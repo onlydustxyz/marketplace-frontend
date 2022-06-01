@@ -44,6 +44,12 @@ diesel setup
 diesel migration run
 ```
 
+### Analyze a repository
+
+```
+cargo run --bin watch_repo bitcoin bitcoin 
+```
+
 ## 🫶 Contributing
 
 ## 📄 License
