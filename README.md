@@ -1,8 +1,5 @@
-<p align="center">
-    <img src="resources/img/logo.png">
-</p>
 <div align="center">
-  <h1 align="center">ProjectName</h1>
+  <h1 align="center">deathnote-contributions-feeder</h1>
   <p align="center">
     <a href="https://discord.gg/onlydust">
         <img src="https://img.shields.io/badge/Discord-6666FF?style=for-the-badge&logo=discord&logoColor=white">
@@ -15,7 +12,9 @@
     </a>
   </p>
   
-  <h3 align="center">Project description</h3>
+  <h3 align="center">Death Note off chain service to watch github contributions and update associated smart contract state on StarkNet.</h3>
+
+</h3>
 </div>
 
 > ## ⚠️ WARNING! ⚠️
@@ -33,8 +32,20 @@
 
 ## 🌡️ Testing
 
+## Dev
+
+### Environment
+
+#### Docker
+
+```
+docker-compose -f scripts/docker/docker-compose-dev.yml up -d
+diesel setup
+diesel migration run
+```
+
 ## 🫶 Contributing
 
 ## 📄 License
 
-**ProjectName** is released under the [MIT](LICENSE).
+**deathnote-contributions-feeder** is released under the [MIT](LICENSE).
