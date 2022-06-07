@@ -38,6 +38,16 @@ pub async fn analyze(organisation_name: &str, repository_name: &str) -> Result<(
     if results.is_empty() {
         create_project(&connection, organisation_name, repository_name)?;
     }
+    let page = octo
+        .pulls(organisation_name, repository_name)
+        .list()
+        .state(octocrab::params::State::Open)
+        .direction(octocrab::params::Direction::Ascending)
+        .per_page(100)
+        .page(0u32)
+        .send()
+        .await?;
+    println!("{:?}", page);
     Ok(())
 }
 
