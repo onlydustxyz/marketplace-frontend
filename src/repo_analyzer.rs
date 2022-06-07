@@ -41,13 +41,19 @@ pub async fn analyze(organisation_name: &str, repository_name: &str) -> Result<(
     let page = octo
         .pulls(organisation_name, repository_name)
         .list()
-        .state(octocrab::params::State::Open)
+        .state(octocrab::params::State::Closed)
         .direction(octocrab::params::Direction::Ascending)
         .per_page(100)
         .page(0u32)
         .send()
         .await?;
     println!("{:?}", page);
+
+    // TODO: investigate alternative technique
+    // https://api.github.com/search/issues?q=repo:onlydustxyz/uraeus+is:pr+is:merged+merged:%3E2022-05-12
+    // = get all merged PRs for a repo after a specific date
+    // without date if first poll
+    // https://api.github.com/search/issues?q=repo:onlydustxyz/uraeus+is:pr+is:merged
     Ok(())
 }
 
