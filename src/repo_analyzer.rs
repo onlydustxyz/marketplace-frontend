@@ -38,18 +38,11 @@ pub async fn analyze(organisation_name: &str, repository_name: &str) -> Result<(
     if results.is_empty() {
         create_project(&connection, organisation_name, repository_name)?;
     }
-    let page = octo
-        .pulls(organisation_name, repository_name)
-        .list()
-        .state(octocrab::params::State::Closed)
-        .direction(octocrab::params::Direction::Ascending)
-        .per_page(100)
-        .page(0u32)
-        .send()
-        .await?;
-    println!("{:?}", page);
 
-    // TODO: investigate alternative technique
+    // TODO: option 1: Octocrab PullRequestHandler.list
+    // https://docs.rs/octocrab/latest/octocrab/pulls/struct.PullRequestHandler.html#method.list
+
+    // TODO: option 2: Github Search API
     // https://api.github.com/search/issues?q=repo:onlydustxyz/uraeus+is:pr+is:merged+merged:%3E2022-05-12
     // = get all merged PRs for a repo after a specific date
     // without date if first poll
