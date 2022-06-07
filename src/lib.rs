@@ -2,6 +2,7 @@
 extern crate diesel;
 extern crate dotenv;
 
+pub mod client;
 pub mod db;
 pub mod model;
-pub mod repo_analyzer;
+pub mod services;
