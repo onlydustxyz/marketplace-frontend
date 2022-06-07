@@ -47,6 +47,26 @@ pub async fn analyze(organisation_name: &str, repository_name: &str) -> Result<(
     // = get all merged PRs for a repo after a specific date
     // without date if first poll
     // https://api.github.com/search/issues?q=repo:onlydustxyz/uraeus+is:pr+is:merged
+
+    let page = octo
+        .pulls(organisation_name, repository_name)
+        .list()
+        .state(octocrab::params::State::Closed)
+        .direction(octocrab::params::Direction::Ascending)
+        .per_page(255)
+        .page(0u32)
+        .send()
+        .await?;
+    for pr in page.items {
+        // TODO: check if PR exists in DB
+        // TODO: check if PR was merged
+        // TODO: invoke smart contract to update state
+        // TODO: update DB
+        let is_merged = pr.merged_at.is_some();
+        let pr_id = pr.id;
+        let author = pr.user.unwrap().login;
+        println!("PR #{} is merged: {} by: {}", pr_id, is_merged, author);
+    }
     Ok(())
 }
 
