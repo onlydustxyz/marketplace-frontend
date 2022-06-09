@@ -1,4 +1,4 @@
-use crate::client::contribution_contract::ContributionContractClient;
+use crate::client::contribution_contract::ContributionStarknetContractClient;
 use crate::db::{
     self,
     models::*,
@@ -11,15 +11,12 @@ use log::debug;
 
 const GITHUB_API_ROOT: &str = "https://api.github.com";
 
-pub struct RepoAnalyzer<T: ContributionContractClient> {
-    pub contribution_contract_client: T,
+pub struct RepoAnalyzer {
+    pub contribution_contract_client: ContributionStarknetContractClient,
 }
 
-impl<T> RepoAnalyzer<T>
-where
-    T: ContributionContractClient,
-{
-    pub fn new(contribution_contract_client: T) -> Self {
+impl RepoAnalyzer {
+    pub fn new(contribution_contract_client: ContributionStarknetContractClient) -> Self {
         Self {
             contribution_contract_client,
         }
@@ -81,12 +78,15 @@ where
             let pr_id = pr.id;
             let author = pr.user.unwrap().login;
             println!("PR #{} is merged: {} by: {}", pr_id, is_merged, author);
-            self.contribution_contract_client.register_contribution(
-                organisation_name,
-                repository_name,
-                author,
-                pr_id.as_ref().to_string(),
-            )?;
+            self.contribution_contract_client
+                .register_contribution(
+                    organisation_name,
+                    repository_name,
+                    author,
+                    pr_id.as_ref().to_string(),
+                )
+                .await
+                .map_err(anyhow::Error::msg)?;
         }
         Ok(())
     }
