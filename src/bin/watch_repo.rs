@@ -15,8 +15,13 @@ async fn main() -> Result<()> {
     }
     let organization = args[1].clone();
     let repository = args[2].clone();
+    let private_key = "";
+    let contract_address = "";
     let contribution_contract_client =
-        contribution_contract::new_starknet_contribution_contract_client();
+        contribution_contract::new_starknet_contribution_contract_client(
+            private_key,
+            contract_address,
+        );
     let repo_analyzer = RepoAnalyzer::new(contribution_contract_client);
     repo_analyzer
         .analyze(&organization, &repository)
