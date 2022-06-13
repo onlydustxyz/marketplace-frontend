@@ -53,13 +53,7 @@ impl RepoAnalyzer {
 
         // TODO: option 1: Octocrab PullRequestHandler.list
         // https://docs.rs/octocrab/latest/octocrab/pulls/struct.PullRequestHandler.html#method.list
-
-        // TODO: option 2: Github Search API
-        // https://api.github.com/search/issues?q=repo:onlydustxyz/uraeus+is:pr+is:merged+merged:%3E2022-05-12
-        // = get all merged PRs for a repo after a specific date
-        // without date if first poll
-        // https://api.github.com/search/issues?q=repo:onlydustxyz/uraeus+is:pr+is:merged
-
+        // TODO: handle pagination
         let page = octo
             .pulls(organisation_name, repository_name)
             .list()
