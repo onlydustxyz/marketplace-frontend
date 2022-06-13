@@ -19,7 +19,6 @@ pub fn new_starknet_contribution_contract_client(
     private_key: &str,
     contract_address: &str,
 ) -> ContributionStarknetContractClient {
-    let provider = SequencerGatewayProvider::starknet_alpha_goerli();
     let account_provider = SequencerGatewayProvider::starknet_alpha_goerli();
 
     let signer = LocalWallet::from(SigningKey::from_secret_scalar(
@@ -31,25 +30,22 @@ pub fn new_starknet_contribution_contract_client(
     // TODO: make chain_id configurable
     let account = SingleOwnerAccount::new(account_provider, signer, address, chain_id::TESTNET);
 
-    ContributionStarknetContractClient::new(contract_address, account, provider)
+    ContributionStarknetContractClient::new(contract_address, account)
 }
 
 pub struct ContributionStarknetContractClient {
     contract_address: FieldElement,
     account: SingleOwnerAccount<SequencerGatewayProvider, LocalWallet>,
-    provider: SequencerGatewayProvider,
 }
 
 impl ContributionStarknetContractClient {
     pub fn new(
         contract_address: FieldElement,
         account: SingleOwnerAccount<SequencerGatewayProvider, LocalWallet>,
-        provider: SequencerGatewayProvider,
     ) -> Self {
         Self {
             contract_address,
             account,
-            provider,
         }
     }
     pub async fn register_contribution(
