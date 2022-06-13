@@ -1,10 +1,10 @@
-use crate::client::contribution_contract::ContributionStarknetContractClient;
 use crate::db::{
     self,
     models::*,
     schema::projects::{self, dsl::*},
 };
 use crate::model::github::RepositoryWithExtension;
+use crate::starknet::contribution_contract::ContributionStarknetContractClient;
 use anyhow::{anyhow, Result};
 use diesel::prelude::*;
 use log::debug;

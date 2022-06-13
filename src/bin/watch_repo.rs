@@ -1,6 +1,6 @@
 use anyhow::{anyhow, Result};
-use deathnote_contributions_feeder::client::contribution_contract;
 use deathnote_contributions_feeder::services::contribution::RepoAnalyzer;
+use deathnote_contributions_feeder::starknet::contribution_contract;
 
 use std::env;
 

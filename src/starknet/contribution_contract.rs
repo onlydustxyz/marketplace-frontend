@@ -1,4 +1,7 @@
-use crate::client::errors::StarknetError;
+use crate::{
+    model::github::PullRequestStatus,
+    starknet::{converter, errors::StarknetError},
+};
 use anyhow::Result;
 use log::debug;
 use starknet::{
@@ -79,7 +82,7 @@ impl ContributionStarknetContractClient {
                     owner_felt,                                           // owner
                     repo_felt,                                            // repo
                     FieldElement::from_dec_str(&pr_id).unwrap(),          // PR ID
-                    FieldElement::from_dec_str("3").unwrap(),             // PR status (merged)
+                    converter::to_felt(PullRequestStatus::Merged),        // PR status (merged)
                 ],
             }])
             .send()
