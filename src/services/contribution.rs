@@ -10,6 +10,7 @@ use diesel::prelude::*;
 use log::debug;
 
 const GITHUB_API_ROOT: &str = "https://api.github.com";
+const MAX_PR_PER_PAGE: u8 = 100;
 
 pub struct RepoAnalyzer {
     pub contribution_contract_client: ContributionStarknetContractClient,
@@ -28,9 +29,10 @@ impl RepoAnalyzer {
             organisation_name, repository_name
         );
         let connection = db::establish_connection()?;
-
         let octo = octocrab::instance();
-        let repo = octo
+
+        // Check if repo exists
+        let _repo = octo
             .get::<RepositoryWithExtension, String, ()>(
                 format!(
                     "{}/repos/{}/{}",
@@ -39,49 +41,69 @@ impl RepoAnalyzer {
                 None::<&()>,
             )
             .await?;
-        println!("open_issues: {:?}", repo.open_issues);
+
+        // Find project in database
         let results = projects
             .filter(organisation.eq(organisation_name))
             .filter(repository.eq(repository_name))
             .limit(1)
             .load::<Project>(&connection)
             .expect("Error loading projects");
-
+        // Create project if not exist
         if results.is_empty() {
             self.create_project(&connection, organisation_name, repository_name)?;
         }
 
-        // TODO: option 1: Octocrab PullRequestHandler.list
-        // https://docs.rs/octocrab/latest/octocrab/pulls/struct.PullRequestHandler.html#method.list
-        // TODO: handle pagination
-        let page = octo
+        // List the closed PRs
+        let mut current_page = octo
             .pulls(organisation_name, repository_name)
             .list()
             .state(octocrab::params::State::Closed)
             .direction(octocrab::params::Direction::Ascending)
-            .per_page(255)
-            .page(0u32)
+            .per_page(MAX_PR_PER_PAGE)
             .send()
             .await?;
-        for pr in page.items {
+        let mut prs = current_page.take_items();
+        while let Ok(Some(mut new_page)) = octo.get_page(&current_page.next).await {
+            prs.extend(new_page.take_items());
+            current_page = new_page;
+        }
+
+        for pr in prs.drain(..) {
             // TODO: check if PR exists in DB
-            // TODO: check if PR was merged
             // TODO: invoke smart contract to update state
             // TODO: update DB
             let is_merged = pr.merged_at.is_some();
             let pr_id = pr.id;
             let author = pr.user.unwrap().login;
-            println!("PR #{} is merged: {} by: {}", pr_id, is_merged, author);
-            self.contribution_contract_client
-                .register_contribution(
+            // Process only merged PRs
+            if is_merged {
+                self.process_merged_pr(
                     organisation_name,
                     repository_name,
                     author,
                     pr_id.as_ref().to_string(),
                 )
-                .await
-                .map_err(anyhow::Error::msg)?;
+                .await?;
+            }
         }
+        Ok(())
+    }
+
+    async fn process_merged_pr(
+        &self,
+        organisation_name: &str,
+        repository_name: &str,
+        author: String,
+        pr_id: String,
+    ) -> Result<()> {
+        println!("PR #{} was merged by: {}", pr_id, author);
+        // TODO: return result when smart contract interaction works
+        let _result = self
+            .contribution_contract_client
+            .register_contribution(organisation_name, repository_name, author, pr_id)
+            .await
+            .map_err(anyhow::Error::msg);
         Ok(())
     }
 
