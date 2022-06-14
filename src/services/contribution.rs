@@ -11,6 +11,7 @@ use crate::starknet::contribution_contract::ContributionStarknetContractClient;
 use anyhow::{anyhow, Result};
 use diesel::prelude::*;
 use log::debug;
+use std::sync::Arc;
 
 const GITHUB_API_ROOT: &str = "https://api.github.com";
 const MAX_PR_PER_PAGE: u8 = 100;
@@ -26,37 +27,37 @@ impl RepoAnalyzer {
         }
     }
 
-    pub async fn analyze(&self, organisation_name: &str, repository_name: &str) -> Result<()> {
+    pub async fn analyze_all(&self) -> Result<()> {
+        let connection = db::establish_connection()?;
+        let octo = octocrab::instance();
+
+        // Find project in database
+        let results = projects
+            .load::<Project>(&connection)
+            .expect("Error loading projects");
+        for project in results {
+            self.analyze_one(
+                &connection,
+                octo.clone(),
+                &project.organisation,
+                &project.repository,
+            )
+            .await?;
+        }
+        Ok(())
+    }
+
+    pub async fn analyze_one(
+        &self,
+        connection: &PgConnection,
+        octo: Arc<octocrab::Octocrab>,
+        organisation_name: &str,
+        repository_name: &str,
+    ) -> Result<()> {
         debug!(
             "Entering analyze with args: {} - {}",
             organisation_name, repository_name
         );
-        let connection = db::establish_connection()?;
-        let octo = octocrab::instance();
-
-        // Check if repo exists
-        let _repo = octo
-            .get::<RepositoryWithExtension, String, ()>(
-                format!(
-                    "{}/repos/{}/{}",
-                    GITHUB_API_ROOT, organisation_name, repository_name
-                ),
-                None::<&()>,
-            )
-            .await?;
-
-        // Find project in database
-        let results = projects
-            .filter(organisation.eq(organisation_name))
-            .filter(repository.eq(repository_name))
-            .limit(1)
-            .load::<Project>(&connection)
-            .expect("Error loading projects");
-        // Create project if not exist
-        if results.is_empty() {
-            self.create_project(&connection, organisation_name, repository_name)?;
-        }
-
         // List the closed PRs
         let mut current_page = octo
             .pulls(organisation_name, repository_name)
@@ -79,7 +80,7 @@ impl RepoAnalyzer {
             // Process only merged PRs
             if is_merged {
                 self.process_merged_pr(
-                    &connection,
+                    connection,
                     organisation_name,
                     repository_name,
                     author_,
@@ -89,6 +90,37 @@ impl RepoAnalyzer {
             }
         }
         Ok(())
+    }
+
+    pub async fn analyze(&self, organisation_name: &str, repository_name: &str) -> Result<()> {
+        debug!(
+            "Entering analyze with args: {} - {}",
+            organisation_name, repository_name
+        );
+        let connection = db::establish_connection()?;
+        let octo = octocrab::instance();
+        // Check if repo exists
+        let _repo = octo
+            .get::<RepositoryWithExtension, String, ()>(
+                format!(
+                    "{}/repos/{}/{}",
+                    GITHUB_API_ROOT, organisation_name, repository_name
+                ),
+                None::<&()>,
+            )
+            .await?;
+        let results = projects
+            .filter(organisation.eq(organisation_name))
+            .filter(repository.eq(repository_name))
+            .limit(1)
+            .load::<Project>(&connection)
+            .expect("Error loading projects");
+        // Create project if not exist
+        if results.is_empty() {
+            self.create_project(&connection, organisation_name, repository_name)?;
+        }
+        self.analyze_one(&connection, octo, organisation_name, repository_name)
+            .await
     }
 
     async fn process_merged_pr(
