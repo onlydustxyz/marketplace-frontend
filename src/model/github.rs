@@ -13,6 +13,7 @@ pub enum PullRequestStatus {
     Open = 1,
     Review = 2,
     Merged = 3,
+    SmartContractError = 4,
 }
 
 impl fmt::Display for PullRequestStatus {
@@ -22,6 +23,7 @@ impl fmt::Display for PullRequestStatus {
             PullRequestStatus::Open => write!(f, "1"),
             PullRequestStatus::Review => write!(f, "2"),
             PullRequestStatus::Merged => write!(f, "3"),
+            PullRequestStatus::SmartContractError => write!(f, "4"),
         }
     }
 }
