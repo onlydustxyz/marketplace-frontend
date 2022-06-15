@@ -26,29 +26,45 @@
 
 ## 🎗️ Prerequisites
 
-## 📦 Installation
+### 1. Setup your environment 
 
-## 🔬 Usage
+Create the `.env` file with the correct environment variables.
+Copy the `.env.example` file and modify the values according to your setup.
 
-## 🌡️ Testing
-
-## Dev
-
-### Environment
-
-#### Docker
-
+### 2. Start the docker container
+Make sure `docker compose` is installed (see [Installation instructions](https://docs.docker.com/compose/install/)).
 ```
-docker-compose -f scripts/docker/docker-compose-dev.yml up -d
+docker-compose -f scripts/docker/dev/docker-compose.yml up -d
+```
+
+### 3. Setup the database
+Make sure `Diesel CLI` is installed (see [installation instructions](https://diesel.rs/guides/getting-started)):
+
+Then, use `Diesel` to initialize the data model and the database:
+```
+source .env
 diesel setup
 diesel migration run
 ```
+   
+## 📦 Installation
 
-### Analyze a repository
+To build the project, run the following command:
+```
+cargo build
+```
+
+## 🔬 Usage
+
+Below are some examples of usage.
+
+### Analyze a single repository
 
 ```
 cargo run --bin watch_repo bitcoin bitcoin 
 ```
+
+## 🌡️ Testing
 
 ## 🫶 Contributing
 
