@@ -1,8 +1,12 @@
-use anyhow::{anyhow, Result};
-use deathnote_contributions_feeder::services::contribution::RepoAnalyzer;
-use deathnote_contributions_feeder::starknet::contribution_contract;
-
+use anyhow::Result;
+use log::warn;
 use std::env;
+
+use deathnote_contributions_feeder::{
+    database, github,
+    model::*,
+    traits::{fetcher::Fetcher, logger::SyncLogger},
+};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -13,18 +17,23 @@ async fn main() -> Result<()> {
     if args.len() != 3 {
         panic!("Invalid arguments.");
     }
-    let organization = args[1].clone();
-    let repository = args[2].clone();
-    let private_key = "";
-    let contract_address = "";
-    let contribution_contract_client =
-        contribution_contract::new_starknet_contribution_contract_client(
-            private_key,
-            contract_address,
-        );
-    let repo_analyzer = RepoAnalyzer::new(contribution_contract_client);
-    repo_analyzer
-        .analyze(&organization, &repository)
-        .await
-        .map_err(|e| anyhow!(e))
+
+    let repository_filter = repository::Filter {
+        owner: Some(args[1].clone()),
+        name: Some(args[2].clone()),
+    };
+
+    let github = github::API::new();
+    let database = database::API::new();
+
+    for repository in github.fetch(repository_filter).await? {
+        if let Err(error) = database.log_sync(&repository) {
+            warn!("Unable to log repository in database: {}", error);
+        }
+
+        let pullrequests = github.fetch(pullrequest::Filter { repository }).await?;
+        database.log_sync(&pullrequests)?;
+    }
+
+    Ok(())
 }

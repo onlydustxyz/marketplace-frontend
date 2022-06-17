@@ -1,19 +1,27 @@
-use anyhow::{anyhow, Result};
-use deathnote_contributions_feeder::services::contribution::RepoAnalyzer;
-use deathnote_contributions_feeder::starknet::contribution_contract;
+use anyhow::Result;
+use deathnote_contributions_feeder::database;
+use deathnote_contributions_feeder::github;
+use deathnote_contributions_feeder::model::*;
+use deathnote_contributions_feeder::traits::fetcher::{Fetcher, SyncFetcher};
+use deathnote_contributions_feeder::traits::logger::SyncLogger;
 
 #[tokio::main]
 async fn main() -> Result<()> {
     env_logger::init();
     octocrab::initialise(octocrab::Octocrab::builder())?;
 
-    let private_key = "";
-    let contract_address = "";
-    let contribution_contract_client =
-        contribution_contract::new_starknet_contribution_contract_client(
-            private_key,
-            contract_address,
-        );
-    let repo_analyzer = RepoAnalyzer::new(contribution_contract_client);
-    repo_analyzer.analyze_all().await.map_err(|e| anyhow!(e))
+    let github = github::API::new();
+    let database = database::API::new();
+
+    const ALL: repository::Filter = repository::Filter {
+        owner: None,
+        name: None,
+    };
+
+    for repository in database.fetch_sync(ALL)? {
+        let pullrequests = github.fetch(pullrequest::Filter { repository }).await?;
+        database.log_sync(&pullrequests)?;
+    }
+
+    Ok(())
 }
