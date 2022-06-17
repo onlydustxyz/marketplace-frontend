@@ -6,7 +6,7 @@ use log::debug;
 use std::sync::Arc;
 
 use crate::model::{pullrequest, repository};
-use crate::traits::fetcher::Fetcher;
+use crate::traits::fetcher::AsyncFetcher;
 
 impl From<models::RepositoryWithExtension> for repository::Repository {
     fn from(repo: models::RepositoryWithExtension) -> Self {
@@ -40,8 +40,11 @@ impl From<octocrab::models::pulls::PullRequest> for pullrequest::PullRequest {
 }
 
 #[async_trait]
-impl Fetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
-    async fn fetch(&self, filter: pullrequest::Filter) -> Result<Vec<pullrequest::PullRequest>> {
+impl AsyncFetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
+    async fn fetch_async(
+        &self,
+        filter: pullrequest::Filter,
+    ) -> Result<Vec<pullrequest::PullRequest>> {
         const MAX_PR_PER_PAGE: u8 = 100;
 
         debug!(
@@ -76,8 +79,8 @@ impl Fetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
 }
 
 #[async_trait]
-impl Fetcher<repository::Filter, repository::Repository> for API {
-    async fn fetch(&self, filter: repository::Filter) -> Result<Vec<repository::Repository>> {
+impl AsyncFetcher<repository::Filter, repository::Repository> for API {
+    async fn fetch_async(&self, filter: repository::Filter) -> Result<Vec<repository::Repository>> {
         const GITHUB_API_ROOT: &str = "https://api.github.com";
 
         let repo = self

@@ -1,11 +1,13 @@
 use anyhow::Result;
-use log::warn;
 use std::env;
+use std::rc::Rc;
+use std::sync::Arc;
 
 use deathnote_contributions_feeder::{
     database, github,
-    model::*,
-    traits::{fetcher::Fetcher, logger::SyncLogger},
+    model::repository,
+    services::contributions::RepositoryAnalyzer,
+    traits::{fetcher::Fetcher, logger::Logger},
 };
 
 #[tokio::main]
@@ -23,17 +25,15 @@ async fn main() -> Result<()> {
         name: Some(args[2].clone()),
     };
 
-    let github = github::API::new();
-    let database = database::API::new();
+    let database = Rc::new(database::API::new());
+    let github = Arc::new(github::API::new());
 
-    for repository in github.fetch(repository_filter).await? {
-        if let Err(error) = database.log_sync(&repository) {
-            warn!("Unable to log repository in database: {}", error);
-        }
+    let analyzer = RepositoryAnalyzer::new(
+        Fetcher::Async(github.clone()),
+        Some(Logger::Sync(database.clone())),
+        Fetcher::Async(github.clone()),
+        Logger::Sync(database.clone()),
+    );
 
-        let pullrequests = github.fetch(pullrequest::Filter { repository }).await?;
-        database.log_sync(&pullrequests)?;
-    }
-
-    Ok(())
+    analyzer.analyze(repository_filter).await
 }

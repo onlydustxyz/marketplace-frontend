@@ -1,27 +1,28 @@
 use anyhow::Result;
-use deathnote_contributions_feeder::database;
-use deathnote_contributions_feeder::github;
-use deathnote_contributions_feeder::model::*;
-use deathnote_contributions_feeder::traits::fetcher::{Fetcher, SyncFetcher};
-use deathnote_contributions_feeder::traits::logger::SyncLogger;
+use std::rc::Rc;
+use std::sync::Arc;
+
+use deathnote_contributions_feeder::{
+    database, github,
+    services::contributions::RepositoryAnalyzer,
+    traits::{fetcher::Fetcher, logger::Logger},
+};
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    // TODO: parallelize the tasks
     env_logger::init();
     octocrab::initialise(octocrab::Octocrab::builder())?;
 
-    let github = github::API::new();
-    let database = database::API::new();
+    let database = Rc::new(database::API::new());
+    let github = Arc::new(github::API::new());
 
-    const ALL: repository::Filter = repository::Filter {
-        owner: None,
-        name: None,
-    };
+    let analyzer = RepositoryAnalyzer::new(
+        Fetcher::Sync(database.clone()),
+        None,
+        Fetcher::Async(github.clone()),
+        Logger::Sync(database.clone()),
+    );
 
-    for repository in database.fetch_sync(ALL)? {
-        let pullrequests = github.fetch(pullrequest::Filter { repository }).await?;
-        database.log_sync(&pullrequests)?;
-    }
-
-    Ok(())
+    analyzer.analyze_all().await
 }
