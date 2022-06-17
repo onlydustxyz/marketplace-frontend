@@ -1,4 +1,4 @@
-use crate::db::schema::{projects, pull_requests};
+use crate::database::schema::{projects, pull_requests};
 use diesel::Queryable;
 use rocket::serde::{Deserialize, Serialize};
 

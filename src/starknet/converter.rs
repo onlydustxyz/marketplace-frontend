@@ -1,4 +1,4 @@
-use crate::model::github::PullRequestStatus;
+use crate::model::pullrequest::Status as PullRequestStatus;
 use starknet::core::types::FieldElement;
 
 pub fn to_felt(status: PullRequestStatus) -> FieldElement {

@@ -1,5 +1,5 @@
 use crate::{
-    model::github::PullRequestStatus,
+    model::pullrequest::Status as PullRequestStatus,
     starknet::{converter, errors::StarknetError},
 };
 use anyhow::Result;
