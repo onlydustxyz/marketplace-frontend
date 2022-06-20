@@ -66,6 +66,10 @@ cargo run --bin watch_repo bitcoin bitcoin
 
 ## 🌡️ Testing
 
+```
+cargo test
+```
+
 ## 🫶 Contributing
 
 ## 📄 License
