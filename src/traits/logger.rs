@@ -1,5 +1,6 @@
 use anyhow::Result;
 use async_trait::async_trait;
+use futures::future::try_join_all;
 use std::rc::Rc;
 use std::sync::Arc;
 
@@ -18,6 +19,18 @@ where
 {
     fn log_sync(&self, items: &Vec<Item>) -> Result<Vec<Report>> {
         items.iter().map(|item| self.log_sync(item)).collect()
+    }
+}
+
+#[async_trait]
+impl<T, Item, Report> AsyncLogger<Vec<Item>, Vec<Report>> for T
+where
+    T: AsyncLogger<Item, Report> + Send + Sync,
+    Item: Send + Sync,
+    Report: Send + Sync,
+{
+    async fn log_async(&self, items: &Vec<Item>) -> Result<Vec<Report>> {
+        try_join_all(items.iter().map(|item| self.log_async(item))).await
     }
 }
 

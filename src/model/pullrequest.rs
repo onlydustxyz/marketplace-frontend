@@ -2,6 +2,7 @@ use std::fmt;
 
 use super::repository::Repository;
 
+#[derive(Debug, PartialEq, Clone)]
 pub enum Status {
     None = 0,
     Open = 1,
@@ -10,12 +11,14 @@ pub enum Status {
     SmartContractError = 4,
 }
 
+#[derive(Debug, PartialEq, Clone)]
 pub struct PullRequest {
     pub id: String,
     pub author: String,
     pub status: Status,
 }
 
+#[derive(Debug, PartialEq)]
 pub struct Filter {
     pub repository: Repository,
 }
