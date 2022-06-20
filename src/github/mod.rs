@@ -29,6 +29,12 @@ impl API {
     }
 }
 
+impl Default for API {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl From<octocrab::models::pulls::PullRequest> for pullrequest::PullRequest {
     fn from(pr: octocrab::models::pulls::PullRequest) -> Self {
         Self {
