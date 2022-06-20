@@ -58,6 +58,12 @@ impl API {
     }
 }
 
+impl Default for API {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl From<&pullrequest::PullRequest> for models::NewPullRequest {
     fn from(pr: &pullrequest::PullRequest) -> Self {
         Self {
