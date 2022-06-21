@@ -11,7 +11,12 @@ use crate::traits::fetcher::AsyncFetcher;
 impl From<models::RepositoryWithExtension> for repository::Repository {
     fn from(repo: models::RepositoryWithExtension) -> Self {
         Self {
-            owner: repo.inner.owner.unwrap().login,
+            id: repo.inner.id.to_string(),
+            owner: repo
+                .inner
+                .owner
+                .expect("Invalid repo owner received from github API")
+                .login,
             name: repo.inner.name,
         }
     }
@@ -39,8 +44,18 @@ impl From<octocrab::models::pulls::PullRequest> for pullrequest::PullRequest {
     fn from(pr: octocrab::models::pulls::PullRequest) -> Self {
         Self {
             id: pr.id.to_string(),
-            author: pr.user.unwrap().id.to_string(),
+            author: pr
+                .user
+                .expect("Invalid user received from github API")
+                .id
+                .to_string(),
             status: pullrequest::Status::Merged, // TODO compute status
+            repository_id: pr
+                .base
+                .repo
+                .expect("Invalid repo received from github API")
+                .id
+                .to_string(),
         }
     }
 }
@@ -53,15 +68,17 @@ impl AsyncFetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
     ) -> Result<Vec<pullrequest::PullRequest>> {
         const MAX_PR_PER_PAGE: u8 = 100;
 
+        let repository = filter.repository.expect("Repository is mandatory for now");
+
         debug!(
             "Entering analyze with args: {} - {}",
-            filter.repository.owner, filter.repository.name
+            repository.owner, repository.name
         );
 
         // List the closed PRs
         let mut current_page = self
             .octo
-            .pulls(&filter.repository.owner, &filter.repository.name)
+            .pulls(&repository.owner, &repository.name)
             .list()
             .state(octocrab::params::State::Closed)
             .direction(octocrab::params::Direction::Ascending)
