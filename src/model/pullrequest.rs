@@ -1,4 +1,5 @@
-use std::fmt;
+use anyhow::anyhow;
+use std::{fmt, str::FromStr};
 
 use super::repository::Repository;
 
@@ -8,7 +9,6 @@ pub enum Status {
     Open = 1,
     Review = 2,
     Merged = 3,
-    SmartContractError = 4,
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -16,11 +16,22 @@ pub struct PullRequest {
     pub id: String,
     pub author: String,
     pub status: Status,
+    pub repository_id: String,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Filter {
-    pub repository: Repository,
+    pub author: Option<String>,
+    pub repository: Option<Repository>,
+}
+
+impl Default for Filter {
+    fn default() -> Self {
+        Self {
+            author: None,
+            repository: None,
+        }
+    }
 }
 
 impl fmt::Display for Status {
@@ -30,7 +41,20 @@ impl fmt::Display for Status {
             Status::Open => write!(f, "1"),
             Status::Review => write!(f, "2"),
             Status::Merged => write!(f, "3"),
-            Status::SmartContractError => write!(f, "4"),
+        }
+    }
+}
+
+impl FromStr for Status {
+    type Err = anyhow::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "0" => Ok(Status::None),
+            "1" => Ok(Status::Open),
+            "2" => Ok(Status::Review),
+            "3" => Ok(Status::Merged),
+            _ => Err(anyhow!("Unable to parse {} into a PR status", s)),
         }
     }
 }

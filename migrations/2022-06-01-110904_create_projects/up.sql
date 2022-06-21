@@ -1,5 +1,6 @@
 CREATE TABLE projects (
-  id SERIAL PRIMARY KEY,
+  id VARCHAR PRIMARY KEY,
   organisation VARCHAR NOT NULL,
-  repository VARCHAR NOT NULL
+  repository VARCHAR NOT NULL,
+  last_indexed_time TIMESTAMP
 )
