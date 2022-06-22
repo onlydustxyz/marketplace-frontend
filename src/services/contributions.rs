@@ -1,15 +1,15 @@
-use anyhow::Result;
-
 use crate::traits::{fetcher::Fetcher, logger::Logger};
+use anyhow::Result;
+use futures::future::join_all;
 
-pub async fn fetch_and_log<Filter, Item>(
+pub async fn fetch_and_log<Filter, Item, Report>(
     fetcher: Fetcher<Filter, Item>,
-    logger: Logger<Vec<Item>, Vec<()>>,
+    logger: Logger<Item, Report>,
     filter: Filter,
-) -> Result<()> {
-    let items = fetcher.fetch(filter).await?;
-    logger.log(&items).await?;
-    Ok(())
+) -> Result<Vec<Report>> {
+    let results = fetcher.fetch(filter).await?.map(|item| logger.log(item));
+
+    Ok(join_all(results).await)
 }
 
 #[cfg(test)]
@@ -28,25 +28,25 @@ mod tests {
         RepoFetcher{}
 
         impl SyncFetcher<repository::Filter, repository::Repository> for RepoFetcher {
-            fn fetch_sync(&self, filter: repository::Filter) -> Result<Vec<repository::Repository>>;
+            fn fetch_sync(&self, filter: repository::Filter) -> Result<Box<dyn Iterator<Item=repository::Repository>>>;
         }
 
         #[async_trait]
         impl AsyncFetcher<repository::Filter, repository::Repository> for RepoFetcher {
-            async fn fetch_async(&self, filter: repository::Filter) -> Result<Vec<repository::Repository>>;
+            async fn fetch_async(&self, filter: repository::Filter) -> Result<Box<dyn Iterator<Item=repository::Repository>>>;
         }
     }
 
     mock! {
         RepoLogger{}
 
-        impl SyncLogger<repository::Repository, ()> for RepoLogger {
-            fn log_sync(&self, item: &repository::Repository) -> Result<()>;
+        impl SyncLogger<repository::Repository, Result<()>> for RepoLogger {
+            fn log_sync(&self, item: repository::Repository) -> Result<()>;
         }
 
         #[async_trait]
-        impl AsyncLogger<repository::Repository, ()> for RepoLogger {
-            async fn log_async(&self, item: &repository::Repository) -> Result<()>;
+        impl AsyncLogger<repository::Repository, Result<()>> for RepoLogger {
+            async fn log_async(&self, item: repository::Repository) -> Result<()>;
         }
     }
 
@@ -54,25 +54,25 @@ mod tests {
         PRFetcher{}
 
         impl SyncFetcher<pullrequest::Filter, pullrequest::PullRequest> for PRFetcher {
-            fn fetch_sync(&self, filter: pullrequest::Filter) -> Result<Vec<pullrequest::PullRequest>>;
+            fn fetch_sync(&self, filter: pullrequest::Filter) -> Result<Box<dyn Iterator<Item=pullrequest::PullRequest>>>;
         }
 
         #[async_trait]
         impl AsyncFetcher<pullrequest::Filter, pullrequest::PullRequest> for PRFetcher {
-            async fn fetch_async(&self, filter: pullrequest::Filter) -> Result<Vec<pullrequest::PullRequest>>;
+            async fn fetch_async(&self, filter: pullrequest::Filter) -> Result<Box<dyn Iterator<Item=pullrequest::PullRequest>>>;
         }
     }
 
     mock! {
         PRLogger{}
 
-        impl SyncLogger<pullrequest::PullRequest, ()> for PRLogger {
-            fn log_sync(&self, item: &pullrequest::PullRequest) -> Result<()>;
+        impl SyncLogger<pullrequest::PullRequest, Result<()>> for PRLogger {
+            fn log_sync(&self, item: pullrequest::PullRequest) -> Result<()>;
         }
 
         #[async_trait]
-        impl AsyncLogger<pullrequest::PullRequest, ()> for PRLogger {
-            async fn log_async(&self, item: &pullrequest::PullRequest) -> Result<()>;
+        impl AsyncLogger<pullrequest::PullRequest, Result<()>> for PRLogger {
+            async fn log_async(&self, item: pullrequest::PullRequest) -> Result<()>;
         }
     }
 
@@ -98,7 +98,7 @@ mod tests {
             .expect_fetch_sync()
             .with(eq(filter.clone()))
             .times(1)
-            .return_once(|_| Ok(repositories));
+            .return_once(|_| Ok(Box::new(repositories.into_iter())));
 
         logger
             .expect_log_sync()
@@ -106,13 +106,20 @@ mod tests {
             .times(1)
             .returning(|_| Ok(()));
 
-        fetch_and_log(
+        let result = fetch_and_log(
             Fetcher::Sync(Rc::new(fetcher)),
             Logger::Sync(Rc::new(logger)),
             filter,
         )
-        .await
-        .unwrap();
+        .await;
+
+        assert!(result.is_ok(), "{}", result.unwrap_err());
+        let reports = result.unwrap();
+        assert_eq!(1, reports.len());
+        assert_eq!(
+            reports.len(),
+            reports.into_iter().filter(|res| res.is_ok()).count()
+        );
     }
 
     #[tokio::test]
@@ -137,7 +144,7 @@ mod tests {
             .expect_fetch_async()
             .with(eq(filter.clone()))
             .times(1)
-            .return_once(|_| Ok(repositories));
+            .return_once(|_| Ok(Box::new(repositories.into_iter())));
 
         logger
             .expect_log_async()
@@ -145,13 +152,20 @@ mod tests {
             .times(1)
             .returning(|_| Ok(()));
 
-        fetch_and_log(
+        let result = fetch_and_log(
             Fetcher::Async(Arc::new(fetcher)),
             Logger::Async(Arc::new(logger)),
             filter,
         )
-        .await
-        .unwrap();
+        .await;
+
+        assert!(result.is_ok(), "{}", result.unwrap_err());
+        let reports = result.unwrap();
+        assert_eq!(1, reports.len());
+        assert_eq!(
+            reports.len(),
+            reports.into_iter().filter(|res| res.is_ok()).count()
+        );
     }
 
     #[tokio::test]
@@ -190,7 +204,7 @@ mod tests {
             .expect_fetch_async()
             .with(eq(filter.clone()))
             .times(1)
-            .return_once(|_| Ok(prs));
+            .return_once(|_| Ok(Box::new(prs.into_iter())));
 
         logger
             .expect_log_async()
@@ -204,13 +218,20 @@ mod tests {
             .times(1)
             .returning(|_| Ok(()));
 
-        fetch_and_log(
+        let result = fetch_and_log(
             Fetcher::Async(Arc::new(fetcher)),
             Logger::Async(Arc::new(logger)),
             filter,
         )
-        .await
-        .unwrap();
+        .await;
+
+        assert!(result.is_ok(), "{}", result.unwrap_err());
+        let reports = result.unwrap();
+        assert_eq!(2, reports.len());
+        assert_eq!(
+            reports.len(),
+            reports.into_iter().filter(|res| res.is_ok()).count()
+        );
     }
 
     #[tokio::test]
@@ -278,7 +299,7 @@ mod tests {
             .expect_fetch_async()
             .with(eq(filter.clone()))
             .times(1)
-            .return_once(|_| Ok(prs));
+            .return_once(|_| Ok(Box::new(prs.into_iter())));
 
         logger
             .expect_log_async()
@@ -286,16 +307,32 @@ mod tests {
             .times(1)
             .returning(|_| Err(anyhow!("Unable to log PR#1")));
 
+        logger
+            .expect_log_async()
+            .with(eq(pr2.clone()))
+            .times(1)
+            .returning(|_| Ok(()));
+
+        let result = fetch_and_log(
+            Fetcher::Async(Arc::new(fetcher)),
+            Logger::Async(Arc::new(logger)),
+            filter,
+        )
+        .await;
+
+        assert!(result.is_ok(), "{}", result.unwrap_err());
+        let mut reports = result.unwrap();
+        assert_eq!(2, reports.len());
+
+        // Second PR
+        let report = reports.pop().unwrap();
+        assert!(report.is_ok(), "{}", report.unwrap_err());
+
+        // First PR
+        let report = reports.pop().unwrap();
         assert_eq!(
-            "Unable to log PR#1",
-            fetch_and_log(
-                Fetcher::Async(Arc::new(fetcher)),
-                Logger::Async(Arc::new(logger)),
-                filter,
-            )
-            .await
-            .unwrap_err()
-            .to_string()
+            String::from("Unable to log PR#1"),
+            report.unwrap_err().to_string()
         );
     }
 }

@@ -1,7 +1,7 @@
 use crate::{model::*, traits::logger::AsyncLogger};
 use anyhow::Result;
 use async_trait::async_trait;
-use log::debug;
+use log::info;
 use starknet::{
     accounts::{Account, Call, SingleOwnerAccount},
     core::{
@@ -44,10 +44,10 @@ impl API {
 }
 
 #[async_trait]
-impl AsyncLogger<pullrequest::PullRequest, ContractUpdateStatus> for API {
-    async fn log_async(&self, pr: &pullrequest::PullRequest) -> Result<ContractUpdateStatus> {
-        debug!(
-            "Entering register_contribution with args: {} {} {}",
+impl AsyncLogger<pullrequest::PullRequest, Result<ContractUpdateStatus>> for API {
+    async fn log_async(&self, pr: pullrequest::PullRequest) -> Result<ContractUpdateStatus> {
+        info!(
+            "Register contribution #{} by {} ({})",
             pr.id, pr.author, pr.status
         );
 

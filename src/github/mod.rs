@@ -2,7 +2,7 @@ mod models;
 
 use anyhow::Result;
 use async_trait::async_trait;
-use log::debug;
+use log::info;
 use std::sync::Arc;
 
 use crate::model::{pullrequest, repository};
@@ -65,13 +65,13 @@ impl AsyncFetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
     async fn fetch_async(
         &self,
         filter: pullrequest::Filter,
-    ) -> Result<Vec<pullrequest::PullRequest>> {
+    ) -> Result<Box<dyn Iterator<Item = pullrequest::PullRequest>>> {
         const MAX_PR_PER_PAGE: u8 = 100;
 
         let repository = filter.repository.expect("Repository is mandatory for now");
 
-        debug!(
-            "Entering analyze with args: {} - {}",
+        info!(
+            "Fetching repository {}/{}",
             repository.owner, repository.name
         );
 
@@ -93,17 +93,23 @@ impl AsyncFetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
             current_page = new_page;
         }
 
-        Ok(prs
+        let prs = prs
             .into_iter()
             .filter(|pr| pr.merged_at.is_some())
-            .map(|pr| pr.into())
-            .collect())
+            .map(|pr| pr.into());
+
+        Ok(Box::new(prs))
     }
 }
 
 #[async_trait]
 impl AsyncFetcher<repository::Filter, repository::Repository> for API {
-    async fn fetch_async(&self, filter: repository::Filter) -> Result<Vec<repository::Repository>> {
+    async fn fetch_async(
+        &self,
+        filter: repository::Filter,
+    ) -> Result<Box<dyn Iterator<Item = repository::Repository>>> {
+        info!("Fetching repository with filter {:?}", filter);
+
         const GITHUB_API_ROOT: &str = "https://api.github.com";
 
         let repo = self
@@ -119,6 +125,6 @@ impl AsyncFetcher<repository::Filter, repository::Repository> for API {
             )
             .await?;
 
-        Ok(vec![repo.into()])
+        Ok(Box::new(vec![repo.into()].into_iter()))
     }
 }

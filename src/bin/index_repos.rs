@@ -6,6 +6,7 @@ use deathnote_contributions_feeder::{
     database, github,
     model::pullrequest,
     model::repository,
+    services::contributions::fetch_and_log,
     traits::{fetcher::Fetcher, logger::Logger},
 };
 
@@ -20,17 +21,13 @@ async fn main() -> Result<()> {
     let repo_fetcher: Fetcher<repository::Filter, repository::Repository> =
         Fetcher::Sync(database.clone());
 
-    let pr_fetcher: Fetcher<pullrequest::Filter, pullrequest::PullRequest> =
-        Fetcher::Async(github.clone());
-
-    let pr_logger: Logger<Vec<pullrequest::PullRequest>, Vec<()>> = Logger::Sync(database.clone());
-
     let repository_filter = repository::Filter {
         owner: None,
         name: None,
     };
 
-    let status_logger: Logger<repository::IndexingStatus, ()> = Logger::Sync(database.clone());
+    let status_logger: Logger<repository::IndexingStatus, Result<()>> =
+        Logger::Sync(database.clone());
 
     for repo in repo_fetcher.fetch(repository_filter).await? {
         let pr_filter = pullrequest::Filter {
@@ -38,11 +35,20 @@ async fn main() -> Result<()> {
             repository: Some(repo.clone()),
         };
 
-        let prs = pr_fetcher.fetch(pr_filter).await?;
-        pr_logger.log(&prs).await?;
+        // Fetch and log PR
+        let results = fetch_and_log(
+            Fetcher::Async(github.clone()),
+            Logger::Sync(database.clone()),
+            pr_filter,
+        )
+        .await?;
 
-        let status = repository::IndexingStatus::new(repo.id);
-        status_logger.log(&status).await?;
+        let ok = results.into_iter().filter(|res| res.is_ok()).count() > 0;
+
+        if ok {
+            let status = repository::IndexingStatus::new(repo.id);
+            status_logger.log(status).await?;
+        }
     }
 
     Ok(())

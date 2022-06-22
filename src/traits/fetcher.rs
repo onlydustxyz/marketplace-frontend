@@ -5,11 +5,11 @@ use std::sync::Arc;
 
 #[async_trait]
 pub trait AsyncFetcher<Filter, Item> {
-    async fn fetch_async(&self, filter: Filter) -> Result<Vec<Item>>;
+    async fn fetch_async(&self, filter: Filter) -> Result<Box<dyn Iterator<Item = Item>>>;
 }
 
 pub trait SyncFetcher<Filter, Item> {
-    fn fetch_sync(&self, filter: Filter) -> Result<Vec<Item>>;
+    fn fetch_sync(&self, filter: Filter) -> Result<Box<dyn Iterator<Item = Item>>>;
 }
 
 pub enum Fetcher<Filter, Item> {
@@ -18,7 +18,7 @@ pub enum Fetcher<Filter, Item> {
 }
 
 impl<Filter, Item> Fetcher<Filter, Item> {
-    pub async fn fetch(&self, filter: Filter) -> Result<Vec<Item>> {
+    pub async fn fetch(&self, filter: Filter) -> Result<Box<dyn Iterator<Item = Item>>> {
         match self {
             Self::Sync(fetcher) => fetcher.as_ref().fetch_sync(filter),
             Self::Async(fetcher) => fetcher.as_ref().fetch_async(filter).await,
