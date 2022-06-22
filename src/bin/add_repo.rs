@@ -24,7 +24,7 @@ async fn main() -> Result<()> {
         name: Some(args[2].clone()),
     };
 
-    let database = database::API::new();
+    let database = database::API::default();
     let github = github::API::new();
 
     github

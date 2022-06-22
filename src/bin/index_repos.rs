@@ -13,7 +13,7 @@ async fn main() -> Result<()> {
     env_logger::init();
     octocrab::initialise(octocrab::Octocrab::builder())?;
 
-    let database = database::API::new();
+    let database = database::API::default();
     let github = github::API::new();
 
     let all_repos = repository::Filter::default();

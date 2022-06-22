@@ -1,12 +1,11 @@
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 use async_trait::async_trait;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
-use dotenv::dotenv;
 use log::info;
-use std::env;
 
 use crate::{
+    connection::{self, DbConn},
     model::{pullrequest, repository},
     starknet::models::ContractUpdateStatus,
     traits::{fetcher::*, logger::*, Streamable},
@@ -25,28 +24,30 @@ use self::{
 pub mod models;
 pub mod schema;
 
-pub fn establish_connection() -> Result<PgConnection> {
-    dotenv().ok();
-
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    PgConnection::establish(&database_url).map_err(|e| anyhow!(e))
+pub fn establish_connection() -> Result<DbConn> {
+    connection::init_pool()
+        .get()
+        .map(|connection| DbConn(connection))
+        .map_err(anyhow::Error::msg)
 }
 
 pub struct API {
-    connection: PgConnection,
+    connection: DbConn,
 }
 
 impl API {
-    pub fn new() -> Self {
-        API {
-            connection: establish_connection().unwrap(),
-        }
+    pub fn new(connection: DbConn) -> Self {
+        API { connection }
+    }
+
+    fn connection(&self) -> &PgConnection {
+        &self.connection
     }
 
     fn insert_pullrequest(&self, pr: models::NewPullRequest) -> Result<()> {
         diesel::insert_into(pull_requests::table)
             .values(&pr)
-            .get_result::<models::PullRequest>(&self.connection)?;
+            .get_result::<models::PullRequest>(self.connection())?;
 
         Ok(())
     }
@@ -54,13 +55,13 @@ impl API {
     fn insert_project(&self, project: models::NewProject) -> Result<()> {
         diesel::insert_into(projects::table)
             .values(&project)
-            .get_result::<models::Project>(&self.connection)?;
+            .get_result::<models::Project>(self.connection())?;
 
         Ok(())
     }
 
     fn update_pullrequest(&self, pr: models::PullRequestForm) -> Result<()> {
-        pr.save_changes::<models::PullRequest>(&self.connection)?;
+        pr.save_changes::<models::PullRequest>(self.connection())?;
         Ok(())
     }
 
@@ -76,7 +77,7 @@ impl API {
         };
 
         let results = query
-            .load::<models::Project>(&self.connection)
+            .load::<models::Project>(self.connection())
             .expect("Error while fetching projects from database");
 
         results.into_iter()
@@ -105,7 +106,7 @@ impl API {
         };
 
         let results = query
-            .load::<models::PullRequest>(&self.connection)
+            .load::<models::PullRequest>(self.connection())
             .expect("Error while fetching pullrequests from database");
 
         Box::new(results.into_iter())
@@ -114,7 +115,7 @@ impl API {
 
 impl Default for API {
     fn default() -> Self {
-        Self::new()
+        Self::new(establish_connection().expect("Unable to get a connection from the pool"))
     }
 }
 
@@ -125,7 +126,7 @@ impl Logger<pullrequest::PullRequest, Result<()>> for API {
 
         let result: Result<models::PullRequest> = pull_requests
             .find(&pr.id)
-            .first(&self.connection)
+            .first(self.connection())
             .map_err(anyhow::Error::msg);
 
         match result {
@@ -159,7 +160,7 @@ impl Logger<ContractUpdateStatus, Result<()>> for API {
         info!("Logging successful contract update for PR#{}", status.pr_id);
 
         PullRequestContractUpdateForm::from(status)
-            .save_changes::<models::PullRequest>(&self.connection)?;
+            .save_changes::<models::PullRequest>(self.connection())?;
         Ok(())
     }
 }
@@ -183,7 +184,7 @@ impl Logger<repository::IndexingStatus, Result<()>> for API {
         );
 
         ProjectIndexingStatusUpdateForm::from(status)
-            .save_changes::<models::Project>(&self.connection)?;
+            .save_changes::<models::Project>(self.connection())?;
 
         Ok(())
     }
