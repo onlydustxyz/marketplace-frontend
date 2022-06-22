@@ -1,6 +1,4 @@
 use anyhow::Result;
-use std::rc::Rc;
-use std::sync::Arc;
 
 use deathnote_contributions_feeder::{
     database, github,
@@ -15,19 +13,18 @@ async fn main() -> Result<()> {
     env_logger::init();
     octocrab::initialise(octocrab::Octocrab::builder())?;
 
-    let database = Rc::new(database::API::new());
-    let github = Arc::new(github::API::new());
+    let database = database::API::new();
+    let github = github::API::new();
 
     let repo_fetcher: Fetcher<repository::Filter, repository::Repository> =
-        Fetcher::Sync(database.clone());
+        Fetcher::new_sync(&database);
 
     let repository_filter = repository::Filter {
         owner: None,
         name: None,
     };
 
-    let status_logger: Logger<repository::IndexingStatus, Result<()>> =
-        Logger::Sync(database.clone());
+    let status_logger = Logger::new_sync(&database);
 
     for repo in repo_fetcher.fetch(repository_filter).await? {
         let pr_filter = pullrequest::Filter {
@@ -37,8 +34,8 @@ async fn main() -> Result<()> {
 
         // Fetch and log PR
         let results = fetch_and_log(
-            Fetcher::Async(github.clone()),
-            Logger::Sync(database.clone()),
+            Fetcher::new_async(&github),
+            Logger::new_sync(&database),
             pr_filter,
         )
         .await?;

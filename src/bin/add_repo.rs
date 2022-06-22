@@ -1,7 +1,5 @@
 use anyhow::Result;
 use std::env;
-use std::rc::Rc;
-use std::sync::Arc;
 
 use deathnote_contributions_feeder::{
     database, github,
@@ -25,12 +23,12 @@ async fn main() -> Result<()> {
         name: Some(args[2].clone()),
     };
 
-    let database = Rc::new(database::API::new());
-    let github = Arc::new(github::API::new());
+    let database = database::API::new();
+    let github = github::API::new();
 
     fetch_and_log(
-        Fetcher::Async(github.clone()),
-        Logger::Sync(database.clone()),
+        Fetcher::new_async(&github),
+        Logger::new_sync(&database),
         repository_filter,
     )
     .await?;
