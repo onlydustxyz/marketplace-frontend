@@ -3,14 +3,12 @@ use dotenv::dotenv;
 use futures::future::join_all;
 use log::info;
 use std::env;
-use std::rc::Rc;
-use std::sync::Arc;
 
 use deathnote_contributions_feeder::{
     database,
     model::pullrequest,
     services::contributions::fetch_and_log,
-    starknet::{self, models::*},
+    starknet,
     traits::{fetcher::Fetcher, logger::Logger},
 };
 
@@ -24,18 +22,12 @@ async fn main() -> Result<()> {
     let account_address = env::var("ACCOUNT_ADDRESS").expect("ACCOUNT_ADDRESS must be set");
     let contract_address = env::var("METADATA_ADDRESS").expect("METADATA_ADDRESS must be set");
 
-    let database = Rc::new(database::API::new());
-    let starknet = Arc::new(starknet::API::new(
-        &private_key,
-        &account_address,
-        &contract_address,
-    ));
+    let database = database::API::new();
+    let starknet = starknet::API::new(&private_key, &account_address, &contract_address);
 
-    let pr_fetcher: Fetcher<pullrequest::Filter, pullrequest::PullRequest> =
-        Fetcher::Sync(database.clone());
-    let pr_logger: Logger<pullrequest::PullRequest, Result<ContractUpdateStatus>> =
-        Logger::Async(starknet.clone());
-    let status_logger: Logger<ContractUpdateStatus, Result<()>> = Logger::Sync(database.clone());
+    let pr_fetcher = Fetcher::new_sync(&database);
+    let pr_logger = Logger::new_async(&starknet);
+    let status_logger = Logger::new_sync(&database);
 
     let all = pullrequest::Filter::default(); // TODO filter only non up-to-date PR
     let statuses = fetch_and_log(pr_fetcher, pr_logger, all).await?;

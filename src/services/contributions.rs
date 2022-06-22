@@ -3,8 +3,8 @@ use anyhow::Result;
 use futures::future::join_all;
 
 pub async fn fetch_and_log<Filter, Item, Report>(
-    fetcher: Fetcher<Filter, Item>,
-    logger: Logger<Item, Report>,
+    fetcher: Fetcher<'_, Filter, Item>,
+    logger: Logger<'_, Item, Report>,
     filter: Filter,
 ) -> Result<Vec<Report>> {
     let results = fetcher.fetch(filter).await?.map(|item| logger.log(item));
@@ -19,8 +19,6 @@ mod tests {
     use anyhow::{anyhow, Result};
     use async_trait::async_trait;
     use mockall::{mock, predicate::*};
-    use std::rc::Rc;
-    use std::sync::Arc;
 
     use super::*;
 
@@ -107,8 +105,8 @@ mod tests {
             .returning(|_| Ok(()));
 
         let result = fetch_and_log(
-            Fetcher::Sync(Rc::new(fetcher)),
-            Logger::Sync(Rc::new(logger)),
+            Fetcher::new_sync(&fetcher),
+            Logger::new_sync(&logger),
             filter,
         )
         .await;
@@ -153,8 +151,8 @@ mod tests {
             .returning(|_| Ok(()));
 
         let result = fetch_and_log(
-            Fetcher::Async(Arc::new(fetcher)),
-            Logger::Async(Arc::new(logger)),
+            Fetcher::new_async(&fetcher),
+            Logger::new_async(&logger),
             filter,
         )
         .await;
@@ -219,8 +217,8 @@ mod tests {
             .returning(|_| Ok(()));
 
         let result = fetch_and_log(
-            Fetcher::Async(Arc::new(fetcher)),
-            Logger::Async(Arc::new(logger)),
+            Fetcher::new_async(&fetcher),
+            Logger::new_async(&logger),
             filter,
         )
         .await;
@@ -253,8 +251,8 @@ mod tests {
         assert_eq!(
             "Repository does not exists",
             fetch_and_log(
-                Fetcher::Async(Arc::new(fetcher)),
-                Logger::Async(Arc::new(logger)),
+                Fetcher::new_async(&fetcher),
+                Logger::new_async(&logger),
                 filter,
             )
             .await
@@ -314,8 +312,8 @@ mod tests {
             .returning(|_| Ok(()));
 
         let result = fetch_and_log(
-            Fetcher::Async(Arc::new(fetcher)),
-            Logger::Async(Arc::new(logger)),
+            Fetcher::new_async(&fetcher),
+            Logger::new_async(&logger),
             filter,
         )
         .await;

@@ -1,6 +1,4 @@
 use async_trait::async_trait;
-use std::rc::Rc;
-use std::sync::Arc;
 
 pub trait SyncLogger<Item, Report> {
     fn log_sync(&self, item: Item) -> Report;
@@ -11,12 +9,20 @@ pub trait AsyncLogger<Item, Report> {
     async fn log_async(&self, item: Item) -> Report;
 }
 
-pub enum Logger<Item, Report> {
-    Sync(Rc<dyn SyncLogger<Item, Report>>),
-    Async(Arc<dyn AsyncLogger<Item, Report>>),
+pub enum Logger<'a, Item, Report> {
+    Sync(Box<&'a dyn SyncLogger<Item, Report>>),
+    Async(Box<&'a dyn AsyncLogger<Item, Report>>),
 }
 
-impl<Item, Report> Logger<Item, Report> {
+impl<'a, Item, Report> Logger<'a, Item, Report> {
+    pub fn new_sync(logger: &'a impl SyncLogger<Item, Report>) -> Self {
+        Self::Sync(Box::new(logger))
+    }
+
+    pub fn new_async(logger: &'a impl AsyncLogger<Item, Report>) -> Self {
+        Self::Async(Box::new(logger))
+    }
+
     pub async fn log(&self, item: Item) -> Report {
         match self {
             Self::Sync(logger) => logger.as_ref().log_sync(item),
