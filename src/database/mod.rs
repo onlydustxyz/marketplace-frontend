@@ -2,7 +2,7 @@ use anyhow::{anyhow, Result};
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use dotenv::dotenv;
-use log::debug;
+use log::info;
 use std::env;
 
 use crate::{
@@ -105,7 +105,6 @@ impl API {
         };
 
         let results = query
-            .limit(1)
             .load::<models::PullRequest>(&self.connection)
             .expect("Error while fetching pullrequests from database");
 
@@ -119,32 +118,31 @@ impl Default for API {
     }
 }
 
-impl From<&pullrequest::PullRequest> for models::NewPullRequest {
-    fn from(pr: &pullrequest::PullRequest) -> Self {
+impl From<pullrequest::PullRequest> for models::NewPullRequest {
+    fn from(pr: pullrequest::PullRequest) -> Self {
         Self {
-            id: pr.id.clone(),
-            project_id: pr.repository_id.clone(),
+            id: pr.id,
+            project_id: pr.repository_id,
             pr_status: pr.status.to_string(),
-            author: pr.author.clone(),
+            author: pr.author,
         }
     }
 }
 
-impl From<&pullrequest::PullRequest> for models::PullRequestForm {
-    fn from(pr: &pullrequest::PullRequest) -> Self {
+impl From<pullrequest::PullRequest> for models::PullRequestForm {
+    fn from(pr: pullrequest::PullRequest) -> Self {
         Self {
-            // TODO find a way to store refs in db model to avoid clones
-            id: pr.id.clone(),
+            id: pr.id,
             pr_status: pr.status.to_string(),
-            author: pr.author.clone(),
+            author: pr.author,
         }
     }
 }
 
-impl From<&ContractUpdateStatus> for models::PullRequestContractUpdateForm {
-    fn from(status: &ContractUpdateStatus) -> Self {
+impl From<ContractUpdateStatus> for models::PullRequestContractUpdateForm {
+    fn from(status: ContractUpdateStatus) -> Self {
         Self {
-            id: status.pr_id.clone(),
+            id: status.pr_id,
             smart_contract_update_time: status
                 .last_update_time
                 .elapsed()
@@ -165,19 +163,19 @@ impl From<models::Project> for repository::Repository {
     }
 }
 
-impl From<&repository::Repository> for models::NewProject {
-    fn from(repo: &repository::Repository) -> Self {
+impl From<repository::Repository> for models::NewProject {
+    fn from(repo: repository::Repository) -> Self {
         Self {
-            id: repo.id.clone(),
-            repository: repo.name.clone(),
-            organisation: repo.owner.clone(),
+            id: repo.id,
+            repository: repo.name,
+            organisation: repo.owner,
         }
     }
 }
 
-impl SyncLogger<pullrequest::PullRequest, ()> for API {
-    fn log_sync(&self, pr: &pullrequest::PullRequest) -> Result<()> {
-        debug!("PR #{} was merged by: {}", pr.id, pr.author);
+impl SyncLogger<pullrequest::PullRequest, Result<()>> for API {
+    fn log_sync(&self, pr: pullrequest::PullRequest) -> Result<()> {
+        info!("Logging PR #{} by {} ({})", pr.id, pr.author, pr.status);
 
         let result: Result<models::PullRequest> = pull_requests
             .find(&pr.id)
@@ -191,8 +189,10 @@ impl SyncLogger<pullrequest::PullRequest, ()> for API {
     }
 }
 
-impl SyncLogger<repository::Repository, ()> for API {
-    fn log_sync(&self, repo: &repository::Repository) -> Result<()> {
+impl SyncLogger<repository::Repository, Result<()>> for API {
+    fn log_sync(&self, repo: repository::Repository) -> Result<()> {
+        info!("Logging repository {}/{}", repo.owner, repo.name);
+
         let filter = repository::Filter {
             owner: Some(repo.owner.clone()),
             name: Some(repo.name.clone()),
@@ -206,8 +206,10 @@ impl SyncLogger<repository::Repository, ()> for API {
     }
 }
 
-impl SyncLogger<ContractUpdateStatus, ()> for API {
-    fn log_sync(&self, status: &ContractUpdateStatus) -> Result<()> {
+impl SyncLogger<ContractUpdateStatus, Result<()>> for API {
+    fn log_sync(&self, status: ContractUpdateStatus) -> Result<()> {
+        info!("Logging successful contract update for PR#{}", status.pr_id);
+
         PullRequestContractUpdateForm::from(status)
             .save_changes::<models::PullRequest>(&self.connection)?;
         Ok(())
@@ -215,27 +217,33 @@ impl SyncLogger<ContractUpdateStatus, ()> for API {
 }
 
 impl SyncFetcher<repository::Filter, repository::Repository> for API {
-    fn fetch_sync(&self, filter: repository::Filter) -> Result<Vec<repository::Repository>> {
-        let repositories = self
-            .find_projects(filter)
-            .map(|project| project.into())
-            .collect();
+    fn fetch_sync(
+        &self,
+        filter: repository::Filter,
+    ) -> Result<Box<dyn Iterator<Item = repository::Repository>>> {
+        info!("Fetching repositories with filter: {:?}", filter);
 
-        Ok(repositories)
+        let results = self.find_projects(filter).map(|project| project.into());
+        Ok(Box::new(results))
     }
 }
 
-impl From<&repository::IndexingStatus> for ProjectIndexingStatusUpdateForm {
-    fn from(status: &repository::IndexingStatus) -> Self {
+impl From<repository::IndexingStatus> for ProjectIndexingStatusUpdateForm {
+    fn from(status: repository::IndexingStatus) -> Self {
         Self {
-            id: status.repository_id.clone(),
+            id: status.repository_id,
             last_indexed_time: status.last_update_time,
         }
     }
 }
 
-impl SyncLogger<repository::IndexingStatus, ()> for API {
-    fn log_sync(&self, status: &repository::IndexingStatus) -> Result<()> {
+impl SyncLogger<repository::IndexingStatus, Result<()>> for API {
+    fn log_sync(&self, status: repository::IndexingStatus) -> Result<()> {
+        info!(
+            "Logging successful syncing for project {} ",
+            status.repository_id
+        );
+
         ProjectIndexingStatusUpdateForm::from(status)
             .save_changes::<models::Project>(&self.connection)?;
 
@@ -246,18 +254,23 @@ impl SyncLogger<repository::IndexingStatus, ()> for API {
 impl From<models::PullRequest> for pullrequest::PullRequest {
     fn from(pr: models::PullRequest) -> Self {
         Self {
-            id: pr.id.clone(),
-            author: pr.author.clone(),
-            repository_id: pr.project_id.clone(),
+            id: pr.id,
+            author: pr.author,
+            repository_id: pr.project_id,
             status: pr.pr_status.parse().unwrap(),
         }
     }
 }
 
 impl SyncFetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
-    fn fetch_sync(&self, filter: pullrequest::Filter) -> Result<Vec<pullrequest::PullRequest>> {
-        let pullrequests = self.find_pullrequests(filter).map(|pr| pr.into()).collect();
+    fn fetch_sync(
+        &self,
+        filter: pullrequest::Filter,
+    ) -> Result<Box<dyn Iterator<Item = pullrequest::PullRequest>>> {
+        info!("Fetching pull requests with filter {:?} ", filter);
 
-        Ok(pullrequests)
+        let pullrequests = self.find_pullrequests(filter).map(|pr| pr.into());
+
+        Ok(Box::new(pullrequests))
     }
 }

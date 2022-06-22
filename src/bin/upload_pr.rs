@@ -1,5 +1,7 @@
 use anyhow::Result;
 use dotenv::dotenv;
+use futures::future::join_all;
+use log::info;
 use std::env;
 use std::rc::Rc;
 use std::sync::Arc;
@@ -7,6 +9,7 @@ use std::sync::Arc;
 use deathnote_contributions_feeder::{
     database,
     model::pullrequest,
+    services::contributions::fetch_and_log,
     starknet::{self, models::*},
     traits::{fetcher::Fetcher, logger::Logger},
 };
@@ -30,14 +33,25 @@ async fn main() -> Result<()> {
 
     let pr_fetcher: Fetcher<pullrequest::Filter, pullrequest::PullRequest> =
         Fetcher::Sync(database.clone());
-    let pr_logger: Logger<Vec<pullrequest::PullRequest>, Vec<ContractUpdateStatus>> =
+    let pr_logger: Logger<pullrequest::PullRequest, Result<ContractUpdateStatus>> =
         Logger::Async(starknet.clone());
-    let status_logger: Logger<Vec<ContractUpdateStatus>, Vec<()>> = Logger::Sync(database.clone());
+    let status_logger: Logger<ContractUpdateStatus, Result<()>> = Logger::Sync(database.clone());
 
     let all = pullrequest::Filter::default(); // TODO filter only non up-to-date PR
-    let prs = pr_fetcher.fetch(all).await?;
-    let statuses = pr_logger.log(&prs).await?;
-    status_logger.log(&statuses).await?;
+    let statuses = fetch_and_log(pr_fetcher, pr_logger, all).await?;
+    info!(
+        "Logged {}/{} pull requests successfully",
+        statuses.iter().filter(|res| res.is_ok()).count(),
+        statuses.len()
+    );
+
+    join_all(
+        statuses
+            .into_iter()
+            .filter_map(|status| status.ok())
+            .map(|status| status_logger.log(status)),
+    )
+    .await;
 
     Ok(())
 }
