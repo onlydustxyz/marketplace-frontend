@@ -1,4 +1,5 @@
 use anyhow::{anyhow, Result};
+use async_trait::async_trait;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use dotenv::dotenv;
@@ -8,7 +9,7 @@ use std::env;
 use crate::{
     model::{pullrequest, repository},
     starknet::models::ContractUpdateStatus,
-    traits::{fetcher::SyncFetcher, logger::SyncLogger},
+    traits::{fetcher::*, logger::*, Streamable},
 };
 
 use self::{
@@ -75,7 +76,6 @@ impl API {
         };
 
         let results = query
-            .limit(1)
             .load::<models::Project>(&self.connection)
             .expect("Error while fetching projects from database");
 
@@ -85,7 +85,7 @@ impl API {
     fn find_pullrequests(
         &self,
         filter: pullrequest::Filter,
-    ) -> Box<dyn Iterator<Item = PullRequest>> {
+    ) -> Box<dyn Iterator<Item = PullRequest> + Send> {
         let mut query = pull_requests.into_boxed();
 
         if let Some(repo) = filter.repository {
@@ -118,63 +118,9 @@ impl Default for API {
     }
 }
 
-impl From<pullrequest::PullRequest> for models::NewPullRequest {
-    fn from(pr: pullrequest::PullRequest) -> Self {
-        Self {
-            id: pr.id,
-            project_id: pr.repository_id,
-            pr_status: pr.status.to_string(),
-            author: pr.author,
-        }
-    }
-}
-
-impl From<pullrequest::PullRequest> for models::PullRequestForm {
-    fn from(pr: pullrequest::PullRequest) -> Self {
-        Self {
-            id: pr.id,
-            pr_status: pr.status.to_string(),
-            author: pr.author,
-        }
-    }
-}
-
-impl From<ContractUpdateStatus> for models::PullRequestContractUpdateForm {
-    fn from(status: ContractUpdateStatus) -> Self {
-        Self {
-            id: status.pr_id,
-            smart_contract_update_time: status
-                .last_update_time
-                .elapsed()
-                .expect("Invalid elapsed time")
-                .as_secs()
-                .to_string(),
-        }
-    }
-}
-
-impl From<models::Project> for repository::Repository {
-    fn from(project: models::Project) -> Self {
-        Self {
-            id: project.id,
-            name: project.repository,
-            owner: project.organisation,
-        }
-    }
-}
-
-impl From<repository::Repository> for models::NewProject {
-    fn from(repo: repository::Repository) -> Self {
-        Self {
-            id: repo.id,
-            repository: repo.name,
-            organisation: repo.owner,
-        }
-    }
-}
-
-impl SyncLogger<pullrequest::PullRequest, Result<()>> for API {
-    fn log_sync(&self, pr: pullrequest::PullRequest) -> Result<()> {
+#[async_trait(?Send)]
+impl Logger<pullrequest::PullRequest, Result<()>> for API {
+    async fn log(&self, pr: pullrequest::PullRequest) -> Result<()> {
         info!("Logging PR #{} by {} ({})", pr.id, pr.author, pr.status);
 
         let result: Result<models::PullRequest> = pull_requests
@@ -189,8 +135,9 @@ impl SyncLogger<pullrequest::PullRequest, Result<()>> for API {
     }
 }
 
-impl SyncLogger<repository::Repository, Result<()>> for API {
-    fn log_sync(&self, repo: repository::Repository) -> Result<()> {
+#[async_trait(?Send)]
+impl Logger<repository::Repository, Result<()>> for API {
+    async fn log(&self, repo: repository::Repository) -> Result<()> {
         info!("Logging repository {}/{}", repo.owner, repo.name);
 
         let filter = repository::Filter {
@@ -206,8 +153,9 @@ impl SyncLogger<repository::Repository, Result<()>> for API {
     }
 }
 
-impl SyncLogger<ContractUpdateStatus, Result<()>> for API {
-    fn log_sync(&self, status: ContractUpdateStatus) -> Result<()> {
+#[async_trait(?Send)]
+impl Logger<ContractUpdateStatus, Result<()>> for API {
+    async fn log(&self, status: ContractUpdateStatus) -> Result<()> {
         info!("Logging successful contract update for PR#{}", status.pr_id);
 
         PullRequestContractUpdateForm::from(status)
@@ -216,29 +164,19 @@ impl SyncLogger<ContractUpdateStatus, Result<()>> for API {
     }
 }
 
-impl SyncFetcher<repository::Filter, repository::Repository> for API {
-    fn fetch_sync(
-        &self,
-        filter: repository::Filter,
-    ) -> Result<Box<dyn Iterator<Item = repository::Repository>>> {
+#[async_trait(?Send)]
+impl Fetcher<repository::Filter, repository::Repository> for API {
+    async fn fetch(&self, filter: repository::Filter) -> FetchResult<'_, repository::Repository> {
         info!("Fetching repositories with filter: {:?}", filter);
 
         let results = self.find_projects(filter).map(|project| project.into());
-        Ok(Box::new(results))
+        Ok(Streamable::Sync(results.into()))
     }
 }
 
-impl From<repository::IndexingStatus> for ProjectIndexingStatusUpdateForm {
-    fn from(status: repository::IndexingStatus) -> Self {
-        Self {
-            id: status.repository_id,
-            last_indexed_time: status.last_update_time,
-        }
-    }
-}
-
-impl SyncLogger<repository::IndexingStatus, Result<()>> for API {
-    fn log_sync(&self, status: repository::IndexingStatus) -> Result<()> {
+#[async_trait(?Send)]
+impl Logger<repository::IndexingStatus, Result<()>> for API {
+    async fn log(&self, status: repository::IndexingStatus) -> Result<()> {
         info!(
             "Logging successful syncing for project {} ",
             status.repository_id
@@ -251,26 +189,13 @@ impl SyncLogger<repository::IndexingStatus, Result<()>> for API {
     }
 }
 
-impl From<models::PullRequest> for pullrequest::PullRequest {
-    fn from(pr: models::PullRequest) -> Self {
-        Self {
-            id: pr.id,
-            author: pr.author,
-            repository_id: pr.project_id,
-            status: pr.pr_status.parse().unwrap(),
-        }
-    }
-}
-
-impl SyncFetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
-    fn fetch_sync(
-        &self,
-        filter: pullrequest::Filter,
-    ) -> Result<Box<dyn Iterator<Item = pullrequest::PullRequest>>> {
+#[async_trait(?Send)]
+impl Fetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
+    async fn fetch(&self, filter: pullrequest::Filter) -> FetchResult<pullrequest::PullRequest> {
         info!("Fetching pull requests with filter {:?} ", filter);
 
         let pullrequests = self.find_pullrequests(filter).map(|pr| pr.into());
 
-        Ok(Box::new(pullrequests))
+        Ok(Streamable::Sync(pullrequests.into()))
     }
 }

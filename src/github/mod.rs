@@ -1,12 +1,15 @@
 mod models;
 
-use anyhow::Result;
 use async_trait::async_trait;
+use futures::stream::{self, StreamExt};
 use log::info;
+use octocrab::{models::pulls::PullRequest, Page};
 use std::sync::Arc;
 
-use crate::model::{pullrequest, repository};
-use crate::traits::fetcher::AsyncFetcher;
+use crate::{
+    model::{pullrequest, repository},
+    traits::{fetcher::*, Streamable},
+};
 
 impl From<models::RepositoryWithExtension> for repository::Repository {
     fn from(repo: models::RepositoryWithExtension) -> Self {
@@ -40,32 +43,9 @@ impl Default for API {
     }
 }
 
-impl From<octocrab::models::pulls::PullRequest> for pullrequest::PullRequest {
-    fn from(pr: octocrab::models::pulls::PullRequest) -> Self {
-        Self {
-            id: pr.id.to_string(),
-            author: pr
-                .user
-                .expect("Invalid user received from github API")
-                .id
-                .to_string(),
-            status: pullrequest::Status::Merged, // TODO compute status
-            repository_id: pr
-                .base
-                .repo
-                .expect("Invalid repo received from github API")
-                .id
-                .to_string(),
-        }
-    }
-}
-
-#[async_trait]
-impl AsyncFetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
-    async fn fetch_async(
-        &self,
-        filter: pullrequest::Filter,
-    ) -> Result<Box<dyn Iterator<Item = pullrequest::PullRequest>>> {
+#[async_trait(?Send)]
+impl Fetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
+    async fn fetch(&self, filter: pullrequest::Filter) -> FetchResult<pullrequest::PullRequest> {
         const MAX_PR_PER_PAGE: u8 = 100;
 
         let repository = filter.repository.expect("Repository is mandatory for now");
@@ -75,8 +55,11 @@ impl AsyncFetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
             repository.owner, repository.name
         );
 
+        let filtered =
+            |page: Page<PullRequest>| page.into_iter().filter(|pr| pr.merged_at.is_some());
+
         // List the closed PRs
-        let mut current_page = self
+        let page = self
             .octo
             .pulls(&repository.owner, &repository.name)
             .list()
@@ -86,28 +69,35 @@ impl AsyncFetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
             .send()
             .await?;
 
-        // TODO implement iterator pattern for fetcher not to perform all queries at once
-        let mut prs = current_page.take_items();
-        while let Ok(Some(mut new_page)) = self.octo.get_page(&current_page.next).await {
-            prs.extend(new_page.take_items());
-            current_page = new_page;
-        }
+        let stream = stream::unfold(
+            (self.octo.clone(), page.next.clone(), filtered(page)),
+            move |(octo, next_page, mut iter)| async move {
+                if let Some(next_item) = iter.next() {
+                    return Some((next_item, (octo, next_page, iter)));
+                }
 
-        let prs = prs
-            .into_iter()
-            .filter(|pr| pr.merged_at.is_some())
-            .map(|pr| pr.into());
+                if let Ok(Some(page)) = octo.get_page(&next_page).await {
+                    let next_page = page.next.clone();
+                    let mut iter = filtered(page);
 
-        Ok(Box::new(prs))
+                    if let Some(next_item) = iter.next() {
+                        return Some((next_item, (octo, next_page, iter)));
+                    }
+                }
+
+                None
+            },
+        );
+
+        let result = stream.map(|pr| pr.into());
+
+        Ok(Streamable::Async(result.into()))
     }
 }
 
-#[async_trait]
-impl AsyncFetcher<repository::Filter, repository::Repository> for API {
-    async fn fetch_async(
-        &self,
-        filter: repository::Filter,
-    ) -> Result<Box<dyn Iterator<Item = repository::Repository>>> {
+#[async_trait(?Send)]
+impl Fetcher<repository::Filter, repository::Repository> for API {
+    async fn fetch(&self, filter: repository::Filter) -> FetchResult<repository::Repository> {
         info!("Fetching repository with filter {:?}", filter);
 
         const GITHUB_API_ROOT: &str = "https://api.github.com";
@@ -125,6 +115,8 @@ impl AsyncFetcher<repository::Filter, repository::Repository> for API {
             )
             .await?;
 
-        Ok(Box::new(vec![repo.into()].into_iter()))
+        Ok(Streamable::Async(
+            stream::once(async { repo.into() }).into(),
+        ))
     }
 }

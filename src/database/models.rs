@@ -1,6 +1,10 @@
 use std::time::SystemTime;
 
-use crate::database::schema::{projects, pull_requests};
+use crate::{
+    database::schema::{projects, pull_requests},
+    model::{pullrequest, repository},
+    starknet::models::ContractUpdateStatus,
+};
 use diesel::Queryable;
 use rocket::serde::{Deserialize, Serialize};
 
@@ -61,4 +65,79 @@ pub struct NewPullRequest {
     pub project_id: String,
     pub pr_status: String,
     pub author: String,
+}
+
+impl From<pullrequest::PullRequest> for NewPullRequest {
+    fn from(pr: pullrequest::PullRequest) -> Self {
+        Self {
+            id: pr.id,
+            project_id: pr.repository_id,
+            pr_status: pr.status.to_string(),
+            author: pr.author,
+        }
+    }
+}
+
+impl From<pullrequest::PullRequest> for PullRequestForm {
+    fn from(pr: pullrequest::PullRequest) -> Self {
+        Self {
+            id: pr.id,
+            pr_status: pr.status.to_string(),
+            author: pr.author,
+        }
+    }
+}
+
+impl From<ContractUpdateStatus> for PullRequestContractUpdateForm {
+    fn from(status: ContractUpdateStatus) -> Self {
+        Self {
+            id: status.pr_id,
+            smart_contract_update_time: status
+                .last_update_time
+                .elapsed()
+                .expect("Invalid elapsed time")
+                .as_secs()
+                .to_string(),
+        }
+    }
+}
+
+impl From<Project> for repository::Repository {
+    fn from(project: Project) -> Self {
+        Self {
+            id: project.id,
+            name: project.repository,
+            owner: project.organisation,
+        }
+    }
+}
+
+impl From<repository::Repository> for NewProject {
+    fn from(repo: repository::Repository) -> Self {
+        Self {
+            id: repo.id,
+            repository: repo.name,
+            organisation: repo.owner,
+        }
+    }
+}
+
+impl From<repository::IndexingStatus> for ProjectIndexingStatusUpdateForm {
+    fn from(status: repository::IndexingStatus) -> Self {
+        Self {
+            id: status.repository_id,
+            last_indexed_time: status.last_update_time,
+        }
+    }
+}
+
+impl From<PullRequest> for pullrequest::PullRequest {
+    fn from(pr: PullRequest) -> Self {
+        Self {
+            id: pr.id,
+            author: pr.author,
+            repository_id: pr.project_id,
+            status: pr.pr_status.parse().unwrap(),
+        }
+    }
 }

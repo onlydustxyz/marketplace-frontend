@@ -1,4 +1,4 @@
-use crate::{model::*, traits::logger::AsyncLogger};
+use crate::{model::*, traits::logger::Logger};
 use anyhow::Result;
 use async_trait::async_trait;
 use log::info;
@@ -43,9 +43,9 @@ impl API {
     }
 }
 
-#[async_trait]
-impl AsyncLogger<pullrequest::PullRequest, Result<ContractUpdateStatus>> for API {
-    async fn log_async(&self, pr: pullrequest::PullRequest) -> Result<ContractUpdateStatus> {
+#[async_trait(?Send)]
+impl Logger<pullrequest::PullRequest, Result<ContractUpdateStatus>> for API {
+    async fn log(&self, pr: pullrequest::PullRequest) -> Result<ContractUpdateStatus> {
         info!(
             "Register contribution #{} by {} ({})",
             pr.id, pr.author, pr.status
@@ -58,11 +58,11 @@ impl AsyncLogger<pullrequest::PullRequest, Result<ContractUpdateStatus>> for API
                 to: self.contract_address,
                 selector: get_selector_from_name("add_contribution_from_handle").unwrap(),
                 calldata: vec![
-                    str_to_felt(&pr.author),                     // github identifier
-                    str_to_felt(&String::from("")),              // owner
-                    str_to_felt(&pr.repository_id),              // repo
-                    FieldElement::from_dec_str(&pr.id).unwrap(), // PR ID
-                    str_to_felt(&pr.status.to_string()),         // PR status (merged)
+                    FieldElement::from_dec_str(&pr.author).unwrap(), // github identifier
+                    str_to_felt(&String::from("")),                  // owner
+                    str_to_felt(&pr.repository_id),                  // repo
+                    FieldElement::from_dec_str(&pr.id).unwrap(),     // PR ID
+                    FieldElement::from_dec_str(&pr.status.to_string()).unwrap(), // PR status (merged)
                 ],
             }])
             .send()
