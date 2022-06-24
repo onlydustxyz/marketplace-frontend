@@ -46,7 +46,7 @@ source .env
 diesel setup
 diesel migration run
 ```
-   
+
 ## 📦 Installation
 
 To build the project, run the following command:

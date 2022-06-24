@@ -1,10 +1,11 @@
 use anyhow::Result;
 use std::env;
 
+use futures::stream::StreamExt;
+
 use deathnote_contributions_feeder::{
     database, github,
     model::repository,
-    services::contributions::fetch_and_log,
     traits::{fetcher::Fetcher, logger::Logger},
 };
 
@@ -26,12 +27,16 @@ async fn main() -> Result<()> {
     let database = database::API::new();
     let github = github::API::new();
 
-    fetch_and_log(
-        Fetcher::new_async(&github),
-        Logger::new_sync(&database),
-        repository_filter,
-    )
-    .await?;
+    github
+        .fetch(repository_filter)
+        .await?
+        .for_each(|repo| async {
+            database
+                .log(repo)
+                .await
+                .expect("Unable to log repository in database");
+        })
+        .await;
 
     Ok(())
 }
