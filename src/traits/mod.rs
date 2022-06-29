@@ -1,11 +1,11 @@
-use futures::{stream::LocalBoxStream, Stream, StreamExt};
+use futures::{stream::BoxStream, Stream, StreamExt};
 
 pub mod fetcher;
 pub mod logger;
 
-pub type LocalBoxIterator<'a, Output> = Box<dyn Iterator<Item = Output> + 'a>;
-pub struct StreamableSync<'a, Output>(LocalBoxIterator<'a, Output>);
-pub struct StreamableAsync<'a, Output>(pub LocalBoxStream<'a, Output>);
+pub type BoxIterator<'a, Output> = Box<dyn Iterator<Item = Output> + Send + 'a>;
+pub struct StreamableSync<'a, Output>(BoxIterator<'a, Output>);
+pub struct StreamableAsync<'a, Output>(BoxStream<'a, Output>);
 
 pub enum Streamable<'a, Output> {
     Sync(StreamableSync<'a, Output>),
@@ -14,7 +14,7 @@ pub enum Streamable<'a, Output> {
 
 impl<'a, Iter, Output> From<Iter> for StreamableSync<'a, Output>
 where
-    Iter: Iterator<Item = Output> + 'a,
+    Iter: Iterator<Item = Output> + Send + 'a,
 {
     fn from(iter: Iter) -> Self {
         Self(Box::new(iter))
@@ -23,10 +23,10 @@ where
 
 impl<'a, Stream_, Output> From<Stream_> for StreamableAsync<'a, Output>
 where
-    Stream_: Stream<Item = Output> + 'a,
+    Stream_: Stream<Item = Output> + Send + 'a,
 {
     fn from(stream: Stream_) -> Self {
-        Self(stream.boxed_local())
+        Self(stream.boxed())
     }
 }
 
