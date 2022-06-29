@@ -43,7 +43,7 @@ impl API {
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl Logger<pullrequest::PullRequest, Result<ContractUpdateStatus>> for API {
     async fn log(&self, pr: pullrequest::PullRequest) -> Result<ContractUpdateStatus> {
         info!(

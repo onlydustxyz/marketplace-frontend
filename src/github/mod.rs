@@ -43,7 +43,7 @@ impl Default for API {
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl Fetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
     async fn fetch(&self, filter: pullrequest::Filter) -> FetchResult<pullrequest::PullRequest> {
         const MAX_PR_PER_PAGE: u8 = 100;
@@ -95,7 +95,7 @@ impl Fetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl Fetcher<repository::Filter, repository::Repository> for API {
     async fn fetch(&self, filter: repository::Filter) -> FetchResult<repository::Repository> {
         info!("Fetching repository with filter {:?}", filter);

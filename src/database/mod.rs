@@ -1,8 +1,8 @@
 use anyhow::Result;
 use async_trait::async_trait;
-use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use log::info;
+use std::sync::{Mutex, MutexGuard};
 
 use crate::{
     connection::{self, DbConn},
@@ -32,22 +32,24 @@ pub fn establish_connection() -> Result<DbConn> {
 }
 
 pub struct API {
-    connection: DbConn,
+    connection: Mutex<DbConn>,
 }
 
 impl API {
     pub fn new(connection: DbConn) -> Self {
-        API { connection }
+        API {
+            connection: Mutex::new(connection),
+        }
     }
 
-    fn connection(&self) -> &PgConnection {
-        &self.connection
+    fn connection(&self) -> MutexGuard<'_, DbConn> {
+        self.connection.lock().unwrap()
     }
 
     fn insert_pullrequest(&self, pr: models::NewPullRequest) -> Result<()> {
         diesel::insert_into(pull_requests::table)
             .values(&pr)
-            .get_result::<models::PullRequest>(self.connection())?;
+            .get_result::<models::PullRequest>(&**self.connection())?;
 
         Ok(())
     }
@@ -55,13 +57,13 @@ impl API {
     fn insert_project(&self, project: models::NewProject) -> Result<()> {
         diesel::insert_into(projects::table)
             .values(&project)
-            .get_result::<models::Project>(self.connection())?;
+            .get_result::<models::Project>(&**self.connection())?;
 
         Ok(())
     }
 
     fn update_pullrequest(&self, pr: models::PullRequestForm) -> Result<()> {
-        pr.save_changes::<models::PullRequest>(self.connection())?;
+        pr.save_changes::<models::PullRequest>(&**self.connection())?;
         Ok(())
     }
 
@@ -77,7 +79,7 @@ impl API {
         };
 
         let results = query
-            .load::<models::Project>(self.connection())
+            .load::<models::Project>(&**self.connection())
             .expect("Error while fetching projects from database");
 
         results.into_iter()
@@ -106,7 +108,7 @@ impl API {
         };
 
         let results = query
-            .load::<models::PullRequest>(self.connection())
+            .load::<models::PullRequest>(&**self.connection())
             .expect("Error while fetching pullrequests from database");
 
         Box::new(results.into_iter())
@@ -119,14 +121,14 @@ impl Default for API {
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl Logger<pullrequest::PullRequest, Result<()>> for API {
     async fn log(&self, pr: pullrequest::PullRequest) -> Result<()> {
         info!("Logging PR #{} by {} ({})", pr.id, pr.author, pr.status);
 
         let result: Result<models::PullRequest> = pull_requests
             .find(&pr.id)
-            .first(self.connection())
+            .first(&**self.connection())
             .map_err(anyhow::Error::msg);
 
         match result {
@@ -136,7 +138,7 @@ impl Logger<pullrequest::PullRequest, Result<()>> for API {
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl Logger<repository::Repository, Result<()>> for API {
     async fn log(&self, repo: repository::Repository) -> Result<()> {
         info!("Logging repository {}/{}", repo.owner, repo.name);
@@ -154,18 +156,18 @@ impl Logger<repository::Repository, Result<()>> for API {
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl Logger<ContractUpdateStatus, Result<()>> for API {
     async fn log(&self, status: ContractUpdateStatus) -> Result<()> {
         info!("Logging successful contract update for PR#{}", status.pr_id);
 
         PullRequestContractUpdateForm::from(status)
-            .save_changes::<models::PullRequest>(self.connection())?;
+            .save_changes::<models::PullRequest>(&**self.connection())?;
         Ok(())
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl Fetcher<repository::Filter, repository::Repository> for API {
     async fn fetch(&self, filter: repository::Filter) -> FetchResult<'_, repository::Repository> {
         info!("Fetching repositories with filter: {:?}", filter);
@@ -175,7 +177,7 @@ impl Fetcher<repository::Filter, repository::Repository> for API {
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl Logger<repository::IndexingStatus, Result<()>> for API {
     async fn log(&self, status: repository::IndexingStatus) -> Result<()> {
         info!(
@@ -184,13 +186,13 @@ impl Logger<repository::IndexingStatus, Result<()>> for API {
         );
 
         ProjectIndexingStatusUpdateForm::from(status)
-            .save_changes::<models::Project>(self.connection())?;
+            .save_changes::<models::Project>(&**self.connection())?;
 
         Ok(())
     }
 }
 
-#[async_trait(?Send)]
+#[async_trait]
 impl Fetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
     async fn fetch(&self, filter: pullrequest::Filter) -> FetchResult<pullrequest::PullRequest> {
         info!("Fetching pull requests with filter {:?} ", filter);
