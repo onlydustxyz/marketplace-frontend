@@ -1,4 +1,4 @@
-use crate::{model::*, traits::logger::Logger};
+use crate::{model::*, traits::logger::*};
 use anyhow::Result;
 use async_trait::async_trait;
 use log::info;
@@ -44,7 +44,7 @@ impl API {
 }
 
 #[async_trait]
-impl Logger<pullrequest::PullRequest, Result<ContractUpdateStatus>> for API {
+impl Logger<pullrequest::PullRequest, ContractUpdateStatus> for API {
     async fn log(&self, pr: pullrequest::PullRequest) -> Result<ContractUpdateStatus> {
         info!(
             "Register contribution #{} by {} ({})",

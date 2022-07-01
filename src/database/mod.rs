@@ -122,7 +122,7 @@ impl Default for API {
 }
 
 #[async_trait]
-impl Logger<pullrequest::PullRequest, Result<()>> for API {
+impl Logger<pullrequest::PullRequest, ()> for API {
     async fn log(&self, pr: pullrequest::PullRequest) -> Result<()> {
         info!("Logging PR #{} by {} ({})", pr.id, pr.author, pr.status);
 
@@ -139,7 +139,7 @@ impl Logger<pullrequest::PullRequest, Result<()>> for API {
 }
 
 #[async_trait]
-impl Logger<repository::Repository, Result<()>> for API {
+impl Logger<repository::Repository, ()> for API {
     async fn log(&self, repo: repository::Repository) -> Result<()> {
         info!("Logging repository {}/{}", repo.owner, repo.name);
 
@@ -157,7 +157,7 @@ impl Logger<repository::Repository, Result<()>> for API {
 }
 
 #[async_trait]
-impl Logger<ContractUpdateStatus, Result<()>> for API {
+impl Logger<ContractUpdateStatus, ()> for API {
     async fn log(&self, status: ContractUpdateStatus) -> Result<()> {
         info!("Logging successful contract update for PR#{}", status.pr_id);
 
@@ -178,7 +178,7 @@ impl Fetcher<repository::Filter, repository::Repository> for API {
 }
 
 #[async_trait]
-impl Logger<repository::IndexingStatus, Result<()>> for API {
+impl Logger<repository::IndexingStatus, ()> for API {
     async fn log(&self, status: repository::IndexingStatus) -> Result<()> {
         info!(
             "Logging successful syncing for project {} ",
