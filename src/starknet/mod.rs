@@ -53,7 +53,8 @@ impl Logger<pullrequest::PullRequest, Result<ContractUpdateStatus>> for API {
 
         let str_to_felt = |value: &String| cairo_short_string_to_felt(&value).unwrap();
 
-        self.account
+        let transaction_result = self
+            .account
             .execute(&[Call {
                 to: self.contract_address,
                 selector: get_selector_from_name("add_contribution_from_handle").unwrap(),
@@ -68,6 +69,9 @@ impl Logger<pullrequest::PullRequest, Result<ContractUpdateStatus>> for API {
             .send()
             .await?;
 
-        Ok(ContractUpdateStatus::new(pr.id.clone()))
+        Ok(ContractUpdateStatus::new(
+            pr.id.clone(),
+            format!("{:x}", transaction_result.transaction_hash),
+        ))
     }
 }
