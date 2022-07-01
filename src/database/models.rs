@@ -55,7 +55,7 @@ pub struct PullRequestForm {
 #[table_name = "pull_requests"]
 pub struct PullRequestContractUpdateForm {
     pub id: String,
-    pub smart_contract_update_time: String,
+    pub transaction_hash: String,
 }
 
 #[derive(Insertable)]
@@ -92,12 +92,7 @@ impl From<ContractUpdateStatus> for PullRequestContractUpdateForm {
     fn from(status: ContractUpdateStatus) -> Self {
         Self {
             id: status.pr_id,
-            smart_contract_update_time: status
-                .last_update_time
-                .elapsed()
-                .expect("Invalid elapsed time")
-                .as_secs()
-                .to_string(),
+            transaction_hash: status.transaction_hash,
         }
     }
 }

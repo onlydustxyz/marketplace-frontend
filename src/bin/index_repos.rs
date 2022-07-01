@@ -1,4 +1,5 @@
 use anyhow::Result;
+use dotenv::dotenv;
 use futures::stream::StreamExt;
 
 use deathnote_contributions_feeder::{
@@ -11,6 +12,7 @@ use deathnote_contributions_feeder::{
 #[tokio::main]
 async fn main() -> Result<()> {
     env_logger::init();
+    dotenv().ok();
     octocrab::initialise(octocrab::Octocrab::builder())?;
 
     let database = database::API::default();

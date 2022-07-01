@@ -12,7 +12,7 @@ table! {
         id -> Varchar,
         project_id -> Varchar,
         pr_status -> Varchar,
-        smart_contract_update_time -> Nullable<Varchar>,
+        transaction_hash -> Nullable<Varchar>,
         author -> Varchar,
     }
 }

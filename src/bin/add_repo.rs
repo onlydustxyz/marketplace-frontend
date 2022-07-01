@@ -1,4 +1,5 @@
 use anyhow::Result;
+use dotenv::dotenv;
 use std::env;
 
 use futures::stream::StreamExt;
@@ -12,6 +13,7 @@ use deathnote_contributions_feeder::{
 #[tokio::main]
 async fn main() -> Result<()> {
     env_logger::init();
+    dotenv().ok();
     octocrab::initialise(octocrab::Octocrab::builder())?;
 
     let args: Vec<String> = env::args().collect();
