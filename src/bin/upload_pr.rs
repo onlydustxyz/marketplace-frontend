@@ -19,10 +19,18 @@ async fn main() -> Result<()> {
 
     let private_key = env::var("PRIVATE_KEY").expect("PRIVATE_KEY must be set");
     let account_address = env::var("ACCOUNT_ADDRESS").expect("ACCOUNT_ADDRESS must be set");
-    let contract_address = env::var("METADATA_ADDRESS").expect("METADATA_ADDRESS must be set");
+    let oracle_contract_address =
+        env::var("METADATA_ADDRESS").expect("METADATA_ADDRESS must be set");
+    let registry_contract_address =
+        env::var("REGISTRY_ADDRESS").expect("REGISTRY_ADDRESS must be set");
 
     let database = database::API::default();
-    let starknet = starknet::API::new(&private_key, &account_address, &contract_address);
+    let starknet = starknet::API::new(
+        &private_key,
+        &account_address,
+        &oracle_contract_address,
+        &registry_contract_address,
+    );
 
     let all = pullrequest::Filter::default(); // TODO filter only non up-to-date PR
 
