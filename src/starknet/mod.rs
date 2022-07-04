@@ -13,16 +13,14 @@ use starknet::{
 
 use self::{
     github_oracle::{GithubOracle, Oracle},
-    models::ContractUpdateStatus,
     registry::Registry,
 };
 use crate::{
-    model::pullrequest,
-    traits::{logger::StreamLogger, Streamable, StreamableResult},
+    domain::*,
+    utils::stream::{Streamable, StreamableResult},
 };
 
 mod github_oracle;
-pub mod models;
 mod registry;
 
 pub fn make_account(private_key: &str, account_address: &str) -> impl Account {
@@ -63,11 +61,11 @@ impl<'a> API<'a> {
 
     async fn next_prs_of_registered_users(
         &self,
-        prs: &mut Streamable<'_, pullrequest::PullRequest>,
-    ) -> Vec<pullrequest::PullRequest> {
-        prs.filter_map(|pr| async {
-            if self.registry.is_user_registered(&pr.author).await {
-                Some(pr)
+        prs: &mut Streamable<'_, Contribution>,
+    ) -> Vec<Contribution> {
+        prs.filter_map(|contribution| async {
+            if self.registry.is_user_registered(&contribution.author).await {
+                Some(contribution)
             } else {
                 None
             }
@@ -79,17 +77,17 @@ impl<'a> API<'a> {
 }
 
 #[async_trait]
-impl StreamLogger<pullrequest::PullRequest, ContractUpdateStatus> for API<'_> {
+impl StreamLogger<Contribution, ContractUpdateStatus> for API<'_> {
     async fn log(
         &self,
-        prs: Streamable<'life0, pullrequest::PullRequest>,
+        prs: Streamable<'life0, Contribution>,
     ) -> Result<StreamableResult<'life0, ContractUpdateStatus>> {
         debug!("Logging contributions in smart contract");
 
         struct State<'a>(
-            Streamable<'a, pullrequest::PullRequest>, // stream of contributions to upload
-            Option<Result<String>>,                   // Last transaction call result, if any
-            Vec<pullrequest::PullRequest>, // contributions sent in previous call for which we need to yield the status
+            Streamable<'a, Contribution>, // stream of contributions to upload
+            Option<Result<String>>,       // Last transaction call result, if any
+            Vec<Contribution>, // contributions sent in previous call for which we need to yield the status
         );
 
         let init_state = State(prs, None, Vec::new());
@@ -102,10 +100,10 @@ impl StreamLogger<pullrequest::PullRequest, ContractUpdateStatus> for API<'_> {
             ) = state;
 
             loop {
-                if let Some(pr) = contributions_uploaded.pop() {
+                if let Some(contribution) = contributions_uploaded.pop() {
                     // If we have some contributions left to flag, let's use the last call status to do so
                     let result = match last_transaction_result.as_ref().unwrap() {
-                        Ok(hash) => Ok(ContractUpdateStatus::new(pr.id, hash.clone())),
+                        Ok(hash) => Ok(ContractUpdateStatus::new(contribution.id, hash.clone())),
                         Err(error) => Err(anyhow::Error::msg(error.to_string())),
                     };
 
@@ -132,7 +130,7 @@ impl StreamLogger<pullrequest::PullRequest, ContractUpdateStatus> for API<'_> {
                 // Make the call to the smart contract
                 let calls = contributions_to_upload
                     .iter()
-                    .map(|pr| self.oracle.make_add_contribution_call(pr))
+                    .map(|contribution| self.oracle.make_add_contribution_call(contribution))
                     .collect::<Vec<_>>();
 
                 let transaction_result = self

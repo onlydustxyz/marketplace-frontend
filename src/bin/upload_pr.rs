@@ -4,12 +4,7 @@ use futures::stream::StreamExt;
 use log::warn;
 use std::env;
 
-use deathnote_contributions_feeder::{
-    database,
-    model::pullrequest,
-    starknet,
-    traits::{fetcher::Fetcher, logger::Logger, logger::StreamLogger},
-};
+use deathnote_contributions_feeder::{database, domain::*, starknet};
 
 fn make_account() -> impl starknet::Account {
     let private_key = env::var("PRIVATE_KEY").expect("PRIVATE_KEY must be set");
@@ -28,7 +23,7 @@ async fn main() -> Result<()> {
     let account = make_account();
     let starknet = starknet::API::new(&account);
 
-    let all = pullrequest::Filter::default(); // TODO filter only non up-to-date PR
+    let all = ContributionFilter::default(); // TODO filter only non up-to-date PR
 
     let prs = database.fetch(all).await?;
 

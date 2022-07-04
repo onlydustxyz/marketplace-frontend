@@ -1,8 +1,8 @@
 use deathnote_contributions_feeder::{
     connection::{self, DbConn},
-    database, github,
-    model::repository,
-    traits::{fetcher::Fetcher, logger::Logger},
+    database,
+    domain::*,
+    github,
 };
 
 use dotenv::dotenv;
@@ -31,7 +31,7 @@ async fn new(
     project: Json<Project<'_>>,
     connection: DbConn,
 ) -> Result<status::Accepted<()>, Failure> {
-    let filter = repository::Filter {
+    let filter = ProjectFilter {
         owner: Some(String::from(project.owner)),
         name: Some(String::from(project.name)),
     };

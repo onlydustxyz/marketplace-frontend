@@ -1,7 +1,7 @@
 use anyhow::Result;
 use async_trait::async_trait;
 
-use super::Streamable;
+use crate::utils::stream::Streamable;
 
 pub type FetchResult<'a, Item> = Result<Streamable<'a, Item>>;
 

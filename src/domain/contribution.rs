@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use std::{fmt, str::FromStr};
 
-use super::repository::Repository;
+use super::*;
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum Status {
@@ -11,25 +11,27 @@ pub enum Status {
     Merged = 3,
 }
 
+pub type Id = String;
+
 #[derive(Debug, PartialEq, Clone)]
-pub struct PullRequest {
-    pub id: String,
+pub struct Contribution {
+    pub id: Id,
     pub author: String,
     pub status: Status,
-    pub repository_id: String,
+    pub project_id: ProjectId,
 }
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct Filter {
     pub author: Option<String>,
-    pub repository: Option<Repository>,
+    pub project: Option<Project>,
 }
 
 impl Default for Filter {
     fn default() -> Self {
         Self {
             author: None,
-            repository: None,
+            project: None,
         }
     }
 }

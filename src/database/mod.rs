@@ -6,22 +6,19 @@ use std::sync::{Mutex, MutexGuard};
 
 use crate::{
     connection::{self, DbConn},
-    model::{pullrequest, repository},
-    starknet::models::ContractUpdateStatus,
-    traits::{fetcher::*, logger::*, Streamable},
+    domain::{self, FetchResult, Fetcher, Logger},
+    utils::stream::Streamable,
 };
 
 use self::{
-    models::{
-        Project, ProjectIndexingStatusUpdateForm, PullRequest, PullRequestContractUpdateForm,
-    },
+    model as db_model,
     schema::{
+        contributions::{self, dsl::*},
         projects::{self, dsl::*},
-        pull_requests::{self, dsl::*},
     },
 };
 
-pub mod models;
+pub mod model;
 pub mod schema;
 
 pub fn establish_connection() -> Result<DbConn> {
@@ -46,70 +43,73 @@ impl API {
         self.connection.lock().unwrap()
     }
 
-    fn insert_pullrequest(&self, pr: models::NewPullRequest) -> Result<()> {
-        diesel::insert_into(pull_requests::table)
-            .values(&pr)
-            .get_result::<models::PullRequest>(&**self.connection())?;
+    fn insert_contribution(&self, contribution: db_model::NewContribution) -> Result<()> {
+        diesel::insert_into(contributions::table)
+            .values(&contribution)
+            .get_result::<db_model::Contribution>(&**self.connection())?;
 
         Ok(())
     }
 
-    fn insert_project(&self, project: models::NewProject) -> Result<()> {
+    fn insert_project(&self, project: db_model::NewProject) -> Result<()> {
         diesel::insert_into(projects::table)
             .values(&project)
-            .get_result::<models::Project>(&**self.connection())?;
+            .get_result::<db_model::Project>(&**self.connection())?;
 
         Ok(())
     }
 
-    fn update_pullrequest(&self, pr: models::PullRequestForm) -> Result<()> {
-        pr.save_changes::<models::PullRequest>(&**self.connection())?;
+    fn update_contribution(&self, contribution: db_model::ContributionForm) -> Result<()> {
+        contribution.save_changes::<db_model::Contribution>(&**self.connection())?;
         Ok(())
     }
 
-    fn find_projects(&self, filter: repository::Filter) -> impl Iterator<Item = Project> {
+    fn find_projects(
+        &self,
+        filter: domain::ProjectFilter,
+    ) -> impl Iterator<Item = db_model::Project> {
         let mut query = projects.into_boxed();
 
-        if let Some(owner) = filter.owner {
-            query = query.filter(organisation.eq(owner));
+        if let Some(owner_) = filter.owner {
+            query = query.filter(owner.eq(owner_));
         };
 
-        if let Some(name) = filter.name {
-            query = query.filter(repository.eq(name));
+        if let Some(name_) = filter.name {
+            query = query.filter(name.eq(name_));
         };
 
         let results = query
-            .load::<models::Project>(&**self.connection())
+            .load::<model::Project>(&**self.connection())
             .expect("Error while fetching projects from database");
 
         results.into_iter()
     }
 
-    fn find_pullrequests(
+    fn find_contributions(
         &self,
-        filter: pullrequest::Filter,
-    ) -> Box<dyn Iterator<Item = PullRequest> + Send> {
-        let mut query = pull_requests.into_boxed();
+        filter: domain::ContributionFilter,
+    ) -> Box<dyn Iterator<Item = db_model::Contribution> + Send> {
+        let mut query = contributions.into_boxed();
 
-        if let Some(repo) = filter.repository {
+        if let Some(repo) = filter.project {
             let project = self
-                .find_projects(repository::Filter {
+                .find_projects(domain::ProjectFilter {
                     owner: Some(repo.owner),
                     name: Some(repo.name),
                 })
                 .take(1)
-                .collect::<Vec<Project>>()
+                .collect::<Vec<db_model::Project>>()
                 .pop();
 
             match project {
                 Some(project) => query = query.filter(project_id.eq(project.id)),
-                None => return Box::new(std::iter::empty::<PullRequest>()),
+                None => return Box::new(std::iter::empty::<db_model::Contribution>()),
             }
         };
 
         let results = query
-            .load::<models::PullRequest>(&**self.connection())
-            .expect("Error while fetching pullrequests from database");
+            .load::<db_model::Contribution>(&**self.connection())
+            .expect("Error while fetching contributions from database");
 
         Box::new(results.into_iter())
     }
@@ -122,28 +122,31 @@ impl Default for API {
 }
 
 #[async_trait]
-impl Logger<pullrequest::PullRequest, ()> for API {
-    async fn log(&self, pr: pullrequest::PullRequest) -> Result<()> {
-        info!("Logging PR #{} by {} ({})", pr.id, pr.author, pr.status);
+impl Logger<domain::Contribution, ()> for API {
+    async fn log(&self, contribution: domain::Contribution) -> Result<()> {
+        info!(
+            "Logging PR #{} by {} ({})",
+            contribution.id, contribution.author, contribution.status
+        );
 
-        let result: Result<models::PullRequest> = pull_requests
-            .find(&pr.id)
+        let result: Result<model::Contribution> = contributions
+            .find(&contribution.id)
             .first(&**self.connection())
             .map_err(anyhow::Error::msg);
 
         match result {
-            Ok(_) => self.update_pullrequest(pr.into()), // PR exists in DB => update
-            Err(_) => self.insert_pullrequest(pr.into()), // PR does not exist in DB => insert
+            Ok(_) => self.update_contribution(contribution.into()), // PR exists in DB => update
+            Err(_) => self.insert_contribution(contribution.into()), // PR does not exist in DB => insert
         }
     }
 }
 
 #[async_trait]
-impl Logger<repository::Repository, ()> for API {
-    async fn log(&self, repo: repository::Repository) -> Result<()> {
+impl Logger<domain::Project, ()> for API {
+    async fn log(&self, repo: domain::Project) -> Result<()> {
         info!("Logging repository {}/{}", repo.owner, repo.name);
 
-        let filter = repository::Filter {
+        let filter = domain::ProjectFilter {
             owner: Some(repo.owner.clone()),
             name: Some(repo.name.clone()),
         };
@@ -157,19 +160,22 @@ impl Logger<repository::Repository, ()> for API {
 }
 
 #[async_trait]
-impl Logger<ContractUpdateStatus, ()> for API {
-    async fn log(&self, status: ContractUpdateStatus) -> Result<()> {
-        info!("Logging successful contract update for PR#{}", status.pr_id);
+impl Logger<domain::ContractUpdateStatus, ()> for API {
+    async fn log(&self, contract_status: domain::ContractUpdateStatus) -> Result<()> {
+        info!(
+            "Logging successful contract update for PR#{}",
+            contract_status.contribution_id
+        );
 
-        PullRequestContractUpdateForm::from(status)
-            .save_changes::<models::PullRequest>(&**self.connection())?;
+        db_model::ContributionContractUpdateForm::from(contract_status)
+            .save_changes::<model::Contribution>(&**self.connection())?;
         Ok(())
     }
 }
 
 #[async_trait]
-impl Fetcher<repository::Filter, repository::Repository> for API {
-    async fn fetch(&self, filter: repository::Filter) -> FetchResult<'_, repository::Repository> {
+impl Fetcher<domain::ProjectFilter, domain::Project> for API {
+    async fn fetch(&self, filter: domain::ProjectFilter) -> FetchResult<'_, domain::Project> {
         info!("Fetching repositories with filter: {:?}", filter);
 
         let results = self.find_projects(filter).map(|project| project.into());
@@ -178,27 +184,29 @@ impl Fetcher<repository::Filter, repository::Repository> for API {
 }
 
 #[async_trait]
-impl Logger<repository::IndexingStatus, ()> for API {
-    async fn log(&self, status: repository::IndexingStatus) -> Result<()> {
+impl Logger<domain::IndexingStatus, ()> for API {
+    async fn log(&self, indexing_status: domain::IndexingStatus) -> Result<()> {
         info!(
             "Logging successful syncing for project {} ",
-            status.repository_id
+            indexing_status.project_id
         );
 
-        ProjectIndexingStatusUpdateForm::from(status)
-            .save_changes::<models::Project>(&**self.connection())?;
+        db_model::ProjectIndexingStatusUpdateForm::from(indexing_status)
+            .save_changes::<model::Project>(&**self.connection())?;
 
         Ok(())
     }
 }
 
 #[async_trait]
-impl Fetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
-    async fn fetch(&self, filter: pullrequest::Filter) -> FetchResult<pullrequest::PullRequest> {
+impl Fetcher<domain::ContributionFilter, domain::Contribution> for API {
+    async fn fetch(&self, filter: domain::ContributionFilter) -> FetchResult<domain::Contribution> {
         info!("Fetching pull requests with filter {:?} ", filter);
 
-        let pullrequests = self.find_pullrequests(filter).map(|pr| pr.into());
+        let contributions_ = self
+            .find_contributions(filter)
+            .map(|contribution| contribution.into());
 
-        Ok(Streamable::Sync(pullrequests.into()))
+        Ok(Streamable::Sync(contributions_.into()))
     }
 }
