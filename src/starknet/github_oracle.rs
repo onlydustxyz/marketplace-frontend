@@ -60,7 +60,7 @@ impl<'a, A: Account + Sync> Oracle for GithubOracle<'a, A> {
 
         Ok(ContractUpdateStatus::new(
             pr.id.clone(),
-            format!("{:x}", transaction_result.transaction_hash),
+            format!("0x{:x}", transaction_result.transaction_hash),
         ))
     }
 

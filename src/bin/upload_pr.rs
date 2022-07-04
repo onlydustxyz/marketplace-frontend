@@ -8,7 +8,7 @@ use deathnote_contributions_feeder::{
     database,
     model::pullrequest,
     starknet,
-    traits::{fetcher::Fetcher, logger::Logger},
+    traits::{fetcher::Fetcher, logger::Logger, logger::StreamLogger},
 };
 
 fn make_account() -> impl starknet::Account {
@@ -30,11 +30,13 @@ async fn main() -> Result<()> {
 
     let all = pullrequest::Filter::default(); // TODO filter only non up-to-date PR
 
-    database
-        .fetch(all)
-        .await?
-        .for_each(|pr| async {
-            match starknet.log(pr).await {
+    let prs = database.fetch(all).await?;
+
+    let contract_statuses = starknet.log(prs).await?;
+
+    contract_statuses
+        .for_each(|status| async {
+            match status {
                 Ok(status) => {
                     database
                         .log(status)
