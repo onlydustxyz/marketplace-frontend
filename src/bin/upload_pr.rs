@@ -11,26 +11,22 @@ use deathnote_contributions_feeder::{
     traits::{fetcher::Fetcher, logger::Logger},
 };
 
+fn make_account() -> impl starknet::Account {
+    let private_key = env::var("PRIVATE_KEY").expect("PRIVATE_KEY must be set");
+    let account_address = env::var("ACCOUNT_ADDRESS").expect("ACCOUNT_ADDRESS must be set");
+    starknet::make_account(&private_key, &account_address)
+}
+
 #[tokio::main]
 async fn main() -> Result<()> {
     env_logger::init();
     dotenv().ok();
     octocrab::initialise(octocrab::Octocrab::builder())?;
 
-    let private_key = env::var("PRIVATE_KEY").expect("PRIVATE_KEY must be set");
-    let account_address = env::var("ACCOUNT_ADDRESS").expect("ACCOUNT_ADDRESS must be set");
-    let oracle_contract_address =
-        env::var("METADATA_ADDRESS").expect("METADATA_ADDRESS must be set");
-    let registry_contract_address =
-        env::var("REGISTRY_ADDRESS").expect("REGISTRY_ADDRESS must be set");
-
     let database = database::API::default();
-    let starknet = starknet::API::new(
-        &private_key,
-        &account_address,
-        &oracle_contract_address,
-        &registry_contract_address,
-    );
+
+    let account = make_account();
+    let starknet = starknet::API::new(&account);
 
     let all = pullrequest::Filter::default(); // TODO filter only non up-to-date PR
 
