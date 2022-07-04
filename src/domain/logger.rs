@@ -1,4 +1,4 @@
-use super::{Streamable, StreamableResult};
+use crate::utils::stream::{Streamable, StreamableResult};
 use anyhow::Result;
 use async_trait::async_trait;
 

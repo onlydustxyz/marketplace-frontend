@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::model::pullrequest;
+use crate::domain::*;
 
 #[derive(Deserialize)]
 pub struct RepositoryWithExtension {
@@ -9,7 +9,7 @@ pub struct RepositoryWithExtension {
     pub open_issues: u32,
 }
 
-impl From<octocrab::models::pulls::PullRequest> for pullrequest::PullRequest {
+impl From<octocrab::models::pulls::PullRequest> for Contribution {
     fn from(pr: octocrab::models::pulls::PullRequest) -> Self {
         Self {
             id: pr.id.to_string(),
@@ -18,8 +18,8 @@ impl From<octocrab::models::pulls::PullRequest> for pullrequest::PullRequest {
                 .expect("Invalid user received from github API")
                 .id
                 .to_string(),
-            status: pullrequest::Status::Merged, // TODO compute status
-            repository_id: pr
+            status: ContributionStatus::Merged, // TODO compute status
+            project_id: pr
                 .base
                 .repo
                 .expect("Invalid repo received from github API")

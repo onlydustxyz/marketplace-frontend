@@ -4,11 +4,7 @@ use std::env;
 
 use futures::stream::StreamExt;
 
-use deathnote_contributions_feeder::{
-    database, github,
-    model::repository,
-    traits::{fetcher::Fetcher, logger::Logger},
-};
+use deathnote_contributions_feeder::{database, domain::*, github};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -21,7 +17,7 @@ async fn main() -> Result<()> {
         panic!("Invalid arguments.");
     }
 
-    let repository_filter = repository::Filter {
+    let repository_filter = ProjectFilter {
         owner: Some(args[1].clone()),
         name: Some(args[2].clone()),
     };

@@ -1,22 +1,22 @@
 table! {
-    projects (id) {
-        id -> Varchar,
-        organisation -> Varchar,
-        repository -> Varchar,
-        last_indexed_time -> Nullable<Timestamp>,
-    }
-}
-
-table! {
-    pull_requests (id) {
+    contributions (id) {
         id -> Varchar,
         project_id -> Varchar,
-        pr_status -> Varchar,
+        status -> Varchar,
         transaction_hash -> Nullable<Varchar>,
         author -> Varchar,
     }
 }
 
-joinable!(pull_requests -> projects (project_id));
+table! {
+    projects (id) {
+        id -> Varchar,
+        owner -> Varchar,
+        name -> Varchar,
+        last_indexed_time -> Nullable<Timestamp>,
+    }
+}
 
-allow_tables_to_appear_in_same_query!(projects, pull_requests,);
+joinable!(contributions -> projects (project_id));
+
+allow_tables_to_appear_in_same_query!(contributions, projects,);

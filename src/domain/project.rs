@@ -1,8 +1,10 @@
 use std::time::SystemTime;
 
+pub type Id = String;
+
 #[derive(Debug, PartialEq, Clone)]
-pub struct Repository {
-    pub id: String,
+pub struct Project {
+    pub id: Id,
     pub owner: String,
     pub name: String,
 }
@@ -23,23 +25,15 @@ impl Default for Filter {
 }
 
 pub struct IndexingStatus {
-    pub repository_id: String,
+    pub project_id: String,
     pub last_update_time: SystemTime,
 }
 
-impl Default for IndexingStatus {
-    fn default() -> Self {
+impl IndexingStatus {
+    pub fn new(id: String) -> Self {
         Self {
-            repository_id: String::from(""),
+            project_id: id,
             last_update_time: SystemTime::now(),
         }
-    }
-}
-
-impl IndexingStatus {
-    pub fn new(repository_id: String) -> Self {
-        let mut status = Self::default();
-        status.repository_id = repository_id.clone();
-        status
     }
 }

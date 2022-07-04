@@ -9,8 +9,7 @@ use starknet::{
     },
 };
 
-use super::models::ContractUpdateStatus;
-use crate::model::pullrequest;
+use crate::domain::*;
 
 pub struct GithubOracle<'a, A: Account + Sync> {
     oracle_contract_address: FieldElement,
@@ -26,10 +25,9 @@ fn oracle_contract_address() -> FieldElement {
 
 #[async_trait]
 pub trait Oracle {
-    async fn add_contribution(&self, pr: &pullrequest::PullRequest)
-        -> Result<ContractUpdateStatus>;
+    async fn add_contribution(&self, contribution: &Contribution) -> Result<ContractUpdateStatus>;
 
-    fn make_add_contribution_call(&self, pr: &pullrequest::PullRequest) -> Call;
+    fn make_add_contribution_call(&self, contribution: &Contribution) -> Call;
 
     async fn send_transaction(&self, calls: &Vec<Call>) -> Result<AddTransactionResult>;
 }
@@ -45,35 +43,32 @@ impl<'a, A: Account + Sync> GithubOracle<'a, A> {
 
 #[async_trait]
 impl<'a, A: Account + Sync> Oracle for GithubOracle<'a, A> {
-    async fn add_contribution(
-        &self,
-        pr: &pullrequest::PullRequest,
-    ) -> Result<ContractUpdateStatus> {
+    async fn add_contribution(&self, contribution: &Contribution) -> Result<ContractUpdateStatus> {
         info!(
             "Register contribution #{} by {} ({})",
-            pr.id, pr.author, pr.status
+            contribution.id, contribution.author, contribution.status
         );
 
         let transaction_result = self
-            .send_transaction(&vec![self.make_add_contribution_call(&pr)])
+            .send_transaction(&vec![self.make_add_contribution_call(&contribution)])
             .await?;
 
         Ok(ContractUpdateStatus::new(
-            pr.id.clone(),
+            contribution.id.clone(),
             format!("0x{:x}", transaction_result.transaction_hash),
         ))
     }
 
-    fn make_add_contribution_call(&self, pr: &pullrequest::PullRequest) -> Call {
+    fn make_add_contribution_call(&self, contribution: &Contribution) -> Call {
         Call {
             to: self.oracle_contract_address,
             selector: get_selector_from_name("add_contribution_from_handle").unwrap(),
             calldata: vec![
-                FieldElement::from_dec_str(&pr.author).unwrap(), // github identifier
-                cairo_short_string_to_felt("").unwrap(),         // owner
-                cairo_short_string_to_felt(&pr.repository_id).unwrap(), // repo
-                FieldElement::from_dec_str(&pr.id).unwrap(),     // PR ID
-                FieldElement::from_dec_str(&pr.status.to_string()).unwrap(), // PR status (merged)
+                FieldElement::from_dec_str(&contribution.author).unwrap(), // github identifier
+                cairo_short_string_to_felt("").unwrap(),                   // owner
+                cairo_short_string_to_felt(&contribution.project_id).unwrap(), // repo
+                FieldElement::from_dec_str(&contribution.id).unwrap(),     // PR ID
+                FieldElement::from_dec_str(&contribution.status.to_string()).unwrap(), // PR status (merged)
             ],
         }
     }

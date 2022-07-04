@@ -1,9 +1,6 @@
 use anyhow::Result;
 use futures::{stream::BoxStream, Stream, StreamExt};
 
-pub mod fetcher;
-pub mod logger;
-
 pub type BoxIterator<'a, Output> = Box<dyn Iterator<Item = Output> + Send + 'a>;
 pub struct StreamableSync<'a, Output>(BoxIterator<'a, Output>);
 pub struct StreamableAsync<'a, Output>(BoxStream<'a, Output>);

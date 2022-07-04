@@ -6,12 +6,9 @@ use log::info;
 use octocrab::{models::pulls::PullRequest, Page};
 use std::sync::Arc;
 
-use crate::{
-    model::{pullrequest, repository},
-    traits::{fetcher::*, Streamable},
-};
+use crate::{domain::*, utils::stream::Streamable};
 
-impl From<models::RepositoryWithExtension> for repository::Repository {
+impl From<models::RepositoryWithExtension> for Project {
     fn from(repo: models::RepositoryWithExtension) -> Self {
         Self {
             id: repo.inner.id.to_string(),
@@ -44,16 +41,13 @@ impl Default for API {
 }
 
 #[async_trait]
-impl Fetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
-    async fn fetch(&self, filter: pullrequest::Filter) -> FetchResult<pullrequest::PullRequest> {
+impl Fetcher<ContributionFilter, Contribution> for API {
+    async fn fetch(&self, filter: ContributionFilter) -> FetchResult<Contribution> {
         const MAX_PR_PER_PAGE: u8 = 100;
 
-        let repository = filter.repository.expect("Repository is mandatory for now");
+        let project = filter.project.expect("Repository is mandatory for now");
 
-        info!(
-            "Fetching repository {}/{}",
-            repository.owner, repository.name
-        );
+        info!("Fetching repository {}/{}", project.owner, project.name);
 
         let filtered =
             |page: Page<PullRequest>| page.into_iter().filter(|pr| pr.merged_at.is_some());
@@ -61,7 +55,7 @@ impl Fetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
         // List the closed PRs
         let page = self
             .octo
-            .pulls(&repository.owner, &repository.name)
+            .pulls(&project.owner, &project.name)
             .list()
             .state(octocrab::params::State::Closed)
             .direction(octocrab::params::Direction::Ascending)
@@ -96,8 +90,8 @@ impl Fetcher<pullrequest::Filter, pullrequest::PullRequest> for API {
 }
 
 #[async_trait]
-impl Fetcher<repository::Filter, repository::Repository> for API {
-    async fn fetch(&self, filter: repository::Filter) -> FetchResult<repository::Repository> {
+impl Fetcher<ProjectFilter, Project> for API {
+    async fn fetch(&self, filter: ProjectFilter) -> FetchResult<Project> {
         info!("Fetching repository with filter {:?}", filter);
 
         const GITHUB_API_ROOT: &str = "https://api.github.com";

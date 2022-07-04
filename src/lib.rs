@@ -4,7 +4,7 @@ extern crate dotenv;
 
 pub mod connection;
 pub mod database;
+pub mod domain;
 pub mod github;
-pub mod model;
 pub mod starknet;
-pub mod traits;
+pub mod utils;

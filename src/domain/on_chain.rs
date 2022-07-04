@@ -1,12 +1,12 @@
 pub struct ContractUpdateStatus {
-    pub pr_id: String,
+    pub contribution_id: String,
     pub transaction_hash: String,
 }
 
 impl ContractUpdateStatus {
-    pub fn new(pr_id: String, transaction_hash: String) -> Self {
+    pub fn new(contribution_id: String, transaction_hash: String) -> Self {
         ContractUpdateStatus {
-            pr_id,
+            contribution_id,
             transaction_hash,
         }
     }
