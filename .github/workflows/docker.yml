@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'main'
-      - 'docker-github-workflow'
     tags:
       - 'v*'
 
@@ -18,7 +17,7 @@ jobs:
       dockerfile: diesel-rocket-rs
       datadog_label: '[{"source": "deathnote", "service": "deathnote-contribution-feeder-rest-api"}]'
     secrets: inherit
-  
+
   docker-pr-uploader:
     uses: onlydustxyz/cicd/.github/workflows/docker-workflow.yml@main
     with:
