@@ -1,0 +1,40 @@
+name: docker
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'docker-github-workflow'
+    tags:
+      - 'v*'
+
+jobs:
+  docker-rest-api:
+    uses: onlydustxyz/cicd/.github/workflows/docker-workflow.yml@main
+    with:
+      image_name: deathnote-contribution-feeder-rest-api
+      image_tag: ${{ github.ref_name }}
+      bin_name: deathnote_contributions_feeder
+      dockerfile: diesel-rocket-rs
+      datadog_label: '[{"source": "deathnote", "service": "deathnote-contribution-feeder-rest-api"}]'
+    secrets: inherit
+  
+  docker-pr-uploader:
+    uses: onlydustxyz/cicd/.github/workflows/docker-workflow.yml@main
+    with:
+      image_name: deathnote-contribution-feeder-pr-uploader
+      image_tag: ${{ github.ref_name }}
+      bin_name: upload_pr
+      dockerfile: diesel-rs
+      datadog_label: '[{"source": "deathnote", "service": "deathnote-contribution-feeder-pr-uploader"}]'
+    secrets: inherit
+
+  docker-repo-indexer:
+    uses: onlydustxyz/cicd/.github/workflows/docker-workflow.yml@main
+    with:
+      image_name: deathnote-contribution-feeder-repo-indexer
+      image_tag: ${{ github.ref_name }}
+      bin_name: index_repos
+      dockerfile: diesel-rs
+      datadog_label: '[{"source": "deathnote", "service": "deathnote-contribution-feeder-repo-indexer"}]'
+    secrets: inherit
