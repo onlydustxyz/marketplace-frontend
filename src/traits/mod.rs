@@ -1,3 +1,4 @@
+use anyhow::Result;
 use futures::{stream::BoxStream, Stream, StreamExt};
 
 pub mod fetcher;
@@ -11,6 +12,8 @@ pub enum Streamable<'a, Output> {
     Sync(StreamableSync<'a, Output>),
     Async(StreamableAsync<'a, Output>),
 }
+
+pub type StreamableResult<'a, T> = Streamable<'a, Result<T>>;
 
 impl<'a, Iter, Output> From<Iter> for StreamableSync<'a, Output>
 where
