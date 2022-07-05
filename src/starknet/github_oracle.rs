@@ -12,7 +12,6 @@ use starknet::{
 use crate::domain::*;
 
 pub struct GithubOracle<'a, A: Account + Sync> {
-    oracle_contract_address: FieldElement,
     account: &'a A,
 }
 
@@ -23,66 +22,79 @@ fn oracle_contract_address() -> FieldElement {
         .expect("Invalid value for METADATA_ADDRESS")
 }
 
-#[async_trait]
-pub trait Oracle {
-    async fn add_contribution(&self, contribution: &Contribution) -> Result<ContractUpdateStatus>;
-
-    fn make_add_contribution_call(&self, contribution: &Contribution) -> Call;
-
-    async fn send_transaction<'life1>(&self, calls: &'life1 [Call])
-        -> Result<AddTransactionResult>;
-}
-
 impl<'a, A: Account + Sync> GithubOracle<'a, A> {
     pub fn new(account: &'a A) -> Self {
-        Self {
-            oracle_contract_address: oracle_contract_address(),
-            account,
+        Self { account }
+    }
+
+    async fn send_transaction<C: Into<Call> + Clone>(
+        &self,
+        calls: &[C],
+    ) -> Result<AddTransactionResult> {
+        let calls: Vec<Call> = calls.iter().cloned().map(|call| call.into()).collect();
+
+        match self.account.execute(&calls).send().await {
+            Ok(transaction_result) => Ok(transaction_result),
+            Err(error) => Err(anyhow!(error.to_string())),
         }
     }
 }
 
 #[async_trait]
 impl<'a, A: Account + Sync> Oracle for GithubOracle<'a, A> {
-    async fn add_contribution(&self, contribution: &Contribution) -> Result<ContractUpdateStatus> {
-        info!(
-            "Register contribution #{} by {} ({})",
-            contribution.id, contribution.author, contribution.status
-        );
+    async fn add_contributions<'life1>(
+        &self,
+        contributions: &'life1 [Contribution],
+    ) -> Result<String> {
+        info!("Registering {} contributions", contributions.len());
 
-        let transaction_result = self
-            .send_transaction(&[self.make_add_contribution_call(contribution)])
-            .await?;
+        // Make the call to the smart contract
+        let calls: Vec<AddContributionCall> = contributions
+            .iter()
+            .map(AddContributionCall::from)
+            .collect();
 
-        Ok(ContractUpdateStatus::new(
-            contribution.id.clone(),
-            format!("0x{:x}", transaction_result.transaction_hash),
-        ))
+        let transaction_hash = self
+            .send_transaction(&calls)
+            .await
+            .map_err(anyhow::Error::msg)?
+            .transaction_hash;
+
+        Ok(format!("0x{:x}", transaction_hash))
     }
+}
 
-    fn make_add_contribution_call(&self, contribution: &Contribution) -> Call {
-        Call {
-            to: self.oracle_contract_address,
-            selector: get_selector_from_name("add_contribution_from_handle").unwrap(),
-            calldata: vec![
-                FieldElement::from_dec_str(&contribution.author).unwrap(), // github identifier
-                cairo_short_string_to_felt("").unwrap(),                   // owner
-                cairo_short_string_to_felt(&contribution.project_id).unwrap(), // repo
-                FieldElement::from_dec_str(&contribution.id).unwrap(),     // PR ID
-                FieldElement::from_dec_str(&contribution.status.to_string()).unwrap(), // PR status (merged)
-            ],
+#[derive(Clone)]
+struct AddContributionCall {
+    github_user_id: FieldElement,
+    github_project_id: FieldElement,
+    github_pr_id: FieldElement,
+    github_pr_status: FieldElement,
+}
+
+impl From<&Contribution> for AddContributionCall {
+    fn from(contribution: &Contribution) -> Self {
+        Self {
+            github_user_id: FieldElement::from_dec_str(&contribution.author).unwrap(),
+            github_project_id: cairo_short_string_to_felt(&contribution.project_id).unwrap(),
+            github_pr_id: FieldElement::from_dec_str(&contribution.id).unwrap(),
+            github_pr_status: FieldElement::from_dec_str(&contribution.status.to_string()).unwrap(),
         }
     }
+}
 
-    async fn send_transaction<'life1>(
-        &self,
-        calls: &'life1 [Call],
-    ) -> Result<AddTransactionResult> {
-        info!("Sending transactions with {} calls", calls.len());
-
-        match self.account.execute(calls).send().await {
-            Ok(transaction_result) => Ok(transaction_result),
-            Err(error) => Err(anyhow!(error.to_string())),
+impl From<AddContributionCall> for Call {
+    fn from(call: AddContributionCall) -> Self {
+        Self {
+            to: oracle_contract_address(),
+            selector: get_selector_from_name("add_contribution_from_handle").unwrap(),
+            calldata: vec![
+                call.github_user_id,
+                FieldElement::ZERO,
+                call.github_project_id,
+                call.github_pr_id,
+                call.github_pr_status,
+            ],
         }
     }
 }
