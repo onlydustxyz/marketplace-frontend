@@ -19,7 +19,4 @@ table! {
 
 joinable!(pull_requests -> projects (project_id));
 
-allow_tables_to_appear_in_same_query!(
-    projects,
-    pull_requests,
-);
+allow_tables_to_appear_in_same_query!(projects, pull_requests,);
