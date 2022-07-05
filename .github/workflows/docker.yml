@@ -21,19 +21,19 @@ jobs:
   docker-pr-uploader:
     uses: onlydustxyz/cicd/.github/workflows/docker-workflow.yml@main
     with:
-      image_name: deathnote-contribution-feeder-pr-uploader
+      image_name: deathnote-contribution-feeder-contribution-uploader
       image_tag: ${{ github.ref_name }}
-      bin_name: upload_pr
+      bin_name: upload_contributions
       dockerfile: diesel-rs
-      datadog_label: '[{"source": "deathnote", "service": "deathnote-contribution-feeder-pr-uploader"}]'
+      datadog_label: '[{"source": "deathnote", "service": "deathnote-contribution-feeder-contribution-uploader"}]'
     secrets: inherit
 
   docker-repo-indexer:
     uses: onlydustxyz/cicd/.github/workflows/docker-workflow.yml@main
     with:
-      image_name: deathnote-contribution-feeder-repo-indexer
+      image_name: deathnote-contribution-feeder-project-indexer
       image_tag: ${{ github.ref_name }}
-      bin_name: index_repos
+      bin_name: index_projects
       dockerfile: diesel-rs
-      datadog_label: '[{"source": "deathnote", "service": "deathnote-contribution-feeder-repo-indexer"}]'
+      datadog_label: '[{"source": "deathnote", "service": "deathnote-contribution-feeder-project-indexer"}]'
     secrets: inherit
