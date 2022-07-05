@@ -19,7 +19,7 @@ async fn main() -> Result<()> {
         .fetch(all_repos)
         .await?
         .for_each(|repo| async {
-            // TODO: select pr since last indexed time
+            // TODO: select contributions since last indexed time
             let filter = ContributionFilter {
                 author: None,
                 project: Some(repo.clone()),
