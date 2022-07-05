@@ -21,19 +21,10 @@ pub struct Contribution {
     pub project_id: ProjectId,
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Default)]
 pub struct Filter {
     pub author: Option<String>,
     pub project: Option<Project>,
-}
-
-impl Default for Filter {
-    fn default() -> Self {
-        Self {
-            author: None,
-            project: None,
-        }
-    }
 }
 
 impl fmt::Display for Status {
