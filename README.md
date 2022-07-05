@@ -32,7 +32,7 @@ Create the `.env` file with the correct environment variables.
 Copy the `.env.example` file and modify the values according to your setup.
 
 ### 2. Start the docker container
-Make sure `docker compose` is installed (see [Installation instructions](https://docs.docker.com/compose/install/)).
+Make sure `docker-compose` is installed (see [Installation instructions](https://docs.docker.com/compose/install/)).
 ```
 docker-compose -f scripts/docker/dev/docker-compose.yml up -d
 ```
@@ -58,10 +58,25 @@ cargo build
 
 Below are some examples of usage.
 
-### Analyze a single repository
+### Add a single repository for indexing
 
 ```
-cargo run --bin watch_repo bitcoin bitcoin 
+# Offline mode
+cargo run --bin add_project onlydustxyz starkonquest
+
+# Online mode
+cargo run &
+curl -d '{"owner":"onlydustxyz", "name":"starkonquest"}' -H "Content-Type: application/json" -X POST http://localhost:8000/projects
+```
+
+### Run the indexer (fetch data from GitHub and store it in our database)
+```
+cargo run --bin index_projects
+```
+
+### Upload data (upload data from our database to our on-chain contract)
+```
+cargo run --bin upload_contributions
 ```
 
 ## 🌡️ Testing
