@@ -11,10 +11,7 @@ use starknet::{
     signers::{LocalWallet, SigningKey},
 };
 
-use self::{
-    github_oracle::{GithubOracle, Oracle},
-    registry::Registry,
-};
+use self::{github_oracle::GithubOracle, registry::Registry};
 use crate::{
     domain::*,
     utils::stream::{Streamable, StreamableResult},
@@ -127,18 +124,10 @@ impl StreamLogger<Contribution, ContractUpdateStatus> for API<'_> {
                     break None;
                 }
 
-                // Make the call to the smart contract
-                let calls = contributions_to_upload
-                    .iter()
-                    .map(|contribution| self.oracle.make_add_contribution_call(contribution))
-                    .collect::<Vec<_>>();
-
                 let transaction_result = self
                     .oracle
-                    .send_transaction(&calls)
-                    .await
-                    .map(|res| format!("0x{:x}", res.transaction_hash))
-                    .map_err(anyhow::Error::msg);
+                    .add_contributions(&contributions_to_upload)
+                    .await;
 
                 last_transaction_result = Some(transaction_result);
                 contributions_uploaded = contributions_to_upload;
