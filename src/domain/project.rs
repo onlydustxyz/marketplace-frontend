@@ -9,19 +9,10 @@ pub struct Project {
     pub name: String,
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Default)]
 pub struct Filter {
     pub owner: Option<String>,
     pub name: Option<String>,
-}
-
-impl Default for Filter {
-    fn default() -> Self {
-        Self {
-            owner: None,
-            name: None,
-        }
-    }
 }
 
 pub struct IndexingStatus {

@@ -24,7 +24,7 @@ pub mod schema;
 pub fn establish_connection() -> Result<DbConn> {
     connection::init_pool()
         .get()
-        .map(|connection| DbConn(connection))
+        .map(DbConn)
         .map_err(anyhow::Error::msg)
 }
 

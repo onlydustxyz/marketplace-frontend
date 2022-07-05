@@ -29,7 +29,8 @@ pub trait Oracle {
 
     fn make_add_contribution_call(&self, contribution: &Contribution) -> Call;
 
-    async fn send_transaction(&self, calls: &Vec<Call>) -> Result<AddTransactionResult>;
+    async fn send_transaction<'life1>(&self, calls: &'life1 [Call])
+        -> Result<AddTransactionResult>;
 }
 
 impl<'a, A: Account + Sync> GithubOracle<'a, A> {
@@ -50,7 +51,7 @@ impl<'a, A: Account + Sync> Oracle for GithubOracle<'a, A> {
         );
 
         let transaction_result = self
-            .send_transaction(&vec![self.make_add_contribution_call(&contribution)])
+            .send_transaction(&[self.make_add_contribution_call(contribution)])
             .await?;
 
         Ok(ContractUpdateStatus::new(
@@ -73,7 +74,10 @@ impl<'a, A: Account + Sync> Oracle for GithubOracle<'a, A> {
         }
     }
 
-    async fn send_transaction(&self, calls: &Vec<Call>) -> Result<AddTransactionResult> {
+    async fn send_transaction<'life1>(
+        &self,
+        calls: &'life1 [Call],
+    ) -> Result<AddTransactionResult> {
         info!("Sending transactions with {} calls", calls.len());
 
         match self.account.execute(calls).send().await {

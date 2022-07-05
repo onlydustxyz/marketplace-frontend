@@ -60,7 +60,7 @@ impl Registry {
                         "get_user_information_from_github_handle",
                     )
                     .unwrap(),
-                    calldata: vec![FieldElement::from_dec_str(&user).unwrap()],
+                    calldata: vec![FieldElement::from_dec_str(user).unwrap()],
                 },
                 &BlockHashOrTag::Tag(BlockTag::Latest),
             )
