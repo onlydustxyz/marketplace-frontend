@@ -11,13 +11,14 @@ use starknet::{
     signers::{LocalWallet, SigningKey},
 };
 
-use self::{github_oracle::GithubOracle, registry::Registry};
+use self::{contract_administrator::ContractAdministrator, registry::Registry};
 use crate::{
     domain::*,
     utils::stream::{Streamable, StreamableResult},
 };
 
-mod github_oracle;
+mod contract_administrator;
+mod domain_implementation;
 mod registry;
 
 pub fn make_account(private_key: &str, account_address: &str) -> impl Account {
@@ -41,9 +42,16 @@ fn nb_transactions_in_batch() -> usize {
         .expect("invalid value for NB_TRX_IN_BATCH")
 }
 
+fn oracle_contract_address() -> FieldElement {
+    let registry_contract_address =
+        std::env::var("METADATA_ADDRESS").expect("METADATA_ADDRESS must be set");
+    FieldElement::from_hex_be(&registry_contract_address)
+        .expect("Invalid value for METADATA_ADDRESS")
+}
+
 pub struct API<'a> {
     registry: Registry,
-    oracle: Box<dyn Oracle + Sync + Send + 'a>,
+    oracle: Box<dyn ContributionManager + Sync + Send + 'a>,
     nb_transactions_in_batch: usize,
 }
 
@@ -51,7 +59,10 @@ impl<'a> API<'a> {
     pub fn new<A: Account + Sync>(account: &'a A) -> Self {
         Self {
             registry: Registry::default(),
-            oracle: Box::new(GithubOracle::new(account)),
+            oracle: Box::new(ContractAdministrator::new(
+                account,
+                oracle_contract_address(),
+            )),
             nb_transactions_in_batch: nb_transactions_in_batch(),
         }
     }
