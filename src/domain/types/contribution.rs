@@ -19,6 +19,7 @@ pub struct Contribution {
     pub author: String,
     pub status: Status,
     pub project_id: ProjectId,
+    pub gate: u8,
 }
 
 #[derive(Debug, PartialEq, Clone, Default)]
