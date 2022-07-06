@@ -1,3 +1,5 @@
+use std::env;
+
 use anyhow::Result;
 use async_trait::async_trait;
 use futures::stream::{self, StreamExt};
@@ -11,7 +13,6 @@ use starknet::{
     signers::{LocalWallet, SigningKey},
 };
 
-use self::{contract_administrator::ContractAdministrator, registry::Registry};
 use crate::{
     domain::*,
     utils::stream::{Streamable, StreamableResult},
@@ -21,7 +22,19 @@ mod contract_administrator;
 mod domain_implementation;
 mod registry;
 
-pub fn make_account(private_key: &str, account_address: &str) -> impl Account {
+pub use contract_administrator::ContractAdministrator;
+use registry::Registry;
+
+pub fn make_account_from_env() -> impl Account {
+    let private_key = env::var("PRIVATE_KEY").expect("PRIVATE_KEY must be set");
+    let account_address = env::var("ACCOUNT_ADDRESS").expect("ACCOUNT_ADDRESS must be set");
+    make_account(&private_key, &account_address)
+}
+
+fn make_account(
+    private_key: &str,
+    account_address: &str,
+) -> SingleOwnerAccount<SequencerGatewayProvider, LocalWallet> {
     let signer = LocalWallet::from(SigningKey::from_secret_scalar(
         FieldElement::from_hex_be(private_key).unwrap(),
     ));
@@ -42,7 +55,7 @@ fn nb_transactions_in_batch() -> usize {
         .expect("invalid value for NB_TRX_IN_BATCH")
 }
 
-fn oracle_contract_address() -> FieldElement {
+pub fn oracle_contract_address() -> FieldElement {
     let registry_contract_address =
         std::env::var("METADATA_ADDRESS").expect("METADATA_ADDRESS must be set");
     FieldElement::from_hex_be(&registry_contract_address)

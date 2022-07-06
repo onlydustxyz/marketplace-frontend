@@ -2,15 +2,12 @@ use anyhow::Result;
 use dotenv::dotenv;
 use futures::stream::StreamExt;
 use log::warn;
-use std::env;
 
-use deathnote_contributions_feeder::{database, domain::*, starknet};
-
-fn make_account() -> impl starknet::Account {
-    let private_key = env::var("PRIVATE_KEY").expect("PRIVATE_KEY must be set");
-    let account_address = env::var("ACCOUNT_ADDRESS").expect("ACCOUNT_ADDRESS must be set");
-    starknet::make_account(&private_key, &account_address)
-}
+use deathnote_contributions_feeder::{
+    database,
+    domain::*,
+    starknet::{self, make_account_from_env},
+};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -20,7 +17,7 @@ async fn main() -> Result<()> {
 
     let database = database::API::default();
 
-    let account = make_account();
+    let account = make_account_from_env();
     let starknet = starknet::API::new(&account);
 
     let all = ContributionFilter::default(); // TODO filter only non up-to-date PR
