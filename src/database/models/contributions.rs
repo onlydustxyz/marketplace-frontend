@@ -1,4 +1,7 @@
-use crate::{database::schema::*, domain};
+use crate::{
+    database::schema::*,
+    domain::{self},
+};
 use diesel::Queryable;
 use rocket::serde::{Deserialize, Serialize};
 
@@ -13,6 +16,7 @@ pub struct Contribution {
     pub status: String,
     pub transaction_hash: Option<String>,
     pub author: String,
+    pub gate: i16,
 }
 
 #[derive(AsChangeset, Identifiable)]
@@ -33,10 +37,11 @@ pub struct ContributionContractUpdateForm {
 #[derive(Insertable)]
 #[table_name = "contributions"]
 pub struct NewContribution {
-    pub id: String,
-    pub project_id: String,
-    pub status: String,
-    pub author: String,
+    id: String,
+    project_id: String,
+    status: String,
+    author: String,
+    gate: i16,
 }
 
 impl From<domain::Contribution> for NewContribution {
@@ -46,6 +51,7 @@ impl From<domain::Contribution> for NewContribution {
             project_id: contribution.project_id,
             status: contribution.status.to_string(),
             author: contribution.author,
+            gate: contribution.gate.into(),
         }
     }
 }
@@ -76,6 +82,8 @@ impl From<Contribution> for domain::Contribution {
             author: contribution.author,
             project_id: contribution.project_id,
             status: contribution.status.parse().unwrap(),
+            // Safe to unwrap because the value stored can only come from an u8
+            gate: contribution.gate.try_into().unwrap(),
         }
     }
 }

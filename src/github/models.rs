@@ -25,6 +25,7 @@ impl From<octocrab::models::pulls::PullRequest> for Contribution {
                 .expect("Invalid repo received from github API")
                 .id
                 .to_string(),
+            gate: 0,
         }
     }
 }

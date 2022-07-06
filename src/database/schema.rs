@@ -5,6 +5,7 @@ table! {
         status -> Varchar,
         transaction_hash -> Nullable<Varchar>,
         author -> Varchar,
+        gate -> Int2,
     }
 }
 
