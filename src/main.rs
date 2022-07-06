@@ -23,7 +23,8 @@ fn rocket() -> _ {
                 routes::cors::options_preflight_handler,
                 routes::health::health_check,
                 routes::get_index,
-                routes::new_project
+                routes::new_project,
+                routes::gates::add_gate,
             ],
         )
 }

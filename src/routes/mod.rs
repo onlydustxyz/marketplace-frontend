@@ -1,4 +1,5 @@
 pub mod cors;
+pub mod gates;
 pub mod health;
 mod index;
 mod projects;

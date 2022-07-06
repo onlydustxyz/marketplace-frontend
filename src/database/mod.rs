@@ -15,6 +15,7 @@ use crate::{
 use connections::pg_connection::{self, DbConn};
 
 use self::schema::{
+    contribution_gates::{self},
     contributions::{self, dsl::*},
     projects::{self, dsl::*},
 };
@@ -54,6 +55,14 @@ impl API {
         diesel::insert_into(projects::table)
             .values(&project)
             .get_result::<db_model::Project>(&**self.connection())?;
+
+        Ok(())
+    }
+
+    pub fn insert_gate(&self, gate: db_model::NewContributionGate) -> Result<()> {
+        diesel::insert_into(contribution_gates::table)
+            .values(&gate)
+            .get_result::<db_model::ContributionGate>(&**self.connection())?;
 
         Ok(())
     }
