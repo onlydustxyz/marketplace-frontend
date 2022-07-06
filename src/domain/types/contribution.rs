@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use std::{fmt, str::FromStr};
 
-use super::*;
+use crate::domain::{Project, ProjectId};
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum Status {
