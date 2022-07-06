@@ -1,3 +1,7 @@
+pub mod connections;
+pub mod models;
+pub mod schema;
+
 use anyhow::Result;
 use async_trait::async_trait;
 use diesel::prelude::*;
@@ -5,24 +9,19 @@ use log::info;
 use std::sync::{Mutex, MutexGuard};
 
 use crate::{
-    connection::{self, DbConn},
     domain::{self, FetchResult, Fetcher, Logger},
     utils::stream::Streamable,
 };
+use connections::pg_connection::{self, DbConn};
 
-use self::{
-    model as db_model,
-    schema::{
-        contributions::{self, dsl::*},
-        projects::{self, dsl::*},
-    },
+use self::schema::{
+    contributions::{self, dsl::*},
+    projects::{self, dsl::*},
 };
-
-pub mod model;
-pub mod schema;
+use models as db_model;
 
 pub fn establish_connection() -> Result<DbConn> {
-    connection::init_pool()
+    pg_connection::init_pool()
         .get()
         .map(DbConn)
         .map_err(anyhow::Error::msg)
@@ -79,7 +78,7 @@ impl API {
         };
 
         let results = query
-            .load::<model::Project>(&**self.connection())
+            .load::<db_model::Project>(&**self.connection())
             .expect("Error while fetching projects from database");
 
         results.into_iter()
@@ -129,7 +128,7 @@ impl Logger<domain::Contribution, ()> for API {
             contribution.id, contribution.author, contribution.status
         );
 
-        let result: Result<model::Contribution> = contributions
+        let result: Result<db_model::Contribution> = contributions
             .find(&contribution.id)
             .first(&**self.connection())
             .map_err(anyhow::Error::msg);
@@ -168,7 +167,7 @@ impl Logger<domain::ContractUpdateStatus, ()> for API {
         );
 
         db_model::ContributionContractUpdateForm::from(contract_status)
-            .save_changes::<model::Contribution>(&**self.connection())?;
+            .save_changes::<db_model::Contribution>(&**self.connection())?;
         Ok(())
     }
 }
@@ -192,7 +191,7 @@ impl Logger<domain::IndexingStatus, ()> for API {
         );
 
         db_model::ProjectIndexingStatusUpdateForm::from(indexing_status)
-            .save_changes::<model::Project>(&**self.connection())?;
+            .save_changes::<db_model::Project>(&**self.connection())?;
 
         Ok(())
     }
