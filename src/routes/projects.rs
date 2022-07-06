@@ -1,5 +1,6 @@
+use deathnote_contributions_feeder::database::connections::pg_connection::DbConn;
 use deathnote_contributions_feeder::domain::{Fetcher, Logger, ProjectFilter};
-use deathnote_contributions_feeder::{connection::DbConn, database, github};
+use deathnote_contributions_feeder::{database, github};
 
 use futures::stream::StreamExt;
 use rocket::post;

@@ -15,8 +15,8 @@ default-run = "deathnote_contributions_feeder"
 [dependencies]
 anyhow = "1.0.57"
 diesel = { version = "1.4.8", default-features = false, features = [
-  "postgres",
-  "serde_json",
+	"postgres",
+	"serde_json",
 ] }
 r2d2 = "0.8.10"
 r2d2-diesel = "1.0.0"
@@ -32,5 +32,5 @@ starknet = { git = "https://github.com/xJonathanLEI/starknet-rs" }
 tokio = { version = "1.18.2", features = ["full"] }
 async-trait = "0.1.56"
 mockall = "0.11.1"
-futures = {version = "0.3.21", features = ["alloc"]}
+futures = { version = "0.3.21", features = ["alloc"] }
 url = "2.2.2"

@@ -1,6 +1,6 @@
 mod routes;
 
-use deathnote_contributions_feeder::connection;
+use deathnote_contributions_feeder::database::connections::pg_connection;
 
 use dotenv::dotenv;
 use rocket::{launch, routes};
@@ -15,7 +15,7 @@ fn rocket() -> _ {
     octocrab::initialise(octocrab::Octocrab::builder()).expect("Unable to initialize octocrab");
 
     rocket::build()
-        .manage(connection::init_pool())
+        .manage(pg_connection::init_pool())
         .attach(routes::cors::Cors)
         .mount(
             "/",
