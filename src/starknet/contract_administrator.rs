@@ -11,7 +11,7 @@ pub struct ContractAdministrator<'a, A: Account + Sync> {
 }
 
 impl<'a, A: Account + Sync> ContractAdministrator<'a, A> {
-    pub fn new(administrator_account: &'a A, contract_address: FieldElement) -> Self {
+    pub fn new(contract_address: FieldElement, administrator_account: &'a A) -> Self {
         Self {
             contract_address,
             administrator_account,

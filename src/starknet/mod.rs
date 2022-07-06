@@ -55,11 +55,11 @@ fn nb_transactions_in_batch() -> usize {
         .expect("invalid value for NB_TRX_IN_BATCH")
 }
 
-pub fn oracle_contract_address() -> FieldElement {
+pub fn contribution_registry_address() -> FieldElement {
     let registry_contract_address =
-        std::env::var("METADATA_ADDRESS").expect("METADATA_ADDRESS must be set");
+        std::env::var("REGISTRY_ADDRESS").expect("REGISTRY_ADDRESS must be set");
     FieldElement::from_hex_be(&registry_contract_address)
-        .expect("Invalid value for METADATA_ADDRESS")
+        .expect("Invalid value for REGISTRY_ADDRESS")
 }
 
 pub struct API<'a> {
@@ -73,8 +73,8 @@ impl<'a> API<'a> {
         Self {
             registry: Registry::default(),
             oracle: Box::new(ContractAdministrator::new(
+                contribution_registry_address(),
                 account,
-                oracle_contract_address(),
             )),
             nb_transactions_in_batch: nb_transactions_in_batch(),
         }
