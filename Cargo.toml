@@ -34,3 +34,4 @@ async-trait = "0.1.56"
 mockall = "0.11.1"
 futures = { version = "0.3.21", features = ["alloc"] }
 url = "2.2.2"
+crypto-bigint = { version = "0.4.8", features = ["serde"] }
