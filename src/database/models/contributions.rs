@@ -21,10 +21,19 @@ pub struct Contribution {
 
 #[derive(AsChangeset, Identifiable)]
 #[table_name = "contributions"]
-pub struct ContributionForm {
+pub struct AssignContributionForm {
     pub id: String,
     pub status: String,
     pub author: String,
+    pub transaction_hash: Option<String>,
+}
+
+#[derive(AsChangeset, Identifiable)]
+#[table_name = "contributions"]
+pub struct ValidateContributionForm {
+    pub id: String,
+    pub status: String,
+    pub transaction_hash: Option<String>,
 }
 
 #[derive(AsChangeset, Identifiable)]
@@ -37,11 +46,12 @@ pub struct ContributionContractUpdateForm {
 #[derive(Insertable)]
 #[table_name = "contributions"]
 pub struct NewContribution {
-    id: String,
-    project_id: String,
-    status: String,
-    author: String,
-    gate: i16,
+    pub id: String,
+    pub project_id: String,
+    pub status: String,
+    pub author: String,
+    pub gate: i16,
+    pub transaction_hash: Option<String>,
 }
 
 impl From<domain::Contribution> for NewContribution {
@@ -52,16 +62,7 @@ impl From<domain::Contribution> for NewContribution {
             status: contribution.status.to_string(),
             author: contribution.author,
             gate: contribution.gate.into(),
-        }
-    }
-}
-
-impl From<domain::Contribution> for ContributionForm {
-    fn from(contribution: domain::Contribution) -> Self {
-        Self {
-            id: contribution.id,
-            status: contribution.status.to_string(),
-            author: contribution.author,
+            transaction_hash: None,
         }
     }
 }

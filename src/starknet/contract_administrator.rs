@@ -34,7 +34,7 @@ impl<'a, A: Account + Sync> ContractAdministrator<'a, A> {
         calls: &[Call],
         wait_for_acceptance: bool,
     ) -> Result<AddTransactionResult> {
-        info!("Sending transactions with {} calls", calls.len());
+        info!("Sending transaction with {} calls", calls.len());
 
         match self.administrator_account.execute(calls).send().await {
             Ok(transaction_result) => match wait_for_acceptance {

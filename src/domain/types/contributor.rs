@@ -21,3 +21,9 @@ impl<'de> Deserialize<'de> for ContributorId {
         Ok(Self(U256::deserialize(deserializer)?))
     }
 }
+
+impl ToString for ContributorId {
+    fn to_string(&self) -> String {
+        self.0.to_string()
+    }
+}
