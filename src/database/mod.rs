@@ -2,17 +2,17 @@ pub mod connections;
 pub mod models;
 pub mod schema;
 
-use anyhow::Result;
-use async_trait::async_trait;
-use diesel::prelude::*;
-use log::info;
-use std::sync::{Mutex, MutexGuard};
-
 use crate::{
     domain::{self, FetchResult, Fetcher, Logger},
     utils::stream::Streamable,
 };
+use anyhow::Result;
+use async_trait::async_trait;
 use connections::pg_connection::{self, DbConn};
+use diesel::prelude::*;
+use diesel::query_dsl::BelongingToDsl;
+use log::info;
+use std::sync::{Mutex, MutexGuard};
 
 use self::schema::{
     contributions::{self, dsl::*},
@@ -82,6 +82,22 @@ impl API {
             .expect("Error while fetching projects from database");
 
         results.into_iter()
+    }
+
+    pub fn list_projects_with_contributions(
+        &self,
+    ) -> Result<impl Iterator<Item = db_model::ProjectWithContributions>, anyhow::Error> {
+        let project_list = projects.load::<db_model::Project>(&**self.connection())?;
+        let contribution_list = db_model::Contribution::belonging_to(&project_list)
+            .load::<db_model::Contribution>(&**self.connection())?
+            .grouped_by(&project_list);
+
+        let result = project_list
+            .into_iter()
+            .zip(contribution_list)
+            .map(db_model::ProjectWithContributions::from);
+
+        Ok(result)
     }
 
     fn find_contributions(

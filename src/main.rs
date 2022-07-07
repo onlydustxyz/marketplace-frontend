@@ -71,6 +71,7 @@ async fn main() {
                 routes::health::health_check,
                 routes::get_index,
                 routes::new_project,
+                routes::list_projects,
             ],
         )
         .mount("", routes![routes::create_contribution,])
