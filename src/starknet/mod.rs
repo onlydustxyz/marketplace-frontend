@@ -57,9 +57,9 @@ fn nb_transactions_in_batch() -> usize {
 
 pub fn oracle_contract_address() -> FieldElement {
     let registry_contract_address =
-        std::env::var("METADATA_ADDRESS").expect("METADATA_ADDRESS must be set");
+        std::env::var("CONTRIBUTIONS_ADDRESS").expect("CONTRIBUTIONS_ADDRESS must be set");
     FieldElement::from_hex_be(&registry_contract_address)
-        .expect("Invalid value for METADATA_ADDRESS")
+        .expect("Invalid value for CONTRIBUTIONS_ADDRESS")
 }
 
 pub fn sequencer() -> SequencerGatewayProvider {

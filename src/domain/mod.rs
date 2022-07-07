@@ -1,3 +1,4 @@
+mod actions;
 mod traits;
 mod types;
 
@@ -11,3 +12,5 @@ pub use types::contribution::{
 };
 pub use types::contributor::ContributorId;
 pub use types::project::{Filter as ProjectFilter, Id as ProjectId, IndexingStatus, Project};
+
+pub use actions::*;
