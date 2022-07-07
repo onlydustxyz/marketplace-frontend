@@ -41,7 +41,7 @@ fn make_account(
 
     // TODO: make chain_id configurable
     SingleOwnerAccount::new(
-        SequencerGatewayProvider::starknet_alpha_goerli(),
+        sequencer(),
         signer,
         FieldElement::from_hex_be(account_address).unwrap(),
         chain_id::TESTNET,
@@ -60,6 +60,10 @@ pub fn oracle_contract_address() -> FieldElement {
         std::env::var("METADATA_ADDRESS").expect("METADATA_ADDRESS must be set");
     FieldElement::from_hex_be(&registry_contract_address)
         .expect("Invalid value for METADATA_ADDRESS")
+}
+
+pub fn sequencer() -> SequencerGatewayProvider {
+    SequencerGatewayProvider::starknet_alpha_goerli()
 }
 
 pub struct API<'a> {
