@@ -18,7 +18,7 @@ impl<'a, A: Account + Sync> ContributionManager for ContractAdministrator<'a, A>
             .map(|contribution| self.make_add_contribution_call(contribution))
             .collect::<Vec<_>>();
 
-        let transaction_result = self.send_transaction(&calls).await?;
+        let transaction_result = self.send_transaction(&calls, true).await?;
 
         Ok(format!("0x{:x}", transaction_result.transaction_hash))
     }
