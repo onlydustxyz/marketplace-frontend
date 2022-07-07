@@ -7,7 +7,7 @@ use rocket::serde::{Deserialize, Serialize};
 
 use super::projects::Project;
 
-#[derive(Queryable, Associations, Debug, Serialize, Deserialize, Clone)]
+#[derive(Queryable, Identifiable, Associations, Debug, Serialize, Deserialize, Clone)]
 #[belongs_to(Project)]
 #[serde(crate = "rocket::serde")]
 pub struct Contribution {

@@ -3,6 +3,7 @@ use deathnote_contributions_feeder::domain::{Fetcher, Logger, ProjectFilter};
 use deathnote_contributions_feeder::{database, github};
 
 use futures::stream::StreamExt;
+use rocket::get;
 use rocket::post;
 use rocket::response::status;
 use rocket::serde::json::Json;
@@ -43,4 +44,17 @@ pub async fn new_project(
         .await;
 
     Ok(status::Accepted(Some(())))
+}
+
+#[get("/projects")]
+pub async fn list_projects(
+    connection: DbConn,
+) -> Result<Json<Vec<database::models::ProjectWithContributions>>, status::NotFound<String>> {
+    let database = database::API::new(connection);
+    let results = database
+        .list_projects_with_contributions()
+        .map_err(|error| status::NotFound(error.to_string()))?;
+    let projects: Vec<database::models::ProjectWithContributions> = results.collect();
+
+    Ok(Json(projects))
 }

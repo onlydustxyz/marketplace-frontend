@@ -24,6 +24,7 @@ fn rocket() -> _ {
                 routes::health::health_check,
                 routes::get_index,
                 routes::new_project,
+                routes::list_projects,
             ],
         )
 }
