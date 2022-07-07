@@ -1,5 +1,6 @@
 use anyhow::Result;
 use async_trait::async_trait;
+use crypto_bigint::Split;
 use starknet::{
     accounts::{Account, Call},
     core::{
@@ -8,7 +9,10 @@ use starknet::{
     },
 };
 
-use crate::{domain::*, starknet::contract_administrator::ContractAdministrator};
+use crate::{
+    domain::*,
+    starknet::{contract_administrator::ContractAdministrator, oracle_contract_address},
+};
 
 #[async_trait]
 impl<'a, A: Account + Sync> ContributionManager for ContractAdministrator<'a, A> {
@@ -37,5 +41,71 @@ impl<'a, A: Account + Sync> ContractAdministrator<'a, A> {
                 FieldElement::from_dec_str(&contribution.status.to_string()).unwrap(), // PR status (merged)
             ],
         }
+    }
+}
+
+impl From<Action> for Call {
+    fn from(action: Action) -> Self {
+        match action {
+            Action::AddContribution {
+                contribution_id,
+                project_id,
+                gate,
+            } => Self {
+                to: oracle_contract_address(),
+                selector: get_selector_from_name("new_contribution").unwrap(),
+                calldata: vec![
+                    FieldElement::from_dec_str(&contribution_id).unwrap(), // id : felt
+                    FieldElement::from_dec_str(&project_id).unwrap(),      // project_id : felt
+                    FieldElement::from(0_u8),                              // status : felt
+                    FieldElement::from(0_u8), // contributor_id : Uint256
+                    FieldElement::from(0_u8),
+                    FieldElement::from(gate), // contribution_count_required : felt
+                ],
+            },
+
+            Action::AssignContributor {
+                contribution_id,
+                contributor_id,
+            } => {
+                let (contributor_id_low, contributor_id_high) = contributor_id.into();
+
+                Self {
+                    to: oracle_contract_address(),
+                    selector: get_selector_from_name("assign_contributor_to_contribution").unwrap(),
+                    calldata: vec![
+                        contribution_id.parse().unwrap(), // id : felt
+                        contributor_id_low,               // contributor_id : Uint256
+                        contributor_id_high,
+                    ],
+                }
+            }
+
+            Action::UnassignContributor { contribution_id } => Self {
+                to: oracle_contract_address(),
+                selector: get_selector_from_name("unassign_contributor_from_contribution").unwrap(),
+                calldata: vec![
+                    contribution_id.parse().unwrap(), // id : felt
+                ],
+            },
+
+            Action::ValidateContribution { contribution_id } => Self {
+                to: oracle_contract_address(),
+                selector: get_selector_from_name("validate_contribution").unwrap(),
+                calldata: vec![
+                    contribution_id.parse().unwrap(), // id : felt
+                ],
+            },
+        }
+    }
+}
+
+impl From<ContributorId> for (FieldElement, FieldElement) {
+    fn from(id: ContributorId) -> Self {
+        let (high, low) = id.0.split();
+        (
+            low.to_string().parse().unwrap(),
+            high.to_string().parse().unwrap(),
+        )
     }
 }
