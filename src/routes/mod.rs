@@ -1,8 +1,10 @@
+mod contributions;
 pub mod cors;
 pub mod health;
 mod index;
 mod projects;
 
+pub use contributions::*;
 pub use index::*;
 pub use projects::*;
 use rocket::Responder;
