@@ -234,6 +234,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "base16ct"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "349a06037c7bf932dd7e7d1f653678b2038b9ad46a74102f1fc7bd7872678cce"
+
+[[package]]
 name = "base64"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -422,6 +428,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "crypto-bigint"
+version = "0.4.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9f2b443d17d49dad5ef0ede301c3179cc923b8822f3393b4d2c28c269dd4a122"
+dependencies = [
+ "rand_core",
+ "serdect",
+ "subtle",
+]
+
+[[package]]
 name = "crypto-common"
 version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -491,6 +508,7 @@ version = "0.0.1"
 dependencies = [
  "anyhow",
  "async-trait",
+ "crypto-bigint 0.4.8",
  "diesel",
  "dotenv",
  "env_logger",
@@ -1964,7 +1982,7 @@ version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "96ef608575f6392792f9ecf7890c00086591d29a83910939d430753f7c050525"
 dependencies = [
- "crypto-bigint",
+ "crypto-bigint 0.3.2",
  "hmac 0.11.0",
  "zeroize",
 ]
@@ -2296,6 +2314,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "serdect"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "038fce1bf4d74b9b30ea7dcd59df75ba8ec669a5dcb3cc64fbfcef7334ced32c"
+dependencies = [
+ "base16ct",
+ "serde",
+]
+
+[[package]]
 name = "sha2"
 version = "0.9.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2487,7 +2515,7 @@ name = "starknet-crypto"
 version = "0.1.0"
 source = "git+https://github.com/xJonathanLEI/starknet-rs#063caeeae9c6fcd1384707d10e7765c8ee6e1315"
 dependencies = [
- "crypto-bigint",
+ "crypto-bigint 0.3.2",
  "hex",
  "hmac 0.11.0",
  "num-bigint",
@@ -2507,7 +2535,7 @@ source = "git+https://github.com/xJonathanLEI/starknet-rs#063caeeae9c6fcd1384707
 dependencies = [
  "ark-ff",
  "bigdecimal",
- "crypto-bigint",
+ "crypto-bigint 0.3.2",
  "getrandom",
  "hex",
  "num-bigint",
