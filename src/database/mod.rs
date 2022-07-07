@@ -3,7 +3,7 @@ pub mod models;
 pub mod schema;
 
 use crate::{
-    domain::{self, FetchResult, Fetcher, Logger},
+    domain::{self, Action, FetchResult, Fetcher, Logger},
     utils::stream::Streamable,
 };
 use anyhow::Result;
@@ -56,11 +56,69 @@ impl API {
         self.connection.lock().unwrap()
     }
 
-    fn insert_contribution(&self, contribution: db_model::NewContribution) -> Result<()> {
+    fn new_contribution(
+        &self,
+        id_: domain::ContributionId,
+        project_id_: domain::ProjectId,
+        gate_: u8,
+        hash_: Option<String>,
+    ) -> Result<()> {
         diesel::insert_into(contributions::table)
-            .values(&contribution)
+            .values(&db_model::NewContribution {
+                id: id_,
+                project_id: project_id_,
+                status: domain::ContributionStatus::Open.to_string(),
+                author: String::new(),
+                gate: gate_ as i16,
+                transaction_hash: hash_,
+            })
             .get_result::<db_model::Contribution>(&**self.connection())?;
 
+        Ok(())
+    }
+
+    fn assign_contribution(
+        &self,
+        id_: domain::ContributionId,
+        contributor_id_: domain::ContributorId,
+        hash_: Option<String>,
+    ) -> Result<()> {
+        db_model::AssignContributionForm {
+            id: id_,
+            status: domain::ContributionStatus::Review.to_string(),
+            author: contributor_id_.to_string(),
+            transaction_hash: hash_,
+        }
+        .save_changes::<db_model::Contribution>(&**self.connection())?;
+        Ok(())
+    }
+
+    fn unassign_contribution(
+        &self,
+        id_: domain::ContributionId,
+        hash_: Option<String>,
+    ) -> Result<()> {
+        db_model::AssignContributionForm {
+            id: id_,
+            status: domain::ContributionStatus::Open.to_string(),
+            author: String::new(),
+            transaction_hash: hash_,
+        }
+        .save_changes::<db_model::Contribution>(&**self.connection())?;
+        Ok(())
+    }
+
+    fn validate_contribution(
+        &self,
+        id_: domain::ContributionId,
+        hash_: Option<String>,
+    ) -> Result<()> {
+        db_model::ValidateContributionForm {
+            id: id_,
+            status: domain::ContributionStatus::Merged.to_string(),
+            transaction_hash: hash_,
+        }
+        .save_changes::<db_model::Contribution>(&**self.connection())?;
         Ok(())
     }
 
@@ -69,11 +127,6 @@ impl API {
             .values(&project)
             .get_result::<db_model::Project>(&**self.connection())?;
 
-        Ok(())
-    }
-
-    fn update_contribution(&self, contribution: db_model::ContributionForm) -> Result<()> {
-        contribution.save_changes::<db_model::Contribution>(&**self.connection())?;
         Ok(())
     }
 
@@ -142,6 +195,42 @@ impl API {
 
         Box::new(results.into_iter())
     }
+
+    pub fn execute_actions(&self, actions: &[Action], hash: &str) -> Result<()> {
+        for action in actions {
+            match action {
+                Action::CreateContribution {
+                    contribution_id: id_,
+                    project_id: project_id_,
+                    gate: gate_,
+                } => self.new_contribution(
+                    id_.clone(),
+                    project_id_.clone(),
+                    *gate_,
+                    Some(hash.into()),
+                ),
+
+                Action::AssignContributor {
+                    contribution_id: id_,
+                    contributor_id: contributor_id_,
+                } => self.assign_contribution(
+                    id_.clone(),
+                    contributor_id_.clone(),
+                    Some(hash.into()),
+                ),
+
+                Action::UnassignContributor {
+                    contribution_id: id_,
+                } => self.unassign_contribution(id_.clone(), Some(hash.into())),
+
+                Action::ValidateContribution {
+                    contribution_id: id_,
+                } => self.validate_contribution(id_.clone(), Some(hash.into())),
+            }?;
+        }
+
+        Ok(())
+    }
 }
 
 impl Default for API {
@@ -164,8 +253,8 @@ impl Logger<domain::Contribution, ()> for API {
             .map_err(anyhow::Error::msg);
 
         match result {
-            Ok(_) => self.update_contribution(contribution.into()), // PR exists in DB => update
-            Err(_) => self.insert_contribution(contribution.into()), // PR does not exist in DB => insert
+            Ok(_) => Ok(()), // do nothing for now
+            Err(_) => self.new_contribution(contribution.id, contribution.project_id, 0, None), // PR does not exist in DB => insert
         }
     }
 }

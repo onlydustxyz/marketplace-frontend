@@ -55,10 +55,10 @@ fn nb_transactions_in_batch() -> usize {
         .expect("invalid value for NB_TRX_IN_BATCH")
 }
 
-pub fn oracle_contract_address() -> FieldElement {
-    let registry_contract_address =
+pub fn contributions_contract_address() -> FieldElement {
+    let contributions_contract_address =
         std::env::var("CONTRIBUTIONS_ADDRESS").expect("CONTRIBUTIONS_ADDRESS must be set");
-    FieldElement::from_hex_be(&registry_contract_address)
+    FieldElement::from_hex_be(&contributions_contract_address)
         .expect("Invalid value for CONTRIBUTIONS_ADDRESS")
 }
 
@@ -69,7 +69,7 @@ pub fn sequencer() -> SequencerGatewayProvider {
 pub struct API<'a> {
     registry: Registry,
     oracle: Box<dyn ContributionManager + Sync + Send + 'a>,
-    nb_transactions_in_batch: usize,
+    pub nb_transactions_in_batch: usize,
 }
 
 impl<'a> API<'a> {
@@ -78,7 +78,7 @@ impl<'a> API<'a> {
             registry: Registry::default(),
             oracle: Box::new(ContractAdministrator::new(
                 account,
-                oracle_contract_address(),
+                contributions_contract_address(),
             )),
             nb_transactions_in_batch: nb_transactions_in_batch(),
         }
@@ -98,6 +98,10 @@ impl<'a> API<'a> {
         .take(self.nb_transactions_in_batch)
         .collect::<Vec<_>>()
         .await
+    }
+
+    pub async fn execute_actions(&self, actions: &[Action]) -> Result<String> {
+        self.oracle.execute_actions(actions, true).await
     }
 }
 

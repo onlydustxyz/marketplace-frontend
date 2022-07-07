@@ -1,10 +1,11 @@
-use std::collections::VecDeque;
 use std::sync::{Arc, RwLock};
 
 use deathnote_contributions_feeder::domain::{Action, ContributionId, ProjectId};
 use rocket::response::status;
 use rocket::serde::{json::Json, Deserialize};
 use rocket::State;
+
+use crate::ActionQueue;
 
 use super::{ApiKey, Failure};
 
@@ -20,18 +21,16 @@ pub struct Body {
 pub async fn create_contribution(
     _api_key: ApiKey,
     body: Json<Body>,
-    queue: &State<Arc<RwLock<VecDeque<Action>>>>,
+    queue: &State<Arc<RwLock<ActionQueue>>>,
 ) -> Result<status::Accepted<()>, Failure> {
     let body = body.into_inner();
 
-    let create_contribution_action = Action::CreateContribution {
-        contribution_id: body.contribution_id,
-        project_id: body.project_id,
-        gate: body.gate,
-    };
-
     match queue.write() {
-        Ok(mut queue) => queue.push_front(create_contribution_action),
+        Ok(mut queue) => queue.push_front(Action::CreateContribution {
+            contribution_id: body.contribution_id.clone(),
+            project_id: body.project_id.clone(),
+            gate: body.gate,
+        }),
         Err(_) => {
             return Err(Failure::InternalServerError(
                 "queue is busy, try again later".to_string(),
