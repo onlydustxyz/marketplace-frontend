@@ -87,6 +87,9 @@ async fn main() {
                 routes::new_project,
                 routes::list_projects,
                 routes::create_contribution,
+                routes::assign_contributor,
+                routes::validate_contribution,
+                routes::unassign_contributor,
             ],
         )
         .manage(QUEUE.clone())
