@@ -1,6 +1,9 @@
 mod routes;
 
-use deathnote_contributions_feeder::database::{connections::pg_connection, run_db_migrations};
+use deathnote_contributions_feeder::{
+    database::{connections::pg_connection, run_db_migrations},
+    domain::Action,
+};
 use diesel_migrations::*;
 use log::info;
 use std::{
@@ -21,7 +24,7 @@ use mockall::lazy_static;
 use rocket::routes;
 
 lazy_static! {
-    pub static ref QUEUE: Arc<RwLock<VecDeque<String>>> = Arc::new(RwLock::new(VecDeque::new()));
+    pub static ref QUEUE: Arc<RwLock<VecDeque<Action>>> = Arc::new(RwLock::new(VecDeque::new()));
 }
 
 #[macro_use]
@@ -92,4 +95,4 @@ async fn main() {
     info!("Gracefully shut down");
 }
 
-fn do_stuff(_queue: &mut VecDeque<String>) {}
+fn do_stuff(_queue: &mut VecDeque<Action>) {}
