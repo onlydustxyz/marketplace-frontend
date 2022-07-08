@@ -12,7 +12,10 @@ use connections::pg_connection::{self, DbConn};
 use diesel::prelude::*;
 use diesel::query_dsl::BelongingToDsl;
 use log::info;
-use std::sync::{Mutex, MutexGuard};
+use std::{
+    env,
+    sync::{Mutex, MutexGuard},
+};
 
 use self::schema::{
     contributions::{self, dsl::*},
@@ -25,6 +28,16 @@ pub fn establish_connection() -> Result<DbConn> {
         .get()
         .map(DbConn)
         .map_err(anyhow::Error::msg)
+}
+
+fn establish_migration_connection() -> PgConnection {
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    PgConnection::establish(&database_url).expect(&format!("Error connecting to {}", database_url))
+}
+
+pub fn run_db_migrations() {
+    let connection = establish_migration_connection();
+    diesel_migrations::run_pending_migrations(&connection).expect("diesel migration failure");
 }
 
 pub struct API {

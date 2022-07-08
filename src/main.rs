@@ -1,5 +1,7 @@
 mod routes;
 
+use deathnote_contributions_feeder::database::{connections::pg_connection, run_db_migrations};
+use diesel_migrations::*;
 use log::info;
 use std::{
     collections::VecDeque,
@@ -14,8 +16,6 @@ use tokio::{
     sync::oneshot::{self, error::TryRecvError},
 };
 
-use deathnote_contributions_feeder::database::connections::pg_connection;
-
 use dotenv::dotenv;
 use mockall::lazy_static;
 use rocket::routes;
@@ -26,11 +26,16 @@ lazy_static! {
 
 #[macro_use]
 extern crate rocket;
+#[macro_use]
+extern crate diesel_migrations;
+
+embed_migrations!("migrations");
 
 #[tokio::main]
 async fn main() {
     env_logger::init();
     dotenv().ok();
+    run_db_migrations();
     octocrab::initialise(octocrab::Octocrab::builder()).expect("Unable to initialize octocrab");
 
     // Allow to gracefully exit kill all thread on ctrl+c
@@ -72,9 +77,9 @@ async fn main() {
                 routes::get_index,
                 routes::new_project,
                 routes::list_projects,
+                routes::create_contribution,
             ],
         )
-        .mount("", routes![routes::create_contribution,])
         .manage(QUEUE.clone())
         .launch();
 
