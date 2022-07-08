@@ -5,7 +5,7 @@ use rocket::response::status;
 use rocket::serde::{json::Json, Deserialize};
 use rocket::State;
 
-use crate::ActionQueue;
+use crate::action_queue::ActionQueue;
 
 use super::{ApiKey, Failure};
 
