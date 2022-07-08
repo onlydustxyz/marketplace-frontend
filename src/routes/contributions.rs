@@ -6,7 +6,7 @@ use rocket::response::status;
 use rocket::serde::{json::Json, Deserialize};
 use rocket::State;
 
-use super::Failure;
+use super::{ApiKey, Failure};
 
 #[derive(Deserialize)]
 #[serde(crate = "rocket::serde")]
@@ -18,6 +18,7 @@ pub struct Body {
 
 #[post("/contribution", format = "application/json", data = "<body>")]
 pub async fn create_contribution(
+    _api_key: ApiKey,
     body: Json<Body>,
     queue: &State<Arc<RwLock<VecDeque<Action>>>>,
 ) -> Result<status::Accepted<()>, Failure> {
