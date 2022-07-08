@@ -32,7 +32,8 @@ pub fn establish_connection() -> Result<DbConn> {
 
 fn establish_migration_connection() -> PgConnection {
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    PgConnection::establish(&database_url).expect(&format!("Error connecting to {}", database_url))
+    PgConnection::establish(&database_url)
+        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
 }
 
 pub fn run_db_migrations() {
