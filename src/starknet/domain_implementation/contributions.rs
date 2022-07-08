@@ -58,7 +58,7 @@ impl<'a, A: Account + Sync> ContractAdministrator<'a, A> {
 impl From<&Action> for Call {
     fn from(action: &Action) -> Self {
         match action {
-            Action::AddContribution {
+            Action::CreateContribution {
                 contribution_id,
                 project_id,
                 gate,

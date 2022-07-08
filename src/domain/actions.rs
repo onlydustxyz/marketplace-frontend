@@ -4,7 +4,7 @@ use crate::domain::{ContributionId, ContributorId, ProjectId};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum Action {
-    AddContribution {
+    CreateContribution {
         contribution_id: ContributionId,
         project_id: ProjectId,
         gate: u8,

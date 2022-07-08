@@ -12,19 +12,22 @@ use super::Failure;
 #[derive(Deserialize)]
 #[serde(crate = "rocket::serde")]
 pub struct Body {
-    _contribution_id: ContributionId,
-    _project_id: ProjectId,
+    contribution_id: ContributionId,
+    project_id: ProjectId,
+    gate: u8,
 }
 
-#[post("/contribution", format = "application/json", data = "<_body>")]
+#[post("/contribution", format = "application/json", data = "<body>")]
 pub async fn create_contribution(
     _body: Json<Body>,
     queue: &State<Arc<RwLock<ActionQueue>>>,
 ) -> Result<status::Accepted<()>, Failure> {
+    let body = body.into_inner();
+
     match queue.write() {
-        Ok(mut queue) => queue.push_front(Action::AddContribution {
-            contribution_id: _body._contribution_id.clone(),
-            project_id: _body._project_id.clone(),
+        Ok(mut queue) => queue.push_front(Action::CreateContribution {
+            contribution_id: body.contribution_id.clone(),
+            project_id: body.project_id.clone(),
             gate: 0,
         }),
         Err(_) => {
