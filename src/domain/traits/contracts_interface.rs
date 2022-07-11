@@ -1,4 +1,4 @@
-use crate::domain::{Action, Contribution};
+use crate::domain::Action;
 
 use anyhow::Result;
 use async_trait::async_trait;
@@ -6,7 +6,6 @@ use async_trait::async_trait;
 /// Manage Contributions existence
 #[async_trait]
 pub trait ContributionManager {
-    async fn add_contributions(&self, contributions: &[Contribution]) -> Result<String>;
     async fn execute_actions(
         &self,
         actions: &[Action],

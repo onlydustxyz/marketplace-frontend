@@ -25,7 +25,7 @@ dotenv = "0.15.0"
 env_logger = "0.9.0"
 log = "0.4.17"
 octocrab = "0.16.0"
-rocket = { version = "0.5.0-rc.1", features = ["json"] }
+rocket = { version = "0.5.0-rc.2", features = ["json"] }
 serde = { version = "1.0.137", features = ["derive"] }
 serde_json = "1.0.81"
 uuid = { version = "1.0.0", features = ["v4"] }
