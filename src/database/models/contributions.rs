@@ -60,8 +60,10 @@ impl From<domain::Contribution> for NewContribution {
             id: contribution.id,
             project_id: contribution.project_id,
             status: contribution.status.to_string(),
-            author: contribution.author,
-            gate: contribution.gate.into(),
+            author: contribution
+                .contributor_id
+                .map_or(String::new(), |id| id.to_string()),
+            gate: contribution.gate.unwrap_or_default() as i16,
             transaction_hash: None,
         }
     }
@@ -80,11 +82,20 @@ impl From<Contribution> for domain::Contribution {
     fn from(contribution: Contribution) -> Self {
         Self {
             id: contribution.id,
-            author: contribution.author,
+            contributor_id: {
+                if contribution.author.is_empty() {
+                    None
+                } else {
+                    Some(contribution.author.into())
+                }
+            },
             project_id: contribution.project_id,
             status: contribution.status.parse().unwrap(),
             // Safe to unwrap because the value stored can only come from an u8
-            gate: contribution.gate.try_into().unwrap(),
+            gate: Some(contribution.gate.try_into().unwrap()),
+            description: None,
+            external_link: None,
+            title: None,
         }
     }
 }

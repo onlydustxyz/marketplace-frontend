@@ -1,3 +1,4 @@
+use crypto_bigint::{Concat, U128};
 use futures::lock::Mutex;
 use log::debug;
 use starknet::{
@@ -10,10 +11,12 @@ use starknet::{
 use std::collections::{hash_map::Entry, HashMap};
 use url::Url;
 
+use crate::domain::*;
+
 pub(super) struct Registry {
     contract_address: FieldElement,
     client: JsonRpcClient<HttpTransport>,
-    users: Mutex<HashMap<String, bool>>,
+    users: Mutex<HashMap<String, Option<Contributor>>>,
 }
 
 fn json_rpc_uri() -> Url {
@@ -39,17 +42,16 @@ impl Default for Registry {
 }
 
 impl Registry {
-    // TODO: Turn this function into get_user_information and use it as filter_map
-    pub async fn is_user_registered(&self, user: &str) -> bool {
+    pub async fn get_user_information(&self, user: &str) -> Option<Contributor> {
         match self.users.lock().await.entry(user.into()) {
             Entry::Occupied(entry) => entry.get().to_owned(),
             Entry::Vacant(entry) => entry
-                .insert(self.is_user_registered_in_contract(user).await)
+                .insert(self.get_user_information_in_contract(user).await)
                 .to_owned(),
         }
     }
 
-    async fn is_user_registered_in_contract(&self, user: &str) -> bool {
+    async fn get_user_information_in_contract(&self, user: &str) -> Option<Contributor> {
         debug!("Checking if user {} is registered", user);
 
         self.client
@@ -65,6 +67,17 @@ impl Registry {
                 &BlockHashOrTag::Tag(BlockTag::Latest),
             )
             .await
-            .is_ok()
+            .map(|c| c.into())
+            .ok()
+    }
+}
+
+impl From<Vec<FieldElement>> for Contributor {
+    fn from(fields: Vec<FieldElement>) -> Self {
+        Self {
+            id: (fields[1], fields[2]).into(),
+            github_handle: Some(fields[3].to_string()),
+            github_username: None,
+        }
     }
 }
