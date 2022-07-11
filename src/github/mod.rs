@@ -1,9 +1,8 @@
 mod models;
 
 use async_trait::async_trait;
-use futures::stream::{self, StreamExt};
+use futures::stream;
 use log::info;
-use octocrab::{models::pulls::PullRequest, Page};
 use std::sync::Arc;
 
 use crate::{domain::*, utils::stream::Streamable};
@@ -37,55 +36,6 @@ impl API {
 impl Default for API {
     fn default() -> Self {
         Self::new()
-    }
-}
-
-#[async_trait]
-impl Fetcher<ContributionFilter, Contribution> for API {
-    async fn fetch(&self, filter: ContributionFilter) -> FetchResult<Contribution> {
-        const MAX_PR_PER_PAGE: u8 = 100;
-
-        let project = filter.project.expect("Repository is mandatory for now");
-
-        info!("Fetching repository {}/{}", project.owner, project.name);
-
-        let filtered =
-            |page: Page<PullRequest>| page.into_iter().filter(|pr| pr.merged_at.is_some());
-
-        // List the closed PRs
-        let page = self
-            .octo
-            .pulls(&project.owner, &project.name)
-            .list()
-            .state(octocrab::params::State::Closed)
-            .direction(octocrab::params::Direction::Ascending)
-            .per_page(MAX_PR_PER_PAGE)
-            .send()
-            .await?;
-
-        let stream = stream::unfold(
-            (self.octo.clone(), page.next.clone(), filtered(page)),
-            move |(octo, next_page, mut iter)| async move {
-                if let Some(next_item) = iter.next() {
-                    return Some((next_item, (octo, next_page, iter)));
-                }
-
-                if let Ok(Some(page)) = octo.get_page(&next_page).await {
-                    let next_page = page.next.clone();
-                    let mut iter = filtered(page);
-
-                    if let Some(next_item) = iter.next() {
-                        return Some((next_item, (octo, next_page, iter)));
-                    }
-                }
-
-                None
-            },
-        );
-
-        let result = stream.map(|pr| pr.into());
-
-        Ok(Streamable::Async(result.into()))
     }
 }
 
