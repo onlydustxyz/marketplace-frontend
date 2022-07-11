@@ -61,7 +61,7 @@ projects_by_name = dict({})
 
 def process_projects(projects_json):
     for project in projects_json:
-        projects_by_name[project["name"]] = project
+        projects_by_name[project["title"]] = project
 
 
 def load_contributions(contribution_csv):
