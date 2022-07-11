@@ -9,14 +9,7 @@ CONTRIBUTIONS = "./scripts/feeder/contributions.csv"
 
 load_dotenv()
 API_KEY = os.environ["API_KEY"]
-GITHUB_KEY = os.environ["GITHUB_KEY"]
-HEADERS = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-    "Api-Key": API_KEY
-}
-API_URL = "http://localhost:8000"
-
+API_URL = os.environ["API_URL"]
 
 def add_projects(projects_list):
     for project in projects_list:
@@ -37,7 +30,6 @@ def add_contributions(contributions_list):
         api_response = api_post("contribution", contribution)
         if api_response["error"] == True:
             print("Couldn't add contribution", api_response)
-            
 
 def api_post(route, json_data):
     api_request = requests.post(
@@ -49,7 +41,6 @@ def api_post(route, json_data):
             "Api-Key": API_KEY
             }
     )
-
     if api_request.status_code in [202]:
         return {'error': False}
     else:
@@ -60,7 +51,6 @@ def api_get(route):
         API_URL + '/' + route,
         headers= { "Accept": "application/json"},
     )
-
     if api_request.status_code == 200:
         request_json = api_request.json()
         return request_json
@@ -93,26 +83,6 @@ def contribution_from_issue(issue_url):
     issue = data[6]
     return (owner, project, issue)
 
-GITHUB_API = "https://api.github.com/repos"
-
-def fetch_contribution_id(issue_url):
-    (owner, project, issue) = contribution_from_issue(issue_url)
-    URL = f"{GITHUB_API}/{owner}/{project}/issues/{issue}"
-    api_request = requests.get(
-        URL,
-        headers= { 
-            "Accept": "application/vnd.github+json",
-            "Authorization": GITHUB_KEY, 
-        },
-    )
-    if api_request.status_code == 200:
-        request_json = api_request.json()
-        id_value = request_json["id"]
-        # print(issue_url, id_value)
-        return {'error': False, "result": id_value }
-    else:
-        return {'error': True, 'status': api_request.status_code}
-
 if __name__ == "__main__":
     contribution_list = load_contributions(CONTRIBUTIONS)
 
@@ -139,7 +109,7 @@ if __name__ == "__main__":
         project_id = projects_by_name[project]["id"]
 
         contribution = {
-            "contribution_id" : issue_number,
+            "contribution_id" : str(int(project_id)*1000000 + int(issue_number)),
             "project_id" : project_id,
             "gate": int(gate)
         }
