@@ -84,14 +84,13 @@ def load_contributions(contribution_csv):
             contributions.append(row)
     return contributions
 
-
 def contribution_from_issue(issue_url):
     data = issue_url.split("/")
     assert len(data) == 7
     assert data[2] == 'github.com'
     owner = data[3]
     project = data[4]
-    issue = int(data[6])
+    issue = data[6]
     return (owner, project, issue)
 
 GITHUB_API = "https://api.github.com/repos"
@@ -132,26 +131,19 @@ if __name__ == "__main__":
 
     contributions = []
     for issue,gate in contribution_list:
-        (_, project, _) = contribution_from_issue(issue)
+        (_, project, issue_number) = contribution_from_issue(issue)
 
         if project not in projects_by_name:
             print("Project is not added")
             continue
         project_id = projects_by_name[project]["id"]
 
-        fetch_json = fetch_contribution_id(issue)
-        if fetch_json["error"] == False:
-            contribution_id = str(fetch_json["result"])
-            contribution = {
-                "contribution_id" : contribution_id,
-                "project_id" : project_id,
-                "gate": int(gate)
-            }
-            contributions.append(contribution)
-        else:
-            print("Error:", fetch_json)
+        contribution = {
+            "contribution_id" : issue_number,
+            "project_id" : project_id,
+            "gate": int(gate)
+        }
+        contributions.append(contribution)
 
     add_contributions(contributions)
     print('Done')
-
-
