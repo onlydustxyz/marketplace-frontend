@@ -1,8 +1,11 @@
 use deathnote_contributions_feeder::database::connections::pg_connection::DbConn;
 use deathnote_contributions_feeder::domain::{Fetcher, Logger, ProjectFilter};
-use deathnote_contributions_feeder::{database, github};
+use deathnote_contributions_feeder::{database, github, starknet};
 
-use futures::stream::StreamExt;
+use futures::{
+    future::join_all,
+    stream::{self, StreamExt},
+};
 use rocket::get;
 use rocket::post;
 use rocket::response::status;
@@ -51,34 +54,44 @@ pub async fn list_projects(
     connection: DbConn,
 ) -> Result<Json<Vec<api::Project>>, status::NotFound<String>> {
     let database = database::API::new(connection);
+
     let results = database
         .list_projects_with_contributions()
         .map_err(|error| status::NotFound(error.to_string()))?
         .map(build_project);
-    let projects: Vec<_> = results.collect();
+    let projects: Vec<_> = join_all(results).await;
 
     Ok(Json(projects))
 }
 
-fn build_project(project: database::models::ProjectWithContributions) -> api::Project {
+async fn build_project(project: database::models::ProjectWithContributions) -> api::Project {
+    let contributions = stream::iter(project.contributions.into_iter())
+        .map(build_contribution)
+        .collect::<Vec<_>>()
+        .await;
+
     api::Project {
         id: project.id,
         title: project.name,
-        contributions: project
-            .contributions
-            .into_iter()
-            .map(build_contribution)
-            .collect(),
+        contributions: join_all(contributions).await,
     }
 }
 
-fn build_contribution(contribution: database::models::Contribution) -> api::Contribution {
+async fn build_contribution(contribution: database::models::Contribution) -> api::Contribution {
+    let account = starknet::make_account_from_env();
+    let starknet = starknet::API::new(&account);
+
+    let contributor_id = starknet
+        .get_user_information(&contribution.author)
+        .await
+        .map(|c| format!("0x{:x}", c.id));
+
     api::Contribution {
         id: contribution.id,
         status: contribution.status.to_string(),
         gate: contribution.gate as u8,
         metadata: api::Metadata {
-            assignee: contribution.author.to_string(),
+            assignee: contributor_id,
         },
     }
 }
@@ -103,6 +116,6 @@ mod api {
 
     #[derive(Serialize)]
     pub struct Metadata {
-        pub assignee: String,
+        pub assignee: Option<String>,
     }
 }
