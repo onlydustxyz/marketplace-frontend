@@ -1,3 +1,5 @@
+use std::fmt::LowerHex;
+
 use crypto_bigint::U256;
 use serde::{Deserialize, Serialize};
 
@@ -38,5 +40,11 @@ impl ToString for Id {
 impl From<String> for Id {
     fn from(s: String) -> Self {
         Self(U256::from_be_hex(&s))
+    }
+}
+
+impl LowerHex for Id {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.0.fmt(f)
     }
 }

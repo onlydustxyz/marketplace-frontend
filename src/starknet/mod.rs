@@ -84,4 +84,8 @@ impl<'a> API<'a> {
     pub async fn execute_actions(&self, actions: &[Action]) -> Result<String> {
         self.oracle.execute_actions(actions, true).await
     }
+
+    pub async fn get_user_information(&self, github_id: &str) -> Option<Contributor> {
+        self.registry.get_user_information(github_id).await
+    }
 }
