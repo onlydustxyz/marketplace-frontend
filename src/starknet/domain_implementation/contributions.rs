@@ -68,9 +68,6 @@ impl From<&Action> for Call {
                 calldata: vec![
                     FieldElement::from_dec_str(contribution_id).unwrap(), // id : felt
                     FieldElement::from_dec_str(project_id).unwrap(),      // project_id : felt
-                    FieldElement::from(0_u8),                             // status : felt
-                    FieldElement::from(0_u8), // contributor_id : Uint256
-                    FieldElement::from(0_u8),
                     FieldElement::from(*gate), // contribution_count_required : felt
                 ],
             },
