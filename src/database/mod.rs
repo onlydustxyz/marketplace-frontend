@@ -243,8 +243,8 @@ impl Default for API {
 impl Logger<domain::Contribution, ()> for API {
     async fn log(&self, contribution: domain::Contribution) -> Result<()> {
         info!(
-            "Logging PR #{} by {} ({})",
-            contribution.id, contribution.author, contribution.status
+            "Logging PR #{} by {:?} ({})",
+            contribution.id, contribution.contributor_id, contribution.status
         );
 
         let result: Result<db_model::Contribution> = contributions

@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use std::{fmt, str::FromStr};
 
-use crate::domain::{Project, ProjectId};
+use crate::domain::{ContributorId, Project, ProjectId};
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum Status {
@@ -16,10 +16,13 @@ pub type Id = String;
 #[derive(Debug, PartialEq, Clone)]
 pub struct Contribution {
     pub id: Id,
-    pub author: String,
-    pub status: Status,
     pub project_id: ProjectId,
-    pub gate: u8,
+    pub contributor_id: Option<ContributorId>,
+    pub title: Option<String>,
+    pub description: Option<String>,
+    pub status: Status,
+    pub external_link: Option<String>,
+    pub gate: Option<u8>,
 }
 
 #[derive(Debug, PartialEq, Clone, Default)]
