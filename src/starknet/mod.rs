@@ -1,10 +1,7 @@
 use std::env;
 
 use anyhow::Result;
-use async_trait::async_trait;
-use futures::stream::{self, StreamExt};
 
-use log::debug;
 pub use starknet::accounts::Account;
 use starknet::{
     accounts::SingleOwnerAccount,
@@ -13,14 +10,14 @@ use starknet::{
     signers::{LocalWallet, SigningKey},
 };
 
-use crate::{
-    domain::*,
-    utils::stream::{Streamable, StreamableResult},
-};
+use crate::domain::*;
 
 mod contract_administrator;
 mod domain_implementation;
+mod model;
 mod registry;
+
+pub use model::*;
 
 pub use contract_administrator::ContractAdministrator;
 use registry::Registry;
@@ -84,88 +81,7 @@ impl<'a> API<'a> {
         }
     }
 
-    async fn next_prs_of_registered_users(
-        &self,
-        prs: &mut Streamable<'_, Contribution>,
-    ) -> Vec<Contribution> {
-        prs.filter_map(|contribution| async {
-            if self.registry.is_user_registered(&contribution.author).await {
-                Some(contribution)
-            } else {
-                None
-            }
-        })
-        .take(self.nb_transactions_in_batch)
-        .collect::<Vec<_>>()
-        .await
-    }
-
     pub async fn execute_actions(&self, actions: &[Action]) -> Result<String> {
         self.oracle.execute_actions(actions, true).await
-    }
-}
-
-#[async_trait]
-impl StreamLogger<Contribution, ContractUpdateStatus> for API<'_> {
-    async fn log(
-        &self,
-        prs: Streamable<'life0, Contribution>,
-    ) -> Result<StreamableResult<'life0, ContractUpdateStatus>> {
-        debug!("Logging contributions in smart contract");
-
-        struct State<'a>(
-            Streamable<'a, Contribution>, // stream of contributions to upload
-            Option<Result<String>>,       // Last transaction call result, if any
-            Vec<Contribution>, // contributions sent in previous call for which we need to yield the status
-        );
-
-        let init_state = State(prs, None, Vec::new());
-
-        let status_stream = stream::unfold(init_state, |state| async {
-            let State(
-                mut next_contributions,
-                mut last_transaction_result,
-                mut contributions_uploaded,
-            ) = state;
-
-            loop {
-                if let Some(contribution) = contributions_uploaded.pop() {
-                    // If we have some contributions left to flag, let's use the last call status to do so
-                    let result = match last_transaction_result.as_ref().unwrap() {
-                        Ok(hash) => Ok(ContractUpdateStatus::new(contribution.id, hash.clone())),
-                        Err(error) => Err(anyhow::Error::msg(error.to_string())),
-                    };
-
-                    break Some((
-                        result,
-                        State(
-                            next_contributions,
-                            last_transaction_result,
-                            contributions_uploaded,
-                        ),
-                    ));
-                }
-
-                // No more current PRs, let's find the next candidates
-                let contributions_to_upload = self
-                    .next_prs_of_registered_users(&mut next_contributions)
-                    .await;
-
-                if contributions_to_upload.is_empty() {
-                    // No more candidate contribution to upload, we're done
-                    break None;
-                }
-
-                let transaction_result = self
-                    .oracle
-                    .add_contributions(&contributions_to_upload)
-                    .await;
-
-                last_transaction_result = Some(transaction_result);
-                contributions_uploaded = contributions_to_upload;
-            }
-        });
-
-        Ok(Streamable::Async(status_stream.into()))
     }
 }
