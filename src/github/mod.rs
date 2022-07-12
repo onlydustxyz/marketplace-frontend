@@ -30,7 +30,7 @@ impl API {
     pub fn initialize() {
         let mut builder = octocrab::Octocrab::builder();
 
-        if let Some(github_token) = std::env::var("GITHUB_TOKEN").ok() {
+        if let Ok(github_token) = std::env::var("GITHUB_TOKEN") {
             builder = builder.personal_token(github_token);
         }
 
