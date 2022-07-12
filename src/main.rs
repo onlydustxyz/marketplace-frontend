@@ -3,6 +3,7 @@ mod routes;
 
 use diesel_migrations::*;
 use log::info;
+use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
 use std::{
     ops::DerefMut,
     sync::{Arc, RwLock},
@@ -76,13 +77,18 @@ async fn main() {
 
     let rocket_handler = rocket::build()
         .manage(pg_connection::init_pool())
+        .manage(QUEUE.clone())
         .attach(routes::cors::Cors)
         .mount(
             "/",
             routes![
                 routes::cors::options_preflight_handler,
                 routes::health::health_check,
-                routes::get_index,
+            ],
+        )
+        .mount(
+            "/",
+            openapi_get_routes![
                 routes::new_project,
                 routes::list_projects,
                 routes::create_contribution,
@@ -91,7 +97,7 @@ async fn main() {
                 routes::unassign_contributor,
             ],
         )
-        .manage(QUEUE.clone())
+        .mount("/swagger", make_swagger_ui(&routes::get_docs()))
         .launch();
 
     let (rocket_result, ctr_c_result, queue_result) =

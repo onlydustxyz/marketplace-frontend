@@ -1,15 +1,22 @@
 use std::sync::{Arc, RwLock};
 
-use deathnote_contributions_feeder::domain::{Action, ContributionId, ContributorId, ProjectId};
+use crypto_bigint::U256;
+use deathnote_contributions_feeder::domain::{Action, ContributionId, ProjectId};
+use http_api_problem::{HttpApiProblem, StatusCode};
+use log::info;
+use rocket::http::Status;
 use rocket::response::status;
 use rocket::serde::{json::Json, Deserialize};
 use rocket::State;
+use rocket_okapi::{openapi, JsonSchema};
+use schemars::gen::SchemaGenerator;
+use schemars::schema::{InstanceType, Schema, SchemaObject, SingleOrVec};
 
 use crate::action_queue::ActionQueue;
 
-use super::{ApiKey, Failure};
+use super::ApiKey;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]
 pub struct CreateContributionBody {
     contribution_id: ContributionId,
@@ -17,12 +24,13 @@ pub struct CreateContributionBody {
     gate: u8,
 }
 
+#[openapi(tag = "Contributions")]
 #[post("/contribution", format = "application/json", data = "<body>")]
 pub async fn create_contribution(
     _api_key: ApiKey,
     body: Json<CreateContributionBody>,
     queue: &State<Arc<RwLock<ActionQueue>>>,
-) -> Result<status::Accepted<()>, Failure> {
+) -> Result<Status, Json<HttpApiProblem>> {
     let body = body.into_inner();
 
     match queue.write() {
@@ -31,22 +39,41 @@ pub async fn create_contribution(
             project_id: body.project_id,
             gate: body.gate,
         }),
-        Err(_) => {
-            return Err(Failure::InternalServerError(
-                "queue is busy, try again later".to_string(),
+        Err(error) => {
+            return Err(Json(
+                HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+                    .title("Unable to add contribution to the queue")
+                    .detail(error.to_string()),
             ))
         }
     }
 
-    Ok(status::Accepted(None))
+    Ok(Status::Accepted)
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]
 pub struct AssignContributorBody {
     contributor_id: ContributorId,
 }
 
+#[derive(Clone, Debug, PartialEq, Deserialize)]
+pub struct ContributorId(pub U256);
+
+impl JsonSchema for ContributorId {
+    fn schema_name() -> String {
+        "ContributorId".to_string()
+    }
+
+    fn json_schema(_gen: &mut SchemaGenerator) -> Schema {
+        Schema::Object(SchemaObject {
+            instance_type: Some(SingleOrVec::Single(Box::new(InstanceType::String))),
+            ..Default::default()
+        })
+    }
+}
+
+#[openapi(tag = "Contributions")]
 #[post(
     "/contribution/<contribution_id>/contributor",
     format = "application/json",
@@ -57,17 +84,22 @@ pub async fn assign_contributor(
     contribution_id: ContributionId,
     body: Json<AssignContributorBody>,
     queue: &State<Arc<RwLock<ActionQueue>>>,
-) -> Result<status::Accepted<()>, Failure> {
+) -> Result<status::Accepted<()>, Json<HttpApiProblem>> {
     let body = body.into_inner();
+    info!("contributor_id={}", body.contributor_id.0);
 
     match queue.write() {
         Ok(mut queue) => queue.push_front(Action::AssignContributor {
             contribution_id,
-            contributor_id: body.contributor_id,
+            contributor_id: deathnote_contributions_feeder::domain::ContributorId(
+                body.contributor_id.0,
+            ),
         }),
-        Err(_) => {
-            return Err(Failure::InternalServerError(
-                "queue is busy, try again later".to_string(),
+        Err(error) => {
+            return Err(Json(
+                HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+                    .title("Unable to add assignation to the queue")
+                    .detail(error.to_string()),
             ))
         }
     }
@@ -75,17 +107,20 @@ pub async fn assign_contributor(
     Ok(status::Accepted(None))
 }
 
+#[openapi(tag = "Contributions")]
 #[post("/contribution/<contribution_id>/validate")]
 pub async fn validate_contribution(
     _api_key: ApiKey,
     contribution_id: ContributionId,
     queue: &State<Arc<RwLock<ActionQueue>>>,
-) -> Result<status::Accepted<()>, Failure> {
+) -> Result<status::Accepted<()>, Json<HttpApiProblem>> {
     match queue.write() {
         Ok(mut queue) => queue.push_front(Action::ValidateContribution { contribution_id }),
-        Err(_) => {
-            return Err(Failure::InternalServerError(
-                "queue is busy, try again later".to_string(),
+        Err(error) => {
+            return Err(Json(
+                HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+                    .title("Unable to add contribution validation to the queue")
+                    .detail(error.to_string()),
             ))
         }
     }
@@ -93,17 +128,20 @@ pub async fn validate_contribution(
     Ok(status::Accepted(None))
 }
 
+#[openapi(tag = "Contributions")]
 #[delete("/contribution/<contribution_id>/contributor")]
 pub async fn unassign_contributor(
     _api_key: ApiKey,
     contribution_id: ContributionId,
     queue: &State<Arc<RwLock<ActionQueue>>>,
-) -> Result<status::Accepted<()>, Failure> {
+) -> Result<status::Accepted<()>, Json<HttpApiProblem>> {
     match queue.write() {
         Ok(mut queue) => queue.push_front(Action::UnassignContributor { contribution_id }),
-        Err(_) => {
-            return Err(Failure::InternalServerError(
-                "queue is busy, try again later".to_string(),
+        Err(error) => {
+            return Err(Json(
+                HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+                    .title("Unable to add unassignation to the queue")
+                    .detail(error.to_string()),
             ))
         }
     }

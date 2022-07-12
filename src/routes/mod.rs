@@ -1,24 +1,22 @@
 mod contributions;
 pub mod cors;
 pub mod health;
-mod index;
 mod projects;
 
 pub use contributions::*;
-pub use index::*;
+use okapi::openapi3::{Object, Parameter};
 pub use projects::*;
 use rocket::{
     http::Status,
     outcome::Outcome,
     request::{self, FromRequest},
-    Request, Responder,
+    Request,
 };
-
-#[derive(Responder)]
-pub enum Failure {
-    #[response(status = 500, content_type = "json")]
-    InternalServerError(String),
-}
+use rocket_okapi::{
+    gen::OpenApiGenerator,
+    request::{OpenApiFromRequest, RequestHeaderInput},
+    swagger_ui::SwaggerUIConfig,
+};
 
 pub struct ApiKey(String);
 
@@ -48,5 +46,44 @@ impl<'r> FromRequest<'r> for ApiKey {
             1 => Outcome::Failure((Status::BadRequest, ApiKeyError::Invalid)),
             _ => Outcome::Failure((Status::BadRequest, ApiKeyError::BadCount)),
         }
+    }
+}
+
+impl<'r> OpenApiFromRequest<'r> for ApiKey {
+    fn from_request_input(
+        _gen: &mut OpenApiGenerator,
+        _name: String,
+        _required: bool,
+    ) -> rocket_okapi::Result<RequestHeaderInput> {
+        Ok(RequestHeaderInput::Parameter(Parameter {
+            name: "Api-Key".to_string(),
+            location: "header".to_string(),
+            description: None,
+            required: true,
+            deprecated: false,
+            allow_empty_value: false,
+            value: okapi::openapi3::ParameterValue::Schema {
+                style: None,
+                explode: None,
+                allow_reserved: true,
+                schema: okapi::openapi3::SchemaObject::default(),
+                example: None,
+                examples: None,
+            },
+            extensions: Object::default(),
+        }))
+    }
+
+    fn get_responses(
+        _gen: &mut OpenApiGenerator,
+    ) -> rocket_okapi::Result<okapi::openapi3::Responses> {
+        Ok(okapi::openapi3::Responses::default())
+    }
+}
+
+pub(crate) fn get_docs() -> SwaggerUIConfig {
+    SwaggerUIConfig {
+        url: "/openapi.json".to_string(),
+        ..Default::default()
     }
 }

@@ -5,6 +5,7 @@ use rocket::http::Status;
 use rocket::request::{FromRequest, Outcome};
 use rocket::State;
 use rocket::{outcome::try_outcome, Request};
+use rocket_okapi::OpenApiFromRequest;
 use std::env;
 use std::ops::Deref;
 
@@ -19,6 +20,7 @@ fn database_url() -> String {
     env::var("DATABASE_URL").expect("DATABASE_URL must be set")
 }
 
+#[derive(OpenApiFromRequest)]
 pub struct DbConn(pub r2d2::PooledConnection<ConnectionManager<PgConnection>>);
 
 #[rocket::async_trait]
