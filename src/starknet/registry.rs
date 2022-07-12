@@ -51,14 +51,14 @@ impl Registry {
     }
 
     async fn get_user_information_in_contract(&self, user: &str) -> Option<Contributor> {
-        debug!("Checking if user {} is registered", user);
+        debug!("Getting user information for {}", user);
 
         self.client
             .call(
                 &FunctionCall {
                     contract_address: self.contract_address,
                     entry_point_selector: get_selector_from_name(
-                        "get_user_information_from_github_handle",
+                        "get_user_information_from_github_identifier",
                     )
                     .unwrap(),
                     calldata: vec![FieldElement::from_dec_str(user).unwrap()],
