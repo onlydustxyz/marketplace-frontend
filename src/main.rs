@@ -15,7 +15,10 @@ use tokio::{
     sync::oneshot::{self, error::TryRecvError},
 };
 
-use deathnote_contributions_feeder::database::{connections::pg_connection, run_db_migrations};
+use deathnote_contributions_feeder::{
+    database::{connections::pg_connection, run_db_migrations},
+    github,
+};
 
 use dotenv::dotenv;
 use mockall::lazy_static;
@@ -39,7 +42,7 @@ async fn main() {
     env_logger::init();
     dotenv().ok();
     run_db_migrations();
-    octocrab::initialise(octocrab::Octocrab::builder()).expect("Unable to initialize octocrab");
+    github::API::initialize();
 
     // Allow to gracefully exit kill all thread on ctrl+c
     let (shutdown_send, mut shutdown_recv) = oneshot::channel();
@@ -52,8 +55,6 @@ async fn main() {
     // Regularly create a transaction with tasks stored in the queue
     let queue_handler = tokio::spawn(async move {
         loop {
-            info!("Checking queue...");
-
             let mut next_actions = vec![];
             if let Ok(mut queue) = QUEUE.write() {
                 next_actions = queue.deref_mut().take(100).collect::<Vec<_>>();
