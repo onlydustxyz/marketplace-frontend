@@ -9,8 +9,6 @@ use rocket::response::status;
 use rocket::serde::{json::Json, Deserialize};
 use rocket::State;
 use rocket_okapi::{openapi, JsonSchema};
-use schemars::gen::SchemaGenerator;
-use schemars::schema::{InstanceType, Schema, SchemaObject, SingleOrVec};
 
 use crate::action_queue::ActionQueue;
 
@@ -57,21 +55,8 @@ pub struct AssignContributorBody {
     contributor_id: ContributorId,
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
-pub struct ContributorId(pub U256);
-
-impl JsonSchema for ContributorId {
-    fn schema_name() -> String {
-        "ContributorId".to_string()
-    }
-
-    fn json_schema(_gen: &mut SchemaGenerator) -> Schema {
-        Schema::Object(SchemaObject {
-            instance_type: Some(SingleOrVec::Single(Box::new(InstanceType::String))),
-            ..Default::default()
-        })
-    }
-}
+#[derive(Clone, Debug, PartialEq, Deserialize, JsonSchema)]
+pub struct ContributorId(#[schemars(with = "String")] pub U256);
 
 #[openapi(tag = "Contributions")]
 #[post(

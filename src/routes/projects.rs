@@ -203,7 +203,9 @@ mod api {
         pub id: String,
         pub title: String,
         pub description: Option<String>,
+        #[schemars(with = "String")]
         pub github_link: Url,
+        #[schemars(with = "String")]
         pub logo: Url,
         pub contributions: Vec<Contribution>,
     }
@@ -213,6 +215,7 @@ mod api {
         pub id: String,
         pub title: String,
         pub description: String,
+        #[schemars(with = "String")]
         pub github_link: Url,
         pub status: String,
         pub gate: u8,
