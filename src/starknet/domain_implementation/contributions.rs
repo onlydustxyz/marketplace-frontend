@@ -7,7 +7,10 @@ use starknet::{
 
 use crate::{
     domain::*,
-    starknet::{contract_administrator::ContractAdministrator, contributions_contract_address},
+    starknet::{
+        contract_administrator::ContractAdministrator, contract_viewer::ContractViewer,
+        contributions_contract_address,
+    },
 };
 
 #[async_trait]
@@ -73,5 +76,32 @@ impl From<&Action> for Call {
                 ],
             },
         }
+    }
+}
+
+#[async_trait]
+impl ContributionViewer for ContractViewer {
+    async fn get_eligible_contributions(
+        &self,
+        contributor_id: &ContributorId,
+    ) -> Result<Vec<ContributionId>> {
+        let contributor_id: (FieldElement, FieldElement) = contributor_id.into();
+
+        let mut results = self
+            .call(
+                "eligible_contributions",
+                vec![contributor_id.0, contributor_id.1],
+            )
+            .await
+            .map_err(anyhow::Error::msg)?
+            .into_iter();
+
+        const CONTRIBUTION_SIZE: usize = 6;
+        results.next(); // contributions_len
+
+        Ok(results
+            .step_by(CONTRIBUTION_SIZE)
+            .map(|x| x.to_string())
+            .collect())
     }
 }

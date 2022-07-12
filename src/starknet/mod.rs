@@ -13,14 +13,15 @@ use starknet::{
 use crate::domain::*;
 
 mod contract_administrator;
+mod contract_viewer;
 mod domain_implementation;
 mod model;
-mod registry;
 
 pub use model::*;
 
 pub use contract_administrator::ContractAdministrator;
-use registry::Registry;
+
+use self::contract_viewer::ContractViewer;
 
 pub fn make_account_from_env() -> impl Account {
     let private_key = env::var("PRIVATE_KEY").expect("PRIVATE_KEY must be set");
@@ -45,13 +46,6 @@ fn make_account(
     )
 }
 
-fn nb_transactions_in_batch() -> usize {
-    std::env::var("NB_TRX_IN_BATCH")
-        .expect("NB_TRX_IN_BATCH should be set")
-        .parse::<usize>()
-        .expect("invalid value for NB_TRX_IN_BATCH")
-}
-
 pub fn contributions_contract_address() -> FieldElement {
     let contributions_contract_address =
         std::env::var("CONTRIBUTIONS_ADDRESS").expect("CONTRIBUTIONS_ADDRESS must be set");
@@ -64,20 +58,20 @@ pub fn sequencer() -> SequencerGatewayProvider {
 }
 
 pub struct API<'a> {
-    registry: Registry,
+    registry: Box<dyn ContributorRegistryViewer + Sync + Send + 'a>,
     oracle: Box<dyn ContributionManager + Sync + Send + 'a>,
-    pub nb_transactions_in_batch: usize,
+    contributions_viewer: Box<dyn ContributionViewer + Sync + Send + 'a>,
 }
 
 impl<'a> API<'a> {
     pub fn new<A: Account + Sync>(account: &'a A) -> Self {
         Self {
-            registry: Registry::default(),
+            registry: Box::new(domain_implementation::Registry::default()),
             oracle: Box::new(ContractAdministrator::new(
                 account,
                 contributions_contract_address(),
             )),
-            nb_transactions_in_batch: nb_transactions_in_batch(),
+            contributions_viewer: Box::new(ContractViewer::new(contributions_contract_address())),
         }
     }
 
@@ -87,5 +81,14 @@ impl<'a> API<'a> {
 
     pub async fn get_user_information(&self, github_id: &str) -> Option<Contributor> {
         self.registry.get_user_information(github_id).await
+    }
+
+    pub async fn get_eligible_contributions(
+        &self,
+        contributor_id: &ContributorId,
+    ) -> Result<Vec<ContributionId>> {
+        self.contributions_viewer
+            .get_eligible_contributions(contributor_id)
+            .await
     }
 }
