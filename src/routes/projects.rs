@@ -7,32 +7,20 @@ use deathnote_contributions_feeder::domain::{
 };
 use deathnote_contributions_feeder::{database, github, starknet};
 
-use futures::{
-    future::join_all,
-    stream::{self, StreamExt},
-};
+use futures::stream::{self, StreamExt};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use log::warn;
 use rocket::get;
 use rocket::http::Status;
 use rocket::post;
 use rocket::serde::json::Json;
-use rocket_okapi::okapi::schemars;
-use rocket_okapi::{openapi, JsonSchema};
-use serde::Deserialize;
+use rocket_okapi::openapi;
 use url::Url;
-
-#[derive(Deserialize, JsonSchema)]
-#[serde(crate = "rocket::serde")]
-pub struct Project<'r> {
-    owner: &'r str,
-    name: &'r str,
-}
 
 #[openapi(tag = "Projects")]
 #[post("/projects", format = "application/json", data = "<project>")]
 pub async fn new_project(
-    project: Json<Project<'_>>,
+    project: Json<api::ProjectCreation<'_>>,
     connection: DbConn,
 ) -> Result<Status, Json<HttpApiProblem>> {
     let filter = ProjectFilter {
@@ -195,8 +183,15 @@ async fn build_contribution(
 
 mod api {
     use rocket_okapi::JsonSchema;
-    use serde::Serialize;
+    use serde::{Deserialize, Serialize};
     use url::Url;
+
+    #[derive(Deserialize, JsonSchema)]
+    #[serde(crate = "rocket::serde")]
+    pub struct ProjectCreation<'r> {
+        pub owner: &'r str,
+        pub name: &'r str,
+    }
 
     #[derive(Serialize, JsonSchema)]
     pub struct Project {
