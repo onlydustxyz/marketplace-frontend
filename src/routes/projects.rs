@@ -7,29 +7,34 @@ use deathnote_contributions_feeder::domain::{
 };
 use deathnote_contributions_feeder::{database, github, starknet};
 
-use futures::stream::{self, StreamExt};
+use futures::{
+    future::join_all,
+    stream::{self, StreamExt},
+};
+use http_api_problem::{HttpApiProblem, StatusCode};
 use log::warn;
 use rocket::get;
+use rocket::http::Status;
 use rocket::post;
-use rocket::response::status;
 use rocket::serde::json::Json;
+use rocket_okapi::okapi::schemars;
+use rocket_okapi::{openapi, JsonSchema};
 use serde::Deserialize;
 use url::Url;
 
-use super::Failure;
-
-#[derive(Deserialize)]
+#[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]
 pub struct Project<'r> {
     owner: &'r str,
     name: &'r str,
 }
 
+#[openapi(tag = "Projects")]
 #[post("/projects", format = "application/json", data = "<project>")]
 pub async fn new_project(
     project: Json<Project<'_>>,
     connection: DbConn,
-) -> Result<status::Accepted<()>, Failure> {
+) -> Result<Status, Json<HttpApiProblem>> {
     let filter = ProjectFilter {
         owner: Some(String::from(project.owner)),
         name: Some(String::from(project.name)),
@@ -41,25 +46,31 @@ pub async fn new_project(
     let projects = github
         .fetch(filter)
         .await
-        .map_err(|error| Failure::InternalServerError(error.to_string()))?
+        .map_err(|error| {
+            HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+                .title("Fetching projects failed")
+                .detail(error.to_string())
+        })?
         .collect::<Vec<_>>()
         .await;
 
     for project in projects {
-        database
-            .log(project)
-            .await
-            .map_err(|e| Failure::InternalServerError(e.to_string()))?;
+        database.log(project).await.map_err(|error| {
+            HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+                .title("Saving projects to DB failed")
+                .detail(error.to_string())
+        })?;
     }
 
-    Ok(status::Accepted(Some(())))
+    Ok(Status::Accepted)
 }
 
+#[openapi(tag = "Projects")]
 #[get("/projects?<user_id>")]
 pub async fn list_projects(
     connection: DbConn,
     user_id: Option<String>,
-) -> Result<Json<Vec<api::Project>>, status::NotFound<String>> {
+) -> Result<Json<Vec<api::Project>>, Json<HttpApiProblem>> {
     let database = database::API::new(connection);
 
     let account = starknet::make_account_from_env();
@@ -73,7 +84,11 @@ pub async fn list_projects(
 
     let results = database
         .list_projects_with_contributions()
-        .map_err(|error| status::NotFound(error.to_string()))?;
+        .map_err(|error| {
+            HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+                .title("Listing projects failed")
+                .detail(error.to_string())
+        })?;
 
     let projects = stream::iter(results)
         .filter_map(|project| build_project(project, &eligible_contributions))
@@ -179,10 +194,11 @@ async fn build_contribution(
 }
 
 mod api {
+    use rocket_okapi::JsonSchema;
     use serde::Serialize;
     use url::Url;
 
-    #[derive(Serialize)]
+    #[derive(Serialize, JsonSchema)]
     pub struct Project {
         pub id: String,
         pub title: String,
@@ -192,7 +208,7 @@ mod api {
         pub contributions: Vec<Contribution>,
     }
 
-    #[derive(Serialize)]
+    #[derive(Serialize, JsonSchema)]
     pub struct Contribution {
         pub id: String,
         pub title: String,
@@ -204,7 +220,7 @@ mod api {
         pub metadata: Metadata,
     }
 
-    #[derive(Serialize)]
+    #[derive(Serialize, JsonSchema)]
     pub struct Metadata {
         pub assignee: Option<String>,
         pub github_username: Option<String>,

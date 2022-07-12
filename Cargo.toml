@@ -36,3 +36,7 @@ mockall = "0.11.1"
 futures = { version = "0.3.21", features = ["alloc"] }
 url = "2.2.2"
 crypto-bigint = { version = "0.4.8", features = ["serde"] }
+okapi = { version = "0.7.0-rc.1" }
+rocket_okapi = { version="0.8.0-rc.2", features = ["swagger"] }
+schemars = "0.8"
+http-api-problem = { version = "0.53.0", features = ["json-schema"] }
