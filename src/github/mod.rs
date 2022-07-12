@@ -47,9 +47,7 @@ impl API {
         &self,
         contribution_id: &ContributionId,
     ) -> Result<octocrab::models::issues::Issue> {
-        let contribution_id: u128 = contribution_id
-            .parse()
-            .expect("contribution_id is not a number");
+        let contribution_id: u128 = contribution_id.parse().map_err(anyhow::Error::msg)?;
 
         const PROJECT_MULTIPLIER: u128 = 1_000_000;
         let project_id_ = contribution_id / PROJECT_MULTIPLIER;
