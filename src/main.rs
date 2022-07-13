@@ -78,6 +78,8 @@ async fn main() {
     let rocket_handler = rocket::build()
         .manage(pg_connection::init_pool())
         .manage(QUEUE.clone())
+        .manage(github::IssueCache::default())
+        .manage(github::RepoCache::default())
         .attach(routes::cors::Cors)
         .mount(
             "/",

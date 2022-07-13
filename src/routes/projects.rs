@@ -10,10 +10,7 @@ use deathnote_contributions_feeder::{database, github, starknet};
 use futures::stream::{self, StreamExt};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use log::warn;
-use rocket::get;
-use rocket::http::Status;
-use rocket::post;
-use rocket::serde::json::Json;
+use rocket::{get, http::Status, post, serde::json::Json, State};
 use rocket_okapi::openapi;
 use url::Url;
 
@@ -57,6 +54,8 @@ pub async fn new_project(
 #[get("/projects?<user_id>")]
 pub async fn list_projects(
     connection: DbConn,
+    issue_cache: &State<github::IssueCache>,
+    repo_cache: &State<github::RepoCache>,
     user_id: Option<String>,
 ) -> Result<Json<Vec<api::Project>>, Json<HttpApiProblem>> {
     let database = database::API::new(connection);
@@ -79,7 +78,9 @@ pub async fn list_projects(
         })?;
 
     let projects = stream::iter(results)
-        .filter_map(|project| build_project(project, &eligible_contributions))
+        .filter_map(|project| {
+            build_project(project, &eligible_contributions, issue_cache, repo_cache)
+        })
         .collect::<Vec<_>>()
         .await;
 
@@ -89,17 +90,25 @@ pub async fn list_projects(
 async fn build_project(
     project: database::models::ProjectWithContributions,
     eligible_contributions: &Option<Vec<ContributionId>>,
+    issue_cache: &github::IssueCache,
+    repo_cache: &github::RepoCache,
 ) -> Option<api::Project> {
-    let github_repository = match github::API::new().repository_by_id(&project.id).await {
-        Ok(repo) => repo,
-        Err(e) => {
-            warn!("Unable to fetch repository from GitHub: {}", e.to_string());
-            return None;
-        }
-    };
+    let github_repository = repo_cache
+        .get_or_insert(&project.id, || async {
+            match github::API::new().repository_by_id(&project.id).await {
+                Ok(repo) => Some(repo),
+                Err(e) => {
+                    warn!("Unable to fetch repository from GitHub: {}", e.to_string());
+                    None
+                }
+            }
+        })
+        .await?;
 
     let contributions = stream::iter(project.contributions.into_iter())
-        .filter_map(|contribution| build_contribution(contribution, eligible_contributions))
+        .filter_map(|contribution| {
+            build_contribution(contribution, eligible_contributions, issue_cache)
+        })
         .collect::<Vec<_>>()
         .await;
 
@@ -115,7 +124,7 @@ async fn build_project(
             ))
             .unwrap()
         }),
-        contributions: contributions,
+        contributions,
     };
 
     Some(project)
@@ -124,6 +133,7 @@ async fn build_project(
 async fn build_contribution(
     contribution: database::models::Contribution,
     eligible_contributions: &Option<Vec<ContributionId>>,
+    issue_cache: &github::IssueCache,
 ) -> Option<api::Contribution> {
     let account = starknet::make_account_from_env();
     let starknet = starknet::API::new(&account);
@@ -136,13 +146,17 @@ async fn build_contribution(
         _ => None,
     };
 
-    let github_issue = match github::API::new().issue(&contribution.id).await {
-        Ok(issue) => issue,
-        Err(e) => {
-            warn!("Unable to fetch issue from GitHub: {}", e.to_string());
-            return None;
-        }
-    };
+    let github_issue = issue_cache
+        .get_or_insert(&contribution.id, || async {
+            match github::API::new().issue(&contribution.id).await {
+                Ok(issue) => Some(issue),
+                Err(e) => {
+                    warn!("Unable to fetch issue from GitHub: {}", e.to_string());
+                    None
+                }
+            }
+        })
+        .await?;
 
     let labels: HashMap<String, String> = github_issue
         .labels

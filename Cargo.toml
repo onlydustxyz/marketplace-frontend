@@ -40,3 +40,4 @@ okapi = { version = "0.7.0-rc.1" }
 rocket_okapi = { version="0.8.0-rc.2", features = ["swagger"] }
 schemars = "0.8"
 http-api-problem = { version = "0.53.0", features = ["json-schema"] }
+stretto = { version = "0.5", features = ["async"] }
