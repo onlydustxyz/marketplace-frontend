@@ -51,19 +51,19 @@ pub async fn new_project(
 }
 
 #[openapi(tag = "Projects")]
-#[get("/projects?<user_id>")]
+#[get("/projects?<contributor_id>")]
 pub async fn list_projects(
     connection: DbConn,
     issue_cache: &State<github::IssueCache>,
     repo_cache: &State<github::RepoCache>,
-    user_id: Option<String>,
+    contributor_id: Option<u128>,
 ) -> Result<Json<Vec<api::Project>>, Json<HttpApiProblem>> {
     let database = database::API::new(connection);
 
     let account = starknet::make_account_from_env();
-    let eligible_contributions = match user_id {
-        Some(user_id) => starknet::API::new(&account)
-            .get_eligible_contributions(&ContributorId(U256::from_be_hex(&user_id)))
+    let eligible_contributions = match contributor_id {
+        Some(contributor_id) => starknet::API::new(&account)
+            .get_eligible_contributions(&ContributorId(U256::from_u128(contributor_id)))
             .await
             .ok(),
         None => None,

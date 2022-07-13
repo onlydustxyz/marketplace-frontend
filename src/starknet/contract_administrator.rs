@@ -84,7 +84,10 @@ impl<'a, A: Account + Sync> ContractAdministrator<'a, A> {
                 TransactionStatus::AcceptedOnL2 | TransactionStatus::AcceptedOnL1 => {
                     Ok(transaction_result)
                 }
-                TransactionStatus::Rejected => Err(anyhow!("Transaction rejected")),
+                TransactionStatus::Rejected => Err(anyhow!(format!(
+                    "Transaction rejected: {:?}",
+                    receipt.transaction_failure_reason
+                ))),
             };
         }
     }

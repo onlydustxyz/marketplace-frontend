@@ -52,11 +52,8 @@ pub async fn create_contribution(
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]
 pub struct AssignContributorBody {
-    contributor_id: ContributorId,
+    contributor_id: u128,
 }
-
-#[derive(Clone, Debug, PartialEq, Deserialize, JsonSchema)]
-pub struct ContributorId(#[schemars(with = "String")] pub U256);
 
 #[openapi(tag = "Contributions")]
 #[post(
@@ -71,14 +68,14 @@ pub async fn assign_contributor(
     queue: &State<Arc<RwLock<ActionQueue>>>,
 ) -> Result<status::Accepted<()>, Json<HttpApiProblem>> {
     let body = body.into_inner();
-    info!("contributor_id={}", body.contributor_id.0);
+    info!("contributor_id={}", body.contributor_id);
 
     match queue.write() {
         Ok(mut queue) => queue.push_front(Action::AssignContributor {
             contribution_id,
-            contributor_id: deathnote_contributions_feeder::domain::ContributorId(
-                body.contributor_id.0,
-            ),
+            contributor_id: deathnote_contributions_feeder::domain::ContributorId(U256::from_u128(
+                body.contributor_id,
+            )),
         }),
         Err(error) => {
             return Err(Json(
