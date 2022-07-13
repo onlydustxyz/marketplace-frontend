@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use futures::lock::Mutex;
-use log::debug;
+use log::{debug, error};
 use starknet::core::types::FieldElement;
 use std::collections::{hash_map::Entry, HashMap};
 
@@ -31,10 +31,18 @@ impl Registry {
     async fn get_user_information_in_contract(&self, user: &str) -> Option<Contributor> {
         debug!("Getting user information for {}", user);
 
+        let github_identifier = match FieldElement::from_hex_be(user) {
+            Ok(identifier) => identifier,
+            Err(e) => {
+                error!("Failed to convert {} to FieldElement: {}", user, e);
+                return None;
+            }
+        };
+
         self.contract_viewer
             .call(
                 "get_user_information_from_github_identifier",
-                vec![FieldElement::from_dec_str(user).unwrap()],
+                vec![github_identifier],
             )
             .await
             .map(|c| c.into())
