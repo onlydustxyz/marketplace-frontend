@@ -28,13 +28,19 @@ impl Default for Registry {
 }
 
 impl Registry {
-    async fn get_user_information_in_contract(&self, user: &str) -> Option<Contributor> {
-        debug!("Getting user information for {}", user);
+    async fn get_user_information_in_contract_from_github_identifier(
+        &self,
+        github_identifier: &str,
+    ) -> Option<Contributor> {
+        debug!("Getting user information for {}", github_identifier);
 
-        let github_identifier = match FieldElement::from_hex_be(user) {
+        let github_identifier = match FieldElement::from_dec_str(github_identifier) {
             Ok(identifier) => identifier,
             Err(e) => {
-                error!("Failed to convert {} to FieldElement: {}", user, e);
+                error!(
+                    "Failed to convert {} to FieldElement: {}",
+                    github_identifier, e
+                );
                 return None;
             }
         };
@@ -52,13 +58,27 @@ impl Registry {
 
 #[async_trait]
 impl ContributorRegistryViewer for Registry {
-    async fn get_user_information(&self, user: &str) -> Option<Contributor> {
-        match self.users.lock().await.entry(user.into()) {
+    async fn get_user_information_from_github_identifier(
+        &self,
+        github_userid: &str,
+    ) -> Option<Contributor> {
+        match self.users.lock().await.entry(github_userid.into()) {
             Entry::Occupied(entry) => entry.get().to_owned(),
             Entry::Vacant(entry) => entry
-                .insert(self.get_user_information_in_contract(user).await)
+                .insert(
+                    self.get_user_information_in_contract_from_github_identifier(github_userid)
+                        .await,
+                )
                 .to_owned(),
         }
+    }
+
+    async fn get_user_information(&self, account: FieldElement) -> Option<Contributor> {
+        self.contract_viewer
+            .call("get_user_information", vec![account])
+            .await
+            .map(|c| c.into())
+            .ok()
     }
 }
 

@@ -61,6 +61,7 @@ pub struct API<'a> {
     registry: Box<dyn ContributorRegistryViewer + Sync + Send + 'a>,
     oracle: Box<dyn ContributionManager + Sync + Send + 'a>,
     contributions_viewer: Box<dyn ContributionViewer + Sync + Send + 'a>,
+    profile_viewer: Box<dyn ContributorProfileViewer + Sync + Send + 'a>,
 }
 
 impl<'a> API<'a> {
@@ -72,6 +73,7 @@ impl<'a> API<'a> {
                 contributions_contract_address(),
             )),
             contributions_viewer: Box::new(ContractViewer::new(contributions_contract_address())),
+            profile_viewer: Box::new(domain_implementation::Profile::default()),
         }
     }
 
@@ -79,8 +81,12 @@ impl<'a> API<'a> {
         self.oracle.execute_actions(actions, true).await
     }
 
-    pub async fn get_user_information(&self, github_id: &str) -> Option<Contributor> {
-        self.registry.get_user_information(github_id).await
+    pub async fn get_user_information(
+        &self,
+        contributor_id: &ContributorId,
+    ) -> Option<Contributor> {
+        let account = self.profile_viewer.get_account(contributor_id).await?;
+        self.registry.get_user_information(account).await
     }
 
     pub async fn get_eligible_contributions(

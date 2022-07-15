@@ -1,9 +1,9 @@
-use std::fmt::LowerHex;
+use serde::{Deserialize, Serialize};
+use std::ops::Deref;
 
 use crypto_bigint::U256;
-use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct Id(pub U256);
 
 #[derive(Clone, Debug)]
@@ -13,38 +13,15 @@ pub struct Contributor {
     pub github_handle: Option<String>,
 }
 
-impl Serialize for Id {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        self.0.serialize(serializer)
-    }
-}
-
-impl<'de> Deserialize<'de> for Id {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        Ok(Self(U256::deserialize(deserializer)?))
-    }
-}
-
-impl ToString for Id {
-    fn to_string(&self) -> String {
-        self.0.to_string()
+impl Deref for Id {
+    type Target = U256;
+    fn deref(&self) -> &Self::Target {
+        &self.0
     }
 }
 
 impl From<String> for Id {
     fn from(s: String) -> Self {
         Self(U256::from_be_hex(&s))
-    }
-}
-
-impl LowerHex for Id {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        self.0.fmt(f)
     }
 }
