@@ -80,6 +80,7 @@ async fn main() {
         .manage(QUEUE.clone())
         .manage(github::IssueCache::default())
         .manage(github::RepoCache::default())
+        .manage(github::UserCache::default())
         .attach(routes::cors::Cors)
         .mount(
             "/",

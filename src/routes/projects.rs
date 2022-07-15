@@ -2,9 +2,7 @@ use std::collections::HashMap;
 
 use crypto_bigint::U256;
 use deathnote_contributions_feeder::database::connections::pg_connection::DbConn;
-use deathnote_contributions_feeder::domain::{
-    ContributionId, ContributorId, Fetcher, Logger, ProjectFilter,
-};
+use deathnote_contributions_feeder::domain::*;
 use deathnote_contributions_feeder::{database, github, starknet};
 
 use futures::stream::{self, StreamExt};
@@ -56,6 +54,7 @@ pub async fn list_projects(
     connection: DbConn,
     issue_cache: &State<github::IssueCache>,
     repo_cache: &State<github::RepoCache>,
+    user_cache: &State<github::UserCache>,
     contributor_id: Option<u128>,
 ) -> Result<Json<Vec<api::Project>>, Json<HttpApiProblem>> {
     let database = database::API::new(connection);
@@ -79,7 +78,13 @@ pub async fn list_projects(
 
     let projects = stream::iter(results)
         .filter_map(|project| {
-            build_project(project, &eligible_contributions, issue_cache, repo_cache)
+            build_project(
+                project,
+                &eligible_contributions,
+                issue_cache,
+                repo_cache,
+                user_cache,
+            )
         })
         .collect::<Vec<_>>()
         .await;
@@ -92,6 +97,7 @@ async fn build_project(
     eligible_contributions: &Option<Vec<ContributionId>>,
     issue_cache: &github::IssueCache,
     repo_cache: &github::RepoCache,
+    user_cache: &github::UserCache,
 ) -> Option<api::Project> {
     let github_repository = repo_cache
         .get_or_insert(&project.id, || async {
@@ -107,7 +113,12 @@ async fn build_project(
 
     let contributions = stream::iter(project.contributions.into_iter())
         .filter_map(|contribution| {
-            build_contribution(contribution, eligible_contributions, issue_cache)
+            build_contribution(
+                contribution,
+                eligible_contributions,
+                issue_cache,
+                user_cache,
+            )
         })
         .collect::<Vec<_>>()
         .await;
@@ -134,17 +145,9 @@ async fn build_contribution(
     contribution: database::models::Contribution,
     eligible_contributions: &Option<Vec<ContributionId>>,
     issue_cache: &github::IssueCache,
+    user_cache: &github::UserCache,
 ) -> Option<api::Contribution> {
-    let account = starknet::make_account_from_env();
-    let starknet = starknet::API::new(&account);
-
-    let contributor_id = match contribution.author {
-        author if !author.is_empty() => starknet
-            .get_user_information(&author)
-            .await
-            .map(|c| format!("0x{:x}", c.id)),
-        _ => None,
-    };
+    let contributor = build_contributor(user_cache, contribution.author).await;
 
     let github_issue = issue_cache
         .get_or_insert(&contribution.id, || async {
@@ -182,8 +185,13 @@ async fn build_contribution(
             .to_owned()
             .map(|eligible| eligible.contains(&contribution.id)),
         metadata: api::Metadata {
-            assignee: contributor_id,
-            github_username: github_issue.assignee.map(|assignee| assignee.login),
+            assignee: contributor
+                .as_ref()
+                .map(|c| format!("0x{}", c.id.to_string().trim_start_matches('0'))),
+            github_username: contributor
+                .as_ref()
+                .map(|c| c.github_username.to_owned())
+                .flatten(),
             context: labels.get("Context").map(|x| x.to_owned()),
             difficulty: labels.get("Difficulty").map(|x| x.to_owned()),
             duration: labels.get("Duration").map(|x| x.to_owned()),
@@ -193,6 +201,36 @@ async fn build_contribution(
     };
 
     Some(contribution)
+}
+
+async fn build_contributor(user_cache: &github::UserCache, author: String) -> Option<Contributor> {
+    if author.is_empty() {
+        return None;
+    }
+
+    let account = starknet::make_account_from_env();
+    let starknet = starknet::API::new(&account);
+
+    let contributor_id: ContributorId = author.into();
+    let mut contributor = starknet.get_user_information(&contributor_id).await?;
+
+    if let Some(github_handle) = &contributor.github_handle {
+        let github_user = user_cache
+            .get_or_insert(&github_handle, || async {
+                match github::API::new().user(github_handle).await {
+                    Ok(user) => Some(user),
+                    Err(e) => {
+                        warn!("Unable to fetch user from GitHub: {}", e.to_string());
+                        None
+                    }
+                }
+            })
+            .await;
+
+        contributor.github_username = github_user.map(|u| u.login);
+    }
+
+    Some(contributor)
 }
 
 mod api {

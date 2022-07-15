@@ -1,9 +1,11 @@
 mod issue_cache;
 mod models;
 mod repo_cache;
+mod user_cache;
 
 pub use issue_cache::IssueCache;
 pub use repo_cache::RepoCache;
+pub use user_cache::UserCache;
 
 use anyhow::Result;
 use async_trait::async_trait;
@@ -64,6 +66,16 @@ impl API {
                     "{}repositories/{}/issues/{}",
                     self.octo.base_url, project_id_, issue_number
                 ),
+                None,
+            )
+            .await
+            .map_err(anyhow::Error::msg)
+    }
+
+    pub async fn user(&self, user_id: &str) -> Result<octocrab::models::User> {
+        self.octo
+            .get::<octocrab::models::User, String, ()>(
+                format!("{}user/{}", self.octo.base_url, user_id),
                 None,
             )
             .await
