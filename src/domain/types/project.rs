@@ -2,14 +2,14 @@ use std::time::SystemTime;
 
 pub type Id = String;
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Project {
     pub id: Id,
     pub owner: String,
     pub name: String,
 }
 
-#[derive(Debug, PartialEq, Clone, Default)]
+#[derive(Debug, PartialEq, Eq, Clone, Default)]
 pub struct Filter {
     pub owner: Option<String>,
     pub name: Option<String>,

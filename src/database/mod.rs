@@ -213,11 +213,7 @@ impl API {
                 Action::AssignContributor {
                     contribution_id: id_,
                     contributor_id: contributor_id_,
-                } => self.assign_contribution(
-                    id_.clone(),
-                    contributor_id_.clone(),
-                    Some(hash.into()),
-                ),
+                } => self.assign_contribution(id_.clone(), *contributor_id_, Some(hash.into())),
 
                 Action::UnassignContributor {
                     contribution_id: id_,
