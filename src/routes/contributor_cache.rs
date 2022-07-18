@@ -5,6 +5,7 @@ use deathnote_contributions_feeder::{
     utils::Cache,
 };
 
+#[derive(Clone)]
 pub struct ContributorCache(Cache<ContributorId, Contributor>);
 
 fn ttl() -> Duration {

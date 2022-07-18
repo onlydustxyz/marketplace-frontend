@@ -3,6 +3,7 @@ use crate::utils::Cache;
 use octocrab::models::issues::Issue;
 use std::{env, ops::Deref, time::Duration};
 
+#[derive(Clone)]
 pub struct IssueCache(Cache<ContributionId, Issue>);
 
 fn ttl() -> Duration {

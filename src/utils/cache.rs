@@ -4,6 +4,7 @@ use futures::Future;
 use log::error;
 use stretto::AsyncCacheBuilder;
 
+#[derive(Clone)]
 pub struct Cache<KEY, VALUE>
 where
     KEY: Hash + Eq,
