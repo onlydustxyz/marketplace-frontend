@@ -6,7 +6,10 @@ use deathnote_contributions_feeder::database::connections::pg_connection::DbConn
 use deathnote_contributions_feeder::domain::*;
 use deathnote_contributions_feeder::{database, github, starknet};
 
-use futures::stream::{self, StreamExt};
+use futures::{
+    future,
+    stream::{self, StreamExt},
+};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use log::warn;
 use rocket::{get, http::Status, post, serde::json::Json, State};
@@ -95,10 +98,24 @@ async fn build_project(
         })
         .await?;
 
-    let contributions = stream::iter(project.contributions.into_iter())
-        .filter_map(|contribution| build_contribution(contribution, issue_cache, contributor_cache))
-        .collect::<Vec<_>>()
-        .await;
+    // Spawn concurent tasks
+    // One for each contribution
+    let build_contribution_tasks = project.contributions.into_iter().map(|contribution| {
+        let cloned_issue_cache = issue_cache.clone();
+        let cloned_contributor_cache = contributor_cache.clone();
+        tokio::spawn(async move {
+            build_contribution(contribution, &cloned_issue_cache, &cloned_contributor_cache).await
+        })
+    });
+
+    // Merge all tasks into a single vector
+    // Stop and return as soon as it fail to join one of the tasks
+    let contributions = future::try_join_all(build_contribution_tasks)
+        .await
+        .ok()?
+        .into_iter()
+        .flatten()
+        .collect();
 
     let project = dto::Project {
         id: project.id,
