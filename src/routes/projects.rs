@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-use crypto_bigint::U256;
 use deathnote_contributions_feeder::database::connections::pg_connection::DbConn;
 use deathnote_contributions_feeder::domain::*;
 use deathnote_contributions_feeder::{database, github, starknet};
@@ -49,24 +48,14 @@ pub async fn new_project(
 }
 
 #[openapi(tag = "Projects")]
-#[get("/projects?<contributor_id>")]
+#[get("/projects")]
 pub async fn list_projects(
     connection: DbConn,
     issue_cache: &State<github::IssueCache>,
     repo_cache: &State<github::RepoCache>,
     user_cache: &State<github::UserCache>,
-    contributor_id: Option<u128>,
 ) -> Result<Json<Vec<api::Project>>, Json<HttpApiProblem>> {
     let database = database::API::new(connection);
-
-    let account = starknet::make_account_from_env();
-    let eligible_contributions = match contributor_id {
-        Some(contributor_id) => starknet::API::new(&account)
-            .get_eligible_contributions(&ContributorId(U256::from_u128(contributor_id)))
-            .await
-            .ok(),
-        None => None,
-    };
 
     let results = database
         .list_projects_with_contributions()
@@ -77,15 +66,7 @@ pub async fn list_projects(
         })?;
 
     let projects = stream::iter(results)
-        .filter_map(|project| {
-            build_project(
-                project,
-                &eligible_contributions,
-                issue_cache,
-                repo_cache,
-                user_cache,
-            )
-        })
+        .filter_map(|project| build_project(project, issue_cache, repo_cache, user_cache))
         .collect::<Vec<_>>()
         .await;
 
@@ -94,7 +75,6 @@ pub async fn list_projects(
 
 async fn build_project(
     project: database::models::ProjectWithContributions,
-    eligible_contributions: &Option<Vec<ContributionId>>,
     issue_cache: &github::IssueCache,
     repo_cache: &github::RepoCache,
     user_cache: &github::UserCache,
@@ -112,14 +92,7 @@ async fn build_project(
         .await?;
 
     let contributions = stream::iter(project.contributions.into_iter())
-        .filter_map(|contribution| {
-            build_contribution(
-                contribution,
-                eligible_contributions,
-                issue_cache,
-                user_cache,
-            )
-        })
+        .filter_map(|contribution| build_contribution(contribution, issue_cache, user_cache))
         .collect::<Vec<_>>()
         .await;
 
@@ -143,7 +116,6 @@ async fn build_project(
 
 async fn build_contribution(
     contribution: database::models::Contribution,
-    eligible_contributions: &Option<Vec<ContributionId>>,
     issue_cache: &github::IssueCache,
     user_cache: &github::UserCache,
 ) -> Option<api::Contribution> {
@@ -181,17 +153,13 @@ async fn build_contribution(
         github_link: github_issue.html_url,
         status: contribution.status.to_string(),
         gate: contribution.gate as u8,
-        eligible: eligible_contributions
-            .to_owned()
-            .map(|eligible| eligible.contains(&contribution.id)),
         metadata: api::Metadata {
             assignee: contributor
                 .as_ref()
                 .map(|c| format!("0x{}", c.id.to_string().trim_start_matches('0'))),
             github_username: contributor
                 .as_ref()
-                .map(|c| c.github_username.to_owned())
-                .flatten(),
+                .and_then(|c| c.github_username.to_owned()),
             context: labels.get("Context").map(|x| x.to_owned()),
             difficulty: labels.get("Difficulty").map(|x| x.to_owned()),
             duration: labels.get("Duration").map(|x| x.to_owned()),
@@ -216,7 +184,7 @@ async fn build_contributor(user_cache: &github::UserCache, author: String) -> Op
 
     if let Some(github_handle) = &contributor.github_handle {
         let github_user = user_cache
-            .get_or_insert(&github_handle, || async {
+            .get_or_insert(github_handle, || async {
                 match github::API::new().user(github_handle).await {
                     Ok(user) => Some(user),
                     Err(e) => {
@@ -266,7 +234,6 @@ mod api {
         pub github_link: Url,
         pub status: String,
         pub gate: u8,
-        pub eligible: Option<bool>,
         pub metadata: Metadata,
     }
 

@@ -21,8 +21,6 @@ pub use model::*;
 
 pub use contract_administrator::ContractAdministrator;
 
-use self::contract_viewer::ContractViewer;
-
 pub fn make_account_from_env() -> impl Account {
     let private_key = env::var("PRIVATE_KEY").expect("PRIVATE_KEY must be set");
     let account_address = env::var("ACCOUNT_ADDRESS").expect("ACCOUNT_ADDRESS must be set");
@@ -60,7 +58,6 @@ pub fn sequencer() -> SequencerGatewayProvider {
 pub struct API<'a> {
     registry: Box<dyn ContributorRegistryViewer + Sync + Send + 'a>,
     oracle: Box<dyn ContributionManager + Sync + Send + 'a>,
-    contributions_viewer: Box<dyn ContributionViewer + Sync + Send + 'a>,
     profile_viewer: Box<dyn ContributorProfileViewer + Sync + Send + 'a>,
 }
 
@@ -72,7 +69,6 @@ impl<'a> API<'a> {
                 account,
                 contributions_contract_address(),
             )),
-            contributions_viewer: Box::new(ContractViewer::new(contributions_contract_address())),
             profile_viewer: Box::new(domain_implementation::Profile::default()),
         }
     }
@@ -87,14 +83,5 @@ impl<'a> API<'a> {
     ) -> Option<Contributor> {
         let account = self.profile_viewer.get_account(contributor_id).await?;
         self.registry.get_user_information(account).await
-    }
-
-    pub async fn get_eligible_contributions(
-        &self,
-        contributor_id: &ContributorId,
-    ) -> Result<Vec<ContributionId>> {
-        self.contributions_viewer
-            .get_eligible_contributions(contributor_id)
-            .await
     }
 }
