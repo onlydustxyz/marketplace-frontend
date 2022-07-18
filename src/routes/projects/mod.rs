@@ -1,3 +1,5 @@
+mod dto;
+
 use std::collections::HashMap;
 
 use deathnote_contributions_feeder::database::connections::pg_connection::DbConn;
@@ -16,7 +18,7 @@ use super::contributor_cache::ContributorCache;
 #[openapi(tag = "Projects")]
 #[post("/projects", format = "application/json", data = "<project>")]
 pub async fn new_project(
-    project: Json<api::ProjectCreation<'_>>,
+    project: Json<dto::ProjectCreation<'_>>,
     connection: DbConn,
 ) -> Result<Status, Json<HttpApiProblem>> {
     let filter = ProjectFilter {
@@ -56,7 +58,7 @@ pub async fn list_projects(
     issue_cache: &State<github::IssueCache>,
     repo_cache: &State<github::RepoCache>,
     contributor_cache: &State<ContributorCache>,
-) -> Result<Json<Vec<api::Project>>, Json<HttpApiProblem>> {
+) -> Result<Json<Vec<dto::Project>>, Json<HttpApiProblem>> {
     let database = database::API::new(connection);
 
     let results = database
@@ -80,7 +82,7 @@ async fn build_project(
     issue_cache: &github::IssueCache,
     repo_cache: &github::RepoCache,
     contributor_cache: &ContributorCache,
-) -> Option<api::Project> {
+) -> Option<dto::Project> {
     let github_repository = repo_cache
         .get_or_insert(&project.id, || async {
             match github::API::new().repository_by_id(&project.id).await {
@@ -98,7 +100,7 @@ async fn build_project(
         .collect::<Vec<_>>()
         .await;
 
-    let project = api::Project {
+    let project = dto::Project {
         id: project.id,
         title: project.name.clone(),
         description: github_repository.description,
@@ -120,7 +122,7 @@ async fn build_contribution(
     contribution: database::models::Contribution,
     issue_cache: &github::IssueCache,
     contributor_cache: &ContributorCache,
-) -> Option<api::Contribution> {
+) -> Option<dto::Contribution> {
     let contributor = build_contributor(contributor_cache, contribution.author).await;
 
     let github_issue = issue_cache
@@ -148,14 +150,14 @@ async fn build_contribution(
         })
         .collect();
 
-    let contribution = api::Contribution {
+    let contribution = dto::Contribution {
         id: contribution.id.clone(),
         title: github_issue.title,
         description: github_issue.body.unwrap_or_default(),
         github_link: github_issue.html_url,
         status: contribution.status.to_string(),
         gate: contribution.gate as u8,
-        metadata: api::Metadata {
+        metadata: dto::Metadata {
             assignee: contributor
                 .as_ref()
                 .map(|c| format!("0x{}", c.id.to_string().trim_start_matches('0'))),
@@ -207,52 +209,4 @@ async fn fetch_contributor(contributor_id: &ContributorId) -> Option<Contributor
     }
 
     Some(contributor)
-}
-
-mod api {
-    use rocket_okapi::JsonSchema;
-    use serde::{Deserialize, Serialize};
-    use url::Url;
-
-    #[derive(Deserialize, JsonSchema)]
-    #[serde(crate = "rocket::serde")]
-    pub struct ProjectCreation<'r> {
-        pub owner: &'r str,
-        pub name: &'r str,
-    }
-
-    #[derive(Serialize, JsonSchema)]
-    pub struct Project {
-        pub id: String,
-        pub title: String,
-        pub description: Option<String>,
-        #[schemars(with = "String")]
-        pub github_link: Url,
-        #[schemars(with = "String")]
-        pub logo: Url,
-        pub contributions: Vec<Contribution>,
-    }
-
-    #[derive(Serialize, JsonSchema)]
-    pub struct Contribution {
-        pub id: String,
-        pub title: String,
-        pub description: String,
-        #[schemars(with = "String")]
-        pub github_link: Url,
-        pub status: String,
-        pub gate: u8,
-        pub metadata: Metadata,
-    }
-
-    #[derive(Serialize, JsonSchema)]
-    pub struct Metadata {
-        pub assignee: Option<String>,
-        pub github_username: Option<String>,
-        pub difficulty: Option<String>,
-        pub technology: Option<String>,
-        pub duration: Option<String>,
-        pub context: Option<String>,
-        pub r#type: Option<String>,
-    }
 }
