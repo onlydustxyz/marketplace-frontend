@@ -1,11 +1,9 @@
 mod issue_cache;
 mod models;
 mod repo_cache;
-mod user_cache;
 
 pub use issue_cache::IssueCache;
 pub use repo_cache::RepoCache;
-pub use user_cache::UserCache;
 
 use anyhow::Result;
 use async_trait::async_trait;

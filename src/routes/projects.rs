@@ -11,6 +11,8 @@ use rocket::{get, http::Status, post, serde::json::Json, State};
 use rocket_okapi::openapi;
 use url::Url;
 
+use super::contributor_cache::ContributorCache;
+
 #[openapi(tag = "Projects")]
 #[post("/projects", format = "application/json", data = "<project>")]
 pub async fn new_project(
@@ -53,7 +55,7 @@ pub async fn list_projects(
     connection: DbConn,
     issue_cache: &State<github::IssueCache>,
     repo_cache: &State<github::RepoCache>,
-    user_cache: &State<github::UserCache>,
+    contributor_cache: &State<ContributorCache>,
 ) -> Result<Json<Vec<api::Project>>, Json<HttpApiProblem>> {
     let database = database::API::new(connection);
 
@@ -66,7 +68,7 @@ pub async fn list_projects(
         })?;
 
     let projects = stream::iter(results)
-        .filter_map(|project| build_project(project, issue_cache, repo_cache, user_cache))
+        .filter_map(|project| build_project(project, issue_cache, repo_cache, contributor_cache))
         .collect::<Vec<_>>()
         .await;
 
@@ -77,7 +79,7 @@ async fn build_project(
     project: database::models::ProjectWithContributions,
     issue_cache: &github::IssueCache,
     repo_cache: &github::RepoCache,
-    user_cache: &github::UserCache,
+    contributor_cache: &ContributorCache,
 ) -> Option<api::Project> {
     let github_repository = repo_cache
         .get_or_insert(&project.id, || async {
@@ -92,7 +94,7 @@ async fn build_project(
         .await?;
 
     let contributions = stream::iter(project.contributions.into_iter())
-        .filter_map(|contribution| build_contribution(contribution, issue_cache, user_cache))
+        .filter_map(|contribution| build_contribution(contribution, issue_cache, contributor_cache))
         .collect::<Vec<_>>()
         .await;
 
@@ -117,9 +119,9 @@ async fn build_project(
 async fn build_contribution(
     contribution: database::models::Contribution,
     issue_cache: &github::IssueCache,
-    user_cache: &github::UserCache,
+    contributor_cache: &ContributorCache,
 ) -> Option<api::Contribution> {
-    let contributor = build_contributor(user_cache, contribution.author).await;
+    let contributor = build_contributor(contributor_cache, contribution.author).await;
 
     let github_issue = issue_cache
         .get_or_insert(&contribution.id, || async {
@@ -171,29 +173,35 @@ async fn build_contribution(
     Some(contribution)
 }
 
-async fn build_contributor(user_cache: &github::UserCache, author: String) -> Option<Contributor> {
+async fn build_contributor(
+    contributor_cache: &ContributorCache,
+    author: String,
+) -> Option<Contributor> {
     if author.is_empty() {
         return None;
     }
 
+    let contributor_id: ContributorId = author.into();
+    contributor_cache
+        .get_or_insert(&contributor_id, || async {
+            fetch_contributor(&contributor_id).await
+        })
+        .await
+}
+
+async fn fetch_contributor(contributor_id: &ContributorId) -> Option<Contributor> {
     let account = starknet::make_account_from_env();
     let starknet = starknet::API::new(&account);
-
-    let contributor_id: ContributorId = author.into();
     let mut contributor = starknet.get_user_information(&contributor_id).await?;
 
     if let Some(github_handle) = &contributor.github_handle {
-        let github_user = user_cache
-            .get_or_insert(github_handle, || async {
-                match github::API::new().user(github_handle).await {
-                    Ok(user) => Some(user),
-                    Err(e) => {
-                        warn!("Unable to fetch user from GitHub: {}", e.to_string());
-                        None
-                    }
-                }
-            })
-            .await;
+        let github_user = match github::API::new().user(github_handle).await {
+            Ok(user) => Some(user),
+            Err(e) => {
+                warn!("Unable to fetch user from GitHub: {}", e.to_string());
+                None
+            }
+        };
 
         contributor.github_username = github_user.map(|u| u.login);
     }

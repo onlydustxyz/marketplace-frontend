@@ -25,7 +25,10 @@ use dotenv::dotenv;
 use mockall::lazy_static;
 use rocket::routes;
 
-use crate::action_queue::{execute_actions, ActionQueue};
+use crate::{
+    action_queue::{execute_actions, ActionQueue},
+    routes::contributor_cache::ContributorCache,
+};
 
 lazy_static! {
     pub static ref QUEUE: Arc<RwLock<ActionQueue>> = Arc::new(RwLock::new(ActionQueue::new()));
@@ -80,7 +83,7 @@ async fn main() {
         .manage(QUEUE.clone())
         .manage(github::IssueCache::default())
         .manage(github::RepoCache::default())
-        .manage(github::UserCache::default())
+        .manage(ContributorCache::default())
         .attach(routes::cors::Cors)
         .mount(
             "/",

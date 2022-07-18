@@ -1,4 +1,5 @@
 mod contributions;
+pub mod contributor_cache;
 pub mod cors;
 pub mod health;
 mod projects;
