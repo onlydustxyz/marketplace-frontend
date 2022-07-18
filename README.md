@@ -1,5 +1,5 @@
 <div align="center">
-  <h1 align="center">deathnote-contributions-feeder</h1>
+  <h1 align="center">Marketplace backend</h1>
   <p align="center">
     <a href="https://discord.gg/onlydust">
         <img src="https://img.shields.io/badge/Discord-6666FF?style=for-the-badge&logo=discord&logoColor=white">
@@ -12,7 +12,7 @@
     </a>
   </p>
   
-  <h3 align="center">Death Note off chain service to watch github contributions and update associated smart contract state on StarkNet.</h3>
+  <h3 align="center">Backend services monorepo to operate the contribution marketplace.</h3>
 
 </h3>
 </div>
@@ -26,21 +26,25 @@
 
 ## 🎗️ Prerequisites
 
-### 1. Setup your environment 
+### 1. Setup your environment
 
 Create the `.env` file with the correct environment variables.
 Copy the `.env.example` file and modify the values according to your setup.
 
 ### 2. Start the docker container
+
 Make sure `docker-compose` is installed (see [Installation instructions](https://docs.docker.com/compose/install/)).
+
 ```
 docker-compose -f scripts/docker/dev/docker-compose.yml up -d
 ```
 
 ### 3. Setup the database
+
 Make sure `Diesel CLI` is installed (see [installation instructions](https://diesel.rs/guides/getting-started)):
 
 Then, use `Diesel` to initialize the data model and the database:
+
 ```
 source .env
 diesel setup
@@ -50,6 +54,7 @@ diesel migration run
 ## 📦 Installation
 
 To build the project, run the following command:
+
 ```
 cargo build
 ```
@@ -70,11 +75,13 @@ curl -d '{"owner":"onlydustxyz", "name":"starkonquest"}' -H "Content-Type: appli
 ```
 
 ### Run the indexer (fetch data from GitHub and store it in our database)
+
 ```
 cargo run --bin index_projects
 ```
 
 ### Upload data (upload data from our database to our on-chain contract)
+
 ```
 cargo run --bin upload_contributions
 ```
@@ -89,4 +96,4 @@ cargo test
 
 ## 📄 License
 
-**deathnote-contributions-feeder** is released under the [MIT](LICENSE).
+**marketplace-backend** is released under the [MIT](LICENSE).
