@@ -3,7 +3,7 @@ use std::ops::Deref;
 
 use crypto_bigint::U256;
 
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, Hash, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash)]
 pub struct Id(pub U256);
 
 #[derive(Clone, Debug)]

@@ -2,8 +2,8 @@ use crate::domain::*;
 use crypto_bigint::{Encoding, Split, U128, U256};
 use starknet::core::types::FieldElement;
 
-impl From<&ContributorId> for (FieldElement, FieldElement) {
-    fn from(id: &ContributorId) -> Self {
+impl From<ContributorId> for (FieldElement, FieldElement) {
+    fn from(id: ContributorId) -> Self {
         let (high, low) = id.0.split();
         let high = U256::from((U128::default(), high));
         let low = U256::from((U128::default(), low));
@@ -37,7 +37,7 @@ mod test {
         let contributor_id: ContributorId =
             String::from("000000000000000000000000000001c80000000000000000000000000000007b").into();
 
-        assert_eq!(contributor_id_felt, (&contributor_id).into());
         assert_eq!(contributor_id, contributor_id_felt.into());
+        assert_eq!(contributor_id_felt, contributor_id.into());
     }
 }

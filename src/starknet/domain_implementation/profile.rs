@@ -24,7 +24,7 @@ impl Default for Profile {
 #[async_trait]
 impl ContributorProfileViewer for Profile {
     async fn get_account(&self, contributor_id: &ContributorId) -> Option<FieldElement> {
-        let contributor_id: (FieldElement, FieldElement) = contributor_id.into();
+        let contributor_id: (FieldElement, FieldElement) = (*contributor_id).into();
         self.contract_viewer
             .call("ownerOf", vec![contributor_id.0, contributor_id.1])
             .await

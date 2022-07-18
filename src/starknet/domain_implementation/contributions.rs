@@ -44,7 +44,7 @@ impl From<&Action> for Call {
                 contribution_id,
                 contributor_id,
             } => {
-                let (contributor_id_low, contributor_id_high) = contributor_id.into();
+                let (contributor_id_low, contributor_id_high) = (*contributor_id).into();
 
                 Self {
                     to: contributions_contract_address(),

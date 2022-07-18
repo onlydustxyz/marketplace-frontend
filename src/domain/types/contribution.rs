@@ -3,7 +3,7 @@ use std::{fmt, str::FromStr};
 
 use crate::domain::{ContributorId, Project, ProjectId};
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Status {
     Open = 0,
     Assigned = 1,
@@ -13,7 +13,7 @@ pub enum Status {
 
 pub type Id = String;
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Contribution {
     pub id: Id,
     pub project_id: ProjectId,
@@ -25,7 +25,7 @@ pub struct Contribution {
     pub gate: Option<u8>,
 }
 
-#[derive(Debug, PartialEq, Clone, Default)]
+#[derive(Debug, PartialEq, Eq, Clone, Default)]
 pub struct Filter {
     pub author: Option<String>,
     pub project: Option<Project>,
