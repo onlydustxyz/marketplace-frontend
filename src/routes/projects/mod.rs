@@ -6,12 +6,9 @@ use deathnote_contributions_feeder::database::connections::pg_connection::DbConn
 use deathnote_contributions_feeder::domain::*;
 use deathnote_contributions_feeder::{database, github, starknet};
 
-use futures::{
-    future,
-    stream::{self, StreamExt},
-};
+use futures::{future, stream::StreamExt};
 use http_api_problem::{HttpApiProblem, StatusCode};
-use log::warn;
+use log::{error, warn};
 use rocket::{get, http::Status, post, serde::json::Json, State};
 use rocket_okapi::openapi;
 use url::Url;
@@ -91,16 +88,17 @@ pub async fn list_projects(
     });
 
     // Merge all tasks into a single vector
-    // Stop and return as soon as it fails to join one of the tasks
-    let projects = future::try_join_all(build_project_tasks)
+    // Failed task will be ignored
+    let projects = future::join_all(build_project_tasks)
         .await
-        .map_err(|e| {
-            HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-                .title("Gathering projects data failed")
-                .detail(e.to_string())
-        })?
         .into_iter()
-        .flatten()
+        .filter_map(|result| match result {
+            Ok(opt_project) => opt_project,
+            Err(e) => {
+                error!("failed to build project dto: {}", e.to_string());
+                None
+            }
+        })
         .collect();
 
     Ok(Json(projects))
@@ -135,12 +133,17 @@ async fn build_project(
     });
 
     // Merge all tasks into a single vector
-    // Stop and return as soon as it fails to join one of the tasks
-    let contributions = future::try_join_all(build_contribution_tasks)
+    // Failed task will be ignored
+    let contributions = future::join_all(build_contribution_tasks)
         .await
-        .ok()?
         .into_iter()
-        .flatten()
+        .filter_map(|result| match result {
+            Ok(opt_project) => opt_project,
+            Err(e) => {
+                error!("failed to build contribution dto: {}", e.to_string());
+                None
+            }
+        })
         .collect();
 
     let project = dto::Project {
