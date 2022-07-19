@@ -1,9 +1,8 @@
 use std::{env, ops::Deref, time::Duration};
 
-use deathnote_contributions_feeder::{
-    domain::{Contributor, ContributorId},
-    utils::Cache,
-};
+use crate::domain::{Contributor, ContributorId};
+
+use super::Cache;
 
 #[derive(Clone)]
 pub struct ContributorCache(Cache<ContributorId, Contributor>);

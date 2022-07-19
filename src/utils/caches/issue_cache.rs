@@ -1,7 +1,8 @@
 use crate::domain::ContributionId;
-use crate::utils::Cache;
 use octocrab::models::issues::Issue;
 use std::{env, ops::Deref, time::Duration};
+
+use super::Cache;
 
 #[derive(Clone)]
 pub struct IssueCache(Cache<ContributionId, Issue>);

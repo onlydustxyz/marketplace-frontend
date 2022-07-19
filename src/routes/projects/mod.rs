@@ -4,6 +4,7 @@ use std::collections::HashMap;
 
 use deathnote_contributions_feeder::database::connections::pg_connection::DbConn;
 use deathnote_contributions_feeder::domain::*;
+use deathnote_contributions_feeder::utils::caches;
 use deathnote_contributions_feeder::{database, github, starknet};
 
 use futures::{future, stream::StreamExt};
@@ -12,8 +13,6 @@ use log::{error, warn};
 use rocket::{get, http::Status, post, serde::json::Json, State};
 use rocket_okapi::openapi;
 use url::Url;
-
-use super::contributor_cache::ContributorCache;
 
 #[openapi(tag = "Projects")]
 #[post("/projects", format = "application/json", data = "<project>")]
@@ -55,9 +54,9 @@ pub async fn new_project(
 #[get("/projects")]
 pub async fn list_projects(
     connection: DbConn,
-    issue_cache: &State<github::IssueCache>,
-    repo_cache: &State<github::RepoCache>,
-    contributor_cache: &State<ContributorCache>,
+    issue_cache: &State<caches::IssueCache>,
+    repo_cache: &State<caches::RepoCache>,
+    contributor_cache: &State<caches::ContributorCache>,
 ) -> Result<Json<Vec<dto::Project>>, Json<HttpApiProblem>> {
     let database = database::API::new(connection);
 
@@ -73,9 +72,9 @@ pub async fn list_projects(
     // Spawn concurent tasks
     // One for each project
     let build_project_tasks = projects_with_contribution_iterator.map(|project| {
-        let cloned_issue_cache: github::IssueCache = issue_cache.inner().clone();
-        let cloned_repo_cache: github::RepoCache = repo_cache.inner().clone();
-        let cloned_contributor_cache: ContributorCache = contributor_cache.inner().clone();
+        let cloned_issue_cache: caches::IssueCache = issue_cache.inner().clone();
+        let cloned_repo_cache: caches::RepoCache = repo_cache.inner().clone();
+        let cloned_contributor_cache: caches::ContributorCache = contributor_cache.inner().clone();
         tokio::spawn(async move {
             build_project(
                 project,
@@ -106,9 +105,9 @@ pub async fn list_projects(
 
 async fn build_project(
     project: database::models::ProjectWithContributions,
-    issue_cache: &github::IssueCache,
-    repo_cache: &github::RepoCache,
-    contributor_cache: &ContributorCache,
+    issue_cache: &caches::IssueCache,
+    repo_cache: &caches::RepoCache,
+    contributor_cache: &caches::ContributorCache,
 ) -> Option<dto::Project> {
     let github_repository = repo_cache
         .get_or_insert(&project.id, || async {
@@ -166,8 +165,8 @@ async fn build_project(
 
 async fn build_contribution(
     contribution: database::models::Contribution,
-    issue_cache: &github::IssueCache,
-    contributor_cache: &ContributorCache,
+    issue_cache: &caches::IssueCache,
+    contributor_cache: &caches::ContributorCache,
 ) -> Option<dto::Contribution> {
     let contributor = build_contributor(contributor_cache, contribution.author).await;
 
@@ -222,7 +221,7 @@ async fn build_contribution(
 }
 
 async fn build_contributor(
-    contributor_cache: &ContributorCache,
+    contributor_cache: &caches::ContributorCache,
     author: String,
 ) -> Option<Contributor> {
     if author.is_empty() {
