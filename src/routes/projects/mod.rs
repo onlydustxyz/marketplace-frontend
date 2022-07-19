@@ -64,18 +64,44 @@ pub async fn list_projects(
 ) -> Result<Json<Vec<dto::Project>>, Json<HttpApiProblem>> {
     let database = database::API::new(connection);
 
-    let results = database
-        .list_projects_with_contributions()
-        .map_err(|error| {
-            HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-                .title("Listing projects failed")
-                .detail(error.to_string())
-        })?;
+    let projects_with_contribution_iterator =
+        database
+            .list_projects_with_contributions()
+            .map_err(|error| {
+                HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+                    .title("Listing projects failed")
+                    .detail(error.to_string())
+            })?;
 
-    let projects = stream::iter(results)
-        .filter_map(|project| build_project(project, issue_cache, repo_cache, contributor_cache))
-        .collect::<Vec<_>>()
-        .await;
+    // Spawn concurent tasks
+    // One for each project
+    let build_project_tasks = projects_with_contribution_iterator.map(|project| {
+        let cloned_issue_cache: github::IssueCache = issue_cache.inner().clone();
+        let cloned_repo_cache: github::RepoCache = repo_cache.inner().clone();
+        let cloned_contributor_cache: ContributorCache = contributor_cache.inner().clone();
+        tokio::spawn(async move {
+            build_project(
+                project,
+                &cloned_issue_cache,
+                &cloned_repo_cache,
+                &cloned_contributor_cache,
+            )
+            .await
+        })
+    });
+
+    // Merge all tasks into a single vector
+    // Stop and return as soon as it fails to join one of the tasks
+    let projects = future::try_join_all(build_project_tasks)
+        .await
+        .map_err(|e| {
+            HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+                .title("Gathering projects data failed")
+                .detail(e.to_string())
+        })?
+        .into_iter()
+        .flatten()
+        .collect();
 
     Ok(Json(projects))
 }
@@ -109,7 +135,7 @@ async fn build_project(
     });
 
     // Merge all tasks into a single vector
-    // Stop and return as soon as it fail to join one of the tasks
+    // Stop and return as soon as it fails to join one of the tasks
     let contributions = future::try_join_all(build_contribution_tasks)
         .await
         .ok()?
