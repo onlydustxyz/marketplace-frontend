@@ -1,7 +1,8 @@
 use std::sync::{Arc, RwLock};
 
 use crypto_bigint::U256;
-use deathnote_contributions_feeder::domain::{Action, ContributionId, ProjectId};
+use deathnote_contributions_feeder::domain::{self, Action, ContributionId, ProjectId};
+use deathnote_contributions_feeder::github;
 use http_api_problem::{HttpApiProblem, StatusCode};
 use log::info;
 use rocket::http::Status;
@@ -27,16 +28,39 @@ pub struct CreateContributionBody {
 pub async fn create_contribution(
     _api_key: ApiKey,
     body: Json<CreateContributionBody>,
+    github_api: &State<github::API>,
     queue: &State<Arc<RwLock<ActionQueue>>>,
 ) -> Result<Status, Json<HttpApiProblem>> {
     let body = body.into_inner();
 
+    let github_issue = github_api.issue(&body.contribution_id).await;
+    let github_issue = match github_issue {
+        Ok(github_issue) => github_issue,
+        Err(error) => {
+            return Err(Json(
+                HttpApiProblem::new(StatusCode::BAD_REQUEST)
+                    .title("Unable to get GitHub issue data")
+                    .detail(error.to_string()),
+            ))
+        }
+    };
+
+    let metadata = github::extract_metadata(github_issue.clone());
+
+    let contribution = domain::Contribution {
+        id: body.contribution_id,
+        project_id: body.project_id,
+        contributor_id: None,
+        title: Some(github_issue.title),
+        description: Some(github_issue.body.unwrap_or_default()),
+        status: domain::ContributionStatus::Open,
+        external_link: Some(github_issue.url.to_string()),
+        gate: body.gate,
+        metadata,
+    };
+
     match queue.write() {
-        Ok(mut queue) => queue.push_front(Action::CreateContribution {
-            contribution_id: body.contribution_id,
-            project_id: body.project_id,
-            gate: body.gate,
-        }),
+        Ok(mut queue) => queue.push_front(Action::CreateContribution { contribution }),
         Err(error) => {
             return Err(Json(
                 HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)

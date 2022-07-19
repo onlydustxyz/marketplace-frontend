@@ -15,8 +15,16 @@ pub struct Contribution {
     pub project_id: String,
     pub status: String,
     pub transaction_hash: Option<String>,
-    pub author: String,
+    pub contributor_id: String,
     pub gate: i16,
+    pub title: Option<String>,
+    pub description: Option<String>,
+    pub external_link: Option<String>,
+    pub difficulty: Option<String>,
+    pub technology: Option<String>,
+    pub duration: Option<String>,
+    pub context: Option<String>,
+    pub type_: Option<String>,
 }
 
 #[derive(AsChangeset, Identifiable)]
@@ -24,7 +32,7 @@ pub struct Contribution {
 pub struct AssignContributionForm {
     pub id: String,
     pub status: String,
-    pub author: String,
+    pub contributor_id: String,
     pub transaction_hash: Option<String>,
 }
 
@@ -49,9 +57,17 @@ pub struct NewContribution {
     pub id: String,
     pub project_id: String,
     pub status: String,
-    pub author: String,
+    pub contributor_id: String,
     pub gate: i16,
     pub transaction_hash: Option<String>,
+    pub title: Option<String>,
+    pub description: Option<String>,
+    pub external_link: Option<String>,
+    pub difficulty: Option<String>,
+    pub technology: Option<String>,
+    pub duration: Option<String>,
+    pub context: Option<String>,
+    pub type_: Option<String>,
 }
 
 impl From<domain::Contribution> for NewContribution {
@@ -60,11 +76,19 @@ impl From<domain::Contribution> for NewContribution {
             id: contribution.id,
             project_id: contribution.project_id,
             status: contribution.status.to_string(),
-            author: contribution
+            contributor_id: contribution
                 .contributor_id
                 .map_or(String::new(), |id| id.to_string()),
-            gate: contribution.gate.unwrap_or_default() as i16,
+            gate: contribution.gate as i16,
             transaction_hash: None,
+            title: contribution.title,
+            description: contribution.description,
+            external_link: contribution.external_link,
+            difficulty: contribution.metadata.difficulty,
+            technology: contribution.metadata.technology,
+            duration: contribution.metadata.duration,
+            context: contribution.metadata.context,
+            type_: contribution.metadata.r#type,
         }
     }
 }
@@ -83,19 +107,26 @@ impl From<Contribution> for domain::Contribution {
         Self {
             id: contribution.id,
             contributor_id: {
-                if contribution.author.is_empty() {
+                if contribution.contributor_id.is_empty() {
                     None
                 } else {
-                    Some(contribution.author.into())
+                    Some(contribution.contributor_id.into())
                 }
             },
             project_id: contribution.project_id,
             status: contribution.status.parse().unwrap(),
             // Safe to unwrap because the value stored can only come from an u8
-            gate: Some(contribution.gate.try_into().unwrap()),
-            description: None,
-            external_link: None,
-            title: None,
+            gate: contribution.gate.try_into().unwrap(),
+            description: contribution.description,
+            external_link: contribution.external_link,
+            title: contribution.title,
+            metadata: domain::ContributionMetadata {
+                difficulty: contribution.difficulty,
+                technology: contribution.technology,
+                duration: contribution.duration,
+                context: contribution.context,
+                r#type: contribution.type_,
+            },
         }
     }
 }

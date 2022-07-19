@@ -1,9 +1,9 @@
 mod models;
 
 use anyhow::Result;
-use std::sync::Arc;
+use std::{collections::HashMap, sync::Arc};
 
-use crate::domain::*;
+use crate::domain::{self, *};
 
 impl From<models::RepositoryWithExtension> for Project {
     fn from(repo: models::RepositoryWithExtension) -> Self {
@@ -101,5 +101,30 @@ impl API {
 impl Default for API {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+pub fn extract_metadata(
+    github_issue: octocrab::models::issues::Issue,
+) -> domain::ContributionMetadata {
+    let labels: HashMap<String, String> = github_issue
+        .labels
+        .into_iter()
+        .filter_map(|label| {
+            let splitted: Vec<_> = label.name.split(':').collect();
+            if splitted.len() == 2 {
+                Some((splitted[0].trim().to_owned(), splitted[1].trim().to_owned()))
+            } else {
+                None
+            }
+        })
+        .collect();
+
+    domain::ContributionMetadata {
+        context: labels.get("Context").map(|x| x.to_owned()),
+        difficulty: labels.get("Difficulty").map(|x| x.to_owned()),
+        duration: labels.get("Duration").map(|x| x.to_owned()),
+        technology: labels.get("Techno").map(|x| x.to_owned()),
+        r#type: labels.get("Type").map(|x| x.to_owned()),
     }
 }

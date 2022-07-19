@@ -54,20 +54,13 @@ impl API {
 
     fn new_contribution(
         &self,
-        id_: domain::ContributionId,
-        project_id_: domain::ProjectId,
-        gate_: u8,
+        contribution_: domain::Contribution,
         hash_: Option<String>,
     ) -> Result<()> {
+        let mut new_contribution = db_model::NewContribution::from(contribution_);
+        new_contribution.transaction_hash = hash_;
         diesel::insert_into(contributions::table)
-            .values(&db_model::NewContribution {
-                id: id_,
-                project_id: project_id_,
-                status: domain::ContributionStatus::Open.to_string(),
-                author: String::new(),
-                gate: gate_ as i16,
-                transaction_hash: hash_,
-            })
+            .values(&new_contribution)
             .get_result::<db_model::Contribution>(&**self.connection())?;
 
         Ok(())
@@ -82,7 +75,7 @@ impl API {
         db_model::AssignContributionForm {
             id: id_,
             status: domain::ContributionStatus::Assigned.to_string(),
-            author: contributor_id_.to_string(),
+            contributor_id: contributor_id_.to_string(),
             transaction_hash: hash_,
         }
         .save_changes::<db_model::Contribution>(&**self.connection())?;
@@ -97,7 +90,7 @@ impl API {
         db_model::AssignContributionForm {
             id: id_,
             status: domain::ContributionStatus::Open.to_string(),
-            author: String::new(),
+            contributor_id: String::new(),
             transaction_hash: hash_,
         }
         .save_changes::<db_model::Contribution>(&**self.connection())?;
@@ -192,15 +185,8 @@ impl API {
         for action in actions {
             match action {
                 Action::CreateContribution {
-                    contribution_id: id_,
-                    project_id: project_id_,
-                    gate: gate_,
-                } => self.new_contribution(
-                    id_.clone(),
-                    project_id_.clone(),
-                    *gate_,
-                    Some(hash.into()),
-                ),
+                    contribution: contribution_,
+                } => self.new_contribution(contribution_.clone(), Some(hash.into())),
 
                 Action::AssignContributor {
                     contribution_id: id_,
