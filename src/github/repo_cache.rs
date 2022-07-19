@@ -2,6 +2,7 @@ use crate::utils::Cache;
 use octocrab::models::Repository;
 use std::{env, ops::Deref, time::Duration};
 
+#[derive(Clone)]
 pub struct RepoCache(Cache<String, Repository>);
 
 fn ttl() -> Duration {
