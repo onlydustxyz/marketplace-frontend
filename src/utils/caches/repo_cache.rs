@@ -1,6 +1,7 @@
-use crate::utils::Cache;
 use octocrab::models::Repository;
 use std::{env, ops::Deref, time::Duration};
+
+use super::Cache;
 
 #[derive(Clone)]
 pub struct RepoCache(Cache<String, Repository>);

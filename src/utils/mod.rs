@@ -1,4 +1,2 @@
-mod cache;
+pub mod caches;
 pub mod stream;
-
-pub use cache::Cache;

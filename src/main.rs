@@ -19,16 +19,14 @@ use tokio::{
 use deathnote_contributions_feeder::{
     database::{connections::pg_connection, run_db_migrations},
     github,
+    utils::caches::{ContributorCache, IssueCache, RepoCache},
 };
 
 use dotenv::dotenv;
 use mockall::lazy_static;
 use rocket::routes;
 
-use crate::{
-    action_queue::{execute_actions, ActionQueue},
-    routes::contributor_cache::ContributorCache,
-};
+use crate::action_queue::{execute_actions, ActionQueue};
 
 lazy_static! {
     pub static ref QUEUE: Arc<RwLock<ActionQueue>> = Arc::new(RwLock::new(ActionQueue::new()));
@@ -81,8 +79,8 @@ async fn main() {
     let rocket_handler = rocket::build()
         .manage(pg_connection::init_pool())
         .manage(QUEUE.clone())
-        .manage(github::IssueCache::default())
-        .manage(github::RepoCache::default())
+        .manage(IssueCache::default())
+        .manage(RepoCache::default())
         .manage(ContributorCache::default())
         .attach(routes::cors::Cors)
         .mount(
