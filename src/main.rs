@@ -80,6 +80,7 @@ async fn main() {
         .manage(IssueCache::default())
         .manage(RepoCache::default())
         .manage(ContributorCache::default())
+        .manage(github::API::new())
         .attach(routes::cors::Cors)
         .mount(
             "/",

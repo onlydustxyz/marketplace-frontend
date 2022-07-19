@@ -22,12 +22,22 @@ pub struct Contribution {
     pub description: Option<String>,
     pub status: Status,
     pub external_link: Option<String>,
-    pub gate: Option<u8>,
+    pub gate: u8,
+    pub metadata: Metadata,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub struct Metadata {
+    pub difficulty: Option<String>,
+    pub technology: Option<String>,
+    pub duration: Option<String>,
+    pub context: Option<String>,
+    pub r#type: Option<String>,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Default)]
 pub struct Filter {
-    pub author: Option<String>,
+    pub contributor_id: Option<String>,
     pub project: Option<Project>,
 }
 

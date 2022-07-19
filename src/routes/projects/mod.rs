@@ -159,7 +159,7 @@ async fn build_contribution(
     issue_cache: &caches::IssueCache,
     contributor_cache: &caches::ContributorCache,
 ) -> Option<dto::Contribution> {
-    let contributor = build_contributor(contributor_cache, contribution.author).await;
+    let contributor = build_contributor(contributor_cache, contribution.contributor_id).await;
 
     let github_issue = issue_cache
         .get_or_insert(&contribution.id, || async {
@@ -213,13 +213,13 @@ async fn build_contribution(
 
 async fn build_contributor(
     contributor_cache: &caches::ContributorCache,
-    author: String,
+    contributor_id: String,
 ) -> Option<Contributor> {
-    if author.is_empty() {
+    if contributor_id.is_empty() {
         return None;
     }
 
-    let contributor_id: ContributorId = author.into();
+    let contributor_id: ContributorId = contributor_id.into();
     contributor_cache
         .get_or_insert(&contributor_id, || async {
             fetch_contributor(&contributor_id).await

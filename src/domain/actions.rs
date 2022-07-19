@@ -1,13 +1,9 @@
-use serde::{Deserialize, Serialize};
+use crate::domain::{Contribution, ContributionId, ContributorId};
 
-use crate::domain::{ContributionId, ContributorId, ProjectId};
-
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug)]
 pub enum Action {
     CreateContribution {
-        contribution_id: ContributionId,
-        project_id: ProjectId,
-        gate: u8,
+        contribution: Contribution,
     },
     AssignContributor {
         contribution_id: ContributionId,

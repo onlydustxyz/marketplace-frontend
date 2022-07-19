@@ -4,8 +4,17 @@ table! {
         project_id -> Varchar,
         status -> Varchar,
         transaction_hash -> Nullable<Varchar>,
-        author -> Varchar,
+        contributor_id -> Varchar,
         gate -> Int2,
+        title -> Nullable<Text>,
+        description -> Nullable<Text>,
+        external_link -> Nullable<Text>,
+        difficulty -> Nullable<Text>,
+        technology -> Nullable<Text>,
+        duration -> Nullable<Text>,
+        context -> Nullable<Text>,
+        #[sql_name = "type"]
+        type_ -> Nullable<Text>,
     }
 }
 

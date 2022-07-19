@@ -26,17 +26,13 @@ impl<'a, A: Account + Sync> ContributionManager for ContractAdministrator<'a, A>
 impl From<&Action> for Call {
     fn from(action: &Action) -> Self {
         match action {
-            Action::CreateContribution {
-                contribution_id,
-                project_id,
-                gate,
-            } => Self {
+            Action::CreateContribution { contribution } => Self {
                 to: contributions_contract_address(),
                 selector: get_selector_from_name("new_contribution").unwrap(),
                 calldata: vec![
-                    FieldElement::from_dec_str(contribution_id).unwrap(), // id : felt
-                    FieldElement::from_dec_str(project_id).unwrap(),      // project_id : felt
-                    FieldElement::from(*gate), // contribution_count_required : felt
+                    FieldElement::from_dec_str(&contribution.id).unwrap(), // id : felt
+                    FieldElement::from_dec_str(&contribution.project_id).unwrap(), // project_id : felt
+                    FieldElement::from(contribution.gate), // contribution_count_required : felt
                 ],
             },
 
