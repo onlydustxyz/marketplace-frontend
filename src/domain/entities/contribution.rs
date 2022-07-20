@@ -37,7 +37,7 @@ pub struct Metadata {
 impl FromStr for Status {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "OPEN" => Ok(Status::Open),
             "ASSIGNED" => Ok(Status::Assigned),

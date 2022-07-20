@@ -13,7 +13,7 @@ use std::{
 
 use self::schema::{
     contributions::{self},
-    projects::{self, dsl::*},
+    projects::dsl::*,
 };
 use crate::infrastructure::db_model;
 
@@ -106,25 +106,6 @@ impl API {
             transaction_hash: hash_,
         }
         .save_changes::<db_model::Contribution>(&**self.connection())?;
-        Ok(())
-    }
-
-    pub fn upsert_project(&self, project: db_model::NewProject) -> Result<()> {
-        diesel::insert_into(projects::table)
-            .values(&project)
-            .on_conflict(id)
-            .do_update()
-            .set(&project)
-            .execute(&**self.connection())?;
-
-        Ok(())
-    }
-
-    pub fn insert_project(&self, project: db_model::NewProject) -> Result<()> {
-        diesel::insert_into(projects::table)
-            .values(&project)
-            .get_result::<db_model::Project>(&**self.connection())?;
-
         Ok(())
     }
 
