@@ -1,10 +1,8 @@
 use super::Database;
 
+use super::models;
 use crate::database::schema::projects::dsl::*;
-use crate::domain::entities::{contribution::Contribution, project::Project};
-use crate::domain::repositories::project::ProjectRepository;
-use crate::domain::value_objects::ProjectWithContributions;
-use crate::{database::models as db_model, domain::errors::Error};
+use crate::domain::*;
 use diesel::prelude::*;
 use diesel::query_dsl::BelongingToDsl;
 use itertools::Itertools;
@@ -12,25 +10,26 @@ use itertools::Itertools;
 impl ProjectRepository for Database {
     fn find_all_with_contributions(&self) -> Result<Vec<ProjectWithContributions>, Error> {
         let project_list = projects
-            .load::<db_model::Project>(self.connection())
-            .map_err(|_| Error)?;
+            .load::<models::Project>(self.connection())
+            .map_err(|e| Error::ProjectListingError(e.to_string()))?;
 
-        let contribution_list = db_model::Contribution::belonging_to(&project_list)
-            .load::<db_model::Contribution>(self.connection())
-            .map_err(|_| Error)?
+        let contribution_list = models::Contribution::belonging_to(&project_list)
+            .load::<models::Contribution>(self.connection())
+            .map_err(|e| Error::ProjectListingError(e.to_string()))?
             .grouped_by(&project_list);
 
         let result = project_list
             .into_iter()
             .zip(contribution_list)
-            .map(ProjectWithContributions::from);
+            .map(ProjectWithContributions::from)
+            .collect_vec();
 
         Ok(result)
     }
 }
 
-impl From<(db_model::Project, Vec<db_model::Contribution>)> for ProjectWithContributions {
-    fn from((project, contributions): (db_model::Project, Vec<db_model::Contribution>)) -> Self {
+impl From<(models::Project, Vec<models::Contribution>)> for ProjectWithContributions {
+    fn from((project, contributions): (models::Project, Vec<models::Contribution>)) -> Self {
         Self {
             project: project.into(),
             contributions: contributions.into_iter().map_into().collect(),
@@ -38,8 +37,8 @@ impl From<(db_model::Project, Vec<db_model::Contribution>)> for ProjectWithContr
     }
 }
 
-impl From<db_model::Project> for Project {
-    fn from(project: db_model::Project) -> Self {
+impl From<models::Project> for Project {
+    fn from(project: models::Project) -> Self {
         Self {
             id: project.id,
             name: project.name,
@@ -48,8 +47,8 @@ impl From<db_model::Project> for Project {
     }
 }
 
-impl From<db_model::Contribution> for Contribution {
-    fn from(contribution: db_model::Contribution) -> Self {
+impl From<models::Contribution> for Contribution {
+    fn from(contribution: models::Contribution) -> Self {
         Self {
             id: contribution.id,
             contributor_id: {
@@ -71,7 +70,7 @@ impl From<db_model::Contribution> for Contribution {
                 .external_link
                 .map(|link| url::Url::parse(&link).unwrap()),
             title: contribution.title,
-            metadata: domain::ContributionMetadata {
+            metadata: ContributionMetadata {
                 difficulty: contribution.difficulty,
                 technology: contribution.technology,
                 duration: contribution.duration,

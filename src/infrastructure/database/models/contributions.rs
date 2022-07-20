@@ -1,6 +1,6 @@
 use crate::{
     database::schema::*,
-    domain::{self, ContributionStatus},
+    domain::{self},
 };
 use diesel::Queryable;
 use rocket::serde::{Deserialize, Serialize};
@@ -98,40 +98,6 @@ impl From<domain::ContractUpdateStatus> for ContributionContractUpdateForm {
         Self {
             id: status.contribution_id,
             transaction_hash: status.transaction_hash,
-        }
-    }
-}
-
-impl From<Contribution> for domain::Contribution {
-    fn from(contribution: Contribution) -> Self {
-        Self {
-            id: contribution.id,
-            contributor_id: {
-                if contribution.contributor_id.is_empty() {
-                    None
-                } else {
-                    Some(contribution.contributor_id.into())
-                }
-            },
-            project_id: contribution.project_id,
-            status: contribution
-                .status
-                .parse()
-                .unwrap_or(ContributionStatus::Open),
-            // Safe to unwrap because the value stored can only come from an u8
-            gate: contribution.gate.try_into().unwrap(),
-            description: contribution.description,
-            external_link: contribution
-                .external_link
-                .map(|link| url::Url::parse(&link).unwrap()),
-            title: contribution.title,
-            metadata: domain::ContributionMetadata {
-                difficulty: contribution.difficulty,
-                technology: contribution.technology,
-                duration: contribution.duration,
-                context: contribution.context,
-                r#type: contribution.type_,
-            },
         }
     }
 }

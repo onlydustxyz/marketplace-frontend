@@ -1,12 +1,10 @@
 pub mod connections;
-pub mod models;
 pub mod schema;
 
 use crate::domain::{self, Action};
 use anyhow::Result;
 use connections::pg_connection::{self, DbConn};
 use diesel::prelude::*;
-use diesel::query_dsl::BelongingToDsl;
 use itertools::Itertools;
 use std::{
     env,
@@ -17,7 +15,7 @@ use self::schema::{
     contributions::{self},
     projects::{self, dsl::*},
 };
-use models as db_model;
+use crate::infrastructure::db_model;
 
 pub fn establish_connection() -> Result<DbConn> {
     pg_connection::init_pool()
@@ -163,22 +161,6 @@ impl API {
             .expect("Error while fetching projects from database");
 
         results.into_iter().map_into()
-    }
-
-    pub fn list_projects_with_contributions(
-        &self,
-    ) -> Result<impl Iterator<Item = db_model::ProjectWithContributions>, anyhow::Error> {
-        let project_list = projects.load::<db_model::Project>(&**self.connection())?;
-        let contribution_list = db_model::Contribution::belonging_to(&project_list)
-            .load::<db_model::Contribution>(&**self.connection())?
-            .grouped_by(&project_list);
-
-        let result = project_list
-            .into_iter()
-            .zip(contribution_list)
-            .map(db_model::ProjectWithContributions::from);
-
-        Ok(result)
     }
 
     pub fn execute_actions(&self, actions: &[Action], hash: &str) -> Result<()> {
