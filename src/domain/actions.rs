@@ -3,7 +3,7 @@ use crate::domain::{Contribution, ContributionId, ContributorId};
 #[derive(Clone, Debug)]
 pub enum Action {
     CreateContribution {
-        contribution: Contribution,
+        contribution: Box<Contribution>,
     },
     AssignContributor {
         contribution_id: ContributionId,

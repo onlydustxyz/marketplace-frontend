@@ -1,5 +1,6 @@
 use anyhow::anyhow;
 use std::{fmt, str::FromStr};
+use url::Url;
 
 use crate::domain::{ContributorId, Project, ProjectId};
 
@@ -21,7 +22,7 @@ pub struct Contribution {
     pub title: Option<String>,
     pub description: Option<String>,
     pub status: Status,
-    pub external_link: Option<String>,
+    pub external_link: Option<Url>,
     pub gate: u8,
     pub metadata: Metadata,
 }
