@@ -1,12 +1,9 @@
 mod models;
 
 use anyhow::Result;
-use async_trait::async_trait;
-use futures::stream;
-use log::info;
 use std::sync::Arc;
 
-use crate::{domain::*, utils::stream::Streamable};
+use crate::domain::*;
 
 impl From<models::RepositoryWithExtension> for Project {
     fn from(repo: models::RepositoryWithExtension) -> Self {
@@ -87,6 +84,18 @@ impl API {
             .await
             .map_err(anyhow::Error::msg)
     }
+
+    pub async fn get_project_by_owner_and_name(&self, owner: &str, name: &str) -> Result<Project> {
+        let repo = self
+            .octo
+            .get::<models::RepositoryWithExtension, String, ()>(
+                format!("{}repos/{}/{}", self.octo.base_url, owner, name),
+                None::<&()>,
+            )
+            .await?;
+
+        Ok(repo.into())
+    }
 }
 
 impl Default for API {
@@ -95,26 +104,26 @@ impl Default for API {
     }
 }
 
-#[async_trait]
-impl Fetcher<ProjectFilter, Project> for API {
-    async fn fetch(&self, filter: ProjectFilter) -> FetchResult<Project> {
-        info!("Fetching repository with filter {:?}", filter);
+// #[async_trait]
+// impl Fetcher<ProjectFilter, Project> for API {
+//     async fn fetch(&self, filter: ProjectFilter) -> FetchResult<Project> {
+//         info!("Fetching repository with filter {:?}", filter);
 
-        let repo = self
-            .octo
-            .get::<models::RepositoryWithExtension, String, ()>(
-                format!(
-                    "{}repos/{}/{}",
-                    self.octo.base_url,
-                    filter.owner.expect("Repository owner is mandatory"),
-                    filter.name.expect("Repository name is mandatory")
-                ),
-                None::<&()>,
-            )
-            .await?;
+//         let repo = self
+//             .octo
+//             .get::<models::RepositoryWithExtension, String, ()>(
+//                 format!(
+//                     "{}repos/{}/{}",
+//                     self.octo.base_url,
+//                     filter.owner.expect("Repository owner is mandatory"),
+//                     filter.name.expect("Repository name is mandatory")
+//                 ),
+//                 None::<&()>,
+//             )
+//             .await?;
 
-        Ok(Streamable::Async(
-            stream::once(async { repo.into() }).into(),
-        ))
-    }
-}
+//         Ok(Streamable::Async(
+//             stream::once(async { repo.into() }).into(),
+//         ))
+//     }
+// }

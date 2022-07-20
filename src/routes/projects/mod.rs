@@ -7,7 +7,7 @@ use deathnote_contributions_feeder::domain::*;
 use deathnote_contributions_feeder::utils::caches;
 use deathnote_contributions_feeder::{database, github, starknet};
 
-use futures::{future, stream::StreamExt};
+use futures::future;
 use http_api_problem::{HttpApiProblem, StatusCode};
 use log::{error, warn};
 use rocket::{get, http::Status, post, serde::json::Json, State};
@@ -20,32 +20,23 @@ pub async fn new_project(
     project: Json<dto::ProjectCreation<'_>>,
     connection: DbConn,
 ) -> Result<Status, Json<HttpApiProblem>> {
-    let filter = ProjectFilter {
-        owner: Some(String::from(project.owner)),
-        name: Some(String::from(project.name)),
-    };
-
     let database = database::API::new(connection);
     let github = github::API::new();
 
-    let projects = github
-        .fetch(filter)
+    let project = github
+        .get_project_by_owner_and_name(project.owner, project.name)
         .await
         .map_err(|error| {
             HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
                 .title("Fetching projects failed")
                 .detail(error.to_string())
-        })?
-        .collect::<Vec<_>>()
-        .await;
-
-    for project in projects {
-        database.log(project).await.map_err(|error| {
-            HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-                .title("Saving projects to DB failed")
-                .detail(error.to_string())
         })?;
-    }
+
+    database.upsert_project(project).map_err(|error| {
+        HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+            .title("Saving projects to DB failed")
+            .detail(error.to_string())
+    })?;
 
     Ok(Status::Accepted)
 }
