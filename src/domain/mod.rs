@@ -1,7 +1,10 @@
 mod actions;
+pub mod entities;
+pub mod errors;
+pub mod repositories;
 mod traits;
 mod types;
-
+pub mod value_objects;
 pub use traits::contracts_interface::*;
 
 pub use types::contracts_update_status::*;
