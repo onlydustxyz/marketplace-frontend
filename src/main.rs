@@ -36,8 +36,8 @@ embed_migrations!("migrations");
 
 #[tokio::main]
 async fn main() {
-    env_logger::init();
     dotenv().ok();
+    env_logger::init();
     run_db_migrations();
     github::API::initialize();
 

@@ -54,13 +54,15 @@ pub async fn create_contribution(
         title: Some(github_issue.title),
         description: Some(github_issue.body.unwrap_or_default()),
         status: domain::ContributionStatus::Open,
-        external_link: Some(github_issue.url.to_string()),
+        external_link: Some(github_issue.html_url),
         gate: body.gate,
         metadata,
     };
 
     match queue.write() {
-        Ok(mut queue) => queue.push_front(Action::CreateContribution { contribution }),
+        Ok(mut queue) => queue.push_front(Action::CreateContribution {
+            contribution: Box::new(contribution),
+        }),
         Err(error) => {
             return Err(Json(
                 HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)

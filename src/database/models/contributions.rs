@@ -1,6 +1,6 @@
 use crate::{
     database::schema::*,
-    domain::{self},
+    domain::{self, ContributionStatus},
 };
 use diesel::Queryable;
 use rocket::serde::{Deserialize, Serialize};
@@ -83,7 +83,7 @@ impl From<domain::Contribution> for NewContribution {
             transaction_hash: None,
             title: contribution.title,
             description: contribution.description,
-            external_link: contribution.external_link,
+            external_link: contribution.external_link.map(|link| link.to_string()),
             difficulty: contribution.metadata.difficulty,
             technology: contribution.metadata.technology,
             duration: contribution.metadata.duration,
@@ -114,11 +114,16 @@ impl From<Contribution> for domain::Contribution {
                 }
             },
             project_id: contribution.project_id,
-            status: contribution.status.parse().unwrap(),
+            status: contribution
+                .status
+                .parse()
+                .unwrap_or(ContributionStatus::Open),
             // Safe to unwrap because the value stored can only come from an u8
             gate: contribution.gate.try_into().unwrap(),
             description: contribution.description,
-            external_link: contribution.external_link,
+            external_link: contribution
+                .external_link
+                .map(|link| url::Url::parse(&link).unwrap()),
             title: contribution.title,
             metadata: domain::ContributionMetadata {
                 difficulty: contribution.difficulty,

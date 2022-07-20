@@ -186,7 +186,7 @@ impl API {
             match action {
                 Action::CreateContribution {
                     contribution: contribution_,
-                } => self.new_contribution(contribution_.clone(), Some(hash.into())),
+                } => self.new_contribution(*contribution_.clone(), Some(hash.into())),
 
                 Action::AssignContributor {
                     contribution_id: id_,
