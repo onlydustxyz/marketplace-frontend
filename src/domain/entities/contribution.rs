@@ -1,4 +1,5 @@
-use crate::domain::{ContributorId, ProjectId};
+use crate::domain::*;
+use std::str::FromStr;
 use url::Url;
 
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -31,4 +32,21 @@ pub struct Metadata {
     pub duration: Option<String>,
     pub context: Option<String>,
     pub r#type: Option<String>,
+}
+
+impl FromStr for Status {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "OPEN" => Ok(Status::Open),
+            "ASSIGNED" => Ok(Status::Assigned),
+            "COMPLETED" => Ok(Status::Completed),
+            "ABANDONED" => Ok(Status::Abandoned),
+            _ => Err(Error::ParseStatusError(format!(
+                "Unable to parse {} into a contribution status",
+                s,
+            ))),
+        }
+    }
 }

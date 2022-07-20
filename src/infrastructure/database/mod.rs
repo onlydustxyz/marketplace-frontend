@@ -2,6 +2,8 @@ use diesel::PgConnection;
 
 use crate::database::connections::pg_connection::DbConn;
 
+// TODO remove the pub once refactoring is done
+pub mod models;
 mod project_repository;
 
 pub struct Database {
@@ -14,6 +16,6 @@ impl Database {
     }
 
     fn connection(&self) -> &PgConnection {
-        &*self.connection
+        &self.connection
     }
 }

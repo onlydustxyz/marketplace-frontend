@@ -1,10 +1,18 @@
+mod entities;
+pub use entities::*;
+
+mod repositories;
+pub use repositories::*;
+
+mod value_objects;
+pub use value_objects::*;
+
+mod errors;
+pub use errors::*;
+
 mod actions;
-pub mod entities;
-pub mod errors;
-pub mod repositories;
 mod traits;
 mod types;
-pub mod value_objects;
 pub use traits::contracts_interface::*;
 
 pub use types::contracts_update_status::*;
@@ -12,7 +20,6 @@ pub use types::contribution::{
     Contribution, Filter as ContributionFilter, Id as ContributionId,
     Metadata as ContributionMetadata, Status as ContributionStatus,
 };
-pub use types::contributor::{Contributor, Id as ContributorId};
 pub use types::project::{Filter as ProjectFilter, Id as ProjectId, IndexingStatus, Project};
 
 pub use actions::*;

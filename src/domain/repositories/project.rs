@@ -1,5 +1,5 @@
-use crate::domain::{errors::Error, value_objects::ProjectWithContributions};
+use crate::domain::*;
 
-pub trait ProjectRepository {
+pub trait Repository {
     fn find_all_with_contributions(&self) -> Result<Vec<ProjectWithContributions>, Error>;
 }

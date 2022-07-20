@@ -39,16 +39,6 @@ pub struct ProjectWithContributions {
     pub contributions: Vec<Contribution>,
 }
 
-impl From<Project> for domain::Project {
-    fn from(project: Project) -> Self {
-        Self {
-            id: project.id,
-            name: project.name,
-            owner: project.owner,
-        }
-    }
-}
-
 impl From<domain::Project> for NewProject {
     fn from(project: domain::Project) -> Self {
         Self {
@@ -64,18 +54,6 @@ impl From<domain::IndexingStatus> for ProjectIndexingStatusUpdateForm {
         Self {
             id: status.project_id,
             last_indexed_time: status.last_update_time,
-        }
-    }
-}
-
-impl From<(Project, Vec<Contribution>)> for ProjectWithContributions {
-    fn from((project, contributions): (Project, Vec<Contribution>)) -> Self {
-        Self {
-            id: project.id,
-            owner: project.owner,
-            name: project.name,
-            last_indexed_time: project.last_indexed_time,
-            contributions,
         }
     }
 }

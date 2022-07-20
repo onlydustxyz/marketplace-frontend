@@ -1,1 +1,2 @@
-pub mod project;
+mod project;
+pub use project::Repository as ProjectRepository;

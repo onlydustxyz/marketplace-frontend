@@ -1,11 +1,12 @@
 mod dto;
 
 use deathnote_contributions_feeder::database::connections::pg_connection::DbConn;
-use deathnote_contributions_feeder::domain::{self, *};
+use deathnote_contributions_feeder::domain::*;
+use deathnote_contributions_feeder::infrastructure::Database;
 use deathnote_contributions_feeder::utils::caches;
 use deathnote_contributions_feeder::{database, github, starknet};
 
-use futures::future;
+use futures::future::{self, OptionFuture};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use log::{error, warn};
 use rocket::{get, http::Status, post, serde::json::Json, State};
@@ -46,16 +47,16 @@ pub async fn list_projects(
     repo_cache: &State<caches::RepoCache>,
     contributor_cache: &State<caches::ContributorCache>,
 ) -> Result<Json<Vec<dto::Project>>, Json<HttpApiProblem>> {
-    let database = database::API::new(connection);
+    let database = Database::new(connection);
 
-    let projects_with_contribution_iterator =
-        database
-            .list_projects_with_contributions()
-            .map_err(|error| {
-                HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-                    .title("Listing projects failed")
-                    .detail(error.to_string())
-            })?;
+    let projects_with_contribution_iterator = database
+        .find_all_with_contributions()
+        .map_err(|error| {
+            HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+                .title("Listing projects failed")
+                .detail(error.to_string())
+        })?
+        .into_iter();
 
     // Spawn concurent tasks
     // One for each project
@@ -85,13 +86,16 @@ pub async fn list_projects(
 }
 
 async fn build_project(
-    project: database::models::ProjectWithContributions,
+    project: ProjectWithContributions,
     repo_cache: &caches::RepoCache,
     contributor_cache: &caches::ContributorCache,
 ) -> Option<dto::Project> {
     let github_repository = repo_cache
-        .get_or_insert(&project.id, || async {
-            match github::API::new().repository_by_id(&project.id).await {
+        .get_or_insert(&project.project.id, || async {
+            match github::API::new()
+                .repository_by_id(&project.project.id)
+                .await
+            {
                 Ok(repo) => Some(repo),
                 Err(e) => {
                     warn!("Unable to fetch repository from GitHub: {}", e.to_string());
@@ -125,14 +129,14 @@ async fn build_project(
         .collect();
 
     let project = dto::Project {
-        id: project.id,
-        title: project.name.clone(),
+        id: project.project.id,
+        title: project.project.name.clone(),
         description: github_repository.description,
         logo: github_repository.owner.unwrap().avatar_url,
         github_link: github_repository.html_url.unwrap_or_else(|| {
             Url::parse(&format!(
                 "https://github.com/{}/{}",
-                project.owner, project.name
+                project.project.owner, project.project.name
             ))
             .unwrap()
         }),
@@ -143,13 +147,17 @@ async fn build_project(
 }
 
 async fn build_contribution(
-    contribution: database::models::Contribution,
+    contribution: Contribution,
     contributor_cache: &caches::ContributorCache,
 ) -> Option<dto::Contribution> {
-    let contributor =
-        build_contributor(contributor_cache, contribution.contributor_id.clone()).await;
+    let contributor = OptionFuture::from(
+        contribution
+            .contributor_id
+            .map(|id| build_contributor(contributor_cache, id)),
+    )
+    .await
+    .flatten();
 
-    let contribution = domain::Contribution::from(contribution);
     let mut contribution = dto::Contribution::from(contribution);
 
     if contributor.is_some() {
@@ -161,13 +169,8 @@ async fn build_contribution(
 
 async fn build_contributor(
     contributor_cache: &caches::ContributorCache,
-    contributor_id: String,
+    contributor_id: ContributorId,
 ) -> Option<Contributor> {
-    if contributor_id.is_empty() {
-        return None;
-    }
-
-    let contributor_id: ContributorId = contributor_id.into();
     contributor_cache
         .get_or_insert(&contributor_id, || async {
             fetch_contributor(&contributor_id).await
