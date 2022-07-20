@@ -1,8 +1,7 @@
 mod dto;
 
-use deathnote_contributions_feeder::database::connections::pg_connection::DbConn;
 use deathnote_contributions_feeder::domain::*;
-use deathnote_contributions_feeder::infrastructure::Database;
+use deathnote_contributions_feeder::infrastructure::database;
 use deathnote_contributions_feeder::utils::caches;
 use deathnote_contributions_feeder::{github, starknet};
 
@@ -18,9 +17,9 @@ use url::Url;
 #[post("/projects", format = "application/json", data = "<project>")]
 pub async fn new_project(
     project: Json<dto::ProjectCreation<'_>>,
-    connection: DbConn,
+    connection: database::Connection,
 ) -> Result<Status, Json<HttpApiProblem>> {
-    let database = Database::new(connection);
+    let database = database::Client::new(connection);
     let github = github::API::new();
 
     let project = github
@@ -44,11 +43,11 @@ pub async fn new_project(
 #[openapi(tag = "Projects")]
 #[get("/projects")]
 pub async fn list_projects(
-    connection: DbConn,
+    connection: database::Connection,
     repo_cache: &State<caches::RepoCache>,
     contributor_cache: &State<caches::ContributorCache>,
 ) -> Result<Json<Vec<dto::Project>>, Json<HttpApiProblem>> {
-    let database = Database::new(connection);
+    let database = database::Client::new(connection);
 
     let projects_with_contribution_iterator = database
         .find_all_with_contributions()

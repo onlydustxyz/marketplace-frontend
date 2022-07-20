@@ -1,4 +1,4 @@
-use super::Database;
+use super::Client;
 
 use super::models;
 use crate::database::schema::projects::{self, dsl::*};
@@ -7,7 +7,7 @@ use diesel::prelude::*;
 use diesel::query_dsl::BelongingToDsl;
 use itertools::Itertools;
 
-impl ProjectRepository for Database {
+impl ProjectRepository for Client {
     fn find_all_with_contributions(&self) -> Result<Vec<ProjectWithContributions>> {
         let project_list = projects
             .load::<models::Project>(self.connection())

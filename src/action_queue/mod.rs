@@ -4,6 +4,7 @@ mod tests;
 use deathnote_contributions_feeder::{
     database::{self},
     domain::Action,
+    infrastructure::database::ConnectionPool,
     starknet,
 };
 
@@ -41,10 +42,10 @@ impl Default for ActionQueue {
     }
 }
 
-pub async fn execute_actions(actions: Vec<Action>) {
+pub async fn execute_actions(database_pool: &ConnectionPool, actions: Vec<Action>) {
     let account = starknet::make_account_from_env();
     let starknet = starknet::API::new(&account);
-    let database = database::API::default();
+    let database = database::API::new(database_pool);
 
     match starknet.execute_actions(&actions).await {
         Ok(transaction_hash) => match database.execute_actions(&actions, &transaction_hash) {

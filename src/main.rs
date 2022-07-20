@@ -16,8 +16,8 @@ use tokio::{
 };
 
 use deathnote_contributions_feeder::{
-    database::{connections::pg_connection, run_db_migrations},
     github,
+    infrastructure::database,
     utils::caches::{ContributorCache, IssueCache, RepoCache},
 };
 
@@ -37,10 +37,11 @@ embed_migrations!("migrations");
 async fn main() {
     dotenv().ok();
     env_logger::init();
-    run_db_migrations();
     github::API::initialize();
 
     let action_queue = Arc::new(RwLock::new(ActionQueue::new()));
+    let database_pool = database::init_pool();
+    database::run_migrations(&database_pool);
 
     // Allow to gracefully exit kill all thread on ctrl+c
     let (shutdown_send, mut shutdown_recv) = oneshot::channel();
@@ -53,13 +54,14 @@ async fn main() {
     // Regularly create a transaction with tasks stored in the queue
     let cloned_action_queue = action_queue.clone();
     let queue_handler = tokio::spawn(async move {
+        let database_pool = database::init_pool();
         loop {
             let mut next_actions = vec![];
             if let Ok(mut queue) = cloned_action_queue.write() {
                 next_actions = queue.pop_n(100);
             };
             if !next_actions.is_empty() {
-                execute_actions(next_actions).await;
+                execute_actions(&database_pool, next_actions).await;
             }
 
             // Look if shutdown signat have been issued
@@ -74,7 +76,7 @@ async fn main() {
     });
 
     let rocket_handler = rocket::build()
-        .manage(pg_connection::init_pool())
+        .manage(database_pool)
         .manage(action_queue.clone())
         .manage(IssueCache::default())
         .manage(RepoCache::default())
