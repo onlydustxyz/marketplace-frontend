@@ -3,8 +3,6 @@ mod traits;
 mod types;
 
 pub use traits::contracts_interface::*;
-pub use traits::fetcher::*;
-pub use traits::logger::*;
 
 pub use types::contracts_update_status::*;
 pub use types::contribution::{
