@@ -2,9 +2,8 @@
 mod tests;
 
 use deathnote_contributions_feeder::{
-    database::{self},
-    domain::Action,
-    infrastructure::database::ConnectionPool,
+    domain::*,
+    infrastructure::database::{self, ConnectionPool},
     starknet,
 };
 
@@ -45,13 +44,56 @@ impl Default for ActionQueue {
 pub async fn execute_actions(database_pool: &ConnectionPool, actions: Vec<Action>) {
     let account = starknet::make_account_from_env();
     let starknet = starknet::API::new(&account);
-    let database = database::API::new(database_pool);
+    let database = database::Client::new(database::Connection::from_pool(database_pool));
 
     match starknet.execute_actions(&actions).await {
-        Ok(transaction_hash) => match database.execute_actions(&actions, &transaction_hash) {
+        Ok(transaction_hash) => match store_action_result(&database, &actions, &transaction_hash) {
             Ok(_) => info!("All actions executed successfully"),
-            Err(e) => warn!("Cannot execute actions on database: {}", e),
+            Err(e) => warn!("Cannot execute actions on database: {}", e.to_string()),
         },
         Err(e) => warn!("Cannot execute actions on smart contract: {}", e),
     }
+}
+
+fn store_action_result(
+    contribution_repository: &dyn ContributionRepository,
+    actions: &[Action],
+    hash: &str,
+) -> Result<()> {
+    for action in actions {
+        match action {
+            Action::CreateContribution {
+                contribution: contribution_,
+            } => contribution_repository.store(*contribution_.to_owned(), hash.to_owned()),
+
+            Action::AssignContributor {
+                contribution_id: id_,
+                contributor_id: contributor_id_,
+            } => contribution_repository.update_contributor_and_status(
+                id_.to_owned(),
+                Some(*contributor_id_),
+                ContributionStatus::Assigned,
+                hash.to_owned(),
+            ),
+
+            Action::UnassignContributor {
+                contribution_id: id_,
+            } => contribution_repository.update_contributor_and_status(
+                id_.to_owned(),
+                None,
+                ContributionStatus::Open,
+                hash.to_owned(),
+            ),
+
+            Action::ValidateContribution {
+                contribution_id: id_,
+            } => contribution_repository.update_status(
+                id_.to_owned(),
+                ContributionStatus::Completed,
+                hash.to_owned(),
+            ),
+        }?;
+    }
+
+    Ok(())
 }

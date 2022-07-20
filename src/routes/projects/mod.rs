@@ -31,7 +31,7 @@ pub async fn new_project(
                 .detail(error.to_string())
         })?;
 
-    database.store(project).map_err(|error| {
+    ProjectRepository::store(&database, project).map_err(|error| {
         HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
             .title("Saving projects to DB failed")
             .detail(error.to_string())
