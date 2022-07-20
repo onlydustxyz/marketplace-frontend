@@ -1,14 +1,14 @@
 use super::Database;
 
 use super::models;
-use crate::database::schema::projects::dsl::*;
+use crate::database::schema::projects::{self, dsl::*};
 use crate::domain::*;
 use diesel::prelude::*;
 use diesel::query_dsl::BelongingToDsl;
 use itertools::Itertools;
 
 impl ProjectRepository for Database {
-    fn find_all_with_contributions(&self) -> Result<Vec<ProjectWithContributions>, Error> {
+    fn find_all_with_contributions(&self) -> Result<Vec<ProjectWithContributions>> {
         let project_list = projects
             .load::<models::Project>(self.connection())
             .map_err(|e| Error::ProjectListingError(e.to_string()))?;
@@ -26,6 +26,19 @@ impl ProjectRepository for Database {
 
         Ok(result)
     }
+
+    fn store(&self, project: Project) -> Result<()> {
+        let project: models::NewProject = project.into();
+        diesel::insert_into(projects::table)
+            .values(&project)
+            .on_conflict(id)
+            .do_update()
+            .set(&project)
+            .execute(self.connection())
+            .map_err(|e| Error::ProjectListingError(e.to_string()))?;
+
+        Ok(())
+    }
 }
 
 impl From<(models::Project, Vec<models::Contribution>)> for ProjectWithContributions {
@@ -39,6 +52,16 @@ impl From<(models::Project, Vec<models::Contribution>)> for ProjectWithContribut
 
 impl From<models::Project> for Project {
     fn from(project: models::Project) -> Self {
+        Self {
+            id: project.id,
+            name: project.name,
+            owner: project.owner,
+        }
+    }
+}
+
+impl From<Project> for models::NewProject {
+    fn from(project: Project) -> Self {
         Self {
             id: project.id,
             name: project.name,

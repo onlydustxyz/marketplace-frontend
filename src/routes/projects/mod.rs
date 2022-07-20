@@ -4,13 +4,14 @@ use deathnote_contributions_feeder::database::connections::pg_connection::DbConn
 use deathnote_contributions_feeder::domain::*;
 use deathnote_contributions_feeder::infrastructure::Database;
 use deathnote_contributions_feeder::utils::caches;
-use deathnote_contributions_feeder::{database, github, starknet};
+use deathnote_contributions_feeder::{github, starknet};
 
 use futures::future::{self, OptionFuture};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use log::{error, warn};
 use rocket::{get, http::Status, post, serde::json::Json, State};
 use rocket_okapi::openapi;
+use std::result::Result;
 use url::Url;
 
 #[openapi(tag = "Projects")]
@@ -19,7 +20,7 @@ pub async fn new_project(
     project: Json<dto::ProjectCreation<'_>>,
     connection: DbConn,
 ) -> Result<Status, Json<HttpApiProblem>> {
-    let database = database::API::new(connection);
+    let database = Database::new(connection);
     let github = github::API::new();
 
     let project = github
@@ -31,7 +32,7 @@ pub async fn new_project(
                 .detail(error.to_string())
         })?;
 
-    database.upsert_project(project.into()).map_err(|error| {
+    database.store(project).map_err(|error| {
         HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
             .title("Saving projects to DB failed")
             .detail(error.to_string())
