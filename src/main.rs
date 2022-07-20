@@ -23,14 +23,9 @@ use deathnote_contributions_feeder::{
 };
 
 use dotenv::dotenv;
-use mockall::lazy_static;
 use rocket::routes;
 
 use crate::action_queue::{execute_actions, ActionQueue};
-
-lazy_static! {
-    pub static ref QUEUE: Arc<RwLock<ActionQueue>> = Arc::new(RwLock::new(ActionQueue::new()));
-}
 
 #[macro_use]
 extern crate rocket;
@@ -46,6 +41,8 @@ async fn main() {
     run_db_migrations();
     github::API::initialize();
 
+    let action_queue = Arc::new(RwLock::new(ActionQueue::new()));
+
     // Allow to gracefully exit kill all thread on ctrl+c
     let (shutdown_send, mut shutdown_recv) = oneshot::channel();
     let ctr_c_handler = tokio::spawn(async {
@@ -55,10 +52,11 @@ async fn main() {
     });
 
     // Regularly create a transaction with tasks stored in the queue
+    let cloned_action_queue = action_queue.clone();
     let queue_handler = tokio::spawn(async move {
         loop {
             let mut next_actions = vec![];
-            if let Ok(mut queue) = QUEUE.write() {
+            if let Ok(mut queue) = cloned_action_queue.write() {
                 next_actions = queue.deref_mut().take(100).collect::<Vec<_>>();
             };
             if !next_actions.is_empty() {
@@ -78,7 +76,7 @@ async fn main() {
 
     let rocket_handler = rocket::build()
         .manage(pg_connection::init_pool())
-        .manage(QUEUE.clone())
+        .manage(action_queue.clone())
         .manage(IssueCache::default())
         .manage(RepoCache::default())
         .manage(ContributorCache::default())
