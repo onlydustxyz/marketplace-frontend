@@ -1,7 +1,7 @@
 use std::sync::{Arc, RwLock};
 
 use crypto_bigint::U256;
-use deathnote_contributions_feeder::domain::{self, Action, ContributionId, ProjectId};
+use deathnote_contributions_feeder::domain::{self, Action, ContributionId};
 use deathnote_contributions_feeder::github;
 use http_api_problem::{HttpApiProblem, StatusCode};
 use log::info;
@@ -17,25 +17,23 @@ use super::ApiKey;
 
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]
-pub struct CreateContributionBody {
-    contribution_id: ContributionId,
-    project_id: ProjectId,
+pub struct CreateContributionFromGitHubBody {
+    issue_number: u128,
+    project_id: u128,
     gate: u8,
 }
 
 #[openapi(tag = "Contributions")]
-#[post("/contribution", format = "application/json", data = "<body>")]
+#[post("/contribution/github", format = "application/json", data = "<body>")]
 pub async fn create_contribution(
     _api_key: ApiKey,
-    body: Json<CreateContributionBody>,
+    body: Json<CreateContributionFromGitHubBody>,
     github_api: &State<github::API>,
     queue: &State<Arc<RwLock<ActionQueue>>>,
 ) -> Result<Status, Json<HttpApiProblem>> {
     let body = body.into_inner();
 
-    let github_issue = github_api
-        .issue(&body.project_id, &body.contribution_id)
-        .await;
+    let github_issue = github_api.issue(body.project_id, body.issue_number).await;
     let github_issue = match github_issue {
         Ok(github_issue) => github_issue,
         Err(error) => {
@@ -50,8 +48,8 @@ pub async fn create_contribution(
     let metadata = github::extract_metadata(github_issue.clone());
 
     let contribution = domain::Contribution {
-        id: body.contribution_id,
-        project_id: body.project_id,
+        id: (body.project_id * 1_000_000 + body.issue_number).to_string(),
+        project_id: body.project_id.to_string(),
         contributor_id: None,
         title: Some(github_issue.title),
         description: Some(github_issue.body.unwrap_or_default()),

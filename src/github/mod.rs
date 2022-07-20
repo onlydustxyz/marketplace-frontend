@@ -42,12 +42,9 @@ impl API {
 
     pub async fn issue(
         &self,
-        project_id: &ProjectId,
-        contribution_id: &ContributionId,
+        project_id: u128,
+        issue_number: u128,
     ) -> Result<octocrab::models::issues::Issue> {
-        let project_id: u128 = project_id.parse().map_err(anyhow::Error::msg)?;
-        let issue_number: u128 = contribution_id.parse().map_err(anyhow::Error::msg)?;
-
         self.octo
             .get::<octocrab::models::issues::Issue, String, ()>(
                 format!(
