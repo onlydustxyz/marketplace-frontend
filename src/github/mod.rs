@@ -42,19 +42,17 @@ impl API {
 
     pub async fn issue(
         &self,
+        project_id: &ProjectId,
         contribution_id: &ContributionId,
     ) -> Result<octocrab::models::issues::Issue> {
-        let contribution_id: u128 = contribution_id.parse().map_err(anyhow::Error::msg)?;
-
-        const PROJECT_MULTIPLIER: u128 = 1_000_000;
-        let project_id_ = contribution_id / PROJECT_MULTIPLIER;
-        let issue_number = contribution_id % PROJECT_MULTIPLIER;
+        let project_id: u128 = project_id.parse().map_err(anyhow::Error::msg)?;
+        let issue_number: u128 = contribution_id.parse().map_err(anyhow::Error::msg)?;
 
         self.octo
             .get::<octocrab::models::issues::Issue, String, ()>(
                 format!(
                     "{}repositories/{}/issues/{}",
-                    self.octo.base_url, project_id_, issue_number
+                    self.octo.base_url, project_id, issue_number
                 ),
                 None,
             )
