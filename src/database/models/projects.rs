@@ -15,7 +15,7 @@ pub struct Project {
     pub last_indexed_time: Option<SystemTime>,
 }
 
-#[derive(Insertable)]
+#[derive(Insertable, AsChangeset)]
 #[table_name = "projects"]
 pub struct NewProject {
     pub id: String,

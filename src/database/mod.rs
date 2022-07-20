@@ -7,6 +7,7 @@ use anyhow::Result;
 use connections::pg_connection::{self, DbConn};
 use diesel::prelude::*;
 use diesel::query_dsl::BelongingToDsl;
+use itertools::Itertools;
 use std::{
     env,
     sync::{Mutex, MutexGuard},
@@ -117,16 +118,15 @@ impl API {
         Ok(())
     }
 
-    pub fn upsert_project(&self, project: domain::Project) -> Result<()> {
-        if self
-            .find_projects_by_owner_and_name(&project.owner, &project.name)
-            .count()
-            == 0
-        {
-            self.insert_project(project.into())
-        } else {
-            Ok(())
-        }
+    pub fn upsert_project(&self, project: db_model::NewProject) -> Result<()> {
+        diesel::insert_into(projects::table)
+            .values(&project)
+            .on_conflict(id)
+            .do_update()
+            .set(&project)
+            .execute(&**self.connection())?;
+
+        Ok(())
     }
 
     pub fn insert_project(&self, project: db_model::NewProject) -> Result<()> {
@@ -148,7 +148,7 @@ impl API {
             .load::<db_model::Project>(&**self.connection())
             .expect("Error while fetching projects from database");
 
-        results.into_iter().map(|p| p.into())
+        results.into_iter().map_into()
     }
 
     pub fn find_projects(
@@ -169,7 +169,7 @@ impl API {
             .load::<db_model::Project>(&**self.connection())
             .expect("Error while fetching projects from database");
 
-        results.into_iter().map(|p| p.into())
+        results.into_iter().map_into()
     }
 
     pub fn list_projects_with_contributions(

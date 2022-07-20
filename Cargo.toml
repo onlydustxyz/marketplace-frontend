@@ -13,31 +13,47 @@ version = "0.0.1"
 default-run = "deathnote_contributions_feeder"
 
 [dependencies]
-anyhow = "1.0.57"
+
+# Async
+tokio = { version = "1.18.2", features = ["full"] }
+async-trait = "0.1.56"
+futures = { version = "0.3.21", features = ["alloc"] }
+
+# Cache
+stretto = { version = "0.5", features = ["async"] }
+
+# Database
+r2d2 = "0.8.10"
+r2d2-diesel = "1.0.0"
+diesel_migrations = "1.4.0"
 diesel = { version = "1.4.8", default-features = false, features = [
 	"postgres",
 	"serde_json",
 ] }
-r2d2 = "0.8.10"
-r2d2-diesel = "1.0.0"
-diesel_migrations = "1.4.0"
+
+# Github
+octocrab = "0.16.0"
+
+# Http client
+url = "2.2.2"
+
+# Http Server
+rocket_okapi = { version = "0.8.0-rc.2", features = ["swagger"] }
+okapi = { version = "0.7.0-rc.1" }
+rocket = { version = "0.5.0-rc.2", features = ["json"] }
+http-api-problem = { version = "0.53.0", features = ["json-schema"] }
+schemars = "0.8"
+
+# Starknet
+starknet = { git = "https://github.com/xJonathanLEI/starknet-rs" }
+crypto-bigint = { version = "0.4.8", features = ["serde"] }
+
+# Utils
+serde = { version = "1.0.137", features = ["derive"] }
+serde_json = "1.0.81"
+anyhow = "1.0.57"
 dotenv = "0.15.0"
 env_logger = "0.9.0"
 log = "0.4.17"
-octocrab = "0.16.0"
-rocket = { version = "0.5.0-rc.2", features = ["json"] }
-serde = { version = "1.0.137", features = ["derive"] }
-serde_json = "1.0.81"
-uuid = { version = "1.0.0", features = ["v4"] }
-starknet = { git = "https://github.com/xJonathanLEI/starknet-rs" }
-tokio = { version = "1.18.2", features = ["full"] }
-async-trait = "0.1.56"
-mockall = "0.11.1"
-futures = { version = "0.3.21", features = ["alloc"] }
-url = "2.2.2"
-crypto-bigint = { version = "0.4.8", features = ["serde"] }
-okapi = { version = "0.7.0-rc.1" }
-rocket_okapi = { version = "0.8.0-rc.2", features = ["swagger"] }
-schemars = "0.8"
-http-api-problem = { version = "0.53.0", features = ["json-schema"] }
-stretto = { version = "0.5", features = ["async"] }
+itertools = "0.10.3"
+mapinto = "0.2.1"
