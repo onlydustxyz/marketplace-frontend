@@ -103,27 +103,3 @@ impl Default for API {
         Self::new()
     }
 }
-
-// #[async_trait]
-// impl Fetcher<ProjectFilter, Project> for API {
-//     async fn fetch(&self, filter: ProjectFilter) -> FetchResult<Project> {
-//         info!("Fetching repository with filter {:?}", filter);
-
-//         let repo = self
-//             .octo
-//             .get::<models::RepositoryWithExtension, String, ()>(
-//                 format!(
-//                     "{}repos/{}/{}",
-//                     self.octo.base_url,
-//                     filter.owner.expect("Repository owner is mandatory"),
-//                     filter.name.expect("Repository name is mandatory")
-//                 ),
-//                 None::<&()>,
-//             )
-//             .await?;
-
-//         Ok(Streamable::Async(
-//             stream::once(async { repo.into() }).into(),
-//         ))
-//     }
-// }
