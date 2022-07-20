@@ -1,6 +1,7 @@
 use async_trait::async_trait;
 use futures::lock::Mutex;
 use log::{debug, error};
+use mapinto::ResultMapInto;
 use starknet::core::types::FieldElement;
 use std::collections::{hash_map::Entry, HashMap};
 
@@ -51,7 +52,7 @@ impl Registry {
                 vec![github_identifier],
             )
             .await
-            .map(|c| c.into())
+            .map_into()
             .ok()
     }
 }
@@ -77,7 +78,7 @@ impl ContributorRegistryViewer for Registry {
         self.contract_viewer
             .call("get_user_information", vec![account])
             .await
-            .map(|c| c.into())
+            .map_into()
             .ok()
     }
 }

@@ -32,7 +32,7 @@ pub async fn new_project(
                 .detail(error.to_string())
         })?;
 
-    database.upsert_project(project).map_err(|error| {
+    database.upsert_project(project.into()).map_err(|error| {
         HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
             .title("Saving projects to DB failed")
             .detail(error.to_string())
