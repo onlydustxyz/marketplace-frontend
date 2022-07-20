@@ -45,7 +45,7 @@ http-api-problem = { version = "0.53.0", features = ["json-schema"] }
 schemars = "0.8"
 
 # Starknet
-starknet = { git = "https://github.com/xJonathanLEI/starknet-rs" }
+starknet = { git = "https://github.com/ofux/starknet-rs" }
 crypto-bigint = { version = "0.4.8", features = ["serde"] }
 
 # Utils
