@@ -1,48 +1,25 @@
-pub mod connections;
 pub mod schema;
 
 use crate::domain::{self, Action};
 use anyhow::Result;
-use connections::pg_connection::{self, DbConn};
 use diesel::prelude::*;
 use itertools::Itertools;
-use std::{
-    env,
-    sync::{Mutex, MutexGuard},
-};
+use std::sync::{Mutex, MutexGuard};
 
 use self::schema::{
     contributions::{self},
     projects::dsl::*,
 };
-use crate::infrastructure::db_model;
-
-pub fn establish_connection() -> Result<DbConn> {
-    pg_connection::init_pool()
-        .get()
-        .map(DbConn)
-        .map_err(anyhow::Error::msg)
-}
-
-fn establish_migration_connection() -> PgConnection {
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    PgConnection::establish(&database_url)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
-}
-
-pub fn run_db_migrations() {
-    let connection = establish_migration_connection();
-    diesel_migrations::run_pending_migrations(&connection).expect("diesel migration failure");
-}
+use crate::infrastructure::database::{models as db_model, Connection as DbConn, ConnectionPool};
 
 pub struct API {
     connection: Mutex<DbConn>,
 }
 
 impl API {
-    pub fn new(connection: DbConn) -> Self {
+    pub fn new(pool: &ConnectionPool) -> Self {
         API {
-            connection: Mutex::new(connection),
+            connection: Mutex::new(DbConn::from_pool(pool)),
         }
     }
 
@@ -167,11 +144,5 @@ impl API {
         }
 
         Ok(())
-    }
-}
-
-impl Default for API {
-    fn default() -> Self {
-        Self::new(establish_connection().expect("Unable to get a connection from the pool"))
     }
 }
