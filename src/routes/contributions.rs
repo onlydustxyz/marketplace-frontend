@@ -33,7 +33,9 @@ pub async fn create_contribution(
 ) -> Result<Status, Json<HttpApiProblem>> {
     let body = body.into_inner();
 
-    let github_issue = github_api.issue(&body.contribution_id).await;
+    let github_issue = github_api
+        .issue(&body.project_id, &body.contribution_id)
+        .await;
     let github_issue = match github_issue {
         Ok(github_issue) => github_issue,
         Err(error) => {

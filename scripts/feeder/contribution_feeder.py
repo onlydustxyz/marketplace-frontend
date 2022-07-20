@@ -109,7 +109,7 @@ if __name__ == "__main__":
         project_id = projects_by_name[project]["id"]
 
         contribution = {
-            "contribution_id" : str(int(project_id)*1000000 + int(issue_number)),
+            "contribution_id" : issue_number,
             "project_id" : project_id,
             "gate": int(gate)
         }
