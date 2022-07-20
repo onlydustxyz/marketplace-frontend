@@ -5,6 +5,7 @@ mod connection;
 pub use connection::{init_pool, DbConn as Connection, Pool as ConnectionPool};
 pub mod models;
 
+mod contribution_repository;
 mod project_repository;
 
 pub fn run_migrations(pool: &ConnectionPool) {
