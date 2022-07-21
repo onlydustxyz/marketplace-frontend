@@ -2,6 +2,7 @@ pub enum Error {
 	ParseStatusError(String),
 	ProjectListingError(String),
 	ContributionStoreError(String),
+	TransactionRevertedError(String),
 }
 
 impl ToString for Error {
@@ -10,6 +11,7 @@ impl ToString for Error {
 			Error::ParseStatusError(e) => e.to_owned(),
 			Error::ProjectListingError(e) => e.to_owned(),
 			Error::ContributionStoreError(e) => e.to_owned(),
+			Error::TransactionRevertedError(e) => e.to_owned(),
 		}
 	}
 }

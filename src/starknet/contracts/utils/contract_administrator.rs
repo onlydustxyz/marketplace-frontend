@@ -1,32 +1,24 @@
-use std::{thread, time::Duration};
-
+use crate::starknet::sequencer;
 use anyhow::{anyhow, Result};
 use log::{info, warn};
 use starknet::{
 	accounts::{Account, Call},
-	core::types::{AddTransactionResult, FieldElement, TransactionStatus},
+	core::types::{AddTransactionResult, TransactionStatus},
 	providers::{Provider, SequencerGatewayProvider},
 };
-
-use super::sequencer;
+use std::{thread, time::Duration};
 
 pub struct ContractAdministrator<'a, A: Account + Sync> {
-	contract_address: FieldElement,
 	administrator_account: &'a A,
 	sequencer: SequencerGatewayProvider,
 }
 
 impl<'a, A: Account + Sync> ContractAdministrator<'a, A> {
-	pub fn new(administrator_account: &'a A, contract_address: FieldElement) -> Self {
+	pub fn new(administrator_account: &'a A) -> Self {
 		Self {
-			contract_address,
 			administrator_account,
 			sequencer: sequencer(),
 		}
-	}
-
-	pub fn contract_address(&self) -> FieldElement {
-		self.contract_address
 	}
 
 	pub async fn send_transaction(

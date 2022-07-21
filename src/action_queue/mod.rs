@@ -51,7 +51,10 @@ pub async fn execute_actions(database_pool: &ConnectionPool, actions: Vec<Action
 			Ok(_) => info!("All actions executed successfully"),
 			Err(e) => warn!("Cannot execute actions on database: {}", e.to_string()),
 		},
-		Err(e) => warn!("Cannot execute actions on smart contract: {}", e),
+		Err(e) => warn!(
+			"Cannot execute actions on smart contract: {}",
+			e.to_string()
+		),
 	}
 }
 
