@@ -1,5 +1,5 @@
 mod contributions;
-mod projects;
-
 pub use contributions::*;
+
+mod projects;
 pub use projects::*;

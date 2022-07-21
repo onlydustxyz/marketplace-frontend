@@ -1,8 +1,6 @@
-use std::time::SystemTime;
-
-use crate::{database::schema::*, domain};
-use diesel::Queryable;
+use crate::infrastructure::database::schema::*;
 use rocket::serde::{Deserialize, Serialize};
+use std::time::SystemTime;
 
 use super::Contribution;
 
@@ -23,13 +21,6 @@ pub struct NewProject {
     pub name: String,
 }
 
-#[derive(AsChangeset, Identifiable)]
-#[table_name = "projects"]
-pub struct ProjectIndexingStatusUpdateForm {
-    pub id: String,
-    pub last_indexed_time: SystemTime,
-}
-
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ProjectWithContributions {
     pub id: String,
@@ -37,13 +28,4 @@ pub struct ProjectWithContributions {
     pub name: String,
     pub last_indexed_time: Option<SystemTime>,
     pub contributions: Vec<Contribution>,
-}
-
-impl From<domain::IndexingStatus> for ProjectIndexingStatusUpdateForm {
-    fn from(status: domain::IndexingStatus) -> Self {
-        Self {
-            id: status.project_id,
-            last_indexed_time: status.last_update_time,
-        }
-    }
 }

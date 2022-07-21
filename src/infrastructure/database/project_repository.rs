@@ -1,7 +1,8 @@
-use super::Client;
-
-use super::models;
-use crate::database::schema::projects::{self, dsl::*};
+use super::{
+    models,
+    schema::projects::{self, dsl::*},
+    Client,
+};
 use crate::domain::*;
 use diesel::prelude::*;
 use diesel::query_dsl::BelongingToDsl;

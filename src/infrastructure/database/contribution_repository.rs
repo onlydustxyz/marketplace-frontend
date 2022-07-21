@@ -1,5 +1,4 @@
-use super::{models, Client};
-use crate::database::schema::contributions;
+use super::{models, schema::contributions, Client};
 use crate::domain::*;
 use diesel::prelude::*;
 

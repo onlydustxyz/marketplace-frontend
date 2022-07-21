@@ -1,12 +1,12 @@
-use diesel::PgConnection;
-
-// TODO remove the pub once refactoring is done
 mod connection;
 pub use connection::{init_pool, DbConn as Connection, Pool as ConnectionPool};
-pub mod models;
 
 mod contribution_repository;
+mod models;
 mod project_repository;
+mod schema;
+
+use diesel::PgConnection;
 
 pub fn run_migrations(pool: &ConnectionPool) {
     let connection = Connection::from_pool(pool);
