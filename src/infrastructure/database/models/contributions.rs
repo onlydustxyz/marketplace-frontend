@@ -1,8 +1,6 @@
-use crate::database::schema::*;
-use diesel::Queryable;
+use super::Project;
+use crate::infrastructure::database::schema::*;
 use rocket::serde::{Deserialize, Serialize};
-
-use super::projects::Project;
 
 #[derive(Queryable, Identifiable, Associations, Debug, Serialize, Deserialize, Clone)]
 #[belongs_to(Project)]

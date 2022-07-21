@@ -1,2 +1,2 @@
 [print_schema]
-file = "src/database/schema.rs"
+file = "src/infrastructure/database/schema.rs"
