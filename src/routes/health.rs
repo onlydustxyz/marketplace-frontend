@@ -4,5 +4,5 @@ pub struct RawOk(&'static str);
 
 #[get("/health")]
 pub async fn health_check() -> RawOk {
-    RawOk("{\"status\":\"ok\"}")
+	RawOk("{\"status\":\"ok\"}")
 }

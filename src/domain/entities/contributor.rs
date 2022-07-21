@@ -8,20 +8,21 @@ pub struct Id(pub U256);
 
 #[derive(Clone, Debug)]
 pub struct Contributor {
-    pub id: Id,
-    pub github_username: Option<String>,
-    pub github_handle: Option<String>,
+	pub id: Id,
+	pub github_username: Option<String>,
+	pub github_handle: Option<String>,
 }
 
 impl Deref for Id {
-    type Target = U256;
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
+	type Target = U256;
+
+	fn deref(&self) -> &Self::Target {
+		&self.0
+	}
 }
 
 impl From<String> for Id {
-    fn from(s: String) -> Self {
-        Self(U256::from_be_hex(&s))
-    }
+	fn from(s: String) -> Self {
+		Self(U256::from_be_hex(&s))
+	}
 }
