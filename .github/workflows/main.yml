@@ -19,6 +19,6 @@ jobs:
     - name: Build
       run: cargo build --verbose
     - name: Clippy
-      run: rustup component add clippy --toolchain nightly-x86_64-unknown-linux-gnu && cargo +nightly clippy --bins --tests --examples --all -- -D warnings
+      run: rustup component add clippy --toolchain nightly-x86_64-unknown-linux-gnu && cargo +nightly clippy --bins --tests --examples -- -D warnings
     - name: Run tests
       run: cargo test --verbose
