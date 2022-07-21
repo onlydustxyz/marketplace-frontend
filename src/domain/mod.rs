@@ -10,6 +10,9 @@ pub use value_objects::*;
 mod errors;
 pub use errors::*;
 
+mod services;
+pub use services::*;
+
 mod actions;
 mod traits;
 mod types;

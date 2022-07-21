@@ -1,9 +1,8 @@
-use async_trait::async_trait;
+use super::ContractViewer;
+use crate::domain::*;
 use starknet::core::types::FieldElement;
 
-use crate::{domain::*, starknet::contract_viewer::ContractViewer};
-
-pub struct Profile {
+pub struct Contract {
 	contract_viewer: ContractViewer,
 }
 
@@ -13,7 +12,7 @@ fn profile_contract_address() -> FieldElement {
 	FieldElement::from_hex_be(&profile_contract_address).expect("Invalid value for PROFILE_ADDRESS")
 }
 
-impl Default for Profile {
+impl Default for Contract {
 	fn default() -> Self {
 		Self {
 			contract_viewer: ContractViewer::new(profile_contract_address()),
@@ -21,9 +20,8 @@ impl Default for Profile {
 	}
 }
 
-#[async_trait]
-impl ContributorProfileViewer for Profile {
-	async fn get_account(&self, contributor_id: &ContributorId) -> Option<FieldElement> {
+impl Contract {
+	pub async fn get_account(&self, contributor_id: &ContributorId) -> Option<FieldElement> {
 		let contributor_id: (FieldElement, FieldElement) = (*contributor_id).into();
 		self.contract_viewer
 			.call("ownerOf", vec![contributor_id.0, contributor_id.1])

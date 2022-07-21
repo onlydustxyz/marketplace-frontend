@@ -1,24 +1,46 @@
-use anyhow::Result;
-use async_trait::async_trait;
+use super::ContractAdministrator;
+use crate::domain::*;
+use itertools::Itertools;
 use starknet::{
 	accounts::{Account, Call},
 	core::{types::FieldElement, utils::get_selector_from_name},
 };
 
-use crate::{
-	domain::*,
-	starknet::{contract_administrator::ContractAdministrator, contributions_contract_address},
-};
+pub struct Contract<'a, A>
+where
+	A: Account + Sync,
+{
+	administrator: ContractAdministrator<'a, A>,
+}
 
-#[async_trait]
-impl<'a, A: Account + Sync> ContributionManager for ContractAdministrator<'a, A> {
-	async fn execute_actions(
+fn contributions_contract_address() -> FieldElement {
+	let contributions_contract_address =
+		std::env::var("CONTRIBUTIONS_ADDRESS").expect("CONTRIBUTIONS_ADDRESS must be set");
+	FieldElement::from_hex_be(&contributions_contract_address)
+		.expect("Invalid value for CONTRIBUTIONS_ADDRESS")
+}
+
+impl<'a, A> Contract<'a, A>
+where
+	A: Account + Sync,
+{
+	pub fn new(administrator_account: &'a A) -> Self {
+		Self {
+			administrator: ContractAdministrator::new(administrator_account),
+		}
+	}
+
+	pub async fn execute_actions(
 		&self,
 		actions: &[Action],
 		wait_for_acceptance: bool,
 	) -> Result<String> {
-		let calls = actions.iter().map(Call::from).collect::<Vec<_>>();
-		let transaction_result = self.send_transaction(&calls, wait_for_acceptance).await?;
+		let calls = actions.iter().map_into().collect_vec();
+		let transaction_result = self
+			.administrator
+			.send_transaction(&calls, wait_for_acceptance)
+			.await
+			.map_err(|e| Error::TransactionRevertedError(e.to_string()))?;
 		Ok(format!("0x{:x}", transaction_result.transaction_hash))
 	}
 }

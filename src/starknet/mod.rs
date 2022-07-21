@@ -1,7 +1,5 @@
 use std::env;
 
-use anyhow::Result;
-
 pub use starknet::accounts::Account;
 use starknet::{
 	accounts::SingleOwnerAccount,
@@ -12,14 +10,12 @@ use starknet::{
 
 use crate::domain::*;
 
-mod contract_administrator;
-mod contract_viewer;
-mod domain_implementation;
+mod contracts;
+use contracts::{ContributionContract, ProfileContract, RegistryContract};
+
 mod model;
 
 pub use model::*;
-
-pub use contract_administrator::ContractAdministrator;
 
 pub fn make_account_from_env() -> impl Account {
 	let private_key = env::var("PRIVATE_KEY").expect("PRIVATE_KEY must be set");
@@ -44,44 +40,40 @@ fn make_account(
 	)
 }
 
-pub fn contributions_contract_address() -> FieldElement {
-	let contributions_contract_address =
-		std::env::var("CONTRIBUTIONS_ADDRESS").expect("CONTRIBUTIONS_ADDRESS must be set");
-	FieldElement::from_hex_be(&contributions_contract_address)
-		.expect("Invalid value for CONTRIBUTIONS_ADDRESS")
-}
-
 pub fn sequencer() -> SequencerGatewayProvider {
 	SequencerGatewayProvider::starknet_alpha_goerli()
 }
 
-pub struct API<'a> {
-	registry: Box<dyn ContributorRegistryViewer + Sync + Send + 'a>,
-	oracle: Box<dyn ContributionManager + Sync + Send + 'a>,
-	profile_viewer: Box<dyn ContributorProfileViewer + Sync + Send + 'a>,
+pub struct API<'a, A>
+where
+	A: Account + Sync,
+{
+	registry: RegistryContract,
+	contributions: ContributionContract<'a, A>,
+	profile: ProfileContract,
 }
 
-impl<'a> API<'a> {
-	pub fn new<A: Account + Sync>(account: &'a A) -> Self {
+impl<'a, A> API<'a, A>
+where
+	A: Account + Sync,
+{
+	pub fn new(account: &'a A) -> Self {
 		Self {
-			registry: Box::new(domain_implementation::Registry::default()),
-			oracle: Box::new(ContractAdministrator::new(
-				account,
-				contributions_contract_address(),
-			)),
-			profile_viewer: Box::new(domain_implementation::Profile::default()),
+			registry: RegistryContract::default(),
+			contributions: ContributionContract::new(account),
+			profile: ProfileContract::default(),
 		}
 	}
 
 	pub async fn execute_actions(&self, actions: &[Action]) -> Result<String> {
-		self.oracle.execute_actions(actions, true).await
+		self.contributions.execute_actions(actions, true).await
 	}
 
 	pub async fn get_user_information(
 		&self,
 		contributor_id: &ContributorId,
 	) -> Option<Contributor> {
-		let account = self.profile_viewer.get_account(contributor_id).await?;
+		let account = self.profile.get_account(contributor_id).await?;
 		self.registry.get_user_information(account).await
 	}
 }
