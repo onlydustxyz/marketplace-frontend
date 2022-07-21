@@ -5,7 +5,6 @@ use diesel_migrations::*;
 use log::info;
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
 use std::{
-    ops::DerefMut,
     sync::{Arc, RwLock},
     thread,
     time::Duration,
@@ -57,7 +56,7 @@ async fn main() {
         loop {
             let mut next_actions = vec![];
             if let Ok(mut queue) = cloned_action_queue.write() {
-                next_actions = queue.deref_mut().take(100).collect::<Vec<_>>();
+                next_actions = queue.pop_n(100);
             };
             if !next_actions.is_empty() {
                 execute_actions(next_actions).await;

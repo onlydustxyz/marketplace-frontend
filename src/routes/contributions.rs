@@ -60,7 +60,7 @@ pub async fn create_contribution(
     };
 
     match queue.write() {
-        Ok(mut queue) => queue.push_front(Action::CreateContribution {
+        Ok(mut queue) => queue.push(Action::CreateContribution {
             contribution: Box::new(contribution),
         }),
         Err(error) => {
@@ -97,7 +97,7 @@ pub async fn assign_contributor(
     info!("contributor_id={}", body.contributor_id);
 
     match queue.write() {
-        Ok(mut queue) => queue.push_front(Action::AssignContributor {
+        Ok(mut queue) => queue.push(Action::AssignContributor {
             contribution_id,
             contributor_id: deathnote_contributions_feeder::domain::ContributorId(U256::from_u128(
                 body.contributor_id,
@@ -123,7 +123,7 @@ pub async fn validate_contribution(
     queue: &State<Arc<RwLock<ActionQueue>>>,
 ) -> Result<status::Accepted<()>, Json<HttpApiProblem>> {
     match queue.write() {
-        Ok(mut queue) => queue.push_front(Action::ValidateContribution { contribution_id }),
+        Ok(mut queue) => queue.push(Action::ValidateContribution { contribution_id }),
         Err(error) => {
             return Err(Json(
                 HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
@@ -144,7 +144,7 @@ pub async fn unassign_contributor(
     queue: &State<Arc<RwLock<ActionQueue>>>,
 ) -> Result<status::Accepted<()>, Json<HttpApiProblem>> {
     match queue.write() {
-        Ok(mut queue) => queue.push_front(Action::UnassignContributor { contribution_id }),
+        Ok(mut queue) => queue.push(Action::UnassignContributor { contribution_id }),
         Err(error) => {
             return Err(Json(
                 HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
