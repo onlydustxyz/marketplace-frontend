@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 use deathnote_contributions_feeder::{
     database::{self},
     domain::Action,
@@ -5,10 +8,7 @@ use deathnote_contributions_feeder::{
 };
 
 use log::{info, warn};
-use std::{
-    collections::VecDeque,
-    ops::{Deref, DerefMut},
-};
+use std::{cmp::min, collections::VecDeque};
 
 pub struct ActionQueue(VecDeque<Action>);
 
@@ -16,33 +16,28 @@ impl ActionQueue {
     pub fn new() -> Self {
         Self(VecDeque::new())
     }
+
+    pub fn push(&mut self, action: Action) {
+        self.0.push_front(action)
+    }
+
+    pub fn pop_n(&mut self, amount: usize) -> Vec<Action> {
+        let mut ret = Vec::with_capacity(min(self.0.len(), amount));
+        for _ in 0..amount {
+            if let Some(v) = self.0.pop_back() {
+                ret.push(v);
+            } else {
+                break;
+            };
+        }
+
+        ret
+    }
 }
 
 impl Default for ActionQueue {
     fn default() -> Self {
         Self::new()
-    }
-}
-
-impl Deref for ActionQueue {
-    type Target = VecDeque<Action>;
-
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-
-impl DerefMut for ActionQueue {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-
-impl Iterator for ActionQueue {
-    type Item = Action;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        self.pop_back()
     }
 }
 

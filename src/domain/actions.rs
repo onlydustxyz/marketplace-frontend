@@ -1,6 +1,6 @@
 use crate::domain::{Contribution, ContributionId, ContributorId};
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Action {
     CreateContribution {
         contribution: Box<Contribution>,
