@@ -55,6 +55,7 @@ impl From<&Action> for Call {
 					FieldElement::from_dec_str(&contribution.id).unwrap(), // id : felt
 					FieldElement::from_dec_str(&contribution.project_id).unwrap(), // project_id : felt
 					FieldElement::from(contribution.gate),                 /* contribution_count_required : felt */
+					contribution.validator,
 				],
 			},
 

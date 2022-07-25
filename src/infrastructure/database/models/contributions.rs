@@ -20,6 +20,7 @@ pub struct Contribution {
 	pub duration: Option<String>,
 	pub context: Option<String>,
 	pub type_: Option<String>,
+	pub validator: Option<String>,
 }
 
 #[derive(AsChangeset, Identifiable)]
@@ -63,4 +64,5 @@ pub struct NewContribution {
 	pub duration: Option<String>,
 	pub context: Option<String>,
 	pub type_: Option<String>,
+	pub validator: String,
 }
