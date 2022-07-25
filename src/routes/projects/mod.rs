@@ -12,9 +12,12 @@ use rocket_okapi::openapi;
 use std::result::Result;
 use url::Url;
 
+use super::ApiKey;
+
 #[openapi(tag = "Projects")]
 #[post("/projects", format = "application/json", data = "<project>")]
 pub async fn new_project(
+	_api_key: ApiKey,
 	project: Json<dto::ProjectCreation<'_>>,
 	connection: database::Connection,
 ) -> Result<Status, Json<HttpApiProblem>> {
