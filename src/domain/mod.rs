@@ -1,5 +1,4 @@
 mod entities;
-pub use entities::*;
 
 mod repositories;
 pub use repositories::*;
@@ -18,12 +17,9 @@ mod traits;
 mod types;
 pub use traits::contracts_interface::*;
 
+pub use entities::*;
 pub use types::{
 	contracts_update_status::*,
-	contribution::{
-		Contribution, Filter as ContributionFilter, Id as ContributionId,
-		Metadata as ContributionMetadata, Status as ContributionStatus,
-	},
 	project::{Filter as ProjectFilter, Id as ProjectId, IndexingStatus, Project},
 };
 

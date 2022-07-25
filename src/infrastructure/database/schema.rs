@@ -15,6 +15,7 @@ table! {
 		context -> Nullable<Text>,
 		#[sql_name = "type"]
 		type_ -> Nullable<Text>,
+		validator -> Nullable<Varchar>,
 	}
 }
 

@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use super::{
 	models,
 	schema::projects::{self, dsl::*},
@@ -6,6 +8,7 @@ use super::{
 use crate::domain::*;
 use diesel::{prelude::*, query_dsl::BelongingToDsl};
 use itertools::Itertools;
+use starknet::core::types::FieldElement;
 
 impl ProjectRepository for Client {
 	fn find_all_with_contributions(&self) -> Result<Vec<ProjectWithContributions>> {
@@ -95,6 +98,11 @@ impl From<models::Contribution> for Contribution {
 				context: contribution.context,
 				r#type: contribution.type_,
 			},
+			// ok to unwrap because values in db are created from FieldElement::ToString
+			validator: FieldElement::from_str(
+				&contribution.validator.unwrap_or_else(|| "0x0".to_string()),
+			)
+			.unwrap(),
 		}
 	}
 }
