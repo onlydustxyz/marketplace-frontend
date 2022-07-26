@@ -21,27 +21,27 @@ use starknet::core::types::FieldElement;
 
 use crate::action_queue::ActionQueue;
 
-use super::ApiKey;
+use super::{api_key::ApiKey, hex_prefixed_string::HexPrefixedString};
 
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]
-pub struct CreateContributionBody {
+pub struct CreateContributionDto {
 	github_issue_number: u128,
 	project_id: u128,
 	gate: u8,
-	validator: String,
+	validator: HexPrefixedString,
 }
 
 #[openapi(tag = "Contributions")]
 #[post("/contributions/github", format = "application/json", data = "<body>")]
 pub async fn create_contribution(
 	_api_key: ApiKey,
-	body: Json<CreateContributionBody>,
+	body: Json<CreateContributionDto>,
 	github_api: &State<github::API>,
 	queue: &State<Arc<RwLock<ActionQueue>>>,
 ) -> Result<Status, Json<HttpApiProblem>> {
 	let body = body.into_inner();
-	let validator = FieldElement::from_str(&body.validator).map_err(|e| {
+	let validator = FieldElement::from_str(body.validator.as_string()).map_err(|e| {
 		Json(
 			HttpApiProblem::new(StatusCode::BAD_REQUEST)
 				.title("Invalid validator address")
