@@ -98,11 +98,8 @@ impl From<models::Contribution> for Contribution {
 				context: contribution.context,
 				r#type: contribution.type_,
 			},
-			// ok to unwrap because values in db are created from FieldElement::ToString
-			validator: FieldElement::from_str(
-				&contribution.validator.unwrap_or_else(|| "0x0".to_string()),
-			)
-			.unwrap(),
+			// ok to unwrap because values in db are created by a call to FieldElement::ToString
+			validator: FieldElement::from_str(&contribution.validator).unwrap(),
 		}
 	}
 }

@@ -1,9 +1,10 @@
-use anyhow::anyhow;
 use starknet::core::types::FieldElement;
 use std::{fmt, str::FromStr};
 use url::Url;
 
-use super::{ContributorId, Project, ProjectId};
+use crate::domain::Error;
+
+use super::{ContributorId, ProjectId};
 
 pub type ValidatorAddress = FieldElement;
 
@@ -40,12 +41,6 @@ pub struct Metadata {
 	pub r#type: Option<String>,
 }
 
-#[derive(Debug, PartialEq, Eq, Clone, Default)]
-pub struct Filter {
-	pub contributor_id: Option<String>,
-	pub project: Option<Project>,
-}
-
 impl fmt::Display for Status {
 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
 		match self {
@@ -58,7 +53,7 @@ impl fmt::Display for Status {
 }
 
 impl FromStr for Status {
-	type Err = anyhow::Error;
+	type Err = Error;
 
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
 		match s {
@@ -66,7 +61,10 @@ impl FromStr for Status {
 			"ASSIGNED" => Ok(Status::Assigned),
 			"COMPLETED" => Ok(Status::Completed),
 			"ABANDONED" => Ok(Status::Abandoned),
-			_ => Err(anyhow!("Unable to parse {} into a PR status", s)),
+			_ => Err(Error::ParseStatusError(format!(
+				"Unable to parse {} into a contribution status",
+				s,
+			))),
 		}
 	}
 }

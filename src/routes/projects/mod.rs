@@ -12,7 +12,7 @@ use rocket_okapi::openapi;
 use std::result::Result;
 use url::Url;
 
-use super::ApiKey;
+use super::api_key::ApiKey;
 
 #[openapi(tag = "Projects")]
 #[post("/projects", format = "application/json", data = "<project>")]

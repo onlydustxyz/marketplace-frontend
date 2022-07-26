@@ -70,7 +70,7 @@ impl From<(Contribution, String)> for models::NewContribution {
 			duration: contribution.metadata.duration,
 			context: contribution.metadata.context,
 			type_: contribution.metadata.r#type,
-			validator: contribution.validator.to_string(),
+			validator: format!("{:#x}", contribution.validator),
 		}
 	}
 }
