@@ -1,10 +1,9 @@
 mod connection;
 pub use connection::{init_pool, DbConn as Connection, Pool as ConnectionPool};
 
-mod contribution_repository;
 mod contributor_repository;
 mod models;
-mod project_repository;
+mod repositories;
 mod schema;
 
 use diesel::PgConnection;
