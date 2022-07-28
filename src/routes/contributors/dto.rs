@@ -13,8 +13,8 @@ pub struct Contributor {
 impl From<domain::Contributor> for Contributor {
 	fn from(contributor: domain::Contributor) -> Self {
 		Self {
-			contributor_id: contributor.id.split().1.into(), /* TODO: Refactor once we migrate to
-			                                                  * uuid */
+			contributor_id: contributor.id.0.split().1.into(), /* TODO: Refactor once we migrate to
+			                                                    * uuid */
 			github_userid: contributor.github_handle,
 			discord_handle: contributor.discord_handle,
 		}

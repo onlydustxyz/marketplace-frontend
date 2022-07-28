@@ -4,6 +4,7 @@ pub enum Error {
 	ProjectListingError(String),
 	ContributionStoreError(String),
 	GetContributorError(String),
+	ApplicationStoreError(String),
 	TransactionRevertedError(String),
 }
 
@@ -14,6 +15,7 @@ impl ToString for Error {
 			Error::ProjectListingError(e) => e.to_owned(),
 			Error::ContributionStoreError(e) => e.to_owned(),
 			Error::GetContributorError(e) => e.to_owned(),
+			Error::ApplicationStoreError(e) => e.to_owned(),
 			Error::TransactionRevertedError(e) => e.to_owned(),
 		}
 	}

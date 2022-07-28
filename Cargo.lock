@@ -602,6 +602,7 @@ dependencies = [
  "slog-stdlog",
  "starknet",
  "stretto",
+ "thiserror",
  "tokio",
  "url",
  "uuid",
@@ -2431,11 +2432,13 @@ version = "0.8.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1847b767a3d62d95cbf3d8a9f0e421cf57a0d8aa4f411d4b16525afb0284d4ed"
 dependencies = [
+ "bigdecimal",
  "dyn-clone",
  "indexmap",
  "schemars_derive",
  "serde",
  "serde_json",
+ "uuid",
 ]
 
 [[package]]
