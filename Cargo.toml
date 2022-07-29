@@ -1,6 +1,7 @@
 [package]
 authors = ["Abdelhamid Bakhta <abdelhamid.bakhta@gmail.com>"]
 categories = ["contribution", "health-check", "analytics-tracking", "analytics"]
+default-run = "deathnote_contributions_feeder"
 description = "Death Note off chain service to watch github contributions and update associated smart contract state on StarkNet."
 edition = "2021"
 homepage = "https://github.com/onlydustxyz/deathnote-contributions-feeder"
@@ -10,27 +11,26 @@ name = "deathnote_contributions_feeder"
 readme = "README.md"
 repository = "https://github.com/onlydustxyz/deathnote-contributions-feeder"
 version = "0.0.1"
-default-run = "deathnote_contributions_feeder"
 
 [dependencies]
 
 # Async
-tokio = { version = "1.18.2", features = ["full"] }
 async-trait = "0.1.56"
-futures = { version = "0.3.21", features = ["alloc"] }
+futures = {version = "0.3.21", features = ["alloc"]}
+tokio = {version = "1.18.2", features = ["full"]}
 
 # Cache
-stretto = { version = "0.5", features = ["async"] }
+stretto = {version = "0.5", features = ["async"]}
 
 # Database
+diesel = {version = "1.4.8", default-features = false, features = [
+  "postgres",
+  "serde_json",
+  "uuidv07",
+]}
+diesel_migrations = "1.4.0"
 r2d2 = "0.8.10"
 r2d2-diesel = "1.0.0"
-diesel_migrations = "1.4.0"
-diesel = { version = "1.4.8", default-features = false, features = [
-	"postgres",
-	"serde_json",
-	"uuidv07",
-] }
 
 # Github
 octocrab = "0.16.0"
@@ -39,29 +39,35 @@ octocrab = "0.16.0"
 url = "2.2.2"
 
 # Http Server
-rocket_okapi = { version = "0.8.0-rc.2", features = ["swagger"] }
-okapi = { version = "0.7.0-rc.1" }
-rocket = { version = "0.5.0-rc.2", features = ["json"] }
-http-api-problem = { version = "0.53.0", features = ["json-schema"] }
+http-api-problem = {version = "0.53.0", features = ["json-schema"]}
+okapi = {version = "0.7.0-rc.1"}
+rocket = {version = "0.5.0-rc.2", features = ["json"]}
+rocket_okapi = {version = "0.8.0-rc.2", features = ["swagger"]}
 schemars = "0.8"
 
 # Starknet
-starknet = { git = "https://github.com/ofux/starknet-rs" }
-crypto-bigint = { version = "0.4.8", features = ["serde"] }
+crypto-bigint = {version = "0.4.8", features = ["serde"]}
+starknet = {git = "https://github.com/ofux/starknet-rs"}
 
 # Utils
-serde = { version = "1.0.137", features = ["derive"] }
-serde_json = "1.0.81"
 anyhow = "1.0.57"
 dotenv = "0.15.0"
 env_logger = "0.9.0"
-log = "0.4.17"
 itertools = "0.10.3"
+log = "0.4.17"
 mapinto = "0.2.1"
-uuid = { version = "0.8.2", default-features = false, features = [
-	"v4",
-	"serde",
-] }
+serde = {version = "1.0.137", features = ["derive"]}
+serde_json = "1.0.81"
+slog = "2.7.0"
+slog-async = "2.7.0"
+slog-envlogger = "2.2.0"
+slog-json = "2.6.1"
+slog-scope = "4.4.0"
+slog-stdlog = "4.1.1"
+uuid = {version = "0.8.2", default-features = false, features = [
+  "v4",
+  "serde",
+]}
 
 [dev-dependencies]
 serde_test = "1.0.140"
