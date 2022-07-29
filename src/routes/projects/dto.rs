@@ -25,6 +25,7 @@ pub struct Project {
 #[derive(Serialize, JsonSchema)]
 pub struct Contribution {
 	pub id: String,
+	pub onchain_id: String,
 	pub title: String,
 	pub description: String,
 	pub github_link: String,
@@ -47,7 +48,8 @@ pub struct Metadata {
 impl From<domain::Contribution> for Contribution {
 	fn from(contribution: domain::Contribution) -> Self {
 		Contribution {
-			id: contribution.id,
+			id: contribution.id.to_string(),
+			onchain_id: contribution.onchain_id,
 			title: contribution.title.unwrap_or_default(),
 			description: contribution.description.unwrap_or_default(),
 			github_link: match contribution.external_link {

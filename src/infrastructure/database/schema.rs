@@ -1,6 +1,6 @@
 table! {
 	contributions (id) {
-		id -> Varchar,
+		onchain_id -> Varchar,
 		project_id -> Varchar,
 		status -> Varchar,
 		transaction_hash -> Nullable<Varchar>,
@@ -16,6 +16,7 @@ table! {
 		#[sql_name = "type"]
 		type_ -> Nullable<Text>,
 		validator -> Varchar,
+		id -> Uuid,
 	}
 }
 

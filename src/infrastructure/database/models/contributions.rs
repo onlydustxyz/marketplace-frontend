@@ -1,12 +1,13 @@
 use super::Project;
 use crate::infrastructure::database::schema::*;
 use rocket::serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 #[derive(Queryable, Identifiable, Associations, Debug, Serialize, Deserialize, Clone)]
 #[belongs_to(Project)]
 #[serde(crate = "rocket::serde")]
 pub struct Contribution {
-	pub id: String,
+	pub onchain_id: String,
 	pub project_id: String,
 	pub status: String,
 	pub transaction_hash: Option<String>,
@@ -21,36 +22,14 @@ pub struct Contribution {
 	pub context: Option<String>,
 	pub type_: Option<String>,
 	pub validator: String,
-}
-
-#[derive(AsChangeset, Identifiable)]
-#[table_name = "contributions"]
-pub struct AssignContributionForm {
-	pub id: String,
-	pub status: String,
-	pub contributor_id: String,
-	pub transaction_hash: String,
-}
-
-#[derive(AsChangeset, Identifiable)]
-#[table_name = "contributions"]
-pub struct ValidateContributionForm {
-	pub id: String,
-	pub status: String,
-	pub transaction_hash: String,
-}
-
-#[derive(AsChangeset, Identifiable)]
-#[table_name = "contributions"]
-pub struct ContributionContractUpdateForm {
-	pub id: String,
-	pub transaction_hash: String,
+	pub id: Uuid,
 }
 
 #[derive(Insertable)]
 #[table_name = "contributions"]
 pub struct NewContribution {
-	pub id: String,
+	pub id: Uuid,
+	pub onchain_id: String,
 	pub project_id: String,
 	pub status: String,
 	pub contributor_id: String,

@@ -5,7 +5,7 @@ pub trait Repository {
 
 	fn update_contributor_and_status(
 		&self,
-		contribution_id: ContributionId,
+		contribution_id: ContributionOnChainId,
 		contributor_id: Option<ContributorId>,
 		status: ContributionStatus,
 		transaction_hash: String,
@@ -13,7 +13,7 @@ pub trait Repository {
 
 	fn update_status(
 		&self,
-		contribution_id: ContributionId,
+		contribution_id: ContributionOnChainId,
 		status: ContributionStatus,
 		transaction_hash: String,
 	) -> Result<()>;
