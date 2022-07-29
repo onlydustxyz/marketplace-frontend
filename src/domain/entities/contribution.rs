@@ -1,6 +1,7 @@
 use starknet::core::types::FieldElement;
 use std::{fmt, str::FromStr};
 use url::Url;
+use uuid::Uuid;
 
 use crate::domain::Error;
 
@@ -16,11 +17,13 @@ pub enum Status {
 	Abandoned = 3,
 }
 
-pub type Id = String;
+pub type OnChainId = String;
+pub type Id = Uuid;
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Contribution {
 	pub id: Id,
+	pub onchain_id: OnChainId,
 	pub project_id: ProjectId,
 	pub contributor_id: Option<ContributorId>,
 	pub title: Option<String>,

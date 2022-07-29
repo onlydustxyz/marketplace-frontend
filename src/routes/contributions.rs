@@ -5,7 +5,7 @@ use std::{
 
 use crypto_bigint::U256;
 use deathnote_contributions_feeder::{
-	domain::{self, Action, ContributionId},
+	domain::{self, Action, ContributionOnChainId},
 	github,
 };
 use http_api_problem::{HttpApiProblem, StatusCode};
@@ -18,6 +18,7 @@ use rocket::{
 };
 use rocket_okapi::{openapi, JsonSchema};
 use starknet::core::types::FieldElement;
+use uuid::Uuid;
 
 use crate::action_queue::ActionQueue;
 
@@ -63,7 +64,8 @@ pub async fn create_contribution(
 	let metadata = github::extract_metadata(github_issue.clone());
 
 	let contribution = domain::Contribution {
-		id: (body.project_id * 1_000_000 + body.github_issue_number).to_string(),
+		id: Uuid::new_v4(),
+		onchain_id: (body.project_id * 1_000_000 + body.github_issue_number).to_string(),
 		project_id: body.project_id.to_string(),
 		contributor_id: None,
 		title: Some(github_issue.title),
@@ -104,7 +106,7 @@ pub struct AssignContributorBody {
 )]
 pub async fn assign_contributor(
 	_api_key: ApiKey,
-	contribution_id: ContributionId,
+	contribution_id: ContributionOnChainId,
 	body: Json<AssignContributorBody>,
 	queue: &State<Arc<RwLock<ActionQueue>>>,
 ) -> Result<status::Accepted<()>, Json<HttpApiProblem>> {
@@ -133,7 +135,7 @@ pub async fn assign_contributor(
 #[post("/contributions/<contribution_id>/validate")]
 pub async fn validate_contribution(
 	_api_key: ApiKey,
-	contribution_id: ContributionId,
+	contribution_id: ContributionOnChainId,
 	queue: &State<Arc<RwLock<ActionQueue>>>,
 ) -> Result<status::Accepted<()>, Json<HttpApiProblem>> {
 	match queue.write() {
@@ -153,7 +155,7 @@ pub async fn validate_contribution(
 #[delete("/contributions/<contribution_id>/contributor")]
 pub async fn unassign_contributor(
 	_api_key: ApiKey,
-	contribution_id: ContributionId,
+	contribution_id: ContributionOnChainId,
 	queue: &State<Arc<RwLock<ActionQueue>>>,
 ) -> Result<status::Accepted<()>, Json<HttpApiProblem>> {
 	match queue.write() {

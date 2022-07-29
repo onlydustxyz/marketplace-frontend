@@ -1,5 +1,5 @@
 use super::{models, schema::contributions, Client};
-use crate::domain::*;
+use crate::{domain::*, infrastructure::database::schema};
 use diesel::prelude::*;
 
 impl ContributionRepository for Client {
@@ -7,7 +7,7 @@ impl ContributionRepository for Client {
 		let contribution = models::NewContribution::from((contribution, transaction_hash));
 		diesel::insert_into(contributions::table)
 			.values(&contribution)
-			.get_result::<models::Contribution>(self.connection())
+			.execute(self.connection())
 			.map_err(|e| Error::ContributionStoreError(e.to_string()))?;
 
 		Ok(())
@@ -15,39 +15,41 @@ impl ContributionRepository for Client {
 
 	fn update_contributor_and_status(
 		&self,
-		contribution_id: ContributionId,
+		contribution_id: ContributionOnChainId,
 		contributor_id_: Option<ContributorId>,
 		status_: ContributionStatus,
 		transaction_hash_: String,
 	) -> Result<()> {
-		models::AssignContributionForm {
-			id: contribution_id,
-			status: status_.to_string(),
-			contributor_id: match contributor_id_ {
-				Some(id_) => id_.to_string(),
-				None => String::new(),
-			},
-			transaction_hash: transaction_hash_,
-		}
-		.save_changes::<models::Contribution>(self.connection())
-		.map_err(|e| Error::ContributionStoreError(e.to_string()))?;
+		diesel::update(schema::contributions::dsl::contributions)
+			.filter(contributions::onchain_id.eq(contribution_id))
+			.set((
+				schema::contributions::status.eq(status_.to_string()),
+				schema::contributions::contributor_id.eq(match contributor_id_ {
+					Some(id_) => id_.to_string(),
+					None => String::new(),
+				}),
+				schema::contributions::transaction_hash.eq(transaction_hash_),
+			))
+			.execute(self.connection())
+			.map_err(|e| Error::ContributionStoreError(e.to_string()))?;
 
 		Ok(())
 	}
 
 	fn update_status(
 		&self,
-		contribution_id: ContributionId,
+		contribution_id: ContributionOnChainId,
 		status_: ContributionStatus,
 		transaction_hash_: String,
 	) -> Result<()> {
-		models::ValidateContributionForm {
-			id: contribution_id,
-			status: status_.to_string(),
-			transaction_hash: transaction_hash_,
-		}
-		.save_changes::<models::Contribution>(self.connection())
-		.map_err(|e| Error::ContributionStoreError(e.to_string()))?;
+		diesel::update(schema::contributions::dsl::contributions)
+			.filter(contributions::onchain_id.eq(contribution_id))
+			.set((
+				schema::contributions::status.eq(status_.to_string()),
+				schema::contributions::transaction_hash.eq(transaction_hash_),
+			))
+			.execute(self.connection())
+			.map_err(|e| Error::ContributionStoreError(e.to_string()))?;
 
 		Ok(())
 	}
@@ -57,6 +59,7 @@ impl From<(Contribution, String)> for models::NewContribution {
 	fn from((contribution, transaction_hash): (Contribution, String)) -> Self {
 		Self {
 			id: contribution.id,
+			onchain_id: contribution.onchain_id,
 			project_id: contribution.project_id,
 			status: contribution.status.to_string(),
 			contributor_id: contribution.contributor_id.map_or(String::new(), |id| id.to_string()),

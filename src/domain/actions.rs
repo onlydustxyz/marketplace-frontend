@@ -1,4 +1,4 @@
-use crate::domain::{Contribution, ContributionId, ContributorId};
+use crate::domain::*;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Action {
@@ -6,13 +6,13 @@ pub enum Action {
 		contribution: Box<Contribution>,
 	},
 	AssignContributor {
-		contribution_id: ContributionId,
+		contribution_id: ContributionOnChainId,
 		contributor_id: ContributorId,
 	},
 	UnassignContributor {
-		contribution_id: ContributionId,
+		contribution_id: ContributionOnChainId,
 	},
 	ValidateContribution {
-		contribution_id: ContributionId,
+		contribution_id: ContributionOnChainId,
 	},
 }

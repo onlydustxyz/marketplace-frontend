@@ -18,7 +18,7 @@ use tokio::{
 use deathnote_contributions_feeder::{
 	github,
 	infrastructure::database,
-	utils::caches::{ContributorCache, IssueCache, RepoCache},
+	utils::caches::{ContributorCache, RepoCache},
 };
 
 use dotenv::dotenv;
@@ -78,7 +78,6 @@ async fn main() {
 	let rocket_handler = rocket::build()
 		.manage(database_pool)
 		.manage(action_queue.clone())
-		.manage(IssueCache::default())
 		.manage(RepoCache::default())
 		.manage(ContributorCache::default())
 		.manage(github::API::new())
