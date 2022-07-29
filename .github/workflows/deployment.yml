@@ -1,4 +1,4 @@
-name: docker
+name: Deployment build
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       - "v*"
 
 jobs:
-  docker-rest-api:
+  docker-build:
     uses: onlydustxyz/cicd/.github/workflows/docker-workflow.yml@main
     with:
       image_name: deathnote-contribution-feeder-rest-api
