@@ -82,6 +82,7 @@ mapinto = "0.2.1"
 
 # Unit testing
 mockall = "0.11.2"
+rstest = "0.15.0"
 
 [dev-dependencies]
 serde_test = "1.0.140"

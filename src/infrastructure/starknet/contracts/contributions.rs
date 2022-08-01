@@ -5,12 +5,10 @@ use starknet::{
 	accounts::{Account, Call},
 	core::{types::FieldElement, utils::get_selector_from_name},
 };
+use std::sync::Arc;
 
-pub struct Contract<'a, A>
-where
-	A: Account + Sync,
-{
-	administrator: ContractAdministrator<'a, A>,
+pub struct Contract<A: Account + Sync> {
+	administrator: ContractAdministrator<A>,
 }
 
 fn contributions_contract_address() -> FieldElement {
@@ -20,11 +18,8 @@ fn contributions_contract_address() -> FieldElement {
 		.expect("Invalid value for CONTRIBUTIONS_ADDRESS")
 }
 
-impl<'a, A> Contract<'a, A>
-where
-	A: Account + Sync,
-{
-	pub fn new(administrator_account: &'a A) -> Self {
+impl<A: Account + Sync> Contract<A> {
+	pub fn new(administrator_account: Arc<A>) -> Self {
 		Self {
 			administrator: ContractAdministrator::new(administrator_account),
 		}

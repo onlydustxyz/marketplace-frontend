@@ -24,7 +24,7 @@ use starknet::{
 
 use crate::domain::*;
 
-pub fn make_account_from_env() -> impl Account {
+fn make_account_from_env() -> SingleOwnerAccount<SequencerGatewayProvider, LocalWallet> {
 	let private_key = env::var("PRIVATE_KEY").expect("PRIVATE_KEY must be set");
 	let account_address = env::var("ACCOUNT_ADDRESS").expect("ACCOUNT_ADDRESS must be set");
 	make_account(&private_key, &account_address)
@@ -51,15 +51,15 @@ fn sequencer() -> SequencerGatewayProvider {
 	SequencerGatewayProvider::starknet_alpha_goerli()
 }
 
-pub struct Client<'a, A: Account + Sync> {
+pub struct Client<A: Account + Sync> {
 	registry: RegistryContract,
-	contributions: ContributionContract<'a, A>,
+	contributions: ContributionContract<A>,
 	profile: ProfileContract,
 	action_queue: Arc<RwLock<ActionQueue>>,
 }
 
-impl<'a, A: Account + Sync> Client<'a, A> {
-	pub fn new(account: &'a A) -> Self {
+impl<A: Account + Sync> Client<A> {
+	pub fn new(account: Arc<A>) -> Self {
 		Self {
 			registry: RegistryContract::default(),
 			contributions: ContributionContract::new(account),
@@ -84,5 +84,11 @@ impl<'a, A: Account + Sync> Client<'a, A> {
 		self.action_queue
 			.write()
 			.map_err(|e| Error::ContributionStoreError(e.to_string()))
+	}
+}
+
+impl Default for Client<SingleOwnerAccount<SequencerGatewayProvider, LocalWallet>> {
+	fn default() -> Self {
+		Self::new(Arc::new(make_account_from_env()))
 	}
 }
