@@ -1,6 +1,6 @@
 use crate::domain::*;
 
-pub trait Service {
+pub trait Service: Send + Sync {
 	fn create(&self, contribution: Contribution) -> AnyResult<()>;
 	fn assign_contributor(
 		&self,

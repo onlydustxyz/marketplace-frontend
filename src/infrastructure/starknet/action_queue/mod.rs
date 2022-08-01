@@ -7,7 +7,7 @@ use crate::{
 };
 
 use log::{info, warn};
-use std::{cmp::min, collections::VecDeque, sync::Arc};
+use std::{cmp::min, collections::VecDeque};
 
 pub struct ActionQueue(VecDeque<Action>);
 
@@ -42,8 +42,7 @@ impl Default for ActionQueue {
 
 // TODO: refactor to event driven to remove dependency on database
 pub async fn execute_actions(database: &database::Client, actions: Vec<Action>) {
-	let account = starknet::make_account_from_env();
-	let starknet = starknet::Client::new(Arc::new(account));
+	let starknet = starknet::Client::default();
 
 	match starknet.execute_actions(&actions).await {
 		Ok(transaction_hash) => match store_action_result(database, &actions, &transaction_hash) {
