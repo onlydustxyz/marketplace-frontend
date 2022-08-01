@@ -1,5 +1,4 @@
-use super::Client;
-use crate::domain::*;
+use crate::{domain::*, infrastructure::database::Client};
 
 impl ContributorRepository for Client {
 	fn by_id(&self, contributor_id: ContributorId) -> Result<Option<Contributor>> {

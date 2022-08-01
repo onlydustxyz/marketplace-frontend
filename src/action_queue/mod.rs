@@ -1,11 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use deathnote_contributions_feeder::{
-	domain::*,
-	infrastructure::database::{self, ConnectionPool},
-	starknet,
-};
+use deathnote_contributions_feeder::{domain::*, infrastructure::database, starknet};
 
 use log::{info, warn};
 use std::{cmp::min, collections::VecDeque};
@@ -41,13 +37,12 @@ impl Default for ActionQueue {
 	}
 }
 
-pub async fn execute_actions(database_pool: &ConnectionPool, actions: Vec<Action>) {
+pub async fn execute_actions(database: &database::Client, actions: Vec<Action>) {
 	let account = starknet::make_account_from_env();
 	let starknet = starknet::API::new(&account);
-	let database = database::Client::new(database::Connection::from_pool(database_pool));
 
 	match starknet.execute_actions(&actions).await {
-		Ok(transaction_hash) => match store_action_result(&database, &actions, &transaction_hash) {
+		Ok(transaction_hash) => match store_action_result(database, &actions, &transaction_hash) {
 			Ok(_) => info!("All actions executed successfully"),
 			Err(e) => warn!("Cannot execute actions on database: {}", e.to_string()),
 		},

@@ -6,10 +6,13 @@ use diesel::prelude::*;
 
 impl ContributionRepository for Client {
 	fn store(&self, contribution: Contribution, transaction_hash: String) -> Result<()> {
+		let connection =
+			self.connection().map_err(|e| Error::ContributionStoreError(e.to_string()))?;
+
 		let contribution = models::NewContribution::from((contribution, transaction_hash));
 		diesel::insert_into(contributions::table)
 			.values(&contribution)
-			.execute(self.connection())
+			.execute(&*connection)
 			.map_err(|e| Error::ContributionStoreError(e.to_string()))?;
 
 		Ok(())
@@ -22,6 +25,9 @@ impl ContributionRepository for Client {
 		status_: ContributionStatus,
 		transaction_hash_: String,
 	) -> Result<()> {
+		let connection =
+			self.connection().map_err(|e| Error::ContributionStoreError(e.to_string()))?;
+
 		diesel::update(schema::contributions::dsl::contributions)
 			.filter(contributions::onchain_id.eq(contribution_id))
 			.set((
@@ -32,7 +38,7 @@ impl ContributionRepository for Client {
 				}),
 				schema::contributions::transaction_hash.eq(transaction_hash_),
 			))
-			.execute(self.connection())
+			.execute(&*connection)
 			.map_err(|e| Error::ContributionStoreError(e.to_string()))?;
 
 		Ok(())
@@ -44,13 +50,16 @@ impl ContributionRepository for Client {
 		status_: ContributionStatus,
 		transaction_hash_: String,
 	) -> Result<()> {
+		let connection =
+			self.connection().map_err(|e| Error::ContributionStoreError(e.to_string()))?;
+
 		diesel::update(schema::contributions::dsl::contributions)
 			.filter(contributions::onchain_id.eq(contribution_id))
 			.set((
 				schema::contributions::status.eq(status_.to_string()),
 				schema::contributions::transaction_hash.eq(transaction_hash_),
 			))
-			.execute(self.connection())
+			.execute(&*connection)
 			.map_err(|e| Error::ContributionStoreError(e.to_string()))?;
 
 		Ok(())

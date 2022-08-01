@@ -50,8 +50,8 @@ async fn main() {
 	github::API::initialize();
 
 	let action_queue = Arc::new(RwLock::new(ActionQueue::new()));
-	let database_pool = database::init_pool();
-	database::run_migrations(&database_pool);
+	let database = Arc::new(database::Client::default());
+	database.run_migrations().expect("Unable to run database migrations");
 
 	// Allow to gracefully exit kill all thread on ctrl+c
 	let (shutdown_send, mut shutdown_recv) = oneshot::channel();
@@ -63,15 +63,15 @@ async fn main() {
 
 	// Regularly create a transaction with tasks stored in the queue
 	let cloned_action_queue = action_queue.clone();
+	let cloned_database = database.clone();
 	let queue_handler = tokio::spawn(async move {
-		let database_pool = database::init_pool();
 		loop {
 			let mut next_actions = vec![];
 			if let Ok(mut queue) = cloned_action_queue.write() {
 				next_actions = queue.pop_n(100);
 			};
 			if !next_actions.is_empty() {
-				execute_actions(&database_pool, next_actions).await;
+				execute_actions(&cloned_database, next_actions).await;
 			}
 
 			// Look if shutdown signat have been issued
@@ -86,7 +86,7 @@ async fn main() {
 	});
 
 	let rocket_handler = rocket::build()
-		.manage(database_pool)
+		.manage(database.clone())
 		.manage(action_queue.clone())
 		.manage(RepoCache::default())
 		.manage(ContributorCache::default())

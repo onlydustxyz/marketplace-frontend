@@ -9,14 +9,14 @@ use super::{InMemoryApplicationRepository, SerialUuidGenerator};
 #[test]
 fn store_and_find_application() {
 	let mut uuid_generator = SerialUuidGenerator(0);
-	let mut application_repository = InMemoryApplicationRepository::new();
+	let application_repository = InMemoryApplicationRepository::new();
 
 	let contributor_id = ContributorId::from(U256::ZERO);
 	let contribution_id = Uuid::new_v4();
 
 	assert!(
 		apply_to_contribution(
-			&mut application_repository,
+			&application_repository,
 			&mut uuid_generator,
 			contribution_id,
 			contributor_id,

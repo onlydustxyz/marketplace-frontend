@@ -1,6 +1,6 @@
 mod apply_to_contribution;
 
-use std::collections::HashMap;
+use std::{cell::RefCell, collections::HashMap};
 
 use crate::domain::*;
 use uuid::Uuid;
@@ -15,22 +15,23 @@ impl UuidGenerator for SerialUuidGenerator {
 	}
 }
 
-struct InMemoryApplicationRepository(HashMap<ContributionId, Application>);
+struct InMemoryApplicationRepository(RefCell<HashMap<ContributionId, Application>>);
 
 impl InMemoryApplicationRepository {
 	pub fn new() -> Self {
-		Self(HashMap::new())
+		Self(RefCell::new(HashMap::new()))
 	}
 }
 
 impl ApplicationRepository for InMemoryApplicationRepository {
-	fn store(&mut self, application: Application) -> Result<()> {
-		self.0.insert(*application.id(), application);
+	fn store(&self, application: Application) -> Result<()> {
+		self.0.borrow_mut().insert(*application.id(), application);
 		Ok(())
 	}
 
 	fn find(&self, id: &ApplicationId) -> Result<Application> {
 		self.0
+			.borrow()
 			.get(id)
 			.cloned()
 			.ok_or_else(|| Error::ApplicationStoreError("Not found".to_string()))

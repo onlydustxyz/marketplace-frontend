@@ -1,6 +1,6 @@
 use deathnote_contributions_feeder::{domain::RandomUuidGenerator, infrastructure::database};
 use http_api_problem::HttpApiProblem;
-use rocket::{response::status, serde::json::Json};
+use rocket::{response::status, serde::json::Json, State};
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
 use serde::Deserialize;
@@ -26,14 +26,13 @@ pub async fn apply_to_contribution(
 	_api_key: ApiKey,
 	contribution_id: UuidParam,
 	body: Json<ApplyDto>,
-	connection: database::Connection,
+	database: &State<database::Client>,
 ) -> Result<status::Accepted<()>, Json<HttpApiProblem>> {
 	let body = body.into_inner();
 	let mut uuid_generator = RandomUuidGenerator;
-	let mut database = database::Client::new(connection);
 
 	deathnote_contributions_feeder::application::apply_to_contribution(
-		&mut database,
+		database.inner(),
 		&mut uuid_generator,
 		contribution_id.into(),
 		body.contributor_id.into(),
