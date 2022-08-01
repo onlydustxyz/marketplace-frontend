@@ -1,3 +1,4 @@
+use crate::diesel::QueryDsl;
 use diesel::RunQueryDsl;
 
 use crate::{
@@ -6,7 +7,7 @@ use crate::{
 };
 
 impl ApplicationRepository for Client {
-	fn store(&self, application: Application) -> Result<()> {
+	fn store(&mut self, application: Application) -> Result<()> {
 		let application = models::NewApplication::from(application);
 		diesel::insert_into(applications::table)
 			.values(&application)
@@ -14,6 +15,14 @@ impl ApplicationRepository for Client {
 			.map_err(|e| Error::ApplicationStoreError(e.to_string()))?;
 
 		Ok(())
+	}
+
+	fn find(&self, id: &ApplicationId) -> Result<Application> {
+		applications::dsl::applications
+			.find(id)
+			.first(self.connection())
+			.map(|a: models::Application| a.into())
+			.map_err(|e| Error::ApplicationStoreError(e.to_string()))
 	}
 }
 
@@ -24,5 +33,15 @@ impl From<Application> for models::NewApplication {
 			contribution_id: *application.contribution_id(),
 			contributor_id: application.contributor_id().to_string(),
 		}
+	}
+}
+
+impl From<models::Application> for Application {
+	fn from(application: models::Application) -> Self {
+		Self::new(
+			application.id,
+			application.contribution_id,
+			ContributorId::from(application.contributor_id),
+		)
 	}
 }

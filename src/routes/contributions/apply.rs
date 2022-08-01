@@ -29,12 +29,12 @@ pub async fn apply_to_contribution(
 	connection: database::Connection,
 ) -> Result<status::Accepted<()>, Json<HttpApiProblem>> {
 	let body = body.into_inner();
-	let uuid_generator = RandomUuidGenerator;
-	let database = database::Client::new(connection);
+	let mut uuid_generator = RandomUuidGenerator;
+	let mut database = database::Client::new(connection);
 
 	deathnote_contributions_feeder::application::apply_to_contribution(
-		database,
-		uuid_generator,
+		&mut database,
+		&mut uuid_generator,
 		contribution_id.into(),
 		body.contributor_id.into(),
 	)
