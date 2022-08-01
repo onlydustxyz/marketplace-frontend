@@ -19,7 +19,10 @@ use deathnote_contributions_feeder::{
 	github,
 	infrastructure::{
 		database,
-		starknet::action_queue::{execute_actions, ActionQueue},
+		starknet::{
+			self,
+			action_queue::{execute_actions, ActionQueue},
+		},
 	},
 	utils::caches::{ContributorCache, RepoCache},
 };
@@ -87,6 +90,7 @@ async fn main() {
 
 	let rocket_handler = rocket::build()
 		.manage(database.clone())
+		.manage(starknet::Client::default())
 		.manage(action_queue.clone())
 		.manage(RepoCache::default())
 		.manage(ContributorCache::default())

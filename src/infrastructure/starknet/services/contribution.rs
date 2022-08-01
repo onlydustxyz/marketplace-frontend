@@ -3,7 +3,7 @@ use crate::{
 	infrastructure::starknet::{Account, Client},
 };
 
-impl<'a, A: Account + Sync> ContributionService for Client<'a, A> {
+impl<A: Account + Sync> ContributionService for Client<A> {
 	fn create(&self, contribution: Contribution) -> Result<()> {
 		self.action_queue_mut()?.push(Action::CreateContribution { contribution });
 		Ok(())
@@ -39,18 +39,24 @@ impl<'a, A: Account + Sync> ContributionService for Client<'a, A> {
 #[cfg(test)]
 mod test {
 	use super::*;
-	use crate::infrastructure::starknet::make_account;
 	use dotenv::dotenv;
-	use starknet::core::types::FieldElement;
+	use rstest::*;
+	use starknet::{
+		accounts::SingleOwnerAccount, core::types::FieldElement,
+		providers::SequencerGatewayProvider, signers::LocalWallet,
+	};
 	use uuid::Uuid;
 
-	#[test]
-	fn create_contribution() {
+	type StarknetClient = Client<SingleOwnerAccount<SequencerGatewayProvider, LocalWallet>>;
+
+	#[fixture]
+	fn client() -> StarknetClient {
 		dotenv().ok();
+		Client::default()
+	}
 
-		let account = make_account("", "");
-		let starknet = Client::new(&account);
-
+	#[rstest]
+	fn create_contribution(client: StarknetClient) {
 		let contribution = Contribution {
 			id: Uuid::from_u128(12),
 			onchain_id: String::from("12"),
@@ -71,26 +77,21 @@ mod test {
 			validator: FieldElement::ZERO,
 		};
 
-		let result = starknet.create(contribution.clone());
+		let result = client.create(contribution.clone());
 
-		let action = starknet.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
+		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 		assert_eq!(Action::CreateContribution { contribution }, action)
 	}
 
-	#[test]
-	fn assign_contributor() {
-		dotenv().ok();
-
-		let account = make_account("", "");
-		let starknet = Client::new(&account);
-
+	#[rstest]
+	fn assign_contributor(client: StarknetClient) {
 		let contribution_id = Uuid::from_u128(12);
 		let contributor_id: ContributorId = 34.into();
 
-		let result = starknet.assign_contributor(contribution_id.clone(), contributor_id.clone());
-		let action = starknet.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
+		let result = client.assign_contributor(contribution_id.clone(), contributor_id.clone());
+		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 		assert_eq!(
@@ -102,17 +103,12 @@ mod test {
 		)
 	}
 
-	#[test]
-	fn unassign_contributor() {
-		dotenv().ok();
-
-		let account = make_account("", "");
-		let starknet = Client::new(&account);
-
+	#[rstest]
+	fn unassign_contributor(client: StarknetClient) {
 		let contribution_id = Uuid::from_u128(12);
 
-		let result = starknet.unassign_contributor(contribution_id.clone());
-		let action = starknet.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
+		let result = client.unassign_contributor(contribution_id.clone());
+		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 		assert_eq!(
@@ -123,17 +119,12 @@ mod test {
 		)
 	}
 
-	#[test]
-	fn validate() {
-		dotenv().ok();
-
-		let account = make_account("", "");
-		let starknet = Client::new(&account);
-
+	#[rstest]
+	fn validate(client: StarknetClient) {
 		let contribution_id = Uuid::from_u128(12);
 
-		let result = starknet.validate(contribution_id.clone());
-		let action = starknet.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
+		let result = client.validate(contribution_id.clone());
+		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 		assert_eq!(

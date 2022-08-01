@@ -5,17 +5,17 @@ use starknet::{
 	core::types::{AddTransactionResult, TransactionStatus},
 	providers::{Provider, SequencerGatewayProvider},
 };
-use std::{thread, time::Duration};
+use std::{sync::Arc, thread, time::Duration};
 
 use crate::infrastructure::starknet::sequencer;
 
-pub struct ContractAdministrator<'a, A: Account + Sync> {
-	administrator_account: &'a A,
+pub struct ContractAdministrator<A: Account + Sync> {
+	administrator_account: Arc<A>,
 	sequencer: SequencerGatewayProvider,
 }
 
-impl<'a, A: Account + Sync> ContractAdministrator<'a, A> {
-	pub fn new(administrator_account: &'a A) -> Self {
+impl<A: Account + Sync> ContractAdministrator<A> {
+	pub fn new(administrator_account: Arc<A>) -> Self {
 		Self {
 			administrator_account,
 			sequencer: sequencer(),
@@ -71,8 +71,9 @@ impl<'a, A: Account + Sync> ContractAdministrator<'a, A> {
 					thread::sleep(Duration::from_secs(3));
 					continue;
 				},
-				TransactionStatus::AcceptedOnL2 | TransactionStatus::AcceptedOnL1 =>
-					Ok(transaction_result),
+				TransactionStatus::AcceptedOnL2 | TransactionStatus::AcceptedOnL1 => {
+					Ok(transaction_result)
+				},
 				TransactionStatus::Rejected => Err(anyhow!(format!(
 					"Transaction rejected: {:?}",
 					receipt.transaction_failure_reason
