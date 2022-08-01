@@ -1,12 +1,9 @@
-use std::{
-	str::FromStr,
-	sync::{Arc, RwLock},
-};
+use std::str::FromStr;
 
 use deathnote_contributions_feeder::{
-	domain::{self, Action},
+	application::{CreateContribution, CreateContributionUsecase},
+	domain::*,
 	github,
-	infrastructure::starknet::action_queue::ActionQueue,
 };
 use http_api_problem::{HttpApiProblem, StatusCode};
 use rocket::{
@@ -16,6 +13,7 @@ use rocket::{
 };
 use rocket_okapi::{openapi, JsonSchema};
 use starknet::core::types::FieldElement;
+use std::result::Result;
 use uuid::Uuid;
 
 use crate::routes::{api_key::ApiKey, hex_prefixed_string::HexPrefixedString};
@@ -35,7 +33,7 @@ pub async fn create_contribution(
 	_api_key: ApiKey,
 	body: Json<CreateContributionDto>,
 	github_api: &State<github::API>,
-	queue: &State<Arc<RwLock<ActionQueue>>>,
+	usecase: CreateContribution,
 ) -> Result<Status, HttpApiProblem> {
 	let body = body.into_inner();
 	let validator = FieldElement::from_str(body.validator.as_string()).map_err(|e| {
@@ -56,28 +54,25 @@ pub async fn create_contribution(
 
 	let metadata = github::extract_metadata(github_issue.clone());
 
-	let contribution = domain::Contribution {
+	let contribution = Contribution {
 		id: Uuid::new_v4(),
 		onchain_id: (body.project_id * 1_000_000 + body.github_issue_number).to_string(),
 		project_id: body.project_id.to_string(),
 		contributor_id: None,
 		title: Some(github_issue.title),
 		description: Some(github_issue.body.unwrap_or_default()),
-		status: domain::ContributionStatus::Open,
+		status: ContributionStatus::Open,
 		external_link: Some(github_issue.html_url),
 		gate: body.gate,
 		metadata,
 		validator,
 	};
 
-	match queue.write() {
-		Ok(mut queue) => queue.push(Action::CreateContribution { contribution }),
-		Err(error) => {
-			return Err(HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-				.title("Unable to add contribution to the queue")
-				.detail(error.to_string()))
-		},
-	}
+	usecase.prepare(contribution).await.map_err(|error| {
+		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+			.title("Unable to add contribution to the queue")
+			.detail(error.to_string())
+	})?;
 
 	Ok(Status::Accepted)
 }

@@ -3,7 +3,7 @@ use crate::{
 	infrastructure::starknet::{Account, Client},
 };
 
-impl<A: Account + Sync> ContributionService for Client<A> {
+impl<A: Account + Send + Sync> ContributionService for Client<A> {
 	fn create(&self, contribution: Contribution) -> Result<()> {
 		self.action_queue_mut()?.push(Action::CreateContribution { contribution });
 		Ok(())

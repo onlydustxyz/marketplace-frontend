@@ -5,6 +5,9 @@ mod get_contributor;
 pub use get_contributor::{GetContributor, Usecase as GetContributorUsecase};
 use mapinto::ResultMapErrInto;
 
+mod contribution;
+pub use contribution::*;
+
 use crate::domain::*;
 
 pub fn apply_to_contribution<A: ApplicationRepository, U: UuidGenerator>(
