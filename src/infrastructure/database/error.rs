@@ -1,16 +1,9 @@
-#[derive(Debug)]
+use thiserror::Error;
+
+#[derive(Debug, Error)]
 pub enum Error {
+	#[error("Unable to connect to the database")]
 	Connection(String),
+	#[error("Unable to migrate the database")]
 	Migration(String),
 }
-
-impl ToString for Error {
-	fn to_string(&self) -> String {
-		match self {
-			Error::Connection(e) => e.to_owned(),
-			Error::Migration(e) => e.to_owned(),
-		}
-	}
-}
-
-pub type Result<T> = std::result::Result<T, Error>;

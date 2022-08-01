@@ -8,4 +8,4 @@ mod contributor;
 pub use contributor::Repository as ContributorRepository;
 
 mod application;
-pub use application::Repository as ApplicationRepository;
+pub use application::{Error as ApplicationRepositoryError, Repository as ApplicationRepository};

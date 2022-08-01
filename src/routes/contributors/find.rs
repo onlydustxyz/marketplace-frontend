@@ -43,7 +43,7 @@ mod tests {
 			pub fn execute(
 				&self,
 				contributor_id: ContributorId,
-			) -> deathnote_contributions_feeder::domain::Result<Option<Contributor>>;
+			) -> deathnote_contributions_feeder::domain::AnyResult<Option<Contributor>>;
 		}
 	}
 
@@ -71,7 +71,7 @@ mod tests {
 		usecase
 			.expect_execute()
 			.with(eq(ContributorId::from(123)))
-			.returning(|_| Err(Error::GetContributorError(String::from("Oops"))));
+			.returning(|_| Err(AnyError::GetContributorError(String::from("Oops"))));
 
 		let result = find_by_id_impl(usecase, 123);
 		assert!(result.is_err());

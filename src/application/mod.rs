@@ -11,10 +11,10 @@ pub fn apply_to_contribution<A: ApplicationRepository, U: UuidGenerator>(
 	uuid_generator: &mut U,
 	contribution_id: ContributionId,
 	contributor_id: ContributorId,
-) -> Result<()> {
+) -> Result<(), DomainError> {
 	let id = uuid_generator.new_uuid();
 
 	let application = Application::new(id, contribution_id, contributor_id);
 
-	application_repository.store(application)
+	application_repository.store(application).map_err(DomainError::from)
 }

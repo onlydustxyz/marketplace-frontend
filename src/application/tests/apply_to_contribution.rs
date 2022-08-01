@@ -27,11 +27,7 @@ fn store_and_find_application() {
 	let expected_id = Uuid::from_u128(0);
 
 	assert_eq!(
-		application_repository.find(&expected_id),
-		Ok(Application::new(
-			expected_id,
-			contribution_id,
-			contributor_id
-		))
+		application_repository.find(&expected_id).unwrap(),
+		Application::new(expected_id, contribution_id, contributor_id)
 	);
 }
