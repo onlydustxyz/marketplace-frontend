@@ -188,7 +188,7 @@ async fn build_contributor(
 
 async fn fetch_contributor(contributor_id: &ContributorId) -> Option<Contributor> {
 	let account = starknet::make_account_from_env();
-	let starknet = starknet::API::new(&account);
+	let starknet = starknet::Client::new(&account);
 	let mut contributor = starknet.get_user_information(contributor_id).await?;
 
 	if let Some(github_handle) = &contributor.github_handle {

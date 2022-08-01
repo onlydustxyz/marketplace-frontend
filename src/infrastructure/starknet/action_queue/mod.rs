@@ -42,7 +42,7 @@ impl Default for ActionQueue {
 
 pub async fn execute_actions(database: &database::Client, actions: Vec<Action>) {
 	let account = starknet::make_account_from_env();
-	let starknet = starknet::API::new(&account);
+	let starknet = starknet::Client::new(&account);
 
 	match starknet.execute_actions(&actions).await {
 		Ok(transaction_hash) => match store_action_result(database, &actions, &transaction_hash) {

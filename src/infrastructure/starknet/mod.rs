@@ -45,7 +45,7 @@ pub fn sequencer() -> SequencerGatewayProvider {
 	SequencerGatewayProvider::starknet_alpha_goerli()
 }
 
-pub struct API<'a, A>
+pub struct Client<'a, A>
 where
 	A: Account + Sync,
 {
@@ -54,7 +54,7 @@ where
 	profile: ProfileContract,
 }
 
-impl<'a, A> API<'a, A>
+impl<'a, A> Client<'a, A>
 where
 	A: Account + Sync,
 {
