@@ -47,10 +47,11 @@ pub async fn create_contribution(
 	let github_issue = github_api.issue(body.project_id, body.github_issue_number).await;
 	let github_issue = match github_issue {
 		Ok(github_issue) => github_issue,
-		Err(error) =>
+		Err(error) => {
 			return Err(HttpApiProblem::new(StatusCode::BAD_REQUEST)
 				.title("Unable to get GitHub issue data")
-				.detail(error.to_string())),
+				.detail(error.to_string()))
+		},
 	};
 
 	let metadata = github::extract_metadata(github_issue.clone());
@@ -70,13 +71,12 @@ pub async fn create_contribution(
 	};
 
 	match queue.write() {
-		Ok(mut queue) => queue.push(Action::CreateContribution {
-			contribution: Box::new(contribution),
-		}),
-		Err(error) =>
+		Ok(mut queue) => queue.push(Action::CreateContribution { contribution }),
+		Err(error) => {
 			return Err(HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 				.title("Unable to add contribution to the queue")
-				.detail(error.to_string())),
+				.detail(error.to_string()))
+		},
 	}
 
 	Ok(Status::Accepted)
