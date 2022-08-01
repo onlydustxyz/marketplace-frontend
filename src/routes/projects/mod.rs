@@ -9,7 +9,7 @@ use http_api_problem::{HttpApiProblem, StatusCode};
 use log::{error, warn};
 use rocket::{get, http::Status, post, serde::json::Json, State};
 use rocket_okapi::openapi;
-use std::result::Result;
+use std::{result::Result, sync::Arc};
 use url::Url;
 
 use super::api_key::ApiKey;
@@ -19,7 +19,7 @@ use super::api_key::ApiKey;
 pub async fn new_project(
 	_api_key: ApiKey,
 	project: Json<dto::ProjectCreation<'_>>,
-	database: &State<database::Client>,
+	database: &State<Arc<database::Client>>,
 ) -> Result<Status, Json<HttpApiProblem>> {
 	let github = github::API::new();
 
@@ -32,7 +32,7 @@ pub async fn new_project(
 				.detail(error.to_string())
 		})?;
 
-	ProjectRepository::store(database.inner(), project).map_err(|error| {
+	ProjectRepository::store(database.as_ref(), project).map_err(|error| {
 		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 			.title("Saving projects to DB failed")
 			.detail(error.to_string())
@@ -44,7 +44,7 @@ pub async fn new_project(
 #[openapi(tag = "Projects")]
 #[get("/projects")]
 pub async fn list_projects(
-	database: &State<database::Client>,
+	database: &State<Arc<database::Client>>,
 	repo_cache: &State<caches::RepoCache>,
 	contributor_cache: &State<caches::ContributorCache>,
 ) -> Result<Json<Vec<dto::Project>>, Json<HttpApiProblem>> {
