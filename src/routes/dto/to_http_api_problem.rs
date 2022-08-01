@@ -14,21 +14,18 @@ impl ToHttpApiProblem for Error {
 			Error::ProjectListingError(e) => HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 				.title("Failed to list the projects")
 				.detail(e),
-			Error::ContributionStoreError(e) => {
+			Error::ContributionStoreError(e) =>
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 					.title("Failed to store the contribution in database")
-					.detail(e)
-			},
-			Error::ApplicationStoreError(e) => {
+					.detail(e),
+			Error::ApplicationStoreError(e) =>
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 					.title("Failed to store the application in database")
-					.detail(e)
-			},
-			Error::TransactionRevertedError(e) => {
+					.detail(e),
+			Error::TransactionRevertedError(e) =>
 				HttpApiProblem::new(StatusCode::FAILED_DEPENDENCY)
 					.title("The on-chain batch transaction failed")
-					.detail(e)
-			},
+					.detail(e),
 			Error::GetContributorError(e) => HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 				.title("Failed to retrieve the contributor")
 				.detail(e),

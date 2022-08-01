@@ -3,6 +3,7 @@ use uuid::Uuid;
 
 pub type Id = Uuid;
 
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Application {
 	id: Id,
 	contribution_id: ContributionId,
