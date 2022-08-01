@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use deathnote_contributions_feeder::{domain::RandomUuidGenerator, infrastructure::database};
 use http_api_problem::HttpApiProblem;
 use rocket::{response::status, serde::json::Json, State};
@@ -26,13 +28,13 @@ pub async fn apply_to_contribution(
 	_api_key: ApiKey,
 	contribution_id: UuidParam,
 	body: Json<ApplyDto>,
-	database: &State<database::Client>,
+	database: &State<Arc<database::Client>>,
 ) -> Result<status::Accepted<()>, Json<HttpApiProblem>> {
 	let body = body.into_inner();
 	let mut uuid_generator = RandomUuidGenerator;
 
 	deathnote_contributions_feeder::application::apply_to_contribution(
-		database.inner(),
+		database.as_ref(),
 		&mut uuid_generator,
 		contribution_id.into(),
 		body.contributor_id.into(),
