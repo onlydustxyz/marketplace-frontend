@@ -1,4 +1,3 @@
-use crate::starknet::sequencer;
 use anyhow::{anyhow, Result};
 use log::{info, warn};
 use starknet::{
@@ -7,6 +6,8 @@ use starknet::{
 	providers::{Provider, SequencerGatewayProvider},
 };
 use std::{thread, time::Duration};
+
+use crate::infrastructure::starknet::sequencer;
 
 pub struct ContractAdministrator<'a, A: Account + Sync> {
 	administrator_account: &'a A,
@@ -70,8 +71,9 @@ impl<'a, A: Account + Sync> ContractAdministrator<'a, A> {
 					thread::sleep(Duration::from_secs(3));
 					continue;
 				},
-				TransactionStatus::AcceptedOnL2 | TransactionStatus::AcceptedOnL1 =>
-					Ok(transaction_result),
+				TransactionStatus::AcceptedOnL2 | TransactionStatus::AcceptedOnL1 => {
+					Ok(transaction_result)
+				},
 				TransactionStatus::Rejected => Err(anyhow!(format!(
 					"Transaction rejected: {:?}",
 					receipt.transaction_failure_reason

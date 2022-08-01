@@ -1,7 +1,10 @@
 #[cfg(test)]
 mod tests;
 
-use deathnote_contributions_feeder::{domain::*, infrastructure::database, starknet};
+use deathnote_contributions_feeder::{
+	domain::*,
+	infrastructure::{database, starknet},
+};
 
 use log::{info, warn};
 use std::{cmp::min, collections::VecDeque};
