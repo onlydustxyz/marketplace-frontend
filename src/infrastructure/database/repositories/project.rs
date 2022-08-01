@@ -14,12 +14,15 @@ use starknet::core::types::FieldElement;
 
 impl ProjectRepository for Client {
 	fn find_all_with_contributions(&self) -> Result<Vec<ProjectWithContributions>> {
+		let connection =
+			self.connection().map_err(|e| Error::ProjectListingError(e.to_string()))?;
+
 		let project_list = projects
-			.load::<models::Project>(self.connection())
+			.load::<models::Project>(&*connection)
 			.map_err(|e| Error::ProjectListingError(e.to_string()))?;
 
 		let contribution_list = models::Contribution::belonging_to(&project_list)
-			.load::<models::Contribution>(self.connection())
+			.load::<models::Contribution>(&*connection)
 			.map_err(|e| Error::ProjectListingError(e.to_string()))?
 			.grouped_by(&project_list);
 
@@ -33,13 +36,16 @@ impl ProjectRepository for Client {
 	}
 
 	fn store(&self, project: Project) -> Result<()> {
+		let connection =
+			self.connection().map_err(|e| Error::ProjectListingError(e.to_string()))?;
+
 		let project: models::NewProject = project.into();
 		diesel::insert_into(projects::table)
 			.values(&project)
 			.on_conflict(id)
 			.do_update()
 			.set(&project)
-			.execute(self.connection())
+			.execute(&*connection)
 			.map_err(|e| Error::ProjectListingError(e.to_string()))?;
 
 		Ok(())

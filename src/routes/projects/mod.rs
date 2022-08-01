@@ -19,9 +19,8 @@ use super::api_key::ApiKey;
 pub async fn new_project(
 	_api_key: ApiKey,
 	project: Json<dto::ProjectCreation<'_>>,
-	connection: database::Connection,
+	database: &State<database::Client>,
 ) -> Result<Status, Json<HttpApiProblem>> {
-	let database = database::Client::new(connection);
 	let github = github::API::new();
 
 	let project = github
@@ -33,7 +32,7 @@ pub async fn new_project(
 				.detail(error.to_string())
 		})?;
 
-	ProjectRepository::store(&database, project).map_err(|error| {
+	ProjectRepository::store(database.inner(), project).map_err(|error| {
 		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 			.title("Saving projects to DB failed")
 			.detail(error.to_string())
@@ -45,12 +44,10 @@ pub async fn new_project(
 #[openapi(tag = "Projects")]
 #[get("/projects")]
 pub async fn list_projects(
-	connection: database::Connection,
+	database: &State<database::Client>,
 	repo_cache: &State<caches::RepoCache>,
 	contributor_cache: &State<caches::ContributorCache>,
 ) -> Result<Json<Vec<dto::Project>>, Json<HttpApiProblem>> {
-	let database = database::Client::new(connection);
-
 	let projects_with_contribution_iterator = database
 		.find_all_with_contributions()
 		.map_err(|error| {

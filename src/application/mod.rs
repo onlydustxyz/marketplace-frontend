@@ -2,13 +2,12 @@
 mod tests;
 
 mod get_contributor;
-
 pub use get_contributor::{GetContributor, Usecase as GetContributorUsecase};
 
 use crate::domain::*;
 
 pub fn apply_to_contribution<A: ApplicationRepository, U: UuidGenerator>(
-	application_repository: &mut A,
+	application_repository: &A,
 	uuid_generator: &mut U,
 	contribution_id: ContributionId,
 	contributor_id: ContributorId,

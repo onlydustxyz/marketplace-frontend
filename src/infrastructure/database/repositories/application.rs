@@ -7,20 +7,26 @@ use crate::{
 };
 
 impl ApplicationRepository for Client {
-	fn store(&mut self, application: Application) -> Result<()> {
+	fn store(&self, application: Application) -> Result<()> {
+		let connection =
+			self.connection().map_err(|e| Error::ApplicationStoreError(e.to_string()))?;
+
 		let application = models::NewApplication::from(application);
 		diesel::insert_into(applications::table)
 			.values(&application)
-			.execute(self.connection())
+			.execute(&*connection)
 			.map_err(|e| Error::ApplicationStoreError(e.to_string()))?;
 
 		Ok(())
 	}
 
 	fn find(&self, id: &ApplicationId) -> Result<Application> {
+		let connection =
+			self.connection().map_err(|e| Error::ApplicationStoreError(e.to_string()))?;
+
 		applications::dsl::applications
 			.find(id)
-			.first(self.connection())
+			.first(&*connection)
 			.map(|a: models::Application| a.into())
 			.map_err(|e| Error::ApplicationStoreError(e.to_string()))
 	}
