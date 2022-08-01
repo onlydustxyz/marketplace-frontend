@@ -1,3 +1,11 @@
+mod contracts;
+use contracts::{ContributionContract, ProfileContract, RegistryContract};
+
+mod model;
+pub use model::*;
+
+pub mod action_queue; // TODO remove pub when refactoring is done
+
 use std::env;
 
 pub use starknet::accounts::Account;
@@ -9,13 +17,6 @@ use starknet::{
 };
 
 use crate::domain::*;
-
-mod contracts;
-use contracts::{ContributionContract, ProfileContract, RegistryContract};
-
-mod model;
-
-pub use model::*;
 
 pub fn make_account_from_env() -> impl Account {
 	let private_key = env::var("PRIVATE_KEY").expect("PRIVATE_KEY must be set");

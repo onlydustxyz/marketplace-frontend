@@ -1,4 +1,3 @@
-mod action_queue;
 mod routes;
 
 use diesel_migrations::*;
@@ -18,14 +17,15 @@ use tokio::{
 
 use deathnote_contributions_feeder::{
 	github,
-	infrastructure::database,
+	infrastructure::{
+		database,
+		starknet::action_queue::{execute_actions, ActionQueue},
+	},
 	utils::caches::{ContributorCache, RepoCache},
 };
 
 use dotenv::dotenv;
 use rocket::routes;
-
-use crate::action_queue::{execute_actions, ActionQueue};
 
 #[macro_use]
 extern crate rocket;

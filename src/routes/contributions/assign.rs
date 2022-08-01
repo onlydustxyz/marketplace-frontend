@@ -1,7 +1,10 @@
 use std::sync::{Arc, RwLock};
 
 use crypto_bigint::U256;
-use deathnote_contributions_feeder::domain::{Action, ContributionOnChainId};
+use deathnote_contributions_feeder::{
+	domain::{Action, ContributionOnChainId},
+	infrastructure::starknet::action_queue::ActionQueue,
+};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use log::info;
 use rocket::{
@@ -11,7 +14,7 @@ use rocket::{
 };
 use rocket_okapi::{openapi, JsonSchema};
 
-use crate::{action_queue::ActionQueue, routes::api_key::ApiKey};
+use crate::routes::api_key::ApiKey;
 
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]

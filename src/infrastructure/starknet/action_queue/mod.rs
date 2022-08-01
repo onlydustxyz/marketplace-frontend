@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use deathnote_contributions_feeder::{
+use crate::{
 	domain::*,
 	infrastructure::{database, starknet},
 };
