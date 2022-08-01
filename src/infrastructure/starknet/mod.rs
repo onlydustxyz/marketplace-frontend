@@ -5,8 +5,14 @@ mod model;
 pub use model::*;
 
 pub mod action_queue; // TODO remove pub when refactoring is done
+use action_queue::ActionQueue;
 
-use std::env;
+mod services;
+
+use std::{
+	env,
+	sync::{Arc, RwLock, RwLockWriteGuard},
+};
 
 pub use starknet::accounts::Account;
 use starknet::{
@@ -41,28 +47,24 @@ fn make_account(
 	)
 }
 
-pub fn sequencer() -> SequencerGatewayProvider {
+fn sequencer() -> SequencerGatewayProvider {
 	SequencerGatewayProvider::starknet_alpha_goerli()
 }
 
-pub struct Client<'a, A>
-where
-	A: Account + Sync,
-{
+pub struct Client<'a, A: Account + Sync> {
 	registry: RegistryContract,
 	contributions: ContributionContract<'a, A>,
 	profile: ProfileContract,
+	action_queue: Arc<RwLock<ActionQueue>>,
 }
 
-impl<'a, A> Client<'a, A>
-where
-	A: Account + Sync,
-{
+impl<'a, A: Account + Sync> Client<'a, A> {
 	pub fn new(account: &'a A) -> Self {
 		Self {
 			registry: RegistryContract::default(),
 			contributions: ContributionContract::new(account),
 			profile: ProfileContract::default(),
+			action_queue: Arc::new(RwLock::new(ActionQueue::new())),
 		}
 	}
 
@@ -76,5 +78,11 @@ where
 	) -> Option<Contributor> {
 		let account = self.profile.get_account(contributor_id).await?;
 		self.registry.get_user_information(account).await
+	}
+
+	fn action_queue_mut(&self) -> Result<RwLockWriteGuard<'_, ActionQueue>> {
+		self.action_queue
+			.write()
+			.map_err(|e| Error::ContributionStoreError(e.to_string()))
 	}
 }

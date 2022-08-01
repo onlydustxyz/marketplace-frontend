@@ -65,7 +65,7 @@ fn store_action_result(
 		match action {
 			Action::CreateContribution {
 				contribution: contribution_,
-			} => contribution_repository.store(*contribution_.to_owned(), hash.to_owned()),
+			} => contribution_repository.store(contribution_.to_owned(), hash.to_owned()),
 
 			Action::AssignContributor {
 				contribution_id: id_,
