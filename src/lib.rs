@@ -6,5 +6,4 @@ pub mod application;
 pub mod domain;
 pub mod github;
 pub mod infrastructure;
-pub mod starknet;
 pub mod utils;

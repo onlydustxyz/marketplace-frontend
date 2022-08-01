@@ -1,7 +1,10 @@
 mod dto;
 
 use deathnote_contributions_feeder::{
-	domain::*, github, infrastructure::database, starknet, utils::caches,
+	domain::*,
+	github,
+	infrastructure::{database, starknet},
+	utils::caches,
 };
 
 use futures::future::{self, OptionFuture};
