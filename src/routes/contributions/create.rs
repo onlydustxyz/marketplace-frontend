@@ -6,6 +6,7 @@ use std::{
 use deathnote_contributions_feeder::{
 	domain::{self, Action},
 	github,
+	infrastructure::starknet::action_queue::ActionQueue,
 };
 use http_api_problem::{HttpApiProblem, StatusCode};
 use rocket::{
@@ -17,10 +18,7 @@ use rocket_okapi::{openapi, JsonSchema};
 use starknet::core::types::FieldElement;
 use uuid::Uuid;
 
-use crate::{
-	action_queue::ActionQueue,
-	routes::{api_key::ApiKey, hex_prefixed_string::HexPrefixedString},
-};
+use crate::routes::{api_key::ApiKey, hex_prefixed_string::HexPrefixedString};
 
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]

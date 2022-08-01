@@ -1,5 +1,5 @@
 use super::ActionQueue;
-use deathnote_contributions_feeder::domain::Action;
+use crate::domain::Action;
 
 #[test]
 fn pop_less_than_len() {

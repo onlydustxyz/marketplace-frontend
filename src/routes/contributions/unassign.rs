@@ -1,11 +1,14 @@
 use std::sync::{Arc, RwLock};
 
-use deathnote_contributions_feeder::domain::{Action, ContributionOnChainId};
+use deathnote_contributions_feeder::{
+	domain::{Action, ContributionOnChainId},
+	infrastructure::starknet::action_queue::ActionQueue,
+};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use rocket::{response::status, State};
 use rocket_okapi::openapi;
 
-use crate::{action_queue::ActionQueue, routes::api_key::ApiKey};
+use crate::routes::api_key::ApiKey;
 
 #[openapi(tag = "Contributions")]
 #[delete("/contributions/<contribution_id>/contributor")]
