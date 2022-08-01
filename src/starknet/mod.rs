@@ -65,7 +65,7 @@ where
 		}
 	}
 
-	pub async fn execute_actions(&self, actions: &[Action]) -> Result<String> {
+	pub async fn execute_actions(&self, actions: &[Action]) -> AnyResult<String> {
 		self.contributions.execute_actions(actions, true).await
 	}
 

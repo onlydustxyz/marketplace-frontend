@@ -34,13 +34,13 @@ where
 		&self,
 		actions: &[Action],
 		wait_for_acceptance: bool,
-	) -> Result<String> {
+	) -> AnyResult<String> {
 		let calls = actions.iter().map_into().collect_vec();
 		let transaction_result = self
 			.administrator
 			.send_transaction(&calls, wait_for_acceptance)
 			.await
-			.map_err(|e| Error::TransactionRevertedError(e.to_string()))?;
+			.map_err(|e| AnyError::TransactionRevertedError(e.to_string()))?;
 		Ok(format!("0x{:x}", transaction_result.transaction_hash))
 	}
 }

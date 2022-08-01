@@ -3,7 +3,7 @@ use std::{fmt, str::FromStr};
 use url::Url;
 use uuid::Uuid;
 
-use crate::domain::Error;
+use crate::domain::AnyError;
 
 use super::{ContributorId, ProjectId};
 
@@ -56,7 +56,7 @@ impl fmt::Display for Status {
 }
 
 impl FromStr for Status {
-	type Err = Error;
+	type Err = AnyError;
 
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
 		match s {
@@ -64,7 +64,7 @@ impl FromStr for Status {
 			"ASSIGNED" => Ok(Status::Assigned),
 			"COMPLETED" => Ok(Status::Completed),
 			"ABANDONED" => Ok(Status::Abandoned),
-			_ => Err(Error::ParseStatusError(format!(
+			_ => Err(AnyError::ParseStatusError(format!(
 				"Unable to parse {} into a contribution status",
 				s,
 			))),

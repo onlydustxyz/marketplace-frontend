@@ -24,16 +24,12 @@ impl InMemoryApplicationRepository {
 }
 
 impl ApplicationRepository for InMemoryApplicationRepository {
-	fn store(&self, application: Application) -> Result<()> {
+	fn store(&self, application: Application) -> Result<(), ApplicationRepositoryError> {
 		self.0.borrow_mut().insert(*application.id(), application);
 		Ok(())
 	}
 
-	fn find(&self, id: &ApplicationId) -> Result<Application> {
-		self.0
-			.borrow()
-			.get(id)
-			.cloned()
-			.ok_or_else(|| Error::ApplicationStoreError("Not found".to_string()))
+	fn find(&self, id: &ApplicationId) -> Result<Application, ApplicationRepositoryError> {
+		self.0.borrow().get(id).cloned().ok_or(ApplicationRepositoryError::NotFound)
 	}
 }
