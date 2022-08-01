@@ -4,13 +4,13 @@ pub use get_contributor::{GetContributor, Usecase as GetContributorUsecase};
 
 use crate::domain::*;
 
-pub fn apply_to_contribution<A: ApplicationRepository, U: UuidService>(
+pub fn apply_to_contribution<A: ApplicationRepository, U: UuidGenerator>(
 	application_repository: A,
-	uuid_repository: U,
+	uuid_generator: U,
 	contribution_id: ContributionId,
 	contributor_id: ContributorId,
 ) -> Result<()> {
-	let id = uuid_repository.new_random();
+	let id = uuid_generator.new_uuid();
 
 	let application = Application::new(id, contribution_id, contributor_id);
 
