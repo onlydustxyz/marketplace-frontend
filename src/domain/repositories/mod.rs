@@ -1,5 +1,5 @@
 mod project;
-pub use project::Repository as ProjectRepository;
+pub use project::{Error as ProjectRepositoryError, Repository as ProjectRepository};
 
 mod contribution;
 pub use contribution::{

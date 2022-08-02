@@ -1,9 +1,8 @@
 use starknet::core::types::FieldElement;
 use std::{fmt, str::FromStr};
+use thiserror::Error;
 use url::Url;
 use uuid::Uuid;
-
-use crate::domain::AnyError;
 
 use super::{ContributorId, ProjectId};
 
@@ -55,8 +54,12 @@ impl fmt::Display for Status {
 	}
 }
 
+#[derive(Debug, Error)]
+#[error("Failed to parse `{0}` as Status")]
+pub struct StatusParsingError(String);
+
 impl FromStr for Status {
-	type Err = AnyError;
+	type Err = StatusParsingError;
 
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
 		match s {
@@ -64,10 +67,7 @@ impl FromStr for Status {
 			"ASSIGNED" => Ok(Status::Assigned),
 			"COMPLETED" => Ok(Status::Completed),
 			"ABANDONED" => Ok(Status::Abandoned),
-			_ => Err(AnyError::ParseStatusError(format!(
-				"Unable to parse {} into a contribution status",
-				s,
-			))),
+			_ => Err(StatusParsingError(s.to_string())),
 		}
 	}
 }

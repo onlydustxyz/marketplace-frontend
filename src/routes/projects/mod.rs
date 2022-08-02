@@ -9,7 +9,7 @@ use http_api_problem::{HttpApiProblem, StatusCode};
 use log::{error, warn};
 use rocket::{get, http::Status, post, serde::json::Json, State};
 use rocket_okapi::openapi;
-use std::{result::Result, sync::Arc};
+use std::{error::Error, result::Result, sync::Arc};
 use url::Url;
 
 use super::api_key::ApiKey;
@@ -27,15 +27,21 @@ pub async fn new_project(
 		.get_project_by_owner_and_name(project.owner, project.name)
 		.await
 		.map_err(|error| {
-			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-				.title("Fetching projects failed")
-				.detail(error.to_string())
+			let mut problem = HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+				.title("Fetching projects failed");
+			if let Some(s) = error.source() {
+				problem.detail = Some(s.to_string());
+			}
+			problem
 		})?;
 
 	ProjectRepository::store(database.as_ref(), project).map_err(|error| {
-		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-			.title("Saving projects to DB failed")
-			.detail(error.to_string())
+		let mut problem = HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+			.title("Saving projects to DB failed");
+		if let Some(s) = error.source() {
+			problem.detail = Some(s.to_string());
+		}
+		problem
 	})?;
 
 	Ok(Status::Accepted)
@@ -51,9 +57,12 @@ pub async fn list_projects(
 	let projects_with_contribution_iterator = database
 		.find_all_with_contributions()
 		.map_err(|error| {
-			HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-				.title("Listing projects failed")
-				.detail(error.to_string())
+			let mut problem = HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+				.title("Listing projects failed");
+			if let Some(s) = error.source() {
+				problem.detail = Some(s.to_string());
+			}
+			problem
 		})?
 		.into_iter();
 

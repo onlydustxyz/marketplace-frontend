@@ -13,17 +13,9 @@ impl ToHttpApiProblem for AnyError {
 			AnyError::ParseStatusError(e) => HttpApiProblem::new(StatusCode::UNPROCESSABLE_ENTITY)
 				.title("Failed to parse the contribution status")
 				.detail(e),
-			AnyError::ProjectListingError(e) =>
-				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-					.title("Failed to list the projects")
-					.detail(e),
 			AnyError::TransactionRevertedError(e) =>
 				HttpApiProblem::new(StatusCode::FAILED_DEPENDENCY)
 					.title("The on-chain batch transaction failed")
-					.detail(e),
-			AnyError::GetContributorError(e) =>
-				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-					.title("Failed to retrieve the contributor")
 					.detail(e),
 		}
 	}

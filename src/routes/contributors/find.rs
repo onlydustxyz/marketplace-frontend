@@ -3,7 +3,7 @@ use deathnote_contributions_feeder::application::{GetContributor, GetContributor
 use http_api_problem::{HttpApiProblem, StatusCode};
 use rocket::{get, serde::json::Json};
 use rocket_okapi::openapi;
-use std::result::Result;
+use std::{error::Error, result::Result};
 
 #[openapi(tag = "Contributors")]
 #[get("/contributors/<contributor_id>")]
@@ -18,10 +18,13 @@ fn find_by_id_impl<U: GetContributorUsecase>(
 	usecase: U,
 	contributor_id: u128,
 ) -> Result<Json<dto::Contributor>, HttpApiProblem> {
-	let contributor = usecase.execute(contributor_id.into()).map_err(|e| {
-		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-			.title("Error while fetching contributor")
-			.detail(e.to_string())
+	let contributor = usecase.execute(contributor_id.into()).map_err(|error| {
+		let mut problem = HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+			.title("Error while fetching contributor");
+		if let Some(s) = error.source() {
+			problem.detail = Some(s.to_string());
+		}
+		problem
 	})?;
 
 	match contributor {

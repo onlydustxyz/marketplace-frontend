@@ -5,7 +5,7 @@ use crate::{
 	infrastructure::database::{
 		models,
 		schema::projects::{self, dsl::*},
-		Client,
+		Client, DatabaseError,
 	},
 };
 use diesel::{prelude::*, query_dsl::BelongingToDsl};
@@ -13,17 +13,18 @@ use itertools::Itertools;
 use starknet::core::types::FieldElement;
 
 impl ProjectRepository for Client {
-	fn find_all_with_contributions(&self) -> AnyResult<Vec<ProjectWithContributions>> {
-		let connection =
-			self.connection().map_err(|e| AnyError::ProjectListingError(e.to_string()))?;
+	fn find_all_with_contributions(
+		&self,
+	) -> Result<Vec<ProjectWithContributions>, ProjectRepositoryError> {
+		let connection = self.connection().map_err(ProjectRepositoryError::from)?;
 
 		let project_list = projects
 			.load::<models::Project>(&*connection)
-			.map_err(|e| AnyError::ProjectListingError(e.to_string()))?;
+			.map_err(ProjectRepositoryError::from)?;
 
 		let contribution_list = models::Contribution::belonging_to(&project_list)
 			.load::<models::Contribution>(&*connection)
-			.map_err(|e| AnyError::ProjectListingError(e.to_string()))?
+			.map_err(ProjectRepositoryError::from)?
 			.grouped_by(&project_list);
 
 		let result = project_list
@@ -35,9 +36,8 @@ impl ProjectRepository for Client {
 		Ok(result)
 	}
 
-	fn store(&self, project: Project) -> AnyResult<()> {
-		let connection =
-			self.connection().map_err(|e| AnyError::ProjectListingError(e.to_string()))?;
+	fn store(&self, project: Project) -> Result<(), ProjectRepositoryError> {
+		let connection = self.connection().map_err(ProjectRepositoryError::from)?;
 
 		let project: models::NewProject = project.into();
 		diesel::insert_into(projects::table)
@@ -46,7 +46,7 @@ impl ProjectRepository for Client {
 			.do_update()
 			.set(&project)
 			.execute(&*connection)
-			.map_err(|e| AnyError::ProjectListingError(e.to_string()))?;
+			.map_err(ProjectRepositoryError::from)?;
 
 		Ok(())
 	}
@@ -109,6 +109,28 @@ impl From<models::Contribution> for Contribution {
 			},
 			// ok to unwrap because values in db are created by a call to FieldElement::ToString
 			validator: FieldElement::from_str(&contribution.validator).unwrap(),
+		}
+	}
+}
+
+impl From<DatabaseError> for ProjectRepositoryError {
+	fn from(_: DatabaseError) -> Self {
+		todo!()
+	}
+}
+
+impl From<diesel::result::Error> for ProjectRepositoryError {
+	fn from(error: diesel::result::Error) -> Self {
+		match error {
+			diesel::result::Error::DatabaseError(kind, _) => match kind {
+				diesel::result::DatabaseErrorKind::UniqueViolation =>
+					Self::AlreadyExist(Box::new(error)),
+				diesel::result::DatabaseErrorKind::ForeignKeyViolation =>
+					Self::InvalidEntity(Box::new(error)),
+				_ => Self::Infrastructure(Box::new(error)),
+			},
+			diesel::result::Error::NotFound => Self::NotFound,
+			_ => Self::Infrastructure(Box::new(error)),
 		}
 	}
 }
