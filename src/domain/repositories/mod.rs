@@ -7,7 +7,10 @@ pub use contribution::{
 };
 
 mod contributor;
-pub use contributor::{Error as ContributorRepositoryError, Repository as ContributorRepository};
+pub use contributor::{
+	Error as ContributorRepositoryError, MockRepository as MockContributorRepository,
+	Repository as ContributorRepository,
+};
 
 mod application;
 pub use application::{Error as ApplicationRepositoryError, Repository as ApplicationRepository};
