@@ -64,13 +64,12 @@ async fn main() {
 	});
 
 	// Regularly create a transaction with tasks stored in the queue
-	let cloned_action_queue = action_queue.clone();
 	let cloned_database = database.clone();
 	let queue_handler = tokio::spawn(async move {
 		loop {
 			info!("Thread heartbeat");
 			let mut next_actions = vec![];
-			if let Ok(mut queue) = cloned_action_queue.write() {
+			if let Ok(mut queue) = action_queue.write() {
 				next_actions = queue.pop_n(100);
 			};
 			if !next_actions.is_empty() {
@@ -92,7 +91,6 @@ async fn main() {
 
 	let rocket_handler = inject_app(rocket::build(), database.clone(), starknet)
 		.manage(database.clone())
-		.manage(action_queue.clone())
 		.manage(RepoCache::default())
 		.manage(ContributorCache::default())
 		.manage(github::API::new())
