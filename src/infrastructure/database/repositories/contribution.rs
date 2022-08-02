@@ -120,12 +120,10 @@ impl From<diesel::result::Error> for ContributionRepositoryError {
 	fn from(error: diesel::result::Error) -> Self {
 		match error {
 			diesel::result::Error::DatabaseError(kind, _) => match kind {
-				diesel::result::DatabaseErrorKind::UniqueViolation => {
-					Self::AlreadyExist(Box::new(error))
-				},
-				diesel::result::DatabaseErrorKind::ForeignKeyViolation => {
-					Self::InvalidEntity(Box::new(error))
-				},
+				diesel::result::DatabaseErrorKind::UniqueViolation =>
+					Self::AlreadyExist(Box::new(error)),
+				diesel::result::DatabaseErrorKind::ForeignKeyViolation =>
+					Self::InvalidEntity(Box::new(error)),
 				_ => Self::Infrastructure(Box::new(error)),
 			},
 			diesel::result::Error::NotFound => Self::NotFound,

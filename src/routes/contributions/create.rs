@@ -8,8 +8,7 @@ use rocket::{
 };
 use rocket_okapi::{openapi, JsonSchema};
 use starknet::core::types::FieldElement;
-use std::result::Result;
-use std::str::FromStr;
+use std::{result::Result, str::FromStr};
 use uuid::Uuid;
 
 #[derive(Deserialize, JsonSchema)]
@@ -39,11 +38,10 @@ pub async fn create_contribution(
 	let github_issue = github_api.issue(body.project_id, body.github_issue_number).await;
 	let github_issue = match github_issue {
 		Ok(github_issue) => github_issue,
-		Err(error) => {
+		Err(error) =>
 			return Err(HttpApiProblem::new(StatusCode::BAD_REQUEST)
 				.title("Unable to get GitHub issue data")
-				.detail(error.to_string()))
-		},
+				.detail(error.to_string())),
 	};
 
 	let metadata = github::extract_metadata(github_issue.clone());

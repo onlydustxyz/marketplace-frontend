@@ -15,8 +15,7 @@ use deathnote_contributions_feeder::{
 use diesel_migrations::*;
 use dotenv::dotenv;
 use log::info;
-use rocket::routes;
-use rocket::{Build, Rocket};
+use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
 use slog::{o, Drain, Logger};
 use std::{
