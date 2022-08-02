@@ -1,21 +1,14 @@
 use super::dto;
-use deathnote_contributions_feeder::application::{GetContributor, GetContributorUsecase};
+use deathnote_contributions_feeder::application::GetContributorUsecase;
 use http_api_problem::{HttpApiProblem, StatusCode};
-use rocket::{get, serde::json::Json};
+use rocket::{get, serde::json::Json, State};
 use rocket_okapi::openapi;
 use std::{error::Error, result::Result};
 
 #[openapi(tag = "Contributors")]
 #[get("/contributors/<contributor_id>")]
 pub fn find_by_id(
-	usecase: GetContributor,
-	contributor_id: u128,
-) -> Result<Json<dto::Contributor>, HttpApiProblem> {
-	find_by_id_impl(usecase, contributor_id)
-}
-
-fn find_by_id_impl<U: GetContributorUsecase>(
-	usecase: U,
+	usecase: &State<Box<dyn GetContributorUsecase>>,
 	contributor_id: u128,
 ) -> Result<Json<dto::Contributor>, HttpApiProblem> {
 	let contributor = usecase.execute(contributor_id.into()).map_err(|error| {
@@ -36,35 +29,27 @@ fn find_by_id_impl<U: GetContributorUsecase>(
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use deathnote_contributions_feeder::domain::*;
-	use mockall::{mock, predicate::*};
+	use deathnote_contributions_feeder::{application::MockGetContributor, domain::*};
+	use mockall::predicate::*;
 	use thiserror::Error;
 
 	#[derive(Debug, Error)]
-	#[error("Something happend")]
-	struct SomeError;
-
-	mock! {
-		pub GetContributorById {}
-
-		impl GetContributorUsecase for GetContributorById{
-			pub fn execute(
-				&self,
-				contributor_id: ContributorId,
-			) -> Result<Option<Contributor>, ContributorRepositoryError>;
-		}
+	pub enum Error {
+		#[error("mocked error")]
+		Mock,
 	}
 
 	#[test]
 	fn find_by_id_should_return_404_when_contributor_not_found() {
-		let mut usecase = MockGetContributorById::new();
-
+		let mut usecase = MockGetContributor::new();
 		usecase
 			.expect_execute()
 			.with(eq(ContributorId::from(123)))
 			.returning(|_| Ok(None));
 
-		let result = find_by_id_impl(usecase, 123);
+		let rocket = rocket::build().manage(Box::new(usecase) as Box<dyn GetContributorUsecase>);
+
+		let result = find_by_id(State::get(&rocket).unwrap(), 123);
 		assert!(result.is_err());
 
 		let problem = result.err().unwrap();
@@ -74,15 +59,17 @@ mod tests {
 
 	#[test]
 	fn find_by_id_should_forward_error_as_500() {
-		let mut usecase = MockGetContributorById::new();
+		let mut usecase = MockGetContributor::new();
 
 		usecase.expect_execute().with(eq(ContributorId::from(123))).returning(|_| {
 			Err(ContributorRepositoryError::Infrastructure(Box::new(
-				SomeError,
+				Error::Mock,
 			)))
 		});
 
-		let result = find_by_id_impl(usecase, 123);
+		let rocket = rocket::build().manage(Box::new(usecase) as Box<dyn GetContributorUsecase>);
+
+		let result = find_by_id(State::get(&rocket).unwrap(), 123);
 		assert!(result.is_err());
 
 		let problem = result.err().unwrap();
@@ -96,7 +83,7 @@ mod tests {
 
 	#[test]
 	fn find_by_id_should_return_contributor_if_found() {
-		let mut usecase = MockGetContributorById::new();
+		let mut usecase = MockGetContributor::new();
 
 		usecase.expect_execute().with(eq(ContributorId::from(123))).returning(|_| {
 			Ok(Some(Contributor {
@@ -107,7 +94,8 @@ mod tests {
 			}))
 		});
 
-		let result = find_by_id_impl(usecase, 123);
+		let rocket = rocket::build().manage(Box::new(usecase) as Box<dyn GetContributorUsecase>);
+		let result = find_by_id(State::get(&rocket).unwrap(), 123);
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 
 		let contributor = result.unwrap();

@@ -1,14 +1,14 @@
 #[cfg(test)]
 mod tests;
 
-mod get_contributor;
-pub use get_contributor::{GetContributor, Usecase as GetContributorUsecase};
-use mapinto::ResultMapErrInto;
-
 mod contribution;
 pub use contribution::*;
 
+mod contributor;
+pub use contributor::*;
+
 use crate::domain::*;
+use mapinto::ResultMapErrInto;
 
 pub fn apply_to_contribution<A: ApplicationRepository, U: UuidGenerator>(
 	application_repository: &A,

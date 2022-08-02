@@ -1,21 +1,7 @@
 mod routes;
 
-use diesel_migrations::*;
-use log::info;
-use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
-use slog::{o, Drain, Logger};
-use std::{
-	sync::{Arc, RwLock},
-	thread,
-	time::Duration,
-};
-
-use tokio::{
-	signal,
-	sync::oneshot::{self, error::TryRecvError},
-};
-
 use deathnote_contributions_feeder::{
+	application::{CreateContribution, GetContributor},
 	github,
 	infrastructure::{
 		database,
@@ -26,9 +12,22 @@ use deathnote_contributions_feeder::{
 	},
 	utils::caches::{ContributorCache, RepoCache},
 };
-
+use diesel_migrations::*;
 use dotenv::dotenv;
+use log::info;
 use rocket::routes;
+use rocket::{Build, Rocket};
+use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
+use slog::{o, Drain, Logger};
+use std::{
+	sync::{Arc, RwLock},
+	thread,
+	time::Duration,
+};
+use tokio::{
+	signal,
+	sync::oneshot::{self, error::TryRecvError},
+};
 
 #[macro_use]
 extern crate rocket;
@@ -88,9 +87,10 @@ async fn main() {
 		}
 	});
 
-	let rocket_handler = rocket::build()
+	let starknet = Arc::new(starknet::Client::default());
+
+	let rocket_handler = manage(rocket::build(), database.clone(), starknet)
 		.manage(database.clone())
-		.manage(Arc::new(starknet::Client::default()))
 		.manage(action_queue.clone())
 		.manage(RepoCache::default())
 		.manage(ContributorCache::default())
@@ -126,4 +126,14 @@ async fn main() {
 	ctr_c_result.unwrap();
 
 	info!("Gracefully shut down");
+}
+
+fn manage(
+	rocket: Rocket<Build>,
+	database: Arc<database::Client>,
+	starknet: Arc<starknet::SingleAdminClient>,
+) -> Rocket<Build> {
+	rocket
+		.manage(GetContributor::new_usecase(database))
+		.manage(CreateContribution::new_usecase(starknet))
 }
