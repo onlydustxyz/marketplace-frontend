@@ -1,3 +1,5 @@
+use mockall::automock;
+
 use crate::domain::*;
 use thiserror::Error;
 
@@ -7,6 +9,7 @@ pub enum Error {
 	Infrastructure(#[source] Box<dyn std::error::Error>),
 }
 
+#[automock]
 pub trait Repository: Send + Sync {
 	fn find(&self, contributor_id: ContributorId) -> Result<Option<Contributor>, Error>;
 }

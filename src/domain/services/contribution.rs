@@ -1,5 +1,7 @@
 use crate::domain::*;
+use mockall::automock;
 
+#[automock]
 pub trait Service: Send + Sync {
 	fn create(&self, contribution: Contribution) -> AnyResult<()>;
 	fn assign_contributor(
