@@ -4,8 +4,6 @@ use thiserror::Error;
 #[derive(Debug, PartialEq, Eq)]
 pub enum AnyError {
 	ParseStatusError(String),
-	ProjectListingError(String),
-	GetContributorError(String),
 	TransactionRevertedError(String),
 }
 
@@ -21,8 +19,6 @@ impl ToString for AnyError {
 	fn to_string(&self) -> String {
 		match self {
 			AnyError::ParseStatusError(e) => e.to_owned(),
-			AnyError::GetContributorError(e) => e.to_owned(),
-			AnyError::ProjectListingError(e) => e.to_owned(),
 			AnyError::TransactionRevertedError(e) => e.to_owned(),
 		}
 	}
