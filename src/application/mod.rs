@@ -3,6 +3,7 @@ mod tests;
 
 mod get_contributor;
 pub use get_contributor::{GetContributor, Usecase as GetContributorUsecase};
+use mapinto::ResultMapErrInto;
 
 use crate::domain::*;
 
@@ -16,5 +17,5 @@ pub fn apply_to_contribution<A: ApplicationRepository, U: UuidGenerator>(
 
 	let application = Application::new(id, contribution_id, contributor_id);
 
-	application_repository.store(application).map_err(DomainError::from)
+	application_repository.store(application).map_err_into()
 }

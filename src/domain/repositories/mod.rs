@@ -5,7 +5,7 @@ mod contribution;
 pub use contribution::Repository as ContributionRepository;
 
 mod contributor;
-pub use contributor::Repository as ContributorRepository;
+pub use contributor::{Error as ContributorRepositoryError, Repository as ContributorRepository};
 
 mod application;
 pub use application::{Error as ApplicationRepositoryError, Repository as ApplicationRepository};
