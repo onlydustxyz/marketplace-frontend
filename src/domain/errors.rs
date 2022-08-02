@@ -3,7 +3,6 @@ use thiserror::Error;
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum AnyError {
-	ParseStatusError(String),
 	TransactionRevertedError(String),
 }
 
@@ -18,7 +17,6 @@ pub enum Error {
 impl ToString for AnyError {
 	fn to_string(&self) -> String {
 		match self {
-			AnyError::ParseStatusError(e) => e.to_owned(),
 			AnyError::TransactionRevertedError(e) => e.to_owned(),
 		}
 	}

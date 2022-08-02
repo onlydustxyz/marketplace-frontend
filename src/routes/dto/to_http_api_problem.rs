@@ -10,9 +10,6 @@ pub(crate) trait ToHttpApiProblem {
 impl ToHttpApiProblem for AnyError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		match self {
-			AnyError::ParseStatusError(e) => HttpApiProblem::new(StatusCode::UNPROCESSABLE_ENTITY)
-				.title("Failed to parse the contribution status")
-				.detail(e),
 			AnyError::TransactionRevertedError(e) =>
 				HttpApiProblem::new(StatusCode::FAILED_DEPENDENCY)
 					.title("The on-chain batch transaction failed")

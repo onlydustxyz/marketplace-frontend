@@ -91,10 +91,7 @@ mod tests {
 			"Error while fetching contributor",
 			problem.title.as_ref().unwrap()
 		);
-		assert_eq!(
-			"Something happend at the infrastructure level",
-			problem.detail.as_ref().unwrap()
-		);
+		assert_eq!("Something happend", problem.detail.as_ref().unwrap());
 	}
 
 	#[test]
