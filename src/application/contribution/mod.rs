@@ -13,3 +13,9 @@ pub use unassign::{
 	MockUsecase as MockUnassignContribution, UnassignContribution,
 	Usecase as UnassignContributionUsecase,
 };
+
+mod validate;
+pub use validate::{
+	MockUsecase as MockValidateContribution, Usecase as ValidateContributionUsecase,
+	ValidateContribution,
+};

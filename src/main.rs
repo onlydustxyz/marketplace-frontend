@@ -1,7 +1,7 @@
 mod routes;
 
 use deathnote_contributions_feeder::{
-	application::{AssignContribution, CreateContribution, GetContributor, UnassignContribution},
+	application::*,
 	github,
 	infrastructure::{
 		database,
@@ -141,5 +141,9 @@ fn inject_app(
 			starknet.clone(),
 			database.clone(),
 		))
-		.manage(UnassignContribution::new_usecase(starknet, database))
+		.manage(UnassignContribution::new_usecase(
+			starknet.clone(),
+			database.clone(),
+		))
+		.manage(ValidateContribution::new_usecase(starknet, database))
 }
