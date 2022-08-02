@@ -1,19 +1,22 @@
 use crate::{
 	domain::*,
-	infrastructure::database::{models, schema, schema::contributions, Client},
+	infrastructure::database::{models, schema, schema::contributions, Client, DatabaseError},
 };
 use diesel::prelude::*;
 
 impl ContributionRepository for Client {
-	fn store(&self, contribution: Contribution, transaction_hash: String) -> AnyResult<()> {
-		let connection =
-			self.connection().map_err(|e| AnyError::ContributionStoreError(e.to_string()))?;
+	fn store(
+		&self,
+		contribution: Contribution,
+		transaction_hash: String,
+	) -> Result<(), ContributionRepositoryError> {
+		let connection = self.connection().map_err(ContributionRepositoryError::from)?;
 
 		let contribution = models::NewContribution::from((contribution, transaction_hash));
 		diesel::insert_into(contributions::table)
 			.values(&contribution)
 			.execute(&*connection)
-			.map_err(|e| AnyError::ContributionStoreError(e.to_string()))?;
+			.map_err(ContributionRepositoryError::from)?;
 
 		Ok(())
 	}
@@ -24,9 +27,8 @@ impl ContributionRepository for Client {
 		contributor_id_: Option<ContributorId>,
 		status_: ContributionStatus,
 		transaction_hash_: String,
-	) -> AnyResult<()> {
-		let connection =
-			self.connection().map_err(|e| AnyError::ContributionStoreError(e.to_string()))?;
+	) -> Result<(), ContributionRepositoryError> {
+		let connection = self.connection().map_err(ContributionRepositoryError::from)?;
 
 		diesel::update(schema::contributions::dsl::contributions)
 			.filter(contributions::onchain_id.eq(contribution_id))
@@ -39,7 +41,7 @@ impl ContributionRepository for Client {
 				schema::contributions::transaction_hash.eq(transaction_hash_),
 			))
 			.execute(&*connection)
-			.map_err(|e| AnyError::ContributionStoreError(e.to_string()))?;
+			.map_err(ContributionRepositoryError::from)?;
 
 		Ok(())
 	}
@@ -49,9 +51,8 @@ impl ContributionRepository for Client {
 		contribution_id: ContributionOnChainId,
 		status_: ContributionStatus,
 		transaction_hash_: String,
-	) -> AnyResult<()> {
-		let connection =
-			self.connection().map_err(|e| AnyError::ContributionStoreError(e.to_string()))?;
+	) -> Result<(), ContributionRepositoryError> {
+		let connection = self.connection().map_err(ContributionRepositoryError::from)?;
 
 		diesel::update(schema::contributions::dsl::contributions)
 			.filter(contributions::onchain_id.eq(contribution_id))
@@ -60,7 +61,7 @@ impl ContributionRepository for Client {
 				schema::contributions::transaction_hash.eq(transaction_hash_),
 			))
 			.execute(&*connection)
-			.map_err(|e| AnyError::ContributionStoreError(e.to_string()))?;
+			.map_err(ContributionRepositoryError::from)?;
 
 		Ok(())
 	}
@@ -85,6 +86,28 @@ impl From<(Contribution, String)> for models::NewContribution {
 			context: contribution.metadata.context,
 			type_: contribution.metadata.r#type,
 			validator: format!("{:#x}", contribution.validator),
+		}
+	}
+}
+
+impl From<DatabaseError> for ContributionRepositoryError {
+	fn from(error: DatabaseError) -> Self {
+		Self::Infrastructure(Box::new(error))
+	}
+}
+
+impl From<diesel::result::Error> for ContributionRepositoryError {
+	fn from(error: diesel::result::Error) -> Self {
+		match error {
+			diesel::result::Error::DatabaseError(kind, _) => match kind {
+				diesel::result::DatabaseErrorKind::UniqueViolation =>
+					Self::AlreadyExist(Box::new(error)),
+				diesel::result::DatabaseErrorKind::ForeignKeyViolation =>
+					Self::InvalidEntity(Box::new(error)),
+				_ => Self::Infrastructure(Box::new(error)),
+			},
+			diesel::result::Error::NotFound => Self::NotFound,
+			_ => Self::Infrastructure(Box::new(error)),
 		}
 	}
 }

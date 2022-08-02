@@ -57,7 +57,7 @@ fn store_action_result(
 	contribution_repository: &dyn ContributionRepository,
 	actions: &[Action],
 	hash: &str,
-) -> AnyResult<()> {
+) -> Result<(), DomainError> {
 	for action in actions {
 		match action {
 			Action::CreateContribution {

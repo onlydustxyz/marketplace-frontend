@@ -1,11 +1,10 @@
-use super::ApplicationRepositoryError;
+use super::{ApplicationRepositoryError, ContributionRepositoryError};
 use thiserror::Error;
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum AnyError {
 	ParseStatusError(String),
 	ProjectListingError(String),
-	ContributionStoreError(String),
 	GetContributorError(String),
 	TransactionRevertedError(String),
 }
@@ -14,6 +13,8 @@ pub enum AnyError {
 pub enum Error {
 	#[error("Application repository error")]
 	ApplicationRepository(#[from] ApplicationRepositoryError),
+	#[error("Application repository error")]
+	ContributionRepository(#[from] ContributionRepositoryError),
 }
 
 impl ToString for AnyError {
@@ -22,7 +23,6 @@ impl ToString for AnyError {
 			AnyError::ParseStatusError(e) => e.to_owned(),
 			AnyError::GetContributorError(e) => e.to_owned(),
 			AnyError::ProjectListingError(e) => e.to_owned(),
-			AnyError::ContributionStoreError(e) => e.to_owned(),
 			AnyError::TransactionRevertedError(e) => e.to_owned(),
 		}
 	}
