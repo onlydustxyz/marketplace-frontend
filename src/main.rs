@@ -89,7 +89,7 @@ async fn main() {
 
 	let starknet = Arc::new(starknet::Client::default());
 
-	let rocket_handler = manage(rocket::build(), database.clone(), starknet)
+	let rocket_handler = inject_app(rocket::build(), database.clone(), starknet)
 		.manage(database.clone())
 		.manage(action_queue.clone())
 		.manage(RepoCache::default())
@@ -128,7 +128,7 @@ async fn main() {
 	info!("Gracefully shut down");
 }
 
-fn manage(
+fn inject_app(
 	rocket: Rocket<Build>,
 	database: Arc<database::Client>,
 	starknet: Arc<starknet::SingleAdminClient>,
