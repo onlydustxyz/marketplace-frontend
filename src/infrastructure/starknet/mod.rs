@@ -2,12 +2,16 @@ mod contracts;
 use contracts::{ContributionContract, ProfileContract, RegistryContract};
 
 mod model;
+use mapinto::ResultMapErrInto;
 pub use model::*;
 
 pub mod action_queue; // TODO remove pub when refactoring is done
 use action_queue::ActionQueue;
 
 mod services;
+
+mod error;
+pub use error::Error as StarknetError;
 
 use std::{
 	env,
@@ -68,8 +72,8 @@ impl<A: Account + Sync> Client<A> {
 		}
 	}
 
-	pub async fn execute_actions(&self, actions: &[Action]) -> AnyResult<String> {
-		self.contributions.execute_actions(actions, true).await
+	pub async fn execute_actions(&self, actions: &[Action]) -> Result<String, StarknetError> {
+		self.contributions.execute_actions(actions, true).await.map_err_into()
 	}
 
 	pub async fn get_user_information(
@@ -80,10 +84,8 @@ impl<A: Account + Sync> Client<A> {
 		self.registry.get_user_information(account).await
 	}
 
-	fn action_queue_mut(&self) -> AnyResult<RwLockWriteGuard<'_, ActionQueue>> {
-		self.action_queue
-			.write()
-			.map_err(|e| AnyError::ContributionStoreError(e.to_string()))
+	fn action_queue_mut(&self) -> Result<RwLockWriteGuard<'_, ActionQueue>, StarknetError> {
+		self.action_queue.write().map_err(|e| StarknetError::Mutex(e.to_string()))
 	}
 }
 

@@ -1,13 +1,12 @@
 use crate::domain::*;
+use mapinto::ResultMapErrInto;
 use mockall::automock;
 use std::sync::Arc;
 
 #[automock]
 pub trait Usecase: Send + Sync {
-	fn find_by_id(
-		&self,
-		contributor_id: ContributorId,
-	) -> Result<Option<Contributor>, ContributorRepositoryError>;
+	fn find_by_id(&self, contributor_id: ContributorId)
+		-> Result<Option<Contributor>, DomainError>;
 }
 
 pub struct GetContributor {
@@ -18,8 +17,8 @@ impl Usecase for GetContributor {
 	fn find_by_id(
 		&self,
 		contributor_id: ContributorId,
-	) -> Result<Option<Contributor>, ContributorRepositoryError> {
-		self.contributor_repository.find(contributor_id)
+	) -> Result<Option<Contributor>, DomainError> {
+		self.contributor_repository.find(contributor_id).map_err_into()
 	}
 }
 
@@ -35,13 +34,18 @@ impl GetContributor {
 mod test {
 	use super::*;
 	use mockall::predicate::*;
+	use thiserror::Error;
+
+	#[derive(Debug, Error)]
+	#[error("Oops")]
+	struct Error;
 
 	#[test]
 	fn contributor_found() {
 		let mut contributor_repository = MockContributorRepository::new();
 
 		contributor_repository
-			.expect_by_id()
+			.expect_find()
 			.with(eq(ContributorId::from(12)))
 			.returning(|_| {
 				Ok(Some(Contributor {
@@ -71,7 +75,7 @@ mod test {
 	fn contributor_not_found() {
 		let mut contributor_repository = MockContributorRepository::new();
 
-		contributor_repository.expect_by_id().returning(|_| Ok(None));
+		contributor_repository.expect_find().returning(|_| Ok(None));
 
 		let usecase = GetContributor::new_usecase(Arc::new(contributor_repository));
 
@@ -85,16 +89,16 @@ mod test {
 		let mut contributor_repository = MockContributorRepository::new();
 
 		contributor_repository
-			.expect_by_id()
-			.returning(|_| Err(Error::GetContributorError(String::new())));
+			.expect_find()
+			.returning(|_| Err(ContributorRepositoryError::Infrastructure(Box::new(Error))));
 
 		let usecase = GetContributor::new_usecase(Arc::new(contributor_repository));
 
 		let result = usecase.find_by_id(ContributorId::from(12));
 		assert!(result.is_err());
 		assert_eq!(
-			Error::GetContributorError(String::new()),
-			result.unwrap_err(),
+			"Contributor repository error",
+			result.unwrap_err().to_string()
 		);
 	}
 }

@@ -34,10 +34,8 @@ mod test {
 	use thiserror::Error;
 
 	#[derive(Debug, Error)]
-	pub enum Error {
-		#[error("mocked error")]
-		Mock,
-	}
+	#[error("Oops")]
+	struct Error;
 
 	#[test]
 	fn find_by_id_should_return_404_when_contributor_not_found() {
@@ -61,11 +59,10 @@ mod test {
 	fn find_by_id_should_forward_error_as_500() {
 		let mut usecase = MockGetContributor::new();
 
-		usecase.expect_find_by_id().with(eq(ContributorId::from(123))).returning(|_| {
-			Err(ContributorRepositoryError::Infrastructure(Box::new(
-				Error::Mock,
-			)))
-		});
+		usecase
+			.expect_find_by_id()
+			.with(eq(ContributorId::from(123)))
+			.returning(|_| Err(ContributorRepositoryError::Infrastructure(Box::new(Error)).into()));
 
 		let rocket = rocket::build().manage(Box::new(usecase) as Box<dyn GetContributorUsecase>);
 
@@ -78,7 +75,10 @@ mod test {
 			"Error while fetching contributor",
 			problem.title.as_ref().unwrap()
 		);
-		assert_eq!("Something happend", problem.detail.as_ref().unwrap());
+		assert_eq!(
+			"Something happend at the infrastructure level",
+			problem.detail.as_ref().unwrap()
+		);
 	}
 
 	#[test]

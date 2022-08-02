@@ -1,13 +1,15 @@
 use crate::{
 	domain::*,
-	infrastructure::starknet::{Account, Client},
+	infrastructure::starknet::{Account, Client, StarknetError},
 };
 
 impl<A: Account + Send + Sync> ContributionService for Client<A> {
-	fn create(&self, contribution: Contribution) -> AnyResult<()> {
-		self.action_queue_mut()?.push(Action::CreateContribution {
-			contribution: contribution.into(),
-		});
+	fn create(&self, contribution: Contribution) -> Result<(), ContributionServiceError> {
+		self.action_queue_mut().map_err(ContributionServiceError::from)?.push(
+			Action::CreateContribution {
+				contribution: contribution.into(),
+			},
+		);
 		Ok(())
 	}
 
@@ -15,22 +17,40 @@ impl<A: Account + Send + Sync> ContributionService for Client<A> {
 		&self,
 		contribution_id: ContributionOnChainId,
 		contributor_id: ContributorId,
-	) -> AnyResult<()> {
-		self.action_queue_mut()?.push(Action::AssignContributor {
-			contribution_id,
-			contributor_id,
-		});
+	) -> Result<(), ContributionServiceError> {
+		self.action_queue_mut().map_err(ContributionServiceError::from)?.push(
+			Action::AssignContributor {
+				contribution_id,
+				contributor_id,
+			},
+		);
 		Ok(())
 	}
 
-	fn unassign_contributor(&self, contribution_id: ContributionOnChainId) -> AnyResult<()> {
-		self.action_queue_mut()?.push(Action::UnassignContributor { contribution_id });
+	fn unassign_contributor(
+		&self,
+		contribution_id: ContributionOnChainId,
+	) -> Result<(), ContributionServiceError> {
+		self.action_queue_mut()
+			.map_err(ContributionServiceError::from)?
+			.push(Action::UnassignContributor { contribution_id });
 		Ok(())
 	}
 
-	fn validate(&self, contribution_id: ContributionOnChainId) -> AnyResult<()> {
-		self.action_queue_mut()?.push(Action::ValidateContribution { contribution_id });
+	fn validate(
+		&self,
+		contribution_id: ContributionOnChainId,
+	) -> Result<(), ContributionServiceError> {
+		self.action_queue_mut()
+			.map_err(ContributionServiceError::from)?
+			.push(Action::ValidateContribution { contribution_id });
 		Ok(())
+	}
+}
+
+impl From<StarknetError> for ContributionServiceError {
+	fn from(error: StarknetError) -> Self {
+		Self::Infrastructure(Box::new(error))
 	}
 }
 

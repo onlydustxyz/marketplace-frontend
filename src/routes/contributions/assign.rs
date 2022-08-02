@@ -49,6 +49,15 @@ mod test {
 	use deathnote_contributions_feeder::{application::MockAssignContribution, domain::*};
 	use http_api_problem::StatusCode;
 	use mockall::predicate::*;
+	use thiserror::Error;
+
+	#[derive(Debug, Error)]
+	#[error("Oops")]
+	struct Error;
+
+	#[derive(Debug, Error)]
+	#[error("Something happened in the infra")]
+	struct InfraError(#[source] Error);
 
 	#[tokio::test]
 	async fn assign_should_return_accepted_upon_success() {
@@ -82,9 +91,9 @@ mod test {
 	async fn assign_should_return_500_upon_failure() {
 		let mut usecase = MockAssignContribution::new();
 
-		usecase
-			.expect_send_assign_request()
-			.returning(|_, _| Err(Error::InvalidContribution(String::from("Oops"))));
+		usecase.expect_send_assign_request().returning(|_, _| {
+			Err(ContributionRepositoryError::Infrastructure(Box::new(InfraError(Error))).into())
+		});
 
 		let rocket =
 			rocket::build().manage(Box::new(usecase) as Box<dyn AssignContributionUsecase>);
@@ -100,8 +109,11 @@ mod test {
 		assert!(result.is_err());
 
 		let problem = result.err().unwrap();
-		assert_eq!(StatusCode::BAD_REQUEST, problem.status.unwrap());
-		assert_eq!("Invalid contribution", problem.title.as_ref().unwrap());
+		assert_eq!(StatusCode::INTERNAL_SERVER_ERROR, problem.status.unwrap());
+		assert_eq!(
+			"Something happened in the infra",
+			problem.title.as_ref().unwrap()
+		);
 		assert_eq!("Oops", problem.detail.as_ref().unwrap());
 	}
 }

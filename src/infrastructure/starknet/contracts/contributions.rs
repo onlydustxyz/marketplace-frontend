@@ -1,4 +1,4 @@
-use super::ContractAdministrator;
+use super::{ContractAdministrator, ContractError};
 use crate::domain::*;
 use itertools::Itertools;
 use starknet::{
@@ -29,13 +29,13 @@ impl<A: Account + Sync> Contract<A> {
 		&self,
 		actions: &[Action],
 		wait_for_acceptance: bool,
-	) -> AnyResult<String> {
+	) -> Result<String, ContractError> {
 		let calls = actions.iter().map_into().collect_vec();
 		let transaction_result = self
 			.administrator
 			.send_transaction(&calls, wait_for_acceptance)
 			.await
-			.map_err(|e| AnyError::TransactionRevertedError(e.to_string()))?;
+			.map_err(|e| ContractError::TransactionReverted(e.to_string()))?;
 		Ok(format!("0x{:x}", transaction_result.transaction_hash))
 	}
 }

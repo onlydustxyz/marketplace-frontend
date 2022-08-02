@@ -2,11 +2,7 @@ use deathnote_contributions_feeder::{
 	application::ValidateContributionUsecase, domain::ContributionId,
 };
 use http_api_problem::HttpApiProblem;
-use rocket::{
-	response::status,
-	serde::{json::Json, uuid::Uuid},
-	State,
-};
+use rocket::{response::status, serde::uuid::Uuid, State};
 use rocket_okapi::openapi;
 
 use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem};
@@ -31,6 +27,15 @@ mod test {
 	use deathnote_contributions_feeder::{application::MockValidateContribution, domain::*};
 	use http_api_problem::StatusCode;
 	use mockall::predicate::*;
+	use thiserror::Error;
+
+	#[derive(Debug, Error)]
+	#[error("Oops")]
+	struct Error;
+
+	#[derive(Debug, Error)]
+	#[error("Something happened in the infra")]
+	struct InfraError(#[source] Error);
 
 	#[tokio::test]
 	async fn validate_should_return_accepted_upon_success() {
@@ -60,9 +65,9 @@ mod test {
 	async fn validate_should_return_500_upon_failure() {
 		let mut usecase = MockValidateContribution::new();
 
-		usecase
-			.expect_send_validate_request()
-			.returning(|_| Err(Error::InvalidContribution(String::from("Oops"))));
+		usecase.expect_send_validate_request().returning(|_| {
+			Err(ContributionRepositoryError::Infrastructure(Box::new(InfraError(Error))).into())
+		});
 
 		let rocket =
 			rocket::build().manage(Box::new(usecase) as Box<dyn ValidateContributionUsecase>);
@@ -77,8 +82,11 @@ mod test {
 		assert!(result.is_err());
 
 		let problem = result.err().unwrap();
-		assert_eq!(StatusCode::BAD_REQUEST, problem.status.unwrap());
-		assert_eq!("Invalid contribution", problem.title.as_ref().unwrap());
+		assert_eq!(StatusCode::INTERNAL_SERVER_ERROR, problem.status.unwrap());
+		assert_eq!(
+			"Something happened in the infra",
+			problem.title.as_ref().unwrap()
+		);
 		assert_eq!("Oops", problem.detail.as_ref().unwrap());
 	}
 }

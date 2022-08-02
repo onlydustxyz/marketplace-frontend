@@ -1,28 +1,10 @@
 use deathnote_contributions_feeder::domain::{
-	AnyError, ApplicationRepositoryError, ContributionRepositoryError, DomainError,
+	ApplicationRepositoryError, ContributionRepositoryError, DomainError,
 };
 use http_api_problem::{HttpApiProblem, StatusCode};
 
 pub(crate) trait ToHttpApiProblem {
 	fn to_http_api_problem(&self) -> HttpApiProblem;
-}
-
-impl ToHttpApiProblem for AnyError {
-	fn to_http_api_problem(&self) -> HttpApiProblem {
-		match self {
-			AnyError::TransactionRevertedError(e) => {
-				HttpApiProblem::new(StatusCode::FAILED_DEPENDENCY)
-					.title("The on-chain batch transaction failed")
-					.detail(e)
-			},
-			AnyError::InvalidContribution(e) => HttpApiProblem::new(StatusCode::BAD_REQUEST)
-				.title("Invalid contribution")
-				.detail(e),
-			AnyError::InternalError(e) => HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-				.title("Internal Error")
-				.detail(e),
-		}
-	}
 }
 
 impl ToHttpApiProblem for DomainError {
@@ -68,6 +50,16 @@ impl ToHttpApiProblem for DomainError {
 						.detail(e.source().unwrap().to_string())
 				},
 			},
+			DomainError::ContributorRepository(e) => match e {
+    deathnote_contributions_feeder::domain::ContributorRepositoryError::Infrastructure(e) => HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+	.title(e.to_string())
+	.detail(e.source().unwrap().to_string()),
+},
+			DomainError::ContributionService(e) => match e {
+    deathnote_contributions_feeder::domain::ContributionServiceError::Infrastructure(e) => HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+	.title(e.to_string())
+	.detail(e.source().unwrap().to_string()),
+},
 		}
 	}
 }
