@@ -5,12 +5,30 @@ use crate::{
 use diesel::prelude::*;
 
 impl ContributionRepository for Client {
+	fn find_by_id(
+		&self,
+		contribution_id: ContributionId,
+	) -> Result<Option<Contribution>, ContributionRepositoryError> {
+		let connection =
+			self.connection().map_err(|e| AnyError::ContributionStoreError(e.to_string()))?;
+
+		match contributions::table
+			.find(contribution_id)
+			.get_result::<models::Contribution>(&*connection)
+		{
+			Ok(contribution) => Ok(Some(contribution.into())),
+			Err(diesel::NotFound) => Ok(None),
+			Err(e) => Err(AnyError::ContributionStoreError(e.to_string())),
+		}
+	}
+
 	fn store(
 		&self,
 		contribution: Contribution,
 		transaction_hash: String,
 	) -> Result<(), ContributionRepositoryError> {
-		let connection = self.connection().map_err(ContributionRepositoryError::from)?;
+		let connection =
+			self.connection().map_err(|e| AnyError::ContributionStoreError(e.to_string()))?;
 
 		let contribution = models::NewContribution::from((contribution, transaction_hash));
 		diesel::insert_into(contributions::table)
@@ -100,10 +118,12 @@ impl From<diesel::result::Error> for ContributionRepositoryError {
 	fn from(error: diesel::result::Error) -> Self {
 		match error {
 			diesel::result::Error::DatabaseError(kind, _) => match kind {
-				diesel::result::DatabaseErrorKind::UniqueViolation =>
-					Self::AlreadyExist(Box::new(error)),
-				diesel::result::DatabaseErrorKind::ForeignKeyViolation =>
-					Self::InvalidEntity(Box::new(error)),
+				diesel::result::DatabaseErrorKind::UniqueViolation => {
+					Self::AlreadyExist(Box::new(error))
+				},
+				diesel::result::DatabaseErrorKind::ForeignKeyViolation => {
+					Self::InvalidEntity(Box::new(error))
+				},
 				_ => Self::Infrastructure(Box::new(error)),
 			},
 			diesel::result::Error::NotFound => Self::NotFound,

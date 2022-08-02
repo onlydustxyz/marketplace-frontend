@@ -13,27 +13,23 @@ impl<A: Account + Send + Sync> ContributionService for Client<A> {
 
 	fn assign_contributor(
 		&self,
-		contribution_id: ContributionId,
+		contribution_id: ContributionOnChainId,
 		contributor_id: ContributorId,
 	) -> AnyResult<()> {
 		self.action_queue_mut()?.push(Action::AssignContributor {
-			contribution_id: contribution_id.to_string(),
+			contribution_id,
 			contributor_id,
 		});
 		Ok(())
 	}
 
-	fn unassign_contributor(&self, contribution_id: ContributionId) -> AnyResult<()> {
-		self.action_queue_mut()?.push(Action::UnassignContributor {
-			contribution_id: contribution_id.to_string(),
-		});
+	fn unassign_contributor(&self, contribution_id: ContributionOnChainId) -> AnyResult<()> {
+		self.action_queue_mut()?.push(Action::UnassignContributor { contribution_id });
 		Ok(())
 	}
 
-	fn validate(&self, contribution_id: ContributionId) -> AnyResult<()> {
-		self.action_queue_mut()?.push(Action::ValidateContribution {
-			contribution_id: contribution_id.to_string(),
-		});
+	fn validate(&self, contribution_id: ContributionOnChainId) -> AnyResult<()> {
+		self.action_queue_mut()?.push(Action::ValidateContribution { contribution_id });
 		Ok(())
 	}
 }
@@ -94,16 +90,16 @@ mod test {
 
 	#[rstest]
 	fn assign_contributor(client: StarknetClient) {
-		let contribution_id = Uuid::from_u128(12);
+		let contribution_id = ContributionOnChainId::from("12");
 		let contributor_id: ContributorId = 34.into();
 
-		let result = client.assign_contributor(contribution_id, contributor_id);
+		let result = client.assign_contributor(contribution_id.clone(), contributor_id);
 		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 		assert_eq!(
 			Action::AssignContributor {
-				contribution_id: contribution_id.to_string(),
+				contribution_id,
 				contributor_id
 			},
 			action
@@ -112,33 +108,23 @@ mod test {
 
 	#[rstest]
 	fn unassign_contributor(client: StarknetClient) {
-		let contribution_id = Uuid::from_u128(12);
+		let contribution_id = ContributionOnChainId::from("12");
 
-		let result = client.unassign_contributor(contribution_id);
+		let result = client.unassign_contributor(contribution_id.clone());
 		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
-		assert_eq!(
-			Action::UnassignContributor {
-				contribution_id: contribution_id.to_string(),
-			},
-			action
-		)
+		assert_eq!(Action::UnassignContributor { contribution_id }, action)
 	}
 
 	#[rstest]
 	fn validate(client: StarknetClient) {
-		let contribution_id = Uuid::from_u128(12);
+		let contribution_id = ContributionOnChainId::from("12");
 
-		let result = client.validate(contribution_id);
+		let result = client.validate(contribution_id.clone());
 		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
-		assert_eq!(
-			Action::ValidateContribution {
-				contribution_id: contribution_id.to_string(),
-			},
-			action
-		)
+		assert_eq!(Action::ValidateContribution { contribution_id }, action)
 	}
 }
