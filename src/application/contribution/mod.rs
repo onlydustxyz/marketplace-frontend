@@ -7,3 +7,9 @@ mod assign;
 pub use assign::{
 	AssignContribution, MockUsecase as MockAssignContribution, Usecase as AssignContributionUsecase,
 };
+
+mod unassign;
+pub use unassign::{
+	MockUsecase as MockUnassignContribution, UnassignContribution,
+	Usecase as UnassignContributionUsecase,
+};
