@@ -11,7 +11,7 @@ pub fn find_by_id(
 	usecase: &State<Box<dyn GetContributorUsecase>>,
 	contributor_id: u128,
 ) -> Result<Json<dto::Contributor>, HttpApiProblem> {
-	let contributor = usecase.execute(contributor_id.into()).map_err(|error| {
+	let contributor = usecase.find_by_id(contributor_id.into()).map_err(|error| {
 		let mut problem = HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 			.title("Error while fetching contributor");
 		if let Some(s) = error.source() {
@@ -27,7 +27,7 @@ pub fn find_by_id(
 }
 
 #[cfg(test)]
-mod tests {
+mod test {
 	use super::*;
 	use deathnote_contributions_feeder::{application::MockGetContributor, domain::*};
 	use mockall::predicate::*;
@@ -43,7 +43,7 @@ mod tests {
 	fn find_by_id_should_return_404_when_contributor_not_found() {
 		let mut usecase = MockGetContributor::new();
 		usecase
-			.expect_execute()
+			.expect_find_by_id()
 			.with(eq(ContributorId::from(123)))
 			.returning(|_| Ok(None));
 
@@ -61,7 +61,7 @@ mod tests {
 	fn find_by_id_should_forward_error_as_500() {
 		let mut usecase = MockGetContributor::new();
 
-		usecase.expect_execute().with(eq(ContributorId::from(123))).returning(|_| {
+		usecase.expect_find_by_id().with(eq(ContributorId::from(123))).returning(|_| {
 			Err(ContributorRepositoryError::Infrastructure(Box::new(
 				Error::Mock,
 			)))
@@ -85,7 +85,7 @@ mod tests {
 	fn find_by_id_should_return_contributor_if_found() {
 		let mut usecase = MockGetContributor::new();
 
-		usecase.expect_execute().with(eq(ContributorId::from(123))).returning(|_| {
+		usecase.expect_find_by_id().with(eq(ContributorId::from(123))).returning(|_| {
 			Ok(Some(Contributor {
 				id: ContributorId::from(123),
 				github_username: None,

@@ -4,7 +4,7 @@ use std::sync::Arc;
 
 #[automock]
 pub trait Usecase: Send + Sync {
-	fn execute(
+	fn find_by_id(
 		&self,
 		contributor_id: ContributorId,
 	) -> Result<Option<Contributor>, ContributorRepositoryError>;
@@ -15,7 +15,7 @@ pub struct GetContributor {
 }
 
 impl Usecase for GetContributor {
-	fn execute(
+	fn find_by_id(
 		&self,
 		contributor_id: ContributorId,
 	) -> Result<Option<Contributor>, ContributorRepositoryError> {

@@ -62,7 +62,7 @@ pub async fn create_contribution(
 		validator,
 	};
 
-	usecase.execute(contribution).map_err(|error| {
+	usecase.send_creation_request(contribution).map_err(|error| {
 		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 			.title("Unable to add contribution to the queue")
 			.detail(error.to_string())
