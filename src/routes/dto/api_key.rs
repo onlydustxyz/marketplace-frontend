@@ -9,6 +9,7 @@ use rocket_okapi::{
 	gen::OpenApiGenerator,
 	request::{OpenApiFromRequest, RequestHeaderInput},
 };
+#[derive(Default)]
 pub struct ApiKey(String);
 
 fn is_valid_key(key: &str) -> bool {

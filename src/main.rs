@@ -1,7 +1,7 @@
 mod routes;
 
 use deathnote_contributions_feeder::{
-	application::{CreateContribution, GetContributor},
+	application::{AssignContribution, CreateContribution, GetContributor},
 	github,
 	infrastructure::{
 		database,
@@ -68,6 +68,7 @@ async fn main() {
 	let cloned_database = database.clone();
 	let queue_handler = tokio::spawn(async move {
 		loop {
+			info!("Thread heartbeat");
 			let mut next_actions = vec![];
 			if let Ok(mut queue) = cloned_action_queue.write() {
 				next_actions = queue.pop_n(100);
@@ -134,6 +135,7 @@ fn inject_app(
 	starknet: Arc<starknet::SingleAdminClient>,
 ) -> Rocket<Build> {
 	rocket
-		.manage(GetContributor::new_usecase(database))
-		.manage(CreateContribution::new_usecase(starknet))
+		.manage(GetContributor::new_usecase(database.clone()))
+		.manage(CreateContribution::new_usecase(starknet.clone()))
+		.manage(AssignContribution::new_usecase(starknet, database))
 }

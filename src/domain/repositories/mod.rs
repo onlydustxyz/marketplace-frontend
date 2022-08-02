@@ -3,7 +3,8 @@ pub use project::{Error as ProjectRepositoryError, Repository as ProjectReposito
 
 mod contribution;
 pub use contribution::{
-	Error as ContributionRepositoryError, Repository as ContributionRepository,
+	Error as ContributionRepositoryError, MockRepository as MockContributionRepository,
+	Repository as ContributionRepository,
 };
 
 mod contributor;
