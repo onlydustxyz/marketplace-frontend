@@ -16,7 +16,7 @@ pub struct ValidateContribution {
 }
 
 impl ValidateContribution {
-	pub fn new_usecase(
+	pub fn new_usecase_boxed(
 		contribution_service: Arc<dyn ContributionService>,
 		contribution_repository: Arc<dyn ContributionRepository>,
 	) -> Box<dyn Usecase> {
@@ -94,7 +94,7 @@ mod test {
 			.with(eq(String::from("22")))
 			.returning(|_| Ok(()));
 
-		let usecase = ValidateContribution::new_usecase(
+		let usecase = ValidateContribution::new_usecase_boxed(
 			Arc::new(contribution_service),
 			Arc::new(contribution_repository),
 		);
@@ -112,7 +112,7 @@ mod test {
 			.expect_find_by_id()
 			.returning(|_| Err(ContributionRepositoryError::InvalidEntity(Box::new(Error))));
 
-		let usecase = ValidateContribution::new_usecase(
+		let usecase = ValidateContribution::new_usecase_boxed(
 			Arc::new(contribution_service),
 			Arc::new(contribution_repository),
 		);
@@ -133,7 +133,7 @@ mod test {
 	) {
 		contribution_repository.expect_find_by_id().returning(|_| Ok(None));
 
-		let usecase = ValidateContribution::new_usecase(
+		let usecase = ValidateContribution::new_usecase_boxed(
 			Arc::new(contribution_service),
 			Arc::new(contribution_repository),
 		);
@@ -182,7 +182,7 @@ mod test {
 			.with(eq(String::from("22")))
 			.returning(|_| Err(ContributionServiceError::Infrastructure(Box::new(Error))));
 
-		let usecase = ValidateContribution::new_usecase(
+		let usecase = ValidateContribution::new_usecase_boxed(
 			Arc::new(contribution_service),
 			Arc::new(contribution_repository),
 		);

@@ -23,7 +23,9 @@ impl Usecase for GetContributor {
 }
 
 impl GetContributor {
-	pub fn new_usecase(contributor_repository: Arc<dyn ContributorRepository>) -> Box<dyn Usecase> {
+	pub fn new_usecase_boxed(
+		contributor_repository: Arc<dyn ContributorRepository>,
+	) -> Box<dyn Usecase> {
 		Box::new(Self {
 			contributor_repository,
 		})
@@ -56,7 +58,7 @@ mod test {
 				}))
 			});
 
-		let usecase = GetContributor::new_usecase(Arc::new(contributor_repository));
+		let usecase = GetContributor::new_usecase_boxed(Arc::new(contributor_repository));
 
 		let result = usecase.find_by_id(ContributorId::from(12));
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
@@ -77,7 +79,7 @@ mod test {
 
 		contributor_repository.expect_find().returning(|_| Ok(None));
 
-		let usecase = GetContributor::new_usecase(Arc::new(contributor_repository));
+		let usecase = GetContributor::new_usecase_boxed(Arc::new(contributor_repository));
 
 		let result = usecase.find_by_id(ContributorId::from(12));
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
@@ -92,7 +94,7 @@ mod test {
 			.expect_find()
 			.returning(|_| Err(ContributorRepositoryError::Infrastructure(Box::new(Error))));
 
-		let usecase = GetContributor::new_usecase(Arc::new(contributor_repository));
+		let usecase = GetContributor::new_usecase_boxed(Arc::new(contributor_repository));
 
 		let result = usecase.find_by_id(ContributorId::from(12));
 		assert!(result.is_err());
