@@ -10,14 +10,14 @@ use std::result::Result;
 pub fn find_by_id(
 	usecase: GetContributor,
 	contributor_id: u128,
-) -> Result<Json<dto::Contributor>, Json<HttpApiProblem>> {
+) -> Result<Json<dto::Contributor>, HttpApiProblem> {
 	find_by_id_impl(usecase, contributor_id)
 }
 
 fn find_by_id_impl<U: GetContributorUsecase>(
 	usecase: U,
 	contributor_id: u128,
-) -> Result<Json<dto::Contributor>, Json<HttpApiProblem>> {
+) -> Result<Json<dto::Contributor>, HttpApiProblem> {
 	let contributor = usecase.execute(contributor_id.into()).map_err(|e| {
 		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 			.title("Error while fetching contributor")
@@ -26,8 +26,7 @@ fn find_by_id_impl<U: GetContributorUsecase>(
 
 	match contributor {
 		Some(contributor) => Ok(Json(contributor.into())),
-		None =>
-			Err(HttpApiProblem::new(StatusCode::NOT_FOUND).title("Contributor not found").into()),
+		None => Err(HttpApiProblem::new(StatusCode::NOT_FOUND).title("Contributor not found")),
 	}
 }
 

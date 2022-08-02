@@ -29,7 +29,7 @@ pub async fn apply_to_contribution(
 	contribution_id: UuidParam,
 	body: Json<ApplyDto>,
 	database: &State<Arc<database::Client>>,
-) -> Result<status::Accepted<()>, Json<HttpApiProblem>> {
+) -> Result<status::Accepted<()>, HttpApiProblem> {
 	let body = body.into_inner();
 	let mut uuid_generator = RandomUuidGenerator;
 
@@ -39,7 +39,7 @@ pub async fn apply_to_contribution(
 		contribution_id.into(),
 		body.contributor_id.into(),
 	)
-	.map_err(|e| Json(e.to_http_api_problem()))?;
+	.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(status::Accepted(None))
 }

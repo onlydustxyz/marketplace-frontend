@@ -20,7 +20,7 @@ pub async fn new_project(
 	_api_key: ApiKey,
 	project: Json<dto::ProjectCreation<'_>>,
 	database: &State<Arc<database::Client>>,
-) -> Result<Status, Json<HttpApiProblem>> {
+) -> Result<Status, HttpApiProblem> {
 	let github = github::API::new();
 
 	let project = github
@@ -47,7 +47,7 @@ pub async fn list_projects(
 	database: &State<Arc<database::Client>>,
 	repo_cache: &State<caches::RepoCache>,
 	contributor_cache: &State<caches::ContributorCache>,
-) -> Result<Json<Vec<dto::Project>>, Json<HttpApiProblem>> {
+) -> Result<Json<Vec<dto::Project>>, HttpApiProblem> {
 	let projects_with_contribution_iterator = database
 		.find_all_with_contributions()
 		.map_err(|error| {
