@@ -1,7 +1,6 @@
 mod routes;
 
 use diesel_migrations::*;
-use futures::lock::Mutex;
 use log::info;
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
 use slog::{o, Drain, Logger};
@@ -91,7 +90,7 @@ async fn main() {
 
 	let rocket_handler = rocket::build()
 		.manage(database.clone())
-		.manage(Arc::new(Mutex::new(starknet::Client::default())))
+		.manage(Arc::new(starknet::Client::default()))
 		.manage(action_queue.clone())
 		.manage(RepoCache::default())
 		.manage(ContributorCache::default())
