@@ -71,9 +71,8 @@ impl<A: Account + Sync> ContractAdministrator<A> {
 					thread::sleep(Duration::from_secs(3));
 					continue;
 				},
-				TransactionStatus::AcceptedOnL2 | TransactionStatus::AcceptedOnL1 => {
-					Ok(transaction_result)
-				},
+				TransactionStatus::AcceptedOnL2 | TransactionStatus::AcceptedOnL1 =>
+					Ok(transaction_result),
 				TransactionStatus::Rejected => Err(anyhow!(format!(
 					"Transaction rejected: {:?}",
 					receipt.transaction_failure_reason

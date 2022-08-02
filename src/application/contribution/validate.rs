@@ -4,7 +4,8 @@ use mockall::automock;
 use std::sync::Arc;
 
 #[automock]
-// Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be `Send` and `Sync`
+// Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be
+// `Send` and `Sync`
 pub trait Usecase: Send + Sync {
 	fn send_validate_request(&self, contribution_id: ContributionId) -> Result<(), DomainError>;
 }
@@ -29,9 +30,8 @@ impl ValidateContribution {
 impl Usecase for ValidateContribution {
 	fn send_validate_request(&self, contribution_id: ContributionId) -> Result<(), DomainError> {
 		match self.contribution_repository.find_by_id(contribution_id)? {
-			Some(contribution) => {
-				self.contribution_service.validate(contribution.onchain_id).map_err_into()
-			},
+			Some(contribution) =>
+				self.contribution_service.validate(contribution.onchain_id).map_err_into(),
 			None => Err(ContributionRepositoryError::NotFound.into()),
 		}
 	}

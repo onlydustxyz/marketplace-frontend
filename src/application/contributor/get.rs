@@ -6,7 +6,7 @@ use std::sync::Arc;
 #[automock]
 pub trait Usecase: Send + Sync {
 	fn find_by_id(&self, contributor_id: ContributorId)
-		-> Result<Option<Contributor>, DomainError>;
+	-> Result<Option<Contributor>, DomainError>;
 }
 
 pub struct GetContributor {
