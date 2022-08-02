@@ -4,7 +4,7 @@ use std::sync::Arc;
 
 #[automock]
 pub trait Usecase: Send + Sync {
-	fn execute(&self, contribution: Contribution) -> AnyResult<()>;
+	fn send_creation_request(&self, contribution: Contribution) -> AnyResult<()>;
 }
 
 pub struct CreateContribution {
@@ -20,7 +20,7 @@ impl CreateContribution {
 }
 
 impl Usecase for CreateContribution {
-	fn execute(&self, contribution: Contribution) -> AnyResult<()> {
+	fn send_creation_request(&self, contribution: Contribution) -> AnyResult<()> {
 		self.contribution_service.create(contribution)
 	}
 }
