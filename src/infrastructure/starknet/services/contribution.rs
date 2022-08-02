@@ -70,6 +70,7 @@ mod test {
 	#[fixture]
 	fn client() -> StarknetClient {
 		dotenv().ok();
+		std::env::set_var("PRIVATE_KEY", "");
 		Client::default()
 	}
 

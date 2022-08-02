@@ -132,15 +132,15 @@ fn inject_app(
 	starknet: Arc<starknet::SingleAdminClient>,
 ) -> Rocket<Build> {
 	rocket
-		.manage(GetContributor::new_usecase(database.clone()))
-		.manage(CreateContribution::new_usecase(starknet.clone()))
-		.manage(AssignContribution::new_usecase(
+		.manage(GetContributor::new_usecase_boxed(database.clone()))
+		.manage(CreateContribution::new_usecase_boxed(starknet.clone()))
+		.manage(AssignContribution::new_usecase_boxed(
 			starknet.clone(),
 			database.clone(),
 		))
-		.manage(UnassignContribution::new_usecase(
+		.manage(UnassignContribution::new_usecase_boxed(
 			starknet.clone(),
 			database.clone(),
 		))
-		.manage(ValidateContribution::new_usecase(starknet, database))
+		.manage(ValidateContribution::new_usecase_boxed(starknet, database))
 }

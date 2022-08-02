@@ -13,7 +13,9 @@ pub struct CreateContribution {
 }
 
 impl CreateContribution {
-	pub fn new_usecase(contribution_service: Arc<dyn ContributionService>) -> Box<dyn Usecase> {
+	pub fn new_usecase_boxed(
+		contribution_service: Arc<dyn ContributionService>,
+	) -> Box<dyn Usecase> {
 		Box::new(Self {
 			contribution_service,
 		})
@@ -67,7 +69,7 @@ mod test {
 			.with(eq(contribution.clone()))
 			.returning(|_| Ok(()));
 
-		let usecase = CreateContribution::new_usecase(Arc::new(contribution_service));
+		let usecase = CreateContribution::new_usecase_boxed(Arc::new(contribution_service));
 
 		let result = usecase.send_creation_request(contribution);
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
@@ -101,7 +103,7 @@ mod test {
 			.expect_create()
 			.returning(|_| Err(ContributionServiceError::Infrastructure(Box::new(Error))));
 
-		let usecase = CreateContribution::new_usecase(Arc::new(contribution_service));
+		let usecase = CreateContribution::new_usecase_boxed(Arc::new(contribution_service));
 
 		let result = usecase.send_creation_request(contribution);
 		assert!(result.is_err());
