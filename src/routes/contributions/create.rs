@@ -1,10 +1,5 @@
-use std::str::FromStr;
-
-use deathnote_contributions_feeder::{
-	application::{CreateContribution, CreateContributionUsecase},
-	domain::*,
-	github,
-};
+use crate::routes::{api_key::ApiKey, hex_prefixed_string::HexPrefixedString};
+use deathnote_contributions_feeder::{application::CreateContributionUsecase, domain::*, github};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use rocket::{
 	http::Status,
@@ -14,9 +9,8 @@ use rocket::{
 use rocket_okapi::{openapi, JsonSchema};
 use starknet::core::types::FieldElement;
 use std::result::Result;
+use std::str::FromStr;
 use uuid::Uuid;
-
-use crate::routes::{api_key::ApiKey, hex_prefixed_string::HexPrefixedString};
 
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]
@@ -33,7 +27,7 @@ pub async fn create_contribution(
 	_api_key: ApiKey,
 	body: Json<CreateContributionDto>,
 	github_api: &State<github::API>,
-	usecase: CreateContribution,
+	usecase: &State<Box<dyn CreateContributionUsecase>>,
 ) -> Result<Status, HttpApiProblem> {
 	let body = body.into_inner();
 	let validator = FieldElement::from_str(body.validator.as_string()).map_err(|e| {
@@ -68,7 +62,7 @@ pub async fn create_contribution(
 		validator,
 	};
 
-	usecase.prepare(contribution).map_err(|error| {
+	usecase.execute(contribution).map_err(|error| {
 		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 			.title("Unable to add contribution to the queue")
 			.detail(error.to_string())

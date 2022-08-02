@@ -7,6 +7,6 @@ pub enum Error {
 	Infrastructure(#[source] Box<dyn std::error::Error>),
 }
 
-pub trait Repository {
+pub trait Repository: Send + Sync {
 	fn find(&self, contributor_id: ContributorId) -> Result<Option<Contributor>, Error>;
 }

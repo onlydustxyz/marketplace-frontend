@@ -4,7 +4,7 @@ use crate::{
 };
 
 impl<A: Account + Send + Sync> ContributionService for Client<A> {
-	fn create(&self, contribution: Contribution) -> Result<()> {
+	fn create(&self, contribution: Contribution) -> AnyResult<()> {
 		self.action_queue_mut()?.push(Action::CreateContribution {
 			contribution: contribution.into(),
 		});
@@ -15,7 +15,7 @@ impl<A: Account + Send + Sync> ContributionService for Client<A> {
 		&self,
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
-	) -> Result<()> {
+	) -> AnyResult<()> {
 		self.action_queue_mut()?.push(Action::AssignContributor {
 			contribution_id: contribution_id.to_string(),
 			contributor_id,
@@ -23,14 +23,14 @@ impl<A: Account + Send + Sync> ContributionService for Client<A> {
 		Ok(())
 	}
 
-	fn unassign_contributor(&self, contribution_id: ContributionId) -> Result<()> {
+	fn unassign_contributor(&self, contribution_id: ContributionId) -> AnyResult<()> {
 		self.action_queue_mut()?.push(Action::UnassignContributor {
 			contribution_id: contribution_id.to_string(),
 		});
 		Ok(())
 	}
 
-	fn validate(&self, contribution_id: ContributionId) -> Result<()> {
+	fn validate(&self, contribution_id: ContributionId) -> AnyResult<()> {
 		self.action_queue_mut()?.push(Action::ValidateContribution {
 			contribution_id: contribution_id.to_string(),
 		});

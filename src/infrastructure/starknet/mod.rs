@@ -80,10 +80,10 @@ impl<A: Account + Sync> Client<A> {
 		self.registry.get_user_information(account).await
 	}
 
-	fn action_queue_mut(&self) -> Result<RwLockWriteGuard<'_, ActionQueue>> {
+	fn action_queue_mut(&self) -> AnyResult<RwLockWriteGuard<'_, ActionQueue>> {
 		self.action_queue
 			.write()
-			.map_err(|e| Error::ContributionStoreError(e.to_string()))
+			.map_err(|e| AnyError::ContributionStoreError(e.to_string()))
 	}
 }
 
