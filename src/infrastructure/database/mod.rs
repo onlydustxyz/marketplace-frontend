@@ -3,7 +3,7 @@ mod repositories;
 mod schema;
 
 mod error;
-use error::Error;
+pub use error::Error as DatabaseError;
 
 use diesel::PgConnection;
 use r2d2;
@@ -22,14 +22,14 @@ pub struct Client {
 }
 
 impl Client {
-	fn connection(&self) -> Result<PooledConnection, Error> {
-		self.pool.get().map_err(|e| Error::Connection(e.to_string()))
+	fn connection(&self) -> Result<PooledConnection, DatabaseError> {
+		self.pool.get().map_err(|e| DatabaseError::Connection(e.to_string()))
 	}
 
-	pub fn run_migrations(&self) -> Result<(), Error> {
+	pub fn run_migrations(&self) -> Result<(), DatabaseError> {
 		let connection = self.connection()?;
 		diesel_migrations::run_pending_migrations(&*connection)
-			.map_err(|e| Error::Migration(e.to_string()))?;
+			.map_err(|e| DatabaseError::Migration(e.to_string()))?;
 		Ok(())
 	}
 }
