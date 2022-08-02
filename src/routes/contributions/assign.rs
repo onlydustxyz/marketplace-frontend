@@ -30,7 +30,7 @@ pub async fn assign_contributor(
 	contribution_id: ContributionOnChainId,
 	body: Json<AssignContributorDto>,
 	queue: &State<Arc<RwLock<ActionQueue>>>,
-) -> Result<status::Accepted<()>, Json<HttpApiProblem>> {
+) -> Result<status::Accepted<()>, HttpApiProblem> {
 	let body = body.into_inner();
 	info!("contributor_id={}", body.contributor_id);
 
@@ -42,11 +42,9 @@ pub async fn assign_contributor(
 			)),
 		}),
 		Err(error) =>
-			return Err(Json(
-				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-					.title("Unable to add assignation to the queue")
-					.detail(error.to_string()),
-			)),
+			return Err(HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+				.title("Unable to add assignation to the queue")
+				.detail(error.to_string())),
 	}
 
 	Ok(status::Accepted(None))

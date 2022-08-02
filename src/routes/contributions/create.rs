@@ -38,25 +38,21 @@ pub async fn create_contribution(
 	body: Json<CreateContributionDto>,
 	github_api: &State<github::API>,
 	queue: &State<Arc<RwLock<ActionQueue>>>,
-) -> Result<Status, Json<HttpApiProblem>> {
+) -> Result<Status, HttpApiProblem> {
 	let body = body.into_inner();
 	let validator = FieldElement::from_str(body.validator.as_string()).map_err(|e| {
-		Json(
-			HttpApiProblem::new(StatusCode::BAD_REQUEST)
-				.title("Invalid validator address")
-				.detail(e.to_string()),
-		)
+		HttpApiProblem::new(StatusCode::BAD_REQUEST)
+			.title("Invalid validator address")
+			.detail(e.to_string())
 	})?;
 
 	let github_issue = github_api.issue(body.project_id, body.github_issue_number).await;
 	let github_issue = match github_issue {
 		Ok(github_issue) => github_issue,
 		Err(error) =>
-			return Err(Json(
-				HttpApiProblem::new(StatusCode::BAD_REQUEST)
-					.title("Unable to get GitHub issue data")
-					.detail(error.to_string()),
-			)),
+			return Err(HttpApiProblem::new(StatusCode::BAD_REQUEST)
+				.title("Unable to get GitHub issue data")
+				.detail(error.to_string())),
 	};
 
 	let metadata = github::extract_metadata(github_issue.clone());
@@ -80,11 +76,9 @@ pub async fn create_contribution(
 			contribution: Box::new(contribution),
 		}),
 		Err(error) =>
-			return Err(Json(
-				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-					.title("Unable to add contribution to the queue")
-					.detail(error.to_string()),
-			)),
+			return Err(HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+				.title("Unable to add contribution to the queue")
+				.detail(error.to_string())),
 	}
 
 	Ok(Status::Accepted)
