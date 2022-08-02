@@ -1,6 +1,5 @@
 use super::ContractAdministrator;
 use crate::domain::*;
-use futures::lock::Mutex;
 use itertools::Itertools;
 use starknet::{
 	accounts::{Account, Call},
@@ -20,7 +19,7 @@ fn contributions_contract_address() -> FieldElement {
 }
 
 impl<A: Account + Sync> Contract<A> {
-	pub fn new(administrator_account: Arc<Mutex<A>>) -> Self {
+	pub fn new(administrator_account: Arc<A>) -> Self {
 		Self {
 			administrator: ContractAdministrator::new(administrator_account),
 		}

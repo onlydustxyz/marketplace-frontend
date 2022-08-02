@@ -5,7 +5,9 @@ use crate::{
 
 impl<A: Account + Send + Sync> ContributionService for Client<A> {
 	fn create(&self, contribution: Contribution) -> Result<()> {
-		self.action_queue_mut()?.push(Action::CreateContribution { contribution });
+		self.action_queue_mut()?.push(Action::CreateContribution {
+			contribution: contribution.into(),
+		});
 		Ok(())
 	}
 
@@ -82,7 +84,12 @@ mod test {
 		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
-		assert_eq!(Action::CreateContribution { contribution }, action)
+		assert_eq!(
+			Action::CreateContribution {
+				contribution: contribution.into()
+			},
+			action
+		)
 	}
 
 	#[rstest]
@@ -90,7 +97,7 @@ mod test {
 		let contribution_id = Uuid::from_u128(12);
 		let contributor_id: ContributorId = 34.into();
 
-		let result = client.assign_contributor(contribution_id.clone(), contributor_id.clone());
+		let result = client.assign_contributor(contribution_id, contributor_id);
 		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
@@ -107,7 +114,7 @@ mod test {
 	fn unassign_contributor(client: StarknetClient) {
 		let contribution_id = Uuid::from_u128(12);
 
-		let result = client.unassign_contributor(contribution_id.clone());
+		let result = client.unassign_contributor(contribution_id);
 		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
@@ -123,7 +130,7 @@ mod test {
 	fn validate(client: StarknetClient) {
 		let contribution_id = Uuid::from_u128(12);
 
-		let result = client.validate(contribution_id.clone());
+		let result = client.validate(contribution_id);
 		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());

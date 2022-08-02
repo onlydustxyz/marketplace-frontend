@@ -1,5 +1,4 @@
 use anyhow::{anyhow, Result};
-use futures::lock::Mutex;
 use log::{info, warn};
 use starknet::{
 	accounts::{Account, Call},
@@ -11,12 +10,12 @@ use std::{sync::Arc, thread, time::Duration};
 use crate::infrastructure::starknet::sequencer;
 
 pub struct ContractAdministrator<A: Account + Sync> {
-	administrator_account: Arc<Mutex<A>>,
+	administrator_account: Arc<A>,
 	sequencer: SequencerGatewayProvider,
 }
 
 impl<A: Account + Sync> ContractAdministrator<A> {
-	pub fn new(administrator_account: Arc<Mutex<A>>) -> Self {
+	pub fn new(administrator_account: Arc<A>) -> Self {
 		Self {
 			administrator_account,
 			sequencer: sequencer(),
@@ -30,7 +29,7 @@ impl<A: Account + Sync> ContractAdministrator<A> {
 	) -> Result<AddTransactionResult> {
 		info!("Sending transaction with {} calls", calls.len());
 
-		match self.administrator_account.lock().await.execute(calls).send().await {
+		match self.administrator_account.execute(calls).send().await {
 			Ok(transaction_result) => match wait_for_acceptance {
 				true => self.wait_for_transaction_acceptance(transaction_result).await,
 				false => Ok(transaction_result),

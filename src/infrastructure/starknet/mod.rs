@@ -2,7 +2,6 @@ mod contracts;
 use contracts::{ContributionContract, ProfileContract, RegistryContract};
 
 mod model;
-use futures::lock::Mutex;
 pub use model::*;
 
 pub mod action_queue; // TODO remove pub when refactoring is done
@@ -60,7 +59,7 @@ pub struct Client<A: Account + Sync> {
 }
 
 impl<A: Account + Sync> Client<A> {
-	pub fn new(account: Arc<Mutex<A>>) -> Self {
+	pub fn new(account: Arc<A>) -> Self {
 		Self {
 			registry: RegistryContract::default(),
 			contributions: ContributionContract::new(account),
@@ -93,6 +92,6 @@ pub type SingleAdminClient = Client<LocalSingleOwnerAccount>;
 
 impl Default for SingleAdminClient {
 	fn default() -> Self {
-		Self::new(Arc::new(Mutex::new(make_account_from_env())))
+		Self::new(Arc::new(make_account_from_env()))
 	}
 }
