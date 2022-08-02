@@ -57,7 +57,6 @@ impl From<StarknetError> for ContributionServiceError {
 #[cfg(test)]
 mod test {
 	use super::*;
-	use dotenv::dotenv;
 	use rstest::*;
 	use starknet::{
 		accounts::SingleOwnerAccount, core::types::FieldElement,
@@ -69,8 +68,12 @@ mod test {
 
 	#[fixture]
 	fn client() -> StarknetClient {
-		dotenv().ok();
 		std::env::set_var("PRIVATE_KEY", "");
+		std::env::set_var("ACCOUNT_ADDRESS", "");
+		std::env::set_var("REGISTRY_ADDRESS", "");
+		std::env::set_var("PROFILE_ADDRESS", "");
+		std::env::set_var("JSON_RPC_URI", "htttp://localhost");
+
 		Client::default()
 	}
 
