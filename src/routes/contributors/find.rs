@@ -35,6 +35,11 @@ mod tests {
 	use super::*;
 	use deathnote_contributions_feeder::domain::*;
 	use mockall::{mock, predicate::*};
+	use thiserror::Error;
+
+	#[derive(Debug, Error)]
+	#[error("Something happend")]
+	struct SomeError;
 
 	mock! {
 		pub GetContributorById {}
@@ -43,7 +48,7 @@ mod tests {
 			pub fn execute(
 				&self,
 				contributor_id: ContributorId,
-			) -> deathnote_contributions_feeder::domain::AnyResult<Option<Contributor>>;
+			) -> Result<Option<Contributor>, ContributorRepositoryError>;
 		}
 	}
 
@@ -68,10 +73,11 @@ mod tests {
 	fn find_by_id_should_forward_error_as_500() {
 		let mut usecase = MockGetContributorById::new();
 
-		usecase
-			.expect_execute()
-			.with(eq(ContributorId::from(123)))
-			.returning(|_| Err(AnyError::GetContributorError(String::from("Oops"))));
+		usecase.expect_execute().with(eq(ContributorId::from(123))).returning(|_| {
+			Err(ContributorRepositoryError::Infrastructure(Box::new(
+				SomeError,
+			)))
+		});
 
 		let result = find_by_id_impl(usecase, 123);
 		assert!(result.is_err());
@@ -82,7 +88,10 @@ mod tests {
 			"Error while fetching contributor",
 			problem.title.as_ref().unwrap()
 		);
-		assert_eq!("Oops", problem.detail.as_ref().unwrap());
+		assert_eq!(
+			"Something happend at the infrastructure level",
+			problem.detail.as_ref().unwrap()
+		);
 	}
 
 	#[test]

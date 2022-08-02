@@ -16,5 +16,5 @@ pub enum Error {
 
 pub trait Repository {
 	fn store(&self, application: Application) -> Result<(), Error>;
-	fn find(&self, id: &ApplicationId) -> Result<Application, Error>;
+	fn find(&self, id: &ApplicationId) -> Result<Option<Application>, Error>;
 }

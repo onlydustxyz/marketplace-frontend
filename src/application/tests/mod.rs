@@ -29,7 +29,7 @@ impl ApplicationRepository for InMemoryApplicationRepository {
 		Ok(())
 	}
 
-	fn find(&self, id: &ApplicationId) -> Result<Application, ApplicationRepositoryError> {
-		self.0.borrow().get(id).cloned().ok_or(ApplicationRepositoryError::NotFound)
+	fn find(&self, id: &ApplicationId) -> Result<Option<Application>, ApplicationRepositoryError> {
+		Ok(self.0.borrow().get(id).cloned())
 	}
 }

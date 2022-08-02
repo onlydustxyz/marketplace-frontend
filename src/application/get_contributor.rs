@@ -9,7 +9,10 @@ use rocket::{
 use rocket_okapi::OpenApiFromRequest;
 
 pub trait Usecase {
-	fn execute(&self, contributor_id: ContributorId) -> AnyResult<Option<Contributor>>;
+	fn execute(
+		&self,
+		contributor_id: ContributorId,
+	) -> Result<Option<Contributor>, ContributorRepositoryError>;
 }
 
 #[derive(OpenApiFromRequest)]
@@ -18,8 +21,11 @@ pub struct GetContributor {
 }
 
 impl Usecase for GetContributor {
-	fn execute(&self, contributor_id: ContributorId) -> AnyResult<Option<Contributor>> {
-		self.contributor_repository.by_id(contributor_id)
+	fn execute(
+		&self,
+		contributor_id: ContributorId,
+	) -> Result<Option<Contributor>, ContributorRepositoryError> {
+		self.contributor_repository.find(contributor_id)
 	}
 }
 

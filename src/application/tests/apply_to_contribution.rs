@@ -28,6 +28,10 @@ fn store_and_find_application() {
 
 	assert_eq!(
 		application_repository.find(&expected_id).unwrap(),
-		Application::new(expected_id, contribution_id, contributor_id)
+		Some(Application::new(
+			expected_id,
+			contribution_id,
+			contributor_id
+		))
 	);
 }

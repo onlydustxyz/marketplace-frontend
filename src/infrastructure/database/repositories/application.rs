@@ -1,5 +1,6 @@
 use crate::diesel::QueryDsl;
 use diesel::RunQueryDsl;
+use mapinto::ResultMapErrInto;
 
 use crate::{
 	domain::*,
@@ -21,15 +22,19 @@ impl ApplicationRepository for Client {
 		Ok(())
 	}
 
-	fn find(&self, id: &ApplicationId) -> Result<Application, ApplicationRepositoryError> {
+	fn find(&self, id: &ApplicationId) -> Result<Option<Application>, ApplicationRepositoryError> {
 		let connection = self
 			.connection()
 			.map_err(|e| ApplicationRepositoryError::Infrastructure(Box::new(e)))?;
-		applications::dsl::applications
+		let res = applications::dsl::applications
 			.find(id)
-			.first(&*connection)
-			.map(|a: models::Application| a.into())
-			.map_err(|e| e.into())
+			.first::<models::Application>(&*connection);
+
+		if let Err(diesel::result::Error::NotFound) = res {
+			Ok(None)
+		} else {
+			res.map(|a| Some(a.into())).map_err_into()
+		}
 	}
 }
 
@@ -64,7 +69,7 @@ impl From<diesel::result::Error> for ApplicationRepositoryError {
 				_ => Self::Infrastructure(Box::new(error)),
 			},
 			diesel::result::Error::NotFound => Self::NotFound,
-			e => Self::Infrastructure(Box::new(e)),
+			_ => Self::Infrastructure(Box::new(error)),
 		}
 	}
 }
