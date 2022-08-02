@@ -1,4 +1,5 @@
 use crate::domain::*;
+use mapinto::ResultMapErrInto;
 use mockall::automock;
 use std::sync::Arc;
 
@@ -9,7 +10,7 @@ pub trait Usecase: Send + Sync {
 		&self,
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
-	) -> Result<()>;
+	) -> Result<(), DomainError>;
 }
 
 pub struct AssignContribution {
@@ -34,14 +35,15 @@ impl Usecase for AssignContribution {
 		&self,
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
-	) -> Result<()> {
+	) -> Result<(), DomainError> {
 		match self.contribution_repository.find_by_id(contribution_id)? {
 			Some(contribution) => self
 				.contribution_service
-				.assign_contributor(contribution.onchain_id, contributor_id),
-			None => Err(Error::InvalidContribution(String::from(
-				"Contribution does not exist",
-			))),
+				.assign_contributor(contribution.onchain_id, contributor_id)
+				.map_err_into(),
+			None => Err(DomainError::ContributionRepository(
+				ContributionRepositoryError::NotFound,
+			)),
 		}
 	}
 }
@@ -52,6 +54,11 @@ mod test {
 	use mockall::predicate::*;
 	use rstest::*;
 	use starknet::core::types::FieldElement;
+	use thiserror::Error;
+
+	#[derive(Debug, Error)]
+	#[error("Oops")]
+	struct Error;
 
 	#[fixture]
 	fn contribution_service() -> MockContributionService {
@@ -115,7 +122,7 @@ mod test {
 	) {
 		contribution_repository
 			.expect_find_by_id()
-			.returning(|_| Err(Error::InvalidContribution(String::new())));
+			.returning(|_| Err(ContributionRepositoryError::InvalidEntity(Box::new(Error))));
 
 		let usecase = AssignContribution::new_usecase(
 			Arc::new(contribution_service),
@@ -127,8 +134,8 @@ mod test {
 
 		assert!(result.is_err());
 		assert_eq!(
-			Error::InvalidContribution(String::new()),
-			result.unwrap_err(),
+			"Contribution repository error",
+			result.unwrap_err().to_string()
 		);
 	}
 
@@ -149,8 +156,8 @@ mod test {
 
 		assert!(result.is_err());
 		assert_eq!(
-			Error::InvalidContribution(String::from("Contribution does not exist")),
-			result.unwrap_err(),
+			"Contribution repository error",
+			result.unwrap_err().to_string()
 		);
 	}
 
@@ -187,7 +194,7 @@ mod test {
 		contribution_service
 			.expect_assign_contributor()
 			.with(eq(String::from("22")), eq(ContributorId::from(34)))
-			.returning(|_, _| Err(Error::TransactionRevertedError(String::new())));
+			.returning(|_, _| Err(ContributionServiceError::Infrastructure(Box::new(Error))));
 
 		let usecase = AssignContribution::new_usecase(
 			Arc::new(contribution_service),
@@ -199,8 +206,8 @@ mod test {
 
 		assert!(result.is_err());
 		assert_eq!(
-			Error::TransactionRevertedError(String::new()),
-			result.unwrap_err(),
+			"Contribution service error",
+			result.unwrap_err().to_string()
 		);
 	}
 }

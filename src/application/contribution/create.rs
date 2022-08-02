@@ -1,10 +1,11 @@
 use crate::domain::*;
+use mapinto::ResultMapErrInto;
 use mockall::automock;
 use std::sync::Arc;
 
 #[automock]
 pub trait Usecase: Send + Sync {
-	fn send_creation_request(&self, contribution: Contribution) -> AnyResult<()>;
+	fn send_creation_request(&self, contribution: Contribution) -> Result<(), DomainError>;
 }
 
 pub struct CreateContribution {
@@ -20,8 +21,8 @@ impl CreateContribution {
 }
 
 impl Usecase for CreateContribution {
-	fn send_creation_request(&self, contribution: Contribution) -> AnyResult<()> {
-		self.contribution_service.create(contribution)
+	fn send_creation_request(&self, contribution: Contribution) -> Result<(), DomainError> {
+		self.contribution_service.create(contribution).map_err_into()
 	}
 }
 
@@ -30,7 +31,12 @@ mod test {
 	use super::*;
 	use mockall::predicate::*;
 	use starknet::core::types::FieldElement;
+	use thiserror::Error;
 	use uuid::Uuid;
+
+	#[derive(Debug, Error)]
+	#[error("Oops")]
+	struct Error;
 
 	#[test]
 	fn forward_request() {
@@ -93,15 +99,15 @@ mod test {
 
 		contribution_service
 			.expect_create()
-			.returning(|_| Err(Error::TransactionRevertedError(String::new())));
+			.returning(|_| Err(ContributionServiceError::Infrastructure(Box::new(Error))));
 
 		let usecase = CreateContribution::new_usecase(Arc::new(contribution_service));
 
 		let result = usecase.send_creation_request(contribution);
 		assert!(result.is_err());
 		assert_eq!(
-			Error::TransactionRevertedError(String::new()),
-			result.unwrap_err(),
+			"Contribution service error",
+			result.unwrap_err().to_string()
 		);
 	}
 }

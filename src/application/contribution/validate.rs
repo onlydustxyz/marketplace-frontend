@@ -1,11 +1,12 @@
 use crate::domain::*;
+use mapinto::ResultMapErrInto;
 use mockall::automock;
 use std::sync::Arc;
 
 #[automock]
 // Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be `Send` and `Sync`
 pub trait Usecase: Send + Sync {
-	fn send_validate_request(&self, contribution_id: ContributionId) -> Result<()>;
+	fn send_validate_request(&self, contribution_id: ContributionId) -> Result<(), DomainError>;
 }
 
 pub struct ValidateContribution {
@@ -26,12 +27,12 @@ impl ValidateContribution {
 }
 
 impl Usecase for ValidateContribution {
-	fn send_validate_request(&self, contribution_id: ContributionId) -> Result<()> {
+	fn send_validate_request(&self, contribution_id: ContributionId) -> Result<(), DomainError> {
 		match self.contribution_repository.find_by_id(contribution_id)? {
-			Some(contribution) => self.contribution_service.validate(contribution.onchain_id),
-			None => Err(Error::InvalidContribution(String::from(
-				"Contribution does not exist",
-			))),
+			Some(contribution) => {
+				self.contribution_service.validate(contribution.onchain_id).map_err_into()
+			},
+			None => Err(ContributionRepositoryError::NotFound.into()),
 		}
 	}
 }
@@ -42,6 +43,11 @@ mod test {
 	use mockall::predicate::*;
 	use rstest::*;
 	use starknet::core::types::FieldElement;
+	use thiserror::Error;
+
+	#[derive(Debug, Error)]
+	#[error("Oops")]
+	struct Error;
 
 	#[fixture]
 	fn contribution_service() -> MockContributionService {
@@ -104,7 +110,7 @@ mod test {
 	) {
 		contribution_repository
 			.expect_find_by_id()
-			.returning(|_| Err(Error::InvalidContribution(String::new())));
+			.returning(|_| Err(ContributionRepositoryError::InvalidEntity(Box::new(Error))));
 
 		let usecase = ValidateContribution::new_usecase(
 			Arc::new(contribution_service),
@@ -115,8 +121,8 @@ mod test {
 
 		assert!(result.is_err());
 		assert_eq!(
-			Error::InvalidContribution(String::new()),
-			result.unwrap_err(),
+			"Contribution repository error",
+			result.unwrap_err().to_string()
 		);
 	}
 
@@ -136,8 +142,8 @@ mod test {
 
 		assert!(result.is_err());
 		assert_eq!(
-			Error::InvalidContribution(String::from("Contribution does not exist")),
-			result.unwrap_err(),
+			"Contribution repository error",
+			result.unwrap_err().to_string()
 		);
 	}
 
@@ -174,7 +180,7 @@ mod test {
 		contribution_service
 			.expect_validate()
 			.with(eq(String::from("22")))
-			.returning(|_| Err(Error::TransactionRevertedError(String::new())));
+			.returning(|_| Err(ContributionServiceError::Infrastructure(Box::new(Error))));
 
 		let usecase = ValidateContribution::new_usecase(
 			Arc::new(contribution_service),
@@ -185,8 +191,8 @@ mod test {
 
 		assert!(result.is_err());
 		assert_eq!(
-			Error::TransactionRevertedError(String::new()),
-			result.unwrap_err(),
+			"Contribution service error",
+			result.unwrap_err().to_string()
 		);
 	}
 }

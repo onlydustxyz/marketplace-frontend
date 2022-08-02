@@ -9,8 +9,9 @@ impl ContributionRepository for Client {
 		&self,
 		contribution_id: ContributionId,
 	) -> Result<Option<Contribution>, ContributionRepositoryError> {
-		let connection =
-			self.connection().map_err(|e| AnyError::ContributionStoreError(e.to_string()))?;
+		let connection = self
+			.connection()
+			.map_err(|e| ContributionRepositoryError::Infrastructure(e.into()))?;
 
 		match contributions::table
 			.find(contribution_id)
@@ -18,7 +19,7 @@ impl ContributionRepository for Client {
 		{
 			Ok(contribution) => Ok(Some(contribution.into())),
 			Err(diesel::NotFound) => Ok(None),
-			Err(e) => Err(AnyError::ContributionStoreError(e.to_string())),
+			Err(e) => Err(ContributionRepositoryError::Infrastructure(e.into())),
 		}
 	}
 
@@ -27,8 +28,9 @@ impl ContributionRepository for Client {
 		contribution: Contribution,
 		transaction_hash: String,
 	) -> Result<(), ContributionRepositoryError> {
-		let connection =
-			self.connection().map_err(|e| AnyError::ContributionStoreError(e.to_string()))?;
+		let connection = self
+			.connection()
+			.map_err(|e| ContributionRepositoryError::Infrastructure(e.into()))?;
 
 		let contribution = models::NewContribution::from((contribution, transaction_hash));
 		diesel::insert_into(contributions::table)
