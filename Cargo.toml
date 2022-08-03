@@ -79,6 +79,7 @@ serde_json = "1.0.81"
 dotenv = "0.15.0"
 itertools = "0.10.3"
 mapinto = "0.2.1"
+rand = "0.8.5"
 
 # Unit testing
 mockall = "0.11.2"

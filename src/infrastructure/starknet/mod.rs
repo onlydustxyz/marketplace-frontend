@@ -2,8 +2,6 @@ mod contracts;
 use contracts::{ContributionContract, ProfileContract, RegistryContract};
 
 mod model;
-use log::{error, info, warn};
-use mapinto::ResultMapErrInto;
 pub use model::*;
 
 mod action_queue;
@@ -13,18 +11,9 @@ mod services;
 
 mod error;
 pub use error::Error as StarknetError;
-use tokio::{
-	sync::oneshot::{error::TryRecvError, Receiver},
-	task::JoinHandle,
-};
-use url::Url;
 
-use std::{
-	env,
-	sync::{Arc, RwLock, RwLockWriteGuard},
-	thread,
-	time::Duration,
-};
+mod transaction_processor;
+pub use transaction_processor::dequeuer::spawn;
 
 pub use starknet::accounts::Account;
 use starknet::{
@@ -33,8 +22,13 @@ use starknet::{
 	providers::SequencerGatewayProvider,
 	signers::{LocalWallet, SigningKey},
 };
+use std::{
+	env,
+	sync::{Arc, RwLock},
+};
+use url::Url;
 
-use crate::{domain::*, infrastructure::starknet::action_queue::store_action_result};
+use crate::domain::*;
 
 fn make_account_from_env() -> SingleOwnerAccount<SequencerGatewayProvider, LocalWallet> {
 	let private_key = env::var("PRIVATE_KEY").expect("PRIVATE_KEY must be set");
@@ -61,73 +55,16 @@ fn make_account(
 
 fn sequencer() -> SequencerGatewayProvider {
 	match std::env::var("NETWORK") {
-		Ok(network) if network == String::from("devnet") => SequencerGatewayProvider::new(
+		Ok(network) if network == *"devnet" => SequencerGatewayProvider::new(
 			Url::parse("http://127.0.0.1:5050/gateway").unwrap(),
 			Url::parse("http://127.0.0.1:5050/feeder_gateway").unwrap(),
 		),
-		Ok(network) if network == String::from("alpha-goerli") =>
+		Ok(network) if network == *"alpha-goerli" =>
 			SequencerGatewayProvider::starknet_alpha_goerli(),
-		Ok(network) if network == String::from("alpha-mainnet") =>
+		Ok(network) if network == *"alpha-mainnet" =>
 			SequencerGatewayProvider::starknet_alpha_mainnet(),
 		_ => SequencerGatewayProvider::starknet_alpha_goerli(), // Default to goerli
 	}
-}
-
-// TODO: refactor to event driven to remove dependency on database
-pub fn spawn<A: Account + Sync + Send + 'static>(
-	contribution_service: Arc<Client<A>>,
-	contribution_repository: Arc<dyn ContributionRepository>,
-	mut shutdown_recv: Receiver<bool>,
-) -> JoinHandle<()> {
-	// TODO: merge within starknet::Client to avoid leaking out the action queue
-	let cloned_action_queue = contribution_service.action_queue();
-
-	tokio::spawn(async move {
-		loop {
-			info!("Thread heartbeat");
-			let next_actions = if let Ok(mut queue) = cloned_action_queue.write() {
-				queue.pop_n(100)
-			} else {
-				vec![]
-			};
-
-			if !next_actions.is_empty() {
-				let handle = contribution_service.execute_actions(next_actions.clone()).await;
-
-				match tokio::join!(handle).0 {
-					Ok(result) => match result {
-						Ok(transaction_hash) => {
-							match store_action_result(
-								&*contribution_repository,
-								&next_actions,
-								&transaction_hash,
-							) {
-								Ok(_) => info!("All actions executed successfully"),
-								Err(e) => {
-									warn!("Cannot execute actions on database: {}", e.to_string())
-								},
-							}
-						},
-						Err(e) => warn!(
-							"Cannot execute actions on smart contract: {}",
-							e.to_string()
-						),
-					},
-					Err(error) => error!("Child thread panicked: {error}"),
-				}
-			}
-
-			// Look if shutdown signat have been issued
-			match shutdown_recv.try_recv() {
-				Ok(_) => return,
-				Err(TryRecvError::Closed) => return,
-				Err(TryRecvError::Empty) => {},
-			}
-
-			// Wait a bit and do it again
-			thread::sleep(Duration::from_secs(5));
-		}
-	})
 }
 
 pub struct Client<A: Account + Sync + Send> {
@@ -147,30 +84,12 @@ impl<A: Account + Sync + Send + 'static> Client<A> {
 		}
 	}
 
-	pub async fn execute_actions(
-		&self,
-		actions: Vec<Action>,
-	) -> JoinHandle<Result<String, StarknetError>> {
-		let cloned_contributions = self.contributions.clone();
-		tokio::spawn(async move {
-			cloned_contributions.execute_actions(&actions, true).await.map_err_into()
-		})
-	}
-
 	pub async fn get_user_information(
 		&self,
 		contributor_id: &ContributorId,
 	) -> Option<Contributor> {
 		let account = self.profile.get_account(contributor_id).await?;
 		self.registry.get_user_information(account).await
-	}
-
-	fn action_queue_mut(&self) -> Result<RwLockWriteGuard<'_, ActionQueue>, StarknetError> {
-		self.action_queue.write().map_err(|e| StarknetError::Mutex(e.to_string()))
-	}
-
-	pub fn action_queue(&self) -> Arc<RwLock<ActionQueue>> {
-		self.action_queue.clone()
 	}
 }
 
