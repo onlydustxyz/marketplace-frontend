@@ -3,7 +3,7 @@ use crate::{
 	infrastructure::starknet::{Account, Client, StarknetError},
 };
 
-impl<A: Account + Send + Sync> ContributionService for Client<A> {
+impl<A: Account + Send + Sync + 'static> ContributionService for Client<A> {
 	fn create(&self, contribution: Contribution) -> Result<(), ContributionServiceError> {
 		self.action_queue_mut().map_err(ContributionServiceError::from)?.push(
 			Action::CreateContribution {

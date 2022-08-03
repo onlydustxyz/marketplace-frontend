@@ -2,7 +2,7 @@ mod contracts;
 use contracts::{ContributionContract, ProfileContract, RegistryContract};
 
 mod model;
-use log::{info, warn};
+use log::{error, info, warn};
 use mapinto::ResultMapErrInto;
 pub use model::*;
 
@@ -74,29 +74,35 @@ pub fn spawn<A: Account + Sync + Send + 'static>(
 	tokio::spawn(async move {
 		loop {
 			info!("Thread heartbeat");
-			let mut next_actions = vec![];
-			if let Ok(mut queue) = cloned_action_queue.write() {
-				next_actions = queue.pop_n(100);
+			let next_actions = if let Ok(mut queue) = cloned_action_queue.write() {
+				queue.pop_n(100)
+			} else {
+				vec![]
 			};
 
 			if !next_actions.is_empty() {
-				match contribution_service.execute_actions(&next_actions).await {
-					Ok(transaction_hash) => {
-						match store_action_result(
-							&*contribution_repository,
-							&next_actions,
-							&transaction_hash,
-						) {
-							Ok(_) => info!("All actions executed successfully"),
-							Err(e) => {
-								warn!("Cannot execute actions on database: {}", e.to_string())
-							},
-						}
+				let handle = contribution_service.execute_actions(next_actions.clone()).await;
+
+				match tokio::join!(handle).0 {
+					Ok(result) => match result {
+						Ok(transaction_hash) => {
+							match store_action_result(
+								&*contribution_repository,
+								&next_actions,
+								&transaction_hash,
+							) {
+								Ok(_) => info!("All actions executed successfully"),
+								Err(e) => {
+									warn!("Cannot execute actions on database: {}", e.to_string())
+								},
+							}
+						},
+						Err(e) => warn!(
+							"Cannot execute actions on smart contract: {}",
+							e.to_string()
+						),
 					},
-					Err(e) => warn!(
-						"Cannot execute actions on smart contract: {}",
-						e.to_string()
-					),
+					Err(error) => error!("Child thread panicked: {error}"),
 				}
 			}
 
@@ -115,23 +121,29 @@ pub fn spawn<A: Account + Sync + Send + 'static>(
 
 pub struct Client<A: Account + Sync + Send> {
 	registry: RegistryContract,
-	contributions: ContributionContract<A>,
+	contributions: Arc<ContributionContract<A>>,
 	profile: ProfileContract,
 	action_queue: Arc<RwLock<ActionQueue>>,
 }
 
-impl<A: Account + Sync + Send> Client<A> {
+impl<A: Account + Sync + Send + 'static> Client<A> {
 	pub fn new(account: Arc<A>) -> Self {
 		Self {
 			registry: RegistryContract::default(),
-			contributions: ContributionContract::new(account),
+			contributions: Arc::new(ContributionContract::new(account)),
 			profile: ProfileContract::default(),
 			action_queue: Arc::new(RwLock::new(ActionQueue::new())),
 		}
 	}
 
-	pub async fn execute_actions(&self, actions: &[Action]) -> Result<String, StarknetError> {
-		self.contributions.execute_actions(actions, true).await.map_err_into()
+	pub async fn execute_actions(
+		&self,
+		actions: Vec<Action>,
+	) -> JoinHandle<Result<String, StarknetError>> {
+		let cloned_contributions = self.contributions.clone();
+		tokio::spawn(async move {
+			cloned_contributions.execute_actions(&actions, true).await.map_err_into()
+		})
 	}
 
 	pub async fn get_user_information(
