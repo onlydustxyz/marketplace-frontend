@@ -1,12 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use crate::{
-	domain::*,
-	infrastructure::{database, starknet},
-};
-
-use log::{info, warn};
+use crate::domain::*;
 use std::{cmp::min, collections::VecDeque};
 
 pub struct ActionQueue(VecDeque<Action>);
@@ -40,23 +35,7 @@ impl Default for ActionQueue {
 	}
 }
 
-// TODO: refactor to event driven to remove dependency on database
-pub async fn execute_actions(database: &database::Client, actions: Vec<Action>) {
-	let starknet = starknet::Client::default();
-
-	match starknet.execute_actions(&actions).await {
-		Ok(transaction_hash) => match store_action_result(database, &actions, &transaction_hash) {
-			Ok(_) => info!("All actions executed successfully"),
-			Err(e) => warn!("Cannot execute actions on database: {}", e.to_string()),
-		},
-		Err(e) => warn!(
-			"Cannot execute actions on smart contract: {}",
-			e.to_string()
-		),
-	}
-}
-
-fn store_action_result(
+pub fn store_action_result(
 	contribution_repository: &dyn ContributionRepository,
 	actions: &[Action],
 	hash: &str,

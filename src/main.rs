@@ -3,13 +3,7 @@ mod routes;
 use deathnote_contributions_feeder::{
 	application::*,
 	github,
-	infrastructure::{
-		database,
-		starknet::{
-			self,
-			action_queue::{execute_actions, ActionQueue},
-		},
-	},
+	infrastructure::{database, starknet},
 	utils::caches::{ContributorCache, RepoCache},
 };
 use diesel_migrations::*;
@@ -18,14 +12,10 @@ use log::info;
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
 use slog::{o, Drain, Logger};
-use std::{
-	sync::{Arc, RwLock},
-	thread,
-	time::Duration,
-};
+use std::sync::Arc;
 use tokio::{
 	signal,
-	sync::oneshot::{self, error::TryRecvError},
+	sync::oneshot::{self},
 };
 
 #[macro_use]
@@ -50,12 +40,11 @@ async fn main() {
 	let _global_logger_guard = slog_scope::set_global_logger(root_logger);
 	github::API::initialize();
 
-	let action_queue = Arc::new(RwLock::new(ActionQueue::new()));
 	let database = Arc::new(database::Client::default());
 	database.run_migrations().expect("Unable to run database migrations");
 
 	// Allow to gracefully exit kill all thread on ctrl+c
-	let (shutdown_send, mut shutdown_recv) = oneshot::channel();
+	let (shutdown_send, shutdown_recv) = oneshot::channel();
 	let ctr_c_handler = tokio::spawn(async {
 		let _ = signal::ctrl_c().await;
 		// ctrl_c have been pushed or something unexpected happened
@@ -63,30 +52,8 @@ async fn main() {
 	});
 
 	// Regularly create a transaction with tasks stored in the queue
-	let cloned_database = database.clone();
-	let queue_handler = tokio::spawn(async move {
-		loop {
-			info!("Thread heartbeat");
-			let mut next_actions = vec![];
-			if let Ok(mut queue) = action_queue.write() {
-				next_actions = queue.pop_n(100);
-			};
-			if !next_actions.is_empty() {
-				execute_actions(&cloned_database, next_actions).await;
-			}
-
-			// Look if shutdown signat have been issued
-			match shutdown_recv.try_recv() {
-				Ok(_) => return,
-				Err(TryRecvError::Closed) => return,
-				Err(TryRecvError::Empty) => {},
-			}
-			// Wait a bit and do it again
-			thread::sleep(Duration::from_secs(5));
-		}
-	});
-
 	let starknet = Arc::new(starknet::Client::default());
+	let queue_handler = starknet::spawn(starknet.clone(), database.clone(), shutdown_recv);
 
 	let rocket_handler = inject_app(rocket::build(), database.clone(), starknet)
 		.manage(database.clone())
