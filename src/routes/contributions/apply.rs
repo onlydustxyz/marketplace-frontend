@@ -8,8 +8,7 @@ use schemars::JsonSchema;
 use serde::Deserialize;
 
 use crate::routes::{
-	api_key::ApiKey, contributor_id::ContributorIdDto, to_http_api_problem::ToHttpApiProblem,
-	uuid::UuidParam,
+	contributor_id::ContributorIdDto, to_http_api_problem::ToHttpApiProblem, uuid::UuidParam,
 };
 
 #[derive(Deserialize, JsonSchema)]
@@ -25,7 +24,6 @@ pub struct ApplyDto {
 	data = "<body>"
 )]
 pub async fn apply_to_contribution(
-	_api_key: ApiKey,
 	contribution_id: UuidParam,
 	body: Json<ApplyDto>,
 	database: &State<Arc<database::Client>>,
