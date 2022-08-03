@@ -17,6 +17,7 @@ use tokio::{
 	sync::oneshot::{error::TryRecvError, Receiver},
 	task::JoinHandle,
 };
+use url::Url;
 
 use std::{
 	env,
@@ -59,7 +60,17 @@ fn make_account(
 }
 
 fn sequencer() -> SequencerGatewayProvider {
-	SequencerGatewayProvider::starknet_alpha_goerli()
+	match std::env::var("NETWORK") {
+		Ok(network) if network == String::from("devnet") => SequencerGatewayProvider::new(
+			Url::parse("http://127.0.0.1:5050/gateway").unwrap(),
+			Url::parse("http://127.0.0.1:5050/feeder_gateway").unwrap(),
+		),
+		Ok(network) if network == String::from("alpha-goerli") =>
+			SequencerGatewayProvider::starknet_alpha_goerli(),
+		Ok(network) if network == String::from("alpha-mainnet") =>
+			SequencerGatewayProvider::starknet_alpha_mainnet(),
+		_ => SequencerGatewayProvider::starknet_alpha_goerli(), // Default to goerli
+	}
 }
 
 // TODO: refactor to event driven to remove dependency on database

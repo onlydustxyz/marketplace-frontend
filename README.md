@@ -51,6 +51,34 @@ diesel setup
 diesel migration run
 ```
 
+### 4. Deploy smart contracts on devnet
+
+1. Install and run [starknet-devnet]()
+```bash
+pip install starknet-devnet
+starknet-devnet --seed 0
+```
+
+Then add the first account as `local_admin` in your `~/.starknet_accounts/starknet_open_zeppelin_accounts.json` file.
+
+2. Deploy the smart contracts
+```bash
+cd marketplace-smart-contracts
+./scripts/deploy.sh -p local -a local_admin
+```
+
+3. Replace the values of the deployed smart contracts in your `.env` file
+```bash
+cd marketplace-backend
+sed -e '/PROFILE_ADDRESS=/d' -e '/REGISTRY_ADDRESS=/d' -e '/CONTRIBUTIONS_ADDRESS=/d' .env | tee .env > /dev/null
+cat ../marketplace-smart-contracts/build/deployed_contracts_local.txt >> .env
+```
+
+4. Run your back-end
+```bash
+cargo run
+```
+
 ## 📦 Installation
 
 To build the project, run the following command:
@@ -66,24 +94,8 @@ Below are some examples of usage.
 ### Add a single repository for indexing
 
 ```
-# Offline mode
-cargo run --bin add_project onlydustxyz starkonquest
-
-# Online mode
 cargo run &
 curl -d '{"owner":"onlydustxyz", "name":"starkonquest"}' -H "Content-Type: application/json" -X POST http://localhost:8000/projects
-```
-
-### Run the indexer (fetch data from GitHub and store it in our database)
-
-```
-cargo run --bin index_projects
-```
-
-### Upload data (upload data from our database to our on-chain contract)
-
-```
-cargo run --bin upload_contributions
 ```
 
 ## 🌡️ Testing
