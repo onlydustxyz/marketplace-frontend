@@ -19,3 +19,6 @@ pub use validate::{
 	MockUsecase as MockValidateContribution, Usecase as ValidateContributionUsecase,
 	ValidateContribution,
 };
+
+mod apply;
+pub use apply::{ApplyToContribution, Usecase as ApplyToContributionUsecase};

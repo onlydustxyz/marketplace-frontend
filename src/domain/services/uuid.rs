@@ -1,6 +1,6 @@
 use uuid::Uuid;
 
-pub trait Service {
+pub trait Service: Send + Sync {
 	fn new_uuid(&mut self) -> Uuid;
 }
 
