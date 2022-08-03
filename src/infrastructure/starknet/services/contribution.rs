@@ -5,11 +5,12 @@ use crate::{
 
 impl<A: Account + Send + Sync + 'static> ContributionService for Client<A> {
 	fn create(&self, contribution: Contribution) -> Result<(), ContributionServiceError> {
-		self.action_queue_mut().map_err(ContributionServiceError::from)?.push(
-			Action::CreateContribution {
+		self.action_queue
+			.write()
+			.map_err(StarknetError::from)?
+			.push(Action::CreateContribution {
 				contribution: contribution.into(),
-			},
-		);
+			});
 		Ok(())
 	}
 
@@ -18,12 +19,13 @@ impl<A: Account + Send + Sync + 'static> ContributionService for Client<A> {
 		contribution_id: ContributionOnChainId,
 		contributor_id: ContributorId,
 	) -> Result<(), ContributionServiceError> {
-		self.action_queue_mut().map_err(ContributionServiceError::from)?.push(
-			Action::AssignContributor {
+		self.action_queue
+			.write()
+			.map_err(StarknetError::from)?
+			.push(Action::AssignContributor {
 				contribution_id,
 				contributor_id,
-			},
-		);
+			});
 		Ok(())
 	}
 
@@ -31,8 +33,9 @@ impl<A: Account + Send + Sync + 'static> ContributionService for Client<A> {
 		&self,
 		contribution_id: ContributionOnChainId,
 	) -> Result<(), ContributionServiceError> {
-		self.action_queue_mut()
-			.map_err(ContributionServiceError::from)?
+		self.action_queue
+			.write()
+			.map_err(StarknetError::from)?
 			.push(Action::UnassignContributor { contribution_id });
 		Ok(())
 	}
@@ -41,8 +44,9 @@ impl<A: Account + Send + Sync + 'static> ContributionService for Client<A> {
 		&self,
 		contribution_id: ContributionOnChainId,
 	) -> Result<(), ContributionServiceError> {
-		self.action_queue_mut()
-			.map_err(ContributionServiceError::from)?
+		self.action_queue
+			.write()
+			.map_err(StarknetError::from)?
 			.push(Action::ValidateContribution { contribution_id });
 		Ok(())
 	}
@@ -101,7 +105,7 @@ mod test {
 
 		let result = client.create(contribution.clone());
 
-		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
+		let action = client.action_queue.write().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 		assert_eq!(
@@ -118,7 +122,7 @@ mod test {
 		let contributor_id: ContributorId = 34.into();
 
 		let result = client.assign_contributor(contribution_id.clone(), contributor_id);
-		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
+		let action = client.action_queue.write().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 		assert_eq!(
@@ -135,7 +139,7 @@ mod test {
 		let contribution_id = ContributionOnChainId::from("12");
 
 		let result = client.unassign_contributor(contribution_id.clone());
-		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
+		let action = client.action_queue.write().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 		assert_eq!(Action::UnassignContributor { contribution_id }, action)
@@ -146,7 +150,7 @@ mod test {
 		let contribution_id = ContributionOnChainId::from("12");
 
 		let result = client.validate(contribution_id.clone());
-		let action = client.action_queue_mut().unwrap().pop_n(1).first().unwrap().to_owned();
+		let action = client.action_queue.write().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 		assert_eq!(Action::ValidateContribution { contribution_id }, action)

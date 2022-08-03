@@ -588,6 +588,7 @@ dependencies = [
  "okapi",
  "r2d2",
  "r2d2-diesel",
+ "rand",
  "rocket",
  "rocket_okapi",
  "rstest",

@@ -1,8 +1,15 @@
 use anyhow::{anyhow, Result};
 use log::{info, warn};
+use rand::prelude::random;
 use starknet::{
-	accounts::{Account, Call},
-	core::types::{AddTransactionResult, TransactionStatus},
+	accounts::{single_owner::GetNonceError, Account, AccountCall, Call},
+	core::{
+		types::{
+			AddTransactionResult, BlockId, FieldElement, InvokeFunctionTransactionRequest,
+			TransactionStatus,
+		},
+		utils::get_selector_from_name,
+	},
 	providers::{Provider, SequencerGatewayProvider},
 };
 use std::{sync::Arc, thread, time::Duration};
@@ -29,12 +36,44 @@ impl<A: Account + Sync> ContractAdministrator<A> {
 	) -> Result<AddTransactionResult> {
 		info!("Sending transaction with {} calls", calls.len());
 
-		match self.administrator_account.execute(calls).send().await {
+		let nonce_key: u64 = random();
+		let nonce = self.get_2d_nonce(nonce_key.into()).await.map_err(|e| anyhow!(e))?;
+
+		match self.administrator_account.execute(calls).nonce(nonce).send().await {
 			Ok(transaction_result) => match wait_for_acceptance {
 				true => self.wait_for_transaction_acceptance(transaction_result).await,
 				false => Ok(transaction_result),
 			},
 			Err(error) => Err(anyhow!(error.to_string())),
+		}
+	}
+
+	async fn get_2d_nonce(
+		&self,
+		nonce_key: FieldElement,
+	) -> Result<FieldElement, GetNonceError<<SequencerGatewayProvider as Provider>::Error>> {
+		let call_result = self
+			.sequencer
+			.call_contract(
+				InvokeFunctionTransactionRequest {
+					contract_address: self.administrator_account.address(),
+					entry_point_selector: get_selector_from_name("get_nonce").unwrap(),
+					calldata: vec![nonce_key],
+					signature: vec![],
+					max_fee: FieldElement::ZERO,
+				},
+				BlockId::Latest,
+			)
+			.await
+			.map_err(GetNonceError::ProviderError)?;
+
+		if call_result.result.len() == 1 {
+			Ok(call_result.result[0])
+		} else {
+			Err(GetNonceError::InvalidResponseLength {
+				expected: 1,
+				actual: call_result.result.len(),
+			})
 		}
 	}
 
