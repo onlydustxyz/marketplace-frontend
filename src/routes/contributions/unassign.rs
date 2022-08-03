@@ -34,10 +34,6 @@ mod test {
 	#[error("Oops")]
 	struct Error;
 
-	#[derive(Debug, Error)]
-	#[error("Something happened in the infra")]
-	struct InfraError(#[source] Error);
-
 	#[tokio::test]
 	async fn unassign_should_return_accepted_upon_success() {
 		let mut usecase = MockUnassignContribution::new();
@@ -67,7 +63,7 @@ mod test {
 		let mut usecase = MockUnassignContribution::new();
 
 		usecase.expect_send_unassign_request().returning(|_| {
-			Err(ContributionRepositoryError::Infrastructure(Box::new(InfraError(Error))).into())
+			Err(ContributionRepositoryError::Infrastructure(Box::new(Error)).into())
 		});
 
 		let rocket =
@@ -85,9 +81,9 @@ mod test {
 		let problem = result.err().unwrap();
 		assert_eq!(StatusCode::INTERNAL_SERVER_ERROR, problem.status.unwrap());
 		assert_eq!(
-			"Something happened in the infra",
-			problem.title.as_ref().unwrap()
+			ContributionRepositoryError::Infrastructure(Box::new(Error)).to_string(),
+			problem.title.unwrap()
 		);
-		assert_eq!("Oops", problem.detail.as_ref().unwrap());
+		assert_eq!(Error.to_string(), problem.detail.unwrap());
 	}
 }

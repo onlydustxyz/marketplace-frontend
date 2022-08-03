@@ -14,7 +14,7 @@ pub enum Error {
 	Infrastructure(#[source] Box<dyn std::error::Error>),
 }
 
-pub trait Repository {
+pub trait Repository: Send + Sync {
 	fn store(&self, application: Application) -> Result<(), Error>;
 	fn find(&self, id: &ApplicationId) -> Result<Option<Application>, Error>;
 }

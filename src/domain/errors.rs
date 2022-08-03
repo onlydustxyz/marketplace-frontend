@@ -14,4 +14,6 @@ pub enum Error {
 	ContributorRepository(#[from] ContributorRepositoryError),
 	#[error("Contribution service error")]
 	ContributionService(#[from] ContributionServiceError),
+	#[error("Failed to take control of a lock")]
+	Lock,
 }

@@ -2,6 +2,7 @@ mod routes;
 
 use deathnote_contributions_feeder::{
 	application::*,
+	domain::RandomUuidGenerator,
 	github,
 	infrastructure::{database, starknet},
 	utils::caches::{ContributorCache, RepoCache},
@@ -12,7 +13,7 @@ use log::info;
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
 use slog::{o, Drain, Logger};
-use std::sync::Arc;
+use std::sync::{Arc, RwLock};
 use tokio::{
 	signal,
 	sync::oneshot::{self},
@@ -55,7 +56,9 @@ async fn main() {
 	let starknet = Arc::new(starknet::Client::default());
 	let queue_handler = starknet::spawn(starknet.clone(), database.clone(), shutdown_recv);
 
-	let rocket_handler = inject_app(rocket::build(), database.clone(), starknet)
+	let uuid_generator = Arc::new(RwLock::new(RandomUuidGenerator));
+
+	let rocket_handler = inject_app(rocket::build(), database.clone(), starknet, uuid_generator)
 		.manage(database.clone())
 		.manage(RepoCache::default())
 		.manage(ContributorCache::default())
@@ -97,6 +100,7 @@ fn inject_app(
 	rocket: Rocket<Build>,
 	database: Arc<database::Client>,
 	starknet: Arc<starknet::SingleAdminClient>,
+	uuid_generator: Arc<RwLock<RandomUuidGenerator>>,
 ) -> Rocket<Build> {
 	rocket
 		.manage(GetContributor::new_usecase_boxed(database.clone()))
@@ -108,6 +112,10 @@ fn inject_app(
 		.manage(UnassignContribution::new_usecase_boxed(
 			starknet.clone(),
 			database.clone(),
+		))
+		.manage(ApplyToContribution::new_usecase_boxed(
+			database.clone(),
+			uuid_generator,
 		))
 		.manage(ValidateContribution::new_usecase_boxed(starknet, database))
 }
