@@ -29,22 +29,22 @@ impl ToHttpApiProblem for DomainError {
 							.title(application_repository_error.to_string())
 							.detail(e.to_string()),
 				},
-			DomainError::ContributionRepository(contribution_reopsitory_error) =>
-				match contribution_reopsitory_error {
+			DomainError::ContributionRepository(contribution_repository_error) =>
+				match contribution_repository_error {
 					ContributionRepositoryError::NotFound =>
 						HttpApiProblem::new(StatusCode::BAD_REQUEST)
-							.title(contribution_reopsitory_error.to_string()),
+							.title(contribution_repository_error.to_string()),
 					ContributionRepositoryError::AlreadyExist(e) =>
 						HttpApiProblem::new(StatusCode::BAD_REQUEST)
-							.title(contribution_reopsitory_error.to_string())
+							.title(contribution_repository_error.to_string())
 							.detail(e.to_string()),
 					ContributionRepositoryError::InvalidEntity(e) =>
 						HttpApiProblem::new(StatusCode::BAD_REQUEST)
-							.title(contribution_reopsitory_error.to_string())
+							.title(contribution_repository_error.to_string())
 							.detail(e.to_string()),
 					ContributionRepositoryError::Infrastructure(e) =>
 						HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-							.title(contribution_reopsitory_error.to_string())
+							.title(contribution_repository_error.to_string())
 							.detail(e.to_string()),
 				},
 			DomainError::ContributorRepository(contributor_repository_error) =>

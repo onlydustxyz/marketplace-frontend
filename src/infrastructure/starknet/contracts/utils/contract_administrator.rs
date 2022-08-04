@@ -1,4 +1,5 @@
-use anyhow::{anyhow, Result};
+use super::ContractError;
+use crate::infrastructure::starknet::sequencer;
 use log::{info, warn};
 use rand::prelude::random;
 use starknet::{
@@ -13,8 +14,6 @@ use starknet::{
 	providers::{Provider, SequencerGatewayProvider},
 };
 use std::{sync::Arc, thread, time::Duration};
-
-use crate::infrastructure::starknet::sequencer;
 
 pub struct ContractAdministrator<A: Account + Sync> {
 	administrator_account: Arc<A>,
@@ -33,18 +32,21 @@ impl<A: Account + Sync> ContractAdministrator<A> {
 		&self,
 		calls: &[Call],
 		wait_for_acceptance: bool,
-	) -> Result<AddTransactionResult> {
+	) -> Result<AddTransactionResult, ContractError> {
 		info!("Sending transaction with {} calls", calls.len());
 
 		let nonce_key: u64 = random();
-		let nonce = self.get_2d_nonce(nonce_key.into()).await.map_err(|e| anyhow!(e))?;
+		let nonce = self
+			.get_2d_nonce(nonce_key.into())
+			.await
+			.map_err(|error| ContractError::GetNonce(error.to_string()))?;
 
 		match self.administrator_account.execute(calls).nonce(nonce).send().await {
 			Ok(transaction_result) => match wait_for_acceptance {
 				true => self.wait_for_transaction_acceptance(transaction_result).await,
 				false => Ok(transaction_result),
 			},
-			Err(error) => Err(anyhow!(error.to_string())),
+			Err(error) => Err(ContractError::SendTransaction(error.to_string())),
 		}
 	}
 
@@ -80,7 +82,7 @@ impl<A: Account + Sync> ContractAdministrator<A> {
 	pub async fn wait_for_transaction_acceptance(
 		&self,
 		transaction_result: AddTransactionResult,
-	) -> Result<AddTransactionResult> {
+	) -> Result<AddTransactionResult, ContractError> {
 		info!(
 			"Waiting for transaction 0x{:x} to be accepted",
 			transaction_result.transaction_hash
@@ -112,10 +114,12 @@ impl<A: Account + Sync> ContractAdministrator<A> {
 				},
 				TransactionStatus::AcceptedOnL2 | TransactionStatus::AcceptedOnL1 =>
 					Ok(transaction_result),
-				TransactionStatus::Rejected => Err(anyhow!(format!(
-					"Transaction rejected: {:?}",
-					receipt.transaction_failure_reason
-				))),
+				TransactionStatus::Rejected => Err(ContractError::TransactionReverted(
+					receipt
+						.transaction_failure_reason
+						.map(|reason| format!("{:?}", reason))
+						.unwrap_or_else(|| String::from("Unknown failure")),
+				)),
 			};
 		}
 	}
