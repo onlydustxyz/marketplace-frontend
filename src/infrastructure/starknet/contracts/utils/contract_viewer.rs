@@ -1,4 +1,4 @@
-use anyhow::Result;
+use super::ContractError;
 use starknet::{
 	core::{types::FieldElement, utils::get_selector_from_name},
 	providers::jsonrpc::{
@@ -25,7 +25,7 @@ impl ContractViewer {
 		&self,
 		function_name: &str,
 		calldata: Vec<FieldElement>,
-	) -> Result<Vec<FieldElement>> {
+	) -> Result<Vec<FieldElement>, ContractError> {
 		self.client
 			.call(
 				&FunctionCall {
@@ -36,7 +36,7 @@ impl ContractViewer {
 				&BlockHashOrTag::Tag(BlockTag::Latest),
 			)
 			.await
-			.map_err(anyhow::Error::msg)
+			.map_err(|e| ContractError::Call(e.to_string()))
 	}
 }
 
