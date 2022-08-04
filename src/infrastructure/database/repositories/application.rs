@@ -1,6 +1,7 @@
 use crate::diesel::QueryDsl;
 use diesel::RunQueryDsl;
 use mapinto::ResultMapErrInto;
+use uuid::Uuid;
 
 use crate::{
 	domain::*,
@@ -42,7 +43,7 @@ impl From<Application> for models::NewApplication {
 	fn from(application: crate::domain::Application) -> Self {
 		Self {
 			id: *application.id(),
-			contribution_id: *application.contribution_id(),
+			contribution_id: Uuid::from(*application.contribution_id()),
 			contributor_id: application.contributor_id().to_string(),
 		}
 	}
@@ -52,7 +53,7 @@ impl From<models::Application> for Application {
 	fn from(application: models::Application) -> Self {
 		Self::new(
 			application.id,
-			application.contribution_id,
+			application.contribution_id.into(),
 			ContributorId::from(application.contributor_id),
 		)
 	}

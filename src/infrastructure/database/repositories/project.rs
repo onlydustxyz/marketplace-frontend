@@ -84,7 +84,7 @@ impl From<Project> for models::NewProject {
 impl From<models::Contribution> for Contribution {
 	fn from(contribution: models::Contribution) -> Self {
 		Self {
-			id: contribution.id,
+			id: contribution.id.into(),
 			onchain_id: contribution.onchain_id,
 			contributor_id: {
 				if contribution.contributor_id.is_empty() {

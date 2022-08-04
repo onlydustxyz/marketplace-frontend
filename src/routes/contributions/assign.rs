@@ -2,15 +2,15 @@ use deathnote_contributions_feeder::{
 	application::AssignContributionUsecase, domain::ContributionId,
 };
 use http_api_problem::HttpApiProblem;
-use log::info;
 use rocket::{
 	response::status,
-	serde::{json::Json, uuid::Uuid, Deserialize},
+	serde::{json::Json, Deserialize},
 	State,
 };
 use rocket_okapi::{openapi, JsonSchema};
+use uuid::Uuid;
 
-use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem};
+use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem, uuid::UuidParam};
 
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]
@@ -26,18 +26,15 @@ pub struct AssignContributorDto {
 )]
 pub async fn assign_contributor(
 	_api_key: ApiKey,
-	contribution_id: Uuid,
+	contribution_id: UuidParam,
 	body: Json<AssignContributorDto>,
 	usecase: &State<Box<dyn AssignContributionUsecase>>,
 ) -> Result<status::Accepted<()>, HttpApiProblem> {
-	let body = body.into_inner();
-	info!("contributor_id={}", body.contributor_id);
+	let contributor_id = body.into_inner().contributor_id.into();
+	let contribution_id: ContributionId = Uuid::from(contribution_id).into();
 
 	usecase
-		.send_assign_request(
-			ContributionId::from_u128_le(contribution_id.to_u128_le()),
-			body.contributor_id.into(),
-		)
+		.send_assign_request(contribution_id, contributor_id)
 		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(status::Accepted(None))
@@ -62,7 +59,7 @@ mod test {
 		usecase
 			.expect_send_assign_request()
 			.with(
-				eq(ContributionId::from_u128(12)),
+				eq(ContributionId::from(Uuid::from_u128(12))),
 				eq(ContributorId::from(34)),
 			)
 			.returning(|_, _| Ok(()));
@@ -72,7 +69,7 @@ mod test {
 
 		let result = assign_contributor(
 			ApiKey::default(),
-			Uuid::from_u128(12),
+			Uuid::from_u128(12).into(),
 			AssignContributorDto { contributor_id: 34 }.into(),
 			State::get(&rocket).unwrap(),
 		)
@@ -96,7 +93,7 @@ mod test {
 
 		let result = assign_contributor(
 			ApiKey::default(),
-			Uuid::from_u128(12),
+			Uuid::from_u128(12).into(),
 			AssignContributorDto { contributor_id: 34 }.into(),
 			State::get(&rocket).unwrap(),
 		)

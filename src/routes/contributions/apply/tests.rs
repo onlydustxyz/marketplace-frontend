@@ -50,7 +50,7 @@ impl ApplyToContributionUsecase for ApplyToContribution {
 }
 
 fn rocket() -> rocket::Rocket<Build> {
-	let contribution_id_1: ContributionId = Uuid::from_str(CONTRIBUTION_ID_1).unwrap();
+	let contribution_id_1: ContributionId = Uuid::from_str(CONTRIBUTION_ID_1).unwrap().into();
 	let mut database = HashMap::new();
 	database.insert(contribution_id_1, HashMap::new());
 
@@ -123,13 +123,13 @@ fn should_return_400_if_invalid_parameters() {
 		http_api_problem_response.title,
 		Some(
 			ApplicationRepositoryError::InvalidEntity(Box::new(ContributionNotFound(
-				contribution_uuid
+				contribution_uuid.into()
 			)))
 			.to_string()
 		)
 	);
 	assert_eq!(
 		http_api_problem_response.detail,
-		Some(ContributionNotFound(contribution_uuid).to_string())
+		Some(ContributionNotFound(contribution_uuid.into()).to_string())
 	);
 }

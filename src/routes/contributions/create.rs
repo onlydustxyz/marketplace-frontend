@@ -47,7 +47,7 @@ pub async fn create_contribution(
 	let metadata = github::extract_metadata(github_issue.clone());
 
 	let contribution = Contribution {
-		id: Uuid::new_v4(),
+		id: Uuid::new_v4().into(),
 		onchain_id: (body.project_id * 1_000_000 + body.github_issue_number).to_string(),
 		project_id: body.project_id.to_string(),
 		contributor_id: None,

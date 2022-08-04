@@ -145,7 +145,7 @@ mod test {
 		let mut contribution_repository = MockContributionRepository::new();
 
 		let contribution = Contribution {
-			id: Uuid::from_u128(12),
+			id: Uuid::from_u128(12).into(),
 			onchain_id: String::from("0"),
 			project_id: String::from("34"),
 			contributor_id: None,

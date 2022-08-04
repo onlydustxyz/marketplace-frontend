@@ -84,7 +84,7 @@ mod test {
 	#[rstest]
 	fn create_contribution(client: StarknetClient) {
 		let contribution = Contribution {
-			id: Uuid::from_u128(12),
+			id: Uuid::from_u128(12).into(),
 			onchain_id: String::from("12"),
 			project_id: String::from("34"),
 			contributor_id: None,

@@ -1,5 +1,8 @@
 use starknet::core::types::FieldElement;
-use std::{fmt, str::FromStr};
+use std::{
+	fmt::{self, Display},
+	str::FromStr,
+};
 use thiserror::Error;
 use url::Url;
 use uuid::Uuid;
@@ -17,7 +20,27 @@ pub enum Status {
 }
 
 pub type OnChainId = String;
-pub type Id = Uuid;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct Id(Uuid);
+
+impl From<Uuid> for Id {
+	fn from(uuid: Uuid) -> Self {
+		Self(uuid)
+	}
+}
+
+impl From<Id> for Uuid {
+	fn from(id: Id) -> Self {
+		id.0
+	}
+}
+
+impl Display for Id {
+	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+		Display::fmt(&self.0, f)
+	}
+}
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Contribution {
