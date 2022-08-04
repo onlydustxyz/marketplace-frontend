@@ -37,6 +37,22 @@ jobs:
       - name: Spawn starknet-devnet
         run: starknet-devnet --seed 0 &
 
+      - name: Build
+        run: cargo build
+
+      - name: Create environment file
+        run: cp .env.example .env
+
+      - name: Start the backend
+        run: cargo run &
+        env:
+          RUST_LOG: debug
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Wait a bit for the back-end to warm up
+        run: sleep 5
+
       - name: Run end-to-end tests
         run: cargo run --bin e2e_tests
-
+        env:
+          RUST_LOG: debug
