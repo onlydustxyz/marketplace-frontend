@@ -46,7 +46,10 @@ impl<A: Account + Sync> ContractAdministrator<A> {
 				true => self.wait_for_transaction_acceptance(transaction_result).await,
 				false => Ok(transaction_result),
 			},
-			Err(error) => Err(ContractError::SendTransaction(error.to_string())),
+			Err(error) => {
+				warn!("{}", error.to_string());
+				Err(ContractError::SendTransaction(error.to_string()))
+			},
 		}
 	}
 

@@ -66,6 +66,7 @@ slog-envlogger = "2.2.0"
 slog-json = "2.6.1"
 slog-scope = "4.4.0"
 slog-stdlog = "4.1.1"
+slog-term = "2.9.0"
 
 # Errors
 anyhow = "1.0.57"
