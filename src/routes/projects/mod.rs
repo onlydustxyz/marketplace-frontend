@@ -1,4 +1,4 @@
-mod dto;
+pub mod dto;
 
 use deathnote_contributions_feeder::{
 	domain::*,

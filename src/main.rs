@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 mod routes;
 
 use deathnote_contributions_feeder::{
