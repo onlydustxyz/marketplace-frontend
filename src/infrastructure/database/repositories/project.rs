@@ -90,7 +90,7 @@ impl From<models::Contribution> for Contribution {
 				if contribution.contributor_id.is_empty() {
 					None
 				} else {
-					Some(contribution.contributor_id.into())
+					Some(contribution.contributor_id.as_str().into())
 				}
 			},
 			project_id: contribution.project_id,

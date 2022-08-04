@@ -1,5 +1,9 @@
 use std::fmt::Display;
 
+use schemars::{
+	schema::{InstanceType, SchemaObject, StringValidation},
+	JsonSchema,
+};
 use serde::{Deserialize, Serialize};
 
 use crypto_bigint::U256;
@@ -15,9 +19,9 @@ pub struct Contributor {
 	pub discord_handle: Option<String>,
 }
 
-impl From<String> for Id {
-	fn from(s: String) -> Self {
-		Self(U256::from_be_hex(&s))
+impl From<&str> for Id {
+	fn from(s: &str) -> Self {
+		Self(U256::from_be_hex(s))
 	}
 }
 
@@ -36,5 +40,25 @@ impl Display for Id {
 impl From<u128> for Id {
 	fn from(id: u128) -> Self {
 		Self(U256::from_u128(id))
+	}
+}
+
+impl JsonSchema for Id {
+	fn schema_name() -> String {
+		"ContributorId".to_string()
+	}
+
+	fn json_schema(_: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+		let schema = SchemaObject {
+			instance_type: Some(InstanceType::String.into()),
+			string: Some(Box::new(StringValidation {
+				min_length: Some(3),
+				max_length: Some(66),
+				pattern: Some("\\b0x[0-9a-f]+\\b".to_string()),
+			})),
+			..Default::default()
+		};
+
+		schema.into()
 	}
 }

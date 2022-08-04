@@ -1,3 +1,5 @@
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 use starknet::core::types::FieldElement;
 use std::{
 	fmt::{self, Display},
@@ -21,7 +23,7 @@ pub enum Status {
 
 pub type OnChainId = String;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema)]
 pub struct Id(Uuid);
 
 impl From<Uuid> for Id {

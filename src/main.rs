@@ -2,7 +2,7 @@ mod routes;
 
 use deathnote_contributions_feeder::{
 	application::*,
-	domain::RandomUuidGenerator,
+	domain::{ApplicationRepository, RandomUuidGenerator},
 	github,
 	infrastructure::{database, starknet},
 	utils::caches::{ContributorCache, RepoCache},
@@ -82,6 +82,7 @@ async fn main() {
 				routes::unassign_contributor,
 				routes::contributors::find_by_id,
 				routes::apply_to_contribution,
+				routes::list_applications,
 			],
 		)
 		.mount("/swagger", make_swagger_ui(&routes::get_docs()))
@@ -117,5 +118,9 @@ fn inject_app(
 			database.clone(),
 			uuid_generator,
 		))
-		.manage(ValidateContribution::new_usecase_boxed(starknet, database))
+		.manage(ValidateContribution::new_usecase_boxed(
+			starknet,
+			database.clone(),
+		))
+		.manage(database as Arc<dyn ApplicationRepository>)
 }

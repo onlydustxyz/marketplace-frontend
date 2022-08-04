@@ -35,7 +35,7 @@ mod test {
 		);
 
 		let contributor_id: ContributorId =
-			String::from("000000000000000000000000000001c80000000000000000000000000000007b").into();
+			"000000000000000000000000000001c80000000000000000000000000000007b".into();
 
 		assert_eq!(contributor_id, contributor_id_felt.into());
 		assert_eq!(contributor_id_felt, contributor_id.into());
