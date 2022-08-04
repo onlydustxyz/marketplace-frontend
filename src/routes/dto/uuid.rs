@@ -21,3 +21,9 @@ impl From<UuidParam> for Uuid {
 		wrapper.0
 	}
 }
+
+impl From<Uuid> for UuidParam {
+	fn from(uuid: Uuid) -> Self {
+		Self(uuid)
+	}
+}

@@ -1,22 +1,22 @@
-use deathnote_contributions_feeder::{
-	application::UnassignContributionUsecase, domain::ContributionId,
-};
+use deathnote_contributions_feeder::application::UnassignContributionUsecase;
 use http_api_problem::HttpApiProblem;
-use rocket::{response::status, serde::uuid::Uuid, State};
+use rocket::{response::status, State};
 use rocket_okapi::openapi;
+use uuid::Uuid;
 
-use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem};
+use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem, uuid::UuidParam};
 
 #[openapi(tag = "Contributions")]
 #[delete("/contributions/<contribution_id>/contributor")]
 pub async fn unassign_contributor(
 	_api_key: ApiKey,
 
-	contribution_id: Uuid,
+	contribution_id: UuidParam,
 	usecase: &State<Box<dyn UnassignContributionUsecase>>,
 ) -> Result<status::Accepted<()>, HttpApiProblem> {
+	let contribution_id = Uuid::from(contribution_id).into();
 	usecase
-		.send_unassign_request(ContributionId::from_u128_le(contribution_id.to_u128_le()))
+		.send_unassign_request(contribution_id)
 		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(status::Accepted(None))
@@ -40,7 +40,7 @@ mod test {
 
 		usecase
 			.expect_send_unassign_request()
-			.with(eq(ContributionId::from_u128(12)))
+			.with(eq(ContributionId::from(Uuid::from_u128(12))))
 			.returning(|_| Ok(()));
 
 		let rocket =
@@ -48,7 +48,7 @@ mod test {
 
 		let result = unassign_contributor(
 			ApiKey::default(),
-			Uuid::from_u128(12),
+			Uuid::from_u128(12).into(),
 			State::get(&rocket).unwrap(),
 		)
 		.await;
@@ -71,7 +71,7 @@ mod test {
 
 		let result = unassign_contributor(
 			ApiKey::default(),
-			Uuid::from_u128(12),
+			Uuid::from_u128(12).into(),
 			State::get(&rocket).unwrap(),
 		)
 		.await;

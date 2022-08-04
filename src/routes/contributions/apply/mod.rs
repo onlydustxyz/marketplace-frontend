@@ -10,6 +10,7 @@ use rocket::{response::status, serde::json::Json, State};
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
 use serde::Deserialize;
+use uuid::Uuid;
 
 use crate::routes::{
 	contributor_id::ContributorIdDto, to_http_api_problem::ToHttpApiProblem, uuid::UuidParam,
@@ -33,7 +34,7 @@ pub async fn apply_to_contribution(
 	usecase: &State<Box<dyn ApplyToContributionUsecase>>,
 ) -> Result<status::Created<()>, HttpApiProblem> {
 	let contributor_id: ContributorId = body.into_inner().contributor_id.into();
-	let contribution_id: ContributionId = contribution_id.into();
+	let contribution_id: ContributionId = Uuid::from(contribution_id).into();
 
 	usecase
 		.apply_to_contribution(contribution_id, contributor_id)

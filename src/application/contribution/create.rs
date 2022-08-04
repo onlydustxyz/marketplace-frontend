@@ -45,7 +45,7 @@ mod test {
 		let mut contribution_service = MockContributionService::new();
 
 		let contribution = Contribution {
-			id: Uuid::from_u128(12),
+			id: Uuid::from_u128(12).into(),
 			onchain_id: String::from("12"),
 			project_id: String::from("34"),
 			contributor_id: None,
@@ -80,7 +80,7 @@ mod test {
 		let mut contribution_service = MockContributionService::new();
 
 		let contribution = Contribution {
-			id: Uuid::from_u128(12),
+			id: Uuid::from_u128(12).into(),
 			onchain_id: String::from("12"),
 			project_id: String::from("34"),
 			contributor_id: None,

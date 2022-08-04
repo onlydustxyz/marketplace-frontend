@@ -3,6 +3,7 @@ use crate::{
 	infrastructure::database::{models, schema, schema::contributions, Client, DatabaseError},
 };
 use diesel::prelude::*;
+use uuid::Uuid;
 
 impl ContributionRepository for Client {
 	fn find_by_id(
@@ -12,6 +13,8 @@ impl ContributionRepository for Client {
 		let connection = self
 			.connection()
 			.map_err(|e| ContributionRepositoryError::Infrastructure(e.into()))?;
+
+		let contribution_id: Uuid = contribution_id.into();
 
 		match contributions::table
 			.find(contribution_id)
@@ -90,7 +93,7 @@ impl ContributionRepository for Client {
 impl From<(Contribution, String)> for models::NewContribution {
 	fn from((contribution, transaction_hash): (Contribution, String)) -> Self {
 		Self {
-			id: contribution.id,
+			id: contribution.id.into(),
 			onchain_id: contribution.onchain_id,
 			project_id: contribution.project_id,
 			status: contribution.status.to_string(),

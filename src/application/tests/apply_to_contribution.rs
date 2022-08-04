@@ -12,7 +12,7 @@ fn store_and_find_application() {
 	let application_repository = Arc::new(InMemoryApplicationRepository::new());
 
 	let contributor_id = ContributorId::from(U256::ZERO);
-	let contribution_id = Uuid::new_v4();
+	let contribution_id = Uuid::new_v4().into();
 
 	let usecase = ApplyToContribution::new_usecase_boxed(
 		application_repository.clone(),

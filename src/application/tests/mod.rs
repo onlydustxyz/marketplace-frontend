@@ -15,7 +15,7 @@ impl UuidGenerator for SerialUuidGenerator {
 	}
 }
 
-struct InMemoryApplicationRepository(RwLock<HashMap<ContributionId, Application>>);
+struct InMemoryApplicationRepository(RwLock<HashMap<ApplicationId, Application>>);
 
 impl InMemoryApplicationRepository {
 	pub fn new() -> Self {

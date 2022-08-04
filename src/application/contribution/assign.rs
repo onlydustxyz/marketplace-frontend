@@ -56,6 +56,7 @@ mod test {
 	use rstest::*;
 	use starknet::core::types::FieldElement;
 	use thiserror::Error;
+	use uuid::Uuid;
 
 	#[derive(Debug, Error)]
 	#[error("Oops")]
@@ -76,12 +77,13 @@ mod test {
 		mut contribution_service: MockContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
+		let contribution_id = Uuid::from_u128(12).into();
 		contribution_repository
 			.expect_find_by_id()
-			.with(eq(ContributionId::from_u128(12)))
+			.with(eq(contribution_id))
 			.returning(|_| {
 				Ok(Some(Contribution {
-					id: ContributionId::from_u128(12),
+					id: Uuid::from_u128(12).into(),
 					onchain_id: String::from("22"),
 					project_id: String::from("34"),
 					contributor_id: None,
@@ -111,8 +113,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result =
-			usecase.send_assign_request(ContributionId::from_u128(12), ContributorId::from(34));
+		let result = usecase.send_assign_request(contribution_id, ContributorId::from(34));
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 	}
 
@@ -131,7 +132,7 @@ mod test {
 		);
 
 		let result =
-			usecase.send_assign_request(ContributionId::from_u128(12), ContributorId::from(34));
+			usecase.send_assign_request(Uuid::from_u128(12).into(), ContributorId::from(34));
 
 		assert!(result.is_err());
 		assert_eq!(
@@ -153,7 +154,7 @@ mod test {
 		);
 
 		let result =
-			usecase.send_assign_request(ContributionId::from_u128(12), ContributorId::from(34));
+			usecase.send_assign_request(Uuid::from_u128(12).into(), ContributorId::from(34));
 
 		assert!(result.is_err());
 		assert_eq!(
@@ -167,12 +168,13 @@ mod test {
 		mut contribution_service: MockContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
+		let contribution_id = Uuid::from_u128(12).into();
 		contribution_repository
 			.expect_find_by_id()
-			.with(eq(ContributionId::from_u128(12)))
+			.with(eq(contribution_id))
 			.returning(|_| {
 				Ok(Some(Contribution {
-					id: ContributionId::from_u128(12),
+					id: Uuid::from_u128(12).into(),
 					onchain_id: String::from("22"),
 					project_id: String::from("34"),
 					contributor_id: None,
@@ -202,8 +204,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result =
-			usecase.send_assign_request(ContributionId::from_u128(12), ContributorId::from(34));
+		let result = usecase.send_assign_request(contribution_id, ContributorId::from(34));
 
 		assert!(result.is_err());
 		assert_eq!(
