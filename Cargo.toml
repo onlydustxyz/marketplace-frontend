@@ -41,6 +41,7 @@ octocrab = "0.16.0"
 
 # Http client
 url = "2.2.2"
+reqwest = "0.11.11"
 
 # Http Server
 http-api-problem = { version = "0.53.0", features = [
@@ -86,7 +87,6 @@ rand = "0.8.5"
 # Unit testing
 mockall = "0.11.2"
 rstest = "0.15.0"
-async-std = { version = "1.12.0", features = ["attributes"] }
 assert-json-diff = "2.0.2"
 
 [dev-dependencies]
