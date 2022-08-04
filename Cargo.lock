@@ -603,6 +603,7 @@ dependencies = [
  "slog-json",
  "slog-scope",
  "slog-stdlog",
+ "slog-term",
  "starknet",
  "stretto",
  "thiserror",
