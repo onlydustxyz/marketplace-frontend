@@ -29,7 +29,7 @@ pub async fn create_contribution(
 	usecase: &State<Box<dyn CreateContributionUsecase>>,
 ) -> Result<Status, HttpApiProblem> {
 	let body = body.into_inner();
-	let validator = FieldElement::from_str(body.validator.as_string()).map_err(|e| {
+	let validator = FieldElement::from_str(body.validator.as_str()).map_err(|e| {
 		HttpApiProblem::new(StatusCode::BAD_REQUEST)
 			.title("Invalid validator address")
 			.detail(e.to_string())

@@ -31,7 +31,7 @@ mod test {
 	#[rstest]
 	fn can_build_error_from_poison() {
 		let poison = PoisonError::new(String::from("message"));
-		let message = format!("Mutex lock cannot be acquired: {}", poison.to_string());
+		let message = format!("Mutex lock cannot be acquired: {}", poison);
 		let error = Error::from(poison);
 
 		assert_eq!(message, error.to_string());

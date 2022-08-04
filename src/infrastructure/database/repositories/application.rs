@@ -1,5 +1,5 @@
-use crate::diesel::QueryDsl;
-use diesel::RunQueryDsl;
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
+use itertools::Itertools;
 use mapinto::ResultMapErrInto;
 use uuid::Uuid;
 
@@ -37,6 +37,32 @@ impl ApplicationRepository for Client {
 			res.map(|a| Some(a.into())).map_err_into()
 		}
 	}
+
+	fn list_by_contribution(
+		&self,
+		contribution_id: &ContributionId,
+		contributor_id: &Option<ContributorId>,
+	) -> Result<Vec<Application>, ApplicationRepositoryError> {
+		let contribution_id = Uuid::from(*contribution_id);
+
+		let connection = self
+			.connection()
+			.map_err(|e| ApplicationRepositoryError::Infrastructure(Box::new(e)))?;
+
+		let mut query = applications::dsl::applications
+			.filter(applications::contribution_id.eq(contribution_id))
+			.into_boxed();
+
+		if let Some(contributor_id) = contributor_id {
+			query = query.filter(applications::contributor_id.eq(contributor_id.to_string()))
+		}
+
+		let applications = query
+			.load::<models::Application>(&*connection)
+			.map_err(ApplicationRepositoryError::from)?;
+
+		Ok(applications.into_iter().map_into().collect())
+	}
 }
 
 impl From<Application> for models::NewApplication {
@@ -54,7 +80,7 @@ impl From<models::Application> for Application {
 		Self::new(
 			application.id,
 			application.contribution_id.into(),
-			ContributorId::from(application.contributor_id),
+			ContributorId::from(application.contributor_id.as_str()),
 		)
 	}
 }

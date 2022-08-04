@@ -1,9 +1,11 @@
 use super::{ContributionId, ContributorId};
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 pub type Id = Uuid;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 pub struct Application {
 	id: Id,
 	contribution_id: ContributionId,
