@@ -2,7 +2,7 @@ mod contributions;
 pub mod cors;
 mod dto;
 pub mod health;
-mod projects;
+pub mod projects;
 
 pub use contributions::*;
 pub use projects::*;
