@@ -37,9 +37,9 @@ Copy the `.env.example` file and modify the values according to your setup.
 ### 2. Start the docker container
 
 Make sure `docker-compose` is installed (see [Installation instructions](https://docs.docker.com/compose/install/)).
-
+Note: specify the `BASE_TAG` to be used depending on your CPU (`latest` or `latest-arm`)
 ```
-docker-compose -f scripts/docker/dev/docker-compose.yml up -d
+BASE_TAG=latest-arm docker-compose -f ./scripts/docker/dev/docker-compose.yml up --build -d
 ```
 
 ### 3. Setup the database
@@ -52,34 +52,6 @@ Then, use `Diesel` to initialize the data model and the database:
 source .env
 diesel setup
 diesel migration run
-```
-
-### 4. Deploy smart contracts on devnet
-
-1. Install and run [starknet-devnet]()
-```bash
-pip install starknet-devnet
-starknet-devnet --seed 0
-```
-
-Then add the first account as `local_admin` in your `~/.starknet_accounts/starknet_open_zeppelin_accounts.json` file.
-
-2. Deploy the smart contracts
-```bash
-cd marketplace-smart-contracts
-./scripts/deploy.sh -p local -a local_admin
-```
-
-3. Replace the values of the deployed smart contracts in your `.env` file
-```bash
-cd marketplace-backend
-sed -e '/PROFILE_ADDRESS=/d' -e '/REGISTRY_ADDRESS=/d' -e '/CONTRIBUTIONS_ADDRESS=/d' .env | tee .env > /dev/null
-cat ../marketplace-smart-contracts/build/deployed_contracts_local.txt >> .env
-```
-
-4. Run your back-end
-```bash
-cargo run
 ```
 
 ## 📦 Installation
@@ -105,6 +77,12 @@ curl -d '{"owner":"onlydustxyz", "name":"starkonquest"}' -H "Content-Type: appli
 
 ```
 cargo test
+```
+
+To run the end-to-end tests, make sure the docker is up and running and your back-end is up as well.
+Then run:
+```sh
+cargo run --bin e2e_tests
 ```
 
 ## 🫶 Contributing

@@ -20,13 +20,12 @@ services:
     ports:
       - "5060:80"
   starknet-devnet:
-    build:
-      context: .
-      dockerfile: ./starknet-devnet.Dockerfile
-      args:
-        BASE_TAG: latest
+    image: shardlabs/starknet-devnet:${BASE_TAG}
+    command: --seed 0 --load-path /tmp/dump.pkl
     ports:
       - "5050:5050"
+    volumes:
+      - .:/tmp
 volumes:
   db:
     driver: local
