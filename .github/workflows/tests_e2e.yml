@@ -24,7 +24,7 @@ jobs:
           override: true
 
       - name: Run docker compose
-        run: docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
+        run: BASE_TAG=latest docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
 
       - name: Build
         run: cargo build

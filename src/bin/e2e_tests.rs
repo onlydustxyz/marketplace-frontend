@@ -1,79 +1,42 @@
-use assert_json_diff::assert_json_include;
-use dotenv::dotenv;
-use reqwest::{Response, StatusCode};
-use serde_json::json;
-use std::fs::read_to_string;
+use reqwest::StatusCode;
+use std::{fs::read_to_string, thread, time::Duration};
 
-#[cfg(debug_assertions)]
-const BACKEND_BASE_URI: &str = "http://localhost:8000";
+mod projects;
+use projects::*;
 
-#[cfg(not(debug_assertions))]
-const BACKEND_BASE_URI: &str = "http://localhost:80";
+mod utils;
+use utils::*;
+
+mod contribution;
+use contribution::*;
 
 #[tokio::main]
 async fn main() {
 	add_all_projects().await;
 
-	compare_jsons(
-		list_all_projects().await,
-		read_to_string("src/data/projects.json").unwrap(),
-	);
-}
+	const STARKONQUEST_ID: u32 = 481932781;
+	add_contribution(51, STARKONQUEST_ID, 0, "0x123").await;
 
-async fn post(url: String, body: serde_json::Value) -> Response {
-	let client = reqwest::Client::new();
-	let response = client
-		.post(url)
-		.header("content-type", "application/json")
-		.header("Api-Key", api_key())
-		.body(body.to_string())
-		.send()
-		.await;
+	for _ in 0..10 {
+		let handle = tokio::spawn(async move {
+			compare_jsons(
+				list_all_projects().await,
+				read_to_string("src/data/projects.json").unwrap(),
+			);
+		});
 
-	assert!(response.is_ok(), "{}", response.err().unwrap());
-	response.unwrap()
-}
+		match tokio::join!(handle).0 {
+			Ok(_) => return,
+			Err(_) => {
+				thread::sleep(Duration::from_secs(3));
+			},
+		}
+	}
 
-fn api_key() -> String {
-	dotenv().ok();
-	std::env::var("API_KEY").unwrap_or_default()
-}
-
-async fn get(url: String) -> Response {
-	let response = reqwest::get(url).await;
-
-	assert!(response.is_ok(), "{}", response.err().unwrap());
-	response.unwrap()
-}
-
-async fn add_project(owner: &str, name: &str) {
-	let response = post(
-		format!("{BACKEND_BASE_URI}/projects"),
-		json!({
-			"owner": owner,
-			"name": name
-		}),
-	)
-	.await;
-
-	assert_eq!(StatusCode::ACCEPTED, response.status());
-}
-
-async fn list_all_projects() -> String {
-	let response = get(format!("{BACKEND_BASE_URI}/projects")).await;
-
-	assert_eq!(StatusCode::OK, response.status());
-	response.text().await.unwrap()
+	assert!(false, "Timeout waiting for transactions to be executed");
 }
 
 async fn add_all_projects() {
 	add_project("onlydustxyz", "starkonquest").await;
 	add_project("onlydustxyz", "starklings").await;
-}
-
-fn compare_jsons(actual: String, expected: String) {
-	let actual: serde_json::Value = serde_json::from_str(&actual).unwrap();
-	let expected: serde_json::Value = serde_json::from_str(&expected).unwrap();
-
-	assert_json_include!(actual: actual, expected: expected);
 }

@@ -2,7 +2,14 @@
     {
         "id": "481932781",
         "title": "starkonquest",
-        "contributions": []
+        "contributions": [
+            {
+                "onchain_id": "481932781000051",
+                "github_link": "https://github.com/onlydustxyz/starkonquest/issues/51",
+                "status": "OPEN",
+                "gate": 0
+            }
+        ]
     },
     {
         "id": "480776993",
