@@ -89,5 +89,8 @@ mockall = "0.11.2"
 rstest = "0.15.0"
 assert-json-diff = "2.0.2"
 
+# Local dependecies
+uuid_wrapper = { path = "./uuid_wrapper" }
+
 [dev-dependencies]
 serde_test = "1.0.140"

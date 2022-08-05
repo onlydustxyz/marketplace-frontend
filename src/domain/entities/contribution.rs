@@ -1,13 +1,11 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use starknet::core::types::FieldElement;
-use std::{
-	fmt::{self, Display},
-	str::FromStr,
-};
+use std::str::FromStr;
 use thiserror::Error;
 use url::Url;
 use uuid::Uuid;
+use uuid_wrapper::UuidWrapper;
 
 use super::{ContributorId, ProjectId};
 
@@ -23,26 +21,10 @@ pub enum Status {
 
 pub type OnChainId = String;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema)]
+#[derive(
+	Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema, UuidWrapper,
+)]
 pub struct Id(Uuid);
-
-impl From<Uuid> for Id {
-	fn from(uuid: Uuid) -> Self {
-		Self(uuid)
-	}
-}
-
-impl From<Id> for Uuid {
-	fn from(id: Id) -> Self {
-		id.0
-	}
-}
-
-impl Display for Id {
-	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		Display::fmt(&self.0, f)
-	}
-}
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Contribution {
@@ -68,8 +50,8 @@ pub struct Metadata {
 	pub r#type: Option<String>,
 }
 
-impl fmt::Display for Status {
-	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+impl std::fmt::Display for Status {
+	fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
 		match self {
 			Status::Open => write!(f, "OPEN"),
 			Status::Assigned => write!(f, "ASSIGNED"),

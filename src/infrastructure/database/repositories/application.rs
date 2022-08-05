@@ -27,8 +27,9 @@ impl ApplicationRepository for Client {
 		let connection = self
 			.connection()
 			.map_err(|e| ApplicationRepositoryError::Infrastructure(Box::new(e)))?;
+
 		let res = applications::dsl::applications
-			.find(id)
+			.find(id.as_uuid())
 			.first::<models::Application>(&*connection);
 
 		if let Err(diesel::result::Error::NotFound) = res {
@@ -68,7 +69,7 @@ impl ApplicationRepository for Client {
 impl From<Application> for models::NewApplication {
 	fn from(application: crate::domain::Application) -> Self {
 		Self {
-			id: *application.id(),
+			id: Uuid::from(*application.id()),
 			contribution_id: Uuid::from(*application.contribution_id()),
 			contributor_id: application.contributor_id().to_string(),
 		}
@@ -78,7 +79,7 @@ impl From<Application> for models::NewApplication {
 impl From<models::Application> for Application {
 	fn from(application: models::Application) -> Self {
 		Self::new(
-			application.id,
+			application.id.into(),
 			application.contribution_id.into(),
 			ContributorId::from(application.contributor_id.as_str()),
 		)

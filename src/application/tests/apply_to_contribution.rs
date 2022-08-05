@@ -21,7 +21,7 @@ fn store_and_find_application() {
 
 	assert!(usecase.apply_to_contribution(contribution_id, contributor_id,).is_ok());
 
-	let expected_id = Uuid::from_u128(0);
+	let expected_id: ApplicationId = Uuid::from_u128(0).into();
 
 	assert_eq!(
 		application_repository.find(&expected_id).unwrap(),

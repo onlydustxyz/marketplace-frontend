@@ -2,8 +2,12 @@ use super::{ContributionId, ContributorId};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
+use uuid_wrapper::UuidWrapper;
 
-pub type Id = Uuid;
+#[derive(
+	Debug, JsonSchema, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Hash, UuidWrapper,
+)]
+pub struct Id(Uuid);
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 pub struct Application {

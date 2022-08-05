@@ -4,8 +4,9 @@ use rocket::request::FromParam;
 use schemars::JsonSchema;
 use serde::Deserialize;
 use uuid::Uuid;
+use uuid_wrapper::UuidWrapper;
 
-#[derive(Debug, Clone, Copy, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, Copy, Deserialize, JsonSchema, UuidWrapper)]
 pub struct UuidParam(Uuid);
 
 impl<'a> FromParam<'a> for UuidParam {
@@ -13,17 +14,5 @@ impl<'a> FromParam<'a> for UuidParam {
 
 	fn from_param(param: &'a str) -> Result<Self, Self::Error> {
 		Uuid::from_str(param).map(UuidParam)
-	}
-}
-
-impl From<UuidParam> for Uuid {
-	fn from(wrapper: UuidParam) -> Self {
-		wrapper.0
-	}
-}
-
-impl From<Uuid> for UuidParam {
-	fn from(uuid: Uuid) -> Self {
-		Self(uuid)
 	}
 }

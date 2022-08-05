@@ -67,8 +67,16 @@ impl ApplicationRepository for FilledDatabase {
 		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
 	> {
 		Ok(vec![
-			Application::new(Uuid::from_u128(0), Uuid::from_u128(0).into(), 0u128.into()),
-			Application::new(Uuid::from_u128(1), Uuid::from_u128(0).into(), 1u128.into()),
+			Application::new(
+				Uuid::from_u128(0).into(),
+				Uuid::from_u128(0).into(),
+				0u128.into(),
+			),
+			Application::new(
+				Uuid::from_u128(1).into(),
+				Uuid::from_u128(0).into(),
+				1u128.into(),
+			),
 		])
 	}
 }
@@ -106,8 +114,16 @@ fn ok_multiple() {
 	assert_eq!(response.status(), Status::Ok);
 	assert_eq!(
 		vec![
-			Application::new(Uuid::from_u128(0), Uuid::from_u128(0).into(), 0u128.into()),
-			Application::new(Uuid::from_u128(1), Uuid::from_u128(0).into(), 1u128.into()),
+			Application::new(
+				Uuid::from_u128(0).into(),
+				Uuid::from_u128(0).into(),
+				0u128.into()
+			),
+			Application::new(
+				Uuid::from_u128(1).into(),
+				Uuid::from_u128(0).into(),
+				1u128.into()
+			),
 		],
 		response.into_json::<Vec<Application>>().unwrap()
 	);
