@@ -36,9 +36,9 @@ impl Usecase for ApplyToContribution {
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
 	) -> Result<(), DomainError> {
-		let id = self.uuid_generator.write().map_err(|_| DomainError::Lock)?.new_uuid();
+		let uuid = self.uuid_generator.write().map_err(|_| DomainError::Lock)?.new_uuid();
 
-		let application = Application::new(id, contribution_id, contributor_id);
+		let application = Application::new(uuid.into(), contribution_id, contributor_id);
 
 		self.application_repository.store(application).map_err_into()
 	}
