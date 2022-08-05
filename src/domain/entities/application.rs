@@ -9,19 +9,33 @@ use uuid_wrapper::UuidWrapper;
 )]
 pub struct Id(Uuid);
 
+#[derive(Debug, JsonSchema, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Status {
+	Pending,
+	Accepted,
+	Refused,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 pub struct Application {
 	id: Id,
 	contribution_id: ContributionId,
 	contributor_id: ContributorId,
+	status: Status,
 }
 
 impl Application {
-	pub fn new(id: Id, contribution_id: ContributionId, contributor_id: ContributorId) -> Self {
+	pub fn new(
+		id: Id,
+		contribution_id: ContributionId,
+		contributor_id: ContributorId,
+		status: Status,
+	) -> Self {
 		Self {
 			id,
 			contribution_id,
 			contributor_id,
+			status,
 		}
 	}
 
@@ -35,5 +49,9 @@ impl Application {
 
 	pub fn contributor_id(&self) -> &ContributorId {
 		&self.contributor_id
+	}
+
+	pub fn status(&self) -> &Status {
+		&self.status
 	}
 }

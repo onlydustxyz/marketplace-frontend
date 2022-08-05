@@ -33,10 +33,10 @@ impl<'r> FromRequest<'r> for ApiKey {
 	async fn from_request(request: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
 		let keys: Vec<_> = request.headers().get("Api-Key").collect();
 		match keys.len() {
-			0 => Outcome::Failure((Status::BadRequest, ApiKeyError::Missing)),
+			0 => Outcome::Failure((Status::Unauthorized, ApiKeyError::Missing)),
 			1 if is_valid_key(keys[0]) => Outcome::Success(ApiKey(keys[0].to_string())),
-			1 => Outcome::Failure((Status::BadRequest, ApiKeyError::Invalid)),
-			_ => Outcome::Failure((Status::BadRequest, ApiKeyError::BadCount)),
+			1 => Outcome::Failure((Status::Unauthorized, ApiKeyError::Invalid)),
+			_ => Outcome::Failure((Status::Unauthorized, ApiKeyError::BadCount)),
 		}
 	}
 }

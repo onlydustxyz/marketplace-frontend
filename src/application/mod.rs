@@ -1,6 +1,3 @@
-#[cfg(test)]
-mod tests;
-
 mod contribution;
 pub use contribution::*;
 

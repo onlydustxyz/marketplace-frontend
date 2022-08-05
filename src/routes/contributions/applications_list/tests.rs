@@ -3,7 +3,7 @@ use std::sync::Arc;
 use super::list_applications;
 
 use deathnote_contributions_feeder::domain::{
-	Application, ApplicationRepository, ContributionId, ContributorId,
+	Application, ApplicationRepository, ApplicationStatus, ContributionId, ContributorId,
 };
 use rocket::{http::Status, local::blocking::Client, Build};
 use uuid::Uuid;
@@ -38,6 +38,13 @@ impl ApplicationRepository for EmptyDatabase {
 	> {
 		Ok(vec![])
 	}
+
+	fn accept_application(
+		&self,
+		_id: &deathnote_contributions_feeder::domain::ApplicationId,
+	) -> Result<Application, deathnote_contributions_feeder::domain::ApplicationRepositoryError> {
+		unimplemented!()
+	}
 }
 struct FilledDatabase;
 impl ApplicationRepository for FilledDatabase {
@@ -71,13 +78,22 @@ impl ApplicationRepository for FilledDatabase {
 				Uuid::from_u128(0).into(),
 				Uuid::from_u128(0).into(),
 				0u128.into(),
+				ApplicationStatus::Pending,
 			),
 			Application::new(
 				Uuid::from_u128(1).into(),
 				Uuid::from_u128(0).into(),
 				1u128.into(),
+				ApplicationStatus::Pending,
 			),
 		])
+	}
+
+	fn accept_application(
+		&self,
+		_id: &deathnote_contributions_feeder::domain::ApplicationId,
+	) -> Result<Application, deathnote_contributions_feeder::domain::ApplicationRepositoryError> {
+		unimplemented!()
 	}
 }
 
@@ -117,12 +133,14 @@ fn ok_multiple() {
 			Application::new(
 				Uuid::from_u128(0).into(),
 				Uuid::from_u128(0).into(),
-				0u128.into()
+				0u128.into(),
+				ApplicationStatus::Pending,
 			),
 			Application::new(
 				Uuid::from_u128(1).into(),
 				Uuid::from_u128(0).into(),
-				1u128.into()
+				1u128.into(),
+				ApplicationStatus::Pending
 			),
 		],
 		response.into_json::<Vec<Application>>().unwrap()
