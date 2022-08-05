@@ -26,17 +26,6 @@ jobs:
       - name: Run docker compose
         run: docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
 
-      - name: Install python
-        uses: actions/setup-python@v3
-        with:
-          python-version: "3.9"
-
-      - name: Install starknet-devnet
-        run: pip install starknet-devnet
-
-      - name: Spawn starknet-devnet
-        run: starknet-devnet --seed 0 &
-
       - name: Build
         run: cargo build
 

@@ -19,6 +19,14 @@ services:
       PGADMIN_DEFAULT_PASSWORD: postgres
     ports:
       - "5060:80"
+  starknet-devnet:
+    build:
+      context: .
+      dockerfile: ./starknet-devnet.Dockerfile
+      args:
+        BASE_TAG: latest
+    ports:
+      - "5050:5050"
 volumes:
   db:
     driver: local
