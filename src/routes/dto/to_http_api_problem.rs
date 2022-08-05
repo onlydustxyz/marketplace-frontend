@@ -12,7 +12,7 @@ impl ToHttpApiProblem for ApplicationRepositoryError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		match self {
 			ApplicationRepositoryError::NotFound =>
-				HttpApiProblem::new(StatusCode::BAD_REQUEST).title(self.to_string()),
+				HttpApiProblem::new(StatusCode::NOT_FOUND).title(self.to_string()),
 			ApplicationRepositoryError::AlreadyExist(e) =>
 				HttpApiProblem::new(StatusCode::CONFLICT)
 					.title(self.to_string())
@@ -33,7 +33,7 @@ impl ToHttpApiProblem for ContributionRepositoryError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		match self {
 			ContributionRepositoryError::NotFound =>
-				HttpApiProblem::new(StatusCode::BAD_REQUEST).title(self.to_string()),
+				HttpApiProblem::new(StatusCode::NOT_FOUND).title(self.to_string()),
 			ContributionRepositoryError::AlreadyExist(e) =>
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)
 					.title(self.to_string())

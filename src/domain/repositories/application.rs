@@ -22,4 +22,5 @@ pub trait Repository: Send + Sync {
 		contribution_id: &ContributionId,
 		contributor_id: &Option<ContributorId>,
 	) -> Result<Vec<Application>, Error>;
+	fn accept_application(&self, id: &ApplicationId) -> Result<Application, Error>;
 }

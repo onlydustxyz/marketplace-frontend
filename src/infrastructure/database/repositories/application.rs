@@ -1,11 +1,14 @@
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use itertools::Itertools;
-use mapinto::ResultMapErrInto;
-use uuid::Uuid;
+use mapinto::{ResultMapErrInto, ResultMapInto};
 
 use crate::{
 	domain::*,
-	infrastructure::database::{models, schema::applications, Client},
+	infrastructure::database::{
+		models::{self, Status},
+		schema::applications,
+		Client,
+	},
 };
 
 impl ApplicationRepository for Client {
@@ -44,14 +47,12 @@ impl ApplicationRepository for Client {
 		contribution_id: &ContributionId,
 		contributor_id: &Option<ContributorId>,
 	) -> Result<Vec<Application>, ApplicationRepositoryError> {
-		let contribution_id = Uuid::from(*contribution_id);
-
 		let connection = self
 			.connection()
 			.map_err(|e| ApplicationRepositoryError::Infrastructure(Box::new(e)))?;
 
 		let mut query = applications::dsl::applications
-			.filter(applications::contribution_id.eq(contribution_id))
+			.filter(applications::contribution_id.eq(contribution_id.as_uuid()))
 			.into_boxed();
 
 		if let Some(contributor_id) = contributor_id {
@@ -64,14 +65,47 @@ impl ApplicationRepository for Client {
 
 		Ok(applications.into_iter().map_into().collect())
 	}
+
+	fn accept_application(
+		&self,
+		id: &ApplicationId,
+	) -> Result<Application, ApplicationRepositoryError> {
+		let connection = self
+			.connection()
+			.map_err(|e| ApplicationRepositoryError::Infrastructure(Box::new(e)))?;
+
+		let res: Result<Application, diesel::result::Error> =
+			connection.build_transaction().run(|| {
+				// Set the chosen one to accepted
+				let application: Application = diesel::update(
+					applications::dsl::applications.filter(applications::id.eq(id.as_uuid())),
+				)
+				.set(applications::status.eq(Status::Accepted))
+				.get_result::<models::Application>(&*connection)
+				.map_into()?;
+
+				// Set all other pending applications to refused
+				diesel::update(
+					applications::dsl::applications
+						.filter(applications::status.eq(Status::Pending)),
+				)
+				.set(applications::status.eq(Status::Refused))
+				.execute(&*connection)?;
+
+				Ok(application)
+			});
+
+		res.map_err_into()
+	}
 }
 
 impl From<Application> for models::NewApplication {
 	fn from(application: crate::domain::Application) -> Self {
 		Self {
-			id: Uuid::from(*application.id()),
-			contribution_id: Uuid::from(*application.contribution_id()),
+			id: (*application.id()).into(),
+			contribution_id: (*application.contribution_id()).into(),
 			contributor_id: application.contributor_id().to_string(),
+			status: (*application.status()).into(),
 		}
 	}
 }
@@ -82,6 +116,7 @@ impl From<models::Application> for Application {
 			application.id.into(),
 			application.contribution_id.into(),
 			ContributorId::from(application.contributor_id.as_str()),
+			application.status.into(),
 		)
 	}
 }

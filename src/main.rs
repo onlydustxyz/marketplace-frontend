@@ -93,6 +93,7 @@ async fn main() {
 				routes::contributors::find_by_id,
 				routes::apply_to_contribution,
 				routes::list_applications,
+				routes::accept_application,
 			],
 		)
 		.mount("/swagger", make_swagger_ui(&routes::get_docs()))
@@ -129,6 +130,10 @@ fn inject_app(
 			uuid_generator,
 		))
 		.manage(ValidateContribution::new_usecase_boxed(
+			starknet.clone(),
+			database.clone(),
+		))
+		.manage(AcceptApplication::new_usecase_boxed(
 			starknet,
 			database.clone(),
 		))

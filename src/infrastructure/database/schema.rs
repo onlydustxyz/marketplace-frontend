@@ -3,6 +3,7 @@ table! {
 		id -> Uuid,
 		contribution_id -> Uuid,
 		contributor_id -> Varchar,
+		status -> Varchar,
 	}
 }
 

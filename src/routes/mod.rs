@@ -1,9 +1,11 @@
+mod applications;
 mod contributions;
 pub mod cors;
 mod dto;
 pub mod health;
 mod projects;
 
+pub use applications::*;
 pub use contributions::*;
 pub use projects::*;
 use rocket_okapi::swagger_ui::SwaggerUIConfig;

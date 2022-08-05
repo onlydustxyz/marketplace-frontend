@@ -30,7 +30,7 @@ pub async fn apply_to_contribution(
 	contribution_id: UuidParam,
 	body: Json<ApplyDto>,
 	usecase: &State<Box<dyn ApplyToContributionUsecase>>,
-) -> Result<status::Created<()>, HttpApiProblem> {
+) -> Result<status::Created<&str>, HttpApiProblem> {
 	let contributor_id: ContributorId = body.into_inner().contributor_id;
 	let contribution_id: ContributionId = Uuid::from(contribution_id).into();
 
