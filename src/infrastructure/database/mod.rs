@@ -1,6 +1,8 @@
 mod models;
 mod repositories;
 mod schema;
+#[cfg(test)]
+mod tests;
 
 mod error;
 pub use error::Error as DatabaseError;
@@ -22,6 +24,12 @@ pub struct Client {
 }
 
 impl Client {
+	pub fn new(pool: Pool) -> Self {
+		Self { pool }
+	}
+}
+
+impl Client {
 	fn connection(&self) -> Result<PooledConnection, DatabaseError> {
 		self.pool.get().map_err(|e| DatabaseError::Connection(e.to_string()))
 	}
@@ -34,15 +42,17 @@ impl Client {
 	}
 }
 
-impl Default for Client {
-	fn default() -> Self {
-		Self { pool: init_pool() }
-	}
-}
-
-fn init_pool() -> Pool {
+pub fn init_pool() -> Pool {
 	let manager = ConnectionManager::<PgConnection>::new(database_url());
-	Pool::new(manager).expect("Unable to create database connection pool")
+	if cfg!(test) {
+		use diesel::Connection;
+
+		let pool = Pool::builder().max_size(1).build(manager).unwrap();
+		pool.get().unwrap().begin_test_transaction().unwrap();
+		pool
+	} else {
+		Pool::new(manager).expect("Unable to create database connection pool")
+	}
 }
 
 fn database_url() -> String {

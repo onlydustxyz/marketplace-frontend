@@ -114,8 +114,8 @@ impl From<models::Contribution> for Contribution {
 }
 
 impl From<DatabaseError> for ProjectRepositoryError {
-	fn from(_: DatabaseError) -> Self {
-		todo!()
+	fn from(error: DatabaseError) -> Self {
+		ProjectRepositoryError::Infrastructure(Box::new(error))
 	}
 }
 

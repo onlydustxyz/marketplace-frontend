@@ -4,7 +4,10 @@ use deathnote_contributions_feeder::{
 	application::*,
 	domain::{ApplicationRepository, RandomUuidGenerator},
 	github,
-	infrastructure::{database, starknet},
+	infrastructure::{
+		database::{self, init_pool},
+		starknet,
+	},
 	utils::caches::{ContributorCache, RepoCache},
 };
 use diesel_migrations::*;
@@ -48,7 +51,7 @@ async fn main() {
 	let _global_logger_guard = slog_scope::set_global_logger(root_logger);
 	github::API::initialize();
 
-	let database = Arc::new(database::Client::default());
+	let database = Arc::new(database::Client::new(init_pool()));
 	database.run_migrations().expect("Unable to run database migrations");
 
 	// Allow to gracefully exit kill all thread on ctrl+c
