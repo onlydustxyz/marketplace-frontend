@@ -41,7 +41,7 @@ pub struct Contribution {
 	pub validator: ValidatorAddress,
 }
 
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone, Default)]
 pub struct Metadata {
 	pub difficulty: Option<String>,
 	pub technology: Option<String>,
