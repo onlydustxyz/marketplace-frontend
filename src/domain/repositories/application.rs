@@ -20,6 +20,6 @@ pub trait Repository: Send + Sync {
 	fn list_by_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: &Option<ContributorId>,
+		contributor_id: Option<&ContributorId>,
 	) -> Result<Vec<Application>, Error>;
 }

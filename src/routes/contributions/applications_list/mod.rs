@@ -30,7 +30,7 @@ pub async fn list_applications(
 		contributor_id.map(|id| id.as_unprefixed_str().into());
 
 	let applications = database
-		.list_by_contribution(&contribution_id, &contributor_id)
+		.list_by_contribution(&contribution_id, contributor_id.as_ref())
 		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(Json(applications))

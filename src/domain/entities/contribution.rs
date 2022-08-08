@@ -11,8 +11,9 @@ use super::{ContributorId, ProjectId};
 
 pub type ValidatorAddress = FieldElement;
 
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone, Default)]
 pub enum Status {
+	#[default]
 	Open = 0,
 	Assigned = 1,
 	Completed = 2,
@@ -22,11 +23,21 @@ pub enum Status {
 pub type OnChainId = String;
 
 #[derive(
-	Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema, UuidWrapper,
+	Debug,
+	Clone,
+	Copy,
+	PartialEq,
+	Eq,
+	Hash,
+	Serialize,
+	Deserialize,
+	JsonSchema,
+	UuidWrapper,
+	Default,
 )]
 pub struct Id(Uuid);
 
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone, Default)]
 pub struct Contribution {
 	pub id: Id,
 	pub onchain_id: OnChainId,

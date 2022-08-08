@@ -94,3 +94,4 @@ uuid_wrapper = { path = "./uuid_wrapper" }
 
 [dev-dependencies]
 serde_test = "1.0.140"
+assert_matches = "1.5"
