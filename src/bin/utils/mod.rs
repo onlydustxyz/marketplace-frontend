@@ -46,9 +46,9 @@ pub fn find_project_by_title(projects: &Value, title: &'static str) -> serde_jso
 	projects
 		.as_array()
 		.expect("projects is not an array")
-		.into_iter()
+		.iter()
 		.find(|project| project["title"] == title)
-		.expect(&format!("could not find {title}"))
+		.unwrap_or_else(|| panic!("could not find {title}"))
 		.to_owned()
 }
 
@@ -56,8 +56,8 @@ pub fn find_contribution_by_onchain_id(project: &Value, contribution_onchain_id:
 	project["contributions"]
 		.as_array()
 		.expect("contributions is not an array")
-		.into_iter()
-		.find(|contribution| contribution["onchain_id"] == contribution_onchain_id.to_string())
+		.iter()
+		.find(|contribution| contribution["onchain_id"] == contribution_onchain_id)
 		.expect("cound not find contribution")
 		.to_owned()
 }
