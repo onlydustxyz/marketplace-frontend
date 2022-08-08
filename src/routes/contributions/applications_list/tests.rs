@@ -38,13 +38,6 @@ impl ApplicationRepository for EmptyDatabase {
 	> {
 		Ok(vec![])
 	}
-
-	fn accept_application(
-		&self,
-		_id: &deathnote_contributions_feeder::domain::ApplicationId,
-	) -> Result<Application, deathnote_contributions_feeder::domain::ApplicationRepositoryError> {
-		unimplemented!()
-	}
 }
 struct FilledDatabase;
 impl ApplicationRepository for FilledDatabase {
@@ -87,13 +80,6 @@ impl ApplicationRepository for FilledDatabase {
 				ApplicationStatus::Pending,
 			),
 		])
-	}
-
-	fn accept_application(
-		&self,
-		_id: &deathnote_contributions_feeder::domain::ApplicationId,
-	) -> Result<Application, deathnote_contributions_feeder::domain::ApplicationRepositoryError> {
-		unimplemented!()
 	}
 }
 

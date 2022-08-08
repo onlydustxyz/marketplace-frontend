@@ -1,6 +1,6 @@
-use thiserror::Error;
-
 use crate::domain::*;
+
+use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -14,12 +14,6 @@ pub enum Error {
 	Infrastructure(#[source] Box<dyn std::error::Error>),
 }
 
-pub trait Repository: Send + Sync {
-	fn store(&self, application: Application) -> Result<(), Error>;
-	fn find(&self, id: &ApplicationId) -> Result<Option<Application>, Error>;
-	fn list_by_contribution(
-		&self,
-		contribution_id: &ContributionId,
-		contributor_id: &Option<ContributorId>,
-	) -> Result<Vec<Application>, Error>;
+pub trait Service: Send + Sync {
+	fn accept_application(&self, id: &ApplicationId) -> Result<Application, Error>;
 }

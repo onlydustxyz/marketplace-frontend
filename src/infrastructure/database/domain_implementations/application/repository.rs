@@ -1,14 +1,10 @@
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use itertools::Itertools;
-use mapinto::{ResultMapErrInto, ResultMapInto};
+use mapinto::ResultMapErrInto;
 
 use crate::{
 	domain::*,
-	infrastructure::database::{
-		models::{self, Status},
-		schema::applications,
-		Client,
-	},
+	infrastructure::database::{models, schema::applications, Client},
 };
 
 impl ApplicationRepository for Client {
@@ -64,38 +60,6 @@ impl ApplicationRepository for Client {
 			.map_err(ApplicationRepositoryError::from)?;
 
 		Ok(applications.into_iter().map_into().collect())
-	}
-
-	fn accept_application(
-		&self,
-		id: &ApplicationId,
-	) -> Result<Application, ApplicationRepositoryError> {
-		let connection = self
-			.connection()
-			.map_err(|e| ApplicationRepositoryError::Infrastructure(Box::new(e)))?;
-
-		let res: Result<Application, diesel::result::Error> =
-			connection.build_transaction().run(|| {
-				// Set the chosen one to accepted
-				let application: Application = diesel::update(
-					applications::dsl::applications.filter(applications::id.eq(id.as_uuid())),
-				)
-				.set(applications::status.eq(Status::Accepted))
-				.get_result::<models::Application>(&*connection)
-				.map_into()?;
-
-				// Set all other pending applications to refused
-				diesel::update(
-					applications::dsl::applications
-						.filter(applications::status.eq(Status::Pending)),
-				)
-				.set(applications::status.eq(Status::Refused))
-				.execute(&*connection)?;
-
-				Ok(application)
-			});
-
-		res.map_err_into()
 	}
 }
 
