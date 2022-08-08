@@ -57,9 +57,7 @@ pub fn find_contribution_by_onchain_id(project: &Value, contribution_onchain_id:
 		.as_array()
 		.expect("contributions is not an array")
 		.iter()
-		.find(|contribution| {
-			contribution["onchain_id"].as_u64().unwrap() == contribution_onchain_id
-		})
+		.find(|contribution| contribution["onchain_id"] == contribution_onchain_id.to_string())
 		.expect("cound not find contribution")
 		.to_owned()
 }
