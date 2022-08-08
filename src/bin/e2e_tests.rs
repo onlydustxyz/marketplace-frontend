@@ -66,5 +66,5 @@ async fn wait_for_result(result_file_path: &'static str) {
 		}
 	}
 
-	assert!(false, "Result does not match with {result_file_path}");
+	panic!("Result does not match with {result_file_path}");
 }
