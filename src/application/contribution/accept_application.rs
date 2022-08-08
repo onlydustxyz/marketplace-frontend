@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use mapinto::ResultMapErrInto;
 
-use crate::domain::{ApplicationId, ApplicationRepository, ContributionService, DomainError};
+use crate::domain::{ApplicationId, ApplicationService, ContributionService, DomainError};
 
 pub trait Usecase: Send + Sync {
 	fn accept_application(&self, application_id: &ApplicationId) -> Result<(), DomainError>;
@@ -10,13 +10,13 @@ pub trait Usecase: Send + Sync {
 
 pub struct AcceptApplication {
 	contribution_service: Arc<dyn ContributionService>,
-	application_repository: Arc<dyn ApplicationRepository>,
+	application_repository: Arc<dyn ApplicationService>,
 }
 
 impl AcceptApplication {
 	pub fn new_usecase_boxed(
 		contribution_service: Arc<dyn ContributionService>,
-		application_repository: Arc<dyn ApplicationRepository>,
+		application_repository: Arc<dyn ApplicationService>,
 	) -> Box<dyn Usecase> {
 		Box::new(Self {
 			contribution_service,

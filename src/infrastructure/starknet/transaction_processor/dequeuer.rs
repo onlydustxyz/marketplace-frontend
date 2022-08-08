@@ -1,6 +1,6 @@
 use futures::future::try_join_all;
 use itertools::Itertools;
-use log::{error, info, warn};
+use log::{debug, error, info, warn};
 
 use super::{StarknetError, TransactionProcessor};
 
@@ -25,7 +25,7 @@ pub fn spawn(
 
 	tokio::spawn(async move {
 		loop {
-			info!("Thread heartbeat");
+			debug!("Thread heartbeat");
 			let next_actions = if let Ok(mut queue) = cloned_action_queue.write() {
 				queue.pop_n(100)
 			} else {
