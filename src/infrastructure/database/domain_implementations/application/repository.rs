@@ -4,28 +4,24 @@ use mapinto::ResultMapErrInto;
 
 use crate::{
 	domain::*,
-	infrastructure::database::{models, schema::applications, Client},
+	infrastructure::database::{models, schema::applications, Client, DatabaseError},
 };
 
 impl ApplicationRepository for Client {
 	fn store(&self, application: Application) -> Result<(), ApplicationRepositoryError> {
-		let connection = self
-			.connection()
-			.map_err(|e| ApplicationRepositoryError::Infrastructure(Box::new(e)))?;
+		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
 
 		let application = models::NewApplication::from(application);
 		diesel::insert_into(applications::table)
 			.values(&application)
 			.execute(&*connection)
-			.map_err(|e| ApplicationRepositoryError::Infrastructure(Box::new(e)))?;
+			.map_err(ApplicationRepositoryError::from)?;
 
 		Ok(())
 	}
 
 	fn find(&self, id: &ApplicationId) -> Result<Option<Application>, ApplicationRepositoryError> {
-		let connection = self
-			.connection()
-			.map_err(|e| ApplicationRepositoryError::Infrastructure(Box::new(e)))?;
+		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
 
 		let res = applications::dsl::applications
 			.find(id.as_uuid())
@@ -41,11 +37,9 @@ impl ApplicationRepository for Client {
 	fn list_by_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: &Option<ContributorId>,
+		contributor_id: Option<&ContributorId>,
 	) -> Result<Vec<Application>, ApplicationRepositoryError> {
-		let connection = self
-			.connection()
-			.map_err(|e| ApplicationRepositoryError::Infrastructure(Box::new(e)))?;
+		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
 
 		let mut query = applications::dsl::applications
 			.filter(applications::contribution_id.eq(contribution_id.as_uuid()))
@@ -98,5 +92,11 @@ impl From<diesel::result::Error> for ApplicationRepositoryError {
 			diesel::result::Error::NotFound => Self::NotFound,
 			_ => Self::Infrastructure(Box::new(error)),
 		}
+	}
+}
+
+impl From<DatabaseError> for ApplicationRepositoryError {
+	fn from(error: DatabaseError) -> Self {
+		ApplicationRepositoryError::Infrastructure(Box::new(error))
 	}
 }

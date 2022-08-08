@@ -9,8 +9,9 @@ use uuid_wrapper::UuidWrapper;
 )]
 pub struct Id(Uuid);
 
-#[derive(Debug, JsonSchema, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, JsonSchema, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 pub enum Status {
+	#[default]
 	Pending,
 	Accepted,
 	Refused,
