@@ -1,4 +1,5 @@
 use assert_json_diff::assert_json_include;
+use deathnote_contributions_feeder::dto::{Contribution, Project};
 use dotenv::dotenv;
 use reqwest::Response;
 use serde_json::Value;
@@ -38,26 +39,22 @@ pub async fn get(url: String) -> Response {
 	response.unwrap()
 }
 
-pub fn compare_jsons(actual: Value, expected: Value) {
-	assert_json_include!(actual: actual, expected: expected);
+pub fn compare_projects_to_expected(actual: Vec<Project>, expected: Value) {
+	let actual_json = serde_json::to_value(actual).unwrap();
+	assert_json_include!(actual: actual_json, expected: expected);
 }
 
-pub fn find_project_by_title(projects: &Value, title: &'static str) -> serde_json::Value {
-	projects
-		.as_array()
-		.expect("projects is not an array")
-		.iter()
-		.find(|project| project["title"] == title)
-		.unwrap_or_else(|| panic!("could not find {title}"))
-		.to_owned()
+pub fn find_project_by_title(projects: &[Project], title: &'static str) -> Option<Project> {
+	projects.iter().find(|project| project.title == title).cloned()
 }
 
-pub fn find_contribution_by_onchain_id(project: &Value, contribution_onchain_id: u64) -> Value {
-	project["contributions"]
-		.as_array()
-		.expect("contributions is not an array")
+pub fn find_contribution_by_onchain_id(
+	project: &Project,
+	contribution_onchain_id: u64,
+) -> Option<Contribution> {
+	project
+		.contributions
 		.iter()
-		.find(|contribution| contribution["onchain_id"] == contribution_onchain_id.to_string())
-		.expect("cound not find contribution")
-		.to_owned()
+		.find(|contribution| contribution.onchain_id == contribution_onchain_id.to_string())
+		.cloned()
 }

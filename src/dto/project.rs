@@ -1,4 +1,4 @@
-use deathnote_contributions_feeder::domain;
+use crate::domain;
 use rocket_okapi::JsonSchema;
 use serde::{Deserialize, Serialize};
 use url::Url;
@@ -10,7 +10,7 @@ pub struct ProjectCreation<'r> {
 	pub name: &'r str,
 }
 
-#[derive(Serialize, JsonSchema)]
+#[derive(Serialize, JsonSchema, Deserialize, Clone)]
 pub struct Project {
 	pub id: String,
 	pub title: String,
@@ -22,7 +22,7 @@ pub struct Project {
 	pub contributions: Vec<Contribution>,
 }
 
-#[derive(Serialize, JsonSchema)]
+#[derive(Serialize, Deserialize, JsonSchema, Clone)]
 pub struct Contribution {
 	pub id: String,
 	pub onchain_id: String,
@@ -34,7 +34,7 @@ pub struct Contribution {
 	pub metadata: Metadata,
 }
 
-#[derive(Serialize, JsonSchema)]
+#[derive(Serialize, Deserialize, JsonSchema, Clone)]
 pub struct Metadata {
 	pub assignee: Option<String>,
 	pub github_username: Option<String>,

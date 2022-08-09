@@ -1,8 +1,6 @@
-mod dto;
-
 use deathnote_contributions_feeder::{
 	domain::*,
-	github,
+	dto, github,
 	infrastructure::{database, starknet},
 	utils::caches,
 };
