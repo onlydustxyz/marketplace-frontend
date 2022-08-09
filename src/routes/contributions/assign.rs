@@ -1,5 +1,6 @@
 use deathnote_contributions_feeder::{
-	application::AssignContributionUsecase, domain::ContributionId,
+	application::AssignContributionUsecase,
+	domain::{ContributionId, ContributorId},
 };
 use http_api_problem::HttpApiProblem;
 use rocket::{
@@ -15,7 +16,7 @@ use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem, uuid
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]
 pub struct AssignContributorDto {
-	contributor_id: u128,
+	contributor_id: ContributorId,
 }
 
 #[openapi(tag = "Contributions")]
@@ -30,7 +31,7 @@ pub async fn assign_contributor(
 	body: Json<AssignContributorDto>,
 	usecase: &State<Box<dyn AssignContributionUsecase>>,
 ) -> Result<status::Accepted<()>, HttpApiProblem> {
-	let contributor_id = body.into_inner().contributor_id.into();
+	let contributor_id = body.into_inner().contributor_id;
 	let contribution_id: ContributionId = Uuid::from(contribution_id).into();
 
 	usecase
@@ -70,7 +71,10 @@ mod test {
 		let result = assign_contributor(
 			ApiKey::default(),
 			Uuid::from_u128(12).into(),
-			AssignContributorDto { contributor_id: 34 }.into(),
+			AssignContributorDto {
+				contributor_id: 34.into(),
+			}
+			.into(),
 			State::get(&rocket).unwrap(),
 		)
 		.await;
@@ -94,7 +98,10 @@ mod test {
 		let result = assign_contributor(
 			ApiKey::default(),
 			Uuid::from_u128(12).into(),
-			AssignContributorDto { contributor_id: 34 }.into(),
+			AssignContributorDto {
+				contributor_id: 34.into(),
+			}
+			.into(),
 			State::get(&rocket).unwrap(),
 		)
 		.await;
