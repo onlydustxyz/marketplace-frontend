@@ -28,12 +28,12 @@ impl ApplicationService for Client {
 			.get_result::<models::Application>(&*connection)
 			.map_into()?;
 
-			// Set all other pending applications to refused
+			// Set all other applications to refused
 			diesel::update(
 				applications::dsl::applications.filter(
 					applications::contribution_id
 						.eq(application.contribution_id().as_uuid())
-						.and(applications::status.eq(Status::Pending)),
+						.and(applications::id.ne(id.as_uuid())),
 				),
 			)
 			.set(applications::status.eq(Status::Refused))
