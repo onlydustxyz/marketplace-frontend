@@ -7,7 +7,7 @@ use std::sync::Arc;
 // Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be
 // `Send` and `Sync`
 pub trait Usecase: Send + Sync {
-	fn send_unassign_request(&self, contribution_id: ContributionId) -> Result<(), DomainError>;
+	fn send_unassign_request(&self, contribution_id: &ContributionId) -> Result<(), DomainError>;
 }
 
 pub struct UnassignContribution {
@@ -28,7 +28,7 @@ impl UnassignContribution {
 }
 
 impl Usecase for UnassignContribution {
-	fn send_unassign_request(&self, contribution_id: ContributionId) -> Result<(), DomainError> {
+	fn send_unassign_request(&self, contribution_id: &ContributionId) -> Result<(), DomainError> {
 		match self.contribution_repository.find_by_id(contribution_id)? {
 			Some(contribution) => self
 				.contribution_service
@@ -68,30 +68,27 @@ mod test {
 		mut contribution_repository: MockContributionRepository,
 	) {
 		let contribution_id = Uuid::from_u128(12).into();
-		contribution_repository
-			.expect_find_by_id()
-			.with(eq(contribution_id))
-			.returning(|_| {
-				Ok(Some(Contribution {
-					id: Uuid::from_u128(12).into(),
-					onchain_id: String::from("22"),
-					project_id: String::from("34"),
-					contributor_id: None,
-					title: None,
-					description: None,
-					status: ContributionStatus::Open,
-					external_link: None,
-					gate: 0,
-					metadata: ContributionMetadata {
-						difficulty: None,
-						technology: None,
-						duration: None,
-						context: None,
-						r#type: None,
-					},
-					validator: FieldElement::ZERO,
-				}))
-			});
+		contribution_repository.expect_find_by_id().returning(|_| {
+			Ok(Some(Contribution {
+				id: Uuid::from_u128(12).into(),
+				onchain_id: String::from("22"),
+				project_id: String::from("34"),
+				contributor_id: None,
+				title: None,
+				description: None,
+				status: ContributionStatus::Open,
+				external_link: None,
+				gate: 0,
+				metadata: ContributionMetadata {
+					difficulty: None,
+					technology: None,
+					duration: None,
+					context: None,
+					r#type: None,
+				},
+				validator: FieldElement::ZERO,
+			}))
+		});
 
 		contribution_service
 			.expect_unassign_contributor()
@@ -103,7 +100,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_unassign_request(contribution_id);
+		let result = usecase.send_unassign_request(&contribution_id);
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 	}
 
@@ -121,7 +118,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_unassign_request(Uuid::from_u128(12).into());
+		let result = usecase.send_unassign_request(&Uuid::from_u128(12).into());
 
 		assert!(result.is_err());
 		assert_eq!(
@@ -142,7 +139,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_unassign_request(Uuid::from_u128(12).into());
+		let result = usecase.send_unassign_request(&Uuid::from_u128(12).into());
 
 		assert!(result.is_err());
 		assert_eq!(
@@ -157,30 +154,27 @@ mod test {
 		mut contribution_repository: MockContributionRepository,
 	) {
 		let contribution_id = Uuid::from_u128(12).into();
-		contribution_repository
-			.expect_find_by_id()
-			.with(eq(contribution_id))
-			.returning(|_| {
-				Ok(Some(Contribution {
-					id: Uuid::from_u128(12).into(),
-					onchain_id: String::from("22"),
-					project_id: String::from("34"),
-					contributor_id: None,
-					title: None,
-					description: None,
-					status: ContributionStatus::Open,
-					external_link: None,
-					gate: 0,
-					metadata: ContributionMetadata {
-						difficulty: None,
-						technology: None,
-						duration: None,
-						context: None,
-						r#type: None,
-					},
-					validator: FieldElement::ZERO,
-				}))
-			});
+		contribution_repository.expect_find_by_id().returning(|_| {
+			Ok(Some(Contribution {
+				id: Uuid::from_u128(12).into(),
+				onchain_id: String::from("22"),
+				project_id: String::from("34"),
+				contributor_id: None,
+				title: None,
+				description: None,
+				status: ContributionStatus::Open,
+				external_link: None,
+				gate: 0,
+				metadata: ContributionMetadata {
+					difficulty: None,
+					technology: None,
+					duration: None,
+					context: None,
+					r#type: None,
+				},
+				validator: FieldElement::ZERO,
+			}))
+		});
 
 		contribution_service
 			.expect_unassign_contributor()
@@ -192,7 +186,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_unassign_request(contribution_id);
+		let result = usecase.send_unassign_request(&contribution_id);
 
 		assert!(result.is_err());
 		assert_eq!(

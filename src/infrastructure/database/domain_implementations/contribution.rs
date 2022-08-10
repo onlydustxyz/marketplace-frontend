@@ -7,7 +7,7 @@ use diesel::prelude::*;
 impl ContributionRepository for Client {
 	fn find_by_id(
 		&self,
-		contribution_id: ContributionId,
+		contribution_id: &ContributionId,
 	) -> Result<Option<Contribution>, ContributionRepositoryError> {
 		let connection = self
 			.connection()

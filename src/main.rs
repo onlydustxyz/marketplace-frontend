@@ -136,6 +136,7 @@ fn inject_app(
 		.manage(AcceptApplication::new_usecase_boxed(
 			starknet,
 			database.clone(),
+			database.clone(),
 		))
 		.manage(database as Arc<dyn ApplicationRepository>)
 }

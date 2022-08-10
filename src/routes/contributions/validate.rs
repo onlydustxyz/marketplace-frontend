@@ -15,7 +15,7 @@ pub async fn validate_contribution(
 ) -> Result<status::Accepted<()>, HttpApiProblem> {
 	let contribution_id = Uuid::from(contribution_id).into();
 	usecase
-		.send_validate_request(contribution_id)
+		.send_validate_request(&contribution_id)
 		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(status::Accepted(None))

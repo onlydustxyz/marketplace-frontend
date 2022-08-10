@@ -9,8 +9,8 @@ use std::sync::Arc;
 pub trait Usecase: Send + Sync {
 	fn send_assign_request(
 		&self,
-		contribution_id: ContributionId,
-		contributor_id: ContributorId,
+		contribution_id: &ContributionId,
+		contributor_id: &ContributorId,
 	) -> Result<(), DomainError>;
 }
 
@@ -34,13 +34,13 @@ impl AssignContribution {
 impl Usecase for AssignContribution {
 	fn send_assign_request(
 		&self,
-		contribution_id: ContributionId,
-		contributor_id: ContributorId,
+		contribution_id: &ContributionId,
+		contributor_id: &ContributorId,
 	) -> Result<(), DomainError> {
 		match self.contribution_repository.find_by_id(contribution_id)? {
 			Some(contribution) => self
 				.contribution_service
-				.assign_contributor(contribution.onchain_id, contributor_id)
+				.assign_contributor(contribution.onchain_id, *contributor_id)
 				.map_err_into(),
 			None => Err(DomainError::ContributionRepository(
 				ContributionRepositoryError::NotFound,
@@ -78,30 +78,27 @@ mod test {
 		mut contribution_repository: MockContributionRepository,
 	) {
 		let contribution_id = Uuid::from_u128(12).into();
-		contribution_repository
-			.expect_find_by_id()
-			.with(eq(contribution_id))
-			.returning(|_| {
-				Ok(Some(Contribution {
-					id: Uuid::from_u128(12).into(),
-					onchain_id: String::from("22"),
-					project_id: String::from("34"),
-					contributor_id: None,
-					title: None,
-					description: None,
-					status: ContributionStatus::Open,
-					external_link: None,
-					gate: 0,
-					metadata: ContributionMetadata {
-						difficulty: None,
-						technology: None,
-						duration: None,
-						context: None,
-						r#type: None,
-					},
-					validator: FieldElement::ZERO,
-				}))
-			});
+		contribution_repository.expect_find_by_id().returning(|_| {
+			Ok(Some(Contribution {
+				id: Uuid::from_u128(12).into(),
+				onchain_id: String::from("22"),
+				project_id: String::from("34"),
+				contributor_id: None,
+				title: None,
+				description: None,
+				status: ContributionStatus::Open,
+				external_link: None,
+				gate: 0,
+				metadata: ContributionMetadata {
+					difficulty: None,
+					technology: None,
+					duration: None,
+					context: None,
+					r#type: None,
+				},
+				validator: FieldElement::ZERO,
+			}))
+		});
 
 		contribution_service
 			.expect_assign_contributor()
@@ -113,7 +110,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_assign_request(contribution_id, ContributorId::from(34));
+		let result = usecase.send_assign_request(&contribution_id, &ContributorId::from(34));
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 	}
 
@@ -132,7 +129,7 @@ mod test {
 		);
 
 		let result =
-			usecase.send_assign_request(Uuid::from_u128(12).into(), ContributorId::from(34));
+			usecase.send_assign_request(&Uuid::from_u128(12).into(), &ContributorId::from(34));
 
 		assert!(result.is_err());
 		assert_eq!(
@@ -154,7 +151,7 @@ mod test {
 		);
 
 		let result =
-			usecase.send_assign_request(Uuid::from_u128(12).into(), ContributorId::from(34));
+			usecase.send_assign_request(&Uuid::from_u128(12).into(), &ContributorId::from(34));
 
 		assert!(result.is_err());
 		assert_eq!(
@@ -169,30 +166,27 @@ mod test {
 		mut contribution_repository: MockContributionRepository,
 	) {
 		let contribution_id = Uuid::from_u128(12).into();
-		contribution_repository
-			.expect_find_by_id()
-			.with(eq(contribution_id))
-			.returning(|_| {
-				Ok(Some(Contribution {
-					id: Uuid::from_u128(12).into(),
-					onchain_id: String::from("22"),
-					project_id: String::from("34"),
-					contributor_id: None,
-					title: None,
-					description: None,
-					status: ContributionStatus::Open,
-					external_link: None,
-					gate: 0,
-					metadata: ContributionMetadata {
-						difficulty: None,
-						technology: None,
-						duration: None,
-						context: None,
-						r#type: None,
-					},
-					validator: FieldElement::ZERO,
-				}))
-			});
+		contribution_repository.expect_find_by_id().returning(|_| {
+			Ok(Some(Contribution {
+				id: Uuid::from_u128(12).into(),
+				onchain_id: String::from("22"),
+				project_id: String::from("34"),
+				contributor_id: None,
+				title: None,
+				description: None,
+				status: ContributionStatus::Open,
+				external_link: None,
+				gate: 0,
+				metadata: ContributionMetadata {
+					difficulty: None,
+					technology: None,
+					duration: None,
+					context: None,
+					r#type: None,
+				},
+				validator: FieldElement::ZERO,
+			}))
+		});
 
 		contribution_service
 			.expect_assign_contributor()
@@ -204,7 +198,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_assign_request(contribution_id, ContributorId::from(34));
+		let result = usecase.send_assign_request(&contribution_id, &ContributorId::from(34));
 
 		assert!(result.is_err());
 		assert_eq!(
