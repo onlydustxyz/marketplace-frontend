@@ -94,6 +94,7 @@ async fn main() {
 				routes::apply_to_contribution,
 				routes::list_applications,
 				routes::accept_application,
+				routes::list_contributor_applications,
 			],
 		)
 		.mount("/swagger", make_swagger_ui(&routes::get_docs()))

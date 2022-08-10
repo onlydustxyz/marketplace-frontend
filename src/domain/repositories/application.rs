@@ -22,4 +22,8 @@ pub trait Repository: Send + Sync {
 		contribution_id: &ContributionId,
 		contributor_id: Option<&ContributorId>,
 	) -> Result<Vec<Application>, Error>;
+	fn list_by_contributor(
+		&self,
+		contributor_id: &ContributorId,
+	) -> Result<Vec<Application>, Error>;
 }
