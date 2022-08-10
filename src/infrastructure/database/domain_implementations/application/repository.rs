@@ -57,6 +57,24 @@ impl ApplicationRepository for Client {
 
 		Ok(applications.into_iter().map_into().collect())
 	}
+
+	fn list_by_contributor(
+		&self,
+		contributor_id: &ContributorId,
+	) -> Result<Vec<Application>, ApplicationRepositoryError> {
+		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
+
+		// println!("{:?}", contributor_id);
+		let query = applications::dsl::applications
+			.filter(applications::contributor_id.eq(contributor_id.to_string()))
+			.into_boxed();
+
+		let applications = query
+			.load::<models::Application>(&*connection)
+			.map_err(ApplicationRepositoryError::from)?;
+
+		Ok(applications.into_iter().map_into().collect())
+	}
 }
 
 impl From<Application> for models::NewApplication {
