@@ -1,4 +1,4 @@
-use log::{debug, info};
+use log::info;
 use reqwest::StatusCode;
 use std::{fs::read_to_string, str::FromStr, thread, time::Duration};
 
@@ -50,7 +50,7 @@ async fn add_all_projects() {
 
 async fn wait_for_result(result_file_path: &'static str) {
 	for i in 0..10 {
-		debug!("LOOP {i}");
+		println!("LOOP {i}");
 		let handle = tokio::spawn(async move {
 			compare_projects_to_expected(
 				list_all_projects().await,
@@ -69,5 +69,6 @@ async fn wait_for_result(result_file_path: &'static str) {
 		}
 	}
 
+	println!("End to end test failed");
 	panic!("Result does not match with {result_file_path}");
 }
