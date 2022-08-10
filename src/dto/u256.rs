@@ -6,7 +6,7 @@ use super::{hex_prefixed_from_str, ParseHexPrefixedStringError};
 #[derive(Debug, Error)]
 pub enum ParseU256Error {
 	#[error("provided sting shoud be between 3 and 66 characters long")]
-	InvalidLenght,
+	InvalidLength,
 	#[error("provided sting shoud be '0x' prefixed")]
 	InvalidPrefix,
 	#[error(
@@ -18,7 +18,7 @@ pub enum ParseU256Error {
 impl From<ParseHexPrefixedStringError> for ParseU256Error {
 	fn from(error: ParseHexPrefixedStringError) -> Self {
 		match error {
-			ParseHexPrefixedStringError::TooShort => ParseU256Error::InvalidLenght,
+			ParseHexPrefixedStringError::TooShort => ParseU256Error::InvalidLength,
 			ParseHexPrefixedStringError::InvalidPrefix => ParseU256Error::InvalidPrefix,
 			ParseHexPrefixedStringError::InvalidCharacter => ParseU256Error::InvalidCharacter,
 		}
@@ -29,7 +29,7 @@ impl From<base16ct::Error> for ParseU256Error {
 	fn from(error: base16ct::Error) -> Self {
 		match error {
 			base16ct::Error::InvalidEncoding => ParseU256Error::InvalidCharacter,
-			base16ct::Error::InvalidLength => ParseU256Error::InvalidLenght,
+			base16ct::Error::InvalidLength => ParseU256Error::InvalidLength,
 		}
 	}
 }
@@ -41,7 +41,7 @@ pub fn u256_from_string(s: &str) -> Result<U256, ParseU256Error> {
 	let mut len = bytes.len();
 
 	if len > 64 {
-		return Err(ParseU256Error::InvalidLenght);
+		return Err(ParseU256Error::InvalidLength);
 	}
 
 	let mut pair_bytes = Vec::new();
