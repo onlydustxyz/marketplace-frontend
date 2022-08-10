@@ -1,15 +1,14 @@
+use std::fmt::Display;
+
 use super::{ContributionId, ContributorId};
-use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use uuid_wrapper::UuidWrapper;
+use wrappers::UuidWrapper;
 
-#[derive(
-	Debug, JsonSchema, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Hash, UuidWrapper,
-)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Hash, UuidWrapper)]
 pub struct Id(Uuid);
 
-#[derive(Debug, JsonSchema, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 pub enum Status {
 	#[default]
 	Pending,
@@ -17,7 +16,21 @@ pub enum Status {
 	Refused,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+impl Display for Status {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(
+			f,
+			"{}",
+			match self {
+				Status::Pending => "pending",
+				Status::Accepted => "accepted",
+				Status::Refused => "refused",
+			}
+		)
+	}
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Application {
 	id: Id,
 	contribution_id: ContributionId,

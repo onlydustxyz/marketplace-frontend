@@ -28,7 +28,7 @@ fn test_de_hex_prefixed_string_wrong_prefix() {
 	assert_de_tokens_error::<HexPrefixedString>(
 		&[Token::Str(test_str)],
 		&format!(
-			"invalid value: string \"{}\", expected a \"0x\" prefixed string representation of an hexadecimal number",
+			"invalid value: string \"{}\", expected a \"0x\" prefixed string, encoding the hexadecimal representation of a number",
 			test_str
 		),
 	)
@@ -40,7 +40,7 @@ fn test_de_hex_prefixed_string_too_short() {
 	assert_de_tokens_error::<HexPrefixedString>(
 		&[Token::Str(test_str)],
 		&format!(
-			"invalid length {}, expected a \"0x\" prefixed string representation of an hexadecimal number",
+			"invalid length {}, expected a \"0x\" prefixed string, encoding the hexadecimal representation of a number",
 			test_str.len()
 		),
 	)
@@ -52,7 +52,7 @@ fn test_de_hex_prefixed_string_non_af_char() {
 	assert_de_tokens_error::<HexPrefixedString>(
 		&[Token::Str(test_str)],
 		&format!(
-			"invalid value: string \"{}\", expected a \"0x\" prefixed string representation of an hexadecimal number",
+			"invalid value: string \"{}\", expected a \"0x\" prefixed string, encoding the hexadecimal representation of a number",
 			test_str
 		),
 	)

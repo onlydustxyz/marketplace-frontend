@@ -12,12 +12,12 @@ use schemars::JsonSchema;
 use serde::Deserialize;
 use uuid::Uuid;
 
-use crate::routes::{to_http_api_problem::ToHttpApiProblem, uuid::UuidParam};
+use crate::routes::{to_http_api_problem::ToHttpApiProblem, u256::U256Param, uuid::UuidParam};
 
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]
 pub struct ApplyDto {
-	contributor_id: ContributorId,
+	contributor_id: U256Param,
 }
 
 #[openapi(tag = "Contributions")]
@@ -31,8 +31,9 @@ pub async fn apply_to_contribution(
 	body: Json<ApplyDto>,
 	usecase: &State<Box<dyn ApplyToContributionUsecase>>,
 ) -> Result<status::Created<&str>, HttpApiProblem> {
-	let contributor_id: ContributorId = body.into_inner().contributor_id;
+	let contributor_id: ContributorId = body.into_inner().contributor_id.into();
 	let contribution_id: ContributionId = Uuid::from(contribution_id).into();
+	debug!("contributor_id {}", contributor_id.to_string());
 
 	usecase
 		.apply_to_contribution(contribution_id, contributor_id)

@@ -592,6 +592,7 @@ dependencies = [
  "assert-json-diff",
  "assert_matches",
  "async-trait",
+ "base16ct",
  "crypto-bigint 0.4.8",
  "diesel",
  "diesel_migrations",
@@ -630,7 +631,7 @@ dependencies = [
  "tokio",
  "url",
  "uuid 0.8.2",
- "uuid_wrapper",
+ "wrappers",
 ]
 
 [[package]]
@@ -3549,15 +3550,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "uuid_wrapper"
-version = "0.1.0"
-dependencies = [
- "quote",
- "syn",
- "uuid 1.1.2",
-]
-
-[[package]]
 name = "valuable"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3840,6 +3832,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "80d0f4e272c85def139476380b12f9ac60926689dd2e01d4923222f40580869d"
 dependencies = [
  "winapi",
+]
+
+[[package]]
+name = "wrappers"
+version = "0.1.0"
+dependencies = [
+ "crypto-bigint 0.4.8",
+ "quote",
+ "syn",
+ "uuid 1.1.2",
 ]
 
 [[package]]
