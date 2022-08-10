@@ -26,24 +26,24 @@ struct ApplyToContribution(RwLock<HashMap<ContributionId, HashMap<ContributorId,
 impl ApplyToContributionUsecase for ApplyToContribution {
 	fn apply_to_contribution(
 		&self,
-		contribution_id: ContributionId,
-		contributor_id: ContributorId,
+		contribution_id: &ContributionId,
+		contributor_id: &ContributorId,
 	) -> Result<(), DomainError> {
 		let mut lock = self.0.write().unwrap();
-		let contribution_db = lock.get_mut(&contribution_id).ok_or_else(|| {
+		let contribution_db = lock.get_mut(contribution_id).ok_or_else(|| {
 			DomainError::ApplicationRepository(ApplicationRepositoryError::InvalidEntity(Box::new(
-				ContributionNotFound(contribution_id),
+				ContributionNotFound(*contribution_id),
 			)))
 		})?;
 
-		let already_applied = contribution_db.get(&contributor_id).copied().unwrap_or_default();
+		let already_applied = contribution_db.get(contributor_id).copied().unwrap_or_default();
 
 		if already_applied {
 			return Err(DomainError::ApplicationRepository(
 				ApplicationRepositoryError::AlreadyExist(Box::new(AlreadyExist)),
 			));
 		}
-		contribution_db.insert(contributor_id, true);
+		contribution_db.insert(*contributor_id, true);
 
 		Ok(())
 	}

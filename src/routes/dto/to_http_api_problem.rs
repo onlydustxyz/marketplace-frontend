@@ -89,6 +89,10 @@ impl ToHttpApiProblem for ApplicationServiceError {
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 					.title(self.to_string())
 					.detail(e.to_string()),
+			ApplicationServiceError::InvalidContributionStatus(e) =>
+				HttpApiProblem::new(StatusCode::BAD_REQUEST)
+					.title(self.to_string())
+					.detail(e.to_string()),
 		}
 	}
 }
