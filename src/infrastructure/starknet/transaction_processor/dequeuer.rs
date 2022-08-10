@@ -76,14 +76,11 @@ fn handle_action_result(
 			match store_action_result(contribution_repository, action, &transaction_hash) {
 				Ok(_) => info!("All actions executed successfully"),
 				Err(e) => {
-					warn!("Cannot execute actions on database: {}", e.to_string())
+					warn!("Cannot execute actions on database: {:?}", e)
 				},
 			}
 		},
-		Err(e) => warn!(
-			"Cannot execute actions on smart contract: {}",
-			e.to_string()
-		),
+		Err(e) => warn!("Cannot execute actions on smart contract: {:?}", e),
 	}
 }
 
