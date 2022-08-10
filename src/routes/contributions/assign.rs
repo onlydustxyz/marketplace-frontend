@@ -36,7 +36,7 @@ pub async fn assign_contributor(
 	let contribution_id: ContributionId = Uuid::from(contribution_id).into();
 
 	usecase
-		.send_assign_request(contribution_id, contributor_id)
+		.send_assign_request(&contribution_id, &contributor_id)
 		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(status::Accepted(None))
