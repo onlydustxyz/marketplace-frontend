@@ -1,6 +1,5 @@
 use deathnote_contributions_feeder::{
-	application::AssignContributionUsecase,
-	domain::{ContributionId, ContributorId},
+	application::AssignContributionUsecase, domain::ContributionId,
 };
 use http_api_problem::HttpApiProblem;
 use rocket::{
@@ -11,12 +10,14 @@ use rocket::{
 use rocket_okapi::{openapi, JsonSchema};
 use uuid::Uuid;
 
-use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem, uuid::UuidParam};
+use crate::routes::{
+	api_key::ApiKey, to_http_api_problem::ToHttpApiProblem, u256::U256Param, uuid::UuidParam,
+};
 
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]
 pub struct AssignContributorDto {
-	contributor_id: ContributorId,
+	contributor_id: U256Param,
 }
 
 #[openapi(tag = "Contributions")]
@@ -31,7 +32,7 @@ pub async fn assign_contributor(
 	body: Json<AssignContributorDto>,
 	usecase: &State<Box<dyn AssignContributionUsecase>>,
 ) -> Result<status::Accepted<()>, HttpApiProblem> {
-	let contributor_id = body.into_inner().contributor_id;
+	let contributor_id = body.into_inner().contributor_id.into();
 	let contribution_id: ContributionId = Uuid::from(contribution_id).into();
 
 	usecase
@@ -44,6 +45,7 @@ pub async fn assign_contributor(
 #[cfg(test)]
 mod test {
 	use super::*;
+	use crypto_bigint::U256;
 	use deathnote_contributions_feeder::{application::MockAssignContribution, domain::*};
 	use http_api_problem::StatusCode;
 	use mockall::predicate::*;
@@ -72,7 +74,7 @@ mod test {
 			ApiKey::default(),
 			Uuid::from_u128(12).into(),
 			AssignContributorDto {
-				contributor_id: 34.into(),
+				contributor_id: U256::from_u128(34).into(),
 			}
 			.into(),
 			State::get(&rocket).unwrap(),
@@ -99,7 +101,7 @@ mod test {
 			ApiKey::default(),
 			Uuid::from_u128(12).into(),
 			AssignContributorDto {
-				contributor_id: 34.into(),
+				contributor_id: U256::from_u128(34).into(),
 			}
 			.into(),
 			State::get(&rocket).unwrap(),

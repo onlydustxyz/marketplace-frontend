@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use itertools::Itertools;
 use mapinto::ResultMapErrInto;
@@ -73,7 +75,7 @@ impl From<models::Application> for Application {
 		Self::new(
 			application.id.into(),
 			application.contribution_id.into(),
-			ContributorId::from(application.contributor_id.as_str()),
+			ContributorId::from_str(application.contributor_id.as_str()).unwrap(),
 			application.status.into(),
 		)
 	}

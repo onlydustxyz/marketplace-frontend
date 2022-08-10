@@ -1,5 +1,5 @@
 [package]
-name = "uuid_wrapper"
+name = "wrappers"
 version = "0.1.0"
 edition = "2021"
 
@@ -12,3 +12,4 @@ proc-macro = true
 syn = "1.0"
 quote = "1.0"
 uuid = { version = "1.1.2" }
+crypto-bigint = { version = "0.4.8" }

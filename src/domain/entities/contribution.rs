@@ -5,7 +5,7 @@ use std::str::FromStr;
 use thiserror::Error;
 use url::Url;
 use uuid::Uuid;
-use uuid_wrapper::UuidWrapper;
+use wrappers::UuidWrapper;
 
 use super::{ContributorId, ProjectId};
 

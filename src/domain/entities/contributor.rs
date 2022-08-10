@@ -1,12 +1,10 @@
-use std::fmt::Display;
+use std::{fmt::Display, str::FromStr};
 
-use schemars::{
-	schema::{InstanceType, SchemaObject, StringValidation},
-	JsonSchema,
-};
 use serde::{Deserialize, Serialize};
 
 use crypto_bigint::U256;
+
+use crate::dto::{u256_from_string, ParseU256Error};
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, Default)]
 pub struct Id(pub U256);
@@ -19,9 +17,11 @@ pub struct Contributor {
 	pub discord_handle: Option<String>,
 }
 
-impl From<&str> for Id {
-	fn from(s: &str) -> Self {
-		Self(U256::from_be_hex(s))
+impl FromStr for Id {
+	type Err = ParseU256Error;
+
+	fn from_str(s: &str) -> Result<Self, Self::Err> {
+		u256_from_string(s).map(Self)
 	}
 }
 
@@ -33,32 +33,12 @@ impl From<U256> for Id {
 
 impl Display for Id {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		Display::fmt(&self.0, f)
+		write!(f, "0x{}", self.0.to_string().to_lowercase())
 	}
 }
 
 impl From<u128> for Id {
 	fn from(id: u128) -> Self {
 		Self(U256::from_u128(id))
-	}
-}
-
-impl JsonSchema for Id {
-	fn schema_name() -> String {
-		"ContributorId".to_string()
-	}
-
-	fn json_schema(_: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-		let schema = SchemaObject {
-			instance_type: Some(InstanceType::String.into()),
-			string: Some(Box::new(StringValidation {
-				min_length: Some(3),
-				max_length: Some(66),
-				pattern: Some("\\b0x[0-9a-f]+\\b".to_string()),
-			})),
-			..Default::default()
-		};
-
-		schema.into()
 	}
 }

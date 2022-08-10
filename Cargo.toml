@@ -55,8 +55,11 @@ rocket_okapi = { version = "0.8.0-rc.2", features = ["swagger", "uuid"] }
 schemars = { version = "0.8", features = ["uuid1", "bigdecimal"] }
 
 # Starknet
-crypto-bigint = { version = "0.4.8", features = ["serde"] }
 starknet = { git = "https://github.com/ofux/starknet-rs" }
+
+# Math types
+base16ct = "0.1.1"
+crypto-bigint = { version = "0.4.8", features = ["serde"] }
 
 # Logs
 env_logger = "0.9.0"
@@ -90,7 +93,7 @@ rstest = "0.15.0"
 assert-json-diff = "2.0.2"
 
 # Local dependecies
-uuid_wrapper = { path = "./uuid_wrapper" }
+wrappers = { path = "./wrappers" }
 
 [dev-dependencies]
 serde_test = "1.0.140"

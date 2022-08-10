@@ -24,6 +24,8 @@ impl From<(FieldElement, FieldElement)> for ContributorId {
 
 #[cfg(test)]
 mod test {
+	use std::str::FromStr;
+
 	use super::*;
 	use starknet::core::types::FieldElement;
 
@@ -34,8 +36,10 @@ mod test {
 			FieldElement::from_dec_str("456").unwrap(),
 		);
 
-		let contributor_id: ContributorId =
-			"000000000000000000000000000001c80000000000000000000000000000007b".into();
+		let contributor_id = ContributorId::from_str(
+			"0x000000000000000000000000000001c80000000000000000000000000000007b",
+		)
+		.unwrap();
 
 		assert_eq!(contributor_id, contributor_id_felt.into());
 		assert_eq!(contributor_id_felt, contributor_id.into());

@@ -2,8 +2,11 @@ use std::sync::Arc;
 
 use super::list_applications;
 
-use deathnote_contributions_feeder::domain::{
-	Application, ApplicationRepository, ApplicationStatus, ContributionId, ContributorId,
+use deathnote_contributions_feeder::{
+	domain::{
+		Application, ApplicationRepository, ApplicationStatus, ContributionId, ContributorId,
+	},
+	dto,
 };
 use rocket::{http::Status, local::blocking::Client, Build};
 use uuid::Uuid;
@@ -99,8 +102,8 @@ fn ok_empty() {
 	assert_eq!(response.status(), Status::Ok);
 
 	assert_eq!(
-		Vec::<Application>::new(),
-		response.into_json::<Vec<Application>>().unwrap()
+		Vec::<dto::Application>::new(),
+		response.into_json::<Vec<dto::Application>>().unwrap()
 	);
 }
 
@@ -116,20 +119,20 @@ fn ok_multiple() {
 	assert_eq!(response.status(), Status::Ok);
 	assert_eq!(
 		vec![
-			Application::new(
-				Uuid::from_u128(0).into(),
-				Uuid::from_u128(0).into(),
-				0u128.into(),
-				ApplicationStatus::Pending,
-			),
-			Application::new(
-				Uuid::from_u128(1).into(),
-				Uuid::from_u128(0).into(),
-				1u128.into(),
-				ApplicationStatus::Pending
-			),
+			dto::Application {
+				id: Uuid::from_u128(0).to_string(),
+				contribution_id: Uuid::from_u128(0).to_string(),
+				contributor_id: ContributorId::from(0).to_string(),
+				status: ApplicationStatus::Pending.to_string(),
+			},
+			dto::Application {
+				id: Uuid::from_u128(1).to_string(),
+				contribution_id: Uuid::from_u128(0).to_string(),
+				contributor_id: ContributorId::from(1).to_string(),
+				status: ApplicationStatus::Pending.to_string(),
+			},
 		],
-		response.into_json::<Vec<Application>>().unwrap()
+		response.into_json::<Vec<dto::Application>>().unwrap()
 	);
 }
 
@@ -146,7 +149,7 @@ fn ok_specifying_contributor() {
 
 	assert_eq!(response.status(), Status::Ok);
 	assert_eq!(
-		Vec::<Application>::new(),
-		response.into_json::<Vec<Application>>().unwrap()
+		Vec::<dto::Application>::new(),
+		response.into_json::<Vec<dto::Application>>().unwrap()
 	);
 }

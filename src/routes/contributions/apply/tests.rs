@@ -64,7 +64,7 @@ fn rocket() -> rocket::Rocket<Build> {
 fn should_return_200_when_ok() {
 	let api_url = "0.0.0.0:8000";
 	let uri = format!("/contributions/{CONTRIBUTION_ID_1}/applications");
-	let contributor_id = "0000000000000000000000000000000000000000000000000000000000000000";
+	let contributor_id = "0x0000000000000000000000000000000000000000000000000000000000000000";
 	std::env::set_var("API_URL", api_url);
 
 	let body = json!({ "contributor_id": contributor_id }).to_string();
@@ -82,7 +82,7 @@ fn should_return_200_when_ok() {
 fn should_return_409_if_already_exist() {
 	let api_url = "0.0.0.0:8000";
 	let uri = format!("/contributions/{CONTRIBUTION_ID_1}/applications");
-	let contributor_id = "0000000000000000000000000000000000000000000000000000000000000000";
+	let contributor_id = "0x0000000000000000000000000000000000000000000000000000000000000000";
 	std::env::set_var("API_URL", api_url);
 
 	let body = json!({ "contributor_id": contributor_id }).to_string();
@@ -110,7 +110,7 @@ fn should_return_400_if_invalid_parameters() {
 	let contribution_uuid = Uuid::from_str(contribution_id_2).unwrap();
 	let api_url = "0.0.0.0:8000";
 	let uri = format!("/contributions/{contribution_id_2}/applications");
-	let contributor_id = "0000000000000000000000000000000000000000000000000000000000000000";
+	let contributor_id = "0x0000000000000000000000000000000000000000000000000000000000000000";
 	std::env::set_var("API_URL", api_url);
 
 	let body = json!({ "contributor_id": contributor_id }).to_string();
