@@ -127,6 +127,7 @@ fn inject_app(
 		))
 		.manage(ApplyToContribution::new_usecase_boxed(
 			database.clone(),
+			database.clone(),
 			uuid_generator,
 		))
 		.manage(ValidateContribution::new_usecase_boxed(
