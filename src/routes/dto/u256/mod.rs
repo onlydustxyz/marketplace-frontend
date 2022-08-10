@@ -52,7 +52,7 @@ impl<'de> Visitor<'de> for U256ParamVisitor {
 		E: serde::de::Error,
 	{
 		U256Param::from_str(v).map_err(|parse_error| match parse_error {
-			ParseU256Error::InvalidLenght => de::Error::invalid_length(v.len(), &self),
+			ParseU256Error::InvalidLength => de::Error::invalid_length(v.len(), &self),
 			_ => de::Error::invalid_value(Unexpected::Str(v), &self),
 		})
 	}
@@ -99,7 +99,7 @@ impl JsonSchema for U256Param {
 impl<'r> FromFormField<'r> for U256Param {
 	fn from_value(field: ValueField<'r>) -> form::Result<'r, Self> {
 		U256Param::from_str(field.value).map_err(|parse_error| match parse_error {
-			ParseU256Error::InvalidLenght => form::error::ErrorKind::InvalidLength {
+			ParseU256Error::InvalidLength => form::error::ErrorKind::InvalidLength {
 				min: Some(3),
 				max: Some(66),
 			}
@@ -123,7 +123,7 @@ impl<'r> FromFormField<'r> for U256Param {
 		let s = std::str::from_utf8(bytes)?;
 
 		U256Param::from_str(s).map_err(|e| match e {
-			ParseU256Error::InvalidLenght => form::error::ErrorKind::InvalidLength {
+			ParseU256Error::InvalidLength => form::error::ErrorKind::InvalidLength {
 				min: Some(3),
 				max: Some(66),
 			}
