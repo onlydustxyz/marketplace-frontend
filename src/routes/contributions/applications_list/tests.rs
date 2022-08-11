@@ -44,7 +44,7 @@ impl ApplicationRepository for EmptyDatabase {
 
 	fn list_by_contributor(
 		&self,
-		_contributor_id: &ContributorId,
+		_contributor_id: Option<&ContributorId>,
 	) -> Result<
 		Vec<deathnote_contributions_feeder::domain::Application>,
 		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
@@ -97,7 +97,7 @@ impl ApplicationRepository for FilledDatabase {
 
 	fn list_by_contributor(
 		&self,
-		_contributor_id: &ContributorId,
+		_contributor_id: Option<&ContributorId>,
 	) -> Result<
 		Vec<deathnote_contributions_feeder::domain::Application>,
 		deathnote_contributions_feeder::domain::ApplicationRepositoryError,

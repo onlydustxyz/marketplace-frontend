@@ -60,12 +60,17 @@ impl ApplicationRepository for Client {
 
 	fn list_by_contributor(
 		&self,
-		contributor_id: &ContributorId,
+		contributor_id: Option<&ContributorId>,
 	) -> Result<Vec<Application>, ApplicationRepositoryError> {
 		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
 
-		let applications = applications::dsl::applications
-			.filter(applications::contributor_id.eq(contributor_id.to_string()))
+		let mut query = applications::dsl::applications.into_boxed();
+
+		if let Some(contributor_id) = contributor_id {
+			query = query.filter(applications::contributor_id.eq(contributor_id.to_string()))
+		}
+
+		let applications = query
 			.load::<models::Application>(&*connection)
 			.map_err(ApplicationRepositoryError::from)?;
 

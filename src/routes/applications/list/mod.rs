@@ -1,10 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use deathnote_contributions_feeder::{
-	domain::{ApplicationRepository, ContributorId},
-	dto,
-};
+use deathnote_contributions_feeder::{domain::ApplicationRepository, dto};
 use http_api_problem::HttpApiProblem;
 use itertools::Itertools;
 use rocket::{serde::json::Json, State};
@@ -16,13 +13,13 @@ use crate::routes::{to_http_api_problem::ToHttpApiProblem, u256::U256Param};
 #[openapi(tag = "Applications")]
 #[get("/applications?<contributor_id>")]
 pub async fn list_contributor_applications(
-	contributor_id: U256Param,
+	contributor_id: Option<U256Param>,
 	application_repository: &State<Arc<dyn ApplicationRepository>>,
 ) -> Result<Json<Vec<dto::Application>>, HttpApiProblem> {
-	let contributor_id: ContributorId = contributor_id.into();
+	let contributor_id = contributor_id.map(|id| id.into());
 
 	let applications = application_repository
-		.list_by_contributor(&contributor_id)
+		.list_by_contributor(contributor_id.as_ref())
 		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(Json(applications.into_iter().map_into().collect()))

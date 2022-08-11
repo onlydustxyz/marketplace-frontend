@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{str::FromStr, sync::Arc};
 
 use super::list_contributor_applications;
 
@@ -47,7 +47,7 @@ impl ApplicationRepository for EmptyDatabase {
 
 	fn list_by_contributor(
 		&self,
-		_contributor_id: &ContributorId,
+		_contributor_id: Option<&ContributorId>,
 	) -> Result<
 		Vec<deathnote_contributions_feeder::domain::Application>,
 		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
@@ -87,42 +87,69 @@ impl ApplicationRepository for FilledDatabase {
 
 	fn list_by_contributor(
 		&self,
-		contributor_id: &ContributorId,
+		contributor_id: Option<&ContributorId>,
 	) -> Result<
 		Vec<deathnote_contributions_feeder::domain::Application>,
 		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
 	> {
-		let contributor = contributor_id.to_string();
-		match contributor.as_str() {
-			CONTRIBUTOR_ID_1 => Ok(vec![
+		match contributor_id {
+			Some(contributor_id) => match contributor_id.to_string().as_str() {
+				CONTRIBUTOR_ID_1 => Ok(vec![
+					Application::new(
+						Uuid::from_u128(2).into(),
+						Uuid::from_u128(0).into(),
+						*contributor_id,
+						ApplicationStatus::Pending,
+					),
+					Application::new(
+						Uuid::from_u128(3).into(),
+						Uuid::from_u128(1).into(),
+						*contributor_id,
+						ApplicationStatus::Pending,
+					),
+				]),
+				CONTRIBUTOR_ID_0 => Ok(vec![
+					Application::new(
+						Uuid::from_u128(0).into(),
+						Uuid::from_u128(0).into(),
+						*contributor_id,
+						ApplicationStatus::Pending,
+					),
+					Application::new(
+						Uuid::from_u128(1).into(),
+						Uuid::from_u128(0).into(),
+						*contributor_id,
+						ApplicationStatus::Pending,
+					),
+				]),
+				_ => Ok(vec![]),
+			},
+			None => Ok(vec![
 				Application::new(
 					Uuid::from_u128(2).into(),
 					Uuid::from_u128(0).into(),
-					*contributor_id,
+					ContributorId::from_str(CONTRIBUTOR_ID_1).unwrap(),
 					ApplicationStatus::Pending,
 				),
 				Application::new(
 					Uuid::from_u128(3).into(),
 					Uuid::from_u128(1).into(),
-					*contributor_id,
+					ContributorId::from_str(CONTRIBUTOR_ID_1).unwrap(),
 					ApplicationStatus::Pending,
 				),
-			]),
-			CONTRIBUTOR_ID_0 => Ok(vec![
 				Application::new(
 					Uuid::from_u128(0).into(),
 					Uuid::from_u128(0).into(),
-					*contributor_id,
+					ContributorId::from_str(CONTRIBUTOR_ID_0).unwrap(),
 					ApplicationStatus::Pending,
 				),
 				Application::new(
 					Uuid::from_u128(1).into(),
 					Uuid::from_u128(0).into(),
-					*contributor_id,
+					ContributorId::from_str(CONTRIBUTOR_ID_0).unwrap(),
 					ApplicationStatus::Pending,
 				),
 			]),
-			_ => Ok(vec![]),
 		}
 	}
 }
@@ -201,7 +228,36 @@ fn ok_no_contributor_given() {
 	.expect("valid rocket instance");
 	let response = client.get(uri).dispatch();
 
-	assert_eq!(response.status(), Status::NotFound);
+	assert_eq!(response.status(), Status::Ok);
+	assert_eq!(
+		vec![
+			dto::Application {
+				id: Uuid::from_u128(2).to_string(),
+				contribution_id: Uuid::from_u128(0).to_string(),
+				contributor_id: ContributorId::from(U256::from_u128(0x911)).to_string(),
+				status: ApplicationStatus::Pending.to_string(),
+			},
+			dto::Application {
+				id: Uuid::from_u128(3).to_string(),
+				contribution_id: Uuid::from_u128(1).to_string(),
+				contributor_id: ContributorId::from(U256::from_u128(0x911)).to_string(),
+				status: ApplicationStatus::Pending.to_string(),
+			},
+			dto::Application {
+				id: Uuid::from_u128(0).to_string(),
+				contribution_id: Uuid::from_u128(0).to_string(),
+				contributor_id: ContributorId::from(U256::from_u128(0)).to_string(),
+				status: ApplicationStatus::Pending.to_string(),
+			},
+			dto::Application {
+				id: Uuid::from_u128(1).to_string(),
+				contribution_id: Uuid::from_u128(0).to_string(),
+				contributor_id: ContributorId::from(U256::from_u128(0)).to_string(),
+				status: ApplicationStatus::Pending.to_string(),
+			},
+		],
+		response.into_json::<Vec<dto::Application>>().unwrap()
+	);
 }
 
 #[test]
@@ -213,5 +269,34 @@ fn ok_empty_contributor_given() {
 	.expect("valid rocket instance");
 	let response = client.get(uri).dispatch();
 
-	assert_eq!(response.status(), Status::NotFound);
+	assert_eq!(response.status(), Status::Ok);
+	assert_eq!(
+		vec![
+			dto::Application {
+				id: Uuid::from_u128(2).to_string(),
+				contribution_id: Uuid::from_u128(0).to_string(),
+				contributor_id: ContributorId::from(U256::from_u128(0x911)).to_string(),
+				status: ApplicationStatus::Pending.to_string(),
+			},
+			dto::Application {
+				id: Uuid::from_u128(3).to_string(),
+				contribution_id: Uuid::from_u128(1).to_string(),
+				contributor_id: ContributorId::from(U256::from_u128(0x911)).to_string(),
+				status: ApplicationStatus::Pending.to_string(),
+			},
+			dto::Application {
+				id: Uuid::from_u128(0).to_string(),
+				contribution_id: Uuid::from_u128(0).to_string(),
+				contributor_id: ContributorId::from(U256::from_u128(0)).to_string(),
+				status: ApplicationStatus::Pending.to_string(),
+			},
+			dto::Application {
+				id: Uuid::from_u128(1).to_string(),
+				contribution_id: Uuid::from_u128(0).to_string(),
+				contributor_id: ContributorId::from(U256::from_u128(0)).to_string(),
+				status: ApplicationStatus::Pending.to_string(),
+			},
+		],
+		response.into_json::<Vec<dto::Application>>().unwrap()
+	);
 }
