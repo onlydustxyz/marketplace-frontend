@@ -23,12 +23,12 @@ struct ContributorIdDynamicParameter(ContributorId);
 pub async fn list_applications(
 	contribution_id: UuidParam,
 	contributor_id: Option<U256Param>,
-	database: &State<Arc<dyn ApplicationRepository>>,
+	application_repository: &State<Arc<dyn ApplicationRepository>>,
 ) -> Result<Json<Vec<dto::Application>>, HttpApiProblem> {
 	let contribution_id: ContributionId = Uuid::from(contribution_id).into();
 	let contributor_id: Option<ContributorId> = contributor_id.map(|id| id.into());
 
-	let applications: Vec<Application> = database
+	let applications: Vec<Application> = application_repository
 		.list_by_contribution(&contribution_id, contributor_id.as_ref())
 		.map_err(|e| e.to_http_api_problem())?;
 
