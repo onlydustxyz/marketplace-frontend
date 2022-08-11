@@ -42,6 +42,6 @@ jobs:
         run: sleep 5
 
       - name: Run end-to-end tests
-        run: cargo run --bin e2e_tests
+        run: cargo run --bin e2e
         env:
           RUST_LOG: debug
