@@ -55,3 +55,23 @@ jobs:
           override: true
       - name: Run tests
         run: cargo test --verbose
+  test_with_database:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Run docker compose
+        run: docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
+        env:
+          BASE_TAG: latest
+      - name: Build
+        run: cargo build
+      - name: Run migrations
+        run: diesel migration run
+      - name: Rust test on db
+        run: cargo test -- --ignored
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost/deathnote_contributions_db
