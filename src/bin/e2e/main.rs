@@ -22,7 +22,7 @@ async fn main() {
 	const ISSUE_NUMBER: u64 = 51;
 	add_contribution(ISSUE_NUMBER, starkonquest_id, 0, "0x123").await;
 
-	wait_for_result("src/data/contributions_open.json").await;
+	wait_for_result("src/bin/e2e/data/contributions_open.json").await;
 
 	let starkonquest = find_project_by_title(&list_all_projects().await, "starkonquest")
 		.expect("Project not found in list of all projects");
@@ -36,11 +36,11 @@ async fn main() {
 	const CONTRIBUTOR_ID: u128 = 123;
 	assign_contribution(contribution_id, CONTRIBUTOR_ID).await;
 
-	wait_for_result("src/data/contributions_assigned.json").await;
+	wait_for_result("src/bin/e2e/data/contributions_assigned.json").await;
 
 	validate_contribution(contribution_id).await;
 
-	wait_for_result("src/data/contributions_validated.json").await;
+	wait_for_result("src/bin/e2e/data/contributions_validated.json").await;
 }
 
 async fn add_all_projects() {
