@@ -22,12 +22,17 @@ fn init_project(client: &Client) -> Project {
 }
 
 fn init_contribution(client: &Client) -> Contribution {
+	init_contribution_with_status(client, Default::default())
+}
+
+fn init_contribution_with_status(client: &Client, status: ContributionStatus) -> Contribution {
 	let project = init_project(client);
 
 	let contribution = Contribution {
 		id: Uuid::new_v4().into(),
 		onchain_id: Uuid::new_v4().to_string(),
 		project_id: project.id,
+		status,
 		..Default::default()
 	};
 	<Client as ContributionRepository>::store(client, contribution.clone(), Default::default())
