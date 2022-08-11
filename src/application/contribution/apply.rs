@@ -17,12 +17,18 @@ pub struct ApplyToContribution {
 }
 
 impl ApplyToContribution {
+	pub fn new(contribution_service: Arc<dyn ContributionService>) -> Self {
+		Self {
+			contribution_service,
+		}
+	}
+}
+
+impl ApplyToContribution {
 	pub fn new_usecase_boxed(
 		contribution_service: Arc<dyn ContributionService>,
 	) -> Box<dyn Usecase> {
-		Box::new(Self {
-			contribution_service,
-		})
+		Box::new(Self::new(contribution_service))
 	}
 }
 

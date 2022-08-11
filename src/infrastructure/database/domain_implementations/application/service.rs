@@ -5,7 +5,7 @@ use crate::{
 	domain::*,
 	infrastructure::database::{
 		models::{self, Status},
-		schema::applications,
+		schema::{applications, contributions},
 		Client,
 	},
 };
@@ -19,30 +19,79 @@ impl ApplicationService for Client {
 			.connection()
 			.map_err(|e| ApplicationServiceError::Infrastructure(Box::new(e)))?;
 
-		let res: Result<Application, diesel::result::Error> = connection.transaction(|| {
-			// Set the chosen one to accepted
-			let application: Application = diesel::update(
-				applications::dsl::applications.filter(applications::id.eq(id.as_uuid())),
-			)
-			.set(applications::status.eq(Status::Accepted))
-			.get_result::<models::Application>(&*connection)
+		let application: Application = applications::dsl::applications
+			.find(id.as_uuid())
+			.first::<models::Application>(&*connection)
 			.map_into()?;
 
-			// Set all other applications to refused
-			diesel::update(
-				applications::dsl::applications.filter(
-					applications::contribution_id
-						.eq(application.contribution_id().as_uuid())
-						.and(applications::id.ne(id.as_uuid())),
-				),
-			)
-			.set(applications::status.eq(Status::Refused))
-			.execute(&*connection)?;
+		if *application.status() != ApplicationStatus::Pending {
+			return Err(ApplicationServiceError::InvalidApplicationStatus {
+				current: *application.status(),
+				required: ApplicationStatus::Pending,
+			});
+		}
 
-			Ok(application)
-		});
+		let res: Result<models::Application, diesel::result::Error> =
+			connection.transaction(|| {
+				// Set the chosen one to accepted
+				let application = diesel::update(
+					applications::dsl::applications.filter(applications::id.eq(id.as_uuid())),
+				)
+				.set(applications::status.eq(Status::Accepted))
+				.get_result::<models::Application>(&*connection)?;
 
-		res.map_err_into()
+				// Set all other applications to refused
+				diesel::update(
+					applications::dsl::applications.filter(
+						applications::contribution_id
+							.eq(application.contribution_id)
+							.and(applications::id.ne(id.as_uuid())),
+					),
+				)
+				.set(applications::status.eq(Status::Refused))
+				.execute(&*connection)?;
+
+				Ok(application)
+			});
+
+		res.map_into().map_err_into()
+	}
+
+	fn apply(
+		&self,
+		id: ApplicationId,
+		contribution_id: ContributionId,
+		contributor_id: ContributorId,
+	) -> Result<(), ApplicationServiceError> {
+		let connection = self
+			.connection()
+			.map_err(|e| ApplicationServiceError::Infrastructure(Box::new(e)))?;
+
+		let contribution: Contribution = contributions::dsl::contributions
+			.find(contribution_id.as_uuid())
+			.first::<models::Contribution>(&*connection)
+			.map_into()?;
+
+		if contribution.status != ContributionStatus::Open {
+			return Err(ApplicationServiceError::InvalidContributionStatus {
+				required: ContributionStatus::Open,
+				current: contribution.status,
+			});
+		}
+
+		let application = models::NewApplication {
+			id: *id.as_uuid(),
+			contribution_id: *contribution_id.as_uuid(),
+			contributor_id: contributor_id.to_string(),
+			status: Status::Pending,
+		};
+
+		diesel::insert_into(applications::table)
+			.values(&application)
+			.execute(&*connection)
+			.map_err(ApplicationServiceError::from)?;
+
+		Ok(())
 	}
 }
 
