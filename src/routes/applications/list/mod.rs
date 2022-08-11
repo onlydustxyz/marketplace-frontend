@@ -1,29 +1,29 @@
-use deathnote_contributions_feeder::domain::{Application, ApplicationRepository, ContributorId};
+#[cfg(test)]
+mod tests;
+
+use deathnote_contributions_feeder::{
+	domain::{ApplicationRepository, ContributorId},
+	dto,
+};
 use http_api_problem::HttpApiProblem;
+use itertools::Itertools;
 use rocket::{serde::json::Json, State};
 use rocket_okapi::openapi;
 use std::sync::Arc;
 
-use crate::routes::{
-	hex_prefixed_string::HexPrefixedString, to_http_api_problem::ToHttpApiProblem,
-};
-
-#[cfg(test)]
-mod tests;
+use crate::routes::{to_http_api_problem::ToHttpApiProblem, u256::U256Param};
 
 #[openapi(tag = "Applications")]
 #[get("/applications?<contributor_id>")]
 pub async fn list_contributor_applications(
-	contributor_id: HexPrefixedString,
-	database: &State<Arc<dyn ApplicationRepository>>,
-) -> Result<Json<Vec<Application>>, HttpApiProblem> {
-	let contributor_id: ContributorId = contributor_id.as_unprefixed_str().into();
+	contributor_id: U256Param,
+	application_repository: &State<Arc<dyn ApplicationRepository>>,
+) -> Result<Json<Vec<dto::Application>>, HttpApiProblem> {
+	let contributor_id: ContributorId = contributor_id.into();
 
-	let applications = database
+	let applications = application_repository
 		.list_by_contributor(&contributor_id)
 		.map_err(|e| e.to_http_api_problem())?;
 
-	println!("response len = {:}", applications.len());
-
-	Ok(Json(applications))
+	Ok(Json(applications.into_iter().map_into().collect()))
 }

@@ -64,12 +64,8 @@ impl ApplicationRepository for Client {
 	) -> Result<Vec<Application>, ApplicationRepositoryError> {
 		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
 
-		// println!("{:?}", contributor_id);
-		let query = applications::dsl::applications
+		let applications = applications::dsl::applications
 			.filter(applications::contributor_id.eq(contributor_id.to_string()))
-			.into_boxed();
-
-		let applications = query
 			.load::<models::Application>(&*connection)
 			.map_err(ApplicationRepositoryError::from)?;
 

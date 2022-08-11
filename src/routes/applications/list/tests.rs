@@ -2,8 +2,12 @@ use std::sync::Arc;
 
 use super::list_contributor_applications;
 
-use deathnote_contributions_feeder::domain::{
-	Application, ApplicationRepository, ApplicationStatus, ContributionId, ContributorId,
+use crypto_bigint::U256;
+use deathnote_contributions_feeder::{
+	domain::{
+		Application, ApplicationRepository, ApplicationStatus, ContributionId, ContributorId,
+	},
+	dto,
 };
 use rocket::{http::Status, local::blocking::Client, Build};
 use uuid::Uuid;
@@ -88,19 +92,19 @@ impl ApplicationRepository for FilledDatabase {
 		Vec<deathnote_contributions_feeder::domain::Application>,
 		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
 	> {
-		let contributor = format!("0x{}", contributor_id);
+		let contributor = contributor_id.to_string();
 		match contributor.as_str() {
 			CONTRIBUTOR_ID_1 => Ok(vec![
 				Application::new(
 					Uuid::from_u128(2).into(),
 					Uuid::from_u128(0).into(),
-					911u128.into(),
+					*contributor_id,
 					ApplicationStatus::Pending,
 				),
 				Application::new(
 					Uuid::from_u128(3).into(),
 					Uuid::from_u128(1).into(),
-					911u128.into(),
+					*contributor_id,
 					ApplicationStatus::Pending,
 				),
 			]),
@@ -108,13 +112,13 @@ impl ApplicationRepository for FilledDatabase {
 				Application::new(
 					Uuid::from_u128(0).into(),
 					Uuid::from_u128(0).into(),
-					0u128.into(),
+					*contributor_id,
 					ApplicationStatus::Pending,
 				),
 				Application::new(
 					Uuid::from_u128(1).into(),
 					Uuid::from_u128(0).into(),
-					0u128.into(),
+					*contributor_id,
 					ApplicationStatus::Pending,
 				),
 			]),
@@ -138,8 +142,8 @@ fn ok_empty() {
 
 	assert_eq!(response.status(), Status::Ok);
 	assert_eq!(
-		Vec::<Application>::new(),
-		response.into_json::<Vec<Application>>().unwrap()
+		Vec::<dto::Application>::new(),
+		response.into_json::<Vec<dto::Application>>().unwrap()
 	);
 }
 
@@ -155,20 +159,20 @@ fn ok_multiple() {
 	assert_eq!(response.status(), Status::Ok);
 	assert_eq!(
 		vec![
-			Application::new(
-				Uuid::from_u128(2).into(),
-				Uuid::from_u128(0).into(),
-				911u128.into(),
-				ApplicationStatus::Pending,
-			),
-			Application::new(
-				Uuid::from_u128(3).into(),
-				Uuid::from_u128(1).into(),
-				911u128.into(),
-				ApplicationStatus::Pending,
-			)
+			dto::Application {
+				id: Uuid::from_u128(2).to_string(),
+				contribution_id: Uuid::from_u128(0).to_string(),
+				contributor_id: ContributorId::from(U256::from_u128(0x911)).to_string(),
+				status: ApplicationStatus::Pending.to_string(),
+			},
+			dto::Application {
+				id: Uuid::from_u128(3).to_string(),
+				contribution_id: Uuid::from_u128(1).to_string(),
+				contributor_id: ContributorId::from(U256::from_u128(0x911)).to_string(),
+				status: ApplicationStatus::Pending.to_string(),
+			}
 		],
-		response.into_json::<Vec<Application>>().unwrap()
+		response.into_json::<Vec<dto::Application>>().unwrap()
 	);
 }
 
@@ -183,7 +187,31 @@ fn ok_no_application_from_contributor() {
 
 	assert_eq!(response.status(), Status::Ok);
 	assert_eq!(
-		Vec::<Application>::new(),
-		response.into_json::<Vec<Application>>().unwrap()
+		Vec::<dto::Application>::new(),
+		response.into_json::<Vec<dto::Application>>().unwrap()
 	);
+}
+
+#[test]
+fn ok_no_contributor_given() {
+	let uri = "/applications";
+	let client = Client::untracked(
+		rocket().manage(Arc::new(FilledDatabase) as Arc<dyn ApplicationRepository>),
+	)
+	.expect("valid rocket instance");
+	let response = client.get(uri).dispatch();
+
+	assert_eq!(response.status(), Status::NotFound);
+}
+
+#[test]
+fn ok_empty_contributor_given() {
+	let uri = "/applications?contributor_id=";
+	let client = Client::untracked(
+		rocket().manage(Arc::new(FilledDatabase) as Arc<dyn ApplicationRepository>),
+	)
+	.expect("valid rocket instance");
+	let response = client.get(uri).dispatch();
+
+	assert_eq!(response.status(), Status::NotFound);
 }
