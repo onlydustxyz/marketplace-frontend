@@ -1,7 +1,6 @@
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
 
 use crate::domain::*;
-use mapinto::ResultMapErrInto;
 
 // Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be
 // `Send` and `Sync`
@@ -14,21 +13,15 @@ pub trait Usecase: Send + Sync {
 }
 
 pub struct ApplyToContribution {
-	application_repository: Arc<dyn ApplicationRepository>,
-	contribution_repository: Arc<dyn ContributionRepository>,
-	uuid_generator: Arc<RwLock<dyn UuidGenerator>>,
+	contribution_service: Arc<dyn ContributionService>,
 }
 
 impl ApplyToContribution {
 	pub fn new_usecase_boxed(
-		application_repository: Arc<dyn ApplicationRepository>,
-		contribution_repository: Arc<dyn ContributionRepository>,
-		uuid_generator: Arc<RwLock<dyn UuidGenerator>>,
+		contribution_service: Arc<dyn ContributionService>,
 	) -> Box<dyn Usecase> {
 		Box::new(Self {
-			application_repository,
-			contribution_repository,
-			uuid_generator,
+			contribution_service,
 		})
 	}
 }
@@ -39,27 +32,6 @@ impl Usecase for ApplyToContribution {
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
 	) -> Result<(), DomainError> {
-		let contribution = self
-			.contribution_repository
-			.find_by_id(contribution_id)
-			.map_err(DomainError::from)?
-			.ok_or_else(|| DomainError::from(ContributionRepositoryError::NotFound))?;
-
-		if contribution.status != ContributionStatus::Open {
-			return Err(
-				ApplicationServiceError::InvalidContributionStatus(contribution.status).into(),
-			);
-		}
-
-		let uuid = self.uuid_generator.write().map_err(|_| DomainError::Lock)?.new_uuid();
-
-		let application = Application::new(
-			uuid.into(),
-			*contribution_id,
-			*contributor_id,
-			ApplicationStatus::Pending,
-		);
-
-		self.application_repository.store(application).map_err_into()
+		self.contribution_service.apply(contribution_id, contributor_id)
 	}
 }
