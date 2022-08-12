@@ -37,7 +37,7 @@ impl ApplicationRepository for EmptyDatabase {
 	fn list_by_contribution(
 		&self,
 		_contribution_id: &ContributionId,
-		_contributor_id: Option<&ContributorId>,
+		_contributor_id: Option<ContributorId>,
 	) -> Result<
 		Vec<deathnote_contributions_feeder::domain::Application>,
 		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
@@ -47,7 +47,7 @@ impl ApplicationRepository for EmptyDatabase {
 
 	fn list_by_contributor(
 		&self,
-		_contributor_id: Option<&ContributorId>,
+		_contributor_id: Option<ContributorId>,
 	) -> Result<
 		Vec<deathnote_contributions_feeder::domain::Application>,
 		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
@@ -77,7 +77,7 @@ impl ApplicationRepository for FilledDatabase {
 	fn list_by_contribution(
 		&self,
 		_contribution_id: &ContributionId,
-		_contributor_id: Option<&ContributorId>,
+		_contributor_id: Option<ContributorId>,
 	) -> Result<
 		Vec<deathnote_contributions_feeder::domain::Application>,
 		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
@@ -87,7 +87,7 @@ impl ApplicationRepository for FilledDatabase {
 
 	fn list_by_contributor(
 		&self,
-		contributor_id: Option<&ContributorId>,
+		contributor_id: Option<ContributorId>,
 	) -> Result<
 		Vec<deathnote_contributions_feeder::domain::Application>,
 		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
@@ -98,13 +98,13 @@ impl ApplicationRepository for FilledDatabase {
 					Application::new(
 						Uuid::from_u128(2).into(),
 						Uuid::from_u128(0).into(),
-						*contributor_id,
+						contributor_id,
 						ApplicationStatus::Pending,
 					),
 					Application::new(
 						Uuid::from_u128(3).into(),
 						Uuid::from_u128(1).into(),
-						*contributor_id,
+						contributor_id,
 						ApplicationStatus::Pending,
 					),
 				]),
@@ -112,13 +112,13 @@ impl ApplicationRepository for FilledDatabase {
 					Application::new(
 						Uuid::from_u128(0).into(),
 						Uuid::from_u128(0).into(),
-						*contributor_id,
+						contributor_id,
 						ApplicationStatus::Pending,
 					),
 					Application::new(
 						Uuid::from_u128(1).into(),
 						Uuid::from_u128(0).into(),
-						*contributor_id,
+						contributor_id,
 						ApplicationStatus::Pending,
 					),
 				]),

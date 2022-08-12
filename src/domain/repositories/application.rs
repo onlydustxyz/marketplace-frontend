@@ -1,3 +1,4 @@
+use mockall::automock;
 use thiserror::Error;
 
 use crate::domain::*;
@@ -14,16 +15,17 @@ pub enum Error {
 	Infrastructure(#[source] Box<dyn std::error::Error>),
 }
 
+#[automock]
 pub trait Repository: Send + Sync {
 	fn store(&self, application: Application) -> Result<(), Error>;
 	fn find(&self, id: &ApplicationId) -> Result<Option<Application>, Error>;
 	fn list_by_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: Option<&ContributorId>,
+		contributor_id: Option<ContributorId>,
 	) -> Result<Vec<Application>, Error>;
 	fn list_by_contributor(
 		&self,
-		contributor_id: Option<&ContributorId>,
+		contributor_id: Option<ContributorId>,
 	) -> Result<Vec<Application>, Error>;
 }

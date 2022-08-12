@@ -39,7 +39,7 @@ impl ApplicationRepository for Client {
 	fn list_by_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: Option<&ContributorId>,
+		contributor_id: Option<ContributorId>,
 	) -> Result<Vec<Application>, ApplicationRepositoryError> {
 		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
 
@@ -60,7 +60,7 @@ impl ApplicationRepository for Client {
 
 	fn list_by_contributor(
 		&self,
-		contributor_id: Option<&ContributorId>,
+		contributor_id: Option<ContributorId>,
 	) -> Result<Vec<Application>, ApplicationRepositoryError> {
 		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
 
@@ -104,10 +104,12 @@ impl From<diesel::result::Error> for ApplicationRepositoryError {
 	fn from(error: diesel::result::Error) -> Self {
 		match error {
 			diesel::result::Error::DatabaseError(kind, _) => match kind {
-				diesel::result::DatabaseErrorKind::UniqueViolation =>
-					Self::AlreadyExist(Box::new(error)),
-				diesel::result::DatabaseErrorKind::ForeignKeyViolation =>
-					Self::InvalidEntity(Box::new(error)),
+				diesel::result::DatabaseErrorKind::UniqueViolation => {
+					Self::AlreadyExist(Box::new(error))
+				},
+				diesel::result::DatabaseErrorKind::ForeignKeyViolation => {
+					Self::InvalidEntity(Box::new(error))
+				},
 				_ => Self::Infrastructure(Box::new(error)),
 			},
 			diesel::result::Error::NotFound => Self::NotFound,
