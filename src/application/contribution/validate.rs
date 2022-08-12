@@ -42,9 +42,7 @@ impl Usecase for ValidateContribution {
 #[cfg(test)]
 mod test {
 	use super::*;
-	use mockall::predicate::*;
 	use rstest::*;
-	use starknet::core::types::FieldElement;
 	use thiserror::Error;
 	use uuid::Uuid;
 
@@ -68,32 +66,11 @@ mod test {
 		mut contribution_repository: MockContributionRepository,
 	) {
 		let contribution_id = Uuid::from_u128(12).into();
-		contribution_repository.expect_find_by_id().returning(|_| {
-			Ok(Some(Contribution {
-				id: Uuid::from_u128(12).into(),
-				onchain_id: String::from("22"),
-				project_id: String::from("34"),
-				contributor_id: None,
-				title: None,
-				description: None,
-				status: ContributionStatus::Open,
-				external_link: None,
-				gate: 0,
-				metadata: ContributionMetadata {
-					difficulty: None,
-					technology: None,
-					duration: None,
-					context: None,
-					r#type: None,
-				},
-				validator: FieldElement::ZERO,
-			}))
-		});
+		contribution_repository
+			.expect_find_by_id()
+			.returning(|_| Ok(Some(Contribution::default())));
 
-		onchain_contribution_service
-			.expect_validate()
-			.with(eq(String::from("22")))
-			.returning(|_| Ok(()));
+		onchain_contribution_service.expect_validate().returning(|_| Ok(()));
 
 		let usecase = ValidateContribution::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),
@@ -154,36 +131,15 @@ mod test {
 		mut contribution_repository: MockContributionRepository,
 	) {
 		let contribution_id = Uuid::from_u128(12).into();
-		contribution_repository.expect_find_by_id().returning(|_| {
-			Ok(Some(Contribution {
-				id: Uuid::from_u128(12).into(),
-				onchain_id: String::from("22"),
-				project_id: String::from("34"),
-				contributor_id: None,
-				title: None,
-				description: None,
-				status: ContributionStatus::Open,
-				external_link: None,
-				gate: 0,
-				metadata: ContributionMetadata {
-					difficulty: None,
-					technology: None,
-					duration: None,
-					context: None,
-					r#type: None,
-				},
-				validator: FieldElement::ZERO,
-			}))
-		});
+		contribution_repository
+			.expect_find_by_id()
+			.returning(|_| Ok(Some(Contribution::default())));
 
-		onchain_contribution_service
-			.expect_validate()
-			.with(eq(String::from("22")))
-			.returning(|_| {
-				Err(OnchainContributionServiceError::Infrastructure(Box::new(
-					Error,
-				)))
-			});
+		onchain_contribution_service.expect_validate().returning(|_| {
+			Err(OnchainContributionServiceError::Infrastructure(Box::new(
+				Error,
+			)))
+		});
 
 		let usecase = ValidateContribution::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),
