@@ -1,6 +1,6 @@
 use super::{
 	ApplicationRepositoryError, ApplicationServiceError, ContributionRepositoryError,
-	ContributorRepositoryError, OnchainContributionServiceError,
+	ContributionServiceError, ContributorRepositoryError, OnchainContributionServiceError,
 };
 use thiserror::Error;
 
@@ -12,7 +12,7 @@ pub enum Error {
 	ContributionRepository(#[from] ContributionRepositoryError),
 	#[error("Contributor repository error")]
 	ContributorRepository(#[from] ContributorRepositoryError),
-	#[error("Contribution service error")]
+	#[error("Onchain contribution service error")]
 	OnchainContributionService(#[from] OnchainContributionServiceError),
 	#[error("Application service error")]
 	ApplicationService(#[from] ApplicationServiceError),

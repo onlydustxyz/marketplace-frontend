@@ -206,7 +206,7 @@ mod test {
 
 		assert!(result.is_err());
 		assert_eq!(
-			"Contribution service error",
+			"Onchain contribution service error",
 			result.unwrap_err().to_string()
 		);
 	}
