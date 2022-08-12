@@ -4,7 +4,7 @@ use mapinto::ResultMapErrInto;
 
 use crate::domain::{
 	ApplicationId, ApplicationService, ContributionRepository, ContributionRepositoryError,
-	ContributionService, DomainError,
+	DomainError, OnchainContributionService,
 };
 
 pub trait Usecase: Send + Sync {
@@ -12,19 +12,19 @@ pub trait Usecase: Send + Sync {
 }
 
 pub struct AcceptApplication {
-	contribution_service: Arc<dyn ContributionService>,
+	onchain_contribution_service: Arc<dyn OnchainContributionService>,
 	contribution_repository: Arc<dyn ContributionRepository>,
 	application_repository: Arc<dyn ApplicationService>,
 }
 
 impl AcceptApplication {
 	pub fn new_usecase_boxed(
-		contribution_service: Arc<dyn ContributionService>,
+		onchain_contribution_service: Arc<dyn OnchainContributionService>,
 		contribution_repository: Arc<dyn ContributionRepository>,
 		application_repository: Arc<dyn ApplicationService>,
 	) -> Box<dyn Usecase> {
 		Box::new(Self {
-			contribution_service,
+			onchain_contribution_service,
 			contribution_repository,
 			application_repository,
 		})
@@ -44,7 +44,7 @@ impl Usecase for AcceptApplication {
 			.map_err(DomainError::from)?
 			.ok_or_else(|| DomainError::from(ContributionRepositoryError::NotFound))?;
 
-		self.contribution_service
+		self.onchain_contribution_service
 			.assign_contributor(
 				contribution.onchain_id,
 				*accepted_application.contributor_id(),

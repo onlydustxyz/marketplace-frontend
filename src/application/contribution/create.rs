@@ -9,22 +9,22 @@ pub trait Usecase: Send + Sync {
 }
 
 pub struct CreateContribution {
-	contribution_service: Arc<dyn ContributionService>,
+	onchain_contribution_service: Arc<dyn OnchainContributionService>,
 }
 
 impl CreateContribution {
 	pub fn new_usecase_boxed(
-		contribution_service: Arc<dyn ContributionService>,
+		onchain_contribution_service: Arc<dyn OnchainContributionService>,
 	) -> Box<dyn Usecase> {
 		Box::new(Self {
-			contribution_service,
+			onchain_contribution_service,
 		})
 	}
 }
 
 impl Usecase for CreateContribution {
 	fn send_creation_request(&self, contribution: Contribution) -> Result<(), DomainError> {
-		self.contribution_service.create(contribution).map_err_into()
+		self.onchain_contribution_service.create(contribution).map_err_into()
 	}
 }
 
@@ -42,7 +42,7 @@ mod test {
 
 	#[test]
 	fn forward_request() {
-		let mut contribution_service = MockContributionService::new();
+		let mut onchain_contribution_service = MockOnchainContributionService::new();
 
 		let contribution = Contribution {
 			id: Uuid::from_u128(12).into(),
@@ -64,12 +64,12 @@ mod test {
 			validator: FieldElement::ZERO,
 		};
 
-		contribution_service
+		onchain_contribution_service
 			.expect_create()
 			.with(eq(contribution.clone()))
 			.returning(|_| Ok(()));
 
-		let usecase = CreateContribution::new_usecase_boxed(Arc::new(contribution_service));
+		let usecase = CreateContribution::new_usecase_boxed(Arc::new(onchain_contribution_service));
 
 		let result = usecase.send_creation_request(contribution);
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
@@ -77,7 +77,7 @@ mod test {
 
 	#[test]
 	fn forward_request_error() {
-		let mut contribution_service = MockContributionService::new();
+		let mut onchain_contribution_service = MockOnchainContributionService::new();
 
 		let contribution = Contribution {
 			id: Uuid::from_u128(12).into(),
@@ -99,11 +99,13 @@ mod test {
 			validator: FieldElement::ZERO,
 		};
 
-		contribution_service
-			.expect_create()
-			.returning(|_| Err(ContributionServiceError::Infrastructure(Box::new(Error))));
+		onchain_contribution_service.expect_create().returning(|_| {
+			Err(OnchainContributionServiceError::Infrastructure(Box::new(
+				Error,
+			)))
+		});
 
-		let usecase = CreateContribution::new_usecase_boxed(Arc::new(contribution_service));
+		let usecase = CreateContribution::new_usecase_boxed(Arc::new(onchain_contribution_service));
 
 		let result = usecase.send_creation_request(contribution);
 		assert!(result.is_err());
