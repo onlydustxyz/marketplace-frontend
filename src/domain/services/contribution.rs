@@ -1,8 +1,17 @@
 use std::sync::{Arc, RwLock};
+use thiserror::Error;
 
 use crate::domain::*;
 use mapinto::ResultMapErrInto;
 use mockall::automock;
+
+#[derive(Debug, Error)]
+pub enum Error {
+	#[error(
+		"The current contribution status, `{0}`, does not allow it to recieve new applications"
+	)]
+	CannotApply(ContributionStatus),
+}
 
 #[automock]
 pub trait Service: Send + Sync {
@@ -32,9 +41,7 @@ impl Service for ContributionService {
 			.ok_or_else(|| DomainError::from(ContributionRepositoryError::NotFound))?;
 
 		if contribution.status != ContributionStatus::Open {
-			return Err(
-				ApplicationServiceError::InvalidContributionStatus(contribution.status).into(),
-			);
+			return Err(Error::CannotApply(contribution.status).into());
 		}
 
 		let uuid = self.uuid_generator.write().map_err(|_| DomainError::Lock)?.new_uuid();
