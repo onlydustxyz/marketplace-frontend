@@ -110,7 +110,7 @@ mod test {
 		let result = usecase.send_creation_request(contribution);
 		assert!(result.is_err());
 		assert_eq!(
-			"Contribution service error",
+			"Onchain contribution service error",
 			result.unwrap_err().to_string()
 		);
 	}
