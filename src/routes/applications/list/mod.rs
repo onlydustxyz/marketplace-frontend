@@ -19,7 +19,7 @@ pub async fn list_contributor_applications(
 	let contributor_id = contributor_id.map(|id| id.into());
 
 	let applications = application_repository
-		.list_by_contributor(contributor_id.as_ref())
+		.list_by_contributor(contributor_id)
 		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(Json(applications.into_iter().map_into().collect()))
