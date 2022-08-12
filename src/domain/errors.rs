@@ -16,6 +16,8 @@ pub enum Error {
 	OnchainContributionService(#[from] OnchainContributionServiceError),
 	#[error("Application service error")]
 	ApplicationService(#[from] ApplicationServiceError),
+	#[error("Contribution service error")]
+	ContributionService(#[from] ContributionServiceError),
 	#[error("Failed to take control of a lock")]
 	Lock,
 }

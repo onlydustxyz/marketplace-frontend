@@ -1,6 +1,7 @@
 use deathnote_contributions_feeder::domain::{
 	ApplicationRepositoryError, ApplicationServiceError, ContributionRepositoryError,
-	ContributorRepositoryError, DomainError, OnchainContributionServiceError,
+	ContributionServiceError, ContributorRepositoryError, DomainError,
+	OnchainContributionServiceError,
 };
 use http_api_problem::{HttpApiProblem, StatusCode};
 
@@ -82,6 +83,18 @@ impl ToHttpApiProblem for OnchainContributionServiceError {
 	}
 }
 
+impl ToHttpApiProblem for ContributionServiceError {
+	fn to_http_api_problem(&self) -> HttpApiProblem {
+		match self {
+			ContributionServiceError::CannotApply(e) => {
+				HttpApiProblem::new(StatusCode::BAD_REQUEST)
+					.title(self.to_string())
+					.detail(e.to_string())
+			},
+		}
+	}
+}
+
 impl ToHttpApiProblem for ApplicationServiceError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		match self {
@@ -124,7 +137,10 @@ impl ToHttpApiProblem for DomainError {
 			DomainError::ContributorRepository(contributor_repository_error) => {
 				contributor_repository_error.to_http_api_problem()
 			},
-			DomainError::OnchainContributionService(contribution_service_error) => {
+			DomainError::OnchainContributionService(onchain_contribution_service_error) => {
+				onchain_contribution_service_error.to_http_api_problem()
+			},
+			DomainError::ContributionService(contribution_service_error) => {
 				contribution_service_error.to_http_api_problem()
 			},
 			DomainError::ApplicationService(application_service_error) => {
