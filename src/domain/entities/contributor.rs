@@ -9,7 +9,7 @@ use crate::dto::{u256_from_string, ParseU256Error};
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, Default)]
 pub struct Id(pub U256);
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Default)]
 pub struct Contributor {
 	pub id: Id,
 	pub github_username: Option<String>,
