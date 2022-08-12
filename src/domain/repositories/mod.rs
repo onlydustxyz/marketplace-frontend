@@ -14,4 +14,7 @@ pub use contributor::{
 };
 
 mod application;
-pub use application::{Error as ApplicationRepositoryError, Repository as ApplicationRepository};
+pub use application::{
+	Error as ApplicationRepositoryError, MockRepository as MockApplicationRepository,
+	Repository as ApplicationRepository,
+};
