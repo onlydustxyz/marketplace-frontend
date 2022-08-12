@@ -49,28 +49,13 @@ mod test {
 		contributor_repository
 			.expect_find()
 			.with(eq(ContributorId::from(12)))
-			.returning(|_| {
-				Ok(Some(Contributor {
-					id: ContributorId::from(12),
-					discord_handle: None,
-					github_handle: None,
-					github_username: None,
-				}))
-			});
+			.returning(|_| Ok(Some(Contributor::default())));
 
 		let usecase = GetContributor::new_usecase_boxed(Arc::new(contributor_repository));
 
 		let result = usecase.find_by_id(ContributorId::from(12));
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
-		assert_eq!(
-			Contributor {
-				id: ContributorId::from(12),
-				discord_handle: None,
-				github_handle: None,
-				github_username: None,
-			},
-			result.unwrap().unwrap()
-		);
+		assert_eq!(Contributor::default(), result.unwrap().unwrap());
 	}
 
 	#[test]
