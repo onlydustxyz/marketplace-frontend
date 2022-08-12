@@ -1,6 +1,6 @@
 use super::{
 	ApplicationRepositoryError, ApplicationServiceError, ContributionRepositoryError,
-	ContributionServiceError, ContributorRepositoryError,
+	ContributorRepositoryError, OnchainContributionServiceError,
 };
 use thiserror::Error;
 
@@ -13,7 +13,7 @@ pub enum Error {
 	#[error("Contributor repository error")]
 	ContributorRepository(#[from] ContributorRepositoryError),
 	#[error("Contribution service error")]
-	ContributionService(#[from] ContributionServiceError),
+	OnchainContributionService(#[from] OnchainContributionServiceError),
 	#[error("Application service error")]
 	ApplicationService(#[from] ApplicationServiceError),
 	#[error("Failed to take control of a lock")]

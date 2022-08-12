@@ -1,7 +1,7 @@
-mod contribution;
-pub use contribution::{
-	Error as ContributionServiceError, MockService as MockContributionService,
-	Service as ContributionService,
+mod onchain_contribution;
+pub use onchain_contribution::{
+	Error as OnchainContributionServiceError, MockService as MockOnchainContributionService,
+	Service as OnchainContributionService,
 };
 
 mod application;

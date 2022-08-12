@@ -11,17 +11,17 @@ pub trait Usecase: Send + Sync {
 }
 
 pub struct UnassignContribution {
-	contribution_service: Arc<dyn ContributionService>,
+	onchain_contribution_service: Arc<dyn OnchainContributionService>,
 	contribution_repository: Arc<dyn ContributionRepository>,
 }
 
 impl UnassignContribution {
 	pub fn new_usecase_boxed(
-		contribution_service: Arc<dyn ContributionService>,
+		onchain_contribution_service: Arc<dyn OnchainContributionService>,
 		contribution_repository: Arc<dyn ContributionRepository>,
 	) -> Box<dyn Usecase> {
 		Box::new(Self {
-			contribution_service,
+			onchain_contribution_service,
 			contribution_repository,
 		})
 	}
@@ -31,7 +31,7 @@ impl Usecase for UnassignContribution {
 	fn send_unassign_request(&self, contribution_id: &ContributionId) -> Result<(), DomainError> {
 		match self.contribution_repository.find_by_id(contribution_id)? {
 			Some(contribution) => self
-				.contribution_service
+				.onchain_contribution_service
 				.unassign_contributor(contribution.onchain_id)
 				.map_err_into(),
 			None => Err(ContributionRepositoryError::NotFound.into()),
@@ -53,8 +53,8 @@ mod test {
 	struct Error;
 
 	#[fixture]
-	fn contribution_service() -> MockContributionService {
-		MockContributionService::new()
+	fn onchain_contribution_service() -> MockOnchainContributionService {
+		MockOnchainContributionService::new()
 	}
 
 	#[fixture]
@@ -64,7 +64,7 @@ mod test {
 
 	#[rstest]
 	fn unassign_contribution_success(
-		mut contribution_service: MockContributionService,
+		mut onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
 		let contribution_id = Uuid::from_u128(12).into();
@@ -90,13 +90,13 @@ mod test {
 			}))
 		});
 
-		contribution_service
+		onchain_contribution_service
 			.expect_unassign_contributor()
 			.with(eq(String::from("22")))
 			.returning(|_| Ok(()));
 
 		let usecase = UnassignContribution::new_usecase_boxed(
-			Arc::new(contribution_service),
+			Arc::new(onchain_contribution_service),
 			Arc::new(contribution_repository),
 		);
 
@@ -106,7 +106,7 @@ mod test {
 
 	#[rstest]
 	fn unassign_contribution_find_error(
-		contribution_service: MockContributionService,
+		onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
 		contribution_repository
@@ -114,7 +114,7 @@ mod test {
 			.returning(|_| Err(ContributionRepositoryError::InvalidEntity(Box::new(Error))));
 
 		let usecase = UnassignContribution::new_usecase_boxed(
-			Arc::new(contribution_service),
+			Arc::new(onchain_contribution_service),
 			Arc::new(contribution_repository),
 		);
 
@@ -129,13 +129,13 @@ mod test {
 
 	#[rstest]
 	fn unassign_contribution_not_found(
-		contribution_service: MockContributionService,
+		onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
 		contribution_repository.expect_find_by_id().returning(|_| Ok(None));
 
 		let usecase = UnassignContribution::new_usecase_boxed(
-			Arc::new(contribution_service),
+			Arc::new(onchain_contribution_service),
 			Arc::new(contribution_repository),
 		);
 
@@ -150,7 +150,7 @@ mod test {
 
 	#[rstest]
 	fn unassign_contribution_send_error(
-		mut contribution_service: MockContributionService,
+		mut onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
 		let contribution_id = Uuid::from_u128(12).into();
@@ -176,13 +176,17 @@ mod test {
 			}))
 		});
 
-		contribution_service
+		onchain_contribution_service
 			.expect_unassign_contributor()
 			.with(eq(String::from("22")))
-			.returning(|_| Err(ContributionServiceError::Infrastructure(Box::new(Error))));
+			.returning(|_| {
+				Err(OnchainContributionServiceError::Infrastructure(Box::new(
+					Error,
+				)))
+			});
 
 		let usecase = UnassignContribution::new_usecase_boxed(
-			Arc::new(contribution_service),
+			Arc::new(onchain_contribution_service),
 			Arc::new(contribution_repository),
 		);
 

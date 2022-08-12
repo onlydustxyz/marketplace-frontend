@@ -3,8 +3,8 @@ use crate::{
 	infrastructure::starknet::{Account, Client, StarknetError},
 };
 
-impl<A: Account + Send + Sync + 'static> ContributionService for Client<A> {
-	fn create(&self, contribution: Contribution) -> Result<(), ContributionServiceError> {
+impl<A: Account + Send + Sync + 'static> OnchainContributionService for Client<A> {
+	fn create(&self, contribution: Contribution) -> Result<(), OnchainContributionServiceError> {
 		self.action_queue
 			.write()
 			.map_err(StarknetError::from)?
@@ -18,7 +18,7 @@ impl<A: Account + Send + Sync + 'static> ContributionService for Client<A> {
 		&self,
 		contribution_id: ContributionOnChainId,
 		contributor_id: ContributorId,
-	) -> Result<(), ContributionServiceError> {
+	) -> Result<(), OnchainContributionServiceError> {
 		self.action_queue
 			.write()
 			.map_err(StarknetError::from)?
@@ -32,7 +32,7 @@ impl<A: Account + Send + Sync + 'static> ContributionService for Client<A> {
 	fn unassign_contributor(
 		&self,
 		contribution_id: ContributionOnChainId,
-	) -> Result<(), ContributionServiceError> {
+	) -> Result<(), OnchainContributionServiceError> {
 		self.action_queue
 			.write()
 			.map_err(StarknetError::from)?
@@ -43,7 +43,7 @@ impl<A: Account + Send + Sync + 'static> ContributionService for Client<A> {
 	fn validate(
 		&self,
 		contribution_id: ContributionOnChainId,
-	) -> Result<(), ContributionServiceError> {
+	) -> Result<(), OnchainContributionServiceError> {
 		self.action_queue
 			.write()
 			.map_err(StarknetError::from)?
@@ -52,7 +52,7 @@ impl<A: Account + Send + Sync + 'static> ContributionService for Client<A> {
 	}
 }
 
-impl From<StarknetError> for ContributionServiceError {
+impl From<StarknetError> for OnchainContributionServiceError {
 	fn from(error: StarknetError) -> Self {
 		Self::Infrastructure(Box::new(error))
 	}
