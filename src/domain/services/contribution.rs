@@ -120,4 +120,32 @@ mod test {
 		let apply_result = contribution_service.apply(&contribution_id, &contributor_id);
 		assert!(apply_result.is_ok());
 	}
+
+	#[rstest]
+	fn contribution_must_be_open(
+		mut contribution_repository: MockContributionRepository,
+		application_repository: MockApplicationRepository,
+		uuid_generator: MockUuidGenerator,
+		contribution_id: ContributionId,
+		contributor_id: ContributorId,
+	) {
+		contribution_repository.expect_find_by_id().with(eq(contribution_id)).returning(
+			move |_| {
+				Ok(Some(Contribution {
+					id: contribution_id,
+					status: ContributionStatus::Completed,
+					..Default::default()
+				}))
+			},
+		);
+
+		let contribution_service = ContributionService {
+			contribution_repository: Arc::new(contribution_repository),
+			application_repository: Arc::new(application_repository),
+			uuid_generator: Arc::new(RwLock::new(uuid_generator)),
+		};
+
+		let apply_result = contribution_service.apply(&contribution_id, &contributor_id);
+		assert!(apply_result.is_err());
+	}
 }
