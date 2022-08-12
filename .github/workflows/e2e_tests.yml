@@ -1,4 +1,4 @@
-name: Tests end-to-end
+name: End-to-end tests
 
 on:
   pull_request: ~
@@ -10,7 +10,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  tests:
+  test:
     runs-on: ubuntu-latest
     name: Run end-to-end tests
     steps:
