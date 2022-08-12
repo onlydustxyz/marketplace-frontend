@@ -2,7 +2,10 @@ mod routes;
 
 use deathnote_contributions_feeder::{
 	application::*,
-	domain::{ApplicationRepository, RandomUuidGenerator},
+	domain::{
+		ApplicationRepository, ContributionService, ContributionServiceImplementation,
+		RandomUuidGenerator,
+	},
 	github,
 	infrastructure::{
 		database::{self, init_pool},
@@ -67,38 +70,48 @@ async fn main() {
 	let queue_handler = starknet::spawn(starknet.clone(), database.clone(), shutdown_recv);
 
 	let uuid_generator = Arc::new(RwLock::new(RandomUuidGenerator));
+	let contribution_service = Arc::new(ContributionServiceImplementation::new(
+		database.clone(),
+		database.clone(),
+		uuid_generator.clone(),
+	));
 
-	let rocket_handler = inject_app(rocket::build(), database.clone(), starknet, uuid_generator)
-		.manage(database.clone())
-		.manage(RepoCache::default())
-		.manage(ContributorCache::default())
-		.manage(github::API::new())
-		.attach(routes::cors::Cors)
-		.mount(
-			"/",
-			routes![
-				routes::cors::options_preflight_handler,
-				routes::health::health_check,
-			],
-		)
-		.mount(
-			"/",
-			openapi_get_routes![
-				routes::new_project,
-				routes::list_projects,
-				routes::create_contribution,
-				routes::assign_contributor,
-				routes::validate_contribution,
-				routes::unassign_contributor,
-				routes::contributors::find_by_id,
-				routes::apply_to_contribution,
-				routes::list_applications,
-				routes::accept_application,
-				routes::list_contributor_applications,
-			],
-		)
-		.mount("/swagger", make_swagger_ui(&routes::get_docs()))
-		.launch();
+	let rocket_handler = inject_app(
+		rocket::build(),
+		database.clone(),
+		starknet,
+		contribution_service,
+	)
+	.manage(database.clone())
+	.manage(RepoCache::default())
+	.manage(ContributorCache::default())
+	.manage(github::API::new())
+	.attach(routes::cors::Cors)
+	.mount(
+		"/",
+		routes![
+			routes::cors::options_preflight_handler,
+			routes::health::health_check,
+		],
+	)
+	.mount(
+		"/",
+		openapi_get_routes![
+			routes::new_project,
+			routes::list_projects,
+			routes::create_contribution,
+			routes::assign_contributor,
+			routes::validate_contribution,
+			routes::unassign_contributor,
+			routes::contributors::find_by_id,
+			routes::apply_to_contribution,
+			routes::list_applications,
+			routes::accept_application,
+			routes::list_contributor_applications,
+		],
+	)
+	.mount("/swagger", make_swagger_ui(&routes::get_docs()))
+	.launch();
 
 	let (rocket_result, ctr_c_result, queue_result) =
 		tokio::join!(rocket_handler, ctr_c_handler, queue_handler);
@@ -113,7 +126,7 @@ fn inject_app(
 	rocket: Rocket<Build>,
 	database: Arc<database::Client>,
 	starknet: Arc<starknet::SingleAdminClient>,
-	uuid_generator: Arc<RwLock<RandomUuidGenerator>>,
+	contribution_service: Arc<dyn ContributionService>,
 ) -> Rocket<Build> {
 	rocket
 		.manage(GetContributor::new_usecase_boxed(database.clone()))
@@ -127,9 +140,7 @@ fn inject_app(
 			database.clone(),
 		))
 		.manage(ApplyToContribution::new_usecase_boxed(
-			database.clone(),
-			database.clone(),
-			uuid_generator,
+			contribution_service.clone(),
 		))
 		.manage(ValidateContribution::new_usecase_boxed(
 			starknet.clone(),

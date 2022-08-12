@@ -28,6 +28,20 @@ pub struct ContributionService {
 	uuid_generator: Arc<RwLock<dyn UuidGenerator>>,
 }
 
+impl ContributionService {
+	pub fn new(
+		contribution_repository: Arc<dyn ContributionRepository>,
+		application_repository: Arc<dyn ApplicationRepository>,
+		uuid_generator: Arc<RwLock<dyn UuidGenerator>>,
+	) -> Self {
+		Self {
+			application_repository,
+			contribution_repository,
+			uuid_generator,
+		}
+	}
+}
+
 impl Service for ContributionService {
 	fn apply(
 		&self,
