@@ -3,6 +3,7 @@ use crate::{
 	infrastructure::database::{models, schema, schema::contributions, Client, DatabaseError},
 };
 use diesel::prelude::*;
+use uuid::Uuid;
 
 impl ContributionRepository for Client {
 	fn find_by_id(
@@ -38,6 +39,19 @@ impl ContributionRepository for Client {
 			.execute(&*connection)
 			.map_err(ContributionRepositoryError::from)?;
 
+		Ok(())
+	}
+
+	fn update(&self, contribution: Contribution) -> Result<(), ContributionRepositoryError> {
+		let connection = self
+			.connection()
+			.map_err(|e| ContributionRepositoryError::Infrastructure(e.into()))?;
+		let contribution_id: Uuid = contribution.id.into();
+		let contribution_update: models::ContributionUpdate = contribution.into();
+		diesel::update(contributions::table.filter(contributions::id.eq(contribution_id)))
+			.set(contribution_update)
+			.execute(&*connection)
+			.map_err(ContributionRepositoryError::from)?;
 		Ok(())
 	}
 
@@ -97,6 +111,28 @@ impl From<(Contribution, String)> for models::Contribution {
 			contributor_id: contribution.contributor_id.map_or(String::new(), |id| id.to_string()),
 			gate: contribution.gate as i16,
 			transaction_hash: transaction_hash.into(),
+			title: contribution.title,
+			description: contribution.description,
+			external_link: contribution.external_link.map(|link| link.to_string()),
+			difficulty: contribution.metadata.difficulty,
+			technology: contribution.metadata.technology,
+			duration: contribution.metadata.duration,
+			context: contribution.metadata.context,
+			type_: contribution.metadata.r#type,
+			validator: format!("{:#x}", contribution.validator),
+		}
+	}
+}
+
+impl From<Contribution> for models::ContributionUpdate {
+	fn from(contribution: Contribution) -> Self {
+		Self {
+			id: contribution.id.into(),
+			onchain_id: contribution.onchain_id,
+			project_id: contribution.project_id,
+			status: contribution.status.to_string(),
+			contributor_id: contribution.contributor_id.map_or(String::new(), |id| id.to_string()),
+			gate: contribution.gate as i16,
 			title: contribution.title,
 			description: contribution.description,
 			external_link: contribution.external_link.map(|link| link.to_string()),

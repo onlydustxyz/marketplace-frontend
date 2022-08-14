@@ -20,6 +20,7 @@ pub trait Repository: Send + Sync {
 	fn find_by_id(&self, contribution_id: &ContributionId) -> Result<Option<Contribution>, Error>;
 
 	fn create(&self, contribution: Contribution, transaction_hash: String) -> Result<(), Error>;
+	fn update(&self, contribution: Contribution) -> Result<(), Error>;
 
 	fn update_contributor_and_status(
 		&self,
