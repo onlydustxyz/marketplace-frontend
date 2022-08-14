@@ -34,3 +34,23 @@ pub struct Contribution {
 	pub validator: String,
 	pub id: Uuid,
 }
+
+#[derive(AsChangeset, Debug)]
+#[table_name = "contributions"]
+pub struct ContributionUpdate {
+	pub onchain_id: String,
+	pub project_id: String,
+	pub status: String,
+	pub contributor_id: String,
+	pub gate: i16,
+	pub title: Option<String>,
+	pub description: Option<String>,
+	pub external_link: Option<String>,
+	pub difficulty: Option<String>,
+	pub technology: Option<String>,
+	pub duration: Option<String>,
+	pub context: Option<String>,
+	pub type_: Option<String>,
+	pub validator: String,
+	pub id: Uuid,
+}
