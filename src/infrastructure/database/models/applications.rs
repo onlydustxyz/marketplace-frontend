@@ -9,17 +9,9 @@ use diesel::{
 };
 use uuid::Uuid;
 
-#[derive(Identifiable, Queryable, Debug)]
-pub struct Application {
-	pub id: Uuid,
-	pub contribution_id: Uuid,
-	pub contributor_id: String,
-	pub status: Status,
-}
-
-#[derive(Insertable)]
+#[derive(Insertable, Identifiable, Queryable, AsChangeset, Debug)]
 #[table_name = "applications"]
-pub struct NewApplication {
+pub struct Application {
 	pub id: Uuid,
 	pub contribution_id: Uuid,
 	pub contributor_id: String,

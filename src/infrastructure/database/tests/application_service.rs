@@ -34,9 +34,9 @@ fn accept_application_ok() {
 		ApplicationStatus::Pending,
 	);
 
-	<Client as ApplicationRepository>::store(&client, application1.clone()).unwrap();
-	<Client as ApplicationRepository>::store(&client, application2.clone()).unwrap();
-	<Client as ApplicationRepository>::store(&client, application3.clone()).unwrap();
+	<Client as ApplicationRepository>::create(&client, application1.clone()).unwrap();
+	<Client as ApplicationRepository>::create(&client, application2.clone()).unwrap();
+	<Client as ApplicationRepository>::create(&client, application3.clone()).unwrap();
 
 	<Client as ApplicationService>::accept_application(&client, application1.id()).unwrap();
 
@@ -89,9 +89,9 @@ fn cannot_accept_invalid_status() {
 		ApplicationStatus::Pending,
 	);
 
-	<Client as ApplicationRepository>::store(&client, application1.clone()).unwrap();
-	<Client as ApplicationRepository>::store(&client, application2.clone()).unwrap();
-	<Client as ApplicationRepository>::store(&client, application3.clone()).unwrap();
+	<Client as ApplicationRepository>::create(&client, application1.clone()).unwrap();
+	<Client as ApplicationRepository>::create(&client, application2.clone()).unwrap();
+	<Client as ApplicationRepository>::create(&client, application3.clone()).unwrap();
 
 	<Client as ApplicationService>::accept_application(&client, application1.id()).unwrap();
 
