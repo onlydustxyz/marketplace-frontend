@@ -6,28 +6,7 @@ use crate::{
 	infrastructure::database::{init_pool, Client},
 };
 
-use super::{init_contribution, init_contribution_with_status};
-
-#[test]
-#[ignore = "require a database"]
-fn cannot_apply_invalid_status() {
-	let client = Client::new(init_pool());
-
-	let contribution = init_contribution_with_status(&client, ContributionStatus::Abandoned);
-
-	assert_matches!(
-		<Client as ApplicationService>::apply(
-			&client,
-			Uuid::new_v4().into(),
-			contribution.id,
-			0.into(),
-		),
-		Err(ApplicationServiceError::InvalidContributionStatus {
-			required: ContributionStatus::Open,
-			..
-		})
-	);
-}
+use super::init_contribution;
 
 #[test]
 #[ignore = "require a database"]

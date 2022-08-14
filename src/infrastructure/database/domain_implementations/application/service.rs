@@ -5,7 +5,7 @@ use crate::{
 	domain::*,
 	infrastructure::database::{
 		models::{self, Status},
-		schema::{applications, contributions},
+		schema::applications,
 		Client,
 	},
 };
@@ -55,43 +55,6 @@ impl ApplicationService for Client {
 			});
 
 		res.map_into().map_err_into()
-	}
-
-	fn apply(
-		&self,
-		id: ApplicationId,
-		contribution_id: ContributionId,
-		contributor_id: ContributorId,
-	) -> Result<(), ApplicationServiceError> {
-		let connection = self
-			.connection()
-			.map_err(|e| ApplicationServiceError::Infrastructure(Box::new(e)))?;
-
-		let contribution: Contribution = contributions::dsl::contributions
-			.find(contribution_id.as_uuid())
-			.first::<models::Contribution>(&*connection)
-			.map_into()?;
-
-		if contribution.status != ContributionStatus::Open {
-			return Err(ApplicationServiceError::InvalidContributionStatus {
-				required: ContributionStatus::Open,
-				current: contribution.status,
-			});
-		}
-
-		let application = models::NewApplication {
-			id: *id.as_uuid(),
-			contribution_id: *contribution_id.as_uuid(),
-			contributor_id: contributor_id.to_string(),
-			status: Status::Pending,
-		};
-
-		diesel::insert_into(applications::table)
-			.values(&application)
-			.execute(&*connection)
-			.map_err(ApplicationServiceError::from)?;
-
-		Ok(())
 	}
 }
 
