@@ -67,7 +67,7 @@ impl Service for ContributionService {
 			ApplicationStatus::Pending,
 		);
 
-		self.application_repository.store(application).map_err_into()
+		self.application_repository.create(application).map_err_into()
 	}
 }
 
@@ -128,7 +128,7 @@ mod test {
 			},
 		);
 		application_repository
-			.expect_store()
+			.expect_create()
 			.withf(move |application| *application.id() == application_id)
 			.returning(move |_| Ok(()));
 

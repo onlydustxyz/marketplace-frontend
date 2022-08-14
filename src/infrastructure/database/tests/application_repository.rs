@@ -28,8 +28,8 @@ fn store_and_find() {
 		ApplicationStatus::Pending,
 	);
 
-	<Client as ApplicationRepository>::store(&client, application1.clone()).unwrap();
-	<Client as ApplicationRepository>::store(&client, application2.clone()).unwrap();
+	<Client as ApplicationRepository>::create(&client, application1.clone()).unwrap();
+	<Client as ApplicationRepository>::create(&client, application2.clone()).unwrap();
 
 	let found_application =
 		<Client as ApplicationRepository>::find(&client, application1.id()).unwrap();
@@ -56,8 +56,8 @@ fn id_must_be_unique() {
 	let application1 = Application::new(id, contribution.id, 0.into(), ApplicationStatus::Pending);
 	let application2 = Application::new(id, contribution.id, 1.into(), ApplicationStatus::Pending);
 
-	<Client as ApplicationRepository>::store(&client, application1).unwrap();
-	let res = <Client as ApplicationRepository>::store(&client, application2);
+	<Client as ApplicationRepository>::create(&client, application1).unwrap();
+	let res = <Client as ApplicationRepository>::create(&client, application2);
 
 	assert!(res.is_err());
 	assert_matches!(
@@ -90,8 +90,8 @@ fn cannot_apply_twice() {
 		ApplicationStatus::Pending,
 	);
 
-	<Client as ApplicationRepository>::store(&client, application.clone()).unwrap();
-	let res = <Client as ApplicationRepository>::store(&client, application);
+	<Client as ApplicationRepository>::create(&client, application.clone()).unwrap();
+	let res = <Client as ApplicationRepository>::create(&client, application);
 
 	assert!(res.is_err());
 	assert_matches!(
@@ -112,7 +112,7 @@ fn contribution_id_must_exist() {
 		ApplicationStatus::Pending,
 	);
 
-	let res = <Client as ApplicationRepository>::store(&client, application);
+	let res = <Client as ApplicationRepository>::create(&client, application);
 
 	assert!(res.is_err());
 	assert_matches!(
@@ -142,8 +142,8 @@ fn store_multiple_and_list() {
 		ApplicationStatus::Pending,
 	);
 
-	<Client as ApplicationRepository>::store(&client, application1.clone()).unwrap();
-	<Client as ApplicationRepository>::store(&client, application2.clone()).unwrap();
+	<Client as ApplicationRepository>::create(&client, application1.clone()).unwrap();
+	<Client as ApplicationRepository>::create(&client, application2.clone()).unwrap();
 
 	let applications =
 		<Client as ApplicationRepository>::list_by_contribution(&client, &contribution.id, None)

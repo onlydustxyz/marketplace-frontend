@@ -17,7 +17,8 @@ pub enum Error {
 
 #[automock]
 pub trait Repository: Send + Sync {
-	fn store(&self, application: Application) -> Result<(), Error>;
+	fn create(&self, application: Application) -> Result<(), Error>;
+	fn update(&self, application: Application) -> Result<(), Error>;
 	fn find(&self, id: &ApplicationId) -> Result<Option<Application>, Error>;
 	fn list_by_contribution(
 		&self,

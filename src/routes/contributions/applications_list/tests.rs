@@ -14,9 +14,16 @@ use uuid::Uuid;
 const CONTRIBUTION_ID_1: &str = "a6127643-1344-4a44-bbfb-7142c17a4ef0";
 struct EmptyDatabase;
 impl ApplicationRepository for EmptyDatabase {
-	fn store(
+	fn create(
 		&self,
 		_application: deathnote_contributions_feeder::domain::Application,
+	) -> Result<(), deathnote_contributions_feeder::domain::ApplicationRepositoryError> {
+		unimplemented!()
+	}
+
+	fn update(
+		&self,
+		_application: Application,
 	) -> Result<(), deathnote_contributions_feeder::domain::ApplicationRepositoryError> {
 		unimplemented!()
 	}
@@ -54,9 +61,16 @@ impl ApplicationRepository for EmptyDatabase {
 }
 struct FilledDatabase;
 impl ApplicationRepository for FilledDatabase {
-	fn store(
+	fn create(
 		&self,
 		_application: deathnote_contributions_feeder::domain::Application,
+	) -> Result<(), deathnote_contributions_feeder::domain::ApplicationRepositoryError> {
+		unimplemented!()
+	}
+
+	fn update(
+		&self,
+		_application: Application,
 	) -> Result<(), deathnote_contributions_feeder::domain::ApplicationRepositoryError> {
 		unimplemented!()
 	}

@@ -10,15 +10,25 @@ use crate::{
 };
 
 impl ApplicationRepository for Client {
-	fn store(&self, application: Application) -> Result<(), ApplicationRepositoryError> {
+	fn create(&self, application: Application) -> Result<(), ApplicationRepositoryError> {
 		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
 
-		let application = models::NewApplication::from(application);
+		let application = models::Application::from(application);
 		diesel::insert_into(applications::table)
 			.values(&application)
 			.execute(&*connection)
 			.map_err(ApplicationRepositoryError::from)?;
 
+		Ok(())
+	}
+
+	fn update(&self, application: Application) -> Result<(), ApplicationRepositoryError> {
+		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
+		let application = models::Application::from(application);
+		diesel::update(applications::table.filter(applications::id.eq(application.id)))
+			.set(application)
+			.execute(&*connection)
+			.map_err(ApplicationRepositoryError::from)?;
 		Ok(())
 	}
 
@@ -78,7 +88,7 @@ impl ApplicationRepository for Client {
 	}
 }
 
-impl From<Application> for models::NewApplication {
+impl From<Application> for models::Application {
 	fn from(application: crate::domain::Application) -> Self {
 		Self {
 			id: (*application.id()).into(),
