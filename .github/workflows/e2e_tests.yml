@@ -52,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Wait for the backend to be ready
-        uses: ifaxity/wait-on-action
+        uses: ifaxity/wait-on-action@v1
         with:
           resource: http://localhost:8000/openapi.json
 
