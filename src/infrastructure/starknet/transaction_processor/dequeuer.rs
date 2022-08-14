@@ -95,7 +95,7 @@ fn store_action_result(
 	match action {
 		Action::CreateContribution {
 			contribution: contribution_,
-		} => contribution_repository.store(contribution_.as_ref().to_owned(), hash.to_owned()),
+		} => contribution_repository.create(contribution_.as_ref().to_owned(), hash.to_owned()),
 
 		Action::AssignContributor {
 			contribution_id: id_,
@@ -221,7 +221,7 @@ mod test {
 			});
 
 		contribution_repository
-			.expect_store()
+			.expect_create()
 			.with(eq(contribution), eq(String::from("0x0")))
 			.returning(|_, _| Ok(()));
 

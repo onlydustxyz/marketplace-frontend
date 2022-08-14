@@ -35,7 +35,7 @@ fn init_contribution_with_status(client: &Client, status: ContributionStatus) ->
 		status,
 		..Default::default()
 	};
-	<Client as ContributionRepository>::store(client, contribution.clone(), Default::default())
+	<Client as ContributionRepository>::create(client, contribution.clone(), Default::default())
 		.unwrap();
 
 	contribution
