@@ -118,7 +118,7 @@ jobs:
       - name: Build
         run: cargo build
       - name: Run migrations
-        run: diesel migration run
+        run: ~/.cargo/bin/diesel migration run
       - name: Rust test on db
         run: cargo test -- --ignored
         env:
