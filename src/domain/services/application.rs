@@ -26,10 +26,4 @@ pub enum Error {
 
 pub trait Service: Send + Sync {
 	fn accept_application(&self, id: &ApplicationId) -> Result<Application, Error>;
-	fn apply(
-		&self,
-		application_id: ApplicationId,
-		contribution_id: ContributionId,
-		contributor_id: ContributorId,
-	) -> Result<(), Error>;
 }
