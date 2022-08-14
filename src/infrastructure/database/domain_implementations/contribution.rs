@@ -23,7 +23,7 @@ impl ContributionRepository for Client {
 		}
 	}
 
-	fn store(
+	fn create(
 		&self,
 		contribution: Contribution,
 		transaction_hash: String,
