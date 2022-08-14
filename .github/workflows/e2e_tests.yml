@@ -8,6 +8,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  RUST_LOG: debug
 
 jobs:
   test:
@@ -23,6 +24,19 @@ jobs:
           toolchain: stable
           override: true
 
+      - name: Set up cargo cache
+        uses: actions/cache@v3
+        continue-on-error: false
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+
       - name: Run docker compose
         run: BASE_TAG=latest docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
 
@@ -35,13 +49,12 @@ jobs:
       - name: Start the backend
         run: cargo run &
         env:
-          RUST_LOG: debug
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Wait a bit for the back-end to warm up
-        run: sleep 5
+      - name: Wait for the backend to be ready
+        uses: ifaxity/wait-on-action
+        with:
+          resource: http://localhost:8000/openapi.json
 
       - name: Run end-to-end tests
         run: cargo run --bin e2e
-        env:
-          RUST_LOG: debug
