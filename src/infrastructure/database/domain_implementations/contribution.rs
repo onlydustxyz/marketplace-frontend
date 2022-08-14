@@ -32,7 +32,7 @@ impl ContributionRepository for Client {
 			.connection()
 			.map_err(|e| ContributionRepositoryError::Infrastructure(e.into()))?;
 
-		let contribution = models::NewContribution::from((contribution, transaction_hash));
+		let contribution = models::Contribution::from((contribution, transaction_hash));
 		diesel::insert_into(contributions::table)
 			.values(&contribution)
 			.execute(&*connection)
@@ -87,7 +87,7 @@ impl ContributionRepository for Client {
 	}
 }
 
-impl From<(Contribution, String)> for models::NewContribution {
+impl From<(Contribution, String)> for models::Contribution {
 	fn from((contribution, transaction_hash): (Contribution, String)) -> Self {
 		Self {
 			id: contribution.id.into(),
@@ -96,7 +96,7 @@ impl From<(Contribution, String)> for models::NewContribution {
 			status: contribution.status.to_string(),
 			contributor_id: contribution.contributor_id.map_or(String::new(), |id| id.to_string()),
 			gate: contribution.gate as i16,
-			transaction_hash,
+			transaction_hash: transaction_hash.into(),
 			title: contribution.title,
 			description: contribution.description,
 			external_link: contribution.external_link.map(|link| link.to_string()),
