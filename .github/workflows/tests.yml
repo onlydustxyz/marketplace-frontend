@@ -93,6 +93,8 @@ jobs:
         run: cargo test --verbose
   test_with_database:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost/deathnote_contributions_db
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
@@ -115,11 +117,11 @@ jobs:
         run: docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
         env:
           BASE_TAG: latest
+      - name: Install diesel CLI
+        run: cargo install diesel_cli --no-default-features --features postgres
       - name: Build
         run: cargo build
       - name: Run migrations
-        run: ~/.cargo/bin/diesel migration run
+        run: diesel migration run
       - name: Rust test on db
         run: cargo test -- --ignored
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost/deathnote_contributions_db
