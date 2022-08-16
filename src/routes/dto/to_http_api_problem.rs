@@ -54,6 +54,12 @@ impl ToHttpApiProblem for ContributionRepositoryError {
 impl ToHttpApiProblem for ContributorRepositoryError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		match self {
+			ContributorRepositoryError::NotFound =>
+				HttpApiProblem::new(StatusCode::NOT_FOUND).title(self.to_string()),
+			ContributorRepositoryError::InvalidEntity(e) =>
+				HttpApiProblem::new(StatusCode::BAD_REQUEST)
+					.title(self.to_string())
+					.detail(e.to_string()),
 			ContributorRepositoryError::Infrastructure(e) =>
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 					.title(self.to_string())

@@ -103,11 +103,12 @@ async fn main() {
 			routes::assign_contributor,
 			routes::validate_contribution,
 			routes::unassign_contributor,
-			routes::contributors::find_by_id,
+			routes::find_by_id,
 			routes::apply_to_contribution,
 			routes::list_applications,
 			routes::accept_application,
 			routes::list_contributor_applications,
+			routes::patch_contributor,
 		],
 	)
 	.mount("/swagger", make_swagger_ui(&routes::get_docs()))
@@ -129,6 +130,8 @@ fn inject_app(
 	contribution_service: Arc<dyn ContributionService>,
 ) -> Rocket<Build> {
 	rocket
+		.manage(UpdateContributor::new_usecase_boxed(database.clone()))
+		.manage(NewContributor::new_usecase_boxed(database.clone()))
 		.manage(GetContributor::new_usecase_boxed(database.clone()))
 		.manage(CreateContribution::new_usecase_boxed(starknet.clone()))
 		.manage(AssignContribution::new_usecase_boxed(

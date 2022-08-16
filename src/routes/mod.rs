@@ -1,5 +1,6 @@
 mod applications;
 mod contributions;
+mod contributors;
 pub mod cors;
 mod dto;
 pub mod health;
@@ -7,6 +8,7 @@ mod projects;
 
 pub use applications::*;
 pub use contributions::*;
+pub use contributors::*;
 pub use projects::*;
 use rocket_okapi::swagger_ui::SwaggerUIConfig;
 
@@ -17,5 +19,3 @@ pub(crate) fn get_docs() -> SwaggerUIConfig {
 		..Default::default()
 	}
 }
-
-pub mod contributors;
