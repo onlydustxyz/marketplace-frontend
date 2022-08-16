@@ -11,6 +11,7 @@ use deathnote_contributions_feeder::{
 use rocket::{
 	data::ToByteUnit,
 	form::{self, DataField, FromFormField, ValueField},
+	request::FromParam,
 };
 use schemars::{
 	schema::{InstanceType, SchemaObject, StringValidation},
@@ -131,5 +132,13 @@ impl<'r> FromFormField<'r> for U256Param {
 			ParseU256Error::InvalidPrefix => form::Error::validation(e.to_string()).into(),
 			ParseU256Error::InvalidCharacter => form::Error::validation(e.to_string()).into(),
 		})
+	}
+}
+
+impl<'a> FromParam<'a> for U256Param {
+	type Error = <U256Param as FromStr>::Err;
+
+	fn from_param(param: &'a str) -> Result<Self, Self::Error> {
+		U256Param::from_str(param)
 	}
 }
