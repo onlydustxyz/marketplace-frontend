@@ -8,19 +8,17 @@ use crate::domain::*;
 pub enum Error {
 	#[error("Contributor not found")]
 	NotFound,
-	#[error("Contributor contains invalid members")]
-	InvalidEntity(#[source] Box<dyn std::error::Error>),
 	#[error("Something happend at the infrastructure level")]
 	Infrastructure(#[source] Box<dyn std::error::Error>),
 }
 
 #[automock]
 pub trait Repository: Send + Sync {
-	fn store(&self, contributor: Contributor) -> Result<(), Error>;
-	fn update_contributor(
+	fn save_contact_information(
 		&self,
 		contributor_id: ContributorId,
-		contributor: Contributor,
+		contact_information: ContactInformation,
 	) -> Result<(), Error>;
+
 	fn find(&self, contributor_id: ContributorId) -> Result<Option<Contributor>, Error>;
 }

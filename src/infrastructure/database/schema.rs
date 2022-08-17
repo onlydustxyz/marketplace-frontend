@@ -33,8 +33,6 @@ table! {
 	contributors (id) {
 		id -> Varchar,
 		discord_handle -> Nullable<Varchar>,
-		github_handle -> Nullable<Varchar>,
-		github_username -> Nullable<Varchar>,
 	}
 }
 

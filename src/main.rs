@@ -4,7 +4,7 @@ use deathnote_contributions_feeder::{
 	application::*,
 	domain::{
 		ApplicationRepository, ContributionService, ContributionServiceImplementation,
-		RandomUuidGenerator,
+		ContributorService, ContributorServiceImplementation, RandomUuidGenerator,
 	},
 	github,
 	infrastructure::{
@@ -75,12 +75,14 @@ async fn main() {
 		database.clone(),
 		uuid_generator.clone(),
 	));
+	let contributor_service = Arc::new(ContributorServiceImplementation::new(database.clone()));
 
 	let rocket_handler = inject_app(
 		rocket::build(),
 		database.clone(),
 		starknet,
 		contribution_service,
+		contributor_service,
 	)
 	.manage(database.clone())
 	.manage(RepoCache::default())
@@ -128,10 +130,9 @@ fn inject_app(
 	database: Arc<database::Client>,
 	starknet: Arc<starknet::SingleAdminClient>,
 	contribution_service: Arc<dyn ContributionService>,
+	contributor_service: Arc<dyn ContributorService>,
 ) -> Rocket<Build> {
 	rocket
-		.manage(UpdateContributor::new_usecase_boxed(database.clone()))
-		.manage(NewContributor::new_usecase_boxed(database.clone()))
 		.manage(GetContributor::new_usecase_boxed(database.clone()))
 		.manage(CreateContribution::new_usecase_boxed(starknet.clone()))
 		.manage(AssignContribution::new_usecase_boxed(
@@ -155,4 +156,5 @@ fn inject_app(
 			database.clone(),
 		))
 		.manage(database as Arc<dyn ApplicationRepository>)
+		.manage(contributor_service)
 }
