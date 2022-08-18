@@ -36,3 +36,85 @@ pub fn put_contact_information(
 
 	Ok(status::NoContent)
 }
+
+#[cfg(test)]
+mod test {
+	use std::str::FromStr;
+
+	use super::*;
+	use deathnote_contributions_feeder::domain::*;
+	use http_api_problem::StatusCode;
+	use mockall::predicate::*;
+	use thiserror::Error;
+
+	#[derive(Debug, Error)]
+	#[error("Oops")]
+	struct Error;
+
+	const CONTRIBUTOR_ID: &str = "0x123";
+
+	#[test]
+	fn put_contact_information_should_forward_error_as_500() {
+		let mut contact_information_service = MockContactInformationService::new();
+
+		contact_information_service
+			.expect_set_contributor_contact_information()
+			.with(
+				eq(ContributorId::from_str(CONTRIBUTOR_ID).unwrap()),
+				eq(None),
+			)
+			.returning(|_, _| {
+				Err(ContactInformationRepositoryError::Infrastructure(Box::new(Error)).into())
+			});
+
+		let rocket = rocket::build()
+			.manage(Arc::new(contact_information_service) as Arc<dyn ContactInformationService>);
+
+		let result = put_contact_information(
+			ApiKey::default(),
+			U256Param::from_str(CONTRIBUTOR_ID).unwrap(),
+			PutContributorDto {
+				discord_handle: None,
+			}
+			.into(),
+			State::get(&rocket).unwrap(),
+		);
+		assert!(result.is_err());
+
+		let problem = result.err().unwrap();
+		assert_eq!(StatusCode::INTERNAL_SERVER_ERROR, problem.status.unwrap());
+		assert_eq!(
+			"Something happend at the infrastructure level",
+			problem.title.as_ref().unwrap()
+		);
+		assert_eq!("Oops", problem.detail.as_ref().unwrap());
+	}
+
+	#[test]
+	fn put_contact_information_should_update_contact_information() {
+		let mut contact_information_service = MockContactInformationService::new();
+
+		contact_information_service
+			.expect_set_contributor_contact_information()
+			.with(
+				eq(ContributorId::from_str(CONTRIBUTOR_ID).unwrap()),
+				eq(Some(String::from("discord"))),
+			)
+			.returning(|_, _| Ok(()));
+
+		let rocket = rocket::build()
+			.manage(Arc::new(contact_information_service) as Arc<dyn ContactInformationService>);
+
+		let result = put_contact_information(
+			ApiKey::default(),
+			U256Param::from_str(CONTRIBUTOR_ID).unwrap(),
+			PutContributorDto {
+				discord_handle: Some(String::from("discord")),
+			}
+			.into(),
+			State::get(&rocket).unwrap(),
+		);
+		assert!(result.is_ok(), "{:?}", result.err().unwrap());
+		assert_eq!(status::NoContent, result.unwrap());
+	}
+}
