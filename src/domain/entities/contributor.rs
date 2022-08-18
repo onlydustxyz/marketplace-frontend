@@ -14,7 +14,6 @@ pub struct Contributor {
 	pub id: Id,
 	pub github_username: Option<String>,
 	pub github_handle: Option<String>,
-	pub discord_handle: Option<String>,
 }
 
 impl FromStr for Id {

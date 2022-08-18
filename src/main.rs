@@ -3,8 +3,8 @@ mod routes;
 use deathnote_contributions_feeder::{
 	application::*,
 	domain::{
-		ApplicationRepository, ContributionService, ContributionServiceImplementation,
-		ContributorService, ContributorServiceImplementation, RandomUuidGenerator,
+		ApplicationRepository, ContactInformationService, ContactInformationServiceImplementation,
+		ContributionService, ContributionServiceImplementation, RandomUuidGenerator,
 	},
 	github,
 	infrastructure::{
@@ -75,14 +75,16 @@ async fn main() {
 		database.clone(),
 		uuid_generator.clone(),
 	));
-	let contributor_service = Arc::new(ContributorServiceImplementation::new(database.clone()));
+	let contact_information_service = Arc::new(ContactInformationServiceImplementation::new(
+		database.clone(),
+	));
 
 	let rocket_handler = inject_app(
 		rocket::build(),
 		database.clone(),
 		starknet,
 		contribution_service,
-		contributor_service,
+		contact_information_service,
 	)
 	.manage(database.clone())
 	.manage(RepoCache::default())
@@ -105,12 +107,12 @@ async fn main() {
 			routes::assign_contributor,
 			routes::validate_contribution,
 			routes::unassign_contributor,
-			routes::contributors::find_by_id,
 			routes::apply_to_contribution,
 			routes::list_applications,
 			routes::accept_application,
 			routes::list_contributor_applications,
-			routes::contributors::patch_contributor,
+			routes::contact_information::find_contact_information,
+			routes::contact_information::put_contact_information,
 		],
 	)
 	.mount("/swagger", make_swagger_ui(&routes::get_docs()))
@@ -130,10 +132,9 @@ fn inject_app(
 	database: Arc<database::Client>,
 	starknet: Arc<starknet::SingleAdminClient>,
 	contribution_service: Arc<dyn ContributionService>,
-	contributor_service: Arc<dyn ContributorService>,
+	contact_information_service: Arc<dyn ContactInformationService>,
 ) -> Rocket<Build> {
 	rocket
-		.manage(GetContributor::new_usecase_boxed(database.clone()))
 		.manage(CreateContribution::new_usecase_boxed(starknet.clone()))
 		.manage(AssignContribution::new_usecase_boxed(
 			starknet.clone(),
@@ -156,5 +157,5 @@ fn inject_app(
 			database.clone(),
 		))
 		.manage(database as Arc<dyn ApplicationRepository>)
-		.manage(contributor_service)
+		.manage(contact_information_service)
 }

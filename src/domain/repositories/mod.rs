@@ -7,10 +7,10 @@ pub use contribution::{
 	Repository as ContributionRepository,
 };
 
-mod contributor;
-pub use contributor::{
-	Error as ContributorRepositoryError, MockRepository as MockContributorRepository,
-	Repository as ContributorRepository,
+mod contact_information;
+pub use contact_information::{
+	Error as ContactInformationRepositoryError, MockRepository as MockContactInformationRepository,
+	Repository as ContactInformationRepository,
 };
 
 mod application;

@@ -1,14 +1,16 @@
+mod contact_information;
+pub use contact_information::{
+	ContactInformationService as ContactInformationServiceImplementation,
+	MockService as MockContactInformationService, Service as ContactInformationService,
+};
+
 mod contribution;
-mod contributor;
-mod onchain_contribution;
 pub use contribution::{
 	ContributionService as ContributionServiceImplementation, Error as ContributionServiceError,
 	MockService as MockContributionService, Service as ContributionService,
 };
-pub use contributor::{
-	ContributorService as ContributorServiceImplementation, MockService as MockContributorService,
-	Service as ContributorService,
-};
+
+mod onchain_contribution;
 pub use onchain_contribution::{
 	Error as OnchainContributionServiceError, MockService as MockOnchainContributionService,
 	Service as OnchainContributionService,
