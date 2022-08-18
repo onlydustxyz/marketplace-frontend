@@ -1,6 +1,6 @@
 use deathnote_contributions_feeder::domain::{
-	ApplicationRepositoryError, ApplicationServiceError, ContributionRepositoryError,
-	ContributionServiceError, ContributorRepositoryError, DomainError,
+	ApplicationRepositoryError, ApplicationServiceError, ContactInformationRepositoryError,
+	ContributionRepositoryError, ContributionServiceError, DomainError,
 	OnchainContributionServiceError,
 };
 use http_api_problem::{HttpApiProblem, StatusCode};
@@ -51,12 +51,12 @@ impl ToHttpApiProblem for ContributionRepositoryError {
 	}
 }
 
-impl ToHttpApiProblem for ContributorRepositoryError {
+impl ToHttpApiProblem for ContactInformationRepositoryError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		match self {
-			ContributorRepositoryError::NotFound =>
+			ContactInformationRepositoryError::NotFound =>
 				HttpApiProblem::new(StatusCode::NOT_FOUND).title(self.to_string()),
-			ContributorRepositoryError::Infrastructure(e) =>
+			ContactInformationRepositoryError::Infrastructure(e) =>
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 					.title(self.to_string())
 					.detail(e.to_string()),
@@ -116,10 +116,10 @@ impl ToHttpApiProblem for DomainError {
 		match self {
 			DomainError::ApplicationRepository(application_repository_error) =>
 				application_repository_error.to_http_api_problem(),
-			DomainError::ContributionRepository(contribution_reopsitory_error) =>
-				contribution_reopsitory_error.to_http_api_problem(),
-			DomainError::ContributorRepository(contributor_repository_error) =>
-				contributor_repository_error.to_http_api_problem(),
+			DomainError::ContributionRepository(contribution_repository_error) =>
+				contribution_repository_error.to_http_api_problem(),
+			DomainError::ContactInformationRepository(contact_information_repository_error) =>
+				contact_information_repository_error.to_http_api_problem(),
 			DomainError::OnchainContributionService(onchain_contribution_service_error) =>
 				onchain_contribution_service_error.to_http_api_problem(),
 			DomainError::ContributionService(contribution_service_error) =>

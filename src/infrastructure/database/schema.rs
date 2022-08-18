@@ -8,6 +8,14 @@ table! {
 }
 
 table! {
+	contact_informations (id) {
+		id -> Uuid,
+		contributor_id -> Varchar,
+		discord_handle -> Nullable<Varchar>,
+	}
+}
+
+table! {
 	contributions (id) {
 		onchain_id -> Varchar,
 		project_id -> Varchar,
@@ -30,13 +38,6 @@ table! {
 }
 
 table! {
-	contributors (id) {
-		id -> Varchar,
-		discord_handle -> Nullable<Varchar>,
-	}
-}
-
-table! {
 	projects (id) {
 		id -> Varchar,
 		owner -> Varchar,
@@ -48,4 +49,4 @@ table! {
 joinable!(applications -> contributions (contribution_id));
 joinable!(contributions -> projects (project_id));
 
-allow_tables_to_appear_in_same_query!(applications, contributions, contributors, projects,);
+allow_tables_to_appear_in_same_query!(applications, contact_informations, contributions, projects,);

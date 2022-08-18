@@ -38,7 +38,6 @@ impl From<Vec<FieldElement>> for Contributor {
 			id: (fields[1], fields[2]).into(),
 			github_handle: Some(fields[3].to_string()),
 			github_username: None,
-			discord_handle: None,
 		}
 	}
 }
