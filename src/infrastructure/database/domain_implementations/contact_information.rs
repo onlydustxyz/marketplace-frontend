@@ -65,9 +65,7 @@ impl From<DatabaseError> for ContactInformationRepositoryError {
 impl From<diesel::result::Error> for ContactInformationRepositoryError {
 	fn from(error: diesel::result::Error) -> Self {
 		match error {
-			diesel::result::Error::DatabaseError(kind, _) => match kind {
-				_ => Self::Infrastructure(Box::new(error)),
-			},
+			diesel::result::Error::DatabaseError(_, _) => Self::Infrastructure(Box::new(error)),
 			diesel::result::Error::NotFound => Self::NotFound,
 			_ => Self::Infrastructure(Box::new(error)),
 		}
@@ -90,7 +88,7 @@ impl From<models::ContactInformation> for ContactInformation {
 			id: contact_information.id.into(),
 			contributor_id: ContributorId::from_str(contact_information.contributor_id.as_str())
 				.unwrap(),
-			discord_handle: contact_information.discord_handle.into(),
+			discord_handle: contact_information.discord_handle,
 		}
 	}
 }
