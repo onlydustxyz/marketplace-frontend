@@ -27,10 +27,9 @@ impl From<OnChainContributorId> for ContributorId {
 
 #[cfg(test)]
 mod test {
-	use std::str::FromStr;
-
 	use super::*;
 	use starknet::core::types::FieldElement;
+	use std::str::FromStr;
 
 	#[test]
 	fn test_convert_contributor_id_from_and_to_felt() {

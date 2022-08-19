@@ -1,4 +1,4 @@
-use crate::routes::{api_key::ApiKey, hex_prefixed_string::HexPrefixedString};
+use crate::routes::api_key::ApiKey;
 use http_api_problem::{HttpApiProblem, StatusCode};
 use marketplace_core::{application::CreateContributionUsecase, github};
 use marketplace_domain::*;
@@ -30,7 +30,7 @@ pub async fn create_contribution(
 	usecase: &State<Box<dyn CreateContributionUsecase>>,
 ) -> Result<Status, HttpApiProblem> {
 	let body = body.into_inner();
-	let validator = FieldElement::from_str(body.validator.as_str()).map_err(|e| {
+	let validator = FieldElement::from_str(&body.validator.to_string()).map_err(|e| {
 		HttpApiProblem::new(StatusCode::BAD_REQUEST)
 			.title("Invalid validator address")
 			.detail(e.to_string())

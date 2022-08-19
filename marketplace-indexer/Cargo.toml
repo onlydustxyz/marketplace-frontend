@@ -1,0 +1,54 @@
+[package]
+name = "marketplace-indexer"
+authors = ["OnlyDust <tech@onlydust.xyz>"]
+description = "Marketplace on-chain event indexing."
+version = "0.1.0"
+edition = "2021"
+license-file = "LICENSE"
+homepage = "https://onlydust.xyz"
+readme = "README.md"
+repository = "https://github.com/onlydustxyz/marketplace-backend"
+
+[dependencies]
+# Async
+tokio = { version = "1.18.2", features = ["full"] }
+async-trait = "0.1.56"
+futures = { version = "0.3.21", features = ["alloc"] }
+tokio-stream = "0.1.9"
+
+# Serde
+serde = { version = "1.0.137", features = ["derive"] }
+serde_json = "1.0.81"
+
+# Web client
+tonic = "0.7.2"
+
+# Utils
+dotenv = "0.15.0"
+itertools = "0.10.3"
+mapinto = "0.2.1"
+thiserror = "1.0.31"
+
+# Starknet
+starknet = { git = "https://github.com/ofux/starknet-rs" }
+crypto-bigint = { version = "0.4.8", features = ["serde"] }
+
+# Protocol Buffers
+prost = "0.10.4"
+prost-types = "0.10.1"
+
+# Log
+log = "0.4.17"
+
+# Unit tests
+mockall = "0.11.2"
+
+# Local dependecies
+marketplace-domain = { path = "../marketplace-domain" }
+
+[dev-dependencies]
+# Unit tests
+rstest = "0.15.0"
+
+[build-dependencies]
+tonic-build = "0.7.2"
