@@ -39,7 +39,7 @@ Copy the `.env.example` file and modify the values according to your setup.
 Make sure `docker-compose` is installed (see [Installation instructions](https://docs.docker.com/compose/install/)).
 Note: specify the `BASE_TAG` to be used depending on your CPU (`latest` or `latest-arm`)
 ```
-BASE_TAG=latest-arm docker-compose -f ./scripts/docker/dev/docker-compose.yml up --build -d
+BASE_TAG=latest-arm docker-compose -f ./marketplace-core/scripts/docker/dev/docker-compose.yml up --build -d
 ```
 
 ### 3. Setup the database
