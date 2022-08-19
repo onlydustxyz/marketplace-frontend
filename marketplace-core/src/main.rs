@@ -12,7 +12,7 @@ use marketplace_core::{
 	},
 	utils::caches::{ContributorCache, RepoCache},
 };
-use onlydust_domain::{
+use marketplace_domain::{
 	ApplicationRepository, ContactInformationService, ContactInformationServiceImplementation,
 	ContributionService, ContributionServiceImplementation, RandomUuidGenerator,
 };

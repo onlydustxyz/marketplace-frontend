@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use onlydust_domain::{Error as DomainError, *};
+use marketplace_domain::{Error as DomainError, *};
 
 // Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be
 // `Send` and `Sync`

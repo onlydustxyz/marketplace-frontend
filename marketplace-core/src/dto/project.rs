@@ -1,4 +1,4 @@
-use onlydust_domain as domain;
+use marketplace_domain as domain;
 use rocket_okapi::JsonSchema;
 use serde::{Deserialize, Serialize};
 use url::Url;

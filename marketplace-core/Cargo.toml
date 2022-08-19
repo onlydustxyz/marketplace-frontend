@@ -91,7 +91,7 @@ assert-json-diff = "2.0.2"
 
 # Local dependecies
 wrappers = { path = "../wrappers" }
-onlydust-domain = { path = "../onlydust-domain" }
+marketplace-domain = { path = "../marketplace-domain" }
 
 [dev-dependencies]
 serde_test = "1.0.140"

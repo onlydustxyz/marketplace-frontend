@@ -3,5 +3,5 @@
 members = [
     "marketplace-core",
     "wrappers",
-	"onlydust-domain"
+	"marketplace-domain"
 ]

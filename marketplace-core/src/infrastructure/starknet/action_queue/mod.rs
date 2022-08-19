@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use onlydust_domain::*;
+use marketplace_domain::*;
 use std::{cmp::min, collections::VecDeque};
 
 pub struct ActionQueue(VecDeque<Action>);

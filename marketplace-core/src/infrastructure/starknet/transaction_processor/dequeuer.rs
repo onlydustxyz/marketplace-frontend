@@ -2,7 +2,7 @@ use super::{StarknetError, TransactionProcessor};
 use futures::future::try_join_all;
 use itertools::Itertools;
 use log::{debug, error, info, warn};
-use onlydust_domain::{Error as DomainError, *};
+use marketplace_domain::{Error as DomainError, *};
 pub use starknet::accounts::Account;
 use std::{sync::Arc, thread, time::Duration};
 use tokio::{

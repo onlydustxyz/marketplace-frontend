@@ -1,5 +1,5 @@
 [package]
-name = "onlydust-domain"
+name = "marketplace-domain"
 authors = ["OnlyDust <tech@onlydust.xyz>"]
 description = "Domain objects and behaviours used in OnlyDust applictions."
 edition = "2021"

@@ -1,7 +1,7 @@
 use diesel::{BoolExpressionMethods, Connection, ExpressionMethods, QueryDsl, RunQueryDsl};
 use mapinto::{ResultMapErrInto, ResultMapInto};
 
-use onlydust_domain::*;
+use marketplace_domain::*;
 
 use crate::infrastructure::database::{
 	models::{self, Status},
@@ -62,10 +62,12 @@ impl From<DatabaseError> for ApplicationServiceError {
 	fn from(error: DatabaseError) -> Self {
 		match error {
 			DatabaseError::Diesel(diesel::result::Error::DatabaseError(kind, _)) => match kind {
-				diesel::result::DatabaseErrorKind::UniqueViolation =>
-					Self::AlreadyExist(Box::new(error)),
-				diesel::result::DatabaseErrorKind::ForeignKeyViolation =>
-					Self::InvalidEntity(Box::new(error)),
+				diesel::result::DatabaseErrorKind::UniqueViolation => {
+					Self::AlreadyExist(Box::new(error))
+				},
+				diesel::result::DatabaseErrorKind::ForeignKeyViolation => {
+					Self::InvalidEntity(Box::new(error))
+				},
 				_ => Self::Infrastructure(Box::new(error)),
 			},
 			DatabaseError::Diesel(diesel::result::Error::NotFound) => Self::NotFound,

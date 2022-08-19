@@ -1,7 +1,7 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use onlydust_domain as domain;
+use marketplace_domain as domain;
 
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct ContactInformation {

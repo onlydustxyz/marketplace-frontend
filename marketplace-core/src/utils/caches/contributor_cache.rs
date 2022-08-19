@@ -1,6 +1,6 @@
 use std::{env, time::Duration};
 
-use onlydust_domain::{Contributor, ContributorId};
+use marketplace_domain::{Contributor, ContributorId};
 
 use super::Cache;
 

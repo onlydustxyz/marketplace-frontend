@@ -1,7 +1,7 @@
 use std::{collections::HashMap, str::FromStr, sync::RwLock};
 
 use super::*;
-use onlydust_domain::{Error as DomainError, *};
+use marketplace_domain::{Error as DomainError, *};
 use rocket::{
 	http::{ContentType, Status},
 	local::blocking::Client,

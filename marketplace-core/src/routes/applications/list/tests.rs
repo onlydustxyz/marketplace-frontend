@@ -4,7 +4,7 @@ use super::list_contributor_applications;
 
 use crypto_bigint::U256;
 use marketplace_core::dto;
-use onlydust_domain::*;
+use marketplace_domain::*;
 use rocket::{http::Status, local::blocking::Client, Build};
 use uuid::Uuid;
 

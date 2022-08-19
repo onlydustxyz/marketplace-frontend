@@ -1,6 +1,6 @@
 use http_api_problem::HttpApiProblem;
 use marketplace_core::application::AssignContributionUsecase;
-use onlydust_domain::ContributionId;
+use marketplace_domain::ContributionId;
 use rocket::{
 	response::status,
 	serde::{json::Json, Deserialize},
@@ -47,8 +47,8 @@ mod test {
 	use crypto_bigint::U256;
 	use http_api_problem::StatusCode;
 	use marketplace_core::application::MockAssignContribution;
+	use marketplace_domain::*;
 	use mockall::predicate::*;
-	use onlydust_domain::*;
 	use thiserror::Error;
 
 	#[derive(Debug, Error)]

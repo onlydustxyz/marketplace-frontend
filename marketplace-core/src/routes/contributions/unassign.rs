@@ -27,7 +27,7 @@ mod test {
 	use super::*;
 	use http_api_problem::StatusCode;
 	use marketplace_core::application::MockUnassignContribution;
-	use onlydust_domain::*;
+	use marketplace_domain::*;
 
 	use mockall::predicate::*;
 	use thiserror::Error;

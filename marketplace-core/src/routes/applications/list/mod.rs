@@ -4,7 +4,7 @@ mod tests;
 use http_api_problem::HttpApiProblem;
 use itertools::Itertools;
 use marketplace_core::dto;
-use onlydust_domain::ApplicationRepository;
+use marketplace_domain::ApplicationRepository;
 use rocket::{serde::json::Json, State};
 use rocket_okapi::openapi;
 use std::sync::Arc;

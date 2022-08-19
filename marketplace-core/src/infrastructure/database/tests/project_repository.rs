@@ -1,6 +1,6 @@
 use crate::infrastructure::database::{init_pool, Client};
 use itertools::Itertools;
-use onlydust_domain::*;
+use marketplace_domain::*;
 use uuid::Uuid;
 
 #[test]

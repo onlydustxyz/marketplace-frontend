@@ -1,7 +1,7 @@
 use crate::routes::{api_key::ApiKey, hex_prefixed_string::HexPrefixedString};
 use http_api_problem::{HttpApiProblem, StatusCode};
 use marketplace_core::{application::CreateContributionUsecase, github};
-use onlydust_domain::*;
+use marketplace_domain::*;
 use rocket::{
 	http::Status,
 	serde::{json::Json, Deserialize},
