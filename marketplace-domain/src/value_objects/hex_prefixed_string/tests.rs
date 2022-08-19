@@ -3,21 +3,21 @@ use serde_test::{assert_de_tokens, assert_de_tokens_error, Token};
 
 #[test]
 fn test_de_hex_prefixed_string() {
-	let test_string = HexPrefixedString("0x0123456789abcdef".to_string());
+	let test_string = HexPrefixedString::from_str("0x0123456789abcdef").unwrap();
 
 	assert_de_tokens(&test_string, &[Token::Str("0x0123456789abcdef")])
 }
 
 #[test]
 fn test_de_hex_prefixed_string_uppercase() {
-	let result_string = HexPrefixedString("0x0123456789abcdef".to_string());
+	let result_string = HexPrefixedString::from_str("0x0123456789abcdef").unwrap();
 
 	assert_de_tokens(&result_string, &[Token::Str("0x0123456789ABCDEF")])
 }
 
 #[test]
 fn test_de_hex_prefixed_string_0x0() {
-	let test_string = HexPrefixedString("0x0".to_string());
+	let test_string = HexPrefixedString::from_str("0x0").unwrap();
 
 	assert_de_tokens(&test_string, &[Token::Str("0x0")])
 }

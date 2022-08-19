@@ -1,7 +1,7 @@
 [package]
 name = "marketplace-core"
 authors = ["OnlyDust <tech@onlydust.xyz>"]
-description = "Death Note off chain service to watch github contributions and update associated smart contract state on StarkNet."
+description = "Backend services to operate the contribution marketplace."
 homepage = "https://onlydust.xyz"
 edition = "2021"
 license-file = "LICENSE"
