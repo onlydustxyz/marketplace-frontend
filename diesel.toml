@@ -1,2 +1,2 @@
 [print_schema]
-file = "marketplace-backend/src/infrastructure/database/schema.rs"
+file = "marketplace-core/src/infrastructure/database/schema.rs"

@@ -1453,7 +1453,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "marketplace-backend"
+name = "marketplace-core"
 version = "0.0.1"
 dependencies = [
  "anyhow",
