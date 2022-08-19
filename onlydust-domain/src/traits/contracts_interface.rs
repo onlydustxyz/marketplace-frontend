@@ -1,18 +1,7 @@
-use crate::{Action, Contributor, ContributorId};
+use crate::{Contributor, ContributorId};
 
-use anyhow::Result;
 use async_trait::async_trait;
 use starknet::core::types::FieldElement;
-
-/// Manage Contributions existence
-#[async_trait]
-pub trait ContributionManager {
-	async fn execute_actions(
-		&self,
-		actions: &[Action],
-		wait_for_acceptance: bool,
-	) -> Result<String>;
-}
 
 /// Manage User registration informations
 #[async_trait]
