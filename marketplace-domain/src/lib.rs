@@ -16,3 +16,6 @@ pub use services::*;
 
 mod actions;
 pub use actions::*;
+
+mod events;
+pub use events::{Event, GithubIdentifierRegisteredEvent};

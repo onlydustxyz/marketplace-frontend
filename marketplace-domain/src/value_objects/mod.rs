@@ -7,8 +7,5 @@ pub use hex_prefixed_string::{HexPrefixedString, ParseHexPrefixedStringError};
 mod u256;
 pub use u256::{u256_from_string, ParseU256Error};
 
-mod events;
-pub use events::{Event, GithubIdentifierRegisteredEvent};
-
 mod contract_address;
 pub use contract_address::ContractAddress;
