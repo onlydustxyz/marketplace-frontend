@@ -19,10 +19,7 @@ mod types;
 pub use traits::contracts_interface::*;
 
 pub use entities::*;
-pub use types::{
-	contracts_update_status::*,
-	project::{Filter as ProjectFilter, Id as ProjectId, IndexingStatus, Project},
-};
+pub use types::project::{Filter as ProjectFilter, Id as ProjectId, IndexingStatus, Project};
 
 pub use actions::*;
 
