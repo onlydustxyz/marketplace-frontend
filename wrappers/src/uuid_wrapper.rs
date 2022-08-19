@@ -1,6 +1,5 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use syn;
 
 pub fn impl_uuid_wrapper_macro(ast: &syn::DeriveInput) -> TokenStream {
 	let name = &ast.ident;
