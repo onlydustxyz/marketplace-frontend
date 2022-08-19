@@ -1,6 +1,6 @@
 use mapinto::ResultMapErrInto;
 use mockall::automock;
-use onlydust_domain::*;
+use onlydust_domain::{Error as DomainError, *};
 use std::sync::Arc;
 
 #[automock]
