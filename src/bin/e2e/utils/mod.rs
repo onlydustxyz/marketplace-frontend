@@ -27,6 +27,22 @@ pub async fn post(url: String, body: Option<serde_json::Value>) -> Response {
 	response.unwrap()
 }
 
+pub async fn put(url: String, body: Option<serde_json::Value>) -> Response {
+	let client = reqwest::Client::new();
+	let mut builder = client
+		.put(url)
+		.header("content-type", "application/json")
+		.header("Api-Key", api_key());
+
+	if let Some(body) = body {
+		builder = builder.body(body.to_string());
+	}
+
+	let response = builder.send().await;
+	assert!(response.is_ok(), "{}", response.err().unwrap());
+	response.unwrap()
+}
+
 fn api_key() -> String {
 	dotenv().ok();
 	std::env::var("API_KEY").unwrap_or_default()

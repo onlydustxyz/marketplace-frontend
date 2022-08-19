@@ -1,9 +1,9 @@
 use schemars::JsonSchema;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use crate::domain;
 
-#[derive(Serialize, JsonSchema)]
+#[derive(Serialize, Deserialize, JsonSchema)]
 pub struct ContactInformation {
 	pub id: String,
 	pub contributor_id: String,
