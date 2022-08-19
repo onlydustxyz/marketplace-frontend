@@ -31,7 +31,7 @@ impl<A: Account + Sync> Contract<A> {
 		actions: &[Action],
 		wait_for_acceptance: bool,
 	) -> Result<String, ContractError> {
-		let calls = actions.iter().map(Action::into_call).collect_vec();
+		let calls = actions.iter().map(|action| action.into_call()).collect_vec();
 		let transaction_result = self
 			.administrator
 			.send_transaction(&calls, wait_for_acceptance)
@@ -42,11 +42,11 @@ impl<A: Account + Sync> Contract<A> {
 }
 
 trait IntoCall {
-	fn into_call(&self) -> Call;
+	fn into_call(self) -> Call;
 }
 
-impl IntoCall for Action {
-	fn into_call(&self) -> Call {
+impl IntoCall for &Action {
+	fn into_call(self) -> Call {
 		match self {
 			Action::CreateContribution { contribution } => Call {
 				to: contributions_contract_address(),
