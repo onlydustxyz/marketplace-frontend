@@ -14,7 +14,7 @@ use contribution::*;
 mod contact_information;
 use contact_information::*;
 
-const DATA_PATH: &str = "backend/src/bin/e2e/data";
+const DATA_PATH: &str = "marketplace-backend/src/bin/e2e/data";
 
 #[tokio::main]
 async fn main() {
