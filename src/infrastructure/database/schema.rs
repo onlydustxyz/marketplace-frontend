@@ -8,7 +8,7 @@ table! {
 }
 
 table! {
-	contact_informations (id) {
+	contact_information (id) {
 		id -> Uuid,
 		contributor_id -> Varchar,
 		discord_handle -> Nullable<Varchar>,
@@ -49,4 +49,4 @@ table! {
 joinable!(applications -> contributions (contribution_id));
 joinable!(contributions -> projects (project_id));
 
-allow_tables_to_appear_in_same_query!(applications, contact_informations, contributions, projects,);
+allow_tables_to_appear_in_same_query!(applications, contact_information, contributions, projects,);

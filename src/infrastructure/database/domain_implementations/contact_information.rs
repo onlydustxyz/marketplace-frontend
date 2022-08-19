@@ -1,6 +1,6 @@
 use crate::{
 	domain::*,
-	infrastructure::database::{models, schema::contact_informations, Client, DatabaseError},
+	infrastructure::database::{models, schema::contact_information, Client, DatabaseError},
 };
 use diesel::prelude::*;
 use std::str::FromStr;
@@ -14,8 +14,8 @@ impl ContactInformationRepository for Client {
 			.connection()
 			.map_err(|e| ContactInformationRepositoryError::Infrastructure(e.into()))?;
 
-		match contact_informations::dsl::contact_informations
-			.filter(contact_informations::contributor_id.eq(contributor_id.to_string()))
+		match contact_information::dsl::contact_information
+			.filter(contact_information::contributor_id.eq(contributor_id.to_string()))
 			.get_result::<models::ContactInformation>(&*connection)
 		{
 			Ok(contact_information) => Ok(Some(contact_information.into())),
@@ -31,7 +31,7 @@ impl ContactInformationRepository for Client {
 		let connection = self.connection().map_err(ContactInformationRepositoryError::from)?;
 
 		let contact_information = models::ContactInformation::from(contact_information);
-		diesel::insert_into(contact_informations::table)
+		diesel::insert_into(contact_information::table)
 			.values(&contact_information)
 			.execute(&*connection)
 			.map_err(ContactInformationRepositoryError::from)?;
@@ -47,7 +47,7 @@ impl ContactInformationRepository for Client {
 
 		let contact_information = models::ContactInformation::from(contact_information);
 		diesel::update(
-			contact_informations::table.filter(contact_informations::id.eq(contact_information.id)),
+			contact_information::table.filter(contact_information::id.eq(contact_information.id)),
 		)
 		.set(contact_information)
 		.execute(&*connection)
