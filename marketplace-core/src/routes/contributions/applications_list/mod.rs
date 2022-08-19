@@ -6,7 +6,7 @@ use std::sync::Arc;
 use http_api_problem::HttpApiProblem;
 use itertools::Itertools;
 use marketplace_core::dto;
-use onlydust_domain::{Application, ApplicationRepository, ContributionId, ContributorId};
+use marketplace_domain::{Application, ApplicationRepository, ContributionId, ContributorId};
 use rocket::{serde::json::Json, State};
 use rocket_okapi::openapi;
 use uuid::Uuid;

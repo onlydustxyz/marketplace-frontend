@@ -1,5 +1,5 @@
 use crypto_bigint::{Encoding, Split, U128, U256};
-use onlydust_domain::ContributorId;
+use marketplace_domain::ContributorId;
 use starknet::core::types::FieldElement;
 
 #[derive(Debug, Clone, PartialEq, Eq)]

@@ -3,7 +3,7 @@ mod models;
 use anyhow::Result;
 use std::{collections::HashMap, sync::Arc};
 
-use onlydust_domain::{self as domain, *};
+use marketplace_domain::{self as domain, *};
 
 impl From<models::RepositoryWithExtension> for Project {
 	fn from(repo: models::RepositoryWithExtension) -> Self {

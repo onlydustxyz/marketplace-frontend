@@ -1,6 +1,6 @@
 use http_api_problem::{HttpApiProblem, StatusCode};
 use marketplace_core::dto;
-use onlydust_domain::ContactInformationService;
+use marketplace_domain::ContactInformationService;
 use rocket::{get, serde::json::Json, State};
 use rocket_okapi::openapi;
 use std::{result::Result, sync::Arc};
@@ -29,8 +29,8 @@ mod test {
 	use std::str::FromStr;
 
 	use super::*;
+	use marketplace_domain::*;
 	use mockall::predicate::*;
-	use onlydust_domain::*;
 	use thiserror::Error;
 	use uuid::Uuid;
 

@@ -3,7 +3,7 @@ mod tests;
 
 use http_api_problem::HttpApiProblem;
 use marketplace_core::application::ApplyToContributionUsecase;
-use onlydust_domain::{ContributionId, ContributorId};
+use marketplace_domain::{ContributionId, ContributorId};
 use rocket::{response::status, serde::json::Json, State};
 use rocket_okapi::openapi;
 use schemars::JsonSchema;

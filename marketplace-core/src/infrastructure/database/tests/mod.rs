@@ -1,13 +1,13 @@
 use uuid::Uuid;
 
-use onlydust_domain::{Contribution, Project};
+use marketplace_domain::{Contribution, Project};
 
 mod application_repository;
 mod application_service;
 mod contact_information_repository;
 mod project_repository;
 
-use onlydust_domain::*;
+use marketplace_domain::*;
 
 use super::Client;
 

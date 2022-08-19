@@ -27,7 +27,7 @@ use std::{
 };
 use url::Url;
 
-use onlydust_domain::{Contributor, ContributorId};
+use marketplace_domain::{Contributor, ContributorId};
 
 fn make_account_from_env() -> SingleOwnerAccount<SequencerGatewayProvider, LocalWallet> {
 	let private_key = env::var("PRIVATE_KEY").expect("PRIVATE_KEY must be set");
@@ -58,10 +58,12 @@ fn sequencer() -> SequencerGatewayProvider {
 			Url::parse("http://127.0.0.1:5050/gateway").unwrap(),
 			Url::parse("http://127.0.0.1:5050/feeder_gateway").unwrap(),
 		),
-		Ok(network) if network == *"alpha-goerli" =>
-			SequencerGatewayProvider::starknet_alpha_goerli(),
-		Ok(network) if network == *"alpha-mainnet" =>
-			SequencerGatewayProvider::starknet_alpha_mainnet(),
+		Ok(network) if network == *"alpha-goerli" => {
+			SequencerGatewayProvider::starknet_alpha_goerli()
+		},
+		Ok(network) if network == *"alpha-mainnet" => {
+			SequencerGatewayProvider::starknet_alpha_mainnet()
+		},
 		_ => SequencerGatewayProvider::starknet_alpha_goerli(), // Default to goerli
 	}
 }

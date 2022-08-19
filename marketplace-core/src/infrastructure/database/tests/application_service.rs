@@ -1,5 +1,5 @@
 use assert_matches::assert_matches;
-use onlydust_domain::*;
+use marketplace_domain::*;
 use uuid::Uuid;
 
 use crate::infrastructure::database::{init_pool, Client};

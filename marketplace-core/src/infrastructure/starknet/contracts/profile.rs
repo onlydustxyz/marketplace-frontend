@@ -1,7 +1,7 @@
 use crate::infrastructure::starknet::model::OnChainContributorId;
 
 use super::ContractViewer;
-use onlydust_domain::*;
+use marketplace_domain::*;
 use starknet::core::types::FieldElement;
 
 pub struct Contract {

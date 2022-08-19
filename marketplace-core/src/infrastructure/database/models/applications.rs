@@ -1,6 +1,6 @@
 use std::io::Write;
 
-use onlydust_domain::ApplicationStatus;
+use marketplace_domain::ApplicationStatus;
 
 use crate::infrastructure::database::schema::*;
 use diesel::{

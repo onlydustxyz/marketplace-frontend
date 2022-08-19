@@ -1,7 +1,7 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use onlydust_domain as domain;
+use marketplace_domain as domain;
 
 #[derive(Serialize, JsonSchema, Deserialize, Clone, PartialEq, Eq, Debug)]
 // #[cfg_attr(test, derive(PartialEq, Eq, Debug))]

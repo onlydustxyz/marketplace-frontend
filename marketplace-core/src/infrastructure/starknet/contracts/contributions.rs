@@ -1,7 +1,7 @@
 use super::{ContractAdministrator, ContractError};
 use crate::infrastructure::starknet::model::OnChainContributorId;
 use itertools::Itertools;
-use onlydust_domain::*;
+use marketplace_domain::*;
 use starknet::{
 	accounts::{Account, Call},
 	core::{types::FieldElement, utils::get_selector_from_name},

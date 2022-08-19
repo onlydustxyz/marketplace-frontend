@@ -5,7 +5,7 @@ use itertools::Itertools;
 use mapinto::ResultMapErrInto;
 
 use crate::infrastructure::database::{models, schema::applications, Client, DatabaseError};
-use onlydust_domain::*;
+use marketplace_domain::*;
 
 impl ApplicationRepository for Client {
 	fn create(&self, application: Application) -> Result<(), ApplicationRepositoryError> {
@@ -85,7 +85,7 @@ impl ApplicationRepository for Client {
 }
 
 impl From<Application> for models::Application {
-	fn from(application: onlydust_domain::Application) -> Self {
+	fn from(application: marketplace_domain::Application) -> Self {
 		Self {
 			id: (*application.id()).into(),
 			contribution_id: (*application.contribution_id()).into(),
@@ -110,10 +110,12 @@ impl From<DatabaseError> for ApplicationRepositoryError {
 	fn from(error: DatabaseError) -> Self {
 		match error {
 			DatabaseError::Diesel(diesel::result::Error::DatabaseError(kind, _)) => match kind {
-				diesel::result::DatabaseErrorKind::UniqueViolation =>
-					Self::AlreadyExist(Box::new(error)),
-				diesel::result::DatabaseErrorKind::ForeignKeyViolation =>
-					Self::InvalidEntity(Box::new(error)),
+				diesel::result::DatabaseErrorKind::UniqueViolation => {
+					Self::AlreadyExist(Box::new(error))
+				},
+				diesel::result::DatabaseErrorKind::ForeignKeyViolation => {
+					Self::InvalidEntity(Box::new(error))
+				},
 				_ => Self::Infrastructure(Box::new(error)),
 			},
 			DatabaseError::Diesel(diesel::result::Error::NotFound) => Self::NotFound,

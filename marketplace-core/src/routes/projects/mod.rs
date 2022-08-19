@@ -3,7 +3,7 @@ use marketplace_core::{
 	infrastructure::{database, starknet},
 	utils::caches,
 };
-use onlydust_domain::*;
+use marketplace_domain::*;
 
 use futures::future::{self, OptionFuture};
 use http_api_problem::{HttpApiProblem, StatusCode};

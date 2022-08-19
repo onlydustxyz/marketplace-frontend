@@ -1,5 +1,5 @@
 use crate::infrastructure::starknet::{Account, Client, StarknetError};
-use onlydust_domain::*;
+use marketplace_domain::*;
 
 impl<A: Account + Send + Sync + 'static> OnchainContributionService for Client<A> {
 	fn create(&self, contribution: Contribution) -> Result<(), OnchainContributionServiceError> {

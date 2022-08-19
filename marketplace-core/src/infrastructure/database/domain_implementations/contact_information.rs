@@ -1,4 +1,4 @@
-use onlydust_domain::*;
+use marketplace_domain::*;
 
 use crate::infrastructure::database::{models, schema::contact_information, Client, DatabaseError};
 use diesel::prelude::*;
@@ -58,8 +58,9 @@ impl ContactInformationRepository for Client {
 impl From<DatabaseError> for ContactInformationRepositoryError {
 	fn from(error: DatabaseError) -> Self {
 		match error {
-			DatabaseError::Diesel(diesel::result::Error::DatabaseError(_, _)) =>
-				Self::Infrastructure(Box::new(error)),
+			DatabaseError::Diesel(diesel::result::Error::DatabaseError(_, _)) => {
+				Self::Infrastructure(Box::new(error))
+			},
 			DatabaseError::Diesel(diesel::result::Error::NotFound) => Self::NotFound,
 			_ => Self::Infrastructure(Box::new(error)),
 		}
@@ -67,7 +68,7 @@ impl From<DatabaseError> for ContactInformationRepositoryError {
 }
 
 impl From<ContactInformation> for models::ContactInformation {
-	fn from(contact_information: onlydust_domain::ContactInformation) -> Self {
+	fn from(contact_information: marketplace_domain::ContactInformation) -> Self {
 		Self {
 			id: contact_information.id.into(),
 			contributor_id: contact_information.contributor_id.to_string(),

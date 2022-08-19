@@ -3,7 +3,7 @@ mod tests;
 
 use http_api_problem::HttpApiProblem;
 use marketplace_core::application::AcceptApplicationUsecase;
-use onlydust_domain::ApplicationId;
+use marketplace_domain::ApplicationId;
 use rocket::{response::status, State};
 use rocket_okapi::openapi;
 

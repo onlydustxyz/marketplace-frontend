@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use super::list_applications;
 use marketplace_core::dto;
-use onlydust_domain::{
+use marketplace_domain::{
 	Application, ApplicationId, ApplicationRepository, ApplicationRepositoryError,
 	ApplicationStatus, ContributionId, ContributorId,
 };

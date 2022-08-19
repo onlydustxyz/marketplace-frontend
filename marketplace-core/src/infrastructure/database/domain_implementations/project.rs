@@ -1,4 +1,4 @@
-use onlydust_domain::*;
+use marketplace_domain::*;
 use std::str::FromStr;
 
 use crate::infrastructure::database::{
@@ -108,10 +108,12 @@ impl From<DatabaseError> for ProjectRepositoryError {
 	fn from(error: DatabaseError) -> Self {
 		match error {
 			DatabaseError::Diesel(diesel::result::Error::DatabaseError(kind, _)) => match kind {
-				diesel::result::DatabaseErrorKind::UniqueViolation =>
-					Self::AlreadyExist(Box::new(error)),
-				diesel::result::DatabaseErrorKind::ForeignKeyViolation =>
-					Self::InvalidEntity(Box::new(error)),
+				diesel::result::DatabaseErrorKind::UniqueViolation => {
+					Self::AlreadyExist(Box::new(error))
+				},
+				diesel::result::DatabaseErrorKind::ForeignKeyViolation => {
+					Self::InvalidEntity(Box::new(error))
+				},
 				_ => Self::Infrastructure(Box::new(error)),
 			},
 			DatabaseError::Diesel(diesel::result::Error::NotFound) => Self::NotFound,

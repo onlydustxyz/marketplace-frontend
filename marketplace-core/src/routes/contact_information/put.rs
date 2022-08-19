@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use http_api_problem::HttpApiProblem;
-use onlydust_domain::ContactInformationService;
+use marketplace_domain::ContactInformationService;
 use rocket::{response::status, serde::json::Json, State};
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
@@ -42,8 +42,8 @@ mod test {
 
 	use super::*;
 	use http_api_problem::StatusCode;
+	use marketplace_domain::*;
 	use mockall::predicate::*;
-	use onlydust_domain::*;
 	use thiserror::Error;
 
 	#[derive(Debug, Error)]
