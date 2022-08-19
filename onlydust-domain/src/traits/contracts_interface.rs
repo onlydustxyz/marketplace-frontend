@@ -1,4 +1,4 @@
-use crate::{Contributor, ContributorId};
+use crate::Contributor;
 
 use async_trait::async_trait;
 use starknet::core::types::FieldElement;
@@ -11,10 +11,4 @@ pub trait ContributorRegistryViewer {
 		&self,
 		github_userid: &str,
 	) -> Option<Contributor>;
-}
-
-/// Profile contract
-#[async_trait]
-pub trait ContributorProfileViewer {
-	async fn get_account(&self, contributor_id: &ContributorId) -> Option<FieldElement>;
 }
