@@ -30,7 +30,7 @@ extern crate rocket;
 #[macro_use]
 extern crate diesel_migrations;
 
-embed_migrations!("migrations");
+embed_migrations!("../migrations");
 
 fn get_root_logger() -> Logger {
 	let drain = match std::env::var("LOGS") {

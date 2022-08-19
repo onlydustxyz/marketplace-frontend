@@ -14,6 +14,8 @@ use contribution::*;
 mod contact_information;
 use contact_information::*;
 
+const DATA_PATH: &str = "backend/src/bin/e2e/data";
+
 #[tokio::main]
 async fn main() {
 	add_all_projects().await;
@@ -25,7 +27,7 @@ async fn main() {
 	const ISSUE_NUMBER: u64 = 51;
 	add_contribution(ISSUE_NUMBER, starkonquest_id, 0, "0x123").await;
 
-	wait_for_result("src/bin/e2e/data/contributions_open.json").await;
+	wait_for_result(format!("{DATA_PATH}/contributions_open.json")).await;
 
 	let starkonquest = find_project_by_title(&list_all_projects().await, "starkonquest")
 		.expect("Project not found in list of all projects");
@@ -50,11 +52,11 @@ async fn main() {
 
 	assign_contribution(contribution_id, CONTRIBUTOR_ID).await;
 
-	wait_for_result("src/bin/e2e/data/contributions_assigned.json").await;
+	wait_for_result(format!("{DATA_PATH}/contributions_assigned.json")).await;
 
 	validate_contribution(contribution_id).await;
 
-	wait_for_result("src/bin/e2e/data/contributions_validated.json").await;
+	wait_for_result(format!("{DATA_PATH}/contributions_validated.json")).await;
 }
 
 async fn add_all_projects() {
@@ -62,13 +64,15 @@ async fn add_all_projects() {
 	add_project("onlydustxyz", "starklings").await;
 }
 
-async fn wait_for_result(result_file_path: &'static str) {
+async fn wait_for_result(result_file_path: String) {
 	for i in 0..10 {
 		println!("LOOP {i}");
+
+		let cloned_result_file_path = result_file_path.clone();
 		let handle = tokio::spawn(async move {
 			compare_projects_to_expected(
 				list_all_projects().await,
-				serde_json::from_str(&read_to_string(result_file_path).unwrap()).unwrap(),
+				serde_json::from_str(&read_to_string(&cloned_result_file_path).unwrap()).unwrap(),
 			);
 		});
 
