@@ -58,10 +58,10 @@ impl ContactInformationRepository for Client {
 impl From<DatabaseError> for ContactInformationRepositoryError {
 	fn from(error: DatabaseError) -> Self {
 		match error {
-			DatabaseError::Diesel(diesel::result::Error::DatabaseError(_, _)) => {
+			DatabaseError::Transaction(diesel::result::Error::DatabaseError(_, _)) => {
 				Self::Infrastructure(Box::new(error))
 			},
-			DatabaseError::Diesel(diesel::result::Error::NotFound) => Self::NotFound,
+			DatabaseError::Transaction(diesel::result::Error::NotFound) => Self::NotFound,
 			_ => Self::Infrastructure(Box::new(error)),
 		}
 	}
