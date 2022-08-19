@@ -1,4 +1,5 @@
 mod entities;
+pub use entities::*;
 
 mod repositories;
 pub use repositories::*;
@@ -14,14 +15,10 @@ mod services;
 pub use services::*;
 
 mod actions;
-mod traits;
-mod types;
-pub use traits::contracts_interface::*;
-
-pub use entities::*;
-pub use types::project::{Filter as ProjectFilter, Id as ProjectId, IndexingStatus, Project};
-
 pub use actions::*;
+
+mod traits;
+pub use traits::contracts_interface::*;
 
 mod u256;
 pub use u256::*;
