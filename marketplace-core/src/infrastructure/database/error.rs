@@ -8,5 +8,5 @@ pub enum Error {
 	#[error("Unable to migrate the database")]
 	Migration(String),
 	#[error(transparent)]
-	Diesel(#[from] DieselError),
+	Transaction(#[from] DieselError),
 }

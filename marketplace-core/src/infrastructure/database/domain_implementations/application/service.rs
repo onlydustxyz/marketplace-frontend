@@ -61,7 +61,8 @@ impl ApplicationService for Client {
 impl From<DatabaseError> for ApplicationServiceError {
 	fn from(error: DatabaseError) -> Self {
 		match error {
-			DatabaseError::Diesel(diesel::result::Error::DatabaseError(kind, _)) => match kind {
+			DatabaseError::Transaction(diesel::result::Error::DatabaseError(kind, _)) => match kind
+			{
 				diesel::result::DatabaseErrorKind::UniqueViolation => {
 					Self::AlreadyExist(Box::new(error))
 				},
@@ -70,7 +71,7 @@ impl From<DatabaseError> for ApplicationServiceError {
 				},
 				_ => Self::Infrastructure(Box::new(error)),
 			},
-			DatabaseError::Diesel(diesel::result::Error::NotFound) => Self::NotFound,
+			DatabaseError::Transaction(diesel::result::Error::NotFound) => Self::NotFound,
 			_ => Self::Infrastructure(Box::new(error)),
 		}
 	}

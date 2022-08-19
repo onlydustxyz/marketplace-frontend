@@ -107,7 +107,8 @@ impl From<models::Contribution> for Contribution {
 impl From<DatabaseError> for ProjectRepositoryError {
 	fn from(error: DatabaseError) -> Self {
 		match error {
-			DatabaseError::Diesel(diesel::result::Error::DatabaseError(kind, _)) => match kind {
+			DatabaseError::Transaction(diesel::result::Error::DatabaseError(kind, _)) => match kind
+			{
 				diesel::result::DatabaseErrorKind::UniqueViolation => {
 					Self::AlreadyExist(Box::new(error))
 				},
@@ -116,7 +117,7 @@ impl From<DatabaseError> for ProjectRepositoryError {
 				},
 				_ => Self::Infrastructure(Box::new(error)),
 			},
-			DatabaseError::Diesel(diesel::result::Error::NotFound) => Self::NotFound,
+			DatabaseError::Transaction(diesel::result::Error::NotFound) => Self::NotFound,
 			_ => Self::Infrastructure(Box::new(error)),
 		}
 	}
