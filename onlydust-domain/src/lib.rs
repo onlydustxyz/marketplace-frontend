@@ -17,9 +17,6 @@ pub use services::*;
 mod actions;
 pub use actions::*;
 
-mod traits;
-pub use traits::contracts_interface::*;
-
 mod u256;
 pub use u256::*;
 
