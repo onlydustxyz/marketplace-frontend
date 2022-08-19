@@ -11,6 +11,9 @@ use utils::*;
 mod contribution;
 use contribution::*;
 
+mod contact_information;
+use contact_information::*;
+
 #[tokio::main]
 async fn main() {
 	add_all_projects().await;
@@ -34,6 +37,17 @@ async fn main() {
 		uuid::Uuid::from_str(&contribution.id).expect("contribution id is not a valid uuid");
 
 	const CONTRIBUTOR_ID: u128 = 123;
+	let discord_handle = String::from("discord");
+
+	add_contact_information(CONTRIBUTOR_ID, Some(String::from("discord"))).await;
+
+	let contact_info = get_contact_information(CONTRIBUTOR_ID).await;
+	assert_eq!(
+		contact_info.contributor_id,
+		"0x000000000000000000000000000000000000000000000000000000000000007b"
+	);
+	assert_eq!(contact_info.discord_handle.unwrap(), discord_handle);
+
 	assign_contribution(contribution_id, CONTRIBUTOR_ID).await;
 
 	wait_for_result("src/bin/e2e/data/contributions_assigned.json").await;
