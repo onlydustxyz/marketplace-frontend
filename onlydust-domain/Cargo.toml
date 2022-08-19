@@ -24,7 +24,6 @@ url = "2.2.2"
 base16ct = "0.1.1"
 # TODO: Remove both dependencies below once https://www.notion.so/onlydust/remove-dependency-on-schema-rs-in-domain-crate-584da1e29638490986f2e28e3988709f has been done
 schemars = { version = "0.8", features = ["uuid1"] }
-# rocket = { version = "0.5.0-rc.2", features = ["json", "uuid"] }
 rocket_okapi = { version = "0.8.0-rc.2", features = ["swagger", "uuid"] }
 
 # Utils
