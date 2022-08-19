@@ -1,10 +1,10 @@
 use std::str::FromStr;
 
+use marketplace_wrappers::UuidWrapper;
 use rocket::request::FromParam;
 use schemars::JsonSchema;
 use serde::Deserialize;
 use uuid::Uuid;
-use wrappers::UuidWrapper;
 
 #[derive(Debug, Clone, Copy, Deserialize, JsonSchema, UuidWrapper)]
 pub struct UuidParam(Uuid);

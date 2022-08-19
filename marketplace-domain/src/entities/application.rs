@@ -1,9 +1,9 @@
 use std::fmt::Display;
 
 use super::{ContributionId, ContributorId};
+use marketplace_wrappers::UuidWrapper;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use wrappers::UuidWrapper;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Hash, UuidWrapper)]
 pub struct Id(Uuid);
