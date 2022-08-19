@@ -1,0 +1,1 @@
+ALTER TABLE IF EXISTS contact_information RENAME TO contact_informations
