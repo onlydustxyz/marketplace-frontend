@@ -1,7 +1,7 @@
 use http_api_problem::{HttpApiProblem, StatusCode};
 use onlydust_domain::{
 	ApplicationRepositoryError, ApplicationServiceError, ContactInformationRepositoryError,
-	ContributionRepositoryError, ContributionServiceError, DomainError,
+	ContributionRepositoryError, ContributionServiceError, Error as DomainError,
 	OnchainContributionServiceError,
 };
 

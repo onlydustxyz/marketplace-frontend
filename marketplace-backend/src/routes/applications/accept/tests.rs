@@ -1,6 +1,6 @@
 use super::accept_application;
 
-use onlydust_domain::{ApplicationId, ApplicationRepositoryError, DomainError};
+use onlydust_domain::{ApplicationId, ApplicationRepositoryError, Error as DomainError};
 
 use marketplace_backend::application::AcceptApplicationUsecase;
 use rocket::{

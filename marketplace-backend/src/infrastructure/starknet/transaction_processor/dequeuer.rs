@@ -1,19 +1,14 @@
+use super::{StarknetError, TransactionProcessor};
 use futures::future::try_join_all;
 use itertools::Itertools;
 use log::{debug, error, info, warn};
-
-use super::{StarknetError, TransactionProcessor};
-
+use onlydust_domain::{Error as DomainError, *};
+pub use starknet::accounts::Account;
+use std::{sync::Arc, thread, time::Duration};
 use tokio::{
 	sync::oneshot::{error::TryRecvError, Receiver},
 	task::JoinHandle,
 };
-
-use std::{sync::Arc, thread, time::Duration};
-
-pub use starknet::accounts::Account;
-
-use onlydust_domain::*;
 
 // TODO: refactor to event driven to remove dependency on database
 pub fn spawn(

@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use mapinto::ResultMapErrInto;
 
-use onlydust_domain::*;
+use onlydust_domain::{Error as DomainError, *};
 
 pub trait Usecase: Send + Sync {
 	fn accept_application(&self, application_id: &ApplicationId) -> Result<(), DomainError>;

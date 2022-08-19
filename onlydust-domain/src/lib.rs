@@ -7,7 +7,8 @@ mod value_objects;
 pub use value_objects::*;
 
 mod errors;
-pub use errors::Error as DomainError;
+pub use errors::Error;
+use Error as DomainError;
 
 mod services;
 pub use services::*;
