@@ -7,7 +7,7 @@ use rocket_okapi::openapi;
 use schemars::JsonSchema;
 use serde::Deserialize;
 
-use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem, u256::U256Param};
+use crate::routes::{to_http_api_problem::ToHttpApiProblem, u256::U256Param};
 
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]
@@ -22,7 +22,6 @@ pub struct PutContributorDto {
 	data = "<body>"
 )]
 pub fn put_contact_information(
-	_api_key: ApiKey,
 	contributor_id: U256Param,
 	body: Json<PutContributorDto>,
 	contact_information_service: &State<Arc<dyn ContactInformationService>>,
@@ -71,7 +70,6 @@ mod test {
 			.manage(Arc::new(contact_information_service) as Arc<dyn ContactInformationService>);
 
 		let result = put_contact_information(
-			ApiKey::default(),
 			U256Param::from_str(CONTRIBUTOR_ID).unwrap(),
 			PutContributorDto {
 				discord_handle: None,
@@ -106,7 +104,6 @@ mod test {
 			.manage(Arc::new(contact_information_service) as Arc<dyn ContactInformationService>);
 
 		let result = put_contact_information(
-			ApiKey::default(),
 			U256Param::from_str(CONTRIBUTOR_ID).unwrap(),
 			PutContributorDto {
 				discord_handle: Some(String::from("discord")),
