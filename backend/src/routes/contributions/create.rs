@@ -1,6 +1,6 @@
 use crate::routes::{api_key::ApiKey, hex_prefixed_string::HexPrefixedString};
-use deathnote_contributions_feeder::{application::CreateContributionUsecase, domain::*, github};
 use http_api_problem::{HttpApiProblem, StatusCode};
+use marketplace_backend::{application::CreateContributionUsecase, domain::*, github};
 use rocket::{
 	http::Status,
 	serde::{json::Json, Deserialize},
@@ -38,10 +38,11 @@ pub async fn create_contribution(
 	let github_issue = github_api.issue(body.project_id, body.github_issue_number).await;
 	let github_issue = match github_issue {
 		Ok(github_issue) => github_issue,
-		Err(error) =>
+		Err(error) => {
 			return Err(HttpApiProblem::new(StatusCode::BAD_REQUEST)
 				.title("Unable to get GitHub issue data")
-				.detail(error.to_string())),
+				.detail(error.to_string()))
+		},
 	};
 
 	let metadata = github::extract_metadata(github_issue.clone());

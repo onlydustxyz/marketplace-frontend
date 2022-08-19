@@ -1,7 +1,5 @@
-use deathnote_contributions_feeder::{
-	application::AssignContributionUsecase, domain::ContributionId,
-};
 use http_api_problem::HttpApiProblem;
+use marketplace_backend::{application::AssignContributionUsecase, domain::ContributionId};
 use rocket::{
 	response::status,
 	serde::{json::Json, Deserialize},
@@ -46,8 +44,8 @@ pub async fn assign_contributor(
 mod test {
 	use super::*;
 	use crypto_bigint::U256;
-	use deathnote_contributions_feeder::{application::MockAssignContribution, domain::*};
 	use http_api_problem::StatusCode;
+	use marketplace_backend::{application::MockAssignContribution, domain::*};
 	use mockall::predicate::*;
 	use thiserror::Error;
 

@@ -1,5 +1,5 @@
-use deathnote_contributions_feeder::{domain::ContactInformationService, dto};
 use http_api_problem::{HttpApiProblem, StatusCode};
+use marketplace_backend::{domain::ContactInformationService, dto};
 use rocket::{get, serde::json::Json, State};
 use rocket_okapi::openapi;
 use std::{result::Result, sync::Arc};
@@ -28,7 +28,7 @@ mod test {
 	use std::str::FromStr;
 
 	use super::*;
-	use deathnote_contributions_feeder::domain::*;
+	use marketplace_backend::domain::*;
 	use mockall::predicate::*;
 	use thiserror::Error;
 	use uuid::Uuid;

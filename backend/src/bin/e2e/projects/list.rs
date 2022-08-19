@@ -1,5 +1,5 @@
 use super::*;
-use deathnote_contributions_feeder::dto::Project;
+use marketplace_backend::dto::Project;
 
 pub async fn list_all_projects() -> Vec<Project> {
 	let response = get(format!("{BACKEND_BASE_URI}/projects")).await;

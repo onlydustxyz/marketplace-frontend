@@ -1,4 +1,4 @@
-use deathnote_contributions_feeder::{
+use marketplace_backend::{
 	domain::*,
 	dto, github,
 	infrastructure::{database, starknet},

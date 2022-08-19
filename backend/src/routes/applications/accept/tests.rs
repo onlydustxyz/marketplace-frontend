@@ -1,6 +1,6 @@
 use super::accept_application;
 
-use deathnote_contributions_feeder::{
+use marketplace_backend::{
 	application::AcceptApplicationUsecase,
 	domain::{ApplicationRepositoryError, DomainError},
 };
@@ -17,8 +17,8 @@ struct SuccessfulUsecase;
 impl AcceptApplicationUsecase for SuccessfulUsecase {
 	fn accept_application(
 		&self,
-		_application_id: &deathnote_contributions_feeder::domain::ApplicationId,
-	) -> Result<(), deathnote_contributions_feeder::domain::DomainError> {
+		_application_id: &marketplace_backend::domain::ApplicationId,
+	) -> Result<(), marketplace_backend::domain::DomainError> {
 		Ok(())
 	}
 }
@@ -28,7 +28,7 @@ struct FailedUsecase;
 impl AcceptApplicationUsecase for FailedUsecase {
 	fn accept_application(
 		&self,
-		_application_id: &deathnote_contributions_feeder::domain::ApplicationId,
+		_application_id: &marketplace_backend::domain::ApplicationId,
 	) -> Result<(), DomainError> {
 		Err(DomainError::ApplicationRepository(
 			ApplicationRepositoryError::NotFound,

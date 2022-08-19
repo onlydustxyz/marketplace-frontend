@@ -1,7 +1,7 @@
 use std::{collections::HashMap, str::FromStr, sync::RwLock};
 
 use super::*;
-use deathnote_contributions_feeder::domain::*;
+use marketplace_backend::domain::*;
 use rocket::{
 	http::{ContentType, Status},
 	local::blocking::Client,
