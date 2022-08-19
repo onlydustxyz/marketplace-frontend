@@ -1746,7 +1746,6 @@ checksum = "18a6dbe30758c9f83eb00cbea4ac95966305f5a7772f3f42ebfc7fc7eddbd8e1"
 name = "onlydust-domain"
 version = "0.0.1"
 dependencies = [
- "anyhow",
  "async-trait",
  "base16ct",
  "crypto-bigint 0.4.8",

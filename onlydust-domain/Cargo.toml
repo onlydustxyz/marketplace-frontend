@@ -34,7 +34,6 @@ mapinto = "0.2.1"
 starknet = { git = "https://github.com/ofux/starknet-rs" }
 
 # Errors
-anyhow = "1.0.57"
 thiserror = "1.0.31"
 
 # Serde
