@@ -111,12 +111,10 @@ impl From<DatabaseError> for ApplicationRepositoryError {
 		match error {
 			DatabaseError::Transaction(diesel::result::Error::DatabaseError(kind, _)) => match kind
 			{
-				diesel::result::DatabaseErrorKind::UniqueViolation => {
-					Self::AlreadyExist(Box::new(error))
-				},
-				diesel::result::DatabaseErrorKind::ForeignKeyViolation => {
-					Self::InvalidEntity(Box::new(error))
-				},
+				diesel::result::DatabaseErrorKind::UniqueViolation =>
+					Self::AlreadyExist(Box::new(error)),
+				diesel::result::DatabaseErrorKind::ForeignKeyViolation =>
+					Self::InvalidEntity(Box::new(error)),
 				_ => Self::Infrastructure(Box::new(error)),
 			},
 			DatabaseError::Transaction(diesel::result::Error::NotFound) => Self::NotFound,

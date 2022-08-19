@@ -103,12 +103,10 @@ impl<'r> FromFormField<'r> for U256Param {
 				max: Some(66),
 			}
 			.into(),
-			ParseU256Error::InvalidPrefix => {
-				form::Error::validation(parse_error.to_string()).into()
-			},
-			ParseU256Error::InvalidCharacter => {
-				form::Error::validation(parse_error.to_string()).into()
-			},
+			ParseU256Error::InvalidPrefix =>
+				form::Error::validation(parse_error.to_string()).into(),
+			ParseU256Error::InvalidCharacter =>
+				form::Error::validation(parse_error.to_string()).into(),
 		})
 	}
 
