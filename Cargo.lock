@@ -1474,6 +1474,7 @@ dependencies = [
  "mockall",
  "octocrab",
  "okapi",
+ "onlydust-domain",
  "r2d2",
  "r2d2-diesel",
  "rand",
@@ -1740,6 +1741,27 @@ name = "once_cell"
 version = "1.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "18a6dbe30758c9f83eb00cbea4ac95966305f5a7772f3f42ebfc7fc7eddbd8e1"
+
+[[package]]
+name = "onlydust-domain"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "base16ct",
+ "crypto-bigint 0.4.8",
+ "mapinto",
+ "mockall",
+ "rocket_okapi",
+ "rstest",
+ "schemars",
+ "serde",
+ "starknet",
+ "thiserror",
+ "url",
+ "uuid 0.8.2",
+ "wrappers",
+]
 
 [[package]]
 name = "opaque-debug"

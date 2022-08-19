@@ -1,6 +1,7 @@
 [workspace]
 
 members = [
-    "backend",
+    "marketplace-backend",
     "wrappers",
+	"onlydust-domain"
 ]
