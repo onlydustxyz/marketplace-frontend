@@ -71,12 +71,10 @@ impl<'r> FromFormField<'r> for HexPrefixedString {
 				max: None,
 			}
 			.into(),
-			ParseHexPrefixedStringError::InvalidPrefix => {
-				form::Error::validation(parse_error.to_string()).into()
-			},
-			ParseHexPrefixedStringError::InvalidCharacter => {
-				form::Error::validation(parse_error.to_string()).into()
-			},
+			ParseHexPrefixedStringError::InvalidPrefix =>
+				form::Error::validation(parse_error.to_string()).into(),
+			ParseHexPrefixedStringError::InvalidCharacter =>
+				form::Error::validation(parse_error.to_string()).into(),
 		})
 	}
 

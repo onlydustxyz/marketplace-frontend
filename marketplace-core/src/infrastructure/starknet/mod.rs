@@ -58,12 +58,10 @@ fn sequencer() -> SequencerGatewayProvider {
 			Url::parse("http://127.0.0.1:5050/gateway").unwrap(),
 			Url::parse("http://127.0.0.1:5050/feeder_gateway").unwrap(),
 		),
-		Ok(network) if network == *"alpha-goerli" => {
-			SequencerGatewayProvider::starknet_alpha_goerli()
-		},
-		Ok(network) if network == *"alpha-mainnet" => {
-			SequencerGatewayProvider::starknet_alpha_mainnet()
-		},
+		Ok(network) if network == *"alpha-goerli" =>
+			SequencerGatewayProvider::starknet_alpha_goerli(),
+		Ok(network) if network == *"alpha-mainnet" =>
+			SequencerGatewayProvider::starknet_alpha_mainnet(),
 		_ => SequencerGatewayProvider::starknet_alpha_goerli(), // Default to goerli
 	}
 }
