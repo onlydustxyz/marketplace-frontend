@@ -1,11 +1,11 @@
 #[cfg(test)]
 mod tests;
 
-use deathnote_contributions_feeder::{
+use http_api_problem::HttpApiProblem;
+use marketplace_backend::{
 	application::ApplyToContributionUsecase,
 	domain::{ContributionId, ContributorId},
 };
-use http_api_problem::HttpApiProblem;
 use rocket::{response::status, serde::json::Json, State};
 use rocket_okapi::openapi;
 use schemars::JsonSchema;

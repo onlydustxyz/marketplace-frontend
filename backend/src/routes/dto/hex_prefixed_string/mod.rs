@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use deathnote_contributions_feeder::dto::{hex_prefixed_from_str, ParseHexPrefixedStringError};
+use marketplace_backend::dto::{hex_prefixed_from_str, ParseHexPrefixedStringError};
 use rocket::{
 	data::ToByteUnit,
 	form::{self, DataField, FromFormField, ValueField},
@@ -71,10 +71,12 @@ impl<'r> FromFormField<'r> for HexPrefixedString {
 				max: None,
 			}
 			.into(),
-			ParseHexPrefixedStringError::InvalidPrefix =>
-				form::Error::validation(parse_error.to_string()).into(),
-			ParseHexPrefixedStringError::InvalidCharacter =>
-				form::Error::validation(parse_error.to_string()).into(),
+			ParseHexPrefixedStringError::InvalidPrefix => {
+				form::Error::validation(parse_error.to_string()).into()
+			},
+			ParseHexPrefixedStringError::InvalidCharacter => {
+				form::Error::validation(parse_error.to_string()).into()
+			},
 		})
 	}
 

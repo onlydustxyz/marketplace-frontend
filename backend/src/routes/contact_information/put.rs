@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-use deathnote_contributions_feeder::domain::ContactInformationService;
 use http_api_problem::HttpApiProblem;
+use marketplace_backend::domain::ContactInformationService;
 use rocket::{response::status, serde::json::Json, State};
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
@@ -41,8 +41,8 @@ mod test {
 	use std::str::FromStr;
 
 	use super::*;
-	use deathnote_contributions_feeder::domain::*;
 	use http_api_problem::StatusCode;
+	use marketplace_backend::domain::*;
 	use mockall::predicate::*;
 	use thiserror::Error;
 

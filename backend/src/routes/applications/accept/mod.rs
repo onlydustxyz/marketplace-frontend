@@ -1,10 +1,8 @@
 #[cfg(test)]
 mod tests;
 
-use deathnote_contributions_feeder::{
-	application::AcceptApplicationUsecase, domain::ApplicationId,
-};
 use http_api_problem::HttpApiProblem;
+use marketplace_backend::{application::AcceptApplicationUsecase, domain::ApplicationId};
 use rocket::{response::status, State};
 use rocket_okapi::openapi;
 

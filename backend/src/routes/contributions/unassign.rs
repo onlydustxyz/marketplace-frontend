@@ -1,5 +1,5 @@
-use deathnote_contributions_feeder::application::UnassignContributionUsecase;
 use http_api_problem::HttpApiProblem;
+use marketplace_backend::application::UnassignContributionUsecase;
 use rocket::{response::status, State};
 use rocket_okapi::openapi;
 use uuid::Uuid;
@@ -25,8 +25,8 @@ pub async fn unassign_contributor(
 #[cfg(test)]
 mod test {
 	use super::*;
-	use deathnote_contributions_feeder::{application::MockUnassignContribution, domain::*};
 	use http_api_problem::StatusCode;
+	use marketplace_backend::{application::MockUnassignContribution, domain::*};
 	use mockall::predicate::*;
 	use thiserror::Error;
 

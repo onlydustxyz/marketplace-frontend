@@ -1,6 +1,6 @@
 use assert_json_diff::assert_json_include;
-use deathnote_contributions_feeder::dto::{Contribution, Project};
 use dotenv::dotenv;
+use marketplace_backend::dto::{Contribution, Project};
 use reqwest::Response;
 use serde_json::Value;
 

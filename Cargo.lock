@@ -585,56 +585,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "deathnote_contributions_feeder"
-version = "0.0.1"
-dependencies = [
- "anyhow",
- "assert-json-diff",
- "assert_matches",
- "async-trait",
- "base16ct",
- "crypto-bigint 0.4.8",
- "diesel",
- "diesel_migrations",
- "dotenv",
- "env_logger",
- "futures 0.3.21",
- "http-api-problem",
- "itertools",
- "log",
- "mapinto",
- "mockall",
- "octocrab",
- "okapi",
- "r2d2",
- "r2d2-diesel",
- "rand",
- "reqwest",
- "rocket",
- "rocket_okapi",
- "rstest",
- "schemars",
- "serde",
- "serde_json",
- "serde_test",
- "serdect",
- "slog",
- "slog-async",
- "slog-envlogger",
- "slog-json",
- "slog-scope",
- "slog-stdlog",
- "slog-term",
- "starknet",
- "stretto",
- "thiserror",
- "tokio",
- "url",
- "uuid 0.8.2",
- "wrappers",
-]
-
-[[package]]
 name = "derivative"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1500,6 +1450,56 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "83fef99e2fe2af6bbbb14a8ea2f4d949260ff713e99a2efa4a454e3eea152136"
 dependencies = [
  "futures 0.1.31",
+]
+
+[[package]]
+name = "marketplace-backend"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "assert-json-diff",
+ "assert_matches",
+ "async-trait",
+ "base16ct",
+ "crypto-bigint 0.4.8",
+ "diesel",
+ "diesel_migrations",
+ "dotenv",
+ "env_logger",
+ "futures 0.3.21",
+ "http-api-problem",
+ "itertools",
+ "log",
+ "mapinto",
+ "mockall",
+ "octocrab",
+ "okapi",
+ "r2d2",
+ "r2d2-diesel",
+ "rand",
+ "reqwest",
+ "rocket",
+ "rocket_okapi",
+ "rstest",
+ "schemars",
+ "serde",
+ "serde_json",
+ "serde_test",
+ "serdect",
+ "slog",
+ "slog-async",
+ "slog-envlogger",
+ "slog-json",
+ "slog-scope",
+ "slog-stdlog",
+ "slog-term",
+ "starknet",
+ "stretto",
+ "thiserror",
+ "tokio",
+ "url",
+ "uuid 0.8.2",
+ "wrappers",
 ]
 
 [[package]]

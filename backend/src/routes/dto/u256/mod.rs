@@ -4,7 +4,7 @@ mod tests;
 use std::str::FromStr;
 
 use crypto_bigint::U256;
-use deathnote_contributions_feeder::{
+use marketplace_backend::{
 	domain::ContributorId,
 	dto::{u256_from_string, ParseU256Error},
 };
@@ -105,10 +105,12 @@ impl<'r> FromFormField<'r> for U256Param {
 				max: Some(66),
 			}
 			.into(),
-			ParseU256Error::InvalidPrefix =>
-				form::Error::validation(parse_error.to_string()).into(),
-			ParseU256Error::InvalidCharacter =>
-				form::Error::validation(parse_error.to_string()).into(),
+			ParseU256Error::InvalidPrefix => {
+				form::Error::validation(parse_error.to_string()).into()
+			},
+			ParseU256Error::InvalidCharacter => {
+				form::Error::validation(parse_error.to_string()).into()
+			},
 		})
 	}
 

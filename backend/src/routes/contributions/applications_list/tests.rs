@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use super::list_applications;
 
-use deathnote_contributions_feeder::{
+use marketplace_backend::{
 	domain::{
 		Application, ApplicationRepository, ApplicationStatus, ContributionId, ContributorId,
 	},
@@ -16,24 +16,24 @@ struct EmptyDatabase;
 impl ApplicationRepository for EmptyDatabase {
 	fn create(
 		&self,
-		_application: deathnote_contributions_feeder::domain::Application,
-	) -> Result<(), deathnote_contributions_feeder::domain::ApplicationRepositoryError> {
+		_application: marketplace_backend::domain::Application,
+	) -> Result<(), marketplace_backend::domain::ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
 	fn update(
 		&self,
 		_application: Application,
-	) -> Result<(), deathnote_contributions_feeder::domain::ApplicationRepositoryError> {
+	) -> Result<(), marketplace_backend::domain::ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
 	fn find(
 		&self,
-		_id: &deathnote_contributions_feeder::domain::ApplicationId,
+		_id: &marketplace_backend::domain::ApplicationId,
 	) -> Result<
-		Option<deathnote_contributions_feeder::domain::Application>,
-		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
+		Option<marketplace_backend::domain::Application>,
+		marketplace_backend::domain::ApplicationRepositoryError,
 	> {
 		unimplemented!()
 	}
@@ -43,8 +43,8 @@ impl ApplicationRepository for EmptyDatabase {
 		_contribution_id: &ContributionId,
 		_contributor_id: Option<ContributorId>,
 	) -> Result<
-		Vec<deathnote_contributions_feeder::domain::Application>,
-		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
+		Vec<marketplace_backend::domain::Application>,
+		marketplace_backend::domain::ApplicationRepositoryError,
 	> {
 		Ok(vec![])
 	}
@@ -53,8 +53,8 @@ impl ApplicationRepository for EmptyDatabase {
 		&self,
 		_contributor_id: Option<ContributorId>,
 	) -> Result<
-		Vec<deathnote_contributions_feeder::domain::Application>,
-		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
+		Vec<marketplace_backend::domain::Application>,
+		marketplace_backend::domain::ApplicationRepositoryError,
 	> {
 		unimplemented!()
 	}
@@ -63,24 +63,24 @@ struct FilledDatabase;
 impl ApplicationRepository for FilledDatabase {
 	fn create(
 		&self,
-		_application: deathnote_contributions_feeder::domain::Application,
-	) -> Result<(), deathnote_contributions_feeder::domain::ApplicationRepositoryError> {
+		_application: marketplace_backend::domain::Application,
+	) -> Result<(), marketplace_backend::domain::ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
 	fn update(
 		&self,
 		_application: Application,
-	) -> Result<(), deathnote_contributions_feeder::domain::ApplicationRepositoryError> {
+	) -> Result<(), marketplace_backend::domain::ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
 	fn find(
 		&self,
-		_id: &deathnote_contributions_feeder::domain::ApplicationId,
+		_id: &marketplace_backend::domain::ApplicationId,
 	) -> Result<
-		Option<deathnote_contributions_feeder::domain::Application>,
-		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
+		Option<marketplace_backend::domain::Application>,
+		marketplace_backend::domain::ApplicationRepositoryError,
 	> {
 		unimplemented!()
 	}
@@ -90,8 +90,8 @@ impl ApplicationRepository for FilledDatabase {
 		_contribution_id: &ContributionId,
 		_contributor_id: Option<ContributorId>,
 	) -> Result<
-		Vec<deathnote_contributions_feeder::domain::Application>,
-		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
+		Vec<marketplace_backend::domain::Application>,
+		marketplace_backend::domain::ApplicationRepositoryError,
 	> {
 		Ok(vec![
 			Application::new(
@@ -113,8 +113,8 @@ impl ApplicationRepository for FilledDatabase {
 		&self,
 		_contributor_id: Option<ContributorId>,
 	) -> Result<
-		Vec<deathnote_contributions_feeder::domain::Application>,
-		deathnote_contributions_feeder::domain::ApplicationRepositoryError,
+		Vec<marketplace_backend::domain::Application>,
+		marketplace_backend::domain::ApplicationRepositoryError,
 	> {
 		unimplemented!()
 	}

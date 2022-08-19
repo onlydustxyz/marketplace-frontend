@@ -1,9 +1,9 @@
 #[cfg(test)]
 mod tests;
 
-use deathnote_contributions_feeder::{domain::ApplicationRepository, dto};
 use http_api_problem::HttpApiProblem;
 use itertools::Itertools;
+use marketplace_backend::{domain::ApplicationRepository, dto};
 use rocket::{serde::json::Json, State};
 use rocket_okapi::openapi;
 use std::sync::Arc;

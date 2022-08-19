@@ -1,15 +1,15 @@
 [package]
 authors = ["OnlyDust <tech@onlydust.xyz>"]
 categories = ["contribution", "health-check"]
-default-run = "deathnote_contributions_feeder"
+default-run = "marketplace-backend"
 description = "Death Note off chain service to watch github contributions and update associated smart contract state on StarkNet."
 edition = "2021"
-homepage = "https://github.com/onlydustxyz/deathnote-contributions-feeder"
+homepage = "https://github.com/onlydustxyz/marketplace-backend"
 keywords = ["http", "rest", "api"]
 license-file = "LICENSE"
-name = "deathnote_contributions_feeder"
+name = "marketplace-backend"
 readme = "README.md"
-repository = "https://github.com/onlydustxyz/deathnote-contributions-feeder"
+repository = "https://github.com/onlydustxyz/marketplace-backend"
 version = "0.0.1"
 
 [dependencies]

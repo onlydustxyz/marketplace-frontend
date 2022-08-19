@@ -3,12 +3,12 @@ mod tests;
 
 use std::sync::Arc;
 
-use deathnote_contributions_feeder::{
+use http_api_problem::HttpApiProblem;
+use itertools::Itertools;
+use marketplace_backend::{
 	domain::{Application, ApplicationRepository, ContributionId, ContributorId},
 	dto,
 };
-use http_api_problem::HttpApiProblem;
-use itertools::Itertools;
 use rocket::{serde::json::Json, State};
 use rocket_okapi::openapi;
 use uuid::Uuid;

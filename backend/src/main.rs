@@ -1,6 +1,9 @@
 mod routes;
 
-use deathnote_contributions_feeder::{
+use diesel_migrations::*;
+use dotenv::dotenv;
+use log::info;
+use marketplace_backend::{
 	application::*,
 	domain::{
 		ApplicationRepository, ContactInformationService, ContactInformationServiceImplementation,
@@ -13,9 +16,6 @@ use deathnote_contributions_feeder::{
 	},
 	utils::caches::{ContributorCache, RepoCache},
 };
-use diesel_migrations::*;
-use dotenv::dotenv;
-use log::info;
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
 use slog::{o, Drain, Logger};

@@ -1,5 +1,5 @@
-use deathnote_contributions_feeder::application::ValidateContributionUsecase;
 use http_api_problem::HttpApiProblem;
+use marketplace_backend::application::ValidateContributionUsecase;
 use rocket::{response::status, State};
 use rocket_okapi::openapi;
 use uuid::Uuid;
@@ -24,8 +24,8 @@ pub async fn validate_contribution(
 #[cfg(test)]
 mod test {
 	use super::*;
-	use deathnote_contributions_feeder::{application::MockValidateContribution, domain::*};
 	use http_api_problem::StatusCode;
+	use marketplace_backend::{application::MockValidateContribution, domain::*};
 	use mockall::predicate::*;
 	use thiserror::Error;
 
