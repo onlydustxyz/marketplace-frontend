@@ -1472,6 +1472,7 @@ dependencies = [
  "log",
  "mapinto",
  "marketplace-domain",
+ "marketplace-wrappers",
  "mockall",
  "octocrab",
  "okapi",
@@ -1500,7 +1501,6 @@ dependencies = [
  "tokio",
  "url",
  "uuid 0.8.2",
- "wrappers",
 ]
 
 [[package]]
@@ -1511,6 +1511,7 @@ dependencies = [
  "base16ct",
  "crypto-bigint 0.4.8",
  "mapinto",
+ "marketplace-wrappers",
  "mockall",
  "rocket_okapi",
  "rstest",
@@ -1520,7 +1521,16 @@ dependencies = [
  "thiserror",
  "url",
  "uuid 0.8.2",
- "wrappers",
+]
+
+[[package]]
+name = "marketplace-wrappers"
+version = "0.1.0"
+dependencies = [
+ "crypto-bigint 0.4.8",
+ "quote",
+ "syn",
+ "uuid 1.1.2",
 ]
 
 [[package]]
@@ -3853,16 +3863,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "80d0f4e272c85def139476380b12f9ac60926689dd2e01d4923222f40580869d"
 dependencies = [
  "winapi",
-]
-
-[[package]]
-name = "wrappers"
-version = "0.1.0"
-dependencies = [
- "crypto-bigint 0.4.8",
- "quote",
- "syn",
- "uuid 1.1.2",
 ]
 
 [[package]]

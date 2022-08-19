@@ -1,8 +1,8 @@
 use super::ContributorId;
+use marketplace_wrappers::UuidWrapper;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use wrappers::UuidWrapper;
 
 #[derive(
 	Debug,

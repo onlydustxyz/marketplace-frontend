@@ -90,7 +90,7 @@ rstest = "0.15.0"
 assert-json-diff = "2.0.2"
 
 # Local dependecies
-wrappers = { path = "../wrappers" }
+marketplace-wrappers = { path = "../marketplace-wrappers" }
 marketplace-domain = { path = "../marketplace-domain" }
 
 [dev-dependencies]

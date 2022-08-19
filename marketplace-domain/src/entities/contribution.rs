@@ -1,3 +1,4 @@
+use marketplace_wrappers::UuidWrapper;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use starknet::core::types::FieldElement;
@@ -5,7 +6,6 @@ use std::str::FromStr;
 use thiserror::Error;
 use url::Url;
 use uuid::Uuid;
-use wrappers::UuidWrapper;
 
 use super::{ContributorId, ProjectId};
 
