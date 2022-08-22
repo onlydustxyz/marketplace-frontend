@@ -1,9 +1,10 @@
+mod contribution;
 mod github_identifier;
 mod topics;
 use topics::*;
 
 use super::apibara::{event::Event as ApibaraEventInner, Event as ApibaraEvent, StarkNetEvent};
-use marketplace_domain::*;
+use marketplace_domain::Event as DomainEvent;
 use starknet::core::types::FieldElement;
 use thiserror::Error;
 
@@ -15,7 +16,12 @@ pub enum FromEventError {
 	Invalid,
 }
 
-impl TryFrom<ApibaraEvent> for Event {
+pub trait EventTranslator {
+	fn selector() -> FieldElement;
+	fn to_domain_event(topics: Topics) -> Result<DomainEvent, FromEventError>;
+}
+
+impl TryFrom<ApibaraEvent> for DomainEvent {
 	type Error = FromEventError;
 
 	fn try_from(event: ApibaraEvent) -> Result<Self, Self::Error> {
@@ -28,10 +34,24 @@ impl TryFrom<ApibaraEvent> for Event {
 			})) => {
 				let selector: FieldElement =
 					Topics::from(topics).pop_front_as().map_err(|_| Self::Error::Invalid)?;
+
+				let data = Topics::from(data);
 				match selector {
-					_ if selector == github_identifier::selector() => Ok(
-						Self::GithubIdentifierRegistered(Topics::from(data).try_into()?),
-					),
+					_ if selector == github_identifier::selector() => {
+						Ok(Self::GithubIdentifierRegistered(data.try_into()?))
+					},
+					_ if selector == contribution::Created::selector() => {
+						Ok(contribution::Created::to_domain_event(data)?)
+					},
+					_ if selector == contribution::Assigned::selector() => {
+						Ok(contribution::Assigned::to_domain_event(data)?)
+					},
+					_ if selector == contribution::Unassigned::selector() => {
+						Ok(contribution::Unassigned::to_domain_event(data)?)
+					},
+					_ if selector == contribution::Validated::selector() => {
+						Ok(contribution::Validated::to_domain_event(data)?)
+					},
 					_ => Err(Self::Error::Unsupported),
 				}
 			},
@@ -44,48 +64,76 @@ impl TryFrom<ApibaraEvent> for Event {
 #[cfg(test)]
 mod test {
 	use super::{super::apibara::TopicValue, *};
+	use marketplace_domain::ContributionEvent;
 	use rstest::*;
 
-	#[rstest]
-	fn github_identifier_registered() {
-		let apibara_event = ApibaraEvent {
+	fn empty_topic() -> TopicValue {
+		TopicValue {
+			value: vec![
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0,
+			],
+		}
+	}
+
+	fn selector<T: EventTranslator>() -> TopicValue {
+		TopicValue {
+			value: T::selector().to_bytes_be().to_vec(),
+		}
+	}
+
+	fn apibara_event(selector: TopicValue) -> ApibaraEvent {
+		ApibaraEvent {
 			event: Some(ApibaraEventInner::Starknet(StarkNetEvent {
-				topics: vec![TopicValue {
-					value: vec![
-						2, 124, 191, 99, 112, 72, 67, 173, 80, 238, 22, 11, 250, 185, 65, 12, 49,
-						1, 103, 176, 70, 145, 84, 215, 212, 99, 214, 168, 222, 6, 146, 25,
-					],
-				}],
-				data: vec![
-					TopicValue {
-						value: vec![
-							0, 65, 118, 135, 43, 113, 88, 60, 185, 188, 54, 113, 219, 40, 242, 110,
-							127, 66, 106, 124, 7, 100, 97, 58, 8, 56, 187, 153, 239, 55, 58, 166,
-						],
-					},
-					TopicValue {
-						value: vec![
-							0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-							0, 0, 0, 0, 0, 0, 0, 203,
-						],
-					},
-					TopicValue {
-						value: vec![
-							0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-							0, 0, 0, 0, 0, 0, 0, 0,
-						],
-					},
-					TopicValue {
-						value: vec![
-							0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-							0, 0, 0, 0, 6, 101, 25, 175,
-						],
-					},
-				],
+				topics: vec![selector],
+				data: vec![empty_topic(), empty_topic(), empty_topic(), empty_topic()],
 				..Default::default()
 			})),
-		};
+		}
+	}
 
-		Event::try_from(apibara_event).unwrap();
+	#[rstest]
+	fn contribution_created() {
+		let apibara_event = apibara_event(selector::<contribution::Created>());
+
+		assert_eq!(
+			DomainEvent::Contribution(ContributionEvent::Created {
+				project_id: u8::default().to_string(),
+				gate: Default::default()
+			}),
+			DomainEvent::try_from(apibara_event).unwrap()
+		);
+	}
+
+	#[rstest]
+	fn contribution_assigned() {
+		let apibara_event = apibara_event(selector::<contribution::Assigned>());
+
+		assert_eq!(
+			DomainEvent::Contribution(ContributionEvent::Assigned {
+				contributor_id: Default::default()
+			}),
+			DomainEvent::try_from(apibara_event).unwrap()
+		);
+	}
+
+	#[rstest]
+	fn contribution_unassigned() {
+		let apibara_event = apibara_event(selector::<contribution::Unassigned>());
+
+		assert_eq!(
+			DomainEvent::Contribution(ContributionEvent::Unassigned {}),
+			DomainEvent::try_from(apibara_event).unwrap()
+		);
+	}
+
+	#[rstest]
+	fn contribution_validated() {
+		let apibara_event = apibara_event(selector::<contribution::Validated>());
+
+		assert_eq!(
+			DomainEvent::Contribution(ContributionEvent::Validated {}),
+			DomainEvent::try_from(apibara_event).unwrap()
+		);
 	}
 }

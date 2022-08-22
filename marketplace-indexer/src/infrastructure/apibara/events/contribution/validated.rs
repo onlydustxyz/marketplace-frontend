@@ -1,0 +1,53 @@
+use super::{EventTranslator, FromEventError, StarknetTopics, Topics};
+use marketplace_domain::{ContributionEvent, Event as DomainEvent};
+use starknet::core::{types::FieldElement, utils::get_selector_from_name};
+
+pub struct Validated;
+
+impl EventTranslator for Validated {
+	fn selector() -> FieldElement {
+		get_selector_from_name("ContributionValidated").unwrap()
+	}
+
+	fn to_domain_event(mut topics: Topics) -> Result<DomainEvent, FromEventError> {
+		let _contribution_id: u128 = topics.pop_front_as()?;
+
+		Ok(DomainEvent::Contribution(ContributionEvent::Validated {}))
+	}
+}
+
+#[cfg(test)]
+mod test {
+	use super::*;
+	use crate::infrastructure::apibara::proto::TopicValue;
+	use rstest::*;
+
+	#[fixture]
+	fn apibara_event_data() -> Topics {
+		vec![TopicValue {
+			value: vec![
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 12,
+			],
+		}]
+		.into()
+	}
+
+	#[rstest]
+	fn selector() {
+		assert_eq!(
+			get_selector_from_name("ContributionValidated").unwrap(),
+			<Validated as EventTranslator>::selector()
+		);
+	}
+
+	#[rstest]
+	fn create_event_from_apibara(apibara_event_data: Topics) {
+		let result = <Validated as EventTranslator>::to_domain_event(apibara_event_data);
+		assert!(result.is_ok(), "{}", result.err().unwrap());
+		assert_eq!(
+			DomainEvent::Contribution(ContributionEvent::Validated {},),
+			result.unwrap()
+		);
+	}
+}
