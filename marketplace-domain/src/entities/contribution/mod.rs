@@ -1,6 +1,9 @@
 mod status;
 pub use status::Status;
 
+mod event;
+pub use event::Event as ContributionEvent;
+
 use marketplace_wrappers::UuidWrapper;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
