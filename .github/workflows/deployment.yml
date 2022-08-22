@@ -13,7 +13,7 @@ jobs:
     with:
       image_name: deathnote-contribution-feeder-rest-api
       image_tag: ${{ github.ref_name }}
-      bin_name: marketplace_backend
+      bin_name: marketplace-core
       dockerfile: diesel-rocket-rs
       datadog_label: '[{"source": "deathnote", "service": "deathnote-contribution-feeder-rest-api"}]'
     secrets: inherit
