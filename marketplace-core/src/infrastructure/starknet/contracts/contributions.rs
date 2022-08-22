@@ -6,8 +6,7 @@ use starknet::{
 	accounts::{Account, Call},
 	core::{types::FieldElement, utils::get_selector_from_name},
 };
-use std::convert::TryInto;
-use std::sync::Arc;
+use std::{convert::TryInto, sync::Arc};
 
 pub struct Contract<A: Account + Sync> {
 	administrator: ContractAdministrator<A>,
