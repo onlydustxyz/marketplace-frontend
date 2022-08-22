@@ -42,7 +42,7 @@ table! {
         index -> Int4,
         timestamp -> Timestamp,
         aggregate_name -> Varchar,
-        aggregate_id -> Uuid,
+        aggregate_id -> Varchar,
         payload -> Json,
     }
 }
