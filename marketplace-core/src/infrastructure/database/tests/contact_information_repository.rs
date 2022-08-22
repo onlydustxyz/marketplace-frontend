@@ -11,11 +11,11 @@ use crate::infrastructure::database::{init_pool, Client};
 fn get_contributor_contact_information_ok() {
 	let client = Client::new(init_pool());
 
-	let contributor_id = 3.into();
+	let contributor_id: ContributorId = 3.into();
 
 	let contact_information = ContactInformation {
 		id: Uuid::new_v4().into(),
-		contributor_id,
+		contributor_id: contributor_id.clone(),
 		discord_handle: Some(String::from("discord")),
 	};
 
@@ -77,7 +77,7 @@ fn set_contributor_contact_information_ok() {
 
 	let new_contact_information = ContactInformation {
 		id: found_contact_information_id,
-		contributor_id,
+		contributor_id: contributor_id.to_owned(),
 		discord_handle: Some(String::from("discord#1234")),
 	};
 

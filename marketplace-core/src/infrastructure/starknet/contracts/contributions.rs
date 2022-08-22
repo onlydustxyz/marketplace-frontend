@@ -69,7 +69,7 @@ impl IntoCall for &Action {
 				contributor_id,
 			} => {
 				let OnChainContributorId(contributor_id_low, contributor_id_high): OnChainContributorId =
-					(*contributor_id).into();
+					contributor_id.to_owned().into();
 
 				Call {
 					to: contributions_contract_address(),

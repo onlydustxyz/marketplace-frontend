@@ -25,7 +25,7 @@ pub struct U256Param(U256);
 
 impl From<U256Param> for ContributorId {
 	fn from(param: U256Param) -> Self {
-		Self(param.0)
+		param.0.into()
 	}
 }
 
@@ -103,10 +103,12 @@ impl<'r> FromFormField<'r> for U256Param {
 				max: Some(66),
 			}
 			.into(),
-			ParseU256Error::InvalidPrefix =>
-				form::Error::validation(parse_error.to_string()).into(),
-			ParseU256Error::InvalidCharacter =>
-				form::Error::validation(parse_error.to_string()).into(),
+			ParseU256Error::InvalidPrefix => {
+				form::Error::validation(parse_error.to_string()).into()
+			},
+			ParseU256Error::InvalidCharacter => {
+				form::Error::validation(parse_error.to_string()).into()
+			},
 		})
 	}
 

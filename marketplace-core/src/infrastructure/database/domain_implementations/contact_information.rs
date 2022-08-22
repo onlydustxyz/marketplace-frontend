@@ -7,7 +7,7 @@ use std::str::FromStr;
 impl ContactInformationRepository for Client {
 	fn find_by_contributor_id(
 		&self,
-		contributor_id: ContributorId,
+		contributor_id: &ContributorId,
 	) -> Result<Option<ContactInformation>, ContactInformationRepositoryError> {
 		let connection = self
 			.connection()
@@ -58,8 +58,9 @@ impl ContactInformationRepository for Client {
 impl From<DatabaseError> for ContactInformationRepositoryError {
 	fn from(error: DatabaseError) -> Self {
 		match error {
-			DatabaseError::Transaction(diesel::result::Error::DatabaseError(_, _)) =>
-				Self::Infrastructure(Box::new(error)),
+			DatabaseError::Transaction(diesel::result::Error::DatabaseError(_, _)) => {
+				Self::Infrastructure(Box::new(error))
+			},
 			DatabaseError::Transaction(diesel::result::Error::NotFound) => Self::NotFound,
 			_ => Self::Infrastructure(Box::new(error)),
 		}

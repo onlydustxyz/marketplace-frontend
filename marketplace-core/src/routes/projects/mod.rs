@@ -158,7 +158,10 @@ async fn build_contribution(
 	contributor_cache: &caches::ContributorCache,
 ) -> Option<dto::Contribution> {
 	let contributor = OptionFuture::from(
-		contribution.contributor_id.map(|id| build_contributor(contributor_cache, id)),
+		contribution
+			.contributor_id
+			.clone()
+			.map(|id| build_contributor(contributor_cache, id)),
 	)
 	.await
 	.flatten();

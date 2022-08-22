@@ -154,7 +154,7 @@ fn store_multiple_and_list() {
 	let applications = <Client as ApplicationRepository>::list_by_contribution(
 		&client,
 		&contribution.id,
-		Some(*application1.contributor_id()),
+		Some(application1.contributor_id().to_owned()),
 	)
 	.unwrap();
 
@@ -163,7 +163,7 @@ fn store_multiple_and_list() {
 	let applications = <Client as ApplicationRepository>::list_by_contribution(
 		&client,
 		&contribution.id,
-		Some(*application2.contributor_id()),
+		Some(application2.contributor_id().to_owned()),
 	)
 	.unwrap();
 

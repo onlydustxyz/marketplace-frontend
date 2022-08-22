@@ -38,7 +38,7 @@ impl Service for ContactInformationService {
 	) -> Result<(), DomainError> {
 		let contact_information = self
 			.contact_information_repository
-			.find_by_contributor_id(*contributor_id)
+			.find_by_contributor_id(&contributor_id)
 			.map_err(DomainError::from)?;
 
 		if let Some(mut contact_information) = contact_information {
@@ -49,7 +49,7 @@ impl Service for ContactInformationService {
 		} else {
 			let contact_information = ContactInformation {
 				id: Uuid::new_v4().into(),
-				contributor_id: *contributor_id,
+				contributor_id: contributor_id.to_owned(),
 				discord_handle,
 			};
 			self.contact_information_repository
@@ -66,7 +66,7 @@ impl Service for ContactInformationService {
 	) -> Result<Option<ContactInformation>, DomainError> {
 		let contact_information = self
 			.contact_information_repository
-			.find_by_contributor_id(*contributor_id)
+			.find_by_contributor_id(&contributor_id)
 			.map_err(DomainError::from)?;
 
 		Ok(contact_information)

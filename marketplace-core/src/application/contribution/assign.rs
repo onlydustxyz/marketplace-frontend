@@ -40,7 +40,7 @@ impl Usecase for AssignContribution {
 		match self.contribution_repository.find_by_id(contribution_id)? {
 			Some(contribution) => self
 				.onchain_contribution_service
-				.assign_contributor(contribution.onchain_id, *contributor_id)
+				.assign_contributor(contribution.onchain_id, contributor_id.to_owned())
 				.map_err_into(),
 			None => Err(DomainError::ContributionRepository(
 				ContributionRepositoryError::NotFound,
