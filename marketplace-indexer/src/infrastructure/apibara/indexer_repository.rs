@@ -112,9 +112,8 @@ impl From<apibara::Network> for Network {
 				apibara::network::Network::Starknet(chain) => match chain.name {
 					chain if chain == "starknet-devnet" => Network::Starknet(StarknetChain::Devnet),
 					chain if chain == "starknet-goerli" => Network::Starknet(StarknetChain::Goerli),
-					chain if chain == "starknet-mainnet" => {
-						Network::Starknet(StarknetChain::Mainnet)
-					},
+					chain if chain == "starknet-mainnet" =>
+						Network::Starknet(StarknetChain::Mainnet),
 					_ => Network::Starknet(StarknetChain::Devnet),
 				},
 				apibara::network::Network::Ethereum(_) => unimplemented!(),

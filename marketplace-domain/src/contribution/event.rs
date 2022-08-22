@@ -46,8 +46,7 @@ impl Display for Event {
 
 #[cfg(test)]
 mod test {
-	use super::contribution::Id as ContributionId;
-	use super::*;
+	use super::{contribution::Id as ContributionId, *};
 	use assert_json_diff::assert_json_eq;
 	use rstest::*;
 	use serde_json::{json, Value};

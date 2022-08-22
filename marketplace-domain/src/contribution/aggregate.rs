@@ -17,10 +17,10 @@ pub struct Id(HexPrefixedString);
 pub struct Contribution;
 
 impl Aggregate for Contribution {
+	type Error = Error;
 	type Event = Event;
 	type Id = Id;
 	type State = State;
-	type Error = Error;
 
 	fn apply(state: Self::State, event: Self::Event) -> Result<Self::State, Self::Error> {
 		match event {
