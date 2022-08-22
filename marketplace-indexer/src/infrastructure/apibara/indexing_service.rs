@@ -149,6 +149,7 @@ mod test {
 	};
 	use mockall::predicate::*;
 	use rstest::*;
+	use starknet::core::utils::get_selector_from_name;
 	use tokio::sync::mpsc::error::TryRecvError;
 
 	#[fixture]
@@ -176,10 +177,10 @@ mod test {
 		apibara::Event {
 			event: Some(apibara::event::Event::Starknet(apibara::StarkNetEvent {
 				topics: vec![TopicValue {
-					value: vec![
-						2, 124, 191, 99, 112, 72, 67, 173, 80, 238, 22, 11, 250, 185, 65, 12, 49,
-						1, 103, 176, 70, 145, 84, 215, 212, 99, 214, 168, 222, 6, 146, 25,
-					],
+					value: get_selector_from_name("ContributionCreated")
+						.unwrap()
+						.to_bytes_be()
+						.to_vec(),
 				}],
 				data: vec![
 					TopicValue {

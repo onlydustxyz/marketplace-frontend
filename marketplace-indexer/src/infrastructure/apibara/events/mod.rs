@@ -1,5 +1,4 @@
 mod contribution;
-mod github_identifier;
 mod topics;
 use topics::*;
 
@@ -37,9 +36,6 @@ impl TryFrom<ApibaraEvent> for DomainEvent {
 
 				let data = Topics::from(data);
 				match selector {
-					_ if selector == github_identifier::selector() => {
-						Ok(Self::GithubIdentifierRegistered(data.try_into()?))
-					},
 					_ if selector == contribution::Created::selector() => {
 						Ok(contribution::Created::to_domain_event(data)?)
 					},
