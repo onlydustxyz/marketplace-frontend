@@ -4,13 +4,12 @@ pub use status::Status;
 use marketplace_wrappers::UuidWrapper;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use starknet::core::types::FieldElement;
 use url::Url;
 use uuid::Uuid;
 
-use super::{ContributorId, ProjectId};
+use crate::{ContractAddress, ContributorId, ProjectId};
 
-pub type ValidatorAddress = FieldElement;
+pub type ValidatorAddress = ContractAddress;
 
 pub type OnChainId = String;
 

@@ -129,35 +129,15 @@ mod test {
 	use super::{super::MockTransactionProcessor, *};
 	use crate::infrastructure::starknet::{action_queue::ActionQueue, contracts::ContractError};
 	use mockall::predicate::*;
-	use starknet::core::types::FieldElement;
 	use std::sync::RwLock;
 	use tokio::sync::oneshot;
-	use uuid::Uuid;
 
 	#[tokio::test]
 	async fn process_n_actions_in_parallel() {
 		let mut transaction_processor = MockTransactionProcessor::new();
 		let mut contribution_repository = MockContributionRepository::new();
 
-		let contribution = Contribution {
-			id: Uuid::from_u128(12).into(),
-			onchain_id: String::from("0"),
-			project_id: String::from("34"),
-			contributor_id: None,
-			title: None,
-			description: None,
-			status: ContributionStatus::Open,
-			external_link: None,
-			gate: 0,
-			metadata: ContributionMetadata {
-				difficulty: None,
-				technology: None,
-				duration: None,
-				context: None,
-				r#type: None,
-			},
-			validator: FieldElement::ZERO,
-		};
+		let contribution = Contribution::default();
 
 		let mut action_queue = ActionQueue::new();
 		action_queue.push(Action::CreateContribution {

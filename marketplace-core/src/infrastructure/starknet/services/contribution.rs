@@ -61,10 +61,8 @@ mod test {
 	use super::*;
 	use rstest::*;
 	use starknet::{
-		accounts::SingleOwnerAccount, core::types::FieldElement,
-		providers::SequencerGatewayProvider, signers::LocalWallet,
+		accounts::SingleOwnerAccount, providers::SequencerGatewayProvider, signers::LocalWallet,
 	};
-	use uuid::Uuid;
 
 	type StarknetClient = Client<SingleOwnerAccount<SequencerGatewayProvider, LocalWallet>>;
 
@@ -81,25 +79,7 @@ mod test {
 
 	#[rstest]
 	fn create_contribution(client: StarknetClient) {
-		let contribution = Contribution {
-			id: Uuid::from_u128(12).into(),
-			onchain_id: String::from("12"),
-			project_id: String::from("34"),
-			contributor_id: None,
-			title: None,
-			description: None,
-			status: ContributionStatus::Open,
-			external_link: None,
-			gate: 0,
-			metadata: ContributionMetadata {
-				difficulty: None,
-				technology: None,
-				duration: None,
-				context: None,
-				r#type: None,
-			},
-			validator: FieldElement::ZERO,
-		};
+		let contribution = Contribution::default();
 
 		let result = client.create(contribution.clone());
 

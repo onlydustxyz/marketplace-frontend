@@ -8,7 +8,6 @@ use crate::infrastructure::database::{
 };
 use diesel::{prelude::*, query_dsl::BelongingToDsl};
 use itertools::Itertools;
-use starknet::core::types::FieldElement;
 
 impl ProjectRepository for Client {
 	fn find_all_with_contributions(
@@ -98,8 +97,8 @@ impl From<models::Contribution> for Contribution {
 				context: contribution.context,
 				r#type: contribution.type_,
 			},
-			// ok to unwrap because values in db are created by a call to FieldElement::ToString
-			validator: FieldElement::from_str(&contribution.validator).unwrap(),
+			// ok to unwrap because values in db are created by a call to ContributorId::ToString
+			validator: contribution.validator.parse().unwrap(),
 		}
 	}
 }
@@ -109,10 +108,12 @@ impl From<DatabaseError> for ProjectRepositoryError {
 		match error {
 			DatabaseError::Transaction(diesel::result::Error::DatabaseError(kind, _)) => match kind
 			{
-				diesel::result::DatabaseErrorKind::UniqueViolation =>
-					Self::AlreadyExist(Box::new(error)),
-				diesel::result::DatabaseErrorKind::ForeignKeyViolation =>
-					Self::InvalidEntity(Box::new(error)),
+				diesel::result::DatabaseErrorKind::UniqueViolation => {
+					Self::AlreadyExist(Box::new(error))
+				},
+				diesel::result::DatabaseErrorKind::ForeignKeyViolation => {
+					Self::InvalidEntity(Box::new(error))
+				},
 				_ => Self::Infrastructure(Box::new(error)),
 			},
 			DatabaseError::Transaction(diesel::result::Error::NotFound) => Self::NotFound,

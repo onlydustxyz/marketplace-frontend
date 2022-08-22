@@ -120,7 +120,7 @@ impl From<(Contribution, String)> for models::Contribution {
 			duration: contribution.metadata.duration,
 			context: contribution.metadata.context,
 			type_: contribution.metadata.r#type,
-			validator: format!("{:#x}", contribution.validator),
+			validator: contribution.validator.to_string(),
 		}
 	}
 }
@@ -142,7 +142,7 @@ impl From<Contribution> for models::ContributionUpdate {
 			duration: contribution.metadata.duration,
 			context: contribution.metadata.context,
 			type_: contribution.metadata.r#type,
-			validator: format!("{:#x}", contribution.validator),
+			validator: contribution.validator.to_string(),
 		}
 	}
 }
@@ -152,10 +152,12 @@ impl From<DatabaseError> for ContributionRepositoryError {
 		match error {
 			DatabaseError::Transaction(diesel::result::Error::DatabaseError(kind, _)) => match kind
 			{
-				diesel::result::DatabaseErrorKind::UniqueViolation =>
-					Self::AlreadyExist(Box::new(error)),
-				diesel::result::DatabaseErrorKind::ForeignKeyViolation =>
-					Self::InvalidEntity(Box::new(error)),
+				diesel::result::DatabaseErrorKind::UniqueViolation => {
+					Self::AlreadyExist(Box::new(error))
+				},
+				diesel::result::DatabaseErrorKind::ForeignKeyViolation => {
+					Self::InvalidEntity(Box::new(error))
+				},
 				_ => Self::Infrastructure(Box::new(error)),
 			},
 			DatabaseError::Transaction(diesel::result::Error::NotFound) => Self::NotFound,

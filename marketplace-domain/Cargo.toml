@@ -29,9 +29,6 @@ rocket_okapi = { version = "0.8.0-rc.2", features = ["swagger", "uuid"] }
 mapinto = "0.2.1"
 hex = "0.4.3"
 
-# Starknet
-starknet = { git = "https://github.com/ofux/starknet-rs" }
-
 # Errors
 thiserror = "1.0.31"
 
