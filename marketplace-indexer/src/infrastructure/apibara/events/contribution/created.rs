@@ -1,5 +1,5 @@
 use super::{EventTranslator, FromEventError, StarknetTopics, Topics};
-use marketplace_domain::{ContributionEvent, Event};
+use marketplace_domain::{ContributionEvent, Event, HexPrefixedString};
 use starknet::core::{types::FieldElement, utils::get_selector_from_name};
 
 pub struct Created;
@@ -11,10 +11,11 @@ impl EventTranslator for Created {
 
 	fn to_domain_event(mut topics: Topics) -> Result<Event, FromEventError> {
 		let project_id: u128 = topics.pop_front_as()?;
-		let _contribution_id: u128 = topics.pop_front_as()?;
+		let contribution_id: HexPrefixedString = topics.pop_front_as()?;
 		let gate: u128 = topics.pop_front_as()?;
 
 		Ok(Event::Contribution(ContributionEvent::Created {
+			id: contribution_id.into(),
 			project_id: project_id.to_string(),
 			gate: gate as u8,
 		}))
@@ -66,6 +67,7 @@ mod test {
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(
 			Event::Contribution(ContributionEvent::Created {
+				id: 24.into(),
 				project_id: String::from("12"),
 				gate: 1,
 			},),

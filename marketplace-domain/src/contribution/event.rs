@@ -6,16 +6,28 @@ use serde_json;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
-	Created { project_id: ProjectId, gate: u8 },
-	Assigned { contributor_id: ContributorId },
-	Unassigned {},
-	Validated {},
+	Created {
+		id: contribution::Id,
+		project_id: ProjectId,
+		gate: u8,
+	},
+	Assigned {
+		id: contribution::Id,
+		contributor_id: ContributorId,
+	},
+	Unassigned {
+		id: contribution::Id,
+	},
+	Validated {
+		id: contribution::Id,
+	},
 }
 
 #[cfg(test)]
 impl Default for Event {
 	fn default() -> Self {
 		Self::Created {
+			id: Default::default(),
 			project_id: Default::default(),
 			gate: Default::default(),
 		}
@@ -34,6 +46,7 @@ impl Display for Event {
 
 #[cfg(test)]
 mod test {
+	use super::contribution::Id as ContributionId;
 	use super::*;
 	use assert_json_diff::assert_json_eq;
 	use rstest::*;
@@ -54,9 +67,19 @@ mod test {
 		ContributorId::from(666)
 	}
 
+	#[fixture]
+	fn contribution_id() -> ContributionId {
+		ContributionId::from(456)
+	}
+
 	#[rstest]
-	fn contribution_created_event_display_as_json(project_id: String, gate: u8) {
+	fn contribution_created_event_display_as_json(
+		contribution_id: ContributionId,
+		project_id: String,
+		gate: u8,
+	) {
 		let event = Event::Created {
+			id: contribution_id.clone(),
 			project_id: project_id.clone(),
 			gate,
 		};
@@ -64,6 +87,7 @@ mod test {
 		assert_json_eq!(
 			json! ({
 				"Created": {
+					"id": contribution_id,
 					"project_id": project_id,
 					"gate": gate
 				}
@@ -73,14 +97,19 @@ mod test {
 	}
 
 	#[rstest]
-	fn contribution_assigned_event_display_as_json(contributor_id: ContributorId) {
+	fn contribution_assigned_event_display_as_json(
+		contribution_id: ContributionId,
+		contributor_id: ContributorId,
+	) {
 		let event = Event::Assigned {
+			id: contribution_id.clone(),
 			contributor_id: contributor_id.clone(),
 		};
 
 		assert_json_eq!(
 			json! ({
 				"Assigned": {
+					"id": contribution_id,
 					"contributor_id": contributor_id
 				}
 			}),
@@ -89,12 +118,15 @@ mod test {
 	}
 
 	#[rstest]
-	fn contribution_unassigned_event_display_as_json() {
-		let event = Event::Unassigned {};
+	fn contribution_unassigned_event_display_as_json(contribution_id: ContributionId) {
+		let event = Event::Unassigned {
+			id: contribution_id.clone(),
+		};
 
 		assert_json_eq!(
 			json! ({
 				"Unassigned": {
+					"id": contribution_id
 				}
 			}),
 			serde_json::from_str::<Value>(&event.to_string()).unwrap()
@@ -102,11 +134,17 @@ mod test {
 	}
 
 	#[rstest]
-	fn contribution_validated_event_display_as_json() {
-		let event = Event::Validated {};
+	fn contribution_validated_event_display_as_json(contribution_id: ContributionId) {
+		let event = Event::Validated {
+			id: contribution_id.clone(),
+		};
 
 		assert_json_eq!(
-			json!({ "Validated": {} }),
+			json!({
+				"Validated": {
+					"id": contribution_id
+				}
+			}),
 			serde_json::from_str::<Value>(&event.to_string()).unwrap()
 		);
 	}

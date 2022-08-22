@@ -94,6 +94,7 @@ mod test {
 
 		assert_eq!(
 			DomainEvent::Contribution(ContributionEvent::Created {
+				id: Default::default(),
 				project_id: u8::default().to_string(),
 				gate: Default::default()
 			}),
@@ -107,6 +108,7 @@ mod test {
 
 		assert_eq!(
 			DomainEvent::Contribution(ContributionEvent::Assigned {
+				id: Default::default(),
 				contributor_id: Default::default()
 			}),
 			DomainEvent::try_from(apibara_event).unwrap()
@@ -118,7 +120,9 @@ mod test {
 		let apibara_event = apibara_event(selector::<contribution::Unassigned>());
 
 		assert_eq!(
-			DomainEvent::Contribution(ContributionEvent::Unassigned {}),
+			DomainEvent::Contribution(ContributionEvent::Unassigned {
+				id: Default::default(),
+			}),
 			DomainEvent::try_from(apibara_event).unwrap()
 		);
 	}
@@ -128,7 +132,9 @@ mod test {
 		let apibara_event = apibara_event(selector::<contribution::Validated>());
 
 		assert_eq!(
-			DomainEvent::Contribution(ContributionEvent::Validated {}),
+			DomainEvent::Contribution(ContributionEvent::Validated {
+				id: Default::default(),
+			}),
 			DomainEvent::try_from(apibara_event).unwrap()
 		);
 	}

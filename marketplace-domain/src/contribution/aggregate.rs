@@ -24,25 +24,30 @@ impl Aggregate for Contribution {
 
 	fn apply(state: Self::State, event: Self::Event) -> Result<Self::State, Self::Error> {
 		match event {
-			Event::Created { project_id, gate } if state.status == Status::None => {
-				Ok(Self::State {
-					project_id,
-					gate,
-					status: Status::Open,
-					..state
-				})
-			},
-			Event::Assigned { contributor_id } if state.status == Status::Open => Ok(Self::State {
+			Event::Created {
+				id: _,
+				project_id,
+				gate,
+			} if state.status == Status::None => Ok(Self::State {
+				project_id,
+				gate,
+				status: Status::Open,
+				..state
+			}),
+			Event::Assigned {
+				id: _,
+				contributor_id,
+			} if state.status == Status::Open => Ok(Self::State {
 				status: Status::Assigned,
 				contributor_id: Some(contributor_id),
 				..state
 			}),
-			Event::Unassigned {} if state.status == Status::Assigned => Ok(Self::State {
+			Event::Unassigned { id: _ } if state.status == Status::Assigned => Ok(Self::State {
 				status: Status::Open,
 				contributor_id: None,
 				..state
 			}),
-			Event::Validated {} if state.status == Status::Assigned => Ok(Self::State {
+			Event::Validated { id: _ } if state.status == Status::Assigned => Ok(Self::State {
 				status: Status::Completed,
 				..state
 			}),
@@ -90,6 +95,7 @@ mod test {
 	#[fixture]
 	fn contribution_created_event() -> Event {
 		Event::Created {
+			id: Default::default(),
 			project_id: Default::default(),
 			gate: Default::default(),
 		}
@@ -98,18 +104,23 @@ mod test {
 	#[fixture]
 	fn contribution_assigned_event() -> Event {
 		Event::Assigned {
+			id: Default::default(),
 			contributor_id: Default::default(),
 		}
 	}
 
 	#[fixture]
 	fn contribution_unassigned_event() -> Event {
-		Event::Unassigned {}
+		Event::Unassigned {
+			id: Default::default(),
+		}
 	}
 
 	#[fixture]
 	fn contribution_validated_event() -> Event {
-		Event::Validated {}
+		Event::Validated {
+			id: Default::default(),
+		}
 	}
 
 	fn apply(state: State, event: Event) -> Result<State, Error> {
