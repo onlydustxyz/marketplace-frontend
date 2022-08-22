@@ -1,7 +1,8 @@
 use crate::*;
+use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
-#[derive(Debug, Default, Clone, PartialEq, Eq)]
+#[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize, Serialize)]
 pub struct GithubIdentifierRegisteredEvent {
 	pub profile_contract: ContractAddress,
 	pub contributor_id: ContributorId,

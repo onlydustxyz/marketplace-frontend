@@ -92,7 +92,7 @@ fn connect_request(indexer_id: &IndexerId) -> ConnectIndexerRequest {
 fn ack_block(block_hash: &BlockHash) -> ConnectIndexerRequest {
 	ConnectIndexerRequest {
 		message: Some(RequestMessage::Ack(AckBlock {
-			hash: block_hash.bytes(),
+			hash: block_hash.to_bytes(),
 		})),
 	}
 }
@@ -259,7 +259,7 @@ mod test {
 		let response = ConnectIndexerResponse {
 			message: Some(ResponseMessage::NewBlock(NewBlock {
 				new_head: Some(BlockHeader {
-					hash: block_hash.bytes(),
+					hash: block_hash.to_bytes(),
 					..Default::default()
 				}),
 			})),
@@ -283,7 +283,7 @@ mod test {
 		let response = ConnectIndexerResponse {
 			message: Some(ResponseMessage::NewEvents(apibara::NewEvents {
 				block: Some(BlockHeader {
-					hash: block_hash.bytes(),
+					hash: block_hash.to_bytes(),
 					..Default::default()
 				}),
 				events: vec![apibara_event.clone(), apibara_event, Default::default()],
@@ -298,7 +298,7 @@ mod test {
 		let request = channel.rx.try_recv().unwrap();
 		assert_eq!(
 			RequestMessage::Ack(AckBlock {
-				hash: block_hash.bytes(),
+				hash: block_hash.to_bytes(),
 			}),
 			request.message.unwrap()
 		);

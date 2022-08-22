@@ -34,6 +34,7 @@ thiserror = "1.0.31"
 
 # Serde
 serde = { version = "1.0.137", features = ["derive"] }
+serde_json = { version = "1.0.81" }
 
 # Unit testing
 mockall = "0.11.2"

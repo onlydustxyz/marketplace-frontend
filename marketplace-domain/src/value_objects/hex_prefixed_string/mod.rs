@@ -1,11 +1,10 @@
 #[cfg(test)]
 mod tests;
 
-use mapinto::ResultMapErrInto;
 use rocket_okapi::JsonSchema;
 use serde::{
 	de::{self, Unexpected, Visitor},
-	Deserialize,
+	Deserialize, Serialize,
 };
 use std::{
 	fmt::{Debug, Display},
@@ -13,31 +12,33 @@ use std::{
 };
 use thiserror::Error;
 
-#[derive(Eq, Default, Clone, JsonSchema)]
-pub struct HexPrefixedString(Vec<u8>);
+#[derive(Eq, Clone, JsonSchema, Serialize, Debug)]
+pub struct HexPrefixedString(String);
 
 impl HexPrefixedString {
-	pub fn bytes(&self) -> Vec<u8> {
-		self.0.clone()
+	pub fn to_bytes(&self) -> Vec<u8> {
+		// Safe to unwrap as value checked during construction
+		hex::decode(&self.0[2..]).unwrap()
+	}
+
+	pub fn from_bytes(bytes: Vec<u8>) -> Self {
+		Self(format!("0x{}", hex::encode(bytes)))
 	}
 }
 
-impl Display for HexPrefixedString {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "0x{}", hex::encode(&self.0))
-	}
-}
-
-impl Debug for HexPrefixedString {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "0x{}", hex::encode(&self.0))
+impl Default for HexPrefixedString {
+	fn default() -> Self {
+		Self(String::from("0x00"))
 	}
 }
 
 impl PartialEq for HexPrefixedString {
 	fn eq(&self, other: &Self) -> bool {
 		let is_zero = |val: &&u8| **val == 0;
-		self.0.iter().skip_while(is_zero).eq(other.0.iter().skip_while(is_zero))
+		self.to_bytes()
+			.iter()
+			.skip_while(is_zero)
+			.eq(other.to_bytes().iter().skip_while(is_zero))
 	}
 }
 
@@ -62,10 +63,15 @@ impl FromStr for HexPrefixedString {
 			s if s[0..2].to_lowercase() != "0x" => Err(Self::Err::InvalidPrefix),
 			s => {
 				let padded = format!("{:0>width$}", &s[2..], width = s.len() - 2 + s.len() % 2); // Add 0 if len is odd
-				let decoded: Result<_, Self::Err> = hex::decode(&padded).map_err_into();
-				Ok(Self(decoded?))
+				hex::decode(&padded).map_err(Self::Err::from)?;
+				Ok(Self(format!("0x{padded}")))
 			},
 		}
+	}
+}
+impl Display for HexPrefixedString {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{}", self.0)
 	}
 }
 
@@ -100,6 +106,6 @@ impl<'de> Deserialize<'de> for HexPrefixedString {
 
 impl From<Vec<u8>> for HexPrefixedString {
 	fn from(bytes: Vec<u8>) -> Self {
-		Self(bytes)
+		Self::from_bytes(bytes)
 	}
 }

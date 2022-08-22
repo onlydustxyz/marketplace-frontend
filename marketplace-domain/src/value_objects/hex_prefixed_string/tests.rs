@@ -57,3 +57,10 @@ fn test_de_hex_prefixed_string_non_af_char() {
 		),
 	)
 }
+
+#[test]
+fn serde() {
+	let value = HexPrefixedString::from_str("0x1234").unwrap();
+	let serialized = serde_json::to_string(&value).unwrap();
+	assert_eq!(value, serde_json::from_str(&serialized).unwrap());
+}
