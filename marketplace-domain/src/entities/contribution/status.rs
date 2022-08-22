@@ -42,34 +42,23 @@ impl FromStr for Status {
 #[cfg(test)]
 mod test {
 	use super::*;
+	use rstest::*;
 
-	#[test]
-	fn contribution_status_from_string() {
-		assert_eq!(Status::Open, "OPEN".parse().unwrap());
-		assert_eq!(Status::Assigned, "ASSIGNED".parse().unwrap());
-		assert_eq!(Status::Completed, "COMPLETED".parse().unwrap());
-		assert_eq!(Status::Abandoned, "ABANDONED".parse().unwrap());
-
-		assert!("NON_EXISTENT".parse::<Status>().is_err());
+	#[rstest]
+	#[case(Status::Open, "OPEN")]
+	#[case(Status::Assigned, "ASSIGNED")]
+	#[case(Status::Completed, "COMPLETED")]
+	#[case(Status::Abandoned, "ABANDONED")]
+	fn contribution_status_serde(#[case] status: Status, #[case] status_str: &str) {
+		assert_eq!(status, status_str.parse().unwrap());
+		assert_eq!(status_str, status.to_string());
+		assert_eq!(status, status.to_string().parse().unwrap());
 	}
 
-	#[test]
-	fn contribution_status_to_string() {
-		assert_eq!("OPEN", Status::Open.to_string());
-		assert_eq!("ASSIGNED", Status::Assigned.to_string());
-		assert_eq!("COMPLETED", Status::Completed.to_string());
-		assert_eq!("ABANDONED", Status::Abandoned.to_string());
-	}
-
-	#[test]
-	fn contribution_status_serde() {
-		for status in [
-			Status::Open,
-			Status::Assigned,
-			Status::Completed,
-			Status::Abandoned,
-		] {
-			assert_eq!(status, status.to_string().parse().unwrap());
-		}
+	#[rstest]
+	#[case("NON_EXISTENT")]
+	#[case("")]
+	fn parsing_error(#[case] status_str: &str) {
+		assert!(status_str.parse::<Status>().is_err());
 	}
 }
