@@ -1,10 +1,10 @@
 use super::*;
-use crate::events::Aggregate;
-use marketplace_wrappers::UuidWrapper;
-use schemars::JsonSchema;
+use crate::{events::Aggregate, HexPrefixedString, ParseHexPrefixedStringError};
+use crypto_bigint::U256;
+use marketplace_wrappers::HexStringWrapper;
 use serde::{Deserialize, Serialize};
+use std::{fmt::Display, str::FromStr};
 use thiserror::Error;
-use uuid::Uuid;
 
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
@@ -12,21 +12,8 @@ pub enum Error {
 	InvalidStateTransition,
 }
 
-#[derive(
-	Debug,
-	Clone,
-	Copy,
-	PartialEq,
-	Eq,
-	Hash,
-	Serialize,
-	Deserialize,
-	JsonSchema,
-	UuidWrapper,
-	Default,
-)]
-pub struct Id(Uuid);
-
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, Default, HexStringWrapper)]
+pub struct Id(HexPrefixedString);
 pub struct Contribution;
 
 impl Aggregate for Contribution {

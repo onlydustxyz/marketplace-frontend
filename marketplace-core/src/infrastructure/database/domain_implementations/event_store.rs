@@ -17,7 +17,7 @@ impl EventStore<contribution::Contribution> for Client {
 			.map(|event| {
 				Ok(models::Event {
 					aggregate_name: CONTRIBUTION_AGGREGATE.to_string(),
-					aggregate_id: aggregate_id.as_uuid().to_owned(),
+					aggregate_id: aggregate_id.to_string(),
 					payload: serde_json::to_value(event)
 						.map_err(|_| EventStoreError::InvalidEvent)?,
 				})
