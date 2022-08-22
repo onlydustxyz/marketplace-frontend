@@ -1,17 +1,16 @@
-use futures::future::BoxFuture;
+use super::*;
+use crate::events::Aggregate;
+use marketplace_wrappers::UuidWrapper;
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 use thiserror::Error;
+use uuid::Uuid;
 
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum Error {
 	#[error("Invalid state transition")]
 	InvalidStateTransition,
 }
-
-use super::*;
-use marketplace_wrappers::UuidWrapper;
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
 #[derive(
 	Debug,
@@ -28,14 +27,13 @@ use uuid::Uuid;
 )]
 pub struct Id(Uuid);
 
-pub struct Aggregate;
+pub struct Contribution;
 
-impl eventually::Aggregate for Aggregate {
-	type Command = ();
+impl Aggregate for Contribution {
 	type Event = Event;
-	type Error = Error;
 	type Id = Id;
 	type State = State;
+	type Error = Error;
 
 	fn apply(state: Self::State, event: Self::Event) -> Result<Self::State, Self::Error> {
 		match event {
@@ -52,29 +50,17 @@ impl eventually::Aggregate for Aggregate {
 				contributor_id: Some(contributor_id),
 				..state
 			}),
-			Event::Unassigned if state.status == Status::Assigned => Ok(Self::State {
+			Event::Unassigned {} if state.status == Status::Assigned => Ok(Self::State {
 				status: Status::Open,
 				contributor_id: None,
 				..state
 			}),
-			Event::Validated if state.status == Status::Assigned => Ok(Self::State {
+			Event::Validated {} if state.status == Status::Assigned => Ok(Self::State {
 				status: Status::Completed,
 				..state
 			}),
 			_ => Err(Self::Error::InvalidStateTransition),
 		}
-	}
-
-	fn handle<'a, 's: 'a>(
-		&'a self,
-		_id: &'s Self::Id,
-		_state: &'s Self::State,
-		_command: Self::Command,
-	) -> BoxFuture<'a, Result<Option<Vec<Self::Event>>, Self::Error>>
-	where
-		Self: Sized,
-	{
-		unimplemented!()
 	}
 }
 
@@ -131,16 +117,16 @@ mod test {
 
 	#[fixture]
 	fn contribution_unassigned_event() -> Event {
-		Event::Unassigned
+		Event::Unassigned {}
 	}
 
 	#[fixture]
 	fn contribution_validated_event() -> Event {
-		Event::Validated
+		Event::Validated {}
 	}
 
 	fn apply(state: State, event: Event) -> Result<State, Error> {
-		<Aggregate as eventually::Aggregate>::apply(state, event)
+		<Contribution as Aggregate>::apply(state, event)
 	}
 
 	#[rstest]
@@ -187,16 +173,5 @@ mod test {
 			Error::InvalidStateTransition,
 			apply(state, event).unwrap_err()
 		);
-	}
-
-	#[rstest]
-	#[case(no_contribution())]
-	#[case(open_contribution())]
-	#[case(assigned_contribution())]
-	#[case(completed_contribution())]
-	#[should_panic(expected = "not implemented")]
-	async fn no_command_handled(#[case] state: State) {
-		let aggregate = Aggregate;
-		let _ = eventually::Aggregate::handle(&aggregate, &Default::default(), &state, ()).await;
 	}
 }

@@ -8,8 +8,8 @@ use serde_json;
 pub enum Event {
 	Created { project_id: ProjectId, gate: u8 },
 	Assigned { contributor_id: ContributorId },
-	Unassigned,
-	Validated,
+	Unassigned {},
+	Validated {},
 }
 
 #[cfg(test)]
@@ -81,6 +81,7 @@ mod test {
 		assert_json_eq!(
 			json! ({
 				"Assigned": {
+					"contributor_id": contributor_id
 				}
 			}),
 			serde_json::from_str::<Value>(&event.to_string()).unwrap()
@@ -89,7 +90,7 @@ mod test {
 
 	#[rstest]
 	fn contribution_unassigned_event_display_as_json() {
-		let event = Event::Unassigned;
+		let event = Event::Unassigned {};
 
 		assert_json_eq!(
 			json! ({
@@ -102,13 +103,10 @@ mod test {
 
 	#[rstest]
 	fn contribution_validated_event_display_as_json() {
-		let event = Event::Validated;
+		let event = Event::Validated {};
 
 		assert_json_eq!(
-			json! ({
-				"Validated": {
-				}
-			}),
+			json!({ "Validated": {} }),
 			serde_json::from_str::<Value>(&event.to_string()).unwrap()
 		);
 	}
