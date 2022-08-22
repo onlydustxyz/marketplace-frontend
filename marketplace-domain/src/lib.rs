@@ -18,7 +18,9 @@ mod actions;
 pub use actions::*;
 
 mod events;
-pub use events::{Event, GithubIdentifierRegisteredEvent};
+pub use events::{
+	Event, GithubIdentifierRegisteredEvent, Store as EventStore, StoreError as EventStoreError,
+};
 
 pub mod contribution;
 pub use contribution::{Event as ContributionEvent, Status as ContributionStatus};

@@ -1,6 +1,9 @@
 mod github_identifier_registered;
 pub use github_identifier_registered::GithubIdentifierRegisteredEvent;
 
+mod store;
+pub use store::{Error as StoreError, Store};
+
 use crate::ContributionEvent;
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;

@@ -9,3 +9,6 @@ pub use applications::*;
 
 mod contact_informations;
 pub use contact_informations::*;
+
+mod events;
+pub use events::*;
