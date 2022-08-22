@@ -1594,7 +1594,6 @@ dependencies = [
  "schemars",
  "serde",
  "serde_test",
- "starknet",
  "thiserror",
  "url",
  "uuid 0.8.2",

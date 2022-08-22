@@ -39,10 +39,11 @@ pub async fn create_contribution(
 	let github_issue = github_api.issue(body.project_id, body.github_issue_number).await;
 	let github_issue = match github_issue {
 		Ok(github_issue) => github_issue,
-		Err(error) =>
+		Err(error) => {
 			return Err(HttpApiProblem::new(StatusCode::BAD_REQUEST)
 				.title("Unable to get GitHub issue data")
-				.detail(error.to_string())),
+				.detail(error.to_string()))
+		},
 	};
 
 	let metadata = github::extract_metadata(github_issue.clone());
@@ -58,7 +59,7 @@ pub async fn create_contribution(
 		external_link: Some(github_issue.html_url),
 		gate: body.gate,
 		metadata,
-		validator,
+		validator: validator.to_bytes_be().to_vec().into(),
 	};
 
 	usecase.send_creation_request(contribution).map_err(|error| {
