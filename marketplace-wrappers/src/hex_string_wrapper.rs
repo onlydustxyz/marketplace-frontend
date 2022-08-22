@@ -35,6 +35,12 @@ pub fn impl_hex_string_wrapper_macro(ast: &syn::DeriveInput) -> TokenStream {
 				U256::from_u128(id).into()
 			}
 		}
+
+		impl From<HexPrefixedString> for #name {
+			fn from(id: HexPrefixedString) -> Self {
+				Self(id)
+			}
+		}
 	};
 	gen.into()
 }

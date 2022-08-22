@@ -1,5 +1,5 @@
 use super::{EventTranslator, FromEventError, StarknetTopics, Topics};
-use marketplace_domain::{ContributionEvent, Event as DomainEvent};
+use marketplace_domain::{ContributionEvent, Event as DomainEvent, HexPrefixedString};
 use starknet::core::{types::FieldElement, utils::get_selector_from_name};
 
 pub struct Validated;
@@ -10,9 +10,11 @@ impl EventTranslator for Validated {
 	}
 
 	fn to_domain_event(mut topics: Topics) -> Result<DomainEvent, FromEventError> {
-		let _contribution_id: u128 = topics.pop_front_as()?;
+		let contribution_id: HexPrefixedString = topics.pop_front_as()?;
 
-		Ok(DomainEvent::Contribution(ContributionEvent::Validated {}))
+		Ok(DomainEvent::Contribution(ContributionEvent::Validated {
+			id: contribution_id.into(),
+		}))
 	}
 }
 
@@ -46,7 +48,7 @@ mod test {
 		let result = <Validated as EventTranslator>::to_domain_event(apibara_event_data);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(
-			DomainEvent::Contribution(ContributionEvent::Validated {},),
+			DomainEvent::Contribution(ContributionEvent::Validated { id: 12.into() },),
 			result.unwrap()
 		);
 	}
