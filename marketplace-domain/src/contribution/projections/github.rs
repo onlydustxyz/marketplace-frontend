@@ -1,40 +1,21 @@
 use crate::*;
-use marketplace_wrappers::UuidWrapper;
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
 use url::Url;
-use uuid::Uuid;
-
-pub type OnChainId = String;
-
-#[derive(
-	Debug,
-	Clone,
-	Copy,
-	PartialEq,
-	Eq,
-	Hash,
-	Serialize,
-	Deserialize,
-	JsonSchema,
-	UuidWrapper,
-	Default,
-)]
-pub struct Id(Uuid);
 
 #[derive(Debug, PartialEq, Eq, Clone, Default)]
-pub struct Contribution {
-	pub id: Id,
-	pub onchain_id: OnChainId,
+pub struct WithGithubData {
+	pub id: ContributionId,
+	// Contribution state
 	pub project_id: ProjectId,
+	pub github_issue_number: u32,
+	pub status: ContributionStatus,
 	pub contributor_id: Option<ContributorId>,
+	pub gate: u8,
+	pub validator: ContractAddress,
+	// Github data
 	pub title: Option<String>,
 	pub description: Option<String>,
-	pub status: ContributionStatus,
 	pub external_link: Option<Url>,
-	pub gate: u8,
 	pub metadata: Metadata,
-	pub validator: ContractAddress,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Default)]

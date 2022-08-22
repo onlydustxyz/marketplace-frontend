@@ -19,3 +19,6 @@ pub use actions::*;
 
 mod events;
 pub use events::{Event, GithubIdentifierRegisteredEvent};
+
+pub mod contribution;
+pub use contribution::{Event as ContributionEvent, Status as ContributionStatus};

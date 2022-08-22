@@ -1,4 +1,3 @@
-use super::Project;
 use crate::infrastructure::database::schema::*;
 use rocket::serde::{Deserialize, Serialize};
 use uuid::Uuid;
