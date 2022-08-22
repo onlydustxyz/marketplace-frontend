@@ -19,7 +19,8 @@ pub use actions::*;
 
 mod events;
 pub use events::{
-	Event, GithubIdentifierRegisteredEvent, Store as EventStore, StoreError as EventStoreError,
+	Aggregate as EventAggregate, Event, GithubIdentifierRegisteredEvent, Store as EventStore,
+	StoreError as EventStoreError,
 };
 
 pub mod contribution;

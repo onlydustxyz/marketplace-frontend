@@ -1,4 +1,4 @@
-use eventually::Aggregate;
+use super::Aggregate;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
