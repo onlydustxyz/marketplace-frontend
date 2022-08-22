@@ -58,7 +58,7 @@ impl IntoCall for &Action {
 					                                                                * : felt */
 					FieldElement::from(contribution.gate), /* contribution_count_required : felt */
 					FieldElement::from_bytes_be(
-						&contribution.validator.bytes().try_into().unwrap(),
+						&contribution.validator.to_bytes().try_into().unwrap(),
 					)
 					.unwrap(),
 				],

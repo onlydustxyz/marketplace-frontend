@@ -29,7 +29,7 @@ impl From<ParseHexPrefixedStringError> for ParseU256Error {
 
 pub fn u256_from_string(s: &str) -> Result<U256, ParseU256Error> {
 	let hex_prefixed_string = HexPrefixedString::from_str(s).map_err(ParseU256Error::from)?;
-	let bytes = left_pad_with(hex_prefixed_string.bytes(), 0, 32) // Pad with 0s if len < 32
+	let bytes = left_pad_with(hex_prefixed_string.to_bytes(), 0, 32) // Pad with 0s if len < 32
 		.try_into()
 		.map_err(|_| ParseU256Error::InvalidLength)?;
 	Ok(U256::from_be_bytes(bytes))
