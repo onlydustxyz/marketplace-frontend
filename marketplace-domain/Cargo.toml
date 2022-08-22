@@ -45,3 +45,4 @@ marketplace-wrappers = { path = "../marketplace-wrappers" }
 [dev-dependencies]
 rstest = "0.15.0"
 serde_test = "1.0.140"
+assert-json-diff = "2.0.2"

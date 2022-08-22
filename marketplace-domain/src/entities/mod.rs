@@ -1,6 +1,6 @@
 mod contribution;
 pub use contribution::{
-	Contribution, Id as ContributionId, Metadata as ContributionMetadata,
+	Contribution, ContributionEvent, Id as ContributionId, Metadata as ContributionMetadata,
 	OnChainId as ContributionOnChainId, Status as ContributionStatus,
 };
 
