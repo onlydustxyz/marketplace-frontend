@@ -72,13 +72,13 @@ impl ApplicationRepository for FilledDatabase {
 					Application::new(
 						Uuid::from_u128(2).into(),
 						Uuid::from_u128(0).into(),
-						contributor_id,
+						contributor_id.clone(),
 						ApplicationStatus::Pending,
 					),
 					Application::new(
 						Uuid::from_u128(3).into(),
 						Uuid::from_u128(1).into(),
-						contributor_id,
+						contributor_id.clone(),
 						ApplicationStatus::Pending,
 					),
 				]),
@@ -86,7 +86,7 @@ impl ApplicationRepository for FilledDatabase {
 					Application::new(
 						Uuid::from_u128(0).into(),
 						Uuid::from_u128(0).into(),
-						contributor_id,
+						contributor_id.clone(),
 						ApplicationStatus::Pending,
 					),
 					Application::new(

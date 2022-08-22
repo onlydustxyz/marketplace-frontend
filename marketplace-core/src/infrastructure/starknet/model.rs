@@ -7,7 +7,8 @@ pub struct OnChainContributorId(pub FieldElement, pub FieldElement);
 
 impl From<ContributorId> for OnChainContributorId {
 	fn from(id: ContributorId) -> Self {
-		let (high, low) = id.0.split();
+		let id: U256 = id.into();
+		let (high, low) = id.split();
 		let high = U256::from((U128::default(), high));
 		let low = U256::from((U128::default(), low));
 		Self(
@@ -21,7 +22,7 @@ impl From<OnChainContributorId> for ContributorId {
 	fn from(OnChainContributorId(low, high): OnChainContributorId) -> Self {
 		let (_, low) = U256::from_be_bytes(low.to_bytes_be()).split();
 		let (_, high) = U256::from_be_bytes(high.to_bytes_be()).split();
-		Self(U256::from((high, low)))
+		U256::from((high, low)).into()
 	}
 }
 

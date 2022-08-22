@@ -64,3 +64,9 @@ fn serde() {
 	let serialized = serde_json::to_string(&value).unwrap();
 	assert_eq!(value, serde_json::from_str(&serialized).unwrap());
 }
+
+#[test]
+fn from_into_u256() {
+	let value = U256::from_u128(123);
+	assert_eq!(value, HexPrefixedString::from(value).into());
+}

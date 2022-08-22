@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod tests;
 
+use crypto_bigint::{Encoding, U256};
 use rocket_okapi::JsonSchema;
 use serde::{
 	de::{self, Unexpected, Visitor},
@@ -12,7 +13,7 @@ use std::{
 };
 use thiserror::Error;
 
-#[derive(Eq, Clone, JsonSchema, Serialize, Debug)]
+#[derive(Eq, Clone, JsonSchema, Serialize, Debug, Hash)]
 pub struct HexPrefixedString(String);
 
 impl HexPrefixedString {
@@ -107,5 +108,17 @@ impl<'de> Deserialize<'de> for HexPrefixedString {
 impl From<Vec<u8>> for HexPrefixedString {
 	fn from(bytes: Vec<u8>) -> Self {
 		Self::from_bytes(bytes)
+	}
+}
+
+impl Into<U256> for HexPrefixedString {
+	fn into(self) -> U256 {
+		U256::from_be_hex(&self.0[2..])
+	}
+}
+
+impl From<U256> for HexPrefixedString {
+	fn from(value: U256) -> Self {
+		Self::from_bytes(value.to_be_bytes().to_vec())
 	}
 }

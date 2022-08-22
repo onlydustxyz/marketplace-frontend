@@ -99,7 +99,7 @@ mod test {
 		let contribution_id = ContributionOnChainId::from("12");
 		let contributor_id: ContributorId = 34.into();
 
-		let result = client.assign_contributor(contribution_id.clone(), contributor_id);
+		let result = client.assign_contributor(contribution_id.clone(), contributor_id.clone());
 		let action = client.action_queue.write().unwrap().pop_n(1).first().unwrap().to_owned();
 
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());

@@ -43,7 +43,7 @@ impl ApplyToContributionUsecase for ApplyToContribution {
 				ApplicationRepositoryError::AlreadyExist(Box::new(AlreadyExist)),
 			));
 		}
-		contribution_db.insert(*contributor_id, true);
+		contribution_db.insert(contributor_id.to_owned(), true);
 
 		Ok(())
 	}

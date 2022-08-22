@@ -97,7 +97,7 @@ fn store_action_result(
 			contributor_id: contributor_id_,
 		} => contribution_repository.update_contributor_and_status(
 			id_.to_owned(),
-			Some(*contributor_id_),
+			Some(contributor_id_.to_owned()),
 			ContributionStatus::Assigned,
 			hash.to_owned(),
 		),

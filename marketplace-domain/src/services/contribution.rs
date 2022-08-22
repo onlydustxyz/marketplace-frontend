@@ -63,7 +63,7 @@ impl Service for ContributionService {
 		let application = Application::new(
 			uuid.into(),
 			*contribution_id,
-			*contributor_id,
+			contributor_id.clone(),
 			ApplicationStatus::Pending,
 		);
 

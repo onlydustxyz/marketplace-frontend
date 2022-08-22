@@ -56,7 +56,10 @@ impl Usecase for AcceptApplication {
 			.ok_or_else(|| DomainError::from(ContributionRepositoryError::NotFound))?;
 
 		self.onchain_contribution_service
-			.assign_contributor(contribution.onchain_id, *application.contributor_id())
+			.assign_contributor(
+				contribution.onchain_id,
+				application.contributor_id().to_owned(),
+			)
 			.map_err_into()
 	}
 }

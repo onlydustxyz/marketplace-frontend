@@ -1,13 +1,16 @@
+use crate::{HexPrefixedString, ParseHexPrefixedStringError};
+use crypto_bigint::U256;
+use serde::{Deserialize, Serialize};
 use std::{fmt::Display, str::FromStr};
 
-use serde::{Deserialize, Serialize};
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, Default)]
+pub struct Id(HexPrefixedString);
 
-use crypto_bigint::U256;
-
-use crate::{u256_from_string, ParseU256Error};
-
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, Default)]
-pub struct Id(pub U256);
+impl Into<U256> for Id {
+	fn into(self) -> U256 {
+		self.0.into()
+	}
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Default)]
 pub struct Contributor {
@@ -17,27 +20,27 @@ pub struct Contributor {
 }
 
 impl FromStr for Id {
-	type Err = ParseU256Error;
+	type Err = ParseHexPrefixedStringError;
 
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
-		u256_from_string(s).map(Self)
+		HexPrefixedString::from_str(s).map(Self)
 	}
 }
 
 impl From<U256> for Id {
 	fn from(v: U256) -> Self {
-		Self(v)
+		Self(HexPrefixedString::from(v))
 	}
 }
 
 impl Display for Id {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(f, "0x{}", self.0.to_string().to_lowercase())
+		write!(f, "{}", self.0.to_string())
 	}
 }
 
 impl From<u128> for Id {
 	fn from(id: u128) -> Self {
-		Self(U256::from_u128(id))
+		U256::from_u128(id).into()
 	}
 }

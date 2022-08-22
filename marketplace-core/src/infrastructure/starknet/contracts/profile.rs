@@ -24,7 +24,7 @@ impl Default for Contract {
 
 impl Contract {
 	pub async fn get_account(&self, contributor_id: &ContributorId) -> Option<FieldElement> {
-		let contributor_id: OnChainContributorId = (*contributor_id).into();
+		let contributor_id: OnChainContributorId = contributor_id.to_owned().into();
 		self.contract_viewer
 			.call("ownerOf", vec![contributor_id.0, contributor_id.1])
 			.await
