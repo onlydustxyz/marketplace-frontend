@@ -1,5 +1,5 @@
 use crypto_bigint::{Encoding, Split, U128, U256};
-use marketplace_domain::ContributorId;
+use marketplace_domain::{u256_from_string, ContributorId};
 use starknet::core::types::FieldElement;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -7,7 +7,7 @@ pub struct OnChainContributorId(pub FieldElement, pub FieldElement);
 
 impl From<ContributorId> for OnChainContributorId {
 	fn from(id: ContributorId) -> Self {
-		let id: U256 = id.into();
+		let id = u256_from_string(&id.to_string()).unwrap(); // Contributor ID is a U256 by design and cannot be bigger
 		let (high, low) = id.split();
 		let high = U256::from((U128::default(), high));
 		let low = U256::from((U128::default(), low));

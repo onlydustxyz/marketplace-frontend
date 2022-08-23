@@ -38,7 +38,7 @@ impl Service for ContactInformationService {
 	) -> Result<(), DomainError> {
 		let contact_information = self
 			.contact_information_repository
-			.find_by_contributor_id(&contributor_id)
+			.find_by_contributor_id(contributor_id)
 			.map_err(DomainError::from)?;
 
 		if let Some(mut contact_information) = contact_information {
@@ -66,7 +66,7 @@ impl Service for ContactInformationService {
 	) -> Result<Option<ContactInformation>, DomainError> {
 		let contact_information = self
 			.contact_information_repository
-			.find_by_contributor_id(&contributor_id)
+			.find_by_contributor_id(contributor_id)
 			.map_err(DomainError::from)?;
 
 		Ok(contact_information)

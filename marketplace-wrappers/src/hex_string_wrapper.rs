@@ -4,12 +4,6 @@ use quote::quote;
 pub fn impl_hex_string_wrapper_macro(ast: &syn::DeriveInput) -> TokenStream {
 	let name = &ast.ident;
 	let gen = quote! {
-		impl Into<U256> for #name {
-			fn into(self) -> U256 {
-				self.0.into()
-			}
-		}
-
 		impl FromStr for #name {
 			type Err = ParseHexPrefixedStringError;
 
@@ -24,12 +18,6 @@ pub fn impl_hex_string_wrapper_macro(ast: &syn::DeriveInput) -> TokenStream {
 			}
 		}
 
-		impl Display for #name {
-			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-				write!(f, "{}", self.0.to_string())
-			}
-		}
-
 		impl From<u128> for #name {
 			fn from(id: u128) -> Self {
 				U256::from_u128(id).into()
@@ -39,6 +27,12 @@ pub fn impl_hex_string_wrapper_macro(ast: &syn::DeriveInput) -> TokenStream {
 		impl From<HexPrefixedString> for #name {
 			fn from(id: HexPrefixedString) -> Self {
 				Self(id)
+			}
+		}
+
+		impl Display for #name {
+			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+				self.0.fmt(f)
 			}
 		}
 	};
