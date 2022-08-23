@@ -44,10 +44,7 @@ async fn main() {
 	add_contact_information(CONTRIBUTOR_ID, Some(String::from("discord"))).await;
 
 	let contact_info = get_contact_information(CONTRIBUTOR_ID).await;
-	assert_eq!(
-		contact_info.contributor_id,
-		"0x000000000000000000000000000000000000000000000000000000000000007b"
-	);
+	assert_eq!(contact_info.contributor_id, "0x007b");
 	assert_eq!(contact_info.discord_handle.unwrap(), discord_handle);
 
 	assign_contribution(contribution_id, CONTRIBUTOR_ID).await;
