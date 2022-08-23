@@ -43,7 +43,7 @@ table! {
 		timestamp -> Timestamp,
 		aggregate_name -> Varchar,
 		aggregate_id -> Varchar,
-		payload -> Json,
+		payload -> Jsonb,
 	}
 }
 
