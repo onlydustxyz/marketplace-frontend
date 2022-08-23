@@ -8,9 +8,9 @@ use marketplace_domain::*;
 use rocket::{http::Status, local::blocking::Client, Build};
 use uuid::Uuid;
 
-const CONTRIBUTOR_ID_0: &str = "0x0000000000000000000000000000000000000000000000000000000000000000";
-const CONTRIBUTOR_ID_1: &str = "0x0000000000000000000000000000000000000000000000000000000000000911";
-const CONTRIBUTOR_ID_2: &str = "0x0000000000000000000000000000000000000000000000000000000000000666";
+const CONTRIBUTOR_ID_0: &str = "0x00";
+const CONTRIBUTOR_ID_1: &str = "0x0911";
+const CONTRIBUTOR_ID_2: &str = "0x0666";
 struct EmptyDatabase;
 impl ApplicationRepository for EmptyDatabase {
 	fn create(&self, _application: Application) -> Result<(), ApplicationRepositoryError> {

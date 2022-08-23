@@ -13,7 +13,7 @@ impl EventStore<contribution::Contribution> for Client {
 		let connection = self.connection().map_err(|_| EventStoreError::Connection)?;
 
 		let events = events
-			.into_iter()
+			.iter()
 			.map(|event| {
 				Ok(models::Event {
 					aggregate_name: CONTRIBUTION_AGGREGATE.to_string(),

@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use crypto_bigint::{Encoding, U256};
+use crypto_bigint::{Encoding, Limb, UInt, U256};
 use rocket_okapi::JsonSchema;
 use serde::{
 	de::{self, Unexpected, Visitor},
@@ -13,7 +13,7 @@ use std::{
 };
 use thiserror::Error;
 
-#[derive(Eq, Clone, JsonSchema, Serialize, Debug, Hash)]
+#[derive(PartialEq, Eq, Clone, JsonSchema, Serialize, Debug, Hash)]
 pub struct HexPrefixedString(String);
 
 impl HexPrefixedString {
@@ -23,6 +23,20 @@ impl HexPrefixedString {
 	}
 
 	pub fn from_bytes(bytes: Vec<u8>) -> Self {
+		let bytes: Vec<u8> = bytes.into_iter().skip_while(|byte| *byte == 0).collect();
+
+		if bytes.is_empty() {
+			return Self::default();
+		}
+
+		let bytes = if bytes.len() % 2 == 0 {
+			bytes
+		} else {
+			let mut padded = vec![0];
+			padded.extend(bytes);
+			padded
+		};
+
 		Self(format!("0x{}", hex::encode(bytes)))
 	}
 }
@@ -30,16 +44,6 @@ impl HexPrefixedString {
 impl Default for HexPrefixedString {
 	fn default() -> Self {
 		Self(String::from("0x00"))
-	}
-}
-
-impl PartialEq for HexPrefixedString {
-	fn eq(&self, other: &Self) -> bool {
-		let is_zero = |val: &&u8| **val == 0;
-		self.to_bytes()
-			.iter()
-			.skip_while(is_zero)
-			.eq(other.to_bytes().iter().skip_while(is_zero))
 	}
 }
 
@@ -64,12 +68,13 @@ impl FromStr for HexPrefixedString {
 			s if s[0..2].to_lowercase() != "0x" => Err(Self::Err::InvalidPrefix),
 			s => {
 				let padded = format!("{:0>width$}", &s[2..], width = s.len() - 2 + s.len() % 2); // Add 0 if len is odd
-				hex::decode(&padded).map_err(Self::Err::from)?;
-				Ok(Self(format!("0x{padded}")))
+				let bytes = hex::decode(&padded).map_err(Self::Err::from)?;
+				Ok(Self::from_bytes(bytes))
 			},
 		}
 	}
 }
+
 impl Display for HexPrefixedString {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(f, "{}", self.0)
@@ -111,9 +116,27 @@ impl From<Vec<u8>> for HexPrefixedString {
 	}
 }
 
-impl Into<U256> for HexPrefixedString {
-	fn into(self) -> U256 {
-		U256::from_be_hex(&self.0[2..])
+#[derive(Debug, Error)]
+pub enum ToUIntError {
+	#[error("Invalid length, expected {expected}, got {actual}")]
+	InvalidLength { expected: usize, actual: usize },
+}
+
+impl<const LIMBS: usize> TryFrom<HexPrefixedString> for UInt<LIMBS> {
+	type Error = ToUIntError;
+
+	fn try_from(value: HexPrefixedString) -> Result<Self, Self::Error> {
+		let expected_size = Limb::BYTE_SIZE * LIMBS * 2;
+
+		let bytes = format!("{:0>expected_size$}", &value.0[2..],);
+
+		match bytes.len() {
+			len if len == expected_size => Ok(Self::from_be_hex(&bytes)),
+			len => Err(ToUIntError::InvalidLength {
+				expected: expected_size,
+				actual: len,
+			}),
+		}
 	}
 }
 

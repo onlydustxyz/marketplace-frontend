@@ -68,5 +68,28 @@ fn serde() {
 #[test]
 fn from_into_u256() {
 	let value = U256::from_u128(123);
-	assert_eq!(value, HexPrefixedString::from(value).into());
+	assert_eq!(value, HexPrefixedString::from(value).try_into().unwrap());
+}
+
+#[test]
+fn into_u256_too_long() {
+	let bytes = format!("0x{}", ["1"; 65].concat());
+	let result: Result<U256, _> = HexPrefixedString::from_str(&bytes).unwrap().try_into();
+	assert!(result.is_err());
+}
+
+#[test]
+fn padding_and_truncating() {
+	let mut same_values = vec![
+		HexPrefixedString::from_str("0x123").unwrap(),
+		HexPrefixedString::from_str("0x00123").unwrap(),
+		HexPrefixedString::from(U256::from_u128(291)),
+		HexPrefixedString::from_bytes(vec![0, 0, 0, 0, 0, 1, 35]),
+		HexPrefixedString::from(vec![1, 35]),
+	];
+
+	same_values.dedup();
+
+	assert_eq!(1, same_values.len());
+	assert_eq!("0x0123", same_values[0].to_string());
 }
