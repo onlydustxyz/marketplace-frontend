@@ -60,12 +60,7 @@ mod test {
 	use rstest::*;
 
 	fn empty_topic() -> TopicValue {
-		TopicValue {
-			value: vec![
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 0,
-			],
-		}
+		TopicValue { value: vec![0; 32] }
 	}
 
 	fn selector<T: EventTranslator>() -> TopicValue {
