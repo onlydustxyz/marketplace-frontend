@@ -26,7 +26,7 @@ impl Builder {
 	pub fn new(indexer_repository: Arc<dyn IndexerRepository>) -> Self {
 		Self {
 			indexer_repository,
-			network: Network::Starknet(StarknetChain::Devnet),
+			network: Network::Starknet,
 			filters: vec![],
 			start_at_block: 0,
 			on_conflict: OnConflictAction::DoNothing,
@@ -123,12 +123,7 @@ mod tests {
 			.with(eq(IndexerId::from("ID")))
 			.returning(|_| Ok(None));
 
-		let expected_indexer = Indexer::new(
-			"ID".into(),
-			Network::Starknet(StarknetChain::Devnet),
-			0,
-			Vec::new(),
-		);
+		let expected_indexer = Indexer::new("ID".into(), Network::Starknet, 0, Vec::new());
 
 		indexer_repository
 			.expect_create()
@@ -153,7 +148,7 @@ mod tests {
 
 		let expected_indexer = Indexer::new(
 			"ID".into(),
-			Network::Starknet(StarknetChain::Mainnet),
+			Network::Starknet,
 			1234,
 			vec![
 				EventFilter::new(ContractAddress::from_str("0x1234").unwrap(), "Event1"),
@@ -167,7 +162,7 @@ mod tests {
 			.returning(|_| Ok(()));
 
 		let result = Builder::new(Arc::new(indexer_repository))
-			.network(Network::Starknet(StarknetChain::Mainnet))
+			.network(Network::Starknet)
 			.start_at_block(1234)
 			.filter(
 				ContractAddress::from_str("0x1234").unwrap(),
@@ -193,7 +188,7 @@ mod tests {
 			.returning(|_| {
 				Ok(Some(Indexer::new(
 					"ID".into(),
-					Network::Starknet(StarknetChain::Devnet),
+					Network::Starknet,
 					0,
 					Vec::new(),
 				)))
@@ -216,7 +211,7 @@ mod tests {
 			.returning(|_| {
 				Ok(Some(Indexer::new(
 					"ID".into(),
-					Network::Starknet(StarknetChain::Devnet),
+					Network::Starknet,
 					0,
 					Vec::new(),
 				)))
@@ -282,7 +277,7 @@ mod tests {
 			.returning(|_| {
 				Ok(Some(Indexer::new(
 					"ID".into(),
-					Network::Starknet(StarknetChain::Devnet),
+					Network::Starknet,
 					0,
 					Vec::new(),
 				)))
