@@ -1,11 +1,15 @@
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub enum Network {
-	Starknet(StarknetChain),
+	#[default]
+	Starknet,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum StarknetChain {
-	Devnet,
-	Goerli,
-	Mainnet,
+#[cfg(test)]
+mod test {
+	use super::*;
+
+	#[test]
+	fn network_default_to_starknet() {
+		assert_eq!(Network::Starknet, Network::default())
+	}
 }

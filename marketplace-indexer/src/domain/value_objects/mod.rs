@@ -1,5 +1,5 @@
 mod network;
-pub use network::{Network, StarknetChain};
+pub use network::Network;
 
 mod event_filter;
 pub use event_filter::EventFilter;

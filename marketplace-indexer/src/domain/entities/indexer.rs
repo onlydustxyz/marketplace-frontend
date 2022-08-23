@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use crate::domain::*;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct Id(String);
 
 impl<T: Into<String>> From<T> for Id {
@@ -17,7 +17,7 @@ impl Display for Id {
 	}
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct Indexer {
 	pub id: Id,
 	pub network: Network,
@@ -46,7 +46,7 @@ mod test {
 	fn indexer_can_be_created() {
 		let indexer = Indexer::new(
 			IndexerId::from("123"),
-			Network::Starknet(StarknetChain::Devnet),
+			Network::Starknet,
 			42,
 			vec![
 				EventFilter::new(ContractAddress::from_str("0x1234").unwrap(), "event1"),
@@ -55,7 +55,7 @@ mod test {
 		);
 
 		assert_eq!(String::from("123"), indexer.id.to_string());
-		assert_eq!(Network::Starknet(StarknetChain::Devnet), indexer.network);
+		assert_eq!(Network::Starknet, indexer.network);
 		assert_eq!(42, indexer.index_from_block);
 		assert_eq!(
 			vec![
