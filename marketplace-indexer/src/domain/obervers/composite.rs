@@ -30,15 +30,20 @@ impl Observer for ObserverComposite {
 
 #[cfg(test)]
 mod test {
-	use std::str::FromStr;
-
 	use super::*;
 	use mockall::predicate::*;
+	use rstest::*;
+	use std::str::FromStr;
 
-	#[test]
-	fn on_new_event() {
-		let event = Event::GithubIdentifierRegistered(Default::default());
+	#[fixture]
+	fn event() -> Event {
+		Event::Contribution(ContributionEvent::Validated {
+			id: Default::default(),
+		})
+	}
 
+	#[rstest]
+	fn on_new_event(event: Event) {
 		let mut observer1 = MockObserver::new();
 		observer1.expect_on_new_event().with(eq(event.clone())).return_const(());
 

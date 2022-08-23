@@ -1,19 +1,9 @@
-mod github_identifier_registered;
-pub use github_identifier_registered::GithubIdentifierRegisteredEvent;
-
-mod store;
-pub use store::{Error as StoreError, Store};
-
-mod aggregate;
-pub use aggregate::Aggregate;
-
 use crate::ContributionEvent;
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
-	GithubIdentifierRegistered(GithubIdentifierRegisteredEvent),
 	Contribution(ContributionEvent),
 }
 

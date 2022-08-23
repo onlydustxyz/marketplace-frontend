@@ -1,5 +1,5 @@
 use super::*;
-use crate::{events::Aggregate, HexPrefixedString, ParseHexPrefixedStringError};
+use crate::{EventAggregate, HexPrefixedString, ParseHexPrefixedStringError};
 use crypto_bigint::U256;
 use marketplace_wrappers::HexStringWrapper;
 use serde::{Deserialize, Serialize};
@@ -14,9 +14,9 @@ pub enum Error {
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, Default, HexStringWrapper)]
 pub struct Id(HexPrefixedString);
-pub struct Contribution;
+pub struct Aggregate;
 
-impl Aggregate for Contribution {
+impl EventAggregate for Aggregate {
 	type Error = Error;
 	type Event = Event;
 	type Id = Id;
@@ -124,7 +124,7 @@ mod test {
 	}
 
 	fn apply(state: State, event: Event) -> Result<State, Error> {
-		<Contribution as Aggregate>::apply(state, event)
+		<Aggregate as EventAggregate>::apply(state, event)
 	}
 
 	#[rstest]
