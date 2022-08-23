@@ -6,7 +6,7 @@ use starknet::{
 	accounts::{Account, Call},
 	core::{types::FieldElement, utils::get_selector_from_name},
 };
-use std::{convert::TryInto, sync::Arc};
+use std::sync::Arc;
 
 pub struct Contract<A: Account + Sync> {
 	administrator: ContractAdministrator<A>,
@@ -56,10 +56,7 @@ impl IntoCall for &Action {
 					FieldElement::from_dec_str(&contribution.project_id).unwrap(), /* project_id
 					                                                                * : felt */
 					FieldElement::from(contribution.gate), /* contribution_count_required : felt */
-					FieldElement::from_bytes_be(
-						&contribution.validator.to_bytes().try_into().unwrap(),
-					)
-					.unwrap(),
+					FieldElement::from_hex_be(&contribution.validator.to_string()).unwrap(),
 				],
 			},
 
