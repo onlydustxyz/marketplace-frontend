@@ -17,11 +17,14 @@ pub use services::*;
 mod actions;
 pub use actions::*;
 
-mod events;
-pub use events::{
-	Aggregate as EventAggregate, Event, GithubIdentifierRegisteredEvent, Store as EventStore,
-	StoreError as EventStoreError,
-};
+mod event;
+pub use event::Event;
+
+mod event_store;
+pub use event_store::{Error as EventStoreError, Store as EventStore};
+
+mod event_aggregate;
+pub use event_aggregate::Aggregate as EventAggregate;
 
 pub mod contribution;
 pub use contribution::{Event as ContributionEvent, Status as ContributionStatus};

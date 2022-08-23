@@ -1,4 +1,4 @@
-use super::Aggregate;
+use crate::EventAggregate;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -11,6 +11,6 @@ pub enum Error {
 	Append,
 }
 
-pub trait Store<A: Aggregate> {
+pub trait Store<A: EventAggregate> {
 	fn append(&self, aggregate_id: &A::Id, events: &[A::Event]) -> Result<(), Error>;
 }

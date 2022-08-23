@@ -52,15 +52,21 @@ mod test {
 		MockLoggerCallback::new()
 	}
 
+	#[fixture]
+	fn event() -> Event {
+		Event::Contribution(ContributionEvent::Validated {
+			id: Default::default(),
+		})
+	}
+
 	#[rstest]
-	fn on_new_event(mut logger: MockLoggerCallback) {
+	fn on_new_event(mut logger: MockLoggerCallback, event: Event) {
 		logger
 			.expect_log()
 			.withf(|msg| msg.starts_with("⚡ New event: "))
 			.return_const(());
 		let logging_callback = move |message| logger.log(message);
 
-		let event = Event::GithubIdentifierRegistered(Default::default());
 		let handler = Logger::new(&logging_callback);
 		handler.on_new_event(&event);
 	}
@@ -98,9 +104,9 @@ mod test {
 		handler.on_reorg();
 	}
 
-	#[test]
-	fn handler_can_be_created_using_default() {
+	#[rstest]
+	fn handler_can_be_created_using_default(event: Event) {
 		let handler = Logger::default();
-		handler.on_new_event(&Event::GithubIdentifierRegistered(Default::default()));
+		handler.on_new_event(&event);
 	}
 }
