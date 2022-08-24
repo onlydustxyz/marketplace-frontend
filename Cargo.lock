@@ -1670,10 +1670,7 @@ dependencies = [
  "assert-json-diff",
  "assert_matches",
  "async-trait",
- "base16ct",
  "crypto-bigint 0.4.8",
- "diesel",
- "diesel_migrations",
  "dotenv",
  "env_logger",
  "futures 0.3.21",
@@ -1682,13 +1679,11 @@ dependencies = [
  "log",
  "mapinto",
  "marketplace-domain",
+ "marketplace-infrastructure",
  "marketplace-wrappers",
  "mockall",
  "octocrab",
  "okapi",
- "r2d2",
- "r2d2-diesel",
- "rand",
  "reqwest",
  "rocket",
  "rocket_okapi",
@@ -1768,6 +1763,37 @@ dependencies = [
  "tokio-stream",
  "tonic",
  "tonic-build",
+]
+
+[[package]]
+name = "marketplace-infrastructure"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "assert_matches",
+ "async-trait",
+ "crypto-bigint 0.4.8",
+ "diesel",
+ "diesel_migrations",
+ "futures 0.3.21",
+ "itertools",
+ "log",
+ "mapinto",
+ "marketplace-domain",
+ "mockall",
+ "octocrab",
+ "r2d2",
+ "r2d2-diesel",
+ "rand",
+ "rocket",
+ "rstest",
+ "serde",
+ "serde_json",
+ "starknet",
+ "thiserror",
+ "tokio",
+ "url",
+ "uuid 0.8.2",
 ]
 
 [[package]]
