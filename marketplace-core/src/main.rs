@@ -1,17 +1,17 @@
 mod routes;
 
-use diesel_migrations::*;
 use dotenv::dotenv;
 use log::info;
 use marketplace_core::{
 	application::*,
 	github,
-	infrastructure::{
-		database::{self, init_pool},
-		starknet,
-	},
 	utils::caches::{ContributorCache, RepoCache},
 };
+use marketplace_infrastructure::{
+	database::{self, init_pool},
+	starknet,
+};
+
 use marketplace_domain::{
 	ApplicationRepository, ContactInformationService, ContactInformationServiceImplementation,
 	ContributionService, ContributionServiceImplementation, RandomUuidGenerator,
@@ -27,10 +27,6 @@ use tokio::{
 
 #[macro_use]
 extern crate rocket;
-#[macro_use]
-extern crate diesel_migrations;
-
-embed_migrations!("../migrations");
 
 fn get_root_logger() -> Logger {
 	let drain = match std::env::var("LOGS") {

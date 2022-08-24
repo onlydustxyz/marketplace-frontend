@@ -2,7 +2,8 @@
 
 members = [
     "marketplace-core",
+	"marketplace-domain",
     "marketplace-indexer",
+    "marketplace-infrastructure",
     "marketplace-wrappers",
-	"marketplace-domain"
 ]
