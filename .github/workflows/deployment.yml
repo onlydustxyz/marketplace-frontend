@@ -8,12 +8,21 @@ on:
       - "v*"
 
 jobs:
-  docker-build:
+  docker-build-backend:
     uses: onlydustxyz/cicd/.github/workflows/docker-workflow.yml@main
     with:
       image_name: deathnote-contribution-feeder-rest-api
       image_tag: ${{ github.ref_name }}
       bin_name: marketplace-core
       dockerfile: diesel-rocket-rs
-      datadog_label: '[{"source": "deathnote", "service": "deathnote-contribution-feeder-rest-api"}]'
+      datadog_label: '[{"source": "marketplace", "service": "marketplace-backend"}]'
+    secrets: inherit
+  docker-build-indexer:
+    uses: onlydustxyz/cicd/.github/workflows/docker-workflow.yml@main
+    with:
+      image_name: marketplace-indexer
+      image_tag: ${{ github.ref_name }}
+      bin_name: marketplace-core
+      dockerfile: diesel-rs
+      datadog_label: '[{"source": "marketplace", "service": "marketplace-indexer"}]'
     secrets: inherit

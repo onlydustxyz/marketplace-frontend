@@ -31,7 +31,7 @@ impl Observer for Logger<'_> {
 
 impl Default for Logger<'_> {
 	fn default() -> Self {
-		Self(&|message| info!("{}", message))
+		Self::new(&|message| info!("{}", message))
 	}
 }
 
