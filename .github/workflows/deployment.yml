@@ -22,7 +22,7 @@ jobs:
     with:
       image_name: marketplace-indexer
       image_tag: ${{ github.ref_name }}
-      bin_name: marketplace-core
+      bin_name: marketplace-indexer
       dockerfile: diesel-rs
       datadog_label: '[{"source": "marketplace", "service": "marketplace-indexer"}]'
     secrets: inherit
