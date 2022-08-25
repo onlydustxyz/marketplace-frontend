@@ -14,6 +14,10 @@ pub trait Usecase: Send + Sync {
 	) -> Result<(), DomainError>;
 }
 
+#[deprecated(
+	since = "0.1.0",
+	note = "please use `accept_application` usecase instead"
+)]
 pub struct AssignContribution {
 	onchain_contribution_service: Arc<dyn OnchainContributionService>,
 	contribution_repository: Arc<dyn ContributionRepository>,
