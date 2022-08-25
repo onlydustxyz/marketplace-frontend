@@ -17,7 +17,10 @@ pub use onchain_contribution::{
 };
 
 mod application;
-pub use application::{Error as ApplicationServiceError, Service as ApplicationService};
+pub use application::{
+	Error as ApplicationServiceError, MockService as MockApplicationService,
+	Service as ApplicationService,
+};
 
 mod uuid;
 pub use self::uuid::{

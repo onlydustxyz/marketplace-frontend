@@ -1,5 +1,6 @@
 use crate::*;
 
+use mockall::automock;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -24,6 +25,8 @@ pub enum Error {
 	},
 }
 
+#[automock]
 pub trait Service: Send + Sync {
-	fn accept_application(&self, id: &ApplicationId) -> Result<Application, Error>;
+	fn accept_application(&self, application: Application) -> Result<(), Error>;
+	fn reject_all_applications(&self, contribution_id: &ContributionId) -> Result<(), Error>;
 }
