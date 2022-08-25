@@ -25,6 +25,7 @@ pub struct AssignContributorDto {
 	format = "application/json",
 	data = "<body>"
 )]
+#[deprecated(since = "0.1.0", note = "please use `accept_application` instead")]
 pub async fn assign_contributor(
 	_api_key: ApiKey,
 	contribution_id: UuidParam,
