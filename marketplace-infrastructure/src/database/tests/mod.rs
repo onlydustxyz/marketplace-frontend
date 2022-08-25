@@ -5,6 +5,7 @@ use marketplace_domain::{Contribution, Project};
 mod application_repository;
 mod application_service;
 mod contact_information_repository;
+mod contribution_repository;
 mod project_repository;
 
 use marketplace_domain::*;
