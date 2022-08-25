@@ -4,12 +4,11 @@ use dotenv::dotenv;
 use log::info;
 use marketplace_core::{
 	application::*,
-	github,
 	utils::caches::{ContributorCache, RepoCache},
 };
 use marketplace_infrastructure::{
 	database::{self, init_pool},
-	starknet,
+	github, starknet,
 };
 
 use marketplace_domain::{

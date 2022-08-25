@@ -1,7 +1,8 @@
 use crate::routes::api_key::ApiKey;
 use http_api_problem::{HttpApiProblem, StatusCode};
-use marketplace_core::{application::CreateContributionUsecase, dto::ContributionCreation, github};
+use marketplace_core::{application::CreateContributionUsecase, dto::ContributionCreation};
 use marketplace_domain::*;
+use marketplace_infrastructure::github;
 use rocket::{http::Status, serde::json::Json, State};
 use rocket_okapi::openapi;
 use std::result::Result;
@@ -20,10 +21,11 @@ pub async fn create_contribution(
 	let github_issue = github_api.issue(body.project_id(), body.github_issue_number()).await;
 	let github_issue = match github_issue {
 		Ok(github_issue) => github_issue,
-		Err(error) =>
+		Err(error) => {
 			return Err(HttpApiProblem::new(StatusCode::BAD_REQUEST)
 				.title("Unable to get GitHub issue data")
-				.detail(error.to_string())),
+				.detail(error.to_string()))
+		},
 	};
 
 	let metadata = github::extract_metadata(github_issue.clone());

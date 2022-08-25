@@ -2,6 +2,7 @@
 extern crate diesel;
 
 pub mod database;
+pub mod github;
 pub mod starknet;
 
 use diesel_migrations::*;
