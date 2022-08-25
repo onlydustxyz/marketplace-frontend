@@ -1,6 +1,6 @@
-use marketplace_core::{dto, github, utils::caches};
+use marketplace_core::{dto, utils::caches};
 use marketplace_domain::*;
-use marketplace_infrastructure::{database, starknet};
+use marketplace_infrastructure::{database, github, starknet};
 
 use futures::future::{self, OptionFuture};
 use http_api_problem::{HttpApiProblem, StatusCode};
