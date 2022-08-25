@@ -22,9 +22,6 @@ uuid = { version = "0.8.2", default_features = false, features = [
 ] }
 crypto-bigint = { version = "0.4.8", features = ["serde"] }
 url = "2.2.2"
-# TODO: Remove both dependencies below once https://www.notion.so/onlydust/remove-dependency-on-schema-rs-in-domain-crate-584da1e29638490986f2e28e3988709f has been done
-schemars = { version = "0.8", features = ["uuid1"] }
-rocket_okapi = { version = "0.8.0-rc.2", features = ["swagger", "uuid"] }
 
 # Utils
 mapinto = "0.2.1"

@@ -2,7 +2,6 @@
 mod tests;
 
 use crypto_bigint::{Encoding, Limb, UInt, U256};
-use rocket_okapi::JsonSchema;
 use serde::{
 	de::{self, Unexpected, Visitor},
 	Deserialize, Serialize,
@@ -13,7 +12,7 @@ use std::{
 };
 use thiserror::Error;
 
-#[derive(PartialEq, Eq, Clone, JsonSchema, Serialize, Debug, Hash)]
+#[derive(PartialEq, Eq, Clone, Serialize, Debug, Hash)]
 pub struct HexPrefixedString(String);
 
 impl HexPrefixedString {

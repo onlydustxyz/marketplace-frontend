@@ -8,8 +8,7 @@ use rocket::{
 	State,
 };
 use rocket_okapi::{openapi, JsonSchema};
-use starknet::core::types::FieldElement;
-use std::{result::Result, str::FromStr};
+use std::result::Result;
 use uuid::Uuid;
 
 #[derive(Deserialize, JsonSchema)]
@@ -18,7 +17,6 @@ pub struct CreateContributionDto {
 	github_issue_number: u128,
 	project_id: u128,
 	gate: u8,
-	validator: HexPrefixedString,
 }
 
 #[openapi(tag = "Contributions")]
@@ -30,11 +28,6 @@ pub async fn create_contribution(
 	usecase: &State<Box<dyn CreateContributionUsecase>>,
 ) -> Result<Status, HttpApiProblem> {
 	let body = body.into_inner();
-	let validator = FieldElement::from_str(&body.validator.to_string()).map_err(|e| {
-		HttpApiProblem::new(StatusCode::BAD_REQUEST)
-			.title("Invalid validator address")
-			.detail(e.to_string())
-	})?;
 
 	let github_issue = github_api.issue(body.project_id, body.github_issue_number).await;
 	let github_issue = match github_issue {
@@ -58,7 +51,7 @@ pub async fn create_contribution(
 		external_link: Some(github_issue.html_url),
 		gate: body.gate,
 		metadata,
-		validator: validator.to_bytes_be().to_vec().into(),
+		validator: HexPrefixedString::default(),
 	};
 
 	usecase.send_creation_request(contribution).map_err(|error| {
