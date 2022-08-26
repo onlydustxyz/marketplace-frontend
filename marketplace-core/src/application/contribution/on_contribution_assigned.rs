@@ -125,11 +125,11 @@ mod test {
 		updated_contribution.status = ContributionStatus::Assigned;
 		updated_contribution.contributor_id = Some(contributor_id.to_owned());
 
-		let returned_contribution = contribution.to_owned();
+		let returned_contribution = contribution.clone();
 		contribution_repository
 			.expect_find_by_onchain_id()
 			.with(eq(contribution_onchain_id.to_owned()))
-			.returning(move |_| Ok(Some(returned_contribution.to_owned())));
+			.returning(move |_| Ok(Some(returned_contribution.clone())));
 		contribution_repository
 			.expect_update()
 			.with(eq(updated_contribution))
@@ -177,11 +177,11 @@ mod test {
 		updated_contribution.status = ContributionStatus::Assigned;
 		updated_contribution.contributor_id = Some(contributor_id.to_owned());
 
-		let returned_contribution = contribution.to_owned();
+		let returned_contribution = contribution.clone();
 		contribution_repository
 			.expect_find_by_onchain_id()
 			.with(eq(contribution_onchain_id.to_owned()))
-			.returning(move |_| Ok(Some(returned_contribution.to_owned())));
+			.returning(move |_| Ok(Some(returned_contribution.clone())));
 		contribution_repository
 			.expect_update()
 			.with(eq(updated_contribution))
