@@ -92,11 +92,17 @@ mod test {
 		MockApplicationRepository::new()
 	}
 
+	#[fixture]
+	fn onchain_contribution_id() -> ContributionOnChainId {
+		"1".to_string()
+	}
+
 	#[rstest]
 	fn accept_application_success(
 		mut onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 		mut application_repository: MockApplicationRepository,
+		onchain_contribution_id: ContributionOnChainId,
 	) {
 		let application_id = Uuid::from_u128(12).into();
 		application_repository.expect_find().returning(|_| {
@@ -108,16 +114,17 @@ mod test {
 			)))
 		});
 
-		contribution_repository.expect_find_by_id().returning(|_| {
+		let onchain_id = onchain_contribution_id.clone();
+		contribution_repository.expect_find_by_id().returning(move |_| {
 			Ok(Some(Contribution {
-				onchain_id: "1".to_string(),
+				onchain_id: onchain_id.clone(),
 				..Default::default()
 			}))
 		});
 
 		onchain_contribution_service
 			.expect_assign_contributor()
-			.with(eq("1".to_string()), eq(ContributorId::from(42)))
+			.with(eq(onchain_contribution_id), eq(ContributorId::from(42)))
 			.returning(|_, _| Ok(()));
 
 		let usecase = AcceptApplication::new_usecase_boxed(
