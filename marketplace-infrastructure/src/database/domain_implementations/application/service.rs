@@ -15,13 +15,6 @@ impl ApplicationService for Client {
 			.connection()
 			.map_err(|e| ApplicationServiceError::Infrastructure(Box::new(e)))?;
 
-		if *application.status() != ApplicationStatus::Pending {
-			return Err(ApplicationServiceError::InvalidApplicationStatus {
-				current: *application.status(),
-				required: ApplicationStatus::Pending,
-			});
-		}
-
 		let res: Result<(), diesel::result::Error> = connection.transaction(|| {
 			let application = diesel::update(
 				applications::dsl::applications
