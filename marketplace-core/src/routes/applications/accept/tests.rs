@@ -1,6 +1,8 @@
 use super::accept_application;
 
-use marketplace_domain::{ApplicationId, ApplicationRepositoryError, Error as DomainError};
+use marketplace_domain::{
+	ApplicationId, ApplicationRepositoryError, Error as DomainError, HexPrefixedString,
+};
 
 use marketplace_core::application::AcceptApplicationUsecase;
 use rocket::{
@@ -14,15 +16,21 @@ const URI: &str = "/applications/a6127643-1344-4a44-bbfb-7142c17a4ef0/accept";
 struct SuccessfulUsecase;
 
 impl AcceptApplicationUsecase for SuccessfulUsecase {
-	fn accept_application(&self, _application_id: &ApplicationId) -> Result<(), DomainError> {
-		Ok(())
+	fn accept_application(
+		&self,
+		_application_id: &ApplicationId,
+	) -> Result<HexPrefixedString, DomainError> {
+		Ok(HexPrefixedString::default())
 	}
 }
 
 struct FailedUsecase;
 
 impl AcceptApplicationUsecase for FailedUsecase {
-	fn accept_application(&self, _application_id: &ApplicationId) -> Result<(), DomainError> {
+	fn accept_application(
+		&self,
+		_application_id: &ApplicationId,
+	) -> Result<HexPrefixedString, DomainError> {
 		Err(DomainError::ApplicationRepository(
 			ApplicationRepositoryError::NotFound,
 		))

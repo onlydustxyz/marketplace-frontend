@@ -5,7 +5,10 @@ use mapinto::ResultMapErrInto;
 use marketplace_domain::{Error as DomainError, *};
 
 pub trait Usecase: Send + Sync {
-	fn accept_application(&self, application_id: &ApplicationId) -> Result<(), DomainError>;
+	fn accept_application(
+		&self,
+		application_id: &ApplicationId,
+	) -> Result<HexPrefixedString, DomainError>;
 }
 
 pub struct AcceptApplication {
@@ -43,7 +46,10 @@ impl AcceptApplication {
 }
 
 impl Usecase for AcceptApplication {
-	fn accept_application(&self, application_id: &ApplicationId) -> Result<(), DomainError> {
+	fn accept_application(
+		&self,
+		application_id: &ApplicationId,
+	) -> Result<HexPrefixedString, DomainError> {
 		let application = self
 			.application_repository
 			.find(application_id)
@@ -125,7 +131,7 @@ mod test {
 		onchain_contribution_service
 			.expect_assign_contributor()
 			.with(eq(onchain_contribution_id), eq(ContributorId::from(42)))
-			.returning(|_, _| Ok(()));
+			.returning(|_, _| Ok(HexPrefixedString::default()));
 
 		let usecase = AcceptApplication::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),

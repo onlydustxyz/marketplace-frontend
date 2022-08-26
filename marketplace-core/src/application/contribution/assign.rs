@@ -11,7 +11,7 @@ pub trait Usecase: Send + Sync {
 		&self,
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
-	) -> Result<(), DomainError>;
+	) -> Result<HexPrefixedString, DomainError>;
 }
 
 #[deprecated(
@@ -40,7 +40,7 @@ impl Usecase for AssignContribution {
 		&self,
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
-	) -> Result<(), DomainError> {
+	) -> Result<HexPrefixedString, DomainError> {
 		match self.contribution_repository.find_by_id(contribution_id)? {
 			Some(contribution) => self
 				.onchain_contribution_service
@@ -86,7 +86,7 @@ mod test {
 
 		onchain_contribution_service
 			.expect_assign_contributor()
-			.returning(|_, _| Ok(()));
+			.returning(|_, _| Ok(HexPrefixedString::default()));
 
 		let usecase = AssignContribution::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),

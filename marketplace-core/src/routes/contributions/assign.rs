@@ -66,7 +66,7 @@ mod test {
 				eq(ContributionId::from(Uuid::from_u128(12))),
 				eq(ContributorId::from(34)),
 			)
-			.returning(|_, _| Ok(()));
+			.returning(|_, _| Ok(HexPrefixedString::default()));
 
 		let rocket =
 			rocket::build().manage(Box::new(usecase) as Box<dyn AssignContributionUsecase>);

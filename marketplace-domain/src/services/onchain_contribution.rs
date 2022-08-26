@@ -10,12 +10,15 @@ pub enum Error {
 
 #[automock]
 pub trait Service: Send + Sync {
-	fn create(&self, contribution: Contribution) -> Result<(), Error>;
+	fn create(&self, contribution: Contribution) -> Result<HexPrefixedString, Error>;
 	fn assign_contributor(
 		&self,
 		contribution_id: ContributionOnChainId,
 		contributor_id: ContributorId,
-	) -> Result<(), Error>;
-	fn unassign_contributor(&self, contribution_id: ContributionOnChainId) -> Result<(), Error>;
-	fn validate(&self, contribution_id: ContributionOnChainId) -> Result<(), Error>;
+	) -> Result<HexPrefixedString, Error>;
+	fn unassign_contributor(
+		&self,
+		contribution_id: ContributionOnChainId,
+	) -> Result<HexPrefixedString, Error>;
+	fn validate(&self, contribution_id: ContributionOnChainId) -> Result<HexPrefixedString, Error>;
 }

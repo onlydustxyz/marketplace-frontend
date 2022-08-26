@@ -3,16 +3,9 @@ use contracts::{ContributionContract, ProfileContract, RegistryContract};
 
 mod model;
 
-mod action_queue;
-use action_queue::ActionQueue;
-
-mod services;
-
 mod error;
+mod services;
 pub use error::Error as StarknetError;
-
-mod transaction_processor;
-pub use transaction_processor::dequeuer::spawn;
 
 pub use starknet::accounts::Account;
 use starknet::{
@@ -21,10 +14,7 @@ use starknet::{
 	providers::SequencerGatewayProvider,
 	signers::{LocalWallet, SigningKey},
 };
-use std::{
-	env,
-	sync::{Arc, RwLock},
-};
+use std::{env, sync::Arc};
 use url::Url;
 
 use marketplace_domain::{Contributor, ContributorId};
@@ -70,7 +60,6 @@ pub struct Client<A: Account + Sync + Send> {
 	registry: RegistryContract,
 	contributions: Arc<ContributionContract<A>>,
 	profile: ProfileContract,
-	action_queue: Arc<RwLock<ActionQueue>>,
 }
 
 impl<A: Account + Sync + Send + 'static> Client<A> {
@@ -79,7 +68,6 @@ impl<A: Account + Sync + Send + 'static> Client<A> {
 			registry: RegistryContract::default(),
 			contributions: Arc::new(ContributionContract::new(account)),
 			profile: ProfileContract::default(),
-			action_queue: Arc::new(RwLock::new(ActionQueue::new())),
 		}
 	}
 
