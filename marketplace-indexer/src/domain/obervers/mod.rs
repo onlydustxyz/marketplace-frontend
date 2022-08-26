@@ -11,7 +11,7 @@ mod contribution;
 pub use contribution::ContributionObserver;
 
 mod confirmed;
-pub use confirmed::Confirmed as ConfirmedObserver;
+pub use confirmed::{ConfirmedObserver, WithBockConfirmationCount};
 
 use crate::domain::*;
 use mockall::automock;

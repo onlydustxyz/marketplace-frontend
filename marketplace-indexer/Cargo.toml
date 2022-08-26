@@ -52,6 +52,7 @@ mockall = "0.11.2"
 
 # Local dependecies
 marketplace-domain = { path = "../marketplace-domain" }
+marketplace-infrastructure = { path = "../marketplace-infrastructure" }
 
 [dev-dependencies]
 # Unit tests

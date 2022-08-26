@@ -1743,6 +1743,7 @@ dependencies = [
  "log",
  "mapinto",
  "marketplace-domain",
+ "marketplace-infrastructure",
  "mockall",
  "prost",
  "prost-types",
