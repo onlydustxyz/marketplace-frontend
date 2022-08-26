@@ -5,25 +5,15 @@ use marketplace_domain::*;
 use marketplace_infrastructure::github;
 use rocket::{http::Status, serde::json::Json, State};
 use rocket_okapi::openapi;
-use schemars::JsonSchema;
-use serde::Deserialize;
 use std::result::Result;
 use uuid::Uuid;
-
-#[derive(Deserialize, JsonSchema)]
-#[serde(crate = "rocket::serde")]
-pub struct CreateContributionDto {
-	github_issue_number: i64,
-	project_id: i64,
-	gate: u8,
-}
 
 #[openapi(tag = "Contributions")]
 #[post("/contributions/github", format = "application/json", data = "<body>")]
 pub async fn create_contribution(
 	_api_key: ApiKey,
 	body: Json<ContributionCreation>,
-	github_api: &State<github::API>,
+	github_api: &State<github::Client>,
 	usecase: &State<Box<dyn CreateContributionUsecase>>,
 ) -> Result<Status, HttpApiProblem> {
 	let body = body.into_inner();

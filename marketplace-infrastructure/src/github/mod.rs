@@ -16,7 +16,7 @@ impl From<models::RepositoryWithExtension> for Project {
 	}
 }
 
-pub struct API {
+pub struct Client {
 	octo: Arc<octocrab::Octocrab>,
 }
 
@@ -25,7 +25,7 @@ pub struct OctocrabIssue {
 	pub project_id: GithubProjectId,
 }
 
-impl API {
+impl Client {
 	pub fn initialize() {
 		let mut builder = octocrab::Octocrab::builder();
 
@@ -37,7 +37,7 @@ impl API {
 	}
 
 	pub fn new() -> Self {
-		API {
+		Client {
 			octo: octocrab::instance(),
 		}
 	}
@@ -94,7 +94,7 @@ impl API {
 	}
 }
 
-impl Default for API {
+impl Default for Client {
 	fn default() -> Self {
 		Self::new()
 	}

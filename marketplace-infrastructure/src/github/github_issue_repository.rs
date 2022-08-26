@@ -1,4 +1,4 @@
-use super::{extract_metadata, OctocrabIssue, API};
+use super::{extract_metadata, Client, OctocrabIssue};
 use async_trait::async_trait;
 use marketplace_domain::{
 	GithubIssue, GithubIssueNumber, GithubIssueRepository, GithubIssueRepositoryError,
@@ -6,7 +6,7 @@ use marketplace_domain::{
 };
 
 #[async_trait]
-impl GithubIssueRepository for API {
+impl GithubIssueRepository for Client {
 	async fn find(
 		&self,
 		project_id: &GithubProjectId,
