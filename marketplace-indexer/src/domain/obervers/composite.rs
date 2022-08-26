@@ -15,12 +15,14 @@ impl Observer for ObserverComposite {
 		self.0.iter().for_each(|observer| observer.on_connect(indexer_id))
 	}
 
-	fn on_new_event(&self, event: &Event) {
-		self.0.iter().for_each(|observer| observer.on_new_event(event))
+	fn on_new_event(&self, event: &Event, block_number: u64) {
+		self.0.iter().for_each(|observer| observer.on_new_event(event, block_number))
 	}
 
-	fn on_new_block(&self, block_hash: &BlockHash) {
-		self.0.iter().for_each(|observer| observer.on_new_block(block_hash))
+	fn on_new_block(&self, block_hash: &BlockHash, block_number: u64) {
+		self.0
+			.iter()
+			.for_each(|observer| observer.on_new_block(block_hash, block_number))
 	}
 
 	fn on_reorg(&self) {
@@ -42,16 +44,27 @@ mod test {
 		})
 	}
 
+	#[fixture]
+	fn block_number() -> u64 {
+		42
+	}
+
 	#[rstest]
-	fn on_new_event(event: Event) {
+	fn on_new_event(event: Event, block_number: u64) {
 		let mut observer1 = MockObserver::new();
-		observer1.expect_on_new_event().with(eq(event.clone())).return_const(());
+		observer1
+			.expect_on_new_event()
+			.with(eq(event.clone()), eq(block_number))
+			.return_const(());
 
 		let mut observer2 = MockObserver::new();
-		observer2.expect_on_new_event().with(eq(event.clone())).return_const(());
+		observer2
+			.expect_on_new_event()
+			.with(eq(event.clone()), eq(block_number))
+			.return_const(());
 
 		let composite = ObserverComposite::new(vec![Arc::new(observer1), Arc::new(observer2)]);
-		composite.on_new_event(&event);
+		composite.on_new_event(&event, block_number);
 	}
 
 	#[test]
@@ -69,15 +82,22 @@ mod test {
 	#[test]
 	fn on_new_block() {
 		let block_hash = BlockHash::from_str("0x1234").unwrap();
+		let block_number = 1234;
 
 		let mut observer1 = MockObserver::new();
-		observer1.expect_on_new_block().with(eq(block_hash.clone())).return_const(());
+		observer1
+			.expect_on_new_block()
+			.with(eq(block_hash.clone()), eq(block_number))
+			.return_const(());
 
 		let mut observer2 = MockObserver::new();
-		observer2.expect_on_new_block().with(eq(block_hash.clone())).return_const(());
+		observer2
+			.expect_on_new_block()
+			.with(eq(block_hash.clone()), eq(block_number))
+			.return_const(());
 
 		let composite = ObserverComposite::new(vec![Arc::new(observer1), Arc::new(observer2)]);
-		composite.on_new_block(&block_hash);
+		composite.on_new_block(&block_hash, block_number);
 	}
 
 	#[test]

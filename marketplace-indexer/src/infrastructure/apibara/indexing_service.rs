@@ -115,7 +115,7 @@ async fn handle_response(
 			new_head: Some(new_head),
 		})) => {
 			let block_hash = BlockHash::from(new_head.hash);
-			observer.on_new_block(&block_hash);
+			observer.on_new_block(&block_hash, new_head.number);
 			Ok(())
 		},
 
@@ -125,15 +125,16 @@ async fn handle_response(
 		},
 
 		Some(ResponseMessage::NewEvents(NewEvents { block, events })) => {
-			events.into_iter().for_each(|event| {
-				if let Ok(event) = event.try_into() {
-					observer.on_new_event(&event);
-				}
-			});
+			if let Some(block_head) = block {
+				events.into_iter().for_each(|event| {
+					if let Ok(event) = event.try_into() {
+						observer.on_new_event(&event, block_head.number);
+					}
+				});
 
-			match block {
-				Some(header) => send_ack_request(sender, &header.hash.into()).await,
-				_ => Ok(()),
+				send_ack_request(sender, &block_head.hash.into()).await
+			} else {
+				Ok(())
 			}
 		},
 
@@ -160,6 +161,11 @@ mod test {
 	#[fixture]
 	fn block_hash() -> BlockHash {
 		vec![12].into()
+	}
+
+	#[fixture]
+	fn block_number() -> u64 {
+		123456
 	}
 
 	#[fixture]
@@ -249,6 +255,7 @@ mod test {
 	#[tokio::test]
 	async fn can_handle_a_new_block_response(
 		block_hash: BlockHash,
+		block_number: u64,
 		mut channel: Channel,
 		mut observer: MockBlockchainObserver,
 	) {
@@ -256,12 +263,16 @@ mod test {
 			message: Some(ResponseMessage::NewBlock(NewBlock {
 				new_head: Some(BlockHeader {
 					hash: block_hash.to_bytes(),
+					number: block_number,
 					..Default::default()
 				}),
 			})),
 		};
 
-		observer.expect_on_new_block().with(eq(block_hash.clone())).return_const(());
+		observer
+			.expect_on_new_block()
+			.with(eq(block_hash.clone()), eq(block_number))
+			.return_const(());
 
 		let result = handle_response(response, &channel.tx, &observer).await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
@@ -275,11 +286,13 @@ mod test {
 		mut observer: MockBlockchainObserver,
 		apibara_event: apibara::Event,
 		block_hash: BlockHash,
+		block_number: u64,
 	) {
 		let response = ConnectIndexerResponse {
 			message: Some(ResponseMessage::NewEvents(apibara::NewEvents {
 				block: Some(BlockHeader {
 					hash: block_hash.to_bytes(),
+					number: block_number,
 					..Default::default()
 				}),
 				events: vec![apibara_event.clone(), apibara_event, Default::default()],
