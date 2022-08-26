@@ -20,10 +20,12 @@ impl EventAggregate for Aggregate {
 			Event::Created {
 				id: _,
 				project_id,
+				issue_number,
 				gate,
 			} => Self::State {
 				project_id,
 				gate,
+				issue_number,
 				status: Status::Open,
 				..state
 			},
@@ -89,6 +91,7 @@ mod test {
 		Event::Created {
 			id: Default::default(),
 			project_id: Default::default(),
+			issue_number: Default::default(),
 			gate: Default::default(),
 		}
 	}

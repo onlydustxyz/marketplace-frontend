@@ -10,13 +10,15 @@ impl EventTranslator for Created {
 	}
 
 	fn to_domain_event(mut topics: Topics) -> Result<Event, FromEventError> {
-		let project_id: u128 = topics.pop_front_as()?;
 		let contribution_id: HexPrefixedString = topics.pop_front_as()?;
+		let project_id: u128 = topics.pop_front_as()?;
+		let issue_number: u128 = topics.pop_front_as()?;
 		let gate: u128 = topics.pop_front_as()?;
 
 		Ok(Event::Contribution(ContributionEvent::Created {
 			id: contribution_id.into(),
-			project_id: project_id.to_string(),
+			project_id: project_id as i64,
+			issue_number: issue_number as i64,
 			gate: gate as u8,
 		}))
 	}
@@ -68,7 +70,8 @@ mod test {
 		assert_eq!(
 			Event::Contribution(ContributionEvent::Created {
 				id: 24.into(),
-				project_id: String::from("12"),
+				project_id: 12,
+				issue_number: 34,
 				gate: 1,
 			},),
 			result.unwrap()
