@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use crate::database::{init_pool, Client};
 use itertools::Itertools;
 use marketplace_domain::*;
@@ -55,8 +57,7 @@ fn store_and_find_with_contributions() {
 		owner: "owner".to_string(),
 	};
 	let contribution1 = Contribution {
-		id: Uuid::new_v4().into(),
-		onchain_id: Uuid::new_v4().to_string(),
+		id: ContributionId::from_str("0x01").unwrap(),
 		project_id: project.id.clone(),
 		contributor_id: None,
 		title: None,
@@ -67,8 +68,7 @@ fn store_and_find_with_contributions() {
 		metadata: Default::default(),
 	};
 	let contribution2 = Contribution {
-		id: Uuid::new_v4().into(),
-		onchain_id: Uuid::new_v4().to_string(),
+		id: ContributionId::from_str("0x02").unwrap(),
 		project_id: project.id.clone(),
 		contributor_id: None,
 		title: None,
@@ -80,10 +80,8 @@ fn store_and_find_with_contributions() {
 	};
 
 	<Client as ProjectRepository>::store(&client, project.clone()).unwrap();
-	<Client as ContributionRepository>::create(&client, contribution1.clone(), Default::default())
-		.unwrap();
-	<Client as ContributionRepository>::create(&client, contribution2.clone(), Default::default())
-		.unwrap();
+	<Client as ContributionRepository>::create(&client, contribution1.clone()).unwrap();
+	<Client as ContributionRepository>::create(&client, contribution2.clone()).unwrap();
 	let projects = <Client as ProjectRepository>::find_all_with_contributions(&client).unwrap();
 
 	let foud_project = projects.iter().find(|s| s.project == project).unwrap();

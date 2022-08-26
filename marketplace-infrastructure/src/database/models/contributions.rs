@@ -1,28 +1,18 @@
 use super::Project;
 use crate::database::schema::*;
 use rocket::serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
 #[derive(
-	Queryable,
-	Identifiable,
-	Insertable,
-	Associations,
-	AsChangeset,
-	Debug,
-	Serialize,
-	Deserialize,
-	Clone,
+	Queryable, Identifiable, Insertable, Associations, Debug, Serialize, Deserialize, Clone,
 )]
 #[belongs_to(Project)]
 #[serde(crate = "rocket::serde")]
 pub struct Contribution {
-	pub onchain_id: String,
+	pub id: String,
 	pub project_id: String,
 	pub status: String,
-	pub transaction_hash: Option<String>,
-	pub contributor_id: String,
-	pub gate: i16,
+	pub gate: i32,
+	pub contributor_id: Option<String>,
 	pub title: Option<String>,
 	pub description: Option<String>,
 	pub external_link: Option<String>,
@@ -31,24 +21,4 @@ pub struct Contribution {
 	pub duration: Option<String>,
 	pub context: Option<String>,
 	pub type_: Option<String>,
-	pub id: Uuid,
-}
-
-#[derive(AsChangeset, Debug)]
-#[table_name = "contributions"]
-pub struct ContributionUpdate {
-	pub onchain_id: String,
-	pub project_id: String,
-	pub status: String,
-	pub contributor_id: String,
-	pub gate: i16,
-	pub title: Option<String>,
-	pub description: Option<String>,
-	pub external_link: Option<String>,
-	pub difficulty: Option<String>,
-	pub technology: Option<String>,
-	pub duration: Option<String>,
-	pub context: Option<String>,
-	pub type_: Option<String>,
-	pub id: Uuid,
 }

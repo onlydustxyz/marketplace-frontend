@@ -18,26 +18,18 @@ pub enum Error {
 #[automock]
 pub trait Repository: Send + Sync {
 	fn find_by_id(&self, contribution_id: &ContributionId) -> Result<Option<Contribution>, Error>;
-	fn find_by_onchain_id(
-		&self,
-		contribution_onchain_id: &ContributionOnChainId,
-	) -> Result<Option<Contribution>, Error>;
-
-	fn create(&self, contribution: Contribution, transaction_hash: String) -> Result<(), Error>;
-	fn update(&self, contribution: Contribution) -> Result<(), Error>;
+	fn create(&self, contribution: Contribution) -> Result<(), Error>;
 
 	fn update_contributor_and_status(
 		&self,
-		contribution_id: ContributionOnChainId,
+		contribution_id: ContributionId,
 		contributor_id: Option<ContributorId>,
 		status: ContributionStatus,
-		transaction_hash: String,
 	) -> Result<(), Error>;
 
 	fn update_status(
 		&self,
-		contribution_id: ContributionOnChainId,
+		contribution_id: ContributionId,
 		status: ContributionStatus,
-		transaction_hash: String,
 	) -> Result<(), Error>;
 }

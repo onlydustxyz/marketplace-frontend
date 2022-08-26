@@ -1,6 +1,15 @@
 table! {
 	applications (id) {
 		id -> Uuid,
+		contribution_id -> Text,
+		contributor_id -> Text,
+		status -> Text,
+	}
+}
+
+table! {
+	applications_backup (id) {
+		id -> Uuid,
 		contribution_id -> Uuid,
 		contributor_id -> Varchar,
 		status -> Varchar,
@@ -17,6 +26,25 @@ table! {
 
 table! {
 	contributions (id) {
+		id -> Text,
+		project_id -> Text,
+		status -> Text,
+		gate -> Int4,
+		contributor_id -> Nullable<Text>,
+		title -> Nullable<Text>,
+		description -> Nullable<Text>,
+		external_link -> Nullable<Text>,
+		difficulty -> Nullable<Text>,
+		technology -> Nullable<Text>,
+		duration -> Nullable<Text>,
+		context -> Nullable<Text>,
+		#[sql_name = "type"]
+		type_ -> Nullable<Text>,
+	}
+}
+
+table! {
+	contributions_backup (id) {
 		onchain_id -> Varchar,
 		project_id -> Varchar,
 		status -> Varchar,
@@ -56,12 +84,16 @@ table! {
 }
 
 joinable!(applications -> contributions (contribution_id));
+joinable!(applications_backup -> contributions_backup (contribution_id));
 joinable!(contributions -> projects (project_id));
+joinable!(contributions_backup -> projects (project_id));
 
 allow_tables_to_appear_in_same_query!(
 	applications,
+	applications_backup,
 	contact_information,
 	contributions,
+	contributions_backup,
 	events,
 	projects,
 );

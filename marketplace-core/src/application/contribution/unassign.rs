@@ -38,7 +38,7 @@ impl Usecase for UnassignContribution {
 		match self.contribution_repository.find_by_id(contribution_id)? {
 			Some(contribution) => self
 				.onchain_contribution_service
-				.unassign_contributor(contribution.onchain_id)
+				.unassign_contributor(contribution.id)
 				.map_err_into(),
 			None => Err(ContributionRepositoryError::NotFound.into()),
 		}
@@ -50,7 +50,6 @@ mod test {
 	use super::*;
 	use rstest::*;
 	use thiserror::Error;
-	use uuid::Uuid;
 
 	#[derive(Debug, Error)]
 	#[error("Oops")]
@@ -71,7 +70,7 @@ mod test {
 		mut onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
-		let contribution_id = Uuid::from_u128(12).into();
+		let contribution_id = 12.into();
 		contribution_repository
 			.expect_find_by_id()
 			.returning(|_| Ok(Some(Contribution::default())));
@@ -103,7 +102,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_unassign_request(&Uuid::from_u128(12).into());
+		let result = usecase.send_unassign_request(&12.into());
 
 		assert!(result.is_err());
 		assert_eq!(
@@ -124,7 +123,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_unassign_request(&Uuid::from_u128(12).into());
+		let result = usecase.send_unassign_request(&12.into());
 
 		assert!(result.is_err());
 		assert_eq!(
@@ -138,7 +137,7 @@ mod test {
 		mut onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
-		let contribution_id = Uuid::from_u128(12).into();
+		let contribution_id = 12.into();
 		contribution_repository
 			.expect_find_by_id()
 			.returning(|_| Ok(Some(Contribution::default())));

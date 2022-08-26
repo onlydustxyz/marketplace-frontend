@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use super::{ContributionId, ContributorId};
+use crate::{ContributionId, ContributorId};
 use marketplace_wrappers::UuidWrapper;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;

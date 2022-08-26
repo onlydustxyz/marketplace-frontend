@@ -1,19 +1,22 @@
 use http_api_problem::HttpApiProblem;
 use marketplace_core::application::ValidateContributionUsecase;
+use marketplace_domain::ParseHexPrefixedStringError;
 use rocket::{response::status, State};
 use rocket_okapi::openapi;
-use uuid::Uuid;
 
-use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem, uuid::UuidParam};
+use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem};
 
 #[openapi(tag = "Contributions")]
 #[post("/contributions/<contribution_id>/validate")]
 pub async fn validate_contribution(
 	_api_key: ApiKey,
-	contribution_id: UuidParam,
+	contribution_id: String,
 	usecase: &State<Box<dyn ValidateContributionUsecase>>,
 ) -> Result<status::Accepted<()>, HttpApiProblem> {
-	let contribution_id = Uuid::from(contribution_id).into();
+	let contribution_id = contribution_id
+		.parse()
+		.map_err(|e: ParseHexPrefixedStringError| e.to_http_api_problem())?;
+
 	usecase
 		.send_validate_request(&contribution_id)
 		.map_err(|e| e.to_http_api_problem())?;
@@ -23,6 +26,8 @@ pub async fn validate_contribution(
 
 #[cfg(test)]
 mod test {
+	use std::str::FromStr;
+
 	use super::*;
 	use http_api_problem::StatusCode;
 	use marketplace_core::application::MockValidateContribution;
@@ -40,7 +45,7 @@ mod test {
 
 		usecase
 			.expect_send_validate_request()
-			.with(eq(ContributionId::from(Uuid::from_u128(12))))
+			.with(eq(ContributionId::from_str("0x12").unwrap()))
 			.returning(|_| Ok(HexPrefixedString::default()));
 
 		let rocket =
@@ -48,7 +53,7 @@ mod test {
 
 		let result = validate_contribution(
 			ApiKey::default(),
-			Uuid::from_u128(12).into(),
+			"0x12".into(),
 			State::get(&rocket).unwrap(),
 		)
 		.await;
@@ -71,7 +76,7 @@ mod test {
 
 		let result = validate_contribution(
 			ApiKey::default(),
-			Uuid::from_u128(12).into(),
+			"0x12".into(),
 			State::get(&rocket).unwrap(),
 		)
 		.await;

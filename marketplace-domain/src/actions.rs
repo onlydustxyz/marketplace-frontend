@@ -8,13 +8,13 @@ pub enum Action {
 		gate: u8,
 	},
 	AssignContributor {
-		contribution_id: ContributionOnChainId,
+		contribution_id: ContributionId,
 		contributor_id: ContributorId,
 	},
 	UnassignContributor {
-		contribution_id: ContributionOnChainId,
+		contribution_id: ContributionId,
 	},
 	ValidateContribution {
-		contribution_id: ContributionOnChainId,
+		contribution_id: ContributionId,
 	},
 }

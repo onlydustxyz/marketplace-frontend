@@ -1,18 +1,9 @@
 use crate::*;
-use marketplace_wrappers::UuidWrapper;
-use serde::{Deserialize, Serialize};
 use url::Url;
-use uuid::Uuid;
-
-pub type OnChainId = String;
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, UuidWrapper, Default)]
-pub struct Id(Uuid);
 
 #[derive(Debug, PartialEq, Eq, Clone, Default)]
 pub struct Contribution {
-	pub id: Id,
-	pub onchain_id: OnChainId,
+	pub id: ContributionId,
 	pub project_id: ProjectId,
 	pub contributor_id: Option<ContributorId>,
 	pub title: Option<String>,

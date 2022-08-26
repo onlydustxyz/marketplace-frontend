@@ -1,8 +1,5 @@
 mod contribution;
-pub use contribution::{
-	Contribution, Id as ContributionId, Metadata as ContributionMetadata,
-	OnChainId as ContributionOnChainId,
-};
+pub use contribution::{Contribution, Metadata as ContributionMetadata};
 
 mod project;
 pub use project::{Id as ProjectId, Project};

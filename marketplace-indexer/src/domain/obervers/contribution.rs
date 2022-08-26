@@ -24,8 +24,7 @@ impl Observer for ContributionObserver {
 #[cfg(test)]
 mod test {
 	use super::*;
-	use mockall::mock;
-	use mockall::predicate::*;
+	use mockall::{mock, predicate::*};
 	use rstest::*;
 
 	mock! {

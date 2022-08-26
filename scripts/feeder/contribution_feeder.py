@@ -112,7 +112,6 @@ if __name__ == "__main__":
             "github_issue_number" : int(issue_number),
             "project_id" : int(project_id),
             "gate": int(gate),
-            "validator": "0x071CE7E8c126EA3085fDf2cd01C7d4B7ec12AA9930CE835BfdC8Fb1562e3Baa4"
         }
         contributions.append(contribution)
 

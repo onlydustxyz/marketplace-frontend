@@ -6,6 +6,5 @@ pub struct State {
 	pub issue_number: GithubIssueNumber,
 	pub gate: u8,
 	pub contributor_id: Option<ContributorId>,
-	pub validator: ContractAddress,
 	pub status: ContributionStatus,
 }

@@ -64,13 +64,10 @@ pub fn find_project_by_title(projects: &[Project], title: &'static str) -> Optio
 	projects.iter().find(|project| project.title == title).cloned()
 }
 
-pub fn find_contribution_by_onchain_id(
-	project: &Project,
-	contribution_onchain_id: i64,
-) -> Option<Contribution> {
+pub fn find_contribution_by_id(project: &Project, contribution_id: i64) -> Option<Contribution> {
 	project
 		.contributions
 		.iter()
-		.find(|contribution| contribution.onchain_id == contribution_onchain_id.to_string())
+		.find(|contribution| contribution.id == contribution_id.to_string())
 		.cloned()
 }

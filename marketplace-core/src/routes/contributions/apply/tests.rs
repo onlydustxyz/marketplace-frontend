@@ -9,9 +9,8 @@ use rocket::{
 };
 use serde_json::json;
 use thiserror::Error;
-use uuid::Uuid;
 
-const CONTRIBUTION_ID_1: &str = "a6127643-1344-4a44-bbfb-7142c17a4ef0";
+const CONTRIBUTION_ID_1: &str = "0x1234";
 
 #[derive(Debug, Error)]
 #[error("Already in DB")]
@@ -32,7 +31,7 @@ impl ApplyToContributionUsecase for ApplyToContribution {
 		let mut lock = self.0.write().unwrap();
 		let contribution_db = lock.get_mut(contribution_id).ok_or_else(|| {
 			DomainError::ApplicationRepository(ApplicationRepositoryError::InvalidEntity(Box::new(
-				ContributionNotFound(*contribution_id),
+				ContributionNotFound(contribution_id.to_owned()),
 			)))
 		})?;
 
@@ -50,7 +49,7 @@ impl ApplyToContributionUsecase for ApplyToContribution {
 }
 
 fn rocket() -> rocket::Rocket<Build> {
-	let contribution_id_1: ContributionId = Uuid::from_str(CONTRIBUTION_ID_1).unwrap().into();
+	let contribution_id_1 = ContributionId::from_str(CONTRIBUTION_ID_1).unwrap();
 	let mut database = HashMap::new();
 	database.insert(contribution_id_1, HashMap::new());
 
@@ -106,8 +105,7 @@ fn should_return_409_if_already_exist() {
 
 #[test]
 fn should_return_400_if_invalid_parameters() {
-	let contribution_id_2 = "b6127643-1344-4a44-bbfb-7142c17a4ef0";
-	let contribution_uuid = Uuid::from_str(contribution_id_2).unwrap();
+	let contribution_id_2 = "0x123456";
 	let api_url = "0.0.0.0:8000";
 	let uri = format!("/contributions/{contribution_id_2}/applications");
 	let contributor_id = "0x0000000000000000000000000000000000000000000000000000000000000000";
@@ -123,13 +121,13 @@ fn should_return_400_if_invalid_parameters() {
 		http_api_problem_response.title,
 		Some(
 			ApplicationRepositoryError::InvalidEntity(Box::new(ContributionNotFound(
-				contribution_uuid.into()
+				contribution_id_2.parse().unwrap()
 			)))
 			.to_string()
 		)
 	);
 	assert_eq!(
 		http_api_problem_response.detail,
-		Some(ContributionNotFound(contribution_uuid.into()).to_string())
+		Some(ContributionNotFound(contribution_id_2.parse().unwrap()).to_string())
 	);
 }

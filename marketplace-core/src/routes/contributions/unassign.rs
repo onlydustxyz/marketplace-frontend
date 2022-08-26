@@ -1,20 +1,23 @@
 use http_api_problem::HttpApiProblem;
 use marketplace_core::application::UnassignContributionUsecase;
+use marketplace_domain::ParseHexPrefixedStringError;
 use rocket::{response::status, State};
 use rocket_okapi::openapi;
-use uuid::Uuid;
 
-use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem, uuid::UuidParam};
+use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem};
 
 #[openapi(tag = "Contributions")]
 #[delete("/contributions/<contribution_id>/contributor")]
 pub async fn unassign_contributor(
 	_api_key: ApiKey,
 
-	contribution_id: UuidParam,
+	contribution_id: String,
 	usecase: &State<Box<dyn UnassignContributionUsecase>>,
 ) -> Result<status::Accepted<()>, HttpApiProblem> {
-	let contribution_id = Uuid::from(contribution_id).into();
+	let contribution_id = contribution_id
+		.parse()
+		.map_err(|e: ParseHexPrefixedStringError| e.to_http_api_problem())?;
+
 	usecase
 		.send_unassign_request(&contribution_id)
 		.map_err(|e| e.to_http_api_problem())?;
@@ -24,6 +27,8 @@ pub async fn unassign_contributor(
 
 #[cfg(test)]
 mod test {
+	use std::str::FromStr;
+
 	use super::*;
 	use http_api_problem::StatusCode;
 	use marketplace_core::application::MockUnassignContribution;
@@ -42,7 +47,7 @@ mod test {
 
 		usecase
 			.expect_send_unassign_request()
-			.with(eq(ContributionId::from(Uuid::from_u128(12))))
+			.with(eq(ContributionId::from_str("0x12").unwrap()))
 			.returning(|_| Ok((HexPrefixedString::default())));
 
 		let rocket =
@@ -50,7 +55,7 @@ mod test {
 
 		let result = unassign_contributor(
 			ApiKey::default(),
-			Uuid::from_u128(12).into(),
+			"0x12".into(),
 			State::get(&rocket).unwrap(),
 		)
 		.await;
@@ -73,7 +78,7 @@ mod test {
 
 		let result = unassign_contributor(
 			ApiKey::default(),
-			Uuid::from_u128(12).into(),
+			"0x12".into(),
 			State::get(&rocket).unwrap(),
 		)
 		.await;

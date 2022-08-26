@@ -52,7 +52,7 @@ impl ApplicationRepository for Client {
 		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
 
 		let mut query = applications::dsl::applications
-			.filter(applications::contribution_id.eq(contribution_id.as_uuid()))
+			.filter(applications::contribution_id.eq(contribution_id.to_string()))
 			.into_boxed();
 
 		if let Some(contributor_id) = contributor_id {
@@ -88,7 +88,7 @@ impl From<Application> for models::Application {
 	fn from(application: marketplace_domain::Application) -> Self {
 		Self {
 			id: (*application.id()).into(),
-			contribution_id: (*application.contribution_id()).into(),
+			contribution_id: application.contribution_id().to_string(),
 			contributor_id: application.contributor_id().to_string(),
 			status: (*application.status()).into(),
 		}
@@ -99,7 +99,7 @@ impl From<models::Application> for Application {
 	fn from(application: models::Application) -> Self {
 		Self::new(
 			application.id.into(),
-			application.contribution_id.into(),
+			application.contribution_id.parse().unwrap(),
 			ContributorId::from_str(application.contributor_id.as_str()).unwrap(),
 			application.status.into(),
 		)
