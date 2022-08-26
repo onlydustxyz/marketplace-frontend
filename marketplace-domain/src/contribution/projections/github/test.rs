@@ -2,17 +2,11 @@ use super::WithGithubDataProjection;
 use crate::*;
 use mockall::predicate::*;
 use rstest::*;
-use std::{str::FromStr, sync::Arc};
-use uuid::Uuid;
+use std::sync::Arc;
 
 #[fixture]
 fn contribution_repository() -> MockContributionRepository {
 	MockContributionRepository::new()
-}
-
-#[fixture]
-fn uuid_generator() -> MockUuidGenerator {
-	MockUuidGenerator::new()
 }
 
 #[fixture]
@@ -22,7 +16,7 @@ fn github_issue_repository() -> MockGithubIssueRepository {
 
 #[fixture]
 fn contribution_id() -> ContributionId {
-	Uuid::from_str("c5ac070d-3478-4973-be8e-756aada6bcf8").unwrap().into()
+	ContributionId::from(123)
 }
 
 #[fixture]
@@ -50,11 +44,6 @@ fn github_issue(project_id: GithubProjectId, issue_number: GithubIssueNumber) ->
 }
 
 #[fixture]
-fn contribution_onchain_id() -> ContributionAggregateId {
-	"0x123".parse().unwrap()
-}
-
-#[fixture]
 fn gate() -> u8 {
 	2
 }
@@ -62,14 +51,12 @@ fn gate() -> u8 {
 #[fixture]
 fn contribution(
 	contribution_id: ContributionId,
-	contribution_onchain_id: ContributionAggregateId,
 	project_id: GithubProjectId,
 	gate: u8,
 	github_issue: GithubIssue,
 ) -> Contribution {
 	Contribution {
 		id: contribution_id,
-		onchain_id: contribution_onchain_id.to_string(),
 		project_id: project_id.to_string(),
 		gate,
 		contributor_id: None,
@@ -90,13 +77,13 @@ fn contribution(
 
 #[fixture]
 fn contribution_created_event(
-	contribution_onchain_id: ContributionAggregateId,
+	contribution_id: ContributionId,
 	project_id: GithubProjectId,
 	issue_number: GithubIssueNumber,
 	gate: u8,
 ) -> ContributionEvent {
 	ContributionEvent::Created {
-		id: contribution_onchain_id,
+		id: contribution_id,
 		project_id,
 		issue_number,
 		gate,
@@ -105,30 +92,26 @@ fn contribution_created_event(
 
 #[fixture]
 fn contribution_assigned_event(
-	contribution_onchain_id: ContributionAggregateId,
+	contribution_id: ContributionId,
 	contributor_id: ContributorId,
 ) -> ContributionEvent {
 	ContributionEvent::Assigned {
-		id: contribution_onchain_id,
+		id: contribution_id,
 		contributor_id,
 	}
 }
 
 #[fixture]
-fn contribution_unassigned_event(
-	contribution_onchain_id: ContributionAggregateId,
-) -> ContributionEvent {
+fn contribution_unassigned_event(contribution_id: ContributionId) -> ContributionEvent {
 	ContributionEvent::Unassigned {
-		id: contribution_onchain_id,
+		id: contribution_id,
 	}
 }
 
 #[fixture]
-fn contribution_validated_event(
-	contribution_onchain_id: ContributionAggregateId,
-) -> ContributionEvent {
+fn contribution_validated_event(contribution_id: ContributionId) -> ContributionEvent {
 	ContributionEvent::Validated {
-		id: contribution_onchain_id,
+		id: contribution_id,
 	}
 }
 
@@ -136,12 +119,10 @@ fn contribution_validated_event(
 async fn on_contribution_created_event(
 	mut contribution_repository: MockContributionRepository,
 	mut github_issue_repository: MockGithubIssueRepository,
-	mut uuid_generator: MockUuidGenerator,
 	project_id: GithubProjectId,
 	issue_number: GithubIssueNumber,
 	github_issue: GithubIssue,
 	contribution: Contribution,
-	contribution_id: ContributionId,
 	contribution_created_event: ContributionEvent,
 ) {
 	github_issue_repository
@@ -151,14 +132,11 @@ async fn on_contribution_created_event(
 
 	contribution_repository
 		.expect_create()
-		.with(eq(contribution), always())
-		.returning(|_, _| Ok(()));
-
-	uuid_generator.expect_new_uuid().returning(move || contribution_id.into());
+		.with(eq(contribution))
+		.returning(|_| Ok(()));
 
 	let projection = WithGithubDataProjection::new(
 		Arc::new(contribution_repository),
-		Arc::new(uuid_generator),
 		Arc::new(github_issue_repository),
 	);
 
@@ -169,24 +147,21 @@ async fn on_contribution_created_event(
 fn on_contribution_assigned_event(
 	mut contribution_repository: MockContributionRepository,
 	github_issue_repository: MockGithubIssueRepository,
-	uuid_generator: MockUuidGenerator,
 	contributor_id: ContributorId,
-	contribution_onchain_id: ContributionAggregateId,
+	contribution_id: ContributionId,
 	contribution_assigned_event: ContributionEvent,
 ) {
 	contribution_repository
 		.expect_update_contributor_and_status()
 		.with(
-			eq(contribution_onchain_id.to_string()),
+			eq(contribution_id),
 			eq(Some(contributor_id)),
 			eq(ContributionStatus::Assigned),
-			always(),
 		)
-		.returning(|_, _, _, _| Ok(()));
+		.returning(|_, _, _| Ok(()));
 
 	let projection = WithGithubDataProjection::new(
 		Arc::new(contribution_repository),
-		Arc::new(uuid_generator),
 		Arc::new(github_issue_repository),
 	);
 
@@ -197,22 +172,16 @@ fn on_contribution_assigned_event(
 fn on_contribution_unassigned_event(
 	mut contribution_repository: MockContributionRepository,
 	github_issue_repository: MockGithubIssueRepository,
-	uuid_generator: MockUuidGenerator,
-	contribution_onchain_id: ContributionAggregateId,
+	contribution_id: ContributionId,
 	contribution_unassigned_event: ContributionEvent,
 ) {
 	contribution_repository
 		.expect_update_status()
-		.with(
-			eq(contribution_onchain_id.to_string()),
-			eq(ContributionStatus::Open),
-			always(),
-		)
-		.returning(|_, _, _| Ok(()));
+		.with(eq(contribution_id), eq(ContributionStatus::Open))
+		.returning(|_, _| Ok(()));
 
 	let projection = WithGithubDataProjection::new(
 		Arc::new(contribution_repository),
-		Arc::new(uuid_generator),
 		Arc::new(github_issue_repository),
 	);
 
@@ -223,22 +192,16 @@ fn on_contribution_unassigned_event(
 fn on_contribution_validated_event(
 	mut contribution_repository: MockContributionRepository,
 	github_issue_repository: MockGithubIssueRepository,
-	uuid_generator: MockUuidGenerator,
-	contribution_onchain_id: ContributionAggregateId,
+	contribution_id: ContributionId,
 	contribution_validated_event: ContributionEvent,
 ) {
 	contribution_repository
 		.expect_update_status()
-		.with(
-			eq(contribution_onchain_id.to_string()),
-			eq(ContributionStatus::Completed),
-			always(),
-		)
-		.returning(|_, _, _| Ok(()));
+		.with(eq(contribution_id), eq(ContributionStatus::Completed))
+		.returning(|_, _| Ok(()));
 
 	let projection = WithGithubDataProjection::new(
 		Arc::new(contribution_repository),
-		Arc::new(uuid_generator),
 		Arc::new(github_issue_repository),
 	);
 
