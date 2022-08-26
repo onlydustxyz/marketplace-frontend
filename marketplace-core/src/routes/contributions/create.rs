@@ -5,25 +5,26 @@ use marketplace_domain::*;
 use marketplace_infrastructure::github;
 use rocket::{http::Status, serde::json::Json, State};
 use rocket_okapi::openapi;
-use std::result::Result;
+use std::{result::Result, sync::Arc};
 
 #[openapi(tag = "Contributions")]
 #[post("/contributions/github", format = "application/json", data = "<body>")]
 pub async fn create_contribution(
 	_api_key: ApiKey,
 	body: Json<ContributionCreation>,
-	github_api: &State<github::Client>,
+	github: &State<Arc<github::Client>>,
 	usecase: &State<Box<dyn CreateContributionUsecase>>,
 ) -> Result<Status, HttpApiProblem> {
 	let body = body.into_inner();
 
-	let github_issue = github_api.issue(body.project_id(), body.github_issue_number()).await;
+	let github_issue = github.issue(body.project_id(), body.github_issue_number()).await;
 	let github_issue = match github_issue {
 		Ok(github_issue) => github_issue,
-		Err(error) =>
+		Err(error) => {
 			return Err(HttpApiProblem::new(StatusCode::BAD_REQUEST)
 				.title("Unable to get GitHub issue data")
-				.detail(error.to_string())),
+				.detail(error.to_string()))
+		},
 	};
 
 	let metadata = github::extract_metadata(&github_issue.issue);
