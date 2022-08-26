@@ -59,7 +59,6 @@ trait IntoCall {
 
 impl IntoCall for &Action {
 	fn into_call(self) -> Call {
-		println!("{:?}", self);
 		match self {
 			Action::CreateContribution {
 				github_composite,
