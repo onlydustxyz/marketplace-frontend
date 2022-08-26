@@ -24,3 +24,8 @@ match_block_trailing_comma = true
 reorder_impl_items = true
 trailing_semicolon = true
 use_field_init_shorthand = true
+
+# Ignore generated files
+ignore = [
+	"marketplace-infrastructure/src/database/schema.rs"
+]
