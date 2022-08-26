@@ -60,10 +60,9 @@ impl IntoCall for &Action {
 				to: contributions_contract_address(),
 				selector: get_selector_from_name("new_contribution").unwrap(),
 				calldata: vec![
-					FieldElement::from_dec_str(&github_composite.to_string()).unwrap(), // id : felt
-					FieldElement::from_dec_str(&project_id.to_string()).unwrap(),       /* project_id
-					                                                                     * : felt */
-					FieldElement::from(*gate), /* contribution_count_required : felt */
+					FieldElement::from(*github_composite), // id : felt
+					FieldElement::from(*project_id),       // project_id
+					FieldElement::from(*gate),             // contribution_count_required : felt
 				],
 			},
 
