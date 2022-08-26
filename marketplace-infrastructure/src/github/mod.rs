@@ -1,3 +1,4 @@
+mod github_issue_repository;
 mod models;
 
 use anyhow::Result;
@@ -19,6 +20,11 @@ pub struct API {
 	octo: Arc<octocrab::Octocrab>,
 }
 
+pub struct OctocrabIssue {
+	pub issue: octocrab::models::issues::Issue,
+	pub project_id: GithubProjectId,
+}
+
 impl API {
 	pub fn initialize() {
 		let mut builder = octocrab::Octocrab::builder();
@@ -36,12 +42,9 @@ impl API {
 		}
 	}
 
-	pub async fn issue(
-		&self,
-		project_id: u128,
-		issue_number: u128,
-	) -> Result<octocrab::models::issues::Issue> {
-		self.octo
+	pub async fn issue(&self, project_id: i64, issue_number: i64) -> Result<OctocrabIssue> {
+		let issue = self
+			.octo
 			.get::<octocrab::models::issues::Issue, String, ()>(
 				format!(
 					"{}repositories/{}/issues/{}",
@@ -50,7 +53,9 @@ impl API {
 				None,
 			)
 			.await
-			.map_err(anyhow::Error::msg)
+			.map_err(anyhow::Error::msg)?;
+
+		Ok(OctocrabIssue { issue, project_id })
 	}
 
 	pub async fn user(&self, user_id: &str) -> Result<octocrab::models::User> {
@@ -96,11 +101,11 @@ impl Default for API {
 }
 
 pub fn extract_metadata(
-	github_issue: octocrab::models::issues::Issue,
+	github_issue: &octocrab::models::issues::Issue,
 ) -> domain::ContributionMetadata {
 	let labels: HashMap<String, String> = github_issue
 		.labels
-		.into_iter()
+		.iter()
 		.filter_map(|label| {
 			let splitted: Vec<_> = label.name.split(':').collect();
 			if splitted.len() == 2 {
