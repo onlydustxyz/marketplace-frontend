@@ -42,7 +42,13 @@ mod test {
 			TopicValue {
 				value: vec![
 					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 24,
+					0, 0, 0, 0, 0, 23,
+				],
+			},
+			TopicValue {
+				value: vec![
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+					0, 0, 0, 0, 0, 34,
 				],
 			},
 			TopicValue {
@@ -69,8 +75,8 @@ mod test {
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(
 			Event::Contribution(ContributionEvent::Created {
-				id: 24.into(),
-				project_id: 12,
+				id: 12.into(),
+				project_id: 23,
 				issue_number: 34,
 				gate: 1,
 			},),

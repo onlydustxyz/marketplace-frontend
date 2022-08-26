@@ -51,12 +51,11 @@ async fn main() {
 	let starknet = Arc::new(starknet::Client::default());
 
 	let github_client = Arc::new(github::Client::new());
-	let uuid_generator = Arc::new(RwLock::new(RandomUuidGenerator));
+	let uuid_generator = Arc::new(RandomUuidGenerator);
 	let contribution_service = Arc::new(ContributionServiceImplementation::new(
 		database.clone(),
 		database.clone(),
 		uuid_generator.clone(),
-		github_client.clone(),
 	));
 	let contact_information_service = Arc::new(ContactInformationServiceImplementation::new(
 		database.clone(),

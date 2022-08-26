@@ -4,11 +4,11 @@ use marketplace_domain::*;
 
 const CONTRIBUTION_AGGREGATE: &str = "CONTRIBUTION";
 
-impl EventStore<contribution::Aggregate> for Client {
+impl EventStore<ContributionAggregate> for Client {
 	fn append(
 		&self,
-		aggregate_id: &<contribution::Aggregate as EventAggregate>::Id,
-		events: &[<contribution::Aggregate as EventAggregate>::Event],
+		aggregate_id: &<ContributionAggregate as EventAggregate>::Id,
+		events: &[<ContributionAggregate as EventAggregate>::Event],
 	) -> Result<(), EventStoreError> {
 		let connection = self.connection().map_err(|_| EventStoreError::Connection)?;
 

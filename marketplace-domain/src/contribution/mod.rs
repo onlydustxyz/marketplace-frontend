@@ -5,7 +5,7 @@ mod event;
 pub use event::Event;
 
 mod aggregate;
-pub use aggregate::{Aggregate, Id};
+pub use aggregate::{Aggregate, Id as AggregateId};
 
 mod state;
 pub use state::State;

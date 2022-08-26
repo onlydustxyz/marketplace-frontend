@@ -26,5 +26,11 @@ pub use event_store::{Error as EventStoreError, Store as EventStore};
 mod event_aggregate;
 pub use event_aggregate::Aggregate as EventAggregate;
 
-pub mod contribution;
-pub use contribution::{Event as ContributionEvent, Status as ContributionStatus};
+mod event_projection;
+pub use event_projection::Projection as EventProjection;
+
+mod contribution;
+pub use contribution::{
+	Aggregate as ContributionAggregate, AggregateId as ContributionAggregateId,
+	Event as ContributionEvent, Status as ContributionStatus,
+};
