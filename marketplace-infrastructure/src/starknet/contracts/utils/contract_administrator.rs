@@ -5,15 +5,12 @@ use rand::prelude::random;
 use starknet::{
 	accounts::{single_owner::GetNonceError, Account, AccountCall, Call},
 	core::{
-		types::{
-			AddTransactionResult, BlockId, FieldElement, InvokeFunctionTransactionRequest,
-			TransactionStatus,
-		},
+		types::{AddTransactionResult, BlockId, FieldElement, InvokeFunctionTransactionRequest},
 		utils::get_selector_from_name,
 	},
 	providers::{Provider, SequencerGatewayProvider},
 };
-use std::{sync::Arc, thread, time::Duration};
+use std::sync::Arc;
 
 pub struct ContractAdministrator<A: Account + Sync> {
 	administrator_account: Arc<A>,
@@ -31,7 +28,6 @@ impl<A: Account + Sync> ContractAdministrator<A> {
 	pub async fn send_transaction(
 		&self,
 		calls: &[Call],
-		wait_for_acceptance: bool,
 	) -> Result<AddTransactionResult, ContractError> {
 		info!("Sending transaction with {} calls", calls.len());
 
@@ -42,10 +38,7 @@ impl<A: Account + Sync> ContractAdministrator<A> {
 			.map_err(|error| ContractError::GetNonce(error.to_string()))?;
 
 		match self.administrator_account.execute(calls).nonce(nonce).send().await {
-			Ok(transaction_result) => match wait_for_acceptance {
-				true => self.wait_for_transaction_acceptance(transaction_result).await,
-				false => Ok(transaction_result),
-			},
+			Ok(transaction_result) => Ok(transaction_result),
 			Err(error) => {
 				warn!("{}", error.to_string());
 				Err(ContractError::SendTransaction(error.to_string()))
@@ -79,51 +72,6 @@ impl<A: Account + Sync> ContractAdministrator<A> {
 				expected: 1,
 				actual: call_result.result.len(),
 			})
-		}
-	}
-
-	pub async fn wait_for_transaction_acceptance(
-		&self,
-		transaction_result: AddTransactionResult,
-	) -> Result<AddTransactionResult, ContractError> {
-		info!(
-			"Waiting for transaction 0x{:x} to be accepted",
-			transaction_result.transaction_hash
-		);
-
-		loop {
-			let receipt = match self
-				.sequencer
-				.get_transaction_status(transaction_result.transaction_hash)
-				.await
-				.map_err(anyhow::Error::msg)
-			{
-				Ok(receipt) => receipt,
-				Err(e) => {
-					warn!("{}", e);
-					thread::sleep(Duration::from_secs(3));
-					continue;
-				},
-			};
-
-			info!("Transaction is {:?}", receipt.status);
-
-			break match receipt.status {
-				TransactionStatus::NotReceived
-				| TransactionStatus::Received
-				| TransactionStatus::Pending => {
-					thread::sleep(Duration::from_secs(3));
-					continue;
-				},
-				TransactionStatus::AcceptedOnL2 | TransactionStatus::AcceptedOnL1 =>
-					Ok(transaction_result),
-				TransactionStatus::Rejected => Err(ContractError::TransactionReverted(
-					receipt
-						.transaction_failure_reason
-						.map(|reason| format!("{:?}", reason))
-						.unwrap_or_else(|| String::from("Unknown failure")),
-				)),
-			};
 		}
 	}
 }

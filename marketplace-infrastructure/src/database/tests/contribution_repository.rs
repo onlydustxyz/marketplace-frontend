@@ -19,7 +19,7 @@ fn store_and_find() {
 	let contribution2 = Contribution {
 		id: Uuid::new_v4().into(),
 		onchain_id: "2".to_string(),
-		project_id: project.id.to_owned(),
+		project_id: project.id,
 		..Default::default()
 	};
 

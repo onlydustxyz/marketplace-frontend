@@ -6,7 +6,7 @@ use starknet::{
 	accounts::{Account, Call},
 	core::{types::FieldElement, utils::get_selector_from_name},
 };
-use std::sync::Arc;
+use std::{str::FromStr, sync::Arc};
 
 pub struct Contract<A: Account + Sync> {
 	administrator: ContractAdministrator<A>,
@@ -29,15 +29,19 @@ impl<A: Account + Sync> Contract<A> {
 	pub async fn execute_actions(
 		&self,
 		actions: &[Action],
-		wait_for_acceptance: bool,
-	) -> Result<String, ContractError> {
+	) -> Result<HexPrefixedString, ContractError> {
 		let calls = actions.iter().map(|action| action.into_call()).collect_vec();
 		let transaction_result = self
 			.administrator
-			.send_transaction(&calls, wait_for_acceptance)
+			.send_transaction(&calls)
 			.await
 			.map_err(|e| ContractError::TransactionReverted(e.to_string()))?;
-		Ok(format!("0x{:x}", transaction_result.transaction_hash))
+
+		// Safe to unwrap because transaction hash is an hexa string and we add the prefix ourselves
+		Ok(
+			HexPrefixedString::from_str(&format!("0x{:x}", transaction_result.transaction_hash))
+				.unwrap(),
+		)
 	}
 }
 
@@ -48,14 +52,18 @@ trait IntoCall {
 impl IntoCall for &Action {
 	fn into_call(self) -> Call {
 		match self {
-			Action::CreateContribution { contribution } => Call {
+			Action::CreateContribution {
+				github_composite,
+				project_id,
+				gate,
+			} => Call {
 				to: contributions_contract_address(),
 				selector: get_selector_from_name("new_contribution").unwrap(),
 				calldata: vec![
-					FieldElement::from_dec_str(&contribution.onchain_id).unwrap(), // id : felt
-					FieldElement::from_dec_str(&contribution.project_id).unwrap(), /* project_id
-					                                                                * : felt */
-					FieldElement::from(contribution.gate), /* contribution_count_required : felt */
+					FieldElement::from_dec_str(github_composite).unwrap(), // id : felt
+					FieldElement::from_dec_str(project_id).unwrap(),       /* project_id
+					                                                        * : felt */
+					FieldElement::from(*gate), /* contribution_count_required : felt */
 				],
 			},
 

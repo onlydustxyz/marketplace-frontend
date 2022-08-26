@@ -43,7 +43,7 @@ mod test {
 		usecase
 			.expect_send_unassign_request()
 			.with(eq(ContributionId::from(Uuid::from_u128(12))))
-			.returning(|_| Ok(()));
+			.returning(|_| Ok((HexPrefixedString::default())));
 
 		let rocket =
 			rocket::build().manage(Box::new(usecase) as Box<dyn UnassignContributionUsecase>);

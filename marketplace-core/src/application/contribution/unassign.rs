@@ -7,7 +7,10 @@ use std::sync::Arc;
 // Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be
 // `Send` and `Sync`
 pub trait Usecase: Send + Sync {
-	fn send_unassign_request(&self, contribution_id: &ContributionId) -> Result<(), DomainError>;
+	fn send_unassign_request(
+		&self,
+		contribution_id: &ContributionId,
+	) -> Result<HexPrefixedString, DomainError>;
 }
 
 pub struct UnassignContribution {
@@ -28,7 +31,10 @@ impl UnassignContribution {
 }
 
 impl Usecase for UnassignContribution {
-	fn send_unassign_request(&self, contribution_id: &ContributionId) -> Result<(), DomainError> {
+	fn send_unassign_request(
+		&self,
+		contribution_id: &ContributionId,
+	) -> Result<HexPrefixedString, DomainError> {
 		match self.contribution_repository.find_by_id(contribution_id)? {
 			Some(contribution) => self
 				.onchain_contribution_service
@@ -70,7 +76,9 @@ mod test {
 			.expect_find_by_id()
 			.returning(|_| Ok(Some(Contribution::default())));
 
-		onchain_contribution_service.expect_unassign_contributor().returning(|_| Ok(()));
+		onchain_contribution_service
+			.expect_unassign_contributor()
+			.returning(|_| Ok(HexPrefixedString::default()));
 
 		let usecase = UnassignContribution::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),

@@ -3,7 +3,9 @@ use crate::*;
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Action {
 	CreateContribution {
-		contribution: Box<Contribution>,
+		github_composite: String,
+		project_id: ProjectId,
+		gate: u8,
 	},
 	AssignContributor {
 		contribution_id: ContributionOnChainId,

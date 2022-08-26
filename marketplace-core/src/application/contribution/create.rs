@@ -5,7 +5,10 @@ use std::sync::Arc;
 
 #[automock]
 pub trait Usecase: Send + Sync {
-	fn send_creation_request(&self, contribution: Contribution) -> Result<(), DomainError>;
+	fn send_creation_request(
+		&self,
+		contribution: Contribution,
+	) -> Result<HexPrefixedString, DomainError>;
 }
 
 pub struct CreateContribution {
@@ -23,7 +26,10 @@ impl CreateContribution {
 }
 
 impl Usecase for CreateContribution {
-	fn send_creation_request(&self, contribution: Contribution) -> Result<(), DomainError> {
+	fn send_creation_request(
+		&self,
+		contribution: Contribution,
+	) -> Result<HexPrefixedString, DomainError> {
 		self.onchain_contribution_service.create(contribution).map_err_into()
 	}
 }
@@ -47,7 +53,7 @@ mod test {
 		onchain_contribution_service
 			.expect_create()
 			.with(eq(contribution.clone()))
-			.returning(|_| Ok(()));
+			.returning(|_| Ok(HexPrefixedString::default()));
 
 		let usecase = CreateContribution::new_usecase_boxed(Arc::new(onchain_contribution_service));
 

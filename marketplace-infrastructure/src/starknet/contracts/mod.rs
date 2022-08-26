@@ -11,4 +11,4 @@ mod contributions;
 pub use contributions::Contract as ContributionContract;
 
 mod error;
-pub(super) use error::Error as ContractError;
+pub use error::Error as ContractError;

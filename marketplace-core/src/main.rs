@@ -20,10 +20,6 @@ use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
 use slog::{o, Drain, Logger};
 use std::sync::{Arc, RwLock};
-use tokio::{
-	signal,
-	sync::oneshot::{self},
-};
 
 #[macro_use]
 extern crate rocket;
@@ -53,17 +49,7 @@ async fn main() {
 	let database = Arc::new(database::Client::new(init_pool()));
 	database.run_migrations().expect("Unable to run database migrations");
 
-	// Allow to gracefully exit kill all thread on ctrl+c
-	let (shutdown_send, shutdown_recv) = oneshot::channel();
-	let ctr_c_handler = tokio::spawn(async {
-		let _ = signal::ctrl_c().await;
-		// ctrl_c have been pushed or something unexpected happened
-		let _ = shutdown_send.send(true);
-	});
-
-	// Regularly create a transaction with tasks stored in the queue
 	let starknet = Arc::new(starknet::Client::default());
-	let queue_handler = starknet::spawn(starknet.clone(), database.clone(), shutdown_recv);
 
 	let uuid_generator = Arc::new(RwLock::new(RandomUuidGenerator));
 	let contribution_service = Arc::new(ContributionServiceImplementation::new(
@@ -114,11 +100,8 @@ async fn main() {
 	.mount("/swagger", make_swagger_ui(&routes::get_docs()))
 	.launch();
 
-	let (rocket_result, ctr_c_result, queue_result) =
-		tokio::join!(rocket_handler, ctr_c_handler, queue_handler);
+	let (rocket_result,) = tokio::join!(rocket_handler);
 	let _ = rocket_result.unwrap();
-	queue_result.unwrap();
-	ctr_c_result.unwrap();
 
 	info!("Gracefully shut down");
 }
