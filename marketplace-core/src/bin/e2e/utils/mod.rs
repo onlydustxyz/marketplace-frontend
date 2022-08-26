@@ -66,7 +66,7 @@ pub fn find_project_by_title(projects: &[Project], title: &'static str) -> Optio
 
 pub fn find_contribution_by_onchain_id(
 	project: &Project,
-	contribution_onchain_id: u128,
+	contribution_onchain_id: i64,
 ) -> Option<Contribution> {
 	project
 		.contributions

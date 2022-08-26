@@ -5,8 +5,18 @@ use marketplace_domain::*;
 use marketplace_infrastructure::github;
 use rocket::{http::Status, serde::json::Json, State};
 use rocket_okapi::openapi;
+use schemars::JsonSchema;
+use serde::Deserialize;
 use std::result::Result;
 use uuid::Uuid;
+
+#[derive(Deserialize, JsonSchema)]
+#[serde(crate = "rocket::serde")]
+pub struct CreateContributionDto {
+	github_issue_number: i64,
+	project_id: i64,
+	gate: u8,
+}
 
 #[openapi(tag = "Contributions")]
 #[post("/contributions/github", format = "application/json", data = "<body>")]
@@ -28,17 +38,17 @@ pub async fn create_contribution(
 		},
 	};
 
-	let metadata = github::extract_metadata(github_issue.clone());
+	let metadata = github::extract_metadata(&github_issue.issue);
 
 	let contribution = Contribution {
 		id: Uuid::new_v4().into(),
 		onchain_id: (body.project_id() * 1_000_000 + body.github_issue_number()).to_string(),
 		project_id: body.project_id().to_string(),
 		contributor_id: None,
-		title: Some(github_issue.title),
-		description: Some(github_issue.body.unwrap_or_default()),
+		title: Some(github_issue.issue.title),
+		description: github_issue.issue.body,
 		status: ContributionStatus::Open,
-		external_link: Some(github_issue.html_url),
+		external_link: Some(github_issue.issue.html_url),
 		gate: body.gate(),
 		metadata,
 	};

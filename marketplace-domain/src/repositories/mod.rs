@@ -18,3 +18,6 @@ pub use application::{
 	Error as ApplicationRepositoryError, MockRepository as MockApplicationRepository,
 	Repository as ApplicationRepository,
 };
+
+mod github_issue;
+pub use github_issue::{Error as GithubIssueRepositoryError, Repository as GithubIssueRepository};

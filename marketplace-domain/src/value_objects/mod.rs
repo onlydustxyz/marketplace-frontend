@@ -9,3 +9,8 @@ pub use u256::{u256_from_string, ParseU256Error};
 
 mod contract_address;
 pub use contract_address::ContractAddress;
+
+mod github;
+pub use github::{
+	Issue as GithubIssue, IssueNumber as GithubIssueNumber, ProjectId as GithubProjectId,
+};
