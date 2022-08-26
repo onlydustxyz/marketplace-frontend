@@ -1,6 +1,6 @@
 use log::info;
 use reqwest::StatusCode;
-use std::{fs::read_to_string, str::FromStr, thread, time::Duration};
+use std::{fs::read_to_string, thread, time::Duration};
 
 mod projects;
 use projects::*;
@@ -22,7 +22,7 @@ async fn main() {
 
 	let starkonquest = find_project_by_title(&list_all_projects().await, "starkonquest")
 		.expect("Project not found in list of all projects");
-	let starkonquest_id: i64 = starkonquest.id.parse().expect("starkonquest id is not a number");
+	let starkonquest_id: u64 = starkonquest.id.parse().expect("starkonquest id is not a number");
 
 	const ISSUE_NUMBER: i64 = 51;
 	add_contribution(ISSUE_NUMBER, starkonquest_id, 0).await;
@@ -32,11 +32,9 @@ async fn main() {
 	let starkonquest = find_project_by_title(&list_all_projects().await, "starkonquest")
 		.expect("Project not found in list of all projects");
 	let contribution =
-		find_contribution_by_id(&starkonquest, starkonquest_id * 1_000_000 + ISSUE_NUMBER)
-			.expect("Contribution not found in project");
+		find_contribution_by_id(&starkonquest, 1).expect("Contribution not found in project");
 
-	let contribution_id =
-		uuid::Uuid::from_str(&contribution.id).expect("contribution id is not a valid uuid");
+	let contribution_id = contribution.id.to_string();
 
 	const CONTRIBUTOR_ID: u128 = 123;
 	let discord_handle = String::from("discord");
@@ -47,11 +45,11 @@ async fn main() {
 	assert_eq!(contact_info.contributor_id, "0x007b");
 	assert_eq!(contact_info.discord_handle.unwrap(), discord_handle);
 
-	assign_contribution(contribution_id, CONTRIBUTOR_ID).await;
+	assign_contribution(&contribution_id, CONTRIBUTOR_ID).await;
 
 	wait_for_result(format!("{DATA_PATH}/contributions_assigned.json")).await;
 
-	validate_contribution(contribution_id).await;
+	validate_contribution(&contribution_id).await;
 
 	wait_for_result(format!("{DATA_PATH}/contributions_validated.json")).await;
 }

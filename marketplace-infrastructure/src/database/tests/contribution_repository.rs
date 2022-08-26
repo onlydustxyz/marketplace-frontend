@@ -11,12 +11,12 @@ fn store_and_find() {
 
 	let contribution1 = Contribution {
 		id: 1.into(),
-		project_id: project.id.to_owned(),
+		project_id: project.id,
 		..Default::default()
 	};
 	let contribution2 = Contribution {
 		id: 2.into(),
-		project_id: project.id.to_owned(),
+		project_id: project.id,
 		..Default::default()
 	};
 

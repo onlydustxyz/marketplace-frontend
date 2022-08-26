@@ -4,6 +4,7 @@ RENAME TO contributions_backup;
 CREATE TABLE contributions (
   id TEXT PRIMARY KEY,
   project_id TEXT NOT NULL REFERENCES projects (id) on delete cascade,
+  issue_number TEXT NOT NULL,
   status TEXT NOT NULL,
   gate INT NOT NULL,
   contributor_id TEXT,

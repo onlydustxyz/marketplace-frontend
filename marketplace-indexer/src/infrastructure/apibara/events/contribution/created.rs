@@ -17,7 +17,7 @@ impl EventTranslator for Created {
 
 		Ok(Event::Contribution(ContributionEvent::Created {
 			id: contribution_id.into(),
-			project_id: project_id as i64,
+			project_id: project_id as u64,
 			issue_number: issue_number as i64,
 			gate: gate as u8,
 		}))

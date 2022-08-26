@@ -30,7 +30,7 @@ pub async fn create_contribution(
 	let metadata = github::extract_metadata(&github_issue.issue);
 
 	let contribution = Contribution {
-		project_id: body.project_id().to_string(),
+		project_id: body.project_id(),
 		contributor_id: None,
 		title: Some(github_issue.issue.title),
 		description: github_issue.issue.body,

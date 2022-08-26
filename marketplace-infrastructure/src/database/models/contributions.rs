@@ -10,6 +10,7 @@ use rocket::serde::{Deserialize, Serialize};
 pub struct Contribution {
 	pub id: String,
 	pub project_id: String,
+	pub issue_number: String,
 	pub status: String,
 	pub gate: i32,
 	pub contributor_id: Option<String>,

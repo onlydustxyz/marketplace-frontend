@@ -4,6 +4,7 @@ use serde_json::json;
 use super::{post, BACKEND_BASE_URI};
 
 pub async fn add_project(owner: &str, name: &str) {
+	println!("Adding project {owner}/{name}");
 	let response = post(
 		format!("{BACKEND_BASE_URI}/projects"),
 		Some(json!({

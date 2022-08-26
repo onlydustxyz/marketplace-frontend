@@ -55,7 +55,8 @@ impl WithGithubDataProjection {
 
 		let contribution = Contribution {
 			id: id.to_owned(),
-			project_id: project_id.to_string(),
+			project_id: *project_id,
+			issue_number: *issue_number,
 			contributor_id: None,
 			status: ContributionStatus::Open,
 			gate,
