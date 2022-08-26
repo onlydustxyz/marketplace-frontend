@@ -18,9 +18,8 @@ pub async fn new_project(
 	_api_key: ApiKey,
 	project: Json<dto::ProjectCreation<'_>>,
 	database: &State<Arc<database::Client>>,
+	github: &State<Arc<github::Client>>,
 ) -> Result<Status, HttpApiProblem> {
-	let github = github::Client::new();
-
 	let project = github
 		.get_project_by_owner_and_name(project.owner, project.name)
 		.await
