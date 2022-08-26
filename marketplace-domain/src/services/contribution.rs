@@ -65,8 +65,8 @@ impl Service for ContributionService {
 
 		let application = Application::new(
 			uuid.into(),
-			*contribution_id,
-			contributor_id.clone(),
+			contribution_id.to_owned(),
+			contributor_id.to_owned(),
 			ApplicationStatus::Pending,
 		);
 
@@ -99,7 +99,7 @@ mod test {
 
 	#[fixture]
 	fn contribution_id() -> ContributionId {
-		Uuid::from_str("c5ac070d-3478-4973-be8e-756aada6bcf8").unwrap().into()
+		ContributionId::from_str("0x1234").unwrap()
 	}
 
 	#[fixture]
@@ -122,15 +122,18 @@ mod test {
 		application_id: ApplicationId,
 	) {
 		uuid_generator.expect_new_uuid().return_const(application_id);
-		contribution_repository.expect_find_by_id().with(eq(contribution_id)).returning(
-			move |_| {
+
+		let cloned_contribution_id = contribution_id.clone();
+		contribution_repository
+			.expect_find_by_id()
+			.with(eq(contribution_id.clone()))
+			.returning(move |_| {
 				Ok(Some(Contribution {
-					id: contribution_id,
+					id: cloned_contribution_id.clone(),
 					status: ContributionStatus::Open,
 					..Default::default()
 				}))
-			},
-		);
+			});
 		application_repository
 			.expect_create()
 			.withf(move |application| *application.id() == application_id)
@@ -154,15 +157,17 @@ mod test {
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
 	) {
-		contribution_repository.expect_find_by_id().with(eq(contribution_id)).returning(
-			move |_| {
+		let cloned_contribution_id = contribution_id.clone();
+		contribution_repository
+			.expect_find_by_id()
+			.with(eq(contribution_id.clone()))
+			.returning(move |_| {
 				Ok(Some(Contribution {
-					id: contribution_id,
+					id: cloned_contribution_id.clone(),
 					status: ContributionStatus::Completed,
 					..Default::default()
 				}))
-			},
-		);
+			});
 
 		let contribution_service = ContributionService {
 			contribution_repository: Arc::new(contribution_repository),

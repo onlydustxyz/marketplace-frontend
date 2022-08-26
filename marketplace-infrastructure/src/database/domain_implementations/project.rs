@@ -74,15 +74,10 @@ impl From<Project> for models::NewProject {
 impl From<models::Contribution> for Contribution {
 	fn from(contribution: models::Contribution) -> Self {
 		Self {
-			id: contribution.id.into(),
-			onchain_id: contribution.onchain_id,
-			contributor_id: {
-				if contribution.contributor_id.is_empty() {
-					None
-				} else {
-					Some(ContributorId::from_str(contribution.contributor_id.as_str()).unwrap())
-				}
-			},
+			id: contribution.id.parse().unwrap(),
+			contributor_id: contribution
+				.contributor_id
+				.map(|id_| ContributorId::from_str(id_.as_str()).unwrap()),
 			project_id: contribution.project_id,
 			status: contribution.status.parse().unwrap_or(ContributionStatus::Open),
 			// Safe to unwrap because the value stored can only come from an u8

@@ -44,7 +44,7 @@ impl Usecase for AssignContribution {
 		match self.contribution_repository.find_by_id(contribution_id)? {
 			Some(contribution) => self
 				.onchain_contribution_service
-				.assign_contributor(contribution.onchain_id, contributor_id.to_owned())
+				.assign_contributor(contribution.id, contributor_id.to_owned())
 				.map_err_into(),
 			None => Err(DomainError::ContributionRepository(
 				ContributionRepositoryError::NotFound,
@@ -79,7 +79,7 @@ mod test {
 		mut onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
-		let contribution_id = Uuid::from_u128(12).into();
+		let contribution_id = 12.into();
 		contribution_repository
 			.expect_find_by_id()
 			.returning(|_| Ok(Some(Contribution::default())));
@@ -111,8 +111,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result =
-			usecase.send_assign_request(&Uuid::from_u128(12).into(), &ContributorId::from(34));
+		let result = usecase.send_assign_request(&12.into(), &ContributorId::from(34));
 
 		assert!(result.is_err());
 		assert_eq!(
@@ -133,8 +132,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result =
-			usecase.send_assign_request(&Uuid::from_u128(12).into(), &ContributorId::from(34));
+		let result = usecase.send_assign_request(&12.into(), &ContributorId::from(34));
 
 		assert!(result.is_err());
 		assert_eq!(
@@ -148,7 +146,7 @@ mod test {
 		mut onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
-		let contribution_id = Uuid::from_u128(12).into();
+		let contribution_id = 12.into();
 		contribution_repository
 			.expect_find_by_id()
 			.returning(|_| Ok(Some(Contribution::default())));

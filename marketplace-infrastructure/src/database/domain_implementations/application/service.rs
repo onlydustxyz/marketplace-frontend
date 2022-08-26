@@ -57,7 +57,7 @@ impl ApplicationService for Client {
 		let res: Result<(), diesel::result::Error> = connection.transaction(|| {
 			diesel::update(
 				applications::dsl::applications
-					.filter(applications::contribution_id.eq(contribution_id.as_uuid())),
+					.filter(applications::contribution_id.eq(contribution_id.to_string())),
 			)
 			.set(applications::status.eq(Status::Refused))
 			.execute(&*connection)?;

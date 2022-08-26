@@ -6,7 +6,6 @@ use marketplace_infrastructure::github;
 use rocket::{http::Status, serde::json::Json, State};
 use rocket_okapi::openapi;
 use std::result::Result;
-use uuid::Uuid;
 
 #[openapi(tag = "Contributions")]
 #[post("/contributions/github", format = "application/json", data = "<body>")]
@@ -21,17 +20,16 @@ pub async fn create_contribution(
 	let github_issue = github_api.issue(body.project_id(), body.github_issue_number()).await;
 	let github_issue = match github_issue {
 		Ok(github_issue) => github_issue,
-		Err(error) =>
+		Err(error) => {
 			return Err(HttpApiProblem::new(StatusCode::BAD_REQUEST)
 				.title("Unable to get GitHub issue data")
-				.detail(error.to_string())),
+				.detail(error.to_string()))
+		},
 	};
 
 	let metadata = github::extract_metadata(&github_issue.issue);
 
 	let contribution = Contribution {
-		id: Uuid::new_v4().into(),
-		onchain_id: (body.project_id() * 1_000_000 + body.github_issue_number()).to_string(),
 		project_id: body.project_id().to_string(),
 		contributor_id: None,
 		title: Some(github_issue.issue.title),
@@ -40,6 +38,7 @@ pub async fn create_contribution(
 		external_link: Some(github_issue.issue.html_url),
 		gate: body.gate(),
 		metadata,
+		..Default::default()
 	};
 
 	usecase.send_creation_request(contribution).map_err(|error| {

@@ -15,7 +15,7 @@ use uuid::Uuid;
 #[table_name = "applications"]
 pub struct Application {
 	pub id: Uuid,
-	pub contribution_id: Uuid,
+	pub contribution_id: String,
 	pub contributor_id: String,
 	pub status: Status,
 }

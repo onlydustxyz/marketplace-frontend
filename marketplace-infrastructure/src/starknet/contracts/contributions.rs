@@ -78,8 +78,8 @@ impl IntoCall for &Action {
 					to: contributions_contract_address(),
 					selector: get_selector_from_name("assign_contributor_to_contribution").unwrap(),
 					calldata: vec![
-						contribution_id.parse().unwrap(), // id : felt
-						contributor_id_low,               // contributor_id : Uint256
+						FieldElement::from_hex_be(&contribution_id.to_string()).unwrap(), /* id : felt */
+						contributor_id_low,                                               /* contributor_id : Uint256 */
 						contributor_id_high,
 					],
 				}
@@ -89,7 +89,7 @@ impl IntoCall for &Action {
 				to: contributions_contract_address(),
 				selector: get_selector_from_name("unassign_contributor_from_contribution").unwrap(),
 				calldata: vec![
-					contribution_id.parse().unwrap(), // id : felt
+					FieldElement::from_hex_be(&contribution_id.to_string()).unwrap(), // id : felt
 				],
 			},
 
@@ -97,7 +97,7 @@ impl IntoCall for &Action {
 				to: contributions_contract_address(),
 				selector: get_selector_from_name("validate_contribution").unwrap(),
 				calldata: vec![
-					contribution_id.parse().unwrap(), // id : felt
+					FieldElement::from_hex_be(&contribution_id.to_string()).unwrap(), // id : felt
 				],
 			},
 		}

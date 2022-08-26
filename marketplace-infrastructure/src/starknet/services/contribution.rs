@@ -24,7 +24,7 @@ impl<A: Account + Send + Sync + 'static> OnchainContributionService for Client<A
 
 	fn assign_contributor(
 		&self,
-		contribution_id: ContributionOnChainId,
+		contribution_id: ContributionId,
 		contributor_id: ContributorId,
 	) -> Result<HexPrefixedString, OnchainContributionServiceError> {
 		let cloned_contribution_contract = self.contributions.clone();
@@ -44,7 +44,7 @@ impl<A: Account + Send + Sync + 'static> OnchainContributionService for Client<A
 
 	fn unassign_contributor(
 		&self,
-		contribution_id: ContributionOnChainId,
+		contribution_id: ContributionId,
 	) -> Result<HexPrefixedString, OnchainContributionServiceError> {
 		let cloned_contribution_contract = self.contributions.clone();
 		let transaction_hash = tokio::runtime::Handle::current()
@@ -60,7 +60,7 @@ impl<A: Account + Send + Sync + 'static> OnchainContributionService for Client<A
 
 	fn validate(
 		&self,
-		contribution_id: ContributionOnChainId,
+		contribution_id: ContributionId,
 	) -> Result<HexPrefixedString, OnchainContributionServiceError> {
 		let cloned_contribution_contract = self.contributions.clone();
 		let transaction_hash = tokio::runtime::Handle::current()

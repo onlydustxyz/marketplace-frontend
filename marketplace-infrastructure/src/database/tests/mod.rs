@@ -31,14 +31,12 @@ fn init_contribution_with_status(client: &Client, status: ContributionStatus) ->
 	let project = init_project(client);
 
 	let contribution = Contribution {
-		id: Uuid::new_v4().into(),
-		onchain_id: Uuid::new_v4().to_string(),
+		id: 1.into(),
 		project_id: project.id,
 		status,
 		..Default::default()
 	};
-	<Client as ContributionRepository>::create(client, contribution.clone(), Default::default())
-		.unwrap();
+	<Client as ContributionRepository>::create(client, contribution.clone()).unwrap();
 
 	contribution
 }

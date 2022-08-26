@@ -32,7 +32,7 @@ async fn main() {
 	let starkonquest = find_project_by_title(&list_all_projects().await, "starkonquest")
 		.expect("Project not found in list of all projects");
 	let contribution =
-		find_contribution_by_onchain_id(&starkonquest, starkonquest_id * 1_000_000 + ISSUE_NUMBER)
+		find_contribution_by_id(&starkonquest, starkonquest_id * 1_000_000 + ISSUE_NUMBER)
 			.expect("Contribution not found in project");
 
 	let contribution_id =

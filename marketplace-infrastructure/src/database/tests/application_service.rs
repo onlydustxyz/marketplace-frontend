@@ -15,13 +15,13 @@ fn accept_application_ok() {
 
 	let application1 = Application::new(
 		Uuid::new_v4().into(),
-		contribution.id,
+		contribution.id.clone(),
 		0.into(),
 		ApplicationStatus::Pending,
 	);
 	let application2 = Application::new(
 		Uuid::new_v4().into(),
-		contribution.id,
+		contribution.id.clone(),
 		1.into(),
 		ApplicationStatus::Pending,
 	);
@@ -70,13 +70,13 @@ fn cannot_accept_invalid_status() {
 
 	let application1 = Application::new(
 		Uuid::new_v4().into(),
-		contribution.id,
+		contribution.id.clone(),
 		0.into(),
 		ApplicationStatus::Pending,
 	);
 	let application2 = Application::new(
 		Uuid::new_v4().into(),
-		contribution.id,
+		contribution.id.clone(),
 		1.into(),
 		ApplicationStatus::Pending,
 	);
@@ -134,19 +134,19 @@ fn reject_all_applications_ok() {
 
 	let application1 = Application::new(
 		Uuid::new_v4().into(),
-		contribution.id,
+		contribution.id.clone(),
 		0.into(),
 		ApplicationStatus::Pending,
 	);
 	let application2 = Application::new(
 		Uuid::new_v4().into(),
-		contribution.id,
+		contribution.id.clone(),
 		1.into(),
 		ApplicationStatus::Pending,
 	);
 	let application3 = Application::new(
 		Uuid::new_v4().into(),
-		contribution.id,
+		contribution.id.clone(),
 		3.into(),
 		ApplicationStatus::Pending,
 	);

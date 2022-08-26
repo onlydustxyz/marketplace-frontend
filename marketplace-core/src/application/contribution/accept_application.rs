@@ -63,10 +63,7 @@ impl Usecase for AcceptApplication {
 			.ok_or_else(|| DomainError::from(ContributionRepositoryError::NotFound))?;
 
 		self.onchain_contribution_service
-			.assign_contributor(
-				contribution.onchain_id,
-				application.contributor_id().to_owned(),
-			)
+			.assign_contributor(contribution.id, application.contributor_id().to_owned())
 			.map_err_into()
 	}
 }
@@ -99,8 +96,8 @@ mod test {
 	}
 
 	#[fixture]
-	fn onchain_contribution_id() -> ContributionOnChainId {
-		"1".to_string()
+	fn contribution_id() -> ContributionId {
+		1.into()
 	}
 
 	#[rstest]
@@ -108,7 +105,7 @@ mod test {
 		mut onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 		mut application_repository: MockApplicationRepository,
-		onchain_contribution_id: ContributionOnChainId,
+		contribution_id: ContributionId,
 	) {
 		let application_id = Uuid::from_u128(12).into();
 		application_repository.expect_find().returning(|_| {
@@ -120,17 +117,17 @@ mod test {
 			)))
 		});
 
-		let onchain_id = onchain_contribution_id.clone();
+		let cloned_contribution_id = contribution_id.clone();
 		contribution_repository.expect_find_by_id().returning(move |_| {
 			Ok(Some(Contribution {
-				onchain_id: onchain_id.clone(),
+				id: cloned_contribution_id.clone(),
 				..Default::default()
 			}))
 		});
 
 		onchain_contribution_service
 			.expect_assign_contributor()
-			.with(eq(onchain_contribution_id), eq(ContributorId::from(42)))
+			.with(eq(contribution_id), eq(ContributorId::from(42)))
 			.returning(|_, _| Ok(HexPrefixedString::default()));
 
 		let usecase = AcceptApplication::new_usecase_boxed(

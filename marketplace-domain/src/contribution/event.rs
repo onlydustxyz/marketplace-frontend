@@ -2,25 +2,24 @@ use std::fmt::Display;
 
 use crate::*;
 use serde::{Deserialize, Serialize};
-use serde_json;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	Created {
-		id: ContributionAggregateId,
+		id: ContributionId,
 		project_id: GithubProjectId,
 		issue_number: GithubIssueNumber,
 		gate: u8,
 	},
 	Assigned {
-		id: ContributionAggregateId,
+		id: ContributionId,
 		contributor_id: ContributorId,
 	},
 	Unassigned {
-		id: ContributionAggregateId,
+		id: ContributionId,
 	},
 	Validated {
-		id: ContributionAggregateId,
+		id: ContributionId,
 	},
 }
 
@@ -48,7 +47,7 @@ impl Display for Event {
 
 #[cfg(test)]
 mod test {
-	use super::{ContributionAggregateId as ContributionId, *};
+	use super::{ContributionId, *};
 	use assert_json_diff::assert_json_eq;
 	use rstest::*;
 	use serde_json::{json, Value};

@@ -9,7 +9,7 @@ use marketplace_domain::{
 use rocket::{http::Status, local::blocking::Client, Build};
 use uuid::Uuid;
 
-const CONTRIBUTION_ID_1: &str = "a6127643-1344-4a44-bbfb-7142c17a4ef0";
+const CONTRIBUTION_ID_1: &str = "0x1234";
 struct EmptyDatabase;
 impl ApplicationRepository for EmptyDatabase {
 	fn create(&self, _application: Application) -> Result<(), ApplicationRepositoryError> {
@@ -61,13 +61,13 @@ impl ApplicationRepository for FilledDatabase {
 		Ok(vec![
 			Application::new(
 				Uuid::from_u128(0).into(),
-				Uuid::from_u128(0).into(),
+				0.into(),
 				0u128.into(),
 				ApplicationStatus::Pending,
 			),
 			Application::new(
 				Uuid::from_u128(1).into(),
-				Uuid::from_u128(0).into(),
+				0.into(),
 				1u128.into(),
 				ApplicationStatus::Pending,
 			),
@@ -117,13 +117,13 @@ fn ok_multiple() {
 		vec![
 			dto::Application {
 				id: Uuid::from_u128(0).to_string(),
-				contribution_id: Uuid::from_u128(0).to_string(),
+				contribution_id: String::from("0x00"),
 				contributor_id: ContributorId::from(0).to_string(),
 				status: ApplicationStatus::Pending.to_string(),
 			},
 			dto::Application {
 				id: Uuid::from_u128(1).to_string(),
-				contribution_id: Uuid::from_u128(0).to_string(),
+				contribution_id: String::from("0x00"),
 				contributor_id: ContributorId::from(1).to_string(),
 				status: ApplicationStatus::Pending.to_string(),
 			},

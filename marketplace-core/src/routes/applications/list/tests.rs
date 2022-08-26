@@ -71,13 +71,13 @@ impl ApplicationRepository for FilledDatabase {
 				CONTRIBUTOR_ID_1 => Ok(vec![
 					Application::new(
 						Uuid::from_u128(2).into(),
-						Uuid::from_u128(0).into(),
+						0.into(),
 						contributor_id.clone(),
 						ApplicationStatus::Pending,
 					),
 					Application::new(
 						Uuid::from_u128(3).into(),
-						Uuid::from_u128(1).into(),
+						1.into(),
 						contributor_id.clone(),
 						ApplicationStatus::Pending,
 					),
@@ -85,13 +85,13 @@ impl ApplicationRepository for FilledDatabase {
 				CONTRIBUTOR_ID_0 => Ok(vec![
 					Application::new(
 						Uuid::from_u128(0).into(),
-						Uuid::from_u128(0).into(),
+						0.into(),
 						contributor_id.clone(),
 						ApplicationStatus::Pending,
 					),
 					Application::new(
 						Uuid::from_u128(1).into(),
-						Uuid::from_u128(0).into(),
+						0.into(),
 						contributor_id,
 						ApplicationStatus::Pending,
 					),
@@ -101,25 +101,25 @@ impl ApplicationRepository for FilledDatabase {
 			None => Ok(vec![
 				Application::new(
 					Uuid::from_u128(2).into(),
-					Uuid::from_u128(0).into(),
+					0.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_1).unwrap(),
 					ApplicationStatus::Pending,
 				),
 				Application::new(
 					Uuid::from_u128(3).into(),
-					Uuid::from_u128(1).into(),
+					1.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_1).unwrap(),
 					ApplicationStatus::Pending,
 				),
 				Application::new(
 					Uuid::from_u128(0).into(),
-					Uuid::from_u128(0).into(),
+					0.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_0).unwrap(),
 					ApplicationStatus::Pending,
 				),
 				Application::new(
 					Uuid::from_u128(1).into(),
-					Uuid::from_u128(0).into(),
+					0.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_0).unwrap(),
 					ApplicationStatus::Pending,
 				),
@@ -162,13 +162,13 @@ fn ok_multiple() {
 		vec![
 			dto::Application {
 				id: Uuid::from_u128(2).to_string(),
-				contribution_id: Uuid::from_u128(0).to_string(),
+				contribution_id: String::from("0x00"),
 				contributor_id: ContributorId::from(U256::from_u128(0x911)).to_string(),
 				status: ApplicationStatus::Pending.to_string(),
 			},
 			dto::Application {
 				id: Uuid::from_u128(3).to_string(),
-				contribution_id: Uuid::from_u128(1).to_string(),
+				contribution_id: String::from("0x0001"),
 				contributor_id: ContributorId::from(U256::from_u128(0x911)).to_string(),
 				status: ApplicationStatus::Pending.to_string(),
 			}
@@ -207,25 +207,25 @@ fn ok_no_contributor_given() {
 		vec![
 			dto::Application {
 				id: Uuid::from_u128(2).to_string(),
-				contribution_id: Uuid::from_u128(0).to_string(),
+				contribution_id: String::from("0x00"),
 				contributor_id: ContributorId::from(U256::from_u128(0x911)).to_string(),
 				status: ApplicationStatus::Pending.to_string(),
 			},
 			dto::Application {
 				id: Uuid::from_u128(3).to_string(),
-				contribution_id: Uuid::from_u128(1).to_string(),
+				contribution_id: String::from("0x0001"),
 				contributor_id: ContributorId::from(U256::from_u128(0x911)).to_string(),
 				status: ApplicationStatus::Pending.to_string(),
 			},
 			dto::Application {
 				id: Uuid::from_u128(0).to_string(),
-				contribution_id: Uuid::from_u128(0).to_string(),
+				contribution_id: String::from("0x00"),
 				contributor_id: ContributorId::from(U256::from_u128(0)).to_string(),
 				status: ApplicationStatus::Pending.to_string(),
 			},
 			dto::Application {
 				id: Uuid::from_u128(1).to_string(),
-				contribution_id: Uuid::from_u128(0).to_string(),
+				contribution_id: String::from("0x00"),
 				contributor_id: ContributorId::from(U256::from_u128(0)).to_string(),
 				status: ApplicationStatus::Pending.to_string(),
 			},
@@ -248,25 +248,25 @@ fn ok_empty_contributor_given() {
 		vec![
 			dto::Application {
 				id: Uuid::from_u128(2).to_string(),
-				contribution_id: Uuid::from_u128(0).to_string(),
+				contribution_id: String::from("0x00"),
 				contributor_id: ContributorId::from(U256::from_u128(0x911)).to_string(),
 				status: ApplicationStatus::Pending.to_string(),
 			},
 			dto::Application {
 				id: Uuid::from_u128(3).to_string(),
-				contribution_id: Uuid::from_u128(1).to_string(),
+				contribution_id: String::from("0x0001"),
 				contributor_id: ContributorId::from(U256::from_u128(0x911)).to_string(),
 				status: ApplicationStatus::Pending.to_string(),
 			},
 			dto::Application {
 				id: Uuid::from_u128(0).to_string(),
-				contribution_id: Uuid::from_u128(0).to_string(),
+				contribution_id: String::from("0x00"),
 				contributor_id: ContributorId::from(U256::from_u128(0)).to_string(),
 				status: ApplicationStatus::Pending.to_string(),
 			},
 			dto::Application {
 				id: Uuid::from_u128(1).to_string(),
-				contribution_id: Uuid::from_u128(0).to_string(),
+				contribution_id: String::from("0x00"),
 				contributor_id: ContributorId::from(U256::from_u128(0)).to_string(),
 				status: ApplicationStatus::Pending.to_string(),
 			},

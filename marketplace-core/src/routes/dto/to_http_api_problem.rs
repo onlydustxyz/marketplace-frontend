@@ -2,7 +2,7 @@ use http_api_problem::{HttpApiProblem, StatusCode};
 use marketplace_domain::{
 	ApplicationRepositoryError, ApplicationServiceError, ContactInformationRepositoryError,
 	ContributionRepositoryError, ContributionServiceError, Error as DomainError,
-	OnchainContributionServiceError,
+	OnchainContributionServiceError, ParseHexPrefixedStringError,
 };
 
 pub(crate) trait ToHttpApiProblem {
@@ -129,5 +129,11 @@ impl ToHttpApiProblem for DomainError {
 			DomainError::Lock =>
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR).title(self.to_string()),
 		}
+	}
+}
+
+impl ToHttpApiProblem for ParseHexPrefixedStringError {
+	fn to_http_api_problem(&self) -> HttpApiProblem {
+		HttpApiProblem::new(StatusCode::BAD_REQUEST).title(self.to_string())
 	}
 }
