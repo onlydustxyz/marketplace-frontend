@@ -19,7 +19,7 @@ pub async fn new_project(
 	project: Json<dto::ProjectCreation<'_>>,
 	database: &State<Arc<database::Client>>,
 ) -> Result<Status, HttpApiProblem> {
-	let github = github::API::new();
+	let github = github::Client::new();
 
 	let project = github
 		.get_project_by_owner_and_name(project.owner, project.name)
@@ -99,7 +99,7 @@ async fn build_project(
 	let github_repository = repo_cache
 		.inner_ref()
 		.get_or_insert(&project.project.id, || async {
-			match github::API::new().repository_by_id(&project.project.id).await {
+			match github::Client::new().repository_by_id(&project.project.id).await {
 				Ok(repo) => Some(repo),
 				Err(e) => {
 					warn!("Unable to fetch repository from GitHub: {}", e.to_string());
@@ -189,7 +189,7 @@ async fn fetch_contributor(contributor_id: &ContributorId) -> Option<Contributor
 	let mut contributor = starknet.get_user_information(contributor_id).await?;
 
 	if let Some(github_handle) = &contributor.github_handle {
-		let github_user = match github::API::new().user(github_handle).await {
+		let github_user = match github::Client::new().user(github_handle).await {
 			Ok(user) => Some(user),
 			Err(e) => {
 				warn!("Unable to fetch user from GitHub: {}", e.to_string());

@@ -43,7 +43,7 @@ async fn main() {
 	dotenv().ok();
 	let root_logger = get_root_logger();
 	let _global_logger_guard = slog_scope::set_global_logger(root_logger);
-	github::API::initialize();
+	github::Client::initialize();
 
 	let database = Arc::new(database::Client::new(init_pool()));
 	database.run_migrations().expect("Unable to run database migrations");
@@ -70,7 +70,7 @@ async fn main() {
 	.manage(database.clone())
 	.manage(RepoCache::default())
 	.manage(ContributorCache::default())
-	.manage(github::API::new())
+	.manage(github::Client::new())
 	.attach(routes::cors::Cors)
 	.mount(
 		"/",
