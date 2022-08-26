@@ -1,13 +1,15 @@
+use async_trait::async_trait;
 use mapinto::ResultMapErrInto;
 use marketplace_domain::{Error as DomainError, *};
 use mockall::automock;
 use std::sync::Arc;
 
 #[automock]
+#[async_trait]
 // Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be
 // `Send` and `Sync`
 pub trait Usecase: Send + Sync {
-	fn send_unassign_request(
+	async fn send_unassign_request(
 		&self,
 		contribution_id: &ContributionId,
 	) -> Result<HexPrefixedString, DomainError>;
@@ -30,15 +32,19 @@ impl UnassignContribution {
 	}
 }
 
+#[async_trait]
 impl Usecase for UnassignContribution {
-	fn send_unassign_request(
+	async fn send_unassign_request(
 		&self,
 		contribution_id: &ContributionId,
 	) -> Result<HexPrefixedString, DomainError> {
-		match self.contribution_repository.find_by_id(contribution_id)? {
+		let contribution = self.contribution_repository.find_by_id(contribution_id)?;
+
+		match contribution {
 			Some(contribution) => self
 				.onchain_contribution_service
 				.unassign_contributor(contribution.id)
+				.await
 				.map_err_into(),
 			None => Err(ContributionRepositoryError::NotFound.into()),
 		}
@@ -48,6 +54,7 @@ impl Usecase for UnassignContribution {
 #[cfg(test)]
 mod test {
 	use super::*;
+	use futures::FutureExt;
 	use rstest::*;
 	use thiserror::Error;
 
@@ -66,7 +73,8 @@ mod test {
 	}
 
 	#[rstest]
-	fn unassign_contribution_success(
+	#[tokio::test]
+	async fn unassign_contribution_success(
 		mut onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
@@ -77,19 +85,20 @@ mod test {
 
 		onchain_contribution_service
 			.expect_unassign_contributor()
-			.returning(|_| Ok(HexPrefixedString::default()));
+			.returning(|_| async { Ok(HexPrefixedString::default()) }.boxed());
 
 		let usecase = UnassignContribution::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_unassign_request(&contribution_id);
+		let result = usecase.send_unassign_request(&contribution_id).await;
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 	}
 
 	#[rstest]
-	fn unassign_contribution_find_error(
+	#[tokio::test]
+	async fn unassign_contribution_find_error(
 		onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
@@ -102,7 +111,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_unassign_request(&12.into());
+		let result = usecase.send_unassign_request(&12.into()).await;
 
 		assert!(result.is_err());
 		assert_eq!(
@@ -112,7 +121,8 @@ mod test {
 	}
 
 	#[rstest]
-	fn unassign_contribution_not_found(
+	#[tokio::test]
+	async fn unassign_contribution_not_found(
 		onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
@@ -123,7 +133,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_unassign_request(&12.into());
+		let result = usecase.send_unassign_request(&12.into()).await;
 
 		assert!(result.is_err());
 		assert_eq!(
@@ -133,7 +143,8 @@ mod test {
 	}
 
 	#[rstest]
-	fn unassign_contribution_send_error(
+	#[tokio::test]
+	async fn unassign_contribution_send_error(
 		mut onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
@@ -143,9 +154,12 @@ mod test {
 			.returning(|_| Ok(Some(Contribution::default())));
 
 		onchain_contribution_service.expect_unassign_contributor().returning(|_| {
-			Err(OnchainContributionServiceError::Infrastructure(Box::new(
-				Error,
-			)))
+			async {
+				Err(OnchainContributionServiceError::Infrastructure(Box::new(
+					Error,
+				)))
+			}
+			.boxed()
 		});
 
 		let usecase = UnassignContribution::new_usecase_boxed(
@@ -153,7 +167,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_unassign_request(&contribution_id);
+		let result = usecase.send_unassign_request(&contribution_id).await;
 
 		assert!(result.is_err());
 		assert_eq!(

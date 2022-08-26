@@ -1,4 +1,5 @@
 use crate::*;
+use async_trait::async_trait;
 use mockall::automock;
 use thiserror::Error;
 
@@ -8,17 +9,18 @@ pub enum Error {
 	Infrastructure(#[source] Box<dyn std::error::Error>),
 }
 
+#[async_trait]
 #[automock]
 pub trait Service: Send + Sync {
-	fn create(&self, contribution: Contribution) -> Result<HexPrefixedString, Error>;
-	fn assign_contributor(
+	async fn create(&self, contribution: Contribution) -> Result<HexPrefixedString, Error>;
+	async fn assign_contributor(
 		&self,
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
 	) -> Result<HexPrefixedString, Error>;
-	fn unassign_contributor(
+	async fn unassign_contributor(
 		&self,
 		contribution_id: ContributionId,
 	) -> Result<HexPrefixedString, Error>;
-	fn validate(&self, contribution_id: ContributionId) -> Result<HexPrefixedString, Error>;
+	async fn validate(&self, contribution_id: ContributionId) -> Result<HexPrefixedString, Error>;
 }

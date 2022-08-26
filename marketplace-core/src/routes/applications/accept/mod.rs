@@ -20,6 +20,7 @@ pub async fn accept_application(
 
 	usecase
 		.accept_application(&application_id)
+		.await
 		.map_err(|e| e.to_http_api_problem())?;
 
 	// TODO after action queue is removed:

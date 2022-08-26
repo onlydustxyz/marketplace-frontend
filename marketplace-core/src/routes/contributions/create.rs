@@ -22,7 +22,7 @@ pub async fn create_contribution(
 		..Default::default()
 	};
 
-	usecase.send_creation_request(contribution).map_err(|error| {
+	usecase.send_creation_request(contribution).await.map_err(|error| {
 		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 			.title("Unable to send contribution creation request")
 			.detail(error.to_string())

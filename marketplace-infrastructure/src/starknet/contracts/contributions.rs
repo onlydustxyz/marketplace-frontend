@@ -1,6 +1,7 @@
 use super::{ContractAdministrator, ContractError};
 use crate::starknet::model::OnChainContributorId;
 use itertools::Itertools;
+use log::error;
 use marketplace_domain::*;
 use starknet::{
 	accounts::{Account, Call},
@@ -35,7 +36,14 @@ impl<A: Account + Sync> Contract<A> {
 			.administrator
 			.send_transaction(&calls)
 			.await
-			.map_err(|e| ContractError::TransactionReverted(e.to_string()))?;
+			.map_err(|e| ContractError::TransactionReverted(e.to_string()));
+
+		if let Err(error) = transaction_result {
+			error!("Error: {:?}", error);
+			return Err(error);
+		}
+
+		let transaction_result = transaction_result.unwrap();
 
 		// Safe to unwrap because transaction hash is an hexa string and we add the prefix ourselves
 		Ok(
@@ -51,6 +59,7 @@ trait IntoCall {
 
 impl IntoCall for &Action {
 	fn into_call(self) -> Call {
+		println!("{:?}", self);
 		match self {
 			Action::CreateContribution {
 				github_composite,

@@ -15,8 +15,9 @@ const URI: &str = "/applications/a6127643-1344-4a44-bbfb-7142c17a4ef0/accept";
 
 struct SuccessfulUsecase;
 
+#[async_trait]
 impl AcceptApplicationUsecase for SuccessfulUsecase {
-	fn accept_application(
+	async fn accept_application(
 		&self,
 		_application_id: &ApplicationId,
 	) -> Result<HexPrefixedString, DomainError> {
@@ -26,8 +27,9 @@ impl AcceptApplicationUsecase for SuccessfulUsecase {
 
 struct FailedUsecase;
 
+#[async_trait]
 impl AcceptApplicationUsecase for FailedUsecase {
-	fn accept_application(
+	async fn accept_application(
 		&self,
 		_application_id: &ApplicationId,
 	) -> Result<HexPrefixedString, DomainError> {
