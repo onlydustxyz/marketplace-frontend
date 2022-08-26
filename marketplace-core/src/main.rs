@@ -55,6 +55,7 @@ async fn main() {
 	let contribution_service = Arc::new(ContributionServiceImplementation::new(
 		database.clone(),
 		database.clone(),
+		database.clone(),
 		uuid_generator.clone(),
 	));
 	let contact_information_service = Arc::new(ContactInformationServiceImplementation::new(

@@ -22,11 +22,18 @@ pub trait Service: Send + Sync {
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
 	) -> Result<(), DomainError>;
+
+	fn on_assigned(
+		&self,
+		contribution_id: &ContributionId,
+		contributor_id: &ContributorId,
+	) -> Result<(), DomainError>;
 }
 
 pub struct ContributionService {
 	contribution_repository: Arc<dyn ContributionRepository>,
 	application_repository: Arc<dyn ApplicationRepository>,
+	application_service: Arc<dyn ApplicationService>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 }
 
@@ -34,11 +41,13 @@ impl ContributionService {
 	pub fn new(
 		contribution_repository: Arc<dyn ContributionRepository>,
 		application_repository: Arc<dyn ApplicationRepository>,
+		application_service: Arc<dyn ApplicationService>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Self {
 		Self {
 			application_repository,
 			contribution_repository,
+			application_service,
 			uuid_generator,
 		}
 	}
@@ -72,6 +81,30 @@ impl Service for ContributionService {
 
 		self.application_repository.create(application).map_err_into()
 	}
+
+	fn on_assigned(
+		&self,
+		contribution_id: &ContributionId,
+		contributor_id: &ContributorId,
+	) -> Result<(), DomainError> {
+		// Note that we handle the None case properly as the old way to apply (ie. typeform) didn't
+		// create any application.
+		match self
+			.application_repository
+			.list_by_contribution(contribution_id, Some(contributor_id.to_owned()))
+			.map_err(DomainError::from)?
+			.first()
+		{
+			Some(application) => self
+				.application_service
+				.accept_application(application.to_owned())
+				.map_err(DomainError::from),
+			None => self
+				.application_service
+				.reject_all_applications(contribution_id)
+				.map_err(DomainError::from),
+		}
+	}
 }
 
 #[cfg(test)]
@@ -90,6 +123,11 @@ mod test {
 	#[fixture]
 	fn application_repository() -> MockApplicationRepository {
 		MockApplicationRepository::new()
+	}
+
+	#[fixture]
+	fn application_service() -> MockApplicationService {
+		MockApplicationService::new()
 	}
 
 	#[fixture]
@@ -116,6 +154,7 @@ mod test {
 	fn application_success(
 		mut contribution_repository: MockContributionRepository,
 		mut application_repository: MockApplicationRepository,
+		application_service: MockApplicationService,
 		mut uuid_generator: MockUuidGenerator,
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
@@ -142,6 +181,7 @@ mod test {
 		let contribution_service = ContributionService {
 			contribution_repository: Arc::new(contribution_repository),
 			application_repository: Arc::new(application_repository),
+			application_service: Arc::new(application_service),
 			uuid_generator: Arc::new(uuid_generator),
 		};
 
@@ -153,6 +193,7 @@ mod test {
 	fn contribution_must_be_open(
 		mut contribution_repository: MockContributionRepository,
 		application_repository: MockApplicationRepository,
+		application_service: MockApplicationService,
 		uuid_generator: MockUuidGenerator,
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
@@ -172,10 +213,80 @@ mod test {
 		let contribution_service = ContributionService {
 			contribution_repository: Arc::new(contribution_repository),
 			application_repository: Arc::new(application_repository),
+			application_service: Arc::new(application_service),
 			uuid_generator: Arc::new(uuid_generator),
 		};
 
 		let apply_result = contribution_service.apply(&contribution_id, &contributor_id);
 		assert!(apply_result.is_err());
+	}
+
+	#[rstest]
+	fn on_assigned_success_application_found(
+		contribution_repository: MockContributionRepository,
+		mut application_repository: MockApplicationRepository,
+		mut application_service: MockApplicationService,
+		uuid_generator: MockUuidGenerator,
+	) {
+		let contribution_id = ContributionId::from(100);
+		let contributor_id = ContributorId::from(42);
+
+		let contribution = Contribution {
+			id: contribution_id.clone(),
+			status: ContributionStatus::Open,
+			..Default::default()
+		};
+
+		let cloned_contribution_id = contribution_id.clone();
+		application_repository
+			.expect_list_by_contribution()
+			.with(eq(contribution.id), eq(Some(contributor_id.to_owned())))
+			.returning(move |_, _| {
+				Ok(vec![Application::new(
+					ApplicationId::default(),
+					cloned_contribution_id.clone(),
+					ContributorId::from(42),
+					ApplicationStatus::Pending,
+				)])
+			});
+
+		application_service.expect_accept_application().returning(|_| Ok(()));
+
+		let contribution_service = ContributionService {
+			contribution_repository: Arc::new(contribution_repository),
+			application_repository: Arc::new(application_repository),
+			application_service: Arc::new(application_service),
+			uuid_generator: Arc::new(uuid_generator),
+		};
+
+		let result = contribution_service.on_assigned(&contribution_id, &contributor_id);
+		assert!(result.is_ok(), "{:?}", result.err().unwrap());
+	}
+
+	#[rstest]
+	fn on_assigned_success_application_not_found(
+		contribution_repository: MockContributionRepository,
+		mut application_repository: MockApplicationRepository,
+		mut application_service: MockApplicationService,
+		uuid_generator: MockUuidGenerator,
+	) {
+		let contribution_id = ContributionId::from(100);
+		let contributor_id = ContributorId::from(42);
+
+		application_repository
+			.expect_list_by_contribution()
+			.returning(|_, _| Ok(vec![]));
+
+		application_service.expect_reject_all_applications().returning(|_| Ok(()));
+
+		let contribution_service = ContributionService {
+			contribution_repository: Arc::new(contribution_repository),
+			application_repository: Arc::new(application_repository),
+			application_service: Arc::new(application_service),
+			uuid_generator: Arc::new(uuid_generator),
+		};
+
+		let result = contribution_service.on_assigned(&contribution_id, &contributor_id);
+		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 	}
 }
