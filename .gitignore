@@ -23,3 +23,6 @@
 
 # MacOS
 .DS_Store
+
+# Docker
+_docker
