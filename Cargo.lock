@@ -1718,6 +1718,7 @@ dependencies = [
  "crypto-bigint 0.4.8",
  "futures 0.3.21",
  "hex",
+ "log",
  "mapinto",
  "marketplace-wrappers",
  "mockall",

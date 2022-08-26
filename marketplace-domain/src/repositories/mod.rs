@@ -21,3 +21,6 @@ pub use application::{
 
 mod github_issue;
 pub use github_issue::{Error as GithubIssueRepositoryError, Repository as GithubIssueRepository};
+
+#[cfg(test)]
+pub use github_issue::MockRepository as MockGithubIssueRepository;

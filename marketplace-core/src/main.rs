@@ -50,11 +50,13 @@ async fn main() {
 
 	let starknet = Arc::new(starknet::Client::default());
 
+	let github_client = Arc::new(github::Client::new());
 	let uuid_generator = Arc::new(RwLock::new(RandomUuidGenerator));
 	let contribution_service = Arc::new(ContributionServiceImplementation::new(
 		database.clone(),
 		database.clone(),
 		uuid_generator.clone(),
+		github_client.clone(),
 	));
 	let contact_information_service = Arc::new(ContactInformationServiceImplementation::new(
 		database.clone(),
@@ -70,7 +72,7 @@ async fn main() {
 	.manage(database.clone())
 	.manage(RepoCache::default())
 	.manage(ContributorCache::default())
-	.manage(github::Client::new())
+	.manage(github_client)
 	.attach(routes::cors::Cors)
 	.mount(
 		"/",

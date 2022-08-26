@@ -15,3 +15,21 @@ pub struct Issue {
 	pub context: Option<String>,
 	pub r#type: Option<String>,
 }
+
+#[cfg(test)]
+impl Default for Issue {
+	fn default() -> Self {
+		Self {
+			number: Default::default(),
+			project_id: Default::default(),
+			title: Default::default(),
+			description: Default::default(),
+			external_link: Url::parse("https://github.com/404").unwrap(),
+			difficulty: Default::default(),
+			technology: Default::default(),
+			duration: Default::default(),
+			context: Default::default(),
+			r#type: Default::default(),
+		}
+	}
+}
