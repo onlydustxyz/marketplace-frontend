@@ -10,7 +10,6 @@ pub struct WithGithubData {
 	pub status: ContributionStatus,
 	pub contributor_id: Option<ContributorId>,
 	pub gate: u8,
-	pub validator: ContractAddress,
 	// Github data
 	pub title: Option<String>,
 	pub description: Option<String>,

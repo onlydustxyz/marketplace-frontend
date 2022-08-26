@@ -65,7 +65,6 @@ fn store_and_find_with_contributions() {
 		external_link: None,
 		gate: 0,
 		metadata: Default::default(),
-		validator: Default::default(),
 	};
 	let contribution2 = Contribution {
 		id: Uuid::new_v4().into(),
@@ -78,7 +77,6 @@ fn store_and_find_with_contributions() {
 		external_link: None,
 		gate: 0,
 		metadata: Default::default(),
-		validator: Default::default(),
 	};
 
 	<Client as ProjectRepository>::store(&client, project.clone()).unwrap();

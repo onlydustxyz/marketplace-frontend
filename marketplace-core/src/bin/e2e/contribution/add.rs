@@ -1,20 +1,11 @@
 use super::*;
-use serde_json::json;
+use marketplace_core::dto::ContributionCreation;
 
-pub async fn add_contribution(
-	github_issue_number: u64,
-	project_id: u64,
-	gate: u8,
-	validator: &str,
-) {
+pub async fn add_contribution(github_issue_number: u128, project_id: u128, gate: u8) {
+	let body = ContributionCreation::new(github_issue_number, project_id, gate);
 	let response = post(
 		format!("{BACKEND_BASE_URI}/contributions/github"),
-		Some(json!({
-		  "github_issue_number": github_issue_number,
-		  "project_id": project_id,
-		  "gate": gate,
-		  "validator": validator
-		})),
+		Some(serde_json::to_value(&body).unwrap()),
 	)
 	.await;
 

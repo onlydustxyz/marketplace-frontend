@@ -56,7 +56,6 @@ impl IntoCall for &Action {
 					FieldElement::from_dec_str(&contribution.project_id).unwrap(), /* project_id
 					                                                                * : felt */
 					FieldElement::from(contribution.gate), /* contribution_count_required : felt */
-					FieldElement::from_hex_be(&contribution.validator.to_string()).unwrap(),
 				],
 			},
 

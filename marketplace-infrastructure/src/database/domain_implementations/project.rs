@@ -97,8 +97,6 @@ impl From<models::Contribution> for Contribution {
 				context: contribution.context,
 				r#type: contribution.type_,
 			},
-			// ok to unwrap because values in db are created by a call to ContributorId::ToString
-			validator: contribution.validator.parse().unwrap(),
 		}
 	}
 }

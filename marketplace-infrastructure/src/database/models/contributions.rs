@@ -31,7 +31,6 @@ pub struct Contribution {
 	pub duration: Option<String>,
 	pub context: Option<String>,
 	pub type_: Option<String>,
-	pub validator: String,
 	pub id: Uuid,
 }
 
@@ -51,6 +50,5 @@ pub struct ContributionUpdate {
 	pub duration: Option<String>,
 	pub context: Option<String>,
 	pub type_: Option<String>,
-	pub validator: String,
 	pub id: Uuid,
 }
