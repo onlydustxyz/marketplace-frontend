@@ -16,12 +16,12 @@ impl Observer for Logger<'_> {
 		self.0(format!("🔗 Indexer `{indexer_id}` connected"));
 	}
 
-	fn on_new_event(&self, event: &Event) {
-		self.0(format!("⚡ New event: {}", event));
+	fn on_new_event(&self, event: &Event, block_number: u64) {
+		self.0(format!("⚡ New event [{block_number}]: {}", event));
 	}
 
-	fn on_new_block(&self, block_hash: &BlockHash) {
-		self.0(format!("⛏️ New block: {block_hash}"));
+	fn on_new_block(&self, block_hash: &BlockHash, block_number: u64) {
+		self.0(format!("⛏️ New block [{block_number}]: {block_hash}"));
 	}
 
 	fn on_reorg(&self) {
@@ -63,12 +63,12 @@ mod test {
 	fn on_new_event(mut logger: MockLoggerCallback, event: Event) {
 		logger
 			.expect_log()
-			.withf(|msg| msg.starts_with("⚡ New event: "))
+			.withf(|msg| msg.starts_with("⚡ New event [0]: "))
 			.return_const(());
 		let logging_callback = move |message| logger.log(message);
 
 		let handler = Logger::new(&logging_callback);
-		handler.on_new_event(&event);
+		handler.on_new_event(&event, 0);
 	}
 
 	#[rstest]
@@ -87,12 +87,12 @@ mod test {
 	fn on_new_block(mut logger: MockLoggerCallback) {
 		logger
 			.expect_log()
-			.with(eq(String::from("⛏️ New block: 0x1234")))
+			.with(eq(String::from("⛏️ New block [2222]: 0x1234")))
 			.return_const(());
 		let logging_callback = move |message| logger.log(message);
 
 		let handler = Logger::new(&logging_callback);
-		handler.on_new_block(&BlockHash::from_str("0x1234").unwrap());
+		handler.on_new_block(&BlockHash::from_str("0x1234").unwrap(), 2222);
 	}
 
 	#[rstest]
@@ -107,6 +107,6 @@ mod test {
 	#[rstest]
 	fn handler_can_be_created_using_default(event: Event) {
 		let handler = Logger::default();
-		handler.on_new_event(&event);
+		handler.on_new_event(&event, 0);
 	}
 }

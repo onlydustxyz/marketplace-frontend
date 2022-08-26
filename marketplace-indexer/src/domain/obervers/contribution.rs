@@ -14,7 +14,7 @@ impl ContributionObserver {
 }
 
 impl Observer for ContributionObserver {
-	fn on_new_event(&self, event: &Event) {
+	fn on_new_event(&self, event: &Event, _block_number: u64) {
 		match event {
 			Event::Contribution(event) => self.contribution_projection.project(event),
 		}
@@ -64,6 +64,6 @@ mod test {
 			.return_const(());
 
 		let observer = ContributionObserver::new(Arc::new(contribution_projection));
-		observer.on_new_event(&event)
+		observer.on_new_event(&event, 0)
 	}
 }
