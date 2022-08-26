@@ -1,11 +1,13 @@
+use async_trait::async_trait;
 use mapinto::ResultMapErrInto;
 use marketplace_domain::{Error as DomainError, *};
 use mockall::automock;
 use std::sync::Arc;
 
 #[automock]
+#[async_trait]
 pub trait Usecase: Send + Sync {
-	fn send_creation_request(
+	async fn send_creation_request(
 		&self,
 		contribution: Contribution,
 	) -> Result<HexPrefixedString, DomainError>;
@@ -25,18 +27,20 @@ impl CreateContribution {
 	}
 }
 
+#[async_trait]
 impl Usecase for CreateContribution {
-	fn send_creation_request(
+	async fn send_creation_request(
 		&self,
 		contribution: Contribution,
 	) -> Result<HexPrefixedString, DomainError> {
-		self.onchain_contribution_service.create(contribution).map_err_into()
+		self.onchain_contribution_service.create(contribution).await.map_err_into()
 	}
 }
 
 #[cfg(test)]
 mod test {
 	use super::*;
+	use futures::FutureExt;
 	use mockall::predicate::*;
 	use thiserror::Error;
 
@@ -44,8 +48,8 @@ mod test {
 	#[error("Oops")]
 	struct Error;
 
-	#[test]
-	fn forward_request() {
+	#[tokio::test]
+	async fn forward_request() {
 		let mut onchain_contribution_service = MockOnchainContributionService::new();
 
 		let contribution = Contribution::default();
@@ -53,29 +57,32 @@ mod test {
 		onchain_contribution_service
 			.expect_create()
 			.with(eq(contribution.clone()))
-			.returning(|_| Ok(HexPrefixedString::default()));
+			.returning(|_| async { Ok(HexPrefixedString::default()) }.boxed());
 
 		let usecase = CreateContribution::new_usecase_boxed(Arc::new(onchain_contribution_service));
 
-		let result = usecase.send_creation_request(contribution);
+		let result = usecase.send_creation_request(contribution).await;
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 	}
 
-	#[test]
-	fn forward_request_error() {
+	#[tokio::test]
+	async fn forward_request_error() {
 		let mut onchain_contribution_service = MockOnchainContributionService::new();
 
 		let contribution = Contribution::default();
 
 		onchain_contribution_service.expect_create().returning(|_| {
-			Err(OnchainContributionServiceError::Infrastructure(Box::new(
-				Error,
-			)))
+			async {
+				Err(OnchainContributionServiceError::Infrastructure(Box::new(
+					Error,
+				)))
+			}
+			.boxed()
 		});
 
 		let usecase = CreateContribution::new_usecase_boxed(Arc::new(onchain_contribution_service));
 
-		let result = usecase.send_creation_request(contribution);
+		let result = usecase.send_creation_request(contribution).await;
 		assert!(result.is_err());
 		assert_eq!(
 			"Onchain contribution service error",

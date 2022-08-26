@@ -1,11 +1,13 @@
 use std::sync::Arc;
 
+use async_trait::async_trait;
 use mapinto::ResultMapErrInto;
 
 use marketplace_domain::{Error as DomainError, *};
 
+#[async_trait]
 pub trait Usecase: Send + Sync {
-	fn accept_application(
+	async fn accept_application(
 		&self,
 		application_id: &ApplicationId,
 	) -> Result<HexPrefixedString, DomainError>;
@@ -45,8 +47,9 @@ impl AcceptApplication {
 	}
 }
 
+#[async_trait]
 impl Usecase for AcceptApplication {
-	fn accept_application(
+	async fn accept_application(
 		&self,
 		application_id: &ApplicationId,
 	) -> Result<HexPrefixedString, DomainError> {
@@ -64,6 +67,7 @@ impl Usecase for AcceptApplication {
 
 		self.onchain_contribution_service
 			.assign_contributor(contribution.id, application.contributor_id().to_owned())
+			.await
 			.map_err_into()
 	}
 }
@@ -71,6 +75,7 @@ impl Usecase for AcceptApplication {
 #[cfg(test)]
 mod test {
 	use super::*;
+	use futures::FutureExt;
 	use mockall::predicate::eq;
 	use rstest::*;
 	use thiserror::Error;
@@ -101,7 +106,8 @@ mod test {
 	}
 
 	#[rstest]
-	fn accept_application_success(
+	#[tokio::test]
+	async fn accept_application_success(
 		mut onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 		mut application_repository: MockApplicationRepository,
@@ -128,7 +134,7 @@ mod test {
 		onchain_contribution_service
 			.expect_assign_contributor()
 			.with(eq(contribution_id), eq(ContributorId::from(42)))
-			.returning(|_, _| Ok(HexPrefixedString::default()));
+			.returning(|_, _| async { Ok(HexPrefixedString::default()) }.boxed());
 
 		let usecase = AcceptApplication::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),
@@ -136,12 +142,13 @@ mod test {
 			Arc::new(application_repository),
 		);
 
-		let result = usecase.accept_application(&application_id);
+		let result = usecase.accept_application(&application_id).await;
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 	}
 
 	#[rstest]
-	fn accept_application_application_not_found(
+	#[tokio::test]
+	async fn accept_application_application_not_found(
 		onchain_contribution_service: MockOnchainContributionService,
 		contribution_repository: MockContributionRepository,
 		mut application_repository: MockApplicationRepository,
@@ -155,7 +162,7 @@ mod test {
 			Arc::new(application_repository),
 		);
 
-		let result = usecase.accept_application(&application_id);
+		let result = usecase.accept_application(&application_id).await;
 		assert!(result.is_err());
 		assert_eq!(
 			"Application repository error",
@@ -164,7 +171,8 @@ mod test {
 	}
 
 	#[rstest]
-	fn accept_application_contribution_not_found(
+	#[tokio::test]
+	async fn accept_application_contribution_not_found(
 		onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 		mut application_repository: MockApplicationRepository,
@@ -187,7 +195,7 @@ mod test {
 			Arc::new(application_repository),
 		);
 
-		let result = usecase.accept_application(&application_id);
+		let result = usecase.accept_application(&application_id).await;
 		assert!(result.is_err());
 		assert_eq!(
 			"Contribution repository error",

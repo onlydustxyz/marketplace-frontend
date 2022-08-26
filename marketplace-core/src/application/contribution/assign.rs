@@ -1,13 +1,15 @@
+use async_trait::async_trait;
 use mapinto::ResultMapErrInto;
 use marketplace_domain::{Error as DomainError, *};
 use mockall::automock;
 use std::sync::Arc;
 
 #[automock]
+#[async_trait]
 // Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be
 // `Send` and `Sync`
 pub trait Usecase: Send + Sync {
-	fn send_assign_request(
+	async fn send_assign_request(
 		&self,
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
@@ -35,16 +37,20 @@ impl AssignContribution {
 	}
 }
 
+#[async_trait]
 impl Usecase for AssignContribution {
-	fn send_assign_request(
+	async fn send_assign_request(
 		&self,
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
 	) -> Result<HexPrefixedString, DomainError> {
-		match self.contribution_repository.find_by_id(contribution_id)? {
+		let contribution = self.contribution_repository.find_by_id(contribution_id)?;
+
+		match contribution {
 			Some(contribution) => self
 				.onchain_contribution_service
 				.assign_contributor(contribution.id, contributor_id.to_owned())
+				.await
 				.map_err_into(),
 			None => Err(DomainError::ContributionRepository(
 				ContributionRepositoryError::NotFound,
@@ -56,9 +62,9 @@ impl Usecase for AssignContribution {
 #[cfg(test)]
 mod test {
 	use super::*;
+	use futures::FutureExt;
 	use rstest::*;
 	use thiserror::Error;
-	use uuid::Uuid;
 
 	#[derive(Debug, Error)]
 	#[error("Oops")]
@@ -75,7 +81,8 @@ mod test {
 	}
 
 	#[rstest]
-	fn assign_contribution_success(
+	#[tokio::test]
+	async fn assign_contribution_success(
 		mut onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
@@ -86,19 +93,20 @@ mod test {
 
 		onchain_contribution_service
 			.expect_assign_contributor()
-			.returning(|_, _| Ok(HexPrefixedString::default()));
+			.returning(|_, _| async { Ok(HexPrefixedString::default()) }.boxed());
 
 		let usecase = AssignContribution::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_assign_request(&contribution_id, &ContributorId::from(34));
+		let result = usecase.send_assign_request(&contribution_id, &ContributorId::from(34)).await;
 		assert!(result.is_ok(), "{:?}", result.err().unwrap());
 	}
 
 	#[rstest]
-	fn assign_contribution_find_error(
+	#[tokio::test]
+	async fn assign_contribution_find_error(
 		onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
@@ -111,7 +119,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_assign_request(&12.into(), &ContributorId::from(34));
+		let result = usecase.send_assign_request(&12.into(), &ContributorId::from(34)).await;
 
 		assert!(result.is_err());
 		assert_eq!(
@@ -121,7 +129,8 @@ mod test {
 	}
 
 	#[rstest]
-	fn assign_contribution_not_found(
+	#[tokio::test]
+	async fn assign_contribution_not_found(
 		onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
@@ -132,7 +141,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_assign_request(&12.into(), &ContributorId::from(34));
+		let result = usecase.send_assign_request(&12.into(), &ContributorId::from(34)).await;
 
 		assert!(result.is_err());
 		assert_eq!(
@@ -142,7 +151,8 @@ mod test {
 	}
 
 	#[rstest]
-	fn assign_contribution_send_error(
+	#[tokio::test]
+	async fn assign_contribution_send_error(
 		mut onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_repository: MockContributionRepository,
 	) {
@@ -152,9 +162,12 @@ mod test {
 			.returning(|_| Ok(Some(Contribution::default())));
 
 		onchain_contribution_service.expect_assign_contributor().returning(|_, _| {
-			Err(OnchainContributionServiceError::Infrastructure(Box::new(
-				Error,
-			)))
+			async {
+				Err(OnchainContributionServiceError::Infrastructure(Box::new(
+					Error,
+				)))
+			}
+			.boxed()
 		});
 
 		let usecase = AssignContribution::new_usecase_boxed(
@@ -162,7 +175,7 @@ mod test {
 			Arc::new(contribution_repository),
 		);
 
-		let result = usecase.send_assign_request(&contribution_id, &ContributorId::from(34));
+		let result = usecase.send_assign_request(&contribution_id, &ContributorId::from(34)).await;
 
 		assert!(result.is_err());
 		assert_eq!(

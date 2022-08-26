@@ -19,6 +19,7 @@ pub async fn validate_contribution(
 
 	usecase
 		.send_validate_request(&contribution_id)
+		.await
 		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(status::Accepted(None))

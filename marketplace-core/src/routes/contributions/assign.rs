@@ -36,6 +36,7 @@ pub async fn assign_contributor(
 
 	usecase
 		.send_assign_request(&contribution_id, &contributor_id)
+		.await
 		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(status::Accepted(None))

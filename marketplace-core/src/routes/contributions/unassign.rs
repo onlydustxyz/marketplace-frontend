@@ -20,6 +20,7 @@ pub async fn unassign_contributor(
 
 	usecase
 		.send_unassign_request(&contribution_id)
+		.await
 		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(status::Accepted(None))
@@ -48,7 +49,7 @@ mod test {
 		usecase
 			.expect_send_unassign_request()
 			.with(eq(ContributionId::from_str("0x12").unwrap()))
-			.returning(|_| Ok((HexPrefixedString::default())));
+			.returning(|_| Ok(HexPrefixedString::default()));
 
 		let rocket =
 			rocket::build().manage(Box::new(usecase) as Box<dyn UnassignContributionUsecase>);
