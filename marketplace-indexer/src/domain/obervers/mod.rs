@@ -4,6 +4,9 @@ pub use composite::ObserverComposite;
 mod logging;
 pub use logging::Logger;
 
+mod contribution;
+pub use contribution::ContributionObserver;
+
 use crate::domain::*;
 use mockall::automock;
 
