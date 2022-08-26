@@ -8,7 +8,8 @@ use serde_json;
 pub enum Event {
 	Created {
 		id: contribution::Id,
-		project_id: ProjectId,
+		project_id: GithubProjectId,
+		issue_number: GithubIssueNumber,
 		gate: u8,
 	},
 	Assigned {
@@ -29,6 +30,7 @@ impl Default for Event {
 		Self::Created {
 			id: Default::default(),
 			project_id: Default::default(),
+			issue_number: Default::default(),
 			gate: Default::default(),
 		}
 	}
@@ -52,8 +54,13 @@ mod test {
 	use serde_json::{json, Value};
 
 	#[fixture]
-	fn project_id() -> String {
-		String::from("123")
+	fn project_id() -> GithubProjectId {
+		123
+	}
+
+	#[fixture]
+	fn issue_number() -> GithubIssueNumber {
+		456
 	}
 
 	#[fixture]
@@ -74,12 +81,14 @@ mod test {
 	#[rstest]
 	fn contribution_created_event_display_as_json(
 		contribution_id: ContributionId,
-		project_id: String,
+		project_id: GithubProjectId,
+		issue_number: GithubIssueNumber,
 		gate: u8,
 	) {
 		let event = Event::Created {
 			id: contribution_id.clone(),
-			project_id: project_id.clone(),
+			project_id,
+			issue_number,
 			gate,
 		};
 

@@ -36,14 +36,18 @@ impl TryFrom<ApibaraEvent> for DomainEvent {
 
 				let data = Topics::from(data);
 				match selector {
-					_ if selector == contribution::Created::selector() =>
-						Ok(contribution::Created::to_domain_event(data)?),
-					_ if selector == contribution::Assigned::selector() =>
-						Ok(contribution::Assigned::to_domain_event(data)?),
-					_ if selector == contribution::Unassigned::selector() =>
-						Ok(contribution::Unassigned::to_domain_event(data)?),
-					_ if selector == contribution::Validated::selector() =>
-						Ok(contribution::Validated::to_domain_event(data)?),
+					_ if selector == contribution::Created::selector() => {
+						Ok(contribution::Created::to_domain_event(data)?)
+					},
+					_ if selector == contribution::Assigned::selector() => {
+						Ok(contribution::Assigned::to_domain_event(data)?)
+					},
+					_ if selector == contribution::Unassigned::selector() => {
+						Ok(contribution::Unassigned::to_domain_event(data)?)
+					},
+					_ if selector == contribution::Validated::selector() => {
+						Ok(contribution::Validated::to_domain_event(data)?)
+					},
 					_ => Err(Self::Error::Unsupported),
 				}
 			},
@@ -86,7 +90,8 @@ mod test {
 		assert_eq!(
 			DomainEvent::Contribution(ContributionEvent::Created {
 				id: Default::default(),
-				project_id: u8::default().to_string(),
+				project_id: Default::default(),
+				issue_number: Default::default(),
 				gate: Default::default()
 			}),
 			DomainEvent::try_from(apibara_event).unwrap()

@@ -19,7 +19,7 @@ pub enum Error {
 pub trait Service: Send + Sync {
 	async fn create(
 		&self,
-		id: &ContributionOnChainId,
+		id: &contribution::Id,
 		project_id: &GithubProjectId,
 		issue_number: &GithubIssueNumber,
 		gate: u8,
@@ -59,7 +59,7 @@ impl ContributionService {
 impl Service for ContributionService {
 	async fn create(
 		&self,
-		id: &ContributionOnChainId,
+		id: &contribution::Id,
 		project_id: &GithubProjectId,
 		issue_number: &GithubIssueNumber,
 		gate: u8,
@@ -85,7 +85,7 @@ impl Service for ContributionService {
 
 		let contribution = Contribution {
 			id: uuid.into(),
-			onchain_id: id.to_owned(),
+			onchain_id: id.to_string(),
 			project_id: project_id.to_string(),
 			contributor_id: None,
 			status: ContributionStatus::Open,
@@ -201,8 +201,8 @@ mod test {
 	}
 
 	#[fixture]
-	fn contribution_onchain_id() -> ContributionOnChainId {
-		String::from("0x123")
+	fn contribution_onchain_id() -> crate::contribution::Id {
+		"0x123".parse().unwrap()
 	}
 
 	#[fixture]
@@ -213,14 +213,14 @@ mod test {
 	#[fixture]
 	fn contribution(
 		contribution_id: ContributionId,
-		contribution_onchain_id: ContributionOnChainId,
+		contribution_onchain_id: crate::contribution::Id,
 		project_id: GithubProjectId,
 		gate: u8,
 		github_issue: GithubIssue,
 	) -> Contribution {
 		Contribution {
 			id: contribution_id,
-			onchain_id: contribution_onchain_id,
+			onchain_id: contribution_onchain_id.to_string(),
 			project_id: project_id.to_string(),
 			gate,
 			contributor_id: None,
@@ -250,7 +250,7 @@ mod test {
 		issue_number: GithubIssueNumber,
 		github_issue: GithubIssue,
 		contribution: Contribution,
-		contribution_onchain_id: ContributionOnChainId,
+		contribution_onchain_id: crate::contribution::Id,
 		gate: u8,
 		contribution_id: ContributionId,
 	) {
