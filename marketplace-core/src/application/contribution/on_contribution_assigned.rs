@@ -61,7 +61,8 @@ impl Usecase for OnContributionAssigned {
 		contribution.contributor_id = Some(contributor_id.to_owned());
 		self.contribution_repository.update(contribution).map_err(DomainError::from)?;
 
-		// Note that we handle the None case properly as the old way to apply (ie. typeform) didn't create any application.
+		// Note that we handle the None case properly as the old way to apply (ie. typeform) didn't
+		// create any application.
 		match self
 			.application_repository
 			.list_by_contribution(&contribution_id, Some(contributor_id.to_owned()))
