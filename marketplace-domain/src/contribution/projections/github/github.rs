@@ -69,7 +69,6 @@ impl WithGithubDataProjection {
 				context: issue.clone().and_then(|issue| issue.context),
 				r#type: issue.and_then(|issue| issue.r#type),
 			},
-			..Default::default()
 		};
 
 		self.contribution_repository.create(contribution).map_err_into()

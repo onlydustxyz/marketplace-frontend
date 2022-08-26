@@ -4,13 +4,13 @@ use std::{
 	sync::{Arc, RwLock, RwLockReadGuard, RwLockWriteGuard},
 };
 
-pub struct Confirmed {
+pub struct WithBockConfirmationCount {
 	observer: Arc<dyn Observer>,
 	confirmation_blocks_count: u64,
 	events: RwLock<VecDeque<(Event, u64)>>,
 }
 
-impl Confirmed {
+impl WithBockConfirmationCount {
 	pub fn new(observer: Arc<dyn Observer>, confirmation_blocks_count: u64) -> Self {
 		Self {
 			observer,
@@ -32,7 +32,7 @@ impl Confirmed {
 	}
 }
 
-impl Observer for Confirmed {
+impl Observer for WithBockConfirmationCount {
 	fn on_new_block(&self, _block_hash: &crate::domain::BlockHash, block_number: u64) {
 		while let Some((_, event_block)) = self.peek() {
 			if block_number >= event_block + self.confirmation_blocks_count {
@@ -42,11 +42,20 @@ impl Observer for Confirmed {
 				return;
 			}
 		}
-		println!("END");
 	}
 
 	fn on_new_event(&self, event: &Event, block_number: u64) {
 		self.events_mut().push_front((event.to_owned(), block_number));
+	}
+}
+
+pub trait ConfirmedObserver {
+	fn confirmed(self, confirmation_blocks_count: u64) -> WithBockConfirmationCount;
+}
+
+impl<O: Observer + Sized + 'static> ConfirmedObserver for O {
+	fn confirmed(self, confirmation_blocks_count: u64) -> WithBockConfirmationCount {
+		WithBockConfirmationCount::new(Arc::new(self), confirmation_blocks_count)
 	}
 }
 
@@ -74,7 +83,7 @@ mod test {
 	fn should_call_observer_only_if_confirmed(event: Event, mut observer: MockBlockchainObserver) {
 		observer.expect_on_new_event().with(eq(event.clone()), eq(1)).return_const(());
 
-		let confirmed = Confirmed::new(Arc::new(observer), 3);
+		let confirmed = WithBockConfirmationCount::new(Arc::new(observer), 3);
 		confirmed.on_new_event(&event, 1);
 		confirmed.on_new_block(&Default::default(), 4);
 	}
@@ -86,7 +95,7 @@ mod test {
 	) {
 		observer.expect_on_new_event().return_const(());
 
-		let confirmed = Confirmed::new(Arc::new(observer), 3);
+		let confirmed = WithBockConfirmationCount::new(Arc::new(observer), 3);
 		confirmed.on_new_event(&event, 1);
 		confirmed.on_new_block(&Default::default(), 42);
 	}
@@ -95,7 +104,7 @@ mod test {
 	fn should_call_observer_only_once(event: Event, mut observer: MockBlockchainObserver) {
 		observer.expect_on_new_event().times(1).return_const(());
 
-		let confirmed = Confirmed::new(Arc::new(observer), 3);
+		let confirmed = WithBockConfirmationCount::new(Arc::new(observer), 3);
 		confirmed.on_new_event(&event, 1);
 		confirmed.on_new_block(&Default::default(), 4);
 		confirmed.on_new_block(&Default::default(), 5);
@@ -110,7 +119,7 @@ mod test {
 	) {
 		observer.expect_on_new_event().never();
 
-		let confirmed = Confirmed::new(Arc::new(observer), 3);
+		let confirmed = WithBockConfirmationCount::new(Arc::new(observer), 3);
 		confirmed.on_new_event(&event, 1);
 		confirmed.on_new_block(&Default::default(), 1);
 		confirmed.on_new_block(&Default::default(), 2);

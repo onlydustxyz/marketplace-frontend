@@ -11,4 +11,4 @@ mod state;
 pub use state::State;
 
 mod projections;
-pub use projections::WithGithubDataProjection as ContributionWithGithubDataProjection;
+pub use projections::WithGithubDataProjection;

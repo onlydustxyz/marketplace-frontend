@@ -56,12 +56,14 @@ impl Builder {
 	}
 
 	/// If the indexer we are creating already exists, do nothing
+	#[allow(dead_code)]
 	pub fn on_conflict_do_nothing(&mut self) -> &mut Self {
 		self.on_conflict = OnConflictAction::DoNothing;
 		self
 	}
 
 	/// If the indexer we are creating already exists, delete it and re-create it
+	#[allow(dead_code)]
 	pub fn on_conflict_recreate(&mut self) -> &mut Self {
 		self.on_conflict = OnConflictAction::Recreate;
 		self

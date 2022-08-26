@@ -4,7 +4,11 @@ mod infrastructure;
 
 use crate::{application::IndexerBuilder, domain::*, infrastructure::ApibaraClient};
 use dotenv::dotenv;
-use marketplace_domain::ContractAddress;
+use marketplace_domain::{
+	ContractAddress, ContributionServiceImplementation, ContributionWithGithubDataProjection,
+	RandomUuidGenerator,
+};
+use marketplace_infrastructure::{database, github};
 use slog::{o, Drain, Logger};
 use std::sync::Arc;
 
@@ -34,21 +38,60 @@ async fn main() {
 
 	let indexer = IndexerBuilder::new(apibara_client.clone())
 		.network(Network::Starknet)
-		.start_at_block(0)
+		.start_at_block(311611)
 		.on_conflict_recreate()
-		.filter(registry_contract_address(), "GithubIdentifierRegistered")
-		.filter(registry_contract_address(), "GithubIdentifierUnregistered")
-		.build("github_registration-indexer".into())
+		.filter(contributions_contract_address(), "ContributionCreated")
+		.filter(contributions_contract_address(), "ContributionAssigned")
+		.filter(contributions_contract_address(), "ContributionUnassigned")
+		.filter(contributions_contract_address(), "ContributionValidated")
+		.build("contribution-indexer".into())
 		.await
 		.expect("Unable to create the indexer");
 
+	let database = Arc::new(database::Client::new(database::init_pool()));
+	let github = Arc::new(github::Client::new());
+
+	let contribution_observer = build_contribution_observers(database.clone(), github.clone());
+
 	apibara_client
-		.fetch_new_events(&indexer, Arc::new(BlockchainLogger::default()))
+		.fetch_new_events(&indexer, contribution_observer)
 		.await
 		.expect("Error while fetching events");
 }
 
-fn registry_contract_address() -> ContractAddress {
-	let address = std::env::var("REGISTRY_ADDRESS").expect("REGISTRY_ADDRESS must be set");
-	address.parse().expect("REGISTRY_ADDRESS is not a valid contract address")
+fn contributions_contract_address() -> ContractAddress {
+	let address =
+		std::env::var("CONTRIBUTIONS_ADDRESS").expect("CONTRIBUTIONS_ADDRESS must be set");
+	address.parse().expect("CONTRIBUTIONS_ADDRESS is not a valid contract address")
+}
+
+fn build_contribution_observers(
+	database: Arc<database::Client>,
+	github: Arc<github::Client>,
+) -> Arc<dyn BlockchainObserver> {
+	let confirmation_blocks_count = 3;
+
+	let contribution_with_github_projection =
+		ContributionWithGithubDataProjection::new(database.clone(), github);
+
+	let contribution_service = ContributionServiceImplementation::new(
+		database.clone(),
+		database.clone(),
+		database,
+		Arc::new(RandomUuidGenerator),
+	);
+
+	let observer = BlockchainObserverComposite::new(vec![
+		Arc::new(BlockchainLogger::default()),
+		Arc::new(
+			ContributionObserver::new(Arc::new(contribution_with_github_projection))
+				.confirmed(confirmation_blocks_count),
+		),
+		Arc::new(
+			ApplicationObserver::new(Arc::new(contribution_service))
+				.confirmed(confirmation_blocks_count),
+		),
+	]);
+
+	Arc::new(observer)
 }
