@@ -3,7 +3,6 @@ use std::str::FromStr;
 use crate::database::{init_pool, Client};
 use itertools::Itertools;
 use marketplace_domain::*;
-use uuid::Uuid;
 
 #[test]
 #[ignore = "require a database"]
@@ -11,7 +10,7 @@ fn store_and_find_one() {
 	let client = Client::new(init_pool());
 
 	let project = Project {
-		id: Uuid::new_v4().to_string(),
+		id: 666,
 		name: "name".to_string(),
 		owner: "owner".to_string(),
 	};
@@ -28,12 +27,12 @@ fn store_and_find_multiple() {
 	let client = Client::new(init_pool());
 
 	let project1 = Project {
-		id: Uuid::new_v4().to_string(),
+		id: 111,
 		name: "name".to_string(),
 		owner: "owner".to_string(),
 	};
 	let project2 = Project {
-		id: Uuid::new_v4().to_string(),
+		id: 222,
 		name: "name".to_string(),
 		owner: "owner".to_string(),
 	};
@@ -52,13 +51,14 @@ fn store_and_find_with_contributions() {
 	let client = Client::new(init_pool());
 
 	let project = Project {
-		id: Uuid::new_v4().to_string(),
+		id: 123,
 		name: "name".to_string(),
 		owner: "owner".to_string(),
 	};
 	let contribution1 = Contribution {
 		id: ContributionId::from_str("0x01").unwrap(),
-		project_id: project.id.clone(),
+		project_id: project.id,
+		issue_number: 23,
 		contributor_id: None,
 		title: None,
 		description: None,
@@ -69,7 +69,8 @@ fn store_and_find_with_contributions() {
 	};
 	let contribution2 = Contribution {
 		id: ContributionId::from_str("0x02").unwrap(),
-		project_id: project.id.clone(),
+		project_id: project.id,
+		issue_number: 34,
 		contributor_id: None,
 		title: None,
 		description: None,

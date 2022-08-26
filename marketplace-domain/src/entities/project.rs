@@ -1,8 +1,8 @@
-pub type Id = String;
+use crate::GithubProjectId;
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Project {
-	pub id: Id,
+	pub id: GithubProjectId,
 	pub owner: String,
 	pub name: String,
 }

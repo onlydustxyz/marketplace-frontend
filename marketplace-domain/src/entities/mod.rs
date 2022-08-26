@@ -2,7 +2,7 @@ mod contribution;
 pub use contribution::{Contribution, Metadata as ContributionMetadata};
 
 mod project;
-pub use project::{Id as ProjectId, Project};
+pub use project::Project;
 
 mod contributor;
 pub use contributor::{Contributor, Id as ContributorId};

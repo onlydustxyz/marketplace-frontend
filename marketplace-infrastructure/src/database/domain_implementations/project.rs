@@ -54,7 +54,7 @@ impl ProjectRepository for Client {
 impl From<models::Project> for Project {
 	fn from(project: models::Project) -> Self {
 		Self {
-			id: project.id,
+			id: project.id.parse().unwrap(),
 			name: project.name,
 			owner: project.owner,
 		}
@@ -64,7 +64,7 @@ impl From<models::Project> for Project {
 impl From<Project> for models::NewProject {
 	fn from(project: Project) -> Self {
 		Self {
-			id: project.id,
+			id: project.id.to_string(),
 			name: project.name,
 			owner: project.owner,
 		}
@@ -78,7 +78,8 @@ impl From<models::Contribution> for Contribution {
 			contributor_id: contribution
 				.contributor_id
 				.map(|id_| ContributorId::from_str(id_.as_str()).unwrap()),
-			project_id: contribution.project_id,
+			project_id: contribution.project_id.parse().unwrap(),
+			issue_number: contribution.issue_number.parse().unwrap(),
 			status: contribution.status.parse().unwrap_or(ContributionStatus::Open),
 			// Safe to unwrap because the value stored can only come from an u8
 			gate: contribution.gate.try_into().unwrap(),
@@ -101,10 +102,12 @@ impl From<DatabaseError> for ProjectRepositoryError {
 		match error {
 			DatabaseError::Transaction(diesel::result::Error::DatabaseError(kind, _)) => match kind
 			{
-				diesel::result::DatabaseErrorKind::UniqueViolation =>
-					Self::AlreadyExist(Box::new(error)),
-				diesel::result::DatabaseErrorKind::ForeignKeyViolation =>
-					Self::InvalidEntity(Box::new(error)),
+				diesel::result::DatabaseErrorKind::UniqueViolation => {
+					Self::AlreadyExist(Box::new(error))
+				},
+				diesel::result::DatabaseErrorKind::ForeignKeyViolation => {
+					Self::InvalidEntity(Box::new(error))
+				},
 				_ => Self::Infrastructure(Box::new(error)),
 			},
 			DatabaseError::Transaction(diesel::result::Error::NotFound) => Self::NotFound,

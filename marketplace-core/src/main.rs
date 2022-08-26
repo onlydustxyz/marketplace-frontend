@@ -18,7 +18,7 @@ use marketplace_domain::{
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
 use slog::{o, Drain, Logger};
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
 
 #[macro_use]
 extern crate rocket;

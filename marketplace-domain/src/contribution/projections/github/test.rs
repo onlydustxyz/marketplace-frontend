@@ -54,10 +54,12 @@ fn contribution(
 	project_id: GithubProjectId,
 	gate: u8,
 	github_issue: GithubIssue,
+	issue_number: GithubIssueNumber,
 ) -> Contribution {
 	Contribution {
 		id: contribution_id,
-		project_id: project_id.to_string(),
+		project_id,
+		issue_number,
 		gate,
 		contributor_id: None,
 		status: ContributionStatus::Open,

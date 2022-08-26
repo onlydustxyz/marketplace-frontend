@@ -4,7 +4,7 @@ use std::{env, time::Duration};
 use super::Cache;
 
 #[derive(Clone)]
-pub struct RepoCache(Cache<String, Repository>);
+pub struct RepoCache(Cache<u64, Repository>);
 
 fn ttl() -> Duration {
 	if let Ok(ttl) = env::var("REPO_CACHE_TTL") {
@@ -22,7 +22,7 @@ impl Default for RepoCache {
 }
 
 impl RepoCache {
-	pub fn inner_ref(&self) -> &Cache<String, Repository> {
+	pub fn inner_ref(&self) -> &Cache<u64, Repository> {
 		&self.0
 	}
 }

@@ -11,7 +11,7 @@ impl<A: Account + Send + Sync + 'static> OnchainContributionService for Client<A
 			.block_on(async move {
 				cloned_contribution_contract
 					.execute_actions(&[Action::CreateContribution {
-						github_composite: contribution.onchain_id,
+						github_composite: contribution.old_composite_id(),
 						project_id: contribution.project_id,
 						gate: contribution.gate,
 					}])

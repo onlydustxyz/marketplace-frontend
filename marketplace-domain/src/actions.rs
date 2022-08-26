@@ -3,8 +3,8 @@ use crate::*;
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Action {
 	CreateContribution {
-		github_composite: String,
-		project_id: ProjectId,
+		github_composite: u64,
+		project_id: GithubProjectId,
 		gate: u8,
 	},
 	AssignContributor {

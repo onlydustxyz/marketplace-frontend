@@ -28,6 +28,7 @@ table! {
     contributions (id) {
         id -> Text,
         project_id -> Text,
+        issue_number -> Text,
         status -> Text,
         gate -> Int4,
         contributor_id -> Nullable<Text>,

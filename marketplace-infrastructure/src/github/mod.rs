@@ -9,7 +9,7 @@ use marketplace_domain::{self as domain, *};
 impl From<models::RepositoryWithExtension> for Project {
 	fn from(repo: models::RepositoryWithExtension) -> Self {
 		Self {
-			id: repo.inner.id.to_string(),
+			id: repo.inner.id.0,
 			owner: repo.inner.owner.expect("Invalid repo owner received from github API").login,
 			name: repo.inner.name,
 		}
@@ -42,7 +42,7 @@ impl Client {
 		}
 	}
 
-	pub async fn issue(&self, project_id: i64, issue_number: i64) -> Result<OctocrabIssue> {
+	pub async fn issue(&self, project_id: u64, issue_number: i64) -> Result<OctocrabIssue> {
 		let issue = self
 			.octo
 			.get::<octocrab::models::issues::Issue, String, ()>(
@@ -68,10 +68,7 @@ impl Client {
 			.map_err(anyhow::Error::msg)
 	}
 
-	pub async fn repository_by_id(
-		&self,
-		project_id_: &str,
-	) -> Result<octocrab::models::Repository> {
+	pub async fn repository_by_id(&self, project_id_: u64) -> Result<octocrab::models::Repository> {
 		self.octo
 			.get::<octocrab::models::Repository, String, ()>(
 				format!("{}repositories/{}", self.octo.base_url, project_id_),

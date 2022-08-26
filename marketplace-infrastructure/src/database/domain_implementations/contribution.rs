@@ -80,7 +80,8 @@ impl From<Contribution> for models::Contribution {
 	fn from(contribution: Contribution) -> Self {
 		Self {
 			id: contribution.id.to_string(),
-			project_id: contribution.project_id,
+			project_id: contribution.project_id.to_string(),
+			issue_number: contribution.issue_number.to_string(),
 			status: contribution.status.to_string(),
 			contributor_id: contribution.contributor_id.map(|id| id.to_string()),
 			gate: contribution.gate as i32,
@@ -101,10 +102,12 @@ impl From<DatabaseError> for ContributionRepositoryError {
 		match error {
 			DatabaseError::Transaction(diesel::result::Error::DatabaseError(kind, _)) => match kind
 			{
-				diesel::result::DatabaseErrorKind::UniqueViolation =>
-					Self::AlreadyExist(Box::new(error)),
-				diesel::result::DatabaseErrorKind::ForeignKeyViolation =>
-					Self::InvalidEntity(Box::new(error)),
+				diesel::result::DatabaseErrorKind::UniqueViolation => {
+					Self::AlreadyExist(Box::new(error))
+				},
+				diesel::result::DatabaseErrorKind::ForeignKeyViolation => {
+					Self::InvalidEntity(Box::new(error))
+				},
 				_ => Self::Infrastructure(Box::new(error)),
 			},
 			DatabaseError::Transaction(diesel::result::Error::NotFound) => Self::NotFound,

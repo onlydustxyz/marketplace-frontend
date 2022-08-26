@@ -98,7 +98,7 @@ async fn build_project(
 	let github_repository = repo_cache
 		.inner_ref()
 		.get_or_insert(&project.project.id, || async {
-			match github::Client::new().repository_by_id(&project.project.id).await {
+			match github::Client::new().repository_by_id(project.project.id).await {
 				Ok(repo) => Some(repo),
 				Err(e) => {
 					warn!("Unable to fetch repository from GitHub: {}", e.to_string());
@@ -132,7 +132,7 @@ async fn build_project(
 		.collect();
 
 	let project = dto::Project {
-		id: project.project.id,
+		id: project.project.id.to_string(),
 		title: project.project.name.clone(),
 		description: github_repository.description,
 		logo: github_repository.owner.unwrap().avatar_url,

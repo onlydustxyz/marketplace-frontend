@@ -1,5 +1,5 @@
 use url::Url;
-pub type ProjectId = i64;
+pub type ProjectId = u64;
 pub type IssueNumber = i64;
 
 #[derive(Debug, PartialEq, Eq, Clone)]

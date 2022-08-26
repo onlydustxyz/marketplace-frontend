@@ -14,7 +14,7 @@ use super::Client;
 
 fn init_project(client: &Client) -> Project {
 	let project = Project {
-		id: Uuid::new_v4().to_string(),
+		id: 666,
 		name: Uuid::new_v4().to_string(),
 		owner: Uuid::new_v4().to_string(),
 	};
