@@ -1,4 +1,3 @@
-use super::super::*;
 use crate::*;
 use futures::executor::block_on;
 use log::error;
@@ -16,26 +15,23 @@ pub enum Error {
 
 pub struct WithGithubDataProjection {
 	contribution_repository: Arc<dyn ContributionRepository>,
-	uuid_generator: Arc<dyn UuidGenerator>,
 	github_issue_repository: Arc<dyn GithubIssueRepository>,
 }
 
 impl WithGithubDataProjection {
 	pub fn new(
 		contribution_repository: Arc<dyn ContributionRepository>,
-		uuid_generator: Arc<dyn UuidGenerator>,
 		github_issue_repository: Arc<dyn GithubIssueRepository>,
 	) -> Self {
 		Self {
 			contribution_repository,
-			uuid_generator,
 			github_issue_repository,
 		}
 	}
 
 	async fn create(
 		&self,
-		id: &ContributionAggregateId,
+		id: &ContributionId,
 		project_id: &GithubProjectId,
 		issue_number: &GithubIssueNumber,
 		gate: u8,
@@ -57,11 +53,8 @@ impl WithGithubDataProjection {
 			},
 		};
 
-		let uuid = self.uuid_generator.new_uuid();
-
 		let contribution = Contribution {
-			id: uuid.into(),
-			onchain_id: id.to_string(),
+			id: id.to_owned(),
 			project_id: project_id.to_string(),
 			contributor_id: None,
 			status: ContributionStatus::Open,
@@ -79,44 +72,33 @@ impl WithGithubDataProjection {
 			..Default::default()
 		};
 
-		self.contribution_repository
-			.create(contribution, Default::default())
-			.map_err_into()
+		self.contribution_repository.create(contribution).map_err_into()
 	}
 
-	fn assign(
-		&self,
-		id: &ContributionAggregateId,
-		contributor_id: &ContributorId,
-	) -> Result<(), Error> {
+	fn assign(&self, id: &ContributionId, contributor_id: &ContributorId) -> Result<(), Error> {
 		self.contribution_repository
 			.update_contributor_and_status(
-				id.to_string(),
+				id.to_owned(),
 				Some(contributor_id.to_owned()),
 				ContributionStatus::Assigned,
-				Default::default(),
 			)
 			.map_err_into()
 	}
 
-	fn unassign(&self, id: &ContributionAggregateId) -> Result<(), Error> {
+	fn unassign(&self, id: &ContributionId) -> Result<(), Error> {
 		self.contribution_repository
-			.update_status(id.to_string(), ContributionStatus::Open, Default::default())
+			.update_status(id.to_owned(), ContributionStatus::Open)
 			.map_err_into()
 	}
 
-	fn validate(&self, id: &ContributionAggregateId) -> Result<(), Error> {
+	fn validate(&self, id: &ContributionId) -> Result<(), Error> {
 		self.contribution_repository
-			.update_status(
-				id.to_string(),
-				ContributionStatus::Completed,
-				Default::default(),
-			)
+			.update_status(id.to_owned(), ContributionStatus::Completed)
 			.map_err_into()
 	}
 }
 
-impl Projection<ContributionAggregate> for WithGithubDataProjection {
+impl EventProjection<ContributionAggregate> for WithGithubDataProjection {
 	fn project(&self, event: &ContributionEvent) {
 		let result = match event {
 			ContributionEvent::Created {
