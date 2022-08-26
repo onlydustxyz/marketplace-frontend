@@ -30,6 +30,9 @@ hex = "0.4.3"
 # Errors
 thiserror = "1.0.31"
 
+# Log
+log = "0.4.17"
+
 # Serde
 serde = { version = "1.0.137", features = ["derive"] }
 serde_json = { version = "1.0.81" }
