@@ -3,8 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use marketplace_domain as domain;
 
-#[derive(Serialize, JsonSchema, Deserialize, Clone, PartialEq, Eq, Debug)]
-// #[cfg_attr(test, derive(PartialEq, Eq, Debug))]
+#[derive(Serialize, JsonSchema, Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Application {
 	pub id: String,
 	pub contribution_id: String,

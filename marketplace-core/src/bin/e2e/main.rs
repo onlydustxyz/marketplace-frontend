@@ -22,10 +22,10 @@ async fn main() {
 
 	let starkonquest = find_project_by_title(&list_all_projects().await, "starkonquest")
 		.expect("Project not found in list of all projects");
-	let starkonquest_id: u64 = starkonquest.id.parse().expect("starkonquest id is not a number");
+	let starkonquest_id: u128 = starkonquest.id.parse().expect("starkonquest id is not a number");
 
-	const ISSUE_NUMBER: u64 = 51;
-	add_contribution(ISSUE_NUMBER, starkonquest_id, 0, "0x123").await;
+	const ISSUE_NUMBER: u128 = 51;
+	add_contribution(ISSUE_NUMBER, starkonquest_id, 0).await;
 
 	wait_for_result(format!("{DATA_PATH}/contributions_open.json")).await;
 

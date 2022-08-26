@@ -21,7 +21,6 @@ pub struct Contribution {
 	pub external_link: Option<Url>,
 	pub gate: u8,
 	pub metadata: Metadata,
-	pub validator: ContractAddress,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Default)]

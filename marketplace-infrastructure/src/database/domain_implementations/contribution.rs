@@ -136,7 +136,6 @@ impl From<(Contribution, String)> for models::Contribution {
 			duration: contribution.metadata.duration,
 			context: contribution.metadata.context,
 			type_: contribution.metadata.r#type,
-			validator: contribution.validator.to_string(),
 		}
 	}
 }
@@ -158,7 +157,6 @@ impl From<Contribution> for models::ContributionUpdate {
 			duration: contribution.metadata.duration,
 			context: contribution.metadata.context,
 			type_: contribution.metadata.r#type,
-			validator: contribution.validator.to_string(),
 		}
 	}
 }
