@@ -1,4 +1,4 @@
-pub trait Aggregate {
+pub trait Aggregate: Send + Sync {
 	type Id;
 	type State;
 	type Event;

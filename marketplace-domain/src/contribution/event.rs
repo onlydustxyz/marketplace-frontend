@@ -7,20 +7,20 @@ use serde_json;
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	Created {
-		id: contribution::Id,
+		id: ContributionAggregateId,
 		project_id: GithubProjectId,
 		issue_number: GithubIssueNumber,
 		gate: u8,
 	},
 	Assigned {
-		id: contribution::Id,
+		id: ContributionAggregateId,
 		contributor_id: ContributorId,
 	},
 	Unassigned {
-		id: contribution::Id,
+		id: ContributionAggregateId,
 	},
 	Validated {
-		id: contribution::Id,
+		id: ContributionAggregateId,
 	},
 }
 
@@ -48,7 +48,7 @@ impl Display for Event {
 
 #[cfg(test)]
 mod test {
-	use super::{contribution::Id as ContributionId, *};
+	use super::{ContributionAggregateId as ContributionId, *};
 	use assert_json_diff::assert_json_eq;
 	use rstest::*;
 	use serde_json::{json, Value};
@@ -97,6 +97,7 @@ mod test {
 				"Created": {
 					"id": contribution_id,
 					"project_id": project_id,
+					"issue_number": issue_number,
 					"gate": gate
 				}
 			}),
