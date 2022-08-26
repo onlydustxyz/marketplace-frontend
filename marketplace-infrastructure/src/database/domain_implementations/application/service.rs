@@ -23,7 +23,6 @@ impl ApplicationService for Client {
 		}
 
 		let res: Result<(), diesel::result::Error> = connection.transaction(|| {
-			// Set the chosen one to accepted
 			let application = diesel::update(
 				applications::dsl::applications
 					.filter(applications::id.eq(application.id().as_uuid())),
@@ -31,7 +30,6 @@ impl ApplicationService for Client {
 			.set(applications::status.eq(Status::Accepted))
 			.get_result::<models::Application>(&*connection)?;
 
-			// Set all other applications to refused
 			diesel::update(
 				applications::dsl::applications.filter(
 					applications::contribution_id
@@ -57,7 +55,6 @@ impl ApplicationService for Client {
 			.map_err(|e| ApplicationServiceError::Infrastructure(Box::new(e)))?;
 
 		let res: Result<(), diesel::result::Error> = connection.transaction(|| {
-			// Set all applications to refused
 			diesel::update(
 				applications::dsl::applications
 					.filter(applications::contribution_id.eq(contribution_id.as_uuid())),
