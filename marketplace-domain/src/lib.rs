@@ -26,8 +26,8 @@ pub use event_store::{Error as EventStoreError, Store as EventStore};
 mod aggregate_root;
 pub use aggregate_root::AggregateRoot;
 
-mod event_projection;
-pub use event_projection::Projection as EventProjection;
+mod projector;
+pub use projector::Projector;
 
 mod contribution;
 pub use contribution::{
