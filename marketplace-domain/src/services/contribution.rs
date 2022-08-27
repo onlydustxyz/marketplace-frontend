@@ -167,7 +167,7 @@ mod test {
 			.expect_find_by_id()
 			.with(eq(contribution_id.clone()))
 			.returning(move |_| {
-				Ok(Some(Contribution {
+				Ok(Some(ContributionProjection {
 					id: cloned_contribution_id.clone(),
 					status: ContributionStatus::Open,
 					..Default::default()
@@ -203,7 +203,7 @@ mod test {
 			.expect_find_by_id()
 			.with(eq(contribution_id.clone()))
 			.returning(move |_| {
-				Ok(Some(Contribution {
+				Ok(Some(ContributionProjection {
 					id: cloned_contribution_id.clone(),
 					status: ContributionStatus::Completed,
 					..Default::default()
@@ -231,7 +231,7 @@ mod test {
 		let contribution_id = ContributionId::from(100);
 		let contributor_id = ContributorId::from(42);
 
-		let contribution = Contribution {
+		let contribution = ContributionProjection {
 			id: contribution_id.clone(),
 			status: ContributionStatus::Open,
 			..Default::default()

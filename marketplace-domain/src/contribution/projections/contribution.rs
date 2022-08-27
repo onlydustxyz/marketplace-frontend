@@ -2,7 +2,7 @@ use crate::*;
 use url::Url;
 
 #[derive(Debug, PartialEq, Eq, Clone, Default)]
-pub struct Contribution {
+pub struct Projection {
 	pub id: ContributionId,
 	pub project_id: GithubProjectId,
 	pub issue_number: GithubIssueNumber,
@@ -15,7 +15,7 @@ pub struct Contribution {
 	pub metadata: Metadata,
 }
 
-impl Contribution {
+impl Projection {
 	pub fn old_composite_id(&self) -> u64 {
 		let project_id: u64 = self.project_id;
 		let issue_number = self.issue_number as u64;

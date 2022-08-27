@@ -44,8 +44,8 @@ pub struct Metadata {
 	pub r#type: Option<String>,
 }
 
-impl From<domain::Contribution> for Contribution {
-	fn from(contribution: domain::Contribution) -> Self {
+impl From<domain::ContributionProjection> for Contribution {
+	fn from(contribution: domain::ContributionProjection) -> Self {
 		Contribution {
 			id: contribution.id.to_string(),
 			title: contribution.title.unwrap_or_default(),

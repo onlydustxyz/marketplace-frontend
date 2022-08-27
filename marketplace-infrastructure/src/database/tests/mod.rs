@@ -1,6 +1,6 @@
 use uuid::Uuid;
 
-use marketplace_domain::{Contribution, Project};
+use marketplace_domain::{ContributionProjection, Project};
 
 mod application_repository;
 mod application_service;
@@ -23,14 +23,17 @@ fn init_project(client: &Client) -> Project {
 	project
 }
 
-fn init_contribution(client: &Client) -> Contribution {
+fn init_contribution(client: &Client) -> ContributionProjection {
 	init_contribution_with_status(client, Default::default())
 }
 
-fn init_contribution_with_status(client: &Client, status: ContributionStatus) -> Contribution {
+fn init_contribution_with_status(
+	client: &Client,
+	status: ContributionStatus,
+) -> ContributionProjection {
 	let project = init_project(client);
 
-	let contribution = Contribution {
+	let contribution = ContributionProjection {
 		id: 1.into(),
 		project_id: project.id,
 		status,

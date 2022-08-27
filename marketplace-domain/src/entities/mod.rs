@@ -1,6 +1,3 @@
-mod contribution;
-pub use contribution::{Contribution, Metadata as ContributionMetadata};
-
 mod project;
 pub use project::Project;
 

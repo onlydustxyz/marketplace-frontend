@@ -12,3 +12,6 @@ pub use state::State;
 
 mod projectors;
 pub use projectors::ContributionProjector;
+
+mod projections;
+pub use projections::{ContributionProjection, ContributionProjectionMetadata};

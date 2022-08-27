@@ -12,7 +12,10 @@ pub enum Error {
 #[async_trait]
 #[automock]
 pub trait Service: Send + Sync {
-	async fn create(&self, contribution: Contribution) -> Result<HexPrefixedString, Error>;
+	async fn create(
+		&self,
+		contribution: ContributionProjection,
+	) -> Result<HexPrefixedString, Error>;
 	async fn assign_contributor(
 		&self,
 		contribution_id: ContributionId,

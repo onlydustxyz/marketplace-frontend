@@ -150,7 +150,7 @@ async fn build_project(
 }
 
 async fn build_contribution(
-	contribution: Contribution,
+	contribution: ContributionProjection,
 	contributor_cache: &caches::ContributorCache,
 ) -> Option<dto::Contribution> {
 	let contributor = OptionFuture::from(

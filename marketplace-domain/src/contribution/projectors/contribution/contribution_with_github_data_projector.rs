@@ -53,7 +53,7 @@ impl WithGithubDataProjector {
 			},
 		};
 
-		let contribution = Contribution {
+		let contribution = ContributionProjection {
 			id: id.to_owned(),
 			project_id: *project_id,
 			issue_number: *issue_number,
@@ -63,7 +63,7 @@ impl WithGithubDataProjector {
 			title: issue.clone().map(|issue| issue.title),
 			description: issue.clone().and_then(|issue| issue.description),
 			external_link: issue.clone().map(|issue| issue.external_link),
-			metadata: ContributionMetadata {
+			metadata: ContributionProjectionMetadata {
 				difficulty: issue.clone().and_then(|issue| issue.difficulty),
 				technology: issue.clone().and_then(|issue| issue.technology),
 				duration: issue.clone().and_then(|issue| issue.duration),

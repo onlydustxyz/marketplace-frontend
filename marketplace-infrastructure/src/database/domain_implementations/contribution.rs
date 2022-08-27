@@ -7,7 +7,7 @@ impl ContributionRepository for Client {
 	fn find_by_id(
 		&self,
 		contribution_id: &ContributionId,
-	) -> Result<Option<Contribution>, ContributionRepositoryError> {
+	) -> Result<Option<ContributionProjection>, ContributionRepositoryError> {
 		let connection = self
 			.connection()
 			.map_err(|e| ContributionRepositoryError::Infrastructure(e.into()))?;
@@ -22,7 +22,10 @@ impl ContributionRepository for Client {
 		}
 	}
 
-	fn create(&self, contribution: Contribution) -> Result<(), ContributionRepositoryError> {
+	fn create(
+		&self,
+		contribution: ContributionProjection,
+	) -> Result<(), ContributionRepositoryError> {
 		let connection = self
 			.connection()
 			.map_err(|e| ContributionRepositoryError::Infrastructure(e.into()))?;
@@ -76,8 +79,8 @@ impl ContributionRepository for Client {
 	}
 }
 
-impl From<Contribution> for models::Contribution {
-	fn from(contribution: Contribution) -> Self {
+impl From<ContributionProjection> for models::Contribution {
+	fn from(contribution: ContributionProjection) -> Self {
 		Self {
 			id: contribution.id.to_string(),
 			project_id: contribution.project_id.to_string(),
