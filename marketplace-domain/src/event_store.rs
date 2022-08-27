@@ -9,8 +9,11 @@ pub enum Error {
 	InvalidEvent,
 	#[error("Unable to append event to the store")]
 	Append,
+	#[error("Unable to list events from the store")]
+	List,
 }
 
-pub trait Store<A: AggregateRoot> {
-	fn append(&self, aggregate_id: &A::Id, events: &[A::Event]) -> Result<(), Error>;
+pub trait Store<A: AggregateRoot>: Send + Sync {
+	fn append(&self, aggregate_id: &A::Id, events: Vec<A::Event>) -> Result<(), Error>;
+	fn list_by_id(&self, aggregate_id: &A::Id) -> Result<Vec<A::Event>, Error>;
 }
