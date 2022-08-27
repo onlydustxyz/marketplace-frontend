@@ -98,7 +98,7 @@ impl WithGithubDataProjection {
 	}
 }
 
-impl Projector<ContributionAggregate> for WithGithubDataProjection {
+impl Projector<ContributionAggregateRoot> for WithGithubDataProjection {
 	fn project(&self, event: &ContributionEvent) {
 		let result = match event {
 			ContributionEvent::Created {

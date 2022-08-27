@@ -2,11 +2,11 @@ use super::*;
 use std::sync::Arc;
 
 pub struct ContributionObserver {
-	contribution_projection: Arc<dyn Projector<ContributionAggregate>>,
+	contribution_projection: Arc<dyn Projector<ContributionAggregateRoot>>,
 }
 
 impl ContributionObserver {
-	pub fn new(contribution_projection: Arc<dyn Projector<ContributionAggregate>>) -> Self {
+	pub fn new(contribution_projection: Arc<dyn Projector<ContributionAggregateRoot>>) -> Self {
 		Self {
 			contribution_projection,
 		}
@@ -30,7 +30,7 @@ mod test {
 	mock! {
 		pub ContributionProjection {}
 
-		impl Projector<ContributionAggregate> for ContributionProjection {
+		impl Projector<ContributionAggregateRoot> for ContributionProjection {
 			fn project(&self, event: &ContributionEvent);
 		}
 	}
