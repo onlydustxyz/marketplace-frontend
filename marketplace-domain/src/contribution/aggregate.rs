@@ -1,5 +1,5 @@
 use super::*;
-use crate::{EventAggregate, HexPrefixedString, ParseHexPrefixedStringError};
+use crate::{AggregateRoot, HexPrefixedString, ParseHexPrefixedStringError};
 use crypto_bigint::U256;
 use marketplace_wrappers::HexStringWrapper;
 use serde::{Deserialize, Serialize};
@@ -10,7 +10,7 @@ pub struct Id(HexPrefixedString);
 
 pub struct Aggregate;
 
-impl EventAggregate for Aggregate {
+impl AggregateRoot for Aggregate {
 	type Event = Event;
 	type Id = Id;
 	type State = State;
@@ -119,7 +119,7 @@ mod test {
 	}
 
 	fn apply(state: State, event: Event) -> State {
-		<Aggregate as EventAggregate>::apply(state, event)
+		<Aggregate as AggregateRoot>::apply(state, event)
 	}
 
 	#[rstest]
