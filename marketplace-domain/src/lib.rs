@@ -31,7 +31,7 @@ pub use projector::Projector;
 
 mod contribution;
 pub use contribution::{
-	Aggregate as ContributionAggregateRoot, AggregateId as ContributionId, ContributionProjection,
-	ContributionProjectionMetadata, ContributionProjector, Event as ContributionEvent,
-	Status as ContributionStatus,
+	AggregateId as ContributionId, ContributionAggregateRoot, ContributionEvent,
+	ContributionProjection, ContributionProjectionMetadata, ContributionProjector,
+	ContributionStatus,
 };

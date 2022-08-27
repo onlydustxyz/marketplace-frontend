@@ -1,14 +1,8 @@
-mod status;
-pub use status::Status;
-
-mod event;
-pub use event::Event;
-
-mod aggregate;
-pub use aggregate::{Aggregate, Id as AggregateId};
-
-mod state;
-pub use state::State;
+mod aggregate_root;
+pub use aggregate_root::{
+	Aggregate as ContributionAggregateRoot, Event as ContributionEvent, Id as AggregateId,
+	Status as ContributionStatus,
+};
 
 mod projectors;
 pub use projectors::ContributionProjector;

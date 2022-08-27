@@ -1,9 +1,17 @@
-use super::*;
 use crate::{AggregateRoot, HexPrefixedString, ParseHexPrefixedStringError};
 use crypto_bigint::U256;
 use marketplace_wrappers::HexStringWrapper;
 use serde::{Deserialize, Serialize};
 use std::{fmt::Display, str::FromStr};
+
+mod event;
+pub use event::Event;
+
+mod state;
+use state::State;
+
+mod status;
+pub use status::Status;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, Default, HexStringWrapper)]
 pub struct Id(HexPrefixedString);
