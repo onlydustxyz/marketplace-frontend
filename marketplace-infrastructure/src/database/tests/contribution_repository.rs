@@ -9,12 +9,12 @@ fn store_and_find() {
 
 	let project = init_project(&client);
 
-	let contribution1 = Contribution {
+	let contribution1 = ContributionProjection {
 		id: 1.into(),
 		project_id: project.id,
 		..Default::default()
 	};
-	let contribution2 = Contribution {
+	let contribution2 = ContributionProjection {
 		id: 2.into(),
 		project_id: project.id,
 		..Default::default()

@@ -125,7 +125,7 @@ mod test {
 
 		let cloned_contribution_id = contribution_id.clone();
 		contribution_repository.expect_find_by_id().returning(move |_| {
-			Ok(Some(Contribution {
+			Ok(Some(ContributionProjection {
 				id: cloned_contribution_id.clone(),
 				..Default::default()
 			}))

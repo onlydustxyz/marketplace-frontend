@@ -55,7 +55,7 @@ fn store_and_find_with_contributions() {
 		name: "name".to_string(),
 		owner: "owner".to_string(),
 	};
-	let contribution1 = Contribution {
+	let contribution1 = ContributionProjection {
 		id: ContributionId::from_str("0x01").unwrap(),
 		project_id: project.id,
 		issue_number: 23,
@@ -67,7 +67,7 @@ fn store_and_find_with_contributions() {
 		gate: 0,
 		metadata: Default::default(),
 	};
-	let contribution2 = Contribution {
+	let contribution2 = ContributionProjection {
 		id: ContributionId::from_str("0x02").unwrap(),
 		project_id: project.id,
 		issue_number: 34,

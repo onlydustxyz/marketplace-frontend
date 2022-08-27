@@ -9,7 +9,7 @@ use std::sync::Arc;
 pub trait Usecase: Send + Sync {
 	async fn send_creation_request(
 		&self,
-		contribution: Contribution,
+		contribution: ContributionProjection,
 	) -> Result<HexPrefixedString, DomainError>;
 }
 
@@ -31,7 +31,7 @@ impl CreateContribution {
 impl Usecase for CreateContribution {
 	async fn send_creation_request(
 		&self,
-		contribution: Contribution,
+		contribution: ContributionProjection,
 	) -> Result<HexPrefixedString, DomainError> {
 		self.onchain_contribution_service.create(contribution).await.map_err_into()
 	}
@@ -52,7 +52,7 @@ mod test {
 	async fn forward_request() {
 		let mut onchain_contribution_service = MockOnchainContributionService::new();
 
-		let contribution = Contribution::default();
+		let contribution = ContributionProjection::default();
 
 		onchain_contribution_service
 			.expect_create()
@@ -69,7 +69,7 @@ mod test {
 	async fn forward_request_error() {
 		let mut onchain_contribution_service = MockOnchainContributionService::new();
 
-		let contribution = Contribution::default();
+		let contribution = ContributionProjection::default();
 
 		onchain_contribution_service.expect_create().returning(|_| {
 			async {

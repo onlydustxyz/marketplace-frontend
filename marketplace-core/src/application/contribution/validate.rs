@@ -77,7 +77,7 @@ mod test {
 		let contribution_id = 12.into();
 		contribution_repository
 			.expect_find_by_id()
-			.returning(|_| Ok(Some(Contribution::default())));
+			.returning(|_| Ok(Some(ContributionProjection::default())));
 
 		onchain_contribution_service
 			.expect_validate()
@@ -147,7 +147,7 @@ mod test {
 		let contribution_id = 12.into();
 		contribution_repository
 			.expect_find_by_id()
-			.returning(|_| Ok(Some(Contribution::default())));
+			.returning(|_| Ok(Some(ContributionProjection::default())));
 
 		onchain_contribution_service.expect_validate().returning(|_| {
 			async {

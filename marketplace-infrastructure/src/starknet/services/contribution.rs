@@ -6,7 +6,7 @@ use marketplace_domain::*;
 impl<A: Account + Send + Sync + 'static> OnchainContributionService for Client<A> {
 	async fn create(
 		&self,
-		contribution: Contribution,
+		contribution: ContributionProjection,
 	) -> Result<HexPrefixedString, OnchainContributionServiceError> {
 		let transaction_hash = self
 			.contributions

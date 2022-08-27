@@ -71,7 +71,7 @@ impl From<Project> for models::NewProject {
 	}
 }
 
-impl From<models::Contribution> for Contribution {
+impl From<models::Contribution> for ContributionProjection {
 	fn from(contribution: models::Contribution) -> Self {
 		Self {
 			id: contribution.id.parse().unwrap(),
@@ -86,7 +86,7 @@ impl From<models::Contribution> for Contribution {
 			description: contribution.description,
 			external_link: contribution.external_link.map(|link| url::Url::parse(&link).unwrap()),
 			title: contribution.title,
-			metadata: ContributionMetadata {
+			metadata: ContributionProjectionMetadata {
 				difficulty: contribution.difficulty,
 				technology: contribution.technology,
 				duration: contribution.duration,

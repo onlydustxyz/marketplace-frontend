@@ -15,7 +15,7 @@ pub async fn create_contribution(
 ) -> Result<Status, HttpApiProblem> {
 	let body = body.into_inner();
 
-	let contribution = Contribution {
+	let contribution = ContributionProjection {
 		project_id: body.project_id(),
 		issue_number: body.github_issue_number(),
 		gate: body.gate(),

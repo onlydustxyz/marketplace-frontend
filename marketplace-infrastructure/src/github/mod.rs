@@ -99,7 +99,7 @@ impl Default for Client {
 
 pub fn extract_metadata(
 	github_issue: &octocrab::models::issues::Issue,
-) -> domain::ContributionMetadata {
+) -> domain::ContributionProjectionMetadata {
 	let labels: HashMap<String, String> = github_issue
 		.labels
 		.iter()
@@ -113,7 +113,7 @@ pub fn extract_metadata(
 		})
 		.collect();
 
-	domain::ContributionMetadata {
+	domain::ContributionProjectionMetadata {
 		context: labels.get("Context").map(|x| x.to_owned()),
 		difficulty: labels.get("Difficulty").map(|x| x.to_owned()),
 		duration: labels.get("Duration").map(|x| x.to_owned()),
