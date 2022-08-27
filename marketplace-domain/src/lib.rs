@@ -31,6 +31,7 @@ pub use projector::Projector;
 
 mod contribution;
 pub use contribution::{
-	Aggregate as ContributionAggregate, AggregateId as ContributionId, Event as ContributionEvent,
-	Status as ContributionStatus, WithGithubDataProjection as ContributionWithGithubDataProjection,
+	Aggregate as ContributionAggregateRoot, AggregateId as ContributionId,
+	Event as ContributionEvent, Status as ContributionStatus,
+	WithGithubDataProjection as ContributionWithGithubDataProjection,
 };
