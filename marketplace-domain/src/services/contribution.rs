@@ -60,6 +60,7 @@ impl Service for ContributionService {
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
 	) -> Result<(), DomainError> {
+		// TODO: Use aggregate root repository instead of the projection's one
 		let contribution = self
 			.contribution_projection_repository
 			.find_by_id(contribution_id)
