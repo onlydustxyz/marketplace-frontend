@@ -10,5 +10,5 @@ pub use aggregate::{Aggregate, Id as AggregateId};
 mod state;
 pub use state::State;
 
-mod projections;
-pub use projections::WithGithubDataProjection;
+mod projectors;
+pub use projectors::ContributionProjector;
