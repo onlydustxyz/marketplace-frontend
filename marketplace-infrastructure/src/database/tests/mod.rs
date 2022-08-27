@@ -5,7 +5,7 @@ use marketplace_domain::{ContributionProjection, Project};
 mod application_repository;
 mod application_service;
 mod contact_information_repository;
-mod contribution_repository;
+mod contribution_projection_repository;
 mod project_repository;
 
 use marketplace_domain::*;
@@ -39,7 +39,7 @@ fn init_contribution_with_status(
 		status,
 		..Default::default()
 	};
-	<Client as ContributionRepository>::create(client, contribution.clone()).unwrap();
+	<Client as ContributionProjectionRepository>::create(client, contribution.clone()).unwrap();
 
 	contribution
 }

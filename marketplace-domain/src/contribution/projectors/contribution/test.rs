@@ -5,8 +5,8 @@ use rstest::*;
 use std::sync::Arc;
 
 #[fixture]
-fn contribution_repository() -> MockContributionRepository {
-	MockContributionRepository::new()
+fn contribution_projection_repository() -> MockContributionProjectionRepository {
+	MockContributionProjectionRepository::new()
 }
 
 #[fixture]
@@ -119,7 +119,7 @@ fn contribution_validated_event(contribution_id: ContributionId) -> Contribution
 
 #[rstest]
 async fn on_contribution_created_event(
-	mut contribution_repository: MockContributionRepository,
+	mut contribution_projection_repository: MockContributionProjectionRepository,
 	mut github_issue_repository: MockGithubIssueRepository,
 	project_id: GithubProjectId,
 	issue_number: GithubIssueNumber,
@@ -132,13 +132,13 @@ async fn on_contribution_created_event(
 		.with(eq(project_id), eq(issue_number))
 		.returning(move |_, _| Ok(Some(github_issue.clone())));
 
-	contribution_repository
+	contribution_projection_repository
 		.expect_create()
 		.with(eq(contribution))
 		.returning(|_| Ok(()));
 
 	let projector = ContributionProjector::new(
-		Arc::new(contribution_repository),
+		Arc::new(contribution_projection_repository),
 		Arc::new(github_issue_repository),
 	);
 
@@ -147,13 +147,13 @@ async fn on_contribution_created_event(
 
 #[rstest]
 fn on_contribution_assigned_event(
-	mut contribution_repository: MockContributionRepository,
+	mut contribution_projection_repository: MockContributionProjectionRepository,
 	github_issue_repository: MockGithubIssueRepository,
 	contributor_id: ContributorId,
 	contribution_id: ContributionId,
 	contribution_assigned_event: ContributionEvent,
 ) {
-	contribution_repository
+	contribution_projection_repository
 		.expect_update_contributor_and_status()
 		.with(
 			eq(contribution_id),
@@ -163,7 +163,7 @@ fn on_contribution_assigned_event(
 		.returning(|_, _, _| Ok(()));
 
 	let projector = ContributionProjector::new(
-		Arc::new(contribution_repository),
+		Arc::new(contribution_projection_repository),
 		Arc::new(github_issue_repository),
 	);
 
@@ -172,18 +172,18 @@ fn on_contribution_assigned_event(
 
 #[rstest]
 fn on_contribution_unassigned_event(
-	mut contribution_repository: MockContributionRepository,
+	mut contribution_projection_repository: MockContributionProjectionRepository,
 	github_issue_repository: MockGithubIssueRepository,
 	contribution_id: ContributionId,
 	contribution_unassigned_event: ContributionEvent,
 ) {
-	contribution_repository
+	contribution_projection_repository
 		.expect_update_status()
 		.with(eq(contribution_id), eq(ContributionStatus::Open))
 		.returning(|_, _| Ok(()));
 
 	let projector = ContributionProjector::new(
-		Arc::new(contribution_repository),
+		Arc::new(contribution_projection_repository),
 		Arc::new(github_issue_repository),
 	);
 
@@ -192,18 +192,18 @@ fn on_contribution_unassigned_event(
 
 #[rstest]
 fn on_contribution_validated_event(
-	mut contribution_repository: MockContributionRepository,
+	mut contribution_projection_repository: MockContributionProjectionRepository,
 	github_issue_repository: MockGithubIssueRepository,
 	contribution_id: ContributionId,
 	contribution_validated_event: ContributionEvent,
 ) {
-	contribution_repository
+	contribution_projection_repository
 		.expect_update_status()
 		.with(eq(contribution_id), eq(ContributionStatus::Completed))
 		.returning(|_, _| Ok(()));
 
 	let projector = ContributionProjector::new(
-		Arc::new(contribution_repository),
+		Arc::new(contribution_projection_repository),
 		Arc::new(github_issue_repository),
 	);
 

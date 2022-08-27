@@ -17,17 +17,17 @@ pub trait Usecase: Send + Sync {
 
 pub struct UnassignContribution {
 	onchain_contribution_service: Arc<dyn OnchainContributionService>,
-	contribution_repository: Arc<dyn ContributionRepository>,
+	contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
 }
 
 impl UnassignContribution {
 	pub fn new_usecase_boxed(
 		onchain_contribution_service: Arc<dyn OnchainContributionService>,
-		contribution_repository: Arc<dyn ContributionRepository>,
+		contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
 	) -> Box<dyn Usecase> {
 		Box::new(Self {
 			onchain_contribution_service,
-			contribution_repository,
+			contribution_projection_repository,
 		})
 	}
 }
@@ -38,7 +38,7 @@ impl Usecase for UnassignContribution {
 		&self,
 		contribution_id: &ContributionId,
 	) -> Result<HexPrefixedString, DomainError> {
-		let contribution = self.contribution_repository.find_by_id(contribution_id)?;
+		let contribution = self.contribution_projection_repository.find_by_id(contribution_id)?;
 
 		match contribution {
 			Some(contribution) => self
@@ -46,7 +46,7 @@ impl Usecase for UnassignContribution {
 				.unassign_contributor(contribution.id)
 				.await
 				.map_err_into(),
-			None => Err(ContributionRepositoryError::NotFound.into()),
+			None => Err(ContributionProjectionRepositoryError::NotFound.into()),
 		}
 	}
 }
@@ -68,18 +68,18 @@ mod test {
 	}
 
 	#[fixture]
-	fn contribution_repository() -> MockContributionRepository {
-		MockContributionRepository::new()
+	fn contribution_projection_repository() -> MockContributionProjectionRepository {
+		MockContributionProjectionRepository::new()
 	}
 
 	#[rstest]
 	#[tokio::test]
 	async fn unassign_contribution_success(
 		mut onchain_contribution_service: MockOnchainContributionService,
-		mut contribution_repository: MockContributionRepository,
+		mut contribution_projection_repository: MockContributionProjectionRepository,
 	) {
 		let contribution_id = 12.into();
-		contribution_repository
+		contribution_projection_repository
 			.expect_find_by_id()
 			.returning(|_| Ok(Some(ContributionProjection::default())));
 
@@ -89,7 +89,7 @@ mod test {
 
 		let usecase = UnassignContribution::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),
-			Arc::new(contribution_repository),
+			Arc::new(contribution_projection_repository),
 		);
 
 		let result = usecase.send_unassign_request(&contribution_id).await;
@@ -100,15 +100,17 @@ mod test {
 	#[tokio::test]
 	async fn unassign_contribution_find_error(
 		onchain_contribution_service: MockOnchainContributionService,
-		mut contribution_repository: MockContributionRepository,
+		mut contribution_projection_repository: MockContributionProjectionRepository,
 	) {
-		contribution_repository
-			.expect_find_by_id()
-			.returning(|_| Err(ContributionRepositoryError::InvalidEntity(Box::new(Error))));
+		contribution_projection_repository.expect_find_by_id().returning(|_| {
+			Err(ContributionProjectionRepositoryError::InvalidEntity(
+				Box::new(Error),
+			))
+		});
 
 		let usecase = UnassignContribution::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),
-			Arc::new(contribution_repository),
+			Arc::new(contribution_projection_repository),
 		);
 
 		let result = usecase.send_unassign_request(&12.into()).await;
@@ -124,13 +126,13 @@ mod test {
 	#[tokio::test]
 	async fn unassign_contribution_not_found(
 		onchain_contribution_service: MockOnchainContributionService,
-		mut contribution_repository: MockContributionRepository,
+		mut contribution_projection_repository: MockContributionProjectionRepository,
 	) {
-		contribution_repository.expect_find_by_id().returning(|_| Ok(None));
+		contribution_projection_repository.expect_find_by_id().returning(|_| Ok(None));
 
 		let usecase = UnassignContribution::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),
-			Arc::new(contribution_repository),
+			Arc::new(contribution_projection_repository),
 		);
 
 		let result = usecase.send_unassign_request(&12.into()).await;
@@ -146,10 +148,10 @@ mod test {
 	#[tokio::test]
 	async fn unassign_contribution_send_error(
 		mut onchain_contribution_service: MockOnchainContributionService,
-		mut contribution_repository: MockContributionRepository,
+		mut contribution_projection_repository: MockContributionProjectionRepository,
 	) {
 		let contribution_id = 12.into();
-		contribution_repository
+		contribution_projection_repository
 			.expect_find_by_id()
 			.returning(|_| Ok(Some(ContributionProjection::default())));
 
@@ -164,7 +166,7 @@ mod test {
 
 		let usecase = UnassignContribution::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),
-			Arc::new(contribution_repository),
+			Arc::new(contribution_projection_repository),
 		);
 
 		let result = usecase.send_unassign_request(&contribution_id).await;

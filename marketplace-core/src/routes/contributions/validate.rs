@@ -69,7 +69,7 @@ mod test {
 		let mut usecase = MockValidateContribution::new();
 
 		usecase.expect_send_validate_request().returning(|_| {
-			Err(ContributionRepositoryError::Infrastructure(Box::new(Error)).into())
+			Err(ContributionProjectionRepositoryError::Infrastructure(Box::new(Error)).into())
 		});
 
 		let rocket =
@@ -87,7 +87,7 @@ mod test {
 		let problem = result.err().unwrap();
 		assert_eq!(StatusCode::INTERNAL_SERVER_ERROR, problem.status.unwrap());
 		assert_eq!(
-			ContributionRepositoryError::Infrastructure(Box::new(Error)).to_string(),
+			ContributionProjectionRepositoryError::Infrastructure(Box::new(Error)).to_string(),
 			problem.title.unwrap()
 		);
 		assert_eq!(Error.to_string(), problem.detail.unwrap());

@@ -1,7 +1,7 @@
 use http_api_problem::{HttpApiProblem, StatusCode};
 use marketplace_domain::{
 	ApplicationRepositoryError, ApplicationServiceError, ContactInformationRepositoryError,
-	ContributionRepositoryError, ContributionServiceError, Error as DomainError,
+	ContributionProjectionRepositoryError, ContributionServiceError, Error as DomainError,
 	OnchainContributionServiceError, ParseHexPrefixedStringError,
 };
 
@@ -30,20 +30,20 @@ impl ToHttpApiProblem for ApplicationRepositoryError {
 	}
 }
 
-impl ToHttpApiProblem for ContributionRepositoryError {
+impl ToHttpApiProblem for ContributionProjectionRepositoryError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		match self {
-			ContributionRepositoryError::NotFound =>
+			ContributionProjectionRepositoryError::NotFound =>
 				HttpApiProblem::new(StatusCode::NOT_FOUND).title(self.to_string()),
-			ContributionRepositoryError::AlreadyExist(e) =>
+			ContributionProjectionRepositoryError::AlreadyExist(e) =>
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)
 					.title(self.to_string())
 					.detail(e.to_string()),
-			ContributionRepositoryError::InvalidEntity(e) =>
+			ContributionProjectionRepositoryError::InvalidEntity(e) =>
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)
 					.title(self.to_string())
 					.detail(e.to_string()),
-			ContributionRepositoryError::Infrastructure(e) =>
+			ContributionProjectionRepositoryError::Infrastructure(e) =>
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 					.title(self.to_string())
 					.detail(e.to_string()),
@@ -116,7 +116,7 @@ impl ToHttpApiProblem for DomainError {
 		match self {
 			DomainError::ApplicationRepository(application_repository_error) =>
 				application_repository_error.to_http_api_problem(),
-			DomainError::ContributionRepository(contribution_repository_error) =>
+			DomainError::ContributionProjectionRepository(contribution_repository_error) =>
 				contribution_repository_error.to_http_api_problem(),
 			DomainError::ContactInformationRepository(contact_information_repository_error) =>
 				contact_information_repository_error.to_http_api_problem(),

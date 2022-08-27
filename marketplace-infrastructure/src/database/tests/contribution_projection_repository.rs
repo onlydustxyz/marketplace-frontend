@@ -20,14 +20,16 @@ fn store_and_find() {
 		..Default::default()
 	};
 
-	<Client as ContributionRepository>::create(&client, contribution1.clone()).unwrap();
-	<Client as ContributionRepository>::create(&client, contribution2.clone()).unwrap();
+	<Client as ContributionProjectionRepository>::create(&client, contribution1.clone()).unwrap();
+	<Client as ContributionProjectionRepository>::create(&client, contribution2.clone()).unwrap();
 
 	let found_contribution =
-		<Client as ContributionRepository>::find_by_id(&client, &contribution1.id).unwrap();
+		<Client as ContributionProjectionRepository>::find_by_id(&client, &contribution1.id)
+			.unwrap();
 	assert_eq!(found_contribution, Some(contribution1));
 
 	let found_contribution =
-		<Client as ContributionRepository>::find_by_id(&client, &contribution2.id).unwrap();
+		<Client as ContributionProjectionRepository>::find_by_id(&client, &contribution2.id)
+			.unwrap();
 	assert_eq!(found_contribution, Some(contribution2));
 }

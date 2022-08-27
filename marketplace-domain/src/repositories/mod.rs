@@ -1,10 +1,11 @@
 mod project;
 pub use project::{Error as ProjectRepositoryError, Repository as ProjectRepository};
 
-mod contribution;
-pub use contribution::{
-	Error as ContributionRepositoryError, MockRepository as MockContributionRepository,
-	Repository as ContributionRepository,
+mod contribution_projection;
+pub use contribution_projection::{
+	Error as ContributionProjectionRepositoryError,
+	MockRepository as MockContributionProjectionRepository,
+	Repository as ContributionProjectionRepository,
 };
 
 mod contact_information;
