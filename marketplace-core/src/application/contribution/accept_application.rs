@@ -15,19 +15,19 @@ pub trait Usecase: Send + Sync {
 
 pub struct AcceptApplication {
 	onchain_contribution_service: Arc<dyn OnchainContributionService>,
-	contribution_repository: Arc<dyn ContributionRepository>,
+	contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
 	application_repository: Arc<dyn ApplicationRepository>,
 }
 
 impl AcceptApplication {
 	pub fn new(
 		onchain_contribution_service: Arc<dyn OnchainContributionService>,
-		contribution_repository: Arc<dyn ContributionRepository>,
+		contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
 		application_repository: Arc<dyn ApplicationRepository>,
 	) -> Self {
 		Self {
 			onchain_contribution_service,
-			contribution_repository,
+			contribution_projection_repository,
 			application_repository,
 		}
 	}
@@ -36,12 +36,12 @@ impl AcceptApplication {
 impl AcceptApplication {
 	pub fn new_usecase_boxed(
 		onchain_contribution_service: Arc<dyn OnchainContributionService>,
-		contribution_repository: Arc<dyn ContributionRepository>,
+		contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
 		application_repository: Arc<dyn ApplicationRepository>,
 	) -> Box<dyn Usecase> {
 		Box::new(Self {
 			onchain_contribution_service,
-			contribution_repository,
+			contribution_projection_repository,
 			application_repository,
 		})
 	}
@@ -60,10 +60,10 @@ impl Usecase for AcceptApplication {
 			.ok_or_else(|| DomainError::from(ApplicationRepositoryError::NotFound))?;
 
 		let contribution = self
-			.contribution_repository
+			.contribution_projection_repository
 			.find_by_id(application.contribution_id())
 			.map_err(DomainError::from)?
-			.ok_or_else(|| DomainError::from(ContributionRepositoryError::NotFound))?;
+			.ok_or_else(|| DomainError::from(ContributionProjectionRepositoryError::NotFound))?;
 
 		self.onchain_contribution_service
 			.assign_contributor(contribution.id, application.contributor_id().to_owned())
@@ -91,8 +91,8 @@ mod test {
 	}
 
 	#[fixture]
-	fn contribution_repository() -> MockContributionRepository {
-		MockContributionRepository::new()
+	fn contribution_projection_repository() -> MockContributionProjectionRepository {
+		MockContributionProjectionRepository::new()
 	}
 
 	#[fixture]
@@ -109,7 +109,7 @@ mod test {
 	#[tokio::test]
 	async fn accept_application_success(
 		mut onchain_contribution_service: MockOnchainContributionService,
-		mut contribution_repository: MockContributionRepository,
+		mut contribution_projection_repository: MockContributionProjectionRepository,
 		mut application_repository: MockApplicationRepository,
 		contribution_id: ContributionId,
 	) {
@@ -124,7 +124,7 @@ mod test {
 		});
 
 		let cloned_contribution_id = contribution_id.clone();
-		contribution_repository.expect_find_by_id().returning(move |_| {
+		contribution_projection_repository.expect_find_by_id().returning(move |_| {
 			Ok(Some(ContributionProjection {
 				id: cloned_contribution_id.clone(),
 				..Default::default()
@@ -138,7 +138,7 @@ mod test {
 
 		let usecase = AcceptApplication::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),
-			Arc::new(contribution_repository),
+			Arc::new(contribution_projection_repository),
 			Arc::new(application_repository),
 		);
 
@@ -150,7 +150,7 @@ mod test {
 	#[tokio::test]
 	async fn accept_application_application_not_found(
 		onchain_contribution_service: MockOnchainContributionService,
-		contribution_repository: MockContributionRepository,
+		contribution_projection_repository: MockContributionProjectionRepository,
 		mut application_repository: MockApplicationRepository,
 	) {
 		let application_id = Uuid::from_u128(12).into();
@@ -158,7 +158,7 @@ mod test {
 
 		let usecase = AcceptApplication::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),
-			Arc::new(contribution_repository),
+			Arc::new(contribution_projection_repository),
 			Arc::new(application_repository),
 		);
 
@@ -174,7 +174,7 @@ mod test {
 	#[tokio::test]
 	async fn accept_application_contribution_not_found(
 		onchain_contribution_service: MockOnchainContributionService,
-		mut contribution_repository: MockContributionRepository,
+		mut contribution_projection_repository: MockContributionProjectionRepository,
 		mut application_repository: MockApplicationRepository,
 	) {
 		let application_id = Uuid::from_u128(12).into();
@@ -187,11 +187,11 @@ mod test {
 			)))
 		});
 
-		contribution_repository.expect_find_by_id().returning(|_| Ok(None));
+		contribution_projection_repository.expect_find_by_id().returning(|_| Ok(None));
 
 		let usecase = AcceptApplication::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),
-			Arc::new(contribution_repository),
+			Arc::new(contribution_projection_repository),
 			Arc::new(application_repository),
 		);
 

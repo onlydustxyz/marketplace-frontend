@@ -8,23 +8,23 @@ use thiserror::Error;
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error(transparent)]
-	Contribution(#[from] ContributionRepositoryError),
+	Contribution(#[from] ContributionProjectionRepositoryError),
 	#[error(transparent)]
 	GithubIssue(#[from] GithubIssueRepositoryError),
 }
 
 pub struct WithGithubDataProjector {
-	contribution_repository: Arc<dyn ContributionRepository>,
+	contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
 	github_issue_repository: Arc<dyn GithubIssueRepository>,
 }
 
 impl WithGithubDataProjector {
 	pub fn new(
-		contribution_repository: Arc<dyn ContributionRepository>,
+		contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
 		github_issue_repository: Arc<dyn GithubIssueRepository>,
 	) -> Self {
 		Self {
-			contribution_repository,
+			contribution_projection_repository,
 			github_issue_repository,
 		}
 	}
@@ -72,11 +72,11 @@ impl WithGithubDataProjector {
 			},
 		};
 
-		self.contribution_repository.create(contribution).map_err_into()
+		self.contribution_projection_repository.create(contribution).map_err_into()
 	}
 
 	fn assign(&self, id: &ContributionId, contributor_id: &ContributorId) -> Result<(), Error> {
-		self.contribution_repository
+		self.contribution_projection_repository
 			.update_contributor_and_status(
 				id.to_owned(),
 				Some(contributor_id.to_owned()),
@@ -86,13 +86,13 @@ impl WithGithubDataProjector {
 	}
 
 	fn unassign(&self, id: &ContributionId) -> Result<(), Error> {
-		self.contribution_repository
+		self.contribution_projection_repository
 			.update_status(id.to_owned(), ContributionStatus::Open)
 			.map_err_into()
 	}
 
 	fn validate(&self, id: &ContributionId) -> Result<(), Error> {
-		self.contribution_repository
+		self.contribution_projection_repository
 			.update_status(id.to_owned(), ContributionStatus::Completed)
 			.map_err_into()
 	}

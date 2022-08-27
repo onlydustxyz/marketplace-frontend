@@ -3,14 +3,14 @@ use marketplace_domain::*;
 use crate::database::{models, schema, schema::contributions, Client, DatabaseError};
 use diesel::prelude::*;
 
-impl ContributionRepository for Client {
+impl ContributionProjectionRepository for Client {
 	fn find_by_id(
 		&self,
 		contribution_id: &ContributionId,
-	) -> Result<Option<ContributionProjection>, ContributionRepositoryError> {
+	) -> Result<Option<ContributionProjection>, ContributionProjectionRepositoryError> {
 		let connection = self
 			.connection()
-			.map_err(|e| ContributionRepositoryError::Infrastructure(e.into()))?;
+			.map_err(|e| ContributionProjectionRepositoryError::Infrastructure(e.into()))?;
 
 		match contributions::table
 			.find(contribution_id.to_string())
@@ -18,17 +18,19 @@ impl ContributionRepository for Client {
 		{
 			Ok(contribution) => Ok(Some(contribution.into())),
 			Err(diesel::NotFound) => Ok(None),
-			Err(e) => Err(ContributionRepositoryError::Infrastructure(e.into())),
+			Err(e) => Err(ContributionProjectionRepositoryError::Infrastructure(
+				e.into(),
+			)),
 		}
 	}
 
 	fn create(
 		&self,
 		contribution: ContributionProjection,
-	) -> Result<(), ContributionRepositoryError> {
+	) -> Result<(), ContributionProjectionRepositoryError> {
 		let connection = self
 			.connection()
-			.map_err(|e| ContributionRepositoryError::Infrastructure(e.into()))?;
+			.map_err(|e| ContributionProjectionRepositoryError::Infrastructure(e.into()))?;
 
 		let contribution = models::Contribution::from(contribution);
 		diesel::insert_into(contributions::table)
@@ -44,8 +46,8 @@ impl ContributionRepository for Client {
 		contribution_id: ContributionId,
 		contributor_id_: Option<ContributorId>,
 		status_: ContributionStatus,
-	) -> Result<(), ContributionRepositoryError> {
-		let connection = self.connection().map_err(ContributionRepositoryError::from)?;
+	) -> Result<(), ContributionProjectionRepositoryError> {
+		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
 
 		diesel::update(schema::contributions::dsl::contributions)
 			.filter(contributions::id.eq(contribution_id.to_string()))
@@ -66,8 +68,8 @@ impl ContributionRepository for Client {
 		&self,
 		contribution_id: ContributionId,
 		status_: ContributionStatus,
-	) -> Result<(), ContributionRepositoryError> {
-		let connection = self.connection().map_err(ContributionRepositoryError::from)?;
+	) -> Result<(), ContributionProjectionRepositoryError> {
+		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
 
 		diesel::update(schema::contributions::dsl::contributions)
 			.filter(contributions::id.eq(contribution_id.to_string()))
@@ -100,7 +102,7 @@ impl From<ContributionProjection> for models::Contribution {
 	}
 }
 
-impl From<DatabaseError> for ContributionRepositoryError {
+impl From<DatabaseError> for ContributionProjectionRepositoryError {
 	fn from(error: DatabaseError) -> Self {
 		match error {
 			DatabaseError::Transaction(diesel::result::Error::DatabaseError(kind, _)) => match kind

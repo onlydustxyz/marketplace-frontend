@@ -81,8 +81,8 @@ fn store_and_find_with_contributions() {
 	};
 
 	<Client as ProjectRepository>::store(&client, project.clone()).unwrap();
-	<Client as ContributionRepository>::create(&client, contribution1.clone()).unwrap();
-	<Client as ContributionRepository>::create(&client, contribution2.clone()).unwrap();
+	<Client as ContributionProjectionRepository>::create(&client, contribution1.clone()).unwrap();
+	<Client as ContributionProjectionRepository>::create(&client, contribution2.clone()).unwrap();
 	let projects = <Client as ProjectRepository>::find_all_with_contributions(&client).unwrap();
 
 	let foud_project = projects.iter().find(|s| s.project == project).unwrap();

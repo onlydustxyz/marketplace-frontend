@@ -31,7 +31,7 @@ pub trait Service: Send + Sync {
 }
 
 pub struct ContributionService {
-	contribution_repository: Arc<dyn ContributionRepository>,
+	contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
 	application_repository: Arc<dyn ApplicationRepository>,
 	application_service: Arc<dyn ApplicationService>,
 	uuid_generator: Arc<dyn UuidGenerator>,
@@ -39,14 +39,14 @@ pub struct ContributionService {
 
 impl ContributionService {
 	pub fn new(
-		contribution_repository: Arc<dyn ContributionRepository>,
+		contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
 		application_repository: Arc<dyn ApplicationRepository>,
 		application_service: Arc<dyn ApplicationService>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Self {
 		Self {
 			application_repository,
-			contribution_repository,
+			contribution_projection_repository,
 			application_service,
 			uuid_generator,
 		}
@@ -61,10 +61,10 @@ impl Service for ContributionService {
 		contributor_id: &ContributorId,
 	) -> Result<(), DomainError> {
 		let contribution = self
-			.contribution_repository
+			.contribution_projection_repository
 			.find_by_id(contribution_id)
 			.map_err(DomainError::from)?
-			.ok_or_else(|| DomainError::from(ContributionRepositoryError::NotFound))?;
+			.ok_or_else(|| DomainError::from(ContributionProjectionRepositoryError::NotFound))?;
 
 		if contribution.status != ContributionStatus::Open {
 			return Err(Error::CannotApply(contribution.status).into());
@@ -116,8 +116,8 @@ mod test {
 	use uuid::Uuid;
 
 	#[fixture]
-	fn contribution_repository() -> MockContributionRepository {
-		MockContributionRepository::new()
+	fn contribution_projection_repository() -> MockContributionProjectionRepository {
+		MockContributionProjectionRepository::new()
 	}
 
 	#[fixture]
@@ -152,7 +152,7 @@ mod test {
 
 	#[rstest]
 	fn application_success(
-		mut contribution_repository: MockContributionRepository,
+		mut contribution_projection_repository: MockContributionProjectionRepository,
 		mut application_repository: MockApplicationRepository,
 		application_service: MockApplicationService,
 		mut uuid_generator: MockUuidGenerator,
@@ -163,7 +163,7 @@ mod test {
 		uuid_generator.expect_new_uuid().return_const(application_id);
 
 		let cloned_contribution_id = contribution_id.clone();
-		contribution_repository
+		contribution_projection_repository
 			.expect_find_by_id()
 			.with(eq(contribution_id.clone()))
 			.returning(move |_| {
@@ -179,7 +179,7 @@ mod test {
 			.returning(move |_| Ok(()));
 
 		let contribution_service = ContributionService {
-			contribution_repository: Arc::new(contribution_repository),
+			contribution_projection_repository: Arc::new(contribution_projection_repository),
 			application_repository: Arc::new(application_repository),
 			application_service: Arc::new(application_service),
 			uuid_generator: Arc::new(uuid_generator),
@@ -191,7 +191,7 @@ mod test {
 
 	#[rstest]
 	fn contribution_must_be_open(
-		mut contribution_repository: MockContributionRepository,
+		mut contribution_projection_repository: MockContributionProjectionRepository,
 		application_repository: MockApplicationRepository,
 		application_service: MockApplicationService,
 		uuid_generator: MockUuidGenerator,
@@ -199,7 +199,7 @@ mod test {
 		contributor_id: ContributorId,
 	) {
 		let cloned_contribution_id = contribution_id.clone();
-		contribution_repository
+		contribution_projection_repository
 			.expect_find_by_id()
 			.with(eq(contribution_id.clone()))
 			.returning(move |_| {
@@ -211,7 +211,7 @@ mod test {
 			});
 
 		let contribution_service = ContributionService {
-			contribution_repository: Arc::new(contribution_repository),
+			contribution_projection_repository: Arc::new(contribution_projection_repository),
 			application_repository: Arc::new(application_repository),
 			application_service: Arc::new(application_service),
 			uuid_generator: Arc::new(uuid_generator),
@@ -223,7 +223,7 @@ mod test {
 
 	#[rstest]
 	fn on_assigned_success_application_found(
-		contribution_repository: MockContributionRepository,
+		contribution_projection_repository: MockContributionProjectionRepository,
 		mut application_repository: MockApplicationRepository,
 		mut application_service: MockApplicationService,
 		uuid_generator: MockUuidGenerator,
@@ -253,7 +253,7 @@ mod test {
 		application_service.expect_accept_application().returning(|_| Ok(()));
 
 		let contribution_service = ContributionService {
-			contribution_repository: Arc::new(contribution_repository),
+			contribution_projection_repository: Arc::new(contribution_projection_repository),
 			application_repository: Arc::new(application_repository),
 			application_service: Arc::new(application_service),
 			uuid_generator: Arc::new(uuid_generator),
@@ -265,7 +265,7 @@ mod test {
 
 	#[rstest]
 	fn on_assigned_success_application_not_found(
-		contribution_repository: MockContributionRepository,
+		contribution_projection_repository: MockContributionProjectionRepository,
 		mut application_repository: MockApplicationRepository,
 		mut application_service: MockApplicationService,
 		uuid_generator: MockUuidGenerator,
@@ -280,7 +280,7 @@ mod test {
 		application_service.expect_reject_all_applications().returning(|_| Ok(()));
 
 		let contribution_service = ContributionService {
-			contribution_repository: Arc::new(contribution_repository),
+			contribution_projection_repository: Arc::new(contribution_projection_repository),
 			application_repository: Arc::new(application_repository),
 			application_service: Arc::new(application_service),
 			uuid_generator: Arc::new(uuid_generator),
