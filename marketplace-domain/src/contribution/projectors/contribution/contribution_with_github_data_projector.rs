@@ -13,12 +13,12 @@ pub enum Error {
 	GithubIssue(#[from] GithubIssueRepositoryError),
 }
 
-pub struct WithGithubDataProjection {
+pub struct WithGithubDataProjector {
 	contribution_repository: Arc<dyn ContributionRepository>,
 	github_issue_repository: Arc<dyn GithubIssueRepository>,
 }
 
-impl WithGithubDataProjection {
+impl WithGithubDataProjector {
 	pub fn new(
 		contribution_repository: Arc<dyn ContributionRepository>,
 		github_issue_repository: Arc<dyn GithubIssueRepository>,
@@ -98,7 +98,7 @@ impl WithGithubDataProjection {
 	}
 }
 
-impl Projector<ContributionAggregateRoot> for WithGithubDataProjection {
+impl Projector<ContributionAggregateRoot> for WithGithubDataProjector {
 	fn project(&self, event: &ContributionEvent) {
 		let result = match event {
 			ContributionEvent::Created {

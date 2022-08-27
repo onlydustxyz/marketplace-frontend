@@ -5,8 +5,7 @@ mod infrastructure;
 use crate::{application::IndexerBuilder, domain::*, infrastructure::ApibaraClient};
 use dotenv::dotenv;
 use marketplace_domain::{
-	ContractAddress, ContributionServiceImplementation, ContributionWithGithubDataProjection,
-	RandomUuidGenerator,
+	ContractAddress, ContributionProjector, ContributionServiceImplementation, RandomUuidGenerator,
 };
 use marketplace_infrastructure::{database, github};
 use slog::{o, Drain, Logger};
@@ -71,8 +70,7 @@ fn build_contribution_observers(
 ) -> Arc<dyn BlockchainObserver> {
 	let confirmation_blocks_count = 3;
 
-	let contribution_with_github_projection =
-		ContributionWithGithubDataProjection::new(database.clone(), github);
+	let contribution_with_github_projection = ContributionProjector::new(database.clone(), github);
 
 	let contribution_service = ContributionServiceImplementation::new(
 		database.clone(),

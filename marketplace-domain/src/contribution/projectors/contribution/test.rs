@@ -1,4 +1,4 @@
-use super::WithGithubDataProjection;
+use super::ContributionProjector;
 use crate::*;
 use mockall::predicate::*;
 use rstest::*;
@@ -137,12 +137,12 @@ async fn on_contribution_created_event(
 		.with(eq(contribution))
 		.returning(|_| Ok(()));
 
-	let projection = WithGithubDataProjection::new(
+	let projector = ContributionProjector::new(
 		Arc::new(contribution_repository),
 		Arc::new(github_issue_repository),
 	);
 
-	projection.project(&contribution_created_event);
+	projector.project(&contribution_created_event);
 }
 
 #[rstest]
@@ -162,12 +162,12 @@ fn on_contribution_assigned_event(
 		)
 		.returning(|_, _, _| Ok(()));
 
-	let projection = WithGithubDataProjection::new(
+	let projector = ContributionProjector::new(
 		Arc::new(contribution_repository),
 		Arc::new(github_issue_repository),
 	);
 
-	projection.project(&contribution_assigned_event);
+	projector.project(&contribution_assigned_event);
 }
 
 #[rstest]
@@ -182,12 +182,12 @@ fn on_contribution_unassigned_event(
 		.with(eq(contribution_id), eq(ContributionStatus::Open))
 		.returning(|_, _| Ok(()));
 
-	let projection = WithGithubDataProjection::new(
+	let projector = ContributionProjector::new(
 		Arc::new(contribution_repository),
 		Arc::new(github_issue_repository),
 	);
 
-	projection.project(&contribution_unassigned_event);
+	projector.project(&contribution_unassigned_event);
 }
 
 #[rstest]
@@ -202,10 +202,10 @@ fn on_contribution_validated_event(
 		.with(eq(contribution_id), eq(ContributionStatus::Completed))
 		.returning(|_, _| Ok(()));
 
-	let projection = WithGithubDataProjection::new(
+	let projector = ContributionProjector::new(
 		Arc::new(contribution_repository),
 		Arc::new(github_issue_repository),
 	);
 
-	projection.project(&contribution_validated_event);
+	projector.project(&contribution_validated_event);
 }
