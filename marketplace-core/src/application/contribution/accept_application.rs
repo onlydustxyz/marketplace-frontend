@@ -198,7 +198,7 @@ mod test {
 		let result = usecase.accept_application(&application_id).await;
 		assert!(result.is_err());
 		assert_eq!(
-			"Contribution repository error",
+			"Contribution projection repository error",
 			result.unwrap_err().to_string()
 		);
 	}
