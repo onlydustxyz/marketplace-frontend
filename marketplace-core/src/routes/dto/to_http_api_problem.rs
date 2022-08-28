@@ -47,12 +47,12 @@ impl ToHttpApiProblem for ContributionProjectionRepositoryError {
 	}
 }
 
-impl ToHttpApiProblem for ContributionAggregateRootRepositoryError {
+impl ToHttpApiProblem for ContributionRepositoryError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		match self {
-			ContributionAggregateRootRepositoryError::NotFound =>
+			ContributionRepositoryError::NotFound =>
 				HttpApiProblem::new(StatusCode::NOT_FOUND).title(self.to_string()),
-			ContributionAggregateRootRepositoryError::EventStoreError(e) =>
+			ContributionRepositoryError::EventStoreError(e) =>
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 					.title(self.to_string())
 					.detail(e.to_string()),
@@ -127,9 +127,8 @@ impl ToHttpApiProblem for DomainError {
 				application_repository_error.to_http_api_problem(),
 			DomainError::ContributionProjectionRepository(contribution_repository_error) =>
 				contribution_repository_error.to_http_api_problem(),
-			DomainError::ContributionAggregateRootRepository(
-				contribution_aggregate_root_repository_error,
-			) => contribution_aggregate_root_repository_error.to_http_api_problem(),
+			DomainError::ContributionRepository(contribution_aggregate_root_repository_error) =>
+				contribution_aggregate_root_repository_error.to_http_api_problem(),
 			DomainError::ContactInformationRepository(contact_information_repository_error) =>
 				contact_information_repository_error.to_http_api_problem(),
 			DomainError::OnchainContributionService(onchain_contribution_service_error) =>

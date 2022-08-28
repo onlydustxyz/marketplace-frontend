@@ -14,26 +14,26 @@ pub enum Error {
 
 #[automock]
 pub trait Repository: Send + Sync {
-	fn find_by_id(&self, id: ContributionId) -> Result<ContributionAggregateRoot, Error>;
+	fn find_by_id(&self, id: ContributionId) -> Result<Contribution, Error>;
 }
 
 pub struct RepositoryImplementation {
-	event_store: Arc<dyn EventStore<ContributionAggregateRoot>>,
+	event_store: Arc<dyn EventStore<Contribution>>,
 }
 
 impl RepositoryImplementation {
-	pub fn new(event_store: Arc<dyn EventStore<ContributionAggregateRoot>>) -> Self {
+	pub fn new(event_store: Arc<dyn EventStore<Contribution>>) -> Self {
 		Self { event_store }
 	}
 }
 
 impl Repository for RepositoryImplementation {
-	fn find_by_id(&self, id: ContributionId) -> Result<ContributionAggregateRoot, Error> {
+	fn find_by_id(&self, id: ContributionId) -> Result<Contribution, Error> {
 		let events = self.event_store.list_by_id(&id)?;
 		if events.len() == 0 {
 			return Err(Error::NotFound);
 		}
-		Ok(ContributionAggregateRoot::from_events(events))
+		Ok(Contribution::from_events(events))
 	}
 }
 
@@ -53,12 +53,12 @@ mod tests {
 	use rstest::{fixture, rstest};
 
 	#[fixture]
-	fn event_store() -> MockEventStore<ContributionAggregateRoot> {
+	fn event_store() -> MockEventStore<Contribution> {
 		MockEventStore::new()
 	}
 
 	#[rstest]
-	fn test_not_found(mut event_store: MockEventStore<ContributionAggregateRoot>) {
+	fn test_not_found(mut event_store: MockEventStore<Contribution>) {
 		let contribution_id = ContributionId::from_str("0xaf").unwrap();
 		event_store
 			.expect_list_by_id()
@@ -72,7 +72,7 @@ mod tests {
 	}
 
 	#[rstest]
-	fn test_event_store_error(mut event_store: MockEventStore<ContributionAggregateRoot>) {
+	fn test_event_store_error(mut event_store: MockEventStore<Contribution>) {
 		let contribution_id = ContributionId::from_str("0xaf").unwrap();
 		event_store
 			.expect_list_by_id()
@@ -89,7 +89,7 @@ mod tests {
 	}
 
 	#[rstest]
-	fn test_found(mut event_store: MockEventStore<ContributionAggregateRoot>) {
+	fn test_found(mut event_store: MockEventStore<Contribution>) {
 		let contribution_id = ContributionId::from_str("0xaf").unwrap();
 		let creation_event = ContributionEvent::Created {
 			id: contribution_id.clone(),

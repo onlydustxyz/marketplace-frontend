@@ -1,7 +1,6 @@
 mod aggregate_root;
 pub use aggregate_root::{
-	Contribution as ContributionAggregateRoot, Event as ContributionEvent, Id as AggregateId,
-	Status as ContributionStatus,
+	Contribution, Event as ContributionEvent, Id as AggregateId, Status as ContributionStatus,
 };
 
 mod projectors;

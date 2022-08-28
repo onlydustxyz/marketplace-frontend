@@ -31,7 +31,7 @@ pub trait Service: Send + Sync {
 }
 
 pub struct ContributionService {
-	contribution_repository: Arc<dyn ContributionAggregateRootRepository>,
+	contribution_repository: Arc<dyn ContributionRepository>,
 	application_repository: Arc<dyn ApplicationRepository>,
 	application_service: Arc<dyn ApplicationService>,
 	uuid_generator: Arc<dyn UuidGenerator>,
@@ -39,7 +39,7 @@ pub struct ContributionService {
 
 impl ContributionService {
 	pub fn new(
-		contribution_repository: Arc<dyn ContributionAggregateRootRepository>,
+		contribution_repository: Arc<dyn ContributionRepository>,
 		application_repository: Arc<dyn ApplicationRepository>,
 		application_service: Arc<dyn ApplicationService>,
 		uuid_generator: Arc<dyn UuidGenerator>,
@@ -115,8 +115,8 @@ mod test {
 	use uuid::Uuid;
 
 	#[fixture]
-	fn contribution_repository() -> MockContributionAggregateRootRepository {
-		MockContributionAggregateRootRepository::new()
+	fn contribution_repository() -> MockContributionRepository {
+		MockContributionRepository::new()
 	}
 
 	#[fixture]
@@ -151,7 +151,7 @@ mod test {
 
 	#[rstest]
 	fn application_success(
-		mut contribution_repository: MockContributionAggregateRootRepository,
+		mut contribution_repository: MockContributionRepository,
 		mut application_repository: MockApplicationRepository,
 		application_service: MockApplicationService,
 		mut uuid_generator: MockUuidGenerator,
@@ -166,7 +166,7 @@ mod test {
 			.expect_find_by_id()
 			.with(eq(contribution_id.clone()))
 			.returning(move |_| {
-				Ok(ContributionAggregateRoot {
+				Ok(Contribution {
 					id: cloned_contribution_id.clone(),
 					status: ContributionStatus::Open,
 					..Default::default()
@@ -190,7 +190,7 @@ mod test {
 
 	#[rstest]
 	fn contribution_must_be_open(
-		mut contribution_repository: MockContributionAggregateRootRepository,
+		mut contribution_repository: MockContributionRepository,
 		application_repository: MockApplicationRepository,
 		application_service: MockApplicationService,
 		uuid_generator: MockUuidGenerator,
@@ -202,7 +202,7 @@ mod test {
 			.expect_find_by_id()
 			.with(eq(contribution_id.clone()))
 			.returning(move |_| {
-				Ok(ContributionAggregateRoot {
+				Ok(Contribution {
 					id: cloned_contribution_id.clone(),
 					status: ContributionStatus::Completed,
 					..Default::default()
@@ -222,7 +222,7 @@ mod test {
 
 	#[rstest]
 	fn on_assigned_success_application_found(
-		contribution_repository: MockContributionAggregateRootRepository,
+		contribution_repository: MockContributionRepository,
 		mut application_repository: MockApplicationRepository,
 		mut application_service: MockApplicationService,
 		uuid_generator: MockUuidGenerator,
@@ -264,7 +264,7 @@ mod test {
 
 	#[rstest]
 	fn on_assigned_success_application_not_found(
-		contribution_repository: MockContributionAggregateRootRepository,
+		contribution_repository: MockContributionRepository,
 		mut application_repository: MockApplicationRepository,
 		mut application_service: MockApplicationService,
 		uuid_generator: MockUuidGenerator,
