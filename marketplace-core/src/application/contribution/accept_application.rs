@@ -120,7 +120,6 @@ mod test {
 				ApplicationId::default(),
 				ContributionId::default(),
 				ContributorId::from(42),
-				ApplicationStatus::Pending,
 			)))
 		});
 
@@ -184,7 +183,6 @@ mod test {
 				ApplicationId::default(),
 				ContributionId::default(),
 				ContributorId::from(42),
-				ApplicationStatus::Pending,
 			)))
 		});
 

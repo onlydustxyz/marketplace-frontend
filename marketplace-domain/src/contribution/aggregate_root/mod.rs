@@ -50,10 +50,12 @@ impl Aggregate for Contribution {
 				self.contributor_id = Some(contributor_id);
 			},
 			Event::Applied {
-				id: _,
+				id,
 				contributor_id,
 				application_id,
-			} => {},
+			} => {
+				self.applications.push(Application::new(application_id, id, contributor_id));
+			},
 			Event::Unassigned { id: _ } => {
 				self.status = Status::Open;
 				self.contributor_id = None;

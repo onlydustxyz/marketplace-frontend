@@ -69,32 +69,12 @@ impl ApplicationRepository for FilledDatabase {
 		match contributor_id {
 			Some(contributor_id) => match contributor_id.to_string().as_str() {
 				CONTRIBUTOR_ID_1 => Ok(vec![
-					Application::new(
-						Uuid::from_u128(2).into(),
-						0.into(),
-						contributor_id.clone(),
-						ApplicationStatus::Pending,
-					),
-					Application::new(
-						Uuid::from_u128(3).into(),
-						1.into(),
-						contributor_id.clone(),
-						ApplicationStatus::Pending,
-					),
+					Application::new(Uuid::from_u128(2).into(), 0.into(), contributor_id.clone()),
+					Application::new(Uuid::from_u128(3).into(), 1.into(), contributor_id.clone()),
 				]),
 				CONTRIBUTOR_ID_0 => Ok(vec![
-					Application::new(
-						Uuid::from_u128(0).into(),
-						0.into(),
-						contributor_id.clone(),
-						ApplicationStatus::Pending,
-					),
-					Application::new(
-						Uuid::from_u128(1).into(),
-						0.into(),
-						contributor_id,
-						ApplicationStatus::Pending,
-					),
+					Application::new(Uuid::from_u128(0).into(), 0.into(), contributor_id.clone()),
+					Application::new(Uuid::from_u128(1).into(), 0.into(), contributor_id),
 				]),
 				_ => Ok(vec![]),
 			},
@@ -103,25 +83,21 @@ impl ApplicationRepository for FilledDatabase {
 					Uuid::from_u128(2).into(),
 					0.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_1).unwrap(),
-					ApplicationStatus::Pending,
 				),
 				Application::new(
 					Uuid::from_u128(3).into(),
 					1.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_1).unwrap(),
-					ApplicationStatus::Pending,
 				),
 				Application::new(
 					Uuid::from_u128(0).into(),
 					0.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_0).unwrap(),
-					ApplicationStatus::Pending,
 				),
 				Application::new(
 					Uuid::from_u128(1).into(),
 					0.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_0).unwrap(),
-					ApplicationStatus::Pending,
 				),
 			]),
 		}

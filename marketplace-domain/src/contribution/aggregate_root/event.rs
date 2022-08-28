@@ -2,7 +2,6 @@ use std::fmt::Display;
 
 use crate::*;
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -15,7 +14,7 @@ pub enum Event {
 	Applied {
 		id: ContributionId,
 		contributor_id: ContributorId,
-		application_id: Uuid,
+		application_id: ApplicationId,
 	},
 	Assigned {
 		id: ContributionId,

@@ -97,7 +97,7 @@ impl From<Application> for models::Application {
 
 impl From<models::Application> for Application {
 	fn from(application: models::Application) -> Self {
-		Self::new(
+		Self::new_with_status(
 			application.id.into(),
 			application.contribution_id.parse().unwrap(),
 			ContributorId::from_str(application.contributor_id.as_str()).unwrap(),
