@@ -1,5 +1,5 @@
-use crate::AggregateRoot;
+use crate::Aggregate;
 
-pub trait Projector<A: AggregateRoot>: Send + Sync {
+pub trait Projector<A: Aggregate>: Send + Sync {
 	fn project(&self, event: &A::Event);
 }
