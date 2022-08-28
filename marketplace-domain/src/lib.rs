@@ -24,7 +24,7 @@ mod event_store;
 pub use event_store::{Error as EventStoreError, Store as EventStore};
 
 mod aggregate_root;
-pub use aggregate_root::AggregateRoot;
+pub use aggregate_root::{AggregateRoot, EventSourceable};
 
 mod projector;
 pub use projector::Projector;
