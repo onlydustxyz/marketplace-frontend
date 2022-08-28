@@ -30,9 +30,4 @@ mod projector;
 pub use projector::Projector;
 
 mod contribution;
-pub use contribution::{
-	AggregateId as ContributionId, ContributionAggregateRoot, ContributionAggregateRootRepository,
-	ContributionAggregateRootRepositoryError, ContributionAggregateRootRepositoryImplementation,
-	ContributionEvent, ContributionProjection, ContributionProjectionMetadata,
-	ContributionProjector, ContributionStatus,
-};
+pub use contribution::{AggregateId as ContributionId, *};

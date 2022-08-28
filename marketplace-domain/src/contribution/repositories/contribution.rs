@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use crate::*;
+use mockall::automock;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -11,6 +12,7 @@ pub enum Error {
 	EventStoreError(#[source] EventStoreError),
 }
 
+#[automock]
 pub trait Repository: Send + Sync {
 	fn find_by_id(&self, id: ContributionId) -> Result<ContributionAggregateRoot, Error>;
 }
@@ -20,7 +22,7 @@ pub struct RepositoryImplementation {
 }
 
 impl RepositoryImplementation {
-	fn new(event_store: Arc<dyn EventStore<ContributionAggregateRoot>>) -> Self {
+	pub fn new(event_store: Arc<dyn EventStore<ContributionAggregateRoot>>) -> Self {
 		Self { event_store }
 	}
 }

@@ -13,6 +13,7 @@ use marketplace_infrastructure::{
 
 use marketplace_domain::{
 	ApplicationRepository, ContactInformationService, ContactInformationServiceImplementation,
+	ContributionAggregateRootRepository, ContributionAggregateRootRepositoryImplementation,
 	ContributionService, ContributionServiceImplementation, RandomUuidGenerator,
 };
 use rocket::{routes, Build, Rocket};
@@ -52,8 +53,12 @@ async fn main() {
 
 	let github_client = Arc::new(github::Client::new());
 	let uuid_generator = Arc::new(RandomUuidGenerator);
+	let contribution_aggregate_root_repository: Arc<dyn ContributionAggregateRootRepository> =
+		Arc::new(ContributionAggregateRootRepositoryImplementation::new(
+			database.clone(),
+		));
 	let contribution_service = Arc::new(ContributionServiceImplementation::new(
-		database.clone(),
+		contribution_aggregate_root_repository.clone(),
 		database.clone(),
 		database.clone(),
 		uuid_generator.clone(),
