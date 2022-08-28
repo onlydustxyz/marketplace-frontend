@@ -1713,6 +1713,7 @@ name = "marketplace-domain"
 version = "0.0.1"
 dependencies = [
  "assert-json-diff",
+ "assert_matches",
  "async-std",
  "async-trait",
  "crypto-bigint 0.4.8",
