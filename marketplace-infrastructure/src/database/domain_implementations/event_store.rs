@@ -8,8 +8,8 @@ const CONTRIBUTION_AGGREGATE: &str = "CONTRIBUTION";
 impl EventStore<ContributionAggregateRoot> for Client {
 	fn append(
 		&self,
-		aggregate_id: &<ContributionAggregateRoot as AggregateRoot>::Id,
-		events: Vec<<ContributionAggregateRoot as AggregateRoot>::Event>,
+		aggregate_id: &<ContributionAggregateRoot as Aggregate>::Id,
+		events: Vec<<ContributionAggregateRoot as Aggregate>::Event>,
 	) -> Result<(), EventStoreError> {
 		let connection = self.connection().map_err(|_| EventStoreError::Connection)?;
 
@@ -35,8 +35,8 @@ impl EventStore<ContributionAggregateRoot> for Client {
 
 	fn list_by_id(
 		&self,
-		aggregate_id: &<ContributionAggregateRoot as AggregateRoot>::Id,
-	) -> Result<Vec<<ContributionAggregateRoot as AggregateRoot>::Event>, EventStoreError> {
+		aggregate_id: &<ContributionAggregateRoot as Aggregate>::Id,
+	) -> Result<Vec<<ContributionAggregateRoot as Aggregate>::Event>, EventStoreError> {
 		let connection = self.connection().map_err(|_| EventStoreError::Connection)?;
 
 		let query = events::dsl::events
@@ -47,17 +47,15 @@ impl EventStore<ContributionAggregateRoot> for Client {
 			.into_boxed();
 		let serialized_events =
 			query.load::<Value>(&*connection).map_err(|_| EventStoreError::List)?;
-		let deserialized_events: Result<
-			Vec<<ContributionAggregateRoot as AggregateRoot>::Event>,
-			_,
-		> = serialized_events
-			.iter()
-			.map(|event_value| {
-				serde_json::from_value::<<ContributionAggregateRoot as AggregateRoot>::Event>(
-					event_value.to_owned(),
-				)
-			})
-			.collect();
+		let deserialized_events: Result<Vec<<ContributionAggregateRoot as Aggregate>::Event>, _> =
+			serialized_events
+				.iter()
+				.map(|event_value| {
+					serde_json::from_value::<<ContributionAggregateRoot as Aggregate>::Event>(
+						event_value.to_owned(),
+					)
+				})
+				.collect();
 		deserialized_events.map_err(|_| EventStoreError::List)
 	}
 }

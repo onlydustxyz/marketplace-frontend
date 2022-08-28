@@ -14,7 +14,7 @@ pub use status::Status;
 pub struct Id(HexPrefixedString);
 
 #[derive(Default, Debug, Clone, PartialEq, Eq)]
-pub struct Aggregate {
+pub struct Contribution {
 	pub id: Id,
 	pub project_id: GithubProjectId,
 	pub issue_number: GithubIssueNumber,
@@ -23,12 +23,10 @@ pub struct Aggregate {
 	pub status: ContributionStatus,
 }
 
-impl AggregateRoot for Aggregate {
+impl Aggregate for Contribution {
 	type Event = Event;
 	type Id = Id;
-}
 
-impl EventSourceable for Aggregate {
 	fn apply_event(&mut self, event: &Self::Event) {
 		match event.clone() {
 			Event::Created {
@@ -61,13 +59,15 @@ impl EventSourceable for Aggregate {
 	}
 
 	fn from_events(events: Vec<Self::Event>) -> Self {
-		let mut aggregate = Self::default();
+		let mut contribution = Self::default();
 		events.iter().for_each(|event| {
-			aggregate.apply_event(event);
+			contribution.apply_event(event);
 		});
-		aggregate
+		contribution
 	}
 }
+
+impl AggregateRoot for Contribution {}
 
 #[cfg(test)]
 mod test {
@@ -113,19 +113,19 @@ mod test {
 
 	#[rstest]
 	fn create_contribution(contribution_created_event: Event, contribution_id: Id) {
-		let aggregate = Aggregate::from_events(vec![contribution_created_event]);
-		assert_eq!(Status::Open, aggregate.status);
-		assert_eq!(contribution_id, aggregate.id);
+		let contribution = Contribution::from_events(vec![contribution_created_event]);
+		assert_eq!(Status::Open, contribution.status);
+		assert_eq!(contribution_id, contribution.id);
 	}
 
 	#[rstest]
 	fn assign_contribution(contribution_created_event: Event, contribution_assigned_event: Event) {
-		let aggregate = Aggregate::from_events(vec![
+		let contribution = Contribution::from_events(vec![
 			contribution_created_event,
 			contribution_assigned_event,
 		]);
-		assert_eq!(Status::Assigned, aggregate.status);
-		assert!(aggregate.contributor_id.is_some());
+		assert_eq!(Status::Assigned, contribution.status);
+		assert!(contribution.contributor_id.is_some());
 	}
 
 	#[rstest]
@@ -134,13 +134,13 @@ mod test {
 		contribution_assigned_event: Event,
 		contribution_unassigned_event: Event,
 	) {
-		let aggregate = Aggregate::from_events(vec![
+		let contribution = Contribution::from_events(vec![
 			contribution_created_event,
 			contribution_assigned_event,
 			contribution_unassigned_event,
 		]);
-		assert_eq!(Status::Open, aggregate.status);
-		assert!(aggregate.contributor_id.is_none());
+		assert_eq!(Status::Open, contribution.status);
+		assert!(contribution.contributor_id.is_none());
 	}
 
 	#[rstest]
@@ -149,11 +149,11 @@ mod test {
 		contribution_assigned_event: Event,
 		contribution_validated_event: Event,
 	) {
-		let aggregate = Aggregate::from_events(vec![
+		let contribution = Contribution::from_events(vec![
 			contribution_created_event,
 			contribution_assigned_event,
 			contribution_validated_event,
 		]);
-		assert_eq!(Status::Completed, aggregate.status);
+		assert_eq!(Status::Completed, contribution.status);
 	}
 }
