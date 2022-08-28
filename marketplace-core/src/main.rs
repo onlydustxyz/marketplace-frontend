@@ -11,11 +11,7 @@ use marketplace_infrastructure::{
 	github, starknet,
 };
 
-use marketplace_domain::{
-	ApplicationRepository, ContactInformationService, ContactInformationServiceImplementation,
-	ContributionRepository, ContributionRepositoryImplementation, ContributionService,
-	ContributionServiceImplementation, RandomUuidGenerator,
-};
+use marketplace_domain::*;
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
 use slog::{o, Drain, Logger};
@@ -53,10 +49,10 @@ async fn main() {
 
 	let github_client = Arc::new(github::Client::new());
 	let uuid_generator = Arc::new(RandomUuidGenerator);
-	let contribution_aggregate_root_repository: Arc<dyn ContributionRepository> =
-		Arc::new(ContributionRepositoryImplementation::new(database.clone()));
+	let contribution_repository: Arc<dyn Repository<Contribution>> =
+		Arc::new(RepositoryImplementation::new(database.clone()));
 	let contribution_service = Arc::new(ContributionServiceImplementation::new(
-		contribution_aggregate_root_repository.clone(),
+		contribution_repository.clone(),
 		database.clone(),
 		database.clone(),
 		uuid_generator.clone(),
