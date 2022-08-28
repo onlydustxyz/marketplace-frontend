@@ -3,6 +3,7 @@ use crypto_bigint::U256;
 use marketplace_wrappers::HexStringWrapper;
 use serde::{Deserialize, Serialize};
 use std::{fmt::Display, str::FromStr};
+use thiserror::Error;
 
 mod event;
 pub use event::Event;
@@ -13,6 +14,16 @@ pub use status::Status;
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, Default, HexStringWrapper)]
 pub struct Id(HexPrefixedString);
 
+#[derive(Debug, Error)]
+pub enum Error {
+	#[error(
+		"The current contribution status, `{0}`, does not allow it to recieve new applications"
+	)]
+	CannotApply(ContributionStatus),
+	#[error("Contributor `{0}` already applied")]
+	AlreadyApplied(ContributorId),
+}
+
 #[derive(Default, Debug, Clone, PartialEq, Eq)]
 pub struct Contribution {
 	pub id: Id,
@@ -21,7 +32,28 @@ pub struct Contribution {
 	pub gate: u8,
 	pub contributor_id: Option<ContributorId>,
 	pub status: ContributionStatus,
-	pub applications: Vec<Application>,
+	pub applicants: Vec<ContributorId>,
+	pub pending_events: Vec<Event>,
+}
+
+impl Contribution {
+	pub fn apply(&mut self, contributor_id: &ContributorId) -> Result<(), Error> {
+		if self.status != Status::Open {
+			return Err(Error::CannotApply(self.status.to_owned()));
+		}
+		if self.applicants.contains(&contributor_id) {
+			return Err(Error::AlreadyApplied(contributor_id.to_owned()));
+		}
+
+		let applied_event = Event::Applied {
+			id: self.id.to_owned(),
+			contributor_id: contributor_id.to_owned(),
+		};
+
+		self.emit(applied_event.to_owned());
+		self.apply_event(&applied_event);
+		Ok(())
+	}
 }
 
 impl Aggregate for Contribution {
@@ -42,19 +74,18 @@ impl Aggregate for Contribution {
 				self.gate = gate;
 				self.status = Status::Open;
 			},
+			Event::Applied {
+				id: _,
+				contributor_id,
+			} => {
+				self.applicants.push(contributor_id.to_owned());
+			},
 			Event::Assigned {
 				id: _,
 				contributor_id,
 			} => {
 				self.status = Status::Assigned;
 				self.contributor_id = Some(contributor_id);
-			},
-			Event::Applied {
-				id,
-				contributor_id,
-				application_id,
-			} => {
-				self.applications.push(Application::new(application_id, id, contributor_id));
 			},
 			Event::Unassigned { id: _ } => {
 				self.status = Status::Open;
@@ -73,6 +104,10 @@ impl Aggregate for Contribution {
 		});
 		contribution
 	}
+
+	fn emit(&mut self, event: Self::Event) {
+		self.pending_events.push(event);
+	}
 }
 
 impl AggregateRoot for Contribution {}
@@ -80,6 +115,7 @@ impl AggregateRoot for Contribution {}
 #[cfg(test)]
 mod test {
 	use super::*;
+	use assert_matches::assert_matches;
 	use rstest::*;
 
 	#[fixture]
@@ -124,7 +160,7 @@ mod test {
 		let contribution = Contribution::from_events(vec![contribution_created_event]);
 		assert_eq!(Status::Open, contribution.status);
 		assert_eq!(contribution_id, contribution.id);
-		assert!(contribution.applications.is_empty());
+		assert!(contribution.applicants.is_empty());
 	}
 
 	#[rstest]
@@ -164,5 +200,48 @@ mod test {
 			contribution_validated_event,
 		]);
 		assert_eq!(Status::Completed, contribution.status);
+	}
+
+	#[rstest]
+	fn apply_to_assigned_contribution(
+		contribution_created_event: Event,
+		contribution_assigned_event: Event,
+	) {
+		let mut contribution = Contribution::from_events(vec![
+			contribution_created_event,
+			contribution_assigned_event,
+		]);
+
+		let result = contribution.apply(&ContributorId::default());
+		assert!(result.is_err());
+		assert_matches!(result.unwrap_err(), Error::CannotApply(Status::Assigned))
+	}
+
+	#[rstest]
+	fn apply_twice_to_contribution(contribution_created_event: Event) {
+		let mut contribution = Contribution::from_events(vec![contribution_created_event]);
+		let contributor_id = ContributorId::from_str("0x123").unwrap();
+
+		let _first_application = contribution.apply(&contributor_id);
+		let second_application = contribution.apply(&contributor_id);
+		assert!(second_application.is_err());
+		assert_matches!(second_application.unwrap_err(), Error::AlreadyApplied(_))
+	}
+	#[rstest]
+	fn apply_to_contribution_emits_an_event(contribution_created_event: Event) {
+		let mut contribution = Contribution::from_events(vec![contribution_created_event]);
+		let contributor_id = ContributorId::from_str("0x123").unwrap();
+
+		let application_result = contribution.apply(&contributor_id);
+		assert!(application_result.is_ok());
+
+		assert_eq!(1, contribution.pending_events.len());
+		assert_matches!(
+			contribution.pending_events.first().unwrap(),
+			ContributionEvent::Applied {
+				contributor_id: _,
+				id: _
+			}
+		);
 	}
 }

@@ -14,7 +14,6 @@ pub enum Event {
 	Applied {
 		id: ContributionId,
 		contributor_id: ContributorId,
-		application_id: ApplicationId,
 	},
 	Assigned {
 		id: ContributionId,
