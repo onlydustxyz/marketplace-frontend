@@ -29,7 +29,7 @@ impl WithGithubDataProjector {
 		}
 	}
 
-	async fn create(
+	async fn on_create(
 		&self,
 		id: &ContributionId,
 		project_id: &GithubProjectId,
@@ -75,7 +75,7 @@ impl WithGithubDataProjector {
 		self.contribution_projection_repository.create(contribution).map_err_into()
 	}
 
-	fn assign(&self, id: &ContributionId, contributor_id: &ContributorId) -> Result<(), Error> {
+	fn on_assign(&self, id: &ContributionId, contributor_id: &ContributorId) -> Result<(), Error> {
 		self.contribution_projection_repository
 			.update_contributor_and_status(
 				id.to_owned(),
@@ -85,13 +85,13 @@ impl WithGithubDataProjector {
 			.map_err_into()
 	}
 
-	fn unassign(&self, id: &ContributionId) -> Result<(), Error> {
+	fn on_unassign(&self, id: &ContributionId) -> Result<(), Error> {
 		self.contribution_projection_repository
 			.update_status(id.to_owned(), ContributionStatus::Open)
 			.map_err_into()
 	}
 
-	fn validate(&self, id: &ContributionId) -> Result<(), Error> {
+	fn on_validate(&self, id: &ContributionId) -> Result<(), Error> {
 		self.contribution_projection_repository
 			.update_status(id.to_owned(), ContributionStatus::Completed)
 			.map_err_into()
@@ -107,17 +107,20 @@ impl Projector<Contribution> for WithGithubDataProjector {
 				project_id,
 				issue_number,
 				gate,
-			} => self.create(id, project_id, issue_number, *gate).await,
-			ContributionEvent::Assigned { id, contributor_id } => self.assign(id, contributor_id),
-			ContributionEvent::Unassigned { id } => self.unassign(id),
-			ContributionEvent::Validated { id } => self.validate(id),
+			} => __self.on_create(id, project_id, issue_number, *gate).await,
+			ContributionEvent::Assigned { id, contributor_id } =>
+				__self.on_assign(id, contributor_id),
+			ContributionEvent::Unassigned { id } => __self.on_unassign(id),
+			ContributionEvent::Validated { id } => __self.on_validate(id),
+			ContributionEvent::Applied {
+				id,
+				contributor_id,
+				application_id,
+			} => todo!(),
 		};
 
 		if let Err(error) = result {
-			error!(
-				"Unable to update WithGithubDataProjection with event {event}: {}",
-				error.to_string()
-			);
+			error!("Unable to project event {event}: {}", error.to_string());
 		}
 	}
 }

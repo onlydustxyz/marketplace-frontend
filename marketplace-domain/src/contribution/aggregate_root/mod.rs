@@ -21,6 +21,7 @@ pub struct Contribution {
 	pub gate: u8,
 	pub contributor_id: Option<ContributorId>,
 	pub status: ContributionStatus,
+	pub applications: Vec<Application>,
 }
 
 impl Aggregate for Contribution {
@@ -48,6 +49,11 @@ impl Aggregate for Contribution {
 				self.status = Status::Assigned;
 				self.contributor_id = Some(contributor_id);
 			},
+			Event::Applied {
+				id: _,
+				contributor_id,
+				application_id,
+			} => {},
 			Event::Unassigned { id: _ } => {
 				self.status = Status::Open;
 				self.contributor_id = None;
@@ -116,6 +122,7 @@ mod test {
 		let contribution = Contribution::from_events(vec![contribution_created_event]);
 		assert_eq!(Status::Open, contribution.status);
 		assert_eq!(contribution_id, contribution.id);
+		assert!(contribution.applications.is_empty());
 	}
 
 	#[rstest]
