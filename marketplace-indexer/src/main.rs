@@ -5,9 +5,8 @@ mod infrastructure;
 use crate::{application::IndexerBuilder, domain::*, infrastructure::ApibaraClient};
 use dotenv::dotenv;
 use marketplace_domain::{
-	ContractAddress, ContributionAggregateRootRepository,
-	ContributionAggregateRootRepositoryImplementation, ContributionProjector,
-	ContributionServiceImplementation, RandomUuidGenerator,
+	ContractAddress, ContributionProjector, ContributionRepository,
+	ContributionRepositoryImplementation, ContributionServiceImplementation, RandomUuidGenerator,
 };
 use marketplace_infrastructure::{database, github};
 use slog::{o, Drain, Logger};
@@ -74,10 +73,8 @@ fn build_contribution_observers(
 
 	let contribution_projector = ContributionProjector::new(database.clone(), github);
 
-	let contribution_aggregate_root_repository: Arc<dyn ContributionAggregateRootRepository> =
-		Arc::new(ContributionAggregateRootRepositoryImplementation::new(
-			database.clone(),
-		));
+	let contribution_aggregate_root_repository: Arc<dyn ContributionRepository> =
+		Arc::new(ContributionRepositoryImplementation::new(database.clone()));
 	let contribution_service = ContributionServiceImplementation::new(
 		contribution_aggregate_root_repository.clone(),
 		database.clone(),
