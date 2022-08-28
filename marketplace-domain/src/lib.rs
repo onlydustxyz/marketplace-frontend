@@ -31,3 +31,6 @@ pub use projector::Projector;
 
 mod contribution;
 pub use contribution::{AggregateId as ContributionId, *};
+
+mod aggregate_root_repository;
+pub use aggregate_root_repository::{Error as AggregateRootRepositoryError, *};

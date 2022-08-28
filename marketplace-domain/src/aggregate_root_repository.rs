@@ -6,34 +6,34 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error("Contribution not found")]
+	#[error("Aggregate not found")]
 	NotFound,
 	#[error("Something bad happend with the event store")]
 	EventStoreError(#[source] EventStoreError),
 }
 
 #[automock]
-pub trait Repository: Send + Sync {
-	fn find_by_id(&self, id: ContributionId) -> Result<Contribution, Error>;
+pub trait Repository<A: AggregateRoot>: Send + Sync {
+	fn find_by_id(&self, id: A::Id) -> Result<A, Error>;
 }
 
-pub struct RepositoryImplementation {
-	event_store: Arc<dyn EventStore<Contribution>>,
+pub struct RepositoryImplementation<A: AggregateRoot> {
+	event_store: Arc<dyn EventStore<A>>,
 }
 
-impl RepositoryImplementation {
-	pub fn new(event_store: Arc<dyn EventStore<Contribution>>) -> Self {
+impl<A: AggregateRoot> RepositoryImplementation<A> {
+	pub fn new(event_store: Arc<dyn EventStore<A>>) -> Self {
 		Self { event_store }
 	}
 }
 
-impl Repository for RepositoryImplementation {
-	fn find_by_id(&self, id: ContributionId) -> Result<Contribution, Error> {
+impl<A: AggregateRoot> Repository<A> for RepositoryImplementation<A> {
+	fn find_by_id(&self, id: A::Id) -> Result<A, Error> {
 		let events = self.event_store.list_by_id(&id)?;
 		if events.len() == 0 {
 			return Err(Error::NotFound);
 		}
-		Ok(Contribution::from_events(events))
+		Ok(A::from_events(events))
 	}
 }
 

@@ -1,4 +1,4 @@
-use crate::*;
+use crate::{aggregate_root_repository::Repository, *};
 use async_trait::async_trait;
 use log::error;
 use mapinto::ResultMapErrInto;
@@ -31,7 +31,7 @@ pub trait Service: Send + Sync {
 }
 
 pub struct ContributionService {
-	contribution_repository: Arc<dyn ContributionRepository>,
+	contribution_repository: Arc<dyn Repository<Contribution>>,
 	application_repository: Arc<dyn ApplicationRepository>,
 	application_service: Arc<dyn ApplicationService>,
 	uuid_generator: Arc<dyn UuidGenerator>,
@@ -39,7 +39,7 @@ pub struct ContributionService {
 
 impl ContributionService {
 	pub fn new(
-		contribution_repository: Arc<dyn ContributionRepository>,
+		contribution_repository: Arc<dyn Repository<Contribution>>,
 		application_repository: Arc<dyn ApplicationRepository>,
 		application_service: Arc<dyn ApplicationService>,
 		uuid_generator: Arc<dyn UuidGenerator>,
@@ -115,8 +115,8 @@ mod test {
 	use uuid::Uuid;
 
 	#[fixture]
-	fn contribution_repository() -> MockContributionRepository {
-		MockContributionRepository::new()
+	fn contribution_repository() -> MockRepository<Contribution> {
+		MockRepository::new()
 	}
 
 	#[fixture]
@@ -151,7 +151,7 @@ mod test {
 
 	#[rstest]
 	fn application_success(
-		mut contribution_repository: MockContributionRepository,
+		mut contribution_repository: MockRepository<Contribution>,
 		mut application_repository: MockApplicationRepository,
 		application_service: MockApplicationService,
 		mut uuid_generator: MockUuidGenerator,
@@ -190,7 +190,7 @@ mod test {
 
 	#[rstest]
 	fn contribution_must_be_open(
-		mut contribution_repository: MockContributionRepository,
+		mut contribution_repository: MockRepository<Contribution>,
 		application_repository: MockApplicationRepository,
 		application_service: MockApplicationService,
 		uuid_generator: MockUuidGenerator,
@@ -222,7 +222,7 @@ mod test {
 
 	#[rstest]
 	fn on_assigned_success_application_found(
-		contribution_repository: MockContributionRepository,
+		contribution_repository: MockRepository<Contribution>,
 		mut application_repository: MockApplicationRepository,
 		mut application_service: MockApplicationService,
 		uuid_generator: MockUuidGenerator,
@@ -264,7 +264,7 @@ mod test {
 
 	#[rstest]
 	fn on_assigned_success_application_not_found(
-		contribution_repository: MockContributionRepository,
+		contribution_repository: MockRepository<Contribution>,
 		mut application_repository: MockApplicationRepository,
 		mut application_service: MockApplicationService,
 		uuid_generator: MockUuidGenerator,

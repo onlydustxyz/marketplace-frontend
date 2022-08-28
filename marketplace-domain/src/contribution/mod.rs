@@ -8,6 +8,3 @@ pub use projectors::ContributionProjector;
 
 mod projections;
 pub use projections::{ContributionProjection, ContributionProjectionMetadata};
-
-mod repositories;
-pub use repositories::*;
