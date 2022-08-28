@@ -59,6 +59,7 @@ impl Usecase for AcceptApplication {
 			.map_err(DomainError::from)?
 			.ok_or_else(|| DomainError::from(ApplicationRepositoryError::NotFound))?;
 
+		// TODO: use contribution aggregate root instead of projection as source of truth
 		let contribution = self
 			.contribution_projection_repository
 			.find_by_id(application.contribution_id())

@@ -44,6 +44,7 @@ impl Usecase for AssignContribution {
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
 	) -> Result<HexPrefixedString, DomainError> {
+		// TODO: use contribution aggregate root instead of projection as source of truth
 		let contribution = self.contribution_projection_repository.find_by_id(contribution_id)?;
 
 		match contribution {
