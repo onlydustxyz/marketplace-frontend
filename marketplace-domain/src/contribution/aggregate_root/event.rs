@@ -2,6 +2,7 @@ use std::fmt::Display;
 
 use crate::*;
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -10,6 +11,11 @@ pub enum Event {
 		project_id: GithubProjectId,
 		issue_number: GithubIssueNumber,
 		gate: u8,
+	},
+	Applied {
+		id: ContributionId,
+		contributor_id: ContributorId,
+		application_id: Uuid,
 	},
 	Assigned {
 		id: ContributionId,
