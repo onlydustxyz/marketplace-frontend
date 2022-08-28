@@ -1,10 +1,10 @@
 [package]
-name = "marketplace-domain"
 authors = ["OnlyDust <tech@onlydust.xyz>"]
 description = "Domain objects and behaviours used in OnlyDust applictions."
 edition = "2021"
 homepage = "https://onlydust.xyz"
 license-file = "LICENSE"
+name = "marketplace-domain"
 readme = "README.md"
 repository = "https://github.com/onlydustxyz/marketplace-backend"
 version = "0.0.1"
@@ -13,19 +13,19 @@ version = "0.0.1"
 
 # Async
 async-trait = "0.1.56"
-futures = { version = "0.3.21", features = ["alloc"] }
+futures = {version = "0.3.21", features = ["alloc"]}
 
 # Core types
-uuid = { version = "0.8.2", default_features = false, features = [
-	"v4",
-	"serde",
-] }
-crypto-bigint = { version = "0.4.8", features = ["serde"] }
+crypto-bigint = {version = "0.4.8", features = ["serde"]}
 url = "2.2.2"
+uuid = {version = "0.8.2", default_features = false, features = [
+  "v4",
+  "serde",
+]}
 
 # Utils
-mapinto = "0.2.1"
 hex = "0.4.3"
+mapinto = "0.2.1"
 
 # Errors
 thiserror = "1.0.31"
@@ -34,17 +34,18 @@ thiserror = "1.0.31"
 log = "0.4.17"
 
 # Serde
-serde = { version = "1.0.137", features = ["derive"] }
-serde_json = { version = "1.0.81" }
+serde = {version = "1.0.137", features = ["derive"]}
+serde_json = {version = "1.0.81"}
 
 # Unit testing
 mockall = "0.11.2"
 
 # Local dependecies
-marketplace-wrappers = { path = "../marketplace-wrappers" }
+marketplace-wrappers = {path = "../marketplace-wrappers"}
 
 [dev-dependencies]
+assert-json-diff = "2.0.2"
+assert_matches = "1.5"
+async-std = {version = "1.12.0", features = ["attributes"]}
 rstest = "0.15.0"
 serde_test = "1.0.140"
-assert-json-diff = "2.0.2"
-async-std = { version = "1.12.0", features = ["attributes"] }
