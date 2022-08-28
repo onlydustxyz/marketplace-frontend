@@ -59,18 +59,8 @@ impl ApplicationRepository for FilledDatabase {
 		_contributor_id: Option<ContributorId>,
 	) -> Result<Vec<Application>, ApplicationRepositoryError> {
 		Ok(vec![
-			Application::new(
-				Uuid::from_u128(0).into(),
-				0.into(),
-				0u128.into(),
-				ApplicationStatus::Pending,
-			),
-			Application::new(
-				Uuid::from_u128(1).into(),
-				0.into(),
-				1u128.into(),
-				ApplicationStatus::Pending,
-			),
+			Application::new(Uuid::from_u128(0).into(), 0.into(), 0u128.into()),
+			Application::new(Uuid::from_u128(1).into(), 0.into(), 1u128.into()),
 		])
 	}
 

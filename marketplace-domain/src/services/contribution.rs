@@ -75,7 +75,6 @@ impl Service for ContributionService {
 			uuid.into(),
 			contribution_id.to_owned(),
 			contributor_id.to_owned(),
-			ApplicationStatus::Pending,
 		);
 
 		self.application_repository.create(application).map_err_into()
@@ -245,7 +244,6 @@ mod test {
 					ApplicationId::default(),
 					cloned_contribution_id.clone(),
 					ContributorId::from(42),
-					ApplicationStatus::Pending,
 				)])
 			});
 

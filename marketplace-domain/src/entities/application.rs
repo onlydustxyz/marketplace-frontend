@@ -39,7 +39,11 @@ pub struct Application {
 }
 
 impl Application {
-	pub fn new(
+	pub fn new(id: Id, contribution_id: ContributionId, contributor_id: ContributorId) -> Self {
+		Self::new_with_status(id, contribution_id, contributor_id, Status::Pending)
+	}
+
+	pub fn new_with_status(
 		id: Id,
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
