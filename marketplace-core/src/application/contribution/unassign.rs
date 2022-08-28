@@ -117,7 +117,7 @@ mod test {
 
 		assert!(result.is_err());
 		assert_eq!(
-			"Contribution repository error",
+			"Contribution projection repository error",
 			result.unwrap_err().to_string()
 		);
 	}
@@ -139,7 +139,7 @@ mod test {
 
 		assert!(result.is_err());
 		assert_eq!(
-			"Contribution repository error",
+			"Contribution projection repository error",
 			result.unwrap_err().to_string()
 		);
 	}

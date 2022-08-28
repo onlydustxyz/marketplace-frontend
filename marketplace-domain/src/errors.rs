@@ -1,7 +1,7 @@
 use super::{
 	ApplicationRepositoryError, ApplicationServiceError, ContactInformationRepositoryError,
-	ContributionProjectionRepositoryError, ContributionServiceError,
-	OnchainContributionServiceError,
+	ContributionAggregateRootRepositoryError, ContributionProjectionRepositoryError,
+	ContributionServiceError, OnchainContributionServiceError,
 };
 use thiserror::Error;
 
@@ -9,7 +9,9 @@ use thiserror::Error;
 pub enum Error {
 	#[error("Application repository error")]
 	ApplicationRepository(#[from] ApplicationRepositoryError),
-	#[error("Contribution repository error")]
+	#[error("Contribution aggregate root repository error")]
+	ContributionAggregateRootRepository(#[from] ContributionAggregateRootRepositoryError),
+	#[error("Contribution projection repository error")]
 	ContributionProjectionRepository(#[from] ContributionProjectionRepositoryError),
 	#[error("Contact Information repository error")]
 	ContactInformationRepository(#[from] ContactInformationRepositoryError),
