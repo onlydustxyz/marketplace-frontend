@@ -139,6 +139,9 @@ impl ToHttpApiProblem for DomainError {
 				application_service_error.to_http_api_problem(),
 			DomainError::Lock =>
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR).title(self.to_string()),
+			DomainError::ContributionError(_) => HttpApiProblem::new(StatusCode::BAD_REQUEST)
+				.title("Contribution error")
+				.detail(self.to_string()),
 		}
 	}
 }
