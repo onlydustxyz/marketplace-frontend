@@ -74,8 +74,8 @@ fn build_contribution_observers(
 ) -> Arc<dyn BlockchainObserver> {
 	let contribution_projector = ContributionProjector::new(database.clone(), github);
 
-	let contribution_repository: Arc<dyn Repository<Contribution>> =
-		Arc::new(RepositoryImplementation::new(database.clone()));
+	let contribution_repository: Arc<dyn AggregateRootRepository<Contribution>> =
+		Arc::new(AggregateRootRepositoryImplementation::new(database.clone()));
 	let contribution_service = ContributionServiceImplementation::new(
 		contribution_repository.clone(),
 		database.clone(),
