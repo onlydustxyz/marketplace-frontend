@@ -66,6 +66,7 @@ async fn main() {
 		database.clone(),
 		starknet,
 		contribution_service,
+		contribution_repository,
 		contact_information_service,
 	)
 	.manage(database.clone())
@@ -111,6 +112,7 @@ fn inject_app(
 	database: Arc<database::Client>,
 	starknet: Arc<starknet::SingleAdminClient>,
 	contribution_service: Arc<dyn ContributionService>,
+	contribution_repository: Arc<dyn AggregateRootRepository<Contribution>>,
 	contact_information_service: Arc<dyn ContactInformationService>,
 ) -> Rocket<Build> {
 	rocket
@@ -125,6 +127,7 @@ fn inject_app(
 		))
 		.manage(ApplyToContribution::new_usecase_boxed(
 			contribution_service.clone(),
+			contribution_repository,
 		))
 		.manage(ValidateContribution::new_usecase_boxed(
 			starknet.clone(),
