@@ -62,7 +62,7 @@ impl Service for ContributionService {
 	) -> Result<(), DomainError> {
 		let contribution = self
 			.contribution_repository
-			.find_by_id(contribution_id.to_owned())
+			.find_by_id(contribution_id)
 			.map_err(DomainError::from)?;
 
 		if contribution.get_status() != ContributionStatus::Open {
