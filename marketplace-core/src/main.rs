@@ -49,8 +49,8 @@ async fn main() {
 
 	let github_client = Arc::new(github::Client::new());
 	let uuid_generator = Arc::new(RandomUuidGenerator);
-	let contribution_repository: Arc<dyn Repository<Contribution>> =
-		Arc::new(RepositoryImplementation::new(database.clone()));
+	let contribution_repository: Arc<dyn AggregateRootRepository<Contribution>> =
+		Arc::new(AggregateRootRepositoryImplementation::new(database.clone()));
 	let contribution_service = Arc::new(ContributionServiceImplementation::new(
 		contribution_repository.clone(),
 		database.clone(),
