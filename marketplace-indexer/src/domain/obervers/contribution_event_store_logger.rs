@@ -18,6 +18,10 @@ impl<ES: EventStore<Contribution>> Observer for ES {
 				id,
 				contributor_id: _,
 			} => id,
+			ContributionEvent::Applied {
+				id,
+				contributor_id: _,
+			} => id,
 			ContributionEvent::Unassigned { id } => id,
 			ContributionEvent::Validated { id } => id,
 		};

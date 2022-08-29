@@ -26,14 +26,14 @@ pub enum Error {
 
 #[derive(Default, Debug, Clone, PartialEq, Eq)]
 pub struct Contribution {
-	pub id: Id,
-	pub project_id: GithubProjectId,
-	pub issue_number: GithubIssueNumber,
-	pub gate: u8,
-	pub contributor_id: Option<ContributorId>,
-	pub status: ContributionStatus,
-	pub applicants: Vec<ContributorId>,
-	pub pending_events: Vec<Event>,
+	id: Id,
+	project_id: GithubProjectId,
+	issue_number: GithubIssueNumber,
+	gate: u8,
+	contributor_id: Option<ContributorId>,
+	status: ContributionStatus,
+	applicants: Vec<ContributorId>,
+	pending_events: Vec<Event>,
 }
 
 impl Contribution {
@@ -53,6 +53,25 @@ impl Contribution {
 		self.emit(applied_event.to_owned());
 		self.apply_event(&applied_event);
 		Ok(())
+	}
+
+	pub fn get_id(&self) -> Id {
+		self.id.to_owned()
+	}
+
+	pub fn get_status(&self) -> ContributionStatus {
+		self.status.to_owned()
+	}
+}
+
+#[cfg(test)]
+impl Contribution {
+	pub fn new_with_id_and_status(id: Id, status: ContributionStatus) -> Self {
+		Self {
+			id,
+			status,
+			..Default::default()
+		}
 	}
 }
 
@@ -97,16 +116,12 @@ impl Aggregate for Contribution {
 		}
 	}
 
-	fn from_events(events: Vec<Self::Event>) -> Self {
-		let mut contribution = Self::default();
-		events.iter().for_each(|event| {
-			contribution.apply_event(event);
-		});
-		contribution
-	}
-
 	fn emit(&mut self, event: Self::Event) {
 		self.pending_events.push(event);
+	}
+
+	fn get_pending_events(&self) -> &Vec<Self::Event> {
+		&self.pending_events
 	}
 }
 
