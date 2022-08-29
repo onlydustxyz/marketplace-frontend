@@ -33,11 +33,10 @@ pub struct Contribution {
 	contributor_id: Option<ContributorId>,
 	status: ContributionStatus,
 	applicants: Vec<ContributorId>,
-	pending_events: Vec<Event>,
 }
 
 impl Contribution {
-	pub fn apply(&mut self, contributor_id: &ContributorId) -> Result<(), Error> {
+	pub fn apply(&mut self, contributor_id: &ContributorId) -> Result<Vec<Event>, Error> {
 		if self.status != Status::Open {
 			return Err(Error::CannotApply(self.status.to_owned()));
 		}
@@ -50,9 +49,8 @@ impl Contribution {
 			contributor_id: contributor_id.to_owned(),
 		};
 
-		self.emit(applied_event.to_owned());
 		self.apply_event(&applied_event);
-		Ok(())
+		Ok(vec![applied_event])
 	}
 
 	pub fn get_id(&self) -> Id {
@@ -114,14 +112,6 @@ impl Aggregate for Contribution {
 				self.status = Status::Completed;
 			},
 		}
-	}
-
-	fn emit(&mut self, event: Self::Event) {
-		self.pending_events.push(event);
-	}
-
-	fn get_pending_events(&self) -> &Vec<Self::Event> {
-		&self.pending_events
 	}
 }
 
@@ -242,6 +232,7 @@ mod test {
 		assert!(second_application.is_err());
 		assert_matches!(second_application.unwrap_err(), Error::AlreadyApplied(_))
 	}
+
 	#[rstest]
 	fn apply_to_contribution_emits_an_event(contribution_created_event: Event) {
 		let mut contribution = Contribution::from_events(vec![contribution_created_event]);
@@ -250,9 +241,10 @@ mod test {
 		let application_result = contribution.apply(&contributor_id);
 		assert!(application_result.is_ok());
 
-		assert_eq!(1, contribution.pending_events.len());
+		let emitted_events = application_result.unwrap();
+		assert_eq!(1, emitted_events.len());
 		assert_matches!(
-			contribution.pending_events.first().unwrap(),
+			emitted_events.first().unwrap(),
 			ContributionEvent::Applied {
 				contributor_id: _,
 				id: _
