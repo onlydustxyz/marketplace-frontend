@@ -65,8 +65,8 @@ impl Service for ContributionService {
 			.find_by_id(contribution_id.to_owned())
 			.map_err(DomainError::from)?;
 
-		if contribution.status != ContributionStatus::Open {
-			return Err(Error::CannotApply(contribution.status).into());
+		if contribution.get_status() != ContributionStatus::Open {
+			return Err(Error::CannotApply(contribution.get_status()).into());
 		}
 
 		let uuid = self.uuid_generator.new_uuid();
@@ -163,13 +163,12 @@ mod test {
 		let cloned_contribution_id = contribution_id.clone();
 		contribution_repository
 			.expect_find_by_id()
-			.with(eq(contribution_id.clone()))
+			.with(eq(cloned_contribution_id.to_owned()))
 			.returning(move |_| {
-				Ok(Contribution {
-					id: cloned_contribution_id.clone(),
-					status: ContributionStatus::Open,
-					..Default::default()
-				})
+				Ok(Contribution::new_with_id_and_status(
+					cloned_contribution_id.clone(),
+					ContributionStatus::Open,
+				))
 			});
 		application_repository
 			.expect_create()
@@ -201,11 +200,10 @@ mod test {
 			.expect_find_by_id()
 			.with(eq(contribution_id.clone()))
 			.returning(move |_| {
-				Ok(Contribution {
-					id: cloned_contribution_id.clone(),
-					status: ContributionStatus::Completed,
-					..Default::default()
-				})
+				Ok(Contribution::new_with_id_and_status(
+					cloned_contribution_id.clone(),
+					ContributionStatus::Completed,
+				))
 			});
 
 		let contribution_service = ContributionService {
