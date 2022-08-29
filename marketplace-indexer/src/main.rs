@@ -36,7 +36,7 @@ async fn main() {
 	let indexer = IndexerBuilder::new(apibara_client.clone())
 		.network(Network::Starknet)
 		.start_at_block(311611)
-		.on_conflict_recreate()
+		.on_conflict_do_nothing()
 		.filter(contributions_contract_address(), "")
 		.build("contribution-indexer".into())
 		.await
