@@ -9,8 +9,6 @@ pub trait Aggregate: Send + Sync + Default {
 		});
 		contribution
 	}
-	fn emit(&mut self, event: Self::Event);
-	fn get_pending_events(&self) -> &Vec<Self::Event>;
 }
 
 pub trait AggregateRoot: Aggregate {}
