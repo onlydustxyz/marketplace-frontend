@@ -1,7 +1,7 @@
 use super::{ContractAdministrator, ContractError};
 use crate::starknet::model::OnChainContributorId;
 use itertools::Itertools;
-use log::error;
+use log::{error, info};
 use marketplace_domain::*;
 use starknet::{
 	accounts::{Account, Call},
@@ -44,12 +44,14 @@ impl<A: Account + Sync> Contract<A> {
 		}
 
 		let transaction_result = transaction_result.unwrap();
-
 		// Safe to unwrap because transaction hash is an hexa string and we add the prefix ourselves
-		Ok(
+		let transaction_result =
 			HexPrefixedString::from_str(&format!("0x{:x}", transaction_result.transaction_hash))
-				.unwrap(),
-		)
+				.unwrap();
+
+		info!("Transaction hash: {transaction_result}");
+
+		Ok(transaction_result)
 	}
 }
 
