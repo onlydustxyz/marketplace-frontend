@@ -37,14 +37,20 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-
 
-      - name: Run docker compose
+      - name: Run docker compose for marketplace
         run: BASE_TAG=latest docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
+
+      - name: Run docker compose for indexer
+        run: docker-compose -f ./marketplace-indexer/docker-compose.yml up -d
 
       - name: Build
         run: cargo build
 
       - name: Create environment file
         run: cp .env.example .env
+
+      - name: Run the indexer
+        run: cargo run -p marketplace-indexer &
 
       - name: Start the backend
         run: cargo run &

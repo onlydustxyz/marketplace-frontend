@@ -15,6 +15,7 @@ mod contact_information;
 use contact_information::*;
 
 const DATA_PATH: &str = "marketplace-core/src/bin/e2e/data";
+const THREAD_DURATION: u64 = 15;
 
 #[tokio::main]
 async fn main() {
@@ -77,7 +78,7 @@ async fn wait_for_result(result_file_path: String) {
 				return;
 			},
 			Err(_) => {
-				thread::sleep(Duration::from_secs(3));
+				thread::sleep(Duration::from_secs(THREAD_DURATION));
 			},
 		}
 	}

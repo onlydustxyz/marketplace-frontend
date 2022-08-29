@@ -19,13 +19,13 @@ services:
       PGADMIN_DEFAULT_PASSWORD: postgres
     ports:
       - "5060:80"
-  starknet-devnet:
-    image: shardlabs/starknet-devnet:${BASE_TAG}
-    command: --seed 0 --load-path /tmp/dump.pkl
-    ports:
-      - "5050:5050"
-    volumes:
-      - .:/tmp
+  # starknet-devnet:
+  #   image: shardlabs/starknet-devnet:${BASE_TAG}
+  #   command: --seed 0 --load-path /tmp/dump.pkl
+  #   ports:
+  #     - "5050:5050"
+  #   volumes:
+  #     - .:/tmp
 volumes:
   db:
     driver: local
