@@ -50,12 +50,15 @@ impl Observer for WithBockConfirmationCount {
 }
 
 pub trait ConfirmedObserver {
-	fn confirmed(self, confirmation_blocks_count: u64) -> WithBockConfirmationCount;
+	fn confirmed(self, confirmation_blocks_count: u64) -> Arc<WithBockConfirmationCount>;
 }
 
-impl<O: Observer + Sized + 'static> ConfirmedObserver for O {
-	fn confirmed(self, confirmation_blocks_count: u64) -> WithBockConfirmationCount {
-		WithBockConfirmationCount::new(Arc::new(self), confirmation_blocks_count)
+impl<O: Observer + Sized + 'static> ConfirmedObserver for Arc<O> {
+	fn confirmed(self, confirmation_blocks_count: u64) -> Arc<WithBockConfirmationCount> {
+		Arc::new(WithBockConfirmationCount::new(
+			self,
+			confirmation_blocks_count,
+		))
 	}
 }
 

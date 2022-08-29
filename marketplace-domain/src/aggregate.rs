@@ -1,5 +1,5 @@
 pub trait Aggregate: Send + Sync {
-	type Id;
+	type Id: PartialEq;
 	type Event;
 	fn apply_event(&mut self, event: &Self::Event);
 	fn from_events(events: Vec<Self::Event>) -> Self;
