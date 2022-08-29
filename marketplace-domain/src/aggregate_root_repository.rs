@@ -30,10 +30,10 @@ impl<A: AggregateRoot> RepositoryImplementation<A> {
 impl<A: AggregateRoot> Repository<A> for RepositoryImplementation<A> {
 	fn find_by_id(&self, id: A::Id) -> Result<A, Error> {
 		let events = self.event_store.list_by_id(&id)?;
-		if events.len() == 0 {
-			return Err(Error::NotFound);
+		match events {
+			_ if events.is_empty() => Err(Error::NotFound),
+			events => Ok(A::from_events(events)),
 		}
-		Ok(A::from_events(events))
 	}
 }
 

@@ -13,6 +13,8 @@ pub use contribution::ContributionObserver;
 mod confirmed;
 pub use confirmed::{ConfirmedObserver, WithBockConfirmationCount};
 
+mod contribution_event_store_logger;
+
 use crate::domain::*;
 use mockall::automock;
 
