@@ -14,7 +14,7 @@ pub enum Error {
 
 #[automock]
 pub trait Repository<A: AggregateRoot>: Send + Sync {
-	fn find_by_id(&self, id: A::Id) -> Result<A, Error>;
+	fn find_by_id(&self, id: &A::Id) -> Result<A, Error>;
 }
 
 pub struct RepositoryImplementation<A: AggregateRoot> {
@@ -28,8 +28,8 @@ impl<A: AggregateRoot> RepositoryImplementation<A> {
 }
 
 impl<A: AggregateRoot> Repository<A> for RepositoryImplementation<A> {
-	fn find_by_id(&self, id: A::Id) -> Result<A, Error> {
-		let events = self.event_store.list_by_id(&id)?;
+	fn find_by_id(&self, id: &A::Id) -> Result<A, Error> {
+		let events = self.event_store.list_by_id(id)?;
 		match events {
 			_ if events.is_empty() => Err(Error::NotFound),
 			events => Ok(A::from_events(events)),
@@ -66,7 +66,7 @@ mod tests {
 			.returning(|_| Ok(vec![]));
 
 		let repository = RepositoryImplementation::new(Arc::new(event_store));
-		let result = repository.find_by_id(contribution_id);
+		let result = repository.find_by_id(&contribution_id);
 		assert!(result.is_err());
 		assert_matches!(result.unwrap_err(), Error::NotFound);
 	}
@@ -80,7 +80,7 @@ mod tests {
 			.returning(|_| Err(EventStoreError::List));
 
 		let repository = RepositoryImplementation::new(Arc::new(event_store));
-		let result = repository.find_by_id(contribution_id);
+		let result = repository.find_by_id(&contribution_id);
 		assert!(result.is_err());
 		assert_matches!(
 			result.unwrap_err(),
@@ -103,7 +103,7 @@ mod tests {
 			.returning(move |_| Ok(vec![creation_event.clone()]));
 
 		let repository = RepositoryImplementation::new(Arc::new(event_store));
-		let result = repository.find_by_id(contribution_id.clone());
+		let result = repository.find_by_id(&contribution_id);
 		assert!(result.is_ok());
 		assert_eq!(
 			ContributionStatus::Open,
