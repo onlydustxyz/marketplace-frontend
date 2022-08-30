@@ -33,6 +33,14 @@ impl ApplicationProjectionRepository for EmptyDatabase {
 		unimplemented!()
 	}
 
+	fn find_by_contribution_and_contributor(
+		&self,
+		_contribution_id: &ContributionId,
+		_contributor_id: &ContributorId,
+	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
+		unimplemented!()
+	}
+
 	fn list_by_contribution(
 		&self,
 		_contribution_id: &ContributionId,
@@ -67,6 +75,14 @@ impl ApplicationProjectionRepository for FilledDatabase {
 	fn find(
 		&self,
 		_id: &ApplicationId,
+	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
+		unimplemented!()
+	}
+
+	fn find_by_contribution_and_contributor(
+		&self,
+		_contribution_id: &ContributionId,
+		_contributor_id: &ContributorId,
 	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		unimplemented!()
 	}
