@@ -4,7 +4,11 @@ use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use itertools::Itertools;
 use mapinto::ResultMapErrInto;
 
-use crate::database::{models, schema::applications, Client, DatabaseError};
+use crate::database::{
+	models::{self, Status},
+	schema::applications,
+	Client, DatabaseError,
+};
 use marketplace_domain::*;
 
 impl ApplicationProjectionRepository for Client {
@@ -125,12 +129,16 @@ impl From<ApplicationProjection> for models::Application {
 
 impl From<models::Application> for ApplicationProjection {
 	fn from(application: models::Application) -> Self {
-		Self::new_with_status(
+		let application_projection = Self::new(
 			application.id.into(),
 			application.contribution_id.parse().unwrap(),
 			ContributorId::from_str(application.contributor_id.as_str()).unwrap(),
-			application.status.into(),
-		)
+		);
+		match application.status {
+			Status::Pending => application_projection.as_pending(),
+			Status::Accepted => application_projection.as_accepted(),
+			Status::Refused => application_projection.as_refused(),
+		}
 	}
 }
 
