@@ -14,9 +14,9 @@ impl ContributionObserver {
 }
 
 impl Observer for ContributionObserver {
-	fn on_new_event(&self, event: &Event, _block_number: u64) {
-		match event {
-			Event::Contribution(event) => self.contribution_projection.project(event),
+	fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
+		match &event.event {
+			Event::Contribution(event) => self.contribution_projection.project(&event),
 		}
 	}
 }
@@ -43,8 +43,11 @@ mod test {
 	}
 
 	#[fixture]
-	fn event(contribution_event: ContributionEvent) -> Event {
-		Event::Contribution(contribution_event)
+	fn event(contribution_event: ContributionEvent) -> ObservedEvent {
+		ObservedEvent {
+			event: Event::Contribution(contribution_event),
+			deduplication_id: "dedup".to_string(),
+		}
 	}
 
 	#[fixture]
@@ -56,7 +59,7 @@ mod test {
 	fn on_contribution_created_event(
 		mut contribution_projection: MockContributionProjection,
 		contribution_event: ContributionEvent,
-		event: Event,
+		event: ObservedEvent,
 	) {
 		contribution_projection
 			.expect_project()

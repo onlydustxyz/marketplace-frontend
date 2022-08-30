@@ -16,7 +16,7 @@ impl Observer for Logger<'_> {
 		self.0(format!("🔗 Indexer `{indexer_id}` connected"));
 	}
 
-	fn on_new_event(&self, event: &Event, block_number: u64) {
+	fn on_new_event(&self, event: &ObservedEvent, block_number: u64) {
 		self.0(format!("⚡ New event [{block_number}]: {}", event));
 	}
 
@@ -53,14 +53,17 @@ mod test {
 	}
 
 	#[fixture]
-	fn event() -> Event {
-		Event::Contribution(ContributionEvent::Validated {
-			id: Default::default(),
-		})
+	fn event() -> ObservedEvent {
+		ObservedEvent {
+			event: Event::Contribution(ContributionEvent::Validated {
+				id: Default::default(),
+			}),
+			deduplication_id: "dedup".to_string(),
+		}
 	}
 
 	#[rstest]
-	fn on_new_event(mut logger: MockLoggerCallback, event: Event) {
+	fn on_new_event(mut logger: MockLoggerCallback, event: ObservedEvent) {
 		logger
 			.expect_log()
 			.withf(|msg| msg.starts_with("⚡ New event [0]: "))
@@ -105,7 +108,7 @@ mod test {
 	}
 
 	#[rstest]
-	fn handler_can_be_created_using_default(event: Event) {
+	fn handler_can_be_created_using_default(event: ObservedEvent) {
 		let handler = Logger::default();
 		handler.on_new_event(&event, 0);
 	}

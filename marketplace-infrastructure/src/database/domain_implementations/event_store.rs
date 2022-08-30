@@ -9,7 +9,7 @@ impl EventStore<Contribution> for Client {
 	fn append(
 		&self,
 		aggregate_id: &<Contribution as Aggregate>::Id,
-		events: Vec<<Contribution as Aggregate>::Event>,
+		events: Vec<StorableEvent<Contribution>>,
 	) -> Result<(), EventStoreError> {
 		let connection = self.connection().map_err(|_| EventStoreError::Connection)?;
 
@@ -19,7 +19,7 @@ impl EventStore<Contribution> for Client {
 				Ok(models::Event {
 					aggregate_name: CONTRIBUTION_AGGREGATE.to_string(),
 					aggregate_id: aggregate_id.to_string(),
-					payload: serde_json::to_value(event)
+					payload: serde_json::to_value(&event.event)
 						.map_err(|_| EventStoreError::InvalidEvent)?,
 				})
 			})
@@ -78,29 +78,33 @@ mod tests {
 	fn test_append_and_list(event_store: Box<dyn EventStore<Contribution>>) {
 		let contribution_id: ContributionId = HexPrefixedString::from_str("0x123").unwrap().into();
 		let contributor_id: ContributorId = HexPrefixedString::from_str("0x456").unwrap().into();
-		let creation_event = ContributionEvent::Created {
-			id: contribution_id.clone(),
-			project_id: Default::default(),
-			issue_number: Default::default(),
-			gate: Default::default(),
+		let creation_event = StorableEvent {
+			event: ContributionEvent::Created {
+				id: contribution_id.clone(),
+				project_id: Default::default(),
+				issue_number: Default::default(),
+				gate: Default::default(),
+			},
+			deduplication_id: "dedup".to_string(),
 		};
-		let assigned_event = ContributionEvent::Assigned {
-			id: contribution_id.clone(),
-			contributor_id,
+		let assigned_event = StorableEvent {
+			event: ContributionEvent::Assigned {
+				id: contribution_id.clone(),
+				contributor_id,
+			},
+			deduplication_id: "dedup".to_string(),
 		};
 
-		assert!(
-			event_store
-				.append(
-					&contribution_id,
-					vec![creation_event.clone(), assigned_event.clone()]
-				)
-				.is_ok()
-		);
+		assert!(event_store
+			.append(
+				&contribution_id,
+				vec![creation_event.clone(), assigned_event.clone()]
+			)
+			.is_ok());
 
 		let contribution_events = event_store.list_by_id(&contribution_id).unwrap();
 		assert_eq!(contribution_events.len(), 2);
-		assert_eq!(*contribution_events.first().unwrap(), creation_event);
-		assert_eq!(*contribution_events.last().unwrap(), assigned_event);
+		assert_eq!(*contribution_events.first().unwrap(), creation_event.event);
+		assert_eq!(*contribution_events.last().unwrap(), assigned_event.event);
 	}
 }

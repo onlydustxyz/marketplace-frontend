@@ -4,9 +4,9 @@ use super::*;
 use marketplace_domain::EventStore;
 
 impl<ES: EventStore<Contribution>> Observer for ES {
-	fn on_new_event(&self, event: &Event, _block_number: u64) {
-		let Event::Contribution(event) = event;
-		let id = match event {
+	fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
+		let Event::Contribution(domain_event) = &event.event;
+		let id = match domain_event {
 			ContributionEvent::Created {
 				id,
 				project_id: _,
@@ -21,7 +21,13 @@ impl<ES: EventStore<Contribution>> Observer for ES {
 			ContributionEvent::Validated { id } => id,
 		};
 
-		if let Err(error) = self.append(id, vec![event.to_owned()]) {
+		if let Err(error) = self.append(
+			&id,
+			vec![StorableEvent {
+				event: domain_event.to_owned(),
+				deduplication_id: event.deduplication_id.to_owned(),
+			}],
+		) {
 			error!(
 				"Failed to append {event} to the store: {}",
 				error.to_string()
@@ -56,21 +62,31 @@ mod test {
 	}
 
 	#[fixture]
-	fn event(contribution_event: ContributionEvent) -> Event {
-		Event::Contribution(contribution_event)
+	fn event(contribution_event: ContributionEvent) -> ObservedEvent {
+		ObservedEvent {
+			event: Event::Contribution(contribution_event),
+			deduplication_id: "dedup".to_string(),
+		}
 	}
 
 	#[rstest]
 	fn on_new_event(
 		mut event_store: EventStore,
 		contribution_id: ContributionId,
-		event: Event,
+		event: ObservedEvent,
 		contribution_event: ContributionEvent,
 	) {
+		let cloned_event = event.clone();
 		event_store
 			.expect_append()
 			.times(1)
-			.with(eq(contribution_id), eq(vec![contribution_event]))
+			.with(
+				eq(contribution_id),
+				eq(vec![StorableEvent {
+					event: contribution_event.to_owned(),
+					deduplication_id: cloned_event.deduplication_id.to_owned(),
+				}]),
+			)
 			.returning(|_, _| Ok(()));
 
 		event_store.on_new_event(&event, 0);

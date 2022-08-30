@@ -1,4 +1,6 @@
-use super::{Event, Observer};
+use log::info;
+
+use super::{ObservedEvent, Observer};
 use std::{
 	collections::VecDeque,
 	sync::{Arc, RwLock, RwLockReadGuard, RwLockWriteGuard},
@@ -7,7 +9,7 @@ use std::{
 pub struct WithBockConfirmationCount {
 	observer: Arc<dyn Observer>,
 	confirmation_blocks_count: u64,
-	events: RwLock<VecDeque<(Event, u64)>>,
+	events: RwLock<VecDeque<(ObservedEvent, u64)>>,
 }
 
 impl WithBockConfirmationCount {
@@ -19,15 +21,15 @@ impl WithBockConfirmationCount {
 		}
 	}
 
-	fn events_mut(&self) -> RwLockWriteGuard<'_, VecDeque<(Event, u64)>> {
+	fn events_mut(&self) -> RwLockWriteGuard<'_, VecDeque<(ObservedEvent, u64)>> {
 		self.events.write().expect("Could not acquire lock to push new events")
 	}
 
-	fn events(&self) -> RwLockReadGuard<'_, VecDeque<(Event, u64)>> {
+	fn events(&self) -> RwLockReadGuard<'_, VecDeque<(ObservedEvent, u64)>> {
 		self.events.read().expect("Could not acquire lock to fetch new events")
 	}
 
-	fn peek(&self) -> Option<(Event, u64)> {
+	fn peek(&self) -> Option<(ObservedEvent, u64)> {
 		self.events().back().map(|value| value.to_owned())
 	}
 }
@@ -44,7 +46,7 @@ impl Observer for WithBockConfirmationCount {
 		}
 	}
 
-	fn on_new_event(&self, event: &Event, block_number: u64) {
+	fn on_new_event(&self, event: &ObservedEvent, block_number: u64) {
 		self.events_mut().push_front((event.to_owned(), block_number));
 	}
 }
@@ -66,7 +68,7 @@ impl<O: Observer + Sized + 'static> ConfirmedObserver for Arc<O> {
 mod test {
 	use super::*;
 	use crate::domain::MockBlockchainObserver;
-	use marketplace_domain::ContributionEvent;
+	use marketplace_domain::{ContributionEvent, Event};
 	use mockall::predicate::eq;
 	use rstest::*;
 
@@ -76,14 +78,20 @@ mod test {
 	}
 
 	#[fixture]
-	fn event() -> Event {
-		Event::Contribution(ContributionEvent::Validated {
-			id: Default::default(),
-		})
+	fn event() -> ObservedEvent {
+		ObservedEvent {
+			event: Event::Contribution(ContributionEvent::Validated {
+				id: Default::default(),
+			}),
+			deduplication_id: "dedup".to_string(),
+		}
 	}
 
 	#[rstest]
-	fn should_call_observer_only_if_confirmed(event: Event, mut observer: MockBlockchainObserver) {
+	fn should_call_observer_only_if_confirmed(
+		event: ObservedEvent,
+		mut observer: MockBlockchainObserver,
+	) {
 		observer.expect_on_new_event().with(eq(event.clone()), eq(1)).return_const(());
 
 		let confirmed = WithBockConfirmationCount::new(Arc::new(observer), 3);
@@ -93,7 +101,7 @@ mod test {
 
 	#[rstest]
 	fn should_call_observer_if_confirmed_and_block_missed(
-		event: Event,
+		event: ObservedEvent,
 		mut observer: MockBlockchainObserver,
 	) {
 		observer.expect_on_new_event().return_const(());
@@ -104,7 +112,7 @@ mod test {
 	}
 
 	#[rstest]
-	fn should_call_observer_only_once(event: Event, mut observer: MockBlockchainObserver) {
+	fn should_call_observer_only_once(event: ObservedEvent, mut observer: MockBlockchainObserver) {
 		observer.expect_on_new_event().times(1).return_const(());
 
 		let confirmed = WithBockConfirmationCount::new(Arc::new(observer), 3);
@@ -117,7 +125,7 @@ mod test {
 
 	#[rstest]
 	fn should_not_call_observer_before_confirmation(
-		event: Event,
+		event: ObservedEvent,
 		mut observer: MockBlockchainObserver,
 	) {
 		observer.expect_on_new_event().never();

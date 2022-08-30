@@ -15,7 +15,7 @@ impl Observer for ObserverComposite {
 		self.0.iter().for_each(|observer| observer.on_connect(indexer_id))
 	}
 
-	fn on_new_event(&self, event: &Event, block_number: u64) {
+	fn on_new_event(&self, event: &ObservedEvent, block_number: u64) {
 		self.0.iter().for_each(|observer| observer.on_new_event(event, block_number))
 	}
 
@@ -38,10 +38,13 @@ mod test {
 	use std::str::FromStr;
 
 	#[fixture]
-	fn event() -> Event {
-		Event::Contribution(ContributionEvent::Validated {
-			id: Default::default(),
-		})
+	fn event() -> ObservedEvent {
+		ObservedEvent {
+			event: Event::Contribution(ContributionEvent::Validated {
+				id: Default::default(),
+			}),
+			deduplication_id: "dedup".to_string(),
+		}
 	}
 
 	#[fixture]
@@ -50,7 +53,7 @@ mod test {
 	}
 
 	#[rstest]
-	fn on_new_event(event: Event, block_number: u64) {
+	fn on_new_event(event: ObservedEvent, block_number: u64) {
 		let mut observer1 = MockObserver::new();
 		observer1
 			.expect_on_new_event()
