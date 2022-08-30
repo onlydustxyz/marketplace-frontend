@@ -15,26 +15,34 @@ pub trait Usecase: Send + Sync {
 pub struct ApplyToContribution {
 	contribution_repository: Arc<dyn AggregateRootRepository<Contribution>>,
 	contribution_service: Arc<dyn ContributionService>,
+	event_store: Arc<dyn EventStore<Contribution>>,
 }
 
 impl ApplyToContribution {
 	pub fn new(
-		contribution_service: Arc<dyn ContributionService>,
 		contribution_repository: Arc<dyn AggregateRootRepository<Contribution>>,
+		contribution_service: Arc<dyn ContributionService>,
+		event_store: Arc<dyn EventStore<Contribution>>,
 	) -> Self {
 		Self {
-			contribution_service,
 			contribution_repository,
+			contribution_service,
+			event_store,
 		}
 	}
 }
 
 impl ApplyToContribution {
 	pub fn new_usecase_boxed(
-		contribution_service: Arc<dyn ContributionService>,
 		contribution_repository: Arc<dyn AggregateRootRepository<Contribution>>,
+		contribution_service: Arc<dyn ContributionService>,
+		event_store: Arc<dyn EventStore<Contribution>>,
 	) -> Box<dyn Usecase> {
-		Box::new(Self::new(contribution_service, contribution_repository))
+		Box::new(Self::new(
+			contribution_repository,
+			contribution_service,
+			event_store,
+		))
 	}
 }
 
@@ -46,6 +54,10 @@ impl Usecase for ApplyToContribution {
 	) -> Result<(), DomainError> {
 		let mut contribution = self.contribution_repository.find_by_id(contribution_id)?;
 		let events = contribution.apply(contributor_id)?;
-		self.contribution_service.apply(contribution_id, contributor_id)
+		self.event_store.append(&contribution.get_id(), events)?;
+
+		// TODO: remove the following call when using the application projector
+		self.contribution_service.apply(contribution_id, contributor_id)?;
+		Ok(())
 	}
 }

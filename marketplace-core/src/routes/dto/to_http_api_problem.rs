@@ -142,6 +142,10 @@ impl ToHttpApiProblem for DomainError {
 			DomainError::ContributionError(_) => HttpApiProblem::new(StatusCode::BAD_REQUEST)
 				.title("Contribution error")
 				.detail(self.to_string()),
+			DomainError::EventStoreError(_) =>
+				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+					.title("Internal error")
+					.detail(self.to_string()),
 		}
 	}
 }

@@ -126,8 +126,9 @@ fn inject_app(
 			database.clone(),
 		))
 		.manage(ApplyToContribution::new_usecase_boxed(
-			contribution_service.clone(),
 			contribution_repository,
+			contribution_service,
+			database.clone(),
 		))
 		.manage(ValidateContribution::new_usecase_boxed(
 			starknet.clone(),
