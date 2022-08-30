@@ -1,10 +1,16 @@
-use crate::ContributionEvent;
+use crate::{Aggregate, ContributionEvent};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	Contribution(ContributionEvent),
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct StorableEvent<A: Aggregate> {
+	pub event: A::Event,
+	pub deduplication_id: String,
 }
 
 impl Display for Event {

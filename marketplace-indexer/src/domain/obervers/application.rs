@@ -15,11 +15,11 @@ impl ApplicationObserver {
 }
 
 impl Observer for ApplicationObserver {
-	fn on_new_event(&self, event: &Event, _block_number: u64) {
-		match event {
+	fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
+		match &event.event {
 			Event::Contribution(event) => {
 				if let ContributionEvent::Assigned { id, contributor_id } = event {
-					let result = self.contribution_service.on_assigned(id, contributor_id);
+					let result = self.contribution_service.on_assigned(&id, &contributor_id);
 					if let Err(error) = result {
 						error!(
 							"Unable to update applications with {event}: {}",
@@ -60,8 +60,11 @@ mod test {
 	}
 
 	#[fixture]
-	fn event(contribution_event: ContributionEvent) -> Event {
-		Event::Contribution(contribution_event)
+	fn event(contribution_event: ContributionEvent) -> ObservedEvent {
+		ObservedEvent {
+			event: Event::Contribution(contribution_event),
+			deduplication_id: "dedup".to_string(),
+		}
 	}
 
 	#[fixture]
@@ -72,7 +75,7 @@ mod test {
 	#[rstest]
 	fn on_contribution_assigned_event(
 		mut contribution_service: MockContributionService,
-		event: Event,
+		event: ObservedEvent,
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
 	) {
