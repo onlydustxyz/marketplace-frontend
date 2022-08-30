@@ -22,8 +22,9 @@ struct ContributionNotFound(ContributionId);
 
 struct ApplyToContribution(RwLock<HashMap<ContributionId, HashMap<ContributorId, bool>>>);
 
+#[async_trait]
 impl ApplyToContributionUsecase for ApplyToContribution {
-	fn apply_to_contribution(
+	async fn apply_to_contribution(
 		&self,
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,

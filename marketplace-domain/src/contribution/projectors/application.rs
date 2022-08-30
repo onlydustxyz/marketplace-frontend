@@ -1,4 +1,5 @@
 use crate::*;
+use async_trait::async_trait;
 use log::error;
 use std::sync::Arc;
 
@@ -82,8 +83,9 @@ impl ApplicationProjector {
 	}
 }
 
+#[async_trait]
 impl Projector<Contribution> for ApplicationProjector {
-	fn project(&self, event: &<Contribution as Aggregate>::Event) {
+	async fn project(&self, event: &<Contribution as Aggregate>::Event) {
 		let result = match event {
 			ContributionEvent::Applied {
 				id: contribution_id,
@@ -129,7 +131,7 @@ mod tests {
 	}
 
 	#[rstest]
-	fn contribution_applied_with_same_contributor_updates_application(
+	async fn contribution_applied_with_same_contributor_updates_application(
 		mut application_projection_repository: MockApplicationProjectionRepository,
 		mut uuid_generator: MockUuidGenerator,
 	) {
@@ -160,14 +162,16 @@ mod tests {
 			Arc::new(uuid_generator),
 		);
 
-		projector.project(&ContributionEvent::Applied {
-			id: contribution_id,
-			contributor_id,
-		});
+		projector
+			.project(&ContributionEvent::Applied {
+				id: contribution_id,
+				contributor_id,
+			})
+			.await;
 	}
 
 	#[rstest]
-	fn contribution_applied_creates_an_application(
+	async fn contribution_applied_creates_an_application(
 		mut application_projection_repository: MockApplicationProjectionRepository,
 		mut uuid_generator: MockUuidGenerator,
 	) {
@@ -204,14 +208,16 @@ mod tests {
 			Arc::new(uuid_generator),
 		);
 
-		projector.project(&ContributionEvent::Applied {
-			id: contribution_id,
-			contributor_id,
-		});
+		projector
+			.project(&ContributionEvent::Applied {
+				id: contribution_id,
+				contributor_id,
+			})
+			.await;
 	}
 
 	#[rstest]
-	fn contribution_assigned_updates_all_the_contribution_applications(
+	async fn contribution_assigned_updates_all_the_contribution_applications(
 		mut application_projection_repository: MockApplicationProjectionRepository,
 		mut uuid_generator: MockUuidGenerator,
 		random_uuid_generator: Box<dyn UuidGenerator>,
@@ -287,14 +293,16 @@ mod tests {
 			Arc::new(uuid_generator),
 		);
 
-		projector.project(&ContributionEvent::Assigned {
-			id: contribution_id,
-			contributor_id: contributor2_id,
-		});
+		projector
+			.project(&ContributionEvent::Assigned {
+				id: contribution_id,
+				contributor_id: contributor2_id,
+			})
+			.await;
 	}
 
 	#[rstest]
-	fn contribution_unassigned_updates_all_the_contribution_applications(
+	async fn contribution_unassigned_updates_all_the_contribution_applications(
 		mut application_projection_repository: MockApplicationProjectionRepository,
 		mut uuid_generator: MockUuidGenerator,
 		random_uuid_generator: Box<dyn UuidGenerator>,
@@ -373,8 +381,10 @@ mod tests {
 			Arc::new(uuid_generator),
 		);
 
-		projector.project(&ContributionEvent::Unassigned {
-			id: contribution_id,
-		});
+		projector
+			.project(&ContributionEvent::Unassigned {
+				id: contribution_id,
+			})
+			.await;
 	}
 }

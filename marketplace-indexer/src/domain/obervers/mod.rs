@@ -1,8 +1,4 @@
-mod application;
 use std::fmt::Display;
-
-pub use application::ApplicationObserver;
-
 mod composite;
 use async_trait::async_trait;
 pub use composite::ObserverComposite;

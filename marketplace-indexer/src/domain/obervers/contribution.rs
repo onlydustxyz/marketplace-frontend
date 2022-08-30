@@ -2,14 +2,12 @@ use super::*;
 use std::sync::Arc;
 
 pub struct ContributionObserver {
-	contribution_projection: Arc<dyn Projector<Contribution>>,
+	projector: Arc<dyn Projector<Contribution>>,
 }
 
 impl ContributionObserver {
-	pub fn new(contribution_projection: Arc<dyn Projector<Contribution>>) -> Self {
-		Self {
-			contribution_projection,
-		}
+	pub fn new(projector: Arc<dyn Projector<Contribution>>) -> Self {
+		Self { projector }
 	}
 }
 
@@ -17,7 +15,7 @@ impl ContributionObserver {
 impl Observer for ContributionObserver {
 	async fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
 		match &event.event {
-			Event::Contribution(event) => self.contribution_projection.project(event).await,
+			Event::Contribution(event) => self.projector.project(event).await,
 		}
 	}
 }
@@ -33,7 +31,7 @@ mod test {
 		pub ContributionProjector {}
 
 		#[async_trait]
-		impl Projector<Contribution> for ContributionProjection {
+		impl Projector<Contribution> for ContributionProjector {
 			async fn project(&self, event: &ContributionEvent);
 		}
 	}

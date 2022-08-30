@@ -51,23 +51,22 @@ async fn main() {
 	let uuid_generator = Arc::new(RandomUuidGenerator);
 	let contribution_repository: Arc<dyn AggregateRootRepository<Contribution>> =
 		Arc::new(AggregateRootRepositoryImplementation::new(database.clone()));
-	let contribution_service = Arc::new(ContributionServiceImplementation::new(
-		contribution_repository.clone(),
-		database.clone(),
-		database.clone(),
-		uuid_generator.clone(),
-	));
 	let contact_information_service = Arc::new(ContactInformationServiceImplementation::new(
 		database.clone(),
+	));
+	let application_projector: Arc<ApplicationProjector> = Arc::new(ApplicationProjector::new(
+		database.clone(),
+		uuid_generator.clone(),
 	));
 
 	let rocket_handler = inject_app(
 		rocket::build(),
 		database.clone(),
 		starknet,
-		contribution_service,
 		contribution_repository,
 		contact_information_service,
+		application_projector,
+		uuid_generator,
 	)
 	.manage(database.clone())
 	.manage(RepoCache::default())
@@ -111,9 +110,10 @@ fn inject_app(
 	rocket: Rocket<Build>,
 	database: Arc<database::Client>,
 	starknet: Arc<starknet::SingleAdminClient>,
-	contribution_service: Arc<dyn ContributionService>,
 	contribution_repository: Arc<dyn AggregateRootRepository<Contribution>>,
 	contact_information_service: Arc<dyn ContactInformationService>,
+	application_projector: Arc<ApplicationProjector>,
+	uuid_generator: Arc<dyn UuidGenerator>,
 ) -> Rocket<Build> {
 	rocket
 		.manage(CreateContribution::new_usecase_boxed(starknet.clone()))
@@ -127,8 +127,9 @@ fn inject_app(
 		))
 		.manage(ApplyToContribution::new_usecase_boxed(
 			contribution_repository,
-			contribution_service,
 			database.clone(),
+			application_projector,
+			uuid_generator,
 		))
 		.manage(ValidateContribution::new_usecase_boxed(
 			starknet.clone(),

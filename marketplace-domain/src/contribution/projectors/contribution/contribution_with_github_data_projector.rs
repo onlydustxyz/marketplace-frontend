@@ -112,11 +112,7 @@ impl Projector<Contribution> for WithGithubDataProjector {
 				__self.on_assign(id, contributor_id),
 			ContributionEvent::Unassigned { id } => __self.on_unassign(id),
 			ContributionEvent::Validated { id } => __self.on_validate(id),
-			ContributionEvent::Applied {
-				id,
-				contributor_id,
-				application_id,
-			} => todo!(),
+			ContributionEvent::Applied { id, contributor_id } => todo!(),
 		};
 
 		if let Err(error) = result {
