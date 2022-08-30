@@ -37,10 +37,7 @@ async fn main() {
 		.network(Network::Starknet)
 		.start_at_block(311611)
 		.on_conflict_recreate()
-		.filter(contributions_contract_address(), "ContributionCreated")
-		.filter(contributions_contract_address(), "ContributionAssigned")
-		.filter(contributions_contract_address(), "ContributionUnassigned")
-		.filter(contributions_contract_address(), "ContributionValidated")
+		.filter(contributions_contract_address(), "")
 		.build("contribution-indexer".into())
 		.await
 		.expect("Unable to create the indexer");

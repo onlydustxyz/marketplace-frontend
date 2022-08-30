@@ -8,19 +8,19 @@ services:
       MONGO_INITDB_ROOT_USERNAME: apibara
       MONGO_INITDB_ROOT_PASSWORD: apibara
     ports:
-    - 27017:27017
+      - 27017:27017
     volumes:
-    - ./_docker/apibara_mongodb:/data/db
+      - ./_docker/apibara_mongodb:/data/db
 
   apibara:
-    image: apibara/apibara:0.3.0
+    build: https://github.com/AnthonyBuisset/apibara.git#main
     restart: always
     command: start --config /usr/etc/apibara/configuration.toml
     environment:
       RUST_LOG: "apibara=info"
     ports:
-    - 7171:7171
+      - 7171:7171
     volumes:
-    - ./apibara.toml:/usr/etc/apibara/configuration.toml
+      - ./apibara.toml:/usr/etc/apibara/configuration.toml
     links:
-    - mongo
+      - mongo
