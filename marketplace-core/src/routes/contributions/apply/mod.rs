@@ -36,6 +36,7 @@ pub async fn apply_to_contribution(
 
 	usecase
 		.apply_to_contribution(&contribution_id, &contributor_id)
+		.await
 		.map_err(|e| e.to_http_api_problem())?;
 
 	let api_url = std::env::var("API_URL").unwrap();

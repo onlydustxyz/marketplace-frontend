@@ -53,8 +53,10 @@ async fn main() {
 
 	let database = Arc::new(database::Client::new(database::init_pool()));
 	let github = Arc::new(github::Client::new());
+	let uuid_generator = Arc::new(RandomUuidGenerator {});
 
-	let contribution_observer = build_contribution_observers(database.clone(), github.clone());
+	let contribution_observer =
+		build_contribution_observers(database.clone(), github.clone(), uuid_generator);
 
 	apibara_client
 		.fetch_new_events(&indexer, contribution_observer)
@@ -71,23 +73,16 @@ fn contributions_contract_address() -> ContractAddress {
 fn build_contribution_observers(
 	database: Arc<database::Client>,
 	github: Arc<github::Client>,
+	uuid_generator: Arc<dyn UuidGenerator>,
 ) -> Arc<dyn BlockchainObserver> {
 	let contribution_projector = ContributionProjector::new(database.clone(), github);
-
-	let contribution_repository: Arc<dyn AggregateRootRepository<Contribution>> =
-		Arc::new(AggregateRootRepositoryImplementation::new(database.clone()));
-	let contribution_service = ContributionServiceImplementation::new(
-		contribution_repository.clone(),
-		database.clone(),
-		database.clone(),
-		Arc::new(RandomUuidGenerator),
-	);
+	let application_projector = ApplicationProjector::new(database.clone(), uuid_generator);
 
 	let observer = BlockchainObserverComposite::new(vec![
 		Arc::new(BlockchainLogger::default()),
 		database,
 		Arc::new(ContributionObserver::new(Arc::new(contribution_projector))),
-		Arc::new(ApplicationObserver::new(Arc::new(contribution_service))),
+		Arc::new(ContributionObserver::new(Arc::new(application_projector))),
 	]);
 
 	Arc::new(observer)
