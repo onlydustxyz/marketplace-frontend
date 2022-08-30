@@ -40,20 +40,11 @@ pub struct Projection {
 
 impl Projection {
 	pub fn new(id: Id, contribution_id: ContributionId, contributor_id: ContributorId) -> Self {
-		Self::new_with_status(id, contribution_id, contributor_id, Status::Pending)
-	}
-
-	pub fn new_with_status(
-		id: Id,
-		contribution_id: ContributionId,
-		contributor_id: ContributorId,
-		status: Status,
-	) -> Self {
 		Self {
 			id,
 			contribution_id,
 			contributor_id,
-			status,
+			status: Status::Pending,
 		}
 	}
 
@@ -73,7 +64,47 @@ impl Projection {
 		&self.status
 	}
 
-	pub fn set_status(&mut self, status: Status) {
-		self.status = status;
+	pub fn as_pending(&self) -> Self {
+		Self {
+			id: self.id,
+			contribution_id: self.contribution_id.to_owned(),
+			contributor_id: self.contributor_id.to_owned(),
+			status: Status::Pending,
+		}
+	}
+
+	pub fn as_accepted(&self) -> Self {
+		Self {
+			id: self.id,
+			contribution_id: self.contribution_id.to_owned(),
+			contributor_id: self.contributor_id.to_owned(),
+			status: Status::Accepted,
+		}
+	}
+
+	pub fn as_refused(&self) -> Self {
+		Self {
+			id: self.id,
+			contribution_id: self.contribution_id.to_owned(),
+			contributor_id: self.contributor_id.to_owned(),
+			status: Status::Refused,
+		}
+	}
+}
+
+#[cfg(test)]
+impl Projection {
+	pub fn new_with_status(
+		id: Id,
+		contribution_id: ContributionId,
+		contributor_id: ContributorId,
+		status: Status,
+	) -> Self {
+		Self {
+			id,
+			contribution_id,
+			contributor_id,
+			status,
+		}
 	}
 }

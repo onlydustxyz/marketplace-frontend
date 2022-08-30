@@ -28,10 +28,8 @@ impl ApplicationProjector {
 			.application_projection_repository
 			.find_by_contribution_and_contributor(contribution_id, contributor_id)?;
 		match previous_application {
-			Some(mut application) => {
-				application.set_status(ApplicationStatus::Pending);
-				self.application_projection_repository.update(application)
-			},
+			Some(application) =>
+				self.application_projection_repository.update(application.as_pending()),
 			None => {
 				let application = ApplicationProjection::new(
 					self.uuid_generator.new_uuid().into(),
@@ -48,18 +46,17 @@ impl ApplicationProjector {
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		let mut contribution_applications = self
+		let contribution_applications = self
 			.application_projection_repository
 			.list_by_contribution(contribution_id, None)?;
 		contribution_applications
-			.iter_mut()
+			.iter()
 			.map(|application| {
-				match application.contributor_id() {
-					id if id == contributor_id =>
-						application.set_status(ApplicationStatus::Accepted),
-					_ => application.set_status(ApplicationStatus::Refused),
-				}
-				self.application_projection_repository.update(application.to_owned())
+				self.application_projection_repository
+					.update(match application.contributor_id() {
+						id if id == contributor_id => application.as_accepted(),
+						_ => application.as_refused(),
+					})
 			})
 			.collect::<Result<Vec<()>, ApplicationProjectionRepositoryError>>()
 			.and(Ok(()))
@@ -75,8 +72,7 @@ impl ApplicationProjector {
 		contribution_applications
 			.iter_mut()
 			.map(|application| {
-				application.set_status(ApplicationStatus::Pending);
-				self.application_projection_repository.update(application.to_owned())
+				self.application_projection_repository.update(application.as_pending())
 			})
 			.collect::<Result<Vec<()>, ApplicationProjectionRepositoryError>>()
 			.and(Ok(()))
