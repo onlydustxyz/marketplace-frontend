@@ -19,6 +19,8 @@ pub enum Error {
 	ContributionService(#[from] ContributionServiceError),
 	#[error("Failed to take control of a lock")]
 	Lock,
+	#[error("Event store error")]
+	EventStoreError(#[from] EventStoreError),
 	#[error(transparent)]
 	ContributionError(#[from] ContributionError),
 }

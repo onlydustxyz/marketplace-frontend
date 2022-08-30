@@ -8,8 +8,8 @@ use thiserror::Error;
 pub enum Error {
 	#[error("Aggregate not found")]
 	NotFound,
-	#[error("Something bad happend with the event store")]
-	EventStoreError(#[source] EventStoreError),
+	#[error(transparent)]
+	EventStoreError(#[from] EventStoreError),
 }
 
 #[automock]
@@ -34,12 +34,6 @@ impl<A: AggregateRoot> Repository<A> for RepositoryImplementation<A> {
 			_ if events.is_empty() => Err(Error::NotFound),
 			events => Ok(A::from_events(events)),
 		}
-	}
-}
-
-impl From<EventStoreError> for Error {
-	fn from(original_error: EventStoreError) -> Self {
-		Self::EventStoreError(original_error)
 	}
 }
 
