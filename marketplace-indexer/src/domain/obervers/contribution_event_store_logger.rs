@@ -22,7 +22,7 @@ impl<ES: EventStore<Contribution>> Observer for ES {
 		};
 
 		if let Err(error) = self.append(
-			&id,
+			id,
 			vec![StorableEvent {
 				event: domain_event.to_owned(),
 				deduplication_id: event.deduplication_id.to_owned(),

@@ -19,7 +19,7 @@ impl Observer for ApplicationObserver {
 		match &event.event {
 			Event::Contribution(event) => {
 				if let ContributionEvent::Assigned { id, contributor_id } = event {
-					let result = self.contribution_service.on_assigned(&id, &contributor_id);
+					let result = self.contribution_service.on_assigned(id, contributor_id);
 					if let Err(error) = result {
 						error!(
 							"Unable to update applications with {event}: {}",

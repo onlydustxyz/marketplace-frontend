@@ -16,7 +16,7 @@ impl ContributionObserver {
 impl Observer for ContributionObserver {
 	fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
 		match &event.event {
-			Event::Contribution(event) => self.contribution_projection.project(&event),
+			Event::Contribution(event) => self.contribution_projection.project(event),
 		}
 	}
 }
