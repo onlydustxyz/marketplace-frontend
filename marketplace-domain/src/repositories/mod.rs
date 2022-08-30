@@ -14,10 +14,11 @@ pub use contact_information::{
 	Repository as ContactInformationRepository,
 };
 
-mod application;
-pub use application::{
-	Error as ApplicationRepositoryError, MockRepository as MockApplicationRepository,
-	Repository as ApplicationRepository,
+mod application_projection;
+pub use application_projection::{
+	Error as ApplicationProjectionRepositoryError,
+	MockRepository as MockApplicationProjectionRepository,
+	Repository as ApplicationProjectionRepository,
 };
 
 mod github_issue;

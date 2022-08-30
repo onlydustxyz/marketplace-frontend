@@ -16,19 +16,19 @@ fn store_and_find() {
 		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 0.into());
 	let application2 = ApplicationProjection::new(Uuid::new_v4().into(), contribution.id, 1.into());
 
-	<Client as ApplicationRepository>::create(&client, application1.clone()).unwrap();
-	<Client as ApplicationRepository>::create(&client, application2.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application1.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application2.clone()).unwrap();
 
 	let found_application =
-		<Client as ApplicationRepository>::find(&client, application1.id()).unwrap();
+		<Client as ApplicationProjectionRepository>::find(&client, application1.id()).unwrap();
 	assert_eq!(found_application, Some(application1));
 
 	let found_application =
-		<Client as ApplicationRepository>::find(&client, application2.id()).unwrap();
+		<Client as ApplicationProjectionRepository>::find(&client, application2.id()).unwrap();
 	assert_eq!(found_application, Some(application2));
 
 	let found_application =
-		<Client as ApplicationRepository>::find(&client, &Uuid::new_v4().into()).unwrap();
+		<Client as ApplicationProjectionRepository>::find(&client, &Uuid::new_v4().into()).unwrap();
 	assert_eq!(found_application, None);
 }
 
@@ -44,13 +44,13 @@ fn id_must_be_unique() {
 	let application1 = ApplicationProjection::new(id, contribution.id.clone(), 0.into());
 	let application2 = ApplicationProjection::new(id, contribution.id, 1.into());
 
-	<Client as ApplicationRepository>::create(&client, application1).unwrap();
-	let res = <Client as ApplicationRepository>::create(&client, application2);
+	<Client as ApplicationProjectionRepository>::create(&client, application1).unwrap();
+	let res = <Client as ApplicationProjectionRepository>::create(&client, application2);
 
 	assert!(res.is_err());
 	assert_matches!(
 		res.unwrap_err(),
-		ApplicationRepositoryError::AlreadyExist(_)
+		ApplicationProjectionRepositoryError::AlreadyExist(_)
 	);
 }
 
@@ -59,7 +59,7 @@ fn id_must_be_unique() {
 fn find_return_none_if_not_found() {
 	let client = Client::new(init_pool());
 
-	let res = <Client as ApplicationRepository>::find(&client, &Uuid::new_v4().into());
+	let res = <Client as ApplicationProjectionRepository>::find(&client, &Uuid::new_v4().into());
 	assert!(res.is_ok());
 	assert_eq!(res.unwrap(), None)
 }
@@ -73,13 +73,13 @@ fn cannot_apply_twice() {
 
 	let application = ApplicationProjection::new(Uuid::new_v4().into(), contribution.id, 0.into());
 
-	<Client as ApplicationRepository>::create(&client, application.clone()).unwrap();
-	let res = <Client as ApplicationRepository>::create(&client, application);
+	<Client as ApplicationProjectionRepository>::create(&client, application.clone()).unwrap();
+	let res = <Client as ApplicationProjectionRepository>::create(&client, application);
 
 	assert!(res.is_err());
 	assert_matches!(
 		res.unwrap_err(),
-		ApplicationRepositoryError::AlreadyExist(_)
+		ApplicationProjectionRepositoryError::AlreadyExist(_)
 	);
 }
 
@@ -90,12 +90,12 @@ fn contribution_id_must_exist() {
 
 	let application = ApplicationProjection::new(Uuid::new_v4().into(), 1.into(), 0.into());
 
-	let res = <Client as ApplicationRepository>::create(&client, application);
+	let res = <Client as ApplicationProjectionRepository>::create(&client, application);
 
 	assert!(res.is_err());
 	assert_matches!(
 		res.unwrap_err(),
-		ApplicationRepositoryError::InvalidEntity(_)
+		ApplicationProjectionRepositoryError::InvalidEntity(_)
 	);
 }
 
@@ -112,19 +112,22 @@ fn store_multiple_and_list() {
 	let application2 =
 		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 1.into());
 
-	<Client as ApplicationRepository>::create(&client, application1.clone()).unwrap();
-	<Client as ApplicationRepository>::create(&client, application2.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application1.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application2.clone()).unwrap();
 
-	let applications =
-		<Client as ApplicationRepository>::list_by_contribution(&client, &contribution.id, None)
-			.unwrap();
+	let applications = <Client as ApplicationProjectionRepository>::list_by_contribution(
+		&client,
+		&contribution.id,
+		None,
+	)
+	.unwrap();
 
 	assert_eq!(
 		applications,
 		vec![application1.clone(), application2.clone()]
 	);
 
-	let applications = <Client as ApplicationRepository>::list_by_contribution(
+	let applications = <Client as ApplicationProjectionRepository>::list_by_contribution(
 		&client,
 		&contribution.id,
 		Some(application1.contributor_id().to_owned()),
@@ -133,7 +136,7 @@ fn store_multiple_and_list() {
 
 	assert_eq!(applications, vec![application1]);
 
-	let applications = <Client as ApplicationRepository>::list_by_contribution(
+	let applications = <Client as ApplicationProjectionRepository>::list_by_contribution(
 		&client,
 		&contribution.id,
 		Some(application2.contributor_id().to_owned()),

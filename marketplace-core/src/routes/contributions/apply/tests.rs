@@ -30,16 +30,18 @@ impl ApplyToContributionUsecase for ApplyToContribution {
 	) -> Result<(), DomainError> {
 		let mut lock = self.0.write().unwrap();
 		let contribution_db = lock.get_mut(contribution_id).ok_or_else(|| {
-			DomainError::ApplicationRepository(ApplicationRepositoryError::InvalidEntity(Box::new(
-				ContributionNotFound(contribution_id.to_owned()),
-			)))
+			DomainError::ApplicationProjectionRepository(
+				ApplicationProjectionRepositoryError::InvalidEntity(Box::new(
+					ContributionNotFound(contribution_id.to_owned()),
+				)),
+			)
 		})?;
 
 		let already_applied = contribution_db.get(contributor_id).copied().unwrap_or_default();
 
 		if already_applied {
-			return Err(DomainError::ApplicationRepository(
-				ApplicationRepositoryError::AlreadyExist(Box::new(AlreadyExist)),
+			return Err(DomainError::ApplicationProjectionRepository(
+				ApplicationProjectionRepositoryError::AlreadyExist(Box::new(AlreadyExist)),
 			));
 		}
 		contribution_db.insert(contributor_id.to_owned(), true);
@@ -95,7 +97,9 @@ fn should_return_409_if_already_exist() {
 	let http_api_problem_response = response.into_json::<HttpApiProblem>().unwrap();
 	assert_eq!(
 		http_api_problem_response.title,
-		Some(ApplicationRepositoryError::AlreadyExist(Box::new(AlreadyExist)).to_string())
+		Some(
+			ApplicationProjectionRepositoryError::AlreadyExist(Box::new(AlreadyExist)).to_string()
+		)
 	);
 	assert_eq!(
 		http_api_problem_response.detail,
@@ -120,7 +124,7 @@ fn should_return_400_if_invalid_parameters() {
 	assert_eq!(
 		http_api_problem_response.title,
 		Some(
-			ApplicationRepositoryError::InvalidEntity(Box::new(ContributionNotFound(
+			ApplicationProjectionRepositoryError::InvalidEntity(Box::new(ContributionNotFound(
 				contribution_id_2.parse().unwrap()
 			)))
 			.to_string()

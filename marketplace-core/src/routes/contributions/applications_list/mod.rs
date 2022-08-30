@@ -7,7 +7,8 @@ use http_api_problem::HttpApiProblem;
 use itertools::Itertools;
 use marketplace_core::dto;
 use marketplace_domain::{
-	ApplicationProjection, ApplicationRepository, ContributorId, ParseHexPrefixedStringError,
+	ApplicationProjection, ApplicationProjectionRepository, ContributorId,
+	ParseHexPrefixedStringError,
 };
 use rocket::{serde::json::Json, State};
 use rocket_okapi::openapi;
@@ -22,7 +23,7 @@ struct ContributorIdDynamicParameter(ContributorId);
 pub async fn list_applications(
 	contribution_id: String,
 	contributor_id: Option<U256Param>,
-	application_repository: &State<Arc<dyn ApplicationRepository>>,
+	application_repository: &State<Arc<dyn ApplicationProjectionRepository>>,
 ) -> Result<Json<Vec<dto::Application>>, HttpApiProblem> {
 	let contribution_id = contribution_id
 		.parse()

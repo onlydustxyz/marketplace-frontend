@@ -5,20 +5,20 @@ pub(crate) trait ToHttpApiProblem {
 	fn to_http_api_problem(&self) -> HttpApiProblem;
 }
 
-impl ToHttpApiProblem for ApplicationRepositoryError {
+impl ToHttpApiProblem for ApplicationProjectionRepositoryError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		match self {
-			ApplicationRepositoryError::NotFound =>
+			ApplicationProjectionRepositoryError::NotFound =>
 				HttpApiProblem::new(StatusCode::NOT_FOUND).title(self.to_string()),
-			ApplicationRepositoryError::AlreadyExist(e) =>
+			ApplicationProjectionRepositoryError::AlreadyExist(e) =>
 				HttpApiProblem::new(StatusCode::CONFLICT)
 					.title(self.to_string())
 					.detail(e.to_string()),
-			ApplicationRepositoryError::InvalidEntity(e) =>
+			ApplicationProjectionRepositoryError::InvalidEntity(e) =>
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)
 					.title(self.to_string())
 					.detail(e.to_string()),
-			ApplicationRepositoryError::Infrastructure(e) =>
+			ApplicationProjectionRepositoryError::Infrastructure(e) =>
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 					.title(self.to_string())
 					.detail(e.to_string()),
@@ -123,7 +123,7 @@ impl ToHttpApiProblem for ApplicationServiceError {
 impl ToHttpApiProblem for DomainError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		match self {
-			DomainError::ApplicationRepository(application_repository_error) =>
+			DomainError::ApplicationProjectionRepository(application_repository_error) =>
 				application_repository_error.to_http_api_problem(),
 			DomainError::ContributionProjectionRepository(contribution_repository_error) =>
 				contribution_repository_error.to_http_api_problem(),

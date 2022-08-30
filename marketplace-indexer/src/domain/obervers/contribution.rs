@@ -30,7 +30,7 @@ mod test {
 	use rstest::*;
 
 	mock! {
-		pub ContributionProjection {}
+		pub ContributionProjector {}
 
 		#[async_trait]
 		impl Projector<Contribution> for ContributionProjection {
@@ -54,22 +54,22 @@ mod test {
 	}
 
 	#[fixture]
-	fn contribution_projection() -> MockContributionProjection {
-		MockContributionProjection::new()
+	fn contribution_projector() -> MockContributionProjector {
+		MockContributionProjector::new()
 	}
 
 	#[rstest]
 	async fn on_contribution_created_event(
-		mut contribution_projection: MockContributionProjection,
+		mut contribution_projector: MockContributionProjector,
 		contribution_event: ContributionEvent,
 		event: ObservedEvent,
 	) {
-		contribution_projection
+		contribution_projector
 			.expect_project()
 			.with(eq(contribution_event))
 			.return_const(());
 
-		let observer = ContributionObserver::new(Arc::new(contribution_projection));
+		let observer = ContributionObserver::new(Arc::new(contribution_projector));
 		observer.on_new_event(&event, 0).await;
 	}
 }

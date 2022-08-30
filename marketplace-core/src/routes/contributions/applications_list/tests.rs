@@ -3,33 +3,33 @@ use std::sync::Arc;
 use super::list_applications;
 use marketplace_core::dto;
 use marketplace_domain::{
-	ApplicationId, ApplicationProjection, ApplicationRepository, ApplicationRepositoryError,
-	ApplicationStatus, ContributionId, ContributorId,
+	ApplicationId, ApplicationProjection, ApplicationProjectionRepository,
+	ApplicationProjectionRepositoryError, ApplicationStatus, ContributionId, ContributorId,
 };
 use rocket::{http::Status, local::blocking::Client, Build};
 use uuid::Uuid;
 
 const CONTRIBUTION_ID_1: &str = "0x1234";
 struct EmptyDatabase;
-impl ApplicationRepository for EmptyDatabase {
+impl ApplicationProjectionRepository for EmptyDatabase {
 	fn create(
 		&self,
 		_application: ApplicationProjection,
-	) -> Result<(), ApplicationRepositoryError> {
+	) -> Result<(), ApplicationProjectionRepositoryError> {
 		unimplemented!()
 	}
 
 	fn update(
 		&self,
 		_application: ApplicationProjection,
-	) -> Result<(), ApplicationRepositoryError> {
+	) -> Result<(), ApplicationProjectionRepositoryError> {
 		unimplemented!()
 	}
 
 	fn find(
 		&self,
 		_id: &ApplicationId,
-	) -> Result<Option<ApplicationProjection>, ApplicationRepositoryError> {
+	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		unimplemented!()
 	}
 
@@ -37,37 +37,37 @@ impl ApplicationRepository for EmptyDatabase {
 		&self,
 		_contribution_id: &ContributionId,
 		_contributor_id: Option<ContributorId>,
-	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
+	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		Ok(vec![])
 	}
 
 	fn list_by_contributor(
 		&self,
 		_contributor_id: Option<ContributorId>,
-	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
+	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		unimplemented!()
 	}
 }
 struct FilledDatabase;
-impl ApplicationRepository for FilledDatabase {
+impl ApplicationProjectionRepository for FilledDatabase {
 	fn create(
 		&self,
 		_application: ApplicationProjection,
-	) -> Result<(), ApplicationRepositoryError> {
+	) -> Result<(), ApplicationProjectionRepositoryError> {
 		unimplemented!()
 	}
 
 	fn update(
 		&self,
 		_application: ApplicationProjection,
-	) -> Result<(), ApplicationRepositoryError> {
+	) -> Result<(), ApplicationProjectionRepositoryError> {
 		unimplemented!()
 	}
 
 	fn find(
 		&self,
 		_id: &ApplicationId,
-	) -> Result<Option<ApplicationProjection>, ApplicationRepositoryError> {
+	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		unimplemented!()
 	}
 
@@ -75,7 +75,7 @@ impl ApplicationRepository for FilledDatabase {
 		&self,
 		_contribution_id: &ContributionId,
 		_contributor_id: Option<ContributorId>,
-	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
+	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		Ok(vec![
 			ApplicationProjection::new(Uuid::from_u128(0).into(), 0.into(), 0u128.into()),
 			ApplicationProjection::new(Uuid::from_u128(1).into(), 0.into(), 1u128.into()),
@@ -85,7 +85,7 @@ impl ApplicationRepository for FilledDatabase {
 	fn list_by_contributor(
 		&self,
 		_contributor_id: Option<ContributorId>,
-	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
+	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		unimplemented!()
 	}
 }
@@ -98,7 +98,7 @@ fn rocket() -> rocket::Rocket<Build> {
 fn ok_empty() {
 	let uri = format!("/contributions/{CONTRIBUTION_ID_1}/applications");
 	let client = Client::untracked(
-		rocket().manage(Arc::new(EmptyDatabase) as Arc<dyn ApplicationRepository>),
+		rocket().manage(Arc::new(EmptyDatabase) as Arc<dyn ApplicationProjectionRepository>),
 	)
 	.expect("valid rocket instance");
 	let response = client.get(uri).dispatch();
@@ -115,7 +115,7 @@ fn ok_empty() {
 fn ok_multiple() {
 	let uri = format!("/contributions/{CONTRIBUTION_ID_1}/applications");
 	let client = Client::untracked(
-		rocket().manage(Arc::new(FilledDatabase) as Arc<dyn ApplicationRepository>),
+		rocket().manage(Arc::new(FilledDatabase) as Arc<dyn ApplicationProjectionRepository>),
 	)
 	.expect("valid rocket instance");
 	let response = client.get(uri).dispatch();
@@ -146,7 +146,7 @@ fn ok_specifying_contributor() {
 		"/contributions/{CONTRIBUTION_ID_1}/applications?contributor_id=0x0000000000000000000000000000000000000000000000000000000000000000"
 	);
 	let client = Client::untracked(
-		rocket().manage(Arc::new(EmptyDatabase) as Arc<dyn ApplicationRepository>),
+		rocket().manage(Arc::new(EmptyDatabase) as Arc<dyn ApplicationProjectionRepository>),
 	)
 	.expect("valid rocket instance");
 	let response = client.get(uri).dispatch();

@@ -32,7 +32,7 @@ pub trait Service: Send + Sync {
 
 pub struct ContributionService {
 	contribution_repository: Arc<dyn Repository<Contribution>>,
-	application_repository: Arc<dyn ApplicationRepository>,
+	application_repository: Arc<dyn ApplicationProjectionRepository>,
 	application_service: Arc<dyn ApplicationService>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 }
@@ -40,7 +40,7 @@ pub struct ContributionService {
 impl ContributionService {
 	pub fn new(
 		contribution_repository: Arc<dyn AggregateRootRepository<Contribution>>,
-		application_repository: Arc<dyn ApplicationRepository>,
+		application_repository: Arc<dyn ApplicationProjectionRepository>,
 		application_service: Arc<dyn ApplicationService>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Self {
@@ -119,8 +119,8 @@ mod test {
 	}
 
 	#[fixture]
-	fn application_repository() -> MockApplicationRepository {
-		MockApplicationRepository::new()
+	fn application_repository() -> MockApplicationProjectionRepository {
+		MockApplicationProjectionRepository::new()
 	}
 
 	#[fixture]
@@ -151,7 +151,7 @@ mod test {
 	#[rstest]
 	fn application_success(
 		mut contribution_repository: MockAggregateRootRepository<Contribution>,
-		mut application_repository: MockApplicationRepository,
+		mut application_repository: MockApplicationProjectionRepository,
 		application_service: MockApplicationService,
 		mut uuid_generator: MockUuidGenerator,
 		contribution_id: ContributionId,
@@ -189,7 +189,7 @@ mod test {
 	#[rstest]
 	fn contribution_must_be_open(
 		mut contribution_repository: MockAggregateRootRepository<Contribution>,
-		application_repository: MockApplicationRepository,
+		application_repository: MockApplicationProjectionRepository,
 		application_service: MockApplicationService,
 		uuid_generator: MockUuidGenerator,
 		contribution_id: ContributionId,
@@ -220,7 +220,7 @@ mod test {
 	#[rstest]
 	fn on_assigned_success_application_found(
 		contribution_repository: MockAggregateRootRepository<Contribution>,
-		mut application_repository: MockApplicationRepository,
+		mut application_repository: MockApplicationProjectionRepository,
 		mut application_service: MockApplicationService,
 		uuid_generator: MockUuidGenerator,
 	) {
@@ -261,7 +261,7 @@ mod test {
 	#[rstest]
 	fn on_assigned_success_application_not_found(
 		contribution_repository: MockAggregateRootRepository<Contribution>,
-		mut application_repository: MockApplicationRepository,
+		mut application_repository: MockApplicationProjectionRepository,
 		mut application_service: MockApplicationService,
 		uuid_generator: MockUuidGenerator,
 	) {
