@@ -9,3 +9,9 @@ pub struct Event {
 	pub aggregate_id: String,
 	pub payload: Value,
 }
+
+#[derive(Insertable, Debug, Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
+pub struct EventDeduplication {
+	pub deduplication_id: String,
+}
