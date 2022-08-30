@@ -73,10 +73,10 @@ mod test {
 	use marketplace_domain::ContributionEvent;
 	use rstest::*;
 
-	const contract_address: &str = "0x42";
-	const log_index: u64 = 666;
-	const transaction_hash: &str = "0x1234";
-	const deduplication_id: &str = "0x42_0x1234_666";
+	const CONTRACT_ADDRESS: &str = "0x42";
+	const LOG_INDEX: u64 = 666;
+	const TRANSACTION_HASH: &str = "0x1234";
+	const DEDUPLICATION_ID: &str = "0x42_0x1234_666";
 
 	fn empty_topic() -> TopicValue {
 		TopicValue { value: vec![0; 32] }
@@ -91,9 +91,9 @@ mod test {
 	fn apibara_event(selector: TopicValue) -> ApibaraEvent {
 		ApibaraEvent {
 			event: Some(ApibaraEventInner::Starknet(StarkNetEvent {
-				address: contract_address.as_bytes().into(),
-				log_index,
-				transaction_hash: transaction_hash.as_bytes().into(),
+				address: CONTRACT_ADDRESS.as_bytes().into(),
+				log_index: LOG_INDEX,
+				transaction_hash: TRANSACTION_HASH.as_bytes().into(),
 				topics: vec![selector],
 				data: vec![empty_topic(), empty_topic(), empty_topic(), empty_topic()],
 				..Default::default()
@@ -113,7 +113,7 @@ mod test {
 					issue_number: Default::default(),
 					gate: Default::default()
 				}),
-				deduplication_id: deduplication_id.to_string()
+				deduplication_id: DEDUPLICATION_ID.to_string()
 			},
 			ObservedEvent::try_from(apibara_event).unwrap()
 		);
@@ -129,7 +129,7 @@ mod test {
 					id: Default::default(),
 					contributor_id: Default::default()
 				}),
-				deduplication_id: deduplication_id.to_string()
+				deduplication_id: DEDUPLICATION_ID.to_string()
 			},
 			ObservedEvent::try_from(apibara_event).unwrap()
 		);
@@ -144,7 +144,7 @@ mod test {
 				event: DomainEvent::Contribution(ContributionEvent::Unassigned {
 					id: Default::default(),
 				}),
-				deduplication_id: deduplication_id.to_string()
+				deduplication_id: DEDUPLICATION_ID.to_string()
 			},
 			ObservedEvent::try_from(apibara_event).unwrap()
 		);
@@ -159,7 +159,7 @@ mod test {
 				event: DomainEvent::Contribution(ContributionEvent::Validated {
 					id: Default::default(),
 				}),
-				deduplication_id: deduplication_id.to_string()
+				deduplication_id: DEDUPLICATION_ID.to_string()
 			},
 			ObservedEvent::try_from(apibara_event).unwrap()
 		);

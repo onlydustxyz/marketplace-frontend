@@ -63,7 +63,7 @@ mod test {
 	fn event(contribution_event: ContributionEvent) -> ObservedEvent {
 		ObservedEvent {
 			event: Event::Contribution(contribution_event),
-			deduplication_id: "dedup".to_string(),
+			deduplication_id: String::default(),
 		}
 	}
 
