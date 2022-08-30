@@ -63,6 +63,23 @@ impl ApplicationProjector {
 			.collect::<Result<Vec<()>, ApplicationProjectionRepositoryError>>()
 			.and(Ok(()))
 	}
+
+	fn on_unassigned(
+		&self,
+		contribution_id: &ContributionId,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		let mut contribution_applications = self
+			.application_projection_repository
+			.list_by_contribution(contribution_id, None)?;
+		contribution_applications
+			.iter_mut()
+			.map(|application| {
+				application.set_status(ApplicationStatus::Pending);
+				self.application_projection_repository.update(application.to_owned())
+			})
+			.collect::<Result<Vec<()>, ApplicationProjectionRepositoryError>>()
+			.and(Ok(()))
+	}
 }
 
 impl Projector<Contribution> for ApplicationProjector {
@@ -76,6 +93,9 @@ impl Projector<Contribution> for ApplicationProjector {
 				id: contribution_id,
 				contributor_id,
 			} => self.on_assigned(contribution_id, contributor_id),
+			ContributionEvent::Unassigned {
+				id: contribution_id,
+			} => self.on_unassigned(contribution_id),
 			_ => Ok(()),
 		};
 
@@ -270,6 +290,91 @@ mod tests {
 		projector.project(&ContributionEvent::Assigned {
 			id: contribution_id,
 			contributor_id: contributor2_id,
+		});
+	}
+
+	#[rstest]
+	fn contribution_unassigned_updates_all_the_contribution_applications(
+		mut application_projection_repository: MockApplicationProjectionRepository,
+		mut uuid_generator: MockUuidGenerator,
+		random_uuid_generator: Box<dyn UuidGenerator>,
+	) {
+		let contribution_id = ContributionId::from_str("0x123").unwrap();
+		let contributor1_id = ContributorId::from_str("0x456").unwrap();
+		let contributor2_id = ContributorId::from_str("0x457").unwrap();
+		let contributor3_id = ContributorId::from_str("0x458").unwrap();
+
+		let application_1 = ApplicationProjection::new_with_status(
+			random_uuid_generator.new_uuid().into(),
+			contribution_id.to_owned(),
+			contributor1_id.to_owned(),
+			ApplicationStatus::Refused,
+		);
+		let application_2 = ApplicationProjection::new_with_status(
+			random_uuid_generator.new_uuid().into(),
+			contribution_id.to_owned(),
+			contributor2_id.to_owned(),
+			ApplicationStatus::Accepted,
+		);
+		let application_3 = ApplicationProjection::new_with_status(
+			random_uuid_generator.new_uuid().into(),
+			contribution_id.to_owned(),
+			contributor3_id.to_owned(),
+			ApplicationStatus::Refused,
+		);
+
+		let mut repository_sequence = Sequence::new();
+		uuid_generator.expect_new_uuid().never();
+		let application_1_clone = application_1.clone();
+		let application_2_clone = application_2.clone();
+		let application_3_clone = application_3.clone();
+		application_projection_repository
+			.expect_list_by_contribution()
+			.with(eq(contribution_id.to_owned()), eq(None))
+			.once()
+			.in_sequence(&mut repository_sequence)
+			.returning(move |_, _| {
+				Ok(vec![
+					application_1_clone.to_owned(),
+					application_2_clone.to_owned(),
+					application_3_clone.to_owned(),
+				])
+			});
+		application_projection_repository
+			.expect_update()
+			.withf(move |application| {
+				application_1.id() == application.id()
+					&& &ApplicationStatus::Pending == application.status()
+			})
+			.once()
+			.in_sequence(&mut repository_sequence)
+			.returning(|_| Ok(()));
+		application_projection_repository
+			.expect_update()
+			.withf(move |application| {
+				application_2.id() == application.id()
+					&& &ApplicationStatus::Pending == application.status()
+			})
+			.once()
+			.in_sequence(&mut repository_sequence)
+			.returning(|_| Ok(()));
+		application_projection_repository
+			.expect_update()
+			.withf(move |application| {
+				application_3.id() == application.id()
+					&& &ApplicationStatus::Pending == application.status()
+			})
+			.once()
+			.in_sequence(&mut repository_sequence)
+			.returning(|_| Ok(()));
+
+		let projector = ApplicationProjector::new(
+			Arc::new(application_projection_repository),
+			Arc::new(uuid_generator),
+		);
+
+		projector.project(&ContributionEvent::Unassigned {
+			id: contribution_id,
 		});
 	}
 }
