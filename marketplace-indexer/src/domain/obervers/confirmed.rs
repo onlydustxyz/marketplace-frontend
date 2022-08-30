@@ -83,7 +83,7 @@ mod test {
 			event: Event::Contribution(ContributionEvent::Validated {
 				id: Default::default(),
 			}),
-			deduplication_id: "dedup".to_string(),
+			..Default::default()
 		}
 	}
 
@@ -92,7 +92,11 @@ mod test {
 		event: ObservedEvent,
 		mut observer: MockBlockchainObserver,
 	) {
-		observer.expect_on_new_event().with(eq(event.clone()), eq(1)).return_const(());
+		observer
+			.expect_on_new_event()
+			.with(eq(event.clone()), eq(1))
+			.times(1)
+			.return_const(());
 
 		let confirmed = WithBockConfirmationCount::new(Arc::new(observer), 3);
 		confirmed.on_new_event(&event, 1);
@@ -104,7 +108,7 @@ mod test {
 		event: ObservedEvent,
 		mut observer: MockBlockchainObserver,
 	) {
-		observer.expect_on_new_event().return_const(());
+		observer.expect_on_new_event().times(1).return_const(());
 
 		let confirmed = WithBockConfirmationCount::new(Arc::new(observer), 3);
 		confirmed.on_new_event(&event, 1);

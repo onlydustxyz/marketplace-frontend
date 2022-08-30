@@ -54,12 +54,7 @@ mod test {
 
 	#[fixture]
 	fn event() -> ObservedEvent {
-		ObservedEvent {
-			event: Event::Contribution(ContributionEvent::Validated {
-				id: Default::default(),
-			}),
-			deduplication_id: "dedup".to_string(),
-		}
+		ObservedEvent::default()
 	}
 
 	#[rstest]

@@ -46,3 +46,15 @@ impl Display for ObservedEvent {
 		)
 	}
 }
+
+#[cfg(test)]
+impl Default for ObservedEvent {
+	fn default() -> Self {
+		Self {
+			event: Event::Contribution(ContributionEvent::Validated {
+				id: Default::default(),
+			}),
+			deduplication_id: "dedup".to_string(),
+		}
+	}
+}
