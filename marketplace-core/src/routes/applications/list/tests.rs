@@ -13,15 +13,24 @@ const CONTRIBUTOR_ID_1: &str = "0x0911";
 const CONTRIBUTOR_ID_2: &str = "0x0666";
 struct EmptyDatabase;
 impl ApplicationRepository for EmptyDatabase {
-	fn create(&self, _application: Application) -> Result<(), ApplicationRepositoryError> {
+	fn create(
+		&self,
+		_application: ApplicationProjection,
+	) -> Result<(), ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
-	fn update(&self, _application: Application) -> Result<(), ApplicationRepositoryError> {
+	fn update(
+		&self,
+		_application: ApplicationProjection,
+	) -> Result<(), ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
-	fn find(&self, _id: &ApplicationId) -> Result<Option<Application>, ApplicationRepositoryError> {
+	fn find(
+		&self,
+		_id: &ApplicationId,
+	) -> Result<Option<ApplicationProjection>, ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
@@ -29,28 +38,37 @@ impl ApplicationRepository for EmptyDatabase {
 		&self,
 		_contribution_id: &ContributionId,
 		_contributor_id: Option<ContributorId>,
-	) -> Result<Vec<Application>, ApplicationRepositoryError> {
+	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
 	fn list_by_contributor(
 		&self,
 		_contributor_id: Option<ContributorId>,
-	) -> Result<Vec<Application>, ApplicationRepositoryError> {
+	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
 		Ok(vec![])
 	}
 }
 struct FilledDatabase;
 impl ApplicationRepository for FilledDatabase {
-	fn create(&self, _application: Application) -> Result<(), ApplicationRepositoryError> {
+	fn create(
+		&self,
+		_application: ApplicationProjection,
+	) -> Result<(), ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
-	fn update(&self, _application: Application) -> Result<(), ApplicationRepositoryError> {
+	fn update(
+		&self,
+		_application: ApplicationProjection,
+	) -> Result<(), ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
-	fn find(&self, _id: &ApplicationId) -> Result<Option<Application>, ApplicationRepositoryError> {
+	fn find(
+		&self,
+		_id: &ApplicationId,
+	) -> Result<Option<ApplicationProjection>, ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
@@ -58,43 +76,55 @@ impl ApplicationRepository for FilledDatabase {
 		&self,
 		_contribution_id: &ContributionId,
 		_contributor_id: Option<ContributorId>,
-	) -> Result<Vec<Application>, ApplicationRepositoryError> {
+	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
 	fn list_by_contributor(
 		&self,
 		contributor_id: Option<ContributorId>,
-	) -> Result<Vec<Application>, ApplicationRepositoryError> {
+	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
 		match contributor_id {
 			Some(contributor_id) => match contributor_id.to_string().as_str() {
 				CONTRIBUTOR_ID_1 => Ok(vec![
-					Application::new(Uuid::from_u128(2).into(), 0.into(), contributor_id.clone()),
-					Application::new(Uuid::from_u128(3).into(), 1.into(), contributor_id.clone()),
+					ApplicationProjection::new(
+						Uuid::from_u128(2).into(),
+						0.into(),
+						contributor_id.clone(),
+					),
+					ApplicationProjection::new(
+						Uuid::from_u128(3).into(),
+						1.into(),
+						contributor_id.clone(),
+					),
 				]),
 				CONTRIBUTOR_ID_0 => Ok(vec![
-					Application::new(Uuid::from_u128(0).into(), 0.into(), contributor_id.clone()),
-					Application::new(Uuid::from_u128(1).into(), 0.into(), contributor_id),
+					ApplicationProjection::new(
+						Uuid::from_u128(0).into(),
+						0.into(),
+						contributor_id.clone(),
+					),
+					ApplicationProjection::new(Uuid::from_u128(1).into(), 0.into(), contributor_id),
 				]),
 				_ => Ok(vec![]),
 			},
 			None => Ok(vec![
-				Application::new(
+				ApplicationProjection::new(
 					Uuid::from_u128(2).into(),
 					0.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_1).unwrap(),
 				),
-				Application::new(
+				ApplicationProjection::new(
 					Uuid::from_u128(3).into(),
 					1.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_1).unwrap(),
 				),
-				Application::new(
+				ApplicationProjection::new(
 					Uuid::from_u128(0).into(),
 					0.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_0).unwrap(),
 				),
-				Application::new(
+				ApplicationProjection::new(
 					Uuid::from_u128(1).into(),
 					0.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_0).unwrap(),

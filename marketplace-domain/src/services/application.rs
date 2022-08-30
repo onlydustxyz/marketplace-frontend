@@ -27,6 +27,6 @@ pub enum Error {
 
 #[automock]
 pub trait Service: Send + Sync {
-	fn accept_application(&self, application: Application) -> Result<(), Error>;
+	fn accept_application(&self, application: ApplicationProjection) -> Result<(), Error>;
 	fn reject_all_applications(&self, contribution_id: &ContributionId) -> Result<(), Error>;
 }

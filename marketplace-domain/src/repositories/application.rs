@@ -17,16 +17,16 @@ pub enum Error {
 
 #[automock]
 pub trait Repository: Send + Sync {
-	fn create(&self, application: Application) -> Result<(), Error>;
-	fn update(&self, application: Application) -> Result<(), Error>;
-	fn find(&self, id: &ApplicationId) -> Result<Option<Application>, Error>;
+	fn create(&self, application: ApplicationProjection) -> Result<(), Error>;
+	fn update(&self, application: ApplicationProjection) -> Result<(), Error>;
+	fn find(&self, id: &ApplicationId) -> Result<Option<ApplicationProjection>, Error>;
 	fn list_by_contribution(
 		&self,
 		contribution_id: &ContributionId,
 		contributor_id: Option<ContributorId>,
-	) -> Result<Vec<Application>, Error>;
+	) -> Result<Vec<ApplicationProjection>, Error>;
 	fn list_by_contributor(
 		&self,
 		contributor_id: Option<ContributorId>,
-	) -> Result<Vec<Application>, Error>;
+	) -> Result<Vec<ApplicationProjection>, Error>;
 }

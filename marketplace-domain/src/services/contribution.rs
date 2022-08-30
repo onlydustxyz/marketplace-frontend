@@ -71,7 +71,7 @@ impl Service for ContributionService {
 
 		let uuid = self.uuid_generator.new_uuid();
 
-		let application = Application::new(
+		let application = ApplicationProjection::new(
 			uuid.into(),
 			contribution_id.to_owned(),
 			contributor_id.to_owned(),
@@ -238,7 +238,7 @@ mod test {
 			.expect_list_by_contribution()
 			.with(eq(contribution.id), eq(Some(contributor_id.to_owned())))
 			.returning(move |_, _| {
-				Ok(vec![Application::new(
+				Ok(vec![ApplicationProjection::new(
 					ApplicationId::default(),
 					cloned_contribution_id.clone(),
 					ContributorId::from(42),

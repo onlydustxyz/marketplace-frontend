@@ -10,7 +10,10 @@ use crate::database::{
 };
 
 impl ApplicationService for Client {
-	fn accept_application(&self, application: Application) -> Result<(), ApplicationServiceError> {
+	fn accept_application(
+		&self,
+		application: ApplicationProjection,
+	) -> Result<(), ApplicationServiceError> {
 		let connection = self
 			.connection()
 			.map_err(|e| ApplicationServiceError::Infrastructure(Box::new(e)))?;

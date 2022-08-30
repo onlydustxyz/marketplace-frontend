@@ -11,8 +11,8 @@ pub struct Application {
 	pub status: String,
 }
 
-impl From<domain::Application> for Application {
-	fn from(application: domain::Application) -> Self {
+impl From<domain::ApplicationProjection> for Application {
+	fn from(application: domain::ApplicationProjection) -> Self {
 		Self {
 			id: application.id().to_string(),
 			contribution_id: application.contribution_id().to_string(),
