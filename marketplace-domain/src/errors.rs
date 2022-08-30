@@ -13,10 +13,6 @@ pub enum Error {
 	ContactInformationRepository(#[from] ContactInformationRepositoryError),
 	#[error("Onchain contribution service error")]
 	OnchainContributionService(#[from] OnchainContributionServiceError),
-	#[error("Application service error")]
-	ApplicationService(#[from] ApplicationServiceError),
-	#[error("Contribution service error")]
-	ContributionService(#[from] ContributionServiceError),
 	#[error("Failed to take control of a lock")]
 	Lock,
 	#[error("Event store error")]

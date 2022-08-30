@@ -3,7 +3,6 @@ use uuid::Uuid;
 use marketplace_domain::{ContributionProjection, Project};
 
 mod application_repository;
-mod application_service;
 mod contact_information_repository;
 mod contribution_projection_repository;
 mod project_repository;
