@@ -1,7 +1,7 @@
 use super::accept_application;
 
 use marketplace_domain::{
-	ApplicationId, ApplicationRepositoryError, Error as DomainError, HexPrefixedString,
+	ApplicationId, ApplicationProjectionRepositoryError, Error as DomainError, HexPrefixedString,
 };
 
 use marketplace_core::application::AcceptApplicationUsecase;
@@ -33,8 +33,8 @@ impl AcceptApplicationUsecase for FailedUsecase {
 		&self,
 		_application_id: &ApplicationId,
 	) -> Result<HexPrefixedString, DomainError> {
-		Err(DomainError::ApplicationRepository(
-			ApplicationRepositoryError::NotFound,
+		Err(DomainError::ApplicationProjectionRepository(
+			ApplicationProjectionRepositoryError::NotFound,
 		))
 	}
 }

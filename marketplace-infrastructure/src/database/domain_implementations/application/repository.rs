@@ -7,9 +7,12 @@ use mapinto::ResultMapErrInto;
 use crate::database::{models, schema::applications, Client, DatabaseError};
 use marketplace_domain::*;
 
-impl ApplicationRepository for Client {
-	fn create(&self, application: ApplicationProjection) -> Result<(), ApplicationRepositoryError> {
-		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
+impl ApplicationProjectionRepository for Client {
+	fn create(
+		&self,
+		application: ApplicationProjection,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
 		let application = models::Application::from(application);
 		diesel::insert_into(applications::table)
@@ -20,8 +23,11 @@ impl ApplicationRepository for Client {
 		Ok(())
 	}
 
-	fn update(&self, application: ApplicationProjection) -> Result<(), ApplicationRepositoryError> {
-		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
+	fn update(
+		&self,
+		application: ApplicationProjection,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 		let application = models::Application::from(application);
 		diesel::update(applications::table.filter(applications::id.eq(application.id)))
 			.set(application)
@@ -33,8 +39,8 @@ impl ApplicationRepository for Client {
 	fn find(
 		&self,
 		id: &ApplicationId,
-	) -> Result<Option<ApplicationProjection>, ApplicationRepositoryError> {
-		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
+	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
+		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
 		let res = applications::dsl::applications
 			.find(id.as_uuid())
@@ -51,8 +57,8 @@ impl ApplicationRepository for Client {
 		&self,
 		contribution_id: &ContributionId,
 		contributor_id: Option<ContributorId>,
-	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
-		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
+	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
+		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
 		let mut query = applications::dsl::applications
 			.filter(applications::contribution_id.eq(contribution_id.to_string()))
@@ -71,8 +77,8 @@ impl ApplicationRepository for Client {
 	fn list_by_contributor(
 		&self,
 		contributor_id: Option<ContributorId>,
-	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
-		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
+	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
+		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
 		let mut query = applications::dsl::applications.into_boxed();
 
@@ -109,7 +115,7 @@ impl From<models::Application> for ApplicationProjection {
 	}
 }
 
-impl From<DatabaseError> for ApplicationRepositoryError {
+impl From<DatabaseError> for ApplicationProjectionRepositoryError {
 	fn from(error: DatabaseError) -> Self {
 		match error {
 			DatabaseError::Transaction(diesel::result::Error::DatabaseError(kind, _)) => match kind

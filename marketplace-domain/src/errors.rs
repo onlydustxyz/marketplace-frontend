@@ -4,7 +4,7 @@ use thiserror::Error;
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error("Application repository error")]
-	ApplicationRepository(#[from] ApplicationRepositoryError),
+	ApplicationProjectionRepository(#[from] ApplicationProjectionRepositoryError),
 	#[error("Contribution repository error")]
 	ContributionRepository(#[from] AggregateRootRepositoryError),
 	#[error("Contribution projection repository error")]

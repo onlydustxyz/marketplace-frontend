@@ -18,28 +18,28 @@ fn accept_application_ok() {
 		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 1.into());
 	let application3 = ApplicationProjection::new(Uuid::new_v4().into(), contribution.id, 3.into());
 
-	<Client as ApplicationRepository>::create(&client, application1.clone()).unwrap();
-	<Client as ApplicationRepository>::create(&client, application2.clone()).unwrap();
-	<Client as ApplicationRepository>::create(&client, application3.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application1.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application2.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application3.clone()).unwrap();
 
 	<Client as ApplicationService>::accept_application(&client, application1.to_owned()).unwrap();
 
 	assert_eq!(
-		<Client as ApplicationRepository>::find(&client, application1.id())
+		<Client as ApplicationProjectionRepository>::find(&client, application1.id())
 			.unwrap()
 			.unwrap()
 			.status(),
 		&ApplicationStatus::Accepted
 	);
 	assert_eq!(
-		<Client as ApplicationRepository>::find(&client, application2.id())
+		<Client as ApplicationProjectionRepository>::find(&client, application2.id())
 			.unwrap()
 			.unwrap()
 			.status(),
 		&ApplicationStatus::Refused
 	);
 	assert_eq!(
-		<Client as ApplicationRepository>::find(&client, application3.id())
+		<Client as ApplicationProjectionRepository>::find(&client, application3.id())
 			.unwrap()
 			.unwrap()
 			.status(),
@@ -61,28 +61,28 @@ fn reject_all_applications_ok() {
 	let application3 =
 		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 3.into());
 
-	<Client as ApplicationRepository>::create(&client, application1.clone()).unwrap();
-	<Client as ApplicationRepository>::create(&client, application2.clone()).unwrap();
-	<Client as ApplicationRepository>::create(&client, application3.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application1.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application2.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application3.clone()).unwrap();
 
 	<Client as ApplicationService>::reject_all_applications(&client, &contribution.id).unwrap();
 
 	assert_eq!(
-		<Client as ApplicationRepository>::find(&client, application1.id())
+		<Client as ApplicationProjectionRepository>::find(&client, application1.id())
 			.unwrap()
 			.unwrap()
 			.status(),
 		&ApplicationStatus::Refused
 	);
 	assert_eq!(
-		<Client as ApplicationRepository>::find(&client, application2.id())
+		<Client as ApplicationProjectionRepository>::find(&client, application2.id())
 			.unwrap()
 			.unwrap()
 			.status(),
 		&ApplicationStatus::Refused
 	);
 	assert_eq!(
-		<Client as ApplicationRepository>::find(&client, application3.id())
+		<Client as ApplicationProjectionRepository>::find(&client, application3.id())
 			.unwrap()
 			.unwrap()
 			.status(),

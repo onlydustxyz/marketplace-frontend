@@ -16,14 +16,14 @@ pub trait Usecase: Send + Sync {
 pub struct AcceptApplication {
 	onchain_contribution_service: Arc<dyn OnchainContributionService>,
 	contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
-	application_repository: Arc<dyn ApplicationRepository>,
+	application_repository: Arc<dyn ApplicationProjectionRepository>,
 }
 
 impl AcceptApplication {
 	pub fn new(
 		onchain_contribution_service: Arc<dyn OnchainContributionService>,
 		contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
-		application_repository: Arc<dyn ApplicationRepository>,
+		application_repository: Arc<dyn ApplicationProjectionRepository>,
 	) -> Self {
 		Self {
 			onchain_contribution_service,
@@ -37,7 +37,7 @@ impl AcceptApplication {
 	pub fn new_usecase_boxed(
 		onchain_contribution_service: Arc<dyn OnchainContributionService>,
 		contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
-		application_repository: Arc<dyn ApplicationRepository>,
+		application_repository: Arc<dyn ApplicationProjectionRepository>,
 	) -> Box<dyn Usecase> {
 		Box::new(Self {
 			onchain_contribution_service,
@@ -57,7 +57,7 @@ impl Usecase for AcceptApplication {
 			.application_repository
 			.find(application_id)
 			.map_err(DomainError::from)?
-			.ok_or_else(|| DomainError::from(ApplicationRepositoryError::NotFound))?;
+			.ok_or_else(|| DomainError::from(ApplicationProjectionRepositoryError::NotFound))?;
 
 		// TODO: use contribution aggregate root instead of projection as source of truth
 		let contribution = self
@@ -77,7 +77,7 @@ impl Usecase for AcceptApplication {
 mod test {
 	use super::*;
 	use futures::FutureExt;
-	use mockall::predicate::eq;
+	use mockall::{mock, predicate::eq};
 	use rstest::*;
 	use thiserror::Error;
 	use uuid::Uuid;
@@ -97,8 +97,8 @@ mod test {
 	}
 
 	#[fixture]
-	fn application_repository() -> MockApplicationRepository {
-		MockApplicationRepository::new()
+	fn application_repository() -> MockApplicationProjectionRepository {
+		MockApplicationProjectionRepository::new()
 	}
 
 	#[fixture]
@@ -111,7 +111,7 @@ mod test {
 	async fn accept_application_success(
 		mut onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_projection_repository: MockContributionProjectionRepository,
-		mut application_repository: MockApplicationRepository,
+		mut application_repository: MockApplicationProjectionRepository,
 		contribution_id: ContributionId,
 	) {
 		let application_id = Uuid::from_u128(12).into();
@@ -151,7 +151,7 @@ mod test {
 	async fn accept_application_application_not_found(
 		onchain_contribution_service: MockOnchainContributionService,
 		contribution_projection_repository: MockContributionProjectionRepository,
-		mut application_repository: MockApplicationRepository,
+		mut application_repository: MockApplicationProjectionRepository,
 	) {
 		let application_id = Uuid::from_u128(12).into();
 		application_repository.expect_find().returning(|_| Ok(None));
@@ -175,7 +175,7 @@ mod test {
 	async fn accept_application_contribution_not_found(
 		onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_projection_repository: MockContributionProjectionRepository,
-		mut application_repository: MockApplicationRepository,
+		mut application_repository: MockApplicationProjectionRepository,
 	) {
 		let application_id = Uuid::from_u128(12).into();
 		application_repository.expect_find().returning(|_| {

@@ -139,6 +139,6 @@ fn inject_app(
 			database.clone(),
 			database.clone(),
 		))
-		.manage(database as Arc<dyn ApplicationRepository>)
+		.manage(database as Arc<dyn ApplicationProjectionRepository>)
 		.manage(contact_information_service)
 }
