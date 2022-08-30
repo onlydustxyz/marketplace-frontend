@@ -130,13 +130,38 @@ mod tests {
 		Box::new(RandomUuidGenerator {})
 	}
 
+	#[fixture]
+	fn contribution_id() -> ContributionId {
+		ContributionId::from_str("0x123").unwrap()
+	}
+
+	#[fixture]
+	fn application_id() -> ApplicationId {
+		uuid::Uuid::from_str("03b4715c-d237-422c-8689-370e4c257f90").unwrap().into()
+	}
+
+	#[fixture]
+	fn contributor_1_id() -> ContributorId {
+		ContributorId::from_str("0x456").unwrap()
+	}
+
+	#[fixture]
+	fn contributor_2_id() -> ContributorId {
+		ContributorId::from_str("0x457").unwrap()
+	}
+
+	#[fixture]
+	fn contributor_3_id() -> ContributorId {
+		ContributorId::from_str("0x458").unwrap()
+	}
+
 	#[rstest]
 	async fn contribution_applied_with_same_contributor_updates_application(
 		mut application_projection_repository: MockApplicationProjectionRepository,
 		mut uuid_generator: MockUuidGenerator,
+		contribution_id: ContributionId,
+		contributor_1_id: ContributorId,
 	) {
-		let contribution_id = ContributionId::from_str("0x123").unwrap();
-		let contributor_id = ContributorId::from_str("0x456").unwrap();
 		let previous_application = ApplicationProjection::default();
 
 		let mut repository_sequence = Sequence::new();
@@ -145,7 +170,7 @@ mod tests {
 			.expect_find_by_contribution_and_contributor()
 			.with(
 				eq(contribution_id.to_owned()),
-				eq(contributor_id.to_owned()),
+				eq(contributor_1_id.to_owned()),
 			)
 			.once()
 			.in_sequence(&mut repository_sequence)
@@ -165,7 +190,7 @@ mod tests {
 		projector
 			.project(&ContributionEvent::Applied {
 				id: contribution_id,
-				contributor_id,
+				contributor_id: contributor_1_id,
 			})
 			.await;
 	}
@@ -174,19 +199,17 @@ mod tests {
 	async fn contribution_applied_creates_an_application(
 		mut application_projection_repository: MockApplicationProjectionRepository,
 		mut uuid_generator: MockUuidGenerator,
+		contribution_id: ContributionId,
+		application_id: ApplicationId,
+		contributor_1_id: ContributorId,
 	) {
-		let contribution_id = ContributionId::from_str("0x123").unwrap();
-		let contributor_id = ContributorId::from_str("0x456").unwrap();
-		let application_id: ApplicationId =
-			uuid::Uuid::from_str("03b4715c-d237-422c-8689-370e4c257f90").unwrap().into();
-
 		let mut repository_sequence = Sequence::new();
 		uuid_generator.expect_new_uuid().returning(move || application_id.into());
 		application_projection_repository
 			.expect_find_by_contribution_and_contributor()
 			.with(
 				eq(contribution_id.to_owned()),
-				eq(contributor_id.to_owned()),
+				eq(contributor_1_id.to_owned()),
 			)
 			.once()
 			.in_sequence(&mut repository_sequence)
@@ -197,7 +220,7 @@ mod tests {
 			.with(eq(ApplicationProjection::new(
 				application_id.to_owned(),
 				contribution_id.to_owned(),
-				contributor_id.to_owned(),
+				contributor_1_id.to_owned(),
 			)))
 			.once()
 			.in_sequence(&mut repository_sequence)
@@ -211,7 +234,7 @@ mod tests {
 		projector
 			.project(&ContributionEvent::Applied {
 				id: contribution_id,
-				contributor_id,
+				contributor_id: contributor_1_id,
 			})
 			.await;
 	}
@@ -221,26 +244,25 @@ mod tests {
 		mut application_projection_repository: MockApplicationProjectionRepository,
 		mut uuid_generator: MockUuidGenerator,
 		random_uuid_generator: Box<dyn UuidGenerator>,
+		contribution_id: ContributionId,
+		contributor_1_id: ContributorId,
+		contributor_2_id: ContributorId,
+		contributor_3_id: ContributorId,
 	) {
-		let contribution_id = ContributionId::from_str("0x123").unwrap();
-		let contributor1_id = ContributorId::from_str("0x456").unwrap();
-		let contributor2_id = ContributorId::from_str("0x457").unwrap();
-		let contributor3_id = ContributorId::from_str("0x458").unwrap();
-
 		let application_1 = ApplicationProjection::new(
 			random_uuid_generator.new_uuid().into(),
 			contribution_id.to_owned(),
-			contributor1_id.to_owned(),
+			contributor_1_id.to_owned(),
 		);
 		let application_2 = ApplicationProjection::new(
 			random_uuid_generator.new_uuid().into(),
 			contribution_id.to_owned(),
-			contributor2_id.to_owned(),
+			contributor_2_id.to_owned(),
 		);
 		let application_3 = ApplicationProjection::new(
 			random_uuid_generator.new_uuid().into(),
 			contribution_id.to_owned(),
-			contributor3_id.to_owned(),
+			contributor_3_id.to_owned(),
 		);
 
 		let mut repository_sequence = Sequence::new();
@@ -296,7 +318,7 @@ mod tests {
 		projector
 			.project(&ContributionEvent::Assigned {
 				id: contribution_id,
-				contributor_id: contributor2_id,
+				contributor_id: contributor_2_id,
 			})
 			.await;
 	}
@@ -306,28 +328,27 @@ mod tests {
 		mut application_projection_repository: MockApplicationProjectionRepository,
 		mut uuid_generator: MockUuidGenerator,
 		random_uuid_generator: Box<dyn UuidGenerator>,
+		contribution_id: ContributionId,
+		contributor_1_id: ContributorId,
+		contributor_2_id: ContributorId,
+		contributor_3_id: ContributorId,
 	) {
-		let contribution_id = ContributionId::from_str("0x123").unwrap();
-		let contributor1_id = ContributorId::from_str("0x456").unwrap();
-		let contributor2_id = ContributorId::from_str("0x457").unwrap();
-		let contributor3_id = ContributorId::from_str("0x458").unwrap();
-
 		let application_1 = ApplicationProjection::new_with_status(
 			random_uuid_generator.new_uuid().into(),
 			contribution_id.to_owned(),
-			contributor1_id.to_owned(),
+			contributor_1_id.to_owned(),
 			ApplicationStatus::Refused,
 		);
 		let application_2 = ApplicationProjection::new_with_status(
 			random_uuid_generator.new_uuid().into(),
 			contribution_id.to_owned(),
-			contributor2_id.to_owned(),
+			contributor_2_id.to_owned(),
 			ApplicationStatus::Accepted,
 		);
 		let application_3 = ApplicationProjection::new_with_status(
 			random_uuid_generator.new_uuid().into(),
 			contribution_id.to_owned(),
-			contributor3_id.to_owned(),
+			contributor_3_id.to_owned(),
 			ApplicationStatus::Refused,
 		);
 
