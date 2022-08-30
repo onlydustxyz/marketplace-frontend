@@ -53,12 +53,12 @@ impl Contribution {
 		Ok(vec![applied_event])
 	}
 
-	pub fn get_id(&self) -> Id {
-		self.id.to_owned()
+	pub fn id(&self) -> &Id {
+		&self.id
 	}
 
-	pub fn get_status(&self) -> ContributionStatus {
-		self.status.to_owned()
+	pub fn status(&self) -> &ContributionStatus {
+		&self.status
 	}
 }
 
@@ -78,17 +78,17 @@ impl Aggregate for Contribution {
 	type Id = Id;
 
 	fn apply_event(&mut self, event: &Self::Event) {
-		match event.clone() {
+		match event {
 			Event::Created {
 				id,
 				project_id,
 				issue_number,
 				gate,
 			} => {
-				self.id = id;
-				self.project_id = project_id;
-				self.issue_number = issue_number;
-				self.gate = gate;
+				self.id = id.to_owned();
+				self.project_id = *project_id;
+				self.issue_number = *issue_number;
+				self.gate = *gate;
 				self.status = Status::Open;
 			},
 			Event::Applied {
@@ -102,7 +102,7 @@ impl Aggregate for Contribution {
 				contributor_id,
 			} => {
 				self.status = Status::Assigned;
-				self.contributor_id = Some(contributor_id);
+				self.contributor_id = Some(contributor_id.to_owned());
 			},
 			Event::Unassigned { id: _ } => {
 				self.status = Status::Open;

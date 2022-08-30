@@ -99,10 +99,7 @@ mod tests {
 		let repository = RepositoryImplementation::new(Arc::new(event_store));
 		let result = repository.find_by_id(&contribution_id);
 		assert!(result.is_ok());
-		assert_eq!(
-			ContributionStatus::Open,
-			result.as_ref().unwrap().get_status()
-		);
-		assert_eq!(contribution_id, result.as_ref().unwrap().get_id());
+		assert_eq!(&ContributionStatus::Open, result.as_ref().unwrap().status());
+		assert_eq!(&contribution_id, result.as_ref().unwrap().id());
 	}
 }

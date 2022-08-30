@@ -70,7 +70,7 @@ impl Usecase for ApplyToContribution {
 				event: event.to_owned(),
 			})
 			.collect();
-		self.event_store.append(&contribution.get_id(), storable_events)?;
+		self.event_store.append(&contribution.id(), storable_events)?;
 		// TODO: the usecase shouldn't know about the projectors, it should just push the events to
 		// a bus
 		events
