@@ -29,6 +29,7 @@ async fn main() {
 	dotenv().ok();
 	let _global_logger_guard = slog_scope::set_global_logger(get_root_logger());
 	_global_logger_guard.cancel_reset();
+	github::Client::initialize();
 
 	let apibara_client =
 		Arc::new(ApibaraClient::default().await.expect("Unable to connect to Apibara server"));
