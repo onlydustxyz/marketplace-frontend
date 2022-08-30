@@ -53,6 +53,25 @@ impl ApplicationProjectionRepository for Client {
 		}
 	}
 
+	fn find_by_contribution_and_contributor(
+		&self,
+		contribution_id: &AggregateId,
+		contributor_id: &ContributorId,
+	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
+		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
+
+		let res = applications::dsl::applications
+			.filter(applications::contribution_id.eq(contribution_id.to_string()))
+			.filter(applications::contributor_id.eq(contributor_id.to_string()))
+			.first::<models::Application>(&*connection);
+
+		if let Err(diesel::result::Error::NotFound) = res {
+			Ok(None)
+		} else {
+			res.map(|a| Some(a.into())).map_err(DatabaseError::from).map_err_into()
+		}
+	}
+
 	fn list_by_contribution(
 		&self,
 		contribution_id: &ContributionId,

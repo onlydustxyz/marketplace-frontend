@@ -72,4 +72,8 @@ impl Projection {
 	pub fn status(&self) -> &Status {
 		&self.status
 	}
+
+	pub fn set_status(&mut self, status: Status) {
+		self.status = status;
+	}
 }
