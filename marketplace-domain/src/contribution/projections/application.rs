@@ -31,14 +31,14 @@ impl Display for Status {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
-pub struct Application {
+pub struct Projection {
 	id: Id,
 	contribution_id: ContributionId,
 	contributor_id: ContributorId,
 	status: Status,
 }
 
-impl Application {
+impl Projection {
 	pub fn new(id: Id, contribution_id: ContributionId, contributor_id: ContributorId) -> Self {
 		Self::new_with_status(id, contribution_id, contributor_id, Status::Pending)
 	}

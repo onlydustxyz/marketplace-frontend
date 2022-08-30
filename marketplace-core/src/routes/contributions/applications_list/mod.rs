@@ -7,7 +7,7 @@ use http_api_problem::HttpApiProblem;
 use itertools::Itertools;
 use marketplace_core::dto;
 use marketplace_domain::{
-	Application, ApplicationRepository, ContributorId, ParseHexPrefixedStringError,
+	ApplicationProjection, ApplicationRepository, ContributorId, ParseHexPrefixedStringError,
 };
 use rocket::{serde::json::Json, State};
 use rocket_okapi::openapi;
@@ -29,7 +29,7 @@ pub async fn list_applications(
 		.map_err(|e: ParseHexPrefixedStringError| e.to_http_api_problem())?;
 	let contributor_id: Option<ContributorId> = contributor_id.map(|id| id.into());
 
-	let applications: Vec<Application> = application_repository
+	let applications: Vec<ApplicationProjection> = application_repository
 		.list_by_contribution(&contribution_id, contributor_id)
 		.map_err(|e| e.to_http_api_problem())?;
 

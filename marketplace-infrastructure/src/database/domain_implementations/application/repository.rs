@@ -8,7 +8,7 @@ use crate::database::{models, schema::applications, Client, DatabaseError};
 use marketplace_domain::*;
 
 impl ApplicationRepository for Client {
-	fn create(&self, application: Application) -> Result<(), ApplicationRepositoryError> {
+	fn create(&self, application: ApplicationProjection) -> Result<(), ApplicationRepositoryError> {
 		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
 
 		let application = models::Application::from(application);
@@ -20,7 +20,7 @@ impl ApplicationRepository for Client {
 		Ok(())
 	}
 
-	fn update(&self, application: Application) -> Result<(), ApplicationRepositoryError> {
+	fn update(&self, application: ApplicationProjection) -> Result<(), ApplicationRepositoryError> {
 		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
 		let application = models::Application::from(application);
 		diesel::update(applications::table.filter(applications::id.eq(application.id)))
@@ -30,7 +30,10 @@ impl ApplicationRepository for Client {
 		Ok(())
 	}
 
-	fn find(&self, id: &ApplicationId) -> Result<Option<Application>, ApplicationRepositoryError> {
+	fn find(
+		&self,
+		id: &ApplicationId,
+	) -> Result<Option<ApplicationProjection>, ApplicationRepositoryError> {
 		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
 
 		let res = applications::dsl::applications
@@ -48,7 +51,7 @@ impl ApplicationRepository for Client {
 		&self,
 		contribution_id: &ContributionId,
 		contributor_id: Option<ContributorId>,
-	) -> Result<Vec<Application>, ApplicationRepositoryError> {
+	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
 		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
 
 		let mut query = applications::dsl::applications
@@ -68,7 +71,7 @@ impl ApplicationRepository for Client {
 	fn list_by_contributor(
 		&self,
 		contributor_id: Option<ContributorId>,
-	) -> Result<Vec<Application>, ApplicationRepositoryError> {
+	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
 		let connection = self.connection().map_err(ApplicationRepositoryError::from)?;
 
 		let mut query = applications::dsl::applications.into_boxed();
@@ -84,8 +87,8 @@ impl ApplicationRepository for Client {
 	}
 }
 
-impl From<Application> for models::Application {
-	fn from(application: marketplace_domain::Application) -> Self {
+impl From<ApplicationProjection> for models::Application {
+	fn from(application: marketplace_domain::ApplicationProjection) -> Self {
 		Self {
 			id: (*application.id()).into(),
 			contribution_id: application.contribution_id().to_string(),
@@ -95,7 +98,7 @@ impl From<Application> for models::Application {
 	}
 }
 
-impl From<models::Application> for Application {
+impl From<models::Application> for ApplicationProjection {
 	fn from(application: models::Application) -> Self {
 		Self::new_with_status(
 			application.id.into(),

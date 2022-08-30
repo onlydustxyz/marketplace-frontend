@@ -12,9 +12,11 @@ fn accept_application_ok() {
 
 	let contribution = init_contribution(&client);
 
-	let application1 = Application::new(Uuid::new_v4().into(), contribution.id.clone(), 0.into());
-	let application2 = Application::new(Uuid::new_v4().into(), contribution.id.clone(), 1.into());
-	let application3 = Application::new(Uuid::new_v4().into(), contribution.id, 3.into());
+	let application1 =
+		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 0.into());
+	let application2 =
+		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 1.into());
+	let application3 = ApplicationProjection::new(Uuid::new_v4().into(), contribution.id, 3.into());
 
 	<Client as ApplicationRepository>::create(&client, application1.clone()).unwrap();
 	<Client as ApplicationRepository>::create(&client, application2.clone()).unwrap();
@@ -52,9 +54,12 @@ fn reject_all_applications_ok() {
 
 	let contribution = init_contribution(&client);
 
-	let application1 = Application::new(Uuid::new_v4().into(), contribution.id.clone(), 0.into());
-	let application2 = Application::new(Uuid::new_v4().into(), contribution.id.clone(), 1.into());
-	let application3 = Application::new(Uuid::new_v4().into(), contribution.id.clone(), 3.into());
+	let application1 =
+		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 0.into());
+	let application2 =
+		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 1.into());
+	let application3 =
+		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 3.into());
 
 	<Client as ApplicationRepository>::create(&client, application1.clone()).unwrap();
 	<Client as ApplicationRepository>::create(&client, application2.clone()).unwrap();

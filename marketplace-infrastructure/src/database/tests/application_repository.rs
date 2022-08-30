@@ -12,8 +12,9 @@ fn store_and_find() {
 
 	let contribution = init_contribution(&client);
 
-	let application1 = Application::new(Uuid::new_v4().into(), contribution.id.clone(), 0.into());
-	let application2 = Application::new(Uuid::new_v4().into(), contribution.id, 1.into());
+	let application1 =
+		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 0.into());
+	let application2 = ApplicationProjection::new(Uuid::new_v4().into(), contribution.id, 1.into());
 
 	<Client as ApplicationRepository>::create(&client, application1.clone()).unwrap();
 	<Client as ApplicationRepository>::create(&client, application2.clone()).unwrap();
@@ -40,8 +41,8 @@ fn id_must_be_unique() {
 
 	let id = Uuid::new_v4().into();
 
-	let application1 = Application::new(id, contribution.id.clone(), 0.into());
-	let application2 = Application::new(id, contribution.id, 1.into());
+	let application1 = ApplicationProjection::new(id, contribution.id.clone(), 0.into());
+	let application2 = ApplicationProjection::new(id, contribution.id, 1.into());
 
 	<Client as ApplicationRepository>::create(&client, application1).unwrap();
 	let res = <Client as ApplicationRepository>::create(&client, application2);
@@ -70,7 +71,7 @@ fn cannot_apply_twice() {
 
 	let contribution = init_contribution(&client);
 
-	let application = Application::new(Uuid::new_v4().into(), contribution.id, 0.into());
+	let application = ApplicationProjection::new(Uuid::new_v4().into(), contribution.id, 0.into());
 
 	<Client as ApplicationRepository>::create(&client, application.clone()).unwrap();
 	let res = <Client as ApplicationRepository>::create(&client, application);
@@ -87,7 +88,7 @@ fn cannot_apply_twice() {
 fn contribution_id_must_exist() {
 	let client = Client::new(init_pool());
 
-	let application = Application::new(Uuid::new_v4().into(), 1.into(), 0.into());
+	let application = ApplicationProjection::new(Uuid::new_v4().into(), 1.into(), 0.into());
 
 	let res = <Client as ApplicationRepository>::create(&client, application);
 
@@ -105,9 +106,11 @@ fn store_multiple_and_list() {
 
 	let contribution = init_contribution(&client);
 
-	let application1 = Application::new(Uuid::new_v4().into(), contribution.id.clone(), 0.into());
+	let application1 =
+		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 0.into());
 
-	let application2 = Application::new(Uuid::new_v4().into(), contribution.id.clone(), 1.into());
+	let application2 =
+		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 1.into());
 
 	<Client as ApplicationRepository>::create(&client, application1.clone()).unwrap();
 	<Client as ApplicationRepository>::create(&client, application2.clone()).unwrap();

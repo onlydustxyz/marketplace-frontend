@@ -8,4 +8,7 @@ mod projectors;
 pub use projectors::ContributionProjector;
 
 mod projections;
-pub use projections::{ContributionProjection, ContributionProjectionMetadata};
+pub use projections::{
+	ApplicationId, ApplicationProjection, ApplicationStatus, ContributionProjection,
+	ContributionProjectionMetadata,
+};

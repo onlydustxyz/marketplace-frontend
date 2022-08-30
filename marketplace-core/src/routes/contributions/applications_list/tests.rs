@@ -3,7 +3,7 @@ use std::sync::Arc;
 use super::list_applications;
 use marketplace_core::dto;
 use marketplace_domain::{
-	Application, ApplicationId, ApplicationRepository, ApplicationRepositoryError,
+	ApplicationId, ApplicationProjection, ApplicationRepository, ApplicationRepositoryError,
 	ApplicationStatus, ContributionId, ContributorId,
 };
 use rocket::{http::Status, local::blocking::Client, Build};
@@ -12,15 +12,24 @@ use uuid::Uuid;
 const CONTRIBUTION_ID_1: &str = "0x1234";
 struct EmptyDatabase;
 impl ApplicationRepository for EmptyDatabase {
-	fn create(&self, _application: Application) -> Result<(), ApplicationRepositoryError> {
+	fn create(
+		&self,
+		_application: ApplicationProjection,
+	) -> Result<(), ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
-	fn update(&self, _application: Application) -> Result<(), ApplicationRepositoryError> {
+	fn update(
+		&self,
+		_application: ApplicationProjection,
+	) -> Result<(), ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
-	fn find(&self, _id: &ApplicationId) -> Result<Option<Application>, ApplicationRepositoryError> {
+	fn find(
+		&self,
+		_id: &ApplicationId,
+	) -> Result<Option<ApplicationProjection>, ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
@@ -28,28 +37,37 @@ impl ApplicationRepository for EmptyDatabase {
 		&self,
 		_contribution_id: &ContributionId,
 		_contributor_id: Option<ContributorId>,
-	) -> Result<Vec<Application>, ApplicationRepositoryError> {
+	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
 		Ok(vec![])
 	}
 
 	fn list_by_contributor(
 		&self,
 		_contributor_id: Option<ContributorId>,
-	) -> Result<Vec<Application>, ApplicationRepositoryError> {
+	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
 		unimplemented!()
 	}
 }
 struct FilledDatabase;
 impl ApplicationRepository for FilledDatabase {
-	fn create(&self, _application: Application) -> Result<(), ApplicationRepositoryError> {
+	fn create(
+		&self,
+		_application: ApplicationProjection,
+	) -> Result<(), ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
-	fn update(&self, _application: Application) -> Result<(), ApplicationRepositoryError> {
+	fn update(
+		&self,
+		_application: ApplicationProjection,
+	) -> Result<(), ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
-	fn find(&self, _id: &ApplicationId) -> Result<Option<Application>, ApplicationRepositoryError> {
+	fn find(
+		&self,
+		_id: &ApplicationId,
+	) -> Result<Option<ApplicationProjection>, ApplicationRepositoryError> {
 		unimplemented!()
 	}
 
@@ -57,17 +75,17 @@ impl ApplicationRepository for FilledDatabase {
 		&self,
 		_contribution_id: &ContributionId,
 		_contributor_id: Option<ContributorId>,
-	) -> Result<Vec<Application>, ApplicationRepositoryError> {
+	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
 		Ok(vec![
-			Application::new(Uuid::from_u128(0).into(), 0.into(), 0u128.into()),
-			Application::new(Uuid::from_u128(1).into(), 0.into(), 1u128.into()),
+			ApplicationProjection::new(Uuid::from_u128(0).into(), 0.into(), 0u128.into()),
+			ApplicationProjection::new(Uuid::from_u128(1).into(), 0.into(), 1u128.into()),
 		])
 	}
 
 	fn list_by_contributor(
 		&self,
 		_contributor_id: Option<ContributorId>,
-	) -> Result<Vec<Application>, ApplicationRepositoryError> {
+	) -> Result<Vec<ApplicationProjection>, ApplicationRepositoryError> {
 		unimplemented!()
 	}
 }

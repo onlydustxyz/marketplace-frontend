@@ -116,7 +116,7 @@ mod test {
 	) {
 		let application_id = Uuid::from_u128(12).into();
 		application_repository.expect_find().returning(|_| {
-			Ok(Some(Application::new(
+			Ok(Some(ApplicationProjection::new(
 				ApplicationId::default(),
 				ContributionId::default(),
 				ContributorId::from(42),
@@ -179,7 +179,7 @@ mod test {
 	) {
 		let application_id = Uuid::from_u128(12).into();
 		application_repository.expect_find().returning(|_| {
-			Ok(Some(Application::new(
+			Ok(Some(ApplicationProjection::new(
 				ApplicationId::default(),
 				ContributionId::default(),
 				ContributorId::from(42),
