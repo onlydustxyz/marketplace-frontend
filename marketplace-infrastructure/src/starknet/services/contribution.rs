@@ -11,8 +11,8 @@ impl<A: Account + Send + Sync + 'static> OnchainContributionService for Client<A
 		let transaction_hash = self
 			.contributions
 			.execute_actions(&[Action::CreateContribution {
-				github_composite: contribution.old_composite_id(),
 				project_id: contribution.project_id,
+				issue_number: contribution.issue_number,
 				gate: contribution.gate,
 			}])
 			.await

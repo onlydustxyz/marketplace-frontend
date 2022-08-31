@@ -24,7 +24,7 @@ async fn main() {
 		.expect("Project not found in list of all projects");
 	let starkonquest_id: u64 = starkonquest.id.parse().expect("starkonquest id is not a number");
 
-	const ISSUE_NUMBER: i64 = 51;
+	const ISSUE_NUMBER: u64 = 51;
 	add_contribution(ISSUE_NUMBER, starkonquest_id, 0).await;
 
 	wait_for_result(format!("{DATA_PATH}/contributions_open.json")).await;

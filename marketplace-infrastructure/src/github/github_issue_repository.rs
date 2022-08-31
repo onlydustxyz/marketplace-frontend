@@ -12,7 +12,9 @@ impl GithubIssueRepository for Client {
 		project_id: &GithubProjectId,
 		issue_number: &GithubIssueNumber,
 	) -> Result<Option<GithubIssue>, GithubIssueRepositoryError> {
-		self.issue(project_id.to_owned(), issue_number.to_owned())
+		// Safe to cast, as long as there is no more than i64::Max (9_223_372_036_854_775_807)
+		// issues on the repository.
+		self.issue(project_id.to_owned(), *issue_number as i64)
 			.await
 			.map_err(|e| GithubIssueRepositoryError::Infrastructure(e.to_string()))
 			.map(|issue| Some(issue.into()))
@@ -24,7 +26,9 @@ impl From<OctocrabIssue> for GithubIssue {
 		let metadata = extract_metadata(&issue.issue);
 
 		Self {
-			number: issue.issue.number,
+			// Safe to unwrap because, despite being of type i64,
+			// github issue numbers are always positive numbers
+			number: issue.issue.number.try_into().unwrap(),
 			project_id: issue.project_id,
 			title: issue.issue.title,
 			description: issue.issue.body,

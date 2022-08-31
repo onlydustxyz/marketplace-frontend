@@ -3,13 +3,13 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, JsonSchema)]
 pub struct ContributionCreation {
-	github_issue_number: i64,
+	github_issue_number: u64,
 	project_id: u64,
 	gate: u8,
 }
 
 impl ContributionCreation {
-	pub fn new(github_issue_number: i64, project_id: u64, gate: u8) -> Self {
+	pub fn new(github_issue_number: u64, project_id: u64, gate: u8) -> Self {
 		Self {
 			github_issue_number,
 			project_id,
@@ -17,7 +17,7 @@ impl ContributionCreation {
 		}
 	}
 
-	pub fn github_issue_number(&self) -> i64 {
+	pub fn github_issue_number(&self) -> u64 {
 		self.github_issue_number
 	}
 
