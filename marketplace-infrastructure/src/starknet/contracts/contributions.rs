@@ -63,16 +63,16 @@ impl IntoCall for &Action {
 	fn into_call(self) -> Call {
 		match self {
 			Action::CreateContribution {
-				github_composite,
 				project_id,
+				issue_number,
 				gate,
 			} => Call {
 				to: contributions_contract_address(),
 				selector: get_selector_from_name("new_contribution").unwrap(),
 				calldata: vec![
-					FieldElement::from(*github_composite), // id : felt
-					FieldElement::from(*project_id),       // project_id
-					FieldElement::from(*gate),             // contribution_count_required : felt
+					FieldElement::from(*project_id),   // project_id
+					FieldElement::from(*issue_number), // issue_number : felt
+					FieldElement::from(*gate),         // gate: felt
 				],
 			},
 

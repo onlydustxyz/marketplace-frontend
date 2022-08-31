@@ -73,7 +73,6 @@ fn contribution(
 			context: github_issue.context,
 			r#type: github_issue.r#type,
 		},
-		..Default::default()
 	}
 }
 
