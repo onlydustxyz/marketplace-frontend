@@ -13,8 +13,8 @@ pub use value_objects::*;
 mod error;
 pub use error::Error;
 
-mod obervers;
-pub use obervers::{
+mod observers;
+pub use observers::{
 	ApplicationObserver, ConfirmedObserver, ContributionObserver, Logger as BlockchainLogger,
 	MockObserver as MockBlockchainObserver, Observer as BlockchainObserver,
 	ObserverComposite as BlockchainObserverComposite,

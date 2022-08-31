@@ -90,6 +90,5 @@ fn build_contribution_observers(
 			.confirmed(confirmation_blocks_count),
 		Arc::new(ApplicationObserver::new(Arc::new(contribution_service)))
 			.confirmed(confirmation_blocks_count),
-		database.confirmed(confirmation_blocks_count),
 	])
 }
