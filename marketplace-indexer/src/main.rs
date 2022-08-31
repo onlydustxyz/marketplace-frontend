@@ -16,9 +16,11 @@ fn get_root_logger() -> Logger {
 				.build()
 				.fuse(),
 		)),
-		_ => slog_async::Async::default(slog_envlogger::new(
+		_ => slog_async::Async::new(slog_envlogger::new(
 			slog_json::Json::new(std::io::stdout()).add_default_keys().build().fuse(),
-		)),
+		))
+		.chan_size(256)
+		.build(),
 	};
 	slog_stdlog::init().unwrap();
 	slog::Logger::root(drain.fuse(), o!("version" => env!("CARGO_PKG_VERSION")))
