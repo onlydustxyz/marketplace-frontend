@@ -1,11 +1,17 @@
 use std::sync::Arc;
 
+use log::info;
+
 use super::*;
 
 pub struct ObserverComposite(Vec<Arc<dyn Observer>>);
 
 impl ObserverComposite {
 	pub fn new(observers: Vec<Arc<dyn Observer>>) -> Self {
+		info!(
+			"ObserverComposite created with {} observers",
+			observers.len()
+		);
 		Self(observers)
 	}
 }

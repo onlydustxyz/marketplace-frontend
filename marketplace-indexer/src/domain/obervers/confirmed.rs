@@ -1,3 +1,5 @@
+use log::info;
+
 use super::{Event, Observer};
 use std::{
 	collections::VecDeque,
@@ -37,6 +39,10 @@ impl Observer for WithBockConfirmationCount {
 		while let Some((_, event_block)) = self.peek() {
 			if block_number >= event_block + self.confirmation_blocks_count {
 				let (event, event_block) = self.events_mut().pop_back().unwrap();
+				info!(
+					"Block confirmed, calling underlying observer with event {}",
+					event
+				);
 				self.observer.on_new_event(&event, event_block);
 			} else {
 				return;
