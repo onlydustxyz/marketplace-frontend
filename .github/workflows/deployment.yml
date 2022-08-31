@@ -15,7 +15,7 @@ jobs:
       image_tag: ${{ github.ref_name }}
       bin_name: marketplace-core
       dockerfile: diesel-rocket-rs
-      datadog_label: '[{"source": "marketplace", "service": "marketplace-backend"}]'
+      datadog_label: '[{"source": "marketplace", "service": "marketplace-backend", "github_version": "${{ github.ref_name }}"}]'
     secrets: inherit
   docker-build-indexer:
     uses: onlydustxyz/cicd/.github/workflows/docker-workflow.yml@main
@@ -24,5 +24,5 @@ jobs:
       image_tag: ${{ github.ref_name }}
       bin_name: marketplace-indexer
       dockerfile: diesel-rs
-      datadog_label: '[{"source": "marketplace", "service": "marketplace-indexer"}]'
+      datadog_label: '[{"source": "marketplace", "service": "marketplace-indexer", "github_version": "${{ github.ref_name }}"}]'
     secrets: inherit
