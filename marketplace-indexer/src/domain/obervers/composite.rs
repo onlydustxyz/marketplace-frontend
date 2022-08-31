@@ -4,6 +4,7 @@ use log::info;
 
 use super::*;
 
+#[derive(Clone)]
 pub struct ObserverComposite(Vec<Arc<dyn Observer>>);
 
 impl ObserverComposite {

@@ -1,5 +1,4 @@
 use async_trait::async_trait;
-use std::sync::Arc;
 use tokio::sync::mpsc::{self, Receiver, Sender};
 use tokio_stream::wrappers::ReceiverStream;
 
@@ -14,11 +13,11 @@ use super::{
 use crate::domain::*;
 
 #[async_trait]
-impl IndexingService for Client {
+impl IndexingService<BlockchainObserverComposite> for Client {
 	async fn fetch_new_events(
 		&self,
 		indexer: &Indexer,
-		observer: Arc<dyn BlockchainObserver>,
+		observer: BlockchainObserverComposite,
 	) -> Result<(), IndexingServiceError> {
 		let channel = Channel::new();
 		send_connect_request(&channel.tx, &indexer.id).await?;
@@ -41,7 +40,7 @@ impl IndexingService for Client {
 				.await
 				.map_err(|error| IndexingServiceError::Receive(error.to_string()))?
 			{
-				Some(response) => handle_response(response, &channel.tx, &*observer).await?,
+				Some(response) => handle_response(response, &channel.tx, observer.clone()).await?,
 				None => continue,
 			}
 		}
@@ -97,10 +96,10 @@ fn ack_block(block_hash: &BlockHash) -> ConnectIndexerRequest {
 	}
 }
 
-async fn handle_response(
+async fn handle_response<O: BlockchainObserver>(
 	response: ConnectIndexerResponse,
 	sender: &Sender<ConnectIndexerRequest>,
-	observer: &dyn BlockchainObserver,
+	observer: O,
 ) -> Result<(), IndexingServiceError> {
 	match response.message {
 		Some(ResponseMessage::Connected(IndexerConnected {
@@ -246,7 +245,7 @@ mod test {
 
 		observer.expect_on_connect().return_const(());
 
-		let result = handle_response(response, &channel.tx, &observer).await;
+		let result = handle_response(response, &channel.tx, observer).await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(TryRecvError::Empty, channel.rx.try_recv().unwrap_err());
 	}
@@ -274,7 +273,7 @@ mod test {
 			.with(eq(block_hash.clone()), eq(block_number))
 			.return_const(());
 
-		let result = handle_response(response, &channel.tx, &observer).await;
+		let result = handle_response(response, &channel.tx, observer).await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(TryRecvError::Empty, channel.rx.try_recv().unwrap_err());
 	}
@@ -301,7 +300,7 @@ mod test {
 
 		observer.expect_on_new_event().times(2).return_const(());
 
-		let result = handle_response(response, &channel.tx, &observer).await;
+		let result = handle_response(response, &channel.tx, observer).await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 
 		let request = channel.rx.try_recv().unwrap();
@@ -325,7 +324,7 @@ mod test {
 
 		observer.expect_on_reorg().return_const(());
 
-		let result = handle_response(response, &channel.tx, &observer).await;
+		let result = handle_response(response, &channel.tx, observer).await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(TryRecvError::Empty, channel.rx.try_recv().unwrap_err());
 	}
@@ -335,7 +334,7 @@ mod test {
 	async fn can_handle_an_empty_response(mut channel: Channel, observer: MockBlockchainObserver) {
 		let response = ConnectIndexerResponse { message: None };
 
-		let result = handle_response(response, &channel.tx, &observer).await;
+		let result = handle_response(response, &channel.tx, observer).await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(TryRecvError::Empty, channel.rx.try_recv().unwrap_err());
 	}
