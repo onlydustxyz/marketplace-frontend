@@ -17,7 +17,7 @@ pub async fn create_contribution(
 
 	let contribution = ContributionProjection {
 		project_id: body.project_id(),
-		issue_number: body.github_issue_number(),
+		issue_number: body.github_issue_number() as u64,
 		gate: body.gate(),
 		..Default::default()
 	};
