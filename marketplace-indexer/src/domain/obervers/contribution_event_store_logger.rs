@@ -1,10 +1,12 @@
-use log::error;
+use log::{error, info};
 
 use super::*;
 use marketplace_domain::EventStore;
 
 impl<ES: EventStore<Contribution>> Observer for ES {
 	fn on_new_event(&self, event: &Event, _block_number: u64) {
+		info!("EventStore observer received event {}", event);
+
 		let Event::Contribution(event) = event;
 		let id = match event {
 			ContributionEvent::Created {
@@ -26,6 +28,8 @@ impl<ES: EventStore<Contribution>> Observer for ES {
 				"Failed to append {event} to the store: {}",
 				error.to_string()
 			);
+		} else {
+			info!("Event successfully appended in event store");
 		}
 	}
 }

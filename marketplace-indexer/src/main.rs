@@ -9,6 +9,10 @@ use marketplace_infrastructure::{database, github};
 use slog::{o, Drain, Logger};
 use std::sync::Arc;
 
+fn channel_size() -> usize {
+	std::env::var("SLOG_CHANNEL_SIZE").unwrap_or_default().parse().unwrap_or(256)
+}
+
 fn get_root_logger() -> Logger {
 	let drain = match std::env::var("LOGS") {
 		Ok(logs) if &logs == "terminal" => slog_async::Async::default(slog_envlogger::new(
@@ -19,7 +23,7 @@ fn get_root_logger() -> Logger {
 		_ => slog_async::Async::new(slog_envlogger::new(
 			slog_json::Json::new(std::io::stdout()).add_default_keys().build().fuse(),
 		))
-		.chan_size(256)
+		.chan_size(channel_size())
 		.build(),
 	};
 	slog_stdlog::init().unwrap();
@@ -81,11 +85,11 @@ fn build_contribution_observers(
 
 	let observer = BlockchainObserverComposite::new(vec![
 		Arc::new(BlockchainLogger::default()),
+		database.confirmed(confirmation_blocks_count),
 		Arc::new(ContributionObserver::new(Arc::new(contribution_projector)))
 			.confirmed(confirmation_blocks_count),
 		Arc::new(ApplicationObserver::new(Arc::new(contribution_service)))
 			.confirmed(confirmation_blocks_count),
-		database.confirmed(confirmation_blocks_count),
 	]);
 
 	Arc::new(observer)
