@@ -19,12 +19,10 @@ impl EventStore<Contribution> for Client {
 
 		let deduplications = events
 			.iter()
-			.map(|event| {
-				Ok(models::EventDeduplication {
-					deduplication_id: event.deduplication_id.to_owned(),
-				})
+			.map(|event| models::EventDeduplication {
+				deduplication_id: event.deduplication_id.to_owned(),
 			})
-			.collect::<Result<Vec<_>, EventStoreError>>()?;
+			.collect::<Vec<_>>();
 
 		let events = events
 			.iter()
