@@ -15,11 +15,13 @@ fn channel_size() -> usize {
 
 fn get_root_logger() -> Logger {
 	let drain = match std::env::var("LOGS") {
-		Ok(logs) if &logs == "terminal" => slog_async::Async::default(slog_envlogger::new(
+		Ok(logs) if &logs == "terminal" => slog_async::Async::new(slog_envlogger::new(
 			slog_term::CompactFormat::new(slog_term::TermDecorator::new().stderr().build())
 				.build()
 				.fuse(),
-		)),
+		))
+		.chan_size(channel_size())
+		.build(),
 		_ => slog_async::Async::new(slog_envlogger::new(
 			slog_json::Json::new(std::io::stdout()).add_default_keys().build().fuse(),
 		))
