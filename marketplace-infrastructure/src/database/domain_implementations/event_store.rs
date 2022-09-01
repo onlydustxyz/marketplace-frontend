@@ -1,6 +1,5 @@
 use crate::database::{models, schema::events, Client};
 use diesel::prelude::*;
-use log::info;
 use marketplace_domain::*;
 use serde_json::Value;
 
@@ -12,10 +11,7 @@ impl EventStore<Contribution> for Client {
 		aggregate_id: &<Contribution as Aggregate>::Id,
 		events: Vec<<Contribution as Aggregate>::Event>,
 	) -> Result<(), EventStoreError> {
-		info!("In DB layer with events: {:?}", events);
-
 		let connection = self.connection().map_err(|_| EventStoreError::Connection)?;
-		info!("Connection retrieved from pool");
 
 		let events = events
 			.iter()
@@ -29,14 +25,10 @@ impl EventStore<Contribution> for Client {
 			})
 			.collect::<Result<Vec<_>, EventStoreError>>()?;
 
-		info!("Inserting events in database: {:?}", events);
-
 		diesel::insert_into(events::table)
 			.values(&events)
 			.execute(&*connection)
 			.map_err(|_| EventStoreError::Append)?;
-
-		info!("Insertion OK");
 
 		Ok(())
 	}
