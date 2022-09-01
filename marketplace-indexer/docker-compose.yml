@@ -2,6 +2,7 @@ version: '3'
 
 services:
   mongo:
+    container_name: apibara-server-mongo
     image: mongo:latest
     restart: always
     environment:
@@ -13,7 +14,8 @@ services:
       - ./_docker/apibara_mongodb:/data/db
 
   apibara:
-    build: https://github.com/AnthonyBuisset/apibara.git#main
+    container_name: apibara-server
+    image: docker.io/onlydustxyz/apibara:v1.0.0
     restart: always
     command: start --config /usr/etc/apibara/configuration.toml
     environment:
