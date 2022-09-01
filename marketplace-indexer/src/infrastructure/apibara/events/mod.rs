@@ -5,7 +5,7 @@ use topics::*;
 use crate::domain::ObservedEvent;
 
 use super::apibara::{event::Event as ApibaraEventInner, Event as ApibaraEvent, StarkNetEvent};
-use marketplace_domain::Event as DomainEvent;
+use marketplace_domain::{ContractAddress, Event as DomainEvent, HexPrefixedString};
 use starknet::core::types::FieldElement;
 use thiserror::Error;
 
@@ -50,8 +50,8 @@ impl TryFrom<ApibaraEvent> for ObservedEvent {
 					_ => Err(Self::Error::Unsupported),
 				}?;
 
-				let address = std::str::from_utf8(&address).unwrap();
-				let transaction_hash = std::str::from_utf8(&transaction_hash).unwrap();
+				let address = ContractAddress::from(address);
+				let transaction_hash = HexPrefixedString::from(transaction_hash);
 				Ok(ObservedEvent {
 					event: domain_event,
 					deduplication_id: format!("{address}_{transaction_hash}_{log_index}"),
