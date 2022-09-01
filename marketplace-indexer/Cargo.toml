@@ -28,6 +28,7 @@ dotenv = "0.15.0"
 itertools = "0.10.3"
 mapinto = "0.2.1"
 thiserror = "1.0.31"
+anyhow = "1.0.57"
 
 # Starknet
 starknet = { git = "https://github.com/ofux/starknet-rs" }
