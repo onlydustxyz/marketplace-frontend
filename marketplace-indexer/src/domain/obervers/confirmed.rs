@@ -1,5 +1,3 @@
-use log::info;
-
 use super::{ObservedEvent, Observer};
 use std::{
 	collections::VecDeque,
