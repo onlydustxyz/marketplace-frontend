@@ -3,8 +3,9 @@ use log::error;
 use super::*;
 use marketplace_domain::EventStore;
 
+#[async_trait]
 impl<ES: EventStore<Contribution>> Observer for ES {
-	fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
+	async fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
 		let Event::Contribution(domain_event) = &event.event;
 		let id = match domain_event {
 			ContributionEvent::Created {
@@ -70,7 +71,7 @@ mod test {
 	}
 
 	#[rstest]
-	fn on_new_event(
+	async fn on_new_event(
 		mut event_store: EventStore,
 		contribution_id: ContributionId,
 		event: ObservedEvent,
@@ -89,6 +90,6 @@ mod test {
 			)
 			.returning(|_, _| Ok(()));
 
-		event_store.on_new_event(&event, 0);
+		event_store.on_new_event(&event, 0).await;
 	}
 }

@@ -13,10 +13,11 @@ impl ContributionObserver {
 	}
 }
 
+#[async_trait]
 impl Observer for ContributionObserver {
-	fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
+	async fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
 		match &event.event {
-			Event::Contribution(event) => self.contribution_projection.project(event),
+			Event::Contribution(event) => self.contribution_projection.project(event).await,
 		}
 	}
 }
@@ -24,14 +25,16 @@ impl Observer for ContributionObserver {
 #[cfg(test)]
 mod test {
 	use super::*;
+	use async_trait::async_trait;
 	use mockall::{mock, predicate::*};
 	use rstest::*;
 
 	mock! {
 		pub ContributionProjection {}
 
+		#[async_trait]
 		impl Projector<Contribution> for ContributionProjection {
-			fn project(&self, event: &ContributionEvent);
+			async fn project(&self, event: &ContributionEvent);
 		}
 	}
 
@@ -56,7 +59,7 @@ mod test {
 	}
 
 	#[rstest]
-	fn on_contribution_created_event(
+	async fn on_contribution_created_event(
 		mut contribution_projection: MockContributionProjection,
 		contribution_event: ContributionEvent,
 		event: ObservedEvent,
@@ -67,6 +70,6 @@ mod test {
 			.return_const(());
 
 		let observer = ContributionObserver::new(Arc::new(contribution_projection));
-		observer.on_new_event(&event, 0)
+		observer.on_new_event(&event, 0).await;
 	}
 }

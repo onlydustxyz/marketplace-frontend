@@ -11,20 +11,21 @@ impl<'a> Logger<'a> {
 	}
 }
 
+#[async_trait]
 impl Observer for Logger<'_> {
-	fn on_connect(&self, indexer_id: &IndexerId) {
+	async fn on_connect(&self, indexer_id: &IndexerId) {
 		self.0(format!("🔗 Indexer `{indexer_id}` connected"));
 	}
 
-	fn on_new_event(&self, event: &ObservedEvent, block_number: u64) {
+	async fn on_new_event(&self, event: &ObservedEvent, block_number: u64) {
 		self.0(format!("⚡ New event [{block_number}]: {}", event));
 	}
 
-	fn on_new_block(&self, block_hash: &BlockHash, block_number: u64) {
+	async fn on_new_block(&self, block_hash: &BlockHash, block_number: u64) {
 		self.0(format!("⛏️ New block [{block_number}]: {block_hash}"));
 	}
 
-	fn on_reorg(&self) {
+	async fn on_reorg(&self) {
 		self.0("🤕 Chain reorg".to_string());
 	}
 }
@@ -58,7 +59,7 @@ mod test {
 	}
 
 	#[rstest]
-	fn on_new_event(mut logger: MockLoggerCallback, event: ObservedEvent) {
+	async fn on_new_event(mut logger: MockLoggerCallback, event: ObservedEvent) {
 		logger
 			.expect_log()
 			.withf(|msg| msg.starts_with("⚡ New event [0]: "))
@@ -66,11 +67,11 @@ mod test {
 		let logging_callback = move |message| logger.log(message);
 
 		let handler = Logger::new(&logging_callback);
-		handler.on_new_event(&event, 0);
+		handler.on_new_event(&event, 0).await;
 	}
 
 	#[rstest]
-	fn on_connect(mut logger: MockLoggerCallback) {
+	async fn on_connect(mut logger: MockLoggerCallback) {
 		logger
 			.expect_log()
 			.with(eq(String::from("🔗 Indexer `ID` connected")))
@@ -78,11 +79,11 @@ mod test {
 		let logging_callback = move |message| logger.log(message);
 
 		let handler = Logger::new(&logging_callback);
-		handler.on_connect(&IndexerId::from("ID"));
+		handler.on_connect(&IndexerId::from("ID")).await;
 	}
 
 	#[rstest]
-	fn on_new_block(mut logger: MockLoggerCallback) {
+	async fn on_new_block(mut logger: MockLoggerCallback) {
 		logger
 			.expect_log()
 			.with(eq(String::from("⛏️ New block [2222]: 0x1234")))
@@ -90,21 +91,21 @@ mod test {
 		let logging_callback = move |message| logger.log(message);
 
 		let handler = Logger::new(&logging_callback);
-		handler.on_new_block(&BlockHash::from_str("0x1234").unwrap(), 2222);
+		handler.on_new_block(&BlockHash::from_str("0x1234").unwrap(), 2222).await;
 	}
 
 	#[rstest]
-	fn on_reorg(mut logger: MockLoggerCallback) {
+	async fn on_reorg(mut logger: MockLoggerCallback) {
 		logger.expect_log().with(eq(String::from("🤕 Chain reorg"))).return_const(());
 		let logging_callback = move |message| logger.log(message);
 
 		let handler = Logger::new(&logging_callback);
-		handler.on_reorg();
+		handler.on_reorg().await;
 	}
 
 	#[rstest]
-	fn handler_can_be_created_using_default(event: ObservedEvent) {
+	async fn handler_can_be_created_using_default(event: ObservedEvent) {
 		let handler = Logger::default();
-		handler.on_new_event(&event, 0);
+		handler.on_new_event(&event, 0).await;
 	}
 }
