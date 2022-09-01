@@ -4,11 +4,7 @@ mod models;
 use anyhow::Result;
 use log::error;
 use mapinto::ResultMapErrInto;
-use std::{
-	collections::HashMap,
-	sync::{mpsc, Arc},
-	time::Duration,
-};
+use std::{collections::HashMap, sync::Arc};
 use thiserror::Error;
 
 use marketplace_domain::{self as domain, *};
@@ -21,11 +17,6 @@ impl From<models::RepositoryWithExtension> for Project {
 			name: repo.inner.name,
 		}
 	}
-}
-
-fn request_timeout() -> Duration {
-	let timeout = std::env::var("GITHUB_REQUEST_TIMEOUT").unwrap_or_default().parse().unwrap_or(5);
-	Duration::from_secs(timeout)
 }
 
 pub struct Client {
@@ -63,22 +54,7 @@ impl Client {
 	}
 
 	async fn get<R: octocrab::FromResponse>(&self, url: String) -> Result<R, Error> {
-		let (tx, rx) = mpsc::channel();
-		let cloned_octocrab = self.octo.clone();
-		let handle = tokio::spawn(async move {
-			let result = cloned_octocrab._get(url, None::<&()>).await;
-			tx.send(result).expect("Unable to send the request response");
-		});
-
-		let result = rx.recv_timeout(request_timeout());
-		match result {
-			Ok(result) => R::from_response(result?).await.map_err_into(),
-			Err(_) => {
-				error!("{}", Error::Timeout);
-				handle.abort();
-				Err(Error::Timeout)
-			},
-		}
+		self.octo.get::<R, String, ()>(url, None).await.map_err_into()
 	}
 
 	pub async fn issue(&self, project_id: u64, issue_number: i64) -> Result<OctocrabIssue> {

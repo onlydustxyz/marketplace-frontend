@@ -4,6 +4,7 @@ use std::fmt::Display;
 pub use application::ApplicationObserver;
 
 mod composite;
+use async_trait::async_trait;
 pub use composite::ObserverComposite;
 
 mod logging;
@@ -24,11 +25,12 @@ use mockall::automock;
 use marketplace_domain::*;
 
 #[automock]
+#[async_trait]
 pub trait Observer: Send + Sync {
-	fn on_connect(&self, _indexer_id: &IndexerId) {}
-	fn on_new_event(&self, _event: &ObservedEvent, _block_number: u64) {}
-	fn on_new_block(&self, _block_hash: &BlockHash, _block_number: u64) {}
-	fn on_reorg(&self) {}
+	async fn on_connect(&self, _indexer_id: &IndexerId) {}
+	async fn on_new_event(&self, _event: &ObservedEvent, _block_number: u64) {}
+	async fn on_new_block(&self, _block_hash: &BlockHash, _block_number: u64) {}
+	async fn on_reorg(&self) {}
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

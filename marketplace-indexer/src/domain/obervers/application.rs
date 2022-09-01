@@ -14,8 +14,9 @@ impl ApplicationObserver {
 	}
 }
 
+#[async_trait]
 impl Observer for ApplicationObserver {
-	fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
+	async fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
 		match &event.event {
 			Event::Contribution(event) => {
 				if let ContributionEvent::Assigned { id, contributor_id } = event {
@@ -73,7 +74,7 @@ mod test {
 	}
 
 	#[rstest]
-	fn on_contribution_assigned_event(
+	async fn on_contribution_assigned_event(
 		mut contribution_service: MockContributionService,
 		event: ObservedEvent,
 		contribution_id: ContributionId,
@@ -85,6 +86,6 @@ mod test {
 			.returning(|_, _| Ok(()));
 
 		let observer = ApplicationObserver::new(Arc::new(contribution_service));
-		observer.on_new_event(&event, 42)
+		observer.on_new_event(&event, 42).await
 	}
 }

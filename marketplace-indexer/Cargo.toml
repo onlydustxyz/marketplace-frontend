@@ -58,6 +58,7 @@ marketplace-infrastructure = { path = "../marketplace-infrastructure" }
 [dev-dependencies]
 # Unit tests
 rstest = "0.15.0"
+async-std = {version = "1.12.0", features = ["attributes"]}
 
 [build-dependencies]
 tonic-build = "0.7.2"

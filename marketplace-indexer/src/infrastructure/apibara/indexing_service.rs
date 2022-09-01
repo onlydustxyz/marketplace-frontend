@@ -1,4 +1,5 @@
 use async_trait::async_trait;
+use futures::future::join_all;
 use std::sync::Arc;
 use tokio::sync::mpsc::{self, Receiver, Sender};
 use tokio_stream::wrappers::ReceiverStream;
@@ -107,7 +108,7 @@ async fn handle_response(
 			indexer: Some(indexer),
 			version: _,
 		})) => {
-			observer.on_connect(&indexer.id.into());
+			observer.on_connect(&indexer.id.into()).await;
 			Ok(())
 		},
 
@@ -115,22 +116,23 @@ async fn handle_response(
 			new_head: Some(new_head),
 		})) => {
 			let block_hash = BlockHash::from(new_head.hash);
-			observer.on_new_block(&block_hash, new_head.number);
+			observer.on_new_block(&block_hash, new_head.number).await;
 			Ok(())
 		},
 
 		Some(ResponseMessage::Reorg(_)) => {
-			observer.on_reorg();
+			observer.on_reorg().await;
 			Ok(())
 		},
 
 		Some(ResponseMessage::NewEvents(NewEvents { block, events })) => {
 			if let Some(block_head) = block {
-				events.into_iter().for_each(|event| {
+				join_all(events.into_iter().map(|event| async {
 					if let Ok(event) = event.try_into() {
-						observer.on_new_event(&event, block_head.number);
+						observer.on_new_event(&event, block_head.number).await;
 					}
-				});
+				}))
+				.await;
 
 				send_ack_request(sender, &block_head.hash.into()).await
 			} else {

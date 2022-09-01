@@ -1,5 +1,5 @@
 use crate::*;
-use futures::executor::block_on;
+use async_trait::async_trait;
 use log::error;
 use mapinto::ResultMapErrInto;
 use std::sync::Arc;
@@ -98,15 +98,16 @@ impl WithGithubDataProjector {
 	}
 }
 
+#[async_trait]
 impl Projector<Contribution> for WithGithubDataProjector {
-	fn project(&self, event: &ContributionEvent) {
+	async fn project(&self, event: &ContributionEvent) {
 		let result = match event {
 			ContributionEvent::Created {
 				id,
 				project_id,
 				issue_number,
 				gate,
-			} => block_on(self.create(id, project_id, issue_number, *gate)),
+			} => self.create(id, project_id, issue_number, *gate).await,
 			ContributionEvent::Assigned { id, contributor_id } => self.assign(id, contributor_id),
 			ContributionEvent::Unassigned { id } => self.unassign(id),
 			ContributionEvent::Validated { id } => self.validate(id),
