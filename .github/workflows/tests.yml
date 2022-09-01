@@ -94,7 +94,7 @@ jobs:
   test_with_database:
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: postgres://postgres:postgres@localhost/deathnote_contributions_db
+      DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
