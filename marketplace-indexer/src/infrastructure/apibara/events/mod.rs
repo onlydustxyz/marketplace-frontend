@@ -1,11 +1,12 @@
 mod contribution;
 mod topics;
+use anyhow::anyhow;
 use topics::*;
 
 use crate::domain::ObservedEvent;
 
 use super::apibara::{event::Event as ApibaraEventInner, Event as ApibaraEvent, StarkNetEvent};
-use marketplace_domain::{ContractAddress, Event as DomainEvent, HexPrefixedString};
+use marketplace_domain::Event as DomainEvent;
 use starknet::core::types::FieldElement;
 use thiserror::Error;
 
@@ -13,13 +14,26 @@ use thiserror::Error;
 pub enum FromEventError {
 	#[error("Unsupported event")]
 	Unsupported,
-	#[error("Invalid event")]
-	Invalid,
+	#[error(transparent)]
+	Invalid(#[from] anyhow::Error),
 }
 
 pub trait EventTranslator {
 	fn selector() -> FieldElement;
 	fn to_domain_event(topics: Topics) -> Result<DomainEvent, FromEventError>;
+}
+
+struct FromEventFieldElement(FieldElement);
+
+impl TryFrom<Vec<u8>> for FromEventFieldElement {
+	type Error = FromEventError;
+
+	fn try_from(value: Vec<u8>) -> Result<Self, Self::Error> {
+		let value: [u8; 32] = value.try_into().map_err(|v| anyhow!("{:?}", v))?;
+		Ok(FromEventFieldElement(
+			FieldElement::from_bytes_be(&value).map_err(anyhow::Error::msg)?,
+		))
+	}
 }
 
 impl TryFrom<ApibaraEvent> for ObservedEvent {
@@ -35,7 +49,7 @@ impl TryFrom<ApibaraEvent> for ObservedEvent {
 				data,
 			})) => {
 				let selector: FieldElement =
-					Topics::from(topics).pop_front_as().map_err(|_| Self::Error::Invalid)?;
+					Topics::from(topics).pop_front_as().map_err(anyhow::Error::msg)?;
 
 				let data = Topics::from(data);
 				let domain_event = match selector {
@@ -50,14 +64,18 @@ impl TryFrom<ApibaraEvent> for ObservedEvent {
 					_ => Err(Self::Error::Unsupported),
 				}?;
 
-				let address = ContractAddress::from(address);
-				let transaction_hash = HexPrefixedString::from(transaction_hash);
+				let address = FromEventFieldElement::try_from(address)?;
+				let transaction_hash = FromEventFieldElement::try_from(transaction_hash)?;
+
 				Ok(ObservedEvent {
 					event: domain_event,
-					deduplication_id: format!("{address}_{transaction_hash}_{log_index}"),
+					deduplication_id: format!(
+						"{:#x}_{:#x}_{log_index}",
+						address.0, transaction_hash.0
+					),
 				})
 			},
-			None => Err(Self::Error::Invalid),
+			None => Err(Self::Error::Invalid(anyhow!("Event missing data"))),
 			_ => Err(Self::Error::Unsupported),
 		}
 	}
@@ -69,10 +87,24 @@ mod test {
 	use marketplace_domain::ContributionEvent;
 	use rstest::*;
 
-	const CONTRACT_ADDRESS: &str = "0x42";
 	const LOG_INDEX: u64 = 666;
-	const TRANSACTION_HASH: &str = "0x1234";
-	const DEDUPLICATION_ID: &str = "0x42_0x1234_666";
+	const DEDUPLICATION_ID: &str = "0xcb_0x64cb_666";
+
+	#[fixture]
+	fn contract_address() -> Vec<u8> {
+		vec![
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 203,
+		]
+	}
+
+	#[fixture]
+	fn transaction_hash() -> Vec<u8> {
+		vec![
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 100, 203,
+		]
+	}
 
 	fn empty_topic() -> TopicValue {
 		TopicValue { value: vec![0; 32] }
@@ -84,12 +116,16 @@ mod test {
 		}
 	}
 
-	fn apibara_event(selector: TopicValue) -> ApibaraEvent {
+	fn apibara_event(
+		selector: TopicValue,
+		contract_address: Vec<u8>,
+		transaction_hash: Vec<u8>,
+	) -> ApibaraEvent {
 		ApibaraEvent {
 			event: Some(ApibaraEventInner::Starknet(StarkNetEvent {
-				address: CONTRACT_ADDRESS.as_bytes().into(),
+				address: contract_address,
 				log_index: LOG_INDEX,
-				transaction_hash: TRANSACTION_HASH.as_bytes().into(),
+				transaction_hash,
 				topics: vec![selector],
 				data: vec![empty_topic(), empty_topic(), empty_topic(), empty_topic()],
 				..Default::default()
@@ -98,8 +134,12 @@ mod test {
 	}
 
 	#[rstest]
-	fn contribution_created() {
-		let apibara_event = apibara_event(selector::<contribution::Created>());
+	fn contribution_created(contract_address: Vec<u8>, transaction_hash: Vec<u8>) {
+		let apibara_event = apibara_event(
+			selector::<contribution::Created>(),
+			contract_address,
+			transaction_hash,
+		);
 
 		assert_eq!(
 			ObservedEvent {
@@ -116,8 +156,12 @@ mod test {
 	}
 
 	#[rstest]
-	fn contribution_assigned() {
-		let apibara_event = apibara_event(selector::<contribution::Assigned>());
+	fn contribution_assigned(contract_address: Vec<u8>, transaction_hash: Vec<u8>) {
+		let apibara_event = apibara_event(
+			selector::<contribution::Assigned>(),
+			contract_address,
+			transaction_hash,
+		);
 
 		assert_eq!(
 			ObservedEvent {
@@ -132,8 +176,12 @@ mod test {
 	}
 
 	#[rstest]
-	fn contribution_unassigned() {
-		let apibara_event = apibara_event(selector::<contribution::Unassigned>());
+	fn contribution_unassigned(contract_address: Vec<u8>, transaction_hash: Vec<u8>) {
+		let apibara_event = apibara_event(
+			selector::<contribution::Unassigned>(),
+			contract_address,
+			transaction_hash,
+		);
 
 		assert_eq!(
 			ObservedEvent {
@@ -147,8 +195,12 @@ mod test {
 	}
 
 	#[rstest]
-	fn contribution_validated() {
-		let apibara_event = apibara_event(selector::<contribution::Validated>());
+	fn contribution_validated(contract_address: Vec<u8>, transaction_hash: Vec<u8>) {
+		let apibara_event = apibara_event(
+			selector::<contribution::Validated>(),
+			contract_address,
+			transaction_hash,
+		);
 
 		assert_eq!(
 			ObservedEvent {

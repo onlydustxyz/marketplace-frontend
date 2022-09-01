@@ -1,4 +1,5 @@
 use super::{super::apibara::TopicValue, FromEventError};
+use anyhow::anyhow;
 use crypto_bigint::{Encoding, Split, U256};
 use marketplace_domain::{ContributorId, HexPrefixedString};
 use starknet::core::types::FieldElement;
@@ -29,8 +30,8 @@ pub enum TopicError {
 }
 
 impl From<TopicError> for FromEventError {
-	fn from(_: TopicError) -> Self {
-		Self::Invalid
+	fn from(error: TopicError) -> Self {
+		Self::Invalid(anyhow!(error.to_string()))
 	}
 }
 
