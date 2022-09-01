@@ -72,8 +72,6 @@ fn build_contribution_observers(
 	database: Arc<database::Client>,
 	github: Arc<github::Client>,
 ) -> Arc<dyn BlockchainObserver> {
-	let confirmation_blocks_count = 1;
-
 	let contribution_projector = ContributionProjector::new(database.clone(), github);
 
 	let contribution_repository: Arc<dyn Repository<Contribution>> =
@@ -87,11 +85,9 @@ fn build_contribution_observers(
 
 	let observer = BlockchainObserverComposite::new(vec![
 		Arc::new(BlockchainLogger::default()),
-		database.confirmed(confirmation_blocks_count),
-		Arc::new(ContributionObserver::new(Arc::new(contribution_projector)))
-			.confirmed(confirmation_blocks_count),
-		Arc::new(ApplicationObserver::new(Arc::new(contribution_service)))
-			.confirmed(confirmation_blocks_count),
+		Arc::new(ContributionObserver::new(Arc::new(contribution_projector))),
+		Arc::new(ApplicationObserver::new(Arc::new(contribution_service))),
+		database,
 	]);
 
 	Arc::new(observer)
