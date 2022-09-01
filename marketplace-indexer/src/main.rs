@@ -85,9 +85,9 @@ fn build_contribution_observers(
 
 	let observer = BlockchainObserverComposite::new(vec![
 		Arc::new(BlockchainLogger::default()),
+		database,
 		Arc::new(ContributionObserver::new(Arc::new(contribution_projector))),
 		Arc::new(ApplicationObserver::new(Arc::new(contribution_service))),
-		database,
 	]);
 
 	Arc::new(observer)
