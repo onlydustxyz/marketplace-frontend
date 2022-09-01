@@ -2,7 +2,14 @@ mod github_issue_repository;
 mod models;
 
 use anyhow::Result;
-use std::{collections::HashMap, sync::Arc};
+use log::error;
+use mapinto::ResultMapErrInto;
+use std::{
+	collections::HashMap,
+	sync::{mpsc, Arc},
+	time::Duration,
+};
+use thiserror::Error;
 
 use marketplace_domain::{self as domain, *};
 
@@ -16,6 +23,11 @@ impl From<models::RepositoryWithExtension> for Project {
 	}
 }
 
+fn request_timeout() -> Duration {
+	let timeout = std::env::var("GITHUB_REQUEST_TIMEOUT").unwrap_or_default().parse().unwrap_or(5);
+	Duration::from_secs(timeout)
+}
+
 pub struct Client {
 	octo: Arc<octocrab::Octocrab>,
 }
@@ -23,6 +35,14 @@ pub struct Client {
 pub struct OctocrabIssue {
 	pub issue: octocrab::models::issues::Issue,
 	pub project_id: GithubProjectId,
+}
+
+#[derive(Error, Debug)]
+pub enum Error {
+	#[error(transparent)]
+	Octocrab(#[from] octocrab::Error),
+	#[error("Timeout sending request to GitHub API")]
+	Timeout,
 }
 
 impl Client {
@@ -42,16 +62,31 @@ impl Client {
 		}
 	}
 
+	async fn get<R: octocrab::FromResponse>(&self, url: String) -> Result<R, Error> {
+		let (tx, rx) = mpsc::channel();
+		let cloned_octocrab = self.octo.clone();
+		let handle = tokio::spawn(async move {
+			let result = cloned_octocrab._get(url, None::<&()>).await;
+			tx.send(result).expect("Unable to send the request response");
+		});
+
+		let result = rx.recv_timeout(request_timeout());
+		match result {
+			Ok(result) => R::from_response(result?).await.map_err_into(),
+			Err(_) => {
+				error!("{}", Error::Timeout);
+				handle.abort();
+				Err(Error::Timeout)
+			},
+		}
+	}
+
 	pub async fn issue(&self, project_id: u64, issue_number: i64) -> Result<OctocrabIssue> {
 		let issue = self
-			.octo
-			.get::<octocrab::models::issues::Issue, String, ()>(
-				format!(
-					"{}repositories/{}/issues/{}",
-					self.octo.base_url, project_id, issue_number
-				),
-				None,
-			)
+			.get(format!(
+				"{}repositories/{}/issues/{}",
+				self.octo.base_url, project_id, issue_number
+			))
 			.await
 			.map_err(anyhow::Error::msg)?;
 
@@ -59,32 +94,26 @@ impl Client {
 	}
 
 	pub async fn user(&self, user_id: &str) -> Result<octocrab::models::User> {
-		self.octo
-			.get::<octocrab::models::User, String, ()>(
-				format!("{}user/{}", self.octo.base_url, user_id),
-				None,
-			)
+		self.get::<octocrab::models::User>(format!("{}user/{}", self.octo.base_url, user_id))
 			.await
 			.map_err(anyhow::Error::msg)
 	}
 
 	pub async fn repository_by_id(&self, project_id_: u64) -> Result<octocrab::models::Repository> {
-		self.octo
-			.get::<octocrab::models::Repository, String, ()>(
-				format!("{}repositories/{}", self.octo.base_url, project_id_),
-				None,
-			)
-			.await
-			.map_err(anyhow::Error::msg)
+		self.get::<octocrab::models::Repository>(format!(
+			"{}repositories/{}",
+			self.octo.base_url, project_id_
+		))
+		.await
+		.map_err(anyhow::Error::msg)
 	}
 
 	pub async fn get_project_by_owner_and_name(&self, owner: &str, name: &str) -> Result<Project> {
 		let repo = self
-			.octo
-			.get::<models::RepositoryWithExtension, String, ()>(
-				format!("{}repos/{}/{}", self.octo.base_url, owner, name),
-				None::<&()>,
-			)
+			.get::<models::RepositoryWithExtension>(format!(
+				"{}repos/{}/{}",
+				self.octo.base_url, owner, name
+			))
 			.await?;
 
 		Ok(repo.into())
