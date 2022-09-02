@@ -35,4 +35,6 @@ pub trait Repository: Send + Sync {
 		contribution_id: ContributionId,
 		status: ContributionStatus,
 	) -> Result<(), Error>;
+
+	fn clear(&self) -> Result<(), Error>;
 }
