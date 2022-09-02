@@ -167,7 +167,7 @@ mod test {
 
 	#[rstest]
 	fn create_contribution(contribution_created_event: Event, contribution_id: Id) {
-		let contribution = Contribution::from_events(vec![contribution_created_event]);
+		let contribution = Contribution::from_events(&vec![contribution_created_event]);
 		assert_eq!(Status::Open, contribution.status);
 		assert_eq!(contribution_id, contribution.id);
 		assert!(contribution.applicants.is_empty());
@@ -175,7 +175,7 @@ mod test {
 
 	#[rstest]
 	fn assign_contribution(contribution_created_event: Event, contribution_assigned_event: Event) {
-		let contribution = Contribution::from_events(vec![
+		let contribution = Contribution::from_events(&vec![
 			contribution_created_event,
 			contribution_assigned_event,
 		]);
@@ -189,7 +189,7 @@ mod test {
 		contribution_assigned_event: Event,
 		contribution_unassigned_event: Event,
 	) {
-		let contribution = Contribution::from_events(vec![
+		let contribution = Contribution::from_events(&vec![
 			contribution_created_event,
 			contribution_assigned_event,
 			contribution_unassigned_event,
@@ -204,7 +204,7 @@ mod test {
 		contribution_assigned_event: Event,
 		contribution_validated_event: Event,
 	) {
-		let contribution = Contribution::from_events(vec![
+		let contribution = Contribution::from_events(&vec![
 			contribution_created_event,
 			contribution_assigned_event,
 			contribution_validated_event,
@@ -217,7 +217,7 @@ mod test {
 		contribution_created_event: Event,
 		contribution_assigned_event: Event,
 	) {
-		let contribution = Contribution::from_events(vec![
+		let contribution = Contribution::from_events(&vec![
 			contribution_created_event,
 			contribution_assigned_event,
 		]);
@@ -229,7 +229,7 @@ mod test {
 
 	#[rstest]
 	fn apply_twice_to_contribution(contribution_created_event: Event) {
-		let contribution = Contribution::from_events(vec![contribution_created_event]);
+		let contribution = Contribution::from_events(&vec![contribution_created_event]);
 		let contributor_id = ContributorId::from_str("0x123").unwrap();
 
 		let (contribution, _) = contribution.apply(&contributor_id).unwrap();
@@ -240,7 +240,7 @@ mod test {
 
 	#[rstest]
 	fn apply_to_contribution_emits_an_event(contribution_created_event: Event) {
-		let contribution = Contribution::from_events(vec![contribution_created_event]);
+		let contribution = Contribution::from_events(&vec![contribution_created_event]);
 		let contributor_id = ContributorId::from_str("0x123").unwrap();
 
 		let application_result = contribution.apply(&contributor_id);
