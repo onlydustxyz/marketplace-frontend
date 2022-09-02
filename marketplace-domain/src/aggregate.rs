@@ -1,13 +1,10 @@
-pub trait Aggregate: Send + Sync + Default {
+pub trait Aggregate: Send + Sync {
 	type Id: PartialEq;
 	type Event;
-	fn apply_event(&mut self, event: &Self::Event);
-	fn from_events(events: Vec<Self::Event>) -> Self {
-		let mut contribution = Self::default();
-		events.iter().for_each(|event| {
-			contribution.apply_event(event);
-		});
-		contribution
+	type State: Default;
+	fn apply_event(state: Self::State, event: &Self::Event) -> Self::State;
+	fn from_events(events: Vec<Self::Event>) -> Self::State {
+		events.iter().fold(Default::default(), Self::apply_event)
 	}
 }
 

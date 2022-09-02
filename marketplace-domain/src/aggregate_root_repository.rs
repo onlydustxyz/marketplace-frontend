@@ -25,7 +25,7 @@ impl<A: AggregateRoot> Repository<A> {
 
 #[automock]
 impl<A: AggregateRoot> Repository<A> {
-	pub fn find_by_id(&self, id: &A::Id) -> Result<A, Error> {
+	pub fn find_by_id(&self, id: &A::Id) -> Result<A::State, Error> {
 		let events = self.event_store.list_by_id(&id)?;
 		match events {
 			_ if events.is_empty() => Err(Error::NotFound),

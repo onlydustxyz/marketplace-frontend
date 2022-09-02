@@ -36,9 +36,9 @@ pub struct Contribution {
 }
 
 impl Contribution {
-	pub fn apply(&mut self, contributor_id: &ContributorId) -> Result<Vec<Event>, Error> {
+	pub fn apply(self, contributor_id: &ContributorId) -> Result<(Self, Vec<Event>), Error> {
 		if self.status != Status::Open {
-			return Err(Error::CannotApply(self.status.to_owned()));
+			return Err(Error::CannotApply(self.status));
 		}
 		if self.applicants.contains(&contributor_id) {
 			return Err(Error::AlreadyApplied(contributor_id.to_owned()));
@@ -49,8 +49,7 @@ impl Contribution {
 			contributor_id: contributor_id.to_owned(),
 		};
 
-		self.apply_event(&applied_event);
-		Ok(vec![applied_event])
+		Ok((Self::apply_event(self, &applied_event), vec![applied_event]))
 	}
 
 	pub fn id(&self) -> &Id {
@@ -76,40 +75,46 @@ impl Contribution {
 impl Aggregate for Contribution {
 	type Event = Event;
 	type Id = Id;
+	type State = Self;
 
-	fn apply_event(&mut self, event: &Self::Event) {
+	fn apply_event(state: Self, event: &Self::Event) -> Self {
 		match event {
 			Event::Created {
 				id,
 				project_id,
 				issue_number,
 				gate,
-			} => {
-				self.id = id.to_owned();
-				self.project_id = *project_id;
-				self.issue_number = *issue_number;
-				self.gate = *gate;
-				self.status = Status::Open;
+			} => Self {
+				id: id.to_owned(),
+				project_id: *project_id,
+				issue_number: *issue_number,
+				gate: *gate,
+				status: Status::Open,
+				..state
 			},
 			Event::Applied {
 				id: _,
 				contributor_id,
-			} => {
-				self.applicants.push(contributor_id.to_owned());
+			} => Self {
+				applicants: [&state.applicants[..], &[contributor_id.to_owned()]].concat(),
+				..state
 			},
 			Event::Assigned {
 				id: _,
 				contributor_id,
-			} => {
-				self.status = Status::Assigned;
-				self.contributor_id = Some(contributor_id.to_owned());
+			} => Self {
+				status: Status::Assigned,
+				contributor_id: Some(contributor_id.to_owned()),
+				..state
 			},
-			Event::Unassigned { id: _ } => {
-				self.status = Status::Open;
-				self.contributor_id = None;
+			Event::Unassigned { id: _ } => Self {
+				status: Status::Open,
+				contributor_id: None,
+				..state
 			},
-			Event::Validated { id: _ } => {
-				self.status = Status::Completed;
+			Event::Validated { id: _ } => Self {
+				status: Status::Completed,
+				..state
 			},
 		}
 	}
@@ -212,7 +217,7 @@ mod test {
 		contribution_created_event: Event,
 		contribution_assigned_event: Event,
 	) {
-		let mut contribution = Contribution::from_events(vec![
+		let contribution = Contribution::from_events(vec![
 			contribution_created_event,
 			contribution_assigned_event,
 		]);
@@ -224,10 +229,10 @@ mod test {
 
 	#[rstest]
 	fn apply_twice_to_contribution(contribution_created_event: Event) {
-		let mut contribution = Contribution::from_events(vec![contribution_created_event]);
+		let contribution = Contribution::from_events(vec![contribution_created_event]);
 		let contributor_id = ContributorId::from_str("0x123").unwrap();
 
-		let _first_application = contribution.apply(&contributor_id);
+		let (contribution, _) = contribution.apply(&contributor_id).unwrap();
 		let second_application = contribution.apply(&contributor_id);
 		assert!(second_application.is_err());
 		assert_matches!(second_application.unwrap_err(), Error::AlreadyApplied(_))
@@ -235,13 +240,13 @@ mod test {
 
 	#[rstest]
 	fn apply_to_contribution_emits_an_event(contribution_created_event: Event) {
-		let mut contribution = Contribution::from_events(vec![contribution_created_event]);
+		let contribution = Contribution::from_events(vec![contribution_created_event]);
 		let contributor_id = ContributorId::from_str("0x123").unwrap();
 
 		let application_result = contribution.apply(&contributor_id);
 		assert!(application_result.is_ok());
 
-		let emitted_events = application_result.unwrap();
+		let (_contribution, emitted_events) = application_result.unwrap();
 		assert_eq!(1, emitted_events.len());
 		assert_matches!(
 			emitted_events.first().unwrap(),
