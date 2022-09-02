@@ -49,8 +49,8 @@ async fn main() {
 
 	let github_client = Arc::new(github::Client::new());
 	let uuid_generator = Arc::new(RandomUuidGenerator);
-	let contribution_repository: Arc<dyn AggregateRootRepository<Contribution>> =
-		Arc::new(AggregateRootRepositoryImplementation::new(database.clone()));
+	let contribution_repository: AggregateRootRepository<Contribution> =
+		AggregateRootRepository::new(database.clone());
 	let contact_information_service = Arc::new(ContactInformationServiceImplementation::new(
 		database.clone(),
 	));
@@ -118,7 +118,7 @@ fn inject_app(
 	rocket: Rocket<Build>,
 	database: Arc<database::Client>,
 	starknet: Arc<starknet::SingleAdminClient>,
-	contribution_repository: Arc<dyn AggregateRootRepository<Contribution>>,
+	contribution_repository: AggregateRootRepository<Contribution>,
 	contact_information_service: Arc<dyn ContactInformationService>,
 	application_projector: Arc<ApplicationProjector>,
 	contribution_projector: Arc<ContributionProjector>,

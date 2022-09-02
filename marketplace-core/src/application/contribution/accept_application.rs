@@ -77,7 +77,7 @@ impl Usecase for AcceptApplication {
 mod test {
 	use super::*;
 	use futures::FutureExt;
-	use mockall::{mock, predicate::eq};
+	use mockall::predicate::eq;
 	use rstest::*;
 	use thiserror::Error;
 	use uuid::Uuid;

@@ -15,7 +15,7 @@ pub trait Usecase: Send + Sync {
 }
 
 pub struct ApplyToContribution {
-	contribution_repository: Arc<dyn AggregateRootRepository<Contribution>>,
+	contribution_repository: AggregateRootRepository<Contribution>,
 	event_store: Arc<dyn EventStore<Contribution>>,
 	application_projector: Arc<ApplicationProjector>,
 	uuid_generator: Arc<dyn UuidGenerator>,
@@ -23,7 +23,7 @@ pub struct ApplyToContribution {
 
 impl ApplyToContribution {
 	pub fn new(
-		contribution_repository: Arc<dyn AggregateRootRepository<Contribution>>,
+		contribution_repository: AggregateRootRepository<Contribution>,
 		event_store: Arc<dyn EventStore<Contribution>>,
 		application_projector: Arc<ApplicationProjector>,
 		uuid_generator: Arc<dyn UuidGenerator>,
@@ -39,7 +39,7 @@ impl ApplyToContribution {
 
 impl ApplyToContribution {
 	pub fn new_usecase_boxed(
-		contribution_repository: Arc<dyn AggregateRootRepository<Contribution>>,
+		contribution_repository: AggregateRootRepository<Contribution>,
 		event_store: Arc<dyn EventStore<Contribution>>,
 		application_projector: Arc<ApplicationProjector>,
 		uuid_generator: Arc<dyn UuidGenerator>,
