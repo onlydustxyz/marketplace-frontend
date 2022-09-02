@@ -29,7 +29,7 @@ impl<A: AggregateRoot> Repository<A> {
 		let events = self.event_store.list_by_id(&id)?;
 		match events {
 			_ if events.is_empty() => Err(Error::NotFound),
-			events => Ok(A::from_events(events)),
+			events => Ok(A::from_events(&events)),
 		}
 	}
 }
