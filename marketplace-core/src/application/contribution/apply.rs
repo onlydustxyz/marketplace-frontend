@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use futures::{stream::FuturesUnordered, StreamExt};
 use marketplace_domain::{Error as DomainError, *};
 
 // Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be
