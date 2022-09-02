@@ -41,7 +41,6 @@ pub use contribution::{AggregateId as ContributionId, *};
 mod aggregate_root_repository;
 pub use aggregate_root_repository::{
 	Error as AggregateRootRepositoryError, Repository as AggregateRootRepository,
-	RepositoryImplementation as AggregateRootRepositoryImplementation,
 };
 
 #[cfg(test)]
