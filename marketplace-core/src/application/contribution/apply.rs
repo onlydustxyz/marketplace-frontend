@@ -73,12 +73,9 @@ impl Usecase for ApplyToContribution {
 		self.event_store.append(&contribution.id(), storable_events)?;
 		// TODO: the usecase shouldn't know about the projectors, it should just push the events to
 		// a bus
-		events
-			.iter()
-			.map(move |event| self.application_projector.project(event))
-			.collect::<FuturesUnordered<_>>()
-			.collect::<Vec<_>>()
-			.await;
+		for event in &events {
+			self.application_projector.project(event).await;
+		}
 
 		Ok(())
 	}
