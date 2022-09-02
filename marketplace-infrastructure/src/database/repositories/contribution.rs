@@ -79,6 +79,15 @@ impl ContributionProjectionRepository for Client {
 
 		Ok(())
 	}
+
+	fn clear(&self) -> Result<(), ContributionProjectionRepositoryError> {
+		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
+		diesel::delete(schema::contributions::dsl::contributions)
+			.execute(&*connection)
+			.map_err(DatabaseError::from)?;
+
+		Ok(())
+	}
 }
 
 impl From<ContributionProjection> for models::Contribution {
