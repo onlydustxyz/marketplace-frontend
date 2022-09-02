@@ -60,8 +60,8 @@ impl Usecase for ApplyToContribution {
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
 	) -> Result<(), DomainError> {
-		let mut contribution = self.contribution_repository.find_by_id(contribution_id)?;
-		let events = contribution.apply(contributor_id)?;
+		let contribution = self.contribution_repository.find_by_id(contribution_id)?;
+		let (contribution, events) = contribution.apply(contributor_id)?;
 		let storable_events: Vec<StorableEvent<Contribution>> = events
 			.iter()
 			.map(|event| StorableEvent {
