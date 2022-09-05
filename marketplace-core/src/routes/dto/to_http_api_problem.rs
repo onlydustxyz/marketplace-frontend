@@ -1,4 +1,4 @@
-use crate::RefreshContributionsError;
+use crate::RefreshError;
 use http_api_problem::{HttpApiProblem, StatusCode};
 use marketplace_domain::{Error as DomainError, *};
 
@@ -117,11 +117,11 @@ impl ToHttpApiProblem for ParseHexPrefixedStringError {
 	}
 }
 
-impl ToHttpApiProblem for RefreshContributionsError {
+impl ToHttpApiProblem for RefreshError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		match self {
-			RefreshContributionsError::ProjectionRepository(error) => error.to_http_api_problem(),
-			RefreshContributionsError::EventStore(error) => error.to_http_api_problem(),
+			RefreshError::ProjectionRepository(error) => error.to_http_api_problem(),
+			RefreshError::EventStore(error) => error.to_http_api_problem(),
 		}
 	}
 }

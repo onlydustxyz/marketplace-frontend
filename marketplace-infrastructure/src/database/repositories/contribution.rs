@@ -81,7 +81,7 @@ impl ContributionProjectionRepository for Client {
 	}
 }
 
-impl ProjectionRepository<Contribution> for Client {
+impl ProjectionRepository<ContributionProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
 		let connection = self
 			.connection()

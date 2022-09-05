@@ -27,4 +27,4 @@ mod accept_application;
 pub use accept_application::{AcceptApplication, Usecase as AcceptApplicationUsecase};
 
 mod refresh;
-pub use refresh::{Error as RefreshContributionsError, Refresh as RefreshContributions};
+pub use refresh::RefreshContributions;

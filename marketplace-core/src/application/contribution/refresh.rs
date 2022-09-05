@@ -1,58 +1,17 @@
-use std::sync::Arc;
-
+use crate::application::refresh::Refresh;
 use marketplace_domain::*;
-use thiserror::Error;
 
-#[derive(Debug, Error)]
-pub enum Error {
-	#[error(transparent)]
-	ProjectionRepository(#[from] ProjectionRepositoryError),
-	#[error(transparent)]
-	EventStore(#[from] EventStoreError),
-}
-
-pub struct Refresh {
-	contribution_projection_repository: Arc<dyn ProjectionRepository<Contribution>>,
-	contribution_projector: Arc<dyn Projector<Contribution>>,
-	contribution_event_store: Arc<dyn EventStore<Contribution>>,
-}
-
-impl Refresh {
-	pub fn new(
-		contribution_projection_repository: Arc<dyn ProjectionRepository<Contribution>>,
-		contribution_projector: Arc<dyn Projector<Contribution>>,
-		event_store: Arc<dyn EventStore<Contribution>>,
-	) -> Self {
-		Self {
-			contribution_projection_repository,
-			contribution_projector,
-			contribution_event_store: event_store,
-		}
-	}
-
-	pub async fn refresh_projection_from_events(&self) -> Result<(), Error> {
-		self.contribution_projection_repository.clear()?;
-
-		let events = self.contribution_event_store.list()?;
-
-		for event in events.iter() {
-			self.contribution_projector.project(event).await;
-		}
-
-		Ok(())
-	}
-}
+pub type RefreshContributions = Refresh<ContributionProjection, Contribution>;
 
 #[cfg(test)]
 mod test {
 	use super::*;
 	use async_trait::async_trait;
 	use dotenv::dotenv;
-	use marketplace_domain::GithubIssueRepository;
 	use marketplace_infrastructure::database::{init_pool, Client as DatabaseClient};
 	use mockall::mock;
 	use rstest::*;
-	use std::str::FromStr;
+	use std::{str::FromStr, sync::Arc};
 
 	const STARKONQUEST: GithubProjectId = 481932781;
 
@@ -167,10 +126,10 @@ mod test {
 	}
 
 	#[fixture]
-	fn refresh_usecase(
+	fn refresh_contributions_usecase(
 		filled_database: Arc<DatabaseClient>,
 		mut github_issue_repository: MockGithubIssueRepository,
-	) -> Refresh {
+	) -> RefreshContributions {
 		github_issue_repository.expect_find().returning(|_, _| Ok(Default::default()));
 
 		Refresh::new(
@@ -186,10 +145,10 @@ mod test {
 	#[rstest]
 	#[cfg_attr(not(feature = "with_component_tests"), ignore = "component test")]
 	async fn refresh_contributions_from_events(
-		refresh_usecase: Refresh,
+		refresh_contributions_usecase: RefreshContributions,
 		database: Arc<DatabaseClient>,
 	) {
-		let result = refresh_usecase.refresh_projection_from_events().await;
+		let result = refresh_contributions_usecase.refresh_projection_from_events().await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 
 		let projection =
