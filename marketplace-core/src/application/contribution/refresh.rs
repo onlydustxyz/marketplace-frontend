@@ -184,6 +184,7 @@ mod test {
 	}
 
 	#[rstest]
+	#[cfg_attr(not(feature = "with_component_tests"), ignore = "component test")]
 	async fn refresh_contributions_from_events(
 		refresh_usecase: Refresh,
 		database: Arc<DatabaseClient>,
