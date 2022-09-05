@@ -13,6 +13,8 @@ jobs:
   coverage:
     name: Code coverage analysis
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -20,14 +22,38 @@ jobs:
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
+          toolchain: nightly
           override: true
+
+      - name: Set up cargo cache
+        uses: actions/cache@v3
+        continue-on-error: false
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+
+      - name: Run docker compose
+        run: docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
+        env:
+          BASE_TAG: latest
+
+      - name: Install diesel CLI
+        run: cargo install diesel_cli --no-default-features --features postgres
+
+      - name: Run migrations
+        run: diesel migration run
 
       - name: Run cargo-tarpaulin
         uses: actions-rs/tarpaulin@v0.1
         with:
           version: '0.20.1'
-          args: '--exclude-files src/bin/e2e_tests.rs -- --test-threads 1'
+          args: '--exclude-files src/bin/e2e_tests.rs --all-features -- --test-threads 1'
 
       - name: Upload to codecov.io
         uses: codecov/codecov-action@v3
