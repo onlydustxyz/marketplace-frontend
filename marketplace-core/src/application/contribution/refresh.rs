@@ -11,7 +11,7 @@ pub enum Error {
 	EventStore(#[from] EventStoreError),
 }
 
-struct Refresh {
+pub struct Refresh {
 	contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
 	contribution_projector: Arc<dyn Projector<Contribution>>,
 	event_store: Arc<dyn EventStore<Contribution>>,

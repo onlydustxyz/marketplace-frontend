@@ -1,3 +1,4 @@
+use crate::RefreshContributionsError;
 use http_api_problem::{HttpApiProblem, StatusCode};
 use marketplace_domain::{Error as DomainError, *};
 
@@ -113,5 +114,23 @@ impl ToHttpApiProblem for DomainError {
 impl ToHttpApiProblem for ParseHexPrefixedStringError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		HttpApiProblem::new(StatusCode::BAD_REQUEST).title(self.to_string())
+	}
+}
+
+impl ToHttpApiProblem for RefreshContributionsError {
+	fn to_http_api_problem(&self) -> HttpApiProblem {
+		match self {
+			RefreshContributionsError::ContributionProjectionRepository(error) =>
+				error.to_http_api_problem(),
+			RefreshContributionsError::EventStore(error) => error.to_http_api_problem(),
+		}
+	}
+}
+
+impl ToHttpApiProblem for EventStoreError {
+	fn to_http_api_problem(&self) -> HttpApiProblem {
+		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+			.title("Internal error")
+			.detail(self.to_string())
 	}
 }
