@@ -1,3 +1,4 @@
+use crate::Projection;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -6,6 +7,6 @@ pub enum Error {
 	Infrastructure(#[source] anyhow::Error),
 }
 
-pub trait ProjectionRepository<P>: Send + Sync {
+pub trait ProjectionRepository<P: Projection>: Send + Sync {
 	fn clear(&self) -> Result<(), Error>;
 }

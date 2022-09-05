@@ -15,6 +15,8 @@ pub struct Projection {
 	pub metadata: Metadata,
 }
 
+impl crate::Projection for Projection {}
+
 impl Projection {
 	pub fn old_composite_id(&self) -> u64 {
 		let project_id: u64 = self.project_id;

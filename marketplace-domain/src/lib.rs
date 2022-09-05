@@ -29,6 +29,9 @@ pub use aggregate::{Aggregate, AggregateRoot};
 mod projector;
 pub use projector::Projector;
 
+mod projection;
+pub use projection::Projection;
+
 mod projection_repository;
 pub use projection_repository::{Error as ProjectionRepositoryError, ProjectionRepository};
 

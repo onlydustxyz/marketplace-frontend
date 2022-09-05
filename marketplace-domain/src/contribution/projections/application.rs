@@ -38,6 +38,8 @@ pub struct Projection {
 	status: Status,
 }
 
+impl crate::Projection for Projection {}
+
 impl Projection {
 	pub fn new(id: Id, contribution_id: ContributionId, contributor_id: ContributorId) -> Self {
 		Self {
