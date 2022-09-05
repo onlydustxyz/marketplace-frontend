@@ -5,7 +5,10 @@ use itertools::Itertools;
 use marketplace_domain::*;
 
 #[test]
-#[ignore = "require a database"]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
 fn store_and_find_one() {
 	let client = Client::new(init_pool());
 
@@ -22,7 +25,10 @@ fn store_and_find_one() {
 }
 
 #[test]
-#[ignore = "require a database"]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
 fn store_and_find_multiple() {
 	let client = Client::new(init_pool());
 
@@ -46,7 +52,10 @@ fn store_and_find_multiple() {
 }
 
 #[test]
-#[ignore = "require a database"]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
 fn store_and_find_with_contributions() {
 	let client = Client::new(init_pool());
 

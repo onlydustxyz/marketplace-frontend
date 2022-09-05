@@ -6,7 +6,10 @@ use uuid::Uuid;
 use crate::database::{init_pool, Client};
 
 #[test]
-#[ignore = "require a database"]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
 
 fn get_contributor_contact_information_ok() {
 	let client = Client::new(init_pool());
@@ -33,7 +36,10 @@ fn get_contributor_contact_information_ok() {
 }
 
 #[test]
-#[ignore = "require a database"]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
 
 fn set_contributor_contact_information_ok() {
 	let client = Client::new(init_pool());

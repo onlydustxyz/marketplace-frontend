@@ -3,7 +3,10 @@ use crate::database::{init_pool, tests::init_project, Client};
 use marketplace_domain::*;
 
 #[test]
-#[ignore = "require a database"]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
 fn store_and_find() {
 	let client = Client::new(init_pool());
 
