@@ -59,6 +59,11 @@ async fn main() {
 		uuid_generator.clone(),
 	));
 
+	let contribution_projector = Arc::new(ContributionProjector::new(
+		database.clone(),
+		github_client.clone(),
+	));
+
 	let rocket_handler = inject_app(
 		rocket::build(),
 		database.clone(),
@@ -66,6 +71,7 @@ async fn main() {
 		contribution_repository,
 		contact_information_service,
 		application_projector,
+		contribution_projector,
 		uuid_generator,
 	)
 	.manage(database.clone())
@@ -93,6 +99,7 @@ async fn main() {
 			routes::list_applications,
 			routes::accept_application,
 			routes::list_contributor_applications,
+			routes::refresh_contributions,
 			routes::contact_information::find_contact_information,
 			routes::contact_information::put_contact_information,
 		],
@@ -113,6 +120,7 @@ fn inject_app(
 	contribution_repository: Arc<dyn AggregateRootRepository<Contribution>>,
 	contact_information_service: Arc<dyn ContactInformationService>,
 	application_projector: Arc<ApplicationProjector>,
+	contribution_projector: Arc<ContributionProjector>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 ) -> Rocket<Build> {
 	rocket
@@ -138,6 +146,11 @@ fn inject_app(
 		.manage(AcceptApplication::new_usecase_boxed(
 			starknet,
 			database.clone(),
+			database.clone(),
+		))
+		.manage(RefreshContributions::new(
+			database.clone(),
+			contribution_projector,
 			database.clone(),
 		))
 		.manage(database as Arc<dyn ApplicationProjectionRepository>)
