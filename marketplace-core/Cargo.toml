@@ -10,6 +10,9 @@ repository = "https://github.com/onlydustxyz/marketplace-backend"
 version = "0.0.1"
 default-run = "marketplace-core"
 
+[features]
+with_component_tests = []
+
 [dependencies]
 
 # Async
