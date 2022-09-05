@@ -44,7 +44,7 @@ jobs:
           BASE_TAG: latest
 
       - name: Install diesel CLI
-        run: cargo install diesel_cli --no-default-features --features postgres
+        run: cargo install diesel_cli --no-default-features --features postgres --force
 
       - name: Run migrations
         run: diesel migration run
