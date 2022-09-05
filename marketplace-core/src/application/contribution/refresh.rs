@@ -2,6 +2,7 @@ use crate::application::refresh::Refresh;
 use marketplace_domain::*;
 
 pub type RefreshContributions = Refresh<ContributionProjection, Contribution>;
+pub type RefreshApplications = Refresh<ApplicationProjection, Contribution>;
 
 #[cfg(test)]
 mod test {
@@ -53,7 +54,15 @@ mod test {
 	}
 
 	#[fixture]
-	fn filled_database(database: Arc<DatabaseClient>) -> Arc<DatabaseClient> {
+	fn contributor_id() -> ContributorId {
+		ContributorId::from_str("0x123").unwrap()
+	}
+
+	#[fixture]
+	fn filled_database(
+		database: Arc<DatabaseClient>,
+		contributor_id: ContributorId,
+	) -> Arc<DatabaseClient> {
 		// add project
 		// TODO: remove and fetch data at contribution creation time
 		database
@@ -67,7 +76,6 @@ mod test {
 		// events for contribution #1
 		{
 			let contribution_id = ContributionId::from_str("0x01").unwrap();
-			let contributor_id = ContributorId::from_str("0x123").unwrap();
 			database
 				.append(
 					&contribution_id,
@@ -78,9 +86,13 @@ mod test {
 							issue_number: 51,
 							gate: 0,
 						},
+						ContributionEvent::Applied {
+							id: contribution_id.clone(),
+							contributor_id: contributor_id.clone(),
+						},
 						ContributionEvent::Assigned {
 							id: contribution_id.clone(),
-							contributor_id,
+							contributor_id: contributor_id.clone(),
 						},
 						ContributionEvent::Validated {
 							id: contribution_id.clone(),
@@ -96,7 +108,6 @@ mod test {
 		// events for contribution #2
 		{
 			let contribution_id = ContributionId::from_str("0x02").unwrap();
-			let contributor_id = ContributorId::from_str("0x123").unwrap();
 			database
 				.append(
 					&contribution_id,
@@ -106,6 +117,10 @@ mod test {
 							project_id: STARKONQUEST,
 							issue_number: 52,
 							gate: 0,
+						},
+						ContributionEvent::Applied {
+							id: contribution_id.clone(),
+							contributor_id: contributor_id.clone(),
 						},
 						ContributionEvent::Assigned {
 							id: contribution_id.clone(),
@@ -142,6 +157,18 @@ mod test {
 		)
 	}
 
+	#[fixture]
+	fn refresh_applications_usecase(filled_database: Arc<DatabaseClient>) -> RefreshApplications {
+		Refresh::new(
+			filled_database.clone(),
+			Arc::new(ApplicationProjector::new(
+				filled_database.clone(),
+				Arc::new(RandomUuidGenerator),
+			)),
+			filled_database,
+		)
+	}
+
 	#[rstest]
 	#[cfg_attr(not(feature = "with_component_tests"), ignore = "component test")]
 	async fn refresh_contributions_from_events(
@@ -165,5 +192,22 @@ mod test {
 			project.contributions[0].status
 		);
 		assert_eq!(ContributionStatus::Open, project.contributions[1].status);
+	}
+
+	#[rstest]
+	#[cfg_attr(not(feature = "with_component_tests"), ignore = "component test")]
+	async fn refresh_applications_from_events(
+		refresh_applications_usecase: RefreshApplications,
+		database: Arc<DatabaseClient>,
+		contributor_id: ContributorId,
+	) {
+		let result = refresh_applications_usecase.refresh_projection_from_events().await;
+		assert!(result.is_ok(), "{}", result.err().unwrap());
+
+		let applications = database
+			.list_by_contributor(Some(contributor_id))
+			.expect("Unable to read projection table");
+
+		assert_eq!(2, applications.len());
 	}
 }
