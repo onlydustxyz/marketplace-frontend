@@ -31,7 +31,13 @@ impl<A: Account + Sync> Contract<A> {
 		&self,
 		actions: &[Action],
 	) -> Result<HexPrefixedString, ContractError> {
-		let calls = actions.iter().map(|action| action.into_call()).collect_vec();
+		let calls = actions
+			.iter()
+			.map(|action| {
+				info!("{action}");
+				action.into_call()
+			})
+			.collect_vec();
 		let transaction_result = self
 			.administrator
 			.send_transaction(&calls)
@@ -39,7 +45,7 @@ impl<A: Account + Sync> Contract<A> {
 			.map_err(|e| ContractError::TransactionReverted(e.to_string()));
 
 		if let Err(error) = transaction_result {
-			error!("Error: {:?}", error);
+			error!("Error: {}", error);
 			return Err(error);
 		}
 

@@ -1,6 +1,6 @@
 use super::ContractError;
 use crate::starknet::sequencer;
-use log::{info, warn};
+use log::{error, info};
 use rand::prelude::random;
 use starknet::{
 	accounts::{single_owner::GetNonceError, Account, AccountCall, Call},
@@ -40,7 +40,7 @@ impl<A: Account + Sync> ContractAdministrator<A> {
 		match self.administrator_account.execute(calls).nonce(nonce).send().await {
 			Ok(transaction_result) => Ok(transaction_result),
 			Err(error) => {
-				warn!("{:?}", error);
+				error!("{:?}", error);
 				Err(ContractError::SendTransaction(error.to_string()))
 			},
 		}
