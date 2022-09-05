@@ -102,7 +102,7 @@ mod test {
 		);
 
 		let result = usecase.send_assign_request(&contribution_id, &ContributorId::from(34)).await;
-		assert!(result.is_ok(), "{:?}", result.err().unwrap());
+		assert!(result.is_ok(), "{}", result.err().unwrap());
 	}
 
 	#[rstest]

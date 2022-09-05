@@ -61,7 +61,7 @@ mod test {
 		)
 		.await;
 
-		assert!(result.is_ok(), "{:?}", result.err().unwrap());
+		assert!(result.is_ok(), "{}", result.err().unwrap());
 
 		assert_eq!(status::Accepted(None), result.unwrap());
 	}
