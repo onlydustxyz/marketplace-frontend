@@ -6,7 +6,10 @@ use uuid::Uuid;
 use super::init_contribution;
 
 #[test]
-#[ignore = "require a database"]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
 fn store_and_find() {
 	let client = Client::new(init_pool());
 
@@ -33,7 +36,10 @@ fn store_and_find() {
 }
 
 #[test]
-#[ignore = "require a database"]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
 fn id_must_be_unique() {
 	let client = Client::new(init_pool());
 
@@ -55,7 +61,10 @@ fn id_must_be_unique() {
 }
 
 #[test]
-#[ignore = "require a database"]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
 fn find_return_none_if_not_found() {
 	let client = Client::new(init_pool());
 
@@ -65,7 +74,10 @@ fn find_return_none_if_not_found() {
 }
 
 #[test]
-#[ignore = "require a database"]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
 fn cannot_apply_twice() {
 	let client = Client::new(init_pool());
 
@@ -84,7 +96,10 @@ fn cannot_apply_twice() {
 }
 
 #[test]
-#[ignore = "require a database"]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
 fn contribution_id_must_exist() {
 	let client = Client::new(init_pool());
 
@@ -100,7 +115,10 @@ fn contribution_id_must_exist() {
 }
 
 #[test]
-#[ignore = "require a database"]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
 fn store_multiple_and_list() {
 	let client = Client::new(init_pool());
 

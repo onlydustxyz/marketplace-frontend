@@ -142,7 +142,10 @@ mod tests {
 	}
 
 	#[rstest]
-	#[ignore = "require a database"]
+	#[cfg_attr(
+		not(feature = "with_infrastructure_tests"),
+		ignore = "infrastructure test"
+	)]
 	fn test_append_and_list(
 		event_store: Box<dyn EventStore<Contribution>>,
 		contribution_id: ContributionId,
@@ -165,7 +168,10 @@ mod tests {
 	}
 
 	#[rstest]
-	#[ignore = "require a database"]
+	#[cfg_attr(
+		not(feature = "with_infrastructure_tests"),
+		ignore = "infrastructure test"
+	)]
 	fn test_cannot_append_duplicate_event_in_same_batch(
 		event_store: Box<dyn EventStore<Contribution>>,
 		contribution_id: ContributionId,
@@ -185,7 +191,10 @@ mod tests {
 	}
 
 	#[rstest]
-	#[ignore = "require a database"]
+	#[cfg_attr(
+		not(feature = "with_infrastructure_tests"),
+		ignore = "infrastructure test"
+	)]
 	fn test_cannot_append_duplicate_event_in_different_batches(
 		event_store: Box<dyn EventStore<Contribution>>,
 		contribution_id: ContributionId,
