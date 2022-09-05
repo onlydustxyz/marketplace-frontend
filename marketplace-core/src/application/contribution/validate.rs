@@ -90,7 +90,7 @@ mod test {
 		);
 
 		let result = usecase.send_validate_request(&contribution_id).await;
-		assert!(result.is_ok(), "{:?}", result.err().unwrap());
+		assert!(result.is_ok(), "{}", result.err().unwrap());
 	}
 
 	#[rstest]

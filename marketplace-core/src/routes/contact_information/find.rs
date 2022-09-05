@@ -116,7 +116,7 @@ mod test {
 			State::get(&rocket).unwrap(),
 			U256Param::from_str(CONTRIBUTOR_ID).unwrap(),
 		);
-		assert!(result.is_ok(), "{:?}", result.err().unwrap());
+		assert!(result.is_ok(), "{}", result.err().unwrap());
 
 		let contributor = result.unwrap();
 		assert_eq!("0x0123", contributor.contributor_id);

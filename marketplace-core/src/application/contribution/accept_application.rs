@@ -143,7 +143,7 @@ mod test {
 		);
 
 		let result = usecase.accept_application(&application_id).await;
-		assert!(result.is_ok(), "{:?}", result.err().unwrap());
+		assert!(result.is_ok(), "{}", result.err().unwrap());
 	}
 
 	#[rstest]

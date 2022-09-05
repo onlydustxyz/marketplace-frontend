@@ -111,7 +111,7 @@ mod test {
 			.into(),
 			State::get(&rocket).unwrap(),
 		);
-		assert!(result.is_ok(), "{:?}", result.err().unwrap());
+		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(status::NoContent, result.unwrap());
 	}
 }

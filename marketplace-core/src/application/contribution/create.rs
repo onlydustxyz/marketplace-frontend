@@ -62,7 +62,7 @@ mod test {
 		let usecase = CreateContribution::new_usecase_boxed(Arc::new(onchain_contribution_service));
 
 		let result = usecase.send_creation_request(contribution).await;
-		assert!(result.is_ok(), "{:?}", result.err().unwrap());
+		assert!(result.is_ok(), "{}", result.err().unwrap());
 	}
 
 	#[tokio::test]
