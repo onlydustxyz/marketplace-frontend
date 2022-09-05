@@ -55,6 +55,10 @@ impl ApplicationProjectionRepository for EmptyDatabase {
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		unimplemented!()
 	}
+
+	fn clear(&self) -> Result<(), ApplicationProjectionRepositoryError> {
+		unimplemented!()
+	}
 }
 struct FilledDatabase;
 impl ApplicationProjectionRepository for FilledDatabase {
@@ -102,6 +106,10 @@ impl ApplicationProjectionRepository for FilledDatabase {
 		&self,
 		_contributor_id: Option<ContributorId>,
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
+		unimplemented!()
+	}
+
+	fn clear(&self) -> Result<(), ApplicationProjectionRepositoryError> {
 		unimplemented!()
 	}
 }
