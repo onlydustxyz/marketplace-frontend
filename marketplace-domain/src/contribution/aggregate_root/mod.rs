@@ -36,7 +36,7 @@ pub struct Contribution {
 }
 
 impl Contribution {
-	pub fn apply(self, contributor_id: &ContributorId) -> Result<(Self, Vec<Event>), Error> {
+	pub fn apply(self, contributor_id: &ContributorId) -> Result<Vec<Event>, Error> {
 		if self.status != Status::Open {
 			return Err(Error::CannotApply(self.status));
 		}
@@ -49,7 +49,7 @@ impl Contribution {
 			contributor_id: contributor_id.to_owned(),
 		};
 
-		Ok((Self::apply_event(self, &applied_event), vec![applied_event]))
+		Ok(vec![applied_event])
 	}
 
 	pub fn id(&self) -> &Id {
@@ -134,6 +134,11 @@ mod test {
 	}
 
 	#[fixture]
+	fn contributor_id() -> ContributorId {
+		ContributorId::from_str("0x123").unwrap()
+	}
+
+	#[fixture]
 	fn contribution_created_event(contribution_id: Id) -> Event {
 		Event::Created {
 			id: contribution_id,
@@ -148,6 +153,14 @@ mod test {
 		Event::Assigned {
 			id: Default::default(),
 			contributor_id: Default::default(),
+		}
+	}
+
+	#[fixture]
+	fn contribution_applied_event(contributor_id: ContributorId) -> Event {
+		Event::Applied {
+			id: Default::default(),
+			contributor_id,
 		}
 	}
 
@@ -228,11 +241,16 @@ mod test {
 	}
 
 	#[rstest]
-	fn apply_twice_to_contribution(contribution_created_event: Event) {
-		let contribution = Contribution::from_events(&vec![contribution_created_event]);
-		let contributor_id = ContributorId::from_str("0x123").unwrap();
+	fn apply_twice_to_contribution(
+		contribution_created_event: Event,
+		contribution_applied_event: Event,
+		contributor_id: ContributorId,
+	) {
+		let contribution = Contribution::from_events(&vec![
+			contribution_created_event,
+			contribution_applied_event,
+		]);
 
-		let (contribution, _) = contribution.apply(&contributor_id).unwrap();
 		let second_application = contribution.apply(&contributor_id);
 		assert!(second_application.is_err());
 		assert_matches!(second_application.unwrap_err(), Error::AlreadyApplied(_))
@@ -246,7 +264,7 @@ mod test {
 		let application_result = contribution.apply(&contributor_id);
 		assert!(application_result.is_ok());
 
-		let (_contribution, emitted_events) = application_result.unwrap();
+		let emitted_events = application_result.unwrap();
 		assert_eq!(1, emitted_events.len());
 		assert_matches!(
 			emitted_events.first().unwrap(),

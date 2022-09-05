@@ -61,7 +61,8 @@ impl Usecase for ApplyToContribution {
 		contributor_id: &ContributorId,
 	) -> Result<(), DomainError> {
 		let contribution = self.contribution_repository.find_by_id(contribution_id)?;
-		let (contribution, events) = contribution.apply(contributor_id)?;
+		let contribution_id = contribution_id.to_owned();
+		let events = contribution.apply(contributor_id)?;
 		let storable_events: Vec<StorableEvent<Contribution>> = events
 			.iter()
 			.map(|event| StorableEvent {
@@ -69,7 +70,7 @@ impl Usecase for ApplyToContribution {
 				event: event.to_owned(),
 			})
 			.collect();
-		self.event_store.append(&contribution.id(), storable_events)?;
+		self.event_store.append(&contribution_id, storable_events)?;
 		// TODO: the usecase shouldn't know about the projectors, it should just push the events to
 		// a bus
 		for event in &events {
