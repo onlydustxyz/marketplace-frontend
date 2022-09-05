@@ -125,3 +125,37 @@ jobs:
         run: diesel migration run
       - name: Rust test on db
         run: cargo test --features with_infrastructure_tests
+  component_tests:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      - name: Set up cargo cache
+        uses: actions/cache@v3
+        continue-on-error: false
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+      - name: Run docker compose
+        run: docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
+        env:
+          BASE_TAG: latest
+      - name: Install diesel CLI
+        run: cargo install diesel_cli --no-default-features --features postgres
+      - name: Build
+        run: cargo build
+      - name: Run migrations
+        run: diesel migration run
+      - name: Rust component tests
+        run: cargo test --features with_component_tests
