@@ -97,6 +97,7 @@ async fn main() {
 			routes::unassign_contributor,
 			routes::apply_to_contribution,
 			routes::list_applications,
+			routes::refresh_applications,
 			routes::accept_application,
 			routes::list_contributor_applications,
 			routes::refresh_contributions,
@@ -136,7 +137,7 @@ fn inject_app(
 		.manage(ApplyToContribution::new_usecase_boxed(
 			contribution_repository,
 			database.clone(),
-			application_projector,
+			application_projector.clone(),
 			uuid_generator,
 		))
 		.manage(ValidateContribution::new_usecase_boxed(
@@ -151,6 +152,11 @@ fn inject_app(
 		.manage(RefreshContributions::new(
 			database.clone(),
 			contribution_projector,
+			database.clone(),
+		))
+		.manage(RefreshApplications::new(
+			database.clone(),
+			application_projector,
 			database.clone(),
 		))
 		.manage(database as Arc<dyn ApplicationProjectionRepository>)
