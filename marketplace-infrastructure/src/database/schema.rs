@@ -90,9 +90,7 @@ table! {
     }
 }
 
-joinable!(applications -> contributions (contribution_id));
 joinable!(applications_backup -> contributions_backup (contribution_id));
-joinable!(contributions -> projects (project_id));
 joinable!(contributions_backup -> projects (project_id));
 
 allow_tables_to_appear_in_same_query!(

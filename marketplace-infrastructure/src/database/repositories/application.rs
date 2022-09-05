@@ -158,8 +158,6 @@ impl From<DatabaseError> for ApplicationProjectionRepositoryError {
 			{
 				diesel::result::DatabaseErrorKind::UniqueViolation =>
 					Self::AlreadyExist(Box::new(error)),
-				diesel::result::DatabaseErrorKind::ForeignKeyViolation =>
-					Self::InvalidEntity(Box::new(error)),
 				_ => Self::Infrastructure(Box::new(error)),
 			},
 			DatabaseError::Transaction(diesel::result::Error::NotFound) => Self::NotFound,
