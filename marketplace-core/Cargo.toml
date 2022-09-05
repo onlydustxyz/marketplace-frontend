@@ -88,3 +88,4 @@ marketplace-infrastructure = { path = "../marketplace-infrastructure" }
 [dev-dependencies]
 serde_test = "1.0.140"
 assert_matches = "1.5"
+async-std = {version = "1.12.0", features = ["attributes"]}
