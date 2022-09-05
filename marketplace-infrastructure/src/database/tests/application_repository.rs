@@ -100,25 +100,6 @@ fn cannot_apply_twice() {
 	not(feature = "with_infrastructure_tests"),
 	ignore = "infrastructure test"
 )]
-fn contribution_id_must_exist() {
-	let client = Client::new(init_pool());
-
-	let application = ApplicationProjection::new(Uuid::new_v4().into(), 1.into(), 0.into());
-
-	let res = <Client as ApplicationProjectionRepository>::create(&client, application);
-
-	assert!(res.is_err());
-	assert_matches!(
-		res.unwrap_err(),
-		ApplicationProjectionRepositoryError::InvalidEntity(_)
-	);
-}
-
-#[test]
-#[cfg_attr(
-	not(feature = "with_infrastructure_tests"),
-	ignore = "infrastructure test"
-)]
 fn store_multiple_and_list() {
 	let client = Client::new(init_pool());
 
