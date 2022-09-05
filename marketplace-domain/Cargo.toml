@@ -29,6 +29,7 @@ mapinto = "0.2.1"
 
 # Errors
 thiserror = "1.0.31"
+anyhow = "1.0.57"
 
 # Log
 log = "0.4.17"

@@ -6,20 +6,20 @@ use thiserror::Error;
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error(transparent)]
-	ContributionProjectionRepository(#[from] ContributionProjectionRepositoryError),
+	ProjectionRepository(#[from] ProjectionRepositoryError),
 	#[error(transparent)]
 	EventStore(#[from] EventStoreError),
 }
 
 pub struct Refresh {
-	contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
+	contribution_projection_repository: Arc<dyn ProjectionRepository<Contribution>>,
 	contribution_projector: Arc<dyn Projector<Contribution>>,
 	contribution_event_store: Arc<dyn EventStore<Contribution>>,
 }
 
 impl Refresh {
 	pub fn new(
-		contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
+		contribution_projection_repository: Arc<dyn ProjectionRepository<Contribution>>,
 		contribution_projector: Arc<dyn Projector<Contribution>>,
 		event_store: Arc<dyn EventStore<Contribution>>,
 	) -> Self {
