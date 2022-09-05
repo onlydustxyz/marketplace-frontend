@@ -14,7 +14,7 @@ pub enum Error {
 pub struct Refresh {
 	contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
 	contribution_projector: Arc<dyn Projector<Contribution>>,
-	event_store: Arc<dyn EventStore<Contribution>>,
+	contribution_event_store: Arc<dyn EventStore<Contribution>>,
 }
 
 impl Refresh {
@@ -26,14 +26,14 @@ impl Refresh {
 		Self {
 			contribution_projection_repository,
 			contribution_projector,
-			event_store,
+			contribution_event_store: event_store,
 		}
 	}
 
 	pub async fn refresh_projection_from_events(&self) -> Result<(), Error> {
 		self.contribution_projection_repository.clear()?;
 
-		let events = self.event_store.list()?;
+		let events = self.contribution_event_store.list()?;
 
 		for event in events.iter() {
 			self.contribution_projector.project(event).await;
