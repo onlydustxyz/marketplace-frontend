@@ -46,15 +46,28 @@ impl Refresh {
 #[cfg(test)]
 mod test {
 	use super::*;
+	use async_trait::async_trait;
 	use dotenv::dotenv;
-	use marketplace_infrastructure::{
-		database::{init_pool, Client as DatabaseClient},
-		github::Client as GithubClient,
-	};
+	use marketplace_domain::GithubIssueRepository;
+	use marketplace_infrastructure::database::{init_pool, Client as DatabaseClient};
+	use mockall::mock;
 	use rstest::*;
 	use std::str::FromStr;
 
 	const STARKONQUEST: GithubProjectId = 481932781;
+
+	mock! {
+		pub GithubIssueRepository {}
+
+		#[async_trait]
+		impl GithubIssueRepository for GithubIssueRepository {
+			async fn find(
+				&self,
+				project_id: &GithubProjectId,
+				issue_number: &GithubIssueNumber,
+			) -> Result<Option<GithubIssue>, GithubIssueRepositoryError>;
+		}
+	}
 
 	trait Storable {
 		fn into_storable(self) -> StorableEvent<Contribution>;
@@ -76,10 +89,8 @@ mod test {
 	}
 
 	#[fixture]
-	fn github() -> Arc<GithubClient> {
-		dotenv().ok();
-		GithubClient::initialize();
-		Arc::new(GithubClient::new())
+	fn github_issue_repository() -> MockGithubIssueRepository {
+		MockGithubIssueRepository::new()
 	}
 
 	#[fixture]
@@ -156,16 +167,23 @@ mod test {
 	}
 
 	#[fixture]
-	fn refresh_usecase(filled_database: Arc<DatabaseClient>, github: Arc<GithubClient>) -> Refresh {
+	fn refresh_usecase(
+		filled_database: Arc<DatabaseClient>,
+		mut github_issue_repository: MockGithubIssueRepository,
+	) -> Refresh {
+		github_issue_repository.expect_find().returning(|_, _| Ok(Default::default()));
+
 		Refresh::new(
 			filled_database.clone(),
-			Arc::new(ContributionProjector::new(filled_database.clone(), github)),
+			Arc::new(ContributionProjector::new(
+				filled_database.clone(),
+				Arc::new(github_issue_repository),
+			)),
 			filled_database,
 		)
 	}
 
 	#[rstest]
-	#[tokio::test]
 	async fn refresh_contributions_from_events(
 		refresh_usecase: Refresh,
 		database: Arc<DatabaseClient>,
