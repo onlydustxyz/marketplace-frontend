@@ -55,7 +55,7 @@ mod test {
 
 	#[fixture]
 	fn contributor_id() -> ContributorId {
-		ContributorId::from_str("0x123").unwrap()
+		ContributorId::from_str("0x666").unwrap()
 	}
 
 	#[fixture]
@@ -75,7 +75,7 @@ mod test {
 
 		// events for contribution #1
 		{
-			let contribution_id = ContributionId::from_str("0x01").unwrap();
+			let contribution_id = ContributionId::from_str("0x17267621").unwrap();
 			database
 				.append(
 					&contribution_id,
@@ -107,7 +107,7 @@ mod test {
 
 		// events for contribution #2
 		{
-			let contribution_id = ContributionId::from_str("0x02").unwrap();
+			let contribution_id = ContributionId::from_str("0x17267622").unwrap();
 			database
 				.append(
 					&contribution_id,
