@@ -34,5 +34,4 @@ pub trait Repository: Send + Sync {
 		&self,
 		contributor_id: Option<ContributorId>,
 	) -> Result<Vec<ApplicationProjection>, Error>;
-	fn clear(&self) -> Result<(), Error>;
 }

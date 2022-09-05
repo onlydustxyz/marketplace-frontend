@@ -114,12 +114,19 @@ impl ApplicationProjectionRepository for Client {
 
 		Ok(applications.into_iter().map_into().collect())
 	}
+}
 
-	fn clear(&self) -> Result<(), ApplicationProjectionRepositoryError> {
-		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
+impl ProjectionRepository<ApplicationProjection> for Client {
+	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
+		let connection = self
+			.connection()
+			.map_err(anyhow::Error::msg)
+			.map_err(ProjectionRepositoryError::Infrastructure)?;
+
 		diesel::delete(applications::dsl::applications)
 			.execute(&*connection)
-			.map_err(DatabaseError::from)?;
+			.map_err(anyhow::Error::msg)
+			.map_err(ProjectionRepositoryError::Infrastructure)?;
 
 		Ok(())
 	}
