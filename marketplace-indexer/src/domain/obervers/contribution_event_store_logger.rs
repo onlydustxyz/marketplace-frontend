@@ -33,10 +33,7 @@ impl<ES: EventStore<Contribution>> Observer for ES {
 				deduplication_id: event.deduplication_id.to_owned(),
 			}],
 		) {
-			error!(
-				"Failed to append {event} to the store: {}",
-				error.to_string()
-			);
+			error!("Failed to append {event} to the store: {error}",);
 		}
 	}
 }

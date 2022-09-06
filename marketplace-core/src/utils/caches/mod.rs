@@ -50,8 +50,8 @@ where
 					.insert_with_ttl(key.clone(), value.clone(), self.cost, self.ttl)
 					.await;
 
-				if let Err(error) = self.cache.wait().await {
-					error!("{}", error);
+				if let Err(e) = self.cache.wait().await {
+					error!("Failed to insert value in cache: {e}");
 				}
 
 				value
