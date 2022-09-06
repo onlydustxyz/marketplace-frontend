@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
 use crate::*;
-use mockall::automock;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -23,7 +22,6 @@ impl<A: AggregateRoot> Repository<A> {
 	}
 }
 
-#[automock]
 impl<A: AggregateRoot> Repository<A> {
 	pub fn find_by_id(&self, id: &A::Id) -> Result<A, Error> {
 		let events = self.event_store.list_by_id(&id)?;

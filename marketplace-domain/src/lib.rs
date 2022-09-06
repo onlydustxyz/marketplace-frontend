@@ -42,6 +42,3 @@ mod aggregate_root_repository;
 pub use aggregate_root_repository::{
 	Error as AggregateRootRepositoryError, Repository as AggregateRootRepository,
 };
-
-#[cfg(test)]
-pub use aggregate_root_repository::MockRepository as MockAggregateRootRepository;
