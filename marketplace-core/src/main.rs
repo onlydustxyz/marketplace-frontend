@@ -14,7 +14,7 @@ use marketplace_infrastructure::{
 use marketplace_domain::*;
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
-use slog::{o, Drain, Logger};
+use slog::{o, Drain, FnValue, Logger, Record};
 use std::sync::Arc;
 
 #[macro_use]
@@ -27,9 +27,17 @@ fn get_root_logger() -> Logger {
 				.build()
 				.fuse(),
 		)),
-		_ => slog_async::Async::default(slog_envlogger::new(
-			slog_json::Json::new(std::io::stdout()).add_default_keys().build().fuse(),
-		)),
+		_ => {
+			let logger = slog_json::Json::new(std::io::stdout())
+				.add_default_keys()
+				.add_key_value(o!("location" => FnValue(move |record : &Record| {
+					format!("{}:{}:{}", record.file(), record.line(), record.column())
+				}),
+				))
+				.build()
+				.fuse();
+			slog_async::Async::default(slog_envlogger::new(logger))
+		},
 	};
 	slog_stdlog::init().unwrap();
 	slog::Logger::root(drain.fuse(), o!("version" => env!("CARGO_PKG_VERSION")))
