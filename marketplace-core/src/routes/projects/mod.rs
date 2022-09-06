@@ -3,14 +3,14 @@ use marketplace_domain::*;
 use marketplace_infrastructure::{database, github, starknet};
 
 use futures::future::{self, OptionFuture};
-use http_api_problem::{HttpApiProblem, StatusCode};
+use http_api_problem::HttpApiProblem;
 use log::{error, warn};
 use rocket::{get, http::Status, post, serde::json::Json, State};
 use rocket_okapi::openapi;
-use std::{error::Error, result::Result, sync::Arc};
+use std::{result::Result, sync::Arc};
 use url::Url;
 
-use super::api_key::ApiKey;
+use super::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem};
 
 #[openapi(tag = "Projects")]
 #[post("/projects", format = "application/json", data = "<project>")]
@@ -23,23 +23,9 @@ pub async fn new_project(
 	let project = github
 		.get_project_by_owner_and_name(project.owner, project.name)
 		.await
-		.map_err(|error| {
-			let mut problem = HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-				.title("Fetching projects failed");
-			if let Some(s) = error.source() {
-				problem.detail = Some(s.to_string());
-			}
-			problem
-		})?;
+		.map_err(|e| e.to_http_api_problem())?;
 
-	ProjectRepository::store(database.as_ref(), project).map_err(|error| {
-		let mut problem = HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-			.title("Saving projects to DB failed");
-		if let Some(s) = error.source() {
-			problem.detail = Some(s.to_string());
-		}
-		problem
-	})?;
+	ProjectRepository::store(database.as_ref(), project).map_err(|e| e.to_http_api_problem())?;
 
 	Ok(Status::Accepted)
 }
@@ -53,14 +39,7 @@ pub async fn list_projects(
 ) -> Result<Json<Vec<dto::Project>>, HttpApiProblem> {
 	let projects_with_contribution_iterator = database
 		.find_all_with_contributions()
-		.map_err(|error| {
-			let mut problem = HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-				.title("Listing projects failed");
-			if let Some(s) = error.source() {
-				problem.detail = Some(s.to_string());
-			}
-			problem
-		})?
+		.map_err(|e| e.to_http_api_problem())?
 		.into_iter();
 
 	// Spawn concurent tasks
