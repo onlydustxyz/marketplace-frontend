@@ -75,9 +75,8 @@ impl Contribution {
 impl Aggregate for Contribution {
 	type Event = Event;
 	type Id = Id;
-	type State = Self;
 
-	fn apply_event(state: Self, event: &Self::Event) -> Self {
+	fn apply_event(self, event: &Self::Event) -> Self {
 		match event {
 			Event::Created {
 				id,
@@ -90,14 +89,14 @@ impl Aggregate for Contribution {
 				issue_number: *issue_number,
 				gate: *gate,
 				status: Status::Open,
-				..state
+				..self
 			},
 			Event::Applied {
 				id: _,
 				contributor_id,
 			} => Self {
-				applicants: [&state.applicants[..], &[contributor_id.to_owned()]].concat(),
-				..state
+				applicants: [&self.applicants[..], &[contributor_id.to_owned()]].concat(),
+				..self
 			},
 			Event::Assigned {
 				id: _,
@@ -105,16 +104,16 @@ impl Aggregate for Contribution {
 			} => Self {
 				status: Status::Assigned,
 				contributor_id: Some(contributor_id.to_owned()),
-				..state
+				..self
 			},
 			Event::Unassigned { id: _ } => Self {
 				status: Status::Open,
 				contributor_id: None,
-				..state
+				..self
 			},
 			Event::Validated { id: _ } => Self {
 				status: Status::Completed,
-				..state
+				..self
 			},
 		}
 	}
