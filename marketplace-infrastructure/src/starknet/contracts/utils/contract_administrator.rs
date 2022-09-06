@@ -1,6 +1,6 @@
 use super::ContractError;
 use crate::starknet::sequencer;
-use log::info;
+use log::{error, info};
 use rand::prelude::random;
 use starknet::{
 	accounts::{single_owner::GetNonceError, Account, AccountCall, Call},
@@ -32,17 +32,20 @@ impl<A: Account + Sync> ContractAdministrator<A> {
 		info!("Sending transaction with {} calls", calls.len());
 
 		let nonce_key: u64 = random();
-		let nonce = self
-			.get_2d_nonce(nonce_key.into())
-			.await
-			.map_err(|error| ContractError::GetNonce(error.to_string()))?;
+		let nonce = self.get_2d_nonce(nonce_key.into()).await.map_err(|e| {
+			error!("Failed to get 2d nonce for key {nonce_key}: {e}");
+			ContractError::GetNonce(e.to_string())
+		})?;
 
 		self.administrator_account
 			.execute(calls)
 			.nonce(nonce)
 			.send()
 			.await
-			.map_err(|e| ContractError::SendTransaction(e.to_string()))
+			.map_err(|e| {
+				error!("Failed to send transaction with nonce {nonce} to starknet: {e}");
+				ContractError::SendTransaction(e.to_string())
+			})
 	}
 
 	async fn get_2d_nonce(
