@@ -2,6 +2,7 @@ use std::str::FromStr;
 
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use itertools::Itertools;
+use log::error;
 use mapinto::ResultMapErrInto;
 
 use crate::database::{
@@ -22,7 +23,10 @@ impl ApplicationProjectionRepository for Client {
 		diesel::insert_into(applications::table)
 			.values(&application)
 			.execute(&*connection)
-			.map_err(DatabaseError::from)?;
+			.map_err(|e| {
+				error!("Failed to insert a new application {application:?}: {e}");
+				DatabaseError::from(e)
+			})?;
 
 		Ok(())
 	}
@@ -34,9 +38,15 @@ impl ApplicationProjectionRepository for Client {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 		let application = models::Application::from(application);
 		diesel::update(applications::table.filter(applications::id.eq(application.id)))
-			.set(application)
+			.set(&application)
 			.execute(&*connection)
-			.map_err(DatabaseError::from)?;
+			.map_err(|e| {
+				error!(
+					"Failed to update application with id {} to {application:?}: {e}",
+					application.id
+				);
+				DatabaseError::from(e)
+			})?;
 		Ok(())
 	}
 
@@ -53,7 +63,12 @@ impl ApplicationProjectionRepository for Client {
 		if let Err(diesel::result::Error::NotFound) = res {
 			Ok(None)
 		} else {
-			res.map(|a| Some(a.into())).map_err(DatabaseError::from).map_err_into()
+			res.map(|a| Some(a.into()))
+				.map_err(|e| {
+					error!("Failed while finding application with id {id}: {e}");
+					DatabaseError::from(e)
+				})
+				.map_err_into()
 		}
 	}
 
@@ -72,7 +87,12 @@ impl ApplicationProjectionRepository for Client {
 		if let Err(diesel::result::Error::NotFound) = res {
 			Ok(None)
 		} else {
-			res.map(|a| Some(a.into())).map_err(DatabaseError::from).map_err_into()
+			res.map(|a| Some(a.into()))
+				.map_err(|e| {
+					error!("Failed while finding application of contributor with id {contributor_id} to contribution with id {contribution_id}: {e}");
+					DatabaseError::from(e)
+				})
+				.map_err_into()
 		}
 	}
 
@@ -87,12 +107,20 @@ impl ApplicationProjectionRepository for Client {
 			.filter(applications::contribution_id.eq(contribution_id.to_string()))
 			.into_boxed();
 
-		if let Some(contributor_id) = contributor_id {
+		if let Some(contributor_id) = &contributor_id {
 			query = query.filter(applications::contributor_id.eq(contributor_id.to_string()))
 		}
 
-		let applications =
-			query.load::<models::Application>(&*connection).map_err(DatabaseError::from)?;
+		let applications = query.load::<models::Application>(&*connection).map_err(|e| {
+			error!(
+				"Failed while listing applications to contribution with id {contribution_id}{}: {e}",
+				match contributor_id {
+					Some(id) => format!(" by contributor with id {id}"),
+					None => "".to_string(),
+				}
+			);
+			DatabaseError::from(e)
+		})?;
 
 		Ok(applications.into_iter().map_into().collect())
 	}
@@ -105,12 +133,20 @@ impl ApplicationProjectionRepository for Client {
 
 		let mut query = applications::dsl::applications.into_boxed();
 
-		if let Some(contributor_id) = contributor_id {
+		if let Some(contributor_id) = &contributor_id {
 			query = query.filter(applications::contributor_id.eq(contributor_id.to_string()))
 		}
 
-		let applications =
-			query.load::<models::Application>(&*connection).map_err(DatabaseError::from)?;
+		let applications = query.load::<models::Application>(&*connection).map_err(|e| {
+			error!(
+				"Failed while listing applications{}: {e}",
+				match contributor_id {
+					Some(id) => format!(" of contributor with id {id}"),
+					None => "".to_string(),
+				}
+			);
+			DatabaseError::from(e)
+		})?;
 
 		Ok(applications.into_iter().map_into().collect())
 	}

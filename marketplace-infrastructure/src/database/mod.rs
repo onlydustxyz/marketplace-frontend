@@ -9,6 +9,7 @@ mod error;
 pub use error::Error as DatabaseError;
 
 use diesel::PgConnection;
+use log::error;
 use r2d2;
 use r2d2_diesel::ConnectionManager;
 
@@ -32,13 +33,18 @@ impl Client {
 
 impl Client {
 	fn connection(&self) -> Result<PooledConnection, DatabaseError> {
-		self.pool.get().map_err(|e| DatabaseError::Connection(e.to_string()))
+		self.pool.get().map_err(|e| {
+			error!("Failed to connect to get connection out of pool: {e}");
+			DatabaseError::Connection(e.to_string())
+		})
 	}
 
 	pub fn run_migrations(&self) -> Result<(), DatabaseError> {
 		let connection = self.connection()?;
-		diesel_migrations::run_pending_migrations(&*connection)
-			.map_err(|e| DatabaseError::Migration(e.to_string()))?;
+		diesel_migrations::run_pending_migrations(&*connection).map_err(|e| {
+			error!("Failed to run migrations: {e}");
+			DatabaseError::Migration(e.to_string())
+		})?;
 		Ok(())
 	}
 }
