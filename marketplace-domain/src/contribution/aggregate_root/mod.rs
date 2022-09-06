@@ -94,9 +94,10 @@ impl Aggregate for Contribution {
 			Event::Applied {
 				id: _,
 				contributor_id,
-			} => Self {
-				applicants: [&self.applicants[..], &[contributor_id.to_owned()]].concat(),
-				..self
+			} => {
+				let mut applicants = self.applicants;
+				applicants.push(contributor_id.to_owned());
+				Self { applicants, ..self }
 			},
 			Event::Assigned {
 				id: _,
