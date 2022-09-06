@@ -40,6 +40,7 @@ mod tests {
 	use std::str::FromStr;
 
 	use super::*;
+	use anyhow::anyhow;
 	use mockall::predicate::eq;
 	use rstest::{fixture, rstest};
 
@@ -68,14 +69,14 @@ mod tests {
 		event_store
 			.expect_list_by_id()
 			.with(eq(contribution_id.clone()))
-			.returning(|_| Err(EventStoreError::List));
+			.returning(|_| Err(EventStoreError::List(anyhow!("oops"))));
 
 		let repository = Repository::new(Arc::new(event_store));
 		let result = repository.find_by_id(&contribution_id);
 		assert!(result.is_err());
 		assert_matches!(
 			result.unwrap_err(),
-			Error::EventStoreError(EventStoreError::List)
+			Error::EventStoreError(EventStoreError::List(_))
 		);
 	}
 
