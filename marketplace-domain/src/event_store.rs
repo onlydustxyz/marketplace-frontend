@@ -5,13 +5,13 @@ use thiserror::Error;
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error("Unable to connect to the event store")]
-	Connection,
+	Connection(#[source] anyhow::Error),
 	#[error("Invalid event")]
-	InvalidEvent,
+	InvalidEvent(#[source] anyhow::Error),
 	#[error("Unable to append event to the store")]
-	Append,
+	Append(#[source] anyhow::Error),
 	#[error("Unable to list events from the store")]
-	List,
+	List(#[source] anyhow::Error),
 }
 
 #[automock]

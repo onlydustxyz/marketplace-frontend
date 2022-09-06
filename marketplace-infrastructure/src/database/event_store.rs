@@ -17,7 +17,7 @@ impl EventStore<Contribution> for Client {
 		aggregate_id: &<Contribution as Aggregate>::Id,
 		storable_events: Vec<StorableEvent<Contribution>>,
 	) -> Result<(), EventStoreError> {
-		let connection = self.connection().map_err(|_| EventStoreError::Connection)?;
+		let connection = self.connection().map_err(|e| EventStoreError::Connection(e.into()))?;
 
 		let events = storable_events
 			.iter()
@@ -26,7 +26,7 @@ impl EventStore<Contribution> for Client {
 					aggregate_name: CONTRIBUTION_AGGREGATE.to_string(),
 					aggregate_id: aggregate_id.to_string(),
 					payload: serde_json::to_value(&event.event)
-						.map_err(|_| EventStoreError::InvalidEvent)?,
+						.map_err(|e| EventStoreError::InvalidEvent(e.into()))?,
 				})
 			})
 			.collect::<Result<Vec<_>, EventStoreError>>()?;
@@ -53,7 +53,7 @@ impl EventStore<Contribution> for Client {
 					.values(&deduplications)
 					.execute(&*connection)
 			})
-			.map_err(|_| EventStoreError::Append)?;
+			.map_err(|e| EventStoreError::Append(e.into()))?;
 
 		Ok(())
 	}
@@ -62,7 +62,7 @@ impl EventStore<Contribution> for Client {
 		&self,
 		aggregate_id: &<Contribution as Aggregate>::Id,
 	) -> Result<Vec<<Contribution as Aggregate>::Event>, EventStoreError> {
-		let connection = self.connection().map_err(|_| EventStoreError::Connection)?;
+		let connection = self.connection().map_err(|e| EventStoreError::Connection(e.into()))?;
 
 		let events = events::dsl::events
 			.select(events::payload)
@@ -70,20 +70,20 @@ impl EventStore<Contribution> for Client {
 			.filter(events::aggregate_name.eq_all(CONTRIBUTION_AGGREGATE))
 			.order_by(events::index)
 			.load::<Value>(&*connection)
-			.map_err(|_| EventStoreError::List)?;
+			.map_err(|e| EventStoreError::List(e.into()))?;
 
 		deserialize_events(events)
 	}
 
 	fn list(&self) -> Result<Vec<<Contribution as Aggregate>::Event>, EventStoreError> {
-		let connection = self.connection().map_err(|_| EventStoreError::Connection)?;
+		let connection = self.connection().map_err(|e| EventStoreError::Connection(e.into()))?;
 
 		let events = events::dsl::events
 			.select(events::payload)
 			.filter(events::aggregate_name.eq_all(CONTRIBUTION_AGGREGATE))
 			.order_by(events::index)
 			.load::<Value>(&*connection)
-			.map_err(|_| EventStoreError::List)?;
+			.map_err(|e| EventStoreError::List(e.into()))?;
 
 		deserialize_events(events)
 	}
@@ -98,7 +98,7 @@ fn deserialize_events(
 			serde_json::from_value::<<Contribution as Aggregate>::Event>(event_value.to_owned())
 		})
 		.collect::<Result<Vec<_>, _>>()
-		.map_err(|_| EventStoreError::List)
+		.map_err(|e| EventStoreError::List(e.into()))
 }
 
 #[cfg(test)]
