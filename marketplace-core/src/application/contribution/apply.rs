@@ -61,7 +61,7 @@ impl Usecase for ApplyToContribution {
 		contributor_id: &ContributorId,
 	) -> Result<(), DomainError> {
 		let contribution = self.contribution_repository.find_by_id(contribution_id)?;
-		let contribution_id = contribution_id.to_owned();
+		let contribution_id = contribution_id.clone();
 		let events = contribution.apply(contributor_id)?;
 		let storable_events: Vec<StorableEvent<Contribution>> = events
 			.iter()
