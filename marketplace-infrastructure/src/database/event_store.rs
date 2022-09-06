@@ -7,24 +7,19 @@ use diesel::prelude::*;
 use marketplace_domain::*;
 use serde_json::Value;
 
+use super::schema::events::index;
+
 const CONTRIBUTION_AGGREGATE: &str = "CONTRIBUTION";
 
 impl EventStore<Contribution> for Client {
 	fn append(
 		&self,
 		aggregate_id: &<Contribution as Aggregate>::Id,
-		events: Vec<StorableEvent<Contribution>>,
+		storable_events: Vec<StorableEvent<Contribution>>,
 	) -> Result<(), EventStoreError> {
 		let connection = self.connection().map_err(|_| EventStoreError::Connection)?;
 
-		let deduplications = events
-			.iter()
-			.map(|event| models::EventDeduplication {
-				deduplication_id: event.deduplication_id.to_owned(),
-			})
-			.collect::<Vec<_>>();
-
-		let events = events
+		let events = storable_events
 			.iter()
 			.map(|event| {
 				Ok(models::Event {
@@ -38,10 +33,25 @@ impl EventStore<Contribution> for Client {
 
 		connection
 			.transaction(|| {
+				let inserted_events: Vec<i32> = diesel::insert_into(events::table)
+					.values(&events)
+					.returning(index)
+					.get_results(&*connection)?;
+
+				assert_eq!(inserted_events.len(), storable_events.len());
+
+				let deduplications = storable_events
+					.iter()
+					.zip(inserted_events)
+					.map(|event| models::EventDeduplication {
+						deduplication_id: event.0.deduplication_id.to_owned(),
+						event_index: event.1,
+					})
+					.collect::<Vec<_>>();
+
 				diesel::insert_into(event_deduplications::table)
 					.values(&deduplications)
-					.execute(&*connection)?;
-				diesel::insert_into(events::table).values(&events).execute(&*connection)
+					.execute(&*connection)
 			})
 			.map_err(|_| EventStoreError::Append)?;
 
