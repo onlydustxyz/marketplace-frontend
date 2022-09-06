@@ -1,4 +1,5 @@
 use super::ContractError;
+use log::error;
 use starknet::{
 	core::{types::FieldElement, utils::get_selector_from_name},
 	providers::jsonrpc::{
@@ -31,12 +32,18 @@ impl ContractViewer {
 				&FunctionCall {
 					contract_address: self.contract_address,
 					entry_point_selector: get_selector_from_name(function_name).unwrap(),
-					calldata,
+					calldata: calldata.clone(),
 				},
 				&BlockHashOrTag::Tag(BlockTag::Latest),
 			)
 			.await
-			.map_err(|e| ContractError::Call(e.to_string()))
+			.map_err(|e| {
+				error!(
+					"Failed to call view function '{function_name}' of contract with address '{:#x}' with data {calldata:?}: {e}",
+					self.contract_address
+				);
+				ContractError::Call(e.to_string())
+			})
 	}
 }
 
