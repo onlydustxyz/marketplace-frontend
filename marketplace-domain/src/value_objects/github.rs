@@ -16,7 +16,7 @@ pub struct Issue {
 	pub r#type: Option<String>,
 }
 
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone, Default)]
 pub struct Repository {
 	pub project_id: ProjectId,
 	pub owner: String,
