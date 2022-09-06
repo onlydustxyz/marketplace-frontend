@@ -4,11 +4,11 @@ pub trait Aggregate: Send + Sync + Default + Sized {
 
 	fn apply_event(self, event: &Self::Event) -> Self;
 
-	fn apply_events(self, events: &Vec<Self::Event>) -> Self {
+	fn apply_events(self, events: &[Self::Event]) -> Self {
 		events.iter().fold(self, Self::apply_event)
 	}
 
-	fn from_events(events: &Vec<Self::Event>) -> Self {
+	fn from_events(events: &[Self::Event]) -> Self {
 		Self::apply_events(Default::default(), events)
 	}
 }
