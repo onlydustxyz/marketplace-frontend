@@ -10,11 +10,11 @@ impl<A: Account + Send + Sync + 'static> OnchainContributionService for Client<A
 	) -> Result<HexPrefixedString, OnchainContributionServiceError> {
 		let transaction_hash = self
 			.contributions
-			.execute_actions(&[Action::CreateContribution {
+			.execute_action(Action::CreateContribution {
 				project_id: contribution.project_id,
 				issue_number: contribution.issue_number,
 				gate: contribution.gate,
-			}])
+			})
 			.await
 			.map_err(StarknetError::from)?;
 
@@ -28,10 +28,10 @@ impl<A: Account + Send + Sync + 'static> OnchainContributionService for Client<A
 	) -> Result<HexPrefixedString, OnchainContributionServiceError> {
 		let transaction_hash = self
 			.contributions
-			.execute_actions(&[Action::AssignContributor {
+			.execute_action(Action::AssignContributor {
 				contribution_id,
 				contributor_id,
-			}])
+			})
 			.await
 			.map_err(StarknetError::from)?;
 
@@ -44,7 +44,7 @@ impl<A: Account + Send + Sync + 'static> OnchainContributionService for Client<A
 	) -> Result<HexPrefixedString, OnchainContributionServiceError> {
 		let transaction_hash = self
 			.contributions
-			.execute_actions(&[Action::UnassignContributor { contribution_id }])
+			.execute_action(Action::UnassignContributor { contribution_id })
 			.await
 			.map_err(StarknetError::from)?;
 
@@ -57,7 +57,7 @@ impl<A: Account + Send + Sync + 'static> OnchainContributionService for Client<A
 	) -> Result<HexPrefixedString, OnchainContributionServiceError> {
 		let transaction_hash = self
 			.contributions
-			.execute_actions(&[Action::ValidateContribution { contribution_id }])
+			.execute_action(Action::ValidateContribution { contribution_id })
 			.await
 			.map_err(StarknetError::from)?;
 
