@@ -16,6 +16,13 @@ pub struct Issue {
 	pub r#type: Option<String>,
 }
 
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub struct Repository {
+	pub project_id: ProjectId,
+	pub owner: String,
+	pub name: String,
+}
+
 #[cfg(test)]
 impl Default for Issue {
 	fn default() -> Self {
