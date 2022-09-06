@@ -4,7 +4,7 @@ use marketplace_infrastructure::{database, github, starknet};
 
 use futures::future::{self, OptionFuture};
 use http_api_problem::HttpApiProblem;
-use log::{error, warn};
+use log::error;
 use rocket::{get, http::Status, post, serde::json::Json, State};
 use rocket_okapi::openapi;
 use std::{result::Result, sync::Arc};
@@ -169,10 +169,7 @@ async fn fetch_contributor(contributor_id: &ContributorId) -> Option<Contributor
 	if let Some(github_handle) = &contributor.github_handle {
 		let github_user = match github::Client::new().user(github_handle).await {
 			Ok(user) => Some(user),
-			Err(e) => {
-				warn!("Unable to fetch user from GitHub: {}", e.to_string());
-				None
-			},
+			Err(_) => None,
 		};
 
 		contributor.github_username = github_user.map(|u| u.login);
