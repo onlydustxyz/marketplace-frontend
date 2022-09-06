@@ -14,4 +14,5 @@ pub struct Event {
 #[serde(crate = "rocket::serde")]
 pub struct EventDeduplication {
 	pub deduplication_id: String,
+	pub event_index: i32,
 }

@@ -68,6 +68,7 @@ table! {
 table! {
     event_deduplications (deduplication_id) {
         deduplication_id -> Text,
+        event_index -> Int4,
     }
 }
 
