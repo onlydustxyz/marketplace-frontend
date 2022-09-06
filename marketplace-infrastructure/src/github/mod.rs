@@ -4,7 +4,7 @@ mod models;
 
 pub use errors::Error as GithubError;
 
-use mapinto::ResultMapErrInto;
+use log::error;
 use std::{collections::HashMap, sync::Arc};
 
 use marketplace_domain::{self as domain, *};
@@ -47,13 +47,16 @@ impl Client {
 		}
 	}
 
-	async fn get<R: octocrab::FromResponse>(&self, url: String) -> Result<R, Error> {
-		self.octo.get::<R, String, ()>(url, None).await.map_err_into()
+	async fn get<R: octocrab::FromResponse>(&self, url: &str) -> Result<R, Error> {
+		self.octo.get::<R, &str, ()>(url, None).await.map_err(|e| {
+			error!("Failed to get data from github api at {url}: {e}");
+			e.into()
+		})
 	}
 
 	pub async fn issue(&self, project_id: u64, issue_number: i64) -> Result<OctocrabIssue, Error> {
 		let issue = self
-			.get(format!(
+			.get(&format!(
 				"{}repositories/{}/issues/{}",
 				self.octo.base_url, project_id, issue_number
 			))
@@ -63,7 +66,7 @@ impl Client {
 	}
 
 	pub async fn user(&self, user_id: &str) -> Result<octocrab::models::User, Error> {
-		self.get::<octocrab::models::User>(format!("{}user/{}", self.octo.base_url, user_id))
+		self.get::<octocrab::models::User>(&format!("{}user/{}", self.octo.base_url, user_id))
 			.await
 	}
 
@@ -71,7 +74,7 @@ impl Client {
 		&self,
 		project_id_: u64,
 	) -> Result<octocrab::models::Repository, Error> {
-		self.get::<octocrab::models::Repository>(format!(
+		self.get::<octocrab::models::Repository>(&format!(
 			"{}repositories/{}",
 			self.octo.base_url, project_id_
 		))
@@ -84,7 +87,7 @@ impl Client {
 		name: &str,
 	) -> Result<Project, Error> {
 		let repo = self
-			.get::<models::RepositoryWithExtension>(format!(
+			.get::<models::RepositoryWithExtension>(&format!(
 				"{}repos/{}/{}",
 				self.octo.base_url, owner, name
 			))
