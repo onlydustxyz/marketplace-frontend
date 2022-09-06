@@ -1,7 +1,6 @@
 use super::{ContractAdministrator, ContractError};
 use crate::starknet::model::OnChainContributorId;
-use itertools::Itertools;
-use log::{error, info};
+use log::info;
 use marketplace_domain::*;
 use starknet::{
 	accounts::{Account, Call},
@@ -27,29 +26,15 @@ impl<A: Account + Sync> Contract<A> {
 		}
 	}
 
-	pub async fn execute_actions(
-		&self,
-		actions: &[Action],
-	) -> Result<HexPrefixedString, ContractError> {
-		let calls = actions
-			.iter()
-			.map(|action| {
-				info!("{action}");
-				action.into_call()
-			})
-			.collect_vec();
+	pub async fn execute_action(&self, action: Action) -> Result<HexPrefixedString, ContractError> {
+		info!("Execute action on chain: {action}");
+
 		let transaction_result = self
 			.administrator
-			.send_transaction(&calls)
+			.send_transaction(&[action.into_call()])
 			.await
-			.map_err(|e| ContractError::TransactionReverted(e.to_string()));
+			.map_err(|e| ContractError::TransactionReverted(e.to_string()))?;
 
-		if let Err(error) = transaction_result {
-			error!("Error: {}", error);
-			return Err(error);
-		}
-
-		let transaction_result = transaction_result.unwrap();
 		// Safe to unwrap because transaction hash is an hexa string and we add the prefix ourselves
 		let transaction_result =
 			HexPrefixedString::from_str(&format!("0x{:x}", transaction_result.transaction_hash))
