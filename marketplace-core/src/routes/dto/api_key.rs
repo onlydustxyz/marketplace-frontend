@@ -1,4 +1,4 @@
-use okapi::openapi3::{Object, Parameter};
+use okapi::openapi3::{Object, SecurityRequirement, SecurityScheme, SecuritySchemeData};
 use rocket::{
 	http::Status,
 	outcome::Outcome,
@@ -47,23 +47,28 @@ impl<'r> OpenApiFromRequest<'r> for ApiKey {
 		_name: String,
 		_required: bool,
 	) -> rocket_okapi::Result<RequestHeaderInput> {
-		Ok(RequestHeaderInput::Parameter(Parameter {
-			name: "Api-Key".to_string(),
-			location: "header".to_string(),
-			description: None,
-			required: true,
-			deprecated: false,
-			allow_empty_value: false,
-			value: okapi::openapi3::ParameterValue::Schema {
-				style: None,
-				explode: None,
-				allow_reserved: true,
-				schema: okapi::openapi3::SchemaObject::default(),
-				example: None,
-				examples: None,
+		// Setup global requirement for Security scheme
+		let security_scheme = SecurityScheme {
+			description: Some("Requires an API key to access.".to_owned()),
+			// Setup data requirements.
+			// In this case the header `Authorization: Api-Key` needs to be set.
+			data: SecuritySchemeData::ApiKey {
+				name: "Api-Key".to_owned(),
+				location: "header".to_owned(),
 			},
 			extensions: Object::default(),
-		}))
+		};
+		// Add the requirement for this route/endpoint
+		// This can change between routes.
+		let mut security_req = SecurityRequirement::new();
+		// Each security requirement needs to be met before access is allowed.
+		security_req.insert("ApiKeyAuth".to_owned(), Vec::new());
+		// These vvvvvvv-----^^^^^^^^ values need to match exactly!
+		Ok(RequestHeaderInput::Security(
+			"ApiKeyAuth".to_owned(),
+			security_scheme,
+			security_req,
+		))
 	}
 
 	fn get_responses(
