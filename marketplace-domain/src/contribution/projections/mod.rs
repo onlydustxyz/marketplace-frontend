@@ -7,3 +7,5 @@ mod application;
 pub use application::{
 	Id as ApplicationId, Projection as ApplicationProjection, Status as ApplicationStatus,
 };
+
+mod project;
