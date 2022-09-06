@@ -41,12 +41,12 @@ impl Contribution {
 			return Err(Error::CannotApply(self.status));
 		}
 		if self.applicants.contains(&contributor_id) {
-			return Err(Error::AlreadyApplied(contributor_id.to_owned()));
+			return Err(Error::AlreadyApplied(contributor_id.clone()));
 		}
 
 		let applied_event = Event::Applied {
-			id: self.id.to_owned(),
-			contributor_id: contributor_id.to_owned(),
+			id: self.id.clone(),
+			contributor_id: contributor_id.clone(),
 		};
 
 		Ok(vec![applied_event])
@@ -84,7 +84,7 @@ impl Aggregate for Contribution {
 				issue_number,
 				gate,
 			} => Self {
-				id: id.to_owned(),
+				id: id.clone(),
 				project_id: *project_id,
 				issue_number: *issue_number,
 				gate: *gate,
@@ -96,7 +96,7 @@ impl Aggregate for Contribution {
 				contributor_id,
 			} => {
 				let mut applicants = self.applicants;
-				applicants.push(contributor_id.to_owned());
+				applicants.push(contributor_id.clone());
 				Self { applicants, ..self }
 			},
 			Event::Assigned {
@@ -104,7 +104,7 @@ impl Aggregate for Contribution {
 				contributor_id,
 			} => Self {
 				status: Status::Assigned,
-				contributor_id: Some(contributor_id.to_owned()),
+				contributor_id: Some(contributor_id.clone()),
 				..self
 			},
 			Event::Unassigned { id: _ } => Self {
