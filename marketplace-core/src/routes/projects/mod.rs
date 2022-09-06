@@ -81,7 +81,7 @@ pub async fn list_projects(
 		.filter_map(|result| match result {
 			Ok(opt_project) => opt_project,
 			Err(e) => {
-				error!("failed to build project dto: {}", e.to_string());
+				error!("Failed to join 'build project dto' task: {e}");
 				None
 			},
 		})
@@ -101,7 +101,7 @@ async fn build_project(
 			match github::Client::new().repository_by_id(project.project.id).await {
 				Ok(repo) => Some(repo),
 				Err(e) => {
-					warn!("Unable to fetch repository from GitHub: {}", e.to_string());
+					error!("Failed to fetch repository from GitHub: {e}");
 					None
 				},
 			}
@@ -125,7 +125,7 @@ async fn build_project(
 		.filter_map(|result| match result {
 			Ok(opt_project) => opt_project,
 			Err(e) => {
-				error!("failed to build contribution dto: {}", e.to_string());
+				error!("failed to join 'build contribution DTO' task: {e}");
 				None
 			},
 		})

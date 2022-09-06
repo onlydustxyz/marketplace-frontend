@@ -98,7 +98,7 @@ impl Projector<Contribution> for ApplicationProjector {
 		};
 
 		if let Err(error) = result {
-			error!("Unable to project event {event}: {}", error.to_string());
+			error!("Failed to project event {event}: {}", error.to_string());
 		}
 	}
 }

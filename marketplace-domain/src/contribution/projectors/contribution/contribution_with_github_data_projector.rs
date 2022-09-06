@@ -40,14 +40,15 @@ impl WithGithubDataProjector {
 			Ok(Some(issue)) => Some(issue),
 
 			Ok(None) => {
-				error!("GitHub issue not found: {project_id}/{issue_number}");
+				error!(
+					"Failed to create contribution: GitHub issue {issue_number} not found for project {project_id}"
+				);
 				None
 			},
 
 			Err(e) => {
 				error!(
-					"Error while fetching GitHub issue {project_id}/{issue_number}: {}",
-					e.to_string()
+					"Failed to create contribution: error while fetching GitHub issue {issue_number} of project {project_id}: {e}",
 				);
 				None
 			},
@@ -116,7 +117,7 @@ impl Projector<Contribution> for WithGithubDataProjector {
 		};
 
 		if let Err(error) = result {
-			error!("Unable to project event {event}: {}", error.to_string());
+			error!("Failed to project event {event}: {}", error.to_string());
 		}
 	}
 }
