@@ -1,5 +1,6 @@
 mod errors;
 mod github_issue_repository;
+mod github_repo_repository;
 mod models;
 
 pub use errors::Error as GithubError;
