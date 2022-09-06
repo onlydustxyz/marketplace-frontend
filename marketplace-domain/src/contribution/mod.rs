@@ -10,5 +10,5 @@ pub use projectors::{ApplicationProjector, ContributionProjector};
 mod projections;
 pub use projections::{
 	ApplicationId, ApplicationProjection, ApplicationStatus, ContributionProjection,
-	ContributionProjectionMetadata,
+	ContributionProjectionMetadata, ProjectProjection,
 };
