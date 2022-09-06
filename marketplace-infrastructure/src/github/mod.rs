@@ -1,13 +1,15 @@
+mod errors;
 mod github_issue_repository;
 mod models;
 
-use anyhow::Result;
-use log::error;
+pub use errors::Error as GithubError;
+
 use mapinto::ResultMapErrInto;
 use std::{collections::HashMap, sync::Arc};
-use thiserror::Error;
 
 use marketplace_domain::{self as domain, *};
+
+use errors::Error;
 
 impl From<models::RepositoryWithExtension> for Project {
 	fn from(repo: models::RepositoryWithExtension) -> Self {
@@ -26,14 +28,6 @@ pub struct Client {
 pub struct OctocrabIssue {
 	pub issue: octocrab::models::issues::Issue,
 	pub project_id: GithubProjectId,
-}
-
-#[derive(Error, Debug)]
-pub enum Error {
-	#[error(transparent)]
-	Octocrab(#[from] octocrab::Error),
-	#[error("Timeout sending request to GitHub API")]
-	Timeout,
 }
 
 impl Client {
@@ -57,34 +51,38 @@ impl Client {
 		self.octo.get::<R, String, ()>(url, None).await.map_err_into()
 	}
 
-	pub async fn issue(&self, project_id: u64, issue_number: i64) -> Result<OctocrabIssue> {
+	pub async fn issue(&self, project_id: u64, issue_number: i64) -> Result<OctocrabIssue, Error> {
 		let issue = self
 			.get(format!(
 				"{}repositories/{}/issues/{}",
 				self.octo.base_url, project_id, issue_number
 			))
-			.await
-			.map_err(anyhow::Error::msg)?;
+			.await?;
 
 		Ok(OctocrabIssue { issue, project_id })
 	}
 
-	pub async fn user(&self, user_id: &str) -> Result<octocrab::models::User> {
+	pub async fn user(&self, user_id: &str) -> Result<octocrab::models::User, Error> {
 		self.get::<octocrab::models::User>(format!("{}user/{}", self.octo.base_url, user_id))
 			.await
-			.map_err(anyhow::Error::msg)
 	}
 
-	pub async fn repository_by_id(&self, project_id_: u64) -> Result<octocrab::models::Repository> {
+	pub async fn repository_by_id(
+		&self,
+		project_id_: u64,
+	) -> Result<octocrab::models::Repository, Error> {
 		self.get::<octocrab::models::Repository>(format!(
 			"{}repositories/{}",
 			self.octo.base_url, project_id_
 		))
 		.await
-		.map_err(anyhow::Error::msg)
 	}
 
-	pub async fn get_project_by_owner_and_name(&self, owner: &str, name: &str) -> Result<Project> {
+	pub async fn get_project_by_owner_and_name(
+		&self,
+		owner: &str,
+		name: &str,
+	) -> Result<Project, Error> {
 		let repo = self
 			.get::<models::RepositoryWithExtension>(format!(
 				"{}repos/{}/{}",

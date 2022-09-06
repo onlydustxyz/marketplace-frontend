@@ -1,5 +1,5 @@
-use crate::routes::api_key::ApiKey;
-use http_api_problem::{HttpApiProblem, StatusCode};
+use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem};
+use http_api_problem::HttpApiProblem;
 use marketplace_core::{application::CreateContributionUsecase, dto::ContributionCreation};
 use marketplace_domain::*;
 use rocket::{http::Status, serde::json::Json, State};
@@ -22,11 +22,10 @@ pub async fn create_contribution(
 		..Default::default()
 	};
 
-	usecase.send_creation_request(contribution).await.map_err(|error| {
-		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-			.title("Unable to send contribution creation request")
-			.detail(error.to_string())
-	})?;
+	usecase
+		.send_creation_request(contribution)
+		.await
+		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(Status::Accepted)
 }
