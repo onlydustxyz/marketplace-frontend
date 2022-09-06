@@ -1,15 +1,14 @@
-pub trait Aggregate: Send + Sync {
+pub trait Aggregate: Send + Sync + Default + Sized {
 	type Id: PartialEq;
 	type Event;
-	type State: Default;
 
-	fn apply_event(state: Self::State, event: &Self::Event) -> Self::State;
+	fn apply_event(self, event: &Self::Event) -> Self;
 
-	fn apply_events(state: Self::State, events: &Vec<Self::Event>) -> Self::State {
-		events.iter().fold(state, Self::apply_event)
+	fn apply_events(self, events: &Vec<Self::Event>) -> Self {
+		events.iter().fold(self, Self::apply_event)
 	}
 
-	fn from_events(events: &Vec<Self::Event>) -> Self::State {
+	fn from_events(events: &Vec<Self::Event>) -> Self {
 		Self::apply_events(Default::default(), events)
 	}
 }
