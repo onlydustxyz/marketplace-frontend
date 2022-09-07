@@ -85,13 +85,15 @@ fn build_contribution_observers(
 	let contribution_projector = ContributionProjector::new(database.clone(), github.clone());
 	let application_projector = ApplicationProjector::new(database.clone(), uuid_generator);
 	let project_projector = ProjectProjector::new(github, database.clone());
+	let project_member_projector = ProjectMemberProjector::new(database.clone());
 
 	let observer = BlockchainObserverComposite::new(vec![
 		Arc::new(BlockchainLogger::default()),
-		database,
+		Arc::new(EventStoreObserver::new(database.clone(), database)),
 		Arc::new(ContributionObserver::new(Arc::new(contribution_projector))),
 		Arc::new(ContributionObserver::new(Arc::new(application_projector))),
 		Arc::new(ContributionObserver::new(Arc::new(project_projector))),
+		Arc::new(ProjectObserver::new(Arc::new(project_member_projector))),
 	]);
 
 	Arc::new(observer)
