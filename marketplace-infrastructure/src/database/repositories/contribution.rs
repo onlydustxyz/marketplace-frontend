@@ -120,14 +120,14 @@ impl From<ContributionProjection> for models::Contribution {
 
 impl From<DatabaseError> for ContributionProjectionRepositoryError {
 	fn from(error: DatabaseError) -> Self {
+		use diesel::result::{DatabaseErrorKind, Error as DieselError};
+
 		match error {
-			DatabaseError::Transaction(diesel::result::Error::DatabaseError(kind, _)) => match kind
-			{
-				diesel::result::DatabaseErrorKind::UniqueViolation =>
-					Self::AlreadyExist(Box::new(error)),
-				_ => Self::Infrastructure(Box::new(error)),
-			},
-			DatabaseError::Transaction(diesel::result::Error::NotFound) => Self::NotFound,
+			DatabaseError::Transaction(DieselError::DatabaseError(
+				DatabaseErrorKind::UniqueViolation,
+				_,
+			)) => Self::AlreadyExist(Box::new(error)),
+			DatabaseError::Transaction(DieselError::NotFound) => Self::NotFound,
 			_ => Self::Infrastructure(Box::new(error)),
 		}
 	}

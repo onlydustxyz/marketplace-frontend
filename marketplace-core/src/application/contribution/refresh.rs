@@ -3,6 +3,7 @@ use marketplace_domain::*;
 
 pub type RefreshContributions = Refresh<ContributionProjection, Contribution>;
 pub type RefreshApplications = Refresh<ApplicationProjection, Contribution>;
+pub type RefreshProjects = Refresh<ProjectProjection, Contribution>;
 
 #[cfg(test)]
 mod test {
@@ -26,6 +27,18 @@ mod test {
 				project_id: &GithubProjectId,
 				issue_number: &GithubIssueNumber,
 			) -> Result<Option<GithubIssue>, GithubIssueRepositoryError>;
+		}
+	}
+
+	mock! {
+		pub GithubRepoRepository {}
+
+		#[async_trait]
+		impl GithubRepoRepository for GithubRepoRepository {
+			async fn find(
+				&self,
+				project_id: &GithubProjectId,
+			) -> Result<GithubRepo, GithubRepoRepositoryError>;
 		}
 	}
 
@@ -54,8 +67,22 @@ mod test {
 	}
 
 	#[fixture]
+	fn github_repo_repository() -> MockGithubRepoRepository {
+		MockGithubRepoRepository::new()
+	}
+
+	#[fixture]
 	fn contributor_id() -> ContributorId {
 		ContributorId::from_str("0x666").unwrap()
+	}
+
+	#[fixture]
+	fn project() -> ProjectProjection {
+		ProjectProjection::new(
+			STARKONQUEST,
+			String::from("onlydustxyz"),
+			String::from("starkonquest"),
+		)
 	}
 
 	#[fixture]
@@ -63,16 +90,6 @@ mod test {
 		database: Arc<DatabaseClient>,
 		contributor_id: ContributorId,
 	) -> Arc<DatabaseClient> {
-		// add project
-		// TODO: remove and fetch data at contribution creation time
-		database
-			.store(Project {
-				id: STARKONQUEST,
-				owner: String::from("onlydustxyz"),
-				name: String::from("starkonquest"),
-			})
-			.expect("Unable to insert project in repository");
-
 		// events for contribution #1
 		{
 			let contribution_id = ContributionId::from_str("0x17267621").unwrap();
@@ -169,14 +186,42 @@ mod test {
 		)
 	}
 
+	#[fixture]
+	fn refresh_projects_usecase(
+		filled_database: Arc<DatabaseClient>,
+		mut github_repo_repository: MockGithubRepoRepository,
+		project: ProjectProjection,
+	) -> RefreshProjects {
+		github_repo_repository.expect_find().returning(move |_| {
+			Ok(GithubRepo {
+				project_id: project.id().clone(),
+				owner: project.owner().clone(),
+				name: project.name().clone(),
+			})
+		});
+
+		Refresh::new(
+			filled_database.clone(),
+			Arc::new(ProjectProjector::new(
+				Arc::new(github_repo_repository),
+				filled_database.clone(),
+			)),
+			filled_database,
+		)
+	}
+
 	#[rstest]
 	#[cfg_attr(not(feature = "with_component_tests"), ignore = "component test")]
 	async fn refresh_contributions_from_events(
 		refresh_contributions_usecase: RefreshContributions,
 		database: Arc<DatabaseClient>,
+		project: ProjectProjection,
 	) {
 		let result = refresh_contributions_usecase.refresh_projection_from_events().await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
+
+		// add project - needed for the GET call below
+		database.store(project).expect("Unable to insert project in repository");
 
 		let projection =
 			database.find_all_with_contributions().expect("Unable to read projection table");
@@ -209,5 +254,20 @@ mod test {
 			.expect("Unable to read projection table");
 
 		assert_eq!(2, applications.len());
+	}
+
+	#[rstest]
+	#[cfg_attr(not(feature = "with_component_tests"), ignore = "component test")]
+	async fn refresh_projects_from_events(
+		refresh_projects_usecase: RefreshProjects,
+		database: Arc<DatabaseClient>,
+	) {
+		let result = refresh_projects_usecase.refresh_projection_from_events().await;
+		assert!(result.is_ok(), "{}", result.err().unwrap());
+
+		let projects =
+			database.find_all_with_contributions().expect("Unable to read projection table");
+
+		assert_eq!(1, projects.len());
 	}
 }

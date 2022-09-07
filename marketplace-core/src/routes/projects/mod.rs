@@ -12,6 +12,8 @@ use url::Url;
 
 use super::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem};
 
+pub mod refresh;
+
 #[openapi(tag = "Projects")]
 #[post("/projects", format = "application/json", data = "<project>")]
 pub async fn new_project(
@@ -25,7 +27,9 @@ pub async fn new_project(
 		.await
 		.map_err(|e| e.to_http_api_problem())?;
 
-	ProjectRepository::store(database.as_ref(), project).map_err(|e| e.to_http_api_problem())?;
+	let projection = ProjectProjection::new(project.id, project.owner, project.name);
+	ProjectProjectionRepository::store(database.as_ref(), projection)
+		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(Status::Accepted)
 }
