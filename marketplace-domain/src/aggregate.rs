@@ -1,7 +1,9 @@
 pub trait Aggregate: Send + Sync + Default + Sized {
 	type Id: PartialEq;
 	type Event;
+}
 
+pub trait EventSourcable: Aggregate {
 	fn apply_event(self, event: &Self::Event) -> Self;
 
 	fn apply_events(self, events: &[Self::Event]) -> Self {
@@ -13,4 +15,4 @@ pub trait Aggregate: Send + Sync + Default + Sized {
 	}
 }
 
-pub trait AggregateRoot: Aggregate {}
+pub trait AggregateRoot: EventSourcable {}

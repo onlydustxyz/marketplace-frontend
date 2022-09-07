@@ -75,7 +75,9 @@ impl Contribution {
 impl Aggregate for Contribution {
 	type Event = Event;
 	type Id = Id;
+}
 
+impl EventSourcable for Contribution {
 	fn apply_event(self, event: &Self::Event) -> Self {
 		match event {
 			Event::Created {
