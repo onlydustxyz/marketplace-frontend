@@ -56,6 +56,12 @@ impl From<ProjectProjection> for models::NewProject {
 	}
 }
 
+impl From<models::Project> for ProjectProjection {
+	fn from(project: models::Project) -> Self {
+		Self::new(project.id.parse().unwrap(), project.name, project.owner)
+	}
+}
+
 impl From<models::Contribution> for ContributionProjection {
 	fn from(contribution: models::Contribution) -> Self {
 		Self {
@@ -111,6 +117,20 @@ impl ProjectProjectionRepository for Client {
 			.map_err(DatabaseError::from)?;
 
 		Ok(())
+	}
+
+	fn find_by_id(
+		&self,
+		project_id: &GithubProjectId,
+	) -> Result<ProjectProjection, ProjectProjectionRepositoryError> {
+		let connection = self.connection().map_err(ProjectProjectionRepositoryError::from)?;
+
+		let project: models::Project = projects::table
+			.find(project_id.to_string())
+			.get_result(&*connection)
+			.map_err(DatabaseError::from)?;
+
+		Ok(project.into())
 	}
 }
 

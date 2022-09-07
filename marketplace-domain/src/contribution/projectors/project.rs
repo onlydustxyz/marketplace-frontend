@@ -29,12 +29,14 @@ impl ProjectProjector {
 	}
 
 	async fn on_contribution_created(&self, project_id: &GithubProjectId) -> Result<(), Error> {
-		let repo = self.github_repo_repository.find(project_id).await?;
-		self.project_projection_repository.store(ProjectProjection::new(
-			repo.project_id,
-			repo.owner,
-			repo.name,
-		))?;
+		if self.project_projection_repository.find_by_id(project_id).is_err() {
+			let repo = self.github_repo_repository.find(project_id).await?;
+			self.project_projection_repository.store(ProjectProjection::new(
+				repo.project_id,
+				repo.owner,
+				repo.name,
+			))?;
+		}
 		Ok(())
 	}
 }
@@ -61,6 +63,7 @@ impl Projector<Contribution> for ProjectProjector {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use anyhow::anyhow;
 	use mockall::predicate::eq;
 	use rstest::*;
 
@@ -105,6 +108,12 @@ mod tests {
 		contribution_created_event: ContributionEvent,
 		repo: GithubRepo,
 	) {
+		project_projection_repository
+			.expect_find_by_id()
+			.with(eq(repo.project_id))
+			.times(1)
+			.returning(|_| Err(ProjectProjectionRepositoryError::NotFound(anyhow!("oops"))));
+
 		let cloned_repo = repo.clone();
 		github_repo_repository
 			.expect_find()
@@ -121,6 +130,36 @@ mod tests {
 			)))
 			.times(1)
 			.returning(|_| Ok(()));
+
+		let projector = ProjectProjector::new(
+			Arc::new(github_repo_repository),
+			Arc::new(project_projection_repository),
+		);
+
+		projector.project(&contribution_created_event).await;
+	}
+
+	#[rstest]
+	async fn project_is_not_stored_if_already_present(
+		mut github_repo_repository: MockGithubRepoRepository,
+		mut project_projection_repository: MockProjectProjectionRepository,
+		project_id: GithubProjectId,
+		contribution_created_event: ContributionEvent,
+		repo: GithubRepo,
+	) {
+		project_projection_repository
+			.expect_find_by_id()
+			.with(eq(project_id))
+			.times(1)
+			.returning(move |_| {
+				Ok(ProjectProjection::new(
+					repo.project_id,
+					repo.owner.clone(),
+					repo.name.clone(),
+				))
+			});
+
+		github_repo_repository.expect_find().times(0);
 
 		let projector = ProjectProjector::new(
 			Arc::new(github_repo_repository),
