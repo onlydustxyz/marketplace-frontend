@@ -9,6 +9,7 @@ pub use application::{
 };
 
 mod project_member;
+pub use project_member::Projection as ProjectMemberProjection;
 
 mod project;
 pub use project::Project as ProjectProjection;
