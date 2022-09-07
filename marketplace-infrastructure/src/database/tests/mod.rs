@@ -17,7 +17,11 @@ fn init_project(client: &Client) -> Project {
 		name: Uuid::new_v4().to_string(),
 		owner: Uuid::new_v4().to_string(),
 	};
-	<Client as ProjectRepository>::store(client, project.clone()).unwrap();
+
+	let cloned_project = project.clone();
+	let projection =
+		ProjectProjection::new(cloned_project.id, cloned_project.owner, cloned_project.name);
+	<Client as ProjectProjectionRepository>::store(client, projection).unwrap();
 
 	project
 }
