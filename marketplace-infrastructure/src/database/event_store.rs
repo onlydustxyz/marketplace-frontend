@@ -4,6 +4,7 @@ use crate::database::{
 	Client,
 };
 use diesel::prelude::*;
+use log::error;
 use marketplace_domain::*;
 use serde_json::Value;
 
@@ -17,7 +18,10 @@ impl EventStore<Contribution> for Client {
 		aggregate_id: &<Contribution as Aggregate>::Id,
 		storable_events: Vec<StorableEvent<Contribution>>,
 	) -> Result<(), EventStoreError> {
-		let connection = self.connection().map_err(|e| EventStoreError::Connection(e.into()))?;
+		let connection = self.connection().map_err(|e| {
+			error!("Failed to connect to database: {e}");
+			EventStoreError::Connection(e.into())
+		})?;
 
 		let events = storable_events
 			.iter()
@@ -25,8 +29,10 @@ impl EventStore<Contribution> for Client {
 				Ok(models::Event {
 					aggregate_name: CONTRIBUTION_AGGREGATE.to_string(),
 					aggregate_id: aggregate_id.to_string(),
-					payload: serde_json::to_value(&event.event)
-						.map_err(|e| EventStoreError::InvalidEvent(e.into()))?,
+					payload: serde_json::to_value(&event.event).map_err(|e| {
+						error!("Failed to serialize event {:?}: {e}", &event.event);
+						EventStoreError::InvalidEvent(e.into())
+					})?,
 				})
 			})
 			.collect::<Result<Vec<_>, EventStoreError>>()?;
@@ -38,7 +44,11 @@ impl EventStore<Contribution> for Client {
 					.returning(index)
 					.get_results(&*connection)?;
 
-				assert_eq!(inserted_events.len(), storable_events.len());
+				assert_eq!(
+					inserted_events.len(),
+					storable_events.len(),
+					"list of inserted events and storable events should never have different lengths"
+				);
 
 				let deduplications = storable_events
 					.iter()
@@ -53,7 +63,10 @@ impl EventStore<Contribution> for Client {
 					.values(&deduplications)
 					.execute(&*connection)
 			})
-			.map_err(|e| EventStoreError::Append(e.into()))?;
+			.map_err(|e| {
+				error!("Failed to insert event(s) into database: {e}");
+				EventStoreError::Append(e.into())
+			})?;
 
 		Ok(())
 	}
@@ -62,7 +75,10 @@ impl EventStore<Contribution> for Client {
 		&self,
 		aggregate_id: &<Contribution as Aggregate>::Id,
 	) -> Result<Vec<<Contribution as Aggregate>::Event>, EventStoreError> {
-		let connection = self.connection().map_err(|e| EventStoreError::Connection(e.into()))?;
+		let connection = self.connection().map_err(|e| {
+			error!("Failed to connect to database: {e}");
+			EventStoreError::Connection(e.into())
+		})?;
 
 		let events = events::dsl::events
 			.select(events::payload)
@@ -70,20 +86,31 @@ impl EventStore<Contribution> for Client {
 			.filter(events::aggregate_name.eq_all(CONTRIBUTION_AGGREGATE))
 			.order_by(events::index)
 			.load::<Value>(&*connection)
-			.map_err(|e| EventStoreError::List(e.into()))?;
+			.map_err(|e| {
+				error!(
+					"Failed to retrieve {CONTRIBUTION_AGGREGATE} events of aggregate {aggregate_id} from database: {e}"
+				);
+				EventStoreError::List(e.into())
+			})?;
 
 		deserialize_events(events)
 	}
 
 	fn list(&self) -> Result<Vec<<Contribution as Aggregate>::Event>, EventStoreError> {
-		let connection = self.connection().map_err(|e| EventStoreError::Connection(e.into()))?;
+		let connection = self.connection().map_err(|e| {
+			error!("Failed to connect to database: {e}");
+			EventStoreError::Connection(e.into())
+		})?;
 
 		let events = events::dsl::events
 			.select(events::payload)
 			.filter(events::aggregate_name.eq_all(CONTRIBUTION_AGGREGATE))
 			.order_by(events::index)
 			.load::<Value>(&*connection)
-			.map_err(|e| EventStoreError::List(e.into()))?;
+			.map_err(|e| {
+				error!("Failed to retrieve {CONTRIBUTION_AGGREGATE} events from database: {e}");
+				EventStoreError::List(e.into())
+			})?;
 
 		deserialize_events(events)
 	}
@@ -96,6 +123,10 @@ fn deserialize_events(
 		.iter()
 		.map(|event_value| {
 			serde_json::from_value::<<Contribution as Aggregate>::Event>(event_value.to_owned())
+				.map_err(|e| {
+					error!("Failed to deserialize event {event_value}: {e}");
+					e
+				})
 		})
 		.collect::<Result<Vec<_>, _>>()
 		.map_err(|e| EventStoreError::List(e.into()))
