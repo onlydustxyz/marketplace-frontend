@@ -1,12 +1,3 @@
-use crate::application::refresh::Refresh;
-use marketplace_domain::*;
-
-pub type RefreshContributions = Refresh<ContributionProjection, Contribution>;
-pub type RefreshApplications = Refresh<ApplicationProjection, Contribution>;
-pub type RefreshProjects = Refresh<ProjectProjection, Contribution>;
-
-#[cfg(test)]
-mod test {
 	use super::*;
 	use async_trait::async_trait;
 	use dotenv::dotenv;
@@ -258,4 +249,3 @@ mod test {
 
 		assert_eq!(1, projects.len());
 	}
-}
