@@ -90,11 +90,15 @@ impl Projector<Contribution> for ApplicationProjector {
 			ContributionEvent::Assigned {
 				id: contribution_id,
 				contributor_id,
+			}
+			| ContributionEvent::Claimed {
+				id: contribution_id,
+				contributor_id,
 			} => self.on_assigned(contribution_id, contributor_id),
 			ContributionEvent::Unassigned {
 				id: contribution_id,
 			} => self.on_unassigned(contribution_id),
-			_ => Ok(()),
+			ContributionEvent::Created { .. } | ContributionEvent::Validated { .. } => Ok(()),
 		};
 
 		if let Err(error) = result {

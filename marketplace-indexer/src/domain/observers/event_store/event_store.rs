@@ -81,6 +81,10 @@ impl Identifiable for Contribution {
 				id,
 				contributor_id: _,
 			}
+			| ContributionEvent::Claimed {
+				id,
+				contributor_id: _,
+			}
 			| ContributionEvent::Applied {
 				id,
 				contributor_id: _,

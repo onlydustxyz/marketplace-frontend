@@ -61,17 +61,6 @@ impl Contribution {
 	}
 }
 
-#[cfg(test)]
-impl Contribution {
-	pub fn new_with_id_and_status(id: Id, status: ContributionStatus) -> Self {
-		Self {
-			id,
-			status,
-			..Default::default()
-		}
-	}
-}
-
 impl Aggregate for Contribution {
 	type Event = Event;
 	type Id = Id;
@@ -104,6 +93,10 @@ impl EventSourcable for Contribution {
 			Event::Assigned {
 				id: _,
 				contributor_id,
+			}
+			| Event::Claimed {
+				id: _,
+				contributor_id,
 			} => Self {
 				status: Status::Assigned,
 				contributor_id: Some(contributor_id.clone()),
@@ -125,4 +118,4 @@ impl EventSourcable for Contribution {
 impl AggregateRoot for Contribution {}
 
 #[cfg(test)]
-mod test;
+mod tests;
