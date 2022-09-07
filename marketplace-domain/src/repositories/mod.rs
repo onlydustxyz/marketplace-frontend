@@ -22,6 +22,10 @@ pub use application_projection::{
 };
 
 mod project_member_projection;
+pub use project_member_projection::{
+	Error as ProjectMemberProjectionRepositoryError,
+	Repository as ProjectMemberProjectionRepository,
+};
 
 mod project_projection;
 pub use project_projection::{
@@ -30,3 +34,6 @@ pub use project_projection::{
 
 #[cfg(test)]
 pub use project_projection::MockRepository as MockProjectProjectionRepository;
+
+#[cfg(test)]
+pub use project_member_projection::MockRepository as MockProjectMemberProjectionRepository;
