@@ -17,7 +17,7 @@ impl EventTranslator for Claimed {
 		let contribution_id: HexPrefixedString = topics.pop_front_as()?;
 		let contributor_id: ContributorId = topics.pop_front_as()?;
 
-		Ok(Event::Contribution(ContributionEvent::Assigned {
+		Ok(Event::Contribution(ContributionEvent::Claimed {
 			id: contribution_id.into(),
 			contributor_id,
 		}))
@@ -68,7 +68,7 @@ mod test {
 		let result = <Claimed as EventTranslator>::to_domain_event(apibara_event_data);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(
-			Event::Contribution(ContributionEvent::Assigned {
+			Event::Contribution(ContributionEvent::Claimed {
 				id: 12.into(),
 				contributor_id: ContributorId::from(24)
 			},),

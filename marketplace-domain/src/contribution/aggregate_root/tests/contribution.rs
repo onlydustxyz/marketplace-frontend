@@ -1,6 +1,16 @@
-use super::*;
+use super::super::*;
 use assert_matches::assert_matches;
 use rstest::*;
+
+impl Contribution {
+	pub fn new_with_id_and_status(id: Id, status: ContributionStatus) -> Self {
+		Self {
+			id,
+			status,
+			..Default::default()
+		}
+	}
+}
 
 #[fixture]
 fn contribution_id() -> Id {
@@ -39,6 +49,14 @@ fn contribution_applied_event(contributor_id: ContributorId) -> Event {
 }
 
 #[fixture]
+fn contribution_claimed_event(contributor_id: ContributorId) -> Event {
+	Event::Claimed {
+		id: Default::default(),
+		contributor_id,
+	}
+}
+
+#[fixture]
 fn contribution_unassigned_event() -> Event {
 	Event::Unassigned {
 		id: Default::default(),
@@ -65,6 +83,16 @@ fn assign_contribution(contribution_created_event: Event, contribution_assigned_
 	let contribution = Contribution::from_events(&vec![
 		contribution_created_event,
 		contribution_assigned_event,
+	]);
+	assert_eq!(Status::Assigned, contribution.status);
+	assert!(contribution.contributor_id.is_some());
+}
+
+#[rstest]
+fn claim_contribution(contribution_created_event: Event, contribution_claimed_event: Event) {
+	let contribution = Contribution::from_events(&vec![
+		contribution_created_event,
+		contribution_claimed_event,
 	]);
 	assert_eq!(Status::Assigned, contribution.status);
 	assert!(contribution.contributor_id.is_some());

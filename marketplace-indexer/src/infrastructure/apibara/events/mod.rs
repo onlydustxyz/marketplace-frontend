@@ -59,6 +59,8 @@ impl TryFrom<ApibaraEvent> for ObservedEvent {
 						Ok(contribution::Created::to_domain_event(data)?),
 					_ if selector == contribution::Assigned::selector() =>
 						Ok(contribution::Assigned::to_domain_event(data)?),
+					_ if selector == contribution::Claimed::selector() =>
+						Ok(contribution::Claimed::to_domain_event(data)?),
 					_ if selector == contribution::Unassigned::selector() =>
 						Ok(contribution::Unassigned::to_domain_event(data)?),
 					_ if selector == contribution::Validated::selector() =>
@@ -176,6 +178,26 @@ mod test {
 		assert_eq!(
 			ObservedEvent {
 				event: DomainEvent::Contribution(ContributionEvent::Assigned {
+					id: Default::default(),
+					contributor_id: Default::default()
+				}),
+				deduplication_id: DEDUPLICATION_ID.to_string()
+			},
+			ObservedEvent::try_from(apibara_event).unwrap()
+		);
+	}
+
+	#[rstest]
+	fn contribution_claimed(contract_address: Vec<u8>, transaction_hash: Vec<u8>) {
+		let apibara_event = apibara_event(
+			selector::<contribution::Claimed>(),
+			contract_address,
+			transaction_hash,
+		);
+
+		assert_eq!(
+			ObservedEvent {
+				event: DomainEvent::Contribution(ContributionEvent::Claimed {
 					id: Default::default(),
 					contributor_id: Default::default()
 				}),

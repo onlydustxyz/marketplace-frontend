@@ -103,6 +103,7 @@ impl Projector<Contribution> for WithGithubDataProjector {
 			} => self.on_create(id, project_id, issue_number, *gate).await,
 			ContributionEvent::Assigned { id, contributor_id } =>
 				self.on_assign(id, contributor_id),
+			ContributionEvent::Claimed { id, contributor_id } => self.on_assign(id, contributor_id),
 			ContributionEvent::Unassigned { id } => self.on_unassign(id),
 			ContributionEvent::Validated { id } => self.on_validate(id),
 			ContributionEvent::Applied { .. } => Ok(()),
