@@ -16,13 +16,13 @@ trait NamedAggregate: Aggregate {
 
 impl NamedAggregate for Contribution {
 	fn name() -> String {
-		return String::from("CONTRIBUTION");
+		String::from("CONTRIBUTION")
 	}
 }
 
 impl NamedAggregate for ProjectAggregate {
 	fn name() -> String {
-		return String::from("PROJECT");
+		String::from("PROJECT")
 	}
 }
 

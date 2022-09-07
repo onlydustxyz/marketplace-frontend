@@ -21,9 +21,9 @@ impl MemberProjector {
 		is_lead_contributor: bool,
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
 		self.member_projection_repository.store(ProjectMemberProjection::new(
-			project_id.clone(),
+			*project_id,
 			contributor_account.clone(),
-			is_lead_contributor.clone(),
+			is_lead_contributor,
 		))
 	}
 

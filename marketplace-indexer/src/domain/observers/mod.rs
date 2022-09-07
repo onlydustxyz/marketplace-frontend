@@ -9,11 +9,15 @@ pub use logging::Logger;
 mod contribution;
 pub use contribution::ContributionObserver;
 
+mod project;
+pub use project::ProjectObserver;
+
 mod confirmed;
 pub use confirmed::{ConfirmedObserver, WithBockConfirmationCount};
 use serde::{Deserialize, Serialize};
 
-mod contribution_event_store_logger;
+mod event_store;
+pub use event_store::EventStoreObserver;
 
 use crate::domain::*;
 use mockall::automock;

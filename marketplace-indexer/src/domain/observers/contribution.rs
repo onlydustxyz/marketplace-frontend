@@ -14,8 +14,8 @@ impl ContributionObserver {
 #[async_trait]
 impl Observer for ContributionObserver {
 	async fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
-		match &event.event {
-			Event::Contribution(event) => self.projector.project(event).await,
+		if let Event::Contribution(event) = &event.event {
+			self.projector.project(event).await
 		}
 	}
 }

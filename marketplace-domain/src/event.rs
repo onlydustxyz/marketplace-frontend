@@ -1,10 +1,11 @@
-use crate::{Aggregate, ContributionEvent};
+use crate::{Aggregate, ContributionEvent, ProjectEvent};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	Contribution(ContributionEvent),
+	Project(ProjectEvent),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

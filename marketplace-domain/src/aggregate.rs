@@ -4,7 +4,7 @@ use serde::{de::DeserializeOwned, Serialize};
 
 pub trait Aggregate: Send + Sync + Default + Sized {
 	type Id: PartialEq + Display;
-	type Event: Serialize + DeserializeOwned + Debug;
+	type Event: Serialize + DeserializeOwned + Debug + Display + Clone;
 }
 
 pub trait EventSourcable: Aggregate {
