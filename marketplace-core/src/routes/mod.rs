@@ -8,11 +8,11 @@ mod projects;
 
 pub use applications::*;
 pub use contributions::*;
+pub use dto::*;
+pub use projects::{refresh::*, *};
 
-pub use projects::*;
 use rocket_okapi::swagger_ui::SwaggerUIConfig;
 
-pub use dto::*;
 pub(crate) fn get_docs() -> SwaggerUIConfig {
 	SwaggerUIConfig {
 		url: "/openapi.json".to_string(),

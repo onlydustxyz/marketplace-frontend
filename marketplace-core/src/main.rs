@@ -62,15 +62,6 @@ async fn main() {
 	let contact_information_service = Arc::new(ContactInformationServiceImplementation::new(
 		database.clone(),
 	));
-	let application_projector: Arc<ApplicationProjector> = Arc::new(ApplicationProjector::new(
-		database.clone(),
-		uuid_generator.clone(),
-	));
-
-	let contribution_projector = Arc::new(ContributionProjector::new(
-		database.clone(),
-		github_client.clone(),
-	));
 
 	let rocket_handler = inject_app(
 		rocket::build(),
@@ -78,9 +69,8 @@ async fn main() {
 		starknet,
 		contribution_repository,
 		contact_information_service,
-		application_projector,
-		contribution_projector,
 		uuid_generator,
+		github_client.clone(),
 	)
 	.manage(database.clone())
 	.manage(RepoCache::default())
@@ -99,6 +89,7 @@ async fn main() {
 		openapi_get_routes![
 			routes::new_project,
 			routes::list_projects,
+			routes::refresh_projects,
 			routes::create_contribution,
 			routes::assign_contributor,
 			routes::validate_contribution,
@@ -128,10 +119,24 @@ fn inject_app(
 	starknet: Arc<starknet::SingleAdminClient>,
 	contribution_repository: AggregateRootRepository<Contribution>,
 	contact_information_service: Arc<dyn ContactInformationService>,
-	application_projector: Arc<ApplicationProjector>,
-	contribution_projector: Arc<ContributionProjector>,
 	uuid_generator: Arc<dyn UuidGenerator>,
+	github_client: Arc<github::Client>,
 ) -> Rocket<Build> {
+	let application_projector: Arc<ApplicationProjector> = Arc::new(ApplicationProjector::new(
+		database.clone(),
+		uuid_generator.clone(),
+	));
+
+	let contribution_projector = Arc::new(ContributionProjector::new(
+		database.clone(),
+		github_client.clone(),
+	));
+
+	let project_projector = Arc::new(ProjectProjector::new(
+		github_client.clone(),
+		database.clone(),
+	));
+
 	rocket
 		.manage(CreateContribution::new_usecase_boxed(starknet.clone()))
 		.manage(AssignContribution::new_usecase_boxed(
@@ -165,6 +170,11 @@ fn inject_app(
 		.manage(RefreshApplications::new(
 			database.clone(),
 			application_projector,
+			database.clone(),
+		))
+		.manage(RefreshProjects::new(
+			database.clone(),
+			project_projector,
 			database.clone(),
 		))
 		.manage(database as Arc<dyn ApplicationProjectionRepository>)

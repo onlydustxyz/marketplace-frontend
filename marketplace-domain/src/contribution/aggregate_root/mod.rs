@@ -40,7 +40,7 @@ impl Contribution {
 		if self.status != Status::Open {
 			return Err(Error::CannotApply(self.status));
 		}
-		if self.applicants.contains(&contributor_id) {
+		if self.applicants.contains(contributor_id) {
 			return Err(Error::AlreadyApplied(contributor_id.clone()));
 		}
 
