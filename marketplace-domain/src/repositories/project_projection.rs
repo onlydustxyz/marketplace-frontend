@@ -9,11 +9,13 @@ pub enum Error {
 	AlreadyExist(#[source] anyhow::Error),
 	#[error("Project contains invalid members")]
 	InvalidEntity(#[source] anyhow::Error),
+	#[error("Project does not exist")]
+	NotFound(#[source] anyhow::Error),
 	#[error("Something happend at the infrastructure level")]
 	Infrastructure(#[source] anyhow::Error),
 }
 
 #[cfg_attr(test, automock)]
 pub trait Repository: Send + Sync {
-	fn create(&self, project: ProjectProjection) -> Result<(), Error>;
+	fn store(&self, project: ProjectProjection) -> Result<(), Error>;
 }

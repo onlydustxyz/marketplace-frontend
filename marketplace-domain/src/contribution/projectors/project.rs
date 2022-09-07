@@ -30,7 +30,7 @@ impl ProjectProjector {
 
 	async fn on_contribution_created(&self, project_id: &GithubProjectId) -> Result<(), Error> {
 		let repo = self.github_repo_repository.find(project_id).await?;
-		self.project_projection_repository.create(ProjectProjection::new(
+		self.project_projection_repository.store(ProjectProjection::new(
 			repo.project_id,
 			repo.owner,
 			repo.name,
@@ -113,7 +113,7 @@ mod tests {
 			.returning(move |_| Ok(cloned_repo.clone()));
 
 		project_projection_repository
-			.expect_create()
+			.expect_store()
 			.with(eq(ProjectProjection::new(
 				repo.project_id,
 				repo.owner,

@@ -1,13 +1,13 @@
-use marketplace_domain::*;
-use std::str::FromStr;
-
 use crate::database::{
 	models,
 	schema::projects::{self, dsl::*},
 	Client, DatabaseError,
 };
+use anyhow::anyhow;
 use diesel::{prelude::*, query_dsl::BelongingToDsl};
 use itertools::Itertools;
+use marketplace_domain::*;
+use std::str::FromStr;
 
 impl ProjectRepository for Client {
 	fn find_all_with_contributions(
@@ -34,21 +34,6 @@ impl ProjectRepository for Client {
 
 		Ok(result)
 	}
-
-	fn store(&self, project: Project) -> Result<(), ProjectRepositoryError> {
-		let connection = self.connection().map_err(ProjectRepositoryError::from)?;
-
-		let project: models::NewProject = project.into();
-		diesel::insert_into(projects::table)
-			.values(&project)
-			.on_conflict(id)
-			.do_update()
-			.set(&project)
-			.execute(&*connection)
-			.map_err(DatabaseError::from)?;
-
-		Ok(())
-	}
 }
 
 impl From<models::Project> for Project {
@@ -61,12 +46,12 @@ impl From<models::Project> for Project {
 	}
 }
 
-impl From<Project> for models::NewProject {
-	fn from(project: Project) -> Self {
+impl From<ProjectProjection> for models::NewProject {
+	fn from(project: ProjectProjection) -> Self {
 		Self {
-			id: project.id.to_string(),
-			name: project.name,
-			owner: project.owner,
+			id: project.id().to_string(),
+			name: project.name().clone(),
+			owner: project.owner().clone(),
 		}
 	}
 }
@@ -108,6 +93,55 @@ impl From<DatabaseError> for ProjectRepositoryError {
 			},
 			DatabaseError::Transaction(diesel::result::Error::NotFound) => Self::NotFound,
 			_ => Self::Infrastructure(Box::new(error)),
+		}
+	}
+}
+
+impl ProjectProjectionRepository for Client {
+	fn store(&self, project: ProjectProjection) -> Result<(), ProjectProjectionRepositoryError> {
+		let connection = self.connection().map_err(ProjectProjectionRepositoryError::from)?;
+
+		let project: models::NewProject = project.into();
+		diesel::insert_into(projects::table)
+			.values(&project)
+			.on_conflict(id)
+			.do_update()
+			.set(&project)
+			.execute(&*connection)
+			.map_err(DatabaseError::from)?;
+
+		Ok(())
+	}
+}
+
+impl ProjectionRepository<ProjectProjection> for Client {
+	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
+		let connection = self
+			.connection()
+			.map_err(anyhow::Error::msg)
+			.map_err(ProjectionRepositoryError::Infrastructure)?;
+
+		diesel::delete(projects::dsl::projects)
+			.execute(&*connection)
+			.map_err(anyhow::Error::msg)
+			.map_err(ProjectionRepositoryError::Infrastructure)?;
+
+		Ok(())
+	}
+}
+
+impl From<DatabaseError> for ProjectProjectionRepositoryError {
+	fn from(error: DatabaseError) -> Self {
+		match error {
+			DatabaseError::Transaction(diesel::result::Error::DatabaseError(kind, _)) => match kind
+			{
+				diesel::result::DatabaseErrorKind::UniqueViolation =>
+					Self::AlreadyExist(anyhow!(error)),
+				_ => Self::Infrastructure(anyhow!(error)),
+			},
+			DatabaseError::Transaction(diesel::result::Error::NotFound) =>
+				Self::NotFound(anyhow!(error)),
+			_ => Self::Infrastructure(anyhow!(error)),
 		}
 	}
 }
