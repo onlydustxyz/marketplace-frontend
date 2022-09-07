@@ -21,6 +21,8 @@ pub use application_projection::{
 	Repository as ApplicationProjectionRepository,
 };
 
+mod project_member_projection;
+
 mod project_projection;
 pub use project_projection::{
 	Error as ProjectProjectionRepositoryError, Repository as ProjectProjectionRepository,
