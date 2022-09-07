@@ -83,9 +83,9 @@ table! {
 }
 
 table! {
-    project_members (project_id, contributor_id) {
+    project_members (project_id, contributor_account) {
         project_id -> Text,
-        contributor_id -> Text,
+        contributor_account -> Text,
         is_lead_contributor -> Bool,
     }
 }

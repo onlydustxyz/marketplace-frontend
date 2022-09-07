@@ -7,6 +7,9 @@ use std::{fmt::Display, str::FromStr};
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, Default, HexStringWrapper)]
 pub struct Id(HexPrefixedString);
 
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, Default, HexStringWrapper)]
+pub struct Account(HexPrefixedString);
+
 #[derive(Clone, Debug, PartialEq, Eq, Default)]
 pub struct Contributor {
 	pub id: Id,

@@ -29,14 +29,14 @@ fn project_id() -> ProjectId {
 }
 
 #[fixture]
-fn contributor_id() -> ContributorId {
-	ContributorId::from_str("0x666").unwrap()
+fn contributor_account() -> ContributorAccount {
+	ContributorAccount::from_str("0x666").unwrap()
 }
 
 #[fixture]
 fn filled_database(
 	database: Arc<DatabaseClient>,
-	contributor_id: ContributorId,
+	contributor_account: ContributorAccount,
 	project_id: ProjectId,
 ) -> Arc<DatabaseClient> {
 	database
@@ -45,15 +45,15 @@ fn filled_database(
 			vec![
 				ProjectEvent::MemberAdded {
 					project_id: project_id.clone(),
-					contributor_id: contributor_id.clone(),
+					contributor_account: contributor_account.clone(),
 				},
 				ProjectEvent::MemberRemoved {
 					project_id: project_id.clone(),
-					contributor_id: contributor_id.clone(),
+					contributor_account: contributor_account.clone(),
 				},
 				ProjectEvent::LeadContributorAdded {
 					project_id,
-					contributor_id,
+					contributor_account,
 				},
 			]
 			.into_iter()
