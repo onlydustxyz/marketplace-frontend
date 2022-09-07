@@ -5,7 +5,9 @@ use crate::*;
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error("Member already exist")]
+	#[error("Member does not exist")]
+	NotFound,
+	#[error("Member already exists")]
 	AlreadyExist(#[source] anyhow::Error),
 	#[error("Something happend at the infrastructure level")]
 	Infrastructure(#[source] anyhow::Error),

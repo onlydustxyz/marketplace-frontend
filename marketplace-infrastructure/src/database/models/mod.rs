@@ -12,3 +12,6 @@ pub use contact_informations::*;
 
 mod events;
 pub use events::*;
+
+mod project_members;
+pub use project_members::ProjectMember;
