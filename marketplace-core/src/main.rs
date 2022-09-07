@@ -134,6 +134,8 @@ fn inject_app(
 
 	let project_projector = Arc::new(ProjectProjector::new(github_client, database.clone()));
 
+	let project_member_projector = Arc::new(ProjectMemberProjector::new(database.clone()));
+
 	rocket
 		.manage(CreateContribution::new_usecase_boxed(starknet.clone()))
 		.manage(AssignContribution::new_usecase_boxed(
@@ -172,6 +174,11 @@ fn inject_app(
 		.manage(RefreshProjects::new(
 			database.clone(),
 			project_projector,
+			database.clone(),
+		))
+		.manage(RefreshProjectsMembers::new(
+			database.clone(),
+			project_member_projector,
 			database.clone(),
 		))
 		.manage(database as Arc<dyn ApplicationProjectionRepository>)
