@@ -1,12 +1,12 @@
 mod contribution;
 pub use contribution::{
-	Metadata as ContributionProjectionMetadata, Projection as ContributionProjection,
+	Contribution as ContributionProjection, Metadata as ContributionProjectionMetadata,
 };
 
 mod application;
 pub use application::{
-	Id as ApplicationId, Projection as ApplicationProjection, Status as ApplicationStatus,
+	Application as ApplicationProjection, Id as ApplicationId, Status as ApplicationStatus,
 };
 
 mod project;
-pub use project::Projection as ProjectProjection;
+pub use project::Project as ProjectProjection;
