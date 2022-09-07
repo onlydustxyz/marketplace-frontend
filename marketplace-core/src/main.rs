@@ -132,10 +132,7 @@ fn inject_app(
 		github_client.clone(),
 	));
 
-	let project_projector = Arc::new(ProjectProjector::new(
-		github_client.clone(),
-		database.clone(),
-	));
+	let project_projector = Arc::new(ProjectProjector::new(github_client, database.clone()));
 
 	rocket
 		.manage(CreateContribution::new_usecase_boxed(starknet.clone()))

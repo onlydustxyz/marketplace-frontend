@@ -45,7 +45,7 @@ impl Contribution {
 		}
 
 		let applied_event = Event::Applied {
-			id: self.id.clone(),
+			id: self.id,
 			contributor_id: contributor_id.clone(),
 		};
 
