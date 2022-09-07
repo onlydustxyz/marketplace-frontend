@@ -1,6 +1,7 @@
 use super::{extract_metadata, Client, OctocrabIssue};
 use anyhow::anyhow;
 use async_trait::async_trait;
+use mapinto::ResultMapInto;
 use marketplace_domain::{
 	GithubClient, GithubClientError, GithubIssue, GithubIssueNumber, GithubProjectId, GithubRepo,
 };
@@ -33,7 +34,7 @@ impl GithubClient for Client {
 		self.issue(project_id.to_owned(), *issue_number as i64)
 			.await
 			.map_err(|e| GithubClientError::Infrastructure(anyhow!(e)))
-			.map(|issue| issue.into())
+			.map_into()
 	}
 }
 
