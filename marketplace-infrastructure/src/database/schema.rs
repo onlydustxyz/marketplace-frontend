@@ -83,6 +83,14 @@ table! {
 }
 
 table! {
+    project_members (project_id, contributor_id) {
+        project_id -> Text,
+        contributor_id -> Text,
+        is_lead_contributor -> Bool,
+    }
+}
+
+table! {
     projects (id) {
         id -> Varchar,
         owner -> Varchar,
@@ -102,5 +110,6 @@ allow_tables_to_appear_in_same_query!(
     contributions_backup,
     event_deduplications,
     events,
+    project_members,
     projects,
 );
