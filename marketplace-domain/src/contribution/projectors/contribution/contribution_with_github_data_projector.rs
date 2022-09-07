@@ -10,22 +10,22 @@ pub enum Error {
 	#[error(transparent)]
 	Contribution(#[from] ContributionProjectionRepositoryError),
 	#[error(transparent)]
-	GithubIssue(#[from] GithubIssueRepositoryError),
+	GithubIssue(#[from] GithubClientError),
 }
 
 pub struct WithGithubDataProjector {
 	contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
-	github_issue_repository: Arc<dyn GithubIssueRepository>,
+	github_client: Arc<dyn GithubClient>,
 }
 
 impl WithGithubDataProjector {
 	pub fn new(
 		contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
-		github_issue_repository: Arc<dyn GithubIssueRepository>,
+		github_client: Arc<dyn GithubClient>,
 	) -> Self {
 		Self {
 			contribution_projection_repository,
-			github_issue_repository,
+			github_client,
 		}
 	}
 
@@ -36,7 +36,7 @@ impl WithGithubDataProjector {
 		issue_number: &GithubIssueNumber,
 		gate: u8,
 	) -> Result<(), Error> {
-		let issue = match self.github_issue_repository.find(project_id, issue_number).await {
+		let issue = match self.github_client.find_issue_by_id(project_id, issue_number).await {
 			Ok(Some(issue)) => Some(issue),
 			Ok(None) => None,
 			Err(e) => {

@@ -18,27 +18,20 @@ mod test {
 	const STARKONQUEST: GithubProjectId = 481932781;
 
 	mock! {
-		pub GithubIssueRepository {}
+		pub GithubClient {}
 
 		#[async_trait]
-		impl GithubIssueRepository for GithubIssueRepository {
-			async fn find(
+		impl GithubClient for GithubClient {
+			async fn find_issue_by_id(
 				&self,
 				project_id: &GithubProjectId,
 				issue_number: &GithubIssueNumber,
-			) -> Result<Option<GithubIssue>, GithubIssueRepositoryError>;
-		}
-	}
+			) -> Result<Option<GithubIssue>, GithubClientError>;
 
-	mock! {
-		pub GithubRepoRepository {}
-
-		#[async_trait]
-		impl GithubRepoRepository for GithubRepoRepository {
-			async fn find(
+			async fn find_repository_by_id(
 				&self,
 				project_id: &GithubProjectId,
-			) -> Result<GithubRepo, GithubRepoRepositoryError>;
+			) -> Result<GithubRepo, GithubClientError>;
 		}
 	}
 
@@ -62,13 +55,8 @@ mod test {
 	}
 
 	#[fixture]
-	fn github_issue_repository() -> MockGithubIssueRepository {
-		MockGithubIssueRepository::new()
-	}
-
-	#[fixture]
-	fn github_repo_repository() -> MockGithubRepoRepository {
-		MockGithubRepoRepository::new()
+	fn github_client() -> MockGithubClient {
+		MockGithubClient::new()
 	}
 
 	#[fixture]
@@ -160,15 +148,15 @@ mod test {
 	#[fixture]
 	fn refresh_contributions_usecase(
 		filled_database: Arc<DatabaseClient>,
-		mut github_issue_repository: MockGithubIssueRepository,
+		mut github_client: MockGithubClient,
 	) -> RefreshContributions {
-		github_issue_repository.expect_find().returning(|_, _| Ok(Default::default()));
+		github_client.expect_find_issue_by_id().returning(|_, _| Ok(Default::default()));
 
 		Refresh::new(
 			filled_database.clone(),
 			Arc::new(ContributionProjector::new(
 				filled_database.clone(),
-				Arc::new(github_issue_repository),
+				Arc::new(github_client),
 			)),
 			filled_database,
 		)
@@ -189,10 +177,10 @@ mod test {
 	#[fixture]
 	fn refresh_projects_usecase(
 		filled_database: Arc<DatabaseClient>,
-		mut github_repo_repository: MockGithubRepoRepository,
+		mut github_client: MockGithubClient,
 		project: ProjectProjection,
 	) -> RefreshProjects {
-		github_repo_repository.expect_find().returning(move |_| {
+		github_client.expect_find_repository_by_id().returning(move |_| {
 			Ok(GithubRepo {
 				project_id: project.id().clone(),
 				owner: project.owner().clone(),
@@ -203,7 +191,7 @@ mod test {
 		Refresh::new(
 			filled_database.clone(),
 			Arc::new(ProjectProjector::new(
-				Arc::new(github_repo_repository),
+				Arc::new(github_client),
 				filled_database.clone(),
 			)),
 			filled_database,

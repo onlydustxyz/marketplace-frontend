@@ -7,30 +7,30 @@ use thiserror::Error;
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error(transparent)]
-	GithubRepo(#[from] GithubRepoRepositoryError),
+	GithubRepo(#[from] GithubClientError),
 	#[error(transparent)]
 	ProjectProjectionRepository(#[from] ProjectProjectionRepositoryError),
 }
 
 pub struct ProjectProjector {
-	github_repo_repository: Arc<dyn GithubRepoRepository>,
+	github_client: Arc<dyn GithubClient>,
 	project_projection_repository: Arc<dyn ProjectProjectionRepository>,
 }
 
 impl ProjectProjector {
 	pub fn new(
-		github_repo_repository: Arc<dyn GithubRepoRepository>,
+		github_client: Arc<dyn GithubClient>,
 		project_projection_repository: Arc<dyn ProjectProjectionRepository>,
 	) -> Self {
 		Self {
-			github_repo_repository,
+			github_client,
 			project_projection_repository,
 		}
 	}
 
 	async fn on_contribution_created(&self, project_id: &GithubProjectId) -> Result<(), Error> {
 		if self.project_projection_repository.find_by_id(project_id).is_err() {
-			let repo = self.github_repo_repository.find(project_id).await?;
+			let repo = self.github_client.find_repository_by_id(project_id).await?;
 			self.project_projection_repository.store(ProjectProjection::new(
 				repo.project_id,
 				repo.owner,
@@ -68,8 +68,8 @@ mod tests {
 	use rstest::*;
 
 	#[fixture]
-	fn github_repo_repository() -> MockGithubRepoRepository {
-		MockGithubRepoRepository::new()
+	fn github_client() -> MockGithubClient {
+		MockGithubClient::new()
 	}
 
 	#[fixture]
@@ -102,7 +102,7 @@ mod tests {
 
 	#[rstest]
 	async fn project_gets_created_with_contribution(
-		mut github_repo_repository: MockGithubRepoRepository,
+		mut github_client: MockGithubClient,
 		mut project_projection_repository: MockProjectProjectionRepository,
 		project_id: GithubProjectId,
 		contribution_created_event: ContributionEvent,
@@ -115,8 +115,8 @@ mod tests {
 			.returning(|_| Err(ProjectProjectionRepositoryError::NotFound(anyhow!("oops"))));
 
 		let cloned_repo = repo.clone();
-		github_repo_repository
-			.expect_find()
+		github_client
+			.expect_find_repository_by_id()
 			.with(eq(project_id))
 			.times(1)
 			.returning(move |_| Ok(cloned_repo.clone()));
@@ -132,7 +132,7 @@ mod tests {
 			.returning(|_| Ok(()));
 
 		let projector = ProjectProjector::new(
-			Arc::new(github_repo_repository),
+			Arc::new(github_client),
 			Arc::new(project_projection_repository),
 		);
 
@@ -141,7 +141,7 @@ mod tests {
 
 	#[rstest]
 	async fn project_is_not_stored_if_already_present(
-		mut github_repo_repository: MockGithubRepoRepository,
+		mut github_client: MockGithubClient,
 		mut project_projection_repository: MockProjectProjectionRepository,
 		project_id: GithubProjectId,
 		contribution_created_event: ContributionEvent,
@@ -159,10 +159,10 @@ mod tests {
 				))
 			});
 
-		github_repo_repository.expect_find().times(0);
+		github_client.expect_find_repository_by_id().times(0);
 
 		let projector = ProjectProjector::new(
-			Arc::new(github_repo_repository),
+			Arc::new(github_client),
 			Arc::new(project_projection_repository),
 		);
 

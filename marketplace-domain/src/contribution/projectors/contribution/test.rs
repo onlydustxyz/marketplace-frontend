@@ -10,8 +10,8 @@ fn contribution_projection_repository() -> MockContributionProjectionRepository 
 }
 
 #[fixture]
-fn github_issue_repository() -> MockGithubIssueRepository {
-	MockGithubIssueRepository::new()
+fn github_client() -> MockGithubClient {
+	MockGithubClient::new()
 }
 
 #[fixture]
@@ -119,15 +119,15 @@ fn contribution_validated_event(contribution_id: ContributionId) -> Contribution
 #[rstest]
 async fn on_contribution_created_event(
 	mut contribution_projection_repository: MockContributionProjectionRepository,
-	mut github_issue_repository: MockGithubIssueRepository,
+	mut github_client: MockGithubClient,
 	project_id: GithubProjectId,
 	issue_number: GithubIssueNumber,
 	github_issue: GithubIssue,
 	contribution: ContributionProjection,
 	contribution_created_event: ContributionEvent,
 ) {
-	github_issue_repository
-		.expect_find()
+	github_client
+		.expect_find_issue_by_id()
 		.with(eq(project_id), eq(issue_number))
 		.returning(move |_, _| Ok(Some(github_issue.clone())));
 
@@ -138,7 +138,7 @@ async fn on_contribution_created_event(
 
 	let projector = ContributionProjector::new(
 		Arc::new(contribution_projection_repository),
-		Arc::new(github_issue_repository),
+		Arc::new(github_client),
 	);
 
 	projector.project(&contribution_created_event).await;
@@ -147,7 +147,7 @@ async fn on_contribution_created_event(
 #[rstest]
 async fn on_contribution_assigned_event(
 	mut contribution_projection_repository: MockContributionProjectionRepository,
-	github_issue_repository: MockGithubIssueRepository,
+	github_client: MockGithubClient,
 	contributor_id: ContributorId,
 	contribution_id: ContributionId,
 	contribution_assigned_event: ContributionEvent,
@@ -163,7 +163,7 @@ async fn on_contribution_assigned_event(
 
 	let projector = ContributionProjector::new(
 		Arc::new(contribution_projection_repository),
-		Arc::new(github_issue_repository),
+		Arc::new(github_client),
 	);
 
 	projector.project(&contribution_assigned_event).await;
@@ -172,7 +172,7 @@ async fn on_contribution_assigned_event(
 #[rstest]
 async fn on_contribution_unassigned_event(
 	mut contribution_projection_repository: MockContributionProjectionRepository,
-	github_issue_repository: MockGithubIssueRepository,
+	github_client: MockGithubClient,
 	contribution_id: ContributionId,
 	contribution_unassigned_event: ContributionEvent,
 ) {
@@ -183,7 +183,7 @@ async fn on_contribution_unassigned_event(
 
 	let projector = ContributionProjector::new(
 		Arc::new(contribution_projection_repository),
-		Arc::new(github_issue_repository),
+		Arc::new(github_client),
 	);
 
 	projector.project(&contribution_unassigned_event).await;
@@ -192,7 +192,7 @@ async fn on_contribution_unassigned_event(
 #[rstest]
 async fn on_contribution_validated_event(
 	mut contribution_projection_repository: MockContributionProjectionRepository,
-	github_issue_repository: MockGithubIssueRepository,
+	github_client: MockGithubClient,
 	contribution_id: ContributionId,
 	contribution_validated_event: ContributionEvent,
 ) {
@@ -203,7 +203,7 @@ async fn on_contribution_validated_event(
 
 	let projector = ContributionProjector::new(
 		Arc::new(contribution_projection_repository),
-		Arc::new(github_issue_repository),
+		Arc::new(github_client),
 	);
 
 	projector.project(&contribution_validated_event).await;
