@@ -8,5 +8,7 @@ pub use application::{
 	Application as ApplicationProjection, Id as ApplicationId, Status as ApplicationStatus,
 };
 
+mod project_member;
+
 mod project;
 pub use project::Project as ProjectProjection;
