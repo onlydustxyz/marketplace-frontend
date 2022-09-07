@@ -21,20 +21,10 @@ pub use application_projection::{
 	Repository as ApplicationProjectionRepository,
 };
 
-mod github_issue;
-pub use github_issue::{Error as GithubIssueRepositoryError, Repository as GithubIssueRepository};
-
-mod github_repo;
-pub use github_repo::{Error as GithubRepoRepositoryError, Repository as GithubRepoRepository};
-
 mod project_projection;
 pub use project_projection::{
 	Error as ProjectProjectionRepositoryError, Repository as ProjectProjectionRepository,
 };
 
-#[cfg(test)]
-pub use github_issue::MockRepository as MockGithubIssueRepository;
-#[cfg(test)]
-pub use github_repo::MockRepository as MockGithubRepoRepository;
 #[cfg(test)]
 pub use project_projection::MockRepository as MockProjectProjectionRepository;

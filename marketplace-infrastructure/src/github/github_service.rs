@@ -1,22 +1,38 @@
 use super::{extract_metadata, Client, OctocrabIssue};
+use anyhow::anyhow;
 use async_trait::async_trait;
 use marketplace_domain::{
-	GithubIssue, GithubIssueNumber, GithubIssueRepository, GithubIssueRepositoryError,
-	GithubProjectId,
+	GithubClient, GithubClientError, GithubIssue, GithubIssueNumber, GithubProjectId, GithubRepo,
 };
 
 #[async_trait]
-impl GithubIssueRepository for Client {
-	async fn find(
+impl GithubClient for Client {
+	async fn find_repository_by_id(
+		&self,
+		project_id: &GithubProjectId,
+	) -> Result<GithubRepo, GithubClientError> {
+		let repository = self
+			.repository_by_id(project_id.to_owned())
+			.await
+			.map_err(|e| GithubClientError::Infrastructure(anyhow!(e)))?;
+
+		Ok(GithubRepo {
+			project_id: repository.id.0,
+			owner: repository.owner.map(|user| user.login).unwrap_or_default(),
+			name: repository.name,
+		})
+	}
+
+	async fn find_issue_by_id(
 		&self,
 		project_id: &GithubProjectId,
 		issue_number: &GithubIssueNumber,
-	) -> Result<Option<GithubIssue>, GithubIssueRepositoryError> {
+	) -> Result<Option<GithubIssue>, GithubClientError> {
 		// Safe to cast, as long as there is no more than i64::Max (9_223_372_036_854_775_807)
 		// issues on the repository.
 		self.issue(project_id.to_owned(), *issue_number as i64)
 			.await
-			.map_err(|e| GithubIssueRepositoryError::Infrastructure(e.to_string()))
+			.map_err(|e| GithubClientError::Infrastructure(anyhow!(e)))
 			.map(|issue| Some(issue.into()))
 	}
 }
