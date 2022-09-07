@@ -26,7 +26,7 @@ mod test {
 				&self,
 				project_id: &GithubProjectId,
 				issue_number: &GithubIssueNumber,
-			) -> Result<Option<GithubIssue>, GithubClientError>;
+			) -> Result<GithubIssue, GithubClientError>;
 
 			async fn find_repository_by_id(
 				&self,

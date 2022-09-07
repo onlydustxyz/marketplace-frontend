@@ -129,7 +129,7 @@ async fn on_contribution_created_event(
 	github_client
 		.expect_find_issue_by_id()
 		.with(eq(project_id), eq(issue_number))
-		.returning(move |_, _| Ok(Some(github_issue.clone())));
+		.returning(move |_, _| Ok(github_issue.clone()));
 
 	contribution_projection_repository
 		.expect_create()

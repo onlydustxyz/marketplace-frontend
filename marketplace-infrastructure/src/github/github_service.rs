@@ -27,13 +27,13 @@ impl GithubClient for Client {
 		&self,
 		project_id: &GithubProjectId,
 		issue_number: &GithubIssueNumber,
-	) -> Result<Option<GithubIssue>, GithubClientError> {
+	) -> Result<GithubIssue, GithubClientError> {
 		// Safe to cast, as long as there is no more than i64::Max (9_223_372_036_854_775_807)
 		// issues on the repository.
 		self.issue(project_id.to_owned(), *issue_number as i64)
 			.await
 			.map_err(|e| GithubClientError::Infrastructure(anyhow!(e)))
-			.map(|issue| Some(issue.into()))
+			.map(|issue| issue.into())
 	}
 }
 

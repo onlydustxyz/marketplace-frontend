@@ -23,7 +23,6 @@ pub struct Repository {
 	pub name: String,
 }
 
-#[cfg(test)]
 impl Default for Issue {
 	fn default() -> Self {
 		Self {
