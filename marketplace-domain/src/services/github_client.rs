@@ -17,7 +17,7 @@ pub trait GithubClient: Send + Sync {
 		&self,
 		project_id: &GithubProjectId,
 		issue_number: &GithubIssueNumber,
-	) -> Result<Option<GithubIssue>, Error>;
+	) -> Result<GithubIssue, Error>;
 
 	async fn find_repository_by_id(
 		&self,

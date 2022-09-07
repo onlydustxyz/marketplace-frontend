@@ -37,8 +37,7 @@ impl WithGithubDataProjector {
 		gate: u8,
 	) -> Result<(), Error> {
 		let issue = match self.github_client.find_issue_by_id(project_id, issue_number).await {
-			Ok(Some(issue)) => Some(issue),
-			Ok(None) => None,
+			Ok(issue) => Some(issue),
 			Err(e) => {
 				error!(
 					"Failed to create contribution: error while fetching GitHub issue {issue_number} of project {project_id}: {e}",
