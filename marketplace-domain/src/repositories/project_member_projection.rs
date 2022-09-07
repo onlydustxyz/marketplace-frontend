@@ -16,5 +16,9 @@ pub enum Error {
 #[automock]
 pub trait Repository: Send + Sync {
 	fn store(&self, project_member: ProjectMemberProjection) -> Result<(), Error>;
-	fn delete(&self, project_id: &ProjectId, contributor_id: &ContributorId) -> Result<(), Error>;
+	fn delete(
+		&self,
+		project_id: &ProjectId,
+		contributor_account: &ContributorAccount,
+	) -> Result<(), Error>;
 }
