@@ -15,7 +15,7 @@ services:
 
   apibara:
     container_name: apibara-server
-    image: docker.io/onlydustxyz/apibara:v1.0.0
+    image: docker.io/onlydustxyz/apibara:main
     restart: always
     command: start --config /usr/etc/apibara/configuration.toml
     environment:
