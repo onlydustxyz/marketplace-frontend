@@ -1,15 +1,15 @@
-use crate::{ContributorId, GithubProjectId};
+use crate::{ContributorId, GithubProjectId, Projection};
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
-pub struct Projection {
+pub struct ProjectMember {
 	project_id: GithubProjectId,
 	contributor_id: ContributorId,
 	is_lead_contributor: bool,
 }
 
-impl crate::Projection for Projection {}
+impl Projection for ProjectMember {}
 
-impl Projection {
+impl ProjectMember {
 	pub fn new(
 		project_id: GithubProjectId,
 		contributor_id: ContributorId,
