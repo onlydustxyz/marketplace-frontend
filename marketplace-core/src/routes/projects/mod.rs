@@ -104,7 +104,7 @@ async fn build_project(
 		.filter_map(|result| match result {
 			Ok(opt_project) => opt_project,
 			Err(e) => {
-				error!("failed to join 'build contribution DTO' task: {e}");
+				error!("Failed to join 'build contribution DTO' task: {e}");
 				None
 			},
 		})

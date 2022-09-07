@@ -38,14 +38,7 @@ impl WithGithubDataProjector {
 	) -> Result<(), Error> {
 		let issue = match self.github_issue_repository.find(project_id, issue_number).await {
 			Ok(Some(issue)) => Some(issue),
-
-			Ok(None) => {
-				error!(
-					"Failed to create contribution: GitHub issue {issue_number} not found for project {project_id}"
-				);
-				None
-			},
-
+			Ok(None) => None,
 			Err(e) => {
 				error!(
 					"Failed to create contribution: error while fetching GitHub issue {issue_number} of project {project_id}: {e}",

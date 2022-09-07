@@ -6,7 +6,7 @@ use crate::{application::IndexerBuilder, domain::*, infrastructure::ApibaraClien
 use dotenv::dotenv;
 use marketplace_domain::*;
 use marketplace_infrastructure::{database, github};
-use slog::{o, Drain, Logger};
+use slog::{o, Drain, FnValue, Logger, Record};
 use std::sync::Arc;
 
 fn channel_size() -> usize {
@@ -23,7 +23,14 @@ fn get_root_logger() -> Logger {
 		.chan_size(channel_size())
 		.build(),
 		_ => slog_async::Async::new(slog_envlogger::new(
-			slog_json::Json::new(std::io::stdout()).add_default_keys().build().fuse(),
+			slog_json::Json::new(std::io::stdout())
+				.add_default_keys()
+				.add_key_value(o!("location" => FnValue(move |record : &Record| {
+						format!("{}:{}:{}", record.file(), record.line(), record.column())
+					}),
+				))
+				.build()
+				.fuse(),
 		))
 		.chan_size(channel_size())
 		.build(),

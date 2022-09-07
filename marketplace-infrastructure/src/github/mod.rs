@@ -47,7 +47,7 @@ impl Client {
 		}
 	}
 
-	async fn get<R: octocrab::FromResponse>(&self, url: &str) -> Result<R, Error> {
+	async fn get<R: octocrab::FromResponse>(&self, url: &str) -> Result<R, anyhow::Error> {
 		self.octo.get::<R, &str, ()>(url, None).await.map_err(|e| {
 			error!("Failed to get data from github api at {url}: {e}");
 			e.into()
@@ -66,19 +66,25 @@ impl Client {
 	}
 
 	pub async fn user(&self, user_id: &str) -> Result<octocrab::models::User, Error> {
-		self.get::<octocrab::models::User>(&format!("{}user/{}", self.octo.base_url, user_id))
-			.await
+		let user = self
+			.get::<octocrab::models::User>(&format!("{}user/{}", self.octo.base_url, user_id))
+			.await?;
+
+		Ok(user)
 	}
 
 	pub async fn repository_by_id(
 		&self,
 		project_id_: u64,
 	) -> Result<octocrab::models::Repository, Error> {
-		self.get::<octocrab::models::Repository>(&format!(
-			"{}repositories/{}",
-			self.octo.base_url, project_id_
-		))
-		.await
+		let id = self
+			.get::<octocrab::models::Repository>(&format!(
+				"{}repositories/{}",
+				self.octo.base_url, project_id_
+			))
+			.await?;
+
+		Ok(id)
 	}
 
 	pub async fn get_project_by_owner_and_name(
