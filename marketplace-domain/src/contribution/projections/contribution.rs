@@ -1,8 +1,11 @@
-use crate::*;
+use crate::{
+	ContributionId, ContributionStatus, ContributorId, GithubIssueNumber, GithubProjectId,
+	Projection,
+};
 use url::Url;
 
 #[derive(Debug, PartialEq, Eq, Clone, Default)]
-pub struct Projection {
+pub struct Contribution {
 	pub id: ContributionId,
 	pub project_id: GithubProjectId,
 	pub issue_number: GithubIssueNumber,
@@ -15,9 +18,9 @@ pub struct Projection {
 	pub metadata: Metadata,
 }
 
-impl crate::Projection for Projection {}
+impl Projection for Contribution {}
 
-impl Projection {
+impl Contribution {
 	pub fn old_composite_id(&self) -> u64 {
 		let project_id: u64 = self.project_id;
 		let issue_number = self.issue_number as u64;
