@@ -1,6 +1,10 @@
+use std::fmt::{Debug, Display};
+
+use serde::{de::DeserializeOwned, Serialize};
+
 pub trait Aggregate: Send + Sync + Default + Sized {
-	type Id: PartialEq;
-	type Event;
+	type Id: PartialEq + Display;
+	type Event: Serialize + DeserializeOwned + Debug;
 }
 
 pub trait EventSourcable: Aggregate {
