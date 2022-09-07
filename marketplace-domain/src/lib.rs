@@ -38,6 +38,9 @@ pub use projection_repository::{Error as ProjectionRepositoryError, ProjectionRe
 mod contribution;
 pub use contribution::{AggregateId as ContributionId, *};
 
+mod project;
+pub use project::MemberProjection as ProjectMemberProjection;
+
 mod aggregate_root_repository;
 pub use aggregate_root_repository::{
 	Error as AggregateRootRepositoryError, Repository as AggregateRootRepository,
