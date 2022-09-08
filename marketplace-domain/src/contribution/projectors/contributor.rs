@@ -43,7 +43,7 @@ impl ContributorProjector {
 
 			let user = self.github_client.find_user_by_id(github_identifier).await?;
 
-			self.contributor_projection_repository.store(&ContributorProjection {
+			self.contributor_projection_repository.store(ContributorProjection {
 				id: contributor_id.clone(),
 				github_identifier,
 				github_username: user.name,

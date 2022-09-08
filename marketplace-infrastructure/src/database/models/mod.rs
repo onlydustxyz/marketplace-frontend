@@ -15,3 +15,6 @@ pub use events::*;
 
 mod project_members;
 pub use project_members::ProjectMember;
+
+mod contributors;
+pub use contributors::*;
