@@ -1,6 +1,5 @@
+use super::{ContractError, ContractViewer};
 use crate::starknet::model::OnChainContributorId;
-
-use super::ContractViewer;
 use marketplace_domain::*;
 use starknet::core::types::FieldElement;
 
@@ -24,7 +23,10 @@ impl Default for Contract {
 }
 
 impl Contract {
-	pub async fn get_user_information(&self, account: FieldElement) -> Option<Contributor> {
+	pub async fn get_user_information(
+		&self,
+		account: FieldElement,
+	) -> Result<Contributor, ContractError> {
 		self.contract_viewer
 			.call("get_user_information", vec![account])
 			.await
@@ -34,6 +36,5 @@ impl Contract {
 				github_username: None,
 				account: format!("{account:#x}").parse().unwrap(),
 			})
-			.ok()
 	}
 }

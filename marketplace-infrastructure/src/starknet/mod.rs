@@ -17,8 +17,6 @@ use starknet::{
 use std::{env, sync::Arc};
 use url::Url;
 
-use marketplace_domain::{Contributor, ContributorId};
-
 fn make_account_from_env() -> SingleOwnerAccount<SequencerGatewayProvider, LocalWallet> {
 	let private_key = env::var("PRIVATE_KEY").expect("PRIVATE_KEY must be set");
 	let account_address = env::var("ACCOUNT_ADDRESS").expect("ACCOUNT_ADDRESS must be set");
@@ -69,14 +67,6 @@ impl<A: Account + Sync + Send + 'static> Client<A> {
 			contributions: Arc::new(ContributionContract::new(account)),
 			profile: ProfileContract::default(),
 		}
-	}
-
-	pub async fn get_user_information(
-		&self,
-		contributor_id: &ContributorId,
-	) -> Option<Contributor> {
-		let account = self.profile.get_account(contributor_id).await?;
-		self.registry.get_user_information(account).await
 	}
 }
 
