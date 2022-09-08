@@ -26,3 +26,17 @@ jobs:
       dockerfile: diesel-rs
       datadog_label: '[{"source": "marketplace", "service": "marketplace-indexer", "github_version": "${{ github.ref_name }}"}]'
     secrets: inherit
+  aws:
+    name: "Refresh Instance"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Start AWS Refresh instance
+        run: |
+          aws autoscaling start-instance-refresh --auto-scaling-group-name  ${{ secrets.AWS_ASG_GROUP_NAME_STAGING }} --preferences "SkipMatching=false"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
