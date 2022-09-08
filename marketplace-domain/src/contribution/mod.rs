@@ -5,7 +5,9 @@ pub use aggregate_root::{
 };
 
 mod projectors;
-pub use projectors::{ApplicationProjector, ContributionProjector, ProjectProjector};
+pub use projectors::{
+	ApplicationProjector, ContributionProjector, ContributorProjector, ProjectProjector,
+};
 
 mod projections;
 pub use projections::{
