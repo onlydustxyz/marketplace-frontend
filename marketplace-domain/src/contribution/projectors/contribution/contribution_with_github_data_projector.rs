@@ -32,8 +32,8 @@ impl WithGithubDataProjector {
 	async fn on_create(
 		&self,
 		id: &ContributionId,
-		project_id: &GithubProjectId,
-		issue_number: &GithubIssueNumber,
+		project_id: GithubProjectId,
+		issue_number: GithubIssueNumber,
 		gate: u8,
 	) -> Result<(), Error> {
 		let issue = match self.github_client.find_issue_by_id(project_id, issue_number).await {
@@ -48,8 +48,8 @@ impl WithGithubDataProjector {
 
 		let contribution = ContributionProjection {
 			id: id.to_owned(),
-			project_id: *project_id,
-			issue_number: *issue_number,
+			project_id,
+			issue_number,
 			contributor_id: None,
 			status: ContributionStatus::Open,
 			gate,
@@ -100,7 +100,7 @@ impl Projector<ContributionProjection> for WithGithubDataProjector {
 				project_id,
 				issue_number,
 				gate,
-			} => self.on_create(id, project_id, issue_number, *gate).await,
+			} => self.on_create(id, *project_id, *issue_number, *gate).await,
 			ContributionEvent::Assigned { id, contributor_id } =>
 				self.on_assign(id, contributor_id),
 			ContributionEvent::Claimed { id, contributor_id } => self.on_assign(id, contributor_id),

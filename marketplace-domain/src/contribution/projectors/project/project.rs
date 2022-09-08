@@ -28,7 +28,7 @@ impl ProjectProjector {
 		}
 	}
 
-	async fn on_contribution_created(&self, project_id: &GithubProjectId) -> Result<(), Error> {
+	async fn on_contribution_created(&self, project_id: GithubProjectId) -> Result<(), Error> {
 		if self.project_projection_repository.find_by_id(project_id).is_err() {
 			let repo = self.github_client.find_repository_by_id(project_id).await?;
 			self.project_projection_repository.store(ProjectProjection {
@@ -46,14 +46,14 @@ impl ProjectProjector {
 
 #[async_trait]
 impl Projector<ProjectProjection> for ProjectProjector {
-	async fn project(&self, event: &<Contribution as Aggregate>::Event) {
+	async fn project(&self, event: &ContributionEvent) {
 		let result = match event {
 			ContributionEvent::Created {
 				id: _,
 				project_id,
 				issue_number: _,
 				gate: _,
-			} => self.on_contribution_created(project_id).await,
+			} => self.on_contribution_created(*project_id).await,
 			_ => Ok(()),
 		};
 

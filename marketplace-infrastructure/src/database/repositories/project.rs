@@ -128,7 +128,7 @@ impl ProjectProjectionRepository for Client {
 
 	fn find_by_id(
 		&self,
-		project_id: &GithubProjectId,
+		project_id: GithubProjectId,
 	) -> Result<ProjectProjection, ProjectProjectionRepositoryError> {
 		let connection = self.connection().map_err(ProjectProjectionRepositoryError::from)?;
 
