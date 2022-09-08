@@ -1,6 +1,5 @@
+use super::{ContractError, ContractViewer};
 use crate::starknet::model::OnChainContributorId;
-
-use super::ContractViewer;
 use marketplace_domain::*;
 use starknet::core::types::FieldElement;
 
@@ -23,12 +22,14 @@ impl Default for Contract {
 }
 
 impl Contract {
-	pub async fn get_account(&self, contributor_id: &ContributorId) -> Option<FieldElement> {
-		let contributor_id: OnChainContributorId = contributor_id.to_owned().into();
+	pub async fn get_account(
+		&self,
+		contributor_id: &ContributorId,
+	) -> Result<FieldElement, ContractError> {
+		let contributor_id: OnChainContributorId = contributor_id.clone().into();
 		self.contract_viewer
 			.call("ownerOf", vec![contributor_id.0, contributor_id.1])
 			.await
 			.map(|c| c[0])
-			.ok()
 	}
 }
