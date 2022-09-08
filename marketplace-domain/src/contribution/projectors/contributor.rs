@@ -37,15 +37,11 @@ impl ContributorProjector {
 		if self.contributor_projection_repository.find_by_id(&contributor_id).is_err() {
 			let contributor = self.contributor_service.contributor_by_id(&contributor_id).await?;
 
-			// TODO: make data received from on chain service mandatory
-			let github_identifier: GithubUserId =
-				contributor.github_handle.unwrap().parse().unwrap();
-
-			let user = self.github_client.find_user_by_id(github_identifier).await?;
+			let user = self.github_client.find_user_by_id(contributor.github_identifier).await?;
 
 			self.contributor_projection_repository.store(ContributorProjection {
 				id: contributor_id.clone(),
-				github_identifier,
+				github_identifier: contributor.github_identifier,
 				github_username: user.name,
 				account: contributor.account,
 			})?;

@@ -1,4 +1,4 @@
-use crate::{ContractAddress, HexPrefixedString, ParseHexPrefixedStringError};
+use crate::{ContractAddress, GithubUserId, HexPrefixedString, ParseHexPrefixedStringError};
 use crypto_bigint::U256;
 use marketplace_wrappers::HexStringWrapper;
 use serde::{Deserialize, Serialize};
@@ -14,6 +14,5 @@ pub struct Account(ContractAddress);
 pub struct Contributor {
 	pub id: Id,
 	pub account: Account,
-	pub github_username: Option<String>,
-	pub github_handle: Option<String>,
+	pub github_identifier: GithubUserId,
 }
