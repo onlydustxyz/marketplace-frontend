@@ -1,4 +1,6 @@
-use crate::{GithubIssue, GithubIssueNumber, GithubProjectId, GithubRepo};
+use crate::{
+	GithubIssue, GithubIssueNumber, GithubProjectId, GithubRepo, GithubUser, GithubUserId,
+};
 use async_trait::async_trait;
 #[cfg(test)]
 use mockall::automock;
@@ -23,4 +25,6 @@ pub trait GithubClient: Send + Sync {
 		&self,
 		project_id: &GithubProjectId,
 	) -> Result<GithubRepo, Error>;
+
+	async fn find_user_by_id(&self, user_id: GithubUserId) -> Result<GithubUser, Error>;
 }
