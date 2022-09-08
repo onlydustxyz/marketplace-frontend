@@ -2,10 +2,7 @@ mod routes;
 
 use dotenv::dotenv;
 use log::info;
-use marketplace_core::{
-	application::*,
-	utils::caches::{ContributorCache, RepoCache},
-};
+use marketplace_core::{application::*, utils::caches::ContributorCache};
 use marketplace_infrastructure::{
 	database::{self, init_pool},
 	github, starknet,
@@ -73,7 +70,6 @@ async fn main() {
 		github_client.clone(),
 	)
 	.manage(database.clone())
-	.manage(RepoCache::default())
 	.manage(ContributorCache::default())
 	.manage(github_client)
 	.attach(routes::cors::Cors)

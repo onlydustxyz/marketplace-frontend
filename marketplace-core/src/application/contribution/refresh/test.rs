@@ -57,11 +57,12 @@ fn contributor_id() -> ContributorId {
 
 #[fixture]
 fn project() -> ProjectProjection {
-	ProjectProjection::new(
-		STARKONQUEST,
-		String::from("onlydustxyz"),
-		String::from("starkonquest"),
-	)
+	ProjectProjection {
+		id: STARKONQUEST,
+		owner: String::from("onlydustxyz"),
+		name: String::from("starkonquest"),
+		..Default::default()
+	}
 }
 
 #[fixture]
@@ -173,9 +174,10 @@ fn refresh_projects_usecase(
 ) -> RefreshProjects {
 	github_client.expect_find_repository_by_id().returning(move |_| {
 		Ok(GithubRepo {
-			project_id: project.id().clone(),
-			owner: project.owner().clone(),
-			name: project.name().clone(),
+			project_id: project.id,
+			owner: project.owner.clone(),
+			name: project.name.clone(),
+			..Default::default()
 		})
 	});
 

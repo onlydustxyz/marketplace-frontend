@@ -1,8 +1,6 @@
 mod contributor_cache;
-mod repo_cache;
 
 pub use contributor_cache::ContributorCache;
-pub use repo_cache::RepoCache;
 
 use std::{hash::Hash, time::Duration};
 
