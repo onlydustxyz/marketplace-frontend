@@ -179,6 +179,7 @@ fn inject_app(
 		))
 		.manage(database.clone() as Arc<dyn ApplicationProjectionRepository>)
 		.manage(database.clone() as Arc<dyn ContributionProjectionRepository>)
+		.manage(database.clone() as Arc<dyn ContributorProjectionRepository>)
 		.manage(database as Arc<dyn ProjectProjectionRepository>)
 		.manage(contact_information_service)
 }
