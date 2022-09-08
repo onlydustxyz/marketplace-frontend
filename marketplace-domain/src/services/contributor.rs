@@ -1,5 +1,6 @@
 use crate::*;
 use async_trait::async_trait;
+#[cfg(test)]
 use mockall::automock;
 use thiserror::Error;
 
@@ -9,8 +10,8 @@ pub enum Error {
 	Infrastructure(#[source] anyhow::Error),
 }
 
+#[cfg_attr(test, automock)]
 #[async_trait]
-#[automock]
 pub trait Service: Send + Sync {
 	async fn contributor_by_id(&self, contributor_id: &ContributorId)
 	-> Result<Contributor, Error>;

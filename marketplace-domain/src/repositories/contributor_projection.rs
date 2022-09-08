@@ -1,3 +1,6 @@
+use crate::{ContributorId, ContributorProjection};
+#[cfg(test)]
+use mockall::automock;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -12,4 +15,8 @@ pub enum Error {
 	Infrastructure(#[source] anyhow::Error),
 }
 
-pub trait Repository {}
+#[cfg_attr(test, automock)]
+pub trait Repository: Send + Sync {
+	fn store(&self, contributor: &ContributorProjection) -> Result<(), Error>;
+	fn find_by_id(&self, contributor_id: &ContributorId) -> Result<ContributorProjection, Error>;
+}

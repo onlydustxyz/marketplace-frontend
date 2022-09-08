@@ -1,6 +1,7 @@
 use url::Url;
 pub type ProjectId = u64;
 pub type IssueNumber = u64;
+pub type UserId = u64;
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Issue {
@@ -24,6 +25,12 @@ pub struct Repository {
 	pub description: Option<String>,
 	pub url: Option<Url>,
 	pub logo_url: Option<Url>,
+}
+
+#[derive(Debug, PartialEq, Eq, Clone, Default)]
+pub struct User {
+	pub id: UserId,
+	pub name: String,
 }
 
 impl Default for Issue {

@@ -23,3 +23,6 @@ pub use contributor::{Error as ContributorServiceError, Service as ContributorSe
 
 #[cfg(test)]
 pub use github_client::MockGithubClient;
+
+#[cfg(test)]
+pub use contributor::MockService as MockContributorService;

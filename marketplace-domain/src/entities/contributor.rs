@@ -13,7 +13,7 @@ pub struct Account(ContractAddress);
 #[derive(Clone, Debug, PartialEq, Eq, Default)]
 pub struct Contributor {
 	pub id: Id,
-	pub account: Option<Account>,
+	pub account: Account,
 	pub github_username: Option<String>,
 	pub github_handle: Option<String>,
 }
