@@ -20,9 +20,6 @@ async-trait = "0.1.56"
 futures = { version = "0.3.21", features = ["alloc"] }
 tokio = { version = "1.18.2", features = ["full"] }
 
-# Cache
-stretto = { version = "0.5", features = ["async"] }
-
 # Database
 uuid = { version = "0.8.2", default_features = false, features = [
 	"v4",
