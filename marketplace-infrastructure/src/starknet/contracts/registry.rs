@@ -32,8 +32,7 @@ impl Contract {
 			.await
 			.map(|fields| Contributor {
 				id: OnChainContributorId(fields[1], fields[2]).into(),
-				github_handle: Some(fields[3].to_string()),
-				github_username: None,
+				github_identifier: fields[3].to_string().parse().unwrap(),
 				account: format!("{account:#x}").parse().unwrap(),
 			})
 	}

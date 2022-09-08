@@ -73,7 +73,7 @@ async fn contributor_gets_created_with_contribution(
 		.returning(move |_| {
 			Ok(Contributor {
 				id: cloned_contributor_id.clone(),
-				github_handle: Some(github_user_id.to_string()),
+				github_identifier: github_user_id,
 				account: cloned_contributor_account.clone(),
 				..Default::default()
 			})
