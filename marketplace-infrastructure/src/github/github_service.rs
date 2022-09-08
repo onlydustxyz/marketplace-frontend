@@ -19,8 +19,11 @@ impl GithubClient for Client {
 
 		Ok(GithubRepo {
 			project_id: repository.id.0,
-			owner: repository.owner.map(|user| user.login).unwrap_or_default(),
+			owner: repository.owner.clone().map(|user| user.login).unwrap_or_default(),
 			name: repository.name,
+			description: repository.description,
+			url: repository.html_url,
+			logo_url: repository.owner.map(|user| user.avatar_url),
 		})
 	}
 

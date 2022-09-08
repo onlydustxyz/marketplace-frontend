@@ -1,28 +1,14 @@
 use crate::{GithubProjectId, Projection};
+use url::Url;
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct Project {
-	id: GithubProjectId,
-	owner: String,
-	name: String,
+	pub id: GithubProjectId,
+	pub owner: String,
+	pub name: String,
+	pub url: Option<Url>,
+	pub description: Option<String>,
+	pub logo_url: Option<Url>,
 }
 
 impl Projection for Project {}
-
-impl Project {
-	pub fn new(id: GithubProjectId, owner: String, name: String) -> Self {
-		Self { id, owner, name }
-	}
-
-	pub fn id(&self) -> &GithubProjectId {
-		&self.id
-	}
-
-	pub fn owner(&self) -> &String {
-		&self.owner
-	}
-
-	pub fn name(&self) -> &String {
-		&self.name
-	}
-}

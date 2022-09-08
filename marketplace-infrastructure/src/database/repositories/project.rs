@@ -1,8 +1,4 @@
-use crate::database::{
-	models,
-	schema::projects::{self, dsl::*},
-	Client, DatabaseError,
-};
+use crate::database::{models, schema::projects, Client, DatabaseError};
 use anyhow::anyhow;
 use diesel::{prelude::*, query_dsl::BelongingToDsl};
 use itertools::Itertools;
@@ -15,17 +11,18 @@ impl ProjectRepository for Client {
 	) -> Result<Vec<ProjectWithContributions>, ProjectRepositoryError> {
 		let connection = self.connection().map_err(ProjectRepositoryError::from)?;
 
-		let project_list =
-			projects.load::<models::Project>(&*connection).map_err(DatabaseError::from)?;
+		let projects: Vec<models::Project> =
+			projects::table.load(&*connection).map_err(DatabaseError::from)?;
 
-		let contribution_list = models::Contribution::belonging_to(&project_list)
-			.load::<models::Contribution>(&*connection)
-			.map_err(DatabaseError::from)?
-			.grouped_by(&project_list);
+		let contributions: Vec<Vec<models::Contribution>> =
+			models::Contribution::belonging_to(&projects)
+				.load(&*connection)
+				.map_err(DatabaseError::from)?
+				.grouped_by(&projects);
 
-		let result = project_list
+		let result = projects
 			.into_iter()
-			.zip(contribution_list)
+			.zip(contributions)
 			.map(|(project, contributions)| ProjectWithContributions {
 				project: project.into(),
 				contributions: contributions.into_iter().map_into().collect(),
@@ -46,19 +43,29 @@ impl From<models::Project> for Project {
 	}
 }
 
-impl From<ProjectProjection> for models::NewProject {
+impl From<ProjectProjection> for models::Project {
 	fn from(project: ProjectProjection) -> Self {
 		Self {
-			id: project.id().to_string(),
-			name: project.name().clone(),
-			owner: project.owner().clone(),
+			id: project.id.to_string(),
+			name: project.name,
+			owner: project.owner,
+			description: project.description,
+			url: project.url.map(|url| url.to_string()),
+			logo_url: project.logo_url.map(|url| url.to_string()),
 		}
 	}
 }
 
 impl From<models::Project> for ProjectProjection {
 	fn from(project: models::Project) -> Self {
-		Self::new(project.id.parse().unwrap(), project.name, project.owner)
+		Self {
+			id: project.id.parse().unwrap(),
+			name: project.name,
+			owner: project.owner,
+			description: project.description,
+			url: project.url.map(|url| url.parse().unwrap()),
+			logo_url: project.logo_url.map(|url| url.parse().unwrap()),
+		}
 	}
 }
 
@@ -107,10 +114,10 @@ impl ProjectProjectionRepository for Client {
 	fn store(&self, project: ProjectProjection) -> Result<(), ProjectProjectionRepositoryError> {
 		let connection = self.connection().map_err(ProjectProjectionRepositoryError::from)?;
 
-		let project: models::NewProject = project.into();
+		let project: models::Project = project.into();
 		diesel::insert_into(projects::table)
 			.values(&project)
-			.on_conflict(id)
+			.on_conflict(projects::id)
 			.do_update()
 			.set(&project)
 			.execute(&*connection)
@@ -131,6 +138,15 @@ impl ProjectProjectionRepository for Client {
 			.map_err(DatabaseError::from)?;
 
 		Ok(project.into())
+	}
+
+	fn list(&self) -> Result<Vec<ProjectProjection>, ProjectProjectionRepositoryError> {
+		let connection = self.connection().map_err(ProjectProjectionRepositoryError::from)?;
+
+		let project: Vec<models::Project> =
+			projects::table.load(&*connection).map_err(DatabaseError::from)?;
+
+		Ok(project.into_iter().map_into().collect())
 	}
 }
 

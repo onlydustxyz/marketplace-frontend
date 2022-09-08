@@ -16,7 +16,12 @@ fn project1() -> Project {
 
 #[fixture]
 fn projection1(project1: Project) -> ProjectProjection {
-	ProjectProjection::new(project1.id, project1.owner, project1.name)
+	ProjectProjection {
+		id: project1.id,
+		owner: project1.owner,
+		name: project1.name,
+		..Default::default()
+	}
 }
 
 #[fixture]
@@ -30,7 +35,12 @@ fn project2() -> Project {
 
 #[fixture]
 fn projection2(project1: Project) -> ProjectProjection {
-	ProjectProjection::new(project1.id, project1.owner, project1.name)
+	ProjectProjection {
+		id: project1.id,
+		owner: project1.owner,
+		name: project1.name,
+		..Default::default()
+	}
 }
 
 #[rstest]
