@@ -108,11 +108,7 @@ impl ApplicationProjectionRepository for FilledDatabase {
 						0.into(),
 						contributor_id.clone(),
 					),
-					ApplicationProjection::new(
-						Uuid::from_u128(3).into(),
-						1.into(),
-						contributor_id.clone(),
-					),
+					ApplicationProjection::new(Uuid::from_u128(3).into(), 1.into(), contributor_id),
 				]),
 				CONTRIBUTOR_ID_0 => Ok(vec![
 					ApplicationProjection::new(
