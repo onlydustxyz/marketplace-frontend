@@ -1,6 +1,7 @@
 use crate::routes::to_http_api_problem::ToHttpApiProblem;
 use futures::future::{self, OptionFuture};
 use http_api_problem::HttpApiProblem;
+use itertools::Itertools;
 use log::error;
 use marketplace_core::{dto, utils::caches};
 use marketplace_domain::*;
@@ -16,6 +17,7 @@ pub async fn list_projects(
 	contributor_cache: &State<caches::ContributorCache>,
 	project_projection_repository: &State<Arc<dyn ProjectProjectionRepository>>,
 	contribution_projection_repository: &State<Arc<dyn ContributionProjectionRepository>>,
+	project_member_projection_repository: &State<Arc<dyn ProjectMemberProjectionRepository>>,
 ) -> Result<Json<Vec<dto::Project>>, HttpApiProblem> {
 	let build_project_tasks = project_projection_repository
 		.list()
@@ -25,6 +27,7 @@ pub async fn list_projects(
 			build_project(
 				project,
 				contribution_projection_repository,
+				project_member_projection_repository,
 				contributor_cache,
 			)
 		});
@@ -49,6 +52,7 @@ pub async fn list_projects(
 async fn build_project(
 	project: ProjectProjection,
 	contribution_projection_repository: &State<Arc<dyn ContributionProjectionRepository>>,
+	project_member_projection_repository: &State<Arc<dyn ProjectMemberProjectionRepository>>,
 	contributor_cache: &caches::ContributorCache,
 ) -> Result<Option<dto::Project>, HttpApiProblem> {
 	let contributions = contribution_projection_repository
@@ -78,6 +82,10 @@ async fn build_project(
 		})
 		.collect();
 
+	let members = project_member_projection_repository
+		.list_by_project(&project.id)
+		.map_err(|e| e.to_http_api_problem())?;
+
 	let project = dto::Project {
 		id: project.id.to_string(),
 		title: project.name.clone(),
@@ -91,6 +99,7 @@ async fn build_project(
 			.unwrap()
 		}),
 		contributions,
+		members: members.into_iter().map_into().collect_vec(),
 	};
 
 	Ok(Some(project))

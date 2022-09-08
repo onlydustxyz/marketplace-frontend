@@ -20,6 +20,7 @@ pub struct Project {
 	#[schemars(with = "String")]
 	pub logo: Option<Url>,
 	pub contributions: Vec<Contribution>,
+	pub members: Vec<Member>,
 }
 
 #[derive(Serialize, Deserialize, JsonSchema, Clone)]
@@ -44,6 +45,12 @@ pub struct Metadata {
 	pub r#type: Option<String>,
 }
 
+#[derive(Serialize, Deserialize, JsonSchema, Clone)]
+pub struct Member {
+	contributor_account: String,
+	is_lead_contributor: bool,
+}
+
 impl From<domain::ContributionProjection> for Contribution {
 	fn from(contribution: domain::ContributionProjection) -> Self {
 		Contribution {
@@ -65,6 +72,15 @@ impl From<domain::ContributionProjection> for Contribution {
 				context: contribution.metadata.context,
 				r#type: contribution.metadata.r#type,
 			},
+		}
+	}
+}
+
+impl From<domain::ProjectMemberProjection> for Member {
+	fn from(member: domain::ProjectMemberProjection) -> Self {
+		Member {
+			contributor_account: member.contributor_account().to_string(),
+			is_lead_contributor: member.is_lead_contributor(),
 		}
 	}
 }

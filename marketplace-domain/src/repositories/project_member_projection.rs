@@ -1,7 +1,7 @@
 use mockall::automock;
 use thiserror::Error;
 
-use crate::*;
+use crate::{project::MemberProjection, *};
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -21,4 +21,5 @@ pub trait Repository: Send + Sync {
 		project_id: &ProjectId,
 		contributor_account: &ContributorAccount,
 	) -> Result<(), Error>;
+	fn list_by_project(&self, project_id: &ProjectId) -> Result<Vec<MemberProjection>, Error>;
 }
