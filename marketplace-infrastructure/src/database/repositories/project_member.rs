@@ -1,4 +1,7 @@
+use std::str::FromStr;
+
 use anyhow::anyhow;
+use itertools::Itertools;
 use marketplace_domain::*;
 
 use crate::database::{
@@ -6,7 +9,7 @@ use crate::database::{
 	schema::project_members::{self, dsl::*},
 	Client, DatabaseError,
 };
-use diesel::{ExpressionMethods, RunQueryDsl};
+use diesel::prelude::*;
 
 impl ProjectMemberProjectionRepository for Client {
 	fn store(
@@ -39,6 +42,20 @@ impl ProjectMemberProjectionRepository for Client {
 
 		Ok(())
 	}
+
+	fn list_by_project(
+		&self,
+		project_id_: &ProjectId,
+	) -> Result<Vec<ProjectMemberProjection>, ProjectMemberProjectionRepositoryError> {
+		let connection = self.connection().map_err(ProjectMemberProjectionRepositoryError::from)?;
+
+		let project_members_ = project_members::table
+			.filter(project_members::project_id.eq(project_id_.to_string()))
+			.load::<models::ProjectMember>(&*connection)
+			.map_err(DatabaseError::from)?;
+
+		Ok(project_members_.into_iter().map_into().collect())
+	}
 }
 
 impl ProjectionRepository<ProjectMemberProjection> for Client {
@@ -64,6 +81,16 @@ impl From<ProjectMemberProjection> for models::ProjectMember {
 			contributor_account: member.contributor_account().to_string(),
 			is_lead_contributor: member.is_lead_contributor(),
 		}
+	}
+}
+
+impl From<models::ProjectMember> for ProjectMemberProjection {
+	fn from(member: models::ProjectMember) -> Self {
+		ProjectMemberProjection::new(
+			member.project_id.parse().unwrap(),
+			ContributorAccount::from_str(member.contributor_account.as_str()).unwrap(),
+			member.is_lead_contributor,
+		)
 	}
 }
 

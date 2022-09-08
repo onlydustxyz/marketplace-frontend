@@ -197,3 +197,20 @@ impl ToHttpApiProblem for ProjectProjectionRepositoryError {
 		}
 	}
 }
+
+impl ToHttpApiProblem for ProjectMemberProjectionRepositoryError {
+	fn to_http_api_problem(&self) -> HttpApiProblem {
+		match self {
+			ProjectMemberProjectionRepositoryError::NotFound =>
+				HttpApiProblem::new(StatusCode::NOT_FOUND).title(self.to_string()),
+			ProjectMemberProjectionRepositoryError::AlreadyExist(e) =>
+				HttpApiProblem::new(StatusCode::BAD_REQUEST)
+					.title(self.to_string())
+					.detail(e.to_string()),
+			ProjectMemberProjectionRepositoryError::Infrastructure(e) =>
+				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+					.title(self.to_string())
+					.detail(e.to_string()),
+		}
+	}
+}
