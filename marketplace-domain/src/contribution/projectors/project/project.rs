@@ -31,11 +31,14 @@ impl ProjectProjector {
 	async fn on_contribution_created(&self, project_id: &GithubProjectId) -> Result<(), Error> {
 		if self.project_projection_repository.find_by_id(project_id).is_err() {
 			let repo = self.github_client.find_repository_by_id(project_id).await?;
-			self.project_projection_repository.store(ProjectProjection::new(
-				repo.project_id,
-				repo.owner,
-				repo.name,
-			))?;
+			self.project_projection_repository.store(ProjectProjection {
+				id: repo.project_id,
+				owner: repo.owner,
+				name: repo.name,
+				description: repo.description,
+				url: repo.url,
+				logo_url: repo.logo_url,
+			})?;
 		}
 		Ok(())
 	}

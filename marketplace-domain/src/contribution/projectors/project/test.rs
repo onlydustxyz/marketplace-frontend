@@ -61,11 +61,14 @@ async fn project_gets_created_with_contribution(
 
 	project_projection_repository
 		.expect_store()
-		.with(eq(ProjectProjection::new(
-			repo.project_id,
-			repo.owner,
-			repo.name,
-		)))
+		.with(eq(ProjectProjection {
+			id: repo.project_id,
+			owner: repo.owner,
+			name: repo.name,
+			description: repo.description,
+			url: repo.url,
+			logo_url: repo.logo_url,
+		}))
 		.times(1)
 		.returning(|_| Ok(()));
 
@@ -90,11 +93,14 @@ async fn project_is_not_stored_if_already_present(
 		.with(eq(project_id))
 		.times(1)
 		.returning(move |_| {
-			Ok(ProjectProjection::new(
-				repo.project_id,
-				repo.owner.clone(),
-				repo.name.clone(),
-			))
+			Ok(ProjectProjection {
+				id: repo.project_id,
+				owner: repo.owner.clone(),
+				name: repo.name.clone(),
+				description: repo.description.clone(),
+				url: repo.url.clone(),
+				logo_url: repo.logo_url.clone(),
+			})
 		});
 
 	github_client.expect_find_repository_by_id().times(0);

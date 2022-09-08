@@ -26,7 +26,15 @@ pub async fn new_project(
 		.await
 		.map_err(|e| e.to_http_api_problem())?;
 
-	let projection = ProjectProjection::new(project.id, project.owner, project.name);
+	let owner = project.owner.expect("Invalid repo owner received from github API");
+	let projection = ProjectProjection {
+		id: *project.id,
+		owner: owner.login,
+		name: project.name,
+		description: project.description,
+		url: project.html_url,
+		logo_url: Some(owner.avatar_url),
+	};
 	ProjectProjectionRepository::store(database.as_ref(), projection)
 		.map_err(|e| e.to_http_api_problem())?;
 

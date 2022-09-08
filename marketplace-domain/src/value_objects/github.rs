@@ -21,6 +21,9 @@ pub struct Repository {
 	pub project_id: ProjectId,
 	pub owner: String,
 	pub name: String,
+	pub description: Option<String>,
+	pub url: Option<Url>,
+	pub logo_url: Option<Url>,
 }
 
 impl Default for Issue {

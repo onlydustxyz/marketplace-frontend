@@ -95,7 +95,9 @@ table! {
         id -> Varchar,
         owner -> Varchar,
         name -> Varchar,
-        last_indexed_time -> Nullable<Timestamp>,
+        url -> Nullable<Varchar>,
+        description -> Nullable<Varchar>,
+        logo_url -> Nullable<Varchar>,
     }
 }
 

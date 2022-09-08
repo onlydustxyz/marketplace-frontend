@@ -1,6 +1,6 @@
 use uuid::Uuid;
 
-use marketplace_domain::{ContributionProjection, Project};
+use marketplace_domain::ContributionProjection;
 
 mod application_repository;
 mod contact_information_repository;
@@ -11,17 +11,14 @@ use marketplace_domain::*;
 
 use super::Client;
 
-fn init_project(client: &Client) -> Project {
-	let project = Project {
+fn init_project(client: &Client) -> ProjectProjection {
+	let project = ProjectProjection {
 		id: 666,
 		name: Uuid::new_v4().to_string(),
 		owner: Uuid::new_v4().to_string(),
+		..Default::default()
 	};
-
-	let cloned_project = project.clone();
-	let projection =
-		ProjectProjection::new(cloned_project.id, cloned_project.owner, cloned_project.name);
-	<Client as ProjectProjectionRepository>::store(client, projection).unwrap();
+	<Client as ProjectProjectionRepository>::store(client, project.clone()).unwrap();
 
 	project
 }
