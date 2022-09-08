@@ -1,6 +1,5 @@
 mod errors;
 mod github_service;
-mod models;
 
 pub use errors::Error as GithubError;
 
@@ -10,16 +9,6 @@ use std::{collections::HashMap, sync::Arc};
 use marketplace_domain::{self as domain, *};
 
 use errors::Error;
-
-impl From<models::RepositoryWithExtension> for Project {
-	fn from(repo: models::RepositoryWithExtension) -> Self {
-		Self {
-			id: repo.inner.id.0,
-			owner: repo.inner.owner.expect("Invalid repo owner received from github API").login,
-			name: repo.inner.name,
-		}
-	}
-}
 
 pub struct Client {
 	octo: Arc<octocrab::Octocrab>,
@@ -91,15 +80,15 @@ impl Client {
 		&self,
 		owner: &str,
 		name: &str,
-	) -> Result<Project, Error> {
+	) -> Result<octocrab::models::Repository, Error> {
 		let repo = self
-			.get::<models::RepositoryWithExtension>(&format!(
+			.get::<octocrab::models::Repository>(&format!(
 				"{}repos/{}/{}",
 				self.octo.base_url, owner, name
 			))
 			.await?;
 
-		Ok(repo.into())
+		Ok(repo)
 	}
 }
 
