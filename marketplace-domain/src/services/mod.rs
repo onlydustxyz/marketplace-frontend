@@ -18,5 +18,8 @@ pub use self::uuid::{
 mod github_client;
 pub use github_client::{Error as GithubClientError, GithubClient};
 
+mod contributor;
+pub use contributor::{Error as ContributorServiceError, Service as ContributorService};
+
 #[cfg(test)]
 pub use github_client::MockGithubClient;
