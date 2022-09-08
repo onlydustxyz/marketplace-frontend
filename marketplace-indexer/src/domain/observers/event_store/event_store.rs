@@ -76,17 +76,17 @@ impl Identifiable for Contribution {
 				project_id: _,
 				issue_number: _,
 				gate: _,
-			} => id,
-			ContributionEvent::Assigned {
+			}
+			| ContributionEvent::Assigned {
 				id,
 				contributor_id: _,
-			} => id,
-			ContributionEvent::Applied {
+			}
+			| ContributionEvent::Applied {
 				id,
 				contributor_id: _,
-			} => id,
-			ContributionEvent::Unassigned { id } => id,
-			ContributionEvent::Validated { id } => id,
+			}
+			| ContributionEvent::Unassigned { id }
+			| ContributionEvent::Validated { id } => id,
 		}
 	}
 }
@@ -97,16 +97,16 @@ impl Identifiable for ProjectAggregate {
 			ProjectEvent::MemberAdded {
 				project_id,
 				contributor_account: _,
-			} => project_id,
-			ProjectEvent::MemberRemoved {
+			}
+			| ProjectEvent::MemberRemoved {
 				project_id,
 				contributor_account: _,
-			} => project_id,
-			ProjectEvent::LeadContributorAdded {
+			}
+			| ProjectEvent::LeadContributorAdded {
 				project_id,
 				contributor_account: _,
-			} => project_id,
-			ProjectEvent::LeadContributorRemoved {
+			}
+			| ProjectEvent::LeadContributorRemoved {
 				project_id,
 				contributor_account: _,
 			} => project_id,
