@@ -4,7 +4,7 @@ use http_api_problem::HttpApiProblem;
 use log::error;
 use marketplace_core::{dto, utils::caches};
 use marketplace_domain::*;
-use marketplace_infrastructure::{database, github, starknet};
+use marketplace_infrastructure::{github, starknet};
 use rocket::{get, serde::json::Json, State};
 use rocket_okapi::openapi;
 use std::{result::Result, sync::Arc};
@@ -13,24 +13,21 @@ use url::Url;
 #[openapi(tag = "Projects")]
 #[get("/projects")]
 pub async fn list_projects(
-	database: &State<Arc<database::Client>>,
-	repo_cache: &State<caches::RepoCache>,
 	contributor_cache: &State<caches::ContributorCache>,
+	project_projection_repository: &State<Arc<dyn ProjectProjectionRepository>>,
+	contribution_projection_repository: &State<Arc<dyn ContributionProjectionRepository>>,
 ) -> Result<Json<Vec<dto::Project>>, HttpApiProblem> {
-	let projects_with_contribution_iterator = database
-		.find_all_with_contributions()
+	let build_project_tasks = project_projection_repository
+		.list()
 		.map_err(|e| e.to_http_api_problem())?
-		.into_iter();
-
-	// Spawn concurent tasks
-	// One for each project
-	let build_project_tasks = projects_with_contribution_iterator.map(|project| {
-		let cloned_repo_cache: caches::RepoCache = repo_cache.inner().clone();
-		let cloned_contributor_cache: caches::ContributorCache = contributor_cache.inner().clone();
-		tokio::spawn(async move {
-			build_project(project, &cloned_repo_cache, &cloned_contributor_cache).await
-		})
-	});
+		.into_iter()
+		.map(|project| {
+			build_project(
+				project,
+				contribution_projection_repository,
+				contributor_cache,
+			)
+		});
 
 	// Merge all tasks into a single vector
 	// Failed task will be ignored
@@ -50,26 +47,17 @@ pub async fn list_projects(
 }
 
 async fn build_project(
-	project: ProjectWithContributions,
-	repo_cache: &caches::RepoCache,
+	project: ProjectProjection,
+	contribution_projection_repository: &State<Arc<dyn ContributionProjectionRepository>>,
 	contributor_cache: &caches::ContributorCache,
-) -> Option<dto::Project> {
-	let github_repository = repo_cache
-		.inner_ref()
-		.get_or_insert(&project.project.id, || async {
-			match github::Client::new().repository_by_id(project.project.id).await {
-				Ok(repo) => Some(repo),
-				Err(e) => {
-					error!("Failed to fetch repository from GitHub: {e}");
-					None
-				},
-			}
-		})
-		.await?;
+) -> Result<Option<dto::Project>, HttpApiProblem> {
+	let contributions = contribution_projection_repository
+		.list_by_project(&project.id)
+		.map_err(|e| e.to_http_api_problem())?;
 
 	// Spawn concurent tasks
 	// One for each contribution
-	let build_contribution_tasks = project.contributions.into_iter().map(|contribution| {
+	let build_contribution_tasks = contributions.into_iter().map(|contribution| {
 		let cloned_contributor_cache = contributor_cache.clone();
 		tokio::spawn(
 			async move { build_contribution(contribution, &cloned_contributor_cache).await },
@@ -91,21 +79,21 @@ async fn build_project(
 		.collect();
 
 	let project = dto::Project {
-		id: project.project.id.to_string(),
-		title: project.project.name.clone(),
-		description: github_repository.description,
-		logo: github_repository.owner.unwrap().avatar_url,
-		github_link: github_repository.html_url.unwrap_or_else(|| {
+		id: project.id.to_string(),
+		title: project.name.clone(),
+		description: project.description,
+		logo: project.logo_url,
+		github_link: project.url.unwrap_or_else(|| {
 			Url::parse(&format!(
 				"https://github.com/{}/{}",
-				project.project.owner, project.project.name
+				project.owner, project.name
 			))
 			.unwrap()
 		}),
 		contributions,
 	};
 
-	Some(project)
+	Ok(Some(project))
 }
 
 async fn build_contribution(

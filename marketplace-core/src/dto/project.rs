@@ -18,7 +18,7 @@ pub struct Project {
 	#[schemars(with = "String")]
 	pub github_link: Url,
 	#[schemars(with = "String")]
-	pub logo: Url,
+	pub logo: Option<Url>,
 	pub contributions: Vec<Contribution>,
 }
 
