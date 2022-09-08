@@ -1,3 +1,4 @@
+use itertools::Itertools;
 use marketplace_domain::*;
 
 use crate::database::{models, schema, schema::contributions, Client, DatabaseError};
@@ -78,6 +79,20 @@ impl ContributionProjectionRepository for Client {
 			.map_err(DatabaseError::from)?;
 
 		Ok(())
+	}
+
+	fn list_by_project(
+		&self,
+		project_id: &GithubProjectId,
+	) -> Result<Vec<ContributionProjection>, ContributionProjectionRepositoryError> {
+		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
+
+		let contributions = schema::contributions::table
+			.filter(contributions::project_id.eq(project_id.to_string()))
+			.load::<models::Contribution>(&*connection)
+			.map_err(DatabaseError::from)?;
+
+		Ok(contributions.into_iter().map_into().collect())
 	}
 }
 

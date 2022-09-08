@@ -35,4 +35,9 @@ pub trait Repository: Send + Sync {
 		contribution_id: ContributionId,
 		status: ContributionStatus,
 	) -> Result<(), Error>;
+
+	fn list_by_project(
+		&self,
+		project_id: &GithubProjectId,
+	) -> Result<Vec<ContributionProjection>, Error>;
 }
