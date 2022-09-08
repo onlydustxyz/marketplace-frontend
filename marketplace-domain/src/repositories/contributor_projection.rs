@@ -17,6 +17,6 @@ pub enum Error {
 
 #[cfg_attr(test, automock)]
 pub trait Repository: Send + Sync {
-	fn store(&self, contributor: &ContributorProjection) -> Result<(), Error>;
+	fn store(&self, contributor: ContributorProjection) -> Result<(), Error>;
 	fn find_by_id(&self, contributor_id: &ContributorId) -> Result<ContributorProjection, Error>;
 }

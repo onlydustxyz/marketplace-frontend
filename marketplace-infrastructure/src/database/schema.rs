@@ -66,6 +66,15 @@ table! {
 }
 
 table! {
+    contributors (id) {
+        id -> Text,
+        account -> Text,
+        github_identifier -> Text,
+        github_username -> Text,
+    }
+}
+
+table! {
     event_deduplications (deduplication_id) {
         deduplication_id -> Text,
         event_index -> Int4,
@@ -110,6 +119,7 @@ allow_tables_to_appear_in_same_query!(
     contact_information,
     contributions,
     contributions_backup,
+    contributors,
     event_deduplications,
     events,
     project_members,
