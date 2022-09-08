@@ -32,6 +32,7 @@ impl Contract {
 				id: OnChainContributorId(fields[1], fields[2]).into(),
 				github_handle: Some(fields[3].to_string()),
 				github_username: None,
+				account: format!("{account:#x}").parse().unwrap(),
 			})
 			.ok()
 	}
