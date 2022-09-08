@@ -32,6 +32,11 @@ pub use project_projection::{
 	Error as ProjectProjectionRepositoryError, Repository as ProjectProjectionRepository,
 };
 
+mod contributor_projection;
+pub use contributor_projection::{
+	Error as ContributorProjectionRepositoryError, Repository as ContributorProjectionRepository,
+};
+
 #[cfg(test)]
 pub use project_projection::MockRepository as MockProjectProjectionRepository;
 
