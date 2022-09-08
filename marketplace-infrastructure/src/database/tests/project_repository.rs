@@ -34,11 +34,11 @@ fn project2() -> Project {
 }
 
 #[fixture]
-fn projection2(project1: Project) -> ProjectProjection {
+fn projection2(project2: Project) -> ProjectProjection {
 	ProjectProjection {
-		id: project1.id,
-		owner: project1.owner,
-		name: project1.name,
+		id: project2.id,
+		owner: project2.owner,
+		name: project2.name,
 		..Default::default()
 	}
 }
@@ -54,7 +54,7 @@ fn store_and_find_one(project1: Project, projection1: ProjectProjection) {
 	<Client as ProjectProjectionRepository>::store(&client, projection1).unwrap();
 	let projects = <Client as ProjectRepository>::find_all_with_contributions(&client).unwrap();
 
-	projects.iter().map(|p| &p.project).contains(&project1);
+	assert!(projects.iter().map(|p| &p.project).contains(&project1));
 }
 
 #[rstest]
@@ -74,8 +74,8 @@ fn store_and_find_multiple(
 	<Client as ProjectProjectionRepository>::store(&client, projection2).unwrap();
 	let projects = <Client as ProjectRepository>::find_all_with_contributions(&client).unwrap();
 
-	projects.iter().map(|p| &p.project).contains(&project1);
-	projects.iter().map(|p| &p.project).contains(&project2);
+	assert!(projects.iter().map(|p| &p.project).contains(&project1));
+	assert!(projects.iter().map(|p| &p.project).contains(&project2));
 }
 
 #[rstest]
