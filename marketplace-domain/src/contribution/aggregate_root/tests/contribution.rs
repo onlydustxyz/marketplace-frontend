@@ -72,7 +72,7 @@ fn contribution_validated_event() -> Event {
 
 #[rstest]
 fn create_contribution(contribution_created_event: Event, contribution_id: Id) {
-	let contribution = Contribution::from_events(&vec![contribution_created_event]);
+	let contribution = Contribution::from_events(&[contribution_created_event]);
 	assert_eq!(Status::Open, contribution.status);
 	assert_eq!(contribution_id, contribution.id);
 	assert!(contribution.applicants.is_empty());
@@ -80,20 +80,16 @@ fn create_contribution(contribution_created_event: Event, contribution_id: Id) {
 
 #[rstest]
 fn assign_contribution(contribution_created_event: Event, contribution_assigned_event: Event) {
-	let contribution = Contribution::from_events(&vec![
-		contribution_created_event,
-		contribution_assigned_event,
-	]);
+	let contribution =
+		Contribution::from_events(&[contribution_created_event, contribution_assigned_event]);
 	assert_eq!(Status::Assigned, contribution.status);
 	assert!(contribution.contributor_id.is_some());
 }
 
 #[rstest]
 fn claim_contribution(contribution_created_event: Event, contribution_claimed_event: Event) {
-	let contribution = Contribution::from_events(&vec![
-		contribution_created_event,
-		contribution_claimed_event,
-	]);
+	let contribution =
+		Contribution::from_events(&[contribution_created_event, contribution_claimed_event]);
 	assert_eq!(Status::Assigned, contribution.status);
 	assert!(contribution.contributor_id.is_some());
 }
@@ -104,7 +100,7 @@ fn unassign_contribution(
 	contribution_assigned_event: Event,
 	contribution_unassigned_event: Event,
 ) {
-	let contribution = Contribution::from_events(&vec![
+	let contribution = Contribution::from_events(&[
 		contribution_created_event,
 		contribution_assigned_event,
 		contribution_unassigned_event,
@@ -119,7 +115,7 @@ fn validate_contribution(
 	contribution_assigned_event: Event,
 	contribution_validated_event: Event,
 ) {
-	let contribution = Contribution::from_events(&vec![
+	let contribution = Contribution::from_events(&[
 		contribution_created_event,
 		contribution_assigned_event,
 		contribution_validated_event,
@@ -132,10 +128,8 @@ fn apply_to_assigned_contribution(
 	contribution_created_event: Event,
 	contribution_assigned_event: Event,
 ) {
-	let contribution = Contribution::from_events(&vec![
-		contribution_created_event,
-		contribution_assigned_event,
-	]);
+	let contribution =
+		Contribution::from_events(&[contribution_created_event, contribution_assigned_event]);
 
 	let result = contribution.apply(&ContributorId::default());
 	assert!(result.is_err());
@@ -148,10 +142,8 @@ fn apply_twice_to_contribution(
 	contribution_applied_event: Event,
 	contributor_id: ContributorId,
 ) {
-	let contribution = Contribution::from_events(&vec![
-		contribution_created_event,
-		contribution_applied_event,
-	]);
+	let contribution =
+		Contribution::from_events(&[contribution_created_event, contribution_applied_event]);
 
 	let second_application = contribution.apply(&contributor_id);
 	assert!(second_application.is_err());
@@ -160,7 +152,7 @@ fn apply_twice_to_contribution(
 
 #[rstest]
 fn apply_to_contribution_emits_an_event(contribution_created_event: Event) {
-	let contribution = Contribution::from_events(&vec![contribution_created_event]);
+	let contribution = Contribution::from_events(&[contribution_created_event]);
 	let contributor_id = ContributorId::from_str("0x123").unwrap();
 
 	let application_result = contribution.apply(&contributor_id);

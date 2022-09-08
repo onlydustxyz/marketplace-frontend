@@ -140,7 +140,6 @@ mod test {
 				transaction_hash,
 				topics: vec![selector],
 				data: vec![empty_topic(), empty_topic(), empty_topic(), empty_topic()],
-				..Default::default()
 			})),
 		}
 	}
