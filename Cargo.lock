@@ -1702,7 +1702,6 @@ dependencies = [
  "slog-stdlog",
  "slog-term",
  "starknet",
- "stretto",
  "thiserror",
  "tokio",
  "url",
@@ -3492,24 +3491,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 
 [[package]]
-name = "stretto"
-version = "0.5.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3f7537062c5906795813a413b4acc0508406b7d12f48bd1f7ed81bd9500569ba"
-dependencies = [
- "async-channel",
- "async-io",
- "atomic",
- "crossbeam-channel",
- "futures 0.3.21",
- "parking_lot",
- "rand",
- "thiserror",
- "twox-hash",
- "wg",
-]
-
-[[package]]
 name = "strsim"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3958,17 +3939,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "59547bce71d9c38b83d9c0e92b6066c4253371f15005def0c30d9657f50c7642"
 
 [[package]]
-name = "twox-hash"
-version = "1.6.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "97fee6b57c6a41524a810daee9286c02d7752c4253064d0b05472833a438f675"
-dependencies = [
- "cfg-if",
- "rand",
- "static_assertions",
-]
-
-[[package]]
 name = "typenum"
 version = "1.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4253,15 +4223,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d743fdedc5c64377b5fc2bc036b01c7fd642205a0d96356034ae3404d49eb7fb"
 dependencies = [
  "cc",
-]
-
-[[package]]
-name = "wg"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c4f805fab9f31f0295729d0bc4d563bc466223a45326718e842a5d86a8d1c65"
-dependencies = [
- "parking_lot",
 ]
 
 [[package]]
