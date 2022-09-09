@@ -1,4 +1,4 @@
-use crate::{ContributorAccount, ContributorId, GithubUserId, Projection};
+use crate::{Contribution, ContributorAccount, ContributorId, GithubUserId, Projection};
 
 #[derive(Debug, PartialEq, Eq, Clone, Default)]
 pub struct Contributor {
@@ -8,4 +8,6 @@ pub struct Contributor {
 	pub account: ContributorAccount,
 }
 
-impl Projection for Contributor {}
+impl Projection for Contributor {
+	type A = Contribution;
+}

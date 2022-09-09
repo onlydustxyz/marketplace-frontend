@@ -52,8 +52,8 @@ impl ContributorProjector {
 }
 
 #[async_trait]
-impl Projector<Contribution> for ContributorProjector {
-	async fn project(&self, event: &<Contribution as Aggregate>::Event) {
+impl Projector<ContributorProjection> for ContributorProjector {
+	async fn project(&self, event: &ContributionEvent) {
 		let result = match event {
 			ContributionEvent::Applied {
 				id: _,
