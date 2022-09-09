@@ -8,15 +8,6 @@ table! {
 }
 
 table! {
-    applications_backup (id) {
-        id -> Uuid,
-        contribution_id -> Uuid,
-        contributor_id -> Varchar,
-        status -> Varchar,
-    }
-}
-
-table! {
     contact_information (id) {
         id -> Uuid,
         contributor_id -> Varchar,
@@ -41,27 +32,6 @@ table! {
         context -> Nullable<Text>,
         #[sql_name = "type"]
         type_ -> Nullable<Text>,
-    }
-}
-
-table! {
-    contributions_backup (id) {
-        onchain_id -> Varchar,
-        project_id -> Varchar,
-        status -> Varchar,
-        transaction_hash -> Nullable<Varchar>,
-        contributor_id -> Varchar,
-        gate -> Int2,
-        title -> Nullable<Text>,
-        description -> Nullable<Text>,
-        external_link -> Nullable<Text>,
-        difficulty -> Nullable<Text>,
-        technology -> Nullable<Text>,
-        duration -> Nullable<Text>,
-        context -> Nullable<Text>,
-        #[sql_name = "type"]
-        type_ -> Nullable<Text>,
-        id -> Uuid,
     }
 }
 
@@ -110,15 +80,10 @@ table! {
     }
 }
 
-joinable!(applications_backup -> contributions_backup (contribution_id));
-joinable!(contributions_backup -> projects (project_id));
-
 allow_tables_to_appear_in_same_query!(
     applications,
-    applications_backup,
     contact_information,
     contributions,
-    contributions_backup,
     contributors,
     event_deduplications,
     events,

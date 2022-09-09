@@ -1,0 +1,1 @@
+SELECT 'no fallback possible';
