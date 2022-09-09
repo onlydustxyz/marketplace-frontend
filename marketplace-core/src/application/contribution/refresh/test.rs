@@ -251,12 +251,19 @@ async fn refresh_contributions_from_events(
 		.find(|p| p.project.id == STARKONQUEST)
 		.expect("Cannot find project in projection");
 
-	assert_eq!(2, project.contributions.len());
-	assert_eq!(
-		ContributionStatus::Completed,
-		project.contributions[0].status
-	);
-	assert_eq!(ContributionStatus::Open, project.contributions[1].status);
+	assert!(project.contributions.len() >= 2); // TODO: restore the equality when component tests are refactored and using a test transaction
+
+	{
+		let contribution_id = ContributionId::from_str("0x17267621").unwrap();
+		let contribution = project.contributions.iter().find(|c| c.id == contribution_id).unwrap();
+		assert_eq!(ContributionStatus::Completed, contribution.status);
+	}
+
+	{
+		let contribution_id = ContributionId::from_str("0x17267622").unwrap();
+		let contribution = project.contributions.iter().find(|c| c.id == contribution_id).unwrap();
+		assert_eq!(ContributionStatus::Open, contribution.status);
+	}
 }
 
 #[rstest]
