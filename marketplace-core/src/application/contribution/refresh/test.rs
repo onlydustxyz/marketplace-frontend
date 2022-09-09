@@ -28,6 +28,15 @@ mock! {
 	}
 }
 
+mock! {
+	pub ContributorService {}
+
+	#[async_trait]
+	impl ContributorService for ContributorService {
+		async fn contributor_by_id(&self, contributor_id: &ContributorId) -> Result<Contributor, ContributorServiceError>;
+	}
+}
+
 trait Storable {
 	fn into_storable(self) -> StorableEvent<Contribution>;
 }
@@ -50,6 +59,11 @@ fn database() -> Arc<DatabaseClient> {
 #[fixture]
 fn github_client() -> MockGithubClient {
 	MockGithubClient::new()
+}
+
+#[fixture]
+fn contributor_service() -> MockContributorService {
+	MockContributorService::new()
 }
 
 #[fixture]
@@ -169,6 +183,28 @@ fn refresh_applications_usecase(filled_database: Arc<DatabaseClient>) -> Refresh
 }
 
 #[fixture]
+fn refresh_contributors_usecase(
+	filled_database: Arc<DatabaseClient>,
+	mut github_client: MockGithubClient,
+	mut contributor_service: MockContributorService,
+) -> RefreshContributors {
+	github_client.expect_find_user_by_id().returning(|_| Ok(Default::default()));
+	contributor_service
+		.expect_contributor_by_id()
+		.returning(|_| Ok(Default::default()));
+
+	Refresh::new(
+		filled_database.clone(),
+		Arc::new(ContributorProjector::new(
+			Arc::new(github_client),
+			filled_database.clone(),
+			Arc::new(contributor_service),
+		)),
+		filled_database,
+	)
+}
+
+#[fixture]
 fn refresh_projects_usecase(
 	filled_database: Arc<DatabaseClient>,
 	mut github_client: MockGithubClient,
@@ -252,4 +288,26 @@ async fn refresh_projects_from_events(
 	let projects = database.find_all_with_contributions().expect("Unable to read projection table");
 
 	assert_eq!(1, projects.len());
+}
+
+#[rstest]
+#[cfg_attr(not(feature = "with_component_tests"), ignore = "component test")]
+async fn refresh_contributors_from_events(
+	refresh_contributors_usecase: RefreshContributors,
+	database: Arc<DatabaseClient>,
+	contributor_id: ContributorId,
+) {
+	let result = refresh_contributors_usecase.refresh_projection_from_events().await;
+	assert!(result.is_ok(), "{}", result.err().unwrap());
+
+	let result = ContributorProjectionRepository::find_by_id(&*database, &contributor_id);
+	assert!(result.is_ok(), "{}", result.err().unwrap());
+
+	assert_eq!(
+		ContributorProjection {
+			id: contributor_id,
+			..Default::default()
+		},
+		result.unwrap()
+	);
 }

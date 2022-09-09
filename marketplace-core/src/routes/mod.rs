@@ -1,6 +1,7 @@
 mod applications;
 pub mod contact_information;
 mod contributions;
+pub mod contributors;
 pub mod cors;
 mod dto;
 pub mod health;
