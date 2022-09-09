@@ -4,6 +4,7 @@ mod infrastructure;
 
 use crate::{application::IndexerBuilder, domain::*, infrastructure::ApibaraClient};
 use dotenv::dotenv;
+use futures::join;
 use marketplace_domain::*;
 use marketplace_infrastructure::{database, github};
 use slog::{o, Drain, FnValue, Logger, Record};
@@ -49,26 +50,21 @@ async fn main() {
 	let apibara_client =
 		Arc::new(ApibaraClient::default().await.expect("Unable to connect to Apibara server"));
 
-	let indexer = IndexerBuilder::new(apibara_client.clone())
-		.network(Network::Starknet)
-		.start_at_block(311611)
-		.on_conflict_do_nothing()
-		.filter(contributions_contract_address(), "")
-		.build("contribution-indexer".into())
-		.await
-		.expect("Unable to create the indexer");
-
 	let database = Arc::new(database::Client::new(database::init_pool()));
 	let github = Arc::new(github::Client::new());
 	let uuid_generator = Arc::new(RandomUuidGenerator {});
 
-	let contribution_observer =
-		build_contribution_observers(database.clone(), github.clone(), uuid_generator);
-
-	apibara_client
-		.fetch_new_events(&indexer, contribution_observer)
-		.await
-		.expect("Error while fetching events");
+	let results = join!(
+		index_contributions_events(
+			apibara_client.clone(),
+			database.clone(),
+			github,
+			uuid_generator
+		),
+		index_past_lead_contributors_events(apibara_client, database),
+	);
+	results.0.expect("Failed to index events");
+	results.1.expect("Failed to index events");
 }
 
 fn contributions_contract_address() -> ContractAddress {
@@ -77,11 +73,21 @@ fn contributions_contract_address() -> ContractAddress {
 	address.parse().expect("CONTRIBUTIONS_ADDRESS is not a valid contract address")
 }
 
-fn build_contribution_observers(
+async fn index_contributions_events(
+	apibara_client: Arc<ApibaraClient>,
 	database: Arc<database::Client>,
 	github: Arc<github::Client>,
 	uuid_generator: Arc<dyn UuidGenerator>,
-) -> Arc<dyn BlockchainObserver> {
+) -> Result<(), IndexingServiceError> {
+	let indexer = IndexerBuilder::new(apibara_client.clone())
+		.network(Network::Starknet)
+		.start_at_block(311611)
+		.on_conflict_do_nothing()
+		.filter(contributions_contract_address(), "")
+		.build("contribution-indexer".into())
+		.await
+		.expect("Unable to create the contribution indexer");
+
 	let contribution_projector = ContributionProjector::new(database.clone(), github.clone());
 	let application_projector = ApplicationProjector::new(database.clone(), uuid_generator);
 	let project_projector = ProjectProjector::new(github, database.clone());
@@ -96,5 +102,26 @@ fn build_contribution_observers(
 		Arc::new(ProjectObserver::new(Arc::new(project_member_projector))),
 	]);
 
-	Arc::new(observer)
+	apibara_client.fetch_new_events(&indexer, Arc::new(observer)).await
+}
+
+async fn index_past_lead_contributors_events(
+	apibara_client: Arc<ApibaraClient>,
+	database: Arc<database::Client>,
+) -> Result<(), IndexingServiceError> {
+	let indexer = IndexerBuilder::new(apibara_client.clone())
+		.network(Network::Starknet)
+		.start_at_block(311611)
+		.on_conflict_do_nothing()
+		.filter(contributions_contract_address(), "LeadContributorAdded")
+		.build("past-lead-contributor-indexer".into())
+		.await
+		.expect("Unable to create the past lead contributors indexer");
+
+	let observer = BlockchainObserverComposite::new(vec![
+		Arc::new(BlockchainLogger::default()),
+		Arc::new(EventStoreObserver::new(database.clone(), database)),
+	]);
+
+	apibara_client.fetch_new_events(&indexer, Arc::new(observer)).await
 }
