@@ -103,7 +103,7 @@ fn refresh_project_members_usecase(filled_database: Arc<DatabaseClient>) -> Refr
 
 #[rstest]
 #[cfg_attr(not(feature = "with_component_tests"), ignore = "component test")]
-async fn refresh_contributions_from_events(
+async fn refresh_project_members_from_events(
 	refresh_project_members_usecase: RefreshProjectsMembers,
 	filled_database: Arc<DatabaseClient>,
 	project_id: ProjectId,
