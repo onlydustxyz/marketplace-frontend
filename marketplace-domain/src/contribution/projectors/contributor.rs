@@ -34,8 +34,8 @@ impl ContributorProjector {
 	}
 
 	async fn on_contribution_assigned(&self, contributor_id: &ContributorId) -> Result<(), Error> {
-		if self.contributor_projection_repository.find_by_id(&contributor_id).is_err() {
-			let contributor = self.contributor_service.contributor_by_id(&contributor_id).await?;
+		if self.contributor_projection_repository.find_by_id(contributor_id).is_err() {
+			let contributor = self.contributor_service.contributor_by_id(contributor_id).await?;
 
 			let user = self.github_client.find_user_by_id(contributor.github_identifier).await?;
 
