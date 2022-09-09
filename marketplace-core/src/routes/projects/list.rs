@@ -51,8 +51,9 @@ fn build_project(
 		.list_by_project(&project.id)
 		.map_err(|e| e.to_http_api_problem())?
 		.into_iter()
-		.map(|contribution| build_contribution(contribution, contributor_projection_repository))
-		.filter_map(|result| result)
+		.filter_map(|contribution| {
+			build_contribution(contribution, contributor_projection_repository)
+		})
 		.collect();
 
 	let members = project_member_projection_repository
@@ -85,8 +86,7 @@ fn build_contribution(
 	let contributor = contribution
 		.contributor_id
 		.clone()
-		.map(|id| contributor_projection_repository.find_by_id(&id).ok())
-		.flatten();
+		.and_then(|id| contributor_projection_repository.find_by_id(&id).ok());
 
 	let mut contribution = dto::Contribution::from(contribution);
 	contribution.metadata.github_username = contributor.map(|c| c.github_username);
