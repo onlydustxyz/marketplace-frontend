@@ -1,15 +1,14 @@
 use std::str::FromStr;
 
-use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
-use itertools::Itertools;
-use log::error;
-use mapinto::ResultMapErrInto;
-
 use crate::database::{
 	models::{self, Status},
 	schema::applications,
 	Client, DatabaseError,
 };
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
+use itertools::Itertools;
+use log::error;
+use mapinto::ResultMapErrInto;
 use marketplace_domain::*;
 
 impl ApplicationProjectionRepository for Client {
@@ -156,11 +155,19 @@ impl ProjectionRepository<ApplicationProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
 		let connection = self
 			.connection()
+			.map_err(|e| {
+				error!("Failed while trying to get connection from pool: {e}");
+				e
+			})
 			.map_err(anyhow::Error::msg)
 			.map_err(ProjectionRepositoryError::Infrastructure)?;
 
 		diesel::delete(applications::dsl::applications)
 			.execute(&*connection)
+			.map_err(|e| {
+				error!("Failed while trying to clear applications table: {e}");
+				e
+			})
 			.map_err(anyhow::Error::msg)
 			.map_err(ProjectionRepositoryError::Infrastructure)?;
 

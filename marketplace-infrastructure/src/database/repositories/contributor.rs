@@ -1,8 +1,8 @@
-use anyhow::anyhow;
-use marketplace_domain::*;
-
 use crate::database::{models, schema::contributors, Client, DatabaseError};
+use anyhow::anyhow;
 use diesel::{query_dsl::filter_dsl::FindDsl, RunQueryDsl};
+use log::error;
+use marketplace_domain::*;
 
 impl ContributorProjectionRepository for Client {
 	fn store(
@@ -39,11 +39,19 @@ impl ProjectionRepository<ContributorProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
 		let connection = self
 			.connection()
+			.map_err(|e| {
+				error!("Failed while trying to get connection from pool: {e}");
+				e
+			})
 			.map_err(anyhow::Error::msg)
 			.map_err(ProjectionRepositoryError::Infrastructure)?;
 
 		diesel::delete(contributors::table)
 			.execute(&*connection)
+			.map_err(|e| {
+				error!("Failed while trying to clear contributors table: {e}");
+				e
+			})
 			.map_err(anyhow::Error::msg)
 			.map_err(ProjectionRepositoryError::Infrastructure)?;
 

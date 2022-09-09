@@ -1,15 +1,14 @@
-use std::str::FromStr;
-
-use anyhow::anyhow;
-use itertools::Itertools;
-use marketplace_domain::*;
-
 use crate::database::{
 	models,
 	schema::project_members::{self, dsl::*},
 	Client, DatabaseError,
 };
+use anyhow::anyhow;
 use diesel::prelude::*;
+use itertools::Itertools;
+use log::error;
+use marketplace_domain::*;
+use std::str::FromStr;
 
 impl ProjectMemberProjectionRepository for Client {
 	fn store(
@@ -62,11 +61,19 @@ impl ProjectionRepository<ProjectMemberProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
 		let connection = self
 			.connection()
+			.map_err(|e| {
+				error!("Failed while trying to get connection from pool: {e}");
+				e
+			})
 			.map_err(anyhow::Error::msg)
 			.map_err(ProjectionRepositoryError::Infrastructure)?;
 
 		diesel::delete(project_members)
 			.execute(&*connection)
+			.map_err(|e| {
+				error!("Failed while trying to clear project_members table: {e}");
+				e
+			})
 			.map_err(anyhow::Error::msg)
 			.map_err(ProjectionRepositoryError::Infrastructure)?;
 
