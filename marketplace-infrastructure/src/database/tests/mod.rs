@@ -5,7 +5,6 @@ use marketplace_domain::ContributionProjection;
 mod application_repository;
 mod contact_information_repository;
 mod contribution_projection_repository;
-mod project_member_repository;
 mod project_repository;
 
 use marketplace_domain::*;
