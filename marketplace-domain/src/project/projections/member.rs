@@ -1,4 +1,4 @@
-use crate::{ContributorAccount, GithubProjectId, Projection};
+use crate::{ContributorAccount, GithubProjectId, ProjectAggregate, Projection};
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct Member {
@@ -7,7 +7,9 @@ pub struct Member {
 	is_lead_contributor: bool,
 }
 
-impl Projection for Member {}
+impl Projection for Member {
+	type A = ProjectAggregate;
+}
 
 impl Member {
 	pub fn new(

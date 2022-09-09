@@ -1,6 +1,6 @@
 use crate::{
-	ContributionId, ContributionStatus, ContributorId, GithubIssueNumber, GithubProjectId,
-	Projection,
+	contribution::aggregate_root, ContributionId, ContributionStatus, ContributorId,
+	GithubIssueNumber, GithubProjectId, Projection,
 };
 use url::Url;
 
@@ -18,7 +18,9 @@ pub struct Contribution {
 	pub metadata: Metadata,
 }
 
-impl Projection for Contribution {}
+impl Projection for Contribution {
+	type A = aggregate_root::Contribution;
+}
 
 impl Contribution {
 	pub fn old_composite_id(&self) -> u64 {

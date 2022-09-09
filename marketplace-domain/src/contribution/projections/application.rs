@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use crate::{ContributionId, ContributorId, Projection};
+use crate::{Contribution, ContributionId, ContributorId, Projection};
 use marketplace_wrappers::UuidWrapper;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -38,7 +38,9 @@ pub struct Application {
 	status: Status,
 }
 
-impl Projection for Application {}
+impl Projection for Application {
+	type A = Contribution;
+}
 
 impl Application {
 	pub fn new(id: Id, contribution_id: ContributionId, contributor_id: ContributorId) -> Self {

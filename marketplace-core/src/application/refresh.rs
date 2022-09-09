@@ -11,17 +11,17 @@ pub enum Error {
 	EventStore(#[from] EventStoreError),
 }
 
-pub struct Refresh<P: Projection, A: Aggregate> {
+pub struct Refresh<P: Projection> {
 	projection_repository: Arc<dyn ProjectionRepository<P>>,
-	projector: Arc<dyn Projector<A>>,
-	event_store: Arc<dyn EventStore<A>>,
+	projector: Arc<dyn Projector<P>>,
+	event_store: Arc<dyn EventStore<P::A>>,
 }
 
-impl<P: Projection, A: Aggregate> Refresh<P, A> {
+impl<P: Projection> Refresh<P> {
 	pub fn new(
 		projection_repository: Arc<dyn ProjectionRepository<P>>,
-		projector: Arc<dyn Projector<A>>,
-		event_store: Arc<dyn EventStore<A>>,
+		projector: Arc<dyn Projector<P>>,
+		event_store: Arc<dyn EventStore<P::A>>,
 	) -> Self {
 		Self {
 			projection_repository,
