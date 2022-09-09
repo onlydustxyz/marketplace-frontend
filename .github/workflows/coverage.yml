@@ -49,11 +49,25 @@ jobs:
       - name: Run migrations
         run: diesel migration run
 
+      - name: Configure postgres connection
+        run: echo "localhost:5432:marketplace_db:postgres:postgres" > ~/.pgpass && chmod 600 ~/.pgpass
+
+      - name: Restore data dump
+        run: pg_restore --verbose --dbname marketplace_db --host localhost --port 5432 --username postgres --clean ./marketplace-tests/data/data_dump.tar.gz
+
+      - name: Run the back-end
+        run: cargo run &
+
+      - name: Wait for the backend to be ready
+        uses: ifaxity/wait-on-action@v1
+        with:
+          resource: http://localhost:8000/openapi.json
+
       - name: Run cargo-tarpaulin
         uses: actions-rs/tarpaulin@v0.1
         with:
           version: '0.20.1'
-          args: '--exclude-files src/bin/e2e_tests.rs --all-features -- --test-threads 1'
+          args: '--all-features -- --test-threads 1'
 
       - name: Upload to codecov.io
         uses: codecov/codecov-action@v3
