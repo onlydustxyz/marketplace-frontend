@@ -33,7 +33,7 @@ impl ContributorProjector {
 		}
 	}
 
-	async fn on_contribution_assigned(&self, contributor_id: &ContributorId) -> Result<(), Error> {
+	async fn on_contribution_applied(&self, contributor_id: &ContributorId) -> Result<(), Error> {
 		if self.contributor_projection_repository.find_by_id(contributor_id).is_err() {
 			let contributor = self.contributor_service.contributor_by_id(contributor_id).await?;
 
@@ -55,10 +55,10 @@ impl ContributorProjector {
 impl Projector<Contribution> for ContributorProjector {
 	async fn project(&self, event: &<Contribution as Aggregate>::Event) {
 		let result = match event {
-			ContributionEvent::Assigned {
+			ContributionEvent::Applied {
 				id: _,
 				contributor_id,
-			} => self.on_contribution_assigned(contributor_id).await,
+			} => self.on_contribution_applied(contributor_id).await,
 			_ => Ok(()),
 		};
 
@@ -106,8 +106,8 @@ mod test {
 	}
 
 	#[fixture]
-	fn contribution_assigned_event(contributor_id: ContributorId) -> ContributionEvent {
-		ContributionEvent::Assigned {
+	fn contribution_applied_event(contributor_id: ContributorId) -> ContributionEvent {
+		ContributionEvent::Applied {
 			id: Default::default(),
 			contributor_id,
 		}
@@ -123,7 +123,7 @@ mod test {
 		mut github_client: MockGithubClient,
 		mut contributor_projection_repository: MockContributorProjectionRepository,
 		mut contributor_service: MockContributorService,
-		contribution_assigned_event: ContributionEvent,
+		contribution_applied_event: ContributionEvent,
 		github_user_id: GithubUserId,
 		github_username: String,
 		contributor_id: ContributorId,
@@ -179,7 +179,7 @@ mod test {
 			Arc::new(contributor_service),
 		);
 
-		projector.project(&contribution_assigned_event).await;
+		projector.project(&contribution_applied_event).await;
 	}
 
 	#[rstest]
@@ -187,7 +187,7 @@ mod test {
 		mut github_client: MockGithubClient,
 		mut contributor_projection_repository: MockContributorProjectionRepository,
 		mut contributor_service: MockContributorService,
-		contribution_assigned_event: ContributionEvent,
+		contribution_applied_event: ContributionEvent,
 	) {
 		contributor_projection_repository
 			.expect_find_by_id()
@@ -204,6 +204,6 @@ mod test {
 			Arc::new(contributor_service),
 		);
 
-		projector.project(&contribution_assigned_event).await;
+		projector.project(&contribution_applied_event).await;
 	}
 }
