@@ -1,4 +1,4 @@
-name: Tests
+name: End-to-end tests
 
 on:
   pull_request: ~
@@ -30,59 +30,40 @@ jobs:
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-
+
       - name: Run docker compose
         run: docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
         env:
           BASE_TAG: latest
+
       - name: Install diesel CLI
         run: cargo install diesel_cli --no-default-features --features postgres --force
+
       - name: Build
         run: cargo build
+
       - name: Run migrations
         run: diesel migration run
+
       - name: Configure postgres connection
         run: echo "localhost:5432:marketplace_db:postgres:postgres" > ~/.pgpass && chmod 600 ~/.pgpass
+
       - name: Restore data dump
         run: pg_restore --verbose --dbname marketplace_db --host localhost --port 5432 --username postgres --clean ./marketplace-tests/data/data_dump.tar.gz
-      - name: Run the back-end
+
+      - name: Create environment file
+        run: cp .env.example .env
+
+      - name: Start the backend
         run: cargo run &
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Wait for the backend to be ready
         uses: ifaxity/wait-on-action@v1
         with:
           resource: http://localhost:8000/openapi.json
+
       - name: Execute e2e tests
         run: cargo test -p marketplace-tests --features with_e2e_tests e2e_tests
-  component_tests:
-    runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          override: true
-      - name: Set up cargo cache
-        uses: actions/cache@v3
-        continue-on-error: false
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-cargo-
-      - name: Run docker compose
-        run: docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
-        env:
-          BASE_TAG: latest
-      - name: Install diesel CLI
-        run: cargo install diesel_cli --no-default-features --features postgres --force
-      - name: Build
-        run: cargo build
-      - name: Run migrations
-        run: diesel migration run
-      - name: Rust component tests
-        run: cargo test --features with_component_tests
+

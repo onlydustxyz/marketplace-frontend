@@ -55,8 +55,13 @@ jobs:
       - name: Restore data dump
         run: pg_restore --verbose --dbname marketplace_db --host localhost --port 5432 --username postgres --clean ./marketplace-tests/data/data_dump.tar.gz
 
-      - name: Run the back-end
+      - name: Create environment file
+        run: cp .env.example .env
+
+      - name: Start the backend
         run: cargo run &
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Wait for the backend to be ready
         uses: ifaxity/wait-on-action@v1
