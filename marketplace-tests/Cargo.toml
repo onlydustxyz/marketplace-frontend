@@ -11,3 +11,27 @@ with_e2e_tests = []
 
 [dependencies]
 
+[dev-dependencies]
+# Unit testing
+async-std = {version = "1.12.0", features = ["attributes"]}
+assert_matches = "1.5"
+rstest = "0.15.0"
+assert-json-diff = "2.0.2"
+
+# Utils
+dotenv = "0.15.0"
+
+# Serde
+serde = { version = "1.0.137", features = ["derive"] }
+serde_json = { version = "1.0.81" }
+
+# Http client
+url = "2.2.2"
+reqwest = "0.11.11"
+
+# Async
+tokio = { version = "1.18.2", features = ["full"] }
+
+# Local dependencies
+marketplace-core = { path = "../marketplace-core" }
+

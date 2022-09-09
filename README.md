@@ -95,13 +95,14 @@ cargo run -p marketplace-indexer
 ```
 5. Create the dump file: 
 ```bash
-$ pg_dump --file ./data_dump.tar.gz --format t --table events --table event_deduplication --dbname marketplace_db --host localhost --port 5432 --user postgres --data-only
+$ pg_dump --file ./marketplace-tests/data/data_dump.tar.gz --format t --table events --table event_deduplications --dbname marketplace_db --host localhost --port 5432 --user postgres --data-only
 ```
 
 To run the end-to-end tests, make sure the docker is up and running and your back-end is up as well.
 Then run:
 ```sh
-cargo run --bin e2e_tests
+$ pg_restore --verbose --dbname marketplace_db --host localhost --port 5432 --username postgres --clean ./marketplace-tests/data/data_dump.tar.gz
+$ cargo test -p marketplace-tests --features with_e2e_tests e2e_tests
 ```
 
 ## 🫶 Contributing

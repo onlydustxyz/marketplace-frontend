@@ -1804,6 +1804,19 @@ dependencies = [
 [[package]]
 name = "marketplace-tests"
 version = "0.1.0"
+dependencies = [
+ "assert-json-diff",
+ "assert_matches",
+ "async-std",
+ "dotenv",
+ "marketplace-core",
+ "reqwest",
+ "rstest",
+ "serde",
+ "serde_json",
+ "tokio",
+ "url",
+]
 
 [[package]]
 name = "marketplace-wrappers"
