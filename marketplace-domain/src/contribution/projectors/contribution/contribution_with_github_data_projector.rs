@@ -92,7 +92,7 @@ impl WithGithubDataProjector {
 }
 
 #[async_trait]
-impl Projector<Contribution> for WithGithubDataProjector {
+impl Projector<ContributionProjection> for WithGithubDataProjector {
 	async fn project(&self, event: &ContributionEvent) {
 		let result = match event {
 			ContributionEvent::Created {

@@ -45,7 +45,7 @@ impl ProjectProjector {
 }
 
 #[async_trait]
-impl Projector<Contribution> for ProjectProjector {
+impl Projector<ProjectProjection> for ProjectProjector {
 	async fn project(&self, event: &<Contribution as Aggregate>::Event) {
 		let result = match event {
 			ContributionEvent::Created {

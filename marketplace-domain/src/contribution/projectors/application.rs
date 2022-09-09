@@ -80,8 +80,8 @@ impl ApplicationProjector {
 }
 
 #[async_trait]
-impl Projector<Contribution> for ApplicationProjector {
-	async fn project(&self, event: &<Contribution as Aggregate>::Event) {
+impl Projector<ApplicationProjection> for ApplicationProjector {
+	async fn project(&self, event: &ContributionEvent) {
 		let result = match event {
 			ContributionEvent::Applied {
 				id: contribution_id,

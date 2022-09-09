@@ -1,4 +1,4 @@
-use crate::{GithubProjectId, Projection};
+use crate::{Contribution, GithubProjectId, Projection};
 use url::Url;
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
@@ -11,4 +11,6 @@ pub struct Project {
 	pub logo_url: Option<Url>,
 }
 
-impl Projection for Project {}
+impl Projection for Project {
+	type A = Contribution;
+}

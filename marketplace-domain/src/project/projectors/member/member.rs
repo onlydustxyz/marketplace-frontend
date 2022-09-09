@@ -37,7 +37,7 @@ impl MemberProjector {
 }
 
 #[async_trait]
-impl Projector<ProjectAggregate> for MemberProjector {
+impl Projector<ProjectMemberProjection> for MemberProjector {
 	async fn project(&self, event: &ProjectEvent) {
 		let result = match event {
 			ProjectEvent::MemberAdded {

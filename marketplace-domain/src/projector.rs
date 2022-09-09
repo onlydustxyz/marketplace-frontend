@@ -1,8 +1,8 @@
 use async_trait::async_trait;
 
-use crate::Aggregate;
+use crate::{Aggregate, Projection};
 
 #[async_trait]
-pub trait Projector<A: Aggregate>: Send + Sync {
-	async fn project(&self, event: &A::Event);
+pub trait Projector<P: Projection>: Send + Sync {
+	async fn project(&self, event: &<P::A as Aggregate>::Event);
 }
