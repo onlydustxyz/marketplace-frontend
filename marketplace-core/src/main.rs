@@ -95,6 +95,7 @@ async fn main() {
 			routes::accept_application,
 			routes::list_contributor_applications,
 			routes::refresh_contributions,
+			routes::contributors::refresh_contributors,
 			routes::contact_information::find_contact_information,
 			routes::contact_information::put_contact_information,
 		],
@@ -127,9 +128,18 @@ fn inject_app(
 		github_client.clone(),
 	));
 
-	let project_projector = Arc::new(ProjectProjector::new(github_client, database.clone()));
+	let project_projector = Arc::new(ProjectProjector::new(
+		github_client.clone(),
+		database.clone(),
+	));
 
 	let project_member_projector = Arc::new(ProjectMemberProjector::new(database.clone()));
+
+	let contributor_projector = Arc::new(ContributorProjector::new(
+		github_client,
+		database.clone(),
+		starknet.clone(),
+	));
 
 	rocket
 		.manage(CreateContribution::new_usecase_boxed(starknet.clone()))
@@ -174,6 +184,11 @@ fn inject_app(
 		.manage(RefreshProjectsMembers::new(
 			database.clone(),
 			project_member_projector,
+			database.clone(),
+		))
+		.manage(RefreshContributors::new(
+			database.clone(),
+			contributor_projector,
 			database.clone(),
 		))
 		.manage(database.clone() as Arc<dyn ApplicationProjectionRepository>)

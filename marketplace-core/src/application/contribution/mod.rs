@@ -27,4 +27,6 @@ mod accept_application;
 pub use accept_application::{AcceptApplication, Usecase as AcceptApplicationUsecase};
 
 mod refresh;
-pub use refresh::{RefreshApplications, RefreshContributions, RefreshProjects};
+pub use refresh::{
+	RefreshApplications, RefreshContributions, RefreshContributors, RefreshProjects,
+};
