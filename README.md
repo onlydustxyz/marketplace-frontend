@@ -79,6 +79,25 @@ curl -d '{"owner":"onlydustxyz", "name":"starkonquest"}' -H "Content-Type: appli
 cargo test
 ```
 
+### End-to-end testing
+
+> **Note:**
+> As `starknet-devnet` is not compatible with `apibara`, it is not possible to use it for local end-to-end testing.
+> Therefore, a pre-configured database dump of the events is used.
+
+#### How to create a database dump
+1. Make sure your tables `EVENTS` and `EVENT_DEDUPLICATION` are empty.
+2. Connect to `MongoDB` and delete the indexer from the `apibara_admin` collection
+3. Configure your local `.env` file to use the production `CONTRIBUTIONS_CONTRACT` address
+4. Run the indexer and wait for it to catch up with the latest block HEAD: 
+```bash
+cargo run -p marketplace-indexer
+```
+5. Create the dump file: 
+```bash
+$ pg_dump --file ./data_dump.tar.gz --format t --table events --table event_deduplication --dbname marketplace_db --host localhost --port 5432 --user postgres --data-only
+```
+
 To run the end-to-end tests, make sure the docker is up and running and your back-end is up as well.
 Then run:
 ```sh
@@ -89,4 +108,4 @@ cargo run --bin e2e_tests
 
 ## 📄 License
 
-**marketplace-backend** is released under the [MIT](LICENSE).
+**marketplace-backend** is released under [MIT](LICENSE).
