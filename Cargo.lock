@@ -1802,6 +1802,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "marketplace-tests"
+version = "0.1.0"
+
+[[package]]
 name = "marketplace-wrappers"
 version = "0.1.0"
 dependencies = [

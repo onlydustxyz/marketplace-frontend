@@ -1,0 +1,13 @@
+[package]
+name = "marketplace-tests"
+version = "0.1.0"
+edition = "2021"
+license-file = "LICENSE"
+
+[lib]
+
+[features]
+with_e2e_tests = []
+
+[dependencies]
+
