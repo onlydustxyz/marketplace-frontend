@@ -27,6 +27,7 @@ jobs:
       datadog_label: '[{"source": "marketplace", "service": "marketplace-indexer", "github_version": "${{ github.ref_name }}"}]'
     secrets: inherit
   aws:
+    needs : docker-build-backend
     name: "Refresh Instance"
     runs-on: ubuntu-latest
     steps:
