@@ -1,6 +1,6 @@
 use crate::e2e_tests::utils::*;
-use serde_json::json;
 use reqwest::StatusCode;
+use serde_json::json;
 
 pub async fn add(contributor_id: u128, discord_handle: Option<String>) {
 	let response = put(
