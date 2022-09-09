@@ -1,8 +1,8 @@
-use itertools::Itertools;
-use marketplace_domain::*;
-
 use crate::database::{models, schema, schema::contributions, Client, DatabaseError};
 use diesel::prelude::*;
+use itertools::Itertools;
+use log::error;
+use marketplace_domain::*;
 
 impl ContributionProjectionRepository for Client {
 	fn find_by_id(
@@ -100,11 +100,19 @@ impl ProjectionRepository<ContributionProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
 		let connection = self
 			.connection()
+			.map_err(|e| {
+				error!("Failed while trying to get connection from pool: {e}");
+				e
+			})
 			.map_err(anyhow::Error::msg)
 			.map_err(ProjectionRepositoryError::Infrastructure)?;
 
 		diesel::delete(schema::contributions::dsl::contributions)
 			.execute(&*connection)
+			.map_err(|e| {
+				error!("Failed while trying to clear contributions table: {e}");
+				e
+			})
 			.map_err(anyhow::Error::msg)
 			.map_err(ProjectionRepositoryError::Infrastructure)?;
 

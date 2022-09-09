@@ -2,6 +2,7 @@ use crate::database::{models, schema::projects, Client, DatabaseError};
 use anyhow::anyhow;
 use diesel::{prelude::*, query_dsl::BelongingToDsl};
 use itertools::Itertools;
+use log::error;
 use marketplace_domain::*;
 use std::str::FromStr;
 
@@ -154,11 +155,19 @@ impl ProjectionRepository<ProjectProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
 		let connection = self
 			.connection()
+			.map_err(|e| {
+				error!("Failed while getting connection from pool: {e}");
+				e
+			})
 			.map_err(anyhow::Error::msg)
 			.map_err(ProjectionRepositoryError::Infrastructure)?;
 
 		diesel::delete(projects::dsl::projects)
 			.execute(&*connection)
+			.map_err(|e| {
+				error!("Failed while trying to clear projects table: {e}");
+				e
+			})
 			.map_err(anyhow::Error::msg)
 			.map_err(ProjectionRepositoryError::Infrastructure)?;
 
