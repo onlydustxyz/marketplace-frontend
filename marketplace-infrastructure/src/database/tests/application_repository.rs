@@ -144,3 +144,103 @@ fn store_multiple_and_list() {
 
 	assert_eq!(applications, vec![application2])
 }
+
+#[test]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
+fn set_all_status_for_contribution() {
+	let client = Client::new(init_pool());
+
+	let contribution = init_contribution(&client);
+
+	let application1 =
+		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 0.into());
+	let application2 =
+		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 1.into());
+	let application3 =
+		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 2.into());
+
+	<Client as ApplicationProjectionRepository>::create(&client, application1.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application2.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application3.clone()).unwrap();
+
+	<Client as ApplicationProjectionRepository>::for_a_contribution_set_all_status(
+		&client,
+		&contribution.id,
+		ApplicationStatus::Refused,
+	)
+	.unwrap();
+
+	let applications = <Client as ApplicationProjectionRepository>::list_by_contribution(
+		&client,
+		&contribution.id,
+		None,
+	)
+	.unwrap();
+
+	assert_eq!(
+		applications
+			.into_iter()
+			.filter(|a| *a.status() != ApplicationStatus::Refused)
+			.count(),
+		0
+	);
+}
+
+#[test]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
+fn set_all_but_one_different_status_for_contribution() {
+	let client = Client::new(init_pool());
+
+	let contribution = init_contribution(&client);
+
+	let application1 =
+		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 0.into());
+	let application2 =
+		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 1.into());
+	let application3 =
+		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 2.into());
+
+	<Client as ApplicationProjectionRepository>::create(&client, application1.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application2.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application3.clone()).unwrap();
+
+	<Client as ApplicationProjectionRepository>::for_a_contribution_set_one_to_a_status_and_all_others_to_another(
+		&client,
+		&contribution.id,
+		&2.into(),
+		ApplicationStatus::Accepted,
+		ApplicationStatus::Refused,
+	)
+	.unwrap();
+
+	let applications = <Client as ApplicationProjectionRepository>::list_by_contribution(
+		&client,
+		&contribution.id,
+		None,
+	)
+	.unwrap();
+
+	assert_eq!(
+		applications
+			.iter()
+			.filter(|a| *a.status() == ApplicationStatus::Refused)
+			.count(),
+		2
+	);
+
+	let accepted_id: ContributorId = 2.into();
+	assert_eq!(
+		*applications
+			.iter()
+			.find(|a| *a.status() == ApplicationStatus::Accepted)
+			.unwrap()
+			.contributor_id(),
+		accepted_id
+	)
+}

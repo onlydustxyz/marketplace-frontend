@@ -34,4 +34,16 @@ pub trait Repository: Send + Sync {
 		&self,
 		contributor_id: Option<ContributorId>,
 	) -> Result<Vec<ApplicationProjection>, Error>;
+	fn for_a_contribution_set_all_status(
+		&self,
+		contribution_id: &ContributionId,
+		status: ApplicationStatus,
+	) -> Result<(), Error>;
+	fn for_a_contribution_set_one_to_a_status_and_all_others_to_another(
+		&self,
+		contribution_id: &ContributionId,
+		contributor_id: &ContributorId,
+		status_for_the_distinct: ApplicationStatus,
+		status_for_all: ApplicationStatus,
+	) -> Result<(), Error>;
 }

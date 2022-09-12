@@ -55,6 +55,24 @@ impl ApplicationProjectionRepository for EmptyDatabase {
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		unimplemented!()
 	}
+
+	fn for_a_contribution_set_all_status(
+		&self,
+		_contribution_id: &ContributionId,
+		_status: ApplicationStatus,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		unimplemented!()
+	}
+
+	fn for_a_contribution_set_one_to_a_status_and_all_others_to_another(
+		&self,
+		_contribution_id: &ContributionId,
+		_contributor_id: &ContributorId,
+		_status_for_the_distinct: ApplicationStatus,
+		_status_for_all: ApplicationStatus,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		unimplemented!()
+	}
 }
 struct FilledDatabase;
 impl ApplicationProjectionRepository for FilledDatabase {
@@ -102,6 +120,24 @@ impl ApplicationProjectionRepository for FilledDatabase {
 		&self,
 		_contributor_id: Option<ContributorId>,
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
+		unimplemented!()
+	}
+
+	fn for_a_contribution_set_all_status(
+		&self,
+		_contribution_id: &ContributionId,
+		_status: ApplicationStatus,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		unimplemented!()
+	}
+
+	fn for_a_contribution_set_one_to_a_status_and_all_others_to_another(
+		&self,
+		_contribution_id: &ContributionId,
+		_contributor_id: &ContributorId,
+		_status_for_the_distinct: ApplicationStatus,
+		_status_for_all: ApplicationStatus,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
 		unimplemented!()
 	}
 }
