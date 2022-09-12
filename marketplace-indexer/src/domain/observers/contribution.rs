@@ -1,18 +1,30 @@
-use super::*;
-use std::sync::Arc;
+use std::marker::PhantomData;
 
-pub struct ContributionObserver<P: Projection<A = Contribution>> {
-	projector: Arc<dyn Projector<P>>,
+use super::*;
+
+pub struct ContributionObserver<
+	TProjector: Projector<TProjection>,
+	TProjection: Projection<A = Contribution> + Send + Sync,
+> {
+	projector: TProjector,
+	projection_type: PhantomData<TProjection>,
 }
 
-impl<P: Projection<A = Contribution>> ContributionObserver<P> {
-	pub fn new(projector: Arc<dyn Projector<P>>) -> Self {
-		Self { projector }
+impl<ProjectorT: Projector<ProjectionT>, ProjectionT: Projection<A = Contribution> + Send + Sync>
+	ContributionObserver<ProjectorT, ProjectionT>
+{
+	pub fn new(projector: ProjectorT) -> Self {
+		Self {
+			projector,
+			projection_type: PhantomData,
+		}
 	}
 }
 
 #[async_trait]
-impl<P: Projection<A = Contribution>> Observer for ContributionObserver<P> {
+impl<ProjectorT: Projector<ProjectionT>, ProjectionT: Projection<A = Contribution> + Send + Sync>
+	Observer for ContributionObserver<ProjectorT, ProjectionT>
+{
 	async fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
 		if let Event::Contribution(event) = &event.event {
 			self.projector.project(event).await
@@ -67,7 +79,7 @@ mod test {
 			.with(eq(contribution_event))
 			.return_const(());
 
-		let observer = ContributionObserver::new(Arc::new(contribution_projector));
+		let observer = ContributionObserver::new(contribution_projector);
 		observer.on_new_event(&event, 0).await;
 	}
 }
