@@ -63,15 +63,15 @@ fn filled_database(
 			&project_id,
 			vec![
 				ProjectEvent::MemberAdded {
-					project_id: project_id.clone(),
+					project_id,
 					contributor_account: contributor_account_1.clone(),
 				},
 				ProjectEvent::MemberAdded {
-					project_id: project_id.clone(),
-					contributor_account: contributor_account_2.clone(),
+					project_id,
+					contributor_account: contributor_account_2,
 				},
 				ProjectEvent::MemberRemoved {
-					project_id: project_id.clone(),
+					project_id,
 					contributor_account: contributor_account_1.clone(),
 				},
 				ProjectEvent::LeadContributorAdded {
@@ -79,8 +79,8 @@ fn filled_database(
 					contributor_account: contributor_account_1,
 				},
 				ProjectEvent::MemberAdded {
-					project_id: project_id_2.clone(),
-					contributor_account: contributor_account_3.clone(),
+					project_id: project_id_2,
+					contributor_account: contributor_account_3,
 				},
 			]
 			.into_iter()
