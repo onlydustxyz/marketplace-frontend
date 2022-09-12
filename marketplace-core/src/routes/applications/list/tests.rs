@@ -56,6 +56,24 @@ impl ApplicationProjectionRepository for EmptyDatabase {
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		Ok(vec![])
 	}
+
+	fn for_a_contribution_set_all_status(
+		&self,
+		_contribution_id: &AggregateId,
+		_status: ApplicationStatus,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		unimplemented!()
+	}
+
+	fn for_a_contribution_set_one_to_a_status_and_all_others_to_another(
+		&self,
+		_contribution_id: &AggregateId,
+		_contributor_id: &ContributorId,
+		_status_for_the_distinct: ApplicationStatus,
+		_status_for_all: ApplicationStatus,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		unimplemented!()
+	}
 }
 struct FilledDatabase;
 impl ApplicationProjectionRepository for FilledDatabase {
@@ -143,6 +161,24 @@ impl ApplicationProjectionRepository for FilledDatabase {
 				),
 			]),
 		}
+	}
+
+	fn for_a_contribution_set_all_status(
+		&self,
+		_contribution_id: &AggregateId,
+		_status: ApplicationStatus,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		unimplemented!()
+	}
+
+	fn for_a_contribution_set_one_to_a_status_and_all_others_to_another(
+		&self,
+		_contribution_id: &AggregateId,
+		_contributor_id: &ContributorId,
+		_status_for_the_distinct: ApplicationStatus,
+		_status_for_all: ApplicationStatus,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		unimplemented!()
 	}
 }
 

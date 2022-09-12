@@ -68,29 +68,29 @@ impl Application {
 		&self.status
 	}
 
-	pub fn as_pending(&self) -> Self {
+	pub fn into_pending(self) -> Self {
 		Self {
 			id: self.id,
-			contribution_id: self.contribution_id.to_owned(),
-			contributor_id: self.contributor_id.to_owned(),
+			contribution_id: self.contribution_id,
+			contributor_id: self.contributor_id,
 			status: Status::Pending,
 		}
 	}
 
-	pub fn as_accepted(&self) -> Self {
+	pub fn into_accepted(self) -> Self {
 		Self {
 			id: self.id,
-			contribution_id: self.contribution_id.to_owned(),
-			contributor_id: self.contributor_id.to_owned(),
+			contribution_id: self.contribution_id,
+			contributor_id: self.contributor_id,
 			status: Status::Accepted,
 		}
 	}
 
-	pub fn as_refused(&self) -> Self {
+	pub fn into_refused(self) -> Self {
 		Self {
 			id: self.id,
-			contribution_id: self.contribution_id.to_owned(),
-			contributor_id: self.contributor_id.to_owned(),
+			contribution_id: self.contribution_id,
+			contributor_id: self.contributor_id,
 			status: Status::Refused,
 		}
 	}

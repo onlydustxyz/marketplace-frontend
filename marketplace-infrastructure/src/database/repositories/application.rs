@@ -5,7 +5,7 @@ use crate::database::{
 	schema::applications,
 	Client, DatabaseError,
 };
-use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
+use diesel::{Connection, ExpressionMethods, QueryDsl, RunQueryDsl};
 use itertools::Itertools;
 use log::error;
 use mapinto::ResultMapErrInto;
@@ -149,6 +149,69 @@ impl ApplicationProjectionRepository for Client {
 
 		Ok(applications.into_iter().map_into().collect())
 	}
+
+	fn for_a_contribution_set_all_status(
+		&self,
+		contribution_id: &AggregateId,
+		status: ApplicationStatus,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
+
+		let db_status: Status = status.into();
+		diesel::update(applications::dsl::applications)
+			.filter(applications::contribution_id.eq(contribution_id.to_string()))
+			.set(applications::status.eq(db_status))
+			.execute(&*connection)
+			.map_err(|e| {
+				error!(
+				"Failed to update all applications for contribution with id {contribution_id} to status
+		{status}: {e}", 	);
+				DatabaseError::from(e)
+			})?;
+
+		Ok(())
+	}
+
+	fn for_a_contribution_set_one_to_a_status_and_all_others_to_another(
+		&self,
+		contribution_id: &AggregateId,
+		contributor_id: &ContributorId,
+		status_for_the_distinct: ApplicationStatus,
+		status_for_all: ApplicationStatus,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
+
+		connection.transaction::<_, DatabaseError, _>(|| {
+			let db_status: Status = status_for_all.into();
+			diesel::update(applications::dsl::applications)
+				.filter(applications::contribution_id.eq(contribution_id.to_string()))
+				.set(applications::status.eq(db_status))
+				.execute(&*connection)
+				.map_err(|e| {
+					error!(
+				"Failed to update all applications for contribution with id {contribution_id} to status
+		{status_for_all}: {e}", 	);
+					DatabaseError::from(e)
+				})?;
+
+			let db_status: Status = status_for_the_distinct.into();
+			diesel::update(applications::dsl::applications)
+				.filter(applications::contribution_id.eq(contribution_id.to_string()))
+				.filter(applications::contributor_id.eq(contributor_id.to_string()))
+				.set(applications::status.eq(db_status))
+				.execute(&*connection)
+				.map_err(|e| {
+					error!(
+				"Failed to update status of application of contributor with id {contributor_id} to contribution with id {contribution_id} to status
+		{status_for_the_distinct}: {e}", 	);
+					DatabaseError::from(e)
+				})?;
+
+			Ok(())
+		})?;
+
+		Ok(())
+	}
 }
 
 impl ProjectionRepository<ApplicationProjection> for Client {
@@ -194,9 +257,9 @@ impl From<models::Application> for ApplicationProjection {
 			ContributorId::from_str(application.contributor_id.as_str()).unwrap(),
 		);
 		match application.status {
-			Status::Pending => application_projection.as_pending(),
-			Status::Accepted => application_projection.as_accepted(),
-			Status::Refused => application_projection.as_refused(),
+			Status::Pending => application_projection.into_pending(),
+			Status::Accepted => application_projection.into_accepted(),
+			Status::Refused => application_projection.into_refused(),
 		}
 	}
 }
