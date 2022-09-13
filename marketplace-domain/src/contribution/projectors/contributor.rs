@@ -33,7 +33,7 @@ impl ContributorProjector {
 		}
 	}
 
-	async fn on_contribution_applied(&self, contributor_id: &ContributorId) -> Result<(), Error> {
+	async fn add_contributor(&self, contributor_id: &ContributorId) -> Result<(), Error> {
 		if self.contributor_projection_repository.find_by_id(contributor_id).is_err() {
 			let contributor = self.contributor_service.contributor_by_id(contributor_id).await?;
 
@@ -58,7 +58,15 @@ impl Projector<ContributorProjection> for ContributorProjector {
 			ContributionEvent::Applied {
 				id: _,
 				contributor_id,
-			} => self.on_contribution_applied(contributor_id).await,
+			}
+			| ContributionEvent::Claimed {
+				id: _,
+				contributor_id,
+			}
+			| ContributionEvent::Assigned {
+				id: _,
+				contributor_id,
+			} => self.add_contributor(contributor_id).await,
 			_ => Ok(()),
 		};
 
@@ -114,16 +122,35 @@ mod test {
 	}
 
 	#[fixture]
+	fn contribution_assigned_event(contributor_id: ContributorId) -> ContributionEvent {
+		ContributionEvent::Assigned {
+			id: Default::default(),
+			contributor_id,
+		}
+	}
+
+	#[fixture]
+	fn contribution_claimed_event(contributor_id: ContributorId) -> ContributionEvent {
+		ContributionEvent::Claimed {
+			id: Default::default(),
+			contributor_id,
+		}
+	}
+
+	#[fixture]
 	fn contributor_service() -> MockContributorService {
 		MockContributorService::new()
 	}
 
 	#[rstest]
+	#[case(contribution_applied_event(contributor_id()))]
+	#[case(contribution_assigned_event(contributor_id()))]
+	#[case(contribution_claimed_event(contributor_id()))]
 	async fn contributor_gets_created_with_contribution(
 		mut github_client: MockGithubClient,
 		mut contributor_projection_repository: MockContributorProjectionRepository,
 		mut contributor_service: MockContributorService,
-		contribution_applied_event: ContributionEvent,
+		#[case] event: ContributionEvent,
 		github_user_id: GithubUserId,
 		github_username: String,
 		contributor_id: ContributorId,
@@ -179,7 +206,7 @@ mod test {
 			Arc::new(contributor_service),
 		);
 
-		projector.project(&contribution_applied_event).await;
+		projector.project(&event).await;
 	}
 
 	#[rstest]
