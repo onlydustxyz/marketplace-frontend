@@ -21,13 +21,13 @@ fn project_id() -> GithubProjectId {
 }
 
 #[fixture]
-fn contribution_created_event(project_id: GithubProjectId) -> ContributionEvent {
-	ContributionEvent::Created {
+fn contribution_created_event(project_id: GithubProjectId) -> Event {
+	Event::Contribution(ContributionEvent::Created {
 		id: Default::default(),
 		project_id,
 		issue_number: Default::default(),
 		gate: Default::default(),
-	}
+	})
 }
 
 #[fixture]
@@ -43,7 +43,7 @@ async fn project_gets_created_with_contribution(
 	mut github_client: MockGithubClient,
 	mut project_projection_repository: MockProjectProjectionRepository,
 	project_id: GithubProjectId,
-	contribution_created_event: ContributionEvent,
+	contribution_created_event: Event,
 	repo: GithubRepo,
 ) {
 	project_projection_repository
@@ -77,7 +77,7 @@ async fn project_gets_created_with_contribution(
 		Arc::new(project_projection_repository),
 	);
 
-	projector.project(&contribution_created_event).await;
+	projector.handle(&contribution_created_event).await;
 }
 
 #[rstest]
@@ -85,7 +85,7 @@ async fn project_is_not_stored_if_already_present(
 	mut github_client: MockGithubClient,
 	mut project_projection_repository: MockProjectProjectionRepository,
 	project_id: GithubProjectId,
-	contribution_created_event: ContributionEvent,
+	contribution_created_event: Event,
 	repo: GithubRepo,
 ) {
 	project_projection_repository
@@ -110,5 +110,5 @@ async fn project_is_not_stored_if_already_present(
 		Arc::new(project_projection_repository),
 	);
 
-	projector.project(&contribution_created_event).await;
+	projector.handle(&contribution_created_event).await;
 }

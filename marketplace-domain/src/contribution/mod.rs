@@ -1,6 +1,6 @@
 mod aggregate_root;
 pub use aggregate_root::{
-	Contribution, Error as ContributionError, Event as ContributionEvent, Id as AggregateId,
+	event::Event as ContributionEvent, Contribution, Error as ContributionError, Id as AggregateId,
 	Status as ContributionStatus,
 };
 

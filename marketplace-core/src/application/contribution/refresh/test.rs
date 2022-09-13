@@ -4,7 +4,7 @@ use dotenv::dotenv;
 use marketplace_infrastructure::database::{init_pool, Client as DatabaseClient};
 use mockall::mock;
 use rstest::*;
-use std::{str::FromStr, sync::Arc};
+use std::{ops::Deref, str::FromStr, sync::Arc};
 
 const STARKONQUEST: GithubProjectId = 481932781;
 
@@ -38,13 +38,13 @@ mock! {
 }
 
 trait Storable {
-	fn into_storable(self) -> StorableEvent<Contribution>;
+	fn into_storable(self) -> StorableEvent;
 }
 
 impl Storable for ContributionEvent {
-	fn into_storable(self) -> StorableEvent<Contribution> {
+	fn into_storable(self) -> StorableEvent {
 		StorableEvent {
-			event: self,
+			event: Event::Contribution(self),
 			deduplication_id: RandomUuidGenerator.new_uuid().to_string(),
 		}
 	}
@@ -89,65 +89,67 @@ fn filled_database(
 	// events for contribution #1
 	{
 		let contribution_id = ContributionId::from_str("0x17267621").unwrap();
-		database
-			.append(
-				&contribution_id,
-				vec![
-					ContributionEvent::Created {
-						id: contribution_id.clone(),
-						project_id: STARKONQUEST,
-						issue_number: 51,
-						gate: 0,
-					},
-					ContributionEvent::Applied {
-						id: contribution_id.clone(),
-						contributor_id: contributor_id.clone(),
-					},
-					ContributionEvent::Assigned {
-						id: contribution_id.clone(),
-						contributor_id: contributor_id.clone(),
-					},
-					ContributionEvent::Validated {
-						id: contribution_id.clone(),
-					},
-				]
-				.into_iter()
-				.map(Storable::into_storable)
-				.collect(),
-			)
-			.expect("Unable to add events in event store");
+		let storable_events = vec![
+			ContributionEvent::Created {
+				id: contribution_id.clone(),
+				project_id: STARKONQUEST,
+				issue_number: 51,
+				gate: 0,
+			},
+			ContributionEvent::Applied {
+				id: contribution_id.clone(),
+				contributor_id: contributor_id.clone(),
+			},
+			ContributionEvent::Assigned {
+				id: contribution_id.clone(),
+				contributor_id: contributor_id.clone(),
+			},
+			ContributionEvent::Validated {
+				id: contribution_id.clone(),
+			},
+		]
+		.into_iter()
+		.map(Storable::into_storable)
+		.collect();
+
+		<DatabaseClient as EventStore<Contribution>>::append(
+			database.deref(),
+			&contribution_id,
+			storable_events,
+		)
+		.expect("Unable to add events in event store");
 	}
 
 	// events for contribution #2
 	{
 		let contribution_id = ContributionId::from_str("0x17267622").unwrap();
-		database
-			.append(
-				&contribution_id,
-				vec![
-					ContributionEvent::Created {
-						id: contribution_id.clone(),
-						project_id: STARKONQUEST,
-						issue_number: 52,
-						gate: 0,
-					},
-					ContributionEvent::Applied {
-						id: contribution_id.clone(),
-						contributor_id: contributor_id.clone(),
-					},
-					ContributionEvent::Assigned {
-						id: contribution_id.clone(),
-						contributor_id,
-					},
-					ContributionEvent::Unassigned {
-						id: contribution_id.clone(),
-					},
-				]
-				.into_iter()
-				.map(Storable::into_storable)
-				.collect(),
-			)
-			.expect("Unable to add events in event store");
+		<DatabaseClient as EventStore<Contribution>>::append(
+			database.deref(),
+			&contribution_id,
+			vec![
+				ContributionEvent::Created {
+					id: contribution_id.clone(),
+					project_id: STARKONQUEST,
+					issue_number: 52,
+					gate: 0,
+				},
+				ContributionEvent::Applied {
+					id: contribution_id.clone(),
+					contributor_id: contributor_id.clone(),
+				},
+				ContributionEvent::Assigned {
+					id: contribution_id.clone(),
+					contributor_id,
+				},
+				ContributionEvent::Unassigned {
+					id: contribution_id.clone(),
+				},
+			]
+			.into_iter()
+			.map(Storable::into_storable)
+			.collect(),
+		)
+		.expect("Unable to add events in event store");
 	}
 
 	database

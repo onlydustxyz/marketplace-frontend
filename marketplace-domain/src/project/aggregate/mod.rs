@@ -1,12 +1,9 @@
 use crate::*;
 
-mod event;
-pub use event::Event;
-
+pub mod event;
 #[derive(Default, Debug, Clone, PartialEq, Eq)]
 pub struct Project;
 
 impl Aggregate for Project {
-	type Event = Event;
 	type Id = GithubProjectId;
 }

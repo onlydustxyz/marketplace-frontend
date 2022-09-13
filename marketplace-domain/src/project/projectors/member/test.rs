@@ -21,47 +21,44 @@ fn contributor_account() -> ContributorAccount {
 }
 
 #[fixture]
-fn on_member_added_event(
-	project_id: ProjectId,
-	contributor_account: ContributorAccount,
-) -> ProjectEvent {
-	ProjectEvent::MemberAdded {
+fn on_member_added_event(project_id: ProjectId, contributor_account: ContributorAccount) -> Event {
+	Event::Project(ProjectEvent::MemberAdded {
 		project_id,
 		contributor_account,
-	}
+	})
 }
 
 #[fixture]
 fn on_member_removed_event(
 	project_id: ProjectId,
 	contributor_account: ContributorAccount,
-) -> ProjectEvent {
-	ProjectEvent::MemberRemoved {
+) -> Event {
+	Event::Project(ProjectEvent::MemberRemoved {
 		project_id,
 		contributor_account,
-	}
+	})
 }
 
 #[fixture]
 fn on_lead_contributor_added_event(
 	project_id: ProjectId,
 	contributor_account: ContributorAccount,
-) -> ProjectEvent {
-	ProjectEvent::LeadContributorAdded {
+) -> Event {
+	Event::Project(ProjectEvent::LeadContributorAdded {
 		project_id,
 		contributor_account,
-	}
+	})
 }
 
 #[fixture]
 fn on_lead_contributor_removed_event(
 	project_id: ProjectId,
 	contributor_account: ContributorAccount,
-) -> ProjectEvent {
-	ProjectEvent::LeadContributorRemoved {
+) -> Event {
+	Event::Project(ProjectEvent::LeadContributorRemoved {
 		project_id,
 		contributor_account,
-	}
+	})
 }
 
 #[rstest]
@@ -72,7 +69,7 @@ fn on_lead_contributor_removed_event(
 )]
 async fn on_member_added(
 	mut member_projection_repository: MockProjectMemberProjectionRepository,
-	#[case] event: ProjectEvent,
+	#[case] event: Event,
 	project_id: ProjectId,
 	contributor_account: ContributorAccount,
 	#[case] is_lead_contributor: bool,
@@ -88,7 +85,7 @@ async fn on_member_added(
 		.returning(|_| Ok(()));
 
 	let projector = MemberProjector::new(Arc::new(member_projection_repository));
-	projector.project(&event).await;
+	projector.handle(&event).await;
 }
 
 #[rstest]
@@ -96,7 +93,7 @@ async fn on_member_added(
 #[case(on_lead_contributor_removed_event(project_id(), contributor_account()))]
 async fn on_member_removed(
 	mut member_projection_repository: MockProjectMemberProjectionRepository,
-	#[case] event: ProjectEvent,
+	#[case] event: Event,
 	project_id: ProjectId,
 	contributor_account: ContributorAccount,
 ) {
@@ -107,5 +104,5 @@ async fn on_member_removed(
 		.returning(|_, _| Ok(()));
 
 	let projector = MemberProjector::new(Arc::new(member_projection_repository));
-	projector.project(&event).await;
+	projector.handle(&event).await;
 }

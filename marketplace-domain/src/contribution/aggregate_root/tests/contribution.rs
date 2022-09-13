@@ -24,50 +24,50 @@ fn contributor_id() -> ContributorId {
 
 #[fixture]
 fn contribution_created_event(contribution_id: Id) -> Event {
-	Event::Created {
+	Event::Contribution(ContributionEvent::Created {
 		id: contribution_id,
 		project_id: Default::default(),
 		issue_number: Default::default(),
 		gate: Default::default(),
-	}
+	})
 }
 
 #[fixture]
 fn contribution_assigned_event() -> Event {
-	Event::Assigned {
+	Event::Contribution(ContributionEvent::Assigned {
 		id: Default::default(),
 		contributor_id: Default::default(),
-	}
+	})
 }
 
 #[fixture]
 fn contribution_applied_event(contributor_id: ContributorId) -> Event {
-	Event::Applied {
+	Event::Contribution(ContributionEvent::Applied {
 		id: Default::default(),
 		contributor_id,
-	}
+	})
 }
 
 #[fixture]
 fn contribution_claimed_event(contributor_id: ContributorId) -> Event {
-	Event::Claimed {
+	Event::Contribution(ContributionEvent::Claimed {
 		id: Default::default(),
 		contributor_id,
-	}
+	})
 }
 
 #[fixture]
 fn contribution_unassigned_event() -> Event {
-	Event::Unassigned {
+	Event::Contribution(ContributionEvent::Unassigned {
 		id: Default::default(),
-	}
+	})
 }
 
 #[fixture]
 fn contribution_validated_event() -> Event {
-	Event::Validated {
+	Event::Contribution(ContributionEvent::Validated {
 		id: Default::default(),
-	}
+	})
 }
 
 #[rstest]
@@ -162,9 +162,9 @@ fn apply_to_contribution_emits_an_event(contribution_created_event: Event) {
 	assert_eq!(1, emitted_events.len());
 	assert_matches!(
 		emitted_events.first().unwrap(),
-		ContributionEvent::Applied {
+		Event::Contribution(ContributionEvent::Applied {
 			contributor_id: _,
 			id: _
-		}
+		})
 	);
 }

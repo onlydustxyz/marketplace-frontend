@@ -162,9 +162,9 @@ fn set_all_status_for_contribution() {
 	let application3 =
 		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 2.into());
 
-	<Client as ApplicationProjectionRepository>::create(&client, application1.clone()).unwrap();
-	<Client as ApplicationProjectionRepository>::create(&client, application2.clone()).unwrap();
-	<Client as ApplicationProjectionRepository>::create(&client, application3.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application1).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application2).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application3).unwrap();
 
 	<Client as ApplicationProjectionRepository>::for_a_contribution_set_all_status(
 		&client,
@@ -206,9 +206,9 @@ fn set_all_but_one_different_status_for_contribution() {
 	let application3 =
 		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id.clone(), 2.into());
 
-	<Client as ApplicationProjectionRepository>::create(&client, application1.clone()).unwrap();
-	<Client as ApplicationProjectionRepository>::create(&client, application2.clone()).unwrap();
-	<Client as ApplicationProjectionRepository>::create(&client, application3.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application1).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application2).unwrap();
+	<Client as ApplicationProjectionRepository>::create(&client, application3).unwrap();
 
 	<Client as ApplicationProjectionRepository>::for_a_contribution_set_one_to_a_status_and_all_others_to_another(
 		&client,

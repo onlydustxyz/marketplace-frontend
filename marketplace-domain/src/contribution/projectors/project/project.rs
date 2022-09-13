@@ -45,16 +45,19 @@ impl ProjectProjector {
 }
 
 #[async_trait]
-impl Projector<ProjectProjection> for ProjectProjector {
-	async fn project(&self, event: &ContributionEvent) {
+impl EventHandler<ProjectProjection> for ProjectProjector {
+	async fn handle(&self, event: &Event) {
 		let result = match event {
-			ContributionEvent::Created {
-				id: _,
-				project_id,
-				issue_number: _,
-				gate: _,
-			} => self.on_contribution_created(*project_id).await,
-			_ => Ok(()),
+			Event::Contribution(contribution_event) => match contribution_event {
+				ContributionEvent::Created {
+					id: _,
+					project_id,
+					issue_number: _,
+					gate: _,
+				} => self.on_contribution_created(*project_id).await,
+				_ => return,
+			},
+			Event::Project(_) => return,
 		};
 
 		if let Err(error) = result {

@@ -2,7 +2,7 @@ mod projections;
 pub use projections::MemberProjection;
 
 mod aggregate;
-pub use aggregate::{Event, Project as Aggregate};
+pub use aggregate::{event::Event as ProjectEvent, Project as Aggregate};
 
 mod projectors;
 pub use projectors::MemberProjector;

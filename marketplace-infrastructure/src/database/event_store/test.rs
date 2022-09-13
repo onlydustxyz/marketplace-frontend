@@ -20,28 +20,25 @@ fn contributor_id() -> ContributorId {
 }
 
 #[fixture]
-fn creation_event(contribution_id: ContributionId) -> StorableEvent<Contribution> {
+fn creation_event(contribution_id: ContributionId) -> StorableEvent {
 	StorableEvent {
-		event: ContributionEvent::Created {
-			id: contribution_id.clone(),
+		event: Event::Contribution(ContributionEvent::Created {
+			id: contribution_id,
 			project_id: Default::default(),
 			issue_number: Default::default(),
 			gate: Default::default(),
-		},
+		}),
 		deduplication_id: "dedup1".to_string(),
 	}
 }
 
 #[fixture]
-fn assigned_event(
-	contribution_id: ContributionId,
-	contributor_id: ContributorId,
-) -> StorableEvent<Contribution> {
+fn assigned_event(contribution_id: ContributionId, contributor_id: ContributorId) -> StorableEvent {
 	StorableEvent {
-		event: ContributionEvent::Assigned {
-			id: contribution_id.clone(),
+		event: Event::Contribution(ContributionEvent::Assigned {
+			id: contribution_id,
 			contributor_id,
-		},
+		}),
 		deduplication_id: "dedup2".to_string(),
 	}
 }
@@ -54,8 +51,8 @@ fn assigned_event(
 fn test_append_and_list(
 	event_store: Box<dyn EventStore<Contribution>>,
 	contribution_id: ContributionId,
-	creation_event: StorableEvent<Contribution>,
-	assigned_event: StorableEvent<Contribution>,
+	creation_event: StorableEvent,
+	assigned_event: StorableEvent,
 ) {
 	assert!(
 		event_store
@@ -80,13 +77,13 @@ fn test_append_and_list(
 fn test_cannot_append_duplicate_event_in_same_batch(
 	event_store: Box<dyn EventStore<Contribution>>,
 	contribution_id: ContributionId,
-	creation_event: StorableEvent<Contribution>,
+	creation_event: StorableEvent,
 ) {
 	assert!(
 		event_store
 			.append(
 				&contribution_id,
-				vec![creation_event.clone(), creation_event.clone()]
+				vec![creation_event.clone(), creation_event]
 			)
 			.is_err()
 	);
@@ -103,8 +100,8 @@ fn test_cannot_append_duplicate_event_in_same_batch(
 fn test_cannot_append_duplicate_event_in_different_batches(
 	event_store: Box<dyn EventStore<Contribution>>,
 	contribution_id: ContributionId,
-	creation_event: StorableEvent<Contribution>,
+	creation_event: StorableEvent,
 ) {
 	assert!(event_store.append(&contribution_id, vec![creation_event.clone()]).is_ok());
-	assert!(event_store.append(&contribution_id, vec![creation_event.clone()]).is_err());
+	assert!(event_store.append(&contribution_id, vec![creation_event]).is_err());
 }
