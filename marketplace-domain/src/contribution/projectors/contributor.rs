@@ -52,8 +52,8 @@ impl ContributorProjector {
 }
 
 #[async_trait]
-impl EventHandler<ContributorProjection> for ContributorProjector {
-	async fn handle(&self, event: &Event) {
+impl EventListener for ContributorProjector {
+	async fn on_event(&self, event: &Event) {
 		let result = match event {
 			Event::Contribution(contribution_event) => match contribution_event {
 				ContributionEvent::Applied {
@@ -209,7 +209,7 @@ mod test {
 			Arc::new(contributor_service),
 		);
 
-		projector.handle(&event).await;
+		projector.on_event(&event).await;
 	}
 
 	#[rstest]
@@ -234,6 +234,6 @@ mod test {
 			Arc::new(contributor_service),
 		);
 
-		projector.handle(&contribution_applied_event).await;
+		projector.on_event(&contribution_applied_event).await;
 	}
 }

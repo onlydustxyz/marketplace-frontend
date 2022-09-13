@@ -30,7 +30,7 @@ impl Observer for EventStoreObserver {
 				store_event(
 					self.contribution_event_store.clone(),
 					id,
-					observed_event.event.clone(),
+					contribution_event.clone(),
 					observed_event.deduplication_id.clone(),
 				);
 			},
@@ -39,7 +39,7 @@ impl Observer for EventStoreObserver {
 				store_event(
 					self.project_event_store.clone(),
 					id,
-					observed_event.event.clone(),
+					project_event.clone(),
 					observed_event.deduplication_id.clone(),
 				);
 			},
@@ -50,7 +50,7 @@ impl Observer for EventStoreObserver {
 fn store_event<A: Aggregate>(
 	event_store: Arc<dyn EventStore<A>>,
 	id: &A::Id,
-	event: Event,
+	event: A::Event,
 	deduplication_id: String,
 ) {
 	if let Err(error) = event_store.append(
@@ -191,7 +191,7 @@ mod test {
 			.with(
 				eq(contribution_id),
 				eq(vec![StorableEvent {
-					event: Event::Contribution(contribution_event.clone()),
+					event: contribution_event.clone(),
 					deduplication_id: cloned_event.deduplication_id.clone(),
 				}]),
 			)
@@ -220,7 +220,7 @@ mod test {
 			.with(
 				eq(project_id),
 				eq(vec![StorableEvent {
-					event: Event::Project(project_event.clone()),
+					event: project_event.clone(),
 					deduplication_id: cloned_event.deduplication_id.clone(),
 				}]),
 			)

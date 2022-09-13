@@ -65,8 +65,8 @@ impl ApplicationProjector {
 }
 
 #[async_trait]
-impl EventHandler<ApplicationProjection> for ApplicationProjector {
-	async fn handle(&self, event: &Event) {
+impl EventListener for ApplicationProjector {
+	async fn on_event(&self, event: &Event) {
 		let result = match event {
 			Event::Contribution(contribution_event) => match contribution_event {
 				ContributionEvent::Applied {
@@ -173,7 +173,7 @@ mod tests {
 		);
 
 		projector
-			.handle(&Event::Contribution(ContributionEvent::Applied {
+			.on_event(&Event::Contribution(ContributionEvent::Applied {
 				id: contribution_id,
 				contributor_id: contributor_1_id,
 			}))
@@ -214,7 +214,7 @@ mod tests {
 		);
 
 		projector
-			.handle(&Event::Contribution(ContributionEvent::Applied {
+			.on_event(&Event::Contribution(ContributionEvent::Applied {
 				id: contribution_id,
 				contributor_id: contributor_1_id,
 			}))

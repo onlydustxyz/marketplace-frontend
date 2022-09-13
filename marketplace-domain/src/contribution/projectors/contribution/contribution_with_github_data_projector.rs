@@ -92,8 +92,8 @@ impl WithGithubDataProjector {
 }
 
 #[async_trait]
-impl EventHandler<ContributionProjection> for WithGithubDataProjector {
-	async fn handle(&self, event: &Event) {
+impl EventListener for WithGithubDataProjector {
+	async fn on_event(&self, event: &Event) {
 		let result = match event {
 			Event::Contribution(contribution_event) => match contribution_event {
 				ContributionEvent::Created {

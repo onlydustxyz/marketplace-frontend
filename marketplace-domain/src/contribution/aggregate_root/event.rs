@@ -40,3 +40,9 @@ impl Display for Event {
 		)
 	}
 }
+
+impl From<Event> for crate::Event {
+	fn from(event: Event) -> Self {
+		crate::Event::Contribution(event)
+	}
+}

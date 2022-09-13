@@ -68,19 +68,25 @@ impl Usecase for ApplyToContribution {
 		let contribution = self.contribution_repository.find_by_id(contribution_id)?;
 		let contribution_id = contribution_id.clone();
 		let events = contribution.apply(contributor_id)?;
-		let storable_events: Vec<StorableEvent> = events
+		let storable_events: Vec<StorableEvent<Contribution>> = events
 			.iter()
-			.map(|event| StorableEvent {
-				deduplication_id: self.uuid_generator.new_uuid().to_string(),
-				event: event.clone(),
+			.map(|event| {
+				if let Event::Contribution(contribution_event) = event {
+					StorableEvent {
+						deduplication_id: self.uuid_generator.new_uuid().to_string(),
+						event: contribution_event.clone(),
+					}
+				} else {
+					panic!("Contribution event expected");
+				}
 			})
 			.collect();
 		self.event_store.append(&contribution_id, storable_events)?;
 		// TODO: the usecase shouldn't know about the projectors, it should just push the events to
 		// a bus
 		for event in &events {
-			self.application_projector.handle(event).await;
-			self.contributor_projector.handle(event).await;
+			self.application_projector.on_event(event).await;
+			self.contributor_projector.on_event(event).await;
 		}
 
 		Ok(())

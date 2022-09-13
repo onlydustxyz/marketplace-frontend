@@ -61,6 +61,7 @@ impl Contribution {
 }
 
 impl Aggregate for Contribution {
+	type Event = ContributionEvent;
 	type Id = Id;
 }
 

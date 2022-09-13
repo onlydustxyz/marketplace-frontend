@@ -20,25 +20,28 @@ fn contributor_id() -> ContributorId {
 }
 
 #[fixture]
-fn creation_event(contribution_id: ContributionId) -> StorableEvent {
+fn creation_event(contribution_id: ContributionId) -> StorableEvent<Contribution> {
 	StorableEvent {
-		event: Event::Contribution(ContributionEvent::Created {
+		event: ContributionEvent::Created {
 			id: contribution_id,
 			project_id: Default::default(),
 			issue_number: Default::default(),
 			gate: Default::default(),
-		}),
+		},
 		deduplication_id: "dedup1".to_string(),
 	}
 }
 
 #[fixture]
-fn assigned_event(contribution_id: ContributionId, contributor_id: ContributorId) -> StorableEvent {
+fn assigned_event(
+	contribution_id: ContributionId,
+	contributor_id: ContributorId,
+) -> StorableEvent<Contribution> {
 	StorableEvent {
-		event: Event::Contribution(ContributionEvent::Assigned {
+		event: ContributionEvent::Assigned {
 			id: contribution_id,
 			contributor_id,
-		}),
+		},
 		deduplication_id: "dedup2".to_string(),
 	}
 }
@@ -51,8 +54,8 @@ fn assigned_event(contribution_id: ContributionId, contributor_id: ContributorId
 fn test_append_and_list(
 	event_store: Box<dyn EventStore<Contribution>>,
 	contribution_id: ContributionId,
-	creation_event: StorableEvent,
-	assigned_event: StorableEvent,
+	creation_event: StorableEvent<Contribution>,
+	assigned_event: StorableEvent<Contribution>,
 ) {
 	assert!(
 		event_store
@@ -65,8 +68,14 @@ fn test_append_and_list(
 
 	let contribution_events = event_store.list_by_id(&contribution_id).unwrap();
 	assert_eq!(contribution_events.len(), 2);
-	assert_eq!(*contribution_events.first().unwrap(), creation_event.event);
-	assert_eq!(*contribution_events.last().unwrap(), assigned_event.event);
+	assert_eq!(
+		*contribution_events.first().unwrap(),
+		Event::Contribution(creation_event.event)
+	);
+	assert_eq!(
+		*contribution_events.last().unwrap(),
+		Event::Contribution(assigned_event.event)
+	);
 }
 
 #[rstest]
@@ -77,7 +86,7 @@ fn test_append_and_list(
 fn test_cannot_append_duplicate_event_in_same_batch(
 	event_store: Box<dyn EventStore<Contribution>>,
 	contribution_id: ContributionId,
-	creation_event: StorableEvent,
+	creation_event: StorableEvent<Contribution>,
 ) {
 	assert!(
 		event_store
@@ -100,7 +109,7 @@ fn test_cannot_append_duplicate_event_in_same_batch(
 fn test_cannot_append_duplicate_event_in_different_batches(
 	event_store: Box<dyn EventStore<Contribution>>,
 	contribution_id: ContributionId,
-	creation_event: StorableEvent,
+	creation_event: StorableEvent<Contribution>,
 ) {
 	assert!(event_store.append(&contribution_id, vec![creation_event.clone()]).is_ok());
 	assert!(event_store.append(&contribution_id, vec![creation_event]).is_err());

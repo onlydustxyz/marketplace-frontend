@@ -1,8 +1,11 @@
-use std::fmt::Display;
+use std::fmt::{Debug, Display};
+
+use serde::{de::DeserializeOwned, Serialize};
 
 use crate::Event;
 
 pub trait Aggregate: Send + Sync + Default + Sized {
+	type Event: Serialize + DeserializeOwned + Debug + Display + Clone + Into<Event>;
 	type Id: PartialEq + Display;
 }
 

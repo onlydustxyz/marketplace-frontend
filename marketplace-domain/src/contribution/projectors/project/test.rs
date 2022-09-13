@@ -77,7 +77,7 @@ async fn project_gets_created_with_contribution(
 		Arc::new(project_projection_repository),
 	);
 
-	projector.handle(&contribution_created_event).await;
+	projector.on_event(&contribution_created_event).await;
 }
 
 #[rstest]
@@ -110,5 +110,5 @@ async fn project_is_not_stored_if_already_present(
 		Arc::new(project_projection_repository),
 	);
 
-	projector.handle(&contribution_created_event).await;
+	projector.on_event(&contribution_created_event).await;
 }

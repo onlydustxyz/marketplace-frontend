@@ -6,13 +6,13 @@ use rstest::*;
 use std::{ops::Deref, str::FromStr, sync::Arc};
 
 trait Storable {
-	fn into_storable(self) -> StorableEvent;
+	fn into_storable(self) -> StorableEvent<ProjectAggregate>;
 }
 
 impl Storable for ProjectEvent {
-	fn into_storable(self) -> StorableEvent {
+	fn into_storable(self) -> StorableEvent<ProjectAggregate> {
 		StorableEvent {
-			event: Event::Project(self),
+			event: self,
 			deduplication_id: RandomUuidGenerator.new_uuid().to_string(),
 		}
 	}
