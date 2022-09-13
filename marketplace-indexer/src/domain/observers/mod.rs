@@ -6,18 +6,15 @@ pub use composite::ObserverComposite;
 mod logging;
 pub use logging::Logger;
 
-mod contribution;
-pub use contribution::ContributionObserver;
-
-mod project;
-pub use project::ProjectObserver;
-
 mod confirmed;
 pub use confirmed::{ConfirmedObserver, WithBockConfirmationCount};
 use serde::{Deserialize, Serialize};
 
 mod event_store;
 pub use event_store::EventStoreObserver;
+
+mod projectors;
+pub use projectors::ProjectorsObserver;
 
 use crate::domain::*;
 use mockall::automock;

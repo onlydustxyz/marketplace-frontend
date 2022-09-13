@@ -85,7 +85,7 @@ async fn on_member_added(
 		.returning(|_| Ok(()));
 
 	let projector = MemberProjector::new(Arc::new(member_projection_repository));
-	projector.handle(&event).await;
+	projector.on_event(&event).await;
 }
 
 #[rstest]
@@ -104,5 +104,5 @@ async fn on_member_removed(
 		.returning(|_, _| Ok(()));
 
 	let projector = MemberProjector::new(Arc::new(member_projection_repository));
-	projector.handle(&event).await;
+	projector.on_event(&event).await;
 }

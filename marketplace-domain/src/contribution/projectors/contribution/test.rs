@@ -141,7 +141,7 @@ async fn on_contribution_created_event(
 		Arc::new(github_client),
 	);
 
-	projector.handle(&Event::Contribution(contribution_created_event)).await;
+	projector.on_event(&Event::Contribution(contribution_created_event)).await;
 }
 
 #[rstest]
@@ -166,7 +166,7 @@ async fn on_contribution_assigned_event(
 		Arc::new(github_client),
 	);
 
-	projector.handle(&Event::Contribution(contribution_assigned_event)).await;
+	projector.on_event(&Event::Contribution(contribution_assigned_event)).await;
 }
 
 #[rstest]
@@ -186,7 +186,7 @@ async fn on_contribution_unassigned_event(
 		Arc::new(github_client),
 	);
 
-	projector.handle(&Event::Contribution(contribution_unassigned_event)).await;
+	projector.on_event(&Event::Contribution(contribution_unassigned_event)).await;
 }
 
 #[rstest]
@@ -206,5 +206,5 @@ async fn on_contribution_validated_event(
 		Arc::new(github_client),
 	);
 
-	projector.handle(&Event::Contribution(contribution_validated_event)).await;
+	projector.on_event(&Event::Contribution(contribution_validated_event)).await;
 }

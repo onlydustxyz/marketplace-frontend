@@ -37,8 +37,8 @@ impl MemberProjector {
 }
 
 #[async_trait]
-impl EventHandler<ProjectMemberProjection> for MemberProjector {
-	async fn handle(&self, event: &Event) {
+impl EventListener for MemberProjector {
+	async fn on_event(&self, event: &Event) {
 		let result = match event {
 			Event::Project(project_event) => match project_event {
 				ProjectEvent::MemberAdded {

@@ -45,8 +45,8 @@ impl ProjectProjector {
 }
 
 #[async_trait]
-impl EventHandler<ProjectProjection> for ProjectProjector {
-	async fn handle(&self, event: &Event) {
+impl EventListener for ProjectProjector {
+	async fn on_event(&self, event: &Event) {
 		let result = match event {
 			Event::Contribution(contribution_event) => match contribution_event {
 				ContributionEvent::Created {

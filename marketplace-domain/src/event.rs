@@ -1,4 +1,4 @@
-use crate::{ContributionEvent, ProjectEvent};
+use crate::{Aggregate, ContributionEvent, ProjectEvent};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
@@ -9,8 +9,8 @@ pub enum Event {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct StorableEvent {
-	pub event: Event,
+pub struct StorableEvent<A: Aggregate> {
+	pub event: A::Event,
 	pub deduplication_id: String,
 }
 

@@ -26,8 +26,8 @@ pub use event_store::{Error as EventStoreError, MockStore as MockEventStore, Sto
 mod aggregate;
 pub use aggregate::{Aggregate, AggregateRoot, EventSourcable};
 
-mod projector;
-pub use projector::EventHandler;
+mod event_listener;
+pub use event_listener::{EventListener, MockEventListener};
 
 mod projection;
 pub use projection::Projection;

@@ -13,14 +13,14 @@ pub enum Error {
 
 pub struct Refresh<P: Projection> {
 	projection_repository: Arc<dyn ProjectionRepository<P>>,
-	projector: Arc<dyn EventHandler<P>>,
+	projector: Arc<dyn EventListener>,
 	event_store: Arc<dyn EventStore<P::A>>,
 }
 
 impl<P: Projection> Refresh<P> {
 	pub fn new(
 		projection_repository: Arc<dyn ProjectionRepository<P>>,
-		projector: Arc<dyn EventHandler<P>>,
+		projector: Arc<dyn EventListener>,
 		event_store: Arc<dyn EventStore<P::A>>,
 	) -> Self {
 		Self {
@@ -36,7 +36,7 @@ impl<P: Projection> Refresh<P> {
 		let events = self.event_store.list()?;
 
 		for event in events.iter() {
-			self.projector.handle(event).await;
+			self.projector.on_event(event).await;
 		}
 
 		Ok(())

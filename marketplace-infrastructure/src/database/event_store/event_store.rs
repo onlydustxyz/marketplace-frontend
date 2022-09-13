@@ -30,7 +30,7 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 	fn append(
 		&self,
 		aggregate_id: &A::Id,
-		storable_events: Vec<StorableEvent>,
+		storable_events: Vec<StorableEvent<A>>,
 	) -> Result<(), EventStoreError> {
 		let connection = self.connection().map_err(|e| {
 			error!("Failed to connect to database: {e}");
@@ -39,12 +39,13 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 
 		let events = storable_events
 			.iter()
-			.map(|event| {
+			.map(|storable_event| {
+				let domain_event: Event = storable_event.event.clone().into();
 				Ok(models::Event {
 					aggregate_name: A::name(),
 					aggregate_id: aggregate_id.to_string(),
-					payload: serde_json::to_value(&event.event).map_err(|e| {
-						error!("Failed to serialize event {:?}: {e}", &event.event);
+					payload: serde_json::to_value(&domain_event).map_err(|e| {
+						error!("Failed to serialize event {domain_event:?}: {e}");
 						EventStoreError::InvalidEvent(e.into())
 					})?,
 				})

@@ -101,11 +101,13 @@ async fn index_contributions_events(
 	let observer = BlockchainObserverComposite::new(vec![
 		Arc::new(BlockchainLogger::default()),
 		Arc::new(EventStoreObserver::new(database.clone(), database)),
-		Arc::new(ContributionObserver::new(contribution_projector)),
-		Arc::new(ContributionObserver::new(application_projector)),
-		Arc::new(ContributionObserver::new(project_projector)),
-		Arc::new(ContributionObserver::new(contributor_projector)),
-		Arc::new(ProjectObserver::new(Arc::new(project_member_projector))),
+		Arc::new(ProjectorsObserver::new(vec![
+			Box::new(contribution_projector),
+			Box::new(application_projector),
+			Box::new(project_projector),
+			Box::new(contributor_projector),
+			Box::new(project_member_projector),
+		])),
 	]);
 
 	apibara_client.fetch_new_events(&indexer, Arc::new(observer)).await

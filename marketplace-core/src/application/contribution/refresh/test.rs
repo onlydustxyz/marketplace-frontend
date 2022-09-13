@@ -38,13 +38,13 @@ mock! {
 }
 
 trait Storable {
-	fn into_storable(self) -> StorableEvent;
+	fn into_storable(self) -> StorableEvent<Contribution>;
 }
 
 impl Storable for ContributionEvent {
-	fn into_storable(self) -> StorableEvent {
+	fn into_storable(self) -> StorableEvent<Contribution> {
 		StorableEvent {
-			event: Event::Contribution(self),
+			event: self,
 			deduplication_id: RandomUuidGenerator.new_uuid().to_string(),
 		}
 	}
