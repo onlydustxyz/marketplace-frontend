@@ -37,25 +37,28 @@ impl MemberProjector {
 }
 
 #[async_trait]
-impl Projector<ProjectMemberProjection> for MemberProjector {
-	async fn project(&self, event: &ProjectEvent) {
+impl EventHandler<ProjectMemberProjection> for MemberProjector {
+	async fn handle(&self, event: &Event) {
 		let result = match event {
-			ProjectEvent::MemberAdded {
-				project_id,
-				contributor_account,
-			} => self.on_member_added(project_id, contributor_account, false),
-			ProjectEvent::MemberRemoved {
-				project_id,
-				contributor_account,
-			} => self.on_member_removed(project_id, contributor_account),
-			ProjectEvent::LeadContributorAdded {
-				project_id,
-				contributor_account,
-			} => self.on_member_added(project_id, contributor_account, true),
-			ProjectEvent::LeadContributorRemoved {
-				project_id,
-				contributor_account,
-			} => self.on_member_removed(project_id, contributor_account),
+			Event::Project(project_event) => match project_event {
+				ProjectEvent::MemberAdded {
+					project_id,
+					contributor_account,
+				} => self.on_member_added(project_id, contributor_account, false),
+				ProjectEvent::MemberRemoved {
+					project_id,
+					contributor_account,
+				} => self.on_member_removed(project_id, contributor_account),
+				ProjectEvent::LeadContributorAdded {
+					project_id,
+					contributor_account,
+				} => self.on_member_added(project_id, contributor_account, true),
+				ProjectEvent::LeadContributorRemoved {
+					project_id,
+					contributor_account,
+				} => self.on_member_removed(project_id, contributor_account),
+			},
+			Event::Contribution(_) => return,
 		};
 
 		if let Err(error) = result {

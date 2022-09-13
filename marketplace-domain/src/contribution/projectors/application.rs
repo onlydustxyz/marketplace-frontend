@@ -33,8 +33,8 @@ impl ApplicationProjector {
 			None => {
 				let application = ApplicationProjection::new(
 					self.uuid_generator.new_uuid().into(),
-					contribution_id.to_owned(),
-					contributor_id.to_owned(),
+					contribution_id.clone(),
+					contributor_id.clone(),
 				);
 				self.application_projection_repository.create(application)
 			},
@@ -65,25 +65,28 @@ impl ApplicationProjector {
 }
 
 #[async_trait]
-impl Projector<ApplicationProjection> for ApplicationProjector {
-	async fn project(&self, event: &ContributionEvent) {
+impl EventHandler<ApplicationProjection> for ApplicationProjector {
+	async fn handle(&self, event: &Event) {
 		let result = match event {
-			ContributionEvent::Applied {
-				id: contribution_id,
-				contributor_id,
-			} => self.on_applied(contribution_id, contributor_id),
-			ContributionEvent::Assigned {
-				id: contribution_id,
-				contributor_id,
-			}
-			| ContributionEvent::Claimed {
-				id: contribution_id,
-				contributor_id,
-			} => self.on_assigned(contribution_id, contributor_id),
-			ContributionEvent::Unassigned {
-				id: contribution_id,
-			} => self.on_unassigned(contribution_id),
-			ContributionEvent::Created { .. } | ContributionEvent::Validated { .. } => Ok(()),
+			Event::Contribution(contribution_event) => match contribution_event {
+				ContributionEvent::Applied {
+					id: contribution_id,
+					contributor_id,
+				} => self.on_applied(contribution_id, contributor_id),
+				ContributionEvent::Assigned {
+					id: contribution_id,
+					contributor_id,
+				}
+				| ContributionEvent::Claimed {
+					id: contribution_id,
+					contributor_id,
+				} => self.on_assigned(contribution_id, contributor_id),
+				ContributionEvent::Unassigned {
+					id: contribution_id,
+				} => self.on_unassigned(contribution_id),
+				ContributionEvent::Created { .. } | ContributionEvent::Validated { .. } => return,
+			},
+			Event::Project(_) => return,
 		};
 
 		if let Err(error) = result {
@@ -153,13 +156,10 @@ mod tests {
 		uuid_generator.expect_new_uuid().never();
 		application_projection_repository
 			.expect_find_by_contribution_and_contributor()
-			.with(
-				eq(contribution_id.to_owned()),
-				eq(contributor_1_id.to_owned()),
-			)
+			.with(eq(contribution_id.clone()), eq(contributor_1_id.clone()))
 			.once()
 			.in_sequence(&mut repository_sequence)
-			.returning(move |_, _| Ok(Some(previous_application.to_owned())));
+			.returning(move |_, _| Ok(Some(previous_application.clone())));
 		application_projection_repository
 			.expect_update()
 			.withf(|application| &ApplicationStatus::Pending == application.status())
@@ -173,10 +173,10 @@ mod tests {
 		);
 
 		projector
-			.project(&ContributionEvent::Applied {
+			.handle(&Event::Contribution(ContributionEvent::Applied {
 				id: contribution_id,
 				contributor_id: contributor_1_id,
-			})
+			}))
 			.await;
 	}
 
@@ -192,10 +192,7 @@ mod tests {
 		uuid_generator.expect_new_uuid().returning(move || application_id.into());
 		application_projection_repository
 			.expect_find_by_contribution_and_contributor()
-			.with(
-				eq(contribution_id.to_owned()),
-				eq(contributor_1_id.to_owned()),
-			)
+			.with(eq(contribution_id.clone()), eq(contributor_1_id.clone()))
 			.once()
 			.in_sequence(&mut repository_sequence)
 			.returning(move |_, _| Ok(None));
@@ -203,9 +200,9 @@ mod tests {
 		application_projection_repository
 			.expect_create()
 			.with(eq(ApplicationProjection::new(
-				application_id.to_owned(),
-				contribution_id.to_owned(),
-				contributor_1_id.to_owned(),
+				application_id,
+				contribution_id.clone(),
+				contributor_1_id.clone(),
 			)))
 			.once()
 			.in_sequence(&mut repository_sequence)
@@ -217,10 +214,10 @@ mod tests {
 		);
 
 		projector
-			.project(&ContributionEvent::Applied {
+			.handle(&Event::Contribution(ContributionEvent::Applied {
 				id: contribution_id,
 				contributor_id: contributor_1_id,
-			})
+			}))
 			.await;
 	}
 }

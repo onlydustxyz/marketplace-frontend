@@ -52,22 +52,25 @@ impl ContributorProjector {
 }
 
 #[async_trait]
-impl Projector<ContributorProjection> for ContributorProjector {
-	async fn project(&self, event: &ContributionEvent) {
+impl EventHandler<ContributorProjection> for ContributorProjector {
+	async fn handle(&self, event: &Event) {
 		let result = match event {
-			ContributionEvent::Applied {
-				id: _,
-				contributor_id,
-			}
-			| ContributionEvent::Claimed {
-				id: _,
-				contributor_id,
-			}
-			| ContributionEvent::Assigned {
-				id: _,
-				contributor_id,
-			} => self.add_contributor(contributor_id).await,
-			_ => Ok(()),
+			Event::Contribution(contribution_event) => match contribution_event {
+				ContributionEvent::Applied {
+					id: _,
+					contributor_id,
+				}
+				| ContributionEvent::Claimed {
+					id: _,
+					contributor_id,
+				}
+				| ContributionEvent::Assigned {
+					id: _,
+					contributor_id,
+				} => self.add_contributor(contributor_id).await,
+				_ => return,
+			},
+			Event::Project(_) => return,
 		};
 
 		if let Err(error) = result {
@@ -114,27 +117,27 @@ mod test {
 	}
 
 	#[fixture]
-	fn contribution_applied_event(contributor_id: ContributorId) -> ContributionEvent {
-		ContributionEvent::Applied {
+	fn contribution_applied_event(contributor_id: ContributorId) -> Event {
+		Event::Contribution(ContributionEvent::Applied {
 			id: Default::default(),
 			contributor_id,
-		}
+		})
 	}
 
 	#[fixture]
-	fn contribution_assigned_event(contributor_id: ContributorId) -> ContributionEvent {
-		ContributionEvent::Assigned {
+	fn contribution_assigned_event(contributor_id: ContributorId) -> Event {
+		Event::Contribution(ContributionEvent::Assigned {
 			id: Default::default(),
 			contributor_id,
-		}
+		})
 	}
 
 	#[fixture]
-	fn contribution_claimed_event(contributor_id: ContributorId) -> ContributionEvent {
-		ContributionEvent::Claimed {
+	fn contribution_claimed_event(contributor_id: ContributorId) -> Event {
+		Event::Contribution(ContributionEvent::Claimed {
 			id: Default::default(),
 			contributor_id,
-		}
+		})
 	}
 
 	#[fixture]
@@ -146,11 +149,12 @@ mod test {
 	#[case(contribution_applied_event(contributor_id()))]
 	#[case(contribution_assigned_event(contributor_id()))]
 	#[case(contribution_claimed_event(contributor_id()))]
+	#[allow(clippy::too_many_arguments)]
 	async fn contributor_gets_created_with_contribution(
 		mut github_client: MockGithubClient,
 		mut contributor_projection_repository: MockContributorProjectionRepository,
 		mut contributor_service: MockContributorService,
-		#[case] event: ContributionEvent,
+		#[case] event: Event,
 		github_user_id: GithubUserId,
 		github_username: String,
 		contributor_id: ContributorId,
@@ -173,7 +177,6 @@ mod test {
 					id: cloned_contributor_id.clone(),
 					github_identifier: github_user_id,
 					account: cloned_contributor_account.clone(),
-					..Default::default()
 				})
 			});
 
@@ -206,7 +209,7 @@ mod test {
 			Arc::new(contributor_service),
 		);
 
-		projector.project(&event).await;
+		projector.handle(&event).await;
 	}
 
 	#[rstest]
@@ -214,7 +217,7 @@ mod test {
 		mut github_client: MockGithubClient,
 		mut contributor_projection_repository: MockContributorProjectionRepository,
 		mut contributor_service: MockContributorService,
-		contribution_applied_event: ContributionEvent,
+		contribution_applied_event: Event,
 	) {
 		contributor_projection_repository
 			.expect_find_by_id()
@@ -231,6 +234,6 @@ mod test {
 			Arc::new(contributor_service),
 		);
 
-		projector.project(&contribution_applied_event).await;
+		projector.handle(&contribution_applied_event).await;
 	}
 }

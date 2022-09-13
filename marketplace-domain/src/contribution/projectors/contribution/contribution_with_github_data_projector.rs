@@ -47,7 +47,7 @@ impl WithGithubDataProjector {
 		};
 
 		let contribution = ContributionProjection {
-			id: id.to_owned(),
+			id: id.clone(),
 			project_id,
 			issue_number,
 			contributor_id: None,
@@ -71,8 +71,8 @@ impl WithGithubDataProjector {
 	fn on_assign(&self, id: &ContributionId, contributor_id: &ContributorId) -> Result<(), Error> {
 		self.contribution_projection_repository
 			.update_contributor_and_status(
-				id.to_owned(),
-				Some(contributor_id.to_owned()),
+				id.clone(),
+				Some(contributor_id.clone()),
 				ContributionStatus::Assigned,
 			)
 			.map_err_into()
@@ -80,33 +80,37 @@ impl WithGithubDataProjector {
 
 	fn on_unassign(&self, id: &ContributionId) -> Result<(), Error> {
 		self.contribution_projection_repository
-			.update_status(id.to_owned(), ContributionStatus::Open)
+			.update_status(id.clone(), ContributionStatus::Open)
 			.map_err_into()
 	}
 
 	fn on_validate(&self, id: &ContributionId) -> Result<(), Error> {
 		self.contribution_projection_repository
-			.update_status(id.to_owned(), ContributionStatus::Completed)
+			.update_status(id.clone(), ContributionStatus::Completed)
 			.map_err_into()
 	}
 }
 
 #[async_trait]
-impl Projector<ContributionProjection> for WithGithubDataProjector {
-	async fn project(&self, event: &ContributionEvent) {
+impl EventHandler<ContributionProjection> for WithGithubDataProjector {
+	async fn handle(&self, event: &Event) {
 		let result = match event {
-			ContributionEvent::Created {
-				id,
-				project_id,
-				issue_number,
-				gate,
-			} => self.on_create(id, *project_id, *issue_number, *gate).await,
-			ContributionEvent::Assigned { id, contributor_id } =>
-				self.on_assign(id, contributor_id),
-			ContributionEvent::Claimed { id, contributor_id } => self.on_assign(id, contributor_id),
-			ContributionEvent::Unassigned { id } => self.on_unassign(id),
-			ContributionEvent::Validated { id } => self.on_validate(id),
-			ContributionEvent::Applied { .. } => Ok(()),
+			Event::Contribution(contribution_event) => match contribution_event {
+				ContributionEvent::Created {
+					id,
+					project_id,
+					issue_number,
+					gate,
+				} => self.on_create(id, *project_id, *issue_number, *gate).await,
+				ContributionEvent::Assigned { id, contributor_id } =>
+					self.on_assign(id, contributor_id),
+				ContributionEvent::Claimed { id, contributor_id } =>
+					self.on_assign(id, contributor_id),
+				ContributionEvent::Unassigned { id } => self.on_unassign(id),
+				ContributionEvent::Validated { id } => self.on_validate(id),
+				ContributionEvent::Applied { .. } => return,
+			},
+			Event::Project(_) => return,
 		};
 
 		if let Err(error) = result {

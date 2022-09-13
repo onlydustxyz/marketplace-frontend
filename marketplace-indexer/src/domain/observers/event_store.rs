@@ -23,24 +23,24 @@ impl EventStoreObserver {
 
 #[async_trait]
 impl Observer for EventStoreObserver {
-	async fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
-		match &event.event {
-			Event::Contribution(domain_event) => {
-				let id = <Contribution as Identifiable>::id(domain_event);
+	async fn on_new_event(&self, observed_event: &ObservedEvent, _block_number: u64) {
+		match &observed_event.event {
+			Event::Contribution(contribution_event) => {
+				let id = <Contribution as Identifiable<ContributionEvent>>::id(contribution_event);
 				store_event(
 					self.contribution_event_store.clone(),
 					id,
-					domain_event.clone(),
-					event.deduplication_id.clone(),
+					observed_event.event.clone(),
+					observed_event.deduplication_id.clone(),
 				);
 			},
-			Event::Project(domain_event) => {
-				let id = <ProjectAggregate as Identifiable>::id(domain_event);
+			Event::Project(project_event) => {
+				let id = <ProjectAggregate as Identifiable<ProjectEvent>>::id(project_event);
 				store_event(
 					self.project_event_store.clone(),
 					id,
-					domain_event.clone(),
-					event.deduplication_id.clone(),
+					observed_event.event.clone(),
+					observed_event.deduplication_id.clone(),
 				);
 			},
 		}
@@ -50,7 +50,7 @@ impl Observer for EventStoreObserver {
 fn store_event<A: Aggregate>(
 	event_store: Arc<dyn EventStore<A>>,
 	id: &A::Id,
-	event: A::Event,
+	event: Event,
 	deduplication_id: String,
 ) {
 	if let Err(error) = event_store.append(
@@ -64,12 +64,12 @@ fn store_event<A: Aggregate>(
 	}
 }
 
-trait Identifiable: Aggregate {
-	fn id(event: &Self::Event) -> &Self::Id;
+trait Identifiable<E>: Aggregate {
+	fn id(event: &E) -> &Self::Id;
 }
 
-impl Identifiable for Contribution {
-	fn id(event: &Self::Event) -> &Self::Id {
+impl Identifiable<ContributionEvent> for Contribution {
+	fn id(event: &ContributionEvent) -> &Self::Id {
 		match event {
 			ContributionEvent::Created {
 				id,
@@ -95,8 +95,8 @@ impl Identifiable for Contribution {
 	}
 }
 
-impl Identifiable for ProjectAggregate {
-	fn id(event: &Self::Event) -> &Self::Id {
+impl Identifiable<ProjectEvent> for ProjectAggregate {
+	fn id(event: &ProjectEvent) -> &Self::Id {
 		match event {
 			ProjectEvent::MemberAdded {
 				project_id,
@@ -191,8 +191,8 @@ mod test {
 			.with(
 				eq(contribution_id),
 				eq(vec![StorableEvent {
-					event: contribution_event.to_owned(),
-					deduplication_id: cloned_event.deduplication_id.to_owned(),
+					event: Event::Contribution(contribution_event.clone()),
+					deduplication_id: cloned_event.deduplication_id.clone(),
 				}]),
 			)
 			.returning(|_, _| Ok(()));
@@ -220,8 +220,8 @@ mod test {
 			.with(
 				eq(project_id),
 				eq(vec![StorableEvent {
-					event: project_event.to_owned(),
-					deduplication_id: cloned_event.deduplication_id.to_owned(),
+					event: Event::Project(project_event.clone()),
+					deduplication_id: cloned_event.deduplication_id.clone(),
 				}]),
 			)
 			.returning(|_, _| Ok(()));

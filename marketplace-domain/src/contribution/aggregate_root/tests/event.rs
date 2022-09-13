@@ -3,7 +3,7 @@ use assert_json_diff::assert_json_eq;
 use rstest::*;
 use serde_json::{json, Value};
 
-impl Default for Event {
+impl Default for ContributionEvent {
 	fn default() -> Self {
 		Self::Created {
 			id: Default::default(),
@@ -46,7 +46,7 @@ fn contribution_created_event_display_as_json(
 	issue_number: GithubIssueNumber,
 	gate: u8,
 ) {
-	let event = Event::Created {
+	let event = ContributionEvent::Created {
 		id: contribution_id.clone(),
 		project_id,
 		issue_number,
@@ -71,7 +71,7 @@ fn contribution_assigned_event_display_as_json(
 	contribution_id: ContributionId,
 	contributor_id: ContributorId,
 ) {
-	let event = Event::Assigned {
+	let event = ContributionEvent::Assigned {
 		id: contribution_id.clone(),
 		contributor_id: contributor_id.clone(),
 	};
@@ -92,7 +92,7 @@ fn contribution_claimed_event_display_as_json(
 	contribution_id: ContributionId,
 	contributor_id: ContributorId,
 ) {
-	let event = Event::Claimed {
+	let event = ContributionEvent::Claimed {
 		id: contribution_id.clone(),
 		contributor_id: contributor_id.clone(),
 	};
@@ -110,7 +110,7 @@ fn contribution_claimed_event_display_as_json(
 
 #[rstest]
 fn contribution_unassigned_event_display_as_json(contribution_id: ContributionId) {
-	let event = Event::Unassigned {
+	let event = ContributionEvent::Unassigned {
 		id: contribution_id.clone(),
 	};
 
@@ -126,7 +126,7 @@ fn contribution_unassigned_event_display_as_json(contribution_id: ContributionId
 
 #[rstest]
 fn contribution_validated_event_display_as_json(contribution_id: ContributionId) {
-	let event = Event::Validated {
+	let event = ContributionEvent::Validated {
 		id: contribution_id.clone(),
 	};
 

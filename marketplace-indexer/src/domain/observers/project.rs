@@ -2,11 +2,11 @@ use super::*;
 use std::sync::Arc;
 
 pub struct ProjectObserver<P: Projection<A = ProjectAggregate>> {
-	projector: Arc<dyn Projector<P>>,
+	projector: Arc<dyn EventHandler<P>>,
 }
 
 impl<P: Projection<A = ProjectAggregate>> ProjectObserver<P> {
-	pub fn new(projector: Arc<dyn Projector<P>>) -> Self {
+	pub fn new(projector: Arc<dyn EventHandler<P>>) -> Self {
 		Self { projector }
 	}
 }
@@ -14,9 +14,7 @@ impl<P: Projection<A = ProjectAggregate>> ProjectObserver<P> {
 #[async_trait]
 impl<P: Projection<A = ProjectAggregate>> Observer for ProjectObserver<P> {
 	async fn on_new_event(&self, event: &ObservedEvent, _block_number: u64) {
-		if let Event::Project(event) = &event.event {
-			self.projector.project(event).await;
-		}
+		self.projector.handle(&event.event).await;
 	}
 }
 
@@ -31,8 +29,8 @@ mod test {
 		pub ProjectProjector {}
 
 		#[async_trait]
-		impl Projector<ProjectMemberProjection> for ProjectProjector {
-			async fn project(&self, event: &ProjectEvent);
+		impl EventHandler<ProjectMemberProjection> for ProjectProjector {
+			async fn handle(&self, event: &Event);
 		}
 	}
 
@@ -63,7 +61,10 @@ mod test {
 		project_event: ProjectEvent,
 		event: ObservedEvent,
 	) {
-		project_projector.expect_project().with(eq(project_event)).return_const(());
+		project_projector
+			.expect_handle()
+			.with(eq(Event::Project(project_event)))
+			.return_const(());
 
 		let observer = ProjectObserver::new(Arc::new(project_projector));
 		observer.on_new_event(&event, 0).await;

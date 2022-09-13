@@ -27,7 +27,7 @@ mod aggregate;
 pub use aggregate::{Aggregate, AggregateRoot, EventSourcable};
 
 mod projector;
-pub use projector::Projector;
+pub use projector::EventHandler;
 
 mod projection;
 pub use projection::Projection;
@@ -40,8 +40,8 @@ pub use contribution::{AggregateId as ContributionId, *};
 
 mod project;
 pub use project::{
-	Aggregate as ProjectAggregate, Event as ProjectEvent,
-	MemberProjection as ProjectMemberProjection, MemberProjector as ProjectMemberProjector,
+	Aggregate as ProjectAggregate, MemberProjection as ProjectMemberProjection,
+	MemberProjector as ProjectMemberProjector, ProjectEvent,
 };
 
 mod aggregate_root_repository;

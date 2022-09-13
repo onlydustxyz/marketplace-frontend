@@ -3,16 +3,16 @@ use dotenv::dotenv;
 use itertools::Itertools;
 use marketplace_infrastructure::database::{init_pool, Client as DatabaseClient};
 use rstest::*;
-use std::{str::FromStr, sync::Arc};
+use std::{ops::Deref, str::FromStr, sync::Arc};
 
 trait Storable {
-	fn into_storable(self) -> StorableEvent<ProjectAggregate>;
+	fn into_storable(self) -> StorableEvent;
 }
 
 impl Storable for ProjectEvent {
-	fn into_storable(self) -> StorableEvent<ProjectAggregate> {
+	fn into_storable(self) -> StorableEvent {
 		StorableEvent {
-			event: self,
+			event: Event::Project(self),
 			deduplication_id: RandomUuidGenerator.new_uuid().to_string(),
 		}
 	}
@@ -58,36 +58,36 @@ fn filled_database(
 	project_id: ProjectId,
 	project_id_2: ProjectId,
 ) -> Arc<DatabaseClient> {
-	database
-		.append(
-			&project_id,
-			vec![
-				ProjectEvent::MemberAdded {
-					project_id,
-					contributor_account: contributor_account_1.clone(),
-				},
-				ProjectEvent::MemberAdded {
-					project_id,
-					contributor_account: contributor_account_2,
-				},
-				ProjectEvent::MemberRemoved {
-					project_id,
-					contributor_account: contributor_account_1.clone(),
-				},
-				ProjectEvent::LeadContributorAdded {
-					project_id,
-					contributor_account: contributor_account_1,
-				},
-				ProjectEvent::MemberAdded {
-					project_id: project_id_2,
-					contributor_account: contributor_account_3,
-				},
-			]
-			.into_iter()
-			.map(Storable::into_storable)
-			.collect(),
-		)
-		.expect("Unable to add events in event store");
+	<DatabaseClient as EventStore<ProjectAggregate>>::append(
+		database.deref(),
+		&project_id,
+		vec![
+			ProjectEvent::MemberAdded {
+				project_id,
+				contributor_account: contributor_account_1.clone(),
+			},
+			ProjectEvent::MemberAdded {
+				project_id,
+				contributor_account: contributor_account_2,
+			},
+			ProjectEvent::MemberRemoved {
+				project_id,
+				contributor_account: contributor_account_1.clone(),
+			},
+			ProjectEvent::LeadContributorAdded {
+				project_id,
+				contributor_account: contributor_account_1,
+			},
+			ProjectEvent::MemberAdded {
+				project_id: project_id_2,
+				contributor_account: contributor_account_3,
+			},
+		]
+		.into_iter()
+		.map(Storable::into_storable)
+		.collect(),
+	)
+	.expect("Unable to add events in event store");
 
 	database
 }
