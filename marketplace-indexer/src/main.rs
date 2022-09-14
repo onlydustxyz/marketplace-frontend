@@ -42,29 +42,19 @@ fn get_root_logger() -> Logger {
 #[tokio::main]
 async fn main() {
 	dotenv().ok();
-	let _global_logger_guard = slog_scope::set_global_logger(get_root_logger());
-	_global_logger_guard.cancel_reset();
+	let global_logger_guard = slog_scope::set_global_logger(get_root_logger());
+	global_logger_guard.cancel_reset();
 	github::Client::initialize();
 
 	let apibara_client =
 		Arc::new(ApibaraClient::default().await.expect("Unable to connect to Apibara server"));
-	let reqwest_client = reqwest::Client::new();
 
-	let database = Arc::new(database::Client::new(database::init_pool()));
-	let github = Arc::new(github::Client::new());
-	let uuid_generator = Arc::new(RandomUuidGenerator {});
-	let starknet = Arc::new(starknet::Client::default());
+	let indexer = build_legacy_indexer(apibara_client.clone()).await;
 
-	index_contributions_events(
-		apibara_client.clone(),
-		reqwest_client.clone(),
-		database.clone(),
-		github,
-		uuid_generator,
-		starknet,
-	)
-	.await
-	.expect("Failed to index events");
+	let observer = build_event_observer();
+	index_events(apibara_client, &indexer, Arc::new(observer))
+		.await
+		.expect("Failed to index events");
 }
 
 fn contributions_contract_address() -> ContractAddress {
@@ -73,15 +63,8 @@ fn contributions_contract_address() -> ContractAddress {
 	address.parse().expect("CONTRIBUTIONS_ADDRESS is not a valid contract address")
 }
 
-async fn index_contributions_events(
-	apibara_client: Arc<ApibaraClient>,
-	reqwest_client: reqwest::Client,
-	database: Arc<database::Client>,
-	github: Arc<github::Client>,
-	uuid_generator: Arc<dyn UuidGenerator>,
-	contributor_service: Arc<dyn ContributorService>,
-) -> Result<(), IndexingServiceError> {
-	let indexer = IndexerBuilder::new(apibara_client.clone())
+async fn build_legacy_indexer(apibara_client: Arc<ApibaraClient>) -> Indexer {
+	IndexerBuilder::new(apibara_client.clone())
 		.network(Network::Starknet)
 		.start_at_block(311611)
 		.on_conflict_do_nothing()
@@ -92,16 +75,23 @@ async fn index_contributions_events(
 				.into(),
 		)
 		.await
-		.expect("Unable to create the contribution indexer");
+		.expect("Unable to create the contribution indexer")
+}
+
+fn build_event_observer() -> impl BlockchainObserver {
+	let database = Arc::new(database::Client::new(database::init_pool()));
+	let github = Arc::new(github::Client::new());
+	let uuid_generator = Arc::new(RandomUuidGenerator {});
+	let starknet = Arc::new(starknet::Client::default());
+	let reqwest_client = reqwest::Client::new();
 
 	let contribution_projector = ContributionProjector::new(database.clone(), github.clone());
 	let application_projector = ApplicationProjector::new(database.clone(), uuid_generator);
 	let project_projector = ProjectProjector::new(github.clone(), database.clone());
 	let project_member_projector = ProjectMemberProjector::new(database.clone());
-	let contributor_projector =
-		ContributorProjector::new(github, database.clone(), contributor_service);
+	let contributor_projector = ContributorProjector::new(github, database.clone(), starknet);
 
-	let observer = BlockchainObserverComposite::new(vec![
+	BlockchainObserverComposite::new(vec![
 		Arc::new(BlockchainLogger::default()),
 		Arc::new(EventStoreObserver::new(database.clone(), database)),
 		Arc::new(EventListenersObserver::new(vec![
@@ -112,7 +102,13 @@ async fn index_contributions_events(
 			Box::new(project_member_projector),
 			Box::new(EventWebHook::new(reqwest_client)),
 		])),
-	]);
+	])
+}
 
-	apibara_client.fetch_new_events(&indexer, Arc::new(observer)).await
+async fn index_events(
+	apibara_client: Arc<ApibaraClient>,
+	indexer: &Indexer,
+	observer: Arc<dyn BlockchainObserver>,
+) -> Result<(), IndexingServiceError> {
+	apibara_client.fetch_new_events(&indexer, observer).await
 }
