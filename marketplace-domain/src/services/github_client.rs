@@ -8,7 +8,7 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error("Something happened at infrastructure level")]
+	#[error(transparent)]
 	Infrastructure(anyhow::Error),
 }
 

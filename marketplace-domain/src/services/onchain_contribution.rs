@@ -5,8 +5,8 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error("Something happend at the infrastructure level")]
-	Infrastructure(#[source] Box<dyn std::error::Error>),
+	#[error(transparent)]
+	Infrastructure(anyhow::Error),
 }
 
 #[async_trait]

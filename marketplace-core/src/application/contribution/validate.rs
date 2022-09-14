@@ -154,9 +154,9 @@ mod test {
 
 		onchain_contribution_service.expect_validate().returning(|_| {
 			async {
-				Err(OnchainContributionServiceError::Infrastructure(Box::new(
-					Error,
-				)))
+				Err(OnchainContributionServiceError::Infrastructure(
+					Error.into(),
+				))
 			}
 			.boxed()
 		});
