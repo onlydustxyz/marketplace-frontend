@@ -3,6 +3,7 @@ use super::{
 	Client,
 };
 use crate::domain::*;
+use anyhow::anyhow;
 use async_trait::async_trait;
 use itertools::Itertools;
 
@@ -25,7 +26,7 @@ impl IndexerRepository for Client {
 			.await
 			.map_err(|status| IndexerRepositoryError::CreateIndexer {
 				id: indexer.id.clone(),
-				details: status.to_string(),
+				source: anyhow!(status),
 			})?;
 
 		response
@@ -33,7 +34,7 @@ impl IndexerRepository for Client {
 			.indexer
 			.ok_or_else(|| IndexerRepositoryError::CreateIndexer {
 				id: indexer.id.clone(),
-				details: String::from("Indexer not created"),
+				source: anyhow!("Indexer not created"),
 			})?;
 
 		Ok(())
@@ -53,7 +54,7 @@ impl IndexerRepository for Client {
 			.await
 			.map_err(|status| IndexerRepositoryError::GetIndexer {
 				id: indexer_id.clone(),
-				details: status.to_string(),
+				source: anyhow!(status),
 			})?;
 
 		Ok(response.into_inner().indexer.map(Indexer::from))
@@ -69,7 +70,7 @@ impl IndexerRepository for Client {
 			.await
 			.map_err(|status| IndexerRepositoryError::DeleteIndexer {
 				id: indexer_id.clone(),
-				details: status.to_string(),
+				source: anyhow!(status),
 			})?;
 
 		Ok(())
