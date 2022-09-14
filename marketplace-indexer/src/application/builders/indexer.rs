@@ -101,6 +101,7 @@ impl Builder {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use anyhow::anyhow;
 	use mockall::predicate::*;
 	use rstest::*;
 	use std::str::FromStr;
@@ -243,7 +244,7 @@ mod tests {
 			.returning(|_| {
 				Err(IndexerRepositoryError::GetIndexer {
 					id: "ID".into(),
-					details: String::new(),
+					source: anyhow!("oops"),
 				})
 			});
 
@@ -262,7 +263,7 @@ mod tests {
 		indexer_repository.expect_create().returning(|_| {
 			Err(IndexerRepositoryError::CreateIndexer {
 				id: "ID".into(),
-				details: String::new(),
+				source: anyhow!("oops"),
 			})
 		});
 
@@ -288,7 +289,7 @@ mod tests {
 		indexer_repository.expect_delete().returning(|_| {
 			Err(IndexerRepositoryError::DeleteIndexer {
 				id: "ID".into(),
-				details: String::new(),
+				source: anyhow!("oops"),
 			})
 		});
 
