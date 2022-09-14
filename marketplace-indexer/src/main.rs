@@ -6,7 +6,7 @@ use crate::{application::IndexerBuilder, domain::*, infrastructure::ApibaraClien
 use dotenv::dotenv;
 use futures::join;
 use marketplace_domain::*;
-use marketplace_infrastructure::{database, github};
+use marketplace_infrastructure::{database, github, starknet};
 use slog::{o, Drain, FnValue, Logger, Record};
 use std::sync::Arc;
 
@@ -53,13 +53,15 @@ async fn main() {
 	let database = Arc::new(database::Client::new(database::init_pool()));
 	let github = Arc::new(github::Client::new());
 	let uuid_generator = Arc::new(RandomUuidGenerator {});
+	let starknet = Arc::new(starknet::Client::default());
 
 	let results = join!(
 		index_contributions_events(
 			apibara_client.clone(),
 			database.clone(),
 			github,
-			uuid_generator
+			uuid_generator,
+			starknet
 		),
 		index_past_lead_contributors_events(apibara_client, database),
 	);
@@ -78,6 +80,7 @@ async fn index_contributions_events(
 	database: Arc<database::Client>,
 	github: Arc<github::Client>,
 	uuid_generator: Arc<dyn UuidGenerator>,
+	contributor_service: Arc<dyn ContributorService>,
 ) -> Result<(), IndexingServiceError> {
 	let indexer = IndexerBuilder::new(apibara_client.clone())
 		.network(Network::Starknet)
@@ -90,8 +93,10 @@ async fn index_contributions_events(
 
 	let contribution_projector = ContributionProjector::new(database.clone(), github.clone());
 	let application_projector = ApplicationProjector::new(database.clone(), uuid_generator);
-	let project_projector = ProjectProjector::new(github, database.clone());
+	let project_projector = ProjectProjector::new(github.clone(), database.clone());
 	let project_member_projector = ProjectMemberProjector::new(database.clone());
+	let contributor_projector =
+		ContributorProjector::new(github, database.clone(), contributor_service);
 
 	let observer = BlockchainObserverComposite::new(vec![
 		Arc::new(BlockchainLogger::default()),
@@ -99,6 +104,7 @@ async fn index_contributions_events(
 		Arc::new(ContributionObserver::new(contribution_projector)),
 		Arc::new(ContributionObserver::new(application_projector)),
 		Arc::new(ContributionObserver::new(project_projector)),
+		Arc::new(ContributionObserver::new(contributor_projector)),
 		Arc::new(ProjectObserver::new(Arc::new(project_member_projector))),
 	]);
 
