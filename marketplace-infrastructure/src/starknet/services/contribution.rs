@@ -67,6 +67,6 @@ impl<A: Account + Send + Sync + 'static> OnchainContributionService for Client<A
 
 impl From<StarknetError> for OnchainContributionServiceError {
 	fn from(error: StarknetError) -> Self {
-		Self::Infrastructure(Box::new(error))
+		Self::Infrastructure(error.into())
 	}
 }

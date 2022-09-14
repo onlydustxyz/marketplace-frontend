@@ -6,10 +6,10 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error("Contributor does not exist")]
-	NotFound(#[source] anyhow::Error),
-	#[error("Something happend at the infrastructure level")]
-	Infrastructure(#[source] anyhow::Error),
+	#[error(transparent)]
+	NotFound(anyhow::Error),
+	#[error(transparent)]
+	Infrastructure(anyhow::Error),
 }
 
 #[cfg_attr(test, automock)]
