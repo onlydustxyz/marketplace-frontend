@@ -72,6 +72,7 @@ jobs:
         uses: actions-rs/tarpaulin@v0.1
         with:
           version: '0.20.1'
+          timeout: 180 # TODO: Remove once starknet client dependency is gone
           args: '--all-features -- --test-threads 1'
 
       - name: Upload to codecov.io
