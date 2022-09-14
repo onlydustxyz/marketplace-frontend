@@ -83,7 +83,11 @@ async fn index_contributions_events(
 		.start_at_block(311611)
 		.on_conflict_do_nothing()
 		.filter(contributions_contract_address(), "")
-		.build("contribution-indexer".into())
+		.build(
+			std::env::var("INDEXER_NAME")
+				.unwrap_or(String::from("contribution-indexer"))
+				.into(),
+		)
 		.await
 		.expect("Unable to create the contribution indexer");
 
