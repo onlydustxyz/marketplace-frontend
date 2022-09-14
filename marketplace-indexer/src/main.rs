@@ -5,7 +5,7 @@ mod infrastructure;
 use crate::{application::IndexerBuilder, domain::*, infrastructure::ApibaraClient};
 use dotenv::dotenv;
 use marketplace_domain::*;
-use marketplace_infrastructure::{database, github, starknet};
+use marketplace_infrastructure::{database, event_webhook::EventWebHook, github, starknet};
 use slog::{o, Drain, FnValue, Logger, Record};
 use std::sync::Arc;
 
@@ -101,12 +101,13 @@ async fn index_contributions_events(
 	let observer = BlockchainObserverComposite::new(vec![
 		Arc::new(BlockchainLogger::default()),
 		Arc::new(EventStoreObserver::new(database.clone(), database)),
-		Arc::new(ProjectorsObserver::new(vec![
+		Arc::new(EventListenersObserver::new(vec![
 			Box::new(contribution_projector),
 			Box::new(application_projector),
 			Box::new(project_projector),
 			Box::new(contributor_projector),
 			Box::new(project_member_projector),
+			Box::new(EventWebHook),
 		])),
 	]);
 

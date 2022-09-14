@@ -14,7 +14,7 @@ mod event_store;
 pub use event_store::EventStoreObserver;
 
 mod projectors;
-pub use projectors::ProjectorsObserver;
+pub use projectors::EventListenersObserver;
 
 use crate::domain::*;
 use mockall::automock;
