@@ -1,4 +1,5 @@
 use super::*;
+use chrono::Utc;
 use dotenv::dotenv;
 use itertools::Itertools;
 use marketplace_infrastructure::database::{init_pool, Client as DatabaseClient};
@@ -14,6 +15,7 @@ impl Storable for ProjectEvent {
 		StorableEvent {
 			event: self,
 			deduplication_id: RandomUuidGenerator.new_uuid().to_string(),
+			timestamp: Utc::now().naive_utc(),
 		}
 	}
 }

@@ -1,4 +1,5 @@
 use crate::database::{init_pool, Client};
+use chrono::Utc;
 use marketplace_domain::*;
 use rstest::{fixture, rstest};
 use std::str::FromStr;
@@ -28,6 +29,7 @@ fn creation_event(contribution_id: ContributionId) -> StorableEvent<Contribution
 			issue_number: Default::default(),
 			gate: Default::default(),
 		},
+		timestamp: Utc::now().naive_utc(),
 		deduplication_id: "dedup1".to_string(),
 	}
 }
@@ -42,6 +44,7 @@ fn assigned_event(
 			id: contribution_id,
 			contributor_id,
 		},
+		timestamp: Utc::now().naive_utc(),
 		deduplication_id: "dedup2".to_string(),
 	}
 }

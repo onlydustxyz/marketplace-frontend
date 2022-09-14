@@ -1,5 +1,6 @@
 use super::*;
 use async_trait::async_trait;
+use chrono::Utc;
 use dotenv::dotenv;
 use marketplace_infrastructure::database::{init_pool, Client as DatabaseClient};
 use mockall::mock;
@@ -46,6 +47,7 @@ impl Storable for ContributionEvent {
 		StorableEvent {
 			event: self,
 			deduplication_id: RandomUuidGenerator.new_uuid().to_string(),
+			timestamp: Utc::now().naive_utc(),
 		}
 	}
 }
