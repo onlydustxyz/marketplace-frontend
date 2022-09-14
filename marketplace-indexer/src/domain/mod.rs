@@ -16,7 +16,7 @@ pub use error::Error;
 mod observers;
 use observers::Observer;
 pub use observers::{
-	ConfirmedObserver, EventStoreObserver, Logger as BlockchainLogger,
+	ConfirmedObserver, EventListenersObserver, EventStoreObserver, Logger as BlockchainLogger,
 	MockObserver as MockBlockchainObserver, ObservedEvent, Observer as BlockchainObserver,
-	ObserverComposite as BlockchainObserverComposite, ProjectorsObserver,
+	ObserverComposite as BlockchainObserverComposite,
 };

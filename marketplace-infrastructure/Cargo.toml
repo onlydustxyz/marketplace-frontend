@@ -36,8 +36,11 @@ uuid = { version = "0.8.2", default_features = false, features = [
 # Github
 octocrab = "0.16.0"
 
-# # Http Server
+# Http Server
 rocket = { version = "0.5.0-rc.2", features = ["json", "uuid"] }
+
+# Http Client
+reqwest = { version = "0.11", features = ["json"] }
 
 # Starknet
 starknet = { git = "https://github.com/ofux/starknet-rs" }
