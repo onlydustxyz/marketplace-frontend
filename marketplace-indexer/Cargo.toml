@@ -24,6 +24,9 @@ serde_json = "1.0.81"
 tonic = "0.7.2"
 reqwest = { version = "0.11", default-features = false }
 
+# Datetime
+chrono = "0.4"
+
 # Utils
 dotenv = "0.15.0"
 itertools = "0.10.3"

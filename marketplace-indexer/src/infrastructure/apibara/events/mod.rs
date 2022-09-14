@@ -1,16 +1,16 @@
 mod contribution;
 mod project;
 mod topics;
-
-use anyhow::anyhow;
-use topics::*;
-
+use super::apibara::{
+	event::Event as ApibaraEventInner, BlockHeader, Event as ApibaraEvent, StarkNetEvent,
+};
 use crate::domain::ObservedEvent;
-
-use super::apibara::{event::Event as ApibaraEventInner, Event as ApibaraEvent, StarkNetEvent};
+use anyhow::anyhow;
+use chrono::{NaiveDateTime, Utc};
 use marketplace_domain::Event as DomainEvent;
 use starknet::core::types::FieldElement;
 use thiserror::Error;
+use topics::*;
 
 #[derive(Debug, Error)]
 pub enum FromEventError {
@@ -38,10 +38,10 @@ impl TryFrom<Vec<u8>> for FromEventFieldElement {
 	}
 }
 
-impl TryFrom<ApibaraEvent> for ObservedEvent {
+impl TryFrom<(ApibaraEvent, &BlockHeader)> for ObservedEvent {
 	type Error = FromEventError;
 
-	fn try_from(event: ApibaraEvent) -> Result<Self, Self::Error> {
+	fn try_from((event, block): (ApibaraEvent, &BlockHeader)) -> Result<Self, Self::Error> {
 		match event.event {
 			Some(ApibaraEventInner::Starknet(StarkNetEvent {
 				address,
@@ -78,6 +78,16 @@ impl TryFrom<ApibaraEvent> for ObservedEvent {
 
 				let address = FromEventFieldElement::try_from(address)?;
 				let transaction_hash = FromEventFieldElement::try_from(transaction_hash)?;
+				let timestamp = block
+					.timestamp
+					.as_ref()
+					.map(|timestamp| {
+						NaiveDateTime::from_timestamp(
+							timestamp.seconds,
+							timestamp.nanos as u32, // safe to cast as time cannot be negative
+						)
+					})
+					.unwrap_or_else(|| Utc::now().naive_utc());
 
 				Ok(ObservedEvent {
 					event: domain_event,
@@ -85,6 +95,7 @@ impl TryFrom<ApibaraEvent> for ObservedEvent {
 						"{:#x}_{:#x}_{log_index}",
 						address.0, transaction_hash.0
 					),
+					timestamp,
 				})
 			},
 			None => Err(Self::Error::Invalid(anyhow!("Event missing data"))),
@@ -97,6 +108,7 @@ impl TryFrom<ApibaraEvent> for ObservedEvent {
 mod test {
 	use super::{super::apibara::TopicValue, *};
 	use marketplace_domain::{ContributionEvent, ProjectEvent};
+	use prost_types::Timestamp;
 	use rstest::*;
 
 	const LOG_INDEX: u64 = 666;
@@ -116,6 +128,22 @@ mod test {
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 100, 203,
 		]
+	}
+
+	#[fixture]
+	fn seconds_since_epoch() -> i64 {
+		1_663_186_058
+	}
+
+	#[fixture]
+	fn block_header(seconds_since_epoch: i64) -> BlockHeader {
+		BlockHeader {
+			timestamp: Some(Timestamp {
+				seconds: seconds_since_epoch,
+				nanos: 0,
+			}),
+			..Default::default()
+		}
 	}
 
 	fn empty_topic() -> TopicValue {
@@ -145,182 +173,55 @@ mod test {
 	}
 
 	#[rstest]
-	fn contribution_created(contract_address: Vec<u8>, transaction_hash: Vec<u8>) {
-		let apibara_event = apibara_event(
-			selector::<contribution::Created>(),
-			contract_address,
-			transaction_hash,
-		);
+	#[case(selector::<contribution::Created>(), "ContributionCreated")]
+	#[case(selector::<contribution::Assigned>(), "ContributionAssigned")]
+	#[case(selector::<contribution::Claimed>(), "ContributionClaimed")]
+	#[case(selector::<contribution::Unassigned>(), "ContributionUnassigned")]
+	#[case(selector::<contribution::Validated>(), "ContributionValidated")]
+	#[case(selector::<project::MemberAdded>(), "ProjectMemberAdded")]
+	#[case(selector::<project::MemberRemoved>(), "ProjectMemberRemoved")]
+	#[case(selector::<project::LeadContributorAdded>(), "ProjectLeadContributorAdded")]
+	#[case(selector::<project::LeadContributorRemoved>(), "ProjectLeadContributorRemoved")]
+	fn event_is_well_converted_from_apibara(
+		contract_address: Vec<u8>,
+		transaction_hash: Vec<u8>,
+		block_header: BlockHeader,
+		seconds_since_epoch: i64,
+		#[case] selector: TopicValue,
+		#[case] expected_event_name: String,
+	) {
+		let apibara_event = apibara_event(selector, contract_address, transaction_hash);
+
+		let event = ObservedEvent::try_from((apibara_event, &block_header)).unwrap();
 
 		assert_eq!(
-			ObservedEvent {
-				event: DomainEvent::Contribution(ContributionEvent::Created {
-					id: Default::default(),
-					project_id: Default::default(),
-					issue_number: Default::default(),
-					gate: Default::default()
-				}),
-				deduplication_id: DEDUPLICATION_ID.to_string()
-			},
-			ObservedEvent::try_from(apibara_event).unwrap()
-		);
-	}
-
-	#[rstest]
-	fn contribution_assigned(contract_address: Vec<u8>, transaction_hash: Vec<u8>) {
-		let apibara_event = apibara_event(
-			selector::<contribution::Assigned>(),
-			contract_address,
-			transaction_hash,
+			NaiveDateTime::from_timestamp(seconds_since_epoch, 0),
+			event.timestamp
 		);
 
-		assert_eq!(
-			ObservedEvent {
-				event: DomainEvent::Contribution(ContributionEvent::Assigned {
-					id: Default::default(),
-					contributor_id: Default::default()
-				}),
-				deduplication_id: DEDUPLICATION_ID.to_string()
-			},
-			ObservedEvent::try_from(apibara_event).unwrap()
-		);
-	}
+		assert_eq!(DEDUPLICATION_ID.to_string(), event.deduplication_id);
 
-	#[rstest]
-	fn contribution_claimed(contract_address: Vec<u8>, transaction_hash: Vec<u8>) {
-		let apibara_event = apibara_event(
-			selector::<contribution::Claimed>(),
-			contract_address,
-			transaction_hash,
-		);
+		let event_name = match event.event {
+			DomainEvent::Contribution(event) =>
+				String::from("Contribution")
+					+ match event {
+						ContributionEvent::Created { .. } => "Created",
+						ContributionEvent::Applied { .. } => "Applied",
+						ContributionEvent::Assigned { .. } => "Assigned",
+						ContributionEvent::Claimed { .. } => "Claimed",
+						ContributionEvent::Unassigned { .. } => "Unassigned",
+						ContributionEvent::Validated { .. } => "Validated",
+					},
+			DomainEvent::Project(event) =>
+				String::from("Project")
+					+ match event {
+						ProjectEvent::MemberAdded { .. } => "MemberAdded",
+						ProjectEvent::MemberRemoved { .. } => "MemberRemoved",
+						ProjectEvent::LeadContributorAdded { .. } => "LeadContributorAdded",
+						ProjectEvent::LeadContributorRemoved { .. } => "LeadContributorRemoved",
+					},
+		};
 
-		assert_eq!(
-			ObservedEvent {
-				event: DomainEvent::Contribution(ContributionEvent::Claimed {
-					id: Default::default(),
-					contributor_id: Default::default()
-				}),
-				deduplication_id: DEDUPLICATION_ID.to_string()
-			},
-			ObservedEvent::try_from(apibara_event).unwrap()
-		);
-	}
-
-	#[rstest]
-	fn contribution_unassigned(contract_address: Vec<u8>, transaction_hash: Vec<u8>) {
-		let apibara_event = apibara_event(
-			selector::<contribution::Unassigned>(),
-			contract_address,
-			transaction_hash,
-		);
-
-		assert_eq!(
-			ObservedEvent {
-				event: DomainEvent::Contribution(ContributionEvent::Unassigned {
-					id: Default::default(),
-				}),
-				deduplication_id: DEDUPLICATION_ID.to_string()
-			},
-			ObservedEvent::try_from(apibara_event).unwrap()
-		);
-	}
-
-	#[rstest]
-	fn contribution_validated(contract_address: Vec<u8>, transaction_hash: Vec<u8>) {
-		let apibara_event = apibara_event(
-			selector::<contribution::Validated>(),
-			contract_address,
-			transaction_hash,
-		);
-
-		assert_eq!(
-			ObservedEvent {
-				event: DomainEvent::Contribution(ContributionEvent::Validated {
-					id: Default::default(),
-				}),
-				deduplication_id: DEDUPLICATION_ID.to_string()
-			},
-			ObservedEvent::try_from(apibara_event).unwrap()
-		);
-	}
-
-	#[rstest]
-	fn project_member_added(contract_address: Vec<u8>, transaction_hash: Vec<u8>) {
-		let apibara_event = apibara_event(
-			selector::<project::MemberAdded>(),
-			contract_address,
-			transaction_hash,
-		);
-
-		assert_eq!(
-			ObservedEvent {
-				event: DomainEvent::Project(ProjectEvent::MemberAdded {
-					project_id: Default::default(),
-					contributor_account: Default::default()
-				}),
-				deduplication_id: DEDUPLICATION_ID.to_string()
-			},
-			ObservedEvent::try_from(apibara_event).unwrap()
-		);
-	}
-
-	#[rstest]
-	fn project_member_removed(contract_address: Vec<u8>, transaction_hash: Vec<u8>) {
-		let apibara_event = apibara_event(
-			selector::<project::MemberRemoved>(),
-			contract_address,
-			transaction_hash,
-		);
-
-		assert_eq!(
-			ObservedEvent {
-				event: DomainEvent::Project(ProjectEvent::MemberRemoved {
-					project_id: Default::default(),
-					contributor_account: Default::default()
-				}),
-				deduplication_id: DEDUPLICATION_ID.to_string()
-			},
-			ObservedEvent::try_from(apibara_event).unwrap()
-		);
-	}
-
-	#[rstest]
-	fn project_lead_contributor_added(contract_address: Vec<u8>, transaction_hash: Vec<u8>) {
-		let apibara_event = apibara_event(
-			selector::<project::LeadContributorAdded>(),
-			contract_address,
-			transaction_hash,
-		);
-
-		assert_eq!(
-			ObservedEvent {
-				event: DomainEvent::Project(ProjectEvent::LeadContributorAdded {
-					project_id: Default::default(),
-					contributor_account: Default::default()
-				}),
-				deduplication_id: DEDUPLICATION_ID.to_string()
-			},
-			ObservedEvent::try_from(apibara_event).unwrap()
-		);
-	}
-
-	#[rstest]
-	fn project_lead_contributor_removed(contract_address: Vec<u8>, transaction_hash: Vec<u8>) {
-		let apibara_event = apibara_event(
-			selector::<project::LeadContributorRemoved>(),
-			contract_address,
-			transaction_hash,
-		);
-
-		assert_eq!(
-			ObservedEvent {
-				event: DomainEvent::Project(ProjectEvent::LeadContributorRemoved {
-					project_id: Default::default(),
-					contributor_account: Default::default()
-				}),
-				deduplication_id: DEDUPLICATION_ID.to_string()
-			},
-			ObservedEvent::try_from(apibara_event).unwrap()
-		);
+		assert_eq!(expected_event_name, event_name);
 	}
 }
