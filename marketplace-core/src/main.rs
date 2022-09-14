@@ -155,6 +155,7 @@ fn inject_app(
 			contribution_repository,
 			database.clone(),
 			application_projector.clone(),
+			contributor_projector.clone(),
 			uuid_generator,
 		))
 		.manage(ValidateContribution::new_usecase_boxed(
