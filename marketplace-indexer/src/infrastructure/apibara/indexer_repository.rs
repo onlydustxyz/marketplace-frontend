@@ -1,5 +1,7 @@
 use super::{
-	apibara::{self, CreateIndexerRequest, DeleteIndexerRequest, GetIndexerRequest},
+	apibara::{
+		self, CreateIndexerRequest, DeleteIndexerRequest, GetIndexerRequest, ListIndexerRequest,
+	},
 	Client,
 };
 use crate::domain::*;
@@ -58,6 +60,18 @@ impl IndexerRepository for Client {
 			})?;
 
 		Ok(response.into_inner().indexer.map(Indexer::from))
+	}
+
+	async fn list(&self) -> Result<Vec<Indexer>, IndexerRepositoryError> {
+		let response = self
+			.0
+			.write()
+			.await
+			.list_indexer(ListIndexerRequest {})
+			.await
+			.map_err(|status| IndexerRepositoryError::ListIndexers(anyhow!(status)))?;
+
+		Ok(response.into_inner().indexers.into_iter().map_into().collect())
 	}
 
 	async fn delete(&self, indexer_id: &IndexerId) -> Result<(), IndexerRepositoryError> {

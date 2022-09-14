@@ -15,6 +15,8 @@ pub enum Error {
 		id: IndexerId,
 		source: anyhow::Error,
 	},
+	#[error("Failed while listing indexers")]
+	ListIndexers(#[source] anyhow::Error),
 	#[error("Failed while deleting indexer `{id}`: {source}")]
 	DeleteIndexer {
 		id: IndexerId,
@@ -29,5 +31,6 @@ type Result<T> = std::result::Result<T, Error>;
 pub trait Repository {
 	async fn create(&self, indexer: &Indexer) -> Result<()>;
 	async fn by_id(&self, indexer_id: &IndexerId) -> Result<Option<Indexer>>;
+	async fn list(&self) -> Result<Vec<Indexer>>;
 	async fn delete(&self, indexer_id: &IndexerId) -> Result<()>;
 }
