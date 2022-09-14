@@ -4,7 +4,6 @@ mod infrastructure;
 
 use crate::{application::IndexerBuilder, domain::*, infrastructure::ApibaraClient};
 use dotenv::dotenv;
-use futures::join;
 use marketplace_domain::*;
 use marketplace_infrastructure::{database, github, starknet};
 use slog::{o, Drain, FnValue, Logger, Record};
@@ -55,18 +54,15 @@ async fn main() {
 	let uuid_generator = Arc::new(RandomUuidGenerator {});
 	let starknet = Arc::new(starknet::Client::default());
 
-	let results = join!(
-		index_contributions_events(
-			apibara_client.clone(),
-			database.clone(),
-			github,
-			uuid_generator,
-			starknet
-		),
-		index_past_lead_contributors_events(apibara_client, database),
-	);
-	results.0.expect("Failed to index events");
-	results.1.expect("Failed to index events");
+	index_contributions_events(
+		apibara_client.clone(),
+		database.clone(),
+		github,
+		uuid_generator,
+		starknet,
+	)
+	.await
+	.expect("Failed to index events");
 }
 
 fn contributions_contract_address() -> ContractAddress {
@@ -106,27 +102,6 @@ async fn index_contributions_events(
 		Arc::new(ContributionObserver::new(project_projector)),
 		Arc::new(ContributionObserver::new(contributor_projector)),
 		Arc::new(ProjectObserver::new(Arc::new(project_member_projector))),
-	]);
-
-	apibara_client.fetch_new_events(&indexer, Arc::new(observer)).await
-}
-
-async fn index_past_lead_contributors_events(
-	apibara_client: Arc<ApibaraClient>,
-	database: Arc<database::Client>,
-) -> Result<(), IndexingServiceError> {
-	let indexer = IndexerBuilder::new(apibara_client.clone())
-		.network(Network::Starknet)
-		.start_at_block(311611)
-		.on_conflict_do_nothing()
-		.filter(contributions_contract_address(), "LeadContributorAdded")
-		.build("past-lead-contributor-indexer".into())
-		.await
-		.expect("Unable to create the past lead contributors indexer");
-
-	let observer = BlockchainObserverComposite::new(vec![
-		Arc::new(BlockchainLogger::default()),
-		Arc::new(EventStoreObserver::new(database.clone(), database)),
 	]);
 
 	apibara_client.fetch_new_events(&indexer, Arc::new(observer)).await
