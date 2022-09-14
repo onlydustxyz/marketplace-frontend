@@ -69,6 +69,9 @@ serde = { version = "1.0.137", features = ["derive"] }
 serde_json = { version = "1.0.81" }
 serdect = { version = "0.1.0", features = ["alloc"] }
 
+# Datetime
+chrono = "0.4"
+
 # Utils
 dotenv = "0.15.0"
 itertools = "0.10.3"

@@ -24,6 +24,7 @@ diesel = { version = "1.4.8", default-features = false, features = [
 	"postgres",
 	"serde_json",
 	"uuidv07",
+	"chrono"
 ] }
 diesel_migrations = "1.4.0"
 r2d2 = "0.8.10"
@@ -58,6 +59,9 @@ thiserror = "1.0.31"
 # Serde
 serde = { version = "1.0.137", features = ["derive"] }
 serde_json = { version = "1.0.81" }
+
+# Datetime
+chrono = "0.4"
 
 # Utils
 itertools = "0.10.3"

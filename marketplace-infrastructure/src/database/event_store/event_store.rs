@@ -41,7 +41,8 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 			.iter()
 			.map(|storable_event| {
 				let domain_event: Event = storable_event.event.clone().into();
-				Ok(models::Event {
+				Ok(models::NewEvent {
+					timestamp: storable_event.timestamp,
 					aggregate_name: A::name(),
 					aggregate_id: aggregate_id.to_string(),
 					payload: serde_json::to_value(&domain_event).map_err(|e| {

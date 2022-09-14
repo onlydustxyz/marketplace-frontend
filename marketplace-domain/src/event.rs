@@ -1,4 +1,5 @@
 use crate::{Aggregate, ContributionEvent, ProjectEvent};
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
@@ -12,6 +13,7 @@ pub enum Event {
 pub struct StorableEvent<A: Aggregate> {
 	pub event: A::Event,
 	pub deduplication_id: String,
+	pub timestamp: NaiveDateTime,
 }
 
 impl Display for Event {
