@@ -22,7 +22,7 @@ type Result<T> = std::result::Result<T, Error>;
 pub trait Service {
 	async fn fetch_new_events(
 		&self,
-		indexer: &Indexer,
+		indexer: Indexer,
 		observers: Arc<dyn BlockchainObserver>,
 	) -> Result<()>;
 }
