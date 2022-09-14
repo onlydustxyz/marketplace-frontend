@@ -1,6 +1,8 @@
 use std::fmt::Display;
 mod composite;
 use async_trait::async_trait;
+use chrono::NaiveDateTime;
+
 pub use composite::ObserverComposite;
 
 mod logging;
@@ -35,6 +37,7 @@ pub trait Observer: Send + Sync {
 pub struct ObservedEvent {
 	pub event: Event,
 	pub deduplication_id: String,
+	pub timestamp: NaiveDateTime,
 }
 
 impl Display for ObservedEvent {
@@ -50,11 +53,13 @@ impl Display for ObservedEvent {
 #[cfg(test)]
 impl Default for ObservedEvent {
 	fn default() -> Self {
+		use chrono::Utc;
 		Self {
 			event: Event::Contribution(ContributionEvent::Validated {
 				id: Default::default(),
 			}),
 			deduplication_id: "dedup".to_string(),
+			timestamp: Utc::now().naive_utc(),
 		}
 	}
 }

@@ -1,5 +1,6 @@
 use crate::domain::*;
 use async_trait::async_trait;
+use chrono::NaiveDateTime;
 use log::error;
 use marketplace_domain::{EventStore, *};
 use std::sync::Arc;
@@ -32,6 +33,7 @@ impl Observer for EventStoreObserver {
 					id,
 					contribution_event.clone(),
 					observed_event.deduplication_id.clone(),
+					observed_event.timestamp,
 				);
 			},
 			Event::Project(project_event) => {
@@ -41,6 +43,7 @@ impl Observer for EventStoreObserver {
 					id,
 					project_event.clone(),
 					observed_event.deduplication_id.clone(),
+					observed_event.timestamp,
 				);
 			},
 		}
@@ -52,12 +55,14 @@ fn store_event<A: Aggregate>(
 	id: &A::Id,
 	event: A::Event,
 	deduplication_id: String,
+	timestamp: NaiveDateTime,
 ) {
 	if let Err(error) = event_store.append(
 		id,
 		vec![StorableEvent {
 			event: event.clone(),
 			deduplication_id,
+			timestamp,
 		}],
 	) {
 		error!("Failed to append {event} to the store: {error}",);
@@ -71,24 +76,10 @@ trait Identifiable<E>: Aggregate {
 impl Identifiable<ContributionEvent> for Contribution {
 	fn id(event: &ContributionEvent) -> &Self::Id {
 		match event {
-			ContributionEvent::Created {
-				id,
-				project_id: _,
-				issue_number: _,
-				gate: _,
-			}
-			| ContributionEvent::Assigned {
-				id,
-				contributor_id: _,
-			}
-			| ContributionEvent::Claimed {
-				id,
-				contributor_id: _,
-			}
-			| ContributionEvent::Applied {
-				id,
-				contributor_id: _,
-			}
+			ContributionEvent::Created { id, .. }
+			| ContributionEvent::Assigned { id, .. }
+			| ContributionEvent::Claimed { id, .. }
+			| ContributionEvent::Applied { id, .. }
 			| ContributionEvent::Unassigned { id }
 			| ContributionEvent::Validated { id } => id,
 		}
@@ -193,6 +184,7 @@ mod test {
 				eq(vec![StorableEvent {
 					event: contribution_event.clone(),
 					deduplication_id: cloned_event.deduplication_id.clone(),
+					timestamp: cloned_event.timestamp,
 				}]),
 			)
 			.returning(|_, _| Ok(()));
@@ -222,6 +214,7 @@ mod test {
 				eq(vec![StorableEvent {
 					event: project_event.clone(),
 					deduplication_id: cloned_event.deduplication_id.clone(),
+					timestamp: cloned_event.timestamp,
 				}]),
 			)
 			.returning(|_, _| Ok(()));

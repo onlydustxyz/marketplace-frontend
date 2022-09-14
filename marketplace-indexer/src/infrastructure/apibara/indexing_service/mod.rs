@@ -131,7 +131,7 @@ async fn handle_response(
 		Some(ResponseMessage::NewEvents(NewEvents { block, events })) => {
 			if let Some(block_head) = block {
 				join_all(events.into_iter().map(|event| async {
-					if let Ok(event) = event.try_into() {
+					if let Ok(event) = (event, &block_head).try_into() {
 						observer.on_new_event(&event, block_head.number).await;
 					}
 				}))
