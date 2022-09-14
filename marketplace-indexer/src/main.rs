@@ -4,10 +4,12 @@ mod infrastructure;
 
 use crate::{application::IndexerBuilder, domain::*, infrastructure::ApibaraClient};
 use dotenv::dotenv;
+use futures::future::try_join_all;
 use marketplace_domain::*;
 use marketplace_infrastructure::{database, event_webhook::EventWebHook, github, starknet};
 use slog::{o, Drain, FnValue, Logger, Record};
 use std::sync::Arc;
+use thiserror::Error;
 
 fn channel_size() -> usize {
 	std::env::var("SLOG_CHANNEL_SIZE").unwrap_or_default().parse().unwrap_or(256)
@@ -49,10 +51,11 @@ async fn main() {
 	let apibara_client =
 		Arc::new(ApibaraClient::default().await.expect("Unable to connect to Apibara server"));
 
-	let indexer = build_legacy_indexer(apibara_client.clone()).await;
+	// TODO: Remove this call once web3 migration is over
+	build_legacy_indexer(apibara_client.clone()).await;
 
 	let observer = build_event_observer();
-	index_events(apibara_client, &indexer, Arc::new(observer))
+	index_events(apibara_client, Arc::new(observer))
 		.await
 		.expect("Failed to index events");
 }
@@ -63,7 +66,7 @@ fn contributions_contract_address() -> ContractAddress {
 	address.parse().expect("CONTRIBUTIONS_ADDRESS is not a valid contract address")
 }
 
-async fn build_legacy_indexer(apibara_client: Arc<ApibaraClient>) -> Indexer {
+async fn build_legacy_indexer(apibara_client: Arc<ApibaraClient>) {
 	IndexerBuilder::new(apibara_client.clone())
 		.network(Network::Starknet)
 		.start_at_block(311611)
@@ -75,7 +78,7 @@ async fn build_legacy_indexer(apibara_client: Arc<ApibaraClient>) -> Indexer {
 				.into(),
 		)
 		.await
-		.expect("Unable to create the contribution indexer")
+		.expect("Unable to create the contribution indexer");
 }
 
 fn build_event_observer() -> impl BlockchainObserver {
@@ -105,10 +108,26 @@ fn build_event_observer() -> impl BlockchainObserver {
 	])
 }
 
+#[derive(Debug, Error)]
+pub enum Error {
+	#[error(transparent)]
+	Repository(#[from] IndexerRepositoryError),
+	#[error(transparent)]
+	Service(#[from] IndexingServiceError),
+}
+
 async fn index_events(
 	apibara_client: Arc<ApibaraClient>,
-	indexer: &Indexer,
 	observer: Arc<dyn BlockchainObserver>,
-) -> Result<(), IndexingServiceError> {
-	apibara_client.fetch_new_events(&indexer, observer).await
+) -> Result<(), Error> {
+	let indexers = apibara_client.list().await?;
+
+	try_join_all(
+		indexers
+			.into_iter()
+			.map(|indexer| apibara_client.fetch_new_events(indexer, observer.clone())),
+	)
+	.await?;
+
+	Ok(())
 }

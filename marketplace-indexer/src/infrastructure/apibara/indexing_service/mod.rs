@@ -21,7 +21,7 @@ use crate::domain::*;
 impl IndexingService for Client {
 	async fn fetch_new_events(
 		&self,
-		indexer: &Indexer,
+		indexer: Indexer,
 		observer: Arc<dyn BlockchainObserver>,
 	) -> Result<(), IndexingServiceError> {
 		let channel = Channel::new();
