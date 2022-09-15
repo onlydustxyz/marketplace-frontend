@@ -49,6 +49,14 @@ fn contribution_applied_event(contributor_id: ContributorId) -> Event {
 }
 
 #[fixture]
+fn contribution_application_refused_event(contributor_id: ContributorId) -> Event {
+	Event::Contribution(ContributionEvent::ApplicationRefused {
+		id: Default::default(),
+		contributor_id,
+	})
+}
+
+#[fixture]
 fn contribution_claimed_event(contributor_id: ContributorId) -> Event {
 	Event::Contribution(ContributionEvent::Claimed {
 		id: Default::default(),
@@ -163,6 +171,47 @@ fn apply_to_contribution_emits_an_event(contribution_created_event: Event) {
 	assert_matches!(
 		emitted_events.first().unwrap(),
 		Event::Contribution(ContributionEvent::Applied {
+			contributor_id: _,
+			id: _
+		})
+	);
+}
+
+#[rstest]
+fn refuse_application_twice(
+	contribution_created_event: Event,
+	contribution_applied_event: Event,
+	contribution_application_refused_event: Event,
+	contributor_id: ContributorId,
+) {
+	let contribution = Contribution::from_events(&[
+		contribution_created_event,
+		contribution_applied_event,
+		contribution_application_refused_event,
+	]);
+
+	let second_refusal = contribution.refuse_application(&contributor_id);
+	assert!(second_refusal.is_err());
+	assert_matches!(second_refusal.unwrap_err(), Error::NoPendingApplication(_))
+}
+
+#[rstest]
+fn refuse_application_emits_an_event(
+	contribution_created_event: Event,
+	contribution_applied_event: Event,
+	contributor_id: ContributorId,
+) {
+	let contribution =
+		Contribution::from_events(&[contribution_created_event, contribution_applied_event]);
+
+	let refusal_result = contribution.refuse_application(&contributor_id);
+	assert!(refusal_result.is_ok());
+
+	let emitted_events = refusal_result.unwrap();
+	assert_eq!(1, emitted_events.len());
+	assert_matches!(
+		emitted_events.first().unwrap(),
+		Event::Contribution(ContributionEvent::ApplicationRefused {
 			contributor_id: _,
 			id: _
 		})

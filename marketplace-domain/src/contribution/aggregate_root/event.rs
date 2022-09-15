@@ -15,6 +15,10 @@ pub enum Event {
 		id: ContributionId,
 		contributor_id: ContributorId,
 	},
+	ApplicationRefused {
+		id: ContributionId,
+		contributor_id: ContributorId,
+	},
 	Assigned {
 		id: ContributionId,
 		contributor_id: ContributorId,

@@ -109,6 +109,7 @@ impl EventListener for WithGithubDataProjector {
 				ContributionEvent::Unassigned { id } => self.on_unassign(id),
 				ContributionEvent::Validated { id } => self.on_validate(id),
 				ContributionEvent::Applied { .. } => return,
+				ContributionEvent::ApplicationRefused { .. } => return,
 			},
 			Event::Project(_) => return,
 		};
