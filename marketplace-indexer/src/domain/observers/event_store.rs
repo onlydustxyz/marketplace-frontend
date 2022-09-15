@@ -80,6 +80,7 @@ impl Identifiable<ContributionEvent> for Contribution {
 			| ContributionEvent::Assigned { id, .. }
 			| ContributionEvent::Claimed { id, .. }
 			| ContributionEvent::Applied { id, .. }
+			| ContributionEvent::ApplicationRefused { id, .. }
 			| ContributionEvent::Unassigned { id }
 			| ContributionEvent::Validated { id } => id,
 		}

@@ -21,6 +21,8 @@ pub enum Error {
 	CannotApply(ContributionStatus),
 	#[error("Contributor `{0}` already applied")]
 	AlreadyApplied(ContributorId),
+	#[error("Contributor `{0}` dose not have any pending application")]
+	NoPendingApplication(ContributorId),
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Eq)]
@@ -49,6 +51,20 @@ impl Contribution {
 		});
 
 		Ok(vec![applied_event])
+	}
+
+	pub fn refuse_application(self, contributor_id: &ContributorId) -> Result<Vec<Event>, Error> {
+		if !self.applicants.contains(contributor_id) {
+			return Err(Error::NoPendingApplication(contributor_id.clone()));
+		}
+
+		let application_refused_event =
+			Event::Contribution(ContributionEvent::ApplicationRefused {
+				id: self.id,
+				contributor_id: contributor_id.clone(),
+			});
+
+		Ok(vec![application_refused_event])
 	}
 
 	pub fn id(&self) -> &Id {
@@ -88,6 +104,18 @@ impl EventSourcable for Contribution {
 				} => {
 					let mut applicants = self.applicants;
 					applicants.push(contributor_id.clone());
+					Self { applicants, ..self }
+				},
+				ContributionEvent::ApplicationRefused {
+					id: _,
+					contributor_id,
+				} => {
+					let mut applicants = self.applicants;
+					if let Some(index) =
+						applicants.iter().rposition(|applicant_id| applicant_id == contributor_id)
+					{
+						applicants.remove(index);
+					}
 					Self { applicants, ..self }
 				},
 				ContributionEvent::Assigned {

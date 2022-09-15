@@ -41,6 +41,29 @@ impl ApplicationProjector {
 		}
 	}
 
+	fn on_application_refused(
+		&self,
+		contribution_id: &ContributionId,
+		contributor_id: &ContributorId,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		let previous_application = self
+			.application_projection_repository
+			.find_by_contribution_and_contributor(contribution_id, contributor_id)?;
+		match previous_application {
+			Some(application) =>
+				self.application_projection_repository.update(application.into_refused()),
+			None => {
+				let application = ApplicationProjection::new(
+					self.uuid_generator.new_uuid().into(),
+					contribution_id.clone(),
+					contributor_id.clone(),
+				)
+				.into_refused();
+				self.application_projection_repository.create(application)
+			},
+		}
+	}
+
 	fn on_assigned(
 		&self,
 		contribution_id: &ContributionId,
@@ -73,6 +96,10 @@ impl EventListener for ApplicationProjector {
 					id: contribution_id,
 					contributor_id,
 				} => self.on_applied(contribution_id, contributor_id),
+				ContributionEvent::ApplicationRefused {
+					id: contribution_id,
+					contributor_id,
+				} => self.on_application_refused(contribution_id, contributor_id),
 				ContributionEvent::Assigned {
 					id: contribution_id,
 					contributor_id,
@@ -129,18 +156,8 @@ mod tests {
 	}
 
 	#[fixture]
-	fn contributor_1_id() -> ContributorId {
+	fn contributor_id() -> ContributorId {
 		ContributorId::from_str("0x456").unwrap()
-	}
-
-	#[fixture]
-	fn contributor_2_id() -> ContributorId {
-		ContributorId::from_str("0x457").unwrap()
-	}
-
-	#[fixture]
-	fn contributor_3_id() -> ContributorId {
-		ContributorId::from_str("0x458").unwrap()
 	}
 
 	#[rstest]
@@ -148,7 +165,7 @@ mod tests {
 		mut application_projection_repository: MockApplicationProjectionRepository,
 		mut uuid_generator: MockUuidGenerator,
 		contribution_id: ContributionId,
-		contributor_1_id: ContributorId,
+		contributor_id: ContributorId,
 	) {
 		let previous_application = ApplicationProjection::default();
 
@@ -156,7 +173,7 @@ mod tests {
 		uuid_generator.expect_new_uuid().never();
 		application_projection_repository
 			.expect_find_by_contribution_and_contributor()
-			.with(eq(contribution_id.clone()), eq(contributor_1_id.clone()))
+			.with(eq(contribution_id.clone()), eq(contributor_id.clone()))
 			.once()
 			.in_sequence(&mut repository_sequence)
 			.returning(move |_, _| Ok(Some(previous_application.clone())));
@@ -175,7 +192,7 @@ mod tests {
 		projector
 			.on_event(&Event::Contribution(ContributionEvent::Applied {
 				id: contribution_id,
-				contributor_id: contributor_1_id,
+				contributor_id,
 			}))
 			.await;
 	}
@@ -186,13 +203,13 @@ mod tests {
 		mut uuid_generator: MockUuidGenerator,
 		contribution_id: ContributionId,
 		application_id: ApplicationId,
-		contributor_1_id: ContributorId,
+		contributor_id: ContributorId,
 	) {
 		let mut repository_sequence = Sequence::new();
 		uuid_generator.expect_new_uuid().returning(move || application_id.into());
 		application_projection_repository
 			.expect_find_by_contribution_and_contributor()
-			.with(eq(contribution_id.clone()), eq(contributor_1_id.clone()))
+			.with(eq(contribution_id.clone()), eq(contributor_id.clone()))
 			.once()
 			.in_sequence(&mut repository_sequence)
 			.returning(move |_, _| Ok(None));
@@ -202,7 +219,7 @@ mod tests {
 			.with(eq(ApplicationProjection::new(
 				application_id,
 				contribution_id.clone(),
-				contributor_1_id.clone(),
+				contributor_id.clone(),
 			)))
 			.once()
 			.in_sequence(&mut repository_sequence)
@@ -216,8 +233,91 @@ mod tests {
 		projector
 			.on_event(&Event::Contribution(ContributionEvent::Applied {
 				id: contribution_id,
-				contributor_id: contributor_1_id,
+				contributor_id,
 			}))
+			.await;
+	}
+
+	#[rstest]
+	async fn contribution_application_refused_updates_application(
+		mut application_projection_repository: MockApplicationProjectionRepository,
+		mut uuid_generator: MockUuidGenerator,
+		contribution_id: ContributionId,
+		contributor_id: ContributorId,
+	) {
+		let previous_application = ApplicationProjection::default();
+
+		let mut repository_sequence = Sequence::new();
+		uuid_generator.expect_new_uuid().never();
+		application_projection_repository
+			.expect_find_by_contribution_and_contributor()
+			.with(eq(contribution_id.clone()), eq(contributor_id.clone()))
+			.once()
+			.in_sequence(&mut repository_sequence)
+			.returning(move |_, _| Ok(Some(previous_application.clone())));
+		application_projection_repository
+			.expect_update()
+			.withf(|application| &ApplicationStatus::Refused == application.status())
+			.once()
+			.in_sequence(&mut repository_sequence)
+			.returning(|_| Ok(()));
+
+		let projector = ApplicationProjector::new(
+			Arc::new(application_projection_repository),
+			Arc::new(uuid_generator),
+		);
+
+		projector
+			.on_event(&Event::Contribution(
+				ContributionEvent::ApplicationRefused {
+					id: contribution_id,
+					contributor_id,
+				},
+			))
+			.await;
+	}
+
+	#[rstest]
+	async fn contribution_application_refused_creates_an_application(
+		mut application_projection_repository: MockApplicationProjectionRepository,
+		mut uuid_generator: MockUuidGenerator,
+		contribution_id: ContributionId,
+		application_id: ApplicationId,
+		contributor_id: ContributorId,
+	) {
+		let mut repository_sequence = Sequence::new();
+		uuid_generator.expect_new_uuid().returning(move || application_id.into());
+		application_projection_repository
+			.expect_find_by_contribution_and_contributor()
+			.with(eq(contribution_id.clone()), eq(contributor_id.clone()))
+			.once()
+			.in_sequence(&mut repository_sequence)
+			.returning(move |_, _| Ok(None));
+		application_projection_repository.expect_update().never();
+		application_projection_repository
+			.expect_create()
+			.with(eq(ApplicationProjection::new(
+				application_id,
+				contribution_id.clone(),
+				contributor_id.clone(),
+			)
+			.into_refused()))
+			.once()
+			.in_sequence(&mut repository_sequence)
+			.returning(|_| Ok(()));
+
+		let projector = ApplicationProjector::new(
+			Arc::new(application_projection_repository),
+			Arc::new(uuid_generator),
+		);
+
+		projector
+			.on_event(&Event::Contribution(
+				ContributionEvent::ApplicationRefused {
+					id: contribution_id,
+					contributor_id,
+				},
+			))
 			.await;
 	}
 }
