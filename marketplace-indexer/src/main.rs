@@ -2,14 +2,12 @@ mod application;
 mod domain;
 mod infrastructure;
 
-use crate::{application::IndexerBuilder, domain::*, infrastructure::ApibaraClient};
+use crate::{application::*, domain::*, infrastructure::ApibaraClient};
 use dotenv::dotenv;
-use futures::future::try_join_all;
 use marketplace_domain::*;
 use marketplace_infrastructure::{database, event_webhook::EventWebHook, github, starknet};
 use slog::{o, Drain, FnValue, Logger, Record};
 use std::sync::Arc;
-use thiserror::Error;
 
 fn channel_size() -> usize {
 	std::env::var("SLOG_CHANNEL_SIZE").unwrap_or_default().parse().unwrap_or(256)
@@ -54,10 +52,13 @@ async fn main() {
 	// TODO: Remove this call once web3 migration is over
 	build_legacy_indexer(apibara_client.clone()).await;
 
-	let observer = build_event_observer();
-	index_events(apibara_client.clone(), apibara_client, Arc::new(observer))
-		.await
-		.expect("Failed to index events");
+	let usecase = IndexingUsecase::new(
+		apibara_client.clone(),
+		apibara_client,
+		Arc::new(build_event_observer()),
+	);
+
+	usecase.run_all_indexers().await.expect("Failed to index events");
 }
 
 fn contributions_contract_address() -> ContractAddress {
@@ -106,102 +107,4 @@ fn build_event_observer() -> impl BlockchainObserver {
 			Box::new(EventWebHook::new(reqwest_client)),
 		])),
 	])
-}
-
-#[derive(Debug, Error)]
-pub enum Error {
-	#[error(transparent)]
-	Repository(#[from] IndexerRepositoryError),
-	#[error(transparent)]
-	Service(#[from] IndexingServiceError),
-}
-
-async fn index_events(
-	indexer_repository: Arc<dyn IndexerRepository>,
-	indexing_service: Arc<dyn IndexingService>,
-	observer: Arc<dyn BlockchainObserver>,
-) -> Result<(), Error> {
-	let indexers = indexer_repository.list().await?;
-
-	try_join_all(
-		indexers
-			.into_iter()
-			.map(|indexer| indexing_service.fetch_new_events(indexer, observer.clone())),
-	)
-	.await?;
-
-	Ok(())
-}
-
-#[cfg(test)]
-mod test {
-	use super::*;
-	use mockall::predicate::*;
-	use rstest::*;
-
-	#[fixture]
-	fn indexer_ids() -> Vec<IndexerId> {
-		vec![
-			String::from("indexer-1").into(),
-			String::from("indexer-2").into(),
-			String::from("indexer-3").into(),
-		]
-	}
-
-	#[fixture]
-	fn indexers(indexer_ids: Vec<IndexerId>) -> Vec<Indexer> {
-		indexer_ids
-			.into_iter()
-			.map(|id| Indexer {
-				id,
-				..Default::default()
-			})
-			.collect()
-	}
-
-	#[fixture]
-	fn indexer_repository() -> MockIndexerRepository {
-		MockIndexerRepository::new()
-	}
-
-	#[fixture]
-	fn indexing_service() -> MockIndexingService {
-		MockIndexingService::new()
-	}
-
-	#[fixture]
-	fn observer() -> MockBlockchainObserver {
-		MockBlockchainObserver::new()
-	}
-
-	#[fixture]
-	fn blockchain_observer() -> MockBlockchainObserver {
-		MockBlockchainObserver::new()
-	}
-
-	#[rstest]
-	async fn run_all_indexers(
-		mut indexer_repository: MockIndexerRepository,
-		mut indexing_service: MockIndexingService,
-		indexers: Vec<Indexer>,
-	) {
-		let cloned_indexers = indexers.clone();
-		indexer_repository.expect_list().times(1).return_once(|| Ok(cloned_indexers));
-
-		for indexer in indexers {
-			indexing_service
-				.expect_fetch_new_events()
-				.times(1)
-				.with(eq(indexer), always())
-				.returning(|_, _| Ok(()));
-		}
-
-		let result = index_events(
-			Arc::new(indexer_repository),
-			Arc::new(indexing_service),
-			Arc::new(MockBlockchainObserver::new()),
-		)
-		.await;
-		assert!(result.is_ok(), "{}", result.err().unwrap());
-	}
 }
