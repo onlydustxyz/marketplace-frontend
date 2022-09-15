@@ -48,6 +48,7 @@ async fn main() {
 
 	let apibara_client =
 		Arc::new(ApibaraClient::default().await.expect("Unable to connect to Apibara server"));
+	let reqwest_client = reqwest::Client::new();
 
 	let database = Arc::new(database::Client::new(database::init_pool()));
 	let github = Arc::new(github::Client::new());
@@ -56,6 +57,7 @@ async fn main() {
 
 	index_contributions_events(
 		apibara_client.clone(),
+		reqwest_client.clone(),
 		database.clone(),
 		github,
 		uuid_generator,
@@ -73,6 +75,7 @@ fn contributions_contract_address() -> ContractAddress {
 
 async fn index_contributions_events(
 	apibara_client: Arc<ApibaraClient>,
+	reqwest_client: reqwest::Client,
 	database: Arc<database::Client>,
 	github: Arc<github::Client>,
 	uuid_generator: Arc<dyn UuidGenerator>,
@@ -107,7 +110,7 @@ async fn index_contributions_events(
 			Box::new(project_projector),
 			Box::new(contributor_projector),
 			Box::new(project_member_projector),
-			Box::new(EventWebHook),
+			Box::new(EventWebHook::new(reqwest_client)),
 		])),
 	]);
 

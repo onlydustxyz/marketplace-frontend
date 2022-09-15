@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 use async_trait::async_trait;
 use log::{error, info};
 use marketplace_domain::{Event, EventListener};
@@ -5,7 +8,15 @@ use url::Url;
 
 const WEBHOOK_TARGET_ENV_VAR: &str = "EVENT_WEBHOOK_TARGET";
 
-pub struct EventWebHook;
+pub struct EventWebHook {
+	web_client: reqwest::Client,
+}
+
+impl EventWebHook {
+	pub fn new(client: reqwest::Client) -> Self {
+		Self { web_client: client }
+	}
+}
 
 #[async_trait]
 impl EventListener for EventWebHook {
@@ -21,12 +32,17 @@ impl EventListener for EventWebHook {
 				},
 			};
 
-			let client = reqwest::Client::new();
-			if let Err(e) = client.post(target.clone()).json(&event).send().await {
-				error!("Failed to send event to hook target '{target}': {e}");
+			match self.web_client.post(target.clone()).json(&event).send().await {
+				Ok(res) =>
+					if let Err(e) = res.error_for_status() {
+						error!("WebHook target failed to process event: {e}");
+					},
+				Err(e) => error!("Failed to send event to hook target '{target}': {e}"),
 			}
 		} else {
-			info!("Event webhook ignored: environment variable 'EVENT_WEBHOOK_TARGET' is not set");
+			info!(
+				"Event webhook ignored: environment variable '{WEBHOOK_TARGET_ENV_VAR}' is not set"
+			);
 		};
 	}
 }
