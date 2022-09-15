@@ -22,7 +22,7 @@ jobs:
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: 1.63
           override: true
 
       - name: Set up cargo cache
