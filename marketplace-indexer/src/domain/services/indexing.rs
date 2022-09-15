@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use crate::domain::*;
 use async_trait::async_trait;
+#[cfg(test)]
 use mockall::automock;
 use thiserror::Error as ThisError;
 
@@ -17,7 +18,7 @@ pub enum Error {
 
 type Result<T> = std::result::Result<T, Error>;
 
-#[automock]
+#[cfg_attr(test, automock)]
 #[async_trait]
 pub trait Service {
 	async fn fetch_new_events(

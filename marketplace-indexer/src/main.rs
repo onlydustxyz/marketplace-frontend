@@ -55,7 +55,7 @@ async fn main() {
 	build_legacy_indexer(apibara_client.clone()).await;
 
 	let observer = build_event_observer();
-	index_events(apibara_client, Arc::new(observer))
+	index_events(apibara_client.clone(), apibara_client, Arc::new(observer))
 		.await
 		.expect("Failed to index events");
 }
@@ -117,17 +117,91 @@ pub enum Error {
 }
 
 async fn index_events(
-	apibara_client: Arc<ApibaraClient>,
+	indexer_repository: Arc<dyn IndexerRepository>,
+	indexing_service: Arc<dyn IndexingService>,
 	observer: Arc<dyn BlockchainObserver>,
 ) -> Result<(), Error> {
-	let indexers = apibara_client.list().await?;
+	let indexers = indexer_repository.list().await?;
 
 	try_join_all(
 		indexers
 			.into_iter()
-			.map(|indexer| apibara_client.fetch_new_events(indexer, observer.clone())),
+			.map(|indexer| indexing_service.fetch_new_events(indexer, observer.clone())),
 	)
 	.await?;
 
 	Ok(())
+}
+
+#[cfg(test)]
+mod test {
+	use super::*;
+	use mockall::predicate::*;
+	use rstest::*;
+
+	#[fixture]
+	fn indexer_ids() -> Vec<IndexerId> {
+		vec![
+			String::from("indexer-1").into(),
+			String::from("indexer-2").into(),
+			String::from("indexer-3").into(),
+		]
+	}
+
+	#[fixture]
+	fn indexers(indexer_ids: Vec<IndexerId>) -> Vec<Indexer> {
+		indexer_ids
+			.into_iter()
+			.map(|id| Indexer {
+				id,
+				..Default::default()
+			})
+			.collect()
+	}
+
+	#[fixture]
+	fn indexer_repository() -> MockIndexerRepository {
+		MockIndexerRepository::new()
+	}
+
+	#[fixture]
+	fn indexing_service() -> MockIndexingService {
+		MockIndexingService::new()
+	}
+
+	#[fixture]
+	fn observer() -> MockBlockchainObserver {
+		MockBlockchainObserver::new()
+	}
+
+	#[fixture]
+	fn blockchain_observer() -> MockBlockchainObserver {
+		MockBlockchainObserver::new()
+	}
+
+	#[rstest]
+	async fn run_all_indexers(
+		mut indexer_repository: MockIndexerRepository,
+		mut indexing_service: MockIndexingService,
+		indexers: Vec<Indexer>,
+	) {
+		let cloned_indexers = indexers.clone();
+		indexer_repository.expect_list().times(1).return_once(|| Ok(cloned_indexers));
+
+		for indexer in indexers {
+			indexing_service
+				.expect_fetch_new_events()
+				.times(1)
+				.with(eq(indexer), always())
+				.returning(|_, _| Ok(()));
+		}
+
+		let result = index_events(
+			Arc::new(indexer_repository),
+			Arc::new(indexing_service),
+			Arc::new(MockBlockchainObserver::new()),
+		)
+		.await;
+		assert!(result.is_ok(), "{}", result.err().unwrap());
+	}
 }
