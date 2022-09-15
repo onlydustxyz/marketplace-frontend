@@ -11,7 +11,7 @@ use marketplace_infrastructure::{
 use marketplace_domain::*;
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
-use slog::{o, Drain, FnValue, Logger, Record};
+use slog::{o, Drain, FnValue, Level, Logger, Record};
 use std::sync::Arc;
 
 #[macro_use]
@@ -37,7 +37,16 @@ fn get_root_logger() -> Logger {
 		},
 	};
 	slog_stdlog::init().unwrap();
-	slog::Logger::root(drain.fuse(), o!("version" => env!("CARGO_PKG_VERSION")))
+	slog::Logger::root(
+		drain
+			.filter(|record| {
+				!(record.level() == Level::Error
+					&& record.module() == "rocket::server"
+					&& record.msg().to_string().starts_with("No matching routes for"))
+			})
+			.fuse(),
+		o!("version" => env!("CARGO_PKG_VERSION")),
+	)
 }
 
 #[tokio::main]
