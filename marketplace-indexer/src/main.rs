@@ -88,7 +88,7 @@ async fn index_contributions_events(
 		.filter(contributions_contract_address(), "")
 		.build(
 			std::env::var("INDEXER_NAME")
-				.unwrap_or(String::from("contribution-indexer"))
+				.unwrap_or_else(|_| String::from("contribution-indexer"))
 				.into(),
 		)
 		.await

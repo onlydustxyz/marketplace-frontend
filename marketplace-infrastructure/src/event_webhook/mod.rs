@@ -21,7 +21,7 @@ impl EventWebHook {
 #[async_trait]
 impl EventListener for EventWebHook {
 	async fn on_event(&self, event: &Event) {
-		if let Some(target) = std::env::var(WEBHOOK_TARGET_ENV_VAR).ok() {
+		if let Ok(target) = std::env::var(WEBHOOK_TARGET_ENV_VAR) {
 			let target = match Url::parse(&target) {
 				Ok(url) => url,
 				Err(e) => {

@@ -146,10 +146,10 @@ mod test {
 	}
 
 	#[rstest]
+	#[allow(clippy::too_many_arguments)]
 	#[case(contribution_applied_event(contributor_id()))]
 	#[case(contribution_assigned_event(contributor_id()))]
 	#[case(contribution_claimed_event(contributor_id()))]
-	#[allow(clippy::too_many_arguments)]
 	async fn contributor_gets_created_with_contribution(
 		mut github_client: MockGithubClient,
 		mut contributor_projection_repository: MockContributorProjectionRepository,

@@ -8,10 +8,9 @@ use envtestkit::{
 use log::Level;
 use marketplace_domain::ContributionEvent;
 use mockito;
-use serial_test::serial;
 
+#[allow(clippy::await_holding_lock)]
 #[tokio::test]
-#[serial]
 async fn env_variable_not_set() {
 	testing_logger::setup();
 	let _lock = lock_read();
@@ -33,8 +32,8 @@ async fn env_variable_not_set() {
 	});
 }
 
+#[allow(clippy::await_holding_lock)]
 #[tokio::test]
-#[serial]
 async fn env_variable_invalid() {
 	testing_logger::setup();
 	let _lock = lock_test();
@@ -57,8 +56,8 @@ async fn env_variable_invalid() {
 	});
 }
 
+#[allow(clippy::await_holding_lock)]
 #[tokio::test]
-#[serial]
 async fn http_call_fail() {
 	testing_logger::setup();
 	let server_url = mockito::server_url();
