@@ -1817,7 +1817,6 @@ dependencies = [
  "serde",
  "serde_json",
  "starknet",
- "testing_logger",
  "thiserror",
  "tokio",
  "url",
@@ -3671,15 +3670,6 @@ name = "termtree"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "507e9898683b6c43a9aa55b64259b721b52ba226e0f3779137e50ad114a4c90b"
-
-[[package]]
-name = "testing_logger"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6d92b727cb45d33ae956f7f46b966b25f1bc712092aeef9dba5ac798fc89f720"
-dependencies = [
- "log",
-]
 
 [[package]]
 name = "thiserror"

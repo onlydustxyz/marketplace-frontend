@@ -1,6 +1,8 @@
 #[cfg(test)]
 mod tests;
 
+use std::env;
+
 use async_trait::async_trait;
 use log::{error, info};
 use marketplace_domain::{Event, EventListener};
@@ -18,31 +20,44 @@ impl EventWebHook {
 	}
 }
 
+#[derive(Debug)]
+enum Error {
+	EnvVarNotSet(env::VarError),
+	InvalidEnvVar(url::ParseError),
+	FailToSendRequest(reqwest::Error),
+	RespondWithErrorStatusCode(reqwest::Error),
+}
+
 #[async_trait]
 impl EventListener for EventWebHook {
 	async fn on_event(&self, event: &Event) {
-		if let Ok(target) = std::env::var(WEBHOOK_TARGET_ENV_VAR) {
-			let target = match Url::parse(&target) {
-				Ok(url) => url,
-				Err(e) => {
-					error!(
-						"Failed to parse environment variable '{WEBHOOK_TARGET_ENV_VAR}' content to Url: {e}"
-					);
-					return;
-				},
-			};
-
-			match self.web_client.post(target.clone()).json(&event).send().await {
-				Ok(res) =>
-					if let Err(e) = res.error_for_status() {
-						error!("WebHook target failed to process event: {e}");
-					},
-				Err(e) => error!("Failed to send event to hook target '{target}': {e}"),
-			}
-		} else {
-			info!(
-				"Event webhook ignored: environment variable '{WEBHOOK_TARGET_ENV_VAR}' is not set"
-			);
-		};
+		match send_event_to_webhook(&self.web_client, event).await {
+			Ok(()) => {},
+			Err(e) => match e {
+				Error::EnvVarNotSet(_) => info!(
+					"Event webhook ignored: environment variable '{WEBHOOK_TARGET_ENV_VAR}' is not set"
+				),
+				Error::InvalidEnvVar(e) => error!(
+					"Failed to parse environment variable '{WEBHOOK_TARGET_ENV_VAR}' content to Url: {e}"
+				),
+				Error::FailToSendRequest(e) => error!("Failed to send event to hook target: {e}"),
+				Error::RespondWithErrorStatusCode(e) =>
+					error!("WebHook target failed to process event: {e}"),
+			},
+		}
 	}
+}
+
+async fn send_event_to_webhook(client: &reqwest::Client, event: &Event) -> Result<(), Error> {
+	let env_var = std::env::var(WEBHOOK_TARGET_ENV_VAR).map_err(Error::EnvVarNotSet)?;
+	let target = Url::parse(&env_var).map_err(Error::InvalidEnvVar)?;
+	let res = client
+		.post(target.clone())
+		.json(&event)
+		.send()
+		.await
+		.map_err(Error::FailToSendRequest)?;
+	res.error_for_status().map_err(Error::RespondWithErrorStatusCode)?;
+
+	Ok(())
 }

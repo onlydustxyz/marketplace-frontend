@@ -80,6 +80,7 @@ impl EventListener for ContributorProjector {
 }
 
 #[cfg(test)]
+#[allow(clippy::too_many_arguments)]
 mod test {
 	use super::*;
 	use mockall::predicate::eq;
@@ -146,7 +147,6 @@ mod test {
 	}
 
 	#[rstest]
-	#[allow(clippy::too_many_arguments)]
 	#[case(contribution_applied_event(contributor_id()))]
 	#[case(contribution_assigned_event(contributor_id()))]
 	#[case(contribution_claimed_event(contributor_id()))]
