@@ -2,6 +2,7 @@ use std::{str::FromStr, sync::Arc};
 
 use super::list_contributor_applications;
 
+use chrono::{NaiveDate, NaiveDateTime};
 use crypto_bigint::U256;
 use marketplace_core::dto;
 use marketplace_domain::*;
@@ -11,6 +12,11 @@ use uuid::Uuid;
 const CONTRIBUTOR_ID_0: &str = "0x00";
 const CONTRIBUTOR_ID_1: &str = "0x0911";
 const CONTRIBUTOR_ID_2: &str = "0x0666";
+
+fn now() -> NaiveDateTime {
+	NaiveDate::from_ymd(2022, 9, 16).and_hms(14, 37, 11)
+}
+
 struct EmptyDatabase;
 impl ApplicationProjectionRepository for EmptyDatabase {
 	fn create(
@@ -107,16 +113,28 @@ impl ApplicationProjectionRepository for FilledDatabase {
 						Uuid::from_u128(2).into(),
 						0.into(),
 						contributor_id.clone(),
+						now(),
 					),
-					ApplicationProjection::new(Uuid::from_u128(3).into(), 1.into(), contributor_id),
+					ApplicationProjection::new(
+						Uuid::from_u128(3).into(),
+						1.into(),
+						contributor_id,
+						now(),
+					),
 				]),
 				CONTRIBUTOR_ID_0 => Ok(vec![
 					ApplicationProjection::new(
 						Uuid::from_u128(0).into(),
 						0.into(),
 						contributor_id.clone(),
+						now(),
 					),
-					ApplicationProjection::new(Uuid::from_u128(1).into(), 0.into(), contributor_id),
+					ApplicationProjection::new(
+						Uuid::from_u128(1).into(),
+						0.into(),
+						contributor_id,
+						now(),
+					),
 				]),
 				_ => Ok(vec![]),
 			},
@@ -125,21 +143,25 @@ impl ApplicationProjectionRepository for FilledDatabase {
 					Uuid::from_u128(2).into(),
 					0.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_1).unwrap(),
+					now(),
 				),
 				ApplicationProjection::new(
 					Uuid::from_u128(3).into(),
 					1.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_1).unwrap(),
+					now(),
 				),
 				ApplicationProjection::new(
 					Uuid::from_u128(0).into(),
 					0.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_0).unwrap(),
+					now(),
 				),
 				ApplicationProjection::new(
 					Uuid::from_u128(1).into(),
 					0.into(),
 					ContributorId::from_str(CONTRIBUTOR_ID_0).unwrap(),
+					now(),
 				),
 			]),
 		}

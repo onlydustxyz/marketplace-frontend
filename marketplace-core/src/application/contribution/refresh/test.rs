@@ -1,6 +1,6 @@
 use super::*;
 use async_trait::async_trait;
-use chrono::Utc;
+use chrono::{NaiveDate, NaiveDateTime, Utc};
 use dotenv::dotenv;
 use marketplace_infrastructure::database::Client as DatabaseClient;
 use marketplace_tests::init_pool;
@@ -86,10 +86,16 @@ fn project() -> ProjectProjection {
 }
 
 #[fixture]
+fn now() -> NaiveDateTime {
+	NaiveDate::from_ymd(2022, 9, 16).and_hms(14, 37, 11)
+}
+
+#[fixture]
 #[once]
 fn filled_database(
 	database: &Arc<DatabaseClient>,
 	contributor_id: ContributorId,
+	now: NaiveDateTime,
 ) -> Arc<DatabaseClient> {
 	// events for contribution #1
 	{
@@ -104,6 +110,7 @@ fn filled_database(
 			ContributionEvent::Applied {
 				id: contribution_id.clone(),
 				contributor_id: contributor_id.clone(),
+				applied_at: now,
 			},
 			ContributionEvent::Assigned {
 				id: contribution_id.clone(),
@@ -141,6 +148,7 @@ fn filled_database(
 				ContributionEvent::Applied {
 					id: contribution_id.clone(),
 					contributor_id: contributor_id.clone(),
+					applied_at: now,
 				},
 				ContributionEvent::Assigned {
 					id: contribution_id.clone(),

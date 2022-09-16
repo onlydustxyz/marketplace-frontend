@@ -76,6 +76,7 @@ impl Usecase for AcceptApplication {
 #[cfg(test)]
 mod test {
 	use super::*;
+	use chrono::{NaiveDate, NaiveDateTime};
 	use futures::FutureExt;
 	use mockall::predicate::eq;
 	use rstest::*;
@@ -106,6 +107,11 @@ mod test {
 		1.into()
 	}
 
+	#[fixture]
+	fn now() -> NaiveDateTime {
+		NaiveDate::from_ymd(2022, 9, 16).and_hms(14, 37, 11)
+	}
+
 	#[rstest]
 	#[tokio::test]
 	async fn accept_application_success(
@@ -113,13 +119,15 @@ mod test {
 		mut contribution_projection_repository: MockContributionProjectionRepository,
 		mut application_repository: MockApplicationProjectionRepository,
 		contribution_id: ContributionId,
+		now: NaiveDateTime,
 	) {
 		let application_id = Uuid::from_u128(12).into();
-		application_repository.expect_find().returning(|_| {
+		application_repository.expect_find().returning(move |_| {
 			Ok(Some(ApplicationProjection::new(
 				ApplicationId::default(),
 				ContributionId::default(),
 				ContributorId::from(42),
+				now,
 			)))
 		});
 
@@ -176,13 +184,15 @@ mod test {
 		onchain_contribution_service: MockOnchainContributionService,
 		mut contribution_projection_repository: MockContributionProjectionRepository,
 		mut application_repository: MockApplicationProjectionRepository,
+		now: NaiveDateTime,
 	) {
 		let application_id = Uuid::from_u128(12).into();
-		application_repository.expect_find().returning(|_| {
+		application_repository.expect_find().returning(move |_| {
 			Ok(Some(ApplicationProjection::new(
 				ApplicationId::default(),
 				ContributionId::default(),
 				ContributorId::from(42),
+				now,
 			)))
 		});
 

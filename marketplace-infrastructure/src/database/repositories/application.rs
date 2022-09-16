@@ -182,6 +182,7 @@ impl From<ApplicationProjection> for models::Application {
 			contribution_id: application.contribution_id().to_string(),
 			contributor_id: application.contributor_id().to_string(),
 			status: (*application.status()).into(),
+			applied_at: *application.applied_at(),
 		}
 	}
 }
@@ -192,6 +193,7 @@ impl From<models::Application> for ApplicationProjection {
 			application.id.into(),
 			application.contribution_id.parse().unwrap(),
 			ContributorId::from_str(application.contributor_id.as_str()).unwrap(),
+			application.applied_at,
 		);
 		match application.status {
 			Status::Pending => application_projection.into_pending(),
