@@ -82,7 +82,7 @@ impl Usecase for RefuseApplication {
 				}
 			})
 			.collect();
-		self.event_store.append(&contribution_id, storable_events)?;
+		self.event_store.append(contribution_id, storable_events)?;
 		// TODO: the usecase shouldn't know about the projectors, it should just push the events to
 		// a bus
 		for event in &events {
