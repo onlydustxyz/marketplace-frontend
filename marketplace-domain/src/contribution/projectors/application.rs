@@ -69,21 +69,22 @@ impl ApplicationProjector {
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		self.application_projection_repository
-			.for_a_contribution_set_one_to_a_status_and_all_others_to_another(
-				contribution_id,
-				contributor_id,
-				ApplicationStatus::Accepted,
-				ApplicationStatus::Refused,
-			)
-	}
-
-	fn on_unassigned(
-		&self,
-		contribution_id: &ContributionId,
-	) -> Result<(), ApplicationProjectionRepositoryError> {
-		self.application_projection_repository
-			.for_a_contribution_set_all_status(contribution_id, ApplicationStatus::Pending)
+		let previous_application = self
+			.application_projection_repository
+			.find_by_contribution_and_contributor(contribution_id, contributor_id)?;
+		match previous_application {
+			Some(application) =>
+				self.application_projection_repository.update(application.into_accepted()),
+			None => {
+				let application = ApplicationProjection::new(
+					self.uuid_generator.new_uuid().into(),
+					contribution_id.clone(),
+					contributor_id.clone(),
+				)
+				.into_accepted();
+				self.application_projection_repository.create(application)
+			},
+		}
 	}
 }
 
@@ -108,10 +109,9 @@ impl EventListener for ApplicationProjector {
 					id: contribution_id,
 					contributor_id,
 				} => self.on_assigned(contribution_id, contributor_id),
-				ContributionEvent::Unassigned {
-					id: contribution_id,
-				} => self.on_unassigned(contribution_id),
-				ContributionEvent::Created { .. } | ContributionEvent::Validated { .. } => return,
+				ContributionEvent::Unassigned { .. }
+				| ContributionEvent::Created { .. }
+				| ContributionEvent::Validated { .. } => return,
 			},
 			Event::Project(_) => return,
 		};
@@ -318,6 +318,85 @@ mod tests {
 					contributor_id,
 				},
 			))
+			.await;
+	}
+
+	#[rstest]
+	async fn contribution_assigned_updates_application(
+		mut application_projection_repository: MockApplicationProjectionRepository,
+		mut uuid_generator: MockUuidGenerator,
+		contribution_id: ContributionId,
+		contributor_id: ContributorId,
+	) {
+		let previous_application = ApplicationProjection::default();
+
+		let mut repository_sequence = Sequence::new();
+		uuid_generator.expect_new_uuid().never();
+		application_projection_repository
+			.expect_find_by_contribution_and_contributor()
+			.with(eq(contribution_id.clone()), eq(contributor_id.clone()))
+			.once()
+			.in_sequence(&mut repository_sequence)
+			.returning(move |_, _| Ok(Some(previous_application.clone())));
+		application_projection_repository
+			.expect_update()
+			.withf(|application| &ApplicationStatus::Accepted == application.status())
+			.once()
+			.in_sequence(&mut repository_sequence)
+			.returning(|_| Ok(()));
+
+		let projector = ApplicationProjector::new(
+			Arc::new(application_projection_repository),
+			Arc::new(uuid_generator),
+		);
+
+		projector
+			.on_event(&Event::Contribution(ContributionEvent::Assigned {
+				id: contribution_id,
+				contributor_id,
+			}))
+			.await;
+	}
+
+	#[rstest]
+	async fn contribution_assigned_creates_an_application(
+		mut application_projection_repository: MockApplicationProjectionRepository,
+		mut uuid_generator: MockUuidGenerator,
+		contribution_id: ContributionId,
+		application_id: ApplicationId,
+		contributor_id: ContributorId,
+	) {
+		let mut repository_sequence = Sequence::new();
+		uuid_generator.expect_new_uuid().returning(move || application_id.into());
+		application_projection_repository
+			.expect_find_by_contribution_and_contributor()
+			.with(eq(contribution_id.clone()), eq(contributor_id.clone()))
+			.once()
+			.in_sequence(&mut repository_sequence)
+			.returning(move |_, _| Ok(None));
+		application_projection_repository.expect_update().never();
+		application_projection_repository
+			.expect_create()
+			.with(eq(ApplicationProjection::new(
+				application_id,
+				contribution_id.clone(),
+				contributor_id.clone(),
+			)
+			.into_accepted()))
+			.once()
+			.in_sequence(&mut repository_sequence)
+			.returning(|_| Ok(()));
+
+		let projector = ApplicationProjector::new(
+			Arc::new(application_projection_repository),
+			Arc::new(uuid_generator),
+		);
+
+		projector
+			.on_event(&Event::Contribution(ContributionEvent::Assigned {
+				id: contribution_id,
+				contributor_id,
+			}))
 			.await;
 	}
 }
