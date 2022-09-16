@@ -99,6 +99,7 @@ async fn main() {
 			routes::validate_contribution,
 			routes::unassign_contributor,
 			routes::apply_to_contribution,
+			routes::refuse_contributor_application,
 			routes::list_applications,
 			routes::refresh_applications,
 			routes::accept_application,
@@ -161,6 +162,13 @@ fn inject_app(
 			database.clone(),
 		))
 		.manage(ApplyToContribution::new_usecase_boxed(
+			contribution_repository.clone(),
+			database.clone(),
+			application_projector.clone(),
+			contributor_projector.clone(),
+			uuid_generator.clone(),
+		))
+		.manage(RefuseApplication::new_usecase_boxed(
 			contribution_repository,
 			database.clone(),
 			application_projector.clone(),

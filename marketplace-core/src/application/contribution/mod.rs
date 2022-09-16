@@ -23,6 +23,9 @@ pub use validate::{
 mod apply;
 pub use apply::{ApplyToContribution, Usecase as ApplyToContributionUsecase};
 
+mod refuse_application;
+pub use refuse_application::{RefuseApplication, Usecase as RefuseApplicationUsecase};
+
 mod accept_application;
 pub use accept_application::{AcceptApplication, Usecase as AcceptApplicationUsecase};
 

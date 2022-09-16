@@ -32,7 +32,9 @@ async fn e2e_tests() {
 	// Find an available contribution and apply to it
 	let contribution = projects::find_open_contribution(&all_projects)
 		.expect("No open contribution to perform the test, please change the data dump");
-	contributions::apply(contribution.id, String::from("0x29")).await;
+	contributions::apply(contribution.id.clone(), String::from("0x29")).await;
+
+	contributions::refuse_application(contribution.id, String::from("0x29")).await;
 }
 
 async fn refresh_all() {
