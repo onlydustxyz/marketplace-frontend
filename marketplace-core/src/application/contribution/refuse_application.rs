@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
+use chrono::Utc;
 use marketplace_domain::{Error as DomainError, *};
 
 // Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be
@@ -74,6 +75,7 @@ impl Usecase for RefuseApplication {
 					StorableEvent {
 						deduplication_id: self.uuid_generator.new_uuid().to_string(),
 						event: contribution_event.clone(),
+						timestamp: Utc::now().naive_utc(),
 					}
 				} else {
 					panic!("Contribution event expected");
