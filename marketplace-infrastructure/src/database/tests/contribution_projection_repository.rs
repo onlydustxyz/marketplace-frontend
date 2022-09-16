@@ -36,3 +36,40 @@ fn store_and_find() {
 			.unwrap();
 	assert_eq!(found_contribution, Some(contribution2));
 }
+
+#[test]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
+fn store_and_update_gate() {
+	let new_gate = 5;
+
+	let client = Client::new(init_pool());
+
+	let project = init_project(&client);
+
+	let contribution = ContributionProjection {
+		id: 1.into(),
+		project_id: project.id,
+		..Default::default()
+	};
+	<Client as ContributionProjectionRepository>::create(&client, contribution.clone()).unwrap();
+	<Client as ContributionProjectionRepository>::update_gate(
+		&client,
+		contribution.id.clone(),
+		new_gate,
+	)
+	.unwrap();
+
+	let found_contribution =
+		<Client as ContributionProjectionRepository>::find_by_id(&client, &contribution.id)
+			.unwrap();
+	assert_eq!(
+		found_contribution,
+		Some(ContributionProjection {
+			gate: new_gate,
+			..contribution
+		})
+	);
+}

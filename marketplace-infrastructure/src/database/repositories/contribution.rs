@@ -75,6 +75,22 @@ impl ContributionProjectionRepository for Client {
 		Ok(())
 	}
 
+	fn update_gate(
+		&self,
+		contribution_id: ContributionId,
+		gate: u8,
+	) -> Result<(), ContributionProjectionRepositoryError> {
+		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
+
+		diesel::update(dsl::contributions)
+			.filter(dsl::id.eq(contribution_id.to_string()))
+			.set(dsl::gate.eq(gate as i32))
+			.execute(&*connection)
+			.map_err(DatabaseError::from)?;
+
+		Ok(())
+	}
+
 	fn list_by_project(
 		&self,
 		project_id: &GithubProjectId,

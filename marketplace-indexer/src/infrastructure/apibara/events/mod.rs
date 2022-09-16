@@ -65,6 +65,8 @@ impl TryFrom<(ApibaraEvent, &BlockHeader)> for ObservedEvent {
 						Ok(contribution::Unassigned::to_domain_event(data)?),
 					_ if selector == contribution::Validated::selector() =>
 						Ok(contribution::Validated::to_domain_event(data)?),
+					_ if selector == contribution::GateChanged::selector() =>
+						Ok(contribution::GateChanged::to_domain_event(data)?),
 					_ if selector == project::MemberAdded::selector() =>
 						Ok(project::MemberAdded::to_domain_event(data)?),
 					_ if selector == project::MemberRemoved::selector() =>
@@ -178,6 +180,7 @@ mod test {
 	#[case(selector::<contribution::Claimed>(), "ContributionClaimed")]
 	#[case(selector::<contribution::Unassigned>(), "ContributionUnassigned")]
 	#[case(selector::<contribution::Validated>(), "ContributionValidated")]
+	#[case(selector::<contribution::GateChanged>(), "ContributionGateChanged")]
 	#[case(selector::<project::MemberAdded>(), "ProjectMemberAdded")]
 	#[case(selector::<project::MemberRemoved>(), "ProjectMemberRemoved")]
 	#[case(selector::<project::LeadContributorAdded>(), "ProjectLeadContributorAdded")]
@@ -212,6 +215,7 @@ mod test {
 						ContributionEvent::Claimed { .. } => "Claimed",
 						ContributionEvent::Unassigned { .. } => "Unassigned",
 						ContributionEvent::Validated { .. } => "Validated",
+						ContributionEvent::GateChanged { .. } => "GateChanged",
 					},
 			DomainEvent::Project(event) =>
 				String::from("Project")

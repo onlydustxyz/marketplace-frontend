@@ -117,7 +117,8 @@ impl EventListener for ApplicationProjector {
 				} => self.on_assigned(contribution_id, contributor_id),
 				ContributionEvent::Unassigned { .. }
 				| ContributionEvent::Created { .. }
-				| ContributionEvent::Validated { .. } => return,
+				| ContributionEvent::Validated { .. }
+				| ContributionEvent::GateChanged { .. } => return,
 			},
 			Event::Project(_) => return,
 		};

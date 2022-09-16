@@ -145,6 +145,10 @@ impl EventSourcable for Contribution {
 					status: Status::Completed,
 					..self
 				},
+				ContributionEvent::GateChanged { id: _, gate } => Self {
+					gate: *gate,
+					..self
+				},
 			},
 			Event::Project(_) => self,
 		}
