@@ -40,6 +40,18 @@ pub async fn put(url: String, body: Option<serde_json::Value>) -> Response {
 	response.unwrap()
 }
 
+pub async fn delete(url: String) -> Response {
+	let client = reqwest::Client::new();
+	let mut builder = client
+		.delete(url)
+		.header("Api-Key", api_key());
+
+	let response = builder.send().await;
+
+	assert!(response.is_ok(), "{}", response.err().unwrap());
+	response.unwrap()
+}
+
 pub async fn get(url: String) -> Response {
 	let response = reqwest::get(url).await;
 
