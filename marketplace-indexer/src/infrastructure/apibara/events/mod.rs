@@ -207,6 +207,7 @@ mod test {
 					+ match event {
 						ContributionEvent::Created { .. } => "Created",
 						ContributionEvent::Applied { .. } => "Applied",
+						ContributionEvent::ApplicationRefused { .. } => "ApplicationRefused",
 						ContributionEvent::Assigned { .. } => "Assigned",
 						ContributionEvent::Claimed { .. } => "Claimed",
 						ContributionEvent::Unassigned { .. } => "Unassigned",
