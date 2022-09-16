@@ -58,7 +58,12 @@ pub fn init_pool() -> Pool {
 		pool.get().unwrap().begin_test_transaction().unwrap();
 		pool
 	} else {
-		Pool::new(manager).expect("Unable to create database connection pool")
+		let pool_max_size =
+			std::env::var("PG_POOL_MAX_SIZE").unwrap_or_else(|_| String::from("20"));
+		Pool::builder()
+			.max_size(pool_max_size.parse().expect("PG_POOL_MAX_SIZE is not a valid number"))
+			.build(manager)
+			.expect("Unable to create database connection pool")
 	}
 }
 
