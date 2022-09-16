@@ -75,13 +75,13 @@ impl Contribution {
 		&self.status
 	}
 
-	fn add_applicant(self, contributor_id: &ContributorId) -> Self {
+	fn with_applicant(self, contributor_id: &ContributorId) -> Self {
 		let mut applicants = self.applicants;
 		applicants.push(contributor_id.clone());
 		Self { applicants, ..self }
 	}
 
-	fn remove_applicant(self, contributor_id: &ContributorId) -> Self {
+	fn without_applicant(self, contributor_id: &ContributorId) -> Self {
 		let mut applicants = self.applicants;
 		if let Some(index) =
 			applicants.iter().rposition(|applicant_id| applicant_id == contributor_id)
@@ -117,11 +117,11 @@ impl EventSourcable for Contribution {
 				ContributionEvent::Applied {
 					id: _,
 					contributor_id,
-				} => self.add_applicant(contributor_id),
+				} => self.with_applicant(contributor_id),
 				ContributionEvent::ApplicationRefused {
 					id: _,
 					contributor_id,
-				} => self.remove_applicant(contributor_id),
+				} => self.without_applicant(contributor_id),
 				ContributionEvent::Assigned {
 					id: _,
 					contributor_id,
@@ -132,7 +132,7 @@ impl EventSourcable for Contribution {
 				} => Self {
 					status: Status::Assigned,
 					contributor_id: Some(contributor_id.clone()),
-					..self.remove_applicant(contributor_id)
+					..self.without_applicant(contributor_id)
 				},
 				ContributionEvent::Unassigned { id: _ } => Self {
 					status: Status::Open,

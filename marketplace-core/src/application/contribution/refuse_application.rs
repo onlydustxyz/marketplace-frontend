@@ -19,7 +19,6 @@ pub struct RefuseApplication {
 	contribution_repository: AggregateRootRepository<Contribution>,
 	event_store: Arc<dyn EventStore<Contribution>>,
 	application_projector: Arc<ApplicationProjector>,
-	contributor_projector: Arc<ContributorProjector>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 }
 
@@ -28,14 +27,12 @@ impl RefuseApplication {
 		contribution_repository: AggregateRootRepository<Contribution>,
 		event_store: Arc<dyn EventStore<Contribution>>,
 		application_projector: Arc<ApplicationProjector>,
-		contributor_projector: Arc<ContributorProjector>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Self {
 		Self {
 			contribution_repository,
 			event_store,
 			application_projector,
-			contributor_projector,
 			uuid_generator,
 		}
 	}
@@ -46,14 +43,12 @@ impl RefuseApplication {
 		contribution_repository: AggregateRootRepository<Contribution>,
 		event_store: Arc<dyn EventStore<Contribution>>,
 		application_projector: Arc<ApplicationProjector>,
-		contributor_projector: Arc<ContributorProjector>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Box<dyn Usecase> {
 		Box::new(Self::new(
 			contribution_repository,
 			event_store,
 			application_projector,
-			contributor_projector,
 			uuid_generator,
 		))
 	}
@@ -87,7 +82,6 @@ impl Usecase for RefuseApplication {
 		// a bus
 		for event in &events {
 			self.application_projector.on_event(event).await;
-			self.contributor_projector.on_event(event).await;
 		}
 
 		Ok(())
