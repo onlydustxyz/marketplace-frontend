@@ -1,4 +1,5 @@
 use crate::*;
+use chrono::Utc;
 use crypto_bigint::U256;
 use marketplace_wrappers::HexStringWrapper;
 use serde::{Deserialize, Serialize};
@@ -48,6 +49,7 @@ impl Contribution {
 		let applied_event = Event::Contribution(ContributionEvent::Applied {
 			id: self.id,
 			contributor_id: contributor_id.clone(),
+			applied_at: Utc::now().naive_utc(),
 		});
 
 		Ok(vec![applied_event])
@@ -117,6 +119,7 @@ impl EventSourcable for Contribution {
 				ContributionEvent::Applied {
 					id: _,
 					contributor_id,
+					applied_at: _,
 				} => self.with_applicant(contributor_id),
 				ContributionEvent::ApplicationRefused {
 					id: _,

@@ -59,6 +59,7 @@ impl EventListener for ContributorProjector {
 				ContributionEvent::Applied {
 					id: _,
 					contributor_id,
+					applied_at: _,
 				}
 				| ContributionEvent::Claimed {
 					id: _,
@@ -83,6 +84,7 @@ impl EventListener for ContributorProjector {
 #[allow(clippy::too_many_arguments)]
 mod test {
 	use super::*;
+	use chrono::NaiveDate;
 	use mockall::predicate::eq;
 	use rstest::*;
 	use std::sync::Arc;
@@ -122,6 +124,7 @@ mod test {
 		Event::Contribution(ContributionEvent::Applied {
 			id: Default::default(),
 			contributor_id,
+			applied_at: NaiveDate::from_ymd(2022, 9, 16).and_hms(14, 37, 11),
 		})
 	}
 

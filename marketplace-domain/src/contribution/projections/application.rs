@@ -1,6 +1,7 @@
 use std::fmt::Display;
 
 use crate::{Contribution, ContributionId, ContributorId, Projection};
+use chrono::NaiveDateTime;
 use marketplace_wrappers::UuidWrapper;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -36,6 +37,7 @@ pub struct Application {
 	contribution_id: ContributionId,
 	contributor_id: ContributorId,
 	status: Status,
+	applied_at: NaiveDateTime,
 }
 
 impl Projection for Application {
@@ -43,12 +45,18 @@ impl Projection for Application {
 }
 
 impl Application {
-	pub fn new(id: Id, contribution_id: ContributionId, contributor_id: ContributorId) -> Self {
+	pub fn new(
+		id: Id,
+		contribution_id: ContributionId,
+		contributor_id: ContributorId,
+		applied_at: NaiveDateTime,
+	) -> Self {
 		Self {
 			id,
 			contribution_id,
 			contributor_id,
 			status: Status::Pending,
+			applied_at,
 		}
 	}
 
@@ -68,12 +76,17 @@ impl Application {
 		&self.status
 	}
 
+	pub fn applied_at(&self) -> &NaiveDateTime {
+		&self.applied_at
+	}
+
 	pub fn into_pending(self) -> Self {
 		Self {
 			id: self.id,
 			contribution_id: self.contribution_id,
 			contributor_id: self.contributor_id,
 			status: Status::Pending,
+			applied_at: self.applied_at,
 		}
 	}
 
@@ -83,6 +96,7 @@ impl Application {
 			contribution_id: self.contribution_id,
 			contributor_id: self.contributor_id,
 			status: Status::Accepted,
+			applied_at: self.applied_at,
 		}
 	}
 
@@ -92,6 +106,7 @@ impl Application {
 			contribution_id: self.contribution_id,
 			contributor_id: self.contributor_id,
 			status: Status::Refused,
+			applied_at: self.applied_at,
 		}
 	}
 }
@@ -103,12 +118,14 @@ impl Application {
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
 		status: Status,
+		applied_at: NaiveDateTime,
 	) -> Self {
 		Self {
 			id,
 			contribution_id,
 			contributor_id,
 			status,
+			applied_at,
 		}
 	}
 }

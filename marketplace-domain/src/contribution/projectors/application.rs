@@ -1,5 +1,6 @@
 use crate::*;
 use async_trait::async_trait;
+use chrono::{NaiveDateTime, Utc};
 use log::error;
 use std::sync::Arc;
 
@@ -23,6 +24,7 @@ impl ApplicationProjector {
 		&self,
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
+		applied_at: &NaiveDateTime,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
 		let previous_application = self
 			.application_projection_repository
@@ -35,6 +37,7 @@ impl ApplicationProjector {
 					self.uuid_generator.new_uuid().into(),
 					contribution_id.clone(),
 					contributor_id.clone(),
+					applied_at.clone(),
 				);
 				self.application_projection_repository.create(application)
 			},
@@ -57,6 +60,7 @@ impl ApplicationProjector {
 					self.uuid_generator.new_uuid().into(),
 					contribution_id.clone(),
 					contributor_id.clone(),
+					Utc::now().naive_utc(),
 				)
 				.into_refused();
 				self.application_projection_repository.create(application)
@@ -80,6 +84,7 @@ impl ApplicationProjector {
 					self.uuid_generator.new_uuid().into(),
 					contribution_id.clone(),
 					contributor_id.clone(),
+					Utc::now().naive_utc(),
 				)
 				.into_accepted();
 				self.application_projection_repository.create(application)
@@ -96,7 +101,8 @@ impl EventListener for ApplicationProjector {
 				ContributionEvent::Applied {
 					id: contribution_id,
 					contributor_id,
-				} => self.on_applied(contribution_id, contributor_id),
+					applied_at,
+				} => self.on_applied(contribution_id, contributor_id, applied_at),
 				ContributionEvent::ApplicationRefused {
 					id: contribution_id,
 					contributor_id,
@@ -127,6 +133,7 @@ mod tests {
 	use std::str::FromStr;
 
 	use super::*;
+	use chrono::NaiveDate;
 	use mockall::{predicate::eq, Sequence};
 	use rstest::{fixture, rstest};
 
@@ -160,12 +167,18 @@ mod tests {
 		ContributorId::from_str("0x456").unwrap()
 	}
 
+	#[fixture]
+	fn now() -> NaiveDateTime {
+		NaiveDate::from_ymd(2022, 9, 16).and_hms(14, 37, 11)
+	}
+
 	#[rstest]
 	async fn contribution_applied_with_same_contributor_updates_application(
 		mut application_projection_repository: MockApplicationProjectionRepository,
 		mut uuid_generator: MockUuidGenerator,
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
+		now: NaiveDateTime,
 	) {
 		let previous_application = ApplicationProjection::default();
 
@@ -193,6 +206,7 @@ mod tests {
 			.on_event(&Event::Contribution(ContributionEvent::Applied {
 				id: contribution_id,
 				contributor_id,
+				applied_at: now,
 			}))
 			.await;
 	}
@@ -204,6 +218,7 @@ mod tests {
 		contribution_id: ContributionId,
 		application_id: ApplicationId,
 		contributor_id: ContributorId,
+		now: NaiveDateTime,
 	) {
 		let mut repository_sequence = Sequence::new();
 		uuid_generator.expect_new_uuid().returning(move || application_id.into());
@@ -220,6 +235,7 @@ mod tests {
 				application_id,
 				contribution_id.clone(),
 				contributor_id.clone(),
+				now.clone(),
 			)))
 			.once()
 			.in_sequence(&mut repository_sequence)
@@ -234,6 +250,7 @@ mod tests {
 			.on_event(&Event::Contribution(ContributionEvent::Applied {
 				id: contribution_id,
 				contributor_id,
+				applied_at: now,
 			}))
 			.await;
 	}
@@ -296,12 +313,7 @@ mod tests {
 		application_projection_repository.expect_update().never();
 		application_projection_repository
 			.expect_create()
-			.with(eq(ApplicationProjection::new(
-				application_id,
-				contribution_id.clone(),
-				contributor_id.clone(),
-			)
-			.into_refused()))
+			.withf(|application| &ApplicationStatus::Refused == application.status())
 			.once()
 			.in_sequence(&mut repository_sequence)
 			.returning(|_| Ok(()));
@@ -374,15 +386,11 @@ mod tests {
 			.once()
 			.in_sequence(&mut repository_sequence)
 			.returning(move |_, _| Ok(None));
+
 		application_projection_repository.expect_update().never();
 		application_projection_repository
 			.expect_create()
-			.with(eq(ApplicationProjection::new(
-				application_id,
-				contribution_id.clone(),
-				contributor_id.clone(),
-			)
-			.into_accepted()))
+			.withf(|application| &ApplicationStatus::Accepted == application.status())
 			.once()
 			.in_sequence(&mut repository_sequence)
 			.returning(|_| Ok(()));

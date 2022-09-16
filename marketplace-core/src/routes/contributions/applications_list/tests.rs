@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use super::list_applications;
+use chrono::NaiveDate;
 use marketplace_core::dto;
 use marketplace_domain::{
 	ApplicationId, ApplicationProjection, ApplicationProjectionRepository,
@@ -93,8 +94,18 @@ impl ApplicationProjectionRepository for FilledDatabase {
 		_contributor_id: Option<ContributorId>,
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		Ok(vec![
-			ApplicationProjection::new(Uuid::from_u128(0).into(), 0.into(), 0u128.into()),
-			ApplicationProjection::new(Uuid::from_u128(1).into(), 0.into(), 1u128.into()),
+			ApplicationProjection::new(
+				Uuid::from_u128(0).into(),
+				0.into(),
+				0u128.into(),
+				NaiveDate::from_ymd(2022, 9, 16).and_hms(14, 37, 11),
+			),
+			ApplicationProjection::new(
+				Uuid::from_u128(1).into(),
+				0.into(),
+				1u128.into(),
+				NaiveDate::from_ymd(2022, 9, 16).and_hms(15, 38, 12),
+			),
 		])
 	}
 

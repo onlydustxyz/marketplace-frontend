@@ -1,5 +1,6 @@
 use std::io::Write;
 
+use chrono::NaiveDateTime;
 use marketplace_domain::ApplicationStatus;
 
 use crate::database::schema::*;
@@ -18,6 +19,7 @@ pub struct Application {
 	pub contribution_id: String,
 	pub contributor_id: String,
 	pub status: Status,
+	pub applied_at: NaiveDateTime,
 }
 
 #[derive(Debug, Copy, Clone, AsExpression, FromSqlRow)]

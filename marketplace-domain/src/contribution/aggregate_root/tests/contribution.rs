@@ -1,5 +1,6 @@
 use super::super::*;
 use assert_matches::assert_matches;
+use chrono::NaiveDate;
 use rstest::*;
 
 impl Contribution {
@@ -45,6 +46,7 @@ fn contribution_applied_event(contributor_id: ContributorId) -> Event {
 	Event::Contribution(ContributionEvent::Applied {
 		id: Default::default(),
 		contributor_id,
+		applied_at: NaiveDate::from_ymd(2022, 9, 16).and_hms(14, 37, 11),
 	})
 }
 
@@ -172,7 +174,8 @@ fn apply_to_contribution_emits_an_event(contribution_created_event: Event) {
 		emitted_events.first().unwrap(),
 		Event::Contribution(ContributionEvent::Applied {
 			contributor_id: _,
-			id: _
+			id: _,
+			applied_at: _
 		})
 	);
 }

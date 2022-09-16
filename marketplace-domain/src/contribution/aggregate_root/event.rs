@@ -1,6 +1,7 @@
 use std::fmt::Display;
 
 use crate::*;
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -14,6 +15,7 @@ pub enum Event {
 	Applied {
 		id: ContributionId,
 		contributor_id: ContributorId,
+		applied_at: NaiveDateTime,
 	},
 	ApplicationRefused {
 		id: ContributionId,
