@@ -1,6 +1,4 @@
-// @generated automatically by Diesel CLI.
-
-diesel::table! {
+table! {
     applications (id) {
         id -> Uuid,
         contribution_id -> Text,
@@ -10,7 +8,7 @@ diesel::table! {
     }
 }
 
-diesel::table! {
+table! {
     contact_information (id) {
         id -> Uuid,
         contributor_id -> Varchar,
@@ -18,7 +16,7 @@ diesel::table! {
     }
 }
 
-diesel::table! {
+table! {
     contributions (id) {
         id -> Text,
         project_id -> Text,
@@ -38,7 +36,7 @@ diesel::table! {
     }
 }
 
-diesel::table! {
+table! {
     contributors (id) {
         id -> Text,
         account -> Text,
@@ -47,24 +45,26 @@ diesel::table! {
     }
 }
 
-diesel::table! {
+table! {
     event_deduplications (deduplication_id) {
         deduplication_id -> Text,
         event_index -> Int4,
     }
 }
 
-diesel::table! {
+table! {
     events (index) {
         index -> Int4,
         timestamp -> Timestamp,
         aggregate_name -> Varchar,
         aggregate_id -> Varchar,
         payload -> Jsonb,
+        new_playload -> Nullable<Jsonb>,
+        payload_backup -> Nullable<Jsonb>,
     }
 }
 
-diesel::table! {
+table! {
     project_members (project_id, contributor_account) {
         project_id -> Text,
         contributor_account -> Text,
@@ -72,7 +72,7 @@ diesel::table! {
     }
 }
 
-diesel::table! {
+table! {
     projects (id) {
         id -> Varchar,
         owner -> Varchar,
@@ -83,7 +83,7 @@ diesel::table! {
     }
 }
 
-diesel::allow_tables_to_appear_in_same_query!(
+allow_tables_to_appear_in_same_query!(
     applications,
     contact_information,
     contributions,
