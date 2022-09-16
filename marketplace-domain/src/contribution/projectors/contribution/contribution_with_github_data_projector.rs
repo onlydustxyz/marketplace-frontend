@@ -89,6 +89,12 @@ impl WithGithubDataProjector {
 			.update_status(id.clone(), ContributionStatus::Completed)
 			.map_err_into()
 	}
+
+	fn on_gate_changed(&self, id: &ContributionId, gate: u8) -> Result<(), Error> {
+		self.contribution_projection_repository
+			.update_gate(id.clone(), gate)
+			.map_err_into()
+	}
 }
 
 #[async_trait]
@@ -108,6 +114,7 @@ impl EventListener for WithGithubDataProjector {
 					self.on_assign(id, contributor_id),
 				ContributionEvent::Unassigned { id } => self.on_unassign(id),
 				ContributionEvent::Validated { id } => self.on_validate(id),
+				ContributionEvent::GateChanged { id, gate } => self.on_gate_changed(id, *gate),
 				ContributionEvent::Applied { .. }
 				| ContributionEvent::ApplicationRefused { .. } => return,
 			},

@@ -13,4 +13,7 @@ pub use validated::Validated;
 mod claimed;
 pub use claimed::Claimed;
 
+mod gate_changed;
+pub use gate_changed::GateChanged;
+
 use super::{EventTranslator, FromEventError, StarknetTopics, Topics};

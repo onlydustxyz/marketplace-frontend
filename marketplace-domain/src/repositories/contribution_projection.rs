@@ -36,6 +36,8 @@ pub trait Repository: Send + Sync {
 		status: ContributionStatus,
 	) -> Result<(), Error>;
 
+	fn update_gate(&self, contribution_id: ContributionId, gate: u8) -> Result<(), Error>;
+
 	fn list_by_project(
 		&self,
 		project_id: &GithubProjectId,

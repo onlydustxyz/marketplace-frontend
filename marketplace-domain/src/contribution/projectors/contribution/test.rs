@@ -116,6 +116,19 @@ fn contribution_validated_event(contribution_id: ContributionId) -> Contribution
 	}
 }
 
+#[fixture]
+fn new_gate() -> u8 {
+	5
+}
+
+#[fixture]
+fn gate_changed_event(contribution_id: ContributionId, new_gate: u8) -> ContributionEvent {
+	ContributionEvent::GateChanged {
+		id: contribution_id,
+		gate: new_gate,
+	}
+}
+
 #[rstest]
 async fn on_contribution_created_event(
 	mut contribution_projection_repository: MockContributionProjectionRepository,
@@ -207,4 +220,25 @@ async fn on_contribution_validated_event(
 	);
 
 	projector.on_event(&Event::Contribution(contribution_validated_event)).await;
+}
+
+#[rstest]
+async fn on_gate_changed_event(
+	mut contribution_projection_repository: MockContributionProjectionRepository,
+	github_client: MockGithubClient,
+	contribution_id: ContributionId,
+	new_gate: u8,
+	gate_changed_event: ContributionEvent,
+) {
+	contribution_projection_repository
+		.expect_update_gate()
+		.with(eq(contribution_id), eq(new_gate))
+		.returning(|_, _| Ok(()));
+
+	let projector = ContributionProjector::new(
+		Arc::new(contribution_projection_repository),
+		Arc::new(github_client),
+	);
+
+	projector.on_event(&Event::Contribution(gate_changed_event)).await;
 }

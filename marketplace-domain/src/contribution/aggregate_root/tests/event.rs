@@ -139,3 +139,21 @@ fn contribution_validated_event_display_as_json(contribution_id: ContributionId)
 		serde_json::from_str::<Value>(&event.to_string()).unwrap()
 	);
 }
+
+#[rstest]
+fn gate_changed_event_display_as_json(contribution_id: ContributionId) {
+	let event = ContributionEvent::GateChanged {
+		id: contribution_id.clone(),
+		gate: 5,
+	};
+
+	assert_json_eq!(
+		json!({
+			"GateChanged": {
+				"id": contribution_id,
+				"gate": 5
+			}
+		}),
+		serde_json::from_str::<Value>(&event.to_string()).unwrap()
+	);
+}

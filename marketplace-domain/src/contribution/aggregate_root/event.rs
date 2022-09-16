@@ -35,6 +35,10 @@ pub enum Event {
 	Validated {
 		id: ContributionId,
 	},
+	GateChanged {
+		id: ContributionId,
+		gate: u8,
+	},
 }
 
 impl Display for Event {
