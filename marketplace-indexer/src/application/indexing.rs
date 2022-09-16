@@ -2,6 +2,7 @@ use crate::domain::*;
 use futures::future::try_join_all;
 use std::sync::Arc;
 use thiserror::Error;
+use tokio::task::JoinError;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -9,6 +10,8 @@ pub enum Error {
 	Repository(#[from] IndexerRepositoryError),
 	#[error(transparent)]
 	Service(#[from] IndexingServiceError),
+	#[error(transparent)]
+	Join(#[from] JoinError),
 }
 
 pub struct Usecase {
@@ -33,12 +36,16 @@ impl Usecase {
 	pub async fn run_all_indexers(&self) -> Result<(), Error> {
 		let indexers = self.indexer_repository.list().await?;
 
-		try_join_all(
-			indexers.into_iter().map(|indexer| {
-				self.indexing_service.fetch_new_events(indexer, self.observer.clone())
-			}),
-		)
-		.await?;
+		let tasks = indexers.into_iter().map(move |indexer| {
+			let indexing_service = self.indexing_service.clone();
+			let observer = self.observer.clone();
+			tokio::task::spawn(async move {
+				let result = indexing_service.fetch_new_events(indexer, observer).await;
+				result
+			})
+		});
+
+		try_join_all(tasks).await?.into_iter().collect::<Result<(), _>>()?;
 
 		Ok(())
 	}
@@ -91,6 +98,7 @@ mod test {
 	}
 
 	#[rstest]
+	#[tokio::test]
 	async fn run_all_indexers(
 		mut indexer_repository: MockIndexerRepository,
 		mut indexing_service: MockIndexingService,

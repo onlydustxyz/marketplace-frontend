@@ -20,7 +20,7 @@ type Result<T> = std::result::Result<T, Error>;
 
 #[cfg_attr(test, automock)]
 #[async_trait]
-pub trait Service {
+pub trait Service: Send + Sync {
 	async fn fetch_new_events(
 		&self,
 		indexer: Indexer,
