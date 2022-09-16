@@ -41,7 +41,6 @@ fn get_root_logger() -> Logger {
 		drain
 			.filter(|record| {
 				!(record.level() == Level::Error
-					&& record.module() == "rocket::server"
 					&& record.msg().to_string().starts_with("No matching routes for"))
 			})
 			.fuse(),
