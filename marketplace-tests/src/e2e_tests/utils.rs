@@ -42,9 +42,7 @@ pub async fn put(url: String, body: Option<serde_json::Value>) -> Response {
 
 pub async fn delete(url: String) -> Response {
 	let client = reqwest::Client::new();
-	let mut builder = client
-		.delete(url)
-		.header("Api-Key", api_key());
+	let mut builder = client.delete(url).header("Api-Key", api_key());
 
 	let response = builder.send().await;
 
