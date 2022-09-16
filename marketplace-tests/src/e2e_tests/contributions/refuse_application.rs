@@ -1,6 +1,5 @@
 use crate::e2e_tests::utils::*;
 use reqwest::StatusCode;
-use serde_json::json;
 
 pub async fn refuse_application(contribution_id: String, contributor_id: String) {
 	println!(
