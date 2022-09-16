@@ -21,9 +21,15 @@ impl Storable for ProjectEvent {
 }
 
 #[fixture]
-fn database() -> Arc<DatabaseClient> {
+#[once]
+fn unique_database() -> Arc<DatabaseClient> {
 	dotenv().ok();
 	Arc::new(DatabaseClient::new(init_pool()))
+}
+
+#[fixture]
+fn database(unique_database: &Arc<DatabaseClient>) -> Arc<DatabaseClient> {
+	unique_database.clone()
 }
 
 #[fixture]
