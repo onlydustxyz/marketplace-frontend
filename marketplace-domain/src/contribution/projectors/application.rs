@@ -37,7 +37,7 @@ impl ApplicationProjector {
 					self.uuid_generator.new_uuid().into(),
 					contribution_id.clone(),
 					contributor_id.clone(),
-					applied_at.clone(),
+					*applied_at,
 				);
 				self.application_projection_repository.create(application)
 			},
