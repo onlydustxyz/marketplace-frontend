@@ -1,10 +1,6 @@
+use super::{EventTranslator, FromEventError, StarknetTopics, Topics};
 use marketplace_domain::{ContributionEvent, ContributorId, Event, HexPrefixedString};
 use starknet::core::{types::FieldElement, utils::get_selector_from_name};
-
-use crate::infrastructure::apibara::events::{
-	topics::{StarknetTopics, Topics},
-	EventTranslator, FromEventError,
-};
 
 pub struct Claimed;
 
@@ -27,30 +23,23 @@ impl EventTranslator for Claimed {
 #[cfg(test)]
 mod test {
 	use super::*;
-	use crate::infrastructure::apibara::proto::TopicValue;
 	use rstest::*;
 
 	#[fixture]
 	fn apibara_event_data() -> Topics {
 		vec![
-			TopicValue {
-				value: vec![
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 12,
-				],
-			},
-			TopicValue {
-				value: vec![
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 24,
-				],
-			},
-			TopicValue {
-				value: vec![
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0,
-				],
-			},
+			vec![
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 12,
+			],
+			vec![
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 24,
+			],
+			vec![
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0,
+			],
 		]
 		.into()
 	}

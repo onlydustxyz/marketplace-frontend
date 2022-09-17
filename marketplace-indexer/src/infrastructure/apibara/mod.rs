@@ -5,22 +5,20 @@ use proto as apibara;
 mod error;
 use error::Error;
 
-mod events;
-mod indexer_repository;
-mod indexing_service;
+mod starknet;
 
-use apibara::indexer_manager_client::IndexerManagerClient;
+use apibara::node_client::NodeClient;
 use tokio::sync::RwLock;
 
-pub struct Client(RwLock<IndexerManagerClient<tonic::transport::Channel>>);
+pub struct Client(RwLock<NodeClient<tonic::transport::Channel>>);
 
 impl Client {
-	pub fn new(inner: IndexerManagerClient<tonic::transport::Channel>) -> Self {
+	pub fn new(inner: NodeClient<tonic::transport::Channel>) -> Self {
 		Self(RwLock::new(inner))
 	}
 
 	pub async fn default() -> Result<Self, Error> {
-		let inner = IndexerManagerClient::connect(apibara_url()).await.map_err(Error::from)?;
+		let inner = NodeClient::connect(apibara_url()).await.map_err(Error::from)?;
 		Ok(Self::new(inner))
 	}
 }

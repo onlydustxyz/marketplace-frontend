@@ -1,22 +1,22 @@
-use super::{super::apibara::TopicValue, FromEventError};
+use super::{Bytes, FromEventError};
 use anyhow::anyhow;
 use crypto_bigint::{Encoding, Split, U256};
 use marketplace_domain::{ContributorId, HexPrefixedString};
 use starknet::core::types::FieldElement;
-use std::{collections::VecDeque, convert::TryInto};
+use std::collections::VecDeque;
 use thiserror::Error;
 
 #[derive(Default)]
-pub struct Topics(VecDeque<TopicValue>);
+pub struct Topics(VecDeque<Bytes>);
 
 impl Topics {
-	pub fn pop_front(&mut self) -> Option<TopicValue> {
+	pub fn pop_front(&mut self) -> Option<Bytes> {
 		self.0.pop_front()
 	}
 }
 
-impl From<Vec<TopicValue>> for Topics {
-	fn from(topics: Vec<TopicValue>) -> Self {
+impl From<Vec<Bytes>> for Topics {
+	fn from(topics: Vec<Bytes>) -> Self {
 		Self(topics.into())
 	}
 }
@@ -41,7 +41,7 @@ pub trait StarknetTopics<T> {
 
 impl StarknetTopics<HexPrefixedString> for Topics {
 	fn pop_front_as(&mut self) -> Result<HexPrefixedString, TopicError> {
-		let value = self.pop_front().ok_or(TopicError::Missing)?.value;
+		let value = self.pop_front().ok_or(TopicError::Missing)?;
 		Ok(value.into())
 	}
 }
@@ -51,7 +51,6 @@ impl StarknetTopics<FieldElement> for Topics {
 		let topic: [u8; 32] = self
 			.pop_front()
 			.ok_or(TopicError::Missing)?
-			.value
 			.try_into()
 			.map_err(|_| TopicError::Invalid)?;
 
@@ -93,18 +92,14 @@ mod test {
 	#[fixture]
 	fn topics() -> Topics {
 		vec![
-			TopicValue {
-				value: vec![
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 203,
-				],
-			},
-			TopicValue {
-				value: vec![
-					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-					0, 0, 0, 0, 0, 0,
-				],
-			},
+			vec![
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 203,
+			],
+			vec![
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0,
+			],
 		]
 		.into()
 	}
