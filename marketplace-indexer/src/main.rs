@@ -2,7 +2,7 @@ mod application;
 mod domain;
 mod infrastructure;
 
-use crate::{application::*, domain::*, infrastructure::ApibaraClient};
+use crate::{domain::*, infrastructure::ApibaraClient};
 use dotenv::dotenv;
 use marketplace_domain::*;
 use marketplace_infrastructure::{database, event_webhook::EventWebHook, github, starknet};
@@ -46,43 +46,11 @@ async fn main() {
 	global_logger_guard.cancel_reset();
 	github::Client::initialize();
 
-	let apibara_client =
+	let _apibara_client =
 		Arc::new(ApibaraClient::default().await.expect("Unable to connect to Apibara server"));
-
-	// TODO: Remove this call once web3 migration is over
-	build_legacy_indexer(apibara_client.clone()).await;
-
-	let usecase = IndexingUsecase::new(
-		apibara_client.clone(),
-		apibara_client,
-		Arc::new(build_event_observer()),
-	);
-
-	usecase.run_all_indexers().await.expect("Failed to index events");
 }
 
-fn contributions_contract_address() -> ContractAddress {
-	let address =
-		std::env::var("CONTRIBUTIONS_ADDRESS").expect("CONTRIBUTIONS_ADDRESS must be set");
-	address.parse().expect("CONTRIBUTIONS_ADDRESS is not a valid contract address")
-}
-
-async fn build_legacy_indexer(apibara_client: Arc<ApibaraClient>) {
-	IndexerBuilder::new(apibara_client.clone())
-		.network(Network::Starknet)
-		.start_at_block(311611)
-		.on_conflict_do_nothing()
-		.filter(contributions_contract_address(), "")
-		.build(
-			std::env::var("INDEXER_NAME")
-				.unwrap_or_else(|_| String::from("contribution-indexer"))
-				.into(),
-		)
-		.await
-		.expect("Unable to create the contribution indexer");
-}
-
-fn build_event_observer() -> impl BlockchainObserver {
+fn _build_event_observer() -> impl BlockchainObserver {
 	let database = Arc::new(database::Client::new(database::init_pool()));
 	let github = Arc::new(github::Client::new());
 	let uuid_generator = Arc::new(RandomUuidGenerator {});
