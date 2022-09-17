@@ -1,4 +1,4 @@
-use std::ffi::OsString;
+use std::{ffi::OsString, str::FromStr};
 
 use super::*;
 use assert_matches::assert_matches;
@@ -6,7 +6,7 @@ use envtestkit::{
 	lock::{lock_read, lock_test},
 	set_env,
 };
-use marketplace_domain::ContributionEvent;
+use marketplace_domain::{ContributionEvent, ContributionId};
 use mockito;
 
 #[allow(clippy::await_holding_lock)]
@@ -62,4 +62,20 @@ async fn http_call_fail() {
 	);
 
 	assert!(_m.matched());
+}
+
+#[test]
+fn webhook_event_serialize() {
+	let event = Event::Contribution(ContributionEvent::Validated {
+		id: ContributionId::from_str("0x123").unwrap(),
+	});
+
+	let webhook_event = WebhookEvent::new(event.clone());
+
+	let json = serde_json::to_string(&webhook_event).unwrap();
+
+	assert_eq!(
+		json,
+		r#"{"aggregate_type":"Contribution","payload":{"Validated":{"id":"0x0123"}},"aggregate_id":"0x0123","event":"Validated"}"#
+	);
 }

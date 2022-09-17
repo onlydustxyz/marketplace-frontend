@@ -5,10 +5,89 @@ use std::env;
 
 use async_trait::async_trait;
 use log::{error, info};
-use marketplace_domain::{Event, EventListener};
+use marketplace_domain::{ContributionEvent, Event, EventListener, ProjectEvent};
+use serde::{ser::SerializeStruct, Serialize};
 use url::Url;
 
 const WEBHOOK_TARGET_ENV_VAR: &str = "EVENT_WEBHOOK_TARGET";
+
+pub struct WebhookEvent(Event);
+
+impl WebhookEvent {
+	pub fn new(event: Event) -> Self {
+		Self(event)
+	}
+}
+
+impl Serialize for WebhookEvent {
+	fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+	where
+		S: serde::Serializer,
+	{
+		let mut state = serializer.serialize_struct("Event", 4)?;
+		match &self.0 {
+			Event::Contribution(contribution_event) => {
+				state.serialize_field("aggregate_type", "Contribution")?;
+				state.serialize_field("payload", contribution_event)?;
+
+				match contribution_event {
+					ContributionEvent::Created { id, .. } => {
+						state.serialize_field("aggregate_id", id)?;
+						state.serialize_field("event", "Created")?;
+					},
+					ContributionEvent::Applied { id, .. } => {
+						state.serialize_field("aggregate_id", id)?;
+						state.serialize_field("event", "applied")?;
+					},
+					ContributionEvent::ApplicationRefused { id, .. } => {
+						state.serialize_field("aggregate_id", id)?;
+						state.serialize_field("event", "ApplicationRefused")?;
+					},
+					ContributionEvent::Assigned { id, .. } => {
+						state.serialize_field("aggregate_id", id)?;
+						state.serialize_field("event", "Assigned")?;
+					},
+					ContributionEvent::Claimed { id, .. } => {
+						state.serialize_field("aggregate_id", id)?;
+						state.serialize_field("event", "Claimed")?;
+					},
+					ContributionEvent::Unassigned { id } => {
+						state.serialize_field("aggregate_id", id)?;
+						state.serialize_field("event", "Unassigned")?;
+					},
+					ContributionEvent::Validated { id } => {
+						state.serialize_field("aggregate_id", id)?;
+						state.serialize_field("event", "Validated")?;
+					},
+				}
+			},
+			Event::Project(project_event) => {
+				state.serialize_field("aggregate_type", "Project")?;
+				state.serialize_field("payload", project_event)?;
+
+				match project_event {
+					ProjectEvent::LeadContributorAdded { project_id, .. } => {
+						state.serialize_field("aggregate_id", project_id)?;
+						state.serialize_field("event", "LeadContributorAdded")?;
+					},
+					ProjectEvent::LeadContributorRemoved { project_id, .. } => {
+						state.serialize_field("aggregate_id", project_id)?;
+						state.serialize_field("event", "LeadContributorRemoved")?;
+					},
+					ProjectEvent::MemberAdded { project_id, .. } => {
+						state.serialize_field("aggregate_id", project_id)?;
+						state.serialize_field("event", "MemberAdded")?;
+					},
+					ProjectEvent::MemberRemoved { project_id, .. } => {
+						state.serialize_field("aggregate_id", project_id)?;
+						state.serialize_field("event", "MemberRemoved")?;
+					},
+				}
+			},
+		}
+		state.end()
+	}
+}
 
 pub struct EventWebHook {
 	web_client: reqwest::Client,
@@ -53,7 +132,7 @@ async fn send_event_to_webhook(client: &reqwest::Client, event: &Event) -> Resul
 	let target = Url::parse(&env_var).map_err(Error::InvalidEnvVar)?;
 	let res = client
 		.post(target.clone())
-		.json(&event)
+		.json(&WebhookEvent::new(event.clone()))
 		.send()
 		.await
 		.map_err(Error::FailToSendRequest)?;
