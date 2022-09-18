@@ -7,13 +7,10 @@ pub struct EventFilter {
 }
 
 impl EventFilter {
-	pub fn new<STRING: Into<String>>(
-		contract_address: ContractAddress,
-		event_name: STRING,
-	) -> Self {
+	pub fn new<STRING: ToString>(contract_address: ContractAddress, event_name: STRING) -> Self {
 		Self {
 			contract_address,
-			event_name: event_name.into(),
+			event_name: event_name.to_string(),
 		}
 	}
 }

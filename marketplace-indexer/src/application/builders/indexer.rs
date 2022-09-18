@@ -46,7 +46,7 @@ impl Builder {
 	}
 
 	/// Modify the network
-	pub fn filter<STRING: Into<String>>(
+	pub fn filter<STRING: ToString>(
 		&mut self,
 		contract_address: ContractAddress,
 		event_name: STRING,
