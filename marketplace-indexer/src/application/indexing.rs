@@ -97,10 +97,10 @@ mod test {
 		indexers: Vec<Indexer>,
 	) {
 		let cloned_indexers = indexers.clone();
-		indexer_repository.expect_list().times(1).return_once(|| Ok(cloned_indexers));
+		indexer_repository.expect_list().once().return_once(|| Ok(cloned_indexers));
 
 		for indexer in indexers {
-			indexing_service.expect_observe_events().times(1).returning(|_| Ok(()));
+			indexing_service.expect_observe_events().once().returning(|_| Ok(()));
 		}
 
 		let usecase = Usecase::new(
