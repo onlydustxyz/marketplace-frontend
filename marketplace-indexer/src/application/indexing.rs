@@ -34,9 +34,9 @@ impl Usecase {
 		let indexers = self.indexer_repository.list().await?;
 
 		try_join_all(
-			indexers.into_iter().map(|indexer| {
-				self.indexing_service.fetch_new_events(indexer, self.observer.clone())
-			}),
+			indexers
+				.into_iter()
+				.map(|indexer| self.indexing_service.observe_events(self.observer.clone())),
 		)
 		.await?;
 
@@ -100,11 +100,7 @@ mod test {
 		indexer_repository.expect_list().times(1).return_once(|| Ok(cloned_indexers));
 
 		for indexer in indexers {
-			indexing_service
-				.expect_fetch_new_events()
-				.times(1)
-				.with(eq(indexer), always())
-				.returning(|_, _| Ok(()));
+			indexing_service.expect_observe_events().times(1).returning(|_| Ok(()));
 		}
 
 		let usecase = Usecase::new(
