@@ -2,7 +2,7 @@ mod application;
 mod domain;
 mod infrastructure;
 
-use crate::{domain::*, infrastructure::ApibaraClient};
+use crate::{domain::*, infrastructure::apibara};
 use dotenv::dotenv;
 use marketplace_domain::*;
 use marketplace_infrastructure::{database, event_webhook::EventWebHook, github, starknet};
@@ -46,8 +46,11 @@ async fn main() {
 	global_logger_guard.cancel_reset();
 	github::Client::initialize();
 
-	let _apibara_client =
-		Arc::new(ApibaraClient::default().await.expect("Unable to connect to Apibara server"));
+	let _apibara_client = Arc::new(
+		apibara::Client::connect(apibara::starknet::node_url())
+			.await
+			.expect("Unable to connect to Apibara server"),
+	);
 }
 
 fn _build_event_observer() -> impl BlockchainObserver {
