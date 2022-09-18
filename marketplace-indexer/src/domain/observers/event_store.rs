@@ -180,7 +180,7 @@ mod test {
 		let cloned_event = event_from_contribution.clone();
 		contribution_event_store
 			.expect_append()
-			.times(1)
+			.once()
 			.with(
 				eq(contribution_id),
 				eq(vec![StorableEvent {
@@ -210,7 +210,7 @@ mod test {
 		let cloned_event = event_from_project.clone();
 		project_event_store
 			.expect_append()
-			.times(1)
+			.once()
 			.with(
 				eq(project_id),
 				eq(vec![StorableEvent {

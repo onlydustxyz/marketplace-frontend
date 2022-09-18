@@ -95,7 +95,7 @@ mod test {
 		observer
 			.expect_on_new_event()
 			.with(eq(event.clone()), eq(1))
-			.times(1)
+			.once()
 			.return_const(());
 
 		let confirmed = WithBockConfirmationCount::new(Arc::new(observer), 3);
@@ -108,7 +108,7 @@ mod test {
 		event: ObservedEvent,
 		mut observer: MockBlockchainObserver,
 	) {
-		observer.expect_on_new_event().times(1).return_const(());
+		observer.expect_on_new_event().once().return_const(());
 
 		let confirmed = WithBockConfirmationCount::new(Arc::new(observer), 3);
 		confirmed.on_new_event(&event, 1).await;
@@ -120,7 +120,7 @@ mod test {
 		event: ObservedEvent,
 		mut observer: MockBlockchainObserver,
 	) {
-		observer.expect_on_new_event().times(1).return_const(());
+		observer.expect_on_new_event().once().return_const(());
 
 		let confirmed = WithBockConfirmationCount::new(Arc::new(observer), 3);
 		confirmed.on_new_event(&event, 1).await;
