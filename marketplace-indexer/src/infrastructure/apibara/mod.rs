@@ -5,26 +5,50 @@ use proto as apibara;
 mod error;
 use error::Error;
 
-mod starknet;
+pub mod starknet;
 
-use apibara::node_client::NodeClient;
+use apibara::{
+	connect_response::Message as ResponseMessage, node_client::NodeClient, ConnectRequest, Data,
+};
 use tokio::sync::RwLock;
 
-pub struct Client(RwLock<NodeClient<tonic::transport::Channel>>);
-
-impl Client {
-	pub fn new(inner: NodeClient<tonic::transport::Channel>) -> Self {
-		Self(RwLock::new(inner))
-	}
-
-	pub async fn default() -> Result<Self, Error> {
-		let inner = NodeClient::connect(apibara_url()).await.map_err(Error::from)?;
-		Ok(Self::new(inner))
-	}
+pub struct Client {
+	node_client: RwLock<NodeClient<tonic::transport::Channel>>,
 }
 
-fn apibara_url() -> String {
-	std::env::var("APIBARA_URL").expect("APIBARA_URL must be set")
+impl Client {
+	pub fn new(node_client: NodeClient<tonic::transport::Channel>) -> Self {
+		Self {
+			node_client: RwLock::new(node_client),
+		}
+	}
+
+	pub async fn connect(node_url: String) -> Result<Self, Error> {
+		let node_client = NodeClient::connect(node_url).await?;
+		Ok(Self::new(node_client))
+	}
+
+	async fn stream_messages(&self) -> Result<Data, Error> {
+		let request = ConnectRequest {
+			starting_sequence: 0, // TODO: persist indexing state
+		};
+
+		let mut response_stream =
+			self.node_client.write().await.stream_messages(request).await?.into_inner();
+
+		loop {
+			if let Some(message) =
+				response_stream.message().await?.and_then(|response| response.message)
+			{
+				return match message {
+					ResponseMessage::Data(data) => Ok(data),
+					ResponseMessage::Invalidate(invalidate) => Err(Error::Invalidate {
+						sequence: invalidate.sequence,
+					}),
+				};
+			}
+		}
+	}
 }
 
 #[cfg(test)]
@@ -33,8 +57,7 @@ mod test {
 
 	#[tokio::test]
 	async fn client_forward_connection_errors() {
-		std::env::set_var("APIBARA_URL", "");
-		let result = Client::default().await;
+		let result = Client::connect(starknet::node_url()).await;
 		assert!(result.is_err());
 	}
 }
