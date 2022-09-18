@@ -25,67 +25,59 @@ impl Serialize for WebhookEvent {
 		S: serde::Serializer,
 	{
 		let mut state = serializer.serialize_struct("Event", 4)?;
-		match &self.0 {
-			Event::Contribution(contribution_event) => {
-				state.serialize_field("aggregate_type", "Contribution")?;
-				state.serialize_field("payload", contribution_event)?;
-
-				match contribution_event {
-					ContributionEvent::Created { id, .. } => {
-						state.serialize_field("aggregate_id", id)?;
-						state.serialize_field("event", "Created")?;
-					},
-					ContributionEvent::Applied { id, .. } => {
-						state.serialize_field("aggregate_id", id)?;
-						state.serialize_field("event", "applied")?;
-					},
-					ContributionEvent::ApplicationRefused { id, .. } => {
-						state.serialize_field("aggregate_id", id)?;
-						state.serialize_field("event", "ApplicationRefused")?;
-					},
-					ContributionEvent::Assigned { id, .. } => {
-						state.serialize_field("aggregate_id", id)?;
-						state.serialize_field("event", "Assigned")?;
-					},
-					ContributionEvent::Claimed { id, .. } => {
-						state.serialize_field("aggregate_id", id)?;
-						state.serialize_field("event", "Claimed")?;
-					},
-					ContributionEvent::Unassigned { id } => {
-						state.serialize_field("aggregate_id", id)?;
-						state.serialize_field("event", "Unassigned")?;
-					},
-					ContributionEvent::Validated { id } => {
-						state.serialize_field("aggregate_id", id)?;
-						state.serialize_field("event", "Validated")?;
-					},
-				}
-			},
-			Event::Project(project_event) => {
-				state.serialize_field("aggregate_type", "Project")?;
-				state.serialize_field("payload", project_event)?;
-
-				match project_event {
-					ProjectEvent::LeadContributorAdded { project_id, .. } => {
-						state.serialize_field("aggregate_id", project_id)?;
-						state.serialize_field("event", "LeadContributorAdded")?;
-					},
-					ProjectEvent::LeadContributorRemoved { project_id, .. } => {
-						state.serialize_field("aggregate_id", project_id)?;
-						state.serialize_field("event", "LeadContributorRemoved")?;
-					},
-					ProjectEvent::MemberAdded { project_id, .. } => {
-						state.serialize_field("aggregate_id", project_id)?;
-						state.serialize_field("event", "MemberAdded")?;
-					},
-					ProjectEvent::MemberRemoved { project_id, .. } => {
-						state.serialize_field("aggregate_id", project_id)?;
-						state.serialize_field("event", "MemberRemoved")?;
-					},
-				}
-			},
-		}
+		state.serialize_field("aggregate_type", self.aggregate_name())?;
+		state.serialize_field("aggregate_id", &self.aggregate_id())?;
+		state.serialize_field("event", &self.event())?;
+		state.serialize_field("payload", &self.0)?;
 		state.end()
+	}
+}
+
+pub trait AggregateContext {
+	fn aggregate_name(&self) -> &'static str;
+	fn aggregate_id(&self) -> String;
+	fn event(&self) -> &'static str;
+}
+
+impl AggregateContext for WebhookEvent {
+	fn aggregate_name(&self) -> &'static str {
+		match &self.0 {
+			Event::Contribution(_) => "Contribution",
+			Event::Project(_) => "Project",
+		}
+	}
+
+	fn aggregate_id(&self) -> String {
+		match &self.0 {
+			Event::Contribution(ContributionEvent::Created { id, .. })
+			| Event::Contribution(ContributionEvent::Applied { id, .. })
+			| Event::Contribution(ContributionEvent::ApplicationRefused { id, .. })
+			| Event::Contribution(ContributionEvent::Assigned { id, .. })
+			| Event::Contribution(ContributionEvent::Claimed { id, .. })
+			| Event::Contribution(ContributionEvent::Unassigned { id })
+			| Event::Contribution(ContributionEvent::Validated { id }) => id.to_string(),
+			Event::Project(ProjectEvent::LeadContributorAdded { project_id, .. })
+			| Event::Project(ProjectEvent::LeadContributorRemoved { project_id, .. })
+			| Event::Project(ProjectEvent::MemberAdded { project_id, .. })
+			| Event::Project(ProjectEvent::MemberRemoved { project_id, .. }) => project_id.to_string(),
+		}
+	}
+
+	fn event(&self) -> &'static str {
+		match &self.0 {
+			Event::Contribution(ContributionEvent::Created { .. }) => "Created",
+			Event::Contribution(ContributionEvent::Applied { .. }) => "Applied",
+			Event::Contribution(ContributionEvent::ApplicationRefused { .. }) =>
+				"ApplicationRefused",
+			Event::Contribution(ContributionEvent::Assigned { .. }) => "Assigned",
+			Event::Contribution(ContributionEvent::Claimed { .. }) => "Claimed",
+			Event::Contribution(ContributionEvent::Unassigned { .. }) => "Unassigned",
+			Event::Contribution(ContributionEvent::Validated { .. }) => "Validated",
+			Event::Project(ProjectEvent::LeadContributorAdded { .. }) => "LeadContributorAdded",
+			Event::Project(ProjectEvent::LeadContributorRemoved { .. }) => "LeadContributorRemoved",
+			Event::Project(ProjectEvent::MemberAdded { .. }) => "MemberAdded",
+			Event::Project(ProjectEvent::MemberRemoved { .. }) => "MemberRemoved",
+		}
 	}
 }
 
