@@ -1,8 +1,12 @@
 mod events;
-mod indexing_service;
+use events::Event;
+
+mod indexing;
 
 mod bytes;
 use bytes::*;
+
+mod proto;
 
 pub fn node_url() -> String {
 	std::env::var("APIBARA_STARKNET_NODE_URL")
