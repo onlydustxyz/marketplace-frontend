@@ -1,0 +1,31 @@
+[package]
+name = "marketplace-signup"
+authors = ["OnlyDust <tech@onlydust.xyz>"]
+description = "Marketplace signup"
+version = "0.1.0"
+edition = "2021"
+license-file = "LICENSE"
+homepage = "https://onlydust.xyz"
+readme = "README.md"
+repository = "https://github.com/onlydustxyz/marketplace-backend"
+
+[dependencies]
+dotenv = "0.15.0"
+rocket = { version = "0.5.0-rc.2", features = ["json"] }
+http-api-problem = { version = "0.53.0", features = ["rocket", "json-schema", "api-error", "rocket-okapi"] }
+rocket_okapi = { version = "0.8.0-rc.2", features = ["swagger"] }
+okapi = { version = "0.7.0-rc.1" }
+schemars = "0.8"
+reqwest = { version = "0.11", features = ["json"] }
+starknet = { git = "https://github.com/xJonathanLEI/starknet-rs", rev = "23d1747c4aea084cc3726707edb11007b37e8433" }
+serde_with = "1.14.0"
+thiserror = "1.0.31"
+async-trait = "0.1.56"
+log = "0.4.17"
+slog = "2.7.0"
+
+[dev-dependencies]
+mockall = "0.11.1"
+httpmock = "0.6"
+claim = "0.5"
+rand = "0.8.5"

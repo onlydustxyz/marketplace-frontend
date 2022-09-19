@@ -7,4 +7,5 @@ members = [
     "marketplace-infrastructure",
     "marketplace-tests",
     "marketplace-wrappers",
+    "marketplace-signup"
 ]
