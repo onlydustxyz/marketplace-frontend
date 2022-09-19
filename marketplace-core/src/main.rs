@@ -109,7 +109,7 @@ async fn main() {
 			routes::contributors::refresh_contributors,
 			routes::contact_information::find_contact_information,
 			routes::contact_information::put_contact_information,
-			marketplace_signup::rest::register_github_user,
+			marketplace_signup::routes::register_github_user,
 		],
 	)
 	.mount("/swagger", make_swagger_ui(&routes::get_docs()))

@@ -8,4 +8,4 @@ mod infrastructure;
 
 pub mod domain;
 pub mod init;
-pub mod rest;
+pub mod routes;

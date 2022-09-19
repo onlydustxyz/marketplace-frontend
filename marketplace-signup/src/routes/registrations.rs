@@ -92,7 +92,7 @@ mod tests {
 			github_client::GitHubClient, starknet_client::StarkNetClient, StarknetSignature,
 			StarknetSignedData,
 		},
-		rest::{self},
+		routes::{self},
 	};
 	use claim::assert_some_eq;
 	use mockall::{mock, predicate::eq};
@@ -144,7 +144,7 @@ mod tests {
 			.times(1)
 			.returning(|_, _, _| Ok(felt!("0x666")));
 
-		let router = rest::router::new(
+		let router = routes::router::new(
 			Box::new(registerer_mock) as Box<dyn Registerer<GitHubClient, StarkNetClient>>
 		);
 
