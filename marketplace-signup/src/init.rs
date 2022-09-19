@@ -1,7 +1,5 @@
 use std::sync::Arc;
 
-use dotenv::dotenv;
-
 use crate::{
 	application::registerer::{Registerer, RegistererImpl},
 	config,
