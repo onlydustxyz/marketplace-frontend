@@ -10,7 +10,6 @@ readme = "README.md"
 repository = "https://github.com/onlydustxyz/marketplace-backend"
 
 [dependencies]
-dotenv = "0.15.0"
 rocket = { version = "0.5.0-rc.2", features = ["json"] }
 http-api-problem = { version = "0.53.0", features = ["rocket", "json-schema", "api-error", "rocket-okapi"] }
 rocket_okapi = { version = "0.8.0-rc.2", features = ["swagger"] }
