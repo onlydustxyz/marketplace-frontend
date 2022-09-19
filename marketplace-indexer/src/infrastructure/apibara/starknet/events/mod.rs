@@ -24,15 +24,16 @@ pub trait EventTranslator {
 	fn to_domain_event(topics: Topics) -> Result<DomainEvent, FromEventError>;
 }
 
-#[cfg_attr(test, derive(Default))]
-struct Event {
-	block_hash: HexPrefixedString,
-	block_timestamp: NaiveDateTime,
-	transaction_hash: HexPrefixedString,
-	index: u64,
-	from_address: ContractAddress,
-	selector: Bytes,
-	data: Topics,
+#[derive(Clone)]
+#[cfg_attr(test, derive(Default, Debug, PartialEq))]
+pub struct Event {
+	pub block_hash: HexPrefixedString,
+	pub block_timestamp: NaiveDateTime,
+	pub transaction_hash: HexPrefixedString,
+	pub index: usize,
+	pub from_address: ContractAddress,
+	pub selector: Bytes,
+	pub data: Topics,
 }
 
 impl TryFrom<Event> for ObservedEvent {
@@ -84,7 +85,7 @@ mod test {
 	use marketplace_domain::{ContributionEvent, ProjectEvent};
 	use rstest::*;
 
-	const LOG_INDEX: u64 = 666;
+	const LOG_INDEX: usize = 666;
 	const DEDUPLICATION_ID: &str = "0x00cb_0x64cb_666";
 
 	#[fixture]

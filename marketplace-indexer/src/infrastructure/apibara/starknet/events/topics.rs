@@ -6,7 +6,8 @@ use starknet::core::types::FieldElement;
 use std::collections::VecDeque;
 use thiserror::Error;
 
-#[derive(Default)]
+#[derive(Clone)]
+#[cfg_attr(test, derive(Default, Debug, PartialEq))]
 pub struct Topics(VecDeque<Bytes>);
 
 impl Topics {
