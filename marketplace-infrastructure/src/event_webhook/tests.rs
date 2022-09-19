@@ -76,6 +76,6 @@ fn webhook_event_serialize() {
 
 	assert_eq!(
 		json,
-		r#"{"aggregate_type":"Contribution","aggregate_id":"0x0123","event":"Validated","payload":{"Contribution":{"Validated":{"id":"0x0123"}}}}"#
+		r#"{"aggregate_name":"Contribution","event_name":"Validated","payload":{"id":"0x0123"}}"#
 	);
 }

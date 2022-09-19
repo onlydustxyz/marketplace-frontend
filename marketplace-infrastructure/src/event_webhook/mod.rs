@@ -5,8 +5,9 @@ use std::env;
 
 use async_trait::async_trait;
 use log::{error, info};
-use marketplace_domain::{ContributionEvent, Event, EventListener, ProjectEvent};
-use serde::{ser::SerializeStruct, Serialize};
+use marketplace_domain::{Event, EventListener};
+use serde::{ser::SerializeStruct, Serialize, Serializer};
+use serde_json::json;
 use url::Url;
 
 const WEBHOOK_TARGET_ENV_VAR: &str = "EVENT_WEBHOOK_TARGET";
@@ -22,62 +23,33 @@ impl WebhookEvent {
 impl Serialize for WebhookEvent {
 	fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
 	where
-		S: serde::Serializer,
+		S: Serializer,
 	{
-		let mut state = serializer.serialize_struct("Event", 4)?;
-		state.serialize_field("aggregate_type", self.aggregate_name())?;
-		state.serialize_field("aggregate_id", &self.aggregate_id())?;
-		state.serialize_field("event", &self.event())?;
-		state.serialize_field("payload", &self.0)?;
+		let mut state = serializer.serialize_struct("Event", 3)?;
+		let event_object = json!(self.0).as_object().expect("Event must be an object").clone();
+		let aggregate_name = event_object
+			.keys()
+			.next()
+			.expect("Event must have the aggregate name as first level key");
+		let aggregate_event_object = event_object
+			.values()
+			.next()
+			.expect("Event must have someting as the first level value")
+			.as_object()
+			.expect("Event must have an object as first level value");
+		let event_name = aggregate_event_object
+			.keys()
+			.next()
+			.expect("Event must have the event name as second level key");
+		let payload = aggregate_event_object
+			.values()
+			.next()
+			.expect("Event must have someting as the second level value");
+
+		state.serialize_field("aggregate_name", aggregate_name)?;
+		state.serialize_field("event_name", event_name)?;
+		state.serialize_field("payload", payload)?;
 		state.end()
-	}
-}
-
-pub trait AggregateContext {
-	fn aggregate_name(&self) -> &'static str;
-	fn aggregate_id(&self) -> String;
-	fn event(&self) -> &'static str;
-}
-
-impl AggregateContext for WebhookEvent {
-	fn aggregate_name(&self) -> &'static str {
-		match &self.0 {
-			Event::Contribution(_) => "Contribution",
-			Event::Project(_) => "Project",
-		}
-	}
-
-	fn aggregate_id(&self) -> String {
-		match &self.0 {
-			Event::Contribution(ContributionEvent::Created { id, .. })
-			| Event::Contribution(ContributionEvent::Applied { id, .. })
-			| Event::Contribution(ContributionEvent::ApplicationRefused { id, .. })
-			| Event::Contribution(ContributionEvent::Assigned { id, .. })
-			| Event::Contribution(ContributionEvent::Claimed { id, .. })
-			| Event::Contribution(ContributionEvent::Unassigned { id })
-			| Event::Contribution(ContributionEvent::Validated { id }) => id.to_string(),
-			Event::Project(ProjectEvent::LeadContributorAdded { project_id, .. })
-			| Event::Project(ProjectEvent::LeadContributorRemoved { project_id, .. })
-			| Event::Project(ProjectEvent::MemberAdded { project_id, .. })
-			| Event::Project(ProjectEvent::MemberRemoved { project_id, .. }) => project_id.to_string(),
-		}
-	}
-
-	fn event(&self) -> &'static str {
-		match &self.0 {
-			Event::Contribution(ContributionEvent::Created { .. }) => "Created",
-			Event::Contribution(ContributionEvent::Applied { .. }) => "Applied",
-			Event::Contribution(ContributionEvent::ApplicationRefused { .. }) =>
-				"ApplicationRefused",
-			Event::Contribution(ContributionEvent::Assigned { .. }) => "Assigned",
-			Event::Contribution(ContributionEvent::Claimed { .. }) => "Claimed",
-			Event::Contribution(ContributionEvent::Unassigned { .. }) => "Unassigned",
-			Event::Contribution(ContributionEvent::Validated { .. }) => "Validated",
-			Event::Project(ProjectEvent::LeadContributorAdded { .. }) => "LeadContributorAdded",
-			Event::Project(ProjectEvent::LeadContributorRemoved { .. }) => "LeadContributorRemoved",
-			Event::Project(ProjectEvent::MemberAdded { .. }) => "MemberAdded",
-			Event::Project(ProjectEvent::MemberRemoved { .. }) => "MemberRemoved",
-		}
 	}
 }
 
@@ -124,7 +96,7 @@ async fn send_event_to_webhook(client: &reqwest::Client, event: &Event) -> Resul
 	let target = Url::parse(&env_var).map_err(Error::InvalidEnvVar)?;
 	let res = client
 		.post(target.clone())
-		.json(&WebhookEvent::new(event.clone()))
+		.json(&WebhookEvent::new(event.to_owned()))
 		.send()
 		.await
 		.map_err(Error::FailToSendRequest)?;
