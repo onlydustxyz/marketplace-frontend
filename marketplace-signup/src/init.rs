@@ -9,10 +9,7 @@ use crate::{
 };
 
 pub fn build_registerer() -> Arc<dyn Registerer<GitHubClient, StarkNetClient>> {
-	info!("loading configuration...");
-	dotenv().ok();
 	let conf = config::load();
-	info!("configuration loaded");
 
 	let github_client = GitHubClient::new(
 		conf.github_id,
