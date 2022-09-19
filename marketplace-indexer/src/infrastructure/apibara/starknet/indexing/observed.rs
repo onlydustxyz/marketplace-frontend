@@ -4,7 +4,10 @@ use marketplace_domain::HexPrefixedString;
 
 use crate::{
 	domain::BlockchainObserver,
-	infrastructure::apibara::starknet::{bytes::TryFromBytes, proto::Block},
+	infrastructure::apibara::{
+		proto::Invalidate,
+		starknet::{bytes::TryFromBytes, proto::Block},
+	},
 };
 
 #[async_trait]
@@ -32,6 +35,16 @@ impl Observed for Block {
 				"Invalid block received in message data"
 			))),
 		}
+	}
+}
+
+#[async_trait]
+impl Observed for Invalidate {
+	type Error = super::Error;
+
+	async fn observed(&self, observer: &dyn BlockchainObserver) -> Result<(), Self::Error> {
+		observer.on_reorg().await;
+		Ok(())
 	}
 }
 
@@ -79,5 +92,15 @@ mod test {
 
 		let result = block.observed(&observer).await;
 		assert_matches!(result, Err(IndexingServiceError::Invalid(_)));
+	}
+
+	#[rstest]
+	async fn observed_reorg(mut observer: MockBlockchainObserver) {
+		observer.expect_on_reorg().once().return_const(());
+
+		let invalidate = Invalidate::default();
+
+		let result = invalidate.observed(&observer).await;
+		assert!(result.is_ok(), "{}", result.err().unwrap());
 	}
 }
