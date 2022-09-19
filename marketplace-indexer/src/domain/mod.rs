@@ -20,3 +20,6 @@ pub use observers::{
 	MockObserver as MockBlockchainObserver, ObservedEvent, Observer as BlockchainObserver,
 	ObserverComposite as BlockchainObserverComposite,
 };
+
+#[cfg(test)]
+pub use repositories::MockEventFilterRepository;
