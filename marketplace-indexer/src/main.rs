@@ -1,6 +1,8 @@
 mod application;
 mod domain;
 mod infrastructure;
+#[cfg(test)]
+mod test;
 
 use crate::{domain::*, infrastructure::apibara};
 use dotenv::dotenv;
