@@ -129,7 +129,6 @@ mod tests {
 	use super::GitHubClient;
 	use claim::*;
 	use rocket::serde::json::serde_json;
-	use rstest::rstest;
 	use serde_json::json;
 	use wiremock::{matchers::*, Mock, MockServer, ResponseTemplate};
 

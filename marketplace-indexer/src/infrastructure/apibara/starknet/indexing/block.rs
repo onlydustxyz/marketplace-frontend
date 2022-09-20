@@ -31,28 +31,28 @@ impl TryIntoBlock for Any {
 
 pub trait AsEvents {
 	type Error;
-	fn as_events(self) -> Result<Vec<Event>, Self::Error>;
+	fn as_events(&self) -> Result<Vec<Event>, Self::Error>;
 }
 
 impl AsEvents for Block {
 	type Error = super::Error;
 
-	fn as_events(self) -> Result<Vec<Event>, Self::Error> {
+	fn as_events(&self) -> Result<Vec<Event>, Self::Error> {
 		match self {
 			Block {
 				block_hash: Some(block_hash),
 				timestamp: Some(timestamp),
 				block_number,
 				..
-			} => self.transaction_receipts.into_iter().try_fold(Vec::new(), |events, receipt| {
+			} => self.transaction_receipts.iter().try_fold(Vec::new(), |events, receipt| {
 				receipt.events.clone().into_iter().enumerate().try_fold(
 					events,
 					|events, (index, event)| {
 						let event = build_event(
-							&block_hash,
-							&timestamp,
-							block_number,
-							&receipt,
+							block_hash,
+							timestamp,
+							*block_number,
+							receipt,
 							event,
 							index,
 						)?;

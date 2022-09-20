@@ -14,7 +14,7 @@ impl<'a> Logger<'a> {
 #[async_trait]
 impl Observer for Logger<'_> {
 	async fn on_connect(&self) {
-		self.0(format!("🔗 Indexer connected"));
+		self.0("🔗 Indexer connected".to_string());
 	}
 
 	async fn on_new_event(&self, event: &ObservedEvent, block_number: u64) {

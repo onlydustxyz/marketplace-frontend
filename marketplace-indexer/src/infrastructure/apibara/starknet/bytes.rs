@@ -14,7 +14,7 @@ impl TryFromBytes for FieldElement {
 
 	fn try_from_bytes(bytes: Bytes) -> Result<Self, Self::Error> {
 		let bytes: [u8; 32] = bytes.try_into().map_err(|error| anyhow!("{:?}", error))?;
-		Ok(FieldElement::from_bytes_be(&bytes).map_err(anyhow::Error::msg)?)
+		FieldElement::from_bytes_be(&bytes).map_err(anyhow::Error::msg)
 	}
 }
 

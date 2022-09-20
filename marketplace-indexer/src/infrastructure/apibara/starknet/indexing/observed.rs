@@ -29,7 +29,8 @@ impl Observed for Block {
 			} => {
 				let block_hash = HexPrefixedString::try_from_bytes(block_hash.hash.clone())
 					.map_err(Self::Error::Invalid)?;
-				Ok(observer.on_new_block(&block_hash, *block_number).await)
+				observer.on_new_block(&block_hash, *block_number).await;
+				Ok(())
 			},
 			_ => Err(Self::Error::Invalid(anyhow!(
 				"Invalid block received in message data"
@@ -54,7 +55,10 @@ impl Observed for Event {
 
 	async fn observed(&self, observer: &dyn BlockchainObserver) -> Result<(), Self::Error> {
 		match self.clone().try_into() {
-			Ok(event) => Ok(observer.on_new_event(&event, self.block_number).await),
+			Ok(event) => {
+				observer.on_new_event(&event, self.block_number).await;
+				Ok(())
+			},
 			Err(FromEventError::Unsupported) => Ok(()),
 			Err(error) => Err(Self::Error::Invalid(anyhow!(error))),
 		}

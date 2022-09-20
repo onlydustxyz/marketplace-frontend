@@ -25,7 +25,7 @@ pub trait EventTranslator {
 }
 
 #[derive(Clone)]
-#[cfg_attr(test, derive(Default, Debug, PartialEq))]
+#[cfg_attr(test, derive(Default, Debug, PartialEq, Eq))]
 pub struct Event {
 	pub block_hash: HexPrefixedString,
 	pub block_timestamp: NaiveDateTime,
