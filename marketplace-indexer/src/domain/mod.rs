@@ -1,6 +1,3 @@
-mod entities;
-pub use entities::*;
-
 mod repositories;
 pub use repositories::*;
 
@@ -9,9 +6,6 @@ pub use services::*;
 
 mod value_objects;
 pub use value_objects::*;
-
-mod error;
-pub use error::Error;
 
 mod observers;
 use observers::Observer;

@@ -27,7 +27,7 @@ use marketplace_domain::*;
 #[async_trait]
 #[allow(unused_variables)]
 pub trait Observer: Send + Sync {
-	async fn on_connect(&self, indexer_id: &IndexerId) {}
+	async fn on_connect(&self) {}
 	async fn on_new_event(&self, observed_event: &ObservedEvent, block_number: u64) {}
 	async fn on_new_block(&self, block_hash: &BlockHash, block_number: u64) {}
 	async fn on_reorg(&self) {}
