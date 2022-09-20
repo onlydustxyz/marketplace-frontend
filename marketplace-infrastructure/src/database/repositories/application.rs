@@ -16,18 +16,11 @@ impl ApplicationProjectionRepository for Client {
 		&self,
 		application: ApplicationProjection,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
-
 		let application = models::Application::from(application);
-		diesel::insert_into(dsl::applications)
-			.values(&application)
-			.execute(&*connection)
-			.map_err(|e| {
-				error!("Failed to insert a new application {application:?}: {e}");
-				DatabaseError::from(e)
-			})?;
-
-		Ok(())
+		self.insert(dsl::applications, &application).map_err(|e| {
+			error!("Failed to insert application {application:?}: {e}");
+			ApplicationProjectionRepositoryError::from(e)
+		})
 	}
 
 	fn update(
@@ -152,7 +145,7 @@ impl ApplicationProjectionRepository for Client {
 impl ProjectionRepository<ApplicationProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
 		self.clear_table(dsl::applications)
-			.map_err(ProjectionRepositoryError::Infrastructure)
+			.map_err(|e| ProjectionRepositoryError::Infrastructure(e.into()))
 	}
 }
 

@@ -1,6 +1,7 @@
 use crate::database::{models, schema::contributors::dsl, Client, DatabaseError};
 use anyhow::anyhow;
 use diesel::{query_dsl::filter_dsl::FindDsl, RunQueryDsl};
+use log::error;
 use marketplace_domain::*;
 
 impl ContributorProjectionRepository for Client {
@@ -8,15 +9,11 @@ impl ContributorProjectionRepository for Client {
 		&self,
 		contributor: ContributorProjection,
 	) -> Result<(), ContributorProjectionRepositoryError> {
-		let connection = self.connection().map_err(ContributorProjectionRepositoryError::from)?;
-
 		let contributor: models::Contributor = contributor.into();
-		diesel::insert_into(dsl::contributors)
-			.values(&contributor)
-			.execute(&*connection)
-			.map_err(DatabaseError::from)?;
-
-		Ok(())
+		self.insert(dsl::contributors, &contributor).map_err(|e| {
+			error!("Failed to insert contribution {contributor:?}: {e}");
+			ContributorProjectionRepositoryError::from(e)
+		})
 	}
 
 	fn find_by_id(
@@ -37,7 +34,7 @@ impl ContributorProjectionRepository for Client {
 impl ProjectionRepository<ContributorProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
 		self.clear_table(dsl::contributors)
-			.map_err(ProjectionRepositoryError::Infrastructure)
+			.map_err(|e| ProjectionRepositoryError::Infrastructure(e.into()))
 	}
 }
 

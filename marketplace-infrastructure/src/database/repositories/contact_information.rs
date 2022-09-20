@@ -1,3 +1,4 @@
+use log::error;
 use marketplace_domain::*;
 
 use crate::database::{models, schema::contact_information::dsl, Client, DatabaseError};
@@ -27,15 +28,11 @@ impl ContactInformationRepository for Client {
 		&self,
 		contact_information: ContactInformation,
 	) -> Result<(), ContactInformationRepositoryError> {
-		let connection = self.connection().map_err(ContactInformationRepositoryError::from)?;
-
 		let contact_information = models::ContactInformation::from(contact_information);
-		diesel::insert_into(dsl::contact_information)
-			.values(&contact_information)
-			.execute(&*connection)
-			.map_err(DatabaseError::from)?;
-
-		Ok(())
+		self.insert(dsl::contact_information, &contact_information).map_err(|e| {
+			error!("Failed to insert contact_information {contact_information:?}: {e}");
+			ContactInformationRepositoryError::from(e)
+		})
 	}
 
 	fn update(
