@@ -5,5 +5,5 @@ use rocket::serde::{Deserialize, Serialize};
 #[serde(crate = "rocket::serde")]
 pub struct LeadContributor {
 	pub project_id: String,
-	pub contributor_account: String,
+	pub account: String,
 }

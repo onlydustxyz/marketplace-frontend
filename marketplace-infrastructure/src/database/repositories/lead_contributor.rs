@@ -40,7 +40,7 @@ impl LeadContributorProjectionRepository for Client {
 
 		diesel::delete(dsl::lead_contributors)
 			.filter(dsl::project_id.eq(project_id.to_string()))
-			.filter(dsl::contributor_account.eq(account.to_string()))
+			.filter(dsl::account.eq(account.to_string()))
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
 
@@ -64,19 +64,19 @@ impl LeadContributorProjectionRepository for Client {
 }
 
 impl From<models::LeadContributor> for LeadContributorProjection {
-	fn from(member: models::LeadContributor) -> Self {
+	fn from(lead_contributor: models::LeadContributor) -> Self {
 		LeadContributorProjection::new(
-			member.project_id.parse().unwrap(),
-			Account::from_str(member.contributor_account.as_str()).unwrap(),
+			lead_contributor.project_id.parse().unwrap(),
+			Account::from_str(lead_contributor.account.as_str()).unwrap(),
 		)
 	}
 }
 
 impl From<LeadContributorProjection> for models::LeadContributor {
-	fn from(member: LeadContributorProjection) -> Self {
+	fn from(lead_contributor: LeadContributorProjection) -> Self {
 		Self {
-			project_id: member.project_id().to_string(),
-			contributor_account: member.account().to_string(),
+			project_id: lead_contributor.project_id().to_string(),
+			account: lead_contributor.account().to_string(),
 		}
 	}
 }
