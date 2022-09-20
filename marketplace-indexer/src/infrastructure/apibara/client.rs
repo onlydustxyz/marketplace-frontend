@@ -1,5 +1,6 @@
 use super::proto::{
-	connect_response::Message as ResponseMessage, node_client::NodeClient, ConnectRequest,
+	node_client::NodeClient, stream_messages_response::Message as ResponseMessage,
+	StreamMessagesRequest,
 };
 use crate::domain::BlockchainObserver;
 use tokio::sync::RwLock;
@@ -44,7 +45,7 @@ pub struct ConnectedClient<O: BlockchainObserver> {
 
 impl<O: BlockchainObserver> ConnectedClient<O> {
 	pub(super) async fn stream_messages(&self) -> Result<ResponseMessage, Error> {
-		let request = ConnectRequest {
+		let request = StreamMessagesRequest { 
 			starting_sequence: 0, // TODO: persist indexing state
 		};
 
