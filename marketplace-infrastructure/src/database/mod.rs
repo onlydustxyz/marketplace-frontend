@@ -6,13 +6,15 @@ mod schema;
 mod tests;
 
 mod error;
+
 pub use error::Error as DatabaseError;
 
 use diesel::{
 	associations::HasTable,
+	insertable::CanInsertInSingleQuery,
 	pg::Pg,
 	query_builder::{IntoUpdateTarget, QueryFragment, QueryId},
-	PgConnection, QuerySource, RunQueryDsl,
+	Insertable, PgConnection, QuerySource, RunQueryDsl, Table,
 };
 use log::error;
 use r2d2;
@@ -40,7 +42,7 @@ impl Client {
 	fn connection(&self) -> Result<PooledConnection, DatabaseError> {
 		self.pool.get().map_err(|e| {
 			error!("Failed to connect to get connection out of pool: {e}");
-			DatabaseError::Connection(e.to_string())
+			DatabaseError::Connection(e.into())
 		})
 	}
 
@@ -48,33 +50,43 @@ impl Client {
 		let connection = self.connection()?;
 		diesel_migrations::run_pending_migrations(&*connection).map_err(|e| {
 			error!("Failed to run migrations: {e}");
-			DatabaseError::Migration(e.to_string())
+			DatabaseError::Migration(e.into())
 		})?;
 		Ok(())
 	}
 
-	fn clear_table<T: IntoUpdateTarget>(&self, diesel_table: T) -> Result<(), anyhow::Error>
+	fn clear_table<T: IntoUpdateTarget>(&self, diesel_table: T) -> Result<(), DatabaseError>
 	where
 		<T as HasTable>::Table: QueryId,
 		<<T as HasTable>::Table as QuerySource>::FromClause: QueryFragment<Pg>,
 		<T as diesel::query_builder::IntoUpdateTarget>::WhereClause: QueryFragment<Pg>,
 		<T as diesel::query_builder::IntoUpdateTarget>::WhereClause: QueryId,
 	{
-		let connection = self
-			.connection()
-			.map_err(|e| {
-				error!("Failed while trying to get connection from pool: {e}");
-				e
-			})
-			.map_err(anyhow::Error::msg)?;
+		let connection = self.connection()?;
 
 		diesel::delete(diesel_table)
 			.execute(&*connection)
-			.map_err(|e| {
-				error!("Failed while trying to clear project_members table: {e}");
-				e
-			})
-			.map_err(anyhow::Error::msg)?;
+			.map_err(|e| DatabaseError::Connection(e.into()))?;
+
+		Ok(())
+	}
+
+	fn insert<T: Table, U: Insertable<T>>(
+		&self,
+		diesel_table: T,
+		entry: U,
+	) -> Result<(), DatabaseError>
+	where
+		<T as QuerySource>::FromClause: QueryFragment<Pg>,
+		<U as diesel::Insertable<T>>::Values: CanInsertInSingleQuery<Pg>,
+		<U as diesel::Insertable<T>>::Values: QueryFragment<Pg>,
+	{
+		let connection = self.connection()?;
+
+		diesel::insert_into(diesel_table)
+			.values(entry)
+			.execute(&*connection)
+			.map_err(|e| DatabaseError::Connection(e.into()))?;
 
 		Ok(())
 	}

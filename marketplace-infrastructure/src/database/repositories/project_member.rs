@@ -2,6 +2,7 @@ use crate::database::{models, schema::project_members::dsl, Client, DatabaseErro
 use anyhow::anyhow;
 use diesel::prelude::*;
 use itertools::Itertools;
+use log::error;
 use marketplace_domain::*;
 use std::str::FromStr;
 
@@ -10,15 +11,11 @@ impl ProjectMemberProjectionRepository for Client {
 		&self,
 		member: ProjectMemberProjection,
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
-		let connection = self.connection().map_err(ProjectMemberProjectionRepositoryError::from)?;
-
-		let project: models::ProjectMember = member.into();
-		diesel::insert_into(dsl::project_members)
-			.values(&project)
-			.execute(&*connection)
-			.map_err(DatabaseError::from)?;
-
-		Ok(())
+		let member: models::ProjectMember = member.into();
+		self.insert(dsl::project_members, &member).map_err(|e| {
+			error!("Failed to insert project member {member:?}: {e}");
+			ProjectMemberProjectionRepositoryError::from(e)
+		})
 	}
 
 	fn delete(
@@ -55,7 +52,7 @@ impl ProjectMemberProjectionRepository for Client {
 impl ProjectionRepository<ProjectMemberProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
 		self.clear_table(dsl::project_members)
-			.map_err(ProjectionRepositoryError::Infrastructure)
+			.map_err(|e| ProjectionRepositoryError::Infrastructure(e.into()))
 	}
 }
 

@@ -1,6 +1,7 @@
 use crate::database::{models, schema::contributions::dsl, Client, DatabaseError};
 use diesel::prelude::*;
 use itertools::Itertools;
+use log::error;
 use marketplace_domain::*;
 
 impl ContributionProjectionRepository for Client {
@@ -28,17 +29,11 @@ impl ContributionProjectionRepository for Client {
 		&self,
 		contribution: ContributionProjection,
 	) -> Result<(), ContributionProjectionRepositoryError> {
-		let connection = self
-			.connection()
-			.map_err(|e| ContributionProjectionRepositoryError::Infrastructure(e.into()))?;
-
 		let contribution = models::Contribution::from(contribution);
-		diesel::insert_into(dsl::contributions)
-			.values(&contribution)
-			.execute(&*connection)
-			.map_err(DatabaseError::from)?;
-
-		Ok(())
+		self.insert(dsl::contributions, &contribution).map_err(|e| {
+			error!("Failed to insert contribution {contribution:?}: {e}");
+			ContributionProjectionRepositoryError::from(e)
+		})
 	}
 
 	fn update_contributor_and_status(
@@ -98,7 +93,7 @@ impl ContributionProjectionRepository for Client {
 impl ProjectionRepository<ContributionProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
 		self.clear_table(dsl::contributions)
-			.map_err(ProjectionRepositoryError::Infrastructure)
+			.map_err(|e| ProjectionRepositoryError::Infrastructure(e.into()))
 	}
 }
 

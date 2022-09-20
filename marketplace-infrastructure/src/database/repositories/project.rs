@@ -2,6 +2,7 @@ use crate::database::{models, schema::projects::dsl, Client, DatabaseError};
 use anyhow::anyhow;
 use diesel::{prelude::*, query_dsl::BelongingToDsl};
 use itertools::Itertools;
+use log::error;
 use marketplace_domain::*;
 use std::str::FromStr;
 
@@ -112,18 +113,11 @@ impl From<DatabaseError> for ProjectRepositoryError {
 
 impl ProjectProjectionRepository for Client {
 	fn store(&self, project: ProjectProjection) -> Result<(), ProjectProjectionRepositoryError> {
-		let connection = self.connection().map_err(ProjectProjectionRepositoryError::from)?;
-
 		let project: models::Project = project.into();
-		diesel::insert_into(dsl::projects)
-			.values(&project)
-			.on_conflict(dsl::id)
-			.do_update()
-			.set(&project)
-			.execute(&*connection)
-			.map_err(DatabaseError::from)?;
-
-		Ok(())
+		self.insert(dsl::projects, &project).map_err(|e| {
+			error!("Failed to insert project {project:?}: {e}");
+			ProjectProjectionRepositoryError::from(e)
+		})
 	}
 
 	fn find_by_id(
@@ -153,7 +147,7 @@ impl ProjectProjectionRepository for Client {
 impl ProjectionRepository<ProjectProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
 		self.clear_table(dsl::projects)
-			.map_err(ProjectionRepositoryError::Infrastructure)
+			.map_err(|e| ProjectionRepositoryError::Infrastructure(e.into()))
 	}
 }
 
