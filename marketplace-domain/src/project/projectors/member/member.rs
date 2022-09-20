@@ -18,12 +18,10 @@ impl MemberProjector {
 		&self,
 		project_id: &ProjectId,
 		contributor_account: &ContributorAccount,
-		is_lead_contributor: bool,
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
 		self.member_projection_repository.store(ProjectMemberProjection::new(
 			*project_id,
 			contributor_account.clone(),
-			is_lead_contributor,
 		))
 	}
 
@@ -44,19 +42,13 @@ impl EventListener for MemberProjector {
 				ProjectEvent::MemberAdded {
 					project_id,
 					contributor_account,
-				} => self.on_member_added(project_id, contributor_account, false),
+				} => self.on_member_added(project_id, contributor_account),
 				ProjectEvent::MemberRemoved {
 					project_id,
 					contributor_account,
 				} => self.on_member_removed(project_id, contributor_account),
-				ProjectEvent::LeadContributorAdded {
-					project_id,
-					contributor_account,
-				} => self.on_member_added(project_id, contributor_account, true),
-				ProjectEvent::LeadContributorRemoved {
-					project_id,
-					contributor_account,
-				} => self.on_member_removed(project_id, contributor_account),
+				ProjectEvent::LeadContributorAdded { .. }
+				| ProjectEvent::LeadContributorRemoved { .. } => return,
 			},
 			Event::Contribution(_) => return,
 		};

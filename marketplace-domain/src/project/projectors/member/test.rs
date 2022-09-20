@@ -62,24 +62,18 @@ fn on_lead_contributor_removed_event(
 }
 
 #[rstest]
-#[case(on_member_added_event(project_id(), contributor_account()), false)]
-#[case(
-	on_lead_contributor_added_event(project_id(), contributor_account()),
-	true
-)]
+#[case(on_member_added_event(project_id(), contributor_account()))]
 async fn on_member_added(
 	mut member_projection_repository: MockProjectMemberProjectionRepository,
 	#[case] event: Event,
 	project_id: ProjectId,
 	contributor_account: ContributorAccount,
-	#[case] is_lead_contributor: bool,
 ) {
 	member_projection_repository
 		.expect_store()
 		.with(eq(ProjectMemberProjection::new(
 			project_id,
 			contributor_account,
-			is_lead_contributor,
 		)))
 		.times(1)
 		.returning(|_| Ok(()));
@@ -90,7 +84,6 @@ async fn on_member_added(
 
 #[rstest]
 #[case(on_member_removed_event(project_id(), contributor_account()))]
-#[case(on_lead_contributor_removed_event(project_id(), contributor_account()))]
 async fn on_member_removed(
 	mut member_projection_repository: MockProjectMemberProjectionRepository,
 	#[case] event: Event,

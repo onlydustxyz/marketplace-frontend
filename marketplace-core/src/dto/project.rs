@@ -48,7 +48,6 @@ pub struct Metadata {
 #[derive(Serialize, Deserialize, JsonSchema, Clone)]
 pub struct Member {
 	contributor_account: String,
-	is_lead_contributor: bool,
 }
 
 impl From<domain::ContributionProjection> for Contribution {
@@ -80,7 +79,6 @@ impl From<domain::ProjectMemberProjection> for Member {
 	fn from(member: domain::ProjectMemberProjection) -> Self {
 		Member {
 			contributor_account: member.contributor_account().to_string(),
-			is_lead_contributor: member.is_lead_contributor(),
 		}
 	}
 }
