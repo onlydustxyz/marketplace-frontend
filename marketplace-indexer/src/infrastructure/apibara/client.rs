@@ -3,6 +3,7 @@ use super::proto::{
 	StreamMessagesRequest,
 };
 use crate::domain::BlockchainObserver;
+use futures::Future;
 use tokio::sync::RwLock;
 
 use thiserror::Error;
@@ -13,6 +14,8 @@ pub enum Error {
 	Connect(#[from] tonic::transport::Error),
 	#[error(transparent)]
 	Stream(#[from] tonic::Status),
+	#[error("Failed while observing blockchain events")]
+	Observe(#[from] anyhow::Error),
 }
 
 pub struct Client<OBS: BlockchainObserver> {
@@ -44,10 +47,15 @@ pub struct ConnectedClient<O: BlockchainObserver> {
 }
 
 impl<O: BlockchainObserver> ConnectedClient<O> {
-	pub(super) async fn stream_messages(&self) -> Result<ResponseMessage, Error> {
-		let request = StreamMessagesRequest { 
-			starting_sequence: 0, // TODO: persist indexing state
-		};
+	pub(super) async fn stream_messages<RESULT>(
+		&self,
+		starting_sequence: u64,
+		callback: impl Fn(ResponseMessage) -> RESULT,
+	) -> Result<(), Error>
+	where
+		RESULT: Future<Output = Result<(), anyhow::Error>>,
+	{
+		let request = StreamMessagesRequest { starting_sequence };
 
 		let mut response_stream =
 			self.node_client.write().await.stream_messages(request).await?.into_inner();
@@ -56,7 +64,7 @@ impl<O: BlockchainObserver> ConnectedClient<O> {
 			if let Some(message) =
 				response_stream.message().await?.and_then(|response| response.message)
 			{
-				return Ok(message);
+				callback(message).await?;
 			}
 		}
 	}
