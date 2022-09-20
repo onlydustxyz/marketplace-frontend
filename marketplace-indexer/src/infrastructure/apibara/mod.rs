@@ -8,7 +8,7 @@ use error::Error;
 pub mod starknet;
 
 use apibara::{
-	connect_response::Message as ResponseMessage, node_client::NodeClient, ConnectRequest, Data,
+	connect_response::Message as ResponseMessage, node_client::NodeClient, ConnectRequest,
 };
 use tokio::sync::RwLock;
 
@@ -28,7 +28,7 @@ impl Client {
 		Ok(Self::new(node_client))
 	}
 
-	async fn stream_messages(&self) -> Result<Data, Error> {
+	async fn stream_messages(&self) -> Result<ResponseMessage, Error> {
 		let request = ConnectRequest {
 			starting_sequence: 0, // TODO: persist indexing state
 		};
@@ -40,12 +40,7 @@ impl Client {
 			if let Some(message) =
 				response_stream.message().await?.and_then(|response| response.message)
 			{
-				return match message {
-					ResponseMessage::Data(data) => Ok(data),
-					ResponseMessage::Invalidate(invalidate) => Err(Error::Invalidate {
-						sequence: invalidate.sequence,
-					}),
-				};
+				return Ok(message);
 			}
 		}
 	}
