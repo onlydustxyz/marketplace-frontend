@@ -1,4 +1,3 @@
-mod application;
 mod domain;
 mod infrastructure;
 #[cfg(test)]

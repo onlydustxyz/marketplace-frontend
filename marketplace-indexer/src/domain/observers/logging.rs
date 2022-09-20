@@ -13,8 +13,8 @@ impl<'a> Logger<'a> {
 
 #[async_trait]
 impl Observer for Logger<'_> {
-	async fn on_connect(&self, indexer_id: &IndexerId) {
-		self.0(format!("🔗 Indexer `{indexer_id}` connected"));
+	async fn on_connect(&self) {
+		self.0(format!("🔗 Indexer connected"));
 	}
 
 	async fn on_new_event(&self, event: &ObservedEvent, block_number: u64) {
@@ -79,7 +79,7 @@ mod test {
 		let logging_callback = move |message| logger.log(message);
 
 		let handler = Logger::new(&logging_callback);
-		handler.on_connect(&IndexerId::from("ID")).await;
+		handler.on_connect().await;
 	}
 
 	#[rstest]

@@ -14,8 +14,8 @@ impl ObserverComposite {
 
 #[async_trait]
 impl Observer for ObserverComposite {
-	async fn on_connect(&self, indexer_id: &IndexerId) {
-		join_all(self.0.iter().map(|observer| observer.on_connect(indexer_id))).await;
+	async fn on_connect(&self) {
+		join_all(self.0.iter().map(|observer| observer.on_connect())).await;
 	}
 
 	async fn on_new_event(&self, event: &ObservedEvent, block_number: u64) {
@@ -70,13 +70,13 @@ mod test {
 	#[rstest]
 	async fn on_connect() {
 		let mut observer1 = MockObserver::new();
-		observer1.expect_on_connect().with(eq(IndexerId::from("ID"))).return_const(());
+		observer1.expect_on_connect().return_const(());
 
 		let mut observer2 = MockObserver::new();
-		observer2.expect_on_connect().with(eq(IndexerId::from("ID"))).return_const(());
+		observer2.expect_on_connect().return_const(());
 
 		let composite = ObserverComposite::new(vec![Arc::new(observer1), Arc::new(observer2)]);
-		composite.on_connect(&IndexerId::from("ID")).await;
+		composite.on_connect().await;
 	}
 
 	#[rstest]

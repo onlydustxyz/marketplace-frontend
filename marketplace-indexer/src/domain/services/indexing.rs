@@ -8,8 +8,6 @@ use thiserror::Error as ThisError;
 
 #[derive(ThisError, Debug)]
 pub enum Error {
-	#[error("Failed while trying to connect to the indexing node")]
-	Connection(#[source] anyhow::Error),
 	#[error("Failed while streaming messages")]
 	Stream(#[source] anyhow::Error),
 	#[error("Invalid message received from node")]
