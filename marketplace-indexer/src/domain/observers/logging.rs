@@ -74,7 +74,7 @@ mod test {
 	async fn on_connect(mut logger: MockLoggerCallback) {
 		logger
 			.expect_log()
-			.with(eq(String::from("🔗 Indexer `ID` connected")))
+			.with(eq(String::from("🔗 Indexer connected")))
 			.return_const(());
 		let logging_callback = move |message| logger.log(message);
 

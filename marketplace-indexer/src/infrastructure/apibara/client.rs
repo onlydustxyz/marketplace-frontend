@@ -73,6 +73,7 @@ mod test {
 	}
 
 	#[rstest]
+	#[tokio::test]
 	async fn client_forward_connection_errors(observer: MockBlockchainObserver) {
 		let result = Client::new("http://localhost", observer).connect().await;
 		assert!(result.is_err());
