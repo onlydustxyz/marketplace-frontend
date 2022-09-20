@@ -1,4 +1,4 @@
-use crate::{Aggregate, ContributionEvent, ProjectEvent};
+use crate::{Aggregate, ContributionEvent, ContributorEvent, ProjectEvent};
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
@@ -7,6 +7,7 @@ use std::fmt::Display;
 pub enum Event {
 	Contribution(ContributionEvent),
 	Project(ProjectEvent),
+	Contributor(ContributorEvent),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

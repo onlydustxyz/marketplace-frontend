@@ -71,7 +71,7 @@ impl EventListener for ContributorProjector {
 				} => self.add_contributor(contributor_id).await,
 				_ => return,
 			},
-			Event::Project(_) => return,
+			Event::Project(_) | Event::Contributor(_) => return,
 		};
 
 		if let Err(error) = result {
