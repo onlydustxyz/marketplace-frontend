@@ -25,10 +25,10 @@ impl EventFilterRepository for SingleContract {
 }
 
 fn contributions_contract() -> ContractAddress {
-	std::env::var("CONTRIBUTIONS_CONTRACT")
-		.expect("CONTRIBUTIONS_CONTRACT must be set")
+	std::env::var("CONTRIBUTIONS_ADDRESS")
+		.expect("CONTRIBUTIONS_ADDRESS must be set")
 		.parse()
-		.expect("CONTRIBUTIONS_CONTRACT is not a valid contract address")
+		.expect("CONTRIBUTIONS_ADDRESS is not a valid contract address")
 }
 
 #[cfg(test)]
@@ -40,16 +40,16 @@ mod test {
 
 	#[rstest]
 	#[case::no_panic(Some("0x123456"))]
-	#[should_panic(expected = "CONTRIBUTIONS_CONTRACT must be set: NotPresent")]
+	#[should_panic(expected = "CONTRIBUTIONS_ADDRESS must be set: NotPresent")]
 	#[case::panic(None)]
 	#[should_panic(
-		expected = "CONTRIBUTIONS_CONTRACT is not a valid contract address: InvalidPrefix"
+		expected = "CONTRIBUTIONS_ADDRESS is not a valid contract address: InvalidPrefix"
 	)]
 	#[case::panic(Some("Invalid address"))]
 	fn should_panic_on_invalid_values(#[case] contract_address: Option<&str>) {
 		let _lock = lock_test();
 		let _test =
-			contract_address.map(|value| set_env(OsString::from("CONTRIBUTIONS_CONTRACT"), value));
+			contract_address.map(|value| set_env(OsString::from("CONTRIBUTIONS_ADDRESS"), value));
 
 		SingleContract::default();
 	}
