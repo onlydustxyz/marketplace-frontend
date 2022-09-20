@@ -40,7 +40,7 @@ jobs:
         run: cargo install diesel_cli --no-default-features --features postgres --force
 
       - name: Build
-        run: cargo build
+        run: cargo build --features=starknet
 
       - name: Run migrations
         run: diesel migration run
@@ -55,7 +55,7 @@ jobs:
         run: cp .env.example .env
 
       - name: Start the backend
-        run: cargo run &
+        run: cargo run -p marketplace-core &
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

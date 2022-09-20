@@ -120,7 +120,7 @@ jobs:
       - name: Install diesel CLI
         run: cargo install diesel_cli --no-default-features --features postgres --force
       - name: Build
-        run: cargo build
+        run: cargo build --features=starknet
       - name: Run migrations
         run: diesel migration run
       - name: Rust test on db
@@ -154,7 +154,7 @@ jobs:
       - name: Install diesel CLI
         run: cargo install diesel_cli --no-default-features --features postgres --force
       - name: Build
-        run: cargo build
+        run: cargo build --features=starknet
       - name: Run migrations
         run: diesel migration run
       - name: Rust component tests
