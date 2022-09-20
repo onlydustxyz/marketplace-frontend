@@ -7,18 +7,17 @@ use crate::{
 	domain::{BlockchainObserver, EventFilterRepository, IndexingService, IndexingServiceError},
 	infrastructure::apibara::{
 		proto::{connect_response::Message as ResponseMessage, Data},
-		Client as ApibaraClient,
+		ConnectedClient as ApibaraClient,
 	},
 };
 use async_trait::async_trait;
 use std::{ops::Deref, sync::Arc};
 
 #[async_trait]
-impl IndexingService for ApibaraClient {
+impl<O: BlockchainObserver> IndexingService for ApibaraClient<O> {
 	async fn observe_events(
 		&self,
 		event_filter_repository: Arc<dyn EventFilterRepository>,
-		observers: Arc<dyn BlockchainObserver>,
 	) -> Result<(), IndexingServiceError> {
 		loop {
 			let data = self
@@ -30,15 +29,15 @@ impl IndexingService for ApibaraClient {
 			match data {
 				ResponseMessage::Data(Data { data, .. }) if data.is_some() => {
 					let block = data.unwrap().try_into_block()?;
-					block.observed(observers.deref()).await?;
+					block.observed(&self.observer).await?;
 
 					for event in block.as_events()?.filtered(event_filter_repository.deref())? {
-						event.observed(observers.deref()).await?;
+						event.observed(&self.observer).await?;
 					}
 				},
 
 				ResponseMessage::Invalidate(invalidate) =>
-					invalidate.observed(observers.deref()).await?,
+					invalidate.observed(&self.observer).await?,
 
 				_ => (),
 			};
