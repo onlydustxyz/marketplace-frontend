@@ -118,7 +118,7 @@ impl EventListener for WithGithubDataProjector {
 				ContributionEvent::Applied { .. }
 				| ContributionEvent::ApplicationRefused { .. } => return,
 			},
-			Event::Project(_) => return,
+			Event::Project(_) | Event::Contributor(_) => return,
 		};
 
 		if let Err(error) = result {

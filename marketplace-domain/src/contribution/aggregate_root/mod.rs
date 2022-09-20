@@ -150,7 +150,7 @@ impl EventSourcable for Contribution {
 					..self
 				},
 			},
-			Event::Project(_) => self,
+			Event::Project(_) | Event::Contributor(_) => self,
 		}
 	}
 }
