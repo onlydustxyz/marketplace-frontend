@@ -2,6 +2,7 @@ use super::super::*;
 use assert_matches::assert_matches;
 use chrono::NaiveDate;
 use rstest::*;
+use std::str::FromStr;
 
 impl Contribution {
 	pub fn new_with_id_and_status(id: Id, status: ContributionStatus) -> Self {

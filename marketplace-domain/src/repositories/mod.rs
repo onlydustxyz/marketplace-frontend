@@ -27,6 +27,12 @@ pub use project_member_projection::{
 	Repository as ProjectMemberProjectionRepository,
 };
 
+mod lead_contributor_projection;
+pub use lead_contributor_projection::{
+	Error as LeadContributorProjectionRepositoryError,
+	Repository as LeadContributorProjectionRepository,
+};
+
 mod project_projection;
 pub use project_projection::{
 	Error as ProjectProjectionRepositoryError, Repository as ProjectProjectionRepository,
