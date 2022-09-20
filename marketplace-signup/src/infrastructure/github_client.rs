@@ -80,12 +80,13 @@ impl IdentityProvider for GitHubClient {
 			.error_for_status()
 			.map_err(|e| AuthenticationError::Http(Box::new(e)))?;
 
-		let response = response
-			.json::<AccessTokenResponseBody>()
-			.await
-			.map_err(|e| AuthenticationError::Serde(Box::new(e)))?;
+		let body_string =
+			response.text().await.map_err(|e| AuthenticationError::Http(Box::new(e)))?;
 
-		Ok(AccessToken::from(response.access_token))
+		let decoded_body: AccessTokenResponseBody = serde_json::from_str(&body_string)
+			.map_err(|e| AuthenticationError::Serde(Box::new(e), body_string))?;
+
+		Ok(AccessToken::from(decoded_body.access_token))
 	}
 
 	async fn get_user_id(
@@ -107,12 +108,13 @@ impl IdentityProvider for GitHubClient {
 			.error_for_status()
 			.map_err(|e| IdentificationError::Http(Box::new(e)))?;
 
-		let response = response
-			.json::<UserResponseBody>()
-			.await
-			.map_err(|e| IdentificationError::Serde(Box::new(e)))?;
+		let body_string =
+			response.text().await.map_err(|e| IdentificationError::Http(Box::new(e)))?;
 
-		Ok(Identity::GitHubId(response.id.into()))
+		let decoded_body: UserResponseBody = serde_json::from_str(&body_string)
+			.map_err(|e| IdentificationError::Serde(Box::new(e), body_string))?;
+
+		Ok(Identity::GitHubId(decoded_body.id.into()))
 	}
 }
 
