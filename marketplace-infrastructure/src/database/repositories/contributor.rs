@@ -1,7 +1,6 @@
-use crate::database::{models, schema::contributors, Client, DatabaseError};
+use crate::database::{models, schema::contributors::dsl, Client, DatabaseError};
 use anyhow::anyhow;
 use diesel::{query_dsl::filter_dsl::FindDsl, RunQueryDsl};
-use log::error;
 use marketplace_domain::*;
 
 impl ContributorProjectionRepository for Client {
@@ -12,7 +11,7 @@ impl ContributorProjectionRepository for Client {
 		let connection = self.connection().map_err(ContributorProjectionRepositoryError::from)?;
 
 		let contributor: models::Contributor = contributor.into();
-		diesel::insert_into(contributors::table)
+		diesel::insert_into(dsl::contributors)
 			.values(&contributor)
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
@@ -26,7 +25,7 @@ impl ContributorProjectionRepository for Client {
 	) -> Result<ContributorProjection, ContributorProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributorProjectionRepositoryError::from)?;
 
-		let contributor: models::Contributor = contributors::table
+		let contributor: models::Contributor = dsl::contributors
 			.find(contributor_id.to_string())
 			.get_result(&*connection)
 			.map_err(DatabaseError::from)?;
@@ -37,25 +36,8 @@ impl ContributorProjectionRepository for Client {
 
 impl ProjectionRepository<ContributorProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
-		let connection = self
-			.connection()
-			.map_err(|e| {
-				error!("Failed while trying to get connection from pool: {e}");
-				e
-			})
-			.map_err(anyhow::Error::msg)
-			.map_err(ProjectionRepositoryError::Infrastructure)?;
-
-		diesel::delete(contributors::table)
-			.execute(&*connection)
-			.map_err(|e| {
-				error!("Failed while trying to clear contributors table: {e}");
-				e
-			})
-			.map_err(anyhow::Error::msg)
-			.map_err(ProjectionRepositoryError::Infrastructure)?;
-
-		Ok(())
+		self.clear_table(dsl::contributors)
+			.map_err(ProjectionRepositoryError::Infrastructure)
 	}
 }
 

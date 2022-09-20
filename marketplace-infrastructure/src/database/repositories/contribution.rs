@@ -1,7 +1,6 @@
-use crate::database::{models, schema, schema::contributions, Client, DatabaseError};
+use crate::database::{models, schema::contributions::dsl, Client, DatabaseError};
 use diesel::prelude::*;
 use itertools::Itertools;
-use log::error;
 use marketplace_domain::*;
 
 impl ContributionProjectionRepository for Client {
@@ -13,7 +12,7 @@ impl ContributionProjectionRepository for Client {
 			.connection()
 			.map_err(|e| ContributionProjectionRepositoryError::Infrastructure(e.into()))?;
 
-		match contributions::table
+		match dsl::contributions
 			.find(contribution_id.to_string())
 			.get_result::<models::Contribution>(&*connection)
 		{
@@ -34,7 +33,7 @@ impl ContributionProjectionRepository for Client {
 			.map_err(|e| ContributionProjectionRepositoryError::Infrastructure(e.into()))?;
 
 		let contribution = models::Contribution::from(contribution);
-		diesel::insert_into(contributions::table)
+		diesel::insert_into(dsl::contributions)
 			.values(&contribution)
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
@@ -50,11 +49,11 @@ impl ContributionProjectionRepository for Client {
 	) -> Result<(), ContributionProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
 
-		diesel::update(schema::contributions::dsl::contributions)
-			.filter(contributions::id.eq(contribution_id.to_string()))
+		diesel::update(dsl::contributions)
+			.filter(dsl::id.eq(contribution_id.to_string()))
 			.set((
-				schema::contributions::status.eq(status_.to_string()),
-				schema::contributions::contributor_id.eq(match contributor_id_ {
+				dsl::status.eq(status_.to_string()),
+				dsl::contributor_id.eq(match contributor_id_ {
 					Some(id_) => id_.to_string(),
 					None => String::new(),
 				}),
@@ -72,9 +71,9 @@ impl ContributionProjectionRepository for Client {
 	) -> Result<(), ContributionProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
 
-		diesel::update(schema::contributions::dsl::contributions)
-			.filter(contributions::id.eq(contribution_id.to_string()))
-			.set((schema::contributions::status.eq(status_.to_string()),))
+		diesel::update(dsl::contributions)
+			.filter(dsl::id.eq(contribution_id.to_string()))
+			.set((dsl::status.eq(status_.to_string()),))
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
 
@@ -87,8 +86,8 @@ impl ContributionProjectionRepository for Client {
 	) -> Result<Vec<ContributionProjection>, ContributionProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
 
-		let contributions = schema::contributions::table
-			.filter(contributions::project_id.eq(project_id.to_string()))
+		let contributions = dsl::contributions
+			.filter(dsl::project_id.eq(project_id.to_string()))
 			.load::<models::Contribution>(&*connection)
 			.map_err(DatabaseError::from)?;
 
@@ -98,25 +97,8 @@ impl ContributionProjectionRepository for Client {
 
 impl ProjectionRepository<ContributionProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
-		let connection = self
-			.connection()
-			.map_err(|e| {
-				error!("Failed while trying to get connection from pool: {e}");
-				e
-			})
-			.map_err(anyhow::Error::msg)
-			.map_err(ProjectionRepositoryError::Infrastructure)?;
-
-		diesel::delete(schema::contributions::dsl::contributions)
-			.execute(&*connection)
-			.map_err(|e| {
-				error!("Failed while trying to clear contributions table: {e}");
-				e
-			})
-			.map_err(anyhow::Error::msg)
-			.map_err(ProjectionRepositoryError::Infrastructure)?;
-
-		Ok(())
+		self.clear_table(dsl::contributions)
+			.map_err(ProjectionRepositoryError::Infrastructure)
 	}
 }
 

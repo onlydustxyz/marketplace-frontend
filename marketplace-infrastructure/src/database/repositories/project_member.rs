@@ -1,12 +1,7 @@
-use crate::database::{
-	models,
-	schema::project_members::{self, dsl::*},
-	Client, DatabaseError,
-};
+use crate::database::{models, schema::project_members::dsl, Client, DatabaseError};
 use anyhow::anyhow;
 use diesel::prelude::*;
 use itertools::Itertools;
-use log::error;
 use marketplace_domain::*;
 use std::str::FromStr;
 
@@ -18,7 +13,7 @@ impl ProjectMemberProjectionRepository for Client {
 		let connection = self.connection().map_err(ProjectMemberProjectionRepositoryError::from)?;
 
 		let project: models::ProjectMember = member.into();
-		diesel::insert_into(project_members::table)
+		diesel::insert_into(dsl::project_members)
 			.values(&project)
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
@@ -33,9 +28,9 @@ impl ProjectMemberProjectionRepository for Client {
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
 		let connection = self.connection().map_err(ProjectMemberProjectionRepositoryError::from)?;
 
-		diesel::delete(project_members::table)
-			.filter(project_id.eq(project_id_.to_string()))
-			.filter(contributor_account.eq(contributor_account_.to_string()))
+		diesel::delete(dsl::project_members)
+			.filter(dsl::project_id.eq(project_id_.to_string()))
+			.filter(dsl::contributor_account.eq(contributor_account_.to_string()))
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
 
@@ -48,8 +43,8 @@ impl ProjectMemberProjectionRepository for Client {
 	) -> Result<Vec<ProjectMemberProjection>, ProjectMemberProjectionRepositoryError> {
 		let connection = self.connection().map_err(ProjectMemberProjectionRepositoryError::from)?;
 
-		let project_members_ = project_members::table
-			.filter(project_members::project_id.eq(project_id_.to_string()))
+		let project_members_ = dsl::project_members
+			.filter(dsl::project_id.eq(project_id_.to_string()))
 			.load::<models::ProjectMember>(&*connection)
 			.map_err(DatabaseError::from)?;
 
@@ -59,25 +54,8 @@ impl ProjectMemberProjectionRepository for Client {
 
 impl ProjectionRepository<ProjectMemberProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
-		let connection = self
-			.connection()
-			.map_err(|e| {
-				error!("Failed while trying to get connection from pool: {e}");
-				e
-			})
-			.map_err(anyhow::Error::msg)
-			.map_err(ProjectionRepositoryError::Infrastructure)?;
-
-		diesel::delete(project_members)
-			.execute(&*connection)
-			.map_err(|e| {
-				error!("Failed while trying to clear project_members table: {e}");
-				e
-			})
-			.map_err(anyhow::Error::msg)
-			.map_err(ProjectionRepositoryError::Infrastructure)?;
-
-		Ok(())
+		self.clear_table(dsl::project_members)
+			.map_err(ProjectionRepositoryError::Infrastructure)
 	}
 }
 
