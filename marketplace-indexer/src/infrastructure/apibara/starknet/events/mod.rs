@@ -29,6 +29,7 @@ pub trait EventTranslator {
 pub struct Event {
 	pub block_hash: HexPrefixedString,
 	pub block_timestamp: NaiveDateTime,
+	pub block_number: u64,
 	pub transaction_hash: HexPrefixedString,
 	pub index: usize,
 	pub from_address: ContractAddress,

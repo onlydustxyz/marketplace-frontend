@@ -42,12 +42,20 @@ impl AsEvents for Block {
 			Block {
 				block_hash: Some(block_hash),
 				timestamp: Some(timestamp),
+				block_number,
 				..
 			} => self.transaction_receipts.into_iter().try_fold(Vec::new(), |events, receipt| {
 				receipt.events.clone().into_iter().enumerate().try_fold(
 					events,
 					|events, (index, event)| {
-						let event = build_event(&block_hash, &timestamp, &receipt, event, index)?;
+						let event = build_event(
+							&block_hash,
+							&timestamp,
+							block_number,
+							&receipt,
+							event,
+							index,
+						)?;
 						Ok([events, vec![event]].concat())
 					},
 				)
@@ -63,6 +71,7 @@ impl AsEvents for Block {
 fn build_event(
 	block_hash: &BlockHash,
 	block_timestamp: &Timestamp,
+	block_number: u64,
 	transaction_receipt: &TransactionReceipt,
 	event: ApibaraEvent,
 	index: usize,
@@ -74,6 +83,7 @@ fn build_event(
 			block_timestamp.seconds,
 			block_timestamp.nanos as u32,
 		),
+		block_number,
 		transaction_hash: HexPrefixedString::try_from_bytes(
 			transaction_receipt.transaction_hash.clone(),
 		)
@@ -111,6 +121,7 @@ mod test {
 				seconds: now.timestamp(),
 				nanos: 0,
 			}),
+			block_number: 22223333,
 			transaction_receipts: vec![
 				TransactionReceipt {
 					transaction_hash: TRANSACTION_HASHES[0].as_felt(),
@@ -158,6 +169,7 @@ mod test {
 				Event {
 					block_hash: BLOCK_HASHES[0].as_0x_string(),
 					block_timestamp: now(),
+					block_number: 22223333,
 					transaction_hash: TRANSACTION_HASHES[0].as_0x_string(),
 					from_address: CONTRACT_ADDRESSES[0].as_0x_string(),
 					selector: SELECTORS[0].as_felt(),
@@ -167,6 +179,7 @@ mod test {
 				Event {
 					block_hash: BLOCK_HASHES[0].as_0x_string(),
 					block_timestamp: now(),
+					block_number: 22223333,
 					transaction_hash: TRANSACTION_HASHES[0].as_0x_string(),
 					from_address: CONTRACT_ADDRESSES[1].as_0x_string(),
 					selector: SELECTORS[1].as_felt(),
@@ -176,6 +189,7 @@ mod test {
 				Event {
 					block_hash: BLOCK_HASHES[0].as_0x_string(),
 					block_timestamp: now(),
+					block_number: 22223333,
 					transaction_hash: TRANSACTION_HASHES[1].as_0x_string(),
 					from_address: CONTRACT_ADDRESSES[1].as_0x_string(),
 					selector: SELECTORS[2].as_felt(),
