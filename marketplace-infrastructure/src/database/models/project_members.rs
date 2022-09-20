@@ -6,5 +6,4 @@ use rocket::serde::{Deserialize, Serialize};
 pub struct ProjectMember {
 	pub project_id: String,
 	pub contributor_account: String,
-	pub is_lead_contributor: bool,
 }

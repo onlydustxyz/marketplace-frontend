@@ -86,7 +86,6 @@ impl From<ProjectMemberProjection> for models::ProjectMember {
 		Self {
 			project_id: member.project_id().to_string(),
 			contributor_account: member.contributor_account().to_string(),
-			is_lead_contributor: member.is_lead_contributor(),
 		}
 	}
 }
@@ -96,7 +95,6 @@ impl From<models::ProjectMember> for ProjectMemberProjection {
 		ProjectMemberProjection::new(
 			member.project_id.parse().unwrap(),
 			ContributorAccount::from_str(member.contributor_account.as_str()).unwrap(),
-			member.is_lead_contributor,
 		)
 	}
 }
