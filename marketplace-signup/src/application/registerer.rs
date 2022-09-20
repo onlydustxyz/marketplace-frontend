@@ -83,7 +83,7 @@ where
 mod tests {
 	use claim::assert_ok_eq;
 	use mockall::{mock, predicate::eq};
-	use rocket::tokio;
+	use rstest::rstest;
 	use starknet::{core::types::FieldElement, macros::felt};
 
 	use crate::{
@@ -135,7 +135,7 @@ mod tests {
 		}
 	}
 
-	#[tokio::test]
+	#[rstest]
 	async fn test_register_github_user() {
 		let mut github_mock = MockMyIdentityProvider::new();
 
