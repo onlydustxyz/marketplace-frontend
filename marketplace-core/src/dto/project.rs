@@ -20,7 +20,8 @@ pub struct Project {
 	#[schemars(with = "String")]
 	pub logo: Option<Url>,
 	pub contributions: Vec<Contribution>,
-	pub members: Vec<Member>,
+	pub lead_contributors: Vec<String>,
+	pub members: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, JsonSchema, Clone)]

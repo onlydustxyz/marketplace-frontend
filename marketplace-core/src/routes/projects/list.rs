@@ -15,6 +15,7 @@ pub async fn list_projects(
 	project_projection_repository: &State<Arc<dyn ProjectProjectionRepository>>,
 	contribution_projection_repository: &State<Arc<dyn ContributionProjectionRepository>>,
 	project_member_projection_repository: &State<Arc<dyn ProjectMemberProjectionRepository>>,
+	lead_contributor_projection_repository: &State<Arc<dyn LeadContributorProjectionRepository>>,
 	contributor_projection_repository: &State<Arc<dyn ContributorProjectionRepository>>,
 ) -> Result<Json<Vec<dto::Project>>, HttpApiProblem> {
 	let projects = project_projection_repository
@@ -24,9 +25,10 @@ pub async fn list_projects(
 		.map(|project| {
 			build_project(
 				project,
-				contribution_projection_repository,
-				project_member_projection_repository,
-				contributor_projection_repository,
+				contribution_projection_repository.inner(),
+				project_member_projection_repository.inner(),
+				lead_contributor_projection_repository.inner(),
+				contributor_projection_repository.inner(),
 			)
 		})
 		.filter_map(|result| match result {
@@ -43,9 +45,10 @@ pub async fn list_projects(
 
 fn build_project(
 	project: ProjectProjection,
-	contribution_projection_repository: &State<Arc<dyn ContributionProjectionRepository>>,
-	project_member_projection_repository: &State<Arc<dyn ProjectMemberProjectionRepository>>,
-	contributor_projection_repository: &State<Arc<dyn ContributorProjectionRepository>>,
+	contribution_projection_repository: &Arc<dyn ContributionProjectionRepository>,
+	project_member_projection_repository: &Arc<dyn ProjectMemberProjectionRepository>,
+	lead_contributor_projection_repository: &Arc<dyn LeadContributorProjectionRepository>,
+	contributor_projection_repository: &Arc<dyn ContributorProjectionRepository>,
 ) -> Result<dto::Project, HttpApiProblem> {
 	let contributions = contribution_projection_repository
 		.list_by_project(&project.id)
@@ -57,6 +60,10 @@ fn build_project(
 		.collect();
 
 	let members = project_member_projection_repository
+		.list_by_project(&project.id)
+		.map_err(|e| e.to_http_api_problem())?;
+
+	let lead_contributors = lead_contributor_projection_repository
 		.list_by_project(&project.id)
 		.map_err(|e| e.to_http_api_problem())?;
 
@@ -73,7 +80,8 @@ fn build_project(
 			.unwrap()
 		}),
 		contributions,
-		members: members.into_iter().map_into().collect_vec(),
+		lead_contributors: lead_contributors.into_iter().map(|l| l.account().to_string()).collect(),
+		members: members.into_iter().map(|m| m.contributor_account().to_string()).collect(),
 	};
 
 	Ok(project)
@@ -81,7 +89,7 @@ fn build_project(
 
 fn build_contribution(
 	contribution: ContributionProjection,
-	contributor_projection_repository: &State<Arc<dyn ContributorProjectionRepository>>,
+	contributor_projection_repository: &Arc<dyn ContributorProjectionRepository>,
 ) -> Option<dto::Contribution> {
 	let contributor = contribution
 		.contributor_id
