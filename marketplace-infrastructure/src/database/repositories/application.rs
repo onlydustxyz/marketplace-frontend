@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use crate::database::{
 	models::{self, Status},
-	schema::applications,
+	schema::applications::dsl,
 	Client, DatabaseError,
 };
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
@@ -19,7 +19,7 @@ impl ApplicationProjectionRepository for Client {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
 		let application = models::Application::from(application);
-		diesel::insert_into(applications::table)
+		diesel::insert_into(dsl::applications)
 			.values(&application)
 			.execute(&*connection)
 			.map_err(|e| {
@@ -36,7 +36,7 @@ impl ApplicationProjectionRepository for Client {
 	) -> Result<(), ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 		let application = models::Application::from(application);
-		diesel::update(applications::table.filter(applications::id.eq(application.id)))
+		diesel::update(dsl::applications.filter(dsl::id.eq(application.id)))
 			.set(&application)
 			.execute(&*connection)
 			.map_err(|e| {
@@ -55,9 +55,7 @@ impl ApplicationProjectionRepository for Client {
 	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
-		let res = applications::dsl::applications
-			.find(id.as_uuid())
-			.first::<models::Application>(&*connection);
+		let res = dsl::applications.find(id.as_uuid()).first::<models::Application>(&*connection);
 
 		if let Err(diesel::result::Error::NotFound) = res {
 			Ok(None)
@@ -78,9 +76,9 @@ impl ApplicationProjectionRepository for Client {
 	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
-		let res = applications::dsl::applications
-			.filter(applications::contribution_id.eq(contribution_id.to_string()))
-			.filter(applications::contributor_id.eq(contributor_id.to_string()))
+		let res = dsl::applications
+			.filter(dsl::contribution_id.eq(contribution_id.to_string()))
+			.filter(dsl::contributor_id.eq(contributor_id.to_string()))
 			.first::<models::Application>(&*connection);
 
 		if let Err(diesel::result::Error::NotFound) = res {
@@ -102,12 +100,12 @@ impl ApplicationProjectionRepository for Client {
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
-		let mut query = applications::dsl::applications
-			.filter(applications::contribution_id.eq(contribution_id.to_string()))
+		let mut query = dsl::applications
+			.filter(dsl::contribution_id.eq(contribution_id.to_string()))
 			.into_boxed();
 
 		if let Some(contributor_id) = &contributor_id {
-			query = query.filter(applications::contributor_id.eq(contributor_id.to_string()))
+			query = query.filter(dsl::contributor_id.eq(contributor_id.to_string()))
 		}
 
 		let applications = query.load::<models::Application>(&*connection).map_err(|e| {
@@ -130,10 +128,10 @@ impl ApplicationProjectionRepository for Client {
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
-		let mut query = applications::dsl::applications.into_boxed();
+		let mut query = dsl::applications.into_boxed();
 
 		if let Some(contributor_id) = &contributor_id {
-			query = query.filter(applications::contributor_id.eq(contributor_id.to_string()))
+			query = query.filter(dsl::contributor_id.eq(contributor_id.to_string()))
 		}
 
 		let applications = query.load::<models::Application>(&*connection).map_err(|e| {
@@ -153,25 +151,8 @@ impl ApplicationProjectionRepository for Client {
 
 impl ProjectionRepository<ApplicationProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
-		let connection = self
-			.connection()
-			.map_err(|e| {
-				error!("Failed while trying to get connection from pool: {e}");
-				e
-			})
-			.map_err(anyhow::Error::msg)
-			.map_err(ProjectionRepositoryError::Infrastructure)?;
-
-		diesel::delete(applications::dsl::applications)
-			.execute(&*connection)
-			.map_err(|e| {
-				error!("Failed while trying to clear applications table: {e}");
-				e
-			})
-			.map_err(anyhow::Error::msg)
-			.map_err(ProjectionRepositoryError::Infrastructure)?;
-
-		Ok(())
+		self.clear_table(dsl::applications)
+			.map_err(ProjectionRepositoryError::Infrastructure)
 	}
 }
 

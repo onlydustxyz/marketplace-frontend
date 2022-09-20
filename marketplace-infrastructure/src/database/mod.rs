@@ -8,7 +8,12 @@ mod tests;
 mod error;
 pub use error::Error as DatabaseError;
 
-use diesel::PgConnection;
+use diesel::{
+	associations::HasTable,
+	pg::Pg,
+	query_builder::{IntoUpdateTarget, QueryFragment, QueryId},
+	PgConnection, QuerySource, RunQueryDsl,
+};
 use log::error;
 use r2d2;
 use r2d2_diesel::ConnectionManager;
@@ -45,6 +50,32 @@ impl Client {
 			error!("Failed to run migrations: {e}");
 			DatabaseError::Migration(e.to_string())
 		})?;
+		Ok(())
+	}
+
+	fn clear_table<T: IntoUpdateTarget>(&self, diesel_table: T) -> Result<(), anyhow::Error>
+	where
+		<T as HasTable>::Table: QueryId,
+		<<T as HasTable>::Table as QuerySource>::FromClause: QueryFragment<Pg>,
+		<T as diesel::query_builder::IntoUpdateTarget>::WhereClause: QueryFragment<Pg>,
+		<T as diesel::query_builder::IntoUpdateTarget>::WhereClause: QueryId,
+	{
+		let connection = self
+			.connection()
+			.map_err(|e| {
+				error!("Failed while trying to get connection from pool: {e}");
+				e
+			})
+			.map_err(anyhow::Error::msg)?;
+
+		diesel::delete(diesel_table)
+			.execute(&*connection)
+			.map_err(|e| {
+				error!("Failed while trying to clear project_members table: {e}");
+				e
+			})
+			.map_err(anyhow::Error::msg)?;
+
 		Ok(())
 	}
 }
