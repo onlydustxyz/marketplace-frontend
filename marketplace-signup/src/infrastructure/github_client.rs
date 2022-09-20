@@ -1,3 +1,4 @@
+use async_trait::async_trait;
 use rocket::serde::{Deserialize, Serialize};
 
 use crate::domain::{
@@ -55,7 +56,7 @@ impl GitHubClient {
 	}
 }
 
-#[rocket::async_trait]
+#[async_trait]
 impl IdentityProvider for GitHubClient {
 	async fn new_access_token(
 		&self,
@@ -125,41 +126,42 @@ mod tests {
 
 	use super::GitHubClient;
 	use claim::*;
-	use httpmock::prelude::*;
-	use rocket::{serde::json::serde_json, tokio};
+	use rocket::serde::json::serde_json;
+	use rstest::rstest;
 	use serde_json::json;
+	use wiremock::{matchers::*, Mock, MockServer, ResponseTemplate};
 
 	#[tokio::test]
 	async fn new_access_token() {
 		// Start a server running on a local ephemeral port.
-		let server = MockServer::start();
+		let server = MockServer::start().await;
 
 		let github_client = GitHubClient::new(
 			"foo-github-id".into(),
 			"foo-github-secret".into(),
-			server.url("/login/oauth/access_token"),
+			format!("{}/login/oauth/access_token", &server.uri()),
 			"".into(),
 		);
 
-		let github_mock = server.mock(|when, then| {
-			when.method(POST)
-				.path("/login/oauth/access_token")
-				.header("Accept", "application/json")
-				.json_body(json!({
-					"client_id": "foo-github-id",
-					"client_secret": "foo-github-secret",
-					"code": "foo-code",
-				}));
-			then.status(200).json_body(json!({
+		Mock::given(method("POST"))
+			.and(path("/login/oauth/access_token"))
+			.and(header("Accept", "application/json"))
+			.and(body_json(json!({
+				"client_id": "foo-github-id",
+				"client_secret": "foo-github-secret",
+				"code": "foo-code",
+			})))
+			.respond_with(ResponseTemplate::new(200).set_body_json(json!({
 				"access_token":"gho_16C7e42F292c6912E7710c838347Ae178B4a",
 				"scope":"repo,gist",
 				"token_type":"bearer",
-			}));
-		});
+			})))
+			// Mounting the mock on the mock server - it's now effective!
+			.mount(&server)
+			.await;
 
 		let result = github_client.new_access_token("foo-code").await;
 
-		github_mock.assert();
 		assert!(result.is_ok());
 		assert_eq!(
 			"gho_16C7e42F292c6912E7710c838347Ae178B4a".to_string(),
@@ -170,31 +172,31 @@ mod tests {
 	#[tokio::test]
 	async fn get_user_id() {
 		// Start a server running on a local ephemeral port.
-		let server = MockServer::start();
+		let server = MockServer::start().await;
 
 		let github_client = GitHubClient::new(
 			"foo-github-id".into(),
 			"foo-github-secret".into(),
 			"".into(),
-			server.url("/user"),
+			format!("{}/user", &server.uri()),
 		);
 
-		let github_mock = server.mock(|when, then| {
-			when.method(GET)
-				.path("/user")
-				.header("Accept", "application/json")
-				.header("Authorization", "token foo-access-token");
-			then.status(200).json_body(json!({
+		Mock::given(method("GET"))
+			.and(path("/user"))
+			.and(header("Accept", "application/json"))
+			.and(header("Authorization", "token foo-access-token"))
+			.respond_with(ResponseTemplate::new(200).set_body_json(json!({
 				"login": "octocat",
 				"id": 42,
 				"node_id": "MDQ6VXNlcjE=",
-			}));
-		});
+			})))
+			// Mounting the mock on the mock server - it's now effective!
+			.mount(&server)
+			.await;
 
 		let access_token = AccessToken::from("foo-access-token".to_string());
 		let result = github_client.get_user_id(&access_token).await;
 
-		github_mock.assert();
 		assert_ok_eq!(result, Identity::GitHubId(42.into()));
 	}
 }
