@@ -5,6 +5,8 @@ mod test;
 
 use crate::{domain::*, infrastructure::apibara};
 use dotenv::dotenv;
+use infrastructure::single_contract::SingleContract;
+use log::{error, info};
 use marketplace_domain::*;
 use marketplace_infrastructure::{database, event_webhook::EventWebHook, github, starknet};
 use slog::{o, Drain, FnValue, Logger, Record};
@@ -47,14 +49,24 @@ async fn main() {
 	global_logger_guard.cancel_reset();
 	github::Client::initialize();
 
-	let _apibara_client = Arc::new(
-		apibara::Client::connect(apibara::starknet::node_url())
-			.await
-			.expect("Unable to connect to Apibara server"),
-	);
+	let apibara_client = apibara::Client::new(apibara_node_url(), build_event_observer())
+		.connect()
+		.await
+		.expect("Unable to connect to Apibara server");
+
+	match IndexingService::observe_events(&apibara_client, Arc::new(SingleContract::default()))
+		.await
+	{
+		Ok(()) => info!("Stream closed gracefully"),
+		Err(error) => error!("Failed while streaming from apibara node: {error}"),
+	};
 }
 
-fn _build_event_observer() -> impl BlockchainObserver {
+fn apibara_node_url() -> String {
+	std::env::var("APIBARA_NODE_URL").expect("APIBARA_NODE_URL must be set")
+}
+
+fn build_event_observer() -> impl BlockchainObserver {
 	let database = Arc::new(database::Client::new(database::init_pool()));
 	let github = Arc::new(github::Client::new());
 	let uuid_generator = Arc::new(RandomUuidGenerator {});

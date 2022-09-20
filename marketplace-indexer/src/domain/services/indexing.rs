@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use crate::domain::{BlockchainObserver, EventFilterRepository, EventFilterRepositoryError};
+use crate::domain::{EventFilterRepository, EventFilterRepositoryError};
 use async_trait::async_trait;
 #[cfg(test)]
 use mockall::automock;
@@ -22,6 +22,5 @@ pub trait Service {
 	async fn observe_events(
 		&self,
 		event_filter_repository: Arc<dyn EventFilterRepository>,
-		observers: Arc<dyn BlockchainObserver>,
 	) -> Result<(), Error>;
 }
