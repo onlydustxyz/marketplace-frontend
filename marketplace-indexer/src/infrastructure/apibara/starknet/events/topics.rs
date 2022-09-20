@@ -7,7 +7,7 @@ use std::collections::VecDeque;
 use thiserror::Error;
 
 #[derive(Clone)]
-#[cfg_attr(test, derive(Default, Debug, PartialEq))]
+#[cfg_attr(test, derive(Default, Debug, PartialEq, Eq))]
 pub struct Topics(VecDeque<Bytes>);
 
 impl Topics {
