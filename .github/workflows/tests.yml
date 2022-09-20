@@ -42,7 +42,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --verbose
+          args: --verbose --features=starknet
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -68,7 +68,7 @@ jobs:
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --bins --tests --examples
+          args: --bins --tests --examples --features=starknet
   test:
     runs-on: ubuntu-latest
     steps:
@@ -90,7 +90,7 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-
       - name: Run tests
-        run: cargo test --verbose
+        run: cargo test --verbose --features=starknet
   test_with_database:
     runs-on: ubuntu-latest
     env:
@@ -124,7 +124,7 @@ jobs:
       - name: Run migrations
         run: diesel migration run
       - name: Rust test on db
-        run: cargo test --features with_infrastructure_tests
+        run: cargo test -p marketplace-infrastructure --features with_infrastructure_tests
   component_tests:
     runs-on: ubuntu-latest
     env:
@@ -158,4 +158,4 @@ jobs:
       - name: Run migrations
         run: diesel migration run
       - name: Rust component tests
-        run: cargo test --features with_component_tests
+        run: cargo test -p marketplace-core --features with_component_tests
