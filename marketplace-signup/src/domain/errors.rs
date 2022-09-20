@@ -17,7 +17,7 @@ pub enum AuthenticationError {
 	#[error("HTTP request error")]
 	Http(#[source] Box<dyn std::error::Error>),
 	#[error("(de)serialization error")]
-	Serde(#[source] Box<dyn std::error::Error>),
+	Serde(#[source] Box<dyn std::error::Error>, String),
 }
 
 #[derive(Debug, Error)]
@@ -25,7 +25,7 @@ pub enum IdentificationError {
 	#[error("HTTP request error")]
 	Http(#[source] Box<dyn std::error::Error>),
 	#[error("(de)serialization error")]
-	Serde(#[source] Box<dyn std::error::Error>),
+	Serde(#[source] Box<dyn std::error::Error>, String),
 }
 
 #[derive(Debug, Error)]
