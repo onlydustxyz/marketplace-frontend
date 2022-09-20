@@ -3,7 +3,6 @@ use chrono::Utc;
 use crypto_bigint::U256;
 use marketplace_wrappers::HexStringWrapper;
 use serde::{Deserialize, Serialize};
-use std::{fmt::Display, str::FromStr};
 use thiserror::Error;
 
 pub mod event;

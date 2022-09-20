@@ -20,14 +20,14 @@ impl ProjectMemberProjectionRepository for Client {
 
 	fn delete(
 		&self,
-		project_id_: &ProjectId,
-		contributor_account_: &ContributorAccount,
+		project_id: &ProjectId,
+		contributor_account: &ContributorAccount,
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
 		let connection = self.connection().map_err(ProjectMemberProjectionRepositoryError::from)?;
 
 		diesel::delete(dsl::project_members)
-			.filter(dsl::project_id.eq(project_id_.to_string()))
-			.filter(dsl::contributor_account.eq(contributor_account_.to_string()))
+			.filter(dsl::project_id.eq(project_id.to_string()))
+			.filter(dsl::contributor_account.eq(contributor_account.to_string()))
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
 
@@ -36,16 +36,16 @@ impl ProjectMemberProjectionRepository for Client {
 
 	fn list_by_project(
 		&self,
-		project_id_: &ProjectId,
+		project_id: &ProjectId,
 	) -> Result<Vec<ProjectMemberProjection>, ProjectMemberProjectionRepositoryError> {
 		let connection = self.connection().map_err(ProjectMemberProjectionRepositoryError::from)?;
 
-		let project_members_ = dsl::project_members
-			.filter(dsl::project_id.eq(project_id_.to_string()))
+		let project_members = dsl::project_members
+			.filter(dsl::project_id.eq(project_id.to_string()))
 			.load::<models::ProjectMember>(&*connection)
 			.map_err(DatabaseError::from)?;
 
-		Ok(project_members_.into_iter().map_into().collect())
+		Ok(project_members.into_iter().map_into().collect())
 	}
 }
 

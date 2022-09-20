@@ -4,11 +4,11 @@ use quote::quote;
 pub fn impl_hex_string_wrapper_macro(ast: &syn::DeriveInput) -> TokenStream {
 	let name = &ast.ident;
 	let gen = quote! {
-		impl FromStr for #name {
+		impl std::str::FromStr for #name {
 			type Err = ParseHexPrefixedStringError;
 
 			fn from_str(s: &str) -> Result<Self, Self::Err> {
-				HexPrefixedString::from_str(s).map(Self)
+				<HexPrefixedString as std::str::FromStr>::from_str(s).map(Self)
 			}
 		}
 
@@ -30,7 +30,7 @@ pub fn impl_hex_string_wrapper_macro(ast: &syn::DeriveInput) -> TokenStream {
 			}
 		}
 
-		impl Display for #name {
+		impl std::fmt::Display for #name {
 			fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 				self.0.fmt(f)
 			}
