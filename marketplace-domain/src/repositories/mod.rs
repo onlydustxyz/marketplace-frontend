@@ -51,3 +51,6 @@ pub use project_member_projection::MockRepository as MockProjectMemberProjection
 
 #[cfg(test)]
 pub use contributor_projection::MockRepository as MockContributorProjectionRepository;
+
+#[cfg(test)]
+pub use lead_contributor_projection::MockRepository as MockLeadContributorProjectionRepository;
