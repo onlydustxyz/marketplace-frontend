@@ -15,6 +15,9 @@ impl IndexerRepository for DatabaseClient {
 		let indexer: models::Indexer = indexer.into();
 		diesel::insert_into(dsl::indexers)
 			.values(&indexer)
+			.on_conflict(dsl::id)
+			.do_update()
+			.set(&indexer)
 			.execute(&*connection)
 			.map_err(|e| {
 				error!("Failed while storing indexer in database: {e}");
