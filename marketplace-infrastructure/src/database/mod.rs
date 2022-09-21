@@ -1,7 +1,7 @@
 mod event_store;
 mod models;
 mod repositories;
-mod schema;
+pub mod schema;
 #[cfg(test)]
 mod tests;
 
@@ -39,7 +39,7 @@ impl Client {
 }
 
 impl Client {
-	fn connection(&self) -> Result<PooledConnection, DatabaseError> {
+	pub fn connection(&self) -> Result<PooledConnection, DatabaseError> {
 		self.pool.get().map_err(|e| {
 			error!("Failed to connect to get connection out of pool: {e}");
 			DatabaseError::Connection(e.into())
