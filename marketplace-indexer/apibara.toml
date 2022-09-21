@@ -1,6 +1,0 @@
-[admin.storage]
-connection_string = "mongodb://apibara:apibara@mongo:27017"
-
-[network.starknet]
-type = "starknet"
-provider_url = "http://13.38.227.15:9545/"
