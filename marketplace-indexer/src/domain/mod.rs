@@ -16,4 +16,4 @@ pub use observers::{
 };
 
 #[cfg(test)]
-pub use repositories::MockEventFilterRepository;
+pub use repositories::*;

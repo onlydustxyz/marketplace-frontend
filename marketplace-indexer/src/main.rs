@@ -49,10 +49,16 @@ async fn main() {
 	global_logger_guard.cancel_reset();
 	github::Client::initialize();
 
-	let apibara_client = apibara::Client::new(apibara_node_url(), build_event_observer())
-		.connect()
-		.await
-		.expect("Unable to connect to Apibara server");
+	let database = Arc::new(database::Client::new(database::init_pool()));
+
+	let apibara_client = apibara::Client::new(
+		apibara_node_url(),
+		build_event_observer(database.clone()),
+		database,
+	)
+	.connect()
+	.await
+	.expect("Unable to connect to Apibara server");
 
 	match IndexingService::observe_events(&apibara_client, Arc::new(SingleContract::default()))
 		.await
@@ -66,8 +72,7 @@ fn apibara_node_url() -> String {
 	std::env::var("APIBARA_NODE_URL").expect("APIBARA_NODE_URL must be set")
 }
 
-fn build_event_observer() -> impl BlockchainObserver {
-	let database = Arc::new(database::Client::new(database::init_pool()));
+fn build_event_observer(database: Arc<database::Client>) -> impl BlockchainObserver {
 	let github = Arc::new(github::Client::new());
 	let uuid_generator = Arc::new(RandomUuidGenerator {});
 	let starknet = Arc::new(starknet::Client::default());
