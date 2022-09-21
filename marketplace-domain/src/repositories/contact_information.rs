@@ -14,8 +14,7 @@ pub enum Error {
 
 #[automock]
 pub trait Repository: Send + Sync {
-	fn create(&self, contact_information: ContactInformation) -> Result<(), Error>;
-	fn update(&self, contact_information: ContactInformation) -> Result<(), Error>;
+	fn upsert(&self, contact_information: ContactInformation) -> Result<(), Error>;
 
 	fn find_by_contributor_id(
 		&self,

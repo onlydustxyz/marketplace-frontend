@@ -25,15 +25,23 @@ impl ContributionProjectionRepository for Client {
 		}
 	}
 
-	fn create(
+	fn insert(
 		&self,
 		contribution: ContributionProjection,
 	) -> Result<(), ContributionProjectionRepositoryError> {
+		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
+
 		let contribution = models::Contribution::from(contribution);
-		self.insert(dsl::contributions, &contribution).map_err(|e| {
-			error!("Failed to insert contribution {contribution:?}: {e}");
-			ContributionProjectionRepositoryError::from(e)
-		})
+
+		diesel::insert_into(dsl::contributions)
+			.values(&contribution)
+			.execute(&*connection)
+			.map_err(|e| {
+				error!("Failed to insert contribution {contribution:?}: {e}");
+				DatabaseError::from(e)
+			})?;
+
+		Ok(())
 	}
 
 	fn update_contributor_and_status(

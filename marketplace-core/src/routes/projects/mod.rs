@@ -35,7 +35,7 @@ pub async fn new_project(
 		url: project.html_url,
 		logo_url: Some(owner.avatar_url),
 	};
-	ProjectProjectionRepository::store(database.as_ref(), projection)
+	ProjectProjectionRepository::insert(database.as_ref(), projection)
 		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(Status::Accepted)

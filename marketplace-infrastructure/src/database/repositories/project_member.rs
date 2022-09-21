@@ -7,15 +7,23 @@ use marketplace_domain::*;
 use std::str::FromStr;
 
 impl ProjectMemberProjectionRepository for Client {
-	fn store(
+	fn insert(
 		&self,
 		member: ProjectMemberProjection,
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
-		let member: models::ProjectMember = member.into();
-		self.insert(dsl::project_members, &member).map_err(|e| {
-			error!("Failed to insert project member {member:?}: {e}");
-			ProjectMemberProjectionRepositoryError::from(e)
-		})
+		let connection = self.connection().map_err(ProjectMemberProjectionRepositoryError::from)?;
+
+		let member = models::ProjectMember::from(member);
+
+		diesel::insert_into(dsl::project_members)
+			.values(&member)
+			.execute(&*connection)
+			.map_err(|e| {
+				error!("Failed to insert project member {member:?}: {e}");
+				DatabaseError::from(e)
+			})?;
+
+		Ok(())
 	}
 
 	fn delete(

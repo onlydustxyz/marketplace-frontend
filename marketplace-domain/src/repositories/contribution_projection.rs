@@ -21,7 +21,7 @@ pub trait Repository: Send + Sync {
 		&self,
 		contribution_id: &ContributionId,
 	) -> Result<Option<ContributionProjection>, Error>;
-	fn create(&self, contribution: ContributionProjection) -> Result<(), Error>;
+	fn insert(&self, contribution: ContributionProjection) -> Result<(), Error>;
 
 	fn update_contributor_and_status(
 		&self,

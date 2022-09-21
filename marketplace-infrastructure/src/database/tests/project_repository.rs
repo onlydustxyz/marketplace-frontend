@@ -51,7 +51,7 @@ fn projection2(project2: Project) -> ProjectProjection {
 fn store_and_find_one(project1: Project, projection1: ProjectProjection) {
 	let client = Client::new(init_pool());
 
-	<Client as ProjectProjectionRepository>::store(&client, projection1).unwrap();
+	<Client as ProjectProjectionRepository>::insert(&client, projection1).unwrap();
 	let projects = <Client as ProjectRepository>::find_all_with_contributions(&client).unwrap();
 
 	assert!(projects.iter().map(|p| &p.project).contains(&project1));
@@ -70,8 +70,8 @@ fn store_and_find_multiple(
 ) {
 	let client = Client::new(init_pool());
 
-	<Client as ProjectProjectionRepository>::store(&client, projection1).unwrap();
-	<Client as ProjectProjectionRepository>::store(&client, projection2).unwrap();
+	<Client as ProjectProjectionRepository>::insert(&client, projection1).unwrap();
+	<Client as ProjectProjectionRepository>::insert(&client, projection2).unwrap();
 	let projects = <Client as ProjectRepository>::find_all_with_contributions(&client).unwrap();
 
 	assert!(projects.iter().map(|p| &p.project).contains(&project1));
@@ -111,9 +111,9 @@ fn store_and_find_with_contributions(project1: Project, projection1: ProjectProj
 		metadata: Default::default(),
 	};
 
-	<Client as ProjectProjectionRepository>::store(&client, projection1).unwrap();
-	<Client as ContributionProjectionRepository>::create(&client, contribution1.clone()).unwrap();
-	<Client as ContributionProjectionRepository>::create(&client, contribution2.clone()).unwrap();
+	<Client as ProjectProjectionRepository>::insert(&client, projection1).unwrap();
+	<Client as ContributionProjectionRepository>::insert(&client, contribution1.clone()).unwrap();
+	<Client as ContributionProjectionRepository>::insert(&client, contribution2.clone()).unwrap();
 	let projects = <Client as ProjectRepository>::find_all_with_contributions(&client).unwrap();
 
 	let foud_project = projects.iter().find(|s| s.project == project1).unwrap();

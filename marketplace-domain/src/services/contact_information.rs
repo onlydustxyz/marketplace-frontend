@@ -36,28 +36,14 @@ impl Service for ContactInformationService {
 		contributor_id: &ContributorId,
 		discord_handle: Option<String>,
 	) -> Result<(), DomainError> {
-		let contact_information = self
-			.contact_information_repository
-			.find_by_contributor_id(contributor_id)
-			.map_err(DomainError::from)?;
-
-		if let Some(mut contact_information) = contact_information {
-			contact_information.discord_handle = discord_handle;
-			self.contact_information_repository
-				.update(contact_information)
-				.map_err(DomainError::from)?;
-		} else {
-			let contact_information = ContactInformation {
-				id: Uuid::new_v4().into(),
-				contributor_id: contributor_id.to_owned(),
-				discord_handle,
-			};
-			self.contact_information_repository
-				.create(contact_information)
-				.map_err(DomainError::from)?;
-		}
-
-		Ok(())
+		let contact_information = ContactInformation {
+			id: Uuid::new_v4().into(),
+			contributor_id: contributor_id.to_owned(),
+			discord_handle,
+		};
+		self.contact_information_repository
+			.upsert(contact_information)
+			.map_err(DomainError::from)
 	}
 
 	fn get_contributor_contact_information(

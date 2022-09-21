@@ -48,7 +48,7 @@ async fn on_member_added(
 	contributor_account: ContributorAccount,
 ) {
 	member_projection_repository
-		.expect_store()
+		.expect_insert()
 		.with(eq(ProjectMemberProjection::new(
 			project_id,
 			contributor_account,

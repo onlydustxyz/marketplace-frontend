@@ -16,25 +16,19 @@ impl ApplicationProjectionRepository for Client {
 		&self,
 		application: ApplicationProjection,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		let application = models::Application::from(application);
-		self.insert(dsl::applications, &application).map_err(|e| {
-			error!("Failed to insert application {application:?}: {e}");
-			ApplicationProjectionRepositoryError::from(e)
-		})
-	}
+		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
-	fn update(
-		&self,
-		application: ApplicationProjection,
-	) -> Result<(), ApplicationProjectionRepositoryError> {
 		let application = models::Application::from(application);
-		self.update(&application, &application).map_err(|e| {
-			error!(
-				"Failed to update application with id {} to {application:?}: {e}",
-				application.id
-			);
-			ApplicationProjectionRepositoryError::from(e)
-		})
+
+		diesel::insert_into(dsl::applications)
+			.values(&application)
+			.execute(&*connection)
+			.map_err(|e| {
+				error!("Failed to insert application {application:?}: {e}");
+				DatabaseError::from(e)
+			})?;
+
+		Ok(())
 	}
 
 	fn update_status(
@@ -43,18 +37,21 @@ impl ApplicationProjectionRepository for Client {
 		contributor_id: &ContributorId,
 		status: ApplicationStatus,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		self.update(
-			dsl::applications
+		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
+
+		diesel::update(dsl::applications
 				.filter(dsl::contribution_id.eq(contribution_id.to_string()))
-				.filter(dsl::contributor_id.eq(contributor_id.to_string())),
-			dsl::status.eq(status.to_string()),
-		)
-		.map_err(|e| {
-			error!(
-				"Failed to set status of application of contributor with id {contributor_id} to contirbution with id {contribution_id} to {status}: {e}",
-			);
-			ApplicationProjectionRepositoryError::from(e)
-		})
+				.filter(dsl::contributor_id.eq(contributor_id.to_string())))
+			.set(dsl::status.eq(status.to_string()))
+			.execute(&*connection)
+			.map_err(|e| {
+				error!(
+					"Failed to set status of application of contributor with id {contributor_id} to contirbution with id {contribution_id} to {status}: {e}",
+				);
+				DatabaseError::from(e)
+		})?;
+
+		Ok(())
 	}
 
 	fn find(
@@ -71,30 +68,6 @@ impl ApplicationProjectionRepository for Client {
 			res.map(|a| Some(a.into()))
 				.map_err(|e| {
 					error!("Failed while finding application with id {id}: {e}");
-					DatabaseError::from(e)
-				})
-				.map_err_into()
-		}
-	}
-
-	fn find_by_contribution_and_contributor(
-		&self,
-		contribution_id: &AggregateId,
-		contributor_id: &ContributorId,
-	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
-		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
-
-		let res = dsl::applications
-			.filter(dsl::contribution_id.eq(contribution_id.to_string()))
-			.filter(dsl::contributor_id.eq(contributor_id.to_string()))
-			.first::<models::Application>(&*connection);
-
-		if let Err(diesel::result::Error::NotFound) = res {
-			Ok(None)
-		} else {
-			res.map(|a| Some(a.into()))
-				.map_err(|e| {
-					error!("Failed while finding application of contributor with id {contributor_id} to contribution with id {contribution_id}: {e}");
 					DatabaseError::from(e)
 				})
 				.map_err_into()

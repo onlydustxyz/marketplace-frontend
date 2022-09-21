@@ -31,7 +31,7 @@ impl ProjectProjector {
 	async fn on_contribution_created(&self, project_id: GithubProjectId) -> Result<(), Error> {
 		if self.project_projection_repository.find_by_id(project_id).is_err() {
 			let repo = self.github_client.find_repository_by_id(project_id).await?;
-			self.project_projection_repository.store(ProjectProjection {
+			self.project_projection_repository.insert(ProjectProjection {
 				id: repo.project_id,
 				owner: repo.owner,
 				name: repo.name,

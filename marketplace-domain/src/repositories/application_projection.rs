@@ -18,7 +18,6 @@ pub enum Error {
 #[automock]
 pub trait Repository: Send + Sync {
 	fn insert(&self, application: ApplicationProjection) -> Result<(), Error>;
-	fn update(&self, application: ApplicationProjection) -> Result<(), Error>;
 	fn update_status(
 		&self,
 		contribution_id: &ContributionId,
@@ -26,11 +25,6 @@ pub trait Repository: Send + Sync {
 		status: ApplicationStatus,
 	) -> Result<(), Error>;
 	fn find(&self, id: &ApplicationId) -> Result<Option<ApplicationProjection>, Error>;
-	fn find_by_contribution_and_contributor(
-		&self,
-		contribution_id: &ContributionId,
-		contributor_id: &ContributorId,
-	) -> Result<Option<ApplicationProjection>, Error>;
 	fn list_by_contribution(
 		&self,
 		contribution_id: &ContributionId,

@@ -18,7 +18,7 @@ fn init_project(client: &Client) -> ProjectProjection {
 		owner: Uuid::new_v4().to_string(),
 		..Default::default()
 	};
-	<Client as ProjectProjectionRepository>::store(client, project.clone()).unwrap();
+	<Client as ProjectProjectionRepository>::insert(client, project.clone()).unwrap();
 
 	project
 }
@@ -39,7 +39,7 @@ fn init_contribution_with_status(
 		status,
 		..Default::default()
 	};
-	<Client as ContributionProjectionRepository>::create(client, contribution.clone()).unwrap();
+	<Client as ContributionProjectionRepository>::insert(client, contribution.clone()).unwrap();
 
 	contribution
 }

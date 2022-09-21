@@ -43,7 +43,7 @@ async fn on_lead_contributor_added(
 	account: Account,
 ) {
 	lead_contributor_projection_repository
-		.expect_store()
+		.expect_insert()
 		.with(eq(LeadContributorProjection::new(project_id, account)))
 		.times(1)
 		.returning(|_| Ok(()));
