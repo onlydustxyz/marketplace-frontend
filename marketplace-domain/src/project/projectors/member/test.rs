@@ -39,28 +39,6 @@ fn on_member_removed_event(
 	})
 }
 
-#[fixture]
-fn on_lead_contributor_added_event(
-	project_id: ProjectId,
-	contributor_account: ContributorAccount,
-) -> Event {
-	Event::Project(ProjectEvent::LeadContributorAdded {
-		project_id,
-		contributor_account,
-	})
-}
-
-#[fixture]
-fn on_lead_contributor_removed_event(
-	project_id: ProjectId,
-	contributor_account: ContributorAccount,
-) -> Event {
-	Event::Project(ProjectEvent::LeadContributorRemoved {
-		project_id,
-		contributor_account,
-	})
-}
-
 #[rstest]
 #[case(on_member_added_event(project_id(), contributor_account()))]
 async fn on_member_added(
