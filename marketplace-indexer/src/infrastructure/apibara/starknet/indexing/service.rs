@@ -13,15 +13,15 @@ use crate::{
 use async_trait::async_trait;
 use std::{ops::Deref, sync::Arc};
 
+const INDEXER_ID: &str = "starknet";
+
 #[async_trait]
-impl<O: BlockchainObserver> IndexingService for ApibaraClient<O> {
+impl<OBS: BlockchainObserver> IndexingService for ApibaraClient<OBS> {
 	async fn observe_events(
 		&self,
 		event_filter_repository: Arc<dyn EventFilterRepository>,
 	) -> Result<(), IndexingServiceError> {
-		let starting_sequence = 2_000; // TODO: persist indexing state
-
-		self.stream_messages(starting_sequence, move |data| {
+		self.stream_messages(INDEXER_ID, move |data| {
 			let cloned_event_filter_repository = event_filter_repository.clone();
 			async move {
 				match data {
