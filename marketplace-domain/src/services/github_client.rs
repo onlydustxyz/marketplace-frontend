@@ -24,4 +24,6 @@ pub trait GithubClient: Send + Sync {
 	-> Result<GithubRepo, Error>;
 
 	async fn find_user_by_id(&self, user_id: GithubUserId) -> Result<GithubUser, Error>;
+
+	async fn authenticate_user(&self, authorization_code: String) -> Result<GithubUserId, Error>;
 }

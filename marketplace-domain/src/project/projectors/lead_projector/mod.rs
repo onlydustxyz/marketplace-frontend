@@ -56,7 +56,7 @@ impl EventListener for LeadContributorProjector {
 				} => self.on_lead_contributor_removed(project_id, contributor_account),
 				ProjectEvent::MemberAdded { .. } | ProjectEvent::MemberRemoved { .. } => return,
 			},
-			Event::Contribution(_) => return,
+			Event::Contribution(_) | Event::Contributor(_) => return,
 		};
 
 		if let Err(error) = result {
