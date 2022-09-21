@@ -26,7 +26,7 @@ fn store_and_find(now: NaiveDateTime) {
 		Uuid::new_v4().into(),
 		contribution.id.clone(),
 		0.into(),
-		now.clone(),
+		now,
 	);
 	let application2 =
 		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id, 1.into(), now);

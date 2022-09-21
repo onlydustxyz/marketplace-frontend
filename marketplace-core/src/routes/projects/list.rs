@@ -1,6 +1,5 @@
 use crate::routes::to_http_api_problem::ToHttpApiProblem;
 use http_api_problem::HttpApiProblem;
-use itertools::Itertools;
 use log::error;
 use marketplace_core::dto;
 use marketplace_domain::*;

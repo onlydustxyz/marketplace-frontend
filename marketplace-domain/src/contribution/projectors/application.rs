@@ -235,7 +235,7 @@ mod tests {
 				application_id,
 				contribution_id.clone(),
 				contributor_id.clone(),
-				now.clone(),
+				now,
 			)))
 			.once()
 			.in_sequence(&mut repository_sequence)
