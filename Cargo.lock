@@ -1832,6 +1832,7 @@ dependencies = [
  "async-trait",
  "chrono",
  "crypto-bigint 0.4.8",
+ "diesel",
  "dotenv",
  "envtestkit",
  "futures 0.3.21",
