@@ -21,15 +21,9 @@ impl Storable for ProjectEvent {
 }
 
 #[fixture]
-#[once]
-fn unique_database() -> Arc<DatabaseClient> {
+fn database() -> Arc<DatabaseClient> {
 	dotenv().ok();
 	Arc::new(DatabaseClient::new(init_pool()))
-}
-
-#[fixture]
-fn database(unique_database: &Arc<DatabaseClient>) -> Arc<DatabaseClient> {
-	unique_database.clone()
 }
 
 #[fixture]
@@ -100,24 +94,19 @@ fn filled_database(
 	database
 }
 
-#[fixture]
-fn refresh_project_members_usecase(filled_database: Arc<DatabaseClient>) -> RefreshProjectsMembers {
-	RefreshProjectsMembers::new(
-		filled_database.clone(),
-		Arc::new(ProjectMemberProjector::new(filled_database.clone())),
-		filled_database,
-	)
-}
-
 #[rstest]
 #[cfg_attr(not(feature = "with_component_tests"), ignore = "component test")]
 async fn refresh_project_members_from_events(
-	refresh_project_members_usecase: RefreshProjectsMembers,
 	filled_database: Arc<DatabaseClient>,
 	project_id: ProjectId,
-	contributor_account_1: ContributorAccount,
 	contributor_account_2: ContributorAccount,
 ) {
+	let refresh_project_members_usecase = RefreshProjectsMembers::new(
+		filled_database.clone(),
+		Arc::new(ProjectMemberProjector::new(filled_database.clone())),
+		filled_database.clone(),
+	);
+
 	let result = refresh_project_members_usecase.refresh_projection_from_events().await;
 	assert!(result.is_ok(), "{}", result.err().unwrap());
 
@@ -127,7 +116,33 @@ async fn refresh_project_members_from_events(
 	)
 	.unwrap();
 
-	assert_eq!(members.len(), 2);
-	assert!(members.iter().map(|m| m.contributor_account()).contains(&contributor_account_1));
+	assert_eq!(members.len(), 1);
 	assert!(members.iter().map(|m| m.contributor_account()).contains(&contributor_account_2));
+}
+
+#[rstest]
+#[cfg_attr(not(feature = "with_component_tests"), ignore = "component test")]
+async fn refresh_lead_contributors_from_events(
+	filled_database: Arc<DatabaseClient>,
+	project_id: ProjectId,
+	contributor_account_1: ContributorAccount,
+) {
+	let refresh_lead_contributors_usecase = RefreshLeadContributors::new(
+		filled_database.clone(),
+		Arc::new(LeadContributorProjector::new(filled_database.clone())),
+		filled_database.clone(),
+	);
+
+	let result = refresh_lead_contributors_usecase.refresh_projection_from_events().await;
+	assert!(result.is_ok(), "{}", result.err().unwrap());
+
+	let lead_contributors =
+		marketplace_domain::LeadContributorProjectionRepository::list_by_project(
+			filled_database.as_ref(),
+			&project_id,
+		)
+		.unwrap();
+
+	assert_eq!(lead_contributors.len(), 1);
+	assert!(lead_contributors.iter().map(|m| m.account()).contains(&contributor_account_1));
 }

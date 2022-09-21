@@ -66,7 +66,7 @@ impl Client {
 
 		diesel::delete(diesel_table)
 			.execute(&*connection)
-			.map_err(|e| DatabaseError::Connection(e.into()))?;
+			.map_err(DatabaseError::Transaction)?;
 
 		Ok(())
 	}
@@ -86,7 +86,7 @@ impl Client {
 		diesel::insert_into(diesel_table)
 			.values(entry)
 			.execute(&*connection)
-			.map_err(|e| DatabaseError::Connection(e.into()))?;
+			.map_err(DatabaseError::Transaction)?;
 
 		Ok(())
 	}

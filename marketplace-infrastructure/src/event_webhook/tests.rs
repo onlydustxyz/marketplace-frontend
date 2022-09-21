@@ -70,7 +70,7 @@ fn webhook_event_serialize() {
 		id: ContributionId::from_str("0x123").unwrap(),
 	});
 
-	let webhook_event = WebhookEvent::new(event.clone());
+	let webhook_event = WebhookEvent::new(event);
 
 	let json = serde_json::to_string(&webhook_event).unwrap();
 

@@ -54,7 +54,6 @@ impl Storable for ContributionEvent {
 }
 
 #[fixture]
-#[once]
 fn database() -> Arc<DatabaseClient> {
 	dotenv().ok();
 	Arc::new(DatabaseClient::new(init_pool()))
@@ -91,9 +90,8 @@ fn now() -> NaiveDateTime {
 }
 
 #[fixture]
-#[once]
 fn filled_database(
-	database: &Arc<DatabaseClient>,
+	database: Arc<DatabaseClient>,
 	contributor_id: ContributorId,
 	now: NaiveDateTime,
 ) -> Arc<DatabaseClient> {
@@ -165,92 +163,29 @@ fn filled_database(
 		.expect("Unable to add events in event store");
 	}
 
-	database.clone()
-}
-
-#[fixture]
-fn refresh_contributions_usecase(
-	filled_database: &Arc<DatabaseClient>,
-	mut github_client: MockGithubClient,
-) -> RefreshContributions {
-	github_client.expect_find_issue_by_id().returning(|_, _| Ok(Default::default()));
-
-	Refresh::new(
-		filled_database.clone(),
-		Arc::new(ContributionProjector::new(
-			filled_database.clone(),
-			Arc::new(github_client),
-		)),
-		filled_database.clone(),
-	)
-}
-
-#[fixture]
-fn refresh_applications_usecase(filled_database: &Arc<DatabaseClient>) -> RefreshApplications {
-	Refresh::new(
-		filled_database.clone(),
-		Arc::new(ApplicationProjector::new(
-			filled_database.clone(),
-			Arc::new(RandomUuidGenerator),
-		)),
-		filled_database.clone(),
-	)
-}
-
-#[fixture]
-fn refresh_contributors_usecase(
-	filled_database: &Arc<DatabaseClient>,
-	mut github_client: MockGithubClient,
-	mut contributor_service: MockContributorService,
-) -> RefreshContributors {
-	github_client.expect_find_user_by_id().returning(|_| Ok(Default::default()));
-	contributor_service
-		.expect_contributor_by_id()
-		.returning(|_| Ok(Default::default()));
-
-	Refresh::new(
-		filled_database.clone(),
-		Arc::new(ContributorProjector::new(
-			Arc::new(github_client),
-			filled_database.clone(),
-			Arc::new(contributor_service),
-		)),
-		filled_database.clone(),
-	)
-}
-
-#[fixture]
-fn refresh_projects_usecase(
-	filled_database: &Arc<DatabaseClient>,
-	mut github_client: MockGithubClient,
-	project: ProjectProjection,
-) -> RefreshProjects {
-	github_client.expect_find_repository_by_id().returning(move |_| {
-		Ok(GithubRepo {
-			project_id: project.id,
-			owner: project.owner.clone(),
-			name: project.name.clone(),
-			..Default::default()
-		})
-	});
-
-	Refresh::new(
-		filled_database.clone(),
-		Arc::new(ProjectProjector::new(
-			Arc::new(github_client),
-			filled_database.clone(),
-		)),
-		filled_database.clone(),
-	)
+	database
 }
 
 #[rstest]
 #[cfg_attr(not(feature = "with_component_tests"), ignore = "component test")]
 async fn refresh_contributions_from_events(
-	refresh_contributions_usecase: RefreshContributions,
-	filled_database: &Arc<DatabaseClient>,
+	filled_database: Arc<DatabaseClient>,
+	mut github_client: MockGithubClient,
 	project: ProjectProjection,
 ) {
+	let refresh_contributions_usecase: RefreshContributions = {
+		github_client.expect_find_issue_by_id().returning(|_, _| Ok(Default::default()));
+
+		Refresh::new(
+			filled_database.clone(),
+			Arc::new(ContributionProjector::new(
+				filled_database.clone(),
+				Arc::new(github_client),
+			)),
+			filled_database.clone(),
+		)
+	};
+
 	let result = refresh_contributions_usecase.refresh_projection_from_events().await;
 	assert!(result.is_ok(), "{}", result.err().unwrap());
 
@@ -285,10 +220,20 @@ async fn refresh_contributions_from_events(
 #[rstest]
 #[cfg_attr(not(feature = "with_component_tests"), ignore = "component test")]
 async fn refresh_applications_from_events(
-	refresh_applications_usecase: RefreshApplications,
-	filled_database: &Arc<DatabaseClient>,
+	filled_database: Arc<DatabaseClient>,
 	contributor_id: ContributorId,
 ) {
+	let refresh_applications_usecase: RefreshApplications = {
+		Refresh::new(
+			filled_database.clone(),
+			Arc::new(ApplicationProjector::new(
+				filled_database.clone(),
+				Arc::new(RandomUuidGenerator),
+			)),
+			filled_database.clone(),
+		)
+	};
+
 	let result = refresh_applications_usecase.refresh_projection_from_events().await;
 	assert!(result.is_ok(), "{}", result.err().unwrap());
 
@@ -296,15 +241,38 @@ async fn refresh_applications_from_events(
 		.list_by_contributor(Some(contributor_id))
 		.expect("Unable to read projection table");
 
-	assert_eq!(2, applications.len());
+	println!("{applications:?}");
+
+	assert_eq!(applications.len(), 2);
 }
 
 #[rstest]
 #[cfg_attr(not(feature = "with_component_tests"), ignore = "component test")]
 async fn refresh_projects_from_events(
-	refresh_projects_usecase: RefreshProjects,
-	filled_database: &Arc<DatabaseClient>,
+	filled_database: Arc<DatabaseClient>,
+	mut github_client: MockGithubClient,
+	project: ProjectProjection,
 ) {
+	let refresh_projects_usecase: RefreshProjects = {
+		github_client.expect_find_repository_by_id().returning(move |_| {
+			Ok(GithubRepo {
+				project_id: project.id,
+				owner: project.owner.clone(),
+				name: project.name.clone(),
+				..Default::default()
+			})
+		});
+
+		Refresh::new(
+			filled_database.clone(),
+			Arc::new(ProjectProjector::new(
+				Arc::new(github_client),
+				filled_database.clone(),
+			)),
+			filled_database.clone(),
+		)
+	};
+
 	let result = refresh_projects_usecase.refresh_projection_from_events().await;
 	assert!(result.is_ok(), "{}", result.err().unwrap());
 
@@ -318,10 +286,28 @@ async fn refresh_projects_from_events(
 #[rstest]
 #[cfg_attr(not(feature = "with_component_tests"), ignore = "component test")]
 async fn refresh_contributors_from_events(
-	refresh_contributors_usecase: RefreshContributors,
-	filled_database: &Arc<DatabaseClient>,
+	filled_database: Arc<DatabaseClient>,
+	mut github_client: MockGithubClient,
 	contributor_id: ContributorId,
+	mut contributor_service: MockContributorService,
 ) {
+	let refresh_contributors_usecase: RefreshContributors = {
+		github_client.expect_find_user_by_id().returning(|_| Ok(Default::default()));
+		contributor_service
+			.expect_contributor_by_id()
+			.returning(|_| Ok(Default::default()));
+
+		Refresh::new(
+			filled_database.clone(),
+			Arc::new(ContributorProjector::new(
+				Arc::new(github_client),
+				filled_database.clone(),
+				Arc::new(contributor_service),
+			)),
+			filled_database.clone(),
+		)
+	};
+
 	let result = refresh_contributors_usecase.refresh_projection_from_events().await;
 	assert!(result.is_ok(), "{}", result.err().unwrap());
 
