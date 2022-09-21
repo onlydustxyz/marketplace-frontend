@@ -70,15 +70,13 @@ impl<OBS: BlockchainObserver> ConnectedClient<OBS> {
 		ID: Into<IndexerId>,
 	{
 		let indexer_id: IndexerId = indexer_id.into();
-		let mut indexer = match self.indexer_repository.find_by_id(&indexer_id) {
-			Ok(indexer) => indexer,
-			Err(IndexerRepositoryError::NotFound) => Indexer::new(indexer_id, 0),
+		let starting_sequence = match self.indexer_repository.find_by_id(&indexer_id) {
+			Ok(indexer) => indexer.index_head + 1,
+			Err(IndexerRepositoryError::NotFound) => 0,
 			Err(error) => return Err(error.into()),
 		};
 
-		let request = StreamMessagesRequest {
-			starting_sequence: indexer.index_head,
-		};
+		let request = StreamMessagesRequest { starting_sequence };
 
 		let mut response_stream = self
 			.node_client
@@ -96,9 +94,16 @@ impl<OBS: BlockchainObserver> ConnectedClient<OBS> {
 				.with_error_logged()?
 				.and_then(|response| response.message)
 			{
+				let sequence = match &message {
+					ResponseMessage::Data(data) => Some(data.sequence),
+					_ => None,
+				};
+
 				callback(message).await?;
-				indexer.index_head += 1;
-				self.indexer_repository.store(indexer.clone())?;
+
+				if let Some(sequence) = sequence {
+					self.indexer_repository.store(Indexer::new(indexer_id.clone(), sequence))?;
+				}
 			}
 		}
 	}
