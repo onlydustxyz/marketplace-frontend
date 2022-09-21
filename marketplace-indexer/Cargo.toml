@@ -30,7 +30,7 @@ serde = { version = "1.0.137", features = ["derive"] }
 serde_json = "1.0.81"
 
 # Web client
-tonic = "0.7.2"
+tonic = { version = "0.7.2", features = ["tls", "tls-roots"] }
 reqwest = { version = "0.11", default-features = false }
 
 # Datetime
