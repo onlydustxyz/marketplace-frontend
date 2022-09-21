@@ -91,7 +91,7 @@ fn build_event(
 		index,
 		from_address: HexPrefixedString::try_from_bytes(event.from_address)
 			.map_err(super::Error::Invalid)?,
-		selector: event.keys[0].clone(),
+		selector: event.keys.first().cloned().unwrap_or_default(),
 		data: event.data.into(),
 	};
 
