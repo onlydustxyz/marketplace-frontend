@@ -1,35 +1,39 @@
 use super::models;
 use crate::domain::{Indexer, IndexerId, IndexerRepository, IndexerRepositoryError};
 use anyhow::anyhow;
-use diesel::prelude::*;
-use marketplace_infrastructure::database::{
-	schema::indexers::dsl, Client as DatabaseClient, DatabaseError,
-};
+use diesel::{prelude::*, result::Error as DieselError};
+use log::error;
+use marketplace_infrastructure::database::{schema::indexers::dsl, Client as DatabaseClient};
 
 impl IndexerRepository for DatabaseClient {
 	fn store(&self, indexer: Indexer) -> Result<(), IndexerRepositoryError> {
-		let connection = self
-			.connection()
-			.map_err(|e| IndexerRepositoryError::Infrastructure(anyhow!(e)))?;
+		let connection = self.connection().map_err(|e| {
+			error!("Unable to acquire connection from pool: {e}");
+			IndexerRepositoryError::Infrastructure(anyhow!(e))
+		})?;
 
 		let indexer: models::Indexer = indexer.into();
 		diesel::insert_into(dsl::indexers)
 			.values(&indexer)
 			.execute(&*connection)
-			.map_err(|e| IndexerRepositoryError::Infrastructure(anyhow!(e)))?;
+			.map_err(|e| {
+				error!("Failed while storing indexer in database: {e}");
+				IndexerRepositoryError::Infrastructure(anyhow!(e))
+			})?;
 
 		Ok(())
 	}
 
 	fn find_by_id(&self, indexer_id: &IndexerId) -> Result<Indexer, IndexerRepositoryError> {
-		let connection = self
-			.connection()
-			.map_err(|e| IndexerRepositoryError::Infrastructure(anyhow!(e)))?;
+		let connection = self.connection().map_err(|e| {
+			error!("Unable to acquire connection from pool: {e}");
+			IndexerRepositoryError::Infrastructure(anyhow!(e))
+		})?;
 
 		let indexer: models::Indexer = dsl::indexers
 			.find(indexer_id.to_string())
 			.get_result(&*connection)
-			.map_err(|e| IndexerRepositoryError::Infrastructure(anyhow!(e)))?;
+			.map_err(IndexerRepositoryError::from)?;
 
 		Ok(indexer.into())
 	}
@@ -53,14 +57,14 @@ impl From<models::Indexer> for Indexer {
 	}
 }
 
-impl From<DatabaseError> for IndexerRepositoryError {
-	fn from(error: DatabaseError) -> Self {
+impl From<DieselError> for IndexerRepositoryError {
+	fn from(error: DieselError) -> Self {
 		match error {
-			DatabaseError::Transaction(error) => match error {
-				diesel::NotFound => Self::NotFound,
-				_ => Self::Infrastructure(anyhow!(error)),
+			DieselError::NotFound => Self::NotFound,
+			_ => {
+				error!("Database error: {error}");
+				Self::Infrastructure(anyhow!(error))
 			},
-			_ => Self::Infrastructure(anyhow!(error)),
 		}
 	}
 }

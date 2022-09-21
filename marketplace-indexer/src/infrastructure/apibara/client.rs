@@ -8,9 +8,8 @@ use crate::domain::{
 	BlockchainObserver, Indexer, IndexerId, IndexerRepository, IndexerRepositoryError,
 };
 use futures::Future;
-use tokio::sync::RwLock;
-
 use thiserror::Error;
+use tokio::sync::RwLock;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -81,18 +80,40 @@ impl<OBS: BlockchainObserver> ConnectedClient<OBS> {
 			starting_sequence: indexer.index_head,
 		};
 
-		let mut response_stream =
-			self.node_client.write().await.stream_messages(request).await?.into_inner();
+		let mut response_stream = self
+			.node_client
+			.write()
+			.await
+			.stream_messages(request)
+			.await
+			.with_error_logged()?
+			.into_inner();
 
 		loop {
-			if let Some(message) =
-				response_stream.message().await?.and_then(|response| response.message)
+			if let Some(message) = response_stream
+				.message()
+				.await
+				.with_error_logged()?
+				.and_then(|response| response.message)
 			{
 				callback(message).await?;
 				indexer.index_head += 1;
 				self.indexer_repository.store(indexer.clone())?;
 			}
 		}
+	}
+}
+
+trait WithErrorLog {
+	fn with_error_logged(self) -> Self;
+}
+
+impl<T, E: std::fmt::Display> WithErrorLog for Result<T, E> {
+	fn with_error_logged(self) -> Self {
+		self.map_err(|error| {
+			log::error!("{error}");
+			error
+		})
 	}
 }
 
