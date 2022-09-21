@@ -39,7 +39,7 @@ impl ContributorProjector {
 
 			let user = self.github_client.find_user_by_id(contributor.github_identifier).await?;
 
-			self.contributor_projection_repository.store(ContributorProjection {
+			self.contributor_projection_repository.insert(ContributorProjection {
 				id: contributor_id.clone(),
 				github_identifier: contributor.github_identifier,
 				github_username: user.name,
@@ -196,7 +196,7 @@ mod test {
 			});
 
 		contributor_projection_repository
-			.expect_store()
+			.expect_insert()
 			.times(1)
 			.with(eq(ContributorProjection {
 				id: contributor_id,
@@ -229,7 +229,7 @@ mod test {
 
 		contributor_service.expect_contributor_by_id().never();
 		github_client.expect_find_user_by_id().never();
-		contributor_projection_repository.expect_store().never();
+		contributor_projection_repository.expect_insert().never();
 
 		let projector = ContributorProjector::new(
 			Arc::new(github_client),

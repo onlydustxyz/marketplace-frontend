@@ -145,7 +145,7 @@ async fn on_contribution_created_event(
 		.returning(move |_, _| Ok(github_issue.clone()));
 
 	contribution_projection_repository
-		.expect_create()
+		.expect_insert()
 		.with(eq(contribution))
 		.returning(|_| Ok(()));
 

@@ -19,15 +19,24 @@ impl ProjectionRepository<LeadContributorProjection> for Client {
 }
 
 impl LeadContributorProjectionRepository for Client {
-	fn store(
+	fn insert(
 		&self,
 		lead_contributor: LeadContributorProjection,
 	) -> Result<(), LeadContributorProjectionRepositoryError> {
-		let lead_contributor: models::LeadContributor = lead_contributor.into();
-		self.insert(dsl::lead_contributors, &lead_contributor).map_err(|e| {
-			error!("Failed to insert lead_contributor {lead_contributor:?}: {e}");
-			LeadContributorProjectionRepositoryError::from(e)
-		})
+		let connection =
+			self.connection().map_err(LeadContributorProjectionRepositoryError::from)?;
+
+		let lead_contributor = models::LeadContributor::from(lead_contributor);
+
+		diesel::insert_into(dsl::lead_contributors)
+			.values(&lead_contributor)
+			.execute(&*connection)
+			.map_err(|e| {
+				error!("Failed to insert lead contributor {lead_contributor:?}: {e}");
+				DatabaseError::from(e)
+			})?;
+
+		Ok(())
 	}
 
 	fn delete(

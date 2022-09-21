@@ -22,7 +22,7 @@ fn get_contributor_contact_information_ok() {
 		discord_handle: Some(String::from("discord")),
 	};
 
-	<Client as ContactInformationRepository>::create(&client, contact_information.clone()).unwrap();
+	<Client as ContactInformationRepository>::upsert(&client, contact_information.clone()).unwrap();
 
 	let contact_information_service = ContactInformationServiceImplementation::new(
 		Arc::new(client) as Arc<dyn ContactInformationRepository>,

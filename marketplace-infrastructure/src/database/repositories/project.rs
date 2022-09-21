@@ -112,12 +112,18 @@ impl From<DatabaseError> for ProjectRepositoryError {
 }
 
 impl ProjectProjectionRepository for Client {
-	fn store(&self, project: ProjectProjection) -> Result<(), ProjectProjectionRepositoryError> {
-		let project: models::Project = project.into();
-		self.insert(dsl::projects, &project).map_err(|e| {
-			error!("Failed to insert project {project:?}: {e}");
-			ProjectProjectionRepositoryError::from(e)
-		})
+	fn insert(&self, project: ProjectProjection) -> Result<(), ProjectProjectionRepositoryError> {
+		let connection = self.connection().map_err(ProjectProjectionRepositoryError::from)?;
+		let project = models::Project::from(project);
+		diesel::insert_into(dsl::projects)
+			.values(&project)
+			.execute(&*connection)
+			.map_err(|e| {
+				error!("Failed to insert project {project:?}: {e}");
+				DatabaseError::from(e)
+			})?;
+
+		Ok(())
 	}
 
 	fn find_by_id(

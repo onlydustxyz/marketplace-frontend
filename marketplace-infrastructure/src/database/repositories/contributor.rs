@@ -5,15 +5,23 @@ use log::error;
 use marketplace_domain::*;
 
 impl ContributorProjectionRepository for Client {
-	fn store(
+	fn insert(
 		&self,
 		contributor: ContributorProjection,
 	) -> Result<(), ContributorProjectionRepositoryError> {
-		let contributor: models::Contributor = contributor.into();
-		self.insert(dsl::contributors, &contributor).map_err(|e| {
-			error!("Failed to insert contribution {contributor:?}: {e}");
-			ContributorProjectionRepositoryError::from(e)
-		})
+		let connection = self.connection().map_err(ContributorProjectionRepositoryError::from)?;
+
+		let contributor = models::Contributor::from(contributor);
+
+		diesel::insert_into(dsl::contributors)
+			.values(&contributor)
+			.execute(&*connection)
+			.map_err(|e| {
+				error!("Failed to insert contributor {contributor:?}: {e}");
+				DatabaseError::from(e)
+			})?;
+
+		Ok(())
 	}
 
 	fn find_by_id(

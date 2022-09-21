@@ -23,8 +23,8 @@ fn store_and_find() {
 		..Default::default()
 	};
 
-	<Client as ContributionProjectionRepository>::create(&client, contribution1.clone()).unwrap();
-	<Client as ContributionProjectionRepository>::create(&client, contribution2.clone()).unwrap();
+	<Client as ContributionProjectionRepository>::insert(&client, contribution1.clone()).unwrap();
+	<Client as ContributionProjectionRepository>::insert(&client, contribution2.clone()).unwrap();
 
 	let found_contribution =
 		<Client as ContributionProjectionRepository>::find_by_id(&client, &contribution1.id)
@@ -54,7 +54,7 @@ fn store_and_update_gate() {
 		project_id: project.id,
 		..Default::default()
 	};
-	<Client as ContributionProjectionRepository>::create(&client, contribution.clone()).unwrap();
+	<Client as ContributionProjectionRepository>::insert(&client, contribution.clone()).unwrap();
 	<Client as ContributionProjectionRepository>::update_gate(
 		&client,
 		contribution.id.clone(),

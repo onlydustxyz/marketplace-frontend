@@ -60,7 +60,7 @@ async fn project_gets_created_with_contribution(
 		.returning(move |_| Ok(cloned_repo.clone()));
 
 	project_projection_repository
-		.expect_store()
+		.expect_insert()
 		.with(eq(ProjectProjection {
 			id: repo.project_id,
 			owner: repo.owner,

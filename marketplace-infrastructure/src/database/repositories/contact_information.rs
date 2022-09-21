@@ -24,28 +24,29 @@ impl ContactInformationRepository for Client {
 		}
 	}
 
-	fn create(
+	fn upsert(
 		&self,
 		contact_information: ContactInformation,
 	) -> Result<(), ContactInformationRepositoryError> {
-		let contact_information = models::ContactInformation::from(contact_information);
-		self.insert(dsl::contact_information, &contact_information).map_err(|e| {
-			error!("Failed to insert contact_information {contact_information:?}: {e}");
-			ContactInformationRepositoryError::from(e)
-		})
-	}
-
-	fn update(
-		&self,
-		contact_information: ContactInformation,
-	) -> Result<(), ContactInformationRepositoryError> {
-		let connection = self.connection().map_err(ContactInformationRepositoryError::from)?;
+		let connection = self
+			.connection()
+			.map_err(|e| ContactInformationRepositoryError::Infrastructure(e.into()))?;
 
 		let contact_information = models::ContactInformation::from(contact_information);
-		diesel::update(dsl::contact_information.filter(dsl::id.eq(contact_information.id)))
-			.set(contact_information)
+
+		diesel::insert_into(dsl::contact_information)
+			.values(&contact_information)
+			.on_conflict(dsl::contributor_id)
+			.do_update()
+			.set(dsl::discord_handle.eq(&contact_information.discord_handle))
 			.execute(&*connection)
-			.map_err(DatabaseError::from)?;
+			.map_err(|e| {
+				error!(
+					"Failed to set discord handle contact_information {contact_information:?}: {e}"
+				);
+				DatabaseError::from(e)
+			})?;
+
 		Ok(())
 	}
 }

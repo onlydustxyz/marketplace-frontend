@@ -190,7 +190,7 @@ async fn refresh_contributions_from_events(
 	assert!(result.is_ok(), "{}", result.err().unwrap());
 
 	// add project - needed for the GET call below
-	ProjectProjectionRepository::store(&*filled_database.clone(), project)
+	ProjectProjectionRepository::insert(&*filled_database.clone(), project)
 		.expect("Unable to insert project in repository");
 
 	let projection = filled_database

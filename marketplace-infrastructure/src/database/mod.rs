@@ -11,13 +11,9 @@ pub use error::Error as DatabaseError;
 
 use diesel::{
 	associations::HasTable,
-	insertable::CanInsertInSingleQuery,
-	pg::{upsert::on_constraint, Pg},
-	query_builder::{
-		AsChangeset, AsQuery, IntoUpdateTarget, QueryFragment, QueryId, UndecoratedInsertRecord,
-		UpdateStatement,
-	},
-	Insertable, PgConnection, QuerySource, RunQueryDsl, Table,
+	pg::Pg,
+	query_builder::{IntoUpdateTarget, QueryFragment, QueryId},
+	PgConnection, QuerySource, RunQueryDsl,
 };
 use log::error;
 use r2d2;
@@ -68,69 +64,6 @@ impl Client {
 		let connection = self.connection()?;
 
 		diesel::delete(diesel_table)
-			.execute(&*connection)
-			.map_err(DatabaseError::Transaction)?;
-
-		Ok(())
-	}
-
-	fn insert<T: Table, U: Insertable<T>>(&self, target: T, records: U) -> Result<(), DatabaseError>
-	where
-		<T as QuerySource>::FromClause: QueryFragment<Pg>,
-		<U as diesel::Insertable<T>>::Values: CanInsertInSingleQuery<Pg>,
-		<U as diesel::Insertable<T>>::Values: QueryFragment<Pg>,
-	{
-		let connection = self.connection()?;
-
-		diesel::insert_into(target)
-			.values(records)
-			.execute(&*connection)
-			.map_err(DatabaseError::Transaction)?;
-
-		Ok(())
-	}
-
-	fn update<T: Table, U: IntoUpdateTarget + HasTable<Table = T>, V>(
-		&self,
-		identifiable: U,
-		values: V,
-	) -> Result<(), DatabaseError>
-	where
-		V: AsChangeset<Target = T>,
-		UpdateStatement<T, U, V::Changeset>: AsQuery,
-		<T as QuerySource>::FromClause: QueryFragment<Pg>,
-		<V as AsChangeset>::Changeset: QueryFragment<Pg>,
-		<U as diesel::query_builder::IntoUpdateTarget>::WhereClause: QueryFragment<Pg>,
-	{
-		let connection = self.connection()?;
-
-		diesel::update(identifiable)
-			.set(values)
-			.execute(&*connection)
-			.map_err(DatabaseError::Transaction)?;
-
-		Ok(())
-	}
-
-	fn upsert<T: diesel::Table, U: Insertable<T> + AsChangeset<Target = T> + Copy>(
-		&self,
-		target: T,
-		records: U,
-	) -> Result<(), DatabaseError>
-	where
-		<T as QuerySource>::FromClause: QueryFragment<Pg>,
-		<U as diesel::Insertable<T>>::Values: CanInsertInSingleQuery<Pg>,
-		<U as diesel::Insertable<T>>::Values: QueryFragment<Pg>,
-		<U as diesel::Insertable<T>>::Values: UndecoratedInsertRecord<T>,
-		<U as AsChangeset>::Changeset: QueryFragment<Pg>,
-	{
-		let connection = self.connection()?;
-
-		diesel::insert_into(target)
-			.values(records)
-			.on_conflict(on_constraint("id"))
-			.do_update()
-			.set(records)
 			.execute(&*connection)
 			.map_err(DatabaseError::Transaction)?;
 
