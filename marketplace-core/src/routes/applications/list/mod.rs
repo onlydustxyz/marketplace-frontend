@@ -1,6 +1,3 @@
-#[cfg(test)]
-mod tests;
-
 use http_api_problem::HttpApiProblem;
 use itertools::Itertools;
 use marketplace_core::dto;

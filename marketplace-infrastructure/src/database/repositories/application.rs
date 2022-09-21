@@ -12,7 +12,7 @@ use mapinto::ResultMapErrInto;
 use marketplace_domain::*;
 
 impl ApplicationProjectionRepository for Client {
-	fn create(
+	fn insert(
 		&self,
 		application: ApplicationProjection,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
@@ -27,19 +27,34 @@ impl ApplicationProjectionRepository for Client {
 		&self,
 		application: ApplicationProjection,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 		let application = models::Application::from(application);
-		diesel::update(dsl::applications.filter(dsl::id.eq(application.id)))
-			.set(&application)
-			.execute(&*connection)
-			.map_err(|e| {
-				error!(
-					"Failed to update application with id {} to {application:?}: {e}",
-					application.id
-				);
-				DatabaseError::from(e)
-			})?;
-		Ok(())
+		self.update(&application, &application).map_err(|e| {
+			error!(
+				"Failed to update application with id {} to {application:?}: {e}",
+				application.id
+			);
+			ApplicationProjectionRepositoryError::from(e)
+		})
+	}
+
+	fn update_status(
+		&self,
+		contribution_id: &ContributionId,
+		contributor_id: &ContributorId,
+		status: ApplicationStatus,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		self.update(
+			dsl::applications
+				.filter(dsl::contribution_id.eq(contribution_id.to_string()))
+				.filter(dsl::contributor_id.eq(contributor_id.to_string())),
+			dsl::status.eq(status.to_string()),
+		)
+		.map_err(|e| {
+			error!(
+				"Failed to set status of application of contributor with id {contributor_id} to contirbution with id {contribution_id} to {status}: {e}",
+			);
+			ApplicationProjectionRepositoryError::from(e)
+		})
 	}
 
 	fn find(

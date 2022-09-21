@@ -1,6 +1,6 @@
 use crate::*;
 use async_trait::async_trait;
-use chrono::{NaiveDateTime, Utc};
+use chrono::NaiveDateTime;
 use log::error;
 use std::sync::Arc;
 
@@ -26,22 +26,14 @@ impl ApplicationProjector {
 		contributor_id: &ContributorId,
 		applied_at: &NaiveDateTime,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		let previous_application = self
-			.application_projection_repository
-			.find_by_contribution_and_contributor(contribution_id, contributor_id)?;
-		match previous_application {
-			Some(application) =>
-				self.application_projection_repository.update(application.into_pending()),
-			None => {
-				let application = ApplicationProjection::new(
-					self.uuid_generator.new_uuid().into(),
-					contribution_id.clone(),
-					contributor_id.clone(),
-					*applied_at,
-				);
-				self.application_projection_repository.create(application)
-			},
-		}
+		let application = ApplicationProjection::new(
+			self.uuid_generator.new_uuid().into(),
+			contribution_id.clone(),
+			contributor_id.clone(),
+			*applied_at,
+		);
+
+		self.application_projection_repository.insert(application)
 	}
 
 	fn on_application_refused(
@@ -49,23 +41,11 @@ impl ApplicationProjector {
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		let previous_application = self
-			.application_projection_repository
-			.find_by_contribution_and_contributor(contribution_id, contributor_id)?;
-		match previous_application {
-			Some(application) =>
-				self.application_projection_repository.update(application.into_refused()),
-			None => {
-				let application = ApplicationProjection::new(
-					self.uuid_generator.new_uuid().into(),
-					contribution_id.clone(),
-					contributor_id.clone(),
-					Utc::now().naive_utc(),
-				)
-				.into_refused();
-				self.application_projection_repository.create(application)
-			},
-		}
+		self.application_projection_repository.update_status(
+			contribution_id,
+			contributor_id,
+			ApplicationStatus::Refused,
+		)
 	}
 
 	fn on_assigned(
@@ -73,23 +53,11 @@ impl ApplicationProjector {
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		let previous_application = self
-			.application_projection_repository
-			.find_by_contribution_and_contributor(contribution_id, contributor_id)?;
-		match previous_application {
-			Some(application) =>
-				self.application_projection_repository.update(application.into_accepted()),
-			None => {
-				let application = ApplicationProjection::new(
-					self.uuid_generator.new_uuid().into(),
-					contribution_id.clone(),
-					contributor_id.clone(),
-					Utc::now().naive_utc(),
-				)
-				.into_accepted();
-				self.application_projection_repository.create(application)
-			},
-		}
+		self.application_projection_repository.update_status(
+			contribution_id,
+			contributor_id,
+			ApplicationStatus::Accepted,
+		)
 	}
 }
 
@@ -231,7 +199,7 @@ mod tests {
 			.returning(move |_, _| Ok(None));
 		application_projection_repository.expect_update().never();
 		application_projection_repository
-			.expect_create()
+			.expect_insert()
 			.with(eq(ApplicationProjection::new(
 				application_id,
 				contribution_id.clone(),
@@ -313,7 +281,7 @@ mod tests {
 			.returning(move |_, _| Ok(None));
 		application_projection_repository.expect_update().never();
 		application_projection_repository
-			.expect_create()
+			.expect_insert()
 			.withf(|application| &ApplicationStatus::Refused == application.status())
 			.once()
 			.in_sequence(&mut repository_sequence)
@@ -390,7 +358,7 @@ mod tests {
 
 		application_projection_repository.expect_update().never();
 		application_projection_repository
-			.expect_create()
+			.expect_insert()
 			.withf(|application| &ApplicationStatus::Accepted == application.status())
 			.once()
 			.in_sequence(&mut repository_sequence)
