@@ -10,8 +10,6 @@ pub enum Error {
 	GithubRepo(#[from] GithubClientError),
 	#[error(transparent)]
 	ContributorProjectionRepository(#[from] ContributorProjectionRepositoryError),
-	#[error(transparent)]
-	ContributorService(#[from] ContributorServiceError),
 }
 
 pub struct ContributorProjector {

@@ -1,2 +1,1 @@
 mod contribution;
-mod contributor;
