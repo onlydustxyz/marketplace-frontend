@@ -1,24 +1,34 @@
-use slog::{o, Drain, Logger};
+use slog::{o, Drain, Logger, Never, SendSyncRefUnwindSafeDrain};
+use slog_scope::GlobalLoggerGuard;
 
 mod r#async;
 mod env;
 mod json;
 mod terminal;
 
-pub fn init() {
-	slog_scope::set_global_logger(create()).cancel_reset();
+pub fn set_default_global_logger() -> GlobalLoggerGuard {
+	let logger = create_root_logger(default_drain());
+	set_global_logger(logger)
 }
 
-fn create() -> Logger {
-	let async_drain = match std::env::var("LOGS") {
-		Ok(logs) if &logs == "terminal" => r#async::drain(terminal::drain()),
-		_ => r#async::drain(json::drain()),
-	}
-	.fuse();
+pub fn set_global_logger(logger: Logger) -> GlobalLoggerGuard {
+	slog_scope::set_global_logger(logger)
+}
 
-	slog_stdlog::init().unwrap();
-	Logger::root(
-		env::drain(async_drain),
-		o!("version" => env!("CARGO_PKG_VERSION")),
+pub fn default_drain() -> impl Drain<Ok = (), Err = Never> {
+	env::drain(
+		match std::env::var("LOGS") {
+			Ok(logs) if &logs == "terminal" => r#async::drain(terminal::drain()),
+			_ => r#async::drain(json::drain()),
+		}
+		.fuse(),
 	)
+}
+
+pub fn create_root_logger<D>(drain: D) -> Logger
+where
+	D: 'static + SendSyncRefUnwindSafeDrain<Err = Never, Ok = ()> + std::panic::UnwindSafe,
+{
+	slog_stdlog::init().unwrap();
+	Logger::root(drain, o!("version" => env!("CARGO_PKG_VERSION")))
 }
