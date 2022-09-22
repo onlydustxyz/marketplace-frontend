@@ -5,7 +5,7 @@ use log::info;
 use marketplace_core::application::*;
 use marketplace_infrastructure::{
 	database::{self, init_pool},
-	github, logger, starknet,
+	github, logger, starknet, starknet_account_verifier,
 };
 
 use marketplace_domain::*;
@@ -41,10 +41,13 @@ async fn main() {
 	database.run_migrations().expect("Unable to run database migrations");
 
 	let starknet = Arc::new(starknet::Client::default());
+	let starknet_account_verifier = Arc::new(starknet_account_verifier::StarkNetClient::new());
 
 	let github_client = Arc::new(github::Client::new());
 	let uuid_generator = Arc::new(RandomUuidGenerator);
 	let contribution_repository: AggregateRootRepository<Contribution> =
+		AggregateRootRepository::new(database.clone());
+	let contributor_repository: AggregateRootRepository<ContributorAggregate> =
 		AggregateRootRepository::new(database.clone());
 	let contact_information_service = Arc::new(ContactInformationServiceImplementation::new(
 		database.clone(),
@@ -54,7 +57,9 @@ async fn main() {
 		rocket::build(),
 		database.clone(),
 		starknet,
+		starknet_account_verifier,
 		contribution_repository,
+		contributor_repository,
 		contact_information_service,
 		uuid_generator,
 		github_client.clone(),
@@ -89,6 +94,7 @@ async fn main() {
 			routes::refresh_contributions,
 			routes::contributors::refresh_contributors,
 			routes::contributors::get_contributor,
+			routes::contributors::associate_github_account,
 			routes::contact_information::find_contact_information,
 			routes::contact_information::put_contact_information,
 			marketplace_signup::routes::register_github_user,
@@ -107,7 +113,9 @@ fn inject_app(
 	rocket: Rocket<Build>,
 	database: Arc<database::Client>,
 	starknet: Arc<starknet::SingleAdminClient>,
+	starknet_account_verifier: Arc<starknet_account_verifier::StarkNetClient>,
 	contribution_repository: AggregateRootRepository<Contribution>,
+	contributor_repository: AggregateRootRepository<ContributorAggregate>,
 	contact_information_service: Arc<dyn ContactInformationService>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 	github_client: Arc<github::Client>,
@@ -129,7 +137,7 @@ fn inject_app(
 	let lead_contributor_projector = Arc::new(LeadContributorProjector::new(database.clone()));
 
 	let contributor_projector = Arc::new(ContributorProjector::new(
-		github_client,
+		github_client.clone(),
 		database.clone(),
 		starknet.clone(),
 	));
@@ -155,7 +163,7 @@ fn inject_app(
 			contribution_repository,
 			database.clone(),
 			application_projector.clone(),
-			uuid_generator,
+			uuid_generator.clone(),
 		))
 		.manage(ValidateContribution::new_usecase_boxed(
 			starknet.clone(),
@@ -165,6 +173,14 @@ fn inject_app(
 			starknet,
 			database.clone(),
 			database.clone(),
+		))
+		.manage(AssociateGithubAccount::new_usecase_boxed(
+			contributor_repository,
+			database.clone(),
+			starknet_account_verifier,
+			github_client,
+			contributor_projector.clone(),
+			uuid_generator,
 		))
 		.manage(RefreshContributions::new(
 			database.clone(),

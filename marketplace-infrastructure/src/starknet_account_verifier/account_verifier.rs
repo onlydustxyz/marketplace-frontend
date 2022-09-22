@@ -38,7 +38,7 @@ impl OnChainAccountVerifier for StarkNetClient {
 		account_address: &ContributorAccount,
 	) -> Result<(), OnChainAccountVerifierError> {
 		let contract_address = HexFieldElement::try_from(account_address.clone())
-			.map_err(|e| OnChainAccountVerifierError::Infrastructure(e))?;
+			.map_err(|e| OnChainAccountVerifierError::Infrastructure(e.into()))?;
 
 		self.sequencer
 			.call_contract(
