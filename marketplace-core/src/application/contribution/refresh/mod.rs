@@ -7,4 +7,4 @@ pub type RefreshProjects = Refresh<ProjectProjection>;
 pub type RefreshContributors = Refresh<ContributorProjection>;
 
 #[cfg(test)]
-mod test;
+mod tests;

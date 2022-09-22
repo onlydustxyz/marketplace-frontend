@@ -8,7 +8,6 @@ pub struct Application {
 	pub id: String,
 	pub contribution_id: String,
 	pub contributor_id: String,
-	pub status: String,
 }
 
 impl From<domain::ApplicationProjection> for Application {
@@ -17,7 +16,6 @@ impl From<domain::ApplicationProjection> for Application {
 			id: application.id().to_string(),
 			contribution_id: application.contribution_id().to_string(),
 			contributor_id: application.contributor_id().to_string(),
-			status: application.status().to_string(),
 		}
 	}
 }

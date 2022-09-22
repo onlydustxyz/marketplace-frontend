@@ -1,14 +1,4 @@
 table! {
-	applications (id) {
-		id -> Uuid,
-		contribution_id -> Text,
-		contributor_id -> Text,
-		status -> Text,
-		applied_at -> Timestamp,
-	}
-}
-
-table! {
 	contact_information (id) {
 		id -> Uuid,
 		contributor_id -> Varchar,
@@ -78,6 +68,15 @@ table! {
 }
 
 table! {
+	pending_applications (id) {
+		id -> Uuid,
+		contribution_id -> Text,
+		contributor_id -> Text,
+		applied_at -> Timestamp,
+	}
+}
+
+table! {
 	project_members (project_id, contributor_account) {
 		project_id -> Text,
 		contributor_account -> Text,
@@ -96,7 +95,6 @@ table! {
 }
 
 allow_tables_to_appear_in_same_query!(
-	applications,
 	contact_information,
 	contributions,
 	contributors,
@@ -104,6 +102,7 @@ allow_tables_to_appear_in_same_query!(
 	events,
 	indexers,
 	lead_contributors,
+	pending_applications,
 	project_members,
 	projects,
 );
