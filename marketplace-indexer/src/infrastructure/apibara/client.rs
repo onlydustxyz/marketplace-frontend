@@ -8,6 +8,7 @@ use crate::domain::{
 	BlockchainObserver, Indexer, IndexerId, IndexerRepository, IndexerRepositoryError,
 };
 use futures::Future;
+use std::time::Duration;
 use thiserror::Error;
 use tokio::sync::RwLock;
 
@@ -43,7 +44,11 @@ impl<OBS: BlockchainObserver> Client<OBS> {
 	}
 
 	pub async fn connect(self) -> Result<ConnectedClient<OBS>, Error> {
-		let node_client = NodeClient::connect(self.node_url).await?;
+		let channel = tonic::transport::Endpoint::new(self.node_url)?
+			.http2_keep_alive_interval(keep_alive_interval())
+			.connect()
+			.await?;
+		let node_client = NodeClient::new(channel);
 		self.observer.on_connect().await;
 		Ok(ConnectedClient {
 			node_client: RwLock::new(node_client),
@@ -51,6 +56,14 @@ impl<OBS: BlockchainObserver> Client<OBS> {
 			indexer_repository: self.indexer_repository,
 		})
 	}
+}
+
+fn keep_alive_interval() -> Duration {
+	let interval = std::env::var("HTTP2_KEEPALIVE_INTERVAL")
+		.ok()
+		.and_then(|interval| interval.parse::<u64>().ok())
+		.unwrap_or(5);
+	Duration::from_secs(interval)
 }
 
 pub struct ConnectedClient<OBS: BlockchainObserver> {
