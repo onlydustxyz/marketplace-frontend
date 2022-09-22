@@ -17,33 +17,36 @@ pub enum Error {
 pub struct ContributorProjector {
 	github_client: Arc<dyn GithubClient>,
 	contributor_projection_repository: Arc<dyn ContributorProjectionRepository>,
-	contributor_service: Arc<dyn ContributorService>,
 }
 
 impl ContributorProjector {
 	pub fn new(
 		github_client: Arc<dyn GithubClient>,
 		contributor_projection_repository: Arc<dyn ContributorProjectionRepository>,
-		contributor_service: Arc<dyn ContributorService>,
 	) -> Self {
 		Self {
 			github_client,
 			contributor_projection_repository,
-			contributor_service,
 		}
 	}
 
-	async fn add_contributor(&self, contributor_id: &ContributorId) -> Result<(), Error> {
-		if self.contributor_projection_repository.find_by_id(contributor_id).is_err() {
-			let contributor = self.contributor_service.contributor_by_id(contributor_id).await?;
+	async fn add_contributor(
+		&self,
+		contributor_account: &ContributorAccount,
+		github_identifier: &GithubUserId,
+	) -> Result<(), Error> {
+		// Temporary, until we get rid of contributor_id
+		let contributor_id =
+			ContributorId::from(HexPrefixedString::from(contributor_account.clone()));
 
-			let user = self.github_client.find_user_by_id(contributor.github_identifier).await?;
+		if self.contributor_projection_repository.find_by_id(&contributor_id).is_err() {
+			let user = self.github_client.find_user_by_id(github_identifier.clone()).await?;
 
 			self.contributor_projection_repository.insert(ContributorProjection {
-				id: contributor_id.clone(),
-				github_identifier: contributor.github_identifier,
+				id: contributor_id,
+				github_identifier: github_identifier.clone(),
 				github_username: user.name,
-				account: contributor.account,
+				account: contributor_account.clone(),
 			})?;
 		}
 
@@ -55,23 +58,13 @@ impl ContributorProjector {
 impl EventListener for ContributorProjector {
 	async fn on_event(&self, event: &Event) {
 		let result = match event {
-			Event::Contribution(contribution_event) => match contribution_event {
-				ContributionEvent::Applied {
-					id: _,
-					contributor_id,
-					applied_at: _,
-				}
-				| ContributionEvent::Claimed {
-					id: _,
-					contributor_id,
-				}
-				| ContributionEvent::Assigned {
-					id: _,
-					contributor_id,
-				} => self.add_contributor(contributor_id).await,
-				_ => return,
+			Event::Contributor(contributor_event) => match contributor_event {
+				ContributorEvent::GithubAccountAssociated {
+					contributor_account,
+					github_identifier,
+				} => self.add_contributor(contributor_account, github_identifier).await,
 			},
-			Event::Project(_) | Event::Contributor(_) => return,
+			Event::Project(_) | Event::Contribution(_) => return,
 		};
 
 		if let Err(error) = result {
@@ -84,7 +77,6 @@ impl EventListener for ContributorProjector {
 #[allow(clippy::too_many_arguments)]
 mod test {
 	use super::*;
-	use chrono::NaiveDate;
 	use mockall::predicate::eq;
 	use rstest::*;
 	use std::sync::Arc;
@@ -101,7 +93,7 @@ mod test {
 
 	#[fixture]
 	fn contributor_id() -> ContributorId {
-		"0x1234".parse().unwrap()
+		"0x4444".parse().unwrap()
 	}
 
 	#[fixture]
@@ -110,7 +102,7 @@ mod test {
 	}
 
 	#[fixture]
-	fn github_user_id() -> GithubUserId {
+	fn github_identifier() -> GithubUserId {
 		1234
 	}
 
@@ -120,48 +112,26 @@ mod test {
 	}
 
 	#[fixture]
-	fn contribution_applied_event(contributor_id: ContributorId) -> Event {
-		Event::Contribution(ContributionEvent::Applied {
-			id: Default::default(),
-			contributor_id,
-			applied_at: NaiveDate::from_ymd(2022, 9, 16).and_hms(14, 37, 11),
+	fn github_account_associated_event(
+		contributor_account: ContributorAccount,
+		github_identifier: GithubUserId,
+	) -> Event {
+		Event::Contributor(ContributorEvent::GithubAccountAssociated {
+			contributor_account,
+			github_identifier,
 		})
-	}
-
-	#[fixture]
-	fn contribution_assigned_event(contributor_id: ContributorId) -> Event {
-		Event::Contribution(ContributionEvent::Assigned {
-			id: Default::default(),
-			contributor_id,
-		})
-	}
-
-	#[fixture]
-	fn contribution_claimed_event(contributor_id: ContributorId) -> Event {
-		Event::Contribution(ContributionEvent::Claimed {
-			id: Default::default(),
-			contributor_id,
-		})
-	}
-
-	#[fixture]
-	fn contributor_service() -> MockContributorService {
-		MockContributorService::new()
 	}
 
 	#[rstest]
-	#[case(contribution_applied_event(contributor_id()))]
-	#[case(contribution_assigned_event(contributor_id()))]
-	#[case(contribution_claimed_event(contributor_id()))]
+	#[case(github_account_associated_event(contributor_account(), github_identifier()))]
 	async fn contributor_gets_created_with_contribution(
 		mut github_client: MockGithubClient,
 		mut contributor_projection_repository: MockContributorProjectionRepository,
-		mut contributor_service: MockContributorService,
 		#[case] event: Event,
-		github_user_id: GithubUserId,
+		github_identifier: GithubUserId,
 		github_username: String,
-		contributor_id: ContributorId,
 		contributor_account: ContributorAccount,
+		contributor_id: ContributorId,
 	) {
 		contributor_projection_repository
 			.expect_find_by_id()
@@ -169,28 +139,14 @@ mod test {
 			.times(1)
 			.returning(|_| Err(ContributorProjectionRepositoryError::NotFound));
 
-		let cloned_contributor_id = contributor_id.clone();
-		let cloned_contributor_account = contributor_account.clone();
-		contributor_service
-			.expect_contributor_by_id()
-			.times(1)
-			.with(eq(contributor_id.clone()))
-			.returning(move |_| {
-				Ok(Contributor {
-					id: cloned_contributor_id.clone(),
-					github_identifier: github_user_id,
-					account: cloned_contributor_account.clone(),
-				})
-			});
-
 		let cloned_github_username = github_username.clone();
 		github_client
 			.expect_find_user_by_id()
 			.times(1)
-			.with(eq(github_user_id))
+			.with(eq(github_identifier))
 			.returning(move |_| {
 				Ok(GithubUser {
-					id: github_user_id,
+					id: github_identifier,
 					name: cloned_github_username.clone(),
 				})
 			});
@@ -202,14 +158,13 @@ mod test {
 				id: contributor_id,
 				account: contributor_account,
 				github_username,
-				github_identifier: github_user_id,
+				github_identifier,
 			}))
 			.returning(|_| Ok(()));
 
 		let projector = ContributorProjector::new(
 			Arc::new(github_client),
 			Arc::new(contributor_projection_repository),
-			Arc::new(contributor_service),
 		);
 
 		projector.on_event(&event).await;
@@ -219,24 +174,21 @@ mod test {
 	async fn contributor_is_not_stored_if_already_present(
 		mut github_client: MockGithubClient,
 		mut contributor_projection_repository: MockContributorProjectionRepository,
-		mut contributor_service: MockContributorService,
-		contribution_applied_event: Event,
+		github_account_associated_event: Event,
 	) {
 		contributor_projection_repository
 			.expect_find_by_id()
 			.times(1)
 			.returning(|_| Ok(ContributorProjection::default()));
 
-		contributor_service.expect_contributor_by_id().never();
 		github_client.expect_find_user_by_id().never();
 		contributor_projection_repository.expect_insert().never();
 
 		let projector = ContributorProjector::new(
 			Arc::new(github_client),
 			Arc::new(contributor_projection_repository),
-			Arc::new(contributor_service),
 		);
 
-		projector.on_event(&contribution_applied_event).await;
+		projector.on_event(&github_account_associated_event).await;
 	}
 }

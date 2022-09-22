@@ -8,7 +8,7 @@ use dotenv::dotenv;
 use infrastructure::single_contract::SingleContract;
 use log::{error, info};
 use marketplace_domain::*;
-use marketplace_infrastructure::{database, event_webhook::EventWebHook, github, logger, starknet};
+use marketplace_infrastructure::{database, event_webhook::EventWebHook, github, logger};
 use std::sync::Arc;
 
 #[tokio::main]
@@ -42,14 +42,14 @@ fn apibara_node_url() -> String {
 
 fn build_event_observer(database: Arc<database::Client>) -> impl BlockchainObserver {
 	let github = Arc::new(github::Client::new());
-	let starknet = Arc::new(starknet::Client::default());
+	let uuid_generator = Arc::new(RandomUuidGenerator {});
 	let reqwest_client = reqwest::Client::new();
 
 	let contribution_projector = ContributionProjector::new(database.clone(), github.clone());
 	let application_projector = ApplicationProjector::new(database.clone());
 	let project_projector = ProjectProjector::new(github.clone(), database.clone());
 	let project_member_projector = ProjectMemberProjector::new(database.clone());
-	let contributor_projector = ContributorProjector::new(github, database.clone(), starknet);
+	let contributor_projector = ContributorProjector::new(github, database.clone());
 	let lead_contributors_projector = LeadContributorProjector::new(database.clone());
 
 	BlockchainObserverComposite::new(vec![

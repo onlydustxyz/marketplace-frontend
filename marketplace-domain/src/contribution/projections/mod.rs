@@ -10,6 +10,3 @@ pub use application::{
 
 mod project;
 pub use project::Project as ProjectProjection;
-
-mod contributor;
-pub use contributor::Contributor;

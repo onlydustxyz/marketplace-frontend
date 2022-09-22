@@ -139,7 +139,6 @@ fn inject_app(
 	let contributor_projector = Arc::new(ContributorProjector::new(
 		github_client.clone(),
 		database.clone(),
-		starknet.clone(),
 	));
 
 	rocket
