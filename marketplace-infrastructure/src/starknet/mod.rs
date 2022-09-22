@@ -1,5 +1,5 @@
 mod contracts;
-use contracts::{ContributionContract, ProfileContract, RegistryContract};
+use contracts::ContributionContract;
 
 mod model;
 
@@ -55,17 +55,13 @@ fn sequencer() -> SequencerGatewayProvider {
 }
 
 pub struct Client<A: Account + Sync + Send> {
-	registry: RegistryContract,
 	contributions: Arc<ContributionContract<A>>,
-	profile: ProfileContract,
 }
 
 impl<A: Account + Sync + Send + 'static> Client<A> {
 	pub fn new(account: Arc<A>) -> Self {
 		Self {
-			registry: RegistryContract::default(),
 			contributions: Arc::new(ContributionContract::new(account)),
-			profile: ProfileContract::default(),
 		}
 	}
 }
