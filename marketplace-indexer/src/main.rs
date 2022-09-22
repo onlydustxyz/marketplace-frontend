@@ -14,7 +14,7 @@ use std::sync::Arc;
 #[tokio::main]
 async fn main() {
 	dotenv().ok();
-	logger::init();
+	logger::set_default_global_logger().cancel_reset();
 	github::Client::initialize();
 
 	let database = Arc::new(database::Client::new(database::init_pool()));
