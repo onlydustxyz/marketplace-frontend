@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use crate::*;
 use thiserror::Error;
 
@@ -45,14 +47,16 @@ impl EventSourcable for Contributor {
 	}
 }
 
+impl AggregateRoot for Contributor {}
+
 impl Contributor {
-	pub async fn verify_github_association<V: OnChainAccountVerifier, G: GithubClient>(
+	pub async fn associate_github_account<S: Clone + Send + Sync>(
 		self,
-		account_verifier: V,
-		github_client: G,
+		account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
+		github_client: Arc<dyn GithubClient>,
 		authorization_code: String,
 		contributor_account: ContributorAccount,
-		signed_data: V::SignedData,
+		signed_data: S,
 	) -> Result<Vec<Event>, Error> {
 		account_verifier
 			.check_signature(&signed_data, &contributor_account)
@@ -75,7 +79,7 @@ impl Contributor {
 
 #[cfg(test)]
 mod test {
-	use std::str::FromStr;
+	use std::{str::FromStr, sync::Arc};
 
 	use crate::*;
 	use assert_matches::assert_matches;
@@ -130,7 +134,7 @@ mod test {
 	}
 
 	#[rstest]
-	async fn verify_github_association(contributor_account: ContributorAccount) {
+	async fn associate_github_account(contributor_account: ContributorAccount) {
 		let mut account_verifier = MockOnChainAccountVerifier::new();
 		let mut github_client = MockGithubClient::new();
 		let authorization_code = "thecode".to_string();
@@ -150,9 +154,9 @@ mod test {
 
 		let contributor = super::Contributor::from_events(&[]);
 		let result = contributor
-			.verify_github_association(
-				account_verifier,
-				github_client,
+			.associate_github_account(
+				Arc::new(account_verifier),
+				Arc::new(github_client),
 				authorization_code,
 				contributor_account,
 				signed_data,

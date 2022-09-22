@@ -19,4 +19,6 @@ pub enum Error {
 	EventStoreError(#[from] EventStoreError),
 	#[error(transparent)]
 	ContributionError(#[from] ContributionError),
+	#[error(transparent)]
+	ContributorError(#[from] ContributorError),
 }
