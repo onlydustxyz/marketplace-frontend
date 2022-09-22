@@ -168,12 +168,7 @@ mod test {
 						ProjectEvent::LeadContributorAdded { .. } => "LeadContributorAdded",
 						ProjectEvent::LeadContributorRemoved { .. } => "LeadContributorRemoved",
 					},
-			DomainEvent::Contributor(event) =>
-				String::from("Contributor")
-					+ match event {
-						ContributorEvent::GithubAccountAssociated { .. } =>
-							"GithubAccountAssociated",
-					},
+			DomainEvent::Contributor(_) => unimplemented!(), // Off chain events
 		};
 
 		assert_eq!(expected_event_name, event_name);
