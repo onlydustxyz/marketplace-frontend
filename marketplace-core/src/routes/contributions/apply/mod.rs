@@ -32,7 +32,6 @@ pub async fn apply_to_contribution(
 	let contribution_id = contribution_id
 		.parse()
 		.map_err(|e: ParseHexPrefixedStringError| e.to_http_api_problem())?;
-	debug!("contributor_id {}", contributor_id.to_string());
 
 	usecase
 		.apply_to_contribution(&contribution_id, &contributor_id)

@@ -9,7 +9,8 @@ use marketplace_domain::{Error as DomainError, *};
 pub trait Usecase: Send + Sync {
 	async fn accept_application(
 		&self,
-		application_id: &ApplicationId,
+		contribution_id: &ContributionId,
+		contributor_id: &ContributorId,
 	) -> Result<HexPrefixedString, DomainError>;
 }
 
@@ -51,11 +52,12 @@ impl AcceptApplication {
 impl Usecase for AcceptApplication {
 	async fn accept_application(
 		&self,
-		application_id: &ApplicationId,
+		contribution_id: &ContributionId,
+		contributor_id: &ContributorId,
 	) -> Result<HexPrefixedString, DomainError> {
 		let application = self
 			.application_repository
-			.find(application_id)
+			.find(contribution_id, contributor_id)
 			.map_err(DomainError::from)?
 			.ok_or_else(|| DomainError::from(ApplicationProjectionRepositoryError::NotFound))?;
 
@@ -75,13 +77,14 @@ impl Usecase for AcceptApplication {
 
 #[cfg(test)]
 mod test {
+	use std::str::FromStr;
+
 	use super::*;
 	use chrono::{NaiveDate, NaiveDateTime};
 	use futures::FutureExt;
 	use mockall::predicate::eq;
 	use rstest::*;
 	use thiserror::Error;
-	use uuid::Uuid;
 
 	#[derive(Debug, Error)]
 	#[error("Oops")]
@@ -121,10 +124,8 @@ mod test {
 		contribution_id: ContributionId,
 		now: NaiveDateTime,
 	) {
-		let application_id = Uuid::from_u128(12).into();
-		application_repository.expect_find().returning(move |_| {
+		application_repository.expect_find().returning(move |_, _| {
 			Ok(Some(ApplicationProjection::new(
-				ApplicationId::default(),
 				ContributionId::default(),
 				ContributorId::from(42),
 				now,
@@ -141,7 +142,7 @@ mod test {
 
 		onchain_contribution_service
 			.expect_assign_contributor()
-			.with(eq(contribution_id), eq(ContributorId::from(42)))
+			.with(eq(contribution_id.clone()), eq(ContributorId::from(42)))
 			.returning(|_, _| async { Ok(HexPrefixedString::default()) }.boxed());
 
 		let usecase = AcceptApplication::new_usecase_boxed(
@@ -150,7 +151,7 @@ mod test {
 			Arc::new(application_repository),
 		);
 
-		let result = usecase.accept_application(&application_id).await;
+		let result = usecase.accept_application(&contribution_id, &ContributorId::from(42)).await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 	}
 
@@ -161,8 +162,7 @@ mod test {
 		contribution_projection_repository: MockContributionProjectionRepository,
 		mut application_repository: MockApplicationProjectionRepository,
 	) {
-		let application_id = Uuid::from_u128(12).into();
-		application_repository.expect_find().returning(|_| Ok(None));
+		application_repository.expect_find().returning(|_, _| Ok(None));
 
 		let usecase = AcceptApplication::new_usecase_boxed(
 			Arc::new(onchain_contribution_service),
@@ -170,7 +170,12 @@ mod test {
 			Arc::new(application_repository),
 		);
 
-		let result = usecase.accept_application(&application_id).await;
+		let result = usecase
+			.accept_application(
+				&ContributionId::from_str("0x01").unwrap(),
+				&ContributorId::from_str("0x01").unwrap(),
+			)
+			.await;
 		assert!(result.is_err());
 		assert_eq!(
 			"Application repository error",
@@ -186,10 +191,8 @@ mod test {
 		mut application_repository: MockApplicationProjectionRepository,
 		now: NaiveDateTime,
 	) {
-		let application_id = Uuid::from_u128(12).into();
-		application_repository.expect_find().returning(move |_| {
+		application_repository.expect_find().returning(move |_, _| {
 			Ok(Some(ApplicationProjection::new(
-				ApplicationId::default(),
 				ContributionId::default(),
 				ContributorId::from(42),
 				now,
@@ -204,7 +207,9 @@ mod test {
 			Arc::new(application_repository),
 		);
 
-		let result = usecase.accept_application(&application_id).await;
+		let result = usecase
+			.accept_application(&ContributionId::default(), &ContributorId::from(42))
+			.await;
 		assert!(result.is_err());
 		assert_eq!(
 			"Contribution projection repository error",

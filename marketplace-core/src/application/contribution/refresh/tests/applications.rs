@@ -193,10 +193,7 @@ async fn refresh_applications_from_events(
 ) {
 	let refresh_applications_usecase: RefreshApplications = Refresh::new(
 		filled_database.clone(),
-		Arc::new(ApplicationProjector::new(
-			filled_database.clone(),
-			Arc::new(RandomUuidGenerator),
-		)),
+		Arc::new(ApplicationProjector::new(filled_database.clone())),
 		filled_database.clone(),
 	);
 

@@ -111,10 +111,8 @@ fn inject_app(
 	uuid_generator: Arc<dyn UuidGenerator>,
 	github_client: Arc<github::Client>,
 ) -> Rocket<Build> {
-	let application_projector: Arc<ApplicationProjector> = Arc::new(ApplicationProjector::new(
-		database.clone(),
-		uuid_generator.clone(),
-	));
+	let application_projector: Arc<ApplicationProjector> =
+		Arc::new(ApplicationProjector::new(database.clone()));
 
 	let contribution_projector = Arc::new(ContributionProjector::new(
 		database.clone(),

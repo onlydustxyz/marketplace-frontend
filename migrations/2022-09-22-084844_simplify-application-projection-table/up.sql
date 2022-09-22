@@ -1,8 +1,13 @@
-DELETE FROM applications
-    WHERE "status" != 'pending';
+CREATE TABLE pending_applications(
+    contribution_id TEXT NOT NULL,
+    contributor_id TEXT NOT NULL,
+    applied_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    PRIMARY KEY(contribution_id, contributor_id)
+);
 
-ALTER TABLE applications
-    DROP COLUMN "status";
+INSERT INTO pending_applications (contribution_id, contributor_id, applied_at) (
+    SELECT contribution_id, contributor_id, applied_at FROM applications
+    WHERE "status" = 'pending'
+);
 
-ALTER TABLE applications
-    RENAME TO pending_applications;
+DROP TABLE applications;

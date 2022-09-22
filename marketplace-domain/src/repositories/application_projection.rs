@@ -23,7 +23,11 @@ pub trait Repository: Send + Sync {
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
 	) -> Result<(), Error>;
-	fn find(&self, id: &ApplicationId) -> Result<Option<ApplicationProjection>, Error>;
+	fn find(
+		&self,
+		contribution_id: &ContributionId,
+		contributor_id: &ContributorId,
+	) -> Result<Option<ApplicationProjection>, Error>;
 	fn list_by_contribution(
 		&self,
 		contribution_id: &ContributionId,

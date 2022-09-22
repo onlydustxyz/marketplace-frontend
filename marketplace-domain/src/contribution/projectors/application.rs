@@ -6,17 +6,14 @@ use std::sync::Arc;
 
 pub struct ApplicationProjector {
 	application_projection_repository: Arc<dyn ApplicationProjectionRepository>,
-	uuid_generator: Arc<dyn UuidGenerator>,
 }
 
 impl ApplicationProjector {
 	pub fn new(
 		application_projection_repository: Arc<dyn ApplicationProjectionRepository>,
-		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Self {
 		Self {
 			application_projection_repository,
-			uuid_generator,
 		}
 	}
 
@@ -27,7 +24,6 @@ impl ApplicationProjector {
 		applied_at: &NaiveDateTime,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
 		let application = ApplicationProjection::new(
-			self.uuid_generator.new_uuid().into(),
 			contribution_id.clone(),
 			contributor_id.clone(),
 			*applied_at,

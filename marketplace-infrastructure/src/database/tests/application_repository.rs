@@ -3,7 +3,6 @@ use assert_matches::assert_matches;
 use chrono::{NaiveDate, NaiveDateTime};
 use marketplace_domain::*;
 use rstest::{fixture, rstest};
-use uuid::Uuid;
 
 use super::init_contribution;
 
@@ -22,28 +21,34 @@ fn store_and_find(now: NaiveDateTime) {
 
 	let contribution = init_contribution(&client);
 
-	let application1 = ApplicationProjection::new(
-		Uuid::new_v4().into(),
-		contribution.id.clone(),
-		0.into(),
-		now,
-	);
-	let application2 =
-		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id, 1.into(), now);
+	let application1 = ApplicationProjection::new(contribution.id.clone(), 1.into(), now);
+	let application2 = ApplicationProjection::new(contribution.id, 2.into(), now);
 
 	<Client as ApplicationProjectionRepository>::insert(&client, application1.clone()).unwrap();
 	<Client as ApplicationProjectionRepository>::insert(&client, application2.clone()).unwrap();
 
-	let found_application =
-		<Client as ApplicationProjectionRepository>::find(&client, application1.id()).unwrap();
+	let found_application = <Client as ApplicationProjectionRepository>::find(
+		&client,
+		application1.contribution_id(),
+		application1.contributor_id(),
+	)
+	.unwrap();
 	assert_eq!(found_application, Some(application1));
 
-	let found_application =
-		<Client as ApplicationProjectionRepository>::find(&client, application2.id()).unwrap();
+	let found_application = <Client as ApplicationProjectionRepository>::find(
+		&client,
+		application2.contribution_id(),
+		application2.contributor_id(),
+	)
+	.unwrap();
 	assert_eq!(found_application, Some(application2));
 
-	let found_application =
-		<Client as ApplicationProjectionRepository>::find(&client, &Uuid::new_v4().into()).unwrap();
+	let found_application = <Client as ApplicationProjectionRepository>::find(
+		&client,
+		&ContributionId::default(),
+		&ContributorId::default(),
+	)
+	.unwrap();
 	assert_eq!(found_application, None);
 }
 
@@ -52,15 +57,13 @@ fn store_and_find(now: NaiveDateTime) {
 	not(feature = "with_infrastructure_tests"),
 	ignore = "infrastructure test"
 )]
-fn id_must_be_unique(now: NaiveDateTime) {
+fn must_be_unique(now: NaiveDateTime) {
 	let client = Client::new(init_pool());
 
 	let contribution = init_contribution(&client);
 
-	let id = Uuid::new_v4().into();
-
-	let application1 = ApplicationProjection::new(id, contribution.id.clone(), 0.into(), now);
-	let application2 = ApplicationProjection::new(id, contribution.id, 1.into(), now);
+	let application1 = ApplicationProjection::new(contribution.id.clone(), 1.into(), now);
+	let application2 = ApplicationProjection::new(contribution.id, 1.into(), now);
 
 	<Client as ApplicationProjectionRepository>::insert(&client, application1).unwrap();
 	let res = <Client as ApplicationProjectionRepository>::insert(&client, application2);
@@ -80,7 +83,11 @@ fn id_must_be_unique(now: NaiveDateTime) {
 fn find_return_none_if_not_found() {
 	let client = Client::new(init_pool());
 
-	let res = <Client as ApplicationProjectionRepository>::find(&client, &Uuid::new_v4().into());
+	let res = <Client as ApplicationProjectionRepository>::find(
+		&client,
+		&ContributionId::default(),
+		&ContributorId::default(),
+	);
 	assert!(res.is_ok());
 	assert_eq!(res.unwrap(), None)
 }
@@ -95,8 +102,7 @@ fn cannot_apply_twice(now: NaiveDateTime) {
 
 	let contribution = init_contribution(&client);
 
-	let application =
-		ApplicationProjection::new(Uuid::new_v4().into(), contribution.id, 0.into(), now);
+	let application = ApplicationProjection::new(contribution.id, 1.into(), now);
 
 	<Client as ApplicationProjectionRepository>::insert(&client, application.clone()).unwrap();
 	let res = <Client as ApplicationProjectionRepository>::insert(&client, application);
@@ -118,19 +124,9 @@ fn store_multiple_and_list(now: NaiveDateTime) {
 
 	let contribution = init_contribution(&client);
 
-	let application1 = ApplicationProjection::new(
-		Uuid::new_v4().into(),
-		contribution.id.clone(),
-		0.into(),
-		now,
-	);
+	let application1 = ApplicationProjection::new(contribution.id.clone(), 1.into(), now);
 
-	let application2 = ApplicationProjection::new(
-		Uuid::new_v4().into(),
-		contribution.id.clone(),
-		1.into(),
-		now,
-	);
+	let application2 = ApplicationProjection::new(contribution.id.clone(), 2.into(), now);
 
 	<Client as ApplicationProjectionRepository>::insert(&client, application1.clone()).unwrap();
 	<Client as ApplicationProjectionRepository>::insert(&client, application2.clone()).unwrap();

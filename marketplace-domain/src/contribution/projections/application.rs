@@ -33,7 +33,6 @@ impl Display for Status {
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct Application {
-	id: Id,
 	contribution_id: ContributionId,
 	contributor_id: ContributorId,
 	applied_at: NaiveDateTime,
@@ -45,21 +44,15 @@ impl Projection for Application {
 
 impl Application {
 	pub fn new(
-		id: Id,
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
 		applied_at: NaiveDateTime,
 	) -> Self {
 		Self {
-			id,
 			contribution_id,
 			contributor_id,
 			applied_at,
 		}
-	}
-
-	pub fn id(&self) -> &Id {
-		&self.id
 	}
 
 	pub fn contribution_id(&self) -> &ContributionId {
@@ -78,13 +71,11 @@ impl Application {
 #[cfg(test)]
 impl Application {
 	pub fn new_with_status(
-		id: Id,
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
 		applied_at: NaiveDateTime,
 	) -> Self {
 		Self {
-			id,
 			contribution_id,
 			contributor_id,
 			applied_at,
