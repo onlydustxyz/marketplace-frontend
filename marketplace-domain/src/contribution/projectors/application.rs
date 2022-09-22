@@ -41,11 +41,7 @@ impl ApplicationProjector {
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		self.application_projection_repository.update_status(
-			contribution_id,
-			contributor_id,
-			ApplicationStatus::Refused,
-		)
+		self.application_projection_repository.delete(contribution_id, contributor_id)
 	}
 
 	fn on_assigned(
@@ -53,11 +49,7 @@ impl ApplicationProjector {
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		self.application_projection_repository.update_status(
-			contribution_id,
-			contributor_id,
-			ApplicationStatus::Accepted,
-		)
+		self.application_projection_repository.delete(contribution_id, contributor_id)
 	}
 }
 

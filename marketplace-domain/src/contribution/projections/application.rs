@@ -36,7 +36,6 @@ pub struct Application {
 	id: Id,
 	contribution_id: ContributionId,
 	contributor_id: ContributorId,
-	status: Status,
 	applied_at: NaiveDateTime,
 }
 
@@ -55,7 +54,6 @@ impl Application {
 			id,
 			contribution_id,
 			contributor_id,
-			status: Status::Pending,
 			applied_at,
 		}
 	}
@@ -72,42 +70,8 @@ impl Application {
 		&self.contributor_id
 	}
 
-	pub fn status(&self) -> &Status {
-		&self.status
-	}
-
 	pub fn applied_at(&self) -> &NaiveDateTime {
 		&self.applied_at
-	}
-
-	pub fn into_pending(self) -> Self {
-		Self {
-			id: self.id,
-			contribution_id: self.contribution_id,
-			contributor_id: self.contributor_id,
-			status: Status::Pending,
-			applied_at: self.applied_at,
-		}
-	}
-
-	pub fn into_accepted(self) -> Self {
-		Self {
-			id: self.id,
-			contribution_id: self.contribution_id,
-			contributor_id: self.contributor_id,
-			status: Status::Accepted,
-			applied_at: self.applied_at,
-		}
-	}
-
-	pub fn into_refused(self) -> Self {
-		Self {
-			id: self.id,
-			contribution_id: self.contribution_id,
-			contributor_id: self.contributor_id,
-			status: Status::Refused,
-			applied_at: self.applied_at,
-		}
 	}
 }
 
@@ -117,14 +81,12 @@ impl Application {
 		id: Id,
 		contribution_id: ContributionId,
 		contributor_id: ContributorId,
-		status: Status,
 		applied_at: NaiveDateTime,
 	) -> Self {
 		Self {
 			id,
 			contribution_id,
 			contributor_id,
-			status,
 			applied_at,
 		}
 	}

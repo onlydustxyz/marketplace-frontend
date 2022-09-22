@@ -2,7 +2,6 @@ use crate::{
 	GithubIssue, GithubIssueNumber, GithubProjectId, GithubRepo, GithubUser, GithubUserId,
 };
 use async_trait::async_trait;
-#[cfg(test)]
 use mockall::automock;
 use thiserror::Error;
 
@@ -12,7 +11,7 @@ pub enum Error {
 	Infrastructure(anyhow::Error),
 }
 
-#[cfg_attr(test, automock)]
+#[automock]
 #[async_trait]
 pub trait GithubClient: Send + Sync {
 	async fn find_issue_by_id(

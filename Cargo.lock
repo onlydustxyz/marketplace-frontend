@@ -1763,6 +1763,7 @@ dependencies = [
  "futures 0.3.21",
  "http-api-problem",
  "itertools",
+ "lazy_static",
  "log",
  "mapinto",
  "marketplace-domain",

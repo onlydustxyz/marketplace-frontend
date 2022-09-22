@@ -85,3 +85,4 @@ serde_test = "1.0.140"
 async-std = { version = "1.12.0", features = ["attributes"] }
 rstest = "0.15.0"
 marketplace-tests = { path = "../marketplace-tests" }
+lazy_static = "1.4.0"

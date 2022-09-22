@@ -1,8 +1,8 @@
 use std::str::FromStr;
 
 use crate::database::{
-	models::{self, Status},
-	schema::applications::dsl,
+	models::{self},
+	schema::pending_applications::dsl,
 	Client, DatabaseError,
 };
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
@@ -20,7 +20,7 @@ impl ApplicationProjectionRepository for Client {
 
 		let application = models::Application::from(application);
 
-		diesel::insert_into(dsl::applications)
+		diesel::insert_into(dsl::pending_applications)
 			.values(&application)
 			.execute(&*connection)
 			.map_err(|e| {
@@ -31,24 +31,22 @@ impl ApplicationProjectionRepository for Client {
 		Ok(())
 	}
 
-	fn update_status(
+	fn delete(
 		&self,
-		contribution_id: &ContributionId,
+		contribution_id: &AggregateId,
 		contributor_id: &ContributorId,
-		status: ApplicationStatus,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
-		diesel::update(dsl::applications
-				.filter(dsl::contribution_id.eq(contribution_id.to_string()))
-				.filter(dsl::contributor_id.eq(contributor_id.to_string())))
-			.set(dsl::status.eq(status.to_string()))
-			.execute(&*connection)
-			.map_err(|e| {
-				error!(
-					"Failed to set status of application of contributor with id {contributor_id} to contirbution with id {contribution_id} to {status}: {e}",
-				);
-				DatabaseError::from(e)
+		diesel::delete(
+			dsl::pending_applications
+			.filter(dsl::contribution_id.eq(contribution_id.to_string()))
+			.filter(dsl::contributor_id.eq(contributor_id.to_string()))
+		)
+		.execute(&*connection)
+		.map_err(|e| {
+			error!("Failed to delete pending application of contributor with id {contributor_id} to contribution with id {contribution_id}: {e}");
+			DatabaseError::from(e)
 		})?;
 
 		Ok(())
@@ -60,7 +58,9 @@ impl ApplicationProjectionRepository for Client {
 	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
-		let res = dsl::applications.find(id.as_uuid()).first::<models::Application>(&*connection);
+		let res = dsl::pending_applications
+			.find(id.as_uuid())
+			.first::<models::Application>(&*connection);
 
 		if let Err(diesel::result::Error::NotFound) = res {
 			Ok(None)
@@ -81,7 +81,7 @@ impl ApplicationProjectionRepository for Client {
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
-		let mut query = dsl::applications
+		let mut query = dsl::pending_applications
 			.filter(dsl::contribution_id.eq(contribution_id.to_string()))
 			.into_boxed();
 
@@ -109,7 +109,7 @@ impl ApplicationProjectionRepository for Client {
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
-		let mut query = dsl::applications.into_boxed();
+		let mut query = dsl::pending_applications.into_boxed();
 
 		if let Some(contributor_id) = &contributor_id {
 			query = query.filter(dsl::contributor_id.eq(contributor_id.to_string()))
@@ -132,7 +132,7 @@ impl ApplicationProjectionRepository for Client {
 
 impl ProjectionRepository<ApplicationProjection> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
-		self.clear_table(dsl::applications)
+		self.clear_table(dsl::pending_applications)
 			.map_err(|e| ProjectionRepositoryError::Infrastructure(e.into()))
 	}
 }
@@ -143,7 +143,6 @@ impl From<ApplicationProjection> for models::Application {
 			id: (*application.id()).into(),
 			contribution_id: application.contribution_id().to_string(),
 			contributor_id: application.contributor_id().to_string(),
-			status: (*application.status()).into(),
 			applied_at: *application.applied_at(),
 		}
 	}
@@ -151,17 +150,12 @@ impl From<ApplicationProjection> for models::Application {
 
 impl From<models::Application> for ApplicationProjection {
 	fn from(application: models::Application) -> Self {
-		let application_projection = Self::new(
+		Self::new(
 			application.id.into(),
 			application.contribution_id.parse().unwrap(),
 			ContributorId::from_str(application.contributor_id.as_str()).unwrap(),
 			application.applied_at,
-		);
-		match application.status {
-			Status::Pending => application_projection.into_pending(),
-			Status::Accepted => application_projection.into_accepted(),
-			Status::Refused => application_projection.into_refused(),
-		}
+		)
 	}
 }
 
