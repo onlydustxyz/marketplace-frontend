@@ -4,6 +4,7 @@ extern crate diesel;
 pub mod database;
 pub mod event_webhook;
 pub mod github;
+pub mod logger;
 pub mod starknet;
 
 use diesel_migrations::*;
