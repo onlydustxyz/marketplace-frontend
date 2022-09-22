@@ -83,7 +83,7 @@ impl TryFrom<Event> for ObservedEvent {
 mod test {
 	use super::*;
 	use chrono::NaiveDate;
-	use marketplace_domain::{ContributionEvent, ProjectEvent};
+	use marketplace_domain::{ContributionEvent, ContributorEvent, ProjectEvent};
 	use rstest::*;
 
 	const LOG_INDEX: usize = 666;
@@ -167,6 +167,12 @@ mod test {
 						ProjectEvent::MemberRemoved { .. } => "MemberRemoved",
 						ProjectEvent::LeadContributorAdded { .. } => "LeadContributorAdded",
 						ProjectEvent::LeadContributorRemoved { .. } => "LeadContributorRemoved",
+					},
+			DomainEvent::Contributor(event) =>
+				String::from("Contributor")
+					+ match event {
+						ContributorEvent::GithubAccountAssociated { .. } =>
+							"GithubAccountAssociated",
 					},
 		};
 
