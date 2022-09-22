@@ -3,7 +3,6 @@ use slog_scope::GlobalLoggerGuard;
 
 mod r#async;
 mod env;
-mod json;
 mod terminal;
 
 pub fn set_default_global_logger() -> GlobalLoggerGuard {
@@ -16,13 +15,7 @@ pub fn set_global_logger(logger: Logger) -> GlobalLoggerGuard {
 }
 
 pub fn default_drain() -> impl Drain<Ok = (), Err = Never> {
-	env::drain(
-		match std::env::var("LOGS") {
-			Ok(logs) if &logs == "terminal" => r#async::drain(terminal::drain()),
-			_ => r#async::drain(json::drain()),
-		}
-		.fuse(),
-	)
+	env::drain(r#async::drain(terminal::drain()).fuse())
 }
 
 pub fn create_root_logger<D>(drain: D) -> Logger
@@ -30,5 +23,8 @@ where
 	D: 'static + SendSyncRefUnwindSafeDrain<Err = Never, Ok = ()> + std::panic::UnwindSafe,
 {
 	slog_stdlog::init().unwrap();
-	Logger::root(drain, o!("version" => env!("CARGO_PKG_VERSION")))
+	Logger::root(
+		drain,
+		o!("commit" => option_env!("HEROKU_SLUG_COMMIT").unwrap_or("local_development")),
+	)
 }

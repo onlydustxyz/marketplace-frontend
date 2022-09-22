@@ -1842,6 +1842,7 @@ dependencies = [
  "rstest",
  "serde",
  "serde_json",
+ "slog-scope",
  "starknet 0.2.0 (git+https://github.com/ofux/starknet-rs)",
  "thiserror",
  "tokio",
