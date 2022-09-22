@@ -1,7 +1,9 @@
 use crate::RefreshError;
 use http_api_problem::{HttpApiProblem, StatusCode};
 use marketplace_domain::{Error as DomainError, *};
-use marketplace_infrastructure::github::GithubError;
+use marketplace_infrastructure::{
+	github::GithubError, starknet_account_verifier::HexFieldElementError,
+};
 
 pub(crate) trait ToHttpApiProblem {
 	fn to_http_api_problem(&self) -> HttpApiProblem;
@@ -108,11 +110,20 @@ impl ToHttpApiProblem for DomainError {
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 					.title("Internal error")
 					.detail(self.to_string()),
+			DomainError::ContributorError(_) => HttpApiProblem::new(StatusCode::BAD_REQUEST)
+				.title("Contributor error")
+				.detail(self.to_string()),
 		}
 	}
 }
 
 impl ToHttpApiProblem for ParseHexPrefixedStringError {
+	fn to_http_api_problem(&self) -> HttpApiProblem {
+		HttpApiProblem::new(StatusCode::BAD_REQUEST).title(self.to_string())
+	}
+}
+
+impl ToHttpApiProblem for HexFieldElementError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		HttpApiProblem::new(StatusCode::BAD_REQUEST).title(self.to_string())
 	}
