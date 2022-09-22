@@ -5,12 +5,10 @@ pub use aggregate_root::{
 };
 
 mod projectors;
-pub use projectors::{
-	ApplicationProjector, ContributionProjector, ContributorProjector, ProjectProjector,
-};
+pub use projectors::{ApplicationProjector, ContributionProjector, ProjectProjector};
 
 mod projections;
 pub use projections::{
 	ApplicationId, ApplicationProjection, ApplicationStatus, ContributionProjection,
-	ContributionProjectionMetadata, Contributor as ContributorProjection, ProjectProjection,
+	ContributionProjectionMetadata, ProjectProjection,
 };
