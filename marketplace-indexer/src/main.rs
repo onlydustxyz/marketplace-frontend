@@ -42,12 +42,11 @@ fn apibara_node_url() -> String {
 
 fn build_event_observer(database: Arc<database::Client>) -> impl BlockchainObserver {
 	let github = Arc::new(github::Client::new());
-	let uuid_generator = Arc::new(RandomUuidGenerator {});
 	let starknet = Arc::new(starknet::Client::default());
 	let reqwest_client = reqwest::Client::new();
 
 	let contribution_projector = ContributionProjector::new(database.clone(), github.clone());
-	let application_projector = ApplicationProjector::new(database.clone(), uuid_generator);
+	let application_projector = ApplicationProjector::new(database.clone());
 	let project_projector = ProjectProjector::new(github.clone(), database.clone());
 	let project_member_projector = ProjectMemberProjector::new(database.clone());
 	let contributor_projector = ContributorProjector::new(github, database.clone(), starknet);

@@ -39,10 +39,7 @@ impl ApplicationProjectionRepository for Client {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
 		diesel::delete(
-			dsl::pending_applications
-			.filter(dsl::contribution_id.eq(contribution_id.to_string()))
-			.filter(dsl::contributor_id.eq(contributor_id.to_string()))
-		)
+			dsl::pending_applications.find((contribution_id.to_string(), contributor_id.to_string())))
 		.execute(&*connection)
 		.map_err(|e| {
 			error!("Failed to delete pending application of contributor with id {contributor_id} to contribution with id {contribution_id}: {e}");
@@ -54,12 +51,13 @@ impl ApplicationProjectionRepository for Client {
 
 	fn find(
 		&self,
-		id: &ApplicationId,
+		contribution_id: &AggregateId,
+		contributor_id: &ContributorId,
 	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
 		let res = dsl::pending_applications
-			.find(id.as_uuid())
+			.find((contribution_id.to_string(), contributor_id.to_string()))
 			.first::<models::Application>(&*connection);
 
 		if let Err(diesel::result::Error::NotFound) = res {
@@ -67,7 +65,7 @@ impl ApplicationProjectionRepository for Client {
 		} else {
 			res.map(|a| Some(a.into()))
 				.map_err(|e| {
-					error!("Failed while finding application with id {id}: {e}");
+					error!("Failed while finding application of contributor with id {contributor_id} to contribution with id {contribution_id}: {e}");
 					DatabaseError::from(e)
 				})
 				.map_err_into()
@@ -140,7 +138,6 @@ impl ProjectionRepository<ApplicationProjection> for Client {
 impl From<ApplicationProjection> for models::Application {
 	fn from(application: marketplace_domain::ApplicationProjection) -> Self {
 		Self {
-			id: (*application.id()).into(),
 			contribution_id: application.contribution_id().to_string(),
 			contributor_id: application.contributor_id().to_string(),
 			applied_at: *application.applied_at(),
@@ -151,7 +148,6 @@ impl From<ApplicationProjection> for models::Application {
 impl From<models::Application> for ApplicationProjection {
 	fn from(application: models::Application) -> Self {
 		Self::new(
-			application.id.into(),
 			application.contribution_id.parse().unwrap(),
 			ContributorId::from_str(application.contributor_id.as_str()).unwrap(),
 			application.applied_at,

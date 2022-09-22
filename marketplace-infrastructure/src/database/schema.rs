@@ -68,8 +68,7 @@ table! {
 }
 
 table! {
-	pending_applications (id) {
-		id -> Uuid,
+	pending_applications (contribution_id, contributor_id) {
 		contribution_id -> Text,
 		contributor_id -> Text,
 		applied_at -> Timestamp,
