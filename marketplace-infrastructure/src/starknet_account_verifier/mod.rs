@@ -4,8 +4,7 @@ use url::Url;
 mod account_verifier;
 pub use account_verifier::{Signature as StarknetSignature, SignedData as StarknetSignedData};
 
-mod hex_field_element;
-pub use hex_field_element::{Error as HexFieldElementError, HexFieldElement};
+mod field_element;
 
 pub struct StarkNetClient {
 	pub sequencer: SequencerGatewayProvider,

@@ -5,6 +5,8 @@ use schemars::{
 	JsonSchema,
 };
 use serde::{Deserialize, Serialize};
+use starknet::core::types::FieldElement;
+use thiserror::Error;
 
 #[derive(Serialize, Deserialize, Debug, Clone, Eq, PartialEq, Hash)]
 pub struct HexPrefixedStringDto(HexPrefixedString);
@@ -32,5 +34,42 @@ impl JsonSchema for HexPrefixedStringDto {
 		};
 
 		schema.into()
+	}
+}
+
+#[derive(Error, Debug)]
+pub enum FromHexPrefixedStringError {
+	#[error("Failed to convert")]
+	Convertion(#[from] anyhow::Error),
+}
+
+pub trait TryFromHexPrefixedString: Sized {
+	type Error;
+	fn try_from_hex_prefixed_string(value: HexPrefixedString) -> Result<Self, Self::Error>;
+}
+
+impl TryFromHexPrefixedString for FieldElement {
+	type Error = FromHexPrefixedStringError;
+
+	fn try_from_hex_prefixed_string(value: HexPrefixedString) -> Result<Self, Self::Error> {
+		FieldElement::from_hex_be(&value.to_string())
+			.map_err(anyhow::Error::msg)
+			.map_err(FromHexPrefixedStringError::from)
+	}
+}
+
+#[cfg(test)]
+mod test {
+	use super::*;
+	use marketplace_domain::HexPrefixedString;
+	use rstest::rstest;
+	use std::str::FromStr;
+
+	#[rstest]
+	fn try_from_hex_prefixed_string() {
+		let string = HexPrefixedString::from_str("0x112233").unwrap();
+		assert_eq!(string.to_string(), "0x00112233");
+		let felt: FieldElement = FieldElement::try_from_hex_prefixed_string(string).unwrap().into();
+		assert_eq!(felt.to_string(), "1122867");
 	}
 }
