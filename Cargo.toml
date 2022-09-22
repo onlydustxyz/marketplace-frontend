@@ -6,6 +6,5 @@ members = [
     "marketplace-indexer",
     "marketplace-infrastructure",
     "marketplace-tests",
-    "marketplace-wrappers",
-    "marketplace-signup"
+    "marketplace-wrappers"
 ]

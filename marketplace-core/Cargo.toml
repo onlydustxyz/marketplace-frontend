@@ -78,7 +78,6 @@ mockall = "0.11.2"
 marketplace-wrappers = { path = "../marketplace-wrappers" }
 marketplace-domain = { path = "../marketplace-domain" }
 marketplace-infrastructure = { path = "../marketplace-infrastructure" }
-marketplace-signup = { path = "../marketplace-signup" }
 
 [dev-dependencies]
 serde_test = "1.0.140"

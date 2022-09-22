@@ -35,7 +35,6 @@ async fn main() {
 	let _global_logger_guard = logger::set_global_logger(create_root_logger());
 
 	github::Client::initialize();
-	let registerer = marketplace_signup::init::build_registerer();
 
 	let database = Arc::new(database::Client::new(init_pool()));
 	database.run_migrations().expect("Unable to run database migrations");
@@ -66,7 +65,6 @@ async fn main() {
 	)
 	.manage(database.clone())
 	.manage(github_client)
-	.manage(registerer)
 	.attach(routes::cors::Cors)
 	.mount(
 		"/",
@@ -97,7 +95,6 @@ async fn main() {
 			routes::contributors::associate_github_account,
 			routes::contact_information::find_contact_information,
 			routes::contact_information::put_contact_information,
-			marketplace_signup::routes::register_github_user,
 		],
 	)
 	.mount("/swagger", make_swagger_ui(&routes::get_docs()))
