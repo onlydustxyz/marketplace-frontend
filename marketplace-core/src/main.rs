@@ -5,54 +5,35 @@ use log::info;
 use marketplace_core::application::*;
 use marketplace_infrastructure::{
 	database::{self, init_pool},
-	github, starknet,
+	github, logger, starknet,
 };
 
 use marketplace_domain::*;
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
-use slog::{o, Drain, FnValue, Level, Logger, Record};
+use slog::{Drain, Level, Logger};
 use std::sync::Arc;
 
 #[macro_use]
 extern crate rocket;
 
-fn get_root_logger() -> Logger {
-	let drain = match std::env::var("LOGS") {
-		Ok(logs) if logs == *"terminal" => slog_async::Async::default(slog_envlogger::new(
-			slog_term::CompactFormat::new(slog_term::TermDecorator::new().stderr().build())
-				.build()
-				.fuse(),
-		)),
-		_ => {
-			let logger = slog_json::Json::new(std::io::stdout())
-				.add_default_keys()
-				.add_key_value(o!("location" => FnValue(move |record : &Record| {
-					format!("{}:{}:{}", record.file(), record.line(), record.column())
-				}),
-				))
-				.build()
-				.fuse();
-			slog_async::Async::default(slog_envlogger::new(logger))
-		},
-	};
-	slog_stdlog::init().unwrap();
-	slog::Logger::root(
-		drain
-			.filter(|record| {
-				!(record.level() == Level::Error
-					&& record.msg().to_string().starts_with("No matching routes for"))
-			})
-			.fuse(),
-		o!("version" => env!("CARGO_PKG_VERSION")),
-	)
+fn create_root_logger() -> Logger {
+	let drain = logger::default_drain()
+		.filter(|record| {
+			!(record.level() == Level::Error
+				&& record.msg().to_string().starts_with("No matching routes for"))
+		})
+		.fuse();
+
+	logger::create_root_logger(drain)
 }
 
 #[tokio::main]
 async fn main() {
 	dotenv().ok();
-	let root_logger = get_root_logger();
-	let _global_logger_guard = slog_scope::set_global_logger(root_logger);
+
+	let _global_logger_guard = logger::set_global_logger(create_root_logger());
+
 	github::Client::initialize();
 	let registerer = marketplace_signup::init::build_registerer();
 
