@@ -26,6 +26,12 @@ impl NamedAggregate for ProjectAggregate {
 	}
 }
 
+impl NamedAggregate for ContributorAggregate {
+	fn name() -> String {
+		String::from("CONTRIBUTOR")
+	}
+}
+
 impl<A: NamedAggregate> EventStore<A> for Client {
 	fn append(
 		&self,

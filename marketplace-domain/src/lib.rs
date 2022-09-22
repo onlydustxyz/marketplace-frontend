@@ -51,4 +51,4 @@ pub use aggregate_root_repository::{
 };
 
 mod contributor;
-pub use contributor::{Aggregate as ContributorAggregate, ContributorEvent};
+pub use contributor::{Aggregate as ContributorAggregate, *};
