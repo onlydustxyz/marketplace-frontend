@@ -1,5 +1,3 @@
-use std::convert::TryFrom;
-
 use async_trait::async_trait;
 use marketplace_domain::OnChainAccountVerifier;
 use starknet::{
@@ -10,7 +8,7 @@ use starknet::{
 	providers::Provider,
 };
 
-use super::{HexFieldElement, StarkNetClient};
+use super::{field_element::TryFromContributorAccount, StarkNetClient};
 use marketplace_domain::*;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq, PartialOrd, Ord, Hash)]
@@ -37,7 +35,7 @@ impl OnChainAccountVerifier for StarkNetClient {
 		signed_data: &Self::SignedData,
 		account_address: &ContributorAccount,
 	) -> Result<(), OnChainAccountVerifierError> {
-		let contract_address = HexFieldElement::try_from(account_address.clone())
+		let contract_address = FieldElement::try_from_contributor_account(account_address.clone())
 			.map_err(|e| OnChainAccountVerifierError::Infrastructure(e.into()))?;
 
 		self.sequencer

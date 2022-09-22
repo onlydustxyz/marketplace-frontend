@@ -2,17 +2,21 @@ use std::convert::{TryFrom, TryInto};
 
 use http_api_problem::HttpApiProblem;
 use marketplace_core::application::AssociateGithubAccountUsecase;
-use marketplace_domain::{HexPrefixedString, ParseHexPrefixedStringError};
+use marketplace_domain::ParseHexPrefixedStringError;
 use marketplace_infrastructure::starknet_account_verifier::{
-	HexFieldElement, HexFieldElementError, StarknetSignature, StarknetSignedData,
+	StarknetSignature, StarknetSignedData,
 };
 use rocket::{response::status, serde::json::Json, State};
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
 use serde::Deserialize;
+use starknet::core::types::FieldElement;
 
 use crate::routes::{
-	hex_prefixed_string::HexPrefixedStringDto, to_http_api_problem::ToHttpApiProblem,
+	hex_prefixed_string::{
+		FromHexPrefixedStringError, HexPrefixedStringDto, TryFromHexPrefixedString,
+	},
+	to_http_api_problem::ToHttpApiProblem,
 };
 
 #[derive(Deserialize, Debug, Clone, Eq, PartialEq, Hash, JsonSchema)]
@@ -23,15 +27,12 @@ pub struct Signature {
 }
 
 impl TryFrom<Signature> for StarknetSignature {
-	type Error = HexFieldElementError;
+	type Error = FromHexPrefixedStringError;
 
 	fn try_from(value: Signature) -> Result<Self, Self::Error> {
-		let r: HexFieldElement = HexPrefixedString::from(value.r).try_into()?;
-		let s: HexFieldElement = HexPrefixedString::from(value.s).try_into()?;
-
 		Ok(StarknetSignature {
-			r: r.into(),
-			s: s.into(),
+			r: FieldElement::try_from_hex_prefixed_string(value.r.into())?,
+			s: FieldElement::try_from_hex_prefixed_string(value.s.into())?,
 		})
 	}
 }
@@ -44,13 +45,11 @@ pub struct SignedData {
 }
 
 impl TryFrom<SignedData> for StarknetSignedData {
-	type Error = HexFieldElementError;
+	type Error = FromHexPrefixedStringError;
 
 	fn try_from(value: SignedData) -> Result<Self, Self::Error> {
-		let hash: HexFieldElement = HexPrefixedString::from(value.hash).try_into()?;
-
 		Ok(StarknetSignedData {
-			hash: hash.into(),
+			hash: FieldElement::try_from_hex_prefixed_string(value.hash.into())?,
 			signature: value.signature.try_into()?,
 		})
 	}
@@ -82,7 +81,7 @@ pub async fn associate_github_account(
 	let signed_data = body
 		.signed_data
 		.try_into()
-		.map_err(|e: HexFieldElementError| e.to_http_api_problem())?;
+		.map_err(|e: FromHexPrefixedStringError| e.to_http_api_problem())?;
 
 	usecase
 		.associate_github_account(body.authorization_code, contributor_account, signed_data)
