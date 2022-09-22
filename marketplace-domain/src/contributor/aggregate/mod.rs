@@ -61,12 +61,12 @@ impl Contributor {
 		account_verifier
 			.check_signature(&signed_data, &contributor_account)
 			.await
-			.map_err(|e| Error::Signature(e))?;
+			.map_err(Error::Signature)?;
 
 		let github_identifier = github_client
 			.authenticate_user(authorization_code)
 			.await
-			.map_err(|e| Error::GithubAuthentication(e))?;
+			.map_err(Error::GithubAuthentication)?;
 
 		Ok(vec![Event::Contributor(
 			ContributorEvent::GithubAccountAssociated {

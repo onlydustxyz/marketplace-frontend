@@ -18,6 +18,12 @@ impl StarkNetClient {
 	}
 }
 
+impl Default for StarkNetClient {
+	fn default() -> Self {
+		Self::new()
+	}
+}
+
 fn sequencer() -> SequencerGatewayProvider {
 	match std::env::var("NETWORK") {
 		Ok(network) if network == *"devnet" => SequencerGatewayProvider::new(

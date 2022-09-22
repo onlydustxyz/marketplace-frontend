@@ -38,11 +38,11 @@ impl ContributorProjector {
 			ContributorId::from(HexPrefixedString::from(contributor_account.clone()));
 
 		if self.contributor_projection_repository.find_by_id(&contributor_id).is_err() {
-			let user = self.github_client.find_user_by_id(github_identifier.clone()).await?;
+			let user = self.github_client.find_user_by_id(*github_identifier).await?;
 
 			self.contributor_projection_repository.insert(ContributorProjection {
 				id: contributor_id,
-				github_identifier: github_identifier.clone(),
+				github_identifier: *github_identifier,
 				github_username: user.name,
 				account: contributor_account.clone(),
 			})?;

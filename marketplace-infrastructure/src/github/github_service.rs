@@ -65,11 +65,9 @@ impl GithubClient for Client {
 		let access_token = self
 			.new_access_token(&authorization_code)
 			.await
-			.map_err(|e| GithubClientError::Infrastructure(e))?;
+			.map_err(GithubClientError::Infrastructure)?;
 
-		self.get_user_id(access_token)
-			.await
-			.map_err(|e| GithubClientError::Infrastructure(e))
+		self.get_user_id(access_token).await.map_err(GithubClientError::Infrastructure)
 	}
 }
 
