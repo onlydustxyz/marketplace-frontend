@@ -8,16 +8,19 @@ use std::sync::Arc;
 pub struct EventStoreObserver {
 	contribution_event_store: Arc<dyn EventStore<Contribution>>,
 	project_event_store: Arc<dyn EventStore<ProjectAggregate>>,
+	contributor_event_store: Arc<dyn EventStore<ContributorAggregate>>,
 }
 
 impl EventStoreObserver {
 	pub fn new(
 		contribution_event_store: Arc<dyn EventStore<Contribution>>,
 		project_event_store: Arc<dyn EventStore<ProjectAggregate>>,
+		contributor_event_store: Arc<dyn EventStore<ContributorAggregate>>,
 	) -> Self {
 		Self {
 			contribution_event_store,
 			project_event_store,
+			contributor_event_store,
 		}
 	}
 }
@@ -42,6 +45,17 @@ impl Observer for EventStoreObserver {
 					self.project_event_store.clone(),
 					id,
 					project_event.clone(),
+					observed_event.deduplication_id.clone(),
+					observed_event.timestamp,
+				);
+			},
+			Event::Contributor(contributor_event) => {
+				let id =
+					<ContributorAggregate as Identifiable<ContributorEvent>>::id(contributor_event);
+				store_event(
+					self.contributor_event_store.clone(),
+					id,
+					contributor_event.clone(),
 					observed_event.deduplication_id.clone(),
 					observed_event.timestamp,
 				);
@@ -111,6 +125,17 @@ impl Identifiable<ProjectEvent> for ProjectAggregate {
 	}
 }
 
+impl Identifiable<ContributorEvent> for ContributorAggregate {
+	fn id(event: &ContributorEvent) -> &Self::Id {
+		match event {
+			ContributorEvent::GithubAccountAssociated {
+				contributor_account,
+				github_identifier: _,
+			} => contributor_account,
+		}
+	}
+}
+
 #[cfg(test)]
 mod test {
 	use super::*;
@@ -131,6 +156,11 @@ mod test {
 	#[fixture]
 	fn project_event_store() -> MockEventStore<ProjectAggregate> {
 		MockEventStore::<ProjectAggregate>::new()
+	}
+
+	#[fixture]
+	fn contributor_event_store() -> MockEventStore<ContributorAggregate> {
+		MockEventStore::<ContributorAggregate>::new()
 	}
 
 	#[fixture]
@@ -169,10 +199,32 @@ mod test {
 		}
 	}
 
+	#[fixture]
+	fn contributor_account() -> ContributorAccount {
+		Default::default()
+	}
+
+	#[fixture]
+	fn contributor_event(contributor_account: ContributorAccount) -> ContributorEvent {
+		ContributorEvent::GithubAccountAssociated {
+			contributor_account,
+			github_identifier: 666u64,
+		}
+	}
+
+	#[fixture]
+	fn event_from_contributor(contributor_event: ContributorEvent) -> ObservedEvent {
+		ObservedEvent {
+			event: Event::Contributor(contributor_event),
+			..Default::default()
+		}
+	}
+
 	#[rstest]
 	async fn on_new_contribution_event(
 		mut contribution_event_store: MockEventStore<Contribution>,
 		project_event_store: MockEventStore<ProjectAggregate>,
+		contributor_event_store: MockEventStore<ContributorAggregate>,
 		contribution_id: ContributionId,
 		event_from_contribution: ObservedEvent,
 		contribution_event: ContributionEvent,
@@ -194,6 +246,7 @@ mod test {
 		let observer = EventStoreObserver::new(
 			Arc::new(contribution_event_store),
 			Arc::new(project_event_store),
+			Arc::new(contributor_event_store),
 		);
 
 		observer.on_new_event(&event_from_contribution, 0).await;
@@ -203,6 +256,7 @@ mod test {
 	async fn on_new_project_event(
 		contribution_event_store: MockEventStore<Contribution>,
 		mut project_event_store: MockEventStore<ProjectAggregate>,
+		contributor_event_store: MockEventStore<ContributorAggregate>,
 		project_id: ProjectId,
 		event_from_project: ObservedEvent,
 		project_event: ProjectEvent,
@@ -224,8 +278,41 @@ mod test {
 		let observer = EventStoreObserver::new(
 			Arc::new(contribution_event_store),
 			Arc::new(project_event_store),
+			Arc::new(contributor_event_store),
 		);
 
 		observer.on_new_event(&event_from_project, 0).await;
+	}
+
+	#[rstest]
+	async fn on_new_contributor_event(
+		contribution_event_store: MockEventStore<Contribution>,
+		project_event_store: MockEventStore<ProjectAggregate>,
+		mut contributor_event_store: MockEventStore<ContributorAggregate>,
+		contributor_account: ContributorAccount,
+		event_from_contributor: ObservedEvent,
+		contributor_event: ContributorEvent,
+	) {
+		let cloned_event = event_from_contributor.clone();
+		contributor_event_store
+			.expect_append()
+			.once()
+			.with(
+				eq(contributor_account),
+				eq(vec![StorableEvent {
+					event: contributor_event.clone(),
+					deduplication_id: cloned_event.deduplication_id.clone(),
+					timestamp: cloned_event.timestamp,
+				}]),
+			)
+			.returning(|_, _| Ok(()));
+
+		let observer = EventStoreObserver::new(
+			Arc::new(contribution_event_store),
+			Arc::new(project_event_store),
+			Arc::new(contributor_event_store),
+		);
+
+		observer.on_new_event(&event_from_contributor, 0).await;
 	}
 }
