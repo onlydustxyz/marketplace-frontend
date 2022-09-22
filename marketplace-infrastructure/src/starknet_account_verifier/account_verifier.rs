@@ -36,12 +36,12 @@ impl OnChainAccountVerifier for StarkNetClient {
 		account_address: &ContributorAccount,
 	) -> Result<(), OnChainAccountVerifierError> {
 		let contract_address = FieldElement::try_from_contributor_account(account_address.clone())
-			.map_err(|e| OnChainAccountVerifierError::Infrastructure(e.into()))?;
+			.map_err(OnChainAccountVerifierError::Infrastructure)?;
 
 		self.sequencer
 			.call_contract(
 				InvokeFunctionTransactionRequest {
-					contract_address: contract_address.into(),
+					contract_address,
 					entry_point_selector: get_selector_from_name("is_valid_signature").unwrap(),
 					calldata: vec![
 						signed_data.hash,

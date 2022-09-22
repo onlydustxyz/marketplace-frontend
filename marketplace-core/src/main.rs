@@ -109,6 +109,7 @@ async fn main() {
 	info!("Gracefully shut down");
 }
 
+#[allow(clippy::too_many_arguments)]
 fn inject_app(
 	rocket: Rocket<Build>,
 	database: Arc<database::Client>,
