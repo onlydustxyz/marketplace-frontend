@@ -2,15 +2,32 @@ mod applications;
 mod contributions;
 mod contributors;
 mod projects;
+mod starknet;
 mod utils;
 
-use dotenv::dotenv;
+use ::starknet::core::types::FieldElement;
 use rstest::*;
+use std::{collections::VecDeque, thread, time::Duration};
+
+use self::starknet::accounts::*;
 
 #[rstest]
 #[tokio::test]
-async fn e2e_tests() {
-	refresh_all().await;
+async fn contribution_lifetime(accounts: [starknet::Account; 10]) {
+	let mut accounts = VecDeque::from(accounts);
+	let admin = accounts.pop_front().unwrap();
+	let lead_contributor = accounts.pop_front().unwrap();
+	let contributor = accounts.pop_front().unwrap();
+
+	const STARKONQUEST: u64 = 481932781;
+
+	// grant lead contributor role
+	projects::add_lead_contributor(&admin, STARKONQUEST, lead_contributor.address()).await;
+
+	// Create a new contribution
+	contributions::create(&lead_contributor, STARKONQUEST, 31, 0).await;
+
+	wait_for_events().await;
 
 	// List all projects
 	let all_projects = projects::list().await;
@@ -19,47 +36,50 @@ async fn e2e_tests() {
 	let starkonquest = projects::find_by_title(&all_projects, "starkonquest")
 		.expect("Project not found in list of all projects");
 
-	let contribution = contributions::find_by_id(&starkonquest, "0x0030".to_string())
+	let contribution = contributions::find_by_id(&starkonquest, "0x0001".to_string())
 		.expect("Contribution not found in project");
 	assert_eq!(contribution.status, "COMPLETED");
 
-	let contributor_id = String::from("0x29");
+	// Apply to the contribution
+	let contributor_account = format!("{:#x}", contributor.address());
+	contributions::apply("0x0001", &contributor_account).await;
 
-	// Add some contact information
-	contributors::contact_information::add(contributor_id.clone(), Some(String::from("discord")))
-		.await;
-	let contact_info = contributors::contact_information::get(contributor_id.clone()).await;
-	assert_eq!(contact_info.contributor_id, "0x0029");
-	assert_eq!(contact_info.discord_handle.unwrap(), "discord");
+	contributions::refuse_application("0x0001", &contributor_account).await;
 
-	// Find an available contribution and apply to it
-	let contribution = projects::find_open_contribution(&all_projects)
-		.expect("No open contribution to perform the test, please change the data dump");
-	contributions::apply(contribution.id.clone(), contributor_id.clone()).await;
+	// Get the contributor
+	let contributor = contributors::get::get(contributor_account.clone()).await;
+	assert_eq!(contributor.id, contributor_account);
+	assert_eq!(contributor.account, contributor_account);
+	assert_eq!(contributor.github_identifier, ""); // TODO fill when user registration can be tested in local
+	assert_eq!(contributor.github_username, "");
 
-	contributions::refuse_application(contribution.id, contributor_id.clone()).await;
-
-	let contributor = contributors::get::get(contributor_id.clone()).await;
-	assert_eq!(contributor.id, "0x0029");
-	assert_eq!(
-		contributor.account,
-		"0x0265a2d2ac0c9c95aef8e489b9046a700f9b1d1488a9922fe3b0f9a6f6ddd3b5"
-	);
-	assert_eq!(contributor.github_identifier, "990474");
-	assert_eq!(contributor.github_username, "abuisset");
-
+	// TODO fill when user registration can be tested in local
+	/*
 	let contributor = contributors::get::get_by_account(
 		"0x0265a2d2ac0c9c95aef8e489b9046a700f9b1d1488a9922fe3b0f9a6f6ddd3b5".to_string(),
 	)
 	.await;
 	assert_eq!(contributor.id, "0x0029");
+	*/
 }
 
-async fn refresh_all() {
-	dotenv().ok();
+#[rstest]
+#[tokio::test]
+async fn contact_information(accounts: [starknet::Account; 10]) {
+	let contributor_account = format!("{:#x}", accounts[0].address());
 
-	projects::refresh().await;
-	contributions::refresh().await;
-	applications::refresh().await;
-	contributors::refresh().await;
+	contributors::contact_information::add(&contributor_account, Some(String::from("discord")))
+		.await;
+	let contact_info = contributors::contact_information::get(&contributor_account).await;
+	assert_eq!(
+		FieldElement::from_hex_be(&contact_info.contributor_id).unwrap(),
+		FieldElement::from_hex_be(&contributor_account).unwrap()
+	);
+	assert_eq!(contact_info.discord_handle.unwrap(), "discord");
+}
+
+async fn wait_for_events() {
+	tokio::task::spawn(async { thread::sleep(Duration::from_secs(3)) })
+		.await
+		.unwrap();
 }
