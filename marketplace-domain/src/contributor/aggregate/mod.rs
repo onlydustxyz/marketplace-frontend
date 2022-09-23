@@ -51,7 +51,6 @@ impl AggregateRoot for Contributor {}
 
 impl Contributor {
 	pub async fn associate_github_account<S: Clone + Send + Sync>(
-		self,
 		account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 		github_client: Arc<dyn GithubClient>,
 		authorization_code: String,
@@ -152,16 +151,14 @@ mod test {
 			.once()
 			.returning(|_| Ok(11u64));
 
-		let contributor = super::Contributor::from_events(&[]);
-		let result = contributor
-			.associate_github_account(
-				Arc::new(account_verifier),
-				Arc::new(github_client),
-				authorization_code,
-				contributor_account,
-				signed_data,
-			)
-			.await;
+		let result = super::Contributor::associate_github_account(
+			Arc::new(account_verifier),
+			Arc::new(github_client),
+			authorization_code,
+			contributor_account,
+			signed_data,
+		)
+		.await;
 
 		assert!(result.is_ok());
 

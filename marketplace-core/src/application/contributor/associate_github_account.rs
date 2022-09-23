@@ -16,7 +16,6 @@ pub trait Usecase<S: Clone + Send + Sync>: Send + Sync {
 }
 
 pub struct AssociateGithubAccount<S: Clone + Send + Sync> {
-	contributor_repository: AggregateRootRepository<ContributorAggregate>,
 	event_store: Arc<dyn EventStore<ContributorAggregate>>,
 	account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 	github_client: Arc<dyn GithubClient>,
@@ -26,7 +25,6 @@ pub struct AssociateGithubAccount<S: Clone + Send + Sync> {
 
 impl<S: Clone + Send + Sync> AssociateGithubAccount<S> {
 	pub fn new(
-		contributor_repository: AggregateRootRepository<ContributorAggregate>,
 		event_store: Arc<dyn EventStore<ContributorAggregate>>,
 		account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 		github_client: Arc<dyn GithubClient>,
@@ -34,7 +32,6 @@ impl<S: Clone + Send + Sync> AssociateGithubAccount<S> {
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Self {
 		Self {
-			contributor_repository,
 			event_store,
 			account_verifier,
 			github_client,
@@ -46,7 +43,6 @@ impl<S: Clone + Send + Sync> AssociateGithubAccount<S> {
 
 impl<S: Clone + Send + Sync + 'static> AssociateGithubAccount<S> {
 	pub fn new_usecase_boxed(
-		contributor_repository: AggregateRootRepository<ContributorAggregate>,
 		event_store: Arc<dyn EventStore<ContributorAggregate>>,
 		account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 		github_client: Arc<dyn GithubClient>,
@@ -54,7 +50,6 @@ impl<S: Clone + Send + Sync + 'static> AssociateGithubAccount<S> {
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Box<dyn Usecase<S>> {
 		Box::new(Self::new(
-			contributor_repository,
 			event_store,
 			account_verifier,
 			github_client,
@@ -72,16 +67,14 @@ impl<S: Clone + Send + Sync> Usecase<S> for AssociateGithubAccount<S> {
 		contributor_account: ContributorAccount,
 		signed_data: S,
 	) -> Result<(), DomainError> {
-		let contributor = self.contributor_repository.find_by_id(&contributor_account)?;
-		let events = contributor
-			.associate_github_account(
-				self.account_verifier.clone(),
-				self.github_client.clone(),
-				authorization_code,
-				contributor_account.clone(),
-				signed_data,
-			)
-			.await?;
+		let events = ContributorAggregate::associate_github_account(
+			self.account_verifier.clone(),
+			self.github_client.clone(),
+			authorization_code,
+			contributor_account.clone(),
+			signed_data,
+		)
+		.await?;
 		let storable_events: Vec<StorableEvent<ContributorAggregate>> = events
 			.iter()
 			.map(|event| {
