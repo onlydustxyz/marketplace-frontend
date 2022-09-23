@@ -16,57 +16,10 @@ jobs:
     env:
       DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/run-application
         with:
-          toolchain: 1.63
-          override: true
-
-      - name: Set up cargo cache
-        uses: actions/cache@v3
-        continue-on-error: false
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-cargo-
-
-      - name: Run docker compose
-        run: docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
-        env:
-          BASE_TAG: latest
-
-      - name: Install diesel CLI
-        run: cargo install diesel_cli --no-default-features --features postgres --force
-
-      - name: Run migrations
-        run: diesel migration run
-
-      - name: Configure postgres connection
-        run: echo "localhost:5432:marketplace_db:postgres:postgres" > ~/.pgpass && chmod 600 ~/.pgpass
-
-      - name: Restore data dump
-        run: pg_restore --verbose --dbname marketplace_db --host localhost --port 5432 --username postgres --clean ./marketplace-tests/data/data_dump.tar.gz
-
-      - name: Create environment file
-        run: cp .env.example .env
-
-      - name: Start the backend
-        run: cargo run &
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Wait for the backend to be ready
-        uses: ifaxity/wait-on-action@v1
-        with:
-          resource: http://localhost:8000/openapi.json
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run cargo-tarpaulin
         uses: actions-rs/tarpaulin@v0.1
@@ -74,6 +27,9 @@ jobs:
           version: '0.20.1'
           timeout: 180 # TODO: Remove once starknet client dependency is gone
           args: '--all-features -- --test-threads 1'
+        env:
+          API_KEY: ROOT
+          E2E_WAITING_TIME: 60
 
       - name: Upload to codecov.io
         uses: codecov/codecov-action@v3
