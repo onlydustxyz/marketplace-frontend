@@ -85,7 +85,10 @@ async fn contact_information(accounts: [starknet::Account; 10]) {
 }
 
 async fn wait_for_events() {
-	tokio::task::spawn(async { thread::sleep(Duration::from_secs(3)) })
-		.await
-		.unwrap();
+	tokio::task::spawn(async { thread::sleep(waiting_time()) }).await.unwrap();
+}
+
+fn waiting_time() -> Duration {
+	let duration = std::env::var("E2E_WAITING_TIME").ok().and_then(|v| v.parse().ok()).unwrap_or(3);
+	Duration::from_secs(duration)
 }
