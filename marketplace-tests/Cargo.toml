@@ -40,6 +40,13 @@ reqwest = "0.11.11"
 
 # Async
 tokio = { version = "1.18.2", features = ["full"] }
+async-trait = "0.1.56"
 
 # Local dependencies
 marketplace-core = { path = "../marketplace-core" }
+
+# Starknet
+starknet = { git = "https://github.com/xJonathanLEI/starknet-rs" }
+
+# Errors
+anyhow = "1.0.57"
