@@ -50,6 +50,7 @@ fn build_event_observer(database: Arc<database::Client>) -> impl BlockchainObser
 	let project_projector = ProjectProjector::new(github.clone(), database.clone());
 	let project_member_projector = ProjectMemberProjector::new(database.clone());
 	let contributor_projector = ContributorProjector::new(github, database.clone(), starknet);
+	let lead_contributors_projector = LeadContributorProjector::new(database.clone());
 
 	BlockchainObserverComposite::new(vec![
 		Arc::new(BlockchainLogger::default()),
@@ -60,6 +61,7 @@ fn build_event_observer(database: Arc<database::Client>) -> impl BlockchainObser
 			Box::new(project_projector),
 			Box::new(contributor_projector),
 			Box::new(project_member_projector),
+			Box::new(lead_contributors_projector),
 			Box::new(EventWebHook::new(reqwest_client)),
 		])),
 	])
