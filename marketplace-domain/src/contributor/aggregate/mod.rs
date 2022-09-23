@@ -37,6 +37,7 @@ impl EventSourcable for Contributor {
 				ContributorEvent::GithubAccountAssociated {
 					contributor_account,
 					github_identifier,
+					contributor_id: _,
 				} => Self {
 					id: contributor_account.clone(),
 					github_identifier: *github_identifier,
@@ -69,8 +70,9 @@ impl Contributor {
 
 		Ok(vec![Event::Contributor(
 			ContributorEvent::GithubAccountAssociated {
-				contributor_account,
+				contributor_account: contributor_account.clone(),
 				github_identifier,
+				contributor_id: HexPrefixedString::from(contributor_account).into(),
 			},
 		)])
 	}
@@ -118,6 +120,7 @@ mod test {
 		Event::Contributor(ContributorEvent::GithubAccountAssociated {
 			contributor_account,
 			github_identifier,
+			contributor_id: Default::default(),
 		})
 	}
 
@@ -168,7 +171,8 @@ mod test {
 			emitted_events.first().unwrap(),
 			Event::Contributor(ContributorEvent::GithubAccountAssociated {
 				contributor_account: _,
-				github_identifier: _
+				github_identifier: _,
+				contributor_id: _
 			})
 		);
 	}
