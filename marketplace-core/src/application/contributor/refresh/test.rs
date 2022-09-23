@@ -61,15 +61,22 @@ fn contributor_account() -> ContributorAccount {
 }
 
 #[fixture]
+fn contributor_id() -> ContributorId {
+	"0x12".parse().unwrap()
+}
+
+#[fixture]
 fn filled_database(
 	database: Arc<DatabaseClient>,
 	contributor_account: ContributorAccount,
+	contributor_id: ContributorId,
 ) -> Arc<DatabaseClient> {
 	// events for contributor #1
 	{
 		let storable_events = vec![ContributorEvent::GithubAccountAssociated {
 			contributor_account: contributor_account.clone(),
 			github_identifier: 100u64,
+			contributor_id,
 		}]
 		.into_iter()
 		.map(Storable::into_storable)
@@ -92,6 +99,7 @@ async fn refresh_contributors_from_events(
 	filled_database: Arc<DatabaseClient>,
 	mut github_client: MockGithubClient,
 	contributor_account: ContributorAccount,
+	contributor_id: ContributorId,
 ) {
 	let refresh_contributors_usecase: RefreshContributors = {
 		github_client.expect_find_user_by_id().returning(|_| Ok(Default::default()));
@@ -108,8 +116,6 @@ async fn refresh_contributors_from_events(
 
 	let result = refresh_contributors_usecase.refresh_projection_from_events().await;
 	assert!(result.is_ok(), "{}", result.err().unwrap());
-
-	let contributor_id = ContributorId::from(HexPrefixedString::from(contributor_account.clone()));
 
 	let result =
 		ContributorProjectionRepository::find_by_id(&*filled_database.clone(), &contributor_id);

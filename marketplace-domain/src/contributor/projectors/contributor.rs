@@ -32,16 +32,13 @@ impl ContributorProjector {
 		&self,
 		contributor_account: &ContributorAccount,
 		github_identifier: &GithubUserId,
+		contributor_id: &ContributorId,
 	) -> Result<(), Error> {
-		// Temporary, until we get rid of contributor_id
-		let contributor_id =
-			ContributorId::from(HexPrefixedString::from(contributor_account.clone()));
-
 		if self.contributor_projection_repository.find_by_id(&contributor_id).is_err() {
 			let user = self.github_client.find_user_by_id(*github_identifier).await?;
 
 			self.contributor_projection_repository.insert(ContributorProjection {
-				id: contributor_id,
+				id: contributor_id.clone(),
 				github_identifier: *github_identifier,
 				github_username: user.name,
 				account: contributor_account.clone(),
@@ -60,7 +57,10 @@ impl EventListener for ContributorProjector {
 				ContributorEvent::GithubAccountAssociated {
 					contributor_account,
 					github_identifier,
-				} => self.add_contributor(contributor_account, github_identifier).await,
+					contributor_id,
+				} =>
+					self.add_contributor(contributor_account, github_identifier, contributor_id)
+						.await,
 			},
 			Event::Project(_) | Event::Contribution(_) => return,
 		};
@@ -91,7 +91,7 @@ mod test {
 
 	#[fixture]
 	fn contributor_id() -> ContributorId {
-		"0x4444".parse().unwrap()
+		"0x12".parse().unwrap()
 	}
 
 	#[fixture]
@@ -113,15 +113,21 @@ mod test {
 	fn github_account_associated_event(
 		contributor_account: ContributorAccount,
 		github_identifier: GithubUserId,
+		contributor_id: ContributorId,
 	) -> Event {
 		Event::Contributor(ContributorEvent::GithubAccountAssociated {
 			contributor_account,
 			github_identifier,
+			contributor_id,
 		})
 	}
 
 	#[rstest]
-	#[case(github_account_associated_event(contributor_account(), github_identifier()))]
+	#[case(github_account_associated_event(
+		contributor_account(),
+		github_identifier(),
+		contributor_id()
+	))]
 	async fn contributor_gets_created_with_contribution(
 		mut github_client: MockGithubClient,
 		mut contributor_projection_repository: MockContributorProjectionRepository,

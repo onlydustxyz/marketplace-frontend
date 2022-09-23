@@ -131,6 +131,7 @@ impl Identifiable<ContributorEvent> for ContributorAggregate {
 			ContributorEvent::GithubAccountAssociated {
 				contributor_account,
 				github_identifier: _,
+				contributor_id: _,
 			} => contributor_account,
 		}
 	}
@@ -209,6 +210,7 @@ mod test {
 		ContributorEvent::GithubAccountAssociated {
 			contributor_account,
 			github_identifier: 666u64,
+			contributor_id: Default::default(),
 		}
 	}
 
