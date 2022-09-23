@@ -158,7 +158,7 @@ mod test {
 						ContributionEvent::Unassigned { .. } => "Unassigned",
 						ContributionEvent::Validated { .. } => "Validated",
 						ContributionEvent::GateChanged { .. } => "GateChanged",
-						_ => unimplemented!(), // Off chain events
+						_ => unimplemented!("Off chain events"),
 					},
 			DomainEvent::Project(event) =>
 				String::from("Project")
@@ -168,7 +168,7 @@ mod test {
 						ProjectEvent::LeadContributorAdded { .. } => "LeadContributorAdded",
 						ProjectEvent::LeadContributorRemoved { .. } => "LeadContributorRemoved",
 					},
-			DomainEvent::Contributor(_) => unimplemented!(), // Off chain events
+			DomainEvent::Contributor(_) => unimplemented!("Off chain events"),
 		};
 
 		assert_eq!(expected_event_name, event_name);
