@@ -17,7 +17,6 @@ async fn contribution_lifetime(accounts: [starknet::Account; 10]) {
 	let mut accounts = VecDeque::from(accounts);
 	let admin = accounts.pop_front().unwrap();
 	let lead_contributor = accounts.pop_front().unwrap();
-	let contributor = accounts.pop_front().unwrap();
 
 	const STARKONQUEST: u64 = 481932781;
 
@@ -38,28 +37,36 @@ async fn contribution_lifetime(accounts: [starknet::Account; 10]) {
 
 	let contribution = contributions::find_by_id(&starkonquest, "0x0001".to_string())
 		.expect("Contribution not found in project");
-	assert_eq!(contribution.status, "COMPLETED");
+	assert_eq!(contribution.status, "OPEN");
 
 	// Apply to the contribution
-	let contributor_account = format!("{:#x}", contributor.address());
-	contributions::apply("0x0001", &contributor_account).await;
+	let contributor_id = String::from("0x29");
+	contributions::apply("0x0001", &contributor_id).await;
 
-	contributions::refuse_application("0x0001", &contributor_account).await;
+	contributions::refuse_application("0x0001", &contributor_id).await;
 
+	// TODO restore when user registration can be tested in local
 	// Get the contributor
+	/*
 	let contributor = contributors::get::get(contributor_account.clone()).await;
 	assert_eq!(contributor.id, contributor_account);
 	assert_eq!(contributor.account, contributor_account);
-	assert_eq!(contributor.github_identifier, ""); // TODO fill when user registration can be tested in local
+	assert_eq!(contributor.github_identifier, "");
 	assert_eq!(contributor.github_username, "");
 
-	// TODO fill when user registration can be tested in local
-	/*
 	let contributor = contributors::get::get_by_account(
 		"0x0265a2d2ac0c9c95aef8e489b9046a700f9b1d1488a9922fe3b0f9a6f6ddd3b5".to_string(),
 	)
 	.await;
 	assert_eq!(contributor.id, "0x0029");
+	let contributor = contributors::get::get(contributor_id.clone()).await;
+	assert_eq!(contributor.id, contributor_id);
+	assert_eq!(
+		contributor.account,
+		"0x0265a2d2ac0c9c95aef8e489b9046a700f9b1d1488a9922fe3b0f9a6f6ddd3b5"
+	);
+	assert_eq!(contributor.github_identifier, "990474");
+	assert_eq!(contributor.github_username, "abuisset");
 	*/
 }
 
