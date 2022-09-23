@@ -9,3 +9,6 @@ pub use contact_information::*;
 
 mod contributions;
 pub use contributions::*;
+
+mod contributor;
+pub use contributor::*;
