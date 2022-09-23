@@ -42,7 +42,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --verbose --features=starknet
+          args: --verbose
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -68,7 +68,7 @@ jobs:
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --bins --tests --examples --features=starknet
+          args: --bins --tests --examples
   test:
     runs-on: ubuntu-latest
     steps:
@@ -90,7 +90,7 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-
       - name: Run tests
-        run: cargo test --verbose --features=starknet
+        run: cargo test --verbose
   test_with_database:
     runs-on: ubuntu-latest
     env:
@@ -120,7 +120,7 @@ jobs:
       - name: Install diesel CLI
         run: cargo install diesel_cli --no-default-features --features postgres --force
       - name: Build
-        run: cargo build --features=starknet
+        run: cargo build
       - name: Run migrations
         run: diesel migration run
       - name: Rust test on db
@@ -154,7 +154,7 @@ jobs:
       - name: Install diesel CLI
         run: cargo install diesel_cli --no-default-features --features postgres --force
       - name: Build
-        run: cargo build --features=starknet
+        run: cargo build
       - name: Run migrations
         run: diesel migration run
       - name: Rust component tests

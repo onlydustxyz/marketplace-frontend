@@ -40,7 +40,7 @@ jobs:
         run: cargo install diesel_cli --no-default-features --features postgres --force
 
       - name: Build
-        run: cargo build --features=starknet
+        run: cargo build
 
       - name: Run migrations
         run: diesel migration run
