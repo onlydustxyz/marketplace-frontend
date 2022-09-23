@@ -1,7 +1,7 @@
 use crate::e2e_tests::utils::*;
 use reqwest::StatusCode;
 
-pub async fn refuse_application(contribution_id: String, contributor_id: String) {
+pub async fn refuse_application(contribution_id: &str, contributor_id: &str) {
 	println!(
 		"Refusing application to contribution {contribution_id} for contributor {contributor_id}"
 	);
