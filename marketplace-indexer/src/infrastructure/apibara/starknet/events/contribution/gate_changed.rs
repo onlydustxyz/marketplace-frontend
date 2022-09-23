@@ -6,7 +6,7 @@ pub struct GateChanged;
 
 impl EventTranslator for GateChanged {
 	fn selector() -> FieldElement {
-		get_selector_from_name("GateChanged").unwrap()
+		get_selector_from_name("ContributionGateChanged").unwrap()
 	}
 
 	fn to_domain_event(mut topics: Topics) -> Result<DomainEvent, FromEventError> {
@@ -17,5 +17,47 @@ impl EventTranslator for GateChanged {
 			id: contribution_id.into(),
 			gate: gate as u8,
 		}))
+	}
+}
+
+#[cfg(test)]
+mod test {
+	use super::*;
+	use rstest::*;
+
+	#[fixture]
+	fn apibara_event_data() -> Topics {
+		vec![
+			vec![
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 12,
+			],
+			vec![
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 3,
+			],
+		]
+		.into()
+	}
+
+	#[rstest]
+	fn selector() {
+		assert_eq!(
+			get_selector_from_name("ContributionGateChanged").unwrap(),
+			<GateChanged as EventTranslator>::selector()
+		);
+	}
+
+	#[rstest]
+	fn create_event_from_apibara(apibara_event_data: Topics) {
+		let result = <GateChanged as EventTranslator>::to_domain_event(apibara_event_data);
+		assert!(result.is_ok(), "{}", result.err().unwrap());
+		assert_eq!(
+			DomainEvent::Contribution(ContributionEvent::GateChanged {
+				id: 12.into(),
+				gate: 3.into()
+			},),
+			result.unwrap()
+		);
 	}
 }
