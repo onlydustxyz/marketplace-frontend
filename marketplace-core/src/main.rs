@@ -46,8 +46,6 @@ async fn main() {
 	let uuid_generator = Arc::new(RandomUuidGenerator);
 	let contribution_repository: AggregateRootRepository<Contribution> =
 		AggregateRootRepository::new(database.clone());
-	let contributor_repository: AggregateRootRepository<ContributorAggregate> =
-		AggregateRootRepository::new(database.clone());
 	let contact_information_service = Arc::new(ContactInformationServiceImplementation::new(
 		database.clone(),
 	));
@@ -58,7 +56,6 @@ async fn main() {
 		starknet,
 		starknet_account_verifier,
 		contribution_repository,
-		contributor_repository,
 		contact_information_service,
 		uuid_generator,
 		github_client.clone(),
@@ -113,7 +110,6 @@ fn inject_app(
 	starknet: Arc<starknet::SingleAdminClient>,
 	starknet_account_verifier: Arc<starknet_account_verifier::StarkNetClient>,
 	contribution_repository: AggregateRootRepository<Contribution>,
-	contributor_repository: AggregateRootRepository<ContributorAggregate>,
 	contact_information_service: Arc<dyn ContactInformationService>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 	github_client: Arc<github::Client>,
@@ -172,7 +168,6 @@ fn inject_app(
 			database.clone(),
 		))
 		.manage(AssociateGithubAccount::new_usecase_boxed(
-			contributor_repository,
 			database.clone(),
 			starknet_account_verifier,
 			github_client,
