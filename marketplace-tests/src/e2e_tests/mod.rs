@@ -1,4 +1,3 @@
-mod applications;
 mod contributions;
 mod contributors;
 mod projects;

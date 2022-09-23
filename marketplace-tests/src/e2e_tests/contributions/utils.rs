@@ -7,11 +7,3 @@ pub fn find_by_id(project: &Project, contribution_id: String) -> Option<Contribu
 		.find(|contribution| contribution.id == contribution_id)
 		.cloned()
 }
-
-pub fn find_by_status(project: &Project, contribution_status: &str) -> Option<Contribution> {
-	project
-		.contributions
-		.iter()
-		.find(|contribution| contribution.status == contribution_status)
-		.cloned()
-}
