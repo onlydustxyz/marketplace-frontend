@@ -39,7 +39,7 @@ Copy the `.env.example` file and modify the values according to your setup.
 Make sure `docker-compose` is installed (see [Installation instructions](https://docs.docker.com/compose/install/)).
 Note: specify the `BASE_TAG` to be used depending on your CPU (`latest` or `latest-arm`)
 ```
-BASE_TAG=latest-arm docker-compose -f ./marketplace-core/scripts/docker/dev/docker-compose.yml up --build -d
+BASE_TAG=latest-arm docker-compose -f ./marketplace-core/scripts/docker/dev/docker-compose.yml up -d
 ```
 
 ### 3. Setup the database
@@ -80,28 +80,11 @@ cargo test
 ```
 
 ### End-to-end testing
+We are using a pre-build dump for `starknet-devnet` (see [marketplace-starknet CI](https://github.com/onlydustxyz/marketplace-starknet/blob/main/.github/workflows/devnet.yml)).
 
-> **Note:**
-> As `starknet-devnet` is not compatible with `apibara`, it is not possible to use it for local end-to-end testing.
-> Therefore, a pre-configured database dump of the events is used.
-
-#### How to create a database dump
-1. Make sure your tables `EVENTS` and `EVENT_DEDUPLICATION` are empty.
-2. Connect to `MongoDB` and delete the indexer from the `apibara_admin` collection
-3. Configure your local `.env` file to use the production `CONTRIBUTIONS_CONTRACT` address
-4. Run the indexer and wait for it to catch up with the latest block HEAD: 
-```bash
-cargo run -p marketplace-indexer
-```
-5. Create the dump file: 
-```bash
-$ pg_dump --file ./marketplace-tests/data/data_dump.tar.gz --format t --table events --table event_deduplications --dbname marketplace_db --host localhost --port 5432 --user postgres --data-only
-```
-
-To run the end-to-end tests, make sure the docker is up and running and your back-end is up as well.
+To run the end-to-end tests, make sure the docker is up and running and your back-end and indexer are up as well.
 Then run:
 ```sh
-$ pg_restore --verbose --dbname marketplace_db --host localhost --port 5432 --username postgres --clean ./marketplace-tests/data/data_dump.tar.gz
 $ cargo test -p marketplace-tests --features with_e2e_tests e2e_tests
 ```
 
