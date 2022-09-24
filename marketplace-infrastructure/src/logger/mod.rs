@@ -25,6 +25,6 @@ where
 	slog_stdlog::init().unwrap();
 	Logger::root(
 		drain,
-		o!("commit" => option_env!("HEROKU_SLUG_COMMIT").unwrap_or("local_development")),
+		o!("commit" => std::env::var("HEROKU_SLUG_COMMIT").unwrap_or_else(|_| String::from("local_development"))),
 	)
 }
