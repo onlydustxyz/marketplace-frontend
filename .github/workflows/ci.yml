@@ -25,6 +25,7 @@ jobs:
         run: cargo +nightly fmt -- --check
 
   build:
+    needs : format
     name: Compile
     runs-on: ubuntu-latest
     steps:
@@ -38,6 +39,7 @@ jobs:
         uses: ./.github/actions/compile-application
 
   lint:
+    needs : build
     name: Run clippy checks
     runs-on: ubuntu-latest
     steps:
@@ -56,7 +58,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --bins --tests --examples
 
-  test:
+  unit_tests:
+    needs : build
     name: Execute unit tests
     runs-on: ubuntu-latest
     steps:
@@ -73,6 +76,7 @@ jobs:
         run: cargo test --verbose
 
   infrastructure_tests:
+    needs : unit_tests
     name: Execute infrastructure tests
     runs-on: ubuntu-latest
     steps:
@@ -94,6 +98,7 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
 
   component_tests:
+    needs : unit_tests
     name: Execute component tests
     runs-on: ubuntu-latest
     steps:
@@ -113,3 +118,42 @@ jobs:
         run: cargo test -p marketplace-core --features with_component_tests
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
+
+  e2e_tests:
+    needs : unit_tests
+    name: Execute end-to-end tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup cargo
+        uses: ./.github/actions/cargo-setup
+
+      - name: Setup environment
+        uses: ./.github/actions/env-setup
+
+      - name: Compile application
+        uses: ./.github/actions/compile-application
+
+      - name: Launch the backend
+        uses: ./.github/actions/run-backend
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Launch the indexer
+        uses: ./.github/actions/run-indexer
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          indexer_name: starknet
+
+      - name: Execute end-to-end tests
+        run: cargo test -p marketplace-tests --features with_e2e_tests e2e_tests
+        env:
+          API_KEY: ROOT
+          E2E_WAITING_TIME: 60
+
+      - name: Setup tmate session for debugging
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ failure() && inputs.debug_enabled }}
