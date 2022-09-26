@@ -60,7 +60,7 @@ jobs:
 
   unit_tests:
     needs : build
-    name: Execute unit tests
+    name: Unit tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -76,8 +76,8 @@ jobs:
         run: cargo test --verbose
 
   infrastructure_tests:
-    needs : unit_tests
-    name: Execute infrastructure tests
+    needs : build
+    name: Infrastructure tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -92,14 +92,14 @@ jobs:
       - name: Compile application
         uses: ./.github/actions/compile-application
 
-      - name: Rust test on db
+      - name: Execute infrastructure tests
         run: cargo test -p marketplace-infrastructure --features with_infrastructure_tests
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
 
   component_tests:
-    needs : unit_tests
-    name: Execute component tests
+    needs : build
+    name: Component tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -114,14 +114,14 @@ jobs:
       - name: Compile application
         uses: ./.github/actions/compile-application
 
-      - name: Rust component tests
+      - name: Execute component tests
         run: cargo test -p marketplace-core --features with_component_tests
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
 
   e2e_tests:
-    needs : unit_tests
-    name: Execute end-to-end tests
+    needs : build
+    name: End-to-end tests
     runs-on: ubuntu-latest
 
     steps:
@@ -152,7 +152,6 @@ jobs:
         run: cargo test -p marketplace-tests --features with_e2e_tests e2e_tests
         env:
           API_KEY: ROOT
-          E2E_WAITING_TIME: 60
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
