@@ -1,6 +1,5 @@
 use http_api_problem::HttpApiProblem;
 use marketplace_core::application::AssignContributionUsecase;
-use marketplace_domain::ParseHexPrefixedStringError;
 use rocket::{
 	response::status,
 	serde::{json::Json, Deserialize},
@@ -8,7 +7,10 @@ use rocket::{
 };
 use rocket_okapi::{openapi, JsonSchema};
 
-use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem, u256::U256Param};
+use crate::routes::{
+	api_key::ApiKey, hex_prefixed_string::HexPrefixedStringDto,
+	to_http_api_problem::ToHttpApiProblem, u256::U256Param,
+};
 
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]
@@ -25,14 +27,12 @@ pub struct AssignContributorDto {
 #[deprecated(since = "0.1.0", note = "please use `accept_application` instead")]
 pub async fn assign_contributor(
 	_api_key: ApiKey,
-	contribution_id: String,
+	contribution_id: HexPrefixedStringDto,
 	body: Json<AssignContributorDto>,
 	usecase: &State<Box<dyn AssignContributionUsecase>>,
 ) -> Result<status::Accepted<()>, HttpApiProblem> {
 	let contributor_id = body.into_inner().contributor_id.into();
-	let contribution_id = contribution_id
-		.parse()
-		.map_err(|e: ParseHexPrefixedStringError| e.to_http_api_problem())?;
+	let contribution_id = contribution_id.into();
 
 	usecase
 		.send_assign_request(&contribution_id, &contributor_id)
@@ -75,7 +75,7 @@ mod test {
 
 		let result = assign_contributor(
 			ApiKey::default(),
-			"0x12".into(),
+			HexPrefixedStringDto::from_str("0x12").unwrap(),
 			AssignContributorDto {
 				contributor_id: U256::from_u128(34).into(),
 			}
@@ -102,7 +102,7 @@ mod test {
 
 		let result = assign_contributor(
 			ApiKey::default(),
-			"0x12".into(),
+			HexPrefixedStringDto::from_str("0x12").unwrap(),
 			AssignContributorDto {
 				contributor_id: U256::from_u128(34).into(),
 			}

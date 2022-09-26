@@ -1,22 +1,23 @@
 use http_api_problem::HttpApiProblem;
 use marketplace_core::application::RefuseApplicationUsecase;
-use marketplace_domain::{ContributorId, ParseHexPrefixedStringError};
+use marketplace_domain::ContributorId;
 use rocket::{response::status, State};
 use rocket_okapi::openapi;
 
-use crate::routes::{to_http_api_problem::ToHttpApiProblem, u256::U256Param};
+use crate::routes::{
+	hex_prefixed_string::HexPrefixedStringDto, to_http_api_problem::ToHttpApiProblem,
+	u256::U256Param,
+};
 
 #[openapi(tag = "Contributions")]
 #[delete("/contributions/<contribution_id>/applications?<contributor_id>")]
 pub async fn refuse_contributor_application(
-	contribution_id: String,
+	contribution_id: HexPrefixedStringDto,
 	contributor_id: U256Param,
 	usecase: &State<Box<dyn RefuseApplicationUsecase>>,
 ) -> Result<status::NoContent, HttpApiProblem> {
 	let contributor_id: ContributorId = contributor_id.into();
-	let contribution_id = contribution_id
-		.parse()
-		.map_err(|e: ParseHexPrefixedStringError| e.to_http_api_problem())?;
+	let contribution_id = contribution_id.into();
 
 	usecase
 		.refuse_application(&contribution_id, &contributor_id)

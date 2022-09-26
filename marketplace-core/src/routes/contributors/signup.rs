@@ -2,7 +2,6 @@ use std::convert::{TryFrom, TryInto};
 
 use http_api_problem::HttpApiProblem;
 use marketplace_core::application::AssociateGithubAccountUsecase;
-use marketplace_domain::ParseHexPrefixedStringError;
 use marketplace_infrastructure::starknet_account_verifier::{
 	StarknetSignature, StarknetSignedData,
 };
@@ -67,13 +66,11 @@ pub struct GithubAssociationRequest {
 	data = "<body>"
 )]
 pub async fn associate_github_account(
-	contributor_account: String,
+	contributor_account: HexPrefixedStringDto,
 	body: Json<GithubAssociationRequest>,
 	usecase: &State<Box<dyn AssociateGithubAccountUsecase<StarknetSignedData>>>,
 ) -> Result<status::NoContent, HttpApiProblem> {
-	let contributor_account = contributor_account
-		.parse()
-		.map_err(|e: ParseHexPrefixedStringError| e.to_http_api_problem())?;
+	let contributor_account = contributor_account.into();
 
 	let body = body.into_inner();
 	let signed_data = body

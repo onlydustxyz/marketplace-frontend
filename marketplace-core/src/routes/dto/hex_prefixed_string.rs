@@ -30,6 +30,20 @@ impl From<HexPrefixedStringDto> for ContributorAccount {
 	}
 }
 
+impl From<HexPrefixedStringDto> for ContributionId {
+	fn from(value: HexPrefixedStringDto) -> Self {
+		value.0.into()
+	}
+}
+
+impl FromStr for HexPrefixedStringDto {
+	type Err = ParseHexPrefixedStringError;
+
+	fn from_str(s: &str) -> Result<Self, Self::Err> {
+		HexPrefixedString::from_str(s).map(HexPrefixedStringDto)
+	}
+}
+
 #[derive(Error, Debug)]
 #[error("Failed to convert")]
 pub struct FromHexPrefixedStringError(#[from] anyhow::Error);
