@@ -34,7 +34,7 @@ impl ContributorProjector {
 		github_identifier: &GithubUserId,
 		contributor_id: &ContributorId,
 	) -> Result<(), Error> {
-		if self.contributor_projection_repository.find_by_id(&contributor_id).is_err() {
+		if self.contributor_projection_repository.find_by_id(contributor_id).is_err() {
 			let user = self.github_client.find_user_by_id(*github_identifier).await?;
 
 			self.contributor_projection_repository.insert(ContributorProjection {

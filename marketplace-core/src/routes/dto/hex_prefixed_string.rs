@@ -18,10 +18,8 @@ impl From<HexPrefixedStringDto> for HexPrefixedString {
 }
 
 #[derive(Error, Debug)]
-pub enum FromHexPrefixedStringError {
-	#[error("Failed to convert")]
-	Convertion(#[from] anyhow::Error),
-}
+#[error("Failed to convert")]
+pub struct FromHexPrefixedStringError(#[from] anyhow::Error);
 
 impl TryFrom<HexPrefixedStringDto> for FieldElement {
 	type Error = FromHexPrefixedStringError;
