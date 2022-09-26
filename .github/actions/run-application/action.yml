@@ -10,12 +10,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: ./.github/actions/cargo-setup
-
-    - name: Run docker-compose
-      shell: bash
-      run: docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
-
     - name: Build
       shell: bash
       run: cargo build

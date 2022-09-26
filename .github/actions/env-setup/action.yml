@@ -1,0 +1,18 @@
+name: Setup environment
+
+description: Run docker-compose and run database migrations
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run docker-compose
+      shell: bash
+      run: docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
+
+    - name: Install diesel CLI
+      shell: bash
+      run: cargo install diesel_cli --no-default-features --features postgres --force
+
+    - name: Run migrations
+      shell: bash
+      run: diesel migration run
