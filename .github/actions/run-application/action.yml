@@ -10,10 +10,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Build
-      shell: bash
-      run: cargo build
-
     - name: Start the backend
       shell: bash
       run: cargo run -p marketplace-core | tee marketplace-core.log &

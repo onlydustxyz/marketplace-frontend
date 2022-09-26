@@ -18,61 +18,59 @@ jobs:
           override: true
       - name: Check code format
         run: cargo +nightly fmt -- --check
+
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/cargo-setup
+      - uses: ./.github/actions/compile-application
 
-      - name: Build
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --verbose
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/cargo-setup
+      - uses: ./.github/actions/compile-application
 
       - name: Annotate commit with clippy warnings
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --bins --tests --examples
+
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/cargo-setup
+      - uses: ./.github/actions/compile-application
 
       - name: Run tests
         run: cargo test --verbose
 
-  test_with_database:
+  infrastructure_tests:
     runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/cargo-setup
       - uses: ./.github/actions/env-setup
+      - uses: ./.github/actions/compile-application
 
-      - name: Build
-        run: cargo build
       - name: Rust test on db
         run: cargo test -p marketplace-infrastructure --features with_infrastructure_tests
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
 
   component_tests:
     runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/cargo-setup
       - uses: ./.github/actions/env-setup
+      - uses: ./.github/actions/compile-application
 
-      - name: Build
-        run: cargo build
       - name: Rust component tests
         run: cargo test -p marketplace-core --features with_component_tests
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db

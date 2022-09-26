@@ -13,12 +13,12 @@ jobs:
   coverage:
     name: Code coverage analysis
     runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
+
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/cargo-setup
       - uses: ./.github/actions/env-setup
+      - uses: ./.github/actions/compile-application
 
       - uses: ./.github/actions/run-application
         with:
