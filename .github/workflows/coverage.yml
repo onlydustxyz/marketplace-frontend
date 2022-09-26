@@ -46,7 +46,8 @@ jobs:
           args: '--all-features -- --test-threads 1'
         env:
           API_KEY: ROOT
-          E2E_WAITING_TIME: 60
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
 
       - name: Upload results to codecov.io
         uses: codecov/codecov-action@v3
