@@ -18,7 +18,7 @@ mod actions;
 pub use actions::*;
 
 mod event;
-pub use event::{Event, StorableEvent};
+pub use event::{Event, Origin as EventOrigin, StorableEvent};
 
 mod event_store;
 pub use event_store::{Error as EventStoreError, MockStore as MockEventStore, Store as EventStore};

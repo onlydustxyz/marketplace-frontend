@@ -55,7 +55,7 @@ mod test {
 		assert_eq!(
 			DomainEvent::Contribution(ContributionEvent::GateChanged {
 				id: 12.into(),
-				gate: 3.into()
+				gate: 3
 			},),
 			result.unwrap()
 		);

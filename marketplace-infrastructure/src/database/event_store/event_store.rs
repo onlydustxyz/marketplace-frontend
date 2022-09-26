@@ -55,6 +55,8 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 						error!("Failed to serialize event {domain_event:?}: {e}");
 						EventStoreError::InvalidEvent(e.into())
 					})?,
+					origin: storable_event.origin.to_string(),
+					metadata: storable_event.metadata.clone(),
 				})
 			})
 			.collect::<Result<Vec<_>, EventStoreError>>()?;

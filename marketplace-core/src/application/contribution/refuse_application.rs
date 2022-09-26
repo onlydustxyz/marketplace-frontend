@@ -71,6 +71,8 @@ impl Usecase for RefuseApplication {
 						deduplication_id: self.uuid_generator.new_uuid().to_string(),
 						event: contribution_event.clone(),
 						timestamp: Utc::now().naive_utc(),
+						origin: EventOrigin::BACKEND,
+						metadata: Default::default(),
 					}
 				} else {
 					panic!("Contribution event expected");

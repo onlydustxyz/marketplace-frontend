@@ -1,7 +1,12 @@
-use crate::database::{init_pool, Client};
+use crate::{
+	database::{init_pool, schema::events, Client},
+	diesel::{query_dsl::select_dsl::SelectDsl, RunQueryDsl},
+};
 use chrono::Utc;
 use marketplace_domain::*;
+use rocket::serde::json::serde_json::Value;
 use rstest::{fixture, rstest};
+use serde_json::json;
 use std::str::FromStr;
 
 #[fixture]
@@ -31,6 +36,8 @@ fn creation_event(contribution_id: ContributionId) -> StorableEvent<Contribution
 		},
 		timestamp: Utc::now().naive_utc(),
 		deduplication_id: "dedup1".to_string(),
+		origin: EventOrigin::Starknet,
+		metadata: json!({"key": "value"}),
 	}
 }
 
@@ -46,6 +53,8 @@ fn assigned_event(
 		},
 		timestamp: Utc::now().naive_utc(),
 		deduplication_id: "dedup2".to_string(),
+		origin: EventOrigin::Starknet,
+		metadata: Default::default(),
 	}
 }
 
@@ -116,4 +125,25 @@ fn test_cannot_append_duplicate_event_in_different_batches(
 ) {
 	assert!(event_store.append(&contribution_id, vec![creation_event.clone()]).is_ok());
 	assert!(event_store.append(&contribution_id, vec![creation_event]).is_err());
+}
+
+#[rstest]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
+fn test_metadata_are_stored(
+	contribution_id: ContributionId,
+	creation_event: StorableEvent<Contribution>,
+) {
+	let client = Client::new(init_pool());
+	assert!(client.append(&contribution_id, vec![creation_event]).is_ok());
+
+	let connection = client.connection().unwrap();
+	let list: Vec<(String, Option<Value>)> = events::dsl::events
+		.select((events::dsl::origin, events::dsl::metadata))
+		.load(&*connection)
+		.unwrap();
+	println!("{:?}", list);
+	assert!(list.contains(&("starknet".to_string(), Some(json!({"key": "value"})))));
 }

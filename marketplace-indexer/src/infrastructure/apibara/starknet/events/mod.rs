@@ -7,6 +7,7 @@ use super::{Bytes, TryFromBytes};
 use crate::domain::ObservedEvent;
 use chrono::NaiveDateTime;
 use marketplace_domain::{ContractAddress, Event as DomainEvent, HexPrefixedString};
+use serde_json::json;
 use starknet::core::types::FieldElement;
 use thiserror::Error;
 use topics::*;
@@ -75,6 +76,13 @@ impl TryFrom<Event> for ObservedEvent {
 				event.from_address, event.transaction_hash, event.index
 			),
 			timestamp: event.block_timestamp,
+			metadata: json!({
+				"block_hash": event.block_hash,
+				"block_number": event.block_number,
+				"transaction_hash": event.transaction_hash,
+				"index": event.index,
+				"from_address": event.from_address,
+			}),
 		})
 	}
 }
