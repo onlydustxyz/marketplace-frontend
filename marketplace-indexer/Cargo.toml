@@ -46,7 +46,7 @@ thiserror = "1.0.31"
 
 # Starknet
 crypto-bigint = {version = "0.4.8", features = ["serde"]}
-starknet = {git = "https://github.com/ofux/starknet-rs"}
+starknet = {git = "https://github.com/ofux/starknet-rs", rev = "9d01437"}
 
 # Protocol Buffers
 prost = "0.10.4"

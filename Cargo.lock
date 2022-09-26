@@ -1818,7 +1818,7 @@ dependencies = [
  "serde_test",
  "serdect",
  "slog",
- "starknet 0.2.0 (git+https://github.com/ofux/starknet-rs)",
+ "starknet 0.2.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
  "thiserror",
  "tokio",
  "url",
@@ -1879,7 +1879,7 @@ dependencies = [
  "serde",
  "serde_json",
  "slog-scope",
- "starknet 0.2.0 (git+https://github.com/ofux/starknet-rs)",
+ "starknet 0.2.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
  "thiserror",
  "tokio",
  "tokio-stream",
@@ -1923,7 +1923,7 @@ dependencies = [
  "slog-scope",
  "slog-stdlog",
  "slog-term",
- "starknet 0.2.0 (git+https://github.com/ofux/starknet-rs)",
+ "starknet 0.2.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
  "thiserror",
  "tokio",
  "url",
@@ -3625,14 +3625,14 @@ dependencies = [
 [[package]]
 name = "starknet"
 version = "0.2.0"
-source = "git+https://github.com/ofux/starknet-rs#9d014370423bdb0d68e418ab2e83fa7efb432a37"
+source = "git+https://github.com/ofux/starknet-rs?rev=9d01437#9d014370423bdb0d68e418ab2e83fa7efb432a37"
 dependencies = [
- "starknet-accounts 0.1.0 (git+https://github.com/ofux/starknet-rs)",
- "starknet-contract 0.1.0 (git+https://github.com/ofux/starknet-rs)",
- "starknet-core 0.2.0 (git+https://github.com/ofux/starknet-rs)",
- "starknet-macros 0.1.0 (git+https://github.com/ofux/starknet-rs)",
- "starknet-providers 0.2.0 (git+https://github.com/ofux/starknet-rs)",
- "starknet-signers 0.1.0 (git+https://github.com/ofux/starknet-rs)",
+ "starknet-accounts 0.1.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
+ "starknet-contract 0.1.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
+ "starknet-core 0.2.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
+ "starknet-macros 0.1.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
+ "starknet-providers 0.2.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
+ "starknet-signers 0.1.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
 ]
 
 [[package]]
@@ -3651,12 +3651,12 @@ dependencies = [
 [[package]]
 name = "starknet-accounts"
 version = "0.1.0"
-source = "git+https://github.com/ofux/starknet-rs#9d014370423bdb0d68e418ab2e83fa7efb432a37"
+source = "git+https://github.com/ofux/starknet-rs?rev=9d01437#9d014370423bdb0d68e418ab2e83fa7efb432a37"
 dependencies = [
  "async-trait",
- "starknet-core 0.2.0 (git+https://github.com/ofux/starknet-rs)",
- "starknet-providers 0.2.0 (git+https://github.com/ofux/starknet-rs)",
- "starknet-signers 0.1.0 (git+https://github.com/ofux/starknet-rs)",
+ "starknet-core 0.2.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
+ "starknet-providers 0.2.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
+ "starknet-signers 0.1.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
  "thiserror",
 ]
 
@@ -3675,15 +3675,15 @@ dependencies = [
 [[package]]
 name = "starknet-contract"
 version = "0.1.0"
-source = "git+https://github.com/ofux/starknet-rs#9d014370423bdb0d68e418ab2e83fa7efb432a37"
+source = "git+https://github.com/ofux/starknet-rs?rev=9d01437#9d014370423bdb0d68e418ab2e83fa7efb432a37"
 dependencies = [
  "flate2",
  "rand 0.8.5",
  "serde",
  "serde_json",
  "serde_with",
- "starknet-core 0.2.0 (git+https://github.com/ofux/starknet-rs)",
- "starknet-providers 0.2.0 (git+https://github.com/ofux/starknet-rs)",
+ "starknet-core 0.2.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
+ "starknet-providers 0.2.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
  "thiserror",
 ]
 
@@ -3704,7 +3704,7 @@ dependencies = [
 [[package]]
 name = "starknet-core"
 version = "0.2.0"
-source = "git+https://github.com/ofux/starknet-rs#9d014370423bdb0d68e418ab2e83fa7efb432a37"
+source = "git+https://github.com/ofux/starknet-rs?rev=9d01437#9d014370423bdb0d68e418ab2e83fa7efb432a37"
 dependencies = [
  "base64",
  "ethereum-types",
@@ -3713,8 +3713,8 @@ dependencies = [
  "serde_json",
  "serde_with",
  "sha3",
- "starknet-crypto 0.1.0 (git+https://github.com/ofux/starknet-rs)",
- "starknet-ff 0.1.0 (git+https://github.com/ofux/starknet-rs)",
+ "starknet-crypto 0.1.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
+ "starknet-ff 0.1.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
  "thiserror",
 ]
 
@@ -3739,7 +3739,7 @@ dependencies = [
 [[package]]
 name = "starknet-crypto"
 version = "0.1.0"
-source = "git+https://github.com/ofux/starknet-rs#9d014370423bdb0d68e418ab2e83fa7efb432a37"
+source = "git+https://github.com/ofux/starknet-rs?rev=9d01437#9d014370423bdb0d68e418ab2e83fa7efb432a37"
 dependencies = [
  "crypto-bigint 0.3.2",
  "hex",
@@ -3749,7 +3749,7 @@ dependencies = [
  "num-traits",
  "rfc6979",
  "sha2 0.9.9",
- "starknet-ff 0.1.0 (git+https://github.com/ofux/starknet-rs)",
+ "starknet-ff 0.1.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
  "thiserror",
  "zeroize",
 ]
@@ -3775,7 +3775,7 @@ dependencies = [
 [[package]]
 name = "starknet-ff"
 version = "0.1.0"
-source = "git+https://github.com/ofux/starknet-rs#9d014370423bdb0d68e418ab2e83fa7efb432a37"
+source = "git+https://github.com/ofux/starknet-rs?rev=9d01437#9d014370423bdb0d68e418ab2e83fa7efb432a37"
 dependencies = [
  "ark-ff",
  "bigdecimal",
@@ -3805,9 +3805,9 @@ dependencies = [
 [[package]]
 name = "starknet-macros"
 version = "0.1.0"
-source = "git+https://github.com/ofux/starknet-rs#9d014370423bdb0d68e418ab2e83fa7efb432a37"
+source = "git+https://github.com/ofux/starknet-rs?rev=9d01437#9d014370423bdb0d68e418ab2e83fa7efb432a37"
 dependencies = [
- "starknet-core 0.2.0 (git+https://github.com/ofux/starknet-rs)",
+ "starknet-core 0.2.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
  "syn",
 ]
 
@@ -3823,7 +3823,7 @@ dependencies = [
 [[package]]
 name = "starknet-providers"
 version = "0.2.0"
-source = "git+https://github.com/ofux/starknet-rs#9d014370423bdb0d68e418ab2e83fa7efb432a37"
+source = "git+https://github.com/ofux/starknet-rs?rev=9d01437#9d014370423bdb0d68e418ab2e83fa7efb432a37"
 dependencies = [
  "async-trait",
  "auto_impl",
@@ -3831,7 +3831,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_with",
- "starknet-core 0.2.0 (git+https://github.com/ofux/starknet-rs)",
+ "starknet-core 0.2.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
  "thiserror",
  "url",
 ]
@@ -3855,11 +3855,11 @@ dependencies = [
 [[package]]
 name = "starknet-signers"
 version = "0.1.0"
-source = "git+https://github.com/ofux/starknet-rs#9d014370423bdb0d68e418ab2e83fa7efb432a37"
+source = "git+https://github.com/ofux/starknet-rs?rev=9d01437#9d014370423bdb0d68e418ab2e83fa7efb432a37"
 dependencies = [
  "async-trait",
- "starknet-core 0.2.0 (git+https://github.com/ofux/starknet-rs)",
- "starknet-crypto 0.1.0 (git+https://github.com/ofux/starknet-rs)",
+ "starknet-core 0.2.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
+ "starknet-crypto 0.1.0 (git+https://github.com/ofux/starknet-rs?rev=9d01437)",
  "thiserror",
 ]
 
