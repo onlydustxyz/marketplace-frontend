@@ -63,6 +63,8 @@ jobs:
 
       - name: Setup cargo
         uses: ./.github/actions/cargo-setup
+        with:
+          components: clippy
 
       - name: Compile application
         uses: ./.github/actions/compile-application
@@ -113,7 +115,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: -p marketplace-infrastructure --features with_infrastructure_tests --ignored
+          args: -p marketplace-infrastructure --features with_infrastructure_tests -- --ignored
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
 
@@ -138,7 +140,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: -p marketplace-core --features with_component_tests --ignored
+          args: -p marketplace-core --features with_component_tests -- --ignored
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
 
