@@ -1,14 +1,14 @@
 [package]
-name = "marketplace-core"
 authors = ["OnlyDust <tech@onlydust.xyz>"]
+default-run = "marketplace-core"
 description = "Backend services to operate the contribution marketplace."
-homepage = "https://onlydust.xyz"
 edition = "2021"
+homepage = "https://onlydust.xyz"
 license-file = "LICENSE"
+name = "marketplace-core"
 readme = "README.md"
 repository = "https://github.com/onlydustxyz/marketplace-backend"
 version = "1.0.0"
-default-run = "marketplace-core"
 
 [features]
 with_component_tests = []
@@ -17,14 +17,14 @@ with_component_tests = []
 
 # Async
 async-trait = "0.1.56"
-futures = { version = "0.3.21", features = ["alloc"] }
-tokio = { version = "1.18.2", features = ["full"] }
+futures = {version = "0.3.21", features = ["alloc"]}
+tokio = {version = "1.18.2", features = ["full"]}
 
 # Database
-uuid = { version = "0.8.2", default_features = false, features = [
-	"v4",
-	"serde",
-] }
+uuid = {version = "0.8.2", default_features = false, features = [
+  "v4",
+  "serde",
+]}
 
 # Github
 octocrab = "0.16.0"
@@ -33,21 +33,21 @@ octocrab = "0.16.0"
 url = "2.2.2"
 
 # Http Server
-http-api-problem = { version = "0.53.0", features = [
-	"json-schema",
-	"rocket",
-	"rocket-okapi",
-] }
-okapi = { version = "0.7.0-rc.1" }
-rocket = { version = "0.5.0-rc.2", features = ["json", "uuid"] }
-rocket_okapi = { version = "0.8.0-rc.2", features = ["swagger", "uuid"] }
-schemars = { version = "0.8", features = ["uuid1", "bigdecimal"] }
+http-api-problem = {version = "0.53.0", features = [
+  "json-schema",
+  "rocket",
+  "rocket-okapi",
+]}
+okapi = {version = "0.7.0-rc.1"}
+rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
+rocket_okapi = {version = "0.8.0-rc.2", features = ["swagger", "uuid"]}
+schemars = {version = "0.8", features = ["uuid1", "bigdecimal"]}
 
 # Starknet
-starknet = { git = "https://github.com/ofux/starknet-rs" }
+starknet = {git = "https://github.com/ofux/starknet-rs", rev = "9d01437"}
 
 # Math types
-crypto-bigint = { version = "0.4.8", features = ["serde"] }
+crypto-bigint = {version = "0.4.8", features = ["serde"]}
 
 # Logs
 env_logger = "0.9.0"
@@ -59,9 +59,9 @@ anyhow = "1.0.57"
 thiserror = "1.0.31"
 
 # Serde
-serde = { version = "1.0.137", features = ["derive"] }
-serde_json = { version = "1.0.81" }
-serdect = { version = "0.1.0", features = ["alloc"] }
+serde = {version = "1.0.137", features = ["derive"]}
+serde_json = {version = "1.0.81"}
+serdect = {version = "0.1.0", features = ["alloc"]}
 
 # Datetime
 chrono = "0.4"
@@ -75,13 +75,13 @@ mapinto = "0.2.1"
 mockall = "0.11.2"
 
 # Local dependecies
-marketplace-wrappers = { path = "../marketplace-wrappers" }
-marketplace-domain = { path = "../marketplace-domain" }
-marketplace-infrastructure = { path = "../marketplace-infrastructure" }
+marketplace-domain = {path = "../marketplace-domain"}
+marketplace-infrastructure = {path = "../marketplace-infrastructure"}
+marketplace-wrappers = {path = "../marketplace-wrappers"}
 
 [dev-dependencies]
-serde_test = "1.0.140"
-async-std = { version = "1.12.0", features = ["attributes"] }
-rstest = "0.15.0"
-marketplace-tests = { path = "../marketplace-tests" }
+async-std = {version = "1.12.0", features = ["attributes"]}
 lazy_static = "1.4.0"
+marketplace-tests = {path = "../marketplace-tests"}
+rstest = "0.15.0"
+serde_test = "1.0.140"
