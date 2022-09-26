@@ -8,6 +8,17 @@
             "url": "https://github.com/onlydustxyz/heroku-buildpack-rust"
         }
     ],
+    "env": {
+        "APIBARA_NODE_URL": "https://goerli.starknet.stream.apibara.com",
+        "INDEXER_NAME": "contributions-indexer",
+        "NETWORK": "alpha-goerli",
+        "PG_POOL_MAX_SIZE": "3",
+        "ROCKET_ADDRESS": "0.0.0.0",
+        "ROCKET_CLI_COLORS": "false",
+        "RUST_LOG": "debug",
+        "SLOG_CHANNEL_SIZE": "1024",
+        "STARKNET_CHAIN": "TESTNET"
+    },
     "environments": {
         "review": {
             "addons": [
