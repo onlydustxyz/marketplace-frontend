@@ -20,9 +20,14 @@ jobs:
       - uses: ./.github/actions/env-setup
       - uses: ./.github/actions/compile-application
 
-      - uses: ./.github/actions/run-application
+      - uses: ./.github/actions/run-backend
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: ./.github/actions/run-indexer
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          indexer_name: starknet
 
       - name: Run cargo-tarpaulin
         uses: actions-rs/tarpaulin@v0.1
