@@ -30,6 +30,11 @@ runs:
         token: ${{ inputs.token }}
         indexer_name: starknet
 
+    - name: Setup cargo
+      uses: ./.github/actions/cargo-setup
+      with:
+        key: coverage
+
     - name: Run cargo-tarpaulin
       uses: actions-rs/tarpaulin@v0.1
       with:

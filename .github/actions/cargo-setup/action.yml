@@ -8,6 +8,11 @@ inputs:
     required: false
     default: ''
 
+  key:
+    description: Specific key for the cargo cache
+    required: false
+    default: ''
+
 runs:
   using: "composite"
   steps:
@@ -27,5 +32,7 @@ runs:
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
           target/
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: ${{ runner.os }}-cargo-
+        key: ${{ runner.os }}-cargo-${{ inputs.key }}-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-${{ inputs.key }}-
+          ${{ runner.os }}-cargo-
