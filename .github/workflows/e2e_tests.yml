@@ -8,30 +8,39 @@ env:
 
 jobs:
   e2e_tests:
-    name: End-to-end tests
+    name: Execute end-to-end tests
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: ./.github/actions/cargo-setup
-      - uses: ./.github/actions/env-setup
-      - uses: ./.github/actions/compile-application
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - uses: ./.github/actions/run-backend
+      - name: Setup cargo
+        uses: ./.github/actions/cargo-setup
+
+      - name: Setup environment
+        uses: ./.github/actions/env-setup
+
+      - name: Compile application
+        uses: ./.github/actions/compile-application
+
+      - name: Launch the backend
+        uses: ./.github/actions/run-backend
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: ./.github/actions/run-indexer
+      - name: Launch the indexer
+        uses: ./.github/actions/run-indexer
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           indexer_name: starknet
 
-      - name: Execute e2e tests
+      - name: Execute end-to-end tests
         run: cargo test -p marketplace-tests --features with_e2e_tests e2e_tests
         env:
           API_KEY: ROOT
           E2E_WAITING_TIME: 60
 
-      - name: Setup tmate session
+      - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
         if: ${{ failure() && inputs.debug_enabled }}
