@@ -15,16 +15,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: ./.github/actions/cargo-setup
-      - uses: ./.github/actions/env-setup
-      - uses: ./.github/actions/compile-application
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - uses: ./.github/actions/run-backend
+      - name: Setup cargo
+        uses: ./.github/actions/cargo-setup
+
+      - name: Setup environment
+        uses: ./.github/actions/env-setup
+
+      - name: Compile application
+        uses: ./.github/actions/compile-application
+
+      - name: Launch the backend
+        uses: ./.github/actions/run-backend
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: ./.github/actions/run-indexer
+      - name: Launch the indexer
+        uses: ./.github/actions/run-indexer
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           indexer_name: starknet
@@ -39,7 +48,7 @@ jobs:
           API_KEY: ROOT
           E2E_WAITING_TIME: 60
 
-      - name: Upload to codecov.io
+      - name: Upload results to codecov.io
         uses: codecov/codecov-action@v3
         with:
           files: cobertura.xml
