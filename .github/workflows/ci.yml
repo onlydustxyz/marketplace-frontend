@@ -73,7 +73,9 @@ jobs:
         uses: ./.github/actions/compile-application
 
       - name: Run tests
-        run: cargo test --verbose
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
 
   infrastructure_tests:
     needs : build
@@ -93,7 +95,10 @@ jobs:
         uses: ./.github/actions/compile-application
 
       - name: Execute infrastructure tests
-        run: cargo test -p marketplace-infrastructure --features with_infrastructure_tests
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: -p marketplace-infrastructure --features with_infrastructure_tests --ignored
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
 
@@ -115,7 +120,10 @@ jobs:
         uses: ./.github/actions/compile-application
 
       - name: Execute component tests
-        run: cargo test -p marketplace-core --features with_component_tests
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: -p marketplace-core --features with_component_tests --ignored
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
 
@@ -149,7 +157,10 @@ jobs:
           indexer_name: starknet
 
       - name: Execute end-to-end tests
-        run: cargo test -p marketplace-tests --features with_e2e_tests e2e_tests
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: -p marketplace-tests --features with_e2e_tests e2e_tests
         env:
           API_KEY: ROOT
 
