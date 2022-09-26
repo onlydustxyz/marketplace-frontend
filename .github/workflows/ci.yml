@@ -24,8 +24,23 @@ jobs:
       - name: Check code formatting
         run: cargo +nightly fmt -- --check
 
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup cargo
+        uses: ./.github/actions/cargo-setup
+
+      - name: Check application
+        uses: actions-rs/cargo@v1
+        with:
+          command: check
+
   build:
-    needs : format
+    needs: check
     name: Compile
     runs-on: ubuntu-latest
     steps:
@@ -39,8 +54,8 @@ jobs:
         uses: ./.github/actions/compile-application
 
   lint:
-    needs : build
-    name: Run clippy checks
+    needs : check
+    name: Clippy checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
