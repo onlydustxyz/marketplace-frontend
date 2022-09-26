@@ -17,6 +17,22 @@ impl From<HexPrefixedStringDto> for HexPrefixedString {
 	}
 }
 
+#[derive(Error, Debug)]
+pub enum FromHexPrefixedStringError {
+	#[error("Failed to convert")]
+	Convertion(#[from] anyhow::Error),
+}
+
+impl TryFrom<HexPrefixedStringDto> for FieldElement {
+	type Error = FromHexPrefixedStringError;
+
+	fn try_from(value: HexPrefixedStringDto) -> Result<Self, Self::Error> {
+		FieldElement::from_hex_be(&value.0.to_string())
+			.map_err(anyhow::Error::msg)
+			.map_err(FromHexPrefixedStringError::from)
+	}
+}
+
 impl JsonSchema for HexPrefixedStringDto {
 	fn schema_name() -> String {
 		"HexPrefixedString".to_string()
@@ -37,27 +53,6 @@ impl JsonSchema for HexPrefixedStringDto {
 	}
 }
 
-#[derive(Error, Debug)]
-pub enum FromHexPrefixedStringError {
-	#[error("Failed to convert")]
-	Convertion(#[from] anyhow::Error),
-}
-
-pub trait TryFromHexPrefixedString: Sized {
-	type Error;
-	fn try_from_hex_prefixed_string(value: HexPrefixedString) -> Result<Self, Self::Error>;
-}
-
-impl TryFromHexPrefixedString for FieldElement {
-	type Error = FromHexPrefixedStringError;
-
-	fn try_from_hex_prefixed_string(value: HexPrefixedString) -> Result<Self, Self::Error> {
-		FieldElement::from_hex_be(&value.to_string())
-			.map_err(anyhow::Error::msg)
-			.map_err(FromHexPrefixedStringError::from)
-	}
-}
-
 #[cfg(test)]
 mod test {
 	use super::*;
@@ -67,9 +62,10 @@ mod test {
 
 	#[rstest]
 	fn try_from_hex_prefixed_string() {
-		let string = HexPrefixedString::from_str("0x112233").unwrap();
-		assert_eq!(string.to_string(), "0x00112233");
-		let felt: FieldElement = FieldElement::try_from_hex_prefixed_string(string).unwrap().into();
+		let string: HexPrefixedStringDto =
+			HexPrefixedStringDto(HexPrefixedString::from_str("0x112233").unwrap());
+		assert_eq!(string.0.to_string(), "0x00112233");
+		let felt: FieldElement = FieldElement::try_from(string).unwrap().into();
 		assert_eq!(felt.to_string(), "1122867");
 	}
 }

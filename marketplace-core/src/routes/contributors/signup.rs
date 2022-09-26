@@ -13,9 +13,7 @@ use serde::Deserialize;
 use starknet::core::types::FieldElement;
 
 use crate::routes::{
-	hex_prefixed_string::{
-		FromHexPrefixedStringError, HexPrefixedStringDto, TryFromHexPrefixedString,
-	},
+	hex_prefixed_string::{FromHexPrefixedStringError, HexPrefixedStringDto},
 	to_http_api_problem::ToHttpApiProblem,
 };
 
@@ -31,8 +29,8 @@ impl TryFrom<Signature> for StarknetSignature {
 
 	fn try_from(value: Signature) -> Result<Self, Self::Error> {
 		Ok(StarknetSignature {
-			r: FieldElement::try_from_hex_prefixed_string(value.r.into())?,
-			s: FieldElement::try_from_hex_prefixed_string(value.s.into())?,
+			r: FieldElement::try_from(value.r)?,
+			s: FieldElement::try_from(value.s)?,
 		})
 	}
 }
@@ -49,7 +47,7 @@ impl TryFrom<SignedData> for StarknetSignedData {
 
 	fn try_from(value: SignedData) -> Result<Self, Self::Error> {
 		Ok(StarknetSignedData {
-			hash: FieldElement::try_from_hex_prefixed_string(value.hash.into())?,
+			hash: FieldElement::try_from(value.hash)?,
 			signature: value.signature.try_into()?,
 		})
 	}
