@@ -1,6 +1,6 @@
 use crate::database::{models, schema::contributors::dsl, Client, DatabaseError};
 use anyhow::anyhow;
-use diesel::{query_dsl::filter_dsl::FindDsl, RunQueryDsl};
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use log::error;
 use marketplace_domain::*;
 
@@ -32,6 +32,20 @@ impl ContributorProjectionRepository for Client {
 
 		let contributor: models::Contributor = dsl::contributors
 			.find(contributor_id.to_string())
+			.get_result(&*connection)
+			.map_err(DatabaseError::from)?;
+
+		Ok(contributor.into())
+	}
+
+	fn find_by_account(
+		&self,
+		contributor_account: &ContributorAccount,
+	) -> Result<ContributorProjection, ContributorProjectionRepositoryError> {
+		let connection = self.connection().map_err(ContributorProjectionRepositoryError::from)?;
+
+		let contributor: models::Contributor = dsl::contributors
+			.filter(dsl::account.eq(contributor_account.to_string()))
 			.get_result(&*connection)
 			.map_err(DatabaseError::from)?;
 

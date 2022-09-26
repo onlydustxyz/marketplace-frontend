@@ -1,5 +1,12 @@
-use marketplace_domain::HexPrefixedString;
+use std::str::FromStr;
+
+use marketplace_domain::*;
 use okapi::openapi3::SchemaObject;
+use rocket::{
+	data::ToByteUnit,
+	form::{self, DataField, FromFormField, ValueField},
+	request::FromParam,
+};
 use schemars::{
 	schema::{InstanceType, StringValidation},
 	JsonSchema,
@@ -14,6 +21,12 @@ pub struct HexPrefixedStringDto(HexPrefixedString);
 impl From<HexPrefixedStringDto> for HexPrefixedString {
 	fn from(value: HexPrefixedStringDto) -> Self {
 		value.0
+	}
+}
+
+impl From<HexPrefixedStringDto> for ContributorAccount {
+	fn from(value: HexPrefixedStringDto) -> Self {
+		value.0.into()
 	}
 }
 
@@ -48,6 +61,57 @@ impl JsonSchema for HexPrefixedStringDto {
 		};
 
 		schema.into()
+	}
+}
+
+#[rocket::async_trait]
+impl<'r> FromFormField<'r> for HexPrefixedStringDto {
+	fn from_value(field: ValueField<'r>) -> form::Result<'r, Self> {
+		HexPrefixedString::from_str(field.value)
+			.map(|value| HexPrefixedStringDto(value))
+			.map_err(|parse_error| match parse_error {
+				ParseHexPrefixedStringError::TooShort => form::error::ErrorKind::InvalidLength {
+					min: Some(3),
+					max: Some(66),
+				}
+				.into(),
+				ParseHexPrefixedStringError::InvalidPrefix
+				| ParseHexPrefixedStringError::InvalidHexa(_) =>
+					form::Error::validation(parse_error.to_string()).into(),
+			})
+	}
+
+	async fn from_data(field: DataField<'r, '_>) -> form::Result<'r, Self> {
+		let limit = 256.kibibytes();
+		let bytes = field.data.open(limit).into_bytes().await?;
+		if !bytes.is_complete() {
+			Err((None, Some(limit)))?;
+		}
+
+		let bytes = bytes.into_inner();
+		let bytes = rocket::request::local_cache!(field.request, bytes);
+		let s = std::str::from_utf8(bytes)?;
+
+		HexPrefixedString::from_str(s).map(|value| HexPrefixedStringDto(value)).map_err(
+			|parse_error| match parse_error {
+				ParseHexPrefixedStringError::TooShort => form::error::ErrorKind::InvalidLength {
+					min: Some(3),
+					max: Some(66),
+				}
+				.into(),
+				ParseHexPrefixedStringError::InvalidPrefix
+				| ParseHexPrefixedStringError::InvalidHexa(_) =>
+					form::Error::validation(parse_error.to_string()).into(),
+			},
+		)
+	}
+}
+
+impl<'a> FromParam<'a> for HexPrefixedStringDto {
+	type Error = <HexPrefixedString as FromStr>::Err;
+
+	fn from_param(param: &'a str) -> Result<Self, Self::Error> {
+		HexPrefixedString::from_str(param).map(|value| HexPrefixedStringDto(value))
 	}
 }
 
