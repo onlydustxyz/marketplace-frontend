@@ -56,17 +56,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/cargo-setup
+      - uses: ./.github/actions/env-setup
 
-      - name: Run docker compose
-        run: docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
-        env:
-          BASE_TAG: latest
-      - name: Install diesel CLI
-        run: cargo install diesel_cli --no-default-features --features postgres --force
       - name: Build
         run: cargo build
-      - name: Run migrations
-        run: diesel migration run
       - name: Rust test on db
         run: cargo test -p marketplace-infrastructure --features with_infrastructure_tests
 
@@ -77,16 +70,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/cargo-setup
+      - uses: ./.github/actions/env-setup
 
-      - name: Run docker compose
-        run: docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
-        env:
-          BASE_TAG: latest
-      - name: Install diesel CLI
-        run: cargo install diesel_cli --no-default-features --features postgres --force
       - name: Build
         run: cargo build
-      - name: Run migrations
-        run: diesel migration run
       - name: Rust component tests
         run: cargo test -p marketplace-core --features with_component_tests

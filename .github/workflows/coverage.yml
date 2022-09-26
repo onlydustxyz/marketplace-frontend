@@ -17,6 +17,9 @@ jobs:
       DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
     steps:
       - uses: actions/checkout@v2
+      - uses: ./.github/actions/cargo-setup
+      - uses: ./.github/actions/env-setup
+
       - uses: ./.github/actions/run-application
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
