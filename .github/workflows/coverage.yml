@@ -1,7 +1,6 @@
 name: Coverage
 
 on:
-  pull_request: ~
   push:
     branches:
       - "main"
@@ -18,43 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Setup cargo
-        uses: ./.github/actions/cargo-setup
-
-      - name: Setup environment
-        uses: ./.github/actions/env-setup
-
-      - name: Compile application
-        uses: ./.github/actions/compile-application
-
-      - name: Launch the backend
-        uses: ./.github/actions/run-backend
+      - name: Code coverage
+        uses: ./.github/actions/coverage-checks
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Launch the indexer
-        uses: ./.github/actions/run-indexer
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          indexer_name: starknet
-
-      - name: Run cargo-tarpaulin
-        uses: actions-rs/tarpaulin@v0.1
-        with:
-          version: '0.20.1'
-          args: '--skip-clean --all-features -- --test-threads 1'
-        env:
-          API_KEY: ROOT
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
-
-      - name: Upload results to codecov.io
-        uses: codecov/codecov-action@v3
-        with:
-          files: cobertura.xml
-
-      - name: Archive code coverage results
-        uses: actions/upload-artifact@v1
-        with:
-          name: code-coverage-report
-          path: cobertura.xml

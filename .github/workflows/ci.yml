@@ -184,3 +184,16 @@ jobs:
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
         if: ${{ failure() && inputs.debug_enabled }}
+
+  coverage:
+    name: Code coverage analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Code coverage
+        uses: ./.github/actions/coverage-checks
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
