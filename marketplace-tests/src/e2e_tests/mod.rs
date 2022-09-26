@@ -47,6 +47,12 @@ async fn e2e_tests() {
 	);
 	assert_eq!(contributor.github_identifier, "990474");
 	assert_eq!(contributor.github_username, "abuisset");
+
+	let contributor = contributors::get::get_by_account(
+		"0x0265a2d2ac0c9c95aef8e489b9046a700f9b1d1488a9922fe3b0f9a6f6ddd3b5".to_string(),
+	)
+	.await;
+	assert_eq!(contributor.id, "0x0029");
 }
 
 async fn refresh_all() {
