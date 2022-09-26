@@ -89,6 +89,7 @@ async fn main() {
 			routes::refresh_contributions,
 			routes::contributors::refresh_contributors,
 			routes::contributors::get_contributor,
+			routes::contributors::get_contributor_by_account,
 			routes::contributors::associate_github_account,
 			routes::contact_information::find_contact_information,
 			routes::contact_information::put_contact_information,
