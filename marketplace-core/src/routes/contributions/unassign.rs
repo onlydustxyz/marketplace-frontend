@@ -1,22 +1,22 @@
 use http_api_problem::HttpApiProblem;
 use marketplace_core::application::UnassignContributionUsecase;
-use marketplace_domain::ParseHexPrefixedStringError;
 use rocket::{response::status, State};
 use rocket_okapi::openapi;
 
-use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem};
+use crate::routes::{
+	api_key::ApiKey, hex_prefixed_string::HexPrefixedStringDto,
+	to_http_api_problem::ToHttpApiProblem,
+};
 
 #[openapi(tag = "Contributions")]
 #[delete("/contributions/<contribution_id>/contributor")]
 pub async fn unassign_contributor(
 	_api_key: ApiKey,
 
-	contribution_id: String,
+	contribution_id: HexPrefixedStringDto,
 	usecase: &State<Box<dyn UnassignContributionUsecase>>,
 ) -> Result<status::Accepted<()>, HttpApiProblem> {
-	let contribution_id = contribution_id
-		.parse()
-		.map_err(|e: ParseHexPrefixedStringError| e.to_http_api_problem())?;
+	let contribution_id = contribution_id.into();
 
 	usecase
 		.send_unassign_request(&contribution_id)
@@ -56,7 +56,7 @@ mod test {
 
 		let result = unassign_contributor(
 			ApiKey::default(),
-			"0x12".into(),
+			HexPrefixedStringDto::from_str("0x12").unwrap(),
 			State::get(&rocket).unwrap(),
 		)
 		.await;
@@ -79,7 +79,7 @@ mod test {
 
 		let result = unassign_contributor(
 			ApiKey::default(),
-			"0x12".into(),
+			HexPrefixedStringDto::from_str("0x12").unwrap(),
 			State::get(&rocket).unwrap(),
 		)
 		.await;

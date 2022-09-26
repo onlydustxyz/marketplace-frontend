@@ -1,21 +1,21 @@
 use http_api_problem::HttpApiProblem;
 use marketplace_core::application::ValidateContributionUsecase;
-use marketplace_domain::ParseHexPrefixedStringError;
 use rocket::{response::status, State};
 use rocket_okapi::openapi;
 
-use crate::routes::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem};
+use crate::routes::{
+	api_key::ApiKey, hex_prefixed_string::HexPrefixedStringDto,
+	to_http_api_problem::ToHttpApiProblem,
+};
 
 #[openapi(tag = "Contributions")]
 #[post("/contributions/<contribution_id>/validate")]
 pub async fn validate_contribution(
 	_api_key: ApiKey,
-	contribution_id: String,
+	contribution_id: HexPrefixedStringDto,
 	usecase: &State<Box<dyn ValidateContributionUsecase>>,
 ) -> Result<status::Accepted<()>, HttpApiProblem> {
-	let contribution_id = contribution_id
-		.parse()
-		.map_err(|e: ParseHexPrefixedStringError| e.to_http_api_problem())?;
+	let contribution_id = contribution_id.into();
 
 	usecase
 		.send_validate_request(&contribution_id)
@@ -54,7 +54,7 @@ mod test {
 
 		let result = validate_contribution(
 			ApiKey::default(),
-			"0x12".into(),
+			HexPrefixedStringDto::from_str("0x12").unwrap(),
 			State::get(&rocket).unwrap(),
 		)
 		.await;
@@ -77,7 +77,7 @@ mod test {
 
 		let result = validate_contribution(
 			ApiKey::default(),
-			"0x12".into(),
+			HexPrefixedStringDto::from_str("0x12").unwrap(),
 			State::get(&rocket).unwrap(),
 		)
 		.await;

@@ -3,14 +3,14 @@ use std::sync::Arc;
 use http_api_problem::HttpApiProblem;
 use itertools::Itertools;
 use marketplace_core::dto;
-use marketplace_domain::{
-	ApplicationProjection, ApplicationProjectionRepository, ContributorId,
-	ParseHexPrefixedStringError,
-};
+use marketplace_domain::{ApplicationProjection, ApplicationProjectionRepository, ContributorId};
 use rocket::{serde::json::Json, State};
 use rocket_okapi::openapi;
 
-use crate::routes::{to_http_api_problem::ToHttpApiProblem, u256::U256Param};
+use crate::routes::{
+	hex_prefixed_string::HexPrefixedStringDto, to_http_api_problem::ToHttpApiProblem,
+	u256::U256Param,
+};
 
 #[derive(Debug)]
 struct ContributorIdDynamicParameter(ContributorId);
@@ -18,13 +18,11 @@ struct ContributorIdDynamicParameter(ContributorId);
 #[openapi(tag = "Contributions")]
 #[get("/contributions/<contribution_id>/applications?<contributor_id>")]
 pub async fn list_applications(
-	contribution_id: String,
+	contribution_id: HexPrefixedStringDto,
 	contributor_id: Option<U256Param>,
 	application_repository: &State<Arc<dyn ApplicationProjectionRepository>>,
 ) -> Result<Json<Vec<dto::Application>>, HttpApiProblem> {
-	let contribution_id = contribution_id
-		.parse()
-		.map_err(|e: ParseHexPrefixedStringError| e.to_http_api_problem())?;
+	let contribution_id = contribution_id.into();
 	let contributor_id: Option<ContributorId> = contributor_id.map(|id| id.into());
 
 	let applications: Vec<ApplicationProjection> = application_repository
