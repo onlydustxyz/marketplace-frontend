@@ -68,7 +68,7 @@ impl JsonSchema for HexPrefixedStringDto {
 impl<'r> FromFormField<'r> for HexPrefixedStringDto {
 	fn from_value(field: ValueField<'r>) -> form::Result<'r, Self> {
 		HexPrefixedString::from_str(field.value)
-			.map(|value| HexPrefixedStringDto(value))
+			.map(HexPrefixedStringDto)
 			.map_err(|parse_error| match parse_error {
 				ParseHexPrefixedStringError::TooShort => form::error::ErrorKind::InvalidLength {
 					min: Some(3),
@@ -92,8 +92,8 @@ impl<'r> FromFormField<'r> for HexPrefixedStringDto {
 		let bytes = rocket::request::local_cache!(field.request, bytes);
 		let s = std::str::from_utf8(bytes)?;
 
-		HexPrefixedString::from_str(s).map(|value| HexPrefixedStringDto(value)).map_err(
-			|parse_error| match parse_error {
+		HexPrefixedString::from_str(s).map(HexPrefixedStringDto).map_err(|parse_error| {
+			match parse_error {
 				ParseHexPrefixedStringError::TooShort => form::error::ErrorKind::InvalidLength {
 					min: Some(3),
 					max: Some(66),
@@ -102,8 +102,8 @@ impl<'r> FromFormField<'r> for HexPrefixedStringDto {
 				ParseHexPrefixedStringError::InvalidPrefix
 				| ParseHexPrefixedStringError::InvalidHexa(_) =>
 					form::Error::validation(parse_error.to_string()).into(),
-			},
-		)
+			}
+		})
 	}
 }
 
@@ -111,7 +111,7 @@ impl<'a> FromParam<'a> for HexPrefixedStringDto {
 	type Error = <HexPrefixedString as FromStr>::Err;
 
 	fn from_param(param: &'a str) -> Result<Self, Self::Error> {
-		HexPrefixedString::from_str(param).map(|value| HexPrefixedStringDto(value))
+		HexPrefixedString::from_str(param).map(HexPrefixedStringDto)
 	}
 }
 
