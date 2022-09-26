@@ -49,8 +49,9 @@ table! {
         aggregate_name -> Varchar,
         aggregate_id -> Varchar,
         payload -> Jsonb,
-        new_playload -> Nullable<Jsonb>,
         payload_backup -> Nullable<Jsonb>,
+        metadata -> Nullable<Jsonb>,
+        origin -> Text,
     }
 }
 

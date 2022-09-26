@@ -19,6 +19,8 @@ pub struct NewEvent {
 	pub aggregate_name: String,
 	pub aggregate_id: String,
 	pub payload: Value,
+	pub origin: String,
+	pub metadata: Value,
 }
 
 #[derive(Insertable, Debug, Serialize, Deserialize)]

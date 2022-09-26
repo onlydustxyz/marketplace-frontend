@@ -1,6 +1,7 @@
-use crate::{Aggregate, ContributionEvent, ContributorEvent, ProjectEvent};
+use crate::{Aggregate, ContributionEvent, ContributorEvent, EventOrigin, ProjectEvent};
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use std::fmt::Display;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -15,6 +16,8 @@ pub struct StorableEvent<A: Aggregate> {
 	pub event: A::Event,
 	pub deduplication_id: String,
 	pub timestamp: NaiveDateTime,
+	pub metadata: Value,
+	pub origin: EventOrigin,
 }
 
 impl Display for Event {
@@ -23,6 +26,25 @@ impl Display for Event {
 			f,
 			"{}",
 			serde_json::to_string(self).map_err(|_| std::fmt::Error)?
+		)
+	}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Origin {
+	Starknet,
+	BACKEND,
+}
+
+impl Display for Origin {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(
+			f,
+			"{}",
+			match self {
+				Origin::Starknet => "starknet",
+				Origin::BACKEND => "backend",
+			}
 		)
 	}
 }

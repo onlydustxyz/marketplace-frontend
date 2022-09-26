@@ -40,6 +40,8 @@ impl Storable for ContributorEvent {
 			event: self,
 			deduplication_id: RandomUuidGenerator.new_uuid().to_string(),
 			timestamp: Utc::now().naive_utc(),
+			origin: EventOrigin::BACKEND,
+			metadata: Default::default(),
 		}
 	}
 }

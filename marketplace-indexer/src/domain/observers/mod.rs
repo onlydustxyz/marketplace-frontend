@@ -17,6 +17,7 @@ pub use event_store::EventStoreObserver;
 
 mod projectors;
 pub use projectors::EventListenersObserver;
+use serde_json::Value;
 
 use crate::domain::*;
 use mockall::automock;
@@ -38,6 +39,7 @@ pub struct ObservedEvent {
 	pub event: Event,
 	pub deduplication_id: String,
 	pub timestamp: NaiveDateTime,
+	pub metadata: Value,
 }
 
 impl Display for ObservedEvent {
@@ -60,6 +62,7 @@ impl Default for ObservedEvent {
 			}),
 			deduplication_id: "dedup".to_string(),
 			timestamp: Utc::now().naive_utc(),
+			metadata: Default::default(),
 		}
 	}
 }

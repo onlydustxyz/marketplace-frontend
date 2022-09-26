@@ -48,6 +48,8 @@ impl Storable for ContributionEvent {
 			event: self,
 			deduplication_id: RandomUuidGenerator.new_uuid().to_string(),
 			timestamp: Utc::now().naive_utc(),
+			origin: EventOrigin::Starknet,
+			metadata: Default::default(),
 		}
 	}
 }

@@ -3,6 +3,7 @@ use async_trait::async_trait;
 use chrono::NaiveDateTime;
 use log::error;
 use marketplace_domain::{EventStore, *};
+use serde_json::Value;
 use std::sync::Arc;
 
 pub struct EventStoreObserver {
@@ -37,6 +38,7 @@ impl Observer for EventStoreObserver {
 					contribution_event.clone(),
 					observed_event.deduplication_id.clone(),
 					observed_event.timestamp,
+					observed_event.metadata.clone(),
 				);
 			},
 			Event::Project(project_event) => {
@@ -47,6 +49,7 @@ impl Observer for EventStoreObserver {
 					project_event.clone(),
 					observed_event.deduplication_id.clone(),
 					observed_event.timestamp,
+					observed_event.metadata.clone(),
 				);
 			},
 			Event::Contributor(contributor_event) => {
@@ -58,6 +61,7 @@ impl Observer for EventStoreObserver {
 					contributor_event.clone(),
 					observed_event.deduplication_id.clone(),
 					observed_event.timestamp,
+					observed_event.metadata.clone(),
 				);
 			},
 		}
@@ -70,6 +74,7 @@ fn store_event<A: Aggregate>(
 	event: A::Event,
 	deduplication_id: String,
 	timestamp: NaiveDateTime,
+	metadata: Value,
 ) {
 	if let Err(error) = event_store.append(
 		id,
@@ -77,6 +82,8 @@ fn store_event<A: Aggregate>(
 			event: event.clone(),
 			deduplication_id,
 			timestamp,
+			metadata,
+			origin: EventOrigin::Starknet,
 		}],
 	) {
 		error!("Failed to append {event} to the store: {error}",);
@@ -241,6 +248,8 @@ mod test {
 					event: contribution_event.clone(),
 					deduplication_id: cloned_event.deduplication_id.clone(),
 					timestamp: cloned_event.timestamp,
+					metadata: Default::default(),
+					origin: EventOrigin::Starknet,
 				}]),
 			)
 			.returning(|_, _| Ok(()));
@@ -273,6 +282,8 @@ mod test {
 					event: project_event.clone(),
 					deduplication_id: cloned_event.deduplication_id.clone(),
 					timestamp: cloned_event.timestamp,
+					origin: EventOrigin::Starknet,
+					metadata: Default::default(),
 				}]),
 			)
 			.returning(|_, _| Ok(()));
@@ -305,6 +316,8 @@ mod test {
 					event: contributor_event.clone(),
 					deduplication_id: cloned_event.deduplication_id.clone(),
 					timestamp: cloned_event.timestamp,
+					origin: EventOrigin::Starknet,
+					metadata: Default::default(),
 				}]),
 			)
 			.returning(|_, _| Ok(()));
