@@ -1,7 +1,8 @@
 {
     "name": "Onlydust backend",
     "addons": [
-        "heroku-postgresql:standard-0"
+        "heroku-postgresql:standard-0",
+        "bucketeer:hobbyist"
     ],
     "buildpacks": [
         {
@@ -22,7 +23,8 @@
     "environments": {
         "review": {
             "addons": [
-                "heroku-postgresql:hobby-dev"
+                "heroku-postgresql:hobby-dev",
+                "bucketeer:hobbyist"
             ]
         }
     }
