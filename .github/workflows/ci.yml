@@ -73,7 +73,7 @@ jobs:
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --bins --tests --examples
+          args: --bins --tests --examples -- -D warnings
 
   unit_tests:
     needs : build
