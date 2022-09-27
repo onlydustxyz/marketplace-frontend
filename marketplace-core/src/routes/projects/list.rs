@@ -1,7 +1,6 @@
-use crate::routes::to_http_api_problem::ToHttpApiProblem;
+use crate::{dto, routes::to_http_api_problem::ToHttpApiProblem};
 use http_api_problem::HttpApiProblem;
 use log::error;
-use marketplace_core::dto;
 use marketplace_domain::*;
 use rocket::{get, serde::json::Json, State};
 use rocket_okapi::openapi;

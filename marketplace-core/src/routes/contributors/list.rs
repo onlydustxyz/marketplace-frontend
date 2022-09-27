@@ -1,5 +1,5 @@
+use crate::dto;
 use http_api_problem::HttpApiProblem;
-use marketplace_core::dto;
 use marketplace_domain::ContributorProjectionRepository;
 use rocket::{serde::json::Json, State};
 use rocket_okapi::openapi;

@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod tests;
 
+use crate::application::ApplyToContributionUsecase;
 use http_api_problem::HttpApiProblem;
-use marketplace_core::application::ApplyToContributionUsecase;
 use marketplace_domain::ContributorId;
 use rocket::{response::status, serde::json::Json, State};
 use rocket_okapi::openapi;
