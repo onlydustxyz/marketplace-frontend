@@ -1,7 +1,7 @@
 use std::convert::{TryFrom, TryInto};
 
+use crate::application::AssociateGithubAccountUsecase;
 use http_api_problem::HttpApiProblem;
-use marketplace_core::application::AssociateGithubAccountUsecase;
 use marketplace_infrastructure::starknet_account_verifier::{
 	StarknetSignature, StarknetSignedData,
 };

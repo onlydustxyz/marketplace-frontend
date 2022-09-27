@@ -1,5 +1,5 @@
+use crate::dto;
 use http_api_problem::{HttpApiProblem, StatusCode};
-use marketplace_core::dto;
 use marketplace_domain::ContactInformationService;
 use rocket::{get, serde::json::Json, State};
 use rocket_okapi::openapi;

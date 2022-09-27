@@ -1,4 +1,4 @@
-use marketplace_core::dto;
+use crate::dto;
 use marketplace_domain::*;
 use marketplace_infrastructure::{database, github};
 

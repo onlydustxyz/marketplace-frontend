@@ -1,5 +1,5 @@
+use crate::application::RefuseApplicationUsecase;
 use http_api_problem::HttpApiProblem;
-use marketplace_core::application::RefuseApplicationUsecase;
 use marketplace_domain::ContributorId;
 use rocket::{response::status, State};
 use rocket_okapi::openapi;
