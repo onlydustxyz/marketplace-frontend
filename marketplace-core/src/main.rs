@@ -5,7 +5,7 @@ use log::info;
 use marketplace_core::application::*;
 use marketplace_infrastructure::{
 	database::{self, init_pool},
-	github, logger, starknet, starknet_account_verifier,
+	github, logger, starknet_account_verifier,
 };
 
 use marketplace_domain::*;
@@ -39,7 +39,6 @@ async fn main() {
 	let database = Arc::new(database::Client::new(init_pool()));
 	database.run_migrations().expect("Unable to run database migrations");
 
-	let starknet = Arc::new(starknet::Client::default());
 	let starknet_account_verifier = Arc::new(starknet_account_verifier::StarkNetClient::new());
 
 	let github_client = Arc::new(github::Client::new());
@@ -53,7 +52,6 @@ async fn main() {
 	let rocket_handler = inject_app(
 		rocket::build(),
 		database.clone(),
-		starknet,
 		starknet_account_verifier,
 		contribution_repository,
 		contact_information_service,
@@ -76,15 +74,10 @@ async fn main() {
 			routes::new_project,
 			routes::list_projects,
 			routes::refresh_projects,
-			routes::create_contribution,
-			routes::assign_contributor,
-			routes::validate_contribution,
-			routes::unassign_contributor,
 			routes::apply_to_contribution,
 			routes::refuse_contributor_application,
 			routes::list_applications,
 			routes::refresh_applications,
-			routes::accept_application,
 			routes::list_contributor_applications,
 			routes::refresh_contributions,
 			routes::contributors::refresh_contributors,
@@ -108,7 +101,6 @@ async fn main() {
 fn inject_app(
 	rocket: Rocket<Build>,
 	database: Arc<database::Client>,
-	starknet: Arc<starknet::SingleAdminClient>,
 	starknet_account_verifier: Arc<starknet_account_verifier::StarkNetClient>,
 	contribution_repository: AggregateRootRepository<Contribution>,
 	contact_information_service: Arc<dyn ContactInformationService>,
@@ -137,15 +129,6 @@ fn inject_app(
 	));
 
 	rocket
-		.manage(CreateContribution::new_usecase_boxed(starknet.clone()))
-		.manage(AssignContribution::new_usecase_boxed(
-			starknet.clone(),
-			database.clone(),
-		))
-		.manage(UnassignContribution::new_usecase_boxed(
-			starknet.clone(),
-			database.clone(),
-		))
 		.manage(ApplyToContribution::new_usecase_boxed(
 			contribution_repository.clone(),
 			database.clone(),
@@ -158,15 +141,6 @@ fn inject_app(
 			database.clone(),
 			application_projector.clone(),
 			uuid_generator.clone(),
-		))
-		.manage(ValidateContribution::new_usecase_boxed(
-			starknet.clone(),
-			database.clone(),
-		))
-		.manage(AcceptApplication::new_usecase_boxed(
-			starknet,
-			database.clone(),
-			database.clone(),
 		))
 		.manage(AssociateGithubAccount::new_usecase_boxed(
 			database.clone(),

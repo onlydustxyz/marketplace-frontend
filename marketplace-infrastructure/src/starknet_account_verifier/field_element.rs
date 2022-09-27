@@ -28,7 +28,7 @@ mod test {
 	fn try_from_contributor_account() {
 		let string: ContributorAccount = HexPrefixedString::from_str("0x112233").unwrap().into();
 		assert_eq!(string.to_string(), "0x00112233");
-		let felt: FieldElement = FieldElement::try_from_contributor_account(string).unwrap().into();
+		let felt: FieldElement = FieldElement::try_from_contributor_account(string).unwrap();
 		assert_eq!(felt.to_string(), "1122867");
 	}
 }

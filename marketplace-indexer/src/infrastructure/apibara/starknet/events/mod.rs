@@ -91,7 +91,7 @@ impl TryFrom<Event> for ObservedEvent {
 mod test {
 	use super::*;
 	use chrono::NaiveDate;
-	use marketplace_domain::{ContributionEvent, ContributorEvent, ProjectEvent};
+	use marketplace_domain::{ContributionEvent, ProjectEvent};
 	use rstest::*;
 
 	const LOG_INDEX: usize = 666;

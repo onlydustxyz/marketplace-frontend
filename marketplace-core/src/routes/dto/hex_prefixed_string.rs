@@ -141,7 +141,7 @@ mod test {
 		let string: HexPrefixedStringDto =
 			HexPrefixedStringDto(HexPrefixedString::from_str("0x112233").unwrap());
 		assert_eq!(string.0.to_string(), "0x00112233");
-		let felt: FieldElement = FieldElement::try_from(string).unwrap().into();
+		let felt: FieldElement = FieldElement::try_from(string).unwrap();
 		assert_eq!(felt.to_string(), "1122867");
 	}
 }
