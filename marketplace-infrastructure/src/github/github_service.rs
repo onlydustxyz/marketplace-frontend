@@ -196,8 +196,8 @@ mod tests {
 			format!("{}/login/oauth/access_token", &server.uri()),
 		);
 		std::env::set_var("GITHUB_USER_API_URL", format!("{}/user", &server.uri()));
-		std::env::set_var("GITHUB_ID", "foo-github-id".to_string());
-		std::env::set_var("GITHUB_SECRET", "foo-github-secret".to_string());
+		std::env::set_var("GITHUB_ID", "foo-github-id");
+		std::env::set_var("GITHUB_SECRET", "foo-github-secret");
 
 		let github_client = Client::new();
 

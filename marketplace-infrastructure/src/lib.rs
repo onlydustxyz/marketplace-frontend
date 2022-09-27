@@ -5,7 +5,6 @@ pub mod database;
 pub mod event_webhook;
 pub mod github;
 pub mod logger;
-pub mod starknet;
 pub mod starknet_account_verifier;
 
 use diesel_migrations::*;
