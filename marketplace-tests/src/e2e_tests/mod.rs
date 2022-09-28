@@ -1,5 +1,6 @@
 mod contributions;
 mod contributors;
+mod database;
 mod fixtures;
 mod projects;
 mod starknet;
@@ -8,7 +9,7 @@ mod utils;
 use ::starknet::core::types::FieldElement;
 use fixtures::*;
 use rstest::*;
-use std::{collections::VecDeque, thread, time::Duration};
+use std::{collections::VecDeque, time::Duration};
 
 use self::starknet::accounts::*;
 
@@ -33,7 +34,7 @@ async fn contribution_lifetime(
 	// Create a new contribution
 	contributions::create(&lead_contributor, STARKONQUEST, 31, 0).await;
 
-	wait_for_events().await;
+	wait_for_events(2).await;
 
 	// List all projects
 	let all_projects = projects::list().await;
@@ -97,11 +98,16 @@ async fn contact_information(
 	assert_eq!(contact_info.discord_handle.unwrap(), "discord");
 }
 
-async fn wait_for_events() {
-	tokio::task::spawn(async { thread::sleep(waiting_time()) }).await.unwrap();
-}
+async fn wait_for_events(events_count: i64) {
+	let mut timer = tokio::time::interval(Duration::from_secs(3));
 
-fn waiting_time() -> Duration {
-	let duration = std::env::var("E2E_WAITING_TIME").ok().and_then(|v| v.parse().ok()).unwrap_or(3);
-	Duration::from_secs(duration)
+	for _ in 0..10 {
+		timer.tick().await;
+
+		if database::count_events() == events_count {
+			return;
+		}
+	}
+
+	panic!("Timeout waiting for {events_count} events");
 }

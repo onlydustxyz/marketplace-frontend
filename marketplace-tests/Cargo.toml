@@ -45,6 +45,7 @@ async-trait = "0.1.56"
 # Local dependencies
 marketplace-core = { path = "../marketplace-core" }
 marketplace-indexer = { path = "../marketplace-indexer" }
+marketplace-infrastructure = { path = "../marketplace-infrastructure" }
 
 # Starknet
 starknet = { git = "https://github.com/xJonathanLEI/starknet-rs" }
