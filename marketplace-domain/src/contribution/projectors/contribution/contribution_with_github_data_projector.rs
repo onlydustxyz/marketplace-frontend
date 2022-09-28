@@ -95,6 +95,10 @@ impl WithGithubDataProjector {
 			.update_gate(id.clone(), gate)
 			.map_err_into()
 	}
+
+	fn on_delete(&self, id: &ContributionId) -> Result<(), Error> {
+		self.contribution_projection_repository.delete(id).map_err_into()
+	}
 }
 
 #[async_trait]
@@ -115,6 +119,7 @@ impl EventListener for WithGithubDataProjector {
 				ContributionEvent::Unassigned { id } => self.on_unassign(id),
 				ContributionEvent::Validated { id } => self.on_validate(id),
 				ContributionEvent::GateChanged { id, gate } => self.on_gate_changed(id, *gate),
+				ContributionEvent::Deleted { id } => self.on_delete(id),
 				ContributionEvent::Deployed { .. }
 				| ContributionEvent::Applied { .. }
 				| ContributionEvent::ApplicationRefused { .. } => return,

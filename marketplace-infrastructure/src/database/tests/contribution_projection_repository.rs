@@ -73,3 +73,27 @@ fn store_and_update_gate() {
 		})
 	);
 }
+
+#[test]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
+fn store_and_delete() {
+	let client = Client::new(init_pool());
+
+	let project = init_project(&client);
+
+	let contribution = ContributionProjection {
+		id: 1.into(),
+		project_id: project.id,
+		..Default::default()
+	};
+	<Client as ContributionProjectionRepository>::insert(&client, contribution.clone()).unwrap();
+	<Client as ContributionProjectionRepository>::delete(&client, &contribution.id).unwrap();
+	assert!(
+		<Client as ContributionProjectionRepository>::find_by_id(&client, &contribution.id)
+			.unwrap()
+			.is_none()
+	);
+}

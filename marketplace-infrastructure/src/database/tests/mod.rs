@@ -43,3 +43,18 @@ fn init_contribution_with_status(
 
 	contribution
 }
+
+fn init_contribution_with_id(
+	client: &Client,
+	project_id: ProjectId,
+	contribution_id: ContributionId,
+) -> ContributionProjection {
+	let contribution = ContributionProjection {
+		id: contribution_id,
+		project_id,
+		..Default::default()
+	};
+	<Client as ContributionProjectionRepository>::insert(client, contribution.clone()).unwrap();
+
+	contribution
+}

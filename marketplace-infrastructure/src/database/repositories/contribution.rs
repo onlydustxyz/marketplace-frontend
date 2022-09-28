@@ -44,6 +44,24 @@ impl ContributionProjectionRepository for Client {
 		Ok(())
 	}
 
+	fn delete(
+		&self,
+		contribution_id: &ContributionId,
+	) -> Result<(), ContributionProjectionRepositoryError> {
+		let connection = self
+			.connection()
+			.map_err(|e| ContributionProjectionRepositoryError::Infrastructure(e.into()))?;
+
+		diesel::delete(dsl::contributions.find(contribution_id.to_string()))
+			.execute(&*connection)
+			.map_err(|e| {
+				error!("Failed to delete contribution with id {contribution_id}: {e}");
+				DatabaseError::from(e)
+			})?;
+
+		Ok(())
+	}
+
 	fn update_contributor_and_status(
 		&self,
 		contribution_id: ContributionId,

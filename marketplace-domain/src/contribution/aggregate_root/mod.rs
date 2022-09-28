@@ -153,6 +153,10 @@ impl EventSourcable for Contribution {
 					gate: *gate,
 					..self
 				},
+				ContributionEvent::Deleted { .. } => Self {
+					status: Status::Abandoned,
+					..self
+				},
 			},
 			Event::Project(_) | Event::Contributor(_) => self,
 		}

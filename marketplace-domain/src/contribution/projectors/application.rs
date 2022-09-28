@@ -47,6 +47,14 @@ impl ApplicationProjector {
 	) -> Result<(), ApplicationProjectionRepositoryError> {
 		self.application_projection_repository.delete(contribution_id, contributor_id)
 	}
+
+	fn on_contribution_deleted(
+		&self,
+		contribution_id: &ContributionId,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		self.application_projection_repository
+			.delete_all_for_contribution(contribution_id)
+	}
 }
 
 #[async_trait]
@@ -71,6 +79,7 @@ impl EventListener for ApplicationProjector {
 					id: contribution_id,
 					contributor_id,
 				} => self.on_assigned(contribution_id, contributor_id),
+				ContributionEvent::Deleted { id } => self.on_contribution_deleted(id),
 				ContributionEvent::Deployed { .. }
 				| ContributionEvent::Unassigned { .. }
 				| ContributionEvent::Created { .. }

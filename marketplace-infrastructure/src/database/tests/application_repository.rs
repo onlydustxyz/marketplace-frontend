@@ -1,4 +1,8 @@
-use crate::database::{init_pool, Client};
+use crate::database::{
+	init_pool,
+	tests::{init_contribution_with_id, init_project},
+	Client,
+};
 use assert_matches::assert_matches;
 use chrono::{NaiveDate, NaiveDateTime};
 use marketplace_domain::*;
@@ -160,4 +164,59 @@ fn store_multiple_and_list(now: NaiveDateTime) {
 	.unwrap();
 
 	assert_eq!(applications, vec![application2])
+}
+
+#[rstest]
+#[cfg_attr(
+	not(feature = "with_infrastructure_tests"),
+	ignore = "infrastructure test"
+)]
+fn delete_all_for_contribution(now: NaiveDateTime) {
+	let client = Client::new(init_pool());
+
+	let project = init_project(&client);
+	let contribution1 = init_contribution_with_id(&client, project.id, 1.into());
+	let contribution2 = init_contribution_with_id(&client, project.id, 2.into());
+
+	let application1 = ApplicationProjection::new(contribution1.id.clone(), 1.into(), now);
+	let application2 = ApplicationProjection::new(contribution1.id.clone(), 2.into(), now);
+	let application3 = ApplicationProjection::new(contribution2.id, 3.into(), now);
+
+	<Client as ApplicationProjectionRepository>::insert(&client, application1.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::insert(&client, application2.clone()).unwrap();
+	<Client as ApplicationProjectionRepository>::insert(&client, application3.clone()).unwrap();
+
+	<Client as ApplicationProjectionRepository>::delete_all_for_contribution(
+		&client,
+		&contribution1.id,
+	)
+	.unwrap();
+
+	assert!(
+		<Client as ApplicationProjectionRepository>::find(
+			&client,
+			application1.contribution_id(),
+			application1.contributor_id()
+		)
+		.unwrap()
+		.is_none()
+	);
+	assert!(
+		<Client as ApplicationProjectionRepository>::find(
+			&client,
+			application2.contribution_id(),
+			application2.contributor_id()
+		)
+		.unwrap()
+		.is_none()
+	);
+	assert!(
+		<Client as ApplicationProjectionRepository>::find(
+			&client,
+			application3.contribution_id(),
+			application3.contributor_id()
+		)
+		.unwrap()
+		.is_some()
+	);
 }
