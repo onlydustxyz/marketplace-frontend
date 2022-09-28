@@ -1944,6 +1944,7 @@ dependencies = [
  "dotenv",
  "marketplace-core",
  "marketplace-indexer",
+ "marketplace-infrastructure",
  "r2d2",
  "r2d2-diesel",
  "reqwest",
