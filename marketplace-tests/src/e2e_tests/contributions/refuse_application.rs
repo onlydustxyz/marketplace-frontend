@@ -1,4 +1,4 @@
-use crate::e2e_tests::utils::*;
+use crate::e2e_tests::http::*;
 use reqwest::StatusCode;
 
 pub async fn refuse_application(contribution_id: &str, contributor_id: &str) {

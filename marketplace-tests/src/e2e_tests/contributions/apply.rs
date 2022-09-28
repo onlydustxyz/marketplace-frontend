@@ -1,4 +1,4 @@
-use crate::e2e_tests::utils::*;
+use crate::e2e_tests::http::*;
 use reqwest::StatusCode;
 use serde_json::json;
 
