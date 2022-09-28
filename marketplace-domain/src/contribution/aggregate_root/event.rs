@@ -42,6 +42,9 @@ pub enum Event {
 		id: ContributionId,
 		gate: u8,
 	},
+	Deleted {
+		id: ContributionId,
+	},
 }
 
 impl Display for Event {

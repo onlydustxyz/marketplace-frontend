@@ -49,6 +49,26 @@ impl ApplicationProjectionRepository for Client {
 		Ok(())
 	}
 
+	fn delete_all_for_contribution(
+		&self,
+		contribution_id: &AggregateId,
+	) -> Result<(), ApplicationProjectionRepositoryError> {
+		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
+
+		diesel::delete(
+			dsl::pending_applications.filter(dsl::contribution_id.eq(contribution_id.to_string())),
+		)
+		.execute(&*connection)
+		.map_err(|e| {
+			error!(
+				"Failed to delete all pending applications for contribution with id {contribution_id}: {e}"
+			);
+			DatabaseError::from(e)
+		})?;
+
+		Ok(())
+	}
+
 	fn find(
 		&self,
 		contribution_id: &AggregateId,

@@ -23,6 +23,7 @@ pub trait Repository: Send + Sync {
 		contribution_id: &ContributionId,
 		contributor_id: &ContributorId,
 	) -> Result<(), Error>;
+	fn delete_all_for_contribution(&self, contribution_id: &ContributionId) -> Result<(), Error>;
 	fn find(
 		&self,
 		contribution_id: &ContributionId,
