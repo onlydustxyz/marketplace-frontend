@@ -1,10 +1,12 @@
 mod contributions;
 mod contributors;
+mod fixtures;
 mod projects;
 mod starknet;
 mod utils;
 
 use ::starknet::core::types::FieldElement;
+use fixtures::*;
 use rstest::*;
 use std::{collections::VecDeque, thread, time::Duration};
 
@@ -12,7 +14,13 @@ use self::starknet::accounts::*;
 
 #[rstest]
 #[tokio::test]
-async fn contribution_lifetime(accounts: [starknet::Account; 10]) {
+async fn contribution_lifetime(
+	accounts: [starknet::Account; 10],
+	#[future] marketplace_api_ready: &tokio::task::JoinHandle<()>,
+	_marketplace_indexer: &tokio::task::JoinHandle<()>,
+) {
+	let _ = marketplace_api_ready.await;
+
 	let mut accounts = VecDeque::from(accounts);
 	let admin = accounts.pop_front().unwrap();
 	let lead_contributor = accounts.pop_front().unwrap();
@@ -71,7 +79,12 @@ async fn contribution_lifetime(accounts: [starknet::Account; 10]) {
 
 #[rstest]
 #[tokio::test]
-async fn contact_information(accounts: [starknet::Account; 10]) {
+async fn contact_information(
+	accounts: [starknet::Account; 10],
+	#[future] marketplace_api_ready: &tokio::task::JoinHandle<()>,
+) {
+	let _ = marketplace_api_ready.await;
+
 	let contributor_account = format!("{:#x}", accounts[0].address());
 
 	contributors::contact_information::add(&contributor_account, Some(String::from("discord")))
