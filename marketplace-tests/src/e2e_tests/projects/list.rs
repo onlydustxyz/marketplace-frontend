@@ -1,4 +1,4 @@
-use crate::e2e_tests::utils::*;
+use crate::e2e_tests::http::*;
 use marketplace_core::dto::Project;
 
 pub async fn list() -> Vec<Project> {
