@@ -1,4 +1,4 @@
-use super::utils::BACKEND_BASE_URI;
+use super::{database::migrated_database, utils::BACKEND_BASE_URI};
 use rstest::*;
 use std::time::Duration;
 use tokio::{
@@ -25,7 +25,7 @@ pub async fn marketplace_api() -> JoinHandle<()> {
 }
 
 #[fixture]
-pub async fn marketplace_indexer() -> JoinHandle<()> {
+pub async fn marketplace_indexer(_migrated_database: ()) -> JoinHandle<()> {
 	let handle = spawn(::marketplace_indexer::main());
 
 	// TODO: Find a better way to check the indexer is ready

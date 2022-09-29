@@ -1941,6 +1941,7 @@ dependencies = [
  "async-std",
  "async-trait",
  "diesel",
+ "diesel_migrations",
  "dotenv",
  "marketplace-core",
  "marketplace-indexer",
