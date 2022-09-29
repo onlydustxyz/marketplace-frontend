@@ -1,13 +1,13 @@
+mod backends;
 mod contributions;
 mod contributors;
 mod database;
-mod fixtures;
 mod projects;
 mod starknet;
 mod utils;
 
 use ::starknet::core::types::FieldElement;
-use fixtures::*;
+use backends::*;
 use rstest::*;
 use std::{collections::VecDeque, time::Duration};
 
