@@ -1,3 +1,6 @@
+mod deployed;
+pub use deployed::Deployed;
+
 mod created;
 pub use created::Created;
 
