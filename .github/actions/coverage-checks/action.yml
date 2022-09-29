@@ -12,6 +12,7 @@ runs:
   steps:
     - name: Setup cargo
       uses: ./.github/actions/cargo-setup
+      with:
         key: coverage
 
     - name: Setup environment
