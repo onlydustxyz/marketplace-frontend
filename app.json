@@ -17,8 +17,7 @@
         "ROCKET_ADDRESS": "0.0.0.0",
         "ROCKET_CLI_COLORS": "false",
         "RUST_LOG": "debug",
-        "SLOG_CHANNEL_SIZE": "1024",
-        "STARKNET_CHAIN": "TESTNET"
+        "SLOG_CHANNEL_SIZE": "1024"
     },
     "environments": {
         "review": {
