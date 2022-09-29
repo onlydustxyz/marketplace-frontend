@@ -34,6 +34,7 @@ impl<OBS: BlockchainObserver> IndexingService for ApibaraClient<OBS> {
 						let events = block.as_events()?;
 						for event in events {
 							if cloned_event_filter_repository.matches(&EventFilter {
+								indexer_id: INDEXER_ID.into(),
 								source_contract: event.from_address.clone(),
 							})? {
 								event.observed(&self.observer).await?;
