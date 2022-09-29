@@ -3,7 +3,10 @@ use super::{
 	observed::Observed,
 };
 use crate::{
-	domain::{BlockchainObserver, EventFilterRepository, IndexingService, IndexingServiceError},
+	domain::{
+		BlockchainObserver, EventFilter, EventFilterRepository, IndexingService,
+		IndexingServiceError,
+	},
 	infrastructure::apibara::{
 		proto::{stream_messages_response::Message as ResponseMessage, Data},
 		ConnectedClient as ApibaraClient,
@@ -30,9 +33,9 @@ impl<OBS: BlockchainObserver> IndexingService for ApibaraClient<OBS> {
 
 						let events = block.as_events()?;
 						for event in events {
-							if cloned_event_filter_repository
-								.contract_address_matches(&event.from_address)?
-							{
+							if cloned_event_filter_repository.matches(&EventFilter {
+								source_contract: event.from_address.clone(),
+							})? {
 								event.observed(&self.observer).await?;
 							}
 						}

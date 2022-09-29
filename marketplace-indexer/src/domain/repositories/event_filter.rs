@@ -1,4 +1,5 @@
-use marketplace_domain::ContractAddress;
+use crate::domain::EventFilter;
+
 #[cfg(test)]
 use mockall::automock;
 use thiserror::Error;
@@ -8,5 +9,5 @@ pub enum Error {}
 
 #[cfg_attr(test, automock)]
 pub trait Repository: Send + Sync {
-	fn contract_address_matches(&self, contract_address: &ContractAddress) -> Result<bool, Error>;
+	fn matches(&self, event_filter: &EventFilter) -> Result<bool, Error>;
 }

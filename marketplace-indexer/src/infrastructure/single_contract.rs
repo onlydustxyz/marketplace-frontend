@@ -1,4 +1,4 @@
-use crate::domain::{EventFilterRepository, EventFilterRepositoryError};
+use crate::domain::{EventFilter, EventFilterRepository, EventFilterRepositoryError};
 use marketplace_domain::ContractAddress;
 
 pub struct SingleContract(ContractAddress);
@@ -16,11 +16,8 @@ impl Default for SingleContract {
 }
 
 impl EventFilterRepository for SingleContract {
-	fn contract_address_matches(
-		&self,
-		contract_address: &ContractAddress,
-	) -> Result<bool, EventFilterRepositoryError> {
-		Ok(&self.0 == contract_address)
+	fn matches(&self, event_filter: &EventFilter) -> Result<bool, EventFilterRepositoryError> {
+		Ok(&self.0 == &event_filter.source_contract)
 	}
 }
 
@@ -57,7 +54,20 @@ mod test {
 	#[rstest]
 	fn should_match_against_the_contract_address() {
 		let contract = SingleContract::new("0x1234".parse().unwrap());
-		assert!(contract.contract_address_matches(&"0x1234".parse().unwrap()).unwrap());
-		assert!(!contract.contract_address_matches(&"0x123456".parse().unwrap()).unwrap());
+		assert!(
+			contract
+				.matches(&EventFilter {
+					source_contract: "0x1234".parse().unwrap()
+				})
+				.unwrap()
+		);
+
+		assert!(
+			!contract
+				.matches(&EventFilter {
+					source_contract: "0x123456".parse().unwrap()
+				})
+				.unwrap()
+		);
 	}
 }
