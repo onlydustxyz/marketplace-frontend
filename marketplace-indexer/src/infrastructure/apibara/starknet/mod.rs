@@ -7,3 +7,5 @@ mod bytes;
 use bytes::*;
 
 mod proto;
+
+const INDEXER_ID: &str = "starknet";

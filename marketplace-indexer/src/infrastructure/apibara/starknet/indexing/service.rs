@@ -9,14 +9,13 @@ use crate::{
 	},
 	infrastructure::apibara::{
 		proto::{stream_messages_response::Message as ResponseMessage, Data},
+		starknet::INDEXER_ID,
 		ConnectedClient as ApibaraClient,
 	},
 };
 use async_trait::async_trait;
 use marketplace_domain::ContractAddress;
 use std::sync::Arc;
-
-const INDEXER_ID: &str = "starknet";
 
 #[async_trait]
 impl<OBS: BlockchainObserver> IndexingService for ApibaraClient<OBS> {

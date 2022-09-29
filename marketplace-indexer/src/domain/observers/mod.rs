@@ -15,6 +15,9 @@ use serde::{Deserialize, Serialize};
 mod event_store;
 pub use event_store::EventStoreObserver;
 
+mod event_filter_repository;
+pub use event_filter_repository::EventFilterRepositoryObserver;
+
 mod projectors;
 pub use projectors::EventListenersObserver;
 use serde_json::Value;
@@ -40,6 +43,7 @@ pub struct ObservedEvent {
 	pub deduplication_id: String,
 	pub timestamp: NaiveDateTime,
 	pub metadata: Value,
+	pub indexer_id: IndexerId,
 }
 
 impl Display for ObservedEvent {
@@ -63,6 +67,7 @@ impl Default for ObservedEvent {
 			deduplication_id: "dedup".to_string(),
 			timestamp: Utc::now().naive_utc(),
 			metadata: Default::default(),
+			indexer_id: "starknet".to_string(),
 		}
 	}
 }

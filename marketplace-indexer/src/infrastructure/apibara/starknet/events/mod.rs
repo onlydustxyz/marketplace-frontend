@@ -2,7 +2,7 @@ mod contribution;
 mod project;
 mod topics;
 
-use super::{Bytes, TryFromBytes};
+use super::{Bytes, TryFromBytes, INDEXER_ID};
 
 use crate::domain::ObservedEvent;
 use chrono::NaiveDateTime;
@@ -85,6 +85,7 @@ impl TryFrom<Event> for ObservedEvent {
 				"index": event.index,
 				"from_address": event.from_address,
 			}),
+			indexer_id: INDEXER_ID.into(),
 		})
 	}
 }
