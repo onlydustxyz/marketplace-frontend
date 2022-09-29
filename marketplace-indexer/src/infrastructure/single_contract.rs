@@ -16,7 +16,7 @@ impl Default for SingleContract {
 }
 
 impl EventFilterRepository for SingleContract {
-	fn insert(&self, _event_filter: &EventFilter) -> Result<(), EventFilterRepositoryError> {
+	fn insert(&self, _event_filter: EventFilter) -> Result<(), EventFilterRepositoryError> {
 		Ok(())
 	}
 

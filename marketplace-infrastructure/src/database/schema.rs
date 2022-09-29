@@ -43,6 +43,13 @@ table! {
 }
 
 table! {
+    event_filters (indexer_id, source_contract) {
+        indexer_id -> Text,
+        source_contract -> Text,
+    }
+}
+
+table! {
     events (index) {
         index -> Int4,
         timestamp -> Timestamp,
@@ -99,6 +106,7 @@ allow_tables_to_appear_in_same_query!(
     contributions,
     contributors,
     event_deduplications,
+    event_filters,
     events,
     indexers,
     lead_contributors,
