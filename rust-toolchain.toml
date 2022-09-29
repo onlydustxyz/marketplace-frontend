@@ -1,0 +1,4 @@
+[toolchain]
+# If you upgrade it, also upgrade the dockerfiles at https://github.com/onlydustxyz/cicd
+channel = "1.63"
+
