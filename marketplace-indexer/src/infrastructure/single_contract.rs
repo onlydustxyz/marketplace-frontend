@@ -16,6 +16,10 @@ impl Default for SingleContract {
 }
 
 impl EventFilterRepository for SingleContract {
+	fn insert(&self, _event_filter: &EventFilter) -> Result<(), EventFilterRepositoryError> {
+		Ok(())
+	}
+
 	fn matches(&self, event_filter: &EventFilter) -> Result<bool, EventFilterRepositoryError> {
 		Ok(&self.0 == &event_filter.source_contract)
 	}

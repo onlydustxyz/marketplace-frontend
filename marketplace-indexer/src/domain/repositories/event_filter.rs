@@ -9,5 +9,6 @@ pub enum Error {}
 
 #[cfg_attr(test, automock)]
 pub trait Repository: Send + Sync {
+	fn insert(&self, event_filter: &EventFilter) -> Result<(), Error>;
 	fn matches(&self, event_filter: &EventFilter) -> Result<bool, Error>;
 }
