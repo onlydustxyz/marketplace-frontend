@@ -9,3 +9,6 @@ pub use refuse_application::*;
 
 mod create;
 pub use create::create;
+
+mod delete;
+pub use delete::delete;

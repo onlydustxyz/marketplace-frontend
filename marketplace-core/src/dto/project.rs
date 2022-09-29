@@ -24,7 +24,7 @@ pub struct Project {
 	pub members: Vec<String>,
 }
 
-#[derive(Serialize, Deserialize, JsonSchema, Clone)]
+#[derive(Debug, Serialize, Deserialize, JsonSchema, Clone)]
 pub struct Contribution {
 	pub id: String,
 	pub title: String,
@@ -35,7 +35,7 @@ pub struct Contribution {
 	pub metadata: Metadata,
 }
 
-#[derive(Serialize, Deserialize, JsonSchema, Clone)]
+#[derive(Debug, Serialize, Deserialize, JsonSchema, Clone)]
 pub struct Metadata {
 	pub assignee: Option<String>,
 	pub github_username: Option<String>,
