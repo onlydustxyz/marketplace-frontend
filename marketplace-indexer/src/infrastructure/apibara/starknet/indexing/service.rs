@@ -1,6 +1,5 @@
 use super::{
 	block::{AsEvents, TryIntoBlock},
-	filter::Filtered,
 	observed::Observed,
 };
 use crate::{
@@ -11,7 +10,7 @@ use crate::{
 	},
 };
 use async_trait::async_trait;
-use std::{ops::Deref, sync::Arc};
+use std::sync::Arc;
 
 const INDEXER_ID: &str = "starknet";
 
@@ -29,10 +28,13 @@ impl<OBS: BlockchainObserver> IndexingService for ApibaraClient<OBS> {
 						let block = data.unwrap().try_into_block()?;
 						block.observed(&self.observer).await?;
 
-						for event in
-							block.as_events()?.filtered(cloned_event_filter_repository.deref())?
-						{
-							event.observed(&self.observer).await?;
+						let events = block.as_events()?;
+						for event in events {
+							if cloned_event_filter_repository
+								.contract_address_matches(&event.from_address)?
+							{
+								event.observed(&self.observer).await?;
+							}
 						}
 					},
 
