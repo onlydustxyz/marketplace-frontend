@@ -102,7 +102,7 @@ async fn contact_information(
 async fn wait_for_events(events_count: i64) {
 	let mut timer = tokio::time::interval(Duration::from_secs(3));
 
-	for _ in 0..10 {
+	for _ in 0..20 {
 		timer.tick().await;
 
 		if database::count_events() == events_count {
