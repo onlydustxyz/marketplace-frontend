@@ -13,6 +13,7 @@ use crate::{
 	},
 };
 use async_trait::async_trait;
+use marketplace_domain::ContractAddress;
 use std::sync::Arc;
 
 const INDEXER_ID: &str = "starknet";
@@ -23,6 +24,14 @@ impl<OBS: BlockchainObserver> IndexingService for ApibaraClient<OBS> {
 		&self,
 		event_filter_repository: Arc<dyn EventFilterRepository>,
 	) -> Result<(), IndexingServiceError> {
+		// Make sure the legacy contract is present before streaming messages
+		event_filter_repository
+			.insert(EventFilter {
+				indexer_id: INDEXER_ID.into(),
+				source_contract: contributions_contract(),
+			})
+			.ok(); // ignore error as will be present after first run
+
 		self.stream_messages(INDEXER_ID, move |data| {
 			let cloned_event_filter_repository = event_filter_repository.clone();
 			async move {
@@ -56,4 +65,11 @@ impl<OBS: BlockchainObserver> IndexingService for ApibaraClient<OBS> {
 
 		Ok(())
 	}
+}
+
+fn contributions_contract() -> ContractAddress {
+	std::env::var("CONTRIBUTIONS_ADDRESS")
+		.expect("CONTRIBUTIONS_ADDRESS must be set")
+		.parse()
+		.expect("CONTRIBUTIONS_ADDRESS is not a valid contract address")
 }

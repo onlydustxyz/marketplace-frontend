@@ -5,7 +5,6 @@ mod test;
 
 use crate::{domain::*, infrastructure::apibara};
 use dotenv::dotenv;
-use infrastructure::single_contract::SingleContract;
 use log::{error, info};
 use marketplace_domain::*;
 use marketplace_infrastructure::{database, event_webhook::EventWebHook, github, logger};
@@ -22,15 +21,13 @@ async fn main() {
 	let apibara_client = apibara::Client::new(
 		apibara_node_url(),
 		build_event_observer(database.clone()),
-		database,
+		database.clone(),
 	)
 	.connect()
 	.await
 	.expect("Unable to connect to Apibara server");
 
-	match IndexingService::observe_events(&apibara_client, Arc::new(SingleContract::default()))
-		.await
-	{
+	match IndexingService::observe_events(&apibara_client, database).await {
 		Ok(()) => info!("Stream closed gracefully"),
 		Err(error) => error!("Failed while streaming from apibara node: {error}"),
 	};
