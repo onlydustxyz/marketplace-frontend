@@ -1,4 +1,4 @@
-use super::{database::migrated_database, utils::BACKEND_BASE_URI};
+use super::{database::migrated_database, http::BACKEND_BASE_URI};
 use rstest::*;
 use std::time::Duration;
 use tokio::{

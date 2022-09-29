@@ -49,6 +49,8 @@ impl TryFrom<Event> for ObservedEvent {
 				Ok(contribution::Deployed::to_domain_event(event.data)?),
 			_ if selector == contribution::Created::selector() =>
 				Ok(contribution::Created::to_domain_event(event.data)?),
+			_ if selector == contribution::Deleted::selector() =>
+				Ok(contribution::Deleted::to_domain_event(event.data)?),
 			_ if selector == contribution::Assigned::selector() =>
 				Ok(contribution::Assigned::to_domain_event(event.data)?),
 			_ if selector == contribution::Claimed::selector() =>
@@ -138,6 +140,7 @@ mod test {
 	#[rstest]
 	#[case(selector::<contribution::Deployed>(), "ContributionDeployed")]
 	#[case(selector::<contribution::Created>(), "ContributionCreated")]
+	#[case(selector::<contribution::Deleted>(), "ContributionDeleted")]
 	#[case(selector::<contribution::Assigned>(), "ContributionAssigned")]
 	#[case(selector::<contribution::Claimed>(), "ContributionClaimed")]
 	#[case(selector::<contribution::Unassigned>(), "ContributionUnassigned")]
@@ -166,6 +169,7 @@ mod test {
 					+ match event {
 						ContributionEvent::Deployed { .. } => "Deployed",
 						ContributionEvent::Created { .. } => "Created",
+						ContributionEvent::Deleted { .. } => "Deleted",
 						ContributionEvent::Assigned { .. } => "Assigned",
 						ContributionEvent::Claimed { .. } => "Claimed",
 						ContributionEvent::Unassigned { .. } => "Unassigned",

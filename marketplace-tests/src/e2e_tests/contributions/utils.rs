@@ -13,9 +13,12 @@ pub fn find_by_issue_number(project: &Project, issue_number: u64) -> Option<Cont
 		.cloned()
 }
 
-pub async fn get_contribution_by_issue_number(issue_number: u64) -> Option<Contribution> {
+pub async fn get_project_contribution_by_issue_number(
+	project_name: &str,
+	issue_number: u64,
+) -> Option<Contribution> {
 	let all_projects = projects::list().await;
-	let starkonquest = projects::find_by_title(&all_projects, "starkonquest")
+	let starkonquest = projects::find_by_title(&all_projects, project_name)
 		.expect("Project not found in list of all projects");
 	find_by_issue_number(&starkonquest, issue_number)
 }

@@ -10,7 +10,7 @@ pub struct ProjectCreation<'r> {
 	pub name: &'r str,
 }
 
-#[derive(Serialize, JsonSchema, Deserialize, Clone)]
+#[derive(Debug, Serialize, JsonSchema, Deserialize, Clone)]
 pub struct Project {
 	pub id: String,
 	pub title: String,

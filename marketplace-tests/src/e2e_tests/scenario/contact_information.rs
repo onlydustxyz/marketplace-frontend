@@ -1,4 +1,5 @@
 use crate::e2e_tests::{
+	backends::marketplace_api,
 	contributors,
 	starknet::{accounts::accounts, Account},
 };
@@ -7,7 +8,12 @@ use starknet::core::types::FieldElement;
 
 #[rstest]
 #[tokio::test]
-async fn contact_information(accounts: [Account; 10]) {
+async fn contact_information(
+	accounts: [Account; 10],
+	#[future] marketplace_api: tokio::task::JoinHandle<()>,
+) {
+	marketplace_api.await;
+
 	let contributor_account = format!("{:#x}", accounts[0].address());
 
 	contributors::contact_information::add(&contributor_account, Some(String::from("discord")))

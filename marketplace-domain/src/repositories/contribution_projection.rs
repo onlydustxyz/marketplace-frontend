@@ -24,8 +24,6 @@ pub trait Repository: Send + Sync {
 
 	fn insert(&self, contribution: ContributionProjection) -> Result<(), Error>;
 
-	fn delete(&self, contribution_id: &ContributionId) -> Result<(), Error>;
-
 	fn update_contributor_and_status(
 		&self,
 		contribution_id: ContributionId,
@@ -35,7 +33,7 @@ pub trait Repository: Send + Sync {
 
 	fn update_status(
 		&self,
-		contribution_id: ContributionId,
+		contribution_id: &ContributionId,
 		status: ContributionStatus,
 	) -> Result<(), Error>;
 

@@ -1,7 +1,10 @@
 use super::{wait_for_events, STARKONQUEST_ID};
 use crate::e2e_tests::{
+	backends::{marketplace_api, marketplace_indexer},
 	contributions,
+	database::events_count,
 	projects::add_lead_contributor,
+	scenario::STARKONQUEST_TITLE,
 	starknet::{accounts::accounts, Account},
 };
 use rstest::*;
@@ -12,25 +15,32 @@ const LEAD_CONTRIBUTOR_INDEX: usize = 1;
 
 #[rstest]
 #[tokio::test]
-async fn contribution_lifetime(accounts: [Account; 10]) {
+async fn contribution_lifetime(
+	accounts: [Account; 10],
+	#[future] marketplace_api: tokio::task::JoinHandle<()>,
+	#[future] marketplace_indexer: tokio::task::JoinHandle<()>,
+	events_count: i64,
+) {
+	marketplace_api.await;
+	marketplace_indexer.await;
+
 	let issue_number = 31;
 	let lead_contributor = &accounts[LEAD_CONTRIBUTOR_INDEX];
-	add_lead_contributor(&accounts[0], STARKONQUEST_ID, lead_contributor.address()).await;
 
+	add_lead_contributor(&accounts[0], STARKONQUEST_ID, lead_contributor.address()).await;
 	// Create a new contribution
 	contributions::create(lead_contributor, STARKONQUEST_ID, issue_number, 0).await;
-	wait_for_events().await;
+	wait_for_events(events_count + 2).await;
 
-	let contribution = contributions::get_contribution_by_issue_number(issue_number)
-		.await
-		.expect("Contribution not found in db");
+	let contribution =
+		contributions::get_project_contribution_by_issue_number(STARKONQUEST_TITLE, issue_number)
+			.await
+			.expect("Contribution not found in db");
 	assert_eq!(contribution.status, "OPEN");
 
 	// Apply to the contribution
-	let contribution_id =
-		u64::from_str_radix(contribution.id.trim_start_matches("0x"), 16).unwrap();
-	let contributor_id = String::from("0x29");
-	contributions::apply(contribution_id, &contributor_id).await;
+	let contributor_id = String::from("0x0029");
+	contributions::apply(&contribution.id, &contributor_id).await;
 
 	contributions::refuse_application(&contribution.id, &contributor_id).await;
 
