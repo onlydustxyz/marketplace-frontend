@@ -61,7 +61,8 @@ mod test {
 		assert!(
 			contract
 				.matches(&EventFilter {
-					source_contract: "0x1234".parse().unwrap()
+					source_contract: "0x1234".parse().unwrap(),
+					indexer_id: "starknet".to_string()
 				})
 				.unwrap()
 		);
@@ -69,7 +70,8 @@ mod test {
 		assert!(
 			!contract
 				.matches(&EventFilter {
-					source_contract: "0x123456".parse().unwrap()
+					source_contract: "0x123456".parse().unwrap(),
+					indexer_id: "starknet".to_string()
 				})
 				.unwrap()
 		);
