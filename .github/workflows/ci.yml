@@ -2,6 +2,13 @@ name: CI
 
 on:
   pull_request: ~
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
 
 env:
   CARGO_TERM_COLOR: always
@@ -182,3 +189,7 @@ jobs:
         uses: ./.github/actions/coverage-checks
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup tmate session for debugging
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ failure() && inputs.debug_enabled }}
