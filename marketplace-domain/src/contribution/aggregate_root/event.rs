@@ -6,6 +6,9 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
+	Deployed {
+		contract_address: ContractAddress,
+	},
 	Created {
 		id: ContributionId,
 		project_id: GithubProjectId,

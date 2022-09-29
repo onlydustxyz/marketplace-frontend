@@ -102,6 +102,10 @@ impl EventSourcable for Contribution {
 	fn apply_event(self, event: &Event) -> Self {
 		match event {
 			Event::Contribution(contribution_event) => match contribution_event {
+				ContributionEvent::Deployed { contract_address } => Self {
+					id: contract_address.clone().into(),
+					..self
+				},
 				ContributionEvent::Created {
 					id,
 					project_id,
