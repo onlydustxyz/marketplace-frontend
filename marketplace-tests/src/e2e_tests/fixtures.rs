@@ -7,20 +7,16 @@ use tokio::{
 };
 
 #[fixture]
-#[once]
-fn marketplace_api() -> JoinHandle<()> {
-	spawn(::marketplace_core::main())
-}
+pub async fn marketplace_api() -> JoinHandle<()> {
+	let handle = spawn(::marketplace_core::main());
 
-#[fixture]
-pub async fn marketplace_api_ready<'a>(marketplace_api: &'a JoinHandle<()>) -> &'a JoinHandle<()> {
 	let mut timer = interval(Duration::from_millis(500));
 
 	for _ in 0..10 {
 		timer.tick().await;
 
 		match reqwest::get(format!("{BACKEND_BASE_URI}/openapi.json")).await {
-			Ok(response) if response.status() == reqwest::StatusCode::OK => return marketplace_api,
+			Ok(response) if response.status() == reqwest::StatusCode::OK => return handle,
 			_ => (),
 		}
 	}
@@ -29,7 +25,10 @@ pub async fn marketplace_api_ready<'a>(marketplace_api: &'a JoinHandle<()>) -> &
 }
 
 #[fixture]
-#[once]
-pub fn marketplace_indexer() -> JoinHandle<()> {
-	spawn(::marketplace_indexer::main())
+pub async fn marketplace_indexer() -> JoinHandle<()> {
+	let handle = spawn(::marketplace_indexer::main());
+
+	// TODO: Find a better way to check the indexer is ready
+	tokio::time::sleep(Duration::from_secs(1)).await;
+	handle
 }

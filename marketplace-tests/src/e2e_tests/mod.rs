@@ -17,10 +17,11 @@ use self::starknet::accounts::*;
 #[tokio::test]
 async fn contribution_lifetime(
 	accounts: [starknet::Account; 10],
-	#[future] marketplace_api_ready: &tokio::task::JoinHandle<()>,
-	_marketplace_indexer: &tokio::task::JoinHandle<()>,
+	#[future] marketplace_api: tokio::task::JoinHandle<()>,
+	#[future] marketplace_indexer: tokio::task::JoinHandle<()>,
 ) {
-	let _ = marketplace_api_ready.await;
+	marketplace_api.await;
+	marketplace_indexer.await;
 
 	let mut accounts = VecDeque::from(accounts);
 	let admin = accounts.pop_front().unwrap();
@@ -82,9 +83,9 @@ async fn contribution_lifetime(
 #[tokio::test]
 async fn contact_information(
 	accounts: [starknet::Account; 10],
-	#[future] marketplace_api_ready: &tokio::task::JoinHandle<()>,
+	#[future] marketplace_api: tokio::task::JoinHandle<()>,
 ) {
-	let _ = marketplace_api_ready.await;
+	marketplace_api.await;
 
 	let contributor_account = format!("{:#x}", accounts[0].address());
 
