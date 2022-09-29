@@ -4,6 +4,9 @@ pub use deployed::Deployed;
 mod created;
 pub use created::Created;
 
+mod deleted;
+pub use deleted::Deleted;
+
 mod assigned;
 pub use assigned::Assigned;
 

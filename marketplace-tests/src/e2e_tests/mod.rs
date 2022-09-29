@@ -1,5 +1,8 @@
+pub mod applications;
+pub mod backends;
 pub mod contributions;
 pub mod contributors;
+pub mod database;
 pub mod http;
 pub mod projects;
 pub mod scenario;

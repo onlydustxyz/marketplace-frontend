@@ -80,13 +80,13 @@ impl WithGithubDataProjector {
 
 	fn on_unassign(&self, id: &ContributionId) -> Result<(), Error> {
 		self.contribution_projection_repository
-			.update_status(id.clone(), ContributionStatus::Open)
+			.update_status(id, ContributionStatus::Open)
 			.map_err_into()
 	}
 
 	fn on_validate(&self, id: &ContributionId) -> Result<(), Error> {
 		self.contribution_projection_repository
-			.update_status(id.clone(), ContributionStatus::Completed)
+			.update_status(id, ContributionStatus::Completed)
 			.map_err_into()
 	}
 
@@ -97,7 +97,9 @@ impl WithGithubDataProjector {
 	}
 
 	fn on_delete(&self, id: &ContributionId) -> Result<(), Error> {
-		self.contribution_projection_repository.delete(id).map_err_into()
+		self.contribution_projection_repository
+			.update_status(id, ContributionStatus::Abandoned)
+			.map_err_into()
 	}
 }
 

@@ -144,6 +144,5 @@ fn test_metadata_are_stored(
 		.select((events::dsl::origin, events::dsl::metadata))
 		.load(&*connection)
 		.unwrap();
-	println!("{:?}", list);
 	assert!(list.contains(&("starknet".to_string(), Some(json!({"key": "value"})))));
 }
