@@ -6,12 +6,12 @@ mod projects;
 mod starknet;
 mod utils;
 
+use self::starknet::accounts::*;
 use ::starknet::core::types::FieldElement;
 use backends::*;
+use database::events_count;
 use rstest::*;
 use std::{collections::VecDeque, time::Duration};
-
-use self::starknet::accounts::*;
 
 #[rstest]
 #[tokio::test]
@@ -19,6 +19,7 @@ async fn contribution_lifetime(
 	accounts: [starknet::Account; 10],
 	#[future] marketplace_api: tokio::task::JoinHandle<()>,
 	#[future] marketplace_indexer: tokio::task::JoinHandle<()>,
+	events_count: i64,
 ) {
 	marketplace_api.await;
 	marketplace_indexer.await;
@@ -35,7 +36,7 @@ async fn contribution_lifetime(
 	// Create a new contribution
 	contributions::create(&lead_contributor, STARKONQUEST, 31, 0).await;
 
-	wait_for_events(2).await;
+	wait_for_events(events_count + 2).await;
 
 	// List all projects
 	let all_projects = projects::list().await;
@@ -99,16 +100,16 @@ async fn contact_information(
 	assert_eq!(contact_info.discord_handle.unwrap(), "discord");
 }
 
-async fn wait_for_events(events_count: i64) {
+async fn wait_for_events(expected_events_count: i64) {
 	let mut timer = tokio::time::interval(Duration::from_secs(3));
 
 	for _ in 0..20 {
 		timer.tick().await;
 
-		if database::count_events() == events_count {
+		if events_count() == expected_events_count {
 			return;
 		}
 	}
 
-	panic!("Timeout waiting for {events_count} events");
+	panic!("Timeout waiting for {expected_events_count} events");
 }
