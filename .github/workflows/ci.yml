@@ -52,8 +52,8 @@ jobs:
 
       - name: Compile application
         uses: actions-rs/cargo@v1
-          with:
-            command: build
+        with:
+          command: build
 
   lint:
     needs : check
@@ -156,7 +156,7 @@ jobs:
           args: -p marketplace-tests --features with_e2e_tests e2e_tests
         env:
           API_KEY: ROOT
-          GITHUB_TOKEN: ${{ inputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
           GITHUB_ID: githubid
           GITHUB_SECRET: githubsecret
