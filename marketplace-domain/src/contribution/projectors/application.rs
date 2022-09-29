@@ -71,7 +71,8 @@ impl EventListener for ApplicationProjector {
 					id: contribution_id,
 					contributor_id,
 				} => self.on_assigned(contribution_id, contributor_id),
-				ContributionEvent::Unassigned { .. }
+				ContributionEvent::Deployed { .. }
+				| ContributionEvent::Unassigned { .. }
 				| ContributionEvent::Created { .. }
 				| ContributionEvent::Validated { .. }
 				| ContributionEvent::GateChanged { .. } => return,

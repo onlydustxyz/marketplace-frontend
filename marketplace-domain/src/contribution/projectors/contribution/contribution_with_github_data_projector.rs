@@ -115,7 +115,8 @@ impl EventListener for WithGithubDataProjector {
 				ContributionEvent::Unassigned { id } => self.on_unassign(id),
 				ContributionEvent::Validated { id } => self.on_validate(id),
 				ContributionEvent::GateChanged { id, gate } => self.on_gate_changed(id, *gate),
-				ContributionEvent::Applied { .. }
+				ContributionEvent::Deployed { .. }
+				| ContributionEvent::Applied { .. }
 				| ContributionEvent::ApplicationRefused { .. } => return,
 			},
 			Event::Project(_) | Event::Contributor(_) => return,

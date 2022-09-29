@@ -34,7 +34,7 @@ impl Observer for EventStoreObserver {
 				let id = <Contribution as Identifiable<ContributionEvent>>::id(contribution_event);
 				store_event(
 					self.contribution_event_store.clone(),
-					id,
+					&id,
 					contribution_event.clone(),
 					observed_event.deduplication_id.clone(),
 					observed_event.timestamp,
@@ -45,7 +45,7 @@ impl Observer for EventStoreObserver {
 				let id = <ProjectAggregate as Identifiable<ProjectEvent>>::id(project_event);
 				store_event(
 					self.project_event_store.clone(),
-					id,
+					&id,
 					project_event.clone(),
 					observed_event.deduplication_id.clone(),
 					observed_event.timestamp,
@@ -57,7 +57,7 @@ impl Observer for EventStoreObserver {
 					<ContributorAggregate as Identifiable<ContributorEvent>>::id(contributor_event);
 				store_event(
 					self.contributor_event_store.clone(),
-					id,
+					&id,
 					contributor_event.clone(),
 					observed_event.deduplication_id.clone(),
 					observed_event.timestamp,
@@ -91,55 +91,44 @@ fn store_event<A: Aggregate>(
 }
 
 trait Identifiable<E>: Aggregate {
-	fn id(event: &E) -> &Self::Id;
+	fn id(event: &E) -> Self::Id;
 }
 
 impl Identifiable<ContributionEvent> for Contribution {
-	fn id(event: &ContributionEvent) -> &Self::Id {
+	fn id(event: &ContributionEvent) -> Self::Id {
 		match event {
+			ContributionEvent::Deployed { contract_address } => contract_address.clone().into(),
 			ContributionEvent::Created { id, .. }
 			| ContributionEvent::Assigned { id, .. }
 			| ContributionEvent::Claimed { id, .. }
 			| ContributionEvent::Applied { id, .. }
 			| ContributionEvent::ApplicationRefused { id, .. }
 			| ContributionEvent::Unassigned { id }
-			| ContributionEvent::Validated { id } => id,
-			ContributionEvent::GateChanged { id, .. } => id,
+			| ContributionEvent::Validated { id }
+			| ContributionEvent::GateChanged { id, .. } => id.clone(),
 		}
 	}
 }
 
 impl Identifiable<ProjectEvent> for ProjectAggregate {
-	fn id(event: &ProjectEvent) -> &Self::Id {
+	fn id(event: &ProjectEvent) -> Self::Id {
 		match event {
-			ProjectEvent::MemberAdded {
-				project_id,
-				contributor_account: _,
-			}
-			| ProjectEvent::MemberRemoved {
-				project_id,
-				contributor_account: _,
-			}
-			| ProjectEvent::LeadContributorAdded {
-				project_id,
-				contributor_account: _,
-			}
-			| ProjectEvent::LeadContributorRemoved {
-				project_id,
-				contributor_account: _,
-			} => project_id,
+			ProjectEvent::MemberAdded { project_id, .. }
+			| ProjectEvent::MemberRemoved { project_id, .. }
+			| ProjectEvent::LeadContributorAdded { project_id, .. }
+			| ProjectEvent::LeadContributorRemoved { project_id, .. } => project_id.clone(),
 		}
 	}
 }
 
 impl Identifiable<ContributorEvent> for ContributorAggregate {
-	fn id(event: &ContributorEvent) -> &Self::Id {
+	fn id(event: &ContributorEvent) -> Self::Id {
 		match event {
 			ContributorEvent::GithubAccountAssociated {
 				contributor_account,
 				github_identifier: _,
 				contributor_id: _,
-			} => contributor_account,
+			} => contributor_account.clone(),
 		}
 	}
 }
