@@ -7,7 +7,7 @@ pub async fn add_lead_contributor(
 	project_id: u64,
 	contributor_account: FieldElement,
 ) {
-	ContractAdministrator::new(&account)
+	ContractAdministrator::new(account)
 		.add_lead_contributor_for_project(project_id, contributor_account)
 		.await
 		.expect("Unable to grant lead contributor role");

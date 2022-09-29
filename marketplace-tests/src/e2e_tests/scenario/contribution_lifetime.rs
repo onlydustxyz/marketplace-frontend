@@ -1,44 +1,38 @@
-use super::wait_for_events;
+use super::{wait_for_events, STARKONQUEST_ID};
 use crate::e2e_tests::{
-	contributions, projects,
+	contributions,
+	projects::add_lead_contributor,
 	starknet::{accounts::accounts, Account},
 };
 use rstest::*;
-use std::collections::VecDeque;
+
+// Lead contributors must not overlap between different scenario
+// otherwise their will consume the same call nonces
+const LEAD_CONTRIBUTOR_INDEX: usize = 1;
 
 #[rstest]
 #[tokio::test]
 async fn contribution_lifetime(accounts: [Account; 10]) {
-	let mut accounts = VecDeque::from(accounts);
-	let admin = accounts.pop_front().unwrap();
-	let lead_contributor = accounts.pop_front().unwrap();
-
-	const STARKONQUEST: u64 = 481932781;
-
-	// grant lead contributor role
-	projects::add_lead_contributor(&admin, STARKONQUEST, lead_contributor.address()).await;
+	let issue_number = 31;
+	let lead_contributor = &accounts[LEAD_CONTRIBUTOR_INDEX];
+	add_lead_contributor(&accounts[0], STARKONQUEST_ID, lead_contributor.address()).await;
 
 	// Create a new contribution
-	contributions::create(&lead_contributor, STARKONQUEST, 31, 0).await;
-
+	contributions::create(lead_contributor, STARKONQUEST_ID, issue_number, 0).await;
 	wait_for_events().await;
 
-	// List all projects
-	let all_projects = projects::list().await;
-
-	// Find a project by name and a completed contribution to make sure we have retrieved data
-	let starkonquest = projects::find_by_title(&all_projects, "starkonquest")
-		.expect("Project not found in list of all projects");
-
-	let contribution = contributions::find_by_id(&starkonquest, "0x0001".to_string())
-		.expect("Contribution not found in project");
+	let contribution = contributions::get_contribution_by_issue_number(issue_number)
+		.await
+		.expect("Contribution not found in db");
 	assert_eq!(contribution.status, "OPEN");
 
 	// Apply to the contribution
+	let contribution_id =
+		u64::from_str_radix(contribution.id.trim_start_matches("0x"), 16).unwrap();
 	let contributor_id = String::from("0x29");
-	contributions::apply("0x0001", &contributor_id).await;
+	contributions::apply(contribution_id, &contributor_id).await;
 
-	contributions::refuse_application("0x0001", &contributor_id).await;
+	contributions::refuse_application(&contribution.id, &contributor_id).await;
 
 	// TODO restore when user registration can be tested in local
 	// Get the contributor

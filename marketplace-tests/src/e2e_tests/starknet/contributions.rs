@@ -15,6 +15,7 @@ pub trait ContributionsContract {
 	) -> Result<()>;
 
 	async fn new_contribution(&self, project_id: u64, issue_number: u64, gate: u64) -> Result<()>;
+	async fn delete_contribution(&self, contribution_id: u64) -> Result<()>;
 }
 
 #[async_trait]
@@ -46,6 +47,18 @@ impl<'a> ContributionsContract for ContractAdministrator<'a> {
 				FieldElement::from(issue_number),
 				FieldElement::from(gate),
 			],
+		}])
+		.await?;
+
+		Ok(())
+	}
+
+	async fn delete_contribution(&self, contribution_id: u64) -> Result<()> {
+		self.send_transaction(&[Call {
+			to: FieldElement::from_hex_be(CONTRIBUTIONS_ADDRESS)
+				.expect("Invalid CONTRIBUTIONS_ADDRESS"),
+			selector: get_selector_from_name("delete_contribution").expect("Invalid selector"),
+			calldata: vec![FieldElement::from(contribution_id)],
 		}])
 		.await?;
 

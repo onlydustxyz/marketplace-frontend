@@ -1943,6 +1943,8 @@ dependencies = [
  "diesel",
  "diesel_migrations",
  "dotenv",
+ "futures 0.3.24",
+ "hex",
  "marketplace-core",
  "marketplace-indexer",
  "marketplace-infrastructure",
