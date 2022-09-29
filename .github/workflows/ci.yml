@@ -160,7 +160,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: -p marketplace-tests --features with_e2e_tests e2e_tests
+          args: -p marketplace-tests --features with_e2e_tests e2e_tests -- --test-threads 1
         env:
           API_KEY: ROOT
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
