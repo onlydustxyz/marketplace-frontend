@@ -53,8 +53,9 @@ fn build_event_observer(database: Arc<database::Client>) -> impl BlockchainObser
 		Arc::new(EventStoreObserver::new(
 			database.clone(),
 			database.clone(),
-			database,
+			database.clone(),
 		)),
+		Arc::new(EventFilterRepositoryObserver::new(database)),
 		Arc::new(EventListenersObserver::new(vec![
 			Box::new(contribution_projector),
 			Box::new(application_projector),
