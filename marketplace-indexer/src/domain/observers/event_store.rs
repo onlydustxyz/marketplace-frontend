@@ -116,7 +116,7 @@ impl Identifiable<ProjectEvent> for ProjectAggregate {
 			ProjectEvent::MemberAdded { project_id, .. }
 			| ProjectEvent::MemberRemoved { project_id, .. }
 			| ProjectEvent::LeadContributorAdded { project_id, .. }
-			| ProjectEvent::LeadContributorRemoved { project_id, .. } => project_id.clone(),
+			| ProjectEvent::LeadContributorRemoved { project_id, .. } => *project_id,
 		}
 	}
 }
