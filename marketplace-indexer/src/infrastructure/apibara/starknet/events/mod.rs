@@ -45,6 +45,8 @@ impl TryFrom<Event> for ObservedEvent {
 		let selector = FieldElement::try_from_bytes(event.selector).map_err(anyhow::Error::msg)?;
 
 		let domain_event = match selector {
+			_ if selector == contribution::Deployed::selector() =>
+				Ok(contribution::Deployed::to_domain_event(event.data)?),
 			_ if selector == contribution::Created::selector() =>
 				Ok(contribution::Created::to_domain_event(event.data)?),
 			_ if selector == contribution::Assigned::selector() =>
@@ -133,6 +135,7 @@ mod test {
 	}
 
 	#[rstest]
+	#[case(selector::<contribution::Deployed>(), "ContributionDeployed")]
 	#[case(selector::<contribution::Created>(), "ContributionCreated")]
 	#[case(selector::<contribution::Assigned>(), "ContributionAssigned")]
 	#[case(selector::<contribution::Claimed>(), "ContributionClaimed")]
@@ -160,6 +163,7 @@ mod test {
 			DomainEvent::Contribution(event) =>
 				String::from("Contribution")
 					+ match event {
+						ContributionEvent::Deployed { .. } => "Deployed",
 						ContributionEvent::Created { .. } => "Created",
 						ContributionEvent::Assigned { .. } => "Assigned",
 						ContributionEvent::Claimed { .. } => "Claimed",
