@@ -7,7 +7,8 @@ fn connection() -> PgConnection {
 	PgConnection::establish(&database_url).expect("Unable to connect to database")
 }
 
-pub fn count_events() -> i64 {
+#[fixture]
+pub fn events_count() -> i64 {
 	use marketplace_infrastructure::database::schema::events::dsl::*;
 
 	events
