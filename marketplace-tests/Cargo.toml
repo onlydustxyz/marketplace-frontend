@@ -7,7 +7,6 @@ license-file = "LICENSE"
 [lib]
 
 [features]
-default = ["with_e2e_tests"]
 with_e2e_tests = []
 
 [dependencies]
