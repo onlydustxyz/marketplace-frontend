@@ -5,7 +5,7 @@ use crate::e2e_tests::{
 	contributions,
 	database::events_count,
 	projects::add_lead_contributor,
-	scenario::{hex_str_to_u64, STARKONQUEST_TITLE},
+	scenario::STARKONQUEST_TITLE,
 	starknet::{accounts::accounts, Account},
 };
 use marketplace_core::dto::Application;
@@ -50,7 +50,7 @@ async fn delete_contribution(
 		contribution.id,
 		contributor_id
 	);
-	contributions::delete(lead_contributor, hex_str_to_u64(&contribution.id)).await;
+	contributions::delete(lead_contributor, &contribution.id).await;
 	wait_for_events(events_count + 4).await;
 
 	let contribution =
