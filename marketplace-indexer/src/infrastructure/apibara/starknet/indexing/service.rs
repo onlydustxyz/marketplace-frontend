@@ -25,7 +25,7 @@ impl<OBS: BlockchainObserver> IndexingService for ApibaraClient<OBS> {
 	) -> Result<(), IndexingServiceError> {
 		// Make sure the legacy contract is present before streaming messages
 		event_filter_repository
-			.insert(EventFilter {
+			.insert_if_not_exist(EventFilter {
 				indexer_id: INDEXER_ID.into(),
 				source_contract: contributions_contract(),
 			})

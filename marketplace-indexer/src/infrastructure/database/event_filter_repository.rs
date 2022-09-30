@@ -10,7 +10,10 @@ use log::error;
 use marketplace_infrastructure::database::{schema::event_filters::dsl, Client as DatabaseClient};
 
 impl EventFilterRepository for DatabaseClient {
-	fn insert(&self, event_filter: EventFilter) -> Result<(), EventFilterRepositoryError> {
+	fn insert_if_not_exist(
+		&self,
+		event_filter: EventFilter,
+	) -> Result<(), EventFilterRepositoryError> {
 		let connection = self.connection().map_err(|e| {
 			error!("Unable to acquire connection from pool: {e}");
 			EventFilterRepositoryError::Infrastructure(anyhow!(e))
@@ -19,6 +22,7 @@ impl EventFilterRepository for DatabaseClient {
 		let event_filter: models::EventFilter = event_filter.into();
 		diesel::insert_into(dsl::event_filters)
 			.values(&event_filter)
+			.on_conflict_do_nothing()
 			.execute(&*connection)
 			.map_err(|e| {
 				error!("Failed while storing event filter in database: {e}");

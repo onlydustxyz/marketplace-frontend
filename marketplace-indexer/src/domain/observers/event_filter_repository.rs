@@ -20,7 +20,7 @@ impl Observer for EventFilterRepositoryObserver {
 		if let Event::Contribution(ContributionEvent::Deployed { contract_address }) =
 			&observed_event.event
 		{
-			if let Err(error) = self.event_filter_repository.insert(EventFilter {
+			if let Err(error) = self.event_filter_repository.insert_if_not_exist(EventFilter {
 				indexer_id: observed_event.clone().indexer_id,
 				source_contract: contract_address.clone(),
 			}) {
@@ -52,7 +52,7 @@ mod test {
 
 		let mut repository = MockEventFilterRepository::new();
 		repository
-			.expect_insert()
+			.expect_insert_if_not_exist()
 			.once()
 			.with(eq(EventFilter {
 				indexer_id: indexer_id.clone(),
