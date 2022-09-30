@@ -7,6 +7,13 @@ inputs:
     description: 'A Github PAT'
     required: true
 
+  codecov_flag:
+    description: 'Flag to upload code coverage results to codecov.io'
+    required: true
+
+  test_flags:
+    description: 'Additional test flags to pass to cargo tarpaulin test command'
+
 runs:
   using: "composite"
   steps:
@@ -22,7 +29,7 @@ runs:
       uses: actions-rs/tarpaulin@v0.1
       with:
         version: '0.20.1'
-        args: '--skip-clean --all-features -- --test-threads 1'
+        args: '--skip-clean ${{ inputs.test_flags }}'
       env:
         API_KEY: ROOT
         GITHUB_TOKEN: ${{ inputs.token }}
@@ -39,9 +46,10 @@ runs:
       uses: codecov/codecov-action@v3
       with:
         files: cobertura.xml
+        flags: ${{ inputs.codecov_flag }}
 
     - name: Archive code coverage results
       uses: actions/upload-artifact@v1
       with:
-        name: code-coverage-report
+        name: code-coverage-report-${{ inputs.codecov_flag }}
         path: cobertura.xml
