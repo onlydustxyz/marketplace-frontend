@@ -29,7 +29,7 @@ runs:
         DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
         GITHUB_ID: githubid
         GITHUB_SECRET: githubsecret
-        CONTRIBUTIONS_ADDRESS: "0x000b061238977bb1bd59c2c81bc5670fc2dfbac3854b7a25d9010dffb823b87f"
+        CONTRIBUTIONS_ADDRESS: "0x03f0e236a4cb1b20278ad5a7e790b29c6e5bac25c34fc3fb0c092f8e5275b512"
         NETWORK: alpha-goerli
         APIBARA_NODE_URL: http://localhost:7171
         API_URL: http://localhost:8000
