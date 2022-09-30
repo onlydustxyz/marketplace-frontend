@@ -13,6 +13,7 @@ inputs:
 
   test_flags:
     description: 'Additional test flags to pass to cargo tarpaulin test command'
+    required: false
 
 runs:
   using: "composite"
@@ -29,7 +30,13 @@ runs:
       uses: actions-rs/tarpaulin@v0.1
       with:
         version: '0.20.1'
-        args: '--skip-clean ${{ inputs.test_flags }}'
+        args: |
+          --skip-clean
+          --ignore-tests
+          --workspace
+          --exclude marketplace-tests marketplace-wrappers
+          --exclude-files marketplace-infrastructure/src/database/schema.rs
+          ${{ inputs.test_flags }}
       env:
         API_KEY: ROOT
         GITHUB_TOKEN: ${{ inputs.token }}
