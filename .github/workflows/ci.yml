@@ -189,6 +189,8 @@ jobs:
         uses: ./.github/actions/coverage-checks
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          test_flags: --all-features -- --test-threads 1
+          codecov_flag: global
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
