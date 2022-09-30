@@ -31,7 +31,7 @@ async fn delete_contribution(
 
 	add_lead_contributor(&accounts[0], STARKONQUEST_ID, lead_contributor.address()).await;
 	contributions::create(lead_contributor, STARKONQUEST_ID, issue_number, 0).await;
-	wait_for_events(events_count + 2).await;
+	wait_for_events(events_count + 3).await;
 
 	let contribution =
 		contributions::get_project_contribution_by_issue_number(STARKONQUEST_TITLE, issue_number)
@@ -51,7 +51,7 @@ async fn delete_contribution(
 		contributor_id
 	);
 	contributions::delete(lead_contributor, &contribution.id).await;
-	wait_for_events(events_count + 4).await;
+	wait_for_events(events_count + 5).await;
 
 	let contribution =
 		contributions::get_project_contribution_by_issue_number(STARKONQUEST_TITLE, issue_number)
