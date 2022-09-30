@@ -23,7 +23,3 @@ async fn wait_for_events(expected_events_count: i64) {
 
 const STARKONQUEST_ID: u64 = 481932781;
 const STARKONQUEST_TITLE: &str = "starkonquest";
-
-fn hex_str_to_u64(hex: &str) -> u64 {
-	u64::from_str_radix(hex.trim_start_matches("0x"), 16).unwrap()
-}
