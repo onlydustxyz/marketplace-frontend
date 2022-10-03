@@ -32,9 +32,8 @@ runs:
         version: '0.20.1'
         args: |
           --skip-clean
-          --ignore-tests
           --workspace
-          --exclude marketplace-tests marketplace-wrappers
+          --exclude marketplace-wrappers
           --exclude-files marketplace-infrastructure/src/database/schema.rs
           ${{ inputs.test_flags }}
       env:
