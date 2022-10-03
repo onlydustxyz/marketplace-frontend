@@ -21,6 +21,7 @@ jobs:
         uses: ./.github/actions/coverage-checks
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          codecov_token: ${{ secrets.CODECOV_TOKEN }}
           codecov_flag: unittests
 
   infrastructure-tests:
@@ -35,6 +36,7 @@ jobs:
         uses: ./.github/actions/coverage-checks
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          codecov_token: ${{ secrets.CODECOV_TOKEN }}
           test_flags: -p marketplace-infrastructure --features with_infrastructure_tests -- --ignored
           codecov_flag: infrastructure
 
@@ -50,6 +52,7 @@ jobs:
         uses: ./.github/actions/coverage-checks
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          codecov_token: ${{ secrets.CODECOV_TOKEN }}
           test_flags: -p marketplace-core --features with_component_tests -- --ignored
           codecov_flag: component
 
@@ -65,6 +68,7 @@ jobs:
         uses: ./.github/actions/coverage-checks
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          codecov_token: ${{ secrets.CODECOV_TOKEN }}
           test_flags: -p marketplace-tests --features with_e2e_tests -- --ignored --test-threads 1
           codecov_flag: e2e
 
@@ -80,5 +84,6 @@ jobs:
         uses: ./.github/actions/coverage-checks
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          codecov_token: ${{ secrets.CODECOV_TOKEN }}
           test_flags: --all-features -- --test-threads 1
           codecov_flag: global

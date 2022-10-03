@@ -11,6 +11,10 @@ inputs:
     description: 'Flag to upload code coverage results to codecov.io'
     required: true
 
+  codecov_token:
+    description: 'The codecov token for the repository'
+    required: false
+
   test_flags:
     description: 'Additional test flags to pass to cargo tarpaulin test command'
     required: false
@@ -53,6 +57,7 @@ runs:
       with:
         files: cobertura.xml
         flags: ${{ inputs.codecov_flag }}
+        token: ${{ inputs.codecov_token }}
 
     - name: Archive code coverage results
       uses: actions/upload-artifact@v1
