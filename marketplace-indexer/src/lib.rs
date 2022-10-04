@@ -43,7 +43,7 @@ fn build_event_observer(database: Arc<database::Client>) -> impl BlockchainObser
 	let application_projector = ApplicationProjector::new(database.clone());
 	let project_projector = ProjectProjector::new(github.clone(), database.clone());
 	let project_member_projector = ProjectMemberProjector::new(database.clone());
-	let contributor_projector = ContributorProjector::new(github, database.clone());
+	let contributor_projector = ContributorWithGithubDataProjector::new(github, database.clone());
 	let lead_contributors_projector = LeadContributorProjector::new(database.clone());
 
 	BlockchainObserverComposite::new(vec![

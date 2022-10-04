@@ -19,7 +19,7 @@ pub struct AssociateGithubAccount<S: Clone + Send + Sync> {
 	event_store: Arc<dyn EventStore<Contributor>>,
 	account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 	github_client: Arc<dyn GithubClient>,
-	contributor_projector: Arc<ContributorProjector>,
+	contributor_projector: Arc<ContributorWithGithubDataProjector>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 }
 
@@ -28,7 +28,7 @@ impl<S: Clone + Send + Sync> AssociateGithubAccount<S> {
 		event_store: Arc<dyn EventStore<Contributor>>,
 		account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 		github_client: Arc<dyn GithubClient>,
-		contributor_projector: Arc<ContributorProjector>,
+		contributor_projector: Arc<ContributorWithGithubDataProjector>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Self {
 		Self {
@@ -46,7 +46,7 @@ impl<S: Clone + Send + Sync + 'static> AssociateGithubAccount<S> {
 		event_store: Arc<dyn EventStore<Contributor>>,
 		account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 		github_client: Arc<dyn GithubClient>,
-		contributor_projector: Arc<ContributorProjector>,
+		contributor_projector: Arc<ContributorWithGithubDataProjector>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Box<dyn Usecase<S>> {
 		Box::new(Self::new(

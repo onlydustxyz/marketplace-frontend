@@ -113,7 +113,7 @@ fn inject_app(
 	let project_member_projector = Arc::new(ProjectMemberProjector::new(database.clone()));
 	let lead_contributor_projector = Arc::new(LeadContributorProjector::new(database.clone()));
 
-	let contributor_projector = Arc::new(ContributorProjector::new(
+	let contributor_projector = Arc::new(ContributorWithGithubDataProjector::new(
 		github_client.clone(),
 		database.clone(),
 	));
