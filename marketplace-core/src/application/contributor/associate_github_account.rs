@@ -16,7 +16,7 @@ pub trait Usecase<S: Clone + Send + Sync>: Send + Sync {
 }
 
 pub struct AssociateGithubAccount<S: Clone + Send + Sync> {
-	event_store: Arc<dyn EventStore<ContributorAggregate>>,
+	event_store: Arc<dyn EventStore<Contributor>>,
 	account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 	github_client: Arc<dyn GithubClient>,
 	contributor_projector: Arc<ContributorProjector>,
@@ -25,7 +25,7 @@ pub struct AssociateGithubAccount<S: Clone + Send + Sync> {
 
 impl<S: Clone + Send + Sync> AssociateGithubAccount<S> {
 	pub fn new(
-		event_store: Arc<dyn EventStore<ContributorAggregate>>,
+		event_store: Arc<dyn EventStore<Contributor>>,
 		account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 		github_client: Arc<dyn GithubClient>,
 		contributor_projector: Arc<ContributorProjector>,
@@ -43,7 +43,7 @@ impl<S: Clone + Send + Sync> AssociateGithubAccount<S> {
 
 impl<S: Clone + Send + Sync + 'static> AssociateGithubAccount<S> {
 	pub fn new_usecase_boxed(
-		event_store: Arc<dyn EventStore<ContributorAggregate>>,
+		event_store: Arc<dyn EventStore<Contributor>>,
 		account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 		github_client: Arc<dyn GithubClient>,
 		contributor_projector: Arc<ContributorProjector>,
@@ -67,7 +67,7 @@ impl<S: Clone + Send + Sync> Usecase<S> for AssociateGithubAccount<S> {
 		contributor_account: ContributorAccount,
 		signed_data: S,
 	) -> Result<(), DomainError> {
-		let events = ContributorAggregate::associate_github_account(
+		let events = Contributor::associate_github_account(
 			self.account_verifier.clone(),
 			self.github_client.clone(),
 			authorization_code,
@@ -75,7 +75,7 @@ impl<S: Clone + Send + Sync> Usecase<S> for AssociateGithubAccount<S> {
 			signed_data,
 		)
 		.await?;
-		let storable_events: Vec<StorableEvent<ContributorAggregate>> = events
+		let storable_events: Vec<StorableEvent<Contributor>> = events
 			.iter()
 			.map(|event| {
 				if let Event::Contributor(contributor_event) = event {

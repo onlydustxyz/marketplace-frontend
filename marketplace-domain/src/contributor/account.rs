@@ -1,9 +1,6 @@
-pub use super::Account as ContributorAccount;
-use crate::HexPrefixedString;
+use crate::{ContractAddress, HexPrefixedString};
 use marketplace_wrappers::HexStringWrapper;
 use serde::{Deserialize, Serialize};
-
-use crate::ContractAddress;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, Default, HexStringWrapper)]
 pub struct Account(ContractAddress);

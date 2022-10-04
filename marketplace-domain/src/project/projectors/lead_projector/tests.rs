@@ -14,12 +14,12 @@ fn project_id() -> ProjectId {
 }
 
 #[fixture]
-fn account() -> Account {
+fn account() -> ContributorAccount {
 	"0x5632".parse().unwrap()
 }
 
 #[fixture]
-fn on_lead_contributor_added_event(project_id: ProjectId, account: Account) -> Event {
+fn on_lead_contributor_added_event(project_id: ProjectId, account: ContributorAccount) -> Event {
 	Event::Project(ProjectEvent::LeadContributorAdded {
 		project_id,
 		contributor_account: account,
@@ -27,7 +27,7 @@ fn on_lead_contributor_added_event(project_id: ProjectId, account: Account) -> E
 }
 
 #[fixture]
-fn on_lead_contributor_removed_event(project_id: ProjectId, account: Account) -> Event {
+fn on_lead_contributor_removed_event(project_id: ProjectId, account: ContributorAccount) -> Event {
 	Event::Project(ProjectEvent::LeadContributorRemoved {
 		project_id,
 		contributor_account: account,
@@ -40,7 +40,7 @@ async fn on_lead_contributor_added(
 	mut lead_contributor_projection_repository: MockLeadContributorProjectionRepository,
 	#[case] event: Event,
 	project_id: ProjectId,
-	account: Account,
+	account: ContributorAccount,
 ) {
 	lead_contributor_projection_repository
 		.expect_insert()
@@ -58,7 +58,7 @@ async fn on_lead_contributor_removed(
 	mut lead_contributor_projection_repository: MockLeadContributorProjectionRepository,
 	#[case] event: Event,
 	project_id: ProjectId,
-	account: Account,
+	account: ContributorAccount,
 ) {
 	lead_contributor_projection_repository
 		.expect_delete()
