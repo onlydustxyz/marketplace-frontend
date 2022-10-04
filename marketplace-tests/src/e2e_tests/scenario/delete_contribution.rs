@@ -21,10 +21,11 @@ async fn delete_contribution(
 	accounts: [Account; 10],
 	#[future] marketplace_api: tokio::task::JoinHandle<()>,
 	#[future] marketplace_indexer: tokio::task::JoinHandle<()>,
-	events_count: i64,
 ) {
 	marketplace_api.await;
 	marketplace_indexer.await;
+
+	let events_count = events_count();
 
 	let lead_contributor = &accounts[LEAD_CONTRIBUTOR_INDEX];
 	let issue_number = 32;

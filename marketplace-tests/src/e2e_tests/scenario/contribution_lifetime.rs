@@ -1,7 +1,7 @@
 use super::{wait_for_events, STARKONQUEST_ID};
 use crate::e2e_tests::{
 	backends::{marketplace_api, marketplace_indexer},
-	contributions,
+	contributions, contributors,
 	database::events_count,
 	projects::add_lead_contributor,
 	scenario::STARKONQUEST_TITLE,
@@ -19,10 +19,11 @@ async fn contribution_lifetime(
 	accounts: [Account; 10],
 	#[future] marketplace_api: tokio::task::JoinHandle<()>,
 	#[future] marketplace_indexer: tokio::task::JoinHandle<()>,
-	events_count: i64,
 ) {
 	marketplace_api.await;
 	marketplace_indexer.await;
+
+	let events_count = events_count();
 
 	let issue_number = 31;
 	let lead_contributor = &accounts[LEAD_CONTRIBUTOR_INDEX];
@@ -39,32 +40,18 @@ async fn contribution_lifetime(
 	assert_eq!(contribution.status, "OPEN");
 
 	// Apply to the contribution
-	let contributor_id = String::from("0x0029");
-	contributions::apply(&contribution.id, &contributor_id).await;
+	let contributor_address = format!("{:#066x}", accounts[2].address());
+	contributions::apply(&contribution.id, &contributor_address).await;
 
-	contributions::refuse_application(&contribution.id, &contributor_id).await;
+	contributions::refuse_application(&contribution.id, &contributor_address).await;
 
-	// TODO restore when user registration can be tested in local
-	// Get the contributor
-	/*
-	let contributor = contributors::get::get(contributor_account.clone()).await;
-	assert_eq!(contributor.id, contributor_account);
-	assert_eq!(contributor.account, contributor_account);
-	assert_eq!(contributor.github_identifier, "");
-	assert_eq!(contributor.github_username, "");
+	contributors::signup(accounts[2].clone()).await;
 
-	let contributor = contributors::get::get_by_account(
-		"0x0265a2d2ac0c9c95aef8e489b9046a700f9b1d1488a9922fe3b0f9a6f6ddd3b5".to_string(),
-	)
-	.await;
-	assert_eq!(contributor.id, "0x0029");
-	let contributor = contributors::get::get(contributor_id.clone()).await;
-	assert_eq!(contributor.id, contributor_id);
-	assert_eq!(
-		contributor.account,
-		"0x0265a2d2ac0c9c95aef8e489b9046a700f9b1d1488a9922fe3b0f9a6f6ddd3b5"
-	);
+	let contributor = contributors::get::get_by_account(&contributor_address).await;
+	assert_eq!(contributor.id, contributor_address);
+	let contributor = contributors::get::get(&contributor_address.clone()).await;
+	assert_eq!(contributor.id, contributor_address);
+	assert_eq!(contributor.account, contributor_address);
 	assert_eq!(contributor.github_identifier, "990474");
 	assert_eq!(contributor.github_username, "abuisset");
-	*/
 }
