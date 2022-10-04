@@ -14,9 +14,6 @@ use Error as DomainError;
 mod services;
 pub use services::*;
 
-mod actions;
-pub use actions::*;
-
 mod event;
 pub use event::{Event, Origin as EventOrigin, StorableEvent};
 
