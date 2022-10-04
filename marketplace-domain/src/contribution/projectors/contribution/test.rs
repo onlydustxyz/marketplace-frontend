@@ -190,9 +190,9 @@ async fn on_contribution_unassigned_event(
 	contribution_unassigned_event: ContributionEvent,
 ) {
 	contribution_projection_repository
-		.expect_update_status()
-		.with(eq(contribution_id), eq(ContributionStatus::Open))
-		.returning(|_, _| Ok(()));
+		.expect_update_contributor_and_status()
+		.with(eq(contribution_id), eq(None), eq(ContributionStatus::Open))
+		.returning(|_, _, _| Ok(()));
 
 	let projector = ContributionProjector::new(
 		Arc::new(contribution_projection_repository),
