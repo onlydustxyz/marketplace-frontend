@@ -42,7 +42,11 @@ impl OnChainAccountVerifier for StarkNetClient {
 			.call_contract(
 				InvokeFunctionTransactionRequest {
 					contract_address,
-					entry_point_selector: get_selector_from_name("is_valid_signature").unwrap(),
+					entry_point_selector: get_selector_from_name(
+						&std::env::var("IS_VALID_SIGNATURE_SELECTOR")
+							.unwrap_or_else(|_| "is_valid_signature".to_string()),
+					)
+					.unwrap(),
 					calldata: vec![
 						signed_data.hash,
 						FieldElement::from(2u64),

@@ -7,7 +7,6 @@ fn connection() -> PgConnection {
 	PgConnection::establish(&database_url).expect("Unable to connect to database")
 }
 
-#[fixture]
 pub fn events_count() -> i64 {
 	use marketplace_infrastructure::database::schema::events::dsl::*;
 
@@ -18,6 +17,7 @@ pub fn events_count() -> i64 {
 }
 
 #[fixture]
+#[once]
 pub fn migrated_database() {
 	diesel_migrations::run_pending_migrations(&connection())
 		.expect("Failed while running database migrations");

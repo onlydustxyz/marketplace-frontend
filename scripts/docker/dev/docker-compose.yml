@@ -58,6 +58,17 @@ services:
       db:
         condition: service_healthy
 
+  httpmock:
+    container_name: httpmock
+    image: alexliesenfeld/httpmock:latest
+    ports:
+      - 5001:5000
+    volumes:
+      - ./httpmocks:/mocks
+    environment:
+      HTTPMOCK_MOCK_FILES_DIR: /mocks
+
 volumes:
+  httpmocks:
   db:
     driver: local

@@ -1,0 +1,16 @@
+when:
+  method: GET
+  path: /user
+  header:
+    - name: accept
+      value: application/json
+    - name: user-agent
+      value: onlydust-marketplace
+    - name: authorization
+      value: token gh_access_token
+then:
+  status: 200
+  header:
+    - name: content-type
+      value: application/json
+  body: '{ "id" : 990474 }'
