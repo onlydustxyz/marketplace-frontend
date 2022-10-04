@@ -1,6 +1,5 @@
-use std::sync::Arc;
-
 use crate::*;
+use std::sync::Arc;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
