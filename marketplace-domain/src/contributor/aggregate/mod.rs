@@ -3,8 +3,6 @@ use std::sync::Arc;
 use crate::*;
 use thiserror::Error;
 
-pub mod event;
-
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error("Signature check failed")]

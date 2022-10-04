@@ -1,7 +1,5 @@
 mod aggregate;
-pub use aggregate::{
-	event::Event as ContributorEvent, Contributor as Aggregate, Error as ContributorError,
-};
+pub use aggregate::{Contributor as Aggregate, Error as ContributorError};
 
 mod projections;
 pub use projections::Contributor as ContributorProjection;
@@ -14,3 +12,6 @@ pub use id::Id;
 
 mod account;
 pub use account::Account;
+
+mod event;
+pub use event::Event;
