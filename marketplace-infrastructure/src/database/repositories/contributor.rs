@@ -7,7 +7,7 @@ use marketplace_domain::*;
 impl ContributorProjectionRepository for Client {
 	fn insert(
 		&self,
-		contributor: ContributorProjection,
+		contributor: ContributorDetails,
 	) -> Result<(), ContributorProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributorProjectionRepositoryError::from)?;
 
@@ -27,7 +27,7 @@ impl ContributorProjectionRepository for Client {
 	fn find_by_id(
 		&self,
 		contributor_id: &ContributorId,
-	) -> Result<ContributorProjection, ContributorProjectionRepositoryError> {
+	) -> Result<ContributorDetails, ContributorProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributorProjectionRepositoryError::from)?;
 
 		let contributor: models::Contributor = dsl::contributors
@@ -41,7 +41,7 @@ impl ContributorProjectionRepository for Client {
 	fn find_by_account(
 		&self,
 		contributor_account: &ContributorAccount,
-	) -> Result<ContributorProjection, ContributorProjectionRepositoryError> {
+	) -> Result<ContributorDetails, ContributorProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributorProjectionRepositoryError::from)?;
 
 		let contributor: models::Contributor = dsl::contributors
@@ -53,15 +53,15 @@ impl ContributorProjectionRepository for Client {
 	}
 }
 
-impl ProjectionRepository<ContributorProjection> for Client {
+impl ProjectionRepository<ContributorDetails> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
 		self.clear_table(dsl::contributors)
 			.map_err(|e| ProjectionRepositoryError::Infrastructure(e.into()))
 	}
 }
 
-impl From<ContributorProjection> for models::Contributor {
-	fn from(contributor: ContributorProjection) -> Self {
+impl From<ContributorDetails> for models::Contributor {
+	fn from(contributor: ContributorDetails) -> Self {
 		Self {
 			id: contributor.id.to_string(),
 			account: contributor.account.to_string(),
@@ -71,7 +71,7 @@ impl From<ContributorProjection> for models::Contributor {
 	}
 }
 
-impl From<models::Contributor> for ContributorProjection {
+impl From<models::Contributor> for ContributorDetails {
 	fn from(contributor: models::Contributor) -> Self {
 		Self {
 			id: contributor.id.parse().unwrap(),

@@ -49,7 +49,7 @@ pub use aggregate_root_repository::{
 
 mod contributor;
 pub use contributor::{
-	Account as ContributorAccount, Contributor, ContributorProjection, Error as ContributorError,
+	Account as ContributorAccount, Contributor, ContributorDetails, Error as ContributorError,
 	Event as ContributorEvent, Id as ContributorId,
 };
 

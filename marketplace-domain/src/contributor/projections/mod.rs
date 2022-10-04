@@ -1,2 +1,2 @@
-mod contributor;
-pub use contributor::Contributor;
+mod contributor_details;
+pub use contributor_details::ContributorDetails;
