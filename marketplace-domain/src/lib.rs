@@ -48,4 +48,6 @@ pub use aggregate_root_repository::{
 };
 
 mod contributor;
-pub use contributor::{Aggregate as ContributorAggregate, *};
+pub use contributor::{
+	Account as ContributorAccount, Aggregate as ContributorAggregate, Id as ContributorId, *,
+};

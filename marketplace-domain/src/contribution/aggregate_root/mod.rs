@@ -1,6 +1,5 @@
 use crate::*;
 use chrono::Utc;
-use crypto_bigint::U256;
 use marketplace_wrappers::HexStringWrapper;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;

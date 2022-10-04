@@ -1,4 +1,4 @@
-use super::ContributorId;
+use crate::ContributorId;
 use marketplace_wrappers::UuidWrapper;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;

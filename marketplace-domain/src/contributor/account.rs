@@ -1,6 +1,5 @@
 pub use super::Account as ContributorAccount;
-use crate::{HexPrefixedString, ParseHexPrefixedStringError};
-use crypto_bigint::U256;
+use crate::HexPrefixedString;
 use marketplace_wrappers::HexStringWrapper;
 use serde::{Deserialize, Serialize};
 
