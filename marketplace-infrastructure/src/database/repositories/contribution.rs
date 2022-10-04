@@ -56,10 +56,7 @@ impl ContributionProjectionRepository for Client {
 			.filter(dsl::id.eq(contribution_id.to_string()))
 			.set((
 				dsl::status.eq(status_.to_string()),
-				dsl::contributor_id.eq(match contributor_id_ {
-					Some(id_) => id_.to_string(),
-					None => String::new(),
-				}),
+				dsl::contributor_id.eq(contributor_id_.map(|value| value.to_string())),
 			))
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;

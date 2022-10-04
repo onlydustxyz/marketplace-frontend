@@ -80,7 +80,7 @@ impl WithGithubDataProjector {
 
 	fn on_unassign(&self, id: &ContributionId) -> Result<(), Error> {
 		self.contribution_projection_repository
-			.update_status(id, ContributionStatus::Open)
+			.update_contributor_and_status(id.clone(), None, ContributionStatus::Open)
 			.map_err_into()
 	}
 
