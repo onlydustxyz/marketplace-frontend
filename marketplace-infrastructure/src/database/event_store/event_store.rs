@@ -26,7 +26,7 @@ impl NamedAggregate for ProjectAggregate {
 	}
 }
 
-impl NamedAggregate for ContributorAggregate {
+impl NamedAggregate for Contributor {
 	fn name() -> String {
 		String::from("CONTRIBUTOR")
 	}

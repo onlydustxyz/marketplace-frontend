@@ -9,14 +9,14 @@ use std::sync::Arc;
 pub struct EventStoreObserver {
 	contribution_event_store: Arc<dyn EventStore<Contribution>>,
 	project_event_store: Arc<dyn EventStore<ProjectAggregate>>,
-	contributor_event_store: Arc<dyn EventStore<ContributorAggregate>>,
+	contributor_event_store: Arc<dyn EventStore<Contributor>>,
 }
 
 impl EventStoreObserver {
 	pub fn new(
 		contribution_event_store: Arc<dyn EventStore<Contribution>>,
 		project_event_store: Arc<dyn EventStore<ProjectAggregate>>,
-		contributor_event_store: Arc<dyn EventStore<ContributorAggregate>>,
+		contributor_event_store: Arc<dyn EventStore<Contributor>>,
 	) -> Self {
 		Self {
 			contribution_event_store,
@@ -53,8 +53,7 @@ impl Observer for EventStoreObserver {
 				);
 			},
 			Event::Contributor(contributor_event) => {
-				let id =
-					<ContributorAggregate as Identifiable<ContributorEvent>>::id(contributor_event);
+				let id = <Contributor as Identifiable<ContributorEvent>>::id(contributor_event);
 				store_event(
 					self.contributor_event_store.clone(),
 					&id,
@@ -122,7 +121,7 @@ impl Identifiable<ProjectEvent> for ProjectAggregate {
 	}
 }
 
-impl Identifiable<ContributorEvent> for ContributorAggregate {
+impl Identifiable<ContributorEvent> for Contributor {
 	fn id(event: &ContributorEvent) -> Self::Id {
 		match event {
 			ContributorEvent::GithubAccountAssociated {
@@ -157,8 +156,8 @@ mod test {
 	}
 
 	#[fixture]
-	fn contributor_event_store() -> MockEventStore<ContributorAggregate> {
-		MockEventStore::<ContributorAggregate>::new()
+	fn contributor_event_store() -> MockEventStore<Contributor> {
+		MockEventStore::<Contributor>::new()
 	}
 
 	#[fixture]
@@ -223,7 +222,7 @@ mod test {
 	async fn on_new_contribution_event(
 		mut contribution_event_store: MockEventStore<Contribution>,
 		project_event_store: MockEventStore<ProjectAggregate>,
-		contributor_event_store: MockEventStore<ContributorAggregate>,
+		contributor_event_store: MockEventStore<Contributor>,
 		contribution_id: ContributionId,
 		event_from_contribution: ObservedEvent,
 		contribution_event: ContributionEvent,
@@ -257,7 +256,7 @@ mod test {
 	async fn on_new_project_event(
 		contribution_event_store: MockEventStore<Contribution>,
 		mut project_event_store: MockEventStore<ProjectAggregate>,
-		contributor_event_store: MockEventStore<ContributorAggregate>,
+		contributor_event_store: MockEventStore<Contributor>,
 		project_id: ProjectId,
 		event_from_project: ObservedEvent,
 		project_event: ProjectEvent,
@@ -291,7 +290,7 @@ mod test {
 	async fn on_new_contributor_event(
 		contribution_event_store: MockEventStore<Contribution>,
 		project_event_store: MockEventStore<ProjectAggregate>,
-		mut contributor_event_store: MockEventStore<ContributorAggregate>,
+		mut contributor_event_store: MockEventStore<Contributor>,
 		contributor_account: ContributorAccount,
 		event_from_contributor: ObservedEvent,
 		contributor_event: ContributorEvent,

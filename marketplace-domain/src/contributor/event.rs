@@ -1,7 +1,6 @@
+use crate::{ContributorAccount, ContributorId, GithubUserId};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
-
-use crate::{ContributorAccount, ContributorId, GithubUserId};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {

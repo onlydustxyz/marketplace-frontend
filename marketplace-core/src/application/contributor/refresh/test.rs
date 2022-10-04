@@ -31,11 +31,11 @@ mock! {
 }
 
 trait Storable {
-	fn into_storable(self) -> StorableEvent<ContributorAggregate>;
+	fn into_storable(self) -> StorableEvent<Contributor>;
 }
 
 impl Storable for ContributorEvent {
-	fn into_storable(self) -> StorableEvent<ContributorAggregate> {
+	fn into_storable(self) -> StorableEvent<Contributor> {
 		StorableEvent {
 			event: self,
 			deduplication_id: RandomUuidGenerator.new_uuid().to_string(),
@@ -84,7 +84,7 @@ fn filled_database(
 		.map(Storable::into_storable)
 		.collect();
 
-		<DatabaseClient as EventStore<ContributorAggregate>>::append(
+		<DatabaseClient as EventStore<Contributor>>::append(
 			database.deref(),
 			&contributor_account,
 			storable_events,
