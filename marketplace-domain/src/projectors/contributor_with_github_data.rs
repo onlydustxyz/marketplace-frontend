@@ -12,12 +12,12 @@ pub enum Error {
 	ContributorProjectionRepository(#[from] ContributorProjectionRepositoryError),
 }
 
-pub struct ContributorProjector {
+pub struct ContributorWithGithubData {
 	github_client: Arc<dyn GithubClient>,
 	contributor_projection_repository: Arc<dyn ContributorProjectionRepository>,
 }
 
-impl ContributorProjector {
+impl ContributorWithGithubData {
 	pub fn new(
 		github_client: Arc<dyn GithubClient>,
 		contributor_projection_repository: Arc<dyn ContributorProjectionRepository>,
@@ -50,7 +50,7 @@ impl ContributorProjector {
 }
 
 #[async_trait]
-impl EventListener for ContributorProjector {
+impl EventListener for ContributorWithGithubData {
 	async fn on_event(&self, event: &Event) {
 		let result = match event {
 			Event::Contributor(contributor_event) => match contributor_event {
@@ -166,7 +166,7 @@ mod test {
 			}))
 			.returning(|_| Ok(()));
 
-		let projector = ContributorProjector::new(
+		let projector = ContributorWithGithubData::new(
 			Arc::new(github_client),
 			Arc::new(contributor_projection_repository),
 		);
@@ -188,7 +188,7 @@ mod test {
 		github_client.expect_find_user_by_id().never();
 		contributor_projection_repository.expect_insert().never();
 
-		let projector = ContributorProjector::new(
+		let projector = ContributorWithGithubData::new(
 			Arc::new(github_client),
 			Arc::new(contributor_projection_repository),
 		);

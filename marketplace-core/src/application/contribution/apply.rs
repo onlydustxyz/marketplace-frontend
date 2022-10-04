@@ -18,7 +18,7 @@ pub struct ApplyToContribution {
 	contribution_repository: AggregateRootRepository<Contribution>,
 	event_store: Arc<dyn EventStore<Contribution>>,
 	application_projector: Arc<ApplicationProjector>,
-	contributor_projector: Arc<ContributorProjector>,
+	contributor_projector: Arc<ContributorWithGithubDataProjector>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 }
 
@@ -27,7 +27,7 @@ impl ApplyToContribution {
 		contribution_repository: AggregateRootRepository<Contribution>,
 		event_store: Arc<dyn EventStore<Contribution>>,
 		application_projector: Arc<ApplicationProjector>,
-		contributor_projector: Arc<ContributorProjector>,
+		contributor_projector: Arc<ContributorWithGithubDataProjector>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Self {
 		Self {
@@ -45,7 +45,7 @@ impl ApplyToContribution {
 		contribution_repository: AggregateRootRepository<Contribution>,
 		event_store: Arc<dyn EventStore<Contribution>>,
 		application_projector: Arc<ApplicationProjector>,
-		contributor_projector: Arc<ContributorProjector>,
+		contributor_projector: Arc<ContributorWithGithubDataProjector>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Box<dyn Usecase> {
 		Box::new(Self::new(

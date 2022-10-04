@@ -108,7 +108,7 @@ async fn refresh_contributors_from_events(
 
 		Refresh::new(
 			filled_database.clone(),
-			Arc::new(ContributorProjector::new(
+			Arc::new(ContributorWithGithubDataProjector::new(
 				Arc::new(github_client),
 				filled_database.clone(),
 			)),

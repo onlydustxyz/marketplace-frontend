@@ -54,4 +54,4 @@ pub use contributor::{
 };
 
 mod projectors;
-pub use projectors::ContributorProjector;
+pub use projectors::ContributorWithGithubData as ContributorWithGithubDataProjector;
