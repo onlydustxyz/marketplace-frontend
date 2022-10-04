@@ -4,9 +4,6 @@ pub use aggregate::{Contributor, Error};
 mod projections;
 pub use projections::Contributor as ContributorProjection;
 
-mod projectors;
-pub use projectors::ContributorProjector;
-
 mod id;
 pub use id::Id;
 
