@@ -5,22 +5,22 @@ pub fn impl_hex_string_wrapper_macro(ast: &syn::DeriveInput) -> TokenStream {
 	let name = &ast.ident;
 	let gen = quote! {
 		impl std::str::FromStr for #name {
-			type Err = ParseHexPrefixedStringError;
+			type Err = crate::ParseHexPrefixedStringError;
 
 			fn from_str(s: &str) -> Result<Self, Self::Err> {
 				<HexPrefixedString as std::str::FromStr>::from_str(s).map(Self)
 			}
 		}
 
-		impl From<U256> for #name {
-			fn from(v: U256) -> Self {
+		impl From<crypto_bigint::U256> for #name {
+			fn from(v: crypto_bigint::U256) -> Self {
 				Self(HexPrefixedString::from(v))
 			}
 		}
 
 		impl From<u128> for #name {
 			fn from(id: u128) -> Self {
-				U256::from_u128(id).into()
+				crypto_bigint::U256::from_u128(id).into()
 			}
 		}
 
