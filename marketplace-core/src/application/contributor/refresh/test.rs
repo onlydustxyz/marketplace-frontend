@@ -124,7 +124,7 @@ async fn refresh_contributors_from_events(
 	assert!(result.is_ok(), "{}", result.err().unwrap());
 
 	assert_eq!(
-		ContributorDetails {
+		ContributorProfile {
 			id: contributor_id,
 			github_identifier: 100u64,
 			account: contributor_account,

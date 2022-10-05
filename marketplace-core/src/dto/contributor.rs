@@ -11,8 +11,8 @@ pub struct Contributor {
 	pub account: String,
 }
 
-impl From<domain::ContributorDetails> for Contributor {
-	fn from(contributor: domain::ContributorDetails) -> Self {
+impl From<domain::ContributorProfile> for Contributor {
+	fn from(contributor: domain::ContributorProfile) -> Self {
 		Self {
 			id: contributor.id.to_string(),
 			github_identifier: contributor.github_identifier.to_string(),

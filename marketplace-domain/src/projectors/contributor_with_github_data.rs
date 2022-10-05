@@ -37,7 +37,7 @@ impl ContributorWithGithubData {
 		if self.contributor_projection_repository.find_by_id(contributor_id).is_err() {
 			let user = self.github_client.find_user_by_id(*github_identifier).await?;
 
-			self.contributor_projection_repository.insert(ContributorDetails {
+			self.contributor_projection_repository.insert(ContributorProfile {
 				id: contributor_id.clone(),
 				github_identifier: *github_identifier,
 				github_username: user.name,
@@ -158,7 +158,7 @@ mod test {
 		contributor_projection_repository
 			.expect_insert()
 			.times(1)
-			.with(eq(ContributorDetails {
+			.with(eq(ContributorProfile {
 				id: contributor_id,
 				account: contributor_account,
 				github_username,
@@ -183,7 +183,7 @@ mod test {
 		contributor_projection_repository
 			.expect_find_by_id()
 			.times(1)
-			.returning(|_| Ok(ContributorDetails::default()));
+			.returning(|_| Ok(ContributorProfile::default()));
 
 		github_client.expect_find_user_by_id().never();
 		contributor_projection_repository.expect_insert().never();

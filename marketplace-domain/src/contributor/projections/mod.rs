@@ -1,2 +1,2 @@
-mod contributor_details;
-pub use contributor_details::ContributorDetails;
+mod contributor_profile;
+pub use contributor_profile::ContributorProfile;
