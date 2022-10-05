@@ -1,7 +1,7 @@
 pub mod contact_information;
 
-pub mod get;
-pub use get::get;
+mod get;
+pub use get::{get, get_by_account};
 
-pub mod signup;
+mod signup;
 pub use signup::signup;

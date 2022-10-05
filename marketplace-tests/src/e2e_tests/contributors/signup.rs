@@ -6,7 +6,7 @@ use reqwest::StatusCode;
 use serde_json::json;
 use starknet::{core::crypto::compute_hash_on_elements, signers::Signer};
 
-pub async fn signup(contributor_account: Account) {
+pub async fn signup(contributor_account: &Account) {
 	let address = contributor_account.address();
 	let hash = compute_hash_on_elements(&[address]);
 	let signature = contributor_account

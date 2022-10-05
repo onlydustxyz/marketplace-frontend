@@ -27,6 +27,8 @@ async fn contribution_lifetime(
 
 	let issue_number = 31;
 	let lead_contributor = &accounts[LEAD_CONTRIBUTOR_INDEX];
+	let contributor_account = &accounts[2];
+	let contributor_address = format!("{:#066x}", contributor_account.address());
 
 	add_lead_contributor(&accounts[0], STARKONQUEST_ID, lead_contributor.address()).await;
 	// Create a new contribution
@@ -40,16 +42,16 @@ async fn contribution_lifetime(
 	assert_eq!(contribution.status, "OPEN");
 
 	// Apply to the contribution
-	let contributor_address = format!("{:#066x}", accounts[2].address());
+	contributors::signup(contributor_account).await;
 	contributions::apply(&contribution.id, &contributor_address).await;
-
 	contributions::refuse_application(&contribution.id, &contributor_address).await;
 
-	contributors::signup(accounts[2].clone()).await;
-
-	let contributor = contributors::get::get_by_account(&contributor_address).await;
+	let contributor = contributors::get_by_account(&contributor_address).await;
 	assert_eq!(contributor.id, contributor_address);
-	let contributor = contributors::get::get(&contributor_address.clone()).await;
+	assert_eq!(contributor.account, contributor_address);
+	assert_eq!(contributor.github_identifier, "990474");
+	assert_eq!(contributor.github_username, "abuisset");
+	let contributor = contributors::get(&contributor_address).await;
 	assert_eq!(contributor.id, contributor_address);
 	assert_eq!(contributor.account, contributor_address);
 	assert_eq!(contributor.github_identifier, "990474");
