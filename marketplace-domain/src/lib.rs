@@ -37,9 +37,9 @@ pub use contribution::{AggregateId as ContributionId, *};
 
 mod project;
 pub use project::{
-	Aggregate as ProjectAggregate, LeadContributorProjection, LeadContributorProjector,
-	MemberProjection as ProjectMemberProjection, MemberProjector as ProjectMemberProjector,
-	ProjectEvent,
+	Aggregate as ProjectAggregate, Event as ProjectEvent, LeadContributorProjection,
+	LeadContributorProjector, MemberProjection as ProjectMemberProjection,
+	MemberProjector as ProjectMemberProjector,
 };
 
 mod aggregate_root_repository;
