@@ -1,5 +1,5 @@
-mod member;
-pub use member::Member as MemberProjection;
+mod members;
+pub use members::Member;
 
-mod lead_contributor;
-pub use lead_contributor::LeadContributor as LeadContributorProjection;
+mod lead_contributors;
+pub use lead_contributors::LeadContributor;

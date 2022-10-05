@@ -1,5 +1,5 @@
 mod projections;
-pub use projections::{LeadContributorProjection, MemberProjection};
+pub use projections::{LeadContributor as LeadContributorProjection, Member as MemberProjection};
 
 mod aggregate;
 pub use aggregate::Project as Aggregate;
