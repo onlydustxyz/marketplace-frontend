@@ -5,7 +5,7 @@ use rocket::{serde::json::Json, State};
 use rocket_okapi::openapi;
 
 use marketplace_domain::{
-	ContributionProjectionRepository, ContributorId, ContributorProjectionRepository,
+	ContributionProjectionRepository, ContributorAccountAddress, ContributorProjectionRepository,
 	HexPrefixedString,
 };
 
@@ -28,7 +28,8 @@ pub async fn get_contributions(
 ) -> Result<Json<Vec<dto::Contribution>>, HttpApiProblem> {
 	let mut filters = vec![];
 	if let Some(contributor_account) = contributor_account {
-		let contributor_account = ContributorId::from(HexPrefixedString::from(contributor_account));
+		let contributor_account =
+			ContributorAccountAddress::from(HexPrefixedString::from(contributor_account));
 		filters.push(contributor_account.into())
 	}
 	if let Some(project_id) = project_id {

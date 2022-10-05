@@ -23,7 +23,8 @@ fn now() -> NaiveDateTime {
 fn store_and_find(now: NaiveDateTime) {
 	let client = Client::new(init_pool());
 
-	let contribution = init_contribution(&client);
+	let project = init_project(&client);
+	let contribution = init_contribution(&client, project.id);
 
 	let application1 = ApplicationProjection::new(contribution.id.clone(), 1.into(), now);
 	let application2 = ApplicationProjection::new(contribution.id, 2.into(), now);
@@ -64,7 +65,8 @@ fn store_and_find(now: NaiveDateTime) {
 fn must_be_unique(now: NaiveDateTime) {
 	let client = Client::new(init_pool());
 
-	let contribution = init_contribution(&client);
+	let project = init_project(&client);
+	let contribution = init_contribution(&client, project.id);
 
 	let application1 = ApplicationProjection::new(contribution.id.clone(), 1.into(), now);
 	let application2 = ApplicationProjection::new(contribution.id, 1.into(), now);
@@ -104,7 +106,8 @@ fn find_return_none_if_not_found() {
 fn cannot_apply_twice(now: NaiveDateTime) {
 	let client = Client::new(init_pool());
 
-	let contribution = init_contribution(&client);
+	let project = init_project(&client);
+	let contribution = init_contribution(&client, project.id);
 
 	let application = ApplicationProjection::new(contribution.id, 1.into(), now);
 
@@ -126,7 +129,8 @@ fn cannot_apply_twice(now: NaiveDateTime) {
 fn store_multiple_and_list(now: NaiveDateTime) {
 	let client = Client::new(init_pool());
 
-	let contribution = init_contribution(&client);
+	let project = init_project(&client);
+	let contribution = init_contribution(&client, project.id);
 
 	let application1 = ApplicationProjection::new(contribution.id.clone(), 1.into(), now);
 

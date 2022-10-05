@@ -1,7 +1,8 @@
 use mockall::automock;
 
 use crate::{
-	ContributionId, ContributionProjection, ContributionStatus, ContributorId, GithubProjectId,
+	ContributionId, ContributionProjection, ContributionStatus, ContributorAccountAddress,
+	GithubProjectId,
 };
 
 use super::*;
@@ -17,10 +18,10 @@ pub trait Repository: Send + Sync {
 
 	fn insert(&self, contribution: ContributionProjection) -> Result<(), Error>;
 
-	fn update_contributor_and_status(
+	fn update_contributor_and_status<'a>(
 		&self,
-		contribution_id: ContributionId,
-		contributor_account_address: Option<ContributorAccountAddress>,
+		contribution_id: &ContributionId,
+		contributor_account_address: Option<&'a ContributorAccountAddress>,
 		status: ContributionStatus,
 	) -> Result<(), Error>;
 

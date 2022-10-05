@@ -2,7 +2,7 @@ use crate::*;
 
 pub enum Filter {
 	Project(ProjectId),
-	Contributor(ContributorId),
+	Contributor(ContributorAccountAddress),
 }
 
 impl From<ProjectId> for Filter {
@@ -11,8 +11,8 @@ impl From<ProjectId> for Filter {
 	}
 }
 
-impl From<ContributorId> for Filter {
-	fn from(id: ContributorId) -> Self {
-		Self::Contributor(id)
+impl From<ContributorAccountAddress> for Filter {
+	fn from(address: ContributorAccountAddress) -> Self {
+		Self::Contributor(address)
 	}
 }

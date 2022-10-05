@@ -70,10 +70,10 @@ impl ContributionProjectionRepository for Client {
 		Ok(())
 	}
 
-	fn update_contributor_and_status(
+	fn update_contributor_and_status<'a>(
 		&self,
-		contribution_id: ContributionId,
-		contributor_account_address: Option<ContributorAccountAddress>,
+		contribution_id: &ContributionId,
+		contributor_account_address: Option<&ContributorAccountAddress>,
 		status_: ContributionStatus,
 	) -> Result<(), ContributionProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
