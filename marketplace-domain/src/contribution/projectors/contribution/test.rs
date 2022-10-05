@@ -167,10 +167,12 @@ async fn on_contribution_assigned_event(
 ) {
 	contribution_projection_repository
 		.expect_update_contributor_and_status()
-		.with(
-			eq(contribution_id),
-			eq(Some(contributor_account_address)),
-			eq(ContributionStatus::Assigned),
+		.withf(
+			move |input_contribution_id, input_contributor_id, input_status| {
+				input_contribution_id.eq(&contribution_id)
+					&& input_contributor_id.eq(&Some(&contributor_account_address))
+					&& input_status.eq(&ContributionStatus::Assigned)
+			},
 		)
 		.returning(|_, _, _| Ok(()));
 
@@ -191,7 +193,13 @@ async fn on_contribution_unassigned_event(
 ) {
 	contribution_projection_repository
 		.expect_update_contributor_and_status()
-		.with(eq(contribution_id), eq(None), eq(ContributionStatus::Open))
+		.withf(
+			move |input_contribution_id, input_contributor_id, input_status| {
+				input_contribution_id.eq(&contribution_id)
+					&& input_contributor_id.eq(&None)
+					&& input_status.eq(&ContributionStatus::Open)
+			},
+		)
 		.returning(|_, _, _| Ok(()));
 
 	let projector = ContributionProjector::new(

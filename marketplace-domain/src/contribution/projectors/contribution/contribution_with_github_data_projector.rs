@@ -75,8 +75,8 @@ impl WithGithubDataProjector {
 	) -> Result<(), Error> {
 		self.contribution_projection_repository
 			.update_contributor_and_status(
-				id.clone(),
-				Some(contributor_account_address.clone()),
+				id,
+				Some(contributor_account_address),
 				ContributionStatus::Assigned,
 			)
 			.map_err_into()
@@ -84,7 +84,7 @@ impl WithGithubDataProjector {
 
 	fn on_unassign(&self, id: &ContributionId) -> Result<(), Error> {
 		self.contribution_projection_repository
-			.update_contributor_and_status(id.clone(), None, ContributionStatus::Open)
+			.update_contributor_and_status(id, None, ContributionStatus::Open)
 			.map_err_into()
 	}
 

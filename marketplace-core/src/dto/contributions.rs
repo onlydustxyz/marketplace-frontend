@@ -68,7 +68,7 @@ impl From<ContributionProjection> for Contribution {
 			status: contribution.status.to_string(),
 			gate: contribution.gate,
 			metadata: Metadata {
-				assignee: contribution.contributor_id.map(|id| id.to_string()),
+				assignee: contribution.contributor_account_address.map(|id| id.to_string()),
 				github_username: None,
 				difficulty: contribution.metadata.difficulty,
 				technology: contribution.metadata.technology,
@@ -85,9 +85,9 @@ pub fn build_contribution_dto(
 	contributor_projection_repository: &Arc<dyn ContributorProjectionRepository>,
 ) -> Option<Contribution> {
 	let contributor = contribution
-		.contributor_id
+		.contributor_account_address
 		.clone()
-		.and_then(|id| contributor_projection_repository.find_by_id(&id).ok());
+		.and_then(|id| contributor_projection_repository.find_by_account_address(&id).ok());
 
 	let mut contribution = Contribution::from(contribution);
 	contribution.metadata.github_username = contributor.map(|c| c.github_username);

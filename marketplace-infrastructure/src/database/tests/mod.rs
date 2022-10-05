@@ -13,7 +13,7 @@ use super::Client;
 
 fn init_project(client: &Client) -> ProjectProjection {
 	let project = ProjectProjection {
-		id: 666,
+		id: rand::random(),
 		name: Uuid::new_v4().to_string(),
 		owner: Uuid::new_v4().to_string(),
 		..Default::default()
@@ -23,19 +23,18 @@ fn init_project(client: &Client) -> ProjectProjection {
 	project
 }
 
-fn init_contribution(client: &Client) -> ContributionProjection {
-	init_contribution_with_status(client, Default::default())
+fn init_contribution(client: &Client, project_id: u64) -> ContributionProjection {
+	init_contribution_with_status(client, Default::default(), project_id)
 }
 
 fn init_contribution_with_status(
 	client: &Client,
 	status: ContributionStatus,
+	project_id: u64,
 ) -> ContributionProjection {
-	let project = init_project(client);
-
 	let contribution = ContributionProjection {
-		id: 1.into(),
-		project_id: project.id,
+		id: rand::random::<u128>().into(),
+		project_id,
 		status,
 		..Default::default()
 	};
