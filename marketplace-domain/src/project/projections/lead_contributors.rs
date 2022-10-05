@@ -1,4 +1,4 @@
-use crate::{ContributorAccountAddress, GithubProjectId, ProjectAggregate, Projection};
+use crate::{ContributorAccountAddress, GithubProjectId, Project, Projection};
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct LeadContributor {
@@ -7,7 +7,7 @@ pub struct LeadContributor {
 }
 
 impl Projection for LeadContributor {
-	type A = ProjectAggregate;
+	type A = Project;
 }
 
 impl LeadContributor {

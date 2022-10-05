@@ -7,11 +7,11 @@ use rstest::*;
 use std::{ops::Deref, str::FromStr, sync::Arc};
 
 trait Storable {
-	fn into_storable(self) -> StorableEvent<ProjectAggregate>;
+	fn into_storable(self) -> StorableEvent<Project>;
 }
 
 impl Storable for ProjectEvent {
-	fn into_storable(self) -> StorableEvent<ProjectAggregate> {
+	fn into_storable(self) -> StorableEvent<Project> {
 		StorableEvent {
 			event: self,
 			deduplication_id: RandomUuidGenerator.new_uuid().to_string(),
@@ -62,7 +62,7 @@ fn filled_database(
 	project_id: ProjectId,
 	project_id_2: ProjectId,
 ) -> Arc<DatabaseClient> {
-	<DatabaseClient as EventStore<ProjectAggregate>>::append(
+	<DatabaseClient as EventStore<Project>>::append(
 		database.deref(),
 		&project_id,
 		vec![
