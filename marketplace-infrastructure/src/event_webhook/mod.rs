@@ -84,8 +84,9 @@ impl EventListener for EventWebHook {
 					"Failed to parse environment variable '{WEBHOOK_TARGET_ENV_VAR}' content to Url: {e}"
 				),
 				Error::FailToSendRequest(e) => error!("Failed to send event to hook target: {e}"),
-				Error::RespondWithErrorStatusCode(e) =>
-					error!("WebHook target failed to process event: {e}"),
+				Error::RespondWithErrorStatusCode(e) => {
+					error!("WebHook target failed to process event: {e}")
+				},
 			},
 		}
 	}

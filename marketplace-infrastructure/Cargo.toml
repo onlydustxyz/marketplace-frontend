@@ -16,38 +16,38 @@ with_infrastructure_tests = []
 
 # Async
 async-trait = "0.1.56"
-futures = {version = "0.3.21", features = ["alloc"]}
-tokio = {version = "1.18.2", features = ["full"]}
+futures = { version = "0.3.21", features = ["alloc"] }
+tokio = { version = "1.18.2", features = ["full"] }
 
 # Database
-diesel = {version = "1.4.8", default-features = false, features = [
-  "postgres",
-  "serde_json",
-  "uuidv07",
-  "chrono",
-]}
+diesel = { version = "1.4.8", default-features = false, features = [
+	"postgres",
+	"serde_json",
+	"uuidv07",
+	"chrono",
+] }
 diesel_migrations = "1.4.0"
 r2d2 = "0.8.10"
 r2d2-diesel = "1.0.0"
-uuid = {version = "0.8.2", default_features = false, features = [
-  "v4",
-  "serde",
-]}
+uuid = { version = "0.8.2", default_features = false, features = [
+	"v4",
+	"serde",
+] }
 
 # Github
 octocrab = "0.16.0"
 
 # Http Server
-rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
+rocket = { version = "0.5.0-rc.2", features = ["json", "uuid"] }
 
 # Http Client
-reqwest = {version = "0.11", features = ["json"]}
+reqwest = { version = "0.11", features = ["json"] }
 
 # Starknet
-starknet = {git = "https://github.com/ofux/starknet-rs", rev = "9d01437"}
+starknet = { git = "https://github.com/xJonathanLEI/starknet-rs" }
 
 # Math types
-crypto-bigint = {version = "0.4.8", features = ["serde"]}
+crypto-bigint = { version = "0.4.8", features = ["serde"] }
 
 # Logs
 log = "0.4.17"
@@ -64,8 +64,8 @@ anyhow = "1.0.57"
 thiserror = "1.0.31"
 
 # Serde
-serde = {version = "1.0.137", features = ["derive"]}
-serde_json = {version = "1.0.81"}
+serde = { version = "1.0.137", features = ["derive"] }
+serde_json = { version = "1.0.81" }
 
 # Datetime
 chrono = "0.4"
@@ -80,7 +80,7 @@ url = "2.2.2"
 mockall = "0.11.2"
 
 # Local dependecies
-marketplace-domain = {path = "../marketplace-domain"}
+marketplace-domain = { path = "../marketplace-domain" }
 
 [dev-dependencies]
 assert_matches = "1.5"

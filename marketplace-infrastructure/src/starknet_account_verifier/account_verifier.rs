@@ -2,7 +2,7 @@ use async_trait::async_trait;
 use marketplace_domain::OnChainAccountVerifier;
 use starknet::{
 	core::{
-		types::{BlockId, FieldElement, InvokeFunctionTransactionRequest},
+		types::{BlockId, CallFunction, FieldElement},
 		utils::get_selector_from_name,
 	},
 	providers::Provider,
@@ -40,7 +40,7 @@ impl OnChainAccountVerifier for StarkNetClient {
 
 		self.sequencer
 			.call_contract(
-				InvokeFunctionTransactionRequest {
+				CallFunction {
 					contract_address,
 					entry_point_selector: get_selector_from_name(
 						&std::env::var("IS_VALID_SIGNATURE_SELECTOR")
@@ -53,8 +53,6 @@ impl OnChainAccountVerifier for StarkNetClient {
 						signed_data.signature.r,
 						signed_data.signature.s,
 					],
-					signature: vec![],
-					max_fee: FieldElement::ZERO,
 				},
 				BlockId::Latest,
 			)
