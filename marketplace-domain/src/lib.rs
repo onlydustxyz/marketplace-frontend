@@ -38,8 +38,7 @@ pub use contribution::{AggregateId as ContributionId, *};
 mod project;
 pub use project::{
 	Aggregate as ProjectAggregate, Event as ProjectEvent, LeadContributorProjection,
-	LeadContributorProjector, MemberProjection as ProjectMemberProjection,
-	MemberProjector as ProjectMemberProjector,
+	MemberProjection as ProjectMemberProjection,
 };
 
 mod aggregate_root_repository;
@@ -54,4 +53,7 @@ pub use contributor::{
 };
 
 mod projectors;
-pub use projectors::ContributorWithGithubData as ContributorWithGithubDataProjector;
+pub use projectors::{
+	ContributorWithGithubData as ContributorWithGithubDataProjector, LeadContributorProjector,
+	MemberProjector as ProjectMemberProjector,
+};
