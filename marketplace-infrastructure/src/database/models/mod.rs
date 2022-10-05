@@ -7,8 +7,8 @@ mod projects;
 pub use projects::*;
 
 #[allow(clippy::extra_unused_lifetimes)]
-mod applications;
-pub use applications::*;
+mod pending_applications;
+pub use pending_applications::*;
 
 #[allow(clippy::extra_unused_lifetimes)]
 mod contact_informations;
