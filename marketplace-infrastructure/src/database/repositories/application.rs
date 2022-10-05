@@ -18,7 +18,7 @@ impl ApplicationProjectionRepository for Client {
 	) -> Result<(), ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
-		let application = models::Application::from(application);
+		let application = models::PendingApplication::from(application);
 
 		diesel::insert_into(dsl::pending_applications)
 			.values(&application)
@@ -78,7 +78,7 @@ impl ApplicationProjectionRepository for Client {
 
 		let res = dsl::pending_applications
 			.find((contribution_id.to_string(), contributor_id.to_string()))
-			.first::<models::Application>(&*connection);
+			.first::<models::PendingApplication>(&*connection);
 
 		if let Err(diesel::result::Error::NotFound) = res {
 			Ok(None)
@@ -107,7 +107,7 @@ impl ApplicationProjectionRepository for Client {
 			query = query.filter(dsl::contributor_id.eq(contributor_id.to_string()))
 		}
 
-		let applications = query.load::<models::Application>(&*connection).map_err(|e| {
+		let applications = query.load::<models::PendingApplication>(&*connection).map_err(|e| {
 			error!(
 				"Failed while listing applications to contribution with id {contribution_id}{}: {e}",
 				match contributor_id {
@@ -133,7 +133,7 @@ impl ApplicationProjectionRepository for Client {
 			query = query.filter(dsl::contributor_id.eq(contributor_id.to_string()))
 		}
 
-		let applications = query.load::<models::Application>(&*connection).map_err(|e| {
+		let applications = query.load::<models::PendingApplication>(&*connection).map_err(|e| {
 			error!(
 				"Failed while listing applications{}: {e}",
 				match contributor_id {
@@ -155,21 +155,23 @@ impl ProjectionRepository<ApplicationProjection> for Client {
 	}
 }
 
-impl From<ApplicationProjection> for models::Application {
+impl From<ApplicationProjection> for models::PendingApplication {
 	fn from(application: marketplace_domain::ApplicationProjection) -> Self {
 		Self {
 			contribution_id: application.contribution_id().to_string(),
 			contributor_id: application.contributor_account_address().to_string(),
+			contributor_account_address: application.contributor_account_address().to_string(),
 			applied_at: *application.applied_at(),
 		}
 	}
 }
 
-impl From<models::Application> for ApplicationProjection {
-	fn from(application: models::Application) -> Self {
+impl From<models::PendingApplication> for ApplicationProjection {
+	fn from(application: models::PendingApplication) -> Self {
 		Self::new(
 			application.contribution_id.parse().unwrap(),
-			ContributorAccountAddress::from_str(application.contributor_id.as_str()).unwrap(),
+			ContributorAccountAddress::from_str(application.contributor_account_address.as_str())
+				.unwrap(),
 			application.applied_at,
 		)
 	}
