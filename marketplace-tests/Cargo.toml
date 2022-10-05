@@ -48,7 +48,6 @@ async-trait = "0.1.56"
 
 # Local dependencies
 marketplace-core = { path = "../marketplace-core" }
-marketplace-domain = { path = "../marketplace-domain" }
 marketplace-indexer = { path = "../marketplace-indexer" }
 marketplace-infrastructure = { path = "../marketplace-infrastructure" }
 
