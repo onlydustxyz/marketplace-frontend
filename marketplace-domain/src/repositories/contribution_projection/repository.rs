@@ -1,36 +1,10 @@
 use mockall::automock;
 
-use crate::*;
-use thiserror::Error;
+use crate::{
+	ContributionId, ContributionProjection, ContributionStatus, ContributorId, GithubProjectId,
+};
 
-#[derive(Debug, Error)]
-pub enum Error {
-	#[error("Contribution not found")]
-	NotFound,
-	#[error("Contribution already exist")]
-	AlreadyExist(#[source] Box<dyn std::error::Error>),
-	#[error("Contribution contains invalid members")]
-	InvalidEntity(#[source] Box<dyn std::error::Error>),
-	#[error("Something happend at the infrastructure level")]
-	Infrastructure(#[source] Box<dyn std::error::Error>),
-}
-
-pub enum Filter {
-	Project(ProjectId),
-	Contributor(ContributorId),
-}
-
-impl From<ProjectId> for Filter {
-	fn from(id: ProjectId) -> Self {
-		Self::Project(id)
-	}
-}
-
-impl From<ContributorId> for Filter {
-	fn from(id: ContributorId) -> Self {
-		Self::Contributor(id)
-	}
-}
+use super::*;
 
 #[automock]
 pub trait Repository: Send + Sync {
