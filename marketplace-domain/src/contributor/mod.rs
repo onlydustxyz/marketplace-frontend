@@ -7,5 +7,5 @@ pub use projections::ContributorProfile;
 mod account_address;
 pub use account_address::AccountAddress;
 
-mod event;
-pub use event::Event;
+mod events;
+pub use events::Event;
