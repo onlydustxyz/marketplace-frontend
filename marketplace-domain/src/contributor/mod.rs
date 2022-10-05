@@ -2,7 +2,7 @@ mod aggregate;
 pub use aggregate::{Contributor, Error};
 
 mod projections;
-pub use projections::ContributorDetails;
+pub use projections::ContributorProfile;
 
 mod id;
 pub use id::Id;
