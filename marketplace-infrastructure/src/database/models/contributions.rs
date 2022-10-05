@@ -22,4 +22,5 @@ pub struct Contribution {
 	pub duration: Option<String>,
 	pub context: Option<String>,
 	pub type_: Option<String>,
+	pub contributor_account_address: Option<String>,
 }

@@ -127,6 +127,10 @@ impl From<ContributionProjection> for models::Contribution {
 			status: contribution.status.to_string(),
 			contributor_id: contribution
 				.contributor_account_address
+				.clone()
+				.map(|account| account.to_string()),
+			contributor_account_address: contribution
+				.contributor_account_address
 				.map(|account| account.to_string()),
 			gate: contribution.gate as i32,
 			title: contribution.title,
