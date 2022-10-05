@@ -70,6 +70,7 @@ pub async fn main() {
 			routes::refresh_applications,
 			routes::list_contributor_applications,
 			routes::refresh_contributions,
+			routes::get_contributions,
 			routes::contributors::refresh_contributors,
 			routes::contributors::get_contributor,
 			routes::contributors::get_contributor_by_account,

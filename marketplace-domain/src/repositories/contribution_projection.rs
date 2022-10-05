@@ -15,8 +15,27 @@ pub enum Error {
 	Infrastructure(#[source] Box<dyn std::error::Error>),
 }
 
+pub enum Filter {
+	Project(ProjectId),
+	Contributor(ContributorId),
+}
+
+impl From<ProjectId> for Filter {
+	fn from(id: ProjectId) -> Self {
+		Self::Project(id)
+	}
+}
+
+impl From<ContributorId> for Filter {
+	fn from(id: ContributorId) -> Self {
+		Self::Contributor(id)
+	}
+}
+
 #[automock]
 pub trait Repository: Send + Sync {
+	fn find(&self, filters: &[Filter]) -> Result<Vec<ContributionProjection>, Error>;
+
 	fn find_by_id(
 		&self,
 		contribution_id: &ContributionId,
