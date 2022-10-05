@@ -56,7 +56,10 @@ impl ContributionProjectionRepository for Client {
 			.filter(dsl::id.eq(contribution_id.to_string()))
 			.set((
 				dsl::status.eq(status_.to_string()),
-				dsl::contributor_id.eq(contributor_account_address.map(|value| value.to_string())),
+				dsl::contributor_id
+					.eq(contributor_account_address.clone().map(|value| value.to_string())),
+				dsl::contributor_account_address
+					.eq(contributor_account_address.map(|value| value.to_string())),
 			))
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
@@ -126,6 +129,10 @@ impl From<ContributionProjection> for models::Contribution {
 			issue_number: contribution.issue_number.to_string(),
 			status: contribution.status.to_string(),
 			contributor_id: contribution
+				.contributor_account_address
+				.clone()
+				.map(|account| account.to_string()),
+			contributor_account_address: contribution
 				.contributor_account_address
 				.map(|account| account.to_string()),
 			gate: contribution.gate as i32,
