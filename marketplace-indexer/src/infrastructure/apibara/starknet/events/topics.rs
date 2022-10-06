@@ -59,20 +59,9 @@ impl StarknetTopics<FieldElement> for Topics {
 	}
 }
 
-impl StarknetTopics<U256> for Topics {
-	fn pop_front_as(&mut self) -> Result<U256, TopicError> {
-		let low: FieldElement = self.pop_front_as()?;
-		let high: FieldElement = self.pop_front_as()?;
-
-		let (_, low) = U256::from_be_bytes(low.to_bytes_be()).split();
-		let (_, high) = U256::from_be_bytes(high.to_bytes_be()).split();
-		Ok(U256::from((high, low)))
-	}
-}
-
 impl StarknetTopics<ContributorId> for Topics {
 	fn pop_front_as(&mut self) -> Result<ContributorId, TopicError> {
-		let value: U256 = self.pop_front_as()?;
+		let value: HexPrefixedString = self.pop_front_as()?;
 		Ok(ContributorId::from(value))
 	}
 }
@@ -103,13 +92,6 @@ mod test {
 			],
 		]
 		.into()
-	}
-
-	#[rstest]
-	fn topic_to_u256(mut topics: Topics) {
-		let value: U256 = topics.pop_front_as().expect("Something went wrong during convertion");
-		assert_eq!(U256::from_u128(203), value);
-		assert_eq!(0, topics.0.len());
 	}
 
 	#[rstest]
