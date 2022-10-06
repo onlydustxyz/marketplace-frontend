@@ -19,7 +19,7 @@ impl MemberProjector {
 		project_id: &ProjectId,
 		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
-		self.member_projection_repository.insert(ProjectMemberProjection::new(
+		self.member_projection_repository.upsert(ProjectMemberProjection::new(
 			*project_id,
 			contributor_account_address.clone(),
 		))
