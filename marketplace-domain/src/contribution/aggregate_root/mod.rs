@@ -58,16 +58,18 @@ impl Contribution {
 
 	pub fn refuse_application(
 		self,
-		contributor_id: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<Vec<Event>, Error> {
-		if !self.applicants.contains(contributor_id) {
-			return Err(Error::NoPendingApplication(contributor_id.clone()));
+		if !self.applicants.contains(contributor_account_address) {
+			return Err(Error::NoPendingApplication(
+				contributor_account_address.clone(),
+			));
 		}
 
 		let application_refused_event =
 			Event::Contribution(ContributionEvent::ApplicationRefused {
 				id: self.id,
-				contributor_id: contributor_id.clone(),
+				contributor_account_address: contributor_account_address.clone(),
 			});
 
 		Ok(vec![application_refused_event])
@@ -81,16 +83,17 @@ impl Contribution {
 		&self.status
 	}
 
-	fn with_applicant(self, contributor_id: &ContributorAccountAddress) -> Self {
+	fn with_applicant(self, contributor_account_address: &ContributorAccountAddress) -> Self {
 		let mut applicants = self.applicants;
-		applicants.push(contributor_id.clone());
+		applicants.push(contributor_account_address.clone());
 		Self { applicants, ..self }
 	}
 
-	fn without_applicant(self, contributor_id: &ContributorAccountAddress) -> Self {
+	fn without_applicant(self, contributor_account_address: &ContributorAccountAddress) -> Self {
 		let mut applicants = self.applicants;
-		if let Some(index) =
-			applicants.iter().rposition(|applicant_id| applicant_id == contributor_id)
+		if let Some(index) = applicants
+			.iter()
+			.rposition(|applicant_id| applicant_id == contributor_account_address)
 		{
 			applicants.remove(index);
 		}
@@ -131,8 +134,8 @@ impl EventSourcable for Contribution {
 				} => self.with_applicant(contributor_account_address),
 				ContributionEvent::ApplicationRefused {
 					id: _,
-					contributor_id,
-				} => self.without_applicant(contributor_id),
+					contributor_account_address,
+				} => self.without_applicant(contributor_account_address),
 				ContributionEvent::Assigned {
 					id: _,
 					contributor_account_address,

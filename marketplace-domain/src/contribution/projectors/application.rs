@@ -69,8 +69,8 @@ impl EventListener for ApplicationProjector {
 				} => self.on_applied(contribution_id, contributor_account_address, applied_at),
 				ContributionEvent::ApplicationRefused {
 					id: contribution_id,
-					contributor_id,
-				} => self.on_application_refused(contribution_id, contributor_id),
+					contributor_account_address,
+				} => self.on_application_refused(contribution_id, contributor_account_address),
 				ContributionEvent::Assigned {
 					id: contribution_id,
 					contributor_account_address,

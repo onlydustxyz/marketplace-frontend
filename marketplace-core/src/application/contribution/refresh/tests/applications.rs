@@ -174,7 +174,7 @@ fn filled_database(
 				},
 				ContributionEvent::ApplicationRefused {
 					id: contribution_id.clone(),
-					contributor_id: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ID.clone(),
 				},
 			]
 			.into_iter()

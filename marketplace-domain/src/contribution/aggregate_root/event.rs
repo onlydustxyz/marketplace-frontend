@@ -22,7 +22,7 @@ pub enum Event {
 	},
 	ApplicationRefused {
 		id: ContributionId,
-		contributor_id: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 	},
 	Assigned {
 		id: ContributionId,
