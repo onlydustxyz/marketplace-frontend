@@ -197,12 +197,12 @@ mod test {
 	}
 
 	#[fixture]
-	fn contributor_account() -> ContributorAccount {
+	fn contributor_account() -> ContributorAccountAddress {
 		Default::default()
 	}
 
 	#[fixture]
-	fn contributor_event(contributor_account: ContributorAccount) -> ContributorEvent {
+	fn contributor_event(contributor_account: ContributorAccountAddress) -> ContributorEvent {
 		ContributorEvent::GithubAccountAssociated {
 			contributor_account,
 			github_identifier: 666u64,
@@ -291,7 +291,7 @@ mod test {
 		contribution_event_store: MockEventStore<Contribution>,
 		project_event_store: MockEventStore<ProjectAggregate>,
 		mut contributor_event_store: MockEventStore<Contributor>,
-		contributor_account: ContributorAccount,
+		contributor_account: ContributorAccountAddress,
 		event_from_contributor: ObservedEvent,
 		contributor_event: ContributorEvent,
 	) {

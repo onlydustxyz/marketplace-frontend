@@ -49,8 +49,8 @@ pub use aggregate_root_repository::{
 
 mod contributor;
 pub use contributor::{
-	Account as ContributorAccount, Contributor, ContributorProfile, Error as ContributorError,
-	Event as ContributorEvent,
+	AccountAddress as ContributorAccountAddress, Contributor, ContributorProfile,
+	Error as ContributorError, Event as ContributorEvent,
 };
 
 mod projectors;

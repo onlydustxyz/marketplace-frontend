@@ -12,13 +12,13 @@ pub enum Error {
 
 #[derive(Default, Debug, Clone, PartialEq, Eq)]
 pub struct Contributor {
-	id: ContributorAccount,
+	id: ContributorAccountAddress,
 	github_identifier: GithubUserId,
 }
 
 impl Aggregate for Contributor {
 	type Event = ContributorEvent;
-	type Id = ContributorAccount;
+	type Id = ContributorAccountAddress;
 }
 
 impl From<ContributorEvent> for Event {
@@ -52,7 +52,7 @@ impl Contributor {
 		account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 		github_client: Arc<dyn GithubClient>,
 		authorization_code: String,
-		contributor_account: ContributorAccount,
+		contributor_account: ContributorAccountAddress,
 		signed_data: S,
 	) -> Result<Vec<Event>, Error> {
 		account_verifier
@@ -94,14 +94,14 @@ mod test {
 			async fn check_signature(
 				&self,
 				signed_data: &<MockOnChainAccountVerifier as OnChainAccountVerifier>::SignedData,
-				account_address: &ContributorAccount,
+				account_address: &ContributorAccountAddress,
 			) -> Result<(), OnChainAccountVerifierError>;
 		}
 	}
 
 	#[fixture]
-	fn contributor_account() -> ContributorAccount {
-		ContributorAccount::from_str("0x1234").unwrap()
+	fn contributor_account() -> ContributorAccountAddress {
+		ContributorAccountAddress::from_str("0x1234").unwrap()
 	}
 
 	#[fixture]
@@ -111,7 +111,7 @@ mod test {
 
 	#[fixture]
 	fn github_account_associated_event(
-		contributor_account: ContributorAccount,
+		contributor_account: ContributorAccountAddress,
 		github_identifier: GithubUserId,
 	) -> Event {
 		Event::Contributor(ContributorEvent::GithubAccountAssociated {
@@ -124,7 +124,7 @@ mod test {
 	#[rstest]
 	fn create_contributor(
 		github_account_associated_event: Event,
-		contributor_account: ContributorAccount,
+		contributor_account: ContributorAccountAddress,
 		github_identifier: GithubUserId,
 	) {
 		let contributor = super::Contributor::from_events(&[github_account_associated_event]);
@@ -133,7 +133,7 @@ mod test {
 	}
 
 	#[rstest]
-	async fn associate_github_account(contributor_account: ContributorAccount) {
+	async fn associate_github_account(contributor_account: ContributorAccountAddress) {
 		let mut account_verifier = MockOnChainAccountVerifier::new();
 		let mut github_client = MockGithubClient::new();
 		let authorization_code = "thecode".to_string();

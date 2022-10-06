@@ -1,6 +1,6 @@
 use super::{EventTranslator, FromEventError, StarknetTopics, Topics};
 use marketplace_domain::{
-	ContributionEvent, ContributorAccount, Event as DomainEvent, HexPrefixedString,
+	ContributionEvent, ContributorAccountAddress, Event as DomainEvent, HexPrefixedString,
 };
 use starknet::core::{types::FieldElement, utils::get_selector_from_name};
 
@@ -13,7 +13,7 @@ impl EventTranslator for Assigned {
 
 	fn to_domain_event(mut topics: Topics) -> Result<DomainEvent, FromEventError> {
 		let contribution_id: HexPrefixedString = topics.pop_front_as()?;
-		let contributor_id: ContributorAccount = topics.pop_front_as()?;
+		let contributor_id: ContributorAccountAddress = topics.pop_front_as()?;
 
 		Ok(DomainEvent::Contribution(ContributionEvent::Assigned {
 			id: contribution_id.into(),
@@ -61,7 +61,7 @@ mod test {
 		assert_eq!(
 			DomainEvent::Contribution(ContributionEvent::Assigned {
 				id: 12.into(),
-				contributor_id: ContributorAccount::from(24)
+				contributor_id: ContributorAccountAddress::from(24)
 			},),
 			result.unwrap()
 		);

@@ -20,14 +20,16 @@ struct AlreadyExist;
 #[error("No contribution with id {0}")]
 struct ContributionNotFound(ContributionId);
 
-struct ApplyToContribution(RwLock<HashMap<ContributionId, HashMap<ContributorAccount, bool>>>);
+struct ApplyToContribution(
+	RwLock<HashMap<ContributionId, HashMap<ContributorAccountAddress, bool>>>,
+);
 
 #[async_trait]
 impl ApplyToContributionUsecase for ApplyToContribution {
 	async fn apply_to_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: &ContributorAccount,
+		contributor_id: &ContributorAccountAddress,
 	) -> Result<(), DomainError> {
 		let mut lock = self.0.write().unwrap();
 		let contribution_db = lock.get_mut(contribution_id).ok_or_else(|| {

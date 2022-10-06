@@ -1,4 +1,4 @@
-use crate::ContributorAccount;
+use crate::ContributorAccountAddress;
 use marketplace_wrappers::UuidWrapper;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -9,6 +9,6 @@ pub struct Id(Uuid);
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct ContactInformation {
 	pub id: Id,
-	pub contributor_id: ContributorAccount,
+	pub contributor_id: ContributorAccountAddress,
 	pub discord_handle: Option<String>,
 }

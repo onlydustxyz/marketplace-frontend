@@ -22,7 +22,7 @@ impl LeadContributorProjector {
 	fn on_lead_contributor_added(
 		&self,
 		project_id: &ProjectId,
-		contributor_account: &ContributorAccount,
+		contributor_account: &ContributorAccountAddress,
 	) -> Result<(), LeadContributorProjectionRepositoryError> {
 		self.lead_contributor_projection_repository
 			.insert(LeadContributorProjection::new(
@@ -34,7 +34,7 @@ impl LeadContributorProjector {
 	fn on_lead_contributor_removed(
 		&self,
 		project_id: &ProjectId,
-		contributor_account: &ContributorAccount,
+		contributor_account: &ContributorAccountAddress,
 	) -> Result<(), LeadContributorProjectionRepositoryError> {
 		self.lead_contributor_projection_repository
 			.delete(project_id, contributor_account)

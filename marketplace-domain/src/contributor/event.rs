@@ -1,13 +1,13 @@
-use crate::{ContributorAccount, GithubUserId};
+use crate::{ContributorAccountAddress, GithubUserId};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	GithubAccountAssociated {
-		contributor_account: ContributorAccount,
+		contributor_account: ContributorAccountAddress,
 		github_identifier: GithubUserId,
-		contributor_id: ContributorAccount,
+		contributor_id: ContributorAccountAddress,
 	},
 }
 

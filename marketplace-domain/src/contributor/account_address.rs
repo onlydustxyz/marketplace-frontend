@@ -3,10 +3,10 @@ use marketplace_wrappers::HexStringWrapper;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, Default, HexStringWrapper)]
-pub struct Account(ContractAddress);
+pub struct AccountAddress(ContractAddress);
 
-impl From<Account> for HexPrefixedString {
-	fn from(value: Account) -> Self {
+impl From<AccountAddress> for HexPrefixedString {
+	fn from(value: AccountAddress) -> Self {
 		value.0
 	}
 }

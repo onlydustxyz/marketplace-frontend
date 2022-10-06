@@ -1,4 +1,4 @@
-use crate::ContributorAccount;
+use crate::ContributorAccountAddress;
 use async_trait::async_trait;
 use thiserror::Error;
 
@@ -15,6 +15,6 @@ pub trait OnChainAccountVerifier: Send + Sync {
 	async fn check_signature(
 		&self,
 		signed_data: &Self::SignedData,
-		account_address: &ContributorAccount,
+		account_address: &ContributorAccountAddress,
 	) -> Result<(), Error>;
 }

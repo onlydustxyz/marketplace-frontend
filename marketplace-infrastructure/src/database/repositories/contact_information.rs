@@ -8,7 +8,7 @@ use std::str::FromStr;
 impl ContactInformationRepository for Client {
 	fn find_by_contributor_id(
 		&self,
-		contributor_id: &ContributorAccount,
+		contributor_id: &ContributorAccountAddress,
 	) -> Result<Option<ContactInformation>, ContactInformationRepositoryError> {
 		let connection = self
 			.connection()
@@ -76,7 +76,7 @@ impl From<models::ContactInformation> for ContactInformation {
 	fn from(contact_information: models::ContactInformation) -> Self {
 		Self {
 			id: contact_information.id.into(),
-			contributor_id: ContributorAccount::from_str(
+			contributor_id: ContributorAccountAddress::from_str(
 				contact_information.contributor_id.as_str(),
 			)
 			.unwrap(),

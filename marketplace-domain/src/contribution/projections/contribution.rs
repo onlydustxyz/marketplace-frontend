@@ -1,5 +1,5 @@
 use crate::{
-	contribution::aggregate_root, ContributionId, ContributionStatus, ContributorAccount,
+	contribution::aggregate_root, ContributionId, ContributionStatus, ContributorAccountAddress,
 	GithubIssueNumber, GithubProjectId, Projection,
 };
 use url::Url;
@@ -9,7 +9,7 @@ pub struct Contribution {
 	pub id: ContributionId,
 	pub project_id: GithubProjectId,
 	pub issue_number: GithubIssueNumber,
-	pub contributor_id: Option<ContributorAccount>,
+	pub contributor_id: Option<ContributorAccountAddress>,
 	pub title: Option<String>,
 	pub description: Option<String>,
 	pub status: ContributionStatus,

@@ -19,9 +19,9 @@ pub enum Error {
 	)]
 	CannotApply(ContributionStatus),
 	#[error("Contributor `{0}` already applied")]
-	AlreadyApplied(ContributorAccount),
+	AlreadyApplied(ContributorAccountAddress),
 	#[error("Contributor `{0}` dose not have any pending application")]
-	NoPendingApplication(ContributorAccount),
+	NoPendingApplication(ContributorAccountAddress),
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Eq)]
@@ -30,13 +30,13 @@ pub struct Contribution {
 	project_id: GithubProjectId,
 	issue_number: GithubIssueNumber,
 	gate: u8,
-	contributor_id: Option<ContributorAccount>,
+	contributor_id: Option<ContributorAccountAddress>,
 	status: ContributionStatus,
-	applicants: Vec<ContributorAccount>,
+	applicants: Vec<ContributorAccountAddress>,
 }
 
 impl Contribution {
-	pub fn apply(self, contributor_id: &ContributorAccount) -> Result<Vec<Event>, Error> {
+	pub fn apply(self, contributor_id: &ContributorAccountAddress) -> Result<Vec<Event>, Error> {
 		if self.status != Status::Open {
 			return Err(Error::CannotApply(self.status));
 		}
@@ -55,7 +55,7 @@ impl Contribution {
 
 	pub fn refuse_application(
 		self,
-		contributor_id: &ContributorAccount,
+		contributor_id: &ContributorAccountAddress,
 	) -> Result<Vec<Event>, Error> {
 		if !self.applicants.contains(contributor_id) {
 			return Err(Error::NoPendingApplication(contributor_id.clone()));
@@ -78,13 +78,13 @@ impl Contribution {
 		&self.status
 	}
 
-	fn with_applicant(self, contributor_id: &ContributorAccount) -> Self {
+	fn with_applicant(self, contributor_id: &ContributorAccountAddress) -> Self {
 		let mut applicants = self.applicants;
 		applicants.push(contributor_id.clone());
 		Self { applicants, ..self }
 	}
 
-	fn without_applicant(self, contributor_id: &ContributorAccount) -> Self {
+	fn without_applicant(self, contributor_id: &ContributorAccountAddress) -> Self {
 		let mut applicants = self.applicants;
 		if let Some(index) =
 			applicants.iter().rposition(|applicant_id| applicant_id == contributor_id)

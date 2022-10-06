@@ -71,7 +71,7 @@ impl WithGithubDataProjector {
 	fn on_assign(
 		&self,
 		id: &ContributionId,
-		contributor_id: &ContributorAccount,
+		contributor_id: &ContributorAccountAddress,
 	) -> Result<(), Error> {
 		self.contribution_projection_repository
 			.update_contributor_and_status(

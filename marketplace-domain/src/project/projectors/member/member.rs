@@ -17,7 +17,7 @@ impl MemberProjector {
 	fn on_member_added(
 		&self,
 		project_id: &ProjectId,
-		contributor_account: &ContributorAccount,
+		contributor_account: &ContributorAccountAddress,
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
 		self.member_projection_repository.insert(ProjectMemberProjection::new(
 			*project_id,
@@ -28,7 +28,7 @@ impl MemberProjector {
 	fn on_member_removed(
 		&self,
 		project_id: &ProjectId,
-		contributor_account: &ContributorAccount,
+		contributor_account: &ContributorAccountAddress,
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
 		self.member_projection_repository.delete(project_id, contributor_account)
 	}
