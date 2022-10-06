@@ -191,6 +191,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Setup cargo
+        uses: ./.github/actions/cargo-setup
+        with:
+          key: coverage
+
+      - name: Setup environment
+        uses: ./.github/actions/env-setup
+
       - name: Code coverage
         uses: ./.github/actions/coverage-checks
         with:
