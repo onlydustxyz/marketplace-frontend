@@ -37,8 +37,6 @@ runs:
         args: |
           --skip-clean
           --workspace
-          --exclude marketplace-wrappers
-          --exclude-files marketplace-infrastructure/src/database/schema.rs
           ${{ inputs.test_flags }}
       env:
         API_KEY: ROOT
