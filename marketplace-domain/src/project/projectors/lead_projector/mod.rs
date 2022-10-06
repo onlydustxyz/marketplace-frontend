@@ -25,7 +25,7 @@ impl LeadContributorProjector {
 		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<(), LeadContributorProjectionRepositoryError> {
 		self.lead_contributor_projection_repository
-			.insert(LeadContributorProjection::new(
+			.upsert(LeadContributorProjection::new(
 				*project_id,
 				contributor_account_address.clone(),
 			))

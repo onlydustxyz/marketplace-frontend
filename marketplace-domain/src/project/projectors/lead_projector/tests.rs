@@ -49,7 +49,7 @@ async fn on_lead_contributor_added(
 	contributor_account_address: ContributorAccountAddress,
 ) {
 	lead_contributor_projection_repository
-		.expect_insert()
+		.expect_upsert()
 		.with(eq(LeadContributorProjection::new(
 			project_id,
 			contributor_account_address,
