@@ -39,26 +39,26 @@ fn project_id_2() -> ProjectId {
 }
 
 #[fixture]
-fn contributor_account_1() -> ContributorAccount {
-	ContributorAccount::from_str("0x666").unwrap()
+fn contributor_account_1() -> ContributorAccountAddress {
+	ContributorAccountAddress::from_str("0x666").unwrap()
 }
 
 #[fixture]
-fn contributor_account_2() -> ContributorAccount {
-	ContributorAccount::from_str("0x777").unwrap()
+fn contributor_account_2() -> ContributorAccountAddress {
+	ContributorAccountAddress::from_str("0x777").unwrap()
 }
 
 #[fixture]
-fn contributor_account_3() -> ContributorAccount {
-	ContributorAccount::from_str("0x888").unwrap()
+fn contributor_account_3() -> ContributorAccountAddress {
+	ContributorAccountAddress::from_str("0x888").unwrap()
 }
 
 #[fixture]
 fn filled_database(
 	database: Arc<DatabaseClient>,
-	contributor_account_1: ContributorAccount,
-	contributor_account_2: ContributorAccount,
-	contributor_account_3: ContributorAccount,
+	contributor_account_1: ContributorAccountAddress,
+	contributor_account_2: ContributorAccountAddress,
+	contributor_account_3: ContributorAccountAddress,
 	project_id: ProjectId,
 	project_id_2: ProjectId,
 ) -> Arc<DatabaseClient> {
@@ -101,7 +101,7 @@ fn filled_database(
 async fn refresh_project_members_from_events(
 	filled_database: Arc<DatabaseClient>,
 	project_id: ProjectId,
-	contributor_account_2: ContributorAccount,
+	contributor_account_2: ContributorAccountAddress,
 ) {
 	let refresh_project_members_usecase = RefreshProjectsMembers::new(
 		filled_database.clone(),
@@ -127,7 +127,7 @@ async fn refresh_project_members_from_events(
 async fn refresh_lead_contributors_from_events(
 	filled_database: Arc<DatabaseClient>,
 	project_id: ProjectId,
-	contributor_account_1: ContributorAccount,
+	contributor_account_1: ContributorAccountAddress,
 ) {
 	let refresh_lead_contributors_usecase = RefreshLeadContributors::new(
 		filled_database.clone(),

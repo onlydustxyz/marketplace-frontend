@@ -1,9 +1,9 @@
-use crate::{ContributorAccount, GithubProjectId, ProjectAggregate, Projection};
+use crate::{ContributorAccountAddress, GithubProjectId, ProjectAggregate, Projection};
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct LeadContributor {
 	project_id: GithubProjectId,
-	account: ContributorAccount,
+	account: ContributorAccountAddress,
 }
 
 impl Projection for LeadContributor {
@@ -11,7 +11,7 @@ impl Projection for LeadContributor {
 }
 
 impl LeadContributor {
-	pub fn new(project_id: GithubProjectId, account: ContributorAccount) -> Self {
+	pub fn new(project_id: GithubProjectId, account: ContributorAccountAddress) -> Self {
 		Self {
 			project_id,
 			account,
@@ -22,7 +22,7 @@ impl LeadContributor {
 		&self.project_id
 	}
 
-	pub fn account(&self) -> &ContributorAccount {
+	pub fn account(&self) -> &ContributorAccountAddress {
 		&self.account
 	}
 }

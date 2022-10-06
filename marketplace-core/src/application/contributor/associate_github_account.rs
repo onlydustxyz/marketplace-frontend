@@ -10,7 +10,7 @@ pub trait Usecase<S: Clone + Send + Sync>: Send + Sync {
 	async fn associate_github_account(
 		&self,
 		authorization_code: String,
-		contributor_account: ContributorAccount,
+		contributor_account: ContributorAccountAddress,
 		signed_data: S,
 	) -> Result<(), DomainError>;
 }
@@ -64,7 +64,7 @@ impl<S: Clone + Send + Sync> Usecase<S> for AssociateGithubAccount<S> {
 	async fn associate_github_account(
 		&self,
 		authorization_code: String,
-		contributor_account: ContributorAccount,
+		contributor_account: ContributorAccountAddress,
 		signed_data: S,
 	) -> Result<(), DomainError> {
 		let events = Contributor::associate_github_account(

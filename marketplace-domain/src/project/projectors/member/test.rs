@@ -16,12 +16,15 @@ fn project_id() -> ProjectId {
 }
 
 #[fixture]
-fn contributor_account() -> ContributorAccount {
+fn contributor_account() -> ContributorAccountAddress {
 	"0x5632".parse().unwrap()
 }
 
 #[fixture]
-fn on_member_added_event(project_id: ProjectId, contributor_account: ContributorAccount) -> Event {
+fn on_member_added_event(
+	project_id: ProjectId,
+	contributor_account: ContributorAccountAddress,
+) -> Event {
 	Event::Project(ProjectEvent::MemberAdded {
 		project_id,
 		contributor_account,
@@ -31,7 +34,7 @@ fn on_member_added_event(project_id: ProjectId, contributor_account: Contributor
 #[fixture]
 fn on_member_removed_event(
 	project_id: ProjectId,
-	contributor_account: ContributorAccount,
+	contributor_account: ContributorAccountAddress,
 ) -> Event {
 	Event::Project(ProjectEvent::MemberRemoved {
 		project_id,
@@ -45,7 +48,7 @@ async fn on_member_added(
 	mut member_projection_repository: MockProjectMemberProjectionRepository,
 	#[case] event: Event,
 	project_id: ProjectId,
-	contributor_account: ContributorAccount,
+	contributor_account: ContributorAccountAddress,
 ) {
 	member_projection_repository
 		.expect_insert()
@@ -66,7 +69,7 @@ async fn on_member_removed(
 	mut member_projection_repository: MockProjectMemberProjectionRepository,
 	#[case] event: Event,
 	project_id: ProjectId,
-	contributor_account: ContributorAccount,
+	contributor_account: ContributorAccountAddress,
 ) {
 	member_projection_repository
 		.expect_delete()

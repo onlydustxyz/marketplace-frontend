@@ -50,7 +50,7 @@ fn store_and_find(now: NaiveDateTime) {
 	let found_application = <Client as ApplicationProjectionRepository>::find(
 		&client,
 		&ContributionId::default(),
-		&ContributorAccount::default(),
+		&ContributorAccountAddress::default(),
 	)
 	.unwrap();
 	assert_eq!(found_application, None);
@@ -90,7 +90,7 @@ fn find_return_none_if_not_found() {
 	let res = <Client as ApplicationProjectionRepository>::find(
 		&client,
 		&ContributionId::default(),
-		&ContributorAccount::default(),
+		&ContributorAccountAddress::default(),
 	);
 	assert!(res.is_ok());
 	assert_eq!(res.unwrap(), None)

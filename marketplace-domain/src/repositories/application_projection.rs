@@ -21,21 +21,21 @@ pub trait Repository: Send + Sync {
 	fn delete(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: &ContributorAccount,
+		contributor_id: &ContributorAccountAddress,
 	) -> Result<(), Error>;
 	fn delete_all_for_contribution(&self, contribution_id: &ContributionId) -> Result<(), Error>;
 	fn find(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: &ContributorAccount,
+		contributor_id: &ContributorAccountAddress,
 	) -> Result<Option<ApplicationProjection>, Error>;
 	fn list_by_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: Option<ContributorAccount>,
+		contributor_id: Option<ContributorAccountAddress>,
 	) -> Result<Vec<ApplicationProjection>, Error>;
 	fn list_by_contributor(
 		&self,
-		contributor_id: Option<ContributorAccount>,
+		contributor_id: Option<ContributorAccountAddress>,
 	) -> Result<Vec<ApplicationProjection>, Error>;
 }

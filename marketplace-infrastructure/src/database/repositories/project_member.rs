@@ -29,7 +29,7 @@ impl ProjectMemberProjectionRepository for Client {
 	fn delete(
 		&self,
 		project_id: &ProjectId,
-		contributor_account: &ContributorAccount,
+		contributor_account: &ContributorAccountAddress,
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
 		let connection = self.connection().map_err(ProjectMemberProjectionRepositoryError::from)?;
 
@@ -77,7 +77,7 @@ impl From<models::ProjectMember> for ProjectMemberProjection {
 	fn from(member: models::ProjectMember) -> Self {
 		ProjectMemberProjection::new(
 			member.project_id.parse().unwrap(),
-			ContributorAccount::from_str(member.contributor_account.as_str()).unwrap(),
+			ContributorAccountAddress::from_str(member.contributor_account.as_str()).unwrap(),
 		)
 	}
 }

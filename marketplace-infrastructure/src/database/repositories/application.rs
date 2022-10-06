@@ -34,7 +34,7 @@ impl ApplicationProjectionRepository for Client {
 	fn delete(
 		&self,
 		contribution_id: &AggregateId,
-		contributor_id: &ContributorAccount,
+		contributor_id: &ContributorAccountAddress,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
@@ -72,7 +72,7 @@ impl ApplicationProjectionRepository for Client {
 	fn find(
 		&self,
 		contribution_id: &AggregateId,
-		contributor_id: &ContributorAccount,
+		contributor_id: &ContributorAccountAddress,
 	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
@@ -95,7 +95,7 @@ impl ApplicationProjectionRepository for Client {
 	fn list_by_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: Option<ContributorAccount>,
+		contributor_id: Option<ContributorAccountAddress>,
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
@@ -123,7 +123,7 @@ impl ApplicationProjectionRepository for Client {
 
 	fn list_by_contributor(
 		&self,
-		contributor_id: Option<ContributorAccount>,
+		contributor_id: Option<ContributorAccountAddress>,
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
@@ -169,7 +169,7 @@ impl From<models::Application> for ApplicationProjection {
 	fn from(application: models::Application) -> Self {
 		Self::new(
 			application.contribution_id.parse().unwrap(),
-			ContributorAccount::from_str(application.contributor_id.as_str()).unwrap(),
+			ContributorAccountAddress::from_str(application.contributor_id.as_str()).unwrap(),
 			application.applied_at,
 		)
 	}

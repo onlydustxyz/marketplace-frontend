@@ -20,7 +20,7 @@ fn contribution_id() -> ContributionId {
 }
 
 #[fixture]
-fn contributor_id() -> ContributorAccount {
+fn contributor_id() -> ContributorAccountAddress {
 	123.into()
 }
 
@@ -94,7 +94,7 @@ fn contribution_created_event(
 #[fixture]
 fn contribution_assigned_event(
 	contribution_id: ContributionId,
-	contributor_id: ContributorAccount,
+	contributor_id: ContributorAccountAddress,
 ) -> ContributionEvent {
 	ContributionEvent::Assigned {
 		id: contribution_id,
@@ -161,7 +161,7 @@ async fn on_contribution_created_event(
 async fn on_contribution_assigned_event(
 	mut contribution_projection_repository: MockContributionProjectionRepository,
 	github_client: MockGithubClient,
-	contributor_id: ContributorAccount,
+	contributor_id: ContributorAccountAddress,
 	contribution_id: ContributionId,
 	contribution_assigned_event: ContributionEvent,
 ) {

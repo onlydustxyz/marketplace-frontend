@@ -3,7 +3,7 @@ use diesel::prelude::*;
 use itertools::Itertools;
 use log::error;
 use marketplace_domain::{
-	ContributorAccount, LeadContributorProjection, LeadContributorProjectionRepository,
+	ContributorAccountAddress, LeadContributorProjection, LeadContributorProjectionRepository,
 	LeadContributorProjectionRepositoryError, ProjectId, ProjectionRepository,
 	ProjectionRepositoryError,
 };
@@ -42,7 +42,7 @@ impl LeadContributorProjectionRepository for Client {
 	fn delete(
 		&self,
 		project_id: &ProjectId,
-		account: &ContributorAccount,
+		account: &ContributorAccountAddress,
 	) -> Result<(), LeadContributorProjectionRepositoryError> {
 		let connection =
 			self.connection().map_err(LeadContributorProjectionRepositoryError::from)?;
@@ -76,7 +76,7 @@ impl From<models::LeadContributor> for LeadContributorProjection {
 	fn from(lead_contributor: models::LeadContributor) -> Self {
 		LeadContributorProjection::new(
 			lead_contributor.project_id.parse().unwrap(),
-			ContributorAccount::from_str(lead_contributor.account.as_str()).unwrap(),
+			ContributorAccountAddress::from_str(lead_contributor.account.as_str()).unwrap(),
 		)
 	}
 }

@@ -33,7 +33,7 @@ impl OnChainAccountVerifier for StarkNetClient {
 	async fn check_signature(
 		&self,
 		signed_data: &Self::SignedData,
-		account_address: &ContributorAccount,
+		account_address: &ContributorAccountAddress,
 	) -> Result<(), OnChainAccountVerifierError> {
 		let contract_address = FieldElement::try_from_contributor_account(account_address.clone())
 			.map_err(OnChainAccountVerifierError::Infrastructure)?;

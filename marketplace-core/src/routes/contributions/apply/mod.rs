@@ -3,7 +3,7 @@ mod tests;
 
 use crate::application::ApplyToContributionUsecase;
 use http_api_problem::HttpApiProblem;
-use marketplace_domain::ContributorAccount;
+use marketplace_domain::ContributorAccountAddress;
 use rocket::{response::status, serde::json::Json, State};
 use rocket_okapi::openapi;
 use schemars::JsonSchema;
@@ -31,7 +31,7 @@ pub async fn apply_to_contribution(
 	body: Json<ApplyDto>,
 	usecase: &State<Box<dyn ApplyToContributionUsecase>>,
 ) -> Result<status::Created<&str>, HttpApiProblem> {
-	let contributor_id: ContributorAccount = body.into_inner().contributor_id.into();
+	let contributor_id: ContributorAccountAddress = body.into_inner().contributor_id.into();
 	let contribution_id = contribution_id.into();
 
 	usecase
