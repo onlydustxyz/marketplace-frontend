@@ -50,7 +50,7 @@ mod test {
 	#[error("Oops")]
 	struct Error;
 
-	const CONTRIBUTOR_ID: &str = "0x123";
+	const CONTRIBUTOR_ACCOUNT_ADDRESS: &str = "0x123";
 
 	#[test]
 	fn put_contact_information_should_forward_error_as_500() {
@@ -59,7 +59,7 @@ mod test {
 		contact_information_service
 			.expect_set_contributor_contact_information()
 			.with(
-				eq(ContributorAccountAddress::from_str(CONTRIBUTOR_ID).unwrap()),
+				eq(ContributorAccountAddress::from_str(CONTRIBUTOR_ACCOUNT_ADDRESS).unwrap()),
 				eq(None),
 			)
 			.returning(|_, _| {
@@ -70,7 +70,7 @@ mod test {
 			.manage(Arc::new(contact_information_service) as Arc<dyn ContactInformationService>);
 
 		let result = put_contact_information(
-			U256Param::from_str(CONTRIBUTOR_ID).unwrap(),
+			U256Param::from_str(CONTRIBUTOR_ACCOUNT_ADDRESS).unwrap(),
 			PutContributorDto {
 				discord_handle: None,
 			}
@@ -95,7 +95,7 @@ mod test {
 		contact_information_service
 			.expect_set_contributor_contact_information()
 			.with(
-				eq(ContributorAccountAddress::from_str(CONTRIBUTOR_ID).unwrap()),
+				eq(ContributorAccountAddress::from_str(CONTRIBUTOR_ACCOUNT_ADDRESS).unwrap()),
 				eq(Some(String::from("discord"))),
 			)
 			.returning(|_, _| Ok(()));
@@ -104,7 +104,7 @@ mod test {
 			.manage(Arc::new(contact_information_service) as Arc<dyn ContactInformationService>);
 
 		let result = put_contact_information(
-			U256Param::from_str(CONTRIBUTOR_ID).unwrap(),
+			U256Param::from_str(CONTRIBUTOR_ACCOUNT_ADDRESS).unwrap(),
 			PutContributorDto {
 				discord_handle: Some(String::from("discord")),
 			}

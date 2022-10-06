@@ -6,7 +6,7 @@ use super::*;
 use crate::application::{refresh::Refresh, RefreshProjects};
 
 lazy_static! {
-	static ref CONTRIBUTOR_ID: ContributorAccountAddress =
+	static ref CONTRIBUTOR_ACCOUNT_ADDRESS: ContributorAccountAddress =
 		ContributorAccountAddress::from_str("0x69babe69").unwrap();
 }
 
@@ -53,7 +53,7 @@ fn filled_database(database: Arc<DatabaseClient>) -> Arc<DatabaseClient> {
 			},
 			ContributionEvent::Assigned {
 				id: contribution_id.clone(),
-				contributor_account_address: CONTRIBUTOR_ID.clone(),
+				contributor_account_address: CONTRIBUTOR_ACCOUNT_ADDRESS.clone(),
 			},
 			ContributionEvent::Validated {
 				id: contribution_id.clone(),

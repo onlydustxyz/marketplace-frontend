@@ -6,7 +6,7 @@ use super::*;
 use crate::application::{refresh::Refresh, RefreshApplications};
 
 lazy_static! {
-	static ref CONTRIBUTOR_ID: ContributorAccountAddress =
+	static ref CONTRIBUTOR_ACCOUNT_ADDRESS: ContributorAccountAddress =
 		ContributorAccountAddress::from_str("0x69babe69").unwrap();
 }
 
@@ -42,7 +42,7 @@ fn filled_database(
 			},
 			ContributionEvent::Applied {
 				id: contribution_id.clone(),
-				contributor_account_address: CONTRIBUTOR_ID.clone(),
+				contributor_account_address: CONTRIBUTOR_ACCOUNT_ADDRESS.clone(),
 				applied_at: *now,
 			},
 		]
@@ -73,12 +73,12 @@ fn filled_database(
 				},
 				ContributionEvent::Applied {
 					id: contribution_id.clone(),
-					contributor_account_address: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ACCOUNT_ADDRESS.clone(),
 					applied_at: *now,
 				},
 				ContributionEvent::Assigned {
 					id: contribution_id.clone(),
-					contributor_account_address: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ACCOUNT_ADDRESS.clone(),
 				},
 			]
 			.into_iter()
@@ -103,12 +103,12 @@ fn filled_database(
 				},
 				ContributionEvent::Applied {
 					id: contribution_id.clone(),
-					contributor_account_address: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ACCOUNT_ADDRESS.clone(),
 					applied_at: *now,
 				},
 				ContributionEvent::Assigned {
 					id: contribution_id.clone(),
-					contributor_account_address: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ACCOUNT_ADDRESS.clone(),
 				},
 				ContributionEvent::Validated {
 					id: contribution_id.clone(),
@@ -136,12 +136,12 @@ fn filled_database(
 				},
 				ContributionEvent::Applied {
 					id: contribution_id.clone(),
-					contributor_account_address: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ACCOUNT_ADDRESS.clone(),
 					applied_at: *now,
 				},
 				ContributionEvent::Assigned {
 					id: contribution_id.clone(),
-					contributor_account_address: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ACCOUNT_ADDRESS.clone(),
 				},
 				ContributionEvent::Unassigned {
 					id: contribution_id.clone(),
@@ -169,12 +169,12 @@ fn filled_database(
 				},
 				ContributionEvent::Applied {
 					id: contribution_id.clone(),
-					contributor_account_address: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ACCOUNT_ADDRESS.clone(),
 					applied_at: *now,
 				},
 				ContributionEvent::ApplicationRefused {
 					id: contribution_id.clone(),
-					contributor_account_address: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ACCOUNT_ADDRESS.clone(),
 				},
 			]
 			.into_iter()
@@ -202,7 +202,7 @@ async fn refresh_applications_from_events(
 	assert!(result.is_ok(), "{}", result.err().unwrap());
 
 	let applications = filled_database
-		.list_by_contributor(Some(CONTRIBUTOR_ID.clone()))
+		.list_by_contributor(Some(CONTRIBUTOR_ACCOUNT_ADDRESS.clone()))
 		.expect("Unable to read projection table");
 
 	// Only #1, applied but not assigned nor refused
