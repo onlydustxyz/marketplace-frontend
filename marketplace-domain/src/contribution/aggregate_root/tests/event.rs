@@ -94,14 +94,14 @@ fn contribution_claimed_event_display_as_json(
 ) {
 	let event = ContributionEvent::Claimed {
 		id: contribution_id.clone(),
-		contributor_id: contributor_account_address.clone(),
+		contributor_account_address: contributor_account_address.clone(),
 	};
 
 	assert_json_eq!(
 		json! ({
 			"Claimed": {
 				"id": contribution_id,
-				"contributor_id": contributor_account_address
+				"contributor_account_address": contributor_account_address
 			}
 		}),
 		serde_json::from_str::<Value>(&event.to_string()).unwrap()

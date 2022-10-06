@@ -30,7 +30,7 @@ pub enum Event {
 	},
 	Claimed {
 		id: ContributionId,
-		contributor_id: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 	},
 	Unassigned {
 		id: ContributionId,

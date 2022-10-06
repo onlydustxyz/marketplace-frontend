@@ -139,7 +139,7 @@ impl EventSourcable for Contribution {
 				}
 				| ContributionEvent::Claimed {
 					id: _,
-					contributor_id: contributor_account_address,
+					contributor_account_address,
 				} => Self {
 					status: Status::Assigned,
 					contributor_id: Some(contributor_account_address.clone()),
