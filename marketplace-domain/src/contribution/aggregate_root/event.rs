@@ -17,7 +17,7 @@ pub enum Event {
 	},
 	Applied {
 		id: ContributionId,
-		contributor_id: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 		applied_at: NaiveDateTime,
 	},
 	ApplicationRefused {

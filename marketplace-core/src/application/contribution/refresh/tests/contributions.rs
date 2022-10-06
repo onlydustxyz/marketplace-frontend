@@ -41,7 +41,7 @@ fn filled_database(
 			},
 			ContributionEvent::Applied {
 				id: contribution_id.clone(),
-				contributor_id: CONTRIBUTOR_ID.clone(),
+				contributor_account_address: CONTRIBUTOR_ID.clone(),
 				applied_at: *now,
 			},
 			ContributionEvent::Assigned {
@@ -79,7 +79,7 @@ fn filled_database(
 				},
 				ContributionEvent::Applied {
 					id: contribution_id.clone(),
-					contributor_id: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ID.clone(),
 					applied_at: *now,
 				},
 				ContributionEvent::Assigned {

@@ -20,7 +20,7 @@ fn contribution_id() -> Id {
 }
 
 #[fixture]
-fn contributor_id() -> ContributorAccountAddress {
+fn contributor_account_address() -> ContributorAccountAddress {
 	ContributorAccountAddress::from_str("0x123").unwrap()
 }
 
@@ -43,27 +43,29 @@ fn contribution_assigned_event() -> Event {
 }
 
 #[fixture]
-fn contribution_applied_event(contributor_id: ContributorAccountAddress) -> Event {
+fn contribution_applied_event(contributor_account_address: ContributorAccountAddress) -> Event {
 	Event::Contribution(ContributionEvent::Applied {
 		id: Default::default(),
-		contributor_id,
+		contributor_account_address,
 		applied_at: NaiveDate::from_ymd(2022, 9, 16).and_hms(14, 37, 11),
 	})
 }
 
 #[fixture]
-fn contribution_application_refused_event(contributor_id: ContributorAccountAddress) -> Event {
+fn contribution_application_refused_event(
+	contributor_account_address: ContributorAccountAddress,
+) -> Event {
 	Event::Contribution(ContributionEvent::ApplicationRefused {
 		id: Default::default(),
-		contributor_id,
+		contributor_id: contributor_account_address,
 	})
 }
 
 #[fixture]
-fn contribution_claimed_event(contributor_id: ContributorAccountAddress) -> Event {
+fn contribution_claimed_event(contributor_account_address: ContributorAccountAddress) -> Event {
 	Event::Contribution(ContributionEvent::Claimed {
 		id: Default::default(),
-		contributor_id,
+		contributor_id: contributor_account_address,
 	})
 }
 
@@ -151,12 +153,12 @@ fn apply_to_assigned_contribution(
 fn apply_twice_to_contribution(
 	contribution_created_event: Event,
 	contribution_applied_event: Event,
-	contributor_id: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 ) {
 	let contribution =
 		Contribution::from_events(&[contribution_created_event, contribution_applied_event]);
 
-	let second_application = contribution.apply(&contributor_id);
+	let second_application = contribution.apply(&contributor_account_address);
 	assert!(second_application.is_err());
 	assert_matches!(second_application.unwrap_err(), Error::AlreadyApplied(_))
 }
@@ -174,7 +176,7 @@ fn apply_to_contribution_emits_an_event(contribution_created_event: Event) {
 	assert_matches!(
 		emitted_events.first().unwrap(),
 		Event::Contribution(ContributionEvent::Applied {
-			contributor_id: _,
+			contributor_account_address: _,
 			id: _,
 			applied_at: _
 		})
@@ -186,7 +188,7 @@ fn refuse_application_twice(
 	contribution_created_event: Event,
 	contribution_applied_event: Event,
 	contribution_application_refused_event: Event,
-	contributor_id: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 ) {
 	let contribution = Contribution::from_events(&[
 		contribution_created_event,
@@ -194,7 +196,7 @@ fn refuse_application_twice(
 		contribution_application_refused_event,
 	]);
 
-	let second_refusal = contribution.refuse_application(&contributor_id);
+	let second_refusal = contribution.refuse_application(&contributor_account_address);
 	assert!(second_refusal.is_err());
 	assert_matches!(second_refusal.unwrap_err(), Error::NoPendingApplication(_))
 }
@@ -203,12 +205,12 @@ fn refuse_application_twice(
 fn refuse_application_emits_an_event(
 	contribution_created_event: Event,
 	contribution_applied_event: Event,
-	contributor_id: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 ) {
 	let contribution =
 		Contribution::from_events(&[contribution_created_event, contribution_applied_event]);
 
-	let refusal_result = contribution.refuse_application(&contributor_id);
+	let refusal_result = contribution.refuse_application(&contributor_account_address);
 	assert!(refusal_result.is_ok());
 
 	let emitted_events = refusal_result.unwrap();
