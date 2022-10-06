@@ -4,7 +4,6 @@ use diesel::{prelude::*, query_dsl::BelongingToDsl};
 use itertools::Itertools;
 use log::error;
 use marketplace_domain::*;
-use std::str::FromStr;
 
 impl ProjectRepository for Client {
 	fn find_all_with_contributions(
@@ -66,32 +65,6 @@ impl From<models::Project> for ProjectProjection {
 			description: project.description,
 			url: project.url.map(|url| url.parse().unwrap()),
 			logo_url: project.logo_url.map(|url| url.parse().unwrap()),
-		}
-	}
-}
-
-impl From<models::Contribution> for ContributionProjection {
-	fn from(contribution: models::Contribution) -> Self {
-		Self {
-			id: contribution.id.parse().unwrap(),
-			contributor_account_address: contribution
-				.contributor_account_address
-				.map(|account| ContributorAccountAddress::from_str(account.as_str()).unwrap()),
-			project_id: contribution.project_id.parse().unwrap(),
-			issue_number: contribution.issue_number.parse().unwrap(),
-			status: contribution.status.parse().unwrap_or(ContributionStatus::Open),
-			// Safe to unwrap because the value stored can only come from an u8
-			gate: contribution.gate.try_into().unwrap(),
-			description: contribution.description,
-			external_link: contribution.external_link.map(|link| url::Url::parse(&link).unwrap()),
-			title: contribution.title,
-			metadata: ContributionProjectionMetadata {
-				difficulty: contribution.difficulty,
-				technology: contribution.technology,
-				duration: contribution.duration,
-				context: contribution.context,
-				r#type: contribution.type_,
-			},
 		}
 	}
 }
