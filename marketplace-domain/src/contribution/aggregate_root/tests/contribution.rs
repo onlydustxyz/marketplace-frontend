@@ -57,7 +57,7 @@ fn contribution_application_refused_event(
 ) -> Event {
 	Event::Contribution(ContributionEvent::ApplicationRefused {
 		id: Default::default(),
-		contributor_id: contributor_account_address,
+		contributor_account_address,
 	})
 }
 
@@ -218,7 +218,7 @@ fn refuse_application_emits_an_event(
 	assert_matches!(
 		emitted_events.first().unwrap(),
 		Event::Contribution(ContributionEvent::ApplicationRefused {
-			contributor_id: _,
+			contributor_account_address: _,
 			id: _
 		})
 	);
