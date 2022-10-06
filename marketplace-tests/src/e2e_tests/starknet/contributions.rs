@@ -11,7 +11,7 @@ pub trait ContributionsContract {
 	async fn add_lead_contributor_for_project(
 		&self,
 		project_id: u64,
-		contributor_account: FieldElement,
+		contributor_account_address: FieldElement,
 	) -> Result<()>;
 
 	async fn new_contribution(&self, project_id: u64, issue_number: u64, gate: u64) -> Result<()>;
@@ -23,14 +23,14 @@ impl<'a> ContributionsContract for ContractAdministrator<'a> {
 	async fn add_lead_contributor_for_project(
 		&self,
 		project_id: u64,
-		contributor_account: FieldElement,
+		contributor_account_address: FieldElement,
 	) -> Result<()> {
 		self.send_transaction(&[Call {
 			to: FieldElement::from_hex_be(CONTRIBUTIONS_ADDRESS)
 				.expect("Invalid CONTRIBUTIONS_ADDRESS"),
 			selector: get_selector_from_name("add_lead_contributor_for_project")
 				.expect("Invalid selector"),
-			calldata: vec![FieldElement::from(project_id), contributor_account],
+			calldata: vec![FieldElement::from(project_id), contributor_account_address],
 		}])
 		.await?;
 

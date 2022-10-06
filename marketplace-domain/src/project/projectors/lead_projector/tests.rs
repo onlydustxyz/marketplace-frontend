@@ -14,43 +14,46 @@ fn project_id() -> ProjectId {
 }
 
 #[fixture]
-fn account() -> ContributorAccountAddress {
+fn contributor_account_address() -> ContributorAccountAddress {
 	"0x5632".parse().unwrap()
 }
 
 #[fixture]
 fn on_lead_contributor_added_event(
 	project_id: ProjectId,
-	account: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 ) -> Event {
 	Event::Project(ProjectEvent::LeadContributorAdded {
 		project_id,
-		contributor_account: account,
+		contributor_account: contributor_account_address,
 	})
 }
 
 #[fixture]
 fn on_lead_contributor_removed_event(
 	project_id: ProjectId,
-	account: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 ) -> Event {
 	Event::Project(ProjectEvent::LeadContributorRemoved {
 		project_id,
-		contributor_account: account,
+		contributor_account: contributor_account_address,
 	})
 }
 
 #[rstest]
-#[case(on_lead_contributor_added_event(project_id(), account()))]
+#[case(on_lead_contributor_added_event(project_id(), contributor_account_address()))]
 async fn on_lead_contributor_added(
 	mut lead_contributor_projection_repository: MockLeadContributorProjectionRepository,
 	#[case] event: Event,
 	project_id: ProjectId,
-	account: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 ) {
 	lead_contributor_projection_repository
 		.expect_insert()
-		.with(eq(LeadContributorProjection::new(project_id, account)))
+		.with(eq(LeadContributorProjection::new(
+			project_id,
+			contributor_account_address,
+		)))
 		.times(1)
 		.returning(|_| Ok(()));
 
@@ -59,16 +62,16 @@ async fn on_lead_contributor_added(
 }
 
 #[rstest]
-#[case(on_lead_contributor_removed_event(project_id(), account()))]
+#[case(on_lead_contributor_removed_event(project_id(), contributor_account_address()))]
 async fn on_lead_contributor_removed(
 	mut lead_contributor_projection_repository: MockLeadContributorProjectionRepository,
 	#[case] event: Event,
 	project_id: ProjectId,
-	account: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 ) {
 	lead_contributor_projection_repository
 		.expect_delete()
-		.with(eq(project_id), eq(account))
+		.with(eq(project_id), eq(contributor_account_address))
 		.times(1)
 		.returning(|_, _| Ok(()));
 
