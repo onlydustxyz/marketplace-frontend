@@ -15,7 +15,7 @@ pub enum Error {
 
 #[automock]
 pub trait Repository: Send + Sync {
-	fn insert(&self, lead_contributor: LeadContributorProjection) -> Result<(), Error>;
+	fn upsert(&self, lead_contributor: LeadContributorProjection) -> Result<(), Error>;
 	fn delete(
 		&self,
 		project_id: &ProjectId,

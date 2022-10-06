@@ -19,7 +19,7 @@ impl ProjectionRepository<LeadContributorProjection> for Client {
 }
 
 impl LeadContributorProjectionRepository for Client {
-	fn insert(
+	fn upsert(
 		&self,
 		lead_contributor: LeadContributorProjection,
 	) -> Result<(), LeadContributorProjectionRepositoryError> {
@@ -30,6 +30,8 @@ impl LeadContributorProjectionRepository for Client {
 
 		diesel::insert_into(dsl::lead_contributors)
 			.values(&lead_contributor)
+			.on_conflict((dsl::project_id, dsl::account))
+			.do_nothing()
 			.execute(&*connection)
 			.map_err(|e| {
 				error!("Failed to insert lead contributor {lead_contributor:?}: {e}");
