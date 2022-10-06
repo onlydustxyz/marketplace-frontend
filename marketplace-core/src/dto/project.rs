@@ -49,6 +49,7 @@ pub struct Metadata {
 #[derive(Serialize, Deserialize, JsonSchema, Clone)]
 pub struct Member {
 	contributor_account: String,
+	contributor_account_address: String,
 }
 
 impl From<domain::ContributionProjection> for Contribution {
@@ -79,7 +80,8 @@ impl From<domain::ContributionProjection> for Contribution {
 impl From<domain::ProjectMemberProjection> for Member {
 	fn from(member: domain::ProjectMemberProjection) -> Self {
 		Member {
-			contributor_account: member.contributor_account().to_string(),
+			contributor_account: member.contributor_account_address().to_string(),
+			contributor_account_address: member.contributor_account_address().to_string(),
 		}
 	}
 }

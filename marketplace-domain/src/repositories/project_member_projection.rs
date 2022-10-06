@@ -19,7 +19,7 @@ pub trait Repository: Send + Sync {
 	fn delete(
 		&self,
 		project_id: &ProjectId,
-		contributor_account: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<(), Error>;
 	fn list_by_project(&self, project_id: &ProjectId) -> Result<Vec<MemberProjection>, Error>;
 }

@@ -30,7 +30,7 @@ impl ContributorWithGithubData {
 
 	async fn add_contributor(
 		&self,
-		contributor_account: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 		github_identifier: &GithubUserId,
 		contributor_id: &ContributorAccountAddress,
 	) -> Result<(), Error> {
@@ -41,7 +41,7 @@ impl ContributorWithGithubData {
 				id: contributor_id.clone(),
 				github_identifier: *github_identifier,
 				github_username: user.name,
-				account: contributor_account.clone(),
+				account: contributor_account_address.clone(),
 			})?;
 		}
 
@@ -95,7 +95,7 @@ mod test {
 	}
 
 	#[fixture]
-	fn contributor_account() -> ContributorAccountAddress {
+	fn contributor_account_address() -> ContributorAccountAddress {
 		"0x4444".parse().unwrap()
 	}
 
@@ -111,12 +111,12 @@ mod test {
 
 	#[fixture]
 	fn github_account_associated_event(
-		contributor_account: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 		github_identifier: GithubUserId,
 		contributor_id: ContributorAccountAddress,
 	) -> Event {
 		Event::Contributor(ContributorEvent::GithubAccountAssociated {
-			contributor_account,
+			contributor_account: contributor_account_address,
 			github_identifier,
 			contributor_id,
 		})
@@ -124,7 +124,7 @@ mod test {
 
 	#[rstest]
 	#[case(github_account_associated_event(
-		contributor_account(),
+		contributor_account_address(),
 		github_identifier(),
 		contributor_id()
 	))]
@@ -134,7 +134,7 @@ mod test {
 		#[case] event: Event,
 		github_identifier: GithubUserId,
 		github_username: String,
-		contributor_account: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 		contributor_id: ContributorAccountAddress,
 	) {
 		contributor_projection_repository
@@ -160,7 +160,7 @@ mod test {
 			.times(1)
 			.with(eq(ContributorProfile {
 				id: contributor_id,
-				account: contributor_account,
+				account: contributor_account_address,
 				github_username,
 				github_identifier,
 			}))

@@ -58,7 +58,7 @@ fn github_client() -> MockGithubClient {
 }
 
 #[fixture]
-fn contributor_account() -> ContributorAccountAddress {
+fn contributor_account_address() -> ContributorAccountAddress {
 	ContributorAccountAddress::from_str("0x17267621").unwrap()
 }
 
@@ -70,13 +70,13 @@ fn contributor_id() -> ContributorAccountAddress {
 #[fixture]
 fn filled_database(
 	database: Arc<DatabaseClient>,
-	contributor_account: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 	contributor_id: ContributorAccountAddress,
 ) -> Arc<DatabaseClient> {
 	// events for contributor #1
 	{
 		let storable_events = vec![ContributorEvent::GithubAccountAssociated {
-			contributor_account: contributor_account.clone(),
+			contributor_account: contributor_account_address.clone(),
 			github_identifier: 100u64,
 			contributor_id,
 		}]
@@ -86,7 +86,7 @@ fn filled_database(
 
 		<DatabaseClient as EventStore<Contributor>>::append(
 			database.deref(),
-			&contributor_account,
+			&contributor_account_address,
 			storable_events,
 		)
 		.expect("Unable to add events in event store");
@@ -100,7 +100,7 @@ fn filled_database(
 async fn refresh_contributors_from_events(
 	filled_database: Arc<DatabaseClient>,
 	mut github_client: MockGithubClient,
-	contributor_account: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 	contributor_id: ContributorAccountAddress,
 ) {
 	let refresh_contributors_usecase: RefreshContributors = {
@@ -127,7 +127,7 @@ async fn refresh_contributors_from_events(
 		ContributorProfile {
 			id: contributor_id,
 			github_identifier: 100u64,
-			account: contributor_account,
+			account: contributor_account_address,
 			..Default::default()
 		},
 		result.unwrap()

@@ -29,13 +29,13 @@ impl ProjectMemberProjectionRepository for Client {
 	fn delete(
 		&self,
 		project_id: &ProjectId,
-		contributor_account: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
 		let connection = self.connection().map_err(ProjectMemberProjectionRepositoryError::from)?;
 
 		diesel::delete(dsl::project_members)
 			.filter(dsl::project_id.eq(project_id.to_string()))
-			.filter(dsl::contributor_account.eq(contributor_account.to_string()))
+			.filter(dsl::contributor_account.eq(contributor_account_address.to_string()))
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
 
@@ -68,7 +68,7 @@ impl From<ProjectMemberProjection> for models::ProjectMember {
 	fn from(member: ProjectMemberProjection) -> Self {
 		Self {
 			project_id: member.project_id().to_string(),
-			contributor_account: member.contributor_account().to_string(),
+			contributor_account: member.contributor_account_address().to_string(),
 		}
 	}
 }

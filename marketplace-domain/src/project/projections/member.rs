@@ -3,7 +3,7 @@ use crate::{ContributorAccountAddress, GithubProjectId, ProjectAggregate, Projec
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct Member {
 	project_id: GithubProjectId,
-	contributor_account: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 }
 
 impl Projection for Member {
@@ -13,11 +13,11 @@ impl Projection for Member {
 impl Member {
 	pub fn new(
 		project_id: GithubProjectId,
-		contributor_account: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 	) -> Self {
 		Self {
 			project_id,
-			contributor_account,
+			contributor_account_address,
 		}
 	}
 
@@ -25,7 +25,7 @@ impl Member {
 		&self.project_id
 	}
 
-	pub fn contributor_account(&self) -> &ContributorAccountAddress {
-		&self.contributor_account
+	pub fn contributor_account_address(&self) -> &ContributorAccountAddress {
+		&self.contributor_account_address
 	}
 }

@@ -22,22 +22,22 @@ impl LeadContributorProjector {
 	fn on_lead_contributor_added(
 		&self,
 		project_id: &ProjectId,
-		contributor_account: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<(), LeadContributorProjectionRepositoryError> {
 		self.lead_contributor_projection_repository
 			.insert(LeadContributorProjection::new(
 				*project_id,
-				contributor_account.clone(),
+				contributor_account_address.clone(),
 			))
 	}
 
 	fn on_lead_contributor_removed(
 		&self,
 		project_id: &ProjectId,
-		contributor_account: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<(), LeadContributorProjectionRepositoryError> {
 		self.lead_contributor_projection_repository
-			.delete(project_id, contributor_account)
+			.delete(project_id, contributor_account_address)
 	}
 }
 
