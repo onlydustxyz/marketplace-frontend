@@ -1,5 +1,7 @@
 use super::{EventTranslator, FromEventError, StarknetTopics, Topics};
-use marketplace_domain::{Event as DomainEvent, HexPrefixedString, ProjectEvent, ProjectId};
+use marketplace_domain::{
+	ContributorAccountAddress, Event as DomainEvent, ProjectEvent, ProjectId,
+};
 use starknet::core::{types::FieldElement, utils::get_selector_from_name};
 
 pub struct MemberRemoved;
@@ -11,11 +13,11 @@ impl EventTranslator for MemberRemoved {
 
 	fn to_domain_event(mut topics: Topics) -> Result<DomainEvent, FromEventError> {
 		let project_id: u128 = topics.pop_front_as()?;
-		let contributor_account: HexPrefixedString = topics.pop_front_as()?;
+		let contributor_account_address: ContributorAccountAddress = topics.pop_front_as()?;
 
 		Ok(DomainEvent::Project(ProjectEvent::MemberRemoved {
 			project_id: project_id as ProjectId,
-			contributor_account: contributor_account.into(),
+			contributor_account: contributor_account_address.into(),
 		}))
 	}
 }

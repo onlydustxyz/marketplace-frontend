@@ -14,13 +14,13 @@ async fn contact_information(
 ) {
 	marketplace_api.await;
 
-	let contributor_account = format!("{:#x}", accounts[0].address());
+	let contributor_account_address = format!("{:#x}", accounts[0].address());
 
-	contributors::contact_information::add(&contributor_account, Some("discord")).await;
-	let contact_info = contributors::contact_information::get(&contributor_account).await;
+	contributors::contact_information::add(&contributor_account_address, Some("discord")).await;
+	let contact_info = contributors::contact_information::get(&contributor_account_address).await;
 	assert_eq!(
 		FieldElement::from_hex_be(&contact_info.contributor_id).unwrap(),
-		FieldElement::from_hex_be(&contributor_account).unwrap()
+		FieldElement::from_hex_be(&contributor_account_address).unwrap()
 	);
 	assert_eq!(contact_info.discord_handle.unwrap(), "discord");
 }

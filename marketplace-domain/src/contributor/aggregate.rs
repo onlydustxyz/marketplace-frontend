@@ -52,11 +52,11 @@ impl Contributor {
 		account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 		github_client: Arc<dyn GithubClient>,
 		authorization_code: String,
-		contributor_account: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 		signed_data: S,
 	) -> Result<Vec<Event>, Error> {
 		account_verifier
-			.check_signature(&signed_data, &contributor_account)
+			.check_signature(&signed_data, &contributor_account_address)
 			.await
 			.map_err(Error::Signature)?;
 
@@ -67,9 +67,9 @@ impl Contributor {
 
 		Ok(vec![Event::Contributor(
 			ContributorEvent::GithubAccountAssociated {
-				contributor_account: contributor_account.clone(),
+				contributor_account: contributor_account_address.clone(),
 				github_identifier,
-				contributor_id: HexPrefixedString::from(contributor_account).into(),
+				contributor_id: HexPrefixedString::from(contributor_account_address).into(),
 			},
 		)])
 	}
@@ -100,7 +100,7 @@ mod test {
 	}
 
 	#[fixture]
-	fn contributor_account() -> ContributorAccountAddress {
+	fn contributor_account_address() -> ContributorAccountAddress {
 		ContributorAccountAddress::from_str("0x1234").unwrap()
 	}
 
@@ -111,11 +111,11 @@ mod test {
 
 	#[fixture]
 	fn github_account_associated_event(
-		contributor_account: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 		github_identifier: GithubUserId,
 	) -> Event {
 		Event::Contributor(ContributorEvent::GithubAccountAssociated {
-			contributor_account,
+			contributor_account: contributor_account_address,
 			github_identifier,
 			contributor_id: Default::default(),
 		})
@@ -124,16 +124,16 @@ mod test {
 	#[rstest]
 	fn create_contributor(
 		github_account_associated_event: Event,
-		contributor_account: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 		github_identifier: GithubUserId,
 	) {
 		let contributor = super::Contributor::from_events(&[github_account_associated_event]);
-		assert_eq!(contributor_account, contributor.id);
+		assert_eq!(contributor_account_address, contributor.id);
 		assert_eq!(github_identifier, contributor.github_identifier);
 	}
 
 	#[rstest]
-	async fn associate_github_account(contributor_account: ContributorAccountAddress) {
+	async fn associate_github_account(contributor_account_address: ContributorAccountAddress) {
 		let mut account_verifier = MockOnChainAccountVerifier::new();
 		let mut github_client = MockGithubClient::new();
 		let authorization_code = "thecode".to_string();
@@ -141,7 +141,10 @@ mod test {
 
 		account_verifier
 			.expect_check_signature()
-			.with(eq(signed_data.clone()), eq(contributor_account.clone()))
+			.with(
+				eq(signed_data.clone()),
+				eq(contributor_account_address.clone()),
+			)
 			.once()
 			.returning(|_, _| Ok(()));
 
@@ -155,7 +158,7 @@ mod test {
 			Arc::new(account_verifier),
 			Arc::new(github_client),
 			authorization_code,
-			contributor_account,
+			contributor_account_address,
 			signed_data,
 		)
 		.await;

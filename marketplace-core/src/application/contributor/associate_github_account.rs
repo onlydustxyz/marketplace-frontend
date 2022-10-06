@@ -10,7 +10,7 @@ pub trait Usecase<S: Clone + Send + Sync>: Send + Sync {
 	async fn associate_github_account(
 		&self,
 		authorization_code: String,
-		contributor_account: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 		signed_data: S,
 	) -> Result<(), DomainError>;
 }
@@ -64,14 +64,14 @@ impl<S: Clone + Send + Sync> Usecase<S> for AssociateGithubAccount<S> {
 	async fn associate_github_account(
 		&self,
 		authorization_code: String,
-		contributor_account: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 		signed_data: S,
 	) -> Result<(), DomainError> {
 		let events = Contributor::associate_github_account(
 			self.account_verifier.clone(),
 			self.github_client.clone(),
 			authorization_code,
-			contributor_account.clone(),
+			contributor_account_address.clone(),
 			signed_data,
 		)
 		.await?;
@@ -91,7 +91,7 @@ impl<S: Clone + Send + Sync> Usecase<S> for AssociateGithubAccount<S> {
 				}
 			})
 			.collect();
-		self.event_store.append(&contributor_account, storable_events)?;
+		self.event_store.append(&contributor_account_address, storable_events)?;
 		// TODO: the usecase shouldn't know about the projectors, it should just push the events to
 		// a bus
 		for event in &events {

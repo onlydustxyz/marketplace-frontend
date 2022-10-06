@@ -79,7 +79,10 @@ fn build_project(
 		}),
 		contributions,
 		lead_contributors: lead_contributors.into_iter().map(|l| l.account().to_string()).collect(),
-		members: members.into_iter().map(|m| m.contributor_account().to_string()).collect(),
+		members: members
+			.into_iter()
+			.map(|m| m.contributor_account_address().to_string())
+			.collect(),
 	};
 
 	Ok(project)

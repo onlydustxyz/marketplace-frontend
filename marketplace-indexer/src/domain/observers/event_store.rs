@@ -197,14 +197,16 @@ mod test {
 	}
 
 	#[fixture]
-	fn contributor_account() -> ContributorAccountAddress {
+	fn contributor_account_address() -> ContributorAccountAddress {
 		Default::default()
 	}
 
 	#[fixture]
-	fn contributor_event(contributor_account: ContributorAccountAddress) -> ContributorEvent {
+	fn contributor_event(
+		contributor_account_address: ContributorAccountAddress,
+	) -> ContributorEvent {
 		ContributorEvent::GithubAccountAssociated {
-			contributor_account,
+			contributor_account: contributor_account_address,
 			github_identifier: 666u64,
 			contributor_id: Default::default(),
 		}
@@ -291,7 +293,7 @@ mod test {
 		contribution_event_store: MockEventStore<Contribution>,
 		project_event_store: MockEventStore<ProjectAggregate>,
 		mut contributor_event_store: MockEventStore<Contributor>,
-		contributor_account: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 		event_from_contributor: ObservedEvent,
 		contributor_event: ContributorEvent,
 	) {
@@ -300,7 +302,7 @@ mod test {
 			.expect_append()
 			.once()
 			.with(
-				eq(contributor_account),
+				eq(contributor_account_address),
 				eq(vec![StorableEvent {
 					event: contributor_event.clone(),
 					deduplication_id: cloned_event.deduplication_id.clone(),

@@ -38,14 +38,14 @@ impl ContributorProjectionRepository for Client {
 		Ok(contributor.into())
 	}
 
-	fn find_by_account(
+	fn find_by_account_address(
 		&self,
-		contributor_account: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<ContributorProfile, ContributorProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributorProjectionRepositoryError::from)?;
 
 		let contributor: models::Contributor = dsl::contributors
-			.filter(dsl::account.eq(contributor_account.to_string()))
+			.filter(dsl::account.eq(contributor_account_address.to_string()))
 			.get_result(&*connection)
 			.map_err(DatabaseError::from)?;
 

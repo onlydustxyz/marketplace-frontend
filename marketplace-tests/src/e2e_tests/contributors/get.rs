@@ -14,9 +14,9 @@ pub async fn get(contributor_id: &str) -> Contributor {
 	serde_json::from_str(&body).expect("Invalid contributor")
 }
 
-pub async fn get_by_account(contributor_account: &str) -> Contributor {
+pub async fn get_by_account(contributor_account_address: &str) -> Contributor {
 	let response = http::get(format!(
-		"{BACKEND_BASE_URI}/contributors?contributor_account={contributor_account}"
+		"{BACKEND_BASE_URI}/contributors?contributor_account={contributor_account_address}"
 	))
 	.await;
 

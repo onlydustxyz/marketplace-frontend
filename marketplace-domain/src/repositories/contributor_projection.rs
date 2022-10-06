@@ -22,8 +22,8 @@ pub trait Repository: Send + Sync {
 		&self,
 		contributor_id: &ContributorAccountAddress,
 	) -> Result<ContributorProfile, Error>;
-	fn find_by_account(
+	fn find_by_account_address(
 		&self,
-		contributor_account: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<ContributorProfile, Error>;
 }
