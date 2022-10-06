@@ -71,18 +71,3 @@ jobs:
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
           test_flags: -p marketplace-tests --features with_e2e_tests -- --ignored --test-threads 1
           codecov_flag: e2e
-
-  global:
-    name: Code coverage analysis [global]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Code coverage
-        uses: ./.github/actions/coverage-checks
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          codecov_token: ${{ secrets.CODECOV_TOKEN }}
-          test_flags: --all-features -- --test-threads 1
