@@ -45,7 +45,7 @@ mod test {
 		let mut contact_information_service = MockContactInformationService::new();
 		contact_information_service
 			.expect_get_contributor_contact_information()
-			.with(eq(ContributorId::from_str(CONTRIBUTOR_ID).unwrap()))
+			.with(eq(ContributorAccount::from_str(CONTRIBUTOR_ID).unwrap()))
 			.returning(|_| Ok(None));
 
 		let rocket = rocket::build()
@@ -71,7 +71,7 @@ mod test {
 
 		contact_information_service
 			.expect_get_contributor_contact_information()
-			.with(eq(ContributorId::from_str(CONTRIBUTOR_ID).unwrap()))
+			.with(eq(ContributorAccount::from_str(CONTRIBUTOR_ID).unwrap()))
 			.returning(|_| {
 				Err(ContactInformationRepositoryError::Infrastructure(Box::new(Error)).into())
 			});
@@ -100,11 +100,11 @@ mod test {
 
 		contact_information_service
 			.expect_get_contributor_contact_information()
-			.with(eq(ContributorId::from_str(CONTRIBUTOR_ID).unwrap()))
+			.with(eq(ContributorAccount::from_str(CONTRIBUTOR_ID).unwrap()))
 			.returning(|_| {
 				Ok(Some(ContactInformation {
 					id: Uuid::new_v4().into(),
-					contributor_id: ContributorId::from_str(CONTRIBUTOR_ID).unwrap(),
+					contributor_id: ContributorAccount::from_str(CONTRIBUTOR_ID).unwrap(),
 					discord_handle: Some(String::from("discord")),
 				}))
 			});

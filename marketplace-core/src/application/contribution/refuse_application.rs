@@ -11,7 +11,7 @@ pub trait Usecase: Send + Sync {
 	async fn refuse_application(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: &ContributorId,
+		contributor_id: &ContributorAccount,
 	) -> Result<(), DomainError>;
 }
 
@@ -59,7 +59,7 @@ impl Usecase for RefuseApplication {
 	async fn refuse_application(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: &ContributorId,
+		contributor_id: &ContributorAccount,
 	) -> Result<(), DomainError> {
 		let contribution = self.contribution_repository.find_by_id(contribution_id)?;
 		let events = contribution.refuse_application(contributor_id)?;

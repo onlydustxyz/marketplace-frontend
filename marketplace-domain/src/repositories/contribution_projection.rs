@@ -27,7 +27,7 @@ pub trait Repository: Send + Sync {
 	fn update_contributor_and_status(
 		&self,
 		contribution_id: ContributionId,
-		contributor_id: Option<ContributorId>,
+		contributor_id: Option<ContributorAccount>,
 		status: ContributionStatus,
 	) -> Result<(), Error>;
 

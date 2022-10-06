@@ -21,7 +21,7 @@ fn contribution_id() -> ContributionId {
 }
 
 #[fixture]
-fn contributor_id() -> ContributorId {
+fn contributor_id() -> ContributorAccount {
 	HexPrefixedString::from_str("0x456").unwrap().into()
 }
 
@@ -44,7 +44,7 @@ fn creation_event(contribution_id: ContributionId) -> StorableEvent<Contribution
 #[fixture]
 fn assigned_event(
 	contribution_id: ContributionId,
-	contributor_id: ContributorId,
+	contributor_id: ContributorAccount,
 ) -> StorableEvent<Contribution> {
 	StorableEvent {
 		event: ContributionEvent::Assigned {

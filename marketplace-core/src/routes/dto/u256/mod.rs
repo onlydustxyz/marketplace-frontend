@@ -4,7 +4,7 @@ mod tests;
 use std::str::FromStr;
 
 use crypto_bigint::U256;
-use marketplace_domain::{u256_from_string, ContributorId, ParseU256Error};
+use marketplace_domain::{u256_from_string, ContributorAccount, ParseU256Error};
 
 use rocket::{
 	data::ToByteUnit,
@@ -23,7 +23,7 @@ use serde::{
 #[cfg_attr(test, derive(Debug, PartialEq, Eq))]
 pub struct U256Param(U256);
 
-impl From<U256Param> for ContributorId {
+impl From<U256Param> for ContributorAccount {
 	fn from(param: U256Param) -> Self {
 		param.0.into()
 	}

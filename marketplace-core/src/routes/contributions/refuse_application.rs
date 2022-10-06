@@ -1,6 +1,6 @@
 use crate::application::RefuseApplicationUsecase;
 use http_api_problem::HttpApiProblem;
-use marketplace_domain::ContributorId;
+use marketplace_domain::ContributorAccount;
 use rocket::{response::status, State};
 use rocket_okapi::openapi;
 
@@ -16,7 +16,7 @@ pub async fn refuse_contributor_application(
 	contributor_id: U256Param,
 	usecase: &State<Box<dyn RefuseApplicationUsecase>>,
 ) -> Result<status::NoContent, HttpApiProblem> {
-	let contributor_id: ContributorId = contributor_id.into();
+	let contributor_id: ContributorAccount = contributor_id.into();
 	let contribution_id = contribution_id.into();
 
 	usecase

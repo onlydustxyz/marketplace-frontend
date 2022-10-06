@@ -1,7 +1,7 @@
 use super::{Bytes, FromEventError};
 use anyhow::anyhow;
 use crypto_bigint::{Encoding, Split, U256};
-use marketplace_domain::{ContributorId, HexPrefixedString};
+use marketplace_domain::{ContributorAccount, HexPrefixedString};
 use starknet::core::types::FieldElement;
 use std::collections::VecDeque;
 use thiserror::Error;
@@ -59,10 +59,10 @@ impl StarknetTopics<FieldElement> for Topics {
 	}
 }
 
-impl StarknetTopics<ContributorId> for Topics {
-	fn pop_front_as(&mut self) -> Result<ContributorId, TopicError> {
+impl StarknetTopics<ContributorAccount> for Topics {
+	fn pop_front_as(&mut self) -> Result<ContributorAccount, TopicError> {
 		let value: HexPrefixedString = self.pop_front_as()?;
-		Ok(ContributorId::from(value))
+		Ok(ContributorAccount::from(value))
 	}
 }
 
