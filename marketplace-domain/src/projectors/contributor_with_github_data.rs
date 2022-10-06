@@ -30,9 +30,9 @@ impl ContributorWithGithubData {
 
 	async fn add_contributor(
 		&self,
-		contributor_account: &ContributorAccount,
+		contributor_account: &ContributorAccountAddress,
 		github_identifier: &GithubUserId,
-		contributor_id: &ContributorAccount,
+		contributor_id: &ContributorAccountAddress,
 	) -> Result<(), Error> {
 		if self.contributor_projection_repository.find_by_id(contributor_id).is_err() {
 			let user = self.github_client.find_user_by_id(*github_identifier).await?;
@@ -90,12 +90,12 @@ mod test {
 	}
 
 	#[fixture]
-	fn contributor_id() -> ContributorAccount {
+	fn contributor_id() -> ContributorAccountAddress {
 		"0x12".parse().unwrap()
 	}
 
 	#[fixture]
-	fn contributor_account() -> ContributorAccount {
+	fn contributor_account() -> ContributorAccountAddress {
 		"0x4444".parse().unwrap()
 	}
 
@@ -111,9 +111,9 @@ mod test {
 
 	#[fixture]
 	fn github_account_associated_event(
-		contributor_account: ContributorAccount,
+		contributor_account: ContributorAccountAddress,
 		github_identifier: GithubUserId,
-		contributor_id: ContributorAccount,
+		contributor_id: ContributorAccountAddress,
 	) -> Event {
 		Event::Contributor(ContributorEvent::GithubAccountAssociated {
 			contributor_account,
@@ -134,8 +134,8 @@ mod test {
 		#[case] event: Event,
 		github_identifier: GithubUserId,
 		github_username: String,
-		contributor_account: ContributorAccount,
-		contributor_id: ContributorAccount,
+		contributor_account: ContributorAccountAddress,
+		contributor_id: ContributorAccountAddress,
 	) {
 		contributor_projection_repository
 			.expect_find_by_id()

@@ -30,8 +30,8 @@ fn gate() -> u8 {
 }
 
 #[fixture]
-fn contributor_id() -> ContributorAccount {
-	ContributorAccount::from(666)
+fn contributor_id() -> ContributorAccountAddress {
+	ContributorAccountAddress::from(666)
 }
 
 #[fixture]
@@ -69,7 +69,7 @@ fn contribution_created_event_display_as_json(
 #[rstest]
 fn contribution_assigned_event_display_as_json(
 	contribution_id: ContributionId,
-	contributor_id: ContributorAccount,
+	contributor_id: ContributorAccountAddress,
 ) {
 	let event = ContributionEvent::Assigned {
 		id: contribution_id.clone(),
@@ -90,7 +90,7 @@ fn contribution_assigned_event_display_as_json(
 #[rstest]
 fn contribution_claimed_event_display_as_json(
 	contribution_id: ContributionId,
-	contributor_id: ContributorAccount,
+	contributor_id: ContributorAccountAddress,
 ) {
 	let event = ContributionEvent::Claimed {
 		id: contribution_id.clone(),

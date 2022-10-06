@@ -20,8 +20,8 @@ fn contribution_id() -> Id {
 }
 
 #[fixture]
-fn contributor_id() -> ContributorAccount {
-	ContributorAccount::from_str("0x123").unwrap()
+fn contributor_id() -> ContributorAccountAddress {
+	ContributorAccountAddress::from_str("0x123").unwrap()
 }
 
 #[fixture]
@@ -43,7 +43,7 @@ fn contribution_assigned_event() -> Event {
 }
 
 #[fixture]
-fn contribution_applied_event(contributor_id: ContributorAccount) -> Event {
+fn contribution_applied_event(contributor_id: ContributorAccountAddress) -> Event {
 	Event::Contribution(ContributionEvent::Applied {
 		id: Default::default(),
 		contributor_id,
@@ -52,7 +52,7 @@ fn contribution_applied_event(contributor_id: ContributorAccount) -> Event {
 }
 
 #[fixture]
-fn contribution_application_refused_event(contributor_id: ContributorAccount) -> Event {
+fn contribution_application_refused_event(contributor_id: ContributorAccountAddress) -> Event {
 	Event::Contribution(ContributionEvent::ApplicationRefused {
 		id: Default::default(),
 		contributor_id,
@@ -60,7 +60,7 @@ fn contribution_application_refused_event(contributor_id: ContributorAccount) ->
 }
 
 #[fixture]
-fn contribution_claimed_event(contributor_id: ContributorAccount) -> Event {
+fn contribution_claimed_event(contributor_id: ContributorAccountAddress) -> Event {
 	Event::Contribution(ContributionEvent::Claimed {
 		id: Default::default(),
 		contributor_id,
@@ -142,7 +142,7 @@ fn apply_to_assigned_contribution(
 	let contribution =
 		Contribution::from_events(&[contribution_created_event, contribution_assigned_event]);
 
-	let result = contribution.apply(&ContributorAccount::default());
+	let result = contribution.apply(&ContributorAccountAddress::default());
 	assert!(result.is_err());
 	assert_matches!(result.unwrap_err(), Error::CannotApply(Status::Assigned))
 }
@@ -151,7 +151,7 @@ fn apply_to_assigned_contribution(
 fn apply_twice_to_contribution(
 	contribution_created_event: Event,
 	contribution_applied_event: Event,
-	contributor_id: ContributorAccount,
+	contributor_id: ContributorAccountAddress,
 ) {
 	let contribution =
 		Contribution::from_events(&[contribution_created_event, contribution_applied_event]);
@@ -164,7 +164,7 @@ fn apply_twice_to_contribution(
 #[rstest]
 fn apply_to_contribution_emits_an_event(contribution_created_event: Event) {
 	let contribution = Contribution::from_events(&[contribution_created_event]);
-	let contributor_id = ContributorAccount::from_str("0x123").unwrap();
+	let contributor_id = ContributorAccountAddress::from_str("0x123").unwrap();
 
 	let application_result = contribution.apply(&contributor_id);
 	assert!(application_result.is_ok());
@@ -186,7 +186,7 @@ fn refuse_application_twice(
 	contribution_created_event: Event,
 	contribution_applied_event: Event,
 	contribution_application_refused_event: Event,
-	contributor_id: ContributorAccount,
+	contributor_id: ContributorAccountAddress,
 ) {
 	let contribution = Contribution::from_events(&[
 		contribution_created_event,
@@ -203,7 +203,7 @@ fn refuse_application_twice(
 fn refuse_application_emits_an_event(
 	contribution_created_event: Event,
 	contribution_applied_event: Event,
-	contributor_id: ContributorAccount,
+	contributor_id: ContributorAccountAddress,
 ) {
 	let contribution =
 		Contribution::from_events(&[contribution_created_event, contribution_applied_event]);

@@ -8,13 +8,13 @@ use uuid::Uuid;
 pub trait Service: Send + Sync {
 	fn set_contributor_contact_information(
 		&self,
-		contributor_id: &ContributorAccount,
+		contributor_id: &ContributorAccountAddress,
 		discord_handle: Option<String>,
 	) -> Result<(), DomainError>;
 
 	fn get_contributor_contact_information(
 		&self,
-		contributor_id: &ContributorAccount,
+		contributor_id: &ContributorAccountAddress,
 	) -> Result<Option<ContactInformation>, DomainError>;
 }
 
@@ -33,7 +33,7 @@ impl ContactInformationService {
 impl Service for ContactInformationService {
 	fn set_contributor_contact_information(
 		&self,
-		contributor_id: &ContributorAccount,
+		contributor_id: &ContributorAccountAddress,
 		discord_handle: Option<String>,
 	) -> Result<(), DomainError> {
 		let contact_information = ContactInformation {
@@ -48,7 +48,7 @@ impl Service for ContactInformationService {
 
 	fn get_contributor_contact_information(
 		&self,
-		contributor_id: &ContributorAccount,
+		contributor_id: &ContributorAccountAddress,
 	) -> Result<Option<ContactInformation>, DomainError> {
 		let contact_information = self
 			.contact_information_repository

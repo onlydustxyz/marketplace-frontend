@@ -6,8 +6,8 @@ use super::*;
 use crate::application::{refresh::Refresh, RefreshApplications};
 
 lazy_static! {
-	static ref CONTRIBUTOR_ID: ContributorAccount =
-		ContributorAccount::from_str("0x69babe69").unwrap();
+	static ref CONTRIBUTOR_ID: ContributorAccountAddress =
+		ContributorAccountAddress::from_str("0x69babe69").unwrap();
 }
 
 #[fixture]

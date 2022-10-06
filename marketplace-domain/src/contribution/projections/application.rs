@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use crate::{Contribution, ContributionId, ContributorAccount, Projection};
+use crate::{Contribution, ContributionId, ContributorAccountAddress, Projection};
 use chrono::NaiveDateTime;
 use marketplace_wrappers::UuidWrapper;
 use serde::{Deserialize, Serialize};
@@ -34,7 +34,7 @@ impl Display for Status {
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct Application {
 	contribution_id: ContributionId,
-	contributor_id: ContributorAccount,
+	contributor_id: ContributorAccountAddress,
 	applied_at: NaiveDateTime,
 }
 
@@ -45,7 +45,7 @@ impl Projection for Application {
 impl Application {
 	pub fn new(
 		contribution_id: ContributionId,
-		contributor_id: ContributorAccount,
+		contributor_id: ContributorAccountAddress,
 		applied_at: NaiveDateTime,
 	) -> Self {
 		Self {
@@ -59,7 +59,7 @@ impl Application {
 		&self.contribution_id
 	}
 
-	pub fn contributor_id(&self) -> &ContributorAccount {
+	pub fn contributor_id(&self) -> &ContributorAccountAddress {
 		&self.contributor_id
 	}
 
@@ -72,7 +72,7 @@ impl Application {
 impl Application {
 	pub fn new_with_status(
 		contribution_id: ContributionId,
-		contributor_id: ContributorAccount,
+		contributor_id: ContributorAccountAddress,
 		applied_at: NaiveDateTime,
 	) -> Self {
 		Self {

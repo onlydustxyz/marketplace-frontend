@@ -1,25 +1,25 @@
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
-use crate::{ContributorAccount, ProjectId};
+use crate::{ContributorAccountAddress, ProjectId};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	MemberAdded {
 		project_id: ProjectId,
-		contributor_account: ContributorAccount,
+		contributor_account: ContributorAccountAddress,
 	},
 	MemberRemoved {
 		project_id: ProjectId,
-		contributor_account: ContributorAccount,
+		contributor_account: ContributorAccountAddress,
 	},
 	LeadContributorAdded {
 		project_id: ProjectId,
-		contributor_account: ContributorAccount,
+		contributor_account: ContributorAccountAddress,
 	},
 	LeadContributorRemoved {
 		project_id: ProjectId,
-		contributor_account: ContributorAccount,
+		contributor_account: ContributorAccountAddress,
 	},
 }
 

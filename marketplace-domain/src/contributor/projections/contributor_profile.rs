@@ -1,11 +1,11 @@
-use crate::{ContributorAccount, GithubUserId, Projection};
+use crate::{ContributorAccountAddress, GithubUserId, Projection};
 
 #[derive(Debug, PartialEq, Eq, Clone, Default)]
 pub struct ContributorProfile {
-	pub id: ContributorAccount,
+	pub id: ContributorAccountAddress,
 	pub github_identifier: GithubUserId,
 	pub github_username: String,
-	pub account: ContributorAccount,
+	pub account: ContributorAccountAddress,
 }
 
 impl Projection for ContributorProfile {
