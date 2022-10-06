@@ -8,7 +8,7 @@ use super::*;
 use crate::application::{refresh::Refresh, RefreshContributions};
 
 lazy_static! {
-	static ref CONTRIBUTOR_ID: ContributorAccountAddress =
+	static ref CONTRIBUTOR_ACCOUNT_ADDRESS: ContributorAccountAddress =
 		ContributorAccountAddress::from_str("0x69babe69").unwrap();
 }
 
@@ -41,12 +41,12 @@ fn filled_database(
 			},
 			ContributionEvent::Applied {
 				id: contribution_id.clone(),
-				contributor_account_address: CONTRIBUTOR_ID.clone(),
+				contributor_account_address: CONTRIBUTOR_ACCOUNT_ADDRESS.clone(),
 				applied_at: *now,
 			},
 			ContributionEvent::Assigned {
 				id: contribution_id.clone(),
-				contributor_account_address: CONTRIBUTOR_ID.clone(),
+				contributor_account_address: CONTRIBUTOR_ACCOUNT_ADDRESS.clone(),
 			},
 			ContributionEvent::Validated {
 				id: contribution_id.clone(),
@@ -79,12 +79,12 @@ fn filled_database(
 				},
 				ContributionEvent::Applied {
 					id: contribution_id.clone(),
-					contributor_account_address: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ACCOUNT_ADDRESS.clone(),
 					applied_at: *now,
 				},
 				ContributionEvent::Assigned {
 					id: contribution_id.clone(),
-					contributor_account_address: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ACCOUNT_ADDRESS.clone(),
 				},
 				ContributionEvent::Unassigned {
 					id: contribution_id.clone(),

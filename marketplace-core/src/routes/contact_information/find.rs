@@ -38,16 +38,17 @@ mod test {
 	#[error("Oops")]
 	struct Error;
 
-	const CONTRIBUTOR_ID: &str = "0x123";
+	const CONTRIBUTOR_ACCOUNT_ADDRESS: &str = "0x123";
 
 	#[test]
 	fn find_contact_information_should_return_404_when_contact_information_not_found() {
 		let mut contact_information_service = MockContactInformationService::new();
 		contact_information_service
 			.expect_get_contributor_contact_information()
-			.with(eq(
-				ContributorAccountAddress::from_str(CONTRIBUTOR_ID).unwrap()
-			))
+			.with(eq(ContributorAccountAddress::from_str(
+				CONTRIBUTOR_ACCOUNT_ADDRESS,
+			)
+			.unwrap()))
 			.returning(|_| Ok(None));
 
 		let rocket = rocket::build()
@@ -55,7 +56,7 @@ mod test {
 
 		let result = find_contact_information(
 			State::get(&rocket).unwrap(),
-			U256Param::from_str(CONTRIBUTOR_ID).unwrap(),
+			U256Param::from_str(CONTRIBUTOR_ACCOUNT_ADDRESS).unwrap(),
 		);
 		assert!(result.is_err());
 
@@ -73,9 +74,10 @@ mod test {
 
 		contact_information_service
 			.expect_get_contributor_contact_information()
-			.with(eq(
-				ContributorAccountAddress::from_str(CONTRIBUTOR_ID).unwrap()
-			))
+			.with(eq(ContributorAccountAddress::from_str(
+				CONTRIBUTOR_ACCOUNT_ADDRESS,
+			)
+			.unwrap()))
 			.returning(|_| {
 				Err(ContactInformationRepositoryError::Infrastructure(Box::new(Error)).into())
 			});
@@ -85,7 +87,7 @@ mod test {
 
 		let result = find_contact_information(
 			State::get(&rocket).unwrap(),
-			U256Param::from_str(CONTRIBUTOR_ID).unwrap(),
+			U256Param::from_str(CONTRIBUTOR_ACCOUNT_ADDRESS).unwrap(),
 		);
 		assert!(result.is_err());
 
@@ -104,13 +106,17 @@ mod test {
 
 		contact_information_service
 			.expect_get_contributor_contact_information()
-			.with(eq(
-				ContributorAccountAddress::from_str(CONTRIBUTOR_ID).unwrap()
-			))
+			.with(eq(ContributorAccountAddress::from_str(
+				CONTRIBUTOR_ACCOUNT_ADDRESS,
+			)
+			.unwrap()))
 			.returning(|_| {
 				Ok(Some(ContactInformation {
 					id: Uuid::new_v4().into(),
-					contributor_id: ContributorAccountAddress::from_str(CONTRIBUTOR_ID).unwrap(),
+					contributor_id: ContributorAccountAddress::from_str(
+						CONTRIBUTOR_ACCOUNT_ADDRESS,
+					)
+					.unwrap(),
 					discord_handle: Some(String::from("discord")),
 				}))
 			});
@@ -120,7 +126,7 @@ mod test {
 
 		let result = find_contact_information(
 			State::get(&rocket).unwrap(),
-			U256Param::from_str(CONTRIBUTOR_ID).unwrap(),
+			U256Param::from_str(CONTRIBUTOR_ACCOUNT_ADDRESS).unwrap(),
 		);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 
