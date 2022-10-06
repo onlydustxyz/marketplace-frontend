@@ -159,7 +159,7 @@ impl From<ApplicationProjection> for models::Application {
 	fn from(application: marketplace_domain::ApplicationProjection) -> Self {
 		Self {
 			contribution_id: application.contribution_id().to_string(),
-			contributor_id: application.contributor_id().to_string(),
+			contributor_id: application.contributor_account_address().to_string(),
 			applied_at: *application.applied_at(),
 		}
 	}

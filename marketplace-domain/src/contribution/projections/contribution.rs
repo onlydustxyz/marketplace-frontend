@@ -9,7 +9,7 @@ pub struct Contribution {
 	pub id: ContributionId,
 	pub project_id: GithubProjectId,
 	pub issue_number: GithubIssueNumber,
-	pub contributor_id: Option<ContributorAccountAddress>,
+	pub contributor_account_address: Option<ContributorAccountAddress>,
 	pub title: Option<String>,
 	pub description: Option<String>,
 	pub status: ContributionStatus,

@@ -13,7 +13,7 @@ impl From<domain::ApplicationProjection> for Application {
 	fn from(application: domain::ApplicationProjection) -> Self {
 		Self {
 			contribution_id: application.contribution_id().to_string(),
-			contributor_id: application.contributor_id().to_string(),
+			contributor_id: application.contributor_account_address().to_string(),
 		}
 	}
 }
