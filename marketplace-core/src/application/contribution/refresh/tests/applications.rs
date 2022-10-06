@@ -78,7 +78,7 @@ fn filled_database(
 				},
 				ContributionEvent::Assigned {
 					id: contribution_id.clone(),
-					contributor_id: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ID.clone(),
 				},
 			]
 			.into_iter()
@@ -108,7 +108,7 @@ fn filled_database(
 				},
 				ContributionEvent::Assigned {
 					id: contribution_id.clone(),
-					contributor_id: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ID.clone(),
 				},
 				ContributionEvent::Validated {
 					id: contribution_id.clone(),
@@ -141,7 +141,7 @@ fn filled_database(
 				},
 				ContributionEvent::Assigned {
 					id: contribution_id.clone(),
-					contributor_id: CONTRIBUTOR_ID.clone(),
+					contributor_account_address: CONTRIBUTOR_ID.clone(),
 				},
 				ContributionEvent::Unassigned {
 					id: contribution_id.clone(),

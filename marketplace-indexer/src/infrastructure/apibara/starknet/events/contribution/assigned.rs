@@ -13,11 +13,11 @@ impl EventTranslator for Assigned {
 
 	fn to_domain_event(mut topics: Topics) -> Result<DomainEvent, FromEventError> {
 		let contribution_id: HexPrefixedString = topics.pop_front_as()?;
-		let contributor_id: ContributorAccountAddress = topics.pop_front_as()?;
+		let contributor_account_address: ContributorAccountAddress = topics.pop_front_as()?;
 
 		Ok(DomainEvent::Contribution(ContributionEvent::Assigned {
 			id: contribution_id.into(),
-			contributor_id,
+			contributor_account_address,
 		}))
 	}
 }
@@ -61,7 +61,7 @@ mod test {
 		assert_eq!(
 			DomainEvent::Contribution(ContributionEvent::Assigned {
 				id: 12.into(),
-				contributor_id: ContributorAccountAddress::from(24)
+				contributor_account_address: ContributorAccountAddress::from(24)
 			},),
 			result.unwrap()
 		);

@@ -73,12 +73,12 @@ impl EventListener for ApplicationProjector {
 				} => self.on_application_refused(contribution_id, contributor_id),
 				ContributionEvent::Assigned {
 					id: contribution_id,
-					contributor_id,
+					contributor_account_address,
 				}
 				| ContributionEvent::Claimed {
 					id: contribution_id,
-					contributor_id,
-				} => self.on_assigned(contribution_id, contributor_id),
+					contributor_id: contributor_account_address,
+				} => self.on_assigned(contribution_id, contributor_account_address),
 				ContributionEvent::Deleted { id } => self.on_contribution_deleted(id),
 				ContributionEvent::Deployed { .. }
 				| ContributionEvent::Unassigned { .. }
