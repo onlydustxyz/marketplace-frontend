@@ -96,7 +96,7 @@ fn assign_contribution(contribution_created_event: Event, contribution_assigned_
 	let contribution =
 		Contribution::from_events(&[contribution_created_event, contribution_assigned_event]);
 	assert_eq!(Status::Assigned, contribution.status);
-	assert!(contribution.contributor_id.is_some());
+	assert!(contribution.contributor_account_address.is_some());
 }
 
 #[rstest]
@@ -104,7 +104,7 @@ fn claim_contribution(contribution_created_event: Event, contribution_claimed_ev
 	let contribution =
 		Contribution::from_events(&[contribution_created_event, contribution_claimed_event]);
 	assert_eq!(Status::Assigned, contribution.status);
-	assert!(contribution.contributor_id.is_some());
+	assert!(contribution.contributor_account_address.is_some());
 }
 
 #[rstest]
@@ -119,7 +119,7 @@ fn unassign_contribution(
 		contribution_unassigned_event,
 	]);
 	assert_eq!(Status::Open, contribution.status);
-	assert!(contribution.contributor_id.is_none());
+	assert!(contribution.contributor_account_address.is_none());
 }
 
 #[rstest]

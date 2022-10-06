@@ -30,7 +30,7 @@ pub struct Contribution {
 	project_id: GithubProjectId,
 	issue_number: GithubIssueNumber,
 	gate: u8,
-	contributor_id: Option<ContributorAccountAddress>,
+	contributor_account_address: Option<ContributorAccountAddress>,
 	status: ContributionStatus,
 	applicants: Vec<ContributorAccountAddress>,
 }
@@ -145,12 +145,12 @@ impl EventSourcable for Contribution {
 					contributor_account_address,
 				} => Self {
 					status: Status::Assigned,
-					contributor_id: Some(contributor_account_address.clone()),
+					contributor_account_address: Some(contributor_account_address.clone()),
 					..self.without_applicant(contributor_account_address)
 				},
 				ContributionEvent::Unassigned { id: _ } => Self {
 					status: Status::Open,
-					contributor_id: None,
+					contributor_account_address: None,
 					..self
 				},
 				ContributionEvent::Validated { id: _ } => Self {
