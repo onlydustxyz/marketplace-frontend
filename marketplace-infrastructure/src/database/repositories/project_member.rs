@@ -7,7 +7,7 @@ use marketplace_domain::*;
 use std::str::FromStr;
 
 impl ProjectMemberProjectionRepository for Client {
-	fn insert(
+	fn upsert(
 		&self,
 		member: ProjectMemberProjection,
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
@@ -17,6 +17,8 @@ impl ProjectMemberProjectionRepository for Client {
 
 		diesel::insert_into(dsl::project_members)
 			.values(&member)
+			.on_conflict((dsl::project_id, dsl::contributor_account))
+			.do_nothing()
 			.execute(&*connection)
 			.map_err(|e| {
 				error!("Failed to insert project member {member:?}: {e}");
