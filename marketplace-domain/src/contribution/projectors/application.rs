@@ -64,9 +64,9 @@ impl EventListener for ApplicationProjector {
 			Event::Contribution(contribution_event) => match contribution_event {
 				ContributionEvent::Applied {
 					id: contribution_id,
-					contributor_id,
+					contributor_account_address,
 					applied_at,
-				} => self.on_applied(contribution_id, contributor_id, applied_at),
+				} => self.on_applied(contribution_id, contributor_account_address, applied_at),
 				ContributionEvent::ApplicationRefused {
 					id: contribution_id,
 					contributor_id,

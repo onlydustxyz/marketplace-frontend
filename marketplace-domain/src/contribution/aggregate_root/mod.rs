@@ -36,17 +36,20 @@ pub struct Contribution {
 }
 
 impl Contribution {
-	pub fn apply(self, contributor_id: &ContributorAccountAddress) -> Result<Vec<Event>, Error> {
+	pub fn apply(
+		self,
+		contributor_account_address: &ContributorAccountAddress,
+	) -> Result<Vec<Event>, Error> {
 		if self.status != Status::Open {
 			return Err(Error::CannotApply(self.status));
 		}
-		if self.applicants.contains(contributor_id) {
-			return Err(Error::AlreadyApplied(contributor_id.clone()));
+		if self.applicants.contains(contributor_account_address) {
+			return Err(Error::AlreadyApplied(contributor_account_address.clone()));
 		}
 
 		let applied_event = Event::Contribution(ContributionEvent::Applied {
 			id: self.id,
-			contributor_id: contributor_id.clone(),
+			contributor_account_address: contributor_account_address.clone(),
 			applied_at: Utc::now().naive_utc(),
 		});
 
@@ -123,9 +126,9 @@ impl EventSourcable for Contribution {
 				},
 				ContributionEvent::Applied {
 					id: _,
-					contributor_id,
+					contributor_account_address,
 					applied_at: _,
-				} => self.with_applicant(contributor_id),
+				} => self.with_applicant(contributor_account_address),
 				ContributionEvent::ApplicationRefused {
 					id: _,
 					contributor_id,
