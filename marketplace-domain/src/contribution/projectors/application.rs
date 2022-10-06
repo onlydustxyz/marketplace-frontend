@@ -77,7 +77,7 @@ impl EventListener for ApplicationProjector {
 				}
 				| ContributionEvent::Claimed {
 					id: contribution_id,
-					contributor_id: contributor_account_address,
+					contributor_account_address,
 				} => self.on_assigned(contribution_id, contributor_account_address),
 				ContributionEvent::Deleted { id } => self.on_contribution_deleted(id),
 				ContributionEvent::Deployed { .. }
