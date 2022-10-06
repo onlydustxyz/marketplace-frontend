@@ -30,7 +30,7 @@ fn gate() -> u8 {
 }
 
 #[fixture]
-fn contributor_id() -> ContributorAccountAddress {
+fn contributor_account_address() -> ContributorAccountAddress {
 	ContributorAccountAddress::from(666)
 }
 
@@ -69,18 +69,18 @@ fn contribution_created_event_display_as_json(
 #[rstest]
 fn contribution_assigned_event_display_as_json(
 	contribution_id: ContributionId,
-	contributor_id: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 ) {
 	let event = ContributionEvent::Assigned {
 		id: contribution_id.clone(),
-		contributor_id: contributor_id.clone(),
+		contributor_account_address: contributor_account_address.clone(),
 	};
 
 	assert_json_eq!(
 		json! ({
 			"Assigned": {
 				"id": contribution_id,
-				"contributor_id": contributor_id
+				"contributor_account_address": contributor_account_address
 			}
 		}),
 		serde_json::from_str::<Value>(&event.to_string()).unwrap()
@@ -90,18 +90,18 @@ fn contribution_assigned_event_display_as_json(
 #[rstest]
 fn contribution_claimed_event_display_as_json(
 	contribution_id: ContributionId,
-	contributor_id: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 ) {
 	let event = ContributionEvent::Claimed {
 		id: contribution_id.clone(),
-		contributor_id: contributor_id.clone(),
+		contributor_id: contributor_account_address.clone(),
 	};
 
 	assert_json_eq!(
 		json! ({
 			"Claimed": {
 				"id": contribution_id,
-				"contributor_id": contributor_id
+				"contributor_id": contributor_account_address
 			}
 		}),
 		serde_json::from_str::<Value>(&event.to_string()).unwrap()

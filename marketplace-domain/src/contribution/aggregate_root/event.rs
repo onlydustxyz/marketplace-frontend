@@ -26,7 +26,7 @@ pub enum Event {
 	},
 	Assigned {
 		id: ContributionId,
-		contributor_id: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 	},
 	Claimed {
 		id: ContributionId,

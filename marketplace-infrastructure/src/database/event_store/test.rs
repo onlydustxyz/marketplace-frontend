@@ -21,7 +21,7 @@ fn contribution_id() -> ContributionId {
 }
 
 #[fixture]
-fn contributor_id() -> ContributorAccountAddress {
+fn contributor_account_address() -> ContributorAccountAddress {
 	HexPrefixedString::from_str("0x456").unwrap().into()
 }
 
@@ -44,12 +44,12 @@ fn creation_event(contribution_id: ContributionId) -> StorableEvent<Contribution
 #[fixture]
 fn assigned_event(
 	contribution_id: ContributionId,
-	contributor_id: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 ) -> StorableEvent<Contribution> {
 	StorableEvent {
 		event: ContributionEvent::Assigned {
 			id: contribution_id,
-			contributor_id,
+			contributor_account_address,
 		},
 		timestamp: Utc::now().naive_utc(),
 		deduplication_id: "dedup2".to_string(),

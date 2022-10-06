@@ -53,7 +53,7 @@ fn filled_database(database: Arc<DatabaseClient>) -> Arc<DatabaseClient> {
 			},
 			ContributionEvent::Assigned {
 				id: contribution_id.clone(),
-				contributor_id: CONTRIBUTOR_ID.clone(),
+				contributor_account_address: CONTRIBUTOR_ID.clone(),
 			},
 			ContributionEvent::Validated {
 				id: contribution_id.clone(),
