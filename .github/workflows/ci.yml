@@ -197,7 +197,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
           test_flags: --all-features -- --test-threads 1
-          codecov_flag: global
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
