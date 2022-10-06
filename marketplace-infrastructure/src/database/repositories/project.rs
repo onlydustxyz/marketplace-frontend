@@ -76,7 +76,7 @@ impl From<models::Contribution> for ContributionProjection {
 			id: contribution.id.parse().unwrap(),
 			contributor_id: contribution
 				.contributor_id
-				.map(|id_| ContributorId::from_str(id_.as_str()).unwrap()),
+				.map(|id_| ContributorAccount::from_str(id_.as_str()).unwrap()),
 			project_id: contribution.project_id.parse().unwrap(),
 			issue_number: contribution.issue_number.parse().unwrap(),
 			status: contribution.status.parse().unwrap_or(ContributionStatus::Open),

@@ -18,6 +18,6 @@ pub trait Repository: Send + Sync {
 
 	fn find_by_contributor_id(
 		&self,
-		contributor_id: &ContributorId,
+		contributor_id: &ContributorAccount,
 	) -> Result<Option<ContactInformation>, Error>;
 }

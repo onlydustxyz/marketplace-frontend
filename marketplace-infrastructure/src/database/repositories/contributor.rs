@@ -26,7 +26,7 @@ impl ContributorProjectionRepository for Client {
 
 	fn find_by_id(
 		&self,
-		contributor_id: &ContributorId,
+		contributor_id: &ContributorAccount,
 	) -> Result<ContributorProfile, ContributorProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributorProjectionRepositoryError::from)?;
 

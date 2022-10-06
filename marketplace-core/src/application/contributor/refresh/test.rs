@@ -63,7 +63,7 @@ fn contributor_account() -> ContributorAccount {
 }
 
 #[fixture]
-fn contributor_id() -> ContributorId {
+fn contributor_id() -> ContributorAccount {
 	"0x12".parse().unwrap()
 }
 
@@ -71,7 +71,7 @@ fn contributor_id() -> ContributorId {
 fn filled_database(
 	database: Arc<DatabaseClient>,
 	contributor_account: ContributorAccount,
-	contributor_id: ContributorId,
+	contributor_id: ContributorAccount,
 ) -> Arc<DatabaseClient> {
 	// events for contributor #1
 	{
@@ -101,7 +101,7 @@ async fn refresh_contributors_from_events(
 	filled_database: Arc<DatabaseClient>,
 	mut github_client: MockGithubClient,
 	contributor_account: ContributorAccount,
-	contributor_id: ContributorId,
+	contributor_id: ContributorAccount,
 ) {
 	let refresh_contributors_usecase: RefreshContributors = {
 		github_client.expect_find_user_by_id().returning(|_| Ok(Default::default()));

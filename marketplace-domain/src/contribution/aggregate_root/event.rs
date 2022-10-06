@@ -17,20 +17,20 @@ pub enum Event {
 	},
 	Applied {
 		id: ContributionId,
-		contributor_id: ContributorId,
+		contributor_id: ContributorAccount,
 		applied_at: NaiveDateTime,
 	},
 	ApplicationRefused {
 		id: ContributionId,
-		contributor_id: ContributorId,
+		contributor_id: ContributorAccount,
 	},
 	Assigned {
 		id: ContributionId,
-		contributor_id: ContributorId,
+		contributor_id: ContributorAccount,
 	},
 	Claimed {
 		id: ContributionId,
-		contributor_id: ContributorId,
+		contributor_id: ContributorAccount,
 	},
 	Unassigned {
 		id: ContributionId,

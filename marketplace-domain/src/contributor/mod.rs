@@ -4,9 +4,6 @@ pub use aggregate::{Contributor, Error};
 mod projections;
 pub use projections::ContributorProfile;
 
-mod id;
-pub use id::Id;
-
 mod account;
 pub use account::Account;
 

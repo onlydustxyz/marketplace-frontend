@@ -14,7 +14,7 @@ use crate::database::{init_pool, Client};
 fn get_contributor_contact_information_ok() {
 	let client = Client::new(init_pool());
 
-	let contributor_id: ContributorId = 3.into();
+	let contributor_id: ContributorAccount = 3.into();
 
 	let contact_information = ContactInformation {
 		id: Uuid::new_v4().into(),

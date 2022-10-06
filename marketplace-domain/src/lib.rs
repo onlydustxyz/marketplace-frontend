@@ -50,7 +50,7 @@ pub use aggregate_root_repository::{
 mod contributor;
 pub use contributor::{
 	Account as ContributorAccount, Contributor, ContributorProfile, Error as ContributorError,
-	Event as ContributorEvent, Id as ContributorId,
+	Event as ContributorEvent,
 };
 
 mod projectors;
