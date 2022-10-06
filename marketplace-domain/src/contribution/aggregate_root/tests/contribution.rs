@@ -65,7 +65,7 @@ fn contribution_application_refused_event(
 fn contribution_claimed_event(contributor_account_address: ContributorAccountAddress) -> Event {
 	Event::Contribution(ContributionEvent::Claimed {
 		id: Default::default(),
-		contributor_id: contributor_account_address,
+		contributor_account_address,
 	})
 }
 

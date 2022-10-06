@@ -11,11 +11,11 @@ impl EventTranslator for Claimed {
 
 	fn to_domain_event(mut topics: Topics) -> Result<Event, FromEventError> {
 		let contribution_id: HexPrefixedString = topics.pop_front_as()?;
-		let contributor_id: ContributorAccountAddress = topics.pop_front_as()?;
+		let contributor_account_address: ContributorAccountAddress = topics.pop_front_as()?;
 
 		Ok(Event::Contribution(ContributionEvent::Claimed {
 			id: contribution_id.into(),
-			contributor_id,
+			contributor_account_address,
 		}))
 	}
 }
@@ -59,7 +59,7 @@ mod test {
 		assert_eq!(
 			Event::Contribution(ContributionEvent::Claimed {
 				id: 12.into(),
-				contributor_id: ContributorAccountAddress::from(24)
+				contributor_account_address: ContributorAccountAddress::from(24)
 			},),
 			result.unwrap()
 		);

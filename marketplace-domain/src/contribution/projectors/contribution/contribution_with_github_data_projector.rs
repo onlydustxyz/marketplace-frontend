@@ -124,7 +124,7 @@ impl EventListener for WithGithubDataProjector {
 				}
 				| ContributionEvent::Claimed {
 					id,
-					contributor_id: contributor_account_address,
+					contributor_account_address,
 				} => self.on_assign(id, contributor_account_address),
 				ContributionEvent::Unassigned { id } => self.on_unassign(id),
 				ContributionEvent::Validated { id } => self.on_validate(id),
