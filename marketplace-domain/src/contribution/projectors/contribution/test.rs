@@ -20,7 +20,7 @@ fn contribution_id() -> ContributionId {
 }
 
 #[fixture]
-fn contributor_id() -> ContributorAccountAddress {
+fn contributor_account_address() -> ContributorAccountAddress {
 	123.into()
 }
 
@@ -94,11 +94,11 @@ fn contribution_created_event(
 #[fixture]
 fn contribution_assigned_event(
 	contribution_id: ContributionId,
-	contributor_id: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 ) -> ContributionEvent {
 	ContributionEvent::Assigned {
 		id: contribution_id,
-		contributor_id,
+		contributor_account_address,
 	}
 }
 
@@ -161,7 +161,7 @@ async fn on_contribution_created_event(
 async fn on_contribution_assigned_event(
 	mut contribution_projection_repository: MockContributionProjectionRepository,
 	github_client: MockGithubClient,
-	contributor_id: ContributorAccountAddress,
+	contributor_account_address: ContributorAccountAddress,
 	contribution_id: ContributionId,
 	contribution_assigned_event: ContributionEvent,
 ) {
@@ -169,7 +169,7 @@ async fn on_contribution_assigned_event(
 		.expect_update_contributor_and_status()
 		.with(
 			eq(contribution_id),
-			eq(Some(contributor_id)),
+			eq(Some(contributor_account_address)),
 			eq(ContributionStatus::Assigned),
 		)
 		.returning(|_, _, _| Ok(()));

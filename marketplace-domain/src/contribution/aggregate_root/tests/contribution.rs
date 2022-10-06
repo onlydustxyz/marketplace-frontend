@@ -38,7 +38,7 @@ fn contribution_created_event(contribution_id: Id) -> Event {
 fn contribution_assigned_event() -> Event {
 	Event::Contribution(ContributionEvent::Assigned {
 		id: Default::default(),
-		contributor_id: Default::default(),
+		contributor_account_address: Default::default(),
 	})
 }
 

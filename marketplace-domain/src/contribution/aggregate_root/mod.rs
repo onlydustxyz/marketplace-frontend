@@ -135,15 +135,15 @@ impl EventSourcable for Contribution {
 				} => self.without_applicant(contributor_id),
 				ContributionEvent::Assigned {
 					id: _,
-					contributor_id,
+					contributor_account_address,
 				}
 				| ContributionEvent::Claimed {
 					id: _,
-					contributor_id,
+					contributor_id: contributor_account_address,
 				} => Self {
 					status: Status::Assigned,
-					contributor_id: Some(contributor_id.clone()),
-					..self.without_applicant(contributor_id)
+					contributor_id: Some(contributor_account_address.clone()),
+					..self.without_applicant(contributor_account_address)
 				},
 				ContributionEvent::Unassigned { id: _ } => Self {
 					status: Status::Open,

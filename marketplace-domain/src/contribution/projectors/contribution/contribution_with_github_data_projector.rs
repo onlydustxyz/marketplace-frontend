@@ -118,10 +118,14 @@ impl EventListener for WithGithubDataProjector {
 					issue_number,
 					gate,
 				} => self.on_create(id, *project_id, *issue_number, *gate).await,
-				ContributionEvent::Assigned { id, contributor_id } =>
-					self.on_assign(id, contributor_id),
-				ContributionEvent::Claimed { id, contributor_id } =>
-					self.on_assign(id, contributor_id),
+				ContributionEvent::Assigned {
+					id,
+					contributor_account_address,
+				}
+				| ContributionEvent::Claimed {
+					id,
+					contributor_id: contributor_account_address,
+				} => self.on_assign(id, contributor_account_address),
 				ContributionEvent::Unassigned { id } => self.on_unassign(id),
 				ContributionEvent::Validated { id } => self.on_validate(id),
 				ContributionEvent::GateChanged { id, gate } => self.on_gate_changed(id, *gate),
