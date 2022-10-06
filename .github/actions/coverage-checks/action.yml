@@ -4,19 +4,19 @@ description: Launch application and run all tests while measuring code coverage
 
 inputs:
   token:
-    description: 'A Github PAT'
+    description: "A Github PAT"
     required: true
 
   codecov_flag:
-    description: 'Flag to upload code coverage results to codecov.io'
+    description: "Flag to upload code coverage results to codecov.io"
     required: true
 
   codecov_token:
-    description: 'The codecov token for the repository'
+    description: "The codecov token for the repository"
     required: false
 
   test_flags:
-    description: 'Additional test flags to pass to cargo tarpaulin test command'
+    description: "Additional test flags to pass to cargo tarpaulin test command"
     required: false
 
 runs:
@@ -33,7 +33,7 @@ runs:
     - name: Run cargo-tarpaulin
       uses: actions-rs/tarpaulin@v0.1
       with:
-        version: '0.20.1'
+        version: "0.20.1"
         args: |
           --skip-clean
           --workspace

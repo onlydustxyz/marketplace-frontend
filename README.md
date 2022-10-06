@@ -38,6 +38,7 @@ Copy the `.env.example` file and modify the values according to your setup.
 
 Make sure `docker-compose` is installed (see [Installation instructions](https://docs.docker.com/compose/install/)).
 Note: specify the `BASE_TAG` to be used depending on your CPU (`latest` or `latest-arm`)
+
 ```
 BASE_TAG=latest-arm docker-compose -f ./marketplace-core/scripts/docker/dev/docker-compose.yml up -d
 ```
@@ -80,10 +81,12 @@ cargo test
 ```
 
 ### End-to-end testing
+
 We are using a pre-build dump for `starknet-devnet` (see [marketplace-starknet CI](https://github.com/onlydustxyz/marketplace-starknet/blob/main/.github/workflows/devnet.yml)).
 
 To run the end-to-end tests, make sure the docker is up and running and your back-end and indexer are up as well.
 Then run:
+
 ```sh
 $ cargo test -p marketplace-tests --features with_e2e_tests e2e_tests
 ```
