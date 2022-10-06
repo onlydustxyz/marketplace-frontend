@@ -68,7 +68,11 @@ impl WithGithubDataProjector {
 		self.contribution_projection_repository.insert(contribution).map_err_into()
 	}
 
-	fn on_assign(&self, id: &ContributionId, contributor_id: &ContributorId) -> Result<(), Error> {
+	fn on_assign(
+		&self,
+		id: &ContributionId,
+		contributor_id: &ContributorAccount,
+	) -> Result<(), Error> {
 		self.contribution_projection_repository
 			.update_contributor_and_status(
 				id.clone(),

@@ -1,4 +1,4 @@
-use crate::{ContributorAccount, ContributorId, ContributorProfile};
+use crate::{ContributorAccount, ContributorProfile};
 #[cfg(test)]
 use mockall::automock;
 use thiserror::Error;
@@ -18,7 +18,7 @@ pub enum Error {
 #[cfg_attr(test, automock)]
 pub trait Repository: Send + Sync {
 	fn insert(&self, contributor: ContributorProfile) -> Result<(), Error>;
-	fn find_by_id(&self, contributor_id: &ContributorId) -> Result<ContributorProfile, Error>;
+	fn find_by_id(&self, contributor_id: &ContributorAccount) -> Result<ContributorProfile, Error>;
 	fn find_by_account(
 		&self,
 		contributor_account: &ContributorAccount,

@@ -59,7 +59,7 @@ mod test {
 		contact_information_service
 			.expect_set_contributor_contact_information()
 			.with(
-				eq(ContributorId::from_str(CONTRIBUTOR_ID).unwrap()),
+				eq(ContributorAccount::from_str(CONTRIBUTOR_ID).unwrap()),
 				eq(None),
 			)
 			.returning(|_, _| {
@@ -95,7 +95,7 @@ mod test {
 		contact_information_service
 			.expect_set_contributor_contact_information()
 			.with(
-				eq(ContributorId::from_str(CONTRIBUTOR_ID).unwrap()),
+				eq(ContributorAccount::from_str(CONTRIBUTOR_ID).unwrap()),
 				eq(Some(String::from("discord"))),
 			)
 			.returning(|_, _| Ok(()));
