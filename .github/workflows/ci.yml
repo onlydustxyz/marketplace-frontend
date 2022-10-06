@@ -2,6 +2,11 @@ name: CI
 
 on:
   pull_request: ~
+
+  push:
+    branches:
+      - "main"
+
   workflow_dispatch:
     inputs:
       debug_enabled:
@@ -107,11 +112,15 @@ jobs:
 
       - name: Setup cargo
         uses: ./.github/actions/cargo-setup
+        with:
+          key: coverage
 
       - name: Run tests
-        uses: actions-rs/cargo@v1
+        uses: ./.github/actions/coverage-checks
         with:
-          command: test
+          token: ${{ secrets.GITHUB_TOKEN }}
+          codecov_token: ${{ secrets.CODECOV_TOKEN }}
+          codecov_flag: unittests
 
   infrastructure_tests:
     needs : build
@@ -123,15 +132,19 @@ jobs:
 
       - name: Setup cargo
         uses: ./.github/actions/cargo-setup
+        with:
+          key: coverage
 
       - name: Setup environment
         uses: ./.github/actions/env-setup
 
       - name: Execute infrastructure tests
-        uses: actions-rs/cargo@v1
+        uses: ./.github/actions/coverage-checks
         with:
-          command: test
-          args: -p marketplace-infrastructure --features with_infrastructure_tests -- --ignored
+          token: ${{ secrets.GITHUB_TOKEN }}
+          codecov_token: ${{ secrets.CODECOV_TOKEN }}
+          test_flags: -p marketplace-infrastructure --features with_infrastructure_tests
+          codecov_flag: infrastructure
 
   component_tests:
     needs : build
@@ -143,43 +156,23 @@ jobs:
 
       - name: Setup cargo
         uses: ./.github/actions/cargo-setup
+        with:
+          key: coverage
 
       - name: Setup environment
         uses: ./.github/actions/env-setup
 
       - name: Execute component tests
-        uses: actions-rs/cargo@v1
+        uses: ./.github/actions/coverage-checks
         with:
-          command: test
-          args: -p marketplace-core --features with_component_tests -- --ignored
+          token: ${{ secrets.GITHUB_TOKEN }}
+          codecov_token: ${{ secrets.CODECOV_TOKEN }}
+          test_flags: -p marketplace-core --features with_component_tests
+          codecov_flag: component
 
   e2e_tests:
     needs : build
     name: End-to-end tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Setup cargo
-        uses: ./.github/actions/cargo-setup
-
-      - name: Setup environment
-        uses: ./.github/actions/env-setup
-
-      - name: Execute end-to-end tests
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: -p marketplace-tests --features with_e2e_tests e2e_tests -- --test-threads 1
-
-      - name: Setup tmate session for debugging
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ failure() && inputs.debug_enabled }}
-
-  coverage:
-    name: Code coverage analysis
     runs-on: ubuntu-latest
 
     steps:
@@ -194,12 +187,13 @@ jobs:
       - name: Setup environment
         uses: ./.github/actions/env-setup
 
-      - name: Code coverage
+      - name: Execute end-to-end tests
         uses: ./.github/actions/coverage-checks
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
-          test_flags: --all-features -- --test-threads 1
+          test_flags: -p marketplace-tests --features with_e2e_tests -- --test-threads 1
+          codecov_flag: e2e
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
