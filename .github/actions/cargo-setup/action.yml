@@ -6,12 +6,12 @@ inputs:
   components:
     description: Rust components to install
     required: false
-    default: ''
+    default: ""
 
   key:
     description: Specific key for the cargo cache
     required: false
-    default: ''
+    default: ""
 
 runs:
   using: "composite"

@@ -6,7 +6,7 @@ on:
     inputs:
       debug_enabled:
         type: boolean
-        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
         required: false
         default: false
 
@@ -63,7 +63,7 @@ jobs:
           command: build
 
   lint:
-    needs : check
+    needs: check
     name: Clippy checks
     runs-on: ubuntu-latest
     steps:
@@ -82,7 +82,7 @@ jobs:
           args: --bins --tests --examples -- -D warnings
 
   unit_tests:
-    needs : build
+    needs: build
     name: Unit tests
     runs-on: ubuntu-latest
     steps:
@@ -98,7 +98,7 @@ jobs:
           command: test
 
   infrastructure_tests:
-    needs : build
+    needs: build
     name: Infrastructure tests
     runs-on: ubuntu-latest
     steps:
@@ -120,7 +120,7 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
 
   component_tests:
-    needs : build
+    needs: build
     name: Component tests
     runs-on: ubuntu-latest
     steps:
@@ -142,7 +142,7 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
 
   e2e_tests:
-    needs : build
+    needs: build
     name: End-to-end tests
     runs-on: ubuntu-latest
 

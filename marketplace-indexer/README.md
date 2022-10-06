@@ -30,9 +30,10 @@ cargo build
 ## 🔬 Usage
 
 To launch the backend, just run:
+
 ```sh
 cargo run
-``` 
+```
 
 ## 🌡️ Testing
 

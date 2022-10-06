@@ -1,8 +1,8 @@
 [package]
-name = "marketplace-tests"
-version = "0.1.0"
 edition = "2021"
 license-file = "LICENSE"
+name = "marketplace-tests"
+version = "0.1.0"
 
 [lib]
 
@@ -12,47 +12,47 @@ with_e2e_tests = []
 
 [dependencies]
 # Database
-diesel = { version = "1.4.8", default-features = false, features = [
-	"postgres",
-	"serde_json",
-	"uuidv07",
-	"chrono",
-] }
+diesel = {version = "1.4.8", default-features = false, features = [
+  "postgres",
+  "serde_json",
+  "uuidv07",
+  "chrono",
+]}
 diesel_migrations = "1.4.0"
+futures = "0.3.24"
 r2d2 = "0.8.10"
 r2d2-diesel = "1.0.0"
-futures = "0.3.24"
 
 [dev-dependencies]
 # Unit testing
-async-std = { version = "1.12.0", features = ["attributes"] }
-assert_matches = "1.5"
-rstest = "0.15.0"
 assert-json-diff = "2.0.2"
+assert_matches = "1.5"
+async-std = {version = "1.12.0", features = ["attributes"]}
+rstest = "0.15.0"
 
 # Utils
 dotenv = "0.15.0"
 hex = "0.4.3"
 
 # Serde
-serde = { version = "1.0.137", features = ["derive"] }
-serde_json = { version = "1.0.81" }
+serde = {version = "1.0.137", features = ["derive"]}
+serde_json = {version = "1.0.81"}
 
 # Http client
-url = "2.2.2"
 reqwest = "0.11.11"
+url = "2.2.2"
 
 # Async
-tokio = { version = "1.18.2", features = ["full"] }
 async-trait = "0.1.56"
+tokio = {version = "1.18.2", features = ["full"]}
 
 # Local dependencies
-marketplace-core = { path = "../marketplace-core" }
-marketplace-indexer = { path = "../marketplace-indexer" }
-marketplace-infrastructure = { path = "../marketplace-infrastructure" }
+marketplace-core = {path = "../marketplace-core"}
+marketplace-indexer = {path = "../marketplace-indexer"}
+marketplace-infrastructure = {path = "../marketplace-infrastructure"}
 
 # Starknet
-starknet = { git = "https://github.com/xJonathanLEI/starknet-rs" }
+starknet = {git = "https://github.com/xJonathanLEI/starknet-rs"}
 
 # Errors
 anyhow = "1.0.57"
