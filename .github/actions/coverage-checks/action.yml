@@ -22,14 +22,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Setup cargo
-      uses: ./.github/actions/cargo-setup
-      with:
-        key: coverage
-
-    - name: Setup environment
-      uses: ./.github/actions/env-setup
-
     - name: Run cargo-tarpaulin
       uses: actions-rs/tarpaulin@v0.1
       with:
