@@ -47,7 +47,7 @@ impl ContributionProjectionRepository for Client {
 	fn update_contributor_and_status(
 		&self,
 		contribution_id: ContributionId,
-		contributor_id_: Option<ContributorAccountAddress>,
+		contributor_account_address: Option<ContributorAccountAddress>,
 		status_: ContributionStatus,
 	) -> Result<(), ContributionProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
@@ -56,7 +56,7 @@ impl ContributionProjectionRepository for Client {
 			.filter(dsl::id.eq(contribution_id.to_string()))
 			.set((
 				dsl::status.eq(status_.to_string()),
-				dsl::contributor_id.eq(contributor_id_.map(|value| value.to_string())),
+				dsl::contributor_id.eq(contributor_account_address.map(|value| value.to_string())),
 			))
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
@@ -125,7 +125,9 @@ impl From<ContributionProjection> for models::Contribution {
 			project_id: contribution.project_id.to_string(),
 			issue_number: contribution.issue_number.to_string(),
 			status: contribution.status.to_string(),
-			contributor_id: contribution.contributor_id.map(|id| id.to_string()),
+			contributor_id: contribution
+				.contributor_account_address
+				.map(|account| account.to_string()),
 			gate: contribution.gate as i32,
 			title: contribution.title,
 			description: contribution.description,

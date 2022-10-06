@@ -64,7 +64,7 @@ impl From<domain::ContributionProjection> for Contribution {
 			status: contribution.status.to_string(),
 			gate: contribution.gate,
 			metadata: Metadata {
-				assignee: contribution.contributor_id.map(|id| id.to_string()),
+				assignee: contribution.contributor_account_address.map(|id| id.to_string()),
 				github_username: None,
 				difficulty: contribution.metadata.difficulty,
 				technology: contribution.metadata.technology,

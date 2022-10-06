@@ -34,7 +34,7 @@ fn store_and_find(now: NaiveDateTime) {
 	let found_application = <Client as ApplicationProjectionRepository>::find(
 		&client,
 		application1.contribution_id(),
-		application1.contributor_id(),
+		application1.contributor_account_address(),
 	)
 	.unwrap();
 	assert_eq!(found_application, Some(application1));
@@ -42,7 +42,7 @@ fn store_and_find(now: NaiveDateTime) {
 	let found_application = <Client as ApplicationProjectionRepository>::find(
 		&client,
 		application2.contribution_id(),
-		application2.contributor_id(),
+		application2.contributor_account_address(),
 	)
 	.unwrap();
 	assert_eq!(found_application, Some(application2));
@@ -150,7 +150,7 @@ fn store_multiple_and_list(now: NaiveDateTime) {
 	let applications = <Client as ApplicationProjectionRepository>::list_by_contribution(
 		&client,
 		&contribution.id,
-		Some(application1.contributor_id().to_owned()),
+		Some(application1.contributor_account_address().to_owned()),
 	)
 	.unwrap();
 
@@ -159,7 +159,7 @@ fn store_multiple_and_list(now: NaiveDateTime) {
 	let applications = <Client as ApplicationProjectionRepository>::list_by_contribution(
 		&client,
 		&contribution.id,
-		Some(application2.contributor_id().to_owned()),
+		Some(application2.contributor_account_address().to_owned()),
 	)
 	.unwrap();
 
@@ -196,7 +196,7 @@ fn delete_all_for_contribution(now: NaiveDateTime) {
 		<Client as ApplicationProjectionRepository>::find(
 			&client,
 			application1.contribution_id(),
-			application1.contributor_id()
+			application1.contributor_account_address()
 		)
 		.unwrap()
 		.is_none()
@@ -205,7 +205,7 @@ fn delete_all_for_contribution(now: NaiveDateTime) {
 		<Client as ApplicationProjectionRepository>::find(
 			&client,
 			application2.contribution_id(),
-			application2.contributor_id()
+			application2.contributor_account_address()
 		)
 		.unwrap()
 		.is_none()
@@ -214,7 +214,7 @@ fn delete_all_for_contribution(now: NaiveDateTime) {
 		<Client as ApplicationProjectionRepository>::find(
 			&client,
 			application3.contribution_id(),
-			application3.contributor_id()
+			application3.contributor_account_address()
 		)
 		.unwrap()
 		.is_some()

@@ -61,7 +61,7 @@ fn contribution(
 		project_id,
 		issue_number,
 		gate,
-		contributor_id: None,
+		contributor_account_address: None,
 		status: ContributionStatus::Open,
 		title: Some(github_issue.title),
 		description: github_issue.description,
