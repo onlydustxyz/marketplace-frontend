@@ -74,7 +74,7 @@ impl From<models::Contribution> for ContributionProjection {
 	fn from(contribution: models::Contribution) -> Self {
 		Self {
 			id: contribution.id.parse().unwrap(),
-			contributor_id: contribution
+			contributor_account_address: contribution
 				.contributor_id
 				.map(|id_| ContributorAccountAddress::from_str(id_.as_str()).unwrap()),
 			project_id: contribution.project_id.parse().unwrap(),

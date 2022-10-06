@@ -50,7 +50,7 @@ impl WithGithubDataProjector {
 			id: id.clone(),
 			project_id,
 			issue_number,
-			contributor_id: None,
+			contributor_account_address: None,
 			status: ContributionStatus::Open,
 			gate,
 			title: issue.clone().map(|issue| issue.title),
@@ -71,12 +71,12 @@ impl WithGithubDataProjector {
 	fn on_assign(
 		&self,
 		id: &ContributionId,
-		contributor_id: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<(), Error> {
 		self.contribution_projection_repository
 			.update_contributor_and_status(
 				id.clone(),
-				Some(contributor_id.clone()),
+				Some(contributor_account_address.clone()),
 				ContributionStatus::Assigned,
 			)
 			.map_err_into()

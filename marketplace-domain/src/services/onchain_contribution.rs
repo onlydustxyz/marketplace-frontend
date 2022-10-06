@@ -19,7 +19,7 @@ pub trait Service: Send + Sync {
 	async fn assign_contributor(
 		&self,
 		contribution_id: ContributionId,
-		contributor_id: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 	) -> Result<HexPrefixedString, Error>;
 	async fn unassign_contributor(
 		&self,

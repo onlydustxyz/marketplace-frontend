@@ -10,7 +10,7 @@ pub trait Usecase: Send + Sync {
 	async fn apply_to_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<(), DomainError>;
 }
 
@@ -63,11 +63,11 @@ impl Usecase for ApplyToContribution {
 	async fn apply_to_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<(), DomainError> {
 		let contribution = self.contribution_repository.find_by_id(contribution_id)?;
 		let contribution_id = contribution_id.clone();
-		let events = contribution.apply(contributor_id)?;
+		let events = contribution.apply(contributor_account_address)?;
 		let storable_events: Vec<StorableEvent<Contribution>> = events
 			.iter()
 			.map(|event| {

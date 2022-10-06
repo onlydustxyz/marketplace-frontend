@@ -20,12 +20,12 @@ impl ApplicationProjector {
 	fn on_applied(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 		applied_at: &NaiveDateTime,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
 		let application = ApplicationProjection::new(
 			contribution_id.clone(),
-			contributor_id.clone(),
+			contributor_account_address.clone(),
 			*applied_at,
 		);
 
@@ -35,17 +35,19 @@ impl ApplicationProjector {
 	fn on_application_refused(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		self.application_projection_repository.delete(contribution_id, contributor_id)
+		self.application_projection_repository
+			.delete(contribution_id, contributor_account_address)
 	}
 
 	fn on_assigned(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		self.application_projection_repository.delete(contribution_id, contributor_id)
+		self.application_projection_repository
+			.delete(contribution_id, contributor_account_address)
 	}
 
 	fn on_contribution_deleted(

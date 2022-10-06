@@ -90,7 +90,7 @@ fn build_contribution(
 	contributor_projection_repository: &Arc<dyn ContributorProjectionRepository>,
 ) -> Option<dto::Contribution> {
 	let contributor = contribution
-		.contributor_id
+		.contributor_account_address
 		.clone()
 		.and_then(|id| contributor_projection_repository.find_by_id(&id).ok());
 

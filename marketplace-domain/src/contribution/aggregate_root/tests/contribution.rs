@@ -166,9 +166,9 @@ fn apply_twice_to_contribution(
 #[rstest]
 fn apply_to_contribution_emits_an_event(contribution_created_event: Event) {
 	let contribution = Contribution::from_events(&[contribution_created_event]);
-	let contributor_id = ContributorAccountAddress::from_str("0x123").unwrap();
+	let contributor_account_address = ContributorAccountAddress::from_str("0x123").unwrap();
 
-	let application_result = contribution.apply(&contributor_id);
+	let application_result = contribution.apply(&contributor_account_address);
 	assert!(application_result.is_ok());
 
 	let emitted_events = application_result.unwrap();
