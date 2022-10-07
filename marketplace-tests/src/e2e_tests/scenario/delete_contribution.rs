@@ -3,7 +3,7 @@ use crate::e2e_tests::{
 	applications,
 	backends::{marketplace_api, marketplace_indexer},
 	contributions,
-	database::events_count,
+	database::get_events_count,
 	projects::add_lead_contributor,
 	scenario::STARKONQUEST_TITLE,
 	starknet::{accounts::accounts, Account},
@@ -25,7 +25,7 @@ async fn delete_contribution(
 	marketplace_api.await;
 	marketplace_indexer.await;
 
-	let events_count = events_count();
+	let events_count = get_events_count();
 
 	let lead_contributor = &accounts[LEAD_CONTRIBUTOR_INDEX];
 	let issue_number = 32;

@@ -81,9 +81,9 @@ fn find() {
 	let found_contributions =
 		<Client as ContributionProjectionRepository>::find(&client, &[]).unwrap();
 	assert_eq!(found_contributions.len(), 3);
-	assert!(found_contributions.iter().find(|c| c.id == contribution1.id).is_some());
-	assert!(found_contributions.iter().find(|c| c.id == contribution2.id).is_some());
-	assert!(found_contributions.iter().find(|c| c.id == contribution3.id).is_some());
+	assert!(found_contributions.iter().any(|c| c.id == contribution1.id));
+	assert!(found_contributions.iter().any(|c| c.id == contribution2.id));
+	assert!(found_contributions.iter().any(|c| c.id == contribution3.id));
 
 	// Filter by project
 	let found_contributions = <Client as ContributionProjectionRepository>::find(
@@ -92,8 +92,8 @@ fn find() {
 	)
 	.unwrap();
 	assert_eq!(found_contributions.len(), 2);
-	assert!(found_contributions.iter().find(|c| c.id == contribution1.id).is_some());
-	assert!(found_contributions.iter().find(|c| c.id == contribution2.id).is_some());
+	assert!(found_contributions.iter().any(|c| c.id == contribution1.id));
+	assert!(found_contributions.iter().any(|c| c.id == contribution2.id));
 
 	// Filter by contributor
 	let contributor_id: ContributorAccountAddress = rand::random::<u128>().into();
@@ -120,8 +120,8 @@ fn find() {
 	.unwrap();
 
 	assert_eq!(found_contributions.len(), 2);
-	assert!(found_contributions.iter().find(|c| c.id == contribution1.id).is_some());
-	assert!(found_contributions.iter().find(|c| c.id == contribution3.id).is_some());
+	assert!(found_contributions.iter().any(|c| c.id == contribution1.id));
+	assert!(found_contributions.iter().any(|c| c.id == contribution3.id));
 
 	// Filter by contributor and project
 	let found_contributions = <Client as ContributionProjectionRepository>::find(
@@ -133,5 +133,5 @@ fn find() {
 	)
 	.unwrap();
 	assert_eq!(found_contributions.len(), 1);
-	assert!(found_contributions.iter().find(|c| c.id == contribution1.id).is_some());
+	assert!(found_contributions.iter().any(|c| c.id == contribution1.id));
 }

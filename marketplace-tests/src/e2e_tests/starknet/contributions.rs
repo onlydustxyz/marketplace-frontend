@@ -1,6 +1,9 @@
-use super::*;
+use std::str::FromStr;
+
 use async_trait::async_trait;
 use starknet::core::utils::get_selector_from_name;
+
+use super::*;
 
 // From starknet-devnet dump creation
 const CONTRIBUTIONS_ADDRESS: &str =
@@ -16,6 +19,13 @@ pub trait ContributionsContract {
 
 	async fn new_contribution(&self, project_id: u64, issue_number: u64, gate: u64) -> Result<()>;
 	async fn delete_contribution(&self, contribution_id: &str) -> Result<()>;
+
+	async fn assign_contributor_to_contribution(
+		&self,
+		contribution_id: &str,
+		contributor_address: &str,
+	) -> Result<()>;
+
 }
 
 #[async_trait]
@@ -59,6 +69,27 @@ impl<'a> ContributionsContract for ContractAdministrator<'a> {
 				.expect("Invalid CONTRIBUTIONS_ADDRESS"),
 			selector: get_selector_from_name("delete_contribution").expect("Invalid selector"),
 			calldata: vec![FieldElement::from_hex_be(contribution_id).unwrap()],
+		}])
+		.await?;
+
+		Ok(())
+	}
+
+	async fn assign_contributor_to_contribution(
+		&self,
+		contribution_id: &str,
+		contributor_address: &str,
+	) -> Result<()> {
+		self.send_transaction(&[Call {
+			to: FieldElement::from_hex_be(CONTRIBUTIONS_ADDRESS)
+				.expect("Invalid CONTRIBUTIONS_ADDRESS"),
+			selector: get_selector_from_name("assign_contributor_to_contribution")
+				.expect("Invalid selector"),
+			calldata: vec![
+				FieldElement::from_hex_be(contribution_id).unwrap(),
+				FieldElement::from_str(contributor_address).unwrap(),
+				FieldElement::ZERO,
+			],
 		}])
 		.await?;
 
