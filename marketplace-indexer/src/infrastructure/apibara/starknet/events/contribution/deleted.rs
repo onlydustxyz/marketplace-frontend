@@ -12,7 +12,7 @@ impl EventTranslator for Deleted {
 	fn to_domain_event(mut topics: Topics) -> Result<Event, FromEventError> {
 		let contribution_id: HexPrefixedString = topics.pop_front_as()?;
 
-		Ok(Event::Contribution(ContributionEvent::Deleted {
+		Ok(Event::Contribution(ContributionEvent::Closed {
 			id: contribution_id.into(),
 		}))
 	}
@@ -45,7 +45,7 @@ mod test {
 		let result = <Deleted as EventTranslator>::to_domain_event(apibara_event_data);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(
-			Event::Contribution(ContributionEvent::Deleted { id: 12.into() },),
+			Event::Contribution(ContributionEvent::Closed { id: 12.into() },),
 			result.unwrap()
 		);
 	}
