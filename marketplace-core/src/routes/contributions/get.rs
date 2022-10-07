@@ -11,26 +11,22 @@ use marketplace_domain::{
 
 use crate::{
 	dto,
-	routes::{
-		api_key::ApiKey, hex_prefixed_string::HexPrefixedStringDto,
-		to_http_api_problem::ToHttpApiProblem,
-	},
+	routes::{hex_prefixed_string::HexPrefixedStringDto, to_http_api_problem::ToHttpApiProblem},
 };
 
 #[openapi(tag = "Contributions")]
-#[get("/contributions?<contributor_account>&<project_id>")]
+#[get("/contributions?<contributor_account_address>&<project_id>")]
 pub async fn get_contributions(
-	contributor_account: Option<HexPrefixedStringDto>,
+	contributor_account_address: Option<HexPrefixedStringDto>,
 	project_id: Option<u64>,
 	contribution_repository: &State<Arc<dyn ContributionProjectionRepository>>,
 	contributor_repository: &State<Arc<dyn ContributorProjectionRepository>>,
-	_api_key: ApiKey,
 ) -> Result<Json<Vec<dto::Contribution>>, HttpApiProblem> {
 	let mut filters = vec![];
-	if let Some(contributor_account) = contributor_account {
-		let contributor_account =
-			ContributorAccountAddress::from(HexPrefixedString::from(contributor_account));
-		filters.push(contributor_account.into())
+	if let Some(address) = contributor_account_address {
+		let contributor_account_address =
+			ContributorAccountAddress::from(HexPrefixedString::from(address));
+		filters.push(contributor_account_address.into())
 	}
 	if let Some(project_id) = project_id {
 		filters.push(project_id.into())

@@ -2,7 +2,7 @@ use super::{wait_for_events, STARKONQUEST_ID};
 use crate::e2e_tests::{
 	backends::{marketplace_api, marketplace_indexer},
 	contributions, contributors,
-	database::events_count,
+	database::get_events_count,
 	projects::add_lead_contributor,
 	scenario::STARKONQUEST_TITLE,
 	starknet::{accounts::accounts, Account},
@@ -23,14 +23,15 @@ async fn contribution_lifetime(
 	marketplace_api.await;
 	marketplace_indexer.await;
 
-	let events_count = events_count();
+	let events_count = get_events_count();
 
 	let issue_number = 31;
+	let admin_account = &accounts[0];
 	let lead_contributor = &accounts[LEAD_CONTRIBUTOR_INDEX];
 	let contributor_account = &accounts[2];
 	let contributor_account_address = format!("{:#066x}", contributor_account.address());
 
-	add_lead_contributor(&accounts[0], STARKONQUEST_ID, lead_contributor.address()).await;
+	add_lead_contributor(&admin_account, STARKONQUEST_ID, lead_contributor.address()).await;
 	// Create a new contribution
 	contributions::create(lead_contributor, STARKONQUEST_ID, issue_number, 0).await;
 	wait_for_events(events_count + 3).await;
@@ -56,4 +57,18 @@ async fn contribution_lifetime(
 	assert_eq!(contributor.account, contributor_account_address);
 	assert_eq!(contributor.github_identifier, "990474");
 	assert_eq!(contributor.github_username, "abuisset");
+
+	let events_count = get_events_count();
+	contributions::apply(&contribution.id, &contributor_address).await;
+	contributions::assign_contributor_to_contribution(
+		&lead_contributor,
+		&contribution.id,
+		&contributor_address,
+	)
+	.await;
+	wait_for_events(events_count + 2).await;
+	let found_contributions =
+		contributions::get(Some(STARKONQUEST_ID), Some(&contributor_address)).await;
+	assert_eq!(found_contributions.len(), 1);
+	assert_eq!(found_contributions[0].id, contribution.id);
 }
