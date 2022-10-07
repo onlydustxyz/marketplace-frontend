@@ -108,6 +108,22 @@ impl ContributionProjectionRepository for Client {
 		Ok(())
 	}
 
+	fn update_closed(
+		&self,
+		contribution_id: &ContributionId,
+		closed_: bool,
+	) -> Result<(), ContributionProjectionRepositoryError> {
+		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
+
+		diesel::update(dsl::contributions)
+			.filter(dsl::id.eq(contribution_id.to_string()))
+			.set(dsl::closed.eq(closed_))
+			.execute(&*connection)
+			.map_err(DatabaseError::from)?;
+
+		Ok(())
+	}
+
 	fn update_gate(
 		&self,
 		contribution_id: ContributionId,
@@ -169,6 +185,7 @@ impl From<ContributionProjection> for models::Contribution {
 			duration: contribution.metadata.duration,
 			context: contribution.metadata.context,
 			type_: contribution.metadata.r#type,
+			closed: contribution.closed,
 		}
 	}
 }
@@ -195,6 +212,7 @@ impl From<models::Contribution> for ContributionProjection {
 				context: contribution.context,
 				r#type: contribution.type_,
 			},
+			closed: contribution.closed,
 		}
 	}
 }

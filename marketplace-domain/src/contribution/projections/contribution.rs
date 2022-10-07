@@ -16,6 +16,7 @@ pub struct Contribution {
 	pub external_link: Option<Url>,
 	pub gate: u8,
 	pub metadata: Metadata,
+	pub closed: bool,
 }
 
 impl Projection for Contribution {
