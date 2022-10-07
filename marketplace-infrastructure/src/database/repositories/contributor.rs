@@ -24,20 +24,6 @@ impl ContributorProjectionRepository for Client {
 		Ok(())
 	}
 
-	fn find_by_id(
-		&self,
-		contributor_id: &ContributorAccountAddress,
-	) -> Result<ContributorProfile, ContributorProjectionRepositoryError> {
-		let connection = self.connection().map_err(ContributorProjectionRepositoryError::from)?;
-
-		let contributor: models::Contributor = dsl::contributors
-			.find(contributor_id.to_string())
-			.get_result(&*connection)
-			.map_err(DatabaseError::from)?;
-
-		Ok(contributor.into())
-	}
-
 	fn find_by_account_address(
 		&self,
 		contributor_account_address: &ContributorAccountAddress,

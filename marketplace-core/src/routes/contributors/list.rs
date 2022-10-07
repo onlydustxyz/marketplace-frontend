@@ -19,7 +19,7 @@ pub async fn get_contributor(
 	let contributor_id = contributor_id.into();
 
 	let contributor = contributor_repository
-		.find_by_id(&contributor_id)
+		.find_by_account_address(&contributor_id)
 		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(Json(contributor.into()))
