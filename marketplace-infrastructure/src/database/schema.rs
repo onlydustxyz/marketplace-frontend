@@ -1,12 +1,14 @@
-table! {
-	contact_information (id) {
-		id -> Uuid,
-		contributor_id -> Varchar,
-		discord_handle -> Nullable<Varchar>,
-	}
+// @generated automatically by Diesel CLI.
+
+diesel::table! {
+    contact_information (id) {
+        id -> Uuid,
+        contributor_id -> Varchar,
+        discord_handle -> Nullable<Varchar>,
+    }
 }
 
-table! {
+diesel::table! {
     contributions (id) {
         id -> Text,
         project_id -> Text,
@@ -24,46 +26,46 @@ table! {
         #[sql_name = "type"]
         type_ -> Nullable<Text>,
         contributor_account_address -> Nullable<Text>,
-        closed: Bool,
+        closed -> Bool,
     }
 }
 
-table! {
-	contributors (id) {
-		id -> Text,
-		account -> Text,
-		github_identifier -> Text,
-		github_username -> Text,
-	}
+diesel::table! {
+    contributors (id) {
+        id -> Text,
+        account -> Text,
+        github_identifier -> Text,
+        github_username -> Text,
+    }
 }
 
-table! {
-	event_deduplications (deduplication_id) {
-		deduplication_id -> Text,
-		event_index -> Int4,
-	}
+diesel::table! {
+    event_deduplications (deduplication_id) {
+        deduplication_id -> Text,
+        event_index -> Int4,
+    }
 }
 
-table! {
-	event_filters (indexer_id, source_contract) {
-		indexer_id -> Text,
-		source_contract -> Text,
-	}
+diesel::table! {
+    event_filters (indexer_id, source_contract) {
+        indexer_id -> Text,
+        source_contract -> Text,
+    }
 }
 
-table! {
-	events (index) {
-		index -> Int4,
-		timestamp -> Timestamp,
-		aggregate_name -> Varchar,
-		aggregate_id -> Varchar,
-		payload -> Jsonb,
-		metadata -> Nullable<Jsonb>,
-		origin -> Text,
-	}
+diesel::table! {
+    events (index) {
+        index -> Int4,
+        timestamp -> Timestamp,
+        aggregate_name -> Varchar,
+        aggregate_id -> Varchar,
+        payload -> Jsonb,
+        metadata -> Nullable<Jsonb>,
+        origin -> Text,
+    }
 }
 
-table! {
+diesel::table! {
     events_backup (index) {
         index -> Int4,
         timestamp -> Timestamp,
@@ -75,21 +77,21 @@ table! {
     }
 }
 
-table! {
+diesel::table! {
     indexers (id) {
         id -> Text,
         index_head -> Int8,
     }
 }
 
-table! {
-	lead_contributors (project_id, account) {
-		project_id -> Text,
-		account -> Text,
-	}
+diesel::table! {
+    lead_contributors (project_id, account) {
+        project_id -> Text,
+        account -> Text,
+    }
 }
 
-table! {
+diesel::table! {
     pending_applications (contribution_id, contributor_account_address) {
         contribution_id -> Text,
         contributor_id -> Text,
@@ -98,25 +100,25 @@ table! {
     }
 }
 
-table! {
-	project_members (project_id, contributor_account) {
-		project_id -> Text,
-		contributor_account -> Text,
-	}
+diesel::table! {
+    project_members (project_id, contributor_account) {
+        project_id -> Text,
+        contributor_account -> Text,
+    }
 }
 
-table! {
-	projects (id) {
-		id -> Varchar,
-		owner -> Varchar,
-		name -> Varchar,
-		url -> Nullable<Varchar>,
-		description -> Nullable<Varchar>,
-		logo_url -> Nullable<Varchar>,
-	}
+diesel::table! {
+    projects (id) {
+        id -> Varchar,
+        owner -> Varchar,
+        name -> Varchar,
+        url -> Nullable<Varchar>,
+        description -> Nullable<Varchar>,
+        logo_url -> Nullable<Varchar>,
+    }
 }
 
-allow_tables_to_appear_in_same_query!(
+diesel::allow_tables_to_appear_in_same_query!(
     contact_information,
     contributions,
     contributors,

@@ -91,6 +91,25 @@ Then run:
 $ cargo test -p marketplace-tests --features with_e2e_tests e2e_tests
 ```
 
+## Migrate database
+
+-   To create a new migration, start running
+
+```
+diesel migration generate <your-migration-name>
+```
+
+-   Edit the generated files with your SQL code for `up.sql` and `down.sql`
+-   Test your migration up and down by running
+
+```
+diesel migration run
+diesel migration revert
+diesel migration run
+```
+
+-   The file `schema.rs` should be then automatically updated
+
 ## 🫶 Contributing
 
 ## 📄 License
