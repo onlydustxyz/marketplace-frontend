@@ -43,6 +43,7 @@ pub struct Contribution {
 	pub status: String,
 	pub gate: u8,
 	pub metadata: Metadata,
+	pub closed: bool,
 }
 #[derive(Debug, Serialize, Deserialize, JsonSchema, Clone)]
 pub struct Metadata {
@@ -76,6 +77,7 @@ impl From<ContributionProjection> for Contribution {
 				context: contribution.metadata.context,
 				r#type: contribution.metadata.r#type,
 			},
+			closed: contribution.closed,
 		}
 	}
 }
