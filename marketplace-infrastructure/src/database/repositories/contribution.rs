@@ -82,8 +82,7 @@ impl ContributionProjectionRepository for Client {
 			.filter(dsl::id.eq(contribution_id.to_string()))
 			.set((
 				dsl::status.eq(status_.to_string()),
-				dsl::contributor_id
-					.eq(contributor_account_address.clone().map(|value| value.to_string())),
+				dsl::contributor_id.eq(contributor_account_address.map(|value| value.to_string())),
 				dsl::contributor_account_address
 					.eq(contributor_account_address.map(|value| value.to_string())),
 			))

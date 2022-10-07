@@ -25,7 +25,6 @@ pub trait ContributionsContract {
 		contribution_id: &str,
 		contributor_address: &str,
 	) -> Result<()>;
-
 }
 
 #[async_trait]
