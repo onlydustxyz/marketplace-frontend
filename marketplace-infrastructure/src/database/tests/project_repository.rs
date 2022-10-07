@@ -97,6 +97,7 @@ fn store_and_find_with_contributions(project1: Project, projection1: ProjectProj
 		external_link: None,
 		gate: 0,
 		metadata: Default::default(),
+		closed: false,
 	};
 	let contribution2 = ContributionProjection {
 		id: ContributionId::from_str("0x02").unwrap(),
@@ -109,6 +110,7 @@ fn store_and_find_with_contributions(project1: Project, projection1: ProjectProj
 		external_link: None,
 		gate: 0,
 		metadata: Default::default(),
+		closed: false,
 	};
 
 	<Client as ProjectProjectionRepository>::insert(&client, projection1).unwrap();

@@ -63,6 +63,7 @@ impl WithGithubDataProjector {
 				context: issue.clone().and_then(|issue| issue.context),
 				r#type: issue.and_then(|issue| issue.r#type),
 			},
+			closed: false,
 		};
 
 		self.contribution_projection_repository.insert(contribution).map_err_into()
@@ -100,10 +101,11 @@ impl WithGithubDataProjector {
 			.map_err_into()
 	}
 
-	fn on_delete(&self, id: &ContributionId) -> Result<(), Error> {
+	fn on_close(&self, id: &ContributionId) -> Result<(), Error> {
 		self.contribution_projection_repository
-			.update_status(id, ContributionStatus::Abandoned)
-			.map_err_into()
+			.update_status(id, ContributionStatus::Abandoned)?;
+
+		self.contribution_projection_repository.update_closed(id, true).map_err_into()
 	}
 }
 
@@ -129,7 +131,7 @@ impl EventListener for WithGithubDataProjector {
 				ContributionEvent::Unassigned { id } => self.on_unassign(id),
 				ContributionEvent::Validated { id } => self.on_validate(id),
 				ContributionEvent::GateChanged { id, gate } => self.on_gate_changed(id, *gate),
-				ContributionEvent::Closed { id } => self.on_delete(id),
+				ContributionEvent::Closed { id } => self.on_close(id),
 				ContributionEvent::Deployed { .. }
 				| ContributionEvent::Applied { .. }
 				| ContributionEvent::ApplicationRefused { .. } => return,

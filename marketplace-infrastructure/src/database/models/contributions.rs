@@ -23,4 +23,5 @@ pub struct Contribution {
 	pub context: Option<String>,
 	pub type_: Option<String>,
 	pub contributor_account_address: Option<String>,
+	pub closed: bool,
 }

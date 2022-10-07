@@ -32,7 +32,8 @@ pub struct Contribution {
 	gate: u8,
 	contributor_account_address: Option<ContributorAccountAddress>,
 	status: ContributionStatus,
-	applicants: Vec<ContributorAccountAddress>,
+    closed: bool,
+    applicants: Vec<ContributorAccountAddress>,
 }
 
 impl Contribution {
@@ -163,6 +164,7 @@ impl EventSourcable for Contribution {
 				},
 				ContributionEvent::Closed { .. } => Self {
 					status: Status::Abandoned,
+					closed: true,
 					..self
 				},
 			},
