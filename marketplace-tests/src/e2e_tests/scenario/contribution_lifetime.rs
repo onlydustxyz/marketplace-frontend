@@ -59,16 +59,16 @@ async fn contribution_lifetime(
 	assert_eq!(contributor.github_username, "abuisset");
 
 	let events_count = get_events_count();
-	contributions::apply(&contribution.id, &contributor_address).await;
+	contributions::apply(&contribution.id, &contributor_account_address).await;
 	contributions::assign_contributor_to_contribution(
 		&lead_contributor,
 		&contribution.id,
-		&contributor_address,
+		&contributor_account_address,
 	)
 	.await;
 	wait_for_events(events_count + 2).await;
 	let found_contributions =
-		contributions::get(Some(STARKONQUEST_ID), Some(&contributor_address)).await;
+		contributions::get(Some(STARKONQUEST_ID), Some(&contributor_account_address)).await;
 	assert_eq!(found_contributions.len(), 1);
 	assert_eq!(found_contributions[0].id, contribution.id);
 }
