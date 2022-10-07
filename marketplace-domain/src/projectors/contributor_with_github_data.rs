@@ -32,13 +32,16 @@ impl ContributorWithGithubData {
 		&self,
 		contributor_account_address: &ContributorAccountAddress,
 		github_identifier: &GithubUserId,
-		contributor_id: &ContributorAccountAddress,
 	) -> Result<(), Error> {
-		if self.contributor_projection_repository.find_by_id(contributor_id).is_err() {
+		if self
+			.contributor_projection_repository
+			.find_by_account_address(contributor_account_address)
+			.is_err()
+		{
 			let user = self.github_client.find_user_by_id(*github_identifier).await?;
 
 			self.contributor_projection_repository.insert(ContributorProfile {
-				id: contributor_id.clone(),
+				id: contributor_account_address.clone(),
 				github_identifier: *github_identifier,
 				github_username: user.name,
 				account: contributor_account_address.clone(),
@@ -57,10 +60,8 @@ impl EventListener for ContributorWithGithubData {
 				ContributorEvent::GithubAccountAssociated {
 					contributor_account,
 					github_identifier,
-					contributor_id,
-				} =>
-					self.add_contributor(contributor_account, github_identifier, contributor_id)
-						.await,
+					contributor_id: _,
+				} => self.add_contributor(contributor_account, github_identifier).await,
 			},
 			Event::Project(_) | Event::Contribution(_) => return,
 		};
@@ -135,11 +136,10 @@ mod test {
 		github_identifier: GithubUserId,
 		github_username: String,
 		contributor_account_address: ContributorAccountAddress,
-		contributor_id: ContributorAccountAddress,
 	) {
 		contributor_projection_repository
-			.expect_find_by_id()
-			.with(eq(contributor_id.clone()))
+			.expect_find_by_account_address()
+			.with(eq(contributor_account_address.clone()))
 			.times(1)
 			.returning(|_| Err(ContributorProjectionRepositoryError::NotFound));
 
@@ -159,7 +159,7 @@ mod test {
 			.expect_insert()
 			.times(1)
 			.with(eq(ContributorProfile {
-				id: contributor_id,
+				id: contributor_account_address.clone(),
 				account: contributor_account_address,
 				github_username,
 				github_identifier,
@@ -181,7 +181,7 @@ mod test {
 		github_account_associated_event: Event,
 	) {
 		contributor_projection_repository
-			.expect_find_by_id()
+			.expect_find_by_account_address()
 			.times(1)
 			.returning(|_| Ok(ContributorProfile::default()));
 

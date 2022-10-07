@@ -101,7 +101,6 @@ async fn refresh_contributors_from_events(
 	filled_database: Arc<DatabaseClient>,
 	mut github_client: MockGithubClient,
 	contributor_account_address: ContributorAccountAddress,
-	contributor_id: ContributorAccountAddress,
 ) {
 	let refresh_contributors_usecase: RefreshContributors = {
 		github_client.expect_find_user_by_id().returning(|_| Ok(Default::default()));
@@ -119,13 +118,15 @@ async fn refresh_contributors_from_events(
 	let result = refresh_contributors_usecase.refresh_projection_from_events().await;
 	assert!(result.is_ok(), "{}", result.err().unwrap());
 
-	let result =
-		ContributorProjectionRepository::find_by_id(&*filled_database.clone(), &contributor_id);
+	let result = ContributorProjectionRepository::find_by_account_address(
+		&*filled_database.clone(),
+		&contributor_account_address,
+	);
 	assert!(result.is_ok(), "{}", result.err().unwrap());
 
 	assert_eq!(
 		ContributorProfile {
-			id: contributor_id,
+			id: contributor_account_address.clone(),
 			github_identifier: 100u64,
 			account: contributor_account_address,
 			..Default::default()

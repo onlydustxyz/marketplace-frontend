@@ -92,10 +92,10 @@ fn build_contribution(
 	contribution: ContributionProjection,
 	contributor_projection_repository: &Arc<dyn ContributorProjectionRepository>,
 ) -> Option<dto::Contribution> {
-	let contributor = contribution
-		.contributor_account_address
-		.clone()
-		.and_then(|id| contributor_projection_repository.find_by_id(&id).ok());
+	let contributor =
+		contribution.contributor_account_address.clone().and_then(|account_address| {
+			contributor_projection_repository.find_by_account_address(&account_address).ok()
+		});
 
 	let mut contribution = dto::Contribution::from(contribution);
 	contribution.metadata.github_username = contributor.map(|c| c.github_username);
