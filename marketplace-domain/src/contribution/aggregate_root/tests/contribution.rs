@@ -83,6 +83,13 @@ fn contribution_validated_event() -> Event {
 	})
 }
 
+#[fixture]
+fn contribution_closed_event() -> Event {
+	Event::Contribution(ContributionEvent::Closed {
+		id: Default::default(),
+	})
+}
+
 #[rstest]
 fn create_contribution(contribution_created_event: Event, contribution_id: Id) {
 	let contribution = Contribution::from_events(&[contribution_created_event]);
@@ -134,6 +141,14 @@ fn validate_contribution(
 		contribution_validated_event,
 	]);
 	assert_eq!(Status::Completed, contribution.status);
+}
+
+#[rstest]
+fn close_contribution(contribution_created_event: Event, contribution_closed_event: Event) {
+	let contribution =
+		Contribution::from_events(&[contribution_created_event, contribution_closed_event]);
+	assert_eq!(Status::Abandoned, contribution.status);
+	assert_eq!(true, contribution.closed);
 }
 
 #[rstest]
