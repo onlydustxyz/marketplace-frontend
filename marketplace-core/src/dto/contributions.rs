@@ -84,10 +84,15 @@ pub fn build_contribution_dto(
 	contribution: ContributionProjection,
 	contributor_projection_repository: &Arc<dyn ContributorProjectionRepository>,
 ) -> Option<Contribution> {
-	let contributor = contribution
-		.contributor_account_address
-		.clone()
-		.and_then(|id| contributor_projection_repository.find_by_account_address(&id).ok());
+	let contributor = contribution.contributor_account_address.clone().and_then(|id| {
+		match contributor_projection_repository.find_by_account_address(&id) {
+			Ok(c) => Some(c),
+			Err(e) => {
+				error!("Failed to find contributor with account address {id}: {e}");
+				None
+			},
+		}
+	});
 
 	let mut contribution = Contribution::from(contribution);
 	contribution.metadata.github_username = contributor.map(|c| c.github_username);
