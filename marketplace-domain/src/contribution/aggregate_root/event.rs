@@ -42,7 +42,7 @@ pub enum Event {
 		id: ContributionId,
 		gate: u8,
 	},
-	Deleted {
+	Closed {
 		id: ContributionId,
 	},
 }
