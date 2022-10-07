@@ -7,6 +7,9 @@ pub use created::Created;
 mod deleted;
 pub use deleted::Deleted;
 
+mod closed;
+pub use closed::Closed;
+
 mod assigned;
 pub use assigned::Assigned;
 
