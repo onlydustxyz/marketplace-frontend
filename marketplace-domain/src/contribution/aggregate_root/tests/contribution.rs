@@ -148,7 +148,7 @@ fn close_contribution(contribution_created_event: Event, contribution_closed_eve
 	let contribution =
 		Contribution::from_events(&[contribution_created_event, contribution_closed_event]);
 	assert_eq!(Status::Abandoned, contribution.status);
-	assert_eq!(true, contribution.closed);
+	assert!(contribution.closed);
 }
 
 #[rstest]
