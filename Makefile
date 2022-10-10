@@ -1,4 +1,5 @@
 setup:
+    rustup update nightly
 	docker-compose up -f scripts/docker/dev/docker-compose.yml -d
 	[[ -e .env ]] && cp .env.example .env
 	source .env
