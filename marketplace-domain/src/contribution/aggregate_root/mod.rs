@@ -32,8 +32,8 @@ pub struct Contribution {
 	gate: u8,
 	contributor_account_address: Option<ContributorAccountAddress>,
 	status: ContributionStatus,
-    closed: bool,
-    applicants: Vec<ContributorAccountAddress>,
+	closed: bool,
+	applicants: Vec<ContributorAccountAddress>,
 }
 
 impl Contribution {

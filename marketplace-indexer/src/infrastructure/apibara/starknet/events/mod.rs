@@ -45,42 +45,30 @@ impl TryFrom<Event> for ObservedEvent {
 		let selector = FieldElement::try_from_bytes(event.selector).map_err(anyhow::Error::msg)?;
 
 		let domain_event = match selector {
-			_ if selector == contribution::Deployed::selector() => {
-				Ok(contribution::Deployed::to_domain_event(event.data)?)
-			},
-			_ if selector == contribution::Created::selector() => {
-				Ok(contribution::Created::to_domain_event(event.data)?)
-			},
-			_ if selector == contribution::Closed::selector() => {
-				Ok(contribution::Closed::to_domain_event(event.data)?)
-			},
-			_ if selector == contribution::Deleted::selector() => {
-				Ok(contribution::Deleted::to_domain_event(event.data)?)
-			},
-			_ if selector == contribution::Assigned::selector() => {
-				Ok(contribution::Assigned::to_domain_event(event.data)?)
-			},
-			_ if selector == contribution::Claimed::selector() => {
-				Ok(contribution::Claimed::to_domain_event(event.data)?)
-			},
-			_ if selector == contribution::Unassigned::selector() => {
-				Ok(contribution::Unassigned::to_domain_event(event.data)?)
-			},
-			_ if selector == contribution::Validated::selector() => {
-				Ok(contribution::Validated::to_domain_event(event.data)?)
-			},
-			_ if selector == contribution::GateChanged::selector() => {
-				Ok(contribution::GateChanged::to_domain_event(event.data)?)
-			},
-			_ if selector == project::MemberAdded::selector() => {
-				Ok(project::MemberAdded::to_domain_event(event.data)?)
-			},
-			_ if selector == project::MemberRemoved::selector() => {
-				Ok(project::MemberRemoved::to_domain_event(event.data)?)
-			},
-			_ if selector == project::LeadContributorAdded::selector() => {
-				Ok(project::LeadContributorAdded::to_domain_event(event.data)?)
-			},
+			_ if selector == contribution::Deployed::selector() =>
+				Ok(contribution::Deployed::to_domain_event(event.data)?),
+			_ if selector == contribution::Created::selector() =>
+				Ok(contribution::Created::to_domain_event(event.data)?),
+			_ if selector == contribution::Closed::selector() =>
+				Ok(contribution::Closed::to_domain_event(event.data)?),
+			_ if selector == contribution::Deleted::selector() =>
+				Ok(contribution::Deleted::to_domain_event(event.data)?),
+			_ if selector == contribution::Assigned::selector() =>
+				Ok(contribution::Assigned::to_domain_event(event.data)?),
+			_ if selector == contribution::Claimed::selector() =>
+				Ok(contribution::Claimed::to_domain_event(event.data)?),
+			_ if selector == contribution::Unassigned::selector() =>
+				Ok(contribution::Unassigned::to_domain_event(event.data)?),
+			_ if selector == contribution::Validated::selector() =>
+				Ok(contribution::Validated::to_domain_event(event.data)?),
+			_ if selector == contribution::GateChanged::selector() =>
+				Ok(contribution::GateChanged::to_domain_event(event.data)?),
+			_ if selector == project::MemberAdded::selector() =>
+				Ok(project::MemberAdded::to_domain_event(event.data)?),
+			_ if selector == project::MemberRemoved::selector() =>
+				Ok(project::MemberRemoved::to_domain_event(event.data)?),
+			_ if selector == project::LeadContributorAdded::selector() =>
+				Ok(project::LeadContributorAdded::to_domain_event(event.data)?),
 			_ if selector == project::LeadContributorRemoved::selector() => Ok(
 				project::LeadContributorRemoved::to_domain_event(event.data)?,
 			),
@@ -179,7 +167,7 @@ mod test {
 		assert_eq!(DEDUPLICATION_ID.to_string(), event.deduplication_id);
 
 		let event_name = match event.event {
-			DomainEvent::Contribution(event) => {
+			DomainEvent::Contribution(event) =>
 				String::from("Contribution")
 					+ match event {
 						ContributionEvent::Deployed { .. } => "Deployed",
@@ -191,17 +179,15 @@ mod test {
 						ContributionEvent::Validated { .. } => "Validated",
 						ContributionEvent::GateChanged { .. } => "GateChanged",
 						_ => unimplemented!("Off chain events"),
-					}
-			},
-			DomainEvent::Project(event) => {
+					},
+			DomainEvent::Project(event) =>
 				String::from("Project")
 					+ match event {
 						ProjectEvent::MemberAdded { .. } => "MemberAdded",
 						ProjectEvent::MemberRemoved { .. } => "MemberRemoved",
 						ProjectEvent::LeadContributorAdded { .. } => "LeadContributorAdded",
 						ProjectEvent::LeadContributorRemoved { .. } => "LeadContributorRemoved",
-					}
-			},
+					},
 			DomainEvent::Contributor(_) => unimplemented!("Off chain events"),
 		};
 
