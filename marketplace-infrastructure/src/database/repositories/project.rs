@@ -135,14 +135,12 @@ impl From<DatabaseError> for ProjectProjectionRepositoryError {
 		match error {
 			DatabaseError::Transaction(diesel::result::Error::DatabaseError(kind, _)) => match kind
 			{
-				diesel::result::DatabaseErrorKind::UniqueViolation => {
-					Self::AlreadyExist(anyhow!(error))
-				},
+				diesel::result::DatabaseErrorKind::UniqueViolation =>
+					Self::AlreadyExist(anyhow!(error)),
 				_ => Self::Infrastructure(anyhow!(error)),
 			},
-			DatabaseError::Transaction(diesel::result::Error::NotFound) => {
-				Self::NotFound(anyhow!(error))
-			},
+			DatabaseError::Transaction(diesel::result::Error::NotFound) =>
+				Self::NotFound(anyhow!(error)),
 			_ => Self::Infrastructure(anyhow!(error)),
 		}
 	}
