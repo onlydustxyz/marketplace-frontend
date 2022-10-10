@@ -59,6 +59,7 @@ async fn delete_contribution(
 			.await
 			.expect("Contribution not found in project");
 	assert_eq!(&contribution.status, "ABANDONED");
+	assert_eq!(&contribution.closed, true);
 	let applications = applications::list_for_contributor(&contributor_id).await;
 	assert!(!applications.contains(&Application {
 		contribution_id: contribution.id,
