@@ -74,14 +74,14 @@ impl ContributionProjectionRepository for Client {
 		&self,
 		contribution_id: &ContributionId,
 		contributor_account_address: Option<&ContributorAccountAddress>,
-		status_: ContributionStatus,
+		status: ContributionStatus,
 	) -> Result<(), ContributionProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
 
 		diesel::update(dsl::contributions)
 			.filter(dsl::id.eq(contribution_id.to_string()))
 			.set((
-				dsl::status.eq(status_.to_string()),
+				dsl::status.eq(status.to_string()),
 				dsl::contributor_id.eq(contributor_account_address.map(|value| value.to_string())),
 				dsl::contributor_account_address
 					.eq(contributor_account_address.map(|value| value.to_string())),
@@ -95,13 +95,13 @@ impl ContributionProjectionRepository for Client {
 	fn update_status(
 		&self,
 		contribution_id: &ContributionId,
-		status_: ContributionStatus,
+		status: ContributionStatus,
 	) -> Result<(), ContributionProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
 
 		diesel::update(dsl::contributions)
 			.filter(dsl::id.eq(contribution_id.to_string()))
-			.set((dsl::status.eq(status_.to_string()),))
+			.set((dsl::status.eq(status.to_string()),))
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
 
@@ -111,13 +111,13 @@ impl ContributionProjectionRepository for Client {
 	fn update_closed(
 		&self,
 		contribution_id: &ContributionId,
-		closed_: bool,
+		closed: bool,
 	) -> Result<(), ContributionProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
 
 		diesel::update(dsl::contributions)
 			.filter(dsl::id.eq(contribution_id.to_string()))
-			.set(dsl::closed.eq(closed_))
+			.set(dsl::closed.eq(closed))
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
 
