@@ -1,3 +1,6 @@
+// ! Deprecated : This on-chain event is kept for retro-compatibility with former deleted event
+// ! Please use instead the ContributionClosed event
+
 use super::{EventTranslator, FromEventError, StarknetTopics, Topics};
 use marketplace_domain::{ContributionEvent, Event, HexPrefixedString};
 use starknet::core::{types::FieldElement, utils::get_selector_from_name};
