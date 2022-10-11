@@ -142,7 +142,7 @@ mod test {
 	#[rstest]
 	#[case(selector::<contribution::Deployed>(), "ContributionDeployed")]
 	#[case(selector::<contribution::Created>(), "ContributionCreated")]
-	#[case(selector::<contribution::Deleted>(), "ContributionDeleted")]
+	#[case(selector::<contribution::Deleted>(), "ContributionClosed")]
 	#[case(selector::<contribution::Closed>(), "ContributionClosed")]
 	#[case(selector::<contribution::Assigned>(), "ContributionAssigned")]
 	#[case(selector::<contribution::Claimed>(), "ContributionClaimed")]
