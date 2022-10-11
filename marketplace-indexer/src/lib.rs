@@ -7,6 +7,7 @@ use crate::{domain::*, infrastructure::apibara};
 use dotenv::dotenv;
 use log::{error, info};
 use marketplace_domain::*;
+use marketplace_event_store::Bus as EventStoreBus;
 use marketplace_infrastructure::{database, event_webhook::EventWebHook, github};
 use std::sync::Arc;
 
@@ -15,10 +16,13 @@ pub async fn main() {
 	github::Client::initialize();
 
 	let database = Arc::new(database::Client::new(database::init_pool()));
+	let event_store_bus = EventStoreBus::default()
+		.await
+		.expect("Unable to connect to the event store bus");
 
 	let apibara_client = apibara::Client::new(
 		apibara_node_url(),
-		build_event_observer(database.clone()),
+		build_event_observer(database.clone(), event_store_bus),
 		database.clone(),
 	)
 	.connect()
@@ -35,7 +39,10 @@ fn apibara_node_url() -> String {
 	std::env::var("APIBARA_NODE_URL").expect("APIBARA_NODE_URL must be set")
 }
 
-fn build_event_observer(database: Arc<database::Client>) -> impl BlockchainObserver {
+fn build_event_observer(
+	database: Arc<database::Client>,
+	event_store_bus: EventStoreBus,
+) -> impl BlockchainObserver {
 	let github = Arc::new(github::Client::new());
 	let reqwest_client = reqwest::Client::new();
 
@@ -48,6 +55,7 @@ fn build_event_observer(database: Arc<database::Client>) -> impl BlockchainObser
 
 	BlockchainObserverComposite::new(vec![
 		Arc::new(BlockchainLogger::default()),
+		Arc::new(event_store_bus),
 		Arc::new(EventStoreObserver::new(
 			database.clone(),
 			database.clone(),
