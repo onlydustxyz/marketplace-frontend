@@ -9,7 +9,7 @@ use super::*;
 
 #[automock]
 pub trait Repository: Send + Sync {
-	fn find(&self, filters: &[Filter]) -> Result<Vec<ContributionProjection>, Error>;
+	fn list_all(&self) -> Result<Vec<ContributionProjection>, Error>;
 
 	fn find_by_id(
 		&self,
