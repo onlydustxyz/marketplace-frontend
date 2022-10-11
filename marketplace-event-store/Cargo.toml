@@ -1,0 +1,45 @@
+[package]
+authors = ["OnlyDust <tech@onlydust.xyz>"]
+description = "Marketplace event store"
+edition = "2021"
+homepage = "https://onlydust.xyz"
+license-file = "LICENSE"
+name = "marketplace-event-store"
+readme = "README.md"
+repository = "https://github.com/onlydustxyz/marketplace-backend"
+version = "0.0.1"
+
+[features]
+consumer = []
+
+[dependencies]
+
+# RabbitMQ
+lapin = "2.1.1"
+tokio-executor-trait = "2.1.0"
+
+# Async
+tokio = {version = "1.18.2", features = ["full"]}
+tokio-stream = "0.1.10"
+futures = {version = "0.3.21", features = ["alloc"]}
+
+# Logs
+log = "0.4.17"
+
+# Serde
+serde = {version = "1.0.137", features = ["derive"]}
+serde_json = {version = "1.0.81"}
+
+# Datetime
+chrono = "0.4"
+
+# Utils
+dotenv = "0.15.0"
+
+# Errors
+anyhow = "1.0.57"
+thiserror = "1.0.31"
+
+# Local dependecies
+marketplace-infrastructure = {path = "../marketplace-infrastructure"}
+marketplace-domain = {path = "../marketplace-domain"}
