@@ -77,61 +77,10 @@ fn find() {
 	let contribution2 = init_contribution(&client, project1.id);
 	let contribution3 = init_contribution(&client, project2.id);
 
-	// No filters
 	let found_contributions =
-		<Client as ContributionProjectionRepository>::find(&client, &[]).unwrap();
+		<Client as ContributionProjectionRepository>::list_all(&client).unwrap();
 	assert_eq!(found_contributions.len(), 3);
 	assert!(found_contributions.iter().any(|c| c.id == contribution1.id));
 	assert!(found_contributions.iter().any(|c| c.id == contribution2.id));
 	assert!(found_contributions.iter().any(|c| c.id == contribution3.id));
-
-	// Filter by project
-	let found_contributions = <Client as ContributionProjectionRepository>::find(
-		&client,
-		&[ContributionProjectionFilter::Project(project1.id)],
-	)
-	.unwrap();
-	assert_eq!(found_contributions.len(), 2);
-	assert!(found_contributions.iter().any(|c| c.id == contribution1.id));
-	assert!(found_contributions.iter().any(|c| c.id == contribution2.id));
-
-	// Filter by contributor
-	let contributor_id: ContributorAccountAddress = rand::random::<u128>().into();
-	<Client as ContributionProjectionRepository>::update_contributor_and_status(
-		&client,
-		&contribution1.id,
-		Some(&contributor_id),
-		Default::default(),
-	)
-	.unwrap();
-	<Client as ContributionProjectionRepository>::update_contributor_and_status(
-		&client,
-		&contribution3.id,
-		Some(&contributor_id),
-		Default::default(),
-	)
-	.unwrap();
-	let found_contributions = <Client as ContributionProjectionRepository>::find(
-		&client,
-		&[ContributionProjectionFilter::Contributor(
-			contributor_id.clone(),
-		)],
-	)
-	.unwrap();
-
-	assert_eq!(found_contributions.len(), 2);
-	assert!(found_contributions.iter().any(|c| c.id == contribution1.id));
-	assert!(found_contributions.iter().any(|c| c.id == contribution3.id));
-
-	// Filter by contributor and project
-	let found_contributions = <Client as ContributionProjectionRepository>::find(
-		&client,
-		&[
-			ContributionProjectionFilter::Project(project1.id),
-			ContributionProjectionFilter::Contributor(contributor_id),
-		],
-	)
-	.unwrap();
-	assert_eq!(found_contributions.len(), 1);
-	assert!(found_contributions.iter().any(|c| c.id == contribution1.id));
 }

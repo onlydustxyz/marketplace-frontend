@@ -68,7 +68,7 @@ async fn contribution_lifetime(
 	.await;
 	wait_for_events(events_count + 2).await;
 	let found_contributions =
-		contributions::get(Some(STARKONQUEST_ID), Some(&contributor_account_address)).await;
+		contributions::get().await;
 	assert_eq!(found_contributions.len(), 1);
 	assert_eq!(found_contributions[0].id, contribution.id);
 }

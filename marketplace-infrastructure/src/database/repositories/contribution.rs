@@ -6,27 +6,16 @@ use marketplace_domain::*;
 use std::str::FromStr;
 
 impl ContributionProjectionRepository for Client {
-	fn find(
+	fn list_all(
 		&self,
-		filters: &[ContributionProjectionFilter],
 	) -> Result<Vec<ContributionProjection>, ContributionProjectionRepositoryError> {
-		let mut query = dsl::contributions.into_boxed();
-
-		for filter in filters.iter() {
-			match filter {
-				ContributionProjectionFilter::Project(id) =>
-					query = query.filter(dsl::project_id.eq(id.to_string())),
-				ContributionProjectionFilter::Contributor(id) =>
-					query = query.filter(dsl::contributor_id.eq(id.to_string())),
-			}
-		}
-
 		let connection = self
 			.connection()
 			.map_err(|e| ContributionProjectionRepositoryError::Infrastructure(e.into()))?;
 
-		let contributions =
-			query.load::<models::Contribution>(&*connection).map_err(DatabaseError::from)?;
+		let contributions = dsl::contributions
+			.load::<models::Contribution>(&*connection)
+			.map_err(DatabaseError::from)?;
 
 		Ok(contributions.into_iter().map_into().collect())
 	}
