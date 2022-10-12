@@ -1,6 +1,6 @@
 use super::{EventTranslator, FromEventError, StarknetTopics, Topics};
 use marketplace_domain::{
-	ContributorAccountAddress, Event as DomainEvent, ProjectEvent, ProjectId,
+	ContractAddress, ContributorAccountAddress, Event as DomainEvent, ProjectEvent, ProjectId,
 };
 use starknet::core::{types::FieldElement, utils::get_selector_from_name};
 
@@ -11,7 +11,10 @@ impl EventTranslator for LeadContributorRemoved {
 		get_selector_from_name("LeadContributorRemoved").unwrap()
 	}
 
-	fn to_domain_event(mut topics: Topics) -> Result<DomainEvent, FromEventError> {
+	fn to_domain_event(
+		_: &ContractAddress,
+		mut topics: Topics,
+	) -> Result<DomainEvent, FromEventError> {
 		let project_id: u128 = topics.pop_front_as()?;
 		let contributor_account_address: ContributorAccountAddress = topics.pop_front_as()?;
 
@@ -52,8 +55,10 @@ mod test {
 
 	#[rstest]
 	fn create_event_from_apibara(apibara_event_data: Topics) {
-		let result =
-			<LeadContributorRemoved as EventTranslator>::to_domain_event(apibara_event_data);
+		let result = <LeadContributorRemoved as EventTranslator>::to_domain_event(
+			&Default::default(),
+			apibara_event_data,
+		);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(
 			DomainEvent::Project(ProjectEvent::LeadContributorRemoved {

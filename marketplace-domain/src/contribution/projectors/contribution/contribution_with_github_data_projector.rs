@@ -107,6 +107,13 @@ impl WithGithubDataProjector {
 
 		self.contribution_projection_repository.update_closed(id, true).map_err_into()
 	}
+
+	fn on_reopen(&self, id: &ContributionId) -> Result<(), Error> {
+		self.contribution_projection_repository
+			.update_status(id, ContributionStatus::Open)?;
+
+		self.contribution_projection_repository.update_closed(id, false).map_err_into()
+	}
 }
 
 #[async_trait]
@@ -132,6 +139,7 @@ impl EventListener for WithGithubDataProjector {
 				ContributionEvent::Validated { id } => self.on_validate(id),
 				ContributionEvent::GateChanged { id, gate } => self.on_gate_changed(id, *gate),
 				ContributionEvent::Closed { id } => self.on_close(id),
+				ContributionEvent::Reopened { id } => self.on_reopen(id),
 				ContributionEvent::Deployed { .. }
 				| ContributionEvent::Applied { .. }
 				| ContributionEvent::ApplicationRefused { .. } => return,

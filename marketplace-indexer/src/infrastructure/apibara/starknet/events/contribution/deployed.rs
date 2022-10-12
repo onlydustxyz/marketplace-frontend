@@ -9,7 +9,10 @@ impl EventTranslator for Deployed {
 		get_selector_from_name("ContributionDeployed").unwrap()
 	}
 
-	fn to_domain_event(mut topics: Topics) -> Result<DomainEvent, FromEventError> {
+	fn to_domain_event(
+		_: &ContractAddress,
+		mut topics: Topics,
+	) -> Result<DomainEvent, FromEventError> {
 		let contract_address: ContractAddress = topics.pop_front_as()?;
 
 		Ok(DomainEvent::Contribution(ContributionEvent::Deployed {
@@ -42,7 +45,8 @@ mod test {
 
 	#[rstest]
 	fn create_event_from_apibara(apibara_event_data: Topics) {
-		let result = <Deployed as EventTranslator>::to_domain_event(apibara_event_data);
+		let result =
+			<Deployed as EventTranslator>::to_domain_event(&Default::default(), apibara_event_data);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 
 		assert_eq!(

@@ -83,6 +83,7 @@ impl EventListener for ApplicationProjector {
 				} => self.on_assigned(contribution_id, contributor_account_address),
 				ContributionEvent::Closed { id } => self.on_contribution_deleted(id),
 				ContributionEvent::Deployed { .. }
+				| ContributionEvent::Reopened { .. }
 				| ContributionEvent::Unassigned { .. }
 				| ContributionEvent::Created { .. }
 				| ContributionEvent::Validated { .. }

@@ -45,6 +45,9 @@ pub enum Event {
 	Closed {
 		id: ContributionId,
 	},
+	Reopened {
+		id: ContributionId,
+	},
 }
 
 impl Display for Event {

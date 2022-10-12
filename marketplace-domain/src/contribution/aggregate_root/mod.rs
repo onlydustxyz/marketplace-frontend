@@ -167,6 +167,11 @@ impl EventSourcable for Contribution {
 					closed: true,
 					..self
 				},
+				ContributionEvent::Reopened { .. } => Self {
+					status: Status::Open,
+					closed: false,
+					..self
+				},
 			},
 			Event::Project(_) | Event::Contributor(_) => self,
 		}
