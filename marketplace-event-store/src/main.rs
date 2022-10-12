@@ -1,8 +1,8 @@
 use anyhow::Result;
 use dotenv::dotenv;
 use futures::TryFutureExt;
-use marketplace_domain::Subscriber;
-use marketplace_event_store::{Event, EventBus};
+use marketplace_domain::{Publisher, Subscriber};
+use marketplace_event_store::{Event, EventBus as EventStoreBus};
 use marketplace_infrastructure::{logger, EventBus};
 use std::sync::Arc;
 
@@ -11,7 +11,7 @@ async fn main() -> Result<()> {
 	dotenv().ok();
 	logger::set_default_global_logger().cancel_reset();
 
-	let event_store_bus = EventBus::default().await?;
+	let event_store_bus = EventStoreBus::default().await?;
 	let event_bus = Arc::new(EventBus::default().await?);
 
 	event_store_bus

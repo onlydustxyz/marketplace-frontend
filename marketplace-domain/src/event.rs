@@ -1,4 +1,4 @@
-use crate::{Aggregate, ContributionEvent, ContributorEvent, EventOrigin, ProjectEvent};
+use crate::{Aggregate, ContributionEvent, ContributorEvent, EventOrigin, Message, ProjectEvent};
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -48,6 +48,8 @@ impl Display for Origin {
 		)
 	}
 }
+
+impl Message for Event {}
 
 #[cfg(test)]
 mod test {
