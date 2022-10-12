@@ -13,7 +13,7 @@ pub enum Error {
 	#[error(transparent)]
 	Environment(#[from] VarError),
 	#[error(transparent)]
-	AMQP(#[from] lapin::Error),
+	Amqp(#[from] lapin::Error),
 }
 
 pub struct EventBus {
