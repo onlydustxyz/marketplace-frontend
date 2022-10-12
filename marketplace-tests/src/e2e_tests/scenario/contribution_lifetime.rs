@@ -31,7 +31,7 @@ async fn contribution_lifetime(
 	let contributor_account = &accounts[2];
 	let contributor_account_address = format!("{:#066x}", contributor_account.address());
 
-	add_lead_contributor(&admin_account, STARKONQUEST_ID, lead_contributor.address()).await;
+	add_lead_contributor(admin_account, STARKONQUEST_ID, lead_contributor.address()).await;
 	// Create a new contribution
 	contributions::create(lead_contributor, STARKONQUEST_ID, issue_number, 0).await;
 	wait_for_events(events_count + 3).await;
@@ -61,7 +61,7 @@ async fn contribution_lifetime(
 	let events_count = get_events_count();
 	contributions::apply(&contribution.id, &contributor_account_address).await;
 	contributions::assign_contributor_to_contribution(
-		&lead_contributor,
+		lead_contributor,
 		&contribution.id,
 		&contributor_account_address,
 	)
