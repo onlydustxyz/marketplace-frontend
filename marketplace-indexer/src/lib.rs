@@ -7,7 +7,7 @@ use crate::{domain::*, infrastructure::apibara};
 use dotenv::dotenv;
 use log::{error, info};
 use marketplace_domain::*;
-use marketplace_event_store::Bus as EventStoreBus;
+use marketplace_event_store::EventBus as EventStoreBus;
 use marketplace_infrastructure::{database, event_webhook::EventWebHook, github};
 use std::sync::Arc;
 
