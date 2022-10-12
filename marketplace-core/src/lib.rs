@@ -6,14 +6,14 @@ pub mod dto;
 mod routes;
 
 use crate::application::*;
+use anyhow::Result;
 use dotenv::dotenv;
 use log::info;
+use marketplace_domain::{Subscriber, *};
 use marketplace_infrastructure::{
 	database::{self, init_pool},
-	github, starknet_account_verifier,
+	github, starknet_account_verifier, EventBus,
 };
-
-use marketplace_domain::*;
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
 use std::sync::Arc;
@@ -177,4 +177,20 @@ fn inject_app(
 		.manage(database.clone() as Arc<dyn LeadContributorProjectionRepository>)
 		.manage(database as Arc<dyn ProjectProjectionRepository>)
 		.manage(contact_information_service)
+}
+
+pub async fn event_listeners_main() -> Result<()> {
+	let event_bus = EventBus::default().await?;
+
+	event_bus
+		.subscribe(|event| async move {
+			println!(
+				"[listener] Received message: {}",
+				serde_json::to_string_pretty(&event)?
+			);
+			Ok(())
+		})
+		.await?;
+
+	Ok(())
 }

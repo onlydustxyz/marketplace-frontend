@@ -37,3 +37,8 @@ pub async fn marketplace_indexer(_migrated_database: ()) -> JoinHandle<()> {
 pub async fn marketplace_event_store() -> JoinHandle<()> {
 	spawn(async { ::marketplace_event_store::main().await.unwrap() })
 }
+
+#[fixture]
+pub async fn event_listeners() -> JoinHandle<()> {
+	spawn(async { ::marketplace_core::event_listeners_main().await.unwrap() })
+}
