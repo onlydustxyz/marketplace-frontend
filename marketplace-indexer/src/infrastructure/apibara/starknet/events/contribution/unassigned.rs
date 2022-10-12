@@ -1,5 +1,7 @@
 use super::{EventTranslator, FromEventError, StarknetTopics, Topics};
-use marketplace_domain::{ContributionEvent, Event as DomainEvent, HexPrefixedString};
+use marketplace_domain::{
+	ContractAddress, ContributionEvent, Event as DomainEvent, HexPrefixedString,
+};
 use starknet::core::{types::FieldElement, utils::get_selector_from_name};
 
 pub struct Unassigned;
@@ -9,7 +11,10 @@ impl EventTranslator for Unassigned {
 		get_selector_from_name("ContributionUnassigned").unwrap()
 	}
 
-	fn to_domain_event(mut topics: Topics) -> Result<DomainEvent, FromEventError> {
+	fn to_domain_event(
+		_: &ContractAddress,
+		mut topics: Topics,
+	) -> Result<DomainEvent, FromEventError> {
 		let contribution_id: HexPrefixedString = topics.pop_front_as()?;
 
 		Ok(DomainEvent::Contribution(ContributionEvent::Unassigned {
@@ -42,7 +47,10 @@ mod test {
 
 	#[rstest]
 	fn create_event_from_apibara(apibara_event_data: Topics) {
-		let result = <Unassigned as EventTranslator>::to_domain_event(apibara_event_data);
+		let result = <Unassigned as EventTranslator>::to_domain_event(
+			&Default::default(),
+			apibara_event_data,
+		);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(
 			DomainEvent::Contribution(ContributionEvent::Unassigned { id: 12.into() },),

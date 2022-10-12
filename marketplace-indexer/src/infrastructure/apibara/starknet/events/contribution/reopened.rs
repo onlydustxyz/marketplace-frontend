@@ -2,18 +2,18 @@ use super::{EventTranslator, FromEventError, Topics};
 use marketplace_domain::{ContractAddress, ContributionEvent, Event};
 use starknet::core::{types::FieldElement, utils::get_selector_from_name};
 
-pub struct Closed;
+pub struct Reopened;
 
-impl EventTranslator for Closed {
+impl EventTranslator for Reopened {
 	fn selector() -> FieldElement {
-		get_selector_from_name("ContributionClosed").unwrap()
+		get_selector_from_name("ContributionReopened").unwrap()
 	}
 
 	fn to_domain_event(
 		contract_address: &ContractAddress,
 		_: Topics,
 	) -> Result<Event, FromEventError> {
-		Ok(Event::Contribution(ContributionEvent::Closed {
+		Ok(Event::Contribution(ContributionEvent::Reopened {
 			id: contract_address.clone().into(),
 		}))
 	}
@@ -34,8 +34,8 @@ mod test {
 	#[rstest]
 	fn selector() {
 		assert_eq!(
-			get_selector_from_name("ContributionClosed").unwrap(),
-			<Closed as EventTranslator>::selector()
+			get_selector_from_name("ContributionReopened").unwrap(),
+			<Reopened as EventTranslator>::selector()
 		);
 	}
 
@@ -46,10 +46,10 @@ mod test {
 		)
 		.unwrap();
 		let result =
-			<Closed as EventTranslator>::to_domain_event(&contract_address, apibara_event_data);
+			<Reopened as EventTranslator>::to_domain_event(&contract_address, apibara_event_data);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(
-			Event::Contribution(ContributionEvent::Closed {
+			Event::Contribution(ContributionEvent::Reopened {
 				id: contract_address.into()
 			},),
 			result.unwrap()

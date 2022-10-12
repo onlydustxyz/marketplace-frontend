@@ -105,6 +105,7 @@ impl Identifiable<ContributionEvent> for Contribution {
 			| ContributionEvent::Unassigned { id }
 			| ContributionEvent::Validated { id }
 			| ContributionEvent::Closed { id }
+			| ContributionEvent::Reopened { id }
 			| ContributionEvent::GateChanged { id, .. } => id.clone(),
 		}
 	}

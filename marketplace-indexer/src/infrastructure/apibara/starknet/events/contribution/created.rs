@@ -1,5 +1,5 @@
 use super::{EventTranslator, FromEventError, StarknetTopics, Topics};
-use marketplace_domain::{ContributionEvent, Event, HexPrefixedString};
+use marketplace_domain::{ContractAddress, ContributionEvent, Event, HexPrefixedString};
 use starknet::core::{types::FieldElement, utils::get_selector_from_name};
 
 pub struct Created;
@@ -9,7 +9,7 @@ impl EventTranslator for Created {
 		get_selector_from_name("ContributionCreated").unwrap()
 	}
 
-	fn to_domain_event(mut topics: Topics) -> Result<Event, FromEventError> {
+	fn to_domain_event(_: &ContractAddress, mut topics: Topics) -> Result<Event, FromEventError> {
 		let contribution_id: HexPrefixedString = topics.pop_front_as()?;
 		let project_id: u128 = topics.pop_front_as()?;
 		let issue_number: u128 = topics.pop_front_as()?;
@@ -62,7 +62,8 @@ mod test {
 
 	#[rstest]
 	fn create_event_from_apibara(apibara_event_data: Topics) {
-		let result = <Created as EventTranslator>::to_domain_event(apibara_event_data);
+		let result =
+			<Created as EventTranslator>::to_domain_event(&Default::default(), apibara_event_data);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(
 			Event::Contribution(ContributionEvent::Created {

@@ -10,6 +10,9 @@ pub use deleted::Deleted;
 mod closed;
 pub use closed::Closed;
 
+mod reopened;
+pub use reopened::Reopened;
+
 mod assigned;
 pub use assigned::Assigned;
 
