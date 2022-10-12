@@ -1,7 +1,7 @@
 use super::{wait_for_events, STARKONQUEST_ID};
 use crate::e2e_tests::{
 	applications,
-	backends::{marketplace_api, marketplace_indexer},
+	backends::{marketplace_api, marketplace_event_store, marketplace_indexer},
 	contributions,
 	database::get_events_count,
 	projects::add_lead_contributor,
@@ -10,6 +10,7 @@ use crate::e2e_tests::{
 };
 use marketplace_core::dto::Application;
 use rstest::*;
+use tokio::task::JoinHandle;
 
 // Lead contributors must not overlap between different scenario
 // otherwise their will consume the same call nonces
@@ -19,11 +20,13 @@ const LEAD_CONTRIBUTOR_INDEX: usize = 2;
 #[tokio::test]
 async fn delete_contribution(
 	accounts: [Account; 10],
-	#[future] marketplace_api: tokio::task::JoinHandle<()>,
-	#[future] marketplace_indexer: tokio::task::JoinHandle<()>,
+	#[future] marketplace_api: JoinHandle<()>,
+	#[future] marketplace_indexer: JoinHandle<()>,
+	#[future] marketplace_event_store: JoinHandle<()>,
 ) {
 	marketplace_api.await;
 	marketplace_indexer.await;
+	marketplace_event_store.await;
 
 	let events_count = get_events_count();
 

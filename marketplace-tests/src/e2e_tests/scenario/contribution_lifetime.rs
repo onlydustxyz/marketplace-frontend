@@ -1,6 +1,6 @@
 use super::{wait_for_events, STARKONQUEST_ID};
 use crate::e2e_tests::{
-	backends::{marketplace_api, marketplace_indexer},
+	backends::{marketplace_api, marketplace_event_store, marketplace_indexer},
 	contributions, contributors,
 	database::get_events_count,
 	projects::add_lead_contributor,
@@ -8,6 +8,7 @@ use crate::e2e_tests::{
 	starknet::{accounts::accounts, Account},
 };
 use rstest::*;
+use tokio::task::JoinHandle;
 
 // Lead contributors must not overlap between different scenario
 // otherwise their will consume the same call nonces
@@ -17,11 +18,13 @@ const LEAD_CONTRIBUTOR_INDEX: usize = 1;
 #[tokio::test]
 async fn contribution_lifetime(
 	accounts: [Account; 10],
-	#[future] marketplace_api: tokio::task::JoinHandle<()>,
-	#[future] marketplace_indexer: tokio::task::JoinHandle<()>,
+	#[future] marketplace_api: JoinHandle<()>,
+	#[future] marketplace_indexer: JoinHandle<()>,
+	#[future] marketplace_event_store: JoinHandle<()>,
 ) {
 	marketplace_api.await;
 	marketplace_indexer.await;
+	marketplace_event_store.await;
 
 	let events_count = get_events_count();
 
