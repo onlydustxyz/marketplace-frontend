@@ -1,5 +1,5 @@
 use chrono::NaiveDateTime;
-use marketplace_domain::{Event as DomainEvent, EventOrigin};
+use marketplace_domain::{Event as DomainEvent, EventOrigin, Message};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -11,3 +11,5 @@ pub struct Event {
 	pub metadata: Value,
 	pub origin: EventOrigin,
 }
+
+impl Message for Event {}

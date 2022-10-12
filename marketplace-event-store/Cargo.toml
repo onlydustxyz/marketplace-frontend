@@ -19,9 +19,10 @@ lapin = "2.1.1"
 tokio-executor-trait = "2.1.0"
 
 # Async
+async-trait = "0.1.56"
+futures = {version = "0.3.21", features = ["alloc"]}
 tokio = {version = "1.18.2", features = ["full"]}
 tokio-stream = "0.1.10"
-futures = {version = "0.3.21", features = ["alloc"]}
 
 # Logs
 log = "0.4.17"

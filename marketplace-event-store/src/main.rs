@@ -1,25 +1,35 @@
 use anyhow::Result;
 use dotenv::dotenv;
-use marketplace_event_store::{Bus, Event};
-use marketplace_infrastructure::logger;
+use futures::TryFutureExt;
+use marketplace_domain::Subscriber;
+use marketplace_event_store::{Event, EventBus};
+use marketplace_infrastructure::{logger, EventBus};
+use std::sync::Arc;
 
 #[tokio::main]
 async fn main() -> Result<()> {
 	dotenv().ok();
 	logger::set_default_global_logger().cancel_reset();
 
-	let event_store_bus = Bus::default().await?;
+	let event_store_bus = EventBus::default().await?;
+	let event_bus = Arc::new(EventBus::default().await?);
 
 	event_store_bus
-		.consume(|data| async move {
-			let event: Event = serde_json::from_slice(&data)?;
-			println!(
-				"[event-store] Received message: {}",
-				serde_json::to_string_pretty(&event)?
-			);
-			Ok(())
-		})
+		.subscribe(|event| log(event).and_then(|event| publish(event, event_bus.clone())))
 		.await?;
 
+	Ok(())
+}
+
+async fn log(event: Event) -> Result<Event> {
+	println!(
+		"[event-store] Received message: {}",
+		serde_json::to_string_pretty(&event)?
+	);
+	Ok(event)
+}
+
+async fn publish(event: Event, event_bus: Arc<EventBus>) -> Result<()> {
+	event_bus.publish(event.event).await?;
 	Ok(())
 }
