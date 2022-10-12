@@ -30,6 +30,7 @@ env:
   IS_VALID_SIGNATURE_SELECTOR: isValidSignature
   GITHUB_ACCESS_TOKEN_URL: http://localhost:5001/token
   GITHUB_USER_API_URL: http://localhost:5001/user
+  AMQP_ADDR: amqp://127.0.0.1:5672/%2f
 
 jobs:
   format:

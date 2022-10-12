@@ -2118,6 +2118,7 @@ dependencies = [
  "futures 0.3.24",
  "hex",
  "marketplace-core",
+ "marketplace-event-store",
  "marketplace-indexer",
  "marketplace-infrastructure",
  "r2d2",

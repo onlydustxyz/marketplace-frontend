@@ -32,3 +32,8 @@ pub async fn marketplace_indexer(_migrated_database: ()) -> JoinHandle<()> {
 	tokio::time::sleep(Duration::from_secs(1)).await;
 	handle
 }
+
+#[fixture]
+pub async fn marketplace_event_store() -> JoinHandle<()> {
+	spawn(async { ::marketplace_event_store::main().await.unwrap() })
+}
