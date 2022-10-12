@@ -2017,7 +2017,6 @@ dependencies = [
  "serde_json",
  "thiserror",
  "tokio",
- "tokio-executor-trait",
  "tokio-stream",
 ]
 
