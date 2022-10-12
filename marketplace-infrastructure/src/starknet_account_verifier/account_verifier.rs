@@ -1,5 +1,7 @@
+use super::{field_element::TryFromContributorAccount, StarkNetClient};
 use async_trait::async_trait;
-use marketplace_domain::OnChainAccountVerifier;
+use log::debug;
+use marketplace_domain::{OnChainAccountVerifier, *};
 use starknet::{
 	core::{
 		types::{BlockId, CallFunction, FieldElement},
@@ -7,9 +9,6 @@ use starknet::{
 	},
 	providers::Provider,
 };
-
-use super::{field_element::TryFromContributorAccount, StarkNetClient};
-use marketplace_domain::*;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq, PartialOrd, Ord, Hash)]
 pub struct SignedData {
@@ -35,9 +34,13 @@ impl OnChainAccountVerifier for StarkNetClient {
 		signed_data: &Self::SignedData,
 		account_address: &ContributorAccountAddress,
 	) -> Result<(), OnChainAccountVerifierError> {
-		let contract_address =
-			FieldElement::try_from_contributor_account_address(account_address.clone())
-				.map_err(OnChainAccountVerifierError::Infrastructure)?;
+		let contract_address = FieldElement::try_from_contributor_account_address(
+			account_address.clone(),
+		)
+		.map_err(|e| {
+			debug!("{}", e.to_string());
+			OnChainAccountVerifierError::Infrastructure(e)
+		})?;
 
 		self.sequencer
 			.call_contract(
@@ -58,7 +61,10 @@ impl OnChainAccountVerifier for StarkNetClient {
 				BlockId::Latest,
 			)
 			.await
-			.map_err(|e| OnChainAccountVerifierError::Infrastructure(anyhow::Error::from(e)))?;
+			.map_err(|e| {
+				debug!("{}", e.to_string());
+				OnChainAccountVerifierError::Infrastructure(anyhow::Error::from(e))
+			})?;
 
 		Ok(())
 	}
