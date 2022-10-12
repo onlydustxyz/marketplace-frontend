@@ -26,6 +26,9 @@ pub use aggregate::{Aggregate, AggregateRoot, EventSourcable};
 mod event_listener;
 pub use event_listener::{EventListener, MockEventListener};
 
+mod messaging;
+pub use messaging::{Bus, Message, Publisher, PublisherError, Subscriber, SubscriberError};
+
 mod projection;
 pub use projection::Projection;
 
