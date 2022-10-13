@@ -23,7 +23,7 @@ pub async fn main() -> Result<()> {
 
 async fn log(event: Event) -> Result<Event> {
 	println!(
-		"[event-store] Received message: {}",
+		"[event-store] ✉️ Received message: {}",
 		serde_json::to_string_pretty(&event)?
 	);
 	Ok(event)

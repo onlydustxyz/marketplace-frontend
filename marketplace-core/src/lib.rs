@@ -185,7 +185,7 @@ pub async fn event_listeners_main() -> Result<()> {
 	event_bus
 		.subscribe(|event| async move {
 			println!(
-				"[listener] Received message: {}",
+				"[listener] ✉️ Received message: {}",
 				serde_json::to_string_pretty(&event)?
 			);
 			Ok(())
