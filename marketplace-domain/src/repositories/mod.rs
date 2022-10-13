@@ -3,7 +3,7 @@ pub use project::{Error as ProjectRepositoryError, Repository as ProjectReposito
 
 mod contribution_projection;
 pub use contribution_projection::{
-	Error as ContributionProjectionRepositoryError, Filter as ContributionProjectionFilter,
+	Error as ContributionProjectionRepositoryError,
 	MockRepository as MockContributionProjectionRepository,
 	Repository as ContributionProjectionRepository,
 };
