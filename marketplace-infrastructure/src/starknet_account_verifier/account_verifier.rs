@@ -34,13 +34,9 @@ impl OnChainAccountVerifier for StarkNetClient {
 		signed_data: &Self::SignedData,
 		account_address: &ContributorAccountAddress,
 	) -> Result<(), OnChainAccountVerifierError> {
-		let contract_address = FieldElement::try_from_contributor_account_address(
-			account_address.clone(),
-		)
-		.map_err(|e| {
-			debug!("{}", e.to_string());
-			OnChainAccountVerifierError::Infrastructure(e)
-		})?;
+		let contract_address =
+			FieldElement::try_from_contributor_account_address(account_address.clone())
+				.map_err(OnChainAccountVerifierError::Infrastructure)?;
 
 		self.sequencer
 			.call_contract(
@@ -67,5 +63,31 @@ impl OnChainAccountVerifier for StarkNetClient {
 			})?;
 
 		Ok(())
+	}
+}
+
+#[cfg(test)]
+mod test {
+	use super::*;
+	use std::str::FromStr;
+
+	#[tokio::test]
+	async fn check_signature_error() {
+		let client = StarkNetClient::default();
+		let contributor_account_address = ContributorAccountAddress::from_str(
+			"0x0711a8230e08023d583d1ee8fdfa0af78f6856bc911285c72d9c0eb9ca408733",
+		)
+		.unwrap();
+		let signed_data = &SignedData {
+			hash: FieldElement::from_str("0x112233").unwrap(),
+			signature: Signature {
+				r: FieldElement::from_str("0x112233").unwrap(),
+				s: FieldElement::from_str("0x112233").unwrap(),
+			},
+		};
+
+		let result = client.check_signature(signed_data, &contributor_account_address).await;
+
+		assert!(result.is_err());
 	}
 }
