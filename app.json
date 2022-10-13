@@ -2,7 +2,8 @@
     "name": "Onlydust backend",
     "addons": [
         "heroku-postgresql:standard-0",
-        "bucketeer:hobbyist"
+        "bucketeer:hobbyist",
+        "cloudamqp:lemur"
     ],
     "buildpacks": [
         {
@@ -11,7 +12,6 @@
     ],
     "env": {
         "APIBARA_NODE_URL": "https://goerli.starknet.stream.apibara.com",
-        "INDEXER_NAME": "contributions-indexer",
         "NETWORK": "alpha-goerli",
         "PG_POOL_MAX_SIZE": "3",
         "ROCKET_ADDRESS": "0.0.0.0",
@@ -23,7 +23,8 @@
         "review": {
             "addons": [
                 "heroku-postgresql:hobby-dev",
-                "bucketeer:hobbyist"
+                "bucketeer:hobbyist",
+                "cloudamqp:lemur"
             ]
         }
     }
