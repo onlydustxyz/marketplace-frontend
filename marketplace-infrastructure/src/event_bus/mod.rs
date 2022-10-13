@@ -28,7 +28,7 @@ impl EventBus {
 		channel
 			.exchange_declare(
 				exchange_name,
-				lapin::ExchangeKind::Topic,
+				lapin::ExchangeKind::Fanout,
 				Default::default(),
 				Default::default(),
 			)
