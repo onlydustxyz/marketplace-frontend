@@ -1,9 +1,12 @@
-use anyhow::anyhow;
-use async_trait::async_trait;
-use lapin::{options::QueueDeclareOptions, Channel, Connection};
+mod publisher;
+mod subscriber;
+
+use lapin::{
+	message::Delivery, options::QueueDeclareOptions, publisher_confirm::Confirmation, Channel,
+	Connection,
+};
 use log::{error, info};
-use marketplace_domain::{Event, Publisher, PublisherError, Subscriber, SubscriberError};
-use std::{env::VarError, future::Future};
+use std::env::VarError;
 use thiserror::Error;
 use tokio_stream::StreamExt;
 
@@ -19,6 +22,7 @@ pub struct EventBus {
 	_connection: Connection,
 	channel: Channel,
 	exchange_name: &'static str,
+	queue_name: &'static str,
 }
 
 impl EventBus {
@@ -29,10 +33,11 @@ impl EventBus {
 			_connection: connection,
 			channel,
 			exchange_name: "",
+			queue_name: "",
 		})
 	}
 
-	pub async fn with_exchange(self, exchange_name: &'static str) -> Result<Self, Error> {
+	async fn with_exchange(self, exchange_name: &'static str) -> Result<Self, Error> {
 		self.channel
 			.exchange_declare(
 				exchange_name,
@@ -48,22 +53,8 @@ impl EventBus {
 		})
 	}
 
-	pub async fn default() -> Result<Self, Error> {
-		let connection = Connection::connect(&amqp_address()?, Default::default()).await?;
-		info!("🔗 Event bus connected");
-		Self::new(connection).await?.with_exchange("events").await
-	}
-}
-
-#[async_trait]
-impl Subscriber<Event> for EventBus {
-	async fn subscribe<C, F>(&self, callback: C) -> Result<(), SubscriberError>
-	where
-		C: Fn(Event) -> F + Send + Sync,
-		F: Future<Output = Result<(), anyhow::Error>> + Send,
-	{
-		let queue = self
-			.channel
+	async fn with_queue(self, queue_name: &'static str) -> Result<Self, Error> {
+		self.channel
 			.queue_declare(
 				"",
 				QueueDeclareOptions {
@@ -72,105 +63,67 @@ impl Subscriber<Event> for EventBus {
 				},
 				Default::default(),
 			)
-			.await
-			.map_err(|e| {
-				error!("Failed while declaring queue {e}");
-				SubscriberError::Infrastructure(anyhow!(e))
-			})?;
+			.await?;
 
+		Ok(Self { queue_name, ..self })
+	}
+
+	async fn binded(self) -> Result<Self, Error> {
 		self.channel
 			.queue_bind(
-				queue.name().as_str(),
+				self.queue_name,
 				self.exchange_name,
 				"",
 				Default::default(),
 				Default::default(),
 			)
-			.await
-			.map_err(|e| {
-				error!("Failed while binding queue to exchange {e}");
-				SubscriberError::Infrastructure(anyhow!(e))
-			})?;
+			.await?;
 
+		Ok(self)
+	}
+
+	async fn consume(&self) -> Result<Option<Delivery>, Error> {
 		let mut consumer = self
 			.channel
-			.basic_consume(
-				queue.name().as_str(),
-				"",
-				Default::default(),
-				Default::default(),
-			)
-			.await
-			.map_err(|e| {
-				error!("Failed while consuming event {e}");
-				SubscriberError::Infrastructure(anyhow!(e))
-			})?;
+			.basic_consume(self.queue_name, "", Default::default(), Default::default())
+			.await?;
 
-		while let Some(delivery) = consumer.next().await {
-			let delivery = delivery.map_err(|e| {
-				error!("Failed while dequeuing new event: {e}");
-				SubscriberError::Infrastructure(anyhow!(e))
-			})?;
-
-			let event: Event = serde_json::from_slice(&delivery.data)?;
-			match callback(event).await {
-				Ok(_) => delivery.ack(Default::default()).await.map_err(|e| {
-					error!("Failed while acknowledging event: {e}");
-					SubscriberError::Infrastructure(anyhow!(e))
-				})?,
-
-				Err(error) => {
-					error!("{error}");
-					delivery.nack(Default::default()).await.map_err(|e| {
-						error!("Failed while sending negative ack to publisher: {e}");
-						SubscriberError::Infrastructure(anyhow!(e))
-					})?;
-
-					return Err(SubscriberError::Processing(error));
-				},
-			}
+		match consumer.next().await {
+			Some(Ok(delivery)) => Ok(Some(delivery)),
+			Some(Err(error)) => Err(error.into()),
+			None => Ok(None),
 		}
-
-		Ok(())
 	}
-}
 
-#[async_trait]
-impl Publisher<Event> for EventBus {
-	async fn publish(&self, event: Event) -> Result<(), PublisherError> {
+	async fn publish(&self, data: &[u8]) -> Result<Confirmation, Error> {
 		let confirmation = self
 			.channel
 			.basic_publish(
 				self.exchange_name,
-				topic(&event),
+				"",
 				Default::default(),
-				&serde_json::to_vec(&event)?,
+				data,
 				Default::default(),
 			)
-			.await
-			.map_err(|e| {
-				error!("Failed while publishing event");
-				PublisherError::Infrastructure(anyhow!(e))
-			})?
-			.await
-			.map_err(|e| {
-				error!("Failed while receiving confirmation of event publication");
-				PublisherError::Infrastructure(anyhow!(e))
-			})?;
+			.await?
+			.await?;
 
-		match confirmation.is_nack() {
-			true => Err(PublisherError::Nack),
-			false => Ok(()),
-		}
+		Ok(confirmation)
+	}
+
+	async fn default() -> Result<Self, Error> {
+		let connection = Connection::connect(&amqp_address()?, Default::default()).await?;
+		info!("🔗 Event bus connected");
+		Self::new(connection).await?.with_exchange("events").await
 	}
 }
 
-fn topic(event: &Event) -> &'static str {
-	match event {
-		Event::Contribution(_) => "Contribution",
-		Event::Contributor(_) => "Contributor",
-		Event::Project(_) => "Project",
-	}
+pub async fn consumer() -> Result<EventBus, Error> {
+	EventBus::default().await?.with_queue("").await?.binded().await
+}
+
+pub async fn publisher() -> Result<EventBus, Error> {
+	EventBus::default().await
 }
 
 fn amqp_address() -> Result<String, Error> {

@@ -4,8 +4,8 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error("Something happened at infrastructure level")]
-	Infrastructure(#[from] anyhow::Error),
+	#[error("Failed while publishing message")]
+	Send(#[from] anyhow::Error),
 	#[error("Consumer did not acknowledge the message")]
 	Nack,
 	#[error("Failed while serializing message")]

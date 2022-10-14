@@ -6,8 +6,12 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error("Something happened at infrastructure level")]
-	Infrastructure(#[source] anyhow::Error),
+	#[error("Failed while receiving data from queue")]
+	Receive(#[source] anyhow::Error),
+	#[error("Failed while acknowledging message to publisher")]
+	Ack(#[source] anyhow::Error),
+	#[error("Failed while sending NACK to publisher")]
+	Nack(#[source] anyhow::Error),
 	#[error(transparent)]
 	Processing(#[from] anyhow::Error),
 	#[error("Failed while deserializing message")]

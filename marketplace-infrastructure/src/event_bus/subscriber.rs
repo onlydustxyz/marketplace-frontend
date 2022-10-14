@@ -1,0 +1,39 @@
+use super::EventBus;
+use anyhow::anyhow;
+use async_trait::async_trait;
+use log::error;
+use marketplace_domain::{Event, Subscriber, SubscriberError};
+use std::future::Future;
+
+#[async_trait]
+impl Subscriber<Event> for EventBus {
+	async fn subscribe<C, F>(&self, callback: C) -> Result<(), SubscriberError>
+	where
+		C: Fn(Event) -> F + Send + Sync,
+		F: Future<Output = Result<(), anyhow::Error>> + Send,
+	{
+		while let Some(delivery) =
+			self.consume().await.map_err(|e| SubscriberError::Receive(anyhow!(e)))?
+		{
+			let event: Event = serde_json::from_slice(&delivery.data)?;
+			match callback(event).await {
+				Ok(_) => delivery
+					.ack(Default::default())
+					.await
+					.map_err(|e| SubscriberError::Ack(anyhow!(e)))?,
+
+				Err(error) => {
+					error!("{error}");
+					delivery
+						.nack(Default::default())
+						.await
+						.map_err(|e| SubscriberError::Nack(anyhow!(e)))?;
+
+					return Err(SubscriberError::Processing(error));
+				},
+			}
+		}
+
+		Ok(())
+	}
+}
