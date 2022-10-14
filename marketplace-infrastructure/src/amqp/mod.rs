@@ -1,3 +1,4 @@
+pub mod event_bus;
 mod publisher;
 mod subscriber;
 
@@ -5,7 +6,7 @@ use lapin::{
 	message::Delivery, options::QueueDeclareOptions, publisher_confirm::Confirmation, Channel,
 	Connection,
 };
-use log::{error, info};
+use log::error;
 use std::env::VarError;
 use thiserror::Error;
 use tokio_stream::StreamExt;
@@ -110,23 +111,4 @@ impl EventBus {
 
 		Ok(confirmation)
 	}
-
-	async fn default() -> Result<Self, Error> {
-		let connection = Connection::connect(&amqp_address()?, Default::default()).await?;
-		info!("🔗 Event bus connected");
-		Self::new(connection).await?.with_exchange("events").await
-	}
-}
-
-pub async fn consumer() -> Result<EventBus, Error> {
-	EventBus::default().await?.with_queue("").await?.binded().await
-}
-
-pub async fn publisher() -> Result<EventBus, Error> {
-	EventBus::default().await
-}
-
-fn amqp_address() -> Result<String, Error> {
-	let address = std::env::var("AMQP_ADDR")?;
-	Ok(address)
 }
