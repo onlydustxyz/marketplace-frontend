@@ -22,10 +22,18 @@ pub struct EventBus {
 }
 
 impl EventBus {
-	pub async fn new(connection: Connection, exchange_name: &'static str) -> Result<Self, Error> {
+	pub async fn new(connection: Connection) -> Result<Self, Error> {
 		let channel = connection.create_channel().await?;
 
-		channel
+		Ok(Self {
+			_connection: connection,
+			channel,
+			exchange_name: "",
+		})
+	}
+
+	pub async fn with_exchange(self, exchange_name: &'static str) -> Result<Self, Error> {
+		self.channel
 			.exchange_declare(
 				exchange_name,
 				lapin::ExchangeKind::Fanout,
@@ -35,16 +43,15 @@ impl EventBus {
 			.await?;
 
 		Ok(Self {
-			_connection: connection,
-			channel,
 			exchange_name,
+			..self
 		})
 	}
 
 	pub async fn default() -> Result<Self, Error> {
 		let connection = Connection::connect(&amqp_address()?, Default::default()).await?;
 		info!("🔗 Event bus connected");
-		Self::new(connection, "events").await
+		Self::new(connection).await?.with_exchange("events").await
 	}
 }
 
