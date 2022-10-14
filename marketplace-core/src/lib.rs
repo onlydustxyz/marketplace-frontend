@@ -11,8 +11,9 @@ use dotenv::dotenv;
 use log::info;
 use marketplace_domain::{Subscriber, *};
 use marketplace_infrastructure::{
+	amqp,
 	database::{self, init_pool},
-	event_bus, github, starknet_account_verifier,
+	github, starknet_account_verifier,
 };
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
@@ -180,7 +181,7 @@ fn inject_app(
 }
 
 pub async fn event_listeners_main() -> Result<()> {
-	let event_consumer = event_bus::consumer().await?;
+	let event_consumer = amqp::consumer().await?;
 
 	event_consumer
 		.subscribe(|event| async move {
