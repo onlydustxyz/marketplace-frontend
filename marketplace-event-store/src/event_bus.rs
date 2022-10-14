@@ -3,7 +3,7 @@ use anyhow::anyhow;
 use async_trait::async_trait;
 use lapin::{options::QueueDeclareOptions, Channel, Connection};
 use log::{error, info};
-use marketplace_domain::{Bus, Publisher, PublisherError, Subscriber, SubscriberError};
+use marketplace_domain::{Publisher, PublisherError, Subscriber, SubscriberError};
 use std::{env::VarError, future::Future};
 use thiserror::Error;
 use tokio_stream::StreamExt;
@@ -137,8 +137,6 @@ impl Publisher<Event> for EventBus {
 		}
 	}
 }
-
-impl Bus<Event> for EventBus {}
 
 fn amqp_address() -> Result<String, Error> {
 	let address = std::env::var("AMQP_ADDR")?;

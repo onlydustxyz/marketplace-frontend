@@ -2,7 +2,7 @@ use anyhow::anyhow;
 use async_trait::async_trait;
 use lapin::{options::QueueDeclareOptions, Channel, Connection};
 use log::{error, info};
-use marketplace_domain::{Bus, Event, Publisher, PublisherError, Subscriber, SubscriberError};
+use marketplace_domain::{Event, Publisher, PublisherError, Subscriber, SubscriberError};
 use std::{env::VarError, future::Future};
 use thiserror::Error;
 use tokio_stream::StreamExt;
@@ -157,8 +157,6 @@ impl Publisher<Event> for EventBus {
 		}
 	}
 }
-
-impl Bus<Event> for EventBus {}
 
 fn topic(event: &Event) -> &'static str {
 	match event {

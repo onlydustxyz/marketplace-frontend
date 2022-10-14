@@ -1,6 +1,3 @@
-mod bus;
-pub use bus::Bus;
-
 mod message;
 pub use message::Message;
 
