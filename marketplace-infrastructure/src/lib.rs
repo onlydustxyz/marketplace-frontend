@@ -1,8 +1,8 @@
 #[macro_use]
 extern crate diesel;
 
+pub mod amqp;
 pub mod database;
-pub mod event_bus;
 pub mod event_webhook;
 pub mod github;
 pub mod logger;
