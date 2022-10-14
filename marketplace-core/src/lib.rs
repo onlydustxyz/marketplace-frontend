@@ -181,7 +181,7 @@ fn inject_app(
 }
 
 pub async fn event_listeners_main() -> Result<()> {
-	let event_consumer = amqp::consumer().await?;
+	let event_consumer = amqp::event_bus::consumer().await?;
 
 	event_consumer
 		.subscribe(|event| async move {
