@@ -38,7 +38,7 @@ impl EventBus {
 		})
 	}
 
-	async fn with_exchange(self, exchange_name: &'static str) -> Result<Self, Error> {
+	pub async fn with_exchange(self, exchange_name: &'static str) -> Result<Self, Error> {
 		self.channel
 			.exchange_declare(
 				exchange_name,
@@ -54,22 +54,17 @@ impl EventBus {
 		})
 	}
 
-	async fn with_queue(self, queue_name: &'static str) -> Result<Self, Error> {
-		self.channel
-			.queue_declare(
-				"",
-				QueueDeclareOptions {
-					exclusive: true, // only one consumer on this queue
-					..Default::default()
-				},
-				Default::default(),
-			)
-			.await?;
+	pub async fn with_queue(
+		self,
+		queue_name: &'static str,
+		options: QueueDeclareOptions,
+	) -> Result<Self, Error> {
+		self.channel.queue_declare("", options, Default::default()).await?;
 
 		Ok(Self { queue_name, ..self })
 	}
 
-	async fn binded(self) -> Result<Self, Error> {
+	pub async fn binded(self) -> Result<Self, Error> {
 		self.channel
 			.queue_bind(
 				self.queue_name,

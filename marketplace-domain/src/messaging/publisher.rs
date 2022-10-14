@@ -13,6 +13,6 @@ pub enum Error {
 }
 
 #[async_trait]
-pub trait Publisher<M: Message> {
-	async fn publish(&self, message: M) -> Result<(), Error>;
+pub trait Publisher<M: Message>: Send + Sync {
+	async fn publish(&self, message: &M) -> Result<(), Error>;
 }
