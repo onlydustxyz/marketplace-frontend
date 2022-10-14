@@ -12,7 +12,7 @@ use log::info;
 use marketplace_domain::{Subscriber, *};
 use marketplace_infrastructure::{
 	database::{self, init_pool},
-	github, starknet_account_verifier, EventBus,
+	event_bus, github, starknet_account_verifier,
 };
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
@@ -180,9 +180,9 @@ fn inject_app(
 }
 
 pub async fn event_listeners_main() -> Result<()> {
-	let event_bus = EventBus::default().await?;
+	let event_consumer = event_bus::consumer().await?;
 
-	event_bus
+	event_consumer
 		.subscribe(|event| async move {
 			println!(
 				"[listener] ✉️ Received message: {}",
