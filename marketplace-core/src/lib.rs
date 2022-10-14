@@ -184,7 +184,7 @@ pub async fn event_listeners_main() -> Result<()> {
 	let event_consumer = amqp::event_bus::consumer().await?;
 
 	event_consumer
-		.subscribe(|event| async move {
+		.subscribe(|event: Event| async move {
 			println!(
 				"[listener] ✉️ Received message: {}",
 				serde_json::to_string_pretty(&event)?

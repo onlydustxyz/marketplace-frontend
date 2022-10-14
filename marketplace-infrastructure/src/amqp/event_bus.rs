@@ -1,9 +1,20 @@
 use super::{Error, EventBus};
-use lapin::Connection;
+use lapin::{options::QueueDeclareOptions, Connection};
 use log::info;
 
 pub async fn consumer() -> Result<EventBus, Error> {
-	publisher().await?.with_queue("").await?.binded().await
+	publisher()
+		.await?
+		.with_queue(
+			"",
+			QueueDeclareOptions {
+				exclusive: true, // only one consumer on this queue
+				..Default::default()
+			},
+		)
+		.await?
+		.binded()
+		.await
 }
 
 pub async fn publisher() -> Result<EventBus, Error> {

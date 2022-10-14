@@ -7,8 +7,8 @@ use crate::{domain::*, infrastructure::apibara};
 use dotenv::dotenv;
 use log::{error, info};
 use marketplace_domain::*;
-use marketplace_event_store::EventBus as EventStoreBus;
-use marketplace_infrastructure::{database, event_webhook::EventWebHook, github};
+use marketplace_event_store::event_bus as event_store_bus;
+use marketplace_infrastructure::{amqp::EventBus, database, event_webhook::EventWebHook, github};
 use std::sync::Arc;
 
 pub async fn main() {
@@ -16,7 +16,7 @@ pub async fn main() {
 	github::Client::initialize();
 
 	let database = Arc::new(database::Client::new(database::init_pool()));
-	let event_store_bus = EventStoreBus::default()
+	let event_store_bus = event_store_bus::publisher()
 		.await
 		.expect("Unable to connect to the event store bus");
 
@@ -41,7 +41,7 @@ fn apibara_node_url() -> String {
 
 fn build_event_observer(
 	database: Arc<database::Client>,
-	event_store_bus: EventStoreBus,
+	event_store_bus: EventBus,
 ) -> impl BlockchainObserver {
 	let github = Arc::new(github::Client::new());
 	let reqwest_client = reqwest::Client::new();

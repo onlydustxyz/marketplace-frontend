@@ -1,13 +1,13 @@
 use super::EventBus;
 use anyhow::anyhow;
 use async_trait::async_trait;
-use marketplace_domain::{Event, Publisher, PublisherError};
+use marketplace_domain::{Message, Publisher, PublisherError};
 
 #[async_trait]
-impl Publisher<Event> for EventBus {
-	async fn publish(&self, event: Event) -> Result<(), PublisherError> {
+impl<M: Message + Send + Sync> Publisher<M> for EventBus {
+	async fn publish(&self, message: &M) -> Result<(), PublisherError> {
 		let confirmation = self
-			.publish(&serde_json::to_vec(&event)?)
+			.publish(&serde_json::to_vec(message)?)
 			.await
 			.map_err(|e| PublisherError::Send(anyhow!(e)))?;
 
