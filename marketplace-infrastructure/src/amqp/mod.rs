@@ -19,14 +19,14 @@ pub enum Error {
 	Amqp(#[from] lapin::Error),
 }
 
-pub struct EventBus {
+pub struct Bus {
 	_connection: Connection,
 	channel: Channel,
 	exchange_name: &'static str,
 	queue_name: &'static str,
 }
 
-impl EventBus {
+impl Bus {
 	pub async fn new(connection: Connection) -> Result<Self, Error> {
 		let channel = connection.create_channel().await?;
 

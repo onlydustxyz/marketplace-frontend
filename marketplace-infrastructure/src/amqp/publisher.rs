@@ -1,10 +1,10 @@
-use super::EventBus;
+use super::Bus;
 use anyhow::anyhow;
 use async_trait::async_trait;
 use marketplace_domain::{Destination, Message, Publisher, PublisherError};
 
 #[async_trait]
-impl<M: Message + Send + Sync> Publisher<M> for EventBus {
+impl<M: Message + Send + Sync> Publisher<M> for Bus {
 	async fn publish(&self, destination: Destination, message: &M) -> Result<(), PublisherError> {
 		let (exchange_name, routing_key) = match destination {
 			Destination::Queue(name) => (String::new(), name),

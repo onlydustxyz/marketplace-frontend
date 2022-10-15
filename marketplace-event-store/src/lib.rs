@@ -6,12 +6,12 @@ pub mod event_bus;
 use anyhow::Result;
 use futures::TryFutureExt;
 use marketplace_domain::{Destination, Event as DomainEvent, Publisher, Subscriber};
-use marketplace_infrastructure::amqp::{event_bus::EXCHANGE_NAME, EventBus};
+use marketplace_infrastructure::amqp::{event_bus::EXCHANGE_NAME, Bus};
 use std::sync::Arc;
 
 pub async fn main() -> Result<()> {
 	let event_store_bus = event_bus::consumer().await?;
-	let event_bus = Arc::new(EventBus::default().await?);
+	let event_bus = Arc::new(Bus::default().await?);
 
 	event_store_bus
 		.subscribe(|event| log(event).and_then(|event| publish(event, event_bus.clone())))
