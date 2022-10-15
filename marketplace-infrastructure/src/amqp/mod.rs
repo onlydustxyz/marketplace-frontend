@@ -59,7 +59,7 @@ impl EventBus {
 		queue_name: &'static str,
 		options: QueueDeclareOptions,
 	) -> Result<Self, Error> {
-		self.channel.queue_declare("", options, Default::default()).await?;
+		self.channel.queue_declare(queue_name, options, Default::default()).await?;
 
 		Ok(Self { queue_name, ..self })
 	}
@@ -91,12 +91,12 @@ impl EventBus {
 		}
 	}
 
-	async fn publish(&self, data: &[u8]) -> Result<Confirmation, Error> {
+	async fn publish(&self, routing_key: &str, data: &[u8]) -> Result<Confirmation, Error> {
 		let confirmation = self
 			.channel
 			.basic_publish(
 				self.exchange_name,
-				"",
+				routing_key,
 				Default::default(),
 				data,
 				Default::default(),

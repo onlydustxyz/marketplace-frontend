@@ -29,6 +29,6 @@ async fn log(event: Event) -> Result<Event> {
 }
 
 async fn publish(event: Event, event_bus: Arc<dyn Publisher<DomainEvent>>) -> Result<()> {
-	event_bus.publish(&event.event).await?;
+	event_bus.publish("", &event.event).await?;
 	Ok(())
 }
