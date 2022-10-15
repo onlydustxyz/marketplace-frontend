@@ -1,4 +1,4 @@
-use super::Message;
+use super::{Destination, Message};
 use async_trait::async_trait;
 use thiserror::Error;
 
@@ -14,5 +14,5 @@ pub enum Error {
 
 #[async_trait]
 pub trait Publisher<M: Message>: Send + Sync {
-	async fn publish(&self, destination: &str, message: &M) -> Result<(), Error>;
+	async fn publish(&self, destination: Destination, message: &M) -> Result<(), Error>;
 }

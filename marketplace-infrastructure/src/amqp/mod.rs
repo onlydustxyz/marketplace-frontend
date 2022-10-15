@@ -96,11 +96,16 @@ impl EventBus {
 		}
 	}
 
-	async fn publish(&self, routing_key: &str, data: &[u8]) -> Result<Confirmation, Error> {
+	async fn publish(
+		&self,
+		exchange_name: &str,
+		routing_key: &str,
+		data: &[u8],
+	) -> Result<Confirmation, Error> {
 		let confirmation = self
 			.channel
 			.basic_publish(
-				self.exchange_name,
+				exchange_name,
 				routing_key,
 				Default::default(),
 				data,
