@@ -1,4 +1,4 @@
-use super::Bus;
+use super::ConsumableBus;
 use anyhow::anyhow;
 use async_trait::async_trait;
 use log::error;
@@ -6,7 +6,7 @@ use marketplace_domain::{Message, Subscriber, SubscriberError};
 use std::future::Future;
 
 #[async_trait]
-impl<M: Message + Send + Sync> Subscriber<M> for Bus {
+impl<M: Message + Send + Sync> Subscriber<M> for ConsumableBus {
 	async fn subscribe<C, F>(&self, callback: C) -> Result<(), SubscriberError>
 	where
 		C: Fn(M) -> F + Send + Sync,
