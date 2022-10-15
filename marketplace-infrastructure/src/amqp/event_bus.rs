@@ -22,9 +22,3 @@ pub async fn consumer() -> Result<EventBus, Error> {
 	info!("🔗 Event bus connected");
 	Ok(event_bus)
 }
-
-pub async fn publisher() -> Result<EventBus, Error> {
-	let event_bus = EventBus::default().await?;
-	info!("🔗 Event bus connected");
-	Ok(event_bus)
-}
