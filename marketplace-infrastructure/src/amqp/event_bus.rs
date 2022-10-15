@@ -1,5 +1,5 @@
 use super::{Error, EventBus};
-use lapin::{options::QueueDeclareOptions, Connection};
+use lapin::options::QueueDeclareOptions;
 use log::info;
 
 pub async fn consumer() -> Result<EventBus, Error> {
@@ -18,12 +18,7 @@ pub async fn consumer() -> Result<EventBus, Error> {
 }
 
 pub async fn publisher() -> Result<EventBus, Error> {
-	let connection = Connection::connect(&amqp_address()?, Default::default()).await?;
+	let event_bus = EventBus::default().await?.with_exchange("events").await?;
 	info!("🔗 Event bus connected");
-	EventBus::new(connection).await?.with_exchange("events").await
-}
-
-fn amqp_address() -> Result<String, Error> {
-	let address = std::env::var("AMQP_ADDR")?;
-	Ok(address)
+	Ok(event_bus)
 }

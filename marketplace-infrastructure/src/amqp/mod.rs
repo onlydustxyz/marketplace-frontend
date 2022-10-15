@@ -38,6 +38,11 @@ impl EventBus {
 		})
 	}
 
+	pub async fn default() -> Result<Self, Error> {
+		let connection = Connection::connect(&amqp_address()?, Default::default()).await?;
+		Self::new(connection).await
+	}
+
 	pub async fn with_exchange(self, exchange_name: &'static str) -> Result<Self, Error> {
 		self.channel
 			.exchange_declare(
@@ -106,4 +111,9 @@ impl EventBus {
 
 		Ok(confirmation)
 	}
+}
+
+fn amqp_address() -> Result<String, Error> {
+	let address = std::env::var("AMQP_ADDR")?;
+	Ok(address)
 }

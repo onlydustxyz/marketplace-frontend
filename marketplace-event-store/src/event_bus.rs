@@ -1,13 +1,11 @@
-use lapin::{options::QueueDeclareOptions, Connection};
+use lapin::options::QueueDeclareOptions;
 use log::info;
 use marketplace_infrastructure::amqp::{Error as EventBusError, EventBus};
 
 pub const QUEUE_NAME: &str = "event-store";
 
 pub async fn consumer() -> Result<EventBus, EventBusError> {
-	let connection = Connection::connect(&amqp_address()?, Default::default()).await?;
-	info!("🔗 Event store connected");
-	EventBus::new(connection)
+	let event_bus = EventBus::default()
 		.await?
 		.with_queue(
 			QUEUE_NAME,
@@ -18,16 +16,13 @@ pub async fn consumer() -> Result<EventBus, EventBusError> {
 				..Default::default()
 			},
 		)
-		.await
+		.await?;
+	info!("🔗 Event store connected");
+	Ok(event_bus)
 }
 
 pub async fn publisher() -> Result<EventBus, EventBusError> {
-	let connection = Connection::connect(&amqp_address()?, Default::default()).await?;
+	let event_bus = EventBus::default().await?;
 	info!("🔗 Event store connected");
-	EventBus::new(connection).await
-}
-
-fn amqp_address() -> Result<String, EventBusError> {
-	let address = std::env::var("AMQP_ADDR")?;
-	Ok(address)
+	Ok(event_bus)
 }
