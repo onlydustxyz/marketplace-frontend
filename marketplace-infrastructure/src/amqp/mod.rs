@@ -22,8 +22,6 @@ pub enum Error {
 pub struct Bus {
 	_connection: Connection,
 	channel: Channel,
-	exchange_name: &'static str,
-	queue_name: &'static str,
 }
 
 impl Bus {
@@ -33,8 +31,6 @@ impl Bus {
 		Ok(Self {
 			_connection: connection,
 			channel,
-			exchange_name: "",
-			queue_name: "",
 		})
 	}
 
@@ -43,57 +39,17 @@ impl Bus {
 		Self::new(connection).await
 	}
 
-	pub async fn with_exchange(self, exchange_name: &'static str) -> Result<Self, Error> {
-		self.channel
-			.exchange_declare(
-				exchange_name,
-				lapin::ExchangeKind::Fanout,
-				Default::default(),
-				Default::default(),
-			)
-			.await?;
-
-		Ok(Self {
-			exchange_name,
-			..self
-		})
-	}
-
 	pub async fn with_queue(
 		self,
 		queue_name: &'static str,
 		options: QueueDeclareOptions,
-	) -> Result<Self, Error> {
+	) -> Result<ConsumableBus, Error> {
 		self.channel.queue_declare(queue_name, options, Default::default()).await?;
 
-		Ok(Self { queue_name, ..self })
-	}
-
-	pub async fn binded(self) -> Result<Self, Error> {
-		self.channel
-			.queue_bind(
-				self.queue_name,
-				self.exchange_name,
-				"",
-				Default::default(),
-				Default::default(),
-			)
-			.await?;
-
-		Ok(self)
-	}
-
-	async fn consume(&self) -> Result<Option<Delivery>, Error> {
-		let mut consumer = self
-			.channel
-			.basic_consume(self.queue_name, "", Default::default(), Default::default())
-			.await?;
-
-		match consumer.next().await {
-			Some(Ok(delivery)) => Ok(Some(delivery)),
-			Some(Err(error)) => Err(error.into()),
-			None => Ok(None),
-		}
+		Ok(ConsumableBus {
+			bus: self,
+			queue_name,
+		})
 	}
 
 	async fn publish(
@@ -115,6 +71,52 @@ impl Bus {
 			.await?;
 
 		Ok(confirmation)
+	}
+}
+
+pub struct ConsumableBus {
+	bus: Bus,
+	queue_name: &'static str,
+}
+
+impl ConsumableBus {
+	pub async fn with_exchange(self, exchange_name: &'static str) -> Result<Self, Error> {
+		self.bus
+			.channel
+			.exchange_declare(
+				exchange_name,
+				lapin::ExchangeKind::Fanout,
+				Default::default(),
+				Default::default(),
+			)
+			.await?;
+
+		self.bus
+			.channel
+			.queue_bind(
+				self.queue_name,
+				exchange_name,
+				"",
+				Default::default(),
+				Default::default(),
+			)
+			.await?;
+
+		Ok(self)
+	}
+
+	async fn consume(&self) -> Result<Option<Delivery>, Error> {
+		let mut consumer = self
+			.bus
+			.channel
+			.basic_consume(self.queue_name, "", Default::default(), Default::default())
+			.await?;
+
+		match consumer.next().await {
+			Some(Ok(delivery)) => Ok(Some(delivery)),
+			Some(Err(error)) => Err(error.into()),
+			None => Ok(None),
+		}
 	}
 }
 

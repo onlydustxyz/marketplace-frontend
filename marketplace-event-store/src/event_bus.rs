@@ -1,10 +1,10 @@
 use lapin::options::QueueDeclareOptions;
 use log::info;
-use marketplace_infrastructure::amqp::{Bus, Error as EventBusError};
+use marketplace_infrastructure::amqp::{Bus, ConsumableBus, Error as EventBusError};
 
 pub const QUEUE_NAME: &str = "event-store";
 
-pub async fn consumer() -> Result<Bus, EventBusError> {
+pub async fn consumer() -> Result<ConsumableBus, EventBusError> {
 	let event_bus = Bus::default()
 		.await?
 		.with_queue(

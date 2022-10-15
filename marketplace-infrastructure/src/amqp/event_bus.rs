@@ -1,13 +1,11 @@
-use super::{Bus, Error};
+use super::{Bus, ConsumableBus, Error};
 use lapin::options::QueueDeclareOptions;
 use log::info;
 
 pub const EXCHANGE_NAME: &str = "events";
 
-pub async fn consumer() -> Result<Bus, Error> {
+pub async fn consumer() -> Result<ConsumableBus, Error> {
 	let event_bus = Bus::default()
-		.await?
-		.with_exchange(EXCHANGE_NAME)
 		.await?
 		.with_queue(
 			"",
@@ -17,8 +15,9 @@ pub async fn consumer() -> Result<Bus, Error> {
 			},
 		)
 		.await?
-		.binded()
+		.with_exchange(EXCHANGE_NAME)
 		.await?;
+
 	info!("🔗 Event bus connected");
 	Ok(event_bus)
 }
