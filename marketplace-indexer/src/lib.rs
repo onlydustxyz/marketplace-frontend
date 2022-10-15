@@ -7,7 +7,6 @@ use crate::{domain::*, infrastructure::apibara};
 use dotenv::dotenv;
 use log::{error, info};
 use marketplace_domain::*;
-use marketplace_event_store::event_bus as event_store_bus;
 use marketplace_infrastructure::{amqp::EventBus, database, event_webhook::EventWebHook, github};
 use std::sync::Arc;
 
@@ -16,9 +15,9 @@ pub async fn main() {
 	github::Client::initialize();
 
 	let database = Arc::new(database::Client::new(database::init_pool()));
-	let event_store_bus = event_store_bus::publisher()
-		.await
-		.expect("Unable to connect to the event store bus");
+	let event_store_bus =
+		EventBus::default().await.expect("Unable to connect to the event store bus");
+	info!("🔗 Event store connected");
 
 	let apibara_client = apibara::Client::new(
 		apibara_node_url(),
