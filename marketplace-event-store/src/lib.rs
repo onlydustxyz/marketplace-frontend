@@ -5,8 +5,8 @@ pub mod event_bus;
 
 use anyhow::Result;
 use futures::TryFutureExt;
-use marketplace_domain::{Event as DomainEvent, Publisher, Subscriber};
-use marketplace_infrastructure::amqp;
+use marketplace_domain::{Destination, Event as DomainEvent, Publisher, Subscriber};
+use marketplace_infrastructure::amqp::{self, event_bus::EXCHANGE_NAME};
 use std::sync::Arc;
 
 pub async fn main() -> Result<()> {
@@ -29,6 +29,8 @@ async fn log(event: Event) -> Result<Event> {
 }
 
 async fn publish(event: Event, event_bus: Arc<dyn Publisher<DomainEvent>>) -> Result<()> {
-	event_bus.publish("", &event.event).await?;
+	event_bus
+		.publish(Destination::exchange(EXCHANGE_NAME, ""), &event.event)
+		.await?;
 	Ok(())
 }
