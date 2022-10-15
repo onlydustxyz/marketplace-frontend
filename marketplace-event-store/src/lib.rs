@@ -6,7 +6,7 @@ pub mod bus;
 use anyhow::Result;
 use futures::TryFutureExt;
 use marketplace_domain::{Destination, Event as DomainEvent, Publisher, Subscriber};
-use marketplace_infrastructure::amqp::{event_bus::EXCHANGE_NAME, Bus};
+use marketplace_infrastructure::{amqp::Bus, event_bus::EXCHANGE_NAME};
 use std::sync::Arc;
 
 pub async fn main() -> Result<()> {

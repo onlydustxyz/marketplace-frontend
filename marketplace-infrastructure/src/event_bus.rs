@@ -1,4 +1,4 @@
-use super::{Bus, BusError, ConsumableBus};
+use super::amqp::{Bus, BusError, ConsumableBus};
 use lapin::options::QueueDeclareOptions;
 use log::info;
 
