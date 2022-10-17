@@ -8,6 +8,7 @@ use crate::e2e_tests::{
 	scenario::STARKONQUEST_TITLE,
 	starknet::{accounts::accounts, Account},
 };
+use anyhow::Result;
 use marketplace_core::dto::Application;
 use rstest::*;
 use tokio::task::JoinHandle;
@@ -20,10 +21,10 @@ const LEAD_CONTRIBUTOR_INDEX: usize = 2;
 #[tokio::test]
 async fn delete_contribution(
 	accounts: [Account; 10],
-	#[future] marketplace_api: JoinHandle<()>,
-	#[future] marketplace_indexer: JoinHandle<()>,
-	#[future] marketplace_event_store: JoinHandle<()>,
-	#[future] event_listeners: JoinHandle<()>,
+	#[future] marketplace_api: JoinHandle<Result<()>>,
+	#[future] marketplace_indexer: JoinHandle<Result<()>>,
+	#[future] marketplace_event_store: JoinHandle<Result<()>>,
+	#[future] event_listeners: JoinHandle<Result<()>>,
 ) {
 	marketplace_api.await;
 	marketplace_indexer.await;

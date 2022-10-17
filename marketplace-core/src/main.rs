@@ -1,6 +1,6 @@
+use anyhow::Result;
 use dotenv::dotenv;
 use marketplace_infrastructure::logger;
-
 use slog::{Drain, Level, Logger};
 
 fn create_root_logger() -> Logger {
@@ -15,7 +15,7 @@ fn create_root_logger() -> Logger {
 }
 
 #[tokio::main]
-pub async fn main() {
+async fn main() -> Result<()> {
 	dotenv().ok();
 
 	let _global_logger_guard = logger::set_global_logger(create_root_logger());

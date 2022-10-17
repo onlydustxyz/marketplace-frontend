@@ -1,9 +1,10 @@
 use crate::{
-	database::{init_pool, schema::events, Client},
+	database::{schema::events, Client},
 	diesel::{query_dsl::select_dsl::SelectDsl, RunQueryDsl},
 };
 use chrono::Utc;
 use marketplace_domain::*;
+use marketplace_tests::init_pool;
 use rocket::serde::json::serde_json::Value;
 use rstest::{fixture, rstest};
 use serde_json::json;

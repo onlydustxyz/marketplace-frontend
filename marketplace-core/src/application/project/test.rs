@@ -2,7 +2,8 @@ use super::*;
 use chrono::Utc;
 use dotenv::dotenv;
 use itertools::Itertools;
-use marketplace_infrastructure::database::{init_pool, Client as DatabaseClient};
+use marketplace_infrastructure::database::Client as DatabaseClient;
+use marketplace_tests::init_pool;
 use rstest::*;
 use std::{ops::Deref, str::FromStr, sync::Arc};
 

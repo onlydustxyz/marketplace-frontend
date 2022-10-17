@@ -2075,6 +2075,7 @@ dependencies = [
  "log",
  "mapinto",
  "marketplace-domain",
+ "marketplace-tests",
  "mockall",
  "mockito",
  "octocrab",

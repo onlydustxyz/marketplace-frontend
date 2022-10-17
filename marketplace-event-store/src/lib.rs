@@ -10,11 +10,11 @@ use marketplace_infrastructure::{amqp::Bus, event_bus::EXCHANGE_NAME};
 use std::sync::Arc;
 
 pub async fn main() -> Result<()> {
-	let input_bus = bus::consumer().await?;
-	let output_bus = Arc::new(Bus::default().await?);
+	let inbound_event_bus = bus::consumer().await?;
+	let outbound_event_bus = Arc::new(Bus::default().await?);
 
-	input_bus
-		.subscribe(|event| log(event).and_then(|event| publish(event, output_bus.clone())))
+	inbound_event_bus
+		.subscribe(|event| log(event).and_then(|event| publish(event, outbound_event_bus.clone())))
 		.await?;
 
 	Ok(())
@@ -22,14 +22,14 @@ pub async fn main() -> Result<()> {
 
 async fn log(event: Event) -> Result<Event> {
 	println!(
-		"[event-store] ✉️ Received message: {}",
+		"[event-store] 📨 Received event: {}",
 		serde_json::to_string_pretty(&event)?
 	);
 	Ok(event)
 }
 
-async fn publish(event: Event, event_bus: Arc<dyn Publisher<DomainEvent>>) -> Result<()> {
-	event_bus
+async fn publish(event: Event, publisher: Arc<dyn Publisher<DomainEvent>>) -> Result<()> {
+	publisher
 		.publish(Destination::exchange(EXCHANGE_NAME, ""), &event.event)
 		.await?;
 	Ok(())

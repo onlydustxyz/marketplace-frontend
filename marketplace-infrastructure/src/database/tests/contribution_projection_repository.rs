@@ -1,10 +1,9 @@
 use crate::database::{
-	init_pool,
 	tests::{init_contribution, init_project},
 	Client,
 };
-
 use marketplace_domain::*;
+use marketplace_tests::init_pool;
 
 #[test]
 #[cfg_attr(

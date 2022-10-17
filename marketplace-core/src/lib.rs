@@ -21,13 +21,13 @@ use std::sync::Arc;
 #[macro_use]
 extern crate rocket;
 
-pub async fn main() {
+pub async fn main() -> Result<()> {
 	dotenv().ok();
 
 	github::Client::initialize();
 
-	let database = Arc::new(database::Client::new(init_pool()));
-	database.run_migrations().expect("Unable to run database migrations");
+	let database = Arc::new(database::Client::new(init_pool()?));
+	database.run_migrations()?;
 
 	let starknet_account_verifier = Arc::new(starknet_account_verifier::StarkNetClient::new());
 
@@ -83,9 +83,10 @@ pub async fn main() {
 	.launch();
 
 	let (rocket_result,) = tokio::join!(rocket_handler);
-	let _ = rocket_result.unwrap();
+	let _ = rocket_result?;
 
-	info!("Gracefully shut down");
+	info!("👋 Gracefully shut down");
+	Ok(())
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -185,7 +186,7 @@ pub async fn event_listeners_main() -> Result<()> {
 	event_consumer
 		.subscribe(|event: Event| async move {
 			println!(
-				"[listener] ✉️ Received message: {}",
+				"[events] 📨 Received event: {}",
 				serde_json::to_string_pretty(&event)?
 			);
 			Ok(())

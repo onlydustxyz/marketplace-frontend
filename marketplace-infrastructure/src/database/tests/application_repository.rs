@@ -1,11 +1,11 @@
 use crate::database::{
-	init_pool,
 	tests::{init_contribution_with_id, init_project},
 	Client,
 };
 use assert_matches::assert_matches;
 use chrono::{NaiveDate, NaiveDateTime};
 use marketplace_domain::*;
+use marketplace_tests::init_pool;
 use rstest::{fixture, rstest};
 
 use super::init_contribution;

@@ -17,6 +17,6 @@ pub async fn consumer() -> Result<ConsumableBus, BusError> {
 			},
 		)
 		.await?;
-	info!("🔗 Event store connected");
+	info!("[event-store] 🎧 Start listening to events");
 	Ok(event_bus)
 }

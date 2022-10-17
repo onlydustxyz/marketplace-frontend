@@ -4,33 +4,36 @@ mod infrastructure;
 mod test;
 
 use crate::{domain::*, infrastructure::apibara};
+use anyhow::Result;
 use dotenv::dotenv;
-use log::{error, info};
+use log::info;
 use marketplace_domain::*;
 use marketplace_infrastructure::{amqp::Bus, database, event_webhook::EventWebHook, github};
 use std::sync::Arc;
 
-pub async fn main() {
+pub async fn main() -> Result<()> {
 	dotenv().ok();
+
 	github::Client::initialize();
 
-	let database = Arc::new(database::Client::new(database::init_pool()));
-	let event_store_bus = Bus::default().await.expect("Unable to connect to the event store bus");
-	info!("🔗 Event store connected");
+	let database = Arc::new(database::Client::new(database::init_pool()?));
+
+	let event_bus = Bus::default().await?;
+	info!("🔗 Connected to message broker");
 
 	let apibara_client = apibara::Client::new(
 		apibara_node_url(),
-		build_event_observer(database.clone(), event_store_bus),
+		build_event_observer(database.clone(), event_bus),
 		database.clone(),
 	)
 	.connect()
-	.await
-	.expect("Unable to connect to Apibara server");
+	.await?;
+	info!("🔗 Connected to apibara node");
 
-	match IndexingService::observe_events(&apibara_client, database).await {
-		Ok(()) => info!("Stream closed gracefully"),
-		Err(error) => error!("Failed while streaming from apibara node: {error}"),
-	};
+	IndexingService::observe_events(&apibara_client, database).await?;
+
+	info!("👋 Stream closed gracefully");
+	Ok(())
 }
 
 fn apibara_node_url() -> String {
