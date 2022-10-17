@@ -27,6 +27,28 @@ impl ContributorProjectionRepository for Client {
 		Ok(())
 	}
 
+	fn upsert_discord_handle(
+		&self,
+		contributor: ContributorProfile,
+	) -> Result<(), ContributorProjectionRepositoryError> {
+		let connection = self.connection().map_err(ContributorProjectionRepositoryError::from)?;
+
+		let contributor = models::NewDiscordContributor::from(contributor);
+
+		diesel::insert_into(dsl::contributors)
+			.values(&contributor)
+			.on_conflict(dsl::id)
+			.do_update()
+			.set(&contributor)
+			.execute(&*connection)
+			.map_err(|e| {
+				error!("Failed to insert contributor {contributor:?}: {e}");
+				DatabaseError::from(e)
+			})?;
+
+		Ok(())
+	}
+
 	fn find_by_account_address(
 		&self,
 		contributor_account_address: &ContributorAccountAddress,
@@ -56,6 +78,17 @@ impl From<ContributorProfile> for models::NewGithubContributor {
 			account: contributor.account.to_string(),
 			github_identifier: contributor.github_identifier.to_string(),
 			github_username: contributor.github_username,
+		}
+	}
+}
+
+impl From<ContributorProfile> for models::NewDiscordContributor {
+	fn from(contributor: ContributorProfile) -> Self {
+		Self {
+			id: contributor.id.to_string(),
+			account: contributor.account.to_string(),
+			discord_handle: contributor.discord_handle.unwrap(), /* safe to unwrap as called only
+			                                                      * when discord handle is set */
 		}
 	}
 }
