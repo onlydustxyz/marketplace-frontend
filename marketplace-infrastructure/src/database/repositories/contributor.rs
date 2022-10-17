@@ -5,16 +5,19 @@ use log::error;
 use marketplace_domain::*;
 
 impl ContributorProjectionRepository for Client {
-	fn insert(
+	fn upsert(
 		&self,
 		contributor: ContributorProfile,
 	) -> Result<(), ContributorProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributorProjectionRepositoryError::from)?;
 
-		let contributor = models::Contributor::from(contributor);
+		let contributor = models::NewGithubContributor::from(contributor);
 
 		diesel::insert_into(dsl::contributors)
 			.values(&contributor)
+			.on_conflict(dsl::id)
+			.do_update()
+			.set(&contributor)
 			.execute(&*connection)
 			.map_err(|e| {
 				error!("Failed to insert contributor {contributor:?}: {e}");
@@ -46,7 +49,7 @@ impl ProjectionRepository<ContributorProfile> for Client {
 	}
 }
 
-impl From<ContributorProfile> for models::Contributor {
+impl From<ContributorProfile> for models::NewGithubContributor {
 	fn from(contributor: ContributorProfile) -> Self {
 		Self {
 			id: contributor.id.to_string(),
@@ -62,8 +65,12 @@ impl From<models::Contributor> for ContributorProfile {
 		Self {
 			id: contributor.id.parse().unwrap(),
 			account: contributor.account.parse().unwrap(),
-			github_identifier: contributor.github_identifier.parse().unwrap(),
-			github_username: contributor.github_username,
+			github_identifier: contributor
+				.github_identifier
+				.and_then(|id| id.parse().ok())
+				.unwrap_or_default(),
+			github_username: contributor.github_username.unwrap_or_default(),
+			discord_handle: contributor.discord_handle,
 		}
 	}
 }
