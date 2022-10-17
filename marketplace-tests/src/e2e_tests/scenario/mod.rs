@@ -1,4 +1,3 @@
-mod contact_information;
 mod contribution_lifetime;
 mod delete_contribution;
 
