@@ -35,16 +35,12 @@ pub async fn main() -> Result<()> {
 	let uuid_generator = Arc::new(RandomUuidGenerator);
 	let contribution_repository: AggregateRootRepository<Contribution> =
 		AggregateRootRepository::new(database.clone());
-	let contact_information_service = Arc::new(ContactInformationServiceImplementation::new(
-		database.clone(),
-	));
 
 	let rocket_handler = inject_app(
 		rocket::build(),
 		database.clone(),
 		starknet_account_verifier,
 		contribution_repository,
-		contact_information_service,
 		uuid_generator,
 		github_client.clone(),
 	)
@@ -75,8 +71,6 @@ pub async fn main() -> Result<()> {
 			routes::contributors::get_contributor,
 			routes::contributors::get_contributor_by_account,
 			routes::contributors::associate_github_account,
-			routes::contact_information::find_contact_information,
-			routes::contact_information::put_contact_information,
 		],
 	)
 	.mount("/swagger", make_swagger_ui(&routes::get_docs()))
@@ -95,7 +89,6 @@ fn inject_app(
 	database: Arc<database::Client>,
 	starknet_account_verifier: Arc<starknet_account_verifier::StarkNetClient>,
 	contribution_repository: AggregateRootRepository<Contribution>,
-	contact_information_service: Arc<dyn ContactInformationService>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 	github_client: Arc<github::Client>,
 ) -> Rocket<Build> {
@@ -177,7 +170,6 @@ fn inject_app(
 		.manage(database.clone() as Arc<dyn ProjectMemberProjectionRepository>)
 		.manage(database.clone() as Arc<dyn LeadContributorProjectionRepository>)
 		.manage(database as Arc<dyn ProjectProjectionRepository>)
-		.manage(contact_information_service)
 }
 
 pub async fn event_listeners_main() -> Result<()> {
