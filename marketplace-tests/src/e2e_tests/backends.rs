@@ -1,4 +1,5 @@
 use super::{database::migrated_database, http::BACKEND_BASE_URI};
+use anyhow::Result;
 use rstest::*;
 use std::time::Duration;
 use tokio::{
@@ -7,7 +8,7 @@ use tokio::{
 };
 
 #[fixture]
-pub async fn marketplace_api() -> JoinHandle<()> {
+pub async fn marketplace_api() -> JoinHandle<Result<()>> {
 	let handle = spawn(::marketplace_core::main());
 
 	let mut timer = interval(Duration::from_millis(500));
@@ -25,7 +26,7 @@ pub async fn marketplace_api() -> JoinHandle<()> {
 }
 
 #[fixture]
-pub async fn marketplace_indexer(_migrated_database: ()) -> JoinHandle<()> {
+pub async fn marketplace_indexer(_migrated_database: ()) -> JoinHandle<Result<()>> {
 	let handle = spawn(::marketplace_indexer::main());
 
 	// TODO: Find a better way to check the indexer is ready
@@ -34,11 +35,11 @@ pub async fn marketplace_indexer(_migrated_database: ()) -> JoinHandle<()> {
 }
 
 #[fixture]
-pub async fn marketplace_event_store() -> JoinHandle<()> {
-	spawn(async { ::marketplace_event_store::main().await.unwrap() })
+pub async fn marketplace_event_store() -> JoinHandle<Result<()>> {
+	spawn(::marketplace_event_store::main())
 }
 
 #[fixture]
-pub async fn event_listeners() -> JoinHandle<()> {
-	spawn(async { ::marketplace_core::event_listeners_main().await.unwrap() })
+pub async fn event_listeners() -> JoinHandle<Result<()>> {
+	spawn(::marketplace_core::event_listeners_main())
 }

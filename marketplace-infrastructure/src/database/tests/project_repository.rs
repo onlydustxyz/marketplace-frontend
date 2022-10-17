@@ -1,9 +1,9 @@
-use std::str::FromStr;
-
-use crate::database::{init_pool, Client};
+use crate::database::Client;
 use itertools::Itertools;
 use marketplace_domain::*;
+use marketplace_tests::init_pool;
 use rstest::*;
+use std::str::FromStr;
 
 #[fixture]
 fn project1() -> Project {

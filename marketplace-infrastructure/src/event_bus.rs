@@ -5,7 +5,7 @@ use log::info;
 pub const EXCHANGE_NAME: &str = "events";
 
 pub async fn consumer() -> Result<ConsumableBus, BusError> {
-	let event_bus = Bus::default()
+	let bus = Bus::default()
 		.await?
 		.with_queue(
 			"",
@@ -18,6 +18,6 @@ pub async fn consumer() -> Result<ConsumableBus, BusError> {
 		.with_exchange(EXCHANGE_NAME)
 		.await?;
 
-	info!("🔗 Event bus connected");
-	Ok(event_bus)
+	info!("[events] 🎧 Start listening to events");
+	Ok(bus)
 }

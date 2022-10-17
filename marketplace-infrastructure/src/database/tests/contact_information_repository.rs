@@ -1,9 +1,8 @@
-use std::sync::Arc;
-
+use crate::database::Client;
 use marketplace_domain::*;
+use marketplace_tests::init_pool;
+use std::sync::Arc;
 use uuid::Uuid;
-
-use crate::database::{init_pool, Client};
 
 #[test]
 #[cfg_attr(

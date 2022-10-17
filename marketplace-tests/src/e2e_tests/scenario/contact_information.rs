@@ -3,6 +3,7 @@ use crate::e2e_tests::{
 	contributors,
 	starknet::{accounts::accounts, Account},
 };
+use anyhow::Result;
 use rstest::*;
 use starknet::core::types::FieldElement;
 
@@ -10,7 +11,7 @@ use starknet::core::types::FieldElement;
 #[tokio::test]
 async fn contact_information(
 	accounts: [Account; 10],
-	#[future] marketplace_api: tokio::task::JoinHandle<()>,
+	#[future] marketplace_api: tokio::task::JoinHandle<Result<()>>,
 ) {
 	marketplace_api.await;
 

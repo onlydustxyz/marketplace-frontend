@@ -71,22 +71,12 @@ impl Client {
 	}
 }
 
-pub fn init_pool() -> Pool {
+pub fn init_pool() -> Result<Pool, DatabaseError> {
 	let manager = ConnectionManager::<PgConnection>::new(database_url());
-	if cfg!(test) {
-		use diesel::Connection;
+	let pool_max_size = std::env::var("PG_POOL_MAX_SIZE").unwrap_or_else(|_| String::from("20"));
+	let pool = Pool::builder().max_size(pool_max_size.parse()?).build(manager)?;
 
-		let pool = Pool::builder().max_size(1).build(manager).unwrap();
-		pool.get().unwrap().begin_test_transaction().unwrap();
-		pool
-	} else {
-		let pool_max_size =
-			std::env::var("PG_POOL_MAX_SIZE").unwrap_or_else(|_| String::from("20"));
-		Pool::builder()
-			.max_size(pool_max_size.parse().expect("PG_POOL_MAX_SIZE is not a valid number"))
-			.build(manager)
-			.expect("Unable to create database connection pool")
-	}
+	Ok(pool)
 }
 
 fn database_url() -> String {

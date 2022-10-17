@@ -86,6 +86,7 @@ mockall = "0.11.2"
 
 # Local dependecies
 marketplace-domain = { path = "../marketplace-domain" }
+marketplace-tests = { path = "../marketplace-tests" }
 
 [dev-dependencies]
 assert_matches = "1.5"
