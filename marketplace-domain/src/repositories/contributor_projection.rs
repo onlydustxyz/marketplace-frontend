@@ -17,7 +17,8 @@ pub enum Error {
 
 #[cfg_attr(test, automock)]
 pub trait Repository: Send + Sync {
-	fn upsert(&self, contributor: ContributorProfile) -> Result<(), Error>;
+	fn upsert_github_user_data(&self, contributor: ContributorProfile) -> Result<(), Error>;
+	fn upsert_discord_handle(&self, contributor: ContributorProfile) -> Result<(), Error>;
 	fn find_by_account_address(
 		&self,
 		contributor_account_address: &ContributorAccountAddress,

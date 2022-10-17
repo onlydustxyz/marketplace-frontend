@@ -1,4 +1,4 @@
-use crate::{ContributorAccountAddress, GithubUserId};
+use crate::{ContributorAccountAddress, ContributorDiscordHandle, GithubUserId};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
@@ -8,6 +8,10 @@ pub enum Event {
 		contributor_account: ContributorAccountAddress,
 		github_identifier: GithubUserId,
 		contributor_id: ContributorAccountAddress,
+	},
+	DiscordHandleRegistered {
+		contributor_account_address: ContributorAccountAddress,
+		discord_handle: ContributorDiscordHandle,
 	},
 }
 
