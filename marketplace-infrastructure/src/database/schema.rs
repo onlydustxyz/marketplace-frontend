@@ -1,14 +1,6 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
-    contact_information (id) {
-        id -> Uuid,
-        contributor_id -> Varchar,
-        discord_handle -> Nullable<Varchar>,
-    }
-}
-
-diesel::table! {
     contributions (id) {
         id -> Text,
         project_id -> Text,
@@ -34,8 +26,9 @@ diesel::table! {
     contributors (id) {
         id -> Text,
         account -> Text,
-        github_identifier -> Text,
-        github_username -> Text,
+        github_identifier -> Nullable<Text>,
+        github_username -> Nullable<Text>,
+        discord_handle -> Nullable<Text>,
     }
 }
 
@@ -107,7 +100,6 @@ diesel::table! {
 }
 
 diesel::allow_tables_to_appear_in_same_query!(
-    contact_information,
     contributions,
     contributors,
     event_deduplications,
