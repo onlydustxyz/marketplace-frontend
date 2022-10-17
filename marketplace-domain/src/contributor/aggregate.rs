@@ -81,17 +81,28 @@ impl Contributor {
 			},
 		)])
 	}
+
+	pub fn register_discord_handle(
+		contributor_account_address: ContributorAccountAddress,
+		discord_handle: ContributorDiscordHandle,
+	) -> Result<Vec<Event>, Error> {
+		Ok(vec![Event::Contributor(
+			ContributorEvent::DiscordHandleRegistered {
+				contributor_account_address,
+				discord_handle,
+			},
+		)])
+	}
 }
 
 #[cfg(test)]
 mod test {
-	use std::{str::FromStr, sync::Arc};
-
-	use crate::*;
+	use super::*;
 	use assert_matches::assert_matches;
 	use async_trait::async_trait;
 	use mockall::{mock, predicate::eq};
 	use rstest::*;
+	use std::{str::FromStr, sync::Arc};
 
 	mock! {
 		OnChainAccountVerifier {}
@@ -115,6 +126,11 @@ mod test {
 	#[fixture]
 	fn github_identifier() -> GithubUserId {
 		22u64
+	}
+
+	#[fixture]
+	fn discord_handle() -> ContributorDiscordHandle {
+		ContributorDiscordHandle::from("Antho#9314")
 	}
 
 	#[fixture]
@@ -181,6 +197,29 @@ mod test {
 				contributor_account: _,
 				github_identifier: _,
 				contributor_id: _
+			})
+		);
+	}
+
+	#[rstest]
+	async fn register_discord_handle(
+		contributor_account_address: ContributorAccountAddress,
+		discord_handle: ContributorDiscordHandle,
+	) {
+		let result = Contributor::register_discord_handle(
+			contributor_account_address.clone(),
+			discord_handle.clone(),
+		);
+
+		assert!(result.is_ok(), "{}", result.err().unwrap());
+
+		let emitted_events = result.unwrap();
+		assert_eq!(1, emitted_events.len());
+		assert_eq!(
+			emitted_events.first().unwrap().clone(),
+			Event::Contributor(ContributorEvent::DiscordHandleRegistered {
+				contributor_account_address,
+				discord_handle,
 			})
 		);
 	}

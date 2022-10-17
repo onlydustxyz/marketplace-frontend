@@ -73,19 +73,31 @@ fn github_identifier() -> GithubUserId {
 }
 
 #[fixture]
+fn discord_handle() -> ContributorDiscordHandle {
+	"Discord#1234".into()
+}
+
+#[fixture]
 fn filled_database(
 	database: Arc<DatabaseClient>,
 	contributor_account_address: ContributorAccountAddress,
 	contributor_id: ContributorAccountAddress,
+	discord_handle: ContributorDiscordHandle,
 	github_identifier: GithubUserId,
 ) -> Arc<DatabaseClient> {
 	// events for contributor #1
 	{
-		let storable_events = vec![ContributorEvent::GithubAccountAssociated {
-			contributor_account: contributor_account_address.clone(),
-			github_identifier,
-			contributor_id,
-		}]
+		let storable_events = vec![
+			ContributorEvent::GithubAccountAssociated {
+				contributor_account: contributor_account_address.clone(),
+				github_identifier,
+				contributor_id,
+			},
+			ContributorEvent::DiscordHandleRegistered {
+				contributor_account_address: contributor_account_address.clone(),
+				discord_handle,
+			},
+		]
 		.into_iter()
 		.map(Storable::into_storable)
 		.collect();
@@ -108,6 +120,7 @@ async fn refresh_contributors_from_events(
 	mut github_client: MockGithubClient,
 	contributor_account_address: ContributorAccountAddress,
 	github_identifier: GithubUserId,
+	discord_handle: ContributorDiscordHandle,
 ) {
 	let refresh_contributors_usecase: RefreshContributors = {
 		github_client.expect_find_user_by_id().returning(move |_| {
@@ -139,10 +152,10 @@ async fn refresh_contributors_from_events(
 	assert_eq!(
 		ContributorProfile {
 			id: contributor_account_address.clone(),
-			github_identifier: Some(github_identifier),
 			account: contributor_account_address,
+			github_identifier: Some(github_identifier),
 			github_username: Some(String::from("abuisset")),
-			..Default::default()
+			discord_handle: Some(discord_handle)
 		},
 		result.unwrap()
 	);
