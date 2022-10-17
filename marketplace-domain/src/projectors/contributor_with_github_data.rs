@@ -48,7 +48,7 @@ impl ContributorWithGithubData {
 					github_identifier: Some(*github_identifier),
 					github_username: Some(user.name),
 					account: contributor_account_address.clone(),
-					discord_handle: None,
+					..Default::default()
 				})?;
 		}
 
@@ -63,10 +63,9 @@ impl ContributorWithGithubData {
 		self.contributor_projection_repository
 			.upsert_discord_handle(ContributorProfile {
 				id: contributor_account_address.clone(),
-				github_identifier: Default::default(),
-				github_username: Default::default(),
 				account: contributor_account_address.clone(),
 				discord_handle: Some(discord_handle.clone()),
+				..Default::default()
 			})?;
 
 		Ok(())

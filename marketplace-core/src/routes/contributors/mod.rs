@@ -6,3 +6,6 @@ pub use list::*;
 
 mod signup;
 pub use signup::*;
+
+mod discord;
+pub use discord::*;

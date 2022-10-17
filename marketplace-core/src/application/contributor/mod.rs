@@ -5,3 +5,6 @@ pub use associate_github_account::{
 
 mod refresh;
 pub use refresh::RefreshContributors;
+
+mod register_discord_handle;
+pub use register_discord_handle::{RegisterDiscordHandle, Usecase as RegisterDiscordHandleUsecase};
