@@ -10,10 +10,13 @@ pub enum Error {
 	GithubAuthentication(#[source] GithubClientError),
 }
 
+pub type DiscordHandle = String;
+
 #[derive(Default, Debug, Clone, PartialEq, Eq)]
 pub struct Contributor {
 	id: ContributorAccountAddress,
 	github_identifier: GithubUserId,
+	discord_handle: Option<DiscordHandle>,
 }
 
 impl Aggregate for Contributor {
@@ -38,9 +41,14 @@ impl EventSourcable for Contributor {
 				} => Self {
 					id: contributor_account.clone(),
 					github_identifier: *github_identifier,
+					..Default::default()
+				},
+				ContributorEvent::DiscordHandleRegistered { discord_handle, .. } => Self {
+					discord_handle: Some(discord_handle.clone()),
+					..self
 				},
 			},
-			Event::Contribution(_) | Event::Project(_) => self,
+			_ => self,
 		}
 	}
 }

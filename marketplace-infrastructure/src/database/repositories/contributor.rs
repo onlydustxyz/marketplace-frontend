@@ -5,7 +5,7 @@ use log::error;
 use marketplace_domain::*;
 
 impl ContributorProjectionRepository for Client {
-	fn upsert(
+	fn upsert_github_user_data(
 		&self,
 		contributor: ContributorProfile,
 	) -> Result<(), ContributorProjectionRepositoryError> {

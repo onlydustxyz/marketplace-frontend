@@ -127,8 +127,11 @@ impl Identifiable<ContributorEvent> for Contributor {
 		match event {
 			ContributorEvent::GithubAccountAssociated {
 				contributor_account,
-				github_identifier: _,
-				contributor_id: _,
+				..
+			}
+			| ContributorEvent::DiscordHandleRegistered {
+				contributor_account_address: contributor_account,
+				..
 			} => contributor_account.clone(),
 		}
 	}

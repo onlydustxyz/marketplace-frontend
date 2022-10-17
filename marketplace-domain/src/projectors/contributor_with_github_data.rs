@@ -40,13 +40,14 @@ impl ContributorWithGithubData {
 		{
 			let user = self.github_client.find_user_by_id(*github_identifier).await?;
 
-			self.contributor_projection_repository.upsert(ContributorProfile {
-				id: contributor_account_address.clone(),
-				github_identifier: *github_identifier,
-				github_username: user.name,
-				account: contributor_account_address.clone(),
-				discord_handle: None,
-			})?;
+			self.contributor_projection_repository
+				.upsert_github_user_data(ContributorProfile {
+					id: contributor_account_address.clone(),
+					github_identifier: *github_identifier,
+					github_username: user.name,
+					account: contributor_account_address.clone(),
+					discord_handle: None,
+				})?;
 		}
 
 		Ok(())
@@ -157,7 +158,7 @@ mod test {
 			});
 
 		contributor_projection_repository
-			.expect_upsert()
+			.expect_upsert_github_user_data()
 			.times(1)
 			.with(eq(ContributorProfile {
 				id: contributor_account_address.clone(),
@@ -188,7 +189,7 @@ mod test {
 			.returning(|_| Ok(ContributorProfile::default()));
 
 		github_client.expect_find_user_by_id().never();
-		contributor_projection_repository.expect_upsert().never();
+		contributor_projection_repository.expect_upsert_github_user_data().never();
 
 		let projector = ContributorWithGithubData::new(
 			Arc::new(github_client),
