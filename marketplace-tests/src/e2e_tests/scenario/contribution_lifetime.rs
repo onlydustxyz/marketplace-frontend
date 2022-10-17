@@ -56,13 +56,13 @@ async fn contribution_lifetime(
 	let contributor = contributors::get_by_account(&contributor_account_address).await;
 	assert_eq!(contributor.id, contributor_account_address);
 	assert_eq!(contributor.account, contributor_account_address);
-	assert_eq!(contributor.github_identifier, "990474");
-	assert_eq!(contributor.github_username, "abuisset");
+	assert_eq!(contributor.github_identifier.unwrap(), "990474");
+	assert_eq!(contributor.github_username.unwrap(), "abuisset");
 	let contributor = contributors::get(&contributor_account_address).await;
 	assert_eq!(contributor.id, contributor_account_address);
 	assert_eq!(contributor.account, contributor_account_address);
-	assert_eq!(contributor.github_identifier, "990474");
-	assert_eq!(contributor.github_username, "abuisset");
+	assert_eq!(contributor.github_identifier.unwrap(), "990474");
+	assert_eq!(contributor.github_username.unwrap(), "abuisset");
 
 	let events_count = get_events_count();
 	contributions::apply(&contribution.id, &contributor_account_address).await;

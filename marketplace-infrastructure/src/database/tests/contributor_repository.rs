@@ -49,12 +49,12 @@ fn github_then_discord(
 		let contributor = ContributorProfile {
 			id: contributor_account_address.clone(),
 			account: contributor_account_address.clone(),
-			github_identifier,
-			github_username: github_username.clone(),
+			github_identifier: Some(github_identifier),
+			github_username: Some(github_username.clone()),
 			..Default::default()
 		};
 
-		ContributorProjectionRepository::upsert(&database, contributor.clone())
+		ContributorProjectionRepository::upsert_github_user_data(&database, contributor)
 			.expect("Unable to upsert contributor profile");
 	}
 
@@ -66,7 +66,7 @@ fn github_then_discord(
 			..Default::default()
 		};
 
-		ContributorProjectionRepository::upsert_discord_handle(&database, contributor.clone())
+		ContributorProjectionRepository::upsert_discord_handle(&database, contributor)
 			.expect("Unable to upsert contributor discord handle");
 	}
 
@@ -76,8 +76,8 @@ fn github_then_discord(
 	)
 	.expect("Unable to find contributor by account");
 
-	assert_eq!(contributor.github_identifier, github_identifier);
-	assert_eq!(contributor.github_username, github_username);
+	assert_eq!(contributor.github_identifier, Some(github_identifier));
+	assert_eq!(contributor.github_username, Some(github_username));
 	assert_eq!(contributor.discord_handle, Some(discord_handle));
 }
 
@@ -101,7 +101,7 @@ fn discord_then_github(
 			..Default::default()
 		};
 
-		ContributorProjectionRepository::upsert_discord_handle(&database, contributor.clone())
+		ContributorProjectionRepository::upsert_discord_handle(&database, contributor)
 			.expect("Unable to upsert contributor discord handle");
 	}
 
@@ -109,12 +109,12 @@ fn discord_then_github(
 		let contributor = ContributorProfile {
 			id: contributor_account_address.clone(),
 			account: contributor_account_address.clone(),
-			github_identifier,
-			github_username: github_username.clone(),
+			github_identifier: Some(github_identifier),
+			github_username: Some(github_username.clone()),
 			..Default::default()
 		};
 
-		ContributorProjectionRepository::upsert(&database, contributor.clone())
+		ContributorProjectionRepository::upsert_github_user_data(&database, contributor)
 			.expect("Unable to upsert contributor profile");
 	}
 
@@ -124,7 +124,7 @@ fn discord_then_github(
 	)
 	.expect("Unable to find contributor by account");
 
-	assert_eq!(contributor.github_identifier, github_identifier);
-	assert_eq!(contributor.github_username, github_username);
+	assert_eq!(contributor.github_identifier, Some(github_identifier));
+	assert_eq!(contributor.github_username, Some(github_username));
 	assert_eq!(contributor.discord_handle, Some(discord_handle));
 }
