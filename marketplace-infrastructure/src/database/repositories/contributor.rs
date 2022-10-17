@@ -76,8 +76,9 @@ impl From<ContributorProfile> for models::NewGithubContributor {
 		Self {
 			id: contributor.id.to_string(),
 			account: contributor.account.to_string(),
-			github_identifier: contributor.github_identifier.to_string(),
-			github_username: contributor.github_username,
+			// safe to unwrap as only called when data is present
+			github_identifier: contributor.github_identifier.unwrap().to_string(),
+			github_username: contributor.github_username.unwrap(),
 		}
 	}
 }
@@ -87,8 +88,8 @@ impl From<ContributorProfile> for models::NewDiscordContributor {
 		Self {
 			id: contributor.id.to_string(),
 			account: contributor.account.to_string(),
-			discord_handle: contributor.discord_handle.unwrap(), /* safe to unwrap as called only
-			                                                      * when discord handle is set */
+			// safe to unwrap as only called when data is present
+			discord_handle: contributor.discord_handle.unwrap(),
 		}
 	}
 }
@@ -98,11 +99,8 @@ impl From<models::Contributor> for ContributorProfile {
 		Self {
 			id: contributor.id.parse().unwrap(),
 			account: contributor.account.parse().unwrap(),
-			github_identifier: contributor
-				.github_identifier
-				.and_then(|id| id.parse().ok())
-				.unwrap_or_default(),
-			github_username: contributor.github_username.unwrap_or_default(),
+			github_identifier: contributor.github_identifier.and_then(|id| id.parse().ok()),
+			github_username: contributor.github_username,
 			discord_handle: contributor.discord_handle,
 		}
 	}

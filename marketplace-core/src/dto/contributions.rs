@@ -100,6 +100,6 @@ pub fn build_contribution_dto(
 	});
 
 	let mut contribution = Contribution::from(contribution);
-	contribution.metadata.github_username = contributor.map(|c| c.github_username);
+	contribution.metadata.github_username = contributor.and_then(|c| c.github_username);
 	Some(contribution)
 }

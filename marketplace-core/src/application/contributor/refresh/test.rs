@@ -68,16 +68,22 @@ fn contributor_id() -> ContributorAccountAddress {
 }
 
 #[fixture]
+fn github_identifier() -> GithubUserId {
+	990474
+}
+
+#[fixture]
 fn filled_database(
 	database: Arc<DatabaseClient>,
 	contributor_account_address: ContributorAccountAddress,
 	contributor_id: ContributorAccountAddress,
+	github_identifier: GithubUserId,
 ) -> Arc<DatabaseClient> {
 	// events for contributor #1
 	{
 		let storable_events = vec![ContributorEvent::GithubAccountAssociated {
 			contributor_account: contributor_account_address.clone(),
-			github_identifier: 100u64,
+			github_identifier,
 			contributor_id,
 		}]
 		.into_iter()
@@ -101,9 +107,15 @@ async fn refresh_contributors_from_events(
 	filled_database: Arc<DatabaseClient>,
 	mut github_client: MockGithubClient,
 	contributor_account_address: ContributorAccountAddress,
+	github_identifier: GithubUserId,
 ) {
 	let refresh_contributors_usecase: RefreshContributors = {
-		github_client.expect_find_user_by_id().returning(|_| Ok(Default::default()));
+		github_client.expect_find_user_by_id().returning(move |_| {
+			Ok(GithubUser {
+				id: github_identifier,
+				name: String::from("abuisset"),
+			})
+		});
 
 		Refresh::new(
 			filled_database.clone(),
@@ -127,8 +139,9 @@ async fn refresh_contributors_from_events(
 	assert_eq!(
 		ContributorProfile {
 			id: contributor_account_address.clone(),
-			github_identifier: 100u64,
+			github_identifier: Some(github_identifier),
 			account: contributor_account_address,
+			github_username: Some(String::from("abuisset")),
 			..Default::default()
 		},
 		result.unwrap()
