@@ -20,3 +20,12 @@ pub struct NewGithubContributor {
 	pub github_identifier: String,
 	pub github_username: String,
 }
+
+#[derive(Debug, Serialize, Deserialize, Insertable, Identifiable, AsChangeset)]
+#[serde(crate = "rocket::serde")]
+#[table_name = "contributors"]
+pub struct NewDiscordContributor {
+	pub id: String,
+	pub account: String,
+	pub discord_handle: String,
+}

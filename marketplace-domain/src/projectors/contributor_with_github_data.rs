@@ -52,6 +52,23 @@ impl ContributorWithGithubData {
 
 		Ok(())
 	}
+
+	fn update_discord_handle(
+		&self,
+		contributor_account_address: &ContributorAccountAddress,
+		discord_handle: &ContributorDiscordHandle,
+	) -> Result<(), Error> {
+		self.contributor_projection_repository
+			.upsert_discord_handle(ContributorProfile {
+				id: contributor_account_address.clone(),
+				github_identifier: Default::default(),
+				github_username: Default::default(),
+				account: contributor_account_address.clone(),
+				discord_handle: Some(discord_handle.clone()),
+			})?;
+
+		Ok(())
+	}
 }
 
 #[async_trait]
@@ -64,6 +81,10 @@ impl EventListener for ContributorWithGithubData {
 					github_identifier,
 					contributor_id: _,
 				} => self.add_contributor(contributor_account, github_identifier).await,
+				ContributorEvent::DiscordHandleRegistered {
+					contributor_account_address,
+					discord_handle,
+				} => self.update_discord_handle(contributor_account_address, discord_handle),
 			},
 			Event::Project(_) | Event::Contribution(_) => return,
 		};
@@ -108,6 +129,11 @@ mod test {
 	}
 
 	#[fixture]
+	fn discord_handle() -> ContributorDiscordHandle {
+		ContributorDiscordHandle::from("Antho#9314")
+	}
+
+	#[fixture]
 	fn github_username() -> String {
 		String::from("james_bond")
 	}
@@ -123,6 +149,38 @@ mod test {
 			github_identifier,
 			contributor_id,
 		})
+	}
+
+	#[rstest]
+	async fn discord_handle_gets_updated_upon_event(
+		mut contributor_projection_repository: MockContributorProjectionRepository,
+		discord_handle: ContributorDiscordHandle,
+		contributor_account_address: ContributorAccountAddress,
+	) {
+		contributor_projection_repository
+			.expect_upsert_discord_handle()
+			.once()
+			.with(eq(ContributorProfile {
+				id: contributor_account_address.clone(),
+				account: contributor_account_address.clone(),
+				discord_handle: Some(discord_handle.clone()),
+				..Default::default()
+			}))
+			.returning(|_| Ok(()));
+
+		let projector = ContributorWithGithubData::new(
+			Arc::new(github_client()),
+			Arc::new(contributor_projection_repository),
+		);
+
+		projector
+			.on_event(&Event::Contributor(
+				ContributorEvent::DiscordHandleRegistered {
+					contributor_account_address,
+					discord_handle,
+				},
+			))
+			.await;
 	}
 
 	#[rstest]
