@@ -11,7 +11,11 @@ impl EventTranslator for Claimed {
 		get_selector_from_name("ContributionClaimed").unwrap()
 	}
 
-	fn to_domain_event(_: &ContractAddress, mut topics: Topics) -> Result<Event, FromEventError> {
+	fn to_domain_event(
+		_: &Option<ContractAddress>,
+		_: &ContractAddress,
+		mut topics: Topics,
+	) -> Result<Event, FromEventError> {
 		let contribution_id: HexPrefixedString = topics.pop_front_as()?;
 		let contributor_account_address: ContributorAccountAddress = topics.pop_front_as()?;
 
@@ -56,8 +60,11 @@ mod test {
 
 	#[rstest]
 	fn create_event_from_apibara(apibara_event_data: Topics) {
-		let result =
-			<Claimed as EventTranslator>::to_domain_event(&Default::default(), apibara_event_data);
+		let result = <Claimed as EventTranslator>::to_domain_event(
+			&Default::default(),
+			&Default::default(),
+			apibara_event_data,
+		);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(
 			Event::Contribution(ContributionEvent::Claimed {

@@ -12,6 +12,7 @@ impl EventTranslator for Validated {
 	}
 
 	fn to_domain_event(
+		_: &Option<ContractAddress>,
 		_: &ContractAddress,
 		mut topics: Topics,
 	) -> Result<DomainEvent, FromEventError> {
@@ -48,6 +49,7 @@ mod test {
 	#[rstest]
 	fn create_event_from_apibara(apibara_event_data: Topics) {
 		let result = <Validated as EventTranslator>::to_domain_event(
+			&Default::default(),
 			&Default::default(),
 			apibara_event_data,
 		);

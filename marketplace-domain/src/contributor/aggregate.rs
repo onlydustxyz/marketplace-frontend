@@ -69,7 +69,7 @@ impl Contributor {
 			ContributorEvent::GithubAccountAssociated {
 				contributor_account: contributor_account_address.clone(),
 				github_identifier,
-				contributor_id: HexPrefixedString::from(contributor_account_address).into(),
+				contributor_id: contributor_account_address,
 			},
 		)])
 	}

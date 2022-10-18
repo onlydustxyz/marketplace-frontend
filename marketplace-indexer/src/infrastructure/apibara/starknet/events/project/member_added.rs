@@ -12,6 +12,7 @@ impl EventTranslator for MemberAdded {
 	}
 
 	fn to_domain_event(
+		_: &Option<ContractAddress>,
 		_: &ContractAddress,
 		mut topics: Topics,
 	) -> Result<DomainEvent, FromEventError> {
@@ -56,6 +57,7 @@ mod test {
 	#[rstest]
 	fn create_event_from_apibara(apibara_event_data: Topics) {
 		let result = <MemberAdded as EventTranslator>::to_domain_event(
+			&Default::default(),
 			&Default::default(),
 			apibara_event_data,
 		);

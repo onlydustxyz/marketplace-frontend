@@ -10,6 +10,7 @@ impl EventTranslator for Closed {
 	}
 
 	fn to_domain_event(
+		_: &Option<ContractAddress>,
 		contract_address: &ContractAddress,
 		_: Topics,
 	) -> Result<Event, FromEventError> {
@@ -45,8 +46,11 @@ mod test {
 			"0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
 		)
 		.unwrap();
-		let result =
-			<Closed as EventTranslator>::to_domain_event(&contract_address, apibara_event_data);
+		let result = <Closed as EventTranslator>::to_domain_event(
+			&Default::default(),
+			&contract_address,
+			apibara_event_data,
+		);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(
 			Event::Contribution(ContributionEvent::Closed {
