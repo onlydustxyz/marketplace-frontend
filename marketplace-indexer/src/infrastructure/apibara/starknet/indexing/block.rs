@@ -75,9 +75,9 @@ impl AsEvents for Block {
 
 fn find_event_caller(transactions: &[Transaction], transaction_hash: &Vec<u8>) -> Option<Vec<u8>> {
 	transactions.iter().find_map(|t| {
-		if let transaction::Transaction::Invoke(invoke_transaction) =
-			t.transaction.as_ref().expect("Should be present exist")
-		{
+		if let transaction::Transaction::Invoke(invoke_transaction) = t.transaction.as_ref().expect(
+			"'Transaction' objects defined by Proto are always supposed to contain a 'transaction' field",
+		) {
 			let hash = invoke_transaction.common.as_ref().unwrap().hash.clone();
 			if hash == *transaction_hash {
 				Some(invoke_transaction.contract_address.clone())
@@ -121,7 +121,7 @@ fn build_event(
 			.map_err(super::Error::Invalid)?,
 		selector: event.keys.first().cloned().unwrap_or_default(),
 		data: event.data.into(),
-		caller,
+		caller_address: caller,
 	};
 
 	Ok(event)
@@ -204,7 +204,7 @@ mod test {
 					selector: SELECTORS[0].as_felt(),
 					index: 0,
 					data: vec![vec![11, 11, 11], vec![22, 22, 22]].into(),
-					caller: None,
+					caller_address: None,
 				},
 				Event {
 					block_hash: BLOCK_HASHES[0].as_0x_string(),
@@ -215,7 +215,7 @@ mod test {
 					selector: SELECTORS[1].as_felt(),
 					index: 1,
 					data: vec![vec![11, 11], vec![22, 22]].into(),
-					caller: None,
+					caller_address: None,
 				},
 				Event {
 					block_hash: BLOCK_HASHES[0].as_0x_string(),
@@ -226,7 +226,7 @@ mod test {
 					selector: SELECTORS[2].as_felt(),
 					index: 0,
 					data: vec![vec![11, 33], vec![22, 33]].into(),
-					caller: None,
+					caller_address: None,
 				}
 			]
 		);
