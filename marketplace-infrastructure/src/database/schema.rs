@@ -66,18 +66,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    events_backup (index) {
-        index -> Int4,
-        timestamp -> Timestamp,
-        aggregate_name -> Varchar,
-        aggregate_id -> Varchar,
-        payload -> Jsonb,
-        metadata -> Nullable<Jsonb>,
-        origin -> Text,
-    }
-}
-
-diesel::table! {
     indexers (id) {
         id -> Text,
         index_head -> Int8,
@@ -125,7 +113,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     event_deduplications,
     event_filters,
     events,
-    events_backup,
     indexers,
     lead_contributors,
     pending_applications,
