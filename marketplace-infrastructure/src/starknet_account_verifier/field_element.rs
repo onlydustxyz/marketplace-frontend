@@ -1,4 +1,4 @@
-use marketplace_domain::{ContributorAccountAddress, HexPrefixedString};
+use marketplace_domain::ContributorAccountAddress;
 use starknet::core::types::FieldElement;
 
 pub trait TryFromContributorAccount: Sized {
@@ -14,8 +14,8 @@ impl TryFromContributorAccount for FieldElement {
 	fn try_from_contributor_account_address(
 		contributor_account_address: ContributorAccountAddress,
 	) -> Result<Self, Self::Error> {
-		let hex_string: HexPrefixedString = contributor_account_address.into();
-		FieldElement::from_hex_be(&hex_string.to_string()).map_err(anyhow::Error::msg)
+		FieldElement::from_hex_be(&contributor_account_address.as_contract_address().to_string())
+			.map_err(anyhow::Error::msg)
 	}
 }
 

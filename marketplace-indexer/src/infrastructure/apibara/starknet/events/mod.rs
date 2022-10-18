@@ -23,6 +23,7 @@ pub enum FromEventError {
 pub trait EventTranslator {
 	fn selector() -> FieldElement;
 	fn to_domain_event(
+		caller_address: &Option<ContractAddress>,
 		contract_address: &ContractAddress,
 		topics: Topics,
 	) -> Result<DomainEvent, FromEventError>;
