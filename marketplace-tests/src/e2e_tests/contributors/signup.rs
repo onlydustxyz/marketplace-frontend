@@ -6,10 +6,10 @@ use reqwest::StatusCode;
 use serde_json::json;
 use starknet::{core::crypto::compute_hash_on_elements, signers::Signer};
 
-pub async fn signup(contributor_account_address: &Account) {
-	let address = contributor_account_address.address();
+pub async fn signup(contributor_account: &Account) {
+	let address = contributor_account.address();
 	let hash = compute_hash_on_elements(&[address]);
-	let signature = contributor_account_address
+	let signature = contributor_account
 		.signer()
 		.sign_hash(&hash)
 		.await
@@ -33,6 +33,6 @@ pub async fn signup(contributor_account_address: &Account) {
 	assert_eq!(
 		response.status(),
 		StatusCode::NO_CONTENT,
-		"Invalid response received from GET"
+		"Invalid response received from PUT /github"
 	);
 }

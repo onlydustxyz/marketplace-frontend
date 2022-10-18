@@ -50,6 +50,7 @@ async fn contribution_lifetime(
 
 	// Apply to the contribution
 	contributors::signup(contributor_account).await;
+	contributors::register_discord_handle(&contributor_account_address, "Discord#1234").await;
 	contributions::apply(&contribution.id, &contributor_account_address).await;
 	contributions::refuse_application(&contribution.id, &contributor_account_address).await;
 
@@ -58,6 +59,8 @@ async fn contribution_lifetime(
 	assert_eq!(contributor.account, contributor_account_address);
 	assert_eq!(contributor.github_identifier.unwrap(), "990474");
 	assert_eq!(contributor.github_username.unwrap(), "abuisset");
+	assert_eq!(contributor.discord_handle.unwrap(), "Discord#1234");
+
 	let contributor = contributors::get(&contributor_account_address).await;
 	assert_eq!(contributor.id, contributor_account_address);
 	assert_eq!(contributor.account, contributor_account_address);
