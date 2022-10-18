@@ -1,5 +1,7 @@
 use crate::infrastructure::apibara::starknet::{
-	proto::{Block, BlockHash, Event as ApibaraEvent, TransactionReceipt},
+	proto::{
+		transaction, Block, BlockHash, Event as ApibaraEvent, Transaction, TransactionReceipt,
+	},
 	Event, TryFromBytes,
 };
 use anyhow::anyhow;
@@ -48,6 +50,8 @@ impl AsEvents for Block {
 				receipt.events.clone().into_iter().enumerate().try_fold(
 					events,
 					|events, (index, event)| {
+						let caller_address =
+							find_event_caller(&self.transactions, &receipt.transaction_hash);
 						let event = build_event(
 							block_hash,
 							timestamp,
@@ -55,6 +59,7 @@ impl AsEvents for Block {
 							receipt,
 							event,
 							index,
+							caller_address,
 						)?;
 						Ok([events, vec![event]].concat())
 					},
@@ -68,6 +73,23 @@ impl AsEvents for Block {
 	}
 }
 
+fn find_event_caller(transactions: &[Transaction], transaction_hash: &Vec<u8>) -> Option<Vec<u8>> {
+	transactions.iter().find_map(|t| {
+		if let transaction::Transaction::Invoke(invoke_transaction) =
+			t.transaction.as_ref().expect("Should be present exist")
+		{
+			let hash = invoke_transaction.common.as_ref().unwrap().hash.clone();
+			if hash == *transaction_hash {
+				Some(invoke_transaction.contract_address.clone())
+			} else {
+				None
+			}
+		} else {
+			None
+		}
+	})
+}
+
 fn build_event(
 	block_hash: &BlockHash,
 	block_timestamp: &Timestamp,
@@ -75,7 +97,13 @@ fn build_event(
 	transaction_receipt: &TransactionReceipt,
 	event: ApibaraEvent,
 	index: usize,
+	caller_address: Option<Vec<u8>>,
 ) -> Result<Event, super::Error> {
+	let caller = match caller_address {
+		Some(c) => Some(HexPrefixedString::try_from_bytes(c).map_err(super::Error::Invalid)?),
+		None => None,
+	};
+
 	let event = Event {
 		block_hash: HexPrefixedString::try_from_bytes(block_hash.hash.clone())
 			.map_err(super::Error::Invalid)?,
@@ -93,6 +121,7 @@ fn build_event(
 			.map_err(super::Error::Invalid)?,
 		selector: event.keys.first().cloned().unwrap_or_default(),
 		data: event.data.into(),
+		caller,
 	};
 
 	Ok(event)
@@ -175,6 +204,7 @@ mod test {
 					selector: SELECTORS[0].as_felt(),
 					index: 0,
 					data: vec![vec![11, 11, 11], vec![22, 22, 22]].into(),
+					caller: None,
 				},
 				Event {
 					block_hash: BLOCK_HASHES[0].as_0x_string(),
@@ -185,6 +215,7 @@ mod test {
 					selector: SELECTORS[1].as_felt(),
 					index: 1,
 					data: vec![vec![11, 11], vec![22, 22]].into(),
+					caller: None,
 				},
 				Event {
 					block_hash: BLOCK_HASHES[0].as_0x_string(),
@@ -195,6 +226,7 @@ mod test {
 					selector: SELECTORS[2].as_felt(),
 					index: 0,
 					data: vec![vec![11, 33], vec![22, 33]].into(),
+					caller: None,
 				}
 			]
 		);
