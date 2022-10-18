@@ -51,8 +51,8 @@ mod test {
 				0, 0, 0, 12,
 			],
 			vec![
-				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 24,
+				4, 121, 147, 21, 44, 216, 84, 100, 46, 32, 186, 205, 64, 108, 244, 251, 236, 247,
+				30, 168, 82, 17, 30, 221, 107, 12, 76, 181, 117, 249, 207, 178,
 			],
 			vec![
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -72,16 +72,29 @@ mod test {
 
 	#[rstest]
 	fn create_assigned_event_from_apibara(apibara_event_data: Topics) {
+		let caller_address = HexPrefixedString::from_str(
+			"0x057993152cd854642e20bacd406cf4fbecf71ea852111edd6b0c4cb575f9cfb2",
+		)
+		.unwrap();
+		let contract_address = ContractAddress::from_str(
+			"0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+		)
+		.unwrap();
+		let assignee_address = HexPrefixedString::from_str(
+			"0x047993152cd854642e20bacd406cf4fbecf71ea852111edd6b0c4cb575f9cfb2",
+		)
+		.unwrap();
+
 		let result = <Assigned as EventTranslator>::to_domain_event(
-			&Default::default(),
-			&Default::default(),
+			&Some(caller_address),
+			&contract_address,
 			apibara_event_data,
 		);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert_eq!(
 			DomainEvent::Contribution(ContributionEvent::Assigned {
 				id: 12.into(),
-				contributor_account_address: ContributorAccountAddress::from(24)
+				contributor_account_address: ContributorAccountAddress::from(assignee_address)
 			},),
 			result.unwrap()
 		);
@@ -89,8 +102,12 @@ mod test {
 
 	#[rstest]
 	fn create_claimed_event_from_apibara(apibara_event_data: Topics) {
+		let caller_address = HexPrefixedString::from_str(
+			"0x047993152cd854642e20bacd406cf4fbecf71ea852111edd6b0c4cb575f9cfb2",
+		)
+		.unwrap();
 		let result = <Assigned as EventTranslator>::to_domain_event(
-			&Some(HexPrefixedString::from_str("0x0018").unwrap()),
+			&Some(caller_address.clone()),
 			&Default::default(),
 			apibara_event_data,
 		);
@@ -98,7 +115,7 @@ mod test {
 		assert_eq!(
 			DomainEvent::Contribution(ContributionEvent::Claimed {
 				id: 12.into(),
-				contributor_account_address: ContributorAccountAddress::from(24)
+				contributor_account_address: ContributorAccountAddress::from(caller_address)
 			},),
 			result.unwrap()
 		);

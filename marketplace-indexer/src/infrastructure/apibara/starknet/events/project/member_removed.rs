@@ -31,6 +31,9 @@ mod test {
 	use super::*;
 	use rstest::*;
 
+	use crate::HexPrefixedString;
+	use std::str::FromStr;
+
 	#[fixture]
 	fn apibara_event_data() -> Topics {
 		vec![
@@ -56,9 +59,18 @@ mod test {
 
 	#[rstest]
 	fn create_event_from_apibara(apibara_event_data: Topics) {
+		let caller_address = HexPrefixedString::from_str(
+			"0x047993152cd854642e20bacd406cf4fbecf71ea852111edd6b0c4cb575f9cfb2",
+		)
+		.unwrap();
+		let contract_address = ContractAddress::from_str(
+			"0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+		)
+		.unwrap();
+
 		let result = <MemberRemoved as EventTranslator>::to_domain_event(
-			&Default::default(),
-			&Default::default(),
+			&Some(caller_address),
+			&contract_address,
 			apibara_event_data,
 		);
 		assert!(result.is_ok(), "{}", result.err().unwrap());

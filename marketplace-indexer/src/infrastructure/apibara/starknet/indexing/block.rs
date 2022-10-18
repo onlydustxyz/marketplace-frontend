@@ -78,7 +78,14 @@ fn find_event_caller(transactions: &[Transaction], transaction_hash: &Vec<u8>) -
 		if let transaction::Transaction::Invoke(invoke_transaction) = t.transaction.as_ref().expect(
 			"'Transaction' objects defined by Proto are always supposed to contain a 'transaction' field",
 		) {
-			let hash = invoke_transaction.common.as_ref().unwrap().hash.clone();
+			let hash = invoke_transaction
+				.common
+				.as_ref()
+				.expect(
+					"'InvokeTransaction' objects defined by Proto are always supposed to contain a 'common' field",
+				)
+				.hash
+				.clone();
 			if hash == *transaction_hash {
 				Some(invoke_transaction.contract_address.clone())
 			} else {
