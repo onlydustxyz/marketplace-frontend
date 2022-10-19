@@ -1,6 +1,5 @@
 use crate::application::RefuseApplicationUsecase;
 use http_api_problem::HttpApiProblem;
-use marketplace_domain::ContributorAccountAddress;
 use rocket::{response::status, State};
 use rocket_okapi::openapi;
 
@@ -10,17 +9,17 @@ use crate::routes::{
 };
 
 #[openapi(tag = "Contributions")]
-#[delete("/contributions/<contribution_id>/applications?<contributor_id>")]
+#[delete("/contributions/<contribution_id>/applications?<contributor_account_address>")]
 pub async fn refuse_contributor_application(
 	contribution_id: HexPrefixedStringDto,
-	contributor_id: U256Param,
+	contributor_account_address: U256Param,
 	usecase: &State<Box<dyn RefuseApplicationUsecase>>,
 ) -> Result<status::NoContent, HttpApiProblem> {
-	let contributor_id: ContributorAccountAddress = contributor_id.into();
+	let contributor_account_address = contributor_account_address.into();
 	let contribution_id = contribution_id.into();
 
 	usecase
-		.refuse_application(&contribution_id, &contributor_id)
+		.refuse_application(&contribution_id, &contributor_account_address)
 		.await
 		.map_err(|e| e.to_http_api_problem())?;
 
