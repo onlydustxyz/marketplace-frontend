@@ -17,7 +17,7 @@ use crate::routes::{
 #[derive(Deserialize, JsonSchema)]
 #[serde(crate = "rocket::serde")]
 pub struct ApplyDto {
-	contributor_id: U256Param,
+	contributor_account_address: U256Param,
 }
 
 #[openapi(tag = "Contributions")]
@@ -31,16 +31,17 @@ pub async fn apply_to_contribution(
 	body: Json<ApplyDto>,
 	usecase: &State<Box<dyn ApplyToContributionUsecase>>,
 ) -> Result<status::Created<&str>, HttpApiProblem> {
-	let contributor_id: ContributorAccountAddress = body.into_inner().contributor_id.into();
+	let contributor_account_address: ContributorAccountAddress =
+		body.into_inner().contributor_account_address.into();
 	let contribution_id = contribution_id.into();
 
 	usecase
-		.apply_to_contribution(&contribution_id, &contributor_id)
+		.apply_to_contribution(&contribution_id, &contributor_account_address)
 		.await
 		.map_err(|e| e.to_http_api_problem())?;
 
 	let api_url = std::env::var("API_URL").unwrap();
 	Ok(status::Created::new(format!(
-		"{api_url}/contribution/{contribution_id}/applications/{contributor_id}",
+		"{api_url}/contribution/{contribution_id}/applications/{contributor_account_address}",
 	)))
 }
