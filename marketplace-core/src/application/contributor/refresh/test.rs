@@ -63,11 +63,6 @@ fn contributor_account_address() -> ContributorAccountAddress {
 }
 
 #[fixture]
-fn contributor_id() -> ContributorAccountAddress {
-	"0x12".parse().unwrap()
-}
-
-#[fixture]
 fn github_identifier() -> GithubUserId {
 	990474
 }
