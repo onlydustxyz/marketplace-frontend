@@ -6,21 +6,19 @@ use crate::e2e_tests::{
 	database::get_events_count,
 	projects::add_lead_contributor,
 	scenario::STARKONQUEST_TITLE,
-	starknet::{accounts::accounts, Account},
+	starknet::{accounts::*, Account},
 };
 use anyhow::Result;
 use marketplace_core::dto::Application;
 use rstest::*;
 use tokio::task::JoinHandle;
 
-// Lead contributors must not overlap between different scenario
-// otherwise their will consume the same call nonces
-const LEAD_CONTRIBUTOR_INDEX: usize = 2;
-
 #[rstest]
 #[tokio::test]
 async fn delete_contribution(
-	accounts: [Account; 10],
+	admin_account: Account,
+	lead_contributor_account: Account,
+	contributor_account: Account,
 	#[future] marketplace_api: JoinHandle<Result<()>>,
 	#[future] marketplace_indexer: JoinHandle<Result<()>>,
 	#[future] marketplace_event_store: JoinHandle<Result<()>>,
@@ -33,10 +31,10 @@ async fn delete_contribution(
 
 	let events_count = get_events_count();
 
-	let lead_contributor = &accounts[LEAD_CONTRIBUTOR_INDEX];
+	let lead_contributor = &lead_contributor_account;
 	let issue_number = 32;
 
-	add_lead_contributor(&accounts[0], STARKONQUEST_ID, lead_contributor.address()).await;
+	add_lead_contributor(&admin_account, STARKONQUEST_ID, lead_contributor.address()).await;
 	contributions::create(lead_contributor, STARKONQUEST_ID, issue_number, 0).await;
 	wait_for_events(events_count + 3).await;
 
@@ -45,7 +43,7 @@ async fn delete_contribution(
 			.await
 			.expect("Contribution not found in db");
 
-	let contributor_account_address = String::from("0x0029");
+	let contributor_account_address = format!("{:#066x}", contributor_account.address());
 	contributions::apply(&contribution.id, &contributor_account_address).await;
 	let applications = applications::list_for_contributor(&contributor_account_address).await;
 	assert!(

@@ -9,7 +9,8 @@ use starknet::{
 pub type Account = SingleOwnerAccount<SequencerGatewayProvider, LocalWallet>;
 
 #[fixture]
-pub fn accounts() -> [Account; 10] {
+#[once]
+fn accounts() -> [Account; 10] {
 	// Taken from starknet-devnet run with `--seed 0`
 	[
 		make_account(
@@ -53,6 +54,21 @@ pub fn accounts() -> [Account; 10] {
 			"0x7f61fa3893ad0637b2ff76fed23ebbb91835aacd4f743c2347716f856438429",
 		),
 	]
+}
+
+#[fixture]
+pub fn admin_account(accounts: &[Account; 10]) -> Account {
+	return accounts[0].clone();
+}
+
+#[fixture]
+pub fn lead_contributor_account(accounts: &[Account; 10]) -> Account {
+	return accounts[1].clone();
+}
+
+#[fixture]
+pub fn contributor_account(accounts: &[Account; 10]) -> Account {
+	return accounts[2].clone();
 }
 
 fn make_account(

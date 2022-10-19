@@ -6,7 +6,7 @@ pub async fn assign_contributor_to_contribution(
 	contributor_id: &str,
 ) {
 	println!(
-		"Acceptiong application to contribution {contribution_id} for contributor {contributor_id}"
+		"Accepting application to contribution {contribution_id} for contributor {contributor_id}"
 	);
 	let contributions_contract = ContractAdministrator::new(account);
 	contributions_contract

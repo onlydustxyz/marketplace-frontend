@@ -5,20 +5,18 @@ use crate::e2e_tests::{
 	database::get_events_count,
 	projects::add_lead_contributor,
 	scenario::STARKONQUEST_TITLE,
-	starknet::{accounts::accounts, Account},
+	starknet::{accounts::*, Account},
 };
 use anyhow::Result;
 use rstest::*;
 use tokio::task::JoinHandle;
 
-// Lead contributors must not overlap between different scenario
-// otherwise their will consume the same call nonces
-const LEAD_CONTRIBUTOR_INDEX: usize = 1;
-
 #[rstest]
 #[tokio::test]
 async fn contribution_lifetime(
-	accounts: [Account; 10],
+	admin_account: Account,
+	lead_contributor_account: Account,
+	contributor_account: Account,
 	#[future] marketplace_api: JoinHandle<Result<()>>,
 	#[future] marketplace_indexer: JoinHandle<Result<()>>,
 	#[future] marketplace_event_store: JoinHandle<Result<()>>,
@@ -32,14 +30,16 @@ async fn contribution_lifetime(
 	let events_count = get_events_count();
 
 	let issue_number = 31;
-	let admin_account = &accounts[0];
-	let lead_contributor = &accounts[LEAD_CONTRIBUTOR_INDEX];
-	let contributor_account = &accounts[2];
 	let contributor_account_address = format!("{:#066x}", contributor_account.address());
 
-	add_lead_contributor(admin_account, STARKONQUEST_ID, lead_contributor.address()).await;
+	add_lead_contributor(
+		&admin_account,
+		STARKONQUEST_ID,
+		lead_contributor_account.address(),
+	)
+	.await;
 	// Create a new contribution
-	contributions::create(lead_contributor, STARKONQUEST_ID, issue_number, 0).await;
+	contributions::create(&lead_contributor_account, STARKONQUEST_ID, issue_number, 0).await;
 	wait_for_events(events_count + 3).await;
 
 	let contribution =
@@ -49,7 +49,7 @@ async fn contribution_lifetime(
 	assert_eq!(contribution.status, "OPEN");
 
 	// Apply to the contribution
-	contributors::signup(contributor_account).await;
+	contributors::signup(&contributor_account).await;
 	contributors::register_discord_handle(&contributor_account_address, "Discord#1234").await;
 	contributions::apply(&contribution.id, &contributor_account_address).await;
 	contributions::refuse_application(&contribution.id, &contributor_account_address).await;
@@ -70,7 +70,7 @@ async fn contribution_lifetime(
 	let events_count = get_events_count();
 	contributions::apply(&contribution.id, &contributor_account_address).await;
 	contributions::assign_contributor_to_contribution(
-		lead_contributor,
+		&lead_contributor_account,
 		&contribution.id,
 		&contributor_account_address,
 	)
