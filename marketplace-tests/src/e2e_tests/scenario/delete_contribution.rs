@@ -45,17 +45,17 @@ async fn delete_contribution(
 			.await
 			.expect("Contribution not found in db");
 
-	let contributor_id = String::from("0x0029");
-	contributions::apply(&contribution.id, &contributor_id).await;
-	let applications = applications::list_for_contributor(&contributor_id).await;
+	let contributor_account_address = String::from("0x0029");
+	contributions::apply(&contribution.id, &contributor_account_address).await;
+	let applications = applications::list_for_contributor(&contributor_account_address).await;
 	assert!(
 		applications.contains(&Application {
 			contribution_id: contribution.id.clone(),
-			contributor_id: contributor_id.clone()
+			contributor_account_address: contributor_account_address.clone()
 		}),
 		"{} {}",
 		contribution.id,
-		contributor_id
+		contributor_account_address
 	);
 	contributions::delete(lead_contributor, &contribution.id).await;
 	wait_for_events(events_count + 5).await;
@@ -66,9 +66,9 @@ async fn delete_contribution(
 			.expect("Contribution not found in project");
 	assert_eq!(&contribution.status, "ABANDONED");
 	assert!(contribution.closed);
-	let applications = applications::list_for_contributor(&contributor_id).await;
+	let applications = applications::list_for_contributor(&contributor_account_address).await;
 	assert!(!applications.contains(&Application {
 		contribution_id: contribution.id,
-		contributor_id
+		contributor_account_address
 	}));
 }

@@ -9,15 +9,15 @@ use std::sync::Arc;
 use crate::routes::{to_http_api_problem::ToHttpApiProblem, u256::U256Param};
 
 #[openapi(tag = "Applications")]
-#[get("/applications?<contributor_id>")]
+#[get("/applications?<contributor_account_address>")]
 pub async fn list_contributor_applications(
-	contributor_id: Option<U256Param>,
+	contributor_account_address: Option<U256Param>,
 	application_repository: &State<Arc<dyn ApplicationProjectionRepository>>,
 ) -> Result<Json<Vec<dto::Application>>, HttpApiProblem> {
-	let contributor_id = contributor_id.map(|id| id.into());
+	let contributor_account_address = contributor_account_address.map(Into::into);
 
 	let applications = application_repository
-		.list_by_contributor(contributor_id)
+		.list_by_contributor(contributor_account_address)
 		.map_err(|e| e.to_http_api_problem())?;
 
 	Ok(Json(applications.into_iter().map_into().collect()))
