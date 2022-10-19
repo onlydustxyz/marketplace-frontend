@@ -78,10 +78,9 @@ impl EventListener for ContributorWithGithubData {
 		let result = match event {
 			Event::Contributor(contributor_event) => match contributor_event {
 				ContributorEvent::GithubAccountAssociated {
-					contributor_account,
+					contributor_account_address,
 					github_identifier,
-					contributor_id: _,
-				} => self.add_contributor(contributor_account, github_identifier).await,
+				} => self.add_contributor(contributor_account_address, github_identifier).await,
 				ContributorEvent::DiscordHandleRegistered {
 					contributor_account_address,
 					discord_handle,
@@ -143,12 +142,10 @@ mod test {
 	fn github_account_associated_event(
 		contributor_account_address: ContributorAccountAddress,
 		github_identifier: GithubUserId,
-		contributor_id: ContributorAccountAddress,
 	) -> Event {
 		Event::Contributor(ContributorEvent::GithubAccountAssociated {
-			contributor_account: contributor_account_address,
+			contributor_account_address,
 			github_identifier,
-			contributor_id,
 		})
 	}
 

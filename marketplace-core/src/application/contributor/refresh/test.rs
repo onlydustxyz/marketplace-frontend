@@ -81,7 +81,6 @@ fn discord_handle() -> ContributorDiscordHandle {
 fn filled_database(
 	database: Arc<DatabaseClient>,
 	contributor_account_address: ContributorAccountAddress,
-	contributor_id: ContributorAccountAddress,
 	discord_handle: ContributorDiscordHandle,
 	github_identifier: GithubUserId,
 ) -> Arc<DatabaseClient> {
@@ -89,9 +88,8 @@ fn filled_database(
 	{
 		let storable_events = vec![
 			ContributorEvent::GithubAccountAssociated {
-				contributor_account: contributor_account_address.clone(),
+				contributor_account_address: contributor_account_address.clone(),
 				github_identifier,
-				contributor_id,
 			},
 			ContributorEvent::DiscordHandleRegistered {
 				contributor_account_address: contributor_account_address.clone(),
