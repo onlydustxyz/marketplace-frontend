@@ -126,7 +126,7 @@ impl Identifiable<ContributorEvent> for Contributor {
 	fn id(event: &ContributorEvent) -> Self::Id {
 		match event {
 			ContributorEvent::GithubAccountAssociated {
-				contributor_account,
+				contributor_account_address: contributor_account,
 				..
 			}
 			| ContributorEvent::DiscordHandleRegistered {
@@ -210,9 +210,8 @@ mod test {
 		contributor_account_address: ContributorAccountAddress,
 	) -> ContributorEvent {
 		ContributorEvent::GithubAccountAssociated {
-			contributor_account: contributor_account_address,
+			contributor_account_address,
 			github_identifier: 666u64,
-			contributor_id: Default::default(),
 		}
 	}
 

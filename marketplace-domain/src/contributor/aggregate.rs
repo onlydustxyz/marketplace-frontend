@@ -35,9 +35,8 @@ impl EventSourcable for Contributor {
 		match event {
 			Event::Contributor(contributor_event) => match contributor_event {
 				ContributorEvent::GithubAccountAssociated {
-					contributor_account,
+					contributor_account_address: contributor_account,
 					github_identifier,
-					contributor_id: _,
 				} => Self {
 					id: contributor_account.clone(),
 					github_identifier: *github_identifier,
@@ -75,9 +74,8 @@ impl Contributor {
 
 		Ok(vec![Event::Contributor(
 			ContributorEvent::GithubAccountAssociated {
-				contributor_account: contributor_account_address.clone(),
+				contributor_account_address: contributor_account_address.clone(),
 				github_identifier,
-				contributor_id: contributor_account_address,
 			},
 		)])
 	}
@@ -139,9 +137,8 @@ mod test {
 		github_identifier: GithubUserId,
 	) -> Event {
 		Event::Contributor(ContributorEvent::GithubAccountAssociated {
-			contributor_account: contributor_account_address,
+			contributor_account_address,
 			github_identifier,
-			contributor_id: Default::default(),
 		})
 	}
 
@@ -194,9 +191,8 @@ mod test {
 		assert_matches!(
 			emitted_events.first().unwrap(),
 			Event::Contributor(ContributorEvent::GithubAccountAssociated {
-				contributor_account: _,
+				contributor_account_address: _,
 				github_identifier: _,
-				contributor_id: _
 			})
 		);
 	}

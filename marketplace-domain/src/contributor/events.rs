@@ -5,9 +5,8 @@ use std::fmt::Display;
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	GithubAccountAssociated {
-		contributor_account: ContributorAccountAddress,
+		contributor_account_address: ContributorAccountAddress,
 		github_identifier: GithubUserId,
-		contributor_id: ContributorAccountAddress,
 	},
 	DiscordHandleRegistered {
 		contributor_account_address: ContributorAccountAddress,
