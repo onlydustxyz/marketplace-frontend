@@ -1,5 +1,5 @@
 mod get;
-pub use get::{get, get_by_account};
+pub use get::get;
 
 mod signup;
 pub use signup::signup;
