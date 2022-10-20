@@ -75,9 +75,7 @@ impl AsEvents for Block {
 
 fn find_event_caller(transactions: &[Transaction], transaction_hash: &Vec<u8>) -> Option<Vec<u8>> {
 	transactions.iter().find_map(|t| {
-		if let transaction::Transaction::Invoke(invoke_transaction) = t.transaction.as_ref().expect(
-			"'Transaction' objects defined by Proto are always supposed to contain a 'transaction' field",
-		) {
+		if let Some(transaction::Transaction::Invoke(invoke_transaction)) = &t.transaction {
 			let hash = invoke_transaction
 				.common
 				.as_ref()
