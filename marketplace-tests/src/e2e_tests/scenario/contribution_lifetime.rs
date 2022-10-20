@@ -55,14 +55,12 @@ async fn contribution_lifetime(
 	contributions::refuse_application(&contribution.id, &contributor_account_address).await;
 
 	let contributor = contributors::get(&contributor_account_address).await;
-	assert_eq!(contributor.id, contributor_account_address);
 	assert_eq!(contributor.account, contributor_account_address);
 	assert_eq!(contributor.github_identifier.unwrap(), "990474");
 	assert_eq!(contributor.github_username.unwrap(), "abuisset");
 	assert_eq!(contributor.discord_handle.unwrap(), "Discord#1234");
 
 	let contributor = contributors::get(&contributor_account_address).await;
-	assert_eq!(contributor.id, contributor_account_address);
 	assert_eq!(contributor.account, contributor_account_address);
 	assert_eq!(contributor.github_identifier.unwrap(), "990474");
 	assert_eq!(contributor.github_username.unwrap(), "abuisset");

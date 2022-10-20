@@ -22,8 +22,7 @@ diesel::table! {
 }
 
 diesel::table! {
-    contributors (id) {
-        id -> Text,
+    contributors (account) {
         account -> Text,
         github_identifier -> Nullable<Text>,
         github_username -> Nullable<Text>,
