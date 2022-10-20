@@ -169,9 +169,9 @@ async fn on_contribution_assigned_event(
 	contribution_projection_repository
 		.expect_update_contributor_and_status()
 		.withf(
-			move |input_contribution_id, input_contributor_id, input_status| {
+			move |input_contribution_id, input_contributor_account_address, input_status| {
 				input_contribution_id.eq(&contribution_id)
-					&& input_contributor_id.eq(&Some(&contributor_account_address))
+					&& input_contributor_account_address.eq(&Some(&contributor_account_address))
 					&& input_status.eq(&ContributionStatus::Assigned)
 			},
 		)
@@ -195,9 +195,9 @@ async fn on_contribution_unassigned_event(
 	contribution_projection_repository
 		.expect_update_contributor_and_status()
 		.withf(
-			move |input_contribution_id, input_contributor_id, input_status| {
+			move |input_contribution_id, input_contributor_account_address, input_status| {
 				input_contribution_id.eq(&contribution_id)
-					&& input_contributor_id.eq(&None)
+					&& input_contributor_account_address.eq(&None)
 					&& input_status.eq(&ContributionStatus::Open)
 			},
 		)
