@@ -74,7 +74,6 @@ diesel::table! {
 diesel::table! {
     pending_applications (contribution_id, contributor_account_address) {
         contribution_id -> Text,
-        contributor_id -> Text,
         applied_at -> Timestamp,
         contributor_account_address -> Text,
     }
