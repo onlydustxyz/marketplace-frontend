@@ -64,19 +64,6 @@ impl ToHttpApiProblem for AggregateRootRepositoryError {
 	}
 }
 
-impl ToHttpApiProblem for ContactInformationRepositoryError {
-	fn to_http_api_problem(&self) -> HttpApiProblem {
-		match self {
-			ContactInformationRepositoryError::NotFound =>
-				HttpApiProblem::new(StatusCode::NOT_FOUND).title(self.to_string()),
-			ContactInformationRepositoryError::Infrastructure(e) =>
-				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-					.title(self.to_string())
-					.detail(e.to_string()),
-		}
-	}
-}
-
 impl ToHttpApiProblem for OnchainContributionServiceError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		match self {
@@ -97,8 +84,6 @@ impl ToHttpApiProblem for DomainError {
 				contribution_repository_error.to_http_api_problem(),
 			DomainError::ContributionRepository(contribution_repository_error) =>
 				contribution_repository_error.to_http_api_problem(),
-			DomainError::ContactInformationRepository(contact_information_repository_error) =>
-				contact_information_repository_error.to_http_api_problem(),
 			DomainError::OnchainContributionService(onchain_contribution_service_error) =>
 				onchain_contribution_service_error.to_http_api_problem(),
 			DomainError::Lock =>
