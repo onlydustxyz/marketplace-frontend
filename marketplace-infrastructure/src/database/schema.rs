@@ -7,7 +7,6 @@ diesel::table! {
         issue_number -> Text,
         status -> Text,
         gate -> Int4,
-        contributor_id -> Nullable<Text>,
         title -> Nullable<Text>,
         description -> Nullable<Text>,
         external_link -> Nullable<Text>,

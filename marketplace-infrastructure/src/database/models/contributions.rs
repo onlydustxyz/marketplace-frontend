@@ -13,7 +13,6 @@ pub struct Contribution {
 	pub issue_number: String,
 	pub status: String,
 	pub gate: i32,
-	pub contributor_id: Option<String>,
 	pub title: Option<String>,
 	pub description: Option<String>,
 	pub external_link: Option<String>,
