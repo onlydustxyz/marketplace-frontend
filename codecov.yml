@@ -5,8 +5,7 @@ coverage:
         informational: true
     patch:
       default:
-          target: auto  # Auto adjust target based on previous commits
-          threshold: 1% # Allow 1% drop off
+          informational: true
 
 ignore:
   - "marketplace-infrastructure/src/database/schema.rs"
