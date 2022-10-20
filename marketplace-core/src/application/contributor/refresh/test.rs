@@ -144,7 +144,6 @@ async fn refresh_contributors_from_events(
 
 	assert_eq!(
 		ContributorProfile {
-			id: contributor_account_address.clone(),
 			account: contributor_account_address,
 			github_identifier: Some(github_identifier),
 			github_username: Some(String::from("abuisset")),

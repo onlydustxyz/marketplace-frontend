@@ -44,7 +44,6 @@ impl ContributorWithGithubData {
 
 			self.contributor_projection_repository
 				.upsert_github_user_data(ContributorProfile {
-					id: contributor_account_address.clone(),
 					github_identifier: Some(*github_identifier),
 					github_username: Some(user.name),
 					account: contributor_account_address.clone(),
@@ -62,7 +61,6 @@ impl ContributorWithGithubData {
 	) -> Result<(), Error> {
 		self.contributor_projection_repository
 			.upsert_discord_handle(ContributorProfile {
-				id: contributor_account_address.clone(),
 				account: contributor_account_address.clone(),
 				discord_handle: Some(discord_handle.clone()),
 				..Default::default()
@@ -154,7 +152,6 @@ mod test {
 			.expect_upsert_discord_handle()
 			.once()
 			.with(eq(ContributorProfile {
-				id: contributor_account_address.clone(),
 				account: contributor_account_address.clone(),
 				discord_handle: Some(discord_handle.clone()),
 				..Default::default()
@@ -207,7 +204,6 @@ mod test {
 			.expect_upsert_github_user_data()
 			.times(1)
 			.with(eq(ContributorProfile {
-				id: contributor_account_address.clone(),
 				account: contributor_account_address,
 				github_username: Some(github_username),
 				github_identifier: Some(github_identifier),
@@ -281,7 +277,6 @@ mod test {
 			.expect_upsert_github_user_data()
 			.times(1)
 			.with(eq(ContributorProfile {
-				id: contributor_account_address.clone(),
 				account: contributor_account_address,
 				github_username: Some(github_username),
 				github_identifier: Some(github_identifier),

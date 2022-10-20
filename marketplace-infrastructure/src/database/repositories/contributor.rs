@@ -15,7 +15,7 @@ impl ContributorProjectionRepository for Client {
 
 		diesel::insert_into(dsl::contributors)
 			.values(&contributor)
-			.on_conflict(dsl::id)
+			.on_conflict(dsl::account)
 			.do_update()
 			.set(&contributor)
 			.execute(&*connection)
@@ -37,7 +37,7 @@ impl ContributorProjectionRepository for Client {
 
 		diesel::insert_into(dsl::contributors)
 			.values(&contributor)
-			.on_conflict(dsl::id)
+			.on_conflict(dsl::account)
 			.do_update()
 			.set(&contributor)
 			.execute(&*connection)
@@ -74,7 +74,6 @@ impl ProjectionRepository<ContributorProfile> for Client {
 impl From<ContributorProfile> for models::NewGithubContributor {
 	fn from(contributor: ContributorProfile) -> Self {
 		Self {
-			id: contributor.id.to_string(),
 			account: contributor.account.to_string(),
 			// safe to unwrap as only called when data is present
 			github_identifier: contributor.github_identifier.unwrap().to_string(),
@@ -86,7 +85,6 @@ impl From<ContributorProfile> for models::NewGithubContributor {
 impl From<ContributorProfile> for models::NewDiscordContributor {
 	fn from(contributor: ContributorProfile) -> Self {
 		Self {
-			id: contributor.id.to_string(),
 			account: contributor.account.to_string(),
 			// safe to unwrap as only called when data is present
 			discord_handle: contributor.discord_handle.unwrap(),
@@ -97,7 +95,6 @@ impl From<ContributorProfile> for models::NewDiscordContributor {
 impl From<models::Contributor> for ContributorProfile {
 	fn from(contributor: models::Contributor) -> Self {
 		Self {
-			id: contributor.id.parse().unwrap(),
 			account: contributor.account.parse().unwrap(),
 			github_identifier: contributor.github_identifier.and_then(|id| id.parse().ok()),
 			github_username: contributor.github_username,
