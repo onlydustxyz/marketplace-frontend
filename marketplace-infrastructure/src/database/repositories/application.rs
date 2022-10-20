@@ -95,7 +95,7 @@ impl ApplicationProjectionRepository for Client {
 	fn list_by_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_id: Option<ContributorAccountAddress>,
+		contributor_account_address: Option<ContributorAccountAddress>,
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
@@ -103,14 +103,16 @@ impl ApplicationProjectionRepository for Client {
 			.filter(dsl::contribution_id.eq(contribution_id.to_string()))
 			.into_boxed();
 
-		if let Some(contributor_id) = &contributor_id {
-			query = query.filter(dsl::contributor_id.eq(contributor_id.to_string()))
+		if let Some(contributor_account_address) = &contributor_account_address {
+			query = query.filter(
+				dsl::contributor_account_address.eq(contributor_account_address.to_string()),
+			)
 		}
 
 		let applications = query.load::<models::PendingApplication>(&*connection).map_err(|e| {
 			error!(
 				"Failed while listing applications to contribution with id {contribution_id}{}: {e}",
-				match contributor_id {
+				match contributor_account_address {
 					Some(id) => format!(" by contributor with id {id}"),
 					None => "".to_string(),
 				}
@@ -161,7 +163,6 @@ impl From<ApplicationProjection> for models::PendingApplication {
 	fn from(application: marketplace_domain::ApplicationProjection) -> Self {
 		Self {
 			contribution_id: application.contribution_id().to_string(),
-			contributor_id: application.contributor_account_address().to_string(),
 			contributor_account_address: application.contributor_account_address().to_string(),
 			applied_at: *application.applied_at(),
 		}

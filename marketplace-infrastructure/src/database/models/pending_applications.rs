@@ -6,7 +6,6 @@ use crate::database::schema::pending_applications;
 #[primary_key(contribution_id, contributor_account_address)]
 pub struct PendingApplication {
 	pub contribution_id: String,
-	pub contributor_id: String,
 	pub applied_at: NaiveDateTime,
 	pub contributor_account_address: String,
 }
