@@ -34,15 +34,15 @@ impl ApplicationProjectionRepository for Client {
 	fn delete(
 		&self,
 		contribution_id: &AggregateId,
-		contributor_id: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
 		diesel::delete(
-			dsl::pending_applications.find((contribution_id.to_string(), contributor_id.to_string())))
+			dsl::pending_applications.find((contribution_id.to_string(), contributor_account_address.to_string())))
 		.execute(&*connection)
 		.map_err(|e| {
-			error!("Failed to delete pending application of contributor with id {contributor_id} to contribution with id {contribution_id}: {e}");
+			error!("Failed to delete pending application of contributor with account {contributor_account_address} to contribution with id {contribution_id}: {e}");
 			DatabaseError::from(e)
 		})?;
 
@@ -72,12 +72,15 @@ impl ApplicationProjectionRepository for Client {
 	fn find(
 		&self,
 		contribution_id: &AggregateId,
-		contributor_id: &ContributorAccountAddress,
+		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
 		let res = dsl::pending_applications
-			.find((contribution_id.to_string(), contributor_id.to_string()))
+			.find((
+				contribution_id.to_string(),
+				contributor_account_address.to_string(),
+			))
 			.first::<models::PendingApplication>(&*connection);
 
 		if let Err(diesel::result::Error::NotFound) = res {
@@ -85,7 +88,7 @@ impl ApplicationProjectionRepository for Client {
 		} else {
 			res.map(|a| Some(a.into()))
 				.map_err(|e| {
-					error!("Failed while finding application of contributor with id {contributor_id} to contribution with id {contribution_id}: {e}");
+					error!("Failed while finding application of contributor with account {contributor_account_address} to contribution with id {contribution_id}: {e}");
 					DatabaseError::from(e)
 				})
 				.map_err_into()
