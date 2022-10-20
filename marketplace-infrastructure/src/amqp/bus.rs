@@ -3,14 +3,13 @@ use lapin::{
 	Connection,
 };
 use log::error;
-use std::env::VarError;
 use thiserror::Error;
 use tokio_stream::StreamExt;
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error(transparent)]
-	Environment(#[from] VarError),
+	#[error("environment variable '{0}' not found")]
+	EnvironmentVariableNotFound(&'static str),
 	#[error(transparent)]
 	Amqp(#[from] lapin::Error),
 }
@@ -117,6 +116,9 @@ impl ConsumableBus {
 }
 
 fn amqp_address() -> Result<String, Error> {
-	let address = std::env::var("AMQP_ADDR")?;
+	const AMQP_ADDR_ENV_VAR: &str = "AMQP_ADDR";
+
+	let address = std::env::var(AMQP_ADDR_ENV_VAR)
+		.map_err(|_| Error::EnvironmentVariableNotFound(AMQP_ADDR_ENV_VAR))?;
 	Ok(address)
 }
