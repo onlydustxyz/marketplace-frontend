@@ -114,11 +114,6 @@ mod test {
 	}
 
 	#[fixture]
-	fn contributor_id() -> ContributorAccountAddress {
-		"0x12".parse().unwrap()
-	}
-
-	#[fixture]
 	fn contributor_account_address() -> ContributorAccountAddress {
 		"0x4444".parse().unwrap()
 	}
