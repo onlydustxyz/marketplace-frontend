@@ -1,6 +1,3 @@
-mod entities;
-pub use entities::*;
-
 mod repositories;
 pub use repositories::*;
 
@@ -9,7 +6,6 @@ pub use value_objects::*;
 
 mod errors;
 pub use errors::Error;
-use Error as DomainError;
 
 mod services;
 pub use services::*;

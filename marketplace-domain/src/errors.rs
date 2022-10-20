@@ -9,8 +9,6 @@ pub enum Error {
 	ContributionRepository(#[from] AggregateRootRepositoryError),
 	#[error("Contribution projection repository error")]
 	ContributionProjectionRepository(#[from] ContributionProjectionRepositoryError),
-	#[error("Contact Information repository error")]
-	ContactInformationRepository(#[from] ContactInformationRepositoryError),
 	#[error("Onchain contribution service error")]
 	OnchainContributionService(#[from] OnchainContributionServiceError),
 	#[error("Failed to take control of a lock")]

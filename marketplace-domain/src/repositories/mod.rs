@@ -8,12 +8,6 @@ pub use contribution_projection::{
 	Repository as ContributionProjectionRepository,
 };
 
-mod contact_information;
-pub use contact_information::{
-	Error as ContactInformationRepositoryError, MockRepository as MockContactInformationRepository,
-	Repository as ContactInformationRepository,
-};
-
 mod application_projection;
 pub use application_projection::{
 	Error as ApplicationProjectionRepositoryError,
