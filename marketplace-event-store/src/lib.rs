@@ -5,6 +5,7 @@ pub mod bus;
 
 use anyhow::Result;
 use futures::TryFutureExt;
+use log::debug;
 use marketplace_domain::{Destination, Event as DomainEvent, Publisher, Subscriber};
 use marketplace_infrastructure::{amqp::Bus, event_bus::EXCHANGE_NAME};
 use std::sync::Arc;
@@ -21,10 +22,10 @@ pub async fn main() -> Result<()> {
 }
 
 async fn log(event: Event) -> Result<Event> {
-	println!(
-		"[event-store] 📨 Received event: {}",
-		serde_json::to_string_pretty(&event)?
-	);
+	let res_pretty_event = serde_json::to_string_pretty(&event);
+	if let Ok(pretty_event) = res_pretty_event {
+		debug!("[event-store] 📨 Received event: {}", pretty_event);
+	}
 	Ok(event)
 }
 
