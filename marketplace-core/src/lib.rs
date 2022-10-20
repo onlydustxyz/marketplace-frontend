@@ -8,7 +8,7 @@ mod routes;
 use crate::application::*;
 use anyhow::Result;
 use dotenv::dotenv;
-use log::info;
+use log::{debug, info};
 use marketplace_domain::{Subscriber, *};
 use marketplace_infrastructure::{
 	database::{self, init_pool},
@@ -182,7 +182,7 @@ pub async fn event_listeners_main() -> Result<()> {
 
 	event_consumer
 		.subscribe(|event: Event| async move {
-			println!(
+			debug!(
 				"[events] 📨 Received event: {}",
 				serde_json::to_string_pretty(&event)?
 			);
