@@ -4,7 +4,6 @@ use opentelemetry::{
 	sdk::trace::{self, RandomIdGenerator, Sampler},
 };
 use opentelemetry_datadog::ApiVersion;
-use tracing_log::LogTracer;
 use tracing_subscriber::{layer::SubscriberExt, EnvFilter};
 
 mod datadog_event_format;
@@ -28,18 +27,13 @@ impl Tracer {
 		let telemetry = tracing_opentelemetry::layer().with_tracer(otel_tracer);
 
 		let subscriber = tracing_subscriber::fmt::Subscriber::builder()
-			// subscriber configuration
 			.with_env_filter(EnvFilter::from_default_env())
-			.with_max_level(tracing::Level::TRACE)
-			.with_ansi(false)
-			.event_format(datadog_event_format::TraceIdFormat)
 			.finish()
 			.with(telemetry);
 
 		// Trace executed code
 		tracing::subscriber::set_global_default(subscriber)?;
-
-		LogTracer::init()?;
+		tracing_log::env_logger::try_init()?;
 
 		Ok(Tracer {})
 	}
