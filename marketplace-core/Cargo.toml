@@ -17,14 +17,14 @@ with_component_tests = []
 
 # Async
 async-trait = "0.1.56"
-futures = { version = "0.3.21", features = ["alloc"] }
-tokio = { version = "1.18.2", features = ["full"] }
+futures = {version = "0.3.21", features = ["alloc"]}
+tokio = {version = "1.18.2", features = ["full"]}
 
 # Database
-uuid = { version = "0.8.2", default_features = false, features = [
-	"v4",
-	"serde",
-] }
+uuid = {version = "0.8.2", default_features = false, features = [
+  "v4",
+  "serde",
+]}
 
 # Github
 octocrab = "0.16.0"
@@ -33,21 +33,21 @@ octocrab = "0.16.0"
 url = "2.2.2"
 
 # Http Server
-http-api-problem = { version = "0.53.0", features = [
-	"json-schema",
-	"rocket",
-	"rocket-okapi",
-] }
-okapi = { version = "0.7.0-rc.1" }
-rocket = { version = "0.5.0-rc.2", features = ["json", "uuid"] }
-rocket_okapi = { version = "0.8.0-rc.2", features = ["swagger", "uuid"] }
-schemars = { version = "0.8", features = ["uuid1", "bigdecimal"] }
+http-api-problem = {version = "0.53.0", features = [
+  "json-schema",
+  "rocket",
+  "rocket-okapi",
+]}
+okapi = {version = "0.7.0-rc.1"}
+rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
+rocket_okapi = {version = "0.8.0-rc.2", features = ["swagger", "uuid"]}
+schemars = {version = "0.8", features = ["uuid1", "bigdecimal"]}
 
 # Starknet
-starknet = { git = "https://github.com/xJonathanLEI/starknet-rs" }
+starknet = {git = "https://github.com/xJonathanLEI/starknet-rs"}
 
 # Math types
-crypto-bigint = { version = "0.4.8", features = ["serde"] }
+crypto-bigint = {version = "0.4.8", features = ["serde"]}
 
 # Logs
 env_logger = "0.9.0"
@@ -55,22 +55,16 @@ log = "0.4.17"
 slog = "2.7.0"
 
 # Tracing
-tracing = { version = "0.1" }
-tracing-subscriber = "0.3"
-tracing-opentelemetry = "0.18.0"
-tracing-log = { version = "0.1" }
-opentelemetry = { version = "0.18.0", features = ["rt-tokio"] }
-opentelemetry-datadog = { version = "0.6.0", features = ["reqwest-client"] }
-reqwest = { version = "0.11", features = ["json"] }
+tracing = {version = "0.1"}
 
 # Errors
 anyhow = "1.0.57"
 thiserror = "1.0.31"
 
 # Serde
-serde = { version = "1.0.137", features = ["derive"] }
-serde_json = { version = "1.0.81" }
-serdect = { version = "0.1.0", features = ["alloc"] }
+serde = {version = "1.0.137", features = ["derive"]}
+serde_json = {version = "1.0.81"}
+serdect = {version = "0.1.0", features = ["alloc"]}
 
 # Datetime
 chrono = "0.4"
@@ -84,13 +78,13 @@ mapinto = "0.2.1"
 mockall = "0.11.2"
 
 # Local dependecies
-marketplace-domain = { path = "../marketplace-domain" }
-marketplace-infrastructure = { path = "../marketplace-infrastructure" }
-marketplace-wrappers = { path = "../marketplace-wrappers" }
+marketplace-domain = {path = "../marketplace-domain"}
+marketplace-infrastructure = {path = "../marketplace-infrastructure"}
+marketplace-wrappers = {path = "../marketplace-wrappers"}
 
 [dev-dependencies]
-async-std = { version = "1.12.0", features = ["attributes"] }
+async-std = {version = "1.12.0", features = ["attributes"]}
 lazy_static = "1.4.0"
-marketplace-tests = { path = "../marketplace-tests" }
+marketplace-tests = {path = "../marketplace-tests"}
 rstest = "0.15.0"
 serde_test = "1.0.140"

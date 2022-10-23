@@ -3,7 +3,7 @@ use opentelemetry_datadog::ApiVersion;
 use tracing_log::LogTracer;
 use tracing_subscriber::{layer::SubscriberExt, EnvFilter};
 
-use crate::datadog_event_format;
+mod datadog_event_format;
 
 pub fn setup_tracing() {
 	// Install a new OpenTelemetry trace pipeline
