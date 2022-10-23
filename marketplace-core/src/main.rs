@@ -1,6 +1,6 @@
 use anyhow::Result;
 use dotenv::dotenv;
-use marketplace_infrastructure::tracing::setup_tracing;
+use marketplace_infrastructure::tracing::{setup_tracing, teardown_tracing};
 
 extern crate rocket;
 
@@ -8,6 +8,10 @@ extern crate rocket;
 async fn main() -> Result<()> {
 	dotenv().ok();
 
-	setup_tracing();
-	marketplace_core::main().await
+	setup_tracing()?;
+	marketplace_core::main().await?;
+
+	teardown_tracing();
+
+	Ok(())
 }

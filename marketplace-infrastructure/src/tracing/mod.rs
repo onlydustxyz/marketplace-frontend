@@ -1,11 +1,15 @@
-use opentelemetry::sdk::trace::{self, RandomIdGenerator, Sampler};
+use anyhow::Result;
+use opentelemetry::{
+	global::shutdown_tracer_provider,
+	sdk::trace::{self, RandomIdGenerator, Sampler},
+};
 use opentelemetry_datadog::ApiVersion;
 use tracing_log::LogTracer;
 use tracing_subscriber::{layer::SubscriberExt, EnvFilter};
 
 mod datadog_event_format;
 
-pub fn setup_tracing() {
+pub fn setup_tracing() -> Result<()> {
 	// Install a new OpenTelemetry trace pipeline
 	let tracer = opentelemetry_datadog::new_pipeline()
 		.with_service_name("poc-tracing")
@@ -15,8 +19,7 @@ pub fn setup_tracing() {
 				.with_sampler(Sampler::AlwaysOn)
 				.with_id_generator(RandomIdGenerator::default()),
 		)
-		.install_batch(opentelemetry::runtime::Tokio)
-		.unwrap();
+		.install_batch(opentelemetry::runtime::Tokio)?;
 
 	// Create a tracing layer with the configured tracer
 	let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
@@ -31,7 +34,13 @@ pub fn setup_tracing() {
 		.with(telemetry);
 
 	// Trace executed code
-	tracing::subscriber::set_global_default(subscriber).unwrap();
+	tracing::subscriber::set_global_default(subscriber)?;
 
-	LogTracer::init().unwrap();
+	LogTracer::init()?;
+
+	Ok(())
+}
+
+pub fn teardown_tracing() {
+	shutdown_tracer_provider();
 }
