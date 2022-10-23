@@ -1,15 +1,11 @@
 use anyhow::Result;
 use dotenv::dotenv;
-use marketplace_infrastructure::tracing::{setup_tracing, teardown_tracing};
+use marketplace_infrastructure::tracing::Tracer;
 
 #[tokio::main]
 async fn main() -> Result<()> {
 	dotenv().ok();
-	setup_tracing()?;
+	let _tracer = Tracer::init("event_store")?;
 
-	marketplace_event_store::main().await?;
-
-	teardown_tracing();
-
-	Ok(())
+	marketplace_event_store::main().await
 }
