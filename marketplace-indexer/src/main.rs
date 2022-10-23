@@ -1,15 +1,11 @@
 use anyhow::Result;
 use dotenv::dotenv;
-use marketplace_infrastructure::tracing::{setup_tracing, teardown_tracing};
+use marketplace_infrastructure::tracing::Tracer;
 
 #[tokio::main]
 async fn main() -> Result<()> {
 	dotenv().ok();
-	setup_tracing()?;
 
-	marketplace_indexer::main().await?;
-
-	teardown_tracing();
-
-	Ok(())
+	let _tracer = Tracer::init("indexer")?;
+	marketplace_indexer::main().await
 }
