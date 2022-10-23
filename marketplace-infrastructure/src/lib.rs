@@ -5,8 +5,8 @@ pub mod amqp;
 pub mod database;
 pub mod event_webhook;
 pub mod github;
-pub mod logger;
 pub mod starknet_account_verifier;
+pub mod tracing;
 
 pub mod event_bus;
 
