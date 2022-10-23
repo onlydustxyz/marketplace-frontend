@@ -17,10 +17,12 @@ use marketplace_infrastructure::{
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
 use std::sync::Arc;
+use tracing::instrument;
 
 #[macro_use]
 extern crate rocket;
 
+#[instrument]
 pub async fn main() -> Result<()> {
 	dotenv().ok();
 
