@@ -6,8 +6,6 @@ use opentelemetry::{
 use opentelemetry_datadog::ApiVersion;
 use tracing_subscriber::{layer::SubscriberExt, EnvFilter};
 
-mod datadog_event_format;
-
 pub struct Tracer;
 
 impl Tracer {
