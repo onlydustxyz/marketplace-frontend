@@ -26,6 +26,7 @@ impl Tracer {
 
 		let subscriber = tracing_subscriber::fmt::Subscriber::builder()
 			.with_env_filter(EnvFilter::from_default_env())
+			.with_ansi(std::env::var("ANSI_LOGS").and(Ok(true)).unwrap_or(false))
 			.finish()
 			.with(telemetry);
 
