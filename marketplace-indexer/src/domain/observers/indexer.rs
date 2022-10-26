@@ -1,6 +1,6 @@
 use crate::domain::{IndexerService, Observer};
 use async_trait::async_trait;
-use log::{error, info};
+use log::{error, warn};
 use std::sync::Arc;
 
 pub struct IndexerObserver {
@@ -18,7 +18,7 @@ impl Observer for IndexerObserver {
 	async fn on_reorg(&self) {
 		let result = self.indexer_service.stop_indexer().await;
 		match result {
-			Ok(()) => info!("Indexer stopped"),
+			Ok(()) => warn!("[dd-id=indexer-stopped] Indexer stopped due to Reorg"),
 			Err(e) => error!("Failed to stop indexer: {}", e),
 		}
 	}
