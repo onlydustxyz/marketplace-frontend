@@ -3,43 +3,6 @@ use reqwest::{self, header, Body};
 use serde::Deserialize;
 use std::time::Duration;
 
-const HEROKU_URL: &str = "https://api.heroku.com/";
-
-pub struct HttpApiClient {
-	http_client: reqwest::Client,
-	base_url: url::Url,
-}
-
-impl HttpApiClient {
-	pub fn create(token: &str) -> Result<HttpApiClient, anyhow::Error> {
-		let mut headers = header::HeaderMap::new();
-		headers.insert(
-			reqwest::header::ACCEPT,
-			header::HeaderValue::from_static("application/vnd.heroku+json; version=3"),
-		);
-		headers.insert(
-			reqwest::header::USER_AGENT,
-			header::HeaderValue::from_static("marketplace-indexer"),
-		);
-		headers.insert(
-			reqwest::header::AUTHORIZATION,
-			header::HeaderValue::from_str(&format!("Bearer {}", token))?,
-		);
-
-		let http_client = reqwest::Client::builder()
-			.timeout(Duration::from_secs(30))
-			.default_headers(headers)
-			.build()?;
-
-		let base_url = url::Url::parse(HEROKU_URL)?;
-
-		Ok(HttpApiClient {
-			http_client,
-			base_url,
-		})
-	}
-}
-
 #[derive(Deserialize)]
 struct HerokuError {
 	error: String,
@@ -57,13 +20,42 @@ impl HerokuEndpoint {
 	}
 }
 
-impl HttpApiClient {
+pub struct HerokuClient {}
+
+impl HerokuClient {
+	pub fn new() -> Self {
+		Self {}
+	}
+
+	pub fn create_client(&self) -> Result<reqwest::Client, anyhow::Error> {
+		let mut headers = header::HeaderMap::new();
+		headers.insert(
+			reqwest::header::ACCEPT,
+			header::HeaderValue::from_static("application/vnd.heroku+json; version=3"),
+		);
+		headers.insert(
+			reqwest::header::USER_AGENT,
+			header::HeaderValue::from_static("marketplace-indexer"),
+		);
+		headers.insert(
+			reqwest::header::AUTHORIZATION,
+			header::HeaderValue::from_str(&format!("Bearer {}", heroku_token()))?,
+		);
+
+		let http_client = reqwest::Client::builder()
+			.timeout(Duration::from_secs(30))
+			.default_headers(headers)
+			.build()?;
+
+		Ok(http_client)
+	}
+
 	pub async fn request(
 		&self,
 		endpoint: HerokuEndpoint,
 	) -> Result<reqwest::Response, anyhow::Error> {
-		let url = self.base_url.join(&endpoint.path)?;
-		let mut request = self.http_client.request(endpoint.method, url);
+		let url = url::Url::parse(&heroku_server_url())?.join(&endpoint.path)?;
+		let mut request = self.create_client()?.request(endpoint.method, url);
 
 		if let Some(body) = endpoint.body {
 			request = request.body(body);
@@ -81,4 +73,18 @@ impl HttpApiClient {
 
 		Ok(response)
 	}
+}
+
+fn heroku_token() -> String {
+	std::env::var("HEROKU_TOKEN").expect("HEROKU_TOKEN var must be set")
+}
+
+#[cfg(not(test))]
+fn heroku_server_url() -> String {
+	String::from("https://api.heroku.com/")
+}
+
+#[cfg(test)]
+fn heroku_server_url() -> String {
+	mockito::server_url()
 }
