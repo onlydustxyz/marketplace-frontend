@@ -14,8 +14,9 @@ mod observers;
 use observers::Observer;
 pub use observers::{
 	ConfirmedObserver, EventFilterRepositoryObserver, EventListenersObserver, EventStoreObserver,
-	Logger as BlockchainLogger, MockObserver as MockBlockchainObserver, ObservedEvent,
-	Observer as BlockchainObserver, ObserverComposite as BlockchainObserverComposite,
+	IndexerObserver, Logger as BlockchainLogger, MockObserver as MockBlockchainObserver,
+	ObservedEvent, Observer as BlockchainObserver,
+	ObserverComposite as BlockchainObserverComposite,
 };
 
 #[cfg(test)]
