@@ -28,14 +28,41 @@ impl Observer for IndexerObserver {
 mod test {
 	use super::*;
 	use crate::domain::MockIndexerService;
+	use log::{self, Level};
 	use rstest::*;
 
 	#[rstest]
 	async fn should_call_stop_indexer() {
 		let mut mock_indexer_service = MockIndexerService::new();
-		mock_indexer_service.expect_stop_indexer().once().return_once(|| Ok(()));
-		let reorg_observer = IndexerObserver::new(Arc::new(mock_indexer_service));
+		testing_logger::setup();
 
-		reorg_observer.on_reorg().await;
+		mock_indexer_service.expect_stop_indexer().once().return_once(|| Ok(()));
+		let indexer_observer = IndexerObserver::new(Arc::new(mock_indexer_service));
+
+		indexer_observer.on_reorg().await;
+
+		testing_logger::validate(|captured_logs| {
+			assert_eq!(captured_logs.len(), 1);
+			assert_eq!(captured_logs[0].level, Level::Warn);
+		});
+	}
+
+	#[rstest]
+	async fn should_log_error() {
+		let mut mock_indexer_service = MockIndexerService::new();
+		testing_logger::setup();
+
+		mock_indexer_service
+			.expect_stop_indexer()
+			.once()
+			.return_once(|| Err(anyhow::Error::msg("Something happened!!")));
+		let indexer_observer = IndexerObserver::new(Arc::new(mock_indexer_service));
+
+		indexer_observer.on_reorg().await;
+
+		testing_logger::validate(|captured_logs| {
+			assert_eq!(captured_logs.len(), 1);
+			assert_eq!(captured_logs[0].level, Level::Error);
+		});
 	}
 }
