@@ -5,7 +5,7 @@ mod test;
 
 use crate::{
 	domain::*,
-	infrastructure::{apibara, heroku::HerokuClient},
+	infrastructure::{apibara, heroku::client::HerokuClient},
 };
 use anyhow::Result;
 use dotenv::dotenv;
@@ -56,7 +56,7 @@ fn build_event_observer(
 	let project_member_projector = ProjectMemberProjector::new(database.clone());
 	let contributor_projector = ContributorWithGithubDataProjector::new(github, database.clone());
 	let lead_contributors_projector = LeadContributorProjector::new(database.clone());
-	let indexer_service = HerokuClient {};
+	let indexer_service = HerokuClient::new();
 
 	BlockchainObserverComposite::new(vec![
 		Arc::new(BlockchainLogger::default()),

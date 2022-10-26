@@ -2075,6 +2075,7 @@ dependencies = [
  "marketplace-event-store",
  "marketplace-infrastructure",
  "mockall",
+ "mockito",
  "prost",
  "prost-types",
  "reqwest",
