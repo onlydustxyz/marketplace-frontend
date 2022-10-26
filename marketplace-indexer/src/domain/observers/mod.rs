@@ -20,6 +20,10 @@ pub use event_filter_repository::EventFilterRepositoryObserver;
 
 mod projectors;
 pub use projectors::EventListenersObserver;
+
+mod indexer;
+pub use indexer::IndexerObserver;
+
 use serde_json::Value;
 
 use crate::domain::*;
