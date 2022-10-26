@@ -1,0 +1,270 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'marketplace-core'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=marketplace-core"
+                ],
+                "filter": {
+                    "name": "marketplace-core",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'marketplace-core'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=marketplace-core",
+                    "--package=marketplace-core"
+                ],
+                "filter": {
+                    "name": "marketplace-core",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'marketplace-core'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=marketplace-core",
+                    "--package=marketplace-core"
+                ],
+                "filter": {
+                    "name": "marketplace-core",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'event_listeners'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=event_listeners",
+                    "--package=marketplace-core"
+                ],
+                "filter": {
+                    "name": "event_listeners",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'event_listeners'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=event_listeners",
+                    "--package=marketplace-core"
+                ],
+                "filter": {
+                    "name": "event_listeners",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'marketplace-domain'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=marketplace-domain"
+                ],
+                "filter": {
+                    "name": "marketplace-domain",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'marketplace-infrastructure'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=marketplace-infrastructure"
+                ],
+                "filter": {
+                    "name": "marketplace-infrastructure",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'marketplace-tests'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=marketplace-tests"
+                ],
+                "filter": {
+                    "name": "marketplace-tests",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'marketplace-event-store'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=marketplace-event-store"
+                ],
+                "filter": {
+                    "name": "marketplace-event-store",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'marketplace-event-store'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=marketplace-event-store",
+                    "--package=marketplace-event-store"
+                ],
+                "filter": {
+                    "name": "marketplace-event-store",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'marketplace-event-store'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=marketplace-event-store",
+                    "--package=marketplace-event-store"
+                ],
+                "filter": {
+                    "name": "marketplace-event-store",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'marketplace-indexer'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=marketplace-indexer"
+                ],
+                "filter": {
+                    "name": "marketplace-indexer",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'marketplace-indexer'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=marketplace-indexer",
+                    "--package=marketplace-indexer"
+                ],
+                "filter": {
+                    "name": "marketplace-indexer",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'marketplace-indexer'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=marketplace-indexer",
+                    "--package=marketplace-indexer"
+                ],
+                "filter": {
+                    "name": "marketplace-indexer",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
