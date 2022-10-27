@@ -39,7 +39,7 @@ impl HerokuClient {
 		);
 		headers.insert(
 			reqwest::header::AUTHORIZATION,
-			header::HeaderValue::from_str(&format!("Bearer {}", heroku_token()))?,
+			header::HeaderValue::from_str(&format!("Bearer {}", heroku_token()?))?,
 		);
 
 		let http_client = reqwest::Client::builder()
@@ -75,8 +75,8 @@ impl HerokuClient {
 	}
 }
 
-fn heroku_token() -> String {
-	std::env::var("HEROKU_TOKEN").expect("HEROKU_TOKEN var must be set")
+fn heroku_token() -> Result<String, anyhow::Error> {
+	std::env::var("HEROKU_TOKEN").map_err(|_| anyhow::Error::msg("HEROKU_TOKEN var must be set"))
 }
 
 #[cfg(not(test))]
