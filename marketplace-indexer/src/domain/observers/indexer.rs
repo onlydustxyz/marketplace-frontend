@@ -18,7 +18,7 @@ impl Observer for IndexerObserver {
 	async fn on_reorg(&self) {
 		let result = self.indexer_service.stop_indexer().await;
 		match result {
-			Ok(()) => warn!("[dd-id=indexer-stopped] Indexer stopped due to Reorg"),
+			Ok(()) => warn!("Indexer stopped due to Reorg"),
 			Err(e) => error!("Failed to stop indexer: {}", e),
 		}
 	}
