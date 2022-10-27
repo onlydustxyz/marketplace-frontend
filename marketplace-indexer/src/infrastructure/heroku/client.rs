@@ -20,14 +20,12 @@ impl HerokuEndpoint {
 	}
 }
 
-pub struct HerokuClient {}
+pub struct HerokuClient {
+	http_client: reqwest::Client,
+}
 
 impl HerokuClient {
-	pub fn new() -> Self {
-		Self {}
-	}
-
-	pub fn create_client(&self) -> Result<reqwest::Client, anyhow::Error> {
+	pub fn new() -> Result<Self, anyhow::Error> {
 		let mut headers = header::HeaderMap::new();
 		headers.insert(
 			reqwest::header::ACCEPT,
@@ -47,7 +45,7 @@ impl HerokuClient {
 			.default_headers(headers)
 			.build()?;
 
-		Ok(http_client)
+		Ok(Self { http_client })
 	}
 
 	pub async fn request(
@@ -55,7 +53,7 @@ impl HerokuClient {
 		endpoint: HerokuEndpoint,
 	) -> Result<reqwest::Response, anyhow::Error> {
 		let url = url::Url::parse(&heroku_server_url())?.join(&endpoint.path)?;
-		let mut request = self.create_client()?.request(endpoint.method, url);
+		let mut request = self.http_client.request(endpoint.method, url);
 
 		if let Some(body) = endpoint.body {
 			request = request.body(body);

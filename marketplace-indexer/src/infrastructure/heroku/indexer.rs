@@ -50,7 +50,7 @@ mod test {
 
 		let _lock = lock_test();
 
-		let heroku_client = HerokuClient::new();
+		let heroku_client = HerokuClient::new().expect("Could not create client");
 
 		assert_matches!(heroku_client.stop_indexer().await, Ok(()));
 
