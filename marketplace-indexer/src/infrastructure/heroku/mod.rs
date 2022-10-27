@@ -1,3 +1,3 @@
 pub mod client;
 mod indexer;
-pub use indexer::*;
+pub use client::HerokuClient;
