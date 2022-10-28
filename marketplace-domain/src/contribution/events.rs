@@ -68,12 +68,12 @@ impl From<Event> for crate::Event {
 
 #[cfg(test)]
 mod tests {
-	use super::super::{ContributionId, *};
+	use super::*;
 	use assert_json_diff::assert_json_eq;
 	use rstest::*;
 	use serde_json::{json, Value};
 
-	impl Default for ContributionEvent {
+	impl Default for Event {
 		fn default() -> Self {
 			Self::Created {
 				id: Default::default(),
@@ -116,7 +116,7 @@ mod tests {
 		issue_number: GithubIssueNumber,
 		gate: u8,
 	) {
-		let event = ContributionEvent::Created {
+		let event = Event::Created {
 			id: contribution_id.clone(),
 			project_id,
 			issue_number,
@@ -141,7 +141,7 @@ mod tests {
 		contribution_id: ContributionId,
 		contributor_account_address: ContributorAccountAddress,
 	) {
-		let event = ContributionEvent::Assigned {
+		let event = Event::Assigned {
 			id: contribution_id.clone(),
 			contributor_account_address: contributor_account_address.clone(),
 		};
@@ -162,7 +162,7 @@ mod tests {
 		contribution_id: ContributionId,
 		contributor_account_address: ContributorAccountAddress,
 	) {
-		let event = ContributionEvent::Claimed {
+		let event = Event::Claimed {
 			id: contribution_id.clone(),
 			contributor_account_address: contributor_account_address.clone(),
 		};
@@ -180,7 +180,7 @@ mod tests {
 
 	#[rstest]
 	fn contribution_unassigned_event_display_as_json(contribution_id: ContributionId) {
-		let event = ContributionEvent::Unassigned {
+		let event = Event::Unassigned {
 			id: contribution_id.clone(),
 		};
 
@@ -196,7 +196,7 @@ mod tests {
 
 	#[rstest]
 	fn contribution_validated_event_display_as_json(contribution_id: ContributionId) {
-		let event = ContributionEvent::Validated {
+		let event = Event::Validated {
 			id: contribution_id.clone(),
 		};
 
@@ -212,7 +212,7 @@ mod tests {
 
 	#[rstest]
 	fn gate_changed_event_display_as_json(contribution_id: ContributionId) {
-		let event = ContributionEvent::GateChanged {
+		let event = Event::GateChanged {
 			id: contribution_id.clone(),
 			gate: 5,
 		};
