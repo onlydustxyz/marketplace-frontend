@@ -79,6 +79,7 @@ mockall = "0.11.2"
 
 # Local dependecies
 marketplace-domain = {path = "../marketplace-domain"}
+marketplace-event-store = {path = "../marketplace-event-store"}
 marketplace-infrastructure = {path = "../marketplace-infrastructure"}
 marketplace-wrappers = {path = "../marketplace-wrappers"}
 

@@ -9,10 +9,11 @@ use crate::application::*;
 use anyhow::Result;
 use dotenv::dotenv;
 use log::{debug, info};
-use marketplace_domain::{Subscriber, *};
+use marketplace_domain::*;
 use marketplace_infrastructure::{
+	amqp::Bus,
 	database::{self, init_pool},
-	event_bus, github, starknet_account_verifier,
+	github, starknet_account_verifier,
 };
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
@@ -45,6 +46,7 @@ pub async fn main() -> Result<()> {
 		contribution_repository,
 		uuid_generator,
 		github_client.clone(),
+		Arc::new(Bus::default().await?),
 	)
 	.manage(database.clone())
 	.manage(github_client)
@@ -93,6 +95,7 @@ fn inject_app(
 	contribution_repository: AggregateRootRepository<Contribution>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 	github_client: Arc<github::Client>,
+	event_bus: Arc<Bus>,
 ) -> Rocket<Build> {
 	let application_projector: Arc<ApplicationProjector> =
 		Arc::new(ApplicationProjector::new(database.clone()));
@@ -118,7 +121,7 @@ fn inject_app(
 	rocket
 		.manage(ApplyToContribution::new_usecase_boxed(
 			contribution_repository.clone(),
-			database.clone(),
+			event_bus.clone(),
 			application_projector.clone(),
 			contributor_projector.clone(),
 			uuid_generator.clone(),
@@ -180,6 +183,7 @@ fn inject_app(
 }
 
 pub async fn event_listeners_main() -> Result<()> {
+	use marketplace_infrastructure::event_bus;
 	let event_consumer = event_bus::consumer().await?;
 
 	event_consumer
