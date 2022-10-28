@@ -105,7 +105,7 @@ fn inject_app(
 		github_client.clone(),
 	));
 
-	let project_projector = Arc::new(ProjectProjector::new(
+	let project_projector = Arc::new(GithubProjectProjector::new(
 		github_client.clone(),
 		database.clone(),
 	));
