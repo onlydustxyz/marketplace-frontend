@@ -22,6 +22,8 @@ env:
   DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
   GITHUB_ID: githubid
   GITHUB_SECRET: githubsecret
+  HEROKU_TOKEN: token
+  HEROKU_APP_NAME: app-name
   CONTRIBUTIONS_ADDRESS: "0x03f0e236a4cb1b20278ad5a7e790b29c6e5bac25c34fc3fb0c092f8e5275b512"
   NETWORK: devnet
   APIBARA_NODE_URL: http://localhost:7171
