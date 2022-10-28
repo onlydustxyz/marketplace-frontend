@@ -1,6 +1,6 @@
 #[allow(clippy::module_inception)]
-mod contribution_with_github_data_projector;
-pub use contribution_with_github_data_projector::WithGithubDataProjector as ContributionProjector;
+mod github;
+pub use github::GithubProjector as ContributionProjector;
 
 #[cfg(test)]
 mod test;

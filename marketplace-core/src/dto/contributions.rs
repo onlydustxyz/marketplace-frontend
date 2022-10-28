@@ -3,7 +3,7 @@ use std::sync::Arc;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use marketplace_domain::{ContributionProjection, ContributorProjectionRepository};
+use marketplace_domain::{ContributorProjectionRepository, GithubContribution};
 
 #[derive(Deserialize, Serialize, JsonSchema)]
 pub struct ContributionCreation {
@@ -58,8 +58,8 @@ pub struct Metadata {
 	pub r#type: Option<String>,
 }
 
-impl From<ContributionProjection> for Contribution {
-	fn from(contribution: ContributionProjection) -> Self {
+impl From<GithubContribution> for Contribution {
+	fn from(contribution: GithubContribution) -> Self {
 		Contribution {
 			id: contribution.id.to_string(),
 			title: contribution.title.unwrap_or_default(),
@@ -86,7 +86,7 @@ impl From<ContributionProjection> for Contribution {
 }
 
 pub fn build_contribution_dto(
-	contribution: ContributionProjection,
+	contribution: GithubContribution,
 	contributor_projection_repository: &Arc<dyn ContributorProjectionRepository>,
 ) -> Option<Contribution> {
 	let contributor = contribution.contributor_account_address.clone().and_then(|id| {

@@ -6,9 +6,7 @@ use marketplace_domain::*;
 use std::str::FromStr;
 
 impl ContributionProjectionRepository for Client {
-	fn list_all(
-		&self,
-	) -> Result<Vec<ContributionProjection>, ContributionProjectionRepositoryError> {
+	fn list_all(&self) -> Result<Vec<GithubContribution>, ContributionProjectionRepositoryError> {
 		let connection = self
 			.connection()
 			.map_err(|e| ContributionProjectionRepositoryError::Infrastructure(e.into()))?;
@@ -23,7 +21,7 @@ impl ContributionProjectionRepository for Client {
 	fn find_by_id(
 		&self,
 		contribution_id: &ContributionId,
-	) -> Result<Option<ContributionProjection>, ContributionProjectionRepositoryError> {
+	) -> Result<Option<GithubContribution>, ContributionProjectionRepositoryError> {
 		let connection = self
 			.connection()
 			.map_err(|e| ContributionProjectionRepositoryError::Infrastructure(e.into()))?;
@@ -42,7 +40,7 @@ impl ContributionProjectionRepository for Client {
 
 	fn insert(
 		&self,
-		contribution: ContributionProjection,
+		contribution: GithubContribution,
 	) -> Result<(), ContributionProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
 
@@ -131,7 +129,7 @@ impl ContributionProjectionRepository for Client {
 	fn list_by_project(
 		&self,
 		project_id: &GithubProjectId,
-	) -> Result<Vec<ContributionProjection>, ContributionProjectionRepositoryError> {
+	) -> Result<Vec<GithubContribution>, ContributionProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
 
 		let contributions = dsl::contributions
@@ -143,15 +141,15 @@ impl ContributionProjectionRepository for Client {
 	}
 }
 
-impl ProjectionRepository<ContributionProjection> for Client {
+impl ProjectionRepository<GithubContribution> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
 		self.clear_table(dsl::contributions)
 			.map_err(|e| ProjectionRepositoryError::Infrastructure(e.into()))
 	}
 }
 
-impl From<ContributionProjection> for models::Contribution {
-	fn from(contribution: ContributionProjection) -> Self {
+impl From<GithubContribution> for models::Contribution {
+	fn from(contribution: GithubContribution) -> Self {
 		Self {
 			id: contribution.id.to_string(),
 			project_id: contribution.project_id.to_string(),
@@ -174,7 +172,7 @@ impl From<ContributionProjection> for models::Contribution {
 	}
 }
 
-impl From<models::Contribution> for ContributionProjection {
+impl From<models::Contribution> for GithubContribution {
 	fn from(contribution: models::Contribution) -> Self {
 		Self {
 			id: contribution.id.parse().unwrap(),
@@ -189,7 +187,7 @@ impl From<models::Contribution> for ContributionProjection {
 			description: contribution.description,
 			external_link: contribution.external_link.map(|link| url::Url::parse(&link).unwrap()),
 			title: contribution.title,
-			metadata: ContributionProjectionMetadata {
+			metadata: GithubContributionMetadata {
 				difficulty: contribution.difficulty,
 				technology: contribution.technology,
 				duration: contribution.duration,

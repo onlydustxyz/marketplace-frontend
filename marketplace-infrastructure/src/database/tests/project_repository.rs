@@ -86,7 +86,7 @@ fn store_and_find_multiple(
 fn store_and_find_with_contributions(project1: Project, projection1: ProjectProjection) {
 	let client = Client::new(init_pool());
 
-	let contribution1 = ContributionProjection {
+	let contribution1 = GithubContribution {
 		id: ContributionId::from_str("0x01").unwrap(),
 		project_id: project1.id,
 		issue_number: 23,
@@ -99,7 +99,7 @@ fn store_and_find_with_contributions(project1: Project, projection1: ProjectProj
 		metadata: Default::default(),
 		closed: false,
 	};
-	let contribution2 = ContributionProjection {
+	let contribution2 = GithubContribution {
 		id: ContributionId::from_str("0x02").unwrap(),
 		project_id: project1.id,
 		issue_number: 34,

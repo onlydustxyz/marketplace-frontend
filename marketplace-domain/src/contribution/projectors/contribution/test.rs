@@ -55,8 +55,8 @@ fn contribution(
 	gate: u8,
 	github_issue: GithubIssue,
 	issue_number: GithubIssueNumber,
-) -> ContributionProjection {
-	ContributionProjection {
+) -> GithubContribution {
+	GithubContribution {
 		id: contribution_id,
 		project_id,
 		issue_number,
@@ -66,7 +66,7 @@ fn contribution(
 		title: Some(github_issue.title),
 		description: github_issue.description,
 		external_link: Some(github_issue.external_link),
-		metadata: ContributionProjectionMetadata {
+		metadata: GithubContributionMetadata {
 			difficulty: github_issue.difficulty,
 			technology: github_issue.technology,
 			duration: github_issue.duration,
@@ -137,7 +137,7 @@ async fn on_contribution_created_event(
 	project_id: GithubProjectId,
 	issue_number: GithubIssueNumber,
 	github_issue: GithubIssue,
-	contribution: ContributionProjection,
+	contribution: GithubContribution,
 	contribution_created_event: ContributionEvent,
 ) {
 	github_client
