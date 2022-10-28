@@ -11,6 +11,7 @@ pub enum Event {
 	Contributor(ContributorEvent),
 }
 
+// TODO: Remove after migration
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct StorableEvent<A: Aggregate> {
 	pub event: A::Event,

@@ -61,11 +61,6 @@ fn build_event_observer(
 	BlockchainObserverComposite::new(vec![
 		Arc::new(BlockchainLogger::default()),
 		Arc::new(event_store_bus),
-		Arc::new(EventStoreObserver::new(
-			database.clone(),
-			database.clone(),
-			database.clone(),
-		)),
 		Arc::new(EventFilterRepositoryObserver::new(database)),
 		Arc::new(EventListenersObserver::new(vec![
 			Box::new(contribution_projector),
