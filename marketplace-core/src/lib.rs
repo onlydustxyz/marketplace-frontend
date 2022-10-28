@@ -133,7 +133,7 @@ fn inject_app(
 			uuid_generator.clone(),
 		))
 		.manage(AssociateGithubAccount::new_usecase_boxed(
-			database.clone(),
+			event_bus.clone(),
 			starknet_account_verifier,
 			github_client,
 			contributor_projector.clone(),
