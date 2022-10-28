@@ -1,6 +1,6 @@
 use uuid::Uuid;
 
-use marketplace_domain::ContributionProjection;
+use marketplace_domain::GithubContribution;
 
 mod application_repository;
 mod contribution_projection_repository;
@@ -23,7 +23,7 @@ fn init_project(client: &Client) -> ProjectProjection {
 	project
 }
 
-fn init_contribution(client: &Client, project_id: u64) -> ContributionProjection {
+fn init_contribution(client: &Client, project_id: u64) -> GithubContribution {
 	init_contribution_with_status(client, Default::default(), project_id)
 }
 
@@ -31,8 +31,8 @@ fn init_contribution_with_status(
 	client: &Client,
 	status: ContributionStatus,
 	project_id: u64,
-) -> ContributionProjection {
-	let contribution = ContributionProjection {
+) -> GithubContribution {
+	let contribution = GithubContribution {
 		id: rand::random::<u128>().into(),
 		project_id,
 		status,
@@ -47,8 +47,8 @@ fn init_contribution_with_id(
 	client: &Client,
 	project_id: ProjectId,
 	contribution_id: ContributionId,
-) -> ContributionProjection {
-	let contribution = ContributionProjection {
+) -> GithubContribution {
+	let contribution = GithubContribution {
 		id: contribution_id,
 		project_id,
 		..Default::default()

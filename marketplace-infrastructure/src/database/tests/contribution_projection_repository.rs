@@ -54,7 +54,7 @@ fn store_and_update_gate() {
 			.unwrap();
 	assert_eq!(
 		found_contribution,
-		Some(ContributionProjection {
+		Some(GithubContribution {
 			gate: new_gate,
 			..contribution
 		})

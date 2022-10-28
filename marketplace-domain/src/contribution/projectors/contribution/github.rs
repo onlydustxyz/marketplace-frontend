@@ -13,12 +13,12 @@ pub enum Error {
 	GithubIssue(#[from] GithubClientError),
 }
 
-pub struct WithGithubDataProjector {
+pub struct GithubProjector {
 	contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
 	github_client: Arc<dyn GithubClient>,
 }
 
-impl WithGithubDataProjector {
+impl GithubProjector {
 	pub fn new(
 		contribution_projection_repository: Arc<dyn ContributionProjectionRepository>,
 		github_client: Arc<dyn GithubClient>,
@@ -46,7 +46,7 @@ impl WithGithubDataProjector {
 			},
 		};
 
-		let contribution = ContributionProjection {
+		let contribution = GithubContribution {
 			id: id.clone(),
 			project_id,
 			issue_number,
@@ -56,7 +56,7 @@ impl WithGithubDataProjector {
 			title: issue.clone().map(|issue| issue.title),
 			description: issue.clone().and_then(|issue| issue.description),
 			external_link: issue.clone().map(|issue| issue.external_link),
-			metadata: ContributionProjectionMetadata {
+			metadata: GithubContributionMetadata {
 				difficulty: issue.clone().and_then(|issue| issue.difficulty),
 				technology: issue.clone().and_then(|issue| issue.technology),
 				duration: issue.clone().and_then(|issue| issue.duration),
@@ -117,7 +117,7 @@ impl WithGithubDataProjector {
 }
 
 #[async_trait]
-impl EventListener for WithGithubDataProjector {
+impl EventListener for GithubProjector {
 	async fn on_event(&self, event: &Event) {
 		let result = match event {
 			Event::Contribution(contribution_event) => match contribution_event {

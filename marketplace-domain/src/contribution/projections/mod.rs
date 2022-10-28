@@ -1,7 +1,5 @@
-mod contribution;
-pub use contribution::{
-	Contribution as ContributionProjection, Metadata as ContributionProjectionMetadata,
-};
+mod github;
+pub use github::{GithubContribution, Metadata as GithubContributionMetadata};
 
 mod application;
 pub use application::{
