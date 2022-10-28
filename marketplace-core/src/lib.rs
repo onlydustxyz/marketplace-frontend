@@ -128,7 +128,7 @@ fn inject_app(
 		))
 		.manage(RefuseApplication::new_usecase_boxed(
 			contribution_repository,
-			database.clone(),
+			event_bus.clone(),
 			application_projector.clone(),
 			uuid_generator.clone(),
 		))
