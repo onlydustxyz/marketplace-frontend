@@ -11,10 +11,6 @@ mod pending_applications;
 pub use pending_applications::*;
 
 #[allow(clippy::extra_unused_lifetimes)]
-mod events;
-pub use events::*;
-
-#[allow(clippy::extra_unused_lifetimes)]
 mod lead_contributors;
 pub use lead_contributors::*;
 

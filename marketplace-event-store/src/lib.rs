@@ -3,6 +3,9 @@ pub use event::Event;
 
 pub mod bus;
 
+mod domain;
+mod infrastructure;
+
 use anyhow::Result;
 use futures::TryFutureExt;
 use log::debug;

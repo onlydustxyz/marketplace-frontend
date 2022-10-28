@@ -2039,14 +2039,18 @@ name = "marketplace-event-store"
 version = "0.0.1"
 dependencies = [
  "anyhow",
+ "async-std",
  "async-trait",
  "chrono",
+ "diesel",
  "dotenv",
  "futures 0.3.24",
  "lapin",
  "log",
  "marketplace-domain",
  "marketplace-infrastructure",
+ "marketplace-tests",
+ "rstest",
  "serde",
  "serde_json",
  "thiserror",

@@ -10,6 +10,11 @@ repository = "https://github.com/onlydustxyz/marketplace-backend"
 version = "0.0.1"
 
 [dependencies]
+# Database
+diesel = { version = "1.4.8", default-features = false, features = [
+	"postgres",
+	"serde_json",
+] }
 
 # RabbitMQ
 lapin = "2.1.1"
@@ -40,3 +45,9 @@ thiserror = "1.0.31"
 # Local dependecies
 marketplace-infrastructure = {path = "../marketplace-infrastructure"}
 marketplace-domain = {path = "../marketplace-domain"}
+
+[dev-dependencies]
+# Unit tests
+async-std = { version = "1.12.0", features = ["attributes"] }
+rstest = "0.15.0"
+marketplace-tests = { path = "../marketplace-tests" }
