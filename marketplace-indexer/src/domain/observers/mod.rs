@@ -12,9 +12,6 @@ mod confirmed;
 pub use confirmed::{ConfirmedObserver, WithBockConfirmationCount};
 use serde::{Deserialize, Serialize};
 
-mod event_store;
-pub use event_store::EventStoreObserver;
-
 mod event_filter_repository;
 pub use event_filter_repository::EventFilterRepositoryObserver;
 
