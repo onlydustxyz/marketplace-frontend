@@ -110,6 +110,34 @@ diesel migration run
 
 -   The file `schema.rs` should be then automatically updated
 
+## Monitoring
+
+We use Datadog as a monitoring solution.
+
+```json
+$~ heroku drains --json --app onlydust-backend-staging
+
+[
+  {
+    "id": "459e4e77-bbaa-4be2-8237-98fafe856d19",
+    "url": "https://http-intake.logs.datadoghq.eu/api/v2/logs/?dd-api-key=$API_KEY&ddsource=heroku&env=staging&service=marketplace-backend&host=staging.api.onlydust.xyz",
+    ...
+  }
+]
+```
+
+```json
+$~ heroku drains --json --app onlydust-backend-production
+
+[
+  {
+    "id": "c0b077bf-f0cc-4049-80e9-5b55e18d701a",
+    "url": "https://http-intake.logs.datadoghq.eu/api/v2/logs/?dd-api-key=$API_KEY&ddsource=heroku&env=production&service=marketplace-backend&host=api.onlydust.xyz",
+    ...
+  }
+]
+```
+
 ## 🫶 Contributing
 
 ## 📄 License
