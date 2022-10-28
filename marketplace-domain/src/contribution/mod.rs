@@ -1,5 +1,5 @@
-mod aggregate_root;
-pub use aggregate_root::{Contribution, Error as ContributionError, Id as AggregateId};
+mod aggregate;
+pub use aggregate::{Contribution, Error as ContributionError, Id as AggregateId};
 
 mod events;
 pub use events::Event;

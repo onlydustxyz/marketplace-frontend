@@ -1,5 +1,5 @@
 use crate::{
-	contribution::aggregate_root, ContributionId, ContributionStatus, ContributorAccountAddress,
+	contribution::aggregate, ContributionId, ContributionStatus, ContributorAccountAddress,
 	GithubIssueNumber, GithubProjectId, Projection,
 };
 use url::Url;
@@ -20,7 +20,7 @@ pub struct Contribution {
 }
 
 impl Projection for Contribution {
-	type A = aggregate_root::Contribution;
+	type A = aggregate::Contribution;
 }
 
 impl Contribution {
