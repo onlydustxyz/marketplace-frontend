@@ -1,38 +1,30 @@
 use crate::{domain::*, infrastructure::database::models, Event};
 use diesel::prelude::*;
 use log::error;
-use marketplace_domain::{Aggregate, Contribution, Contributor, Project};
 use marketplace_infrastructure::database::{
 	schema::{event_deduplications, events, events::index},
 	Client,
 };
 
-trait NamedAggregate: Aggregate {
-	fn name() -> String;
+// TODO: factorize with the one in marketplace-infrastructure
+trait NamedAggregate {
+	fn aggregate_name(&self) -> &str;
 }
 
-impl NamedAggregate for Contribution {
-	fn name() -> String {
-		String::from("CONTRIBUTION")
+impl NamedAggregate for Event {
+	fn aggregate_name(&self) -> &str {
+		match self.event {
+			marketplace_domain::Event::Contribution(_) => "CONTRIBUTION",
+			marketplace_domain::Event::Project(_) => "PROJECT",
+			marketplace_domain::Event::Contributor(_) => "CONTRIBUTOR",
+		}
 	}
 }
 
-impl NamedAggregate for Project {
-	fn name() -> String {
-		String::from("PROJECT")
-	}
-}
-
-impl NamedAggregate for Contributor {
-	fn name() -> String {
-		String::from("CONTRIBUTOR")
-	}
-}
-
-impl<A: NamedAggregate> EventStore<A> for Client {
+impl EventStore for Client {
 	fn append(
 		&self,
-		aggregate_id: &A::Id,
+		aggregate_id: &str,
 		storable_events: Vec<Event>,
 	) -> Result<(), EventStoreError> {
 		let connection = self.connection().map_err(|e| {
@@ -46,8 +38,8 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 				let domain_event = storable_event.event.clone();
 				Ok(models::Event {
 					timestamp: storable_event.timestamp,
-					aggregate_name: A::name(),
-					aggregate_id: aggregate_id.to_string(),
+					aggregate_name: storable_event.aggregate_name().to_owned(),
+					aggregate_id: aggregate_id.to_owned(),
 					payload: serde_json::to_value(&domain_event).map_err(|e| {
 						error!("Failed to serialize event {domain_event:?}: {e}");
 						EventStoreError::InvalidEvent(e.into())

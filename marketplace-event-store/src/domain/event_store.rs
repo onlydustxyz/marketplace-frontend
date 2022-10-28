@@ -1,5 +1,4 @@
 use crate::Event;
-use marketplace_domain::Aggregate;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -12,6 +11,6 @@ pub enum Error {
 	Append(#[source] anyhow::Error),
 }
 
-pub trait EventStore<A: Aggregate> {
-	fn append(&self, aggregate_id: &A::Id, events: Vec<Event>) -> Result<(), Error>;
+pub trait EventStore: Send + Sync {
+	fn append(&self, aggregate_id: &str, events: Vec<Event>) -> Result<(), Error>;
 }

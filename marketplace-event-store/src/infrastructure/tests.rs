@@ -75,9 +75,9 @@ fn test_append_and_list(
 	assigned_event: Event,
 ) {
 	assert!(
-		EventStore::<Contribution>::append(
+		EventStore::append(
 			database,
-			&contribution_id,
+			&contribution_id.to_string(),
 			vec![creation_event.clone(), assigned_event.clone()]
 		)
 		.is_ok()
@@ -101,9 +101,9 @@ fn test_cannot_append_duplicate_event_in_same_batch(
 	creation_event: Event,
 ) {
 	assert!(
-		EventStore::<Contribution>::append(
+		EventStore::append(
 			database,
-			&contribution_id,
+			&contribution_id.to_string(),
 			vec![creation_event.clone(), creation_event]
 		)
 		.is_err()
@@ -125,16 +125,15 @@ fn test_cannot_append_duplicate_event_in_different_batches(
 	creation_event: Event,
 ) {
 	assert!(
-		EventStore::<Contribution>::append(
+		EventStore::append(
 			database,
-			&contribution_id,
+			&contribution_id.to_string(),
 			vec![creation_event.clone()]
 		)
 		.is_ok()
 	);
 	assert!(
-		EventStore::<Contribution>::append(database, &contribution_id, vec![creation_event])
-			.is_err()
+		EventStore::append(database, &contribution_id.to_string(), vec![creation_event]).is_err()
 	);
 }
 
@@ -149,8 +148,7 @@ fn test_metadata_are_stored(
 	creation_event: Event,
 ) {
 	assert!(
-		EventStore::<Contribution>::append(database, &contribution_id, vec![creation_event])
-			.is_ok()
+		EventStore::append(database, &contribution_id.to_string(), vec![creation_event]).is_ok()
 	);
 
 	let connection = database.connection().unwrap();
