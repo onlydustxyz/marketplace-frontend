@@ -50,7 +50,7 @@ fn build_event_observer(
 	let github = Arc::new(github::Client::new());
 	let reqwest_client = reqwest::Client::new();
 
-	let contribution_projector = ContributionProjector::new(database.clone(), github.clone());
+	let contribution_projector = GithubContributionProjector::new(database.clone(), github.clone());
 	let application_projector = ApplicationProjector::new(database.clone());
 	let project_projector = ProjectProjector::new(github.clone(), database.clone());
 	let project_member_projector = ProjectMemberProjector::new(database.clone());

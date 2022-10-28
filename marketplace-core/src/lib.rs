@@ -100,7 +100,7 @@ fn inject_app(
 	let application_projector: Arc<ApplicationProjector> =
 		Arc::new(ApplicationProjector::new(database.clone()));
 
-	let contribution_projector = Arc::new(ContributionProjector::new(
+	let contribution_projector = Arc::new(GithubContributionProjector::new(
 		database.clone(),
 		github_client.clone(),
 	));

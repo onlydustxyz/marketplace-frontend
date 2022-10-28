@@ -8,7 +8,7 @@ mod status;
 pub use status::Status;
 
 mod projectors;
-pub use projectors::{ApplicationProjector, ContributionProjector, ProjectProjector};
+pub use projectors::{ApplicationProjector, GithubContributionProjector, ProjectProjector};
 
 mod projections;
 pub use projections::{
