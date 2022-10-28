@@ -18,5 +18,7 @@ pub enum Error {
 	#[error(transparent)]
 	ContributionError(#[from] ContributionError),
 	#[error(transparent)]
+	Publisher(#[from] PublisherError),
+	#[error(transparent)]
 	ContributorError(#[from] ContributorError),
 }
