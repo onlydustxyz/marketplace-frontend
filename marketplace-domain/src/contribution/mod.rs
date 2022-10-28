@@ -1,10 +1,11 @@
 mod aggregate_root;
-pub use aggregate_root::{
-	Contribution, Error as ContributionError, Id as AggregateId, Status as ContributionStatus,
-};
+pub use aggregate_root::{Contribution, Error as ContributionError, Id as AggregateId};
 
 mod events;
 pub use events::Event;
+
+mod status;
+pub use status::Status;
 
 mod projectors;
 pub use projectors::{ApplicationProjector, ContributionProjector, ProjectProjector};

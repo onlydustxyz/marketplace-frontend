@@ -32,7 +32,9 @@ mod projection_repository;
 pub use projection_repository::{Error as ProjectionRepositoryError, ProjectionRepository};
 
 mod contribution;
-pub use contribution::{AggregateId as ContributionId, Event as ContributionEvent, *};
+pub use contribution::{
+	AggregateId as ContributionId, Event as ContributionEvent, Status as ContributionStatus, *,
+};
 
 mod project;
 pub use project::{
