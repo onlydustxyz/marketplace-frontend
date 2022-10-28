@@ -4,9 +4,6 @@ use marketplace_wrappers::HexStringWrapper;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-mod status;
-pub use status::Status;
-
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, Hash, Default, HexStringWrapper)]
 pub struct Id(HexPrefixedString);
 
@@ -39,7 +36,7 @@ impl Contribution {
 		self,
 		contributor_account_address: &ContributorAccountAddress,
 	) -> Result<Vec<Event>, Error> {
-		if self.status != Status::Open {
+		if self.status != ContributionStatus::Open {
 			return Err(Error::CannotApply(self.status));
 		}
 		if self.applicants.contains(contributor_account_address) {
@@ -123,7 +120,7 @@ impl EventSourcable for Contribution {
 					project_id: *project_id,
 					issue_number: *issue_number,
 					gate: *gate,
-					status: Status::Open,
+					status: ContributionStatus::Open,
 					..self
 				},
 				ContributionEvent::Applied {
@@ -143,17 +140,17 @@ impl EventSourcable for Contribution {
 					id: _,
 					contributor_account_address,
 				} => Self {
-					status: Status::Assigned,
+					status: ContributionStatus::Assigned,
 					contributor_account_address: Some(contributor_account_address.clone()),
 					..self.without_applicant(contributor_account_address)
 				},
 				ContributionEvent::Unassigned { id: _ } => Self {
-					status: Status::Open,
+					status: ContributionStatus::Open,
 					contributor_account_address: None,
 					..self
 				},
 				ContributionEvent::Validated { id: _ } => Self {
-					status: Status::Completed,
+					status: ContributionStatus::Completed,
 					..self
 				},
 				ContributionEvent::GateChanged { id: _, gate } => Self {
@@ -161,12 +158,12 @@ impl EventSourcable for Contribution {
 					..self
 				},
 				ContributionEvent::Closed { .. } => Self {
-					status: Status::Abandoned,
+					status: ContributionStatus::Abandoned,
 					closed: true,
 					..self
 				},
 				ContributionEvent::Reopened { .. } => Self {
-					status: Status::Open,
+					status: ContributionStatus::Open,
 					closed: false,
 					..self
 				},
@@ -275,7 +272,7 @@ mod tests {
 	#[rstest]
 	fn create_contribution(contribution_created_event: Event, contribution_id: Id) {
 		let contribution = Contribution::from_events(&[contribution_created_event]);
-		assert_eq!(Status::Open, contribution.status);
+		assert_eq!(ContributionStatus::Open, contribution.status);
 		assert_eq!(contribution_id, contribution.id);
 		assert!(contribution.applicants.is_empty());
 	}
@@ -284,7 +281,7 @@ mod tests {
 	fn assign_contribution(contribution_created_event: Event, contribution_assigned_event: Event) {
 		let contribution =
 			Contribution::from_events(&[contribution_created_event, contribution_assigned_event]);
-		assert_eq!(Status::Assigned, contribution.status);
+		assert_eq!(ContributionStatus::Assigned, contribution.status);
 		assert!(contribution.contributor_account_address.is_some());
 	}
 
@@ -292,7 +289,7 @@ mod tests {
 	fn claim_contribution(contribution_created_event: Event, contribution_claimed_event: Event) {
 		let contribution =
 			Contribution::from_events(&[contribution_created_event, contribution_claimed_event]);
-		assert_eq!(Status::Assigned, contribution.status);
+		assert_eq!(ContributionStatus::Assigned, contribution.status);
 		assert!(contribution.contributor_account_address.is_some());
 	}
 
@@ -307,7 +304,7 @@ mod tests {
 			contribution_assigned_event,
 			contribution_unassigned_event,
 		]);
-		assert_eq!(Status::Open, contribution.status);
+		assert_eq!(ContributionStatus::Open, contribution.status);
 		assert!(contribution.contributor_account_address.is_none());
 	}
 
@@ -322,14 +319,14 @@ mod tests {
 			contribution_assigned_event,
 			contribution_validated_event,
 		]);
-		assert_eq!(Status::Completed, contribution.status);
+		assert_eq!(ContributionStatus::Completed, contribution.status);
 	}
 
 	#[rstest]
 	fn close_contribution(contribution_created_event: Event, contribution_closed_event: Event) {
 		let contribution =
 			Contribution::from_events(&[contribution_created_event, contribution_closed_event]);
-		assert_eq!(Status::Abandoned, contribution.status);
+		assert_eq!(ContributionStatus::Abandoned, contribution.status);
 		assert!(contribution.closed);
 	}
 
@@ -343,7 +340,10 @@ mod tests {
 
 		let result = contribution.apply(&ContributorAccountAddress::default());
 		assert!(result.is_err());
-		assert_matches!(result.unwrap_err(), Error::CannotApply(Status::Assigned))
+		assert_matches!(
+			result.unwrap_err(),
+			Error::CannotApply(ContributionStatus::Assigned)
+		)
 	}
 
 	#[rstest]
