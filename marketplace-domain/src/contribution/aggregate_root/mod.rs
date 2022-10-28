@@ -4,8 +4,6 @@ use marketplace_wrappers::HexStringWrapper;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-pub mod event;
-
 mod status;
 pub use status::Status;
 
