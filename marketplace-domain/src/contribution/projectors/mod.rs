@@ -1,5 +1,5 @@
-mod contribution;
-pub use contribution::ContributionProjector;
+mod github_contribution;
+pub use github_contribution::GithubContributionProjector;
 
 mod application;
 pub use application::ApplicationProjector;
