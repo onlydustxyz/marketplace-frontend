@@ -56,6 +56,7 @@ pub use contributor::{
 
 mod projectors;
 pub use projectors::{
-	ContributorWithGithubData as ContributorWithGithubDataProjector, LeadContributorProjector,
+	ApplicationProjector, ContributorWithGithubData as ContributorWithGithubDataProjector,
+	GithubContributionProjector, GithubProjectProjector, LeadContributorProjector,
 	MemberProjector as ProjectMemberProjector,
 };
