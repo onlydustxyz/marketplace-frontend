@@ -1,8 +1,8 @@
 mod project;
 pub use project::{Error as ProjectRepositoryError, Repository as ProjectRepository};
 
-mod contribution_projection;
-pub use contribution_projection::{
+mod github_contribution_projection;
+pub use github_contribution_projection::{
 	Error as ContributionProjectionRepositoryError,
 	MockRepository as MockContributionProjectionRepository,
 	Repository as ContributionProjectionRepository,
@@ -27,8 +27,8 @@ pub use lead_contributor_projection::{
 	Repository as LeadContributorProjectionRepository,
 };
 
-mod project_projection;
-pub use project_projection::{
+mod github_project_projection;
+pub use github_project_projection::{
 	Error as ProjectProjectionRepositoryError, Repository as ProjectProjectionRepository,
 };
 
@@ -38,7 +38,7 @@ pub use contributor_projection::{
 };
 
 #[cfg(test)]
-pub use project_projection::MockRepository as MockProjectProjectionRepository;
+pub use github_project_projection::MockRepository as MockProjectProjectionRepository;
 
 #[cfg(test)]
 pub use project_member_projection::MockRepository as MockProjectMemberProjectionRepository;
