@@ -33,6 +33,10 @@ rstest = "0.15.0"
 # Utils
 dotenv = "0.15.0"
 hex = "0.4.3"
+chrono = "0.4"
+uuid = {version = "0.8.2", default_features = false, features = [
+  "v4",
+]}
 
 # Serde
 serde = {version = "1.0.137", features = ["derive"]}
@@ -51,6 +55,7 @@ marketplace-core = {path = "../marketplace-core"}
 marketplace-indexer = {path = "../marketplace-indexer"}
 marketplace-infrastructure = {path = "../marketplace-infrastructure"}
 marketplace-event-store = {path = "../marketplace-event-store"}
+marketplace-domain = {path = "../marketplace-domain"}
 
 # Starknet
 starknet = {git = "https://github.com/xJonathanLEI/starknet-rs"}
