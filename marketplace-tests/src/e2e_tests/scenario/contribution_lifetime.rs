@@ -3,7 +3,7 @@ use crate::e2e_tests::{
 	backends::{event_listeners, marketplace_api, marketplace_event_store, marketplace_indexer},
 	contributions, contributors,
 	database::get_events_count,
-	projects::add_lead_contributor,
+	projects,
 	scenario::STARKONQUEST_TITLE,
 	starknet::{accounts::*, Account},
 };
@@ -32,7 +32,7 @@ async fn contribution_lifetime(
 	let issue_number = 31;
 	let contributor_account_address = format!("{:#066x}", contributor_account.address());
 
-	add_lead_contributor(
+	projects::add_lead_contributor(
 		&admin_account,
 		STARKONQUEST_ID,
 		lead_contributor_account.address(),
@@ -57,6 +57,7 @@ async fn contribution_lifetime(
 
 	// Refresh the projections
 	contributors::refresh().await;
+	projects::refresh().await;
 
 	let contributor = contributors::get(&contributor_account_address).await;
 	assert_eq!(contributor.account, contributor_account_address);
