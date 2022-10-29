@@ -1,5 +1,6 @@
 use super::{wait_for_events, STARKONQUEST_ID};
 use crate::e2e_tests::{
+	applications,
 	backends::{event_listeners, marketplace_api, marketplace_event_store, marketplace_indexer},
 	contributions, contributors,
 	database::get_events_count,
@@ -59,6 +60,7 @@ async fn contribution_lifetime(
 	contributors::refresh().await;
 	projects::refresh().await;
 	contributions::refresh().await;
+	applications::refresh().await;
 
 	let contributor = contributors::get(&contributor_account_address).await;
 	assert_eq!(contributor.account, contributor_account_address);
