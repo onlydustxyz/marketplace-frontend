@@ -41,8 +41,7 @@ impl Bus {
 		options: QueueDeclareOptions,
 	) -> Result<ConsumableBus, Error> {
 		self.channel.queue_declare(queue_name, options, Default::default()).await?;
-
-		Ok(ConsumableBus::new(self, queue_name).await?)
+		ConsumableBus::new(self, queue_name).await
 	}
 
 	pub(super) async fn publish(
