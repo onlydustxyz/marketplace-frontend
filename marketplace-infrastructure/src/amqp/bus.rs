@@ -1,9 +1,10 @@
 use lapin::{
 	message::Delivery, options::QueueDeclareOptions, publisher_confirm::Confirmation, Channel,
-	Connection,
+	Connection, Consumer,
 };
 use log::error;
 use thiserror::Error;
+use tokio::sync::RwLock;
 use tokio_stream::StreamExt;
 
 #[derive(Debug, Error)]
@@ -41,10 +42,7 @@ impl Bus {
 	) -> Result<ConsumableBus, Error> {
 		self.channel.queue_declare(queue_name, options, Default::default()).await?;
 
-		Ok(ConsumableBus {
-			bus: self,
-			queue_name,
-		})
+		Ok(ConsumableBus::new(self, queue_name).await?)
 	}
 
 	pub(super) async fn publish(
@@ -72,9 +70,23 @@ impl Bus {
 pub struct ConsumableBus {
 	bus: Bus,
 	queue_name: &'static str,
+	consumer: RwLock<Consumer>,
 }
 
 impl ConsumableBus {
+	async fn new(bus: Bus, queue_name: &'static str) -> Result<Self, Error> {
+		let consumer = bus
+			.channel
+			.basic_consume(queue_name, "", Default::default(), Default::default())
+			.await?;
+
+		Ok(Self {
+			bus,
+			queue_name,
+			consumer: RwLock::new(consumer),
+		})
+	}
+
 	pub async fn with_exchange(self, exchange_name: &'static str) -> Result<Self, Error> {
 		self.bus
 			.channel
@@ -101,13 +113,7 @@ impl ConsumableBus {
 	}
 
 	pub(super) async fn consume(&self) -> Result<Option<Delivery>, Error> {
-		let mut consumer = self
-			.bus
-			.channel
-			.basic_consume(self.queue_name, "", Default::default(), Default::default())
-			.await?;
-
-		match consumer.next().await {
+		match self.consumer.write().await.next().await {
 			Some(Ok(delivery)) => Ok(Some(delivery)),
 			Some(Err(error)) => Err(error.into()),
 			None => Ok(None),
