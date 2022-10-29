@@ -38,6 +38,7 @@ async fn contribution_lifetime(
 		lead_contributor_account.address(),
 	)
 	.await;
+
 	// Create a new contribution
 	contributions::create(&lead_contributor_account, STARKONQUEST_ID, issue_number, 0).await;
 	wait_for_events(events_count + 3).await;
@@ -53,6 +54,9 @@ async fn contribution_lifetime(
 	contributors::register_discord_handle(&contributor_account_address, "Discord#1234").await;
 	contributions::apply(&contribution.id, &contributor_account_address).await;
 	contributions::refuse_application(&contribution.id, &contributor_account_address).await;
+
+	// Refresh the projections
+	contributors::refresh().await;
 
 	let contributor = contributors::get(&contributor_account_address).await;
 	assert_eq!(contributor.account, contributor_account_address);

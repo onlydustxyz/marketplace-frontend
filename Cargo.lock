@@ -2161,12 +2161,14 @@ dependencies = [
  "assert_matches",
  "async-std",
  "async-trait",
+ "chrono",
  "diesel",
  "diesel_migrations",
  "dotenv",
  "futures 0.3.24",
  "hex",
  "marketplace-core",
+ "marketplace-domain",
  "marketplace-event-store",
  "marketplace-indexer",
  "marketplace-infrastructure",
@@ -2179,6 +2181,7 @@ dependencies = [
  "starknet",
  "tokio",
  "url",
+ "uuid 0.8.2",
 ]
 
 [[package]]
