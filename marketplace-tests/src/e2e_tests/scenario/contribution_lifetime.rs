@@ -58,6 +58,7 @@ async fn contribution_lifetime(
 	// Refresh the projections
 	contributors::refresh().await;
 	projects::refresh().await;
+	contributions::refresh().await;
 
 	let contributor = contributors::get(&contributor_account_address).await;
 	assert_eq!(contributor.account, contributor_account_address);
