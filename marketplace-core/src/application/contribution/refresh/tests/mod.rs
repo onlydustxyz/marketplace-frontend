@@ -1,5 +1,4 @@
 mod applications;
-mod contributions;
 
 use std::{str::FromStr, sync::Arc};
 
