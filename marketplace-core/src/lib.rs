@@ -140,7 +140,7 @@ fn inject_app(
 			uuid_generator.clone(),
 		))
 		.manage(RegisterDiscordHandle::new_usecase_boxed(
-			event_bus.clone(),
+			event_bus,
 			contributor_projector.clone(),
 			uuid_generator,
 		))
