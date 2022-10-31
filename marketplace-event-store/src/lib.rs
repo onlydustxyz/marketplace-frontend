@@ -25,7 +25,7 @@ pub async fn main() -> Result<()> {
 
 	inbound_event_bus
 		.subscribe(|event| {
-			log(database.clone(), event)
+			store(database.clone(), event)
 				.and_then(|event| publish(event, outbound_event_bus.clone()))
 		})
 		.await?;
@@ -33,7 +33,7 @@ pub async fn main() -> Result<()> {
 	Ok(())
 }
 
-async fn log(store: Arc<dyn EventStore>, event: Event) -> Result<Event> {
+async fn store(store: Arc<dyn EventStore>, event: Event) -> Result<Event> {
 	if let Ok(pretty_event) = serde_json::to_string_pretty(&event) {
 		debug!("[event-store] 📨 Received event: {}", pretty_event);
 	}
