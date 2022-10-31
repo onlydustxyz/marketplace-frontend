@@ -19,25 +19,6 @@ impl Display for Event {
 	}
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Origin {
-	Starknet,
-	BACKEND,
-}
-
-impl Display for Origin {
-	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-		write!(
-			f,
-			"{}",
-			match self {
-				Origin::Starknet => "starknet",
-				Origin::BACKEND => "backend",
-			}
-		)
-	}
-}
-
 impl Message for Event {}
 
 #[cfg(test)]

@@ -1,6 +1,5 @@
 mod event;
-use domain::EventStore;
-pub use event::Event;
+pub use event::{Event, Origin as EventOrigin};
 
 pub mod bus;
 
@@ -8,6 +7,7 @@ mod domain;
 mod infrastructure;
 
 use anyhow::Result;
+use domain::EventStore;
 use futures::TryFutureExt;
 use log::debug;
 use marketplace_domain::{Destination, Event as DomainEvent, Publisher, Subscriber};
