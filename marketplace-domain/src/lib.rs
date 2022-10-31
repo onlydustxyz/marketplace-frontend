@@ -11,7 +11,7 @@ mod services;
 pub use services::*;
 
 mod event;
-pub use event::{Event, Origin as EventOrigin, StorableEvent};
+pub use event::{Event, Origin as EventOrigin};
 
 mod event_store;
 pub use event_store::{Error as EventStoreError, MockStore as MockEventStore, Store as EventStore};

@@ -1,7 +1,5 @@
-use crate::{Aggregate, ContributionEvent, ContributorEvent, EventOrigin, Message, ProjectEvent};
-use chrono::NaiveDateTime;
+use crate::{ContributionEvent, ContributorEvent, Message, ProjectEvent};
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use std::fmt::Display;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -9,16 +7,6 @@ pub enum Event {
 	Contribution(ContributionEvent),
 	Project(ProjectEvent),
 	Contributor(ContributorEvent),
-}
-
-// TODO: Remove after migration
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct StorableEvent<A: Aggregate> {
-	pub event: A::Event,
-	pub deduplication_id: String,
-	pub timestamp: NaiveDateTime,
-	pub metadata: Value,
-	pub origin: EventOrigin,
 }
 
 impl Display for Event {
