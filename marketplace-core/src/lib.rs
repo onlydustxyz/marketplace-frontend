@@ -188,10 +188,10 @@ pub async fn event_listeners_main() -> Result<()> {
 
 	event_consumer
 		.subscribe(|event: Event| async move {
-			debug!(
-				"[events] 📨 Received event: {}",
-				serde_json::to_string_pretty(&event)?
-			);
+			if let Ok(event) = serde_json::to_string_pretty(&event) {
+				debug!("[events] 📨 Received event: {}", &event);
+			}
+
 			Ok(())
 		})
 		.await?;
