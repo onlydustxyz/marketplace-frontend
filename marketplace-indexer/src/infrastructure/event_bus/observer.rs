@@ -1,8 +1,8 @@
 use crate::domain::{BlockchainObserver, ObservedEvent};
 use async_trait::async_trait;
 use log::error;
-use marketplace_domain::{Destination, EventOrigin, Publisher};
-use marketplace_event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event};
+use marketplace_domain::{Destination, Publisher};
+use marketplace_event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event, EventOrigin};
 
 #[async_trait]
 impl<P: Publisher<Event>> BlockchainObserver for P {

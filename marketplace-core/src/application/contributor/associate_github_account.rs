@@ -1,7 +1,9 @@
 use async_trait::async_trait;
 use chrono::Utc;
 use marketplace_domain::{Error as DomainError, *};
-use marketplace_event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event as StorableEvent};
+use marketplace_event_store::{
+	bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event as StorableEvent, EventOrigin,
+};
 use std::sync::Arc;
 
 // Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be

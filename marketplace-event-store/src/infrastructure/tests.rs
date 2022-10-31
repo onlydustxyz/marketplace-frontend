@@ -1,7 +1,8 @@
+use crate::{domain::EventStore, Event, EventOrigin};
 use chrono::Utc;
 use diesel::{query_dsl::select_dsl::SelectDsl, RunQueryDsl};
 use marketplace_domain::{
-	Contribution, ContributionEvent, ContributionId, ContributorAccountAddress, EventOrigin,
+	Contribution, ContributionEvent, ContributionId, ContributorAccountAddress,
 	EventStore as DomainEventStore, HexPrefixedString,
 };
 use marketplace_infrastructure::database::{schema::events, Client};
@@ -9,8 +10,6 @@ use marketplace_tests::init_pool;
 use rstest::{fixture, rstest};
 use serde_json::{json, Value};
 use std::str::FromStr;
-
-use crate::{domain::EventStore, Event};
 
 #[fixture]
 #[once]

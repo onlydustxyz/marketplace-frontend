@@ -1,15 +1,35 @@
+use std::fmt::Display;
+
 use chrono::NaiveDateTime;
-use marketplace_domain::{Event as DomainEvent, EventOrigin, Message};
+use marketplace_domain::{Event as DomainEvent, Message};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Origin {
+	Starknet,
+	BACKEND,
+}
+
+impl Display for Origin {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(
+			f,
+			"{}",
+			match self {
+				Origin::Starknet => "starknet",
+				Origin::BACKEND => "backend",
+			}
+		)
+	}
+}
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Event {
 	pub event: DomainEvent,
 	pub deduplication_id: String,
 	pub timestamp: NaiveDateTime,
 	pub metadata: Value,
-	pub origin: EventOrigin,
+	pub origin: Origin,
 }
 
 impl Message for Event {}
