@@ -3,7 +3,7 @@ use chrono::Utc;
 use diesel::{query_dsl::select_dsl::SelectDsl, RunQueryDsl};
 use marketplace_domain::{
 	Contribution, ContributionEvent, ContributionId, ContributorAccountAddress,
-	EventStore as DomainEventStore, HexPrefixedString,
+	Event as DomainEvent, EventStore as DomainEventStore, HexPrefixedString,
 };
 use marketplace_infrastructure::database::{schema::events, Client};
 use marketplace_tests::init_pool;
@@ -85,8 +85,14 @@ fn test_append_and_list(
 	let contribution_events =
 		DomainEventStore::<Contribution>::list_by_id(database, &contribution_id).unwrap();
 	assert_eq!(contribution_events.len(), 2);
-	assert_eq!(*contribution_events.first().unwrap(), creation_event.event);
-	assert_eq!(*contribution_events.last().unwrap(), assigned_event.event);
+	assert_eq!(
+		DomainEvent::Contribution(contribution_events.first().unwrap().clone()),
+		creation_event.event
+	);
+	assert_eq!(
+		DomainEvent::Contribution(contribution_events.last().unwrap().clone()),
+		assigned_event.event
+	);
 }
 
 #[rstest]

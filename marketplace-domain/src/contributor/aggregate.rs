@@ -31,23 +31,20 @@ impl From<ContributorEvent> for Event {
 }
 
 impl EventSourcable for Contributor {
-	fn apply_event(self, event: &Event) -> Self {
+	fn apply_event(self, event: &Self::Event) -> Self {
 		match event {
-			Event::Contributor(contributor_event) => match contributor_event {
-				ContributorEvent::GithubAccountAssociated {
-					contributor_account_address: contributor_account,
-					github_identifier,
-				} => Self {
-					id: contributor_account.clone(),
-					github_identifier: *github_identifier,
-					..Default::default()
-				},
-				ContributorEvent::DiscordHandleRegistered { discord_handle, .. } => Self {
-					discord_handle: Some(discord_handle.clone()),
-					..self
-				},
+			ContributorEvent::GithubAccountAssociated {
+				contributor_account_address: contributor_account,
+				github_identifier,
+			} => Self {
+				id: contributor_account.clone(),
+				github_identifier: *github_identifier,
+				..Default::default()
 			},
-			_ => self,
+			ContributorEvent::DiscordHandleRegistered { discord_handle, .. } => Self {
+				discord_handle: Some(discord_handle.clone()),
+				..self
+			},
 		}
 	}
 }
@@ -135,16 +132,16 @@ mod test {
 	fn github_account_associated_event(
 		contributor_account_address: ContributorAccountAddress,
 		github_identifier: GithubUserId,
-	) -> Event {
-		Event::Contributor(ContributorEvent::GithubAccountAssociated {
+	) -> ContributorEvent {
+		ContributorEvent::GithubAccountAssociated {
 			contributor_account_address,
 			github_identifier,
-		})
+		}
 	}
 
 	#[rstest]
 	fn create_contributor(
-		github_account_associated_event: Event,
+		github_account_associated_event: ContributorEvent,
 		contributor_account_address: ContributorAccountAddress,
 		github_identifier: GithubUserId,
 	) {

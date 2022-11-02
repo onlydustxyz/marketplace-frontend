@@ -81,12 +81,12 @@ mod tests {
 	#[rstest]
 	fn test_found(mut event_store: MockEventStore<Contribution>) {
 		let contribution_id = ContributionId::from_str("0xaf").unwrap();
-		let creation_event = Event::Contribution(ContributionEvent::Created {
+		let creation_event = ContributionEvent::Created {
 			id: contribution_id.clone(),
 			project_id: Default::default(),
 			issue_number: Default::default(),
 			gate: Default::default(),
-		});
+		};
 		event_store
 			.expect_list_by_id()
 			.with(eq(contribution_id.clone()))

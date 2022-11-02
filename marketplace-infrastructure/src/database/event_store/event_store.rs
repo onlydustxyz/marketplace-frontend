@@ -27,7 +27,7 @@ impl NamedAggregate for Contributor {
 }
 
 impl<A: NamedAggregate> EventStore<A> for Client {
-	fn list_by_id(&self, aggregate_id: &A::Id) -> Result<Vec<Event>, EventStoreError> {
+	fn list_by_id(&self, aggregate_id: &A::Id) -> Result<Vec<A::Event>, EventStoreError> {
 		let connection = self.connection().map_err(|e| {
 			error!("Failed to connect to database: {e}");
 			EventStoreError::Connection(e.into())
@@ -51,7 +51,7 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 		deserialize_events::<A>(events)
 	}
 
-	fn list(&self) -> Result<Vec<Event>, EventStoreError> {
+	fn list(&self) -> Result<Vec<A::Event>, EventStoreError> {
 		let connection = self.connection().map_err(|e| {
 			error!("Failed to connect to database: {e}");
 			EventStoreError::Connection(e.into())
@@ -74,11 +74,11 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 
 fn deserialize_events<A: Aggregate>(
 	serialized_events: Vec<Value>,
-) -> Result<Vec<Event>, EventStoreError> {
+) -> Result<Vec<A::Event>, EventStoreError> {
 	serialized_events
 		.iter()
 		.map(|event_value| {
-			serde_json::from_value::<Event>(event_value.clone()).map_err(|e| {
+			serde_json::from_value::<A::Event>(event_value.clone()).map_err(|e| {
 				error!("Failed to deserialize event {event_value}: {e}");
 				e
 			})

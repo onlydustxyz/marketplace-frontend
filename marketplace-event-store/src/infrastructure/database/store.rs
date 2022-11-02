@@ -1,10 +1,14 @@
 use crate::{domain::*, infrastructure::database::models, Event};
 use diesel::prelude::*;
 use log::error;
+use marketplace_domain::Event as DomainEvent;
 use marketplace_infrastructure::database::{
 	schema::{event_deduplications, events, events::index},
 	Client,
 };
+use serde_json::{to_value as to_json, Value as Json};
+
+type Result<T> = std::result::Result<T, EventStoreError>;
 
 // TODO: factorize with the one in marketplace-infrastructure
 trait NamedAggregate {
@@ -14,19 +18,15 @@ trait NamedAggregate {
 impl NamedAggregate for Event {
 	fn aggregate_name(&self) -> &str {
 		match self.event {
-			marketplace_domain::Event::Contribution(_) => "CONTRIBUTION",
-			marketplace_domain::Event::Project(_) => "PROJECT",
-			marketplace_domain::Event::Contributor(_) => "CONTRIBUTOR",
+			DomainEvent::Contribution(_) => "CONTRIBUTION",
+			DomainEvent::Project(_) => "PROJECT",
+			DomainEvent::Contributor(_) => "CONTRIBUTOR",
 		}
 	}
 }
 
 impl EventStore for Client {
-	fn append(
-		&self,
-		aggregate_id: &str,
-		storable_events: Vec<Event>,
-	) -> Result<(), EventStoreError> {
+	fn append(&self, aggregate_id: &str, storable_events: Vec<Event>) -> Result<()> {
 		let connection = self.connection().map_err(|e| {
 			error!("Failed to connect to database: {e}");
 			EventStoreError::Connection(e.into())
@@ -40,15 +40,12 @@ impl EventStore for Client {
 					timestamp: storable_event.timestamp,
 					aggregate_name: storable_event.aggregate_name().to_owned(),
 					aggregate_id: aggregate_id.to_owned(),
-					payload: serde_json::to_value(&domain_event).map_err(|e| {
-						error!("Failed to serialize event {domain_event:?}: {e}");
-						EventStoreError::InvalidEvent(e.into())
-					})?,
+					payload: serialize_event(&domain_event)?,
 					origin: storable_event.origin.to_string(),
 					metadata: storable_event.metadata.clone(),
 				})
 			})
-			.collect::<Result<Vec<_>, EventStoreError>>()?;
+			.collect::<Result<Vec<_>>>()?;
 
 		connection
 			.transaction(|| {
@@ -83,4 +80,16 @@ impl EventStore for Client {
 
 		Ok(())
 	}
+}
+
+fn serialize_event(event: &DomainEvent) -> Result<Json> {
+	match event {
+		DomainEvent::Contribution(event) => to_json(event),
+		DomainEvent::Project(event) => to_json(event),
+		DomainEvent::Contributor(event) => to_json(event),
+	}
+	.map_err(|e| {
+		error!("Failed to serialize event {event:?}: {e}");
+		EventStoreError::InvalidEvent(e.into())
+	})
 }

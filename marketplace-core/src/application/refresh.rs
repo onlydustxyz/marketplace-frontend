@@ -35,8 +35,8 @@ impl<P: Projection> Refresh<P> {
 
 		let events = self.event_store.list()?;
 
-		for event in events.iter() {
-			self.projector.on_event(event).await;
+		for event in events.into_iter() {
+			self.projector.on_event(&event.into()).await;
 		}
 
 		Ok(())
