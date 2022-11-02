@@ -68,18 +68,12 @@ impl Usecase for RefuseApplication {
 		let events = contribution.refuse_application(contributor_account_address)?;
 		let storable_events: Vec<StorableEvent> = events
 			.iter()
-			.map(|event| {
-				if let Event::Contribution(contribution_event) = event {
-					StorableEvent {
-						deduplication_id: self.uuid_generator.new_uuid().to_string(),
-						event: contribution_event.clone().into(),
-						timestamp: Utc::now().naive_utc(),
-						origin: EventOrigin::BACKEND,
-						metadata: Default::default(),
-					}
-				} else {
-					panic!("Contribution event expected");
-				}
+			.map(|event| StorableEvent {
+				deduplication_id: self.uuid_generator.new_uuid().to_string(),
+				event: event.clone().into(),
+				timestamp: Utc::now().naive_utc(),
+				origin: EventOrigin::BACKEND,
+				metadata: Default::default(),
 			})
 			.collect();
 		self.event_publisher
@@ -91,7 +85,7 @@ impl Usecase for RefuseApplication {
 		// TODO: the usecase shouldn't know about the projectors, it should just push the events to
 		// a bus
 		for event in &events {
-			self.application_projector.on_event(event).await;
+			self.application_projector.on_event(&Event::Contribution(event.clone())).await;
 		}
 
 		Ok(())
