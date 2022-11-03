@@ -1991,6 +1991,7 @@ dependencies = [
  "mockall",
  "octocrab",
  "okapi",
+ "reqwest",
  "rocket",
  "rocket_okapi",
  "rstest",
