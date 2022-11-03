@@ -9,8 +9,7 @@ async fn notify_event_listener(listener: Arc<dyn EventListener>, event: Event) -
 	Ok(())
 }
 
-pub fn spawn<EL: EventListener + 'static>(bus: ConsumableBus, listener: EL) -> JoinHandle<()> {
-	let listener = Arc::new(listener);
+pub fn spawn(bus: ConsumableBus, listener: Arc<dyn EventListener>) -> JoinHandle<()> {
 	tokio::spawn(async move {
 		bus.subscribe(|event: Event| notify_event_listener(listener.clone(), event))
 			.await
