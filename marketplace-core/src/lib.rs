@@ -3,12 +3,14 @@ extern crate dotenv;
 pub mod application;
 pub mod dto;
 
+pub mod event_listeners;
+
 mod routes;
 
 use crate::application::*;
 use anyhow::Result;
 use dotenv::dotenv;
-use log::{debug, info};
+use log::info;
 use marketplace_domain::*;
 use marketplace_infrastructure::{
 	amqp::Bus,
@@ -180,21 +182,4 @@ fn inject_app(
 		.manage(database.clone() as Arc<dyn ProjectMemberProjectionRepository>)
 		.manage(database.clone() as Arc<dyn LeadContributorProjectionRepository>)
 		.manage(database as Arc<dyn ProjectProjectionRepository>)
-}
-
-pub async fn event_listeners_main() -> Result<()> {
-	use marketplace_infrastructure::event_bus;
-	let event_consumer = event_bus::consumer().await?;
-
-	event_consumer
-		.subscribe(|event: Event| async move {
-			if let Ok(event) = serde_json::to_string_pretty(&event) {
-				debug!("[events] 📨 Received event: {}", &event);
-			}
-
-			Ok(())
-		})
-		.await?;
-
-	Ok(())
 }

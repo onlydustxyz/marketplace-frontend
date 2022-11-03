@@ -7,5 +7,5 @@ async fn main() -> Result<()> {
 	dotenv().ok();
 
 	let _tracer = Tracer::init("event-queue-worker")?;
-	marketplace_core::event_listeners_main().await
+	marketplace_core::event_listeners::main().await
 }
