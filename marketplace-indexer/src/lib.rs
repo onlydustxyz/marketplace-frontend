@@ -10,8 +10,7 @@ use crate::{
 use anyhow::Result;
 use dotenv::dotenv;
 use log::info;
-use marketplace_domain::*;
-use marketplace_infrastructure::{amqp::Bus, database, event_webhook::EventWebHook, github};
+use marketplace_infrastructure::{amqp::Bus, database, github};
 use std::sync::Arc;
 
 pub async fn main() -> Result<()> {
@@ -47,30 +46,12 @@ fn build_event_observer(
 	database: Arc<database::Client>,
 	event_store_bus: Bus,
 ) -> impl BlockchainObserver {
-	let github = Arc::new(github::Client::new());
-	let reqwest_client = reqwest::Client::new();
-
-	let contribution_projector = GithubContributionProjector::new(database.clone(), github.clone());
-	let application_projector = ApplicationProjector::new(database.clone());
-	let project_projector = GithubProjectProjector::new(github.clone(), database.clone());
-	let project_member_projector = ProjectMemberProjector::new(database.clone());
-	let contributor_projector = ContributorWithGithubDataProjector::new(github, database.clone());
-	let lead_contributors_projector = LeadContributorProjector::new(database.clone());
 	let indexer_service = HerokuClient::new().expect("Could not create indexer service");
 
 	BlockchainObserverComposite::new(vec![
 		Arc::new(BlockchainLogger::default()),
 		Arc::new(event_store_bus),
 		Arc::new(EventFilterRepositoryObserver::new(database)),
-		Arc::new(EventListenersObserver::new(vec![
-			Box::new(contribution_projector),
-			Box::new(application_projector),
-			Box::new(project_projector),
-			Box::new(contributor_projector),
-			Box::new(project_member_projector),
-			Box::new(lead_contributors_projector),
-			Box::new(EventWebHook::new(reqwest_client)),
-		])),
 		Arc::new(IndexerObserver::new(Arc::new(indexer_service))),
 	])
 }

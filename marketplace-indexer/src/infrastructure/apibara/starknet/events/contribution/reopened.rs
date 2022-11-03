@@ -22,12 +22,10 @@ impl EventTranslator for Reopened {
 
 #[cfg(test)]
 mod test {
-	use std::str::FromStr;
-
-	use crate::HexPrefixedString;
-
 	use super::*;
+	use marketplace_domain::HexPrefixedString;
 	use rstest::*;
+	use std::str::FromStr;
 
 	#[fixture]
 	fn apibara_event_data() -> Topics {

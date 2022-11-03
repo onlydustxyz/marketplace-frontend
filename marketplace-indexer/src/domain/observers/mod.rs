@@ -15,9 +15,6 @@ use serde::{Deserialize, Serialize};
 mod event_filter_repository;
 pub use event_filter_repository::EventFilterRepositoryObserver;
 
-mod projectors;
-pub use projectors::EventListenersObserver;
-
 mod indexer;
 pub use indexer::IndexerObserver;
 
