@@ -124,26 +124,21 @@ fn inject_app(
 		.manage(ApplyToContribution::new_usecase_boxed(
 			contribution_repository.clone(),
 			event_bus.clone(),
-			application_projector.clone(),
-			contributor_projector.clone(),
 			uuid_generator.clone(),
 		))
 		.manage(RefuseApplication::new_usecase_boxed(
 			contribution_repository,
 			event_bus.clone(),
-			application_projector.clone(),
 			uuid_generator.clone(),
 		))
 		.manage(AssociateGithubAccount::new_usecase_boxed(
 			event_bus.clone(),
 			starknet_account_verifier,
 			github_client,
-			contributor_projector.clone(),
 			uuid_generator.clone(),
 		))
 		.manage(RegisterDiscordHandle::new_usecase_boxed(
 			event_bus,
-			contributor_projector.clone(),
 			uuid_generator,
 		))
 		.manage(RefreshContributions::new(

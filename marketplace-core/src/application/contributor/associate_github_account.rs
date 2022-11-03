@@ -22,7 +22,6 @@ pub struct AssociateGithubAccount<S: Clone + Send + Sync> {
 	event_publisher: Arc<dyn Publisher<StorableEvent>>,
 	account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 	github_client: Arc<dyn GithubClient>,
-	contributor_projector: Arc<ContributorWithGithubDataProjector>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 }
 
@@ -31,14 +30,12 @@ impl<S: Clone + Send + Sync> AssociateGithubAccount<S> {
 		event_publisher: Arc<dyn Publisher<StorableEvent>>,
 		account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 		github_client: Arc<dyn GithubClient>,
-		contributor_projector: Arc<ContributorWithGithubDataProjector>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Self {
 		Self {
 			event_publisher,
 			account_verifier,
 			github_client,
-			contributor_projector,
 			uuid_generator,
 		}
 	}
@@ -49,14 +46,12 @@ impl<S: Clone + Send + Sync + 'static> AssociateGithubAccount<S> {
 		event_publisher: Arc<dyn Publisher<StorableEvent>>,
 		account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 		github_client: Arc<dyn GithubClient>,
-		contributor_projector: Arc<ContributorWithGithubDataProjector>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Box<dyn Usecase<S>> {
 		Box::new(Self::new(
 			event_publisher,
 			account_verifier,
 			github_client,
-			contributor_projector,
 			uuid_generator,
 		))
 	}
@@ -94,17 +89,14 @@ impl<S: Clone + Send + Sync> Usecase<S> for AssociateGithubAccount<S> {
 				}
 			})
 			.collect();
+
 		self.event_publisher
 			.publish_many(
 				Destination::Queue(EVENT_STORE_QUEUE.into()),
 				&storable_events,
 			)
 			.await?;
-		// TODO: the usecase shouldn't know about the projectors, it should just push the events to
-		// a bus
-		for event in &events {
-			self.contributor_projector.on_event(event).await;
-		}
+
 		Ok(())
 	}
 }

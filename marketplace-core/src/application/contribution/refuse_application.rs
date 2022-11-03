@@ -21,7 +21,6 @@ pub trait Usecase: Send + Sync {
 pub struct RefuseApplication {
 	contribution_repository: AggregateRootRepository<Contribution>,
 	event_publisher: Arc<dyn Publisher<StorableEvent>>,
-	application_projector: Arc<ApplicationProjector>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 }
 
@@ -29,13 +28,11 @@ impl RefuseApplication {
 	pub fn new(
 		contribution_repository: AggregateRootRepository<Contribution>,
 		event_publisher: Arc<dyn Publisher<StorableEvent>>,
-		application_projector: Arc<ApplicationProjector>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Self {
 		Self {
 			contribution_repository,
 			event_publisher,
-			application_projector,
 			uuid_generator,
 		}
 	}
@@ -45,13 +42,11 @@ impl RefuseApplication {
 	pub fn new_usecase_boxed(
 		contribution_repository: AggregateRootRepository<Contribution>,
 		event_publisher: Arc<dyn Publisher<StorableEvent>>,
-		application_projector: Arc<ApplicationProjector>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Box<dyn Usecase> {
 		Box::new(Self::new(
 			contribution_repository,
 			event_publisher,
-			application_projector,
 			uuid_generator,
 		))
 	}
@@ -76,17 +71,13 @@ impl Usecase for RefuseApplication {
 				metadata: Default::default(),
 			})
 			.collect();
+
 		self.event_publisher
 			.publish_many(
 				Destination::Queue(EVENT_STORE_QUEUE.into()),
 				&storable_events,
 			)
 			.await?;
-		// TODO: the usecase shouldn't know about the projectors, it should just push the events to
-		// a bus
-		for event in &events {
-			self.application_projector.on_event(&Event::Contribution(event.clone())).await;
-		}
 
 		Ok(())
 	}
