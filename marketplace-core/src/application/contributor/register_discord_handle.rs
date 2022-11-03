@@ -19,33 +19,25 @@ pub trait Usecase: Send + Sync {
 
 pub struct RegisterDiscordHandle {
 	event_publisher: Arc<dyn Publisher<StorableEvent>>,
-	contributor_projector: Arc<ContributorWithGithubDataProjector>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 }
 
 impl RegisterDiscordHandle {
 	pub fn new(
 		event_publisher: Arc<dyn Publisher<StorableEvent>>,
-		contributor_projector: Arc<ContributorWithGithubDataProjector>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Self {
 		Self {
 			event_publisher,
-			contributor_projector,
 			uuid_generator,
 		}
 	}
 
 	pub fn new_usecase_boxed(
 		event_publisher: Arc<dyn Publisher<StorableEvent>>,
-		contributor_projector: Arc<ContributorWithGithubDataProjector>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Box<dyn Usecase> {
-		Box::new(Self::new(
-			event_publisher,
-			contributor_projector,
-			uuid_generator,
-		))
+		Box::new(Self::new(event_publisher, uuid_generator))
 	}
 }
 
@@ -83,11 +75,7 @@ impl Usecase for RegisterDiscordHandle {
 				&storable_events,
 			)
 			.await?;
-		// TODO: the usecase shouldn't know about the projectors, it should just push the events to
-		// a bus
-		for event in &events {
-			self.contributor_projector.on_event(event).await;
-		}
+
 		Ok(())
 	}
 }
