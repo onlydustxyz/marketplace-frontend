@@ -7,12 +7,13 @@ use crate::e2e_tests::database::get_events_count;
 
 async fn wait_for_events(expected_events_count: i64) {
 	println!("WAITING for {expected_events_count} events");
-	let mut timer = tokio::time::interval(Duration::from_secs(15));
+	let mut timer = tokio::time::interval(Duration::from_secs(3));
 
-	for _ in 0..5 {
+	for _ in 0..15 {
 		timer.tick().await;
 
 		if get_events_count() == expected_events_count {
+			timer.tick().await; // waiting once more to allow projectors to react
 			return;
 		}
 	}

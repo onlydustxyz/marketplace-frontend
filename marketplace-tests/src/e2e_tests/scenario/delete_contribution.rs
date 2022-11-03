@@ -45,6 +45,7 @@ async fn delete_contribution(
 
 	let contributor_account_address = format!("{:#066x}", contributor_account.address());
 	contributions::apply(&contribution.id, &contributor_account_address).await;
+	wait_for_events(events_count + 4).await;
 	let applications = applications::list_for_contributor(&contributor_account_address).await;
 	assert!(
 		applications.contains(&Application {
