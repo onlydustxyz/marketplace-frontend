@@ -13,9 +13,9 @@ pub use value_objects::*;
 mod observers;
 use observers::Observer;
 pub use observers::{
-	ConfirmedObserver, EventFilterRepositoryObserver, EventListenersObserver, IndexerObserver,
-	Logger as BlockchainLogger, MockObserver as MockBlockchainObserver, ObservedEvent,
-	Observer as BlockchainObserver, ObserverComposite as BlockchainObserverComposite,
+	ConfirmedObserver, EventFilterRepositoryObserver, IndexerObserver, Logger as BlockchainLogger,
+	MockObserver as MockBlockchainObserver, ObservedEvent, Observer as BlockchainObserver,
+	ObserverComposite as BlockchainObserverComposite,
 };
 
 #[cfg(test)]

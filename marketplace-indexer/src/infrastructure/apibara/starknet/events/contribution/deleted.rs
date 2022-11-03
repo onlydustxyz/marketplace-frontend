@@ -28,7 +28,7 @@ impl EventTranslator for Deleted {
 #[cfg(test)]
 mod test {
 	use super::*;
-	use crate::HexPrefixedString;
+	use marketplace_domain::HexPrefixedString;
 	use rstest::*;
 	use std::str::FromStr;
 

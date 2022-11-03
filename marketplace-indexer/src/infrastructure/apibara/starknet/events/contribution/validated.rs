@@ -26,11 +26,10 @@ impl EventTranslator for Validated {
 
 #[cfg(test)]
 mod test {
-	use crate::HexPrefixedString;
-	use std::str::FromStr;
-
 	use super::*;
+	use marketplace_domain::HexPrefixedString;
 	use rstest::*;
+	use std::str::FromStr;
 
 	#[fixture]
 	fn apibara_event_data() -> Topics {

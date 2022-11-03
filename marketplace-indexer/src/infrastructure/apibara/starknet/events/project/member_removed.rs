@@ -29,9 +29,8 @@ impl EventTranslator for MemberRemoved {
 #[cfg(test)]
 mod test {
 	use super::*;
+	use marketplace_domain::HexPrefixedString;
 	use rstest::*;
-
-	use crate::HexPrefixedString;
 	use std::str::FromStr;
 
 	#[fixture]
