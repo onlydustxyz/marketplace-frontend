@@ -44,9 +44,7 @@ async fn store(store: Arc<dyn EventStore>, event: Event) -> Result<Event> {
 }
 
 async fn publish(event: Event, publisher: Arc<dyn Publisher<DomainEvent>>) -> Result<()> {
-	publisher
-		.publish(Destination::exchange(EXCHANGE_NAME, ""), &event.event)
-		.await?;
+	publisher.publish(Destination::exchange(EXCHANGE_NAME), &event.event).await?;
 	Ok(())
 }
 
