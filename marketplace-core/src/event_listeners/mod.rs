@@ -1,5 +1,5 @@
 use anyhow::Result;
-use futures::future::join_all;
+use futures::future::try_join_all;
 use marketplace_domain::{
 	ApplicationProjector, ContributorWithGithubDataProjector, EventListener,
 	GithubContributionProjector, GithubProjectProjector, LeadContributorProjector,
@@ -19,10 +19,7 @@ mod logger;
 mod projector;
 
 pub async fn main() -> Result<()> {
-	join_all(spawn_listeners().await?)
-		.await
-		.into_iter()
-		.collect::<Result<Vec<()>, _>>()?;
+	try_join_all(spawn_listeners().await?).await?;
 
 	Ok(())
 }
