@@ -8,7 +8,7 @@ impl<M: Message + Send + Sync> Publisher<M> for Bus {
 	async fn publish(&self, destination: Destination, message: &M) -> Result<(), PublisherError> {
 		let (exchange_name, routing_key) = match destination {
 			Destination::Queue(name) => (String::new(), name),
-			Destination::Exchange { name, topic } => (name, topic),
+			Destination::Exchange(name) => (name, String::new()),
 		};
 
 		let confirmation = self
