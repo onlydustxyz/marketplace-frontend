@@ -1,6 +1,8 @@
 use lapin::{
-	message::Delivery, options::QueueDeclareOptions, publisher_confirm::Confirmation, Channel,
-	Connection, Consumer,
+	message::Delivery,
+	options::{ExchangeDeclareOptions, QueueDeclareOptions},
+	publisher_confirm::Confirmation,
+	Channel, Connection, Consumer,
 };
 use log::error;
 use thiserror::Error;
@@ -92,7 +94,10 @@ impl ConsumableBus {
 			.exchange_declare(
 				exchange_name,
 				lapin::ExchangeKind::Fanout,
-				Default::default(),
+				ExchangeDeclareOptions {
+					durable: true,
+					..Default::default()
+				},
 				Default::default(),
 			)
 			.await?;
