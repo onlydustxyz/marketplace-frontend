@@ -1,1 +1,3 @@
-[]
+- role_name: project_lead
+  role_set:
+    - public
