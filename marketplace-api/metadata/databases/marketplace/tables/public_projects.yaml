@@ -1,0 +1,14 @@
+table:
+  name: projects
+  schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - description
+        - id
+        - logo_url
+        - name
+        - owner
+        - url
+      filter: {}

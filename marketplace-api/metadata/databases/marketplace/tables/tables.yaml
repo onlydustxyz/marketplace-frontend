@@ -1,0 +1,6 @@
+- "!include public_contributions.yaml"
+- "!include public_contributors.yaml"
+- "!include public_lead_contributors.yaml"
+- "!include public_pending_applications.yaml"
+- "!include public_project_members.yaml"
+- "!include public_projects.yaml"
