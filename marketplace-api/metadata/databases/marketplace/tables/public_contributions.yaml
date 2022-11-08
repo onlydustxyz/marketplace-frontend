@@ -1,9 +1,23 @@
 table:
   name: contributions
   schema: public
-select_permissions:
-  - role: public
+object_relationships:
+  - name: project
+    using:
+      manual_configuration:
+        column_mapping:
+          project_id: id
+        insertion_order: null
+        remote_table:
+          name: projects
+          schema: public
+insert_permissions:
+  - role: project_lead
     permission:
+      check:
+        project:
+          owner:
+            _eq: X-Hasura-User-Id
       columns:
         - closed
         - gate
@@ -20,5 +34,23 @@ select_permissions:
         - technology
         - title
         - type
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - id
+        - project_id
+        - issue_number
+        - status
+        - gate
+        - title
+        - description
+        - external_link
+        - difficulty
+        - technology
+        - duration
+        - context
+        - type
+        - contributor_account_address
+        - closed
       filter: {}
-      limit: 50

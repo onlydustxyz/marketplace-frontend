@@ -1,6 +1,16 @@
 table:
   name: projects
   schema: public
+remote_relationships:
+  - definition:
+      hasura_fields:
+        - name
+      remote_field:
+        repository:
+          arguments:
+            name: $name
+      remote_schema: Github
+    name: repository
 select_permissions:
   - role: public
     permission:
