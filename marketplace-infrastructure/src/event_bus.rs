@@ -10,7 +10,9 @@ pub async fn consumer() -> Result<ConsumableBus, BusError> {
 		.with_queue(
 			"",
 			QueueDeclareOptions {
-				exclusive: true, // only one consumer on this queue
+				exclusive: true,    // only one consumer on this queue
+				durable: true,      // persist messages
+				auto_delete: false, // keep the queue during consumer restart
 				..Default::default()
 			},
 		)
