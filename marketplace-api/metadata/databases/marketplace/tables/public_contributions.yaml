@@ -1,0 +1,24 @@
+table:
+  name: contributions
+  schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - closed
+        - gate
+        - context
+        - contributor_account_address
+        - description
+        - difficulty
+        - duration
+        - external_link
+        - id
+        - issue_number
+        - project_id
+        - status
+        - technology
+        - title
+        - type
+      filter: {}
+      limit: 50

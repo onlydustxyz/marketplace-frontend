@@ -1,0 +1,10 @@
+- name: marketplace
+  kind: postgres
+  configuration:
+    connection_info:
+      database_url: postgres://Local-Nicolas:pae7ce8a71e664726114c0e27027d755f1ddbafff6d7d60d730db2f168f96a0e1@ec2-46-137-185-183.eu-west-1.compute.amazonaws.com:5432/d3vi5ppjd10voq
+      isolation_level: read-committed
+      use_prepared_statements: false
+  customization:
+    naming_convention: hasura-default
+  tables: "!include marketplace/tables/tables.yaml"

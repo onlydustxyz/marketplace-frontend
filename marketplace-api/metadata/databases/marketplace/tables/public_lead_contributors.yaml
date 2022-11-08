@@ -1,0 +1,10 @@
+table:
+  name: lead_contributors
+  schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - account
+        - project_id
+      filter: {}

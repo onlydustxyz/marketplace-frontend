@@ -1,0 +1,12 @@
+table:
+  name: contributors
+  schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - account
+        - discord_handle
+        - github_identifier
+        - github_username
+      filter: {}

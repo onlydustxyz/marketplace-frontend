@@ -1,0 +1,7 @@
+{
+  "name": "onlydust-marketplace-hasura",
+  "version": "1.0.0",
+  "dependencies": {
+    "hasura-cli": "^2.14.0"
+  }
+}

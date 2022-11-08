@@ -1,0 +1,19 @@
+- name: Starwars
+  definition:
+    url: https://swapi-graphql.netlify.app/.netlify/functions/index
+    timeout_seconds: 60
+    customization:
+      root_fields_namespace: starwars
+      type_names:
+        mapping: {}
+        prefix: starwars
+- name: github
+  definition:
+    url: https://api.github.com/graphql
+    timeout_seconds: 60
+    customization:
+      root_fields_namespace: github
+    headers:
+      - name: Authorization
+        value_from_env: GITHUB_API_TOKEN
+  comment: ""
