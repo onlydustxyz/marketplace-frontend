@@ -30,8 +30,8 @@ uuid = {version = "0.8.2", default_features = false, features = [
 octocrab = "0.16.0"
 
 # Http client
+reqwest = {version = "0.11", default-features = false}
 url = "2.2.2"
-reqwest = { version = "0.11", default-features = false }
 
 # Http Server
 http-api-problem = {version = "0.53.0", features = [
@@ -39,6 +39,7 @@ http-api-problem = {version = "0.53.0", features = [
   "rocket",
   "rocket-okapi",
 ]}
+juniper = {version = "0.15.10"}
 okapi = {version = "0.7.0-rc.1"}
 rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 rocket_okapi = {version = "0.8.0-rc.2", features = ["swagger", "uuid"]}
