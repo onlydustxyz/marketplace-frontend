@@ -71,6 +71,17 @@ diesel::table! {
 }
 
 diesel::table! {
+    payments (id) {
+        id -> Uuid,
+        amount -> Numeric,
+        currency_code -> Text,
+        recipient_id -> Uuid,
+        reason -> Jsonb,
+        receipt -> Nullable<Jsonb>,
+    }
+}
+
+diesel::table! {
     payout_settings (user_id) {
         user_id -> Uuid,
         eth_wallet_address -> Nullable<Text>,
@@ -111,6 +122,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     events,
     indexers,
     lead_contributors,
+    payments,
     payout_settings,
     pending_applications,
     project_members,
