@@ -62,4 +62,4 @@ pub use projectors::{
 };
 
 mod payment;
-pub use payment::Id as PaymentId;
+pub use payment::{Id as PaymentId, Receipt as PaymentReceipt};
