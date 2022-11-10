@@ -30,17 +30,20 @@ async fn spawn_listeners() -> Result<Vec<JoinHandle<()>>> {
 	let reqwest_client = reqwest::Client::new();
 
 	let handles = [
-		logger::spawn(event_bus::consumer().await?),
-		ProjectMemberProjector::new(database.clone()).spawn(event_bus::consumer().await?),
+		logger::spawn(event_bus::consumer("logger").await?),
+		ProjectMemberProjector::new(database.clone())
+			.spawn(event_bus::consumer("project-member-projector").await?),
 		GithubContributionProjector::new(database.clone(), github.clone())
-			.spawn(event_bus::consumer().await?),
-		ApplicationProjector::new(database.clone()).spawn(event_bus::consumer().await?),
+			.spawn(event_bus::consumer("github-contribution-projector").await?),
+		ApplicationProjector::new(database.clone())
+			.spawn(event_bus::consumer("application-projector").await?),
 		GithubProjectProjector::new(github.clone(), database.clone())
-			.spawn(event_bus::consumer().await?),
+			.spawn(event_bus::consumer("github-project-projector").await?),
 		ContributorWithGithubDataProjector::new(github, database.clone())
-			.spawn(event_bus::consumer().await?),
-		LeadContributorProjector::new(database.clone()).spawn(event_bus::consumer().await?),
-		EventWebHook::new(reqwest_client).spawn(event_bus::consumer().await?),
+			.spawn(event_bus::consumer("github-contributor-projector").await?),
+		LeadContributorProjector::new(database.clone())
+			.spawn(event_bus::consumer("project-lead-projector").await?),
+		EventWebHook::new(reqwest_client).spawn(event_bus::consumer("event-webhooks").await?),
 	];
 
 	Ok(handles.into())
