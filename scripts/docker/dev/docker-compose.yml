@@ -76,7 +76,7 @@ services:
       - 15672:15672
 
   pg_hasura_metadata:
-    image: postgres:12
+    image: postgres:14.3-alpine
     restart: always
     volumes:
       - db_hasura_metadata:/var/lib/postgresql/data
