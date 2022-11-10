@@ -1971,6 +1971,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "juniper_rocket"
+version = "0.8.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a431e6f03bc31bd74498a837e87ddf635deef3c1a2026e59680dec2552c84c28"
+dependencies = [
+ "futures 0.3.24",
+ "juniper",
+ "rocket",
+ "serde_json",
+]
+
+[[package]]
 name = "keccak"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2089,6 +2101,7 @@ dependencies = [
  "http-api-problem",
  "itertools",
  "juniper",
+ "juniper_rocket",
  "lazy_static",
  "log",
  "mapinto",

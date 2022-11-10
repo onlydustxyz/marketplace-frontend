@@ -5,11 +5,13 @@ pub mod dto;
 
 pub mod event_listeners;
 
+mod graphql;
 mod routes;
 
-use crate::application::*;
+use crate::{application::*, graphql::Query, routes::graphql::Schema};
 use anyhow::Result;
 use dotenv::dotenv;
+use juniper::{EmptyMutation, EmptySubscription};
 use log::info;
 use marketplace_domain::*;
 use marketplace_infrastructure::{
@@ -40,6 +42,7 @@ pub async fn main() -> Result<()> {
 	let uuid_generator = Arc::new(RandomUuidGenerator);
 	let contribution_repository: AggregateRootRepository<Contribution> =
 		AggregateRootRepository::new(database.clone());
+	let graphql_schema = Schema::new(Query, EmptyMutation::new(), EmptySubscription::new());
 
 	let rocket_handler = inject_app(
 		rocket::build(),
@@ -52,6 +55,7 @@ pub async fn main() -> Result<()> {
 	)
 	.manage(database.clone())
 	.manage(github_client)
+	.manage(graphql_schema)
 	.attach(routes::cors::Cors)
 	.mount(
 		"/",
@@ -76,7 +80,15 @@ pub async fn main() -> Result<()> {
 			routes::contributors::refresh_contributors,
 			routes::contributors::get_contributor_by_account,
 			routes::contributors::associate_github_account,
-			routes::contributors::register_discord_handle
+			routes::contributors::register_discord_handle,
+		],
+	)
+	.mount(
+		"/",
+		routes![
+			routes::graphql::graphiql,
+			routes::graphql::get_graphql_handler,
+			routes::graphql::post_graphql_handler
 		],
 	)
 	.mount("/swagger", make_swagger_ui(&routes::get_docs()))

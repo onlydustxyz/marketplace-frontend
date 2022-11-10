@@ -3,6 +3,7 @@ mod contributions;
 pub mod contributors;
 pub mod cors;
 mod dto;
+pub mod graphql;
 pub mod health;
 mod projects;
 
