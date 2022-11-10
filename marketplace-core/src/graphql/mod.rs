@@ -1,10 +1,13 @@
 mod query;
 use query::Query;
 
-use juniper::{EmptyMutation, EmptySubscription, RootNode};
+mod mutation;
+use mutation::Mutation;
 
-pub type Schema = RootNode<'static, Query, EmptyMutation<()>, EmptySubscription<()>>;
+use juniper::{EmptySubscription, RootNode};
+
+pub type Schema = RootNode<'static, Query, Mutation, EmptySubscription<()>>;
 
 pub fn create_schema() -> Schema {
-	Schema::new(Query, EmptyMutation::new(), EmptySubscription::new())
+	Schema::new(Query, Mutation, EmptySubscription::new())
 }
