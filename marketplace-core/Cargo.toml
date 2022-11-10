@@ -40,6 +40,7 @@ http-api-problem = {version = "0.53.0", features = [
   "rocket-okapi",
 ]}
 juniper = {version = "0.15.10"}
+juniper_rocket = {version = "0.8.2"}
 okapi = {version = "0.7.0-rc.1"}
 rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 rocket_okapi = {version = "0.8.0-rc.2", features = ["swagger", "uuid"]}
