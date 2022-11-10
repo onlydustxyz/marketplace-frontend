@@ -101,9 +101,7 @@ services:
       HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: /srv/console-assets
       ## uncomment next line to set an admin secret
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
-      HASURA_GITHUB_AUTH_HEADER: ${HASURA_GITHUB_AUTH_HEADER}
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: public
-      HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: true
 
 volumes:
   db_hasura_metadata:
