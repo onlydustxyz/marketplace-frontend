@@ -5,7 +5,7 @@ You can find some documentation [on Notion](https://www.notion.so/onlydust/Hasur
 ## Launch local instance
 
 ```
-doco -f scripts/docker/dev/docker-compose.yml up -d
+docker-compose -f scripts/docker/dev/docker-compose.yml up -d
 ```
 
 Two containers are started:
@@ -30,7 +30,8 @@ curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
 
 ### From console
 
-You can access console at http://localhost:8080/console/api/api-explorer. The default local admin secret is stored in docker en variables (currently: `myadminsecretkey`).
+You can access console at http://localhost:8080/console/api/api-explorer.
+The default local admin secret is stored in docker env variables (currently: `myadminsecretkey`).
 
 When you are done, you can sync the config with your local (be aware that it will erase your un-synced modifications on config files).
 
