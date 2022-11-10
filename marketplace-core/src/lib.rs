@@ -8,10 +8,9 @@ pub mod event_listeners;
 mod graphql;
 mod routes;
 
-use crate::{application::*, graphql::Query, routes::graphql::Schema};
+use crate::application::*;
 use anyhow::Result;
 use dotenv::dotenv;
-use juniper::{EmptyMutation, EmptySubscription};
 use log::info;
 use marketplace_domain::*;
 use marketplace_infrastructure::{
@@ -42,7 +41,7 @@ pub async fn main() -> Result<()> {
 	let uuid_generator = Arc::new(RandomUuidGenerator);
 	let contribution_repository: AggregateRootRepository<Contribution> =
 		AggregateRootRepository::new(database.clone());
-	let graphql_schema = Schema::new(Query, EmptyMutation::new(), EmptySubscription::new());
+	let graphql_schema = graphql::create_schema();
 
 	let rocket_handler = inject_app(
 		rocket::build(),

@@ -1,9 +1,5 @@
-use juniper::{EmptyMutation, EmptySubscription, RootNode};
+use crate::graphql::Schema;
 use rocket::{response::content, State};
-
-use crate::graphql::Query;
-
-pub type Schema = RootNode<'static, Query, EmptyMutation<()>, EmptySubscription<()>>;
 
 #[get("/")]
 pub fn graphiql() -> content::RawHtml<String> {
