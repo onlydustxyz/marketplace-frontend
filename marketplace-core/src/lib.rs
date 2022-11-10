@@ -41,7 +41,9 @@ pub async fn main() -> Result<()> {
 	let uuid_generator = Arc::new(RandomUuidGenerator);
 	let contribution_repository: AggregateRootRepository<Contribution> =
 		AggregateRootRepository::new(database.clone());
+	let event_bus = Arc::new(Bus::default().await?);
 	let graphql_schema = graphql::create_schema();
+	let graphql_context = graphql::Context::new(uuid_generator.clone(), event_bus.clone());
 
 	let rocket_handler = inject_app(
 		rocket::build(),
@@ -50,11 +52,12 @@ pub async fn main() -> Result<()> {
 		contribution_repository,
 		uuid_generator,
 		github_client.clone(),
-		Arc::new(Bus::default().await?),
+		event_bus,
 	)
 	.manage(database.clone())
 	.manage(github_client)
 	.manage(graphql_schema)
+	.manage(graphql_context)
 	.attach(routes::cors::Cors)
 	.mount(
 		"/",
