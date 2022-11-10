@@ -48,15 +48,12 @@ impl GithubProjectProjector {
 impl EventListener for GithubProjectProjector {
 	async fn on_event(&self, event: &Event) {
 		let result = match event {
-			Event::Contribution(contribution_event) => match contribution_event {
-				ContributionEvent::Created {
-					id: _,
-					project_id,
-					issue_number: _,
-					gate: _,
-				} => self.on_contribution_created(*project_id).await,
-				_ => return,
-			},
+			Event::Contribution(ContributionEvent::Created {
+				id: _,
+				project_id,
+				issue_number: _,
+				gate: _,
+			}) => self.on_contribution_created(*project_id).await,
 			_ => return,
 		};
 
