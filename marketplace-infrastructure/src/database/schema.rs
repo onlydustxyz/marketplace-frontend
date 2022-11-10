@@ -71,6 +71,13 @@ diesel::table! {
 }
 
 diesel::table! {
+    payout_settings (user_id) {
+        user_id -> Uuid,
+        eth_wallet_address -> Nullable<Text>,
+    }
+}
+
+diesel::table! {
     pending_applications (contribution_id, contributor_account_address) {
         contribution_id -> Text,
         applied_at -> Timestamp,
@@ -104,6 +111,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     events,
     indexers,
     lead_contributors,
+    payout_settings,
     pending_applications,
     project_members,
     projects,
