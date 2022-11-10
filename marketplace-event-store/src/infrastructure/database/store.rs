@@ -21,6 +21,7 @@ impl NamedAggregate for Event {
 			DomainEvent::Contribution(_) => "CONTRIBUTION",
 			DomainEvent::Project(_) => "PROJECT",
 			DomainEvent::Contributor(_) => "CONTRIBUTOR",
+			DomainEvent::Payment(_) => "PAYMENT",
 		}
 	}
 }
@@ -87,6 +88,7 @@ fn serialize_event(event: &DomainEvent) -> Result<Json> {
 		DomainEvent::Contribution(event) => to_json(event),
 		DomainEvent::Project(event) => to_json(event),
 		DomainEvent::Contributor(event) => to_json(event),
+		DomainEvent::Payment(event) => to_json(event),
 	}
 	.map_err(|e| {
 		error!("Failed to serialize event {event:?}: {e}");

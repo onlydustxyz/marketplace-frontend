@@ -144,7 +144,7 @@ impl EventListener for GithubContributionProjector {
 				| ContributionEvent::Applied { .. }
 				| ContributionEvent::ApplicationRefused { .. } => return,
 			},
-			Event::Project(_) | Event::Contributor(_) => return,
+			_ => return,
 		};
 
 		if let Err(error) = result {
