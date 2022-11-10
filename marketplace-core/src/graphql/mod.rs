@@ -7,4 +7,8 @@ impl Query {
 	pub fn new() -> Self {
 		Self {}
 	}
+
+	pub fn hello(&self) -> &str {
+		"Couscous!"
+	}
 }
