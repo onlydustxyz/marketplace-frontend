@@ -5,7 +5,7 @@
       database_url:
         from_env: HASURA_MARKETPLACE_DATABASE_URL
       isolation_level: read-committed
-      use_prepared_statements: false
+      use_prepared_statements: true
   customization:
     naming_convention: hasura-default
   tables: "!include Marketplace/tables/tables.yaml"
