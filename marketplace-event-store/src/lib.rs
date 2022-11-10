@@ -87,6 +87,9 @@ impl IdentifiableAggregate for Event {
 					..
 				} => contributor_account_address.to_string(),
 			},
+			DomainEvent::Payment(event) => match event {
+				marketplace_domain::PaymentEvent::Processed { id, .. } => id.to_string(),
+			},
 		}
 	}
 }

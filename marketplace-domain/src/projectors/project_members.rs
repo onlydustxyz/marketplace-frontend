@@ -51,7 +51,7 @@ impl EventListener for MemberProjector {
 				ProjectEvent::LeadContributorAdded { .. }
 				| ProjectEvent::LeadContributorRemoved { .. } => return,
 			},
-			Event::Contribution(_) | Event::Contributor(_) => return,
+			_ => return,
 		};
 
 		if let Err(error) = result {

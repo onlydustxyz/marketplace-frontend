@@ -89,7 +89,7 @@ impl EventListener for ApplicationProjector {
 				| ContributionEvent::Validated { .. }
 				| ContributionEvent::GateChanged { .. } => return,
 			},
-			Event::Project(_) | Event::Contributor(_) => return,
+			_ => return,
 		};
 
 		if let Err(error) = result {

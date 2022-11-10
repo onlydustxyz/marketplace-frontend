@@ -84,7 +84,7 @@ impl EventListener for ContributorWithGithubData {
 					discord_handle,
 				} => self.update_discord_handle(contributor_account_address, discord_handle),
 			},
-			Event::Project(_) | Event::Contribution(_) => return,
+			_ => return,
 		};
 
 		if let Err(error) = result {
