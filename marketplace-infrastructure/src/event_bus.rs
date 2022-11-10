@@ -4,11 +4,11 @@ use log::info;
 
 pub const EXCHANGE_NAME: &str = "events";
 
-pub async fn consumer() -> Result<ConsumableBus, BusError> {
+pub async fn consumer(queue_name: &'static str) -> Result<ConsumableBus, BusError> {
 	let bus = Bus::default()
 		.await?
 		.with_queue(
-			"",
+			queue_name,
 			QueueDeclareOptions {
 				exclusive: true,    // only one consumer on this queue
 				durable: true,      // persist messages
@@ -20,6 +20,6 @@ pub async fn consumer() -> Result<ConsumableBus, BusError> {
 		.with_exchange(EXCHANGE_NAME)
 		.await?;
 
-	info!("[events] 🎧 Start listening to events");
+	info!("[{queue_name}] 🎧 Start listening to events");
 	Ok(bus)
 }
