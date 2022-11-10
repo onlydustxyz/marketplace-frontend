@@ -41,7 +41,7 @@ impl Mutation {
 		.into_iter()
 		.map(|event| Event {
 			deduplication_id: context.uuid_generator.new_uuid().to_string(),
-			event: event.clone().into(),
+			event: event.into(),
 			timestamp: Utc::now().naive_utc(),
 			origin: EventOrigin::BACKEND,
 			metadata: Default::default(),
