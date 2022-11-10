@@ -1,14 +1,10 @@
-use juniper::graphql_object;
+mod query;
+use query::Query;
 
-pub struct Query;
+use juniper::{EmptyMutation, EmptySubscription, RootNode};
 
-#[graphql_object]
-impl Query {
-	pub fn new() -> Self {
-		Self {}
-	}
+pub type Schema = RootNode<'static, Query, EmptyMutation<()>, EmptySubscription<()>>;
 
-	pub fn hello(&self) -> &str {
-		"Couscous!"
-	}
+pub fn create_schema() -> Schema {
+	Schema::new(Query, EmptyMutation::new(), EmptySubscription::new())
 }
