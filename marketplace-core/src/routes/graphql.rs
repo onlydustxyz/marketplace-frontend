@@ -15,7 +15,7 @@ pub fn get_graphql_handler(
 	request: juniper_rocket::GraphQLRequest,
 	schema: &State<Schema>,
 ) -> juniper_rocket::GraphQLResponse {
-	request.execute_sync(&*schema, &())
+	request.execute_sync(&**schema, &())
 }
 
 #[post("/graphql", data = "<request>")]
@@ -23,5 +23,5 @@ pub fn post_graphql_handler(
 	request: juniper_rocket::GraphQLRequest,
 	schema: &State<Schema>,
 ) -> juniper_rocket::GraphQLResponse {
-	request.execute_sync(&*schema, &())
+	request.execute_sync(&**schema, &())
 }
