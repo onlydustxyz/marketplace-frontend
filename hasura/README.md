@@ -42,8 +42,8 @@ hasura metadata export
 Be sure to have exported/sourced the needed env variables:
 
 ```
-HASURA_GRAPHQL_ADMIN_SECRET=myadminsecretkey
-HASURA_GRAPHQL_ENDPOINT=http://localhost:8080
+export HASURA_GRAPHQL_ADMIN_SECRET=myadminsecretkey
+export HASURA_GRAPHQL_ENDPOINT=http://localhost:8080
 ```
 
 ### From source files
@@ -57,8 +57,8 @@ hasura metadata apply
 Be sure to have exported/sourced the needed env variables:
 
 ```
-HASURA_GRAPHQL_ADMIN_SECRET=myadminsecretkey
-HASURA_GRAPHQL_ENDPOINT=http://localhost:8080
+export HASURA_GRAPHQL_ADMIN_SECRET=myadminsecretkey
+export HASURA_GRAPHQL_ENDPOINT=http://localhost:8080
 ```
 
 It will create another version of the metadatas in your database.

@@ -1,3 +1,9 @@
+- role_name: member
+  role_set:
+    - public
+- role_name: od_payer
+  role_set:
+    - public
 - role_name: project_lead
   role_set:
     - public
