@@ -1,8 +1,1 @@
-- name: Github
-  definition:
-    url: https://api.github.com/graphql
-    timeout_seconds: 60
-    customization: {}
-    headers:
-      - name: Authorization
-        value_from_env: HASURA_GITHUB_AUTH_HEADER
+[]
