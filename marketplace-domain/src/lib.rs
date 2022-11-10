@@ -60,3 +60,5 @@ pub use projectors::{
 	GithubContributionProjector, GithubProjectProjector, LeadContributorProjector,
 	MemberProjector as ProjectMemberProjector,
 };
+
+mod payment;
