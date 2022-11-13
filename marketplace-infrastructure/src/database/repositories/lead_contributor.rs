@@ -3,11 +3,11 @@ use diesel::prelude::*;
 use itertools::Itertools;
 use log::error;
 use marketplace_domain::{
-	ContributorAccountAddress, LeadContributorProjection, LeadContributorProjectionRepository,
+	LeadContributorProjection, LeadContributorProjectionRepository,
 	LeadContributorProjectionRepositoryError, ProjectId, ProjectionRepository,
 	ProjectionRepositoryError,
 };
-use std::str::FromStr;
+use uuid::Uuid;
 
 use crate::database::{models, schema::lead_contributors::dsl, Client, DatabaseError};
 
@@ -30,7 +30,7 @@ impl LeadContributorProjectionRepository for Client {
 
 		diesel::insert_into(dsl::lead_contributors)
 			.values(&lead_contributor)
-			.on_conflict((dsl::project_id, dsl::account))
+			.on_conflict((dsl::project_id, dsl::contributor_id))
 			.do_nothing()
 			.execute(&*connection)
 			.map_err(|e| {
@@ -44,14 +44,14 @@ impl LeadContributorProjectionRepository for Client {
 	fn delete(
 		&self,
 		project_id: &ProjectId,
-		account: &ContributorAccountAddress,
+		contributor_id: Uuid,
 	) -> Result<(), LeadContributorProjectionRepositoryError> {
 		let connection =
 			self.connection().map_err(LeadContributorProjectionRepositoryError::from)?;
 
 		diesel::delete(dsl::lead_contributors)
 			.filter(dsl::project_id.eq(project_id.to_string()))
-			.filter(dsl::account.eq(account.to_string()))
+			.filter(dsl::contributor_id.eq(contributor_id))
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
 
@@ -78,7 +78,7 @@ impl From<models::LeadContributor> for LeadContributorProjection {
 	fn from(lead_contributor: models::LeadContributor) -> Self {
 		LeadContributorProjection::new(
 			lead_contributor.project_id.parse().unwrap(),
-			ContributorAccountAddress::from_str(lead_contributor.account.as_str()).unwrap(),
+			lead_contributor.contributor_id,
 		)
 	}
 }
@@ -87,7 +87,7 @@ impl From<LeadContributorProjection> for models::LeadContributor {
 	fn from(lead_contributor: LeadContributorProjection) -> Self {
 		Self {
 			project_id: lead_contributor.project_id().to_string(),
-			account: lead_contributor.account().to_string(),
+			contributor_id: *lead_contributor.contributor_id(),
 		}
 	}
 }

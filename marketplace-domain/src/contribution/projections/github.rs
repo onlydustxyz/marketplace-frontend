@@ -1,15 +1,16 @@
 use crate::{
-	contribution::aggregate, ContributionId, ContributionStatus, ContributorAccountAddress,
-	GithubIssueNumber, GithubProjectId, Projection,
+	contribution::aggregate, ContributionId, ContributionStatus, GithubIssueNumber,
+	GithubProjectId, Projection,
 };
 use url::Url;
+use uuid::Uuid;
 
 #[derive(Debug, PartialEq, Eq, Clone, Default)]
 pub struct GithubContribution {
 	pub id: ContributionId,
 	pub project_id: GithubProjectId,
 	pub issue_number: GithubIssueNumber,
-	pub contributor_account_address: Option<ContributorAccountAddress>,
+	pub contributor_id: Option<Uuid>,
 	pub title: Option<String>,
 	pub description: Option<String>,
 	pub status: ContributionStatus,

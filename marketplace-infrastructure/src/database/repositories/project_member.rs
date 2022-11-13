@@ -4,7 +4,7 @@ use diesel::prelude::*;
 use itertools::Itertools;
 use log::error;
 use marketplace_domain::*;
-use std::str::FromStr;
+use uuid::Uuid;
 
 impl ProjectMemberProjectionRepository for Client {
 	fn upsert(
@@ -17,7 +17,7 @@ impl ProjectMemberProjectionRepository for Client {
 
 		diesel::insert_into(dsl::project_members)
 			.values(&member)
-			.on_conflict((dsl::project_id, dsl::contributor_account))
+			.on_conflict((dsl::project_id, dsl::contributor_id))
 			.do_nothing()
 			.execute(&*connection)
 			.map_err(|e| {
@@ -31,13 +31,13 @@ impl ProjectMemberProjectionRepository for Client {
 	fn delete(
 		&self,
 		project_id: &ProjectId,
-		contributor_account_address: &ContributorAccountAddress,
+		contributor_id: Uuid,
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
 		let connection = self.connection().map_err(ProjectMemberProjectionRepositoryError::from)?;
 
 		diesel::delete(dsl::project_members)
 			.filter(dsl::project_id.eq(project_id.to_string()))
-			.filter(dsl::contributor_account.eq(contributor_account_address.to_string()))
+			.filter(dsl::contributor_id.eq(contributor_id))
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
 
@@ -70,17 +70,14 @@ impl From<ProjectMemberProjection> for models::ProjectMember {
 	fn from(member: ProjectMemberProjection) -> Self {
 		Self {
 			project_id: member.project_id().to_string(),
-			contributor_account: member.contributor_account_address().to_string(),
+			contributor_id: *member.contributor_id(),
 		}
 	}
 }
 
 impl From<models::ProjectMember> for ProjectMemberProjection {
 	fn from(member: models::ProjectMember) -> Self {
-		ProjectMemberProjection::new(
-			member.project_id.parse().unwrap(),
-			ContributorAccountAddress::from_str(member.contributor_account.as_str()).unwrap(),
-		)
+		ProjectMemberProjection::new(member.project_id.parse().unwrap(), member.contributor_id)
 	}
 }
 

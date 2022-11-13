@@ -3,7 +3,7 @@ use diesel::prelude::*;
 use itertools::Itertools;
 use log::error;
 use marketplace_domain::*;
-use std::str::FromStr;
+use uuid::Uuid;
 
 impl ContributionProjectionRepository for Client {
 	fn list_all(&self) -> Result<Vec<GithubContribution>, ContributionProjectionRepositoryError> {
@@ -60,7 +60,7 @@ impl ContributionProjectionRepository for Client {
 	fn update_contributor_and_status<'a>(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_account_address: Option<&ContributorAccountAddress>,
+		contributor_id: Option<Uuid>,
 		status: ContributionStatus,
 	) -> Result<(), ContributionProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributionProjectionRepositoryError::from)?;
@@ -69,8 +69,7 @@ impl ContributionProjectionRepository for Client {
 			.filter(dsl::id.eq(contribution_id.to_string()))
 			.set((
 				dsl::status.eq(status.to_string()),
-				dsl::contributor_account_address
-					.eq(contributor_account_address.map(|value| value.to_string())),
+				dsl::contributor_id.eq(contributor_id),
 			))
 			.execute(&*connection)
 			.map_err(DatabaseError::from)?;
@@ -155,9 +154,7 @@ impl From<GithubContribution> for models::Contribution {
 			project_id: contribution.project_id.to_string(),
 			issue_number: contribution.issue_number.to_string(),
 			status: contribution.status.to_string(),
-			contributor_account_address: contribution
-				.contributor_account_address
-				.map(|account_address| account_address.to_string()),
+			contributor_id: contribution.contributor_id,
 			gate: contribution.gate as i32,
 			title: contribution.title,
 			description: contribution.description,
@@ -176,9 +173,7 @@ impl From<models::Contribution> for GithubContribution {
 	fn from(contribution: models::Contribution) -> Self {
 		Self {
 			id: contribution.id.parse().unwrap(),
-			contributor_account_address: contribution
-				.contributor_account_address
-				.map(|account| ContributorAccountAddress::from_str(account.as_str()).unwrap()),
+			contributor_id: contribution.contributor_id,
 			project_id: contribution.project_id.parse().unwrap(),
 			issue_number: contribution.issue_number.parse().unwrap(),
 			status: contribution.status.parse().unwrap_or(ContributionStatus::Open),

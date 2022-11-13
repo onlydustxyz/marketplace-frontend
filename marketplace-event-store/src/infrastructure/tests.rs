@@ -2,14 +2,15 @@ use crate::{domain::EventStore, Event, EventOrigin};
 use chrono::Utc;
 use diesel::{query_dsl::select_dsl::SelectDsl, RunQueryDsl};
 use marketplace_domain::{
-	Contribution, ContributionEvent, ContributionId, ContributorAccountAddress,
-	Event as DomainEvent, EventStore as DomainEventStore, HexPrefixedString,
+	Contribution, ContributionEvent, ContributionId, Event as DomainEvent,
+	EventStore as DomainEventStore, HexPrefixedString,
 };
 use marketplace_infrastructure::database::{schema::events, Client};
 use marketplace_tests::init_pool;
 use rstest::{fixture, rstest};
 use serde_json::{json, Value};
 use std::str::FromStr;
+use uuid::Uuid;
 
 #[fixture]
 #[once]
@@ -23,8 +24,8 @@ fn contribution_id() -> ContributionId {
 }
 
 #[fixture]
-fn contributor_account_address() -> ContributorAccountAddress {
-	HexPrefixedString::from_str("0x456").unwrap().into()
+fn contributor_id() -> Uuid {
+	Uuid::from_str("3d863031-e9bb-42dc-becd-67999675fb8b").unwrap()
 }
 
 #[fixture]
@@ -45,14 +46,11 @@ fn creation_event(contribution_id: ContributionId) -> Event {
 }
 
 #[fixture]
-fn assigned_event(
-	contribution_id: ContributionId,
-	contributor_account_address: ContributorAccountAddress,
-) -> Event {
+fn assigned_event(contribution_id: ContributionId, contributor_id: Uuid) -> Event {
 	Event {
 		event: ContributionEvent::Assigned {
 			id: contribution_id,
-			contributor_account_address,
+			contributor_id,
 		}
 		.into(),
 		timestamp: Utc::now().naive_utc(),

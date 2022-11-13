@@ -11,10 +11,10 @@ version = "0.0.1"
 
 [dependencies]
 # Database
-diesel = { version = "1.4.8", default-features = false, features = [
-	"postgres",
-	"serde_json",
-] }
+diesel = {version = "1.4.8", default-features = false, features = [
+  "postgres",
+  "serde_json",
+]}
 
 # RabbitMQ
 lapin = "2.1.1"
@@ -43,11 +43,17 @@ anyhow = "1.0.57"
 thiserror = "1.0.31"
 
 # Local dependecies
-marketplace-infrastructure = {path = "../marketplace-infrastructure"}
 marketplace-domain = {path = "../marketplace-domain"}
+marketplace-infrastructure = {path = "../marketplace-infrastructure"}
+
+# TO REMOVE
+uuid = {version = "0.8.2", default_features = false, features = [
+  "v4",
+  "serde",
+]}
 
 [dev-dependencies]
 # Unit tests
-async-std = { version = "1.12.0", features = ["attributes"] }
+async-std = {version = "1.12.0", features = ["attributes"]}
+marketplace-tests = {path = "../marketplace-tests"}
 rstest = "0.15.0"
-marketplace-tests = { path = "../marketplace-tests" }

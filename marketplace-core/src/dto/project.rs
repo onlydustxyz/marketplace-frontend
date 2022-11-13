@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use url::Url;
 
 use marketplace_domain as domain;
+use uuid::Uuid;
 
 use super::Contribution;
 
@@ -29,15 +30,15 @@ pub struct Project {
 
 #[derive(Serialize, Deserialize, JsonSchema, Clone)]
 pub struct Member {
-	contributor_account: String,
-	contributor_account_address: String,
+	project_id: String,
+	contributor_id: Uuid,
 }
 
 impl From<domain::ProjectMemberProjection> for Member {
 	fn from(member: domain::ProjectMemberProjection) -> Self {
 		Member {
-			contributor_account: member.contributor_account_address().to_string(),
-			contributor_account_address: member.contributor_account_address().to_string(),
+			project_id: member.project_id().to_string(),
+			contributor_id: *member.contributor_id(),
 		}
 	}
 }

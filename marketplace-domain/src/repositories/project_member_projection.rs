@@ -1,5 +1,6 @@
 use mockall::automock;
 use thiserror::Error;
+use uuid::Uuid;
 
 use crate::{project::MemberProjection, *};
 
@@ -16,10 +17,6 @@ pub enum Error {
 #[automock]
 pub trait Repository: Send + Sync {
 	fn upsert(&self, project_member: ProjectMemberProjection) -> Result<(), Error>;
-	fn delete(
-		&self,
-		project_id: &ProjectId,
-		contributor_account_address: &ContributorAccountAddress,
-	) -> Result<(), Error>;
+	fn delete(&self, project_id: &ProjectId, contributor_id: Uuid) -> Result<(), Error>;
 	fn list_by_project(&self, project_id: &ProjectId) -> Result<Vec<MemberProjection>, Error>;
 }

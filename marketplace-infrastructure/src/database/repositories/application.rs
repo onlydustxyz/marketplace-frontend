@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use crate::database::{
 	models::{self},
 	schema::pending_applications::dsl,
@@ -10,6 +8,7 @@ use itertools::Itertools;
 use log::error;
 use mapinto::ResultMapErrInto;
 use marketplace_domain::*;
+use uuid::Uuid;
 
 impl ApplicationProjectionRepository for Client {
 	fn insert(
@@ -34,15 +33,15 @@ impl ApplicationProjectionRepository for Client {
 	fn delete(
 		&self,
 		contribution_id: &AggregateId,
-		contributor_account_address: &ContributorAccountAddress,
+		contributor_id: Uuid,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
 		diesel::delete(
-			dsl::pending_applications.find((contribution_id.to_string(), contributor_account_address.to_string())))
+			dsl::pending_applications.find((contribution_id.to_string(), contributor_id)))
 		.execute(&*connection)
 		.map_err(|e| {
-			error!("Failed to delete pending application of contributor with account {contributor_account_address} to contribution with id {contribution_id}: {e}");
+			error!("Failed to delete pending application of contributor {contributor_id} to contribution with id {contribution_id}: {e}");
 			DatabaseError::from(e)
 		})?;
 
@@ -72,15 +71,12 @@ impl ApplicationProjectionRepository for Client {
 	fn find(
 		&self,
 		contribution_id: &AggregateId,
-		contributor_account_address: &ContributorAccountAddress,
+		contributor_id: Uuid,
 	) -> Result<Option<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
 		let res = dsl::pending_applications
-			.find((
-				contribution_id.to_string(),
-				contributor_account_address.to_string(),
-			))
+			.find((contribution_id.to_string(), contributor_id))
 			.first::<models::PendingApplication>(&*connection);
 
 		if let Err(diesel::result::Error::NotFound) = res {
@@ -88,7 +84,7 @@ impl ApplicationProjectionRepository for Client {
 		} else {
 			res.map(|a| Some(a.into()))
 				.map_err(|e| {
-					error!("Failed while finding application of contributor with account {contributor_account_address} to contribution with id {contribution_id}: {e}");
+					error!("Failed while finding application of contributor {contributor_id} to contribution with id {contribution_id}: {e}");
 					DatabaseError::from(e)
 				})
 				.map_err_into()
@@ -98,7 +94,7 @@ impl ApplicationProjectionRepository for Client {
 	fn list_by_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_account_address: Option<ContributorAccountAddress>,
+		contributor_id: Option<Uuid>,
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
@@ -106,16 +102,14 @@ impl ApplicationProjectionRepository for Client {
 			.filter(dsl::contribution_id.eq(contribution_id.to_string()))
 			.into_boxed();
 
-		if let Some(contributor_account_address) = &contributor_account_address {
-			query = query.filter(
-				dsl::contributor_account_address.eq(contributor_account_address.to_string()),
-			)
+		if let Some(contributor_id) = contributor_id {
+			query = query.filter(dsl::contributor_id.eq(contributor_id))
 		}
 
 		let applications = query.load::<models::PendingApplication>(&*connection).map_err(|e| {
 			error!(
 				"Failed while listing applications to contribution with id {contribution_id}{}: {e}",
-				match contributor_account_address {
+				match contributor_id {
 					Some(id) => format!(" by contributor with id {id}"),
 					None => "".to_string(),
 				}
@@ -128,22 +122,20 @@ impl ApplicationProjectionRepository for Client {
 
 	fn list_by_contributor(
 		&self,
-		contributor_account_address: Option<ContributorAccountAddress>,
+		contributor_id: Option<Uuid>,
 	) -> Result<Vec<ApplicationProjection>, ApplicationProjectionRepositoryError> {
 		let connection = self.connection().map_err(ApplicationProjectionRepositoryError::from)?;
 
 		let mut query = dsl::pending_applications.into_boxed();
 
-		if let Some(contributor_account_address) = &contributor_account_address {
-			query = query.filter(
-				dsl::contributor_account_address.eq(contributor_account_address.to_string()),
-			)
+		if let Some(contributor_id) = contributor_id {
+			query = query.filter(dsl::contributor_id.eq(contributor_id))
 		}
 
 		let applications = query.load::<models::PendingApplication>(&*connection).map_err(|e| {
 			error!(
 				"Failed while listing applications{}: {e}",
-				match contributor_account_address {
+				match contributor_id {
 					Some(id) => format!(" of contributor with id {id}"),
 					None => "".to_string(),
 				}
@@ -166,7 +158,7 @@ impl From<ApplicationProjection> for models::PendingApplication {
 	fn from(application: marketplace_domain::ApplicationProjection) -> Self {
 		Self {
 			contribution_id: application.contribution_id().to_string(),
-			contributor_account_address: application.contributor_account_address().to_string(),
+			contributor_id: *application.contributor_id(),
 			applied_at: *application.applied_at(),
 		}
 	}
@@ -176,8 +168,7 @@ impl From<models::PendingApplication> for ApplicationProjection {
 	fn from(application: models::PendingApplication) -> Self {
 		Self::new(
 			application.contribution_id.parse().unwrap(),
-			ContributorAccountAddress::from_str(application.contributor_account_address.as_str())
-				.unwrap(),
+			application.contributor_id,
 			application.applied_at,
 		)
 	}

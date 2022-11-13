@@ -16,23 +16,23 @@ starknet = []
 [dependencies]
 # Async
 async-trait = "0.1.56"
-futures = { version = "0.3.21", features = ["alloc"] }
-tokio = { version = "1.18.2", features = ["full"] }
+futures = {version = "0.3.21", features = ["alloc"]}
+tokio = {version = "1.18.2", features = ["full"]}
 tokio-stream = "0.1.9"
 
 # Database
-diesel = { version = "1.4.8", default-features = false, features = [
-	"postgres",
-	"serde_json",
-] }
+diesel = {version = "1.4.8", default-features = false, features = [
+  "postgres",
+  "serde_json",
+]}
 
 # Serde
-serde = { version = "1.0.137", features = ["derive"] }
+serde = {version = "1.0.137", features = ["derive"]}
 serde_json = "1.0.81"
 
 # Web client
-reqwest = { version = "0.11", default-features = false }
-tonic = { version = "0.7.2", features = ["tls", "tls-roots"] }
+reqwest = {version = "0.11", default-features = false}
+tonic = {version = "0.7.2", features = ["tls", "tls-roots"]}
 url = "2.3.0"
 
 # Datetime
@@ -46,8 +46,8 @@ mapinto = "0.2.1"
 thiserror = "1.0.31"
 
 # Starknet
-crypto-bigint = { version = "0.4.8", features = ["serde"] }
-starknet = { git = "https://github.com/xJonathanLEI/starknet-rs" }
+crypto-bigint = {version = "0.4.8", features = ["serde"]}
+starknet = {git = "https://github.com/xJonathanLEI/starknet-rs"}
 
 # Protocol Buffers
 prost = "0.10.4"
@@ -61,18 +61,24 @@ slog-scope = "4.4.0"
 mockall = "0.11.2"
 
 # Local dependecies
-marketplace-domain = { path = "../marketplace-domain" }
-marketplace-infrastructure = { path = "../marketplace-infrastructure" }
-marketplace-event-store = { path = "../marketplace-event-store" }
+marketplace-domain = {path = "../marketplace-domain"}
+marketplace-event-store = {path = "../marketplace-event-store"}
+marketplace-infrastructure = {path = "../marketplace-infrastructure"}
+
+# TO REMOVE
+uuid = {version = "0.8.2", default_features = false, features = [
+  "v4",
+  "serde",
+]}
 
 [dev-dependencies]
 # Unit tests
 assert_matches = "1.5.0"
-async-std = { version = "1.12.0", features = ["attributes"] }
+async-std = {version = "1.12.0", features = ["attributes"]}
 envtestkit = "1.1.2"
+mockito = "0.31.0"
 rstest = "0.15.0"
 testing_logger = "0.1.1"
-mockito = "0.31.0"
 
 [build-dependencies]
 tonic-build = "0.7.2"

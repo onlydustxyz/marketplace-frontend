@@ -1,5 +1,6 @@
 use mockall::automock;
 use thiserror::Error;
+use uuid::Uuid;
 
 use crate::*;
 
@@ -18,24 +19,20 @@ pub enum Error {
 #[automock]
 pub trait Repository: Send + Sync {
 	fn insert(&self, application: ApplicationProjection) -> Result<(), Error>;
-	fn delete(
-		&self,
-		contribution_id: &ContributionId,
-		contributor_account_address: &ContributorAccountAddress,
-	) -> Result<(), Error>;
+	fn delete(&self, contribution_id: &ContributionId, contributor_id: Uuid) -> Result<(), Error>;
 	fn delete_all_for_contribution(&self, contribution_id: &ContributionId) -> Result<(), Error>;
 	fn find(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_account_address: &ContributorAccountAddress,
+		contributor_id: Uuid,
 	) -> Result<Option<ApplicationProjection>, Error>;
 	fn list_by_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_account_address: Option<ContributorAccountAddress>,
+		contributor_id: Option<Uuid>,
 	) -> Result<Vec<ApplicationProjection>, Error>;
 	fn list_by_contributor(
 		&self,
-		contributor_account_address: Option<ContributorAccountAddress>,
+		contributor_id: Option<Uuid>,
 	) -> Result<Vec<ApplicationProjection>, Error>;
 }

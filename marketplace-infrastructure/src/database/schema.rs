@@ -16,8 +16,8 @@ diesel::table! {
         context -> Nullable<Text>,
         #[sql_name = "type"]
         type_ -> Nullable<Text>,
-        contributor_account_address -> Nullable<Text>,
         closed -> Bool,
+        contributor_id -> Nullable<Uuid>,
     }
 }
 
@@ -55,9 +55,9 @@ diesel::table! {
 }
 
 diesel::table! {
-    lead_contributors (project_id, account) {
+    lead_contributors (project_id, contributor_id) {
         project_id -> Text,
-        account -> Text,
+        contributor_id -> Uuid,
     }
 }
 
@@ -80,17 +80,17 @@ diesel::table! {
 }
 
 diesel::table! {
-    pending_applications (contribution_id, contributor_account_address) {
+    pending_applications (contribution_id, contributor_id) {
         contribution_id -> Text,
         applied_at -> Timestamp,
-        contributor_account_address -> Text,
+        contributor_id -> Uuid,
     }
 }
 
 diesel::table! {
-    project_members (project_id, contributor_account) {
+    project_members (project_id, contributor_id) {
         project_id -> Text,
-        contributor_account -> Text,
+        contributor_id -> Uuid,
     }
 }
 

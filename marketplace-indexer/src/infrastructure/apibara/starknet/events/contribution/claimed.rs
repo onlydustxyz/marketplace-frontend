@@ -1,8 +1,7 @@
 use super::{EventTranslator, FromEventError, StarknetTopics, Topics};
-use marketplace_domain::{
-	ContractAddress, ContributionEvent, ContributorAccountAddress, Event, HexPrefixedString,
-};
+use marketplace_domain::{ContractAddress, ContributionEvent, Event, HexPrefixedString};
 use starknet::core::{types::FieldElement, utils::get_selector_from_name};
+use uuid::Uuid;
 
 pub struct Claimed;
 
@@ -17,11 +16,11 @@ impl EventTranslator for Claimed {
 		mut topics: Topics,
 	) -> Result<Event, FromEventError> {
 		let contribution_id: HexPrefixedString = topics.pop_front_as()?;
-		let contributor_account_address: ContributorAccountAddress = topics.pop_front_as()?;
 
 		Ok(Event::Contribution(ContributionEvent::Claimed {
 			id: contribution_id.into(),
-			contributor_account_address,
+			contributor_id: Uuid::default(), /* TODO: remove when removing blockchain
+			                                  * listeners */
 		}))
 	}
 }
@@ -80,7 +79,7 @@ mod test {
 		assert_eq!(
 			Event::Contribution(ContributionEvent::Claimed {
 				id: 12.into(),
-				contributor_account_address: ContributorAccountAddress::from(24)
+				contributor_id: Uuid::default()
 			},),
 			result.unwrap()
 		);
