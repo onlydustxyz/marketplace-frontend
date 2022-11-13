@@ -22,15 +22,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    contributors (account) {
-        account -> Text,
-        github_identifier -> Nullable<Text>,
-        github_username -> Nullable<Text>,
-        discord_handle -> Nullable<Text>,
-    }
-}
-
-diesel::table! {
     event_deduplications (deduplication_id) {
         deduplication_id -> Text,
         event_index -> Int4,
@@ -114,9 +105,17 @@ diesel::table! {
     }
 }
 
+diesel::table! {
+    users (id) {
+        id -> Uuid,
+        github_identifier -> Nullable<Text>,
+        github_username -> Nullable<Text>,
+        discord_handle -> Nullable<Text>,
+    }
+}
+
 diesel::allow_tables_to_appear_in_same_query!(
     contributions,
-    contributors,
     event_deduplications,
     event_filters,
     events,
@@ -127,4 +126,5 @@ diesel::allow_tables_to_appear_in_same_query!(
     pending_applications,
     project_members,
     projects,
+    users,
 );
