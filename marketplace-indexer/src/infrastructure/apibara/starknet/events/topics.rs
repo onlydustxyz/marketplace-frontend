@@ -1,6 +1,6 @@
 use super::{Bytes, FromEventError};
 use anyhow::anyhow;
-use crypto_bigint::{Encoding, Split, U256};
+use crypto_bigint::{Encoding, U256};
 use marketplace_domain::{ContributorAccountAddress, HexPrefixedString};
 use starknet::core::types::FieldElement;
 use std::collections::VecDeque;

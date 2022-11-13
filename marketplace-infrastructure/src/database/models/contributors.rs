@@ -1,28 +1,31 @@
 use crate::database::schema::*;
 use rocket::serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
-#[derive(Queryable, Debug, Serialize, Deserialize)]
+#[derive(Identifiable, Eq, PartialEq, Insertable, Queryable, Debug, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
+#[diesel(primary_key(id))]
+#[table_name = "users"]
 pub struct Contributor {
-	pub account: String,
+	pub id: Uuid,
 	pub github_identifier: Option<String>,
 	pub github_username: Option<String>,
 	pub discord_handle: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Insertable, AsChangeset)]
+#[derive(Identifiable, Debug, Serialize, Deserialize, Insertable, AsChangeset)]
 #[serde(crate = "rocket::serde")]
-#[table_name = "contributors"]
+#[table_name = "users"]
 pub struct NewGithubContributor {
-	pub account: String,
+	pub id: Uuid,
 	pub github_identifier: String,
 	pub github_username: String,
 }
 
-#[derive(Debug, Serialize, Deserialize, Insertable, AsChangeset)]
+#[derive(Identifiable, Debug, Serialize, Deserialize, Insertable, AsChangeset)]
 #[serde(crate = "rocket::serde")]
-#[table_name = "contributors"]
+#[table_name = "users"]
 pub struct NewDiscordContributor {
-	pub account: String,
+	pub id: Uuid,
 	pub discord_handle: String,
 }

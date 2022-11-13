@@ -3,6 +3,7 @@ use async_trait::async_trait;
 use log::error;
 use std::sync::Arc;
 use thiserror::Error;
+use uuid::Uuid;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -30,12 +31,12 @@ impl ContributorWithGithubData {
 
 	async fn add_contributor(
 		&self,
-		contributor_account_address: &ContributorAccountAddress,
+		id: &Uuid,
 		github_identifier: &GithubUserId,
 	) -> Result<(), Error> {
 		if self
 			.contributor_projection_repository
-			.find_by_account_address(contributor_account_address)
+			.find_by_id(id)
 			.ok()
 			.and_then(|contributor| contributor.github_identifier)
 			.is_none()
@@ -46,7 +47,7 @@ impl ContributorWithGithubData {
 				.upsert_github_user_data(ContributorProfile {
 					github_identifier: Some(*github_identifier),
 					github_username: Some(user.name),
-					account: contributor_account_address.clone(),
+					id: *id,
 					..Default::default()
 				})?;
 		}
@@ -56,12 +57,12 @@ impl ContributorWithGithubData {
 
 	fn update_discord_handle(
 		&self,
-		contributor_account_address: &ContributorAccountAddress,
+		id: &Uuid,
 		discord_handle: &ContributorDiscordHandle,
 	) -> Result<(), Error> {
 		self.contributor_projection_repository
 			.upsert_discord_handle(ContributorProfile {
-				account: contributor_account_address.clone(),
+				id: *id,
 				discord_handle: Some(discord_handle.clone()),
 				..Default::default()
 			})?;
@@ -76,13 +77,13 @@ impl EventListener for ContributorWithGithubData {
 		let result = match event {
 			Event::Contributor(contributor_event) => match contributor_event {
 				ContributorEvent::GithubAccountAssociated {
-					contributor_account_address,
+					user_id,
 					github_identifier,
-				} => self.add_contributor(contributor_account_address, github_identifier).await,
+				} => self.add_contributor(user_id, github_identifier).await,
 				ContributorEvent::DiscordHandleRegistered {
-					contributor_account_address,
+					user_id,
 					discord_handle,
-				} => self.update_discord_handle(contributor_account_address, discord_handle),
+				} => self.update_discord_handle(user_id, discord_handle),
 			},
 			_ => return,
 		};
@@ -99,7 +100,7 @@ mod test {
 	use super::*;
 	use mockall::predicate::eq;
 	use rstest::*;
-	use std::sync::Arc;
+	use std::{str::FromStr, sync::Arc};
 
 	#[fixture]
 	fn github_client() -> MockGithubClient {
@@ -112,8 +113,8 @@ mod test {
 	}
 
 	#[fixture]
-	fn contributor_account_address() -> ContributorAccountAddress {
-		"0x4444".parse().unwrap()
+	fn user_id() -> Uuid {
+		Uuid::from_str("3d863031-e9bb-42dc-becd-67999675fb8b").unwrap()
 	}
 
 	#[fixture]
@@ -132,12 +133,9 @@ mod test {
 	}
 
 	#[fixture]
-	fn github_account_associated_event(
-		contributor_account_address: ContributorAccountAddress,
-		github_identifier: GithubUserId,
-	) -> Event {
+	fn github_account_associated_event(user_id: Uuid, github_identifier: GithubUserId) -> Event {
 		Event::Contributor(ContributorEvent::GithubAccountAssociated {
-			contributor_account_address,
+			user_id,
 			github_identifier,
 		})
 	}
@@ -146,13 +144,13 @@ mod test {
 	async fn discord_handle_gets_updated_upon_event(
 		mut contributor_projection_repository: MockContributorProjectionRepository,
 		discord_handle: ContributorDiscordHandle,
-		contributor_account_address: ContributorAccountAddress,
+		user_id: Uuid,
 	) {
 		contributor_projection_repository
 			.expect_upsert_discord_handle()
 			.once()
 			.with(eq(ContributorProfile {
-				account: contributor_account_address.clone(),
+				id: user_id.clone(),
 				discord_handle: Some(discord_handle.clone()),
 				..Default::default()
 			}))
@@ -166,7 +164,7 @@ mod test {
 		projector
 			.on_event(&Event::Contributor(
 				ContributorEvent::DiscordHandleRegistered {
-					contributor_account_address,
+					user_id,
 					discord_handle,
 				},
 			))
@@ -180,11 +178,11 @@ mod test {
 		github_account_associated_event: Event,
 		github_identifier: GithubUserId,
 		github_username: String,
-		contributor_account_address: ContributorAccountAddress,
+		user_id: Uuid,
 	) {
 		contributor_projection_repository
-			.expect_find_by_account_address()
-			.with(eq(contributor_account_address.clone()))
+			.expect_find_by_id()
+			.with(eq(user_id.clone()))
 			.once()
 			.returning(|_| Err(ContributorProjectionRepositoryError::NotFound));
 
@@ -204,7 +202,7 @@ mod test {
 			.expect_upsert_github_user_data()
 			.times(1)
 			.with(eq(ContributorProfile {
-				account: contributor_account_address,
+				id: user_id,
 				github_username: Some(github_username),
 				github_identifier: Some(github_identifier),
 				discord_handle: None,
@@ -227,7 +225,7 @@ mod test {
 		github_account_associated_event: Event,
 	) {
 		contributor_projection_repository
-			.expect_find_by_account_address()
+			.expect_find_by_id()
 			.once()
 			.returning(move |_| {
 				Ok(ContributorProfile {
@@ -254,10 +252,10 @@ mod test {
 		github_account_associated_event: Event,
 		github_identifier: GithubUserId,
 		github_username: String,
-		contributor_account_address: ContributorAccountAddress,
+		user_id: Uuid,
 	) {
 		contributor_projection_repository
-			.expect_find_by_account_address()
+			.expect_find_by_id()
 			.once()
 			.returning(|_| Ok(ContributorProfile::default()));
 
@@ -277,7 +275,7 @@ mod test {
 			.expect_upsert_github_user_data()
 			.times(1)
 			.with(eq(ContributorProfile {
-				account: contributor_account_address,
+				id: user_id,
 				github_username: Some(github_username),
 				github_identifier: Some(github_identifier),
 				discord_handle: None,

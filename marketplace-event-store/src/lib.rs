@@ -79,13 +79,13 @@ impl IdentifiableAggregate for Event {
 			},
 			DomainEvent::Contributor(event) => match event {
 				marketplace_domain::ContributorEvent::GithubAccountAssociated {
-					contributor_account_address,
+					user_id: id,
 					..
 				}
 				| marketplace_domain::ContributorEvent::DiscordHandleRegistered {
-					contributor_account_address,
+					user_id: id,
 					..
-				} => contributor_account_address.to_string(),
+				} => id.to_string(),
 			},
 			DomainEvent::Payment(event) => match event {
 				marketplace_domain::PaymentEvent::Processed { id, .. } => id.to_string(),

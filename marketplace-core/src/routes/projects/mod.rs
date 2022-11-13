@@ -9,9 +9,7 @@ use std::{result::Result, sync::Arc};
 
 use super::{api_key::ApiKey, to_http_api_problem::ToHttpApiProblem};
 
-mod list;
 pub mod refresh;
-pub use list::*;
 
 #[openapi(tag = "Projects")]
 #[post("/projects", format = "application/json", data = "<project>")]

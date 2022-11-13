@@ -1,9 +1,7 @@
-use std::sync::Arc;
-
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use marketplace_domain::{ContributorProjectionRepository, GithubContribution};
+use marketplace_domain::GithubContribution;
 
 #[derive(Deserialize, Serialize, JsonSchema)]
 pub struct ContributionCreation {
@@ -83,23 +81,4 @@ impl From<GithubContribution> for Contribution {
 			project_id: contribution.project_id.to_string(),
 		}
 	}
-}
-
-pub fn build_contribution_dto(
-	contribution: GithubContribution,
-	contributor_projection_repository: &Arc<dyn ContributorProjectionRepository>,
-) -> Option<Contribution> {
-	let contributor = contribution.contributor_account_address.clone().and_then(|id| {
-		match contributor_projection_repository.find_by_account_address(&id) {
-			Ok(c) => Some(c),
-			Err(e) => {
-				error!("Failed to find contributor with account address {id}: {e}");
-				None
-			},
-		}
-	});
-
-	let mut contribution = Contribution::from(contribution);
-	contribution.metadata.github_username = contributor.and_then(|c| c.github_username);
-	Some(contribution)
 }

@@ -1,8 +1,9 @@
-use crate::database::{models, schema::contributors::dsl, Client, DatabaseError};
+use crate::database::{models, schema::users::dsl, Client, DatabaseError};
 use anyhow::anyhow;
-use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
+use diesel::{QueryDsl, RunQueryDsl};
 use log::error;
 use marketplace_domain::*;
+use uuid::Uuid;
 
 impl ContributorProjectionRepository for Client {
 	fn upsert_github_user_data(
@@ -13,9 +14,9 @@ impl ContributorProjectionRepository for Client {
 
 		let contributor = models::NewGithubContributor::from(contributor);
 
-		diesel::insert_into(dsl::contributors)
+		diesel::insert_into(dsl::users)
 			.values(&contributor)
-			.on_conflict(dsl::account)
+			.on_conflict(dsl::id)
 			.do_update()
 			.set(&contributor)
 			.execute(&*connection)
@@ -35,9 +36,9 @@ impl ContributorProjectionRepository for Client {
 
 		let contributor = models::NewDiscordContributor::from(contributor);
 
-		diesel::insert_into(dsl::contributors)
+		diesel::insert_into(dsl::users)
 			.values(&contributor)
-			.on_conflict(dsl::account)
+			.on_conflict(dsl::id)
 			.do_update()
 			.set(&contributor)
 			.execute(&*connection)
@@ -49,16 +50,14 @@ impl ContributorProjectionRepository for Client {
 		Ok(())
 	}
 
-	fn find_by_account_address(
+	fn find_by_id(
 		&self,
-		contributor_account_address: &ContributorAccountAddress,
+		id: &Uuid,
 	) -> Result<ContributorProfile, ContributorProjectionRepositoryError> {
 		let connection = self.connection().map_err(ContributorProjectionRepositoryError::from)?;
 
-		let contributor: models::Contributor = dsl::contributors
-			.filter(dsl::account.eq(contributor_account_address.to_string()))
-			.get_result(&*connection)
-			.map_err(DatabaseError::from)?;
+		let contributor: models::Contributor =
+			dsl::users.find(id).get_result(&*connection).map_err(DatabaseError::from)?;
 
 		Ok(contributor.into())
 	}
@@ -66,7 +65,7 @@ impl ContributorProjectionRepository for Client {
 
 impl ProjectionRepository<ContributorProfile> for Client {
 	fn clear(&self) -> Result<(), ProjectionRepositoryError> {
-		self.clear_table(dsl::contributors)
+		self.clear_table(dsl::users)
 			.map_err(|e| ProjectionRepositoryError::Infrastructure(e.into()))
 	}
 }
@@ -74,7 +73,7 @@ impl ProjectionRepository<ContributorProfile> for Client {
 impl From<ContributorProfile> for models::NewGithubContributor {
 	fn from(contributor: ContributorProfile) -> Self {
 		Self {
-			account: contributor.account.to_string(),
+			id: contributor.id,
 			// safe to unwrap as only called when data is present
 			github_identifier: contributor.github_identifier.unwrap().to_string(),
 			github_username: contributor.github_username.unwrap(),
@@ -85,7 +84,7 @@ impl From<ContributorProfile> for models::NewGithubContributor {
 impl From<ContributorProfile> for models::NewDiscordContributor {
 	fn from(contributor: ContributorProfile) -> Self {
 		Self {
-			account: contributor.account.to_string(),
+			id: contributor.id,
 			// safe to unwrap as only called when data is present
 			discord_handle: contributor.discord_handle.unwrap(),
 		}
@@ -95,7 +94,7 @@ impl From<ContributorProfile> for models::NewDiscordContributor {
 impl From<models::Contributor> for ContributorProfile {
 	fn from(contributor: models::Contributor) -> Self {
 		Self {
-			account: contributor.account.parse().unwrap(),
+			id: contributor.id,
 			github_identifier: contributor.github_identifier.and_then(|id| id.parse().ok()),
 			github_username: contributor.github_username,
 			discord_handle: contributor.discord_handle,

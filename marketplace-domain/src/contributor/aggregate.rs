@@ -1,6 +1,7 @@
 use crate::*;
 use std::sync::Arc;
 use thiserror::Error;
+use uuid::Uuid;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -14,7 +15,7 @@ pub type DiscordHandle = String;
 
 #[derive(Default, Debug, Clone, PartialEq, Eq)]
 pub struct Contributor {
-	id: ContributorAccountAddress,
+	id: Uuid,
 	github_identifier: GithubUserId,
 	discord_handle: Option<DiscordHandle>,
 }
@@ -34,10 +35,10 @@ impl EventSourcable for Contributor {
 	fn apply_event(self, event: &Self::Event) -> Self {
 		match event {
 			ContributorEvent::GithubAccountAssociated {
-				contributor_account_address: contributor_account,
+				user_id: id,
 				github_identifier,
 			} => Self {
-				id: contributor_account.clone(),
+				id: *id,
 				github_identifier: *github_identifier,
 				..Default::default()
 			},
@@ -56,11 +57,11 @@ impl Contributor {
 		account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
 		github_client: Arc<dyn GithubClient>,
 		authorization_code: String,
-		contributor_account_address: ContributorAccountAddress,
+		id: &Uuid,
 		signed_data: S,
 	) -> Result<Vec<Event>, Error> {
 		account_verifier
-			.check_signature(&signed_data, &contributor_account_address)
+			.check_signature(&signed_data, id)
 			.await
 			.map_err(Error::Signature)?;
 
@@ -71,19 +72,19 @@ impl Contributor {
 
 		Ok(vec![Event::Contributor(
 			ContributorEvent::GithubAccountAssociated {
-				contributor_account_address: contributor_account_address.clone(),
+				user_id: *id,
 				github_identifier,
 			},
 		)])
 	}
 
 	pub fn register_discord_handle(
-		contributor_account_address: ContributorAccountAddress,
+		user_id: Uuid,
 		discord_handle: ContributorDiscordHandle,
 	) -> Result<Vec<Event>, Error> {
 		Ok(vec![Event::Contributor(
 			ContributorEvent::DiscordHandleRegistered {
-				contributor_account_address,
+				user_id,
 				discord_handle,
 			},
 		)])
@@ -108,14 +109,14 @@ mod test {
 			async fn check_signature(
 				&self,
 				signed_data: &<MockOnChainAccountVerifier as OnChainAccountVerifier>::SignedData,
-				account_address: &ContributorAccountAddress,
+				id: &Uuid,
 			) -> Result<(), OnChainAccountVerifierError>;
 		}
 	}
 
 	#[fixture]
-	fn contributor_account_address() -> ContributorAccountAddress {
-		ContributorAccountAddress::from_str("0x1234").unwrap()
+	fn user_id() -> Uuid {
+		Uuid::from_str("3d863031-e9bb-42dc-becd-67999675fb8b").unwrap()
 	}
 
 	#[fixture]
@@ -130,11 +131,11 @@ mod test {
 
 	#[fixture]
 	fn github_account_associated_event(
-		contributor_account_address: ContributorAccountAddress,
+		user_id: Uuid,
 		github_identifier: GithubUserId,
 	) -> ContributorEvent {
 		ContributorEvent::GithubAccountAssociated {
-			contributor_account_address,
+			user_id,
 			github_identifier,
 		}
 	}
@@ -142,16 +143,16 @@ mod test {
 	#[rstest]
 	fn create_contributor(
 		github_account_associated_event: ContributorEvent,
-		contributor_account_address: ContributorAccountAddress,
+		user_id: Uuid,
 		github_identifier: GithubUserId,
 	) {
 		let contributor = super::Contributor::from_events(&[github_account_associated_event]);
-		assert_eq!(contributor_account_address, contributor.id);
+		assert_eq!(user_id, contributor.id);
 		assert_eq!(github_identifier, contributor.github_identifier);
 	}
 
 	#[rstest]
-	async fn associate_github_account(contributor_account_address: ContributorAccountAddress) {
+	async fn associate_github_account(user_id: Uuid) {
 		let mut account_verifier = MockOnChainAccountVerifier::new();
 		let mut github_client = MockGithubClient::new();
 		let authorization_code = "thecode".to_string();
@@ -159,10 +160,7 @@ mod test {
 
 		account_verifier
 			.expect_check_signature()
-			.with(
-				eq(signed_data.clone()),
-				eq(contributor_account_address.clone()),
-			)
+			.with(eq(signed_data.clone()), eq(user_id.clone()))
 			.once()
 			.returning(|_, _| Ok(()));
 
@@ -176,7 +174,7 @@ mod test {
 			Arc::new(account_verifier),
 			Arc::new(github_client),
 			authorization_code,
-			contributor_account_address,
+			&user_id,
 			signed_data,
 		)
 		.await;
@@ -188,21 +186,15 @@ mod test {
 		assert_matches!(
 			emitted_events.first().unwrap(),
 			Event::Contributor(ContributorEvent::GithubAccountAssociated {
-				contributor_account_address: _,
+				user_id: _,
 				github_identifier: _,
 			})
 		);
 	}
 
 	#[rstest]
-	async fn register_discord_handle(
-		contributor_account_address: ContributorAccountAddress,
-		discord_handle: ContributorDiscordHandle,
-	) {
-		let result = Contributor::register_discord_handle(
-			contributor_account_address.clone(),
-			discord_handle.clone(),
-		);
+	async fn register_discord_handle(user_id: Uuid, discord_handle: ContributorDiscordHandle) {
+		let result = Contributor::register_discord_handle(user_id.clone(), discord_handle.clone());
 
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 
@@ -211,7 +203,7 @@ mod test {
 		assert_eq!(
 			emitted_events.first().unwrap().clone(),
 			Event::Contributor(ContributorEvent::DiscordHandleRegistered {
-				contributor_account_address,
+				user_id,
 				discord_handle,
 			})
 		);
