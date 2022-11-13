@@ -2254,6 +2254,7 @@ dependencies = [
  "thiserror",
  "tokio",
  "tokio-stream",
+ "uuid 0.8.2",
 ]
 
 [[package]]
@@ -2293,6 +2294,7 @@ dependencies = [
  "tonic",
  "tonic-build",
  "url",
+ "uuid 0.8.2",
 ]
 
 [[package]]

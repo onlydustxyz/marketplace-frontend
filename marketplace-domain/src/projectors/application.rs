@@ -3,6 +3,7 @@ use async_trait::async_trait;
 use chrono::NaiveDateTime;
 use log::error;
 use std::sync::Arc;
+use uuid::Uuid;
 
 pub struct ApplicationProjector {
 	application_projection_repository: Arc<dyn ApplicationProjectionRepository>,
@@ -20,14 +21,11 @@ impl ApplicationProjector {
 	fn on_applied(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_account_address: &ContributorAccountAddress,
+		contributor_id: Uuid,
 		applied_at: &NaiveDateTime,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		let application = ApplicationProjection::new(
-			contribution_id.clone(),
-			contributor_account_address.clone(),
-			*applied_at,
-		);
+		let application =
+			ApplicationProjection::new(contribution_id.clone(), contributor_id, *applied_at);
 
 		self.application_projection_repository.insert(application)
 	}
@@ -35,19 +33,17 @@ impl ApplicationProjector {
 	fn on_application_refused(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_account_address: &ContributorAccountAddress,
+		contributor_id: Uuid,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		self.application_projection_repository
-			.delete(contribution_id, contributor_account_address)
+		self.application_projection_repository.delete(contribution_id, contributor_id)
 	}
 
 	fn on_assigned(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_account_address: &ContributorAccountAddress,
+		contributor_id: Uuid,
 	) -> Result<(), ApplicationProjectionRepositoryError> {
-		self.application_projection_repository
-			.delete(contribution_id, contributor_account_address)
+		self.application_projection_repository.delete(contribution_id, contributor_id)
 	}
 
 	fn on_contribution_deleted(
@@ -66,21 +62,21 @@ impl EventListener for ApplicationProjector {
 			Event::Contribution(contribution_event) => match contribution_event {
 				ContributionEvent::Applied {
 					id: contribution_id,
-					contributor_account_address,
+					contributor_id,
 					applied_at,
-				} => self.on_applied(contribution_id, contributor_account_address, applied_at),
+				} => self.on_applied(contribution_id, *contributor_id, applied_at),
 				ContributionEvent::ApplicationRefused {
 					id: contribution_id,
-					contributor_account_address,
-				} => self.on_application_refused(contribution_id, contributor_account_address),
+					contributor_id,
+				} => self.on_application_refused(contribution_id, *contributor_id),
 				ContributionEvent::Assigned {
 					id: contribution_id,
-					contributor_account_address,
+					contributor_id,
 				}
 				| ContributionEvent::Claimed {
 					id: contribution_id,
-					contributor_account_address,
-				} => self.on_assigned(contribution_id, contributor_account_address),
+					contributor_id,
+				} => self.on_assigned(contribution_id, *contributor_id),
 				ContributionEvent::Closed { id } => self.on_contribution_deleted(id),
 				ContributionEvent::Deployed { .. }
 				| ContributionEvent::Reopened { .. }

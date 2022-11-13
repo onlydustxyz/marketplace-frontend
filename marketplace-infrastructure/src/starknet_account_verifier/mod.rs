@@ -4,8 +4,6 @@ use url::Url;
 mod account_verifier;
 pub use account_verifier::{Signature as StarknetSignature, SignedData as StarknetSignedData};
 
-mod field_element;
-
 pub struct StarkNetClient {
 	pub sequencer: SequencerGatewayProvider,
 }

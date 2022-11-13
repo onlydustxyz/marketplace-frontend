@@ -1,6 +1,7 @@
 use super::Project;
 use crate::database::schema::*;
 use rocket::serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 #[derive(
 	Queryable, Identifiable, Insertable, Associations, Debug, Serialize, Deserialize, Clone,
@@ -21,6 +22,6 @@ pub struct Contribution {
 	pub duration: Option<String>,
 	pub context: Option<String>,
 	pub type_: Option<String>,
-	pub contributor_account_address: Option<String>,
 	pub closed: bool,
+	pub contributor_id: Option<Uuid>,
 }

@@ -1,9 +1,9 @@
 use super::{EventTranslator, FromEventError, StarknetTopics, Topics};
 use marketplace_domain::{
-	ContractAddress, ContributionEvent, ContributorAccountAddress, Event as DomainEvent,
-	HexPrefixedString,
+	AccountAddress, ContractAddress, ContributionEvent, Event as DomainEvent, HexPrefixedString,
 };
 use starknet::core::{types::FieldElement, utils::get_selector_from_name};
+use uuid::Uuid;
 
 pub struct Assigned;
 
@@ -18,20 +18,22 @@ impl EventTranslator for Assigned {
 		mut topics: Topics,
 	) -> Result<DomainEvent, FromEventError> {
 		let contribution_id: HexPrefixedString = topics.pop_front_as()?;
-		let contributor_account_address: ContributorAccountAddress = topics.pop_front_as()?;
+		let contributor_account_address: AccountAddress = topics.pop_front_as()?;
 
 		if let Some(caller) = opt_caller {
 			if caller == contributor_account_address.as_contract_address() {
 				return Ok(DomainEvent::Contribution(ContributionEvent::Claimed {
 					id: contribution_id.into(),
-					contributor_account_address,
+					contributor_id: Uuid::default(), /* TODO: remove when removing blockchain
+					                                  * listeners */
 				}));
 			}
 		}
 
 		Ok(DomainEvent::Contribution(ContributionEvent::Assigned {
 			id: contribution_id.into(),
-			contributor_account_address,
+			contributor_id: Uuid::default(), /* TODO: remove when removing blockchain
+			                                  * listeners */
 		}))
 	}
 }
@@ -94,7 +96,7 @@ mod test {
 		assert_eq!(
 			DomainEvent::Contribution(ContributionEvent::Assigned {
 				id: 12.into(),
-				contributor_account_address: ContributorAccountAddress::from(assignee_address)
+				contributor_id: Uuid::default()
 			},),
 			result.unwrap()
 		);
@@ -115,7 +117,7 @@ mod test {
 		assert_eq!(
 			DomainEvent::Contribution(ContributionEvent::Claimed {
 				id: 12.into(),
-				contributor_account_address: ContributorAccountAddress::from(caller_address)
+				contributor_id: Uuid::default()
 			},),
 			result.unwrap()
 		);

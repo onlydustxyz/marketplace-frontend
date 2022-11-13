@@ -22,7 +22,7 @@ pub struct Contributor {
 
 impl Aggregate for Contributor {
 	type Event = ContributorEvent;
-	type Id = ContributorAccountAddress;
+	type Id = Uuid;
 }
 
 impl From<ContributorEvent> for Event {

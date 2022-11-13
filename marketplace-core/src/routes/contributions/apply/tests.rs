@@ -20,16 +20,14 @@ struct AlreadyExist;
 #[error("No contribution with id {0}")]
 struct ContributionNotFound(ContributionId);
 
-struct ApplyToContribution(
-	RwLock<HashMap<ContributionId, HashMap<ContributorAccountAddress, bool>>>,
-);
+struct ApplyToContribution(RwLock<HashMap<ContributionId, HashMap<Uuid, bool>>>);
 
 #[async_trait]
 impl ApplyToContributionUsecase for ApplyToContribution {
 	async fn apply_to_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_account_address: &ContributorAccountAddress,
+		contributor_id: Uuid,
 	) -> Result<(), DomainError> {
 		let mut lock = self.0.write().unwrap();
 		let contribution_db = lock.get_mut(contribution_id).ok_or_else(|| {
@@ -40,15 +38,14 @@ impl ApplyToContributionUsecase for ApplyToContribution {
 			)
 		})?;
 
-		let already_applied =
-			contribution_db.get(contributor_account_address).copied().unwrap_or_default();
+		let already_applied = contribution_db.get(&contributor_id).copied().unwrap_or_default();
 
 		if already_applied {
 			return Err(DomainError::ApplicationProjectionRepository(
 				ApplicationProjectionRepositoryError::AlreadyExist(Box::new(AlreadyExist)),
 			));
 		}
-		contribution_db.insert(contributor_account_address.to_owned(), true);
+		contribution_db.insert(contributor_id.to_owned(), true);
 
 		Ok(())
 	}

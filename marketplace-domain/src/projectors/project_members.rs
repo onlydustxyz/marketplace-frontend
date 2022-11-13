@@ -2,6 +2,7 @@ use crate::*;
 use async_trait::async_trait;
 use log::error;
 use std::sync::Arc;
+use uuid::Uuid;
 
 pub struct MemberProjector {
 	member_projection_repository: Arc<dyn ProjectMemberProjectionRepository>,
@@ -17,21 +18,18 @@ impl MemberProjector {
 	fn on_member_added(
 		&self,
 		project_id: &ProjectId,
-		contributor_account_address: &ContributorAccountAddress,
+		contributor_id: Uuid,
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
-		self.member_projection_repository.upsert(ProjectMemberProjection::new(
-			*project_id,
-			contributor_account_address.clone(),
-		))
+		self.member_projection_repository
+			.upsert(ProjectMemberProjection::new(*project_id, contributor_id))
 	}
 
 	fn on_member_removed(
 		&self,
 		project_id: &ProjectId,
-		contributor_account_address: &ContributorAccountAddress,
+		contributor_id: Uuid,
 	) -> Result<(), ProjectMemberProjectionRepositoryError> {
-		self.member_projection_repository
-			.delete(project_id, contributor_account_address)
+		self.member_projection_repository.delete(project_id, contributor_id)
 	}
 }
 
@@ -42,12 +40,12 @@ impl EventListener for MemberProjector {
 			Event::Project(project_event) => match project_event {
 				ProjectEvent::MemberAdded {
 					project_id,
-					contributor_account: contributor_account_address,
-				} => self.on_member_added(project_id, contributor_account_address),
+					contributor_id,
+				} => self.on_member_added(project_id, *contributor_id),
 				ProjectEvent::MemberRemoved {
 					project_id,
-					contributor_account: contributor_account_address,
-				} => self.on_member_removed(project_id, contributor_account_address),
+					contributor_id,
+				} => self.on_member_removed(project_id, *contributor_id),
 				ProjectEvent::LeadContributorAdded { .. }
 				| ProjectEvent::LeadContributorRemoved { .. } => return,
 			},
@@ -65,7 +63,7 @@ mod tests {
 	use super::*;
 	use mockall::predicate::eq;
 	use rstest::*;
-	use std::sync::Arc;
+	use std::{str::FromStr, sync::Arc};
 
 	#[fixture]
 	fn member_projection_repository() -> MockProjectMemberProjectionRepository {
@@ -78,46 +76,37 @@ mod tests {
 	}
 
 	#[fixture]
-	fn contributor_account_address() -> ContributorAccountAddress {
-		"0x5632".parse().unwrap()
+	fn contributor_id() -> Uuid {
+		Uuid::from_str("3d863031-e9bb-42dc-becd-67999675fb8b").unwrap()
 	}
 
 	#[fixture]
-	fn on_member_added_event(
-		project_id: ProjectId,
-		contributor_account_address: ContributorAccountAddress,
-	) -> Event {
+	fn on_member_added_event(project_id: ProjectId, contributor_id: Uuid) -> Event {
 		Event::Project(ProjectEvent::MemberAdded {
 			project_id,
-			contributor_account: contributor_account_address,
+			contributor_id,
 		})
 	}
 
 	#[fixture]
-	fn on_member_removed_event(
-		project_id: ProjectId,
-		contributor_account_address: ContributorAccountAddress,
-	) -> Event {
+	fn on_member_removed_event(project_id: ProjectId, contributor_id: Uuid) -> Event {
 		Event::Project(ProjectEvent::MemberRemoved {
 			project_id,
-			contributor_account: contributor_account_address,
+			contributor_id,
 		})
 	}
 
 	#[rstest]
-	#[case(on_member_added_event(project_id(), contributor_account_address()))]
+	#[case(on_member_added_event(project_id(), contributor_id()))]
 	async fn on_member_added(
 		mut member_projection_repository: MockProjectMemberProjectionRepository,
 		#[case] event: Event,
 		project_id: ProjectId,
-		contributor_account_address: ContributorAccountAddress,
+		contributor_id: Uuid,
 	) {
 		member_projection_repository
 			.expect_upsert()
-			.with(eq(ProjectMemberProjection::new(
-				project_id,
-				contributor_account_address,
-			)))
+			.with(eq(ProjectMemberProjection::new(project_id, contributor_id)))
 			.times(1)
 			.returning(|_| Ok(()));
 
@@ -126,16 +115,16 @@ mod tests {
 	}
 
 	#[rstest]
-	#[case(on_member_removed_event(project_id(), contributor_account_address()))]
+	#[case(on_member_removed_event(project_id(), contributor_id()))]
 	async fn on_member_removed(
 		mut member_projection_repository: MockProjectMemberProjectionRepository,
 		#[case] event: Event,
 		project_id: ProjectId,
-		contributor_account_address: ContributorAccountAddress,
+		contributor_id: Uuid,
 	) {
 		member_projection_repository
 			.expect_delete()
-			.with(eq(project_id), eq(contributor_account_address))
+			.with(eq(project_id), eq(contributor_id))
 			.times(1)
 			.returning(|_, _| Ok(()));
 

@@ -4,6 +4,7 @@ use log::error;
 use mapinto::ResultMapErrInto;
 use std::sync::Arc;
 use thiserror::Error;
+use uuid::Uuid;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -50,7 +51,7 @@ impl GithubContributionProjector {
 			id: id.clone(),
 			project_id,
 			issue_number,
-			contributor_account_address: None,
+			contributor_id: None,
 			status: ContributionStatus::Open,
 			gate,
 			title: issue.clone().map(|issue| issue.title),
@@ -69,17 +70,9 @@ impl GithubContributionProjector {
 		self.contribution_projection_repository.insert(contribution).map_err_into()
 	}
 
-	fn on_assign(
-		&self,
-		id: &ContributionId,
-		contributor_account_address: &ContributorAccountAddress,
-	) -> Result<(), Error> {
+	fn on_assign(&self, id: &ContributionId, contributor_id: Uuid) -> Result<(), Error> {
 		self.contribution_projection_repository
-			.update_contributor_and_status(
-				id,
-				Some(contributor_account_address),
-				ContributionStatus::Assigned,
-			)
+			.update_contributor_and_status(id, Some(contributor_id), ContributionStatus::Assigned)
 			.map_err_into()
 	}
 
@@ -127,14 +120,8 @@ impl EventListener for GithubContributionProjector {
 					issue_number,
 					gate,
 				} => self.on_create(id, *project_id, *issue_number, *gate).await,
-				ContributionEvent::Assigned {
-					id,
-					contributor_account_address,
-				}
-				| ContributionEvent::Claimed {
-					id,
-					contributor_account_address,
-				} => self.on_assign(id, contributor_account_address),
+				ContributionEvent::Assigned { id, contributor_id }
+				| ContributionEvent::Claimed { id, contributor_id } => self.on_assign(id, *contributor_id),
 				ContributionEvent::Unassigned { id } => self.on_unassign(id),
 				ContributionEvent::Validated { id } => self.on_validate(id),
 				ContributionEvent::GateChanged { id, gate } => self.on_gate_changed(id, *gate),
@@ -158,7 +145,7 @@ mod tests {
 	use super::*;
 	use mockall::predicate::*;
 	use rstest::*;
-	use std::sync::Arc;
+	use std::{str::FromStr, sync::Arc};
 
 	#[fixture]
 	fn contribution_projection_repository() -> MockContributionProjectionRepository {
@@ -176,8 +163,8 @@ mod tests {
 	}
 
 	#[fixture]
-	fn contributor_account_address() -> ContributorAccountAddress {
-		123.into()
+	fn contributor_id() -> Uuid {
+		Uuid::from_str("3d863031-e9bb-42dc-becd-67999675fb8b").unwrap()
 	}
 
 	#[fixture]
@@ -217,7 +204,7 @@ mod tests {
 			project_id,
 			issue_number,
 			gate,
-			contributor_account_address: None,
+			contributor_id: None,
 			status: ContributionStatus::Open,
 			title: Some(github_issue.title),
 			description: github_issue.description,
@@ -251,11 +238,11 @@ mod tests {
 	#[fixture]
 	fn contribution_assigned_event(
 		contribution_id: ContributionId,
-		contributor_account_address: ContributorAccountAddress,
+		contributor_id: Uuid,
 	) -> ContributionEvent {
 		ContributionEvent::Assigned {
 			id: contribution_id,
-			contributor_account_address,
+			contributor_id,
 		}
 	}
 
@@ -318,7 +305,7 @@ mod tests {
 	async fn on_contribution_assigned_event(
 		mut contribution_projection_repository: MockContributionProjectionRepository,
 		github_client: MockGithubClient,
-		contributor_account_address: ContributorAccountAddress,
+		contributor_id: Uuid,
 		contribution_id: ContributionId,
 		contribution_assigned_event: ContributionEvent,
 	) {
@@ -327,7 +314,7 @@ mod tests {
 			.withf(
 				move |input_contribution_id, input_contributor_account_address, input_status| {
 					input_contribution_id.eq(&contribution_id)
-						&& input_contributor_account_address.eq(&Some(&contributor_account_address))
+						&& input_contributor_account_address.eq(&Some(contributor_id))
 						&& input_status.eq(&ContributionStatus::Assigned)
 				},
 			)

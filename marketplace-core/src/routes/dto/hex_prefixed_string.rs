@@ -24,12 +24,6 @@ impl From<HexPrefixedStringDto> for HexPrefixedString {
 	}
 }
 
-impl From<HexPrefixedStringDto> for ContributorAccountAddress {
-	fn from(value: HexPrefixedStringDto) -> Self {
-		value.0.into()
-	}
-}
-
 impl From<HexPrefixedStringDto> for ContributionId {
 	fn from(value: HexPrefixedStringDto) -> Self {
 		value.0.into()

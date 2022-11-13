@@ -5,6 +5,7 @@ use marketplace_event_store::{
 	bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event as StorableEvent, EventOrigin,
 };
 use std::sync::Arc;
+use uuid::Uuid;
 
 // Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be
 // `Send` and `Sync`
@@ -13,7 +14,7 @@ pub trait Usecase: Send + Sync {
 	async fn apply_to_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_account_address: &ContributorAccountAddress,
+		contributor_id: Uuid,
 	) -> Result<(), DomainError>;
 }
 
@@ -56,10 +57,10 @@ impl Usecase for ApplyToContribution {
 	async fn apply_to_contribution(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_account_address: &ContributorAccountAddress,
+		contributor_id: Uuid,
 	) -> Result<(), DomainError> {
 		let contribution = self.contribution_repository.find_by_id(contribution_id)?;
-		let events = contribution.apply(contributor_account_address)?;
+		let events = contribution.apply(contributor_id)?;
 		let storable_events: Vec<StorableEvent> = events
 			.iter()
 			.map(|event| StorableEvent {

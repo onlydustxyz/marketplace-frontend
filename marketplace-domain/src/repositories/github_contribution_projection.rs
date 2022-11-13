@@ -1,9 +1,7 @@
-use crate::{
-	ContributionId, ContributionStatus, ContributorAccountAddress, GithubContribution,
-	GithubProjectId,
-};
+use crate::{ContributionId, ContributionStatus, GithubContribution, GithubProjectId};
 use mockall::automock;
 use thiserror::Error;
+use uuid::Uuid;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -28,10 +26,10 @@ pub trait Repository: Send + Sync {
 
 	fn insert(&self, contribution: GithubContribution) -> Result<(), Error>;
 
-	fn update_contributor_and_status<'a>(
+	fn update_contributor_and_status(
 		&self,
 		contribution_id: &ContributionId,
-		contributor_account_address: Option<&'a ContributorAccountAddress>,
+		contributor_id: Option<Uuid>,
 		status: ContributionStatus,
 	) -> Result<(), Error>;
 

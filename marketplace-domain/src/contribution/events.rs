@@ -3,6 +3,7 @@ use std::fmt::Display;
 use crate::*;
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -17,20 +18,20 @@ pub enum Event {
 	},
 	Applied {
 		id: ContributionId,
-		contributor_account_address: ContributorAccountAddress,
+		contributor_id: Uuid,
 		applied_at: NaiveDateTime,
 	},
 	ApplicationRefused {
 		id: ContributionId,
-		contributor_account_address: ContributorAccountAddress,
+		contributor_id: Uuid,
 	},
 	Assigned {
 		id: ContributionId,
-		contributor_account_address: ContributorAccountAddress,
+		contributor_id: Uuid,
 	},
 	Claimed {
 		id: ContributionId,
-		contributor_account_address: ContributorAccountAddress,
+		contributor_id: Uuid,
 	},
 	Unassigned {
 		id: ContributionId,
@@ -68,6 +69,8 @@ impl From<Event> for crate::Event {
 
 #[cfg(test)]
 mod tests {
+	use std::str::FromStr;
+
 	use super::*;
 	use assert_json_diff::assert_json_eq;
 	use rstest::*;
@@ -100,8 +103,8 @@ mod tests {
 	}
 
 	#[fixture]
-	fn contributor_account_address() -> ContributorAccountAddress {
-		ContributorAccountAddress::from(666)
+	fn contributor_id() -> Uuid {
+		Uuid::from_str("3d863031-e9bb-42dc-becd-67999675fb8b").unwrap()
 	}
 
 	#[fixture]
@@ -139,18 +142,18 @@ mod tests {
 	#[rstest]
 	fn contribution_assigned_event_display_as_json(
 		contribution_id: ContributionId,
-		contributor_account_address: ContributorAccountAddress,
+		contributor_id: Uuid,
 	) {
 		let event = Event::Assigned {
 			id: contribution_id.clone(),
-			contributor_account_address: contributor_account_address.clone(),
+			contributor_id,
 		};
 
 		assert_json_eq!(
 			json! ({
 				"Assigned": {
 					"id": contribution_id,
-					"contributor_account_address": contributor_account_address
+					"contributor_id": contributor_id
 				}
 			}),
 			serde_json::from_str::<Value>(&event.to_string()).unwrap()
@@ -160,18 +163,18 @@ mod tests {
 	#[rstest]
 	fn contribution_claimed_event_display_as_json(
 		contribution_id: ContributionId,
-		contributor_account_address: ContributorAccountAddress,
+		contributor_id: Uuid,
 	) {
 		let event = Event::Claimed {
 			id: contribution_id.clone(),
-			contributor_account_address: contributor_account_address.clone(),
+			contributor_id,
 		};
 
 		assert_json_eq!(
 			json! ({
 				"Claimed": {
 					"id": contribution_id,
-					"contributor_account_address": contributor_account_address
+					"contributor_id": contributor_id
 				}
 			}),
 			serde_json::from_str::<Value>(&event.to_string()).unwrap()

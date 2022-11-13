@@ -1,8 +1,7 @@
 use super::{EventTranslator, FromEventError, StarknetTopics, Topics};
-use marketplace_domain::{
-	ContractAddress, ContributorAccountAddress, Event as DomainEvent, ProjectEvent, ProjectId,
-};
+use marketplace_domain::{ContractAddress, Event as DomainEvent, ProjectEvent, ProjectId};
 use starknet::core::{types::FieldElement, utils::get_selector_from_name};
+use uuid::Uuid;
 
 pub struct MemberRemoved;
 
@@ -17,11 +16,11 @@ impl EventTranslator for MemberRemoved {
 		mut topics: Topics,
 	) -> Result<DomainEvent, FromEventError> {
 		let project_id: u128 = topics.pop_front_as()?;
-		let contributor_account_address: ContributorAccountAddress = topics.pop_front_as()?;
 
 		Ok(DomainEvent::Project(ProjectEvent::MemberRemoved {
 			project_id: project_id as ProjectId,
-			contributor_account: contributor_account_address,
+			contributor_id: Uuid::default(), /* TODO: remove when removing blockchain
+			                                  * listeners */
 		}))
 	}
 }
@@ -76,7 +75,7 @@ mod test {
 		assert_eq!(
 			DomainEvent::Project(ProjectEvent::MemberRemoved {
 				project_id: 12,
-				contributor_account: 24.into()
+				contributor_id: Uuid::default()
 			},),
 			result.unwrap()
 		);
