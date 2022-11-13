@@ -5,6 +5,7 @@ use marketplace_event_store::{
 	bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event as StorableEvent, EventOrigin,
 };
 use std::sync::Arc;
+use uuid::Uuid;
 
 // Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be
 // `Send` and `Sync`
@@ -13,7 +14,7 @@ pub trait Usecase<S: Clone + Send + Sync>: Send + Sync {
 	async fn associate_github_account(
 		&self,
 		authorization_code: String,
-		contributor_account_address: ContributorAccountAddress,
+		user_id: Uuid,
 		signed_data: S,
 	) -> Result<(), DomainError>;
 }
@@ -62,14 +63,14 @@ impl<S: Clone + Send + Sync> Usecase<S> for AssociateGithubAccount<S> {
 	async fn associate_github_account(
 		&self,
 		authorization_code: String,
-		contributor_account_address: ContributorAccountAddress,
+		user_id: Uuid,
 		signed_data: S,
 	) -> Result<(), DomainError> {
 		let events = Contributor::associate_github_account(
 			self.account_verifier.clone(),
 			self.github_client.clone(),
 			authorization_code,
-			contributor_account_address.clone(),
+			&user_id,
 			signed_data,
 		)
 		.await?;

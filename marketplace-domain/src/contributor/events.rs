@@ -1,15 +1,16 @@
-use crate::{ContributorAccountAddress, ContributorDiscordHandle, GithubUserId};
+use crate::{ContributorDiscordHandle, GithubUserId};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
+use uuid::Uuid;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	GithubAccountAssociated {
-		contributor_account_address: ContributorAccountAddress,
+		user_id: Uuid,
 		github_identifier: GithubUserId,
 	},
 	DiscordHandleRegistered {
-		contributor_account_address: ContributorAccountAddress,
+		user_id: Uuid,
 		discord_handle: ContributorDiscordHandle,
 	},
 }

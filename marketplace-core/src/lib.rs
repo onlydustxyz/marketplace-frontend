@@ -68,7 +68,6 @@ pub async fn main() -> Result<()> {
 		"/",
 		openapi_get_routes![
 			routes::new_project,
-			routes::list_projects,
 			routes::refresh_projects,
 			routes::apply_to_contribution,
 			routes::refuse_contributor_application,
@@ -76,11 +75,7 @@ pub async fn main() -> Result<()> {
 			routes::refresh_applications,
 			routes::list_contributor_applications,
 			routes::refresh_contributions,
-			routes::get_contributions,
 			routes::contributors::refresh_contributors,
-			routes::contributors::get_contributor_by_account,
-			routes::contributors::associate_github_account,
-			routes::contributors::register_discord_handle,
 		],
 	)
 	.mount(

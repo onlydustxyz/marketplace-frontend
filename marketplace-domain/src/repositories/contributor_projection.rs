@@ -1,7 +1,8 @@
-use crate::{ContributorAccountAddress, ContributorProfile};
+use crate::ContributorProfile;
 #[cfg(test)]
 use mockall::automock;
 use thiserror::Error;
+use uuid::Uuid;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -19,8 +20,5 @@ pub enum Error {
 pub trait Repository: Send + Sync {
 	fn upsert_github_user_data(&self, contributor: ContributorProfile) -> Result<(), Error>;
 	fn upsert_discord_handle(&self, contributor: ContributorProfile) -> Result<(), Error>;
-	fn find_by_account_address(
-		&self,
-		contributor_account_address: &ContributorAccountAddress,
-	) -> Result<ContributorProfile, Error>;
+	fn find_by_id(&self, id: &Uuid) -> Result<ContributorProfile, Error>;
 }

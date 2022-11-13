@@ -1,4 +1,4 @@
-use super::{field_element::TryFromContributorAccount, StarkNetClient};
+use super::StarkNetClient;
 use async_trait::async_trait;
 use log::debug;
 use marketplace_domain::{OnChainAccountVerifier, *};
@@ -9,6 +9,7 @@ use starknet::{
 	},
 	providers::Provider,
 };
+use uuid::Uuid;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq, PartialOrd, Ord, Hash)]
 pub struct SignedData {
@@ -32,11 +33,11 @@ impl OnChainAccountVerifier for StarkNetClient {
 	async fn check_signature(
 		&self,
 		signed_data: &Self::SignedData,
-		account_address: &ContributorAccountAddress,
+		id: &Uuid,
 	) -> Result<(), OnChainAccountVerifierError> {
-		let contract_address =
-			FieldElement::try_from_contributor_account_address(account_address.clone())
-				.map_err(OnChainAccountVerifierError::Infrastructure)?;
+		let contract_address = FieldElement::from_hex_be(&id.clone().to_string())
+			.map_err(anyhow::Error::msg)
+			.map_err(OnChainAccountVerifierError::Infrastructure)?;
 
 		self.sequencer
 			.call_contract(
@@ -74,10 +75,7 @@ mod test {
 	#[tokio::test]
 	async fn check_signature_error() {
 		let client = StarkNetClient::default();
-		let contributor_account_address = ContributorAccountAddress::from_str(
-			"0x0711a8230e08023d583d1ee8fdfa0af78f6856bc911285c72d9c0eb9ca408733",
-		)
-		.unwrap();
+		let user_id = Uuid::from_str("3d863031-e9bb-42dc-becd-67999675fb8b").unwrap();
 		let signed_data = &SignedData {
 			hash: FieldElement::from_str("0x112233").unwrap(),
 			signature: Signature {
@@ -86,7 +84,7 @@ mod test {
 			},
 		};
 
-		let result = client.check_signature(signed_data, &contributor_account_address).await;
+		let result = client.check_signature(signed_data, &user_id).await;
 
 		assert!(result.is_err());
 	}

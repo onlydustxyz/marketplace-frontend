@@ -1,10 +1,12 @@
+use std::str::FromStr;
+
 use crate::database::Client;
 use marketplace_domain::{
-	ContributorAccountAddress, ContributorDiscordHandle, ContributorProfile,
-	ContributorProjectionRepository, GithubUserId,
+	ContributorDiscordHandle, ContributorProfile, ContributorProjectionRepository, GithubUserId,
 };
 use marketplace_tests::init_pool;
 use rstest::*;
+use uuid::Uuid;
 
 #[fixture]
 fn database() -> Client {
@@ -12,10 +14,8 @@ fn database() -> Client {
 }
 
 #[fixture]
-fn contributor_account_address() -> ContributorAccountAddress {
-	"0x069642afc7c2359888f3e8e6c935662b126b2a0ac6c12ca754861d54b4c17556"
-		.parse()
-		.unwrap()
+fn user_id() -> Uuid {
+	Uuid::from_str("3d863031-e9bb-42dc-becd-67999675fb8b").unwrap()
 }
 
 #[fixture]
@@ -40,14 +40,14 @@ fn discord_handle() -> ContributorDiscordHandle {
 )]
 fn github_then_discord(
 	database: Client,
-	contributor_account_address: ContributorAccountAddress,
+	user_id: Uuid,
 	github_identifier: GithubUserId,
 	github_username: String,
 	discord_handle: ContributorDiscordHandle,
 ) {
 	{
 		let contributor = ContributorProfile {
-			account: contributor_account_address.clone(),
+			id: user_id.clone(),
 			github_identifier: Some(github_identifier),
 			github_username: Some(github_username.clone()),
 			..Default::default()
@@ -59,7 +59,7 @@ fn github_then_discord(
 
 	{
 		let contributor = ContributorProfile {
-			account: contributor_account_address.clone(),
+			id: user_id.clone(),
 			discord_handle: Some(discord_handle.clone()),
 			..Default::default()
 		};
@@ -68,11 +68,8 @@ fn github_then_discord(
 			.expect("Unable to upsert contributor discord handle");
 	}
 
-	let contributor = ContributorProjectionRepository::find_by_account_address(
-		&database,
-		&contributor_account_address,
-	)
-	.expect("Unable to find contributor by account");
+	let contributor = ContributorProjectionRepository::find_by_id(&database, &user_id)
+		.expect("Unable to find contributor by account");
 
 	assert_eq!(contributor.github_identifier, Some(github_identifier));
 	assert_eq!(contributor.github_username, Some(github_username));
@@ -86,14 +83,14 @@ fn github_then_discord(
 )]
 fn discord_then_github(
 	database: Client,
-	contributor_account_address: ContributorAccountAddress,
+	user_id: Uuid,
 	github_identifier: GithubUserId,
 	github_username: String,
 	discord_handle: ContributorDiscordHandle,
 ) {
 	{
 		let contributor = ContributorProfile {
-			account: contributor_account_address.clone(),
+			id: user_id.clone(),
 			discord_handle: Some(discord_handle.clone()),
 			..Default::default()
 		};
@@ -104,7 +101,7 @@ fn discord_then_github(
 
 	{
 		let contributor = ContributorProfile {
-			account: contributor_account_address.clone(),
+			id: user_id.clone(),
 			github_identifier: Some(github_identifier),
 			github_username: Some(github_username.clone()),
 			..Default::default()
@@ -114,11 +111,8 @@ fn discord_then_github(
 			.expect("Unable to upsert contributor profile");
 	}
 
-	let contributor = ContributorProjectionRepository::find_by_account_address(
-		&database,
-		&contributor_account_address,
-	)
-	.expect("Unable to find contributor by account");
+	let contributor = ContributorProjectionRepository::find_by_id(&database, &user_id)
+		.expect("Unable to find contributor by account");
 
 	assert_eq!(contributor.github_identifier, Some(github_identifier));
 	assert_eq!(contributor.github_username, Some(github_username));

@@ -5,6 +5,7 @@ use marketplace_event_store::{
 	bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event as StorableEvent, EventOrigin,
 };
 use std::sync::Arc;
+use uuid::Uuid;
 
 // Usecase must be `Send` and `Sync` as it is managed in a rocket State<T> that requires T to be
 // `Send` and `Sync`
@@ -12,7 +13,7 @@ use std::sync::Arc;
 pub trait Usecase: Send + Sync {
 	async fn register_discord_handle(
 		&self,
-		contributor_account_address: ContributorAccountAddress,
+		user_id: Uuid,
 		discord_handle: ContributorDiscordHandle,
 	) -> Result<(), DomainError>;
 }
@@ -45,13 +46,10 @@ impl RegisterDiscordHandle {
 impl Usecase for RegisterDiscordHandle {
 	async fn register_discord_handle(
 		&self,
-		contributor_account_address: ContributorAccountAddress,
+		user_id: Uuid,
 		discord_handle: ContributorDiscordHandle,
 	) -> Result<(), DomainError> {
-		let events = Contributor::register_discord_handle(
-			contributor_account_address.clone(),
-			discord_handle,
-		)?;
+		let events = Contributor::register_discord_handle(user_id, discord_handle)?;
 		let storable_events: Vec<StorableEvent> = events
 			.iter()
 			.map(|event| {
