@@ -66,17 +66,16 @@ fn rocket() -> rocket::Rocket<Build> {
 fn should_return_200_when_ok() {
 	let api_url = "0.0.0.0:8000";
 	let uri = format!("/contributions/{CONTRIBUTION_ID_1}/applications");
-	let contributor_account_address =
-		"0x0000000000000000000000000000000000000000000000000000000000000000";
+	let contributor_id = "57c8e894-c93a-42be-a25f-fa709744f0f8";
 	std::env::set_var("API_URL", api_url);
 
-	let body = json!({ "contributor_account_address": contributor_account_address }).to_string();
+	let body = json!({ "contributor_id": contributor_id }).to_string();
 
 	let client = Client::untracked(rocket()).expect("valid rocket instance");
 	let response = client.post(uri.clone()).header(ContentType::JSON).body(body).dispatch();
 	assert_eq!(response.status(), Status::Created);
 	assert_ne!(
-		format!("{api_url}/{uri}/{contributor_account_address}"),
+		format!("{api_url}/{uri}/{contributor_id}"),
 		response.headers().get_one("Location").unwrap()
 	);
 }
@@ -85,11 +84,10 @@ fn should_return_200_when_ok() {
 fn should_return_409_if_already_exist() {
 	let api_url = "0.0.0.0:8000";
 	let uri = format!("/contributions/{CONTRIBUTION_ID_1}/applications");
-	let contributor_account_address =
-		"0x0000000000000000000000000000000000000000000000000000000000000000";
+	let contributor_id = "57c8e894-c93a-42be-a25f-fa709744f0f8";
 	std::env::set_var("API_URL", api_url);
 
-	let body = json!({ "contributor_account_address": contributor_account_address }).to_string();
+	let body = json!({ "contributor_id": contributor_id }).to_string();
 
 	let client = Client::untracked(rocket()).expect("valid rocket instance");
 	let response = client.post(uri.clone()).header(ContentType::JSON).body(body.clone()).dispatch();
@@ -115,11 +113,10 @@ fn should_return_400_if_invalid_parameters() {
 	let contribution_id_2 = "0x123456";
 	let api_url = "0.0.0.0:8000";
 	let uri = format!("/contributions/{contribution_id_2}/applications");
-	let contributor_account_address =
-		"0x0000000000000000000000000000000000000000000000000000000000000000";
+	let contributor_id = "57c8e894-c93a-42be-a25f-fa709744f0f8";
 	std::env::set_var("API_URL", api_url);
 
-	let body = json!({ "contributor_account_address": contributor_account_address }).to_string();
+	let body = json!({ "contributor_id": contributor_id }).to_string();
 
 	let client = Client::untracked(rocket()).expect("valid rocket instance");
 	let response = client.post(uri).header(ContentType::JSON).body(body).dispatch();
