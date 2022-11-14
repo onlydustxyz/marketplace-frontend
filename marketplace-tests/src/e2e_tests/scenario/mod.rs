@@ -1,6 +1,3 @@
-mod contribution_lifetime;
-mod delete_contribution;
-
 use std::time::Duration;
 
 use crate::e2e_tests::database::get_events_count;
