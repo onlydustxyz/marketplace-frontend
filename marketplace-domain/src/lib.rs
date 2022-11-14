@@ -4,9 +4,6 @@ pub use repositories::*;
 mod value_objects;
 pub use value_objects::*;
 
-mod errors;
-pub use errors::Error;
-
 mod services;
 pub use services::*;
 

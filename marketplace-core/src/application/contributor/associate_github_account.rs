@@ -1,6 +1,7 @@
+use anyhow::Result;
 use async_trait::async_trait;
 use chrono::Utc;
-use marketplace_domain::{Error as DomainError, *};
+use marketplace_domain::{Contributor, Destination, GithubClient, Publisher, UuidGenerator};
 use marketplace_event_store::{
 	bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event as StorableEvent, EventOrigin,
 };
@@ -15,7 +16,7 @@ pub trait Usecase: Send + Sync {
 		&self,
 		authorization_code: String,
 		user_id: Uuid,
-	) -> Result<(), DomainError>;
+	) -> Result<()>;
 }
 
 pub struct AssociateGithubAccount {
@@ -52,7 +53,7 @@ impl Usecase for AssociateGithubAccount {
 		&self,
 		authorization_code: String,
 		user_id: Uuid,
-	) -> Result<(), DomainError> {
+	) -> Result<()> {
 		let events = Contributor::associate_github_account(
 			self.github_client.clone(),
 			authorization_code,
