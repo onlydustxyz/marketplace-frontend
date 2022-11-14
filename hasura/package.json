@@ -1,0 +1,10 @@
+{
+  "name": "onlydust-hasura",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "hasura console"
+  },
+  "devDependencies": {
+    "hasura-cli": "^2.14.0"
+  }
+}
