@@ -2,9 +2,7 @@ use anyhow::Result;
 use async_trait::async_trait;
 use chrono::Utc;
 use marketplace_domain::{Contributor, Destination, GithubClient, Publisher, UuidGenerator};
-use marketplace_event_store::{
-	bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event as StorableEvent, EventOrigin,
-};
+use marketplace_event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event, EventOrigin};
 use std::sync::Arc;
 use uuid::Uuid;
 
@@ -20,14 +18,14 @@ pub trait Usecase: Send + Sync {
 }
 
 pub struct AssociateGithubAccount {
-	event_publisher: Arc<dyn Publisher<StorableEvent>>,
+	event_publisher: Arc<dyn Publisher<Event>>,
 	github_client: Arc<dyn GithubClient>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 }
 
 impl AssociateGithubAccount {
 	pub fn new(
-		event_publisher: Arc<dyn Publisher<StorableEvent>>,
+		event_publisher: Arc<dyn Publisher<Event>>,
 		github_client: Arc<dyn GithubClient>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Self {
@@ -39,7 +37,7 @@ impl AssociateGithubAccount {
 	}
 
 	pub fn new_usecase_boxed(
-		event_publisher: Arc<dyn Publisher<StorableEvent>>,
+		event_publisher: Arc<dyn Publisher<Event>>,
 		github_client: Arc<dyn GithubClient>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 	) -> Box<dyn Usecase> {
@@ -60,20 +58,14 @@ impl Usecase for AssociateGithubAccount {
 			&user_id,
 		)
 		.await?;
-		let storable_events: Vec<StorableEvent> = events
-			.iter()
-			.map(|event| {
-				if let Event::Contributor(contributor_event) = event {
-					StorableEvent {
-						deduplication_id: self.uuid_generator.new_uuid().to_string(),
-						event: contributor_event.clone().into(),
-						timestamp: Utc::now().naive_utc(),
-						origin: EventOrigin::BACKEND,
-						metadata: Default::default(),
-					}
-				} else {
-					panic!("Contributor event expected");
-				}
+		let storable_events: Vec<_> = events
+			.into_iter()
+			.map(|event| Event {
+				deduplication_id: self.uuid_generator.new_uuid().to_string(),
+				event: event.into(),
+				timestamp: Utc::now().naive_utc(),
+				origin: EventOrigin::BACKEND,
+				metadata: Default::default(),
 			})
 			.collect();
 
