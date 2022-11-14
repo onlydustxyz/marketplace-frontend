@@ -48,18 +48,8 @@ rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 # Http Client
 reqwest = {version = "0.11", features = ["json"]}
 
-# Math types
-crypto-bigint = {version = "0.4.8", features = ["serde"]}
-
 # Logs
 log = "0.4.17"
-slog = "2.7.0"
-slog-async = "2.7.0"
-slog-envlogger = "2.2.0"
-slog-json = "2.6.1"
-slog-scope = "4.4.0"
-slog-stdlog = "4.1.1"
-slog-term = "2.9.0"
 
 # Tracing
 opentelemetry = {version = "0.18.0", features = ["rt-tokio"]}
