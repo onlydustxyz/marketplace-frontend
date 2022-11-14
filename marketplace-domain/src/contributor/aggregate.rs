@@ -5,8 +5,6 @@ use uuid::Uuid;
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error("Signature check failed")]
-	Signature(#[source] OnChainAccountVerifierError),
 	#[error("Github authenticationk failed")]
 	GithubAuthentication(#[source] GithubClientError),
 }
@@ -53,18 +51,11 @@ impl EventSourcable for Contributor {
 impl AggregateRoot for Contributor {}
 
 impl Contributor {
-	pub async fn associate_github_account<S: Clone + Send + Sync>(
-		account_verifier: Arc<dyn OnChainAccountVerifier<SignedData = S>>,
+	pub async fn associate_github_account(
 		github_client: Arc<dyn GithubClient>,
 		authorization_code: String,
 		id: &Uuid,
-		signed_data: S,
 	) -> Result<Vec<Event>, Error> {
-		account_verifier
-			.check_signature(&signed_data, id)
-			.await
-			.map_err(Error::Signature)?;
-
 		let github_identifier = github_client
 			.authenticate_user(authorization_code)
 			.await
@@ -95,24 +86,9 @@ impl Contributor {
 mod test {
 	use super::*;
 	use assert_matches::assert_matches;
-	use async_trait::async_trait;
-	use mockall::{mock, predicate::eq};
+	use mockall::predicate::eq;
 	use rstest::*;
 	use std::{str::FromStr, sync::Arc};
-
-	mock! {
-		OnChainAccountVerifier {}
-		#[async_trait]
-		impl OnChainAccountVerifier for OnChainAccountVerifier {
-			type SignedData = String;
-
-			async fn check_signature(
-				&self,
-				signed_data: &<MockOnChainAccountVerifier as OnChainAccountVerifier>::SignedData,
-				id: &Uuid,
-			) -> Result<(), OnChainAccountVerifierError>;
-		}
-	}
 
 	#[fixture]
 	fn user_id() -> Uuid {
@@ -153,16 +129,8 @@ mod test {
 
 	#[rstest]
 	async fn associate_github_account(user_id: Uuid) {
-		let mut account_verifier = MockOnChainAccountVerifier::new();
 		let mut github_client = MockGithubClient::new();
 		let authorization_code = "thecode".to_string();
-		let signed_data = "signature".to_string();
-
-		account_verifier
-			.expect_check_signature()
-			.with(eq(signed_data.clone()), eq(user_id))
-			.once()
-			.returning(|_, _| Ok(()));
 
 		github_client
 			.expect_authenticate_user()
@@ -171,11 +139,9 @@ mod test {
 			.returning(|_| Ok(11u64));
 
 		let result = super::Contributor::associate_github_account(
-			Arc::new(account_verifier),
 			Arc::new(github_client),
 			authorization_code,
 			&user_id,
-			signed_data,
 		)
 		.await;
 
