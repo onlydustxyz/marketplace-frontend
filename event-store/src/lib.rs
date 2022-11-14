@@ -10,7 +10,9 @@ use anyhow::Result;
 use domain::EventStore;
 use futures::TryFutureExt;
 use log::debug;
-use marketplace_domain::{Destination, Event as DomainEvent, Publisher, Subscriber};
+use marketplace_domain::{
+	Destination, Event as DomainEvent, Publisher, Subscriber, SubscriberCallbackError,
+};
 use marketplace_infrastructure::{
 	amqp::Bus,
 	database::{init_pool, Client as DatabaseClient},
@@ -33,18 +35,26 @@ pub async fn main() -> Result<()> {
 	Ok(())
 }
 
-async fn store(store: Arc<dyn EventStore>, event: Event) -> Result<Event> {
+async fn store(store: Arc<dyn EventStore>, event: Event) -> Result<Event, SubscriberCallbackError> {
 	if let Ok(pretty_event) = serde_json::to_string_pretty(&event) {
 		debug!("[event-store] 📨 Received event: {}", pretty_event);
 	}
 
-	store.append(&event.aggregate_id(), vec![event.clone()])?;
+	store
+		.append(&event.aggregate_id(), vec![event.clone()])
+		.map_err(|e| SubscriberCallbackError::InternalError(e.into()))?;
 
 	Ok(event)
 }
 
-async fn publish(event: Event, publisher: Arc<dyn Publisher<DomainEvent>>) -> Result<()> {
-	publisher.publish(Destination::exchange(EXCHANGE_NAME), &event.event).await?;
+async fn publish(
+	event: Event,
+	publisher: Arc<dyn Publisher<DomainEvent>>,
+) -> Result<(), SubscriberCallbackError> {
+	publisher
+		.publish(Destination::exchange(EXCHANGE_NAME), &event.event)
+		.await
+		.map_err(|e| SubscriberCallbackError::InternalError(e.into()))?;
 	Ok(())
 }
 

@@ -1,10 +1,13 @@
 use anyhow::Result;
-use marketplace_domain::{Event, EventListener, Subscriber};
+use marketplace_domain::{Event, EventListener, Subscriber, SubscriberCallbackError};
 use marketplace_infrastructure::amqp::ConsumableBus;
 use std::sync::Arc;
 use tokio::task::JoinHandle;
 
-async fn notify_event_listener(listener: Arc<dyn EventListener>, event: Event) -> Result<()> {
+async fn notify_event_listener(
+	listener: Arc<dyn EventListener>,
+	event: Event,
+) -> Result<(), SubscriberCallbackError> {
 	listener.on_event(&event).await;
 	Ok(())
 }
