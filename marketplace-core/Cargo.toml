@@ -10,9 +10,6 @@ readme = "README.md"
 repository = "https://github.com/onlydustxyz/marketplace-backend"
 version = "1.0.0"
 
-[features]
-with_component_tests = []
-
 [dependencies]
 
 # Async
