@@ -9,3 +9,5 @@ pub use project::*;
 
 mod contributor;
 pub use contributor::*;
+
+pub mod payment;

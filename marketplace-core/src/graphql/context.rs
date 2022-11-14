@@ -1,10 +1,10 @@
+use crate::application;
 use marketplace_domain::{Publisher, UuidGenerator};
 use marketplace_event_store::Event;
 use std::sync::Arc;
 
 pub struct Context {
-	pub uuid_generator: Arc<dyn UuidGenerator>,
-	pub event_publisher: Arc<dyn Publisher<Event>>,
+	pub mark_payment_as_processed_usecase: application::payment::mark_as_processed::Usecase,
 }
 
 impl Context {
@@ -13,8 +13,11 @@ impl Context {
 		event_publisher: Arc<dyn Publisher<Event>>,
 	) -> Self {
 		Self {
-			uuid_generator,
-			event_publisher,
+			mark_payment_as_processed_usecase:
+				application::payment::mark_as_processed::Usecase::new(
+					uuid_generator,
+					event_publisher,
+				),
 		}
 	}
 }
