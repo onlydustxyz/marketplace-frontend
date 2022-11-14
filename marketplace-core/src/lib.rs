@@ -16,7 +16,7 @@ use marketplace_domain::*;
 use marketplace_infrastructure::{
 	amqp::Bus,
 	database::{self, init_pool},
-	github, starknet_account_verifier,
+	github,
 };
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
@@ -35,8 +35,6 @@ pub async fn main() -> Result<()> {
 	let database = Arc::new(database::Client::new(init_pool()?));
 	database.run_migrations()?;
 
-	let starknet_account_verifier = Arc::new(starknet_account_verifier::StarkNetClient::new());
-
 	let github_client = Arc::new(github::Client::new());
 	let uuid_generator = Arc::new(RandomUuidGenerator);
 	let event_bus = Arc::new(Bus::default().await?);
@@ -46,7 +44,6 @@ pub async fn main() -> Result<()> {
 	let rocket_handler = inject_app(
 		rocket::build(),
 		database.clone(),
-		starknet_account_verifier,
 		uuid_generator,
 		github_client.clone(),
 		event_bus,
@@ -89,7 +86,6 @@ pub async fn main() -> Result<()> {
 fn inject_app(
 	rocket: Rocket<Build>,
 	database: Arc<database::Client>,
-	starknet_account_verifier: Arc<starknet_account_verifier::StarkNetClient>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 	github_client: Arc<github::Client>,
 	event_bus: Arc<Bus>,
@@ -104,7 +100,6 @@ fn inject_app(
 	rocket
 		.manage(AssociateGithubAccount::new_usecase_boxed(
 			event_bus.clone(),
-			starknet_account_verifier,
 			github_client,
 			uuid_generator.clone(),
 		))

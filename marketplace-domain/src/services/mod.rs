@@ -5,6 +5,3 @@ pub use self::uuid::{
 
 mod github_client;
 pub use github_client::{Error as GithubClientError, GithubClient, MockGithubClient};
-
-mod onchain_account_verifier;
-pub use onchain_account_verifier::{Error as OnChainAccountVerifierError, OnChainAccountVerifier};
