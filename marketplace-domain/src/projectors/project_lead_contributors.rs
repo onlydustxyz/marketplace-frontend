@@ -48,7 +48,6 @@ impl EventListener for LeadContributorProjector {
 					project_id,
 					contributor_id,
 				} => self.on_lead_contributor_removed(project_id, *contributor_id),
-				ProjectEvent::MemberAdded { .. } | ProjectEvent::MemberRemoved { .. } => return,
 			},
 			_ => return,
 		};

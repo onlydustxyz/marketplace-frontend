@@ -59,13 +59,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    project_members (project_id, contributor_id) {
-        project_id -> Text,
-        contributor_id -> Uuid,
-    }
-}
-
-diesel::table! {
     users (id) {
         id -> Uuid,
         github_identifier -> Nullable<Text>,
@@ -82,6 +75,5 @@ diesel::allow_tables_to_appear_in_same_query!(
     lead_contributors,
     payments,
     payout_settings,
-    project_members,
     users,
 );

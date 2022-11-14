@@ -32,10 +32,7 @@ mod projection_repository;
 pub use projection_repository::{Error as ProjectionRepositoryError, ProjectionRepository};
 
 mod project;
-pub use project::{
-	Event as ProjectEvent, Id as ProjectId, LeadContributorProjection,
-	MemberProjection as ProjectMemberProjection, Project,
-};
+pub use project::{Event as ProjectEvent, Id as ProjectId, LeadContributorProjection, Project};
 
 mod aggregate_root_repository;
 pub use aggregate_root_repository::{
@@ -51,7 +48,6 @@ pub use contributor::{
 mod projectors;
 pub use projectors::{
 	ContributorWithGithubData as ContributorWithGithubDataProjector, LeadContributorProjector,
-	MemberProjector as ProjectMemberProjector,
 };
 
 mod payment;

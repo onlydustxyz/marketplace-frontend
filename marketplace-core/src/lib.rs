@@ -94,7 +94,6 @@ fn inject_app(
 	github_client: Arc<github::Client>,
 	event_bus: Arc<Bus>,
 ) -> Rocket<Build> {
-	let project_member_projector = Arc::new(ProjectMemberProjector::new(database.clone()));
 	let lead_contributor_projector = Arc::new(LeadContributorProjector::new(database.clone()));
 
 	let contributor_projector = Arc::new(ContributorWithGithubDataProjector::new(
@@ -113,11 +112,6 @@ fn inject_app(
 			event_bus,
 			uuid_generator,
 		))
-		.manage(RefreshProjectsMembers::new(
-			database.clone(),
-			project_member_projector,
-			database.clone(),
-		))
 		.manage(RefreshLeadContributors::new(
 			database.clone(),
 			lead_contributor_projector,
@@ -129,6 +123,5 @@ fn inject_app(
 			database.clone(),
 		))
 		.manage(database.clone() as Arc<dyn ContributorProjectionRepository>)
-		.manage(database.clone() as Arc<dyn ProjectMemberProjectionRepository>)
 		.manage(database as Arc<dyn LeadContributorProjectionRepository>)
 }
