@@ -4,7 +4,6 @@ members = [
   "marketplace-core",
   "marketplace-domain",
   "marketplace-event-store",
-  "marketplace-indexer",
   "marketplace-infrastructure",
   "marketplace-tests",
   "marketplace-wrappers",

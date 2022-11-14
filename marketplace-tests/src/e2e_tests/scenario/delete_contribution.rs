@@ -1,7 +1,7 @@
 use super::{wait_for_events, STARKONQUEST_ID};
 use crate::e2e_tests::{
 	applications,
-	backends::{event_listeners, marketplace_api, marketplace_event_store, marketplace_indexer},
+	backends::{event_listeners, marketplace_api, marketplace_event_store},
 	contributions,
 	database::get_events_count,
 	projects::add_lead_contributor,
@@ -20,12 +20,10 @@ async fn delete_contribution(
 	lead_contributor_account: Account,
 	contributor_account: Account,
 	#[future] marketplace_api: JoinHandle<Result<()>>,
-	#[future] marketplace_indexer: JoinHandle<Result<()>>,
 	#[future] marketplace_event_store: JoinHandle<Result<()>>,
 	#[future] event_listeners: JoinHandle<Result<()>>,
 ) {
 	marketplace_api.await;
-	marketplace_indexer.await;
 	marketplace_event_store.await;
 	event_listeners.await;
 

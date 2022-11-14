@@ -26,15 +26,6 @@ pub async fn marketplace_api() -> JoinHandle<Result<()>> {
 }
 
 #[fixture]
-pub async fn marketplace_indexer(_migrated_database: ()) -> JoinHandle<Result<()>> {
-	let handle = spawn(::marketplace_indexer::main());
-
-	// TODO: Find a better way to check the indexer is ready
-	tokio::time::sleep(Duration::from_secs(1)).await;
-	handle
-}
-
-#[fixture]
 pub async fn marketplace_event_store(_migrated_database: ()) -> JoinHandle<Result<()>> {
 	let handle = spawn(::marketplace_event_store::main());
 

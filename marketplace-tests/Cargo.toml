@@ -52,7 +52,6 @@ tokio = {version = "1.18.2", features = ["full"]}
 
 # Local dependencies
 marketplace-core = {path = "../marketplace-core"}
-marketplace-indexer = {path = "../marketplace-indexer"}
 marketplace-infrastructure = {path = "../marketplace-infrastructure"}
 marketplace-event-store = {path = "../marketplace-event-store"}
 marketplace-domain = {path = "../marketplace-domain"}
