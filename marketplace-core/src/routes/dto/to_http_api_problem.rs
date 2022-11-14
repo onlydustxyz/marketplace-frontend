@@ -3,8 +3,6 @@ use http_api_problem::{HttpApiProblem, StatusCode};
 use marketplace_domain::{Error as DomainError, *};
 use marketplace_infrastructure::github::GithubError;
 
-use super::hex_prefixed_string::FromHexPrefixedStringError;
-
 pub(crate) trait ToHttpApiProblem {
 	fn to_http_api_problem(&self) -> HttpApiProblem;
 }
@@ -40,18 +38,6 @@ impl ToHttpApiProblem for DomainError {
 				.title("Internal error")
 				.detail(self.to_string()),
 		}
-	}
-}
-
-impl ToHttpApiProblem for ParseHexPrefixedStringError {
-	fn to_http_api_problem(&self) -> HttpApiProblem {
-		HttpApiProblem::new(StatusCode::BAD_REQUEST).title(self.to_string())
-	}
-}
-
-impl ToHttpApiProblem for FromHexPrefixedStringError {
-	fn to_http_api_problem(&self) -> HttpApiProblem {
-		HttpApiProblem::new(StatusCode::BAD_REQUEST).title(self.to_string())
 	}
 }
 
