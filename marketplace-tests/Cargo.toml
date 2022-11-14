@@ -61,8 +61,5 @@ marketplace-core = {path = "../marketplace-core"}
 marketplace-infrastructure = {path = "../marketplace-infrastructure"}
 marketplace-event-store = {path = "../marketplace-event-store"}
 
-# Starknet
-starknet = {git = "https://github.com/xJonathanLEI/starknet-rs"}
-
 # Errors
 anyhow = "1.0.57"

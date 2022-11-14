@@ -46,9 +46,6 @@ rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 rocket_okapi = {version = "0.8.0-rc.2", features = ["swagger", "uuid"]}
 schemars = {version = "0.8", features = ["uuid1", "bigdecimal"]}
 
-# Starknet
-starknet = {git = "https://github.com/xJonathanLEI/starknet-rs"}
-
 # Math types
 crypto-bigint = {version = "0.4.8", features = ["serde"]}
 
