@@ -55,30 +55,26 @@ impl Contributor {
 		github_client: Arc<dyn GithubClient>,
 		authorization_code: String,
 		id: &Uuid,
-	) -> Result<Vec<Event>, Error> {
+	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
 		let github_identifier = github_client
 			.authenticate_user(authorization_code)
 			.await
 			.map_err(Error::GithubAuthentication)?;
 
-		Ok(vec![Event::Contributor(
-			ContributorEvent::GithubAccountAssociated {
-				user_id: *id,
-				github_identifier,
-			},
-		)])
+		Ok(vec![ContributorEvent::GithubAccountAssociated {
+			user_id: *id,
+			github_identifier,
+		}])
 	}
 
 	pub fn register_discord_handle(
 		user_id: Uuid,
 		discord_handle: ContributorDiscordHandle,
-	) -> Result<Vec<Event>, Error> {
-		Ok(vec![Event::Contributor(
-			ContributorEvent::DiscordHandleRegistered {
-				user_id,
-				discord_handle,
-			},
-		)])
+	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+		Ok(vec![ContributorEvent::DiscordHandleRegistered {
+			user_id,
+			discord_handle,
+		}])
 	}
 }
 
@@ -151,10 +147,10 @@ mod test {
 		assert_eq!(1, emitted_events.len());
 		assert_matches!(
 			emitted_events.first().unwrap(),
-			Event::Contributor(ContributorEvent::GithubAccountAssociated {
+			ContributorEvent::GithubAccountAssociated {
 				user_id: _,
 				github_identifier: _,
-			})
+			}
 		);
 	}
 
@@ -168,10 +164,10 @@ mod test {
 		assert_eq!(1, emitted_events.len());
 		assert_eq!(
 			emitted_events.first().unwrap().clone(),
-			Event::Contributor(ContributorEvent::DiscordHandleRegistered {
+			ContributorEvent::DiscordHandleRegistered {
 				user_id,
 				discord_handle,
-			})
+			}
 		);
 	}
 }
