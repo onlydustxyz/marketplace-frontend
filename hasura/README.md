@@ -42,16 +42,17 @@ This changes will be sync automatically in your local config files.
 
 Modify your source files, then run `yarn start` to check that everything is well formatted.
 
-## Deployment
+## Manual deployment
 
 Currently, you can deploy configuration from your local environment by setting the appropriate env variables (found in Heroku/1password).
 
 Run:
 
 ```
-hasura deploy --endpoint $HASURA_ENDPOINT --admin-secret $HASURA_ADMIN_SECRET_KEY
+yarn deploy -- --endpoint $HASURA_ENDPOINT --admin-secret $HASURA_ADMIN_SECRET_KEY
 ```
 
 ### CD
 
-TODO
+A buildpack to automatically deploy metadata to corresponding environement has been created [here](https://github.com/onlydustxyz/update-hasura-metadata-buildpack).
+It will run on each env to execute metadata apply on deploy.
