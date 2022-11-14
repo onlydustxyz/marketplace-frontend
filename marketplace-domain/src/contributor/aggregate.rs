@@ -160,7 +160,7 @@ mod test {
 
 		account_verifier
 			.expect_check_signature()
-			.with(eq(signed_data.clone()), eq(user_id.clone()))
+			.with(eq(signed_data.clone()), eq(user_id))
 			.once()
 			.returning(|_, _| Ok(()));
 
@@ -194,7 +194,7 @@ mod test {
 
 	#[rstest]
 	async fn register_discord_handle(user_id: Uuid, discord_handle: ContributorDiscordHandle) {
-		let result = Contributor::register_discord_handle(user_id.clone(), discord_handle.clone());
+		let result = Contributor::register_discord_handle(user_id, discord_handle.clone());
 
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 

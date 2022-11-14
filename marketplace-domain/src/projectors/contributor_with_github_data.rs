@@ -150,7 +150,7 @@ mod test {
 			.expect_upsert_discord_handle()
 			.once()
 			.with(eq(ContributorProfile {
-				id: user_id.clone(),
+				id: user_id,
 				discord_handle: Some(discord_handle.clone()),
 				..Default::default()
 			}))
@@ -182,7 +182,7 @@ mod test {
 	) {
 		contributor_projection_repository
 			.expect_find_by_id()
-			.with(eq(user_id.clone()))
+			.with(eq(user_id))
 			.once()
 			.returning(|_| Err(ContributorProjectionRepositoryError::NotFound));
 

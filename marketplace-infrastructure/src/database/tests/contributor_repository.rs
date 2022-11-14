@@ -47,7 +47,7 @@ fn github_then_discord(
 ) {
 	{
 		let contributor = ContributorProfile {
-			id: user_id.clone(),
+			id: user_id,
 			github_identifier: Some(github_identifier),
 			github_username: Some(github_username.clone()),
 			..Default::default()
@@ -59,7 +59,7 @@ fn github_then_discord(
 
 	{
 		let contributor = ContributorProfile {
-			id: user_id.clone(),
+			id: user_id,
 			discord_handle: Some(discord_handle.clone()),
 			..Default::default()
 		};
@@ -90,7 +90,7 @@ fn discord_then_github(
 ) {
 	{
 		let contributor = ContributorProfile {
-			id: user_id.clone(),
+			id: user_id,
 			discord_handle: Some(discord_handle.clone()),
 			..Default::default()
 		};
@@ -101,7 +101,7 @@ fn discord_then_github(
 
 	{
 		let contributor = ContributorProfile {
-			id: user_id.clone(),
+			id: user_id,
 			github_identifier: Some(github_identifier),
 			github_username: Some(github_username.clone()),
 			..Default::default()
