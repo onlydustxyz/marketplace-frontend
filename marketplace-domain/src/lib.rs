@@ -20,7 +20,10 @@ mod event_listener;
 pub use event_listener::{EventListener, MockEventListener};
 
 mod messaging;
-pub use messaging::{Destination, Message, Publisher, PublisherError, Subscriber, SubscriberError};
+pub use messaging::{
+	Destination, Message, Publisher, PublisherError, Subscriber, SubscriberCallbackError,
+	SubscriberError,
+};
 
 mod projection;
 pub use projection::Projection;
