@@ -1,6 +1,7 @@
+use anyhow::Result;
 use chrono::Utc;
 use marketplace_domain::{
-	Destination, Error, Payment, PaymentId, PaymentReceipt, Publisher, UuidGenerator,
+	Destination, Payment, PaymentId, PaymentReceipt, Publisher, UuidGenerator,
 };
 use marketplace_event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event, EventOrigin};
 use std::sync::Arc;
@@ -25,7 +26,7 @@ impl Usecase {
 		&self,
 		id: PaymentId,
 		receipt: PaymentReceipt,
-	) -> Result<(), Error> {
+	) -> Result<()> {
 		let events: Vec<Event> = Payment::mark_as_processed(id, receipt)
 			.into_iter()
 			.map(|event| Event {

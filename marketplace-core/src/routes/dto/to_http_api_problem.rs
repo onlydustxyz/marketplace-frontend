@@ -1,6 +1,6 @@
 use crate::RefreshError;
 use http_api_problem::{HttpApiProblem, StatusCode};
-use marketplace_domain::{Error as DomainError, *};
+use marketplace_domain::*;
 use marketplace_infrastructure::github::GithubError;
 
 pub(crate) trait ToHttpApiProblem {
@@ -16,27 +16,6 @@ impl ToHttpApiProblem for AggregateRootRepositoryError {
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 					.title(self.to_string())
 					.detail(e.to_string()),
-		}
-	}
-}
-
-impl ToHttpApiProblem for DomainError {
-	fn to_http_api_problem(&self) -> HttpApiProblem {
-		match self {
-			DomainError::ContributionRepository(contribution_repository_error) =>
-				contribution_repository_error.to_http_api_problem(),
-			DomainError::Lock =>
-				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR).title(self.to_string()),
-			DomainError::EventStoreError(_) =>
-				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-					.title("Internal error")
-					.detail(self.to_string()),
-			DomainError::ContributorError(_) => HttpApiProblem::new(StatusCode::BAD_REQUEST)
-				.title("Contributor error")
-				.detail(self.to_string()),
-			DomainError::Publisher(_) => HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
-				.title("Internal error")
-				.detail(self.to_string()),
 		}
 	}
 }

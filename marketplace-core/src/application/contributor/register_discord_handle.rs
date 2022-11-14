@@ -1,6 +1,9 @@
+use anyhow::Result;
 use async_trait::async_trait;
 use chrono::Utc;
-use marketplace_domain::{Error as DomainError, *};
+use marketplace_domain::{
+	Contributor, ContributorDiscordHandle, Destination, Publisher, UuidGenerator,
+};
 use marketplace_event_store::{
 	bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event as StorableEvent, EventOrigin,
 };
@@ -15,7 +18,7 @@ pub trait Usecase: Send + Sync {
 		&self,
 		user_id: Uuid,
 		discord_handle: ContributorDiscordHandle,
-	) -> Result<(), DomainError>;
+	) -> Result<()>;
 }
 
 pub struct RegisterDiscordHandle {
@@ -48,7 +51,7 @@ impl Usecase for RegisterDiscordHandle {
 		&self,
 		user_id: Uuid,
 		discord_handle: ContributorDiscordHandle,
-	) -> Result<(), DomainError> {
+	) -> Result<()> {
 		let events = Contributor::register_discord_handle(user_id, discord_handle)?;
 		let storable_events: Vec<StorableEvent> = events
 			.iter()
