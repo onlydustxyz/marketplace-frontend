@@ -16,7 +16,6 @@ async-trait = "0.1.56"
 futures = {version = "0.3.21", features = ["alloc"]}
 
 # Core types
-crypto-bigint = {version = "0.4.8", features = ["serde"]}
 url = "2.2.2"
 uuid = {version = "0.8.2", default_features = false, features = [
   "v4",
@@ -24,7 +23,6 @@ uuid = {version = "0.8.2", default_features = false, features = [
 ]}
 
 # Utils
-hex = "0.4.3"
 mapinto = "0.2.1"
 
 # Errors

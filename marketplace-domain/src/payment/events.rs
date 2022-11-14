@@ -51,8 +51,8 @@ mod tests {
 					"receipt": {
 						"OnChainPayment": {
 							"network": "Ethereum",
-							"recipient_address": "0x00",
-							"transaction_hash": "0x00"
+							"recipient_address": "",
+							"transaction_hash": ""
 						}
 					}
 				}

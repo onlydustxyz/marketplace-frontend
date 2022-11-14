@@ -8,6 +8,3 @@ pub use github_client::{Error as GithubClientError, GithubClient, MockGithubClie
 
 mod onchain_account_verifier;
 pub use onchain_account_verifier::{Error as OnChainAccountVerifierError, OnChainAccountVerifier};
-
-mod account_address;
-pub use account_address::AccountAddress;
