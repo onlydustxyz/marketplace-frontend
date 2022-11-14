@@ -41,7 +41,7 @@ async fn store(store: Arc<dyn EventStore>, event: Event) -> Result<Event, Subscr
 	}
 
 	store
-		.append(&event.aggregate_id(), vec![event.clone()])
+		.append(&event.aggregate_id(), event.clone())
 		.map_err(|e| SubscriberCallbackError::InternalError(e.into()))?;
 
 	Ok(event)
