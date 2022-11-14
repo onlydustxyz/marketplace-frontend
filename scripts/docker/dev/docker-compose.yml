@@ -13,7 +13,7 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: [ "CMD-SHELL", "pg_isready" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -27,36 +27,6 @@ services:
       PGADMIN_DEFAULT_PASSWORD: postgres
     ports:
       - "5060:80"
-
-  starknet-devnet:
-    container_name: starknet-devnet
-    image: shardlabs/starknet-devnet:0.3.1${ARM_TAG:-}
-    command: --seed 0 --load-path /tmp/dump.pkl
-    ports:
-      - 5050:5050
-    volumes:
-      - .:/tmp
-    healthcheck:
-      test: wget --no-verbose --tries=1 --spider http://localhost:5050/is_alive || exit 1
-      interval: 5s
-      retries: 10
-      start_period: 5s
-      timeout: 1s
-
-  apibara:
-    container_name: apibara
-    image: apibara/starknet:ffbe469b2dadee8f5e3c11d35ee8b0f81915c63a
-    command: /usr/local/bin/apibara-starknet start --custom-network name=devnet,url=http://starknet-devnet:5050 --poll-interval 500
-    environment:
-      RUST_LOG: info
-    restart: always
-    ports:
-      - 7171:7171
-    depends_on:
-      starknet-devnet:
-        condition: service_healthy
-      db:
-        condition: service_healthy
 
   httpmock:
     container_name: httpmock
