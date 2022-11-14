@@ -1,10 +1,9 @@
-use crate::{ContributionEvent, ContributorEvent, Message, PaymentEvent, ProjectEvent};
+use crate::{ContributorEvent, Message, PaymentEvent, ProjectEvent};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
-	Contribution(ContributionEvent),
 	Project(ProjectEvent),
 	Contributor(ContributorEvent),
 	Payment(PaymentEvent),
@@ -25,15 +24,23 @@ impl Message for Event {}
 #[cfg(test)]
 mod test {
 	use super::*;
+	use crate::{BlockchainNetwork, PaymentReceipt};
 	use assert_json_diff::assert_json_include;
 	use serde_json::{json, Value};
 
 	#[test]
 	fn display_event_as_json() {
-		let event = Event::Contribution(ContributionEvent::default());
+		let event = Event::Payment(PaymentEvent::Processed {
+			id: Default::default(),
+			receipt: PaymentReceipt::OnChainPayment {
+				network: BlockchainNetwork::Ethereum,
+				recipient_address: Default::default(),
+				transaction_hash: Default::default(),
+			},
+		});
 		assert_json_include!(
 			actual: serde_json::from_str::<Value>(&event.to_string()).unwrap(),
-			expected: json!({ "Contribution": { "Created": {} } })
+			expected: json!({ "Payment": { "Processed": {} } })
 		);
 	}
 }

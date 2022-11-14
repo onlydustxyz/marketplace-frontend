@@ -1,4 +1,4 @@
-use std::{ffi::OsString, str::FromStr};
+use std::ffi::OsString;
 
 use super::*;
 use assert_matches::assert_matches;
@@ -6,7 +6,7 @@ use envtestkit::{
 	lock::{lock_read, lock_test},
 	set_env,
 };
-use marketplace_domain::{ContributionEvent, ContributionId};
+use marketplace_tests::fixtures;
 use mockito;
 
 #[allow(clippy::await_holding_lock)]
@@ -14,9 +14,7 @@ use mockito;
 async fn env_variable_not_set() {
 	let _lock = lock_read();
 
-	let event = Event::Contribution(ContributionEvent::Validated {
-		id: Default::default(),
-	});
+	let event: Event = fixtures::payment::events::payment_processed().into();
 
 	assert_matches!(
 		send_event_to_webhook(&reqwest::Client::new(), &event).await,
@@ -30,9 +28,7 @@ async fn env_variable_invalid() {
 	let _lock = lock_test();
 	let _test = set_env(OsString::from(WEBHOOK_TARGET_ENV_VAR), "Some random junk");
 
-	let event = Event::Contribution(ContributionEvent::Validated {
-		id: Default::default(),
-	});
+	let event: Event = fixtures::payment::events::payment_processed().into();
 
 	assert_matches!(
 		send_event_to_webhook(&reqwest::Client::new(), &event).await,
@@ -52,9 +48,7 @@ async fn http_call_fail() {
 	let _lock = lock_test();
 	let _test = set_env(OsString::from(WEBHOOK_TARGET_ENV_VAR), &target_url);
 
-	let event = Event::Contribution(ContributionEvent::Validated {
-		id: Default::default(),
-	});
+	let event: Event = fixtures::payment::events::payment_processed().into();
 
 	assert_matches!(
 		send_event_to_webhook(&reqwest::Client::new(), &event).await,
@@ -66,9 +60,7 @@ async fn http_call_fail() {
 
 #[test]
 fn webhook_event_serialize() {
-	let event = Event::Contribution(ContributionEvent::Validated {
-		id: ContributionId::from_str("0x123").unwrap(),
-	});
+	let event: Event = fixtures::payment::events::payment_processed().into();
 
 	let webhook_event = WebhookEvent::new(event);
 
@@ -76,6 +68,6 @@ fn webhook_event_serialize() {
 
 	assert_eq!(
 		json,
-		r#"{"aggregate_name":"Contribution","event_name":"Validated","payload":{"id":"0x0123"}}"#
+		r#"{"aggregate_name":"Payment","event_name":"Processed","payload":{"id":"abad1756-18ba-42e2-8cbf-83369cecfb38","receipt":{"OnChainPayment":{"network":"Ethereum","recipient_address":"0x07b3616d2450b6390e9d14b92de8b766e6d93fd22fb9afde882705154045f2e1","transaction_hash":"0x0797fb77202901c52094d2544f3631a3535b8ca40009f6a6ac6940b67e6873a4"}}}}"#
 	);
 }

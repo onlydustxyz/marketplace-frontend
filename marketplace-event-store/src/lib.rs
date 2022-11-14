@@ -56,20 +56,6 @@ trait IdentifiableAggregate {
 impl IdentifiableAggregate for Event {
 	fn aggregate_id(&self) -> String {
 		match &self.event {
-			DomainEvent::Contribution(event) => match event {
-				marketplace_domain::ContributionEvent::Deployed { contract_address } =>
-					contract_address.to_string(),
-				marketplace_domain::ContributionEvent::Created { id, .. }
-				| marketplace_domain::ContributionEvent::Applied { id, .. }
-				| marketplace_domain::ContributionEvent::ApplicationRefused { id, .. }
-				| marketplace_domain::ContributionEvent::Assigned { id, .. }
-				| marketplace_domain::ContributionEvent::Claimed { id, .. }
-				| marketplace_domain::ContributionEvent::Unassigned { id }
-				| marketplace_domain::ContributionEvent::Validated { id }
-				| marketplace_domain::ContributionEvent::GateChanged { id, .. }
-				| marketplace_domain::ContributionEvent::Closed { id }
-				| marketplace_domain::ContributionEvent::Reopened { id } => id.to_string(),
-			},
 			DomainEvent::Project(event) => match event {
 				marketplace_domain::ProjectEvent::MemberAdded { project_id, .. }
 				| marketplace_domain::ProjectEvent::MemberRemoved { project_id, .. }

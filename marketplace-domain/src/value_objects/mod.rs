@@ -1,6 +1,3 @@
-mod project_with_contributions;
-pub use project_with_contributions::*;
-
 mod hex_prefixed_string;
 pub use hex_prefixed_string::{HexPrefixedString, ParseHexPrefixedStringError};
 
