@@ -30,48 +30,27 @@ curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
 
 ### From console
 
-You can access console at http://localhost:8080/console/api/api-explorer.
-The default local admin secret is stored in docker env variables (currently: `myadminsecretkey`).
-
-When you are done, you can sync the config with your local (be aware that it will erase your un-synced modifications on config files).
+Open console with the start command (running `hasura console`):
 
 ```
-hasura metadata export
+cd hasura && yarn start
 ```
 
-Be sure to have exported/sourced the needed env variables:
-
-```
-export HASURA_GRAPHQL_ADMIN_SECRET=myadminsecretkey
-export HASURA_GRAPHQL_ENDPOINT=http://localhost:8080
-```
+This changes will be sync automatically in your local config files.
 
 ### From source files
 
-To load your local config files in the metadata database, you can use the cli:
-
-```
-hasura metadata apply
-```
-
-Be sure to have exported/sourced the needed env variables:
-
-```
-export HASURA_GRAPHQL_ADMIN_SECRET=myadminsecretkey
-export HASURA_GRAPHQL_ENDPOINT=http://localhost:8080
-```
-
-It will create another version of the metadatas in your database.
-We are not using versions in staging nor production because our versioning is done via github.
-You should therefore clear the metadata before load with the following command:
-
-```
-hasura metadata clear
-```
+Modify your source files, then run `yarn start` to check that everything is well formatted.
 
 ## Deployment
 
 Currently, you can deploy configuration from your local environment by setting the appropriate env variables (found in Heroku/1password).
+
+Run:
+
+```
+hasura deploy --endpoint $HASURA_ENDPOINT --admin-secret $HASURA_ADMIN_SECRET_KEY
+```
 
 ### CD
 
