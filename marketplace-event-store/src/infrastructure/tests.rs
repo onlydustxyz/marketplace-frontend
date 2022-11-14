@@ -2,11 +2,10 @@ use crate::{domain::EventStore, Event, EventOrigin};
 use chrono::Utc;
 use diesel::{query_dsl::select_dsl::SelectDsl, RunQueryDsl};
 use marketplace_domain::{
-	Contribution, ContributionEvent, ContributionId, Event as DomainEvent,
-	EventStore as DomainEventStore, HexPrefixedString,
+	Event as DomainEvent, EventStore as DomainEventStore, Payment, PaymentId,
 };
 use marketplace_infrastructure::database::{schema::events, Client};
-use marketplace_tests::init_pool;
+use marketplace_tests::{fixtures, init_pool};
 use rstest::{fixture, rstest};
 use serde_json::{json, Value};
 use std::str::FromStr;
@@ -19,44 +18,23 @@ fn database() -> Client {
 }
 
 #[fixture]
-fn contribution_id() -> ContributionId {
-	HexPrefixedString::from_str("0x123").unwrap().into()
-}
-
-#[fixture]
 fn contributor_id() -> Uuid {
 	Uuid::from_str("3d863031-e9bb-42dc-becd-67999675fb8b").unwrap()
 }
 
 #[fixture]
-fn creation_event(contribution_id: ContributionId) -> Event {
+fn payment_id() -> PaymentId {
+	fixtures::payment::payment_id()
+}
+
+#[fixture]
+fn payment_processed_event() -> Event {
 	Event {
-		event: ContributionEvent::Created {
-			id: contribution_id,
-			project_id: Default::default(),
-			issue_number: Default::default(),
-			gate: Default::default(),
-		}
-		.into(),
+		event: fixtures::payment::events::payment_processed().into(),
 		timestamp: Utc::now().naive_utc(),
 		deduplication_id: "dedup1".to_string(),
 		origin: EventOrigin::Starknet,
 		metadata: json!({"key": "value"}),
-	}
-}
-
-#[fixture]
-fn assigned_event(contribution_id: ContributionId, contributor_id: Uuid) -> Event {
-	Event {
-		event: ContributionEvent::Assigned {
-			id: contribution_id,
-			contributor_id,
-		}
-		.into(),
-		timestamp: Utc::now().naive_utc(),
-		deduplication_id: "dedup2".to_string(),
-		origin: EventOrigin::Starknet,
-		metadata: Default::default(),
 	}
 }
 
@@ -65,31 +43,21 @@ fn assigned_event(contribution_id: ContributionId, contributor_id: Uuid) -> Even
 	not(feature = "with_infrastructure_tests"),
 	ignore = "infrastructure test"
 )]
-fn test_append_and_list(
-	database: &Client,
-	contribution_id: ContributionId,
-	creation_event: Event,
-	assigned_event: Event,
-) {
+fn test_append_and_list(database: &Client, payment_id: PaymentId, payment_processed_event: Event) {
 	assert!(
 		EventStore::append(
 			database,
-			&contribution_id.to_string(),
-			vec![creation_event.clone(), assigned_event.clone()]
+			&payment_id.to_string(),
+			vec![payment_processed_event.clone()]
 		)
 		.is_ok()
 	);
 
-	let contribution_events =
-		DomainEventStore::<Contribution>::list_by_id(database, &contribution_id).unwrap();
-	assert_eq!(contribution_events.len(), 2);
+	let events = DomainEventStore::<Payment>::list_by_id(database, &payment_id).unwrap();
+	assert_eq!(events.len(), 1);
 	assert_eq!(
-		DomainEvent::Contribution(contribution_events.first().unwrap().clone()),
-		creation_event.event
-	);
-	assert_eq!(
-		DomainEvent::Contribution(contribution_events.last().unwrap().clone()),
-		assigned_event.event
+		DomainEvent::Payment(events.first().unwrap().clone()),
+		payment_processed_event.event
 	);
 }
 
@@ -100,20 +68,20 @@ fn test_append_and_list(
 )]
 fn test_cannot_append_duplicate_event_in_same_batch(
 	database: &Client,
-	contribution_id: ContributionId,
-	creation_event: Event,
+	payment_id: PaymentId,
+	payment_processed_event: Event,
 ) {
 	assert!(
 		EventStore::append(
 			database,
-			&contribution_id.to_string(),
-			vec![creation_event.clone(), creation_event]
+			&payment_id.to_string(),
+			vec![payment_processed_event.clone(), payment_processed_event]
 		)
 		.is_err()
 	);
 
 	let contribution_events =
-		DomainEventStore::<Contribution>::list_by_id(database, &contribution_id).unwrap();
+		DomainEventStore::<Payment>::list_by_id(database, &payment_id).unwrap();
 	assert_eq!(contribution_events.len(), 0);
 }
 
@@ -124,19 +92,24 @@ fn test_cannot_append_duplicate_event_in_same_batch(
 )]
 fn test_cannot_append_duplicate_event_in_different_batches(
 	database: &Client,
-	contribution_id: ContributionId,
-	creation_event: Event,
+	payment_id: PaymentId,
+	payment_processed_event: Event,
 ) {
 	assert!(
 		EventStore::append(
 			database,
-			&contribution_id.to_string(),
-			vec![creation_event.clone()]
+			&payment_id.to_string(),
+			vec![payment_processed_event.clone()]
 		)
 		.is_ok()
 	);
 	assert!(
-		EventStore::append(database, &contribution_id.to_string(), vec![creation_event]).is_err()
+		EventStore::append(
+			database,
+			&payment_id.to_string(),
+			vec![payment_processed_event]
+		)
+		.is_err()
 	);
 }
 
@@ -147,11 +120,16 @@ fn test_cannot_append_duplicate_event_in_different_batches(
 )]
 fn test_metadata_are_stored(
 	database: &Client,
-	contribution_id: ContributionId,
-	creation_event: Event,
+	payment_id: PaymentId,
+	payment_processed_event: Event,
 ) {
 	assert!(
-		EventStore::append(database, &contribution_id.to_string(), vec![creation_event]).is_ok()
+		EventStore::append(
+			database,
+			&payment_id.to_string(),
+			vec![payment_processed_event]
+		)
+		.is_ok()
 	);
 
 	let connection = database.connection().unwrap();

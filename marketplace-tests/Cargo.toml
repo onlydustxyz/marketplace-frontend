@@ -23,6 +23,14 @@ futures = "0.3.24"
 r2d2 = "0.8.10"
 r2d2-diesel = "1.0.0"
 
+# Utils
+uuid = {version = "0.8.2", default_features = false, features = [
+  "v4",
+]}
+
+# Local dependencies
+marketplace-domain = {path = "../marketplace-domain"}
+
 [dev-dependencies]
 # Unit testing
 assert-json-diff = "2.0.2"
@@ -34,9 +42,7 @@ rstest = "0.15.0"
 dotenv = "0.15.0"
 hex = "0.4.3"
 chrono = "0.4"
-uuid = {version = "0.8.2", default_features = false, features = [
-  "v4",
-]}
+
 
 # Serde
 serde = {version = "1.0.137", features = ["derive"]}
@@ -54,7 +60,6 @@ tokio = {version = "1.18.2", features = ["full"]}
 marketplace-core = {path = "../marketplace-core"}
 marketplace-infrastructure = {path = "../marketplace-infrastructure"}
 marketplace-event-store = {path = "../marketplace-event-store"}
-marketplace-domain = {path = "../marketplace-domain"}
 
 # Starknet
 starknet = {git = "https://github.com/xJonathanLEI/starknet-rs"}

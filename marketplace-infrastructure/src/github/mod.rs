@@ -6,7 +6,7 @@ pub use errors::Error as GithubError;
 use log::error;
 use std::{collections::HashMap, sync::Arc};
 
-use marketplace_domain::{self as domain, *};
+use marketplace_domain::*;
 
 use errors::Error;
 
@@ -127,9 +127,16 @@ impl Default for Client {
 	}
 }
 
-pub fn extract_metadata(
-	github_issue: &octocrab::models::issues::Issue,
-) -> domain::GithubContributionMetadata {
+#[derive(Debug, PartialEq, Eq, Clone, Default)]
+pub struct Metadata {
+	pub difficulty: Option<String>,
+	pub technology: Option<String>,
+	pub duration: Option<String>,
+	pub context: Option<String>,
+	pub r#type: Option<String>,
+}
+
+pub fn extract_metadata(github_issue: &octocrab::models::issues::Issue) -> Metadata {
 	let labels: HashMap<String, String> = github_issue
 		.labels
 		.iter()
@@ -143,7 +150,7 @@ pub fn extract_metadata(
 		})
 		.collect();
 
-	domain::GithubContributionMetadata {
+	Metadata {
 		context: labels.get("Context").map(|x| x.to_owned()),
 		difficulty: labels.get("Difficulty").map(|x| x.to_owned()),
 		duration: labels.get("Duration").map(|x| x.to_owned()),

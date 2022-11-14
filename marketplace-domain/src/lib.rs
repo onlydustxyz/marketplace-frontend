@@ -31,11 +31,6 @@ pub use projection::Projection;
 mod projection_repository;
 pub use projection_repository::{Error as ProjectionRepositoryError, ProjectionRepository};
 
-mod contribution;
-pub use contribution::{
-	AggregateId as ContributionId, Event as ContributionEvent, Status as ContributionStatus, *,
-};
-
 mod project;
 pub use project::{
 	Event as ProjectEvent, Id as ProjectId, LeadContributorProjection,
@@ -55,8 +50,7 @@ pub use contributor::{
 
 mod projectors;
 pub use projectors::{
-	ApplicationProjector, ContributorWithGithubData as ContributorWithGithubDataProjector,
-	GithubContributionProjector, GithubProjectProjector, LeadContributorProjector,
+	ContributorWithGithubData as ContributorWithGithubDataProjector, LeadContributorProjector,
 	MemberProjector as ProjectMemberProjector,
 };
 

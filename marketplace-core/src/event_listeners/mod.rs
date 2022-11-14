@@ -1,8 +1,7 @@
 use anyhow::Result;
 use futures::future::try_join_all;
 use marketplace_domain::{
-	ApplicationProjector, ContributorWithGithubDataProjector, EventListener,
-	GithubContributionProjector, GithubProjectProjector, LeadContributorProjector,
+	ContributorWithGithubDataProjector, EventListener, LeadContributorProjector,
 	ProjectMemberProjector,
 };
 use marketplace_infrastructure::{
@@ -33,12 +32,6 @@ async fn spawn_listeners() -> Result<Vec<JoinHandle<()>>> {
 		logger::spawn(event_bus::consumer("logger").await?),
 		ProjectMemberProjector::new(database.clone())
 			.spawn(event_bus::consumer("project-member-projector").await?),
-		GithubContributionProjector::new(database.clone(), github.clone())
-			.spawn(event_bus::consumer("github-contribution-projector").await?),
-		ApplicationProjector::new(database.clone())
-			.spawn(event_bus::consumer("application-projector").await?),
-		GithubProjectProjector::new(github.clone(), database.clone())
-			.spawn(event_bus::consumer("github-project-projector").await?),
 		ContributorWithGithubDataProjector::new(github, database.clone())
 			.spawn(event_bus::consumer("github-contributor-projector").await?),
 		LeadContributorProjector::new(database.clone())

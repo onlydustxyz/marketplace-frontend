@@ -8,12 +8,6 @@ trait NamedAggregate: Aggregate {
 	fn name() -> String;
 }
 
-impl NamedAggregate for Contribution {
-	fn name() -> String {
-		String::from("CONTRIBUTION")
-	}
-}
-
 impl NamedAggregate for Project {
 	fn name() -> String {
 		String::from("PROJECT")
@@ -23,6 +17,12 @@ impl NamedAggregate for Project {
 impl NamedAggregate for Contributor {
 	fn name() -> String {
 		String::from("CONTRIBUTOR")
+	}
+}
+
+impl NamedAggregate for Payment {
+	fn name() -> String {
+		String::from("PAYMENT")
 	}
 }
 

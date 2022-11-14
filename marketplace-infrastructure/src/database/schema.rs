@@ -1,27 +1,6 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
-    contributions (id) {
-        id -> Text,
-        project_id -> Text,
-        issue_number -> Text,
-        status -> Text,
-        gate -> Int4,
-        title -> Nullable<Text>,
-        description -> Nullable<Text>,
-        external_link -> Nullable<Text>,
-        difficulty -> Nullable<Text>,
-        technology -> Nullable<Text>,
-        duration -> Nullable<Text>,
-        context -> Nullable<Text>,
-        #[sql_name = "type"]
-        type_ -> Nullable<Text>,
-        closed -> Bool,
-        contributor_id -> Nullable<Uuid>,
-    }
-}
-
-diesel::table! {
     event_deduplications (deduplication_id) {
         deduplication_id -> Text,
         event_index -> Int4,
@@ -80,28 +59,9 @@ diesel::table! {
 }
 
 diesel::table! {
-    pending_applications (contribution_id, contributor_id) {
-        contribution_id -> Text,
-        applied_at -> Timestamp,
-        contributor_id -> Uuid,
-    }
-}
-
-diesel::table! {
     project_members (project_id, contributor_id) {
         project_id -> Text,
         contributor_id -> Uuid,
-    }
-}
-
-diesel::table! {
-    projects (id) {
-        id -> Varchar,
-        owner -> Varchar,
-        name -> Varchar,
-        url -> Nullable<Varchar>,
-        description -> Nullable<Varchar>,
-        logo_url -> Nullable<Varchar>,
     }
 }
 
@@ -115,7 +75,6 @@ diesel::table! {
 }
 
 diesel::allow_tables_to_appear_in_same_query!(
-    contributions,
     event_deduplications,
     event_filters,
     events,
@@ -123,8 +82,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     lead_contributors,
     payments,
     payout_settings,
-    pending_applications,
     project_members,
-    projects,
     users,
 );
