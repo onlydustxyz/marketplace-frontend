@@ -12,5 +12,5 @@ pub enum Error {
 }
 
 pub trait Store: Send + Sync {
-	fn append(&self, aggregate_id: &str, events: Vec<Event>) -> Result<(), Error>;
+	fn append(&self, aggregate_id: &str, event: Event) -> Result<(), Error>;
 }
