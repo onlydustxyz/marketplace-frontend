@@ -24,12 +24,7 @@ env:
   GITHUB_SECRET: githubsecret
   HEROKU_TOKEN: token
   HEROKU_APP_NAME: app-name
-  CONTRIBUTIONS_ADDRESS: "0x03f0e236a4cb1b20278ad5a7e790b29c6e5bac25c34fc3fb0c092f8e5275b512"
-  NETWORK: devnet
-  APIBARA_NODE_URL: http://localhost:7171
-  API_URL: http://localhost:8000
   RUST_LOG: info
-  IS_VALID_SIGNATURE_SELECTOR: isValidSignature
   GITHUB_ACCESS_TOKEN_URL: http://localhost:5001/token
   GITHUB_USER_API_URL: http://localhost:5001/user
   AMQP_ADDR: amqp://127.0.0.1:5672/%2f

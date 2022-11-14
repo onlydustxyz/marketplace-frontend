@@ -82,8 +82,6 @@ cargo test
 
 ### End-to-end testing
 
-We are using a pre-build dump for `starknet-devnet` (see [marketplace-starknet CI](https://github.com/onlydustxyz/marketplace-starknet/blob/main/.github/workflows/devnet.yml)).
-
 To run the end-to-end tests, make sure the docker is up and running and your back-end and indexer are up as well.
 Then run:
 

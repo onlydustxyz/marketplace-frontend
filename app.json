@@ -14,8 +14,6 @@
         }
     ],
     "env": {
-        "APIBARA_NODE_URL": "https://goerli.starknet.stream.apibara.com",
-        "NETWORK": "alpha-goerli",
         "PG_POOL_MAX_SIZE": "3",
         "ROCKET_ADDRESS": "0.0.0.0",
         "ROCKET_CLI_COLORS": "false",
