@@ -6,14 +6,6 @@ use crate::ProjectId;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
-	MemberAdded {
-		project_id: ProjectId,
-		contributor_id: Uuid,
-	},
-	MemberRemoved {
-		project_id: ProjectId,
-		contributor_id: Uuid,
-	},
 	LeadContributorAdded {
 		project_id: ProjectId,
 		contributor_id: Uuid,

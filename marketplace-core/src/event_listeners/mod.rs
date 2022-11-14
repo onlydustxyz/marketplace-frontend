@@ -2,7 +2,6 @@ use anyhow::Result;
 use futures::future::try_join_all;
 use marketplace_domain::{
 	ContributorWithGithubDataProjector, EventListener, LeadContributorProjector,
-	ProjectMemberProjector,
 };
 use marketplace_infrastructure::{
 	amqp::ConsumableBus,
@@ -30,8 +29,6 @@ async fn spawn_listeners() -> Result<Vec<JoinHandle<()>>> {
 
 	let handles = [
 		logger::spawn(event_bus::consumer("logger").await?),
-		ProjectMemberProjector::new(database.clone())
-			.spawn(event_bus::consumer("project-member-projector").await?),
 		ContributorWithGithubDataProjector::new(github, database.clone())
 			.spawn(event_bus::consumer("github-contributor-projector").await?),
 		LeadContributorProjector::new(database.clone())
