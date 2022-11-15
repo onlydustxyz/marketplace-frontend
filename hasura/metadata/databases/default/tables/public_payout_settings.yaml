@@ -1,0 +1,37 @@
+table:
+  name: payout_settings
+  schema: public
+insert_permissions:
+  - role: public
+    permission:
+      check:
+        user_id:
+          _eq: X-Hasura-User-Id
+      columns:
+        - eth_wallet_address
+        - user_id
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - eth_wallet_address
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+update_permissions:
+  - role: public
+    permission:
+      columns:
+        - eth_wallet_address
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null
+delete_permissions:
+  - role: public
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
