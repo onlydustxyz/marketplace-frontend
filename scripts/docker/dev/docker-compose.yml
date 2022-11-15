@@ -12,21 +12,12 @@ services:
       - 5432:5432
     volumes:
       - db:/var/lib/postgresql/data
+      - ./scripts/dev/docker/initdb.d:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
-
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: postgres
-    ports:
-      - "5060:80"
 
   httpmock:
     container_name: httpmock
@@ -45,36 +36,57 @@ services:
       - 5672:5672
       - 15672:15672
 
-  pg_hasura_metadata:
-    image: postgres:14.3-alpine
-    restart: always
-    volumes:
-      - db_hasura_metadata:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: postgrespassword
-
   graphql-engine:
     image: hasura/graphql-engine:v2.15.0
     ports:
       - "8080:8080"
     depends_on:
-      - "pg_hasura_metadata"
+      - "db"
     restart: always
     environment:
-      ## postgres database to store Hasura metadata
-      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgrespassword@pg_hasura_metadata:5432/postgres
-      HASURA_MARKETPLACE_DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "false" # set to "false" to disable console
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-      ## uncomment next line to run console offline (i.e load console assets from server instead of CDN)
-      HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: /srv/console-assets
-      ## uncomment next line to set an admin secret
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: public
 
+  hasura-auth:
+    image: nhost/hasura-auth:latest
+    depends_on:
+      - postgres
+      - graphql-engine
+    env_file:
+      - ../../../hasura/auth/config.env
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
+      HASURA_GRAPHQL_GRAPHQL_URL: http://graphql-engine:8080/v1/graphql
+      AUTH_SMTP_HOST: mailhog
+      AUTH_SMTP_PORT: 1025
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key":"5152fa850c02dc222631cca898ed1485821a70912a6e3649c49076912daa3b62182ba013315915d64f40cddfbb8b58eb5bd11ba225336a6af45bbae07ca873f3","issuer":"hasura-auth"}'
+      HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./hasura/auth/email-templates:/app/email-templates
+
+  mailhog:
+    image: mailhog/mailhog
+    environment:
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      SMTP_USER: user
+      SMTP_PASS: password
+      SMTP_SENDER: hasura-auth@example.com
+      SMTP_SECURE: false
+
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
+    volumes:
+      - ./docker/data/mailhog:/maildir
+
 volumes:
-  db_hasura_metadata:
   httpmocks:
   db:
     driver: local
