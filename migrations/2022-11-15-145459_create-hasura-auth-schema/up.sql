@@ -3,8 +3,8 @@
 -- auth schema
 CREATE SCHEMA IF NOT EXISTS auth;
 -- https://github.com/hasura/graphql-engine/issues/3657
-CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
-CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE EXTENSION IF NOT EXISTS citext;
 CREATE OR REPLACE FUNCTION public.set_current_timestamp_updated_at() RETURNS trigger LANGUAGE plpgsql AS $$
 declare _new record;
 begin _new := new;
