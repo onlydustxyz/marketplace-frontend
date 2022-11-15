@@ -4,7 +4,7 @@
     timeout_seconds: 60
     customization: {}
   permissions:
-    - role: project_lead
+    - role: payer
       definition:
         schema: |
           schema {
