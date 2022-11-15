@@ -14,7 +14,7 @@ pub async fn main() -> Result<()> {
 	let github = Arc::new(github::Client::new());
 	let reqwest = reqwest::Client::new();
 
-	let web_server = http::server(http::port()?, move || graphql::Context::new());
+	let web_server = http::server(http::port()?, graphql::Context::new);
 
 	let mut handles = vec![tokio::spawn(web_server)];
 	handles.extend(listeners::spawn_all(database, github, reqwest).await?);

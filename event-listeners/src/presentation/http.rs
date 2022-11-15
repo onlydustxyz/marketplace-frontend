@@ -3,13 +3,13 @@ use anyhow::Result;
 use warp::Filter;
 
 pub fn port() -> Result<u16> {
-	let port = std::env::var("PORT").unwrap_or(8081.to_string()).parse()?;
+	let port = std::env::var("WEBSERVER_PORT").unwrap_or_else(|_| 8081.to_string()).parse()?;
 	Ok(port)
 }
 
 pub async fn server<F>(port: u16, context_maker: F)
 where
-	F: Fn() -> graphql::Context + Copy + Send + Sync + 'static,
+	F: Fn() -> graphql::Context + Clone + Send + Sync + 'static,
 {
 	let state = warp::any().map(context_maker);
 	let graphql_filter = juniper_warp::make_graphql_filter(graphql::create_schema(), state.boxed());
