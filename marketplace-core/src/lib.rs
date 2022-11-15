@@ -1,8 +1,6 @@
 extern crate dotenv;
 
-pub mod application;
-pub mod dto;
-
+mod application;
 mod graphql;
 mod routes;
 
@@ -17,7 +15,7 @@ use marketplace_infrastructure::{
 	github,
 };
 use rocket::{routes, Build, Rocket};
-use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
+use rocket_okapi::swagger_ui::make_swagger_ui;
 use std::sync::Arc;
 use tracing::instrument;
 
@@ -41,7 +39,6 @@ pub async fn main() -> Result<()> {
 
 	let rocket_handler = inject_app(
 		rocket::build(),
-		database.clone(),
 		uuid_generator,
 		github_client.clone(),
 		event_bus,
@@ -57,10 +54,6 @@ pub async fn main() -> Result<()> {
 			routes::cors::options_preflight_handler,
 			routes::health::health_check,
 		],
-	)
-	.mount(
-		"/",
-		openapi_get_routes![routes::contributors::refresh_contributors,],
 	)
 	.mount(
 		"/",
@@ -83,18 +76,10 @@ pub async fn main() -> Result<()> {
 #[allow(clippy::too_many_arguments)]
 fn inject_app(
 	rocket: Rocket<Build>,
-	database: Arc<database::Client>,
 	uuid_generator: Arc<dyn UuidGenerator>,
 	github_client: Arc<github::Client>,
 	event_bus: Arc<Bus>,
 ) -> Rocket<Build> {
-	let lead_contributor_projector = Arc::new(ProjectLeadProjector::new(database.clone()));
-
-	let contributor_projector = Arc::new(ContributorWithGithubDataProjector::new(
-		github_client.clone(),
-		database.clone(),
-	));
-
 	rocket
 		.manage(AssociateGithubAccount::new_usecase_boxed(
 			event_bus.clone(),
@@ -105,16 +90,4 @@ fn inject_app(
 			event_bus,
 			uuid_generator,
 		))
-		.manage(RefreshProjectLeads::new(
-			database.clone(),
-			lead_contributor_projector,
-			database.clone(),
-		))
-		.manage(RefreshContributors::new(
-			database.clone(),
-			contributor_projector,
-			database.clone(),
-		))
-		.manage(database.clone() as Arc<dyn ContributorProjectionRepository>)
-		.manage(database as Arc<dyn ProjectLeadRepository>)
 }

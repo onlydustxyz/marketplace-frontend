@@ -9,10 +9,7 @@ pub const BACKEND_BASE_URI: &str = "http://localhost:80";
 
 pub async fn post(url: String, body: Option<serde_json::Value>) -> Response {
 	let client = reqwest::Client::new();
-	let mut builder = client
-		.post(url)
-		.header("content-type", "application/json")
-		.header("Api-Key", api_key());
+	let mut builder = client.post(url).header("content-type", "application/json");
 
 	if let Some(body) = body {
 		builder = builder.body(body.to_string());
@@ -26,10 +23,7 @@ pub async fn post(url: String, body: Option<serde_json::Value>) -> Response {
 
 pub async fn put(url: String, body: Option<serde_json::Value>) -> Response {
 	let client = reqwest::Client::new();
-	let mut builder = client
-		.put(url)
-		.header("content-type", "application/json")
-		.header("Api-Key", api_key());
+	let mut builder = client.put(url).header("content-type", "application/json");
 
 	if let Some(body) = body {
 		builder = builder.body(body.to_string());
@@ -42,7 +36,7 @@ pub async fn put(url: String, body: Option<serde_json::Value>) -> Response {
 
 pub async fn delete(url: String) -> Response {
 	let client = reqwest::Client::new();
-	let builder = client.delete(url).header("Api-Key", api_key());
+	let builder = client.delete(url);
 
 	let response = builder.send().await;
 
@@ -55,9 +49,4 @@ pub async fn get(url: String) -> Response {
 
 	assert!(response.is_ok(), "{}", response.err().unwrap());
 	response.unwrap()
-}
-
-fn api_key() -> String {
-	dotenv().ok();
-	std::env::var("API_KEY").unwrap_or_default()
 }

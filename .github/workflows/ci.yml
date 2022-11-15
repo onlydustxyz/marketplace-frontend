@@ -17,7 +17,6 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  API_KEY: ROOT
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
   GITHUB_ID: githubid

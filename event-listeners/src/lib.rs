@@ -5,20 +5,32 @@ use marketplace_infrastructure::{
 	github,
 };
 use std::sync::Arc;
+use tokio::task::JoinHandle;
 
 mod presentation;
 use presentation::{graphql, http, listeners};
+
+mod application;
 
 pub async fn main() -> Result<()> {
 	let database = Arc::new(database::Client::new(init_pool()?));
 	let github = Arc::new(github::Client::new());
 	let reqwest = reqwest::Client::new();
 
-	let web_server = http::server(http::port()?, graphql::Context::new);
-
-	let mut handles = vec![tokio::spawn(web_server)];
+	let mut handles = vec![spawn_web_server(database.clone(), github.clone())?];
 	handles.extend(listeners::spawn_all(database, github, reqwest).await?);
 	try_join_all(handles).await?;
 
 	Ok(())
+}
+
+fn spawn_web_server(
+	database: Arc<database::Client>,
+	github: Arc<github::Client>,
+) -> Result<JoinHandle<()>> {
+	let web_server = http::server(http::port()?, move || {
+		graphql::Context::new(database.clone(), github.clone())
+	});
+
+	Ok(tokio::spawn(web_server))
 }

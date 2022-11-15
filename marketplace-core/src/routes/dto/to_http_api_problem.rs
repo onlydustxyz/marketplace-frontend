@@ -1,4 +1,3 @@
-use crate::RefreshError;
 use http_api_problem::{HttpApiProblem, StatusCode};
 use marketplace_domain::*;
 use marketplace_infrastructure::github::GithubError;
@@ -16,15 +15,6 @@ impl ToHttpApiProblem for AggregateRootRepositoryError {
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 					.title(self.to_string())
 					.detail(e.to_string()),
-		}
-	}
-}
-
-impl ToHttpApiProblem for RefreshError {
-	fn to_http_api_problem(&self) -> HttpApiProblem {
-		match self {
-			RefreshError::ProjectionRepository(error) => error.to_http_api_problem(),
-			RefreshError::EventStore(error) => error.to_http_api_problem(),
 		}
 	}
 }
