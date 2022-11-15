@@ -1,11 +1,14 @@
-- name: Marketplace
+- name: default
   kind: postgres
   configuration:
     connection_info:
       database_url:
-        from_env: HASURA_MARKETPLACE_DATABASE_URL
+        from_env: HASURA_GRAPHQL_DATABASE_URL
       isolation_level: read-committed
-      use_prepared_statements: false
-  customization:
-    naming_convention: hasura-default
-  tables: "!include Marketplace/tables/tables.yaml"
+      pool_settings:
+        connection_lifetime: 600
+        idle_timeout: 180
+        max_connections: 50
+        retries: 1
+      use_prepared_statements: true
+  tables: "!include default/tables/tables.yaml"
