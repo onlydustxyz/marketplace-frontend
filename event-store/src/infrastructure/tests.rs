@@ -48,7 +48,7 @@ fn test_append_and_list(database: &Client, payment_id: PaymentId, payment_proces
 		EventStore::append(
 			database,
 			&payment_id.to_string(),
-			vec![payment_processed_event.clone()]
+			payment_processed_event.clone()
 		)
 		.is_ok()
 	);
@@ -66,7 +66,7 @@ fn test_append_and_list(database: &Client, payment_id: PaymentId, payment_proces
 	not(feature = "with_infrastructure_tests"),
 	ignore = "infrastructure test"
 )]
-fn test_cannot_append_duplicate_event_in_same_batch(
+fn test_ignore_duplicate_event(
 	database: &Client,
 	payment_id: PaymentId,
 	payment_processed_event: Event,
@@ -75,42 +75,14 @@ fn test_cannot_append_duplicate_event_in_same_batch(
 		EventStore::append(
 			database,
 			&payment_id.to_string(),
-			vec![payment_processed_event.clone(), payment_processed_event]
-		)
-		.is_err()
-	);
-
-	let contribution_events =
-		DomainEventStore::<Payment>::list_by_id(database, &payment_id).unwrap();
-	assert_eq!(contribution_events.len(), 0);
-}
-
-#[rstest]
-#[cfg_attr(
-	not(feature = "with_infrastructure_tests"),
-	ignore = "infrastructure test"
-)]
-fn test_cannot_append_duplicate_event_in_different_batches(
-	database: &Client,
-	payment_id: PaymentId,
-	payment_processed_event: Event,
-) {
-	assert!(
-		EventStore::append(
-			database,
-			&payment_id.to_string(),
-			vec![payment_processed_event.clone()]
+			payment_processed_event.clone()
 		)
 		.is_ok()
 	);
-	assert!(
-		EventStore::append(
-			database,
-			&payment_id.to_string(),
-			vec![payment_processed_event]
-		)
-		.is_err()
-	);
+	assert!(EventStore::append(database, &payment_id.to_string(), payment_processed_event).is_ok());
+
+	let events = DomainEventStore::<Payment>::list_by_id(database, &payment_id).unwrap();
+	assert_eq!(events.len(), 1);
 }
 
 #[rstest]
@@ -123,14 +95,7 @@ fn test_metadata_are_stored(
 	payment_id: PaymentId,
 	payment_processed_event: Event,
 ) {
-	assert!(
-		EventStore::append(
-			database,
-			&payment_id.to_string(),
-			vec![payment_processed_event]
-		)
-		.is_ok()
-	);
+	assert!(EventStore::append(database, &payment_id.to_string(), payment_processed_event).is_ok());
 
 	let connection = database.connection().unwrap();
 	let list: Vec<(String, Option<Value>)> = events::dsl::events
