@@ -1010,7 +1010,6 @@ dependencies = [
  "juniper",
  "juniper_rocket",
  "lazy_static",
- "log",
  "marketplace-domain",
  "marketplace-infrastructure",
  "mockall",
