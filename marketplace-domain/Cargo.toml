@@ -36,12 +36,12 @@ serde_json = {version = "1.0.81"}
 # Datetime
 chrono = "0.4"
 
+# Utils
+derive_more = "0.99.17"
+
 # Unit testing
 mockall = "0.11.2"
 mockall_double = "0.3.0"
-
-# Local dependecies
-marketplace-wrappers = {path = "../marketplace-wrappers"}
 
 [dev-dependencies]
 assert-json-diff = "2.0.2"

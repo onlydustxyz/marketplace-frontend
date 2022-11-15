@@ -63,6 +63,7 @@ chrono = "0.4"
 
 # Utils
 dotenv = "0.15.0"
+derive_more = "0.99.17"
 
 # Unit testing
 mockall = "0.11.2"
@@ -71,7 +72,6 @@ mockall = "0.11.2"
 marketplace-domain = {path = "../marketplace-domain"}
 event-store = {path = "../event-store"}
 marketplace-infrastructure = {path = "../marketplace-infrastructure"}
-marketplace-wrappers = {path = "../marketplace-wrappers"}
 
 [dev-dependencies]
 async-std = {version = "1.12.0", features = ["attributes"]}

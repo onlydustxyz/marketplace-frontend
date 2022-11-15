@@ -1,12 +1,11 @@
-use std::str::FromStr;
-
-use marketplace_wrappers::UuidWrapper;
+use derive_more::From;
 use rocket::request::FromParam;
 use schemars::JsonSchema;
 use serde::Deserialize;
+use std::str::FromStr;
 use uuid::Uuid;
 
-#[derive(Debug, Clone, Copy, Deserialize, JsonSchema, UuidWrapper)]
+#[derive(Debug, Clone, Copy, Deserialize, JsonSchema, From)]
 pub struct UuidParam(Uuid);
 
 impl<'a> FromParam<'a> for UuidParam {

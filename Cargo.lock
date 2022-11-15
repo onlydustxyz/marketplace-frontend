@@ -584,6 +584,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "convert_case"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6245d59a3e82a7fc217c5828a6692dbc6dfb63a0c8c90495621f7b9d79704a0e"
+
+[[package]]
 name = "cookie"
 version = "0.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -649,16 +655,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "edbafec5fa1f196ca66527c1b12c2ec4745ca14b50f1ad8f9f6f720b55d11fac"
 dependencies = [
  "cfg-if",
-]
-
-[[package]]
-name = "crypto-bigint"
-version = "0.4.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ef2b4b23cddf68b89b8f8069890e8c270d54e2d5fe1b143820234805e4cb17ef"
-dependencies = [
- "rand_core 0.6.4",
- "subtle",
 ]
 
 [[package]]
@@ -799,6 +795,19 @@ name = "deadpool-runtime"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "eaa37046cc0f6c3cc6090fbdbf73ef0b8ef4cfcc37f6befc0020f63e8cf121e1"
+
+[[package]]
+name = "derive_more"
+version = "0.99.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4fb810d30a7c1953f91334de7244731fc3f3c10d7fe163338a35b9f640960321"
+dependencies = [
+ "convert_case",
+ "proc-macro2",
+ "quote",
+ "rustc_version",
+ "syn",
+]
 
 [[package]]
 name = "derive_utils"
@@ -1787,6 +1796,7 @@ dependencies = [
  "async-std",
  "async-trait",
  "chrono",
+ "derive_more",
  "dotenv",
  "event-store",
  "futures 0.3.25",
@@ -1797,7 +1807,6 @@ dependencies = [
  "log",
  "marketplace-domain",
  "marketplace-infrastructure",
- "marketplace-wrappers",
  "mockall",
  "octocrab",
  "okapi",
@@ -1828,9 +1837,9 @@ dependencies = [
  "async-std",
  "async-trait",
  "chrono",
+ "derive_more",
  "futures 0.3.25",
  "log",
- "marketplace-wrappers",
  "mockall",
  "mockall_double",
  "rstest",
@@ -1885,16 +1894,6 @@ dependencies = [
  "url",
  "uuid 0.8.2",
  "wiremock",
-]
-
-[[package]]
-name = "marketplace-wrappers"
-version = "0.1.0"
-dependencies = [
- "crypto-bigint",
- "quote",
- "syn",
- "uuid 1.2.1",
 ]
 
 [[package]]
