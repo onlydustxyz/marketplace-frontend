@@ -1,6 +1,6 @@
 use crate::application;
+use event_store::Event;
 use marketplace_domain::{Publisher, UuidGenerator};
-use marketplace_event_store::Event;
 use std::sync::Arc;
 
 pub struct Context {

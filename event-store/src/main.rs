@@ -7,5 +7,5 @@ async fn main() -> Result<()> {
 	dotenv().ok();
 	let _tracer = Tracer::init("event_store")?;
 
-	marketplace_event_store::main().await
+	event_store::main().await
 }

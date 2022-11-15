@@ -11,6 +11,6 @@ pub enum Error {
 	Append(#[source] anyhow::Error),
 }
 
-pub trait EventStore: Send + Sync {
+pub trait Store: Send + Sync {
 	fn append(&self, aggregate_id: &str, events: Vec<Event>) -> Result<(), Error>;
 }

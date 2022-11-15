@@ -1,8 +1,8 @@
 use anyhow::Result;
 use async_trait::async_trait;
 use chrono::Utc;
+use event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event, EventOrigin};
 use marketplace_domain::{Contributor, Destination, GithubClient, Publisher, UuidGenerator};
-use marketplace_event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event, EventOrigin};
 use std::sync::Arc;
 use uuid::Uuid;
 

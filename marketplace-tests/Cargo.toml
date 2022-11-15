@@ -59,7 +59,7 @@ tokio = {version = "1.18.2", features = ["full"]}
 # Local dependencies
 marketplace-core = {path = "../marketplace-core"}
 marketplace-infrastructure = {path = "../marketplace-infrastructure"}
-marketplace-event-store = {path = "../marketplace-event-store"}
+event-store = {path = "../event-store"}
 
 # Errors
 anyhow = "1.0.57"
