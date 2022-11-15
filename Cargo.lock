@@ -975,6 +975,30 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0206175f82b8d6bf6652ff7d71a1e27fd2e4efde587fd368662814d6ec1d9ce0"
 
 [[package]]
+name = "event-store"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "async-std",
+ "async-trait",
+ "chrono",
+ "diesel",
+ "dotenv",
+ "futures 0.3.25",
+ "lapin",
+ "log",
+ "marketplace-domain",
+ "marketplace-infrastructure",
+ "marketplace-tests",
+ "rstest",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
+ "uuid 0.8.2",
+]
+
+[[package]]
 name = "executor-trait"
 version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1764,6 +1788,7 @@ dependencies = [
  "async-trait",
  "chrono",
  "dotenv",
+ "event-store",
  "futures 0.3.25",
  "http-api-problem",
  "juniper",
@@ -1771,7 +1796,6 @@ dependencies = [
  "lazy_static",
  "log",
  "marketplace-domain",
- "marketplace-event-store",
  "marketplace-infrastructure",
  "marketplace-tests",
  "marketplace-wrappers",
@@ -1815,30 +1839,6 @@ dependencies = [
  "serde_test",
  "thiserror",
  "url",
- "uuid 0.8.2",
-]
-
-[[package]]
-name = "marketplace-event-store"
-version = "0.0.1"
-dependencies = [
- "anyhow",
- "async-std",
- "async-trait",
- "chrono",
- "diesel",
- "dotenv",
- "futures 0.3.25",
- "lapin",
- "log",
- "marketplace-domain",
- "marketplace-infrastructure",
- "marketplace-tests",
- "rstest",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
  "uuid 0.8.2",
 ]
 
@@ -1900,11 +1900,11 @@ dependencies = [
  "diesel",
  "diesel_migrations",
  "dotenv",
+ "event-store",
  "futures 0.3.25",
  "hex",
  "marketplace-core",
  "marketplace-domain",
- "marketplace-event-store",
  "marketplace-infrastructure",
  "r2d2",
  "r2d2-diesel",

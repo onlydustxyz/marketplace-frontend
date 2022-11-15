@@ -1,9 +1,9 @@
 use anyhow::Result;
 use chrono::Utc;
+use event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event, EventOrigin};
 use marketplace_domain::{
 	Destination, Payment, PaymentId, PaymentReceipt, Publisher, UuidGenerator,
 };
-use marketplace_event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event, EventOrigin};
 use std::sync::Arc;
 
 pub struct Usecase {

@@ -1,11 +1,10 @@
 [package]
 authors = ["OnlyDust <tech@onlydust.xyz>"]
-default-run = "marketplace-core"
-description = "Backend services to operate the contribution marketplace."
+description = "Event listeners"
 edition = "2021"
 homepage = "https://onlydust.xyz"
 license-file = "LICENSE"
-name = "marketplace-core"
+name = "event-listeners"
 readme = "README.md"
 repository = "https://github.com/onlydustxyz/marketplace-backend"
 version = "1.0.0"
@@ -63,6 +62,7 @@ chrono = "0.4"
 
 # Utils
 dotenv = "0.15.0"
+derive_more = "0.99.17"
 
 # Unit testing
 mockall = "0.11.2"
@@ -71,11 +71,10 @@ mockall = "0.11.2"
 marketplace-domain = {path = "../marketplace-domain"}
 event-store = {path = "../event-store"}
 marketplace-infrastructure = {path = "../marketplace-infrastructure"}
-marketplace-wrappers = {path = "../marketplace-wrappers"}
 
 [dev-dependencies]
 async-std = {version = "1.12.0", features = ["attributes"]}
 lazy_static = "1.4.0"
-marketplace-tests = {path = "../marketplace-tests"}
+testing = {path = "../testing"}
 rstest = "0.15.0"
 serde_test = "1.0.140"

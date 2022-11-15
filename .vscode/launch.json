@@ -157,16 +157,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in library 'marketplace-event-store'",
+            "name": "Debug unit tests in library 'event-store'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
                     "--lib",
-                    "--package=marketplace-event-store"
+                    "--package=event-store"
                 ],
                 "filter": {
-                    "name": "marketplace-event-store",
+                    "name": "event-store",
                     "kind": "lib"
                 }
             },
@@ -176,15 +176,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'marketplace-event-store'",
+            "name": "Debug executable 'event-store'",
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=marketplace-event-store",
-                    "--package=marketplace-event-store"
+                    "--bin=event-store",
+                    "--package=event-store"
                 ],
                 "filter": {
-                    "name": "marketplace-event-store",
+                    "name": "event-store",
                     "kind": "bin"
                 }
             },
@@ -194,16 +194,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in executable 'marketplace-event-store'",
+            "name": "Debug unit tests in executable 'event-store'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=marketplace-event-store",
-                    "--package=marketplace-event-store"
+                    "--bin=event-store",
+                    "--package=event-store"
                 ],
                 "filter": {
-                    "name": "marketplace-event-store",
+                    "name": "event-store",
                     "kind": "bin"
                 }
             },
