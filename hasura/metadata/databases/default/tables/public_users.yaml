@@ -1,0 +1,18 @@
+table:
+  name: users
+  schema: public
+configuration:
+  column_config: {}
+  custom_column_names: {}
+  custom_name: user_info
+  custom_root_fields: {}
+object_relationships:
+  - name: user_auth
+    using:
+      manual_configuration:
+        column_mapping:
+          id: id
+        insertion_order: null
+        remote_table:
+          name: users
+          schema: auth
