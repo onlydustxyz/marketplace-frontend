@@ -86,7 +86,7 @@ To run the end-to-end tests, make sure the docker is up and running and your bac
 Then run:
 
 ```sh
-$ cargo test -p marketplace-tests --features with_e2e_tests e2e_tests
+$ cargo test -p testing --features with_e2e_tests e2e_tests
 ```
 
 ## Migrate database

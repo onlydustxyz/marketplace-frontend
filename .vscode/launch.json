@@ -138,16 +138,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in library 'marketplace-tests'",
+            "name": "Debug unit tests in library 'testing'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
                     "--lib",
-                    "--package=marketplace-tests"
+                    "--package=testing"
                 ],
                 "filter": {
-                    "name": "marketplace-tests",
+                    "name": "testing",
                     "kind": "lib"
                 }
             },

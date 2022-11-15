@@ -166,7 +166,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
-          test_flags: -p marketplace-tests --features with_e2e_tests -- --test-threads 1
+          test_flags: -p testing --features with_e2e_tests -- --test-threads 1
           codecov_flag: e2e
 
       - name: Setup tmate session for debugging

@@ -76,6 +76,6 @@ marketplace-wrappers = {path = "../marketplace-wrappers"}
 [dev-dependencies]
 async-std = {version = "1.12.0", features = ["attributes"]}
 lazy_static = "1.4.0"
-marketplace-tests = {path = "../marketplace-tests"}
+testing = {path = "../testing"}
 rstest = "0.15.0"
 serde_test = "1.0.140"

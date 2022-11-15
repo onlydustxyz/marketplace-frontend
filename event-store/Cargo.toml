@@ -54,5 +54,5 @@ uuid = {version = "0.8.2", default_features = false, features = [
 [dev-dependencies]
 # Unit tests
 async-std = {version = "1.12.0", features = ["attributes"]}
-marketplace-tests = {path = "../marketplace-tests"}
+testing = {path = "../testing"}
 rstest = "0.15.0"

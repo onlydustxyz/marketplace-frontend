@@ -5,6 +5,6 @@ members = [
   "marketplace-domain",
   "event-store",
   "marketplace-infrastructure",
-  "marketplace-tests",
+  "testing",
   "marketplace-wrappers",
 ]

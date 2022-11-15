@@ -989,10 +989,10 @@ dependencies = [
  "log",
  "marketplace-domain",
  "marketplace-infrastructure",
- "marketplace-tests",
  "rstest",
  "serde",
  "serde_json",
+ "testing",
  "thiserror",
  "tokio",
  "uuid 0.8.2",
@@ -1797,7 +1797,6 @@ dependencies = [
  "log",
  "marketplace-domain",
  "marketplace-infrastructure",
- "marketplace-tests",
  "marketplace-wrappers",
  "mockall",
  "octocrab",
@@ -1811,6 +1810,7 @@ dependencies = [
  "serde_json",
  "serde_test",
  "serdect",
+ "testing",
  "thiserror",
  "tokio",
  "tracing",
@@ -1860,7 +1860,6 @@ dependencies = [
  "log",
  "mapinto",
  "marketplace-domain",
- "marketplace-tests",
  "mockall",
  "mockito",
  "octocrab",
@@ -1874,6 +1873,7 @@ dependencies = [
  "rstest",
  "serde",
  "serde_json",
+ "testing",
  "thiserror",
  "tokio",
  "tokio-executor-trait",
@@ -1885,36 +1885,6 @@ dependencies = [
  "url",
  "uuid 0.8.2",
  "wiremock",
-]
-
-[[package]]
-name = "marketplace-tests"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "assert-json-diff",
- "assert_matches",
- "async-std",
- "async-trait",
- "chrono",
- "diesel",
- "diesel_migrations",
- "dotenv",
- "event-store",
- "futures 0.3.25",
- "hex",
- "marketplace-core",
- "marketplace-domain",
- "marketplace-infrastructure",
- "r2d2",
- "r2d2-diesel",
- "reqwest",
- "rstest",
- "serde",
- "serde_json",
- "tokio",
- "url",
- "uuid 0.8.2",
 ]
 
 [[package]]
@@ -3537,6 +3507,36 @@ name = "termtree"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "95059e91184749cb66be6dc994f67f182b6d897cb3df74a5bf66b5e709295fd8"
+
+[[package]]
+name = "testing"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "assert-json-diff",
+ "assert_matches",
+ "async-std",
+ "async-trait",
+ "chrono",
+ "diesel",
+ "diesel_migrations",
+ "dotenv",
+ "event-store",
+ "futures 0.3.25",
+ "hex",
+ "marketplace-core",
+ "marketplace-domain",
+ "marketplace-infrastructure",
+ "r2d2",
+ "r2d2-diesel",
+ "reqwest",
+ "rstest",
+ "serde",
+ "serde_json",
+ "tokio",
+ "url",
+ "uuid 0.8.2",
+]
 
 [[package]]
 name = "thiserror"

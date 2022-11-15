@@ -5,10 +5,10 @@ use marketplace_domain::{
 	Event as DomainEvent, EventStore as DomainEventStore, Payment, PaymentId,
 };
 use marketplace_infrastructure::database::{schema::events, Client};
-use marketplace_tests::{fixtures, init_pool};
 use rstest::{fixture, rstest};
 use serde_json::{json, Value};
 use std::str::FromStr;
+use testing::{fixtures, init_pool};
 use uuid::Uuid;
 
 #[fixture]
