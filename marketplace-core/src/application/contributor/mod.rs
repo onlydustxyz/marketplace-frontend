@@ -3,8 +3,5 @@ pub use associate_github_account::{
 	AssociateGithubAccount, Usecase as AssociateGithubAccountUsecase,
 };
 
-mod refresh;
-pub use refresh::RefreshContributors;
-
 mod register_discord_handle;
 pub use register_discord_handle::{RegisterDiscordHandle, Usecase as RegisterDiscordHandleUsecase};

@@ -1,7 +1,12 @@
+use marketplace_domain::{
+	ContributorProfile, EventListener, EventStore, EventStoreError, ProjectLead, Projection,
+	ProjectionRepository, ProjectionRepositoryError,
+};
 use std::sync::Arc;
-
-use marketplace_domain::*;
 use thiserror::Error;
+
+pub type RefreshProjectLeads = Refresh<ProjectLead>;
+pub type RefreshContributors = Refresh<ContributorProfile>;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -11,6 +16,7 @@ pub enum Error {
 	EventStore(#[from] EventStoreError),
 }
 
+#[derive(Clone)]
 pub struct Refresh<P: Projection> {
 	projection_repository: Arc<dyn ProjectionRepository<P>>,
 	projector: Arc<dyn EventListener>,

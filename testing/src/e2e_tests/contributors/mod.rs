@@ -1,6 +1,3 @@
-mod get;
-pub use get::get;
-
 mod signup;
 pub use signup::signup;
 

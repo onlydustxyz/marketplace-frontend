@@ -1,4 +1,3 @@
-pub mod contributors;
 pub mod cors;
 mod dto;
 pub mod graphql;
