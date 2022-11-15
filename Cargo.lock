@@ -999,11 +999,13 @@ name = "event-listeners"
 version = "1.0.0"
 dependencies = [
  "anyhow",
+ "assert_matches",
  "async-std",
  "async-trait",
  "chrono",
  "derive_more",
  "dotenv",
+ "envtestkit",
  "event-store",
  "futures 0.3.25",
  "http-api-problem",
@@ -1013,6 +1015,7 @@ dependencies = [
  "marketplace-domain",
  "marketplace-infrastructure",
  "mockall",
+ "mockito",
  "octocrab",
  "okapi",
  "reqwest",
@@ -1913,7 +1916,6 @@ dependencies = [
  "claim",
  "diesel",
  "diesel_migrations",
- "envtestkit",
  "futures 0.3.25",
  "itertools",
  "lapin",
@@ -1921,7 +1923,6 @@ dependencies = [
  "mapinto",
  "marketplace-domain",
  "mockall",
- "mockito",
  "octocrab",
  "opentelemetry",
  "opentelemetry-datadog",
@@ -3383,9 +3384,9 @@ dependencies = [
 
 [[package]]
 name = "similar"
-version = "2.2.0"
+version = "2.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "62ac7f900db32bf3fd12e0117dd3dc4da74bc52ebaac97f39668446d89694803"
+checksum = "420acb44afdae038210c99e69aae24109f32f15500aa708e81d46c9f29d55fcf"
 
 [[package]]
 name = "simple_asn1"
