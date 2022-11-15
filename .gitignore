@@ -16,7 +16,7 @@
 **/build
 
 # Python
-**env
+.env
 
 # MacOS
 .DS_Store
