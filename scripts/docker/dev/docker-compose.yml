@@ -55,13 +55,14 @@ services:
     depends_on:
       - db
       - graphql-engine
-    env_file:
-      - ../../../hasura/auth/config.env
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       HASURA_GRAPHQL_GRAPHQL_URL: http://graphql-engine:8080/v1/graphql
       HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key":"5152fa850c02dc222631cca898ed1485821a70912a6e3649c49076912daa3b62182ba013315915d64f40cddfbb8b58eb5bd11ba225336a6af45bbae07ca873f3","issuer":"hasura-auth"}'
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      AUTH_JWT_CUSTOM_CLAIMS: '{"projects_leaded":"projects_leaded[].project_id"}'
+      AUTH_LOG_LEVEL: info
+
     ports:
       - "4000:4000"
     volumes:
