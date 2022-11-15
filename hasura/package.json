@@ -2,8 +2,7 @@
   "name": "onlydust-hasura",
   "version": "1.0.0",
   "scripts": {
-    "start": "hasura console",
-    "deploy": "hasura metadata apply"
+    "start": "hasura metadata apply && hasura console"
   },
   "devDependencies": {
     "hasura-cli": "^2.14.0"
