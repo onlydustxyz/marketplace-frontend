@@ -141,7 +141,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
-          test_flags: -p marketplace-infrastructure -p marketplace-event-store --features with_infrastructure_tests
+          test_flags: -p marketplace-infrastructure -p event-store --features with_infrastructure_tests
           codecov_flag: infrastructure
 
   e2e_tests:
