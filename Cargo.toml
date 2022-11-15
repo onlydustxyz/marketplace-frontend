@@ -6,5 +6,4 @@ members = [
   "event-store",
   "marketplace-infrastructure",
   "testing",
-  "marketplace-wrappers",
 ]

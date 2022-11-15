@@ -9,4 +9,3 @@ coverage:
 
 ignore:
   - "marketplace-infrastructure/src/database/schema.rs"
-  - "marketplace-wrappers"
