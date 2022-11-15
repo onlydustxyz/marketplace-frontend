@@ -20,7 +20,6 @@ select_permissions:
   - role: public
     permission:
       columns:
-        - discord_handle
         - github_identifier
         - github_username
         - id
