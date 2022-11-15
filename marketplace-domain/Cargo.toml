@@ -38,6 +38,7 @@ chrono = "0.4"
 
 # Utils
 derive_more = "0.99.17"
+derive-getters = "0.2.0"
 
 # Unit testing
 mockall = "0.11.2"

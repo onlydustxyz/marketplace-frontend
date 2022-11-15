@@ -6,6 +6,9 @@ pub use contributor_projection::{
 	Error as ContributorProjectionRepositoryError, Repository as ContributorProjectionRepository,
 };
 
+mod project;
+pub use project::{Error as ProjectRepositoryError, Repository as ProjectRepository};
+
 #[cfg(test)]
 pub use contributor_projection::MockRepository as MockContributorProjectionRepository;
 

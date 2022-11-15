@@ -1,14 +1,17 @@
+use derive_getters::{Dissolve, Getters};
+use derive_more::Constructor;
+
 use crate::*;
 
-#[derive(Default, Debug, Clone, PartialEq, Eq)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Getters, Dissolve, Constructor)]
 pub struct Project {
-	pub id: ProjectId,
-	pub name: String,
+	id: ProjectId,
+	name: String,
 }
 
 impl Aggregate for Project {
 	type Event = ProjectEvent;
-	type Id = GithubProjectId;
+	type Id = ProjectId;
 }
 
 impl From<ProjectEvent> for Event {
