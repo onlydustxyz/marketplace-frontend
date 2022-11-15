@@ -2,6 +2,22 @@
 
 You can find some documentation [on Notion](https://www.notion.so/onlydust/Hasura-decisions-44eeeafd20614872a3437aa2529e3a50) about the decisions we made.
 
+## Context
+
+GraphQL is a way of architecturing the presentation layer to let frontend developers write their own query on the data exposed by the backend.
+To achieve this, we expose a schema above our database that can be queried to select or mutate data.
+
+You can explore our schema [with graphiql](https://cloud.hasura.io/public/graphiql?endpoint=https%3A%2F%2Fonlydust-hasura-staging.herokuapp.com%2Fv1%2Fgraphql).
+
+The graph will change depending on your role.
+You can use a different role by setting the correct headers on the request.
+For example, you can use this combination:
+
+```
+x-hasura-admin-secret: <SECRET_FOUND_ON_HEROKU_ENV_VARS>
+x-hasura-role: <ANY_ROLE_YOU_WANT_TO_TEST>
+```
+
 ## Launch local instance
 
 ```
