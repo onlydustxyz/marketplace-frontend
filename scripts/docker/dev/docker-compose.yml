@@ -54,8 +54,9 @@ services:
   hasura-auth:
     image: nhost/hasura-auth:latest
     depends_on:
-      - postgres
+      - db
       - graphql-engine
+      - mailhog
     env_file:
       - ../../../hasura/auth/config.env
     environment:
@@ -78,7 +79,7 @@ services:
       SMTP_USER: user
       SMTP_PASS: password
       SMTP_SENDER: hasura-auth@example.com
-      SMTP_SECURE: false
+      SMTP_SECURE: "false"
 
     ports:
       - 1025:1025 # smtp server
