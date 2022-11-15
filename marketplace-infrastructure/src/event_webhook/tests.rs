@@ -6,8 +6,8 @@ use envtestkit::{
 	lock::{lock_read, lock_test},
 	set_env,
 };
-use marketplace_tests::fixtures;
 use mockito;
+use testing::fixtures;
 
 #[allow(clippy::await_holding_lock)]
 #[tokio::test]

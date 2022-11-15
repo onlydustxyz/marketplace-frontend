@@ -4,8 +4,8 @@ use crate::database::Client;
 use marketplace_domain::{
 	ContributorDiscordHandle, ContributorProfile, ContributorProjectionRepository, GithubUserId,
 };
-use marketplace_tests::init_pool;
 use rstest::*;
+use testing::init_pool;
 use uuid::Uuid;
 
 #[fixture]

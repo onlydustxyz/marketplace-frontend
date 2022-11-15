@@ -1,7 +1,8 @@
 [package]
 edition = "2021"
 license-file = "LICENSE"
-name = "marketplace-tests"
+name = "testing"
+description = "e2e tests and testing utils (fixtures, mocks)"
 version = "0.1.0"
 
 [lib]
