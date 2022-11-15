@@ -995,6 +995,45 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0206175f82b8d6bf6652ff7d71a1e27fd2e4efde587fd368662814d6ec1d9ce0"
 
 [[package]]
+name = "event-listeners"
+version = "1.0.0"
+dependencies = [
+ "anyhow",
+ "async-std",
+ "async-trait",
+ "chrono",
+ "derive_more",
+ "dotenv",
+ "event-store",
+ "futures 0.3.25",
+ "http-api-problem",
+ "juniper",
+ "juniper_rocket",
+ "lazy_static",
+ "log",
+ "marketplace-domain",
+ "marketplace-infrastructure",
+ "mockall",
+ "octocrab",
+ "okapi",
+ "reqwest",
+ "rocket",
+ "rocket_okapi",
+ "rstest",
+ "schemars",
+ "serde",
+ "serde_json",
+ "serde_test",
+ "serdect",
+ "testing",
+ "thiserror",
+ "tokio",
+ "tracing",
+ "url",
+ "uuid 0.8.2",
+]
+
+[[package]]
 name = "event-store"
 version = "0.0.1"
 dependencies = [
@@ -3534,6 +3573,7 @@ dependencies = [
  "diesel",
  "diesel_migrations",
  "dotenv",
+ "event-listeners",
  "event-store",
  "futures 0.3.25",
  "hex",

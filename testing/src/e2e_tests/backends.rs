@@ -35,7 +35,7 @@ pub async fn event_store(_migrated_database: ()) -> JoinHandle<Result<()>> {
 
 #[fixture]
 pub async fn event_listeners() -> JoinHandle<Result<()>> {
-	let handle = spawn(::marketplace_core::event_listeners::main());
+	let handle = spawn(::event_listeners::main());
 
 	tokio::time::sleep(Duration::from_secs(1)).await;
 	handle
