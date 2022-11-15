@@ -3,6 +3,7 @@
 members = [
   "marketplace-core",
   "marketplace-domain",
+  "event-listeners",
   "event-store",
   "marketplace-infrastructure",
   "testing",
