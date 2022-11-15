@@ -1,3 +1,5 @@
+-- Your SQL goes here
+
 -- auth schema
 CREATE SCHEMA IF NOT EXISTS auth;
 -- https://github.com/hasura/graphql-engine/issues/3657
