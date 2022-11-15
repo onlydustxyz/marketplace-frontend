@@ -7,9 +7,7 @@ use marketplace_domain::{
 use marketplace_infrastructure::{
 	amqp::ConsumableBus,
 	database::{self, init_pool},
-	event_bus,
-	event_webhook::EventWebHook,
-	github,
+	event_bus, github,
 };
 use std::sync::Arc;
 use tokio::task::JoinHandle;

@@ -87,8 +87,6 @@ testing = {path = "../testing"}
 async-std = {version = "1.12.0", features = ["attributes"]}
 assert_matches = "1.5"
 claim = "0.5"
-envtestkit = "1.1.2"
-mockito = "0.31.0"
 rand = "0.8.5"
 rstest = "0.15.0"
 wiremock = "0.5"

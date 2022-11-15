@@ -75,3 +75,6 @@ lazy_static = "1.4.0"
 testing = {path = "../testing"}
 rstest = "0.15.0"
 serde_test = "1.0.140"
+envtestkit = "1.1.2"
+mockito = "0.31.0"
+assert_matches = "1.5"
