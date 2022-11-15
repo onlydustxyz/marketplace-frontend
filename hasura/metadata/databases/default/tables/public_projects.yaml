@@ -1,3 +1,10 @@
 table:
   name: projects
   schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - name
+        - id
+      filter: {}
