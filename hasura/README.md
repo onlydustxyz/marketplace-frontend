@@ -42,7 +42,9 @@ This changes will be sync automatically in your local config files.
 
 Modify your source files, then run `yarn start` to check that everything is well formatted.
 
-## Manual deployment
+## Deployment
+
+### Manual deploy
 
 Currently, you can deploy configuration from your local environment by setting the appropriate env variables (found in Heroku/1password).
 
@@ -52,7 +54,22 @@ Run:
 yarn deploy -- --endpoint $HASURA_ENDPOINT --admin-secret $HASURA_ADMIN_SECRET_KEY
 ```
 
-### CD
+### Continuous Deploy
 
 A buildpack to automatically deploy metadata to corresponding environement has been created [here](https://github.com/onlydustxyz/update-hasura-metadata-buildpack).
 It will run on each env to execute metadata apply on deploy.
+
+## Hasura Auth
+
+To manage authentication and roles, we use [hasura-auth](https://github.com/nhost/hasura-auth).
+It is based on a database schema `auth` that is created in the `db` docker on init.
+
+Docker compose boot a hasura auth server accessible on http://localhost:4000.
+It is configured through env variables stored in `hasura/auth/config.env`.
+
+Resources:
+
+-   [Openapi doc](https://editor.swagger.io/?url=https://raw.githubusercontent.com/nhost/hasura-auth/main/docs/openapi.json)
+-   [JWT decoder](https://jwt.io/)
+-   [List of env variable](https://github.com/nhost/hasura-auth/blob/main/docs/environment-variables.md)
+-   [DB schema](https://github.com/nhost/hasura-auth/blob/main/docs/schema.md)
