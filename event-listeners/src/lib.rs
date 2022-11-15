@@ -11,14 +11,41 @@ use marketplace_infrastructure::{
 };
 use std::sync::Arc;
 use tokio::task::JoinHandle;
+use warp::Filter;
 
 mod listeners;
 use listeners::*;
 
+mod presentation;
+use presentation::graphql;
+
 pub async fn main() -> Result<()> {
-	try_join_all(spawn_listeners().await?).await?;
+	let web_server = http_server(http_port()?);
+
+	let mut handles = vec![tokio::spawn(web_server)];
+	handles.extend(spawn_listeners().await?);
+	try_join_all(handles).await?;
 
 	Ok(())
+}
+
+fn http_port() -> Result<u16> {
+	let port = std::env::var("PORT").unwrap_or(8081.to_string()).parse()?;
+	Ok(port)
+}
+
+pub async fn http_server(port: u16) {
+	let state = warp::any().map(move || graphql::Context::new());
+	let graphql_filter = juniper_warp::make_graphql_filter(graphql::create_schema(), state.boxed());
+
+	warp::serve(
+		warp::get()
+			.and(warp::path("graphiql"))
+			.and(juniper_warp::graphiql_filter("/graphql", None))
+			.or(warp::path("graphql").and(graphql_filter)),
+	)
+	.run(([0, 0, 0, 0], port))
+	.await
 }
 
 async fn spawn_listeners() -> Result<Vec<JoinHandle<()>>> {
