@@ -42,7 +42,7 @@ async fn store(store: Arc<dyn EventStore>, event: Event) -> Result<Event, Subscr
 
 	store
 		.append(&event.aggregate_id(), event.clone())
-		.map_err(|e| SubscriberCallbackError::InternalError(e.into()))?;
+		.map_err(|e| SubscriberCallbackError::Fatal(e.into()))?;
 
 	Ok(event)
 }
@@ -54,7 +54,7 @@ async fn publish(
 	publisher
 		.publish(Destination::exchange(EXCHANGE_NAME), &event.event)
 		.await
-		.map_err(|e| SubscriberCallbackError::InternalError(e.into()))?;
+		.map_err(|e| SubscriberCallbackError::Fatal(e.into()))?;
 	Ok(())
 }
 
