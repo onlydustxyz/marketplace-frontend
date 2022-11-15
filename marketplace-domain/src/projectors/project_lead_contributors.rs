@@ -4,14 +4,12 @@ use log::error;
 use std::sync::Arc;
 use uuid::Uuid;
 
-pub struct LeadContributorProjector {
-	lead_contributor_projection_repository: Arc<dyn LeadContributorProjectionRepository>,
+pub struct ProjectLeadProjector {
+	lead_contributor_projection_repository: Arc<dyn ProjectLeadRepository>,
 }
 
-impl LeadContributorProjector {
-	pub fn new(
-		lead_contributor_projection_repository: Arc<dyn LeadContributorProjectionRepository>,
-	) -> Self {
+impl ProjectLeadProjector {
+	pub fn new(lead_contributor_projection_repository: Arc<dyn ProjectLeadRepository>) -> Self {
 		Self {
 			lead_contributor_projection_repository,
 		}
@@ -21,22 +19,22 @@ impl LeadContributorProjector {
 		&self,
 		project_id: &ProjectId,
 		contributor_id: Uuid,
-	) -> Result<(), LeadContributorProjectionRepositoryError> {
+	) -> Result<(), ProjectLeadRepositoryError> {
 		self.lead_contributor_projection_repository
-			.upsert(LeadContributorProjection::new(*project_id, contributor_id))
+			.upsert(ProjectLead::new(*project_id, contributor_id))
 	}
 
 	fn on_lead_contributor_removed(
 		&self,
 		project_id: &ProjectId,
 		contributor_id: Uuid,
-	) -> Result<(), LeadContributorProjectionRepositoryError> {
+	) -> Result<(), ProjectLeadRepositoryError> {
 		self.lead_contributor_projection_repository.delete(project_id, contributor_id)
 	}
 }
 
 #[async_trait]
-impl EventListener for LeadContributorProjector {
+impl EventListener for ProjectLeadProjector {
 	async fn on_event(&self, event: &Event) {
 		let result = match event {
 			Event::Project(project_event) => match project_event {
@@ -67,13 +65,13 @@ mod tests {
 	use rstest::*;
 
 	#[fixture]
-	fn lead_contributor_projection_repository() -> MockLeadContributorProjectionRepository {
-		MockLeadContributorProjectionRepository::new()
+	fn lead_contributor_projection_repository() -> MockProjectLeadRepository {
+		MockProjectLeadRepository::new()
 	}
 
 	#[fixture]
 	fn project_id() -> ProjectId {
-		1324
+		Uuid::from_u128(1324).into()
 	}
 
 	#[fixture]
@@ -100,29 +98,25 @@ mod tests {
 	#[rstest]
 	#[case(on_lead_contributor_added_event(project_id(), contributor_id()))]
 	async fn on_lead_contributor_added(
-		mut lead_contributor_projection_repository: MockLeadContributorProjectionRepository,
+		mut lead_contributor_projection_repository: MockProjectLeadRepository,
 		#[case] event: Event,
 		project_id: ProjectId,
 		contributor_id: Uuid,
 	) {
 		lead_contributor_projection_repository
 			.expect_upsert()
-			.with(eq(LeadContributorProjection::new(
-				project_id,
-				contributor_id,
-			)))
+			.with(eq(ProjectLead::new(project_id, contributor_id)))
 			.times(1)
 			.returning(|_| Ok(()));
 
-		let projector =
-			LeadContributorProjector::new(Arc::new(lead_contributor_projection_repository));
+		let projector = ProjectLeadProjector::new(Arc::new(lead_contributor_projection_repository));
 		projector.on_event(&event).await;
 	}
 
 	#[rstest]
 	#[case(on_lead_contributor_removed_event(project_id(), contributor_id()))]
 	async fn on_lead_contributor_removed(
-		mut lead_contributor_projection_repository: MockLeadContributorProjectionRepository,
+		mut lead_contributor_projection_repository: MockProjectLeadRepository,
 		#[case] event: Event,
 		project_id: ProjectId,
 		contributor_id: Uuid,
@@ -133,8 +127,7 @@ mod tests {
 			.times(1)
 			.returning(|_, _| Ok(()));
 
-		let projector =
-			LeadContributorProjector::new(Arc::new(lead_contributor_projection_repository));
+		let projector = ProjectLeadProjector::new(Arc::new(lead_contributor_projection_repository));
 		projector.on_event(&event).await;
 	}
 }

@@ -1,8 +1,5 @@
-mod lead_contributor_projection;
-pub use lead_contributor_projection::{
-	Error as LeadContributorProjectionRepositoryError,
-	Repository as LeadContributorProjectionRepository,
-};
+mod project_lead;
+pub use project_lead::{Error as ProjectLeadRepositoryError, Repository as ProjectLeadRepository};
 
 mod contributor_projection;
 pub use contributor_projection::{
@@ -13,4 +10,4 @@ pub use contributor_projection::{
 pub use contributor_projection::MockRepository as MockContributorProjectionRepository;
 
 #[cfg(test)]
-pub use lead_contributor_projection::MockRepository as MockLeadContributorProjectionRepository;
+pub use project_lead::MockRepository as MockProjectLeadRepository;

@@ -1,7 +1,7 @@
 use anyhow::Result;
 use futures::future::try_join_all;
 use marketplace_domain::{
-	ContributorWithGithubDataProjector, EventListener, LeadContributorProjector,
+	ContributorWithGithubDataProjector, EventListener, ProjectLeadProjector,
 };
 use marketplace_infrastructure::{
 	amqp::ConsumableBus,
@@ -31,7 +31,7 @@ async fn spawn_listeners() -> Result<Vec<JoinHandle<()>>> {
 		logger::spawn(event_bus::consumer("logger").await?),
 		ContributorWithGithubDataProjector::new(github, database.clone())
 			.spawn(event_bus::consumer("github-contributor-projector").await?),
-		LeadContributorProjector::new(database.clone())
+		ProjectLeadProjector::new(database.clone())
 			.spawn(event_bus::consumer("project-lead-projector").await?),
 		EventWebHook::new(reqwest_client).spawn(event_bus::consumer("event-webhooks").await?),
 	];

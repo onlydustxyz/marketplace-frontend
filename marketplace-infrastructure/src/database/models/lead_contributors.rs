@@ -4,7 +4,7 @@ use uuid::Uuid;
 
 #[derive(Queryable, Debug, Serialize, Deserialize, Insertable)]
 #[serde(crate = "rocket::serde")]
-pub struct LeadContributor {
-	pub project_id: String,
-	pub contributor_id: Uuid,
+pub struct ProjectLead {
+	pub project_id: Uuid,
+	pub user_id: Uuid,
 }

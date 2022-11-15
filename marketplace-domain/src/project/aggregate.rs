@@ -3,7 +3,6 @@ use crate::*;
 #[derive(Default, Debug, Clone, PartialEq, Eq)]
 pub struct Project {
 	pub id: ProjectId,
-	pub owner: String,
 	pub name: String,
 }
 

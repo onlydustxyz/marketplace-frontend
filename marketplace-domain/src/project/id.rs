@@ -1,3 +1,8 @@
-use crate::GithubProjectId;
+use derive_more::{AsRef, Display, From, Into};
+use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
-pub type Id = GithubProjectId;
+#[derive(
+	Debug, Clone, Copy, Default, Serialize, Deserialize, PartialEq, Eq, Display, From, Into, AsRef,
+)]
+pub struct Id(Uuid);
