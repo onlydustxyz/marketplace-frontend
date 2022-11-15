@@ -57,16 +57,16 @@ impl ToHttpApiProblem for GithubError {
 	}
 }
 
-impl ToHttpApiProblem for LeadContributorProjectionRepositoryError {
+impl ToHttpApiProblem for ProjectLeadRepositoryError {
 	fn to_http_api_problem(&self) -> HttpApiProblem {
 		match self {
-			LeadContributorProjectionRepositoryError::NotFound =>
+			ProjectLeadRepositoryError::NotFound =>
 				HttpApiProblem::new(StatusCode::NOT_FOUND).title(self.to_string()),
-			LeadContributorProjectionRepositoryError::AlreadyExist(e) =>
+			ProjectLeadRepositoryError::AlreadyExist(e) =>
 				HttpApiProblem::new(StatusCode::BAD_REQUEST)
 					.title(self.to_string())
 					.detail(e.to_string()),
-			LeadContributorProjectionRepositoryError::Infrastructure(e) =>
+			ProjectLeadRepositoryError::Infrastructure(e) =>
 				HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
 					.title(self.to_string())
 					.detail(e.to_string()),

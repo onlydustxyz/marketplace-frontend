@@ -1,5 +1,5 @@
 mod projections;
-pub use projections::LeadContributor as LeadContributorProjection;
+pub use projections::ProjectLead;
 
 mod aggregate;
 pub use aggregate::Project;

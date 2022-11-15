@@ -1,2 +1,2 @@
 mod refresh;
-pub use refresh::RefreshLeadContributors;
+pub use refresh::RefreshProjectLeads;

@@ -1,2 +1,2 @@
-mod lead_contributors;
-pub use lead_contributors::LeadContributor;
+mod project_leads;
+pub use project_leads::ProjectLead;
