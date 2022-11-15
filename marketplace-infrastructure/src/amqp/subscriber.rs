@@ -38,20 +38,20 @@ impl<M: Message + Send + Sync> Subscriber<M> for ConsumableBus {
 					.map_err(|e| SubscriberError::Ack(anyhow!(e)))?,
 
 				Err(error) => match error {
-					SubscriberCallbackError::BadMessage(error) => {
+					SubscriberCallbackError::Discard(error) => {
 						error!(
 							error = error.to_string(),
 							message = format!("{:?}", delivery.data),
-							"Invalid message",
+							"Ignoring message",
 						);
 						Self::discard_message(&delivery).await?;
 						continue;
 					},
-					SubscriberCallbackError::InternalError(error) => {
+					SubscriberCallbackError::Fatal(error) => {
 						error!(
 							error = error.to_string(),
 							message = format!("{:?}", delivery.data),
-							"Failed to process message due to internal error",
+							"Fatal error while processing the message",
 						);
 						return Err(SubscriberError::Processing(error));
 					},
@@ -142,7 +142,7 @@ mod tests {
 		assert!(!confirmation.is_nack());
 	}
 
-	fn assert_error_message(error: SubscriberError, expected_error_message: &str) {
+	fn assert_processing_error_message(error: SubscriberError, expected_error_message: &str) {
 		match error {
 			SubscriberError::Processing(error) => {
 				assert_eq!(error.to_string(), expected_error_message.to_string());
@@ -166,16 +166,14 @@ mod tests {
 						counter.fetch_add(1, Ordering::SeqCst);
 						Ok(())
 					},
-					TestMessage::Invalid => Err(SubscriberCallbackError::BadMessage(anyhow!(
-						BAD_MESSAGE_ERROR
-					))),
-					TestMessage::Stop =>
-						Err(SubscriberCallbackError::InternalError(anyhow!(STOP_ERROR))),
+					TestMessage::Invalid =>
+						Err(SubscriberCallbackError::Discard(anyhow!(BAD_MESSAGE_ERROR))),
+					TestMessage::Stop => Err(SubscriberCallbackError::Fatal(anyhow!(STOP_ERROR))),
 				}
 			})
 			.await;
 
-		assert_error_message(result.unwrap_err(), STOP_ERROR);
+		assert_processing_error_message(result.unwrap_err(), STOP_ERROR);
 		assert_eq!(counter.load(Ordering::SeqCst), expect_valid_message_count);
 	}
 
@@ -227,8 +225,8 @@ mod tests {
 		not(feature = "with_infrastructure_tests"),
 		ignore = "infrastructure test"
 	)]
-	async fn ignore_bad_message() {
-		const QUEUE: &str = "ignore_bad_message";
+	async fn discard_invalid_message() {
+		const QUEUE: &str = "discard_invalid_message";
 		lazy_static! {
 			static ref COUNTER: Arc<AtomicI32> = Arc::new(AtomicI32::new(0));
 		}
@@ -241,7 +239,7 @@ mod tests {
 
 		run_test(consumer, &*COUNTER, 2).await;
 
-		assert!(logs_contain("Invalid message error=\"bad message\""));
+		assert!(logs_contain("Ignoring message error=\"bad message\""));
 	}
 
 	#[rstest]
@@ -260,14 +258,14 @@ mod tests {
 		let result = consumer
 			.subscribe(|message: TestMessage| async move {
 				assert_eq!(message, TestMessage::Valid);
-				Err(SubscriberCallbackError::InternalError(anyhow!(ERROR)))
+				Err(SubscriberCallbackError::Fatal(anyhow!(ERROR)))
 			})
 			.await;
 
-		assert_error_message(result.unwrap_err(), ERROR);
+		assert_processing_error_message(result.unwrap_err(), ERROR);
 
 		assert!(logs_contain(
-			"Failed to process message due to internal error error=\"some internal error occurred\""
+			"Fatal error while processing the message error=\"some internal error occurred\""
 		));
 	}
 }

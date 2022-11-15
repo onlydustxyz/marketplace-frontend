@@ -19,14 +19,15 @@ pub enum Error {
 
 #[derive(Debug, Error)]
 pub enum CallbackError {
-	// Returning a BadMessage error will discard the current message. It won't be requeued.
-	#[error("Invalid message")]
-	BadMessage(#[source] anyhow::Error),
+	// Returning a Discard error will discard the current message and process the next one. It
+	// won't be requeued.
+	#[error("Ignoring message")]
+	Discard(#[source] anyhow::Error),
 
-	// Returning an InternalError error will stop the consuming of messages. The current message
-	// will be automatically requeued.
-	#[error("Internal error while processing the message")]
-	InternalError(#[from] anyhow::Error),
+	// Returning an Fatal error will stop the consuming of messages. The current message
+	// must be automatically requeued by the message broker.
+	#[error("Fatal error while processing the message")]
+	Fatal(#[from] anyhow::Error),
 }
 
 #[async_trait]
