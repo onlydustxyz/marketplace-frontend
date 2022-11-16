@@ -1,5 +1,5 @@
 install-project:
-    rustup update nightly
+	rustup update nightly
 	docker-compose up -f scripts/docker/dev/docker-compose.yml -d
 	[[ -e .env ]] && cp .env.example .env
 	source .env
@@ -10,3 +10,6 @@ install-project:
 
 connect-db:
 	docker-compose -f scripts/docker/dev/docker-compose.yml exec -u postgres db psql marketplace_db
+
+hasura/start:
+	yarn --cwd ./hasura start
