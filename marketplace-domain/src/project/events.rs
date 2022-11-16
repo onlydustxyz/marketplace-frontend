@@ -1,20 +1,8 @@
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
-use uuid::Uuid;
-
-use crate::ProjectId;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Event {
-	LeadContributorAdded {
-		project_id: ProjectId,
-		contributor_id: Uuid,
-	},
-	LeadContributorRemoved {
-		project_id: ProjectId,
-		contributor_id: Uuid,
-	},
-}
+pub enum Event {}
 
 impl Display for Event {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {

@@ -1,26 +1,16 @@
-use crate::{
-	application::{RefreshContributors, RefreshProjectLeads},
-	domain::*,
-	infrastructure::github,
-};
+use crate::{application::RefreshContributors, domain::*, infrastructure::github};
 use marketplace_infrastructure::database;
 use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct Context {
 	pub refresh_contributors_usecase: RefreshContributors,
-	pub refresh_project_leads_usecase: RefreshProjectLeads,
 }
 
 impl Context {
 	pub fn new(database: Arc<database::Client>, github: Arc<github::Client>) -> Self {
 		Self {
 			refresh_contributors_usecase: RefreshContributors::new(
-				database.clone(),
-				Arc::new(ProjectLeadProjector::new(database.clone())),
-				database.clone(),
-			),
-			refresh_project_leads_usecase: RefreshProjectLeads::new(
 				database.clone(),
 				Arc::new(ContributorWithGithubDataProjector::new(
 					github,

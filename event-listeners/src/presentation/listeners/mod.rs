@@ -20,8 +20,6 @@ pub async fn spawn_all(
 		Logger.spawn(event_bus::consumer("logger").await?),
 		ContributorWithGithubDataProjector::new(github, database.clone())
 			.spawn(event_bus::consumer("github-contributor-projector").await?),
-		ProjectLeadProjector::new(database.clone())
-			.spawn(event_bus::consumer("project-lead-projector").await?),
 		EventWebHook::new(reqwest).spawn(event_bus::consumer("event-webhooks").await?),
 	];
 
