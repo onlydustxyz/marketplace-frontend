@@ -2,5 +2,8 @@
     "rust-analyzer.rustfmt.extraArgs": ["+nightly"],
     "editor.formatOnSave": true,
     "editor.insertSpaces": true,
-    "files.trimFinalNewlines": true
+    "files.trimFinalNewlines": true,
+    "[makefile]": {
+        "editor.insertSpaces": false
+      }
 }
