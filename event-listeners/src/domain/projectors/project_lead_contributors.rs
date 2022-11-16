@@ -1,17 +1,18 @@
-use crate::*;
+use crate::domain::{ProjectLead, ProjectLeadRepository, ProjectLeadRepositoryError};
 use async_trait::async_trait;
-use log::error;
+use marketplace_domain::{Event, EventListener, ProjectEvent, ProjectId};
 use std::sync::Arc;
+use tracing::error;
 use uuid::Uuid;
 
 pub struct ProjectLeadProjector {
-	lead_contributor_projection_repository: Arc<dyn ProjectLeadRepository>,
+	project_lead_repository: Arc<dyn ProjectLeadRepository>,
 }
 
 impl ProjectLeadProjector {
-	pub fn new(lead_contributor_projection_repository: Arc<dyn ProjectLeadRepository>) -> Self {
+	pub fn new(project_lead_repository: Arc<dyn ProjectLeadRepository>) -> Self {
 		Self {
-			lead_contributor_projection_repository,
+			project_lead_repository,
 		}
 	}
 
@@ -20,8 +21,10 @@ impl ProjectLeadProjector {
 		project_id: &ProjectId,
 		contributor_id: Uuid,
 	) -> Result<(), ProjectLeadRepositoryError> {
-		self.lead_contributor_projection_repository
-			.upsert(ProjectLead::new(*project_id, contributor_id))
+		self.project_lead_repository.upsert(ProjectLead {
+			project_id: *project_id,
+			user_id: contributor_id,
+		})
 	}
 
 	fn on_lead_contributor_removed(
@@ -29,7 +32,7 @@ impl ProjectLeadProjector {
 		project_id: &ProjectId,
 		contributor_id: Uuid,
 	) -> Result<(), ProjectLeadRepositoryError> {
-		self.lead_contributor_projection_repository.delete(project_id, contributor_id)
+		self.project_lead_repository.delete(project_id, contributor_id)
 	}
 }
 
@@ -58,11 +61,11 @@ impl EventListener for ProjectLeadProjector {
 
 #[cfg(test)]
 mod tests {
-	use std::str::FromStr;
-
 	use super::*;
+	use crate::domain::*;
 	use mockall::predicate::eq;
 	use rstest::*;
+	use std::str::FromStr;
 
 	#[fixture]
 	fn lead_contributor_projection_repository() -> MockProjectLeadRepository {
@@ -105,7 +108,10 @@ mod tests {
 	) {
 		lead_contributor_projection_repository
 			.expect_upsert()
-			.with(eq(ProjectLead::new(project_id, contributor_id)))
+			.with(eq(ProjectLead {
+				project_id,
+				user_id: contributor_id,
+			}))
 			.times(1)
 			.returning(|_| Ok(()));
 

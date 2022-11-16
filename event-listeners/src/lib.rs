@@ -4,13 +4,13 @@ use marketplace_infrastructure::{
 	database::{self, init_pool},
 	github,
 };
+use presentation::{graphql, http, listeners};
 use std::sync::Arc;
 use tokio::task::JoinHandle;
 
-mod presentation;
-use presentation::{graphql, http, listeners};
-
 mod application;
+mod domain;
+mod presentation;
 
 pub async fn main() -> Result<()> {
 	let database = Arc::new(database::Client::new(init_pool()?));

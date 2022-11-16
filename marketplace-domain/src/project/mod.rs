@@ -1,6 +1,3 @@
-mod projections;
-pub use projections::ProjectLead;
-
 mod aggregate;
 pub use aggregate::Project;
 

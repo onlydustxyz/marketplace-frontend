@@ -1,7 +1,5 @@
-use marketplace_domain::{
-	ContributorProfile, EventListener, EventStore, EventStoreError, ProjectLead, Projection,
-	ProjectionRepository, ProjectionRepositoryError,
-};
+use crate::domain::*;
+use marketplace_domain::{EventListener, EventStore, EventStoreError};
 use std::sync::Arc;
 use thiserror::Error;
 

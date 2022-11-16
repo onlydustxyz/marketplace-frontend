@@ -1,8 +1,12 @@
-use crate::*;
+use crate::domain::{
+	ContributorProfile, ContributorProfileRepository, ContributorProfileRepositoryError,
+	GithubClient, GithubClientError, GithubUserId,
+};
 use async_trait::async_trait;
-use log::error;
+use marketplace_domain::{ContributorDiscordHandle, ContributorEvent, Event, EventListener};
 use std::sync::Arc;
 use thiserror::Error;
+use tracing::error;
 use uuid::Uuid;
 
 #[derive(Debug, Error)]
@@ -10,18 +14,18 @@ pub enum Error {
 	#[error(transparent)]
 	GithubRepo(#[from] GithubClientError),
 	#[error(transparent)]
-	ContributorProjectionRepository(#[from] ContributorProjectionRepositoryError),
+	ContributorProfileRepository(#[from] ContributorProfileRepositoryError),
 }
 
 pub struct ContributorWithGithubData {
 	github_client: Arc<dyn GithubClient>,
-	contributor_projection_repository: Arc<dyn ContributorProjectionRepository>,
+	contributor_projection_repository: Arc<dyn ContributorProfileRepository>,
 }
 
 impl ContributorWithGithubData {
 	pub fn new(
 		github_client: Arc<dyn GithubClient>,
-		contributor_projection_repository: Arc<dyn ContributorProjectionRepository>,
+		contributor_projection_repository: Arc<dyn ContributorProfileRepository>,
 	) -> Self {
 		Self {
 			github_client,
@@ -98,6 +102,7 @@ impl EventListener for ContributorWithGithubData {
 #[allow(clippy::too_many_arguments)]
 mod test {
 	use super::*;
+	use crate::domain::*;
 	use mockall::predicate::eq;
 	use rstest::*;
 	use std::{str::FromStr, sync::Arc};
@@ -108,8 +113,8 @@ mod test {
 	}
 
 	#[fixture]
-	fn contributor_projection_repository() -> MockContributorProjectionRepository {
-		MockContributorProjectionRepository::new()
+	fn contributor_projection_repository() -> MockContributorProfileRepository {
+		MockContributorProfileRepository::new()
 	}
 
 	#[fixture]
@@ -142,7 +147,7 @@ mod test {
 
 	#[rstest]
 	async fn discord_handle_gets_updated_upon_event(
-		mut contributor_projection_repository: MockContributorProjectionRepository,
+		mut contributor_projection_repository: MockContributorProfileRepository,
 		discord_handle: ContributorDiscordHandle,
 		user_id: Uuid,
 	) {
@@ -174,7 +179,7 @@ mod test {
 	#[rstest]
 	async fn contributor_gets_created_with_contribution(
 		mut github_client: MockGithubClient,
-		mut contributor_projection_repository: MockContributorProjectionRepository,
+		mut contributor_projection_repository: MockContributorProfileRepository,
 		github_account_associated_event: Event,
 		github_identifier: GithubUserId,
 		github_username: String,
@@ -184,7 +189,7 @@ mod test {
 			.expect_find_by_id()
 			.with(eq(user_id))
 			.once()
-			.returning(|_| Err(ContributorProjectionRepositoryError::NotFound));
+			.returning(|_| Err(ContributorProfileRepositoryError::NotFound));
 
 		let cloned_github_username = github_username.clone();
 		github_client
@@ -220,7 +225,7 @@ mod test {
 	#[rstest]
 	async fn contributor_is_not_stored_if_already_present(
 		mut github_client: MockGithubClient,
-		mut contributor_projection_repository: MockContributorProjectionRepository,
+		mut contributor_projection_repository: MockContributorProfileRepository,
 		github_identifier: GithubUserId,
 		github_account_associated_event: Event,
 	) {
@@ -248,7 +253,7 @@ mod test {
 	#[rstest]
 	async fn contributor_is_stored_if_already_present_but_without_github_id(
 		mut github_client: MockGithubClient,
-		mut contributor_projection_repository: MockContributorProjectionRepository,
+		mut contributor_projection_repository: MockContributorProfileRepository,
 		github_account_associated_event: Event,
 		github_identifier: GithubUserId,
 		github_username: String,
