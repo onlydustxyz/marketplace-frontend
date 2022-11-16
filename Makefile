@@ -1,6 +1,6 @@
 install-project:
 	rustup update nightly
-	docker-compose up -f scripts/docker/dev/docker-compose.yml -d
+	docker-compose up -d
 	[[ -e .env ]] && cp .env.example .env
 	source .env
 	diesel setup
@@ -9,7 +9,11 @@ install-project:
 	echo "Installation finished! You can start the application with `cargo run` or using `make start`"
 
 connect-db:
-	docker-compose -f scripts/docker/dev/docker-compose.yml exec -u postgres db psql marketplace_db
+	docker-compose up db -d
+	docker-compose exec -u postgres db psql marketplace_db
 
 hasura/start:
 	yarn --cwd ./hasura start
+
+migration/run:
+	diesel migration run
