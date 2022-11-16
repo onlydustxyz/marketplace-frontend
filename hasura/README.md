@@ -1,7 +1,5 @@
 # Hasura onlydust
 
-You can find some documentation [on Notion](https://www.notion.so/onlydust/Hasura-decisions-44eeeafd20614872a3437aa2529e3a50) about the decisions we made.
-
 ## Context
 
 GraphQL is a way of architecturing the presentation layer to let frontend developers write their own query on the data exposed by the backend.
@@ -34,7 +32,7 @@ Two containers are started:
 You can modify config in two ways:
 
 -   Modify yaml source files and load them in your local metadata database
--   Modify database from [the console](http://localhost:8080/console/api/api-explorer) and then export config in your yaml files
+-   Modify database from the console (`yarn hasura start` or `make hasura/start` from root) and then export config in your yaml files
 
 ### Install Hasura CLI
 

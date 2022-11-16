@@ -70,6 +70,12 @@ Below are some examples of usage.
 
 See [Hasura documentation](./hasura).
 
+For convenience, some commands are available from the root of the repo:
+
+```
+make hasura/start # Apply metadata and start the console
+```
+
 ### Add a single repository for indexing
 
 ```
