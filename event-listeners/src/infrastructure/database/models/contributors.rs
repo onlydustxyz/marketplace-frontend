@@ -1,9 +1,7 @@
-use crate::database::schema::*;
-use rocket::serde::{Deserialize, Serialize};
+use marketplace_infrastructure::database::schema::*;
 use uuid::Uuid;
 
-#[derive(Identifiable, Eq, PartialEq, Insertable, Queryable, Debug, Serialize, Deserialize)]
-#[serde(crate = "rocket::serde")]
+#[derive(Identifiable, Eq, PartialEq, Insertable, Queryable, Debug)]
 #[diesel(primary_key(id))]
 #[table_name = "users"]
 pub struct Contributor {
@@ -13,8 +11,7 @@ pub struct Contributor {
 	pub discord_handle: Option<String>,
 }
 
-#[derive(Identifiable, Debug, Serialize, Deserialize, Insertable, AsChangeset)]
-#[serde(crate = "rocket::serde")]
+#[derive(Identifiable, Debug, Insertable, AsChangeset)]
 #[table_name = "users"]
 pub struct NewGithubContributor {
 	pub id: Uuid,
@@ -22,8 +19,7 @@ pub struct NewGithubContributor {
 	pub github_username: String,
 }
 
-#[derive(Identifiable, Debug, Serialize, Deserialize, Insertable, AsChangeset)]
-#[serde(crate = "rocket::serde")]
+#[derive(Identifiable, Debug, Insertable, AsChangeset)]
 #[table_name = "users"]
 pub struct NewDiscordContributor {
 	pub id: Uuid,

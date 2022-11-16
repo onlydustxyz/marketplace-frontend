@@ -23,8 +23,6 @@ pub enum Error {
 	NotFound,
 	#[error("Contributor already exist")]
 	AlreadyExist(#[source] anyhow::Error),
-	#[error("Contributor contains invalid members")]
-	InvalidEntity(#[source] anyhow::Error),
 	#[error("Something happend at the infrastructure level")]
 	Infrastructure(#[source] anyhow::Error),
 }

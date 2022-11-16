@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate diesel;
+
 use anyhow::Result;
 use futures::future::try_join_all;
 use infrastructure::github;
@@ -12,6 +15,8 @@ mod infrastructure;
 mod presentation;
 
 pub async fn main() -> Result<()> {
+	github::Client::initialize();
+
 	let database = Arc::new(database::Client::new(init_pool()?));
 	let github = Arc::new(github::Client::new());
 	let reqwest = reqwest::Client::new();
