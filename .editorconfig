@@ -18,8 +18,9 @@ insert_final_newline = true
 # double whitespace at end of line denotes a line break in Markdown
 trim_trailing_whitespace = false
 
-[*.yml]
+[*.{yml,yaml}]
 indent_size = 2
+tab_width=2
 
 [*.{rs,toml}]
 indent_style=tab
