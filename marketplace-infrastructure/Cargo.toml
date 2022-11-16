@@ -39,9 +39,6 @@ uuid = {version = "0.8.2", default_features = false, features = [
   "serde",
 ]}
 
-# Github
-octocrab = "0.16.0"
-
 # Http Server
 rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 

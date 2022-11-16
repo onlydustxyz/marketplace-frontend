@@ -1,8 +1,9 @@
 use crate::{
 	application::{RefreshContributors, RefreshProjectLeads},
 	domain::*,
+	infrastructure::github,
 };
-use marketplace_infrastructure::{database, github};
+use marketplace_infrastructure::database;
 use std::sync::Arc;
 
 #[derive(Clone)]

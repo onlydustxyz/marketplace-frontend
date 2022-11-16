@@ -4,10 +4,10 @@ use logger::Logger;
 mod webhook;
 use webhook::EventWebHook;
 
-use crate::domain::*;
+use crate::{domain::*, infrastructure::github};
 use anyhow::Result;
 use marketplace_domain::{Event, EventListener, Subscriber, SubscriberCallbackError};
-use marketplace_infrastructure::{amqp::ConsumableBus, database, event_bus, github};
+use marketplace_infrastructure::{amqp::ConsumableBus, database, event_bus};
 use std::sync::Arc;
 use tokio::task::JoinHandle;
 

@@ -4,4 +4,6 @@ pub use self::uuid::{
 };
 
 mod github_client;
-pub use github_client::{Error as GithubClientError, GithubClient, MockGithubClient};
+pub use github_client::{
+	Error as GithubClientError, GithubClient, MockGithubClient, UserId as GithubUserId,
+};

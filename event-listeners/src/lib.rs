@@ -1,15 +1,14 @@
 use anyhow::Result;
 use futures::future::try_join_all;
-use marketplace_infrastructure::{
-	database::{self, init_pool},
-	github,
-};
+use infrastructure::github;
+use marketplace_infrastructure::database::{self, init_pool};
 use presentation::{graphql, http, listeners};
 use std::sync::Arc;
 use tokio::task::JoinHandle;
 
 mod application;
 mod domain;
+mod infrastructure;
 mod presentation;
 
 pub async fn main() -> Result<()> {
