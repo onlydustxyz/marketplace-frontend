@@ -1,18 +1,18 @@
 table:
-    name: projects
-    schema: public
+  name: projects
+  schema: public
 array_relationships:
-    - name: project_leads
-      using:
-          foreign_key_constraint_on:
-              column: project_id
-              table:
-                  name: project_leads
-                  schema: public
+  - name: project_leads
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          name: project_leads
+          schema: public
 select_permissions:
-    - role: public
-      permission:
-          columns:
-              - name
-              - id
-          filter: {}
+  - role: public
+    permission:
+      columns:
+        - name
+        - id
+      filter: {}
