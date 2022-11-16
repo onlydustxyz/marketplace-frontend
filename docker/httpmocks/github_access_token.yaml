@@ -1,0 +1,14 @@
+when:
+  method: POST
+  path: /token
+  header:
+    - name: accept
+      value: application/json
+    - name: user-agent
+      value: onlydust-marketplace
+then:
+  status: 200
+  header:
+    - name: content-type
+      value: application/json
+  body: '{ "access_token" : "gh_access_token" }'
