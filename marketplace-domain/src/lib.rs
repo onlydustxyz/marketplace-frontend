@@ -1,7 +1,9 @@
 mod repositories;
+use derive_more::{AsRef, Display, From, Into};
 pub use repositories::*;
 
 mod value_objects;
+use serde::{Deserialize, Serialize};
 pub use value_objects::*;
 
 mod services;
@@ -49,3 +51,11 @@ pub use projectors::{
 
 mod payment;
 pub use payment::{Event as PaymentEvent, Id as PaymentId, Payment, Receipt as PaymentReceipt};
+
+mod payment_request;
+pub use payment_request::{Id as PaymentRequestId, PaymentRequest};
+
+#[derive(
+	Debug, Clone, Copy, Default, Serialize, Deserialize, PartialEq, Eq, Display, From, Into, AsRef,
+)]
+pub struct UserId(uuid::Uuid);

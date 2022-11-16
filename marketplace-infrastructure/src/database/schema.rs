@@ -1,90 +1,103 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
-	event_deduplications (deduplication_id) {
-		deduplication_id -> Text,
-		event_index -> Int4,
-	}
+    event_deduplications (deduplication_id) {
+        deduplication_id -> Text,
+        event_index -> Int4,
+    }
 }
 
 diesel::table! {
-	event_filters (indexer_id, source_contract) {
-		indexer_id -> Text,
-		source_contract -> Text,
-	}
+    event_filters (indexer_id, source_contract) {
+        indexer_id -> Text,
+        source_contract -> Text,
+    }
 }
 
 diesel::table! {
-	events (index) {
-		index -> Int4,
-		timestamp -> Timestamp,
-		aggregate_name -> Varchar,
-		aggregate_id -> Varchar,
-		payload -> Jsonb,
-		metadata -> Nullable<Jsonb>,
-		origin -> Text,
-	}
+    events (index) {
+        index -> Int4,
+        timestamp -> Timestamp,
+        aggregate_name -> Varchar,
+        aggregate_id -> Varchar,
+        payload -> Jsonb,
+        metadata -> Nullable<Jsonb>,
+        origin -> Text,
+    }
 }
 
 diesel::table! {
-	indexers (id) {
-		id -> Text,
-		index_head -> Int8,
-	}
+    indexers (id) {
+        id -> Text,
+        index_head -> Int8,
+    }
 }
 
 diesel::table! {
-	payments (id) {
-		id -> Uuid,
-		amount -> Numeric,
-		currency_code -> Text,
-		recipient_id -> Uuid,
-		reason -> Jsonb,
-		receipt -> Nullable<Jsonb>,
-	}
+    payment_requests (id) {
+        id -> Uuid,
+        project_id -> Uuid,
+        requestor_id -> Uuid,
+        recipient_id -> Uuid,
+        amount_in_usd -> Int8,
+        reason -> Jsonb,
+    }
 }
 
 diesel::table! {
-	payout_settings (user_id) {
-		user_id -> Uuid,
-		eth_wallet_address -> Nullable<Text>,
-	}
+    payments (id) {
+        id -> Uuid,
+        amount -> Numeric,
+        currency_code -> Text,
+        recipient_id -> Uuid,
+        reason -> Jsonb,
+        receipt -> Nullable<Jsonb>,
+    }
 }
 
 diesel::table! {
-	project_leads (project_id, user_id) {
-		project_id -> Uuid,
-		user_id -> Uuid,
-	}
+    payout_settings (user_id) {
+        user_id -> Uuid,
+        eth_wallet_address -> Nullable<Text>,
+    }
 }
 
 diesel::table! {
-	projects (id) {
-		id -> Uuid,
-		name -> Text,
-	}
+    project_leads (project_id, user_id) {
+        project_id -> Uuid,
+        user_id -> Uuid,
+    }
 }
 
 diesel::table! {
-	users (id) {
-		id -> Uuid,
-		github_identifier -> Nullable<Text>,
-		github_username -> Nullable<Text>,
-		discord_handle -> Nullable<Text>,
-	}
+    projects (id) {
+        id -> Uuid,
+        name -> Text,
+    }
 }
 
+diesel::table! {
+    users (id) {
+        id -> Uuid,
+        github_identifier -> Nullable<Text>,
+        github_username -> Nullable<Text>,
+        discord_handle -> Nullable<Text>,
+    }
+}
+
+diesel::joinable!(payment_requests -> projects (project_id));
 diesel::joinable!(project_leads -> projects (project_id));
 diesel::joinable!(project_leads -> users (user_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
-	event_deduplications,
-	event_filters,
-	events,
-	indexers,
-	payments,
-	payout_settings,
-	project_leads,
-	projects,
-	users,
+    event_deduplications,
+    event_filters,
+    events,
+    indexers,
+    payment_requests,
+    payments,
+    payout_settings,
+    project_leads,
+    projects,
+    users,
 );
