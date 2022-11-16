@@ -34,13 +34,12 @@
 Create the `.env` file with the correct environment variables.
 Copy the `.env.example` file and modify the values according to your setup.
 
-### 2. Start the docker container
+### 2. Start the docker stack
 
 Make sure `docker-compose` is installed (see [Installation instructions](https://docs.docker.com/compose/install/)).
-Note: specify the `BASE_TAG` to be used depending on your CPU (`latest` or `latest-arm`)
 
 ```
-BASE_TAG=latest-arm docker-compose -f ./marketplace-core/scripts/docker/dev/docker-compose.yml up -d
+docker-compose up -d
 ```
 
 ### 3. Setup the database
@@ -66,6 +65,10 @@ cargo build
 ## 🔬 Usage
 
 Below are some examples of usage.
+
+### Using Hasura
+
+See [Hasura documentation](./hasura).
 
 ### Add a single repository for indexing
 
