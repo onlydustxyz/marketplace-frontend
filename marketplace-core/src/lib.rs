@@ -26,8 +26,6 @@ extern crate rocket;
 pub async fn main() -> Result<()> {
 	dotenv().ok();
 
-	github::Client::initialize();
-
 	let database = Arc::new(database::Client::new(init_pool()?));
 	database.run_migrations()?;
 
