@@ -1,8 +1,19 @@
+use super::Projection;
+use marketplace_domain::{Project, ProjectId};
+#[cfg(test)]
 use mockall::automock;
 use thiserror::Error;
 use uuid::Uuid;
 
-use crate::{project::ProjectLead, *};
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
+pub struct ProjectLead {
+	project_id: ProjectId,
+	user_id: Uuid,
+}
+
+impl Projection for ProjectLead {
+	type A = Project;
+}
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -14,7 +25,7 @@ pub enum Error {
 	Infrastructure(#[source] anyhow::Error),
 }
 
-#[automock]
+#[cfg_attr(test, automock)]
 pub trait Repository: Send + Sync {
 	fn upsert(&self, lead_contributor: ProjectLead) -> Result<(), Error>;
 	fn delete(&self, project_id: &ProjectId, contributor_id: Uuid) -> Result<(), Error>;

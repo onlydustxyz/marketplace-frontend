@@ -27,14 +27,8 @@ pub use messaging::{
 	SubscriberError,
 };
 
-mod projection;
-pub use projection::Projection;
-
-mod projection_repository;
-pub use projection_repository::{Error as ProjectionRepositoryError, ProjectionRepository};
-
 mod project;
-pub use project::{Event as ProjectEvent, Id as ProjectId, Project, ProjectLead};
+pub use project::{Event as ProjectEvent, Id as ProjectId, Project};
 
 mod aggregate_root_repository;
 pub use aggregate_root_repository::{
@@ -43,13 +37,8 @@ pub use aggregate_root_repository::{
 
 mod contributor;
 pub use contributor::{
-	Contributor, ContributorProfile, DiscordHandle as ContributorDiscordHandle,
-	Error as ContributorError, Event as ContributorEvent,
-};
-
-mod projectors;
-pub use projectors::{
-	ContributorWithGithubData as ContributorWithGithubDataProjector, ProjectLeadProjector,
+	Contributor, DiscordHandle as ContributorDiscordHandle, Error as ContributorError,
+	Event as ContributorEvent,
 };
 
 mod payment;

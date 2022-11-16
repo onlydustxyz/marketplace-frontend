@@ -1,9 +1,9 @@
-use std::sync::Arc;
-
-use marketplace_domain::{ContributorWithGithubDataProjector, ProjectLeadProjector};
+use crate::{
+	application::{RefreshContributors, RefreshProjectLeads},
+	domain::*,
+};
 use marketplace_infrastructure::{database, github};
-
-use crate::application::{RefreshContributors, RefreshProjectLeads};
+use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct Context {

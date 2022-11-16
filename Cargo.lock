@@ -1010,7 +1010,9 @@ version = "1.0.0"
 dependencies = [
  "anyhow",
  "assert_matches",
+ "async-std",
  "async-trait",
+ "derive-getters",
  "derive_more",
  "dotenv",
  "envtestkit",
@@ -1020,8 +1022,10 @@ dependencies = [
  "juniper_warp",
  "marketplace-domain",
  "marketplace-infrastructure",
+ "mockall",
  "mockito",
  "reqwest",
+ "rstest",
  "serde",
  "serde_json",
  "serde_test",
@@ -1030,6 +1034,7 @@ dependencies = [
  "tokio",
  "tracing",
  "url",
+ "uuid 0.8.2",
  "warp",
 ]
 
