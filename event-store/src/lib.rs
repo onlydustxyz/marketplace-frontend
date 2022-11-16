@@ -66,11 +66,7 @@ trait IdentifiableAggregate {
 impl IdentifiableAggregate for Event {
 	fn aggregate_id(&self) -> String {
 		match &self.event {
-			DomainEvent::Project(event) => match event {
-				marketplace_domain::ProjectEvent::LeadContributorAdded { project_id, .. }
-				| marketplace_domain::ProjectEvent::LeadContributorRemoved { project_id, .. } =>
-					project_id.to_string(),
-			},
+			DomainEvent::Project(_) => unimplemented!("No project event yet"),
 			DomainEvent::Contributor(event) => match event {
 				marketplace_domain::ContributorEvent::GithubAccountAssociated {
 					user_id: id,

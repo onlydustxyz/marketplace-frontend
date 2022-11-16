@@ -13,9 +13,4 @@ impl Mutation {
 		context.refresh_contributors_usecase.refresh_projection_from_events().await?;
 		Ok(1)
 	}
-
-	pub async fn refresh_project_leads(context: &Context) -> FieldResult<i32> {
-		context.refresh_contributors_usecase.refresh_projection_from_events().await?;
-		Ok(1)
-	}
 }

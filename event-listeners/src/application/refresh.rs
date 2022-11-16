@@ -3,7 +3,6 @@ use marketplace_domain::{EventListener, EventStore, EventStoreError};
 use std::sync::Arc;
 use thiserror::Error;
 
-pub type RefreshProjectLeads = Refresh<ProjectLead>;
 pub type RefreshContributors = Refresh<ContributorProfile>;
 
 #[derive(Debug, Error)]
