@@ -1,9 +1,6 @@
-use crate::domain::{
-	ContributorProfile, ContributorProfileRepository, ContributorProfileRepositoryError,
-	GithubClient, GithubClientError, GithubUserId,
-};
+use crate::domain::*;
 use async_trait::async_trait;
-use marketplace_domain::{ContributorDiscordHandle, ContributorEvent, Event, EventListener};
+use marketplace_domain::{ContributorDiscordHandle, ContributorEvent, Event};
 use std::sync::Arc;
 use thiserror::Error;
 use tracing::error;
@@ -102,7 +99,6 @@ impl EventListener for ContributorWithGithubData {
 #[allow(clippy::too_many_arguments)]
 mod test {
 	use super::*;
-	use crate::domain::*;
 	use mockall::predicate::eq;
 	use rstest::*;
 	use std::{str::FromStr, sync::Arc};

@@ -1,5 +1,6 @@
+use crate::domain::EventListener;
 use async_trait::async_trait;
-use marketplace_domain::{Event, EventListener};
+use marketplace_domain::Event;
 use tracing::{error, info};
 
 pub struct Logger;
