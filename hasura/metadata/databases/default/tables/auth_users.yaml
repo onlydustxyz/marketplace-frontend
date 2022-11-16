@@ -105,10 +105,10 @@ array_relationships:
     using:
       manual_configuration:
         column_mapping:
-          id: contributor_id
+          id: user_id
         insertion_order: null
         remote_table:
-          name: lead_contributors
+          name: project_leads
           schema: public
   - name: refreshTokens
     using:
