@@ -1014,6 +1014,7 @@ dependencies = [
  "async-trait",
  "derive-getters",
  "derive_more",
+ "diesel",
  "dotenv",
  "envtestkit",
  "event-store",

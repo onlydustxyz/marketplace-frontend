@@ -2,8 +2,6 @@ mod event_store;
 mod models;
 mod repositories;
 pub mod schema;
-#[cfg(test)]
-mod tests;
 
 mod error;
 
@@ -54,7 +52,7 @@ impl Client {
 		Ok(())
 	}
 
-	fn clear_table<T: IntoUpdateTarget>(&self, diesel_table: T) -> Result<(), DatabaseError>
+	pub fn clear_table<T: IntoUpdateTarget>(&self, diesel_table: T) -> Result<(), DatabaseError>
 	where
 		<T as HasTable>::Table: QueryId,
 		<<T as HasTable>::Table as QuerySource>::FromClause: QueryFragment<Pg>,
