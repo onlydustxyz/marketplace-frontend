@@ -1,5 +1,5 @@
 use crate::domain::*;
-use marketplace_domain::{EventListener, EventStore, EventStoreError};
+use marketplace_domain::{EventStore, EventStoreError};
 use std::sync::Arc;
 use thiserror::Error;
 

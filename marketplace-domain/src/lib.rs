@@ -18,9 +18,6 @@ pub use event_store::{Error as EventStoreError, MockStore as MockEventStore, Sto
 mod aggregate;
 pub use aggregate::{Aggregate, AggregateRoot, EventSourcable};
 
-mod event_listener;
-pub use event_listener::{EventListener, MockEventListener};
-
 mod messaging;
 pub use messaging::{
 	Destination, Message, Publisher, PublisherError, Subscriber, SubscriberCallbackError,
