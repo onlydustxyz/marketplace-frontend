@@ -1,4 +1,5 @@
 use crate::domain::EventListener;
+use anyhow::Result;
 use async_trait::async_trait;
 use domain::Event;
 use serde::{ser::SerializeStruct, Serialize, Serializer};
@@ -70,7 +71,7 @@ enum Error {
 
 #[async_trait]
 impl EventListener for EventWebHook {
-	async fn on_event(&self, event: &Event) {
+	async fn on_event(&self, event: &Event) -> Result<()> {
 		match send_event_to_webhook(&self.web_client, event).await {
 			Ok(()) => {},
 			Err(e) => match e {
@@ -85,7 +86,8 @@ impl EventListener for EventWebHook {
 					error!("WebHook target failed to process event: {e}")
 				},
 			},
-		}
+		};
+		Ok(())
 	}
 }
 
