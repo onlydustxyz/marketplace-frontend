@@ -19,7 +19,6 @@ impl NamedAggregate for Event {
 	fn aggregate_name(&self) -> &str {
 		match self.event {
 			DomainEvent::Project(_) => "PROJECT",
-			DomainEvent::Contributor(_) => "CONTRIBUTOR",
 			DomainEvent::Payment(_) => "PAYMENT",
 		}
 	}
@@ -86,7 +85,6 @@ impl EventStore for Client {
 fn serialize_event(event: &DomainEvent) -> Result<Json> {
 	match event {
 		DomainEvent::Project(event) => to_json(event),
-		DomainEvent::Contributor(event) => to_json(event),
 		DomainEvent::Payment(event) => to_json(event),
 	}
 	.map_err(|e| {

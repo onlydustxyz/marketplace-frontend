@@ -1,11 +1,10 @@
-use crate::{ContributorEvent, Message, PaymentEvent, ProjectEvent};
+use crate::{Message, PaymentEvent, ProjectEvent};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	Project(ProjectEvent),
-	Contributor(ContributorEvent),
 	Payment(PaymentEvent),
 }
 
