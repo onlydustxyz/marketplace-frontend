@@ -1,16 +1,7 @@
 table:
   name: payments
   schema: public
-select_permissions:
-  - role: public
-    permission:
-      columns:
-        - reason
-        - receipt
-        - amount
-        - currency_code
-        - id
-        - recipient_id
-      filter:
-        recipient_id:
-          _eq: X-Hasura-User-Id
+object_relationships:
+  - name: payment_request
+    using:
+      foreign_key_constraint_on: request_id

@@ -49,9 +49,8 @@ diesel::table! {
         id -> Uuid,
         amount -> Numeric,
         currency_code -> Text,
-        recipient_id -> Uuid,
-        reason -> Jsonb,
-        receipt -> Nullable<Jsonb>,
+        receipt -> Jsonb,
+        request_id -> Nullable<Uuid>,
     }
 }
 
@@ -77,6 +76,7 @@ diesel::table! {
 }
 
 diesel::joinable!(payment_requests -> projects (project_id));
+diesel::joinable!(payments -> payment_requests (request_id));
 diesel::joinable!(project_leads -> projects (project_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
