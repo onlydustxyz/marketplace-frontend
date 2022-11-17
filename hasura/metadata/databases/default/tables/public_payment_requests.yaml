@@ -5,9 +5,3 @@ object_relationships:
   - name: project
     using:
       foreign_key_constraint_on: project_id
-  - name: recipient
-    using:
-      foreign_key_constraint_on: recipient_id
-  - name: requestor
-    using:
-      foreign_key_constraint_on: requestor_id
