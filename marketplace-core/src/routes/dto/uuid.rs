@@ -1,11 +1,11 @@
-use derive_more::From;
+use derive_more::Into;
 use rocket::request::FromParam;
 use schemars::JsonSchema;
 use serde::Deserialize;
 use std::str::FromStr;
 use uuid::Uuid;
 
-#[derive(Debug, Clone, Copy, Deserialize, JsonSchema, From)]
+#[derive(Debug, Clone, Copy, Deserialize, JsonSchema, Into)]
 pub struct UuidParam(Uuid);
 
 impl<'a> FromParam<'a> for UuidParam {

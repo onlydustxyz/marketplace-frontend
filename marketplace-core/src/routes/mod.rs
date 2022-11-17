@@ -2,6 +2,7 @@ pub mod cors;
 mod dto;
 pub mod graphql;
 pub mod health;
+pub mod payment_request;
 
 pub use dto::*;
 

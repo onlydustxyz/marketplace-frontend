@@ -1,5 +1,6 @@
-mod repositories;
 use derive_more::{AsRef, Display, From, Into};
+
+mod repositories;
 pub use repositories::*;
 
 mod value_objects;

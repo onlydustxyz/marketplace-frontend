@@ -1,8 +1,10 @@
+use std::error::Error;
+
 use http_api_problem::{HttpApiProblem, StatusCode};
 use marketplace_domain::*;
 use marketplace_infrastructure::github::GithubError;
 
-pub(crate) trait ToHttpApiProblem {
+pub(crate) trait ToHttpApiProblem: Error {
 	fn to_http_api_problem(&self) -> HttpApiProblem;
 }
 
@@ -35,6 +37,29 @@ impl ToHttpApiProblem for GithubError {
 				.detail(e.to_string()),
 			GithubError::Timeout =>
 				HttpApiProblem::new(StatusCode::REQUEST_TIMEOUT).title(self.to_string()),
+		}
+	}
+}
+
+impl ToHttpApiProblem for serde_json::Error {
+	fn to_http_api_problem(&self) -> HttpApiProblem {
+		HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+			.title("(De)Serialization error")
+			.detail(self.to_string())
+	}
+}
+
+impl ToHttpApiProblem for PublisherError {
+	fn to_http_api_problem(&self) -> HttpApiProblem {
+		match self {
+			PublisherError::Send(e) => HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+				.title(self.to_string())
+				.detail(e.to_string()),
+			PublisherError::Nack =>
+				HttpApiProblem::new(StatusCode::FAILED_DEPENDENCY).title(self.to_string()),
+			PublisherError::Serialize(e) => HttpApiProblem::new(StatusCode::INTERNAL_SERVER_ERROR)
+				.title(self.to_string())
+				.detail(e.to_string()),
 		}
 	}
 }

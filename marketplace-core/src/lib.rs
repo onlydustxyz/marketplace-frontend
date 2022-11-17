@@ -14,7 +14,7 @@ use marketplace_infrastructure::{
 	github,
 };
 use rocket::routes;
-use rocket_okapi::swagger_ui::make_swagger_ui;
+use rocket_okapi::{openapi_get_routes, swagger_ui::make_swagger_ui};
 use std::sync::Arc;
 use tracing::instrument;
 
@@ -35,6 +35,8 @@ pub async fn main() -> Result<()> {
 	let graphql_context = graphql::Context::new(uuid_generator.clone(), event_bus.clone());
 
 	let rocket_handler = rocket::build()
+		.manage(event_bus.clone() as Arc<dyn Publisher<event_store::Event>>)
+		.manage(uuid_generator.clone() as Arc<dyn UuidGenerator>)
 		.manage(database.clone())
 		.manage(github_client)
 		.manage(graphql_schema)
@@ -54,6 +56,10 @@ pub async fn main() -> Result<()> {
 				routes::graphql::get_graphql_handler,
 				routes::graphql::post_graphql_handler
 			],
+		)
+		.mount(
+			"/",
+			openapi_get_routes![routes::payment_request::request_payment],
 		)
 		.mount("/swagger", make_swagger_ui(&routes::get_docs()))
 		.launch();
