@@ -13,7 +13,7 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: [ "CMD-SHELL", "pg_isready" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -63,6 +63,12 @@ services:
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
       AUTH_JWT_CUSTOM_CLAIMS: '{"projects_leaded":"projects_leaded[].project_id"}'
       AUTH_LOG_LEVEL: info
+      AUTH_CLIENT_URL: http://localhost:5173
+      AUTH_PROVIDER_GITHUB_ENABLED: "true"
+      AUTH_PROVIDER_GITHUB_SCOPE: user
+      AUTH_SERVER_URL: http://localhost:4000
+      AUTH_PROVIDER_GITHUB_CLIENT_ID: $AUTH_PROVIDER_GITHUB_CLIENT_ID
+      AUTH_PROVIDER_GITHUB_CLIENT_SECRET: $AUTH_PROVIDER_GITHUB_CLIENT_SECRET
 
     ports:
       - "4000:4000"
