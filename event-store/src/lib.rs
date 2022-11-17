@@ -68,7 +68,7 @@ impl IdentifiableAggregate for Event {
 		match &self.event {
 			DomainEvent::Project(_) => unimplemented!("No project event yet"),
 			DomainEvent::Payment(event) => match event {
-				backend_domain::PaymentEvent::Processed { id, .. } => id.to_string(),
+				backend_domain::PaymentEvent::Created { id, .. } => id.to_string(),
 			},
 		}
 	}

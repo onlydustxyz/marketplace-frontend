@@ -23,15 +23,15 @@ impl Mutation {
 		Self {}
 	}
 
-	pub async fn eth_payment_processed(
+	pub async fn add_eth_payment_receipt(
 		context: &Context,
-		id: Uuid,
+		request_id: Uuid,
 		receipt: EthPaymentReceipt,
 	) -> FieldResult<PaymentId> {
-		context
-			.mark_payment_as_processed_usecase
-			.mark_payment_as_processed(
-				id.into(),
+		let payment_id = context
+			.create_payment_usecase
+			.create(
+				request_id.into(),
 				PaymentReceipt::OnChainPayment {
 					network: BlockchainNetwork::Ethereum,
 					recipient_address: receipt.recipient_address.parse()?,
@@ -40,6 +40,8 @@ impl Mutation {
 			)
 			.await?;
 
-		Ok(PaymentId { id })
+		Ok(PaymentId {
+			id: payment_id.into(),
+		})
 	}
 }

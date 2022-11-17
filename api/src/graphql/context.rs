@@ -4,7 +4,7 @@ use event_store::Event;
 use std::sync::Arc;
 
 pub struct Context {
-	pub mark_payment_as_processed_usecase: application::payment::mark_as_processed::Usecase,
+	pub create_payment_usecase: application::payment::create::Usecase,
 }
 
 impl Context {
@@ -13,11 +13,10 @@ impl Context {
 		event_publisher: Arc<dyn Publisher<Event>>,
 	) -> Self {
 		Self {
-			mark_payment_as_processed_usecase:
-				application::payment::mark_as_processed::Usecase::new(
-					uuid_generator,
-					event_publisher,
-				),
+			create_payment_usecase: application::payment::create::Usecase::new(
+				uuid_generator,
+				event_publisher,
+			),
 		}
 	}
 }
