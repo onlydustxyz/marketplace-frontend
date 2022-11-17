@@ -11,4 +11,3 @@
 - "!include public_payout_settings.yaml"
 - "!include public_project_leads.yaml"
 - "!include public_projects.yaml"
-- "!include public_users.yaml"
