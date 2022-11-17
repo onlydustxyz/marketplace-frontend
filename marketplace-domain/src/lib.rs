@@ -32,12 +32,6 @@ pub use aggregate_root_repository::{
 	Error as AggregateRootRepositoryError, Repository as AggregateRootRepository,
 };
 
-mod contributor;
-pub use contributor::{
-	Contributor, DiscordHandle as ContributorDiscordHandle, Error as ContributorError,
-	Event as ContributorEvent,
-};
-
 mod payment;
 pub use payment::{Event as PaymentEvent, Id as PaymentId, Payment, Receipt as PaymentReceipt};
 

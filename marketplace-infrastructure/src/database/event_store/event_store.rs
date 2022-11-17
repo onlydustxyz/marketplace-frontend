@@ -14,12 +14,6 @@ impl NamedAggregate for Project {
 	}
 }
 
-impl NamedAggregate for Contributor {
-	fn name() -> String {
-		String::from("CONTRIBUTOR")
-	}
-}
-
 impl NamedAggregate for Payment {
 	fn name() -> String {
 		String::from("PAYMENT")

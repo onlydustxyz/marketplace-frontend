@@ -4,22 +4,16 @@ use logger::Logger;
 mod webhook;
 use webhook::EventWebHook;
 
-use crate::{domain::*, infrastructure::github};
+use crate::domain::*;
 use anyhow::Result;
 use marketplace_domain::{Event, Subscriber, SubscriberCallbackError};
-use marketplace_infrastructure::{amqp::ConsumableBus, database, event_bus};
+use marketplace_infrastructure::{amqp::ConsumableBus, event_bus};
 use std::sync::Arc;
 use tokio::task::JoinHandle;
 
-pub async fn spawn_all(
-	database: Arc<database::Client>,
-	github: Arc<github::Client>,
-	reqwest: reqwest::Client,
-) -> Result<Vec<JoinHandle<()>>> {
+pub async fn spawn_all(reqwest: reqwest::Client) -> Result<Vec<JoinHandle<()>>> {
 	let handles = [
 		Logger.spawn(event_bus::consumer("logger").await?),
-		ContributorWithGithubDataProjector::new(github, database.clone())
-			.spawn(event_bus::consumer("github-contributor-projector").await?),
 		EventWebHook::new(reqwest).spawn(event_bus::consumer("event-webhooks").await?),
 	];
 

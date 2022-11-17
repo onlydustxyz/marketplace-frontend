@@ -1,2 +1,0 @@
-mod contributor_with_github_data;
-pub use contributor_with_github_data::ContributorWithGithubData;

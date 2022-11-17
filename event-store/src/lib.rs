@@ -67,16 +67,6 @@ impl IdentifiableAggregate for Event {
 	fn aggregate_id(&self) -> String {
 		match &self.event {
 			DomainEvent::Project(_) => unimplemented!("No project event yet"),
-			DomainEvent::Contributor(event) => match event {
-				marketplace_domain::ContributorEvent::GithubAccountAssociated {
-					user_id: id,
-					..
-				}
-				| marketplace_domain::ContributorEvent::DiscordHandleRegistered {
-					user_id: id,
-					..
-				} => id.to_string(),
-			},
 			DomainEvent::Payment(event) => match event {
 				marketplace_domain::PaymentEvent::Processed { id, .. } => id.to_string(),
 			},
