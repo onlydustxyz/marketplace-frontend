@@ -1,4 +1,4 @@
-use crate::{Aggregate, PaymentEvent, PaymentId, PaymentReceipt};
+use crate::{Aggregate, PaymentEvent, PaymentId, PaymentReceipt, PaymentRequestId};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -12,10 +12,15 @@ impl Aggregate for Payment {
 }
 
 impl Payment {
-	pub fn mark_as_processed(
+	pub fn create(
 		id: PaymentId,
+		request_id: PaymentRequestId,
 		receipt: PaymentReceipt,
 	) -> Vec<<Self as Aggregate>::Event> {
-		vec![PaymentEvent::Processed { id, receipt }]
+		vec![PaymentEvent::Created {
+			id,
+			request_id,
+			receipt,
+		}]
 	}
 }

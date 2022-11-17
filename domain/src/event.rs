@@ -29,8 +29,9 @@ mod test {
 
 	#[test]
 	fn display_event_as_json() {
-		let event = Event::Payment(PaymentEvent::Processed {
+		let event = Event::Payment(PaymentEvent::Created {
 			id: Default::default(),
+			request_id: Default::default(),
 			receipt: PaymentReceipt::OnChainPayment {
 				network: BlockchainNetwork::Ethereum,
 				recipient_address: Default::default(),
@@ -39,7 +40,7 @@ mod test {
 		});
 		assert_json_include!(
 			actual: serde_json::from_str::<Value>(&event.to_string()).unwrap(),
-			expected: json!({ "Payment": { "Processed": {} } })
+			expected: json!({ "Payment": { "Created": {} } })
 		);
 	}
 }
