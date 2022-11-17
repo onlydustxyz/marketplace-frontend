@@ -5,6 +5,24 @@ object_relationships:
   - name: project
     using:
       foreign_key_constraint_on: project_id
+  - name: recipient
+    using:
+      manual_configuration:
+        column_mapping:
+          recipient_id: id
+        insertion_order: null
+        remote_table:
+          name: users
+          schema: auth
+  - name: requestor
+    using:
+      manual_configuration:
+        column_mapping:
+          requestor_id: id
+        insertion_order: null
+        remote_table:
+          name: users
+          schema: auth
 array_relationships:
   - name: payments
     using:
