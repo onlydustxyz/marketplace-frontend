@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::fmt::Display;
 
-use crate::{ProjectId, UserId};
+use crate::{PaymentRequestId, ProjectId, UserId};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -10,10 +10,10 @@ pub enum Event {
 		project_id: ProjectId,
 	},
 	PaymentRequested {
+		id: PaymentRequestId,
 		project_id: ProjectId,
-		id: uuid::Uuid,
-		recipient_id: UserId,
 		requestor_id: UserId,
+		recipient_id: UserId,
 		amount_in_usd: u32,
 		reason: Value,
 	},
