@@ -76,18 +76,8 @@ diesel::table! {
     }
 }
 
-diesel::table! {
-    users (id) {
-        id -> Uuid,
-        github_identifier -> Nullable<Text>,
-        github_username -> Nullable<Text>,
-        discord_handle -> Nullable<Text>,
-    }
-}
-
 diesel::joinable!(payment_requests -> projects (project_id));
 diesel::joinable!(project_leads -> projects (project_id));
-diesel::joinable!(project_leads -> users (user_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
     event_deduplications,
@@ -99,5 +89,4 @@ diesel::allow_tables_to_appear_in_same_query!(
     payout_settings,
     project_leads,
     projects,
-    users,
 );
