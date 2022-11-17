@@ -19,7 +19,7 @@ pub async fn main() -> Result<()> {
 }
 
 fn spawn_web_server() -> Result<JoinHandle<()>> {
-	let web_server = http::server(http::port()?, move || graphql::Context::new());
+	let web_server = http::server(http::port()?, graphql::Context::new);
 
 	Ok(tokio::spawn(web_server))
 }
