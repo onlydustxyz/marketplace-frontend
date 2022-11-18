@@ -1,9 +1,11 @@
-use crate::*;
 use async_trait::async_trait;
 use derive_more::Constructor;
-use log::error;
+use marketplace_domain::*;
 use std::sync::Arc;
 use thiserror::Error;
+use tracing::error;
+
+use crate::domain::EventListener;
 
 #[derive(Debug, Error)]
 pub enum Error {
