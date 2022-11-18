@@ -7,7 +7,7 @@ runs:
   steps:
     - name: Run docker-compose
       shell: bash
-      run: docker-compose -f ./scripts/docker/dev/docker-compose.yml up -d
+      run: docker-compose up -d
 
     - name: Install diesel CLI
       shell: bash
