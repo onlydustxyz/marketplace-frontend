@@ -3,26 +3,3 @@
     url_from_env: BACKEND_GRAPHQL_URL
     timeout_seconds: 60
     customization: {}
-  permissions:
-    - role: payer
-      definition:
-        schema: |
-          schema {
-            query: Query
-            mutation: Mutation
-          }
-          scalar Uuid
-          type Mutation {
-            ethPaymentProcessed(id: Uuid!, receipt: EthPaymentReceipt!): PaymentId!
-            new: Mutation!
-          }
-          type PaymentId {
-            id: Uuid!
-          }
-          type Query {
-            new: Query!
-          }
-          input EthPaymentReceipt {
-            recipientAddress: String!
-            transactionHash: String!
-          }
