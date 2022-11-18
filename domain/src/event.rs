@@ -32,7 +32,10 @@ mod test {
 		let event = Event::Payment(PaymentEvent::Created {
 			id: Default::default(),
 			request_id: Default::default(),
-			amount: Amount::new(50000, Currency::Crypto("USDC".to_string())),
+			amount: Amount::new(
+				"500.45".parse().unwrap(),
+				Currency::Crypto("USDC".to_string()),
+			),
 			receipt: PaymentReceipt::OnChainPayment {
 				network: BlockchainNetwork::Ethereum,
 				recipient_address: Default::default(),

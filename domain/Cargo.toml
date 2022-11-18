@@ -21,6 +21,7 @@ uuid = {version = "0.8.2", default_features = false, features = [
   "v4",
   "serde",
 ]}
+rust_decimal = "1.26.1"
 
 # Errors
 anyhow = "1.0.57"
