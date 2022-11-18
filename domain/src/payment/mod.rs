@@ -9,3 +9,6 @@ pub use events::Event;
 
 mod aggregate;
 pub use aggregate::Payment;
+
+mod amount;
+pub use amount::{Amount, Currency};

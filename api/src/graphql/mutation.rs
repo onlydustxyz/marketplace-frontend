@@ -1,5 +1,5 @@
 use super::Context;
-use domain::{BlockchainNetwork, PaymentReceipt};
+use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt};
 use juniper::{graphql_object, FieldResult, GraphQLInputObject, GraphQLObject};
 use uuid::Uuid;
 
@@ -26,12 +26,15 @@ impl Mutation {
 	pub async fn add_eth_payment_receipt(
 		context: &Context,
 		request_id: Uuid,
+		amount_minor: i32,
+		currency_code: String,
 		receipt: EthPaymentReceipt,
 	) -> FieldResult<PaymentId> {
 		let payment_id = context
 			.create_payment_usecase
 			.create(
 				request_id.into(),
+				Amount::new(amount_minor as i64, Currency::Crypto(currency_code)),
 				PaymentReceipt::OnChainPayment {
 					network: BlockchainNetwork::Ethereum,
 					recipient_address: receipt.recipient_address.parse()?,

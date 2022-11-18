@@ -23,7 +23,7 @@ impl Message for Event {}
 #[cfg(test)]
 mod test {
 	use super::*;
-	use crate::{BlockchainNetwork, PaymentReceipt};
+	use crate::{Amount, BlockchainNetwork, Currency, PaymentReceipt};
 	use assert_json_diff::assert_json_include;
 	use serde_json::{json, Value};
 
@@ -32,6 +32,7 @@ mod test {
 		let event = Event::Payment(PaymentEvent::Created {
 			id: Default::default(),
 			request_id: Default::default(),
+			amount: Amount::new(50000, Currency::Crypto("USDC".to_string())),
 			receipt: PaymentReceipt::OnChainPayment {
 				network: BlockchainNetwork::Ethereum,
 				recipient_address: Default::default(),
