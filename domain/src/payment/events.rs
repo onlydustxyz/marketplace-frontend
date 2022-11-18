@@ -3,11 +3,14 @@ use std::fmt::Display;
 use crate::{PaymentId, PaymentReceipt, PaymentRequestId};
 use serde::{Deserialize, Serialize};
 
+use super::amount::Amount;
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	Created {
 		id: PaymentId,
 		request_id: PaymentRequestId,
+		amount: Amount,
 		receipt: PaymentReceipt,
 	},
 }
@@ -31,19 +34,13 @@ impl Display for Event {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::{BlockchainNetwork, Currency};
 	use serde_json::json;
+	use testing::fixtures::payment::events;
 
 	#[test]
 	fn test_display() {
-		let event = Event::Created {
-			id: Default::default(),
-			request_id: Default::default(),
-			receipt: PaymentReceipt::OnChainPayment {
-				network: crate::BlockchainNetwork::Ethereum,
-				recipient_address: Default::default(),
-				transaction_hash: Default::default(),
-			},
-		};
+		let event = events::payment_created();
 
 		assert_eq!(
 			event.to_string(),
@@ -69,8 +66,9 @@ mod tests {
 		let event = Event::Created {
 			id: Default::default(),
 			request_id: Default::default(),
+			amount: Amount::new(50000, Currency::Crypto("USDC".to_string())),
 			receipt: PaymentReceipt::OnChainPayment {
-				network: crate::BlockchainNetwork::Ethereum,
+				network: BlockchainNetwork::Ethereum,
 				recipient_address: Default::default(),
 				transaction_hash: Default::default(),
 			},
