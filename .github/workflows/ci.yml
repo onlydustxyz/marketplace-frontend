@@ -99,6 +99,37 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --bins --tests --examples -- -D warnings
 
+  hasura_inconsistencies:
+    needs: build
+    name: Database and GraphQL Schema consistency
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          working-directory: ./hasura
+
+      - name: Install hasura CLI
+        run: yarn install
+        working-directory: ./hasura
+
+      - name: Setup environment
+        uses: ./.github/actions/env-setup
+
+      - name: Check inconsistencies
+        run: |
+          yarn hasura md apply
+          yarn hasura md ic status
+        working-directory: ./hasura
+
+      - name: Log inconsistencies list on failure
+        if: ${{ failure() }}
+        run: yarn hasura md ic list
+        working-directory: ./hasura
+
   unit_tests:
     needs: build
     name: Unit tests
