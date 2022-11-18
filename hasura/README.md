@@ -19,7 +19,7 @@ x-hasura-role: <ANY_ROLE_YOU_WANT_TO_TEST>
 ## Launch local instance
 
 ```
-docker-compose -f scripts/docker/dev/docker-compose.yml up -d
+docker-compose up -d
 ```
 
 Two containers are started:
