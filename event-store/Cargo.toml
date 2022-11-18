@@ -35,7 +35,7 @@ serde = {version = "1.0.137", features = ["derive"]}
 serde_json = {version = "1.0.81"}
 
 # Datetime
-chrono = "0.4"
+chrono = { version = "0.4", features = ["serde"] }
 
 # Utils
 dotenv = "0.15.0"
