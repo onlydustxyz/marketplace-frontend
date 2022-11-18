@@ -8,6 +8,8 @@ runs:
     - name: Run docker-compose
       shell: bash
       run: docker-compose up -d
+      env:
+        BACKEND_GRAPHQL_URL: https://staging.api.onlydust.xyz/graphql
 
     - name: Install diesel CLI
       shell: bash
