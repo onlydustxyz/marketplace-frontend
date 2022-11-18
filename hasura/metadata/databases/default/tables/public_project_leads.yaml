@@ -5,3 +5,12 @@ object_relationships:
   - name: project
     using:
       foreign_key_constraint_on: project_id
+  - name: user
+    using:
+      manual_configuration:
+        column_mapping:
+          user_id: id
+        insertion_order: null
+        remote_table:
+          name: users
+          schema: auth
