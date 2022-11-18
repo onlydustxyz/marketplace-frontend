@@ -1,16 +1,9 @@
 use super::Context;
 use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt};
-use juniper::{graphql_object, FieldResult, GraphQLInputObject, GraphQLObject};
+use juniper::{graphql_object, FieldResult, GraphQLObject};
 use uuid::Uuid;
 
 pub struct Mutation;
-
-#[derive(GraphQLInputObject)]
-#[graphql(description = "Receipt data of an ethereum payment")]
-struct EthPaymentReceipt {
-	recipient_address: String,
-	transaction_hash: String,
-}
 
 #[derive(GraphQLObject)]
 struct PaymentId {
@@ -28,7 +21,8 @@ impl Mutation {
 		request_id: Uuid,
 		amount_minor: i32,
 		currency_code: String,
-		receipt: EthPaymentReceipt,
+		recipient_address: String,
+		transaction_hash: String,
 	) -> FieldResult<PaymentId> {
 		let payment_id = context
 			.create_payment_usecase
@@ -37,8 +31,8 @@ impl Mutation {
 				Amount::new(amount_minor as i64, Currency::Crypto(currency_code)),
 				PaymentReceipt::OnChainPayment {
 					network: BlockchainNetwork::Ethereum,
-					recipient_address: receipt.recipient_address.parse()?,
-					transaction_hash: receipt.transaction_hash.parse()?,
+					recipient_address: recipient_address.parse()?,
+					transaction_hash: transaction_hash.parse()?,
 				},
 			)
 			.await?;
