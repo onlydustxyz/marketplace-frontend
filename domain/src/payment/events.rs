@@ -35,29 +35,35 @@ impl Display for Event {
 mod tests {
 	use super::*;
 	use crate::{BlockchainNetwork, Currency};
-	use serde_json::json;
+	use assert_json_diff::assert_json_eq;
+	use serde_json::{json, Value};
 	use testing::fixtures::payment::events;
 
 	#[test]
 	fn test_display() {
 		let event = events::payment_created();
 
-		assert_eq!(
-			event.to_string(),
-			serde_json::to_string(&json!({
+		assert_json_eq!(
+			serde_json::from_str::<Value>(&event.to_string()).unwrap(),
+			json!({
 				"Created": {
-					"id": "00000000-0000-0000-0000-000000000000",
-					"request_id": "00000000-0000-0000-0000-000000000000",
-					"receipt": {
-						"OnChainPayment": {
-							"network": "Ethereum",
-							"recipient_address": "",
-							"transaction_hash": ""
+					"id": "abad1756-18ba-42e2-8cbf-83369cecfb38",
+					"request_id":"b5db0b56-ab3e-4bd1-b9a2-6a3d41f35b8f",
+					"amount":{
+						"amount":"500.45",
+						"currency":{
+							"Crypto":"USDC"
+						}
+					},
+					"receipt":{
+						"OnChainPayment":{
+							"network":"Ethereum",
+							"recipient_address":"0x07B3616D2450b6390e9D14B92DE8B766e6d93Fd22fB9AFdE882705154045F2e1",
+							"transaction_hash":"0x797fb77202901c52094d2544f3631a3535b8ca40009f6a6ac6940b67e6873a4"
 						}
 					}
 				}
-			}))
-			.unwrap()
+			})
 		);
 	}
 
@@ -66,7 +72,10 @@ mod tests {
 		let event = Event::Created {
 			id: Default::default(),
 			request_id: Default::default(),
-			amount: Amount::new(50000, Currency::Crypto("USDC".to_string())),
+			amount: Amount::new(
+				"500.45".parse().unwrap(),
+				Currency::Crypto("USDC".to_string()),
+			),
 			receipt: PaymentReceipt::OnChainPayment {
 				network: BlockchainNetwork::Ethereum,
 				recipient_address: Default::default(),

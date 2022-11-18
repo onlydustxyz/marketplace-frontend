@@ -5,7 +5,10 @@ pub fn payment_created() -> PaymentEvent {
 	PaymentEvent::Created {
 		id: payment_id(),
 		request_id: payment_request_id(),
-		amount: Amount::new(50000, Currency::Crypto("USDC".to_string())),
+		amount: Amount::new(
+			"500.45".parse().unwrap(),
+			Currency::Crypto("USDC".to_string()),
+		),
 		receipt: PaymentReceipt::OnChainPayment {
 			network: BlockchainNetwork::Ethereum,
 			recipient_address: recipient_address(),

@@ -1,9 +1,10 @@
 use derive_getters::Getters;
+use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Getters)]
 pub struct Amount {
-	minor: i64,
+	amount: Decimal,
 	currency: Currency,
 }
 
@@ -13,8 +14,8 @@ pub enum Currency {
 }
 
 impl Amount {
-	pub fn new(minor: i64, currency: Currency) -> Self {
-		Self { minor, currency }
+	pub fn new(amount: Decimal, currency: Currency) -> Self {
+		Self { amount, currency }
 	}
 }
 

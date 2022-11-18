@@ -1,6 +1,8 @@
 use super::Context;
+use anyhow::anyhow;
 use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt};
 use juniper::{graphql_object, FieldResult, GraphQLObject};
+use rusty_money::{crypto, Money};
 use uuid::Uuid;
 
 pub struct Mutation;
@@ -19,16 +21,20 @@ impl Mutation {
 	pub async fn add_eth_payment_receipt(
 		context: &Context,
 		request_id: Uuid,
-		amount_minor: i32,
+		amount: String,
 		currency_code: String,
 		recipient_address: String,
 		transaction_hash: String,
 	) -> FieldResult<PaymentId> {
+		let currency = crypto::find(&currency_code)
+			.ok_or_else(|| anyhow!("Unknown currency code: {currency_code}"))?;
+		let amount = Money::from_str(&amount, currency)?;
+
 		let payment_id = context
 			.create_payment_usecase
 			.create(
 				request_id.into(),
-				Amount::new(amount_minor as i64, Currency::Crypto(currency_code)),
+				Amount::new(*amount.amount(), Currency::Crypto(currency_code)),
 				PaymentReceipt::OnChainPayment {
 					network: BlockchainNetwork::Ethereum,
 					recipient_address: recipient_address.parse()?,
