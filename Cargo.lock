@@ -118,11 +118,11 @@ dependencies = [
  "async-trait",
  "chrono",
  "derive_more",
+ "diesel",
  "domain",
  "dotenv",
  "event-store",
  "futures 0.3.25",
- "http-api-problem",
  "infrastructure",
  "juniper",
  "juniper_rocket",
@@ -518,6 +518,7 @@ dependencies = [
  "js-sys",
  "num-integer",
  "num-traits",
+ "serde",
  "time 0.1.44",
  "wasm-bindgen",
  "winapi",
@@ -1481,20 +1482,6 @@ dependencies = [
  "bytes",
  "fnv",
  "itoa",
-]
-
-[[package]]
-name = "http-api-problem"
-version = "0.53.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ef2c3fff5b9b0a4cdbdb81fd1380573f6bf7af9360deb27123a67d878d36d78c"
-dependencies = [
- "http",
- "rocket",
- "rocket_okapi",
- "schemars",
- "serde",
- "serde_json",
 ]
 
 [[package]]

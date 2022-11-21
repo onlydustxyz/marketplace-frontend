@@ -1,6 +1,6 @@
+use super::{EventStore, EventStoreError};
+use domain::EventSourcable;
 use std::sync::Arc;
-
-use crate::*;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -10,6 +10,8 @@ pub enum Error {
 	#[error(transparent)]
 	EventStoreError(#[from] EventStoreError),
 }
+
+pub trait AggregateRoot: EventSourcable {}
 
 #[derive(Clone)]
 pub struct Repository<A: AggregateRoot> {

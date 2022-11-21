@@ -1,16 +1,18 @@
 extern crate dotenv;
 
 mod application;
+mod domain;
 mod graphql;
+mod infrastructure;
 mod routes;
 
-use anyhow::Result;
-use domain::*;
-use dotenv::dotenv;
-use infrastructure::{
+use ::domain::*;
+use ::infrastructure::{
 	amqp::Bus,
 	database::{self, init_pool},
 };
+use anyhow::Result;
+use dotenv::dotenv;
 use log::info;
 use rocket::routes;
 use rocket_okapi::swagger_ui::make_swagger_ui;

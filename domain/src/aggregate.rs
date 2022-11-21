@@ -18,5 +18,3 @@ pub trait EventSourcable: Aggregate {
 		Self::apply_events(Default::default(), events)
 	}
 }
-
-pub trait AggregateRoot: EventSourcable {}

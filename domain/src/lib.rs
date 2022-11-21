@@ -12,11 +12,8 @@ pub use services::*;
 mod event;
 pub use event::Event;
 
-mod event_store;
-pub use event_store::{Error as EventStoreError, MockStore as MockEventStore, Store as EventStore};
-
 mod aggregate;
-pub use aggregate::{Aggregate, AggregateRoot, EventSourcable};
+pub use aggregate::{Aggregate, EventSourcable};
 
 mod messaging;
 pub use messaging::{
@@ -26,11 +23,6 @@ pub use messaging::{
 
 mod project;
 pub use project::{Event as ProjectEvent, Id as ProjectId, Project};
-
-mod aggregate_root_repository;
-pub use aggregate_root_repository::{
-	Error as AggregateRootRepositoryError, Repository as AggregateRootRepository,
-};
 
 mod payment;
 pub use payment::{Event as PaymentEvent, Id as PaymentId, Payment, Receipt as PaymentReceipt};

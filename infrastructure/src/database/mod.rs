@@ -1,4 +1,3 @@
-mod event_store;
 mod models;
 mod repositories;
 pub mod schema;
