@@ -1059,11 +1059,13 @@ dependencies = [
  "infrastructure",
  "juniper",
  "juniper_warp",
+ "macros",
  "mockall",
  "mockito",
  "reqwest",
  "rstest",
  "rust_decimal",
+ "rust_decimal_macros",
  "serde",
  "serde_json",
  "serde_test",
@@ -1893,6 +1895,15 @@ dependencies = [
  "serde_json",
  "tracing",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "macros"
+version = "0.1.0"
+dependencies = [
+ "derive-getters",
+ "quote",
+ "syn",
 ]
 
 [[package]]
