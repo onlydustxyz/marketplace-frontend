@@ -1,10 +1,9 @@
 use anyhow::Result;
 use std::sync::Arc;
-use uuid::Uuid;
 
 use crate::domain::AggregateRootRepository;
 use chrono::Utc;
-use domain::{Destination, Project, ProjectId, Publisher, UuidGenerator};
+use domain::{Destination, Project, ProjectId, Publisher, UserId, UuidGenerator};
 use event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event, EventOrigin};
 
 pub struct Usecase {
@@ -26,7 +25,7 @@ impl Usecase {
 		}
 	}
 
-	pub async fn assign_leader(&self, project_id: ProjectId, leader_id: Uuid) -> Result<Uuid> {
+	pub async fn assign_leader(&self, project_id: ProjectId, leader_id: UserId) -> Result<UserId> {
 		let project = self.project_repository.find_by_id(&project_id)?;
 
 		let events: Vec<Event> = project

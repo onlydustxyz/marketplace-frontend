@@ -33,6 +33,18 @@ mod payment_request;
 pub use payment_request::{Id as PaymentRequestId, PaymentRequest};
 
 #[derive(
-	Debug, Clone, Copy, Default, Serialize, Deserialize, PartialEq, Eq, Display, From, Into, AsRef,
+	Debug,
+	Clone,
+	Copy,
+	Default,
+	Serialize,
+	Deserialize,
+	PartialEq,
+	Eq,
+	Display,
+	From,
+	Into,
+	AsRef,
+	Hash,
 )]
 pub struct UserId(uuid::Uuid);
