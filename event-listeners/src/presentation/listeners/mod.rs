@@ -6,8 +6,8 @@ use webhook::EventWebHook;
 
 use crate::domain::*;
 use anyhow::Result;
-use marketplace_domain::{Event, Subscriber, SubscriberCallbackError};
-use marketplace_infrastructure::{amqp::ConsumableBus, event_bus};
+use domain::{Event, Subscriber, SubscriberCallbackError};
+use infrastructure::{amqp::ConsumableBus, event_bus};
 use std::sync::Arc;
 use tokio::task::JoinHandle;
 

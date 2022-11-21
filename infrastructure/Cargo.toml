@@ -1,0 +1,90 @@
+[package]
+authors = ["OnlyDust <tech@onlydust.xyz>"]
+description = "Infrastructure of the contribution marketplace."
+edition = "2021"
+homepage = "https://onlydust.xyz"
+license-file = "LICENSE"
+name = "infrastructure"
+readme = "README.md"
+repository = "https://github.com/onlydustxyz/marketplace-backend"
+version = "0.0.1"
+
+[features]
+with_infrastructure_tests = []
+
+[dependencies]
+
+# Async
+async-trait = "0.1.56"
+futures = {version = "0.3.21", features = ["alloc"]}
+tokio = {version = "1.18.2", features = ["full"]}
+tokio-stream = "0.1.10"
+
+# RabbitMQ
+lapin = "2.1.1"
+tokio-executor-trait = "2.1.0"
+
+# Database
+diesel = {version = "1.4.8", default-features = false, features = [
+  "postgres",
+  "serde_json",
+  "uuidv07",
+  "chrono",
+]}
+diesel_migrations = "1.4.0"
+r2d2 = "0.8.10"
+r2d2-diesel = "1.0.0"
+uuid = {version = "0.8.2", default_features = false, features = [
+  "v4",
+  "serde",
+]}
+
+# Http Server
+rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
+
+# Http Client
+reqwest = {version = "0.11", features = ["json"]}
+
+# Logs
+log = "0.4.17"
+
+# Tracing
+opentelemetry = {version = "0.18.0", features = ["rt-tokio"]}
+opentelemetry-datadog = {version = "0.6.0", features = ["reqwest-client"]}
+tracing = {version = "0.1", features = []}
+tracing-log = {version = "0.1", features = ["env_logger"]}
+tracing-opentelemetry = "0.18.0"
+tracing-subscriber = {version = "0.3", features = ["env-filter", "fmt", "json"]}
+
+# Errors
+anyhow = "1.0.57"
+thiserror = "1.0.31"
+
+# Serde
+serde = {version = "1.0.137", features = ["derive"]}
+serde_json = {version = "1.0.81"}
+
+# Datetime
+chrono = "0.4"
+
+# Utils
+itertools = "0.10.3"
+mapinto = "0.2.1"
+rand = "0.8.5"
+url = "2.2.2"
+
+# Unit testing
+mockall = "0.11.2"
+
+# Local dependecies
+domain = {path = "../domain"}
+testing = {path = "../testing"}
+
+[dev-dependencies]
+assert_matches = "1.5"
+async-std = {version = "1.12.0", features = ["attributes"]}
+claim = "0.5"
+rand = "0.8.5"
+rstest = "0.15.0"
+tracing-test = "0.2.3"
+wiremock = "0.5"

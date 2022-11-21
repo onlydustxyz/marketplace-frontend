@@ -1,10 +1,8 @@
 use crate::{domain::EventStore, Event, EventOrigin};
+use backend_domain::{Event as DomainEvent, EventStore as DomainEventStore, Payment, PaymentId};
+use backend_infrastructure::database::{schema::events, Client};
 use chrono::Utc;
 use diesel::{query_dsl::select_dsl::SelectDsl, RunQueryDsl};
-use marketplace_domain::{
-	Event as DomainEvent, EventStore as DomainEventStore, Payment, PaymentId,
-};
-use marketplace_infrastructure::database::{schema::events, Client};
 use rstest::{fixture, rstest};
 use serde_json::{json, Value};
 use std::str::FromStr;

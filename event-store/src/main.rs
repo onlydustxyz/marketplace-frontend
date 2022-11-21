@@ -1,6 +1,6 @@
 use anyhow::Result;
+use backend_infrastructure::tracing::Tracer;
 use dotenv::dotenv;
-use marketplace_infrastructure::tracing::Tracer;
 
 #[tokio::main]
 async fn main() -> Result<()> {

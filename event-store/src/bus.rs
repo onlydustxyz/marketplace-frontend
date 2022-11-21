@@ -1,6 +1,6 @@
+use backend_infrastructure::amqp::{Bus, BusError, ConsumableBus};
 use lapin::options::QueueDeclareOptions;
 use log::info;
-use marketplace_infrastructure::amqp::{Bus, BusError, ConsumableBus};
 
 pub const QUEUE_NAME: &str = "event-store";
 

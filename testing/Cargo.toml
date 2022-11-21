@@ -1,8 +1,8 @@
 [package]
+description = "e2e tests and testing utils (fixtures, mocks)"
 edition = "2021"
 license-file = "LICENSE"
 name = "testing"
-description = "e2e tests and testing utils (fixtures, mocks)"
 version = "0.1.0"
 
 [lib]
@@ -30,7 +30,7 @@ uuid = {version = "0.8.2", default_features = false, features = [
 ]}
 
 # Local dependencies
-marketplace-domain = {path = "../marketplace-domain"}
+domain = {path = "../domain"}
 
 [dev-dependencies]
 # Unit testing
@@ -40,10 +40,9 @@ async-std = {version = "1.12.0", features = ["attributes"]}
 rstest = "0.15.0"
 
 # Utils
+chrono = "0.4"
 dotenv = "0.15.0"
 hex = "0.4.3"
-chrono = "0.4"
-
 
 # Serde
 serde = {version = "1.0.137", features = ["derive"]}
@@ -58,10 +57,10 @@ async-trait = "0.1.56"
 tokio = {version = "1.18.2", features = ["full"]}
 
 # Local dependencies
-marketplace-core = {path = "../marketplace-core"}
-marketplace-infrastructure = {path = "../marketplace-infrastructure"}
+api = {path = "../api"}
 event-listeners = {path = "../event-listeners"}
 event-store = {path = "../event-store"}
+infrastructure = {path = "../infrastructure"}
 
 # Errors
 anyhow = "1.0.57"

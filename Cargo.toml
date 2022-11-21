@@ -1,10 +1,10 @@
 [workspace]
 
 members = [
-  "marketplace-core",
-  "marketplace-domain",
+  "api",
+  "domain",
   "event-listeners",
   "event-store",
-  "marketplace-infrastructure",
+  "infrastructure",
   "testing",
 ]

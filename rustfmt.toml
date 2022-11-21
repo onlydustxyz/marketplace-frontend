@@ -27,5 +27,5 @@ use_field_init_shorthand = true
 
 # Ignore generated files
 ignore = [
-  "marketplace-infrastructure/src/database/schema.rs",
+  "infrastructure/src/database/schema.rs",
 ]

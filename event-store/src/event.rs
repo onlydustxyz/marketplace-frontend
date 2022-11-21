@@ -1,7 +1,7 @@
 use std::fmt::Display;
 
+use backend_domain::{Event as DomainEvent, Message};
 use chrono::NaiveDateTime;
-use marketplace_domain::{Event as DomainEvent, Message};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 

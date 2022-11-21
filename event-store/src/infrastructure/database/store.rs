@@ -1,16 +1,16 @@
 use crate::{domain::*, infrastructure::database::models, Event};
-use diesel::{dsl::exists, prelude::*};
-use log::error;
-use marketplace_domain::Event as DomainEvent;
-use marketplace_infrastructure::database::{
+use backend_domain::Event as DomainEvent;
+use backend_infrastructure::database::{
 	schema::{event_deduplications, event_deduplications::dsl, events, events::index},
 	Client,
 };
+use diesel::{dsl::exists, prelude::*};
+use log::error;
 use serde_json::{to_value as to_json, Value as Json};
 
 type Result<T> = std::result::Result<T, EventStoreError>;
 
-// TODO: factorize with the one in marketplace-infrastructure
+// TODO: factorize with the one in infrastructure
 trait NamedAggregate {
 	fn aggregate_name(&self) -> &str;
 }

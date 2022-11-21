@@ -1,5 +1,5 @@
 use crate::fixtures::payment::constants::TRANSACTION_HASHES;
-use marketplace_domain::{ContractAddress, PaymentId, TransactionHash};
+use domain::{ContractAddress, PaymentId, TransactionHash};
 use std::str::FromStr;
 use uuid::Uuid;
 

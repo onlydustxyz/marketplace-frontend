@@ -8,7 +8,7 @@ fn connection() -> PgConnection {
 }
 
 pub fn get_events_count() -> i64 {
-	use marketplace_infrastructure::database::schema::events::dsl::*;
+	use infrastructure::database::schema::events::dsl::*;
 
 	events
 		.count()
