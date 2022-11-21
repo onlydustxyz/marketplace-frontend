@@ -38,9 +38,9 @@ impl EventSourcable for Project {
 				name: name.to_owned(),
 				..Default::default()
 			},
-			ProjectEvent::LeaderAssigned { id, leader_id } => {
+			ProjectEvent::LeaderAssigned { leader_id, .. } => {
 				self.leaders.insert(*leader_id);
-				Project { id: *id, ..self }
+				self
 			},
 		}
 	}
