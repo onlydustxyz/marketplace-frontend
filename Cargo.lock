@@ -1063,6 +1063,7 @@ dependencies = [
  "mockito",
  "reqwest",
  "rstest",
+ "rust_decimal",
  "serde",
  "serde_json",
  "serde_test",
@@ -3002,6 +3003,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ee9164faf726e4f3ece4978b25ca877ddc6802fa77f38cdccb32c7f805ecd70c"
 dependencies = [
  "arrayvec",
+ "diesel",
  "num-traits",
  "serde",
 ]

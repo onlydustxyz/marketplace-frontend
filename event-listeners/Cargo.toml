@@ -29,6 +29,7 @@ uuid = {version = "0.8.2", default_features = false, features = [
   "v4",
   "serde",
 ]}
+rust_decimal = {version="1.26.1", features=["db-diesel-postgres"]}
 
 # Http client
 reqwest = {version = "0.11", default-features = false}

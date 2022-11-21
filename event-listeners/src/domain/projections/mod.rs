@@ -1,3 +1,7 @@
+#[allow(clippy::extra_unused_lifetimes)]
+mod payment;
+pub use payment::Payment;
+
 pub trait Projection {
 	type Id;
 }
