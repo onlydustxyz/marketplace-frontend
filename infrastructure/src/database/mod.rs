@@ -1,9 +1,6 @@
-mod models;
-mod repositories;
 pub mod schema;
 
 mod error;
-
 pub use error::Error as DatabaseError;
 
 use diesel::{
