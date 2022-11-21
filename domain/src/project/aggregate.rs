@@ -6,7 +6,7 @@ use thiserror::Error;
 
 use crate::*;
 
-#[derive(Debug, Error, PartialEq)]
+#[derive(Debug, Error, Eq, PartialEq)]
 pub enum Error {
 	#[error("Project lead already assigned to this project")]
 	LeaderAlreadyAssigned,
@@ -110,7 +110,7 @@ mod tests {
 
 	#[rstest]
 	fn test_assign_leader(project_created: ProjectEvent, leader_id: UserId, project_id: ProjectId) {
-		let project = Project::from_events(&vec![project_created]);
+		let project = Project::from_events(&[project_created]);
 
 		let events = project.assign_leader(leader_id.to_owned()).unwrap();
 
@@ -126,7 +126,7 @@ mod tests {
 
 	#[rstest]
 	fn test_assign_twice_the_same_leader(project_created: ProjectEvent, leader_id: UserId) {
-		let project = Project::from_events(&vec![project_created]);
+		let project = Project::from_events(&[project_created]);
 		let events = project.assign_leader(leader_id.to_owned()).unwrap();
 		let project = project.apply_events(&events);
 
