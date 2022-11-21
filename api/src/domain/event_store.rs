@@ -1,4 +1,4 @@
-use crate::Aggregate;
+use domain::Aggregate;
 use thiserror::Error;
 
 #[derive(Debug, Error)]

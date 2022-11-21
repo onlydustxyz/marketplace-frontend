@@ -47,8 +47,6 @@ impl EventSourcable for Project {
 	}
 }
 
-impl AggregateRoot for Project {}
-
 impl Project {
 	pub fn create(id: ProjectId, name: String) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
 		Ok(vec![ProjectEvent::Created { id, name }])

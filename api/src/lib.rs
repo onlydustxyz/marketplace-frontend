@@ -6,7 +6,8 @@ mod graphql;
 mod infrastructure;
 mod routes;
 
-use ::domain::*;
+use crate::domain::AggregateRootRepository;
+use ::domain::RandomUuidGenerator;
 use ::infrastructure::{
 	amqp::Bus,
 	database::{self, init_pool},
@@ -32,7 +33,12 @@ pub async fn main() -> Result<()> {
 	let uuid_generator = Arc::new(RandomUuidGenerator);
 	let event_bus = Arc::new(Bus::default().await?);
 	let graphql_schema = graphql::create_schema();
-	let graphql_context = graphql::Context::new(uuid_generator.clone(), event_bus.clone());
+	let project_repository = Arc::new(AggregateRootRepository::new(database.clone()));
+	let graphql_context = graphql::Context::new(
+		uuid_generator.clone(),
+		event_bus.clone(),
+		project_repository.clone(),
+	);
 
 	let rocket_handler = rocket::build()
 		.manage(database.clone())
