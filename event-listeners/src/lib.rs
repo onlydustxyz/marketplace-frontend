@@ -1,3 +1,4 @@
+#[macro_use]
 extern crate diesel;
 
 use anyhow::Result;
