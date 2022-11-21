@@ -66,7 +66,6 @@ jobs:
           command: check
 
   build:
-    needs: check
     name: Compile
     runs-on: ubuntu-latest
     steps:
@@ -82,7 +81,6 @@ jobs:
           command: build
 
   lint:
-    needs: check
     name: Clippy checks
     runs-on: ubuntu-latest
     steps:
@@ -101,29 +99,20 @@ jobs:
           args: --bins --tests --examples -- -D warnings
 
   hasura_inconsistencies:
-    needs: build
     name: Database and GraphQL Schema consistency
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          working-directory: ./hasura
-
-      - name: Install hasura CLI
-        run: yarn install
-        working-directory: ./hasura
-
       - name: Setup environment
         uses: ./.github/actions/env-setup
 
+      - name: Install Hasura CLI
+        uses: ./.github/actions/hasura-setup
+
       - name: Check inconsistencies
-        run: |
-          yarn hasura md apply
-          yarn hasura md ic status
+        run: yarn hasura md ic status
         working-directory: ./hasura
 
       - name: Log inconsistencies list on failure
@@ -132,7 +121,6 @@ jobs:
         working-directory: ./hasura
 
   unit_tests:
-    needs: build
     name: Unit tests
     runs-on: ubuntu-latest
     steps:
@@ -152,3 +140,24 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
+
+  e2e_tests:
+    name: End-to-end tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup environment
+        uses: ./.github/actions/env-setup
+
+      - name: Setup hasura
+        uses: ./.github/actions/hasura-setup
+
+      - name: Execute end-to-end tests
+        uses: ./.github/actions/cypress
+
+      - name: Setup tmate session for debugging
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ failure() && inputs.debug_enabled }}

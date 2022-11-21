@@ -29,3 +29,7 @@ _docker
 
 # Node
 **/node_modules
+
+# Cypress
+testing/cypress/screenshots
+testing/cypress/videos
