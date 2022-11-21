@@ -53,4 +53,17 @@ impl Mutation {
 
 		Ok(project_id.into())
 	}
+
+	pub async fn assign_project_lead(
+		context: &Context,
+		project_id: Uuid,
+		lead_id: Uuid,
+	) -> FieldResult<Uuid> {
+		context
+			.assign_project_lead_usecase
+			.assign_leader(project_id.into(), lead_id.into())
+			.await?;
+
+		Ok(project_id)
+	}
 }
