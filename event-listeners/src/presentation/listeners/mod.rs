@@ -4,17 +4,23 @@ use logger::Logger;
 mod webhook;
 use webhook::EventWebHook;
 
-use crate::domain::*;
+use crate::{domain::*, infrastructure::database::PaymentRepository};
 use anyhow::Result;
 use domain::{Event, Subscriber, SubscriberCallbackError};
-use infrastructure::{amqp::ConsumableBus, event_bus};
+use infrastructure::{amqp::ConsumableBus, database, event_bus};
 use std::sync::Arc;
 use tokio::task::JoinHandle;
 
-pub async fn spawn_all(reqwest: reqwest::Client) -> Result<Vec<JoinHandle<()>>> {
+pub async fn spawn_all(
+	reqwest: reqwest::Client,
+	database: Arc<database::Client>,
+) -> Result<Vec<JoinHandle<()>>> {
+	let payment_repository = Arc::new(PaymentRepository::new(database));
+
 	let handles = [
 		Logger.spawn(event_bus::consumer("logger").await?),
 		EventWebHook::new(reqwest).spawn(event_bus::consumer("event-webhooks").await?),
+		PaymentProjector::new(payment_repository).spawn(event_bus::consumer("payments").await?),
 	];
 
 	Ok(handles.into())
