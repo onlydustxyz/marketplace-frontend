@@ -1,0 +1,23 @@
+name: Run Cypress tests
+
+description: Install and run Cypress tests
+
+runs:
+  using: "composite"
+  steps:
+    - name: Use Node.js 16
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Install cypress
+      shell: bash
+      run: yarn
+      working-directory: ./testing
+
+    - name: Cypress run
+      uses: cypress-io/github-action@v4
+      with:
+        working-directory: ./testing
+      env:
+        CYPRESS_BASE_URL: http://localhost:8080

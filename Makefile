@@ -48,3 +48,6 @@ hasura/clean: migration/run
 	yarn --cwd ./hasura hasura md apply
 	yarn --cwd ./hasura hasura md ic drop
 	yarn --cwd ./hasura hasura md export
+
+cypress/test:
+	yarn --cwd ./testing cypress:run

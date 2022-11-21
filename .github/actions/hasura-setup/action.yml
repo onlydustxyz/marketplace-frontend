@@ -1,0 +1,21 @@
+name: Install Hasura CLI and load Hasura metadata
+
+description: Install Hasura CLI and load Hasura metadata
+
+runs:
+  using: "composite"
+  steps:
+    - name: Use Node.js 16
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Install Hasura CLI
+      shell: bash
+      run: yarn
+      working-directory: ./hasura
+
+    - name: Load the Hasura metadata
+      shell: bash
+      run: yarn hasura md apply
+      working-directory: ./hasura
