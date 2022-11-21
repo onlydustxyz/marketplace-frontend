@@ -1,14 +1,23 @@
+use std::collections::HashSet;
+
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
+use thiserror::Error;
 use uuid::Uuid;
 
 use crate::*;
+
+#[derive(Debug, Error, PartialEq)]
+pub enum Error {
+	#[error("Project lead already assigned to this project")]
+	LeaderAlreadyAssigned,
+}
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, Getters, Dissolve, Constructor)]
 pub struct Project {
 	id: ProjectId,
 	name: String,
-	leaders: Vec<Uuid>,
+	leaders: HashSet<Uuid>,
 }
 
 impl Aggregate for Project {
@@ -31,7 +40,7 @@ impl EventSourcable for Project {
 				..Default::default()
 			},
 			ProjectEvent::LeaderAssigned { id, leader_id } => {
-				self.leaders.push(*leader_id);
+				self.leaders.insert(*leader_id);
 				Project { id: *id, ..self }
 			},
 		}
@@ -41,15 +50,18 @@ impl EventSourcable for Project {
 impl AggregateRoot for Project {}
 
 impl Project {
-	pub fn create(id: ProjectId, name: String) -> Vec<<Self as Aggregate>::Event> {
-		vec![ProjectEvent::Created { id, name }]
+	pub fn create(id: ProjectId, name: String) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+		Ok(vec![ProjectEvent::Created { id, name }])
 	}
 
-	pub fn assign_leader(&self, leader_id: Uuid) -> Vec<<Self as Aggregate>::Event> {
-		vec![ProjectEvent::LeaderAssigned {
+	pub fn assign_leader(&self, leader_id: Uuid) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+		if self.leaders.contains(&leader_id) {
+			return Err(Error::LeaderAlreadyAssigned);
+		}
+		Ok(vec![ProjectEvent::LeaderAssigned {
 			id: self.id,
 			leader_id,
-		}]
+		}])
 	}
 }
 
@@ -83,7 +95,7 @@ mod tests {
 	#[rstest]
 	fn test_create(project_id: ProjectId) {
 		let project_name = "My cool project";
-		let events = Project::create(project_id, project_name.to_string());
+		let events = Project::create(project_id, project_name.to_string()).unwrap();
 
 		assert_eq!(events.len(), 1);
 		assert_eq!(
@@ -99,7 +111,7 @@ mod tests {
 	fn test_assign_leader(project_created: ProjectEvent, leader_id: Uuid, project_id: ProjectId) {
 		let project = Project::from_events(&vec![project_created]);
 
-		let events = project.assign_leader(leader_id.to_owned());
+		let events = project.assign_leader(leader_id.to_owned()).unwrap();
 
 		assert_eq!(events.len(), 1);
 		assert_eq!(
@@ -109,5 +121,17 @@ mod tests {
 				leader_id
 			}
 		);
+	}
+
+	#[rstest]
+	fn test_assign_twice_the_same_leader(project_created: ProjectEvent, leader_id: Uuid) {
+		let project = Project::from_events(&vec![project_created]);
+		let events = project.assign_leader(leader_id.to_owned()).unwrap();
+		let project = project.apply_events(&events);
+
+		let result = project.assign_leader(leader_id.to_owned());
+
+		assert!(result.is_err());
+		assert_eq!(result.unwrap_err(), Error::LeaderAlreadyAssigned);
 	}
 }
