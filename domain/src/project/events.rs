@@ -1,10 +1,12 @@
 use crate::ProjectId;
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
+use uuid::Uuid;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	Created { id: ProjectId, name: String },
+	LeaderAssigned { id: ProjectId, leader_id: Uuid },
 }
 
 impl Display for Event {
