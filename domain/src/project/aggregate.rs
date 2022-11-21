@@ -20,6 +20,17 @@ impl From<ProjectEvent> for Event {
 	}
 }
 
+impl EventSourcable for Project {
+	fn apply_event(self, event: &Self::Event) -> Self {
+		match event {
+			ProjectEvent::Created { id, name } => Project {
+				id: *id,
+				name: name.to_owned(),
+			},
+		}
+	}
+}
+
 impl Project {
 	pub fn create(id: ProjectId, name: String) -> Vec<<Self as Aggregate>::Event> {
 		vec![ProjectEvent::Created { id, name }]
