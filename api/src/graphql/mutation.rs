@@ -47,4 +47,10 @@ impl Mutation {
 			id: payment_id.into(),
 		})
 	}
+
+	pub async fn create_project(context: &Context, name: String) -> FieldResult<Uuid> {
+		let project_id = context.create_project_usecase.create(name).await?;
+
+		Ok(project_id.into())
+	}
 }

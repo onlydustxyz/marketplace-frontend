@@ -19,3 +19,9 @@ impl From<ProjectEvent> for Event {
 		Event::Project(event)
 	}
 }
+
+impl Project {
+	pub fn create(id: ProjectId, name: String) -> Vec<<Self as Aggregate>::Event> {
+		vec![ProjectEvent::Created { id, name }]
+	}
+}
