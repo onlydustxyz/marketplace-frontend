@@ -10,7 +10,6 @@ use dotenv::dotenv;
 use infrastructure::{
 	amqp::Bus,
 	database::{self, init_pool},
-	github,
 };
 use log::info;
 use rocket::routes;
@@ -28,7 +27,6 @@ pub async fn main() -> Result<()> {
 	let database = Arc::new(database::Client::new(init_pool()?));
 	database.run_migrations()?;
 
-	let github_client = Arc::new(github::Client::new());
 	let uuid_generator = Arc::new(RandomUuidGenerator);
 	let event_bus = Arc::new(Bus::default().await?);
 	let graphql_schema = graphql::create_schema();
@@ -36,7 +34,6 @@ pub async fn main() -> Result<()> {
 
 	let rocket_handler = rocket::build()
 		.manage(database.clone())
-		.manage(github_client)
 		.manage(graphql_schema)
 		.manage(graphql_context)
 		.attach(routes::cors::Cors)
