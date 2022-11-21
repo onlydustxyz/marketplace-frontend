@@ -1,14 +1,10 @@
 use anyhow::Result;
 use chrono::Utc;
-use domain::{Destination, Payment, PaymentId, PaymentReceipt, Publisher, UuidGenerator};
-use event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event, EventOrigin};
-<<<<<<<< HEAD:api/src/application/payment/mark_as_processed.rs
-========
-use marketplace_domain::{
+use domain::{
 	Amount, Destination, Payment, PaymentId, PaymentReceipt, PaymentRequestId, Publisher,
 	UuidGenerator,
 };
->>>>>>>> 26a89161 (♻️ link payment aggregate to payment_request):api/src/application/payment/create.rs
+use event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event, EventOrigin};
 use std::sync::Arc;
 
 pub struct Usecase {
