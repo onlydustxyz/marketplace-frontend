@@ -1,5 +1,4 @@
 use crate::Aggregate;
-use mockall::automock;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -10,7 +9,6 @@ pub enum Error {
 	List(#[source] anyhow::Error),
 }
 
-#[automock]
 pub trait Store<A: Aggregate>: Send + Sync {
 	fn list_by_id(&self, aggregate_id: &A::Id) -> Result<Vec<A::Event>, Error>;
 	fn list(&self) -> Result<Vec<A::Event>, Error>;
