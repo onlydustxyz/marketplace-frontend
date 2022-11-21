@@ -3,7 +3,6 @@ use std::collections::HashSet;
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
 use thiserror::Error;
-use uuid::Uuid;
 
 use crate::*;
 
@@ -17,7 +16,7 @@ pub enum Error {
 pub struct Project {
 	id: ProjectId,
 	name: String,
-	leaders: HashSet<Uuid>,
+	leaders: HashSet<UserId>,
 }
 
 impl Aggregate for Project {
@@ -52,7 +51,10 @@ impl Project {
 		Ok(vec![ProjectEvent::Created { id, name }])
 	}
 
-	pub fn assign_leader(&self, leader_id: Uuid) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+	pub fn assign_leader(
+		&self,
+		leader_id: UserId,
+	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
 		if self.leaders.contains(&leader_id) {
 			return Err(Error::LeaderAlreadyAssigned);
 		}
@@ -66,6 +68,7 @@ impl Project {
 #[cfg(test)]
 mod tests {
 	use std::str::FromStr;
+	use uuid::Uuid;
 
 	use rstest::{fixture, rstest};
 
@@ -78,8 +81,8 @@ mod tests {
 	}
 
 	#[fixture]
-	fn leader_id() -> Uuid {
-		Uuid::from_str("f2e47686-6cfa-403d-be32-795c6aa78fff").unwrap()
+	fn leader_id() -> UserId {
+		Uuid::from_str("f2e47686-6cfa-403d-be32-795c6aa78fff").unwrap().into()
 	}
 
 	#[fixture]
@@ -106,7 +109,7 @@ mod tests {
 	}
 
 	#[rstest]
-	fn test_assign_leader(project_created: ProjectEvent, leader_id: Uuid, project_id: ProjectId) {
+	fn test_assign_leader(project_created: ProjectEvent, leader_id: UserId, project_id: ProjectId) {
 		let project = Project::from_events(&vec![project_created]);
 
 		let events = project.assign_leader(leader_id.to_owned()).unwrap();
@@ -122,7 +125,7 @@ mod tests {
 	}
 
 	#[rstest]
-	fn test_assign_twice_the_same_leader(project_created: ProjectEvent, leader_id: Uuid) {
+	fn test_assign_twice_the_same_leader(project_created: ProjectEvent, leader_id: UserId) {
 		let project = Project::from_events(&vec![project_created]);
 		let events = project.assign_leader(leader_id.to_owned()).unwrap();
 		let project = project.apply_events(&events);
