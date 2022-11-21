@@ -7,17 +7,17 @@ mod domain;
 mod infrastructure;
 
 use anyhow::Result;
-use domain::EventStore;
-use futures::TryFutureExt;
-use log::debug;
-use marketplace_domain::{
+use backend_domain::{
 	Destination, Event as DomainEvent, Publisher, Subscriber, SubscriberCallbackError,
 };
-use marketplace_infrastructure::{
+use backend_infrastructure::{
 	amqp::Bus,
 	database::{init_pool, Client as DatabaseClient},
 	event_bus::EXCHANGE_NAME,
 };
+use domain::EventStore;
+use futures::TryFutureExt;
+use log::debug;
 use std::sync::Arc;
 
 pub async fn main() -> Result<()> {
@@ -68,7 +68,7 @@ impl IdentifiableAggregate for Event {
 		match &self.event {
 			DomainEvent::Project(_) => unimplemented!("No project event yet"),
 			DomainEvent::Payment(event) => match event {
-				marketplace_domain::PaymentEvent::Processed { id, .. } => id.to_string(),
+				backend_domain::PaymentEvent::Processed { id, .. } => id.to_string(),
 			},
 		}
 	}

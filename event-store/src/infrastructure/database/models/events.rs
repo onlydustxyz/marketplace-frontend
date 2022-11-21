@@ -1,6 +1,6 @@
+use backend_infrastructure::database::schema::*;
 use chrono::NaiveDateTime;
 use diesel::Insertable;
-use marketplace_infrastructure::database::schema::*;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 

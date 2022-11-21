@@ -45,8 +45,8 @@ anyhow = "1.0.57"
 thiserror = "1.0.31"
 
 # Local dependecies
-marketplace-domain = {path = "../marketplace-domain"}
-marketplace-infrastructure = {path = "../marketplace-infrastructure"}
+backend_domain = {path = "../domain", package = "domain"}
+backend_infrastructure = {path = "../infrastructure", package = "infrastructure"}
 
 # TO REMOVE
 uuid = {version = "0.8.2", default_features = false, features = [
@@ -57,5 +57,5 @@ uuid = {version = "0.8.2", default_features = false, features = [
 [dev-dependencies]
 # Unit tests
 async-std = {version = "1.12.0", features = ["attributes"]}
-testing = {path = "../testing"}
 rstest = "0.15.0"
+testing = {path = "../testing"}

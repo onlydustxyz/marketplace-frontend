@@ -125,6 +125,45 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "216261ddc8289130e551ddcd5ce8a064710c0d064a4d2895c67151c92b5443f6"
 
 [[package]]
+name = "api"
+version = "1.0.0"
+dependencies = [
+ "anyhow",
+ "async-std",
+ "async-trait",
+ "chrono",
+ "derive_more",
+ "domain",
+ "dotenv",
+ "event-store",
+ "futures 0.3.25",
+ "http-api-problem",
+ "infrastructure",
+ "juniper",
+ "juniper_rocket",
+ "lazy_static",
+ "log",
+ "mockall",
+ "octocrab",
+ "okapi",
+ "reqwest",
+ "rocket",
+ "rocket_okapi",
+ "rstest",
+ "schemars",
+ "serde",
+ "serde_json",
+ "serde_test",
+ "serdect",
+ "testing",
+ "thiserror",
+ "tokio",
+ "tracing",
+ "url",
+ "uuid 0.8.2",
+]
+
+[[package]]
 name = "arc-swap"
 version = "1.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -943,6 +982,31 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fea41bba32d969b513997752735605054bc0dfa92b4c56bf1189f2e174be7a10"
 
 [[package]]
+name = "domain"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "assert-json-diff",
+ "assert_matches",
+ "async-std",
+ "async-trait",
+ "chrono",
+ "derive-getters",
+ "derive_more",
+ "futures 0.3.25",
+ "log",
+ "mockall",
+ "mockall_double",
+ "rstest",
+ "serde",
+ "serde_json",
+ "serde_test",
+ "thiserror",
+ "url",
+ "uuid 0.8.2",
+]
+
+[[package]]
 name = "dotenv"
 version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1015,14 +1079,14 @@ dependencies = [
  "derive-getters",
  "derive_more",
  "diesel",
+ "domain",
  "dotenv",
  "envtestkit",
  "event-store",
  "futures 0.3.25",
+ "infrastructure",
  "juniper",
  "juniper_warp",
- "marketplace-domain",
- "marketplace-infrastructure",
  "mockall",
  "mockito",
  "octocrab",
@@ -1049,12 +1113,12 @@ dependencies = [
  "async-trait",
  "chrono",
  "diesel",
+ "domain",
  "dotenv",
  "futures 0.3.25",
+ "infrastructure",
  "lapin",
  "log",
- "marketplace-domain",
- "marketplace-infrastructure",
  "rstest",
  "serde",
  "serde_json",
@@ -1649,6 +1713,50 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "64e9829a50b42bb782c1df523f78d332fe371b10c661e78b7a3c34b0198e9fac"
 
 [[package]]
+name = "infrastructure"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "assert_matches",
+ "async-std",
+ "async-trait",
+ "chrono",
+ "claim",
+ "diesel",
+ "diesel_migrations",
+ "domain",
+ "futures 0.3.25",
+ "itertools",
+ "lapin",
+ "log",
+ "mapinto",
+ "mockall",
+ "opentelemetry",
+ "opentelemetry-datadog",
+ "r2d2",
+ "r2d2-diesel",
+ "rand 0.8.5",
+ "reqwest",
+ "rocket",
+ "rstest",
+ "serde",
+ "serde_json",
+ "testing",
+ "thiserror",
+ "tokio",
+ "tokio-executor-trait",
+ "tokio-stream",
+ "tracing",
+ "tracing-log",
+ "tracing-opentelemetry",
+ "tracing-subscriber",
+ "tracing-test",
+ "url",
+ "uuid 0.8.2",
+ "wiremock",
+]
+
+[[package]]
 name = "inlinable_string"
 version = "0.1.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1884,114 +1992,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "83fef99e2fe2af6bbbb14a8ea2f4d949260ff713e99a2efa4a454e3eea152136"
 dependencies = [
  "futures 0.1.31",
-]
-
-[[package]]
-name = "marketplace-core"
-version = "1.0.0"
-dependencies = [
- "anyhow",
- "async-std",
- "async-trait",
- "chrono",
- "derive_more",
- "dotenv",
- "event-store",
- "futures 0.3.25",
- "http-api-problem",
- "juniper",
- "juniper_rocket",
- "lazy_static",
- "log",
- "marketplace-domain",
- "marketplace-infrastructure",
- "mockall",
- "octocrab",
- "okapi",
- "reqwest",
- "rocket",
- "rocket_okapi",
- "rstest",
- "schemars",
- "serde",
- "serde_json",
- "serde_test",
- "serdect",
- "testing",
- "thiserror",
- "tokio",
- "tracing",
- "url",
- "uuid 0.8.2",
-]
-
-[[package]]
-name = "marketplace-domain"
-version = "0.0.1"
-dependencies = [
- "anyhow",
- "assert-json-diff",
- "assert_matches",
- "async-std",
- "async-trait",
- "chrono",
- "derive-getters",
- "derive_more",
- "futures 0.3.25",
- "log",
- "mockall",
- "mockall_double",
- "rstest",
- "serde",
- "serde_json",
- "serde_test",
- "thiserror",
- "url",
- "uuid 0.8.2",
-]
-
-[[package]]
-name = "marketplace-infrastructure"
-version = "0.0.1"
-dependencies = [
- "anyhow",
- "assert_matches",
- "async-std",
- "async-trait",
- "chrono",
- "claim",
- "diesel",
- "diesel_migrations",
- "futures 0.3.25",
- "itertools",
- "lapin",
- "log",
- "mapinto",
- "marketplace-domain",
- "mockall",
- "opentelemetry",
- "opentelemetry-datadog",
- "r2d2",
- "r2d2-diesel",
- "rand 0.8.5",
- "reqwest",
- "rocket",
- "rstest",
- "serde",
- "serde_json",
- "testing",
- "thiserror",
- "tokio",
- "tokio-executor-trait",
- "tokio-stream",
- "tracing",
- "tracing-log",
- "tracing-opentelemetry",
- "tracing-subscriber",
- "tracing-test",
- "url",
- "uuid 0.8.2",
- "wiremock",
 ]
 
 [[package]]
@@ -3664,6 +3664,7 @@ name = "testing"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "api",
  "assert-json-diff",
  "assert_matches",
  "async-std",
@@ -3671,14 +3672,13 @@ dependencies = [
  "chrono",
  "diesel",
  "diesel_migrations",
+ "domain",
  "dotenv",
  "event-listeners",
  "event-store",
  "futures 0.3.25",
  "hex",
- "marketplace-core",
- "marketplace-domain",
- "marketplace-infrastructure",
+ "infrastructure",
  "r2d2",
  "r2d2-diesel",
  "reqwest",

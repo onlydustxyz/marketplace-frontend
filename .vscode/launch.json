@@ -7,16 +7,11 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in library 'marketplace-core'",
+            "name": "Debug unit tests in library 'api'",
             "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--lib",
-                    "--package=marketplace-core"
-                ],
+                "args": ["test", "--no-run", "--lib", "--package=api"],
                 "filter": {
-                    "name": "marketplace-core",
+                    "name": "api",
                     "kind": "lib"
                 }
             },
@@ -26,15 +21,11 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'marketplace-core'",
+            "name": "Debug executable 'api'",
             "cargo": {
-                "args": [
-                    "build",
-                    "--bin=marketplace-core",
-                    "--package=marketplace-core"
-                ],
+                "args": ["build", "--bin=api", "--package=api"],
                 "filter": {
-                    "name": "marketplace-core",
+                    "name": "api",
                     "kind": "bin"
                 }
             },
@@ -44,16 +35,11 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in executable 'marketplace-core'",
+            "name": "Debug unit tests in executable 'api'",
             "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=marketplace-core",
-                    "--package=marketplace-core"
-                ],
+                "args": ["test", "--no-run", "--bin=api", "--package=api"],
                 "filter": {
-                    "name": "marketplace-core",
+                    "name": "api",
                     "kind": "bin"
                 }
             },
@@ -65,11 +51,7 @@
             "request": "launch",
             "name": "Debug executable 'event_listeners'",
             "cargo": {
-                "args": [
-                    "build",
-                    "--bin=event_listeners",
-                    "--package=marketplace-core"
-                ],
+                "args": ["build", "--bin=event_listeners", "--package=api"],
                 "filter": {
                     "name": "event_listeners",
                     "kind": "bin"
@@ -87,7 +69,7 @@
                     "test",
                     "--no-run",
                     "--bin=event_listeners",
-                    "--package=marketplace-core"
+                    "--package=api"
                 ],
                 "filter": {
                     "name": "event_listeners",
@@ -100,16 +82,11 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in library 'marketplace-domain'",
+            "name": "Debug unit tests in library 'domain'",
             "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--lib",
-                    "--package=marketplace-domain"
-                ],
+                "args": ["test", "--no-run", "--lib", "--package=domain"],
                 "filter": {
-                    "name": "marketplace-domain",
+                    "name": "domain",
                     "kind": "lib"
                 }
             },
@@ -119,16 +96,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in library 'marketplace-infrastructure'",
+            "name": "Debug unit tests in library 'infrastructure'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
                     "--lib",
-                    "--package=marketplace-infrastructure"
+                    "--package=infrastructure"
                 ],
                 "filter": {
-                    "name": "marketplace-infrastructure",
+                    "name": "infrastructure",
                     "kind": "lib"
                 }
             },
@@ -140,12 +117,7 @@
             "request": "launch",
             "name": "Debug unit tests in library 'testing'",
             "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--lib",
-                    "--package=testing"
-                ],
+                "args": ["test", "--no-run", "--lib", "--package=testing"],
                 "filter": {
                     "name": "testing",
                     "kind": "lib"
@@ -159,12 +131,7 @@
             "request": "launch",
             "name": "Debug unit tests in library 'event-store'",
             "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--lib",
-                    "--package=event-store"
-                ],
+                "args": ["test", "--no-run", "--lib", "--package=event-store"],
                 "filter": {
                     "name": "event-store",
                     "kind": "lib"
@@ -178,11 +145,7 @@
             "request": "launch",
             "name": "Debug executable 'event-store'",
             "cargo": {
-                "args": [
-                    "build",
-                    "--bin=event-store",
-                    "--package=event-store"
-                ],
+                "args": ["build", "--bin=event-store", "--package=event-store"],
                 "filter": {
                     "name": "event-store",
                     "kind": "bin"
@@ -204,62 +167,6 @@
                 ],
                 "filter": {
                     "name": "event-store",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in library 'marketplace-indexer'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--lib",
-                    "--package=marketplace-indexer"
-                ],
-                "filter": {
-                    "name": "marketplace-indexer",
-                    "kind": "lib"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug executable 'marketplace-indexer'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=marketplace-indexer",
-                    "--package=marketplace-indexer"
-                ],
-                "filter": {
-                    "name": "marketplace-indexer",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'marketplace-indexer'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--bin=marketplace-indexer",
-                    "--package=marketplace-indexer"
-                ],
-                "filter": {
-                    "name": "marketplace-indexer",
                     "kind": "bin"
                 }
             },

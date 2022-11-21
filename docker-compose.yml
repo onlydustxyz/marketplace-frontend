@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   db:
-    container_name: marketplace-db
+    container_name: db
     image: postgres:14.3-alpine
     restart: always
     environment:
@@ -13,7 +13,7 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5

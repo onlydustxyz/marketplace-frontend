@@ -9,7 +9,7 @@ use tokio::{
 
 #[fixture]
 pub async fn marketplace_api() -> JoinHandle<Result<()>> {
-	let handle = spawn(::marketplace_core::main());
+	let handle = spawn(::api::main());
 
 	let mut timer = interval(Duration::from_millis(500));
 

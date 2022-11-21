@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-use marketplace_domain::Event;
+use domain::Event;
 
 #[async_trait]
 pub trait EventListener: Send + Sync {

@@ -1,5 +1,5 @@
 use super::*;
-use marketplace_domain::{BlockchainNetwork, PaymentEvent, PaymentReceipt};
+use domain::{BlockchainNetwork, PaymentEvent, PaymentReceipt};
 
 pub fn payment_processed() -> PaymentEvent {
 	PaymentEvent::Processed {

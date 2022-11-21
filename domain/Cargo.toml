@@ -1,74 +1,52 @@
 [package]
 authors = ["OnlyDust <tech@onlydust.xyz>"]
-description = "Event listeners"
+description = "Domain objects and behaviours used in OnlyDust applictions."
 edition = "2021"
 homepage = "https://onlydust.xyz"
 license-file = "LICENSE"
-name = "event-listeners"
+name = "domain"
 readme = "README.md"
 repository = "https://github.com/onlydustxyz/marketplace-backend"
-version = "1.0.0"
+version = "0.0.1"
 
 [dependencies]
 
 # Async
 async-trait = "0.1.56"
 futures = {version = "0.3.21", features = ["alloc"]}
-tokio = {version = "1.18.2", features = ["full"]}
-
-# Database
-diesel = {version = "1.4.8", default-features = false, features = [
-  "postgres",
-  "serde_json",
-  "uuidv07",
-  "chrono",
-]}
 
 # Core types
+url = "2.2.2"
 uuid = {version = "0.8.2", default_features = false, features = [
   "v4",
   "serde",
 ]}
 
-# Github
-octocrab = "0.16.0"
-
-# Http client
-reqwest = {version = "0.11", default-features = false}
-url = "2.2.2"
-
-# Http Server
-juniper = "0.15.10"
-juniper_warp = "0.7.0"
-warp = "0.3.3"
-
-# Tracing
-tracing = {version = "0.1"}
-
 # Errors
 anyhow = "1.0.57"
 thiserror = "1.0.31"
+
+# Log
+log = "0.4.17"
 
 # Serde
 serde = {version = "1.0.137", features = ["derive"]}
 serde_json = {version = "1.0.81"}
 
+# Datetime
+chrono = "0.4"
+
 # Utils
 derive-getters = "0.2.0"
 derive_more = "0.99.17"
-dotenv = "0.15.0"
 
-# Local dependecies
-domain = {path = "../domain"}
-event-store = {path = "../event-store"}
-infrastructure = {path = "../infrastructure"}
+# Unit testing
+mockall = "0.11.2"
+mockall_double = "0.3.0"
 
 [dev-dependencies]
+assert-json-diff = "2.0.2"
 assert_matches = "1.5"
 async-std = {version = "1.12.0", features = ["attributes"]}
-envtestkit = "1.1.2"
-mockall = "0.11.2"
-mockito = "0.31.0"
 rstest = "0.15.0"
 serde_test = "1.0.140"
-testing = {path = "../testing"}

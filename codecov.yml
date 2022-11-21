@@ -5,7 +5,7 @@ coverage:
         informational: true
     patch:
       default:
-          informational: true
+        informational: true
 
 ignore:
-  - "marketplace-infrastructure/src/database/schema.rs"
+  - "infrastructure/src/database/schema.rs"

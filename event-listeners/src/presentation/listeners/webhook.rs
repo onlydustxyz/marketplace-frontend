@@ -1,6 +1,6 @@
 use crate::domain::EventListener;
 use async_trait::async_trait;
-use marketplace_domain::Event;
+use domain::Event;
 use serde::{ser::SerializeStruct, Serialize, Serializer};
 use serde_json::json;
 use std::env;
