@@ -42,7 +42,7 @@ array_relationships:
           name: payments
           schema: public
 insert_permissions:
-  - role: project_lead
+  - role: user
     permission:
       check:
         project_id:
@@ -55,7 +55,7 @@ insert_permissions:
         - reason
         - recipient_id
 select_permissions:
-  - role: project_lead
+  - role: user
     permission:
       columns:
         - amount_in_usd
@@ -68,7 +68,7 @@ select_permissions:
         project_id:
           _in: X-Hasura-projects_leaded
 delete_permissions:
-  - role: project_lead
+  - role: user
     permission:
       filter:
         project_id:
