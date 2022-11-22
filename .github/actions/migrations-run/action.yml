@@ -1,0 +1,16 @@
+name: Migrations run
+
+description: Install Diesel CLI and run migrations
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install diesel CLI
+      shell: bash
+      run: cargo install diesel_cli --no-default-features --features postgres --force
+
+    - name: Run migrations
+      shell: bash
+      run: diesel migration run
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
