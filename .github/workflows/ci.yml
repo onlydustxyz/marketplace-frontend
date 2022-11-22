@@ -143,33 +143,11 @@ jobs:
         with:
           key: coverage
 
+      - name: Setup environment
+        uses: ./.github/actions/env-setup
+
       - name: Run tests
         uses: ./.github/actions/coverage-checks
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
-          codecov_flag: unittests
-
-  infrastructure_tests:
-    needs: build
-    name: Infrastructure tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Setup cargo
-        uses: ./.github/actions/cargo-setup
-        with:
-          key: coverage
-
-      - name: Setup environment
-        uses: ./.github/actions/env-setup
-
-      - name: Execute infrastructure tests
-        uses: ./.github/actions/coverage-checks
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          codecov_token: ${{ secrets.CODECOV_TOKEN }}
-          test_flags: -p infrastructure -p event-store --features with_infrastructure_tests
-          codecov_flag: infrastructure
