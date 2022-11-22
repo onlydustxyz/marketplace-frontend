@@ -20,6 +20,7 @@ impl NamedAggregate for Event {
 		match self {
 			Event::Project(_) => "PROJECT",
 			Event::Payment(_) => "PAYMENT",
+			Event::PaymentRequest(_) => "PAYMENT_REQUEST",
 		}
 	}
 }
@@ -85,6 +86,7 @@ fn serialize_event(event: &Event) -> Result<Json> {
 	match event {
 		Event::Project(event) => to_json(event),
 		Event::Payment(event) => to_json(event),
+		Event::PaymentRequest(event) => to_json(event),
 	}
 	.map_err(|e| {
 		error!("Failed to serialize event {event:?}: {e}");
