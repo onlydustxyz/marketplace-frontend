@@ -28,3 +28,40 @@ impl Payment {
 		}]
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use crate::{BlockchainNetwork, Currency};
+	use rust_decimal_macros::dec;
+	use testing::fixtures::payment::*;
+	use uuid::Uuid;
+
+	#[test]
+	fn test_create() {
+		let events = Payment::create(
+			Uuid::from(payment_id()).into(),
+			Uuid::from(payment_request_id()).into(),
+			Amount::new(dec!(123.45), Currency::Crypto("USDC".to_string())),
+			PaymentReceipt::OnChainPayment {
+				network: BlockchainNetwork::Ethereum,
+				recipient_address: recipient_address(),
+				transaction_hash: transaction_hash(),
+			},
+		);
+
+		assert_eq!(
+			events,
+			vec![PaymentEvent::Created {
+				id: Uuid::from(payment_id()).into(),
+				request_id: Uuid::from(payment_request_id()).into(),
+				amount: Amount::new(dec!(123.45), Currency::Crypto("USDC".to_string())),
+				receipt: PaymentReceipt::OnChainPayment {
+					network: BlockchainNetwork::Ethereum,
+					recipient_address: recipient_address(),
+					transaction_hash: transaction_hash(),
+				}
+			}]
+		);
+	}
+}

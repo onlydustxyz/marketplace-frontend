@@ -52,3 +52,5 @@ async-std = {version = "1.12.0", features = ["attributes"]}
 rstest = "0.15.0"
 serde_test = "1.0.140"
 testing = {path = "../testing"}
+rust_decimal_macros = "1.26"
+regex = "1.7.0"
