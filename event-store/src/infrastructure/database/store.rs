@@ -5,8 +5,8 @@ use backend_infrastructure::database::{
 	Client,
 };
 use diesel::{dsl::exists, prelude::*};
-use log::error;
 use serde_json::{to_value as to_json, Value as Json};
+use tracing::error;
 
 type Result<T> = std::result::Result<T, EventStoreError>;
 
@@ -74,7 +74,10 @@ impl EventStore for Client {
 				Ok(())
 			})
 			.map_err(|e: diesel::result::Error| {
-				error!("Failed to insert event(s) into database: {e}");
+				error!(
+					error = e.to_string(),
+					"Failed to insert event into database"
+				);
 				EventStoreError::Append(e.into())
 			})?;
 

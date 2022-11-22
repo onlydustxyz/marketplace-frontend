@@ -24,8 +24,8 @@ async-trait = "0.1.56"
 futures = {version = "0.3.21", features = ["alloc"]}
 tokio = {version = "1.18.2", features = ["full"]}
 
-# Logs
-log = "0.4.17"
+# Tracing
+tracing = {version = "0.1"}
 
 # Serde
 serde = {version = "1.0.137", features = ["derive"]}

@@ -1092,13 +1092,13 @@ dependencies = [
  "futures 0.3.25",
  "infrastructure",
  "lapin",
- "log",
  "rstest",
  "serde",
  "serde_json",
  "testing",
  "thiserror",
  "tokio",
+ "tracing",
  "uuid 0.8.2",
 ]
 
