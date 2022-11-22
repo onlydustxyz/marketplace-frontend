@@ -1,4 +1,4 @@
-use crate::{Message, PaymentEvent, ProjectEvent};
+use crate::{Message, PaymentEvent, PaymentRequestEvent, ProjectEvent};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
@@ -6,6 +6,7 @@ use std::fmt::Display;
 pub enum Event {
 	Project(ProjectEvent),
 	Payment(PaymentEvent),
+	PaymentRequest(PaymentRequestEvent),
 }
 
 impl Display for Event {

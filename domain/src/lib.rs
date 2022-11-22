@@ -30,7 +30,7 @@ pub use payment::{
 };
 
 mod payment_request;
-pub use payment_request::{Id as PaymentRequestId, PaymentRequest};
+pub use payment_request::{Event as PaymentRequestEvent, Id as PaymentRequestId, PaymentRequest};
 
 #[derive(
 	Debug,

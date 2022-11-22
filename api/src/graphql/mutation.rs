@@ -66,4 +66,26 @@ impl Mutation {
 
 		Ok(project_id)
 	}
+
+	pub async fn request_payment(
+		context: &Context,
+		project_id: Uuid,
+		requestor_id: Uuid,
+		recipient_id: Uuid,
+		amount_in_usd: i32,
+		reason: String,
+	) -> FieldResult<Uuid> {
+		let payment_request_id = context
+			.create_payment_request_usecase
+			.create(
+				project_id.into(),
+				requestor_id.into(),
+				recipient_id.into(),
+				amount_in_usd as u32,
+				reason.into(),
+			)
+			.await?;
+
+		Ok(payment_request_id.into())
+	}
 }
