@@ -40,6 +40,8 @@ pub use event_store::{Error as EventStoreError, Store as EventStore};
 
 mod specifications;
 
+#[cfg(test)]
+pub use specifications::tests::MockSpecifications;
 pub use specifications::{Specifications, SpecificationsImpl};
 
 #[derive(

@@ -28,3 +28,23 @@ impl SpecificationsImpl {
 }
 
 impl Specifications for SpecificationsImpl {}
+
+#[cfg(test)]
+pub mod tests {
+	use super::Error;
+	use crate::{specifications::project::ProjectSpecifications, ProjectId};
+	use async_trait::async_trait;
+	use mockall::mock;
+
+	mock! {
+		pub Specifications {}
+
+		#[async_trait]
+		impl ProjectSpecifications for Specifications {
+			async fn project_exists(&self, project_id: &ProjectId) -> Result<bool, Error>;
+		}
+
+		#[async_trait]
+		impl super::Specifications for Specifications {}
+	}
+}
