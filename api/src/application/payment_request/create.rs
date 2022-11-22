@@ -1,19 +1,20 @@
+use crate::domain::Publishable;
 use anyhow::Result;
-use chrono::Utc;
-use domain::{Destination, PaymentId, PaymentRequest, ProjectId, Publisher, UserId, UuidGenerator};
-use event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event, EventOrigin};
+use domain::{
+	Event, PaymentId, PaymentRequest, ProjectId, Publisher, UniqueMessage, UserId, UuidGenerator,
+};
 use serde_json::Value;
 use std::sync::Arc;
 
 pub struct Usecase {
 	uuid_generator: Arc<dyn UuidGenerator>,
-	event_publisher: Arc<dyn Publisher<Event>>,
+	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 }
 
 impl Usecase {
 	pub fn new(
 		uuid_generator: Arc<dyn UuidGenerator>,
-		event_publisher: Arc<dyn Publisher<Event>>,
+		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	) -> Self {
 		Self {
 			uuid_generator,
@@ -30,7 +31,8 @@ impl Usecase {
 		reason: Value,
 	) -> Result<PaymentId> {
 		let payment_request_id = self.uuid_generator.new_uuid();
-		let events: Vec<Event> = PaymentRequest::create(
+
+		PaymentRequest::create(
 			payment_request_id.into(),
 			project_id,
 			requestor_id,
@@ -39,18 +41,11 @@ impl Usecase {
 			reason,
 		)
 		.into_iter()
-		.map(|event| Event {
-			deduplication_id: self.uuid_generator.new_uuid().to_string(),
-			event: event.into(),
-			timestamp: Utc::now().naive_utc(),
-			origin: EventOrigin::BACKEND,
-			metadata: Default::default(),
-		})
-		.collect();
-
-		self.event_publisher
-			.publish_many(Destination::queue(EVENT_STORE_QUEUE), &events)
-			.await?;
+		.map(Event::from)
+		.map(UniqueMessage::new)
+		.collect::<Vec<_>>()
+		.publish(self.event_publisher.clone())
+		.await?;
 
 		Ok(payment_request_id.into())
 	}

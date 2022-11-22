@@ -70,7 +70,7 @@ impl IdentifiableAggregate for Event {
 			Event::Payment(event) => match event {
 				backend_domain::PaymentEvent::Created { id, .. } => id.to_string(),
 			},
-			DomainEvent::PaymentRequest(event) => match event {
+			Event::PaymentRequest(event) => match event {
 				backend_domain::PaymentRequestEvent::Created { id, .. } => id.to_string(),
 			},
 		}
