@@ -3,12 +3,7 @@ pub mod schema;
 mod error;
 pub use error::Error as DatabaseError;
 
-use diesel::{
-	associations::HasTable,
-	pg::Pg,
-	query_builder::{IntoUpdateTarget, QueryFragment, QueryId},
-	PgConnection, QuerySource, RunQueryDsl,
-};
+use diesel::PgConnection;
 use log::error;
 use r2d2;
 use r2d2_diesel::ConnectionManager;
@@ -45,22 +40,6 @@ impl Client {
 			error!("Failed to run migrations: {e}");
 			DatabaseError::Migration(e.into())
 		})?;
-		Ok(())
-	}
-
-	pub fn clear_table<T: IntoUpdateTarget>(&self, diesel_table: T) -> Result<(), DatabaseError>
-	where
-		<T as HasTable>::Table: QueryId,
-		<<T as HasTable>::Table as QuerySource>::FromClause: QueryFragment<Pg>,
-		<T as diesel::query_builder::IntoUpdateTarget>::WhereClause: QueryFragment<Pg>,
-		<T as diesel::query_builder::IntoUpdateTarget>::WhereClause: QueryId,
-	{
-		let connection = self.connection()?;
-
-		diesel::delete(diesel_table)
-			.execute(&*connection)
-			.map_err(DatabaseError::Transaction)?;
-
 		Ok(())
 	}
 }
