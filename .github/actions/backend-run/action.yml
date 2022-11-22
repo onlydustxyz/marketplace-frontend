@@ -1,0 +1,10 @@
+name: Run Rust backend
+
+description: Install and run Rust backend
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run the app
+      shell: bash
+      run: cargo run &

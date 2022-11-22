@@ -149,6 +149,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Run Rust backend
+        uses: ./.github/actions/backend-run
+
       - name: Setup environment
         uses: ./.github/actions/env-setup
 
