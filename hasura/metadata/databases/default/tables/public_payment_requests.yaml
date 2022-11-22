@@ -41,3 +41,29 @@ array_relationships:
         table:
           name: payments
           schema: public
+insert_permissions:
+  - role: project_lead
+    permission:
+      check:
+        project_id:
+          _in: X-Hasura-projects_leaded
+      columns: []
+select_permissions:
+  - role: project_lead
+    permission:
+      columns:
+        - amount_in_usd
+        - reason
+        - id
+        - project_id
+        - recipient_id
+        - requestor_id
+      filter:
+        project_id:
+          _in: X-Hasura-projects_leaded
+delete_permissions:
+  - role: project_lead
+    permission:
+      filter:
+        project_id:
+          _in: X-Hasura-projects_leaded
