@@ -40,7 +40,7 @@ pub use event_store::{Error as EventStoreError, Store as EventStore};
 
 mod specifications;
 
-pub use specifications::Specifications;
+pub use specifications::{Specifications, SpecificationsImpl};
 
 #[derive(
 	Debug,
