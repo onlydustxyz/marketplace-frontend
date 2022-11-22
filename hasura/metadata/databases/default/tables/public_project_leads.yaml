@@ -25,3 +25,10 @@ array_relationships:
         remote_table:
           name: payment_requests
           schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - project_id
+        - user_id
+      filter: {}
