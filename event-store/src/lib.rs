@@ -14,8 +14,8 @@ use backend_infrastructure::{
 };
 use domain::EventStore;
 use futures::TryFutureExt;
-use log::debug;
 use std::sync::Arc;
+use tracing::info;
 
 pub async fn main() -> Result<()> {
 	let inbound_event_bus = bus::consumer().await?;
@@ -36,10 +36,7 @@ async fn store(
 	store: Arc<dyn EventStore>,
 	message: UniqueMessage<Event>,
 ) -> Result<UniqueMessage<Event>, SubscriberCallbackError> {
-	if let Ok(pretty_event) = serde_json::to_string_pretty(&message) {
-		debug!("[event-store] 📨 Received event: {}", pretty_event);
-	}
-
+	info!(message = message.to_string(), "📨 Received event");
 	store
 		.append(&message.payload().aggregate_id(), message.clone())
 		.map_err(|e| SubscriberCallbackError::Fatal(e.into()))?;

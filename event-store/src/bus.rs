@@ -1,6 +1,6 @@
 use backend_infrastructure::amqp::{Bus, BusError, ConsumableBus};
 use lapin::options::QueueDeclareOptions;
-use log::info;
+use tracing::info;
 
 pub const QUEUE_NAME: &str = "event-store";
 
@@ -17,6 +17,6 @@ pub async fn consumer() -> Result<ConsumableBus, BusError> {
 			},
 		)
 		.await?;
-	info!("[event-store] 🎧 Start listening to events");
+	info!(queue = QUEUE_NAME, "🎧 Start listening to events");
 	Ok(event_bus)
 }

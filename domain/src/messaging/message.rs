@@ -2,6 +2,7 @@ use chrono::{NaiveDateTime, Utc};
 use derive_getters::Getters;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use serde_json::Value;
+use std::fmt::Display;
 use uuid::Uuid;
 
 pub trait Message: Serialize + DeserializeOwned {}
@@ -24,5 +25,16 @@ impl<P> UniqueMessage<P> {
 			timestamp: Utc::now().naive_utc(),
 			metadata: Default::default(),
 		}
+	}
+}
+
+impl<P: Serialize> Display for UniqueMessage<P> {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(
+			f,
+			"{}",
+			serde_json::to_string(self).map_err(|_| std::fmt::Error)?
+		)?;
+		Ok(())
 	}
 }
