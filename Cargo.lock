@@ -3507,30 +3507,10 @@ checksum = "95059e91184749cb66be6dc994f67f182b6d897cb3df74a5bf66b5e709295fd8"
 name = "testing"
 version = "0.1.0"
 dependencies = [
- "anyhow",
- "api",
- "assert-json-diff",
- "assert_matches",
- "async-std",
- "async-trait",
- "chrono",
  "diesel",
- "diesel_migrations",
  "domain",
- "dotenv",
- "event-listeners",
- "event-store",
- "futures 0.3.25",
- "hex",
- "infrastructure",
  "r2d2",
  "r2d2-diesel",
- "reqwest",
- "rstest",
- "serde",
- "serde_json",
- "tokio",
- "url",
  "uuid 0.8.2",
 ]
 
