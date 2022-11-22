@@ -56,11 +56,11 @@ impl PaymentRequest {
 mod tests {
 	use super::*;
 	use crate::{specifications::tests::MockSpecifications, PaymentRequestId, ProjectId, UserId};
+	use assert_matches::assert_matches;
 	use mockall::predicate::*;
 	use rstest::{fixture, rstest};
 	use std::{str::FromStr, sync::Arc};
 	use uuid::Uuid;
-	use assert_matches::assert_matches;
 
 	#[fixture]
 	fn payment_request_id() -> PaymentRequestId {
@@ -167,9 +167,6 @@ mod tests {
 		.await;
 
 		assert!(result.is_err());
-		assert_matches!(
-			result,
-			Err(Error::ProjectNotFound)
-		);
+		assert_matches!(result, Err(Error::ProjectNotFound));
 	}
 }
