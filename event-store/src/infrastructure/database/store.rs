@@ -37,7 +37,6 @@ impl EventStore for Client {
 			aggregate_name: storable_event.aggregate_name().to_owned(),
 			aggregate_id: aggregate_id.to_owned(),
 			payload: serialize_event(&domain_event)?,
-			origin: storable_event.origin.to_string(),
 			metadata: storable_event.metadata.clone(),
 		};
 

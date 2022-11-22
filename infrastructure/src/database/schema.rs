@@ -22,7 +22,6 @@ diesel::table! {
         aggregate_id -> Varchar,
         payload -> Jsonb,
         metadata -> Nullable<Jsonb>,
-        origin -> Text,
     }
 }
 
