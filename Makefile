@@ -28,6 +28,11 @@ db/update-staging-dump:
 db/load-fixtures: SHELL:=/bin/bash
 db/load-fixtures:
 	PGPASSWORD=postgres pg_restore -L <(pg_restore -l ./scripts/fixtures/latest.dump | grep -Ev 'auth migrations|SCHEMA - auth') --clean --no-owner -h localhost -U postgres -d marketplace_db ./scripts/fixtures/latest.dump
+	@echo ""
+	@echo "Dump loaded ✅"
+	@echo ""
+	@echo "It was generated on the `GIT_PAGER=cat git log -1 --format=%cd ./scripts/fixtures/latest.dump`"
+	@echo "To have a fresh dump, you can use db/update-staging-dump"
 
 api/start:
 	cargo run
