@@ -1,4 +1,8 @@
-use crate::{aggregate_root, AggregateRootRepository, Project};
+use crate::{
+	aggregate_root, specifications::project::ProjectSpecifications, AggregateRootRepository,
+	Project,
+};
+use async_trait::async_trait;
 use std::sync::Arc;
 use thiserror::Error;
 
@@ -10,12 +14,17 @@ pub enum Error {
 	EventStore(aggregate_root::Error),
 }
 
-pub struct Specifications {
+#[async_trait]
+pub trait Specifications: ProjectSpecifications + Send + Sync {}
+
+pub struct SpecificationsImpl {
 	project_repository: Arc<AggregateRootRepository<Project>>,
 }
 
-impl Specifications {
+impl SpecificationsImpl {
 	pub fn new(project_repository: Arc<AggregateRootRepository<Project>>) -> Self {
-		Specifications { project_repository }
+		SpecificationsImpl { project_repository }
 	}
 }
+
+impl Specifications for SpecificationsImpl {}

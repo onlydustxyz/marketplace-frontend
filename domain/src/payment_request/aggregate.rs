@@ -1,11 +1,12 @@
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
 use serde_json::Value;
+use std::sync::Arc;
 use thiserror::Error;
 
 use crate::{
-	specifications, Aggregate, PaymentRequestEvent, PaymentRequestId, ProjectId, Specifications,
-	UserId,
+	specifications, specifications::Specifications, Aggregate, PaymentRequestEvent,
+	PaymentRequestId, ProjectId, UserId,
 };
 
 #[derive(Debug, Error)]
@@ -28,7 +29,7 @@ impl Aggregate for PaymentRequest {
 
 impl PaymentRequest {
 	pub async fn create(
-		specifications: &Specifications,
+		specifications: Arc<dyn Specifications>,
 		id: PaymentRequestId,
 		project_id: ProjectId,
 		requestor_id: UserId,
