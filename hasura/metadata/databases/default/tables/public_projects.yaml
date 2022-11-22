@@ -2,6 +2,13 @@ table:
   name: projects
   schema: public
 array_relationships:
+  - name: payment_requests
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          name: payment_requests
+          schema: public
   - name: project_leads
     using:
       foreign_key_constraint_on:

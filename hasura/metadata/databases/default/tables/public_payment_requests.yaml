@@ -5,6 +5,16 @@ object_relationships:
   - name: project
     using:
       foreign_key_constraint_on: project_id
+  - name: project_lead
+    using:
+      manual_configuration:
+        column_mapping:
+          project_id: project_id
+          requestor_id: user_id
+        insertion_order: null
+        remote_table:
+          name: project_leads
+          schema: public
   - name: recipient
     using:
       manual_configuration:
