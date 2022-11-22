@@ -2,7 +2,7 @@ table:
   name: payout_settings
   schema: public
 insert_permissions:
-  - role: public
+  - role: user
     permission:
       check:
         user_id:
@@ -11,7 +11,7 @@ insert_permissions:
         - eth_wallet_address
         - user_id
 select_permissions:
-  - role: public
+  - role: user
     permission:
       columns:
         - eth_wallet_address
@@ -20,7 +20,7 @@ select_permissions:
         user_id:
           _eq: X-Hasura-User-Id
 update_permissions:
-  - role: public
+  - role: user
     permission:
       columns:
         - eth_wallet_address
@@ -30,7 +30,7 @@ update_permissions:
           _eq: X-Hasura-User-Id
       check: null
 delete_permissions:
-  - role: public
+  - role: user
     permission:
       filter:
         user_id:
