@@ -4,7 +4,10 @@ use logger::Logger;
 mod webhook;
 use webhook::EventWebHook;
 
-use crate::{domain::*, infrastructure::database::PaymentRepository};
+use crate::{
+	domain::*,
+	infrastructure::database::{PaymentRepository, PaymentRequestRepository},
+};
 use anyhow::Result;
 use domain::{Event, Subscriber, SubscriberCallbackError};
 use infrastructure::{amqp::ConsumableBus, database, event_bus};
@@ -15,12 +18,15 @@ pub async fn spawn_all(
 	reqwest: reqwest::Client,
 	database: Arc<database::Client>,
 ) -> Result<Vec<JoinHandle<()>>> {
-	let payment_repository = Arc::new(PaymentRepository::new(database));
+	let payment_repository = Arc::new(PaymentRepository::new(database.clone()));
+	let payment_request_repository = Arc::new(PaymentRequestRepository::new(database));
 
 	let handles = [
 		Logger.spawn(event_bus::consumer("logger").await?),
 		EventWebHook::new(reqwest).spawn(event_bus::consumer("event-webhooks").await?),
 		PaymentProjector::new(payment_repository).spawn(event_bus::consumer("payments").await?),
+		PaymentRequestProjector::new(payment_request_repository)
+			.spawn(event_bus::consumer("payment_requests").await?),
 	];
 
 	Ok(handles.into())
