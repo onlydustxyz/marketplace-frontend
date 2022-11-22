@@ -16,7 +16,7 @@ impl Specification {
 		Self { project_repository }
 	}
 
-	pub async fn is_satisfied_by(&self, project_id: &ProjectId) -> Result<bool, Error> {
+	pub fn is_satisfied_by(&self, project_id: &ProjectId) -> Result<bool, Error> {
 		match self.project_repository.find_by_id(project_id) {
 			Ok(_) => Ok(true),
 			Err(e) => match e {

@@ -37,7 +37,6 @@ impl PaymentRequest {
 	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
 		if !project_exists_specification
 			.is_satisfied_by(&project_id)
-			.await
 			.map_err(Error::Specification)?
 		{
 			return Err(Error::ProjectNotFound);
