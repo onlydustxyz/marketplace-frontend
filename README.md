@@ -91,12 +91,7 @@ cargo test
 
 ### End-to-end testing
 
-To run the end-to-end tests, make sure the docker is up and running and your back-end and indexer are up as well.
-Then run:
-
-```sh
-$ cargo test -p testing --features with_e2e_tests e2e_tests
-```
+TODO
 
 ## Migrate database
 

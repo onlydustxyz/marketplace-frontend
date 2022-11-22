@@ -1,5 +1,5 @@
 [package]
-description = "e2e tests and testing utils (fixtures, mocks)"
+description = "testing utils (fixtures, mocks)"
 edition = "2021"
 license-file = "LICENSE"
 name = "testing"
@@ -7,20 +7,11 @@ version = "0.1.0"
 
 [lib]
 
-[features]
-default = []
-with_e2e_tests = []
-
 [dependencies]
 # Database
 diesel = {version = "1.4.8", default-features = false, features = [
   "postgres",
-  "serde_json",
-  "uuidv07",
-  "chrono",
 ]}
-diesel_migrations = "1.4.0"
-futures = "0.3.24"
 r2d2 = "0.8.10"
 r2d2-diesel = "1.0.0"
 
@@ -31,36 +22,3 @@ uuid = {version = "0.8.2", default_features = false, features = [
 
 # Local dependencies
 domain = {path = "../domain"}
-
-[dev-dependencies]
-# Unit testing
-assert-json-diff = "2.0.2"
-assert_matches = "1.5"
-async-std = {version = "1.12.0", features = ["attributes"]}
-rstest = "0.15.0"
-
-# Utils
-chrono = "0.4"
-dotenv = "0.15.0"
-hex = "0.4.3"
-
-# Serde
-serde = {version = "1.0.137", features = ["derive"]}
-serde_json = {version = "1.0.81"}
-
-# Http client
-reqwest = "0.11.11"
-url = "2.2.2"
-
-# Async
-async-trait = "0.1.56"
-tokio = {version = "1.18.2", features = ["full"]}
-
-# Local dependencies
-api = {path = "../api"}
-event-listeners = {path = "../event-listeners"}
-event-store = {path = "../event-store"}
-infrastructure = {path = "../infrastructure"}
-
-# Errors
-anyhow = "1.0.57"

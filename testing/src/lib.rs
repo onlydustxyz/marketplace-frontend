@@ -1,6 +1,3 @@
-#[cfg(all(test, feature = "with_e2e_tests"))]
-mod e2e_tests;
-
 pub mod fixtures;
 
 use diesel::{Connection, PgConnection};
