@@ -1,5 +1,5 @@
-use crate::{application, domain::AggregateRootRepository};
-use domain::{Event, Project, Publisher, UniqueMessage, UuidGenerator};
+use crate::application;
+use domain::{AggregateRootRepository, Event, Project, Publisher, UniqueMessage, UuidGenerator};
 use std::sync::Arc;
 
 pub struct Context {
@@ -19,6 +19,7 @@ impl Context {
 			create_payment_request_usecase: application::payment_request::create::Usecase::new(
 				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
+				project_repository.to_owned(),
 			),
 			create_payment_usecase: application::payment::create::Usecase::new(
 				uuid_generator.to_owned(),

@@ -3,11 +3,9 @@ extern crate dotenv;
 mod application;
 mod domain;
 mod graphql;
-mod infrastructure;
 mod routes;
 
-use crate::domain::AggregateRootRepository;
-use ::domain::RandomUuidGenerator;
+use ::domain::{AggregateRootRepository, RandomUuidGenerator};
 use ::infrastructure::{
 	amqp::Bus,
 	database::{self, init_pool},
