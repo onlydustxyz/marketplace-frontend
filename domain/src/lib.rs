@@ -18,7 +18,7 @@ pub use aggregate::{Aggregate, EventSourcable};
 mod messaging;
 pub use messaging::{
 	Destination, Message, Publisher, PublisherError, Subscriber, SubscriberCallbackError,
-	SubscriberError,
+	SubscriberError, UniqueMessage,
 };
 
 mod project;

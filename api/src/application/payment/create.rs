@@ -1,21 +1,20 @@
 use anyhow::Result;
-use chrono::Utc;
 use domain::{
-	Amount, Destination, Payment, PaymentId, PaymentReceipt, PaymentRequestId, Publisher,
-	UuidGenerator,
+	Amount, Destination, Event, Payment, PaymentId, PaymentReceipt, PaymentRequestId, Publisher,
+	UniqueMessage, UuidGenerator,
 };
-use event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event, EventOrigin};
+use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
 use std::sync::Arc;
 
 pub struct Usecase {
 	uuid_generator: Arc<dyn UuidGenerator>,
-	event_publisher: Arc<dyn Publisher<Event>>,
+	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 }
 
 impl Usecase {
 	pub fn new(
 		uuid_generator: Arc<dyn UuidGenerator>,
-		event_publisher: Arc<dyn Publisher<Event>>,
+		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	) -> Self {
 		Self {
 			uuid_generator,
@@ -30,15 +29,10 @@ impl Usecase {
 		receipt: PaymentReceipt,
 	) -> Result<PaymentId> {
 		let payment_id = self.uuid_generator.new_uuid();
-		let events: Vec<Event> = Payment::create(payment_id.into(), request_id, amount, receipt)
+		let events: Vec<_> = Payment::create(payment_id.into(), request_id, amount, receipt)
 			.into_iter()
-			.map(|event| Event {
-				deduplication_id: self.uuid_generator.new_uuid().to_string(),
-				event: event.into(),
-				timestamp: Utc::now().naive_utc(),
-				origin: EventOrigin::BACKEND,
-				metadata: Default::default(),
-			})
+			.map(Event::from)
+			.map(UniqueMessage::new)
 			.collect();
 
 		self.event_publisher

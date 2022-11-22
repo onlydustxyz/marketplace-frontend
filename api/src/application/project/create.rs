@@ -1,18 +1,17 @@
 use crate::domain::Publishable;
 use anyhow::Result;
-use domain::{Project, ProjectId, Publisher, UuidGenerator};
-use event_store::Event;
+use domain::{Event, Project, ProjectId, Publisher, UniqueMessage, UuidGenerator};
 use std::sync::Arc;
 
 pub struct Usecase {
 	uuid_generator: Arc<dyn UuidGenerator>,
-	event_publisher: Arc<dyn Publisher<Event>>,
+	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 }
 
 impl Usecase {
 	pub fn new(
 		uuid_generator: Arc<dyn UuidGenerator>,
-		event_publisher: Arc<dyn Publisher<Event>>,
+		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	) -> Self {
 		Self {
 			uuid_generator,
@@ -26,6 +25,7 @@ impl Usecase {
 		Project::create(project_id, name)?
 			.into_iter()
 			.map(Event::from)
+			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;

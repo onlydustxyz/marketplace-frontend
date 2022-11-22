@@ -1,6 +1,3 @@
-mod event;
-pub use event::{Event, Origin as EventOrigin};
-
 pub mod bus;
 
 mod domain;
@@ -8,7 +5,7 @@ mod infrastructure;
 
 use anyhow::Result;
 use backend_domain::{
-	Destination, Event as DomainEvent, Publisher, Subscriber, SubscriberCallbackError,
+	Destination, Event, Publisher, Subscriber, SubscriberCallbackError, UniqueMessage,
 };
 use backend_infrastructure::{
 	amqp::Bus,
@@ -35,24 +32,27 @@ pub async fn main() -> Result<()> {
 	Ok(())
 }
 
-async fn store(store: Arc<dyn EventStore>, event: Event) -> Result<Event, SubscriberCallbackError> {
-	if let Ok(pretty_event) = serde_json::to_string_pretty(&event) {
+async fn store(
+	store: Arc<dyn EventStore>,
+	message: UniqueMessage<Event>,
+) -> Result<UniqueMessage<Event>, SubscriberCallbackError> {
+	if let Ok(pretty_event) = serde_json::to_string_pretty(&message) {
 		debug!("[event-store] 📨 Received event: {}", pretty_event);
 	}
 
 	store
-		.append(&event.aggregate_id(), event.clone())
+		.append(&message.payload().aggregate_id(), message.clone())
 		.map_err(|e| SubscriberCallbackError::Fatal(e.into()))?;
 
-	Ok(event)
+	Ok(message)
 }
 
 async fn publish(
-	event: Event,
-	publisher: Arc<dyn Publisher<DomainEvent>>,
+	message: UniqueMessage<Event>,
+	publisher: Arc<dyn Publisher<Event>>,
 ) -> Result<(), SubscriberCallbackError> {
 	publisher
-		.publish(Destination::exchange(EXCHANGE_NAME), &event.event)
+		.publish(Destination::exchange(EXCHANGE_NAME), message.payload())
 		.await
 		.map_err(|e| SubscriberCallbackError::Fatal(e.into()))?;
 	Ok(())
@@ -65,9 +65,9 @@ trait IdentifiableAggregate {
 
 impl IdentifiableAggregate for Event {
 	fn aggregate_id(&self) -> String {
-		match &self.event {
-			DomainEvent::Project(_) => unimplemented!("No project event yet"),
-			DomainEvent::Payment(event) => match event {
+		match &self {
+			Event::Project(_) => unimplemented!("No project event yet"),
+			Event::Payment(event) => match event {
 				backend_domain::PaymentEvent::Created { id, .. } => id.to_string(),
 			},
 		}
