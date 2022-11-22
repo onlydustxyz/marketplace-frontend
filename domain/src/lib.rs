@@ -30,6 +30,18 @@ pub use payment::{
 mod payment_request;
 pub use payment_request::{Event as PaymentRequestEvent, Id as PaymentRequestId, PaymentRequest};
 
+pub mod aggregate_root;
+pub use aggregate_root::{
+	AggregateRoot, Error as AggregateRootRepositoryError, Repository as AggregateRootRepository,
+};
+
+pub mod event_store;
+pub use event_store::{Error as EventStoreError, Store as EventStore};
+
+mod specifications;
+
+pub use specifications::Specifications;
+
 #[derive(
 	Debug,
 	Clone,

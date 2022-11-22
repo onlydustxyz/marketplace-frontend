@@ -1,9 +1,6 @@
-use crate::{
-	database::{schema::events, Client},
-	domain::{EventStore, EventStoreError},
-};
+use crate::database::{schema::events, Client};
 use diesel::prelude::*;
-use domain::{Aggregate, Payment, Project};
+use domain::{Aggregate, EventStore, EventStoreError, Payment, Project};
 use log::error;
 use serde_json::Value;
 

@@ -1,6 +1,8 @@
-use crate::domain::AggregateRootRepository;
 use anyhow::Result;
-use domain::{Destination, Event, Project, ProjectId, Publisher, UniqueMessage, UserId};
+use domain::{
+	AggregateRootRepository, Destination, Event, Project, ProjectId, Publisher, UniqueMessage,
+	UserId,
+};
 use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
 use std::sync::Arc;
 

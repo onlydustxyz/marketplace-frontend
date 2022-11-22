@@ -1,5 +1,4 @@
-use super::{EventStore, EventStoreError};
-use domain::EventSourcable;
+use crate::{EventSourcable, EventStore, EventStoreError};
 use std::sync::Arc;
 use thiserror::Error;
 
