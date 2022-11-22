@@ -964,6 +964,7 @@ dependencies = [
  "derive_more",
  "futures 0.3.25",
  "log",
+ "mockall",
  "regex",
  "rstest",
  "rust_decimal",

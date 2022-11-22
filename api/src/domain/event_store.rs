@@ -22,7 +22,7 @@ pub trait Publishable<M: Message> {
 }
 
 #[async_trait]
-impl<M: Message + Sync> Publishable<M> for Vec<M> {
+impl<M: Message + Sync + Send> Publishable<M> for Vec<M> {
 	async fn publish(&self, publisher: Arc<dyn Publisher<M>>) -> Result<(), PublisherError> {
 		publisher.publish_many(Destination::queue(EVENT_STORE_QUEUE), self).await?;
 		Ok(())
