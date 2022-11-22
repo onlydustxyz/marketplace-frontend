@@ -30,7 +30,6 @@ uuid = {version = "0.8.2", default_features = false, features = [
   "serde",
 ]}
 rust_decimal = {version="1.26.1", features=["db-diesel-postgres"]}
-rust_decimal_macros = "1.26"
 
 # Http client
 reqwest = {version = "0.11", default-features = false}
@@ -72,3 +71,4 @@ mockito = "0.31.0"
 rstest = "0.15.0"
 serde_test = "1.0.140"
 testing = {path = "../testing"}
+rust_decimal_macros = "1.26"
