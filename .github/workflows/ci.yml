@@ -138,6 +138,9 @@ jobs:
       - name: Setup environment
         uses: ./.github/actions/env-setup
 
+      - name: Run migrations
+        uses: ./.github/actions/migrations-run
+
       - name: Run tests
         uses: ./.github/actions/coverage-checks
         with:
