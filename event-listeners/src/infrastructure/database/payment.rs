@@ -33,10 +33,6 @@ mod tests {
 	}
 
 	#[rstest]
-	#[cfg_attr(
-		not(feature = "with_infrastructure_tests"),
-		ignore = "infrastructure test"
-	)]
 	fn test_macro(repository: Repository) {
 		let payment_id = Uuid::new_v4();
 		let payment = Payment::new(

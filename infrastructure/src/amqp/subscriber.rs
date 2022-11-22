@@ -76,14 +76,14 @@ impl ConsumableBus {
 }
 
 #[cfg(test)]
-
 mod tests {
 	use crate::amqp::{Bus, ConsumableBus};
 	use anyhow::anyhow;
 	use domain::{Message, Subscriber, SubscriberCallbackError, SubscriberError};
+	use dotenv::dotenv;
 	use lapin::options::QueueDeclareOptions;
 	use mockall::lazy_static;
-	use rstest::rstest;
+	use rstest::{fixture, rstest};
 	use serde::{Deserialize, Serialize};
 	use std::sync::{
 		atomic::{AtomicI32, Ordering},
@@ -99,11 +99,9 @@ mod tests {
 	}
 	impl Message for TestMessage {}
 
-	async fn init_consumer(queue_name: &'static str) -> ConsumableBus {
-		Bus::default()
-			.await
-			.unwrap()
-			.with_queue(
+	impl Bus {
+		async fn init(self, queue_name: &'static str) -> ConsumableBus {
+			self.with_queue(
 				queue_name,
 				QueueDeclareOptions {
 					durable: false,    // do not persist messages
@@ -114,6 +112,7 @@ mod tests {
 			)
 			.await
 			.unwrap()
+		}
 	}
 
 	async fn publish_message(queue_name: &'static str, message: TestMessage) {
@@ -177,18 +176,20 @@ mod tests {
 		assert_eq!(counter.load(Ordering::SeqCst), expect_valid_message_count);
 	}
 
+	#[fixture]
+	async fn bus() -> Bus {
+		dotenv().ok();
+		Bus::default().await.unwrap()
+	}
+
 	#[rstest]
-	#[cfg_attr(
-		not(feature = "with_infrastructure_tests"),
-		ignore = "infrastructure test"
-	)]
-	async fn process_valid_messages_successfully() {
+	async fn process_valid_messages_successfully(#[future] bus: Bus) {
 		const QUEUE: &str = "receive_valid_message_and_process_it_successfully";
 		lazy_static! {
 			static ref COUNTER: Arc<AtomicI32> = Arc::new(AtomicI32::new(0));
 		}
 
-		let consumer = init_consumer(QUEUE).await;
+		let consumer = bus.await.init(QUEUE).await;
 		publish_message(QUEUE, TestMessage::Valid).await;
 		publish_message(QUEUE, TestMessage::Valid).await;
 		publish_message(QUEUE, TestMessage::Stop).await;
@@ -198,17 +199,13 @@ mod tests {
 
 	#[rstest]
 	#[traced_test]
-	#[cfg_attr(
-		not(feature = "with_infrastructure_tests"),
-		ignore = "infrastructure test"
-	)]
-	async fn ignore_non_deserializable_message() {
+	async fn ignore_non_deserializable_message(#[future] bus: Bus) {
 		const QUEUE: &str = "ignore_non_deserializable_message";
 		lazy_static! {
 			static ref COUNTER: Arc<AtomicI32> = Arc::new(AtomicI32::new(0));
 		}
 
-		let consumer = init_consumer(QUEUE).await;
+		let consumer = bus.await.init(QUEUE).await;
 		publish_message(QUEUE, TestMessage::Valid).await;
 		publish_badly_formatted_message(QUEUE).await;
 		publish_message(QUEUE, TestMessage::Valid).await;
@@ -221,17 +218,13 @@ mod tests {
 
 	#[rstest]
 	#[traced_test]
-	#[cfg_attr(
-		not(feature = "with_infrastructure_tests"),
-		ignore = "infrastructure test"
-	)]
-	async fn discard_invalid_message() {
+	async fn discard_invalid_message(#[future] bus: Bus) {
 		const QUEUE: &str = "discard_invalid_message";
 		lazy_static! {
 			static ref COUNTER: Arc<AtomicI32> = Arc::new(AtomicI32::new(0));
 		}
 
-		let consumer = init_consumer(QUEUE).await;
+		let consumer = bus.await.init(QUEUE).await;
 		publish_message(QUEUE, TestMessage::Valid).await;
 		publish_message(QUEUE, TestMessage::Invalid).await;
 		publish_message(QUEUE, TestMessage::Valid).await;
@@ -244,15 +237,11 @@ mod tests {
 
 	#[rstest]
 	#[traced_test]
-	#[cfg_attr(
-		not(feature = "with_infrastructure_tests"),
-		ignore = "infrastructure test"
-	)]
-	async fn terminate_message_consuming_because_of_internal_error() {
+	async fn terminate_message_consuming_because_of_internal_error(#[future] bus: Bus) {
 		const QUEUE: &str = "terminate_message_consuming_because_of_internal_error";
 		const ERROR: &str = "some internal error occurred";
 
-		let consumer = init_consumer(QUEUE).await;
+		let consumer = bus.await.init(QUEUE).await;
 		publish_message(QUEUE, TestMessage::Valid).await;
 
 		let result = consumer
