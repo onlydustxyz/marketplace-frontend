@@ -50,3 +50,4 @@ serde_test = "1.0.140"
 testing = {path = "../testing"}
 rust_decimal_macros = "1.26"
 regex = "1.7.0"
+mockall = "0.11.2"
