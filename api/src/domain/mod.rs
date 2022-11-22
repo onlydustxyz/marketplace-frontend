@@ -1,5 +1,5 @@
 mod event_store;
-pub use self::event_store::{Error as EventStoreError, Store as EventStore};
+pub use self::event_store::{Error as EventStoreError, Publishable, Store as EventStore};
 
 mod aggregate_root;
 pub use aggregate_root::{
