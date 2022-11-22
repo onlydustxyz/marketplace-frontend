@@ -54,6 +54,7 @@ services:
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: public
       BACKEND_GRAPHQL_URL: ${BACKEND_GRAPHQL_URL:-http://host.docker.internal:8000/graphql}
       HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: "true"
+      HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
 
   hasura-auth:
     container_name: hasura-auth
@@ -62,11 +63,12 @@ services:
       - db
       - graphql-engine
     environment:
+      HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL:-postgres://postgres:postgres@db/marketplace_db}
       HASURA_GRAPHQL_GRAPHQL_URL: http://graphql-engine:8080/v1/graphql
-      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key":"5152fa850c02dc222631cca898ed1485821a70912a6e3649c49076912daa3b62182ba013315915d64f40cddfbb8b58eb5bd11ba225336a6af45bbae07ca873f3","issuer":"hasura-auth"}'
       HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
       AUTH_JWT_CUSTOM_CLAIMS: '{"projects_leaded":"projects_leaded[].project_id"}'
+      AUTH_USER_DEFAULT_ALLOWED_ROLES: public,me,user
       AUTH_LOG_LEVEL: info
       AUTH_CLIENT_URL: http://localhost:5173/login
       AUTH_PROVIDER_GITHUB_ENABLED: "true"
