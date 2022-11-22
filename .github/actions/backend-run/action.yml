@@ -5,6 +5,14 @@ description: Install and run Rust backend
 runs:
   using: "composite"
   steps:
+    - name: Copy the .env file
+      shell: bash
+      run: cp .env.example .env
+
+    - name: Build the app
+      shell: bash
+      run: cargo build
+
     - name: Run the app
       shell: bash
-      run: cargo run &
+      run: cargo run &> out.log &
