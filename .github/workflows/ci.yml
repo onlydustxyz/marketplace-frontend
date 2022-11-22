@@ -108,6 +108,9 @@ jobs:
       - name: Setup environment
         uses: ./.github/actions/env-setup
 
+      - name: Run Rust backend
+        uses: ./.github/actions/backend-run
+
       - name: Install Hasura CLI
         uses: ./.github/actions/hasura-setup
 
@@ -149,11 +152,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Run Rust backend
-        uses: ./.github/actions/backend-run
-
       - name: Setup environment
         uses: ./.github/actions/env-setup
+
+      - name: Run Rust backend
+        uses: ./.github/actions/backend-run
 
       - name: Setup hasura
         uses: ./.github/actions/hasura-setup
