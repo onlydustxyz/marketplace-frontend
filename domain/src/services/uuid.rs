@@ -1,7 +1,5 @@
-use mockall::automock;
 use uuid::Uuid;
 
-#[automock]
 pub trait Service: Send + Sync {
 	fn new_uuid(&self) -> Uuid;
 }

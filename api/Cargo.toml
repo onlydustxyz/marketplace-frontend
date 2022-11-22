@@ -62,9 +62,6 @@ derive_more = "0.99.17"
 dotenv = "0.15.0"
 rusty-money = {version = "0.4.1", features = ["iso", "crypto"]}
 
-# Unit testing
-mockall = "0.11.2"
-
 # Local dependecies
 domain = {path = "../domain"}
 event-store = {path = "../event-store"}

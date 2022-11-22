@@ -128,7 +128,6 @@ dependencies = [
  "juniper_rocket",
  "lazy_static",
  "log",
- "mockall",
  "okapi",
  "reqwest",
  "rocket",
@@ -965,8 +964,6 @@ dependencies = [
  "derive_more",
  "futures 0.3.25",
  "log",
- "mockall",
- "mockall_double",
  "regex",
  "rstest",
  "rust_decimal",
@@ -2014,18 +2011,6 @@ name = "mockall_derive"
 version = "0.11.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "832663583d5fa284ca8810bf7015e46c9fff9622d3cf34bd1eea5003fec06dd0"
-dependencies = [
- "cfg-if",
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "mockall_double"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ae71c7bb287375187c775cf82e2dcf1bef3388aaf58f0789a77f9c7ab28466f6"
 dependencies = [
  "cfg-if",
  "proc-macro2",
