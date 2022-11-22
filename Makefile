@@ -11,9 +11,23 @@ install:
 docker/start:
 	docker-compose up -d
 
-docker/connect-db:
+docker/clean:
+	docker-compose stop
+	docker-compose rm -f db
+	docker volume rm marketplace-backend_db
+	docker-compose up -d
+
+db/connect:
 	docker-compose up db -d
 	docker-compose exec -u postgres db psql marketplace_db
+
+db/update-staging-dump:
+	heroku pg:backups:capture --app onlydust-backend-staging-next
+	heroku pg:backups:download --app onlydust-backend-staging-next --output ./scripts/fixtures/latest.dump
+
+db/load-fixtures: SHELL:=/bin/bash
+db/load-fixtures:
+	PGPASSWORD=postgres pg_restore -L <(pg_restore -l ./scripts/fixtures/latest.dump | grep -Ev 'auth migrations|SCHEMA - auth') --clean --no-owner -h localhost -U postgres -d marketplace_db ./scripts/fixtures/latest.dump
 
 api/start:
 	cargo run
