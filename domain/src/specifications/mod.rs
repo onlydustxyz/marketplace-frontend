@@ -1,12 +1,12 @@
 use crate::{
-	aggregate_root, specifications::project::ProjectSpecifications, AggregateRootRepository,
-	Project,
+	aggregate_root, specifications::project_exists::Specification as ProjectExistsSpecification,
+	AggregateRootRepository, Project,
 };
 use async_trait::async_trait;
 use std::sync::Arc;
 use thiserror::Error;
 
-mod project;
+mod project_exists;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -15,7 +15,7 @@ pub enum Error {
 }
 
 #[async_trait]
-pub trait Specifications: ProjectSpecifications + Send + Sync {}
+pub trait Specifications: ProjectExistsSpecification + Send + Sync {}
 
 pub struct SpecificationsImpl {
 	project_repository: Arc<AggregateRootRepository<Project>>,
@@ -32,7 +32,9 @@ impl Specifications for SpecificationsImpl {}
 #[cfg(test)]
 pub mod tests {
 	use super::Error;
-	use crate::{specifications::project::ProjectSpecifications, ProjectId};
+	use crate::{
+		specifications::project_exists::Specification as ProjectExistsSpecification, ProjectId,
+	};
 	use async_trait::async_trait;
 	use mockall::mock;
 
@@ -40,7 +42,7 @@ pub mod tests {
 		pub Specifications {}
 
 		#[async_trait]
-		impl ProjectSpecifications for Specifications {
+		impl ProjectExistsSpecification for Specifications {
 			async fn project_exists(&self, project_id: &ProjectId) -> Result<bool, Error>;
 		}
 
