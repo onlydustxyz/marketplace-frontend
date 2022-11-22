@@ -1,5 +1,6 @@
 #[allow(clippy::extra_unused_lifetimes)]
 mod payment;
+#[allow(clippy::extra_unused_lifetimes)]
 mod payment_request;
 
 pub use payment::Payment;
