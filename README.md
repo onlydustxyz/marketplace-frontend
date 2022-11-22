@@ -66,6 +66,27 @@ cargo build
 
 Below are some examples of usage.
 
+### Load latest staging dump
+
+Start by cleaning your local env:
+
+```
+make docker/clean
+diesel migration run
+```
+
+Then, load the dump:
+
+```
+make db/load-fixtures
+```
+
+If the dump is out of date, you can update it with:
+
+```
+make db/update-staging-dump
+```
+
 ### Using Hasura
 
 See [Hasura documentation](./hasura).
