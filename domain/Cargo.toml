@@ -51,3 +51,4 @@ testing = {path = "../testing"}
 rust_decimal_macros = "1.26"
 regex = "1.7.0"
 mockall = "0.11.2"
+mockall_double = "0.3.0"

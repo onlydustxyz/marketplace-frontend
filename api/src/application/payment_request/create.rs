@@ -1,8 +1,8 @@
 use crate::domain::Publishable;
 use anyhow::Result;
 use domain::{
-	AggregateRootRepository, Event, PaymentId, PaymentRequest, Project, ProjectId, Publisher,
-	Specifications, SpecificationsImpl, UniqueMessage, UserId, UuidGenerator,
+	specifications::ProjectExistsSpecification, AggregateRootRepository, Event, PaymentId,
+	PaymentRequest, Project, ProjectId, Publisher, UniqueMessage, UserId, UuidGenerator,
 };
 use serde_json::Value;
 use std::sync::Arc;
@@ -10,7 +10,7 @@ use std::sync::Arc;
 pub struct Usecase {
 	uuid_generator: Arc<dyn UuidGenerator>,
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-	specifications: Arc<dyn Specifications>,
+	project_exists_specification: ProjectExistsSpecification,
 }
 
 impl Usecase {
@@ -22,7 +22,7 @@ impl Usecase {
 		Self {
 			uuid_generator,
 			event_publisher,
-			specifications: Arc::new(SpecificationsImpl::new(project_repository)),
+			project_exists_specification: ProjectExistsSpecification::new(project_repository),
 		}
 	}
 
@@ -37,7 +37,7 @@ impl Usecase {
 		let payment_request_id = self.uuid_generator.new_uuid();
 
 		PaymentRequest::create(
-			self.specifications.to_owned(),
+			&self.project_exists_specification,
 			payment_request_id.into(),
 			project_id,
 			requestor_id,
