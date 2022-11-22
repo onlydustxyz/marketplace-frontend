@@ -1,4 +1,4 @@
-use crate::Event;
+use backend_domain::{Event, UniqueMessage};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -12,5 +12,5 @@ pub enum Error {
 }
 
 pub trait Store: Send + Sync {
-	fn append(&self, aggregate_id: &str, event: Event) -> Result<(), Error>;
+	fn append(&self, aggregate_id: &str, event: UniqueMessage<Event>) -> Result<(), Error>;
 }

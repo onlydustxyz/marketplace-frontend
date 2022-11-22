@@ -1,5 +1,5 @@
 mod message;
-pub use message::Message;
+pub use message::{Message, UniqueMessage};
 
 mod publisher;
 pub use publisher::{Error as PublisherError, Publisher};

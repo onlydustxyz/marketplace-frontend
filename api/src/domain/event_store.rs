@@ -1,5 +1,5 @@
-use domain::{Aggregate, Destination, Publisher, PublisherError};
-use event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event};
+use domain::{Aggregate, Destination, Message, Publisher, PublisherError};
+use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
 use std::sync::Arc;
 use thiserror::Error;
 
@@ -17,13 +17,13 @@ pub trait Store<A: Aggregate>: Send + Sync {
 }
 
 #[async_trait]
-pub trait Publishable {
-	async fn publish(&self, publisher: Arc<dyn Publisher<Event>>) -> Result<(), PublisherError>;
+pub trait Publishable<M: Message> {
+	async fn publish(&self, publisher: Arc<dyn Publisher<M>>) -> Result<(), PublisherError>;
 }
 
 #[async_trait]
-impl Publishable for Vec<Event> {
-	async fn publish(&self, publisher: Arc<dyn Publisher<Event>>) -> Result<(), PublisherError> {
+impl<M: Message + Sync> Publishable<M> for Vec<M> {
+	async fn publish(&self, publisher: Arc<dyn Publisher<M>>) -> Result<(), PublisherError> {
 		publisher.publish_many(Destination::queue(EVENT_STORE_QUEUE), self).await?;
 		Ok(())
 	}

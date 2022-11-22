@@ -1,6 +1,5 @@
 use crate::{application, domain::AggregateRootRepository};
-use domain::{Project, Publisher, UuidGenerator};
-use event_store::Event;
+use domain::{Event, Project, Publisher, UniqueMessage, UuidGenerator};
 use std::sync::Arc;
 
 pub struct Context {
@@ -12,7 +11,7 @@ pub struct Context {
 impl Context {
 	pub fn new(
 		uuid_generator: Arc<dyn UuidGenerator>,
-		event_publisher: Arc<dyn Publisher<Event>>,
+		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		project_repository: Arc<AggregateRootRepository<Project>>,
 	) -> Self {
 		Self {
@@ -25,7 +24,6 @@ impl Context {
 				event_publisher.to_owned(),
 			),
 			assign_project_lead_usecase: application::project::assign_leader::Usecase::new(
-				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
 				project_repository,
 			),

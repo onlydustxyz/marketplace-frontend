@@ -1,25 +1,20 @@
+use crate::domain::AggregateRootRepository;
 use anyhow::Result;
+use domain::{Destination, Event, Project, ProjectId, Publisher, UniqueMessage, UserId};
+use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
 use std::sync::Arc;
 
-use crate::domain::AggregateRootRepository;
-use chrono::Utc;
-use domain::{Destination, Project, ProjectId, Publisher, UserId, UuidGenerator};
-use event_store::{bus::QUEUE_NAME as EVENT_STORE_QUEUE, Event, EventOrigin};
-
 pub struct Usecase {
-	uuid_generator: Arc<dyn UuidGenerator>,
-	event_publisher: Arc<dyn Publisher<Event>>,
+	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_repository: Arc<AggregateRootRepository<Project>>,
 }
 
 impl Usecase {
 	pub fn new(
-		uuid_generator: Arc<dyn UuidGenerator>,
-		event_publisher: Arc<dyn Publisher<Event>>,
+		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		project_repository: Arc<AggregateRootRepository<Project>>,
 	) -> Self {
 		Self {
-			uuid_generator,
 			event_publisher,
 			project_repository,
 		}
@@ -28,16 +23,11 @@ impl Usecase {
 	pub async fn assign_leader(&self, project_id: ProjectId, leader_id: UserId) -> Result<UserId> {
 		let project = self.project_repository.find_by_id(&project_id)?;
 
-		let events: Vec<Event> = project
+		let events: Vec<_> = project
 			.assign_leader(leader_id)?
 			.into_iter()
-			.map(|event| Event {
-				deduplication_id: self.uuid_generator.new_uuid().to_string(),
-				event: event.into(),
-				timestamp: Utc::now().naive_utc(),
-				origin: EventOrigin::BACKEND,
-				metadata: Default::default(),
-			})
+			.map(Event::from)
+			.map(UniqueMessage::new)
 			.collect();
 
 		self.event_publisher
