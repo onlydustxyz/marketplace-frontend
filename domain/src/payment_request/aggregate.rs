@@ -1,13 +1,11 @@
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
 use serde_json::Value;
-use std::sync::Arc;
 use thiserror::Error;
 
-use crate::{
-	specifications, specifications::Specifications, Aggregate, PaymentRequestEvent,
-	PaymentRequestId, ProjectId, UserId,
-};
+#[cfg_attr(test, mockall_double::double)]
+use crate::specifications::ProjectExistsSpecification;
+use crate::{specifications, Aggregate, PaymentRequestEvent, PaymentRequestId, ProjectId, UserId};
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -29,7 +27,7 @@ impl Aggregate for PaymentRequest {
 
 impl PaymentRequest {
 	pub async fn create(
-		specifications: Arc<dyn Specifications>,
+		project_exists_specification: &ProjectExistsSpecification,
 		id: PaymentRequestId,
 		project_id: ProjectId,
 		requestor_id: UserId,
@@ -37,7 +35,11 @@ impl PaymentRequest {
 		amount_in_usd: u32,
 		reason: Value,
 	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
-		if !specifications.project_exists(&project_id).await.map_err(Error::Specification)? {
+		if !project_exists_specification
+			.is_satisfied_by(&project_id)
+			.await
+			.map_err(Error::Specification)?
+		{
 			return Err(Error::ProjectNotFound);
 		}
 
@@ -55,11 +57,13 @@ impl PaymentRequest {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::{specifications::tests::MockSpecifications, PaymentRequestId, ProjectId, UserId};
+	#[mockall_double::double]
+	use crate::specifications::ProjectExistsSpecification;
+	use crate::{PaymentRequestId, ProjectId, UserId};
 	use assert_matches::assert_matches;
 	use mockall::predicate::*;
 	use rstest::{fixture, rstest};
-	use std::{str::FromStr, sync::Arc};
+	use std::str::FromStr;
 	use uuid::Uuid;
 
 	#[fixture]
@@ -106,15 +110,15 @@ mod tests {
 		amount_in_usd: u32,
 		reason: Value,
 	) {
-		let mut specifications = MockSpecifications::new();
-		specifications
-			.expect_project_exists()
+		let mut project_exists_specification = ProjectExistsSpecification::default();
+		project_exists_specification
+			.expect_is_satisfied_by()
 			.with(eq(project_id))
 			.times(1)
 			.returning(|_| Ok(true));
 
 		let events = PaymentRequest::create(
-			Arc::new(specifications),
+			&project_exists_specification,
 			payment_request_id,
 			project_id,
 			requestor_id,
@@ -148,15 +152,15 @@ mod tests {
 		amount_in_usd: u32,
 		reason: Value,
 	) {
-		let mut specifications = MockSpecifications::new();
-		specifications
-			.expect_project_exists()
+		let mut project_exists_specification = ProjectExistsSpecification::default();
+		project_exists_specification
+			.expect_is_satisfied_by()
 			.with(eq(wrong_project_id))
 			.times(1)
 			.returning(|_| Ok(false));
 
 		let result = PaymentRequest::create(
-			Arc::new(specifications),
+			&project_exists_specification,
 			payment_request_id,
 			wrong_project_id,
 			requestor_id,
