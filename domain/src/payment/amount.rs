@@ -1,4 +1,5 @@
 use derive_getters::Getters;
+use derive_more::Display;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
@@ -8,7 +9,7 @@ pub struct Amount {
 	currency: Currency,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Display)]
 pub enum Currency {
 	Crypto(String),
 }
@@ -16,13 +17,5 @@ pub enum Currency {
 impl Amount {
 	pub fn new(amount: Decimal, currency: Currency) -> Self {
 		Self { amount, currency }
-	}
-}
-
-impl ToString for Currency {
-	fn to_string(&self) -> String {
-		match self {
-			Self::Crypto(currency) => currency.clone(),
-		}
 	}
 }
