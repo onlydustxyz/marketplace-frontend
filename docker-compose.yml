@@ -39,6 +39,8 @@ services:
   graphql-engine:
     container_name: graphql-engine
     image: hasura/graphql-engine:v2.15.0
+    depends_on:
+      - db
     ports:
       - "8080:8080"
     restart: always
@@ -57,6 +59,7 @@ services:
     container_name: hasura-auth
     image: nhost/hasura-auth:latest
     depends_on:
+      - db
       - graphql-engine
     environment:
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL:-postgres://postgres:postgres@db/marketplace_db}
