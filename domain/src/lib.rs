@@ -35,6 +35,9 @@ pub use aggregate_root::{
 	AggregateRoot, Error as AggregateRootRepositoryError, Repository as AggregateRootRepository,
 };
 
+#[cfg(test)]
+pub use aggregate_root::MockRepository as MockAggregateRootRepository;
+
 pub mod event_store;
 pub use event_store::{Error as EventStoreError, Store as EventStore};
 
