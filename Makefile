@@ -16,6 +16,7 @@ docker/clean:
 	docker-compose rm -f db
 	docker volume rm marketplace-backend_db
 	docker-compose up -d
+	diesel migration run
 
 db/connect:
 	docker-compose up db -d
