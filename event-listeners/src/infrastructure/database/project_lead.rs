@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use crate::{
 	diesel::{ExpressionMethods, QueryDsl, RunQueryDsl},
-	domain::ProjectLead,
+	domain::{ProjectLead, ProjectLeadRepository},
 };
 use infrastructure::database::{schema::project_leads::dsl, Client};
 use uuid::Uuid;
@@ -13,7 +13,9 @@ impl Repository {
 	pub fn new(client: Arc<Client>) -> Self {
 		Self(client)
 	}
+}
 
+impl ProjectLeadRepository for Repository {
 	fn insert(&self, projection: &ProjectLead) -> anyhow::Result<()> {
 		let connection = self.0.connection()?;
 		diesel::insert_into(dsl::project_leads)
