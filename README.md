@@ -72,7 +72,6 @@ Start by cleaning your local env:
 
 ```
 make docker/clean
-diesel migration run
 ```
 
 Then, load the dump:
