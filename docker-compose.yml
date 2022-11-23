@@ -51,7 +51,7 @@ services:
       HASURA_GRAPHQL_ENABLE_CONSOLE: "false" # use Hasura CLI to access the console, see projet README
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-      HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-myadminsecretkey}
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: public
       BACKEND_GRAPHQL_URL: ${BACKEND_GRAPHQL_URL:-http://host.docker.internal:8000/graphql}
       HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: "true"
