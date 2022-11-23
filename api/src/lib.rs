@@ -31,11 +31,11 @@ pub async fn main() -> Result<()> {
 	let uuid_generator = Arc::new(RandomUuidGenerator);
 	let event_bus = Arc::new(Bus::default().await?);
 	let graphql_schema = graphql::create_schema();
-	let project_repository = Arc::new(AggregateRootRepository::new(database.clone()));
 	let graphql_context = graphql::Context::new(
 		uuid_generator.clone(),
 		event_bus.clone(),
-		project_repository.clone(),
+		AggregateRootRepository::new(database.clone()),
+		AggregateRootRepository::new(database.clone()),
 	);
 
 	let rocket_handler = rocket::build()
