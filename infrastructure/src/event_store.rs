@@ -1,6 +1,6 @@
 use crate::database::{schema::events, Client};
 use diesel::prelude::*;
-use domain::{Aggregate, EventStore, EventStoreError, Payment, Project};
+use domain::{Aggregate, EventStore, EventStoreError, Payment, PaymentRequest, Project};
 use log::error;
 use serde_json::Value;
 
@@ -17,6 +17,12 @@ impl NamedAggregate for Project {
 impl NamedAggregate for Payment {
 	fn name() -> String {
 		String::from("PAYMENT")
+	}
+}
+
+impl NamedAggregate for PaymentRequest {
+	fn name() -> String {
+		String::from("PAYMENT_REQUEST")
 	}
 }
 
