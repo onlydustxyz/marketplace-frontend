@@ -96,22 +96,25 @@ For convenience, some commands are available from the root of the repo:
 make hasura/start # Apply metadata and start the console
 ```
 
-### Add a single repository for indexing
-
-```
-cargo run &
-curl -d '{"owner":"onlydustxyz", "name":"starkonquest"}' -H "Content-Type: application/json" -X POST http://localhost:8000/projects
-```
-
 ## 🌡️ Testing
 
+Make sure the docker is up and running.
+Then run the following command:
 ```
 cargo test
 ```
 
 ### End-to-end testing
 
-TODO
+Make sure cypress is installed:
+```
+yarn --cwd testing/cypress install
+```
+
+Then run e2e tests:
+```
+yarn --cwd testing/cypress cypress:open
+```
 
 ## Migrate database
 
