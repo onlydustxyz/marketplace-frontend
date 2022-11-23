@@ -1,6 +1,8 @@
 #[cfg_attr(test, double)]
 use crate::AggregateRootRepository;
-use crate::{specifications::Error, AggregateRoot, AggregateRootRepositoryError, Project};
+use crate::{
+	specifications::Error, AggregateRoot, AggregateRootRepositoryError, PaymentRequest, Project,
+};
 #[cfg(test)]
 use mockall::automock;
 #[cfg(test)]
@@ -31,9 +33,12 @@ impl<A: AggregateRoot + 'static> Specification<A> {
 }
 
 pub type ProjectExists = Specification<Project>;
+pub type PaymentRequestExists = Specification<PaymentRequest>;
 
 #[cfg(test)]
 pub type MockProjectExists = MockSpecification<Project>;
+#[cfg(test)]
+pub type MockPaymentRequestExists = MockSpecification<PaymentRequest>;
 
 #[cfg(test)]
 mod tests {
