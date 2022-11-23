@@ -9,9 +9,17 @@ runs:
       shell: bash
       run: cp .env.example .env
 
-    - name: Build the app
+    - name: Build the api
       shell: bash
-      run: cargo build --workspace
+      run: cargo build
+
+    - name: Build the event-store
+      shell: bash
+      run: cargo build -p event-store
+
+    - name: Build the event-listeners
+      shell: bash
+      run: cargo build -p event-listeners
 
     - name: Run the api
       shell: bash
