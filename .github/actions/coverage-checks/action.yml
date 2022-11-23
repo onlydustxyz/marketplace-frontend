@@ -2,23 +2,6 @@ name: Code coverage
 
 description: Launch application and run all tests while measuring code coverage
 
-inputs:
-  token:
-    description: "A Github PAT"
-    required: true
-
-  codecov_flag:
-    description: "Flag to upload code coverage results to codecov.io"
-    required: true
-
-  codecov_token:
-    description: "The codecov token for the repository"
-    required: false
-
-  test_flags:
-    description: "Additional test flags to pass to cargo tarpaulin test command"
-    required: false
-
 runs:
   using: "composite"
   steps:
@@ -30,16 +13,3 @@ runs:
           --skip-clean
           --workspace
           ${{ inputs.test_flags }}
-
-    - name: Upload results to codecov.io
-      uses: codecov/codecov-action@v3
-      with:
-        files: cobertura.xml
-        flags: ${{ inputs.codecov_flag }}
-        token: ${{ inputs.codecov_token }}
-
-    - name: Archive code coverage results
-      uses: actions/upload-artifact@v1
-      with:
-        name: code-coverage-report-${{ inputs.codecov_flag }}
-        path: cobertura.xml
