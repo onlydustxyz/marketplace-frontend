@@ -5,4 +5,4 @@ mod projections;
 pub use projections::{Repository as ProjectionRepository, *};
 
 mod projectors;
-pub use projectors::{PaymentProjector, PaymentRequestProjector};
+pub use projectors::*;
