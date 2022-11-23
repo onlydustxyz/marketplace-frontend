@@ -8,13 +8,13 @@ use std::sync::Arc;
 
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-	project_repository: Arc<AggregateRootRepository<Project>>,
+	project_repository: AggregateRootRepository<Project>,
 }
 
 impl Usecase {
 	pub fn new(
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		project_repository: Arc<AggregateRootRepository<Project>>,
+		project_repository: AggregateRootRepository<Project>,
 	) -> Self {
 		Self {
 			event_publisher,
