@@ -1,8 +1,8 @@
 use crate::domain::Publishable;
 use anyhow::Result;
 use domain::{
-	specifications::ProjectExistsSpecification, AggregateRootRepository, Event, PaymentId,
-	PaymentRequest, Project, ProjectId, Publisher, UniqueMessage, UserId, UuidGenerator,
+	specifications::ProjectExists as ProjectExistsSpecification, AggregateRootRepository, Event,
+	PaymentId, PaymentRequest, Project, ProjectId, Publisher, UniqueMessage, UserId, UuidGenerator,
 };
 use serde_json::Value;
 use std::sync::Arc;

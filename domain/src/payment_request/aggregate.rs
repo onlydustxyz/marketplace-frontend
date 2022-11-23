@@ -4,7 +4,7 @@ use serde_json::Value;
 use thiserror::Error;
 
 #[cfg_attr(test, mockall_double::double)]
-use crate::specifications::ProjectExistsSpecification;
+use crate::specifications::ProjectExists;
 use crate::{specifications, Aggregate, PaymentRequestEvent, PaymentRequestId, ProjectId, UserId};
 
 #[derive(Debug, Error)]
@@ -27,7 +27,7 @@ impl Aggregate for PaymentRequest {
 
 impl PaymentRequest {
 	pub async fn create(
-		project_exists_specification: &ProjectExistsSpecification,
+		project_exists_specification: &ProjectExists,
 		id: PaymentRequestId,
 		project_id: ProjectId,
 		requestor_id: UserId,
@@ -57,7 +57,7 @@ impl PaymentRequest {
 mod tests {
 	use super::*;
 	#[mockall_double::double]
-	use crate::specifications::ProjectExistsSpecification;
+	use crate::specifications::ProjectExists;
 	use crate::{PaymentRequestId, ProjectId, UserId};
 	use assert_matches::assert_matches;
 	use mockall::predicate::*;
@@ -109,7 +109,7 @@ mod tests {
 		amount_in_usd: u32,
 		reason: Value,
 	) {
-		let mut project_exists_specification = ProjectExistsSpecification::default();
+		let mut project_exists_specification = ProjectExists::default();
 		project_exists_specification
 			.expect_is_satisfied_by()
 			.with(eq(project_id))
@@ -151,7 +151,7 @@ mod tests {
 		amount_in_usd: u32,
 		reason: Value,
 	) {
-		let mut project_exists_specification = ProjectExistsSpecification::default();
+		let mut project_exists_specification = ProjectExists::default();
 		project_exists_specification
 			.expect_is_satisfied_by()
 			.with(eq(wrong_project_id))
