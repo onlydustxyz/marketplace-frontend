@@ -11,8 +11,16 @@ runs:
 
     - name: Build the app
       shell: bash
-      run: cargo build
+      run: cargo build --workspace
 
-    - name: Run the app
+    - name: Run the api
       shell: bash
-      run: cargo run &> out.log &
+      run: cargo run &> api.out.log &
+
+    - name: Run the event listeners
+      shell: bash
+      run: cargo run -p event-listeners &> event-listeners.out.log &
+
+    - name: Run the event store
+      shell: bash
+      run: cargo run -p event-store &> event-store.out.log &
