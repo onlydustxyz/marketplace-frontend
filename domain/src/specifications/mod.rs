@@ -1,11 +1,11 @@
 use crate::aggregate_root;
 use thiserror::Error;
 
-mod project_exists;
-pub use project_exists::Specification as ProjectExistsSpecification;
+mod aggregate_exists;
+pub use aggregate_exists::Specification as ProjectExistsSpecification;
 
 #[cfg(test)]
-pub use project_exists::MockSpecification as MockProjectExistsSpecification;
+pub use aggregate_exists::MockSpecification as MockProjectExistsSpecification;
 
 #[derive(Debug, Error)]
 pub enum Error {
