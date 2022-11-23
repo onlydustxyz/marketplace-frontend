@@ -17,7 +17,7 @@ impl Usecase {
 	pub fn new(
 		uuid_generator: Arc<dyn UuidGenerator>,
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		project_repository: Arc<AggregateRootRepository<Project>>,
+		project_repository: AggregateRootRepository<Project>,
 	) -> Self {
 		Self {
 			uuid_generator,

@@ -7,15 +7,14 @@ use crate::{
 use mockall::automock;
 #[cfg(test)]
 use mockall_double::double;
-use std::sync::Arc;
 
 pub struct Specification<A: AggregateRoot + 'static> {
-	aggregate_repository: Arc<AggregateRootRepository<A>>,
+	aggregate_repository: AggregateRootRepository<A>,
 }
 
 #[cfg_attr(test, automock)]
 impl<A: AggregateRoot + 'static> Specification<A> {
-	pub fn new(aggregate_repository: Arc<AggregateRootRepository<A>>) -> Self {
+	pub fn new(aggregate_repository: AggregateRootRepository<A>) -> Self {
 		Self {
 			aggregate_repository,
 		}
@@ -73,8 +72,7 @@ mod tests {
 			.once()
 			.returning(|_| Ok(Default::default()));
 
-		let result =
-			Specification::new(Arc::new(aggregate_root_repository)).is_satisfied_by(project_id);
+		let result = Specification::new(aggregate_root_repository).is_satisfied_by(project_id);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert!(result.unwrap());
 	}
@@ -90,8 +88,7 @@ mod tests {
 			.once()
 			.returning(|_| Err(AggregateRootRepositoryError::NotFound));
 
-		let result =
-			Specification::new(Arc::new(aggregate_root_repository)).is_satisfied_by(project_id);
+		let result = Specification::new(aggregate_root_repository).is_satisfied_by(project_id);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		assert!(!result.unwrap());
 	}
@@ -111,8 +108,7 @@ mod tests {
 				))
 			});
 
-		let result =
-			Specification::new(Arc::new(aggregate_root_repository)).is_satisfied_by(project_id);
+		let result = Specification::new(aggregate_root_repository).is_satisfied_by(project_id);
 		assert!(result.is_err());
 	}
 }
