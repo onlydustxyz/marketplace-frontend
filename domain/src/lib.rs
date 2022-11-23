@@ -1,11 +1,11 @@
-use derive_more::{AsRef, Display, From, Into};
-
 mod value_objects;
-use serde::{Deserialize, Serialize};
 pub use value_objects::*;
 
 mod services;
 pub use services::*;
+
+mod repositories;
+pub use repositories::*;
 
 mod event;
 pub use event::Event;
@@ -30,6 +30,9 @@ pub use payment::{
 mod payment_request;
 pub use payment_request::{Event as PaymentRequestEvent, Id as PaymentRequestId, PaymentRequest};
 
+mod user;
+pub use user::{Entity as User, Id as UserId};
+
 pub mod aggregate_root;
 pub use aggregate_root::{
 	AggregateRoot, Error as AggregateRootRepositoryError, Repository as AggregateRootRepository,
@@ -42,20 +45,3 @@ pub mod event_store;
 pub use event_store::{Error as EventStoreError, Store as EventStore};
 
 pub mod specifications;
-
-#[derive(
-	Debug,
-	Clone,
-	Copy,
-	Default,
-	Serialize,
-	Deserialize,
-	PartialEq,
-	Eq,
-	Display,
-	From,
-	Into,
-	AsRef,
-	Hash,
-)]
-pub struct UserId(uuid::Uuid);

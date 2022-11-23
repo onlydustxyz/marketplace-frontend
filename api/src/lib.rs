@@ -12,6 +12,7 @@ use ::infrastructure::{
 };
 use anyhow::Result;
 use dotenv::dotenv;
+use infrastructure::graphql::GraphqlClient;
 use log::info;
 use rocket::routes;
 use rocket_okapi::swagger_ui::make_swagger_ui;
@@ -36,6 +37,7 @@ pub async fn main() -> Result<()> {
 		event_bus.clone(),
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),
+		Arc::new(GraphqlClient {}),
 	);
 
 	let rocket_handler = rocket::build()

@@ -3,6 +3,7 @@ extern crate diesel;
 
 pub mod amqp;
 pub mod database;
+pub mod graphql;
 pub mod tracing;
 
 pub mod event_bus;
