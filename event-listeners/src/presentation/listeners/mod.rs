@@ -32,7 +32,7 @@ pub async fn spawn_all(
 		PaymentRequestProjector::new(payment_request_repository)
 			.spawn(event_bus::consumer("payment_requests").await?),
 		ProjectProjector::new(project_repository, project_lead_repository)
-			.spawn(event_bus::consumer("payment_requests").await?),
+			.spawn(event_bus::consumer("projects").await?),
 	];
 
 	Ok(handles.into())
