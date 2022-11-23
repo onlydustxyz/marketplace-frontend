@@ -1,0 +1,10 @@
+name: Run Rust backend
+
+description: Kill runnin Rust backends
+
+runs:
+  using: "composite"
+  steps:
+    - name: Kill all running backends
+      shell: bash
+      run: kill ${{ env.api_pid }} ${{ env.event_store_pid }} ${{ env.event_listeners_pid }}

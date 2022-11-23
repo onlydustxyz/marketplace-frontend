@@ -11,7 +11,7 @@ runs:
 
     - name: Build the api
       shell: bash
-      run: cargo build
+      run: cargo build -p api
 
     - name: Build the event-store
       shell: bash
@@ -23,12 +23,30 @@ runs:
 
     - name: Run the api
       shell: bash
-      run: cargo run &> api.out.log &
+      run: |
+        cargo run &> api.out.log &
+        echo "api_pid=$!" >> $GITHUB_ENV
 
-    - name: Run the event listeners
+    - name: Run the event-listeners
       shell: bash
-      run: cargo run -p event-listeners &> event-listeners.out.log &
+      run: |
+        cargo run -p event-listeners &> event-listeners.out.log &
+        echo "event_listeners_pid=$!" >> $GITHUB_ENV
 
-    - name: Run the event store
+    - name: Run the event-store
       shell: bash
-      run: cargo run -p event-store &> event-store.out.log &
+      run: |
+        cargo run -p event-store &> event-store.out.log &
+        echo "event_store_pid=$!" >> $GITHUB_ENV
+
+    - name: Wait for api to be up
+      uses: ifaxity/wait-on-action@v1
+      with:
+        resource: http://localhost:8000
+        timeout: 120000
+
+    - name: Wait for event-listeners to be up
+      uses: ifaxity/wait-on-action@v1
+      with:
+        resource: http-get://localhost:8081/graphiql
+        timeout: 1000
