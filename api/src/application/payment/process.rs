@@ -1,7 +1,7 @@
 use anyhow::Result;
 use domain::{
-	Amount, Destination, Event, Payment, PaymentId, PaymentReceipt, PaymentReceiptId, Publisher,
-	UniqueMessage, UuidGenerator,
+	AggregateRootRepository, Amount, Destination, Event, Payment, PaymentId, PaymentReceipt,
+	PaymentReceiptId, Publisher, UniqueMessage, UuidGenerator,
 };
 use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
 use std::sync::Arc;
@@ -9,16 +9,19 @@ use std::sync::Arc;
 pub struct Usecase {
 	uuid_generator: Arc<dyn UuidGenerator>,
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
+	payment_repository: AggregateRootRepository<Payment>,
 }
 
 impl Usecase {
 	pub fn new(
 		uuid_generator: Arc<dyn UuidGenerator>,
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
+		payment_repository: AggregateRootRepository<Payment>,
 	) -> Self {
 		Self {
 			uuid_generator,
 			event_publisher,
+			payment_repository,
 		}
 	}
 
@@ -29,7 +32,9 @@ impl Usecase {
 		receipt: PaymentReceipt,
 	) -> Result<PaymentReceiptId> {
 		let receipt_id = self.uuid_generator.new_uuid();
-		let events: Vec<_> = Payment::add_receipt(payment_id, receipt_id.into(), amount, receipt)?
+		let payment = self.payment_repository.find_by_id(&payment_id)?;
+		let events: Vec<_> = payment
+			.add_receipt(receipt_id.into(), amount, receipt)?
 			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)

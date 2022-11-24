@@ -41,7 +41,7 @@ juniper_warp = "0.7.0"
 warp = "0.3.3"
 
 # Tracing
-tracing = {version = "0.1"}
+tracing = "0.1"
 
 # Errors
 anyhow = "1.0.57"

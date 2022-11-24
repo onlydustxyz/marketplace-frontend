@@ -36,6 +36,7 @@ pub async fn main() -> Result<()> {
 		uuid_generator.clone(),
 		event_bus.clone(),
 		AggregateRootRepository::new(database.clone()),
+		AggregateRootRepository::new(database.clone()),
 		Arc::new(HasuraClient::default()),
 	);
 
