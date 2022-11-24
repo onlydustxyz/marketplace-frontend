@@ -2,7 +2,7 @@ mod id;
 pub use id::Id;
 
 mod receipt;
-pub use receipt::Receipt;
+pub use receipt::{Id as ReceiptId, Receipt};
 
 mod events;
 pub use events::Event;

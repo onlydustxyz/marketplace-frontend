@@ -1,6 +1,6 @@
 use anyhow::Result;
 use domain::{
-	Amount, Destination, Event, Payment, PaymentId, PaymentReceipt, PaymentRequestId, Publisher,
+	Amount, Destination, Event, Payment, PaymentId, PaymentReceipt, PaymentReceiptId, Publisher,
 	UniqueMessage, UuidGenerator,
 };
 use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
@@ -22,14 +22,14 @@ impl Usecase {
 		}
 	}
 
-	pub async fn create(
+	pub async fn add_receipt(
 		&self,
-		request_id: PaymentRequestId,
+		payment_id: PaymentId,
 		amount: Amount,
 		receipt: PaymentReceipt,
-	) -> Result<PaymentId> {
-		let payment_id = self.uuid_generator.new_uuid();
-		let events: Vec<_> = Payment::create(payment_id.into(), request_id, amount, receipt)?
+	) -> Result<PaymentReceiptId> {
+		let receipt_id = self.uuid_generator.new_uuid();
+		let events: Vec<_> = Payment::add_receipt(payment_id, receipt_id.into(), amount, receipt)?
 			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)
@@ -39,6 +39,6 @@ impl Usecase {
 			.publish_many(Destination::queue(EVENT_STORE_QUEUE), &events)
 			.await?;
 
-		Ok(payment_id.into())
+		Ok(receipt_id.into())
 	}
 }
