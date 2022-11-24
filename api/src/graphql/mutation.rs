@@ -15,7 +15,7 @@ impl Mutation {
 
 	pub async fn add_eth_payment_receipt(
 		context: &Context,
-		request_id: Uuid,
+		payment_id: Uuid,
 		amount: String,
 		currency_code: String,
 		recipient_address: String,
@@ -26,9 +26,9 @@ impl Mutation {
 		let amount = Money::from_str(&amount, currency)?;
 
 		let payment_id = context
-			.create_payment_usecase
-			.create(
-				request_id.into(),
+			.process_payment_usecase
+			.add_receipt(
+				payment_id.into(),
 				Amount::new(*amount.amount(), Currency::Crypto(currency_code)),
 				PaymentReceipt::OnChainPayment {
 					network: BlockchainNetwork::Ethereum,
@@ -69,7 +69,7 @@ impl Mutation {
 		reason: String,
 	) -> FieldResult<Uuid> {
 		let payment_request_id = context
-			.create_payment_request_usecase
+			.request_payment_usecase
 			.request(
 				project_id.into(),
 				requestor_id.into(),

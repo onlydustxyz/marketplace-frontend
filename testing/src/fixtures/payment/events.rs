@@ -1,10 +1,10 @@
 use super::*;
 use domain::{Amount, BlockchainNetwork, Currency, PaymentEvent, PaymentReceipt};
 
-pub fn payment_created() -> PaymentEvent {
-	PaymentEvent::Created {
+pub fn payment_processed() -> PaymentEvent {
+	PaymentEvent::Processed {
 		id: payment_id(),
-		request_id: payment_request_id(),
+		receipt_id: payment_receipt_id(),
 		amount: Amount::new(
 			"500.45".parse().unwrap(),
 			Currency::Crypto("USDC".to_string()),

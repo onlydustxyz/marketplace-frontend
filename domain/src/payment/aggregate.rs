@@ -3,7 +3,7 @@ use super::amount::Amount;
 use crate::specifications::{ProjectExists, UserExists};
 use crate::{
 	specifications, Aggregate, AggregateRoot, EventSourcable, PaymentEvent, PaymentId,
-	PaymentReceipt, PaymentRequestId, ProjectId, UserId,
+	PaymentReceipt, PaymentReceiptId, ProjectId, UserId,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -23,7 +23,7 @@ impl EventSourcable for Payment {
 	fn apply_event(self, event: &Self::Event) -> Self {
 		match event {
 			PaymentEvent::Requested { id, .. } => Self { id: *id },
-			PaymentEvent::Created { id, .. } => Self { id: *id },
+			PaymentEvent::Processed { id, .. } => Self { id: *id },
 		}
 	}
 }
@@ -87,16 +87,16 @@ impl Payment {
 		}])
 	}
 
-	pub fn create(
+	pub fn add_receipt(
 		id: PaymentId,
-		request_id: PaymentRequestId,
+		receipt_id: PaymentReceiptId,
 		amount: Amount,
 		receipt: PaymentReceipt,
 	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
-		let events = vec![PaymentEvent::Created {
+		let events = vec![PaymentEvent::Processed {
 			id,
 			amount,
-			request_id,
+			receipt_id,
 			receipt,
 		}];
 
@@ -109,7 +109,7 @@ mod tests {
 	use super::*;
 	#[mockall_double::double]
 	use crate::specifications::ProjectExists;
-	use crate::{BlockchainNetwork, Currency, PaymentRequestId, ProjectId, UserId};
+	use crate::{BlockchainNetwork, Currency, PaymentReceiptId, ProjectId, UserId};
 	use assert_matches::assert_matches;
 	use mockall::predicate::*;
 	use rstest::{fixture, rstest};
@@ -119,7 +119,7 @@ mod tests {
 	use uuid::Uuid;
 
 	#[fixture]
-	fn payment_request_id() -> PaymentRequestId {
+	fn payment_receipt_id() -> PaymentReceiptId {
 		Uuid::from_str("00000000-aaaa-495e-9f4c-038ec0ebecb1").unwrap().into()
 	}
 
@@ -184,14 +184,14 @@ mod tests {
 
 	#[fixture]
 	fn payment_created_event(
-		payment_request_id: PaymentRequestId,
+		payment_receipt_id: PaymentReceiptId,
 		payment_id: PaymentId,
 		amount: Amount,
 		receipt: PaymentReceipt,
 	) -> PaymentEvent {
-		PaymentEvent::Created {
+		PaymentEvent::Processed {
 			id: payment_id,
-			request_id: payment_request_id,
+			receipt_id: payment_receipt_id,
 			amount,
 			receipt,
 		}
@@ -199,13 +199,13 @@ mod tests {
 
 	#[rstest]
 	fn test_create(
-		payment_request_id: PaymentRequestId,
+		payment_receipt_id: PaymentReceiptId,
 		payment_id: PaymentId,
 		payment_created_event: PaymentEvent,
 		amount: Amount,
 		receipt: PaymentReceipt,
 	) {
-		let events = Payment::create(payment_id, payment_request_id, amount, receipt)
+		let events = Payment::add_receipt(payment_id, payment_receipt_id, amount, receipt)
 			.expect("Problem when creating payment");
 
 		assert_eq!(events, vec![payment_created_event]);

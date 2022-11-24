@@ -30,9 +30,9 @@ mod test {
 
 	#[test]
 	fn display_event_as_json() {
-		let event = Event::Payment(PaymentEvent::Created {
+		let event = Event::Payment(PaymentEvent::Processed {
 			id: Default::default(),
-			request_id: Default::default(),
+			receipt_id: Default::default(),
 			amount: Amount::new(
 				"500.45".parse().unwrap(),
 				Currency::Crypto("USDC".to_string()),
@@ -45,7 +45,7 @@ mod test {
 		});
 		assert_json_include!(
 			actual: serde_json::from_str::<Value>(&event.to_string()).unwrap(),
-			expected: json!({ "Payment": { "Created": {} } })
+			expected: json!({ "Payment": { "Processed": {} } })
 		);
 	}
 }

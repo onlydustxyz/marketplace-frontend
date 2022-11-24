@@ -1,9 +1,8 @@
-use crate::{PaymentId, PaymentReceipt, PaymentRequestId, ProjectId, UserId};
+use super::amount::Amount;
+use crate::{PaymentId, PaymentReceipt, PaymentReceiptId, ProjectId, UserId};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::fmt::Display;
-
-use super::amount::Amount;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -15,9 +14,9 @@ pub enum Event {
 		amount_in_usd: u32,
 		reason: Value,
 	},
-	Created {
+	Processed {
 		id: PaymentId,
-		request_id: PaymentRequestId,
+		receipt_id: PaymentReceiptId,
 		amount: Amount,
 		receipt: PaymentReceipt,
 	},
@@ -49,14 +48,14 @@ mod tests {
 
 	#[test]
 	fn test_display() {
-		let event = events::payment_created();
+		let event = events::payment_processed();
 
 		assert_json_eq!(
 			serde_json::from_str::<Value>(&event.to_string()).unwrap(),
 			json!({
-				"Created": {
+				"Processed": {
 					"id": "abad1756-18ba-42e2-8cbf-83369cecfb38",
-					"request_id":"b5db0b56-ab3e-4bd1-b9a2-6a3d41f35b8f",
+					"receipt_id":"b5db0b56-ab3e-4bd1-b9a2-6a3d41f35b8f",
 					"amount":{
 						"amount":"500.45",
 						"currency":{
@@ -77,9 +76,9 @@ mod tests {
 
 	#[test]
 	fn test_to_domain_event() {
-		let event = Event::Created {
+		let event = Event::Processed {
 			id: Default::default(),
-			request_id: Default::default(),
+			receipt_id: Default::default(),
 			amount: Amount::new(
 				"500.45".parse().unwrap(),
 				Currency::Crypto("USDC".to_string()),

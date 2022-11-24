@@ -6,8 +6,8 @@ use domain::{
 use std::sync::Arc;
 
 pub struct Context {
-	pub create_payment_request_usecase: application::payment::request::Usecase,
-	pub create_payment_usecase: application::payment::create::Usecase,
+	pub request_payment_usecase: application::payment::request::Usecase,
+	pub process_payment_usecase: application::payment::process::Usecase,
 	pub create_project_usecase: application::project::create::Usecase,
 	pub assign_project_lead_usecase: application::project::assign_leader::Usecase,
 }
@@ -20,13 +20,13 @@ impl Context {
 		user_repository: Arc<dyn UserRepository>,
 	) -> Self {
 		Self {
-			create_payment_request_usecase: application::payment::request::Usecase::new(
+			request_payment_usecase: application::payment::request::Usecase::new(
 				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
 				project_repository.to_owned(),
 				user_repository,
 			),
-			create_payment_usecase: application::payment::create::Usecase::new(
+			process_payment_usecase: application::payment::process::Usecase::new(
 				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
 			),
