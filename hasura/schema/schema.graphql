@@ -1,0 +1,6895 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """measured in seconds"""
+  ttl: Int! = 60
+
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+) on QUERY
+
+"""
+Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
+"""
+input Boolean_comparison_exp {
+  _eq: Boolean
+  _gt: Boolean
+  _gte: Boolean
+  _in: [Boolean!]
+  _is_null: Boolean
+  _lt: Boolean
+  _lte: Boolean
+  _neq: Boolean
+  _nin: [Boolean!]
+}
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _is_null: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+"""
+Oauth requests, inserted before redirecting to the provider's site. Don't modify its structure as Hasura Auth relies on it to function properly.
+"""
+type authProviderRequests {
+  id: uuid!
+  options(
+    """JSON select path"""
+    path: String
+  ): jsonb
+}
+
+"""
+aggregated selection of "auth.provider_requests"
+"""
+type authProviderRequests_aggregate {
+  aggregate: authProviderRequests_aggregate_fields
+  nodes: [authProviderRequests!]!
+}
+
+"""
+aggregate fields of "auth.provider_requests"
+"""
+type authProviderRequests_aggregate_fields {
+  count(columns: [authProviderRequests_select_column!], distinct: Boolean): Int!
+  max: authProviderRequests_max_fields
+  min: authProviderRequests_min_fields
+}
+
+"""append existing jsonb value of filtered columns with new jsonb value"""
+input authProviderRequests_append_input {
+  options: jsonb
+}
+
+"""
+Boolean expression to filter rows from the table "auth.provider_requests". All fields are combined with a logical 'AND'.
+"""
+input authProviderRequests_bool_exp {
+  _and: [authProviderRequests_bool_exp!]
+  _not: authProviderRequests_bool_exp
+  _or: [authProviderRequests_bool_exp!]
+  id: uuid_comparison_exp
+  options: jsonb_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "auth.provider_requests"
+"""
+enum authProviderRequests_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  provider_requests_pkey
+}
+
+"""
+delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+"""
+input authProviderRequests_delete_at_path_input {
+  options: [String!]
+}
+
+"""
+delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+"""
+input authProviderRequests_delete_elem_input {
+  options: Int
+}
+
+"""
+delete key/value pair or string element. key/value pairs are matched based on their key value
+"""
+input authProviderRequests_delete_key_input {
+  options: String
+}
+
+"""
+input type for inserting data into table "auth.provider_requests"
+"""
+input authProviderRequests_insert_input {
+  id: uuid
+  options: jsonb
+}
+
+"""aggregate max on columns"""
+type authProviderRequests_max_fields {
+  id: uuid
+}
+
+"""aggregate min on columns"""
+type authProviderRequests_min_fields {
+  id: uuid
+}
+
+"""
+response of any mutation on the table "auth.provider_requests"
+"""
+type authProviderRequests_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [authProviderRequests!]!
+}
+
+"""
+on_conflict condition type for table "auth.provider_requests"
+"""
+input authProviderRequests_on_conflict {
+  constraint: authProviderRequests_constraint!
+  update_columns: [authProviderRequests_update_column!]! = []
+  where: authProviderRequests_bool_exp
+}
+
+"""Ordering options when selecting data from "auth.provider_requests"."""
+input authProviderRequests_order_by {
+  id: order_by
+  options: order_by
+}
+
+"""primary key columns input for table: auth.provider_requests"""
+input authProviderRequests_pk_columns_input {
+  id: uuid!
+}
+
+"""prepend existing jsonb value of filtered columns with new jsonb value"""
+input authProviderRequests_prepend_input {
+  options: jsonb
+}
+
+"""
+select columns of table "auth.provider_requests"
+"""
+enum authProviderRequests_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  options
+}
+
+"""
+input type for updating data in table "auth.provider_requests"
+"""
+input authProviderRequests_set_input {
+  id: uuid
+  options: jsonb
+}
+
+"""
+Streaming cursor of the table "authProviderRequests"
+"""
+input authProviderRequests_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: authProviderRequests_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input authProviderRequests_stream_cursor_value_input {
+  id: uuid
+  options: jsonb
+}
+
+"""
+update columns of table "auth.provider_requests"
+"""
+enum authProviderRequests_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  options
+}
+
+input authProviderRequests_updates {
+  """append existing jsonb value of filtered columns with new jsonb value"""
+  _append: authProviderRequests_append_input
+
+  """
+  delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+  """
+  _delete_at_path: authProviderRequests_delete_at_path_input
+
+  """
+  delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+  """
+  _delete_elem: authProviderRequests_delete_elem_input
+
+  """
+  delete key/value pair or string element. key/value pairs are matched based on their key value
+  """
+  _delete_key: authProviderRequests_delete_key_input
+
+  """prepend existing jsonb value of filtered columns with new jsonb value"""
+  _prepend: authProviderRequests_prepend_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: authProviderRequests_set_input
+  where: authProviderRequests_bool_exp!
+}
+
+"""
+List of available Oauth providers. Don't modify its structure as Hasura Auth relies on it to function properly.
+"""
+type authProviders {
+  id: String!
+
+  """An array relationship"""
+  userProviders(
+    """distinct select on columns"""
+    distinct_on: [authUserProviders_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserProviders_order_by!]
+
+    """filter the rows returned"""
+    where: authUserProviders_bool_exp
+  ): [authUserProviders!]!
+
+  """An aggregate relationship"""
+  userProviders_aggregate(
+    """distinct select on columns"""
+    distinct_on: [authUserProviders_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserProviders_order_by!]
+
+    """filter the rows returned"""
+    where: authUserProviders_bool_exp
+  ): authUserProviders_aggregate!
+}
+
+"""
+aggregated selection of "auth.providers"
+"""
+type authProviders_aggregate {
+  aggregate: authProviders_aggregate_fields
+  nodes: [authProviders!]!
+}
+
+"""
+aggregate fields of "auth.providers"
+"""
+type authProviders_aggregate_fields {
+  count(columns: [authProviders_select_column!], distinct: Boolean): Int!
+  max: authProviders_max_fields
+  min: authProviders_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "auth.providers". All fields are combined with a logical 'AND'.
+"""
+input authProviders_bool_exp {
+  _and: [authProviders_bool_exp!]
+  _not: authProviders_bool_exp
+  _or: [authProviders_bool_exp!]
+  id: String_comparison_exp
+  userProviders: authUserProviders_bool_exp
+  userProviders_aggregate: authUserProviders_aggregate_bool_exp
+}
+
+"""
+unique or primary key constraints on table "auth.providers"
+"""
+enum authProviders_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  providers_pkey
+}
+
+"""
+input type for inserting data into table "auth.providers"
+"""
+input authProviders_insert_input {
+  id: String
+  userProviders: authUserProviders_arr_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type authProviders_max_fields {
+  id: String
+}
+
+"""aggregate min on columns"""
+type authProviders_min_fields {
+  id: String
+}
+
+"""
+response of any mutation on the table "auth.providers"
+"""
+type authProviders_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [authProviders!]!
+}
+
+"""
+input type for inserting object relation for remote table "auth.providers"
+"""
+input authProviders_obj_rel_insert_input {
+  data: authProviders_insert_input!
+
+  """upsert condition"""
+  on_conflict: authProviders_on_conflict
+}
+
+"""
+on_conflict condition type for table "auth.providers"
+"""
+input authProviders_on_conflict {
+  constraint: authProviders_constraint!
+  update_columns: [authProviders_update_column!]! = []
+  where: authProviders_bool_exp
+}
+
+"""Ordering options when selecting data from "auth.providers"."""
+input authProviders_order_by {
+  id: order_by
+  userProviders_aggregate: authUserProviders_aggregate_order_by
+}
+
+"""primary key columns input for table: auth.providers"""
+input authProviders_pk_columns_input {
+  id: String!
+}
+
+"""
+select columns of table "auth.providers"
+"""
+enum authProviders_select_column {
+  """column name"""
+  id
+}
+
+"""
+input type for updating data in table "auth.providers"
+"""
+input authProviders_set_input {
+  id: String
+}
+
+"""
+Streaming cursor of the table "authProviders"
+"""
+input authProviders_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: authProviders_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input authProviders_stream_cursor_value_input {
+  id: String
+}
+
+"""
+update columns of table "auth.providers"
+"""
+enum authProviders_update_column {
+  """column name"""
+  id
+}
+
+input authProviders_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: authProviders_set_input
+  where: authProviders_bool_exp!
+}
+
+"""
+User refresh tokens. Hasura auth uses them to rotate new access tokens as long as the refresh token is not expired. Don't modify its structure as Hasura Auth relies on it to function properly.
+"""
+type authRefreshTokens {
+  createdAt: timestamptz!
+  expiresAt: timestamptz!
+  refreshToken: uuid!
+
+  """An object relationship"""
+  user: users!
+  userId: uuid!
+}
+
+"""
+aggregated selection of "auth.refresh_tokens"
+"""
+type authRefreshTokens_aggregate {
+  aggregate: authRefreshTokens_aggregate_fields
+  nodes: [authRefreshTokens!]!
+}
+
+input authRefreshTokens_aggregate_bool_exp {
+  count: authRefreshTokens_aggregate_bool_exp_count
+}
+
+input authRefreshTokens_aggregate_bool_exp_count {
+  arguments: [authRefreshTokens_select_column!]
+  distinct: Boolean
+  filter: authRefreshTokens_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "auth.refresh_tokens"
+"""
+type authRefreshTokens_aggregate_fields {
+  count(columns: [authRefreshTokens_select_column!], distinct: Boolean): Int!
+  max: authRefreshTokens_max_fields
+  min: authRefreshTokens_min_fields
+}
+
+"""
+order by aggregate values of table "auth.refresh_tokens"
+"""
+input authRefreshTokens_aggregate_order_by {
+  count: order_by
+  max: authRefreshTokens_max_order_by
+  min: authRefreshTokens_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "auth.refresh_tokens"
+"""
+input authRefreshTokens_arr_rel_insert_input {
+  data: [authRefreshTokens_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: authRefreshTokens_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "auth.refresh_tokens". All fields are combined with a logical 'AND'.
+"""
+input authRefreshTokens_bool_exp {
+  _and: [authRefreshTokens_bool_exp!]
+  _not: authRefreshTokens_bool_exp
+  _or: [authRefreshTokens_bool_exp!]
+  createdAt: timestamptz_comparison_exp
+  expiresAt: timestamptz_comparison_exp
+  refreshToken: uuid_comparison_exp
+  user: users_bool_exp
+  userId: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "auth.refresh_tokens"
+"""
+enum authRefreshTokens_constraint {
+  """
+  unique or primary key constraint on columns "refresh_token"
+  """
+  refresh_tokens_pkey
+}
+
+"""
+input type for inserting data into table "auth.refresh_tokens"
+"""
+input authRefreshTokens_insert_input {
+  createdAt: timestamptz
+  expiresAt: timestamptz
+  refreshToken: uuid
+  user: users_obj_rel_insert_input
+  userId: uuid
+}
+
+"""aggregate max on columns"""
+type authRefreshTokens_max_fields {
+  createdAt: timestamptz
+  expiresAt: timestamptz
+  refreshToken: uuid
+  userId: uuid
+}
+
+"""
+order by max() on columns of table "auth.refresh_tokens"
+"""
+input authRefreshTokens_max_order_by {
+  createdAt: order_by
+  expiresAt: order_by
+  refreshToken: order_by
+  userId: order_by
+}
+
+"""aggregate min on columns"""
+type authRefreshTokens_min_fields {
+  createdAt: timestamptz
+  expiresAt: timestamptz
+  refreshToken: uuid
+  userId: uuid
+}
+
+"""
+order by min() on columns of table "auth.refresh_tokens"
+"""
+input authRefreshTokens_min_order_by {
+  createdAt: order_by
+  expiresAt: order_by
+  refreshToken: order_by
+  userId: order_by
+}
+
+"""
+response of any mutation on the table "auth.refresh_tokens"
+"""
+type authRefreshTokens_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [authRefreshTokens!]!
+}
+
+"""
+on_conflict condition type for table "auth.refresh_tokens"
+"""
+input authRefreshTokens_on_conflict {
+  constraint: authRefreshTokens_constraint!
+  update_columns: [authRefreshTokens_update_column!]! = []
+  where: authRefreshTokens_bool_exp
+}
+
+"""Ordering options when selecting data from "auth.refresh_tokens"."""
+input authRefreshTokens_order_by {
+  createdAt: order_by
+  expiresAt: order_by
+  refreshToken: order_by
+  user: users_order_by
+  userId: order_by
+}
+
+"""primary key columns input for table: auth.refresh_tokens"""
+input authRefreshTokens_pk_columns_input {
+  refreshToken: uuid!
+}
+
+"""
+select columns of table "auth.refresh_tokens"
+"""
+enum authRefreshTokens_select_column {
+  """column name"""
+  createdAt
+
+  """column name"""
+  expiresAt
+
+  """column name"""
+  refreshToken
+
+  """column name"""
+  userId
+}
+
+"""
+input type for updating data in table "auth.refresh_tokens"
+"""
+input authRefreshTokens_set_input {
+  createdAt: timestamptz
+  expiresAt: timestamptz
+  refreshToken: uuid
+  userId: uuid
+}
+
+"""
+Streaming cursor of the table "authRefreshTokens"
+"""
+input authRefreshTokens_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: authRefreshTokens_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input authRefreshTokens_stream_cursor_value_input {
+  createdAt: timestamptz
+  expiresAt: timestamptz
+  refreshToken: uuid
+  userId: uuid
+}
+
+"""
+update columns of table "auth.refresh_tokens"
+"""
+enum authRefreshTokens_update_column {
+  """column name"""
+  createdAt
+
+  """column name"""
+  expiresAt
+
+  """column name"""
+  refreshToken
+
+  """column name"""
+  userId
+}
+
+input authRefreshTokens_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: authRefreshTokens_set_input
+  where: authRefreshTokens_bool_exp!
+}
+
+"""
+Persistent Hasura roles for users. Don't modify its structure as Hasura Auth relies on it to function properly.
+"""
+type authRoles {
+  role: String!
+
+  """An array relationship"""
+  userRoles(
+    """distinct select on columns"""
+    distinct_on: [authUserRoles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserRoles_order_by!]
+
+    """filter the rows returned"""
+    where: authUserRoles_bool_exp
+  ): [authUserRoles!]!
+
+  """An aggregate relationship"""
+  userRoles_aggregate(
+    """distinct select on columns"""
+    distinct_on: [authUserRoles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserRoles_order_by!]
+
+    """filter the rows returned"""
+    where: authUserRoles_bool_exp
+  ): authUserRoles_aggregate!
+
+  """An array relationship"""
+  usersByDefaultRole(
+    """distinct select on columns"""
+    distinct_on: [users_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_order_by!]
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): [users!]!
+
+  """An aggregate relationship"""
+  usersByDefaultRole_aggregate(
+    """distinct select on columns"""
+    distinct_on: [users_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_order_by!]
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): users_aggregate!
+}
+
+"""
+aggregated selection of "auth.roles"
+"""
+type authRoles_aggregate {
+  aggregate: authRoles_aggregate_fields
+  nodes: [authRoles!]!
+}
+
+"""
+aggregate fields of "auth.roles"
+"""
+type authRoles_aggregate_fields {
+  count(columns: [authRoles_select_column!], distinct: Boolean): Int!
+  max: authRoles_max_fields
+  min: authRoles_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "auth.roles". All fields are combined with a logical 'AND'.
+"""
+input authRoles_bool_exp {
+  _and: [authRoles_bool_exp!]
+  _not: authRoles_bool_exp
+  _or: [authRoles_bool_exp!]
+  role: String_comparison_exp
+  userRoles: authUserRoles_bool_exp
+  userRoles_aggregate: authUserRoles_aggregate_bool_exp
+  usersByDefaultRole: users_bool_exp
+  usersByDefaultRole_aggregate: users_aggregate_bool_exp
+}
+
+"""
+unique or primary key constraints on table "auth.roles"
+"""
+enum authRoles_constraint {
+  """
+  unique or primary key constraint on columns "role"
+  """
+  roles_pkey
+}
+
+"""
+input type for inserting data into table "auth.roles"
+"""
+input authRoles_insert_input {
+  role: String
+  userRoles: authUserRoles_arr_rel_insert_input
+  usersByDefaultRole: users_arr_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type authRoles_max_fields {
+  role: String
+}
+
+"""aggregate min on columns"""
+type authRoles_min_fields {
+  role: String
+}
+
+"""
+response of any mutation on the table "auth.roles"
+"""
+type authRoles_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [authRoles!]!
+}
+
+"""
+input type for inserting object relation for remote table "auth.roles"
+"""
+input authRoles_obj_rel_insert_input {
+  data: authRoles_insert_input!
+
+  """upsert condition"""
+  on_conflict: authRoles_on_conflict
+}
+
+"""
+on_conflict condition type for table "auth.roles"
+"""
+input authRoles_on_conflict {
+  constraint: authRoles_constraint!
+  update_columns: [authRoles_update_column!]! = []
+  where: authRoles_bool_exp
+}
+
+"""Ordering options when selecting data from "auth.roles"."""
+input authRoles_order_by {
+  role: order_by
+  userRoles_aggregate: authUserRoles_aggregate_order_by
+  usersByDefaultRole_aggregate: users_aggregate_order_by
+}
+
+"""primary key columns input for table: auth.roles"""
+input authRoles_pk_columns_input {
+  role: String!
+}
+
+"""
+select columns of table "auth.roles"
+"""
+enum authRoles_select_column {
+  """column name"""
+  role
+}
+
+"""
+input type for updating data in table "auth.roles"
+"""
+input authRoles_set_input {
+  role: String
+}
+
+"""
+Streaming cursor of the table "authRoles"
+"""
+input authRoles_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: authRoles_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input authRoles_stream_cursor_value_input {
+  role: String
+}
+
+"""
+update columns of table "auth.roles"
+"""
+enum authRoles_update_column {
+  """column name"""
+  role
+}
+
+input authRoles_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: authRoles_set_input
+  where: authRoles_bool_exp!
+}
+
+"""
+Active providers for a given user. Don't modify its structure as Hasura Auth relies on it to function properly.
+"""
+type authUserProviders {
+  accessToken: String!
+  createdAt: timestamptz!
+  id: uuid!
+
+  """An object relationship"""
+  provider: authProviders!
+  providerId: String!
+  providerUserId: String!
+  refreshToken: String
+  updatedAt: timestamptz!
+
+  """An object relationship"""
+  user: users!
+  userId: uuid!
+}
+
+"""
+aggregated selection of "auth.user_providers"
+"""
+type authUserProviders_aggregate {
+  aggregate: authUserProviders_aggregate_fields
+  nodes: [authUserProviders!]!
+}
+
+input authUserProviders_aggregate_bool_exp {
+  count: authUserProviders_aggregate_bool_exp_count
+}
+
+input authUserProviders_aggregate_bool_exp_count {
+  arguments: [authUserProviders_select_column!]
+  distinct: Boolean
+  filter: authUserProviders_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "auth.user_providers"
+"""
+type authUserProviders_aggregate_fields {
+  count(columns: [authUserProviders_select_column!], distinct: Boolean): Int!
+  max: authUserProviders_max_fields
+  min: authUserProviders_min_fields
+}
+
+"""
+order by aggregate values of table "auth.user_providers"
+"""
+input authUserProviders_aggregate_order_by {
+  count: order_by
+  max: authUserProviders_max_order_by
+  min: authUserProviders_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "auth.user_providers"
+"""
+input authUserProviders_arr_rel_insert_input {
+  data: [authUserProviders_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: authUserProviders_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "auth.user_providers". All fields are combined with a logical 'AND'.
+"""
+input authUserProviders_bool_exp {
+  _and: [authUserProviders_bool_exp!]
+  _not: authUserProviders_bool_exp
+  _or: [authUserProviders_bool_exp!]
+  accessToken: String_comparison_exp
+  createdAt: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  provider: authProviders_bool_exp
+  providerId: String_comparison_exp
+  providerUserId: String_comparison_exp
+  refreshToken: String_comparison_exp
+  updatedAt: timestamptz_comparison_exp
+  user: users_bool_exp
+  userId: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "auth.user_providers"
+"""
+enum authUserProviders_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  user_providers_pkey
+
+  """
+  unique or primary key constraint on columns "provider_id", "provider_user_id"
+  """
+  user_providers_provider_id_provider_user_id_key
+
+  """
+  unique or primary key constraint on columns "provider_id", "user_id"
+  """
+  user_providers_user_id_provider_id_key
+}
+
+"""
+input type for inserting data into table "auth.user_providers"
+"""
+input authUserProviders_insert_input {
+  accessToken: String
+  createdAt: timestamptz
+  id: uuid
+  provider: authProviders_obj_rel_insert_input
+  providerId: String
+  providerUserId: String
+  refreshToken: String
+  updatedAt: timestamptz
+  user: users_obj_rel_insert_input
+  userId: uuid
+}
+
+"""aggregate max on columns"""
+type authUserProviders_max_fields {
+  accessToken: String
+  createdAt: timestamptz
+  id: uuid
+  providerId: String
+  providerUserId: String
+  refreshToken: String
+  updatedAt: timestamptz
+  userId: uuid
+}
+
+"""
+order by max() on columns of table "auth.user_providers"
+"""
+input authUserProviders_max_order_by {
+  accessToken: order_by
+  createdAt: order_by
+  id: order_by
+  providerId: order_by
+  providerUserId: order_by
+  refreshToken: order_by
+  updatedAt: order_by
+  userId: order_by
+}
+
+"""aggregate min on columns"""
+type authUserProviders_min_fields {
+  accessToken: String
+  createdAt: timestamptz
+  id: uuid
+  providerId: String
+  providerUserId: String
+  refreshToken: String
+  updatedAt: timestamptz
+  userId: uuid
+}
+
+"""
+order by min() on columns of table "auth.user_providers"
+"""
+input authUserProviders_min_order_by {
+  accessToken: order_by
+  createdAt: order_by
+  id: order_by
+  providerId: order_by
+  providerUserId: order_by
+  refreshToken: order_by
+  updatedAt: order_by
+  userId: order_by
+}
+
+"""
+response of any mutation on the table "auth.user_providers"
+"""
+type authUserProviders_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [authUserProviders!]!
+}
+
+"""
+on_conflict condition type for table "auth.user_providers"
+"""
+input authUserProviders_on_conflict {
+  constraint: authUserProviders_constraint!
+  update_columns: [authUserProviders_update_column!]! = []
+  where: authUserProviders_bool_exp
+}
+
+"""Ordering options when selecting data from "auth.user_providers"."""
+input authUserProviders_order_by {
+  accessToken: order_by
+  createdAt: order_by
+  id: order_by
+  provider: authProviders_order_by
+  providerId: order_by
+  providerUserId: order_by
+  refreshToken: order_by
+  updatedAt: order_by
+  user: users_order_by
+  userId: order_by
+}
+
+"""primary key columns input for table: auth.user_providers"""
+input authUserProviders_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "auth.user_providers"
+"""
+enum authUserProviders_select_column {
+  """column name"""
+  accessToken
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  id
+
+  """column name"""
+  providerId
+
+  """column name"""
+  providerUserId
+
+  """column name"""
+  refreshToken
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  userId
+}
+
+"""
+input type for updating data in table "auth.user_providers"
+"""
+input authUserProviders_set_input {
+  accessToken: String
+  createdAt: timestamptz
+  id: uuid
+  providerId: String
+  providerUserId: String
+  refreshToken: String
+  updatedAt: timestamptz
+  userId: uuid
+}
+
+"""
+Streaming cursor of the table "authUserProviders"
+"""
+input authUserProviders_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: authUserProviders_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input authUserProviders_stream_cursor_value_input {
+  accessToken: String
+  createdAt: timestamptz
+  id: uuid
+  providerId: String
+  providerUserId: String
+  refreshToken: String
+  updatedAt: timestamptz
+  userId: uuid
+}
+
+"""
+update columns of table "auth.user_providers"
+"""
+enum authUserProviders_update_column {
+  """column name"""
+  accessToken
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  id
+
+  """column name"""
+  providerId
+
+  """column name"""
+  providerUserId
+
+  """column name"""
+  refreshToken
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  userId
+}
+
+input authUserProviders_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: authUserProviders_set_input
+  where: authUserProviders_bool_exp!
+}
+
+"""
+Roles of users. Don't modify its structure as Hasura Auth relies on it to function properly.
+"""
+type authUserRoles {
+  createdAt: timestamptz!
+  id: uuid!
+  role: String!
+
+  """An object relationship"""
+  roleByRole: authRoles!
+
+  """An object relationship"""
+  user: users!
+  userId: uuid!
+}
+
+"""
+aggregated selection of "auth.user_roles"
+"""
+type authUserRoles_aggregate {
+  aggregate: authUserRoles_aggregate_fields
+  nodes: [authUserRoles!]!
+}
+
+input authUserRoles_aggregate_bool_exp {
+  count: authUserRoles_aggregate_bool_exp_count
+}
+
+input authUserRoles_aggregate_bool_exp_count {
+  arguments: [authUserRoles_select_column!]
+  distinct: Boolean
+  filter: authUserRoles_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "auth.user_roles"
+"""
+type authUserRoles_aggregate_fields {
+  count(columns: [authUserRoles_select_column!], distinct: Boolean): Int!
+  max: authUserRoles_max_fields
+  min: authUserRoles_min_fields
+}
+
+"""
+order by aggregate values of table "auth.user_roles"
+"""
+input authUserRoles_aggregate_order_by {
+  count: order_by
+  max: authUserRoles_max_order_by
+  min: authUserRoles_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "auth.user_roles"
+"""
+input authUserRoles_arr_rel_insert_input {
+  data: [authUserRoles_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: authUserRoles_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "auth.user_roles". All fields are combined with a logical 'AND'.
+"""
+input authUserRoles_bool_exp {
+  _and: [authUserRoles_bool_exp!]
+  _not: authUserRoles_bool_exp
+  _or: [authUserRoles_bool_exp!]
+  createdAt: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  role: String_comparison_exp
+  roleByRole: authRoles_bool_exp
+  user: users_bool_exp
+  userId: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "auth.user_roles"
+"""
+enum authUserRoles_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  user_roles_pkey
+
+  """
+  unique or primary key constraint on columns "user_id", "role"
+  """
+  user_roles_user_id_role_key
+}
+
+"""
+input type for inserting data into table "auth.user_roles"
+"""
+input authUserRoles_insert_input {
+  createdAt: timestamptz
+  id: uuid
+  role: String
+  roleByRole: authRoles_obj_rel_insert_input
+  user: users_obj_rel_insert_input
+  userId: uuid
+}
+
+"""aggregate max on columns"""
+type authUserRoles_max_fields {
+  createdAt: timestamptz
+  id: uuid
+  role: String
+  userId: uuid
+}
+
+"""
+order by max() on columns of table "auth.user_roles"
+"""
+input authUserRoles_max_order_by {
+  createdAt: order_by
+  id: order_by
+  role: order_by
+  userId: order_by
+}
+
+"""aggregate min on columns"""
+type authUserRoles_min_fields {
+  createdAt: timestamptz
+  id: uuid
+  role: String
+  userId: uuid
+}
+
+"""
+order by min() on columns of table "auth.user_roles"
+"""
+input authUserRoles_min_order_by {
+  createdAt: order_by
+  id: order_by
+  role: order_by
+  userId: order_by
+}
+
+"""
+response of any mutation on the table "auth.user_roles"
+"""
+type authUserRoles_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [authUserRoles!]!
+}
+
+"""
+on_conflict condition type for table "auth.user_roles"
+"""
+input authUserRoles_on_conflict {
+  constraint: authUserRoles_constraint!
+  update_columns: [authUserRoles_update_column!]! = []
+  where: authUserRoles_bool_exp
+}
+
+"""Ordering options when selecting data from "auth.user_roles"."""
+input authUserRoles_order_by {
+  createdAt: order_by
+  id: order_by
+  role: order_by
+  roleByRole: authRoles_order_by
+  user: users_order_by
+  userId: order_by
+}
+
+"""primary key columns input for table: auth.user_roles"""
+input authUserRoles_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "auth.user_roles"
+"""
+enum authUserRoles_select_column {
+  """column name"""
+  createdAt
+
+  """column name"""
+  id
+
+  """column name"""
+  role
+
+  """column name"""
+  userId
+}
+
+"""
+input type for updating data in table "auth.user_roles"
+"""
+input authUserRoles_set_input {
+  createdAt: timestamptz
+  id: uuid
+  role: String
+  userId: uuid
+}
+
+"""
+Streaming cursor of the table "authUserRoles"
+"""
+input authUserRoles_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: authUserRoles_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input authUserRoles_stream_cursor_value_input {
+  createdAt: timestamptz
+  id: uuid
+  role: String
+  userId: uuid
+}
+
+"""
+update columns of table "auth.user_roles"
+"""
+enum authUserRoles_update_column {
+  """column name"""
+  createdAt
+
+  """column name"""
+  id
+
+  """column name"""
+  role
+
+  """column name"""
+  userId
+}
+
+input authUserRoles_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: authUserRoles_set_input
+  where: authUserRoles_bool_exp!
+}
+
+"""
+User webauthn security keys. Don't modify its structure as Hasura Auth relies on it to function properly.
+"""
+type authUserSecurityKeys {
+  counter: bigint!
+  credentialId: String!
+  credentialPublicKey: bytea
+  id: uuid!
+  nickname: String
+  transports: String!
+
+  """An object relationship"""
+  user: users!
+  userId: uuid!
+}
+
+"""
+aggregated selection of "auth.user_security_keys"
+"""
+type authUserSecurityKeys_aggregate {
+  aggregate: authUserSecurityKeys_aggregate_fields
+  nodes: [authUserSecurityKeys!]!
+}
+
+input authUserSecurityKeys_aggregate_bool_exp {
+  count: authUserSecurityKeys_aggregate_bool_exp_count
+}
+
+input authUserSecurityKeys_aggregate_bool_exp_count {
+  arguments: [authUserSecurityKeys_select_column!]
+  distinct: Boolean
+  filter: authUserSecurityKeys_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "auth.user_security_keys"
+"""
+type authUserSecurityKeys_aggregate_fields {
+  avg: authUserSecurityKeys_avg_fields
+  count(columns: [authUserSecurityKeys_select_column!], distinct: Boolean): Int!
+  max: authUserSecurityKeys_max_fields
+  min: authUserSecurityKeys_min_fields
+  stddev: authUserSecurityKeys_stddev_fields
+  stddev_pop: authUserSecurityKeys_stddev_pop_fields
+  stddev_samp: authUserSecurityKeys_stddev_samp_fields
+  sum: authUserSecurityKeys_sum_fields
+  var_pop: authUserSecurityKeys_var_pop_fields
+  var_samp: authUserSecurityKeys_var_samp_fields
+  variance: authUserSecurityKeys_variance_fields
+}
+
+"""
+order by aggregate values of table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_aggregate_order_by {
+  avg: authUserSecurityKeys_avg_order_by
+  count: order_by
+  max: authUserSecurityKeys_max_order_by
+  min: authUserSecurityKeys_min_order_by
+  stddev: authUserSecurityKeys_stddev_order_by
+  stddev_pop: authUserSecurityKeys_stddev_pop_order_by
+  stddev_samp: authUserSecurityKeys_stddev_samp_order_by
+  sum: authUserSecurityKeys_sum_order_by
+  var_pop: authUserSecurityKeys_var_pop_order_by
+  var_samp: authUserSecurityKeys_var_samp_order_by
+  variance: authUserSecurityKeys_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_arr_rel_insert_input {
+  data: [authUserSecurityKeys_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: authUserSecurityKeys_on_conflict
+}
+
+"""aggregate avg on columns"""
+type authUserSecurityKeys_avg_fields {
+  counter: Float
+}
+
+"""
+order by avg() on columns of table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_avg_order_by {
+  counter: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "auth.user_security_keys". All fields are combined with a logical 'AND'.
+"""
+input authUserSecurityKeys_bool_exp {
+  _and: [authUserSecurityKeys_bool_exp!]
+  _not: authUserSecurityKeys_bool_exp
+  _or: [authUserSecurityKeys_bool_exp!]
+  counter: bigint_comparison_exp
+  credentialId: String_comparison_exp
+  credentialPublicKey: bytea_comparison_exp
+  id: uuid_comparison_exp
+  nickname: String_comparison_exp
+  transports: String_comparison_exp
+  user: users_bool_exp
+  userId: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "auth.user_security_keys"
+"""
+enum authUserSecurityKeys_constraint {
+  """
+  unique or primary key constraint on columns "credential_id"
+  """
+  user_security_key_credential_id_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  user_security_keys_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_inc_input {
+  counter: bigint
+}
+
+"""
+input type for inserting data into table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_insert_input {
+  counter: bigint
+  credentialId: String
+  credentialPublicKey: bytea
+  id: uuid
+  nickname: String
+  transports: String
+  user: users_obj_rel_insert_input
+  userId: uuid
+}
+
+"""aggregate max on columns"""
+type authUserSecurityKeys_max_fields {
+  counter: bigint
+  credentialId: String
+  id: uuid
+  nickname: String
+  transports: String
+  userId: uuid
+}
+
+"""
+order by max() on columns of table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_max_order_by {
+  counter: order_by
+  credentialId: order_by
+  id: order_by
+  nickname: order_by
+  transports: order_by
+  userId: order_by
+}
+
+"""aggregate min on columns"""
+type authUserSecurityKeys_min_fields {
+  counter: bigint
+  credentialId: String
+  id: uuid
+  nickname: String
+  transports: String
+  userId: uuid
+}
+
+"""
+order by min() on columns of table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_min_order_by {
+  counter: order_by
+  credentialId: order_by
+  id: order_by
+  nickname: order_by
+  transports: order_by
+  userId: order_by
+}
+
+"""
+response of any mutation on the table "auth.user_security_keys"
+"""
+type authUserSecurityKeys_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [authUserSecurityKeys!]!
+}
+
+"""
+on_conflict condition type for table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_on_conflict {
+  constraint: authUserSecurityKeys_constraint!
+  update_columns: [authUserSecurityKeys_update_column!]! = []
+  where: authUserSecurityKeys_bool_exp
+}
+
+"""Ordering options when selecting data from "auth.user_security_keys"."""
+input authUserSecurityKeys_order_by {
+  counter: order_by
+  credentialId: order_by
+  credentialPublicKey: order_by
+  id: order_by
+  nickname: order_by
+  transports: order_by
+  user: users_order_by
+  userId: order_by
+}
+
+"""primary key columns input for table: auth.user_security_keys"""
+input authUserSecurityKeys_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "auth.user_security_keys"
+"""
+enum authUserSecurityKeys_select_column {
+  """column name"""
+  counter
+
+  """column name"""
+  credentialId
+
+  """column name"""
+  credentialPublicKey
+
+  """column name"""
+  id
+
+  """column name"""
+  nickname
+
+  """column name"""
+  transports
+
+  """column name"""
+  userId
+}
+
+"""
+input type for updating data in table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_set_input {
+  counter: bigint
+  credentialId: String
+  credentialPublicKey: bytea
+  id: uuid
+  nickname: String
+  transports: String
+  userId: uuid
+}
+
+"""aggregate stddev on columns"""
+type authUserSecurityKeys_stddev_fields {
+  counter: Float
+}
+
+"""
+order by stddev() on columns of table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_stddev_order_by {
+  counter: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type authUserSecurityKeys_stddev_pop_fields {
+  counter: Float
+}
+
+"""
+order by stddev_pop() on columns of table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_stddev_pop_order_by {
+  counter: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type authUserSecurityKeys_stddev_samp_fields {
+  counter: Float
+}
+
+"""
+order by stddev_samp() on columns of table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_stddev_samp_order_by {
+  counter: order_by
+}
+
+"""
+Streaming cursor of the table "authUserSecurityKeys"
+"""
+input authUserSecurityKeys_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: authUserSecurityKeys_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input authUserSecurityKeys_stream_cursor_value_input {
+  counter: bigint
+  credentialId: String
+  credentialPublicKey: bytea
+  id: uuid
+  nickname: String
+  transports: String
+  userId: uuid
+}
+
+"""aggregate sum on columns"""
+type authUserSecurityKeys_sum_fields {
+  counter: bigint
+}
+
+"""
+order by sum() on columns of table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_sum_order_by {
+  counter: order_by
+}
+
+"""
+update columns of table "auth.user_security_keys"
+"""
+enum authUserSecurityKeys_update_column {
+  """column name"""
+  counter
+
+  """column name"""
+  credentialId
+
+  """column name"""
+  credentialPublicKey
+
+  """column name"""
+  id
+
+  """column name"""
+  nickname
+
+  """column name"""
+  transports
+
+  """column name"""
+  userId
+}
+
+input authUserSecurityKeys_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: authUserSecurityKeys_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: authUserSecurityKeys_set_input
+  where: authUserSecurityKeys_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type authUserSecurityKeys_var_pop_fields {
+  counter: Float
+}
+
+"""
+order by var_pop() on columns of table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_var_pop_order_by {
+  counter: order_by
+}
+
+"""aggregate var_samp on columns"""
+type authUserSecurityKeys_var_samp_fields {
+  counter: Float
+}
+
+"""
+order by var_samp() on columns of table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_var_samp_order_by {
+  counter: order_by
+}
+
+"""aggregate variance on columns"""
+type authUserSecurityKeys_variance_fields {
+  counter: Float
+}
+
+"""
+order by variance() on columns of table "auth.user_security_keys"
+"""
+input authUserSecurityKeys_variance_order_by {
+  counter: order_by
+}
+
+scalar bigint
+
+"""
+Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'.
+"""
+input bigint_comparison_exp {
+  _eq: bigint
+  _gt: bigint
+  _gte: bigint
+  _in: [bigint!]
+  _is_null: Boolean
+  _lt: bigint
+  _lte: bigint
+  _neq: bigint
+  _nin: [bigint!]
+}
+
+scalar bytea
+
+"""
+Boolean expression to compare columns of type "bytea". All fields are combined with logical 'AND'.
+"""
+input bytea_comparison_exp {
+  _eq: bytea
+  _gt: bytea
+  _gte: bytea
+  _in: [bytea!]
+  _is_null: Boolean
+  _lt: bytea
+  _lte: bytea
+  _neq: bytea
+  _nin: [bytea!]
+}
+
+scalar citext
+
+"""
+Boolean expression to compare columns of type "citext". All fields are combined with logical 'AND'.
+"""
+input citext_comparison_exp {
+  _eq: citext
+  _gt: citext
+  _gte: citext
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: citext
+  _in: [citext!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: citext
+  _is_null: Boolean
+
+  """does the column match the given pattern"""
+  _like: citext
+  _lt: citext
+  _lte: citext
+  _neq: citext
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: citext
+  _nin: [citext!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: citext
+
+  """does the column NOT match the given pattern"""
+  _nlike: citext
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: citext
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: citext
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: citext
+
+  """does the column match the given SQL regular expression"""
+  _similar: citext
+}
+
+"""ordering argument of a cursor"""
+enum cursor_ordering {
+  """ascending ordering of the cursor"""
+  ASC
+
+  """descending ordering of the cursor"""
+  DESC
+}
+
+scalar jsonb
+
+input jsonb_cast_exp {
+  String: String_comparison_exp
+}
+
+"""
+Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'.
+"""
+input jsonb_comparison_exp {
+  _cast: jsonb_cast_exp
+
+  """is the column contained in the given json value"""
+  _contained_in: jsonb
+
+  """does the column contain the given json value at the top level"""
+  _contains: jsonb
+  _eq: jsonb
+  _gt: jsonb
+  _gte: jsonb
+
+  """does the string exist as a top-level key in the column"""
+  _has_key: String
+
+  """do all of these strings exist as top-level keys in the column"""
+  _has_keys_all: [String!]
+
+  """do any of these strings exist as top-level keys in the column"""
+  _has_keys_any: [String!]
+  _in: [jsonb!]
+  _is_null: Boolean
+  _lt: jsonb
+  _lte: jsonb
+  _neq: jsonb
+  _nin: [jsonb!]
+}
+
+"""mutation root"""
+type mutation_root {
+  """
+  delete single row from the table: "auth.providers"
+  """
+  deleteAuthProvider(id: String!): authProviders
+
+  """
+  delete single row from the table: "auth.provider_requests"
+  """
+  deleteAuthProviderRequest(id: uuid!): authProviderRequests
+
+  """
+  delete data from the table: "auth.provider_requests"
+  """
+  deleteAuthProviderRequests(
+    """filter the rows which have to be deleted"""
+    where: authProviderRequests_bool_exp!
+  ): authProviderRequests_mutation_response
+
+  """
+  delete data from the table: "auth.providers"
+  """
+  deleteAuthProviders(
+    """filter the rows which have to be deleted"""
+    where: authProviders_bool_exp!
+  ): authProviders_mutation_response
+
+  """
+  delete single row from the table: "auth.refresh_tokens"
+  """
+  deleteAuthRefreshToken(refreshToken: uuid!): authRefreshTokens
+
+  """
+  delete data from the table: "auth.refresh_tokens"
+  """
+  deleteAuthRefreshTokens(
+    """filter the rows which have to be deleted"""
+    where: authRefreshTokens_bool_exp!
+  ): authRefreshTokens_mutation_response
+
+  """
+  delete single row from the table: "auth.roles"
+  """
+  deleteAuthRole(role: String!): authRoles
+
+  """
+  delete data from the table: "auth.roles"
+  """
+  deleteAuthRoles(
+    """filter the rows which have to be deleted"""
+    where: authRoles_bool_exp!
+  ): authRoles_mutation_response
+
+  """
+  delete single row from the table: "auth.user_providers"
+  """
+  deleteAuthUserProvider(id: uuid!): authUserProviders
+
+  """
+  delete data from the table: "auth.user_providers"
+  """
+  deleteAuthUserProviders(
+    """filter the rows which have to be deleted"""
+    where: authUserProviders_bool_exp!
+  ): authUserProviders_mutation_response
+
+  """
+  delete single row from the table: "auth.user_roles"
+  """
+  deleteAuthUserRole(id: uuid!): authUserRoles
+
+  """
+  delete data from the table: "auth.user_roles"
+  """
+  deleteAuthUserRoles(
+    """filter the rows which have to be deleted"""
+    where: authUserRoles_bool_exp!
+  ): authUserRoles_mutation_response
+
+  """
+  delete single row from the table: "auth.user_security_keys"
+  """
+  deleteAuthUserSecurityKey(id: uuid!): authUserSecurityKeys
+
+  """
+  delete data from the table: "auth.user_security_keys"
+  """
+  deleteAuthUserSecurityKeys(
+    """filter the rows which have to be deleted"""
+    where: authUserSecurityKeys_bool_exp!
+  ): authUserSecurityKeys_mutation_response
+
+  """
+  delete single row from the table: "auth.users"
+  """
+  deleteUser(id: uuid!): users
+
+  """
+  delete data from the table: "auth.users"
+  """
+  deleteUsers(
+    """filter the rows which have to be deleted"""
+    where: users_bool_exp!
+  ): users_mutation_response
+
+  """
+  delete data from the table: "payment_requests"
+  """
+  delete_payment_requests(
+    """filter the rows which have to be deleted"""
+    where: payment_requests_bool_exp!
+  ): payment_requests_mutation_response
+
+  """
+  delete single row from the table: "payment_requests"
+  """
+  delete_payment_requests_by_pk(id: uuid!): payment_requests
+
+  """
+  delete data from the table: "payments"
+  """
+  delete_payments(
+    """filter the rows which have to be deleted"""
+    where: payments_bool_exp!
+  ): payments_mutation_response
+
+  """
+  delete single row from the table: "payments"
+  """
+  delete_payments_by_pk(id: uuid!): payments
+
+  """
+  delete data from the table: "payout_settings"
+  """
+  delete_payout_settings(
+    """filter the rows which have to be deleted"""
+    where: payout_settings_bool_exp!
+  ): payout_settings_mutation_response
+
+  """
+  delete single row from the table: "payout_settings"
+  """
+  delete_payout_settings_by_pk(user_id: uuid!): payout_settings
+
+  """
+  delete data from the table: "project_leads"
+  """
+  delete_project_leads(
+    """filter the rows which have to be deleted"""
+    where: project_leads_bool_exp!
+  ): project_leads_mutation_response
+
+  """
+  delete single row from the table: "project_leads"
+  """
+  delete_project_leads_by_pk(project_id: uuid!, user_id: uuid!): project_leads
+
+  """
+  delete data from the table: "projects"
+  """
+  delete_projects(
+    """filter the rows which have to be deleted"""
+    where: projects_bool_exp!
+  ): projects_mutation_response
+
+  """
+  delete single row from the table: "projects"
+  """
+  delete_projects_by_pk(id: uuid!): projects
+
+  """
+  insert a single row into the table: "auth.providers"
+  """
+  insertAuthProvider(
+    """the row to be inserted"""
+    object: authProviders_insert_input!
+
+    """upsert condition"""
+    on_conflict: authProviders_on_conflict
+  ): authProviders
+
+  """
+  insert a single row into the table: "auth.provider_requests"
+  """
+  insertAuthProviderRequest(
+    """the row to be inserted"""
+    object: authProviderRequests_insert_input!
+
+    """upsert condition"""
+    on_conflict: authProviderRequests_on_conflict
+  ): authProviderRequests
+
+  """
+  insert data into the table: "auth.provider_requests"
+  """
+  insertAuthProviderRequests(
+    """the rows to be inserted"""
+    objects: [authProviderRequests_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: authProviderRequests_on_conflict
+  ): authProviderRequests_mutation_response
+
+  """
+  insert data into the table: "auth.providers"
+  """
+  insertAuthProviders(
+    """the rows to be inserted"""
+    objects: [authProviders_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: authProviders_on_conflict
+  ): authProviders_mutation_response
+
+  """
+  insert a single row into the table: "auth.refresh_tokens"
+  """
+  insertAuthRefreshToken(
+    """the row to be inserted"""
+    object: authRefreshTokens_insert_input!
+
+    """upsert condition"""
+    on_conflict: authRefreshTokens_on_conflict
+  ): authRefreshTokens
+
+  """
+  insert data into the table: "auth.refresh_tokens"
+  """
+  insertAuthRefreshTokens(
+    """the rows to be inserted"""
+    objects: [authRefreshTokens_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: authRefreshTokens_on_conflict
+  ): authRefreshTokens_mutation_response
+
+  """
+  insert a single row into the table: "auth.roles"
+  """
+  insertAuthRole(
+    """the row to be inserted"""
+    object: authRoles_insert_input!
+
+    """upsert condition"""
+    on_conflict: authRoles_on_conflict
+  ): authRoles
+
+  """
+  insert data into the table: "auth.roles"
+  """
+  insertAuthRoles(
+    """the rows to be inserted"""
+    objects: [authRoles_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: authRoles_on_conflict
+  ): authRoles_mutation_response
+
+  """
+  insert a single row into the table: "auth.user_providers"
+  """
+  insertAuthUserProvider(
+    """the row to be inserted"""
+    object: authUserProviders_insert_input!
+
+    """upsert condition"""
+    on_conflict: authUserProviders_on_conflict
+  ): authUserProviders
+
+  """
+  insert data into the table: "auth.user_providers"
+  """
+  insertAuthUserProviders(
+    """the rows to be inserted"""
+    objects: [authUserProviders_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: authUserProviders_on_conflict
+  ): authUserProviders_mutation_response
+
+  """
+  insert a single row into the table: "auth.user_roles"
+  """
+  insertAuthUserRole(
+    """the row to be inserted"""
+    object: authUserRoles_insert_input!
+
+    """upsert condition"""
+    on_conflict: authUserRoles_on_conflict
+  ): authUserRoles
+
+  """
+  insert data into the table: "auth.user_roles"
+  """
+  insertAuthUserRoles(
+    """the rows to be inserted"""
+    objects: [authUserRoles_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: authUserRoles_on_conflict
+  ): authUserRoles_mutation_response
+
+  """
+  insert a single row into the table: "auth.user_security_keys"
+  """
+  insertAuthUserSecurityKey(
+    """the row to be inserted"""
+    object: authUserSecurityKeys_insert_input!
+
+    """upsert condition"""
+    on_conflict: authUserSecurityKeys_on_conflict
+  ): authUserSecurityKeys
+
+  """
+  insert data into the table: "auth.user_security_keys"
+  """
+  insertAuthUserSecurityKeys(
+    """the rows to be inserted"""
+    objects: [authUserSecurityKeys_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: authUserSecurityKeys_on_conflict
+  ): authUserSecurityKeys_mutation_response
+
+  """
+  insert a single row into the table: "auth.users"
+  """
+  insertUser(
+    """the row to be inserted"""
+    object: users_insert_input!
+
+    """upsert condition"""
+    on_conflict: users_on_conflict
+  ): users
+
+  """
+  insert data into the table: "auth.users"
+  """
+  insertUsers(
+    """the rows to be inserted"""
+    objects: [users_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: users_on_conflict
+  ): users_mutation_response
+
+  """
+  insert data into the table: "payment_requests"
+  """
+  insert_payment_requests(
+    """the rows to be inserted"""
+    objects: [payment_requests_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: payment_requests_on_conflict
+  ): payment_requests_mutation_response
+
+  """
+  insert a single row into the table: "payment_requests"
+  """
+  insert_payment_requests_one(
+    """the row to be inserted"""
+    object: payment_requests_insert_input!
+
+    """upsert condition"""
+    on_conflict: payment_requests_on_conflict
+  ): payment_requests
+
+  """
+  insert data into the table: "payments"
+  """
+  insert_payments(
+    """the rows to be inserted"""
+    objects: [payments_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: payments_on_conflict
+  ): payments_mutation_response
+
+  """
+  insert a single row into the table: "payments"
+  """
+  insert_payments_one(
+    """the row to be inserted"""
+    object: payments_insert_input!
+
+    """upsert condition"""
+    on_conflict: payments_on_conflict
+  ): payments
+
+  """
+  insert data into the table: "payout_settings"
+  """
+  insert_payout_settings(
+    """the rows to be inserted"""
+    objects: [payout_settings_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: payout_settings_on_conflict
+  ): payout_settings_mutation_response
+
+  """
+  insert a single row into the table: "payout_settings"
+  """
+  insert_payout_settings_one(
+    """the row to be inserted"""
+    object: payout_settings_insert_input!
+
+    """upsert condition"""
+    on_conflict: payout_settings_on_conflict
+  ): payout_settings
+
+  """
+  insert data into the table: "project_leads"
+  """
+  insert_project_leads(
+    """the rows to be inserted"""
+    objects: [project_leads_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: project_leads_on_conflict
+  ): project_leads_mutation_response
+
+  """
+  insert a single row into the table: "project_leads"
+  """
+  insert_project_leads_one(
+    """the row to be inserted"""
+    object: project_leads_insert_input!
+
+    """upsert condition"""
+    on_conflict: project_leads_on_conflict
+  ): project_leads
+
+  """
+  insert data into the table: "projects"
+  """
+  insert_projects(
+    """the rows to be inserted"""
+    objects: [projects_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: projects_on_conflict
+  ): projects_mutation_response
+
+  """
+  insert a single row into the table: "projects"
+  """
+  insert_projects_one(
+    """the row to be inserted"""
+    object: projects_insert_input!
+
+    """upsert condition"""
+    on_conflict: projects_on_conflict
+  ): projects
+
+  """
+  update single row of the table: "auth.providers"
+  """
+  updateAuthProvider(
+    """sets the columns of the filtered rows to the given values"""
+    _set: authProviders_set_input
+    pk_columns: authProviders_pk_columns_input!
+  ): authProviders
+
+  """
+  update single row of the table: "auth.provider_requests"
+  """
+  updateAuthProviderRequest(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: authProviderRequests_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: authProviderRequests_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: authProviderRequests_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: authProviderRequests_delete_key_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: authProviderRequests_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: authProviderRequests_set_input
+    pk_columns: authProviderRequests_pk_columns_input!
+  ): authProviderRequests
+
+  """
+  update data of the table: "auth.provider_requests"
+  """
+  updateAuthProviderRequests(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: authProviderRequests_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: authProviderRequests_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: authProviderRequests_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: authProviderRequests_delete_key_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: authProviderRequests_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: authProviderRequests_set_input
+
+    """filter the rows which have to be updated"""
+    where: authProviderRequests_bool_exp!
+  ): authProviderRequests_mutation_response
+
+  """
+  update data of the table: "auth.providers"
+  """
+  updateAuthProviders(
+    """sets the columns of the filtered rows to the given values"""
+    _set: authProviders_set_input
+
+    """filter the rows which have to be updated"""
+    where: authProviders_bool_exp!
+  ): authProviders_mutation_response
+
+  """
+  update single row of the table: "auth.refresh_tokens"
+  """
+  updateAuthRefreshToken(
+    """sets the columns of the filtered rows to the given values"""
+    _set: authRefreshTokens_set_input
+    pk_columns: authRefreshTokens_pk_columns_input!
+  ): authRefreshTokens
+
+  """
+  update data of the table: "auth.refresh_tokens"
+  """
+  updateAuthRefreshTokens(
+    """sets the columns of the filtered rows to the given values"""
+    _set: authRefreshTokens_set_input
+
+    """filter the rows which have to be updated"""
+    where: authRefreshTokens_bool_exp!
+  ): authRefreshTokens_mutation_response
+
+  """
+  update single row of the table: "auth.roles"
+  """
+  updateAuthRole(
+    """sets the columns of the filtered rows to the given values"""
+    _set: authRoles_set_input
+    pk_columns: authRoles_pk_columns_input!
+  ): authRoles
+
+  """
+  update data of the table: "auth.roles"
+  """
+  updateAuthRoles(
+    """sets the columns of the filtered rows to the given values"""
+    _set: authRoles_set_input
+
+    """filter the rows which have to be updated"""
+    where: authRoles_bool_exp!
+  ): authRoles_mutation_response
+
+  """
+  update single row of the table: "auth.user_providers"
+  """
+  updateAuthUserProvider(
+    """sets the columns of the filtered rows to the given values"""
+    _set: authUserProviders_set_input
+    pk_columns: authUserProviders_pk_columns_input!
+  ): authUserProviders
+
+  """
+  update data of the table: "auth.user_providers"
+  """
+  updateAuthUserProviders(
+    """sets the columns of the filtered rows to the given values"""
+    _set: authUserProviders_set_input
+
+    """filter the rows which have to be updated"""
+    where: authUserProviders_bool_exp!
+  ): authUserProviders_mutation_response
+
+  """
+  update single row of the table: "auth.user_roles"
+  """
+  updateAuthUserRole(
+    """sets the columns of the filtered rows to the given values"""
+    _set: authUserRoles_set_input
+    pk_columns: authUserRoles_pk_columns_input!
+  ): authUserRoles
+
+  """
+  update data of the table: "auth.user_roles"
+  """
+  updateAuthUserRoles(
+    """sets the columns of the filtered rows to the given values"""
+    _set: authUserRoles_set_input
+
+    """filter the rows which have to be updated"""
+    where: authUserRoles_bool_exp!
+  ): authUserRoles_mutation_response
+
+  """
+  update single row of the table: "auth.user_security_keys"
+  """
+  updateAuthUserSecurityKey(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: authUserSecurityKeys_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: authUserSecurityKeys_set_input
+    pk_columns: authUserSecurityKeys_pk_columns_input!
+  ): authUserSecurityKeys
+
+  """
+  update data of the table: "auth.user_security_keys"
+  """
+  updateAuthUserSecurityKeys(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: authUserSecurityKeys_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: authUserSecurityKeys_set_input
+
+    """filter the rows which have to be updated"""
+    where: authUserSecurityKeys_bool_exp!
+  ): authUserSecurityKeys_mutation_response
+
+  """
+  update single row of the table: "auth.users"
+  """
+  updateUser(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: users_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: users_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: users_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: users_delete_key_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: users_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: users_set_input
+    pk_columns: users_pk_columns_input!
+  ): users
+
+  """
+  update data of the table: "auth.users"
+  """
+  updateUsers(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: users_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: users_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: users_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: users_delete_key_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: users_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: users_set_input
+
+    """filter the rows which have to be updated"""
+    where: users_bool_exp!
+  ): users_mutation_response
+
+  """
+  update multiples rows of table: "auth.provider_requests"
+  """
+  update_authProviderRequests_many(
+    """updates to execute, in order"""
+    updates: [authProviderRequests_updates!]!
+  ): [authProviderRequests_mutation_response]
+
+  """
+  update multiples rows of table: "auth.providers"
+  """
+  update_authProviders_many(
+    """updates to execute, in order"""
+    updates: [authProviders_updates!]!
+  ): [authProviders_mutation_response]
+
+  """
+  update multiples rows of table: "auth.refresh_tokens"
+  """
+  update_authRefreshTokens_many(
+    """updates to execute, in order"""
+    updates: [authRefreshTokens_updates!]!
+  ): [authRefreshTokens_mutation_response]
+
+  """
+  update multiples rows of table: "auth.roles"
+  """
+  update_authRoles_many(
+    """updates to execute, in order"""
+    updates: [authRoles_updates!]!
+  ): [authRoles_mutation_response]
+
+  """
+  update multiples rows of table: "auth.user_providers"
+  """
+  update_authUserProviders_many(
+    """updates to execute, in order"""
+    updates: [authUserProviders_updates!]!
+  ): [authUserProviders_mutation_response]
+
+  """
+  update multiples rows of table: "auth.user_roles"
+  """
+  update_authUserRoles_many(
+    """updates to execute, in order"""
+    updates: [authUserRoles_updates!]!
+  ): [authUserRoles_mutation_response]
+
+  """
+  update multiples rows of table: "auth.user_security_keys"
+  """
+  update_authUserSecurityKeys_many(
+    """updates to execute, in order"""
+    updates: [authUserSecurityKeys_updates!]!
+  ): [authUserSecurityKeys_mutation_response]
+
+  """
+  update data of the table: "payment_requests"
+  """
+  update_payment_requests(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: payment_requests_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: payment_requests_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: payment_requests_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: payment_requests_delete_key_input
+
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: payment_requests_inc_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: payment_requests_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: payment_requests_set_input
+
+    """filter the rows which have to be updated"""
+    where: payment_requests_bool_exp!
+  ): payment_requests_mutation_response
+
+  """
+  update single row of the table: "payment_requests"
+  """
+  update_payment_requests_by_pk(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: payment_requests_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: payment_requests_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: payment_requests_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: payment_requests_delete_key_input
+
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: payment_requests_inc_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: payment_requests_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: payment_requests_set_input
+    pk_columns: payment_requests_pk_columns_input!
+  ): payment_requests
+
+  """
+  update multiples rows of table: "payment_requests"
+  """
+  update_payment_requests_many(
+    """updates to execute, in order"""
+    updates: [payment_requests_updates!]!
+  ): [payment_requests_mutation_response]
+
+  """
+  update data of the table: "payments"
+  """
+  update_payments(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: payments_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: payments_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: payments_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: payments_delete_key_input
+
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: payments_inc_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: payments_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: payments_set_input
+
+    """filter the rows which have to be updated"""
+    where: payments_bool_exp!
+  ): payments_mutation_response
+
+  """
+  update single row of the table: "payments"
+  """
+  update_payments_by_pk(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: payments_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: payments_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: payments_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: payments_delete_key_input
+
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: payments_inc_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: payments_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: payments_set_input
+    pk_columns: payments_pk_columns_input!
+  ): payments
+
+  """
+  update multiples rows of table: "payments"
+  """
+  update_payments_many(
+    """updates to execute, in order"""
+    updates: [payments_updates!]!
+  ): [payments_mutation_response]
+
+  """
+  update data of the table: "payout_settings"
+  """
+  update_payout_settings(
+    """sets the columns of the filtered rows to the given values"""
+    _set: payout_settings_set_input
+
+    """filter the rows which have to be updated"""
+    where: payout_settings_bool_exp!
+  ): payout_settings_mutation_response
+
+  """
+  update single row of the table: "payout_settings"
+  """
+  update_payout_settings_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: payout_settings_set_input
+    pk_columns: payout_settings_pk_columns_input!
+  ): payout_settings
+
+  """
+  update multiples rows of table: "payout_settings"
+  """
+  update_payout_settings_many(
+    """updates to execute, in order"""
+    updates: [payout_settings_updates!]!
+  ): [payout_settings_mutation_response]
+
+  """
+  update data of the table: "project_leads"
+  """
+  update_project_leads(
+    """sets the columns of the filtered rows to the given values"""
+    _set: project_leads_set_input
+
+    """filter the rows which have to be updated"""
+    where: project_leads_bool_exp!
+  ): project_leads_mutation_response
+
+  """
+  update single row of the table: "project_leads"
+  """
+  update_project_leads_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: project_leads_set_input
+    pk_columns: project_leads_pk_columns_input!
+  ): project_leads
+
+  """
+  update multiples rows of table: "project_leads"
+  """
+  update_project_leads_many(
+    """updates to execute, in order"""
+    updates: [project_leads_updates!]!
+  ): [project_leads_mutation_response]
+
+  """
+  update data of the table: "projects"
+  """
+  update_projects(
+    """sets the columns of the filtered rows to the given values"""
+    _set: projects_set_input
+
+    """filter the rows which have to be updated"""
+    where: projects_bool_exp!
+  ): projects_mutation_response
+
+  """
+  update single row of the table: "projects"
+  """
+  update_projects_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: projects_set_input
+    pk_columns: projects_pk_columns_input!
+  ): projects
+
+  """
+  update multiples rows of table: "projects"
+  """
+  update_projects_many(
+    """updates to execute, in order"""
+    updates: [projects_updates!]!
+  ): [projects_mutation_response]
+
+  """
+  update multiples rows of table: "auth.users"
+  """
+  update_users_many(
+    """updates to execute, in order"""
+    updates: [users_updates!]!
+  ): [users_mutation_response]
+}
+
+scalar numeric
+
+"""
+Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'.
+"""
+input numeric_comparison_exp {
+  _eq: numeric
+  _gt: numeric
+  _gte: numeric
+  _in: [numeric!]
+  _is_null: Boolean
+  _lt: numeric
+  _lte: numeric
+  _neq: numeric
+  _nin: [numeric!]
+}
+
+"""column ordering options"""
+enum order_by {
+  """in ascending order, nulls last"""
+  asc
+
+  """in ascending order, nulls first"""
+  asc_nulls_first
+
+  """in ascending order, nulls last"""
+  asc_nulls_last
+
+  """in descending order, nulls first"""
+  desc
+
+  """in descending order, nulls first"""
+  desc_nulls_first
+
+  """in descending order, nulls last"""
+  desc_nulls_last
+}
+
+"""
+columns and relationships of "payment_requests"
+"""
+type payment_requests {
+  amount_in_usd: bigint!
+  id: uuid!
+
+  """An array relationship"""
+  payments(
+    """distinct select on columns"""
+    distinct_on: [payments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payments_order_by!]
+
+    """filter the rows returned"""
+    where: payments_bool_exp
+  ): [payments!]!
+
+  """An aggregate relationship"""
+  payments_aggregate(
+    """distinct select on columns"""
+    distinct_on: [payments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payments_order_by!]
+
+    """filter the rows returned"""
+    where: payments_bool_exp
+  ): payments_aggregate!
+
+  """An object relationship"""
+  project: projects!
+  project_id: uuid!
+
+  """An object relationship"""
+  project_lead: project_leads
+  reason(
+    """JSON select path"""
+    path: String
+  ): jsonb!
+
+  """An object relationship"""
+  recipient: users
+  recipient_id: uuid!
+
+  """An object relationship"""
+  requestor: users
+  requestor_id: uuid!
+}
+
+"""
+aggregated selection of "payment_requests"
+"""
+type payment_requests_aggregate {
+  aggregate: payment_requests_aggregate_fields
+  nodes: [payment_requests!]!
+}
+
+input payment_requests_aggregate_bool_exp {
+  count: payment_requests_aggregate_bool_exp_count
+}
+
+input payment_requests_aggregate_bool_exp_count {
+  arguments: [payment_requests_select_column!]
+  distinct: Boolean
+  filter: payment_requests_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "payment_requests"
+"""
+type payment_requests_aggregate_fields {
+  avg: payment_requests_avg_fields
+  count(columns: [payment_requests_select_column!], distinct: Boolean): Int!
+  max: payment_requests_max_fields
+  min: payment_requests_min_fields
+  stddev: payment_requests_stddev_fields
+  stddev_pop: payment_requests_stddev_pop_fields
+  stddev_samp: payment_requests_stddev_samp_fields
+  sum: payment_requests_sum_fields
+  var_pop: payment_requests_var_pop_fields
+  var_samp: payment_requests_var_samp_fields
+  variance: payment_requests_variance_fields
+}
+
+"""
+order by aggregate values of table "payment_requests"
+"""
+input payment_requests_aggregate_order_by {
+  avg: payment_requests_avg_order_by
+  count: order_by
+  max: payment_requests_max_order_by
+  min: payment_requests_min_order_by
+  stddev: payment_requests_stddev_order_by
+  stddev_pop: payment_requests_stddev_pop_order_by
+  stddev_samp: payment_requests_stddev_samp_order_by
+  sum: payment_requests_sum_order_by
+  var_pop: payment_requests_var_pop_order_by
+  var_samp: payment_requests_var_samp_order_by
+  variance: payment_requests_variance_order_by
+}
+
+"""append existing jsonb value of filtered columns with new jsonb value"""
+input payment_requests_append_input {
+  reason: jsonb
+}
+
+"""
+input type for inserting array relation for remote table "payment_requests"
+"""
+input payment_requests_arr_rel_insert_input {
+  data: [payment_requests_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: payment_requests_on_conflict
+}
+
+"""aggregate avg on columns"""
+type payment_requests_avg_fields {
+  amount_in_usd: Float
+}
+
+"""
+order by avg() on columns of table "payment_requests"
+"""
+input payment_requests_avg_order_by {
+  amount_in_usd: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "payment_requests". All fields are combined with a logical 'AND'.
+"""
+input payment_requests_bool_exp {
+  _and: [payment_requests_bool_exp!]
+  _not: payment_requests_bool_exp
+  _or: [payment_requests_bool_exp!]
+  amount_in_usd: bigint_comparison_exp
+  id: uuid_comparison_exp
+  payments: payments_bool_exp
+  payments_aggregate: payments_aggregate_bool_exp
+  project: projects_bool_exp
+  project_id: uuid_comparison_exp
+  project_lead: project_leads_bool_exp
+  reason: jsonb_comparison_exp
+  recipient: users_bool_exp
+  recipient_id: uuid_comparison_exp
+  requestor: users_bool_exp
+  requestor_id: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "payment_requests"
+"""
+enum payment_requests_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  payment_requests_pkey
+}
+
+"""
+delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+"""
+input payment_requests_delete_at_path_input {
+  reason: [String!]
+}
+
+"""
+delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+"""
+input payment_requests_delete_elem_input {
+  reason: Int
+}
+
+"""
+delete key/value pair or string element. key/value pairs are matched based on their key value
+"""
+input payment_requests_delete_key_input {
+  reason: String
+}
+
+"""
+input type for incrementing numeric columns in table "payment_requests"
+"""
+input payment_requests_inc_input {
+  amount_in_usd: bigint
+}
+
+"""
+input type for inserting data into table "payment_requests"
+"""
+input payment_requests_insert_input {
+  amount_in_usd: bigint
+  id: uuid
+  payments: payments_arr_rel_insert_input
+  project: projects_obj_rel_insert_input
+  project_id: uuid
+  project_lead: project_leads_obj_rel_insert_input
+  reason: jsonb
+  recipient: users_obj_rel_insert_input
+  recipient_id: uuid
+  requestor: users_obj_rel_insert_input
+  requestor_id: uuid
+}
+
+"""aggregate max on columns"""
+type payment_requests_max_fields {
+  amount_in_usd: bigint
+  id: uuid
+  project_id: uuid
+  recipient_id: uuid
+  requestor_id: uuid
+}
+
+"""
+order by max() on columns of table "payment_requests"
+"""
+input payment_requests_max_order_by {
+  amount_in_usd: order_by
+  id: order_by
+  project_id: order_by
+  recipient_id: order_by
+  requestor_id: order_by
+}
+
+"""aggregate min on columns"""
+type payment_requests_min_fields {
+  amount_in_usd: bigint
+  id: uuid
+  project_id: uuid
+  recipient_id: uuid
+  requestor_id: uuid
+}
+
+"""
+order by min() on columns of table "payment_requests"
+"""
+input payment_requests_min_order_by {
+  amount_in_usd: order_by
+  id: order_by
+  project_id: order_by
+  recipient_id: order_by
+  requestor_id: order_by
+}
+
+"""
+response of any mutation on the table "payment_requests"
+"""
+type payment_requests_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [payment_requests!]!
+}
+
+"""
+input type for inserting object relation for remote table "payment_requests"
+"""
+input payment_requests_obj_rel_insert_input {
+  data: payment_requests_insert_input!
+
+  """upsert condition"""
+  on_conflict: payment_requests_on_conflict
+}
+
+"""
+on_conflict condition type for table "payment_requests"
+"""
+input payment_requests_on_conflict {
+  constraint: payment_requests_constraint!
+  update_columns: [payment_requests_update_column!]! = []
+  where: payment_requests_bool_exp
+}
+
+"""Ordering options when selecting data from "payment_requests"."""
+input payment_requests_order_by {
+  amount_in_usd: order_by
+  id: order_by
+  payments_aggregate: payments_aggregate_order_by
+  project: projects_order_by
+  project_id: order_by
+  project_lead: project_leads_order_by
+  reason: order_by
+  recipient: users_order_by
+  recipient_id: order_by
+  requestor: users_order_by
+  requestor_id: order_by
+}
+
+"""primary key columns input for table: payment_requests"""
+input payment_requests_pk_columns_input {
+  id: uuid!
+}
+
+"""prepend existing jsonb value of filtered columns with new jsonb value"""
+input payment_requests_prepend_input {
+  reason: jsonb
+}
+
+"""
+select columns of table "payment_requests"
+"""
+enum payment_requests_select_column {
+  """column name"""
+  amount_in_usd
+
+  """column name"""
+  id
+
+  """column name"""
+  project_id
+
+  """column name"""
+  reason
+
+  """column name"""
+  recipient_id
+
+  """column name"""
+  requestor_id
+}
+
+"""
+input type for updating data in table "payment_requests"
+"""
+input payment_requests_set_input {
+  amount_in_usd: bigint
+  id: uuid
+  project_id: uuid
+  reason: jsonb
+  recipient_id: uuid
+  requestor_id: uuid
+}
+
+"""aggregate stddev on columns"""
+type payment_requests_stddev_fields {
+  amount_in_usd: Float
+}
+
+"""
+order by stddev() on columns of table "payment_requests"
+"""
+input payment_requests_stddev_order_by {
+  amount_in_usd: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type payment_requests_stddev_pop_fields {
+  amount_in_usd: Float
+}
+
+"""
+order by stddev_pop() on columns of table "payment_requests"
+"""
+input payment_requests_stddev_pop_order_by {
+  amount_in_usd: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type payment_requests_stddev_samp_fields {
+  amount_in_usd: Float
+}
+
+"""
+order by stddev_samp() on columns of table "payment_requests"
+"""
+input payment_requests_stddev_samp_order_by {
+  amount_in_usd: order_by
+}
+
+"""
+Streaming cursor of the table "payment_requests"
+"""
+input payment_requests_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: payment_requests_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input payment_requests_stream_cursor_value_input {
+  amount_in_usd: bigint
+  id: uuid
+  project_id: uuid
+  reason: jsonb
+  recipient_id: uuid
+  requestor_id: uuid
+}
+
+"""aggregate sum on columns"""
+type payment_requests_sum_fields {
+  amount_in_usd: bigint
+}
+
+"""
+order by sum() on columns of table "payment_requests"
+"""
+input payment_requests_sum_order_by {
+  amount_in_usd: order_by
+}
+
+"""
+update columns of table "payment_requests"
+"""
+enum payment_requests_update_column {
+  """column name"""
+  amount_in_usd
+
+  """column name"""
+  id
+
+  """column name"""
+  project_id
+
+  """column name"""
+  reason
+
+  """column name"""
+  recipient_id
+
+  """column name"""
+  requestor_id
+}
+
+input payment_requests_updates {
+  """append existing jsonb value of filtered columns with new jsonb value"""
+  _append: payment_requests_append_input
+
+  """
+  delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+  """
+  _delete_at_path: payment_requests_delete_at_path_input
+
+  """
+  delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+  """
+  _delete_elem: payment_requests_delete_elem_input
+
+  """
+  delete key/value pair or string element. key/value pairs are matched based on their key value
+  """
+  _delete_key: payment_requests_delete_key_input
+
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: payment_requests_inc_input
+
+  """prepend existing jsonb value of filtered columns with new jsonb value"""
+  _prepend: payment_requests_prepend_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: payment_requests_set_input
+  where: payment_requests_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type payment_requests_var_pop_fields {
+  amount_in_usd: Float
+}
+
+"""
+order by var_pop() on columns of table "payment_requests"
+"""
+input payment_requests_var_pop_order_by {
+  amount_in_usd: order_by
+}
+
+"""aggregate var_samp on columns"""
+type payment_requests_var_samp_fields {
+  amount_in_usd: Float
+}
+
+"""
+order by var_samp() on columns of table "payment_requests"
+"""
+input payment_requests_var_samp_order_by {
+  amount_in_usd: order_by
+}
+
+"""aggregate variance on columns"""
+type payment_requests_variance_fields {
+  amount_in_usd: Float
+}
+
+"""
+order by variance() on columns of table "payment_requests"
+"""
+input payment_requests_variance_order_by {
+  amount_in_usd: order_by
+}
+
+"""
+columns and relationships of "payments"
+"""
+type payments {
+  amount: numeric!
+  currency_code: String!
+  id: uuid!
+
+  """An object relationship"""
+  payment_request: payment_requests
+  receipt(
+    """JSON select path"""
+    path: String
+  ): jsonb!
+  request_id: uuid
+}
+
+"""
+aggregated selection of "payments"
+"""
+type payments_aggregate {
+  aggregate: payments_aggregate_fields
+  nodes: [payments!]!
+}
+
+input payments_aggregate_bool_exp {
+  count: payments_aggregate_bool_exp_count
+}
+
+input payments_aggregate_bool_exp_count {
+  arguments: [payments_select_column!]
+  distinct: Boolean
+  filter: payments_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "payments"
+"""
+type payments_aggregate_fields {
+  avg: payments_avg_fields
+  count(columns: [payments_select_column!], distinct: Boolean): Int!
+  max: payments_max_fields
+  min: payments_min_fields
+  stddev: payments_stddev_fields
+  stddev_pop: payments_stddev_pop_fields
+  stddev_samp: payments_stddev_samp_fields
+  sum: payments_sum_fields
+  var_pop: payments_var_pop_fields
+  var_samp: payments_var_samp_fields
+  variance: payments_variance_fields
+}
+
+"""
+order by aggregate values of table "payments"
+"""
+input payments_aggregate_order_by {
+  avg: payments_avg_order_by
+  count: order_by
+  max: payments_max_order_by
+  min: payments_min_order_by
+  stddev: payments_stddev_order_by
+  stddev_pop: payments_stddev_pop_order_by
+  stddev_samp: payments_stddev_samp_order_by
+  sum: payments_sum_order_by
+  var_pop: payments_var_pop_order_by
+  var_samp: payments_var_samp_order_by
+  variance: payments_variance_order_by
+}
+
+"""append existing jsonb value of filtered columns with new jsonb value"""
+input payments_append_input {
+  receipt: jsonb
+}
+
+"""
+input type for inserting array relation for remote table "payments"
+"""
+input payments_arr_rel_insert_input {
+  data: [payments_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: payments_on_conflict
+}
+
+"""aggregate avg on columns"""
+type payments_avg_fields {
+  amount: Float
+}
+
+"""
+order by avg() on columns of table "payments"
+"""
+input payments_avg_order_by {
+  amount: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "payments". All fields are combined with a logical 'AND'.
+"""
+input payments_bool_exp {
+  _and: [payments_bool_exp!]
+  _not: payments_bool_exp
+  _or: [payments_bool_exp!]
+  amount: numeric_comparison_exp
+  currency_code: String_comparison_exp
+  id: uuid_comparison_exp
+  payment_request: payment_requests_bool_exp
+  receipt: jsonb_comparison_exp
+  request_id: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "payments"
+"""
+enum payments_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  payments_pkey
+}
+
+"""
+delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+"""
+input payments_delete_at_path_input {
+  receipt: [String!]
+}
+
+"""
+delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+"""
+input payments_delete_elem_input {
+  receipt: Int
+}
+
+"""
+delete key/value pair or string element. key/value pairs are matched based on their key value
+"""
+input payments_delete_key_input {
+  receipt: String
+}
+
+"""
+input type for incrementing numeric columns in table "payments"
+"""
+input payments_inc_input {
+  amount: numeric
+}
+
+"""
+input type for inserting data into table "payments"
+"""
+input payments_insert_input {
+  amount: numeric
+  currency_code: String
+  id: uuid
+  payment_request: payment_requests_obj_rel_insert_input
+  receipt: jsonb
+  request_id: uuid
+}
+
+"""aggregate max on columns"""
+type payments_max_fields {
+  amount: numeric
+  currency_code: String
+  id: uuid
+  request_id: uuid
+}
+
+"""
+order by max() on columns of table "payments"
+"""
+input payments_max_order_by {
+  amount: order_by
+  currency_code: order_by
+  id: order_by
+  request_id: order_by
+}
+
+"""aggregate min on columns"""
+type payments_min_fields {
+  amount: numeric
+  currency_code: String
+  id: uuid
+  request_id: uuid
+}
+
+"""
+order by min() on columns of table "payments"
+"""
+input payments_min_order_by {
+  amount: order_by
+  currency_code: order_by
+  id: order_by
+  request_id: order_by
+}
+
+"""
+response of any mutation on the table "payments"
+"""
+type payments_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [payments!]!
+}
+
+"""
+on_conflict condition type for table "payments"
+"""
+input payments_on_conflict {
+  constraint: payments_constraint!
+  update_columns: [payments_update_column!]! = []
+  where: payments_bool_exp
+}
+
+"""Ordering options when selecting data from "payments"."""
+input payments_order_by {
+  amount: order_by
+  currency_code: order_by
+  id: order_by
+  payment_request: payment_requests_order_by
+  receipt: order_by
+  request_id: order_by
+}
+
+"""primary key columns input for table: payments"""
+input payments_pk_columns_input {
+  id: uuid!
+}
+
+"""prepend existing jsonb value of filtered columns with new jsonb value"""
+input payments_prepend_input {
+  receipt: jsonb
+}
+
+"""
+select columns of table "payments"
+"""
+enum payments_select_column {
+  """column name"""
+  amount
+
+  """column name"""
+  currency_code
+
+  """column name"""
+  id
+
+  """column name"""
+  receipt
+
+  """column name"""
+  request_id
+}
+
+"""
+input type for updating data in table "payments"
+"""
+input payments_set_input {
+  amount: numeric
+  currency_code: String
+  id: uuid
+  receipt: jsonb
+  request_id: uuid
+}
+
+"""aggregate stddev on columns"""
+type payments_stddev_fields {
+  amount: Float
+}
+
+"""
+order by stddev() on columns of table "payments"
+"""
+input payments_stddev_order_by {
+  amount: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type payments_stddev_pop_fields {
+  amount: Float
+}
+
+"""
+order by stddev_pop() on columns of table "payments"
+"""
+input payments_stddev_pop_order_by {
+  amount: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type payments_stddev_samp_fields {
+  amount: Float
+}
+
+"""
+order by stddev_samp() on columns of table "payments"
+"""
+input payments_stddev_samp_order_by {
+  amount: order_by
+}
+
+"""
+Streaming cursor of the table "payments"
+"""
+input payments_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: payments_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input payments_stream_cursor_value_input {
+  amount: numeric
+  currency_code: String
+  id: uuid
+  receipt: jsonb
+  request_id: uuid
+}
+
+"""aggregate sum on columns"""
+type payments_sum_fields {
+  amount: numeric
+}
+
+"""
+order by sum() on columns of table "payments"
+"""
+input payments_sum_order_by {
+  amount: order_by
+}
+
+"""
+update columns of table "payments"
+"""
+enum payments_update_column {
+  """column name"""
+  amount
+
+  """column name"""
+  currency_code
+
+  """column name"""
+  id
+
+  """column name"""
+  receipt
+
+  """column name"""
+  request_id
+}
+
+input payments_updates {
+  """append existing jsonb value of filtered columns with new jsonb value"""
+  _append: payments_append_input
+
+  """
+  delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+  """
+  _delete_at_path: payments_delete_at_path_input
+
+  """
+  delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+  """
+  _delete_elem: payments_delete_elem_input
+
+  """
+  delete key/value pair or string element. key/value pairs are matched based on their key value
+  """
+  _delete_key: payments_delete_key_input
+
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: payments_inc_input
+
+  """prepend existing jsonb value of filtered columns with new jsonb value"""
+  _prepend: payments_prepend_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: payments_set_input
+  where: payments_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type payments_var_pop_fields {
+  amount: Float
+}
+
+"""
+order by var_pop() on columns of table "payments"
+"""
+input payments_var_pop_order_by {
+  amount: order_by
+}
+
+"""aggregate var_samp on columns"""
+type payments_var_samp_fields {
+  amount: Float
+}
+
+"""
+order by var_samp() on columns of table "payments"
+"""
+input payments_var_samp_order_by {
+  amount: order_by
+}
+
+"""aggregate variance on columns"""
+type payments_variance_fields {
+  amount: Float
+}
+
+"""
+order by variance() on columns of table "payments"
+"""
+input payments_variance_order_by {
+  amount: order_by
+}
+
+"""
+columns and relationships of "payout_settings"
+"""
+type payout_settings {
+  eth_wallet_address: String
+  user_id: uuid!
+}
+
+"""
+aggregated selection of "payout_settings"
+"""
+type payout_settings_aggregate {
+  aggregate: payout_settings_aggregate_fields
+  nodes: [payout_settings!]!
+}
+
+"""
+aggregate fields of "payout_settings"
+"""
+type payout_settings_aggregate_fields {
+  count(columns: [payout_settings_select_column!], distinct: Boolean): Int!
+  max: payout_settings_max_fields
+  min: payout_settings_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "payout_settings". All fields are combined with a logical 'AND'.
+"""
+input payout_settings_bool_exp {
+  _and: [payout_settings_bool_exp!]
+  _not: payout_settings_bool_exp
+  _or: [payout_settings_bool_exp!]
+  eth_wallet_address: String_comparison_exp
+  user_id: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "payout_settings"
+"""
+enum payout_settings_constraint {
+  """
+  unique or primary key constraint on columns "user_id"
+  """
+  payout_settings_pkey
+}
+
+"""
+input type for inserting data into table "payout_settings"
+"""
+input payout_settings_insert_input {
+  eth_wallet_address: String
+  user_id: uuid
+}
+
+"""aggregate max on columns"""
+type payout_settings_max_fields {
+  eth_wallet_address: String
+  user_id: uuid
+}
+
+"""aggregate min on columns"""
+type payout_settings_min_fields {
+  eth_wallet_address: String
+  user_id: uuid
+}
+
+"""
+response of any mutation on the table "payout_settings"
+"""
+type payout_settings_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [payout_settings!]!
+}
+
+"""
+input type for inserting object relation for remote table "payout_settings"
+"""
+input payout_settings_obj_rel_insert_input {
+  data: payout_settings_insert_input!
+
+  """upsert condition"""
+  on_conflict: payout_settings_on_conflict
+}
+
+"""
+on_conflict condition type for table "payout_settings"
+"""
+input payout_settings_on_conflict {
+  constraint: payout_settings_constraint!
+  update_columns: [payout_settings_update_column!]! = []
+  where: payout_settings_bool_exp
+}
+
+"""Ordering options when selecting data from "payout_settings"."""
+input payout_settings_order_by {
+  eth_wallet_address: order_by
+  user_id: order_by
+}
+
+"""primary key columns input for table: payout_settings"""
+input payout_settings_pk_columns_input {
+  user_id: uuid!
+}
+
+"""
+select columns of table "payout_settings"
+"""
+enum payout_settings_select_column {
+  """column name"""
+  eth_wallet_address
+
+  """column name"""
+  user_id
+}
+
+"""
+input type for updating data in table "payout_settings"
+"""
+input payout_settings_set_input {
+  eth_wallet_address: String
+  user_id: uuid
+}
+
+"""
+Streaming cursor of the table "payout_settings"
+"""
+input payout_settings_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: payout_settings_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input payout_settings_stream_cursor_value_input {
+  eth_wallet_address: String
+  user_id: uuid
+}
+
+"""
+update columns of table "payout_settings"
+"""
+enum payout_settings_update_column {
+  """column name"""
+  eth_wallet_address
+
+  """column name"""
+  user_id
+}
+
+input payout_settings_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: payout_settings_set_input
+  where: payout_settings_bool_exp!
+}
+
+"""
+columns and relationships of "project_leads"
+"""
+type project_leads {
+  """An array relationship"""
+  payment_requests(
+    """distinct select on columns"""
+    distinct_on: [payment_requests_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payment_requests_order_by!]
+
+    """filter the rows returned"""
+    where: payment_requests_bool_exp
+  ): [payment_requests!]!
+
+  """An aggregate relationship"""
+  payment_requests_aggregate(
+    """distinct select on columns"""
+    distinct_on: [payment_requests_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payment_requests_order_by!]
+
+    """filter the rows returned"""
+    where: payment_requests_bool_exp
+  ): payment_requests_aggregate!
+
+  """An object relationship"""
+  project: projects!
+  project_id: uuid!
+
+  """An object relationship"""
+  user: users
+  user_id: uuid!
+}
+
+"""
+aggregated selection of "project_leads"
+"""
+type project_leads_aggregate {
+  aggregate: project_leads_aggregate_fields
+  nodes: [project_leads!]!
+}
+
+input project_leads_aggregate_bool_exp {
+  count: project_leads_aggregate_bool_exp_count
+}
+
+input project_leads_aggregate_bool_exp_count {
+  arguments: [project_leads_select_column!]
+  distinct: Boolean
+  filter: project_leads_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "project_leads"
+"""
+type project_leads_aggregate_fields {
+  count(columns: [project_leads_select_column!], distinct: Boolean): Int!
+  max: project_leads_max_fields
+  min: project_leads_min_fields
+}
+
+"""
+order by aggregate values of table "project_leads"
+"""
+input project_leads_aggregate_order_by {
+  count: order_by
+  max: project_leads_max_order_by
+  min: project_leads_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "project_leads"
+"""
+input project_leads_arr_rel_insert_input {
+  data: [project_leads_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: project_leads_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "project_leads". All fields are combined with a logical 'AND'.
+"""
+input project_leads_bool_exp {
+  _and: [project_leads_bool_exp!]
+  _not: project_leads_bool_exp
+  _or: [project_leads_bool_exp!]
+  payment_requests: payment_requests_bool_exp
+  payment_requests_aggregate: payment_requests_aggregate_bool_exp
+  project: projects_bool_exp
+  project_id: uuid_comparison_exp
+  user: users_bool_exp
+  user_id: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "project_leads"
+"""
+enum project_leads_constraint {
+  """
+  unique or primary key constraint on columns "project_id", "user_id"
+  """
+  project_leads_pkey
+}
+
+"""
+input type for inserting data into table "project_leads"
+"""
+input project_leads_insert_input {
+  payment_requests: payment_requests_arr_rel_insert_input
+  project: projects_obj_rel_insert_input
+  project_id: uuid
+  user: users_obj_rel_insert_input
+  user_id: uuid
+}
+
+"""aggregate max on columns"""
+type project_leads_max_fields {
+  project_id: uuid
+  user_id: uuid
+}
+
+"""
+order by max() on columns of table "project_leads"
+"""
+input project_leads_max_order_by {
+  project_id: order_by
+  user_id: order_by
+}
+
+"""aggregate min on columns"""
+type project_leads_min_fields {
+  project_id: uuid
+  user_id: uuid
+}
+
+"""
+order by min() on columns of table "project_leads"
+"""
+input project_leads_min_order_by {
+  project_id: order_by
+  user_id: order_by
+}
+
+"""
+response of any mutation on the table "project_leads"
+"""
+type project_leads_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [project_leads!]!
+}
+
+"""
+input type for inserting object relation for remote table "project_leads"
+"""
+input project_leads_obj_rel_insert_input {
+  data: project_leads_insert_input!
+
+  """upsert condition"""
+  on_conflict: project_leads_on_conflict
+}
+
+"""
+on_conflict condition type for table "project_leads"
+"""
+input project_leads_on_conflict {
+  constraint: project_leads_constraint!
+  update_columns: [project_leads_update_column!]! = []
+  where: project_leads_bool_exp
+}
+
+"""Ordering options when selecting data from "project_leads"."""
+input project_leads_order_by {
+  payment_requests_aggregate: payment_requests_aggregate_order_by
+  project: projects_order_by
+  project_id: order_by
+  user: users_order_by
+  user_id: order_by
+}
+
+"""primary key columns input for table: project_leads"""
+input project_leads_pk_columns_input {
+  project_id: uuid!
+  user_id: uuid!
+}
+
+"""
+select columns of table "project_leads"
+"""
+enum project_leads_select_column {
+  """column name"""
+  project_id
+
+  """column name"""
+  user_id
+}
+
+"""
+input type for updating data in table "project_leads"
+"""
+input project_leads_set_input {
+  project_id: uuid
+  user_id: uuid
+}
+
+"""
+Streaming cursor of the table "project_leads"
+"""
+input project_leads_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: project_leads_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input project_leads_stream_cursor_value_input {
+  project_id: uuid
+  user_id: uuid
+}
+
+"""
+update columns of table "project_leads"
+"""
+enum project_leads_update_column {
+  """column name"""
+  project_id
+
+  """column name"""
+  user_id
+}
+
+input project_leads_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: project_leads_set_input
+  where: project_leads_bool_exp!
+}
+
+"""
+columns and relationships of "projects"
+"""
+type projects {
+  id: uuid!
+  name: String!
+
+  """An array relationship"""
+  payment_requests(
+    """distinct select on columns"""
+    distinct_on: [payment_requests_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payment_requests_order_by!]
+
+    """filter the rows returned"""
+    where: payment_requests_bool_exp
+  ): [payment_requests!]!
+
+  """An aggregate relationship"""
+  payment_requests_aggregate(
+    """distinct select on columns"""
+    distinct_on: [payment_requests_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payment_requests_order_by!]
+
+    """filter the rows returned"""
+    where: payment_requests_bool_exp
+  ): payment_requests_aggregate!
+
+  """An array relationship"""
+  project_leads(
+    """distinct select on columns"""
+    distinct_on: [project_leads_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [project_leads_order_by!]
+
+    """filter the rows returned"""
+    where: project_leads_bool_exp
+  ): [project_leads!]!
+
+  """An aggregate relationship"""
+  project_leads_aggregate(
+    """distinct select on columns"""
+    distinct_on: [project_leads_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [project_leads_order_by!]
+
+    """filter the rows returned"""
+    where: project_leads_bool_exp
+  ): project_leads_aggregate!
+}
+
+"""
+aggregated selection of "projects"
+"""
+type projects_aggregate {
+  aggregate: projects_aggregate_fields
+  nodes: [projects!]!
+}
+
+"""
+aggregate fields of "projects"
+"""
+type projects_aggregate_fields {
+  count(columns: [projects_select_column!], distinct: Boolean): Int!
+  max: projects_max_fields
+  min: projects_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "projects". All fields are combined with a logical 'AND'.
+"""
+input projects_bool_exp {
+  _and: [projects_bool_exp!]
+  _not: projects_bool_exp
+  _or: [projects_bool_exp!]
+  id: uuid_comparison_exp
+  name: String_comparison_exp
+  payment_requests: payment_requests_bool_exp
+  payment_requests_aggregate: payment_requests_aggregate_bool_exp
+  project_leads: project_leads_bool_exp
+  project_leads_aggregate: project_leads_aggregate_bool_exp
+}
+
+"""
+unique or primary key constraints on table "projects"
+"""
+enum projects_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  projects_pkey
+}
+
+"""
+input type for inserting data into table "projects"
+"""
+input projects_insert_input {
+  id: uuid
+  name: String
+  payment_requests: payment_requests_arr_rel_insert_input
+  project_leads: project_leads_arr_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type projects_max_fields {
+  id: uuid
+  name: String
+}
+
+"""aggregate min on columns"""
+type projects_min_fields {
+  id: uuid
+  name: String
+}
+
+"""
+response of any mutation on the table "projects"
+"""
+type projects_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [projects!]!
+}
+
+"""
+input type for inserting object relation for remote table "projects"
+"""
+input projects_obj_rel_insert_input {
+  data: projects_insert_input!
+
+  """upsert condition"""
+  on_conflict: projects_on_conflict
+}
+
+"""
+on_conflict condition type for table "projects"
+"""
+input projects_on_conflict {
+  constraint: projects_constraint!
+  update_columns: [projects_update_column!]! = []
+  where: projects_bool_exp
+}
+
+"""Ordering options when selecting data from "projects"."""
+input projects_order_by {
+  id: order_by
+  name: order_by
+  payment_requests_aggregate: payment_requests_aggregate_order_by
+  project_leads_aggregate: project_leads_aggregate_order_by
+}
+
+"""primary key columns input for table: projects"""
+input projects_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "projects"
+"""
+enum projects_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""
+input type for updating data in table "projects"
+"""
+input projects_set_input {
+  id: uuid
+  name: String
+}
+
+"""
+Streaming cursor of the table "projects"
+"""
+input projects_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: projects_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input projects_stream_cursor_value_input {
+  id: uuid
+  name: String
+}
+
+"""
+update columns of table "projects"
+"""
+enum projects_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+input projects_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: projects_set_input
+  where: projects_bool_exp!
+}
+
+type query_root {
+  """fetch data from the table: "auth.providers" using primary key columns"""
+  authProvider(id: String!): authProviders
+
+  """
+  fetch data from the table: "auth.provider_requests" using primary key columns
+  """
+  authProviderRequest(id: uuid!): authProviderRequests
+
+  """
+  fetch data from the table: "auth.provider_requests"
+  """
+  authProviderRequests(
+    """distinct select on columns"""
+    distinct_on: [authProviderRequests_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authProviderRequests_order_by!]
+
+    """filter the rows returned"""
+    where: authProviderRequests_bool_exp
+  ): [authProviderRequests!]!
+
+  """
+  fetch aggregated fields from the table: "auth.provider_requests"
+  """
+  authProviderRequestsAggregate(
+    """distinct select on columns"""
+    distinct_on: [authProviderRequests_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authProviderRequests_order_by!]
+
+    """filter the rows returned"""
+    where: authProviderRequests_bool_exp
+  ): authProviderRequests_aggregate!
+
+  """
+  fetch data from the table: "auth.providers"
+  """
+  authProviders(
+    """distinct select on columns"""
+    distinct_on: [authProviders_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authProviders_order_by!]
+
+    """filter the rows returned"""
+    where: authProviders_bool_exp
+  ): [authProviders!]!
+
+  """
+  fetch aggregated fields from the table: "auth.providers"
+  """
+  authProvidersAggregate(
+    """distinct select on columns"""
+    distinct_on: [authProviders_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authProviders_order_by!]
+
+    """filter the rows returned"""
+    where: authProviders_bool_exp
+  ): authProviders_aggregate!
+
+  """
+  fetch data from the table: "auth.refresh_tokens" using primary key columns
+  """
+  authRefreshToken(refreshToken: uuid!): authRefreshTokens
+
+  """
+  fetch data from the table: "auth.refresh_tokens"
+  """
+  authRefreshTokens(
+    """distinct select on columns"""
+    distinct_on: [authRefreshTokens_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authRefreshTokens_order_by!]
+
+    """filter the rows returned"""
+    where: authRefreshTokens_bool_exp
+  ): [authRefreshTokens!]!
+
+  """
+  fetch aggregated fields from the table: "auth.refresh_tokens"
+  """
+  authRefreshTokensAggregate(
+    """distinct select on columns"""
+    distinct_on: [authRefreshTokens_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authRefreshTokens_order_by!]
+
+    """filter the rows returned"""
+    where: authRefreshTokens_bool_exp
+  ): authRefreshTokens_aggregate!
+
+  """fetch data from the table: "auth.roles" using primary key columns"""
+  authRole(role: String!): authRoles
+
+  """
+  fetch data from the table: "auth.roles"
+  """
+  authRoles(
+    """distinct select on columns"""
+    distinct_on: [authRoles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authRoles_order_by!]
+
+    """filter the rows returned"""
+    where: authRoles_bool_exp
+  ): [authRoles!]!
+
+  """
+  fetch aggregated fields from the table: "auth.roles"
+  """
+  authRolesAggregate(
+    """distinct select on columns"""
+    distinct_on: [authRoles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authRoles_order_by!]
+
+    """filter the rows returned"""
+    where: authRoles_bool_exp
+  ): authRoles_aggregate!
+
+  """
+  fetch data from the table: "auth.user_providers" using primary key columns
+  """
+  authUserProvider(id: uuid!): authUserProviders
+
+  """
+  fetch data from the table: "auth.user_providers"
+  """
+  authUserProviders(
+    """distinct select on columns"""
+    distinct_on: [authUserProviders_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserProviders_order_by!]
+
+    """filter the rows returned"""
+    where: authUserProviders_bool_exp
+  ): [authUserProviders!]!
+
+  """
+  fetch aggregated fields from the table: "auth.user_providers"
+  """
+  authUserProvidersAggregate(
+    """distinct select on columns"""
+    distinct_on: [authUserProviders_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserProviders_order_by!]
+
+    """filter the rows returned"""
+    where: authUserProviders_bool_exp
+  ): authUserProviders_aggregate!
+
+  """fetch data from the table: "auth.user_roles" using primary key columns"""
+  authUserRole(id: uuid!): authUserRoles
+
+  """
+  fetch data from the table: "auth.user_roles"
+  """
+  authUserRoles(
+    """distinct select on columns"""
+    distinct_on: [authUserRoles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserRoles_order_by!]
+
+    """filter the rows returned"""
+    where: authUserRoles_bool_exp
+  ): [authUserRoles!]!
+
+  """
+  fetch aggregated fields from the table: "auth.user_roles"
+  """
+  authUserRolesAggregate(
+    """distinct select on columns"""
+    distinct_on: [authUserRoles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserRoles_order_by!]
+
+    """filter the rows returned"""
+    where: authUserRoles_bool_exp
+  ): authUserRoles_aggregate!
+
+  """
+  fetch data from the table: "auth.user_security_keys" using primary key columns
+  """
+  authUserSecurityKey(id: uuid!): authUserSecurityKeys
+
+  """
+  fetch data from the table: "auth.user_security_keys"
+  """
+  authUserSecurityKeys(
+    """distinct select on columns"""
+    distinct_on: [authUserSecurityKeys_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserSecurityKeys_order_by!]
+
+    """filter the rows returned"""
+    where: authUserSecurityKeys_bool_exp
+  ): [authUserSecurityKeys!]!
+
+  """
+  fetch aggregated fields from the table: "auth.user_security_keys"
+  """
+  authUserSecurityKeysAggregate(
+    """distinct select on columns"""
+    distinct_on: [authUserSecurityKeys_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserSecurityKeys_order_by!]
+
+    """filter the rows returned"""
+    where: authUserSecurityKeys_bool_exp
+  ): authUserSecurityKeys_aggregate!
+
+  """An array relationship"""
+  payment_requests(
+    """distinct select on columns"""
+    distinct_on: [payment_requests_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payment_requests_order_by!]
+
+    """filter the rows returned"""
+    where: payment_requests_bool_exp
+  ): [payment_requests!]!
+
+  """An aggregate relationship"""
+  payment_requests_aggregate(
+    """distinct select on columns"""
+    distinct_on: [payment_requests_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payment_requests_order_by!]
+
+    """filter the rows returned"""
+    where: payment_requests_bool_exp
+  ): payment_requests_aggregate!
+
+  """
+  fetch data from the table: "payment_requests" using primary key columns
+  """
+  payment_requests_by_pk(id: uuid!): payment_requests
+
+  """An array relationship"""
+  payments(
+    """distinct select on columns"""
+    distinct_on: [payments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payments_order_by!]
+
+    """filter the rows returned"""
+    where: payments_bool_exp
+  ): [payments!]!
+
+  """An aggregate relationship"""
+  payments_aggregate(
+    """distinct select on columns"""
+    distinct_on: [payments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payments_order_by!]
+
+    """filter the rows returned"""
+    where: payments_bool_exp
+  ): payments_aggregate!
+
+  """fetch data from the table: "payments" using primary key columns"""
+  payments_by_pk(id: uuid!): payments
+
+  """
+  fetch data from the table: "payout_settings"
+  """
+  payout_settings(
+    """distinct select on columns"""
+    distinct_on: [payout_settings_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payout_settings_order_by!]
+
+    """filter the rows returned"""
+    where: payout_settings_bool_exp
+  ): [payout_settings!]!
+
+  """
+  fetch aggregated fields from the table: "payout_settings"
+  """
+  payout_settings_aggregate(
+    """distinct select on columns"""
+    distinct_on: [payout_settings_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payout_settings_order_by!]
+
+    """filter the rows returned"""
+    where: payout_settings_bool_exp
+  ): payout_settings_aggregate!
+
+  """fetch data from the table: "payout_settings" using primary key columns"""
+  payout_settings_by_pk(user_id: uuid!): payout_settings
+
+  """An array relationship"""
+  project_leads(
+    """distinct select on columns"""
+    distinct_on: [project_leads_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [project_leads_order_by!]
+
+    """filter the rows returned"""
+    where: project_leads_bool_exp
+  ): [project_leads!]!
+
+  """An aggregate relationship"""
+  project_leads_aggregate(
+    """distinct select on columns"""
+    distinct_on: [project_leads_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [project_leads_order_by!]
+
+    """filter the rows returned"""
+    where: project_leads_bool_exp
+  ): project_leads_aggregate!
+
+  """fetch data from the table: "project_leads" using primary key columns"""
+  project_leads_by_pk(project_id: uuid!, user_id: uuid!): project_leads
+
+  """
+  fetch data from the table: "projects"
+  """
+  projects(
+    """distinct select on columns"""
+    distinct_on: [projects_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [projects_order_by!]
+
+    """filter the rows returned"""
+    where: projects_bool_exp
+  ): [projects!]!
+
+  """
+  fetch aggregated fields from the table: "projects"
+  """
+  projects_aggregate(
+    """distinct select on columns"""
+    distinct_on: [projects_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [projects_order_by!]
+
+    """filter the rows returned"""
+    where: projects_bool_exp
+  ): projects_aggregate!
+
+  """fetch data from the table: "projects" using primary key columns"""
+  projects_by_pk(id: uuid!): projects
+
+  """fetch data from the table: "auth.users" using primary key columns"""
+  user(id: uuid!): users
+
+  """
+  fetch data from the table: "auth.users"
+  """
+  users(
+    """distinct select on columns"""
+    distinct_on: [users_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_order_by!]
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): [users!]!
+
+  """
+  fetch aggregated fields from the table: "auth.users"
+  """
+  usersAggregate(
+    """distinct select on columns"""
+    distinct_on: [users_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_order_by!]
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): users_aggregate!
+}
+
+type subscription_root {
+  """fetch data from the table: "auth.providers" using primary key columns"""
+  authProvider(id: String!): authProviders
+
+  """
+  fetch data from the table: "auth.provider_requests" using primary key columns
+  """
+  authProviderRequest(id: uuid!): authProviderRequests
+
+  """
+  fetch data from the table: "auth.provider_requests"
+  """
+  authProviderRequests(
+    """distinct select on columns"""
+    distinct_on: [authProviderRequests_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authProviderRequests_order_by!]
+
+    """filter the rows returned"""
+    where: authProviderRequests_bool_exp
+  ): [authProviderRequests!]!
+
+  """
+  fetch aggregated fields from the table: "auth.provider_requests"
+  """
+  authProviderRequestsAggregate(
+    """distinct select on columns"""
+    distinct_on: [authProviderRequests_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authProviderRequests_order_by!]
+
+    """filter the rows returned"""
+    where: authProviderRequests_bool_exp
+  ): authProviderRequests_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "auth.provider_requests"
+  """
+  authProviderRequests_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [authProviderRequests_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: authProviderRequests_bool_exp
+  ): [authProviderRequests!]!
+
+  """
+  fetch data from the table: "auth.providers"
+  """
+  authProviders(
+    """distinct select on columns"""
+    distinct_on: [authProviders_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authProviders_order_by!]
+
+    """filter the rows returned"""
+    where: authProviders_bool_exp
+  ): [authProviders!]!
+
+  """
+  fetch aggregated fields from the table: "auth.providers"
+  """
+  authProvidersAggregate(
+    """distinct select on columns"""
+    distinct_on: [authProviders_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authProviders_order_by!]
+
+    """filter the rows returned"""
+    where: authProviders_bool_exp
+  ): authProviders_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "auth.providers"
+  """
+  authProviders_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [authProviders_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: authProviders_bool_exp
+  ): [authProviders!]!
+
+  """
+  fetch data from the table: "auth.refresh_tokens" using primary key columns
+  """
+  authRefreshToken(refreshToken: uuid!): authRefreshTokens
+
+  """
+  fetch data from the table: "auth.refresh_tokens"
+  """
+  authRefreshTokens(
+    """distinct select on columns"""
+    distinct_on: [authRefreshTokens_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authRefreshTokens_order_by!]
+
+    """filter the rows returned"""
+    where: authRefreshTokens_bool_exp
+  ): [authRefreshTokens!]!
+
+  """
+  fetch aggregated fields from the table: "auth.refresh_tokens"
+  """
+  authRefreshTokensAggregate(
+    """distinct select on columns"""
+    distinct_on: [authRefreshTokens_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authRefreshTokens_order_by!]
+
+    """filter the rows returned"""
+    where: authRefreshTokens_bool_exp
+  ): authRefreshTokens_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "auth.refresh_tokens"
+  """
+  authRefreshTokens_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [authRefreshTokens_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: authRefreshTokens_bool_exp
+  ): [authRefreshTokens!]!
+
+  """fetch data from the table: "auth.roles" using primary key columns"""
+  authRole(role: String!): authRoles
+
+  """
+  fetch data from the table: "auth.roles"
+  """
+  authRoles(
+    """distinct select on columns"""
+    distinct_on: [authRoles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authRoles_order_by!]
+
+    """filter the rows returned"""
+    where: authRoles_bool_exp
+  ): [authRoles!]!
+
+  """
+  fetch aggregated fields from the table: "auth.roles"
+  """
+  authRolesAggregate(
+    """distinct select on columns"""
+    distinct_on: [authRoles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authRoles_order_by!]
+
+    """filter the rows returned"""
+    where: authRoles_bool_exp
+  ): authRoles_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "auth.roles"
+  """
+  authRoles_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [authRoles_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: authRoles_bool_exp
+  ): [authRoles!]!
+
+  """
+  fetch data from the table: "auth.user_providers" using primary key columns
+  """
+  authUserProvider(id: uuid!): authUserProviders
+
+  """
+  fetch data from the table: "auth.user_providers"
+  """
+  authUserProviders(
+    """distinct select on columns"""
+    distinct_on: [authUserProviders_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserProviders_order_by!]
+
+    """filter the rows returned"""
+    where: authUserProviders_bool_exp
+  ): [authUserProviders!]!
+
+  """
+  fetch aggregated fields from the table: "auth.user_providers"
+  """
+  authUserProvidersAggregate(
+    """distinct select on columns"""
+    distinct_on: [authUserProviders_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserProviders_order_by!]
+
+    """filter the rows returned"""
+    where: authUserProviders_bool_exp
+  ): authUserProviders_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "auth.user_providers"
+  """
+  authUserProviders_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [authUserProviders_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: authUserProviders_bool_exp
+  ): [authUserProviders!]!
+
+  """fetch data from the table: "auth.user_roles" using primary key columns"""
+  authUserRole(id: uuid!): authUserRoles
+
+  """
+  fetch data from the table: "auth.user_roles"
+  """
+  authUserRoles(
+    """distinct select on columns"""
+    distinct_on: [authUserRoles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserRoles_order_by!]
+
+    """filter the rows returned"""
+    where: authUserRoles_bool_exp
+  ): [authUserRoles!]!
+
+  """
+  fetch aggregated fields from the table: "auth.user_roles"
+  """
+  authUserRolesAggregate(
+    """distinct select on columns"""
+    distinct_on: [authUserRoles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserRoles_order_by!]
+
+    """filter the rows returned"""
+    where: authUserRoles_bool_exp
+  ): authUserRoles_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "auth.user_roles"
+  """
+  authUserRoles_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [authUserRoles_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: authUserRoles_bool_exp
+  ): [authUserRoles!]!
+
+  """
+  fetch data from the table: "auth.user_security_keys" using primary key columns
+  """
+  authUserSecurityKey(id: uuid!): authUserSecurityKeys
+
+  """
+  fetch data from the table: "auth.user_security_keys"
+  """
+  authUserSecurityKeys(
+    """distinct select on columns"""
+    distinct_on: [authUserSecurityKeys_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserSecurityKeys_order_by!]
+
+    """filter the rows returned"""
+    where: authUserSecurityKeys_bool_exp
+  ): [authUserSecurityKeys!]!
+
+  """
+  fetch aggregated fields from the table: "auth.user_security_keys"
+  """
+  authUserSecurityKeysAggregate(
+    """distinct select on columns"""
+    distinct_on: [authUserSecurityKeys_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserSecurityKeys_order_by!]
+
+    """filter the rows returned"""
+    where: authUserSecurityKeys_bool_exp
+  ): authUserSecurityKeys_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "auth.user_security_keys"
+  """
+  authUserSecurityKeys_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [authUserSecurityKeys_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: authUserSecurityKeys_bool_exp
+  ): [authUserSecurityKeys!]!
+
+  """An array relationship"""
+  payment_requests(
+    """distinct select on columns"""
+    distinct_on: [payment_requests_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payment_requests_order_by!]
+
+    """filter the rows returned"""
+    where: payment_requests_bool_exp
+  ): [payment_requests!]!
+
+  """An aggregate relationship"""
+  payment_requests_aggregate(
+    """distinct select on columns"""
+    distinct_on: [payment_requests_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payment_requests_order_by!]
+
+    """filter the rows returned"""
+    where: payment_requests_bool_exp
+  ): payment_requests_aggregate!
+
+  """
+  fetch data from the table: "payment_requests" using primary key columns
+  """
+  payment_requests_by_pk(id: uuid!): payment_requests
+
+  """
+  fetch data from the table in a streaming manner: "payment_requests"
+  """
+  payment_requests_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [payment_requests_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: payment_requests_bool_exp
+  ): [payment_requests!]!
+
+  """An array relationship"""
+  payments(
+    """distinct select on columns"""
+    distinct_on: [payments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payments_order_by!]
+
+    """filter the rows returned"""
+    where: payments_bool_exp
+  ): [payments!]!
+
+  """An aggregate relationship"""
+  payments_aggregate(
+    """distinct select on columns"""
+    distinct_on: [payments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payments_order_by!]
+
+    """filter the rows returned"""
+    where: payments_bool_exp
+  ): payments_aggregate!
+
+  """fetch data from the table: "payments" using primary key columns"""
+  payments_by_pk(id: uuid!): payments
+
+  """
+  fetch data from the table in a streaming manner: "payments"
+  """
+  payments_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [payments_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: payments_bool_exp
+  ): [payments!]!
+
+  """
+  fetch data from the table: "payout_settings"
+  """
+  payout_settings(
+    """distinct select on columns"""
+    distinct_on: [payout_settings_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payout_settings_order_by!]
+
+    """filter the rows returned"""
+    where: payout_settings_bool_exp
+  ): [payout_settings!]!
+
+  """
+  fetch aggregated fields from the table: "payout_settings"
+  """
+  payout_settings_aggregate(
+    """distinct select on columns"""
+    distinct_on: [payout_settings_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payout_settings_order_by!]
+
+    """filter the rows returned"""
+    where: payout_settings_bool_exp
+  ): payout_settings_aggregate!
+
+  """fetch data from the table: "payout_settings" using primary key columns"""
+  payout_settings_by_pk(user_id: uuid!): payout_settings
+
+  """
+  fetch data from the table in a streaming manner: "payout_settings"
+  """
+  payout_settings_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [payout_settings_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: payout_settings_bool_exp
+  ): [payout_settings!]!
+
+  """An array relationship"""
+  project_leads(
+    """distinct select on columns"""
+    distinct_on: [project_leads_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [project_leads_order_by!]
+
+    """filter the rows returned"""
+    where: project_leads_bool_exp
+  ): [project_leads!]!
+
+  """An aggregate relationship"""
+  project_leads_aggregate(
+    """distinct select on columns"""
+    distinct_on: [project_leads_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [project_leads_order_by!]
+
+    """filter the rows returned"""
+    where: project_leads_bool_exp
+  ): project_leads_aggregate!
+
+  """fetch data from the table: "project_leads" using primary key columns"""
+  project_leads_by_pk(project_id: uuid!, user_id: uuid!): project_leads
+
+  """
+  fetch data from the table in a streaming manner: "project_leads"
+  """
+  project_leads_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [project_leads_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: project_leads_bool_exp
+  ): [project_leads!]!
+
+  """
+  fetch data from the table: "projects"
+  """
+  projects(
+    """distinct select on columns"""
+    distinct_on: [projects_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [projects_order_by!]
+
+    """filter the rows returned"""
+    where: projects_bool_exp
+  ): [projects!]!
+
+  """
+  fetch aggregated fields from the table: "projects"
+  """
+  projects_aggregate(
+    """distinct select on columns"""
+    distinct_on: [projects_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [projects_order_by!]
+
+    """filter the rows returned"""
+    where: projects_bool_exp
+  ): projects_aggregate!
+
+  """fetch data from the table: "projects" using primary key columns"""
+  projects_by_pk(id: uuid!): projects
+
+  """
+  fetch data from the table in a streaming manner: "projects"
+  """
+  projects_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [projects_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: projects_bool_exp
+  ): [projects!]!
+
+  """fetch data from the table: "auth.users" using primary key columns"""
+  user(id: uuid!): users
+
+  """
+  fetch data from the table: "auth.users"
+  """
+  users(
+    """distinct select on columns"""
+    distinct_on: [users_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_order_by!]
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): [users!]!
+
+  """
+  fetch aggregated fields from the table: "auth.users"
+  """
+  usersAggregate(
+    """distinct select on columns"""
+    distinct_on: [users_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_order_by!]
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): users_aggregate!
+
+  """
+  fetch data from the table in a streaming manner: "auth.users"
+  """
+  users_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [users_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): [users!]!
+}
+
+scalar timestamptz
+
+"""
+Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
+"""
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
+"""
+User account information. Don't modify its structure as Hasura Auth relies on it to function properly.
+"""
+type users {
+  activeMfaType: String
+  avatarUrl: String!
+  createdAt: timestamptz!
+  currentChallenge: String
+  defaultRole: String!
+
+  """An object relationship"""
+  defaultRoleByRole: authRoles!
+  disabled: Boolean!
+  displayName: String!
+  email: citext
+  emailVerified: Boolean!
+  id: uuid!
+  isAnonymous: Boolean!
+  lastSeen: timestamptz
+  locale: String!
+  metadata(
+    """JSON select path"""
+    path: String
+  ): jsonb
+  newEmail: citext
+  otpHash: String
+  otpHashExpiresAt: timestamptz!
+  otpMethodLastUsed: String
+  passwordHash: String
+
+  """An object relationship"""
+  payoutSettings: payout_settings
+  phoneNumber: String
+  phoneNumberVerified: Boolean!
+
+  """An array relationship"""
+  projects_leaded(
+    """distinct select on columns"""
+    distinct_on: [project_leads_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [project_leads_order_by!]
+
+    """filter the rows returned"""
+    where: project_leads_bool_exp
+  ): [project_leads!]!
+
+  """An aggregate relationship"""
+  projects_leaded_aggregate(
+    """distinct select on columns"""
+    distinct_on: [project_leads_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [project_leads_order_by!]
+
+    """filter the rows returned"""
+    where: project_leads_bool_exp
+  ): project_leads_aggregate!
+
+  """An array relationship"""
+  refreshTokens(
+    """distinct select on columns"""
+    distinct_on: [authRefreshTokens_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authRefreshTokens_order_by!]
+
+    """filter the rows returned"""
+    where: authRefreshTokens_bool_exp
+  ): [authRefreshTokens!]!
+
+  """An aggregate relationship"""
+  refreshTokens_aggregate(
+    """distinct select on columns"""
+    distinct_on: [authRefreshTokens_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authRefreshTokens_order_by!]
+
+    """filter the rows returned"""
+    where: authRefreshTokens_bool_exp
+  ): authRefreshTokens_aggregate!
+
+  """An array relationship"""
+  roles(
+    """distinct select on columns"""
+    distinct_on: [authUserRoles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserRoles_order_by!]
+
+    """filter the rows returned"""
+    where: authUserRoles_bool_exp
+  ): [authUserRoles!]!
+
+  """An aggregate relationship"""
+  roles_aggregate(
+    """distinct select on columns"""
+    distinct_on: [authUserRoles_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserRoles_order_by!]
+
+    """filter the rows returned"""
+    where: authUserRoles_bool_exp
+  ): authUserRoles_aggregate!
+
+  """An array relationship"""
+  securityKeys(
+    """distinct select on columns"""
+    distinct_on: [authUserSecurityKeys_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserSecurityKeys_order_by!]
+
+    """filter the rows returned"""
+    where: authUserSecurityKeys_bool_exp
+  ): [authUserSecurityKeys!]!
+
+  """An aggregate relationship"""
+  securityKeys_aggregate(
+    """distinct select on columns"""
+    distinct_on: [authUserSecurityKeys_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserSecurityKeys_order_by!]
+
+    """filter the rows returned"""
+    where: authUserSecurityKeys_bool_exp
+  ): authUserSecurityKeys_aggregate!
+  ticket: String
+  ticketExpiresAt: timestamptz!
+  totpSecret: String
+  updatedAt: timestamptz!
+
+  """An array relationship"""
+  userProviders(
+    """distinct select on columns"""
+    distinct_on: [authUserProviders_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserProviders_order_by!]
+
+    """filter the rows returned"""
+    where: authUserProviders_bool_exp
+  ): [authUserProviders!]!
+
+  """An aggregate relationship"""
+  userProviders_aggregate(
+    """distinct select on columns"""
+    distinct_on: [authUserProviders_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserProviders_order_by!]
+
+    """filter the rows returned"""
+    where: authUserProviders_bool_exp
+  ): authUserProviders_aggregate!
+}
+
+"""
+aggregated selection of "auth.users"
+"""
+type users_aggregate {
+  aggregate: users_aggregate_fields
+  nodes: [users!]!
+}
+
+input users_aggregate_bool_exp {
+  bool_and: users_aggregate_bool_exp_bool_and
+  bool_or: users_aggregate_bool_exp_bool_or
+  count: users_aggregate_bool_exp_count
+}
+
+input users_aggregate_bool_exp_bool_and {
+  arguments: users_select_column_users_aggregate_bool_exp_bool_and_arguments_columns!
+  distinct: Boolean
+  filter: users_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input users_aggregate_bool_exp_bool_or {
+  arguments: users_select_column_users_aggregate_bool_exp_bool_or_arguments_columns!
+  distinct: Boolean
+  filter: users_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input users_aggregate_bool_exp_count {
+  arguments: [users_select_column!]
+  distinct: Boolean
+  filter: users_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "auth.users"
+"""
+type users_aggregate_fields {
+  count(columns: [users_select_column!], distinct: Boolean): Int!
+  max: users_max_fields
+  min: users_min_fields
+}
+
+"""
+order by aggregate values of table "auth.users"
+"""
+input users_aggregate_order_by {
+  count: order_by
+  max: users_max_order_by
+  min: users_min_order_by
+}
+
+"""append existing jsonb value of filtered columns with new jsonb value"""
+input users_append_input {
+  metadata: jsonb
+}
+
+"""
+input type for inserting array relation for remote table "auth.users"
+"""
+input users_arr_rel_insert_input {
+  data: [users_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: users_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "auth.users". All fields are combined with a logical 'AND'.
+"""
+input users_bool_exp {
+  _and: [users_bool_exp!]
+  _not: users_bool_exp
+  _or: [users_bool_exp!]
+  activeMfaType: String_comparison_exp
+  avatarUrl: String_comparison_exp
+  createdAt: timestamptz_comparison_exp
+  currentChallenge: String_comparison_exp
+  defaultRole: String_comparison_exp
+  defaultRoleByRole: authRoles_bool_exp
+  disabled: Boolean_comparison_exp
+  displayName: String_comparison_exp
+  email: citext_comparison_exp
+  emailVerified: Boolean_comparison_exp
+  id: uuid_comparison_exp
+  isAnonymous: Boolean_comparison_exp
+  lastSeen: timestamptz_comparison_exp
+  locale: String_comparison_exp
+  metadata: jsonb_comparison_exp
+  newEmail: citext_comparison_exp
+  otpHash: String_comparison_exp
+  otpHashExpiresAt: timestamptz_comparison_exp
+  otpMethodLastUsed: String_comparison_exp
+  passwordHash: String_comparison_exp
+  payoutSettings: payout_settings_bool_exp
+  phoneNumber: String_comparison_exp
+  phoneNumberVerified: Boolean_comparison_exp
+  projects_leaded: project_leads_bool_exp
+  projects_leaded_aggregate: project_leads_aggregate_bool_exp
+  refreshTokens: authRefreshTokens_bool_exp
+  refreshTokens_aggregate: authRefreshTokens_aggregate_bool_exp
+  roles: authUserRoles_bool_exp
+  roles_aggregate: authUserRoles_aggregate_bool_exp
+  securityKeys: authUserSecurityKeys_bool_exp
+  securityKeys_aggregate: authUserSecurityKeys_aggregate_bool_exp
+  ticket: String_comparison_exp
+  ticketExpiresAt: timestamptz_comparison_exp
+  totpSecret: String_comparison_exp
+  updatedAt: timestamptz_comparison_exp
+  userProviders: authUserProviders_bool_exp
+  userProviders_aggregate: authUserProviders_aggregate_bool_exp
+}
+
+"""
+unique or primary key constraints on table "auth.users"
+"""
+enum users_constraint {
+  """
+  unique or primary key constraint on columns "email"
+  """
+  users_email_key
+
+  """
+  unique or primary key constraint on columns "phone_number"
+  """
+  users_phone_number_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  users_pkey
+}
+
+"""
+delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+"""
+input users_delete_at_path_input {
+  metadata: [String!]
+}
+
+"""
+delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+"""
+input users_delete_elem_input {
+  metadata: Int
+}
+
+"""
+delete key/value pair or string element. key/value pairs are matched based on their key value
+"""
+input users_delete_key_input {
+  metadata: String
+}
+
+"""
+input type for inserting data into table "auth.users"
+"""
+input users_insert_input {
+  activeMfaType: String
+  avatarUrl: String
+  createdAt: timestamptz
+  currentChallenge: String
+  defaultRole: String
+  defaultRoleByRole: authRoles_obj_rel_insert_input
+  disabled: Boolean
+  displayName: String
+  email: citext
+  emailVerified: Boolean
+  id: uuid
+  isAnonymous: Boolean
+  lastSeen: timestamptz
+  locale: String
+  metadata: jsonb
+  newEmail: citext
+  otpHash: String
+  otpHashExpiresAt: timestamptz
+  otpMethodLastUsed: String
+  passwordHash: String
+  payoutSettings: payout_settings_obj_rel_insert_input
+  phoneNumber: String
+  phoneNumberVerified: Boolean
+  projects_leaded: project_leads_arr_rel_insert_input
+  refreshTokens: authRefreshTokens_arr_rel_insert_input
+  roles: authUserRoles_arr_rel_insert_input
+  securityKeys: authUserSecurityKeys_arr_rel_insert_input
+  ticket: String
+  ticketExpiresAt: timestamptz
+  totpSecret: String
+  updatedAt: timestamptz
+  userProviders: authUserProviders_arr_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type users_max_fields {
+  activeMfaType: String
+  avatarUrl: String
+  createdAt: timestamptz
+  currentChallenge: String
+  defaultRole: String
+  displayName: String
+  email: citext
+  id: uuid
+  lastSeen: timestamptz
+  locale: String
+  newEmail: citext
+  otpHash: String
+  otpHashExpiresAt: timestamptz
+  otpMethodLastUsed: String
+  passwordHash: String
+  phoneNumber: String
+  ticket: String
+  ticketExpiresAt: timestamptz
+  totpSecret: String
+  updatedAt: timestamptz
+}
+
+"""
+order by max() on columns of table "auth.users"
+"""
+input users_max_order_by {
+  activeMfaType: order_by
+  avatarUrl: order_by
+  createdAt: order_by
+  currentChallenge: order_by
+  defaultRole: order_by
+  displayName: order_by
+  email: order_by
+  id: order_by
+  lastSeen: order_by
+  locale: order_by
+  newEmail: order_by
+  otpHash: order_by
+  otpHashExpiresAt: order_by
+  otpMethodLastUsed: order_by
+  passwordHash: order_by
+  phoneNumber: order_by
+  ticket: order_by
+  ticketExpiresAt: order_by
+  totpSecret: order_by
+  updatedAt: order_by
+}
+
+"""aggregate min on columns"""
+type users_min_fields {
+  activeMfaType: String
+  avatarUrl: String
+  createdAt: timestamptz
+  currentChallenge: String
+  defaultRole: String
+  displayName: String
+  email: citext
+  id: uuid
+  lastSeen: timestamptz
+  locale: String
+  newEmail: citext
+  otpHash: String
+  otpHashExpiresAt: timestamptz
+  otpMethodLastUsed: String
+  passwordHash: String
+  phoneNumber: String
+  ticket: String
+  ticketExpiresAt: timestamptz
+  totpSecret: String
+  updatedAt: timestamptz
+}
+
+"""
+order by min() on columns of table "auth.users"
+"""
+input users_min_order_by {
+  activeMfaType: order_by
+  avatarUrl: order_by
+  createdAt: order_by
+  currentChallenge: order_by
+  defaultRole: order_by
+  displayName: order_by
+  email: order_by
+  id: order_by
+  lastSeen: order_by
+  locale: order_by
+  newEmail: order_by
+  otpHash: order_by
+  otpHashExpiresAt: order_by
+  otpMethodLastUsed: order_by
+  passwordHash: order_by
+  phoneNumber: order_by
+  ticket: order_by
+  ticketExpiresAt: order_by
+  totpSecret: order_by
+  updatedAt: order_by
+}
+
+"""
+response of any mutation on the table "auth.users"
+"""
+type users_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [users!]!
+}
+
+"""
+input type for inserting object relation for remote table "auth.users"
+"""
+input users_obj_rel_insert_input {
+  data: users_insert_input!
+
+  """upsert condition"""
+  on_conflict: users_on_conflict
+}
+
+"""
+on_conflict condition type for table "auth.users"
+"""
+input users_on_conflict {
+  constraint: users_constraint!
+  update_columns: [users_update_column!]! = []
+  where: users_bool_exp
+}
+
+"""Ordering options when selecting data from "auth.users"."""
+input users_order_by {
+  activeMfaType: order_by
+  avatarUrl: order_by
+  createdAt: order_by
+  currentChallenge: order_by
+  defaultRole: order_by
+  defaultRoleByRole: authRoles_order_by
+  disabled: order_by
+  displayName: order_by
+  email: order_by
+  emailVerified: order_by
+  id: order_by
+  isAnonymous: order_by
+  lastSeen: order_by
+  locale: order_by
+  metadata: order_by
+  newEmail: order_by
+  otpHash: order_by
+  otpHashExpiresAt: order_by
+  otpMethodLastUsed: order_by
+  passwordHash: order_by
+  payoutSettings: payout_settings_order_by
+  phoneNumber: order_by
+  phoneNumberVerified: order_by
+  projects_leaded_aggregate: project_leads_aggregate_order_by
+  refreshTokens_aggregate: authRefreshTokens_aggregate_order_by
+  roles_aggregate: authUserRoles_aggregate_order_by
+  securityKeys_aggregate: authUserSecurityKeys_aggregate_order_by
+  ticket: order_by
+  ticketExpiresAt: order_by
+  totpSecret: order_by
+  updatedAt: order_by
+  userProviders_aggregate: authUserProviders_aggregate_order_by
+}
+
+"""primary key columns input for table: auth.users"""
+input users_pk_columns_input {
+  id: uuid!
+}
+
+"""prepend existing jsonb value of filtered columns with new jsonb value"""
+input users_prepend_input {
+  metadata: jsonb
+}
+
+"""
+select columns of table "auth.users"
+"""
+enum users_select_column {
+  """column name"""
+  activeMfaType
+
+  """column name"""
+  avatarUrl
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  currentChallenge
+
+  """column name"""
+  defaultRole
+
+  """column name"""
+  disabled
+
+  """column name"""
+  displayName
+
+  """column name"""
+  email
+
+  """column name"""
+  emailVerified
+
+  """column name"""
+  id
+
+  """column name"""
+  isAnonymous
+
+  """column name"""
+  lastSeen
+
+  """column name"""
+  locale
+
+  """column name"""
+  metadata
+
+  """column name"""
+  newEmail
+
+  """column name"""
+  otpHash
+
+  """column name"""
+  otpHashExpiresAt
+
+  """column name"""
+  otpMethodLastUsed
+
+  """column name"""
+  passwordHash
+
+  """column name"""
+  phoneNumber
+
+  """column name"""
+  phoneNumberVerified
+
+  """column name"""
+  ticket
+
+  """column name"""
+  ticketExpiresAt
+
+  """column name"""
+  totpSecret
+
+  """column name"""
+  updatedAt
+}
+
+"""
+select "users_aggregate_bool_exp_bool_and_arguments_columns" columns of table "auth.users"
+"""
+enum users_select_column_users_aggregate_bool_exp_bool_and_arguments_columns {
+  """column name"""
+  disabled
+
+  """column name"""
+  emailVerified
+
+  """column name"""
+  isAnonymous
+
+  """column name"""
+  phoneNumberVerified
+}
+
+"""
+select "users_aggregate_bool_exp_bool_or_arguments_columns" columns of table "auth.users"
+"""
+enum users_select_column_users_aggregate_bool_exp_bool_or_arguments_columns {
+  """column name"""
+  disabled
+
+  """column name"""
+  emailVerified
+
+  """column name"""
+  isAnonymous
+
+  """column name"""
+  phoneNumberVerified
+}
+
+"""
+input type for updating data in table "auth.users"
+"""
+input users_set_input {
+  activeMfaType: String
+  avatarUrl: String
+  createdAt: timestamptz
+  currentChallenge: String
+  defaultRole: String
+  disabled: Boolean
+  displayName: String
+  email: citext
+  emailVerified: Boolean
+  id: uuid
+  isAnonymous: Boolean
+  lastSeen: timestamptz
+  locale: String
+  metadata: jsonb
+  newEmail: citext
+  otpHash: String
+  otpHashExpiresAt: timestamptz
+  otpMethodLastUsed: String
+  passwordHash: String
+  phoneNumber: String
+  phoneNumberVerified: Boolean
+  ticket: String
+  ticketExpiresAt: timestamptz
+  totpSecret: String
+  updatedAt: timestamptz
+}
+
+"""
+Streaming cursor of the table "users"
+"""
+input users_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: users_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input users_stream_cursor_value_input {
+  activeMfaType: String
+  avatarUrl: String
+  createdAt: timestamptz
+  currentChallenge: String
+  defaultRole: String
+  disabled: Boolean
+  displayName: String
+  email: citext
+  emailVerified: Boolean
+  id: uuid
+  isAnonymous: Boolean
+  lastSeen: timestamptz
+  locale: String
+  metadata: jsonb
+  newEmail: citext
+  otpHash: String
+  otpHashExpiresAt: timestamptz
+  otpMethodLastUsed: String
+  passwordHash: String
+  phoneNumber: String
+  phoneNumberVerified: Boolean
+  ticket: String
+  ticketExpiresAt: timestamptz
+  totpSecret: String
+  updatedAt: timestamptz
+}
+
+"""
+update columns of table "auth.users"
+"""
+enum users_update_column {
+  """column name"""
+  activeMfaType
+
+  """column name"""
+  avatarUrl
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  currentChallenge
+
+  """column name"""
+  defaultRole
+
+  """column name"""
+  disabled
+
+  """column name"""
+  displayName
+
+  """column name"""
+  email
+
+  """column name"""
+  emailVerified
+
+  """column name"""
+  id
+
+  """column name"""
+  isAnonymous
+
+  """column name"""
+  lastSeen
+
+  """column name"""
+  locale
+
+  """column name"""
+  metadata
+
+  """column name"""
+  newEmail
+
+  """column name"""
+  otpHash
+
+  """column name"""
+  otpHashExpiresAt
+
+  """column name"""
+  otpMethodLastUsed
+
+  """column name"""
+  passwordHash
+
+  """column name"""
+  phoneNumber
+
+  """column name"""
+  phoneNumberVerified
+
+  """column name"""
+  ticket
+
+  """column name"""
+  ticketExpiresAt
+
+  """column name"""
+  totpSecret
+
+  """column name"""
+  updatedAt
+}
+
+input users_updates {
+  """append existing jsonb value of filtered columns with new jsonb value"""
+  _append: users_append_input
+
+  """
+  delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+  """
+  _delete_at_path: users_delete_at_path_input
+
+  """
+  delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+  """
+  _delete_elem: users_delete_elem_input
+
+  """
+  delete key/value pair or string element. key/value pairs are matched based on their key value
+  """
+  _delete_key: users_delete_key_input
+
+  """prepend existing jsonb value of filtered columns with new jsonb value"""
+  _prepend: users_prepend_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: users_set_input
+  where: users_bool_exp!
+}
+
+scalar uuid
+
+"""
+Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
+"""
+input uuid_comparison_exp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid!]
+  _is_null: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid!]
+}
+
