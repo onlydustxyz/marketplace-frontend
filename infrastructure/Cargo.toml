@@ -51,7 +51,7 @@ log = "0.4.17"
 # Tracing
 opentelemetry = {version = "0.18.0", features = ["rt-tokio"]}
 opentelemetry-datadog = {version = "0.6.0", features = ["reqwest-client"]}
-tracing = {version = "0.1", features = []}
+tracing = "0.1"
 tracing-log = {version = "0.1", features = ["env_logger"]}
 tracing-opentelemetry = "0.18.0"
 tracing-subscriber = {version = "0.3", features = ["env-filter", "fmt", "json"]}

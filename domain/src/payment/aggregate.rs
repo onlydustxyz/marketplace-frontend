@@ -5,13 +5,17 @@ use crate::{
 	specifications, Aggregate, AggregateRoot, EventSourcable, PaymentEvent, PaymentId,
 	PaymentReceipt, PaymentReceiptId, ProjectId, UserId,
 };
+use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use thiserror::Error;
+use tracing::info;
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Payment {
 	id: PaymentId,
+	requested_usd_amount: Decimal,
+	paid_usd_amount: Decimal,
 }
 
 impl Aggregate for Payment {
@@ -22,8 +26,17 @@ impl Aggregate for Payment {
 impl EventSourcable for Payment {
 	fn apply_event(self, event: &Self::Event) -> Self {
 		match event {
-			PaymentEvent::Requested { id, .. } => Self { id: *id },
-			PaymentEvent::Processed { id, .. } => Self { id: *id },
+			PaymentEvent::Requested {
+				id, amount_in_usd, ..
+			} => Self {
+				id: *id,
+				requested_usd_amount: Decimal::new(*amount_in_usd as i64, 0),
+				..self
+			},
+			PaymentEvent::Processed { amount, .. } => Self {
+				paid_usd_amount: self.paid_usd_amount + amount.amount(),
+				..self
+			},
 		}
 	}
 }
@@ -38,6 +51,8 @@ pub enum Error {
 	RequestorNotFound,
 	#[error("Recipient not found")]
 	RecipientNotFound,
+	#[error("Receipt amount exceeds requested amount")]
+	Overspent,
 	#[error(transparent)]
 	Specification(specifications::Error),
 }
@@ -88,13 +103,25 @@ impl Payment {
 	}
 
 	pub fn add_receipt(
-		id: PaymentId,
+		&self,
 		receipt_id: PaymentReceiptId,
 		amount: Amount,
 		receipt: PaymentReceipt,
 	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+		// TODO: Handle currency conversion when needed
+		if self.paid_usd_amount + amount.amount() > self.requested_usd_amount {
+			return Err(Error::Overspent);
+		}
+
+		info!(
+			amount = amount.amount().to_string(),
+			already_paid = self.paid_usd_amount.to_string(),
+			requested_amount = self.requested_usd_amount.to_string(),
+			"New payment receipt added",
+		);
+
 		let events = vec![PaymentEvent::Processed {
-			id,
+			id: self.id,
 			amount,
 			receipt_id,
 			receipt,
@@ -113,7 +140,6 @@ mod tests {
 	use assert_matches::assert_matches;
 	use mockall::predicate::*;
 	use rstest::{fixture, rstest};
-	use rust_decimal_macros::dec;
 	use std::str::FromStr;
 	use testing::fixtures::payment::*;
 	use uuid::Uuid;
@@ -169,8 +195,11 @@ mod tests {
 	}
 
 	#[fixture]
-	fn amount() -> Amount {
-		Amount::new(dec!(123.45), Currency::Crypto("USDC".to_string()))
+	fn amount(amount_in_usd: u32) -> Amount {
+		Amount::new(
+			Decimal::new(amount_in_usd as i64, 0),
+			Currency::Crypto("USDC".to_string()),
+		)
 	}
 
 	#[fixture]
@@ -197,18 +226,83 @@ mod tests {
 		}
 	}
 
-	#[rstest]
-	fn test_create(
-		payment_receipt_id: PaymentReceiptId,
+	#[fixture]
+	async fn requested_payment(
 		payment_id: PaymentId,
+		project_id: ProjectId,
+		requestor_id: UserId,
+		recipient_id: UserId,
+		amount_in_usd: u32,
+		reason: Value,
+	) -> Payment {
+		let mut project_exists = ProjectExists::default();
+		project_exists.expect_is_satisfied_by().returning(|_| Ok(true));
+		let mut user_exists = UserExists::default();
+		user_exists.expect_is_satisfied_by().returning(|_| Ok(true));
+
+		let events = Payment::request(
+			&project_exists,
+			&user_exists,
+			payment_id,
+			project_id,
+			requestor_id,
+			recipient_id,
+			amount_in_usd,
+			reason,
+		)
+		.await
+		.expect("Problem when creating payment");
+		Payment::from_events(&events)
+	}
+
+	#[rstest]
+	async fn test_add_receipt(
+		payment_receipt_id: PaymentReceiptId,
 		payment_created_event: PaymentEvent,
 		amount: Amount,
 		receipt: PaymentReceipt,
+		#[future] requested_payment: Payment,
 	) {
-		let events = Payment::add_receipt(payment_id, payment_receipt_id, amount, receipt)
-			.expect("Problem when creating payment");
+		let events = requested_payment
+			.await
+			.add_receipt(payment_receipt_id, amount, receipt)
+			.expect("Problem when adding receipt");
 
 		assert_eq!(events, vec![payment_created_event]);
+	}
+
+	#[rstest]
+	async fn test_add_receipt_fails_if_overspent(
+		payment_receipt_id: PaymentReceiptId,
+		amount: Amount,
+		receipt: PaymentReceipt,
+		#[future] requested_payment: Payment,
+	) {
+		let result = requested_payment.await.add_receipt(
+			payment_receipt_id,
+			Amount::new(amount.amount() + amount.amount(), amount.currency().clone()),
+			receipt,
+		);
+
+		assert_matches!(result, Err(Error::Overspent));
+	}
+
+	#[rstest]
+	async fn test_add_receipt_fails_if_double_spent(
+		payment_receipt_id: PaymentReceiptId,
+		amount: Amount,
+		receipt: PaymentReceipt,
+		#[future] requested_payment: Payment,
+	) {
+		let payment = requested_payment.await;
+		let events = payment
+			.add_receipt(payment_receipt_id, amount.clone(), receipt.clone())
+			.expect("Problem when adding receipt");
+
+		let payment = payment.apply_events(&events);
+
+		let result = payment.add_receipt(payment_receipt_id, amount, receipt);
+		assert_matches!(result, Err(Error::Overspent));
 	}
 
 	#[rstest]

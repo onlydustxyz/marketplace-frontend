@@ -43,7 +43,7 @@ schemars = {version = "0.8", features = ["uuid1", "bigdecimal"]}
 log = "0.4.17"
 
 # Tracing
-tracing = {version = "0.1"}
+tracing = "0.1"
 
 # Errors
 anyhow = "1.0.57"
