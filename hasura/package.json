@@ -2,9 +2,11 @@
   "name": "onlydust-hasura",
   "version": "1.0.0",
   "scripts": {
-    "start": "hasura metadata apply --skip-update-check && hasura console --skip-update-check"
+    "start": "hasura metadata apply --skip-update-check && hasura console --skip-update-check",
+    "export-schema": "gq http://localhost:8080/v1/graphql -H \"X-Hasura-Admin-Secret: myadminsecretkey\" --introspect > schema/schema.graphql"
   },
   "devDependencies": {
-    "hasura-cli": "^2.14.0"
+    "hasura-cli": "^2.14.0",
+    "graphqurl": "^1.0.1"
   }
 }
