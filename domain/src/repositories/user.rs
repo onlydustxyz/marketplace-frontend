@@ -1,3 +1,4 @@
+use async_trait::async_trait;
 #[cfg(test)]
 use mockall::automock;
 use thiserror::Error;
@@ -13,6 +14,7 @@ pub enum Error {
 }
 
 #[cfg_attr(test, automock)]
+#[async_trait]
 pub trait Repository: Send + Sync {
-	fn find_by_id(&self, id: &UserId) -> Result<User, Error>;
+	async fn find_by_id(&self, id: &UserId) -> Result<User, Error>;
 }

@@ -15,8 +15,8 @@ impl Specification {
 		Self { user_repository }
 	}
 
-	pub fn is_satisfied_by(&self, user_id: &UserId) -> Result<bool, Error> {
-		match self.user_repository.find_by_id(user_id) {
+	pub async fn is_satisfied_by(&self, user_id: &UserId) -> Result<bool, Error> {
+		match self.user_repository.find_by_id(user_id).await {
 			Ok(_) => Ok(true),
 			Err(e) => match e {
 				UserRepositoryError::NotFound => Ok(false),
@@ -48,11 +48,11 @@ mod tests {
 			.expect_find_by_id()
 			.with(eq(user_id))
 			.once()
-			.returning(|id| Ok(User { id: *id }));
+			.returning(|id| Ok(User::new(*id)));
 
 		let specification = Specification::new(Arc::new(user_repository));
 
-		let result = specification.is_satisfied_by(&user_id).unwrap();
+		let result = specification.is_satisfied_by(&user_id).await.unwrap();
 		assert!(result);
 	}
 
@@ -67,7 +67,7 @@ mod tests {
 
 		let specification = Specification::new(Arc::new(user_repository));
 
-		let result = specification.is_satisfied_by(&user_id).unwrap();
+		let result = specification.is_satisfied_by(&user_id).await.unwrap();
 		assert!(!result);
 	}
 
@@ -82,7 +82,7 @@ mod tests {
 
 		let specification = Specification::new(Arc::new(user_repository));
 
-		let result = specification.is_satisfied_by(&user_id);
+		let result = specification.is_satisfied_by(&user_id).await;
 		assert!(result.is_err());
 		assert_matches!(result, Err(Error::UserRepository(_)));
 	}
