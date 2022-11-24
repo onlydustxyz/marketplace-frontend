@@ -28,9 +28,6 @@ pub use payment::{
 	ReceiptId as PaymentReceiptId,
 };
 
-mod payment_request;
-pub use payment_request::{Event as PaymentRequestEvent, Id as PaymentRequestId, PaymentRequest};
-
 mod user;
 pub use user::{Entity as User, Id as UserId};
 

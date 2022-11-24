@@ -71,7 +71,6 @@ impl IdentifiableAggregate for Event {
 				backend_domain::PaymentEvent::Requested { id, .. }
 				| backend_domain::PaymentEvent::Processed { id, .. } => id.to_string(),
 			},
-			Event::PaymentRequest(_) => unimplemented!(),
 		}
 	}
 }
