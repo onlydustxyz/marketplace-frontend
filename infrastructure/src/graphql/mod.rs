@@ -32,7 +32,7 @@ impl GraphQLClient {
 		}
 
 		let response_data: Q::ResponseData =
-			response_body.data.ok_or(anyhow!("missing response data"))?;
+			response_body.data.ok_or_else(|| anyhow!("missing response data"))?;
 		Ok(response_data)
 	}
 
