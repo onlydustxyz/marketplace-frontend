@@ -2,10 +2,10 @@ use crate::*;
 use thiserror::Error;
 
 mod aggregate_exists;
-pub use aggregate_exists::{PaymentRequestExists, ProjectExists};
+pub use aggregate_exists::ProjectExists;
 
 #[cfg(test)]
-pub use aggregate_exists::{MockPaymentRequestExists, MockProjectExists};
+pub use aggregate_exists::MockProjectExists;
 
 mod user_exists;
 pub use user_exists::Specification as UserExists;

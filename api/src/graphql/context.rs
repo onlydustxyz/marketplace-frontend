@@ -1,7 +1,7 @@
 use crate::application;
 use domain::{
-	AggregateRootRepository, Event, PaymentRequest, Project, Publisher, UniqueMessage,
-	UserRepository, UuidGenerator,
+	AggregateRootRepository, Event, Project, Publisher, UniqueMessage, UserRepository,
+	UuidGenerator,
 };
 use std::sync::Arc;
 
@@ -17,7 +17,6 @@ impl Context {
 		uuid_generator: Arc<dyn UuidGenerator>,
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		project_repository: AggregateRootRepository<Project>,
-		payment_request_repository: AggregateRootRepository<PaymentRequest>,
 		user_repository: Arc<dyn UserRepository>,
 	) -> Self {
 		Self {
@@ -30,7 +29,6 @@ impl Context {
 			create_payment_usecase: application::payment::create::Usecase::new(
 				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
-				payment_request_repository,
 			),
 			create_project_usecase: application::project::create::Usecase::new(
 				uuid_generator.to_owned(),

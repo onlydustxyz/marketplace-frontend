@@ -5,10 +5,7 @@ use thiserror::Error;
 
 #[cfg_attr(test, mockall_double::double)]
 use crate::specifications::{ProjectExists, UserExists};
-use crate::{
-	specifications, Aggregate, AggregateRoot, EventSourcable, PaymentRequestEvent,
-	PaymentRequestId, ProjectId, UserId,
-};
+use crate::{specifications, Aggregate, PaymentRequestEvent, PaymentRequestId, ProjectId, UserId};
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -31,16 +28,6 @@ impl Aggregate for PaymentRequest {
 	type Event = PaymentRequestEvent;
 	type Id = PaymentRequestId;
 }
-
-impl EventSourcable for PaymentRequest {
-	fn apply_event(self, event: &Self::Event) -> Self {
-		match event {
-			PaymentRequestEvent::Created { id, .. } => Self { id: *id },
-		}
-	}
-}
-
-impl AggregateRoot for PaymentRequest {}
 
 impl PaymentRequest {
 	#[cfg_attr(feature = "cargo-clippy", allow(clippy::too_many_arguments))]
@@ -315,20 +302,5 @@ mod tests {
 
 		assert!(result.is_err());
 		assert_matches!(result, Err(Error::RecipientNotFound));
-	}
-
-	#[rstest]
-	fn test_event_sourced_request(payment_request_id: PaymentRequestId) {
-		let event = PaymentRequestEvent::Created {
-			id: payment_request_id,
-			project_id: Default::default(),
-			requestor_id: Default::default(),
-			recipient_id: Default::default(),
-			amount_in_usd: Default::default(),
-			reason: Default::default(),
-		};
-
-		let payment_request = PaymentRequest::from_events(&[event]);
-		assert_eq!(payment_request.id, payment_request_id);
 	}
 }
