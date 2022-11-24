@@ -17,21 +17,20 @@ impl Projector {
 #[async_trait]
 impl EventListener for Projector {
 	async fn on_event(&self, event: &Event) -> Result<()> {
-		if let Event::Payment(event) = event {
-			match event {
-				PaymentEvent::Created {
-					id,
-					request_id,
-					amount,
-					receipt,
-				} => self.repository.insert(&Payment::new(
-					(*id).into(),
-					*amount.amount(),
-					amount.currency().to_string(),
-					serde_json::to_value(receipt)?,
-					(*request_id).into(),
-				))?,
-			}
+		if let Event::Payment(PaymentEvent::Created {
+			id,
+			request_id,
+			amount,
+			receipt,
+		}) = event
+		{
+			self.repository.insert(&Payment::new(
+				(*id).into(),
+				*amount.amount(),
+				amount.currency().to_string(),
+				serde_json::to_value(receipt)?,
+				(*request_id).into(),
+			))?
 		}
 		Ok(())
 	}

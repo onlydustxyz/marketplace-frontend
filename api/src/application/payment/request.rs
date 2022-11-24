@@ -4,7 +4,7 @@ use domain::{
 	specifications::{
 		ProjectExists as ProjectExistsSpecification, UserExists as UserExistsSpecification,
 	},
-	AggregateRootRepository, Event, PaymentId, PaymentRequest, Project, ProjectId, Publisher,
+	AggregateRootRepository, Event, Payment, PaymentId, Project, ProjectId, Publisher,
 	UniqueMessage, UserId, UserRepository, UuidGenerator,
 };
 use serde_json::Value;
@@ -32,7 +32,7 @@ impl Usecase {
 		}
 	}
 
-	pub async fn create(
+	pub async fn request(
 		&self,
 		project_id: ProjectId,
 		requestor_id: UserId,
@@ -40,12 +40,12 @@ impl Usecase {
 		amount_in_usd: u32,
 		reason: Value,
 	) -> Result<PaymentId> {
-		let payment_request_id = self.uuid_generator.new_uuid();
+		let payment_id = self.uuid_generator.new_uuid();
 
-		PaymentRequest::create(
+		Payment::request(
 			&self.project_exists_specification,
 			&self.user_exists_specification,
-			payment_request_id.into(),
+			payment_id.into(),
 			project_id,
 			requestor_id,
 			recipient_id,
@@ -60,6 +60,6 @@ impl Usecase {
 		.publish(self.event_publisher.clone())
 		.await?;
 
-		Ok(payment_request_id.into())
+		Ok(payment_id.into())
 	}
 }
