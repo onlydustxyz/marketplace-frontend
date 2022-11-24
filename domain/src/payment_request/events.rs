@@ -1,20 +1,8 @@
+use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
-use crate::{PaymentRequestId, ProjectId, UserId};
-use serde::{Deserialize, Serialize};
-use serde_json::Value;
-
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Event {
-	Created {
-		id: PaymentRequestId,
-		project_id: ProjectId,
-		requestor_id: UserId,
-		recipient_id: UserId,
-		amount_in_usd: u32,
-		reason: Value,
-	},
-}
+pub enum Event {}
 
 impl From<Event> for crate::Event {
 	fn from(event: Event) -> Self {

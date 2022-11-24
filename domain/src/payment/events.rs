@@ -1,12 +1,20 @@
-use std::fmt::Display;
-
-use crate::{PaymentId, PaymentReceipt, PaymentRequestId};
+use crate::{PaymentId, PaymentReceipt, PaymentRequestId, ProjectId, UserId};
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
+use std::fmt::Display;
 
 use super::amount::Amount;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
+	Requested {
+		id: PaymentId,
+		project_id: ProjectId,
+		requestor_id: UserId,
+		recipient_id: UserId,
+		amount_in_usd: u32,
+		reason: Value,
+	},
 	Created {
 		id: PaymentId,
 		request_id: PaymentRequestId,

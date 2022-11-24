@@ -70,7 +70,7 @@ impl Mutation {
 	) -> FieldResult<Uuid> {
 		let payment_request_id = context
 			.create_payment_request_usecase
-			.create(
+			.request(
 				project_id.into(),
 				requestor_id.into(),
 				recipient_id.into(),
