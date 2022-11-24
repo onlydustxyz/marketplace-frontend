@@ -36,6 +36,9 @@ uuid = {version = "0.8.2", default_features = false, features = [
   "serde",
 ]}
 
+# GraphQL Client
+graphql_client = "0.11.0"
+
 # Http Server
 rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 
@@ -84,3 +87,4 @@ tracing-test = "0.2.3"
 wiremock = "0.5"
 dotenv = "0.15.0"
 mockall = "0.11.2"
+httpmock = "0.6"

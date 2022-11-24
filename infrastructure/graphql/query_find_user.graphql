@@ -1,0 +1,5 @@
+query FindUserQuery($user_id: uuid!) {
+    user(id: $user_id) {
+        displayName
+    }
+}

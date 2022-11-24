@@ -63,6 +63,7 @@ impl PaymentRequest {
 
 		if !user_exists_specification
 			.is_satisfied_by(&requestor_id)
+			.await
 			.map_err(Error::Specification)?
 		{
 			return Err(Error::RequestorNotFound);
@@ -70,6 +71,7 @@ impl PaymentRequest {
 
 		if !user_exists_specification
 			.is_satisfied_by(&recipient_id)
+			.await
 			.map_err(Error::Specification)?
 		{
 			return Err(Error::RecipientNotFound);
