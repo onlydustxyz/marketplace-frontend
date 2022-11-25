@@ -1,4 +1,4 @@
-use crate::application;
+use crate::{application, domain::User};
 use domain::{
 	AggregateRootRepository, Event, Payment, Project, Publisher, UniqueMessage, UserRepository,
 	UuidGenerator,
@@ -6,6 +6,7 @@ use domain::{
 use std::sync::Arc;
 
 pub struct Context {
+	pub user: Box<dyn User>,
 	pub request_payment_usecase: application::payment::request::Usecase,
 	pub process_payment_usecase: application::payment::process::Usecase,
 	pub create_project_usecase: application::project::create::Usecase,
@@ -14,6 +15,7 @@ pub struct Context {
 
 impl Context {
 	pub fn new(
+		user: Box<dyn User>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		project_repository: AggregateRootRepository<Project>,
@@ -21,6 +23,7 @@ impl Context {
 		user_repository: Arc<dyn UserRepository>,
 	) -> Self {
 		Self {
+			user,
 			request_payment_usecase: application::payment::request::Usecase::new(
 				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
