@@ -9,6 +9,11 @@
         schema: |
           schema {
             query: Query
+            mutation: Mutation
+          }
+          scalar Uuid
+          type Mutation {
+            requestPayment(projectId: Uuid!, requestorId: Uuid!, recipientId: Uuid!, amountInUsd: Int!, reason: String!): Uuid!
           }
           type Query {
             hello: String!
