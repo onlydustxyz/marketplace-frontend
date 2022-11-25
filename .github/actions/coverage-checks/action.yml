@@ -10,6 +10,5 @@ runs:
       with:
         version: "0.20.1"
         args: |
-          --skip-clean
           --workspace
           ${{ inputs.test_flags }}
