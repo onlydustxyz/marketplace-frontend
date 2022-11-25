@@ -1,51 +1,33 @@
-use anyhow::anyhow;
-use graphql_client::GraphQLQuery;
+use reqwest::header::{HeaderMap, HeaderValue};
 
-pub mod hasura_client;
+use self::client::GraphQLClient;
+
+mod client;
 mod repositories;
 
-pub struct GraphQLClient {
-	http_client: reqwest::Client,
-	url: String,
-	custom_headers: reqwest::header::HeaderMap,
+fn graphql_url() -> String {
+	std::env::var("HASURA_GRAPHQL_GRAPHQL_URL").expect("HASURA_GRAPHQL_GRAPHQL_URL must be set")
 }
 
-impl GraphQLClient {
-	pub fn new(url: String, custom_headers: reqwest::header::HeaderMap) -> Self {
-		GraphQLClient {
-			http_client: reqwest::Client::new(),
-			url,
-			custom_headers,
-		}
+fn hasura_secret() -> String {
+	std::env::var("HASURA_GRAPHQL_ADMIN_SECRET").expect("HASURA_GRAPHQL_ADMIN_SECRET must be set")
+}
+
+pub struct HasuraClient(GraphQLClient);
+
+impl HasuraClient {
+	fn new(url: &str, hasura_secret: &str) -> Self {
+		let mut custom_headers = HeaderMap::new();
+		custom_headers.insert(
+			"x-hasura-admin-secret",
+			HeaderValue::from_str(hasura_secret).expect("invalid value for hasura secret"),
+		);
+		HasuraClient(GraphQLClient::new(url, custom_headers))
 	}
+}
 
-	async fn query<Q: GraphQLQuery>(
-		&self,
-		variables: Q::Variables,
-	) -> anyhow::Result<Q::ResponseData> {
-		let response_body = self
-			.post_graphql::<Q, _>(&self.http_client, self.url.clone(), variables)
-			.await?;
-
-		if let Some(errors) = response_body.errors {
-			return Err(anyhow!("Errors in GraphQL response: {:?}", errors));
-		}
-
-		let response_data: Q::ResponseData =
-			response_body.data.ok_or_else(|| anyhow!("missing response data"))?;
-		Ok(response_data)
-	}
-
-	async fn post_graphql<Q: GraphQLQuery, U: reqwest::IntoUrl>(
-		&self,
-		client: &reqwest::Client,
-		url: U,
-		variables: Q::Variables,
-	) -> Result<graphql_client::Response<Q::ResponseData>, reqwest::Error> {
-		let body = Q::build_query(variables);
-		let reqwest_response =
-			client.post(url).headers(self.custom_headers.clone()).json(&body).send().await?;
-
-		reqwest_response.json().await
+impl Default for HasuraClient {
+	fn default() -> Self {
+		Self::new(graphql_url().as_str(), hasura_secret().as_str())
 	}
 }
