@@ -8,11 +8,19 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
-Cypress.Commands.add('graphqlAsAdmin', (body) => {
+Cypress.Commands.add('graphql', (query) => {
     return cy.request({
         method: "POST",
         url: "/v1/graphql",
-        body: body,
+        body: { query: query },
+    });
+});
+
+Cypress.Commands.add('graphqlAsAdmin', (query) => {
+    return cy.request({
+        method: "POST",
+        url: "/v1/graphql",
+        body: { query: query },
         headers: {
             "X-Hasura-Admin-Secret": Cypress.env("hasuraAdminSecret"),
         },
@@ -20,9 +28,7 @@ Cypress.Commands.add('graphqlAsAdmin', (body) => {
 });
 
 Cypress.Commands.add('createProject', (projectName) => {
-    return cy.graphqlAsAdmin({
-        query: `mutation{ createProject(name: "${projectName}")}`,
-    })
+    return cy.graphqlAsAdmin(`mutation{ createProject(name: "${projectName}")}`)
         .its("body.data.createProject")
         .should("be.a", "string");
 });
@@ -49,16 +55,19 @@ Cypress.Commands.add('createUser', () => {
         },
         failOnStatusCode: false
     }).then(() => {
-        return cy.graphqlAsAdmin({
-            query: `{
+        return cy.graphqlAsAdmin(`{
                 users(where: {email: {_eq: "${email}"}}) {
                     id
                 }
             }`
-        })
+        )
             .its('body.data.users')
             .its(0)
             .its('id')
             .should('be.a', 'string');
     })
+});
+
+Cypress.Commands.add('addProjectLead', (projectId, userId) => {
+    cy.graphqlAsAdmin(`mutation { assignProjectLead(leaderId: "${userId}", projectId: "${projectId}") }`);
 });

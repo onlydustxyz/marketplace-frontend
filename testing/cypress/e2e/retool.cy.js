@@ -18,4 +18,27 @@ describe("Retool", () => {
                     });
             });
     });
+
+    it('can assign a leader to a project', () => {
+        cy.createProject('A leaded project').then(projectId => {
+            cy.createUser().then(userId => {
+                cy.addProjectLead(projectId, userId).then(() => {
+                    // Let the event sourcing magic happen
+                    cy.wait(500);
+
+                    cy.graphql(`{
+                        projects_by_pk(id: "${projectId}") {
+                          project_leads {
+                            user_id
+                          }
+                        }
+                      }`)
+                        .its('body.data.projects_by_pk.project_leads')
+                        .its(0)
+                        .its('user_id')
+                        .should('equal', userId);
+                })
+            })
+        });
+    });
 });
