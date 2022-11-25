@@ -1,4 +1,4 @@
-describe("GraphQL", () => {
+describe("The application", () => {
     it("should answer on Hasura queries", () => {
         cy.request("POST", "/v1/graphql", {
             query: "{ projects { name } }",
@@ -8,6 +8,7 @@ describe("GraphQL", () => {
                 assert.isArray($projects);
             });
     });
+
     it("should answer on Rust queries", () => {
         cy.request("POST", "/v1/graphql", {
             query: "{ hello }",

@@ -1,4 +1,4 @@
-describe("Retool", () => {
+describe("As an admin, on retool, I", () => {
     it("can create projects", () => {
         const projectName = "Cypress test project";
 
