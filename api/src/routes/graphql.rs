@@ -1,3 +1,4 @@
+use super::User;
 use crate::graphql::{Context, Schema};
 use domain::{
 	AggregateRootRepository, Event, Payment, Project, Publisher, UniqueMessage, UserRepository,
@@ -14,6 +15,7 @@ pub fn graphiql() -> content::RawHtml<String> {
 
 #[get("/graphql?<request>")]
 pub async fn get_graphql_handler(
+	user: User,
 	request: GraphQLRequest,
 	schema: &State<Schema>,
 	uuid_generator: &State<Arc<dyn UuidGenerator>>,
@@ -23,6 +25,7 @@ pub async fn get_graphql_handler(
 	user_repository: &State<Arc<dyn UserRepository>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
+		user.into(),
 		(*uuid_generator).clone(),
 		(*event_publisher).clone(),
 		(*project_repository).clone(),
@@ -34,6 +37,7 @@ pub async fn get_graphql_handler(
 
 #[post("/graphql", data = "<request>")]
 pub async fn post_graphql_handler(
+	user: User,
 	request: GraphQLRequest,
 	schema: &State<Schema>,
 	uuid_generator: &State<Arc<dyn UuidGenerator>>,
@@ -43,6 +47,7 @@ pub async fn post_graphql_handler(
 	user_repository: &State<Arc<dyn UserRepository>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
+		user.into(),
 		(*uuid_generator).clone(),
 		(*event_publisher).clone(),
 		(*project_repository).clone(),
