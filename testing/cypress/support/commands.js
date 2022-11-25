@@ -27,6 +27,18 @@ Cypress.Commands.add('graphqlAsAdmin', (query) => {
     });
 });
 
+Cypress.Commands.add('graphqlAs', (user, query) => {
+    return cy.signinUser(user).then(({ accessToken }) =>
+        cy.request({
+            method: "POST",
+            url: "/v1/graphql",
+            body: { query: query },
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            },
+        }));
+});
+
 Cypress.Commands.add('createProject', (projectName) => {
     return cy.graphqlAsAdmin(`mutation{ createProject(name: "${projectName}")}`)
         .its("body.data.createProject")
@@ -35,6 +47,7 @@ Cypress.Commands.add('createProject', (projectName) => {
 
 Cypress.Commands.add('createUser', () => {
     const email = `cypress-${Date.now()}@onlydust.xyz`;
+    const password = "Str0ngPassw#ord-94|%";
 
     cy.request({
         method: 'POST',
@@ -51,7 +64,7 @@ Cypress.Commands.add('createUser', () => {
                 "displayName": "John Smith",
                 "locale": "en",
             },
-            "password": "Str0ngPassw#ord-94|%"
+            "password": password
         },
         failOnStatusCode: false
     }).then(() => {
@@ -64,10 +77,46 @@ Cypress.Commands.add('createUser', () => {
             .its('body.data.users')
             .its(0)
             .its('id')
-            .should('be.a', 'string');
+            .should('be.a', 'string').then(userId => {
+                cy.graphqlAsAdmin(`mutation {
+                    updateUser(pk_columns: {id: "${userId}"}, _set: {emailVerified: true}) {
+                      id
+                    }
+                  }`
+                )
+                    .its('body.data.updateUser.id')
+                    .should('be.a', 'string')
+                    .then(() => {
+                        return {
+                            'id': userId,
+                            email,
+                            password
+                        }
+                    });
+            })
     })
+});
+
+Cypress.Commands.add('signinUser', (user) => {
+    cy.request('POST', 'http://localhost:4000/signin/email-password', {
+        "email": user.email,
+        "password": user.password
+    })
+        .its('body.session.accessToken').should('be.a', 'string').then(accessToken => {
+            return {
+                'accessToken': accessToken,
+                ...user
+            }
+        });
 });
 
 Cypress.Commands.add('addProjectLead', (projectId, userId) => {
     cy.graphqlAsAdmin(`mutation { assignProjectLead(leaderId: "${userId}", projectId: "${projectId}") }`);
+});
+
+Cypress.Commands.add('requestPayment', (requestor, projectId, amount, recipient, reason) => {
+    return cy.graphqlAs(requestor, `mutation {
+        requestPayment(amountInUsd: ${amount}, projectId: "${projectId}", recipientId: "${recipient.id}", requestorId: "${requestor.id}", reason: "{}")
+      }
+      `).its('body.data.requestPayment').should('be.a', 'string');
 });
