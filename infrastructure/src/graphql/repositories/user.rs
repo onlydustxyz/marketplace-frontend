@@ -2,7 +2,7 @@ use async_trait::async_trait;
 use domain::*;
 use graphql_client::GraphQLQuery;
 
-use crate::graphql::GraphQLClient;
+use crate::graphql::HasuraClient;
 
 use uuid::Uuid;
 
@@ -16,9 +16,10 @@ use uuid::Uuid;
 pub struct FindUserQuery;
 
 #[async_trait]
-impl UserRepository for GraphQLClient {
+impl UserRepository for HasuraClient {
 	async fn find_by_id(&self, id: &UserId) -> Result<User, UserRepositoryError> {
 		let response_data = self
+			.0
 			.query::<FindUserQuery>(find_user_query::Variables {
 				user_id: (*id).into(),
 			})
@@ -39,7 +40,6 @@ mod tests {
 	use ::uuid::Uuid;
 	use assert_matches::assert_matches;
 	use httpmock::{Method::POST, MockServer};
-	use reqwest::header::HeaderMap;
 	use rstest::{fixture, rstest};
 	use serde_json::json;
 	use std::str::FromStr;
@@ -69,7 +69,7 @@ mod tests {
 			}));
 		});
 
-		let user_repository = GraphQLClient::new(server.url("/v1/graphql"), HeaderMap::new());
+		let user_repository = HasuraClient::new(server.url("/v1/graphql").as_str(), "secret");
 		let user = user_repository.find_by_id(&user_id).await.unwrap();
 		assert_eq!(user.id(), &user_id);
 	}
@@ -89,7 +89,7 @@ mod tests {
 			}));
 		});
 
-		let user_repository = GraphQLClient::new(server.url("/v1/graphql"), HeaderMap::new());
+		let user_repository = HasuraClient::new(server.url("/v1/graphql").as_str(), "secret");
 		let result = user_repository.find_by_id(&unexisting_user_id).await;
 		assert!(result.is_err());
 		assert_matches!(result, Err(UserRepositoryError::NotFound));
