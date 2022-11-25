@@ -7,19 +7,22 @@
 // commands please read more here:
 // https://on.cypress.io/custom-commands
 // ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('graphqlAsAdmin', (body) => {
+    return cy.request({
+        method: "POST",
+        url: "/v1/graphql",
+        body: body,
+        headers: {
+            "X-Hasura-Admin-Secret": Cypress.env("hasuraAdminSecret"),
+        },
+    });
+});
+
+Cypress.Commands.add('createProject', (projectName) => {
+    return cy.graphqlAsAdmin({
+        query: `mutation{ createProject(name: "${projectName}")}`,
+    })
+        .its("body.data.createProject")
+        .should("be.a", "string");
+});
