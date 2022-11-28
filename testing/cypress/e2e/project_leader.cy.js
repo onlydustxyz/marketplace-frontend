@@ -26,4 +26,19 @@ describe("As a project leader, I", () => {
             })
         });
     });
+
+
+    it("anyone cannot request a payment", () => {
+        cy.createUser().then(contributor => {
+            cy.graphqlAs(contributor, `mutation {
+                requestPayment(amountInUsd: 500, projectId: "${projectId}", recipientId: "${contributor.id}", requestorId: "${contributor.id}", reason: "{}")
+              }
+              `).its('body.errors').should($errors => {
+                expect($errors).to.have.length(1);
+                expect($errors[0].message).to.equal('User is not authorized to perform the action');
+                expect($errors[0].extensions.reason).to.equal('Project leader role required');
+
+            })
+        });
+    });
 });
