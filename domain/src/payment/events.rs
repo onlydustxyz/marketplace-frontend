@@ -1,5 +1,4 @@
-use super::amount::Amount;
-use crate::{PaymentId, PaymentReceipt, PaymentReceiptId, ProjectId, UserId};
+use crate::{Amount, PaymentId, PaymentReceipt, PaymentReceiptId, ProjectId, UserId};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::fmt::Display;

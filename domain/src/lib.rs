@@ -24,7 +24,7 @@ pub use project::{Event as ProjectEvent, Id as ProjectId, Project};
 
 mod payment;
 pub use payment::{
-	Amount, Currency, Event as PaymentEvent, Id as PaymentId, Payment, Receipt as PaymentReceipt,
+	Event as PaymentEvent, Id as PaymentId, Payment, Receipt as PaymentReceipt,
 	ReceiptId as PaymentReceiptId,
 };
 
