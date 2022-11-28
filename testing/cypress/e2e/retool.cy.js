@@ -20,14 +20,14 @@ describe("As an admin, on retool, I", () => {
     });
 
     it('can assign a leader to a project', () => {
-        cy.createProject('A leaded project').then(projectId => {
-            cy.createUser().then(userId => {
-                cy.addProjectLead(projectId, userId).then(() => {
+        cy.createProject('A leaded project').then($projectId => {
+            cy.createUser().then($user => {
+                cy.addProjectLead($projectId, $user.id).then(() => {
                     // Let the event sourcing magic happen
                     cy.wait(500);
 
                     cy.graphql(`{
-                        projects_by_pk(id: "${projectId}") {
+                        projects_by_pk(id: "${$projectId}") {
                           project_leads {
                             user_id
                           }
@@ -36,7 +36,7 @@ describe("As an admin, on retool, I", () => {
                         .its('body.data.projects_by_pk.project_leads')
                         .its(0)
                         .its('user_id')
-                        .should('equal', userId);
+                        .should('equal', $user.id);
                 })
             })
         });
