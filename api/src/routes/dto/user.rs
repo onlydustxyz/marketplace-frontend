@@ -23,10 +23,10 @@ impl<'r> FromRequest<'r> for User {
 		let lead_projects: Vec<Uuid> = request
 			.headers()
 			.get_one("x-hasura-projects_leaded")
-			.and_then(|h| serde_json::from_str(&h.replace("{", "[").replace("}", "]")).ok())
+			.and_then(|h| serde_json::from_str(&h.replace('{', "[").replace('}', "]")).ok())
 			.unwrap_or_default();
 
-		if lead_projects.len() > 0 {
+		if !lead_projects.is_empty() {
 			return Outcome::Success(User::ProjectLead(lead_projects));
 		}
 
