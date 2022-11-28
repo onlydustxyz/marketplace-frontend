@@ -1,8 +1,7 @@
-use super::amount::Amount;
 #[cfg_attr(test, mockall_double::double)]
 use crate::specifications::{ProjectExists, UserExists};
 use crate::{
-	specifications, Aggregate, AggregateRoot, EventSourcable, PaymentEvent, PaymentId,
+	specifications, Aggregate, AggregateRoot, Amount, EventSourcable, PaymentEvent, PaymentId,
 	PaymentReceipt, PaymentReceiptId, ProjectId, UserId,
 };
 use rust_decimal::Decimal;
