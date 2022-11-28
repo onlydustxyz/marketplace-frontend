@@ -13,6 +13,7 @@ pub fn graphiql() -> content::RawHtml<String> {
 	juniper_rocket::graphiql_source("/graphql", None)
 }
 
+#[allow(clippy::too_many_arguments)]
 #[get("/graphql?<request>")]
 pub async fn get_graphql_handler(
 	user: User,
@@ -35,6 +36,7 @@ pub async fn get_graphql_handler(
 	request.execute(schema, &context).await
 }
 
+#[allow(clippy::too_many_arguments)]
 #[post("/graphql", data = "<request>")]
 pub async fn post_graphql_handler(
 	user: User,
