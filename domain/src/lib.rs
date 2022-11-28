@@ -31,6 +31,9 @@ pub use payment::{
 mod user;
 pub use user::{Entity as User, Id as UserId};
 
+mod budget;
+pub use budget::{Budget, Event as BudgetEvent, Id as BudgetId};
+
 pub mod aggregate_root;
 pub use aggregate_root::{
 	AggregateRoot, Error as AggregateRootRepositoryError, Repository as AggregateRootRepository,
