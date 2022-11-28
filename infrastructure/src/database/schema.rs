@@ -1,6 +1,15 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
+    budgets (id) {
+        id -> Uuid,
+        project_id -> Nullable<Uuid>,
+        initial_amount -> Numeric,
+        remaining_amount -> Numeric,
+    }
+}
+
+diesel::table! {
     event_deduplications (deduplication_id) {
         deduplication_id -> Text,
         event_index -> Int4,
@@ -83,11 +92,13 @@ diesel::table! {
     }
 }
 
+diesel::joinable!(budgets -> projects (project_id));
 diesel::joinable!(payment_requests -> projects (project_id));
 diesel::joinable!(payments -> payment_requests (request_id));
 diesel::joinable!(project_leads -> projects (project_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
+    budgets,
     event_deduplications,
     event_filters,
     events,
