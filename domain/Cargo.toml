@@ -22,6 +22,7 @@ uuid = {version = "0.8.2", default_features = false, features = [
   "serde",
 ]}
 rust_decimal = "1.26.1"
+rusty-money = {version = "0.4.1", features = ["iso", "crypto"]}
 
 # Errors
 anyhow = "1.0.57"

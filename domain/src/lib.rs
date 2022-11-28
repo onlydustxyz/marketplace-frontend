@@ -32,7 +32,7 @@ mod user;
 pub use user::{Entity as User, Id as UserId};
 
 mod budget;
-pub use budget::{Budget, Event as BudgetEvent, Id as BudgetId};
+pub use budget::{Budget, Event as BudgetEvent, Id as BudgetId, Topic as BudgetTopic};
 
 pub mod aggregate_root;
 pub use aggregate_root::{
