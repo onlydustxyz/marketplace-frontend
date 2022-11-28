@@ -3,17 +3,11 @@ use std::sync::Arc;
 use crate::domain::Payment;
 use infrastructure::database::{schema::payments::dsl, Client};
 
-#[derive(DieselRepository)]
+#[derive(DieselRepository, new)]
 #[entity(Payment)]
 #[table(dsl::payments)]
 #[id(dsl::id)]
 pub struct Repository(Arc<Client>);
-
-impl Repository {
-	pub fn new(client: Arc<Client>) -> Self {
-		Self(client)
-	}
-}
 
 #[cfg(test)]
 mod tests {
