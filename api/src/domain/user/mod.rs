@@ -1,4 +1,5 @@
 use domain::ProjectId;
+use std::collections::HashSet;
 
 mod admin;
 mod project_leader;
@@ -12,7 +13,7 @@ pub fn admin() -> Box<dyn User> {
 	Box::new(admin::Admin)
 }
 
-pub fn project_leader(projects: Vec<ProjectId>) -> Box<dyn User> {
+pub fn project_leader(projects: HashSet<ProjectId>) -> Box<dyn User> {
 	Box::new(project_leader::ProjectLeader::new(projects))
 }
 

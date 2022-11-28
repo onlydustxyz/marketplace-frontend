@@ -1,9 +1,10 @@
 use super::User;
 use domain::ProjectId;
+use std::collections::HashSet;
 
 #[derive(new)]
 pub(super) struct ProjectLeader {
-	projects: Vec<ProjectId>,
+	projects: HashSet<ProjectId>,
 }
 
 impl User for ProjectLeader {
