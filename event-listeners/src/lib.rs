@@ -4,6 +4,9 @@ extern crate diesel;
 #[macro_use]
 extern crate macros;
 
+#[macro_use]
+extern crate derive_new;
+
 use std::sync::Arc;
 
 use ::infrastructure::database;

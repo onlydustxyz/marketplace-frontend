@@ -1210,6 +1210,7 @@ dependencies = [
  "async-std",
  "async-trait",
  "derive-getters",
+ "derive-new",
  "derive_more",
  "diesel",
  "domain",

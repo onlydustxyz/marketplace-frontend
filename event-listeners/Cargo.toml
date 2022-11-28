@@ -54,6 +54,7 @@ serde_json = {version = "1.0.81"}
 # Utils
 derive-getters = "0.2.0"
 derive_more = "0.99.17"
+derive-new = "0.5.9"
 dotenv = "0.15.0"
 
 # Local dependecies

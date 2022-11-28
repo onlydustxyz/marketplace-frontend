@@ -7,13 +7,8 @@ use crate::{
 use infrastructure::database::{schema::project_leads::dsl, Client};
 use uuid::Uuid;
 
+#[derive(new)]
 pub struct Repository(Arc<Client>);
-
-impl Repository {
-	pub fn new(client: Arc<Client>) -> Self {
-		Self(client)
-	}
-}
 
 impl ProjectLeadRepository for Repository {
 	fn insert(&self, projection: &ProjectLead) -> anyhow::Result<()> {
