@@ -7,7 +7,8 @@ use webhook::EventWebHook;
 use crate::{
 	domain::*,
 	infrastructure::database::{
-		PaymentRepository, PaymentRequestRepository, ProjectLeadRepository, ProjectRepository,
+		BudgetRepository, PaymentRepository, PaymentRequestRepository, ProjectLeadRepository,
+		ProjectRepository,
 	},
 };
 use anyhow::Result;
@@ -23,6 +24,7 @@ pub async fn spawn_all(
 	let payment_repository = Arc::new(PaymentRepository::new(database.clone()));
 	let payment_request_repository = Arc::new(PaymentRequestRepository::new(database.clone()));
 	let project_repository = Arc::new(ProjectRepository::new(database.clone()));
+	let budget_repository = Arc::new(BudgetRepository::new(database.clone()));
 	let project_lead_repository = Arc::new(ProjectLeadRepository::new(database));
 
 	let handles = [
@@ -33,6 +35,7 @@ pub async fn spawn_all(
 			.spawn(event_bus::consumer("payment_requests").await?),
 		ProjectProjector::new(project_repository, project_lead_repository)
 			.spawn(event_bus::consumer("projects").await?),
+		BudgetProjector::new(budget_repository).spawn(event_bus::consumer("budgets").await?),
 	];
 
 	Ok(handles.into())

@@ -1,4 +1,6 @@
 #[allow(clippy::extra_unused_lifetimes)]
+mod budget;
+#[allow(clippy::extra_unused_lifetimes)]
 mod payment;
 #[allow(clippy::extra_unused_lifetimes)]
 mod payment_request;
@@ -7,6 +9,7 @@ mod project;
 #[allow(clippy::extra_unused_lifetimes)]
 mod project_lead;
 
+pub use budget::Budget;
 use domain::Entity;
 pub use payment::Payment;
 pub use payment_request::PaymentRequest;
