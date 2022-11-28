@@ -3,11 +3,12 @@ use rocket::{
 	request::{FromRequest, Outcome},
 	Request,
 };
+use std::collections::HashSet;
 use uuid::Uuid;
 
 pub enum User {
 	Admin,
-	ProjectLead(Vec<Uuid>),
+	ProjectLead(HashSet<Uuid>),
 	Public,
 }
 
@@ -20,7 +21,7 @@ impl<'r> FromRequest<'r> for User {
 			return Outcome::Success(User::Admin);
 		}
 
-		let lead_projects: Vec<Uuid> = request
+		let lead_projects: HashSet<Uuid> = request
 			.headers()
 			.get_one("x-hasura-projects_leaded")
 			.and_then(|h| serde_json::from_str(&h.replace('{', "[").replace('}', "]")).ok())
