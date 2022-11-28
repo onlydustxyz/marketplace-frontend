@@ -20,7 +20,7 @@ describe("As an admin, on retool, I", () => {
     });
 
     it('can assign a leader to a project', () => {
-        cy.createProject('A leaded project').then($projectId => {
+        cy.createProject().then($projectId => {
             cy.createUser().then($user => {
                 cy.addProjectLead($projectId, $user.id).then(() => {
                     // Let the event sourcing magic happen

@@ -39,8 +39,8 @@ Cypress.Commands.add('graphqlAs', (user, query) => {
         }));
 });
 
-Cypress.Commands.add('createProject', (projectName) => {
-    return cy.graphqlAsAdmin(`mutation{ createProject(name: "${projectName}")}`)
+Cypress.Commands.add('createProject', (projectName = 'My Project', initialBudget = 500) => {
+    return cy.graphqlAsAdmin(`mutation{ createProject(name: "${projectName}", initialBudgetInUsd: ${initialBudget})}`)
         .its("body.data.createProject")
         .should("be.a", "string");
 });

@@ -2,7 +2,7 @@ describe("As a project leader, I", () => {
     let projectId;
     let leader;
     before(() => {
-        cy.createProject('My Project').then($projectId =>
+        cy.createProject().then($projectId =>
             cy.createUser().then($user => {
                 cy.addProjectLead($projectId, $user.id).then(() => {
                     projectId = $projectId;
