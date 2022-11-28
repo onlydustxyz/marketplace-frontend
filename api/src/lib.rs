@@ -25,6 +25,9 @@ use tracing::instrument;
 #[macro_use]
 extern crate rocket;
 
+#[macro_use]
+extern crate derive_new;
+
 #[instrument]
 pub async fn main() -> Result<()> {
 	dotenv().ok();
