@@ -4,8 +4,8 @@ use domain::{
 	specifications::{
 		ProjectExists as ProjectExistsSpecification, UserExists as UserExistsSpecification,
 	},
-	AggregateRootRepository, Event, Payment, PaymentId, Project, ProjectId, Publisher,
-	UniqueMessage, UserId, UserRepository, UuidGenerator,
+	BudgetId, Event, Payment, PaymentId, Publisher, UniqueMessage, UserId, UserRepository,
+	UuidGenerator,
 };
 use serde_json::Value;
 use std::sync::Arc;
@@ -34,7 +34,7 @@ impl Usecase {
 
 	pub async fn request(
 		&self,
-		project_id: ProjectId,
+		budget_id: BudgetId,
 		requestor_id: UserId,
 		recipient_id: UserId,
 		amount_in_usd: u32,
@@ -46,7 +46,7 @@ impl Usecase {
 			&self.project_exists_specification,
 			&self.user_exists_specification,
 			payment_id.into(),
-			project_id,
+			budget_id,
 			requestor_id,
 			recipient_id,
 			amount_in_usd,
