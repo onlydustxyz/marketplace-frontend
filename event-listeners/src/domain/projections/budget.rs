@@ -9,7 +9,7 @@ pub struct Budget {
 	id: Uuid,
 	project_id: Option<Uuid>,
 	initial_amount: Decimal,
-	remaining_amount: Decimal,
+	pub remaining_amount: Decimal,
 }
 
 impl Entity for Budget {
