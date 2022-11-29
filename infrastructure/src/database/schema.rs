@@ -61,6 +61,15 @@ diesel::table! {
 }
 
 diesel::table! {
+    project_details (project_id) {
+        project_id -> Uuid,
+        github_repo_id -> Int8,
+        description -> Nullable<Text>,
+        telegram_link -> Nullable<Text>,
+    }
+}
+
+diesel::table! {
     project_leads (project_id, user_id) {
         project_id -> Uuid,
         user_id -> Uuid,
@@ -86,6 +95,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     payment_requests,
     payments,
     payout_settings,
+    project_details,
     project_leads,
     projects,
 );
