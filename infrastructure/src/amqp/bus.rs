@@ -2,12 +2,14 @@ use lapin::{
 	message::Delivery,
 	options::{ExchangeDeclareOptions, QueueDeclareOptions},
 	publisher_confirm::Confirmation,
-	Channel, Connection, Consumer,
+	BasicProperties, Channel, Connection, Consumer,
 };
 use log::error;
 use thiserror::Error;
 use tokio::sync::RwLock;
 use tokio_stream::StreamExt;
+
+const DELIVERY_MODE_PERSISTENT: u8 = 2;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -59,7 +61,7 @@ impl Bus {
 				routing_key,
 				Default::default(),
 				data,
-				Default::default(),
+				BasicProperties::default().with_delivery_mode(DELIVERY_MODE_PERSISTENT),
 			)
 			.await?
 			.await?;
