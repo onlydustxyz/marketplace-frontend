@@ -1,8 +1,8 @@
 #[cfg_attr(test, mockall_double::double)]
 use crate::specifications::{ProjectExists, UserExists};
 use crate::{
-	specifications, Aggregate, AggregateRoot, Amount, EventSourcable, PaymentEvent, PaymentId,
-	PaymentReceipt, PaymentReceiptId, ProjectId, UserId,
+	specifications, Aggregate, AggregateRoot, Amount, BudgetId, EventSourcable, PaymentEvent,
+	PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
 };
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
@@ -62,7 +62,7 @@ impl Payment {
 		project_exists_specification: &ProjectExists,
 		user_exists_specification: &UserExists,
 		id: PaymentId,
-		project_id: ProjectId,
+		budget_id: BudgetId,
 		requestor_id: UserId,
 		recipient_id: UserId,
 		amount_in_usd: u32,
@@ -93,7 +93,7 @@ impl Payment {
 
 		Ok(vec![PaymentEvent::Requested {
 			id,
-			project_id,
+			budget_id,
 			requestor_id,
 			recipient_id,
 			amount_in_usd,
@@ -135,7 +135,7 @@ mod tests {
 	use super::*;
 	#[mockall_double::double]
 	use crate::specifications::ProjectExists;
-	use crate::{BlockchainNetwork, Currency, PaymentReceiptId, ProjectId, UserId};
+	use crate::{BlockchainNetwork, BudgetId, Currency, PaymentReceiptId, UserId};
 	use assert_matches::assert_matches;
 	use mockall::predicate::*;
 	use rstest::{fixture, rstest};
@@ -149,7 +149,7 @@ mod tests {
 	}
 
 	#[fixture]
-	fn project_id() -> ProjectId {
+	fn budget_id() -> BudgetId {
 		Uuid::from_str("11111111-aaaa-495e-9f4c-038ec0ebecb1").unwrap().into()
 	}
 
@@ -228,7 +228,7 @@ mod tests {
 	#[fixture]
 	async fn requested_payment(
 		payment_id: PaymentId,
-		project_id: ProjectId,
+		budget_id: BudgetId,
 		requestor_id: UserId,
 		recipient_id: UserId,
 		amount_in_usd: u32,
@@ -243,7 +243,7 @@ mod tests {
 			&project_exists,
 			&user_exists,
 			payment_id,
-			project_id,
+			budget_id,
 			requestor_id,
 			recipient_id,
 			amount_in_usd,
@@ -307,7 +307,7 @@ mod tests {
 	#[rstest]
 	async fn test_request(
 		payment_id: PaymentId,
-		project_id: ProjectId,
+		budget_id: BudgetId,
 		requestor_id: UserId,
 		recipient_id: UserId,
 		amount_in_usd: u32,
@@ -336,7 +336,7 @@ mod tests {
 			&project_exists_specification,
 			&user_exists_specification,
 			payment_id,
-			project_id,
+			budget_id,
 			requestor_id,
 			recipient_id,
 			amount_in_usd,
@@ -350,7 +350,7 @@ mod tests {
 			events[0],
 			PaymentEvent::Requested {
 				id: payment_id,
-				project_id,
+				budget_id,
 				requestor_id,
 				recipient_id,
 				amount_in_usd,
@@ -396,7 +396,7 @@ mod tests {
 	#[rstest]
 	async fn test_request_with_wrong_requestor_id(
 		payment_id: PaymentId,
-		project_id: ProjectId,
+		budget_id: BudgetId,
 		wrong_requestor_id: UserId,
 		recipient_id: UserId,
 		amount_in_usd: u32,
@@ -420,7 +420,7 @@ mod tests {
 			&project_exists_specification,
 			&user_exists_specification,
 			payment_id,
-			project_id,
+			budget_id,
 			wrong_requestor_id,
 			recipient_id,
 			amount_in_usd,
@@ -435,7 +435,7 @@ mod tests {
 	#[rstest]
 	async fn test_request_with_wrong_recipient_id(
 		payment_id: PaymentId,
-		project_id: ProjectId,
+		budget_id: BudgetId,
 		requestor_id: UserId,
 		wrong_recipient_id: UserId,
 		amount_in_usd: u32,
@@ -464,7 +464,7 @@ mod tests {
 			&project_exists_specification,
 			&user_exists_specification,
 			payment_id,
-			project_id,
+			budget_id,
 			requestor_id,
 			wrong_recipient_id,
 			amount_in_usd,
@@ -480,7 +480,7 @@ mod tests {
 	fn test_event_sourced(payment_id: PaymentId) {
 		let event = PaymentEvent::Requested {
 			id: payment_id,
-			project_id: Default::default(),
+			budget_id: Default::default(),
 			requestor_id: Default::default(),
 			recipient_id: Default::default(),
 			amount_in_usd: Default::default(),

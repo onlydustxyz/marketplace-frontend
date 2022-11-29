@@ -120,9 +120,9 @@ Cypress.Commands.add('addProjectLead', (projectId, userId) => {
     cy.graphqlAsAdmin(`mutation { assignProjectLead(leaderId: "${userId}", projectId: "${projectId}") }`);
 });
 
-Cypress.Commands.add('requestPayment', (requestor, projectId, amount, recipient, reason) => {
+Cypress.Commands.add('requestPayment', (requestor, budgetId, amount, recipient, reason) => {
     return cy.graphqlAs(requestor, `mutation {
-        requestPayment(amountInUsd: ${amount}, projectId: "${projectId}", recipientId: "${recipient.id}", requestorId: "${requestor.id}", reason: "{}")
+        requestPayment(amountInUsd: ${amount}, budgetId: "${budgetId}", recipientId: "${recipient.id}", requestorId: "${requestor.id}", reason: "${reason}")
       }
       `).its('body.data.requestPayment').should('be.a', 'string');
 });

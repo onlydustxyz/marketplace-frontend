@@ -7,7 +7,7 @@ use uuid::Uuid;
 #[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, new)]
 pub struct PaymentRequest {
 	id: Uuid,
-	project_id: Uuid,
+	budget_id: Uuid,
 	requestor_id: Uuid,
 	recipient_id: Uuid,
 	amount_in_usd: i64,

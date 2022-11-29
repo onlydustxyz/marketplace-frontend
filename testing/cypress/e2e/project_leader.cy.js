@@ -1,12 +1,28 @@
 describe("As a project leader, I", () => {
     let projectId;
     let leader;
+    let budgetId;
+
     before(() => {
-        cy.createProject().then($projectId =>
+        cy.createProject('Project with budget', 1000).then($projectId =>
             cy.createUser().then($user => {
                 cy.addProjectLead($projectId, $user.id).then(() => {
-                    projectId = $projectId;
-                    leader = $user;
+                    cy.graphqlAs($user, `{
+                        projects_by_pk(id: "${$projectId}") {
+                            budgets {
+                                id
+                            }
+                        }
+                    }`)
+                        .its('body.data.projects_by_pk.budgets')
+                        .its(0)
+                        .its('id')
+                        .should('be.a', 'string')
+                        .then($budgetId => {
+                            projectId = $projectId;
+                            leader = $user;
+                            budgetId = $budgetId;
+                        })
                 })
             })
         )
@@ -14,7 +30,7 @@ describe("As a project leader, I", () => {
 
     it("can request a payment", () => {
         cy.createUser().then(contributor => {
-            cy.requestPayment(leader, projectId, '500', contributor, {}).then(paymentId => {
+            cy.requestPayment(leader, budgetId, '500', contributor, {}).then(paymentId => {
                 cy.wait(500);
                 cy.graphqlAsAdmin(`{
                     payment_requests_by_pk(id: "${paymentId}") {
@@ -31,7 +47,7 @@ describe("As a project leader, I", () => {
     it("anyone cannot request a payment", () => {
         cy.createUser().then(contributor => {
             cy.graphqlAs(contributor, `mutation {
-                requestPayment(amountInUsd: 500, projectId: "${projectId}", recipientId: "${contributor.id}", requestorId: "${contributor.id}", reason: "{}")
+                requestPayment(amountInUsd: 500, budgetId: "${budgetId}", recipientId: "${contributor.id}", requestorId: "${contributor.id}", reason: "{}")
               }
               `).its('body.errors').should($errors => {
                 expect($errors).to.have.length(1);

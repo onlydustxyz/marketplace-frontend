@@ -19,7 +19,7 @@ impl EventListener for Projector {
 	async fn on_event(&self, event: &Event) -> Result<()> {
 		if let Event::Payment(PaymentEvent::Requested {
 			id,
-			project_id,
+			budget_id,
 			requestor_id,
 			recipient_id,
 			amount_in_usd,
@@ -28,7 +28,7 @@ impl EventListener for Projector {
 		{
 			self.repository.insert(&PaymentRequest::new(
 				(*id).into(),
-				(*project_id).into(),
+				(*budget_id).into(),
 				(*requestor_id).into(),
 				(*recipient_id).into(),
 				*amount_in_usd as i64,

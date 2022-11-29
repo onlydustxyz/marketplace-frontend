@@ -95,7 +95,7 @@ impl Mutation {
 
 	pub async fn request_payment(
 		context: &Context,
-		project_id: Uuid,
+		budget_id: Uuid,
 		requestor_id: Uuid,
 		recipient_id: Uuid,
 		amount_in_usd: i32,
@@ -110,7 +110,7 @@ impl Mutation {
 		let payment_request_id = context
 			.request_payment_usecase
 			.request(
-				project_id.into(),
+				budget_id.into(),
 				requestor_id.into(),
 				recipient_id.into(),
 				amount_in_usd as u32,

@@ -44,7 +44,7 @@ diesel::table! {
 diesel::table! {
     payment_requests (id) {
         id -> Uuid,
-        project_id -> Uuid,
+        budget_id -> Uuid,
         requestor_id -> Uuid,
         recipient_id -> Uuid,
         amount_in_usd -> Int8,
@@ -93,7 +93,7 @@ diesel::table! {
 }
 
 diesel::joinable!(budgets -> projects (project_id));
-diesel::joinable!(payment_requests -> projects (project_id));
+diesel::joinable!(payment_requests -> budgets (budget_id));
 diesel::joinable!(payments -> payment_requests (request_id));
 diesel::joinable!(project_leads -> projects (project_id));
 

@@ -13,7 +13,7 @@
           }
           scalar Uuid
           type Mutation {
-            requestPayment(projectId: Uuid!, requestorId: Uuid!, recipientId: Uuid!, amountInUsd: Int!, reason: String!): Uuid!
+            requestPayment(budgetId: Uuid!, requestorId: Uuid!, recipientId: Uuid!, amountInUsd: Int!, reason: String!): Uuid!
           }
           type Query {
             hello: String!
