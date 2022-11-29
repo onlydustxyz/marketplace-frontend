@@ -8,8 +8,6 @@ use uuid::Uuid;
 
 #[derive(Debug, Error)]
 enum Error {
-	#[error("User is not authorized to perform the action")]
-	NotAuthorized(String),
 	#[error("Invalid GraphQL request")]
 	InvalidRequest(#[from] anyhow::Error),
 }
@@ -17,7 +15,6 @@ enum Error {
 impl IntoFieldError for Error {
 	fn into_field_error(self) -> FieldError<DefaultScalarValue> {
 		let (msg, reason) = match &self {
-			Self::NotAuthorized(reason) => (self.to_string(), reason.clone()),
 			Self::InvalidRequest(source) => (self.to_string(), source.to_string()),
 		};
 		FieldError::new(msg, graphql_value!({ "reason": reason }))
@@ -101,12 +98,6 @@ impl Mutation {
 		amount_in_usd: i32,
 		reason: String,
 	) -> Result<Uuid> {
-		if !context.user.is_leader_on_project(&project_id.into()) {
-			return Err(Error::NotAuthorized(
-				"Project leader role required".to_string(),
-			));
-		}
-
 		let payment_request_id = context
 			.request_payment_usecase
 			.request(
