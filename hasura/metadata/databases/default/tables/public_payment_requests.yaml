@@ -2,18 +2,14 @@ table:
   name: payment_requests
   schema: public
 object_relationships:
-  - name: project
-    using:
-      foreign_key_constraint_on: project_id
-  - name: project_lead
+  - name: budget
     using:
       manual_configuration:
         column_mapping:
-          project_id: project_id
-          requestor_id: user_id
+          budget_id: id
         insertion_order: null
         remote_table:
-          name: project_leads
+          name: budgets
           schema: public
   - name: recipient
     using:
@@ -41,35 +37,3 @@ array_relationships:
         table:
           name: payments
           schema: public
-insert_permissions:
-  - role: user
-    permission:
-      check:
-        project_id:
-          _in: X-Hasura-projects_leaded
-      set:
-        requestor_id: x-hasura-User-id
-      columns:
-        - amount_in_usd
-        - project_id
-        - reason
-        - recipient_id
-select_permissions:
-  - role: user
-    permission:
-      columns:
-        - amount_in_usd
-        - reason
-        - id
-        - project_id
-        - recipient_id
-        - requestor_id
-      filter:
-        project_id:
-          _in: X-Hasura-projects_leaded
-delete_permissions:
-  - role: user
-    permission:
-      filter:
-        project_id:
-          _in: X-Hasura-projects_leaded
