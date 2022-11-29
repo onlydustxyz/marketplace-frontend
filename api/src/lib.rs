@@ -3,8 +3,10 @@ extern crate dotenv;
 mod application;
 mod domain;
 mod graphql;
+mod infrastructure;
 mod routes;
 
+use crate::domain::ProjectDetailsRepository;
 use ::domain::{
 	AggregateRootRepository, Event, Payment, Project, Publisher, RandomUuidGenerator,
 	UniqueMessage, UserRepository, UuidGenerator,
@@ -12,10 +14,10 @@ use ::domain::{
 use ::infrastructure::{
 	amqp::Bus,
 	database::{self, init_pool},
+	graphql::HasuraClient,
 };
 use anyhow::Result;
 use dotenv::dotenv;
-use infrastructure::graphql::HasuraClient;
 use log::info;
 use rocket::{routes, Build, Rocket};
 use rocket_okapi::swagger_ui::make_swagger_ui;
@@ -43,6 +45,7 @@ pub async fn main() -> Result<()> {
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),
 		Arc::new(HasuraClient::default()),
+		database.clone(),
 	)
 	.attach(routes::cors::Cors)
 	.mount(
@@ -78,6 +81,7 @@ fn inject_app(
 	project_repository: AggregateRootRepository<Project>,
 	payment_repository: AggregateRootRepository<Payment>,
 	user_repository: Arc<dyn UserRepository>,
+	project_details_repository: Arc<dyn ProjectDetailsRepository>,
 ) -> Rocket<Build> {
 	rocket
 		.manage(schema)
@@ -86,4 +90,5 @@ fn inject_app(
 		.manage(project_repository)
 		.manage(payment_repository)
 		.manage(user_repository)
+		.manage(project_details_repository)
 }

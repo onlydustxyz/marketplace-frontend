@@ -1,4 +1,4 @@
-use crate::{application, domain::User};
+use crate::{application, domain::User, ProjectDetailsRepository};
 use domain::{
 	AggregateRootRepository, Event, Payment, Project, Publisher, UniqueMessage, UserRepository,
 	UuidGenerator,
@@ -21,6 +21,7 @@ impl Context {
 		project_repository: AggregateRootRepository<Project>,
 		payment_repository: AggregateRootRepository<Payment>,
 		user_repository: Arc<dyn UserRepository>,
+		project_details_repository: Arc<dyn ProjectDetailsRepository>,
 	) -> Self {
 		Self {
 			user,
@@ -38,6 +39,7 @@ impl Context {
 			create_project_usecase: application::project::create::Usecase::new(
 				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
+				project_details_repository,
 			),
 			assign_project_lead_usecase: application::project::assign_leader::Usecase::new(
 				event_publisher.to_owned(),
