@@ -1,0 +1,24 @@
+table:
+  name: budgets
+  schema: public
+object_relationships:
+  - name: project
+    using:
+      manual_configuration:
+        column_mapping:
+          project_id: id
+        insertion_order: null
+        remote_table:
+          name: projects
+          schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - id
+        - project_id
+        - initial_amount
+        - remaining_amount
+      filter:
+        project_id:
+          _in: X-Hasura-projects_leaded

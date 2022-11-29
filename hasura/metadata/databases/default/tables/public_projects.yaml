@@ -12,6 +12,15 @@ object_relationships:
           name: project_details
           schema: public
 array_relationships:
+  - name: budgets
+    using:
+      manual_configuration:
+        column_mapping:
+          id: project_id
+        insertion_order: null
+        remote_table:
+          name: budgets
+          schema: public
   - name: payment_requests
     using:
       foreign_key_constraint_on:
