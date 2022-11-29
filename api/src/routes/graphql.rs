@@ -1,5 +1,8 @@
 use super::User;
-use crate::graphql::{Context, Schema};
+use crate::{
+	graphql::{Context, Schema},
+	ProjectDetailsRepository,
+};
 use domain::{
 	AggregateRootRepository, Event, Payment, Project, Publisher, UniqueMessage, UserRepository,
 	UuidGenerator,
@@ -24,6 +27,7 @@ pub async fn get_graphql_handler(
 	project_repository: &State<AggregateRootRepository<Project>>,
 	payment_repository: &State<AggregateRootRepository<Payment>>,
 	user_repository: &State<Arc<dyn UserRepository>>,
+	project_details_repository: &State<Arc<dyn ProjectDetailsRepository>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		user.into(),
@@ -32,6 +36,7 @@ pub async fn get_graphql_handler(
 		(*project_repository).clone(),
 		(*payment_repository).clone(),
 		(*user_repository).clone(),
+		(*project_details_repository).clone(),
 	);
 	request.execute(schema, &context).await
 }
@@ -47,6 +52,7 @@ pub async fn post_graphql_handler(
 	project_repository: &State<AggregateRootRepository<Project>>,
 	payment_repository: &State<AggregateRootRepository<Payment>>,
 	user_repository: &State<Arc<dyn UserRepository>>,
+	project_details_repository: &State<Arc<dyn ProjectDetailsRepository>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		user.into(),
@@ -55,6 +61,7 @@ pub async fn post_graphql_handler(
 		(*project_repository).clone(),
 		(*payment_repository).clone(),
 		(*user_repository).clone(),
+		(*project_details_repository).clone(),
 	);
 	request.execute(schema, &context).await
 }

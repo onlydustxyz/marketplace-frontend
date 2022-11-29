@@ -62,12 +62,18 @@ impl Mutation {
 		context: &Context,
 		name: String,
 		initial_budget_in_usd: i32,
+		github_repo_id: i32,
+		description: Option<String>,
+		telegram_link: Option<String>,
 	) -> Result<Uuid> {
 		let project_id = context
 			.create_project_usecase
 			.create(
 				name,
 				Money::from_major(initial_budget_in_usd as i64, crypto::USDC).into(),
+				(github_repo_id as i64).into(),
+				description,
+				telegram_link,
 			)
 			.await?;
 
