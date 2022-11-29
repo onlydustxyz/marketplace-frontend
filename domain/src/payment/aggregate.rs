@@ -1,5 +1,5 @@
 #[cfg_attr(test, mockall_double::double)]
-use crate::specifications::{ProjectExists, UserExists};
+use crate::specifications::UserExists;
 use crate::{
 	specifications, Aggregate, AggregateRoot, Amount, BudgetId, EventSourcable, PaymentEvent,
 	PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
@@ -44,8 +44,6 @@ impl AggregateRoot for Payment {}
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error("Project not found")]
-	ProjectNotFound,
 	#[error("Requestor not found")]
 	RequestorNotFound,
 	#[error("Recipient not found")]
@@ -59,7 +57,6 @@ pub enum Error {
 impl Payment {
 	#[cfg_attr(feature = "cargo-clippy", allow(clippy::too_many_arguments))]
 	pub async fn request(
-		project_exists_specification: &ProjectExists,
 		user_exists_specification: &UserExists,
 		id: PaymentId,
 		budget_id: BudgetId,
@@ -68,13 +65,6 @@ impl Payment {
 		amount_in_usd: u32,
 		reason: Value,
 	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
-		if !project_exists_specification
-			.is_satisfied_by(&project_id)
-			.map_err(Error::Specification)?
-		{
-			return Err(Error::ProjectNotFound);
-		}
-
 		if !user_exists_specification
 			.is_satisfied_by(&requestor_id)
 			.await
@@ -133,8 +123,6 @@ impl Payment {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	#[mockall_double::double]
-	use crate::specifications::ProjectExists;
 	use crate::{BlockchainNetwork, BudgetId, Currency, PaymentReceiptId, UserId};
 	use assert_matches::assert_matches;
 	use mockall::predicate::*;
@@ -151,11 +139,6 @@ mod tests {
 	#[fixture]
 	fn budget_id() -> BudgetId {
 		Uuid::from_str("11111111-aaaa-495e-9f4c-038ec0ebecb1").unwrap().into()
-	}
-
-	#[fixture]
-	fn wrong_project_id() -> ProjectId {
-		Uuid::from_str("11111111-bbbb-495e-9f4c-038ec0ebecb1").unwrap().into()
 	}
 
 	#[fixture]
@@ -234,13 +217,10 @@ mod tests {
 		amount_in_usd: u32,
 		reason: Value,
 	) -> Payment {
-		let mut project_exists = ProjectExists::default();
-		project_exists.expect_is_satisfied_by().returning(|_| Ok(true));
 		let mut user_exists = UserExists::default();
 		user_exists.expect_is_satisfied_by().returning(|_| Ok(true));
 
 		let events = Payment::request(
-			&project_exists,
 			&user_exists,
 			payment_id,
 			budget_id,
@@ -313,13 +293,6 @@ mod tests {
 		amount_in_usd: u32,
 		reason: Value,
 	) {
-		let mut project_exists_specification = ProjectExists::default();
-		project_exists_specification
-			.expect_is_satisfied_by()
-			.with(eq(project_id))
-			.once()
-			.returning(|_| Ok(true));
-
 		let mut user_exists_specification = UserExists::default();
 		user_exists_specification
 			.expect_is_satisfied_by()
@@ -333,7 +306,6 @@ mod tests {
 			.returning(|_| Ok(true));
 
 		let events = Payment::request(
-			&project_exists_specification,
 			&user_exists_specification,
 			payment_id,
 			budget_id,
@@ -360,40 +332,6 @@ mod tests {
 	}
 
 	#[rstest]
-	async fn test_request_with_wrong_project_id(
-		payment_id: PaymentId,
-		wrong_project_id: ProjectId,
-		requestor_id: UserId,
-		recipient_id: UserId,
-		amount_in_usd: u32,
-		reason: Value,
-	) {
-		let mut project_exists_specification = ProjectExists::default();
-		project_exists_specification
-			.expect_is_satisfied_by()
-			.with(eq(wrong_project_id))
-			.once()
-			.returning(|_| Ok(false));
-
-		let user_exists_specification = UserExists::default();
-
-		let result = Payment::request(
-			&project_exists_specification,
-			&user_exists_specification,
-			payment_id,
-			wrong_project_id,
-			requestor_id,
-			recipient_id,
-			amount_in_usd,
-			reason,
-		)
-		.await;
-
-		assert!(result.is_err());
-		assert_matches!(result, Err(Error::ProjectNotFound));
-	}
-
-	#[rstest]
 	async fn test_request_with_wrong_requestor_id(
 		payment_id: PaymentId,
 		budget_id: BudgetId,
@@ -402,13 +340,6 @@ mod tests {
 		amount_in_usd: u32,
 		reason: Value,
 	) {
-		let mut project_exists_specification = ProjectExists::default();
-		project_exists_specification
-			.expect_is_satisfied_by()
-			.with(eq(project_id))
-			.once()
-			.returning(|_| Ok(true));
-
 		let mut user_exists_specification = UserExists::default();
 		user_exists_specification
 			.expect_is_satisfied_by()
@@ -417,7 +348,6 @@ mod tests {
 			.returning(|_| Ok(false));
 
 		let result = Payment::request(
-			&project_exists_specification,
 			&user_exists_specification,
 			payment_id,
 			budget_id,
@@ -441,13 +371,6 @@ mod tests {
 		amount_in_usd: u32,
 		reason: Value,
 	) {
-		let mut project_exists_specification = ProjectExists::default();
-		project_exists_specification
-			.expect_is_satisfied_by()
-			.with(eq(project_id))
-			.once()
-			.returning(|_| Ok(true));
-
 		let mut user_exists_specification = UserExists::default();
 		user_exists_specification
 			.expect_is_satisfied_by()
@@ -461,7 +384,6 @@ mod tests {
 			.returning(|_| Ok(false));
 
 		let result = Payment::request(
-			&project_exists_specification,
 			&user_exists_specification,
 			payment_id,
 			budget_id,
