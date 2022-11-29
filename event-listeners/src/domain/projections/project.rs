@@ -3,7 +3,7 @@ use domain::Entity;
 use infrastructure::database::schema::projects;
 use uuid::Uuid;
 
-#[derive(Debug, Insertable, Identifiable, AsChangeset, new)]
+#[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, new)]
 pub struct Project {
 	id: Uuid,
 	name: String,

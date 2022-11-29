@@ -1,12 +1,12 @@
-use crate::domain::{Budget, EventListener, ProjectionRepository};
+use crate::domain::{Budget, EventListener};
 use anyhow::Result;
 use async_trait::async_trait;
-use domain::{BudgetEvent, BudgetTopic, Event};
+use domain::{BudgetEvent, BudgetTopic, EntityRepository, Event};
 use std::sync::Arc;
 
 #[derive(new)]
 pub struct Projector {
-	budget_repository: Arc<dyn ProjectionRepository<Budget>>,
+	budget_repository: Arc<dyn EntityRepository<Budget>>,
 }
 
 #[async_trait]
@@ -18,7 +18,7 @@ impl EventListener for Projector {
 					let BudgetTopic::Project(project_id) = topic;
 					self.budget_repository.insert(&Budget::new(
 						(*id).into(),
-						(*project_id).into(),
+						Some((*project_id).into()),
 						*amount.amount(),
 						*amount.amount(),
 					))?;
