@@ -31,7 +31,6 @@ impl Context {
 			request_payment_usecase: application::payment::request::Usecase::new(
 				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
-				project_repository.to_owned(),
 				user_repository,
 			),
 			process_payment_usecase: application::payment::process::Usecase::new(
