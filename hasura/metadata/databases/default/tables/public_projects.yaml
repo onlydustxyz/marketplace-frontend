@@ -1,6 +1,16 @@
 table:
   name: projects
   schema: public
+object_relationships:
+  - name: project_details
+    using:
+      manual_configuration:
+        column_mapping:
+          id: project_id
+        insertion_order: null
+        remote_table:
+          name: project_details
+          schema: public
 array_relationships:
   - name: payment_requests
     using:
