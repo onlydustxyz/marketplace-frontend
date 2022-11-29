@@ -58,7 +58,7 @@ diesel::table! {
         amount -> Numeric,
         currency_code -> Text,
         receipt -> Jsonb,
-        request_id -> Nullable<Uuid>,
+        request_id -> Uuid,
     }
 }
 
