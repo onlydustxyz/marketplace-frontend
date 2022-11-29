@@ -10,9 +10,15 @@ pub async fn consumer(queue_name: &'static str) -> Result<ConsumableBus, BusErro
 		.with_queue(
 			queue_name,
 			QueueDeclareOptions {
-				exclusive: true,    // only one consumer on this queue
-				durable: true,      // persist messages
-				auto_delete: false, // keep the queue during consumer restart
+				// allows multiple connections to this queue, and do not delete the queue when
+				// connection is closed
+				exclusive: false,
+
+				// the queue will survive a broker restart
+				durable: true,
+
+				// do not delete the queue when the last consumer unsubscribes
+				auto_delete: false,
 				..Default::default()
 			},
 		)
