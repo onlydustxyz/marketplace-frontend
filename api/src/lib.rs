@@ -73,6 +73,7 @@ pub async fn main() -> Result<()> {
 	Ok(())
 }
 
+#[allow(clippy::too_many_arguments)]
 fn inject_app(
 	rocket: Rocket<Build>,
 	schema: graphql::Schema,
