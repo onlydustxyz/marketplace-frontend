@@ -9,5 +9,6 @@
 - "!include public_payment_requests.yaml"
 - "!include public_payments.yaml"
 - "!include public_payout_settings.yaml"
+- "!include public_project_details.yaml"
 - "!include public_project_leads.yaml"
 - "!include public_projects.yaml"
