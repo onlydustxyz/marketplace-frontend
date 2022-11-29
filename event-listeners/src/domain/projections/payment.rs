@@ -5,7 +5,7 @@ use rust_decimal::Decimal;
 use serde_json::Value;
 use uuid::Uuid;
 
-#[derive(Debug, Insertable, Identifiable, AsChangeset, new)]
+#[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, new)]
 pub struct Payment {
 	id: Uuid,
 	amount: Decimal,

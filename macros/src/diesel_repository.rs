@@ -46,8 +46,15 @@ pub fn derive(input: TokenStream) -> TokenStream {
 	let expanded = quote! {
 		use crate::diesel::RunQueryDsl;
 		use crate::diesel::ExpressionMethods;
+		use crate::diesel::query_dsl::filter_dsl::FindDsl;
 
 		impl ::domain::EntityRepository<#entity_type> for #repository_name {
+			fn find_by_id(&self, id: &<#entity_type as ::domain::Entity>::Id) -> anyhow::Result<#entity_type> {
+				let connection = self.0.connection()?;
+				let entity = #table.find(*id).first(&*connection)?;
+				Ok(entity)
+			}
+
 			fn insert(&self, entity: &#entity_type) -> anyhow::Result<()> {
 				let connection = self.0.connection()?;
 				diesel::insert_into(#table).values(entity).execute(&*connection)?;

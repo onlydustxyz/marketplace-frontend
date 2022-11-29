@@ -19,11 +19,14 @@ use crate::domain::github::GithubRepositoryId;
 	Insertable,
 	Serialize,
 	Deserialize,
+	Queryable,
 	AsChangeset,
 )]
 #[table_name = "project_details"]
 pub struct ProjectDetails {
+	#[diesel(deserialize_as = "uuid::Uuid")]
 	project_id: ProjectId,
+	#[diesel(deserialize_as = "i64")]
 	github_repo_id: GithubRepositoryId,
 	description: Option<String>,
 	telegram_link: Option<String>,
