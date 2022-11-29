@@ -11,7 +11,7 @@ pub enum Error {
 
 type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct Budget {
 	id: BudgetId,
 	remaining_amount: Amount,

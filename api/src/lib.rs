@@ -8,7 +8,7 @@ mod routes;
 
 use crate::{domain::ProjectDetails, infrastructure::database::ProjectDetailsRepository};
 use ::domain::{
-	AggregateRootRepository, EntityRepository, Event, Payment, Project, Publisher,
+	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Project, Publisher,
 	RandomUuidGenerator, UniqueMessage, UserRepository, UuidGenerator,
 };
 use ::infrastructure::{
@@ -50,6 +50,7 @@ pub async fn main() -> Result<()> {
 		Arc::new(Bus::default().await?),
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),
+		AggregateRootRepository::new(database.clone()),
 		Arc::new(HasuraClient::default()),
 		Arc::new(ProjectDetailsRepository::new(database)),
 	)
@@ -87,6 +88,7 @@ fn inject_app(
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_repository: AggregateRootRepository<Project>,
 	payment_repository: AggregateRootRepository<Payment>,
+	budget_repository: AggregateRootRepository<Budget>,
 	user_repository: Arc<dyn UserRepository>,
 	project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
 ) -> Rocket<Build> {
@@ -96,6 +98,7 @@ fn inject_app(
 		.manage(event_publisher)
 		.manage(project_repository)
 		.manage(payment_repository)
+		.manage(budget_repository)
 		.manage(user_repository)
 		.manage(project_details_repository)
 }

@@ -39,6 +39,15 @@ describe("As a project leader, I", () => {
                   }`)
                     .its('body.data.payment_requests_by_pk.id')
                     .should('be.a', 'string');
+            }).then(() => {
+                cy.wait(500);
+                cy.graphqlAsAdmin(`{
+                    budgets_by_pk(id:"${budgetId}") {
+                      remaining_amount
+                    }
+                  }`)
+                    .its('body.data.budgets_by_pk.remaining_amount')
+                    .should('equal', 500)
             })
         });
     });
