@@ -1,5 +1,7 @@
+use std::fmt::Display;
+
 pub trait Entity {
-	type Id;
+	type Id: PartialEq + Display;
 }
 
 use anyhow::Result;

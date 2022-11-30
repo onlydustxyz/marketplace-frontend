@@ -1,10 +1,9 @@
-use crate::Event;
+use crate::{Entity, Event};
 use serde::{de::DeserializeOwned, Serialize};
 use std::fmt::{Debug, Display};
 
-pub trait Aggregate: Send + Sync + Default + Sized {
+pub trait Aggregate: Entity + Send + Sync + Default + Sized {
 	type Event: Serialize + DeserializeOwned + Debug + Display + Clone + Into<Event>;
-	type Id: PartialEq + Display;
 }
 
 pub trait EventSourcable: Aggregate {

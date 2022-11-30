@@ -19,9 +19,12 @@ pub struct Project {
 	leaders: HashSet<UserId>,
 }
 
+impl Entity for Project {
+	type Id = ProjectId;
+}
+
 impl Aggregate for Project {
 	type Event = ProjectEvent;
-	type Id = ProjectId;
 }
 
 impl AggregateRoot for Project {}
