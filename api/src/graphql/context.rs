@@ -1,7 +1,10 @@
-use crate::{application, domain::User, ProjectDetailsRepository};
+use crate::{
+	application,
+	domain::{ProjectDetails, User},
+};
 use domain::{
-	AggregateRootRepository, Event, Payment, Project, Publisher, UniqueMessage, UserRepository,
-	UuidGenerator,
+	AggregateRootRepository, EntityRepository, Event, Payment, Project, Publisher, UniqueMessage,
+	UserRepository, UuidGenerator,
 };
 use std::sync::Arc;
 
@@ -21,7 +24,7 @@ impl Context {
 		project_repository: AggregateRootRepository<Project>,
 		payment_repository: AggregateRootRepository<Payment>,
 		user_repository: Arc<dyn UserRepository>,
-		project_details_repository: Arc<dyn ProjectDetailsRepository>,
+		project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
 	) -> Self {
 		Self {
 			user,

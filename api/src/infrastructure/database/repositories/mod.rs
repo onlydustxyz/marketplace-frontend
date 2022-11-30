@@ -1,1 +1,0 @@
-mod project_details;

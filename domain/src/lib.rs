@@ -49,3 +49,6 @@ pub mod event_store;
 pub use event_store::{Error as EventStoreError, Store as EventStore};
 
 pub mod specifications;
+
+#[macro_use]
+extern crate diesel;

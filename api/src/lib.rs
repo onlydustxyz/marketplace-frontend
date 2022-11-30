@@ -6,10 +6,10 @@ mod graphql;
 mod infrastructure;
 mod routes;
 
-use crate::domain::ProjectDetailsRepository;
+use crate::{domain::ProjectDetails, infrastructure::database::ProjectDetailsRepository};
 use ::domain::{
-	AggregateRootRepository, Event, Payment, Project, Publisher, RandomUuidGenerator,
-	UniqueMessage, UserRepository, UuidGenerator,
+	AggregateRootRepository, EntityRepository, Event, Payment, Project, Publisher,
+	RandomUuidGenerator, UniqueMessage, UserRepository, UuidGenerator,
 };
 use ::infrastructure::{
 	amqp::Bus,
@@ -30,6 +30,12 @@ extern crate rocket;
 #[macro_use]
 extern crate derive_new;
 
+#[macro_use]
+extern crate diesel;
+
+#[macro_use]
+extern crate macros;
+
 #[instrument]
 pub async fn main() -> Result<()> {
 	dotenv().ok();
@@ -45,7 +51,7 @@ pub async fn main() -> Result<()> {
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),
 		Arc::new(HasuraClient::default()),
-		database.clone(),
+		Arc::new(ProjectDetailsRepository::new(database)),
 	)
 	.attach(routes::cors::Cors)
 	.mount(
@@ -82,7 +88,7 @@ fn inject_app(
 	project_repository: AggregateRootRepository<Project>,
 	payment_repository: AggregateRootRepository<Payment>,
 	user_repository: Arc<dyn UserRepository>,
-	project_details_repository: Arc<dyn ProjectDetailsRepository>,
+	project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
 ) -> Rocket<Build> {
 	rocket
 		.manage(schema)
