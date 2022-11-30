@@ -1,36 +1,12 @@
+use crate::domain::ProjectLeadRepository;
+use domain::{Project, User};
+use infrastructure::database::{schema::project_leads::dsl, Client};
 use std::sync::Arc;
 
-use crate::{
-	diesel::{ExpressionMethods, RunQueryDsl},
-	domain::{ProjectLead, ProjectLeadRepository},
-};
-use infrastructure::database::{schema::project_leads::dsl, Client};
-use uuid::Uuid;
-
-#[derive(new)]
+#[derive(new, DieselMappingRepository)]
+#[entities((Project, User))]
+#[ids((dsl::project_id, dsl::user_id))]
+#[table(dsl::project_leads)]
 pub struct Repository(Arc<Client>);
 
-impl ProjectLeadRepository for Repository {
-	fn insert(&self, projection: &ProjectLead) -> anyhow::Result<()> {
-		let connection = self.0.connection()?;
-		diesel::insert_into(dsl::project_leads)
-			.values(projection)
-			.execute(&*connection)?;
-		Ok(())
-	}
-
-	fn delete(&self, project_id: &Uuid, leader_id: &Uuid) -> anyhow::Result<()> {
-		let connection = self.0.connection()?;
-		diesel::delete(dsl::project_leads)
-			.filter(dsl::project_id.eq(project_id))
-			.filter(dsl::user_id.eq(leader_id))
-			.execute(&*connection)?;
-		Ok(())
-	}
-
-	fn clear(&self) -> anyhow::Result<()> {
-		let connection = self.0.connection()?;
-		diesel::delete(dsl::project_leads).execute(&*connection)?;
-		Ok(())
-	}
-}
+impl ProjectLeadRepository for Repository {}
