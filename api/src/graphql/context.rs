@@ -17,6 +17,7 @@ pub struct Context {
 }
 
 impl Context {
+	#[allow(clippy::too_many_arguments)]
 	pub fn new(
 		user: Box<dyn User>,
 		uuid_generator: Arc<dyn UuidGenerator>,
