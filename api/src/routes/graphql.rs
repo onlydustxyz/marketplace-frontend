@@ -1,11 +1,11 @@
 use super::User;
 use crate::{
+	domain::ProjectDetails,
 	graphql::{Context, Schema},
-	ProjectDetailsRepository,
 };
 use domain::{
-	AggregateRootRepository, Event, Payment, Project, Publisher, UniqueMessage, UserRepository,
-	UuidGenerator,
+	AggregateRootRepository, EntityRepository, Event, Payment, Project, Publisher, UniqueMessage,
+	UserRepository, UuidGenerator,
 };
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use rocket::{response::content, State};
@@ -27,7 +27,7 @@ pub async fn get_graphql_handler(
 	project_repository: &State<AggregateRootRepository<Project>>,
 	payment_repository: &State<AggregateRootRepository<Payment>>,
 	user_repository: &State<Arc<dyn UserRepository>>,
-	project_details_repository: &State<Arc<dyn ProjectDetailsRepository>>,
+	project_details_repository: &State<Arc<dyn EntityRepository<ProjectDetails>>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		user.into(),
@@ -52,7 +52,7 @@ pub async fn post_graphql_handler(
 	project_repository: &State<AggregateRootRepository<Project>>,
 	payment_repository: &State<AggregateRootRepository<Payment>>,
 	user_repository: &State<Arc<dyn UserRepository>>,
-	project_details_repository: &State<Arc<dyn ProjectDetailsRepository>>,
+	project_details_repository: &State<Arc<dyn EntityRepository<ProjectDetails>>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		user.into(),
