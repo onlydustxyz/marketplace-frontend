@@ -65,6 +65,7 @@ impl Mutation {
 		github_repo_id: i32,
 		description: Option<String>,
 		telegram_link: Option<String>,
+		user_id: Uuid,
 	) -> Result<Uuid> {
 		let project_id = context
 			.create_project_usecase
@@ -74,23 +75,11 @@ impl Mutation {
 				(github_repo_id as i64).into(),
 				description,
 				telegram_link,
+				user_id.into(),
 			)
 			.await?;
 
 		Ok(project_id.into())
-	}
-
-	pub async fn assign_project_lead(
-		context: &Context,
-		project_id: Uuid,
-		leader_id: Uuid,
-	) -> Result<Uuid> {
-		context
-			.assign_project_lead_usecase
-			.assign_leader(project_id.into(), leader_id.into())
-			.await?;
-
-		Ok(project_id)
 	}
 
 	pub async fn request_payment(

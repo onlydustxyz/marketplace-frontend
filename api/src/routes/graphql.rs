@@ -4,8 +4,8 @@ use crate::{
 	graphql::{Context, Schema},
 };
 use domain::{
-	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Project, Publisher,
-	UniqueMessage, UserRepository, UuidGenerator,
+	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Publisher, UniqueMessage,
+	UserRepository, UuidGenerator,
 };
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use rocket::{response::content, State};
@@ -24,7 +24,6 @@ pub async fn get_graphql_handler(
 	schema: &State<Schema>,
 	uuid_generator: &State<Arc<dyn UuidGenerator>>,
 	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
-	project_repository: &State<AggregateRootRepository<Project>>,
 	payment_repository: &State<AggregateRootRepository<Payment>>,
 	budget_repository: &State<AggregateRootRepository<Budget>>,
 	user_repository: &State<Arc<dyn UserRepository>>,
@@ -34,7 +33,6 @@ pub async fn get_graphql_handler(
 		user.into(),
 		(*uuid_generator).clone(),
 		(*event_publisher).clone(),
-		(*project_repository).clone(),
 		(*payment_repository).clone(),
 		(*budget_repository).clone(),
 		(*user_repository).clone(),
@@ -51,7 +49,6 @@ pub async fn post_graphql_handler(
 	schema: &State<Schema>,
 	uuid_generator: &State<Arc<dyn UuidGenerator>>,
 	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
-	project_repository: &State<AggregateRootRepository<Project>>,
 	payment_repository: &State<AggregateRootRepository<Payment>>,
 	budget_repository: &State<AggregateRootRepository<Budget>>,
 	user_repository: &State<Arc<dyn UserRepository>>,
@@ -61,7 +58,6 @@ pub async fn post_graphql_handler(
 		user.into(),
 		(*uuid_generator).clone(),
 		(*event_publisher).clone(),
-		(*project_repository).clone(),
 		(*payment_repository).clone(),
 		(*budget_repository).clone(),
 		(*user_repository).clone(),
