@@ -39,13 +39,14 @@ Cypress.Commands.add('graphqlAs', (user, query) => {
         }));
 });
 
-Cypress.Commands.add('createProject', (projectName = 'My Project', initialBudget = 500, githubRepoId = 1234, description = "My project description", telegramLink = "https://t.me/foo") => {
+Cypress.Commands.add('createProject', (userId, projectName = 'My Project', initialBudget = 500, githubRepoId = 1234, description = "My project description", telegramLink = "https://t.me/foo") => {
     return cy.graphqlAsAdmin(`mutation{ createProject(
             name: "${projectName}",
             initialBudgetInUsd: ${initialBudget},
             githubRepoId: ${githubRepoId},
             description: "${description}",
-            telegramLink: "${telegramLink}"
+            telegramLink: "${telegramLink}",
+            userId: "${userId}"
         )}`)
         .its("body.data.createProject")
         .should("be.a", "string");
@@ -114,10 +115,6 @@ Cypress.Commands.add('signinUser', (user) => {
                 ...user
             }
         });
-});
-
-Cypress.Commands.add('addProjectLead', (projectId, userId) => {
-    cy.graphqlAsAdmin(`mutation { assignProjectLead(leaderId: "${userId}", projectId: "${projectId}") }`);
 });
 
 Cypress.Commands.add('requestPayment', (requestor, budgetId, amount, recipient, reason) => {
