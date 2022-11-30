@@ -1,6 +1,13 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
+    budget_spenders (budget_id, user_id) {
+        budget_id -> Uuid,
+        user_id -> Uuid,
+    }
+}
+
+diesel::table! {
     budgets (id) {
         id -> Uuid,
         project_id -> Nullable<Uuid>,
@@ -92,12 +99,14 @@ diesel::table! {
     }
 }
 
+diesel::joinable!(budget_spenders -> budgets (budget_id));
 diesel::joinable!(budgets -> projects (project_id));
 diesel::joinable!(payment_requests -> budgets (budget_id));
 diesel::joinable!(payments -> payment_requests (request_id));
 diesel::joinable!(project_leads -> projects (project_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
+    budget_spenders,
     budgets,
     event_deduplications,
     event_filters,
