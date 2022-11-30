@@ -1,4 +1,6 @@
-use crate::{Aggregate, AggregateRoot, Amount, BudgetEvent, BudgetId, BudgetTopic, EventSourcable};
+use crate::{
+	Aggregate, AggregateRoot, Amount, BudgetEvent, BudgetId, BudgetTopic, Entity, EventSourcable,
+};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -38,9 +40,12 @@ impl Budget {
 	}
 }
 
+impl Entity for Budget {
+	type Id = BudgetId;
+}
+
 impl Aggregate for Budget {
 	type Event = BudgetEvent;
-	type Id = BudgetId;
 }
 
 impl EventSourcable for Budget {

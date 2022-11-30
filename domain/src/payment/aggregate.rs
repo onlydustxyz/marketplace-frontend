@@ -1,8 +1,8 @@
 #[cfg_attr(test, mockall_double::double)]
 use crate::specifications::UserExists;
 use crate::{
-	specifications, Aggregate, AggregateRoot, Amount, BudgetId, EventSourcable, PaymentEvent,
-	PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
+	specifications, Aggregate, AggregateRoot, Amount, BudgetId, Entity, EventSourcable,
+	PaymentEvent, PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
 };
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
@@ -17,9 +17,12 @@ pub struct Payment {
 	paid_usd_amount: Decimal,
 }
 
+impl Entity for Payment {
+	type Id = PaymentId;
+}
+
 impl Aggregate for Payment {
 	type Event = PaymentEvent;
-	type Id = PaymentId;
 }
 
 impl EventSourcable for Payment {

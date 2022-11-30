@@ -7,3 +7,7 @@ use crate::*;
 pub struct Entity {
 	id: UserId,
 }
+
+impl crate::Entity for Entity {
+	type Id = UserId;
+}
