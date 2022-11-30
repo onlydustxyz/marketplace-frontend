@@ -28,7 +28,6 @@ impl Projection for ProjectLead {}
 
 pub trait Repository: Send + Sync {
 	fn insert(&self, projection: &ProjectLead) -> Result<()>;
-	fn update(&self, project_id: &Uuid, leader_id: &Uuid) -> Result<()>;
 	fn delete(&self, project_id: &Uuid, leader_id: &Uuid) -> Result<()>;
 	fn clear(&self) -> Result<()>;
 }
