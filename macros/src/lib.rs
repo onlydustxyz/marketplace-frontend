@@ -5,7 +5,7 @@ use syn::{parse::Parse, DeriveInput, Result};
 
 mod diesel_repository;
 
-#[proc_macro_derive(DieselRepository, attributes(projection, table, id))]
+#[proc_macro_derive(DieselRepository, attributes(entity, table, id))]
 pub fn diesel_repository(input: TokenStream) -> TokenStream {
 	diesel_repository::derive(input)
 }

@@ -1,15 +1,15 @@
-use crate::domain::{EventListener, PaymentRequest, ProjectionRepository};
+use crate::domain::{EventListener, PaymentRequest};
 use anyhow::Result;
 use async_trait::async_trait;
-use domain::{Event, PaymentEvent};
+use domain::{EntityRepository, Event, PaymentEvent};
 use std::sync::Arc;
 
 pub struct Projector {
-	repository: Arc<dyn ProjectionRepository<PaymentRequest>>,
+	repository: Arc<dyn EntityRepository<PaymentRequest>>,
 }
 
 impl Projector {
-	pub fn new(repository: Arc<dyn ProjectionRepository<PaymentRequest>>) -> Self {
+	pub fn new(repository: Arc<dyn EntityRepository<PaymentRequest>>) -> Self {
 		Self { repository }
 	}
 }

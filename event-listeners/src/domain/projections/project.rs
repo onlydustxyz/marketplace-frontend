@@ -1,4 +1,5 @@
 use super::Projection;
+use domain::Entity;
 use infrastructure::database::schema::projects;
 use uuid::Uuid;
 
@@ -14,6 +15,8 @@ impl Project {
 	}
 }
 
-impl Projection for Project {
+impl Entity for Project {
 	type Id = Uuid;
 }
+
+impl Projection for Project {}

@@ -1,4 +1,5 @@
 use super::Projection;
+use domain::Entity;
 use infrastructure::database::schema::payment_requests;
 use serde_json::Value;
 use uuid::Uuid;
@@ -33,6 +34,8 @@ impl PaymentRequest {
 	}
 }
 
-impl Projection for PaymentRequest {
+impl Entity for PaymentRequest {
 	type Id = Uuid;
 }
+
+impl Projection for PaymentRequest {}

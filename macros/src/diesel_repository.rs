@@ -10,7 +10,7 @@ use syn::{
 #[derive(Dissolve)]
 struct Input {
 	repository_name: Ident,
-	projection_type: TypePath,
+	entity_type: TypePath,
 	table: TypePath,
 	id: TypePath,
 }
@@ -19,7 +19,7 @@ struct Input {
  * Parse a Diesel Repository derive macro
  *
  * #[derive(DieselRepository)]
- * #[projection(Payment)]
+ * #[entity(Payment)]
  * #[table(infrastructure::database::schema::payments::dsl::payments)]
  * #[id(infrastructure::database::schema::payments::dsl::id)]
  * struct Repository(Client);
@@ -30,7 +30,7 @@ impl Parse for Input {
 
 		Ok(Self {
 			repository_name: ast.ident.clone(),
-			projection_type: find_attr(&ast, "projection")?,
+			entity_type: find_attr(&ast, "entity")?,
 			table: find_attr(&ast, "table")?,
 			id: find_attr(&ast, "id")?,
 		})
@@ -40,30 +40,41 @@ impl Parse for Input {
 pub fn derive(input: TokenStream) -> TokenStream {
 	// Parse the input into an ast
 	let input = parse_macro_input!(input as Input);
-	let (repository_name, projection_type, table, id) = input.dissolve();
+	let (repository_name, entity_type, table, id) = input.dissolve();
 
 	// Build the output, possibly using quasi-quotation
 	let expanded = quote! {
 		use crate::diesel::RunQueryDsl;
 		use crate::diesel::ExpressionMethods;
 
-		impl crate::domain::ProjectionRepository<#projection_type> for #repository_name {
-			fn insert(&self, projection: &#projection_type) -> anyhow::Result<()> {
+		impl ::domain::EntityRepository<#entity_type> for #repository_name {
+			fn insert(&self, entity: &#entity_type) -> anyhow::Result<()> {
 				let connection = self.0.connection()?;
-				diesel::insert_into(#table).values(projection).execute(&*connection)?;
+				diesel::insert_into(#table).values(entity).execute(&*connection)?;
 				Ok(())
 			}
 
-			fn update(&self, id: &<#projection_type as crate::domain::Projection>::Id, projection: &#projection_type) -> anyhow::Result<()> {
+			fn update(&self, id: &<#entity_type as ::domain::Entity>::Id, entity: &#entity_type) -> anyhow::Result<()> {
 				let connection = self.0.connection()?;
 				diesel::update(#table)
 					.filter(#id.eq(id))
-					.set(projection)
+					.set(entity)
 					.execute(&*connection)?;
 				Ok(())
 			}
 
-			fn delete(&self, id: &<#projection_type as crate::domain::Projection>::Id) -> anyhow::Result<()> {
+			fn upsert(&self, entity: &#entity_type)  -> anyhow::Result<()> {
+				let connection = self.0.connection()?;
+				diesel::insert_into(#table)
+					.values(entity)
+					.on_conflict(#id)
+					.do_update()
+					.set(entity)
+					.execute(&*connection)?;
+				Ok(())
+			}
+
+			fn delete(&self, id: &<#entity_type as ::domain::Entity>::Id) -> anyhow::Result<()> {
 				let connection = self.0.connection()?;
 				diesel::delete(#table).filter(#id.eq(id)).execute(&*connection)?;
 				Ok(())
