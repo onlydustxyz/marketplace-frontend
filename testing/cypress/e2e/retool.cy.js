@@ -2,20 +2,21 @@ describe("As an admin, on retool, I", () => {
     it("can create projects", () => {
         const projectName = "Cypress test project";
 
-        cy.createProject(projectName)
-            .then($project_id => {
+        cy.createProject(projectName, 500, 1234)
+            .then($projectId => {
                 // Let the event sourcing magic happen
                 cy.wait(500);
 
-                cy.request("POST", "/v1/graphql", {
-                    query: `{ projects(where: {id: {_eq: "${$project_id}"}}) { name } }`,
-                })
-                    .its("body")
-                    .should("deep.equal", {
-                        data: {
-                            projects: [{ name: projectName }],
-                        },
-                    });
+                cy.graphql(`{
+                    projects_by_pk(id: "${$projectId}") {
+                      project_details {
+                        github_repo_id
+                      }
+                    }
+                  }`)
+                    .its('body.data.projects_by_pk.project_details')
+                    .its('github_repo_id')
+                    .should('equal', 1234);
             });
     });
 
