@@ -1,7 +1,4 @@
-use crate::domain::{
-	projections::{Project, ProjectLead},
-	EventListener, ProjectLeadRepository,
-};
+use crate::domain::{projections::Project, EventListener, ProjectLeadRepository};
 use anyhow::Result;
 use async_trait::async_trait;
 use domain::{EntityRepository, Event, ProjectEvent};
@@ -31,9 +28,8 @@ impl EventListener for Projector {
 			match event {
 				ProjectEvent::Created { id, name } =>
 					self.project_repository.insert(&Project::new((*id).into(), name.to_owned()))?,
-				ProjectEvent::LeaderAssigned { id, leader_id } => self
-					.project_lead_repository
-					.insert(&ProjectLead::new((*id).into(), (*leader_id).into()))?,
+				ProjectEvent::LeaderAssigned { id, leader_id } =>
+					self.project_lead_repository.insert(id, leader_id)?,
 			}
 		}
 		Ok(())
