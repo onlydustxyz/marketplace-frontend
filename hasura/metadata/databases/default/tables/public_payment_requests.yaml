@@ -37,3 +37,16 @@ array_relationships:
         table:
           name: payments
           schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - amount_in_usd
+        - reason
+        - budget_id
+        - id
+        - recipient_id
+        - requestor_id
+      filter:
+        budget_id:
+          _in: X-Hasura-budgets_owned

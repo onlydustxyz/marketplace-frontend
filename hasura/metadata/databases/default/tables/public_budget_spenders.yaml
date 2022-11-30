@@ -1,0 +1,3 @@
+table:
+  name: budget_spenders
+  schema: public
