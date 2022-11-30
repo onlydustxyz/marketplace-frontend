@@ -73,7 +73,8 @@ impl IdentifiableAggregate for Event {
 			},
 			Event::Budget(event) => match event {
 				backend_domain::BudgetEvent::Allocated { id, .. }
-				| backend_domain::BudgetEvent::Spent { id, .. } => id.to_string(),
+				| backend_domain::BudgetEvent::Spent { id, .. }
+				| backend_domain::BudgetEvent::SpenderAssigned { id, .. } => id.to_string(),
 			},
 		}
 	}
