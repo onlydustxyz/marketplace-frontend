@@ -4,7 +4,7 @@ use crate::domain::Payment;
 use infrastructure::database::{schema::payments::dsl, Client};
 
 #[derive(DieselRepository)]
-#[projection(Payment)]
+#[entity(Payment)]
 #[table(dsl::payments)]
 #[id(dsl::id)]
 pub struct Repository(Arc<Client>);
@@ -18,7 +18,7 @@ impl Repository {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::domain::ProjectionRepository;
+	use ::domain::EntityRepository;
 	use dotenv::dotenv;
 	use rstest::*;
 	use rust_decimal_macros::dec;

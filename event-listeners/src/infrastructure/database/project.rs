@@ -4,7 +4,7 @@ use crate::domain::Project;
 use infrastructure::database::{schema::projects::dsl, Client};
 
 #[derive(DieselRepository)]
-#[projection(Project)]
+#[entity(Project)]
 #[table(dsl::projects)]
 #[id(dsl::id)]
 pub struct Repository(Arc<Client>);

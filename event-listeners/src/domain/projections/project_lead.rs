@@ -1,5 +1,6 @@
 use super::Projection;
 use anyhow::Result;
+use domain::Entity;
 use infrastructure::database::schema::project_leads;
 use uuid::Uuid;
 
@@ -19,9 +20,11 @@ impl ProjectLead {
 	}
 }
 
-impl Projection for ProjectLead {
+impl Entity for ProjectLead {
 	type Id = Uuid;
 }
+
+impl Projection for ProjectLead {}
 
 pub trait Repository: Send + Sync {
 	fn insert(&self, projection: &ProjectLead) -> Result<()>;

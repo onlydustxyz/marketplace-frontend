@@ -3,7 +3,7 @@ use infrastructure::database::{schema::payment_requests::dsl, Client};
 use std::sync::Arc;
 
 #[derive(DieselRepository)]
-#[projection(PaymentRequest)]
+#[entity(PaymentRequest)]
 #[table(dsl::payment_requests)]
 #[id(dsl::id)]
 pub struct Repository(Arc<Client>);

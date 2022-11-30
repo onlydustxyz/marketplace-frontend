@@ -1,4 +1,5 @@
 use super::Projection;
+use domain::Entity;
 use infrastructure::database::schema::payments;
 use rust_decimal::Decimal;
 use serde_json::Value;
@@ -31,6 +32,8 @@ impl Payment {
 	}
 }
 
-impl Projection for Payment {
+impl Entity for Payment {
 	type Id = Uuid;
 }
+
+impl Projection for Payment {}
