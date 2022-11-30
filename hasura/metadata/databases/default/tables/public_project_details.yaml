@@ -1,3 +1,11 @@
 table:
   name: project_details
   schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - description
+        - github_repo_id
+        - telegram_link
+      filter: {}
