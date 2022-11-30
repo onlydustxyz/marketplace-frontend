@@ -7,8 +7,8 @@ use webhook::EventWebHook;
 use crate::{
 	domain::*,
 	infrastructure::database::{
-		BudgetRepository, PaymentRepository, PaymentRequestRepository, ProjectLeadRepository,
-		ProjectRepository,
+		BudgetRepository, BudgetSpenderRepository, PaymentRepository, PaymentRequestRepository,
+		ProjectLeadRepository, ProjectRepository,
 	},
 };
 use anyhow::Result;
@@ -25,7 +25,8 @@ pub async fn spawn_all(
 	let payment_request_repository = Arc::new(PaymentRequestRepository::new(database.clone()));
 	let project_repository = Arc::new(ProjectRepository::new(database.clone()));
 	let budget_repository = Arc::new(BudgetRepository::new(database.clone()));
-	let project_lead_repository = Arc::new(ProjectLeadRepository::new(database));
+	let project_lead_repository = Arc::new(ProjectLeadRepository::new(database.clone()));
+	let budget_spender_repository = Arc::new(BudgetSpenderRepository::new(database));
 
 	let handles = [
 		Logger.spawn(event_bus::consumer("logger").await?),
@@ -35,7 +36,8 @@ pub async fn spawn_all(
 			.spawn(event_bus::consumer("payment_requests").await?),
 		ProjectProjector::new(project_repository, project_lead_repository)
 			.spawn(event_bus::consumer("projects").await?),
-		BudgetProjector::new(budget_repository).spawn(event_bus::consumer("budgets").await?),
+		BudgetProjector::new(budget_repository, budget_spender_repository)
+			.spawn(event_bus::consumer("budgets").await?),
 	];
 
 	Ok(handles.into())

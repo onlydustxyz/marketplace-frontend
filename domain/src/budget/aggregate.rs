@@ -1,5 +1,6 @@
 use crate::{
 	Aggregate, AggregateRoot, Amount, BudgetEvent, BudgetId, BudgetTopic, Entity, EventSourcable,
+	UserId,
 };
 use thiserror::Error;
 
@@ -38,6 +39,13 @@ impl Budget {
 			amount: amount.clone(),
 		}])
 	}
+
+	pub fn assign_spender(&self, spender_id: &UserId) -> Vec<BudgetEvent> {
+		vec![BudgetEvent::SpenderAssigned {
+			id: self.id,
+			spender_id: *spender_id,
+		}]
+	}
 }
 
 impl Entity for Budget {
@@ -59,6 +67,7 @@ impl EventSourcable for Budget {
 				remaining_amount: self.remaining_amount - amount,
 				..self
 			},
+			BudgetEvent::SpenderAssigned { .. } => self,
 		}
 	}
 }
@@ -83,6 +92,12 @@ mod tests {
 	#[fixture]
 	#[once]
 	fn project_id() -> ProjectId {
+		Uuid::new_v4().into()
+	}
+
+	#[fixture]
+	#[once]
+	fn spender_id() -> UserId {
 		Uuid::new_v4().into()
 	}
 
@@ -114,6 +129,14 @@ mod tests {
 		BudgetEvent::Spent {
 			id: *budget_id,
 			amount,
+		}
+	}
+
+	#[fixture]
+	fn budget_spender_assigned_event(budget_id: &BudgetId, spender_id: &UserId) -> BudgetEvent {
+		BudgetEvent::SpenderAssigned {
+			id: *budget_id,
+			spender_id: *spender_id,
 		}
 	}
 
@@ -158,5 +181,16 @@ mod tests {
 			crate::Currency::Crypto("USDT".to_string()),
 		));
 		assert_matches!(result, Err(Error::InvalidCurrency));
+	}
+
+	#[rstest]
+	fn assign_spender(
+		budget_allocated_event: BudgetEvent,
+		budget_spender_assigned_event: BudgetEvent,
+		spender_id: &UserId,
+	) {
+		let budget = Budget::from_events(&[budget_allocated_event]);
+		let events = budget.assign_spender(spender_id);
+		assert_eq!(events, vec![budget_spender_assigned_event]);
 	}
 }

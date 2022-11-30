@@ -1,4 +1,4 @@
-use crate::{Amount, BudgetId, BudgetTopic};
+use crate::{Amount, BudgetId, BudgetTopic, UserId};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
@@ -12,6 +12,10 @@ pub enum Event {
 	Spent {
 		id: BudgetId,
 		amount: Amount,
+	},
+	SpenderAssigned {
+		id: BudgetId,
+		spender_id: UserId,
 	},
 }
 
