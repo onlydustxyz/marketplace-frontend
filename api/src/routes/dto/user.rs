@@ -8,7 +8,10 @@ use uuid::Uuid;
 
 pub enum User {
 	Admin,
-	ProjectLead(HashSet<Uuid>),
+	IdentifiedUser {
+		lead_projects: HashSet<Uuid>,
+		owned_budgets: HashSet<Uuid>,
+	},
 	Public,
 }
 
@@ -21,14 +24,23 @@ impl<'r> FromRequest<'r> for User {
 			return Outcome::Success(User::Admin);
 		}
 
-		let lead_projects: HashSet<Uuid> = request
-			.headers()
-			.get_one("x-hasura-projects_leaded")
-			.and_then(|h| serde_json::from_str(&h.replace('{', "[").replace('}', "]")).ok())
-			.unwrap_or_default();
+		if request.headers().get_one("x-hasura-user-id").is_some() {
+			let lead_projects: HashSet<Uuid> = request
+				.headers()
+				.get_one("x-hasura-projects_leaded")
+				.and_then(|h| serde_json::from_str(&h.replace('{', "[").replace('}', "]")).ok())
+				.unwrap_or_default();
 
-		if !lead_projects.is_empty() {
-			return Outcome::Success(User::ProjectLead(lead_projects));
+			let owned_budgets: HashSet<Uuid> = request
+				.headers()
+				.get_one("x-hasura-budgets_owned")
+				.and_then(|h| serde_json::from_str(&h.replace('{', "[").replace('}', "]")).ok())
+				.unwrap_or_default();
+
+			return Outcome::Success(User::IdentifiedUser {
+				lead_projects,
+				owned_budgets,
+			});
 		}
 
 		Outcome::Success(User::Public)
@@ -39,9 +51,14 @@ impl From<User> for Box<dyn DomainUser> {
 	fn from(user: User) -> Self {
 		match user {
 			User::Admin => user::admin(),
-			User::ProjectLead(projects) =>
-				user::project_leader(projects.into_iter().map(Into::into).collect()),
-			User::Public => user::public(),
+			User::IdentifiedUser {
+				lead_projects,
+				owned_budgets,
+			} => user::identified_user(
+				lead_projects.into_iter().map(Into::into).collect(),
+				owned_budgets.into_iter().map(Into::into).collect(),
+			),
+			User::Public => user::anonymous(),
 		}
 	}
 }
