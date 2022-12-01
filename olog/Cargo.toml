@@ -14,3 +14,6 @@ tracing = "0.1"
 tracing-log = {version = "0.1", features = ["env_logger"]}
 tracing-opentelemetry = "0.18.0"
 tracing-subscriber = {version = "0.3", features = ["env-filter", "fmt", "json"]}
+
+[dev-dependencies]
+ctor = "0.1.26"
