@@ -1113,6 +1113,7 @@ dependencies = [
  "diesel",
  "futures 0.3.25",
  "log",
+ "macros",
  "mockall",
  "mockall_double",
  "regex",
