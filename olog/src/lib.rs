@@ -1,3 +1,4 @@
+mod error;
 mod info;
 
 pub use opentelemetry;
