@@ -59,7 +59,7 @@ fn get_inner_type(ast: &DeriveInput) -> TypePath {
 	let inner_field = match ast.data {
 		syn::Data::Struct(ref data) => match data.fields {
 			syn::Fields::Unnamed(ref fields) => {
-				assert!(fields.unnamed.clone().len() == 1);
+				assert_eq!(fields.unnamed.clone().len(), 1, "{}", NEWTYPE_ERROR);
 				let unnamed: Field = fields.unnamed.first().expect(NEWTYPE_ERROR).clone();
 				unnamed
 			},
