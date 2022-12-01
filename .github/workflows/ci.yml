@@ -89,8 +89,9 @@ jobs:
 
       - name: Setup cargo
         uses: ./.github/actions/cargo-setup
-        with:
-          components: clippy
+
+      - name: Setup clippy
+        run: rustup component add clippy
 
       - name: Annotate commit with clippy warnings
         uses: actions-rs/clippy-check@v1
@@ -104,6 +105,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Setup cargo
+        uses: ./.github/actions/cargo-setup
 
       - name: Setup environment
         uses: ./.github/actions/env-setup
@@ -132,8 +136,6 @@ jobs:
 
       - name: Setup cargo
         uses: ./.github/actions/cargo-setup
-        with:
-          key: coverage
 
       - name: Setup environment
         uses: ./.github/actions/env-setup
@@ -160,9 +162,9 @@ jobs:
 
       - name: Setup cargo
         uses: ./.github/actions/cargo-setup
-        with:
-          key: coverage
-          components: llvm-tools-preview
+
+      - name: Setup llvm tools
+        run: rustup component add llvm-tools-preview
 
       - name: Setup environment
         uses: ./.github/actions/env-setup
