@@ -36,3 +36,20 @@ macro_rules! span_id {
 		)
 	};
 }
+
+#[cfg(test)]
+#[ctor::ctor]
+fn init_tracing_for_tests() {
+	use tracing_subscriber::prelude::__tracing_subscriber_SubscriberExt;
+
+	let tracer = opentelemetry::sdk::export::trace::stdout::new_pipeline().install_simple();
+	let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
+
+	let subscriber = tracing_subscriber::fmt::Subscriber::builder()
+		.with_ansi(std::env::var("ANSI_LOGS").and(Ok(true)).unwrap_or(false))
+		.finish()
+		.with(telemetry);
+
+	// Trace executed code
+	tracing::subscriber::set_global_default(subscriber).unwrap();
+}

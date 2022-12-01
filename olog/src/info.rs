@@ -179,23 +179,7 @@ macro_rules! info {
 
 #[cfg(test)]
 mod tests {
-	use opentelemetry::sdk::export::trace::stdout;
 	use tracing::Level;
-	use tracing_subscriber::prelude::__tracing_subscriber_SubscriberExt;
-
-	#[ctor::ctor]
-	fn init() {
-		let tracer = stdout::new_pipeline().install_simple();
-		let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
-
-		let subscriber = tracing_subscriber::fmt::Subscriber::builder()
-			.with_ansi(std::env::var("ANSI_LOGS").and(Ok(true)).unwrap_or(false))
-			.finish()
-			.with(telemetry);
-
-		// Trace executed code
-		tracing::subscriber::set_global_default(subscriber).unwrap();
-	}
 
 	#[test]
 	fn info() {
