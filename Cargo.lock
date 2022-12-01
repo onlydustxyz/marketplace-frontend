@@ -133,6 +133,7 @@ dependencies = [
  "macros",
  "mockall",
  "okapi",
+ "olog",
  "reqwest",
  "rocket",
  "rocket_okapi",
@@ -2537,6 +2538,18 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
+]
+
+[[package]]
+name = "olog"
+version = "0.1.0"
+dependencies = [
+ "opentelemetry",
+ "opentelemetry-datadog",
+ "tracing",
+ "tracing-log",
+ "tracing-opentelemetry",
+ "tracing-subscriber",
 ]
 
 [[package]]
