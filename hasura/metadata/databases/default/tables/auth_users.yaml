@@ -178,3 +178,13 @@ select_permissions:
       filter:
         id:
           _eq: X-Hasura-User-Id
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - email
+        - metadata
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
