@@ -44,4 +44,23 @@ describe("As an admin, on retool, I", () => {
             })
         });
     });
+
+    it('can update project details', () => {
+        cy.createUser().then($user =>
+            cy.createProject($user.id, 'Another project', 500, 1234).then($projectId =>
+                cy.updateProject($projectId, 4321).then(() =>
+                    cy.graphql(`{
+                    projects_by_pk(id: "${$projectId}") {
+                      project_details {
+                        github_repo_id
+                      }
+                    }
+                  }`)
+                        .its('body.data.projects_by_pk.project_details')
+                        .its('github_repo_id')
+                        .should('equal', 4321)
+                )
+            )
+        )
+    });
 });
