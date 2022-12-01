@@ -7,7 +7,7 @@ runs:
   steps:
     - name: Install diesel CLI
       shell: bash
-      run: cargo install diesel_cli --no-default-features --features postgres --force
+      run: cargo install diesel_cli --no-default-features --features postgres
 
     - name: Run migrations
       shell: bash
