@@ -7,8 +7,8 @@ pub use tracing_opentelemetry;
 macro_rules! trace_id {
 	() => {
 		u64::from_be_bytes(
-			olog::opentelemetry::trace::TraceContextExt::span(
-				&olog::tracing_opentelemetry::OpenTelemetrySpanExt::context(
+			$crate::opentelemetry::trace::TraceContextExt::span(
+				&$crate::tracing_opentelemetry::OpenTelemetrySpanExt::context(
 					&tracing::Span::current(),
 				),
 			)
@@ -25,8 +25,8 @@ macro_rules! trace_id {
 macro_rules! span_id {
 	() => {
 		u64::from_be_bytes(
-			olog::opentelemetry::trace::TraceContextExt::span(
-				&olog::tracing_opentelemetry::OpenTelemetrySpanExt::context(
+			$crate::opentelemetry::trace::TraceContextExt::span(
+				&$crate::tracing_opentelemetry::OpenTelemetrySpanExt::context(
 					&tracing::Span::current(),
 				),
 			)
