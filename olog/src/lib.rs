@@ -1,5 +1,6 @@
 mod error;
 mod info;
+mod warn;
 
 pub use opentelemetry;
 pub use tracing_opentelemetry;
