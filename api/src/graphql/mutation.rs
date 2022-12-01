@@ -82,6 +82,26 @@ impl Mutation {
 		Ok(project_id.into())
 	}
 
+	pub async fn update_project(
+		context: &Context,
+		id: Uuid,
+		github_repo_id: i32,
+		description: Option<String>,
+		telegram_link: Option<String>,
+	) -> Result<Uuid> {
+		context
+			.update_project_usecase
+			.update(
+				id.into(),
+				(github_repo_id as i64).into(),
+				description,
+				telegram_link,
+			)
+			.await?;
+
+		Ok(id)
+	}
+
 	pub async fn request_payment(
 		context: &Context,
 		budget_id: Uuid,

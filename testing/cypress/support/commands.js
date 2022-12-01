@@ -52,6 +52,18 @@ Cypress.Commands.add('createProject', (userId, projectName = 'My Project', initi
         .should("be.a", "string");
 });
 
+
+Cypress.Commands.add('updateProject', (projectId, githubRepoId, description = "My project description", telegramLink = "https://t.me/foo") => {
+    return cy.graphqlAsAdmin(`mutation{ updateProject(
+            id: "${projectId}",
+            githubRepoId: ${githubRepoId},
+            description: "${description}",
+            telegramLink: "${telegramLink}",
+        )}`)
+        .its("body.data.updateProject")
+        .should("equal", projectId);
+});
+
 Cypress.Commands.add('createUser', () => {
     const email = `cypress-${Date.now()}@onlydust.xyz`;
     const password = "Str0ngPassw#ord-94|%";

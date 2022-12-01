@@ -13,6 +13,7 @@ pub struct Context {
 	pub request_payment_usecase: application::payment::request::Usecase,
 	pub process_payment_usecase: application::payment::process::Usecase,
 	pub create_project_usecase: application::project::create::Usecase,
+	pub update_project_usecase: application::project::update::Usecase,
 }
 
 impl Context {
@@ -42,6 +43,9 @@ impl Context {
 			create_project_usecase: application::project::create::Usecase::new(
 				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
+				project_details_repository.clone(),
+			),
+			update_project_usecase: application::project::update::Usecase::new(
 				project_details_repository,
 			),
 		}
