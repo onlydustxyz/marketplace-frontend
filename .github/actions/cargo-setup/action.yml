@@ -16,8 +16,8 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - uses: Swatinem/rust-cache@v2
+
     - name: Install toolchain
       shell: bash
       run: rustup toolchain install 1.63 --profile minimal
-
-    - uses: Swatinem/rust-cache@v2

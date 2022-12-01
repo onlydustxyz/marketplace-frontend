@@ -5,10 +5,16 @@ description: Launch application and run all tests while measuring code coverage
 runs:
   using: "composite"
   steps:
+    - uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: ". -> tarpaulin_target"
+
     - name: Run cargo-tarpaulin
       uses: actions-rs/tarpaulin@v0.1
       with:
         version: "0.20.1"
         args: |
           --workspace
+          --skip-clean
+          --target-dir tarpaulin_target
           ${{ inputs.test_flags }}
