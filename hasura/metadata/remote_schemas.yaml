@@ -33,3 +33,18 @@
           type Query {
             hello: String!
           }
+- name: Github Proxy
+  definition:
+    url_from_env: GITHUB_PROXY_GRAPHQL_URL
+    timeout_seconds: 60
+    customization: {}
+  permissions:
+    - role: public
+      definition:
+        schema: |
+          schema {
+            query: Query
+          }
+          type Query {
+            helloFromGithubProxy: String!
+          }
