@@ -4,3 +4,19 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+# Config
+figment = {version ="0.10.8", features = ["env", "toml"]}
+
+# Http Server
+rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
+
+# Errors
+anyhow = "1.0.57"
+
+# Utils
+dotenv = "0.15.0"
+
+# Local dependecies
+infrastructure = {path = "../infrastructure"}
+
+[dev-dependencies]

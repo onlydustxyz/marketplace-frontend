@@ -1,0 +1,8 @@
+[default]
+address = "0.0.0.0"
+
+[debug]
+port = 8001
+
+[release]
+port = 80

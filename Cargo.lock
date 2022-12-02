@@ -1510,6 +1510,13 @@ dependencies = [
 [[package]]
 name = "github-proxy"
 version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "dotenv",
+ "figment",
+ "infrastructure",
+ "rocket",
+]
 
 [[package]]
 name = "glob"
