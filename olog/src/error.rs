@@ -1,3 +1,21 @@
+/// Constructs an event at the error level.
+///
+/// This functions similarly to the [`tracing::error!`] macro. However, the current trace_id and
+/// span_id are automatically added as fields.
+///
+/// # Examples
+///
+/// ```rust
+/// use olog::error;
+/// # fn main() {
+///
+/// let (err_info, port) = ("No connection", 22);
+///
+/// error!(port, error = %err_info);
+/// error!(target: "app_events", "App Error: {}", err_info);
+/// error!({ info = err_info }, "error on port: {}", port);
+/// # }
+/// ```
 #[macro_export]
 macro_rules! error {
 	(target: $target:expr, parent: $parent:expr, { $($field:tt)* }, $($arg:tt)* ) => (
