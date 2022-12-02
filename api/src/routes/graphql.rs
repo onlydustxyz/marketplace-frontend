@@ -2,6 +2,7 @@ use super::User;
 use crate::{
 	domain::ProjectDetails,
 	graphql::{Context, Schema},
+	routes::api_key::ApiKey,
 };
 use domain::{
 	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Publisher, UniqueMessage,
@@ -19,6 +20,7 @@ pub fn graphiql() -> content::RawHtml<String> {
 #[allow(clippy::too_many_arguments)]
 #[get("/graphql?<request>")]
 pub async fn get_graphql_handler(
+	_api_key: ApiKey,
 	user: User,
 	request: GraphQLRequest,
 	schema: &State<Schema>,
@@ -44,6 +46,7 @@ pub async fn get_graphql_handler(
 #[allow(clippy::too_many_arguments)]
 #[post("/graphql", data = "<request>")]
 pub async fn post_graphql_handler(
+	_api_key: ApiKey,
 	user: User,
 	request: GraphQLRequest,
 	schema: &State<Schema>,

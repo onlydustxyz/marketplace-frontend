@@ -3,6 +3,10 @@
     url_from_env: BACKEND_GRAPHQL_URL
     timeout_seconds: 60
     customization: {}
+    headers:
+      - name: api-key
+        value_from_env: BACKEND_GRAPHQL_API_KEY
+  comment: ""
   permissions:
     - role: public
       definition:
