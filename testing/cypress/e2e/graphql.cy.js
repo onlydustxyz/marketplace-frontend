@@ -20,4 +20,17 @@ describe("The application", () => {
                 },
             });
     });
+
+
+    it("should answer on Github proxy queries", () => {
+        cy.request("POST", "/v1/graphql", {
+            query: "{ helloFromGithubProxy }",
+        })
+            .its("body")
+            .should("deep.equal", {
+                data: {
+                    helloFromGithubProxy: "Raclette!",
+                },
+            });
+    });
 });
