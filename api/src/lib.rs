@@ -20,7 +20,6 @@ use anyhow::Result;
 use dotenv::dotenv;
 use log::info;
 use rocket::{routes, Build, Rocket};
-use rocket_okapi::swagger_ui::make_swagger_ui;
 use std::sync::Arc;
 use tracing::instrument;
 
@@ -70,7 +69,6 @@ pub async fn main() -> Result<()> {
 			routes::graphql::post_graphql_handler
 		],
 	)
-	.mount("/swagger", make_swagger_ui(&routes::get_docs()))
 	.launch();
 
 	let (rocket_result,) = tokio::join!(rocket_handler);
