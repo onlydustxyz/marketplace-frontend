@@ -1515,6 +1515,8 @@ dependencies = [
  "dotenv",
  "figment",
  "infrastructure",
+ "juniper",
+ "juniper_rocket",
  "rocket",
 ]
 

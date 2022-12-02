@@ -8,6 +8,8 @@ edition = "2021"
 figment = {version ="0.10.8", features = ["env", "toml"]}
 
 # Http Server
+juniper = {version = "0.15.10"}
+juniper_rocket = {version = "0.8.2"}
 rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 
 # Errors
