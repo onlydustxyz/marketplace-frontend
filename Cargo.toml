@@ -5,6 +5,7 @@ members = [
   "domain",
   "event-listeners",
   "event-store",
+  "github-proxy",
   "infrastructure",
   "macros",
   "testing",
