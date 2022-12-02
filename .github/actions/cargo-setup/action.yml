@@ -2,17 +2,6 @@ name: Setup cargo
 
 description: Install Rust toolchain and use cargo cache to speed up compilation time
 
-inputs:
-  components:
-    description: Rust components to install
-    required: false
-    default: ""
-
-  key:
-    description: Specific key for the cargo cache
-    required: false
-    default: ""
-
 runs:
   using: "composite"
   steps:

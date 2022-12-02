@@ -21,6 +21,10 @@ runs:
       shell: bash
       run: cargo build -p event-listeners
 
+    - name: Build the github-proxy
+      shell: bash
+      run: cargo build -p github-proxy
+
     - name: Run the api
       shell: bash
       run: |
@@ -39,6 +43,12 @@ runs:
         cargo run -p event-store &> event-store.out.log &
         echo "event_store_pid=$!" >> $GITHUB_ENV
 
+    - name: Run the github-proxy
+      shell: bash
+      run: |
+        cargo run -p github-proxy &> github-proxy.out.log &
+        echo "github_proxy_pid=$!" >> $GITHUB_ENV
+
     - name: Wait for api to be up
       uses: ifaxity/wait-on-action@v1
       with:
@@ -49,4 +59,10 @@ runs:
       uses: ifaxity/wait-on-action@v1
       with:
         resource: http-get://localhost:8081/graphiql
-        timeout: 1000
+        timeout: 120000
+
+    - name: Wait for github-proxy to be up
+      uses: ifaxity/wait-on-action@v1
+      with:
+        resource: http://localhost:8001
+        timeout: 120000
