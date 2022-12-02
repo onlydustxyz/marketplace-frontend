@@ -1,3 +1,34 @@
+/// Constructs an event at the trace level.
+///
+/// This functions similarly to the [`tracing::trace!`] macro. However, the current trace_id and
+/// span_id are automatically added as fields.
+///
+/// # Examples
+///
+/// ```rust
+/// use olog::trace;
+/// # #[derive(Debug, Copy, Clone)] struct Position { x: f32, y: f32 }
+/// # impl Position {
+/// # const ORIGIN: Self = Self { x: 0.0, y: 0.0 };
+/// # fn dist(&self, other: Position) -> f32 {
+/// #    let x = (other.x - self.x).exp2(); let y = (self.y - other.y).exp2();
+/// #    (x + y).sqrt()
+/// # }
+/// # }
+/// # fn main() {
+/// let pos = Position { x: 3.234, y: -1.223 };
+/// let origin_dist = pos.dist(Position::ORIGIN);
+///
+/// trace!(position = ?pos, ?origin_dist);
+/// trace!(
+///     target: "app_events",
+///     position = ?pos,
+///     "x is {} and y is {}",
+///     if pos.x >= 0.0 { "positive" } else { "negative" },
+///     if pos.y >= 0.0 { "positive" } else { "negative" }
+/// );
+/// # }
+/// ```
 #[macro_export]
 macro_rules! trace {
 	(target: $target:expr, parent: $parent:expr, { $($field:tt)* }, $($arg:tt)* ) => (

@@ -1,3 +1,21 @@
+/// Constructs an event at the debug level.
+///
+/// This functions similarly to the [`tracing::debug!`] macro. However, the current trace_id and
+/// span_id are automatically added as fields.
+///
+/// # Examples
+///
+/// ```rust
+/// use olog::debug;
+/// # fn main() {
+/// # #[derive(Debug)] struct Position { x: f32, y: f32 }
+///
+/// let pos = Position { x: 3.234, y: -1.223 };
+///
+/// debug!(?pos.x, ?pos.y);
+/// debug!(target: "app_events", position = ?pos, "New position");
+/// # }
+/// ```
 #[macro_export]
 macro_rules! debug {
 	(target: $target:expr, parent: $parent:expr, { $($field:tt)* }, $($arg:tt)* ) => (

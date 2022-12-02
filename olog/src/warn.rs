@@ -1,3 +1,25 @@
+/// Constructs an event at the warn level.
+///
+/// This functions similarly to the [`tracing::warn!`] macro. However, the current trace_id and
+/// span_id are automatically added as fields.
+///
+/// # Examples
+///
+/// ```rust
+/// use olog::warn;
+/// # fn main() {
+///
+/// let warn_description = "Invalid Input";
+/// let input = &[0x27, 0x45];
+///
+/// warn!(?input, warning = warn_description);
+/// warn!(
+///     target: "input_events",
+///     warning = warn_description,
+///     "Received warning for input: {:?}", input,
+/// );
+/// # }
+/// ```
 #[macro_export]
 macro_rules! warn {
 	(target: $target:expr, parent: $parent:expr, { $($field:tt)* }, $($arg:tt)* ) => (

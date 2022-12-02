@@ -7,6 +7,7 @@ mod warn;
 pub use opentelemetry;
 pub use tracing_opentelemetry;
 
+/// Retrieves current trace ID and converts it to Datadog format.
 #[macro_export]
 macro_rules! trace_id {
 	() => {
@@ -25,6 +26,7 @@ macro_rules! trace_id {
 	};
 }
 
+/// Retrieves current span ID and converts it to Datadog format.
 #[macro_export]
 macro_rules! span_id {
 	() => {
