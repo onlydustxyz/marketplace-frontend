@@ -114,6 +114,7 @@ name = "api"
 version = "1.0.0"
 dependencies = [
  "anyhow",
+ "assert_matches",
  "async-std",
  "async-trait",
  "chrono",
