@@ -7,4 +7,4 @@ runs:
   steps:
     - name: Kill all running backends
       shell: bash
-      run: kill ${{ env.api_pid }} ${{ env.event_store_pid }} ${{ env.event_listeners_pid }}
+      run: kill ${{ env.api_pid }} ${{ env.event_store_pid }} ${{ env.event_listeners_pid }} ${{ env.github_proxy_pid }}
