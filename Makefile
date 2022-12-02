@@ -1,25 +1,23 @@
-install:
-	rustup update nightly
-	docker-compose up -d
-	[[ -e .env ]] && cp .env.example .env
-	source .env
-	diesel setup
-	diesel migration run
-	cargo build
-	echo "Installation finished! You can start the application with `cargo run` or using `make start`"
+ROOT_DIR := $(shell basename $(dir $(realpath $(lastword $(MAKEFILE_LIST)))))
+RUST_VERSION := $(shell sed -n 's/^ *channel.*=.*"\([^"]*\)".*/\1/p' rust-toolchain.toml)
 
-docker/start:
+install:
+	rustup install $(RUST_VERSION)
+
+docker/up:
 	docker-compose up -d
 
 docker/clean:
 	docker-compose stop
 	docker-compose rm -f db
-	docker volume rm marketplace-backend_db
-	docker-compose up -d
-	diesel migration run
+	docker volume rm $(ROOT_DIR)_db
 
-db/connect:
-	docker-compose up db -d
+docker/re: docker/clean docker/up
+
+db/up:
+	docker-compose up -d db
+
+db/connect: db/up
 	docker-compose exec -u postgres db psql marketplace_db
 
 db/update-staging-dump:
@@ -27,7 +25,7 @@ db/update-staging-dump:
 	heroku pg:backups:download --app onlydust-backend-staging-next --output ./scripts/fixtures/latest.dump
 
 db/load-fixtures: SHELL:=/bin/bash
-db/load-fixtures:
+db/load-fixtures: db/up
 	PGPASSWORD=postgres pg_restore -L <(pg_restore -l ./scripts/fixtures/latest.dump | grep -Ev 'auth migrations|SCHEMA - auth') --clean --no-owner -h localhost -U postgres -d marketplace_db ./scripts/fixtures/latest.dump
 	@echo ""
 	@echo "Dump loaded ✅"
@@ -35,11 +33,11 @@ db/load-fixtures:
 	@echo "It was generated on the `GIT_PAGER=cat git log -1 --format=%cd ./scripts/fixtures/latest.dump`"
 	@echo "To have a fresh dump, you can use db/update-staging-dump"
 
-api/start:
-	cargo run
-
-migration/run:
+migration/run: db/up
 	diesel migration run
+
+api/start: docker/up migration/run
+	cargo run
 
 hasura/start:
 	yarn --cwd ./hasura start
@@ -52,3 +50,5 @@ hasura/clean: migration/run
 
 cypress/test:
 	yarn --cwd ./testing cypress:run
+
+.PHONY: install docker/up docker/clean docker/re db/up db/connect db/update-staging-dump db/load-fixtures migration/run api/start hasura/start hasura/clean cypress/test
