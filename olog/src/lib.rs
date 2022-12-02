@@ -1,3 +1,4 @@
+mod debug;
 mod error;
 mod info;
 mod warn;
@@ -42,13 +43,16 @@ macro_rules! span_id {
 #[cfg(test)]
 #[ctor::ctor]
 fn init_tracing_for_tests() {
+	use tracing::Level;
 	use tracing_subscriber::prelude::__tracing_subscriber_SubscriberExt;
 
-	let tracer = opentelemetry::sdk::export::trace::stdout::new_pipeline().install_simple();
+	let tracer = opentelemetry::sdk::export::trace::stdout::new_pipeline()
+		.with_writer(Vec::new())
+		.install_simple();
 	let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
 
 	let subscriber = tracing_subscriber::fmt::Subscriber::builder()
-		.with_ansi(std::env::var("ANSI_LOGS").and(Ok(true)).unwrap_or(false))
+		.with_max_level(Level::TRACE)
 		.finish()
 		.with(telemetry);
 
