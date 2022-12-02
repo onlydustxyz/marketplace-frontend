@@ -1,6 +1,7 @@
 mod debug;
 mod error;
 mod info;
+mod trace;
 mod warn;
 
 pub use opentelemetry;
@@ -47,7 +48,7 @@ fn init_tracing_for_tests() {
 	use tracing_subscriber::prelude::__tracing_subscriber_SubscriberExt;
 
 	let tracer = opentelemetry::sdk::export::trace::stdout::new_pipeline()
-		.with_writer(Vec::new())
+		.with_writer(std::io::sink())
 		.install_simple();
 	let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
 
