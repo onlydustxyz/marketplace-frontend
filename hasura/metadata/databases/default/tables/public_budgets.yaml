@@ -12,7 +12,7 @@ object_relationships:
           name: projects
           schema: public
 select_permissions:
-  - role: public
+  - role: user
     permission:
       columns:
         - id

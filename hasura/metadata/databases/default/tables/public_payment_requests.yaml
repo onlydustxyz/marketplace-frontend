@@ -38,7 +38,7 @@ array_relationships:
           name: payments
           schema: public
 select_permissions:
-  - role: public
+  - role: user
     permission:
       columns:
         - amount_in_usd

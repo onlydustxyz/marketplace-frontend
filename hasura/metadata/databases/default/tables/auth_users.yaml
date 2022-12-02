@@ -153,10 +153,7 @@ select_permissions:
       columns:
         - avatar_url
         - display_name
-        - id
-      filter:
-        id:
-          _eq: X-Hasura-User-Id
+      filter: {}
   - role: user
     permission:
       columns:
