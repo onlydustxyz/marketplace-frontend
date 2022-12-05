@@ -7,7 +7,9 @@ runs:
   steps:
     - name: Copy the .env file
       shell: bash
-      run: cp .env.example .env
+      run: |
+        cp .env.example .env
+        cp api/.env.example api/.env
 
     - name: Build the api
       shell: bash

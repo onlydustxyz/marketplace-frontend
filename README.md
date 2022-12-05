@@ -32,7 +32,11 @@
 ### 1. Setup your environment
 
 Create the `.env` file with the correct environment variables.
-Copy the `.env.example` file and modify the values according to your setup.
+Copy the `.env.example` files and modify the values according to your setup.
+```
+cp .env.example .env
+cp api/.env.example api/.env
+```
 
 ### 2. Start the docker stack
 

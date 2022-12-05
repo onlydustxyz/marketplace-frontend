@@ -8,7 +8,7 @@ use rocket::{
 pub struct ApiKey(String);
 
 fn is_valid_key(key: &str) -> bool {
-	key == match std::env::var("BACKEND_GRAPHQL_API_KEY") {
+	key == match std::env::var("API_KEY") {
 		Ok(v) => v,
 		Err(_) => return false,
 	}

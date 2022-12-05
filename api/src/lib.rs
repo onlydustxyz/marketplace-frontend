@@ -41,9 +41,12 @@ extern crate diesel;
 #[macro_use]
 extern crate macros;
 
+const ROOT: &str = "api";
+
 #[instrument]
 pub async fn main() -> Result<()> {
 	dotenv().ok();
+	dotenv::from_filename(&format!("{ROOT}/.env")).ok();
 
 	let database = Arc::new(database::Client::new(init_pool()?));
 	database.run_migrations()?;
@@ -109,6 +112,6 @@ fn inject_app(
 
 fn rocket_config() -> Figment {
 	Figment::from(rocket::Config::default())
-		.merge(Toml::file("api/Rocket.toml").nested())
+		.merge(Toml::file(&format!("{ROOT}/Rocket.toml")).nested())
 		.merge(Env::prefixed("ROCKET_"))
 }
