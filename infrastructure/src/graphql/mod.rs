@@ -1,6 +1,6 @@
-use reqwest::header::{HeaderMap, HeaderValue};
-
 use self::client::GraphQLClient;
+use crate::config;
+use reqwest::header::{HeaderMap, HeaderValue};
 
 mod client;
 mod repositories;

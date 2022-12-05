@@ -9,6 +9,7 @@ use serde::Deserialize;
 pub struct App {
 	pub database: Database,
 	pub amqp: Amqp,
+	pub hasura: Hasura,
 }
 
 #[derive(Deserialize)]
@@ -19,6 +20,11 @@ pub struct Database {
 #[derive(Deserialize)]
 pub struct Amqp {
 	pub url: String,
+}
+
+#[derive(Deserialize)]
+pub struct Hasura {
+	pub graphql_server_url: String,
 }
 
 pub fn load() -> Result<App> {
@@ -47,6 +53,8 @@ mod tests {
 				url = "postgres://postgres:postgres@localhost/marketplace_db"
 				[amqp]
 				url = "amqp://127.0.0.1:5672/%2f"
+				[hasura]
+				graphql_server_url = "http://localhost:8080/v1/graphql"
 				"#,
 			)?;
 
@@ -60,6 +68,10 @@ mod tests {
 				"postgres://postgres:postgres@localhost/marketplace_db"
 			);
 			assert_eq!(config.amqp.url, "amqp://127.0.0.1:5672/%2f");
+			assert_eq!(
+				config.hasura.graphql_server_url,
+				"http://localhost:8080/v1/graphql"
+			);
 
 			Ok(())
 		});
@@ -73,6 +85,10 @@ mod tests {
 				"postgres://postgres:postgres@localhost/marketplace_db",
 			);
 			jail.set_env("amqp.url", "amqp://127.0.0.1:5672/%2f");
+			jail.set_env(
+				"HASURA_GRAPHQL_GRAPHQL_URL",
+				"http://localhost:8080/v1/graphql",
+			);
 
 			let result = load();
 			assert!(result.is_ok(), "{}", result.err().unwrap());
@@ -84,6 +100,10 @@ mod tests {
 				"postgres://postgres:postgres@localhost/marketplace_db"
 			);
 			assert_eq!(config.amqp.url, "amqp://127.0.0.1:5672/%2f");
+			assert_eq!(
+				config.hasura.graphql_server_url,
+				"http://localhost:8080/v1/graphql"
+			);
 
 			Ok(())
 		});
