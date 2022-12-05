@@ -19,5 +19,3 @@ runs:
       uses: cypress-io/github-action@v4
       with:
         working-directory: ./testing
-      env:
-        CYPRESS_BASE_URL: http://localhost:8080
