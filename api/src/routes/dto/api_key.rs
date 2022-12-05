@@ -26,11 +26,6 @@ impl<'r> FromRequest<'r> for ApiKey {
 	type Error = ApiKeyError;
 
 	async fn from_request(request: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
-		println!(
-			"Api-Key = {} : {}",
-			request.headers().get_one("Api-Key").unwrap_or_default(),
-			is_valid_key(request.headers().get_one("Api-Key").unwrap_or_default())
-		);
 		let keys: Vec<_> = request.headers().get("Api-Key").collect();
 		match keys.len() {
 			0 => Outcome::Failure((Status::Unauthorized, ApiKeyError::Missing)),
