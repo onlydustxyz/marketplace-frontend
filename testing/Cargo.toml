@@ -22,3 +22,4 @@ uuid = {version = "0.8.2", default_features = false, features = [
 
 # Local dependencies
 domain = {path = "../domain"}
+infrastructure = {path = "../infrastructure"}

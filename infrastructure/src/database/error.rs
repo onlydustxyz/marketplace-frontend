@@ -4,6 +4,8 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum Error {
+	#[error("Bad database configuration")]
+	Configuration(anyhow::Error),
 	#[error(transparent)]
 	Connection(anyhow::Error),
 	#[error(transparent)]

@@ -1,8 +1,9 @@
 pub mod fixtures;
 
 use diesel::{Connection, PgConnection};
-
+use infrastructure::config;
 use r2d2_diesel::ConnectionManager;
+
 type Pool = r2d2::Pool<ConnectionManager<PgConnection>>;
 
 pub fn init_pool() -> Pool {
@@ -13,5 +14,5 @@ pub fn init_pool() -> Pool {
 }
 
 fn database_url() -> String {
-	std::env::var("DATABASE_URL").expect("DATABASE_URL must be set")
+	config::load().expect("Unable to load configuration").database.url
 }

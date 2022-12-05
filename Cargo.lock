@@ -1254,8 +1254,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4e56602b469b2201400dec66a66aec5a9b8761ee97cd1b8c96ab2483fcc16cc9"
 dependencies = [
  "atomic",
+ "parking_lot 0.12.1",
  "pear",
  "serde",
+ "tempfile",
  "toml",
  "uncased",
  "version_check",
@@ -1890,6 +1892,7 @@ dependencies = [
  "diesel_migrations",
  "domain",
  "dotenv",
+ "figment",
  "futures 0.3.25",
  "graphql_client",
  "httpmock",
@@ -1908,7 +1911,6 @@ dependencies = [
  "rstest",
  "serde",
  "serde_json",
- "testing",
  "thiserror",
  "tokio",
  "tokio-executor-trait",
@@ -3904,6 +3906,7 @@ version = "0.1.0"
 dependencies = [
  "diesel",
  "domain",
+ "infrastructure",
  "r2d2",
  "r2d2-diesel",
  "uuid 0.8.2",
