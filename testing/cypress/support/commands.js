@@ -27,16 +27,17 @@ Cypress.Commands.add('graphqlAsAdmin', (query) => {
     });
 });
 
-Cypress.Commands.add('graphqlAs', (user, query) => {
-    return cy.signinUser(user).then(({ accessToken }) =>
+Cypress.Commands.add('graphqlAsUser', (user, query) => {
+    return cy.signinUser(user).then(({ accessToken }) =>{
         cy.request({
             method: "POST",
             url: "/v1/graphql",
             body: { query: query },
             headers: {
+                "X-Hasura-Role": "user",
                 "Authorization": `Bearer ${accessToken}`
             },
-        }));
+        })});
 });
 
 Cypress.Commands.add('createProject', (userId, projectName = 'My Project', initialBudget = 500, githubRepoId = 1234, description = "My project description", telegramLink = "https://t.me/foo") => {
@@ -130,7 +131,7 @@ Cypress.Commands.add('signinUser', (user) => {
 });
 
 Cypress.Commands.add('requestPayment', (requestor, budgetId, amount, recipient, reason) => {
-    return cy.graphqlAs(requestor, `mutation {
+    return cy.graphqlAsUser(requestor, `mutation {
         requestPayment(amountInUsd: ${amount}, budgetId: "${budgetId}", recipientId: "${recipient.id}", requestorId: "${requestor.id}", reason: "${reason}")
       }
       `).its('body.data.requestPayment').should('be.a', 'string');
