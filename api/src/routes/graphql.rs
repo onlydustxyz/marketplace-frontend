@@ -1,4 +1,4 @@
-use super::User;
+use super::Role;
 use crate::{
 	domain::ProjectDetails,
 	graphql::{Context, Schema},
@@ -21,7 +21,7 @@ pub fn graphiql() -> content::RawHtml<String> {
 #[get("/graphql?<request>")]
 pub async fn get_graphql_handler(
 	_api_key: ApiKey,
-	user: User,
+	role: Role,
 	request: GraphQLRequest,
 	schema: &State<Schema>,
 	uuid_generator: &State<Arc<dyn UuidGenerator>>,
@@ -32,7 +32,7 @@ pub async fn get_graphql_handler(
 	project_details_repository: &State<Arc<dyn EntityRepository<ProjectDetails>>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
-		user.into(),
+		role.into(),
 		(*uuid_generator).clone(),
 		(*event_publisher).clone(),
 		(*payment_repository).clone(),
@@ -47,7 +47,7 @@ pub async fn get_graphql_handler(
 #[post("/graphql", data = "<request>")]
 pub async fn post_graphql_handler(
 	_api_key: ApiKey,
-	user: User,
+	role: Role,
 	request: GraphQLRequest,
 	schema: &State<Schema>,
 	uuid_generator: &State<Arc<dyn UuidGenerator>>,
@@ -58,7 +58,7 @@ pub async fn post_graphql_handler(
 	project_details_repository: &State<Arc<dyn EntityRepository<ProjectDetails>>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
-		user.into(),
+		role.into(),
 		(*uuid_generator).clone(),
 		(*event_publisher).clone(),
 		(*payment_repository).clone(),

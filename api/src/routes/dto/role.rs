@@ -1,4 +1,4 @@
-use crate::domain::{user, User as DomainUser};
+use crate::domain::{permissions, Permissions};
 use rocket::{
 	request::{FromRequest, Outcome},
 	Request,
@@ -7,7 +7,7 @@ use std::collections::HashSet;
 use uuid::Uuid;
 
 #[derive(Debug, PartialEq, Eq)]
-pub enum User {
+pub enum Role {
 	Admin,
 	IdentifiedUser {
 		lead_projects: HashSet<Uuid>,
@@ -17,19 +17,19 @@ pub enum User {
 }
 
 #[async_trait]
-impl<'r> FromRequest<'r> for User {
+impl<'r> FromRequest<'r> for Role {
 	type Error = ();
 
-	async fn from_request(request: &'r Request<'_>) -> Outcome<User, ()> {
+	async fn from_request(request: &'r Request<'_>) -> Outcome<Role, ()> {
 		match request.headers().get_one("x-hasura-role") {
-			Some("admin") => Outcome::Success(User::Admin),
-			Some("user") => from_user_role(request),
-			_ => return Outcome::Success(User::Public),
+			Some("admin") => Outcome::Success(Role::Admin),
+			Some("user") => from_role_user(request),
+			_ => return Outcome::Success(Role::Public),
 		}
 	}
 }
 
-fn from_user_role(request: &'_ Request<'_>) -> Outcome<User, ()> {
+fn from_role_user(request: &'_ Request<'_>) -> Outcome<Role, ()> {
 	if request.headers().get_one("x-hasura-user-id").is_some() {
 		let lead_projects: HashSet<Uuid> = request
 			.headers()
@@ -43,27 +43,27 @@ fn from_user_role(request: &'_ Request<'_>) -> Outcome<User, ()> {
 			.and_then(|h| serde_json::from_str(&h.replace('{', "[").replace('}', "]")).ok())
 			.unwrap_or_default();
 
-		return Outcome::Success(User::IdentifiedUser {
+		return Outcome::Success(Role::IdentifiedUser {
 			lead_projects,
 			owned_budgets,
 		});
 	}
 
-	Outcome::Success(User::Public)
+	Outcome::Success(Role::Public)
 }
 
-impl From<User> for Box<dyn DomainUser> {
-	fn from(user: User) -> Self {
-		match user {
-			User::Admin => user::admin(),
-			User::IdentifiedUser {
+impl From<Role> for Box<dyn Permissions> {
+	fn from(role: Role) -> Self {
+		match role {
+			Role::Admin => permissions::of_admin(),
+			Role::IdentifiedUser {
 				lead_projects,
 				owned_budgets,
-			} => user::identified_user(
+			} => permissions::of_identified_user(
 				lead_projects.into_iter().map(Into::into).collect(),
 				owned_budgets.into_iter().map(Into::into).collect(),
 			),
-			User::Public => user::anonymous(),
+			Role::Public => permissions::of_anonymous(),
 		}
 	}
 }
@@ -89,8 +89,8 @@ mod tests {
 		let mut request: LocalRequest = client.post("/v1/graphql");
 		request.add_header(Header::new("x-hasura-role", "admin"));
 
-		let result = User::from_request(&request).await;
-		assert_eq!(result, Outcome::Success(User::Admin));
+		let result = Role::from_request(&request).await;
+		assert_eq!(result, Outcome::Success(Role::Admin));
 	}
 
 	#[rstest]
@@ -98,16 +98,16 @@ mod tests {
 		let mut request: LocalRequest = client.post("/v1/graphql");
 		request.add_header(Header::new("x-hasura-role", "public"));
 
-		let result = User::from_request(&request).await;
-		assert_eq!(result, Outcome::Success(User::Public));
+		let result = Role::from_request(&request).await;
+		assert_eq!(result, Outcome::Success(Role::Public));
 	}
 
 	#[rstest]
 	async fn from_request_no_role(client: Client) {
 		let request: LocalRequest = client.post("/v1/graphql");
 
-		let result = User::from_request(&request).await;
-		assert_eq!(result, Outcome::Success(User::Public));
+		let result = Role::from_request(&request).await;
+		assert_eq!(result, Outcome::Success(Role::Public));
 	}
 
 	#[rstest]
@@ -115,8 +115,8 @@ mod tests {
 		let mut request: LocalRequest = client.post("/v1/graphql");
 		request.add_header(Header::new("x-hasura-role", "user"));
 
-		let result = User::from_request(&request).await;
-		assert_eq!(result, Outcome::Success(User::Public));
+		let result = Role::from_request(&request).await;
+		assert_eq!(result, Outcome::Success(Role::Public));
 	}
 
 	#[rstest]
@@ -125,7 +125,7 @@ mod tests {
 		request.add_header(Header::new("x-hasura-role", "user"));
 		request.add_header(Header::new("x-hasura-user-id", "42"));
 
-		let result = User::from_request(&request).await;
-		assert_matches!(result.succeeded().unwrap(), User::IdentifiedUser { .. });
+		let result = Role::from_request(&request).await;
+		assert_matches!(result.succeeded().unwrap(), Role::IdentifiedUser { .. });
 	}
 }
