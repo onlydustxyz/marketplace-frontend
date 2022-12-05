@@ -6,13 +6,7 @@ describe("As a project leader, I", () => {
     before(() => {
         cy.createUser().then($user =>
             cy.createProject($user.id, 'Project with budget', 1000).then($projectId => {
-                cy.graphqlAsUser($user, `{
-                        projects_by_pk(id: "${$projectId}") {
-                            budgets {
-                                id
-                            }
-                        }
-                    }`)
+                cy.getProjectBudget($user, $projectId)
                     .its('body.data.projects_by_pk.budgets')
                     .its(0)
                     .its('id')

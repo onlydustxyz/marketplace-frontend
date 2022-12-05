@@ -131,8 +131,22 @@ Cypress.Commands.add('signinUser', (user) => {
 });
 
 Cypress.Commands.add('requestPayment', (requestor, budgetId, amount, recipient, reason) => {
+    return cy.requestPayment_noassert(requestor, budgetId, amount, recipient, reason).its('body.data.requestPayment').should('be.a', 'string');
+});
+
+Cypress.Commands.add('requestPayment_noassert', (requestor, budgetId, amount, recipient, reason) => {
     return cy.graphqlAsUser(requestor, `mutation {
         requestPayment(amountInUsd: ${amount}, budgetId: "${budgetId}", recipientId: "${recipient.id}", requestorId: "${requestor.id}", reason: "${reason}")
       }
-      `).its('body.data.requestPayment').should('be.a', 'string');
+      `);
+});
+
+Cypress.Commands.add('getProjectBudget', (user, projectId) => {
+    return cy.graphqlAsUser(user, `{
+        projects_by_pk(id: "${projectId}") {
+            budgets {
+                id
+            }
+        }
+    }`);
 });
