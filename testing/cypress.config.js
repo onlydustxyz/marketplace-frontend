@@ -1,6 +1,8 @@
 require("dotenv").config({
     path: "../.env",
 });
+const fs = require('fs');
+const config = require('toml-js').parse(fs.readFileSync('../App.toml'));
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
@@ -8,6 +10,6 @@ module.exports = defineConfig({
         baseUrl: process.env.CYPRESS_BASE_URL,
     },
     env: {
-        hasuraAdminSecret: process.env.HASURA_GRAPHQL_ADMIN_SECRET,
+        hasuraAdminSecret: config.hasura.graphql_admin_secret,
     },
 });

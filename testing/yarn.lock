@@ -1033,6 +1033,11 @@ tmp@~0.2.1:
   dependencies:
     rimraf "^3.0.0"
 
+toml-js@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/toml-js/-/toml-js-0.0.8.tgz#648ea6f1a4d63b19c0bb30b8ed03e40d09473b0a"
+  integrity sha512-MQUXr5oq9fgOQIcucZuda1BtGUmQRt3Y2z1TY9JT3oUR6gs1qLkbsGfVdlr/gJ6JqrjJdPLO5wNXCgkmvzXNTQ==
+
 tough-cookie@~2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.5.0.tgz#cd9fb2a0aa1d5a12b473bd9fb96fa3dcff65ade2"

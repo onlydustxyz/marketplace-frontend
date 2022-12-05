@@ -6,3 +6,4 @@ url = "amqp://127.0.0.1:5672/%2f"
 
 [hasura]
 graphql_server_url = "http://localhost:8080/v1/graphql"
+graphql_admin_secret = "myadminsecretkey"

@@ -25,6 +25,7 @@ pub struct Amqp {
 #[derive(Deserialize)]
 pub struct Hasura {
 	pub graphql_server_url: String,
+	pub graphql_admin_secret: String,
 }
 
 pub fn load() -> Result<App> {
@@ -35,6 +36,8 @@ pub fn load() -> Result<App> {
 fn environment() -> Env {
 	Env::raw().map(|key| match key.as_str() {
 		"DATABASE_URL" => "database.url".into(),
+		"HASURA_GRAPHQL_GRAPHQL_URL" => "hasura.graphql_server_url".into(),
+		"HASURA_GRAPHQL_ADMIN_SECRET" => "hasura.graphql_admin_secret".into(),
 		_ => key.into(),
 	})
 }
@@ -55,6 +58,7 @@ mod tests {
 				url = "amqp://127.0.0.1:5672/%2f"
 				[hasura]
 				graphql_server_url = "http://localhost:8080/v1/graphql"
+				graphql_admin_secret = "myadminsecret"
 				"#,
 			)?;
 
@@ -72,6 +76,7 @@ mod tests {
 				config.hasura.graphql_server_url,
 				"http://localhost:8080/v1/graphql"
 			);
+			assert_eq!(config.hasura.graphql_admin_secret, "myadminsecret");
 
 			Ok(())
 		});
@@ -89,6 +94,7 @@ mod tests {
 				"HASURA_GRAPHQL_GRAPHQL_URL",
 				"http://localhost:8080/v1/graphql",
 			);
+			jail.set_env("HASURA_GRAPHQL_ADMIN_SECRET", "myadminsecret");
 
 			let result = load();
 			assert!(result.is_ok(), "{}", result.err().unwrap());
@@ -104,6 +110,7 @@ mod tests {
 				config.hasura.graphql_server_url,
 				"http://localhost:8080/v1/graphql"
 			);
+			assert_eq!(config.hasura.graphql_admin_secret, "myadminsecret");
 
 			Ok(())
 		});

@@ -5,12 +5,8 @@ use reqwest::header::{HeaderMap, HeaderValue};
 mod client;
 mod repositories;
 
-fn graphql_url() -> String {
-	std::env::var("HASURA_GRAPHQL_GRAPHQL_URL").expect("HASURA_GRAPHQL_GRAPHQL_URL must be set")
-}
-
-fn hasura_secret() -> String {
-	std::env::var("HASURA_GRAPHQL_ADMIN_SECRET").expect("HASURA_GRAPHQL_ADMIN_SECRET must be set")
+fn graphql_config() -> config::Hasura {
+	config::load().expect("Unable to load configuration").hasura
 }
 
 pub struct HasuraClient(GraphQLClient);
@@ -28,6 +24,9 @@ impl HasuraClient {
 
 impl Default for HasuraClient {
 	fn default() -> Self {
-		Self::new(graphql_url().as_str(), hasura_secret().as_str())
+		Self::new(
+			graphql_config().graphql_server_url.as_str(),
+			graphql_config().graphql_admin_secret.as_str(),
+		)
 	}
 }
