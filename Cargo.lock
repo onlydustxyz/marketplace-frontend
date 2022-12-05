@@ -133,6 +133,7 @@ dependencies = [
  "log",
  "macros",
  "mockall",
+ "olog",
  "reqwest",
  "rocket",
  "rstest",
