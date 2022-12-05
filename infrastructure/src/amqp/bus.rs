@@ -9,12 +9,14 @@ use thiserror::Error;
 use tokio::sync::RwLock;
 use tokio_stream::StreamExt;
 
+use crate::config;
+
 const DELIVERY_MODE_PERSISTENT: u8 = 2;
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error("environment variable '{0}' not found")]
-	EnvironmentVariableNotFound(&'static str),
+	#[error("Bad AMQP configuration")]
+	Configuration(anyhow::Error),
 	#[error(transparent)]
 	Amqp(#[from] lapin::Error),
 }
@@ -128,9 +130,5 @@ impl ConsumableBus {
 }
 
 fn amqp_address() -> Result<String, Error> {
-	const AMQP_ADDR_ENV_VAR: &str = "AMQP_ADDR";
-
-	let address = std::env::var(AMQP_ADDR_ENV_VAR)
-		.map_err(|_| Error::EnvironmentVariableNotFound(AMQP_ADDR_ENV_VAR))?;
-	Ok(address)
+	Ok(config::load().map_err(Error::Configuration)?.amqp.url)
 }

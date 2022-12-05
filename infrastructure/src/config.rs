@@ -8,10 +8,16 @@ use serde::Deserialize;
 #[derive(Deserialize)]
 pub struct App {
 	pub database: Database,
+	pub amqp: Amqp,
 }
 
 #[derive(Deserialize)]
 pub struct Database {
+	pub url: String,
+}
+
+#[derive(Deserialize)]
+pub struct Amqp {
 	pub url: String,
 }
 
@@ -39,6 +45,8 @@ mod tests {
 				r#"
 				[database]
 				url = "postgres://postgres:postgres@localhost/marketplace_db"
+				[amqp]
+				url = "amqp://127.0.0.1:5672/%2f"
 				"#,
 			)?;
 
@@ -51,6 +59,7 @@ mod tests {
 				config.database.url,
 				"postgres://postgres:postgres@localhost/marketplace_db"
 			);
+			assert_eq!(config.amqp.url, "amqp://127.0.0.1:5672/%2f");
 
 			Ok(())
 		});
@@ -63,6 +72,7 @@ mod tests {
 				"DATABASE_URL",
 				"postgres://postgres:postgres@localhost/marketplace_db",
 			);
+			jail.set_env("amqp.url", "amqp://127.0.0.1:5672/%2f");
 
 			let result = load();
 			assert!(result.is_ok(), "{}", result.err().unwrap());
@@ -73,6 +83,7 @@ mod tests {
 				config.database.url,
 				"postgres://postgres:postgres@localhost/marketplace_db"
 			);
+			assert_eq!(config.amqp.url, "amqp://127.0.0.1:5672/%2f");
 
 			Ok(())
 		});

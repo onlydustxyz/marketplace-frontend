@@ -1,2 +1,5 @@
 [database]
 url = "postgres://postgres:postgres@localhost/marketplace_db"
+
+[amqp]
+url = "amqp://127.0.0.1:5672/%2f"
