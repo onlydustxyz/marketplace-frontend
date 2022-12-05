@@ -9,7 +9,7 @@ extern crate derive_new;
 
 use std::sync::Arc;
 
-use ::infrastructure::{config, database};
+use ::infrastructure::{amqp, config, database};
 use anyhow::Result;
 use futures::future::try_join_all;
 use lazy_static::lazy_static;
@@ -24,6 +24,7 @@ mod presentation;
 #[derive(Deserialize)]
 pub struct Config {
 	database: database::Config,
+	amqp: amqp::Config,
 }
 
 lazy_static! {
@@ -38,7 +39,7 @@ pub async fn main() -> Result<()> {
 	)?));
 
 	let mut handles = vec![spawn_web_server()?];
-	handles.extend(listeners::spawn_all(reqwest, database).await?);
+	handles.extend(listeners::spawn_all(&CONFIG, reqwest, database).await?);
 	try_join_all(handles).await?;
 
 	Ok(())

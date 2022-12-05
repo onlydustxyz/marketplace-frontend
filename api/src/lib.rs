@@ -12,7 +12,7 @@ use ::domain::{
 	RandomUuidGenerator, UniqueMessage, UserRepository, UuidGenerator,
 };
 use ::infrastructure::{
-	amqp::Bus,
+	amqp::{self, Bus},
 	config,
 	database::{self, init_pool},
 	graphql::HasuraClient,
@@ -46,6 +46,7 @@ extern crate macros;
 #[derive(Deserialize)]
 pub struct Config {
 	database: database::Config,
+	amqp: amqp::Config,
 }
 
 #[instrument]
@@ -60,7 +61,7 @@ pub async fn main() -> Result<()> {
 		rocket::custom(rocket_config()),
 		graphql::create_schema(),
 		Arc::new(RandomUuidGenerator),
-		Arc::new(Bus::default().await?),
+		Arc::new(Bus::default(&config.amqp).await?),
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),

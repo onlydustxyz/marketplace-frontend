@@ -1,11 +1,11 @@
-use backend_infrastructure::amqp::{Bus, BusError, ConsumableBus};
+use backend_infrastructure::amqp::{Bus, BusError, Config, ConsumableBus};
 use lapin::options::QueueDeclareOptions;
 use tracing::info;
 
 pub const QUEUE_NAME: &str = "event-store";
 
-pub async fn consumer() -> Result<ConsumableBus, BusError> {
-	let event_bus = Bus::default()
+pub async fn consumer(config: &Config) -> Result<ConsumableBus, BusError> {
+	let event_bus = Bus::default(config)
 		.await?
 		.with_queue(
 			QUEUE_NAME,

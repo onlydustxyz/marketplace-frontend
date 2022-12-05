@@ -77,7 +77,7 @@ impl ConsumableBus {
 
 #[cfg(test)]
 mod tests {
-	use crate::amqp::{Bus, ConsumableBus};
+	use crate::amqp::{Bus, Config, ConsumableBus};
 	use anyhow::anyhow;
 	use domain::{Message, Subscriber, SubscriberCallbackError, SubscriberError};
 	use dotenv::dotenv;
@@ -115,10 +115,13 @@ mod tests {
 		}
 	}
 
-	async fn publish_message(queue_name: &'static str, message: TestMessage) {
-		let confirmation = Bus::default()
-			.await
-			.unwrap()
+	#[ctor::ctor]
+	fn init_env() {
+		dotenv().ok();
+	}
+
+	async fn publish_message(bus: &Bus, queue_name: &'static str, message: TestMessage) {
+		let confirmation = bus
 			.publish(
 				&*String::new(),
 				queue_name,
@@ -130,10 +133,8 @@ mod tests {
 		assert!(!confirmation.is_nack());
 	}
 
-	async fn publish_badly_formatted_message(queue_name: &'static str) {
-		let confirmation = Bus::default()
-			.await
-			.unwrap()
+	async fn publish_badly_formatted_message(bus: &Bus, queue_name: &'static str) {
+		let confirmation = bus
 			.publish(&*String::new(), queue_name, "bad-message".as_bytes())
 			.await
 			.unwrap();
@@ -177,39 +178,61 @@ mod tests {
 	}
 
 	#[fixture]
-	async fn bus() -> Bus {
-		dotenv().ok();
-		Bus::default().await.unwrap()
+	#[once]
+	fn config() -> Config {
+		// TODO: Find a better way to have a test configuration for integration tests
+		Config::new("amqp://127.0.0.1:5672/%2f".to_string())
+	}
+
+	#[fixture]
+	async fn bus(config: &Config) -> Bus {
+		Bus::default(config).await.unwrap()
 	}
 
 	#[rstest]
-	async fn process_valid_messages_successfully(#[future] bus: Bus) {
+	async fn process_valid_messages_successfully(
+		#[future]
+		#[from(bus)]
+		consumer: Bus,
+		#[future]
+		#[from(bus)]
+		publisher: Bus,
+	) {
 		const QUEUE: &str = "receive_valid_message_and_process_it_successfully";
 		lazy_static! {
 			static ref COUNTER: Arc<AtomicI32> = Arc::new(AtomicI32::new(0));
 		}
 
-		let consumer = bus.await.init(QUEUE).await;
-		publish_message(QUEUE, TestMessage::Valid).await;
-		publish_message(QUEUE, TestMessage::Valid).await;
-		publish_message(QUEUE, TestMessage::Stop).await;
+		let consumer = consumer.await.init(QUEUE).await;
+		let publisher = publisher.await;
+		publish_message(&publisher, QUEUE, TestMessage::Valid).await;
+		publish_message(&publisher, QUEUE, TestMessage::Valid).await;
+		publish_message(&publisher, QUEUE, TestMessage::Stop).await;
 
 		run_test(consumer, &*COUNTER, 2).await;
 	}
 
 	#[rstest]
 	#[traced_test]
-	async fn ignore_non_deserializable_message(#[future] bus: Bus) {
+	async fn ignore_non_deserializable_message(
+		#[future]
+		#[from(bus)]
+		consumer: Bus,
+		#[future]
+		#[from(bus)]
+		publisher: Bus,
+	) {
 		const QUEUE: &str = "ignore_non_deserializable_message";
 		lazy_static! {
 			static ref COUNTER: Arc<AtomicI32> = Arc::new(AtomicI32::new(0));
 		}
 
-		let consumer = bus.await.init(QUEUE).await;
-		publish_message(QUEUE, TestMessage::Valid).await;
-		publish_badly_formatted_message(QUEUE).await;
-		publish_message(QUEUE, TestMessage::Valid).await;
-		publish_message(QUEUE, TestMessage::Stop).await;
+		let consumer = consumer.await.init(QUEUE).await;
+		let publisher = publisher.await;
+		publish_message(&publisher, QUEUE, TestMessage::Valid).await;
+		publish_badly_formatted_message(&publisher, QUEUE).await;
+		publish_message(&publisher, QUEUE, TestMessage::Valid).await;
+		publish_message(&publisher, QUEUE, TestMessage::Stop).await;
 
 		run_test(consumer, &*COUNTER, 2).await;
 
@@ -218,17 +241,25 @@ mod tests {
 
 	#[rstest]
 	#[traced_test]
-	async fn discard_invalid_message(#[future] bus: Bus) {
+	async fn discard_invalid_message(
+		#[future]
+		#[from(bus)]
+		consumer: Bus,
+		#[future]
+		#[from(bus)]
+		publisher: Bus,
+	) {
 		const QUEUE: &str = "discard_invalid_message";
 		lazy_static! {
 			static ref COUNTER: Arc<AtomicI32> = Arc::new(AtomicI32::new(0));
 		}
 
-		let consumer = bus.await.init(QUEUE).await;
-		publish_message(QUEUE, TestMessage::Valid).await;
-		publish_message(QUEUE, TestMessage::Invalid).await;
-		publish_message(QUEUE, TestMessage::Valid).await;
-		publish_message(QUEUE, TestMessage::Stop).await;
+		let consumer = consumer.await.init(QUEUE).await;
+		let publisher = publisher.await;
+		publish_message(&publisher, QUEUE, TestMessage::Valid).await;
+		publish_message(&publisher, QUEUE, TestMessage::Invalid).await;
+		publish_message(&publisher, QUEUE, TestMessage::Valid).await;
+		publish_message(&publisher, QUEUE, TestMessage::Stop).await;
 
 		run_test(consumer, &*COUNTER, 2).await;
 
@@ -237,12 +268,20 @@ mod tests {
 
 	#[rstest]
 	#[traced_test]
-	async fn terminate_message_consuming_because_of_internal_error(#[future] bus: Bus) {
+	async fn terminate_message_consuming_because_of_internal_error(
+		#[future]
+		#[from(bus)]
+		consumer: Bus,
+		#[future]
+		#[from(bus)]
+		publisher: Bus,
+	) {
 		const QUEUE: &str = "terminate_message_consuming_because_of_internal_error";
 		const ERROR: &str = "some internal error occurred";
 
-		let consumer = bus.await.init(QUEUE).await;
-		publish_message(QUEUE, TestMessage::Valid).await;
+		let consumer = consumer.await.init(QUEUE).await;
+		let publisher = publisher.await;
+		publish_message(&publisher, QUEUE, TestMessage::Valid).await;
 
 		let result = consumer
 			.subscribe(|message: TestMessage| async move {

@@ -8,7 +8,7 @@ use backend_domain::{
 	Destination, Event, Publisher, Subscriber, SubscriberCallbackError, UniqueMessage,
 };
 use backend_infrastructure::{
-	amqp::Bus,
+	amqp::{self, Bus},
 	config,
 	database::{self, init_pool, Client as DatabaseClient},
 	event_bus::EXCHANGE_NAME,
@@ -22,12 +22,13 @@ use tracing::info;
 #[derive(Deserialize)]
 pub struct Config {
 	database: database::Config,
+	amqp: amqp::Config,
 }
 
 pub async fn main() -> Result<()> {
 	let config: Config = config::load("event-store/app.yaml")?;
-	let inbound_event_bus = bus::consumer().await?;
-	let outbound_event_bus = Arc::new(Bus::default().await?);
+	let inbound_event_bus = bus::consumer(&config.amqp).await?;
+	let outbound_event_bus = Arc::new(Bus::default(&config.amqp).await?);
 	let database = Arc::new(DatabaseClient::new(init_pool(&config.database)?));
 
 	inbound_event_bus

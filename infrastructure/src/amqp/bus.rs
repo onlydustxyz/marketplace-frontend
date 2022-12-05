@@ -1,3 +1,4 @@
+use super::Config;
 use lapin::{
 	message::Delivery,
 	options::{ExchangeDeclareOptions, QueueDeclareOptions},
@@ -13,8 +14,6 @@ const DELIVERY_MODE_PERSISTENT: u8 = 2;
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error("environment variable '{0}' not found")]
-	EnvironmentVariableNotFound(&'static str),
 	#[error(transparent)]
 	Amqp(#[from] lapin::Error),
 }
@@ -34,8 +33,8 @@ impl Bus {
 		})
 	}
 
-	pub async fn default() -> Result<Self, Error> {
-		let connection = Connection::connect(&amqp_address()?, Default::default()).await?;
+	pub async fn default(config: &Config) -> Result<Self, Error> {
+		let connection = Connection::connect(config.url(), Default::default()).await?;
 		Self::new(connection).await
 	}
 
@@ -125,12 +124,4 @@ impl ConsumableBus {
 			None => Ok(None),
 		}
 	}
-}
-
-fn amqp_address() -> Result<String, Error> {
-	const AMQP_ADDR_ENV_VAR: &str = "AMQP_ADDR";
-
-	let address = std::env::var(AMQP_ADDR_ENV_VAR)
-		.map_err(|_| Error::EnvironmentVariableNotFound(AMQP_ADDR_ENV_VAR))?;
-	Ok(address)
 }
