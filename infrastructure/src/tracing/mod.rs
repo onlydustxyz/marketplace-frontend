@@ -6,6 +6,8 @@ use opentelemetry::{
 use opentelemetry_datadog::ApiVersion;
 use tracing_subscriber::{layer::SubscriberExt, EnvFilter};
 
+use crate::config;
+
 pub struct Tracer;
 
 impl Tracer {
@@ -45,9 +47,8 @@ impl Drop for Tracer {
 }
 
 fn ansi_logs() -> bool {
-	if let Ok(value) = std::env::var("ANSI_LOGS") {
-		value.eq_ignore_ascii_case("true")
-	} else {
-		false
+	match config::load() {
+		Ok(config) => config.logs.ansi,
+		_ => false,
 	}
 }

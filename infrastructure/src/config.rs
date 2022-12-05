@@ -10,6 +10,7 @@ pub struct App {
 	pub database: Database,
 	pub amqp: Amqp,
 	pub hasura: Hasura,
+	pub logs: Logs,
 }
 
 #[derive(Deserialize)]
@@ -20,6 +21,11 @@ pub struct Database {
 #[derive(Deserialize)]
 pub struct Amqp {
 	pub url: String,
+}
+
+#[derive(Deserialize)]
+pub struct Logs {
+	pub ansi: bool,
 }
 
 #[derive(Deserialize)]
@@ -59,6 +65,8 @@ mod tests {
 				[hasura]
 				graphql_server_url = "http://localhost:8080/v1/graphql"
 				graphql_admin_secret = "myadminsecret"
+				[logs]
+				ansi = true
 				"#,
 			)?;
 
@@ -77,6 +85,7 @@ mod tests {
 				"http://localhost:8080/v1/graphql"
 			);
 			assert_eq!(config.hasura.graphql_admin_secret, "myadminsecret");
+			assert!(config.logs.ansi);
 
 			Ok(())
 		});
@@ -95,6 +104,7 @@ mod tests {
 				"http://localhost:8080/v1/graphql",
 			);
 			jail.set_env("HASURA_GRAPHQL_ADMIN_SECRET", "myadminsecret");
+			jail.set_env("logs.ansi", "true");
 
 			let result = load();
 			assert!(result.is_ok(), "{}", result.err().unwrap());
