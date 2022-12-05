@@ -35,3 +35,9 @@ select_permissions:
         - name
         - id
       filter: {}
+  - role: user
+    permission:
+      columns:
+        - id
+        - name
+      filter: {}

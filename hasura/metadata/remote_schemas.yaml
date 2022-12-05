@@ -8,7 +8,7 @@
         value_from_env: BACKEND_GRAPHQL_API_KEY
   comment: ""
   permissions:
-    - role: public
+    - role: user
       definition:
         schema: |
           schema {
@@ -17,7 +17,18 @@
           }
           scalar Uuid
           type Mutation {
+            createProject(name: String!, initialBudgetInUsd: Int!, githubRepoId: Int!, description: String, telegramLink: String, userId: Uuid!): Uuid!
             requestPayment(budgetId: Uuid!, requestorId: Uuid!, recipientId: Uuid!, amountInUsd: Int!, reason: String!): Uuid!
+            updateProject(id: Uuid!, githubRepoId: Int!, description: String, telegramLink: String): Uuid!
+          }
+          type Query {
+            hello: String!
+          }
+    - role: public
+      definition:
+        schema: |
+          schema {
+            query: Query
           }
           type Query {
             hello: String!

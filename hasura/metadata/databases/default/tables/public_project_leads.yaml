@@ -21,3 +21,9 @@ select_permissions:
         - project_id
         - user_id
       filter: {}
+  - role: user
+    permission:
+      columns:
+        - project_id
+        - user_id
+      filter: {}
