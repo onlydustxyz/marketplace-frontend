@@ -10,6 +10,7 @@ use crate::{
 		BudgetRepository, BudgetSpenderRepository, PaymentRepository, PaymentRequestRepository,
 		ProjectLeadRepository, ProjectRepository,
 	},
+	Config,
 };
 use anyhow::Result;
 use domain::{Event, Subscriber, SubscriberCallbackError};
@@ -18,6 +19,7 @@ use std::sync::Arc;
 use tokio::task::JoinHandle;
 
 pub async fn spawn_all(
+	config: &Config,
 	reqwest: reqwest::Client,
 	database: Arc<database::Client>,
 ) -> Result<Vec<JoinHandle<()>>> {
@@ -29,15 +31,17 @@ pub async fn spawn_all(
 	let budget_spender_repository = Arc::new(BudgetSpenderRepository::new(database));
 
 	let handles = [
-		Logger.spawn(event_bus::consumer("logger").await?),
-		EventWebHook::new(reqwest).spawn(event_bus::consumer("event-webhooks").await?),
-		PaymentProjector::new(payment_repository).spawn(event_bus::consumer("payments").await?),
+		Logger.spawn(event_bus::consumer(&config.amqp, "logger").await?),
+		EventWebHook::new(reqwest)
+			.spawn(event_bus::consumer(&config.amqp, "event-webhooks").await?),
+		PaymentProjector::new(payment_repository)
+			.spawn(event_bus::consumer(&config.amqp, "payments").await?),
 		PaymentRequestProjector::new(payment_request_repository)
-			.spawn(event_bus::consumer("payment_requests").await?),
+			.spawn(event_bus::consumer(&config.amqp, "payment_requests").await?),
 		ProjectProjector::new(project_repository, project_lead_repository)
-			.spawn(event_bus::consumer("projects").await?),
+			.spawn(event_bus::consumer(&config.amqp, "projects").await?),
 		BudgetProjector::new(budget_repository, budget_spender_repository)
-			.spawn(event_bus::consumer("budgets").await?),
+			.spawn(event_bus::consumer(&config.amqp, "budgets").await?),
 	];
 
 	Ok(handles.into())

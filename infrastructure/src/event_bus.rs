@@ -1,11 +1,15 @@
 use super::amqp::{Bus, BusError, ConsumableBus};
+use crate::amqp::Config;
 use lapin::options::QueueDeclareOptions;
 use log::info;
 
 pub const EXCHANGE_NAME: &str = "events";
 
-pub async fn consumer(queue_name: &'static str) -> Result<ConsumableBus, BusError> {
-	let bus = Bus::default()
+pub async fn consumer(
+	config: &Config,
+	queue_name: &'static str,
+) -> Result<ConsumableBus, BusError> {
+	let bus = Bus::default(config)
 		.await?
 		.with_queue(
 			queue_name,

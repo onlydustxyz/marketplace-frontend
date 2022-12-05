@@ -2,13 +2,19 @@ local:
   database:
     url: postgres://postgres:postgres@localhost/marketplace_db
     pool_max_size: 20
+  amqp:
+    url: "amqp://127.0.0.1:5672/%2f"
 
 staging:
   database:
     url: $DATABASE_URL
     pool_max_size: 3
+  amqp:
+    url: $CLOUDAMQP_URL
 
 production:
   database:
     url: $DATABASE_URL
     pool_max_size: 3
+  amqp:
+    url: $CLOUDAMQP_URL
