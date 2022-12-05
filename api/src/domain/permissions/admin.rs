@@ -1,14 +1,14 @@
-use super::User;
+use super::Permissions;
 use domain::{BudgetId, ProjectId};
 
-pub(super) struct Anonymous;
+pub(super) struct Admin;
 
-impl User for Anonymous {
+impl Permissions for Admin {
 	fn is_leader_on_project(&self, _project_id: &ProjectId) -> bool {
-		false
+		true
 	}
 
 	fn can_spend_budget(&self, _budget_id: &BudgetId) -> bool {
-		false
+		true
 	}
 }

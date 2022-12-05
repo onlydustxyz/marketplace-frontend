@@ -1,6 +1,6 @@
 use crate::{
 	application,
-	domain::{ProjectDetails, User},
+	domain::{Permissions, ProjectDetails},
 };
 use domain::{
 	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Publisher, UniqueMessage,
@@ -9,7 +9,7 @@ use domain::{
 use std::sync::Arc;
 
 pub struct Context {
-	pub user: Box<dyn User>,
+	pub caller_permissions: Box<dyn Permissions>,
 	pub request_payment_usecase: application::payment::request::Usecase,
 	pub process_payment_usecase: application::payment::process::Usecase,
 	pub create_project_usecase: application::project::create::Usecase,
@@ -19,7 +19,7 @@ pub struct Context {
 impl Context {
 	#[allow(clippy::too_many_arguments)]
 	pub fn new(
-		user: Box<dyn User>,
+		caller_permissions: Box<dyn Permissions>,
 		uuid_generator: Arc<dyn UuidGenerator>,
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		payment_repository: AggregateRootRepository<Payment>,
@@ -28,7 +28,7 @@ impl Context {
 		project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
 	) -> Self {
 		Self {
-			user,
+			caller_permissions,
 			request_payment_usecase: application::payment::request::Usecase::new(
 				uuid_generator.to_owned(),
 				event_publisher.to_owned(),

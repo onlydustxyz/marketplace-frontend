@@ -5,19 +5,22 @@ mod admin;
 mod anonymous;
 mod identified;
 
-pub trait User: Send + Sync {
+pub trait Permissions: Send + Sync {
 	fn is_leader_on_project(&self, project_id: &ProjectId) -> bool;
 	fn can_spend_budget(&self, budget_id: &BudgetId) -> bool;
 }
 
-pub fn admin() -> Box<dyn User> {
+pub fn of_admin() -> Box<dyn Permissions> {
 	Box::new(admin::Admin)
 }
 
-pub fn identified_user(projects: HashSet<ProjectId>, budgets: HashSet<BudgetId>) -> Box<dyn User> {
+pub fn of_identified_user(
+	projects: HashSet<ProjectId>,
+	budgets: HashSet<BudgetId>,
+) -> Box<dyn Permissions> {
 	Box::new(identified::IdentifiedUser::new(projects, budgets))
 }
 
-pub fn anonymous() -> Box<dyn User> {
+pub fn of_anonymous() -> Box<dyn Permissions> {
 	Box::new(anonymous::Anonymous)
 }

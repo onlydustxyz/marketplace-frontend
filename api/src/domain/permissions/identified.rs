@@ -1,4 +1,4 @@
-use super::User;
+use super::Permissions;
 use domain::{BudgetId, ProjectId};
 use std::collections::HashSet;
 
@@ -8,7 +8,7 @@ pub(super) struct IdentifiedUser {
 	budgets: HashSet<BudgetId>,
 }
 
-impl User for IdentifiedUser {
+impl Permissions for IdentifiedUser {
 	fn is_leader_on_project(&self, project_id: &ProjectId) -> bool {
 		self.projects.contains(project_id)
 	}

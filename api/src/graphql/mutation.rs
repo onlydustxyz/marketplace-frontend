@@ -110,7 +110,7 @@ impl Mutation {
 		amount_in_usd: i32,
 		reason: String,
 	) -> Result<Uuid> {
-		if !context.user.can_spend_budget(&budget_id.into()) {
+		if !context.caller_permissions.can_spend_budget(&budget_id.into()) {
 			return Err(Error::NotAuthorized(
 				"Budget spender role required".to_string(),
 			));

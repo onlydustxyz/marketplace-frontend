@@ -1,5 +1,5 @@
-mod user;
-pub use user::User;
+mod role;
+pub use role::Role;
 
 pub mod api_key;
 pub mod uuid;
