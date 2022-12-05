@@ -26,7 +26,7 @@ impl Tracer {
 
 		let subscriber = tracing_subscriber::fmt::Subscriber::builder()
 			.with_env_filter(EnvFilter::from_default_env())
-			.with_ansi(std::env::var("ANSI_LOGS").and(Ok(true)).unwrap_or(false))
+			.with_ansi(ansi_logs())
 			.finish()
 			.with(telemetry);
 
@@ -41,5 +41,13 @@ impl Tracer {
 impl Drop for Tracer {
 	fn drop(&mut self) {
 		shutdown_tracer_provider();
+	}
+}
+
+fn ansi_logs() -> bool {
+	if let Ok(value) = std::env::var("ANSI_LOGS") {
+		value.eq_ignore_ascii_case("true")
+	} else {
+		false
 	}
 }
