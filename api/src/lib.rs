@@ -19,7 +19,13 @@ use ::infrastructure::{
 use anyhow::Result;
 use dotenv::dotenv;
 use log::info;
-use rocket::{routes, Build, Rocket};
+use rocket::{
+	figment::{
+		providers::{Env, Format, Toml},
+		Figment,
+	},
+	routes, Build, Rocket,
+};
 use std::sync::Arc;
 use tracing::instrument;
 
@@ -43,7 +49,7 @@ pub async fn main() -> Result<()> {
 	database.run_migrations()?;
 
 	let rocket_handler = inject_app(
-		rocket::build(),
+		rocket::custom(rocket_config()),
 		graphql::create_schema(),
 		Arc::new(RandomUuidGenerator),
 		Arc::new(Bus::default().await?),
@@ -99,4 +105,10 @@ fn inject_app(
 		.manage(budget_repository)
 		.manage(user_repository)
 		.manage(project_details_repository)
+}
+
+fn rocket_config() -> Figment {
+	Figment::from(rocket::Config::default())
+		.merge(Toml::file("api/Rocket.toml").nested())
+		.merge(Env::prefixed("ROCKET_"))
 }
