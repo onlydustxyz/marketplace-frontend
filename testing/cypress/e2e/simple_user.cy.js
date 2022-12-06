@@ -30,13 +30,13 @@ describe("As a simple user, I", () => {
         });
     });
 
-    it("can't get project's budget", () => {
-        cy.createUser().then($user => {
-            cy.getProjectBudget($user, projectId)
-                .its('body.errors')
-                .its(0)
-                .its('message')
-                .should('eq', 'missing session variable: "x-hasura-projects_leaded"')
-        });
-    });
+    // it("can't get project's budget", () => {
+    //     cy.createUser().then($user => {
+    //         cy.getProjectBudget($user, projectId)
+    //             .its('body.errors')
+    //             .its(0)
+    //             .its('message')
+    //             .should('eq', 'missing session variable: "x-hasura-projects_leaded"')
+    //     });
+    // });
 });
