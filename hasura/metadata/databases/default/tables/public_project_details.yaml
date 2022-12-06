@@ -15,4 +15,5 @@ select_permissions:
         - description
         - github_repo_id
         - project_id
+        - telegram_link
       filter: {}
