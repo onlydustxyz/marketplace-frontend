@@ -61,7 +61,7 @@ fn init_tracing_for_tests() {
 		.finish()
 		.with(telemetry);
 
-	LogTracer::init_with_filter(log::LevelFilter::Trace).unwrap();
+	LogTracer::init().unwrap();
 
 	// Trace executed code
 	tracing::subscriber::set_global_default(subscriber).unwrap();

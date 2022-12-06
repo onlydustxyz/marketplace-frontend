@@ -32,7 +32,9 @@ impl Tracer {
 
 		// Trace executed code
 		tracing::subscriber::set_global_default(subscriber)?;
-		tracing_log::env_logger::try_init()?;
+
+		// Init a simple "logger" that converts all `log` records into `tracing` `Event`s
+		olog::LogTracer::init()?;
 
 		Ok(Tracer {})
 	}
