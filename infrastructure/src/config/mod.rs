@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use figment::{
 	providers::{Format, Yaml},
 	Figment,
@@ -10,8 +10,15 @@ mod providers;
 use providers::Enhanced;
 
 pub fn load<'a, T: Deserialize<'a>, P: AsRef<Path>>(path: P) -> Result<T> {
-	let config = Figment::from(Enhanced::new(Yaml::file(path))).extract()?;
+	let config = Figment::new()
+		.select(profile()?)
+		.merge(Enhanced::new(Yaml::file(path).nested()))
+		.extract()?;
 	Ok(config)
+}
+
+fn profile() -> Result<String> {
+	std::env::var("PROFILE").map_err(|_| anyhow!("Missing 'PROFILE' env variable"))
 }
 
 #[cfg(test)]
@@ -36,14 +43,16 @@ mod tests {
 			jail.create_file(
 				"app.yaml",
 				r#"
-                api_key: my_api_key
-                inner:
-                  key: another_key
-                  multiple:
-                    - val1
-                    - val2
+                local:
+                  api_key: my_api_key
+                  inner:
+                    key: another_key
+                    multiple:
+                      - val1
+                      - val2
                 "#,
 			)?;
+			jail.set_env("PROFILE", "local");
 
 			let result = load("app.yaml");
 			assert!(result.is_ok(), "{}", result.err().unwrap());
@@ -63,15 +72,17 @@ mod tests {
 			jail.create_file(
 				"app.yaml",
 				r#"
-                api_key: $MY_API_KEY
-                inner:
-                  key: $MY_API_KEY
-                  multiple:
-                    - val1
-                    - $MY_API_KEY
-                    - $NON_EXISTING_KEY
+                local:
+                  api_key: $MY_API_KEY
+                  inner:
+                    key: $MY_API_KEY
+                    multiple:
+                      - val1
+                      - $MY_API_KEY
+                      - $NON_EXISTING_KEY
                 "#,
 			)?;
+			jail.set_env("PROFILE", "local");
 
 			jail.set_env("MY_API_KEY", "my_api_key");
 
