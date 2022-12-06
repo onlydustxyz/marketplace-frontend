@@ -2503,8 +2503,9 @@ name = "olog"
 version = "0.1.0"
 dependencies = [
  "ctor",
+ "lazy_static",
+ "log",
  "opentelemetry",
- "opentelemetry-datadog",
  "tracing",
  "tracing-log",
  "tracing-opentelemetry",

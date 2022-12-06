@@ -4,6 +4,9 @@ mod info;
 mod trace;
 mod warn;
 
+mod stdlog;
+pub use stdlog::LogTracer;
+
 pub use opentelemetry;
 pub use tracing_opentelemetry;
 
@@ -44,6 +47,7 @@ macro_rules! span_id {
 #[cfg(test)]
 #[ctor::ctor]
 fn init_tracing_for_tests() {
+	use crate::stdlog::LogTracer;
 	use tracing::Level;
 	use tracing_subscriber::prelude::__tracing_subscriber_SubscriberExt;
 
@@ -56,6 +60,8 @@ fn init_tracing_for_tests() {
 		.with_max_level(Level::TRACE)
 		.finish()
 		.with(telemetry);
+
+	LogTracer::init_with_filter(log::LevelFilter::Trace).unwrap();
 
 	// Trace executed code
 	tracing::subscriber::set_global_default(subscriber).unwrap();
