@@ -142,7 +142,7 @@ Cypress.Commands.add('requestPayment_noassert', (requestor, budgetId, amount, re
 
 Cypress.Commands.add('getProjectBudget', (user, projectId) => {
     return cy.graphqlAsUser(user, `{
-        projects_by_pk(id: "${projectId}") {
+        projectsByPk(id: "${projectId}") {
             budgets {
                 id
             }
