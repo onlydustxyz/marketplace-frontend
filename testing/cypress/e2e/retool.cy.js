@@ -9,12 +9,10 @@ describe("As an admin, on retool, I", () => {
 
                 cy.graphql(`{
                     projects_by_pk(id: "${$projectId}") {
-                      project_details {
-                        github_repo_id
-                      }
+                      github_repo_id
                     }
                   }`)
-                    .its('body.data.projects_by_pk.project_details')
+                    .its('body.data.projects_by_pk')
                     .its('github_repo_id')
                     .should('equal', 1234);
 
@@ -48,17 +46,17 @@ describe("As an admin, on retool, I", () => {
     it('can update project details', () => {
         cy.createUser().then($user =>
             cy.createProject($user.id, 'Another project', 500, 1234).then($projectId =>
-                cy.updateProject($projectId, 4321).then(() =>
+                cy.updateProject($projectId, 'new description').then(() =>
                     cy.graphql(`{
                     projects_by_pk(id: "${$projectId}") {
                       project_details {
-                        github_repo_id
+                        description
                       }
                     }
                   }`)
-                        .its('body.data.projects_by_pk.project_details')
-                        .its('github_repo_id')
-                        .should('equal', 4321)
+                    .its('body.data.projects_by_pk.project_details')
+                    .its('description')
+                    .should('equal', 'new description')
                 )
             )
         )
