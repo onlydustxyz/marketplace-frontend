@@ -54,10 +54,9 @@ Cypress.Commands.add('createProject', (userId, projectName = 'My Project', initi
 });
 
 
-Cypress.Commands.add('updateProject', (projectId, githubRepoId, description = "My project description", telegramLink = "https://t.me/foo") => {
+Cypress.Commands.add('updateProject', (projectId, description = "My project description", telegramLink = "https://t.me/foo") => {
     return cy.graphqlAsAdmin(`mutation{ updateProject(
             id: "${projectId}",
-            githubRepoId: ${githubRepoId},
             description: "${description}",
             telegramLink: "${telegramLink}",
         )}`)

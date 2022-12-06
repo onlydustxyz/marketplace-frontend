@@ -32,12 +32,14 @@ select_permissions:
   - role: public
     permission:
       columns:
+        - github_repo_id
         - name
         - id
       filter: {}
   - role: user
     permission:
       columns:
-        - id
+        - github_repo_id
         - name
+        - id
       filter: {}
