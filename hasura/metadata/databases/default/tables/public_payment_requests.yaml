@@ -48,5 +48,10 @@ select_permissions:
         - recipient_id
         - requestor_id
       filter:
-        budget_id:
-          _in: X-Hasura-budgets_owned
+        _or:
+          - budget_id:
+              _in:
+                - X-Hasura-budgets_owned
+          - recipient:
+              id:
+                _eq: X-Hasura-User-Id

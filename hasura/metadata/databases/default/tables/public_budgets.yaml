@@ -19,6 +19,4 @@ select_permissions:
         - project_id
         - initial_amount
         - remaining_amount
-      filter:
-        project_id:
-          _in: X-Hasura-projects_leaded
+      filter: {}
