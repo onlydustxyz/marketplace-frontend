@@ -53,7 +53,6 @@ impl Usecase {
 
 		self.project_details_repository.upsert(&ProjectDetails::new(
 			project_id,
-			github_repo_id,
 			description,
 			telegram_link,
 		))?;
