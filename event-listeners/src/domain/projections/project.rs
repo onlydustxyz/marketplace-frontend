@@ -7,6 +7,7 @@ use uuid::Uuid;
 pub struct Project {
 	id: Uuid,
 	name: String,
+	github_repo_id: i64,
 }
 
 impl Entity for Project {

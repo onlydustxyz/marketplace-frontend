@@ -16,6 +16,7 @@ pub enum Error {
 pub struct Project {
 	id: ProjectId,
 	name: String,
+	github_repo_id: GithubRepositoryId,
 	leaders: HashSet<UserId>,
 }
 
@@ -38,9 +39,14 @@ impl From<ProjectEvent> for Event {
 impl EventSourcable for Project {
 	fn apply_event(mut self, event: &Self::Event) -> Self {
 		match event {
-			ProjectEvent::Created { id, name } => Project {
+			ProjectEvent::Created {
+				id,
+				name,
+				github_repo_id,
+			} => Project {
 				id: *id,
 				name: name.to_owned(),
+				github_repo_id: github_repo_id.to_owned(),
 				..Default::default()
 			},
 			ProjectEvent::LeaderAssigned { leader_id, .. } => {
@@ -52,8 +58,16 @@ impl EventSourcable for Project {
 }
 
 impl Project {
-	pub fn create(id: ProjectId, name: String) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
-		Ok(vec![ProjectEvent::Created { id, name }])
+	pub fn create(
+		id: ProjectId,
+		name: String,
+		github_repo_id: GithubRepositoryId,
+	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+		Ok(vec![ProjectEvent::Created {
+			id,
+			name,
+			github_repo_id,
+		}])
 	}
 
 	pub fn assign_leader(
@@ -78,7 +92,7 @@ mod tests {
 	use rstest::{fixture, rstest};
 
 	use super::*;
-	use crate::ProjectId;
+	use crate::{GithubRepositoryId, ProjectId};
 
 	#[fixture]
 	fn project_id() -> ProjectId {
@@ -95,20 +109,23 @@ mod tests {
 		ProjectEvent::Created {
 			id: project_id,
 			name: "La barbe de la femme à Georges Moustaki".to_string(),
+			github_repo_id: 12345.into(),
 		}
 	}
 
 	#[rstest]
 	fn test_create(project_id: ProjectId) {
 		let project_name = "My cool project";
-		let events = Project::create(project_id, project_name.to_string()).unwrap();
+		let github_repo_id: GithubRepositoryId = 12345.into();
+		let events = Project::create(project_id, project_name.to_string(), github_repo_id).unwrap();
 
 		assert_eq!(events.len(), 1);
 		assert_eq!(
 			events[0],
 			ProjectEvent::Created {
 				id: project_id,
-				name: project_name.to_string()
+				name: project_name.to_string(),
+				github_repo_id
 			}
 		);
 	}

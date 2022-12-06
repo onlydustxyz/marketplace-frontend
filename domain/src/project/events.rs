@@ -1,11 +1,18 @@
-use crate::{ProjectId, UserId};
+use crate::{GithubRepositoryId, ProjectId, UserId};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
-	Created { id: ProjectId, name: String },
-	LeaderAssigned { id: ProjectId, leader_id: UserId },
+	Created {
+		id: ProjectId,
+		name: String,
+		github_repo_id: GithubRepositoryId,
+	},
+	LeaderAssigned {
+		id: ProjectId,
+		leader_id: UserId,
+	},
 }
 
 impl Display for Event {

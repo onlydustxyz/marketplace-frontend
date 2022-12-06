@@ -26,8 +26,15 @@ impl EventListener for Projector {
 	async fn on_event(&self, event: &Event) -> Result<()> {
 		if let Event::Project(event) = event {
 			match event {
-				ProjectEvent::Created { id, name } =>
-					self.project_repository.insert(&Project::new((*id).into(), name.to_owned()))?,
+				ProjectEvent::Created {
+					id,
+					name,
+					github_repo_id,
+				} => self.project_repository.insert(&Project::new(
+					(*id).into(),
+					name.to_owned(),
+					(*github_repo_id).into(),
+				))?,
 				ProjectEvent::LeaderAssigned { id, leader_id } =>
 					self.project_lead_repository.insert(id, leader_id)?,
 			}
