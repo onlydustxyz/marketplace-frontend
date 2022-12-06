@@ -11,18 +11,20 @@ use tracing_log::AsTrace;
 use crate::{span_id, trace_id};
 
 /// A simple "logger" that converts all log records into `tracing` `Event`s, and
-/// adds trace_id and span_id as fiels.
+/// adds trace_id and span_id as fields.
 pub struct LogTracer(tracing_log::LogTracer);
 
 impl LogTracer {
-	/// Sets up `LogTracer` as global logger for the `log` crate,
-	/// with the given level as max level filter.
+	/// Sets a `LogTracer` as the global logger for the `log` crate.
 	///
 	/// Setting a global logger can only be done once.
-	pub fn init_with_filter(level: log::LevelFilter) -> Result<(), SetLoggerError> {
-		let logger = Box::new(LogTracer(tracing_log::LogTracer::new()));
+	///
+	/// This will forward all logs to `tracing` and lets the current `Subscriber`
+	/// determine if they are enabled.
+	pub fn init() -> Result<(), SetLoggerError> {
+		let logger = Box::new(LogTracer(tracing_log::LogTracer::default()));
 		log::set_boxed_logger(logger)?;
-		log::set_max_level(level);
+		log::set_max_level(log::LevelFilter::max()); // forward all logs to `tracing` and lets the current `Subscriber` determine if they are enabled.
 		Ok(())
 	}
 }
