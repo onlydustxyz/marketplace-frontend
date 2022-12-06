@@ -6,5 +6,3 @@ pub use permissions::Permissions;
 
 mod project_details;
 pub use project_details::ProjectDetails;
-
-pub mod github;

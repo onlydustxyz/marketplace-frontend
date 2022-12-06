@@ -95,6 +95,7 @@ diesel::table! {
     projects (id) {
         id -> Uuid,
         name -> Text,
+        github_repo_id -> Int8,
     }
 }
 

@@ -1,8 +1,8 @@
-use crate::domain::{github::GithubRepositoryId, ProjectDetails, Publishable};
+use crate::domain::{ProjectDetails, Publishable};
 use anyhow::Result;
 use domain::{
-	Amount, Budget, BudgetId, EntityRepository, Event, EventSourcable, Project, ProjectId,
-	Publisher, UniqueMessage, UserId, UuidGenerator,
+	Amount, Budget, BudgetId, EntityRepository, Event, EventSourcable, GithubRepositoryId, Project,
+	ProjectId, Publisher, UniqueMessage, UserId, UuidGenerator,
 };
 use std::sync::Arc;
 
@@ -36,7 +36,7 @@ impl Usecase {
 	) -> Result<ProjectId> {
 		let project_id: ProjectId = self.uuid_generator.new_uuid().into();
 
-		let mut events = create_leaded_project(project_id, user_id, name)?;
+		let mut events = create_leaded_project(project_id, user_id, name, github_repo_id)?;
 		events.extend(allocate_owned_budget(
 			self.uuid_generator.new_uuid().into(),
 			project_id,
@@ -65,8 +65,9 @@ fn create_leaded_project(
 	project_id: ProjectId,
 	leader_id: UserId,
 	name: String,
+	github_repo_id: GithubRepositoryId,
 ) -> Result<Vec<Event>> {
-	let mut events = Project::create(project_id, name)?;
+	let mut events = Project::create(project_id, name, github_repo_id)?;
 
 	let project = <Project as EventSourcable>::from_events(&events);
 	events.extend(project.assign_leader(leader_id)?);
