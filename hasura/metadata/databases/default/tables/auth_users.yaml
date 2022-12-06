@@ -101,7 +101,7 @@ object_relationships:
           name: payout_settings
           schema: public
 array_relationships:
-  - name: budgets_owned
+  - name: budgetsOwned
     using:
       manual_configuration:
         column_mapping:
@@ -110,7 +110,7 @@ array_relationships:
         remote_table:
           name: budget_spenders
           schema: public
-  - name: projects_leaded
+  - name: projectsLeaded
     using:
       manual_configuration:
         column_mapping:

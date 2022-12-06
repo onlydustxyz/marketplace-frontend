@@ -2,7 +2,7 @@ table:
   name: projects
   schema: public
 object_relationships:
-  - name: project_details
+  - name: projectDetails
     using:
       manual_configuration:
         column_mapping:
@@ -21,7 +21,7 @@ array_relationships:
         remote_table:
           name: budgets
           schema: public
-  - name: project_leads
+  - name: projectLeads
     using:
       foreign_key_constraint_on:
         column: project_id

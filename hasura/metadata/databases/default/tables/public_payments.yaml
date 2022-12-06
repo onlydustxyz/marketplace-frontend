@@ -2,7 +2,7 @@ table:
   name: payments
   schema: public
 object_relationships:
-  - name: payment_request
+  - name: paymentRequest
     using:
       foreign_key_constraint_on: request_id
 select_permissions:
@@ -15,6 +15,6 @@ select_permissions:
         - receipt
         - request_id
       filter:
-        payment_request:
+        paymentRequest:
           recipient_id:
             _eq: X-Hasura-User-Id
