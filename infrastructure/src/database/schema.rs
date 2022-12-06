@@ -79,7 +79,6 @@ diesel::table! {
 diesel::table! {
     project_details (project_id) {
         project_id -> Uuid,
-        github_repo_id -> Int8,
         description -> Nullable<Text>,
         telegram_link -> Nullable<Text>,
     }

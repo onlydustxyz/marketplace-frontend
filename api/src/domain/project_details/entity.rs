@@ -5,8 +5,6 @@ use derive_more::Constructor;
 use domain::Entity;
 use serde::{Deserialize, Serialize};
 
-use crate::domain::github::GithubRepositoryId;
-
 #[derive(
 	Default,
 	Debug,
@@ -26,8 +24,6 @@ use crate::domain::github::GithubRepositoryId;
 pub struct ProjectDetails {
 	#[diesel(deserialize_as = "uuid::Uuid")]
 	project_id: ProjectId,
-	#[diesel(deserialize_as = "i64")]
-	github_repo_id: GithubRepositoryId,
 	description: Option<String>,
 	telegram_link: Option<String>,
 }

@@ -6,14 +6,12 @@ select_permissions:
     permission:
       columns:
         - description
-        - github_repo_id
         - project_id
       filter: {}
   - role: user
     permission:
       columns:
         - description
-        - github_repo_id
         - project_id
         - telegram_link
       filter: {}
