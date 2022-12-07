@@ -1,10 +1,6 @@
-#[derive(Clone)]
-pub struct Context {}
+use derive_more::Constructor;
 
-impl Context {
-	pub fn new() -> Self {
-		Self {}
-	}
-}
+#[derive(Clone, Constructor)]
+pub struct Context {}
 
 impl juniper::Context for Context {}
