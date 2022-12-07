@@ -4,8 +4,8 @@ describe("The application", () => {
             query: "{ projects { name } }",
         })
             .its("body.data.projects")
-            .should($projects => {
-                assert.isArray($projects);
+            .should(projects => {
+                assert.isArray(projects);
             });
     });
 

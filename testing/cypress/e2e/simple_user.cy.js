@@ -1,6 +1,5 @@
 describe("As a simple user, I", () => {
     let projectId;
-    let leader;
     let budgetId;
 
     before(() => {
@@ -13,7 +12,6 @@ describe("As a simple user, I", () => {
                     .should('be.a', 'string')
                     .then($budgetId => {
                         projectId = $projectId;
-                        leader = $user;
                         budgetId = $budgetId;
                     })
             })
@@ -21,8 +19,8 @@ describe("As a simple user, I", () => {
     });
 
     it("can't request a payment", () => {
-        cy.createUser().then($user => {
-            cy.requestPayment_noassert($user, budgetId, '500', $user, {})
+        cy.createUser().then(user => {
+            cy.requestPayment_noassert(user, budgetId, '500', user, {})
                 .its('body.errors')
                 .its(0)
                 .its('message')
@@ -31,8 +29,8 @@ describe("As a simple user, I", () => {
     });
 
     // it("can't get project's budget", () => {
-    //     cy.createUser().then($user => {
-    //         cy.getProjectBudget($user, projectId)
+    //     cy.createUser().then(user => {
+    //         cy.getProjectBudget(user, projectId)
     //             .its('body.errors')
     //             .its(0)
     //             .its('message')
