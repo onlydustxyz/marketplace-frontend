@@ -23,7 +23,7 @@ mod tests {
 	#[fixture]
 	fn repository() -> Repository {
 		dotenv().ok();
-		Repository(Arc::new(Client::new(init_pool())))
+		Repository(Arc::new(Client::new(init_pool(&crate::CONFIG.database))))
 	}
 
 	#[rstest]

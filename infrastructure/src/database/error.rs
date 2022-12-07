@@ -1,5 +1,4 @@
 use diesel::result::Error as DieselError;
-use std::num::ParseIntError;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -12,6 +11,4 @@ pub enum Error {
 	Transaction(#[from] DieselError),
 	#[error(transparent)]
 	Pool(#[from] r2d2::Error),
-	#[error(transparent)]
-	Parse(#[from] ParseIntError),
 }

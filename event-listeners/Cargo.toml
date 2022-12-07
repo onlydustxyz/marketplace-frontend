@@ -56,6 +56,7 @@ derive-getters = "0.2.0"
 derive_more = "0.99.17"
 derive-new = "0.5.9"
 dotenv = "0.15.0"
+lazy_static = "1.4.0"
 
 # Local dependecies
 domain = {path = "../domain"}

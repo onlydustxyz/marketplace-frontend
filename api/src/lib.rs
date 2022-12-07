@@ -13,6 +13,7 @@ use ::domain::{
 };
 use ::infrastructure::{
 	amqp::Bus,
+	config,
 	database::{self, init_pool},
 	graphql::HasuraClient,
 };
@@ -26,6 +27,7 @@ use rocket::{
 	},
 	routes, Build, Rocket,
 };
+use serde::Deserialize;
 use std::sync::Arc;
 use tracing::instrument;
 
@@ -41,11 +43,17 @@ extern crate diesel;
 #[macro_use]
 extern crate macros;
 
+#[derive(Deserialize)]
+pub struct Config {
+	database: database::Config,
+}
+
 #[instrument]
 pub async fn main() -> Result<()> {
 	dotenv().ok();
+	let config: Config = config::load("api/app.yaml")?;
 
-	let database = Arc::new(database::Client::new(init_pool()?));
+	let database = Arc::new(database::Client::new(init_pool(&config.database)?));
 	database.run_migrations()?;
 
 	let rocket_handler = inject_app(

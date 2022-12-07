@@ -3,6 +3,9 @@ pub mod schema;
 mod error;
 pub use error::Error as DatabaseError;
 
+mod config;
+pub use config::Config;
+
 use diesel::PgConnection;
 use log::error;
 use r2d2;
@@ -44,14 +47,9 @@ impl Client {
 	}
 }
 
-pub fn init_pool() -> Result<Pool, DatabaseError> {
-	let manager = ConnectionManager::<PgConnection>::new(database_url());
-	let pool_max_size = std::env::var("PG_POOL_MAX_SIZE").unwrap_or_else(|_| String::from("20"));
-	let pool = Pool::builder().max_size(pool_max_size.parse()?).build(manager)?;
+pub fn init_pool(config: &Config) -> Result<Pool, DatabaseError> {
+	let manager = ConnectionManager::<PgConnection>::new(config.url());
+	let pool = Pool::builder().max_size(*config.pool_max_size()).build(manager)?;
 
 	Ok(pool)
-}
-
-fn database_url() -> String {
-	std::env::var("DATABASE_URL").expect("DATABASE_URL must be set")
 }
