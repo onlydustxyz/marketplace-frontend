@@ -9,18 +9,26 @@ use backend_domain::{
 };
 use backend_infrastructure::{
 	amqp::Bus,
-	database::{init_pool, Client as DatabaseClient},
+	config,
+	database::{self, init_pool, Client as DatabaseClient},
 	event_bus::EXCHANGE_NAME,
 };
 use domain::EventStore;
 use futures::TryFutureExt;
+use serde::Deserialize;
 use std::sync::Arc;
 use tracing::info;
 
+#[derive(Deserialize)]
+pub struct Config {
+	database: database::Config,
+}
+
 pub async fn main() -> Result<()> {
+	let config: Config = config::load("event-store/app.yaml")?;
 	let inbound_event_bus = bus::consumer().await?;
 	let outbound_event_bus = Arc::new(Bus::default().await?);
-	let database = Arc::new(DatabaseClient::new(init_pool()?));
+	let database = Arc::new(DatabaseClient::new(init_pool(&config.database)?));
 
 	inbound_event_bus
 		.subscribe(|event| {

@@ -1,0 +1,14 @@
+local:
+  database:
+    url: postgres://postgres:postgres@localhost/marketplace_db
+    pool_max_size: 20
+
+staging:
+  database:
+    url: $DATABASE_URL
+    pool_max_size: 3
+
+production:
+  database:
+    url: $DATABASE_URL
+    pool_max_size: 3
