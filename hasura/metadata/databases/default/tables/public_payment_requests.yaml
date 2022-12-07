@@ -38,7 +38,7 @@ array_relationships:
           name: payments
           schema: public
 select_permissions:
-  - role: user
+  - role: project_lead_specific
     permission:
       columns:
         - amount_in_usd
@@ -48,9 +48,18 @@ select_permissions:
         - recipient_id
         - requestor_id
       filter:
-        _or:
-          - budget_id:
-              _in: X-Hasura-budgetsOwned
-          - recipient:
-              id:
-                _eq: X-Hasura-User-Id
+        budget_id:
+          _in: X-Hasura-budgetsOwned
+  - role: registered_user_specific
+    permission:
+      columns:
+        - amount_in_usd
+        - reason
+        - budget_id
+        - id
+        - recipient_id
+        - requestor_id
+      filter:
+        recipient:
+          id:
+            _eq: X-Hasura-User-Id

@@ -47,10 +47,3 @@ select_permissions:
         - name
         - id
       filter: {}
-  - role: user
-    permission:
-      columns:
-        - github_repo_id
-        - name
-        - id
-      filter: {}

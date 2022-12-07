@@ -154,7 +154,7 @@ select_permissions:
         - avatar_url
         - display_name
       filter: {}
-  - role: user
+  - role: registered_user_specific
     permission:
       columns:
         - active_mfa_type
@@ -176,7 +176,7 @@ select_permissions:
         id:
           _eq: X-Hasura-User-Id
 update_permissions:
-  - role: user
+  - role: registered_user_specific
     permission:
       columns:
         - email
