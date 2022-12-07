@@ -8,10 +8,11 @@ use uuid::Uuid;
 #[derive(Debug, PartialEq, Eq)]
 pub enum Role {
 	Admin,
-	IdentifiedUser {
+	ProjectLead {
 		lead_projects: HashSet<Uuid>,
 		owned_budgets: HashSet<Uuid>,
 	},
+	RegisteredUser,
 	Public,
 }
 
@@ -22,13 +23,14 @@ impl<'r> FromRequest<'r> for Role {
 	async fn from_request(request: &'r Request<'_>) -> Outcome<Role, ()> {
 		match request.headers().get_one("x-hasura-role") {
 			Some("admin") => Outcome::Success(Role::Admin),
-			Some("user") => from_role_user(request),
+			Some("project_lead") => from_role_project_lead(request),
+			Some("registered_user") => from_role_registered_user(request),
 			_ => return Outcome::Success(Role::Public),
 		}
 	}
 }
 
-fn from_role_user(request: &'_ Request<'_>) -> Outcome<Role, ()> {
+fn from_role_project_lead(request: &'_ Request<'_>) -> Outcome<Role, ()> {
 	if request.headers().get_one("x-hasura-user-id").is_some() {
 		let lead_projects: HashSet<Uuid> = request
 			.headers()
@@ -42,7 +44,7 @@ fn from_role_user(request: &'_ Request<'_>) -> Outcome<Role, ()> {
 			.and_then(|h| serde_json::from_str(&h.replace('{', "[").replace('}', "]")).ok())
 			.unwrap_or_default();
 
-		return Outcome::Success(Role::IdentifiedUser {
+		return Outcome::Success(Role::ProjectLead {
 			lead_projects,
 			owned_budgets,
 		});
@@ -109,6 +111,6 @@ mod tests {
 		request.add_header(Header::new("x-hasura-user-id", "42"));
 
 		let result = Role::from_request(&request).await;
-		assert_matches!(result.succeeded().unwrap(), Role::IdentifiedUser { .. });
+		assert_matches!(result.succeeded().unwrap(), Role::ProjectLead { .. });
 	}
 }
