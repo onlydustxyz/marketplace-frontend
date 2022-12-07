@@ -69,6 +69,7 @@ serde_json = {version = "1.0.81"}
 chrono = "0.4"
 
 # Utils
+derive_more = "0.99.17"
 itertools = "0.10.3"
 mapinto = "0.2.1"
 rand = "0.8.5"
