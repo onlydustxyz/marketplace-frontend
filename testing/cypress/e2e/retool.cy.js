@@ -2,13 +2,13 @@ describe("As an admin, on retool, I", () => {
     it('can create a project', () => {
         const projectName = "Cypress test project";
 
-        cy.createUser().then($user => {
-            cy.createProject($user.id, projectName, 500, 1234).then($projectId => {
+        cy.createUser().then(user => {
+            cy.createProject(user.id, projectName, 500, 1234).then(projectId => {
                 // Let the event sourcing magic happen
                 cy.wait(500);
 
                 cy.graphql(`{
-                    projects_by_pk(id: "${$projectId}") {
+                    projects_by_pk(id: "${projectId}") {
                       github_repo_id
                     }
                   }`)
@@ -17,7 +17,7 @@ describe("As an admin, on retool, I", () => {
                     .should('equal', 1234);
 
                 cy.graphql(`{
-                        projects_by_pk(id: "${$projectId}") {
+                        projects_by_pk(id: "${projectId}") {
                           project_leads {
                             user_id
                           }
@@ -26,10 +26,10 @@ describe("As an admin, on retool, I", () => {
                     .its('body.data.projects_by_pk.project_leads')
                     .its(0)
                     .its('user_id')
-                    .should('equal', $user.id);
+                    .should('equal', user.id);
 
                 cy.graphql(`{
-                    projects(where: {id: {_eq: "${$projectId}"}}) {
+                    projects(where: {id: {_eq: "${projectId}"}}) {
                         name
                     }
                 }`)
@@ -44,11 +44,11 @@ describe("As an admin, on retool, I", () => {
     });
 
     it('can update project details', () => {
-        cy.createUser().then($user =>
-            cy.createProject($user.id, 'Another project', 500, 1234).then($projectId =>
-                cy.updateProject($projectId, 'new description').then(() =>
+        cy.createUser().then(user =>
+            cy.createProject(user.id, 'Another project', 500, 1234).then(projectId =>
+                cy.updateProject(projectId, 'new description').then(() =>
                     cy.graphql(`{
-                    projects_by_pk(id: "${$projectId}") {
+                    projects_by_pk(id: "${projectId}") {
                       project_details {
                         description
                       }
