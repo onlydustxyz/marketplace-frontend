@@ -8,7 +8,7 @@
         value_from_env: BACKEND_GRAPHQL_API_KEY
   comment: ""
   permissions:
-    - role: project_lead_specific
+    - role: project_lead
       definition:
         schema: |
           schema {
