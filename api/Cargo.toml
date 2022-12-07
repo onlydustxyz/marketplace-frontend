@@ -63,9 +63,10 @@ dotenv = "0.15.0"
 rusty-money = {version = "0.4.1", features = ["iso", "crypto"]}
 derive-new = "0.5.9"
 derive-getters = "0.2.0"
+email_address = "0.2.4"
 
 # Local dependecies
-domain = {path = "../domain"}
+domain = {path = "../domain", features = ["rocket"]}
 event-store = {path = "../event-store"}
 infrastructure = {path = "../infrastructure"}
 macros = {path = "../macros"}

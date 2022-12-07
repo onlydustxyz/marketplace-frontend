@@ -1,4 +1,7 @@
-use crate::{domain::ProjectDetails, presentation::graphql};
+use crate::{
+	domain::{ProjectDetails, UserInfo},
+	presentation::graphql,
+};
 use ::domain::{
 	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Project, Publisher,
 	UniqueMessage, UserRepository, UuidGenerator,
@@ -26,6 +29,7 @@ pub async fn serve(
 	budget_repository: AggregateRootRepository<Budget>,
 	user_repository: Arc<dyn UserRepository>,
 	project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
+	user_info_repository: Arc<dyn EntityRepository<UserInfo>>,
 ) -> Result<()> {
 	let _ = rocket::custom(rocket_config())
 		.manage(config)
@@ -37,6 +41,7 @@ pub async fn serve(
 		.manage(budget_repository)
 		.manage(user_repository)
 		.manage(project_details_repository)
+		.manage(user_info_repository)
 		.attach(routes::cors::Cors)
 		.mount(
 			"/",

@@ -5,7 +5,7 @@ use syn::{parse::Parse, DeriveInput, Result};
 
 mod diesel_mapping_repository;
 mod diesel_repository;
-mod to_sql;
+mod from_to_sql;
 
 #[proc_macro_derive(DieselMappingRepository, attributes(table, entities, ids))]
 pub fn diesel_mapping_repository(input: TokenStream) -> TokenStream {
@@ -17,9 +17,35 @@ pub fn diesel_repository(input: TokenStream) -> TokenStream {
 	diesel_repository::derive(input)
 }
 
-#[proc_macro_derive(NewtypeToSql, attributes(sql_type))]
+/// Parse a FromToSql derive macro.
+/// This macro implements the traits [ToSql](https://docs.rs/diesel/2.0.2/diesel/serialize/trait.ToSql.html) and
+/// [FromSql](https://docs.rs/diesel/2.0.2/diesel/deserialize/trait.FromSql.html). Requires the 'sql_type' attribute to be set.
+/// Single field unnamed struct will be modelized as their inner type (newtype patter)
+/// Enum and named struct will be modelized as [serde_json::Value](https://docs.rs/serde_json/1.0.89/serde_json/enum.Value.html)
+///
+/// ```
+/// #[derive(AsExpression, FromToSql, FromSqlRow)]
+/// #[sql_type = "diesel::sql_types::Uuid"]
+/// struct Id(uuid::Uuid);
+///
+/// #[derive(AsExpression, FromToSql, FromSqlRow)]
+/// #[sql_type = "diesel::sql_types::Jsonb"]
+/// enum AOrB(
+///     A(InnerA),
+///     B(InnerB)
+/// );
+///
+/// #[derive(AsExpression, FromToSql, FromSqlRow)]
+/// #[sql_type = "diesel::sql_types::Jsonb"]
+/// struct Person {
+///     firstname: String,
+///     lastname: String,
+/// }
+/// ```
+#[proc_macro_derive(FromToSql, attributes(sql_type))]
 pub fn to_sql(input: TokenStream) -> TokenStream {
-	to_sql::derive(input)
+	let ast: DeriveInput = syn::parse(input).unwrap();
+	from_to_sql::impl_from_to_sql_macro(ast)
 }
 
 fn find_attr<T: Parse>(ast: &DeriveInput, attr_name: &str) -> Result<T> {

@@ -1,10 +1,16 @@
-use super::Context;
 use anyhow::anyhow;
-use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt};
 use juniper::{graphql_object, graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
 use rusty_money::{crypto, Money};
 use thiserror::Error;
 use uuid::Uuid;
+
+use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt};
+
+use crate::domain::user_info::{
+	Email, Identity, IdentityInput, Location, PayoutSettings, PayoutSettingsInput, UserInfo,
+};
+
+use super::Context;
 
 #[derive(Debug, Error)]
 enum Error {
@@ -122,5 +128,25 @@ impl Mutation {
 			.await?;
 
 		Ok(payment_request_id.into())
+	}
+
+	pub async fn update_profile_info(
+		context: &Context,
+		location: Location,
+		identity: IdentityInput,
+		email: Email,
+		payout_settings: PayoutSettingsInput,
+	) -> Result<Uuid> {
+		let user_id =
+			context.maybe_user_id.ok().map_err(|e| Error::NotAuthorized(e.to_string()))?;
+		let identity = Identity::try_from(identity).map_err(Error::InvalidRequest)?;
+		let payout_settings =
+			PayoutSettings::try_from(payout_settings).map_err(Error::InvalidRequest)?;
+
+		let user_info = UserInfo::new(user_id, identity, location, email, payout_settings);
+
+		context.user_info_repository.upsert(&user_info)?;
+
+		Ok(user_id.into())
 	}
 }
