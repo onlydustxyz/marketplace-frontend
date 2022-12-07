@@ -15,7 +15,7 @@ use ::infrastructure::{
 	amqp::{self, Bus},
 	config,
 	database::{self, init_pool},
-	graphql::HasuraClient,
+	graphql::{Config as GraphQlConfig, HasuraClient},
 };
 use anyhow::Result;
 use dotenv::dotenv;
@@ -47,6 +47,7 @@ extern crate macros;
 pub struct Config {
 	database: database::Config,
 	amqp: amqp::Config,
+	graphql: GraphQlConfig,
 }
 
 #[instrument]
@@ -65,7 +66,7 @@ pub async fn main() -> Result<()> {
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),
-		Arc::new(HasuraClient::default()),
+		Arc::new(HasuraClient::new(&config.graphql)),
 		Arc::new(ProjectDetailsRepository::new(database)),
 	)
 	.attach(routes::cors::Cors)

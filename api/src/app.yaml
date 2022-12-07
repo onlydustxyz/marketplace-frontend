@@ -4,6 +4,9 @@ local:
     pool_max_size: 20
   amqp:
     url: "amqp://127.0.0.1:5672/%2f"
+  graphql:
+    url: "http://localhost:8080/v1/graphql"
+    admin_secret: $HASURA_GRAPHQL_ADMIN_SECRET
 
 staging:
   database:
@@ -11,6 +14,9 @@ staging:
     pool_max_size: 3
   amqp:
     url: $CLOUDAMQP_URL
+  graphql:
+    url: https://staging.hasura.onlydust.xyz/v1/graphql
+    admin_secret: $HASURA_GRAPHQL_ADMIN_SECRET
 
 production:
   database:
@@ -18,3 +24,6 @@ production:
     pool_max_size: 3
   amqp:
     url: $CLOUDAMQP_URL
+  graphql:
+    url: https://hasura.onlydust.xyz/v1/graphql
+    admin_secret: $HASURA_GRAPHQL_ADMIN_SECRET
