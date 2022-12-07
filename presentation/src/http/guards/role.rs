@@ -105,12 +105,22 @@ mod tests {
 	}
 
 	#[rstest]
-	async fn from_request_user(client: Client) {
+	async fn from_request_project_lead(client: Client) {
 		let mut request: LocalRequest = client.post("/v1/graphql");
-		request.add_header(Header::new("x-hasura-role", "user"));
+		request.add_header(Header::new("x-hasura-role", "project_lead"));
 		request.add_header(Header::new("x-hasura-user-id", "42"));
 
 		let result = Role::from_request(&request).await;
 		assert_matches!(result.succeeded().unwrap(), Role::ProjectLead { .. });
+	}
+
+	#[rstest]
+	async fn from_request_registered_user(client: Client) {
+		let mut request: LocalRequest = client.post("/v1/graphql");
+		request.add_header(Header::new("x-hasura-role", "registered_user"));
+		request.add_header(Header::new("x-hasura-user-id", "42"));
+
+		let result = Role::from_request(&request).await;
+		assert_matches!(result.succeeded().unwrap(), Role::RegisteredUser { .. });
 	}
 }
