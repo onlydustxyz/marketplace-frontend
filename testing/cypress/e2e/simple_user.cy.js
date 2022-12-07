@@ -1,6 +1,7 @@
 describe("As a simple user, I", () => {
     let projectId;
     let budgetId;
+    const role_registered_user = 'registered_user';
 
     const STARKONQUEST_ID = 481932781;
 
@@ -25,6 +26,29 @@ describe("As a simple user, I", () => {
                         });
                 })
         );
+    });
+
+    it("can get projects with some details", () => {
+        cy.createUser().then(user => {
+            cy.graphqlAsRegisteredUser(user, `query {
+                projects {
+                  name
+                  github_repo_id
+                  id
+                  project_details {
+                    description
+                  }
+                  project_leads {
+                    user {
+                      avatarUrl
+                      displayName
+                    }
+                  }
+                }
+              }`)
+              .its("body.data.projects")
+              .should("be.a", "array");
+        });
     });
 
     it("can't request a payment", () => {
