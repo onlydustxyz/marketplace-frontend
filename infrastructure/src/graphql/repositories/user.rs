@@ -36,6 +36,8 @@ impl UserRepository for HasuraClient {
 #[cfg(test)]
 mod tests {
 
+	use crate::graphql::Config;
+
 	use super::*;
 	use ::uuid::Uuid;
 	use assert_matches::assert_matches;
@@ -69,7 +71,8 @@ mod tests {
 			}));
 		});
 
-		let user_repository = HasuraClient::new(server.url("/v1/graphql").as_str(), "secret");
+		let config = Config::new(server.url("/v1/graphql"), "secret".to_string());
+		let user_repository = HasuraClient::new(&config);
 		let user = user_repository.find_by_id(&user_id).await.unwrap();
 		assert_eq!(user.id(), &user_id);
 	}
@@ -89,7 +92,8 @@ mod tests {
 			}));
 		});
 
-		let user_repository = HasuraClient::new(server.url("/v1/graphql").as_str(), "secret");
+		let config = Config::new(server.url("/v1/graphql"), "secret".to_string());
+		let user_repository = HasuraClient::new(&config);
 		let result = user_repository.find_by_id(&unexisting_user_id).await;
 		assert!(result.is_err());
 		assert_matches!(result, Err(UserRepositoryError::NotFound));
