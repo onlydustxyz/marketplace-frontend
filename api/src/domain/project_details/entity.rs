@@ -9,8 +9,6 @@ use serde::{Deserialize, Serialize};
 	Default,
 	Debug,
 	Clone,
-	PartialEq,
-	Eq,
 	Constructor,
 	Getters,
 	Dissolve,

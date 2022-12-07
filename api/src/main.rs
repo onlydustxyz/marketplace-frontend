@@ -1,6 +1,6 @@
 use anyhow::Result;
 use api::{
-	infrastructure::database::ProjectDetailsRepository,
+	infrastructure::database::{ProjectDetailsRepository, UserInfoRepository},
 	presentation::{graphql, http},
 	Config,
 };
@@ -32,7 +32,8 @@ async fn main() -> Result<()> {
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),
 		Arc::new(HasuraClient::new(config.graphql())),
-		Arc::new(ProjectDetailsRepository::new(database)),
+		Arc::new(ProjectDetailsRepository::new(database.clone())),
+		Arc::new(UserInfoRepository::new(database)),
 	)
 	.await?;
 

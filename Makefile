@@ -20,6 +20,9 @@ db/up:
 db/connect: db/up
 	docker-compose exec -u postgres db psql marketplace_db
 
+db/migrate: db/up
+	diesel migration run
+
 db/update-staging-dump:
 	heroku pg:backups:capture --app onlydust-backend-staging-next
 	heroku pg:backups:download --app onlydust-backend-staging-next --output ./scripts/fixtures/latest.dump
@@ -33,16 +36,16 @@ db/load-fixtures: db/up
 	@echo "It was generated on the `GIT_PAGER=cat git log -1 --format=%cd ./scripts/fixtures/latest.dump`"
 	@echo "To have a fresh dump, you can use db/update-staging-dump"
 
-migration/run: db/up
+db/migrate: db/up
 	diesel migration run
 
-api/start: docker/up migration/run
+api/start: docker/up db/migrate
 	cargo run
 
 hasura/start:
 	yarn --cwd ./hasura start
 
-hasura/clean: migration/run
+hasura/clean: db/migrate
 	docker-compose exec -u postgres db psql marketplace_db -c "DELETE FROM hdb_catalog.hdb_metadata"
 	yarn --cwd ./hasura hasura md apply
 	yarn --cwd ./hasura hasura md ic drop
@@ -51,4 +54,4 @@ hasura/clean: migration/run
 cypress/test:
 	yarn --cwd ./testing cypress:run
 
-.PHONY: install docker/up docker/clean docker/re db/up db/connect db/update-staging-dump db/load-fixtures migration/run api/start hasura/start hasura/clean cypress/test
+.PHONY: install docker/up docker/clean docker/re db/up db/connect db/update-staging-dump db/load-fixtures db/migrate api/start hasura/start hasura/clean cypress/test

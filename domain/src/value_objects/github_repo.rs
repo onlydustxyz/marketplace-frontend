@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 	AsRef,
 	Hash,
 	AsExpression,
-	NewtypeToSql,
+	FromToSql,
 )]
 #[sql_type = "diesel::sql_types::BigInt"]
 pub struct GithubRepositoryId(i64);

@@ -53,6 +53,9 @@ diesel = {version = "1.4.8", default-features = false, features = [
   "chrono",
 ]}
 
+# Webserver
+rocket = {version = "0.5.0-rc.2"}
+
 # Local dependecies
 macros = {path = "../macros"}
 
@@ -67,3 +70,6 @@ rust_decimal_macros = "1.26"
 regex = "1.7.0"
 mockall = "0.11.2"
 mockall_double = "0.3.0"
+
+[features]
+rocket = []

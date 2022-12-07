@@ -99,6 +99,16 @@ diesel::table! {
     }
 }
 
+diesel::table! {
+    user_info (user_id) {
+        user_id -> Uuid,
+        identity -> Jsonb,
+        location -> Jsonb,
+        email -> Text,
+        payout_settings -> Jsonb,
+    }
+}
+
 diesel::joinable!(budget_spenders -> budgets (budget_id));
 diesel::joinable!(budgets -> projects (project_id));
 diesel::joinable!(payment_requests -> budgets (budget_id));
@@ -118,4 +128,5 @@ diesel::allow_tables_to_appear_in_same_query!(
     project_details,
     project_leads,
     projects,
+    user_info,
 );
