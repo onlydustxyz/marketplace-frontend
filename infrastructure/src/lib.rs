@@ -2,12 +2,12 @@
 extern crate diesel;
 
 pub mod amqp;
+pub mod config;
 pub mod database;
-pub mod graphql;
-pub mod tracing;
-
 pub mod event_bus;
 pub mod event_store;
+pub mod graphql;
+pub mod tracing;
 
 use diesel_migrations::*;
 #[macro_use]
