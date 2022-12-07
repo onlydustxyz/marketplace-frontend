@@ -1,3 +1,7 @@
+default:
+  tracer:
+    ansi: false
+
 local:
   database:
     url: postgres://postgres:postgres@localhost/marketplace_db
@@ -7,6 +11,8 @@ local:
   graphql:
     url: "http://localhost:8080/v1/graphql"
     admin_secret: $HASURA_GRAPHQL_ADMIN_SECRET
+  tracer:
+    ansi: true
 
 staging:
   database:

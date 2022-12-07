@@ -31,17 +31,17 @@ pub async fn spawn_all(
 	let budget_spender_repository = Arc::new(BudgetSpenderRepository::new(database));
 
 	let handles = [
-		Logger.spawn(event_bus::consumer(&config.amqp, "logger").await?),
+		Logger.spawn(event_bus::consumer(config.amqp(), "logger").await?),
 		EventWebHook::new(reqwest)
-			.spawn(event_bus::consumer(&config.amqp, "event-webhooks").await?),
+			.spawn(event_bus::consumer(config.amqp(), "event-webhooks").await?),
 		PaymentProjector::new(payment_repository)
-			.spawn(event_bus::consumer(&config.amqp, "payments").await?),
+			.spawn(event_bus::consumer(config.amqp(), "payments").await?),
 		PaymentRequestProjector::new(payment_request_repository)
-			.spawn(event_bus::consumer(&config.amqp, "payment_requests").await?),
+			.spawn(event_bus::consumer(config.amqp(), "payment_requests").await?),
 		ProjectProjector::new(project_repository, project_lead_repository)
-			.spawn(event_bus::consumer(&config.amqp, "projects").await?),
+			.spawn(event_bus::consumer(config.amqp(), "projects").await?),
 		BudgetProjector::new(budget_repository, budget_spender_repository)
-			.spawn(event_bus::consumer(&config.amqp, "budgets").await?),
+			.spawn(event_bus::consumer(config.amqp(), "budgets").await?),
 	];
 
 	Ok(handles.into())

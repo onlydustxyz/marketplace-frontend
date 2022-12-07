@@ -1,0 +1,7 @@
+default:
+  tracer:
+    ansi: false
+
+local:
+  tracer:
+    ansi: true
