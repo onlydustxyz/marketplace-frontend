@@ -1889,6 +1889,7 @@ dependencies = [
  "async-trait",
  "chrono",
  "claim",
+ "derive_more",
  "diesel",
  "diesel_migrations",
  "domain",
