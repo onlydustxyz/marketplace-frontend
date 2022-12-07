@@ -4,12 +4,18 @@ use opentelemetry::{
 	sdk::trace::{self, RandomIdGenerator, Sampler},
 };
 use opentelemetry_datadog::ApiVersion;
+use serde::Deserialize;
 use tracing_subscriber::{layer::SubscriberExt, EnvFilter};
 
 pub struct Tracer;
 
+#[derive(Deserialize)]
+pub struct Config {
+	ansi: bool,
+}
+
 impl Tracer {
-	pub fn init(service_name: &str) -> Result<Self> {
+	pub fn init(config: &Config, service_name: &str) -> Result<Self> {
 		// Install a new OpenTelemetry trace pipeline
 		let otel_tracer = opentelemetry_datadog::new_pipeline()
 			.with_service_name(service_name)
@@ -26,7 +32,7 @@ impl Tracer {
 
 		let subscriber = tracing_subscriber::fmt::Subscriber::builder()
 			.with_env_filter(EnvFilter::from_default_env())
-			.with_ansi(ansi_logs())
+			.with_ansi(config.ansi)
 			.finish()
 			.with(telemetry);
 
@@ -43,13 +49,5 @@ impl Tracer {
 impl Drop for Tracer {
 	fn drop(&mut self) {
 		shutdown_tracer_provider();
-	}
-}
-
-fn ansi_logs() -> bool {
-	if let Ok(value) = std::env::var("ANSI_LOGS") {
-		value.eq_ignore_ascii_case("true")
-	} else {
-		false
 	}
 }

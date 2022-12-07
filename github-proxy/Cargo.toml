@@ -15,6 +15,9 @@ rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 # Errors
 anyhow = "1.0.57"
 
+# Serde
+serde = {version = "1.0.137", features = ["derive"]}
+
 # Utils
 dotenv = "0.15.0"
 

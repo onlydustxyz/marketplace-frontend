@@ -14,6 +14,7 @@ mod tests {
 	use super::*;
 	use ::domain::EntityRepository;
 	use dotenv::dotenv;
+	use infrastructure::database::Config;
 	use rstest::*;
 	use rust_decimal_macros::dec;
 	use serde_json::json;
@@ -21,9 +22,18 @@ mod tests {
 	use uuid::Uuid;
 
 	#[fixture]
-	fn repository() -> Repository {
+	#[once]
+	fn config() -> Config {
+		Config::new(
+			"postgres://postgres:postgres@localhost/marketplace_db".to_string(),
+			20,
+		)
+	}
+
+	#[fixture]
+	fn repository(config: &Config) -> Repository {
 		dotenv().ok();
-		Repository(Arc::new(Client::new(init_pool(&crate::CONFIG.database))))
+		Repository(Arc::new(Client::new(init_pool(config))))
 	}
 
 	#[rstest]

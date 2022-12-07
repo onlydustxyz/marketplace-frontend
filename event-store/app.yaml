@@ -1,9 +1,15 @@
+default:
+  tracer:
+    ansi: false
+
 local:
   database:
     url: postgres://postgres:postgres@localhost/marketplace_db
     pool_max_size: 20
   amqp:
     url: "amqp://127.0.0.1:5672/%2f"
+  tracer:
+    ansi: true
 
 staging:
   database:

@@ -1522,6 +1522,7 @@ dependencies = [
  "juniper",
  "juniper_rocket",
  "rocket",
+ "serde",
 ]
 
 [[package]]

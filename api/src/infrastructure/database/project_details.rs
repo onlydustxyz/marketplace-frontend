@@ -1,4 +1,4 @@
-use crate::ProjectDetails;
+use crate::domain::ProjectDetails;
 use infrastructure::database::{schema::project_details::dsl, Client};
 use std::sync::Arc;
 
