@@ -65,7 +65,7 @@ services:
 
   hasura-auth:
     container_name: hasura-auth
-    image: nhost/hasura-auth:latest
+    image: onlydustdocker/hasura_auth:graphql-default
     depends_on:
       db:
         condition: service_healthy
