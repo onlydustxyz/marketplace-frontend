@@ -33,13 +33,13 @@ fn from_role_user(request: &'_ Request<'_>) -> Outcome<Role, ()> {
 	if request.headers().get_one("x-hasura-user-id").is_some() {
 		let lead_projects: HashSet<Uuid> = request
 			.headers()
-			.get_one("x-hasura-projects_leaded")
+			.get_one("x-hasura-projectsLeaded")
 			.and_then(|h| serde_json::from_str(&h.replace('{', "[").replace('}', "]")).ok())
 			.unwrap_or_default();
 
 		let owned_budgets: HashSet<Uuid> = request
 			.headers()
-			.get_one("x-hasura-budgets_owned")
+			.get_one("x-hasura-budgetsOwned")
 			.and_then(|h| serde_json::from_str(&h.replace('{', "[").replace('}', "]")).ok())
 			.unwrap_or_default();
 

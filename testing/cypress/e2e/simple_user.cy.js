@@ -5,28 +5,35 @@ describe("As a simple user, I", () => {
     const STARKONQUEST_ID = 481932781;
 
     before(() => {
-        cy.createUser().then($user =>
-            cy.createProject($user.id, 'Project with budget', 1000, STARKONQUEST_ID).then($projectId => {
-                cy.getProjectBudget($user, $projectId)
-                    .its('body.data.projects_by_pk.budgets')
-                    .its(0)
-                    .its('id')
-                    .should('be.a', 'string')
-                    .then($budgetId => {
-                        projectId = $projectId;
-                        budgetId = $budgetId;
-                    })
-            })
-        )
+        cy.createUser().then(($user) =>
+            cy
+                .createProject(
+                    $user.id,
+                    "Project with budget",
+                    1000,
+                    STARKONQUEST_ID
+                )
+                .then(($projectId) => {
+                    cy.getProjectBudget($user, $projectId)
+                        .its("body.data.projectsByPk.budgets")
+                        .its(0)
+                        .its("id")
+                        .should("be.a", "string")
+                        .then(($budgetId) => {
+                            projectId = $projectId;
+                            budgetId = $budgetId;
+                        });
+                })
+        );
     });
 
     it("can't request a payment", () => {
-        cy.createUser().then(user => {
-            cy.requestPayment_noassert(user, budgetId, '500', user, {})
-                .its('body.errors')
+        cy.createUser().then((user) => {
+            cy.requestPaymentNoassert(user, budgetId, "500", user, {})
+                .its("body.errors")
                 .its(0)
-                .its('message')
-                .should('eq', 'User is not authorized to perform this action')
+                .its("message")
+                .should("eq", "User is not authorized to perform this action");
         });
     });
 
@@ -41,10 +48,12 @@ describe("As a simple user, I", () => {
     // });
 
     it("can fetch github repository details from a project", () => {
-        cy.createUser().then(user => {
-            cy.graphqlAsUser(user, `{
-                projects_by_pk(id: "${projectId}") {
-                  github_repo {
+        cy.createUser().then((user) => {
+            cy.graphqlAsUser(
+                user,
+                `{
+                projectsByPk(id: "${projectId}") {
+                  githubRepo {
                     id
                     name
                     owner
@@ -55,15 +64,20 @@ describe("As a simple user, I", () => {
                     }
                   }
                   }
-              }`)
-                .its("body.data.projects_by_pk.github_repo")
-                .then(repo => {
+              }`
+            )
+                .its("body.data.projectsByPk.githubRepo")
+                .then((repo) => {
                     expect(repo.id).equal(STARKONQUEST_ID);
                     expect(repo.name).equal("starkonquest");
                     expect(repo.owner).equal("onlydustxyz");
                     expect(repo.contributors).to.be.an("array");
-                    expect(repo.contributors[0]).to.have.all.keys(["id", "login", "avatarUrl"]);
+                    expect(repo.contributors[0]).to.have.all.keys([
+                        "id",
+                        "login",
+                        "avatarUrl",
+                    ]);
                 });
-        })
+        });
     });
 });
