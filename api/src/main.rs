@@ -98,5 +98,5 @@ fn inject_app(
 fn rocket_config() -> Figment {
 	Figment::from(rocket::Config::default())
 		.merge(Toml::file("api/Rocket.toml").nested())
-		.merge(Env::prefixed("ROCKET_"))
+		.merge(Env::prefixed("ROCKET_").global())
 }
