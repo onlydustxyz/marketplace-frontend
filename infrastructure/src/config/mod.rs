@@ -7,12 +7,12 @@ use serde::Deserialize;
 use std::path::Path;
 
 mod providers;
-use providers::Enhanced;
+use providers::ExpandWithEnv;
 
 pub fn load<'a, T: Deserialize<'a>, P: AsRef<Path>>(path: P) -> Result<T> {
 	let config = Figment::new()
 		.select(profile()?)
-		.merge(Enhanced::new(Yaml::file(path).nested()))
+		.merge(ExpandWithEnv::new(Yaml::file(path).nested()))
 		.extract()?;
 	Ok(config)
 }
@@ -92,10 +92,30 @@ mod tests {
 			let config: App = result.unwrap();
 			assert_eq!(config.api_key, "my_api_key");
 			assert_eq!(config.inner.key, "my_api_key");
-			assert_eq!(
-				config.inner.multiple,
-				vec!["val1", "my_api_key", "$NON_EXISTING_KEY"]
-			);
+			assert_eq!(config.inner.multiple, vec!["val1", "my_api_key"]);
+
+			Ok(())
+		});
+	}
+
+	#[test]
+	fn fail_if_missing_variable() {
+		figment::Jail::expect_with(|jail| {
+			jail.create_file(
+				"app.yaml",
+				r#"
+                local:
+                  api_key: $MY_API_KEY
+                  inner:
+                    key: $MY_API_KEY
+                    multiple:
+                      - val1
+                "#,
+			)?;
+			jail.set_env("PROFILE", "local");
+
+			let result = load::<App, _>("app.yaml");
+			assert!(result.is_err());
 
 			Ok(())
 		});
