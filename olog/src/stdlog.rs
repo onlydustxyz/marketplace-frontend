@@ -66,13 +66,13 @@ fn dispatch_record(record: &log::Record<'_>) {
 		dispatch.event(&Event::new(
 			meta,
 			&meta.fields().value_set(&[
-				(&keys.trace_id, Some(&trace as &dyn field::Value)),
-				(&keys.span_id, Some(&span as &dyn field::Value)),
 				(&keys.message, Some(record.args() as &dyn field::Value)),
 				(&keys.target, Some(&record.target())),
 				(&keys.module, module),
 				(&keys.file, file),
 				(&keys.line, line),
+				(&keys.trace_id, Some(&trace as &dyn field::Value)),
+				(&keys.span_id, Some(&span as &dyn field::Value)),
 			]),
 		));
 	});
