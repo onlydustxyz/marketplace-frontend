@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use derive_more::From;
 use email_address::EmailAddress;
 use serde::{Deserialize, Serialize};
@@ -20,10 +18,39 @@ where
 
 	fn from_input_value(value: &juniper::InputValue) -> Option<Self> {
 		let str_value = value.as_string_value()?;
-		EmailAddress::from_str(str_value).map(|email| Email(email.to_string())).ok()
+		if EmailAddress::is_valid(str_value) {
+			Some(Email(str_value.to_string()))
+		} else {
+			None
+		}
 	}
 
 	fn from_str<'a>(value: juniper::ScalarToken<'a>) -> juniper::ParseScalarResult<'a, S> {
 		<String as juniper::ParseScalarValue<S>>::from_str(value)
+	}
+}
+#[cfg(test)]
+mod test {
+	use super::Email;
+	use juniper::{DefaultScalarValue, FromInputValue, InputValue};
+	use rstest::rstest;
+
+	#[rstest]
+	#[case(InputValue::Scalar(DefaultScalarValue::String("abc42@gmail.com".to_string())), true)]
+	#[case(InputValue::Scalar(DefaultScalarValue::String("aBc@gMail.coM".to_string())), true)]
+	#[case(InputValue::Scalar(DefaultScalarValue::String("abc@gmail".to_string())), true)]
+	#[case(InputValue::Scalar(DefaultScalarValue::String("jsmith@[192.168.2.1]".to_string())), true)]
+	#[case(InputValue::Scalar(DefaultScalarValue::String("abcgmail.com".to_string())), false)]
+	#[case(InputValue::Scalar(DefaultScalarValue::String("".to_string())), false)]
+	#[case(InputValue::Scalar(DefaultScalarValue::Int(42)), false)]
+	#[case(InputValue::Scalar(DefaultScalarValue::Float(4.2)), false)]
+	#[case(InputValue::Scalar(DefaultScalarValue::Boolean(true)), false)]
+	#[case(InputValue::Null, false)]
+	#[case(InputValue::Enum("abc@gmail.com".to_string()), false)]
+	#[case(InputValue::Variable("abc@gmail.com".to_string()), false)]
+	#[case(InputValue::list(vec![InputValue::Scalar(DefaultScalarValue::String("abc42@gmail.com".to_string()))]), false)]
+	#[case(InputValue::<DefaultScalarValue>::Object(Default::default()), false)]
+	fn is_valid_email(#[case] input: InputValue, #[case] expected: bool) {
+		assert_eq!(Email::from_input_value(&input).is_some(), expected)
 	}
 }

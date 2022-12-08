@@ -6,8 +6,9 @@ use uuid::Uuid;
 
 use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt};
 
-use crate::domain::user_info::{
-	Email, Identity, IdentityInput, Location, PayoutSettings, PayoutSettingsInput, UserInfo,
+use crate::{
+	domain::user_info::{Email, Identity, Location, PayoutSettings, UserInfo},
+	presentation::http::routes::{identity::IdentityInput, payout_settings::PayoutSettingsInput},
 };
 
 use super::Context;

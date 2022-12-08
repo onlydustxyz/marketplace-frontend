@@ -32,7 +32,7 @@ pub use payment::{
 };
 
 mod user;
-pub use user::{from_rocket_request::MaybeId as MaybeUserId, Entity as User, Id as UserId};
+pub use user::{Entity as User, Id as UserId};
 
 mod budget;
 pub use budget::{Budget, Event as BudgetEvent, Id as BudgetId, Topic as BudgetTopic};

@@ -13,7 +13,7 @@ use rocket::figment::{
 };
 use std::sync::Arc;
 
-mod routes;
+pub mod routes;
 
 mod config;
 pub use config::Config;

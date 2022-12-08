@@ -2,17 +2,19 @@ use ::infrastructure::database::schema::*;
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
 use domain::{Entity, UserId};
-use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
 
 mod email;
 pub use email::Email;
 
 mod identity;
-pub use identity::{CompanyIdentity, Identity, IdentityInput, PersonIdentity};
+pub use identity::{CompanyIdentity, Identity, PersonIdentity};
 
 mod payout_settings;
-pub use payout_settings::{BankAddress, EthereumAddress, PayoutSettings, PayoutSettingsInput};
+pub use payout_settings::{BankAddress, EthereumAddress, PayoutSettings};
+
+mod location;
+pub use location::Location;
 
 #[derive(
 	Debug,
@@ -38,16 +40,4 @@ pub struct UserInfo {
 
 impl Entity for UserInfo {
 	type Id = UserId;
-}
-
-#[derive(
-	Debug, Clone, Serialize, Deserialize, GraphQLInputObject, AsExpression, FromToSql, FromSqlRow,
-)]
-#[sql_type = "diesel::sql_types::Jsonb"]
-pub struct Location {
-	number: String,
-	street: String,
-	post_code: String,
-	city: String,
-	county: String,
 }
