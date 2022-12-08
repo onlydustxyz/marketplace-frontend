@@ -1,7 +1,3 @@
-default:
-  tracer:
-    ansi: false
-
 local:
   database:
     url: postgres://postgres:postgres@localhost/marketplace_db
@@ -14,16 +10,6 @@ local:
   tracer:
     ansi: true
 
-staging:
-  database:
-    url: $DATABASE_URL
-    pool_max_size: 3
-  amqp:
-    url: $CLOUDAMQP_URL
-  graphql:
-    url: https://staging.hasura.onlydust.xyz/v1/graphql
-    admin_secret: $HASURA_GRAPHQL_ADMIN_SECRET
-
 production:
   database:
     url: $DATABASE_URL
@@ -31,5 +17,7 @@ production:
   amqp:
     url: $CLOUDAMQP_URL
   graphql:
-    url: https://hasura.onlydust.xyz/v1/graphql
+    url: $HASURA_GRAPHQL_GRAPHQL_URL
     admin_secret: $HASURA_GRAPHQL_ADMIN_SECRET
+  tracer:
+    ansi: false

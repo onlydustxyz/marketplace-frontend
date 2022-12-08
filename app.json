@@ -15,7 +15,8 @@
     ],
     "env": {
         "ROCKET_CLI_COLORS": "false",
-        "RUST_LOG": "debug"
+        "RUST_LOG": "debug",
+        "PROFILE": "production"
     },
     "environments": {
         "review": {
