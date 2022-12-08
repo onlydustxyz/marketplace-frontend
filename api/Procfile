@@ -1,0 +1,2 @@
+web: ROCKET_PORT=$PORT ./target/release/api
+release: ./hasura/update-metadata.sh
