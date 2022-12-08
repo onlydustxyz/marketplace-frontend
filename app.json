@@ -10,7 +10,7 @@
             "url": "https://github.com/onlydustxyz/heroku-buildpack-rust"
         },
         {
-            "url": "https://github.com/onlydustxyz/update-hasura-metadata-buildpack"
+            "url": "heroku-community/multi-procfile"
         }
     ],
     "env": {
