@@ -1558,11 +1558,13 @@ name = "github-proxy"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "derive_more",
  "dotenv",
  "figment",
  "infrastructure",
  "juniper",
  "juniper_rocket",
+ "octocrab",
  "rocket",
  "serde",
 ]
