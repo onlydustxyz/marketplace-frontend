@@ -38,6 +38,9 @@ uuid = {version = "0.8.2", default_features = false, features = [
   "serde",
 ]}
 
+# Github
+octocrab = "0.17.0"
+
 # GraphQL Client
 graphql_client = "0.11.0"
 
