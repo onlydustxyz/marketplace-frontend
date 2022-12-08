@@ -2,9 +2,11 @@ describe("As a simple user, I", () => {
     let projectId;
     let budgetId;
 
+    const STARKONQUEST_ID = 481932781;
+
     before(() => {
         cy.createUser().then($user =>
-            cy.createProject($user.id, 'Project with budget', 1000).then($projectId => {
+            cy.createProject($user.id, 'Project with budget', 1000, STARKONQUEST_ID).then($projectId => {
                 cy.getProjectBudget($user, $projectId)
                     .its('body.data.projects_by_pk.budgets')
                     .its(0)
@@ -37,4 +39,25 @@ describe("As a simple user, I", () => {
     //             .should('eq', 'missing session variable: "x-hasura-projects_leaded"')
     //     });
     // });
+
+    it("can fetch github repository details from a project", () => {
+        cy.createUser().then(user => {
+            cy.graphqlAsUser(user, `{
+                projects_by_pk(id: "${projectId}") {
+                    github_repo {
+                        id
+                        name
+                        owner
+                    }
+                }
+              }
+              `)
+                .its("body.data.projects_by_pk.github_repo")
+                .should('deep.equal', {
+                    "id": STARKONQUEST_ID,
+                    "name": "starkonquest",
+                    "owner": "onlydustxyz"
+                });
+        })
+    });
 });
