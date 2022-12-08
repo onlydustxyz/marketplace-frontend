@@ -1,64 +1,77 @@
 describe("As an admin, on retool, I", () => {
-    it('can create a project', () => {
+    it("can create a project", () => {
         const projectName = "Cypress test project";
 
-        cy.createUser().then(user => {
-            cy.createProject(user.id, projectName, 500, 1234).then(projectId => {
-                // Let the event sourcing magic happen
-                cy.wait(500);
+        cy.createUser().then((user) => {
+            cy.createProject(user.id, projectName, 500, 1234).then(
+                (projectId) => {
+                    // Let the event sourcing magic happen
+                    cy.wait(500);
 
-                cy.graphql(`{
-                    projects_by_pk(id: "${projectId}") {
-                      github_repo_id
+                    cy.graphql(
+                        `{
+                    projectsByPk(id: "${projectId}") {
+                      githubRepoId
                     }
-                  }`)
-                    .its('body.data.projects_by_pk')
-                    .its('github_repo_id')
-                    .should('equal', 1234);
+                  }`
+                    )
+                        .its("body.data.projectsByPk")
+                        .its("githubRepoId")
+                        .should("equal", 1234);
 
-                cy.graphql(`{
-                        projects_by_pk(id: "${projectId}") {
-                          project_leads {
-                            user_id
+                    cy.graphql(
+                        `{
+                        projectsByPk(id: "${projectId}") {
+                          projectLeads {
+                            userId
                           }
                         }
-                      }`)
-                    .its('body.data.projects_by_pk.project_leads')
-                    .its(0)
-                    .its('user_id')
-                    .should('equal', user.id);
+                      }`
+                    )
+                        .its("body.data.projectsByPk.projectLeads")
+                        .its(0)
+                        .its("userId")
+                        .should("equal", user.id);
 
-                cy.graphql(`{
+                    cy.graphql(
+                        `{
                     projects(where: {id: {_eq: "${projectId}"}}) {
                         name
                     }
-                }`)
-                    .its("body")
-                    .should("deep.equal", {
-                        data: {
-                            projects: [{ name: projectName }],
-                        },
-                    });
-            })
+                }`
+                    )
+                        .its("body")
+                        .should("deep.equal", {
+                            data: {
+                                projects: [{ name: projectName }],
+                            },
+                        });
+                }
+            );
         });
     });
 
-    it('can update project details', () => {
-        cy.createUser().then(user =>
-            cy.createProject(user.id, 'Another project', 500, 1234).then(projectId =>
-                cy.updateProject(projectId, 'new description').then(() =>
-                    cy.graphql(`{
-                    projects_by_pk(id: "${projectId}") {
-                      project_details {
+    it("can update project details", () => {
+        cy.createUser().then((user) =>
+            cy
+                .createProject(user.id, "Another project", 500, 1234)
+                .then((projectId) =>
+                    cy.updateProject(projectId, "new description").then(() =>
+                        cy
+                            .graphql(
+                                `{
+                    projectsByPk(id: "${projectId}") {
+                      projectDetails {
                         description
                       }
                     }
-                  }`)
-                    .its('body.data.projects_by_pk.project_details')
-                    .its('description')
-                    .should('equal', 'new description')
+                  }`
+                            )
+                            .its("body.data.projectsByPk.projectDetails")
+                            .its("description")
+                            .should("equal", "new description")
+                    )
                 )
-            )
-        )
+        );
     });
 });

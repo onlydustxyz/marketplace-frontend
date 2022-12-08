@@ -4,43 +4,51 @@ describe("As a project leader, I", () => {
     let budgetId;
 
     before(() => {
-        cy.createUser().then($user =>
-            cy.createProject($user.id, 'Project with budget', 1000).then($projectId => {
-                cy.getProjectBudget($user, $projectId)
-                    .its('body.data.projects_by_pk.budgets')
-                    .its(0)
-                    .its('id')
-                    .should('be.a', 'string')
-                    .then($budgetId => {
-                        projectId = $projectId;
-                        leader = $user;
-                        budgetId = $budgetId;
-                    })
-            })
-        )
+        cy.createUser().then(($user) =>
+            cy
+                .createProject($user.id, "Project with budget", 1000)
+                .then(($projectId) => {
+                    cy.getProjectBudget($user, $projectId)
+                        .its("body.data.projectsByPk.budgets")
+                        .its(0)
+                        .its("id")
+                        .should("be.a", "string")
+                        .then(($budgetId) => {
+                            projectId = $projectId;
+                            leader = $user;
+                            budgetId = $budgetId;
+                        });
+                })
+        );
     });
 
     it("can request a payment", () => {
-        cy.createUser().then(contributor => {
-            cy.requestPayment(leader, budgetId, '500', contributor, {}).then(paymentId => {
-                cy.wait(500);
-                cy.graphqlAsAdmin(`{
-                    payment_requests_by_pk(id: "${paymentId}") {
+        cy.createUser().then((contributor) => {
+            cy.requestPayment(leader, budgetId, "500", contributor, {})
+                .then((paymentId) => {
+                    cy.wait(500);
+                    cy.graphqlAsAdmin(
+                        `{
+                    paymentRequestsByPk(id: "${paymentId}") {
                       id
                     }
-                  }`)
-                    .its('body.data.payment_requests_by_pk.id')
-                    .should('be.a', 'string');
-            }).then(() => {
-                cy.wait(500);
-                cy.graphqlAsAdmin(`{
-                    budgets_by_pk(id:"${budgetId}") {
-                      remaining_amount
+                  }`
+                    )
+                        .its("body.data.paymentRequestsByPk.id")
+                        .should("be.a", "string");
+                })
+                .then(() => {
+                    cy.wait(500);
+                    cy.graphqlAsAdmin(
+                        `{
+                    budgetsByPk(id:"${budgetId}") {
+                      remainingAmount
                     }
-                  }`)
-                    .its('body.data.budgets_by_pk.remaining_amount')
-                    .should('equal', 500)
-            })
+                  }`
+                    )
+                        .its("body.data.budgetsByPk.remainingAmount")
+                        .should("equal", 500);
+                });
         });
     });
 });

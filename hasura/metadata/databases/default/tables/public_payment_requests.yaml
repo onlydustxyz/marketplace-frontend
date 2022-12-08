@@ -50,7 +50,7 @@ select_permissions:
       filter:
         _or:
           - budget_id:
-              _in: X-Hasura-budgets_owned
+              _in: X-Hasura-budgetsOwned
           - recipient:
               id:
                 _eq: X-Hasura-User-Id
