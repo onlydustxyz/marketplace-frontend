@@ -37,6 +37,20 @@
     timeout_seconds: 60
     customization: {}
   permissions:
+    - role: user
+      definition:
+        schema: |
+          schema {
+            query: Query
+          }
+          type Query {
+            fetchRepositoryDetails(id: Int!): Repository!
+          }
+          type Repository {
+            id: Int!
+            name: String!
+            owner: String!
+          }
     - role: public
       definition:
         schema: |

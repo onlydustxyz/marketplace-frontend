@@ -28,6 +28,17 @@ array_relationships:
         table:
           name: project_leads
           schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - github_repo_id
+        remote_field:
+          fetchRepositoryDetails:
+            arguments:
+              id: $github_repo_id
+        remote_schema: Github Proxy
+    name: github_repo
 select_permissions:
   - role: public
     permission:
