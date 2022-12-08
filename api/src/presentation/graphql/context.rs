@@ -1,16 +1,17 @@
 use crate::{
 	application,
 	domain::{Permissions, ProjectDetails, UserInfo},
+	presentation::http::routes::option_user_id::OptionUserId,
 };
 use domain::{
-	AggregateRootRepository, Budget, EntityRepository, Event, MaybeUserId, Payment, Publisher,
-	UniqueMessage, UserRepository, UuidGenerator,
+	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Publisher, UniqueMessage,
+	UserRepository, UuidGenerator,
 };
 use std::sync::Arc;
 
 pub struct Context {
 	pub caller_permissions: Box<dyn Permissions>,
-	pub maybe_user_id: MaybeUserId,
+	pub maybe_user_id: OptionUserId,
 	pub request_payment_usecase: application::payment::request::Usecase,
 	pub process_payment_usecase: application::payment::process::Usecase,
 	pub create_project_usecase: application::project::create::Usecase,
@@ -22,7 +23,7 @@ impl Context {
 	#[allow(clippy::too_many_arguments)]
 	pub fn new(
 		caller_permissions: Box<dyn Permissions>,
-		maybe_user_id: MaybeUserId,
+		maybe_user_id: OptionUserId,
 		uuid_generator: Arc<dyn UuidGenerator>,
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		payment_repository: AggregateRootRepository<Payment>,

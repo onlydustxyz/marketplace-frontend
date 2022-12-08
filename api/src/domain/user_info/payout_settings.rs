@@ -1,51 +1,11 @@
-use derive_more::From;
-use juniper::{GraphQLEnum, GraphQLInputObject};
+use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
-
-#[derive(Debug, Clone, Serialize, Deserialize, AsExpression, From, GraphQLInputObject)]
-pub struct PayoutSettingsInput {
-	r#type: PayoutSettingsType,
-	opt_eth_address: Option<EthereumAddress>,
-	opt_bank_address: Option<BankAddress>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, GraphQLEnum)]
-pub enum PayoutSettingsType {
-	EthereumAddress,
-	BankAddress,
-}
 
 #[derive(Debug, Clone, Serialize, Deserialize, AsExpression, FromToSql, FromSqlRow)]
 #[sql_type = "diesel::sql_types::Jsonb"]
 pub enum PayoutSettings {
 	WireTransfer(BankAddress),
 	EthTransfer(EthereumAddress),
-}
-
-impl TryFrom<PayoutSettingsInput> for PayoutSettings {
-	type Error = anyhow::Error;
-
-	fn try_from(input: PayoutSettingsInput) -> Result<Self, Self::Error> {
-		let typ = input.r#type;
-		match typ {
-			PayoutSettingsType::EthereumAddress => input
-				.opt_eth_address
-				.ok_or_else(|| {
-					anyhow::anyhow!(
-						"type was set to `ETHEREUM_ADDRESS` without the matching `optEthAddress` field being provided"
-					)
-				})
-				.map(PayoutSettings::EthTransfer),
-			PayoutSettingsType::BankAddress => input
-				.opt_bank_address
-				.ok_or_else(|| {
-					anyhow::anyhow!(
-						"type was set to `BANK_ADDRESS` without the matching `optBankAddress` field being provided"
-					)
-				})
-				.map(PayoutSettings::WireTransfer),
-		}
-	}
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -87,4 +47,32 @@ where
 pub struct BankAddress {
 	BIC: String,
 	IBAN: String,
+}
+
+#[cfg(test)]
+mod test {
+	use super::EthereumAddress;
+	use juniper::{DefaultScalarValue, FromInputValue, InputValue};
+	use rstest::rstest;
+
+	#[rstest]
+	#[case(InputValue::Scalar(DefaultScalarValue::String("0x0".to_string())), true)]
+	#[case(InputValue::Scalar(DefaultScalarValue::String("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045".to_string())), true)]
+	#[case(InputValue::Scalar(DefaultScalarValue::String("0xd8da6bf26964af9d7eed9e03e53415d37aa96045".to_string())), true)]
+	#[case(InputValue::Scalar(DefaultScalarValue::String("0Xd8da6bf26964af9d7eed9e03e53415d37aa96045".to_string())), true)]
+	#[case(InputValue::Scalar(DefaultScalarValue::String("0xd8dA6BF26964aF9D7".to_string())), true)]
+	#[case(InputValue::Scalar(DefaultScalarValue::String("d8da6bf26964af9d7eed9e03e53415d37aa96045".to_string())), false)]
+	#[case(InputValue::Scalar(DefaultScalarValue::String("0xfd8da6bf26964af9d7eed9e03e53415d37aa96045".to_string())), false)]
+	#[case(InputValue::Scalar(DefaultScalarValue::String("xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045".to_string())), false)]
+	#[case(InputValue::Scalar(DefaultScalarValue::Int(0x0)), false)]
+	#[case(InputValue::Scalar(DefaultScalarValue::Float(4.2)), false)]
+	#[case(InputValue::Scalar(DefaultScalarValue::Boolean(false)), false)]
+	#[case(InputValue::Null, false)]
+	#[case(InputValue::Enum("0x0".to_string()), false)]
+	#[case(InputValue::Variable("0x0".to_string()), false)]
+	#[case(InputValue::list(vec![InputValue::Scalar(DefaultScalarValue::String("0x0".to_string()))]), false)]
+	#[case(InputValue::<DefaultScalarValue>::Object(Default::default()), false)]
+	fn is_valid_ethereum_address(#[case] input: juniper::InputValue, #[case] expect: bool) {
+		assert_eq!(EthereumAddress::from_input_value(&input).is_some(), expect)
+	}
 }

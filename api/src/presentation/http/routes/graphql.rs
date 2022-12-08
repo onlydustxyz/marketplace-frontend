@@ -3,12 +3,12 @@ use crate::{
 	domain::{ProjectDetails, UserInfo},
 	presentation::{
 		graphql::{Context, Schema},
-		http::routes::api_key::ApiKey,
+		http::routes::{api_key::ApiKey, option_user_id::OptionUserId},
 	},
 };
 use domain::{
-	AggregateRootRepository, Budget, EntityRepository, Event, MaybeUserId, Payment, Publisher,
-	UniqueMessage, UserRepository, UuidGenerator,
+	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Publisher, UniqueMessage,
+	UserRepository, UuidGenerator,
 };
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use rocket::{response::content, State};
@@ -24,7 +24,7 @@ pub fn graphiql() -> content::RawHtml<String> {
 pub async fn get_graphql_handler(
 	_api_key: ApiKey,
 	role: Role,
-	maybe_user_id: MaybeUserId,
+	maybe_user_id: OptionUserId,
 	request: GraphQLRequest,
 	schema: &State<Schema>,
 	uuid_generator: &State<Arc<dyn UuidGenerator>>,
@@ -54,7 +54,7 @@ pub async fn get_graphql_handler(
 pub async fn post_graphql_handler(
 	_api_key: ApiKey,
 	role: Role,
-	maybe_user_id: MaybeUserId,
+	maybe_user_id: OptionUserId,
 	request: GraphQLRequest,
 	schema: &State<Schema>,
 	uuid_generator: &State<Arc<dyn UuidGenerator>>,

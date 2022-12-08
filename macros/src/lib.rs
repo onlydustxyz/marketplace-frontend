@@ -23,17 +23,22 @@ pub fn diesel_repository(input: TokenStream) -> TokenStream {
 /// Single field unnamed struct will be modelized as their inner type (newtype patter)
 /// Enum and named struct will be modelized as [serde_json::Value](https://docs.rs/serde_json/1.0.89/serde_json/enum.Value.html)
 ///
-/// ```
+/// ```compile_fail
+/// # #[macro_use] extern crate macros;
+/// # use diesel::{FromSqlRow, AsExpression};
+/// # struct InnerA;
+/// # struct InnerB;
+///
 /// #[derive(AsExpression, FromToSql, FromSqlRow)]
 /// #[sql_type = "diesel::sql_types::Uuid"]
-/// struct Id(uuid::Uuid);
+/// struct Id(u32);
 ///
 /// #[derive(AsExpression, FromToSql, FromSqlRow)]
 /// #[sql_type = "diesel::sql_types::Jsonb"]
-/// enum AOrB(
+/// enum AOrB {
 ///     A(InnerA),
 ///     B(InnerB)
-/// );
+/// }
 ///
 /// #[derive(AsExpression, FromToSql, FromSqlRow)]
 /// #[sql_type = "diesel::sql_types::Jsonb"]

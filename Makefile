@@ -36,10 +36,7 @@ db/load-fixtures: db/up
 	@echo "It was generated on the `GIT_PAGER=cat git log -1 --format=%cd ./scripts/fixtures/latest.dump`"
 	@echo "To have a fresh dump, you can use db/update-staging-dump"
 
-db/migrate: db/up
-	diesel migration run
-
-api/start: docker/up db/migrate
+api/start: docker/up
 	cargo run
 
 hasura/start:
