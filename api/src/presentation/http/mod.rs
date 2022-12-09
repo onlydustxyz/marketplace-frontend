@@ -39,14 +39,7 @@ pub async fn serve(
 		.manage(user_repository)
 		.manage(project_details_repository)
 		.manage(user_info_repository)
-		.attach(http::guards::Cors)
-		.mount(
-			"/",
-			routes![
-				http::routes::options_preflight_handler,
-				http::routes::health_check,
-			],
-		)
+		.mount("/", routes![http::routes::health_check,])
 		.mount(
 			"/",
 			routes![
