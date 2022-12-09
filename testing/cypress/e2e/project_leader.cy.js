@@ -29,7 +29,7 @@ describe("As a project leader, I", () => {
                     cy.wait(500);
                     cy.graphqlAsAdmin(
                         `{
-                    payment_requests_by_pk(id: "${paymentId}") {
+                            paymentRequestsByPk(id: "${paymentId}") {
                       id
                     }
                   }`

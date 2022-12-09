@@ -2,13 +2,6 @@ table:
   name: project_details
   schema: public
 select_permissions:
-  - role: project_lead_specific
-    permission:
-      columns:
-        - telegram_link
-      filter:
-        project_id:
-          _in: X-Hasura-projects_leaded
   - role: public
     permission:
       columns:
