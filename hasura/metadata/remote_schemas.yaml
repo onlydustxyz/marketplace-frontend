@@ -83,6 +83,10 @@
           schema {
             query: Query
           }
+          type File {
+            content: String!
+            encoding: Encoding!
+          }
           type Query {
             fetchRepositoryDetails(id: Int!): Repository!
           }
@@ -91,11 +95,15 @@
             id: Int!
             name: String!
             owner: String!
+            readme: File!
           }
           type User {
             avatarUrl: String!
             id: Int!
             login: String!
+          }
+          enum Encoding {
+            BASE64
           }
     - role: public
       definition:
