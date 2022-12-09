@@ -47,9 +47,15 @@
             fetchRepositoryDetails(id: Int!): Repository!
           }
           type Repository {
+            contributors: [User!]!
             id: Int!
             name: String!
             owner: String!
+          }
+          type User {
+            avatarUrl: String!
+            id: Int!
+            login: String!
           }
     - role: public
       definition:
