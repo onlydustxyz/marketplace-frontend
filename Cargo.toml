@@ -8,6 +8,7 @@ members = [
   "github-proxy",
   "infrastructure",
   "macros",
+  "presentation",
   "testing",
   "olog",
 ]
