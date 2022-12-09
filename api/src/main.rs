@@ -10,7 +10,9 @@ use ::infrastructure::{
 };
 use anyhow::Result;
 use api::{
-	domain::ProjectDetails, graphql, infrastructure::database::ProjectDetailsRepository, routes,
+	domain::ProjectDetails,
+	infrastructure::database::ProjectDetailsRepository,
+	presentation::{graphql, http::routes},
 	Config,
 };
 use dotenv::dotenv;

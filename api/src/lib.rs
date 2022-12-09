@@ -2,9 +2,8 @@ extern crate dotenv;
 
 mod application;
 pub mod domain;
-pub mod graphql;
 pub mod infrastructure;
-pub mod routes;
+pub mod presentation;
 
 mod config;
 pub use config::Config;
