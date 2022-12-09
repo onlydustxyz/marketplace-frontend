@@ -44,19 +44,25 @@ describe("As a simple user, I", () => {
         cy.createUser().then(user => {
             cy.graphqlAsUser(user, `{
                 projects_by_pk(id: "${projectId}") {
-                    github_repo {
-                        id
-                        name
-                        owner
+                  github_repo {
+                    id
+                    name
+                    owner
+                    contributors {
+                      id
+                      login
+                      avatarUrl
                     }
-                }
-              }
-              `)
+                  }
+                  }
+              }`)
                 .its("body.data.projects_by_pk.github_repo")
-                .should('deep.equal', {
-                    "id": STARKONQUEST_ID,
-                    "name": "starkonquest",
-                    "owner": "onlydustxyz"
+                .then(repo => {
+                    expect(repo.id).equal(STARKONQUEST_ID);
+                    expect(repo.name).equal("starkonquest");
+                    expect(repo.owner).equal("onlydustxyz");
+                    expect(repo.contributors).to.be.an("array");
+                    expect(repo.contributors[0]).to.have.all.keys(["id", "login", "avatarUrl"]);
                 });
         })
     });
