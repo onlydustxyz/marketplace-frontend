@@ -8,7 +8,7 @@ use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt};
 
 use crate::{
 	domain::user_info::{Email, Identity, Location, PayoutSettings, UserInfo},
-	presentation::http::routes::{identity::IdentityInput, payout_settings::PayoutSettingsInput},
+	presentation::http::dto::{IdentityInput, PayoutSettingsInput},
 };
 
 use super::Context;

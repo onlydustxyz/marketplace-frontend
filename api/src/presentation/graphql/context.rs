@@ -1,12 +1,12 @@
 use crate::{
 	application,
 	domain::{Permissions, ProjectDetails, UserInfo},
-	presentation::http::routes::option_user_id::OptionUserId,
 };
 use domain::{
 	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Publisher, UniqueMessage,
 	UserRepository, UuidGenerator,
 };
+use presentation::http::guards::OptionUserId;
 use std::sync::Arc;
 
 pub struct Context {

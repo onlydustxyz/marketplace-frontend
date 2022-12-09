@@ -149,6 +149,7 @@ dependencies = [
  "log",
  "macros",
  "mockall",
+ "presentation",
  "reqwest",
  "rocket",
  "rstest",
@@ -1576,6 +1577,7 @@ dependencies = [
  "juniper",
  "juniper_rocket",
  "octocrab",
+ "presentation",
  "rocket",
  "serde",
 ]
@@ -3080,6 +3082,19 @@ dependencies = [
 [[package]]
 name = "presentation"
 version = "0.1.0"
+dependencies = [
+ "assert_matches",
+ "async-std",
+ "async-trait",
+ "derive-getters",
+ "domain",
+ "rocket",
+ "rstest",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "uuid 0.8.2",
+]
 
 [[package]]
 name = "proc-macro-error"

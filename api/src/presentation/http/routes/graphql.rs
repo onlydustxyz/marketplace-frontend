@@ -1,16 +1,13 @@
-use super::Role;
 use crate::{
 	domain::{ProjectDetails, UserInfo},
-	presentation::{
-		graphql::{Context, Schema},
-		http::routes::{api_key::ApiKey, option_user_id::OptionUserId},
-	},
+	presentation::graphql::{Context, Schema},
 };
 use domain::{
 	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Publisher, UniqueMessage,
 	UserRepository, UuidGenerator,
 };
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
+use presentation::http::guards::{ApiKey, OptionUserId, Role};
 use rocket::{response::content, State};
 use std::sync::Arc;
 

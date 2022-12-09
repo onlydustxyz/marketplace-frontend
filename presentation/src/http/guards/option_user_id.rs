@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use async_trait::async_trait;
 use domain::UserId;
 use rocket::{
@@ -7,6 +5,7 @@ use rocket::{
 	request::{FromRequest, Outcome},
 	Request,
 };
+use std::str::FromStr;
 use thiserror::Error;
 use uuid::Uuid;
 

@@ -1,4 +1,3 @@
-use crate::domain::{permissions, Permissions};
 use rocket::{
 	request::{FromRequest, Outcome},
 	Request,
@@ -50,22 +49,6 @@ fn from_role_user(request: &'_ Request<'_>) -> Outcome<Role, ()> {
 	}
 
 	Outcome::Success(Role::Public)
-}
-
-impl From<Role> for Box<dyn Permissions> {
-	fn from(role: Role) -> Self {
-		match role {
-			Role::Admin => permissions::of_admin(),
-			Role::IdentifiedUser {
-				lead_projects,
-				owned_budgets,
-			} => permissions::of_identified_user(
-				lead_projects.into_iter().map(Into::into).collect(),
-				owned_budgets.into_iter().map(Into::into).collect(),
-			),
-			Role::Public => permissions::of_anonymous(),
-		}
-	}
 }
 
 #[cfg(test)]
