@@ -1,5 +1,3 @@
-#[cfg_attr(test, mockall_double::double)]
-use crate::specifications::UserExists;
 use crate::{
 	specifications, Aggregate, AggregateRoot, Amount, BudgetId, Entity, EventSourcable,
 	GithubUserId, PaymentEvent, PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
@@ -60,7 +58,6 @@ pub enum Error {
 impl Payment {
 	#[cfg_attr(feature = "cargo-clippy", allow(clippy::too_many_arguments))]
 	pub async fn request(
-		user_exists_specification: &UserExists,
 		id: PaymentId,
 		budget_id: BudgetId,
 		requestor_id: UserId,
@@ -68,14 +65,6 @@ impl Payment {
 		amount_in_usd: u32,
 		reason: Value,
 	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
-		if !user_exists_specification
-			.is_satisfied_by(&requestor_id)
-			.await
-			.map_err(Error::Specification)?
-		{
-			return Err(Error::RequestorNotFound);
-		}
-
 		Ok(vec![PaymentEvent::Requested {
 			id,
 			budget_id,
@@ -120,7 +109,6 @@ mod tests {
 	use super::*;
 	use crate::{BlockchainNetwork, BudgetId, Currency, PaymentReceiptId, UserId};
 	use assert_matches::assert_matches;
-	use mockall::predicate::*;
 	use rstest::{fixture, rstest};
 	use std::str::FromStr;
 	use testing::fixtures::payment::*;
@@ -207,11 +195,7 @@ mod tests {
 		amount_in_usd: u32,
 		reason: Value,
 	) -> Payment {
-		let mut user_exists = UserExists::default();
-		user_exists.expect_is_satisfied_by().returning(|_| Ok(true));
-
 		let events = Payment::request(
-			&user_exists,
 			payment_id,
 			budget_id,
 			requestor_id,
@@ -283,15 +267,7 @@ mod tests {
 		amount_in_usd: u32,
 		reason: Value,
 	) {
-		let mut user_exists_specification = UserExists::default();
-		user_exists_specification
-			.expect_is_satisfied_by()
-			.with(eq(requestor_id))
-			.once()
-			.returning(|_| Ok(true));
-
 		let events = Payment::request(
-			&user_exists_specification,
 			payment_id,
 			budget_id,
 			requestor_id,
@@ -314,37 +290,6 @@ mod tests {
 				reason,
 			}
 		);
-	}
-
-	#[rstest]
-	async fn test_request_with_wrong_requestor_id(
-		payment_id: PaymentId,
-		budget_id: BudgetId,
-		wrong_requestor_id: UserId,
-		recipient_id: GithubUserId,
-		amount_in_usd: u32,
-		reason: Value,
-	) {
-		let mut user_exists_specification = UserExists::default();
-		user_exists_specification
-			.expect_is_satisfied_by()
-			.with(eq(wrong_requestor_id))
-			.once()
-			.returning(|_| Ok(false));
-
-		let result = Payment::request(
-			&user_exists_specification,
-			payment_id,
-			budget_id,
-			wrong_requestor_id,
-			recipient_id,
-			amount_in_usd,
-			reason.clone(),
-		)
-		.await;
-
-		assert!(result.is_err());
-		assert_matches!(result, Err(Error::RequestorNotFound));
 	}
 
 	#[rstest]

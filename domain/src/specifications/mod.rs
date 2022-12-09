@@ -7,16 +7,8 @@ pub use aggregate_exists::ProjectExists;
 #[cfg(test)]
 pub use aggregate_exists::MockProjectExists;
 
-mod user_exists;
-pub use user_exists::Specification as UserExists;
-
-#[cfg(test)]
-pub use user_exists::MockSpecification as MockUserExists;
-
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error(transparent)]
 	EventStore(aggregate_root::Error),
-	#[error(transparent)]
-	UserRepository(UserRepositoryError),
 }

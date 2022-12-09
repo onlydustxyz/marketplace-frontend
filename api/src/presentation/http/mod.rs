@@ -4,7 +4,7 @@ use crate::{
 };
 use ::domain::{
 	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Project, Publisher,
-	UniqueMessage, UserRepository, UuidGenerator,
+	UniqueMessage, UuidGenerator,
 };
 use anyhow::Result;
 use http::Config;
@@ -24,7 +24,6 @@ pub async fn serve(
 	project_repository: AggregateRootRepository<Project>,
 	payment_repository: AggregateRootRepository<Payment>,
 	budget_repository: AggregateRootRepository<Budget>,
-	user_repository: Arc<dyn UserRepository>,
 	project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
 	user_info_repository: Arc<dyn EntityRepository<UserInfo>>,
 ) -> Result<()> {
@@ -36,7 +35,6 @@ pub async fn serve(
 		.manage(project_repository)
 		.manage(payment_repository)
 		.manage(budget_repository)
-		.manage(user_repository)
 		.manage(project_details_repository)
 		.manage(user_info_repository)
 		.mount("/", routes![http::routes::health_check,])
