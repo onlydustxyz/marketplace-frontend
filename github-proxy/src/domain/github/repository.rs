@@ -1,4 +1,4 @@
-use crate::domain::GithubUser;
+use crate::domain::{GithubFile, GithubUser};
 use derive_more::Constructor;
 use juniper::GraphQLObject;
 
@@ -8,4 +8,5 @@ pub struct Repository {
 	owner: String,
 	name: String,
 	contributors: Vec<GithubUser>,
+	readme: GithubFile,
 }
