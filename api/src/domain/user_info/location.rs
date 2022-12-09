@@ -10,5 +10,5 @@ pub struct Location {
 	street: String,
 	post_code: String,
 	city: String,
-	county: String,
+	country: String,
 }
