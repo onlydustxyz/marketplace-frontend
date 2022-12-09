@@ -71,11 +71,15 @@
           type Query {
             hello: String!
           }
-- name: Github Proxy
+- name: GithubProxy
   definition:
     url_from_env: GITHUB_PROXY_GRAPHQL_URL
     timeout_seconds: 60
     customization: {}
+    headers:
+      - name: api-key
+        value_from_env: GITHUB_PROXY_GRAPHQL_API_KEY
+  comment: ""
   permissions:
     - role: user
       definition:

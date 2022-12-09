@@ -37,7 +37,7 @@ remote_relationships:
           fetchRepositoryDetails:
             arguments:
               id: $github_repo_id
-        remote_schema: Github Proxy
+        remote_schema: GithubProxy
     name: githubRepo
 select_permissions:
   - role: public

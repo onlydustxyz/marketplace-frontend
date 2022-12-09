@@ -49,6 +49,7 @@ services:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       BACKEND_GRAPHQL_URL: ${BACKEND_GRAPHQL_URL:-http://host.docker.internal:8000/graphql}
       BACKEND_GRAPHQL_API_KEY: ${BACKEND_GRAPHQL_API_KEY:-myapikey}
+      GITHUB_PROXY_GRAPHQL_API_KEY: ${GITHUB_PROXY_GRAPHQL_API_KEY:-mygithubproxyapikey}
       GITHUB_PROXY_GRAPHQL_URL: ${GITHUB_PROXY_GRAPHQL_URL:-http://host.docker.internal:8001/graphql}
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       HASURA_GRAPHQL_ENABLE_CONSOLE: "false" # use Hasura CLI to access the console, see projet README
