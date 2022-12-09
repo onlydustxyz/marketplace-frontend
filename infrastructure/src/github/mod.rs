@@ -3,13 +3,23 @@ use octocrab::{
 	models::{repos::Content, Repository},
 	FromResponse, Octocrab,
 };
-use std::sync::Arc;
+use serde::Deserialize;
 
-pub struct Client(Arc<Octocrab>);
+#[derive(Deserialize)]
+pub struct Config {
+	base_url: String,
+	personal_access_token: String,
+}
+
+pub struct Client(Octocrab);
 
 impl Client {
-	pub fn new() -> Self {
-		Self(octocrab::instance())
+	pub fn new(config: Config) -> Result<Self> {
+		let instance = Octocrab::builder()
+			.base_url(config.base_url)?
+			.personal_token(config.personal_access_token)
+			.build()?;
+		Ok(Self(instance))
 	}
 
 	pub async fn get_as<U, R>(&self, url: U) -> Result<R>
@@ -45,11 +55,5 @@ impl Client {
 			.items
 			.pop()
 			.ok_or_else(|| anyhow!("Could not find {path} in repository"))
-	}
-}
-
-impl Default for Client {
-	fn default() -> Self {
-		Self::new()
 	}
 }
