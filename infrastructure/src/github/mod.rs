@@ -1,4 +1,4 @@
-use octocrab::{models::Repository, Octocrab, Result};
+use octocrab::{models::Repository, FromResponse, Octocrab, Result};
 use std::sync::Arc;
 
 pub struct Client(Arc<Octocrab>);
@@ -8,8 +8,16 @@ impl Client {
 		Self(octocrab::instance())
 	}
 
+	pub async fn get_as<U, R>(&self, url: U) -> Result<R>
+	where
+		U: AsRef<str>,
+		R: FromResponse,
+	{
+		self.0.get(url, None::<&()>).await
+	}
+
 	pub async fn get_repository_by_id(&self, id: u64) -> Result<Repository> {
-		self.0.get(format!("{}repositories/{id}", self.0.base_url), None::<&()>).await
+		self.get_as(format!("{}repositories/{id}", self.0.base_url)).await
 	}
 }
 
