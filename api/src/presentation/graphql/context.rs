@@ -4,7 +4,7 @@ use crate::{
 };
 use domain::{
 	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Publisher, UniqueMessage,
-	UserRepository, UuidGenerator,
+	UuidGenerator,
 };
 use presentation::http::guards::OptionUserId;
 use std::sync::Arc;
@@ -28,7 +28,6 @@ impl Context {
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		payment_repository: AggregateRootRepository<Payment>,
 		budget_repository: AggregateRootRepository<Budget>,
-		user_repository: Arc<dyn UserRepository>,
 		project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
 		user_info_repository: Arc<dyn EntityRepository<UserInfo>>,
 	) -> Self {
@@ -38,7 +37,6 @@ impl Context {
 			request_payment_usecase: application::payment::request::Usecase::new(
 				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
-				user_repository,
 				budget_repository,
 			),
 			process_payment_usecase: application::payment::process::Usecase::new(

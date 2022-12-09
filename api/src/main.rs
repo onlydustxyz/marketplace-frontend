@@ -6,7 +6,7 @@ use api::{
 };
 use domain::{AggregateRootRepository, RandomUuidGenerator};
 use dotenv::dotenv;
-use infrastructure::{amqp, config, database, graphql::HasuraClient, tracing::Tracer};
+use infrastructure::{amqp, config, database, tracing::Tracer};
 use log::info;
 use std::sync::Arc;
 use tracing::instrument;
@@ -31,7 +31,6 @@ async fn main() -> Result<()> {
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),
-		Arc::new(HasuraClient::new(config.graphql())),
 		Arc::new(ProjectDetailsRepository::new(database.clone())),
 		Arc::new(UserInfoRepository::new(database)),
 	)

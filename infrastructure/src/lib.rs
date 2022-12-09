@@ -7,7 +7,6 @@ pub mod database;
 pub mod event_bus;
 pub mod event_store;
 pub mod github;
-pub mod graphql;
 pub mod tracing;
 
 use diesel_migrations::*;

@@ -8,6 +8,5 @@ pub struct Config {
 	http: http::Config,
 	database: database::Config,
 	amqp: amqp::Config,
-	graphql: graphql::Config,
 	tracer: tracing::Config,
 }
