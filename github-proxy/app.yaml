@@ -1,4 +1,6 @@
 default:
+  http:
+    api_key: $GITHUB_PROXY_GRAPHQL_API_KEY
   github:
     base_url: https://api.github.com
     personal_access_token: $GITHUB_PAT

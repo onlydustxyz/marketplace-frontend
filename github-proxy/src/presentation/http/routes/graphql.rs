@@ -1,8 +1,8 @@
-use std::sync::Arc;
-
 use crate::{domain::GithubService, presentation::graphql};
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
+use presentation::http::guards::ApiKey;
 use rocket::{response::content, State};
+use std::sync::Arc;
 
 #[get("/")]
 pub fn graphiql() -> content::RawHtml<String> {
@@ -11,6 +11,7 @@ pub fn graphiql() -> content::RawHtml<String> {
 
 #[get("/graphql?<request>")]
 pub async fn get(
+	_api_key: ApiKey,
 	github_service: &State<Arc<dyn GithubService>>,
 	request: GraphQLRequest,
 ) -> GraphQLResponse {
@@ -21,6 +22,7 @@ pub async fn get(
 
 #[post("/graphql", data = "<request>")]
 pub async fn post(
+	_api_key: ApiKey,
 	github_service: &State<Arc<dyn GithubService>>,
 	request: GraphQLRequest,
 ) -> GraphQLResponse {

@@ -5,8 +5,9 @@ use std::sync::Arc;
 
 mod routes;
 
-pub async fn serve(github_service: Arc<dyn GithubService>) -> Result<()> {
+pub async fn serve(config: http::Config, github_service: Arc<dyn GithubService>) -> Result<()> {
 	let _ = rocket::custom(http::config::rocket("github-proxy/Rocket.toml"))
+		.manage(config)
 		.manage(github_service)
 		.mount(
 			"/",
