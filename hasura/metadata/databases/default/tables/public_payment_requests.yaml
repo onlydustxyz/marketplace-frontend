@@ -15,10 +15,10 @@ object_relationships:
     using:
       manual_configuration:
         column_mapping:
-          recipient_id: id
+          recipient_id: provider_user_id
         insertion_order: null
         remote_table:
-          name: users
+          name: user_providers
           schema: auth
   - name: requestor
     using:
@@ -61,5 +61,5 @@ select_permissions:
         - requestor_id
       filter:
         recipient:
-          id:
+          user_id:
             _eq: X-Hasura-User-Id
