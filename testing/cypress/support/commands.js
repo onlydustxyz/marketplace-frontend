@@ -156,13 +156,13 @@ Cypress.Commands.add("signinUser", (user) => {
 
 Cypress.Commands.add(
     "requestPayment",
-    (requestor, budgetId, amount, recipient, reason) => {
+    (requestor, budgetId, amount, recipient_github_user_id, reason) => {
         return cy
             .requestPaymentNoassert(
                 requestor,
                 budgetId,
                 amount,
-                recipient,
+                recipient_github_user_id,
                 reason
             )
             .its("body.data.requestPayment")
@@ -172,11 +172,11 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
     "requestPaymentNoassert",
-    (requestor, budgetId, amount, recipient, reason) => {
+    (requestor, budgetId, amount, recipient_github_user_id, reason) => {
         return cy.graphqlAsUser(
             requestor,
             `mutation {
-        requestPayment(amountInUsd: ${amount}, budgetId: "${budgetId}", recipientId: "${recipient.id}", reason: "${reason}")
+        requestPayment(amountInUsd: ${amount}, budgetId: "${budgetId}", recipientId: "${recipient_github_user_id}", reason: "${reason}")
       }
       `
         );
@@ -196,9 +196,14 @@ Cypress.Commands.add("getProjectBudget", (user, projectId) => {
     );
 });
 
-
-Cypress.Commands.add('updateProfileInfo', (requestor, email, location, identity, payout_settings) => {
-    return cy.graphqlAsUser(requestor, `mutation {
+Cypress.Commands.add(
+    "updateProfileInfo",
+    (requestor, email, location, identity, payout_settings) => {
+        return cy.graphqlAsUser(
+            requestor,
+            `mutation {
         updateProfileInfo(email: "${email}", identity: ${identity}, location: ${location}, payoutSettings: ${payout_settings})
-    }`);
-});
+    }`
+        );
+    }
+);

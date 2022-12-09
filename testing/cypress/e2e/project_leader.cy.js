@@ -24,7 +24,7 @@ describe("As a project leader, I", () => {
 
     it("can request a payment from a budget I own", () => {
         cy.createUser().then((contributor) => {
-            cy.requestPayment(leader, budgetId, "500", contributor, {})
+            cy.requestPayment(leader, budgetId, "500", "55000", {})
                 .then((paymentId) => {
                     cy.wait(500);
                     cy.graphqlAsAdmin(
