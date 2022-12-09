@@ -1,8 +1,10 @@
 use super::Role;
 use crate::{
 	domain::ProjectDetails,
-	graphql::{Context, Schema},
-	routes::api_key::ApiKey,
+	presentation::{
+		graphql::{Context, Schema},
+		http::routes::api_key::ApiKey,
+	},
 };
 use domain::{
 	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Publisher, UniqueMessage,
