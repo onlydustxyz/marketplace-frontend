@@ -1,4 +1,4 @@
-use crate::{Amount, BudgetId, PaymentId, PaymentReceipt, PaymentReceiptId, UserId};
+use crate::{Amount, BudgetId, GithubUserId, PaymentId, PaymentReceipt, PaymentReceiptId, UserId};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::fmt::Display;
@@ -9,7 +9,7 @@ pub enum Event {
 		id: PaymentId,
 		budget_id: BudgetId,
 		requestor_id: UserId,
-		recipient_id: UserId,
+		recipient_id: GithubUserId,
 		amount_in_usd: u32,
 		reason: Value,
 	},

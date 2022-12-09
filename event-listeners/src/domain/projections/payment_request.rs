@@ -9,7 +9,7 @@ pub struct PaymentRequest {
 	id: Uuid,
 	budget_id: Uuid,
 	requestor_id: Uuid,
-	recipient_id: Uuid,
+	recipient_id: i64,
 	amount_in_usd: i64,
 	reason: Value,
 }

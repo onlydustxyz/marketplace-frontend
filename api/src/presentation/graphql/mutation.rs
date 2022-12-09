@@ -112,7 +112,7 @@ impl Mutation {
 	pub async fn request_payment(
 		context: &Context,
 		budget_id: Uuid,
-		recipient_id: Uuid,
+		recipient_id: i32,
 		amount_in_usd: i32,
 		reason: String,
 	) -> Result<Uuid> {
@@ -129,7 +129,7 @@ impl Mutation {
 			.request(
 				budget_id.into(),
 				caller_id,
-				recipient_id.into(),
+				(recipient_id as i64).into(),
 				amount_in_usd as u32,
 				reason.into(),
 			)

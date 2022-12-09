@@ -53,7 +53,7 @@ diesel::table! {
         id -> Uuid,
         budget_id -> Uuid,
         requestor_id -> Uuid,
-        recipient_id -> Uuid,
+        recipient_id -> Int8,
         amount_in_usd -> Int8,
         reason -> Jsonb,
     }

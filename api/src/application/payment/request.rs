@@ -2,8 +2,8 @@ use crate::domain::Publishable;
 use anyhow::Result;
 use domain::{
 	specifications::UserExists as UserExistsSpecification, AggregateRootRepository, Budget,
-	BudgetId, Event, Payment, PaymentId, Publisher, UniqueMessage, UserId, UserRepository,
-	UuidGenerator,
+	BudgetId, Event, GithubUserId, Payment, PaymentId, Publisher, UniqueMessage, UserId,
+	UserRepository, UuidGenerator,
 };
 use rusty_money::{crypto, Money};
 use serde_json::Value;
@@ -35,7 +35,7 @@ impl Usecase {
 		&self,
 		budget_id: BudgetId,
 		requestor_id: UserId,
-		recipient_id: UserId,
+		recipient_id: GithubUserId,
 		amount_in_usd: u32,
 		reason: Value,
 	) -> Result<PaymentId> {
