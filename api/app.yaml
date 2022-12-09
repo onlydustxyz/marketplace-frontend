@@ -1,3 +1,7 @@
+default:
+  http:
+    api_key: $BACKEND_GRAPHQL_API_KEY
+
 local:
   database:
     url: postgres://postgres:postgres@localhost/marketplace_db

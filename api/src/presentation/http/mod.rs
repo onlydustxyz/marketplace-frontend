@@ -12,8 +12,12 @@ use std::sync::Arc;
 
 mod routes;
 
+mod config;
+pub use config::Config;
+
 #[allow(clippy::too_many_arguments)]
 pub async fn serve(
+	config: Config,
 	schema: graphql::Schema,
 	uuid_generator: Arc<dyn UuidGenerator>,
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
@@ -24,6 +28,7 @@ pub async fn serve(
 	project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
 ) -> Result<()> {
 	let _ = rocket::custom(rocket_config())
+		.manage(config)
 		.manage(schema)
 		.manage(uuid_generator)
 		.manage(event_publisher)

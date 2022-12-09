@@ -24,6 +24,7 @@ async fn main() -> Result<()> {
 	database.run_migrations()?;
 
 	http::serve(
+		config.http().clone(),
 		graphql::create_schema(),
 		Arc::new(RandomUuidGenerator),
 		Arc::new(amqp::Bus::default(config.amqp()).await?),
