@@ -7,8 +7,16 @@ mod routes;
 
 pub async fn serve(config: http::Config, github_service: Arc<dyn GithubService>) -> Result<()> {
 	let _ = rocket::custom(http::config::rocket("github-proxy/Rocket.toml"))
+		.attach(http::guards::Cors)
 		.manage(config)
 		.manage(github_service)
+		.mount(
+			"/",
+			routes![
+				http::routes::options_preflight_handler,
+				http::routes::health_check,
+			],
+		)
 		.mount(
 			"/",
 			routes![
