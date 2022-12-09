@@ -62,8 +62,12 @@ describe("As a simple user, I", () => {
                       login
                       avatarUrl
                     }
+                    readme {
+                      encoding
+                      content
+                    }
                   }
-                  }
+                }
               }`
             )
                 .its("body.data.projectsByPk.githubRepo")
@@ -77,6 +81,8 @@ describe("As a simple user, I", () => {
                         "login",
                         "avatarUrl",
                     ]);
+                    expect(repo.readme.encoding).equal("BASE64");
+                    expect(repo.readme.content).to.be.a("string");
                 });
         });
     });
