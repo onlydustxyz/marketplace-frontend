@@ -15,12 +15,52 @@
             query: Query
             mutation: Mutation
           }
+          scalar Email
+          scalar EthereumAddress
           scalar Uuid
           type Mutation {
             requestPayment(budgetId: Uuid!, requestorId: Uuid!, recipientId: Uuid!, amountInUsd: Int!, reason: String!): Uuid!
+            updateProfileInfo(location: Location!, identity: IdentityInput!, email: Email!, payoutSettings: PayoutSettingsInput!): Uuid!
           }
           type Query {
             hello: String!
+          }
+          enum IdentityType {
+            COMPANY
+            PERSON
+          }
+          enum PayoutSettingsType {
+            BANK_ADDRESS
+            ETHEREUM_ADDRESS
+          }
+          input BankAddress {
+            BIC: String!
+            IBAN: String!
+          }
+          input CompanyIdentity {
+            id: String!
+            name: String!
+          }
+          input IdentityInput {
+            optCompany: CompanyIdentity
+            optPerson: PersonIdentity
+            type: IdentityType!
+          }
+          input Location {
+            city: String!
+            country: String!
+            number: String!
+            postCode: String!
+            street: String!
+          }
+          input PayoutSettingsInput {
+            optBankAddress: BankAddress
+            optEthAddress: EthereumAddress
+            type: PayoutSettingsType!
+          }
+          input PersonIdentity {
+            firstname: String!
+            lastname: String!
           }
     - role: public
       definition:

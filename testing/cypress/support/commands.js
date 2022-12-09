@@ -195,3 +195,10 @@ Cypress.Commands.add("getProjectBudget", (user, projectId) => {
     }`
     );
 });
+
+
+Cypress.Commands.add('updateProfileInfo', (requestor, email, location, identity, payout_settings) => {
+    return cy.graphqlAsUser(requestor, `mutation {
+        updateProfileInfo(email: "${email}", identity: ${identity}, location: ${location}, payoutSettings: ${payout_settings})
+    }`);
+});
