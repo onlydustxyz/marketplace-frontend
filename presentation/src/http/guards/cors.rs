@@ -1,8 +1,6 @@
-use std::path::PathBuf;
-
 use rocket::{
 	fairing::{Fairing, Info, Kind},
-	http::{Header, Status},
+	http::Header,
 	Request, Response,
 };
 
@@ -26,9 +24,4 @@ impl Fairing for Cors {
 		response.set_header(Header::new("Access-Control-Allow-Headers", "*"));
 		response.set_header(Header::new("Access-Control-Allow-Credentials", "true"));
 	}
-}
-
-#[options("/<_path..>")]
-pub fn options_preflight_handler(_path: PathBuf) -> Status {
-	Status::Ok
 }

@@ -7,16 +7,13 @@ use ::domain::{
 	UniqueMessage, UserRepository, UuidGenerator,
 };
 use anyhow::Result;
-use rocket::figment::{
-	providers::{Env, Format, Toml},
-	Figment,
-};
+use http::Config;
+use presentation::http;
 use std::sync::Arc;
 
-pub mod routes;
-
-mod config;
-pub use config::Config;
+pub mod dto;
+pub mod roles;
+mod routes;
 
 #[allow(clippy::too_many_arguments)]
 pub async fn serve(
@@ -31,7 +28,7 @@ pub async fn serve(
 	project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
 	user_info_repository: Arc<dyn EntityRepository<UserInfo>>,
 ) -> Result<()> {
-	let _ = rocket::custom(rocket_config())
+	let _ = rocket::custom(http::config::rocket("api/Rocket.toml"))
 		.manage(config)
 		.manage(schema)
 		.manage(uuid_generator)
@@ -42,12 +39,12 @@ pub async fn serve(
 		.manage(user_repository)
 		.manage(project_details_repository)
 		.manage(user_info_repository)
-		.attach(routes::cors::Cors)
+		.attach(http::guards::Cors)
 		.mount(
 			"/",
 			routes![
-				routes::cors::options_preflight_handler,
-				routes::health::health_check,
+				http::routes::options_preflight_handler,
+				http::routes::health_check,
 			],
 		)
 		.mount(
@@ -62,10 +59,4 @@ pub async fn serve(
 		.await?;
 
 	Ok(())
-}
-
-fn rocket_config() -> Figment {
-	Figment::from(rocket::Config::default())
-		.merge(Toml::file("api/Rocket.toml").nested())
-		.merge(Env::prefixed("ROCKET_").global())
 }

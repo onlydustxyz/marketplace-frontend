@@ -1,8 +1,7 @@
 use derive_getters::Getters;
 use infrastructure::{amqp, database, graphql, tracing};
+use presentation::http;
 use serde::Deserialize;
-
-use crate::presentation::http;
 
 #[derive(Deserialize, Getters)]
 pub struct Config {

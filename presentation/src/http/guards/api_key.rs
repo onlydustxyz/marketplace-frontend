@@ -5,7 +5,7 @@ use rocket::{
 	Request,
 };
 
-use crate::presentation::http::Config;
+use crate::http::Config;
 #[derive(Default)]
 pub struct ApiKey(String);
 
