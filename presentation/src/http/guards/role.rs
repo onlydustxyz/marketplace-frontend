@@ -8,11 +8,10 @@ use uuid::Uuid;
 #[derive(Debug, PartialEq, Eq)]
 pub enum Role {
 	Admin,
-	ProjectLead {
+	RegisteredUser {
 		lead_projects: HashSet<Uuid>,
 		owned_budgets: HashSet<Uuid>,
 	},
-	RegisteredUser,
 	Public,
 }
 
@@ -23,14 +22,13 @@ impl<'r> FromRequest<'r> for Role {
 	async fn from_request(request: &'r Request<'_>) -> Outcome<Role, ()> {
 		match request.headers().get_one("x-hasura-role") {
 			Some("admin") => Outcome::Success(Role::Admin),
-			Some("project_lead") => from_role_project_lead(request),
 			Some("registered_user") => from_role_registered_user(request),
 			_ => return Outcome::Success(Role::Public),
 		}
 	}
 }
 
-fn from_role_project_lead(request: &'_ Request<'_>) -> Outcome<Role, ()> {
+fn from_role_registered_user(request: &'_ Request<'_>) -> Outcome<Role, ()> {
 	if request.headers().get_one("x-hasura-user-id").is_some() {
 		let lead_projects: HashSet<Uuid> = request
 			.headers()
@@ -44,13 +42,29 @@ fn from_role_project_lead(request: &'_ Request<'_>) -> Outcome<Role, ()> {
 			.and_then(|h| serde_json::from_str(&h.replace('{', "[").replace('}', "]")).ok())
 			.unwrap_or_default();
 
-		return Outcome::Success(Role::ProjectLead {
+		return Outcome::Success(Role::RegisteredUser {
 			lead_projects,
 			owned_budgets,
 		});
 	}
 
 	Outcome::Success(Role::Public)
+}
+
+impl From<Role> for Box<dyn Permissions> {
+	fn from(role: Role) -> Self {
+		match role {
+			Role::Admin => permissions::of_admin(),
+			Role::RegisteredUser {
+				lead_projects,
+				owned_budgets,
+			} => permissions::of_identified_user(
+				lead_projects.into_iter().map(Into::into).collect(),
+				owned_budgets.into_iter().map(Into::into).collect(),
+			),
+			Role::Public => permissions::of_anonymous(),
+		}
+	}
 }
 
 #[cfg(test)]
@@ -102,16 +116,6 @@ mod tests {
 
 		let result = Role::from_request(&request).await;
 		assert_eq!(result, Outcome::Success(Role::Public));
-	}
-
-	#[rstest]
-	async fn from_request_project_lead(client: Client) {
-		let mut request: LocalRequest = client.post("/v1/graphql");
-		request.add_header(Header::new("x-hasura-role", "project_lead"));
-		request.add_header(Header::new("x-hasura-user-id", "42"));
-
-		let result = Role::from_request(&request).await;
-		assert_matches!(result.succeeded().unwrap(), Role::ProjectLead { .. });
 	}
 
 	#[rstest]
