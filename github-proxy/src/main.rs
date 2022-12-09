@@ -20,6 +20,7 @@ use serde::Deserialize;
 #[derive(Deserialize)]
 struct Config {
 	tracer: tracing::Config,
+	github: github::Config,
 }
 
 #[rocket::main]
@@ -28,7 +29,7 @@ async fn main() -> Result<()> {
 	let config: Config = config::load("github-proxy/app.yaml")?;
 	let _tracer = Tracer::init(&config.tracer, "github-proxy")?;
 
-	let github_client = Arc::new(github::Client::new());
+	let github_client = Arc::new(github::Client::new(config.github)?);
 	http::serve(github_client).await?;
 
 	info!("👋 Gracefully shut down");
