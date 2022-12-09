@@ -2,7 +2,7 @@
 use crate::specifications::UserExists;
 use crate::{
 	specifications, Aggregate, AggregateRoot, Amount, BudgetId, Entity, EventSourcable,
-	PaymentEvent, PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
+	GithubUserId, PaymentEvent, PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
 };
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
@@ -64,7 +64,7 @@ impl Payment {
 		id: PaymentId,
 		budget_id: BudgetId,
 		requestor_id: UserId,
-		recipient_id: UserId,
+		recipient_id: GithubUserId,
 		amount_in_usd: u32,
 		reason: Value,
 	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
@@ -74,14 +74,6 @@ impl Payment {
 			.map_err(Error::Specification)?
 		{
 			return Err(Error::RequestorNotFound);
-		}
-
-		if !user_exists_specification
-			.is_satisfied_by(&recipient_id)
-			.await
-			.map_err(Error::Specification)?
-		{
-			return Err(Error::RecipientNotFound);
 		}
 
 		Ok(vec![PaymentEvent::Requested {
@@ -155,13 +147,8 @@ mod tests {
 	}
 
 	#[fixture]
-	fn recipient_id() -> UserId {
-		Uuid::from_str("33333333-aaaa-495e-9f4c-038ec0ebecb1").unwrap().into()
-	}
-
-	#[fixture]
-	fn wrong_recipient_id() -> UserId {
-		Uuid::from_str("33333333-bbbb-495e-9f4c-038ec0ebecb1").unwrap().into()
+	fn recipient_id() -> GithubUserId {
+		42.into()
 	}
 
 	#[fixture]
@@ -216,7 +203,7 @@ mod tests {
 		payment_id: PaymentId,
 		budget_id: BudgetId,
 		requestor_id: UserId,
-		recipient_id: UserId,
+		recipient_id: GithubUserId,
 		amount_in_usd: u32,
 		reason: Value,
 	) -> Payment {
@@ -292,7 +279,7 @@ mod tests {
 		payment_id: PaymentId,
 		budget_id: BudgetId,
 		requestor_id: UserId,
-		recipient_id: UserId,
+		recipient_id: GithubUserId,
 		amount_in_usd: u32,
 		reason: Value,
 	) {
@@ -300,11 +287,6 @@ mod tests {
 		user_exists_specification
 			.expect_is_satisfied_by()
 			.with(eq(requestor_id))
-			.once()
-			.returning(|_| Ok(true));
-		user_exists_specification
-			.expect_is_satisfied_by()
-			.with(eq(recipient_id))
 			.once()
 			.returning(|_| Ok(true));
 
@@ -339,7 +321,7 @@ mod tests {
 		payment_id: PaymentId,
 		budget_id: BudgetId,
 		wrong_requestor_id: UserId,
-		recipient_id: UserId,
+		recipient_id: GithubUserId,
 		amount_in_usd: u32,
 		reason: Value,
 	) {
@@ -363,42 +345,6 @@ mod tests {
 
 		assert!(result.is_err());
 		assert_matches!(result, Err(Error::RequestorNotFound));
-	}
-
-	#[rstest]
-	async fn test_request_with_wrong_recipient_id(
-		payment_id: PaymentId,
-		budget_id: BudgetId,
-		requestor_id: UserId,
-		wrong_recipient_id: UserId,
-		amount_in_usd: u32,
-		reason: Value,
-	) {
-		let mut user_exists_specification = UserExists::default();
-		user_exists_specification
-			.expect_is_satisfied_by()
-			.with(eq(requestor_id))
-			.once()
-			.returning(|_| Ok(true));
-		user_exists_specification
-			.expect_is_satisfied_by()
-			.with(eq(wrong_recipient_id))
-			.once()
-			.returning(|_| Ok(false));
-
-		let result = Payment::request(
-			&user_exists_specification,
-			payment_id,
-			budget_id,
-			requestor_id,
-			wrong_recipient_id,
-			amount_in_usd,
-			reason.clone(),
-		)
-		.await;
-
-		assert!(result.is_err());
-		assert_matches!(result, Err(Error::RecipientNotFound));
 	}
 
 	#[rstest]
