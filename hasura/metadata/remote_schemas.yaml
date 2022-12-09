@@ -81,7 +81,7 @@
         value_from_env: GITHUB_PROXY_GRAPHQL_API_KEY
   comment: ""
   permissions:
-    - role: user
+    - role: registered_user
       definition:
         schema: |
           schema {

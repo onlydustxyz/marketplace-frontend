@@ -21,4 +21,4 @@ select_permissions:
         - remaining_amount
       filter:
         id:
-          _in: X-Hasura-budgets_owned
+          _in: X-Hasura-budgetsOwned

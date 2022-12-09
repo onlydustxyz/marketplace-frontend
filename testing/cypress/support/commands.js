@@ -27,14 +27,14 @@ Cypress.Commands.add("graphqlAsAdmin", (query) => {
     });
 });
 
-Cypress.Commands.add("graphqlAs", (user, role, query) => {
+Cypress.Commands.add("graphqlAsUser", (user, query) => {
     return cy.signinUser(user).then(({ accessToken }) => {
         cy.request({
             method: "POST",
             url: "/v1/graphql",
             body: { query: query },
             headers: {
-                "X-Hasura-Role": role,
+                "X-Hasura-Role": "registered_user",
                 Authorization: `Bearer ${accessToken}`,
             },
         });
