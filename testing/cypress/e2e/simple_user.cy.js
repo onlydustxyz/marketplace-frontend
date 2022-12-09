@@ -56,7 +56,7 @@ describe("As a simple user, I", () => {
 
     it("can't request a payment", () => {
         cy.createUser().then((user) => {
-            cy.requestPaymentNoassert(user, budgetId, "500", user, {})
+            cy.requestPaymentNoassert(user, budgetId, "500", "55000", {})
                 .its("body.errors")
                 .its(0)
                 .its("message")
@@ -116,56 +116,93 @@ describe("As a simple user, I", () => {
 
     it("can update my info", () => {
         let email = "pierre.fabre@gmail.com";
-        let location = '{city: "Paris", country: "France", number: "4", postCode: "75008", street: "avenue des Champs Elysee"}';
-        let identity = '{type: PERSON, optPerson: {firstname: "Pierre", lastname: "Fabre"}}';
-        let payout_settings = '{type: ETHEREUM_ADDRESS, optEthAddress: "0x123"}';
+        let location =
+            '{city: "Paris", country: "France", number: "4", postCode: "75008", street: "avenue des Champs Elysee"}';
+        let identity =
+            '{type: PERSON, optPerson: {firstname: "Pierre", lastname: "Fabre"}}';
+        let payout_settings =
+            '{type: ETHEREUM_ADDRESS, optEthAddress: "0x123"}';
 
-        let new_payout_settings = '{type: ETHEREUM_ADDRESS, optEthAddress: "0x456"}';
-        cy.createUser().then(user => {
-            cy.updateProfileInfo(user, email, location, identity, payout_settings)
+        let new_payout_settings =
+            '{type: ETHEREUM_ADDRESS, optEthAddress: "0x456"}';
+        cy.createUser().then((user) => {
+            cy.updateProfileInfo(
+                user,
+                email,
+                location,
+                identity,
+                payout_settings
+            )
                 .its("body.data.updateProfileInfo")
-                .should('eq', user.id)
+                .should("eq", user.id)
                 .then(() => {
-                    cy.graphqlAsAdmin(`{
+                    cy.graphqlAsAdmin(
+                        `{
                     userInfoByPk(userId: "${user.id}") {
                         identity
                         email
                         location
                         payoutSettings
                       }
-                  }`)
+                  }`
+                    )
                         .its("body.data.userInfoByPk")
-                        .should('deep.eq', {
-                            "identity": {
+                        .should("deep.eq", {
+                            identity: {
                                 Person: {
-                                    lastname: 'Fabre', firstname: 'Pierre'
-                                }
+                                    lastname: "Fabre",
+                                    firstname: "Pierre",
+                                },
                             },
-                            "email": email,
-                            "location": { city: "Paris", number: "4", street: "avenue des Champs Elysee", country: "France", post_code: "75008" },
-                            "payoutSettings": { EthTransfer: '0x0123' },
-                        })
-                }).then(() => cy.updateProfileInfo(user, email, location, identity, new_payout_settings))
+                            email: email,
+                            location: {
+                                city: "Paris",
+                                number: "4",
+                                street: "avenue des Champs Elysee",
+                                country: "France",
+                                post_code: "75008",
+                            },
+                            payoutSettings: { EthTransfer: "0x0123" },
+                        });
+                })
+                .then(() =>
+                    cy.updateProfileInfo(
+                        user,
+                        email,
+                        location,
+                        identity,
+                        new_payout_settings
+                    )
+                )
                 .then(() => {
-                    cy.graphqlAsAdmin(`{
+                    cy.graphqlAsAdmin(
+                        `{
                     userInfoByPk(userId: "${user.id}") {
                         identity
                         email
                         location
                         payoutSettings
                       }
-                  }`)
+                  }`
+                    )
                         .its("body.data.userInfoByPk")
-                        .should('deep.eq', {
-                            "identity": {
+                        .should("deep.eq", {
+                            identity: {
                                 Person: {
-                                    lastname: 'Fabre', firstname: 'Pierre'
-                                }
+                                    lastname: "Fabre",
+                                    firstname: "Pierre",
+                                },
                             },
-                            "email": email,
-                            "location": { city: "Paris", number: "4", street: "avenue des Champs Elysee", country: "France", post_code: "75008" },
-                            "payoutSettings": { EthTransfer: '0x0456' },
-                        })
+                            email: email,
+                            location: {
+                                city: "Paris",
+                                number: "4",
+                                street: "avenue des Champs Elysee",
+                                country: "France",
+                                post_code: "75008",
+                            },
+                            payoutSettings: { EthTransfer: "0x0456" },
+                        });
                 });
         });
     });
