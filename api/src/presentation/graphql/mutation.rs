@@ -4,7 +4,7 @@ use rusty_money::{crypto, Money};
 use thiserror::Error;
 use uuid::Uuid;
 
-use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt};
+use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt, UserId};
 
 use crate::{
 	domain::user_info::{Email, Identity, Location, PayoutSettings, UserInfo},
@@ -106,11 +106,12 @@ impl Mutation {
 	pub async fn request_payment(
 		context: &Context,
 		budget_id: Uuid,
-		requestor_id: Uuid,
 		recipient_id: Uuid,
 		amount_in_usd: i32,
 		reason: String,
 	) -> Result<Uuid> {
+		let caller_id = try_get_caller_user_id(context)?;
+
 		if !context.caller_permissions.can_spend_budget(&budget_id.into()) {
 			return Err(Error::NotAuthorized(
 				"Budget spender role required".to_string(),
@@ -121,7 +122,7 @@ impl Mutation {
 			.request_payment_usecase
 			.request(
 				budget_id.into(),
-				requestor_id.into(),
+				caller_id,
 				recipient_id.into(),
 				amount_in_usd as u32,
 				reason.into(),
@@ -138,16 +139,20 @@ impl Mutation {
 		email: Email,
 		payout_settings: PayoutSettingsInput,
 	) -> Result<Uuid> {
-		let user_id =
-			context.maybe_user_id.ok().map_err(|e| Error::NotAuthorized(e.to_string()))?;
+		let caller_id = try_get_caller_user_id(context)?;
+
 		let identity = Identity::try_from(identity).map_err(Error::InvalidRequest)?;
 		let payout_settings =
 			PayoutSettings::try_from(payout_settings).map_err(Error::InvalidRequest)?;
 
-		let user_info = UserInfo::new(user_id, identity, location, email, payout_settings);
+		let user_info = UserInfo::new(caller_id, identity, location, email, payout_settings);
 
 		context.user_info_repository.upsert(&user_info)?;
 
-		Ok(user_id.into())
+		Ok(caller_id.into())
 	}
+}
+
+fn try_get_caller_user_id(context: &Context) -> Result<UserId> {
+	context.maybe_user_id.ok().map_err(|e| Error::NotAuthorized(e.to_string()))
 }

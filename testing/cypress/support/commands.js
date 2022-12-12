@@ -176,7 +176,7 @@ Cypress.Commands.add(
         return cy.graphqlAsUser(
             requestor,
             `mutation {
-        requestPayment(amountInUsd: ${amount}, budgetId: "${budgetId}", recipientId: "${recipient.id}", requestorId: "${requestor.id}", reason: "${reason}")
+        requestPayment(amountInUsd: ${amount}, budgetId: "${budgetId}", recipientId: "${recipient.id}", reason: "${reason}")
       }
       `
         );
