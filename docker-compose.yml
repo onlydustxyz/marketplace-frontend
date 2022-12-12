@@ -79,6 +79,7 @@ services:
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-myadminsecretkey}
       AUTH_JWT_CUSTOM_CLAIMS: '{"projectsLeaded":"projectsLeaded[].projectId","budgetsOwned":"budgetsOwned[].budgetId"}'
       AUTH_USER_DEFAULT_ALLOWED_ROLES: public,me,registered_user
+      AUTH_USER_DEFAULT_ROLE: registered_user
       AUTH_LOG_LEVEL: info
       AUTH_CLIENT_URL: http://localhost:5173/login
       AUTH_PROVIDER_GITHUB_ENABLED: "true"
