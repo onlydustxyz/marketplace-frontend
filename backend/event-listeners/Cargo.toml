@@ -59,10 +59,10 @@ dotenv = "0.15.0"
 lazy_static = "1.4.0"
 
 # Local dependecies
-domain = {path = "../domain"}
+domain = {path = "../common/domain"}
 event-store = {path = "../event-store"}
-infrastructure = {path = "../infrastructure"}
-macros = {path = "../macros"}
+infrastructure = {path = "../common/infrastructure"}
+macros = {path = "../common/macros"}
 
 [dev-dependencies]
 assert_matches = "1.5"
@@ -72,5 +72,5 @@ mockall = "0.11.2"
 mockito = "0.31.0"
 rstest = "0.15.0"
 serde_test = "1.0.140"
-testing = {path = "../testing"}
+testing = {path = "../common/testing"}
 rust_decimal_macros = "1.26"

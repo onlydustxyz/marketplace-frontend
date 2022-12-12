@@ -13,4 +13,4 @@ use diesel_migrations::*;
 #[macro_use]
 extern crate diesel_migrations;
 
-embed_migrations!("../../migrations");
+embed_migrations!("../../../migrations");
