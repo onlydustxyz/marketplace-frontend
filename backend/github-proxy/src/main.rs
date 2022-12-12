@@ -27,7 +27,7 @@ struct Config {
 #[rocket::main]
 async fn main() -> Result<()> {
 	dotenv().ok();
-	let config: Config = config::load("github-proxy/app.yaml")?;
+	let config: Config = config::load("backend/github-proxy/app.yaml")?;
 	let _tracer = Tracer::init(&config.tracer, "github-proxy")?;
 
 	let github_client = Arc::new(github::Client::new(config.github)?);
