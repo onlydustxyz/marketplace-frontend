@@ -27,7 +27,7 @@ pub async fn serve(
 	project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
 	user_info_repository: Arc<dyn EntityRepository<UserInfo>>,
 ) -> Result<()> {
-	let _ = rocket::custom(http::config::rocket("api/Rocket.toml"))
+	let _ = rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config)
 		.manage(schema)
 		.manage(uuid_generator)

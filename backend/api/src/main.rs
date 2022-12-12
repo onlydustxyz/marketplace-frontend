@@ -15,7 +15,7 @@ use tracing::instrument;
 #[instrument]
 async fn main() -> Result<()> {
 	dotenv().ok();
-	let config: Config = config::load("api/app.yaml")?;
+	let config: Config = config::load("backend/api/app.yaml")?;
 	let _tracer = Tracer::init(config.tracer(), "api")?;
 
 	let database = Arc::new(database::Client::new(database::init_pool(

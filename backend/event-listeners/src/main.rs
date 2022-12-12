@@ -13,7 +13,7 @@ use tokio::task::JoinHandle;
 #[tokio::main]
 async fn main() -> Result<()> {
 	dotenv().ok();
-	let config: Config = config::load("event-listeners/app.yaml")?;
+	let config: Config = config::load("backend/event-listeners/app.yaml")?;
 	let _tracer = Tracer::init(config.tracer(), "event-queue-worker")?;
 
 	let reqwest = reqwest::Client::new();

@@ -26,7 +26,7 @@ pub struct Config {
 #[tokio::main]
 async fn main() -> Result<()> {
 	dotenv().ok();
-	let config: Config = config::load("event-store/app.yaml")?;
+	let config: Config = config::load("backend/event-store/app.yaml")?;
 	let _tracer = Tracer::init(&config.tracer, "event_store")?;
 
 	let inbound_event_bus = bus::consumer(&config.amqp).await?;

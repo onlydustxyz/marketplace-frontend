@@ -1,14 +1,14 @@
 [workspace]
 
 members = [
-  "api",
-  "domain",
-  "event-listeners",
-  "event-store",
-  "github-proxy",
-  "infrastructure",
-  "macros",
-  "presentation",
-  "testing",
-  "olog",
+  "backend/api",
+  "backend/domain",
+  "backend/event-listeners",
+  "backend/event-store",
+  "backend/github-proxy",
+  "backend/infrastructure",
+  "backend/macros",
+  "backend/presentation",
+  "backend/testing",
+  "backend/olog",
 ]
