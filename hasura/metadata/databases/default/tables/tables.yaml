@@ -1,3 +1,4 @@
+- "!include auth_github_users.yaml"
 - "!include auth_provider_requests.yaml"
 - "!include auth_providers.yaml"
 - "!include auth_refresh_tokens.yaml"

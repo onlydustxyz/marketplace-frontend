@@ -15,10 +15,10 @@ object_relationships:
     using:
       manual_configuration:
         column_mapping:
-          recipient_id: provider_user_id
+          recipient_id: github_user_id
         insertion_order: null
         remote_table:
-          name: user_providers
+          name: github_users
           schema: auth
   - name: requestor
     using:
