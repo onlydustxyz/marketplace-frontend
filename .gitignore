@@ -31,5 +31,5 @@ _docker
 **/node_modules
 
 # Cypress
-testing/cypress/screenshots
-testing/cypress/videos
+cypress/cypress/screenshots
+cypress/cypress/videos
