@@ -2,7 +2,7 @@
 extern crate diesel;
 
 #[macro_use]
-extern crate macros;
+extern crate derive;
 
 #[macro_use]
 extern crate derive_new;

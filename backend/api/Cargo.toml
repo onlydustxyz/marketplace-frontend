@@ -69,7 +69,7 @@ email_address = "0.2.4"
 domain = {path = "../common/domain", features = ["rocket"]}
 event-store = {path = "../event-store"}
 infrastructure = {path = "../common/infrastructure"}
-macros = {path = "../common/macros"}
+derive = {path = "../common/derive"}
 presentation = {path = "../common/presentation"}
 
 [dev-dependencies]

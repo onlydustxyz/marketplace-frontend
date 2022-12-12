@@ -24,7 +24,7 @@ pub fn diesel_repository(input: TokenStream) -> TokenStream {
 /// Enum and named struct will be modelized as [serde_json::Value](https://docs.rs/serde_json/1.0.89/serde_json/enum.Value.html)
 ///
 /// ```compile_fail
-/// # #[macro_use] extern crate macros;
+/// # #[macro_use] extern crate derive;
 /// # use diesel::{FromSqlRow, AsExpression};
 /// # struct InnerA;
 /// # struct InnerB;

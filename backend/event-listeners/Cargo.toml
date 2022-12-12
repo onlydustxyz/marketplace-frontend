@@ -62,7 +62,7 @@ lazy_static = "1.4.0"
 domain = {path = "../common/domain"}
 event-store = {path = "../event-store"}
 infrastructure = {path = "../common/infrastructure"}
-macros = {path = "../common/macros"}
+derive = {path = "../common/derive"}
 
 [dev-dependencies]
 assert_matches = "1.5"

@@ -54,4 +54,4 @@ pub mod specifications;
 extern crate diesel;
 
 #[macro_use]
-extern crate macros;
+extern crate derive;

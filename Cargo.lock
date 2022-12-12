@@ -133,6 +133,7 @@ dependencies = [
  "async-std",
  "async-trait",
  "chrono",
+ "derive",
  "derive-getters",
  "derive-new",
  "derive_more",
@@ -147,7 +148,6 @@ dependencies = [
  "juniper_rocket",
  "lazy_static",
  "log",
- "macros",
  "mockall",
  "presentation",
  "reqwest",
@@ -927,6 +927,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "eaa37046cc0f6c3cc6090fbdbf73ef0b8ef4cfcc37f6befc0020f63e8cf121e1"
 
 [[package]]
+name = "derive"
+version = "0.1.0"
+dependencies = [
+ "derive-getters",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "derive-getters"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1110,12 +1119,12 @@ dependencies = [
  "async-std",
  "async-trait",
  "chrono",
+ "derive",
  "derive-getters",
  "derive_more",
  "diesel",
  "futures 0.3.25",
  "log",
- "macros",
  "mockall",
  "mockall_double",
  "regex",
@@ -1222,6 +1231,7 @@ dependencies = [
  "assert_matches",
  "async-std",
  "async-trait",
+ "derive",
  "derive-getters",
  "derive-new",
  "derive_more",
@@ -1235,7 +1245,6 @@ dependencies = [
  "juniper",
  "juniper_warp",
  "lazy_static",
- "macros",
  "mockall",
  "mockito",
  "reqwest",
@@ -2319,15 +2328,6 @@ dependencies = [
  "serde_json",
  "tracing",
  "tracing-subscriber",
-]
-
-[[package]]
-name = "macros"
-version = "0.1.0"
-dependencies = [
- "derive-getters",
- "quote",
- "syn",
 ]
 
 [[package]]
