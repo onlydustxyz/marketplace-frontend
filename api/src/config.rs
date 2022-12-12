@@ -1,5 +1,5 @@
 use derive_getters::Getters;
-use infrastructure::{amqp, database, graphql, tracing};
+use infrastructure::{amqp, database, tracing};
 use presentation::http;
 use serde::Deserialize;
 

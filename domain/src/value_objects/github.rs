@@ -36,7 +36,7 @@ pub struct GithubRepositoryId(i64);
 	AsRef,
 	Hash,
 	AsExpression,
-	NewtypeToSql,
+	FromToSql,
 )]
 #[sql_type = "diesel::sql_types::BigInt"]
 pub struct GithubUserId(i64);
