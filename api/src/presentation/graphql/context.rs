@@ -15,7 +15,7 @@ pub struct Context {
 	pub request_payment_usecase: application::payment::request::Usecase,
 	pub process_payment_usecase: application::payment::process::Usecase,
 	pub create_project_usecase: application::project::create::Usecase,
-	pub update_project_usecase: application::project::update::Usecase,
+	pub project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
 	pub user_info_repository: Arc<dyn EntityRepository<UserInfo>>,
 }
 
@@ -51,9 +51,7 @@ impl Context {
 				event_publisher.to_owned(),
 				project_details_repository.clone(),
 			),
-			update_project_usecase: application::project::update::Usecase::new(
-				project_details_repository,
-			),
+			project_details_repository,
 			user_info_repository,
 		}
 	}

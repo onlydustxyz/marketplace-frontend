@@ -7,7 +7,10 @@ use uuid::Uuid;
 use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt, UserId};
 
 use crate::{
-	domain::user_info::{Email, Identity, Location, PayoutSettings, UserInfo},
+	domain::{
+		user_info::{Email, Identity, Location, PayoutSettings, UserInfo},
+		ProjectDetails,
+	},
 	presentation::http::dto::{IdentityInput, PayoutSettingsInput},
 };
 
@@ -95,10 +98,13 @@ impl Mutation {
 		description: Option<String>,
 		telegram_link: Option<String>,
 	) -> Result<Uuid> {
-		context
-			.update_project_usecase
-			.update(id.into(), description, telegram_link)
-			.await?;
+		let project_id = id.into();
+
+		context.project_details_repository.upsert(&ProjectDetails::new(
+			project_id,
+			description,
+			telegram_link,
+		))?;
 
 		Ok(id)
 	}
