@@ -2,13 +2,13 @@
 
 members = [
   "backend/api",
-  "backend/domain",
+  "backend/common/domain",
   "backend/event-listeners",
   "backend/event-store",
   "backend/github-proxy",
-  "backend/infrastructure",
-  "backend/macros",
-  "backend/presentation",
-  "backend/testing",
-  "backend/olog",
+  "backend/common/infrastructure",
+  "backend/common/macros",
+  "backend/common/presentation",
+  "backend/common/testing",
+  "backend/common/olog",
 ]
