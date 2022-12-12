@@ -1,0 +1,19 @@
+table:
+  name: github_users
+  schema: auth
+select_permissions:
+  - role: registered_user_specific
+    permission:
+      columns:
+        - github_user_id
+        - access_token
+        - provider_id
+        - provider_user_id
+        - refresh_token
+        - created_at
+        - updated_at
+        - id
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
