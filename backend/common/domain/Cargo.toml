@@ -57,7 +57,7 @@ diesel = {version = "1.4.8", default-features = false, features = [
 rocket = {version = "0.5.0-rc.2"}
 
 # Local dependecies
-macros = {path = "../macros"}
+derive = {path = "../derive"}
 
 [dev-dependencies]
 assert-json-diff = "2.0.2"

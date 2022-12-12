@@ -7,7 +7,7 @@ members = [
   "backend/event-store",
   "backend/github-proxy",
   "backend/common/infrastructure",
-  "backend/common/macros",
+  "backend/common/derive",
   "backend/common/presentation",
   "backend/common/testing",
   "backend/common/olog",
