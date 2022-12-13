@@ -93,6 +93,7 @@
           }
           type Query {
             fetchRepositoryDetails(id: Int!): Repository!
+            fetchUserDetails(username: String!): User!
           }
           type Repository {
             contributors: [User!]!
