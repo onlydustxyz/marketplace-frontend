@@ -11,7 +11,7 @@ Cypress.Commands.add(
                 recipient_github_user_id,
                 reason
             )
-            .its("body.data.requestPayment")
+            .data("requestPayment")
             .should("be.a", "string");
     }
 );

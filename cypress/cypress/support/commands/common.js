@@ -30,3 +30,48 @@ Cypress.Commands.add("graphqlAsUser", (user, query) => {
         });
     });
 });
+
+Cypress.Commands.add(
+    "property",
+    {
+        prevSubject: true,
+    },
+    (object, property) => {
+        cy.wrap(object)
+            .should(($object) => {
+                expect(
+                    $object,
+                    JSON.stringify($object)
+                ).to.have.deep.nested.property(property);
+            })
+            .its(property);
+    }
+);
+
+Cypress.Commands.add(
+    "data",
+    {
+        prevSubject: true,
+    },
+    (response, path = null) => {
+        cy.wrap(response)
+            .should("have.property", "body")
+            .property("data")
+            .then((data) => {
+                if (path !== null) {
+                    return cy.wrap(data).property(path);
+                }
+                return data;
+            });
+    }
+);
+
+Cypress.Commands.add(
+    "errors",
+    {
+        prevSubject: true,
+    },
+    (response) => {
+        cy.wrap(response).should("have.property", "body").property("errors");
+    }
+);

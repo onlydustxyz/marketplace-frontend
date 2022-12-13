@@ -27,7 +27,7 @@ Cypress.Commands.add("createUser", () => {
                 }
             }`
             )
-            .its("body.data.users")
+            .data("users")
             .its(0)
             .its("id")
             .should("be.a", "string")
@@ -39,7 +39,7 @@ Cypress.Commands.add("createUser", () => {
                     }
                   }`
                 )
-                    .its("body.data.updateUser.id")
+                    .data("updateUser.id")
                     .should("be.a", "string")
                     .then(() => {
                         return {
@@ -51,6 +51,30 @@ Cypress.Commands.add("createUser", () => {
             });
     });
 });
+
+Cypress.Commands.add(
+    "withGithubProvider",
+    {
+        prevSubject: true,
+    },
+    (user, githubUserId) => {
+        cy.graphqlAsAdmin(
+            `mutation {
+        insertAuthUserProvider( object: {userId: "${user.id}", providerId: "github", providerUserId: "${githubUserId}", accessToken: "fake-token"},
+                                onConflict: {constraint: user_providers_provider_id_provider_user_id_key, update_columns: accessToken}) {
+            id
+        }
+      }`
+        )
+            .data()
+            .its("insertAuthUserProvider.id")
+            .should("be.a", "string")
+            .then((_) => {
+                user.githubUserId = githubUserId;
+                return user;
+            });
+    }
+);
 
 Cypress.Commands.add("signinUser", (user) => {
     cy.request("POST", "http://localhost:4000/signin/email-password", {
