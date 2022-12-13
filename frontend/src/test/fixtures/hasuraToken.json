@@ -1,0 +1,21 @@
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsicHVibGljIiwibWUiLCJ1c2VyIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiMzhjMDQ5NzgtYzVkZS00YzUzLTliMGMtNjM2ZmU2YzY5OWEyIiwieC1oYXN1cmEtdXNlci1pcy1hbm9ueW1vdXMiOiJmYWxzZSJ9LCJzdWIiOiIzOGMwNDk3OC1jNWRlLTRjNTMtOWIwYy02MzZmZTZjNjk5YTIiLCJpYXQiOjE2NjkxMjgyODQsImV4cCI6MTY2OTEyOTE4NCwiaXNzIjoiaGFzdXJhLWF1dGgifQ.xrjwYbx6Hi4ujwFyT3BgFsUWBKxcOr8nqLZngiFqzQM",
+  "accessTokenExpiresIn": 900,
+  "refreshToken": "111353c1-b45f-4df2-95ae-6727906a0a14",
+  "user": {
+    "id": "38c04978-c5de-4c53-9b0c-636fe6c699a2",
+    "createdAt": "2022-11-22T14:44:44.499065+00:00",
+    "displayName": "Nicolas Ngomai",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/10167015?v=4",
+    "locale": "en",
+    "email": "nicolasn@theodo.fr",
+    "isAnonymous": false,
+    "defaultRole": "user",
+    "metadata": {},
+    "emailVerified": true,
+    "phoneNumber": null,
+    "phoneNumberVerified": false,
+    "activeMfaType": null,
+    "roles": ["public", "me", "user"]
+  }
+}

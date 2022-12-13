@@ -1,0 +1,92 @@
+{
+  "contributions": {
+    "empty": "No contributions yet"
+  },
+  "form": {
+    "required": "Required"
+  },
+  "github": {
+    "loggingIn": "Logging in...",
+    "tokenMissing": "Github authentication token missing!"
+  },
+  "images": {
+    "githubLogo": "Github logo",
+    "onlyDustLogo": "OnlyDust logo"
+  },
+  "navbar": {
+    "logout": "Logout",
+    "myContributions": "My contributions",
+    "myProjects": "My projects",
+    "projects": "Projects",
+    "signInWithGithub": "Sign in with Github"
+  },
+  "payment": {
+    "form": {
+      "amountToWire": "Amount to wire",
+      "contributor": "Contributor",
+      "linkToIssue": "Link to issue",
+      "recommendation": "Based on your input we recommend a payment between __lowerPaymentBound__ and __upperPaymentBound__",
+      "sent": "Payment request sent!",
+      "statisfaction": {
+        "levels": {
+          "excellent": "Excellent",
+          "fair": "Fair",
+          "good": "Good"
+        },
+        "title": "Overall satisfaction"
+      },
+      "submit": "Submit payment",
+      "workingDays": "Working days"
+    },
+    "list": "List payments",
+    "status": {
+      "completed": "Completed",
+      "processing": "Processing"
+    },
+    "table": {
+      "amount": "Amount",
+      "project": "Project",
+      "status": "Status"
+    }
+  },
+  "profile": {
+    "edit": "Edit profile",
+    "form": {
+      "bankWire": "Bank wire",
+      "bic": "BIC",
+      "city": "City",
+      "companyProfile": "Company",
+      "country": "Country",
+      "email": "Email",
+      "ethereum": "Ethereum",
+      "ethereumWalletAddress": "Ethereum wallet address",
+      "firstname": "Firstname",
+      "iban": "IBAN",
+      "individualProfile": "Individual",
+      "lastname": "Lastname",
+      "location": "Location",
+      "payoutSettings": "Payout settings",
+      "saved": "Your data has been saved!",
+      "send": "Send",
+      "typeOfProfile": "Type of profile",
+      "zipCode": "Zip code"
+    }
+  },
+  "project": {
+    "remainingBudget": "Remaining budget"
+  },
+  "seniority": {
+    "levels": {
+      "advanced": "Advanced",
+      "expert": "Expert",
+      "junior": "Junior",
+      "senior": "Senior"
+    },
+    "title": "Seniority"
+  },
+  "state": {
+    "errorOccured": "Oops, an unexpected error occured",
+    "loading": "Loading..."
+  },
+  "tryToRefresh": "Try to refresh the page"
+}
