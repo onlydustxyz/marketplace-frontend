@@ -2,6 +2,7 @@ import Card from "src/components/Card";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useIntl } from "src/hooks/useIntl";
+import { buildGithubLink } from "src/utils/stringUtils";
 
 interface OverviewProps {
   decodedReadme: string;
@@ -35,7 +36,7 @@ export default function Overview({ decodedReadme, contributors, repo }: Overview
             </OverviewPanelSection>
             <OverviewPanelSection title={T("project.details.overview.githubLinkTitle")}>
               <a
-                href={buildGithubRepoUrl(repo.owner, repo.name)}
+                href={buildGithubLink(repo.owner, repo.name)}
                 className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
               >
                 {T("project.details.overview.githubLinkContent")}
@@ -59,8 +60,4 @@ function OverviewPanelSection({ title, children }: OverviewPanelSectionProps) {
       <div className="flex">{children}</div>
     </div>
   );
-}
-
-function buildGithubRepoUrl(owner: string, name: string) {
-  return `github.com/${owner}/${name}`;
 }
