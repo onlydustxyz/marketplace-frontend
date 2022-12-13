@@ -65,12 +65,16 @@ export default function ProjectInformation({ name, details, budget, githubRepoIn
       {githubRepoInfo && (
         <div className="flex flex-row justify-between items-center">
           <GithubDetails title={T("project.details.overview.technologies")}>Cairo</GithubDetails>
-          <GithubDetails title={T("project.details.overview.projectLeader")}>
-            {githubRepoInfo?.contributors?.[0]?.login}
-          </GithubDetails>
-          <GithubDetails title={T("project.details.overview.contributors")}>
-            {githubRepoInfo?.contributors?.length}
-          </GithubDetails>
+          {githubRepoInfo?.contributors?.[0]?.login && (
+            <GithubDetails title={T("project.details.overview.projectLeader")}>
+              {githubRepoInfo?.contributors[0].login}
+            </GithubDetails>
+          )}
+          {githubRepoInfo?.contributors && (
+            <GithubDetails title={T("project.details.overview.contributors")}>
+              {githubRepoInfo?.contributors?.length}
+            </GithubDetails>
+          )}
         </div>
       )}
     </div>
