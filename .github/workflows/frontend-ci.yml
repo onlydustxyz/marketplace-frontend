@@ -1,11 +1,26 @@
-name: Continuous integration
+name: Frontend CI
 
 on:
   pull_request: ~
 
+  push:
+    branches:
+      - "main"
+
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
+        required: false
+        default: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -16,8 +31,12 @@ jobs:
       - run: yarn install --frozen-lockfile
       - name: Build project
         run: yarn build
+
   lint:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -26,8 +45,12 @@ jobs:
           cache: "yarn"
       - run: yarn install --frozen-lockfile
       - run: yarn lint
+
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
