@@ -4,7 +4,7 @@ import * as tailwindcss from "../tailwind.config";
 import viteConfig from "../vite.config";
 
 const config: StorybookViteConfig = {
-  stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
+  stories: ["../frontend/src/**/*.stories.mdx", "../frontend/src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",

@@ -17,7 +17,7 @@
     "jsx": "react-jsx",
     "baseUrl": "."
   },
-  "include": ["src"],
+  "include": ["frontend/src"],
   "references": [
     {
       "path": "./tsconfig.node.json"
