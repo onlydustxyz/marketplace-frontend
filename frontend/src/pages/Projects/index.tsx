@@ -1,29 +1,32 @@
 import { gql } from "@apollo/client";
 import { Link } from "react-router-dom";
-import ProjectCard from "src/components/ProjectCard";
+import Card from "src/components/Card";
+import ProjectInformation from "src/components/ProjectInformation";
 import QueryWrapper from "src/components/QueryWrapper";
 import { GITHUB_REPO_FIELDS_FOR_PROJECT_CARD_FRAGMENT } from "src/graphql/fragments";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
-import { buildGithubLink } from "src/utils/stringUtils";
+import { GetProjectsQuery } from "src/__generated/graphql";
 
 export default function Projects() {
-  const query = useHasuraQuery(GET_PROJECTS_QUERY, HasuraUserRole.Public);
+  const query = useHasuraQuery<GetProjectsQuery>(GET_PROJECTS_QUERY, HasuraUserRole.Public);
   const { data } = query;
   return (
-    <QueryWrapper query={query}>
+    <QueryWrapper<GetProjectsQuery> query={query}>
       <div className="px-10 flex flex-col align-center items-center">
-        {data?.projects &&
-          data.projects.map((project: any) => (
+        {data &&
+          data.projects.map(project => (
             <Link key={project.id} className="flex w-5/6 my-3" to={`/project/${project.id}`}>
-              <ProjectCard
-                name={project.name}
-                details={project?.projectDetails}
-                githubRepoInfo={{
-                  contributors: project.githubRepo.contributors,
-                  githubLink: buildGithubLink(project.githubRepo.owner, project.githubRepo.name),
-                }}
-              />
+              <Card selectable={true}>
+                <ProjectInformation
+                  name={project.name}
+                  details={{
+                    description: project?.projectDetails?.description,
+                    telegramLink: project?.projectDetails?.telegramLink,
+                  }}
+                  githubRepoInfo={{ ...project.githubRepo }}
+                />
+              </Card>
             </Link>
           ))}
       </div>
@@ -33,7 +36,7 @@ export default function Projects() {
 
 export const GET_PROJECTS_QUERY = gql`
   ${GITHUB_REPO_FIELDS_FOR_PROJECT_CARD_FRAGMENT}
-  query MyQuery {
+  query GetProjects {
     projects {
       id
       name

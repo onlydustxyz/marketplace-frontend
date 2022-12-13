@@ -2,11 +2,11 @@ import { QueryResult } from "@apollo/client";
 import LoaderFallback from "src/components/LoaderFallback";
 import ErrorFallback from "../ErrorFallback";
 
-interface PropsType extends React.PropsWithChildren {
-  query: QueryResult;
+interface PropsType<T> extends React.PropsWithChildren {
+  query: QueryResult<T>;
 }
 
-const QueryWrapper: React.FC<React.PropsWithChildren<PropsType>> = ({ query, children }) => {
+const QueryWrapper = <T,>({ query, children }: PropsType<T>) => {
   const { loading, data, error } = query;
   if (error) {
     console.error(error);

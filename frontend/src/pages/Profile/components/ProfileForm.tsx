@@ -22,24 +22,24 @@ type Inputs = {
 };
 
 type PropsType = {
-  user: User;
+  user: Pick<User, "id" | "metadata" | "email">;
 };
 
 const ProfileForm: React.FC<PropsType> = ({ user }) => {
   const formMethods = useForm<Inputs>({
     defaultValues: {
-      paymentReceiverType: user.metadata.paymentReceiverType ?? PaymentReceiverType.INDIVIDUAL,
-      firstName: user.metadata?.firstName ?? "",
-      lastName: user.metadata?.lastName ?? "",
-      email: user.email ?? "",
-      address: user.metadata?.location?.address ?? "",
-      zipcode: user.metadata?.location?.zipcode ?? "",
-      city: user.metadata?.location?.city ?? "",
-      country: user.metadata?.location?.country ?? "",
-      payoutSettingsType: user.metadata?.payoutSettings?.type,
-      ethWalletAddress: user.metadata?.payoutSettings?.settings?.ethWalletAddress,
-      iban: user.metadata?.payoutSettings?.settings?.iban,
-      bic: user.metadata?.payoutSettings?.settings?.bic,
+      paymentReceiverType: user?.metadata?.paymentReceiverType ?? PaymentReceiverType.INDIVIDUAL,
+      firstName: user?.metadata?.firstName ?? "",
+      lastName: user?.metadata?.lastName ?? "",
+      email: user?.email ?? "",
+      address: user?.metadata?.location?.address ?? "",
+      zipcode: user?.metadata?.location?.zipcode ?? "",
+      city: user?.metadata?.location?.city ?? "",
+      country: user?.metadata?.location?.country ?? "",
+      payoutSettingsType: user?.metadata?.payoutSettings?.type,
+      ethWalletAddress: user?.metadata?.payoutSettings?.settings?.ethWalletAddress,
+      iban: user?.metadata?.payoutSettings?.settings?.iban,
+      bic: user?.metadata?.payoutSettings?.settings?.bic,
     },
   });
   const { handleSubmit } = formMethods;

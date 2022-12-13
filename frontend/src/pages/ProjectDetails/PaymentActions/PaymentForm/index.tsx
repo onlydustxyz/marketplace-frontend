@@ -8,6 +8,7 @@ import { Inputs } from "./types";
 import Input from "src/components/FormInput";
 import { useMemo } from "react";
 import { useIntl } from "src/hooks/useIntl";
+import { GetUsersForPaymentFormQuery } from "src/__generated/graphql";
 
 const BASE_DAILY_RATE_DOLLARS = 200;
 
@@ -47,7 +48,10 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
     }
   );
   const success = !!requestPaymentMutation.data;
-  const getUserGithubIdsQuery = useHasuraQuery(GET_USERS_QUERY, HasuraUserRole.RegisteredUser);
+  const getUserGithubIdsQuery = useHasuraQuery<GetUsersForPaymentFormQuery>(
+    GET_USERS_QUERY,
+    HasuraUserRole.RegisteredUser
+  );
 
   const onSubmit: SubmitHandler<Inputs> = async formData => {
     await insertPayment(mapFormDataToSchema(formData));
@@ -171,7 +175,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
 };
 
 export const GET_USERS_QUERY = gql`
-  query {
+  query GetUsersForPaymentForm {
     users {
       id
       displayName
@@ -180,7 +184,7 @@ export const GET_USERS_QUERY = gql`
 `;
 
 export const REQUEST_PAYMENT_MUTATION = gql`
-  mutation ($amount: Int!, $contributorId: Uuid!, $budgetId: Uuid!) {
+  mutation RequestPayment($amount: Int!, $contributorId: Int!, $budgetId: Uuid!) {
     requestPayment(amountInUsd: $amount, budgetId: $budgetId, reason: "{}", recipientId: $contributorId)
   }
 `;

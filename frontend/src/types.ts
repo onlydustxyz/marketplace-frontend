@@ -33,7 +33,7 @@ export type User = {
 } & UserInfo;
 
 export type UserInfo = {
-  metadata: {
+  metadata?: {
     paymentReceiverType?: PaymentReceiverType;
     firstName?: string;
     lastName?: string;
