@@ -1,13 +1,17 @@
-use crate::domain::{Budget, BudgetSpenderRepository, EventListener};
 use anyhow::Result;
 use async_trait::async_trait;
-use domain::{BudgetEvent, BudgetTopic, EntityRepository, Event};
-use std::sync::Arc;
+
+use domain::{BudgetEvent, BudgetTopic, Event, MappingRepository};
+
+use crate::{
+	domain::{Budget, EventListener},
+	infrastructure::database::{BudgetRepository, BudgetSpenderRepository},
+};
 
 #[derive(new)]
 pub struct Projector {
-	budget_repository: Arc<dyn EntityRepository<Budget>>,
-	budget_spender_repository: Arc<dyn BudgetSpenderRepository>,
+	budget_repository: BudgetRepository,
+	budget_spender_repository: BudgetSpenderRepository,
 }
 
 #[async_trait]

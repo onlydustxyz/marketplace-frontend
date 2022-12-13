@@ -12,7 +12,6 @@ pub struct Repository(Arc<Client>);
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use ::domain::EntityRepository;
 	use dotenv::dotenv;
 	use infrastructure::database::Config;
 	use rstest::*;

@@ -48,20 +48,20 @@ pub fn derive(input: TokenStream) -> TokenStream {
 		use crate::diesel::ExpressionMethods;
 		use crate::diesel::query_dsl::filter_dsl::FindDsl;
 
-		impl ::domain::EntityRepository<#entity_type> for #repository_name {
-			fn find_by_id(&self, id: &<#entity_type as ::domain::Entity>::Id) -> anyhow::Result<#entity_type> {
+		impl #repository_name {
+			pub fn find_by_id(&self, id: &<#entity_type as ::domain::Entity>::Id) -> anyhow::Result<#entity_type> {
 				let connection = self.0.connection()?;
 				let entity = #table.find(*id).first(&*connection)?;
 				Ok(entity)
 			}
 
-			fn insert(&self, entity: &#entity_type) -> anyhow::Result<()> {
+			pub fn insert(&self, entity: &#entity_type) -> anyhow::Result<()> {
 				let connection = self.0.connection()?;
 				diesel::insert_into(#table).values(entity).execute(&*connection)?;
 				Ok(())
 			}
 
-			fn update(&self, id: &<#entity_type as ::domain::Entity>::Id, entity: &#entity_type) -> anyhow::Result<()> {
+			pub fn update(&self, id: &<#entity_type as ::domain::Entity>::Id, entity: &#entity_type) -> anyhow::Result<()> {
 				let connection = self.0.connection()?;
 				diesel::update(#table)
 					.filter(#id.eq(id))
@@ -70,7 +70,7 @@ pub fn derive(input: TokenStream) -> TokenStream {
 				Ok(())
 			}
 
-			fn upsert(&self, entity: &#entity_type)  -> anyhow::Result<()> {
+			pub fn upsert(&self, entity: &#entity_type)  -> anyhow::Result<()> {
 				let connection = self.0.connection()?;
 				diesel::insert_into(#table)
 					.values(entity)
@@ -81,13 +81,13 @@ pub fn derive(input: TokenStream) -> TokenStream {
 				Ok(())
 			}
 
-			fn delete(&self, id: &<#entity_type as ::domain::Entity>::Id) -> anyhow::Result<()> {
+			pub fn delete(&self, id: &<#entity_type as ::domain::Entity>::Id) -> anyhow::Result<()> {
 				let connection = self.0.connection()?;
 				diesel::delete(#table).filter(#id.eq(id)).execute(&*connection)?;
 				Ok(())
 			}
 
-			fn clear(&self) -> anyhow::Result<()> {
+			pub fn clear(&self) -> anyhow::Result<()> {
 				let connection = self.0.connection()?;
 				diesel::delete(#table).execute(&*connection)?;
 				Ok(())

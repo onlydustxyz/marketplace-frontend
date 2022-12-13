@@ -14,7 +14,7 @@ mod aggregate;
 pub use aggregate::{Aggregate, EventSourcable};
 
 mod entity;
-pub use entity::{Entity, Repository as EntityRepository};
+pub use entity::Entity;
 
 mod messaging;
 pub use messaging::{

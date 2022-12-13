@@ -23,25 +23,24 @@ pub async fn spawn_all(
 	reqwest: reqwest::Client,
 	database: Arc<database::Client>,
 ) -> Result<Vec<JoinHandle<()>>> {
-	let payment_repository = Arc::new(PaymentRepository::new(database.clone()));
-	let payment_request_repository = Arc::new(PaymentRequestRepository::new(database.clone()));
-	let project_repository = Arc::new(ProjectRepository::new(database.clone()));
-	let budget_repository = Arc::new(BudgetRepository::new(database.clone()));
-	let project_lead_repository = Arc::new(ProjectLeadRepository::new(database.clone()));
-	let budget_spender_repository = Arc::new(BudgetSpenderRepository::new(database));
-
 	let handles = [
 		Logger.spawn(event_bus::consumer(config.amqp(), "logger").await?),
 		EventWebHook::new(reqwest)
 			.spawn(event_bus::consumer(config.amqp(), "event-webhooks").await?),
-		PaymentProjector::new(payment_repository)
+		PaymentProjector::new(PaymentRepository::new(database.clone()))
 			.spawn(event_bus::consumer(config.amqp(), "payments").await?),
-		PaymentRequestProjector::new(payment_request_repository)
+		PaymentRequestProjector::new(PaymentRequestRepository::new(database.clone()))
 			.spawn(event_bus::consumer(config.amqp(), "payment_requests").await?),
-		ProjectProjector::new(project_repository, project_lead_repository)
-			.spawn(event_bus::consumer(config.amqp(), "projects").await?),
-		BudgetProjector::new(budget_repository, budget_spender_repository)
-			.spawn(event_bus::consumer(config.amqp(), "budgets").await?),
+		ProjectProjector::new(
+			ProjectRepository::new(database.clone()),
+			ProjectLeadRepository::new(database.clone()),
+		)
+		.spawn(event_bus::consumer(config.amqp(), "projects").await?),
+		BudgetProjector::new(
+			BudgetRepository::new(database.clone()),
+			BudgetSpenderRepository::new(database),
+		)
+		.spawn(event_bus::consumer(config.amqp(), "budgets").await?),
 	];
 
 	Ok(handles.into())

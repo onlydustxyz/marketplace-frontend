@@ -1,18 +1,20 @@
-use crate::domain::{projections::Project, EventListener, ProjectLeadRepository};
+use crate::{
+	domain::{projections::Project, EventListener},
+	infrastructure::database::{ProjectLeadRepository, ProjectRepository},
+};
 use anyhow::Result;
 use async_trait::async_trait;
-use domain::{EntityRepository, Event, ProjectEvent};
-use std::sync::Arc;
+use domain::{Event, MappingRepository, ProjectEvent};
 
 pub struct Projector {
-	project_repository: Arc<dyn EntityRepository<Project>>,
-	project_lead_repository: Arc<dyn ProjectLeadRepository>,
+	project_repository: ProjectRepository,
+	project_lead_repository: ProjectLeadRepository,
 }
 
 impl Projector {
 	pub fn new(
-		project_repository: Arc<dyn EntityRepository<Project>>,
-		project_lead_repository: Arc<dyn ProjectLeadRepository>,
+		project_repository: ProjectRepository,
+		project_lead_repository: ProjectLeadRepository,
 	) -> Self {
 		Self {
 			project_repository,

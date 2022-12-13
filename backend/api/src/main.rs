@@ -31,8 +31,8 @@ async fn main() -> Result<()> {
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),
-		Arc::new(ProjectDetailsRepository::new(database.clone())),
-		Arc::new(UserInfoRepository::new(database)),
+		ProjectDetailsRepository::new(database.clone()),
+		UserInfoRepository::new(database),
 	)
 	.await?;
 
