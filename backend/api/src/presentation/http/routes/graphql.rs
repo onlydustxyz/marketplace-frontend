@@ -4,7 +4,8 @@ use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use rocket::{response::content, State};
 
 use domain::{
-	AggregateRootRepository, Budget, Event, Payment, Publisher, UniqueMessage, UuidGenerator,
+	AggregateRootRepository, Budget, Event, Payment, Project, Publisher, UniqueMessage,
+	UuidGenerator,
 };
 use presentation::http::guards::{ApiKey, ApiKeyGuard, OptionUserId, Role};
 
@@ -39,6 +40,7 @@ pub async fn get_graphql_handler(
 	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
 	payment_repository: &State<AggregateRootRepository<Payment>>,
 	budget_repository: &State<AggregateRootRepository<Budget>>,
+	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<ProjectDetailsRepository>,
 	user_info_repository: &State<UserInfoRepository>,
 ) -> GraphQLResponse {
@@ -49,6 +51,7 @@ pub async fn get_graphql_handler(
 		(*event_publisher).clone(),
 		(*payment_repository).clone(),
 		(*budget_repository).clone(),
+		(*project_repository).clone(),
 		(*project_details_repository).clone(),
 		(*user_info_repository).clone(),
 	);
@@ -67,6 +70,7 @@ pub async fn post_graphql_handler(
 	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
 	payment_repository: &State<AggregateRootRepository<Payment>>,
 	budget_repository: &State<AggregateRootRepository<Budget>>,
+	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<ProjectDetailsRepository>,
 	user_info_repository: &State<UserInfoRepository>,
 ) -> GraphQLResponse {
@@ -77,6 +81,7 @@ pub async fn post_graphql_handler(
 		(*event_publisher).clone(),
 		(*payment_repository).clone(),
 		(*budget_repository).clone(),
+		(*project_repository).clone(),
 		(*project_details_repository).clone(),
 		(*user_info_repository).clone(),
 	);

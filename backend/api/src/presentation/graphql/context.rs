@@ -4,7 +4,8 @@ use crate::{
 	infrastructure::database::{ProjectDetailsRepository, UserInfoRepository},
 };
 use domain::{
-	AggregateRootRepository, Budget, Event, Payment, Publisher, UniqueMessage, UuidGenerator,
+	AggregateRootRepository, Budget, Event, Payment, Project, Publisher, UniqueMessage,
+	UuidGenerator,
 };
 use presentation::http::guards::OptionUserId;
 use std::sync::Arc;
@@ -15,6 +16,7 @@ pub struct Context {
 	pub request_payment_usecase: application::payment::request::Usecase,
 	pub process_payment_usecase: application::payment::process::Usecase,
 	pub create_project_usecase: application::project::create::Usecase,
+	pub update_project_github_repo_id_usecase: application::project::update_github_repo_id::Usecase,
 	pub project_details_repository: ProjectDetailsRepository,
 	pub user_info_repository: UserInfoRepository,
 }
@@ -28,6 +30,7 @@ impl Context {
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		payment_repository: AggregateRootRepository<Payment>,
 		budget_repository: AggregateRootRepository<Budget>,
+		project_repository: AggregateRootRepository<Project>,
 		project_details_repository: ProjectDetailsRepository,
 		user_info_repository: UserInfoRepository,
 	) -> Self {
@@ -49,6 +52,11 @@ impl Context {
 				event_publisher.to_owned(),
 				project_details_repository.clone(),
 			),
+			update_project_github_repo_id_usecase:
+				application::project::update_github_repo_id::Usecase::new(
+					event_publisher.to_owned(),
+					project_repository,
+				),
 			project_details_repository,
 			user_info_repository,
 		}
