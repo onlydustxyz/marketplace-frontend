@@ -17,6 +17,9 @@
 
 # Python
 .env
+.env.*
+!.env.example
+!.env.test
 
 # MacOS
 .DS_Store
@@ -28,8 +31,22 @@ _docker
 .idea
 
 # Node
-**/node_modules
+node_modules
+dist
+dist-ssr
+*.local
+coverage
+.nyc_output
 
 # Cypress
-cypress/cypress/screenshots
-cypress/cypress/videos
+testing/cypress/screenshots
+testing/cypress/videos
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
