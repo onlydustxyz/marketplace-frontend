@@ -114,6 +114,28 @@ describe("As a simple user, I", () => {
         });
     });
 
+    it("can fetch github user details from name", () => {
+        cy.createUser().then((user) => {
+            cy.graphqlAsUser(
+                user,
+                `{
+                    fetchUserDetails(username: "abuisset") {
+                      id
+                      login
+                      avatarUrl
+                    }
+                  }`
+            )
+                .its("body.data.fetchUserDetails")
+                .then((user) => {
+                    expect(user.id).equal(990474);
+                    expect(user.login).equal("abuisset");
+                    expect(user.avatarUrl).to.be.a("string");
+                });
+        });
+    });
+
+
     it("can update my info", () => {
         let email = "pierre.fabre@gmail.com";
         let location =
