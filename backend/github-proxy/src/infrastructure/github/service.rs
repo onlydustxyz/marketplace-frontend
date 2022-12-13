@@ -15,6 +15,11 @@ impl GithubService for github::Client {
 
 		GithubRepository::build(repo, contributors, readme.into())
 	}
+
+	async fn fetch_user_by_name(&self, username: &str) -> Result<GithubUser> {
+		let user = self.get_user_by_name(username).await?;
+		Ok(user.into())
+	}
 }
 
 impl GithubRepository {
