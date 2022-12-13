@@ -1,15 +1,17 @@
+use std::sync::Arc;
+
+use juniper_rocket::{GraphQLRequest, GraphQLResponse};
+use rocket::{response::content, State};
+
+use domain::{
+	AggregateRootRepository, Budget, Event, Payment, Publisher, UniqueMessage, UuidGenerator,
+};
+use presentation::http::guards::{ApiKey, ApiKeyGuard, OptionUserId, Role};
+
 use crate::{
-	domain::{ProjectDetails, UserInfo},
+	infrastructure::database::{ProjectDetailsRepository, UserInfoRepository},
 	presentation::graphql::{Context, Schema},
 };
-use domain::{
-	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Publisher, UniqueMessage,
-	UuidGenerator,
-};
-use juniper_rocket::{GraphQLRequest, GraphQLResponse};
-use presentation::http::guards::{ApiKey, ApiKeyGuard, OptionUserId, Role};
-use rocket::{response::content, State};
-use std::sync::Arc;
 
 #[derive(Default)]
 pub struct GraphqlApiKey;
@@ -37,8 +39,8 @@ pub async fn get_graphql_handler(
 	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
 	payment_repository: &State<AggregateRootRepository<Payment>>,
 	budget_repository: &State<AggregateRootRepository<Budget>>,
-	project_details_repository: &State<Arc<dyn EntityRepository<ProjectDetails>>>,
-	user_info_repository: &State<Arc<dyn EntityRepository<UserInfo>>>,
+	project_details_repository: &State<ProjectDetailsRepository>,
+	user_info_repository: &State<UserInfoRepository>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		role.into(),
@@ -65,8 +67,8 @@ pub async fn post_graphql_handler(
 	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
 	payment_repository: &State<AggregateRootRepository<Payment>>,
 	budget_repository: &State<AggregateRootRepository<Budget>>,
-	project_details_repository: &State<Arc<dyn EntityRepository<ProjectDetails>>>,
-	user_info_repository: &State<Arc<dyn EntityRepository<UserInfo>>>,
+	project_details_repository: &State<ProjectDetailsRepository>,
+	user_info_repository: &State<UserInfoRepository>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		role.into(),

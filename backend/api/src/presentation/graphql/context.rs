@@ -1,10 +1,10 @@
 use crate::{
 	application,
-	domain::{Permissions, ProjectDetails, UserInfo},
+	domain::Permissions,
+	infrastructure::database::{ProjectDetailsRepository, UserInfoRepository},
 };
 use domain::{
-	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Publisher, UniqueMessage,
-	UuidGenerator,
+	AggregateRootRepository, Budget, Event, Payment, Publisher, UniqueMessage, UuidGenerator,
 };
 use presentation::http::guards::OptionUserId;
 use std::sync::Arc;
@@ -15,8 +15,8 @@ pub struct Context {
 	pub request_payment_usecase: application::payment::request::Usecase,
 	pub process_payment_usecase: application::payment::process::Usecase,
 	pub create_project_usecase: application::project::create::Usecase,
-	pub project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
-	pub user_info_repository: Arc<dyn EntityRepository<UserInfo>>,
+	pub project_details_repository: ProjectDetailsRepository,
+	pub user_info_repository: UserInfoRepository,
 }
 
 impl Context {
@@ -28,8 +28,8 @@ impl Context {
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		payment_repository: AggregateRootRepository<Payment>,
 		budget_repository: AggregateRootRepository<Budget>,
-		project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
-		user_info_repository: Arc<dyn EntityRepository<UserInfo>>,
+		project_details_repository: ProjectDetailsRepository,
+		user_info_repository: UserInfoRepository,
 	) -> Self {
 		Self {
 			caller_permissions,

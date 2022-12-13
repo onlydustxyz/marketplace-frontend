@@ -1,15 +1,18 @@
-use crate::{
-	domain::{ProjectDetails, UserInfo},
-	presentation::graphql,
-};
-use ::domain::{
-	AggregateRootRepository, Budget, EntityRepository, Event, Payment, Project, Publisher,
-	UniqueMessage, UuidGenerator,
-};
+use std::sync::Arc;
+
 use anyhow::Result;
 use http::Config;
 use presentation::http;
-use std::sync::Arc;
+
+use ::domain::{
+	AggregateRootRepository, Budget, Event, Payment, Project, Publisher, UniqueMessage,
+	UuidGenerator,
+};
+
+use crate::{
+	infrastructure::database::{ProjectDetailsRepository, UserInfoRepository},
+	presentation::graphql,
+};
 
 pub mod dto;
 pub mod roles;
@@ -24,8 +27,8 @@ pub async fn serve(
 	project_repository: AggregateRootRepository<Project>,
 	payment_repository: AggregateRootRepository<Payment>,
 	budget_repository: AggregateRootRepository<Budget>,
-	project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
-	user_info_repository: Arc<dyn EntityRepository<UserInfo>>,
+	project_details_repository: ProjectDetailsRepository,
+	user_info_repository: UserInfoRepository,
 ) -> Result<()> {
 	let _ = rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config)

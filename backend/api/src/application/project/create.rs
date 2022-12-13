@@ -1,22 +1,28 @@
-use crate::domain::{ProjectDetails, Publishable};
-use anyhow::Result;
-use domain::{
-	Amount, Budget, BudgetId, EntityRepository, Event, EventSourcable, GithubRepositoryId, Project,
-	ProjectId, Publisher, UniqueMessage, UserId, UuidGenerator,
-};
 use std::sync::Arc;
+
+use anyhow::Result;
+
+use domain::{
+	Amount, Budget, BudgetId, Event, EventSourcable, GithubRepositoryId, Project, ProjectId,
+	Publisher, UniqueMessage, UserId, UuidGenerator,
+};
+
+use crate::{
+	domain::{ProjectDetails, Publishable},
+	infrastructure::database::ProjectDetailsRepository,
+};
 
 pub struct Usecase {
 	uuid_generator: Arc<dyn UuidGenerator>,
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-	project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
+	project_details_repository: ProjectDetailsRepository,
 }
 
 impl Usecase {
 	pub fn new(
 		uuid_generator: Arc<dyn UuidGenerator>,
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		project_details_repository: Arc<dyn EntityRepository<ProjectDetails>>,
+		project_details_repository: ProjectDetailsRepository,
 	) -> Self {
 		Self {
 			uuid_generator,
