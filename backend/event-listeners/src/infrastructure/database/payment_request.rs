@@ -1,8 +1,9 @@
 use crate::domain::PaymentRequest;
+use derive_more::Constructor;
 use infrastructure::database::{schema::payment_requests::dsl, Client};
 use std::sync::Arc;
 
-#[derive(DieselRepository, new)]
+#[derive(DieselRepository, Constructor)]
 #[entity(PaymentRequest)]
 #[table(dsl::payment_requests)]
 #[id(dsl::id)]
