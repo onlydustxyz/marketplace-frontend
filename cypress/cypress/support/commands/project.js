@@ -21,7 +21,7 @@ Cypress.Commands.add(
             userId: "${userId}"
         )}`
             )
-            .its("body.data.createProject")
+            .data("createProject")
             .should("be.a", "string");
     }
 );
@@ -41,7 +41,7 @@ Cypress.Commands.add(
             telegramLink: "${telegramLink}",
         )}`
             )
-            .its("body.data.updateProject")
+            .data("updateProject")
             .should("equal", projectId);
     }
 );

@@ -1,7 +1,9 @@
+import { newRandomGithubUserId } from "../support/utils";
+
 describe("As a simple user, I", () => {
     let projectId;
     let budgetId;
-    const role_registered_user = "registered_user";
+    let leader;
 
     const STARKONQUEST_ID = 481932781;
 
@@ -16,13 +18,14 @@ describe("As a simple user, I", () => {
                 )
                 .then(($projectId) => {
                     cy.getProjectBudget($user, $projectId)
-                        .its("body.data.projectsByPk.budgets")
+                        .data("projectsByPk.budgets")
                         .its(0)
                         .its("id")
                         .should("be.a", "string")
                         .then(($budgetId) => {
                             projectId = $projectId;
                             budgetId = $budgetId;
+                            leader = $user;
                         });
                 })
         );
@@ -49,15 +52,55 @@ describe("As a simple user, I", () => {
                 }
               }`
             )
-                .its("body.data.projects")
+                .data("projects")
                 .should("be.a", "array");
         });
+    });
+
+    it("can get payment request as the recipient", () => {
+        const githubUserId = newRandomGithubUserId();
+
+        cy.requestPayment(leader, budgetId, "500", `${githubUserId}`, {}).then(
+            () => {
+                cy.createUser()
+                    .withGithubProvider(githubUserId)
+                    .then((user) => {
+                        cy.graphqlAsUser(
+                            user,
+                            `query {
+                                    paymentRequests {
+                                        id
+                                        recipientId
+                                        amountInUsd
+                                        budgetId
+                                        recipient {
+                                            userId
+                                        }
+                                    }
+                                }`
+                        )
+                            .data("paymentRequests")
+                            .should("be.a", "array")
+                            .its(0)
+                            .then((paymentRequest) => {
+                                expect(paymentRequest.recipientId).equal(
+                                    user.githubUserId
+                                );
+                                expect(paymentRequest.amountInUsd).equal(500);
+                                expect(paymentRequest.budgetId).equal(budgetId);
+                                expect(paymentRequest.recipient.userId).equal(
+                                    user.id
+                                );
+                            });
+                    });
+            }
+        );
     });
 
     it("can't request a payment", () => {
         cy.createUser().then((user) => {
             cy.requestPaymentNoassert(user, budgetId, "500", "55000", {})
-                .its("body.errors")
+                .errors()
                 .its(0)
                 .its("message")
                 .should("eq", "User is not authorized to perform this action");
@@ -97,7 +140,7 @@ describe("As a simple user, I", () => {
                 }
               }`
             )
-                .its("body.data.projectsByPk.githubRepo")
+                .data("projectsByPk.githubRepo")
                 .then((repo) => {
                     expect(repo.id).equal(STARKONQUEST_ID);
                     expect(repo.name).equal("starkonquest");
@@ -155,7 +198,7 @@ describe("As a simple user, I", () => {
                 identity,
                 payout_settings
             )
-                .its("body.data.updateProfileInfo")
+                .data("updateProfileInfo")
                 .should("eq", user.id)
                 .then(() => {
                     cy.graphqlAsAdmin(
@@ -168,7 +211,7 @@ describe("As a simple user, I", () => {
                       }
                   }`
                     )
-                        .its("body.data.userInfoByPk")
+                        .data("userInfoByPk")
                         .should("deep.eq", {
                             identity: {
                                 Person: {
@@ -207,7 +250,7 @@ describe("As a simple user, I", () => {
                       }
                   }`
                     )
-                        .its("body.data.userInfoByPk")
+                        .data("userInfoByPk")
                         .should("deep.eq", {
                             identity: {
                                 Person: {
