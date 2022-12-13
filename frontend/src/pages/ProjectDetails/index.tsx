@@ -6,6 +6,7 @@ import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useJwtRole } from "src/hooks/useJwtRole";
 import { HasuraUserRole } from "src/types";
+import { decodeBase64ToString } from "src/utils/stringUtils";
 import Overview from "./Overview";
 import Payments from "./PaymentActions";
 import Project from "./Project";
@@ -60,7 +61,7 @@ export default function ProjectDetails() {
             </Project>
             {selectedTab === ProjectDetailsTab.Overview && (
               <Overview
-                decodedReadme={decodeURIComponent(escape(atob(githubRepo.readme.content)))}
+                decodedReadme={decodeBase64ToString(githubRepo.readme.content)}
                 contributors={githubRepo.contributors}
                 repo={{ name: githubRepo.name, owner: githubRepo.owner }}
               />
