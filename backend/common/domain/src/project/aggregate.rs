@@ -96,6 +96,7 @@ impl Project {
 		if self.github_repo_id == github_repo_id {
 			return Err(Error::AlreadyProjectGithubRepository);
 		}
+
 		Ok(vec![ProjectEvent::GithubRepositoryUpdated {
 			id: self.id,
 			github_repo_id,
