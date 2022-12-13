@@ -1,6 +1,8 @@
 use crate::{
 	domain::{projections::Project, EventListener},
-	infrastructure::database::{ProjectLeadRepository, ProjectRepository},
+	infrastructure::database::{
+		ProjectLeadRepository, ProjectRepository, UpdateGitubRepoIdChangeset,
+	},
 };
 use anyhow::Result;
 use async_trait::async_trait;
@@ -33,12 +35,15 @@ impl EventListener for Projector {
 					name,
 					github_repo_id,
 				} => self.project_repository.insert(&Project::new(
-					(*id).into(),
+					*id,
 					name.to_owned(),
 					(*github_repo_id).into(),
 				))?,
 				ProjectEvent::LeaderAssigned { id, leader_id } =>
 					self.project_lead_repository.insert(id, leader_id)?,
+				ProjectEvent::GithubRepositoryUpdated { id, github_repo_id } => self
+					.project_repository
+					.update(id, UpdateGitubRepoIdChangeset::new(*github_repo_id))?,
 			}
 		}
 		Ok(())

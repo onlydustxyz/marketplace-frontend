@@ -13,6 +13,10 @@ pub enum Event {
 		id: ProjectId,
 		leader_id: UserId,
 	},
+	GithubRepositoryUpdated {
+		id: ProjectId,
+		github_repo_id: GithubRepositoryId,
+	},
 }
 
 impl Display for Event {

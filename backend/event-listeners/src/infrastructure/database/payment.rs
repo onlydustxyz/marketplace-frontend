@@ -38,7 +38,7 @@ mod tests {
 
 	#[rstest]
 	fn test_macro(repository: Repository) {
-		let payment_id = Uuid::new_v4();
+		let payment_id = Uuid::new_v4().into();
 		let payment = Payment::new(
 			payment_id,
 			dec!(500.45),

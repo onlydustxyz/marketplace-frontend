@@ -30,7 +30,7 @@ impl EventListener for Projector {
 					))?;
 				},
 				BudgetEvent::Spent { id, amount } => {
-					let id = (*id).into();
+					let id = *id;
 					let mut budget = self.budget_repository.find_by_id(&id)?;
 					budget.remaining_amount -= amount.amount();
 					self.budget_repository.update(&id, &budget)?;

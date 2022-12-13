@@ -10,6 +10,8 @@ use crate::*;
 pub enum Error {
 	#[error("Project lead already assigned to this project")]
 	LeaderAlreadyAssigned,
+	#[error("This was already the project github repository")]
+	AlreadyProjectGithubRepository,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, Getters, Dissolve, Constructor)]
@@ -53,6 +55,10 @@ impl EventSourcable for Project {
 				self.leaders.insert(*leader_id);
 				self
 			},
+			ProjectEvent::GithubRepositoryUpdated { github_repo_id, .. } => {
+				self.github_repo_id = *github_repo_id;
+				self
+			},
 		}
 	}
 }
@@ -82,6 +88,19 @@ impl Project {
 			leader_id,
 		}])
 	}
+
+	pub fn update_github_repository(
+		&self,
+		github_repo_id: GithubRepositoryId,
+	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+		if self.github_repo_id == github_repo_id {
+			return Err(Error::AlreadyProjectGithubRepository);
+		}
+		Ok(vec![ProjectEvent::GithubRepositoryUpdated {
+			id: self.id,
+			github_repo_id,
+		}])
+	}
 }
 
 #[cfg(test)]
@@ -102,6 +121,11 @@ mod tests {
 	#[fixture]
 	fn leader_id() -> UserId {
 		Uuid::from_str("f2e47686-6cfa-403d-be32-795c6aa78fff").unwrap().into()
+	}
+
+	#[fixture]
+	fn github_repo_id() -> GithubRepositoryId {
+		4324334i64.into()
 	}
 
 	#[fixture]
@@ -156,5 +180,40 @@ mod tests {
 
 		assert!(result.is_err());
 		assert_eq!(result.unwrap_err(), Error::LeaderAlreadyAssigned);
+	}
+
+	#[rstest]
+	fn test_update_github_repo(
+		project_created: ProjectEvent,
+		github_repo_id: GithubRepositoryId,
+		project_id: ProjectId,
+	) {
+		let project = Project::from_events(&[project_created]);
+
+		let events = project.update_github_repository(github_repo_id).unwrap();
+
+		assert_eq!(events.len(), 1);
+		assert_eq!(
+			events[0],
+			ProjectEvent::GithubRepositoryUpdated {
+				id: project_id,
+				github_repo_id
+			}
+		);
+	}
+
+	#[rstest]
+	fn test_set_github_repo_id_to_current_value(
+		project_created: ProjectEvent,
+		github_repo_id: GithubRepositoryId,
+	) {
+		let project = Project::from_events(&[project_created]);
+		let events = project.update_github_repository(github_repo_id).unwrap();
+		let project = project.apply_events(&events);
+
+		let result = project.update_github_repository(github_repo_id);
+
+		assert!(result.is_err());
+		assert_eq!(result.unwrap_err(), Error::AlreadyProjectGithubRepository);
 	}
 }

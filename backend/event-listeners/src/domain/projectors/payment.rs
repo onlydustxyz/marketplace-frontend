@@ -27,7 +27,7 @@ impl EventListener for Projector {
 		}) = event
 		{
 			self.repository.insert(&Payment::new(
-				(*receipt_id).into(),
+				*receipt_id,
 				*amount.amount(),
 				amount.currency().to_string(),
 				serde_json::to_value(receipt)?,
