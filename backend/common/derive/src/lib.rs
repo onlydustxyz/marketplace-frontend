@@ -21,9 +21,15 @@ pub fn diesel_repository(input: TokenStream) -> TokenStream {
 
 /// Parse a FromToSql derive macro.
 /// This macro implements the traits [ToSql](https://docs.rs/diesel/2.0.2/diesel/serialize/trait.ToSql.html) and
-/// [FromSql](https://docs.rs/diesel/2.0.2/diesel/deserialize/trait.FromSql.html). Requires the 'sql_type' attribute to be set.
+/// [FromSql](https://docs.rs/diesel/2.0.2/diesel/deserialize/trait.FromSql.html).
+///
+/// Requires the 'sql_type' attribute to be set.
+///
 /// Single field unnamed struct will be modelized as their inner type (newtype patter)
 /// Enum and named struct will be modelized as [serde_json::Value](https://docs.rs/serde_json/1.0.89/serde_json/enum.Value.html)
+///
+/// You may also need to derive FromSqlRow and AsExpression in order to use it in actual diesel
+/// queries.
 ///
 /// ```compile_fail
 /// # #[macro_use] extern crate derive;

@@ -1,18 +1,17 @@
 use super::Projection;
 use derive_more::Constructor;
-use domain::Entity;
+use domain::{Entity, ProjectId};
 use infrastructure::database::schema::projects;
-use uuid::Uuid;
 
 #[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, Constructor)]
 pub struct Project {
-	id: Uuid,
+	id: ProjectId,
 	name: String,
 	github_repo_id: i64,
 }
 
 impl Entity for Project {
-	type Id = Uuid;
+	type Id = ProjectId;
 }
 
 impl Projection for Project {}

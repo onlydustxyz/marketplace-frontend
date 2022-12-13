@@ -17,6 +17,7 @@ use serde::{Deserialize, Serialize};
 	Hash,
 	AsExpression,
 	FromToSql,
+	FromSqlRow,
 )]
 #[sql_type = "diesel::sql_types::Uuid"]
 pub struct Id(uuid::Uuid);
