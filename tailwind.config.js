@@ -4,5 +4,5 @@ module.exports = {
   theme: {
     extend: { fontFamily: { alfreda: ["Alfreda"], walsheim: ["GT Walsheim"] } },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };

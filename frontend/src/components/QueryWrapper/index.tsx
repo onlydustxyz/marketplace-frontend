@@ -1,5 +1,5 @@
 import { QueryResult } from "@apollo/client";
-import Loader from "src/components/Loader";
+import LoaderFallback from "src/components/LoaderFallback";
 import ErrorFallback from "../ErrorFallback";
 
 interface PropsType extends React.PropsWithChildren {
@@ -13,7 +13,7 @@ const QueryWrapper: React.FC<React.PropsWithChildren<PropsType>> = ({ query, chi
   }
   return (
     <>
-      {loading && <Loader />}
+      {loading && <LoaderFallback />}
       {data && children}
       {error && <ErrorFallback />}
     </>

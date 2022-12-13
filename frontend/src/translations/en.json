@@ -73,7 +73,16 @@
     }
   },
   "project": {
-    "remainingBudget": "Remaining budget"
+    "remainingBudget": "Remaining budget",
+    "details": {
+      "overview": {
+        "technologies": "Technologies",
+        "projectLeader": "Project Leader",
+        "contributors": "Contributors",
+        "githubLinkTitle": "GitHub",
+        "githubLinkContent": "Link"
+      }
+    }
   },
   "seniority": {
     "levels": {

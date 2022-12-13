@@ -36,6 +36,11 @@ const TEST_PROJECT_ID = "test-project-id";
 const TEST_PROJECT_NAME = "test-project-name";
 const TEST_TELEGRAM_LINK = "test-link";
 const TEST_DESCRIPTION = "test-description";
+const TEST_GITHUB_REPO_NAME = "test-github-repo-name";
+const TEST_GITHUB_REPO_OWNER = "test-github-repo-owner";
+const TEST_GITHUB_REPO_CONTENT = "test-github-repo-content";
+const TEST_GITHUB_CONTRIBUTOR_LOGIN = "test-github-contributor-login";
+const TEST_GITHUB_LINK = `github.com/${TEST_GITHUB_REPO_OWNER}/${TEST_GITHUB_REPO_NAME}`;
 
 expect.extend(matchers);
 
@@ -112,6 +117,14 @@ const graphQlMocks = [
         projectsByPk: {
           name: TEST_PROJECT_NAME,
           projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
+          githubRepo: {
+            name: TEST_GITHUB_REPO_NAME,
+            owner: TEST_GITHUB_REPO_OWNER,
+            readme: {
+              content: btoa(TEST_GITHUB_REPO_CONTENT),
+            },
+            contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+          },
         },
       },
     },
@@ -188,6 +201,15 @@ describe('"Login" page', () => {
     userEvent.click(await screen.findByText(TEST_PROJECT_NAME));
     await waitFor(() => {
       screen.getByText(ProjectDetailsTab.Overview);
+      screen.getByText(TEST_GITHUB_CONTRIBUTOR_LOGIN);
+      screen.getByText(TEST_GITHUB_REPO_CONTENT);
+      expect(
+        screen
+          .getByRole("link", {
+            name: /link/i,
+          })
+          .getAttribute("href")
+      ).toEqual(TEST_GITHUB_LINK);
     });
 
     expect(screen.queryByText(ProjectDetailsTab.Payments)).not.toBeInTheDocument();
