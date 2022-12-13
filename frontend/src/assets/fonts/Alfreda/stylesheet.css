@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "Alfreda";
+  src: url("alfreda-regular.woff") format("woff");
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Alfreda";
+  src: url("alfreda-bold.woff") format("woff");
+  font-style: bold;
+}
