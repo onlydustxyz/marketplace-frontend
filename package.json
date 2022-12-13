@@ -1,7 +1,6 @@
 {
-  "name": "marketplace-frontend-v2",
-  "private": true,
-  "version": "0.0.0",
+  "name": "marketplace",
+  "version": "2.0.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -9,7 +8,6 @@
     "test": "vitest",
     "lint": "eslint '**/*.{js,jsx,json,ts,tsx}'",
     "test:coverage": "vitest --coverage",
-    "postinstall": "husky install",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "chromatic": "npx chromatic --project-token=2118ca8bdd40"
@@ -30,7 +28,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
-    "@commitlint/config-conventional": "^17.2.0",
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^2.0.13",
     "@storybook/addon-actions": "^6.5.13",
@@ -52,15 +49,12 @@
     "@vitest/coverage-c8": "^0.25.1",
     "babel-loader": "^9.1.0",
     "chromatic": "^6.11.4",
-    "commitlint": "^17.2.0",
     "eslint": "^8.27.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.10",
     "eslint-plugin-storybook": "^0.6.7",
-    "husky": "^8.0.2",
     "jsdom": "^20.0.2",
-    "lint-staged": "^13.0.3",
     "postcss": "^8.4.18",
     "prettier": "^2.7.1",
     "react-hook-form": "^7.40.0",
@@ -68,7 +62,5 @@
     "typescript": "^4.6.4",
     "vite": "^3.2.3",
     "vitest": "^0.25.1"
-  },
-  "readme": "ERROR: No README data found!",
-  "_id": "marketplace-frontend-v2@0.0.0"
+  }
 }
