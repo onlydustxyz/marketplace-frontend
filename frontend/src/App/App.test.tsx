@@ -12,6 +12,7 @@ import { GET_PROFILE_QUERY } from "src/pages/Profile";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { GET_MY_PROJECT_QUERY } from "src/pages/MyProjects";
 import { ProjectDetailsTab, GET_PROJECT_USER_QUERY } from "src/pages/ProjectDetails";
+import { buildGithubLink } from "src/utils/stringUtils";
 
 const AUTH_CODE_TEST_VALUE = "code";
 const LOGGING_IN_TEXT_QUERY = /logging in.../i;
@@ -40,7 +41,7 @@ const TEST_GITHUB_REPO_NAME = "test-github-repo-name";
 const TEST_GITHUB_REPO_OWNER = "test-github-repo-owner";
 const TEST_GITHUB_REPO_CONTENT = "test-github-repo-content";
 const TEST_GITHUB_CONTRIBUTOR_LOGIN = "test-github-contributor-login";
-const TEST_GITHUB_LINK = `github.com/${TEST_GITHUB_REPO_OWNER}/${TEST_GITHUB_REPO_NAME}`;
+const TEST_GITHUB_LINK = buildGithubLink(TEST_GITHUB_REPO_OWNER, TEST_GITHUB_REPO_NAME);
 
 expect.extend(matchers);
 
@@ -70,6 +71,11 @@ const graphQlMocks = [
             id: TEST_PROJECT_ID,
             name: TEST_PROJECT_NAME,
             projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
+            githubRepo: {
+              name: TEST_GITHUB_REPO_NAME,
+              owner: TEST_GITHUB_REPO_OWNER,
+              contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+            },
           },
         ],
       },
@@ -101,6 +107,11 @@ const graphQlMocks = [
           name: TEST_PROJECT_NAME,
           budgets: [{ initialAmount: 500, remainingAmount: 300 }],
           projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
+          githubRepo: {
+            name: TEST_GITHUB_REPO_NAME,
+            owner: TEST_GITHUB_REPO_OWNER,
+            contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+          },
         },
       },
     },

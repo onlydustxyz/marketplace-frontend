@@ -1,7 +1,7 @@
-import ProjectCard from "src/components/Card";
+import Card from "src/components/Card";
 import ProjectInformation from "src/components/ProjectInformation";
 
-interface MyProjectProps {
+interface ProjectCardProps {
   name: string;
   budget?: {
     remainingAmount: number;
@@ -11,12 +11,16 @@ interface MyProjectProps {
     description: string;
     telegramLink: string;
   };
+  githubRepoInfo: {
+    githubLink: string;
+    contributors: { login: string }[];
+  };
 }
 
-export default function MyProject(props: MyProjectProps) {
+export default function ProjectCard(props: ProjectCardProps) {
   return (
-    <ProjectCard selectable={true}>
+    <Card selectable={true}>
       <ProjectInformation {...props} />
-    </ProjectCard>
+    </Card>
   );
 }
