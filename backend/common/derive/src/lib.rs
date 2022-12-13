@@ -1,7 +1,7 @@
 extern crate proc_macro;
 
 use proc_macro::TokenStream;
-use syn::{parse::Parse, DeriveInput, Result};
+use syn::{parse::Parse, DeriveInput};
 
 mod diesel_mapping_repository;
 mod diesel_repository;
@@ -9,12 +9,14 @@ mod from_to_sql;
 
 #[proc_macro_derive(DieselMappingRepository, attributes(table, entities, ids))]
 pub fn diesel_mapping_repository(input: TokenStream) -> TokenStream {
-	diesel_mapping_repository::derive(input)
+	let derive_input: DeriveInput = syn::parse(input).unwrap();
+	diesel_mapping_repository::impl_diesel_mapping_repository(derive_input)
 }
 
 #[proc_macro_derive(DieselRepository, attributes(entity, table, id))]
 pub fn diesel_repository(input: TokenStream) -> TokenStream {
-	diesel_repository::derive(input)
+	let derive_input: DeriveInput = syn::parse(input).unwrap();
+	diesel_repository::impl_diesel_repository(derive_input)
 }
 
 /// Parse a FromToSql derive macro.
@@ -49,14 +51,15 @@ pub fn diesel_repository(input: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro_derive(FromToSql, attributes(sql_type))]
 pub fn to_sql(input: TokenStream) -> TokenStream {
-	let ast: DeriveInput = syn::parse(input).unwrap();
-	from_to_sql::impl_from_to_sql_macro(ast)
+	let derive_input: DeriveInput = syn::parse(input).unwrap();
+	from_to_sql::impl_from_to_sql_macro(derive_input)
 }
 
-fn find_attr<T: Parse>(ast: &DeriveInput, attr_name: &str) -> Result<T> {
+fn find_attr<T: Parse>(ast: &DeriveInput, attr_name: &str) -> T {
 	ast.attrs
 		.iter()
 		.find(|a| a.path.is_ident(attr_name))
 		.unwrap_or_else(|| panic!("{attr_name} keyword not found"))
 		.parse_args()
+		.unwrap_or_else(|e| panic!("Failed to parse attribute {attr_name}: {e}"))
 }

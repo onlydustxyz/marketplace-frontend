@@ -1,8 +1,8 @@
 use proc_macro::TokenStream;
 use quote::quote;
 
-pub fn impl_from_to_sql_macro(ast: syn::DeriveInput) -> TokenStream {
-	let derivation_pattern = deduce_derivation_pattern(ast);
+pub fn impl_from_to_sql_macro(derive_input: syn::DeriveInput) -> TokenStream {
+	let derivation_pattern = deduce_derivation_pattern(derive_input);
 	derivation_pattern.expand()
 }
 

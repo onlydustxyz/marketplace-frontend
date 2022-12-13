@@ -1,52 +1,22 @@
 use super::find_attr;
-use derive_getters::Dissolve;
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{
-	parse::{Parse, ParseStream},
-	parse_macro_input, DeriveInput, Ident, Result, TypePath,
-};
+use syn::TypePath;
 
-#[derive(Dissolve)]
-struct Input {
-	repository_name: Ident,
-	entity_type: TypePath,
-	table: TypePath,
-	id: TypePath,
-}
-
-/**
- * Parse a Diesel Repository derive macro
- *
- * #[derive(DieselRepository)]
- * #[entity(Payment)]
- * #[table(infrastructure::database::schema::payments::dsl::payments)]
- * #[id(infrastructure::database::schema::payments::dsl::id)]
- * struct Repository(Client);
- */
-impl Parse for Input {
-	fn parse(input: ParseStream) -> Result<Self> {
-		let ast: DeriveInput = input.parse()?;
-
-		Ok(Self {
-			repository_name: ast.ident.clone(),
-			entity_type: find_attr(&ast, "entity")?,
-			table: find_attr(&ast, "table")?,
-			id: find_attr(&ast, "id")?,
-		})
-	}
-}
-
-pub fn derive(input: TokenStream) -> TokenStream {
+pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 	// Parse the input into an ast
-	let input = parse_macro_input!(input as Input);
-	let (repository_name, entity_type, table, id) = input.dissolve();
+	let repository_name = derive_input.ident.clone();
+	let entity_type: TypePath = find_attr(&derive_input, "entity");
+	let table: TypePath = find_attr(&derive_input, "table");
+	let id: TypePath = find_attr(&derive_input, "id");
 
 	// Build the output, possibly using quasi-quotation
 	let expanded = quote! {
-		use crate::diesel::RunQueryDsl;
-		use crate::diesel::ExpressionMethods;
-		use crate::diesel::query_dsl::filter_dsl::FindDsl;
+		use diesel::RunQueryDsl;
+		use diesel::ExpressionMethods;
+		use diesel::query_dsl::filter_dsl::FindDsl;
+		use diesel::query_builder::{AsChangeset, QueryFragment};
+		use diesel::pg::Pg;
 
 		impl #repository_name {
 			pub fn find_by_id(&self, id: &<#entity_type as ::domain::Entity>::Id) -> anyhow::Result<#entity_type> {
@@ -61,7 +31,7 @@ pub fn derive(input: TokenStream) -> TokenStream {
 				Ok(())
 			}
 
-			pub fn update(&self, id: &<#entity_type as ::domain::Entity>::Id, entity: &#entity_type) -> anyhow::Result<()> {
+			pub fn update<A: AsChangeset<Target = #table, Changeset = C>, C: QueryFragment<Pg>>(&self, id: &<#entity_type as ::domain::Entity>::Id, entity: A) -> anyhow::Result<()> {
 				let connection = self.0.connection()?;
 				diesel::update(#table)
 					.filter(#id.eq(id))
