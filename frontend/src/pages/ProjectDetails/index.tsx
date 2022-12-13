@@ -59,7 +59,7 @@ export default function ProjectDetails() {
                 </div>
               ))}
             </Project>
-            {selectedTab === ProjectDetailsTab.Overview && (
+            {selectedTab === ProjectDetailsTab.Overview && githubRepo?.readme?.content && (
               <Overview
                 decodedReadme={decodeBase64ToString(githubRepo.readme.content)}
                 contributors={githubRepo.contributors}
@@ -80,10 +80,8 @@ const GITHUB_REPO_FIELDS_FRAGMENT = gql`
     owner
     readme {
       content
-      encoding
     }
     contributors {
-      avatarUrl
       login
     }
   }
