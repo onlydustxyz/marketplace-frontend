@@ -3,6 +3,7 @@ use anyhow::Result;
 use presentation::http;
 use std::sync::Arc;
 
+mod dto;
 mod routes;
 
 pub async fn serve(config: http::Config, github_service: Arc<dyn GithubService>) -> Result<()> {
@@ -10,6 +11,7 @@ pub async fn serve(config: http::Config, github_service: Arc<dyn GithubService>)
 		.manage(config)
 		.manage(github_service)
 		.mount("/", routes![http::routes::health_check,])
+		.mount("/", routes![routes::github::get,])
 		.mount(
 			"/",
 			routes![
