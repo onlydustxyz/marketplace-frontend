@@ -8,12 +8,18 @@
     "test": "vitest",
     "lint": "eslint '**/*.{js,jsx,json,ts,tsx}'",
     "test:coverage": "vitest --coverage",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "TS_NODE_IGNORE=* start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "chromatic": "npx chromatic --project-token=2118ca8bdd40"
+    "chromatic": "npx chromatic --project-token=2118ca8bdd40",
+    "generate": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",
+    "@graphql-codegen/cli": "^2.16.1",
+    "@graphql-codegen/introspection": "^2.2.3",
+    "@graphql-codegen/typescript": "^2.8.5",
+    "@graphql-codegen/typescript-operations": "^2.5.10",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.7",
     "axios": "^1.1.3",
     "classnames": "^2.3.2",
     "graphql": "^16.6.0",

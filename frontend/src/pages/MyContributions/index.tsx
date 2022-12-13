@@ -5,14 +5,15 @@ import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { useUser } from "src/hooks/useUser";
 import { HasuraUserRole } from "src/types";
+import { GetPaymentRequestsQuery } from "src/__generated/graphql";
 
 const MyContributions = () => {
   const { githubId } = useUser();
-  const query = useHasuraQuery(GET_MY_CONTRIBUTIONS_QUERY, HasuraUserRole.RegisteredUser, {
-    variables: { userId: githubId },
+  const query = useHasuraQuery<GetPaymentRequestsQuery>(GET_MY_CONTRIBUTIONS_QUERY, HasuraUserRole.RegisteredUser, {
+    variables: { githubId },
   });
   const { data } = query;
-  const payments = data?.paymentRequests?.map(mapApiPaymentsToProps) ?? null;
+  const payments = data?.paymentRequests?.map(mapApiPaymentsToProps);
   const hasPayments = payments && payments.length > 0;
   const { T } = useIntl();
 
@@ -24,8 +25,8 @@ const MyContributions = () => {
 };
 
 export const GET_MY_CONTRIBUTIONS_QUERY = gql`
-  query GetPaymentRequests($userId: uuid!) {
-    paymentRequests(where: { recipientId: { _eq: $userId } }) {
+  query GetPaymentRequests($githubId: bigint!) {
+    paymentRequests(where: { recipientId: { _eq: $githubId } }) {
       id
       payments {
         amount

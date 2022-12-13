@@ -10,6 +10,8 @@ on:
 jobs:
   chromatic-deployment:
     runs-on: ubuntu-latest
+    env:
+      TS_NODE_IGNORE: '*'
     defaults:
       run:
         working-directory: ./frontend

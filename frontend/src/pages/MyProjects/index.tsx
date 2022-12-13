@@ -1,12 +1,13 @@
 import { gql } from "@apollo/client";
 import { Link } from "react-router-dom";
-import ProjectCard from "src/components/ProjectCard";
+import Card from "src/components/Card";
+import ProjectInformation from "src/components/ProjectInformation";
 import { GITHUB_REPO_FIELDS_FOR_PROJECT_CARD_FRAGMENT } from "src/graphql/fragments";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useJwtRole } from "src/hooks/useJwtRole";
 import { HasuraUserRole } from "src/types";
-import { buildGithubLink } from "src/utils/stringUtils";
+import { MyProjectQuery } from "src/__generated/graphql";
 
 export default function MyProjects() {
   const { hasuraToken } = useAuth();
@@ -27,23 +28,24 @@ interface MyProjectContainerProps {
 }
 
 function MyProjectContainer({ projectId }: MyProjectContainerProps) {
-  const query = useHasuraQuery(GET_MY_PROJECT_QUERY, HasuraUserRole.RegisteredUser, {
+  const query = useHasuraQuery<MyProjectQuery>(GET_MY_PROJECT_QUERY, HasuraUserRole.RegisteredUser, {
     variables: { id: projectId },
   });
-  const project = query?.data?.projectsByPk;
-  const githubRepo = project?.githubRepo;
+  const project = query.data?.projectsByPk;
   return (
     <>
       {project && (
-        <ProjectCard
-          name={project.name}
-          budget={project?.budgets[0]}
-          details={project?.projectDetails}
-          githubRepoInfo={{
-            contributors: githubRepo.contributors,
-            githubLink: buildGithubLink(githubRepo.owner, githubRepo.name),
-          }}
-        />
+        <Card>
+          <ProjectInformation
+            name={project.name}
+            budget={project?.budgets[0]}
+            details={{
+              description: project?.projectDetails?.description,
+              telegramLink: project?.projectDetails?.telegramLink,
+            }}
+            githubRepoInfo={{ ...project.githubRepo }}
+          />
+        </Card>
       )}
     </>
   );
