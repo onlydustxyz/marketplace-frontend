@@ -1,8 +1,9 @@
 use crate::domain::Project;
+use derive_more::Constructor;
 use infrastructure::database::{schema::projects::dsl, Client};
 use std::sync::Arc;
 
-#[derive(DieselRepository, new)]
+#[derive(DieselRepository, Constructor)]
 #[entity(Project)]
 #[table(dsl::projects)]
 #[id(dsl::id)]

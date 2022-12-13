@@ -1,8 +1,9 @@
 use super::Permissions;
+use derive_more::Constructor;
 use domain::{BudgetId, ProjectId};
 use std::collections::HashSet;
 
-#[derive(new)]
+#[derive(Constructor)]
 pub(super) struct IdentifiedUser {
 	projects: HashSet<ProjectId>,
 	budgets: HashSet<BudgetId>,

@@ -1,6 +1,7 @@
 use anyhow::Result;
 use async_trait::async_trait;
 
+use derive_more::Constructor;
 use domain::{BudgetEvent, BudgetTopic, Event, MappingRepository};
 
 use crate::{
@@ -8,7 +9,7 @@ use crate::{
 	infrastructure::database::{BudgetRepository, BudgetSpenderRepository},
 };
 
-#[derive(new)]
+#[derive(Constructor)]
 pub struct Projector {
 	budget_repository: BudgetRepository,
 	budget_spender_repository: BudgetSpenderRepository,

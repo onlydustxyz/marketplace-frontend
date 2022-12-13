@@ -12,9 +12,6 @@ pub use config::Config;
 extern crate rocket;
 
 #[macro_use]
-extern crate derive_new;
-
-#[macro_use]
 extern crate diesel;
 
 #[macro_use]
