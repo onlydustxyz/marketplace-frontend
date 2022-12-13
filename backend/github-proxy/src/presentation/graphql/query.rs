@@ -1,5 +1,5 @@
 use super::Context;
-use crate::domain::GithubRepository;
+use crate::domain::{GithubRepository, GithubUser};
 use juniper::{graphql_object, FieldResult};
 
 pub struct Query;
@@ -17,5 +17,14 @@ impl Query {
 	) -> FieldResult<GithubRepository> {
 		let repository = context.github_service.fetch_repository_by_id(id as u64).await?;
 		Ok(repository)
+	}
+
+	pub async fn fetch_user_details(
+		&self,
+		context: &Context,
+		username: String,
+	) -> FieldResult<GithubUser> {
+		let user = context.github_service.fetch_user_by_name(&username).await?;
+		Ok(user)
 	}
 }

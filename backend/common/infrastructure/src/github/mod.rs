@@ -1,6 +1,6 @@
 use anyhow::{anyhow, Result};
 use octocrab::{
-	models::{repos::Content, Repository},
+	models::{repos::Content, Repository, User},
 	FromResponse, Octocrab,
 };
 use serde::Deserialize;
@@ -33,6 +33,10 @@ impl Client {
 
 	pub async fn get_repository_by_id(&self, id: u64) -> Result<Repository> {
 		self.get_as(format!("{}repositories/{id}", self.0.base_url)).await
+	}
+
+	pub async fn get_user_by_name(&self, username: &str) -> Result<User> {
+		self.get_as(format!("{}users/{username}", self.0.base_url)).await
 	}
 
 	pub async fn get_raw_file(&self, repo: &Repository, path: &str) -> Result<Content> {
