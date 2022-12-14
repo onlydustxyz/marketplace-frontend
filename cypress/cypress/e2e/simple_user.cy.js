@@ -16,6 +16,8 @@ describe("As a simple user, I", () => {
                     1000,
                     STARKONQUEST_ID
                 )
+                .asAdmin()
+                .data("createProject")
                 .then(($projectId) => {
                     cy.getProjectBudget($projectId)
                         .asRegisteredUser($user)
