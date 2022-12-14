@@ -20,25 +20,27 @@ Cypress.Commands.add("createUser", () => {
         failOnStatusCode: false,
     }).then(() => {
         return cy
-            .graphqlAsAdmin(
+            .graphql(
                 `{
-                users(where: {email: {_eq: "${email}"}}) {
-                    id
-                }
-            }`
+                    users(where: {email: {_eq: "${email}"}}) {
+                        id
+                    }
+                }`
             )
+            .asAdmin()
             .data("users")
             .its(0)
             .its("id")
             .should("be.a", "string")
             .then((userId) => {
-                cy.graphqlAsAdmin(
+                cy.graphql(
                     `mutation {
-                    updateUser(pk_columns: {id: "${userId}"}, _set: {emailVerified: true}) {
-                      id
-                    }
-                  }`
+                        updateUser(pk_columns: {id: "${userId}"}, _set: {emailVerified: true}) {
+                        id
+                        }
+                    }`
                 )
+                    .asAdmin()
                     .data("updateUser.id")
                     .should("be.a", "string")
                     .then(() => {
@@ -58,14 +60,15 @@ Cypress.Commands.add(
         prevSubject: true,
     },
     (user, githubUserId) => {
-        cy.graphqlAsAdmin(
+        cy.graphql(
             `mutation {
-        insertAuthUserProvider( object: {userId: "${user.id}", providerId: "github", providerUserId: "${githubUserId}", accessToken: "fake-token"},
-                                onConflict: {constraint: user_providers_provider_id_provider_user_id_key, update_columns: accessToken}) {
-            id
-        }
-      }`
+                insertAuthUserProvider( object: {userId: "${user.id}", providerId: "github", providerUserId: "${githubUserId}", accessToken: "fake-token"},
+                                        onConflict: {constraint: user_providers_provider_id_provider_user_id_key, update_columns: accessToken}) {
+                    id
+                }
+            }`
         )
+            .asAdmin()
             .data()
             .its("insertAuthUserProvider.id")
             .should("be.a", "string")
@@ -93,12 +96,9 @@ Cypress.Commands.add("signinUser", (user) => {
 
 Cypress.Commands.add(
     "updateProfileInfo",
-    (requestor, email, location, identity, payout_settings) => {
-        return cy.graphqlAsUser(
-            requestor,
-            `mutation {
-        updateProfileInfo(email: "${email}", identity: ${identity}, location: ${location}, payoutSettings: ${payout_settings})
-    }`
-        );
+    (email, location, identity, payout_settings) => {
+        return `mutation {
+            updateProfileInfo(email: "${email}", identity: ${identity}, location: ${location}, payoutSettings: ${payout_settings})
+        }`;
     }
 );

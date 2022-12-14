@@ -36,8 +36,7 @@ describe("As a simple user, I", () => {
 
     it("can get projects with some details", () => {
         cy.createUser().then((user) => {
-            cy.graphqlAsUser(
-                user,
+            cy.graphql(
                 `query {
                 projects {
                   name
@@ -55,6 +54,7 @@ describe("As a simple user, I", () => {
                 }
               }`
             )
+                .asRegisteredUser(user)
                 .data("projects")
                 .should("be.a", "array");
         });
@@ -70,8 +70,7 @@ describe("As a simple user, I", () => {
                 cy.createUser()
                     .withGithubProvider(githubUserId)
                     .then((user) => {
-                        cy.graphqlAsUser(
-                            user,
+                        cy.graphql(
                             `query {
                                     paymentRequests {
                                         id
@@ -84,6 +83,7 @@ describe("As a simple user, I", () => {
                                     }
                                 }`
                         )
+                            .asRegisteredUser(user)
                             .data("paymentRequests")
                             .should("be.a", "array")
                             .its(0)
@@ -124,8 +124,7 @@ describe("As a simple user, I", () => {
 
     it("can fetch github repository details from a project", () => {
         cy.createUser().then((user) => {
-            cy.graphqlAsUser(
-                user,
+            cy.graphql(
                 `{
                 projectsByPk(id: "${projectId}") {
                   githubRepo {
@@ -145,6 +144,7 @@ describe("As a simple user, I", () => {
                 }
               }`
             )
+                .asRegisteredUser(user)
                 .data("projectsByPk.githubRepo")
                 .then((repo) => {
                     expect(repo.id).equal(STARKONQUEST_ID);
@@ -164,8 +164,7 @@ describe("As a simple user, I", () => {
 
     it("can fetch github user details from name", () => {
         cy.createUser().then((user) => {
-            cy.graphqlAsUser(
-                user,
+            cy.graphql(
                 `{
                     fetchUserDetails(username: "abuisset") {
                       id
@@ -173,8 +172,8 @@ describe("As a simple user, I", () => {
                       avatarUrl
                     }
                   }`
-            )
-                .its("body.data.fetchUserDetails")
+            ).asRegisteredUser(user)
+                .data("fetchUserDetails")
                 .then((user) => {
                     expect(user.id).equal(990474);
                     expect(user.login).equal("abuisset");
@@ -196,17 +195,12 @@ describe("As a simple user, I", () => {
         let new_payout_settings =
             '{type: ETHEREUM_ADDRESS, optEthAddress: "0x456"}';
         cy.createUser().then((user) => {
-            cy.updateProfileInfo(
-                user,
-                email,
-                location,
-                identity,
-                payout_settings
-            )
+            cy.updateProfileInfo(email, location, identity, payout_settings)
+                .asRegisteredUser(user)
                 .data("updateProfileInfo")
                 .should("eq", user.id)
                 .then(() => {
-                    cy.graphqlAsAdmin(
+                    cy.graphql(
                         `{
                     userInfoByPk(userId: "${user.id}") {
                         identity
@@ -216,6 +210,7 @@ describe("As a simple user, I", () => {
                       }
                   }`
                     )
+                        .asAdmin()
                         .data("userInfoByPk")
                         .should("deep.eq", {
                             identity: {
@@ -236,16 +231,18 @@ describe("As a simple user, I", () => {
                         });
                 })
                 .then(() =>
-                    cy.updateProfileInfo(
-                        user,
-                        email,
-                        location,
-                        identity,
-                        new_payout_settings
-                    )
+                    cy
+                        .updateProfileInfo(
+                            email,
+                            location,
+                            identity,
+                            new_payout_settings
+                        )
+                        .asRegisteredUser(user)
+                        .data()
                 )
                 .then(() => {
-                    cy.graphqlAsAdmin(
+                    cy.graphql(
                         `{
                     userInfoByPk(userId: "${user.id}") {
                         identity
@@ -255,6 +252,7 @@ describe("As a simple user, I", () => {
                       }
                   }`
                     )
+                        .asAdmin()
                         .data("userInfoByPk")
                         .should("deep.eq", {
                             identity: {

@@ -17,6 +17,7 @@ describe("As an admin, on retool, I", () => {
                     }
                   }`
                     )
+                        .asAnonymous()
                         .data("projectsByPk")
                         .its("githubRepoId")
                         .should("equal", 1234);
@@ -30,6 +31,7 @@ describe("As an admin, on retool, I", () => {
                         }
                       }`
                     )
+                        .asAnonymous()
                         .data("projectsByPk.projectLeads")
                         .its(0)
                         .its("userId")
@@ -42,6 +44,7 @@ describe("As an admin, on retool, I", () => {
                     }
                 }`
                     )
+                        .asAnonymous()
                         .its("body")
                         .should("deep.equal", {
                             data: {
@@ -74,6 +77,7 @@ describe("As an admin, on retool, I", () => {
                     }
                   }`
                                 )
+                                .asAnonymous()
                                 .data("projectsByPk.projectDetails")
                                 .its("description")
                                 .should("equal", "new description")

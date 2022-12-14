@@ -32,25 +32,27 @@ describe("As a project leader, I", () => {
                 .data("requestPayment")
                 .then((paymentId) => {
                     cy.wait(500);
-                    cy.graphqlAsAdmin(
+                    cy.graphql(
                         `{
                             paymentRequestsByPk(id: "${paymentId}") {
                       id
                     }
                   }`
                     )
+                        .asAdmin()
                         .data("paymentRequestsByPk.id")
                         .should("be.a", "string");
                 })
                 .then(() => {
                     cy.wait(500);
-                    cy.graphqlAsAdmin(
+                    cy.graphql(
                         `{
                     budgetsByPk(id:"${budgetId}") {
                       remainingAmount
                     }
                   }`
                     )
+                        .asAdmin()
                         .data("budgetsByPk.remainingAmount")
                         .should("equal", 500);
                 });
