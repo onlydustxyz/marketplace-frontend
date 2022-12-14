@@ -3,8 +3,10 @@ describe("As an admin, on retool, I", () => {
         const projectName = "Cypress test project";
 
         cy.createUser().then((user) => {
-            cy.createProject(user.id, projectName, 500, 1234).then(
-                (projectId) => {
+            cy.createProject(user.id, projectName, 500, 1234)
+                .asAdmin()
+                .data("createProject")
+                .then((projectId) => {
                     // Let the event sourcing magic happen
                     cy.wait(500);
 
@@ -46,8 +48,7 @@ describe("As an admin, on retool, I", () => {
                                 projects: [{ name: projectName }],
                             },
                         });
-                }
-            );
+                });
         });
     });
 
@@ -55,6 +56,8 @@ describe("As an admin, on retool, I", () => {
         cy.createUser().then((user) =>
             cy
                 .createProject(user.id, "Another project", 500, 1234)
+                .asAdmin()
+                .data("createProject")
                 .then((projectId) =>
                     cy
                         .updateProject(projectId, "new description")

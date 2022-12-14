@@ -7,6 +7,8 @@ describe("As a project leader, I", () => {
         cy.createUser().then(($user) =>
             cy
                 .createProject($user.id, "Project with budget", 1000)
+                .asAdmin()
+                .data("createProject")
                 .then(($projectId) => {
                     cy.getProjectBudget($projectId)
                         .asRegisteredUser($user)

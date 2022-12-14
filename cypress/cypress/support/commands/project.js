@@ -10,19 +10,14 @@ Cypress.Commands.add(
         description = "My project description",
         telegramLink = "https://t.me/foo"
     ) => {
-        return cy
-            .graphqlAsAdmin(
-                `mutation{ createProject(
+        return `mutation{ createProject(
             name: "${projectName}",
             initialBudgetInUsd: ${initialBudget},
             githubRepoId: ${githubRepoId},
             description: "${description}",
             telegramLink: "${telegramLink}",
             userId: "${userId}"
-        )}`
-            )
-            .data("createProject")
-            .should("be.a", "string");
+        )}`;
     }
 );
 
