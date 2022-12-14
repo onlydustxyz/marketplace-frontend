@@ -31,7 +31,7 @@ async fn main() -> Result<()> {
 	let config: Config = config::load("backend/github-proxy/app.yaml")?;
 	let _tracer = Tracer::init(&config.tracer, "github-proxy")?;
 
-	let github_client = Arc::new(github::Client::new(config.github)?);
+	let github_client = Arc::new(github::Client::new(&config.github)?);
 	http::serve(config.http, github_client).await?;
 
 	info!("👋 Gracefully shut down");

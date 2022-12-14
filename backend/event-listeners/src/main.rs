@@ -8,7 +8,7 @@ use event_listeners::{
 	Config,
 };
 use futures::future::try_join_all;
-use infrastructure::tracing::Tracer;
+use infrastructure::{github, tracing::Tracer};
 use tokio::task::JoinHandle;
 
 #[tokio::main]
@@ -21,9 +21,10 @@ async fn main() -> Result<()> {
 	let database = Arc::new(database::Client::new(database::init_pool(
 		config.database(),
 	)?));
+	let github = Arc::new(github::Client::new(config.github())?);
 
 	let mut handles = vec![spawn_web_server()?];
-	handles.extend(listeners::spawn_all(&config, reqwest, database).await?);
+	handles.extend(listeners::spawn_all(&config, reqwest, database, github).await?);
 	try_join_all(handles).await?;
 
 	Ok(())

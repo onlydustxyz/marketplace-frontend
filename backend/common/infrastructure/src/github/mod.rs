@@ -17,11 +17,11 @@ pub struct Config {
 pub struct Client(Octocrab);
 
 impl Client {
-	pub fn new(config: Config) -> Result<Self> {
+	pub fn new(config: &Config) -> Result<Self> {
 		let instance = Octocrab::builder()
-			.base_url(config.base_url)?
-			.personal_token(config.personal_access_token)
-			.add_headers(config.headers)?
+			.base_url(&config.base_url)?
+			.personal_token(config.personal_access_token.clone())
+			.add_headers(&config.headers)?
 			.build()?;
 		Ok(Self(instance))
 	}
@@ -67,13 +67,13 @@ impl Client {
 }
 
 trait AddHeaders: Sized {
-	fn add_headers(self, headers: HashMap<String, String>) -> Result<Self>;
+	fn add_headers(self, headers: &HashMap<String, String>) -> Result<Self>;
 }
 
 impl AddHeaders for OctocrabBuilder {
-	fn add_headers(mut self, headers: HashMap<String, String>) -> Result<Self> {
+	fn add_headers(mut self, headers: &HashMap<String, String>) -> Result<Self> {
 		for (key, value) in headers {
-			self = self.add_header(key.parse()?, value);
+			self = self.add_header(key.parse()?, value.clone());
 		}
 		Ok(self)
 	}
