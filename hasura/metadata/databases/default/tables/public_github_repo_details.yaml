@@ -1,0 +1,12 @@
+table:
+  name: github_repo_details
+  schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - id
+        - owner
+        - name
+        - languages
+      filter: {}
