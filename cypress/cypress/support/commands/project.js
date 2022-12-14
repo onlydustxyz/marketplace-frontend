@@ -33,28 +33,20 @@ Cypress.Commands.add(
         description = "My project description",
         telegramLink = "https://t.me/foo"
     ) => {
-        return cy
-            .graphqlAsAdmin(
-                `mutation{ updateProject(
-            id: "${projectId}",
-            description: "${description}",
-            telegramLink: "${telegramLink}",
-        )}`
-            )
-            .data("updateProject")
-            .should("equal", projectId);
+        return `mutation{ updateProject(
+                id: "${projectId}",
+                description: "${description}",
+                telegramLink: "${telegramLink}",
+            )}`;
     }
 );
 
-Cypress.Commands.add("getProjectBudget", (user, projectId) => {
-    return cy.graphqlAsUser(
-        user,
-        `{
+Cypress.Commands.add("getProjectBudget", (projectId) => {
+    return `{
         projectsByPk(id: "${projectId}") {
             budgets {
                 id
             }
         }
-    }`
-    );
+    }`;
 });

@@ -56,21 +56,25 @@ describe("As an admin, on retool, I", () => {
             cy
                 .createProject(user.id, "Another project", 500, 1234)
                 .then((projectId) =>
-                    cy.updateProject(projectId, "new description").then(() =>
-                        cy
-                            .graphql(
-                                `{
+                    cy
+                        .updateProject(projectId, "new description")
+                        .asAdmin()
+                        .data()
+                        .then(() =>
+                            cy
+                                .graphql(
+                                    `{
                     projectsByPk(id: "${projectId}") {
                       projectDetails {
                         description
                       }
                     }
                   }`
-                            )
-                            .data("projectsByPk.projectDetails")
-                            .its("description")
-                            .should("equal", "new description")
-                    )
+                                )
+                                .data("projectsByPk.projectDetails")
+                                .its("description")
+                                .should("equal", "new description")
+                        )
                 )
         );
     });

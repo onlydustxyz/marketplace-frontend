@@ -17,7 +17,8 @@ describe("As a simple user, I", () => {
                     STARKONQUEST_ID
                 )
                 .then(($projectId) => {
-                    cy.getProjectBudget($user, $projectId)
+                    cy.getProjectBudget($projectId)
+                        .asRegisteredUser($user)
                         .data("projectsByPk.budgets")
                         .its(0)
                         .its("id")
@@ -60,8 +61,10 @@ describe("As a simple user, I", () => {
     it("can get payment request as the recipient", () => {
         const githubUserId = newRandomGithubUserId();
 
-        cy.requestPayment(leader, budgetId, "500", `${githubUserId}`, {}).then(
-            () => {
+        cy.requestPayment(budgetId, "500", `${githubUserId}`, {})
+            .asRegisteredUser(leader)
+            .data()
+            .then(() => {
                 cy.createUser()
                     .withGithubProvider(githubUserId)
                     .then((user) => {
@@ -93,13 +96,13 @@ describe("As a simple user, I", () => {
                                 );
                             });
                     });
-            }
-        );
+            });
     });
 
     it("can't request a payment", () => {
         cy.createUser().then((user) => {
-            cy.requestPaymentNoassert(user, budgetId, "500", "55000", {})
+            cy.requestPayment(budgetId, "500", "55000", {})
+                .asRegisteredUser(user)
                 .errors()
                 .its(0)
                 .its("message")
