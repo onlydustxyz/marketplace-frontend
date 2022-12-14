@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use async_trait::async_trait;
 use domain::UserId;
 use rocket::{
@@ -5,7 +7,6 @@ use rocket::{
 	request::{FromRequest, Outcome},
 	Request,
 };
-use std::str::FromStr;
 use thiserror::Error;
 use uuid::Uuid;
 
@@ -54,14 +55,15 @@ impl<'r> FromRequest<'r> for OptionUserId {
 
 #[cfg(test)]
 mod test {
-	use super::{
-		OptionUserId, OptionUserIdFromRequestError, Status, UserId, Uuid, HASURA_USER_ID_HEADER_KEY,
-	};
 	use rocket::{
 		http::{Header, HeaderMap},
 		request::Outcome,
 	};
 	use rstest::rstest;
+
+	use super::{
+		OptionUserId, OptionUserIdFromRequestError, Status, UserId, Uuid, HASURA_USER_ID_HEADER_KEY,
+	};
 
 	#[rstest]
 	#[case(

@@ -1,6 +1,8 @@
-use crate::{Amount, BudgetId, BudgetTopic, UserId};
-use serde::{Deserialize, Serialize};
 use std::fmt::Display;
+
+use serde::{Deserialize, Serialize};
+
+use crate::{Amount, BudgetId, BudgetTopic, UserId};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -37,8 +39,9 @@ impl Display for Event {
 
 #[cfg(test)]
 mod tests {
-	use super::*;
 	use assert_matches::assert_matches;
+
+	use super::*;
 
 	#[test]
 	fn to_domain_event() {

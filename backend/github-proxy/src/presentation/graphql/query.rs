@@ -1,6 +1,7 @@
+use juniper::{graphql_object, FieldResult};
+
 use super::Context;
 use crate::domain::{GithubRepository, GithubUser};
-use juniper::{graphql_object, FieldResult};
 
 pub struct Query;
 

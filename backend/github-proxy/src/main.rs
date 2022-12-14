@@ -14,8 +14,9 @@ mod domain;
 mod infrastructure;
 mod presentation;
 
-use self::presentation::http;
 use serde::Deserialize;
+
+use self::presentation::http;
 
 #[derive(Deserialize)]
 struct Config {

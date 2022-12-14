@@ -1,11 +1,13 @@
-use super::ConsumableBus;
+use std::future::Future;
+
 use anyhow::anyhow;
 use async_trait::async_trait;
 use domain::{Message, Subscriber, SubscriberCallbackError, SubscriberError};
 use lapin::{message::Delivery, options::BasicNackOptions};
 use serde_json::Error;
-use std::future::Future;
 use tracing::error;
+
+use super::ConsumableBus;
 
 #[async_trait]
 impl<M: Message + Send + Sync> Subscriber<M> for ConsumableBus {
@@ -77,7 +79,11 @@ impl ConsumableBus {
 
 #[cfg(test)]
 mod tests {
-	use crate::amqp::{Bus, Config, ConsumableBus};
+	use std::sync::{
+		atomic::{AtomicI32, Ordering},
+		Arc,
+	};
+
 	use anyhow::anyhow;
 	use domain::{Message, Subscriber, SubscriberCallbackError, SubscriberError};
 	use dotenv::dotenv;
@@ -85,11 +91,9 @@ mod tests {
 	use mockall::lazy_static;
 	use rstest::{fixture, rstest};
 	use serde::{Deserialize, Serialize};
-	use std::sync::{
-		atomic::{AtomicI32, Ordering},
-		Arc,
-	};
 	use tracing_test::traced_test;
+
+	use crate::amqp::{Bus, Config, ConsumableBus};
 
 	#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 	enum TestMessage {

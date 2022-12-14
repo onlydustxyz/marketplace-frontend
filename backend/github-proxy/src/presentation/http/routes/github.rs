@@ -1,8 +1,10 @@
-use crate::presentation::http::dto::{Headers, Params, Response};
+use std::path::PathBuf;
+
 use olog::error;
 use presentation::http::guards::{ApiKey, ApiKeyGuard};
 use rocket::http::Status;
-use std::path::PathBuf;
+
+use crate::presentation::http::dto::{Headers, Params, Response};
 
 #[derive(Default)]
 pub struct GithubApiKey;

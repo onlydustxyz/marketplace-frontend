@@ -1,4 +1,3 @@
-use super::Config;
 use lapin::{
 	message::Delivery,
 	options::{ExchangeDeclareOptions, QueueDeclareOptions},
@@ -9,6 +8,8 @@ use log::error;
 use thiserror::Error;
 use tokio::sync::RwLock;
 use tokio_stream::StreamExt;
+
+use super::Config;
 
 const DELIVERY_MODE_PERSISTENT: u8 = 2;
 

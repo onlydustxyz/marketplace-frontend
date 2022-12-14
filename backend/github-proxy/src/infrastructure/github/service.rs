@@ -1,6 +1,7 @@
-use crate::domain::{GithubFile, GithubFileEncoding, GithubRepository, GithubService, GithubUser};
 use anyhow::{anyhow, Result};
 use infrastructure::github;
+
+use crate::domain::{GithubFile, GithubFileEncoding, GithubRepository, GithubService, GithubUser};
 
 #[async_trait]
 impl GithubService for github::Client {

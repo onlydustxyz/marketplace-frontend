@@ -1,11 +1,11 @@
-use crate::*;
 use thiserror::Error;
 
-mod aggregate_exists;
-pub use aggregate_exists::ProjectExists;
+use crate::*;
 
+mod aggregate_exists;
 #[cfg(test)]
 pub use aggregate_exists::MockProjectExists;
+pub use aggregate_exists::ProjectExists;
 
 #[derive(Debug, Error)]
 pub enum Error {

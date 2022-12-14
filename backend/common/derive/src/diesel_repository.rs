@@ -1,7 +1,8 @@
-use super::find_attr;
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::TypePath;
+
+use super::find_attr;
 
 pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 	// Parse the input into an ast

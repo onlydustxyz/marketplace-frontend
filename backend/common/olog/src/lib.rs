@@ -5,9 +5,8 @@ mod trace;
 mod warn;
 
 mod stdlog;
-pub use stdlog::LogTracer;
-
 pub use opentelemetry;
+pub use stdlog::LogTracer;
 pub use tracing_opentelemetry;
 
 /// Retrieves current trace ID and converts it to Datadog format.
@@ -47,9 +46,10 @@ macro_rules! span_id {
 #[cfg(test)]
 #[ctor::ctor]
 fn init_tracing_for_tests() {
-	use crate::stdlog::LogTracer;
 	use tracing::Level;
 	use tracing_subscriber::prelude::__tracing_subscriber_SubscriberExt;
+
+	use crate::stdlog::LogTracer;
 
 	let tracer = opentelemetry::sdk::export::trace::stdout::new_pipeline()
 		.with_writer(std::io::sink())

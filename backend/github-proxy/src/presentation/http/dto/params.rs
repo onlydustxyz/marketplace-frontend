@@ -1,8 +1,9 @@
-use derive_more::*;
 use std::{
 	collections::HashMap,
 	fmt::{Display, Formatter, Result},
 };
+
+use derive_more::*;
 
 #[derive(Debug, From, FromForm)]
 pub struct Params(HashMap<String, String>);

@@ -1,8 +1,9 @@
-use crate::database::{schema::events, Client};
 use diesel::prelude::*;
 use domain::{Aggregate, Budget, EventStore, EventStoreError, Payment, Project};
 use log::error;
 use serde_json::Value;
+
+use crate::database::{schema::events, Client};
 
 trait NamedAggregate: Aggregate {
 	fn name() -> String;

@@ -1,10 +1,11 @@
+use std::path::Path;
+
 use anyhow::{anyhow, Result};
 use figment::{
 	providers::{Format, Yaml},
 	Figment,
 };
 use serde::Deserialize;
-use std::path::Path;
 
 mod providers;
 use providers::ExpandWithEnv;

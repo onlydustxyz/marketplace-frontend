@@ -1,5 +1,6 @@
-use crate::domain::{permissions, Permissions};
 use presentation::http::guards::Role;
+
+use crate::domain::{permissions, Permissions};
 
 impl From<Role> for Box<dyn Permissions> {
 	fn from(role: Role) -> Self {

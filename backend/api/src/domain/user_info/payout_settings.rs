@@ -51,9 +51,10 @@ pub struct BankAddress {
 
 #[cfg(test)]
 mod test {
-	use super::EthereumAddress;
 	use juniper::{DefaultScalarValue, FromInputValue, InputValue};
 	use rstest::rstest;
+
+	use super::EthereumAddress;
 
 	#[rstest]
 	#[case(InputValue::Scalar(DefaultScalarValue::String("0x0".to_string())), true)]

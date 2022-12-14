@@ -74,9 +74,10 @@ impl<'a, T: FormattableCurrency> From<Money<'a, T>> for Amount {
 
 #[cfg(test)]
 mod tests {
-	use super::*;
 	use rust_decimal_macros::dec;
 	use rusty_money::crypto;
+
+	use super::*;
 
 	#[test]
 	fn convert_from_money() {

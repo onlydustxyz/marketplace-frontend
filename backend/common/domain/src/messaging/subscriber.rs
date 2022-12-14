@@ -1,7 +1,9 @@
-use super::Message;
-use async_trait::async_trait;
 use std::future::Future;
+
+use async_trait::async_trait;
 use thiserror::Error;
+
+use super::Message;
 
 #[derive(Debug, Error)]
 pub enum Error {

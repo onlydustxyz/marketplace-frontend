@@ -1,9 +1,10 @@
-use crate::fixtures::payment::constants::TRANSACTION_HASHES;
-use domain::{ContractAddress, PaymentId, PaymentReceiptId, TransactionHash};
 use std::str::FromStr;
+
+use domain::{ContractAddress, PaymentId, PaymentReceiptId, TransactionHash};
 use uuid::Uuid;
 
 use self::constants::CONTRACT_ADDRESSES;
+use crate::fixtures::payment::constants::TRANSACTION_HASHES;
 
 pub mod constants;
 pub mod events;

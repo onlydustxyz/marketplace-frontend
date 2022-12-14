@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use ::infrastructure::{config, database};
 use anyhow::Result;
 use dotenv::dotenv;
@@ -7,7 +9,6 @@ use event_listeners::{
 };
 use futures::future::try_join_all;
 use infrastructure::tracing::Tracer;
-use std::sync::Arc;
 use tokio::task::JoinHandle;
 
 #[tokio::main]

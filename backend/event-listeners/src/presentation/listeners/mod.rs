@@ -2,6 +2,12 @@ mod logger;
 use logger::Logger;
 
 mod webhook;
+use std::sync::Arc;
+
+use anyhow::Result;
+use domain::{Event, Subscriber, SubscriberCallbackError};
+use infrastructure::{amqp::ConsumableBus, database, event_bus};
+use tokio::task::JoinHandle;
 use webhook::EventWebHook;
 
 use crate::{
@@ -12,11 +18,6 @@ use crate::{
 	},
 	Config,
 };
-use anyhow::Result;
-use domain::{Event, Subscriber, SubscriberCallbackError};
-use infrastructure::{amqp::ConsumableBus, database, event_bus};
-use std::sync::Arc;
-use tokio::task::JoinHandle;
 
 pub async fn spawn_all(
 	config: &Config,

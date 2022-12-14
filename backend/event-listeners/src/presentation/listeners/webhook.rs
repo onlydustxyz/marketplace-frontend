@@ -1,12 +1,14 @@
-use crate::domain::EventListener;
+use std::env;
+
 use anyhow::Result;
 use async_trait::async_trait;
 use domain::Event;
 use serde::{ser::SerializeStruct, Serialize, Serializer};
 use serde_json::json;
-use std::env;
 use tracing::{error, info};
 use url::Url;
+
+use crate::domain::EventListener;
 
 const WEBHOOK_TARGET_ENV_VAR: &str = "EVENT_WEBHOOK_TARGET";
 
@@ -107,15 +109,17 @@ async fn send_event_to_webhook(client: &reqwest::Client, event: &Event) -> Resul
 
 #[cfg(test)]
 mod tests {
-	use super::*;
+	use std::ffi::OsString;
+
 	use assert_matches::assert_matches;
 	use envtestkit::{
 		lock::{lock_read, lock_test},
 		set_env,
 	};
 	use mockito;
-	use std::ffi::OsString;
 	use testing::fixtures;
+
+	use super::*;
 
 	#[allow(clippy::await_holding_lock)]
 	#[tokio::test]

@@ -1,8 +1,9 @@
 use std::sync::Arc;
 
-use crate::domain::Payment;
 use derive_more::Constructor;
 use infrastructure::database::{schema::payments::dsl, Client};
+
+use crate::domain::Payment;
 
 #[derive(DieselRepository, Constructor)]
 #[entity(Payment)]
@@ -12,7 +13,6 @@ pub struct Repository(Arc<Client>);
 
 #[cfg(test)]
 mod tests {
-	use super::*;
 	use dotenv::dotenv;
 	use infrastructure::database::Config;
 	use rstest::*;
@@ -20,6 +20,8 @@ mod tests {
 	use serde_json::json;
 	use testing::init_pool;
 	use uuid::Uuid;
+
+	use super::*;
 
 	#[fixture]
 	#[once]

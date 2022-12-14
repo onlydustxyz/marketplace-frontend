@@ -1,9 +1,10 @@
-use super::Projection;
 use derive_more::Constructor;
 use domain::{BudgetId, Entity};
 use infrastructure::database::schema::budgets;
 use rust_decimal::Decimal;
 use uuid::Uuid;
+
+use super::Projection;
 
 #[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, Constructor)]
 pub struct Budget {

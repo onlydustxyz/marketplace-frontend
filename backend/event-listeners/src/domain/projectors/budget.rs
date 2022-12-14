@@ -1,6 +1,5 @@
 use anyhow::Result;
 use async_trait::async_trait;
-
 use derive_more::Constructor;
 use domain::{BudgetEvent, BudgetTopic, Event, MappingRepository};
 

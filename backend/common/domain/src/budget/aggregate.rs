@@ -1,8 +1,9 @@
+use thiserror::Error;
+
 use crate::{
 	Aggregate, AggregateRoot, Amount, BudgetEvent, BudgetId, BudgetTopic, Entity, EventSourcable,
 	UserId,
 };
-use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -76,12 +77,13 @@ impl AggregateRoot for Budget {}
 
 #[cfg(test)]
 mod tests {
-	use super::*;
-	use crate::ProjectId;
 	use assert_matches::assert_matches;
 	use rstest::*;
 	use rust_decimal_macros::dec;
 	use uuid::Uuid;
+
+	use super::*;
+	use crate::ProjectId;
 
 	#[fixture]
 	#[once]

@@ -1,5 +1,6 @@
-use super::*;
 use domain::{Amount, BlockchainNetwork, Currency, PaymentEvent, PaymentReceipt};
+
+use super::*;
 
 pub fn payment_processed() -> PaymentEvent {
 	PaymentEvent::Processed {

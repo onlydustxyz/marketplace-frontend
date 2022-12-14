@@ -1,8 +1,9 @@
+use std::collections::HashSet;
+
 use rocket::{
 	request::{FromRequest, Outcome},
 	Request,
 };
-use std::collections::HashSet;
 use uuid::Uuid;
 
 #[derive(Debug, PartialEq, Eq)]
@@ -53,13 +54,14 @@ fn from_role_registered_user(request: &'_ Request<'_>) -> Outcome<Role, ()> {
 
 #[cfg(test)]
 mod tests {
-	use super::*;
 	use assert_matches::assert_matches;
 	use rocket::{
 		http::Header,
 		local::blocking::{Client, LocalRequest},
 	};
 	use rstest::{fixture, rstest};
+
+	use super::*;
 
 	#[fixture]
 	fn client() -> Client {

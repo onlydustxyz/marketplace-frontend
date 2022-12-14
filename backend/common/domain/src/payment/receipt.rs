@@ -1,7 +1,8 @@
-use crate::{BlockchainNetwork, ContractAddress, TransactionHash};
 use derive_more::{Display, From, Into};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
+
+use crate::{BlockchainNetwork, ContractAddress, TransactionHash};
 
 #[derive(
 	Debug,

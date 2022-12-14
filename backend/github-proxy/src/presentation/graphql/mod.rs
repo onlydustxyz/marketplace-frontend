@@ -3,7 +3,6 @@ use query::Query;
 
 mod context;
 pub use context::Context;
-
 use juniper::{EmptyMutation, EmptySubscription, RootNode};
 
 pub type Schema = RootNode<'static, Query, EmptyMutation<Context>, EmptySubscription<Context>>;

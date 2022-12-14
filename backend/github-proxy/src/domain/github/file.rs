@@ -1,6 +1,7 @@
-use crate::domain::GithubUser;
 use derive_more::Constructor;
 use juniper::{GraphQLEnum, GraphQLObject};
+
+use crate::domain::GithubUser;
 
 #[derive(Constructor, GraphQLObject)]
 pub struct Repository {

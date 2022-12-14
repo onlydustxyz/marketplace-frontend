@@ -1,7 +1,8 @@
-use super::Bus;
 use anyhow::anyhow;
 use async_trait::async_trait;
 use domain::{Destination, Message, Publisher, PublisherError};
+
+use super::Bus;
 
 #[async_trait]
 impl<M: Message + Send + Sync> Publisher<M> for Bus {

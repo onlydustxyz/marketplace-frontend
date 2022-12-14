@@ -1,5 +1,6 @@
-use super::Permissions;
 use domain::{BudgetId, ProjectId};
+
+use super::Permissions;
 
 pub(super) struct Anonymous;
 

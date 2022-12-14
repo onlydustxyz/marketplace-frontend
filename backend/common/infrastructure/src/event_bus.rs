@@ -1,7 +1,8 @@
-use super::amqp::{Bus, BusError, ConsumableBus};
-use crate::amqp::Config;
 use lapin::options::QueueDeclareOptions;
 use log::info;
+
+use super::amqp::{Bus, BusError, ConsumableBus};
+use crate::amqp::Config;
 
 pub const EXCHANGE_NAME: &str = "events";
 

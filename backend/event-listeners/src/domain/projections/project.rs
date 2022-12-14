@@ -1,7 +1,8 @@
-use super::Projection;
 use derive_more::Constructor;
 use domain::{Entity, ProjectId};
 use infrastructure::database::schema::projects;
+
+use super::Projection;
 
 #[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, Constructor)]
 pub struct Project {

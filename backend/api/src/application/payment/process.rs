@@ -1,10 +1,11 @@
+use std::sync::Arc;
+
 use anyhow::Result;
 use domain::{
 	AggregateRootRepository, Amount, Destination, Event, Payment, PaymentId, PaymentReceipt,
 	PaymentReceiptId, Publisher, UniqueMessage, UuidGenerator,
 };
 use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
-use std::sync::Arc;
 
 pub struct Usecase {
 	uuid_generator: Arc<dyn UuidGenerator>,

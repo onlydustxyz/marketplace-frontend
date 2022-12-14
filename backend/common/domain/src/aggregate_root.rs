@@ -1,8 +1,10 @@
-use crate::{EventSourcable, EventStore, EventStoreError};
+use std::sync::Arc;
+
 #[cfg(test)]
 use mockall::automock;
-use std::sync::Arc;
 use thiserror::Error;
+
+use crate::{EventSourcable, EventStore, EventStoreError};
 
 #[derive(Debug, Error)]
 pub enum Error {

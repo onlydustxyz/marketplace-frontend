@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-
 use domain::{
 	AggregateRootRepository, Event, GithubRepositoryId, Project, ProjectId, Publisher,
 	UniqueMessage,

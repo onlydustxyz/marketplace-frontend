@@ -1,8 +1,10 @@
-use crate::{domain::GithubService, presentation::graphql};
+use std::sync::Arc;
+
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use presentation::http::guards::{ApiKey, ApiKeyGuard};
 use rocket::{response::content, State};
-use std::sync::Arc;
+
+use crate::{domain::GithubService, presentation::graphql};
 
 #[get("/")]
 pub fn graphiql() -> content::RawHtml<String> {

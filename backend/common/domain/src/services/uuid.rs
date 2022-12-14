@@ -14,8 +14,9 @@ impl Service for RandomUuidGenerator {
 
 #[cfg(test)]
 mod tests {
-	use super::*;
 	use regex::Regex;
+
+	use super::*;
 
 	#[test]
 	fn test_new_uuid() {

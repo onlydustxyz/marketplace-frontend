@@ -1,7 +1,9 @@
-use crate::{Amount, BudgetId, GithubUserId, PaymentId, PaymentReceipt, PaymentReceiptId, UserId};
+use std::fmt::Display;
+
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::fmt::Display;
+
+use crate::{Amount, BudgetId, GithubUserId, PaymentId, PaymentReceipt, PaymentReceiptId, UserId};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -39,11 +41,12 @@ impl Display for Event {
 
 #[cfg(test)]
 mod tests {
-	use super::*;
-	use crate::{BlockchainNetwork, Currency};
 	use assert_json_diff::assert_json_eq;
 	use serde_json::{json, Value};
 	use testing::fixtures::payment::events;
+
+	use super::*;
+	use crate::{BlockchainNetwork, Currency};
 
 	#[test]
 	fn test_display() {
