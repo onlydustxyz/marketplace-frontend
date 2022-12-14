@@ -1,31 +1,18 @@
 describe("The application", () => {
     it("should answer on Hasura queries", () => {
         cy.graphql("{ projects { name } }")
-            .its("body.data.projects")
-            .should(projects => {
-                assert.isArray(projects);
-            });
+            .data("projects")
+            .should("be.a", "array");
     });
 
     it("should answer on Rust queries", () => {
-        cy.graphql("{ hello }")
-            .its("body")
-            .should("deep.equal", {
-                data: {
-                    hello: "Couscous!",
-                },
-            });
+        cy.graphql("{ hello }").data("hello").should("eq", "Couscous!");
     });
-
 
     it("should answer on Github proxy queries", () => {
         cy.graphql("{ helloFromGithubProxy }")
-            .its("body")
-            .should("deep.equal", {
-                data: {
-                    helloFromGithubProxy: "Raclette!",
-                },
-            });
+            .data("helloFromGithubProxy")
+            .should("eq", "Raclette!");
     });
 
     it("should answer on health checks for API", () => {
@@ -35,7 +22,6 @@ describe("The application", () => {
                 status: "ok",
             });
     });
-
 
     it("should answer on health checks for github proxy", () => {
         cy.request("GET", "http://localhost:8001/health")
