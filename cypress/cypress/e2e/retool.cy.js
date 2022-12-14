@@ -1,9 +1,10 @@
 describe("As an admin, on retool, I", () => {
     it("can create a project", () => {
         const projectName = "Cypress test project";
+        const STARKONQUEST_ID = 481932781;
 
         cy.createUser().then((user) => {
-            cy.createProject(user.id, projectName, 500, 1234)
+            cy.createProject(user.id, projectName, 500, STARKONQUEST_ID)
                 .asAdmin()
                 .data("createProject")
                 .then((projectId) => {
@@ -13,14 +14,24 @@ describe("As an admin, on retool, I", () => {
                     cy.graphql(
                         `{
                     projectsByPk(id: "${projectId}") {
-                      githubRepoId
+                      githubRepoDetails {
+                        id
+                        owner
+                        name
+                        languages
+                      }
                     }
                   }`
                     )
                         .asAnonymous()
-                        .data("projectsByPk")
-                        .its("githubRepoId")
-                        .should("equal", 1234);
+                        .data("projectsByPk.githubRepoDetails")
+                        .then(details => {
+                            console.log(`details: ${details}`);
+                            expect(details.id).to.equal(STARKONQUEST_ID);
+                            expect(details.owner).to.equal("onlydustxyz");
+                            expect(details.name).to.equal("starkonquest");
+                            expect(details.languages).to.be.a("string");
+                        });
 
                     cy.graphql(
                         `{
