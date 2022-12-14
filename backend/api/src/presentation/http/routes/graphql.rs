@@ -7,9 +7,18 @@ use domain::{
 	UuidGenerator,
 };
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
-use presentation::http::guards::{ApiKey, OptionUserId, Role};
+use presentation::http::guards::{ApiKey, ApiKeyGuard, OptionUserId, Role};
 use rocket::{response::content, State};
 use std::sync::Arc;
+
+#[derive(Default)]
+pub struct GraphqlApiKey;
+
+impl ApiKey for GraphqlApiKey {
+	fn name() -> &'static str {
+		"graphql"
+	}
+}
 
 #[get("/")]
 pub fn graphiql() -> content::RawHtml<String> {
@@ -19,7 +28,7 @@ pub fn graphiql() -> content::RawHtml<String> {
 #[allow(clippy::too_many_arguments)]
 #[get("/graphql?<request>")]
 pub async fn get_graphql_handler(
-	_api_key: ApiKey,
+	_api_key: ApiKeyGuard<GraphqlApiKey>,
 	role: Role,
 	maybe_user_id: OptionUserId,
 	request: GraphQLRequest,
@@ -47,7 +56,7 @@ pub async fn get_graphql_handler(
 #[allow(clippy::too_many_arguments)]
 #[post("/graphql", data = "<request>")]
 pub async fn post_graphql_handler(
-	_api_key: ApiKey,
+	_api_key: ApiKeyGuard<GraphqlApiKey>,
 	role: Role,
 	maybe_user_id: OptionUserId,
 	request: GraphQLRequest,

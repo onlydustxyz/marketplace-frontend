@@ -4,10 +4,13 @@ use rocket::{
 	request::{self, FromRequest},
 	Request,
 };
+use std::marker::PhantomData;
 
 use crate::http::Config;
 #[derive(Default)]
-pub struct ApiKey(String);
+pub struct Guard<K: ApiKey> {
+	phantom: PhantomData<K>,
+}
 
 #[derive(Debug)]
 pub enum ApiKeyError {
@@ -16,17 +19,25 @@ pub enum ApiKeyError {
 	Invalid,
 }
 
+pub trait ApiKey: Default {
+	fn name() -> &'static str;
+}
+
 #[rocket::async_trait]
-impl<'r> FromRequest<'r> for ApiKey {
+impl<'r, K: ApiKey> FromRequest<'r> for Guard<K> {
 	type Error = ApiKeyError;
 
 	async fn from_request(request: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
 		let keys: Vec<_> = request.headers().get("Api-Key").collect();
 
-		if let Some(config) = request.rocket().state::<Config>() {
+		if let Some(api_key) = request
+			.rocket()
+			.state::<Config>()
+			.and_then(|config| config.api_keys().get(K::name()))
+		{
 			match keys.len() {
 				0 => Outcome::Failure((Status::Unauthorized, ApiKeyError::Missing)),
-				1 if keys[0] == config.api_key() => Outcome::Success(ApiKey(keys[0].to_string())),
+				1 if keys[0] == api_key => Outcome::Success(Guard::default()),
 				1 => Outcome::Failure((Status::Unauthorized, ApiKeyError::Invalid)),
 				_ => Outcome::Failure((Status::Unauthorized, ApiKeyError::BadCount)),
 			}
