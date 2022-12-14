@@ -15,7 +15,7 @@ describe("As an admin, on retool, I", () => {
                     }
                   }`
                     )
-                        .its("body.data.projectsByPk")
+                        .data("projectsByPk")
                         .its("githubRepoId")
                         .should("equal", 1234);
 
@@ -28,7 +28,7 @@ describe("As an admin, on retool, I", () => {
                         }
                       }`
                     )
-                        .its("body.data.projectsByPk.projectLeads")
+                        .data("projectsByPk.projectLeads")
                         .its(0)
                         .its("userId")
                         .should("equal", user.id);
@@ -67,7 +67,7 @@ describe("As an admin, on retool, I", () => {
                     }
                   }`
                             )
-                            .its("body.data.projectsByPk.projectDetails")
+                            .data("projectsByPk.projectDetails")
                             .its("description")
                             .should("equal", "new description")
                     )

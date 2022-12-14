@@ -9,7 +9,7 @@ describe("As a project leader, I", () => {
                 .createProject($user.id, "Project with budget", 1000)
                 .then(($projectId) => {
                     cy.getProjectBudget($user, $projectId)
-                        .its("body.data.projectsByPk.budgets")
+                        .data("projectsByPk.budgets")
                         .its(0)
                         .its("id")
                         .should("be.a", "string")
@@ -34,7 +34,7 @@ describe("As a project leader, I", () => {
                     }
                   }`
                     )
-                        .its("body.data.paymentRequestsByPk.id")
+                        .data("paymentRequestsByPk.id")
                         .should("be.a", "string");
                 })
                 .then(() => {
@@ -46,7 +46,7 @@ describe("As a project leader, I", () => {
                     }
                   }`
                     )
-                        .its("body.data.budgetsByPk.remainingAmount")
+                        .data("budgetsByPk.remainingAmount")
                         .should("equal", 500);
                 });
         });
