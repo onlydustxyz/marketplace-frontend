@@ -8,7 +8,8 @@ describe("As a project leader, I", () => {
             cy
                 .createProject($user.id, "Project with budget", 1000)
                 .then(($projectId) => {
-                    cy.getProjectBudget($user, $projectId)
+                    cy.getProjectBudget($projectId)
+                        .asRegisteredUser($user)
                         .data("projectsByPk.budgets")
                         .its(0)
                         .its("id")
@@ -24,7 +25,9 @@ describe("As a project leader, I", () => {
 
     it("can request a payment from a budget I own", () => {
         cy.createUser().then((contributor) => {
-            cy.requestPayment(leader, budgetId, "500", "55000", {})
+            cy.requestPayment(budgetId, "500", "55000", "{}")
+                .asRegisteredUser(leader)
+                .data("requestPayment")
                 .then((paymentId) => {
                     cy.wait(500);
                     cy.graphqlAsAdmin(
