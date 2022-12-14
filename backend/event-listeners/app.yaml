@@ -1,3 +1,10 @@
+default:
+  github:
+    base_url: $GITHUB_BASE_URL
+    personal_access_token: $GITHUB_PAT
+    headers:
+      api-key: $GITHUB_PROXY_GITHUB_API_KEY
+
 local:
   database:
     url: postgres://postgres:postgres@localhost/marketplace_db
