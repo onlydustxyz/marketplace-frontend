@@ -9,7 +9,7 @@ describe("As an admin, on retool, I", () => {
                 .data("createProject")
                 .then((projectId) => {
                     // Let the event sourcing magic happen
-                    cy.wait(500);
+                    cy.wait(700);
 
                     cy.graphql(
                         `{
@@ -26,11 +26,11 @@ describe("As an admin, on retool, I", () => {
                         .asAnonymous()
                         .data("projectsByPk.githubRepoDetails")
                         .then(details => {
-                            console.log(`details: ${details}`);
                             expect(details.id).to.equal(STARKONQUEST_ID);
                             expect(details.owner).to.equal("onlydustxyz");
                             expect(details.name).to.equal("starkonquest");
-                            expect(details.languages).to.be.a("string");
+                            expect(details.languages).to.be.an("object");
+                            expect(details.languages).to.have.property("Cairo");
                         });
 
                     cy.graphql(
