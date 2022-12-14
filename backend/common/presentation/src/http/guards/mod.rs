@@ -1,5 +1,5 @@
 mod api_key;
-pub use api_key::ApiKey;
+pub use api_key::{ApiKey, Guard as ApiKeyGuard};
 
 mod role;
 pub use role::Role;
