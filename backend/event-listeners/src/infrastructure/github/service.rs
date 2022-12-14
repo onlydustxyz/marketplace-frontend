@@ -2,6 +2,7 @@ use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use domain::GithubRepositoryId;
 use infrastructure::github;
+use serde_json::Value;
 
 use crate::domain::{GithubRepoDetail, GithubService};
 
@@ -13,7 +14,13 @@ impl GithubService for github::Client {
 	) -> Result<GithubRepoDetail> {
 		let repo_id: i64 = (*github_repo_id).into();
 		let repo = self.get_repository_by_id(repo_id as u64).await?;
-		let languages = repo.language.unwrap_or_default();
+
+		let languages: Value = if let Some(url) = repo.languages_url {
+			self.get_as(url).await?
+		} else {
+			Default::default()
+		};
+
 		let owner = repo
 			.owner
 			.ok_or_else(|| anyhow!("No owner in github repository {github_repo_id}"))?;
