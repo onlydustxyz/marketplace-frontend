@@ -1,5 +1,6 @@
-use crate::Aggregate;
 use thiserror::Error;
+
+use crate::Aggregate;
 
 #[derive(Debug, Error)]
 pub enum Error {

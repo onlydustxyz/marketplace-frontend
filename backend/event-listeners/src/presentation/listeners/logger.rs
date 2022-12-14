@@ -1,8 +1,9 @@
-use crate::domain::EventListener;
 use anyhow::Result;
 use async_trait::async_trait;
 use domain::Event;
 use tracing::info;
+
+use crate::domain::EventListener;
 
 pub struct Logger;
 

@@ -31,9 +31,10 @@ where
 }
 #[cfg(test)]
 mod test {
-	use super::Email;
 	use juniper::{DefaultScalarValue, FromInputValue, InputValue};
 	use rstest::rstest;
+
+	use super::Email;
 
 	#[rstest]
 	#[case(InputValue::Scalar(DefaultScalarValue::String("abc42@gmail.com".to_string())), true)]

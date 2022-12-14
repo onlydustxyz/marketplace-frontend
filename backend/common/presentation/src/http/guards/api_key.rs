@@ -1,10 +1,11 @@
+use std::marker::PhantomData;
+
 use rocket::{
 	http::Status,
 	outcome::Outcome,
 	request::{self, FromRequest},
 	Request,
 };
-use std::marker::PhantomData;
 
 use crate::http::Config;
 #[derive(Default)]

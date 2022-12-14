@@ -1,11 +1,13 @@
-use crate::domain::Project;
+use std::sync::Arc;
+
 use derive_more::Constructor;
 use domain::GithubRepositoryId;
 use infrastructure::database::{
 	schema::projects::{self, dsl},
 	Client,
 };
-use std::sync::Arc;
+
+use crate::domain::Project;
 
 #[derive(DieselRepository, Constructor)]
 #[entity(Project)]

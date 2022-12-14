@@ -1,7 +1,9 @@
-use crate::domain::GithubService;
+use std::sync::Arc;
+
 use anyhow::Result;
 use presentation::http;
-use std::sync::Arc;
+
+use crate::domain::GithubService;
 
 mod dto;
 mod routes;

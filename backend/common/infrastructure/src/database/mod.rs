@@ -5,7 +5,6 @@ pub use error::Error as DatabaseError;
 
 mod config;
 pub use config::Config;
-
 use diesel::PgConnection;
 use log::error;
 use r2d2;

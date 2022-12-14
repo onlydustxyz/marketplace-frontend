@@ -1,8 +1,9 @@
-use super::{Destination, Message};
 use async_trait::async_trait;
 #[cfg(test)]
 use mockall::automock;
 use thiserror::Error;
+
+use super::{Destination, Message};
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -28,11 +29,12 @@ pub trait Publisher<M: Message + Sync + Send>: Send + Sync {
 
 #[cfg(test)]
 mod tests {
-	use super::*;
 	use futures::FutureExt;
 	use mockall::predicate::eq;
 	use rstest::rstest;
 	use serde::{Deserialize, Serialize};
+
+	use super::*;
 
 	#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 	enum TestMessage {

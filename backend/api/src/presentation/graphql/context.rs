@@ -1,14 +1,16 @@
-use crate::{
-	application,
-	domain::Permissions,
-	infrastructure::database::{ProjectDetailsRepository, UserInfoRepository},
-};
+use std::sync::Arc;
+
 use domain::{
 	AggregateRootRepository, Budget, Event, Payment, Project, Publisher, UniqueMessage,
 	UuidGenerator,
 };
 use presentation::http::guards::OptionUserId;
-use std::sync::Arc;
+
+use crate::{
+	application,
+	domain::Permissions,
+	infrastructure::database::{ProjectDetailsRepository, UserInfoRepository},
+};
 
 pub struct Context {
 	pub caller_permissions: Box<dyn Permissions>,

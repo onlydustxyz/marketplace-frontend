@@ -1,12 +1,13 @@
+use anyhow::Result;
+use async_trait::async_trait;
+use domain::{Event, MappingRepository, ProjectEvent};
+
 use crate::{
 	domain::{projections::Project, EventListener},
 	infrastructure::database::{
 		ProjectLeadRepository, ProjectRepository, UpdateGitubRepoIdChangeset,
 	},
 };
-use anyhow::Result;
-use async_trait::async_trait;
-use domain::{Event, MappingRepository, ProjectEvent};
 
 pub struct Projector {
 	project_repository: ProjectRepository,

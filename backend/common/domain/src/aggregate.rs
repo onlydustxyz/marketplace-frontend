@@ -1,6 +1,8 @@
-use crate::{Entity, Event};
-use serde::{de::DeserializeOwned, Serialize};
 use std::fmt::{Debug, Display};
+
+use serde::{de::DeserializeOwned, Serialize};
+
+use crate::{Entity, Event};
 
 pub trait Aggregate: Entity + Send + Sync + Default + Sized {
 	type Event: Serialize + DeserializeOwned + Debug + Display + Clone + Into<Event>;

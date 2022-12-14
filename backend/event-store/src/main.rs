@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use ::tracing::info;
 use anyhow::Result;
 use backend_domain::{
@@ -14,7 +16,6 @@ use dotenv::dotenv;
 use event_store::{bus, domain::EventStore};
 use futures::TryFutureExt;
 use serde::Deserialize;
-use std::sync::Arc;
 
 #[derive(Deserialize)]
 pub struct Config {

@@ -1,10 +1,11 @@
-#[cfg_attr(test, double)]
-use crate::AggregateRootRepository;
-use crate::{specifications::Error, AggregateRoot, AggregateRootRepositoryError, Project};
 #[cfg(test)]
 use mockall::automock;
 #[cfg(test)]
 use mockall_double::double;
+
+#[cfg_attr(test, double)]
+use crate::AggregateRootRepository;
+use crate::{specifications::Error, AggregateRoot, AggregateRootRepositoryError, Project};
 
 pub struct Specification<A: AggregateRoot + 'static> {
 	aggregate_repository: AggregateRootRepository<A>,
@@ -36,14 +37,15 @@ pub type MockProjectExists = MockSpecification<Project>;
 
 #[cfg(test)]
 mod tests {
-	use super::*;
-	#[double]
-	use crate::AggregateRootRepository;
-	use crate::{EventStoreError, ProjectId};
 	use anyhow::anyhow;
 	use mockall::predicate::eq;
 	use rstest::*;
 	use uuid::Uuid;
+
+	use super::*;
+	#[double]
+	use crate::AggregateRootRepository;
+	use crate::{EventStoreError, ProjectId};
 
 	#[fixture]
 	fn aggregate_root_repository() -> AggregateRootRepository<Project> {

@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-
 use domain::{
 	Amount, Budget, BudgetId, Event, EventSourcable, GithubRepositoryId, Project, ProjectId,
 	Publisher, UniqueMessage, UserId, UuidGenerator,

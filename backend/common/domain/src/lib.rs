@@ -38,12 +38,11 @@ mod budget;
 pub use budget::{Budget, Event as BudgetEvent, Id as BudgetId, Topic as BudgetTopic};
 
 pub mod aggregate_root;
+#[cfg(test)]
+pub use aggregate_root::MockRepository as MockAggregateRootRepository;
 pub use aggregate_root::{
 	AggregateRoot, Error as AggregateRootRepositoryError, Repository as AggregateRootRepository,
 };
-
-#[cfg(test)]
-pub use aggregate_root::MockRepository as MockAggregateRootRepository;
 
 pub mod event_store;
 pub use event_store::{Error as EventStoreError, Store as EventStore};

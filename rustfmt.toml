@@ -9,6 +9,7 @@ max_width = 100
 
 # Imports
 imports_granularity = "Crate"
+group_imports = "StdExternalCrate"
 
 # Consistency
 newline_style = "Unix"

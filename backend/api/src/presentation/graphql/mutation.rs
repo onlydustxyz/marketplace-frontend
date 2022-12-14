@@ -1,11 +1,11 @@
 use anyhow::anyhow;
+use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt, UserId};
 use juniper::{graphql_object, graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
 use rusty_money::{crypto, Money};
 use thiserror::Error;
 use uuid::Uuid;
 
-use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt, UserId};
-
+use super::Context;
 use crate::{
 	domain::{
 		user_info::{Email, Identity, Location, PayoutSettings, UserInfo},
@@ -13,8 +13,6 @@ use crate::{
 	},
 	presentation::http::dto::{IdentityInput, PayoutSettingsInput},
 };
-
-use super::Context;
 
 #[derive(Debug, Error)]
 enum Error {

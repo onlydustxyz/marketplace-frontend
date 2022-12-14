@@ -1,5 +1,6 @@
-use super::Context;
 use juniper::graphql_object;
+
+use super::Context;
 
 pub struct Query;
 

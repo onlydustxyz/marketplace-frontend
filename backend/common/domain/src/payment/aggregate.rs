@@ -1,12 +1,13 @@
-use crate::{
-	specifications, Aggregate, AggregateRoot, Amount, BudgetId, Entity, EventSourcable,
-	GithubUserId, PaymentEvent, PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
-};
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use thiserror::Error;
 use tracing::info;
+
+use crate::{
+	specifications, Aggregate, AggregateRoot, Amount, BudgetId, Entity, EventSourcable,
+	GithubUserId, PaymentEvent, PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
+};
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Payment {
@@ -106,13 +107,15 @@ impl Payment {
 
 #[cfg(test)]
 mod tests {
-	use super::*;
-	use crate::{BlockchainNetwork, BudgetId, Currency, PaymentReceiptId, UserId};
+	use std::str::FromStr;
+
 	use assert_matches::assert_matches;
 	use rstest::{fixture, rstest};
-	use std::str::FromStr;
 	use testing::fixtures::payment::*;
 	use uuid::Uuid;
+
+	use super::*;
+	use crate::{BlockchainNetwork, BudgetId, Currency, PaymentReceiptId, UserId};
 
 	#[fixture]
 	fn payment_receipt_id() -> PaymentReceiptId {

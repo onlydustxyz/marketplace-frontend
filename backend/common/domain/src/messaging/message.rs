@@ -1,8 +1,9 @@
+use std::fmt::Display;
+
 use chrono::{NaiveDateTime, Utc};
 use derive_getters::Getters;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use serde_json::Value;
-use std::fmt::Display;
 use uuid::Uuid;
 
 pub trait Message: Serialize + DeserializeOwned {}

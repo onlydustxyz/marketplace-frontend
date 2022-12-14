@@ -1,7 +1,8 @@
+use std::sync::Arc;
+
 use derive_more::Constructor;
 use domain::{Project, User};
 use infrastructure::database::{schema::project_leads::dsl, Client};
-use std::sync::Arc;
 
 #[derive(DieselMappingRepository, Constructor)]
 #[entities((Project, User))]

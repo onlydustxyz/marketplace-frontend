@@ -1,3 +1,5 @@
+use std::io::Cursor;
+
 use anyhow::Result;
 use olog::error;
 use reqwest::header::HeaderMap;
@@ -6,7 +8,6 @@ use rocket::{
 	response::{Responder, Response as RocketResponse, Result as ResponseResult},
 	Request,
 };
-use std::io::Cursor;
 
 pub struct Response {
 	status: u16,

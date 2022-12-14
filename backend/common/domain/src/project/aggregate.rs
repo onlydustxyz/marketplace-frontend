@@ -107,9 +107,9 @@ impl Project {
 #[cfg(test)]
 mod tests {
 	use std::str::FromStr;
-	use uuid::Uuid;
 
 	use rstest::{fixture, rstest};
+	use uuid::Uuid;
 
 	use super::*;
 	use crate::{GithubRepositoryId, ProjectId};

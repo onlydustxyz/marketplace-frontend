@@ -1,5 +1,6 @@
-use domain::{BudgetId, ProjectId};
 use std::collections::HashSet;
+
+use domain::{BudgetId, ProjectId};
 
 mod admin;
 mod anonymous;

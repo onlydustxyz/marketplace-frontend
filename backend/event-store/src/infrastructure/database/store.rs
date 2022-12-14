@@ -1,4 +1,3 @@
-use crate::{domain::*, infrastructure::database::models};
 use backend_domain::{Event, UniqueMessage};
 use backend_infrastructure::database::{
 	schema::{event_deduplications, event_deduplications::dsl, events, events::index},
@@ -7,6 +6,8 @@ use backend_infrastructure::database::{
 use diesel::{dsl::exists, prelude::*};
 use serde_json::{to_value as to_json, Value as Json};
 use tracing::error;
+
+use crate::{domain::*, infrastructure::database::models};
 
 type Result<T> = std::result::Result<T, EventStoreError>;
 

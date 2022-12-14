@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use anyhow::Result;
 use api::{
 	infrastructure::database::{ProjectDetailsRepository, UserInfoRepository},
@@ -8,7 +10,6 @@ use domain::{AggregateRootRepository, RandomUuidGenerator};
 use dotenv::dotenv;
 use infrastructure::{amqp, config, database, tracing::Tracer};
 use log::info;
-use std::sync::Arc;
 use tracing::instrument;
 
 #[tokio::main]

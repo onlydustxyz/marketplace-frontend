@@ -1,10 +1,11 @@
+use anyhow::Result;
+use async_trait::async_trait;
+use domain::{Event, PaymentEvent};
+
 use crate::{
 	domain::{EventListener, Payment},
 	infrastructure::database::PaymentRepository,
 };
-use anyhow::Result;
-use async_trait::async_trait;
-use domain::{Event, PaymentEvent};
 
 pub struct Projector {
 	repository: PaymentRepository,

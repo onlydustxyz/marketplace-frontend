@@ -1,7 +1,8 @@
-use super::find_attr;
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{Type, TypePath, TypeTuple};
+
+use super::find_attr;
 
 trait UnwrapAsPath {
 	fn unwrap_as_path(&self) -> TypePath;

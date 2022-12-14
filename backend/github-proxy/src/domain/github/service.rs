@@ -1,5 +1,6 @@
-use crate::domain::{GithubRepository, GithubUser};
 use anyhow::Result;
+
+use crate::domain::{GithubRepository, GithubUser};
 
 #[async_trait]
 pub trait Service: Send + Sync {

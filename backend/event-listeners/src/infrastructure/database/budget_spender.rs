@@ -1,8 +1,10 @@
-use crate::domain::BudgetSpenderRepository;
+use std::sync::Arc;
+
 use derive_more::Constructor;
 use domain::{Budget, User};
 use infrastructure::database::{schema::budget_spenders::dsl, Client};
-use std::sync::Arc;
+
+use crate::domain::BudgetSpenderRepository;
 
 #[derive(Constructor, DieselMappingRepository)]
 #[entities((Budget, User))]

@@ -1,7 +1,6 @@
 pub mod fixtures;
 
 use diesel::{Connection, PgConnection};
-
 use r2d2_diesel::ConnectionManager;
 type Pool = r2d2::Pool<ConnectionManager<PgConnection>>;
 

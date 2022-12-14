@@ -1,6 +1,8 @@
-use crate::{BudgetEvent, Message, PaymentEvent, ProjectEvent};
-use serde::{Deserialize, Serialize};
 use std::fmt::Display;
+
+use serde::{Deserialize, Serialize};
+
+use crate::{BudgetEvent, Message, PaymentEvent, ProjectEvent};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -23,10 +25,11 @@ impl Message for Event {}
 
 #[cfg(test)]
 mod test {
-	use super::*;
-	use crate::{Amount, BlockchainNetwork, Currency, PaymentReceipt};
 	use assert_json_diff::assert_json_include;
 	use serde_json::{json, Value};
+
+	use super::*;
+	use crate::{Amount, BlockchainNetwork, Currency, PaymentReceipt};
 
 	#[test]
 	fn display_event_as_json() {

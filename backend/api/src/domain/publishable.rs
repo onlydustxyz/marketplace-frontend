@@ -1,6 +1,7 @@
+use std::sync::Arc;
+
 use domain::{Destination, Message, Publisher, PublisherError};
 use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
-use std::sync::Arc;
 
 #[async_trait]
 pub trait Publishable<M: Message> {

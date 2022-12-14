@@ -1,7 +1,9 @@
-use crate::domain::Budget;
+use std::sync::Arc;
+
 use derive_more::Constructor;
 use infrastructure::database::{schema::budgets::dsl, Client};
-use std::sync::Arc;
+
+use crate::domain::Budget;
 
 #[derive(DieselRepository, Constructor)]
 #[entity(Budget)]
