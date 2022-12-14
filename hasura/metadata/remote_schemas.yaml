@@ -81,7 +81,7 @@
         value_from_env: GITHUB_PROXY_GRAPHQL_API_KEY
   comment: ""
   permissions:
-    - role: public
+    - role: registered_user
       definition:
         schema: |
           schema {
@@ -93,7 +93,7 @@
           }
           type Query {
             fetchRepositoryDetails(id: Int!): Repository!
-            helloFromGithubProxy: String!
+            fetchUserDetails(username: String!): User!
           }
           type Repository {
             contributors: [User!]!
@@ -110,7 +110,7 @@
           enum Encoding {
             BASE64
           }
-    - role: registered_user
+    - role: public
       definition:
         schema: |
           schema {
@@ -122,6 +122,7 @@
           }
           type Query {
             fetchRepositoryDetails(id: Int!): Repository!
+            helloFromGithubProxy: String!
           }
           type Repository {
             contributors: [User!]!
