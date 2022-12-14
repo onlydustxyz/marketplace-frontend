@@ -42,6 +42,15 @@ diesel::table! {
 }
 
 diesel::table! {
+    github_repo_details (id) {
+        id -> Int8,
+        owner -> Text,
+        name -> Text,
+        languages -> Jsonb,
+    }
+}
+
+diesel::table! {
     indexers (id) {
         id -> Text,
         index_head -> Int8,
@@ -121,6 +130,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     event_deduplications,
     event_filters,
     events,
+    github_repo_details,
     indexers,
     payment_requests,
     payments,
