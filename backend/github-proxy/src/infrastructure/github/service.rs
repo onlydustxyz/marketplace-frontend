@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 use infrastructure::github;
 
 use crate::domain::{GithubFile, GithubFileEncoding, GithubRepository, GithubService, GithubUser};
@@ -7,37 +7,23 @@ use crate::domain::{GithubFile, GithubFileEncoding, GithubRepository, GithubServ
 impl GithubService for github::Client {
 	async fn fetch_repository_by_id(&self, id: u64) -> Result<GithubRepository> {
 		let repo = self.get_repository_by_id(id).await?;
-		let contributors: Vec<octocrab::models::User> = if let Some(url) = &repo.contributors_url {
-			self.get_as(url).await?
-		} else {
-			Default::default()
+
+		let contributors: Vec<octocrab::models::User> = match &repo.contributors_url {
+			Some(url) => self.get_as(url).await?,
+			None => Default::default(),
 		};
+
 		let readme = self.get_raw_file(&repo, "README.md").await?;
 
-		GithubRepository::build(repo, contributors, readme.into())
+		Ok(GithubRepository::new(
+			contributors.into_iter().map(Into::into).collect(),
+			readme.into(),
+		))
 	}
 
 	async fn fetch_user_by_name(&self, username: &str) -> Result<GithubUser> {
 		let user = self.get_user_by_name(username).await?;
 		Ok(user.into())
-	}
-}
-
-impl GithubRepository {
-	pub fn build(
-		repo: octocrab::models::Repository,
-		contributors: Vec<octocrab::models::User>,
-		readme: GithubFile,
-	) -> Result<Self> {
-		let repo = Self::new(
-			repo.id.0 as i32,
-			repo.owner.ok_or_else(|| anyhow!("Missing owner in github repository"))?.login,
-			repo.name,
-			contributors.into_iter().map(Into::into).collect(),
-			readme,
-		);
-
-		Ok(repo)
 	}
 }
 
