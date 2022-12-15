@@ -1,7 +1,7 @@
 use ::infrastructure::database::schema::*;
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
-use domain::{Entity, UserId};
+use domain::UserId;
 use serde::{Deserialize, Serialize};
 
 mod email;
@@ -23,12 +23,14 @@ pub use location::Location;
 	Getters,
 	Dissolve,
 	Insertable,
+	Identifiable,
 	Serialize,
 	Deserialize,
 	Queryable,
 	AsChangeset,
 )]
 #[table_name = "user_info"]
+#[primary_key(user_id)]
 pub struct UserInfo {
 	#[diesel(deserialize_as = "uuid::Uuid")]
 	user_id: UserId,
@@ -36,8 +38,4 @@ pub struct UserInfo {
 	location: Location,
 	email: Email,
 	payout_settings: PayoutSettings,
-}
-
-impl Entity for UserInfo {
-	type Id = UserId;
 }

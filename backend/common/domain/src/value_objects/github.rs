@@ -31,13 +31,14 @@ pub struct GithubRepositoryId(i64);
 	Deserialize,
 	PartialEq,
 	Eq,
+	Hash,
 	Display,
 	From,
 	Into,
 	AsRef,
-	Hash,
 	AsExpression,
 	FromToSql,
+	FromSqlRow,
 )]
 #[sql_type = "diesel::sql_types::BigInt"]
 pub struct GithubUserId(i64);

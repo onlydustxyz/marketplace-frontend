@@ -1,11 +1,9 @@
 use derive_more::Constructor;
-use domain::{Entity, PaymentReceiptId};
+use domain::PaymentReceiptId;
 use infrastructure::database::schema::payments;
 use rust_decimal::Decimal;
 use serde_json::Value;
 use uuid::Uuid;
-
-use super::Projection;
 
 #[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, Constructor)]
 pub struct Payment {
@@ -15,9 +13,3 @@ pub struct Payment {
 	receipt: Value,
 	request_id: Uuid,
 }
-
-impl Entity for Payment {
-	type Id = PaymentReceiptId;
-}
-
-impl Projection for Payment {}

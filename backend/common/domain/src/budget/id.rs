@@ -18,6 +18,7 @@ use uuid::Uuid;
 	Hash,
 	AsExpression,
 	FromToSql,
+	FromSqlRow,
 )]
 #[sql_type = "diesel::sql_types::Uuid"]
 pub struct Id(Uuid);

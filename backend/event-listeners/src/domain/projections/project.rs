@@ -1,8 +1,6 @@
 use derive_more::Constructor;
-use domain::{Entity, ProjectId};
+use domain::ProjectId;
 use infrastructure::database::schema::projects;
-
-use super::Projection;
 
 #[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, Constructor)]
 pub struct Project {
@@ -10,9 +8,3 @@ pub struct Project {
 	name: String,
 	github_repo_id: i64,
 }
-
-impl Entity for Project {
-	type Id = ProjectId;
-}
-
-impl Projection for Project {}
