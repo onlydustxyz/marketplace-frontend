@@ -30,10 +30,10 @@ impl EventListener for Projector {
 		}) = event
 		{
 			self.repository.insert(&PaymentRequest::new(
-				(*id).into(),
-				(*budget_id).into(),
-				(*requestor_id).into(),
-				(*recipient_id).into(),
+				*id,
+				*budget_id,
+				*requestor_id,
+				*recipient_id,
 				*amount_in_usd as i64,
 				reason.clone(),
 			))?

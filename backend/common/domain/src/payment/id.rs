@@ -9,13 +9,15 @@ use uuid::Uuid;
 	Clone,
 	PartialEq,
 	Eq,
+	Hash,
 	Serialize,
 	Deserialize,
 	Display,
 	From,
 	Into,
-	FromToSql,
 	AsExpression,
+	FromToSql,
+	FromSqlRow,
 )]
 #[sql_type = "diesel::sql_types::Uuid"]
 pub struct Id(Uuid);
