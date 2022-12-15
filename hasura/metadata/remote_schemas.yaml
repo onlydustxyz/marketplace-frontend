@@ -97,9 +97,6 @@
           }
           type Repository {
             contributors: [User!]!
-            id: Int!
-            name: String!
-            owner: String!
             readme: File!
           }
           type User {
@@ -126,9 +123,6 @@
           }
           type Repository {
             contributors: [User!]!
-            id: Int!
-            name: String!
-            owner: String!
             readme: File!
           }
           type User {
