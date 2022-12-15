@@ -1,6 +1,17 @@
 table:
   name: github_repo_details
   schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - id
+        remote_field:
+          fetchRepositoryDetails:
+            arguments:
+              id: $id
+        remote_schema: GithubProxy
+    name: content
 select_permissions:
   - role: public
     permission:
