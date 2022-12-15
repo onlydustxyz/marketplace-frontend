@@ -2,7 +2,7 @@ table:
   name: projects
   schema: public
 object_relationships:
-  - name: githubRepoDetails
+  - name: githubRepo
     using:
       manual_configuration:
         column_mapping:
@@ -37,17 +37,6 @@ array_relationships:
         table:
           name: project_leads
           schema: public
-remote_relationships:
-  - definition:
-      to_remote_schema:
-        lhs_fields:
-          - github_repo_id
-        remote_field:
-          fetchRepositoryDetails:
-            arguments:
-              id: $github_repo_id
-        remote_schema: GithubProxy
-    name: githubRepo
 select_permissions:
   - role: public
     permission:

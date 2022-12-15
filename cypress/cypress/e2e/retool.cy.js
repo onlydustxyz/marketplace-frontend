@@ -14,7 +14,7 @@ describe("As an admin, on retool, I", () => {
                     cy.graphql(
                         `{
                     projectsByPk(id: "${projectId}") {
-                      githubRepoDetails {
+                      githubRepo {
                         id
                         owner
                         name
@@ -24,7 +24,7 @@ describe("As an admin, on retool, I", () => {
                   }`
                     )
                         .asAnonymous()
-                        .data("projectsByPk.githubRepoDetails")
+                        .data("projectsByPk.githubRepo")
                         .then(details => {
                             expect(details.id).to.equal(STARKONQUEST_ID);
                             expect(details.owner).to.equal("onlydustxyz");

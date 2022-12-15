@@ -131,14 +131,16 @@ describe("As a simple user, I", () => {
                     id
                     name
                     owner
-                    contributors {
-                      id
-                      login
-                      avatarUrl
-                    }
-                    readme {
-                      encoding
-                      content
+                    content {
+                        contributors {
+                        id
+                        login
+                        avatarUrl
+                        }
+                        readme {
+                        encoding
+                        content
+                        }
                     }
                   }
                 }
@@ -150,14 +152,14 @@ describe("As a simple user, I", () => {
                     expect(repo.id).equal(STARKONQUEST_ID);
                     expect(repo.name).equal("starkonquest");
                     expect(repo.owner).equal("onlydustxyz");
-                    expect(repo.contributors).to.be.an("array");
-                    expect(repo.contributors[0]).to.have.all.keys([
+                    expect(repo.content.contributors).to.be.an("array");
+                    expect(repo.content.contributors[0]).to.have.all.keys([
                         "id",
                         "login",
                         "avatarUrl",
                     ]);
-                    expect(repo.readme.encoding).equal("BASE64");
-                    expect(repo.readme.content).to.be.a("string");
+                    expect(repo.content.readme.encoding).equal("BASE64");
+                    expect(repo.content.readme.content).to.be.a("string");
                 });
         });
     });
