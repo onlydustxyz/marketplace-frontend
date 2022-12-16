@@ -17,9 +17,9 @@ interface ProjectInformationProps {
     telegramLink?: string | null;
   } | null;
   githubRepoInfo?: {
-    owner: string;
-    name: string;
-    contributors: { login: string }[];
+    owner?: string;
+    name?: string;
+    contributors?: { login: string }[];
   };
 }
 

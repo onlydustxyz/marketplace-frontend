@@ -1,11 +1,13 @@
 import { gql } from "@apollo/client";
 
 export const GITHUB_REPO_FIELDS_FOR_PROJECT_CARD_FRAGMENT = gql`
-  fragment GithubRepoFieldsForProjectCard on Repository {
+  fragment GithubRepoFieldsForProjectCard on GithubRepoDetails {
     name
     owner
-    contributors {
-      login
+    content {
+      contributors {
+        login
+      }
     }
   }
 `;

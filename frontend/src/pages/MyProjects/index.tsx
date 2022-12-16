@@ -43,7 +43,11 @@ function MyProjectContainer({ projectId }: MyProjectContainerProps) {
               description: project?.projectDetails?.description,
               telegramLink: project?.projectDetails?.telegramLink,
             }}
-            githubRepoInfo={{ ...project.githubRepo }}
+            githubRepoInfo={{
+              owner: project?.githubRepo?.owner,
+              name: project?.githubRepo?.name,
+              contributors: project?.githubRepo?.content?.contributors,
+            }}
           />
         </Card>
       )}

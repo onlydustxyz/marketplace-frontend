@@ -74,7 +74,9 @@ const graphQlMocks = [
             githubRepo: {
               name: TEST_GITHUB_REPO_NAME,
               owner: TEST_GITHUB_REPO_OWNER,
-              contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+              content: {
+                contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+              },
             },
           },
         ],
@@ -110,7 +112,9 @@ const graphQlMocks = [
           githubRepo: {
             name: TEST_GITHUB_REPO_NAME,
             owner: TEST_GITHUB_REPO_OWNER,
-            contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+            content: {
+              contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+            },
           },
         },
       },
@@ -131,10 +135,12 @@ const graphQlMocks = [
           githubRepo: {
             name: TEST_GITHUB_REPO_NAME,
             owner: TEST_GITHUB_REPO_OWNER,
-            readme: {
-              content: btoa(TEST_GITHUB_REPO_CONTENT),
+            content: {
+              readme: {
+                content: btoa(TEST_GITHUB_REPO_CONTENT),
+              },
+              contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
             },
-            contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
           },
         },
       },
