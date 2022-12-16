@@ -10,6 +10,8 @@ type Inputs = {
   paymentReceiverType: PaymentReceiverType;
   firstName: string;
   lastName: string;
+  id: string;
+  name: string;
   email: string;
   number: string;
   street: string;
@@ -32,6 +34,8 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
       paymentReceiverType: user.identity.Person ? PaymentReceiverType.INDIVIDUAL : user.identity.Company ? PaymentReceiverType.COMPANY : PaymentReceiverType.INDIVIDUAL,
       firstName: user.identity?.Person?.firstname ?? "",
       lastName: user.identity.Person?.lastname ?? "",
+      id: user.identity?.Company?.id ?? "",
+      name: user.identity?.Company?.name ?? "",
       email: user.email ?? "",
       number: user.location.number ?? "",
       street: user.location.street ?? "",
@@ -53,6 +57,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
   };
 
   const payoutSettingsType = formMethods.watch("payoutSettingsType");
+  const paymentReceiverType = formMethods.watch("paymentReceiverType");
   const { T } = useIntl();
 
   return (
@@ -77,20 +82,38 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
               />
             </div>
           </div>
-          <div className="flex flex-row gap-5">
-            <Input
-              label={T("profile.form.firstname")}
-              name="firstName"
-              placeholder={T("profile.form.firstname")}
-              options={{ required: T("form.required") }}
-            />
-            <Input
-              label={T("profile.form.lastname")}
-              name="lastName"
-              placeholder={T("profile.form.lastname")}
-              options={{ required: T("form.required") }}
-            />
-          </div>
+          {paymentReceiverType === PaymentReceiverType.INDIVIDUAL && (
+            <div className="flex flex-row gap-5">
+              <Input
+                label={T("profile.form.firstname")}
+                name="firstName"
+                placeholder={T("profile.form.firstname")}
+                options={{ required: T("form.required") }}
+              />
+              <Input
+                label={T("profile.form.lastname")}
+                name="lastName"
+                placeholder={T("profile.form.lastname")}
+                options={{ required: T("form.required") }}
+              />
+            </div>
+          )}
+          {paymentReceiverType === PaymentReceiverType.COMPANY && (
+            <div className="flex flex-row gap-5">
+              <Input
+                label={T("profile.form.id")}
+                name="id"
+                placeholder={T("profile.form.id")}
+                options={{ required: T("form.required") }}
+              />
+              <Input
+                label={T("profile.form.name")}
+                name="name"
+                placeholder={T("profile.form.name")}
+                options={{ required: T("form.required") }}
+              />
+            </div>
+          )}
           <Input
             label={T("profile.form.email")}
             name="email"
@@ -165,6 +188,8 @@ const mapFormDataToSchema = ({
   email,
   lastName,
   firstName,
+  id,
+  name,
   number,
   street,
   city,
@@ -176,7 +201,7 @@ const mapFormDataToSchema = ({
   iban,
   bic,
 }: Inputs) => {
-  const identity = paymentReceiverType === PaymentReceiverType.INDIVIDUAL ? { type: "PERSON", optPerson: { lastname: lastName, firstname: firstName } } : { type: "COMPANY", optCompany: { id: lastName, name: firstName } };
+  const identity = paymentReceiverType === PaymentReceiverType.INDIVIDUAL ? { type: "PERSON", optPerson: { lastname: lastName, firstname: firstName } } : { type: "COMPANY", optCompany: { id, name } };
   const location = {
     number: number,
     street: street,
