@@ -5,8 +5,6 @@ import {
   useQuery,
   useMutation,
   QueryResult,
-  LazyQueryResult,
-  useLazyQuery,
   OperationVariables,
 } from "@apollo/client";
 import merge from "lodash/merge";
@@ -19,15 +17,6 @@ export const useHasuraQuery = <T, V = OperationVariables>(
 ): QueryResult<T, V> => {
   return useQuery(query, merge(options, { context: { headers: { "X-Hasura-Role": role } } }));
 };
-
-export function useLazyHasuraQuery<T = any>(
-  query: TypedDocumentNode,
-  role: HasuraUserRole,
-  options: QueryHookOptions = {}
-) {
-  const [fetch, apolloQuery] = useLazyQuery(query, merge(options, { context: { headers: { "X-Hasura-Role": role } } }));
-  return [fetch, apolloQuery] as [typeof fetch, QueryResult<T>];
-}
 
 export const useHasuraMutation = (
   query: TypedDocumentNode,

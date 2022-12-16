@@ -1,50 +1,43 @@
-import { gql } from "@apollo/client";
-import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
+import { gql, useApolloClient } from "@apollo/client";
+import { createContext, PropsWithChildren, useContext, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { RoutePaths } from "src/App";
 import { useAuth } from "src/hooks/useAuth";
-import { useLazyHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { GetGithubUserIdQuery } from "src/__generated/graphql";
 
-export const useFetchUserGithubId = () => {
-  const [githubId, setGithubId] = useState<number>();
-  const [fetchGithubId, { data }] = useLazyHasuraQuery<GetGithubUserIdQuery>(
-    GET_USER_GITHUB_ID,
-    HasuraUserRole.RegisteredUser
-  );
-
-  useEffect(() => {
-    if (data?.authGithubUsers?.[0]?.githubUserId) {
-      setGithubId(data.authGithubUsers[0].githubUserId);
-    }
-  }, [data]);
-
-  return {
-    githubId,
-    fetchGithubId,
-  };
-};
-
 type UserContextType = {
   githubId?: number;
+  logout: () => void;
 };
 
 const UserContext = createContext<UserContextType | null>(null);
 
 export const UserProvider = ({ children }: PropsWithChildren) => {
-  const { githubId, fetchGithubId } = useFetchUserGithubId();
-  const { user } = useAuth();
-
-  useEffect(() => {
-    if (user) {
-      fetchGithubId();
+  const { user, clearAuth } = useAuth();
+  const { data: githubIdData } = useHasuraQuery<GetGithubUserIdQuery>(
+    GET_USER_GITHUB_ID,
+    HasuraUserRole.RegisteredUser,
+    {
+      skip: !user,
     }
-  }, [user]);
+  );
+  const client = useApolloClient();
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    await client.clearStore();
+    await clearAuth();
+    navigate(RoutePaths.Projects, { replace: true });
+  };
 
   const value = useMemo(() => {
     return {
-      githubId,
+      githubId: githubIdData?.authGithubUsers?.[0]?.githubUserId,
+      logout,
     };
-  }, [githubId]);
+  }, [githubIdData, logout]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

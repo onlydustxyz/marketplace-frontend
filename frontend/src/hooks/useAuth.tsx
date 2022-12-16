@@ -13,7 +13,7 @@ type AuthContextType = {
   hasuraToken?: HasuraToken | null;
   getUpToDateHasuraToken: () => Promise<HasuraToken | null | undefined>;
   login: (refreshToken: string) => void;
-  logout: () => void;
+  clearAuth: () => Promise<void>;
   user: User | null;
 };
 
@@ -53,12 +53,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     navigate(RoutePaths.Profile);
   };
 
-  const logout = () => {
-    axios.post(`${config.HASURA_AUTH_BASE_URL}/signout`, {
+  const clearAuth = async () => {
+    await axios.post(`${config.HASURA_AUTH_BASE_URL}/signout`, {
       refreshToken: hasuraToken?.refreshToken,
     });
     setHasuraToken(null);
-    navigate(RoutePaths.Projects, { replace: true });
   };
 
   const value = useMemo(
@@ -67,7 +66,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       getUpToDateHasuraToken,
       user: hasuraToken ? hasuraToken.user : null,
       login,
-      logout,
+      clearAuth,
     }),
     [hasuraToken]
   );
