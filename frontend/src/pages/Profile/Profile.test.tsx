@@ -34,6 +34,32 @@ const mockUser = {
   }
 };
 
+const mockCompany = {
+  id: "test-company-id",
+  infos: {
+    email: "james.bond@mi6.uk",
+    identity: {
+      Company: {
+        id: "007",
+        name: "MI6",
+      },
+    },
+    location: {
+      number: "7",
+      street: "big ben street",
+      city: "London",
+      country: "United Kingdom",
+      post_code: "EC",
+    },
+    payoutSettings: {
+      WireTransfer: {
+        bic: "CITTGB2LXXX",
+        iban: "GB7611315000011234567890138"
+      },
+    }
+  }
+};
+
 const HASURA_TOKEN_BASIC_TEST_VALUE = {
   user: {
     id: mockUser.id,
@@ -41,6 +67,13 @@ const HASURA_TOKEN_BASIC_TEST_VALUE = {
   accessToken: "SOME_TOKEN",
   accessTokenExpiresIn: 900,
   creationDate: new Date().getTime(),
+};
+
+const HASURA_TOKEN_COMPANY = {
+  user: {
+    id: mockCompany.id,
+  },
+  accessToken: "SOME_TOKEN",
 };
 
 expect.extend(matchers);
@@ -73,7 +106,7 @@ const buildMockMutationUpdateUser = (userId: string, userInfo: UserInfo) => ({
   result: { data: { userId } },
 });
 
-describe('"Profile" page', () => {
+describe('"Profile" page for individual', () => {
   beforeAll(() => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
   });
@@ -117,6 +150,66 @@ describe('"Profile" page', () => {
     waitFor(() => {
       const errorMessages = screen.getAllByText("Required");
       expect(errorMessages.length).toBe(2);
+    });
+  });
+
+  it("should display success message on success", async () => {
+    // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
+    await userEvent.click(await screen.findByText("Send"));
+    waitFor(() => {
+      const successMessage = screen.getByText("Your data has been saved!");
+      expect(successMessage).toBeInTheDocument();
+    });
+  });
+});
+
+describe('"Profile" page for company', () => {
+  beforeAll(() => {
+    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_COMPANY));
+  });
+
+  beforeEach(() => {
+    renderWithIntl(<ProfilePage />, {
+      wrapper: MemoryRouterProviderFactory({
+        route: RoutePaths.Profile,
+        mocks: [
+          buildMockProfileQuery(mockCompany.infos),
+          buildMockMutationUpdateUser(mockCompany.id, mockCompany.infos),
+        ],
+      }),
+    });
+  });
+
+  it("should print form with default values", async () => {
+    await screen.findByText("Edit profile");
+    expect((await screen.findByLabelText<HTMLInputElement>("ID")).value).toBe(mockCompany.infos.identity.Company.id);
+    expect((await screen.findByLabelText<HTMLInputElement>("Name")).value).toBe(mockCompany.infos.identity.Company.name);
+    expect((await screen.findByLabelText<HTMLInputElement>("Email")).value).toBe(mockCompany.infos.email);
+    expect((await screen.findByLabelText<HTMLInputElement>("N.")).value).toBe(mockCompany.infos.location.number);
+    expect((await screen.findByLabelText<HTMLInputElement>("Street")).value).toBe(mockCompany.infos.location.street);
+    expect((await screen.findByPlaceholderText<HTMLInputElement>("Zip code")).value).toBe(
+      mockCompany.infos.location.post_code
+    );
+    expect((await screen.findByPlaceholderText<HTMLInputElement>("City")).value).toBe(mockCompany.infos.location.city);
+    expect((await screen.findByPlaceholderText<HTMLInputElement>("Country")).value).toBe(
+      mockCompany.infos.location.country
+    );
+    expect((await screen.findByPlaceholderText<HTMLInputElement>("IBAN")).value).toBe(
+      mockCompany.infos.payoutSettings.WireTransfer.iban
+    );
+    expect((await screen.findByPlaceholderText<HTMLInputElement>("BIC")).value).toBe(
+      mockCompany.infos.payoutSettings.WireTransfer.bic
+    );
+  });
+
+
+  it("should display error when required field missing", async () => {
+    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Name"));
+    expect((await screen.findByLabelText<HTMLInputElement>("Name")).value).toBe("");
+    await userEvent.click(await screen.findByText("Send"));
+    waitFor(() => {
+      const errorMessages = screen.getAllByText("Required");
+      expect(errorMessages.length).toBe(1);
     });
   });
 
