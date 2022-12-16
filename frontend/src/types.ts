@@ -35,17 +35,28 @@ export type User = {
   phoneNumberVerified: boolean;
   activeMfaType: null;
   roles: HasuraUserRole[];
-} & UserInfo;
+};
 
 export type UserInfo = {
-  metadata?: {
-    paymentReceiverType?: PaymentReceiverType;
-    firstName?: string;
-    lastName?: string;
-    location?: Location;
-    payoutSettings?: PayoutSettings;
-  };
+  identity: Identity,
+  location: Location;
+  payoutSettings: PayoutSettings,
   email: Email;
+};
+
+export type Identity = {
+  Person?: PersonIdentity;
+  Company?: CompanyIdentity;
+}
+
+export type PersonIdentity = {
+  lastname: string;
+  firstname: string
+};
+
+export type CompanyIdentity = {
+  id: string;
+  name: string;
 };
 
 type Date = string;
@@ -54,18 +65,22 @@ type Uuid = string;
 export type Email = string;
 export type PhoneNumber = string;
 export type Location = {
-  address: string;
-  zipcode: string;
+  number: string;
+  street: string;
+  post_code: string;
   city: string;
   country: string;
 };
+
 export type PayoutSettings = {
-  type: PayoutSettingsType;
-  settings: {
-    ethWalletAddress?: string;
-    iban?: string;
-    bic?: string;
-  };
+  EthTransfer?: EthTransfer;
+  WireTransfer?: WireTransfer;
+}
+
+export type EthTransfer = string;
+export type WireTransfer = {
+  bic: string;
+  iban: string;
 };
 
 export enum PayoutSettingsType {
