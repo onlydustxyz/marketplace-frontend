@@ -1,11 +1,10 @@
 use anyhow::anyhow;
 use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt, UserId};
-use juniper::{graphql_object, graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
+use juniper::{graphql_object, DefaultScalarValue};
 use rusty_money::{crypto, Money};
-use thiserror::Error;
 use uuid::Uuid;
 
-use super::Context;
+use super::{Context, Error, Result};
 use crate::{
 	domain::{
 		user_info::{Email, Identity, Location, PayoutSettings, UserInfo},
@@ -13,26 +12,6 @@ use crate::{
 	},
 	presentation::http::dto::{IdentityInput, PayoutSettingsInput},
 };
-
-#[derive(Debug, Error)]
-enum Error {
-	#[error("User is not authorized to perform this action")]
-	NotAuthorized(String),
-	#[error("Invalid GraphQL request")]
-	InvalidRequest(#[from] anyhow::Error),
-}
-
-impl IntoFieldError for Error {
-	fn into_field_error(self) -> FieldError<DefaultScalarValue> {
-		let (msg, reason) = match &self {
-			Self::NotAuthorized(reason) => (self.to_string(), reason.clone()),
-			Self::InvalidRequest(source) => (self.to_string(), source.to_string()),
-		};
-		FieldError::new(msg, graphql_value!({ "reason": reason }))
-	}
-}
-
-type Result<T> = std::result::Result<T, Error>;
 
 pub struct Mutation;
 
@@ -46,9 +25,12 @@ impl Mutation {
 		recipient_address: String,
 		transaction_hash: String,
 	) -> Result<Uuid> {
-		let currency = crypto::find(&currency_code)
-			.ok_or_else(|| anyhow!("Unknown currency code: {currency_code}"))?;
-		let amount = Money::from_str(&amount, currency).map_err(anyhow::Error::msg)?;
+		let currency = crypto::find(&currency_code).ok_or_else(|| {
+			Error::InvalidRequest(anyhow!("Unknown currency code: {currency_code}"))
+		})?;
+
+		let amount = Money::from_str(&amount, currency)
+			.map_err(|e| Error::InvalidRequest(anyhow::Error::msg(e)))?;
 
 		let payment_id = context
 			.process_payment_usecase

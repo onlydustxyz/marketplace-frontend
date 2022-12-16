@@ -7,6 +7,8 @@ use domain::{
 };
 use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
 
+use crate::application::UsecaseError;
+
 pub struct Usecase {
 	uuid_generator: Arc<dyn UuidGenerator>,
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
@@ -31,11 +33,12 @@ impl Usecase {
 		payment_id: PaymentId,
 		amount: Amount,
 		receipt: PaymentReceipt,
-	) -> Result<PaymentReceiptId> {
+	) -> Result<PaymentReceiptId, UsecaseError> {
 		let receipt_id = self.uuid_generator.new_uuid();
 		let payment = self.payment_repository.find_by_id(&payment_id)?;
 		let events: Vec<_> = payment
-			.add_receipt(receipt_id.into(), amount, receipt)?
+			.add_receipt(receipt_id.into(), amount, receipt)
+			.map_err(|e| UsecaseError::InvalidInputs(e.into()))?
 			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)

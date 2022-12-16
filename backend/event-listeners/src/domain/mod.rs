@@ -1,5 +1,5 @@
 mod event_listener;
-pub use event_listener::EventListener;
+pub use event_listener::*;
 
 mod projections;
 pub use projections::*;

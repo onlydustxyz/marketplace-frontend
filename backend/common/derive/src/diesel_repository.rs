@@ -20,19 +20,19 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 		use diesel::pg::Pg;
 
 		impl #repository_name {
-			pub fn find_by_id(&self, id: <&#entity_type as ::domain::Entity>::Id) -> anyhow::Result<#entity_type> {
+			pub fn find_by_id(&self, id: <&#entity_type as ::domain::Entity>::Id) -> Result<#entity_type, infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 				let entity = #table.find(*id).first(&*connection)?;
 				Ok(entity)
 			}
 
-			pub fn insert(&self, entity: &#entity_type) -> anyhow::Result<()> {
+			pub fn insert(&self, entity: &#entity_type) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 				diesel::insert_into(#table).values(entity).execute(&*connection)?;
 				Ok(())
 			}
 
-			pub fn update<A: AsChangeset<Target = #table, Changeset = C>, C: QueryFragment<Pg>>(&self, id: <&#entity_type as ::domain::Entity>::Id, entity: A) -> anyhow::Result<()> {
+			pub fn update<A: AsChangeset<Target = #table, Changeset = C>, C: QueryFragment<Pg>>(&self, id: <&#entity_type as ::domain::Entity>::Id, entity: A) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 				diesel::update(#table)
 					.filter(#id.eq(id))
@@ -41,7 +41,7 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 				Ok(())
 			}
 
-			pub fn upsert(&self, entity: &#entity_type)  -> anyhow::Result<()> {
+			pub fn upsert(&self, entity: &#entity_type)  -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 				diesel::insert_into(#table)
 					.values(entity)
@@ -52,13 +52,13 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 				Ok(())
 			}
 
-			pub fn delete(&self, id: <&#entity_type as ::domain::Entity>::Id) -> anyhow::Result<()> {
+			pub fn delete(&self, id: <&#entity_type as ::domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 				diesel::delete(#table).filter(#id.eq(id)).execute(&*connection)?;
 				Ok(())
 			}
 
-			pub fn clear(&self) -> anyhow::Result<()> {
+			pub fn clear(&self) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 				diesel::delete(#table).execute(&*connection)?;
 				Ok(())
