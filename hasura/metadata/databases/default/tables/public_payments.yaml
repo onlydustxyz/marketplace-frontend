@@ -16,5 +16,6 @@ select_permissions:
         - request_id
       filter:
         paymentRequest:
-          recipient_id:
-            _eq: X-Hasura-User-Id
+          recipient:
+            user_id:
+              _eq: X-Hasura-User-Id
