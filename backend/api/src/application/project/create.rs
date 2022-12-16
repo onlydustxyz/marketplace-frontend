@@ -2,12 +2,11 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{
-	Amount, Budget, BudgetId, Event, EventSourcable, GithubRepositoryId, Project, ProjectId,
-	Publisher, UniqueMessage, UserId, UuidGenerator,
+	Amount, Budget, BudgetId, DomainError, Event, EventSourcable, GithubRepositoryId, Project,
+	ProjectId, Publisher, UniqueMessage, UserId, UuidGenerator,
 };
 
 use crate::{
-	application::UsecaseError,
 	domain::{ProjectDetails, Publishable},
 	infrastructure::database::ProjectDetailsRepository,
 };
@@ -39,11 +38,11 @@ impl Usecase {
 		description: Option<String>,
 		telegram_link: Option<String>,
 		user_id: UserId,
-	) -> Result<ProjectId, UsecaseError> {
+	) -> Result<ProjectId, DomainError> {
 		let project_id: ProjectId = self.uuid_generator.new_uuid().into();
 
 		let mut events = create_leaded_project(project_id, user_id, name, github_repo_id)
-			.map_err(UsecaseError::InvalidInputs)?;
+			.map_err(DomainError::InvalidInputs)?;
 		events.extend(allocate_owned_budget(
 			self.uuid_generator.new_uuid().into(),
 			project_id,
