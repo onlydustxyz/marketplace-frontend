@@ -1,8 +1,7 @@
+use domain::DomainError;
 use infrastructure::database::DatabaseError;
 use juniper::{graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
 use thiserror::Error;
-
-use crate::application::UsecaseError;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -25,11 +24,11 @@ impl From<DatabaseError> for Error {
 	}
 }
 
-impl From<UsecaseError> for Error {
-	fn from(usecase_error: UsecaseError) -> Self {
+impl From<DomainError> for Error {
+	fn from(usecase_error: DomainError) -> Self {
 		match usecase_error {
-			UsecaseError::InternalError(e) => Self::InternalError(e),
-			UsecaseError::InvalidInputs(e) => Self::InvalidRequest(e),
+			DomainError::InternalError(e) => Self::InternalError(e),
+			DomainError::InvalidInputs(e) => Self::InvalidRequest(e),
 		}
 	}
 }

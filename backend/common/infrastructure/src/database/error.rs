@@ -1,5 +1,5 @@
 use diesel::result::Error as DieselError;
-use domain::SubscriberCallbackError;
+use domain::{DomainError, SubscriberCallbackError};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -21,6 +21,17 @@ impl From<Error> for SubscriberCallbackError {
 			Error::Migration(e) => Self::Fatal(e),
 			Error::Transaction(e) => Self::Discard(e.into()),
 			Error::Pool(e) => Self::Fatal(e.into()),
+		}
+	}
+}
+
+impl From<Error> for DomainError {
+	fn from(database_error: Error) -> Self {
+		match database_error {
+			Error::Connection(e) => Self::InternalError(e),
+			Error::Migration(e) => Self::InternalError(e),
+			Error::Transaction(e) => Self::InvalidInputs(e.into()),
+			Error::Pool(e) => Self::InternalError(e.into()),
 		}
 	}
 }

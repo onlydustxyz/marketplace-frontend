@@ -13,6 +13,9 @@ pub use aggregate::{Aggregate, EventSourcable};
 mod entity;
 pub use entity::Entity;
 
+mod error;
+pub use error::*;
+
 mod messaging;
 pub use messaging::{
 	Destination, Message, Publisher, PublisherError, Subscriber, SubscriberCallbackError,

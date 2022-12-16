@@ -2,13 +2,13 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{
-	AggregateRootRepository, Budget, BudgetId, Event, GithubUserId, Payment, PaymentId, Publisher,
-	UniqueMessage, UserId, UuidGenerator,
+	AggregateRootRepository, Budget, BudgetId, DomainError, Event, GithubUserId, Payment,
+	PaymentId, Publisher, UniqueMessage, UserId, UuidGenerator,
 };
 use rusty_money::{crypto, Money};
 use serde_json::Value;
 
-use crate::{application::UsecaseError, domain::Publishable};
+use crate::domain::Publishable;
 
 pub struct Usecase {
 	uuid_generator: Arc<dyn UuidGenerator>,
@@ -36,11 +36,11 @@ impl Usecase {
 		recipient_id: GithubUserId,
 		amount_in_usd: u32,
 		reason: Value,
-	) -> Result<PaymentId, UsecaseError> {
+	) -> Result<PaymentId, DomainError> {
 		let budget = self.budget_repository.find_by_id(&budget_id)?;
 		let mut events = budget
 			.spend(&Money::from_major(amount_in_usd as i64, crypto::USDC).into())
-			.map_err(|e| UsecaseError::InvalidInputs(e.into()))?
+			.map_err(|e| DomainError::InvalidInputs(e.into()))?
 			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)
