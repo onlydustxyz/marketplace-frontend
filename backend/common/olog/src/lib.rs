@@ -7,6 +7,7 @@ mod warn;
 mod stdlog;
 pub use opentelemetry;
 pub use stdlog::LogTracer;
+pub use tracing;
 pub use tracing_opentelemetry;
 
 /// Retrieves current trace ID and converts it to Datadog format.
@@ -16,7 +17,7 @@ macro_rules! trace_id {
 		u128::from_be_bytes(
 			$crate::opentelemetry::trace::TraceContextExt::span(
 				&$crate::tracing_opentelemetry::OpenTelemetrySpanExt::context(
-					&tracing::Span::current(),
+					&$crate::tracing::Span::current(),
 				),
 			)
 			.span_context()
@@ -33,7 +34,7 @@ macro_rules! span_id {
 		u64::from_be_bytes(
 			$crate::opentelemetry::trace::TraceContextExt::span(
 				&$crate::tracing_opentelemetry::OpenTelemetrySpanExt::context(
-					&tracing::Span::current(),
+					&$crate::tracing::Span::current(),
 				),
 			)
 			.span_context()

@@ -19,176 +19,176 @@
 #[macro_export]
 macro_rules! error {
 	(target: $target:expr, parent: $parent:expr, { $($field:tt)* }, $($arg:tt)* ) => (
-        tracing::event!(target: $target, parent: $parent, tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($field)* }, $($arg)*)
+        $crate::tracing::event!(target: $target, parent: $parent, $crate::tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($field)* }, $($arg)*)
     );
     (target: $target:expr, parent: $parent:expr, $($k:ident).+ $($field:tt)+ ) => (
-        tracing::event!(target: $target, parent: $parent, tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+ $($field)+ })
+        $crate::tracing::event!(target: $target, parent: $parent, $crate::tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+ $($field)+ })
     );
     (target: $target:expr, parent: $parent:expr, ?$($k:ident).+ $($field:tt)+ ) => (
-        tracing::event!(target: $target, parent: $parent, tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+ $($field)+ })
+        $crate::tracing::event!(target: $target, parent: $parent, $crate::tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+ $($field)+ })
     );
     (target: $target:expr, parent: $parent:expr, %$($k:ident).+ $($field:tt)+ ) => (
-        tracing::event!(target: $target, parent: $parent, tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+ $($field)+ })
+        $crate::tracing::event!(target: $target, parent: $parent, $crate::tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+ $($field)+ })
     );
     (target: $target:expr, parent: $parent:expr, $($arg:tt)+ ) => (
-        tracing::event!(target: $target, parent: $parent, tracing::Level::ERROR, {trace_id = $crate::trace_id!(), span_id = $crate::span_id!() }, $($arg)+)
+        $crate::tracing::event!(target: $target, parent: $parent, $crate::tracing::Level::ERROR, {trace_id = $crate::trace_id!(), span_id = $crate::span_id!() }, $($arg)+)
     );
     (parent: $parent:expr, { $($field:tt)+ }, $($arg:tt)+ ) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
             parent: $parent,
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($field)+ },
             $($arg)+
         )
     );
     (parent: $parent:expr, $($k:ident).+ = $($field:tt)*) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
             parent: $parent,
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+ = $($field)*}
         )
     );
     (parent: $parent:expr, ?$($k:ident).+ = $($field:tt)*) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
             parent: $parent,
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), ?$($k).+ = $($field)*}
         )
     );
     (parent: $parent:expr, %$($k:ident).+ = $($field:tt)*) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
             parent: $parent,
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), %$($k).+ = $($field)*}
         )
     );
     (parent: $parent:expr, $($k:ident).+, $($field:tt)*) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
             parent: $parent,
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+, $($field)*}
         )
     );
     (parent: $parent:expr, ?$($k:ident).+, $($field:tt)*) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
             parent: $parent,
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), ?$($k).+, $($field)*}
         )
     );
     (parent: $parent:expr, %$($k:ident).+, $($field:tt)*) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
             parent: $parent,
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), %$($k).+, $($field)*}
         )
     );
     (parent: $parent:expr, $($arg:tt)+) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
             parent: $parent,
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             {trace_id = $crate::trace_id!(), span_id = $crate::span_id!() },
             $($arg)+
         )
     );
     (target: $target:expr, { $($field:tt)* }, $($arg:tt)* ) => (
-        tracing::event!(target: $target, tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($field)* }, $($arg)*)
+        $crate::tracing::event!(target: $target, $crate::tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($field)* }, $($arg)*)
     );
     (target: $target:expr, $($k:ident).+ $($field:tt)* ) => (
-        tracing::event!(target: $target, tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+ $($field)* })
+        $crate::tracing::event!(target: $target, $crate::tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+ $($field)* })
     );
     (target: $target:expr, ?$($k:ident).+ $($field:tt)* ) => (
-        tracing::event!(target: $target, tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), ?$($k).+ $($field)* })
+        $crate::tracing::event!(target: $target, $crate::tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), ?$($k).+ $($field)* })
     );
     (target: $target:expr, %$($k:ident).+ $($field:tt)* ) => (
-        tracing::event!(target: $target, tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+ $($field)* })
+        $crate::tracing::event!(target: $target, $crate::tracing::Level::ERROR, { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+ $($field)* })
     );
     (target: $target:expr, $($arg:tt)+ ) => (
-        tracing::event!(target: $target, tracing::Level::ERROR, {trace_id = $crate::trace_id!(), span_id = $crate::span_id!() }, $($arg)+)
+        $crate::tracing::event!(target: $target, $crate::tracing::Level::ERROR, {trace_id = $crate::trace_id!(), span_id = $crate::span_id!() }, $($arg)+)
     );
     ({ $($field:tt)+ }, $($arg:tt)+ ) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($field)+ },
             $($arg)+
         )
     );
     ($($k:ident).+ = $($field:tt)*) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+ = $($field)*}
         )
     );
     (?$($k:ident).+ = $($field:tt)*) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), ?$($k).+ = $($field)*}
         )
     );
     (%$($k:ident).+ = $($field:tt)*) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), %$($k).+ = $($field)*}
         )
     );
     ($($k:ident).+, $($field:tt)*) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+, $($field)*}
         )
     );
     (?$($k:ident).+, $($field:tt)*) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), ?$($k).+, $($field)*}
         )
     );
     (%$($k:ident).+, $($field:tt)*) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), %$($k).+, $($field)*}
         )
     );
     (?$($k:ident).+) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), ?$($k).+ }
         )
     );
     (%$($k:ident).+) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), %$($k).+ }
         )
     );
     ($($k:ident).+) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!(), $($k).+ }
         )
     );
 	($($arg:tt)+) => (
-        tracing::event!(
+        $crate::tracing::event!(
             target: module_path!(),
-            tracing::Level::ERROR,
+            $crate::tracing::Level::ERROR,
             { trace_id = $crate::trace_id!(), span_id = $crate::span_id!() },
             $($arg)+
         )

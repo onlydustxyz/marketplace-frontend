@@ -24,9 +24,6 @@ rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 # Serde
 serde = {version = "1.0.137", features = ["derive"]}
 
-# Tracing
-tracing = "0.1"
-
 # Utils
 derive_more = "0.99.17"
 dotenv = "0.15.0"
