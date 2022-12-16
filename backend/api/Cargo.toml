@@ -70,6 +70,7 @@ event-store = {path = "../event-store"}
 infrastructure = {path = "../common/infrastructure"}
 derive = {path = "../common/derive"}
 presentation = {path = "../common/presentation"}
+olog = {path = "../common/olog"}
 
 [dev-dependencies]
 async-std = {version = "1.12.0", features = ["attributes"]}
