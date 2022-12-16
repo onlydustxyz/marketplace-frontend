@@ -37,56 +37,11 @@ export type User = {
   roles: HasuraUserRole[];
 };
 
-export type UserInfo = {
-  identity: Identity,
-  location: Location;
-  payoutSettings: PayoutSettings,
-  email: Email;
-};
-
-export type Identity = {
-  Person?: PersonIdentity;
-  Company?: CompanyIdentity;
-}
-
-export type PersonIdentity = {
-  lastname: string;
-  firstname: string
-};
-
-export type CompanyIdentity = {
-  id: string;
-  name: string;
-};
-
 type Date = string;
 type Url = string;
 type Uuid = string;
 export type Email = string;
 export type PhoneNumber = string;
-export type Location = {
-  number: string;
-  street: string;
-  post_code: string;
-  city: string;
-  country: string;
-};
-
-export type PayoutSettings = {
-  EthTransfer?: EthTransfer;
-  WireTransfer?: WireTransfer;
-}
-
-export type EthTransfer = string;
-export type WireTransfer = {
-  bic: string;
-  iban: string;
-};
-
-export enum PayoutSettingsType {
-  ETH = "ETH",
-  IBAN = "IBAN",
-}
 
 export type Payment = {
   id: string;
@@ -116,11 +71,6 @@ export type Project = {
 };
 
 type Locale = "en" | "fr";
-
-export enum PaymentReceiverType {
-  INDIVIDUAL = "INDIVIDUAL",
-  COMPANY = "COMPANY",
-}
 
 export const CLAIMS_KEY = "https://hasura.io/jwt/claims";
 export const PROJECTS_LED_KEY = "x-hasura-projectsLeaded";
