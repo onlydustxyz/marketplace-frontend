@@ -1,15 +1,15 @@
 import { gql } from "@apollo/client";
 import PaymentTable, { mapApiPaymentsToProps } from "src/components/PaymentTable";
 import QueryWrapper from "src/components/QueryWrapper";
-import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
+import { useUser } from "src/hooks/useUser";
 import { HasuraUserRole } from "src/types";
 
 const MyContributions = () => {
-  const { user } = useAuth();
+  const { githubId } = useUser();
   const query = useHasuraQuery(GET_MY_CONTRIBUTIONS_QUERY, HasuraUserRole.RegisteredUser, {
-    variables: { userId: user?.id },
+    variables: { userId: githubId },
   });
   const { data } = query;
   const payments = data?.paymentRequests?.map(mapApiPaymentsToProps) ?? null;
