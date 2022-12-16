@@ -29,7 +29,7 @@ pub enum CallbackError {
 	// Returning an Fatal error will stop the consuming of messages. The current message
 	// must be automatically requeued by the message broker.
 	#[error("Fatal error while processing the message")]
-	Fatal(#[from] anyhow::Error),
+	Fatal(#[source] anyhow::Error),
 }
 
 #[async_trait]

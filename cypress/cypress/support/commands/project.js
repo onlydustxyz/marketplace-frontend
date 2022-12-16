@@ -45,3 +45,16 @@ Cypress.Commands.add("getProjectBudget", (projectId) => {
         }
     }`;
 });
+
+Cypress.Commands.add(
+    "updateProjectGithubRepoId",
+    (
+        id,
+        githubRepoId
+    ) => {
+        return `mutation{ updateProjectGithubRepoId(
+                id: "${id}",
+                githubRepoId: ${githubRepoId},
+            )}`;
+    }
+);
