@@ -22,7 +22,7 @@ const mockUser = {
       },
     },
     location: {
-      number: "0",
+      number: "34",
       street: "rue Lakanal",
       city: "Grenoble",
       country: "France",
@@ -95,7 +95,8 @@ describe('"Profile" page', () => {
     expect((await screen.findByLabelText<HTMLInputElement>("Firstname")).value).toBe(mockUser.infos.identity.Person.firstname);
     expect((await screen.findByLabelText<HTMLInputElement>("Lastname")).value).toBe(mockUser.infos.identity.Person.lastname);
     expect((await screen.findByLabelText<HTMLInputElement>("Email")).value).toBe(mockUser.infos.email);
-    expect((await screen.findByLabelText<HTMLInputElement>("Location")).value).toBe(mockUser.infos.location.street);
+    expect((await screen.findByLabelText<HTMLInputElement>("N.")).value).toBe(mockUser.infos.location.number);
+    expect((await screen.findByLabelText<HTMLInputElement>("Street")).value).toBe(mockUser.infos.location.street);
     expect((await screen.findByPlaceholderText<HTMLInputElement>("Zip code")).value).toBe(
       mockUser.infos.location.post_code
     );

@@ -11,7 +11,8 @@ type Inputs = {
   firstName: string;
   lastName: string;
   email: string;
-  address: string;
+  number: string;
+  street: string;
   zipcode: string;
   city: string;
   country: string;
@@ -32,7 +33,8 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
       firstName: user.identity?.Person?.firstname ?? "",
       lastName: user.identity.Person?.lastname ?? "",
       email: user.email ?? "",
-      address: user.location.street ?? "",
+      number: user.location.number ?? "",
+      street: user.location.street ?? "",
       zipcode: user.location.post_code ?? "",
       city: user.location.city ?? "",
       country: user.location.country ?? "",
@@ -96,9 +98,15 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
             options={{ required: T("form.required") }}
           />
           <Input
-            label={T("profile.form.location")}
-            name="address"
-            placeholder={T("profile.form.location")}
+            label={T("profile.form.number")}
+            name="number"
+            placeholder={T("profile.form.number")}
+            options={{ required: T("form.required") }}
+          />
+          <Input
+            label={T("profile.form.street")}
+            name="street"
+            placeholder={T("profile.form.street")}
             options={{ required: T("form.required") }}
           />
           <div className="flex flex-row gap-5">
@@ -157,7 +165,8 @@ const mapFormDataToSchema = ({
   email,
   lastName,
   firstName,
-  address,
+  number,
+  street,
   city,
   country,
   paymentReceiverType,
@@ -169,8 +178,8 @@ const mapFormDataToSchema = ({
 }: Inputs) => {
   const identity = paymentReceiverType === PaymentReceiverType.INDIVIDUAL ? { type: "PERSON", optPerson: { lastname: lastName, firstname: firstName } } : { type: "COMPANY", optCompany: { id: lastName, name: firstName } };
   const location = {
-    number: "0",
-    street: address,
+    number: number,
+    street: street,
     post_code: zipcode,
     city,
     country,
