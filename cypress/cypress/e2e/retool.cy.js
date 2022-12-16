@@ -72,7 +72,8 @@ describe("As an admin, on retool, I", () => {
                 .createProject(user.id, "Another project", 500, 1234)
                 .asAdmin()
                 .data("createProject")
-                .then((projectId) =>
+                .then((projectId) => {
+                    cy.wait(700);
                     cy
                         .updateProject(projectId, "new description")
                         .asAdmin()
@@ -93,7 +94,41 @@ describe("As an admin, on retool, I", () => {
                                 .its("description")
                                 .should("equal", "new description")
                         )
-                )
+                })
+        );
+    });
+
+    it("can update a project github repository id", () => {
+        const FIRST_REPO_ID = 1;
+        const SECOND_REPO_ID = 1234;
+
+        cy.createUser().then((user) =>
+            cy
+                .createProject(user.id, "Another project", 500, FIRST_REPO_ID)
+                .asAdmin()
+                .data("createProject")
+                .then((projectId) => {
+                    cy.wait(700);
+                    cy
+                        .updateProjectGithubRepoId(projectId, SECOND_REPO_ID)
+                        .asAdmin()
+                        .data()
+                        .then(() => {
+                            cy.wait(700);
+                            cy
+                                .graphql(
+                                    `{
+                    projectsByPk(id: "${projectId}") {
+                        githubRepoId
+                    }
+                  }`
+                                )
+                                .asAnonymous()
+                                .data("projectsByPk")
+                                .its("githubRepoId")
+                                .should("equal", SECOND_REPO_ID)
+                        })
+                })
         );
     });
 });

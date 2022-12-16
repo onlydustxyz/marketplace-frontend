@@ -35,9 +35,18 @@ impl Projector {
 		}
 	}
 
-	async fn project_github_data(&self, github_repo_id: &GithubRepositoryId) -> Result<()> {
-		let repo = self.github_service.fetch_repository_details(github_repo_id).await?;
+	async fn project_github_data(
+		&self,
+		github_repo_id: &GithubRepositoryId,
+	) -> Result<(), SubscriberCallbackError> {
+		let repo = self
+			.github_service
+			.fetch_repository_details(github_repo_id)
+			.await
+			.map_err(SubscriberCallbackError::Discard)?;
+
 		self.github_repo_details_repository.upsert(&repo)?;
+
 		Ok(())
 	}
 }
@@ -68,6 +77,7 @@ impl EventListener for Projector {
 				},
 			}
 		}
+
 		Ok(())
 	}
 }

@@ -4,12 +4,13 @@ describe("As a project leader, I", () => {
     let budgetId;
 
     before(() => {
-        cy.createUser().then(($user) =>
+        cy.createUser().then(($user) => {
             cy
-                .createProject($user.id, "Project with budget", 1000)
+                .createProject($user.id, "Project with budget", 1000, 1234)
                 .asAdmin()
                 .data("createProject")
                 .then(($projectId) => {
+                    cy.wait(700);
                     cy.getProjectBudget($projectId)
                         .asRegisteredUser($user)
                         .data("projectsByPk.budgets")
@@ -22,7 +23,7 @@ describe("As a project leader, I", () => {
                             budgetId = $budgetId;
                         });
                 })
-        );
+        });
     });
 
     it("can request a payment from a budget I own", () => {
