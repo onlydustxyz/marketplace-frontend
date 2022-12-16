@@ -5,76 +5,74 @@ import matchers from "@testing-library/jest-dom/matchers";
 
 import ProfilePage from ".";
 import { GET_PROFILE_QUERY } from "src/pages/Profile";
-import { CLAIMS_KEY, PROJECTS_LED_KEY, UserInfo } from "src/types";
+import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { UPDATE_USER_MUTATION } from "./components/ProfileForm";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
+import {
+  IdentityInput,
+  PayoutSettingsInput,
+  UpdateProfileInfoMutationVariables,
+  Location,
+  UserInfo,
+  IdentityType,
+  PayoutSettingsType,
+} from "src/__generated/graphql";
 
-const mockUser = {
-  id: "test-user-id",
-  infos: {
-    email: "test@user.email",
-    identity: {
-      Person: {
-        firstname: "Nicolas",
-        lastname: "Ngomai",
-      },
+const mockUser: UserInfo = {
+  userId: "test-user-id",
+  email: "test@user.email",
+  identity: {
+    Person: {
+      firstname: "Nicolas",
+      lastname: "Ngomai",
     },
-    location: {
-      number: "34",
-      street: "rue Lakanal",
-      city: "Grenoble",
-      country: "France",
-      post_code: "38000",
-    },
-    payoutSettings: {
-      EthTransfer: "0x1234567890",
-    }
-  }
+  },
+  location: {
+    number: "34",
+    street: "rue Lakanal",
+    city: "Grenoble",
+    country: "France",
+    post_code: "38000",
+  },
+  payoutSettings: {
+    EthTransfer: "0x1234567890",
+  },
 };
 
-const mockCompany = {
-  id: "test-company-id",
-  infos: {
-    email: "james.bond@mi6.uk",
-    identity: {
-      Company: {
-        id: "007",
-        name: "MI6",
-      },
+const mockCompany: UserInfo = {
+  userId: "test-company-id",
+  email: "james.bond@mi6.uk",
+  identity: {
+    Company: {
+      id: "007",
+      name: "MI6",
     },
-    location: {
-      number: "7",
-      street: "big ben street",
-      city: "London",
-      country: "United Kingdom",
-      post_code: "EC",
+  },
+  location: {
+    number: "7",
+    street: "big ben street",
+    city: "London",
+    country: "United Kingdom",
+    post_code: "EC",
+  },
+  payoutSettings: {
+    WireTransfer: {
+      BIC: "CITTGB2LXXX",
+      IBAN: "GB7611315000011234567890138",
     },
-    payoutSettings: {
-      WireTransfer: {
-        bic: "CITTGB2LXXX",
-        iban: "GB7611315000011234567890138"
-      },
-    }
-  }
+  },
 };
 
-const HASURA_TOKEN_BASIC_TEST_VALUE = {
+const accessToken = (userId: string) => ({
   user: {
-    id: mockUser.id,
+    id: userId,
   },
   accessToken: "SOME_TOKEN",
   accessTokenExpiresIn: 900,
   creationDate: new Date().getTime(),
-};
-
-const HASURA_TOKEN_COMPANY = {
-  user: {
-    id: mockCompany.id,
-  },
-  accessToken: "SOME_TOKEN",
-};
+});
 
 expect.extend(matchers);
 
@@ -93,52 +91,88 @@ const buildMockProfileQuery = (userResponse: UserInfo) => ({
   },
 });
 
-const buildMockMutationUpdateUser = (userId: string, userInfo: UserInfo) => ({
-  request: {
-    query: UPDATE_USER_MUTATION,
-    variables: {
-      email: userInfo.email,
-      identity: userInfo.identity.Person ? { type: "PERSON", optPerson: { lastname: userInfo.identity.Person.lastname, firstname: userInfo.identity.Person.firstname } } : { type: "COMPANY", optCompany: { id: userInfo.identity.Company?.id, name: userInfo.identity.Company?.name } },
-      location: userInfo.location,
-      payoutSettings: userInfo.payoutSettings.EthTransfer ? { type: "ETHEREUM_ADDRESS", optEthAddress: userInfo.payoutSettings.EthTransfer } : { type: "BANK_ADDRESS", optBankAddress: { iban: userInfo.payoutSettings.WireTransfer?.iban, bic: userInfo.payoutSettings.WireTransfer?.bic } }
+const buildMockMutationUpdateUser = (userInfo: UserInfo) => {
+  const identity: IdentityInput = userInfo.identity.Person
+    ? {
+        type: IdentityType.Person,
+        optPerson: { lastname: userInfo.identity.Person.lastname, firstname: userInfo.identity.Person.firstname },
+        optCompany: null,
+      }
+    : {
+        type: IdentityType.Company,
+        optCompany: { id: userInfo.identity.Company?.id, name: userInfo.identity.Company?.name },
+        optPerson: null,
+      };
+
+  const location: Location = {
+    number: userInfo.location.number,
+    street: userInfo.location.street,
+    postCode: userInfo.location.post_code,
+    city: userInfo.location.city,
+    country: userInfo.location.country,
+  };
+
+  const payoutSettings: PayoutSettingsInput = userInfo.payoutSettings.EthTransfer
+    ? {
+        type: PayoutSettingsType.EthereumAddress,
+        optEthAddress: userInfo.payoutSettings.EthTransfer,
+        optBankAddress: null,
+      }
+    : {
+        type: PayoutSettingsType.BankAddress,
+        optBankAddress: {
+          IBAN: userInfo.payoutSettings.WireTransfer?.IBAN,
+          BIC: userInfo.payoutSettings.WireTransfer?.BIC,
+        },
+        optEthAddress: null,
+      };
+
+  const variables: UpdateProfileInfoMutationVariables = {
+    email: userInfo.email,
+    identity,
+    location,
+    payoutSettings,
+  };
+
+  return {
+    request: {
+      query: UPDATE_USER_MUTATION,
+      variables,
     },
-  },
-  result: { data: { userId } },
-});
+    result: { data: { updateProfileInfo: userInfo.userId } },
+  };
+};
 
 describe('"Profile" page for individual', () => {
   beforeAll(() => {
-    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(accessToken(mockUser.userId)));
   });
 
   beforeEach(() => {
     renderWithIntl(<ProfilePage />, {
       wrapper: MemoryRouterProviderFactory({
         route: RoutePaths.Profile,
-        mocks: [
-          buildMockProfileQuery(mockUser.infos),
-          buildMockMutationUpdateUser(mockUser.id, mockUser.infos),
-        ],
+        mocks: [buildMockProfileQuery(mockUser), buildMockMutationUpdateUser(mockUser)],
       }),
     });
   });
 
   it("should print form with default values", async () => {
     await screen.findByText("Edit profile");
-    expect((await screen.findByLabelText<HTMLInputElement>("Firstname")).value).toBe(mockUser.infos.identity.Person.firstname);
-    expect((await screen.findByLabelText<HTMLInputElement>("Lastname")).value).toBe(mockUser.infos.identity.Person.lastname);
-    expect((await screen.findByLabelText<HTMLInputElement>("Email")).value).toBe(mockUser.infos.email);
-    expect((await screen.findByLabelText<HTMLInputElement>("N.")).value).toBe(mockUser.infos.location.number);
-    expect((await screen.findByLabelText<HTMLInputElement>("Street")).value).toBe(mockUser.infos.location.street);
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("Zip code")).value).toBe(
-      mockUser.infos.location.post_code
+    expect((await screen.findByLabelText<HTMLInputElement>("Firstname")).value).toBe(
+      mockUser.identity.Person.firstname
     );
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("City")).value).toBe(mockUser.infos.location.city);
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("Country")).value).toBe(
-      mockUser.infos.location.country
+    expect((await screen.findByLabelText<HTMLInputElement>("Lastname")).value).toBe(mockUser.identity.Person.lastname);
+    expect((await screen.findByLabelText<HTMLInputElement>("Email")).value).toBe(mockUser.email);
+    expect((await screen.findByLabelText<HTMLInputElement>("N.")).value).toBe(mockUser.location.number);
+    expect((await screen.findByLabelText<HTMLInputElement>("Street")).value).toBe(mockUser.location.street);
+    expect((await screen.findByPlaceholderText<HTMLInputElement>("Postal code")).value).toBe(
+      mockUser.location.post_code
     );
+    expect((await screen.findByPlaceholderText<HTMLInputElement>("City")).value).toBe(mockUser.location.city);
+    expect((await screen.findByPlaceholderText<HTMLInputElement>("Country")).value).toBe(mockUser.location.country);
     expect((await screen.findByPlaceholderText<HTMLInputElement>("Ethereum wallet address")).value).toBe(
-      mockUser.infos.payoutSettings.EthTransfer
+      mockUser.payoutSettings.EthTransfer
     );
   });
 
@@ -165,43 +199,37 @@ describe('"Profile" page for individual', () => {
 
 describe('"Profile" page for company', () => {
   beforeAll(() => {
-    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_COMPANY));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(accessToken(mockCompany.userId)));
   });
 
   beforeEach(() => {
     renderWithIntl(<ProfilePage />, {
       wrapper: MemoryRouterProviderFactory({
         route: RoutePaths.Profile,
-        mocks: [
-          buildMockProfileQuery(mockCompany.infos),
-          buildMockMutationUpdateUser(mockCompany.id, mockCompany.infos),
-        ],
+        mocks: [buildMockProfileQuery(mockCompany), buildMockMutationUpdateUser(mockCompany)],
       }),
     });
   });
 
   it("should print form with default values", async () => {
     await screen.findByText("Edit profile");
-    expect((await screen.findByLabelText<HTMLInputElement>("ID")).value).toBe(mockCompany.infos.identity.Company.id);
-    expect((await screen.findByLabelText<HTMLInputElement>("Name")).value).toBe(mockCompany.infos.identity.Company.name);
-    expect((await screen.findByLabelText<HTMLInputElement>("Email")).value).toBe(mockCompany.infos.email);
-    expect((await screen.findByLabelText<HTMLInputElement>("N.")).value).toBe(mockCompany.infos.location.number);
-    expect((await screen.findByLabelText<HTMLInputElement>("Street")).value).toBe(mockCompany.infos.location.street);
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("Zip code")).value).toBe(
-      mockCompany.infos.location.post_code
+    expect((await screen.findByLabelText<HTMLInputElement>("ID")).value).toBe(mockCompany.identity.Company.id);
+    expect((await screen.findByLabelText<HTMLInputElement>("Name")).value).toBe(mockCompany.identity.Company.name);
+    expect((await screen.findByLabelText<HTMLInputElement>("Email")).value).toBe(mockCompany.email);
+    expect((await screen.findByLabelText<HTMLInputElement>("N.")).value).toBe(mockCompany.location.number);
+    expect((await screen.findByLabelText<HTMLInputElement>("Street")).value).toBe(mockCompany.location.street);
+    expect((await screen.findByPlaceholderText<HTMLInputElement>("Postal code")).value).toBe(
+      mockCompany.location.post_code
     );
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("City")).value).toBe(mockCompany.infos.location.city);
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("Country")).value).toBe(
-      mockCompany.infos.location.country
-    );
+    expect((await screen.findByPlaceholderText<HTMLInputElement>("City")).value).toBe(mockCompany.location.city);
+    expect((await screen.findByPlaceholderText<HTMLInputElement>("Country")).value).toBe(mockCompany.location.country);
     expect((await screen.findByPlaceholderText<HTMLInputElement>("IBAN")).value).toBe(
-      mockCompany.infos.payoutSettings.WireTransfer.iban
+      mockCompany.payoutSettings.WireTransfer.IBAN
     );
     expect((await screen.findByPlaceholderText<HTMLInputElement>("BIC")).value).toBe(
-      mockCompany.infos.payoutSettings.WireTransfer.bic
+      mockCompany.payoutSettings.WireTransfer.BIC
     );
   });
-
 
   it("should display error when required field missing", async () => {
     await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Name"));

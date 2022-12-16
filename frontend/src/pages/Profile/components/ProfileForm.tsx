@@ -1,27 +1,36 @@
 import { gql } from "@apollo/client";
-import { HasuraUserRole, PaymentReceiverType, PayoutSettingsType, UserInfo } from "src/types";
+import { HasuraUserRole } from "src/types";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import Input from "src/components/FormInput";
 import { useHasuraMutation } from "src/hooks/useHasuraQuery";
 import Radio from "./Radio";
 import { useIntl } from "src/hooks/useIntl";
+import {
+  IdentityType,
+  PayoutSettingsType,
+  UpdateProfileInfoMutationVariables,
+  UserInfo,
+  PayoutSettingsInput,
+  Location,
+  IdentityInput,
+} from "src/__generated/graphql";
 
 type Inputs = {
-  paymentReceiverType: PaymentReceiverType;
-  firstName: string;
-  lastName: string;
-  id: string;
-  name: string;
+  paymentReceiverType: IdentityType;
+  firstname?: string;
+  lastname?: string;
+  id?: string;
+  name?: string;
   email: string;
   number: string;
   street: string;
-  zipcode: string;
+  postCode: string;
   city: string;
   country: string;
   payoutSettingsType: PayoutSettingsType;
   ethWalletAddress?: string;
-  iban?: string;
-  bic?: string;
+  IBAN?: string;
+  BIC?: string;
 };
 
 type PropsType = {
@@ -31,21 +40,29 @@ type PropsType = {
 const ProfileForm: React.FC<PropsType> = ({ user }) => {
   const formMethods = useForm<Inputs>({
     defaultValues: {
-      paymentReceiverType: user.identity.Person ? PaymentReceiverType.INDIVIDUAL : user.identity.Company ? PaymentReceiverType.COMPANY : PaymentReceiverType.INDIVIDUAL,
-      firstName: user.identity?.Person?.firstname ?? "",
-      lastName: user.identity.Person?.lastname ?? "",
-      id: user.identity?.Company?.id ?? "",
-      name: user.identity?.Company?.name ?? "",
-      email: user.email ?? "",
-      number: user.location.number ?? "",
-      street: user.location.street ?? "",
-      zipcode: user.location.post_code ?? "",
-      city: user.location.city ?? "",
-      country: user.location.country ?? "",
-      payoutSettingsType: user.payoutSettings.EthTransfer ? PayoutSettingsType.ETH : user.payoutSettings.WireTransfer ? PayoutSettingsType.IBAN : PayoutSettingsType.ETH,
-      ethWalletAddress: user.payoutSettings.EthTransfer ?? "",
-      iban: user.payoutSettings.WireTransfer?.iban ?? "",
-      bic: user.payoutSettings.WireTransfer?.bic ?? "",
+      paymentReceiverType: user.identity.Person
+        ? IdentityType.Person
+        : user.identity.Company
+        ? IdentityType.Company
+        : IdentityType.Person,
+      firstname: user.identity?.Person?.firstname,
+      lastname: user.identity.Person?.lastname,
+      id: user.identity?.Company?.id,
+      name: user.identity?.Company?.name,
+      email: user.email,
+      number: user.location.number,
+      street: user.location.street,
+      postCode: user.location.post_code,
+      city: user.location.city,
+      country: user.location.country,
+      payoutSettingsType: user.payoutSettings.EthTransfer
+        ? PayoutSettingsType.EthereumAddress
+        : user.payoutSettings.WireTransfer
+        ? PayoutSettingsType.BankAddress
+        : PayoutSettingsType.EthereumAddress,
+      ethWalletAddress: user.payoutSettings.EthTransfer,
+      IBAN: user.payoutSettings.WireTransfer?.IBAN,
+      BIC: user.payoutSettings.WireTransfer?.BIC,
     },
   });
   const { handleSubmit } = formMethods;
@@ -71,34 +88,34 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                 name="paymentReceiverType"
                 options={[
                   {
-                    value: PaymentReceiverType.INDIVIDUAL,
+                    value: IdentityType.Person,
                     label: T("profile.form.individualProfile"),
                   },
                   {
-                    value: PaymentReceiverType.COMPANY,
+                    value: IdentityType.Company,
                     label: T("profile.form.companyProfile"),
                   },
                 ]}
               />
             </div>
           </div>
-          {paymentReceiverType === PaymentReceiverType.INDIVIDUAL && (
+          {paymentReceiverType === IdentityType.Person && (
             <div className="flex flex-row gap-5">
               <Input
                 label={T("profile.form.firstname")}
-                name="firstName"
+                name="firstname"
                 placeholder={T("profile.form.firstname")}
                 options={{ required: T("form.required") }}
               />
               <Input
                 label={T("profile.form.lastname")}
-                name="lastName"
+                name="lastname"
                 placeholder={T("profile.form.lastname")}
                 options={{ required: T("form.required") }}
               />
             </div>
           )}
-          {paymentReceiverType === PaymentReceiverType.COMPANY && (
+          {paymentReceiverType === IdentityType.Company && (
             <div className="flex flex-row gap-5">
               <Input
                 label={T("profile.form.id")}
@@ -133,7 +150,11 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
             options={{ required: T("form.required") }}
           />
           <div className="flex flex-row gap-5">
-            <Input name="zipcode" placeholder={T("profile.form.zipCode")} options={{ required: T("form.required") }} />
+            <Input
+              name="postCode"
+              placeholder={T("profile.form.postCode")}
+              options={{ required: T("form.required") }}
+            />
             <Input name="city" placeholder={T("profile.form.city")} options={{ required: T("form.required") }} />
             <Input name="country" placeholder={T("profile.form.country")} options={{ required: T("form.required") }} />
           </div>
@@ -144,28 +165,28 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                 name="payoutSettingsType"
                 options={[
                   {
-                    value: PayoutSettingsType.ETH,
+                    value: PayoutSettingsType.EthereumAddress,
                     label: T("profile.form.ethereum"),
                   },
                   {
-                    value: PayoutSettingsType.IBAN,
+                    value: PayoutSettingsType.BankAddress,
                     label: T("profile.form.bankWire"),
                   },
                 ]}
               />
             </div>
           </div>
-          {payoutSettingsType === PayoutSettingsType.ETH && (
+          {payoutSettingsType === PayoutSettingsType.EthereumAddress && (
             <Input
               name="ethWalletAddress"
               placeholder={T("profile.form.ethereumWalletAddress")}
               options={{ required: T("form.required") }}
             />
           )}
-          {payoutSettingsType === PayoutSettingsType.IBAN && (
+          {payoutSettingsType === PayoutSettingsType.BankAddress && (
             <div className="flex flex-row gap-5">
-              <Input name="iban" placeholder={T("profile.form.iban")} options={{ required: T("form.required") }} />
-              <Input name="bic" placeholder={T("profile.form.bic")} options={{ required: T("form.required") }} />
+              <Input name="IBAN" placeholder={T("profile.form.iban")} options={{ required: T("form.required") }} />
+              <Input name="BIC" placeholder={T("profile.form.bic")} options={{ required: T("form.required") }} />
             </div>
           )}
           <button type="submit" className="self-start border-white border-2 px-3 py-2 rounded-md">
@@ -179,15 +200,20 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
 };
 
 export const UPDATE_USER_MUTATION = gql`
-  mutation updateProfileInfo($email:Email!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
+  mutation updateProfileInfo(
+    $email: Email!
+    $identity: IdentityInput!
+    $location: Location!
+    $payoutSettings: PayoutSettingsInput!
+  ) {
     updateProfileInfo(identity: $identity, location: $location, payoutSettings: $payoutSettings, email: $email)
   }
 `;
 
 const mapFormDataToSchema = ({
   email,
-  lastName,
-  firstName,
+  lastname,
+  firstname,
   id,
   name,
   number,
@@ -195,28 +221,36 @@ const mapFormDataToSchema = ({
   city,
   country,
   paymentReceiverType,
-  zipcode,
+  postCode,
   payoutSettingsType,
   ethWalletAddress,
-  iban,
-  bic,
+  IBAN,
+  BIC,
 }: Inputs) => {
-  const identity = paymentReceiverType === PaymentReceiverType.INDIVIDUAL ? { type: "PERSON", optPerson: { lastname: lastName, firstname: firstName } } : { type: "COMPANY", optCompany: { id, name } };
-  const location = {
-    number: number,
-    street: street,
-    post_code: zipcode,
+  const identity: IdentityInput = {
+    type: paymentReceiverType,
+    optPerson: lastname && firstname ? { lastname, firstname } : null,
+    optCompany: id && name ? { id, name } : null,
+  };
+
+  const location: Location = {
+    number,
+    street,
+    postCode,
     city,
     country,
   };
-  const payoutSettings = payoutSettingsType === PayoutSettingsType.ETH ? { type: "ETHEREUM_ADDRESS", optEthAddress: ethWalletAddress } : { type: "BANK_ADDRESS", optBankAddress: { iban, bic } };
+
+  const payoutSettings: PayoutSettingsInput = {
+    type: payoutSettingsType,
+    optEthAddress: ethWalletAddress ?? null,
+    optBankAddress: IBAN && BIC ? { IBAN, BIC } : null,
+  };
+
+  const variables: UpdateProfileInfoMutationVariables = { email, identity, location, payoutSettings };
+
   return {
-    variables: {
-      email,
-      identity,
-      location,
-      payoutSettings
-    },
+    variables,
   };
 };
 

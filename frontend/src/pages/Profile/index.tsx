@@ -5,11 +5,11 @@ import { HasuraUserRole } from "src/types";
 import QueryWrapper from "src/components/QueryWrapper";
 import ProfileForm from "./components/ProfileForm";
 import { useIntl } from "src/hooks/useIntl";
-import { GetProfileQuery } from "src/__generated/graphql";
+import { ProfileQuery } from "src/__generated/graphql";
 
 const Profile: React.FC = () => {
-  const { user, isLoggedIn } = useAuth();
-  const query = useHasuraQuery<GetProfileQuery>(GET_PROFILE_QUERY, HasuraUserRole.RegisteredUser, {
+  const { isLoggedIn } = useAuth();
+  const query = useHasuraQuery<ProfileQuery>(GET_PROFILE_QUERY, HasuraUserRole.RegisteredUser, {
     skip: !isLoggedIn,
   });
   const { T } = useIntl();
@@ -25,12 +25,13 @@ const Profile: React.FC = () => {
 
 export const GET_PROFILE_QUERY = gql`
   query Profile {
-      userInfo {
-          identity
-          email
-          location
-          payoutSettings
-      }
+    userInfo {
+      userId
+      identity
+      email
+      location
+      payoutSettings
+    }
   }
 `;
 

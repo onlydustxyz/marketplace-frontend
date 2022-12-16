@@ -2223,21 +2223,20 @@ export type MyProjectQueryVariables = Exact<{
 
 export type MyProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
 
-export type UpdateUserProfileMutationVariables = Exact<{
-  userId: Scalars['uuid'];
-  email: Scalars['citext'];
-  metadata: Scalars['jsonb'];
+export type UpdateProfileInfoMutationVariables = Exact<{
+  email: Scalars['Email'];
+  identity: IdentityInput;
+  location: Location;
+  payoutSettings: PayoutSettingsInput;
 }>;
 
 
-export type UpdateUserProfileMutation = { __typename?: 'mutation_root', updateUser: { __typename?: 'users', metadata: any | null, email: any | null } | null };
+export type UpdateProfileInfoMutation = { __typename?: 'mutation_root', updateProfileInfo: any };
 
-export type GetProfileQueryVariables = Exact<{
-  id: Scalars['uuid'];
-}>;
+export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProfileQuery = { __typename?: 'query_root', user: { __typename?: 'users', id: any | null, email: any | null, metadata: any | null } | null };
+export type ProfileQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', userId: any, identity: any, email: string, location: any, payoutSettings: any }> };
 
 export type GetUsersForPaymentFormQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2435,82 +2434,83 @@ export function useMyProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type MyProjectQueryHookResult = ReturnType<typeof useMyProjectQuery>;
 export type MyProjectLazyQueryHookResult = ReturnType<typeof useMyProjectLazyQuery>;
 export type MyProjectQueryResult = Apollo.QueryResult<MyProjectQuery, MyProjectQueryVariables>;
-export const UpdateUserProfileDocument = gql`
-    mutation UpdateUserProfile($userId: uuid!, $email: citext!, $metadata: jsonb!) {
-  updateUser(
-    pk_columns: {id: $userId}
-    _set: {email: $email, metadata: $metadata}
-  ) {
-    metadata
-    email
-  }
+export const UpdateProfileInfoDocument = gql`
+    mutation updateProfileInfo($email: Email!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
+  updateProfileInfo(
+    identity: $identity
+    location: $location
+    payoutSettings: $payoutSettings
+    email: $email
+  )
 }
     `;
-export type UpdateUserProfileMutationFn = Apollo.MutationFunction<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
+export type UpdateProfileInfoMutationFn = Apollo.MutationFunction<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>;
 
 /**
- * __useUpdateUserProfileMutation__
+ * __useUpdateProfileInfoMutation__
  *
- * To run a mutation, you first call `useUpdateUserProfileMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateUserProfileMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateProfileInfoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProfileInfoMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateUserProfileMutation, { data, loading, error }] = useUpdateUserProfileMutation({
+ * const [updateProfileInfoMutation, { data, loading, error }] = useUpdateProfileInfoMutation({
  *   variables: {
- *      userId: // value for 'userId'
  *      email: // value for 'email'
- *      metadata: // value for 'metadata'
+ *      identity: // value for 'identity'
+ *      location: // value for 'location'
+ *      payoutSettings: // value for 'payoutSettings'
  *   },
  * });
  */
-export function useUpdateUserProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>) {
+export function useUpdateProfileInfoMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>(UpdateUserProfileDocument, options);
+        return Apollo.useMutation<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>(UpdateProfileInfoDocument, options);
       }
-export type UpdateUserProfileMutationHookResult = ReturnType<typeof useUpdateUserProfileMutation>;
-export type UpdateUserProfileMutationResult = Apollo.MutationResult<UpdateUserProfileMutation>;
-export type UpdateUserProfileMutationOptions = Apollo.BaseMutationOptions<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>;
-export const GetProfileDocument = gql`
-    query GetProfile($id: uuid!) {
-  user(id: $id) {
-    id
+export type UpdateProfileInfoMutationHookResult = ReturnType<typeof useUpdateProfileInfoMutation>;
+export type UpdateProfileInfoMutationResult = Apollo.MutationResult<UpdateProfileInfoMutation>;
+export type UpdateProfileInfoMutationOptions = Apollo.BaseMutationOptions<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>;
+export const ProfileDocument = gql`
+    query Profile {
+  userInfo {
+    userId
+    identity
     email
-    metadata
+    location
+    payoutSettings
   }
 }
     `;
 
 /**
- * __useGetProfileQuery__
+ * __useProfileQuery__
  *
- * To run a query within a React component, call `useGetProfileQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetProfileQuery({
+ * const { data, loading, error } = useProfileQuery({
  *   variables: {
- *      id: // value for 'id'
  *   },
  * });
  */
-export function useGetProfileQuery(baseOptions: Apollo.QueryHookOptions<GetProfileQuery, GetProfileQueryVariables>) {
+export function useProfileQuery(baseOptions?: Apollo.QueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, options);
+        return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
       }
-export function useGetProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProfileQuery, GetProfileQueryVariables>) {
+export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, options);
+          return Apollo.useLazyQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
         }
-export type GetProfileQueryHookResult = ReturnType<typeof useGetProfileQuery>;
-export type GetProfileLazyQueryHookResult = ReturnType<typeof useGetProfileLazyQuery>;
-export type GetProfileQueryResult = Apollo.QueryResult<GetProfileQuery, GetProfileQueryVariables>;
+export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
+export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
+export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
 export const GetUsersForPaymentFormDocument = gql`
     query GetUsersForPaymentForm {
   users {
