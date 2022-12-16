@@ -11,16 +11,16 @@ vi.mock("axios", () => ({
   },
 }));
 
-describe("logout", () => {
-  it("should reset token to null on logout", () => {
+describe("clearAuth", () => {
+  it("should reset token to null", () => {
     const { result } = renderHook(() => useAuth(), { wrapper: MemoryRouterProviderFactory({ route: "" }) });
-    result.current.logout();
+    result.current.clearAuth();
     expect(result.current.hasuraToken).toEqual(null);
   });
 
-  it("should revoke token on logout", () => {
+  it("should revoke token", () => {
     const { result } = renderHook(() => useAuth(), { wrapper: MemoryRouterProviderFactory({ route: "" }) });
-    result.current.logout();
+    result.current.clearAuth();
     expect(axios.post).toHaveBeenCalledWith(`${config.HASURA_AUTH_BASE_URL}/signout`, expect.anything());
   });
 });

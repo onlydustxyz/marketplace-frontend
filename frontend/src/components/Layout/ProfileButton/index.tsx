@@ -5,9 +5,11 @@ import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
+import { useUser } from "src/hooks/useUser";
 
 const ProfileButton = () => {
-  const { logout, user } = useAuth();
+  const { user } = useAuth();
+  const { logout } = useUser();
   const { avatarUrl, displayName } = user ?? { avatarUrl: null, displayName: "My Account" };
   const { T } = useIntl();
   return (
@@ -19,6 +21,7 @@ const ProfileButton = () => {
 							inline-flex w-full justify-center px-4 py-2 items-center
 							rounded-md bg-black bg-opacity-20 text-sm font-medium text-white
 							hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+            data-testid="profile-button"
           >
             {avatarUrl && <img className="w-4 rounded-full mr-2" src={avatarUrl} />}
             {displayName}
@@ -67,6 +70,7 @@ const ProfileButton = () => {
                     className={`${
                       active ? "bg-violet-500 text-white" : "text-gray-900"
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                    data-testid="logout-button"
                   >
                     {T("navbar.logout")}
                   </button>

@@ -20,6 +20,8 @@ const AUTH_TOKEN_MISSING_TEXT_QUERY = /github authentication token missing!/i;
 const TEST_USER_ID = "test-user-id";
 const TEST_USER_EMAIL = "test@user.email";
 const EDIT_PROFILE_TITLE = "Edit profile";
+const PROFILE_BUTTON_TEST_ID = "profile-button";
+const LOGOUT_BUTTON_TEST_ID = "logout-button";
 const HASURA_TOKEN_BASIC_TEST_VALUE = {
   user: {
     id: TEST_USER_ID,
@@ -243,5 +245,18 @@ describe('"Login" page', () => {
     userEvent.click(await screen.findByText(TEST_PROJECT_NAME));
     await screen.findByText(ProjectDetailsTab.Overview);
     await screen.findByText(ProjectDetailsTab.Payments);
+  });
+
+  it("should redirect to project list when logging out", async () => {
+    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
+    renderWithIntl(<App />, {
+      wrapper: MemoryRouterProviderFactory({
+        route: `${RoutePaths.MyProjects}`,
+        mocks: graphQlMocks,
+      }),
+    });
+    userEvent.click(await screen.findByTestId(PROFILE_BUTTON_TEST_ID));
+    userEvent.click(await screen.findByTestId(LOGOUT_BUTTON_TEST_ID));
+    await screen.findByText(TEST_PROJECT_NAME);
   });
 });
