@@ -9,14 +9,9 @@ import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useJwtRole } from "src/hooks/useJwtRole";
 import { HasuraUserRole } from "src/types";
 import { decodeBase64ToString } from "src/utils/stringUtils";
-import {
-  GetPublicProjectLazyQueryHookResult,
-  GetPublicProjectQuery,
-  GetUserProjectQuery,
-} from "src/__generated/graphql";
+import { GetPublicProjectQuery, GetUserProjectQuery } from "src/__generated/graphql";
 import Overview from "./Overview";
 import Payments from "./PaymentActions";
-import Project from "./Project";
 
 type ProjectDetailsParams = {
   projectId: string;
@@ -71,7 +66,6 @@ export default function ProjectDetails() {
                   />
                 </div>
                 <div className="flex flex-row align-start pt-5 space-x-3">
-                  {" "}
                   {availableTabs.map((tab: ProjectDetailsTab) => (
                     <div
                       key={tab}
@@ -86,13 +80,15 @@ export default function ProjectDetails() {
                 </div>
               </div>
             </Card>
-            {selectedTab === ProjectDetailsTab.Overview && githubRepo?.readme?.content && (
-              <Overview
-                decodedReadme={decodeBase64ToString(githubRepo.readme.content)}
-                contributors={githubRepo.contributors}
-                repo={{ name: githubRepo.name, owner: githubRepo.owner }}
-              />
-            )}
+            {selectedTab === ProjectDetailsTab.Overview &&
+              githubRepo?.content?.readme?.content &&
+              githubRepo.content?.contributors && (
+                <Overview
+                  decodedReadme={decodeBase64ToString(githubRepo.content.readme.content)}
+                  contributors={githubRepo.content?.contributors}
+                  repo={{ name: githubRepo.name, owner: githubRepo.owner }}
+                />
+              )}
             {selectedTab === ProjectDetailsTab.Payments && (
               <Payments budget={getProjectUserQuery?.data?.projectsByPk?.budgets?.[0]} />
             )}
@@ -104,14 +100,16 @@ export default function ProjectDetails() {
 }
 
 const GITHUB_REPO_FIELDS_FRAGMENT = gql`
-  fragment ProjectDetailsGithubRepoFields on Repository {
+  fragment ProjectDetailsGithubRepoFields on GithubRepoDetails {
     name
     owner
-    readme {
-      content
-    }
-    contributors {
-      login
+    content {
+      readme {
+        content
+      }
+      contributors {
+        login
+      }
     }
   }
 `;

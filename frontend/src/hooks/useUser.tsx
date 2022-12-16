@@ -1,12 +1,16 @@
-import { gql, LazyQueryExecFunction, OperationVariables } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
 import { useAuth } from "src/hooks/useAuth";
 import { useLazyHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
+import { GetGithubUserIdQuery } from "src/__generated/graphql";
 
 export const useFetchUserGithubId = () => {
   const [githubId, setGithubId] = useState<number>();
-  const [fetchGithubId, { data }] = useLazyHasuraQuery(GET_USER_GITHUB_ID, HasuraUserRole.RegisteredUser);
+  const [fetchGithubId, { data }] = useLazyHasuraQuery<GetGithubUserIdQuery>(
+    GET_USER_GITHUB_ID,
+    HasuraUserRole.RegisteredUser
+  );
 
   useEffect(() => {
     if (data?.authGithubUsers?.[0]?.githubUserId) {
@@ -54,7 +58,7 @@ export const useUser = () => {
 };
 
 export const GET_USER_GITHUB_ID = gql`
-  query {
+  query GetGithubUserId {
     authGithubUsers {
       githubUserId
     }
