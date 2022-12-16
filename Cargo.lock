@@ -148,6 +148,7 @@ dependencies = [
  "lazy_static",
  "log",
  "mockall",
+ "olog",
  "presentation",
  "reqwest",
  "rocket",
