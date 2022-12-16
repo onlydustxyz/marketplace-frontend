@@ -53,8 +53,8 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 		use diesel::ExpressionMethods;
 		use diesel::query_dsl::filter_dsl::FindDsl;
 
-		impl domain::MappingRepository<#entity1, #entity2> for #repository_name {
-			fn insert(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> anyhow::Result<()> {
+		impl infrastructure::database::MappingRepository<#entity1, #entity2> for #repository_name {
+			fn insert(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 
 				diesel::insert_into(#table)

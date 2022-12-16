@@ -1,3 +1,4 @@
-use domain::{Budget, MappingRepository, User};
+use domain::{Budget, User};
+use infrastructure::database::MappingRepository;
 
 pub trait Repository: MappingRepository<Budget, User> {}

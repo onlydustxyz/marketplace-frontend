@@ -2,7 +2,7 @@ use std::env;
 
 use anyhow::Result;
 use async_trait::async_trait;
-use domain::Event;
+use domain::{Event, SubscriberCallbackError};
 use serde::{ser::SerializeStruct, Serialize, Serializer};
 use serde_json::json;
 use tracing::{error, info};
@@ -73,7 +73,7 @@ enum Error {
 
 #[async_trait]
 impl EventListener for EventWebHook {
-	async fn on_event(&self, event: &Event) -> Result<()> {
+	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
 		match send_event_to_webhook(&self.web_client, event).await {
 			Ok(()) => {},
 			Err(e) => match e {

@@ -58,22 +58,22 @@ pub enum Error {
 
 impl Payment {
 	#[cfg_attr(feature = "cargo-clippy", allow(clippy::too_many_arguments))]
-	pub async fn request(
+	pub fn request(
 		id: PaymentId,
 		budget_id: BudgetId,
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount_in_usd: u32,
 		reason: Value,
-	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
-		Ok(vec![PaymentEvent::Requested {
+	) -> Vec<<Self as Aggregate>::Event> {
+		vec![PaymentEvent::Requested {
 			id,
 			budget_id,
 			requestor_id,
 			recipient_id,
 			amount_in_usd,
 			reason,
-		}])
+		}]
 	}
 
 	pub fn add_receipt(
@@ -205,9 +205,7 @@ mod tests {
 			recipient_id,
 			amount_in_usd,
 			reason,
-		)
-		.await
-		.expect("Problem when creating payment");
+		);
 		Payment::from_events(&events)
 	}
 
@@ -277,9 +275,7 @@ mod tests {
 			recipient_id,
 			amount_in_usd,
 			reason.clone(),
-		)
-		.await
-		.unwrap();
+		);
 
 		assert_eq!(events.len(), 1);
 		assert_eq!(

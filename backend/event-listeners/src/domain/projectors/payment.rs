@@ -1,6 +1,6 @@
 use anyhow::Result;
 use async_trait::async_trait;
-use domain::{Event, PaymentEvent};
+use domain::{Event, PaymentEvent, SubscriberCallbackError};
 
 use crate::{
 	domain::{EventListener, Payment},
@@ -19,7 +19,7 @@ impl Projector {
 
 #[async_trait]
 impl EventListener for Projector {
-	async fn on_event(&self, event: &Event) -> Result<()> {
+	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
 		if let Event::Payment(PaymentEvent::Processed {
 			id,
 			receipt_id,
@@ -31,7 +31,8 @@ impl EventListener for Projector {
 				*receipt_id,
 				*amount.amount(),
 				amount.currency().to_string(),
-				serde_json::to_value(receipt)?,
+				serde_json::to_value(receipt)
+					.map_err(|e| SubscriberCallbackError::Discard(e.into()))?,
 				(*id).into(),
 			))?
 		}

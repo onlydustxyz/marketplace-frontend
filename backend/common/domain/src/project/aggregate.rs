@@ -83,6 +83,7 @@ impl Project {
 		if self.leaders.contains(&leader_id) {
 			return Err(Error::LeaderAlreadyAssigned);
 		}
+
 		Ok(vec![ProjectEvent::LeaderAssigned {
 			id: self.id,
 			leader_id,

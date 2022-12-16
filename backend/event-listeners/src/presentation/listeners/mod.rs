@@ -69,5 +69,5 @@ async fn notify_event_listener(
 	listener: Arc<dyn EventListener>,
 	event: Event,
 ) -> Result<(), SubscriberCallbackError> {
-	listener.on_event(&event).await.map_err(SubscriberCallbackError::Fatal)
+	listener.on_event(&event).await.map_err(SubscriberCallbackError::from)
 }

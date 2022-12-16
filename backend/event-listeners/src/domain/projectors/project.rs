@@ -2,7 +2,8 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use async_trait::async_trait;
-use domain::{Event, GithubRepositoryId, MappingRepository, ProjectEvent};
+use domain::{Event, GithubRepositoryId, ProjectEvent, SubscriberCallbackError};
+use infrastructure::database::MappingRepository;
 
 use crate::{
 	domain::{projections::Project, EventListener, GithubService},
@@ -43,7 +44,7 @@ impl Projector {
 
 #[async_trait]
 impl EventListener for Projector {
-	async fn on_event(&self, event: &Event) -> Result<()> {
+	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
 		if let Event::Project(event) = event {
 			match event {
 				ProjectEvent::Created {

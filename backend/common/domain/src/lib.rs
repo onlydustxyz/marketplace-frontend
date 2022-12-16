@@ -4,9 +4,6 @@ pub use value_objects::*;
 mod services;
 pub use services::*;
 
-mod repositories;
-pub use repositories::*;
-
 mod event;
 pub use event::Event;
 

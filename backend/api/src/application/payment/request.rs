@@ -8,7 +8,7 @@ use domain::{
 use rusty_money::{crypto, Money};
 use serde_json::Value;
 
-use crate::domain::Publishable;
+use crate::{application::UsecaseError, domain::Publishable};
 
 pub struct Usecase {
 	uuid_generator: Arc<dyn UuidGenerator>,
@@ -36,10 +36,11 @@ impl Usecase {
 		recipient_id: GithubUserId,
 		amount_in_usd: u32,
 		reason: Value,
-	) -> Result<PaymentId> {
+	) -> Result<PaymentId, UsecaseError> {
 		let budget = self.budget_repository.find_by_id(&budget_id)?;
 		let mut events = budget
-			.spend(&Money::from_major(amount_in_usd as i64, crypto::USDC).into())?
+			.spend(&Money::from_major(amount_in_usd as i64, crypto::USDC).into())
+			.map_err(|e| UsecaseError::InvalidInputs(e.into()))?
 			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)
@@ -55,7 +56,6 @@ impl Usecase {
 				amount_in_usd,
 				reason,
 			)
-			.await?
 			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new),
