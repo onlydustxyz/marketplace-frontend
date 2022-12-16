@@ -3,7 +3,7 @@ services:
   db:
     container_name: db
     image: postgres:14.3-alpine
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -14,14 +14,15 @@ services:
       - db:/var/lib/postgresql/data
       - ./scripts/initdb.d:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      test: [ "CMD-SHELL", "pg_isready", "-U", "postgres" ]
+      interval: 2s
+      timeout: 1s
+      retries: 20
 
   httpmock:
     container_name: httpmock
     image: alexliesenfeld/httpmock:latest
+    restart: unless-stopped
     ports:
       - 5001:5000
     volumes:
@@ -32,6 +33,9 @@ services:
   rabbitmq:
     container_name: rabbitmq
     image: rabbitmq:3.11-management
+    restart: unless-stopped
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
     ports:
       - 5672:5672
       - 15672:15672
@@ -44,7 +48,7 @@ services:
         condition: service_healthy
     ports:
       - "8080:8080"
-    restart: always
+    restart: unless-stopped
     environment:
       DATABASE_URL: postgres://postgres:postgres@db/marketplace_db
       BACKEND_GRAPHQL_URL: ${BACKEND_GRAPHQL_URL:-http://host.docker.internal:8000/graphql}
@@ -64,6 +68,12 @@ services:
       HASURA_GRAPHQL_DEFAULT_NAMING_CONVENTION: graphql-default
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: bash -c ':> /dev/tcp/127.0.0.1/8080' || exit 1
+      interval: 2s
+      timeout: 1s
+      retries: 10
+      start_period: 5s
 
   hasura-auth:
     container_name: hasura-auth
@@ -72,7 +82,7 @@ services:
       db:
         condition: service_healthy
       graphql-engine:
-        condition: service_started
+        condition: service_healthy
     environment:
       HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL:-postgres://postgres:postgres@db/marketplace_db}
@@ -92,11 +102,12 @@ services:
       - "4000:4000"
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:4000/healthz || exit 1
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 2s
+      timeout: 1s
+      retries: 30
 
 volumes:
+  rabbitmq:
   httpmocks:
   db:
     driver: local

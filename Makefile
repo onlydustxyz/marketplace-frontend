@@ -5,17 +5,23 @@ install:
 	rustup install $(RUST_VERSION)
 
 docker/up:
-	docker-compose up -d
+	docker-compose up -d --wait
 
 docker/clean:
 	docker-compose stop
 	docker-compose rm -f db
-	docker volume rm $(ROOT_DIR)_db
+	docker-compose rm -f httpmock
+	docker-compose rm -f rabbitmq
+	docker-compose rm -f graphql-engine
+	docker-compose rm -f hasura-auth
+	docker volume rm -f $(ROOT_DIR)_db
+	docker volume rm -f $(ROOT_DIR)_httpmock
+	docker volume rm -f $(ROOT_DIR)_rabbitmq
 
 docker/re: docker/clean docker/up
 
 db/up:
-	docker-compose up -d db
+	docker-compose up -d --wait db
 
 db/connect: db/up
 	docker-compose exec -u postgres db psql marketplace_db
