@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { HasuraUserRole, PaymentReceiverType, PayoutSettingsType, User } from "src/types";
+import { HasuraUserRole, PaymentReceiverType, PayoutSettingsType, UserInfo } from "src/types";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import Input from "src/components/FormInput";
 import { useHasuraMutation } from "src/hooks/useHasuraQuery";
@@ -22,30 +22,28 @@ type Inputs = {
 };
 
 type PropsType = {
-  user: Pick<User, "id" | "metadata" | "email">;
+  user: UserInfo;
 };
 
 const ProfileForm: React.FC<PropsType> = ({ user }) => {
   const formMethods = useForm<Inputs>({
     defaultValues: {
-      paymentReceiverType: user?.metadata?.paymentReceiverType ?? PaymentReceiverType.INDIVIDUAL,
-      firstName: user?.metadata?.firstName ?? "",
-      lastName: user?.metadata?.lastName ?? "",
-      email: user?.email ?? "",
-      address: user?.metadata?.location?.address ?? "",
-      zipcode: user?.metadata?.location?.zipcode ?? "",
-      city: user?.metadata?.location?.city ?? "",
-      country: user?.metadata?.location?.country ?? "",
-      payoutSettingsType: user?.metadata?.payoutSettings?.type,
-      ethWalletAddress: user?.metadata?.payoutSettings?.settings?.ethWalletAddress,
-      iban: user?.metadata?.payoutSettings?.settings?.iban,
-      bic: user?.metadata?.payoutSettings?.settings?.bic,
+      paymentReceiverType: user.identity.Person ? PaymentReceiverType.INDIVIDUAL : user.identity.Company ? PaymentReceiverType.COMPANY : PaymentReceiverType.INDIVIDUAL,
+      firstName: user.identity?.Person?.firstname ?? "",
+      lastName: user.identity.Person?.lastname ?? "",
+      email: user.email ?? "",
+      address: user.location.street ?? "",
+      zipcode: user.location.post_code ?? "",
+      city: user.location.city ?? "",
+      country: user.location.country ?? "",
+      payoutSettingsType: user.payoutSettings.EthTransfer ? PayoutSettingsType.ETH : user.payoutSettings.WireTransfer ? PayoutSettingsType.IBAN : PayoutSettingsType.ETH,
+      ethWalletAddress: user.payoutSettings.EthTransfer ?? "",
+      iban: user.payoutSettings.WireTransfer?.iban ?? "",
+      bic: user.payoutSettings.WireTransfer?.bic ?? "",
     },
   });
   const { handleSubmit } = formMethods;
-  const [updateUser, { data, loading }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser, {
-    variables: { userId: user.id },
-  });
+  const [updateUser, { data, loading }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser);
   const success = !!data;
 
   const onSubmit: SubmitHandler<Inputs> = async formData => {
@@ -150,11 +148,8 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
 };
 
 export const UPDATE_USER_MUTATION = gql`
-  mutation UpdateUserProfile($userId: uuid!, $email: citext!, $metadata: jsonb!) {
-    updateUser(pk_columns: { id: $userId }, _set: { email: $email, metadata: $metadata }) {
-      metadata
-      email
-    }
+  mutation updateProfileInfo($email:Email!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
+    updateProfileInfo(identity: $identity, location: $location, payoutSettings: $payoutSettings, email: $email)
   }
 `;
 
@@ -172,25 +167,21 @@ const mapFormDataToSchema = ({
   iban,
   bic,
 }: Inputs) => {
-  const settings = payoutSettingsType === PayoutSettingsType.ETH ? { ethWalletAddress } : { iban, bic };
+  const identity = paymentReceiverType === PaymentReceiverType.INDIVIDUAL ? { type: "PERSON", optPerson: { lastname: lastName, firstname: firstName } } : { type: "COMPANY", optCompany: { id: lastName, name: firstName } };
+  const location = {
+    number: "0",
+    street: address,
+    post_code: zipcode,
+    city,
+    country,
+  };
+  const payoutSettings = payoutSettingsType === PayoutSettingsType.ETH ? { type: "ETHEREUM_ADDRESS", optEthAddress: ethWalletAddress } : { type: "BANK_ADDRESS", optBankAddress: { iban, bic } };
   return {
     variables: {
       email,
-      metadata: {
-        paymentReceiverType,
-        firstName,
-        lastName,
-        location: {
-          address,
-          city,
-          country,
-          zipcode,
-        },
-        payoutSettings: {
-          type: payoutSettingsType,
-          settings,
-        },
-      },
+      identity,
+      location,
+      payoutSettings
     },
   };
 };

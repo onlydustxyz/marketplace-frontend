@@ -11,7 +11,6 @@ const Profile: React.FC = () => {
   const { user, isLoggedIn } = useAuth();
   const query = useHasuraQuery<GetProfileQuery>(GET_PROFILE_QUERY, HasuraUserRole.RegisteredUser, {
     skip: !isLoggedIn,
-    variables: { id: user?.id },
   });
   const { T } = useIntl();
 
@@ -19,20 +18,19 @@ const Profile: React.FC = () => {
     <div className="flex flex-col mt-10 text-2xl">
       <h1>{T("profile.edit")}</h1>
       <br />
-      <QueryWrapper query={query}>
-        {query.data && query.data.user && <ProfileForm user={query.data.user} />}
-      </QueryWrapper>
+      <QueryWrapper query={query}>{query.data && <ProfileForm user={query.data.userInfo[0]} />}</QueryWrapper>
     </div>
   );
 };
 
 export const GET_PROFILE_QUERY = gql`
-  query GetProfile($id: uuid!) {
-    user(id: $id) {
-      id
-      email
-      metadata
-    }
+  query Profile {
+      userInfo {
+          identity
+          email
+          location
+          payoutSettings
+      }
   }
 `;
 

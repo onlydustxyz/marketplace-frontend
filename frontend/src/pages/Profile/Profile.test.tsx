@@ -5,7 +5,7 @@ import matchers from "@testing-library/jest-dom/matchers";
 
 import ProfilePage from ".";
 import { GET_PROFILE_QUERY } from "src/pages/Profile";
-import { CLAIMS_KEY, Email, PaymentReceiverType, PayoutSettingsType, PROJECTS_LED_KEY, UserInfo } from "src/types";
+import { CLAIMS_KEY, PROJECTS_LED_KEY, UserInfo } from "src/types";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { UPDATE_USER_MUTATION } from "./components/ProfileForm";
@@ -13,24 +13,25 @@ import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 
 const mockUser = {
   id: "test-user-id",
-  email: "test@user.email",
-  metadata: {
-    paymentReceiverType: PaymentReceiverType.INDIVIDUAL,
-    firstName: "Nicolas",
-    lastName: "Ngomai",
-    location: {
-      address: "18 rue Lakanal",
-      city: "Grenoble",
-      country: "France",
-      zipcode: "38000",
-    },
-    payoutSettings: {
-      type: PayoutSettingsType.ETH,
-      settings: {
-        ethWalletAddress: "0x1234567890",
+  infos: {
+    email: "test@user.email",
+    identity: {
+      Person: {
+        firstname: "Nicolas",
+        lastname: "Ngomai",
       },
     },
-  },
+    location: {
+      number: "0",
+      street: "rue Lakanal",
+      city: "Grenoble",
+      country: "France",
+      post_code: "38000",
+    },
+    payoutSettings: {
+      EthTransfer: "0x1234567890",
+    }
+  }
 };
 
 const HASURA_TOKEN_BASIC_TEST_VALUE = {
@@ -48,26 +49,28 @@ vi.mock("jwt-decode", () => ({
   default: () => ({ [CLAIMS_KEY]: { [PROJECTS_LED_KEY]: '{"test-project-id"}' } }),
 }));
 
-const buildMockProfileQuery = (userId: string, userResponse: UserInfo) => ({
+const buildMockProfileQuery = (userResponse: UserInfo) => ({
   request: {
     query: GET_PROFILE_QUERY,
-    variables: {
-      id: userId,
-    },
   },
   result: {
     data: {
-      user: userResponse,
+      userInfo: [userResponse],
     },
   },
 });
 
-const buildMockMutationUpdateUser = (userId: string, email: Email, metadata: UserInfo["metadata"]) => ({
+const buildMockMutationUpdateUser = (userId: string, userInfo: UserInfo) => ({
   request: {
     query: UPDATE_USER_MUTATION,
-    variables: { userId, email, metadata },
+    variables: {
+      email: userInfo.email,
+      identity: userInfo.identity.Person ? { type: "PERSON", optPerson: { lastname: userInfo.identity.Person.lastname, firstname: userInfo.identity.Person.firstname } } : { type: "COMPANY", optCompany: { id: userInfo.identity.Company?.id, name: userInfo.identity.Company?.name } },
+      location: userInfo.location,
+      payoutSettings: userInfo.payoutSettings.EthTransfer ? { type: "ETHEREUM_ADDRESS", optEthAddress: userInfo.payoutSettings.EthTransfer } : { type: "BANK_ADDRESS", optBankAddress: { iban: userInfo.payoutSettings.WireTransfer?.iban, bic: userInfo.payoutSettings.WireTransfer?.bic } }
+    },
   },
-  result: { data: { email, metadata } },
+  result: { data: { userId } },
 });
 
 describe('"Profile" page', () => {
@@ -80,8 +83,8 @@ describe('"Profile" page', () => {
       wrapper: MemoryRouterProviderFactory({
         route: RoutePaths.Profile,
         mocks: [
-          buildMockProfileQuery(mockUser.id, mockUser),
-          buildMockMutationUpdateUser(mockUser.id, mockUser.email, mockUser.metadata),
+          buildMockProfileQuery(mockUser.infos),
+          buildMockMutationUpdateUser(mockUser.id, mockUser.infos),
         ],
       }),
     });
@@ -89,16 +92,19 @@ describe('"Profile" page', () => {
 
   it("should print form with default values", async () => {
     await screen.findByText("Edit profile");
-    expect((await screen.findByLabelText<HTMLInputElement>("Firstname")).value).toBe(mockUser.metadata.firstName);
-    expect((await screen.findByLabelText<HTMLInputElement>("Lastname")).value).toBe(mockUser.metadata.lastName);
-    expect((await screen.findByLabelText<HTMLInputElement>("Email")).value).toBe(mockUser.email);
-    expect((await screen.findByLabelText<HTMLInputElement>("Location")).value).toBe(mockUser.metadata.location.address);
+    expect((await screen.findByLabelText<HTMLInputElement>("Firstname")).value).toBe(mockUser.infos.identity.Person.firstname);
+    expect((await screen.findByLabelText<HTMLInputElement>("Lastname")).value).toBe(mockUser.infos.identity.Person.lastname);
+    expect((await screen.findByLabelText<HTMLInputElement>("Email")).value).toBe(mockUser.infos.email);
+    expect((await screen.findByLabelText<HTMLInputElement>("Location")).value).toBe(mockUser.infos.location.street);
     expect((await screen.findByPlaceholderText<HTMLInputElement>("Zip code")).value).toBe(
-      mockUser.metadata.location.zipcode
+      mockUser.infos.location.post_code
     );
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("City")).value).toBe(mockUser.metadata.location.city);
+    expect((await screen.findByPlaceholderText<HTMLInputElement>("City")).value).toBe(mockUser.infos.location.city);
     expect((await screen.findByPlaceholderText<HTMLInputElement>("Country")).value).toBe(
-      mockUser.metadata.location.country
+      mockUser.infos.location.country
+    );
+    expect((await screen.findByPlaceholderText<HTMLInputElement>("Ethereum wallet address")).value).toBe(
+      mockUser.infos.payoutSettings.EthTransfer
     );
   });
 
