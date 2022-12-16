@@ -5,6 +5,7 @@ import { AuthProvider } from "src/hooks/useAuth";
 import { render, RenderOptions } from "@testing-library/react";
 import { RoutePaths } from "src/App";
 import { IntlProvider } from "src/hooks/useIntl";
+import { UserProvider } from "src/hooks/useUser";
 
 interface MemoryRouterProviderFactoryProps {
   route?: string;
@@ -17,7 +18,9 @@ export const MemoryRouterProviderFactory =
     (
       <MockedProvider mocks={mocks} addTypename={false}>
         <MemoryRouter initialEntries={[route]}>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <UserProvider>{children}</UserProvider>
+          </AuthProvider>
         </MemoryRouter>
       </MockedProvider>
     );

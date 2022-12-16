@@ -49,7 +49,7 @@ const buildMockMyContributionsQuery = (
   request: {
     query: GET_MY_CONTRIBUTIONS_QUERY,
     variables: {
-      userId,
+      userId: undefined,
     },
   },
   result: {

@@ -10,6 +10,7 @@ import "src/assets/css/index.css";
 import "src/assets/fonts/Alfreda/stylesheet.css";
 import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import { IntlProvider } from "src/hooks/useIntl";
+import { UserProvider } from "src/hooks/useUser";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <BrowserRouter>
         <AuthProvider>
           <ApolloWrapper>
-            <App />
+            <UserProvider>
+              <App />
+            </UserProvider>
           </ApolloWrapper>
         </AuthProvider>
       </BrowserRouter>
