@@ -1578,7 +1578,6 @@ dependencies = [
  "reqwest",
  "rocket",
  "serde",
- "tracing",
 ]
 
 [[package]]
