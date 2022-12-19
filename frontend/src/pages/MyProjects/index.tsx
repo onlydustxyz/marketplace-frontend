@@ -13,7 +13,7 @@ export default function MyProjects() {
   const { hasuraToken } = useAuth();
   const { ledProjectIds } = useJwtRole(hasuraToken?.accessToken);
   return (
-    <div className="px-10 flex flex-col align-center items-center">
+    <div className="px-10 flex flex-col align-center items-center gap-5">
       {ledProjectIds.map((projectId: string) => (
         <Link key={projectId} className="flex w-5/6 my-3" to={`/project/${projectId}`}>
           <MyProjectContainer projectId={projectId} />
@@ -38,7 +38,6 @@ function MyProjectContainer({ projectId }: MyProjectContainerProps) {
         <Card>
           <ProjectInformation
             name={project.name}
-            budget={project?.budgets[0]}
             details={{
               description: project?.projectDetails?.description,
               telegramLink: project?.projectDetails?.telegramLink,
@@ -60,10 +59,6 @@ export const GET_MY_PROJECT_QUERY = gql`
   query MyProject($id: uuid!) {
     projectsByPk(id: $id) {
       name
-      budgets {
-        initialAmount
-        remainingAmount
-      }
       projectDetails {
         description
         telegramLink
