@@ -10,6 +10,7 @@ import { renderWithIntl } from "src/test/utils";
 expect.extend(matchers);
 
 const HASURA_TOKEN_TEST_VALUE = "test";
+const ONLYDUST_TITLE_NAME_QUERY = /onlydust title/i;
 const ONLYDUST_LOGO_NAME_QUERY = /onlydust logo/i;
 const GITHUB_LOGO_NAME_QUERY = /github logo/i;
 
@@ -48,7 +49,7 @@ describe('"Layout" component', () => {
     });
   });
 
-  it("should display the github logo if there is no hasura jwt", () => {
+  it("should display the onlydust logo and title if there is no hasura jwt", () => {
     window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_TEST_VALUE));
     renderWithIntl(
       <AuthProvider>
@@ -59,6 +60,11 @@ describe('"Layout" component', () => {
     expect(
       screen.getByRole("img", {
         name: ONLYDUST_LOGO_NAME_QUERY,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", {
+        name: ONLYDUST_TITLE_NAME_QUERY,
       })
     ).toBeInTheDocument();
   });
