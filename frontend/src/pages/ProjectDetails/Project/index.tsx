@@ -17,7 +17,7 @@ interface ProjectProps extends PropsWithChildren {
 export default function Project({ name, details, budget, children }: ProjectProps) {
   return (
     <Card>
-      <div className="flex flex-col divide-white divide-solid divide-y-2">
+      <div className="flex flex-col divide-white divide-solid divide-y-2 w-full items-center">
         <div className="pb-5">
           <ProjectInformation name={name} budget={budget} details={details} />
         </div>
