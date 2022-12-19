@@ -9,7 +9,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { GetProfileQuery } from "src/__generated/graphql";
 
 const Profile: React.FC = () => {
-  const { user, hasuraToken } = useAuth();
+  const { user, tokenSet: hasuraToken } = useAuth();
   const { isLoggedIn } = useJwtRole(hasuraToken?.accessToken);
   const query = useHasuraQuery<GetProfileQuery>(GET_PROFILE_QUERY, HasuraUserRole.RegisteredUser, {
     skip: !isLoggedIn,

@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
 import Layout from ".";
-import { AuthProvider, LOCAL_STORAGE_HASURA_TOKEN_KEY } from "src/hooks/useAuth";
+import { AuthProvider, LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
 import { BrowserRouter } from "react-router-dom";
 import { renderWithIntl } from "src/test/utils";
 
@@ -50,7 +50,7 @@ describe('"Layout" component', () => {
   });
 
   it("should display the onlydust logo and title if there is no hasura jwt", () => {
-    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_TEST_VALUE));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_TEST_VALUE));
     renderWithIntl(
       <AuthProvider>
         <Layout />

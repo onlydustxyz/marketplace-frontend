@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { HasuraUserRole } from "src/types";
 
 import ProtectedRoute from ".";
-import { AuthProvider, LOCAL_STORAGE_HASURA_TOKEN_KEY } from "src/hooks/useAuth";
+import { AuthProvider, LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
 import { renderWithIntl } from "src/test/utils";
 
 expect.extend(matchers);
@@ -32,7 +32,7 @@ describe('"ProtectedRoute" component', () => {
   });
 
   it("should display its child element when there is a token in the local storage", () => {
-    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
     renderWithIntl(
       <AuthProvider>
         <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>{CHILD_ELEMENT_TEXT}</ProtectedRoute>

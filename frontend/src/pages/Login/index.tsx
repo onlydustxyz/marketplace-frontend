@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
+import { RefreshToken } from "src/types";
 
 export const AUTH_CODE_QUERY_KEY = "refreshToken";
 
@@ -12,7 +13,7 @@ export default function Login() {
   const { T } = useIntl();
   useEffect(() => {
     if (refreshToken) {
-      login(refreshToken);
+      login(refreshToken as RefreshToken);
     }
   }, [refreshToken]);
   return (

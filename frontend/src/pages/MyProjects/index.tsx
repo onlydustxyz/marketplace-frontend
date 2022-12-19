@@ -10,7 +10,7 @@ import { HasuraUserRole } from "src/types";
 import { MyProjectQuery } from "src/__generated/graphql";
 
 export default function MyProjects() {
-  const { hasuraToken } = useAuth();
+  const { tokenSet: hasuraToken } = useAuth();
   const { ledProjectIds } = useJwtRole(hasuraToken?.accessToken);
   return (
     <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">

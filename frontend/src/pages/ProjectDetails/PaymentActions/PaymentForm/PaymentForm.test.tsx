@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
 
 import { GET_USERS_QUERY, REQUEST_PAYMENT_MUTATION } from ".";
-import { LOCAL_STORAGE_HASURA_TOKEN_KEY } from "src/hooks/useAuth";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
@@ -50,7 +50,7 @@ const graphQlMocks = [
 
 describe('"PaymentForm" component', () => {
   beforeAll(() => {
-    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
   });
 
   beforeEach(() => {

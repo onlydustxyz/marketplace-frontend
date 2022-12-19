@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
 import MyContributionsPage, { GET_MY_CONTRIBUTIONS_QUERY } from ".";
-import { LOCAL_STORAGE_HASURA_TOKEN_KEY } from "src/hooks/useAuth";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 
@@ -61,7 +61,7 @@ const buildMockMyContributionsQuery = (
 
 describe('"MyContributions" page', () => {
   beforeAll(() => {
-    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
   });
 
   it("should print message when no contributions returned", async () => {

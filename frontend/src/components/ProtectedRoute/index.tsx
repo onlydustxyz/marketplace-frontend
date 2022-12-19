@@ -13,7 +13,7 @@ export default function ProtectedRoute({
   requiredRole = HasuraUserRole.RegisteredUser,
   children,
 }: ProtectedRouteProps) {
-  const { hasuraToken } = useAuth();
+  const { tokenSet: hasuraToken } = useAuth();
   const { roleList } = useJwtRole(hasuraToken?.accessToken);
   if (roleList.includes(requiredRole)) {
     return <>{children}</>;

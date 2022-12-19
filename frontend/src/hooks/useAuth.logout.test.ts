@@ -15,7 +15,7 @@ describe("clearAuth", () => {
   it("should reset token to null", () => {
     const { result } = renderHook(() => useAuth(), { wrapper: MemoryRouterProviderFactory({ route: "" }) });
     result.current.clearAuth();
-    expect(result.current.hasuraToken).toEqual(null);
+    expect(result.current.tokenSet).toEqual(null);
   });
 
   it("should revoke token", () => {

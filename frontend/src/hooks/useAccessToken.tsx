@@ -1,8 +1,8 @@
 import { useMemo } from "react";
-import { LOCAL_STORAGE_HASURA_TOKEN_KEY } from "src/hooks/useAuth";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
 
 export const useAccessToken = () => {
-  const rawHasuraToken = localStorage.getItem(LOCAL_STORAGE_HASURA_TOKEN_KEY);
+  const rawHasuraToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_SET_KEY);
 
   const hasuraToken = useMemo(() => {
     if (!rawHasuraToken) return null;

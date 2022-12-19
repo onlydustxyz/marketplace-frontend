@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
 
 import ProfilePage from ".";
-import { LOCAL_STORAGE_HASURA_TOKEN_KEY } from "src/hooks/useAuth";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
 import { GET_PROFILE_QUERY } from "src/pages/Profile";
 import { CLAIMS_KEY, Email, PaymentReceiverType, PayoutSettingsType, PROJECTS_LED_KEY, UserInfo } from "src/types";
 import { RoutePaths } from "src/App";
@@ -70,7 +70,7 @@ const buildMockMutationUpdateUser = (userId: string, email: Email, metadata: Use
 
 describe('"Profile" page', () => {
   beforeAll(() => {
-    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
   });
 
   beforeEach(() => {
