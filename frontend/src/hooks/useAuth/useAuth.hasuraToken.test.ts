@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { renderHook } from "@testing-library/react-hooks";
-import { useAuth, LOCAL_STORAGE_TOKEN_SET_KEY } from "./useAuth";
+import { useAuth, LOCAL_STORAGE_TOKEN_SET_KEY } from ".";
 import { MemoryRouterProviderFactory } from "src/test/utils";
 import hasuraToken from "src/test/fixtures/hasuraToken.json";
 
