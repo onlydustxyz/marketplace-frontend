@@ -22,6 +22,9 @@ Default.args = {
     remainingAmount: 2000,
     initialAmount: 10000,
   },
-  details: { telegramLink: "https://web.telegram.org/z/", description: "Test description" },
+  details: {
+    telegramLink: "https://web.telegram.org/z/",
+    description: "EVM interpreter written in Cairo, a sort of ZK-EVM emulator, leveraging STARK proof system.",
+  },
   githubRepoInfo: { owner: "facebook", name: "react", contributors: [{ login: "oscar le boss" }] },
 };
