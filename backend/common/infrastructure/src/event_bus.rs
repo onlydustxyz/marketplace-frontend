@@ -1,5 +1,5 @@
 use lapin::options::QueueDeclareOptions;
-use log::info;
+use olog::info;
 
 use super::amqp::{Bus, BusError, ConsumableBus};
 use crate::amqp::Config;

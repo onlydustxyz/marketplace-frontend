@@ -9,7 +9,7 @@ use api::{
 use domain::{AggregateRootRepository, RandomUuidGenerator};
 use dotenv::dotenv;
 use infrastructure::{amqp, config, database, tracing::Tracer};
-use log::info;
+use olog::info;
 use tracing::instrument;
 
 #[tokio::main]

@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use ::tracing::info;
+use ::olog::info;
 use anyhow::Result;
 use backend_domain::{
 	Destination, Event, Publisher, Subscriber, SubscriberCallbackError, UniqueMessage,

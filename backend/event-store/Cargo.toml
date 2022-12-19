@@ -44,6 +44,7 @@ thiserror = "1.0.31"
 # Local dependecies
 backend_domain = {path = "../common/domain", package = "domain"}
 backend_infrastructure = {path = "../common/infrastructure", package = "infrastructure"}
+olog = {path = "../common/olog"}
 
 # TO REMOVE
 uuid = {version = "0.8.2", default_features = false, features = [

@@ -62,6 +62,7 @@ domain = {path = "../common/domain"}
 event-store = {path = "../event-store"}
 infrastructure = {path = "../common/infrastructure"}
 derive = {path = "../common/derive"}
+olog = {path = "../common/olog"}
 
 [dev-dependencies]
 assert_matches = "1.5"
