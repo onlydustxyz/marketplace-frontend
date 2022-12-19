@@ -75,6 +75,7 @@
   },
   "project": {
     "remainingBudget": "Remaining budget",
+    "ledBy": "Led by",
     "details": {
       "overview": {
         "technologies": "Technologies",
