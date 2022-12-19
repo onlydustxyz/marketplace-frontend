@@ -4,8 +4,8 @@ use backend_infrastructure::database::{
 	Client,
 };
 use diesel::{dsl::exists, prelude::*};
+use olog::error;
 use serde_json::{to_value as to_json, Value as Json};
-use tracing::error;
 
 use crate::{domain::*, infrastructure::database::models};
 

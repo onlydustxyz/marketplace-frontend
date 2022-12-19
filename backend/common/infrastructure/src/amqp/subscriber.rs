@@ -4,8 +4,8 @@ use anyhow::anyhow;
 use async_trait::async_trait;
 use domain::{Message, Subscriber, SubscriberCallbackError, SubscriberError};
 use lapin::{message::Delivery, options::BasicNackOptions};
+use olog::error;
 use serde_json::Error;
-use tracing::error;
 
 use super::ConsumableBus;
 
@@ -267,7 +267,8 @@ mod tests {
 
 		run_test(consumer, &*COUNTER, 2).await;
 
-		assert!(logs_contain("Ignoring message error=\"bad message\""));
+		assert!(logs_contain("Ignoring message"));
+		assert!(logs_contain("error=\"bad message\""));
 	}
 
 	#[rstest]
@@ -296,8 +297,7 @@ mod tests {
 
 		assert_processing_error_message(result.unwrap_err(), ERROR);
 
-		assert!(logs_contain(
-			"Fatal error while processing the message error=\"some internal error occurred\""
-		));
+		assert!(logs_contain("Fatal error while processing the message"));
+		assert!(logs_contain("error=\"some internal error occurred\""));
 	}
 }

@@ -1,7 +1,7 @@
 use anyhow::Result;
 use async_trait::async_trait;
 use domain::{Event, SubscriberCallbackError};
-use tracing::info;
+use olog::info;
 
 use crate::domain::EventListener;
 

@@ -4,7 +4,7 @@ use lapin::{
 	publisher_confirm::Confirmation,
 	BasicProperties, Channel, Connection, Consumer,
 };
-use log::error;
+use olog::error;
 use thiserror::Error;
 use tokio::sync::RwLock;
 use tokio_stream::StreamExt;

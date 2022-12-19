@@ -1,8 +1,8 @@
+use olog::info;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use thiserror::Error;
-use tracing::info;
 
 use crate::{
 	specifications, Aggregate, AggregateRoot, Amount, BudgetId, Entity, EventSourcable,

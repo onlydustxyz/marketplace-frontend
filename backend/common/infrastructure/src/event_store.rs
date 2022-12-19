@@ -1,6 +1,6 @@
 use diesel::prelude::*;
 use domain::{Aggregate, Budget, EventStore, EventStoreError, Payment, Project};
-use log::error;
+use olog::error;
 use serde_json::Value;
 
 use crate::database::{schema::events, Client};
