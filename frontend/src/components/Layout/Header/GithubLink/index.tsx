@@ -8,8 +8,8 @@ export default function GithubLink() {
   const { T } = useIntl();
   return (
     <a href={GITHUB_SIGN_IN_URL}>
-      <div className="flex flex-row items-center gap-4 w-fit rounded-xl p-4 bg-white">
-        <div className="text-2xl md:flex hidden text-black font-alfreda font-bold">{T("navbar.signInWithGithub")}</div>
+      <div className="flex flex-row items-center gap-4 w-fit p-3 border-slate-400 border border-solid border-white rounded-3xl">
+        <div className="text-sm md:flex hidden text-white font-bold">{T("navbar.signInWithGithub")}</div>
         <GithubLogo />
       </div>
     </a>
