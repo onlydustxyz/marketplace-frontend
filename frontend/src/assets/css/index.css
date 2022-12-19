@@ -18,9 +18,9 @@
   body {
     @apply text-white;
 
-    background: url("src/assets/img/bg.jpg") repeat top center;
-    background-image: -webkit-image-set(url("src/assets/img/bg.jpg") 1x);
-    background-image: image-set(url("src/assets/img/bg.jpg") 1x);
+    background: url("src/assets/img/bg.jpeg") repeat top center;
+    background-image: -webkit-image-set(url("src/assets/img/bg.jpeg") 1x);
+    background-image: image-set(url("src/assets/img/bg.jpeg") 1x);
   }
 
   .header {
