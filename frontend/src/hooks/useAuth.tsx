@@ -4,22 +4,22 @@ import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 import { RoutePaths } from "src/App";
 import config from "src/config";
-import { HasuraToken, User } from "src/types";
+import { RefreshToken, TokenSet, User } from "src/types";
 
-export const LOCAL_STORAGE_HASURA_TOKEN_KEY = "hasura_token";
+export const LOCAL_STORAGE_TOKEN_SET_KEY = "hasura_token";
 const TOKEN_VALIDITY_TIME_THRESHOLD = 30;
 
 type AuthContextType = {
-  hasuraToken?: HasuraToken | null;
-  getUpToDateHasuraToken: () => Promise<HasuraToken | null | undefined>;
-  login: (refreshToken: string) => void;
+  tokenSet?: TokenSet | null;
+  getUpToDateHasuraToken: () => Promise<TokenSet | null | undefined>;
+  login: (refreshToken: RefreshToken) => void;
   clearAuth: () => Promise<void>;
   user: User | null;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const checkTokenValidity = (token: HasuraToken): boolean => {
+const checkTokenValidity = (token: TokenSet): boolean => {
   const creationDate = new Date(token.creationDate);
   const expirationDate = creationDate.setSeconds(
     creationDate.getSeconds() + token.accessTokenExpiresIn - TOKEN_VALIDITY_TIME_THRESHOLD
@@ -28,47 +28,47 @@ const checkTokenValidity = (token: HasuraToken): boolean => {
 };
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [hasuraToken, setHasuraToken] = useLocalStorage<HasuraToken | null>(LOCAL_STORAGE_HASURA_TOKEN_KEY, null);
+  const [tokenSet, setTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY, null);
   const navigate = useNavigate();
 
-  const consumeRefreshToken = useCallback(async (refreshToken: string) => {
+  const consumeRefreshToken = useCallback(async (refreshToken: RefreshToken) => {
     const accessToken = await axios.post(`${config.HASURA_AUTH_BASE_URL}/token`, {
       refreshToken,
     });
     if (!accessToken.data) throw new Error("Could not consume refresh token");
     const newHasuraToken = { ...accessToken.data, creationDate: Date.now() };
-    setHasuraToken(newHasuraToken);
+    setTokenSet(newHasuraToken);
     return newHasuraToken;
   }, []);
 
   const getUpToDateHasuraToken = useCallback(async () => {
-    if (hasuraToken && !checkTokenValidity(hasuraToken)) {
-      return consumeRefreshToken(hasuraToken.refreshToken);
+    if (tokenSet && !checkTokenValidity(tokenSet)) {
+      return consumeRefreshToken(tokenSet.refreshToken);
     }
-    return hasuraToken;
-  }, [hasuraToken]);
+    return tokenSet;
+  }, [tokenSet]);
 
-  const login = async (refreshToken: string) => {
+  const login = async (refreshToken: RefreshToken) => {
     await consumeRefreshToken(refreshToken);
     navigate(RoutePaths.Profile);
   };
 
   const clearAuth = async () => {
     await axios.post(`${config.HASURA_AUTH_BASE_URL}/signout`, {
-      refreshToken: hasuraToken?.refreshToken,
+      refreshToken: tokenSet?.refreshToken,
     });
-    setHasuraToken(null);
+    setTokenSet(null);
   };
 
   const value = useMemo(
     () => ({
-      hasuraToken,
+      tokenSet,
       getUpToDateHasuraToken,
-      user: hasuraToken ? hasuraToken.user : null,
+      user: tokenSet ? tokenSet.user : null,
       login,
       clearAuth,
     }),
-    [hasuraToken]
+    [tokenSet]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

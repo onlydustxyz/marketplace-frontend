@@ -8,7 +8,7 @@ import View from "./View";
 
 export default function Header() {
   const location = useLocation();
-  const { hasuraToken } = useAuth();
+  const { tokenSet: hasuraToken } = useAuth();
   const { isLoggedIn, roleList } = useJwtRole(hasuraToken?.accessToken);
   const { T } = useIntl();
   return (

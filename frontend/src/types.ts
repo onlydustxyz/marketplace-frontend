@@ -1,3 +1,5 @@
+export type Branded<T, B> = T & { __brand: B };
+
 export enum HasuraUserRole {
   Public = "public",
   RegisteredUser = "registered_user",
@@ -9,13 +11,16 @@ export enum CustomUserRole {
 
 export type UserRole = HasuraUserRole | CustomUserRole;
 
-export type HasuraToken = {
-  accessToken: string;
+export type TokenSet = {
+  accessToken: AccessToken;
   accessTokenExpiresIn: number;
   creationDate: Date;
-  refreshToken: Uuid;
+  refreshToken: RefreshToken;
   user: User;
 };
+
+export type AccessToken = Branded<string, "AccessToken">;
+export type RefreshToken = Branded<Uuid, "RefreshToken">;
 
 export type User = {
   id: Uuid;

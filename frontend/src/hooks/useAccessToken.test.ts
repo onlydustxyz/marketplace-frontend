@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react-hooks";
 import { useAccessToken } from "src/hooks/useAccessToken";
-import { LOCAL_STORAGE_HASURA_TOKEN_KEY } from "src/hooks/useAuth";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
 import { describe, expect, it, beforeEach } from "vitest";
 
 describe("useAccessToken", () => {
@@ -15,7 +15,7 @@ describe("useAccessToken", () => {
 
   it("should  return the access token on first render if a token is stored", () => {
     const accessToken = "accessToken";
-    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify({ accessToken }));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify({ accessToken }));
     const { result } = renderHook(() => useAccessToken());
     expect(result.current).toBe(accessToken);
   });
@@ -25,7 +25,7 @@ describe("useAccessToken", () => {
     expect(result.current).toBeUndefined();
 
     const accessToken = "accessToken";
-    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify({ accessToken }));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify({ accessToken }));
 
     rerender();
     expect(result.current).toBe(accessToken);

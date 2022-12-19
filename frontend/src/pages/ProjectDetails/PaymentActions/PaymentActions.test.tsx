@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
-import { LOCAL_STORAGE_HASURA_TOKEN_KEY } from "src/hooks/useAuth";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentActions, { GET_BUDGET_PAYMENTS_QUERY } from ".";
 import { RoutePaths } from "src/App";
@@ -61,7 +61,7 @@ const graphQlMocks = [
 
 describe('"ProjectDetails" page', () => {
   beforeAll(() => {
-    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
   });
 
   beforeEach(() => {

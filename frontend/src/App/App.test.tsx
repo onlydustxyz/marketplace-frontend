@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 
 import App, { RoutePaths } from ".";
 import { AUTH_CODE_QUERY_KEY } from "src/pages/Login";
-import { LOCAL_STORAGE_HASURA_TOKEN_KEY } from "src/hooks/useAuth";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
 import { checkLocalStorageValue, MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { GET_PROJECTS_QUERY } from "src/pages/Projects";
 import { GET_PROFILE_QUERY } from "src/pages/Profile";
@@ -166,13 +166,13 @@ describe('"Login" page', () => {
     await screen.findByText(EDIT_PROFILE_TITLE);
     expect(screen.queryByText(LOGGING_IN_TEXT_QUERY)).not.toBeInTheDocument();
     checkLocalStorageValue({
-      key: LOCAL_STORAGE_HASURA_TOKEN_KEY,
+      key: LOCAL_STORAGE_TOKEN_SET_KEY,
       expectedIncludedObject: HASURA_TOKEN_BASIC_TEST_VALUE,
     });
   });
 
   it("should be able to access the profile page and display profile info when having a token in local storage", async () => {
-    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({
         route: `${RoutePaths.Profile}`,
@@ -186,7 +186,7 @@ describe('"Login" page', () => {
     renderWithIntl(<App />, { wrapper: MemoryRouterProviderFactory({ route: RoutePaths.Login, mocks: graphQlMocks }) });
     await screen.findByText(AUTH_TOKEN_MISSING_TEXT_QUERY);
     checkLocalStorageValue({
-      key: LOCAL_STORAGE_HASURA_TOKEN_KEY,
+      key: LOCAL_STORAGE_TOKEN_SET_KEY,
       expectNotToExist: true,
     });
   });
@@ -199,7 +199,7 @@ describe('"Login" page', () => {
   });
 
   it("should be able to access the my projects page when having a token with the right jwt in local storage", async () => {
-    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({
         route: `${RoutePaths.MyProjects}`,
@@ -210,7 +210,7 @@ describe('"Login" page', () => {
   });
 
   it("should be able to access the project details page from the projects list and only see the overview tab", async () => {
-    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({
         route: `${RoutePaths.Projects}`,
@@ -235,7 +235,7 @@ describe('"Login" page', () => {
   });
 
   it("should be able to access the project details page from the my projects list and see both the overview and payment tabs", async () => {
-    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({
         route: `${RoutePaths.MyProjects}`,
@@ -248,7 +248,7 @@ describe('"Login" page', () => {
   });
 
   it("should redirect to project list when logging out", async () => {
-    window.localStorage.setItem(LOCAL_STORAGE_HASURA_TOKEN_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({
         route: `${RoutePaths.MyProjects}`,

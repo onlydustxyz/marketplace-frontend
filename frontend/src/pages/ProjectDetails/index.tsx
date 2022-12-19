@@ -25,7 +25,7 @@ export enum ProjectDetailsTab {
 export default function ProjectDetails() {
   const [selectedTab, setSelectedTab] = useState<ProjectDetailsTab>(ProjectDetailsTab.Overview);
   const { projectId } = useParams<ProjectDetailsParams>();
-  const { hasuraToken } = useAuth();
+  const { tokenSet: hasuraToken } = useAuth();
   const { ledProjectIds, isLoggedIn } = useJwtRole(hasuraToken?.accessToken);
   const getProjectPublicQuery = useHasuraQuery<GetPublicProjectQuery>(GET_PROJECT_PUBLIC_QUERY, HasuraUserRole.Public, {
     variables: { id: projectId },
