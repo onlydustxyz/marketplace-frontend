@@ -16,13 +16,13 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <IntlProvider>
       <BrowserRouter>
-        <AuthProvider>
-          <ApolloWrapper>
+        <ApolloWrapper>
+          <AuthProvider>
             <UserProvider>
               <App />
             </UserProvider>
-          </ApolloWrapper>
-        </AuthProvider>
+          </AuthProvider>
+        </ApolloWrapper>
       </BrowserRouter>
     </IntlProvider>
   </React.StrictMode>
