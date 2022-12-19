@@ -6,7 +6,6 @@ import ProjectInformation from "src/components/ProjectInformation";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
-import { useJwtRole } from "src/hooks/useJwtRole";
 import { HasuraUserRole } from "src/types";
 import { decodeBase64ToString } from "src/utils/stringUtils";
 import { GetPublicProjectQuery, GetUserProjectQuery } from "src/__generated/graphql";
@@ -25,8 +24,7 @@ export enum ProjectDetailsTab {
 export default function ProjectDetails() {
   const [selectedTab, setSelectedTab] = useState<ProjectDetailsTab>(ProjectDetailsTab.Overview);
   const { projectId } = useParams<ProjectDetailsParams>();
-  const { tokenSet: hasuraToken } = useAuth();
-  const { ledProjectIds, isLoggedIn } = useJwtRole(hasuraToken?.accessToken);
+  const { ledProjectIds, isLoggedIn } = useAuth();
   const getProjectPublicQuery = useHasuraQuery<GetPublicProjectQuery>(GET_PROJECT_PUBLIC_QUERY, HasuraUserRole.Public, {
     variables: { id: projectId },
     skip: isLoggedIn,

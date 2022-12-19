@@ -5,13 +5,11 @@ import ProjectInformation from "src/components/ProjectInformation";
 import { GITHUB_REPO_FIELDS_FOR_PROJECT_CARD_FRAGMENT } from "src/graphql/fragments";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
-import { useJwtRole } from "src/hooks/useJwtRole";
 import { HasuraUserRole } from "src/types";
 import { MyProjectQuery } from "src/__generated/graphql";
 
 export default function MyProjects() {
-  const { tokenSet: hasuraToken } = useAuth();
-  const { ledProjectIds } = useJwtRole(hasuraToken?.accessToken);
+  const { ledProjectIds } = useAuth();
   return (
     <div className="px-10 flex flex-col align-center items-center">
       {ledProjectIds.map((projectId: string) => (

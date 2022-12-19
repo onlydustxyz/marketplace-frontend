@@ -2,15 +2,13 @@ import { gql } from "@apollo/client";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useAuth } from "src/hooks/useAuth";
 import { HasuraUserRole } from "src/types";
-import { useJwtRole } from "src/hooks/useJwtRole";
 import QueryWrapper from "src/components/QueryWrapper";
 import ProfileForm from "./components/ProfileForm";
 import { useIntl } from "src/hooks/useIntl";
 import { GetProfileQuery } from "src/__generated/graphql";
 
 const Profile: React.FC = () => {
-  const { user, tokenSet: hasuraToken } = useAuth();
-  const { isLoggedIn } = useJwtRole(hasuraToken?.accessToken);
+  const { user, isLoggedIn } = useAuth();
   const query = useHasuraQuery<GetProfileQuery>(GET_PROFILE_QUERY, HasuraUserRole.RegisteredUser, {
     skip: !isLoggedIn,
     variables: { id: user?.id },
