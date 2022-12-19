@@ -1,8 +1,8 @@
 import githubLogo from "assets/img/github-logo.svg";
 import telegramLogo from "assets/img/telegram-logo.svg";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
-import CodeIcon from "assets/icons/Code";
-import { MouseEvent, useTransition } from "react";
+import CodeIcon from "src/assets/icons/Code";
+import { MouseEvent } from "react";
 import { buildGithubLink } from "src/utils/stringUtils";
 import { useT } from "talkr";
 
@@ -39,9 +39,11 @@ export default function ProjectInformation({ name, details, githubRepoInfo }: Pr
           </div>
           <div className="flex flex-col">
             <div className="text-3xl font-medium">{name}</div>
-            <div className="text-md text-neutral-500 font-medium">
-              {T("project.ledBy")} <span className="text-purple-700">{githubRepoInfo?.contributors?.[0]?.login}</span>
-            </div>
+            {githubRepoInfo?.contributors?.[0]?.login && (
+              <div className="text-md text-neutral-500 font-medium">
+                {T("project.ledBy")} <span className="text-purple-700">{githubRepoInfo?.contributors?.[0]?.login}</span>
+              </div>
+            )}
           </div>
         </div>
         <div className="flex flex-row border border-neutral-600 w-fit px-2 py-1 rounded-2xl gap-2 text-md">
@@ -61,10 +63,12 @@ export default function ProjectInformation({ name, details, githubRepoInfo }: Pr
             {details?.telegramLink && <LinkWithLogo link={details?.telegramLink} logo={telegramLogo} />}
           </div>
           <div className="flex flex-row w-full justify-center items-center gap-10">
-            <div className="flex">
-              {githubRepoInfo?.contributors?.length} contributor
-              {githubRepoInfo?.contributors?.length && githubRepoInfo?.contributors?.length <= 1 ? "" : "s"}
-            </div>
+            {githubRepoInfo?.contributors?.length && (
+              <div className="flex">
+                {githubRepoInfo?.contributors?.length} contributor
+                {githubRepoInfo?.contributors?.length && githubRepoInfo?.contributors?.length <= 1 ? "" : "s"}
+              </div>
+            )}
             <div className="flex">8 contributions</div>
           </div>
         </div>
