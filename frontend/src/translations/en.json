@@ -11,13 +11,14 @@
   },
   "images": {
     "githubLogo": "Github logo",
-    "onlyDustLogo": "OnlyDust logo"
+    "onlyDustLogo": "OnlyDust logo",
+    "onlyDustTitle": "OnlyDust title"
   },
   "navbar": {
     "logout": "Logout",
     "myContributions": "My contributions",
     "myProjects": "My projects",
-    "projects": "Projects",
+    "projects": "Browse projects",
     "signInWithGithub": "Sign in with Github"
   },
   "payment": {
