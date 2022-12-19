@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { renderHook } from "@testing-library/react-hooks";
-import { useAuth } from "./useAuth";
+import { useAuth } from ".";
 import { MemoryRouterProviderFactory } from "src/test/utils";
 import axios from "axios";
 import config from "src/config";
