@@ -1,20 +1,22 @@
 import axios from "axios";
-import { createContext, PropsWithChildren, useCallback, useContext, useMemo } from "react";
+import { createContext, PropsWithChildren, useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 import { RoutePaths } from "src/App";
 import config from "src/config";
-import { RefreshToken, TokenSet, User } from "src/types";
+import { useRoles } from "src/hooks/useAuth/useRoles";
+import { RefreshToken, TokenSet, User, UserRole } from "src/types";
 
 export const LOCAL_STORAGE_TOKEN_SET_KEY = "hasura_token";
 const TOKEN_VALIDITY_TIME_THRESHOLD = 30;
 
 type AuthContextType = {
-  tokenSet?: TokenSet | null;
-  getUpToDateHasuraToken: () => Promise<TokenSet | null | undefined>;
   login: (refreshToken: RefreshToken) => void;
   clearAuth: () => Promise<void>;
   user: User | null;
+  isLoggedIn: boolean;
+  roles: UserRole[];
+  ledProjectIds: string[];
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -60,16 +62,16 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     setTokenSet(null);
   };
 
-  const value = useMemo(
-    () => ({
-      tokenSet,
-      getUpToDateHasuraToken,
-      user: tokenSet ? tokenSet.user : null,
-      login,
-      clearAuth,
-    }),
-    [tokenSet]
-  );
+  const { isLoggedIn, roles, ledProjectIds } = useRoles(tokenSet?.accessToken);
+
+  const value = {
+    user: tokenSet ? tokenSet.user : null,
+    login,
+    clearAuth,
+    isLoggedIn,
+    roles,
+    ledProjectIds,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
