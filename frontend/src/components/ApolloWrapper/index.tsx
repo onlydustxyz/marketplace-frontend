@@ -4,16 +4,15 @@ import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 
 import config from "src/config";
-import { useAuth } from "src/hooks/useAuth";
+import { useAccessToken } from "src/hooks/useAccessToken";
 import ErrorFallback from "../ErrorFallback";
 
 const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const [displayError, setDisplayError] = useState(false);
-  const { getUpToDateHasuraToken } = useAuth();
+  const accessToken = useAccessToken();
 
-  const AuthenticationLink = setContext(async (_, { headers }) => {
-    const hasuraToken = await getUpToDateHasuraToken();
-    const authorizationHeaders = hasuraToken ? { Authorization: `Bearer ${hasuraToken.accessToken}` } : {};
+  const AuthenticationLink = setContext((_, { headers }) => {
+    const authorizationHeaders = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
     return {
       headers: {
         ...headers,
