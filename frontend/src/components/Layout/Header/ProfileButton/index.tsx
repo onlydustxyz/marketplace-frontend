@@ -1,6 +1,5 @@
 import { useAuth } from "src/hooks/useAuth";
 import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { RoutePaths } from "src/App";
@@ -18,19 +17,13 @@ const ProfileButton = () => {
         <div>
           <Menu.Button
             className="
-							inline-flex w-full justify-center px-4 py-2 items-center
-							rounded-md bg-black bg-opacity-20 text-sm font-medium text-white
+	      inline-flex w-full justify-center border-solid border-slate-400 border px-4 py-2 items-center
+							rounded-3xl bg-black bg-opacity-20 text-sm font-medium text-white
 							hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
             data-testid="profile-button"
           >
-            {avatarUrl && <img className="w-4 rounded-full mr-2" src={avatarUrl} />}
+            {avatarUrl && <img className="w-4 rounded-full mr-4" src={avatarUrl} />}
             {displayName}
-            <ChevronDownIcon
-              className="
-								ml-2 -mr-1 h-5 w-5
-							text-violet-200 hover:text-violet-100"
-              aria-hidden="true"
-            />
           </Menu.Button>
         </div>
         <Transition
