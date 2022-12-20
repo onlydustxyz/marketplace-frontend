@@ -69,7 +69,7 @@ describe("As an admin, on retool, I", () => {
     it("can update project details", () => {
         cy.createUser().then((user) =>
             cy
-                .createProject(user.id, "Another project", 500, 1234)
+                .createProject(user.id, "Another project", 500)
                 .asAdmin()
                 .data("createProject")
                 .then((projectId) => {

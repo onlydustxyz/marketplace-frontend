@@ -6,7 +6,7 @@ Cypress.Commands.add(
         userId,
         projectName = "My Project",
         initialBudget = 500,
-        githubRepoId = 1234,
+        githubRepoId = 481932781,
         description = "My project description",
         telegramLink = "https://t.me/foo"
     ) => {
