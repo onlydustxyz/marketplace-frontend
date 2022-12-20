@@ -4,7 +4,9 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import CodeIcon from "src/assets/icons/Code";
 import { MouseEvent } from "react";
 import { buildGithubLink } from "src/utils/stringUtils";
-import { useT } from "talkr";
+import LeadContributor, { Contributor } from "../LeadContributor";
+
+type LanguageMap = { [languageName: string]: number }[];
 
 interface ProjectInformationProps {
   name: string;
@@ -19,7 +21,8 @@ interface ProjectInformationProps {
   githubRepoInfo?: {
     owner?: string;
     name?: string;
-    contributors?: { login: string }[];
+    contributors?: Contributor[];
+    languages: LanguageMap;
   };
 }
 
@@ -29,7 +32,6 @@ const linkClickHandlerFactory = (url: string) => (e: MouseEvent<HTMLDivElement>)
 };
 
 export default function ProjectInformation({ name, details, githubRepoInfo }: ProjectInformationProps) {
-  const { T } = useT();
   return (
     <div className="flex flex-row w-full divide-x divide-neutral-600 gap-5 justify-items-center font-walsheim">
       <div className="flex flex-col basis-4/12 gap-5 justify-around">
@@ -39,19 +41,17 @@ export default function ProjectInformation({ name, details, githubRepoInfo }: Pr
           </div>
           <div className="flex flex-col">
             <div className="text-3xl font-medium">{name}</div>
-            {githubRepoInfo?.contributors?.[0]?.login && (
-              <div className="text-md text-neutral-500 font-medium">
-                {T("project.ledBy")} <span className="text-purple-700">{githubRepoInfo?.contributors?.[0]?.login}</span>
-              </div>
-            )}
+            {githubRepoInfo?.contributors?.[0]?.login && <LeadContributor {...githubRepoInfo?.contributors?.[0]} />}
           </div>
         </div>
-        <div className="flex flex-row border border-neutral-600 w-fit px-2 py-1 rounded-2xl gap-2 text-md">
-          <div>
-            <CodeIcon className="fill-gray-400" />
+        {githubRepoInfo?.languages && (
+          <div className="flex flex-row border border-neutral-600 w-fit px-2 py-1 rounded-2xl gap-2 text-md">
+            <div>
+              <CodeIcon className="fill-gray-400" />
+            </div>
+            <div>{buildLanguageString(githubRepoInfo?.languages)}</div>
           </div>
-          <div>Cairo</div>
-        </div>
+        )}
       </div>
       <div className="flex flex-col basis-8/12 pl-8 justify-around gap-5">
         <div className="text-lg">{details?.description}</div>
@@ -62,15 +62,9 @@ export default function ProjectInformation({ name, details, githubRepoInfo }: Pr
             )}
             {details?.telegramLink && <LinkWithLogo link={details?.telegramLink} logo={telegramLogo} />}
           </div>
-          <div className="flex flex-row w-full justify-center items-center gap-10">
-            {githubRepoInfo?.contributors?.length && (
-              <div className="flex">
-                {githubRepoInfo?.contributors?.length} contributor
-                {githubRepoInfo?.contributors?.length && githubRepoInfo?.contributors?.length <= 1 ? "" : "s"}
-              </div>
-            )}
-            <div className="flex">8 contributions</div>
-          </div>
+          {githubRepoInfo?.contributors?.length && (
+            <NumberOfContributors numberOfContributors={githubRepoInfo?.contributors?.length} />
+          )}
         </div>
       </div>
     </div>
@@ -86,8 +80,28 @@ function LinkWithLogo({ link, logo }: TelegramLinkProps) {
   return (
     <div className="border-2 rounded-xl p-2 grayscale border-slate-500 opacity-80 hover:opacity-50 hover:cursor-pointer">
       <div onClick={linkClickHandlerFactory(link)}>
-        <img className="md:w-10 w-5" src={logo} alt="Telegram Logo" />
+        <img className="md:w-10 w-6" src={logo} alt="Telegram Logo" />
       </div>
+    </div>
+  );
+}
+
+function buildLanguageString(languageMap: LanguageMap) {
+  return Object.keys(languageMap)
+    .slice(0, 2)
+    .map(str => str.toLowerCase())
+    .join(", ");
+}
+
+interface NumberOfContributorsProps {
+  numberOfContributors: number;
+}
+
+function NumberOfContributors({ numberOfContributors }: NumberOfContributorsProps) {
+  return (
+    <div className="flex flex-row w-full justify-center items-center text-xl">
+      {numberOfContributors} contributor
+      {numberOfContributors <= 1 ? "" : "s"}
     </div>
   );
 }

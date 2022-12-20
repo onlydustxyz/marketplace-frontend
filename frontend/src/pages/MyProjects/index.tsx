@@ -15,7 +15,7 @@ export default function MyProjects() {
   return (
     <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
       {ledProjectIds.map((projectId: string) => (
-        <Link key={projectId} className="flex w-5/6 my-3" to={`/project/${projectId}`}>
+        <Link key={projectId} className="flex w-11/12 my-3" to={`/project/${projectId}`}>
           <MyProjectContainer projectId={projectId} />
         </Link>
       ))}
@@ -46,6 +46,7 @@ function MyProjectContainer({ projectId }: MyProjectContainerProps) {
               owner: project?.githubRepo?.owner,
               name: project?.githubRepo?.name,
               contributors: project?.githubRepo?.content?.contributors,
+              languages: project?.githubRepo.languages,
             }}
           />
         </Card>
