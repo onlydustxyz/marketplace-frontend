@@ -146,3 +146,4 @@ jobs:
         with:
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
           codecov_flag: unittest
+          file: cobertura.xml

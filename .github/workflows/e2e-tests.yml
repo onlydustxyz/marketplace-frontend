@@ -73,7 +73,7 @@ jobs:
         with:
           crate: grcov
 
-      - name: Build coverage file
+      - name: Build backend coverage file
         run: |
           grcov . \
             --binary-path ./target/debug/deps/ \
@@ -85,11 +85,23 @@ jobs:
             --ignore "/*" \
             -o cobertura.xml
 
-      - name: Upload coverage results
+      - name: Build frontend coverage file
+        run: |
+          npx nyc report --reporter=cobertura
+
+      - name: Upload backend coverage results
         uses: ./.github/actions/coverage-upload
         with:
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
           codecov_flag: e2e
+          file: cobertura.xml
+
+      - name: Upload frontend coverage results
+        uses: ./.github/actions/coverage-upload
+        with:
+          codecov_token: ${{ secrets.CODECOV_TOKEN }}
+          codecov_flag: e2e
+          file: coverage/cobertura-coverage.xml
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3

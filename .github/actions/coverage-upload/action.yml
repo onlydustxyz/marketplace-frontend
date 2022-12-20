@@ -11,13 +11,17 @@ inputs:
     description: "The codecov token for the repository"
     required: false
 
+  file:
+    description: "The coverage result file to upload"
+    required: true
+
 runs:
   using: "composite"
   steps:
     - name: Upload results to codecov.io
       uses: codecov/codecov-action@v3
       with:
-        files: cobertura.xml
+        files: ${{ inputs.file }}
         flags: ${{ inputs.codecov_flag }}
         token: ${{ inputs.codecov_token }}
 
@@ -25,4 +29,4 @@ runs:
       uses: actions/upload-artifact@v1
       with:
         name: code-coverage-report-${{ inputs.codecov_flag }}
-        path: cobertura.xml
+        path: ${{ inputs.file }}
