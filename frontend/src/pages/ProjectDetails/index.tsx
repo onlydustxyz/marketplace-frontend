@@ -85,8 +85,12 @@ export default function ProjectDetails() {
               githubRepo.content?.contributors && (
                 <Overview
                   decodedReadme={decodeBase64ToString(githubRepo.content.readme.content)}
-                  contributors={githubRepo.content?.contributors}
-                  repo={{ name: githubRepo.name, owner: githubRepo.owner }}
+                  githubRepoInfo={{
+                    name: githubRepo.name,
+                    owner: githubRepo.owner,
+                    contributors: githubRepo.content?.contributors,
+                    languages: githubRepo.languages,
+                  }}
                 />
               )}
             {selectedTab === ProjectDetailsTab.Payments && (
@@ -109,8 +113,10 @@ const GITHUB_REPO_FIELDS_FRAGMENT = gql`
       }
       contributors {
         login
+        avatarUrl
       }
     }
+    languages
   }
 `;
 

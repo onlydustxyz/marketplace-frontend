@@ -11,12 +11,13 @@ import { GetProjectsQuery } from "src/__generated/graphql";
 export default function Projects() {
   const query = useHasuraQuery<GetProjectsQuery>(GET_PROJECTS_QUERY, HasuraUserRole.Public);
   const { data } = query;
+
   return (
     <QueryWrapper<GetProjectsQuery> query={query}>
       <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
         {data &&
           data.projects.map(project => (
-            <Link key={project.id} className="flex w-5/6 my-3" to={`/project/${project.id}`}>
+            <Link key={project.id} className="flex w-11/12 my-3" to={`/project/${project.id}`}>
               <Card selectable={true}>
                 <ProjectInformation
                   name={project.name}
@@ -24,7 +25,12 @@ export default function Projects() {
                     description: project?.projectDetails?.description,
                     telegramLink: project?.projectDetails?.telegramLink,
                   }}
-                  githubRepoInfo={{ ...project.githubRepo }}
+                  githubRepoInfo={{
+                    owner: project?.githubRepo?.owner,
+                    name: project?.githubRepo?.name,
+                    contributors: project?.githubRepo?.content?.contributors,
+                    languages: project?.githubRepo?.languages,
+                  }}
                 />
               </Card>
             </Link>
