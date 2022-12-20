@@ -7,6 +7,8 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: process.env.CYPRESS_BASE_URL,
     setupNodeEvents(on, config) {
+      require("@cypress/code-coverage/task")(on, config);
+
       on("task", {
         log(message) {
           console.log(message);
@@ -14,6 +16,8 @@ module.exports = defineConfig({
           return null;
         },
       });
+
+      return config;
     },
   },
   env: {
