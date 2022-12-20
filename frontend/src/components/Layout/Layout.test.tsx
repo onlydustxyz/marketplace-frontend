@@ -3,9 +3,11 @@ import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
 import Layout from ".";
-import { AuthProvider, LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
+import { AuthProvider } from "src/hooks/useAuth";
 import { BrowserRouter } from "react-router-dom";
 import { renderWithIntl } from "src/test/utils";
+import { MockedProvider } from "@apollo/client/testing";
+import { LOCAL_STORAGE_TOKEN_SET_KEY, TokenSetProvider } from "src/hooks/useTokenSet";
 
 expect.extend(matchers);
 
@@ -27,9 +29,13 @@ describe('"Layout" component', () => {
 
   it("should always display the onlydust logo", async () => {
     renderWithIntl(
-      <AuthProvider>
-        <Layout />
-      </AuthProvider>,
+      <MockedProvider>
+        <TokenSetProvider>
+          <AuthProvider>
+            <Layout />
+          </AuthProvider>
+        </TokenSetProvider>
+      </MockedProvider>,
       { wrapper: BrowserRouter }
     );
     await screen.findByRole("img", {
@@ -39,9 +45,13 @@ describe('"Layout" component', () => {
 
   it("should display the github logo when there is no hasura jwt in the local storage", async () => {
     renderWithIntl(
-      <AuthProvider>
-        <Layout />
-      </AuthProvider>,
+      <MockedProvider>
+        <TokenSetProvider>
+          <AuthProvider>
+            <Layout />
+          </AuthProvider>
+        </TokenSetProvider>
+      </MockedProvider>,
       { wrapper: BrowserRouter }
     );
     await screen.findByRole("img", {
@@ -52,9 +62,13 @@ describe('"Layout" component', () => {
   it("should display the onlydust logo and title if there is no hasura jwt", () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_TEST_VALUE));
     renderWithIntl(
-      <AuthProvider>
-        <Layout />
-      </AuthProvider>,
+      <MockedProvider>
+        <TokenSetProvider>
+          <AuthProvider>
+            <Layout />
+          </AuthProvider>
+        </TokenSetProvider>
+      </MockedProvider>,
       { wrapper: BrowserRouter }
     );
     expect(

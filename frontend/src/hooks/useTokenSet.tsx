@@ -6,7 +6,7 @@ export const LOCAL_STORAGE_TOKEN_SET_KEY = "hasura_token";
 
 type TokenSetContextType = {
   tokenSet?: TokenSet | null;
-  setTokenSet: (tokenSet: TokenSet) => void;
+  setTokenSet: (tokenSet: TokenSet | null) => void;
 };
 
 const TokenSetContext = createContext<TokenSetContextType | null>(null);

@@ -4,12 +4,12 @@ import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
 
 import ProfilePage from ".";
-import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
 import { GET_PROFILE_QUERY } from "src/pages/Profile";
 import { CLAIMS_KEY, Email, PaymentReceiverType, PayoutSettingsType, PROJECTS_LED_KEY, UserInfo } from "src/types";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { UPDATE_USER_MUTATION } from "./components/ProfileForm";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 
 const mockUser = {
   id: "test-user-id",

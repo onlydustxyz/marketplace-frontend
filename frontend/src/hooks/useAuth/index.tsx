@@ -1,22 +1,24 @@
+import { useApolloClient } from "@apollo/client";
 import axios from "axios";
 import { createContext, PropsWithChildren, useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLocalStorage } from "react-use";
 import { RoutePaths } from "src/App";
 import config from "src/config";
+import { useGithubProfile } from "src/hooks/useAuth/useGithubProfile";
 import { useRoles } from "src/hooks/useAuth/useRoles";
+import { useTokenSet } from "src/hooks/useTokenSet";
 import { RefreshToken, TokenSet, User, UserRole } from "src/types";
 
-export const LOCAL_STORAGE_TOKEN_SET_KEY = "hasura_token";
 const TOKEN_VALIDITY_TIME_THRESHOLD = 30;
 
 type AuthContextType = {
   login: (refreshToken: RefreshToken) => void;
-  clearAuth: () => Promise<void>;
+  logout: () => Promise<void>;
   user: User | null;
   isLoggedIn: boolean;
   roles: UserRole[];
   ledProjectIds: string[];
+  githubUserId?: number;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -30,7 +32,7 @@ const checkTokenValidity = (token: TokenSet): boolean => {
 };
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [tokenSet, setTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY, null);
+  const { tokenSet, setTokenSet } = useTokenSet();
   const navigate = useNavigate();
 
   const consumeRefreshToken = useCallback(async (refreshToken: RefreshToken) => {
@@ -52,25 +54,32 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const login = async (refreshToken: RefreshToken) => {
     await consumeRefreshToken(refreshToken);
+    await client.clearStore();
     navigate(RoutePaths.Profile);
   };
 
-  const clearAuth = async () => {
+  const client = useApolloClient();
+
+  const logout = async () => {
+    await client.clearStore();
     await axios.post(`${config.HASURA_AUTH_BASE_URL}/signout`, {
       refreshToken: tokenSet?.refreshToken,
     });
     setTokenSet(null);
+    navigate(RoutePaths.Projects, { replace: true });
   };
 
   const { isLoggedIn, roles, ledProjectIds } = useRoles(tokenSet?.accessToken);
+  const { githubUserId } = useGithubProfile(roles);
 
   const value = {
     user: tokenSet ? tokenSet.user : null,
     login,
-    clearAuth,
+    logout,
     isLoggedIn,
     roles,
     ledProjectIds,
+    githubUserId,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

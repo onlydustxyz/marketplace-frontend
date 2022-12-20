@@ -4,15 +4,15 @@ import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 
 import config from "src/config";
-import { useAccessToken } from "src/hooks/useAccessToken";
 import ErrorFallback from "../ErrorFallback";
+import { useTokenSet } from "src/hooks/useTokenSet";
 
 const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const [displayError, setDisplayError] = useState(false);
-  const accessToken = useAccessToken();
+  const { tokenSet } = useTokenSet();
 
   const AuthenticationLink = setContext((_, { headers }) => {
-    const authorizationHeaders = accessToken ? { Authorization: `Bearer ${accessToken}` } : {};
+    const authorizationHeaders = tokenSet?.accessToken ? { Authorization: `Bearer ${tokenSet?.accessToken}` } : {};
     return {
       headers: {
         ...headers,

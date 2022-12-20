@@ -4,11 +4,9 @@ import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
-import { useUser } from "src/hooks/useUser";
 
 const ProfileButton = () => {
-  const { user } = useAuth();
-  const { logout } = useUser();
+  const { user, logout } = useAuth();
   const { avatarUrl, displayName } = user ?? { avatarUrl: null, displayName: "My Account" };
   const { T } = useIntl();
   return (

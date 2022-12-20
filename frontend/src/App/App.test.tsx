@@ -5,7 +5,6 @@ import userEvent from "@testing-library/user-event";
 
 import App, { RoutePaths } from ".";
 import { AUTH_CODE_QUERY_KEY } from "src/pages/Login";
-import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
 import { checkLocalStorageValue, MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { GET_PROJECTS_QUERY } from "src/pages/Projects";
 import { GET_PROFILE_QUERY } from "src/pages/Profile";
@@ -13,6 +12,7 @@ import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { GET_MY_PROJECT_QUERY } from "src/pages/MyProjects";
 import { ProjectDetailsTab, GET_PROJECT_USER_QUERY } from "src/pages/ProjectDetails";
 import { buildGithubLink } from "src/utils/stringUtils";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 
 const AUTH_CODE_TEST_VALUE = "code";
 const LOGGING_IN_TEXT_QUERY = /logging in.../i;

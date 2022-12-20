@@ -5,7 +5,7 @@ import { AuthProvider } from "src/hooks/useAuth";
 import { render, RenderOptions } from "@testing-library/react";
 import { RoutePaths } from "src/App";
 import { IntlProvider } from "src/hooks/useIntl";
-import { UserProvider } from "src/hooks/useUser";
+import { TokenSetProvider } from "src/hooks/useTokenSet";
 
 interface MemoryRouterProviderFactoryProps {
   route?: string;
@@ -16,13 +16,13 @@ export const MemoryRouterProviderFactory =
   ({ route = RoutePaths.CatchAll, mocks }: MemoryRouterProviderFactoryProps) =>
   ({ children }: PropsWithChildren) =>
     (
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <MemoryRouter initialEntries={[route]}>
-          <AuthProvider>
-            <UserProvider>{children}</UserProvider>
-          </AuthProvider>
-        </MemoryRouter>
-      </MockedProvider>
+      <TokenSetProvider>
+        <MockedProvider mocks={mocks} addTypename={false}>
+          <MemoryRouter initialEntries={[route]}>
+            <AuthProvider>{children}</AuthProvider>
+          </MemoryRouter>
+        </MockedProvider>
+      </TokenSetProvider>
     );
 
 interface CheckLocalStorageValueProps<T> {
