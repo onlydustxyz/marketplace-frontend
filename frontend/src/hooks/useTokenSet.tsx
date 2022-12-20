@@ -22,7 +22,7 @@ export const accessTokenValidityDelay = (token: TokenSet): number => {
 };
 
 const accessTokenExpired = (token: TokenSet): boolean => {
-  return accessTokenValidityDelay(token) < 0;
+  return accessTokenValidityDelay(token) <= 0;
 };
 
 const fetchNewAccessToken = async (refreshToken: RefreshToken): Promise<TokenSet> => {
@@ -60,7 +60,7 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
         clearTimeout(timerRef.current);
       }
     };
-  }, []);
+  }, [tokenSet?.accessToken]);
 
   const setFromRefreshToken = async (refreshToken: RefreshToken) => {
     const newTokenSet = await fetchNewAccessToken(refreshToken);
