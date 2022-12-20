@@ -1,6 +1,6 @@
-name: Run Rust backend
+name: Kill Rust backend
 
-description: Kill runnin Rust backends
+description: Kill running Rust backends
 
 runs:
   using: "composite"

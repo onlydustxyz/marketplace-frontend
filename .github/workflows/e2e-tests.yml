@@ -1,0 +1,96 @@
+name: E2E tests
+
+on:
+  pull_request: ~
+
+  push:
+    branches:
+      - "main"
+
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
+        required: false
+        default: false
+
+env:
+  CARGO_TERM_COLOR: always
+  GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+  DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db
+  RUST_LOG: info
+  HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key":"5152fa850c02dc222631cca898ed1485821a70912a6e3649c49076912daa3b62182ba013315915d64f40cddfbb8b58eb5bd11ba225336a6af45bbae07ca873f3","issuer":"hasura-auth"}'
+  HASURA_GRAPHQL_EXPERIMENTAL_FEATURES: naming_convention
+  HASURA_GRAPHQL_DEFAULT_NAMING_CONVENTION: graphql-default
+
+jobs:
+  e2e_tests:
+    name: End-to-end tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup cargo
+        uses: ./.github/actions/cargo-setup
+
+      - name: Setup llvm tools
+        run: rustup component add llvm-tools-preview
+
+      - name: Setup environment
+        uses: ./.github/actions/env-setup
+
+      - name: Run Rust backend
+        uses: ./.github/actions/backend-run
+        env:
+          CARGO_INCREMENTAL: 0
+          RUSTFLAGS: -Cinstrument-coverage
+          LLVM_PROFILE_FILE: backend-%p-%m.profraw
+
+      - name: Run frontend
+        uses: ./.github/actions/frontend-run
+        env:
+          VITE_HASURA_AUTH_BASE_URL: http://localhost:4000
+          VITE_HASURA_BASE_URL: http://localhost:8080
+          VITE_HASURA_ADMIN_SECRET: myadminsecretkey
+
+      - name: Setup hasura
+        uses: ./.github/actions/hasura-setup
+
+      - name: Execute end-to-end tests
+        uses: ./.github/actions/cypress
+
+      - name: Kill Rust backend
+        uses: ./.github/actions/backend-kill
+
+      - name: Kill frontend
+        uses: ./.github/actions/frontend-kill
+
+      - name: Install grcov
+        uses: actions-rs/install@v0.1
+        with:
+          crate: grcov
+
+      - name: Build coverage file
+        run: |
+          grcov . \
+            --binary-path ./target/debug/deps/ \
+            -s . \
+            -t cobertura \
+            --branch \
+            --ignore-not-existing \
+            --ignore '../*' \
+            --ignore "/*" \
+            -o cobertura.xml
+
+      - name: Upload coverage results
+        uses: ./.github/actions/coverage-upload
+        with:
+          codecov_token: ${{ secrets.CODECOV_TOKEN }}
+          codecov_flag: e2e
+
+      - name: Setup tmate session for debugging
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ failure() && inputs.debug_enabled }}

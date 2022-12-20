@@ -1,0 +1,19 @@
+name: Run frontend
+
+description: Install and run frontend
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+    - name: Install frontend dependencies
+      shell: bash
+      run: yarn install --frozen-lockfile
+    - name: Run frontend
+      shell: bash
+      run: |
+        yarn dev --host &> frontend.out.log &
+        echo "frontend_pid=$!" >> $GITHUB_ENV

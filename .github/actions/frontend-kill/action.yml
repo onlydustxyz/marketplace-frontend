@@ -1,0 +1,10 @@
+name: Kill frontend
+
+description: Kill running frontend
+
+runs:
+  using: "composite"
+  steps:
+    - name: Kill running frontend
+      shell: bash
+      run: kill ${{ env.frontend_pid }}
