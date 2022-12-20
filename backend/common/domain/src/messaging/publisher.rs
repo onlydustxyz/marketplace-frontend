@@ -36,7 +36,7 @@ mod tests {
 
 	use super::*;
 
-	#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
+	#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 	enum TestMessage {
 		Msg1,
 		Msg2,

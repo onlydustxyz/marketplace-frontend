@@ -1,4 +1,4 @@
-use std::fmt::Display;
+use std::fmt::{Debug, Display};
 
 use chrono::{NaiveDateTime, Utc};
 use derive_getters::Getters;
@@ -6,7 +6,7 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use serde_json::Value;
 use uuid::Uuid;
 
-pub trait Message: Serialize + DeserializeOwned {}
+pub trait Message: Serialize + DeserializeOwned + Debug + Clone {}
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Getters)]
 pub struct UniqueMessage<P> {
