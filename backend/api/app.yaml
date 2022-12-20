@@ -10,7 +10,9 @@ local:
   amqp:
     url: "amqp://127.0.0.1:5672/%2f"
   tracer:
+    json: false
     ansi: true
+    location: true
 
 production:
   database:
@@ -19,4 +21,6 @@ production:
   amqp:
     url: $CLOUDAMQP_URL
   tracer:
+    json: true
     ansi: false
+    location: true

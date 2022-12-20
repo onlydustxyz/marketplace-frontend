@@ -11,8 +11,12 @@ default:
 
 local:
   tracer:
+    json: false
     ansi: true
+    location: true
 
 production:
   tracer:
+    json: true
     ansi: false
+    location: true
