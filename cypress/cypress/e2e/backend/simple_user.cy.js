@@ -1,4 +1,4 @@
-import { newRandomGithubUserId } from "../support/utils";
+import { newRandomGithubUserId } from "../../support/utils";
 
 describe("As a simple user, I", () => {
     let projectId;
