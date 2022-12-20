@@ -14,12 +14,24 @@ type TokenSetContextType = {
   setFromRefreshToken: (refreshToken: RefreshToken) => Promise<void>;
 };
 
-const checkTokenValidity = (token: TokenSet): boolean => {
+export const accessTokenValidityDelay = (token: TokenSet): number => {
   const creationDate = new Date(token.creationDate);
   const expirationDate = creationDate.setSeconds(
     creationDate.getSeconds() + token.accessTokenExpiresIn - TOKEN_VALIDITY_TIME_THRESHOLD
   );
-  return expirationDate > Date.now();
+  return expirationDate - Date.now();
+};
+
+const accessTokenExpired = (token: TokenSet): boolean => {
+  return accessTokenValidityDelay(token) < 0;
+};
+
+const refreshAccessToken = async (refreshToken: RefreshToken): Promise<TokenSet> => {
+  const tokenSetResponse = await axios.post(`${config.HASURA_AUTH_BASE_URL}/token`, {
+    refreshToken,
+  });
+  if (!tokenSetResponse.data) throw new Error("Could not consume refresh token");
+  return { ...tokenSetResponse.data, creationDate: Date.now() };
 };
 
 const TokenSetContext = createContext<TokenSetContextType | null>(null);
@@ -28,11 +40,7 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
   const [tokenSet, setTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY);
 
   const setFromRefreshToken = async (refreshToken: RefreshToken) => {
-    const accessToken = await axios.post(`${config.HASURA_AUTH_BASE_URL}/token`, {
-      refreshToken,
-    });
-    if (!accessToken.data) throw new Error("Could not consume refresh token");
-    const newTokenSet = { ...accessToken.data, creationDate: Date.now() };
+    const newTokenSet = await refreshAccessToken(refreshToken);
     setTokenSet(newTokenSet);
   };
 

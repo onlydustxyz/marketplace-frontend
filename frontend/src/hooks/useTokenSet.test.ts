@@ -1,5 +1,10 @@
 import { act, renderHook } from "@testing-library/react-hooks";
-import { LOCAL_STORAGE_TOKEN_SET_KEY, TokenSetProvider, useTokenSet } from "src/hooks/useTokenSet";
+import {
+  accessTokenValidityDelay,
+  LOCAL_STORAGE_TOKEN_SET_KEY,
+  TokenSetProvider,
+  useTokenSet,
+} from "src/hooks/useTokenSet";
 import { RefreshToken, TokenSet } from "src/types";
 import { describe, expect, it, beforeEach, afterEach, vi, Mock } from "vitest";
 import axios from "axios";
@@ -89,6 +94,19 @@ describe("useTokenSet", () => {
 
       await waitForValueToChange(() => result.current.tokenSet);
       expect(result.current.tokenSet).toEqual({ ...tokenSet, creationDate: date.getTime() });
+    });
+  });
+
+  describe("tokenValidityDelay", () => {
+    it("should compute the delay until access token expiration", () => {
+      const creationDate = new Date(2000, 1, 1, 13, 0, 0);
+      const currentDate = new Date(2000, 1, 1, 13, 0, 30);
+
+      const tokenSet = { creationDate: creationDate.getTime(), accessTokenExpiresIn: 90 } as unknown as TokenSet;
+      vi.setSystemTime(currentDate);
+
+      const validityDelay = accessTokenValidityDelay(tokenSet);
+      expect(validityDelay).toBe(30 * 1000); // 90 - 30 - 30 = 30
     });
   });
 });
