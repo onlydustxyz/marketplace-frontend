@@ -3,9 +3,9 @@ use std::env;
 use anyhow::Result;
 use async_trait::async_trait;
 use domain::{Event, SubscriberCallbackError};
+use olog::{error, info};
 use serde::{ser::SerializeStruct, Serialize, Serializer};
 use serde_json::json;
-use tracing::{error, info};
 use url::Url;
 
 use crate::domain::EventListener;

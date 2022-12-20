@@ -6,6 +6,7 @@ use domain::{Message, Subscriber, SubscriberCallbackError, SubscriberError};
 use lapin::{message::Delivery, options::BasicNackOptions};
 use olog::error;
 use serde_json::Error;
+use tracing::instrument;
 
 use super::ConsumableBus;
 
@@ -33,32 +34,7 @@ impl<M: Message + Send + Sync> Subscriber<M> for ConsumableBus {
 				},
 			};
 
-			match callback(message.clone()).await {
-				Ok(_) => delivery
-					.ack(Default::default())
-					.await
-					.map_err(|e| SubscriberError::Ack(anyhow!(e)))?,
-
-				Err(error) => match error {
-					SubscriberCallbackError::Discard(error) => {
-						error!(
-							content = format!("{:?}", message),
-							error = error.to_string(),
-							"Ignoring message",
-						);
-						Self::discard_message(&delivery).await?;
-						continue;
-					},
-					SubscriberCallbackError::Fatal(error) => {
-						error!(
-							content = format!("{:?}", message),
-							error = error.to_string(),
-							"Fatal error while processing the message",
-						);
-						return Err(SubscriberError::Processing(error));
-					},
-				},
-			}
+			self.process_event(&callback, message, delivery).await?;
 		}
 
 		Ok(())
@@ -66,6 +42,45 @@ impl<M: Message + Send + Sync> Subscriber<M> for ConsumableBus {
 }
 
 impl ConsumableBus {
+	#[instrument(skip(self, callback, delivery))]
+	async fn process_event<M, C, F>(
+		&self,
+		callback: C,
+		message: M,
+		delivery: Delivery,
+	) -> Result<(), SubscriberError>
+	where
+		M: Message + Send + Sync,
+		C: Fn(M) -> F + Send + Sync,
+		F: Future<Output = Result<(), SubscriberCallbackError>> + Send,
+	{
+		match callback(message.clone()).await {
+			Ok(_) => delivery
+				.ack(Default::default())
+				.await
+				.map_err(|e| SubscriberError::Ack(anyhow!(e))),
+
+			Err(error) => match error {
+				SubscriberCallbackError::Discard(error) => {
+					error!(
+						event = format!("{:?}", message),
+						error = error.to_string(),
+						"Ignoring event",
+					);
+					Self::discard_message(&delivery).await
+				},
+				SubscriberCallbackError::Fatal(error) => {
+					error!(
+						event = format!("{:?}", message),
+						error = error.to_string(),
+						"Fatal error while processing the event",
+					);
+					Err(SubscriberError::Processing(error))
+				},
+			},
+		}
+	}
+
 	async fn discard_message(delivery: &Delivery) -> Result<(), SubscriberError> {
 		delivery
 			.nack(BasicNackOptions {
@@ -267,7 +282,7 @@ mod tests {
 
 		run_test(consumer, &*COUNTER, 2).await;
 
-		assert!(logs_contain("Ignoring message"));
+		assert!(logs_contain("Ignoring event"));
 		assert!(logs_contain("error=\"bad message\""));
 	}
 
@@ -297,7 +312,7 @@ mod tests {
 
 		assert_processing_error_message(result.unwrap_err(), ERROR);
 
-		assert!(logs_contain("Fatal error while processing the message"));
+		assert!(logs_contain("Fatal error while processing the event"));
 		assert!(logs_contain("error=\"some internal error occurred\""));
 	}
 }
