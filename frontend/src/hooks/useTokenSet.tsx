@@ -6,7 +6,8 @@ export const LOCAL_STORAGE_TOKEN_SET_KEY = "hasura_token";
 
 type TokenSetContextType = {
   tokenSet?: TokenSet | null;
-  setTokenSet: (tokenSet: TokenSet | null) => void;
+  setTokenSet: (tokenSet: TokenSet) => void;
+  clearTokenSet: () => void;
 };
 
 const TokenSetContext = createContext<TokenSetContextType | null>(null);
@@ -14,7 +15,17 @@ const TokenSetContext = createContext<TokenSetContextType | null>(null);
 export const TokenSetProvider = ({ children }: PropsWithChildren) => {
   const [tokenSet, setTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY);
 
-  return <TokenSetContext.Provider value={{ tokenSet, setTokenSet }}>{children}</TokenSetContext.Provider>;
+  const clearTokenSet = () => {
+    setTokenSet(null);
+  };
+
+  const value = {
+    tokenSet,
+    setTokenSet,
+    clearTokenSet,
+  };
+
+  return <TokenSetContext.Provider value={value}>{children}</TokenSetContext.Provider>;
 };
 
 export const useTokenSet = (): TokenSetContextType => {

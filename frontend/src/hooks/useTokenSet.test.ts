@@ -34,4 +34,28 @@ describe("useTokenSet", () => {
     rerender();
     expect(result.current.tokenSet).toEqual({ accessToken });
   });
+
+  describe("setTokenSet", () => {
+    it("should store the token in localStorage", () => {
+      const { result } = renderWithProvider();
+      const accessToken = "accessToken";
+      act(() => {
+        result.current.setTokenSet({ accessToken } as TokenSet);
+      });
+      expect(window.localStorage.getItem(LOCAL_STORAGE_TOKEN_SET_KEY)).toEqual(JSON.stringify({ accessToken }));
+    });
+  });
+
+  describe("clearTokenSet", () => {
+    it("should remove the token from localStorage", () => {
+      const accessToken = "accessToken";
+      window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify({ accessToken }));
+
+      const { result } = renderWithProvider();
+      act(() => {
+        result.current.clearTokenSet();
+      });
+      expect(window.localStorage.getItem(LOCAL_STORAGE_TOKEN_SET_KEY)).toBe("null");
+    });
+  });
 });
