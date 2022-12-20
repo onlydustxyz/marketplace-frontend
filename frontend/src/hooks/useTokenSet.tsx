@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, PropsWithChildren, useContext, useEffect } from "react";
+import { createContext, PropsWithChildren, useContext, useEffect, useRef } from "react";
 import { useLocalStorage } from "react-use";
 import config from "src/config";
 import { RefreshToken, TokenSet } from "src/types";
@@ -37,6 +37,7 @@ const TokenSetContext = createContext<TokenSetContextType | null>(null);
 
 export const TokenSetProvider = ({ children }: PropsWithChildren) => {
   const [tokenSet, setTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY);
+  const timerRef = useRef<NodeJS.Timeout>();
 
   const refreshAccessToken = (tokenSet: TokenSet) => {
     fetchNewAccessToken(tokenSet.refreshToken).then(newTokenSet => {
@@ -49,11 +50,16 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
       if (accessTokenExpired(tokenSet)) {
         refreshAccessToken(tokenSet);
       } else {
-        setTimeout(() => {
+        timerRef.current = setTimeout(() => {
           refreshAccessToken(tokenSet);
         }, accessTokenValidityDelay(tokenSet));
       }
     }
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
   }, []);
 
   const setFromRefreshToken = async (refreshToken: RefreshToken) => {

@@ -83,6 +83,27 @@ describe("useTokenSet", () => {
     expect(axios.post).toHaveBeenCalledOnce();
   });
 
+  it("should remove the schedules access token refresh when unmounted", async () => {
+    const currentDate = new Date(2000, 1, 1, 13, 0, 30);
+
+    vi.setSystemTime(currentDate);
+    const tokenSet = {
+      creationDate: currentDate.getTime(),
+      accessTokenExpiresIn: 90,
+      accessToken,
+      refreshToken,
+    } as unknown as TokenSet;
+    setTokenSet(tokenSet);
+    (axios.post as Mock).mockResolvedValue({ data: tokenSet });
+
+    const { unmount } = renderWithProvider();
+    expect(axios.post).not.toHaveBeenCalledOnce();
+
+    unmount();
+    vi.advanceTimersByTime(120 * 1000);
+    expect(axios.post).not.toHaveBeenCalledOnce();
+  });
+
   describe("clearTokenSet", () => {
     it("should remove the token from localStorage", () => {
       setTokenSet({ accessToken });
