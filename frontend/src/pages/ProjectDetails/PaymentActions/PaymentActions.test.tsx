@@ -17,6 +17,8 @@ const HASURA_TOKEN_BASIC_TEST_VALUE = {
     id: TEST_USER_ID,
   },
   accessToken: "SOME_TOKEN",
+  accessTokenExpiresIn: 900,
+  creationDate: new Date().getTime(),
 };
 
 const mockContribution = {

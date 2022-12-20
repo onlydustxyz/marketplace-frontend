@@ -25,29 +25,5 @@ export const MemoryRouterProviderFactory =
       </TokenSetProvider>
     );
 
-interface CheckLocalStorageValueProps<T> {
-  key: string;
-  expectedValue?: T;
-  expectNotToExist?: boolean;
-  expectedIncludedObject?: Record<string, unknown>;
-}
-
-export function checkLocalStorageValue<T>({
-  key,
-  expectedValue,
-  expectedIncludedObject,
-  expectNotToExist,
-}: CheckLocalStorageValueProps<T>) {
-  const localStorageValue = window.localStorage.getItem(key);
-  if (expectNotToExist) {
-    expect(localStorageValue).toBeNull();
-  } else if (expectedIncludedObject) {
-    const parsedObject = JSON.parse(localStorageValue ?? "");
-    expect(parsedObject).toMatchObject(expectedIncludedObject);
-  } else {
-    expect(localStorageValue).toEqual(expectedValue);
-  }
-}
-
 export const renderWithIntl = (ui: React.ReactElement, options?: RenderOptions) =>
   render(<IntlProvider>{ui}</IntlProvider>, options);
