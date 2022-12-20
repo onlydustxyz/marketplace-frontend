@@ -13,11 +13,8 @@ runs:
     - name: Install cypress
       shell: bash
       run: yarn
-      working-directory: ./cypress
 
     - name: Cypress run
       uses: cypress-io/github-action@v4
-      with:
-        working-directory: ./cypress
       env:
         CYPRESS_BASE_URL: http://localhost:8080

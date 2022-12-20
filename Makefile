@@ -55,6 +55,6 @@ hasura/clean: db/migrate
 	yarn --cwd ./hasura hasura md export
 
 cypress/test:
-	yarn --cwd ./cypress cypress:run
+	yarn cypress:run
 
 .PHONY: install docker/up docker/clean docker/re db/up db/connect db/update-staging-dump db/load-fixtures db/migrate api/start hasura/start hasura/clean cypress/test
