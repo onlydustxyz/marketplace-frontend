@@ -34,35 +34,35 @@ type Inputs = {
 };
 
 type PropsType = {
-  user: UserInfo;
+  user?: UserInfo;
 };
 
 const ProfileForm: React.FC<PropsType> = ({ user }) => {
   const formMethods = useForm<Inputs>({
     defaultValues: {
-      paymentReceiverType: user.identity.Person
+      paymentReceiverType: user?.identity.Person
         ? IdentityType.Person
-        : user.identity.Company
+        : user?.identity.Company
         ? IdentityType.Company
         : IdentityType.Person,
-      firstname: user.identity?.Person?.firstname,
-      lastname: user.identity.Person?.lastname,
-      id: user.identity?.Company?.id,
-      name: user.identity?.Company?.name,
-      email: user.email,
-      number: user.location.number,
-      street: user.location.street,
-      postCode: user.location.post_code,
-      city: user.location.city,
-      country: user.location.country,
-      payoutSettingsType: user.payoutSettings.EthTransfer
+      firstname: user?.identity?.Person?.firstname,
+      lastname: user?.identity.Person?.lastname,
+      id: user?.identity?.Company?.id,
+      name: user?.identity?.Company?.name,
+      email: user?.email,
+      number: user?.location.number,
+      street: user?.location.street,
+      postCode: user?.location.post_code,
+      city: user?.location.city,
+      country: user?.location.country,
+      payoutSettingsType: user?.payoutSettings.EthTransfer
         ? PayoutSettingsType.EthereumAddress
-        : user.payoutSettings.WireTransfer
+        : user?.payoutSettings.WireTransfer
         ? PayoutSettingsType.BankAddress
         : PayoutSettingsType.EthereumAddress,
-      ethWalletAddress: user.payoutSettings.EthTransfer,
-      IBAN: user.payoutSettings.WireTransfer?.IBAN,
-      BIC: user.payoutSettings.WireTransfer?.BIC,
+      ethWalletAddress: user?.payoutSettings.EthTransfer,
+      IBAN: user?.payoutSettings.WireTransfer?.IBAN,
+      BIC: user?.payoutSettings.WireTransfer?.BIC,
     },
   });
   const { handleSubmit } = formMethods;
