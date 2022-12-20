@@ -10,19 +10,19 @@ import "src/assets/css/index.css";
 import "src/assets/fonts/Alfreda/stylesheet.css";
 import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import { IntlProvider } from "src/hooks/useIntl";
-import { UserProvider } from "src/hooks/useUser";
+import { TokenSetProvider } from "src/hooks/useTokenSet";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <IntlProvider>
       <BrowserRouter>
-        <ApolloWrapper>
-          <AuthProvider>
-            <UserProvider>
+        <TokenSetProvider>
+          <ApolloWrapper>
+            <AuthProvider>
               <App />
-            </UserProvider>
-          </AuthProvider>
-        </ApolloWrapper>
+            </AuthProvider>
+          </ApolloWrapper>
+        </TokenSetProvider>
       </BrowserRouter>
     </IntlProvider>
   </React.StrictMode>

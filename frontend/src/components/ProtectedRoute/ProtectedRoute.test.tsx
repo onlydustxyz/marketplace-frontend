@@ -5,8 +5,10 @@ import { BrowserRouter } from "react-router-dom";
 import { HasuraUserRole } from "src/types";
 
 import ProtectedRoute from ".";
-import { AuthProvider, LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
+import { AuthProvider } from "src/hooks/useAuth";
 import { renderWithIntl } from "src/test/utils";
+import { MockedProvider } from "@apollo/client/testing";
+import { LOCAL_STORAGE_TOKEN_SET_KEY, TokenSetProvider } from "src/hooks/useTokenSet";
 
 expect.extend(matchers);
 
@@ -34,9 +36,13 @@ describe('"ProtectedRoute" component', () => {
   it("should display its child element when there is a token in the local storage", () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
     renderWithIntl(
-      <AuthProvider>
-        <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>{CHILD_ELEMENT_TEXT}</ProtectedRoute>
-      </AuthProvider>,
+      <MockedProvider>
+        <TokenSetProvider>
+          <AuthProvider>
+            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>{CHILD_ELEMENT_TEXT}</ProtectedRoute>
+          </AuthProvider>
+        </TokenSetProvider>
+      </MockedProvider>,
       { wrapper: BrowserRouter }
     );
     expect(screen.queryByText(CHILD_ELEMENT_TEXT)).toBeInTheDocument();
