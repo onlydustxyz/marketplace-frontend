@@ -40,18 +40,6 @@ describe("useTokenSet", () => {
     expect(result.current.tokenSet).toEqual({ accessToken });
   });
 
-  it("should return the access token at next render after token is stored", () => {
-    const { result, rerender } = renderWithProvider();
-    expect(result.current.tokenSet).toBeUndefined();
-
-    act(() => {
-      result.current.setTokenSet({ accessToken } as TokenSet);
-    });
-
-    rerender();
-    expect(result.current.tokenSet).toEqual({ accessToken });
-  });
-
   it("should refresh the token if access token from local storage is expired", async () => {
     const updatedAccessToken = "updatedAccessToken";
     const creationDate = new Date(2000, 1, 1, 13, 0, 0);
@@ -72,16 +60,6 @@ describe("useTokenSet", () => {
 
     await waitForValueToChange(() => result.current.tokenSet);
     expect(result.current.tokenSet?.accessToken).toEqual(updatedAccessToken);
-  });
-
-  describe("setTokenSet", () => {
-    it("should store the token in localStorage", () => {
-      const { result } = renderWithProvider();
-      act(() => {
-        result.current.setTokenSet({ accessToken } as TokenSet);
-      });
-      expect(window.localStorage.getItem(LOCAL_STORAGE_TOKEN_SET_KEY)).toEqual(JSON.stringify({ accessToken }));
-    });
   });
 
   describe("clearTokenSet", () => {
