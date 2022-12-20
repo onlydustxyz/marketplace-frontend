@@ -27,6 +27,13 @@ macro_rules! trace_id {
 	};
 }
 
+#[macro_export]
+macro_rules! trace_id_str {
+	() => {
+		format!("{}", $crate::trace_id!())
+	};
+}
+
 /// Retrieves current span ID and converts it to Datadog format.
 #[macro_export]
 macro_rules! span_id {
@@ -41,6 +48,13 @@ macro_rules! span_id {
 			.span_id()
 			.to_bytes(),
 		)
+	};
+}
+
+#[macro_export]
+macro_rules! span_id_str {
+	() => {
+		format!("{}", $crate::span_id!())
 	};
 }
 
