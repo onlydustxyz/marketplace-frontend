@@ -2,10 +2,9 @@ import Card from "src/components/Card";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useIntl } from "src/hooks/useIntl";
-import { buildGithubLink } from "src/utils/stringUtils";
+import { buildGithubLink, buildLanguageString } from "src/utils/stringUtils";
 import LeadContributor, { Contributor } from "src/components/LeadContributor";
-
-type LanguageMap = { [languageName: string]: number }[];
+import { LanguageMap } from "src/types";
 
 interface OverviewProps {
   decodedReadme: string;
@@ -32,7 +31,9 @@ export default function Overview({ decodedReadme, githubRepoInfo }: OverviewProp
         <Card>
           <div className="flex flex-col gap-3">
             {githubRepoInfo?.languages && (
-              <OverviewPanelSection title={T("project.details.overview.technologies")}>{}</OverviewPanelSection>
+              <OverviewPanelSection title={T("project.details.overview.technologies")}>
+                {buildLanguageString(githubRepoInfo.languages)}
+              </OverviewPanelSection>
             )}
             {githubRepoInfo?.contributors?.length && (
               <OverviewPanelSection title={T("project.details.overview.projectLeader")}>

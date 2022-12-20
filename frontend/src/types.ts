@@ -110,3 +110,5 @@ export interface HasuraJWT {
     [PROJECTS_LED_KEY]?: string;
   };
 }
+
+export type LanguageMap = { [languageName: string]: number };
