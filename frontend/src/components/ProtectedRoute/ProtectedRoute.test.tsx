@@ -20,6 +20,8 @@ const HASURA_TOKEN_BASIC_TEST_VALUE = {
     id: TEST_USER_ID,
   },
   accessToken: "TEST_ACCESS_TOKEN",
+  accessTokenExpiresIn: 900,
+  creationDate: new Date().getTime(),
 };
 
 vi.mock("axios", () => ({

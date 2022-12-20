@@ -38,6 +38,8 @@ const HASURA_TOKEN_BASIC_TEST_VALUE = {
     id: mockUser.id,
   },
   accessToken: "SOME_TOKEN",
+  accessTokenExpiresIn: 900,
+  creationDate: new Date().getTime(),
 };
 
 expect.extend(matchers);

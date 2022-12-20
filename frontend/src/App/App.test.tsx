@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 
 import App, { RoutePaths } from ".";
 import { AUTH_CODE_QUERY_KEY } from "src/pages/Login";
-import { checkLocalStorageValue, MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
+import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { GET_PROJECTS_QUERY } from "src/pages/Projects";
 import { GET_PROFILE_QUERY } from "src/pages/Profile";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
@@ -169,10 +169,6 @@ describe('"Login" page', () => {
     await screen.findByText(LOGGING_IN_TEXT_QUERY);
     await screen.findByText(EDIT_PROFILE_TITLE);
     expect(screen.queryByText(LOGGING_IN_TEXT_QUERY)).not.toBeInTheDocument();
-    checkLocalStorageValue({
-      key: LOCAL_STORAGE_TOKEN_SET_KEY,
-      expectedIncludedObject: HASURA_TOKEN_BASIC_TEST_VALUE,
-    });
   });
 
   it("should be able to access the profile page and display profile info when having a token in local storage", async () => {
@@ -189,10 +185,6 @@ describe('"Login" page', () => {
   it("should display an error message if no refresh token is passed as a query parameter in the URL", async () => {
     renderWithIntl(<App />, { wrapper: MemoryRouterProviderFactory({ route: RoutePaths.Login, mocks: graphQlMocks }) });
     await screen.findByText(AUTH_TOKEN_MISSING_TEXT_QUERY);
-    checkLocalStorageValue({
-      key: LOCAL_STORAGE_TOKEN_SET_KEY,
-      expectNotToExist: true,
-    });
   });
 
   it("should redirect to the projects page if the profile route is accessed without a token in the local storage", async () => {
