@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, PropsWithChildren, useContext } from "react";
+import { createContext, PropsWithChildren, useContext, useEffect } from "react";
 import { useLocalStorage } from "react-use";
 import config from "src/config";
 import { RefreshToken, TokenSet } from "src/types";
@@ -38,6 +38,14 @@ const TokenSetContext = createContext<TokenSetContextType | null>(null);
 
 export const TokenSetProvider = ({ children }: PropsWithChildren) => {
   const [tokenSet, setTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY);
+
+  useEffect(() => {
+    if (tokenSet && accessTokenExpired(tokenSet)) {
+      refreshAccessToken(tokenSet.refreshToken).then(newTokenSet => {
+        setTokenSet(newTokenSet);
+      });
+    }
+  }, []);
 
   const setFromRefreshToken = async (refreshToken: RefreshToken) => {
     const newTokenSet = await refreshAccessToken(refreshToken);
