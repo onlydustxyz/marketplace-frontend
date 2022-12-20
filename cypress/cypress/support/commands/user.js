@@ -84,11 +84,11 @@ Cypress.Commands.add("signinUser", (user) => {
         email: user.email,
         password: user.password,
     })
-        .its("body.session.accessToken")
-        .should("be.a", "string")
-        .then((accessToken) => {
+        .its("body.session")
+        .should("be.a", "object")
+        .then((session) => {
             return {
-                accessToken: accessToken,
+                session,
                 ...user,
             };
         });

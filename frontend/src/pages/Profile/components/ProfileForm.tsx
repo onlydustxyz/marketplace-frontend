@@ -243,7 +243,7 @@ const mapFormDataToSchema = ({
 
   const payoutSettings: PayoutSettingsInput = {
     type: payoutSettingsType,
-    optEthAddress: ethWalletAddress ?? null,
+    optEthAddress: ethWalletAddress || null,
     optBankAddress: IBAN && BIC ? { IBAN, BIC } : null,
   };
 

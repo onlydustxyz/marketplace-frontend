@@ -41,7 +41,7 @@ Cypress.Commands.add(
         prevSubject: "optional",
     },
     (query, user) => {
-        return cy.signinUser(user).then(({ accessToken }) => {
+        return cy.signinUser(user).then(({ session }) => {
             expect(query).to.be.a("string");
             cy.request({
                 method: "POST",
@@ -49,7 +49,7 @@ Cypress.Commands.add(
                 body: { query: query },
                 headers: {
                     "X-Hasura-Role": "registered_user",
-                    Authorization: `Bearer ${accessToken}`,
+                    Authorization: `Bearer ${session.accessToken}`,
                 },
             });
         });
