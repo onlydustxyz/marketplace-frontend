@@ -2202,7 +2202,7 @@ export type Users_StreamCursorValueInput = {
   phoneNumberVerified: InputMaybe<Scalars['Boolean']>;
 };
 
-export type GithubRepoFieldsForProjectCardFragment = { __typename?: 'GithubRepoDetails', name: string, owner: string, content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', login: string }> } };
+export type GithubRepoFieldsForProjectCardFragment = { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } };
 
 export type GetGithubUserIdQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2221,7 +2221,7 @@ export type MyProjectQueryVariables = Exact<{
 }>;
 
 
-export type MyProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', login: string }> } } | null } | null };
+export type MyProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
 
 export type UpdateUserProfileMutationVariables = Exact<{
   userId: Scalars['uuid'];
@@ -2260,26 +2260,26 @@ export type GetPaymentRequestsForBudgetIdQueryVariables = Exact<{
 
 export type GetPaymentRequestsForBudgetIdQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', project: { __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null } | null } | null } | null }> };
 
-export type ProjectDetailsGithubRepoFieldsFragment = { __typename?: 'GithubRepoDetails', name: string, owner: string, content: { __typename?: 'Repository', readme: { __typename?: 'File', content: string }, contributors: Array<{ __typename?: 'User', login: string }> } };
+export type ProjectDetailsGithubRepoFieldsFragment = { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', readme: { __typename?: 'File', content: string }, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } };
 
 export type GetPublicProjectQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type GetPublicProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, content: { __typename?: 'Repository', readme: { __typename?: 'File', content: string }, contributors: Array<{ __typename?: 'User', login: string }> } } | null } | null };
+export type GetPublicProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', readme: { __typename?: 'File', content: string }, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
 
 export type GetUserProjectQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type GetUserProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any, remainingAmount: any }>, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, content: { __typename?: 'Repository', readme: { __typename?: 'File', content: string }, contributors: Array<{ __typename?: 'User', login: string }> } } | null } | null };
+export type GetUserProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any, remainingAmount: any }>, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', readme: { __typename?: 'File', content: string }, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
 
 export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', login: string }> } } | null }> };
+export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null }> };
 
 export const GithubRepoFieldsForProjectCardFragmentDoc = gql`
     fragment GithubRepoFieldsForProjectCard on GithubRepoDetails {
@@ -2288,8 +2288,10 @@ export const GithubRepoFieldsForProjectCardFragmentDoc = gql`
   content {
     contributors {
       login
+      avatarUrl
     }
   }
+  languages
 }
     `;
 export const ProjectDetailsGithubRepoFieldsFragmentDoc = gql`
@@ -2302,8 +2304,10 @@ export const ProjectDetailsGithubRepoFieldsFragmentDoc = gql`
     }
     contributors {
       login
+      avatarUrl
     }
   }
+  languages
 }
     `;
 export const GetGithubUserIdDocument = gql`
