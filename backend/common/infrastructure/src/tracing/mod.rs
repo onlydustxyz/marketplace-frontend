@@ -5,13 +5,15 @@ use opentelemetry::{
 };
 use opentelemetry_datadog::ApiVersion;
 use serde::Deserialize;
-use tracing_subscriber::{layer::SubscriberExt, EnvFilter};
+use tracing_subscriber::{fmt::Subscriber, layer::SubscriberExt, EnvFilter};
 
 pub struct Tracer;
 
 #[derive(Deserialize)]
 pub struct Config {
 	ansi: bool,
+	json: bool,
+	location: bool,
 }
 
 impl Tracer {
@@ -27,22 +29,51 @@ impl Tracer {
 			)
 			.install_batch(opentelemetry::runtime::Tokio)?;
 
-		// Create a tracing layer with the configured tracer
-		let telemetry = tracing_opentelemetry::layer().with_tracer(otel_tracer);
-
-		let subscriber = tracing_subscriber::fmt::Subscriber::builder()
-			.with_env_filter(EnvFilter::from_default_env())
-			.with_ansi(config.ansi)
-			.finish()
-			.with(telemetry);
-
-		// Trace executed code
-		tracing::subscriber::set_global_default(subscriber)?;
+		if config.json {
+			Self::setup_json_subscriber(config, otel_tracer)?;
+		} else {
+			Self::setup_pretty_subscriber(config, otel_tracer)?;
+		};
 
 		// Init a simple "logger" that converts all `log` records into `tracing` `Event`s
 		olog::LogTracer::init()?;
 
 		Ok(Tracer {})
+	}
+
+	fn setup_pretty_subscriber(
+		config: &Config,
+		tracer: opentelemetry::sdk::trace::Tracer,
+	) -> Result<(), tracing::subscriber::SetGlobalDefaultError> {
+		let subscriber = Subscriber::builder()
+			.with_env_filter(EnvFilter::from_default_env())
+			.with_ansi(config.ansi)
+			.with_file(config.location)
+			.with_line_number(config.location)
+			.finish();
+
+		// Create a tracing layer with the configured tracer
+		let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
+		tracing::subscriber::set_global_default(subscriber.with(telemetry))
+	}
+
+	fn setup_json_subscriber(
+		config: &Config,
+		tracer: opentelemetry::sdk::trace::Tracer,
+	) -> Result<(), tracing::subscriber::SetGlobalDefaultError> {
+		let subscriber = Subscriber::builder()
+			.json()
+			.with_env_filter(EnvFilter::from_default_env())
+			.with_ansi(false)
+			.with_file(config.location)
+			.with_line_number(config.location)
+			.with_current_span(false)
+			.with_span_list(false)
+			.finish();
+
+		// Create a tracing layer with the configured tracer
+		let telemetry = tracing_opentelemetry::layer().with_tracer(tracer);
+		tracing::subscriber::set_global_default(subscriber.with(telemetry))
 	}
 }
 
