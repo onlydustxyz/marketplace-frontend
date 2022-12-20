@@ -32,7 +32,7 @@ const checkTokenValidity = (token: TokenSet): boolean => {
 };
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const { tokenSet, setTokenSet } = useTokenSet();
+  const { tokenSet, setTokenSet, clearTokenSet } = useTokenSet();
   const navigate = useNavigate();
 
   const consumeRefreshToken = useCallback(async (refreshToken: RefreshToken) => {
@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     await axios.post(`${config.HASURA_AUTH_BASE_URL}/signout`, {
       refreshToken: tokenSet?.refreshToken,
     });
-    setTokenSet(null);
+    clearTokenSet();
     navigate(RoutePaths.Projects, { replace: true });
   };
 
