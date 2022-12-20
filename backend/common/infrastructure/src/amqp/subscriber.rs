@@ -24,8 +24,8 @@ impl<M: Message + Send + Sync> Subscriber<M> for ConsumableBus {
 				Ok(message) => message,
 				Err(error) => {
 					error!(
+						content = format!("{:?}", delivery.data),
 						error = error.to_string(),
-						message = format!("{:?}", delivery.data),
 						"Failed to deserialize message",
 					);
 					Self::discard_message(&delivery).await?;
@@ -33,7 +33,7 @@ impl<M: Message + Send + Sync> Subscriber<M> for ConsumableBus {
 				},
 			};
 
-			match callback(message).await {
+			match callback(message.clone()).await {
 				Ok(_) => delivery
 					.ack(Default::default())
 					.await
@@ -42,8 +42,8 @@ impl<M: Message + Send + Sync> Subscriber<M> for ConsumableBus {
 				Err(error) => match error {
 					SubscriberCallbackError::Discard(error) => {
 						error!(
+							content = format!("{:?}", message),
 							error = error.to_string(),
-							message = format!("{:?}", delivery.data),
 							"Ignoring message",
 						);
 						Self::discard_message(&delivery).await?;
@@ -51,8 +51,8 @@ impl<M: Message + Send + Sync> Subscriber<M> for ConsumableBus {
 					},
 					SubscriberCallbackError::Fatal(error) => {
 						error!(
+							content = format!("{:?}", message),
 							error = error.to_string(),
-							message = format!("{:?}", delivery.data),
 							"Fatal error while processing the message",
 						);
 						return Err(SubscriberError::Processing(error));

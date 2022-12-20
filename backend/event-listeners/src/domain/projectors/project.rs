@@ -6,7 +6,7 @@ use domain::{Event, GithubRepositoryId, ProjectEvent, SubscriberCallbackError};
 use infrastructure::database::MappingRepository;
 
 use crate::{
-	domain::{projections::Project, EventListener, GithubService},
+	domain::{projections::Project, EventListener, GithubService, GithubServiceError},
 	infrastructure::database::{
 		GithubRepoDetailsRepository, ProjectLeadRepository, ProjectRepository,
 		UpdateGitubRepoIdChangeset,
@@ -39,11 +39,13 @@ impl Projector {
 		&self,
 		github_repo_id: &GithubRepositoryId,
 	) -> Result<(), SubscriberCallbackError> {
-		let repo = self
-			.github_service
-			.fetch_repository_details(github_repo_id)
-			.await
-			.map_err(SubscriberCallbackError::Discard)?;
+		let repo = self.github_service.fetch_repository_details(github_repo_id).await.map_err(
+			|e| match e {
+				GithubServiceError::NotFound(error)
+				| GithubServiceError::MissingRepositoryOwner(error) => SubscriberCallbackError::Discard(error),
+				GithubServiceError::Other(error) => SubscriberCallbackError::Fatal(error),
+			},
+		)?;
 
 		self.github_repo_details_repository.upsert(&repo)?;
 

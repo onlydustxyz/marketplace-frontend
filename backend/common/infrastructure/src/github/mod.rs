@@ -7,6 +7,9 @@ use octocrab::{
 };
 use serde::Deserialize;
 
+mod error;
+pub use error::Error;
+
 #[derive(Deserialize)]
 pub struct Config {
 	base_url: String,
@@ -26,7 +29,7 @@ impl Client {
 		Ok(Self(instance))
 	}
 
-	pub async fn get_as<U, R>(&self, url: U) -> Result<R>
+	pub async fn get_as<U, R>(&self, url: U) -> Result<R, Error>
 	where
 		U: AsRef<str>,
 		R: FromResponse,
@@ -35,11 +38,11 @@ impl Client {
 		Ok(result)
 	}
 
-	pub async fn get_repository_by_id(&self, id: u64) -> Result<Repository> {
+	pub async fn get_repository_by_id(&self, id: u64) -> Result<Repository, Error> {
 		self.get_as(format!("{}repositories/{id}", self.0.base_url)).await
 	}
 
-	pub async fn get_user_by_name(&self, username: &str) -> Result<User> {
+	pub async fn get_user_by_name(&self, username: &str) -> Result<User, Error> {
 		self.get_as(format!("{}users/{username}", self.0.base_url)).await
 	}
 

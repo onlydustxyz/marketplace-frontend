@@ -1,2 +1,2 @@
 mod github;
-pub use github::Service as GithubService;
+pub use github::{Error as GithubServiceError, Service as GithubService};

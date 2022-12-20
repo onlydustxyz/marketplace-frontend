@@ -4,14 +4,23 @@ use domain::GithubRepositoryId;
 use infrastructure::github;
 use serde_json::Value;
 
-use crate::domain::{GithubRepoDetail, GithubService};
+use crate::domain::{GithubRepoDetail, GithubService, GithubServiceError};
+
+impl From<github::Error> for GithubServiceError {
+	fn from(error: github::Error) -> Self {
+		match error {
+			github::Error::NotFound(error) => GithubServiceError::NotFound(error.into()),
+			github::Error::Other(error) => GithubServiceError::Other(error.into()),
+		}
+	}
+}
 
 #[async_trait]
 impl GithubService for github::Client {
 	async fn fetch_repository_details(
 		&self,
 		github_repo_id: &GithubRepositoryId,
-	) -> Result<GithubRepoDetail> {
+	) -> Result<GithubRepoDetail, GithubServiceError> {
 		let repo_id: i64 = (*github_repo_id).into();
 		let repo = self.get_repository_by_id(repo_id as u64).await?;
 
@@ -21,9 +30,12 @@ impl GithubService for github::Client {
 			Default::default()
 		};
 
-		let owner = repo
-			.owner
-			.ok_or_else(|| anyhow!("No owner in github repository {github_repo_id}"))?;
+		let owner = repo.owner.ok_or_else(|| {
+			GithubServiceError::MissingRepositoryOwner(anyhow!(
+				"No owner in github repository {github_repo_id}"
+			))
+		})?;
+
 		Ok(GithubRepoDetail::new(
 			*github_repo_id,
 			owner.login,
