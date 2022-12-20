@@ -27,12 +27,16 @@ const HASURA_TOKEN_BASIC_TEST_VALUE = {
     id: TEST_USER_ID,
   },
   accessToken: "TEST_ACCESS_TOKEN",
+  accessTokenExpiresIn: 900,
+  creationDate: new Date().getTime(),
 };
 const HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE = {
   user: {
     id: TEST_USER_ID,
   },
   accessToken: "VALID_ACCESS_TOKEN",
+  accessTokenExpiresIn: 900,
+  creationDate: new Date().getTime(),
 };
 
 const TEST_PROJECT_ID = "test-project-id";
@@ -151,7 +155,7 @@ const graphQlMocks = [
 ];
 
 describe('"Login" page', () => {
-  afterEach(() => {
+  beforeEach(() => {
     window.localStorage.clear();
   });
 
