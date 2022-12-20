@@ -3,10 +3,9 @@ import telegramLogo from "assets/img/telegram-logo.svg";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import CodeIcon from "src/assets/icons/Code";
 import { MouseEvent } from "react";
-import { buildGithubLink } from "src/utils/stringUtils";
+import { buildGithubLink, buildLanguageString } from "src/utils/stringUtils";
 import LeadContributor, { Contributor } from "../LeadContributor";
-
-type LanguageMap = { [languageName: string]: number }[];
+import { LanguageMap } from "src/types";
 
 interface ProjectInformationProps {
   name: string;
@@ -71,12 +70,12 @@ export default function ProjectInformation({ name, details, githubRepoInfo }: Pr
   );
 }
 
-interface TelegramLinkProps {
+interface LinkWithLogoProps {
   link: string;
   logo: string;
 }
 
-function LinkWithLogo({ link, logo }: TelegramLinkProps) {
+function LinkWithLogo({ link, logo }: LinkWithLogoProps) {
   return (
     <div className="border-2 rounded-xl p-2 grayscale border-slate-500 opacity-80 hover:opacity-50 hover:cursor-pointer">
       <div onClick={linkClickHandlerFactory(link)}>
@@ -84,13 +83,6 @@ function LinkWithLogo({ link, logo }: TelegramLinkProps) {
       </div>
     </div>
   );
-}
-
-function buildLanguageString(languageMap: LanguageMap) {
-  return Object.keys(languageMap)
-    .slice(0, 2)
-    .map(str => str.toLowerCase())
-    .join(", ");
 }
 
 interface NumberOfContributorsProps {

@@ -46,7 +46,7 @@ function MyProjectContainer({ projectId }: MyProjectContainerProps) {
               owner: project?.githubRepo?.owner,
               name: project?.githubRepo?.name,
               contributors: project?.githubRepo?.content?.contributors,
-              languages: project?.githubRepo.languages,
+              languages: project?.githubRepo?.languages,
             }}
           />
         </Card>
