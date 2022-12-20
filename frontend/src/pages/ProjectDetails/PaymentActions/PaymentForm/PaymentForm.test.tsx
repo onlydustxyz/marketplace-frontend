@@ -4,11 +4,11 @@ import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
 
 import { GET_USERS_QUERY, REQUEST_PAYMENT_MUTATION } from ".";
-import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentForm from ".";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-user-name" };
 const TEST_BUDGET_ID = "test-budget-id";

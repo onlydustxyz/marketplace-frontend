@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
-import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentActions, { GET_BUDGET_PAYMENTS_QUERY } from ".";
 import { RoutePaths } from "src/App";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 
 expect.extend(matchers);
 

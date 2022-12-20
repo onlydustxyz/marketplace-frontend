@@ -3,9 +3,9 @@ import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
 import MyContributionsPage, { GET_MY_CONTRIBUTIONS_QUERY } from ".";
-import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useAuth";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 
 expect.extend(matchers);
 

@@ -9,7 +9,6 @@ const TOKEN_VALIDITY_TIME_THRESHOLD = 30;
 
 type TokenSetContextType = {
   tokenSet?: TokenSet | null;
-  setTokenSet: (tokenSet: TokenSet) => void;
   clearTokenSet: () => void;
   setFromRefreshToken: (refreshToken: RefreshToken) => Promise<void>;
 };
@@ -58,7 +57,6 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
 
   const value = {
     tokenSet,
-    setTokenSet,
     clearTokenSet,
     setFromRefreshToken,
   };
