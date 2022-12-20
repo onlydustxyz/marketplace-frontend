@@ -4,6 +4,7 @@ use anyhow::Result;
 use async_trait::async_trait;
 use domain::{Event, GithubRepositoryId, ProjectEvent, SubscriberCallbackError};
 use infrastructure::database::MappingRepository;
+use tracing::instrument;
 
 use crate::{
 	domain::{projections::Project, EventListener, GithubService, GithubServiceError},
@@ -35,6 +36,7 @@ impl Projector {
 		}
 	}
 
+	#[instrument(skip(self))]
 	async fn project_github_data(
 		&self,
 		github_repo_id: &GithubRepositoryId,
