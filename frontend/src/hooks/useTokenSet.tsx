@@ -25,7 +25,7 @@ const accessTokenExpired = (token: TokenSet): boolean => {
   return accessTokenValidityDelay(token) < 0;
 };
 
-const refreshAccessToken = async (refreshToken: RefreshToken): Promise<TokenSet> => {
+const fetchNewAccessToken = async (refreshToken: RefreshToken): Promise<TokenSet> => {
   const tokenSetResponse = await axios.post(`${config.HASURA_AUTH_BASE_URL}/token`, {
     refreshToken,
   });
@@ -38,16 +38,26 @@ const TokenSetContext = createContext<TokenSetContextType | null>(null);
 export const TokenSetProvider = ({ children }: PropsWithChildren) => {
   const [tokenSet, setTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY);
 
+  const refreshAccessToken = (tokenSet: TokenSet) => {
+    fetchNewAccessToken(tokenSet.refreshToken).then(newTokenSet => {
+      setTokenSet(newTokenSet);
+    });
+  };
+
   useEffect(() => {
-    if (tokenSet && accessTokenExpired(tokenSet)) {
-      refreshAccessToken(tokenSet.refreshToken).then(newTokenSet => {
-        setTokenSet(newTokenSet);
-      });
+    if (tokenSet) {
+      if (accessTokenExpired(tokenSet)) {
+        refreshAccessToken(tokenSet);
+      } else {
+        setTimeout(() => {
+          refreshAccessToken(tokenSet);
+        }, accessTokenValidityDelay(tokenSet));
+      }
     }
   }, []);
 
   const setFromRefreshToken = async (refreshToken: RefreshToken) => {
-    const newTokenSet = await refreshAccessToken(refreshToken);
+    const newTokenSet = await fetchNewAccessToken(refreshToken);
     setTokenSet(newTokenSet);
   };
 

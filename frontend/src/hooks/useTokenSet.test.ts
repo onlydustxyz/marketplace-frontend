@@ -21,6 +21,7 @@ describe("useTokenSet", () => {
   const refreshToken = "refreshToken";
 
   beforeEach(() => {
+    vi.clearAllMocks();
     window.localStorage.clear();
     vi.useFakeTimers();
   });
@@ -60,6 +61,26 @@ describe("useTokenSet", () => {
 
     await waitForValueToChange(() => result.current.tokenSet);
     expect(result.current.tokenSet?.accessToken).toEqual(updatedAccessToken);
+  });
+
+  it("should schedule an access token refresh when mounted", async () => {
+    const currentDate = new Date(2000, 1, 1, 13, 0, 30);
+
+    vi.setSystemTime(currentDate);
+    const tokenSet = {
+      creationDate: currentDate.getTime(),
+      accessTokenExpiresIn: 90,
+      accessToken,
+      refreshToken,
+    } as unknown as TokenSet;
+    setTokenSet(tokenSet);
+    (axios.post as Mock).mockResolvedValue({ data: tokenSet });
+
+    renderWithProvider();
+    expect(axios.post).not.toHaveBeenCalledOnce();
+
+    vi.advanceTimersByTime(120 * 1000);
+    expect(axios.post).toHaveBeenCalledOnce();
   });
 
   describe("clearTokenSet", () => {
