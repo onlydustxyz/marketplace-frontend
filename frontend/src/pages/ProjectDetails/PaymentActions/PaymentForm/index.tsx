@@ -98,11 +98,13 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
                       options={{ required: T("form.required") }}
                       control={control}
                     >
-                      {getUserGithubIdsQuery.data.users.map((user: any) => (
-                        <option key={user.id} value={user.id}>
-                          {user.displayName}
-                        </option>
-                      ))}
+                      {getUserGithubIdsQuery.data.users
+                        .filter(user => user.githubUser)
+                        .map((user: any) => (
+                          <option key={user.githubUser.githubUserId} value={user.githubUser.githubUserId}>
+                            {user.displayName}
+                          </option>
+                        ))}
                     </Select>
                     <Input label="Memo" name="memo" placeholder="" />
                   </div>
@@ -177,8 +179,10 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
 export const GET_USERS_QUERY = gql`
   query GetUsersForPaymentForm {
     users {
-      id
       displayName
+      githubUser {
+        githubUserId
+      }
     }
   }
 `;
@@ -193,7 +197,7 @@ const mapFormDataToSchema = ({ amountToWire, contributor }: Inputs) => {
   return {
     variables: {
       amount: amountToWire,
-      contributorId: contributor,
+      contributorId: parseInt(contributor),
     },
   };
 };

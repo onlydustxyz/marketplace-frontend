@@ -10,7 +10,7 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentForm from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 
-const TEST_USER = { id: "test-user-id", displayName: "test-user-name" };
+const TEST_USER = { id: "test-user-id", displayName: "test-user-name", githubUser: { githubUserId: 748483646584 } };
 const TEST_BUDGET_ID = "test-budget-id";
 
 const HASURA_TOKEN_BASIC_TEST_VALUE = {
@@ -42,7 +42,7 @@ const graphQlMocks = [
   {
     request: {
       query: REQUEST_PAYMENT_MUTATION,
-      variables: { budgetId: "test-budget-id", amount: 3, contributorId: "test-user-id" },
+      variables: { budgetId: "test-budget-id", amount: 3, contributorId: TEST_USER.githubUser.githubUserId },
     },
     result: {
       data: {},
@@ -94,7 +94,10 @@ describe('"PaymentForm" component', () => {
 
   it("should be able to request payment when required info is filled", async () => {
     await userEvent.type(await screen.findByLabelText(/link to issue/i), "test-link-name");
-    userEvent.selectOptions(await screen.findByRole("combobox", { name: /contributor/i }), "test-user-id");
+    userEvent.selectOptions(
+      await screen.findByRole("combobox", { name: /contributor/i }),
+      TEST_USER.githubUser.githubUserId.toString()
+    );
     await userEvent.type(await screen.findByRole("spinbutton", { name: /amount to wire/i }), "3");
     await userEvent.click(await screen.findByText(/send/i));
     await waitFor(() => {
