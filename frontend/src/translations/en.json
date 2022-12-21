@@ -45,9 +45,9 @@
       "processing": "Processing"
     },
     "table": {
-      "amount": "Amount",
-      "project": "Project",
-      "status": "Status"
+      "amount": "AMOUNT",
+      "project": "PROJECT",
+      "status": "PAYMENT STATUS"
     }
   },
   "profile": {
