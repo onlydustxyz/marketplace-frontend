@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use anyhow::{anyhow, Result};
+use anyhow::anyhow;
 use octocrab::{
 	models::{repos::Content, Repository, User},
 	FromResponse, Octocrab, OctocrabBuilder,
@@ -20,7 +20,7 @@ pub struct Config {
 pub struct Client(Octocrab);
 
 impl Client {
-	pub fn new(config: &Config) -> Result<Self> {
+	pub fn new(config: &Config) -> anyhow::Result<Self> {
 		let instance = Octocrab::builder()
 			.base_url(&config.base_url)?
 			.personal_token(config.personal_access_token.clone())
@@ -46,11 +46,11 @@ impl Client {
 		self.get_as(format!("{}users/{username}", self.0.base_url)).await
 	}
 
-	pub async fn get_raw_file(&self, repo: &Repository, path: &str) -> Result<Content> {
+	pub async fn get_raw_file(&self, repo: &Repository, path: &str) -> Result<Content, Error> {
 		let owner = repo
 			.owner
 			.as_ref()
-			.ok_or_else(|| anyhow!("Missing owner in github repository"))?
+			.ok_or_else(|| Error::Other(anyhow!("Missing owner in github repository")))?
 			.login
 			.clone();
 
@@ -65,16 +65,16 @@ impl Client {
 		contents
 			.items
 			.pop()
-			.ok_or_else(|| anyhow!("Could not find {path} in repository"))
+			.ok_or_else(|| Error::NotFound(anyhow!("Could not find {path} in repository")))
 	}
 }
 
 trait AddHeaders: Sized {
-	fn add_headers(self, headers: &HashMap<String, String>) -> Result<Self>;
+	fn add_headers(self, headers: &HashMap<String, String>) -> anyhow::Result<Self>;
 }
 
 impl AddHeaders for OctocrabBuilder {
-	fn add_headers(mut self, headers: &HashMap<String, String>) -> Result<Self> {
+	fn add_headers(mut self, headers: &HashMap<String, String>) -> anyhow::Result<Self> {
 		for (key, value) in headers {
 			self = self.add_header(key.parse()?, value.clone());
 		}

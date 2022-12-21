@@ -6,5 +6,5 @@ use crate::domain::{GithubFile, GithubUser};
 #[derive(Constructor, GraphQLObject)]
 pub struct Repository {
 	contributors: Vec<GithubUser>,
-	readme: GithubFile,
+	readme: Option<GithubFile>,
 }

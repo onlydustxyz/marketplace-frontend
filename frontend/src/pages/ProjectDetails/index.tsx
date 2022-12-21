@@ -78,20 +78,20 @@ export default function ProjectDetails() {
                 </div>
               </div>
             </Card>
-            {selectedTab === ProjectDetailsTab.Overview &&
-              githubRepo?.content?.readme?.content &&
-              githubRepo.content?.contributors && (
-                <Overview
-                  decodedReadme={decodeBase64ToString(githubRepo.content.readme.content)}
-                  lead={project?.projectLeads?.[0]?.user}
-                  githubRepoInfo={{
-                    name: githubRepo.name,
-                    owner: githubRepo.owner,
-                    contributors: githubRepo.content?.contributors,
-                    languages: githubRepo.languages,
-                  }}
-                />
-              )}
+            {selectedTab === ProjectDetailsTab.Overview && githubRepo?.content?.contributors && (
+              <Overview
+                decodedReadme={
+                  githubRepo.content.readme?.content && decodeBase64ToString(githubRepo.content.readme.content)
+                }
+                lead={project?.projectLeads?.[0]?.user}
+                githubRepoInfo={{
+                  name: githubRepo.name,
+                  owner: githubRepo.owner,
+                  contributors: githubRepo.content?.contributors,
+                  languages: githubRepo.languages,
+                }}
+              />
+            )}
             {selectedTab === ProjectDetailsTab.Payments && (
               <Payments budget={getProjectUserQuery?.data?.projectsByPk?.budgets?.[0]} />
             )}

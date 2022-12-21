@@ -9,8 +9,8 @@ use crate::domain::{GithubRepoDetail, GithubService, GithubServiceError};
 impl From<github::Error> for GithubServiceError {
 	fn from(error: github::Error) -> Self {
 		match error {
-			github::Error::NotFound(error) => GithubServiceError::NotFound(error.into()),
-			github::Error::Other(error) => GithubServiceError::Other(error.into()),
+			github::Error::NotFound(error) => GithubServiceError::NotFound(error),
+			github::Error::Other(error) => GithubServiceError::Other(error),
 		}
 	}
 }

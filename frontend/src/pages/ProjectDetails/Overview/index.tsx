@@ -7,7 +7,7 @@ import ProjectLead, { Lead } from "src/components/LeadContributor";
 import { Contributor, LanguageMap } from "src/types";
 
 interface OverviewProps {
-  decodedReadme: string;
+  decodedReadme?: string;
   lead?: Lead | null;
   githubRepoInfo?: {
     owner?: string;
@@ -21,13 +21,15 @@ export default function Overview({ decodedReadme, lead, githubRepoInfo }: Overvi
   const { T } = useIntl();
   return (
     <div className="flex flex-row items-start gap-5">
-      <div className="flex w-3/4">
-        <Card>
-          <ReactMarkdown skipHtml={true} remarkPlugins={[[remarkGfm]]} className="prose lg:prose-xl prose-invert">
-            {decodedReadme}
-          </ReactMarkdown>
-        </Card>
-      </div>
+      {decodedReadme && (
+        <div className="flex w-3/4">
+          <Card>
+            <ReactMarkdown skipHtml={true} remarkPlugins={[[remarkGfm]]} className="prose lg:prose-xl prose-invert">
+              {decodedReadme}
+            </ReactMarkdown>
+          </Card>
+        </div>
+      )}
       <div className="flex w-1/4">
         <Card>
           <div className="flex flex-col gap-3">
