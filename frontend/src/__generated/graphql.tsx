@@ -2006,6 +2006,8 @@ export type Users = {
   displayName: Scalars['String'];
   email: Maybe<Scalars['citext']>;
   emailVerified: Maybe<Scalars['Boolean']>;
+  /** An object relationship */
+  githubUser: Maybe<AuthGithubUsers>;
   id: Maybe<Scalars['uuid']>;
   isAnonymous: Maybe<Scalars['Boolean']>;
   locale: Maybe<Scalars['String']>;
@@ -2053,6 +2055,7 @@ export type UsersBoolExp = {
   displayName: InputMaybe<StringComparisonExp>;
   email: InputMaybe<CitextComparisonExp>;
   emailVerified: InputMaybe<BooleanComparisonExp>;
+  githubUser: InputMaybe<AuthGithubUsersBoolExp>;
   id: InputMaybe<UuidComparisonExp>;
   isAnonymous: InputMaybe<BooleanComparisonExp>;
   locale: InputMaybe<StringComparisonExp>;
@@ -2098,6 +2101,7 @@ export type UsersOrderBy = {
   displayName: InputMaybe<OrderBy>;
   email: InputMaybe<OrderBy>;
   emailVerified: InputMaybe<OrderBy>;
+  githubUser: InputMaybe<AuthGithubUsersOrderBy>;
   id: InputMaybe<OrderBy>;
   isAnonymous: InputMaybe<OrderBy>;
   locale: InputMaybe<OrderBy>;
@@ -2241,7 +2245,7 @@ export type ProfileQuery = { __typename?: 'query_root', userInfo: Array<{ __type
 export type GetUsersForPaymentFormQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUsersForPaymentFormQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any | null, displayName: string }> };
+export type GetUsersForPaymentFormQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', displayName: string, githubUser: { __typename?: 'AuthGithubUsers', githubUserId: any | null } | null }> };
 
 export type RequestPaymentMutationVariables = Exact<{
   amount: Scalars['Int'];
@@ -2514,8 +2518,10 @@ export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVa
 export const GetUsersForPaymentFormDocument = gql`
     query GetUsersForPaymentForm {
   users {
-    id
     displayName
+    githubUser {
+      githubUserId
+    }
   }
 }
     `;
