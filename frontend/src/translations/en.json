@@ -24,9 +24,9 @@
   "payment": {
     "form": {
       "amountToWire": "Amount to wire",
-      "contributor": "Contributor",
-      "linkToIssue": "Link to issue",
-      "recommendation": "Based on your input we recommend a payment between __lowerPaymentBound__ and __upperPaymentBound__",
+      "contributor": "Recipient",
+      "linkToIssue": "Link to GitHub issue",
+      "recommendation": "Based on your input we recommend a payment between __lowerPaymentBound__ USD and __upperPaymentBound__ USD",
       "sent": "Payment request sent!",
       "statisfaction": {
         "levels": {

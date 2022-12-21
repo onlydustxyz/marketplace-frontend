@@ -52,22 +52,13 @@ export default function ProjectDetails() {
         {project && (
           <div className="flex flex-col w-11/12 my-3 gap-5">
             <Card>
-              <div className="flex flex-col divide-white divide-solid divide-y-2">
-                <div className="pb-5">
-                  <ProjectInformation
-                    name={project.name}
-                    budget={getProjectUserQuery?.data?.projectsByPk?.budgets?.[0]}
-                    details={{
-                      description: project?.projectDetails?.description,
-                      telegramLink: project?.projectDetails?.telegramLink,
-                    }}
-                  />
-                </div>
-                <div className="flex flex-row align-start pt-5 space-x-3">
+              <div className="flex flex-row justify-between items-center">
+                <div className="text-3xl font-bold">{project.name}</div>
+                <div className="flex flex-row align-start space-x-3">
                   {availableTabs.map((tab: ProjectDetailsTab) => (
                     <div
                       key={tab}
-                      className={`border-solid border-white border-2 w-fit p-2 hover:cursor-pointer ${
+                      className={`bg-neutral-50 rounded-xl w-fit p-3 hover:cursor-pointer text-black ${
                         selectedTab === tab ? "font-bold border-3" : "opacity-70"
                       }`}
                       onClick={() => setSelectedTab(tab)}
