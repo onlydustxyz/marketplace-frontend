@@ -1,0 +1,11 @@
+{
+    "firstname": "James",
+    "lastname": "Bond",
+    "email": "james.bond@mi6.com",
+    "number": "007",
+    "street": "Big Ben Street",
+    "postCode": "007GB",
+    "city": "London",
+    "country": "GB",
+    "ethWalletAddress": "0x777777777777777777"
+}
