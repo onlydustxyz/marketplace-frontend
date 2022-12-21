@@ -26,10 +26,14 @@ Default.args = {
     telegramLink: "https://web.telegram.org/z/",
     description: "EVM interpreter written in Cairo, a sort of ZK-EVM emulator, leveraging STARK proof system.",
   },
+  lead: {
+    displayName: "Oscar le Boss",
+    avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
+  },
   githubRepoInfo: {
     owner: "facebook",
     name: "react",
-    contributors: [{ login: "oscar le boss", avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4" }],
+    contributors: [{ login: "oscar666", avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4" }],
     languages: { Cairo: 2200 },
   },
 };
