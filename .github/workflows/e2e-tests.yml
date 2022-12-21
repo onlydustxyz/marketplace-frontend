@@ -42,19 +42,19 @@ jobs:
       - name: Setup environment
         uses: ./.github/actions/env-setup
 
-      - name: Run Rust backend
-        uses: ./.github/actions/backend-run
-        env:
-          CARGO_INCREMENTAL: 0
-          RUSTFLAGS: -Cinstrument-coverage
-          LLVM_PROFILE_FILE: backend-%p-%m.profraw
-
       - name: Run frontend
         uses: ./.github/actions/frontend-run
         env:
           VITE_HASURA_AUTH_BASE_URL: http://localhost:4000
           VITE_HASURA_BASE_URL: http://localhost:8080
           VITE_HASURA_ADMIN_SECRET: myadminsecretkey
+
+      - name: Run Rust backend
+        uses: ./.github/actions/backend-run
+        env:
+          CARGO_INCREMENTAL: 0
+          RUSTFLAGS: -Cinstrument-coverage
+          LLVM_PROFILE_FILE: backend-%p-%m.profraw
 
       - name: Setup hasura
         uses: ./.github/actions/hasura-setup
