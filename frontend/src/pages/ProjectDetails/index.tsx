@@ -83,6 +83,7 @@ export default function ProjectDetails() {
               githubRepo.content?.contributors && (
                 <Overview
                   decodedReadme={decodeBase64ToString(githubRepo.content.readme.content)}
+                  lead={project?.projectLeads?.[0]?.user}
                   githubRepoInfo={{
                     name: githubRepo.name,
                     owner: githubRepo.owner,
@@ -127,6 +128,12 @@ export const GET_PROJECT_PUBLIC_QUERY = gql`
         description
         telegramLink
       }
+      projectLeads {
+        user {
+          displayName
+          avatarUrl
+        }
+      }
       githubRepo {
         ...ProjectDetailsGithubRepoFields
       }
@@ -147,6 +154,12 @@ export const GET_PROJECT_USER_QUERY = gql`
       projectDetails {
         description
         telegramLink
+      }
+      projectLeads {
+        user {
+          displayName
+          avatarUrl
+        }
       }
       githubRepo {
         ...ProjectDetailsGithubRepoFields

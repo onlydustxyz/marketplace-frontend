@@ -25,6 +25,7 @@ export default function Projects() {
                     description: project?.projectDetails?.description,
                     telegramLink: project?.projectDetails?.telegramLink,
                   }}
+                  lead={project?.projectLeads?.[0]?.user}
                   githubRepoInfo={{
                     owner: project?.githubRepo?.owner,
                     name: project?.githubRepo?.name,
@@ -49,6 +50,12 @@ export const GET_PROJECTS_QUERY = gql`
       projectDetails {
         description
         telegramLink
+      }
+      projectLeads {
+        user {
+          displayName
+          avatarUrl
+        }
       }
       githubRepo {
         ...GithubRepoFieldsForProjectCard

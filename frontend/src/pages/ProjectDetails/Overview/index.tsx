@@ -3,11 +3,12 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useIntl } from "src/hooks/useIntl";
 import { buildGithubLink, buildLanguageString } from "src/utils/stringUtils";
-import LeadContributor, { Contributor } from "src/components/LeadContributor";
-import { LanguageMap } from "src/types";
+import ProjectLead, { Lead } from "src/components/LeadContributor";
+import { Contributor, LanguageMap } from "src/types";
 
 interface OverviewProps {
   decodedReadme: string;
+  lead?: Lead | null;
   githubRepoInfo?: {
     owner?: string;
     name?: string;
@@ -16,7 +17,7 @@ interface OverviewProps {
   };
 }
 
-export default function Overview({ decodedReadme, githubRepoInfo }: OverviewProps) {
+export default function Overview({ decodedReadme, lead, githubRepoInfo }: OverviewProps) {
   const { T } = useIntl();
   return (
     <div className="flex flex-row items-start gap-5">
@@ -35,9 +36,9 @@ export default function Overview({ decodedReadme, githubRepoInfo }: OverviewProp
                 {buildLanguageString(githubRepoInfo.languages)}
               </OverviewPanelSection>
             )}
-            {githubRepoInfo?.contributors?.length && (
+            {lead && (
               <OverviewPanelSection title={T("project.details.overview.projectLeader")}>
-                <LeadContributor {...githubRepoInfo?.contributors?.[0]} />
+                <ProjectLead {...lead} />
               </OverviewPanelSection>
             )}
             {githubRepoInfo?.contributors?.length && (
