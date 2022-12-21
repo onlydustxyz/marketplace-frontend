@@ -6,9 +6,10 @@ import Slider from "./Slider";
 import Select from "./Select";
 import { Inputs } from "./types";
 import Input from "src/components/FormInput";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import { GetUsersForPaymentFormQuery } from "src/__generated/graphql";
+import Card from "src/components/Card";
 
 const BASE_DAILY_RATE_DOLLARS = 200;
 
@@ -30,21 +31,31 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
     defaultValues: {
       linkToIssue: "",
       contributor: "",
-      memo: "",
       remainingBudget: budget?.remainingAmount,
       seniority: 1,
       workingDays: 10,
       satisfaction: 1,
-      amountToWire: 0,
     },
   });
   const { handleSubmit, control, watch } = formMethods;
+  const formValues = watch(["workingDays", "seniority", "satisfaction"]);
+
+  const { lowerPaymentBound, upperPaymentBound } = useMemo(
+    () => computePaymentBounds(...formValues),
+    [JSON.stringify(formValues)]
+  );
+
+  const [amountToWire, setAmountToWire] = useState(Math.floor((upperPaymentBound + lowerPaymentBound) / 2));
+
+  useEffect(() => {
+    setAmountToWire(Math.floor((upperPaymentBound + lowerPaymentBound) / 2));
+  }, [lowerPaymentBound, upperPaymentBound]);
 
   const [insertPayment, requestPaymentMutation] = useHasuraMutation(
     REQUEST_PAYMENT_MUTATION,
     HasuraUserRole.RegisteredUser,
     {
-      variables: { budgetId: budget.id },
+      variables: { budgetId: budget.id, amountToWire },
     }
   );
   const success = !!requestPaymentMutation.data;
@@ -57,11 +68,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
     await insertPayment(mapFormDataToSchema(formData));
   };
 
-  const formValues = watch(["workingDays", "seniority", "satisfaction"]);
-  const { lowerPaymentBound, upperPaymentBound } = useMemo(
-    () => computePaymentBounds(...formValues),
-    [JSON.stringify(formValues)]
-  );
   const { T } = useIntl();
 
   const SENIORITY = [
@@ -76,90 +82,107 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
     T("payment.form.statisfaction.levels.excellent"),
   ];
 
+  const handleSuggestedAmountChange = (e: any) => {
+    setAmountToWire(e.target.value);
+  };
+
   return (
     <>
       {getUserGithubIdsQuery.data && (
         <div className="flex flex-col gap-10">
-          <div className="flex text-xl font-bold">Submit Payment</div>
           <div>
             <FormProvider {...formMethods}>
               <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 justify-between">
-                <div className="flex flex-row justify-between flex-grow gap-10">
-                  <div className="flex flex-col gap-5 w-2/3">
-                    <Input
-                      label={T("payment.form.linkToIssue")}
-                      name="linkToIssue"
-                      placeholder=""
-                      options={{ required: T("form.required") }}
-                    />
-                    <Select
-                      label={T("payment.form.contributor")}
-                      name="contributor"
-                      options={{ required: T("form.required") }}
-                      control={control}
-                    >
-                      {getUserGithubIdsQuery.data.users
-                        .filter(user => user.githubUser)
-                        .map((user: any) => (
-                          <option key={user.githubUser.githubUserId} value={user.githubUser.githubUserId}>
-                            {user.displayName}
-                          </option>
-                        ))}
-                    </Select>
-                    <Input label="Memo" name="memo" placeholder="" />
-                  </div>
-                  <div className="flex flex-col gap-5 w-1/3">
-                    <div>
-                      {T("seniority.title")}
-                      <Slider
-                        control={control}
-                        name="seniority"
-                        minValue={0}
-                        maxValue={SENIORITY.length - 1}
-                        defaultValue={1}
-                        displayValue={(value: number) => SENIORITY[value]}
-                      />
-                    </div>
-                    <div>
-                      {T("payment.form.workingDays")}
-                      <Slider
-                        control={control}
-                        name="workingDays"
-                        minValue={1}
-                        maxValue={20}
-                        defaultValue={10}
-                        displayValue={(value: number) => `${value} days`}
-                      />
-                    </div>
-                    <div>
-                      {T("payment.form.statisfaction.title")}
-                      <Slider
-                        control={control}
-                        name="satisfaction"
-                        minValue={0}
-                        maxValue={2}
-                        defaultValue={1}
-                        displayValue={(value: number) => SATISFACTION[value]}
-                      />
-                    </div>
-                    <div className="flex flex-col border-solid border-2 rounded-md border-white p-5 gap-5">
-                      <div className="flex">
-                        {T("payment.form.recommendation", { lowerPaymentBound, upperPaymentBound })}
-                      </div>
-                      <div className="flex">
+                <div className="flex flex-col justify-between gap-10">
+                  <Card>
+                    <div className="flex flex-col gap-8">
+                      <div className="text-2xl text-bold">Issue information</div>
+                      <div className="flex flex-col">
+                        <Select
+                          label={T("payment.form.contributor")}
+                          name="contributor"
+                          options={{ required: T("form.required") }}
+                          control={control}
+                        >
+                          {getUserGithubIdsQuery.data.users
+                            .filter(user => user.githubUser)
+                            .map((user: any) => (
+                              <option key={user.githubUser.githubUserId} value={user.githubUser.githubUserId}>
+                                {user.displayName}
+                              </option>
+                            ))}
+                        </Select>
                         <Input
-                          label={T("payment.form.amountToWire")}
-                          name="amountToWire"
-                          type="number"
-                          placeholder={"0"}
-                          options={{
-                            valueAsNumber: true,
-                            validate: value => value > 0,
-                          }}
+                          label={T("payment.form.linkToIssue")}
+                          name="linkToIssue"
+                          placeholder=""
+                          options={{ required: T("form.required") }}
                         />
                       </div>
                     </div>
-                  </div>
+                  </Card>
+                  {
+                    <Card>
+                      <div className="flex flex-col gap-8">
+                        <div className="text-2xl text-bold">Amount estimation</div>
+                        <div className="flex flex-row gap-10">
+                          <div className="flex flex-col gap-3 w-1/2">
+                            <div>
+                              {T("seniority.title")}
+                              <Slider
+                                control={control}
+                                name="seniority"
+                                minValue={0}
+                                maxValue={SENIORITY.length - 1}
+                                defaultValue={1}
+                                displayValue={(value: number) => SENIORITY[value]}
+                              />
+                            </div>
+                            <div>
+                              {T("payment.form.workingDays")}
+                              <Slider
+                                control={control}
+                                name="workingDays"
+                                minValue={1}
+                                maxValue={20}
+                                defaultValue={10}
+                                displayValue={(value: number) => `${value} days`}
+                              />
+                            </div>
+                            <div>
+                              {T("payment.form.statisfaction.title")}
+                              <Slider
+                                control={control}
+                                name="satisfaction"
+                                minValue={0}
+                                maxValue={2}
+                                defaultValue={1}
+                                displayValue={(value: number) => SATISFACTION[value]}
+                              />
+                            </div>
+                          </div>
+                          <div className="flex flex-col border-solid border-2 rounded-md border-white p-5 gap-5">
+                            <div className="flex">
+                              {T("payment.form.recommendation", { lowerPaymentBound, upperPaymentBound })}
+                            </div>
+                            <div className="flex">
+                              <Input
+                                name="amountToWire"
+                                label={T("payment.form.amountToWire")}
+                                type="number"
+                                value={amountToWire}
+                                onChange={handleSuggestedAmountChange}
+                                options={{
+                                  valueAsNumber: true,
+                                  validate: value => value > 0,
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  }
                 </div>
                 <div className="flex flex-row gap-5">
                   <button type="submit" className="self-start border-white border-2 px-3 py-2 rounded-md">
