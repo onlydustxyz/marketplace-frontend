@@ -47,6 +47,8 @@ const TEST_GITHUB_REPO_NAME = "test-github-repo-name";
 const TEST_GITHUB_REPO_OWNER = "test-github-repo-owner";
 const TEST_GITHUB_REPO_CONTENT = "test-github-repo-content";
 const TEST_GITHUB_CONTRIBUTOR_LOGIN = "test-github-contributor-login";
+const TEST_PROJECT_LEAD_DISPLAY_NAME = "test-project-lead-display-name";
+const TEST_PROJECT_LEAD_AVATAR_URL = "http://foo.bar/plop.png";
 const TEST_GITHUB_LINK = buildGithubLink(TEST_GITHUB_REPO_OWNER, TEST_GITHUB_REPO_NAME);
 
 expect.extend(matchers);
@@ -77,6 +79,14 @@ const graphQlMocks = [
             id: TEST_PROJECT_ID,
             name: TEST_PROJECT_NAME,
             projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
+            projectLeads: [
+              {
+                user: {
+                  displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
+                  avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
+                },
+              },
+            ],
             githubRepo: {
               name: TEST_GITHUB_REPO_NAME,
               owner: TEST_GITHUB_REPO_OWNER,
@@ -115,6 +125,14 @@ const graphQlMocks = [
           name: TEST_PROJECT_NAME,
           budgets: [{ initialAmount: 500, remainingAmount: 300 }],
           projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
+          projectLeads: [
+            {
+              user: {
+                displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
+                avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
+              },
+            },
+          ],
           githubRepo: {
             name: TEST_GITHUB_REPO_NAME,
             owner: TEST_GITHUB_REPO_OWNER,
@@ -138,6 +156,14 @@ const graphQlMocks = [
         projectsByPk: {
           name: TEST_PROJECT_NAME,
           projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
+          projectLeads: [
+            {
+              user: {
+                displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
+                avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
+              },
+            },
+          ],
           githubRepo: {
             name: TEST_GITHUB_REPO_NAME,
             owner: TEST_GITHUB_REPO_OWNER,
@@ -216,7 +242,7 @@ describe('"Login" page', () => {
     userEvent.click(await screen.findByText(TEST_PROJECT_NAME));
     await waitFor(() => {
       screen.getByText(ProjectDetailsTab.Overview);
-      screen.getByText(TEST_GITHUB_CONTRIBUTOR_LOGIN);
+      screen.getByText(TEST_PROJECT_LEAD_DISPLAY_NAME);
       screen.getByText(TEST_GITHUB_REPO_CONTENT);
       expect(
         screen
