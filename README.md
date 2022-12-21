@@ -10,8 +10,8 @@
     <a href="https://contributions.onlydust.xyz/">
         <img src="https://img.shields.io/badge/Contribute-6A1B9A?style=for-the-badge&logo=notion&logoColor=white">
     </a>
-    <a href="https://codecov.io/gh/onlydustxyz/marketplace-backend" > 
-        <img src="https://img.shields.io/codecov/c/gh/onlydustxyz/marketplace-backend?style=for-the-badge&token=BCU5QG0IFJ"/>
+    <a href="https://codecov.io/gh/onlydustxyz/marketplace" > 
+        <img src="https://img.shields.io/codecov/c/gh/onlydustxyz/marketplace?style=for-the-badge&token=BCU5QG0IFJ"/>
     </a>
   </p>
   
