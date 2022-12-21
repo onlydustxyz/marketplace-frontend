@@ -2,10 +2,12 @@ describe("The user", () => {
     beforeEach(() => {
         cy.createUser().withGithubProvider(12345).then(user => {
             cy.signinUser(user).then(user => (JSON.stringify(user.session))).as('token')
-        })
+        });
+
+        cy.fixture('profiles/james_bond').as('profile');
     });
 
-    it("can fill its personal info", () => {
+    it("can fill its personal info", function () {
         cy.visit('http://127.0.0.1:5173/profile', {
             onBeforeLoad(win) {
                 win.localStorage.setItem('hasura_token', this.token)
@@ -13,16 +15,16 @@ describe("The user", () => {
         });
 
         cy.get('[value=PERSON]').click();
-        cy.get('[name=firstname]').clear().type('James');
-        cy.get('[name=lastname]').clear().type('Bond');
-        cy.get('[name=email]').clear().type('james.bond@mi6.com');
-        cy.get('[name=number]').clear().type('007');
-        cy.get('[name=street]').clear().type('Big Ben Street');
-        cy.get('[name=postCode]').clear().type('007GB');
-        cy.get('[name=city]').clear().type('London');
-        cy.get('[name=country]').clear().type('GB');
+        cy.get('[name=firstname]').clear().type(this.profile.firstname);
+        cy.get('[name=lastname]').clear().type(this.profile.lastname);
+        cy.get('[name=email]').clear().type(this.profile.email);
+        cy.get('[name=number]').clear().type(this.profile.number);
+        cy.get('[name=street]').clear().type(this.profile.street);
+        cy.get('[name=postCode]').clear().type(this.profile.postCode);
+        cy.get('[name=city]').clear().type(this.profile.city);
+        cy.get('[name=country]').clear().type(this.profile.country);
         cy.get('[value=ETHEREUM_ADDRESS]').click();
-        cy.get('[name=ethWalletAddress]').clear().type('0x777777777777777777');
+        cy.get('[name=ethWalletAddress]').clear().type(this.profile.ethWalletAddress);
 
         cy.contains('Send').click();
 
@@ -34,10 +36,11 @@ describe("The company", () => {
     beforeEach(() => {
         cy.createUser().withGithubProvider(12345).then(user => {
             cy.signinUser(user).then(user => (JSON.stringify(user.session))).as('token')
-        })
+        });
+        cy.fixture('profiles/mi6').as('profile');
     });
 
-    it("can fill its personal info", () => {
+    it("can fill its personal info", function () {
         cy.visit('http://127.0.0.1:5173/profile', {
             onBeforeLoad(win) {
                 win.localStorage.setItem('hasura_token', this.token)
@@ -45,17 +48,17 @@ describe("The company", () => {
         });
 
         cy.get('[value=COMPANY]').click();
-        cy.get('[name=id]').clear().type('007');
-        cy.get('[name=name]').clear().type('MI6');
-        cy.get('[name=email]').clear().type('admin@mi6.com');
-        cy.get('[name=number]').clear().type('007');
-        cy.get('[name=street]').clear().type('Big Ben Street');
-        cy.get('[name=postCode]').clear().type('007GB');
-        cy.get('[name=city]').clear().type('London');
-        cy.get('[name=country]').clear().type('GB');
+        cy.get('[name=id]').clear().type(this.profile.id);
+        cy.get('[name=name]').clear().type(this.profile.name);
+        cy.get('[name=email]').clear().type(this.profile.email);
+        cy.get('[name=number]').clear().type(this.profile.number);
+        cy.get('[name=street]').clear().type(this.profile.street);
+        cy.get('[name=postCode]').clear().type(this.profile.postCode);
+        cy.get('[name=city]').clear().type(this.profile.city);
+        cy.get('[name=country]').clear().type(this.profile.country);
         cy.get('[value=BANK_ADDRESS]').click();
-        cy.get('[name=IBAN]').clear().type('GB7611315000011234567890138');
-        cy.get('[name=BIC]').clear().type('CITTGB2LXXX');
+        cy.get('[name=IBAN]').clear().type(this.profile.IBAN);
+        cy.get('[name=BIC]').clear().type(this.profile.BIC);
 
         cy.contains('Send').click();
 

@@ -1,0 +1,12 @@
+{
+    "id": "007",
+    "name": "MI6",
+    "email": "admin@mi6.com",
+    "number": "007",
+    "street": "Big Ben Street",
+    "postCode": "007GB",
+    "city": "London",
+    "country": "GB",
+    "IBAN": "GB7611315000011234567890138",
+    "BIC": "CITTGB2LXXX"
+}
