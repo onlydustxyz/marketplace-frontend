@@ -4,8 +4,8 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import CodeIcon from "src/assets/icons/Code";
 import { MouseEvent } from "react";
 import { buildGithubLink, buildLanguageString } from "src/utils/stringUtils";
-import LeadContributor, { Contributor } from "../LeadContributor";
-import { LanguageMap } from "src/types";
+import ProjectLead from "../LeadContributor";
+import { Contributor, LanguageMap } from "src/types";
 
 interface ProjectInformationProps {
   name: string;
@@ -16,6 +16,10 @@ interface ProjectInformationProps {
   details?: {
     description?: string | null;
     telegramLink?: string | null;
+  } | null;
+  lead?: {
+    displayName: string;
+    avatarUrl: string;
   } | null;
   githubRepoInfo?: {
     owner?: string;
@@ -30,7 +34,7 @@ const linkClickHandlerFactory = (url: string) => (e: MouseEvent<HTMLDivElement>)
   window?.open(url, "_blank")?.focus();
 };
 
-export default function ProjectInformation({ name, details, githubRepoInfo }: ProjectInformationProps) {
+export default function ProjectInformation({ name, details, lead, githubRepoInfo }: ProjectInformationProps) {
   return (
     <div className="flex flex-row w-full divide-x divide-neutral-600 gap-5 justify-items-center font-walsheim">
       <div className="flex flex-col basis-4/12 gap-5 justify-around">
@@ -40,7 +44,7 @@ export default function ProjectInformation({ name, details, githubRepoInfo }: Pr
           </div>
           <div className="flex flex-col">
             <div className="text-3xl font-medium">{name}</div>
-            {githubRepoInfo?.contributors?.[0]?.login && <LeadContributor {...githubRepoInfo?.contributors?.[0]} />}
+            {lead && <ProjectLead {...lead} />}
           </div>
         </div>
         {githubRepoInfo?.languages && (

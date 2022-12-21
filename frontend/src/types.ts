@@ -82,3 +82,5 @@ export interface HasuraJWT {
 }
 
 export type LanguageMap = { [languageName: string]: number };
+
+export type Contributor = { login: string; avatarUrl: string };
