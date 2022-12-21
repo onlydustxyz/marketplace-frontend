@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import { useState } from "react";
 import Card from "src/components/Card";
 import PaymentTable, { mapApiPaymentsToProps } from "src/components/PaymentTable";
+import PaymentTableFallback from "src/components/PaymentTableFallback";
 import QueryWrapper from "src/components/QueryWrapper";
 import RemainingBudget from "src/components/RemainingBudget";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
@@ -71,11 +72,10 @@ function PaymentTableQueryContainer({ budgetId }: PaymentTableQueryContainerProp
   const { data } = query;
   const payments = data?.paymentRequests?.map(mapApiPaymentsToProps) ?? null;
   const hasPayments = payments && payments.length > 0;
-  const { T } = useIntl();
 
   return (
     <QueryWrapper query={query}>
-      {hasPayments ? <PaymentTable payments={payments} /> : <p>{T("contributions.empty")}</p>}
+      {hasPayments ? <PaymentTable payments={payments} /> : <PaymentTableFallback />}
     </QueryWrapper>
   );
 }

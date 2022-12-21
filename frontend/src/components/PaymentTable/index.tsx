@@ -1,7 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
 import { Currency, Payment, PaymentStatus } from "src/types";
 import PaymentLine from "./PaymentLine";
-import Card from "src/components/Card";
 
 type PropsType = {
   payments: Payment[];
@@ -10,31 +9,27 @@ type PropsType = {
 const PaymentTable: React.FC<PropsType> = ({ payments }) => {
   const { T } = useIntl();
   return (
-    <div className="mt-10">
-      <Card>
-        <div className="px-4 mx-4">
-          <table className="table-fixed w-full text-white text-sm font-medium font-walsheim">
-            <thead className="border-b text-neutral-300 border-neutral-600">
-              <tr>
-                <th scope="col" className="px-6 py-4 text-left w-1/2">
-                  {T("payment.table.project")}
-                </th>
-                <th scope="col" className="px-6 py-4 text-left w-1/4">
-                  {T("payment.table.amount")}
-                </th>
-                <th scope="col" className="px-6 py-4 text-left w-1/4">
-                  {T("payment.table.status")}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {payments.map(payment => (
-                <PaymentLine payment={payment} key={payment.id} />
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+    <div className="px-4 mx-4">
+      <table className="table-fixed w-full text-white text-sm font-medium font-walsheim">
+        <thead className="border-b text-neutral-300 border-neutral-600">
+          <tr>
+            <th scope="col" className="px-6 py-4 text-left w-1/2">
+              {T("payment.table.project")}
+            </th>
+            <th scope="col" className="px-6 py-4 text-left w-1/4">
+              {T("payment.table.amount")}
+            </th>
+            <th scope="col" className="px-6 py-4 text-left w-1/4">
+              {T("payment.table.status")}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {payments.map(payment => (
+            <PaymentLine payment={payment} key={payment.id} />
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

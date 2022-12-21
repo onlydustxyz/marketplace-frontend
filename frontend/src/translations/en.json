@@ -48,6 +48,11 @@
       "amount": "AMOUNT",
       "project": "PROJECT",
       "status": "PAYMENT STATUS"
+    },
+    "tableFallback": {
+      "noPayments": "No payments received yet",
+      "contribute": "Contribute to get your first one!",
+      "browseProjects": "Browse projects"
     }
   },
   "profile": {
