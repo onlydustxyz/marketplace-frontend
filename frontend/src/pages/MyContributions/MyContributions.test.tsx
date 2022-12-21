@@ -74,7 +74,7 @@ describe('"MyContributions" page', () => {
       }),
     });
 
-    expect(await screen.findByText("No contributions yet")).toBeInTheDocument();
+    expect(await screen.findByText("No payments received yet")).toBeInTheDocument();
   });
 
   it("should render contributions table", async () => {
