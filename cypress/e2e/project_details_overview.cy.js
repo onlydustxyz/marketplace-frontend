@@ -1,4 +1,5 @@
 const GITHUB_REPO_ID_WITHOUT_README = 1234;
+const STARKONQUEST_ID = 481932781;
 
 describe("A project without readme", () => {
     beforeEach(() => {
@@ -18,6 +19,26 @@ describe("A project without readme", () => {
                 win.localStorage.setItem('hasura_token', this.token)
             },
         });
+
+        cy.contains('Overview').click();
+        cy.contains('Technologies');
+    });
+});
+
+
+describe("A project", () => {
+    beforeEach(() => {
+        cy.createUser().withGithubProvider(98735558).then(user => {
+            cy.createProject(user.id, "Starkonquest", 1000, STARKONQUEST_ID)
+                .asAdmin()
+                .data('createProject')
+                .as('projectId');
+            cy.wait(500);
+        });
+    });
+
+    it("should render properly in public view", function() {
+        cy.visit(`http://127.0.0.1:5173/project/${this.projectId}`);
 
         cy.contains('Overview').click();
         cy.contains('Technologies');
