@@ -2,6 +2,12 @@ table:
   name: github_users
   schema: auth
 select_permissions:
+  - role: project_lead_specific
+    permission:
+      columns:
+        - github_user_id
+        - user_id
+      filter: {}
   - role: registered_user_specific
     permission:
       columns:
