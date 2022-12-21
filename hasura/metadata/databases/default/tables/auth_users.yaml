@@ -91,6 +91,15 @@ object_relationships:
   - name: defaultRoleByRole
     using:
       foreign_key_constraint_on: default_role
+  - name: githubUser
+    using:
+      manual_configuration:
+        column_mapping:
+          id: user_id
+        insertion_order: null
+        remote_table:
+          name: github_users
+          schema: auth
   - name: payoutSettings
     using:
       manual_configuration:
