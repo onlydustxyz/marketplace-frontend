@@ -1,9 +1,11 @@
 describe("The user", () => {
-    beforeEach(() => {
+    before(() => {
         cy.createUser().withGithubProvider(12345).then(user => {
             cy.signinUser(user).then(user => (JSON.stringify(user.session))).as('token')
         });
+    });
 
+    beforeEach(() => {
         cy.fixture('profiles/james_bond').as('profile');
     });
 
@@ -30,13 +32,34 @@ describe("The user", () => {
 
         cy.contains('Your data has been saved!');
     });
+
+    it("can see its personal info pre-filled", function () {
+        cy.visit('http://127.0.0.1:5173/profile', {
+            onBeforeLoad(win) {
+                win.localStorage.setItem('hasura_token', this.token)
+            },
+        });
+
+        cy.get('[name=firstname]').should('have.value', this.profile.firstname);
+        cy.get('[name=lastname]').should('have.value', this.profile.lastname);
+        cy.get('[name=email]').should('have.value', this.profile.email);
+        cy.get('[name=number]').should('have.value', this.profile.number);
+        cy.get('[name=street]').should('have.value', this.profile.street);
+        cy.get('[name=postCode]').should('have.value', this.profile.postCode);
+        cy.get('[name=city]').should('have.value', this.profile.city);
+        cy.get('[name=country]').should('have.value', this.profile.country);
+        cy.get('[name=ethWalletAddress]').should('have.value', this.profile.ethWalletAddress);
+    });
 });
 
 describe("The company", () => {
-    beforeEach(() => {
-        cy.createUser().withGithubProvider(12345).then(user => {
+    before(() => {
+        cy.createUser().withGithubProvider(54321).then(user => {
             cy.signinUser(user).then(user => (JSON.stringify(user.session))).as('token')
         });
+    });
+
+    beforeEach(() => {
         cy.fixture('profiles/mi6').as('profile');
     });
 
@@ -63,5 +86,24 @@ describe("The company", () => {
         cy.contains('Send').click();
 
         cy.contains('Your data has been saved!');
+    });
+
+    it("can see its personal info pre-filled", function () {
+        cy.visit('http://127.0.0.1:5173/profile', {
+            onBeforeLoad(win) {
+                win.localStorage.setItem('hasura_token', this.token)
+            },
+        });
+
+        cy.get('[name=id]').should('have.value', this.profile.id);
+        cy.get('[name=name]').should('have.value', this.profile.name);
+        cy.get('[name=email]').should('have.value', this.profile.email);
+        cy.get('[name=number]').should('have.value', this.profile.number);
+        cy.get('[name=street]').should('have.value', this.profile.street);
+        cy.get('[name=postCode]').should('have.value', this.profile.postCode);
+        cy.get('[name=city]').should('have.value', this.profile.city);
+        cy.get('[name=country]').should('have.value', this.profile.country);
+        cy.get('[name=IBAN]').should('have.value', this.profile.IBAN);
+        cy.get('[name=BIC]').should('have.value', this.profile.BIC);
     });
 });

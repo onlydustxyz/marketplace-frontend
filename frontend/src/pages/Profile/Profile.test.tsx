@@ -157,25 +157,6 @@ describe('"Profile" page for individual', () => {
     });
   });
 
-  it("should print form with default values", async () => {
-    await screen.findByText("Edit profile");
-    expect((await screen.findByLabelText<HTMLInputElement>("Firstname")).value).toBe(
-      mockUser.identity.Person.firstname
-    );
-    expect((await screen.findByLabelText<HTMLInputElement>("Lastname")).value).toBe(mockUser.identity.Person.lastname);
-    expect((await screen.findByLabelText<HTMLInputElement>("Email")).value).toBe(mockUser.email);
-    expect((await screen.findByLabelText<HTMLInputElement>("N.")).value).toBe(mockUser.location.number);
-    expect((await screen.findByLabelText<HTMLInputElement>("Street")).value).toBe(mockUser.location.street);
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("Postal code")).value).toBe(
-      mockUser.location.post_code
-    );
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("City")).value).toBe(mockUser.location.city);
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("Country")).value).toBe(mockUser.location.country);
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("Ethereum wallet address")).value).toBe(
-      mockUser.payoutSettings.EthTransfer
-    );
-  });
-
   it("should display error when required field missing", async () => {
     await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Email"));
     await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Firstname"));
@@ -209,26 +190,6 @@ describe('"Profile" page for company', () => {
         mocks: [buildMockProfileQuery(mockCompany), buildMockMutationUpdateUser(mockCompany)],
       }),
     });
-  });
-
-  it("should print form with default values", async () => {
-    await screen.findByText("Edit profile");
-    expect((await screen.findByLabelText<HTMLInputElement>("ID")).value).toBe(mockCompany.identity.Company.id);
-    expect((await screen.findByLabelText<HTMLInputElement>("Name")).value).toBe(mockCompany.identity.Company.name);
-    expect((await screen.findByLabelText<HTMLInputElement>("Email")).value).toBe(mockCompany.email);
-    expect((await screen.findByLabelText<HTMLInputElement>("N.")).value).toBe(mockCompany.location.number);
-    expect((await screen.findByLabelText<HTMLInputElement>("Street")).value).toBe(mockCompany.location.street);
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("Postal code")).value).toBe(
-      mockCompany.location.post_code
-    );
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("City")).value).toBe(mockCompany.location.city);
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("Country")).value).toBe(mockCompany.location.country);
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("IBAN")).value).toBe(
-      mockCompany.payoutSettings.WireTransfer.IBAN
-    );
-    expect((await screen.findByPlaceholderText<HTMLInputElement>("BIC")).value).toBe(
-      mockCompany.payoutSettings.WireTransfer.BIC
-    );
   });
 
   it("should display error when required field missing", async () => {
