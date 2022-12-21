@@ -1,9 +1,10 @@
 import { gql } from "@apollo/client";
+import Card from "src/components/Card";
 import PaymentTable, { mapApiPaymentsToProps } from "src/components/PaymentTable";
+import PaymentTableFallback from "src/components/PaymentTableFallback";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
-import { useIntl } from "src/hooks/useIntl";
 import { HasuraUserRole } from "src/types";
 import { GetPaymentRequestsQuery } from "src/__generated/graphql";
 
@@ -15,11 +16,12 @@ const MyContributions = () => {
   const { data } = query;
   const payments = data?.paymentRequests?.map(mapApiPaymentsToProps);
   const hasPayments = payments && payments.length > 0;
-  const { T } = useIntl();
 
   return (
     <QueryWrapper query={query}>
-      {hasPayments ? <PaymentTable payments={payments} /> : <p>{T("contributions.empty")}</p>}
+      <div className="mt-10">
+        <Card>{hasPayments ? <PaymentTable payments={payments} /> : <PaymentTableFallback />}</Card>
+      </div>
     </QueryWrapper>
   );
 };
