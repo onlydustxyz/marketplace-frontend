@@ -1,11 +1,12 @@
+use anyhow::anyhow;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error("Not found")]
-	NotFound(#[source] octocrab::Error),
+	NotFound(#[source] anyhow::Error),
 	#[error(transparent)]
-	Other(octocrab::Error),
+	Other(anyhow::Error),
 }
 
 impl From<octocrab::Error> for Error {
@@ -15,10 +16,10 @@ impl From<octocrab::Error> for Error {
 				source,
 				backtrace: _,
 			} => match source.status() {
-				Some(status) if status == 404 => Error::NotFound(error),
-				_ => Error::Other(error),
+				Some(status) if status == 404 => Error::NotFound(anyhow!(error)),
+				_ => Error::Other(anyhow!(error)),
 			},
-			_ => Error::Other(error),
+			_ => Error::Other(anyhow!(error)),
 		}
 	}
 }

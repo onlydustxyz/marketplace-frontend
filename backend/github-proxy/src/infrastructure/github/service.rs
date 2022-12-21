@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use infrastructure::github;
 
 use crate::domain::{GithubFile, GithubFileEncoding, GithubRepository, GithubService, GithubUser};
@@ -13,11 +13,15 @@ impl GithubService for github::Client {
 			None => Default::default(),
 		};
 
-		let readme = self.get_raw_file(&repo, "README.md").await?;
+		let readme = match self.get_raw_file(&repo, "README.md").await {
+			Ok(readme) => Some(readme),
+			Err(github::Error::NotFound(_)) => None,
+			Err(error) => return Err(anyhow!(error)),
+		};
 
 		Ok(GithubRepository::new(
 			contributors.into_iter().map(Into::into).collect(),
-			readme.into(),
+			readme.map(Into::into),
 		))
 	}
 
