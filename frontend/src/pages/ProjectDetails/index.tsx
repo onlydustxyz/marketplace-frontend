@@ -2,7 +2,6 @@ import { gql } from "@apollo/client";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Card from "src/components/Card";
-import ProjectInformation from "src/components/ProjectInformation";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
@@ -11,6 +10,7 @@ import { decodeBase64ToString } from "src/utils/stringUtils";
 import { GetPublicProjectQuery, GetUserProjectQuery } from "src/__generated/graphql";
 import Overview from "./Overview";
 import Payments from "./PaymentActions";
+import onlyDustLogo from "assets/img/onlydust-logo.png";
 
 type ProjectDetailsParams = {
   projectId: string;
@@ -46,6 +46,7 @@ export default function ProjectDetails() {
 
   const project = getProjectUserQuery?.data?.projectsByPk || getProjectPublicQuery?.data?.projectsByPk;
   const githubRepo = project?.githubRepo;
+  const logoUrl = project?.projectDetails?.logoUrl || project?.githubRepo?.content.logoUrl || onlyDustLogo;
 
   const component = (
     <div className="px-10 flex flex-col align-center items-center">
@@ -53,6 +54,9 @@ export default function ProjectDetails() {
         <div className="flex flex-col w-11/12 my-3 gap-5">
           <Card>
             <div className="flex flex-row justify-between items-center">
+              <div className="border-4 border-neutral-600 p-2 rounded-2xl">
+                <img className="md:w-12 w-12 hover:opacity-90" src={logoUrl} alt="Project Logo" />
+              </div>
               <div className="text-3xl font-bold">{project.name}</div>
               <div className="flex flex-row align-start space-x-3">
                 {availableTabs.map((tab: ProjectDetailsTab) => (
@@ -110,6 +114,7 @@ const GITHUB_REPO_FIELDS_FRAGMENT = gql`
         login
         avatarUrl
       }
+      logoUrl
     }
     languages
   }
@@ -123,6 +128,7 @@ export const GET_PROJECT_PUBLIC_QUERY = gql`
       projectDetails {
         description
         telegramLink
+        logoUrl
       }
       projectLeads {
         user {
@@ -150,6 +156,7 @@ export const GET_PROJECT_USER_QUERY = gql`
       projectDetails {
         description
         telegramLink
+        logoUrl
       }
       projectLeads {
         user {
