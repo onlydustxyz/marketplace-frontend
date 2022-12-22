@@ -131,4 +131,14 @@ describe("As an admin, on retool, I", () => {
                 })
         );
     });
+
+    it("can't create a project with a repository that doesn't exist", () => {
+        const projectName = "Cypress test project";
+        const UNEXISTING_REPO_ID = 2147466666;
+
+        cy.createUser().then((user) => {
+            cy.createProject(user.id, projectName, 500, UNEXISTING_REPO_ID)
+                .asAdmin().errors().its(0).its("extensions.reason").should("equal", "Github repository 2147466666 does not exist");
+        });
+    });
 });
