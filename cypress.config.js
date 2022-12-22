@@ -27,4 +27,5 @@ module.exports = defineConfig({
     hasuraAdminSecret: process.env.HASURA_GRAPHQL_ADMIN_SECRET,
   },
   video: false,
+  defaultCommandTimeout: 15000,
 });
