@@ -1,3 +1,6 @@
+const GRAPHQL_TIMEOUT = 10000;
+const READ_BODY_PROPERTY_TIMEOUT = 100;
+
 Cypress.Commands.add("graphql", (query) => {
     return query;
 });
@@ -13,6 +16,7 @@ Cypress.Commands.add(
             method: "POST",
             url: "/v1/graphql",
             body: { query: query },
+            timeout: GRAPHQL_TIMEOUT,
         });
     }
 );
@@ -31,6 +35,7 @@ Cypress.Commands.add(
             headers: {
                 "X-Hasura-Admin-Secret": Cypress.env("hasuraAdminSecret"),
             },
+            timeout: GRAPHQL_TIMEOUT,
         });
     }
 );
@@ -51,6 +56,7 @@ Cypress.Commands.add(
                     "X-Hasura-Role": "registered_user",
                     Authorization: `Bearer ${session.accessToken}`,
                 },
+                timeout: GRAPHQL_TIMEOUT,
             });
         });
     }
@@ -62,14 +68,14 @@ Cypress.Commands.add(
         prevSubject: true,
     },
     (object, property) => {
-        cy.wrap(object)
+        cy.wrap(object, { timeout: READ_BODY_PROPERTY_TIMEOUT })
             .should(($object) => {
                 expect(
                     $object,
                     JSON.stringify($object)
-                ).to.have.deep.nested.property(property);
+                ).to.have.deep.nested.property(property).that.is.not.null;
             })
-            .its(property);
+            .its(property, { timeout: READ_BODY_PROPERTY_TIMEOUT });
     }
 );
 
@@ -79,7 +85,7 @@ Cypress.Commands.add(
         prevSubject: true,
     },
     (response, path = null) => {
-        cy.wrap(response)
+        cy.wrap(response, { timeout: READ_BODY_PROPERTY_TIMEOUT })
             .should("have.property", "body")
             .property("data")
             .then((data) => {
@@ -97,6 +103,6 @@ Cypress.Commands.add(
         prevSubject: true,
     },
     (response) => {
-        cy.wrap(response).should("have.property", "body").property("errors");
+        cy.wrap(response, { timeout: READ_BODY_PROPERTY_TIMEOUT }).should("have.property", "body").property("errors");
     }
 );
