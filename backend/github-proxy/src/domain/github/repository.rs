@@ -7,4 +7,5 @@ use crate::domain::{GithubFile, GithubUser};
 pub struct Repository {
 	contributors: Vec<GithubUser>,
 	readme: Option<GithubFile>,
+	logo_url: String,
 }

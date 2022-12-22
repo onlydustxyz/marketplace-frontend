@@ -19,9 +19,12 @@ impl GithubService for github::Client {
 			Err(error) => return Err(anyhow!(error)),
 		};
 
+		let owner = repo.owner.ok_or_else(|| anyhow!("Missing owner in github repository"))?;
+
 		Ok(GithubRepository::new(
 			contributors.into_iter().map(Into::into).collect(),
 			readme.map(Into::into),
+			owner.avatar_url.to_string(),
 		))
 	}
 
