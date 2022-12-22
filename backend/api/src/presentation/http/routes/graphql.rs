@@ -4,6 +4,7 @@ use domain::{
 	AggregateRootRepository, Budget, Event, Payment, Project, Publisher, UniqueMessage,
 	UuidGenerator,
 };
+use infrastructure::github;
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use presentation::http::guards::{ApiKey, ApiKeyGuard, OptionUserId, Role};
 use rocket::{response::content, State};
@@ -42,6 +43,7 @@ pub async fn get_graphql_handler(
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<ProjectDetailsRepository>,
 	user_info_repository: &State<UserInfoRepository>,
+	github: &State<Arc<github::Client>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		role.into(),
@@ -53,6 +55,7 @@ pub async fn get_graphql_handler(
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
 		(*user_info_repository).clone(),
+		(*github).clone(),
 	);
 	request.execute(schema, &context).await
 }
@@ -72,6 +75,7 @@ pub async fn post_graphql_handler(
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<ProjectDetailsRepository>,
 	user_info_repository: &State<UserInfoRepository>,
+	github: &State<Arc<github::Client>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		role.into(),
@@ -83,6 +87,7 @@ pub async fn post_graphql_handler(
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
 		(*user_info_repository).clone(),
+		(*github).clone(),
 	);
 	request.execute(schema, &context).await
 }

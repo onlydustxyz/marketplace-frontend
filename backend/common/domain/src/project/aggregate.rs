@@ -1,4 +1,4 @@
-use std::collections::HashSet;
+use std::{collections::HashSet, sync::Arc};
 
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
@@ -6,12 +6,16 @@ use thiserror::Error;
 
 use crate::*;
 
-#[derive(Debug, Error, Eq, PartialEq)]
+#[derive(Debug, Error)]
 pub enum Error {
 	#[error("Project lead already assigned to this project")]
 	LeaderAlreadyAssigned,
 	#[error("This was already the project github repository")]
 	AlreadyProjectGithubRepository,
+	#[error("Github repository {0} does not exist")]
+	GithubRepositoryNotFound(GithubRepositoryId),
+	#[error(transparent)]
+	Infrastructure(anyhow::Error),
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, Getters, Dissolve, Constructor)]
@@ -64,11 +68,20 @@ impl EventSourcable for Project {
 }
 
 impl Project {
-	pub fn create(
+	pub async fn create(
+		github_repo_exists: Arc<dyn GithubRepoExists>,
 		id: ProjectId,
 		name: String,
 		github_repo_id: GithubRepositoryId,
 	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+		if !github_repo_exists
+			.is_statified_by(&github_repo_id)
+			.await
+			.map_err(|e| Error::Infrastructure(e.into()))?
+		{
+			return Err(Error::GithubRepositoryNotFound(github_repo_id));
+		}
+
 		Ok(vec![ProjectEvent::Created {
 			id,
 			name,
@@ -109,15 +122,23 @@ impl Project {
 mod tests {
 	use std::str::FromStr;
 
+	use anyhow::anyhow;
+	use assert_matches::assert_matches;
+	use mockall::predicate::eq;
 	use rstest::{fixture, rstest};
 	use uuid::Uuid;
 
 	use super::*;
-	use crate::{GithubRepositoryId, ProjectId};
+	use crate::{GithubRepositoryId, MockGithubRepoExists, ProjectId};
 
 	#[fixture]
 	fn project_id() -> ProjectId {
 		Uuid::from_str("9859fcd9-b357-495e-9f4c-038ec0ebecb1").unwrap().into()
+	}
+
+	#[fixture]
+	fn project_name() -> &'static str {
+		"My cool project"
 	}
 
 	#[fixture]
@@ -140,10 +161,25 @@ mod tests {
 	}
 
 	#[rstest]
-	fn test_create(project_id: ProjectId) {
-		let project_name = "My cool project";
-		let github_repo_id: GithubRepositoryId = 12345.into();
-		let events = Project::create(project_id, project_name.to_string(), github_repo_id).unwrap();
+	async fn test_create(
+		project_id: ProjectId,
+		project_name: &str,
+		github_repo_id: GithubRepositoryId,
+	) {
+		let mut github_repo_exists_specification = MockGithubRepoExists::new();
+		github_repo_exists_specification
+			.expect_is_statified_by()
+			.with(eq(github_repo_id))
+			.returning(|_| Ok(true));
+
+		let events = Project::create(
+			Arc::new(github_repo_exists_specification),
+			project_id,
+			project_name.to_string(),
+			github_repo_id,
+		)
+		.await
+		.unwrap();
 
 		assert_eq!(events.len(), 1);
 		assert_eq!(
@@ -154,6 +190,54 @@ mod tests {
 				github_repo_id
 			}
 		);
+	}
+
+	#[rstest]
+	async fn test_create_with_unexisting_github_repo(
+		project_id: ProjectId,
+		project_name: &str,
+		github_repo_id: GithubRepositoryId,
+	) {
+		let mut github_repo_exists_specification = MockGithubRepoExists::new();
+		github_repo_exists_specification
+			.expect_is_statified_by()
+			.with(eq(github_repo_id))
+			.returning(|_| Ok(false));
+
+		let result = Project::create(
+			Arc::new(github_repo_exists_specification),
+			project_id,
+			project_name.to_string(),
+			github_repo_id,
+		)
+		.await;
+
+		assert!(result.is_err());
+		assert_matches!(result.unwrap_err(), Error::GithubRepositoryNotFound(_));
+	}
+
+	#[rstest]
+	async fn test_create_with_internal_error(
+		project_id: ProjectId,
+		project_name: &str,
+		github_repo_id: GithubRepositoryId,
+	) {
+		let mut github_repo_exists_specification = MockGithubRepoExists::new();
+		github_repo_exists_specification
+			.expect_is_statified_by()
+			.with(eq(github_repo_id))
+			.returning(|_| Err(SpecificationError::Infrastructure(anyhow!("some error"))));
+
+		let result = Project::create(
+			Arc::new(github_repo_exists_specification),
+			project_id,
+			project_name.to_string(),
+			github_repo_id,
+		)
+		.await;
+
+		assert!(result.is_err());
+		assert_matches!(result.unwrap_err(), Error::Infrastructure(_));
 	}
 
 	#[rstest]
@@ -181,7 +265,7 @@ mod tests {
 		let result = project.assign_leader(leader_id.to_owned());
 
 		assert!(result.is_err());
-		assert_eq!(result.unwrap_err(), Error::LeaderAlreadyAssigned);
+		assert_matches!(result.unwrap_err(), Error::LeaderAlreadyAssigned);
 	}
 
 	#[rstest]
@@ -216,6 +300,6 @@ mod tests {
 		let result = project.update_github_repository(github_repo_id);
 
 		assert!(result.is_err());
-		assert_eq!(result.unwrap_err(), Error::AlreadyProjectGithubRepository);
+		assert_matches!(result.unwrap_err(), Error::AlreadyProjectGithubRepository);
 	}
 }

@@ -8,7 +8,7 @@ use api::{
 };
 use domain::{AggregateRootRepository, RandomUuidGenerator};
 use dotenv::dotenv;
-use infrastructure::{amqp, config, database, tracing::Tracer};
+use infrastructure::{amqp, config, database, github, tracing::Tracer};
 use olog::info;
 use tracing::instrument;
 
@@ -24,6 +24,8 @@ async fn main() -> Result<()> {
 	)?));
 	database.run_migrations()?;
 
+	let github = Arc::new(github::Client::new(config.github())?);
+
 	http::serve(
 		config.http().clone(),
 		graphql::create_schema(),
@@ -34,6 +36,7 @@ async fn main() -> Result<()> {
 		AggregateRootRepository::new(database.clone()),
 		ProjectDetailsRepository::new(database.clone()),
 		UserInfoRepository::new(database),
+		github,
 	)
 	.await?;
 

@@ -5,6 +5,7 @@ use domain::{
 	Amount, Budget, BudgetId, DomainError, Event, EventSourcable, GithubRepositoryId, Project,
 	ProjectId, Publisher, UniqueMessage, UserId, UuidGenerator,
 };
+use infrastructure::github;
 
 use crate::{
 	domain::{ProjectDetails, Publishable},
@@ -15,6 +16,7 @@ pub struct Usecase {
 	uuid_generator: Arc<dyn UuidGenerator>,
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_details_repository: ProjectDetailsRepository,
+	github: Arc<github::Client>,
 }
 
 impl Usecase {
@@ -22,11 +24,13 @@ impl Usecase {
 		uuid_generator: Arc<dyn UuidGenerator>,
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		project_details_repository: ProjectDetailsRepository,
+		github: Arc<github::Client>,
 	) -> Self {
 		Self {
 			uuid_generator,
 			event_publisher,
 			project_details_repository,
+			github,
 		}
 	}
 
@@ -41,7 +45,9 @@ impl Usecase {
 	) -> Result<ProjectId, DomainError> {
 		let project_id: ProjectId = self.uuid_generator.new_uuid().into();
 
-		let mut events = create_leaded_project(project_id, user_id, name, github_repo_id)
+		let mut events = self
+			.create_leaded_project(project_id, user_id, name, github_repo_id)
+			.await
 			.map_err(DomainError::InvalidInputs)?;
 		events.extend(allocate_owned_budget(
 			self.uuid_generator.new_uuid().into(),
@@ -65,20 +71,22 @@ impl Usecase {
 
 		Ok(project_id)
 	}
-}
 
-fn create_leaded_project(
-	project_id: ProjectId,
-	leader_id: UserId,
-	name: String,
-	github_repo_id: GithubRepositoryId,
-) -> Result<Vec<Event>> {
-	let mut events = Project::create(project_id, name, github_repo_id)?;
+	async fn create_leaded_project(
+		&self,
+		project_id: ProjectId,
+		leader_id: UserId,
+		name: String,
+		github_repo_id: GithubRepositoryId,
+	) -> Result<Vec<Event>> {
+		let mut events =
+			Project::create(self.github.clone(), project_id, name, github_repo_id).await?;
 
-	let project = <Project as EventSourcable>::from_events(&events);
-	events.extend(project.assign_leader(leader_id)?);
+		let project = <Project as EventSourcable>::from_events(&events);
+		events.extend(project.assign_leader(leader_id)?);
 
-	Ok(events.into_iter().map(Event::from).collect())
+		Ok(events.into_iter().map(Event::from).collect())
+	}
 }
 
 fn allocate_owned_budget(

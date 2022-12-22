@@ -48,6 +48,9 @@ pub mod event_store;
 pub use event_store::{Error as EventStoreError, Store as EventStore};
 
 pub mod specifications;
+#[cfg(test)]
+pub use specifications::MockGithubRepoExists;
+pub use specifications::{Error as SpecificationError, GithubRepoExists};
 
 #[macro_use]
 extern crate diesel;

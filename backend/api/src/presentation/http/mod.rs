@@ -6,6 +6,7 @@ use ::domain::{
 };
 use anyhow::Result;
 use http::Config;
+use infrastructure::github;
 use presentation::http;
 
 use crate::{
@@ -28,6 +29,7 @@ pub async fn serve(
 	budget_repository: AggregateRootRepository<Budget>,
 	project_details_repository: ProjectDetailsRepository,
 	user_info_repository: UserInfoRepository,
+	github: Arc<github::Client>,
 ) -> Result<()> {
 	let _ = rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config)
@@ -39,6 +41,7 @@ pub async fn serve(
 		.manage(budget_repository)
 		.manage(project_details_repository)
 		.manage(user_info_repository)
+		.manage(github)
 		.mount("/", routes![http::routes::health_check,])
 		.mount(
 			"/",
