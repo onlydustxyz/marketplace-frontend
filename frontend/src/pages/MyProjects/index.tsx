@@ -39,6 +39,7 @@ function MyProjectContainer({ projectId }: MyProjectContainerProps) {
             details={{
               description: project?.projectDetails?.description,
               telegramLink: project?.projectDetails?.telegramLink,
+              logoUrl: project?.projectDetails?.logoUrl || project?.githubRepo?.content?.logoUrl,
             }}
             githubRepoInfo={{
               owner: project?.githubRepo?.owner,
@@ -61,6 +62,7 @@ export const GET_MY_PROJECT_QUERY = gql`
       projectDetails {
         description
         telegramLink
+        logoUrl
       }
       githubRepo {
         ...GithubRepoFieldsForProjectCard
