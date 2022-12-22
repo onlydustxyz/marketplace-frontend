@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import Card from "src/components/Card";
+import Sidebar from "src/components/Sidebar";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
@@ -9,8 +9,9 @@ import { HasuraUserRole } from "src/types";
 import { decodeBase64ToString } from "src/utils/stringUtils";
 import { GetPublicProjectQuery, GetUserProjectQuery } from "src/__generated/graphql";
 import Overview from "./Overview";
-import Payments from "./PaymentActions";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
+import PaymentForm from "./PaymentActions/PaymentForm";
+import PaymentTableContainer from "./PaymentTableContainer";
 
 type ProjectDetailsParams = {
   projectId: string;
@@ -18,7 +19,8 @@ type ProjectDetailsParams = {
 
 export enum ProjectDetailsTab {
   Overview = "Overview",
-  Payments = "Payments",
+  ListPayments = "List Payments",
+  SendPayment = "Send Payment",
 }
 
 export default function ProjectDetails() {
@@ -41,7 +43,7 @@ export default function ProjectDetails() {
 
   const availableTabs =
     projectId && ledProjectIds && ledProjectIds.includes(projectId)
-      ? [ProjectDetailsTab.Overview, ProjectDetailsTab.Payments]
+      ? [ProjectDetailsTab.Overview, ProjectDetailsTab.ListPayments, ProjectDetailsTab.SendPayment]
       : [ProjectDetailsTab.Overview];
 
   const project = getProjectUserQuery?.data?.projectsByPk || getProjectPublicQuery?.data?.projectsByPk;
@@ -49,20 +51,20 @@ export default function ProjectDetails() {
   const logoUrl = project?.projectDetails?.logoUrl || project?.githubRepo?.content.logoUrl || onlyDustLogo;
 
   const component = (
-    <div className="px-10 flex flex-col align-center items-center">
+    <>
       {project && (
-        <div className="flex flex-col w-11/12 my-3 gap-5">
-          <Card>
-            <div className="flex flex-row justify-between items-center">
+        <div className="flex flex-row w-full my-3 gap-5 items-stretch">
+          <Sidebar>
+            <div className="flex flex-col h-full gap-10">
               <div className="border-4 border-neutral-600 p-2 rounded-2xl">
                 <img className="md:w-12 w-12 hover:opacity-90" src={logoUrl} alt="Project Logo" />
               </div>
-              <div className="text-3xl font-bold">{project.name}</div>
-              <div className="flex flex-row align-start space-x-3">
+              <div className="text-3xl font-bold border border-neutral-600 rounded-lg p-5">{project.name}</div>
+              <div className="flex flex-col gap-3">
                 {availableTabs.map((tab: ProjectDetailsTab) => (
                   <div
                     key={tab}
-                    className={`bg-neutral-50 rounded-xl w-fit p-3 hover:cursor-pointer text-black ${
+                    className={`bg-neutral-50 w-fit p-3 hover:cursor-pointer text-black ${
                       selectedTab === tab ? "font-bold border-3" : "opacity-70"
                     }`}
                     onClick={() => setSelectedTab(tab)}
@@ -72,7 +74,7 @@ export default function ProjectDetails() {
                 ))}
               </div>
             </div>
-          </Card>
+          </Sidebar>
           {selectedTab === ProjectDetailsTab.Overview && githubRepo?.content?.contributors && (
             <Overview
               decodedReadme={
@@ -87,12 +89,16 @@ export default function ProjectDetails() {
               }}
             />
           )}
-          {selectedTab === ProjectDetailsTab.Payments && (
-            <Payments budget={getProjectUserQuery?.data?.projectsByPk?.budgets?.[0]} />
+          {selectedTab === ProjectDetailsTab.ListPayments && getProjectUserQuery?.data?.projectsByPk?.budgets?.[0] && (
+            <PaymentForm budget={getProjectUserQuery.data.projectsByPk.budgets[0]} />
           )}
+          {selectedTab === ProjectDetailsTab.SendPayment &&
+            getProjectUserQuery?.data?.projectsByPk?.budgets?.[0].id && (
+              <PaymentTableContainer budgetId={getProjectUserQuery.data.projectsByPk.budgets[0].id} />
+            )}
         </div>
       )}
-    </div>
+    </>
   );
 
   return isLoggedIn ? (

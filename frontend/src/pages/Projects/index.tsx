@@ -14,7 +14,7 @@ export default function Projects() {
 
   return (
     <QueryWrapper<GetProjectsQuery> query={query}>
-      <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
+      <div className="mx-auto px-10 flex flex-col align-center items-center gap-5 mt-10">
         {data &&
           data.projects.map(project => (
             <Link key={project.id} className="flex w-11/12 my-3" to={`/project/${project.id}`}>
