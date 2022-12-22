@@ -8,7 +8,8 @@ Cypress.Commands.add(
         initialBudget = 500,
         githubRepoId = 481932781,
         description = "My project description",
-        telegramLink = "https://t.me/foo"
+        telegramLink = "https://t.me/foo",
+        logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4"
     ) => {
         return `mutation{ createProject(
             name: "${projectName}",
@@ -16,7 +17,8 @@ Cypress.Commands.add(
             githubRepoId: ${githubRepoId},
             description: "${description}",
             telegramLink: "${telegramLink}",
-            userId: "${userId}"
+            userId: "${userId}",
+            logoUrl: "${logoUrl}"
         )}`;
     }
 );
@@ -26,12 +28,14 @@ Cypress.Commands.add(
     (
         projectId,
         description = "My project description",
-        telegramLink = "https://t.me/foo"
-    ) => {
+        telegramLink = "https://t.me/foo",
+        logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4"
+        ) => {
         return `mutation{ updateProject(
                 id: "${projectId}",
                 description: "${description}",
                 telegramLink: "${telegramLink}",
+                logoUrl: "${logoUrl}"
             )}`;
     }
 );

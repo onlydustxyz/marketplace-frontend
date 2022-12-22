@@ -33,6 +33,7 @@ impl Usecase {
 		}
 	}
 
+	#[allow(clippy::too_many_arguments)]
 	pub async fn create(
 		&self,
 		name: String,
@@ -41,6 +42,7 @@ impl Usecase {
 		description: Option<String>,
 		telegram_link: Option<String>,
 		user_id: UserId,
+		logo_url: Option<String>,
 	) -> Result<ProjectId, DomainError> {
 		let project_id: ProjectId = self.uuid_generator.new_uuid().into();
 
@@ -66,6 +68,7 @@ impl Usecase {
 			project_id,
 			description,
 			telegram_link,
+			logo_url,
 		))?;
 
 		Ok(project_id)

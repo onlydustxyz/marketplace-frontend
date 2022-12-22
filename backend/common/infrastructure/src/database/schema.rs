@@ -90,6 +90,7 @@ diesel::table! {
         project_id -> Uuid,
         description -> Nullable<Text>,
         telegram_link -> Nullable<Text>,
+        logo_url -> Nullable<Text>,
     }
 }
 

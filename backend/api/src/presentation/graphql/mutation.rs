@@ -56,6 +56,7 @@ impl Mutation {
 		description: Option<String>,
 		telegram_link: Option<String>,
 		user_id: Uuid,
+		logo_url: Option<String>,
 	) -> Result<Uuid> {
 		let project_id = context
 			.create_project_usecase
@@ -66,6 +67,7 @@ impl Mutation {
 				description,
 				telegram_link,
 				user_id.into(),
+				logo_url,
 			)
 			.await?;
 
@@ -77,6 +79,7 @@ impl Mutation {
 		id: Uuid,
 		description: Option<String>,
 		telegram_link: Option<String>,
+		logo_url: Option<String>,
 	) -> Result<Uuid> {
 		let project_id = id.into();
 
@@ -84,6 +87,7 @@ impl Mutation {
 			project_id,
 			description,
 			telegram_link,
+			logo_url,
 		))?;
 
 		Ok(id)

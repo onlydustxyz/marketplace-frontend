@@ -48,6 +48,20 @@ describe("As an admin, on retool, I", () => {
                         .its("userId")
                         .should("equal", user.id);
 
+
+                    cy.graphql(
+                        `{
+                        projectsByPk(id: "${projectId}") {
+                            projectDetails {
+                                logoUrl
+                            }
+                        }
+                      }`
+                    )
+                        .asAnonymous()
+                        .data("projectsByPk.projectDetails.logoUrl")
+                        .should("be.a", "string");
+
                     cy.graphql(
                         `{
                     projects(where: {id: {_eq: "${projectId}"}}) {
