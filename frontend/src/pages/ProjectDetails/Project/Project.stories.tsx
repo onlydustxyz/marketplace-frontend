@@ -13,5 +13,9 @@ export const Default = Template.bind({});
 
 Default.args = {
   name: "test",
-  details: { telegramLink: "https://web.telegram.org/z/", description: "Test description" },
+  details: {
+    telegramLink: "https://web.telegram.org/z/",
+    description: "Test description",
+    logoUrl: "https://avatars.githubusercontent.com/u/25772758?v=4",
+  },
 };

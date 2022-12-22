@@ -26,7 +26,7 @@ const PaymentLine: React.FC<PropsType> = ({ payment }) => (
     <td className="px-6 py-4">
       <div className="flex flex-row gap-3">
         <div className="border-4 border-neutral-600 p-2 rounded-2xl">
-          <img className="w-8 max-w-fit" src={onlyDustLogo} alt="Project Logo" />
+          <img className="w-8 max-w-fit" src={payment.project.logoUrl || onlyDustLogo} alt="Project Logo" />
         </div>
         <div className="flex flex-col truncate">
           <div className="font-bold text-xl">{payment.project.title}</div>

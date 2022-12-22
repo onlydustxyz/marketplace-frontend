@@ -16,6 +16,7 @@ const mockPayments: Payment[] = [
       description: "This project is sooooo awesome",
       id: "a4441ead-737a-4feb-8700-60f0721776ff",
       title: "Awesome Project",
+      logoUrl: "https://avatars.githubusercontent.com/u/25772758?v=4",
     },
     status: PaymentStatus.ACCEPTED,
   },
