@@ -9,6 +9,7 @@ export const GITHUB_REPO_FIELDS_FOR_PROJECT_CARD_FRAGMENT = gql`
         login
         avatarUrl
       }
+      logoUrl
     }
     languages
   }
