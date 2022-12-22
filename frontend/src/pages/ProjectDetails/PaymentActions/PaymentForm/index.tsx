@@ -55,7 +55,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
     REQUEST_PAYMENT_MUTATION,
     HasuraUserRole.RegisteredUser,
     {
-      variables: { budgetId: budget.id, amountToWire },
+      variables: { budgetId: budget.id, amount: amountToWire },
     }
   );
   const success = !!requestPaymentMutation.data;

@@ -42,7 +42,7 @@ const graphQlMocks = [
   {
     request: {
       query: REQUEST_PAYMENT_MUTATION,
-      variables: { budgetId: "test-budget-id", amount: 3, contributorId: TEST_USER.githubUser.githubUserId },
+      variables: { budgetId: "test-budget-id", amount: 26403, contributorId: TEST_USER.githubUser.githubUserId },
     },
     result: {
       data: {},
@@ -65,10 +65,8 @@ describe('"PaymentForm" component', () => {
   });
 
   it("should show the right input / button labels", async () => {
-    await screen.findByText(/submit payment/i);
-    await screen.findByText(/link to issue/i);
-    await screen.findByText(/contributor/i);
-    await screen.findByText(/memo/i);
+    await screen.findByText(/link to github issue/i);
+    await screen.findByText(/recipient/i);
     await screen.findByText(/seniority/i);
     await screen.findByText(/working days/i);
     await screen.findByText(/overall satisfaction/i);
@@ -76,14 +74,14 @@ describe('"PaymentForm" component', () => {
   });
 
   it("should be able to see user name in dropdown", async () => {
-    await userEvent.click(await screen.findByRole("combobox", { name: /contributor/i }));
+    await userEvent.click(await screen.findByRole("combobox", { name: /recipient/i }));
     await screen.findByText(/test-user-name/i);
   });
 
   it("should display an error when a required field is missing", async () => {
-    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>(/link to issue/i));
+    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>(/link to github issue/i));
     await waitFor(() => {
-      expect(screen.getByLabelText<HTMLInputElement>(/link to issue/i).value).toBe("");
+      expect(screen.getByLabelText<HTMLInputElement>(/link to github issue/i).value).toBe("");
     });
     await userEvent.click(await screen.findByRole("button", { name: /send/i }));
     await waitFor(() => {
@@ -93,9 +91,9 @@ describe('"PaymentForm" component', () => {
   });
 
   it("should be able to request payment when required info is filled", async () => {
-    await userEvent.type(await screen.findByLabelText(/link to issue/i), "test-link-name");
+    await userEvent.type(await screen.findByLabelText(/link to github issue/i), "test-link-name");
     userEvent.selectOptions(
-      await screen.findByRole("combobox", { name: /contributor/i }),
+      await screen.findByRole("combobox", { name: /recipient/i }),
       TEST_USER.githubUser.githubUserId.toString()
     );
     await userEvent.type(await screen.findByRole("spinbutton", { name: /amount to wire/i }), "3");
