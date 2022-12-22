@@ -26,4 +26,5 @@ module.exports = defineConfig({
   env: {
     hasuraAdminSecret: process.env.HASURA_GRAPHQL_ADMIN_SECRET,
   },
+  video: false,
 });
