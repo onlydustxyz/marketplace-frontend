@@ -2,24 +2,23 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{
-	AggregateRootRepository, DomainError, Event, GithubRepositoryId, Project, ProjectId, Publisher,
-	UniqueMessage,
+	AggregateRootRepository, DomainError, Event, GithubRepoExists, GithubRepositoryId, Project,
+	ProjectId, Publisher, UniqueMessage,
 };
-use infrastructure::github;
 
 use crate::domain::Publishable;
 
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_repository: AggregateRootRepository<Project>,
-	github: Arc<github::Client>,
+	github: Arc<dyn GithubRepoExists>,
 }
 
 impl Usecase {
 	pub fn new(
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		project_repository: AggregateRootRepository<Project>,
-		github: Arc<github::Client>,
+		github: Arc<dyn GithubRepoExists>,
 	) -> Self {
 		Self {
 			event_publisher,
