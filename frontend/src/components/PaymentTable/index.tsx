@@ -48,6 +48,7 @@ export const mapApiPaymentsToProps = (apiPayment: any): Payment => {
       id: project.id,
       title: project.name,
       description: project.projectDetails.description,
+      logoUrl: project.projectDetails.logoUrl || project.githubRepo?.content?.logoUrl,
     },
     status:
       getPaidAmount(apiPayment.payments) === apiPayment.amountInUsd

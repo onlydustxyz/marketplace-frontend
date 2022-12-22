@@ -93,6 +93,12 @@ export const GET_BUDGET_PAYMENTS_QUERY = gql`
           name
           projectDetails {
             description
+            logoUrl
+          }
+          githubRepo {
+            content {
+              logoUrl
+            }
           }
         }
       }

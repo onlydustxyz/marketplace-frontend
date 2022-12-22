@@ -7,6 +7,7 @@ interface ProjectProps extends PropsWithChildren {
   details?: {
     description: string;
     telegramLink: string;
+    logoUrl?: string;
   };
   budget?: {
     remainingAmount: number;

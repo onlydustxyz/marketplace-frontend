@@ -2225,7 +2225,7 @@ export type GetPaymentRequestsQueryVariables = Exact<{
 }>;
 
 
-export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', project: { __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null } | null } | null } | null }> };
+export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', project: { __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', logoUrl: string } } | null } | null } | null }> };
 
 export type MyProjectQueryVariables = Exact<{
   id: Scalars['uuid'];
@@ -2268,7 +2268,7 @@ export type GetPaymentRequestsForBudgetIdQueryVariables = Exact<{
 }>;
 
 
-export type GetPaymentRequestsForBudgetIdQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', project: { __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null } | null } | null } | null }> };
+export type GetPaymentRequestsForBudgetIdQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', project: { __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', logoUrl: string } } | null } | null } | null }> };
 
 export type ProjectDetailsGithubRepoFieldsFragment = { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } };
 
@@ -2371,6 +2371,12 @@ export const GetPaymentRequestsDocument = gql`
         name
         projectDetails {
           description
+          logoUrl
+        }
+        githubRepo {
+          content {
+            logoUrl
+          }
         }
       }
     }
@@ -2615,6 +2621,12 @@ export const GetPaymentRequestsForBudgetIdDocument = gql`
         name
         projectDetails {
           description
+          logoUrl
+        }
+        githubRepo {
+          content {
+            logoUrl
+          }
         }
       }
     }

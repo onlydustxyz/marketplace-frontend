@@ -68,6 +68,7 @@ export type Project = {
   id: string;
   title: string;
   description: string;
+  logoUrl?: string;
 };
 
 type Locale = "en" | "fr";
