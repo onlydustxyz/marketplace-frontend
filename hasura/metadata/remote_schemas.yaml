@@ -97,6 +97,7 @@
           }
           type Repository {
             contributors: [User!]!
+            logoUrl: String!
             readme: File
           }
           type User {
@@ -123,6 +124,7 @@
           }
           type Repository {
             contributors: [User!]!
+            logoUrl: String!
             readme: File
           }
           type User {

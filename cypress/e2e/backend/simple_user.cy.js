@@ -141,6 +141,7 @@ describe("As a simple user, I", () => {
                         encoding
                         content
                         }
+                        logoUrl
                     }
                   }
                 }
@@ -160,6 +161,7 @@ describe("As a simple user, I", () => {
                     ]);
                     expect(repo.content.readme.encoding).equal("BASE64");
                     expect(repo.content.readme.content).to.be.a("string");
+                    expect(repo.content.logoUrl).to.be.a("string");
                 });
         });
     });
