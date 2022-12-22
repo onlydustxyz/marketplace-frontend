@@ -9,6 +9,7 @@ use serde::Deserialize;
 
 mod error;
 pub use error::Error;
+mod specifications;
 
 #[derive(Deserialize)]
 pub struct Config {

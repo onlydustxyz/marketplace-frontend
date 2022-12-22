@@ -4,6 +4,7 @@ use domain::{
 	AggregateRootRepository, Budget, Event, Payment, Project, Publisher, UniqueMessage,
 	UuidGenerator,
 };
+use infrastructure::github;
 use presentation::http::guards::OptionUserId;
 
 use crate::{
@@ -35,6 +36,7 @@ impl Context {
 		project_repository: AggregateRootRepository<Project>,
 		project_details_repository: ProjectDetailsRepository,
 		user_info_repository: UserInfoRepository,
+		github: Arc<github::Client>,
 	) -> Self {
 		Self {
 			caller_permissions,
@@ -53,6 +55,7 @@ impl Context {
 				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
 				project_details_repository.clone(),
+				github,
 			),
 			update_project_github_repo_id_usecase:
 				application::project::update_github_repo_id::Usecase::new(
