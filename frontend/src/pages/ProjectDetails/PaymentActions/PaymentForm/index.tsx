@@ -106,8 +106,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
                         >
                           {getUserGithubIdsQuery.data.users
                             .filter(user => user.githubUser)
-                            .map((user: any) => (
-                              <option key={user.githubUser.githubUserId} value={user.githubUser.githubUserId}>
+                            .map(user => (
+                              <option key={user.githubUser?.githubUserId} value={user.githubUser?.githubUserId}>
                                 {user.displayName}
                               </option>
                             ))}
