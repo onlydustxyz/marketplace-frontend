@@ -141,4 +141,21 @@ describe("As an admin, on retool, I", () => {
                 .asAdmin().errors().its(0).its("extensions.reason").should("equal", "Github repository 2147466666 does not exist");
         });
     });
+
+    it("can't update a project with a repository that doesn't exist", () => {
+        const FIRST_REPO_ID = 1;
+        const UNEXISTING_REPO_ID = 2147466666;
+
+        cy.createUser().then((user) =>
+            cy
+                .createProject(user.id, "Another project", 500, FIRST_REPO_ID)
+                .asAdmin()
+                .data("createProject")
+                .then((projectId) => {
+                    cy.wait(700);
+                        cy.updateProjectGithubRepoId(projectId, UNEXISTING_REPO_ID)
+                            .asAdmin().errors().its(0).its("extensions.reason").should("equal", "Github repository 2147466666 does not exist");
+                })
+        );
+    });
 });
