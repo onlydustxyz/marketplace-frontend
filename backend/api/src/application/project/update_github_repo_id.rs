@@ -5,22 +5,26 @@ use domain::{
 	AggregateRootRepository, DomainError, Event, GithubRepositoryId, Project, ProjectId, Publisher,
 	UniqueMessage,
 };
+use infrastructure::github;
 
 use crate::domain::Publishable;
 
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_repository: AggregateRootRepository<Project>,
+	github: Arc<github::Client>,
 }
 
 impl Usecase {
 	pub fn new(
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		project_repository: AggregateRootRepository<Project>,
+		github: Arc<github::Client>,
 	) -> Self {
 		Self {
 			event_publisher,
 			project_repository,
+			github,
 		}
 	}
 
@@ -32,7 +36,8 @@ impl Usecase {
 		let project = self.project_repository.find_by_id(&project_id)?;
 
 		let events = project
-			.update_github_repository(github_repo_id)
+			.update_github_repository(self.github.clone(), github_repo_id)
+			.await
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?;
 
 		events

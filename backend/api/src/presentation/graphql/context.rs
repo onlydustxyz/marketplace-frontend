@@ -55,12 +55,13 @@ impl Context {
 				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
 				project_details_repository.clone(),
-				github,
+				github.clone(),
 			),
 			update_project_github_repo_id_usecase:
 				application::project::update_github_repo_id::Usecase::new(
 					event_publisher.to_owned(),
 					project_repository,
+					github,
 				),
 			project_details_repository,
 			user_info_repository,
