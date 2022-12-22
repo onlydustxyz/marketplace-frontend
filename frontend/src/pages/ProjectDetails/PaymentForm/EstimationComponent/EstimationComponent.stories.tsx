@@ -16,6 +16,6 @@ let numberOfDays = 2;
 Default.args = {
   numberOfDays,
   subtractNumberOfDays: () => numberOfDays--,
-  addNumberOfDays: () => numberOfDays++,
+  increaseNumberOfDays: () => numberOfDays++,
   budget: { total: 50000, remaining: 30000 },
 };

@@ -14,7 +14,7 @@ export default function Projects() {
 
   return (
     <QueryWrapper<GetProjectsQuery> query={query}>
-      <div className="mx-auto px-10 flex flex-col align-center items-center gap-5 mt-10">
+      <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
         {data &&
           data.projects.map(project => (
             <Link key={project.id} className="flex w-11/12 my-3" to={`/project/${project.id}`}>
@@ -24,7 +24,6 @@ export default function Projects() {
                   details={{
                     description: project?.projectDetails?.description,
                     telegramLink: project?.projectDetails?.telegramLink,
-                    logoUrl: project.projectDetails?.logoUrl || project.githubRepo?.content.logoUrl,
                   }}
                   lead={project?.projectLeads?.[0]?.user}
                   githubRepoInfo={{
@@ -51,7 +50,6 @@ export const GET_PROJECTS_QUERY = gql`
       projectDetails {
         description
         telegramLink
-        logoUrl
       }
       projectLeads {
         user {
