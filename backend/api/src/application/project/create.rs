@@ -2,10 +2,9 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{
-	Amount, Budget, BudgetId, DomainError, Event, EventSourcable, GithubRepositoryId, Project,
-	ProjectId, Publisher, UniqueMessage, UserId, UuidGenerator,
+	Amount, Budget, BudgetId, DomainError, Event, EventSourcable, GithubRepoExists,
+	GithubRepositoryId, Project, ProjectId, Publisher, UniqueMessage, UserId, UuidGenerator,
 };
-use infrastructure::github;
 
 use crate::{
 	domain::{ProjectDetails, Publishable},
@@ -16,7 +15,7 @@ pub struct Usecase {
 	uuid_generator: Arc<dyn UuidGenerator>,
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_details_repository: ProjectDetailsRepository,
-	github: Arc<github::Client>,
+	github: Arc<dyn GithubRepoExists>,
 }
 
 impl Usecase {
@@ -24,7 +23,7 @@ impl Usecase {
 		uuid_generator: Arc<dyn UuidGenerator>,
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		project_details_repository: ProjectDetailsRepository,
-		github: Arc<github::Client>,
+		github: Arc<dyn GithubRepoExists>,
 	) -> Self {
 		Self {
 			uuid_generator,

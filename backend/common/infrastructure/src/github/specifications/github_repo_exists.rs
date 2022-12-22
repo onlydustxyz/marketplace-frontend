@@ -15,7 +15,7 @@ impl GithubRepoExists for Client {
 			Ok(_) => Ok(true),
 			Err(error) => match error {
 				Error::NotFound(_) => Ok(false),
-				Error::Other(error) => Err(SpecificationError::Infrastructure(error.into())),
+				Error::Other(error) => Err(SpecificationError::Infrastructure(error)),
 			},
 		}
 	}
