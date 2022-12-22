@@ -25,4 +25,5 @@ pub struct ProjectDetails {
 	project_id: ProjectId,
 	description: Option<String>,
 	telegram_link: Option<String>,
+	logo_url: Option<String>,
 }
