@@ -25,6 +25,7 @@ Default.args = {
   details: {
     telegramLink: "https://web.telegram.org/z/",
     description: "EVM interpreter written in Cairo, a sort of ZK-EVM emulator, leveraging STARK proof system.",
+    logoUrl: "https://avatars.githubusercontent.com/u/25772758?v=4",
   },
   lead: {
     displayName: "Oscar le Boss",

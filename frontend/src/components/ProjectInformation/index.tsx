@@ -16,6 +16,7 @@ interface ProjectInformationProps {
   details?: {
     description?: string | null;
     telegramLink?: string | null;
+    logoUrl?: string | null;
   } | null;
   lead?: {
     displayName: string;
@@ -40,7 +41,7 @@ export default function ProjectInformation({ name, details, lead, githubRepoInfo
       <div className="flex flex-col basis-4/12 gap-5 justify-around">
         <div className="flex flex-row gap-3 items-center">
           <div className="border-4 border-neutral-600 p-2 rounded-2xl">
-            <img className="md:w-8 w-4 hover:opacity-90" src={onlyDustLogo} alt="Project Logo" />
+            <img className="md:w-8 w-4 hover:opacity-90" src={details?.logoUrl || onlyDustLogo} alt="Project Logo" />
           </div>
           <div className="flex flex-col">
             <div className="text-3xl font-medium">{name}</div>
