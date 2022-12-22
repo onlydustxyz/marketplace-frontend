@@ -2232,7 +2232,7 @@ export type MyProjectQueryVariables = Exact<{
 }>;
 
 
-export type MyProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
+export type MyProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
 
 export type UpdateProfileInfoMutationVariables = Exact<{
   email: Scalars['Email'];
@@ -2412,6 +2412,7 @@ export const MyProjectDocument = gql`
     projectDetails {
       description
       telegramLink
+      logoUrl
     }
     githubRepo {
       ...GithubRepoFieldsForProjectCard
