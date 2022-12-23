@@ -64,21 +64,30 @@ const getProjectLeadInfos = async userId =>
     { userId }
   ).then(response => response.user);
 
-const getProjectDetails = async projectId =>
+const getProjectDetails = async projectName =>
   graphqlAsAdmin(
-    `query($projectId: uuid!) {
-    projectsByPk(id: $projectId) {
-        id
-        projectLeads {
+    `query ($projectName: String!) {
+        projects(where: {name: {_eq: $projectName}}) {
+          id
+          projectLeads {
             userId
-        }
-        budgets {
+          }
+          budgets {
             id
+          }
         }
+      }`,
+    { projectName }
+  ).then(response => {
+    if (response.projects.length == 0) {
+      throw new Error(`Project '${projectName}' not found`);
     }
-  }`,
-    { projectId }
-  ).then(response => response.projectsByPk);
+
+    if (response.projects.length > 1) {
+      throw new Error(`More than one project named '${projectName}'`);
+    }
+    return response.projects[0];
+  });
 
 const getGithubUser = async githubLogin =>
   graphqlAsAdmin(
@@ -119,7 +128,7 @@ const addEthReceipt = async (amount, currencyCode, paymentId, recipientAddress, 
   ).then(response => response.addEthPaymentReceipt);
 
 const importPayment = async (
-  projectId,
+  projectName,
   recipientGithubHandle,
   recipientEthAddress,
   workItems,
@@ -127,14 +136,16 @@ const importPayment = async (
   transactionHash
 ) => {
   console.error(`Processing payment for ${recipientGithubHandle} (${amount} $)`);
-  const project = await getProjectDetails(projectId);
+  const project = await getProjectDetails(projectName);
   const githubUser = await getGithubUser(recipientGithubHandle);
 
+  const projectId = project.id;
   const leaderId = project.projectLeads[0].userId;
   const budgetId = project.budgets[0].id;
   const recipientGithubId = githubUser.id;
 
   const paymentId = await sendPaymentRequest(leaderId, amount, budgetId, recipientGithubId, workItems);
+  sleep(500);
   const receiptId = await addEthReceipt(amount.toString(), "USDC", paymentId, recipientEthAddress, transactionHash);
 
   return {
@@ -151,7 +162,7 @@ const importPayment = async (
   };
 };
 
-const importPaymentsFromFile = async (projectId, filename) => {
+const importPaymentsFromFile = async (projectName, filename) => {
   let reports = [];
 
   for await (const record of fs.createReadStream(filename, "utf-8").pipe(csv.parse({ columns: true, trim: true }))) {
@@ -159,7 +170,7 @@ const importPaymentsFromFile = async (projectId, filename) => {
       const amount = parseInt(record["Est. Reward ($)"]);
       if (!isNaN(amount)) {
         const report = await importPayment(
-          projectId,
+          projectName,
           record["Github Handle"],
           record["Ethereum Address"],
           record["PR links"].split(";").map(item => item.trim()),
@@ -179,12 +190,12 @@ const importPaymentsFromFile = async (projectId, filename) => {
 nconf.argv(
   require("yargs")
     .version("1.0.0")
-    .usage("Usage: import-payments-history.js -p project_id -f file.csv > report.csv")
+    .usage("Usage: import-payments-history.js -p Kakarot -f kakarot.csv > kakarot_report.csv")
     .strict()
     .options({
       project: {
         alias: "p",
-        describe: "The project ID to import payments for",
+        describe: "The project name to import payments for",
         demand: true,
       },
     })
