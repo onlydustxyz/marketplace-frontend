@@ -7,7 +7,8 @@
   },
   "github": {
     "loggingIn": "Logging in...",
-    "tokenMissing": "Github authentication token missing!"
+    "tokenMissing": "Github authentication token missing!",
+    "invalidLogin": "Invalid Github login"
   },
   "images": {
     "githubLogo": "Github logo",
