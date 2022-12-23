@@ -25,14 +25,14 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     uri: `${config.HASURA_BASE_URL}/v1/graphql`,
   });
 
-  const ErrorLink = onError(({ graphQLErrors, networkError }) => {
+  const ErrorLink = onError(({ graphQLErrors, networkError, operation }) => {
     if (graphQLErrors) {
       graphQLErrors.forEach(({ message, locations, path }) =>
         console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
       );
     }
     if (networkError) console.error(`[Network error]: ${networkError}`);
-    setDisplayError(true);
+    setDisplayError(!!networkError || !operation.getContext().ignoreGraphQLErrors);
   });
 
   const client = new ApolloClient({
