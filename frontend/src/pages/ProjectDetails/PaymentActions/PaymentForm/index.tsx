@@ -112,15 +112,18 @@ export const GET_USERS_QUERY = gql`
 `;
 
 export const REQUEST_PAYMENT_MUTATION = gql`
-  mutation RequestPayment($amount: Int!, $contributorId: Int!, $budgetId: Uuid!) {
-    requestPayment(amountInUsd: $amount, budgetId: $budgetId, reason: "{}", recipientId: $contributorId)
+  mutation RequestPayment($amount: Int!, $contributorId: Int!, $budgetId: Uuid!, $reason: Reason!) {
+    requestPayment(amountInUsd: $amount, budgetId: $budgetId, reason: $reason, recipientId: $contributorId)
   }
 `;
 
-const mapFormDataToSchema = ({ contributor }: Inputs) => {
+const mapFormDataToSchema = ({ contributor, linkToIssue }: Inputs) => {
   return {
     variables: {
       contributorId: parseInt(contributor),
+      reason: {
+        workItems: [linkToIssue],
+      },
     },
   };
 };
