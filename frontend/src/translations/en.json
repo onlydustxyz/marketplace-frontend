@@ -53,13 +53,13 @@
   },
   "profile": {
     "edit": "Edit profile",
-      "form": {
-	  "aboutYou": "About you",
+    "form": {
+      "aboutYou": "About you",
       "bankWire": "Bank wire",
       "bic": "BIC",
       "city": "City",
-	  "companyProfile": "Company",
-	  "contactInfo": "Contact info",
+      "companyProfile": "Company",
+      "contactInfo": "Contact info",
       "country": "Country",
       "email": "Email",
       "ethereum": "Ethereum",
@@ -68,8 +68,8 @@
       "iban": "IBAN",
       "id": "ID",
       "individualProfile": "Individual",
-	"lastname": "Last name",
-	"location": "Location",
+      "lastname": "Last name",
+      "location": "Location",
       "number": "N.",
       "street": "Street",
       "name": "Name",
