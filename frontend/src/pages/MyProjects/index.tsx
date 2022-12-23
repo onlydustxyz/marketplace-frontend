@@ -7,16 +7,21 @@ import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { MyProjectQuery } from "src/__generated/graphql";
+import { useT } from "talkr";
 
 export default function MyProjects() {
+  const { T } = useT();
   const { ledProjectIds } = useAuth();
   return (
-    <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
-      {ledProjectIds.map((projectId: string) => (
-        <Link key={projectId} className="flex w-11/12 my-3" to={`/project/${projectId}`}>
-          <MyProjectContainer projectId={projectId} />
-        </Link>
-      ))}
+    <div>
+      <div className="text-3xl font-alfreda mt-10">{T("navbar.myProjects")}</div>
+      <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
+        {ledProjectIds.map((projectId: string) => (
+          <Link key={projectId} className="flex w-11/12 my-3" to={`/project/${projectId}`}>
+            <MyProjectContainer projectId={projectId} />
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
