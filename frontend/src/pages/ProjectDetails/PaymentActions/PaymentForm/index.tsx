@@ -1,13 +1,14 @@
 import { gql } from "@apollo/client";
 import { HasuraUserRole } from "src/types";
-import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
-import { useHasuraMutation } from "src/hooks/useHasuraQuery";
+import { useForm, SubmitHandler, FormProvider, ChangeHandler } from "react-hook-form";
+import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { Inputs } from "./types";
 import Input from "src/components/FormInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import Card from "src/components/Card";
 import EstimationComponent, { BASE_RATE_USD } from "./EstimationComponent";
+import { FindUserQueryForPaymentFormQuery } from "src/__generated/graphql";
 
 const DEFAULT_NUMBER_OF_DAYS = 2;
 
@@ -35,10 +36,42 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
     variables: { budgetId: budget.id, amount: numberOfDays * BASE_RATE_USD },
   });
 
-  const { handleSubmit } = formMethods;
+  const { handleSubmit, setError, clearErrors } = formMethods;
+
+  const [contributorLoginInput, setContributorLoginInput] = useState("");
+  const [contributorLogin, setContributorLogin] = useState("");
+
+  const onContributorLoginChange: ChangeHandler = async ({ target }) => setContributorLoginInput(target.value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setContributorLogin(contributorLoginInput), 500);
+    return () => clearTimeout(timer);
+  }, [contributorLoginInput]);
+
+  const findUserQuery = useHasuraQuery<FindUserQueryForPaymentFormQuery>(
+    FIND_USER_QUERY,
+    HasuraUserRole.RegisteredUser,
+    {
+      skip: !contributorLogin,
+      variables: {
+        username: contributorLogin,
+      },
+      context: {
+        ignoreGraphQLErrors: true, // tell ApolloWrapper to ignore the errors
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (findUserQuery.error) {
+      setError("contributor", { message: T("github.invalidLogin"), type: "value" });
+    } else {
+      clearErrors("contributor");
+    }
+  }, [findUserQuery.error]);
 
   const onSubmit: SubmitHandler<Inputs> = async formData => {
-    await insertPayment(mapFormDataToSchema(formData));
+    await insertPayment(mapFormDataToSchema(formData, findUserQuery.data?.fetchUserDetails.id));
     window.location.reload();
   };
 
@@ -55,6 +88,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
                     name="contributor"
                     placeholder="Github login"
                     options={{ required: T("form.required") }}
+                    onChange={onContributorLoginChange}
                   />
                   <Input
                     label={T("payment.form.linkToIssue")}
@@ -90,10 +124,18 @@ export const REQUEST_PAYMENT_MUTATION = gql`
   }
 `;
 
-const mapFormDataToSchema = ({ contributor, linkToIssue }: Inputs) => {
+export const FIND_USER_QUERY = gql`
+  query FindUserQueryForPaymentForm($username: String!) {
+    fetchUserDetails(username: $username) {
+      id
+    }
+  }
+`;
+
+const mapFormDataToSchema = ({ linkToIssue }: Inputs, contributorId?: number) => {
   return {
     variables: {
-      contributorId: parseInt(contributor),
+      contributorId,
       reason: {
         workItems: [linkToIssue],
       },
