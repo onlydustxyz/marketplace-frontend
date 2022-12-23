@@ -11,11 +11,13 @@ const Template: ComponentStory<typeof EstimationComponent> = args => <Estimation
 
 export const Default = Template.bind({});
 
-let numberOfDays = 2;
-
 Default.args = {
-  numberOfDays,
-  subtractNumberOfDays: () => numberOfDays--,
-  addNumberOfDays: () => numberOfDays++,
-  budget: { total: 50000, remaining: 30000 },
+  numberOfDays: 2,
+  decreaseNumberOfDays: () => {
+    return;
+  },
+  increaseNumberOfDays: () => {
+    return;
+  },
+  budget: { initialAmount: 50000, remainingAmount: 30000 },
 };
