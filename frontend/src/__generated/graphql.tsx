@@ -128,11 +128,11 @@ export type BooleanComparisonExp = {
 export type Budgets = {
   __typename?: 'Budgets';
   id: Scalars['uuid'];
-  initialAmount: Scalars['numeric'];
+  initialAmount: Maybe<Scalars['numeric']>;
   /** An object relationship */
   project: Maybe<Projects>;
   projectId: Maybe<Scalars['uuid']>;
-  remainingAmount: Scalars['numeric'];
+  remainingAmount: Maybe<Scalars['numeric']>;
 };
 
 /** order by aggregate values of table "budgets" */
@@ -769,6 +769,10 @@ export enum ProjectsSelectColumn {
   Name = 'name'
 }
 
+export type Reason = {
+  workItems: InputMaybe<Array<Scalars['String']>>;
+};
+
 export type Repository = {
   __typename?: 'Repository';
   contributors: Array<User>;
@@ -1230,7 +1234,7 @@ export type Mutation_RootInsertUserInfoOneArgs = {
 export type Mutation_RootRequestPaymentArgs = {
   amountInUsd: Scalars['Int'];
   budgetId: Scalars['Uuid'];
-  reason: Scalars['String'];
+  reason: Reason;
   recipientId: Scalars['Int'];
 };
 
@@ -2264,6 +2268,7 @@ export type RequestPaymentMutationVariables = Exact<{
   amount: Scalars['Int'];
   contributorId: Scalars['Int'];
   budgetId: Scalars['Uuid'];
+  reason: Reason;
 }>;
 
 
@@ -2290,7 +2295,7 @@ export type GetUserProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetUserProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any, remainingAmount: any }>, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
+export type GetUserProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any | null, remainingAmount: any | null }>, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
 
 export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2576,11 +2581,11 @@ export type GetUsersForPaymentFormQueryHookResult = ReturnType<typeof useGetUser
 export type GetUsersForPaymentFormLazyQueryHookResult = ReturnType<typeof useGetUsersForPaymentFormLazyQuery>;
 export type GetUsersForPaymentFormQueryResult = Apollo.QueryResult<GetUsersForPaymentFormQuery, GetUsersForPaymentFormQueryVariables>;
 export const RequestPaymentDocument = gql`
-    mutation RequestPayment($amount: Int!, $contributorId: Int!, $budgetId: Uuid!) {
+    mutation RequestPayment($amount: Int!, $contributorId: Int!, $budgetId: Uuid!, $reason: Reason!) {
   requestPayment(
     amountInUsd: $amount
     budgetId: $budgetId
-    reason: "{}"
+    reason: $reason
     recipientId: $contributorId
   )
 }
@@ -2603,6 +2608,7 @@ export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMut
  *      amount: // value for 'amount'
  *      contributorId: // value for 'contributorId'
  *      budgetId: // value for 'budgetId'
+ *      reason: // value for 'reason'
  *   },
  * });
  */

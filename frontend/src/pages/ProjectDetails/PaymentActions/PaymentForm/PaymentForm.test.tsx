@@ -53,7 +53,12 @@ const graphQlMocks = [
   {
     request: {
       query: REQUEST_PAYMENT_MUTATION,
-      variables: { budgetId: "test-budget-id", amount: 1000, contributorId: TEST_USER.githubUser.githubUserId },
+      variables: {
+        budgetId: "test-budget-id",
+        amount: 1000,
+        contributorId: TEST_USER.githubUser.githubUserId,
+        reason: { workItems: ["test-link-name"] },
+      },
     },
     result: {
       data: {},
