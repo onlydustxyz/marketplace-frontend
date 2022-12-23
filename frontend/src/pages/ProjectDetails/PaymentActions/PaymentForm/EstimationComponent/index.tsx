@@ -35,9 +35,9 @@ export default function EstimationComponent({
             </div>
           </div>
         </div>
-        <div className="w-full bg-gray-700 rounded-full h-2.5">
+        <div className="w-full bg-purple-400 rounded-full h-3">
           <div
-            className="bg-blue-600 h-2.5 rounded-full"
+            className="bg-purple-600 h-3 rounded-full"
             style={{
               width: `${Math.floor(
                 ((budget.initialAmount - budget.remainingAmount + amountToPay) * 100) / budget.initialAmount
@@ -45,7 +45,7 @@ export default function EstimationComponent({
             }}
           >
             <div
-              className="bg-blue-900 h-2.5 rounded-full"
+              className="bg-purple-800 h-3 rounded-full"
               style={{
                 width: `${Math.floor(
                   ((budget.initialAmount - budget.remainingAmount) * 100) /
@@ -55,7 +55,7 @@ export default function EstimationComponent({
             ></div>
           </div>
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 font-medium">
           <div className="flex flex-row justify-between">
             <div>Total budget</div>
             <div>$ {budget.initialAmount}</div>

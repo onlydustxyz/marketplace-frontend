@@ -116,8 +116,13 @@ export const GET_USERS_QUERY = gql`
 `;
 
 export const REQUEST_PAYMENT_MUTATION = gql`
-  mutation RequestPayment($amount: Int!, $contributorId: Int!, $budgetId: Uuid!) {
-    requestPayment(amountInUsd: $amount, budgetId: $budgetId, reason: "{}", recipientId: $contributorId)
+  mutation RequestPayment($amount: Int!, $contributorId: Int!, $budgetId: Uuid!, $githubIssueLink: String!) {
+    requestPayment(
+      amountInUsd: $amount
+      budgetId: $budgetId
+      reason: "{githubIssueLink: $githubIssueLink}"
+      recipientId: $contributorId
+    )
   }
 `;
 

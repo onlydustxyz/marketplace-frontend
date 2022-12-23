@@ -17,14 +17,14 @@ const Input: React.FC<PropsType> = ({ label, type = "text", placeholder, name, v
   const error = errors[name];
 
   return (
-    <label html-for={name} className="flex flex-col flex-grow">
-      {label}
+    <label html-for={name} className="flex flex-col flex-grow gap-3">
+      <div className="font-bold">{label}</div>
       <input
         id={name}
         placeholder={placeholder}
         type={type}
         {...register(name, options)}
-        className={error ? "border-2 border-rose-600" : ""}
+        className={error ? "border-2 border-rose-600" : "p-3"}
         value={value}
         onChange={onChange}
       />

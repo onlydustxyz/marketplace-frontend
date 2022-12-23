@@ -19,12 +19,12 @@ const Select: React.FC<SelectProps> = ({ label, name, options, control, children
       control={control}
       name={name}
       render={({ field: { value, onChange } }) => (
-        <label html-for={name} className="flex flex-col flex-grow">
-          {label}
+        <label html-for={name} className="flex flex-col flex-grow gap-3">
+          <div className="font-bold">{label}</div>
           <select
             id={name}
             {...register(name, options)}
-            className={error ? "border-2 border-rose-600" : ""}
+            className={error ? "border-2 border-rose-600" : "p-3"}
             value={value}
             onChange={onChange}
           >
