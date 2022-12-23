@@ -28,6 +28,16 @@ vi.mock("jwt-decode", () => ({
   default: () => ({ [CLAIMS_KEY]: { [PROJECTS_LED_KEY]: '{"test-project-id"}' } }),
 }));
 
+const location: Location = window.location;
+
+//@ts-ignore
+delete (window.location as any);
+
+window.location = {
+  ...location,
+  reload: vi.fn(),
+};
+
 const graphQlMocks = [
   {
     request: {
@@ -42,7 +52,7 @@ const graphQlMocks = [
   {
     request: {
       query: REQUEST_PAYMENT_MUTATION,
-      variables: { budgetId: "test-budget-id", amount: 26403, contributorId: TEST_USER.githubUser.githubUserId },
+      variables: { budgetId: "test-budget-id", amount: 1000, contributorId: TEST_USER.githubUser.githubUserId },
     },
     result: {
       data: {},
@@ -56,7 +66,7 @@ describe('"PaymentForm" component', () => {
   });
 
   beforeEach(() => {
-    renderWithIntl(<PaymentForm budget={{ initialAmount: 100, remainingAmount: 40, id: TEST_BUDGET_ID }} />, {
+    renderWithIntl(<PaymentForm budget={{ initialAmount: 10000, remainingAmount: 4000, id: TEST_BUDGET_ID }} />, {
       wrapper: MemoryRouterProviderFactory({
         route: `${RoutePaths.ProjectDetails}/test-project-id`,
         mocks: graphQlMocks,
@@ -67,10 +77,6 @@ describe('"PaymentForm" component', () => {
   it("should show the right input / button labels", async () => {
     await screen.findByText(/link to github issue/i);
     await screen.findByText(/recipient/i);
-    await screen.findByText(/seniority/i);
-    await screen.findByText(/working days/i);
-    await screen.findByText(/overall satisfaction/i);
-    await screen.findByText(/amount to wire/i);
   });
 
   it("should be able to see user name in dropdown", async () => {
@@ -83,24 +89,24 @@ describe('"PaymentForm" component', () => {
     await waitFor(() => {
       expect(screen.getByLabelText<HTMLInputElement>(/link to github issue/i).value).toBe("");
     });
-    await userEvent.click(await screen.findByRole("button", { name: /send/i }));
+    await userEvent.click(await screen.findByRole("button", { name: /confirm payment/i }));
     await waitFor(() => {
       const errorMessages = screen.getAllByText(/required/i);
       expect(errorMessages.length).toBe(2);
     });
   });
 
-  it("should be able to request payment when required info is filled", async () => {
+  it.only("should be able to request payment when required info is filled and go back to project overview", async () => {
     await userEvent.type(await screen.findByLabelText(/link to github issue/i), "test-link-name");
     userEvent.selectOptions(
       await screen.findByRole("combobox", { name: /recipient/i }),
       TEST_USER.githubUser.githubUserId.toString()
     );
-    await userEvent.type(await screen.findByRole("spinbutton", { name: /amount to wire/i }), "3");
-    await userEvent.click(await screen.findByText(/send/i));
+    await userEvent.click(await screen.findByText(/confirm payment/i));
     await waitFor(() => {
-      const successMessage = screen.getByText(/sent/i);
-      expect(successMessage).toBeInTheDocument();
+      expect(window.location.reload).toHaveBeenCalledTimes(1);
+      vi.restoreAllMocks();
+      window.location = location;
     });
   });
 });
