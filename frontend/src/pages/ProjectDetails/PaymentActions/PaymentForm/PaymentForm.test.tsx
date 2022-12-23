@@ -3,7 +3,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
 
-import { GET_USERS_QUERY, REQUEST_PAYMENT_MUTATION } from ".";
+import { REQUEST_PAYMENT_MUTATION } from ".";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
@@ -42,16 +42,6 @@ window.location = {
 const graphQlMocks = [
   {
     request: {
-      query: GET_USERS_QUERY,
-    },
-    result: {
-      data: {
-        users: [TEST_USER],
-      },
-    },
-  },
-  {
-    request: {
       query: REQUEST_PAYMENT_MUTATION,
       variables: {
         budgetId: "test-budget-id",
@@ -85,11 +75,6 @@ describe('"PaymentForm" component', () => {
     await screen.findByText(/recipient/i);
   });
 
-  it("should be able to see user name in dropdown", async () => {
-    await userEvent.click(await screen.findByRole("combobox", { name: /recipient/i }));
-    await screen.findByText(/test-user-name/i);
-  });
-
   it("should display an error when a required field is missing", async () => {
     await userEvent.clear(await screen.findByLabelText<HTMLInputElement>(/link to github issue/i));
     await waitFor(() => {
@@ -104,10 +89,7 @@ describe('"PaymentForm" component', () => {
 
   it("should be able to request payment when required info is filled and go back to project overview", async () => {
     await userEvent.type(await screen.findByLabelText(/link to github issue/i), "test-link-name");
-    userEvent.selectOptions(
-      await screen.findByRole("combobox", { name: /recipient/i }),
-      TEST_USER.githubUser.githubUserId.toString()
-    );
+    await userEvent.type(await screen.findByLabelText(/recipient/i), TEST_USER.githubUser.githubUserId.toString());
     await userEvent.click(await screen.findByText(/confirm payment/i));
     await waitFor(() => {
       expect(window.location.reload).toHaveBeenCalledTimes(1);
