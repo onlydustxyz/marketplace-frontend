@@ -10,7 +10,7 @@ const PaymentTable: React.FC<PropsType> = ({ payments }) => {
   const { T } = useIntl();
   return (
     <div className="px-4 mx-4">
-      <table className="table-fixed w-full text-white text-sm font-medium font-walsheim">
+      <table id="payment_table" className="table-fixed w-full text-white text-sm font-medium font-walsheim">
         <thead className="border-b text-neutral-300 border-neutral-600">
           <tr>
             <th scope="col" className="px-6 py-4 text-left w-1/2">

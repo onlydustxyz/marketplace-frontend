@@ -2215,7 +2215,9 @@ export type Users_StreamCursorValueInput = {
 
 export type GithubRepoFieldsForProjectCardFragment = { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } };
 
-export type GetGithubUserIdQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetGithubUserIdQueryVariables = Exact<{
+  userId: InputMaybe<Scalars['uuid']>;
+}>;
 
 
 export type GetGithubUserIdQuery = { __typename?: 'query_root', authGithubUsers: Array<{ __typename?: 'AuthGithubUsers', githubUserId: any | null }> };
@@ -2323,8 +2325,8 @@ export const ProjectDetailsGithubRepoFieldsFragmentDoc = gql`
 }
     `;
 export const GetGithubUserIdDocument = gql`
-    query GetGithubUserId {
-  authGithubUsers {
+    query GetGithubUserId($userId: uuid) {
+  authGithubUsers(where: {userId: {_eq: $userId}}) {
     githubUserId
   }
 }
@@ -2342,6 +2344,7 @@ export const GetGithubUserIdDocument = gql`
  * @example
  * const { data, loading, error } = useGetGithubUserIdQuery({
  *   variables: {
+ *      userId: // value for 'userId'
  *   },
  * });
  */

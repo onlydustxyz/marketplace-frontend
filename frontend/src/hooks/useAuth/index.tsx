@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   const { isLoggedIn, roles, ledProjectIds } = useRoles(tokenSet?.accessToken);
-  const { githubUserId } = useGithubProfile(roles);
+  const { githubUserId } = useGithubProfile(roles, tokenSet?.user?.id);
 
   const value = {
     user: tokenSet ? tokenSet.user : null,

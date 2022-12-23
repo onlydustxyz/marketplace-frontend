@@ -8,11 +8,15 @@ import { describe, expect, it } from "vitest";
 describe("useGithubProfile", () => {
   it("should not fetch the profile when the user is not registered, then fetch the github profile", async () => {
     const roles: UserRole[] = [HasuraUserRole.Public];
+    const userId = "test-user-id";
     const githubUserId = Symbol("githubUserId");
     const mocks = [
       {
         request: {
           query: GET_USER_GITHUB_ID,
+          variables: {
+            userId,
+          },
         },
         result: {
           data: {
@@ -30,7 +34,7 @@ describe("useGithubProfile", () => {
     const { result, rerender, waitForValueToChange } = renderHook<
       PropsWithChildren & { roles: UserRole[] },
       ReturnType<typeof useGithubProfile>
-    >(({ roles }) => useGithubProfile(roles), {
+    >(({ roles }) => useGithubProfile(roles, userId), {
       wrapper,
       initialProps: { roles },
     });
