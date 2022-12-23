@@ -35,6 +35,8 @@ export type AuthGithubUsers = {
   providerUserId: Maybe<Scalars['String']>;
   refreshToken: Maybe<Scalars['String']>;
   updatedAt: Maybe<Scalars['timestamptz']>;
+  /** An object relationship */
+  user: Maybe<Users>;
   userId: Maybe<Scalars['uuid']>;
 };
 
@@ -51,6 +53,7 @@ export type AuthGithubUsersBoolExp = {
   providerUserId: InputMaybe<StringComparisonExp>;
   refreshToken: InputMaybe<StringComparisonExp>;
   updatedAt: InputMaybe<TimestamptzComparisonExp>;
+  user: InputMaybe<UsersBoolExp>;
   userId: InputMaybe<UuidComparisonExp>;
 };
 
@@ -64,6 +67,7 @@ export type AuthGithubUsersOrderBy = {
   providerUserId: InputMaybe<OrderBy>;
   refreshToken: InputMaybe<OrderBy>;
   updatedAt: InputMaybe<OrderBy>;
+  user: InputMaybe<UsersOrderBy>;
   userId: InputMaybe<OrderBy>;
 };
 
