@@ -5,7 +5,7 @@ use std::{
 
 use derive_more::*;
 
-#[derive(Debug, From, FromForm)]
+#[derive(Debug, From)]
 pub struct Params(HashMap<String, String>);
 
 impl Display for Params {
