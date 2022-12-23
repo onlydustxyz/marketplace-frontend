@@ -32,11 +32,11 @@ export default function PaymentActions({ budget }: PaymentsProps) {
     <>
       {budget && (
         <div className="flex flex-row items-start gap-5">
-          <div className="flex w-3/4">
+          <div className="flex w-2/3">
             {action === Action.Submit && <PaymentForm budget={budget} />}
             {action === Action.List && <PaymentTableQueryContainer budgetId={budget.id} />}
           </div>
-          <div className="flex w-1/4">
+          <div className="flex w-1/3">
             <Card>
               <div className="flex flex-col gap-10 items-stretch">
                 <RemainingBudget remainingAmount={budget.remainingAmount} initialAmount={budget.initialAmount} />

@@ -23,21 +23,12 @@
   },
   "payment": {
     "form": {
-      "amountToWire": "Amount to wire",
       "contributor": "Recipient",
       "linkToIssue": "Link to GitHub issue",
-      "recommendation": "Based on your input we recommend a payment between __lowerPaymentBound__ USD and __upperPaymentBound__ USD",
       "sent": "Payment request sent!",
-      "statisfaction": {
-        "levels": {
-          "excellent": "Excellent",
-          "fair": "Fair",
-          "good": "Good"
-        },
-        "title": "Overall satisfaction"
-      },
       "submit": "Submit payment",
-      "workingDays": "Working days"
+	"workingDays": "Working days",
+	"confirm": "Confirm payment"
     },
     "list": "List payments",
     "status": {

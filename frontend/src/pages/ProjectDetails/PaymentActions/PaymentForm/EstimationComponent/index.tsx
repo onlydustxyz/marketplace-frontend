@@ -1,5 +1,6 @@
 import headerElementBackground from "src/assets/img/header-element-background.png";
 import Card from "src/components/Card";
+import { useT } from "talkr";
 
 export const BASE_RATE_USD = 500;
 
@@ -17,9 +18,10 @@ export default function EstimationComponent({
   budget,
 }: EstimationComponentProps) {
   const amountToPay = numberOfDays * BASE_RATE_USD;
+  const { T } = useT();
   return (
     <Card backgroundImageUrl={headerElementBackground}>
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-10 items-stretch justify-items-center">
         <div className="flex flex-row justify-between items-center">
           <div className="text-3xl">
             <span className="font-walsheim font-black">{numberOfDays}</span> <span>days</span>
@@ -45,23 +47,31 @@ export default function EstimationComponent({
             <div
               className="bg-blue-900 h-2.5 rounded-full"
               style={{
-                width: `${Math.floor(((budget.initialAmount - budget.remainingAmount) * 100) / budget.initialAmount)}%`,
+                width: `${Math.floor(
+                  ((budget.initialAmount - budget.remainingAmount) * 100) /
+                    (budget.initialAmount - budget.remainingAmount + amountToPay)
+                )}%`,
               }}
             ></div>
           </div>
         </div>
-        <div className="flex flex-row justify-between">
-          <div>Total budget</div>
-          <div>$ {budget.initialAmount}</div>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-row justify-between">
+            <div>Total budget</div>
+            <div>$ {budget.initialAmount}</div>
+          </div>
+          <div className="flex flex-row justify-between">
+            <div>This payment</div>
+            <div>$ {amountToPay}</div>
+          </div>
+          <div className="flex flex-row justify-between">
+            <div>Left to spend</div>
+            <div>$ {budget.remainingAmount - amountToPay}</div>
+          </div>
         </div>
-        <div className="flex flex-row justify-between">
-          <div>This payment</div>
-          <div>$ {amountToPay}</div>
-        </div>
-        <div className="flex flex-row justify-between">
-          <div>Left to spend</div>
-          <div>$ {budget.remainingAmount - amountToPay}</div>
-        </div>
+        <button type="submit" className=" border-white border-2 px-3 py-2 rounded-md bg-neutral-50 text-black">
+          {T("payment.form.confirm")}
+        </button>
       </div>
     </Card>
   );
