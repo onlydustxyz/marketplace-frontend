@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::{collections::HashMap, path::PathBuf};
 
 use olog::error;
 use presentation::http::guards::{ApiKey, ApiKeyGuard};
@@ -20,8 +20,9 @@ pub async fn get(
 	_api_key: ApiKeyGuard<GithubApiKey>,
 	headers: Headers,
 	path: PathBuf,
-	params: Params,
+	params: HashMap<String, String>,
 ) -> Result<Response, Status> {
+	let params: Params = params.into();
 	let request = reqwest::Client::new()
 		.get(format!("https://api.github.com/{}{params}", path.display()))
 		.headers(headers.into());

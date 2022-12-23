@@ -55,7 +55,8 @@ impl Client {
 			.login
 			.clone();
 
-		let mut contents = octocrab::instance()
+		let mut contents = self
+			.0
 			.repos(owner, &repo.name)
 			.get_content()
 			.path(path)
