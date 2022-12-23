@@ -6,6 +6,18 @@ object_relationships:
     using:
       foreign_key_constraint_on: request_id
 select_permissions:
+  - role: project_lead_specific
+    permission:
+      columns:
+        - receipt
+        - amount
+        - currency_code
+        - id
+        - request_id
+      filter:
+        paymentRequest:
+          requestor_id:
+            _eq: X-Hasura-User-Id
   - role: registered_user_specific
     permission:
       columns:
