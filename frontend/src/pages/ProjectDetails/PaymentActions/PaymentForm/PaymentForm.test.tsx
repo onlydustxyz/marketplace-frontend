@@ -30,7 +30,8 @@ vi.mock("jwt-decode", () => ({
 
 const location: Location = window.location;
 
-//@ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 delete (window.location as any);
 
 window.location = {
@@ -96,7 +97,7 @@ describe('"PaymentForm" component', () => {
     });
   });
 
-  it.only("should be able to request payment when required info is filled and go back to project overview", async () => {
+  it("should be able to request payment when required info is filled and go back to project overview", async () => {
     await userEvent.type(await screen.findByLabelText(/link to github issue/i), "test-link-name");
     userEvent.selectOptions(
       await screen.findByRole("combobox", { name: /recipient/i }),
