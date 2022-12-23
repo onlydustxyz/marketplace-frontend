@@ -16,7 +16,7 @@
   },
   "navbar": {
     "logout": "Logout",
-    "myContributions": "My contributions",
+    "myContributions": "My payments",
     "myProjects": "My projects",
     "projects": "Browse projects",
     "signInWithGithub": "Sign in with Github"

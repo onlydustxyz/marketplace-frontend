@@ -7,9 +7,11 @@ import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { GetPaymentRequestsQuery } from "src/__generated/graphql";
+import { useT } from "talkr";
 
 const MyContributions = () => {
   const { githubUserId } = useAuth();
+  const { T } = useT();
   const query = useHasuraQuery<GetPaymentRequestsQuery>(GET_MY_CONTRIBUTIONS_QUERY, HasuraUserRole.RegisteredUser, {
     variables: { githubId: githubUserId },
   });
@@ -18,11 +20,14 @@ const MyContributions = () => {
   const hasPayments = payments && payments.length > 0;
 
   return (
-    <QueryWrapper query={query}>
-      <div className="mt-10">
-        <Card>{hasPayments ? <PaymentTable payments={payments} /> : <PaymentTableFallback />}</Card>
-      </div>
-    </QueryWrapper>
+    <div>
+      <div className="text-3xl font-alfreda mt-10">{T("navbar.myContributions")}</div>
+      <QueryWrapper query={query}>
+        <div className="mt-10">
+          <Card>{hasPayments ? <PaymentTable payments={payments} /> : <PaymentTableFallback />}</Card>
+        </div>
+      </QueryWrapper>
+    </div>
   );
 };
 
