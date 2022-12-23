@@ -10,3 +10,6 @@ pub use project_details::ProjectDetails;
 #[allow(clippy::extra_unused_lifetimes)]
 pub mod user_info;
 pub use user_info::UserInfo;
+
+mod payment;
+pub use payment::Reason as PaymentReason;

@@ -8,7 +8,7 @@ use super::{Context, Error, Result};
 use crate::{
 	domain::{
 		user_info::{Email, Identity, Location, PayoutSettings, UserInfo},
-		ProjectDetails,
+		PaymentReason, ProjectDetails,
 	},
 	presentation::http::dto::{IdentityInput, PayoutSettingsInput},
 };
@@ -98,7 +98,7 @@ impl Mutation {
 		budget_id: Uuid,
 		recipient_id: i32,
 		amount_in_usd: i32,
-		reason: String,
+		reason: PaymentReason,
 	) -> Result<Uuid> {
 		let caller_id = try_get_caller_user_id(context)?;
 
@@ -115,7 +115,7 @@ impl Mutation {
 				caller_id,
 				(recipient_id as i64).into(),
 				amount_in_usd as u32,
-				reason.into(),
+				serde_json::to_value(reason).map_err(|e| Error::InvalidRequest(anyhow!(e)))?,
 			)
 			.await?;
 

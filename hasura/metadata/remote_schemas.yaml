@@ -19,7 +19,7 @@
           scalar EthereumAddress
           scalar Uuid
           type Mutation {
-            requestPayment(budgetId: Uuid!, recipientId: Int!, amountInUsd: Int!, reason: String!): Uuid!
+            requestPayment(budgetId: Uuid!, recipientId: Int!, amountInUsd: Int!, reason: Reason!): Uuid!
             updateProfileInfo(location: Location!, identity: IdentityInput!, email: Email!, payoutSettings: PayoutSettingsInput!): Uuid!
           }
           type Query {
@@ -61,6 +61,9 @@
           input PersonIdentity {
             firstname: String!
             lastname: String!
+          }
+          input Reason {
+            workItems: [String!]
           }
     - role: public
       definition:
