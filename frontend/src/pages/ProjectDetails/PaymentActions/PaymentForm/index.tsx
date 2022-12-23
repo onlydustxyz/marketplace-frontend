@@ -86,7 +86,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
                   if (numberOfDays > 1) setNumberOfDays(numberOfDays - 1);
                 }}
                 increaseNumberOfDays={() => {
-                  if (numberOfDays < 20 && budget.remainingAmount - (numberOfDays + 1) * BASE_RATE_USD > 0) {
+                  if (numberOfDays < 20 && budget.remainingAmount - (numberOfDays + 1) * BASE_RATE_USD >= 0) {
                     setNumberOfDays(numberOfDays + 1);
                   }
                 }}

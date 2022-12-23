@@ -40,12 +40,14 @@ export default function PaymentActions({ budget }: PaymentsProps) {
             <Card>
               <div className="flex flex-col gap-10 items-stretch">
                 <RemainingBudget remainingAmount={budget.remainingAmount} initialAmount={budget.initialAmount} />
-                <div
-                  className="bg-neutral-50 rounded-xl w-fit p-3 hover:cursor-pointer text-black"
-                  onClick={() => setAction(action === Action.List ? Action.Submit : Action.List)}
-                >
-                  {T(action === Action.List ? "payment.form.submit" : "payment.list")}
-                </div>
+                {budget.remainingAmount > 0 && (
+                  <div
+                    className="bg-neutral-50 rounded-xl w-fit p-3 hover:cursor-pointer text-black"
+                    onClick={() => setAction(action === Action.List ? Action.Submit : Action.List)}
+                  >
+                    {T(action === Action.List ? "payment.form.submit" : "payment.list")}
+                  </div>
+                )}
               </div>
             </Card>
           </div>
