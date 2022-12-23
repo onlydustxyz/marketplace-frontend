@@ -33,7 +33,7 @@ function MyProjectContainer({ projectId }: MyProjectContainerProps) {
   return (
     <>
       {project && (
-        <Card>
+        <Card selectable>
           <ProjectInformation
             name={project.name}
             details={{
