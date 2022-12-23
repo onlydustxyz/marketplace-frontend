@@ -9,7 +9,7 @@ export default function RemainingBudget({ remainingAmount, initialAmount }: Rema
   const { T } = useIntl();
   return (
     <>
-      {remainingAmount && initialAmount && (
+      {remainingAmount !== undefined && initialAmount && (
         <div className="flex flex-col">
           <div>{T("project.remainingBudget")}</div>
           <div className="flex flex-row items-center space-x-3 md:flex-nowrap flex-wrap">

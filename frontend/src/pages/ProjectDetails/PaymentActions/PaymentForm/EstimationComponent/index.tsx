@@ -28,10 +28,10 @@ export default function EstimationComponent({
           </div>
           <div className="flex flex-row gap-3 text-white items-center">
             <div className="border rounded-xl w-fit py-2 px-4 hover:cursor-pointer" onClick={decreaseNumberOfDays}>
-              {T("payment.form.increase")}
+              {T("payment.form.decrease")}
             </div>
             <div className="border rounded-xl w-fit py-2 px-4 hover:cursor-pointer" onClick={increaseNumberOfDays}>
-              {T("payment.form.decrease")}
+              {T("payment.form.increase")}
             </div>
           </div>
         </div>
