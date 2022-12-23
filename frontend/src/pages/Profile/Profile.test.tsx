@@ -168,11 +168,11 @@ describe('"Profile" page for individual', () => {
     });
   });
 
-  it("should display success message on success", async () => {
+  it("should navigate to projects screen on success", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
     await userEvent.click(await screen.findByText("Save profile"));
     waitFor(() => {
-      const successMessage = screen.getByText("Your data has been saved!");
+      const successMessage = screen.getByText("Browse projects");
       expect(successMessage).toBeInTheDocument();
     });
   });
@@ -202,11 +202,11 @@ describe('"Profile" page for company', () => {
     });
   });
 
-  it("should display success message on success", async () => {
+  it("should navigate to projects screen on success", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
     await userEvent.click(await screen.findByText("Save profile"));
     waitFor(() => {
-      const successMessage = screen.getByText("Your data has been saved!");
+      const successMessage = screen.getByText("Browse projects");
       expect(successMessage).toBeInTheDocument();
     });
   });
