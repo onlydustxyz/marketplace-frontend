@@ -2259,11 +2259,6 @@ export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ProfileQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', userId: any, identity: any, email: string, location: any, payoutSettings: any }> };
 
-export type GetUsersForPaymentFormQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetUsersForPaymentFormQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', displayName: string, githubUser: { __typename?: 'AuthGithubUsers', githubUserId: any | null } | null }> };
-
 export type RequestPaymentMutationVariables = Exact<{
   amount: Scalars['Int'];
   contributorId: Scalars['Int'];
@@ -2543,43 +2538,6 @@ export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Pr
 export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
-export const GetUsersForPaymentFormDocument = gql`
-    query GetUsersForPaymentForm {
-  users {
-    displayName
-    githubUser {
-      githubUserId
-    }
-  }
-}
-    `;
-
-/**
- * __useGetUsersForPaymentFormQuery__
- *
- * To run a query within a React component, call `useGetUsersForPaymentFormQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUsersForPaymentFormQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUsersForPaymentFormQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetUsersForPaymentFormQuery(baseOptions?: Apollo.QueryHookOptions<GetUsersForPaymentFormQuery, GetUsersForPaymentFormQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUsersForPaymentFormQuery, GetUsersForPaymentFormQueryVariables>(GetUsersForPaymentFormDocument, options);
-      }
-export function useGetUsersForPaymentFormLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersForPaymentFormQuery, GetUsersForPaymentFormQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUsersForPaymentFormQuery, GetUsersForPaymentFormQueryVariables>(GetUsersForPaymentFormDocument, options);
-        }
-export type GetUsersForPaymentFormQueryHookResult = ReturnType<typeof useGetUsersForPaymentFormQuery>;
-export type GetUsersForPaymentFormLazyQueryHookResult = ReturnType<typeof useGetUsersForPaymentFormLazyQuery>;
-export type GetUsersForPaymentFormQueryResult = Apollo.QueryResult<GetUsersForPaymentFormQuery, GetUsersForPaymentFormQueryVariables>;
 export const RequestPaymentDocument = gql`
     mutation RequestPayment($amount: Int!, $contributorId: Int!, $budgetId: Uuid!, $reason: Reason!) {
   requestPayment(
