@@ -24,10 +24,15 @@ impl<'r> FromRequest<'r> for Headers {
 fn try_decode_headers(request: &Request<'_>) -> Result<Headers> {
 	let mut headers = HeaderMap::new();
 
+	const FORBIDDEN_HEADERS: [&str; 2] = [
+		"host",    // added by Rocket
+		"api-key", // do not leak secrets
+	];
+
 	for header in request
 		.headers()
 		.iter()
-		.filter(|header| header.name() != "host" /* added by Rocket */)
+		.filter(|header| !FORBIDDEN_HEADERS.contains(&header.name().as_str()))
 	{
 		headers.append(
 			header.name().as_str().parse::<HeaderName>().map_err(|error| {
