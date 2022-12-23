@@ -27,8 +27,13 @@
       "linkToIssue": "Link to GitHub issue",
       "sent": "Payment request sent!",
       "submit": "Submit payment",
-	"workingDays": "Working days",
-	"confirm": "Confirm payment"
+      "days": "days",
+      "confirm": "Confirm payment",
+      "increase": "+",
+      "decrease": "-",
+      "totalBudget": "Total budget",
+      "thisPayment": "This payment",
+      "leftToSpend": "Left to spend"
     },
     "list": "List payments",
     "status": {
