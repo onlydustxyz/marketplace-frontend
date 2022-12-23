@@ -1,20 +1,20 @@
 describe("The application", () => {
     it("should answer on Hasura queries", () => {
-        cy.graphql("{ projects { name } }")
+        cy.graphql({query: "{ projects { name } }"})
             .asAnonymous()
             .data("projects")
             .should("be.a", "array");
     });
 
     it("should answer on Rust queries", () => {
-        cy.graphql("{ hello }")
+        cy.graphql({query: "{ hello }"})
             .asAnonymous()
             .data("hello")
             .should("eq", "Couscous!");
     });
 
     it("should answer on Github proxy queries", () => {
-        cy.graphql("{ helloFromGithubProxy }")
+        cy.graphql({query: "{ helloFromGithubProxy }"})
             .asAnonymous()
             .data("helloFromGithubProxy")
             .should("eq", "Raclette!");

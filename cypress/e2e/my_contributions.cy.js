@@ -18,7 +18,7 @@ describe("As a contributor, I", () => {
               .its("id")
               .should("be.a", "string")
               .then(budgetId =>
-                cy.requestPayment(budgetId, 200, CONTRIBUTOR_GITHUB_ID, "{}").asRegisteredUser(user).data()
+                cy.requestPayment(budgetId, 200, CONTRIBUTOR_GITHUB_ID, {}).asRegisteredUser(user).data()
               )
           );
       });

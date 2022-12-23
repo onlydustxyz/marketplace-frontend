@@ -36,8 +36,7 @@ describe("As a simple user, I", () => {
 
     it("can get projects with some details", () => {
         cy.createUser().then((user) => {
-            cy.graphql(
-                `query {
+            cy.graphql({ query: `query {
                 projects {
                   name
                   githubRepoId
@@ -52,8 +51,7 @@ describe("As a simple user, I", () => {
                     }
                   }
                 }
-              }`
-            )
+              }`})
                 .asRegisteredUser(user)
                 .data("projects")
                 .should("be.a", "array");
@@ -63,15 +61,14 @@ describe("As a simple user, I", () => {
     it("can get payment request as the recipient", () => {
         const githubUserId = newRandomGithubUserId();
 
-        cy.requestPayment(budgetId, "500", `${githubUserId}`, {})
+        cy.requestPayment(budgetId, 500, githubUserId, {})
             .asRegisteredUser(leader)
             .data()
             .then(() => {
                 cy.createUser()
                     .withGithubProvider(githubUserId)
                     .then((user) => {
-                        cy.graphql(
-                            `query {
+                        cy.graphql({ query: `query {
                                     paymentRequests {
                                         id
                                         recipientId
@@ -81,8 +78,7 @@ describe("As a simple user, I", () => {
                                             userId
                                         }
                                     }
-                                }`
-                        )
+                                }`})
                             .asRegisteredUser(user)
                             .data("paymentRequests")
                             .should("be.a", "array")
@@ -103,7 +99,7 @@ describe("As a simple user, I", () => {
 
     it("can't request a payment", () => {
         cy.createUser().then((user) => {
-            cy.requestPayment(budgetId, "500", "55000", {})
+            cy.requestPayment(budgetId, 500, 55000, {})
                 .asRegisteredUser(user)
                 .errors()
                 .its(0)
@@ -124,8 +120,7 @@ describe("As a simple user, I", () => {
 
     it("can fetch github repository details from a project", () => {
         cy.createUser().then((user) => {
-            cy.graphql(
-                `{
+            cy.graphql({ query: `{
                 projectsByPk(id: "${projectId}") {
                   githubRepo {
                     id
@@ -145,8 +140,7 @@ describe("As a simple user, I", () => {
                     }
                   }
                 }
-              }`
-            )
+              }`})
                 .asRegisteredUser(user)
                 .data("projectsByPk.githubRepo")
                 .then((repo) => {
@@ -168,15 +162,14 @@ describe("As a simple user, I", () => {
 
     it("can fetch github user details from name", () => {
         cy.createUser().then((user) => {
-            cy.graphql(
-                `{
+            cy.graphql({ query: `{
                     fetchUserDetails(username: "abuisset") {
                       id
                       login
                       avatarUrl
                     }
-                  }`
-            ).asRegisteredUser(user)
+                  }`})
+                .asRegisteredUser(user)
                 .data("fetchUserDetails")
                 .then((user) => {
                     expect(user.id).equal(990474);
@@ -190,30 +183,28 @@ describe("As a simple user, I", () => {
     it("can update my info", () => {
         let email = "pierre.fabre@gmail.com";
         let location =
-            '{city: "Paris", country: "France", number: "4", postCode: "75008", street: "avenue des Champs Elysee"}';
+            {city: "Paris", country: "France", number: "4", postCode: "75008", street: "avenue des Champs Elysee"};
         let identity =
-            '{type: PERSON, optPerson: {firstname: "Pierre", lastname: "Fabre"}}';
+            {type: "PERSON", optPerson: {firstname: "Pierre", lastname: "Fabre"}};
         let payout_settings =
-            '{type: ETHEREUM_ADDRESS, optEthAddress: "0x123"}';
+            {type: "ETHEREUM_ADDRESS", optEthAddress: "0x123"};
 
         let new_payout_settings =
-            '{type: ETHEREUM_ADDRESS, optEthAddress: "0x456"}';
+            {type: "ETHEREUM_ADDRESS", optEthAddress: "0x456"};
         cy.createUser().then((user) => {
             cy.updateProfileInfo(email, location, identity, payout_settings)
                 .asRegisteredUser(user)
                 .data("updateProfileInfo")
                 .should("eq", user.id)
                 .then(() => {
-                    cy.graphql(
-                        `{
+                    cy.graphql({query: `{
                     userInfoByPk(userId: "${user.id}") {
                         identity
                         email
                         location
                         payoutSettings
                       }
-                  }`
-                    )
+                  }`})
                         .asAdmin()
                         .data("userInfoByPk")
                         .should("deep.eq", {
@@ -246,16 +237,14 @@ describe("As a simple user, I", () => {
                         .data()
                 )
                 .then(() => {
-                    cy.graphql(
-                        `{
+                    cy.graphql({query: `{
                     userInfoByPk(userId: "${user.id}") {
                         identity
                         email
                         location
                         payoutSettings
                       }
-                  }`
-                    )
+                  }`})
                         .asAdmin()
                         .data("userInfoByPk")
                         .should("deep.eq", {
