@@ -10,8 +10,6 @@ import { useIntl } from "src/hooks/useIntl";
 import { GetUsersForPaymentFormQuery } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import EstimationComponent, { BASE_RATE_USD } from "./EstimationComponent";
-import { useNavigate } from "react-router-dom";
-import { RoutePaths } from "src/App";
 
 const DEFAULT_NUMBER_OF_DAYS = 2;
 
@@ -39,8 +37,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
     variables: { budgetId: budget.id, amount: numberOfDays * BASE_RATE_USD },
   });
 
-  const navigate = useNavigate();
-
   const getUserGithubIdsQuery = useHasuraQuery<GetUsersForPaymentFormQuery>(
     GET_USERS_QUERY,
     HasuraUserRole.RegisteredUser
@@ -49,7 +45,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
 
   const onSubmit: SubmitHandler<Inputs> = async formData => {
     await insertPayment(mapFormDataToSchema(formData));
-    navigate(RoutePaths.Projects);
+    window.location.reload();
   };
 
   return (
@@ -116,13 +112,8 @@ export const GET_USERS_QUERY = gql`
 `;
 
 export const REQUEST_PAYMENT_MUTATION = gql`
-  mutation RequestPayment($amount: Int!, $contributorId: Int!, $budgetId: Uuid!, $githubIssueLink: String!) {
-    requestPayment(
-      amountInUsd: $amount
-      budgetId: $budgetId
-      reason: "{githubIssueLink: $githubIssueLink}"
-      recipientId: $contributorId
-    )
+  mutation RequestPayment($amount: Int!, $contributorId: Int!, $budgetId: Uuid!) {
+    requestPayment(amountInUsd: $amount, budgetId: $budgetId, reason: "{}", recipientId: $contributorId)
   }
 `;
 
