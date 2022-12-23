@@ -63,7 +63,7 @@ Cypress.Commands.add(
         cy.graphql(
             `mutation {
                 insertAuthUserProvider( object: {userId: "${user.id}", providerId: "github", providerUserId: "${githubUserId}", accessToken: "fake-token"},
-                                        onConflict: {constraint: user_providers_provider_id_provider_user_id_key, update_columns: accessToken}) {
+                                        onConflict: {constraint: user_providers_provider_id_provider_user_id_key, update_columns: userId}) {
                     id
                 }
             }`
