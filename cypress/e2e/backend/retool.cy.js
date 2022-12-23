@@ -11,8 +11,7 @@ describe("As an admin, on retool, I", () => {
                     // Let the event sourcing magic happen
                     cy.wait(700);
 
-                    cy.graphql(
-                        `{
+                    cy.graphql({ query: `{
                     projectsByPk(id: "${projectId}") {
                       githubRepo {
                         id
@@ -21,8 +20,7 @@ describe("As an admin, on retool, I", () => {
                         languages
                       }
                     }
-                  }`
-                    )
+                  }`})
                         .asAnonymous()
                         .data("projectsByPk.githubRepo")
                         .then(details => {
@@ -33,15 +31,13 @@ describe("As an admin, on retool, I", () => {
                             expect(details.languages).to.have.property("Cairo");
                         });
 
-                    cy.graphql(
-                        `{
+                    cy.graphql({ query: `{
                         projectsByPk(id: "${projectId}") {
                           projectLeads {
                             userId
                           }
                         }
-                      }`
-                    )
+                      }`})
                         .asAnonymous()
                         .data("projectsByPk.projectLeads")
                         .its(0)
@@ -49,26 +45,22 @@ describe("As an admin, on retool, I", () => {
                         .should("equal", user.id);
 
 
-                    cy.graphql(
-                        `{
+                    cy.graphql({ query: `{
                         projectsByPk(id: "${projectId}") {
                             projectDetails {
                                 logoUrl
                             }
                         }
-                      }`
-                    )
+                      }`})
                         .asAnonymous()
                         .data("projectsByPk.projectDetails.logoUrl")
                         .should("be.a", "string");
 
-                    cy.graphql(
-                        `{
-                    projects(where: {id: {_eq: "${projectId}"}}) {
-                        name
-                    }
-                }`
-                    )
+                    cy.graphql({ query: `{
+                        projects(where: {id: {_eq: "${projectId}"}}) {
+                            name
+                        }
+                    }`})
                         .asAnonymous()
                         .its("body")
                         .should("deep.equal", {
@@ -94,15 +86,13 @@ describe("As an admin, on retool, I", () => {
                         .data()
                         .then(() =>
                             cy
-                                .graphql(
-                                    `{
-                    projectsByPk(id: "${projectId}") {
-                      projectDetails {
-                        description
-                      }
-                    }
-                  }`
-                                )
+                                .graphql({ query: `{
+                                    projectsByPk(id: "${projectId}") {
+                                    projectDetails {
+                                        description
+                                    }
+                                    }
+                                }`})
                                 .asAnonymous()
                                 .data("projectsByPk.projectDetails")
                                 .its("description")
@@ -130,13 +120,11 @@ describe("As an admin, on retool, I", () => {
                         .then(() => {
                             cy.wait(700);
                             cy
-                                .graphql(
-                                    `{
-                    projectsByPk(id: "${projectId}") {
-                        githubRepoId
-                    }
-                  }`
-                                )
+                                .graphql({ query: `{
+                                    projectsByPk(id: "${projectId}") {
+                                        githubRepoId
+                                    }
+                                }`})
                                 .asAnonymous()
                                 .data("projectsByPk")
                                 .its("githubRepoId")

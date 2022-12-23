@@ -11,11 +11,11 @@ Cypress.Commands.add(
         prevSubject: true,
     },
     (query) => {
-        expect(query).to.be.a("string");
+        expect(JSON.stringify(query)).to.be.a("string");
         return cy.request({
             method: "POST",
             url: "/v1/graphql",
-            body: { query: query },
+            body: query,
             timeout: GRAPHQL_TIMEOUT,
         });
     }
@@ -27,11 +27,11 @@ Cypress.Commands.add(
         prevSubject: true,
     },
     (query) => {
-        expect(query).to.be.a("string");
+        expect(JSON.stringify(query)).to.be.a("string");
         return cy.request({
             method: "POST",
             url: "/v1/graphql",
-            body: { query: query },
+            body: query,
             headers: {
                 "X-Hasura-Admin-Secret": Cypress.env("hasuraAdminSecret"),
             },
@@ -47,11 +47,11 @@ Cypress.Commands.add(
     },
     (query, user) => {
         return cy.signinUser(user).then(({ session }) => {
-            expect(query).to.be.a("string");
+            expect(JSON.stringify(query)).to.be.a("string");
             cy.request({
                 method: "POST",
                 url: "/v1/graphql",
-                body: { query: query },
+                body: query,
                 headers: {
                     "X-Hasura-Role": "registered_user",
                     Authorization: `Bearer ${session.accessToken}`,
