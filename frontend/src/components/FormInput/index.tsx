@@ -18,7 +18,7 @@ const Input: React.FC<PropsType> = ({ label, type = "text", placeholder, name, v
 
   return (
     <label html-for={name} className="flex flex-col flex-grow gap-3">
-      <div className="font-bold">{label}</div>
+      <div className="font-medium text-neutral-300">{label}</div>
       <input
         id={name}
         placeholder={placeholder}

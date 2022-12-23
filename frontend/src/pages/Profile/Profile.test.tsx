@@ -159,9 +159,9 @@ describe('"Profile" page for individual', () => {
 
   it("should display error when required field missing", async () => {
     await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Email"));
-    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Firstname"));
+    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("First name"));
     expect((await screen.findByLabelText<HTMLInputElement>("Email")).value).toBe("");
-    await userEvent.click(await screen.findByText("Send"));
+    await userEvent.click(await screen.findByText("Save profile"));
     waitFor(() => {
       const errorMessages = screen.getAllByText("Required");
       expect(errorMessages.length).toBe(2);
@@ -170,7 +170,7 @@ describe('"Profile" page for individual', () => {
 
   it("should display success message on success", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
-    await userEvent.click(await screen.findByText("Send"));
+    await userEvent.click(await screen.findByText("Save profile"));
     waitFor(() => {
       const successMessage = screen.getByText("Your data has been saved!");
       expect(successMessage).toBeInTheDocument();
@@ -195,7 +195,7 @@ describe('"Profile" page for company', () => {
   it("should display error when required field missing", async () => {
     await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Name"));
     expect((await screen.findByLabelText<HTMLInputElement>("Name")).value).toBe("");
-    await userEvent.click(await screen.findByText("Send"));
+    await userEvent.click(await screen.findByText("Save profile"));
     waitFor(() => {
       const errorMessages = screen.getAllByText("Required");
       expect(errorMessages.length).toBe(1);
@@ -204,7 +204,7 @@ describe('"Profile" page for company', () => {
 
   it("should display success message on success", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
-    await userEvent.click(await screen.findByText("Send"));
+    await userEvent.click(await screen.findByText("Save profile"));
     waitFor(() => {
       const successMessage = screen.getByText("Your data has been saved!");
       expect(successMessage).toBeInTheDocument();

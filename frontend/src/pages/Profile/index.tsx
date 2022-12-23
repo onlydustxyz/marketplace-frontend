@@ -4,7 +4,6 @@ import { useAuth } from "src/hooks/useAuth";
 import { HasuraUserRole } from "src/types";
 import QueryWrapper from "src/components/QueryWrapper";
 import ProfileForm from "./components/ProfileForm";
-import { useIntl } from "src/hooks/useIntl";
 import { ProfileQuery } from "src/__generated/graphql";
 
 const Profile: React.FC = () => {
@@ -12,12 +11,10 @@ const Profile: React.FC = () => {
   const query = useHasuraQuery<ProfileQuery>(GET_PROFILE_QUERY, HasuraUserRole.RegisteredUser, {
     skip: !isLoggedIn,
   });
-  const { T } = useIntl();
 
   return (
-    <div className="flex flex-col mt-10 text-2xl">
-      <h1>{T("profile.edit")}</h1>
-      <br />
+    <div className="mt-10">
+      <div className="text-3xl font-alfreda mb-6">Edit profile</div>
       <QueryWrapper query={query}>{query.data && <ProfileForm user={query.data.userInfo[0]} />}</QueryWrapper>
     </div>
   );

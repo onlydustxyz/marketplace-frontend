@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import { HasuraUserRole } from "src/types";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
+import { Navigate } from "react-router-dom";
 import Input from "src/components/FormInput";
 import { useHasuraMutation } from "src/hooks/useHasuraQuery";
 import Radio from "./Radio";
@@ -14,6 +15,8 @@ import {
   Location,
   IdentityInput,
 } from "src/__generated/graphql";
+import Card from "src/components/Card";
+import { RoutePaths } from "src/App";
 
 type Inputs = {
   paymentReceiverType: IdentityType;
@@ -79,121 +82,165 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
 
   return (
     <FormProvider {...formMethods}>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
-        <>
-          <div className="flex flex-col">
-            {T("profile.form.typeOfProfile")}
-            <div className="flex flex-row gap-3">
-              <Radio
-                name="paymentReceiverType"
-                options={[
-                  {
-                    value: IdentityType.Person,
-                    label: T("profile.form.individualProfile"),
-                  },
-                  {
-                    value: IdentityType.Company,
-                    label: T("profile.form.companyProfile"),
-                  },
-                ]}
-              />
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+        <div className="flex flex-row gap-3 items-stretch">
+          <Card>
+            <div className="flex flex-col gap-5">
+              <div>
+                <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
+                  <div className="font-medium text-lg">{T("profile.form.aboutYou")}</div>
+                  <div>
+                    {paymentReceiverType === IdentityType.Person && (
+                      <div className="flex flex-row gap-5 pt-3">
+                        <Input
+                          label={T("profile.form.firstname")}
+                          name="firstname"
+                          placeholder={T("profile.form.firstname")}
+                          options={{ required: T("form.required") }}
+                        />
+                        <Input
+                          label={T("profile.form.lastname")}
+                          name="lastname"
+                          placeholder={T("profile.form.lastname")}
+                          options={{ required: T("form.required") }}
+                        />
+                      </div>
+                    )}
+                    {paymentReceiverType === IdentityType.Company && (
+                      <div className="flex flex-row gap-5">
+                        <Input
+                          label={T("profile.form.id")}
+                          name="id"
+                          placeholder={T("profile.form.id")}
+                          options={{ required: T("form.required") }}
+                        />
+                        <Input
+                          label={T("profile.form.name")}
+                          name="name"
+                          placeholder={T("profile.form.name")}
+                          options={{ required: T("form.required") }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col font-medium text-neutral-300 gap-2">
+                  <div>{T("profile.form.typeOfProfile")}</div>
+                  <div className="flex flex-row gap-3">
+                    <Radio
+                      name="paymentReceiverType"
+                      options={[
+                        {
+                          value: IdentityType.Person,
+                          label: T("profile.form.individualProfile"),
+                        },
+                        {
+                          value: IdentityType.Company,
+                          label: T("profile.form.companyProfile"),
+                        },
+                      ]}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
+                  <div className="font-medium text-lg">{T("profile.form.contactInfo")}</div>
+                  <div className="pt-3">
+                    <Input
+                      label={T("profile.form.email")}
+                      name="email"
+                      placeholder={T("profile.form.email")}
+                      options={{ required: T("form.required") }}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          {paymentReceiverType === IdentityType.Person && (
-            <div className="flex flex-row gap-5">
+          </Card>
+          <Card>
+            <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
+              <div className="font-medium text-lg">{T("profile.form.location")}</div>
+              <div>
+                <div className="mt-3">
+                  <Input
+                    label={T("profile.form.number")}
+                    name="number"
+                    placeholder={T("profile.form.number")}
+                    options={{ required: T("form.required") }}
+                  />
+                  <Input
+                    label={T("profile.form.street")}
+                    name="street"
+                    placeholder={T("profile.form.street")}
+                    options={{ required: T("form.required") }}
+                  />
+                  <div className="flex flex-row gap-5">
+                    <Input
+                      name="postCode"
+                      placeholder={T("profile.form.postCode")}
+                      options={{ required: T("form.required") }}
+                    />
+                    <Input
+                      name="city"
+                      placeholder={T("profile.form.city")}
+                      options={{ required: T("form.required") }}
+                    />
+                    <Input
+                      name="country"
+                      placeholder={T("profile.form.country")}
+                      options={{ required: T("form.required") }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
+                <div className="font-medium text-lg">{T("profile.form.payoutSettings")}</div>
+                <div>
+                  <div className="flex flex-row gap-3 font-medium text-neutral-300 mt-3">
+                    <Radio
+                      name="payoutSettingsType"
+                      options={[
+                        {
+                          value: PayoutSettingsType.EthereumAddress,
+                          label: T("profile.form.ethereum"),
+                        },
+                        {
+                          value: PayoutSettingsType.BankAddress,
+                          label: T("profile.form.bankWire"),
+                        },
+                      ]}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            {payoutSettingsType === PayoutSettingsType.EthereumAddress && (
               <Input
-                label={T("profile.form.firstname")}
-                name="firstname"
-                placeholder={T("profile.form.firstname")}
+                name="ethWalletAddress"
+                placeholder={T("profile.form.ethereumWalletAddress")}
                 options={{ required: T("form.required") }}
               />
-              <Input
-                label={T("profile.form.lastname")}
-                name="lastname"
-                placeholder={T("profile.form.lastname")}
-                options={{ required: T("form.required") }}
-              />
-            </div>
-          )}
-          {paymentReceiverType === IdentityType.Company && (
-            <div className="flex flex-row gap-5">
-              <Input
-                label={T("profile.form.id")}
-                name="id"
-                placeholder={T("profile.form.id")}
-                options={{ required: T("form.required") }}
-              />
-              <Input
-                label={T("profile.form.name")}
-                name="name"
-                placeholder={T("profile.form.name")}
-                options={{ required: T("form.required") }}
-              />
-            </div>
-          )}
-          <Input
-            label={T("profile.form.email")}
-            name="email"
-            placeholder={T("profile.form.email")}
-            options={{ required: T("form.required") }}
-          />
-          <Input
-            label={T("profile.form.number")}
-            name="number"
-            placeholder={T("profile.form.number")}
-            options={{ required: T("form.required") }}
-          />
-          <Input
-            label={T("profile.form.street")}
-            name="street"
-            placeholder={T("profile.form.street")}
-            options={{ required: T("form.required") }}
-          />
-          <div className="flex flex-row gap-5">
-            <Input
-              name="postCode"
-              placeholder={T("profile.form.postCode")}
-              options={{ required: T("form.required") }}
-            />
-            <Input name="city" placeholder={T("profile.form.city")} options={{ required: T("form.required") }} />
-            <Input name="country" placeholder={T("profile.form.country")} options={{ required: T("form.required") }} />
-          </div>
-          <div className="flex flex-col">
-            {T("profile.form.payoutSettings")}
-            <div className="flex flex-row gap-3">
-              <Radio
-                name="payoutSettingsType"
-                options={[
-                  {
-                    value: PayoutSettingsType.EthereumAddress,
-                    label: T("profile.form.ethereum"),
-                  },
-                  {
-                    value: PayoutSettingsType.BankAddress,
-                    label: T("profile.form.bankWire"),
-                  },
-                ]}
-              />
-            </div>
-          </div>
-          {payoutSettingsType === PayoutSettingsType.EthereumAddress && (
-            <Input
-              name="ethWalletAddress"
-              placeholder={T("profile.form.ethereumWalletAddress")}
-              options={{ required: T("form.required") }}
-            />
-          )}
-          {payoutSettingsType === PayoutSettingsType.BankAddress && (
-            <div className="flex flex-row gap-5">
-              <Input name="IBAN" placeholder={T("profile.form.iban")} options={{ required: T("form.required") }} />
-              <Input name="BIC" placeholder={T("profile.form.bic")} options={{ required: T("form.required") }} />
-            </div>
-          )}
-          <button type="submit" className="self-start border-white border-2 px-3 py-2 rounded-md">
+            )}
+            {payoutSettingsType === PayoutSettingsType.BankAddress && (
+              <div className="flex flex-row gap-5">
+                <Input name="IBAN" placeholder={T("profile.form.iban")} options={{ required: T("form.required") }} />
+                <Input name="BIC" placeholder={T("profile.form.bic")} options={{ required: T("form.required") }} />
+              </div>
+            )}
+          </Card>
+        </div>
+        <div className="self-end">
+          <button
+            type="submit"
+            className="self-start bg-neutral-50 text-xl text-black border-2 px-4 py-2 rounded-md font-medium"
+          >
             {loading ? T("state.loading") : T("profile.form.send")}
           </button>
-          {success && <p>{T("profile.form.saved")}</p>}
-        </>
+          {success && <Navigate to={RoutePaths.Projects} />}
+        </div>
       </form>
     </FormProvider>
   );
