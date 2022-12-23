@@ -24,14 +24,14 @@ export default function EstimationComponent({
       <div className="flex flex-col gap-10 items-stretch justify-items-center">
         <div className="flex flex-row justify-between items-center">
           <div className="text-3xl">
-            <span className="font-walsheim font-black">{numberOfDays}</span> <span>days</span>
+            <span className="font-walsheim font-black">{numberOfDays}</span> <span>{T("payment.form.days")}</span>
           </div>
           <div className="flex flex-row gap-3 text-white items-center">
             <div className="border rounded-xl w-fit py-2 px-4 hover:cursor-pointer" onClick={decreaseNumberOfDays}>
-              -
+              {T("payment.form.increase")}
             </div>
             <div className="border rounded-xl w-fit py-2 px-4 hover:cursor-pointer" onClick={increaseNumberOfDays}>
-              +
+              {T("payment.form.decrease")}
             </div>
           </div>
         </div>
@@ -57,15 +57,15 @@ export default function EstimationComponent({
         </div>
         <div className="flex flex-col gap-3 font-medium">
           <div className="flex flex-row justify-between">
-            <div>Total budget</div>
+            <div>{T("payment.form.totalBudget")}</div>
             <div>$ {budget.initialAmount}</div>
           </div>
           <div className="flex flex-row justify-between">
-            <div>This payment</div>
+            <div>{T("payment.form.thisPayment")}</div>
             <div>$ {amountToPay}</div>
           </div>
           <div className="flex flex-row justify-between">
-            <div>Left to spend</div>
+            <div>{T("payment.form.leftToSpend")}</div>
             <div>$ {budget.remainingAmount - amountToPay}</div>
           </div>
         </div>
