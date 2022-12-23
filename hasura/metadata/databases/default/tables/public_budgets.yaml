@@ -22,3 +22,9 @@ select_permissions:
       filter:
         id:
           _in: X-Hasura-budgetsOwned
+  - role: public
+    permission:
+      columns:
+        - id
+        - project_id
+      filter: {}
