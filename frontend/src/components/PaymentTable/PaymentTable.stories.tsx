@@ -28,6 +28,7 @@ const mockPayments: Payment[] = [
       id: "fea3c754-bf35-4f2b-aabc-ff345105322e",
       title: "Good Project",
     },
+    reason: "Link to my perfect PR",
     status: PaymentStatus.WAITING_PAYMENT,
   },
 ];
