@@ -12,6 +12,9 @@ runs:
     - name: Install frontend dependencies
       shell: bash
       run: yarn install --frozen-lockfile
+    - name: Generate graphql code
+      shell: bash
+      run: yarn generate
     - name: Run frontend
       shell: bash
       run: |

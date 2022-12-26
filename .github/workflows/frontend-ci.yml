@@ -48,6 +48,8 @@ jobs:
         with:
           node-version: 18
       - run: yarn install --frozen-lockfile
+      - name: Generate graphql code
+        run: yarn generate
       - name: Run unit/integration test
         run: yarn test --coverage
       - name: Upload unit/integration tests coverage
