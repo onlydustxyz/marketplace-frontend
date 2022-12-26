@@ -2,13 +2,16 @@ use derive_more::From;
 use juniper::{GraphQLEnum, GraphQLInputObject};
 use serde::{Deserialize, Serialize};
 
-use crate::domain::user_info::{BankAddress, EthereumAddress, PayoutSettings};
+use crate::domain::user_info::{
+	BankAddress, EthereumAddress, EthereumIdentity, EthereumName, PayoutSettings,
+};
 
 #[derive(Debug, Clone, Serialize, Deserialize, AsExpression, From, GraphQLInputObject)]
 pub struct PayoutSettingsInput {
 	r#type: PayoutSettingsType,
 	opt_eth_address: Option<EthereumAddress>,
 	opt_bank_address: Option<BankAddress>,
+	opt_eth_name: Option<EthereumName>,
 }
 
 impl TryFrom<PayoutSettingsInput> for PayoutSettings {
@@ -24,7 +27,7 @@ impl TryFrom<PayoutSettingsInput> for PayoutSettings {
 						"type was set to `ETHEREUM_ADDRESS` without the matching `optEthAddress` field being provided"
 					)
 				})
-				.map(PayoutSettings::EthTransfer),
+				.map(|address| PayoutSettings::EthTransfer(EthereumIdentity::Address(address))),
 			PayoutSettingsType::BankAddress => input
 				.opt_bank_address
 				.ok_or_else(|| {
@@ -33,6 +36,14 @@ impl TryFrom<PayoutSettingsInput> for PayoutSettings {
 					)
 				})
 				.map(PayoutSettings::WireTransfer),
+			PayoutSettingsType::EthereumName => input
+				.opt_eth_name
+				.ok_or_else(|| {
+					anyhow::anyhow!(
+						"type was set to `ETHEREUM_NAME` without the matching `optEthName` field being provided"
+					)
+				})
+				.map(|name| PayoutSettings::EthTransfer(EthereumIdentity::Name(name))),
 		}
 	}
 }
@@ -40,5 +51,6 @@ impl TryFrom<PayoutSettingsInput> for PayoutSettings {
 #[derive(Debug, Clone, Serialize, Deserialize, GraphQLEnum)]
 pub enum PayoutSettingsType {
 	EthereumAddress,
+	EthereumName,
 	BankAddress,
 }

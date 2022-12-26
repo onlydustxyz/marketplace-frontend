@@ -17,6 +17,7 @@
           }
           scalar Email
           scalar EthereumAddress
+          scalar EthereumName
           scalar Uuid
           type Mutation {
             requestPayment(budgetId: Uuid!, recipientId: Int!, amountInUsd: Int!, reason: Reason!): Uuid!
@@ -32,6 +33,7 @@
           enum PayoutSettingsType {
             BANK_ADDRESS
             ETHEREUM_ADDRESS
+            ETHEREUM_NAME
           }
           input BankAddress {
             BIC: String!
@@ -56,6 +58,7 @@
           input PayoutSettingsInput {
             optBankAddress: BankAddress
             optEthAddress: EthereumAddress
+            optEthName: EthereumName
             type: PayoutSettingsType!
           }
           input PersonIdentity {

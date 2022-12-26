@@ -15,6 +15,7 @@ export type Scalars = {
   Float: number;
   Email: any;
   EthereumAddress: any;
+  EthereumName: any;
   Uuid: any;
   bigint: any;
   citext: any;
@@ -539,6 +540,7 @@ export enum PayoutSettingsConstraint {
 export type PayoutSettingsInput = {
   optBankAddress: InputMaybe<BankAddress>;
   optEthAddress: InputMaybe<Scalars['EthereumAddress']>;
+  optEthName: InputMaybe<Scalars['EthereumName']>;
   type: PayoutSettingsType;
 };
 
@@ -591,7 +593,8 @@ export type PayoutSettingsSetInput = {
 
 export enum PayoutSettingsType {
   BankAddress = 'BANK_ADDRESS',
-  EthereumAddress = 'ETHEREUM_ADDRESS'
+  EthereumAddress = 'ETHEREUM_ADDRESS',
+  EthereumName = 'ETHEREUM_NAME'
 }
 
 /** update columns of table "payout_settings" */
