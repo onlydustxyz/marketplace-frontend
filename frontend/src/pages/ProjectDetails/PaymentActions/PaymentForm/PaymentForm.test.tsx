@@ -113,4 +113,13 @@ describe('"PaymentForm" component', () => {
       window.location = location;
     });
   });
+
+  it("should display an error when the github username is invalid", async () => {
+    await userEvent.type(await screen.findByLabelText(/link to github issue/i), "test-link-name");
+    await userEvent.type(await screen.findByLabelText(/recipient/i), "invalid-username");
+    await waitFor(() => {
+      const errorMessages = screen.getAllByText(/invalid github login/i);
+      expect(errorMessages.length).toBe(1);
+    });
+  });
 });
