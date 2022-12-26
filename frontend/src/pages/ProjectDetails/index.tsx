@@ -55,7 +55,7 @@ export default function ProjectDetails() {
           <Card>
             <div className="flex flex-row justify-between items-center">
               <div className="border-4 border-neutral-600 p-2 rounded-2xl">
-                <img className="md:w-12 w-12 hover:opacity-90" src={logoUrl} alt="Project Logo" />
+                <img className="md:w-20 w-20 hover:opacity-90" src={logoUrl} alt="Project Logo" />
               </div>
               <div className="flex flex-col items-center">
                 <div className="text-3xl font-bold">{project.name}</div>
