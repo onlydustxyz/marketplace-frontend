@@ -3,7 +3,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
 
-import { REQUEST_PAYMENT_MUTATION } from ".";
+import { FIND_USER_QUERY, REQUEST_PAYMENT_MUTATION } from ".";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
@@ -40,6 +40,19 @@ window.location = {
 };
 
 const graphQlMocks = [
+  {
+    request: {
+      query: FIND_USER_QUERY,
+      variables: {
+        username: "test-user-name",
+      },
+    },
+    newData: vi.fn(() => ({
+      data: {
+        fetchUserDetails: { id: TEST_USER.githubUser.githubUserId },
+      },
+    })),
+  },
   {
     request: {
       query: REQUEST_PAYMENT_MUTATION,
@@ -89,7 +102,10 @@ describe('"PaymentForm" component', () => {
 
   it("should be able to request payment when required info is filled and go back to project overview", async () => {
     await userEvent.type(await screen.findByLabelText(/link to github issue/i), "test-link-name");
-    await userEvent.type(await screen.findByLabelText(/recipient/i), TEST_USER.githubUser.githubUserId.toString());
+    await userEvent.type(await screen.findByLabelText(/recipient/i), TEST_USER.displayName);
+    await waitFor(() => {
+      expect(graphQlMocks[0].newData).toHaveBeenCalledTimes(1);
+    });
     await userEvent.click(await screen.findByText(/confirm payment/i));
     await waitFor(() => {
       expect(window.location.reload).toHaveBeenCalledTimes(1);

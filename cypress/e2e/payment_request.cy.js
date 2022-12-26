@@ -25,8 +25,9 @@ describe("As a project lead, I", () => {
     cy.get("#remainingBudget").should("have.text", "$1000");
 
     cy.contains("Submit payment").click();
+    cy.get("[name=contributor").type("AnthonyBuisset");
     cy.get("[name=linkToIssue").type("https://github.com/onlydustxyz/starkonquest/pull/68");
-    cy.get("[name=contributor").select(0);
+    cy.wait(1000);
     cy.contains("Confirm payment").click();
 
     cy.reload();
