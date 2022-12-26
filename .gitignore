@@ -37,6 +37,7 @@ dist-ssr
 *.local
 coverage
 .nyc_output
+frontend/src/__generated
 
 # Cypress
 cypress/screenshots
