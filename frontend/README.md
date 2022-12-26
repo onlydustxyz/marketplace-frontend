@@ -30,6 +30,7 @@ Install [yarn](https://classic.yarnpkg.com/en/docs/install).
 
 ```bash
 yarn install
+yarn generate
 ```
 
 ## 🔬 Usage
@@ -56,7 +57,6 @@ yarn storybook --no-manager-cache
 
 ## 🌡️ Testing
 
-
 ### Unit/integration
 
 ```bash
@@ -79,7 +79,7 @@ yarn preview
 
 Each pull request must target the `develop` branch.
 This way, a preview will be created.  
-When a pull request is merged into `develop`, it is automatically deployed on the staging environment.  
+When a pull request is merged into `develop`, it is automatically deployed on the staging environment.
 
 ### Production deployment
 
