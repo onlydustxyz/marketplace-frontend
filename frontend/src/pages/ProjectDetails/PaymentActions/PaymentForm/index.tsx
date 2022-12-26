@@ -89,6 +89,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
                     placeholder="Github login"
                     options={{ required: T("form.required") }}
                     onChange={onContributorLoginChange}
+                    loading={findUserQuery.loading}
                   />
                   <Input
                     label={T("payment.form.linkToIssue")}
