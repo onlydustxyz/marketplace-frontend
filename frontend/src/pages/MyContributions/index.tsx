@@ -14,6 +14,9 @@ const MyContributions = () => {
   const { T } = useT();
   const query = useHasuraQuery<GetPaymentRequestsQuery>(GET_MY_CONTRIBUTIONS_QUERY, HasuraUserRole.RegisteredUser, {
     variables: { githubId: githubUserId },
+    context: {
+      ignoreGraphQLErrors: true, // tell ApolloWrapper to ignore the errors
+    },
   });
   const { data } = query;
   const payments = data?.paymentRequests?.map(mapApiPaymentsToProps);
