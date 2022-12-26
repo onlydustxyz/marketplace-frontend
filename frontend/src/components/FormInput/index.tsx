@@ -1,17 +1,28 @@
 import { memo } from "react";
 import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
+import LoaderIcon from "src/assets/icons/Loader";
 
 type PropsType = {
   label?: string;
   type?: string;
   placeholder?: string;
   name: string;
+  loading?: boolean;
   options?: RegisterOptions;
   value?: string | number;
   onChange?: (value: any) => void;
 };
 
-const Input: React.FC<PropsType> = ({ label, type = "text", placeholder, name, value, onChange, options = {} }) => {
+const Input: React.FC<PropsType> = ({
+  label,
+  type = "text",
+  placeholder,
+  name,
+  value,
+  onChange,
+  loading,
+  options = {},
+}) => {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
   const error = errors[name];
@@ -28,6 +39,7 @@ const Input: React.FC<PropsType> = ({ label, type = "text", placeholder, name, v
         value={value}
         onChange={onChange}
       />
+      {loading && <LoaderIcon className="flex animate-spin place-items-center" />}
       <span className="text-red-600 text-sm">{error?.message ? error.message.toString() : "\u00A0"}</span>
     </label>
   );
