@@ -33,13 +33,16 @@ const mockContribution = {
     },
   ],
   amountInUsd: 200,
+  reason: { work_items: ["link_to_pr"] },
   budget: {
     project: {
       id: "632d5da7-e590-4815-85ea-82a5585e6049",
       name: "MyAwesomeProject",
       projectDetails: {
         description: "SOOOOOO awesome",
+        logoUrl: null,
       },
+      githubRepo: null,
     },
   },
 };
@@ -56,7 +59,7 @@ const buildMockMyContributionsQuery = (
   },
   result: {
     data: {
-      paymentRequests: paymentRequests,
+      paymentRequests,
     },
   },
 });
@@ -85,7 +88,7 @@ describe('"MyContributions" page', () => {
       }),
     });
 
-    expect(await screen.findByText(mockContribution.budget.project.projectDetails.description)).toBeInTheDocument();
+    expect(await screen.findByText(mockContribution.reason.work_items[0])).toBeInTheDocument();
     expect(await screen.findByText(mockContribution.budget.project.name)).toBeInTheDocument();
     expect(await screen.findByText("200 USD")).toBeInTheDocument();
     expect(await screen.findByText("Completed")).toBeInTheDocument();

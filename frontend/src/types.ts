@@ -46,6 +46,7 @@ export type PhoneNumber = string;
 export type Payment = {
   id: string;
   project: Project;
+  reason?: string;
   amount: {
     value: number;
     currency: Currency;

@@ -40,6 +40,7 @@ export const GET_MY_CONTRIBUTIONS_QUERY = gql`
         currencyCode
       }
       amountInUsd
+      reason
       budget {
         project {
           id

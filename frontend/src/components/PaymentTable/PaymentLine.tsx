@@ -28,9 +28,9 @@ const PaymentLine: React.FC<PropsType> = ({ payment }) => (
         <div className="border-4 border-neutral-600 p-2 rounded-2xl">
           <img className="w-8 max-w-fit" src={payment.project.logoUrl || onlyDustLogo} alt="Project Logo" />
         </div>
-        <div className="flex flex-col truncate">
+        <div className="flex flex-col truncate justify-center">
           <div className="font-bold text-xl">{payment.project.title}</div>
-          <div className="text-lg truncate">{payment.project.description}</div>
+          {payment.reason && <div className="text-lg truncate">{payment.reason}</div>}
         </div>
       </div>
     </td>

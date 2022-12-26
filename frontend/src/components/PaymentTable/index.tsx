@@ -38,12 +38,14 @@ const PaymentTable: React.FC<PropsType> = ({ payments }) => {
 export const mapApiPaymentsToProps = (apiPayment: any): Payment => {
   const amount = { value: apiPayment.amountInUsd, currency: Currency.USD };
   const project = apiPayment.budget.project;
+  const reason = apiPayment.reason?.work_items?.at(0);
   const getPaidAmount = (payments: { amount: number }[]) =>
     payments.reduce((total: number, payment: { amount: number }) => total + payment.amount, 0);
 
   return {
     id: apiPayment.id,
     amount,
+    reason,
     project: {
       id: project.id,
       title: project.name,

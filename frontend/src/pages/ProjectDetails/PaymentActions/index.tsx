@@ -89,6 +89,7 @@ export const GET_BUDGET_PAYMENTS_QUERY = gql`
         currencyCode
       }
       amountInUsd
+      reason
       budget {
         project {
           id
