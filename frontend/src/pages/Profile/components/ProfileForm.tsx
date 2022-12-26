@@ -32,6 +32,7 @@ type Inputs = {
   country: string;
   payoutSettingsType: PayoutSettingsType;
   ethWalletAddress?: string;
+  ethName?: string;
   IBAN?: string;
   BIC?: string;
 };
@@ -58,12 +59,15 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
       postCode: user?.location.post_code,
       city: user?.location.city,
       country: user?.location.country,
-      payoutSettingsType: user?.payoutSettings.EthTransfer
+      payoutSettingsType: user?.payoutSettings.EthTransfer?.Address
         ? PayoutSettingsType.EthereumAddress
+        : user?.payoutSettings.EthTransfer?.Domain
+        ? PayoutSettingsType.EthereumName
         : user?.payoutSettings.WireTransfer
         ? PayoutSettingsType.BankAddress
         : PayoutSettingsType.EthereumAddress,
-      ethWalletAddress: user?.payoutSettings.EthTransfer,
+      ethWalletAddress: user?.payoutSettings.EthTransfer?.Address,
+      ethName: user?.payoutSettings.EthTransfer?.Domain,
       IBAN: user?.payoutSettings.WireTransfer?.IBAN,
       BIC: user?.payoutSettings.WireTransfer?.BIC,
     },
@@ -271,6 +275,7 @@ const mapFormDataToSchema = ({
   postCode,
   payoutSettingsType,
   ethWalletAddress,
+  ethName,
   IBAN,
   BIC,
 }: Inputs) => {
@@ -292,6 +297,7 @@ const mapFormDataToSchema = ({
     type: payoutSettingsType,
     optEthAddress: ethWalletAddress || null,
     optBankAddress: IBAN && BIC ? { IBAN, BIC } : null,
+    optEthName: ethName || null,
   };
 
   const variables: UpdateProfileInfoMutationVariables = { email, identity, location, payoutSettings };

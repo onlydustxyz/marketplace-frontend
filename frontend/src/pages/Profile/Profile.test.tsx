@@ -117,6 +117,7 @@ const buildMockMutationUpdateUser = (userInfo: UserInfo) => {
         type: PayoutSettingsType.EthereumAddress,
         optEthAddress: userInfo.payoutSettings.EthTransfer,
         optBankAddress: null,
+        optEthName: null,
       }
     : {
         type: PayoutSettingsType.BankAddress,
@@ -125,6 +126,7 @@ const buildMockMutationUpdateUser = (userInfo: UserInfo) => {
           BIC: userInfo.payoutSettings.WireTransfer?.BIC,
         },
         optEthAddress: null,
+        optEthName: null,
       };
 
   const variables: UpdateProfileInfoMutationVariables = {

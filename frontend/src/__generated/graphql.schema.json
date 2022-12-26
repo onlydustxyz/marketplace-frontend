@@ -1649,6 +1649,16 @@
         "possibleTypes": null
       },
       {
+        "kind": "SCALAR",
+        "name": "EthereumName",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "File",
         "description": null,
@@ -3917,6 +3927,18 @@
             "deprecationReason": null
           },
           {
+            "name": "optEthName",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "EthereumName",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "type",
             "description": null,
             "type": {
@@ -4222,6 +4244,12 @@
           },
           {
             "name": "ETHEREUM_ADDRESS",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ETHEREUM_NAME",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null

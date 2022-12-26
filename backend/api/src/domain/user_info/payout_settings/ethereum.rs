@@ -1,11 +1,37 @@
-use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize, AsExpression, FromToSql, FromSqlRow)]
-#[sql_type = "diesel::sql_types::Jsonb"]
-pub enum PayoutSettings {
-	WireTransfer(BankAddress),
-	EthTransfer(EthereumAddress),
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum EthereumIdentity {
+	Address(EthereumAddress),
+	Name(EthereumName),
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(transparent)]
+pub struct EthereumName(String);
+
+#[juniper::graphql_scalar(description = "A ENS backed domain name")]
+impl<S> GraphQLScalar for EthereumName
+where
+	S: juniper::ScalarValue,
+{
+	fn resolve(&self) -> juniper::Value {
+		juniper::Value::scalar(self.0.to_owned())
+	}
+
+	fn from_input_value(value: &juniper::InputValue) -> Option<Self> {
+		let str_value = value.as_string_value()?;
+
+		if !str_value.ends_with(".eth") {
+			return None;
+		}
+
+		Some(EthereumName(str_value.to_string()))
+	}
+
+	fn from_str<'a>(value: juniper::ScalarToken<'a>) -> juniper::ParseScalarResult<'a, S> {
+		<String as juniper::ParseScalarValue<S>>::from_str(value)
+	}
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -25,28 +51,24 @@ where
 
 	fn from_input_value(value: &juniper::InputValue) -> Option<Self> {
 		let str_value = value.as_string_value()?;
+
 		if str_value.len() < 3 || str_value.len() > 42 || str_value[0..2].to_lowercase() != "0x" {
-			None
-		} else {
-			let padded = format!(
-				"0x{:0>width$}",
-				&str_value[2..].to_lowercase(),
-				width = str_value.len() - 2 + str_value.len() % 2
-			); // Add 0 if len is odd
-			Some(EthereumAddress(padded))
+			return None;
 		}
+
+		// Add 0 if len is odd
+		let padded = format!(
+			"0x{:0>width$}",
+			&str_value[2..].to_lowercase(),
+			width = str_value.len() - 2 + str_value.len() % 2
+		);
+
+		Some(EthereumAddress(padded))
 	}
 
 	fn from_str<'a>(value: juniper::ScalarToken<'a>) -> juniper::ParseScalarResult<'a, S> {
 		<String as juniper::ParseScalarValue<S>>::from_str(value)
 	}
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, GraphQLInputObject)]
-#[allow(non_snake_case)]
-pub struct BankAddress {
-	BIC: String,
-	IBAN: String,
 }
 
 #[cfg(test)]
