@@ -2,7 +2,7 @@ use derive_more::{Display, From, Into};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{BlockchainNetwork, ContractAddress, TransactionHash};
+use crate::{BlockchainNetwork, EthereumAddress, TransactionHash};
 
 #[derive(
 	Debug,
@@ -28,7 +28,7 @@ pub struct Id(Uuid);
 pub enum Receipt {
 	OnChainPayment {
 		network: BlockchainNetwork,
-		recipient_address: ContractAddress,
+		recipient_address: EthereumAddress,
 		transaction_hash: TransactionHash,
 	},
 }

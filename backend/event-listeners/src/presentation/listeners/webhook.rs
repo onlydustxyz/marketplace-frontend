@@ -117,7 +117,10 @@ mod tests {
 		set_env,
 	};
 	use mockito;
-	use testing::fixtures;
+	use testing::fixtures::{
+		self,
+		payment::{recipient_address, transaction_hash},
+	};
 
 	use super::*;
 
@@ -176,11 +179,31 @@ mod tests {
 
 		let webhook_event = WebhookEvent::new(event);
 
-		let json = serde_json::to_string(&webhook_event).unwrap();
+		let json_value = serde_json::to_value(&webhook_event).unwrap();
 
-		assert_eq!(
-			json,
-			r#"{"aggregate_name":"Payment","event_name":"Processed","payload":{"id":"abad1756-18ba-42e2-8cbf-83369cecfb38","receipt_id":"b5db0b56-ab3e-4bd1-b9a2-6a3d41f35b8f","amount":{"amount":"500.45","currency":{"Crypto":"USDC"}},"receipt":{"OnChainPayment":{"network":"Ethereum","recipient_address":"0x07B3616D2450b6390e9D14B92DE8B766e6d93Fd22fB9AFdE882705154045F2e1","transaction_hash":"0x797fb77202901c52094d2544f3631a3535b8ca40009f6a6ac6940b67e6873a4"}}}}"#
-		);
+		let recipient_address = recipient_address();
+		let transaction_hash = transaction_hash();
+
+		let expected_json_value = json!({
+			"aggregate_name":"Payment",
+			"event_name":"Processed",
+			"payload": {
+				"id":"abad1756-18ba-42e2-8cbf-83369cecfb38",
+				"receipt_id":"b5db0b56-ab3e-4bd1-b9a2-6a3d41f35b8f",
+				"amount": {
+					"amount":"500.45",
+					"currency": {"Crypto":"USDC"}
+				},
+				"receipt": {
+					"OnChainPayment": {
+						"network":"Ethereum",
+						"recipient_address": recipient_address,
+						"transaction_hash": transaction_hash,
+					}
+				}
+			}
+		});
+
+		assert_eq!(json_value, expected_json_value);
 	}
 }

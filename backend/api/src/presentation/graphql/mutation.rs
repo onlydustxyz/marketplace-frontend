@@ -1,5 +1,5 @@
 use anyhow::anyhow;
-use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt, UserId};
+use domain::{Amount, BlockchainNetwork, Currency, EthereumAddress, PaymentReceipt, UserId};
 use juniper::{graphql_object, DefaultScalarValue};
 use rusty_money::{crypto, Money};
 use uuid::Uuid;
@@ -22,7 +22,7 @@ impl Mutation {
 		payment_id: Uuid,
 		amount: String,
 		currency_code: String,
-		recipient_address: String,
+		recipient_address: EthereumAddress,
 		transaction_hash: String,
 	) -> Result<Uuid> {
 		let currency = crypto::find(&currency_code).ok_or_else(|| {
