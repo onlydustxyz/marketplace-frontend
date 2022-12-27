@@ -6,6 +6,7 @@ import { MouseEvent } from "react";
 import { buildGithubLink, buildLanguageString } from "src/utils/stringUtils";
 import ProjectLead from "../LeadContributor";
 import { Contributor, LanguageMap } from "src/types";
+import GithubLogo from "../Layout/Header/GithubLink/GithubLogo";
 
 interface ProjectInformationProps {
   name: string;
@@ -62,9 +63,9 @@ export default function ProjectInformation({ name, details, lead, githubRepoInfo
         <div className="flex flex-row divide-x divide-neutral-600">
           <div className="flex flex-row gap-3 pr-5">
             {githubRepoInfo?.owner && githubRepoInfo?.name && (
-              <LinkWithLogo link={buildGithubLink(githubRepoInfo?.owner, githubRepoInfo?.name)} logo={githubLogo} />
+              <GithubLink link={buildGithubLink(githubRepoInfo?.owner, githubRepoInfo?.name)} />
             )}
-            {details?.telegramLink && <LinkWithLogo link={details?.telegramLink} logo={telegramLogo} />}
+            {details?.telegramLink && <TelegramLink link={details?.telegramLink} />}
           </div>
           {githubRepoInfo?.contributors?.length && (
             <NumberOfContributors numberOfContributors={githubRepoInfo?.contributors?.length} />
@@ -75,16 +76,25 @@ export default function ProjectInformation({ name, details, lead, githubRepoInfo
   );
 }
 
-interface LinkWithLogoProps {
+interface LinkProps {
   link: string;
-  logo: string;
 }
 
-function LinkWithLogo({ link, logo }: LinkWithLogoProps) {
+function GithubLink({ link }: LinkProps) {
   return (
     <div className="border-2 rounded-xl p-2 grayscale border-slate-500 opacity-80 hover:opacity-50 hover:cursor-pointer">
       <div onClick={linkClickHandlerFactory(link)}>
-        <img className="md:w-10 w-6" src={logo} alt="Telegram Logo" />
+        <img className="md:w-10 w-6 fill-white" alt="GitHub Logo" src={githubLogo} />
+      </div>
+    </div>
+  );
+}
+
+function TelegramLink({ link }: LinkProps) {
+  return (
+    <div className="border-2 rounded-xl p-2 pt-3 grayscale border-slate-500 opacity-80 hover:opacity-50 hover:cursor-pointer">
+      <div onClick={linkClickHandlerFactory(link)}>
+        <img className="md:w-10 w-6 fill-white" alt="Telegram Logo" src={telegramLogo} />
       </div>
     </div>
   );
