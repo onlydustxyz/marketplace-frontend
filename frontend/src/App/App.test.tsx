@@ -13,6 +13,7 @@ import { GET_MY_PROJECT_QUERY } from "src/pages/MyProjects";
 import { ProjectDetailsTab, GET_PROJECT_USER_QUERY } from "src/pages/ProjectDetails";
 import { buildGithubLink } from "src/utils/stringUtils";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
+import Overview from "src/pages/ProjectDetails/Overview";
 
 const AUTH_CODE_TEST_VALUE = "code";
 const LOGGING_IN_TEXT_QUERY = /logging in.../i;
@@ -180,6 +181,8 @@ const graphQlMocks = [
   },
 ];
 
+Object.defineProperty(window, "innerWidth", { writable: true, configurable: true, value: 2000 });
+
 describe('"Login" page', () => {
   beforeEach(() => {
     window.localStorage.clear();
@@ -231,7 +234,7 @@ describe('"Login" page', () => {
     await screen.findByText(TEST_PROJECT_NAME);
   });
 
-  it("should be able to access the project details page from the projects list and only see the overview tab", async () => {
+  it("should be able to access the project details page from the projects list and not see any tabs", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({
@@ -241,7 +244,6 @@ describe('"Login" page', () => {
     });
     userEvent.click(await screen.findByText(TEST_PROJECT_NAME));
     await waitFor(() => {
-      screen.getByText(ProjectDetailsTab.Overview);
       screen.getByText(TEST_PROJECT_LEAD_DISPLAY_NAME);
       screen.getByText(TEST_GITHUB_REPO_CONTENT);
       expect(
@@ -253,6 +255,7 @@ describe('"Login" page', () => {
       ).toEqual(TEST_GITHUB_LINK);
     });
 
+    expect(screen.queryByText(ProjectDetailsTab.Overview)).not.toBeInTheDocument();
     expect(screen.queryByText(ProjectDetailsTab.Payments)).not.toBeInTheDocument();
   });
 
