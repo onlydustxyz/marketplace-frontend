@@ -59,7 +59,7 @@ export default function ProjectInformation({ name, details, lead, githubRepoInfo
         )}
       </div>
       <div className="flex flex-col basis-8/12 pl-8 justify-around gap-5">
-        <div className="h-20 text-lg line-clamp-2">{details?.description}</div>
+        <div className="text-lg line-clamp-3 h-20">{details?.description}</div>
         <div className="flex flex-row divide-x divide-neutral-600">
           <div className="flex flex-row gap-3 pr-5">
             {githubRepoInfo?.owner && githubRepoInfo?.name && (
