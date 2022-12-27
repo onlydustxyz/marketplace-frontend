@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import { useState } from "react";
 import Card from "src/components/Card";
 import PaymentTable, { mapApiPaymentsToProps } from "src/components/PaymentTable";
-import PaymentTableFallback from "src/components/PaymentTableFallback";
+import ProjectPaymentTableFallback from "src/components/ProjectPaymentTableFallback";
 import QueryWrapper from "src/components/QueryWrapper";
 import RemainingBudget from "src/components/RemainingBudget";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
@@ -34,7 +34,9 @@ export default function PaymentActions({ budget }: PaymentsProps) {
         <div className="flex flex-row items-start gap-5">
           <div className="flex w-2/3">
             {action === Action.Submit && <PaymentForm budget={budget} />}
-            {action === Action.List && <PaymentTableQueryContainer budgetId={budget.id} />}
+            {action === Action.List && (
+              <PaymentTableQueryContainer budgetId={budget.id} onClickSendPayment={() => setAction(Action.Submit)} />
+            )}
           </div>
           <div className="flex w-1/3">
             <Card>
@@ -59,9 +61,10 @@ export default function PaymentActions({ budget }: PaymentsProps) {
 
 interface PaymentTableQueryContainerProps {
   budgetId: string;
+  onClickSendPayment: () => void;
 }
 
-function PaymentTableQueryContainer({ budgetId }: PaymentTableQueryContainerProps) {
+function PaymentTableQueryContainer({ budgetId, onClickSendPayment }: PaymentTableQueryContainerProps) {
   const query = useHasuraQuery<GetPaymentRequestsForBudgetIdQuery>(
     GET_BUDGET_PAYMENTS_QUERY,
     HasuraUserRole.RegisteredUser,
@@ -75,7 +78,13 @@ function PaymentTableQueryContainer({ budgetId }: PaymentTableQueryContainerProp
 
   return (
     <QueryWrapper query={query}>
-      <Card>{hasPayments ? <PaymentTable payments={payments} /> : <PaymentTableFallback />}</Card>
+      <Card>
+        {hasPayments ? (
+          <PaymentTable payments={payments} />
+        ) : (
+          <ProjectPaymentTableFallback onClick={onClickSendPayment} />
+        )}
+      </Card>
     </QueryWrapper>
   );
 }
