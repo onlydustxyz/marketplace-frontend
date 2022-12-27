@@ -89,6 +89,11 @@
         "githubLinkTitle": "GitHub",
         "projectLeader": "Project Leader",
         "technologies": "Technologies"
+      },
+      "tableFallback": {
+        "sendPayment": "Send payment",
+        "send": "Send your first one!",
+        "noPayments": "No payments so far"
       }
     },
     "ledBy": "Led by",
