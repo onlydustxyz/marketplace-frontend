@@ -53,28 +53,32 @@ export default function ProjectDetails() {
       {project && (
         <div className="flex flex-col w-11/12 my-3 gap-5">
           <Card>
-            <div className="flex flex-row justify-between items-center">
-              <div className="border-4 border-neutral-600 p-2 rounded-2xl">
-                <img className="md:w-20 w-20 hover:opacity-90" src={logoUrl} alt="Project Logo" />
+            <div className="flex flex-col divide-y">
+              <div className="flex flex-row justify-between items-center mb-5">
+                <div className="border-4 border-neutral-600 p-2 rounded-2xl">
+                  <img className="md:w-20 w-20 hover:opacity-90" src={logoUrl} alt="Project Logo" />
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="text-3xl font-bold">{project.name}</div>
+                  {project.projectDetails?.description && (
+                    <div className="text-lg px-8 py-4 text-center">{project.projectDetails.description}</div>
+                  )}
+                </div>
               </div>
-              <div className="flex flex-col items-center">
-                <div className="text-3xl font-bold">{project.name}</div>
-                {project.projectDetails?.description && (
-                  <div className="text-lg px-8 py-4 text-center">{project.projectDetails.description}</div>
-                )}
-              </div>
-              <div className="flex flex-row align-start space-x-3">
-                {availableTabs.map((tab: ProjectDetailsTab) => (
-                  <div
-                    key={tab}
-                    className={`bg-neutral-50 rounded-xl w-fit p-3 hover:cursor-pointer text-black ${
-                      selectedTab === tab ? "font-bold border-3" : "opacity-70"
-                    }`}
-                    onClick={() => setSelectedTab(tab)}
-                  >
-                    {tab}
-                  </div>
-                ))}
+              <div className="font-medium text-xl items-center justify-items-center">
+                <div className="flex flex-row align-start divide-x h-20">
+                  {availableTabs.map((tab: ProjectDetailsTab) => (
+                    <div
+                      key={tab}
+                      className={`first:pr-5 last:pl-5 pt-6 flex w-fit hover:cursor-pointer text-white ${
+                        selectedTab === tab ? "font-bold" : "text-neutral-400"
+                      }`}
+                      onClick={() => setSelectedTab(tab)}
+                    >
+                      {tab}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </Card>
