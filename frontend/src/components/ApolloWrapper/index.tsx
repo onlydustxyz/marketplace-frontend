@@ -40,7 +40,12 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     cache: new InMemoryCache(),
   });
 
-  return <>{displayError ? <ErrorFallback /> : <ApolloProvider client={client}>{children}</ApolloProvider>}</>;
+  return (
+    <>
+      {displayError && <ErrorFallback />}
+      {!displayError && <ApolloProvider client={client}>{children}</ApolloProvider>}
+    </>
+  );
 };
 
 export default ApolloWrapper;

@@ -6,7 +6,7 @@ import { RoutePaths } from "src/App";
 import config from "src/config";
 import { useGithubProfile } from "src/hooks/useAuth/useGithubProfile";
 import { useRoles } from "src/hooks/useAuth/useRoles";
-import { useTokenSet } from "src/hooks/useTokenSet";
+import { accessTokenExpired, useTokenSet } from "src/hooks/useTokenSet";
 import { RefreshToken, User, UserRole } from "src/types";
 
 type AuthContextType = {
@@ -22,7 +22,9 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const { tokenSet, setFromRefreshToken, clearTokenSet } = useTokenSet();
+  const { tokenSet, setFromRefreshToken, clearTokenSet, hasRefreshError } = useTokenSet();
+  const tokenIsRefreshed = !(tokenSet?.accessToken && accessTokenExpired(tokenSet));
+
   const navigate = useNavigate();
 
   const login = async (refreshToken: RefreshToken) => {
@@ -42,8 +44,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     navigate(RoutePaths.Projects, { replace: true });
   };
 
+  if (hasRefreshError) {
+    logout();
+  }
+
   const { isLoggedIn, roles, ledProjectIds } = useRoles(tokenSet?.accessToken);
-  const { githubUserId } = useGithubProfile(roles, tokenSet?.user?.id);
+  const { githubUserId } = useGithubProfile(roles, tokenSet?.user?.id, tokenIsRefreshed);
 
   const value = {
     user: tokenSet ? tokenSet.user : null,
@@ -55,7 +61,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     githubUserId,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <>{tokenIsRefreshed && <AuthContext.Provider value={value}>{children}</AuthContext.Provider>}</>;
 };
 
 export const useAuth = (): AuthContextType => {
