@@ -6,7 +6,10 @@
         "eamodio.gitlens",
         "ms-vsliveshare.vsliveshare",
         "editorconfig.editorconfig",
-        "graphql.vscode-graphql-syntax"
+        "graphql.vscode-graphql-syntax",
+        "esbenp.prettier-vscode",
+        "rvest.vs-code-prettier-eslint",
+        "dbaeumer.vscode-eslint"
     ],
     "unwantedRecommendations": ["tamasfe.even-better-toml", "rust-lang.rust"]
 }
