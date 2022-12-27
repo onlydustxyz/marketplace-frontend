@@ -44,6 +44,8 @@ export default function ProjectDetails() {
       ? [ProjectDetailsTab.Overview, ProjectDetailsTab.Payments]
       : [ProjectDetailsTab.Overview];
 
+  const showTabs = availableTabs.length > 1;
+
   const project = getProjectUserQuery?.data?.projectsByPk || getProjectPublicQuery?.data?.projectsByPk;
   const githubRepo = project?.githubRepo;
   const logoUrl = project?.projectDetails?.logoUrl || project?.githubRepo?.content.logoUrl || onlyDustLogo;
@@ -54,32 +56,34 @@ export default function ProjectDetails() {
         <div className="flex flex-col w-11/12 my-3 gap-5">
           <Card>
             <div className="flex flex-col divide-y">
-              <div className="flex flex-row justify-between items-center mb-5">
+              <div className={`flex flex-row justify-around items-center ${showTabs && "mb-5"}`}>
                 <div className="border-4 border-neutral-600 p-2 rounded-2xl">
                   <img className="md:w-20 w-20 hover:opacity-90" src={logoUrl} alt="Project Logo" />
                 </div>
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center w-5/6 gap-4">
                   <div className="text-3xl font-bold">{project.name}</div>
                   {project.projectDetails?.description && (
-                    <div className="text-lg px-8 py-4 text-center">{project.projectDetails.description}</div>
+                    <div className="text-lg px-8 text-center line-clamp-3">{project.projectDetails.description}</div>
                   )}
                 </div>
               </div>
-              <div className="font-medium text-xl items-center justify-items-center">
-                <div className="flex flex-row align-start divide-x h-20">
-                  {availableTabs.map((tab: ProjectDetailsTab) => (
-                    <div
-                      key={tab}
-                      className={`first:pr-5 last:pl-5 pt-6 flex w-fit hover:cursor-pointer text-white ${
-                        selectedTab === tab ? "font-bold" : "text-neutral-400"
-                      }`}
-                      onClick={() => setSelectedTab(tab)}
-                    >
-                      {tab}
-                    </div>
-                  ))}
+              {showTabs && (
+                <div className="font-medium text-xl items-center justify-items-center">
+                  <div className="flex flex-row align-start divide-x h-20">
+                    {availableTabs.map((tab: ProjectDetailsTab) => (
+                      <div
+                        key={tab}
+                        className={`first:pr-5 last:pl-5 pt-6 flex w-fit hover:cursor-pointer text-white ${
+                          selectedTab === tab ? "font-bold" : "text-neutral-400"
+                        }`}
+                        onClick={() => setSelectedTab(tab)}
+                      >
+                        {tab}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </Card>
           {selectedTab === ProjectDetailsTab.Overview && githubRepo?.content?.contributors && (
