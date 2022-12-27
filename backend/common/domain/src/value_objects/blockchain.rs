@@ -6,4 +6,3 @@ pub enum Network {
 }
 
 pub type TransactionHash = String;
-pub type ContractAddress = String;

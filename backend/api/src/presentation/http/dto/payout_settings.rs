@@ -1,10 +1,9 @@
 use derive_more::From;
+use domain::EthereumAddress;
 use juniper::{GraphQLEnum, GraphQLInputObject};
 use serde::{Deserialize, Serialize};
 
-use crate::domain::user_info::{
-	BankAddress, EthereumAddress, EthereumIdentity, EthereumName, PayoutSettings,
-};
+use crate::domain::user_info::{BankAddress, EthereumIdentity, EthereumName, PayoutSettings};
 
 #[derive(Debug, Clone, Serialize, Deserialize, AsExpression, From, GraphQLInputObject)]
 pub struct PayoutSettingsInput {

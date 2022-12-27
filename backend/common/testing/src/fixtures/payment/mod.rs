@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use domain::{ContractAddress, PaymentId, PaymentReceiptId, TransactionHash};
+use domain::{PaymentId, PaymentReceiptId, TransactionHash};
 use uuid::Uuid;
 
 use self::constants::CONTRACT_ADDRESSES;
@@ -17,8 +17,8 @@ pub fn payment_receipt_id() -> PaymentReceiptId {
 	Uuid::from_str("b5db0b56-ab3e-4bd1-b9a2-6a3d41f35b8f").unwrap().into()
 }
 
-pub fn recipient_address() -> ContractAddress {
-	CONTRACT_ADDRESSES[0].parse().unwrap()
+pub fn recipient_address() -> &'static str {
+	CONTRACT_ADDRESSES[0]
 }
 
 pub fn transaction_hash() -> TransactionHash {

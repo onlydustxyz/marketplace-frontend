@@ -115,7 +115,7 @@ mod tests {
 	use uuid::Uuid;
 
 	use super::*;
-	use crate::{BlockchainNetwork, BudgetId, Currency, PaymentReceiptId, UserId};
+	use crate::{BlockchainNetwork, BudgetId, Currency, EthereumAddress, PaymentReceiptId, UserId};
 
 	#[fixture]
 	fn payment_receipt_id() -> PaymentReceiptId {
@@ -169,7 +169,7 @@ mod tests {
 	fn receipt() -> PaymentReceipt {
 		PaymentReceipt::OnChainPayment {
 			network: BlockchainNetwork::Ethereum,
-			recipient_address: recipient_address(),
+			recipient_address: EthereumAddress::try_from(recipient_address()).unwrap(),
 			transaction_hash: transaction_hash(),
 		}
 	}

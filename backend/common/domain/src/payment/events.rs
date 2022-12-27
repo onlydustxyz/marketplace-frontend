@@ -43,7 +43,7 @@ impl Display for Event {
 mod tests {
 	use assert_json_diff::assert_json_eq;
 	use serde_json::{json, Value};
-	use testing::fixtures::payment::events;
+	use testing::fixtures::payment::{events, recipient_address, transaction_hash};
 
 	use super::*;
 	use crate::{BlockchainNetwork, Currency};
@@ -67,8 +67,8 @@ mod tests {
 					"receipt":{
 						"OnChainPayment":{
 							"network":"Ethereum",
-							"recipient_address":"0x07B3616D2450b6390e9D14B92DE8B766e6d93Fd22fB9AFdE882705154045F2e1",
-							"transaction_hash":"0x797fb77202901c52094d2544f3631a3535b8ca40009f6a6ac6940b67e6873a4"
+							"recipient_address": recipient_address(),
+							"transaction_hash": transaction_hash()
 						}
 					}
 				}

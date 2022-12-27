@@ -3,7 +3,7 @@ mod ethereum;
 use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
 
-pub use self::ethereum::{EthereumAddress, EthereumIdentity, EthereumName};
+pub use self::ethereum::{EthereumIdentity, EthereumName};
 
 #[derive(Debug, Clone, Serialize, Deserialize, AsExpression, FromToSql, FromSqlRow)]
 #[sql_type = "diesel::sql_types::Jsonb"]
