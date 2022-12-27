@@ -64,6 +64,7 @@
       "country": "Country",
       "email": "Email",
       "ethereum": "Ethereum",
+      "ethereumName": "ENS domain",
       "ethereumWalletAddress": "Ethereum wallet address",
       "firstname": "First name",
       "iban": "IBAN",

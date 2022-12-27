@@ -18,6 +18,11 @@ import {
 import Card from "src/components/Card";
 import { RoutePaths } from "src/App";
 
+const ETHEREUM_ADDRESS_REGEXP = /^0x[a-fA-F0-9]{40}$/gi;
+const ENS_DOMAIN_REGEXP = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi;
+const EMAIL_ADDRESS_REGEXP =
+  /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+
 type Inputs = {
   paymentReceiverType: IdentityType;
   firstname?: string;
@@ -72,7 +77,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
       BIC: user?.payoutSettings.WireTransfer?.BIC,
     },
   });
-  const { handleSubmit } = formMethods;
+  const { handleSubmit, register } = formMethods;
   const [updateUser, { data, loading }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser);
   const success = !!data;
 
@@ -153,7 +158,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                   <div className="pt-3">
                     <Input
                       label={T("profile.form.email")}
-                      name="email"
+                      {...register("email", { pattern: EMAIL_ADDRESS_REGEXP })}
                       placeholder={T("profile.form.email")}
                       options={{ required: T("form.required") }}
                     />
@@ -212,6 +217,10 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                           label: T("profile.form.ethereum"),
                         },
                         {
+                          value: PayoutSettingsType.EthereumName,
+                          label: T("profile.form.ethereumName"),
+                        },
+                        {
                           value: PayoutSettingsType.BankAddress,
                           label: T("profile.form.bankWire"),
                         },
@@ -223,9 +232,16 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
             </div>
             {payoutSettingsType === PayoutSettingsType.EthereumAddress && (
               <Input
-                name="ethWalletAddress"
                 placeholder={T("profile.form.ethereumWalletAddress")}
                 options={{ required: T("form.required") }}
+                {...register("ethWalletAddress", { pattern: ETHEREUM_ADDRESS_REGEXP })}
+              />
+            )}
+            {payoutSettingsType === PayoutSettingsType.EthereumName && (
+              <Input
+                placeholder={T("profile.form.ethereumName")}
+                options={{ required: T("form.required") }}
+                {...register("ethName", { pattern: ENS_DOMAIN_REGEXP })}
               />
             )}
             {payoutSettingsType === PayoutSettingsType.BankAddress && (
