@@ -6,9 +6,9 @@
     "required": "Required"
   },
   "github": {
+    "invalidLogin": "Invalid Github login",
     "loggingIn": "Logging in...",
-    "tokenMissing": "Github authentication token missing!",
-    "invalidLogin": "Invalid Github login"
+    "tokenMissing": "Github authentication token missing!"
   },
   "images": {
     "githubLogo": "Github logo",
@@ -24,17 +24,17 @@
   },
   "payment": {
     "form": {
+      "confirm": "Confirm payment",
       "contributor": "Recipient",
+      "days": "days",
+      "decrease": "-",
+      "increase": "+",
+      "leftToSpend": "Left to spend",
       "linkToIssue": "Link to GitHub issue",
       "sent": "Payment request sent!",
       "submit": "Submit payment",
-      "days": "days",
-      "confirm": "Confirm payment",
-      "increase": "+",
-      "decrease": "-",
-      "totalBudget": "Total budget",
       "thisPayment": "This payment",
-      "leftToSpend": "Left to spend"
+      "totalBudget": "Total budget"
     },
     "list": "List payments",
     "status": {
@@ -47,9 +47,9 @@
       "status": "PAYMENT STATUS"
     },
     "tableFallback": {
-      "noPayments": "No payments received yet",
+      "browseProjects": "Browse projects",
       "contribute": "Contribute to get your first one!",
-      "browseProjects": "Browse projects"
+      "noPayments": "No payments received yet"
     }
   },
   "profile": {
@@ -71,28 +71,28 @@
       "individualProfile": "Individual",
       "lastname": "Last name",
       "location": "Location",
-      "number": "N.",
-      "street": "Street",
       "name": "Name",
+      "number": "N.",
       "payoutSettings": "Payout settings",
+      "postCode": "Postal code",
       "saved": "Your data has been saved!",
       "send": "Save profile",
-      "typeOfProfile": "Profile type",
-      "postCode": "Postal code"
+      "street": "Street",
+      "typeOfProfile": "Profile type"
     }
   },
   "project": {
-    "remainingBudget": "Remaining budget",
-    "ledBy": "Led by",
     "details": {
       "overview": {
-        "technologies": "Technologies",
-        "projectLeader": "Project Leader",
         "contributors": "Contributors",
+        "githubLinkContent": "Link",
         "githubLinkTitle": "GitHub",
-        "githubLinkContent": "Link"
+        "projectLeader": "Project Leader",
+        "technologies": "Technologies"
       }
-    }
+    },
+    "ledBy": "Led by",
+    "remainingBudget": "Remaining budget"
   },
   "seniority": {
     "levels": {
@@ -105,7 +105,8 @@
   },
   "state": {
     "errorOccured": "Oops, an unexpected error occured",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "notResponsive": "This website is only available for desktop now. Mobile version coming soon ..."
   },
   "tryToRefresh": "Try to refresh the page"
 }
