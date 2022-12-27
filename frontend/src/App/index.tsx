@@ -15,6 +15,7 @@ const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
 
 import { CustomUserRole, HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/LoaderFallback";
+import ScrollToTop from "src/components/ScrollToTop";
 
 export enum RoutePaths {
   Projects = "/",
@@ -77,6 +78,7 @@ function App() {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <ScrollToTop />
       <Suspense fallback={<LoaderFallback />}>{routes}</Suspense>
     </ErrorBoundary>
   );
