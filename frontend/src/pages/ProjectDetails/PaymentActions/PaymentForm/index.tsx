@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { HasuraUserRole } from "src/types";
-import { useForm, SubmitHandler, FormProvider, ChangeHandler } from "react-hook-form";
+import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { Inputs } from "./types";
 import Input from "src/components/FormInput";
@@ -9,6 +9,7 @@ import { useIntl } from "src/hooks/useIntl";
 import Card from "src/components/Card";
 import EstimationComponent, { BASE_RATE_USD } from "./EstimationComponent";
 import { FindUserQueryForPaymentFormQuery } from "src/__generated/graphql";
+import { debounce } from "lodash";
 
 const DEFAULT_NUMBER_OF_DAYS = 2;
 
@@ -38,15 +39,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
 
   const { handleSubmit, setError, clearErrors } = formMethods;
 
-  const [contributorLoginInput, setContributorLoginInput] = useState("");
   const [contributorLogin, setContributorLogin] = useState("");
-
-  const onContributorLoginChange: ChangeHandler = async ({ target }) => setContributorLoginInput(target.value);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setContributorLogin(contributorLoginInput), 500);
-    return () => clearTimeout(timer);
-  }, [contributorLoginInput]);
 
   const findUserQuery = useHasuraQuery<FindUserQueryForPaymentFormQuery>(
     FIND_USER_QUERY,
@@ -88,7 +81,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
                     name="contributor"
                     placeholder="Github login"
                     options={{ required: T("form.required") }}
-                    onChange={onContributorLoginChange}
+                    onChange={debounce(({ target }) => setContributorLogin(target.value), 500)}
                     loading={findUserQuery.loading}
                   />
                   <Input
