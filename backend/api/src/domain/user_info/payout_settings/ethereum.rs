@@ -1,3 +1,5 @@
+#[cfg(test)]
+use derive_more::Constructor;
 use domain::EthereumAddress;
 use serde::{Deserialize, Serialize};
 
@@ -9,7 +11,14 @@ pub enum EthereumIdentity {
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(transparent)]
+#[cfg_attr(test, derive(Constructor))]
 pub struct EthereumName(String);
+
+impl EthereumName {
+	pub fn as_str(&self) -> &str {
+		self.0.as_str()
+	}
+}
 
 #[juniper::graphql_scalar(description = "A ENS backed domain name")]
 impl<S> GraphQLScalar for EthereumName
