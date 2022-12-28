@@ -3,6 +3,8 @@ use infrastructure::database::DatabaseError;
 use juniper::{graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
 use thiserror::Error;
 
+use crate::application::user::update_profile_info::Error as UpdateProfileInfoError;
+
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error("User is not authorized to perform this action")]
@@ -29,6 +31,14 @@ impl From<DomainError> for Error {
 		match usecase_error {
 			DomainError::InternalError(e) => Self::InternalError(e),
 			DomainError::InvalidInputs(e) => Self::InvalidRequest(e),
+		}
+	}
+}
+
+impl From<UpdateProfileInfoError> for Error {
+	fn from(error: UpdateProfileInfoError) -> Self {
+		match error {
+			UpdateProfileInfoError::Repository(e) => e.into(),
 		}
 	}
 }

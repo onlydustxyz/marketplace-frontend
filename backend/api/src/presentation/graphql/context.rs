@@ -18,7 +18,7 @@ pub struct Context {
 	pub create_project_usecase: application::project::create::Usecase,
 	pub update_project_github_repo_id_usecase: application::project::update_github_repo_id::Usecase,
 	pub project_details_repository: ProjectDetailsRepository,
-	pub user_info_repository: UserInfoRepository,
+	pub update_user_info_usecase: application::user::update_profile_info::Usecase,
 }
 
 impl Context {
@@ -57,7 +57,9 @@ impl Context {
 					github,
 				),
 			project_details_repository,
-			user_info_repository,
+			update_user_info_usecase: application::user::update_profile_info::Usecase::new(
+				user_info_repository,
+			),
 		}
 	}
 }
