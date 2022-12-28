@@ -8,6 +8,7 @@ pub mod event_bus;
 pub mod event_store;
 pub mod github;
 pub mod tracing;
+pub mod web3;
 
 use diesel_migrations::*;
 #[macro_use]

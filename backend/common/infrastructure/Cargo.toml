@@ -79,6 +79,9 @@ mapinto = "0.2.1"
 rand = "0.8.5"
 url = "2.2.2"
 
+# Web3
+web3 = "0.18.0"
+
 # Local dependecies
 domain = {path = "../domain"}
 olog = {path = "../olog"}
