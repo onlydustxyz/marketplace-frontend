@@ -106,32 +106,36 @@ const getGithubUser = async githubLogin =>
   ).then(response => response.fetchUserDetails);
 
 const sendPaymentRequest = async (leaderId, amountInUsd, budgetId, recipientId, workItems) =>
-  graphqlAsUser(
-    leaderId,
-    `mutation ($amountInUsd:Int!, $budgetId: Uuid!, $recipientId:Int!, $reason:String!) {
-        requestPayment(amountInUsd: $amountInUsd, budgetId: $budgetId, recipientId: $recipientId, reason: $reason)
-    }`,
-    {
-      amountInUsd,
-      budgetId,
-      recipientId,
-      reason: JSON.stringify({ workItems }),
-    }
-  ).then(response => response.requestPayment);
+  nconf.get("simulate")
+    ? "fake_payment_id"
+    : graphqlAsUser(
+        leaderId,
+        `mutation ($amountInUsd:Int!, $budgetId: Uuid!, $recipientId:Int!, $reason:Reason!) {
+    requestPayment(amountInUsd: $amountInUsd, budgetId: $budgetId, recipientId: $recipientId, reason: $reason)
+}`,
+        {
+          amountInUsd,
+          budgetId,
+          recipientId,
+          reason: { workItems },
+        }
+      ).then(response => response.requestPayment);
 
 const addEthReceipt = async (amount, currencyCode, paymentId, recipientAddress, transactionHash) =>
-  graphqlAsAdmin(
-    `mutation($amount:String!, $currencyCode:String!, $paymentId:Uuid!, $recipientAddress:String!, $transactionHash:String!) {
-        addEthPaymentReceipt(amount: $amount, currencyCode: $currencyCode, paymentId: $paymentId, recipientAddress: $recipientAddress, transactionHash: $transactionHash)
-      }`,
-    {
-      amount,
-      currencyCode,
-      paymentId,
-      recipientAddress,
-      transactionHash,
-    }
-  ).then(response => response.addEthPaymentReceipt);
+  nconf.get("simulate")
+    ? "fake_receipt_id"
+    : graphqlAsAdmin(
+        `mutation($amount:String!, $currencyCode:String!, $paymentId:Uuid!, $recipientAddress:EthereumAddress!, $transactionHash:String!) {
+    addEthPaymentReceipt(amount: $amount, currencyCode: $currencyCode, paymentId: $paymentId, recipientAddress: $recipientAddress, transactionHash: $transactionHash)
+  }`,
+        {
+          amount,
+          currencyCode,
+          paymentId,
+          recipientAddress,
+          transactionHash,
+        }
+      ).then(response => response.addEthPaymentReceipt);
 
 const importPayment = async (
   projectName,
@@ -204,12 +208,15 @@ nconf.argv(
         describe: "The project name to import payments for",
         demand: true,
       },
-    })
-    .options({
       filename: {
         alias: "f",
         describe: "The path to the CSV file that contains the list of payments to import",
         demand: true,
+      },
+      simulate: {
+        alias: "s",
+        describe: "simulate mutation, do not execute them",
+        type: "boolean",
       },
     })
 );
