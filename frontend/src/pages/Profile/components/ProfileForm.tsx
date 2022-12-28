@@ -72,12 +72,12 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
         ? PayoutSettingsType.BankAddress
         : PayoutSettingsType.EthereumAddress,
       ethWalletAddress: user?.payoutSettings.EthTransfer?.Address,
-      ethName: user?.payoutSettings.EthTransfer?.Domain,
+      ethName: user?.payoutSettings.EthTransfer?.Name,
       IBAN: user?.payoutSettings.WireTransfer?.IBAN,
       BIC: user?.payoutSettings.WireTransfer?.BIC,
     },
   });
-  const { handleSubmit, register } = formMethods;
+  const { handleSubmit } = formMethods;
   const [updateUser, { data, loading }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser);
   const success = !!data;
 
@@ -158,9 +158,9 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                   <div className="pt-3">
                     <Input
                       label={T("profile.form.email")}
-                      {...register("email", { pattern: EMAIL_ADDRESS_REGEXP })}
+                      name="email"
+                      options={{ pattern: EMAIL_ADDRESS_REGEXP, required: T("form.required") }}
                       placeholder={T("profile.form.email")}
-                      options={{ required: T("form.required") }}
                     />
                   </div>
                 </div>
@@ -218,7 +218,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                         },
                         {
                           value: PayoutSettingsType.EthereumName,
-                          label: T("profile.form.ethereumName"),
+                          label: T("profile.form.ethName"),
                         },
                         {
                           value: PayoutSettingsType.BankAddress,
@@ -232,16 +232,16 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
             </div>
             {payoutSettingsType === PayoutSettingsType.EthereumAddress && (
               <Input
-                placeholder={T("profile.form.ethereumWalletAddress")}
-                options={{ required: T("form.required") }}
-                {...register("ethWalletAddress", { pattern: ETHEREUM_ADDRESS_REGEXP })}
+                name="ethWalletAddress"
+                placeholder={T("profile.form.ethWalletAddress")}
+                options={{ pattern: ETHEREUM_ADDRESS_REGEXP, required: T("form.required") }}
               />
             )}
             {payoutSettingsType === PayoutSettingsType.EthereumName && (
               <Input
-                placeholder={T("profile.form.ethereumName")}
-                options={{ required: T("form.required") }}
-                {...register("ethName", { pattern: ENS_DOMAIN_REGEXP })}
+                name="ethName"
+                placeholder={T("profile.form.ethName")}
+                options={{ pattern: ENS_DOMAIN_REGEXP, required: T("form.required") }}
               />
             )}
             {payoutSettingsType === PayoutSettingsType.BankAddress && (
@@ -257,7 +257,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
             type="submit"
             className="self-start bg-neutral-50 text-xl text-black border-2 px-4 py-2 rounded-md font-medium"
           >
-            {loading ? T("state.loading") : T("profile.form.send")}
+            {success ? T("state.success") : loading ? T("state.loading") : T("profile.form.send")}
           </button>
           {success && <Navigate to={RoutePaths.Projects} />}
         </div>
