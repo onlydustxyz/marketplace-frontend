@@ -13,5 +13,7 @@ pub mod web3;
 use diesel_migrations::*;
 #[macro_use]
 extern crate diesel_migrations;
+#[macro_use]
+extern crate lazy_static;
 
 embed_migrations!("../../../migrations");

@@ -3,6 +3,7 @@ use figment::{
 	value::{Dict, Map, Value},
 	Error, Metadata, Profile, Provider,
 };
+use regex::Regex;
 
 #[derive(Constructor)]
 pub struct ExpandWithEnv<P: Provider>(P);
@@ -52,11 +53,18 @@ impl TryFromEnv for Vec<Value> {
 }
 
 impl TryFromEnv for String {
-	fn try_from_env(self) -> Option<Self> {
-		if let Some(variable) = self.strip_prefix('$') {
-			std::env::var(variable).ok()
-		} else {
-			Some(self)
+	fn try_from_env(mut self) -> Option<Self> {
+		lazy_static! {
+			// retrieve all occurences of pattern like $VAR_NAME
+			static ref RE: Regex = Regex::new(r"(?:\$)(?P<var>[[:alpha:]_]+)").unwrap();
 		}
+
+		while let Some(captures) = RE.captures(&self) {
+			self.replace_range(
+				captures.get(0).unwrap().range(),
+				&captures.get(1).and_then(|var| std::env::var(var.as_str()).ok())?,
+			)
+		}
+		Some(self)
 	}
 }

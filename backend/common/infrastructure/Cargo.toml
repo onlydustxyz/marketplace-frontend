@@ -77,7 +77,9 @@ derive_more = "0.99.17"
 itertools = "0.10.3"
 mapinto = "0.2.1"
 rand = "0.8.5"
+regex = "1.7.0"
 url = "2.2.2"
+lazy_static = "1.4.0"
 
 # Web3
 web3 = "0.18.0"
