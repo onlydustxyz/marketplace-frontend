@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const login = async (refreshToken: RefreshToken) => {
     await setFromRefreshToken(refreshToken);
     await client.clearStore();
-    navigate(RoutePaths.Profile);
+    navigate(RoutePaths.Projects);
   };
 
   const client = useApolloClient();

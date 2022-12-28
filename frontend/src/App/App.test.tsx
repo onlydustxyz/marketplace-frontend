@@ -196,7 +196,7 @@ describe('"Login" page', () => {
       }),
     });
     await screen.findByText(LOGGING_IN_TEXT_QUERY);
-    await screen.findByText(EDIT_PROFILE_TITLE);
+    await screen.findByText(TEST_PROJECT_NAME);
     expect(screen.queryByText(LOGGING_IN_TEXT_QUERY)).not.toBeInTheDocument();
   });
 
