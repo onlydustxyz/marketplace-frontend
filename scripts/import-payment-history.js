@@ -5,6 +5,12 @@ const nconf = require("nconf");
 const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT;
 const GRAPHQL_ADMIN_SECRET = process.env.GRAPHQL_ADMIN_SECRET;
 
+function sleep(ms) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+}
+
 const graphqlAsAdmin = async (query, variables = undefined) => {
   const response = await fetch(GRAPHQL_ENDPOINT, {
     method: "POST",
@@ -145,7 +151,7 @@ const importPayment = async (
   const recipientGithubId = githubUser.id;
 
   const paymentId = await sendPaymentRequest(leaderId, amount, budgetId, recipientGithubId, workItems);
-  sleep(500);
+  await sleep(500);
   const receiptId = await addEthReceipt(amount.toString(), "USDC", paymentId, recipientEthAddress, transactionHash);
 
   return {
