@@ -7,7 +7,7 @@ use uuid::Uuid;
 use super::{Context, Error, Result};
 use crate::{
 	domain::{
-		user_info::{Email, Identity, Location, PayoutSettings, UserInfo},
+		user_info::{Email, Identity, Location, PayoutSettings},
 		PaymentReason, ProjectDetails,
 	},
 	presentation::http::dto::{IdentityInput, PayoutSettingsInput},
@@ -135,9 +135,10 @@ impl Mutation {
 		let payout_settings =
 			PayoutSettings::try_from(payout_settings).map_err(Error::InvalidRequest)?;
 
-		let user_info = UserInfo::new(caller_id, identity, location, email, payout_settings);
-
-		context.user_info_repository.upsert(&user_info)?;
+		context
+			.update_user_info_usecase
+			.update_profile_info(caller_id, identity, location, email, payout_settings)
+			.await?;
 
 		Ok(caller_id.into())
 	}
