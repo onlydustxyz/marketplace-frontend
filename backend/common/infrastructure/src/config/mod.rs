@@ -29,6 +29,7 @@ mod tests {
 	#[derive(Deserialize)]
 	pub struct App {
 		api_key: String,
+		url: String,
 		inner: Inner,
 	}
 
@@ -46,6 +47,7 @@ mod tests {
 				r#"
                 local:
                   api_key: my_api_key
+                  url: http://url.com
                   inner:
                     key: another_key
                     multiple:
@@ -74,6 +76,7 @@ mod tests {
 				"app.yaml",
 				r#"
                 local:
+                  url: http://url.com/$MY_API_KEY
                   api_key: $MY_API_KEY
                   inner:
                     key: $MY_API_KEY
@@ -92,6 +95,7 @@ mod tests {
 
 			let config: App = result.unwrap();
 			assert_eq!(config.api_key, "my_api_key");
+			assert_eq!(config.url, "http://url.com/my_api_key");
 			assert_eq!(config.inner.key, "my_api_key");
 			assert_eq!(config.inner.multiple, vec!["val1", "my_api_key"]);
 
@@ -106,6 +110,7 @@ mod tests {
 				"app.yaml",
 				r#"
                 local:
+                  url: http://url.com/$MY_API_KEY
                   api_key: $MY_API_KEY
                   inner:
                     key: $MY_API_KEY
