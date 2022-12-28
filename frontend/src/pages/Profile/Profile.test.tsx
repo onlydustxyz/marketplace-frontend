@@ -20,6 +20,9 @@ import {
   PayoutSettingsType,
 } from "src/__generated/graphql";
 
+const INVALID_ETHEREUM_ADDRESS = "0x1234567890";
+const VALID_ETHEREUM_ADDRESS = "0xebec795c9c8bbd61ffc14a6662944748f299cacf";
+
 const mockUser: UserInfo = {
   userId: "test-user-id",
   email: "test@user.email",
@@ -37,7 +40,7 @@ const mockUser: UserInfo = {
     post_code: "38000",
   },
   payoutSettings: {
-    EthTransfer: "0x1234567890",
+    EthTransfer: { Address: INVALID_ETHEREUM_ADDRESS },
   },
 };
 
@@ -115,7 +118,7 @@ const buildMockMutationUpdateUser = (userInfo: UserInfo) => {
   const payoutSettings: PayoutSettingsInput = userInfo.payoutSettings.EthTransfer
     ? {
         type: PayoutSettingsType.EthereumAddress,
-        optEthAddress: userInfo.payoutSettings.EthTransfer,
+        optEthAddress: VALID_ETHEREUM_ADDRESS,
         optBankAddress: null,
         optEthName: null,
       }
@@ -164,19 +167,32 @@ describe('"Profile" page for individual', () => {
     await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("First name"));
     expect((await screen.findByLabelText<HTMLInputElement>("Email")).value).toBe("");
     await userEvent.click(await screen.findByText("Save profile"));
-    waitFor(() => {
+    await waitFor(() => {
       const errorMessages = screen.getAllByText("Required");
       expect(errorMessages.length).toBe(2);
     });
   });
 
-  it("should navigate to projects screen on success", async () => {
+  it("should not navigate to projects screen when clicking Save profile with invalid Ethereum address", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
     await userEvent.click(await screen.findByText("Save profile"));
-    waitFor(() => {
-      const successMessage = screen.getByText("Browse projects");
-      expect(successMessage).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText("Success !")).not.toBeInTheDocument();
     });
+  });
+
+  it("should navigate to projects screen when clicking Save profile with valid Ethereum address", async () => {
+    // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
+
+    await screen.findByDisplayValue(INVALID_ETHEREUM_ADDRESS);
+    await userEvent.clear(await screen.findByPlaceholderText<HTMLInputElement>("Ethereum wallet address"));
+    await userEvent.type(
+      await screen.findByPlaceholderText<HTMLInputElement>("Ethereum wallet address"),
+      VALID_ETHEREUM_ADDRESS
+    );
+    await screen.findByDisplayValue(VALID_ETHEREUM_ADDRESS);
+    await userEvent.click(await screen.findByText("Save profile"));
+    await screen.findByText("Success !");
   });
 });
 
@@ -198,7 +214,7 @@ describe('"Profile" page for company', () => {
     await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Name"));
     expect((await screen.findByLabelText<HTMLInputElement>("Name")).value).toBe("");
     await userEvent.click(await screen.findByText("Save profile"));
-    waitFor(() => {
+    await waitFor(() => {
       const errorMessages = screen.getAllByText("Required");
       expect(errorMessages.length).toBe(1);
     });
@@ -207,8 +223,8 @@ describe('"Profile" page for company', () => {
   it("should navigate to projects screen on success", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
     await userEvent.click(await screen.findByText("Save profile"));
-    waitFor(() => {
-      const successMessage = screen.getByText("Browse projects");
+    await waitFor(() => {
+      const successMessage = screen.getByText("Success !");
       expect(successMessage).toBeInTheDocument();
     });
   });

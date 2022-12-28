@@ -10,6 +10,7 @@ const Profile: React.FC = () => {
   const { isLoggedIn } = useAuth();
   const query = useHasuraQuery<ProfileQuery>(GET_PROFILE_QUERY, HasuraUserRole.RegisteredUser, {
     skip: !isLoggedIn,
+    fetchPolicy: "network-only",
   });
 
   return (

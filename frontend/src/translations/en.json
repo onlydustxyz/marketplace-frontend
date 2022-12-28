@@ -64,8 +64,8 @@
       "country": "Country",
       "email": "Email",
       "ethereum": "Ethereum",
-      "ethereumName": "ENS domain",
-      "ethereumWalletAddress": "Ethereum wallet address",
+      "ethName": "ENS domain",
+      "ethWalletAddress": "Ethereum wallet address",
       "firstname": "First name",
       "iban": "IBAN",
       "id": "ID",
@@ -112,7 +112,8 @@
   "state": {
     "errorOccured": "Oops, an unexpected error occured",
     "loading": "Loading...",
-    "notResponsive": "This website is only available for desktop now. Mobile version coming soon ..."
+    "notResponsive": "This website is only available for desktop now. Mobile version coming soon ...",
+    "success": "Success !"
   },
   "tryToRefresh": "Try to refresh the page"
 }
