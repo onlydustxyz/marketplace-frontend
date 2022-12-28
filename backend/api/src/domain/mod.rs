@@ -13,3 +13,6 @@ pub use user_info::UserInfo;
 
 mod payment;
 pub use payment::Reason as PaymentReason;
+
+mod specifications;
+pub use specifications::ArePayoutSettingsValid;
