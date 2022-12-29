@@ -22,3 +22,9 @@ use uuid::Uuid;
 )]
 #[sql_type = "diesel::sql_types::Uuid"]
 pub struct Id(Uuid);
+
+impl Id {
+	pub fn new() -> Self {
+		Self(Uuid::new_v4())
+	}
+}

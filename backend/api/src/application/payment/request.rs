@@ -3,7 +3,7 @@ use std::sync::Arc;
 use anyhow::Result;
 use domain::{
 	AggregateRootRepository, Budget, BudgetId, DomainError, Event, GithubUserId, Payment,
-	PaymentId, Publisher, UniqueMessage, UserId, UuidGenerator,
+	PaymentId, Publisher, UniqueMessage, UserId,
 };
 use rusty_money::{crypto, Money};
 use serde_json::Value;
@@ -11,19 +11,16 @@ use serde_json::Value;
 use crate::domain::Publishable;
 
 pub struct Usecase {
-	uuid_generator: Arc<dyn UuidGenerator>,
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	budget_repository: AggregateRootRepository<Budget>,
 }
 
 impl Usecase {
 	pub fn new(
-		uuid_generator: Arc<dyn UuidGenerator>,
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		budget_repository: AggregateRootRepository<Budget>,
 	) -> Self {
 		Self {
-			uuid_generator,
 			event_publisher,
 			budget_repository,
 		}
@@ -46,10 +43,10 @@ impl Usecase {
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>();
 
-		let payment_id = self.uuid_generator.new_uuid();
+		let new_payment_id = PaymentId::new();
 		events.extend(
 			Payment::request(
-				payment_id.into(),
+				new_payment_id,
 				budget_id,
 				requestor_id,
 				recipient_id,
@@ -63,6 +60,6 @@ impl Usecase {
 
 		events.publish(self.event_publisher.clone()).await?;
 
-		Ok(payment_id.into())
+		Ok(new_payment_id)
 	}
 }

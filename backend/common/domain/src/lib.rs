@@ -1,9 +1,6 @@
 mod value_objects;
 pub use value_objects::*;
 
-mod services;
-pub use services::*;
-
 mod event;
 pub use event::Event;
 
