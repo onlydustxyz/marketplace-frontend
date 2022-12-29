@@ -8,7 +8,7 @@ use api::{
 };
 use domain::AggregateRootRepository;
 use dotenv::dotenv;
-use infrastructure::{amqp, config, database, github, tracing::Tracer};
+use infrastructure::{amqp, config, database, github, tracing::Tracer, web3::ens};
 use olog::info;
 use tracing::instrument;
 
@@ -36,6 +36,7 @@ async fn main() -> Result<()> {
 		ProjectDetailsRepository::new(database.clone()),
 		UserInfoRepository::new(database),
 		github,
+		Arc::new(ens::Client::new(config.web3())?),
 	)
 	.await?;
 
