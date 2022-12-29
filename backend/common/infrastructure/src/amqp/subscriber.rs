@@ -141,11 +141,7 @@ mod tests {
 
 	async fn publish_message(bus: &Bus, queue_name: &'static str, message: TestMessage) {
 		let confirmation = bus
-			.publish(
-				&*String::new(),
-				queue_name,
-				&serde_json::to_vec(&message).unwrap(),
-			)
+			.publish("", queue_name, &serde_json::to_vec(&message).unwrap())
 			.await
 			.unwrap();
 
@@ -153,10 +149,7 @@ mod tests {
 	}
 
 	async fn publish_badly_formatted_message(bus: &Bus, queue_name: &'static str) {
-		let confirmation = bus
-			.publish(&*String::new(), queue_name, "bad-message".as_bytes())
-			.await
-			.unwrap();
+		let confirmation = bus.publish("", queue_name, "bad-message".as_bytes()).await.unwrap();
 
 		assert!(!confirmation.is_nack());
 	}
@@ -228,7 +221,7 @@ mod tests {
 		publish_message(&publisher, QUEUE, TestMessage::Valid).await;
 		publish_message(&publisher, QUEUE, TestMessage::Stop).await;
 
-		run_test(consumer, &*COUNTER, 2).await;
+		run_test(consumer, &COUNTER, 2).await;
 	}
 
 	#[rstest]
@@ -253,7 +246,7 @@ mod tests {
 		publish_message(&publisher, QUEUE, TestMessage::Valid).await;
 		publish_message(&publisher, QUEUE, TestMessage::Stop).await;
 
-		run_test(consumer, &*COUNTER, 2).await;
+		run_test(consumer, &COUNTER, 2).await;
 
 		assert!(logs_contain("Failed to deserialize message"));
 	}
@@ -280,7 +273,7 @@ mod tests {
 		publish_message(&publisher, QUEUE, TestMessage::Valid).await;
 		publish_message(&publisher, QUEUE, TestMessage::Stop).await;
 
-		run_test(consumer, &*COUNTER, 2).await;
+		run_test(consumer, &COUNTER, 2).await;
 
 		assert!(logs_contain("Ignoring event"));
 		assert!(logs_contain("error=\"bad message\""));
