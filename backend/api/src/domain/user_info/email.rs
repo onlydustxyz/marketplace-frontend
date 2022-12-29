@@ -2,7 +2,9 @@ use derive_more::From;
 use email_address::EmailAddress;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Serialize, Deserialize, AsExpression, From, FromToSql, FromSqlRow)]
+#[derive(
+	Debug, Default, Clone, Serialize, Deserialize, AsExpression, From, FromToSql, FromSqlRow,
+)]
 #[sql_type = "diesel::sql_types::Text"]
 #[serde(transparent)]
 pub struct Email(String);

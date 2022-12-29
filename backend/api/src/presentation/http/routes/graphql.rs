@@ -7,7 +7,10 @@ use presentation::http::guards::{ApiKey, ApiKeyGuard, OptionUserId, Role};
 use rocket::{response::content, State};
 
 use crate::{
-	infrastructure::database::{ProjectDetailsRepository, UserInfoRepository},
+	infrastructure::{
+		database::{ProjectDetailsRepository, UserInfoRepository},
+		web3::ens,
+	},
 	presentation::graphql::{Context, Schema},
 };
 
@@ -40,6 +43,7 @@ pub async fn get_graphql_handler(
 	project_details_repository: &State<ProjectDetailsRepository>,
 	user_info_repository: &State<UserInfoRepository>,
 	github: &State<Arc<github::Client>>,
+	ens: &State<Arc<ens::Client>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		role.into(),
@@ -51,6 +55,7 @@ pub async fn get_graphql_handler(
 		(*project_details_repository).clone(),
 		(*user_info_repository).clone(),
 		(*github).clone(),
+		(*ens).clone(),
 	);
 	request.execute(schema, &context).await
 }
@@ -70,6 +75,7 @@ pub async fn post_graphql_handler(
 	project_details_repository: &State<ProjectDetailsRepository>,
 	user_info_repository: &State<UserInfoRepository>,
 	github: &State<Arc<github::Client>>,
+	ens: &State<Arc<ens::Client>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		role.into(),
@@ -81,6 +87,7 @@ pub async fn post_graphql_handler(
 		(*project_details_repository).clone(),
 		(*user_info_repository).clone(),
 		(*github).clone(),
+		(*ens).clone(),
 	);
 	request.execute(schema, &context).await
 }
