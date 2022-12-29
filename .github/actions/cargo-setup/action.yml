@@ -9,4 +9,4 @@ runs:
 
     - name: Install toolchain
       shell: bash
-      run: rustup toolchain install 1.63 --profile minimal
+      run: rustup toolchain install 1.66 --profile minimal
