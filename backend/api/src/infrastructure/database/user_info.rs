@@ -10,3 +10,14 @@ use crate::domain::UserInfo;
 #[table(dsl::user_info)]
 #[id(dsl::user_id)]
 pub struct Repository(Arc<Client>);
+
+#[cfg(test)]
+mockall::mock! {
+	pub Repository {
+		pub fn upsert(&self, entity: &UserInfo)  -> Result<(), infrastructure::database::DatabaseError>;
+	}
+
+	impl Clone for Repository {
+		fn clone(&self) -> Self;
+	}
+}
