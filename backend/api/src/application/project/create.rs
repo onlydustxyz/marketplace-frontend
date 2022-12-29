@@ -3,7 +3,7 @@ use std::sync::Arc;
 use anyhow::Result;
 use domain::{
 	Amount, Budget, BudgetId, DomainError, Event, EventSourcable, GithubRepoExists,
-	GithubRepositoryId, Project, ProjectId, Publisher, UniqueMessage, UserId, UuidGenerator,
+	GithubRepositoryId, Project, ProjectId, Publisher, UniqueMessage, UserId,
 };
 
 use crate::{
@@ -12,7 +12,6 @@ use crate::{
 };
 
 pub struct Usecase {
-	uuid_generator: Arc<dyn UuidGenerator>,
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_details_repository: ProjectDetailsRepository,
 	github: Arc<dyn GithubRepoExists>,
@@ -20,13 +19,11 @@ pub struct Usecase {
 
 impl Usecase {
 	pub fn new(
-		uuid_generator: Arc<dyn UuidGenerator>,
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		project_details_repository: ProjectDetailsRepository,
 		github: Arc<dyn GithubRepoExists>,
 	) -> Self {
 		Self {
-			uuid_generator,
 			event_publisher,
 			project_details_repository,
 			github,
@@ -44,15 +41,15 @@ impl Usecase {
 		user_id: UserId,
 		logo_url: Option<String>,
 	) -> Result<ProjectId, DomainError> {
-		let project_id: ProjectId = self.uuid_generator.new_uuid().into();
+		let new_project_id = ProjectId::new();
 
 		let mut events = self
-			.create_leaded_project(project_id, user_id, name, github_repo_id)
+			.create_leaded_project(new_project_id, user_id, name, github_repo_id)
 			.await
 			.map_err(DomainError::InvalidInputs)?;
 		events.extend(allocate_owned_budget(
-			self.uuid_generator.new_uuid().into(),
-			project_id,
+			BudgetId::new(),
+			new_project_id,
 			user_id,
 			initial_budget,
 		));
@@ -65,13 +62,13 @@ impl Usecase {
 			.await?;
 
 		self.project_details_repository.upsert(&ProjectDetails::new(
-			project_id,
+			new_project_id,
 			description,
 			telegram_link,
 			logo_url,
 		))?;
 
-		Ok(project_id)
+		Ok(new_project_id)
 	}
 
 	async fn create_leaded_project(

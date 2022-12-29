@@ -6,7 +6,7 @@ use api::{
 	presentation::{graphql, http},
 	Config,
 };
-use domain::{AggregateRootRepository, RandomUuidGenerator};
+use domain::AggregateRootRepository;
 use dotenv::dotenv;
 use infrastructure::{amqp, config, database, github, tracing::Tracer};
 use olog::info;
@@ -29,7 +29,6 @@ async fn main() -> Result<()> {
 	http::serve(
 		config.http().clone(),
 		graphql::create_schema(),
-		Arc::new(RandomUuidGenerator),
 		Arc::new(amqp::Bus::default(config.amqp()).await?),
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),

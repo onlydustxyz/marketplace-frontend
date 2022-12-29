@@ -2,7 +2,6 @@ use std::sync::Arc;
 
 use ::domain::{
 	AggregateRootRepository, Budget, Event, Payment, Project, Publisher, UniqueMessage,
-	UuidGenerator,
 };
 use anyhow::Result;
 use http::Config;
@@ -22,7 +21,6 @@ mod routes;
 pub async fn serve(
 	config: Config,
 	schema: graphql::Schema,
-	uuid_generator: Arc<dyn UuidGenerator>,
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_repository: AggregateRootRepository<Project>,
 	payment_repository: AggregateRootRepository<Payment>,
@@ -34,7 +32,6 @@ pub async fn serve(
 	let _ = rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config)
 		.manage(schema)
-		.manage(uuid_generator)
 		.manage(event_publisher)
 		.manage(project_repository)
 		.manage(payment_repository)

@@ -1,9 +1,6 @@
 use std::sync::Arc;
 
-use domain::{
-	AggregateRootRepository, Budget, Event, Payment, Project, Publisher, UniqueMessage,
-	UuidGenerator,
-};
+use domain::{AggregateRootRepository, Budget, Event, Payment, Project, Publisher, UniqueMessage};
 use infrastructure::github;
 use presentation::http::guards::OptionUserId;
 
@@ -29,7 +26,6 @@ impl Context {
 	pub fn new(
 		caller_permissions: Box<dyn Permissions>,
 		maybe_user_id: OptionUserId,
-		uuid_generator: Arc<dyn UuidGenerator>,
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		payment_repository: AggregateRootRepository<Payment>,
 		budget_repository: AggregateRootRepository<Budget>,
@@ -42,17 +38,14 @@ impl Context {
 			caller_permissions,
 			maybe_user_id,
 			request_payment_usecase: application::payment::request::Usecase::new(
-				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
 				budget_repository,
 			),
 			process_payment_usecase: application::payment::process::Usecase::new(
-				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
 				payment_repository,
 			),
 			create_project_usecase: application::project::create::Usecase::new(
-				uuid_generator.to_owned(),
 				event_publisher.to_owned(),
 				project_details_repository.clone(),
 				github.clone(),

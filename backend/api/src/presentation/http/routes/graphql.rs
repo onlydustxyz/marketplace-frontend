@@ -1,9 +1,6 @@
 use std::sync::Arc;
 
-use domain::{
-	AggregateRootRepository, Budget, Event, Payment, Project, Publisher, UniqueMessage,
-	UuidGenerator,
-};
+use domain::{AggregateRootRepository, Budget, Event, Payment, Project, Publisher, UniqueMessage};
 use infrastructure::github;
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use presentation::http::guards::{ApiKey, ApiKeyGuard, OptionUserId, Role};
@@ -36,7 +33,6 @@ pub async fn get_graphql_handler(
 	maybe_user_id: OptionUserId,
 	request: GraphQLRequest,
 	schema: &State<Schema>,
-	uuid_generator: &State<Arc<dyn UuidGenerator>>,
 	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
 	payment_repository: &State<AggregateRootRepository<Payment>>,
 	budget_repository: &State<AggregateRootRepository<Budget>>,
@@ -48,7 +44,6 @@ pub async fn get_graphql_handler(
 	let context = Context::new(
 		role.into(),
 		maybe_user_id,
-		(*uuid_generator).clone(),
 		(*event_publisher).clone(),
 		(*payment_repository).clone(),
 		(*budget_repository).clone(),
@@ -68,7 +63,6 @@ pub async fn post_graphql_handler(
 	maybe_user_id: OptionUserId,
 	request: GraphQLRequest,
 	schema: &State<Schema>,
-	uuid_generator: &State<Arc<dyn UuidGenerator>>,
 	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
 	payment_repository: &State<AggregateRootRepository<Payment>>,
 	budget_repository: &State<AggregateRootRepository<Budget>>,
@@ -80,7 +74,6 @@ pub async fn post_graphql_handler(
 	let context = Context::new(
 		role.into(),
 		maybe_user_id,
-		(*uuid_generator).clone(),
 		(*event_publisher).clone(),
 		(*payment_repository).clone(),
 		(*budget_repository).clone(),
