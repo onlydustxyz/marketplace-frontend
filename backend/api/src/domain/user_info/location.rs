@@ -2,7 +2,15 @@ use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
 
 #[derive(
-	Debug, Clone, Serialize, Deserialize, GraphQLInputObject, AsExpression, FromToSql, FromSqlRow,
+	Default,
+	Debug,
+	Clone,
+	Serialize,
+	Deserialize,
+	GraphQLInputObject,
+	AsExpression,
+	FromToSql,
+	FromSqlRow,
 )]
 #[sql_type = "diesel::sql_types::Jsonb"]
 pub struct Location {

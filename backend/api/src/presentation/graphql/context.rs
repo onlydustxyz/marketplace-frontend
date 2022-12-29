@@ -6,8 +6,11 @@ use presentation::http::guards::OptionUserId;
 
 use crate::{
 	application,
-	domain::Permissions,
-	infrastructure::database::{ProjectDetailsRepository, UserInfoRepository},
+	domain::{ArePayoutSettingsValid, Permissions},
+	infrastructure::{
+		database::{ProjectDetailsRepository, UserInfoRepository},
+		web3::ens,
+	},
 };
 
 pub struct Context {
@@ -33,6 +36,7 @@ impl Context {
 		project_details_repository: ProjectDetailsRepository,
 		user_info_repository: UserInfoRepository,
 		github: Arc<github::Client>,
+		ens: Arc<ens::Client>,
 	) -> Self {
 		Self {
 			caller_permissions,
@@ -59,6 +63,7 @@ impl Context {
 			project_details_repository,
 			update_user_info_usecase: application::user::update_profile_info::Usecase::new(
 				user_info_repository,
+				ArePayoutSettingsValid::new(ens),
 			),
 		}
 	}

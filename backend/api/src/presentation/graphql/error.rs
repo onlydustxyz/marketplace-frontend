@@ -39,6 +39,8 @@ impl From<UpdateProfileInfoError> for Error {
 	fn from(error: UpdateProfileInfoError) -> Self {
 		match error {
 			UpdateProfileInfoError::Repository(e) => e.into(),
+			UpdateProfileInfoError::Internal(e) => Self::InternalError(e),
+			UpdateProfileInfoError::InvalidInput(e) => Self::InvalidRequest(e),
 		}
 	}
 }

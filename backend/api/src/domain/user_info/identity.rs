@@ -8,13 +8,13 @@ pub enum Identity {
 	Person(PersonIdentity),
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, GraphQLInputObject)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize, GraphQLInputObject)]
 pub struct CompanyIdentity {
 	name: String,
 	id: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, GraphQLInputObject)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize, GraphQLInputObject)]
 pub struct PersonIdentity {
 	firstname: String,
 	lastname: String,
