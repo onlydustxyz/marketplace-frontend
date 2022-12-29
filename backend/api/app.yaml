@@ -7,6 +7,8 @@ default:
     personal_access_token: $GITHUB_PAT
     headers:
       api-key: $GITHUB_PROXY_GITHUB_API_KEY
+  web3:
+    url: https://mainnet.infura.io/v3/$INFURA_API_KEY
 
 local:
   database:
