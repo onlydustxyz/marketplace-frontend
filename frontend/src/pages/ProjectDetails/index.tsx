@@ -85,7 +85,7 @@ export default function ProjectDetails() {
         <div className="flex flex-row w-full gap-3 items-stretch p-5">
           <Sidebar>
             <Listbox value={project} onChange={onChangeProjectFromDropdown}>
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-3">
                 <Listbox.Button className="border-2 rounded-2xl hover:cursor-pointer p-3 font-medium text-2xl border-neutral-700">
                   <div className="flex flex-row gap-3 items-center">
                     <div className="border-4 border-neutral-600 p-2 rounded-xl">
@@ -97,7 +97,7 @@ export default function ProjectDetails() {
                     </div>
                   </div>
                 </Listbox.Button>
-                <Listbox.Options className="flex flex-col border-2 border-neutral-600 divide-y rounded-b-lg">
+                <Listbox.Options className="flex flex-col border-2 border-neutral-700 divide-y rounded-2xl">
                   {projects.map(projectFromDropdown => (
                     <Listbox.Option
                       key={projectFromDropdown.id}
