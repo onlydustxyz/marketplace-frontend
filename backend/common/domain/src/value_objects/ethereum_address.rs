@@ -69,12 +69,7 @@ where
 	}
 
 	fn from_input_value(value: &juniper::InputValue) -> Option<Self> {
-		let str_value = value.as_string_value()?;
-
-		let x = EthereumAddress::try_from(str_value);
-		println!("{:?}", x);
-
-		x.ok()
+		EthereumAddress::try_from(value.as_string_value()?).ok()
 	}
 
 	fn from_str<'a>(value: juniper::ScalarToken<'a>) -> juniper::ParseScalarResult<'a, S> {
