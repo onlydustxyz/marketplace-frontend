@@ -20,46 +20,49 @@ interface OverviewProps {
 export default function Overview({ decodedReadme, lead, githubRepoInfo }: OverviewProps) {
   const { T } = useIntl();
   return (
-    <div className="flex flex-row items-start gap-5">
-      {decodedReadme && (
-        <div className="flex w-3/4">
+    <div className="flex flex-col gap-8 mt-3">
+      <div className="text-3xl font-alfreda">Overview</div>
+      <div className="flex flex-row items-start gap-5">
+        {decodedReadme && (
+          <div className="flex basis-3/4 flex-1">
+            <Card>
+              <ReactMarkdown skipHtml={true} remarkPlugins={[[remarkGfm]]} className="prose lg:prose-l prose-invert">
+                {decodedReadme}
+              </ReactMarkdown>
+            </Card>
+          </div>
+        )}
+        <div className="flex basis-1/4 flex-1">
           <Card>
-            <ReactMarkdown skipHtml={true} remarkPlugins={[[remarkGfm]]} className="prose lg:prose-xl prose-invert">
-              {decodedReadme}
-            </ReactMarkdown>
+            <div className="flex flex-col gap-3">
+              {githubRepoInfo?.languages && (
+                <OverviewPanelSection title={T("project.details.overview.technologies")}>
+                  {buildLanguageString(githubRepoInfo.languages)}
+                </OverviewPanelSection>
+              )}
+              {lead && (
+                <OverviewPanelSection title={T("project.details.overview.projectLeader")}>
+                  <ProjectLead {...lead} />
+                </OverviewPanelSection>
+              )}
+              {githubRepoInfo?.contributors?.length && (
+                <OverviewPanelSection title={T("project.details.overview.contributors")}>
+                  {githubRepoInfo.contributors.length}
+                </OverviewPanelSection>
+              )}
+              {githubRepoInfo?.owner && githubRepoInfo?.name && (
+                <OverviewPanelSection title={T("project.details.overview.githubLinkTitle")}>
+                  <a
+                    href={buildGithubLink(githubRepoInfo.owner, githubRepoInfo.name)}
+                    className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                  >
+                    {T("project.details.overview.githubLinkContent")}
+                  </a>
+                </OverviewPanelSection>
+              )}
+            </div>
           </Card>
         </div>
-      )}
-      <div className="flex w-1/4">
-        <Card>
-          <div className="flex flex-col gap-3">
-            {githubRepoInfo?.languages && (
-              <OverviewPanelSection title={T("project.details.overview.technologies")}>
-                {buildLanguageString(githubRepoInfo.languages)}
-              </OverviewPanelSection>
-            )}
-            {lead && (
-              <OverviewPanelSection title={T("project.details.overview.projectLeader")}>
-                <ProjectLead {...lead} />
-              </OverviewPanelSection>
-            )}
-            {githubRepoInfo?.contributors?.length && (
-              <OverviewPanelSection title={T("project.details.overview.contributors")}>
-                {githubRepoInfo.contributors.length}
-              </OverviewPanelSection>
-            )}
-            {githubRepoInfo?.owner && githubRepoInfo?.name && (
-              <OverviewPanelSection title={T("project.details.overview.githubLinkTitle")}>
-                <a
-                  href={buildGithubLink(githubRepoInfo.owner, githubRepoInfo.name)}
-                  className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-                >
-                  {T("project.details.overview.githubLinkContent")}
-                </a>
-              </OverviewPanelSection>
-            )}
-          </div>
-        </Card>
       </div>
     </div>
   );

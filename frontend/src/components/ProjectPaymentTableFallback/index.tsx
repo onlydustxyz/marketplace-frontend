@@ -8,9 +8,9 @@ interface ProjectPaymentTableFallbackProps {
 export default function ProjectPaymentTableFallback({ onClick }: ProjectPaymentTableFallbackProps) {
   const { T } = useT();
   return (
-    <div className="flex flex-col items-center gap-8 p-4">
+    <div className="flex flex-col items-center gap-8 p-4 w-full">
       <div className="w-64">
-        <img src={foxLogo}></img>
+        <img src={foxLogo} />
       </div>
       <div className="flex flex-col text-lg items-center gap-2">
         <div>{T("project.details.tableFallback.noPayments")}</div>
