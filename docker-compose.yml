@@ -88,7 +88,7 @@ services:
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL:-postgres://postgres:postgres@db/marketplace_db}
       HASURA_GRAPHQL_GRAPHQL_URL: http://graphql-engine:8080/v1/graphql
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET:-myadminsecretkey}
-      AUTH_JWT_CUSTOM_CLAIMS: '{"projectsLeaded":"projectsLeaded[].projectId"}'
+      AUTH_JWT_CUSTOM_CLAIMS: '{"projectsLeaded":"projectsLeaded[].projectId","githubUserId":"githubUser.githubUserId"}'
       AUTH_USER_DEFAULT_ALLOWED_ROLES: public,me,registered_user
       AUTH_USER_DEFAULT_ROLE: registered_user
       AUTH_LOG_LEVEL: info
