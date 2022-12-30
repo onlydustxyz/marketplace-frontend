@@ -184,7 +184,7 @@ describe("As a simple user, I", () => {
     });
 
 
-    it("can update my info", () => {
+    it.only("can update my info", () => {
         let email = "pierre.fabre@gmail.com";
         let location =
             { city: "Paris", country: "France", number: "4", postCode: "75008", street: "avenue des Champs Elysee" };
@@ -194,7 +194,7 @@ describe("As a simple user, I", () => {
             { type: "ETHEREUM_ADDRESS", optEthAddress: "0x123" };
 
         let new_payout_settings =
-            { type: "ETHEREUM_NAME", optEthName: "name.eth" };
+            { type: "ETHEREUM_NAME", optEthName: "vitalik.eth" };
 
         cy.createUser().then((user) => {
             cy.updateProfileInfo(email, location, identity, payout_settings)
@@ -269,7 +269,7 @@ describe("As a simple user, I", () => {
                                 country: "France",
                                 post_code: "75008",
                             },
-                            payoutSettings: { EthTransfer: { Name: "name.eth" } },
+                            payoutSettings: { EthTransfer: { Name: "vitalik.eth" } },
                         });
                 });
         });
