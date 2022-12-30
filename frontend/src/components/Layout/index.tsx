@@ -10,7 +10,7 @@ export default function Layout() {
       </div>
       <div className="md:visible invisible">
         <Header />
-        <div className="container mx-auto pb-10">
+        <div className="">
           <Outlet />
         </div>
       </div>

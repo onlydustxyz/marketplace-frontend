@@ -23,7 +23,7 @@ const MyContributions = () => {
   const hasPayments = payments && payments.length > 0;
 
   return (
-    <div>
+    <div className="container mx-auto pb-10">
       <div className="text-3xl font-alfreda mt-10">{T("navbar.myContributions")}</div>
       <QueryWrapper query={query}>
         <div className="mt-10">
