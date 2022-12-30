@@ -10,10 +10,9 @@ import { GET_PROJECTS_QUERY } from "src/pages/Projects";
 import { GET_PROFILE_QUERY } from "src/pages/Profile";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { GET_MY_PROJECT_QUERY } from "src/pages/MyProjects";
-import { ProjectDetailsTab, GET_PROJECT_USER_QUERY } from "src/pages/ProjectDetails";
+import { ProjectDetailsTab, GET_PROJECT_USER_QUERY, GET_PROJECTS_FOR_SIDEBAR_QUERY } from "src/pages/ProjectDetails";
 import { buildGithubLink } from "src/utils/stringUtils";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import Overview from "src/pages/ProjectDetails/Overview";
 
 const AUTH_CODE_TEST_VALUE = "code";
 const LOGGING_IN_TEXT_QUERY = /logging in.../i;
@@ -179,6 +178,37 @@ const graphQlMocks = [
       },
     },
   },
+  {
+    request: {
+      query: GET_PROJECTS_FOR_SIDEBAR_QUERY,
+    },
+    result: {
+      data: {
+        projects: [
+          {
+            id: TEST_PROJECT_ID,
+            name: TEST_PROJECT_NAME,
+            projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
+            projectLeads: [
+              {
+                user: {
+                  displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
+                  avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
+                },
+              },
+            ],
+            githubRepo: {
+              name: TEST_GITHUB_REPO_NAME,
+              owner: TEST_GITHUB_REPO_OWNER,
+              content: {
+                contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+              },
+            },
+          },
+        ],
+      },
+    },
+  },
 ];
 
 Object.defineProperty(window, "innerWidth", { writable: true, configurable: true, value: 2000 });
@@ -255,8 +285,10 @@ describe('"Login" page', () => {
       ).toEqual(TEST_GITHUB_LINK);
     });
 
-    expect(screen.queryByText(ProjectDetailsTab.Overview)).not.toBeInTheDocument();
+    expect((await screen.findAllByText(ProjectDetailsTab.Overview)).length).toEqual(1);
     expect(screen.queryByText(ProjectDetailsTab.Payments)).not.toBeInTheDocument();
+    await screen.findByRole("img", { name: /github logo/i });
+    await screen.findByRole("img", { name: /telegram logo/i });
   });
 
   it("should be able to access the project details page from the my projects list and see both the overview and payment tabs", async () => {
@@ -268,8 +300,10 @@ describe('"Login" page', () => {
       }),
     });
     userEvent.click(await screen.findByText(TEST_PROJECT_NAME));
-    await screen.findByText(ProjectDetailsTab.Overview);
+    expect((await screen.findAllByText(ProjectDetailsTab.Overview)).length).toEqual(2);
     await screen.findByText(ProjectDetailsTab.Payments);
+    await screen.findByRole("img", { name: /github logo/i });
+    await screen.findByRole("img", { name: /telegram logo/i });
   });
 
   it("should redirect to project list when logging out", async () => {
