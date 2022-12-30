@@ -182,5 +182,5 @@ impl Mutation {
 }
 
 fn try_get_caller_user_id(context: &Context) -> Result<UserId> {
-	context.maybe_user_id.ok().map_err(|e| Error::NotAuthorized(e.to_string()))
+	context.maybe_user_id.user_id().map_err(|e| Error::NotAuthorized(e.to_string()))
 }
