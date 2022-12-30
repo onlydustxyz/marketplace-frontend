@@ -4,28 +4,34 @@ use async_trait::async_trait;
 use domain::UserId;
 use rocket::{
 	http::{HeaderMap, Status},
+	outcome::IntoOutcome,
 	request::{FromRequest, Outcome},
 	Request,
 };
 use thiserror::Error;
-use uuid::Uuid;
 
 const HASURA_USER_ID_HEADER_KEY: &str = "x-hasura-user-id";
 
 #[derive(Debug, Error, PartialEq, Eq)]
-pub enum OptionUserIdFromRequestError {
-	#[error("{HASURA_USER_ID_HEADER_KEY} header is not present")]
-	Missing,
-	#[error("{HASURA_USER_ID_HEADER_KEY} header is invalid")]
-	Invalid,
+pub enum Error {
+	#[error("{0} header is not present")]
+	Missing(&'static str),
+	#[error("{0} header is invalid")]
+	Invalid(&'static str),
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub struct OptionUserId(Option<UserId>);
+pub struct OptionUserId {
+	user_id: Option<UserId>,
+}
 
 impl OptionUserId {
-	pub fn ok(&self) -> Result<UserId, OptionUserIdFromRequestError> {
-		self.0.ok_or(OptionUserIdFromRequestError::Missing)
+	pub fn user_id(&self) -> Result<UserId, Error> {
+		self.user_id.clone().ok_or(Error::Missing(HASURA_USER_ID_HEADER_KEY))
+	}
+
+	fn build<E: std::error::Error>(user_id: Result<Option<UserId>, E>) -> Result<Self, E> {
+		Ok(Self { user_id: user_id? })
 	}
 }
 
@@ -33,20 +39,29 @@ impl OptionUserId {
 	fn from_request_headers<'r>(
 		headers: &HeaderMap<'r>,
 	) -> Outcome<Self, <Self as FromRequest<'r>>::Error> {
-		match headers.get_one(HASURA_USER_ID_HEADER_KEY) {
-			Some(id) => match Uuid::from_str(id) {
-				Ok(uuid) => Outcome::Success(OptionUserId(Some(UserId::from(uuid)))),
-				Err(_) =>
-					Outcome::Failure((Status::BadRequest, OptionUserIdFromRequestError::Invalid)),
-			},
-			_ => Outcome::Success(OptionUserId(None)),
-		}
+		let user_id = headers.try_parse_header_as(HASURA_USER_ID_HEADER_KEY);
+
+		OptionUserId::build(user_id).into_outcome(Status::BadRequest)
+	}
+}
+
+trait TryParseHeaderAs<R> {
+	fn try_parse_header_as(&self, header_name: &'static str) -> Result<Option<R>, Error>;
+}
+
+impl<R: FromStr> TryParseHeaderAs<R> for HeaderMap<'_> {
+	fn try_parse_header_as(&self, header_name: &'static str) -> Result<Option<R>, Error> {
+		let value: Option<R> = match self.get_one(header_name) {
+			Some(value) => Some(value.parse().map_err(|_| Error::Invalid(header_name))?),
+			None => None,
+		};
+		Ok(value)
 	}
 }
 
 #[async_trait]
 impl<'r> FromRequest<'r> for OptionUserId {
-	type Error = OptionUserIdFromRequestError;
+	type Error = Error;
 
 	async fn from_request(request: &'r Request<'_>) -> Outcome<Self, Self::Error> {
 		OptionUserId::from_request_headers(request.headers())
@@ -55,40 +70,53 @@ impl<'r> FromRequest<'r> for OptionUserId {
 
 #[cfg(test)]
 mod test {
-	use rocket::{
-		http::{Header, HeaderMap},
-		request::Outcome,
-	};
+	use rocket::http::{Header, HeaderMap};
 	use rstest::rstest;
+	use uuid::Uuid;
 
-	use super::{
-		OptionUserId, OptionUserIdFromRequestError, Status, UserId, Uuid, HASURA_USER_ID_HEADER_KEY,
-	};
+	use super::*;
 
 	#[rstest]
-	#[case(
-		Header::new(HASURA_USER_ID_HEADER_KEY, uuid::Uuid::default().to_string()),
-		rocket::outcome::Outcome::Success(OptionUserId(Some(UserId::default())))
-	)]
-	#[case(
-		Header::new(HASURA_USER_ID_HEADER_KEY, Uuid::from_u128(42).to_string()),
-		rocket::outcome::Outcome::Success(OptionUserId(Some(Uuid::from_u128(42).into())))
-	)]
-	#[case(
-		Header::new("the header won't be set", uuid::Uuid::default().to_string()),
-		rocket::outcome::Outcome::Success(OptionUserId(None))
-	)]
-	#[case(
-		Header::new(HASURA_USER_ID_HEADER_KEY, "some random string"),
-		rocket::outcome::Outcome::Failure((Status::BadRequest, OptionUserIdFromRequestError::Invalid))
-	)]
-	fn from_headers(
-		#[case] header: Header,
-		#[case] expect: Outcome<OptionUserId, OptionUserIdFromRequestError>,
-	) {
+	#[case(Uuid::default())]
+	#[case(Uuid::from_u128(42))]
+	fn from_valid_headers(#[case] user_id: Uuid) {
 		let mut header_map = HeaderMap::new();
-		header_map.add(header);
+		header_map.add(Header::new(HASURA_USER_ID_HEADER_KEY, user_id.to_string()));
 
-		assert_eq!(OptionUserId::from_request_headers(&header_map), expect)
+		match OptionUserId::from_request_headers(&header_map) {
+			Outcome::Success(user) => {
+				assert_eq!(user.user_id(), Ok(user_id.into()));
+			},
+			_ => panic!(),
+		}
+	}
+
+	#[rstest]
+	fn from_missing_headers() {
+		let header_map = HeaderMap::new();
+
+		match OptionUserId::from_request_headers(&header_map) {
+			Outcome::Success(user) => {
+				assert_eq!(
+					user.user_id(),
+					Err(Error::Missing(HASURA_USER_ID_HEADER_KEY))
+				);
+			},
+			_ => panic!(),
+		}
+	}
+
+	#[rstest]
+	fn from_invalid_user_id() {
+		let mut header_map = HeaderMap::new();
+		header_map.add(Header::new(HASURA_USER_ID_HEADER_KEY, "some random string"));
+
+		assert_eq!(
+			OptionUserId::from_request_headers(&header_map),
+			Outcome::Failure((
+				Status::BadRequest,
+				Error::Invalid(HASURA_USER_ID_HEADER_KEY)
+			))
+		)
 	}
 }
