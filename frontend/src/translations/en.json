@@ -63,9 +63,9 @@
       "contactInfo": "Contact info",
       "country": "Country",
       "email": "Email",
-      "ethereum": "Ethereum",
       "ethName": "ENS domain",
       "ethWalletAddress": "Ethereum wallet address",
+      "ethereum": "Ethereum",
       "firstname": "First name",
       "iban": "IBAN",
       "id": "ID",
@@ -89,12 +89,19 @@
         "githubLinkContent": "Link",
         "githubLinkTitle": "GitHub",
         "projectLeader": "Project Leader",
-        "technologies": "Technologies"
+        "technologies": "Technologies",
+        "title": "Overview"
+      },
+      "payments": {
+        "title": "Payments"
+      },
+      "sidebar": {
+        "contributors": " contributors"
       },
       "tableFallback": {
-        "sendPayment": "Send payment",
+        "noPayments": "No payments so far",
         "send": "Send your first one!",
-        "noPayments": "No payments so far"
+        "sendPayment": "Send payment"
       }
     },
     "ledBy": "Led by",

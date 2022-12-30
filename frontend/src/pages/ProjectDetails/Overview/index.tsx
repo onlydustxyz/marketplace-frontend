@@ -21,7 +21,7 @@ export default function Overview({ decodedReadme, lead, githubRepoInfo }: Overvi
   const { T } = useIntl();
   return (
     <div className="flex flex-col gap-8 mt-3">
-      <div className="text-3xl font-alfreda">Overview</div>
+      <div className="text-3xl font-alfreda">{T("project.details.overview.title")}</div>
       <div className="flex flex-row items-start gap-5">
         {decodedReadme && (
           <div className="flex basis-3/4 flex-1">

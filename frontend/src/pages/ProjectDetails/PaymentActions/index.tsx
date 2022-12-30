@@ -35,7 +35,7 @@ export default function PaymentActions({ project }: PaymentsProps) {
     <>
       {project && (
         <div className="flex flex-col gap-8 mt-3">
-          <div className="text-3xl font-alfreda">Payments</div>
+          <div className="text-3xl font-alfreda">{T("project.details.payments.title")}</div>
           <div className="flex flex-row items-start gap-5">
             <div className="flex basis-2/3">
               {action === Action.Submit && <PaymentForm project={project} />}
