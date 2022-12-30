@@ -17,6 +17,7 @@ import UpDownChevrons from "src/assets/icons/UpDownChevrons";
 import CheckMark from "src/assets/icons/CheckMark";
 import GithubLink from "src/components/GithubLink";
 import TelegramLink from "src/components/TelegramLink";
+import { useT } from "talkr";
 
 type ProjectDetailsParams = {
   projectId: string;
@@ -32,7 +33,9 @@ export default function ProjectDetails() {
   const { projectId } = useParams<ProjectDetailsParams>();
   const { ledProjectIds, isLoggedIn } = useAuth();
   const [selectedProjectId, setSelectedProjectId] = useState(projectId);
+
   const navigate = useNavigate();
+  const { T } = useT();
 
   const onChangeProjectFromDropdown = (project: any) => {
     setSelectedProjectId(project.id);
@@ -112,7 +115,8 @@ export default function ProjectDetails() {
                         <div className="flex flex-col justify-self-start">
                           <div className="truncate text-xl font-medium">{projectFromDropdown.name}</div>
                           <div className="truncate text-lg font-regular text-neutral-500">
-                            {projectFromDropdown.githubRepo?.content?.contributors?.length} contributors
+                            {projectFromDropdown.githubRepo?.content?.contributors?.length}{" "}
+                            {T("project.details.sidebar.contributors")}
                           </div>
                         </div>
                         <div className="ml-5">
