@@ -1,12 +1,10 @@
-import githubLogo from "assets/img/github-logo.svg";
-import telegramLogo from "assets/img/telegram-logo.svg";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import CodeIcon from "src/assets/icons/Code";
-import { MouseEvent } from "react";
 import { buildGithubLink, buildLanguageString } from "src/utils/stringUtils";
 import ProjectLead from "../LeadContributor";
 import { Contributor, LanguageMap } from "src/types";
-import GithubLogo from "../Layout/Header/GithubLink/GithubLogo";
+import TelegramLink from "../TelegramLink";
+import GithubLink from "../GithubLink";
 
 interface ProjectInformationProps {
   name: string;
@@ -30,11 +28,6 @@ interface ProjectInformationProps {
     languages: LanguageMap;
   };
 }
-
-const linkClickHandlerFactory = (url: string) => (e: MouseEvent<HTMLDivElement>) => {
-  e.preventDefault();
-  window?.open(url, "_blank")?.focus();
-};
 
 export default function ProjectInformation({ name, details, lead, githubRepoInfo }: ProjectInformationProps) {
   return (
@@ -71,30 +64,6 @@ export default function ProjectInformation({ name, details, lead, githubRepoInfo
             <NumberOfContributors numberOfContributors={githubRepoInfo?.contributors?.length} />
           )}
         </div>
-      </div>
-    </div>
-  );
-}
-
-interface LinkProps {
-  link: string;
-}
-
-function GithubLink({ link }: LinkProps) {
-  return (
-    <div className="border-2 rounded-xl p-2 grayscale border-slate-500 opacity-80 hover:opacity-50 hover:cursor-pointer">
-      <div onClick={linkClickHandlerFactory(link)}>
-        <img className="md:w-10 w-6 fill-white" alt="GitHub Logo" src={githubLogo} />
-      </div>
-    </div>
-  );
-}
-
-function TelegramLink({ link }: LinkProps) {
-  return (
-    <div className="border-2 rounded-xl p-2 pt-3 grayscale border-slate-500 opacity-80 hover:opacity-50 hover:cursor-pointer">
-      <div onClick={linkClickHandlerFactory(link)}>
-        <img className="md:w-10 w-6 fill-white" alt="Telegram Logo" src={telegramLogo} />
       </div>
     </div>
   );
