@@ -23,7 +23,7 @@ export default function EstimationComponent({
   const { T } = useT();
   return (
     <Card backgroundImageUrl={headerElementBackground}>
-      <div className="flex flex-col gap-10 items-stretch justify-items-center">
+      <div className="flex flex-col gap-10 items-stretch justify-items-center w-full">
         <div className="flex flex-row justify-between items-center">
           <div className="text-3xl">
             <span className="font-walsheim font-black">{numberOfDays}</span> <span>{T("payment.form.days")}</span>
@@ -64,7 +64,7 @@ export default function EstimationComponent({
           </div>
           <div className="flex flex-row justify-between">
             <div>{T("payment.form.thisPayment")}</div>
-            <div>$ {amountToPay}</div>
+            <div className="text-purple-600">$ {amountToPay}</div>
           </div>
           <div className="flex flex-row justify-between">
             <div>{T("payment.form.leftToSpend")}</div>

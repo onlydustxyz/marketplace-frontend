@@ -77,7 +77,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ project }) => {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 justify-between w-full">
           <div className="flex flex-col gap-3">
             <Card>
-              <div className="flex flex-col gap-8">
+              <div className="flex flex-col gap-8 w-full">
                 <div className="flex flex-col">
                   <Input
                     label={T("payment.form.contributor")}
