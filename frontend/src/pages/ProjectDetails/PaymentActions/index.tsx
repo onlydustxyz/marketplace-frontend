@@ -34,33 +34,36 @@ export default function PaymentActions({ project }: PaymentsProps) {
   return (
     <>
       {project && (
-        <div className="flex flex-row items-start gap-5">
-          <div className="flex w-2/3">
-            {action === Action.Submit && <PaymentForm project={project} />}
-            {action === Action.List && (
-              <PaymentTableQueryContainer
-                budgetId={project.budget.id}
-                onClickSendPayment={() => setAction(Action.Submit)}
-              />
-            )}
-          </div>
-          <div className="flex w-1/3">
-            <Card>
-              <div className="flex flex-col gap-10 items-stretch">
-                <RemainingBudget
-                  remainingAmount={project.budget.remainingAmount}
-                  initialAmount={project.budget.initialAmount}
+        <div className="flex flex-col gap-8 mt-3">
+          <div className="text-3xl font-alfreda">Payments</div>
+          <div className="flex flex-row items-start gap-5">
+            <div className="flex basis-2/3">
+              {action === Action.Submit && <PaymentForm project={project} />}
+              {action === Action.List && (
+                <PaymentTableQueryContainer
+                  budgetId={project.budget.id}
+                  onClickSendPayment={() => setAction(Action.Submit)}
                 />
-                {project.budget.remainingAmount > 0 && (
-                  <div
-                    className="bg-neutral-50 rounded-xl w-fit p-3 hover:cursor-pointer text-black"
-                    onClick={() => setAction(action === Action.List ? Action.Submit : Action.List)}
-                  >
-                    {T(action === Action.List ? "payment.form.submit" : "payment.list")}
-                  </div>
-                )}
-              </div>
-            </Card>
+              )}
+            </div>
+            <div className="flex basis-1/3">
+              <Card>
+                <div className="flex flex-col gap-10 items-stretch w-full">
+                  <RemainingBudget
+                    remainingAmount={project.budget.remainingAmount}
+                    initialAmount={project.budget.initialAmount}
+                  />
+                  {project.budget.remainingAmount > 0 && (
+                    <div
+                      className="bg-neutral-50 rounded-xl w-fit p-3 hover:cursor-pointer text-black"
+                      onClick={() => setAction(action === Action.List ? Action.Submit : Action.List)}
+                    >
+                      {T(action === Action.List ? "payment.form.submit" : "payment.list")}
+                    </div>
+                  )}
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
       )}
