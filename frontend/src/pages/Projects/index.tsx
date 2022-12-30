@@ -15,7 +15,7 @@ export default function Projects() {
   const { data } = query;
 
   return (
-    <div className="mt-10">
+    <div className="container mx-auto pb-10 mt-10">
       <div className="text-3xl font-alfreda">{T("navbar.projects")}</div>
       <QueryWrapper<GetProjectsQuery> query={query}>
         <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
