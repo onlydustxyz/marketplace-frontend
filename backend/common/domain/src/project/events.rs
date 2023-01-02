@@ -15,6 +15,10 @@ pub enum Event {
 		id: ProjectId,
 		leader_id: UserId,
 	},
+	LeaderUnassigned {
+		id: ProjectId,
+		leader_id: UserId,
+	},
 	GithubRepositoryUpdated {
 		id: ProjectId,
 		github_repo_id: GithubRepositoryId,

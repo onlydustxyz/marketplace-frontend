@@ -10,6 +10,8 @@ use crate::*;
 pub enum Error {
 	#[error("Project lead already assigned to this project")]
 	LeaderAlreadyAssigned,
+	#[error("User is not a project leader")]
+	NotLeader,
 	#[error("This was already the project github repository")]
 	AlreadyProjectGithubRepository,
 	#[error("Github repository {0} does not exist")]
@@ -59,6 +61,10 @@ impl EventSourcable for Project {
 				self.leaders.insert(*leader_id);
 				self
 			},
+			ProjectEvent::LeaderUnassigned { leader_id, .. } => {
+				self.leaders.remove(leader_id);
+				self
+			},
 			ProjectEvent::GithubRepositoryUpdated { github_repo_id, .. } => {
 				self.github_repo_id = *github_repo_id;
 				self
@@ -98,6 +104,20 @@ impl Project {
 		}
 
 		Ok(vec![ProjectEvent::LeaderAssigned {
+			id: self.id,
+			leader_id,
+		}])
+	}
+
+	pub fn unassign_leader(
+		&self,
+		leader_id: UserId,
+	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+		if !self.leaders.contains(&leader_id) {
+			return Err(Error::NotLeader);
+		}
+
+		Ok(vec![ProjectEvent::LeaderUnassigned {
 			id: self.id,
 			leader_id,
 		}])
