@@ -1,5 +1,7 @@
 use anyhow::anyhow;
-use domain::{Amount, BlockchainNetwork, Currency, EthereumAddress, PaymentReceipt, UserId};
+use domain::{
+	Amount, BlockchainNetwork, Currency, EthereumAddress, PaymentReceipt, ProjectId, UserId,
+};
 use juniper::{graphql_object, DefaultScalarValue};
 use rusty_money::{crypto, Money};
 use uuid::Uuid;
@@ -154,6 +156,28 @@ impl Mutation {
 			.await?;
 
 		Ok(id)
+	}
+
+	pub async fn unassign_project_lead(
+		context: &Context,
+		project_id: Uuid,
+		user_id: Uuid,
+	) -> Result<i32> {
+		let project_id = ProjectId::from(project_id);
+		let user_id = UserId::from(user_id);
+
+		if !context.caller_permissions.can_unassign_project_leader(&project_id, &user_id) {
+			return Err(Error::NotAuthorized(
+				"Only an admin can unasign an project lead".to_string(),
+			));
+		}
+
+		context
+			.remove_project_leader_usecase
+			.remove_leader(&project_id, &user_id)
+			.await?;
+
+		Ok(1)
 	}
 }
 

@@ -19,6 +19,7 @@ pub struct Context {
 	pub request_payment_usecase: application::payment::request::Usecase,
 	pub process_payment_usecase: application::payment::process::Usecase,
 	pub create_project_usecase: application::project::create::Usecase,
+	pub remove_project_leader_usecase: application::project::remove_leader::Usecase,
 	pub update_project_github_repo_id_usecase: application::project::update_github_repo_id::Usecase,
 	pub project_details_repository: ProjectDetailsRepository,
 	pub update_user_info_usecase: application::user::update_profile_info::Usecase,
@@ -53,6 +54,10 @@ impl Context {
 				event_publisher.to_owned(),
 				project_details_repository.clone(),
 				github.clone(),
+			),
+			remove_project_leader_usecase: application::project::remove_leader::Usecase::new(
+				event_publisher.to_owned(),
+				project_repository.clone(),
 			),
 			update_project_github_repo_id_usecase:
 				application::project::update_github_repo_id::Usecase::new(
