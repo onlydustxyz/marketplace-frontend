@@ -60,7 +60,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ project }) => {
 
   useEffect(() => {
     if (findUserQuery.error) {
-      setError("contributor", { message: T("github.invalidLogin"), type: "value" });
+      setError("contributor", { message: T("github.invalidLogin") });
     } else {
       clearErrors("contributor");
     }
@@ -83,7 +83,10 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ project }) => {
                     label={T("payment.form.contributor")}
                     name="contributor"
                     placeholder="Github login"
-                    options={{ required: T("form.required") }}
+                    options={{
+                      required: T("form.required"),
+                      validate: () => !!findUserQuery.data?.fetchUserDetails.id || T("github.invalidLogin"),
+                    }}
                     onChange={debounce(({ target }) => setContributorLogin(target.value), 500)}
                     loading={findUserQuery.loading}
                   />
@@ -107,6 +110,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ project }) => {
                 }
               }}
               budget={{ ...project.budget }}
+              submitDisabled={findUserQuery.loading}
             />
           </div>
         </form>
