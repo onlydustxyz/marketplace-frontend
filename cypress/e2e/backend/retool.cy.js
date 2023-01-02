@@ -160,4 +160,40 @@ describe("As an admin, on retool, I", () => {
                 })
         );
     });
+
+
+    it("can remove a leader from a project", () => {
+        const STARKONQUEST_ID = 481932781;
+
+        cy.createUser().then((user) =>
+            cy
+                .createProject(user.id, "Another project", 500, STARKONQUEST_ID)
+                .asAdmin()
+                .data("createProject")
+                .then((projectId) => {
+                    cy.wait(700);
+                    cy
+                        .unassignProjectLead(projectId, user.id)
+                        .asAdmin()
+                        .data("unassignProjectLead")
+                        .should("equal", 1)
+                        .then(() => {
+                            cy.wait(700);
+                            cy
+                                .graphql({ query: `{
+                                    projectsByPk(id: "${projectId}") {
+                                        projectLeads {
+                                            userId
+                                        }
+                                    }
+                                }`})
+                                .asAnonymous()
+                                .data("projectsByPk")
+                                .its("projectLeads")
+                                .should("be.empty")
+                        })
+                })
+        );
+
+    });
 });

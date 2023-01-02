@@ -69,3 +69,18 @@ Cypress.Commands.add(
         };
     }
 );
+
+Cypress.Commands.add(
+    "unassignProjectLead",
+    (
+        projectId,
+        userId
+    ) => {
+        return {
+            query: `mutation($projectId: Uuid!, $userId: Uuid!) {
+                unassignProjectLead(projectId: $projectId, userId: $userId)
+            }`,
+            variables: { projectId, userId}
+        };
+    }
+);
