@@ -3,7 +3,7 @@ use std::sync::Arc;
 use anyhow::Result;
 use domain::{
 	Amount, Budget, BudgetId, DomainError, Event, EventSourcable, GithubRepoExists,
-	GithubRepositoryId, Project, ProjectId, Publisher, UniqueMessage, UserId,
+	GithubRepositoryId, Project, ProjectEvent, ProjectId, Publisher, UniqueMessage, UserId,
 };
 
 use crate::{
@@ -48,11 +48,14 @@ impl Usecase {
 			.await
 			.map_err(DomainError::InvalidInputs)?;
 
-		events.extend(allocate_budget(
-			BudgetId::new(),
-			new_project_id,
-			initial_budget,
-		));
+		events.extend(
+			Budget::allocate(BudgetId::new(), initial_budget).into_iter().map(|event| {
+				Event::Project(ProjectEvent::Budget {
+					id: new_project_id,
+					event,
+				})
+			}),
+		);
 
 		events
 			.into_iter()
@@ -86,19 +89,4 @@ impl Usecase {
 
 		Ok(events.into_iter().map(Event::from).collect())
 	}
-}
-
-fn allocate_budget(
-	budget_id: BudgetId,
-	project_id: ProjectId,
-	initial_budget: Amount,
-) -> Vec<Event> {
-	Budget::allocate(
-		budget_id,
-		domain::BudgetTopic::Project(project_id),
-		initial_budget,
-	)
-	.into_iter()
-	.map(Event::from)
-	.collect()
 }

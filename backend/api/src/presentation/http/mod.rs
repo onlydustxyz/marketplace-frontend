@@ -1,8 +1,6 @@
 use std::sync::Arc;
 
-use ::domain::{
-	AggregateRootRepository, Budget, Event, Payment, Project, Publisher, UniqueMessage,
-};
+use ::domain::{AggregateRootRepository, Event, Payment, Project, Publisher, UniqueMessage};
 use anyhow::Result;
 use http::Config;
 use infrastructure::{github, web3::ens};
@@ -24,7 +22,6 @@ pub async fn serve(
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_repository: AggregateRootRepository<Project>,
 	payment_repository: AggregateRootRepository<Payment>,
-	budget_repository: AggregateRootRepository<Budget>,
 	project_details_repository: ProjectDetailsRepository,
 	user_info_repository: UserInfoRepository,
 	github: Arc<github::Client>,
@@ -36,7 +33,6 @@ pub async fn serve(
 		.manage(event_publisher)
 		.manage(project_repository)
 		.manage(payment_repository)
-		.manage(budget_repository)
 		.manage(project_details_repository)
 		.manage(user_info_repository)
 		.manage(github)

@@ -9,18 +9,10 @@ describe("As a contributor, I", () => {
         cy.createProject(user.id, "Project with budget", 1000, 493591124)
           .asAdmin()
           .data("createProject")
-          .then(projectId =>
-            cy
-              .getProjectBudget(projectId)
-              .asRegisteredUser(user)
-              .data("projectsByPk.budgets")
-              .its(0)
-              .its("id")
-              .should("be.a", "string")
-              .then(budgetId =>
-                cy.requestPayment(budgetId, 200, CONTRIBUTOR_GITHUB_ID, {}).asRegisteredUser(user).data()
-              )
-          );
+          .then(projectId => {
+            cy.wait(700);
+            cy.requestPayment(projectId, 200, CONTRIBUTOR_GITHUB_ID, {}).asRegisteredUser(user).data()
+          });
       });
 
     cy.createUser()

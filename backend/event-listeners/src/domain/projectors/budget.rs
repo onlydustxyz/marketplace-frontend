@@ -1,7 +1,7 @@
 use anyhow::Result;
 use async_trait::async_trait;
 use derive_more::Constructor;
-use domain::{BudgetEvent, BudgetTopic, Event, SubscriberCallbackError};
+use domain::{BudgetEvent, Event, ProjectEvent, SubscriberCallbackError};
 
 use crate::{
 	domain::{Budget, EventListener},
@@ -16,10 +16,13 @@ pub struct Projector {
 #[async_trait]
 impl EventListener for Projector {
 	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
-		if let Event::Budget(event) = event {
+		if let Event::Project(ProjectEvent::Budget {
+			id: project_id,
+			event,
+		}) = event
+		{
 			match event {
-				BudgetEvent::Allocated { id, amount, topic } => {
-					let BudgetTopic::Project(project_id) = topic;
+				BudgetEvent::Allocated { id, amount } => {
 					self.budget_repository.insert(&Budget::new(
 						*id,
 						Some((*project_id).into()),

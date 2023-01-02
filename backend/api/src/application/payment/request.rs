@@ -2,8 +2,8 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{
-	AggregateRootRepository, Budget, BudgetId, DomainError, Event, GithubUserId, Payment,
-	PaymentId, Publisher, UniqueMessage, UserId,
+	AggregateRootRepository, DomainError, Event, GithubUserId, Payment, PaymentId, Project,
+	ProjectEvent, ProjectId, Publisher, UniqueMessage, UserId,
 };
 use rusty_money::{crypto, Money};
 use serde_json::Value;
@@ -12,34 +12,41 @@ use crate::domain::Publishable;
 
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-	budget_repository: AggregateRootRepository<Budget>,
+	project_repository: AggregateRootRepository<Project>,
 }
 
 impl Usecase {
 	pub fn new(
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		budget_repository: AggregateRootRepository<Budget>,
+		project_repository: AggregateRootRepository<Project>,
 	) -> Self {
 		Self {
 			event_publisher,
-			budget_repository,
+			project_repository,
 		}
 	}
 
 	pub async fn request(
 		&self,
-		budget_id: BudgetId,
+		project_id: ProjectId,
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount_in_usd: u32,
 		reason: Value,
 	) -> Result<PaymentId, DomainError> {
-		let budget = self.budget_repository.find_by_id(&budget_id)?;
+		let project = self.project_repository.find_by_id(&project_id)?;
+		let budget = project.budget();
+
 		let mut events = budget
 			.spend(&Money::from_major(amount_in_usd as i64, crypto::USDC).into())
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
 			.into_iter()
-			.map(Event::from)
+			.map(|event| {
+				Event::Project(ProjectEvent::Budget {
+					id: project_id,
+					event,
+				})
+			})
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>();
 
@@ -47,7 +54,7 @@ impl Usecase {
 		events.extend(
 			Payment::request(
 				new_payment_id,
-				budget_id,
+				*budget.id(),
 				requestor_id,
 				recipient_id,
 				amount_in_usd,

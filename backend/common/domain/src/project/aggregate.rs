@@ -26,6 +26,7 @@ pub struct Project {
 	name: String,
 	github_repo_id: GithubRepositoryId,
 	leaders: HashSet<UserId>,
+	budget: Budget,
 }
 
 impl Entity for Project {
@@ -67,6 +68,10 @@ impl EventSourcable for Project {
 			},
 			ProjectEvent::GithubRepositoryUpdated { github_repo_id, .. } => {
 				self.github_repo_id = *github_repo_id;
+				self
+			},
+			ProjectEvent::Budget { event, .. } => {
+				self.budget = self.budget.apply_event(event);
 				self
 			},
 		}

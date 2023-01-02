@@ -1,7 +1,6 @@
 describe("As a project leader, I", () => {
     let projectId;
     let leader;
-    let budgetId;
 
     before(() => {
         cy.createUser().then(($user) => {
@@ -10,25 +9,15 @@ describe("As a project leader, I", () => {
                 .asAdmin()
                 .data("createProject")
                 .then(($projectId) => {
-                    cy.wait(700);
-                    cy.getProjectBudget($projectId)
-                        .asRegisteredUser($user)
-                        .data("projectsByPk.budgets")
-                        .its(0)
-                        .its("id")
-                        .should("be.a", "string")
-                        .then(($budgetId) => {
-                            projectId = $projectId;
-                            leader = $user;
-                            budgetId = $budgetId;
-                        });
+                    projectId = $projectId;
+                    leader = $user;
                 })
         });
     });
 
-    it("can request a payment from a budget I own", () => {
+    it("can request a payment from a project I lead", () => {
         cy.createUser().then((contributor) => {
-            cy.requestPayment(budgetId, 500, 55000, { workItems: ["http://link/to/pr"] })
+            cy.requestPayment(projectId, 500, 55000, { workItems: ["http://link/to/pr"] })
                 .asRegisteredUser(leader)
                 .data("requestPayment")
                 .then((paymentId) => {
@@ -44,13 +33,20 @@ describe("As a project leader, I", () => {
                 })
                 .then(() => {
                     cy.wait(500);
-                    cy.graphql({query: `{
-                    budgetsByPk(id:"${budgetId}") {
-                      remainingAmount
-                    }
-                  }`})
+                    cy.graphql({
+                        query: `
+                        query($projectId: uuid!) {
+                            projectsByPk(id:$projectId) {
+                                budgets {
+                                    remainingAmount
+                                }
+                            }
+                        }`,
+                        variables: { projectId }})
                         .asAdmin()
-                        .data("budgetsByPk.remainingAmount")
+                        .data("projectsByPk.budgets")
+                        .its(0)
+                        .its('remainingAmount')
                         .should("equal", 500);
                 });
         });

@@ -81,6 +81,7 @@ impl EventListener for Projector {
 						.update(id, UpdateGitubRepoIdChangeset::new(*github_repo_id))?;
 					self.project_github_data(github_repo_id).await?;
 				},
+				ProjectEvent::Budget { .. } => (),
 			}
 		}
 

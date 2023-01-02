@@ -7,7 +7,7 @@ describe("As a project lead, I", () => {
           .asAdmin()
           .data("createProject")
           .as("projectId");
-        cy.wait(500);
+        cy.wait(700);
         cy.signinUser(user)
           .then(user => JSON.stringify(user.session))
           .as("token");

@@ -32,7 +32,6 @@ async fn main() -> Result<()> {
 		Arc::new(amqp::Bus::default(config.amqp()).await?),
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),
-		AggregateRootRepository::new(database.clone()),
 		ProjectDetailsRepository::new(database.clone()),
 		UserInfoRepository::new(database),
 		github,

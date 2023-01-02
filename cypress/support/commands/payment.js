@@ -2,14 +2,14 @@ import "./common";
 
 Cypress.Commands.add(
     "requestPayment",
-    (budgetId, amount, recipientId, reason) => {
+    (projectId, amount, recipientId, reason) => {
         return {
-            query: `mutation($amount: Int!, $budgetId: Uuid!, $recipientId: Int!, $reason: Reason!) {
-                requestPayment(amountInUsd: $amount, budgetId: $budgetId, recipientId: $recipientId, reason: $reason)
+            query: `mutation($amount: Int!, $projectId: Uuid!, $recipientId: Int!, $reason: Reason!) {
+                requestPayment(amountInUsd: $amount, projectId: $projectId, recipientId: $recipientId, reason: $reason)
             }`,
             variables: {
                 amount,
-                budgetId,
+                projectId,
                 recipientId,
                 reason
             }

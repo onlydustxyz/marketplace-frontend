@@ -1,8 +1,7 @@
+use derive_getters::Getters;
 use thiserror::Error;
 
-use crate::{
-	Aggregate, AggregateRoot, Amount, BudgetEvent, BudgetId, BudgetTopic, Entity, EventSourcable,
-};
+use crate::{Aggregate, Amount, BudgetEvent, BudgetId, Entity, EventSourcable};
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -14,15 +13,15 @@ pub enum Error {
 
 type Result<T> = std::result::Result<T, Error>;
 
-#[derive(Default, Clone)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Getters)]
 pub struct Budget {
 	id: BudgetId,
 	remaining_amount: Amount,
 }
 
 impl Budget {
-	pub fn allocate(id: BudgetId, topic: BudgetTopic, amount: Amount) -> Vec<BudgetEvent> {
-		vec![BudgetEvent::Allocated { id, topic, amount }]
+	pub fn allocate(id: BudgetId, amount: Amount) -> Vec<BudgetEvent> {
+		vec![BudgetEvent::Allocated { id, amount }]
 	}
 
 	pub fn spend(&self, amount: &Amount) -> Result<Vec<BudgetEvent>> {
@@ -64,8 +63,6 @@ impl EventSourcable for Budget {
 	}
 }
 
-impl AggregateRoot for Budget {}
-
 #[cfg(test)]
 mod tests {
 	use assert_matches::assert_matches;
@@ -89,24 +86,14 @@ mod tests {
 	}
 
 	#[fixture]
-	fn topic(project_id: &ProjectId) -> BudgetTopic {
-		BudgetTopic::Project(*project_id)
-	}
-
-	#[fixture]
 	fn amount() -> Amount {
 		Amount::new(dec!(500), crate::Currency::Crypto("USDC".to_string()))
 	}
 
 	#[fixture]
-	fn budget_allocated_event(
-		budget_id: &BudgetId,
-		amount: Amount,
-		topic: BudgetTopic,
-	) -> BudgetEvent {
+	fn budget_allocated_event(budget_id: &BudgetId, amount: Amount) -> BudgetEvent {
 		BudgetEvent::Allocated {
 			id: *budget_id,
-			topic,
 			amount,
 		}
 	}
@@ -123,11 +110,10 @@ mod tests {
 	fn allocate_budget_for_project(
 		budget_id: &BudgetId,
 		amount: Amount,
-		topic: BudgetTopic,
 		budget_allocated_event: BudgetEvent,
 	) {
 		assert_eq!(
-			Budget::allocate(*budget_id, topic, amount),
+			Budget::allocate(*budget_id, amount),
 			vec![budget_allocated_event]
 		);
 	}

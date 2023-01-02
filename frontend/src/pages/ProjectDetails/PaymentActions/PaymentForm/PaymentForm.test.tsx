@@ -57,7 +57,7 @@ const graphQlMocks = [
     request: {
       query: REQUEST_PAYMENT_MUTATION,
       variables: {
-        budgetId: "test-budget-id",
+        projectId: "test-project-id",
         amount: 1000,
         contributorId: TEST_USER.githubUser.githubUserId,
         reason: { workItems: ["test-link-name"] },
@@ -75,12 +75,17 @@ describe('"PaymentForm" component', () => {
   });
 
   beforeEach(() => {
-    renderWithIntl(<PaymentForm budget={{ initialAmount: 10000, remainingAmount: 4000, id: TEST_BUDGET_ID }} />, {
-      wrapper: MemoryRouterProviderFactory({
-        route: `${RoutePaths.ProjectDetails}/test-project-id`,
-        mocks: graphQlMocks,
-      }),
-    });
+    renderWithIntl(
+      <PaymentForm
+        project={{ id: "test-project-id", budget: { initialAmount: 10000, remainingAmount: 4000, id: TEST_BUDGET_ID } }}
+      />,
+      {
+        wrapper: MemoryRouterProviderFactory({
+          route: `${RoutePaths.ProjectDetails}/test-project-id`,
+          mocks: graphQlMocks,
+        }),
+      }
+    );
   });
 
   it("should show the right input / button labels", async () => {

@@ -9270,7 +9270,7 @@
                 "deprecationReason": null
               },
               {
-                "name": "budgetId",
+                "name": "projectId",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",

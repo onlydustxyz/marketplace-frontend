@@ -14,27 +14,30 @@ import { debounce } from "lodash";
 const DEFAULT_NUMBER_OF_DAYS = 2;
 
 interface PaymentFormProps {
-  budget: {
-    remainingAmount: number;
-    initialAmount: number;
+  project: {
     id: string;
+    budget: {
+      remainingAmount: number;
+      initialAmount: number;
+      id: string;
+    };
   };
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
+const PaymentForm: React.FC<PaymentFormProps> = ({ project }) => {
   const { T } = useIntl();
   const formMethods = useForm<Inputs>({
     defaultValues: {
       linkToIssue: "",
       contributor: "",
-      remainingBudget: budget?.remainingAmount,
+      remainingBudget: project.budget?.remainingAmount,
     },
   });
 
   const [numberOfDays, setNumberOfDays] = useState(DEFAULT_NUMBER_OF_DAYS);
 
   const [insertPayment] = useHasuraMutation(REQUEST_PAYMENT_MUTATION, HasuraUserRole.RegisteredUser, {
-    variables: { budgetId: budget.id, amount: numberOfDays * BASE_RATE_USD },
+    variables: { projectId: project.id, amount: numberOfDays * BASE_RATE_USD },
   });
 
   const { handleSubmit, setError, clearErrors } = formMethods;
@@ -99,11 +102,11 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
                 if (numberOfDays > 1) setNumberOfDays(numberOfDays - 1);
               }}
               increaseNumberOfDays={() => {
-                if (numberOfDays < 20 && budget.remainingAmount - (numberOfDays + 1) * BASE_RATE_USD >= 0) {
+                if (numberOfDays < 20 && project.budget.remainingAmount - (numberOfDays + 1) * BASE_RATE_USD >= 0) {
                   setNumberOfDays(numberOfDays + 1);
                 }
               }}
-              budget={{ ...budget }}
+              budget={{ ...project.budget }}
             />
           </div>
         </form>
@@ -113,8 +116,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ budget }) => {
 };
 
 export const REQUEST_PAYMENT_MUTATION = gql`
-  mutation RequestPayment($amount: Int!, $contributorId: Int!, $budgetId: Uuid!, $reason: Reason!) {
-    requestPayment(amountInUsd: $amount, budgetId: $budgetId, reason: $reason, recipientId: $contributorId)
+  mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
+    requestPayment(amountInUsd: $amount, projectId: $projectId, reason: $reason, recipientId: $contributorId)
   }
 `;
 

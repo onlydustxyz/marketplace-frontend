@@ -62,7 +62,7 @@ describe("As a simple user, I", () => {
     it("can get payment request as the recipient", () => {
         const githubUserId = newRandomGithubUserId();
 
-        cy.requestPayment(budgetId, 500, githubUserId, {})
+        cy.requestPayment(projectId, 500, githubUserId, {})
             .asRegisteredUser(leader)
             .data()
             .then(() => {
@@ -109,16 +109,6 @@ describe("As a simple user, I", () => {
                 .should("eq", "User is not authorized to perform this action");
         });
     });
-
-    // it("can't get project's budget", () => {
-    //     cy.createUser().then(user => {
-    //         cy.getProjectBudget(user, projectId)
-    //             .its('body.errors')
-    //             .its(0)
-    //             .its('message')
-    //             .should('eq', 'missing session variable: "x-hasura-projects_leaded"')
-    //     });
-    // });
 
     it("can fetch github repository details from a project", () => {
         cy.createUser().then((user) => {

@@ -79,15 +79,12 @@ impl IdentifiableAggregate for Event {
 				backend_domain::ProjectEvent::Created { id, .. }
 				| backend_domain::ProjectEvent::LeaderAssigned { id, .. }
 				| backend_domain::ProjectEvent::LeaderUnassigned { id, .. }
-				| backend_domain::ProjectEvent::GithubRepositoryUpdated { id, .. } => id.to_string(),
+				| backend_domain::ProjectEvent::GithubRepositoryUpdated { id, .. }
+				| backend_domain::ProjectEvent::Budget { id, .. } => id.to_string(),
 			},
 			Event::Payment(event) => match event {
 				backend_domain::PaymentEvent::Requested { id, .. }
 				| backend_domain::PaymentEvent::Processed { id, .. } => id.to_string(),
-			},
-			Event::Budget(event) => match event {
-				backend_domain::BudgetEvent::Allocated { id, .. }
-				| backend_domain::BudgetEvent::Spent { id, .. } => id.to_string(),
 			},
 		}
 	}

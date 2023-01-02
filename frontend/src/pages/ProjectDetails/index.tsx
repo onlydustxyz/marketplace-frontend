@@ -100,8 +100,8 @@ export default function ProjectDetails() {
               }}
             />
           )}
-          {selectedTab === ProjectDetailsTab.Payments && (
-            <Payments budget={getProjectUserQuery?.data?.projectsByPk?.budgets?.[0]} />
+          {selectedTab === ProjectDetailsTab.Payments && projectId && (
+            <Payments project={projectFromQuery(projectId, getProjectUserQuery?.data?.projectsByPk)} />
           )}
         </div>
       )}
@@ -114,6 +114,11 @@ export default function ProjectDetails() {
     <QueryWrapper query={getProjectPublicQuery}>{component}</QueryWrapper>
   );
 }
+
+const projectFromQuery = (projectId: string, project: any) => ({
+  id: projectId,
+  budget: project.budgets[0],
+});
 
 const GITHUB_REPO_FIELDS_FRAGMENT = gql`
   fragment ProjectDetailsGithubRepoFields on GithubRepoDetails {
