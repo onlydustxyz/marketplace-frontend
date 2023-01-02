@@ -1236,7 +1236,7 @@ export type Mutation_RootInsertUserInfoOneArgs = {
 /** mutation root */
 export type Mutation_RootRequestPaymentArgs = {
   amountInUsd: Scalars['Int'];
-  budgetId: Scalars['Uuid'];
+  projectId: Scalars['Uuid'];
   reason: Reason;
   recipientId: Scalars['Int'];
 };
@@ -2265,7 +2265,7 @@ export type ProfileQuery = { __typename?: 'query_root', userInfo: Array<{ __type
 export type RequestPaymentMutationVariables = Exact<{
   amount: Scalars['Int'];
   contributorId: Scalars['Int'];
-  budgetId: Scalars['Uuid'];
+  projectId: Scalars['Uuid'];
   reason: Reason;
 }>;
 
@@ -2550,10 +2550,10 @@ export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
 export const RequestPaymentDocument = gql`
-    mutation RequestPayment($amount: Int!, $contributorId: Int!, $budgetId: Uuid!, $reason: Reason!) {
+    mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
   requestPayment(
     amountInUsd: $amount
-    budgetId: $budgetId
+    projectId: $projectId
     reason: $reason
     recipientId: $contributorId
   )
@@ -2576,7 +2576,7 @@ export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMut
  *   variables: {
  *      amount: // value for 'amount'
  *      contributorId: // value for 'contributorId'
- *      budgetId: // value for 'budgetId'
+ *      projectId: // value for 'projectId'
  *      reason: // value for 'reason'
  *   },
  * });

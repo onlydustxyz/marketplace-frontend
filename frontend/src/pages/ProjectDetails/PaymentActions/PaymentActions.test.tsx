@@ -68,12 +68,17 @@ describe('"ProjectDetails" page', () => {
   });
 
   beforeEach(() => {
-    renderWithIntl(<PaymentActions budget={{ initialAmount: 100, remainingAmount: 40, id: TEST_BUDGET_ID }} />, {
-      wrapper: MemoryRouterProviderFactory({
-        route: `${RoutePaths.ProjectDetails}/test-project-id`,
-        mocks: graphQlMocks,
-      }),
-    });
+    renderWithIntl(
+      <PaymentActions
+        project={{ id: "test-project-id", budget: { initialAmount: 100, remainingAmount: 40, id: TEST_BUDGET_ID } }}
+      />,
+      {
+        wrapper: MemoryRouterProviderFactory({
+          route: `${RoutePaths.ProjectDetails}/test-project-id`,
+          mocks: graphQlMocks,
+        }),
+      }
+    );
   });
 
   it("should render the submit payment buttons", async () => {

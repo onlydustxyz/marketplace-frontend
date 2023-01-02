@@ -17,32 +17,41 @@ enum Action {
 }
 
 interface PaymentsProps {
-  budget?: {
-    remainingAmount: number;
-    initialAmount: number;
+  project?: {
     id: string;
+    budget: {
+      remainingAmount: number;
+      initialAmount: number;
+      id: string;
+    };
   };
 }
-export default function PaymentActions({ budget }: PaymentsProps) {
+export default function PaymentActions({ project }: PaymentsProps) {
   const { T } = useIntl();
 
   const [action, setAction] = useState<Action>(Action.List);
 
   return (
     <>
-      {budget && (
+      {project && (
         <div className="flex flex-row items-start gap-5">
           <div className="flex w-2/3">
-            {action === Action.Submit && <PaymentForm budget={budget} />}
+            {action === Action.Submit && <PaymentForm project={project} />}
             {action === Action.List && (
-              <PaymentTableQueryContainer budgetId={budget.id} onClickSendPayment={() => setAction(Action.Submit)} />
+              <PaymentTableQueryContainer
+                budgetId={project.budget.id}
+                onClickSendPayment={() => setAction(Action.Submit)}
+              />
             )}
           </div>
           <div className="flex w-1/3">
             <Card>
               <div className="flex flex-col gap-10 items-stretch">
-                <RemainingBudget remainingAmount={budget.remainingAmount} initialAmount={budget.initialAmount} />
-                {budget.remainingAmount > 0 && (
+                <RemainingBudget
+                  remainingAmount={project.budget.remainingAmount}
+                  initialAmount={project.budget.initialAmount}
+                />
+                {project.budget.remainingAmount > 0 && (
                   <div
                     className="bg-neutral-50 rounded-xl w-fit p-3 hover:cursor-pointer text-black"
                     onClick={() => setAction(action === Action.List ? Action.Submit : Action.List)}
