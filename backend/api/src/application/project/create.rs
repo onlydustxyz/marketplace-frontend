@@ -47,10 +47,10 @@ impl Usecase {
 			.create_leaded_project(new_project_id, user_id, name, github_repo_id)
 			.await
 			.map_err(DomainError::InvalidInputs)?;
-		events.extend(allocate_owned_budget(
+
+		events.extend(allocate_budget(
 			BudgetId::new(),
 			new_project_id,
-			user_id,
 			initial_budget,
 		));
 
@@ -88,20 +88,17 @@ impl Usecase {
 	}
 }
 
-fn allocate_owned_budget(
+fn allocate_budget(
 	budget_id: BudgetId,
 	project_id: ProjectId,
-	owner_id: UserId,
 	initial_budget: Amount,
 ) -> Vec<Event> {
-	let mut events = Budget::allocate(
+	Budget::allocate(
 		budget_id,
 		domain::BudgetTopic::Project(project_id),
 		initial_budget,
-	);
-
-	let budget = <Budget as EventSourcable>::from_events(&events);
-	events.extend(budget.assign_spender(&owner_id));
-
-	events.into_iter().map(Event::from).collect()
+	)
+	.into_iter()
+	.map(Event::from)
+	.collect()
 }

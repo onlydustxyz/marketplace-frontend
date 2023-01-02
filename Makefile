@@ -30,8 +30,8 @@ db/migrate: db/up
 	diesel migration run
 
 db/update-staging-dump:
-	heroku pg:backups:capture --app onlydust-backend-staging-next
-	heroku pg:backups:download --app onlydust-backend-staging-next --output ./scripts/fixtures/latest.dump
+	heroku pg:backups:capture --app od-api-staging
+	heroku pg:backups:download --app od-api-staging --output ./scripts/fixtures/latest.dump
 
 db/load-fixtures: SHELL:=/bin/bash
 db/load-fixtures: db/up

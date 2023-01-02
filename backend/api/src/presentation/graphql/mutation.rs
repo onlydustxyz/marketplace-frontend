@@ -97,23 +97,23 @@ impl Mutation {
 
 	pub async fn request_payment(
 		context: &Context,
-		budget_id: Uuid,
+		project_id: Uuid,
 		recipient_id: i32,
 		amount_in_usd: i32,
 		reason: PaymentReason,
 	) -> Result<Uuid> {
 		let caller_id = try_get_caller_user_id(context)?;
 
-		if !context.caller_permissions.can_spend_budget(&budget_id.into()) {
+		if !context.caller_permissions.can_spend_budget_of_project(&project_id.into()) {
 			return Err(Error::NotAuthorized(
-				"Budget spender role required".to_string(),
+				"Project Lead role required".to_string(),
 			));
 		}
 
 		let payment_request_id = context
 			.request_payment_usecase
 			.request(
-				budget_id.into(),
+				project_id.into(),
 				caller_id,
 				(recipient_id as i64).into(),
 				amount_in_usd as u32,

@@ -48,8 +48,9 @@ select_permissions:
         - recipient_id
         - requestor_id
       filter:
-        budget_id:
-          _in: X-Hasura-budgetsOwned
+        budget:
+          project_id:
+            _in: X-Hasura-projectsLeaded
   - role: registered_user_specific
     permission:
       columns:

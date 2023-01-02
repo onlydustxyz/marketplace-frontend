@@ -20,8 +20,8 @@ select_permissions:
         - initial_amount
         - remaining_amount
       filter:
-        id:
-          _in: X-Hasura-budgetsOwned
+        project_id:
+          _in: X-Hasura-projectsLeaded
   - role: public
     permission:
       columns:

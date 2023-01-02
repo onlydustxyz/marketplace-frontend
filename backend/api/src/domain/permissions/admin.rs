@@ -1,12 +1,12 @@
-use domain::{BudgetId, ProjectId};
+use domain::ProjectId;
 
 use super::Permissions;
 
 pub(super) struct Admin;
 
 impl Permissions for Admin {
-	fn can_spend_budget(&self, _budget_id: &BudgetId) -> bool {
-		true
+	fn can_spend_budget_of_project(&self, _project_id: &ProjectId) -> bool {
+		false
 	}
 
 	fn can_unassign_project_leader(

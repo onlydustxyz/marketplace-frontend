@@ -2,17 +2,15 @@ use anyhow::Result;
 use async_trait::async_trait;
 use derive_more::Constructor;
 use domain::{BudgetEvent, BudgetTopic, Event, SubscriberCallbackError};
-use infrastructure::database::MappingRepository;
 
 use crate::{
 	domain::{Budget, EventListener},
-	infrastructure::database::{BudgetRepository, BudgetSpenderRepository},
+	infrastructure::database::BudgetRepository,
 };
 
 #[derive(Constructor)]
 pub struct Projector {
 	budget_repository: BudgetRepository,
-	budget_spender_repository: BudgetSpenderRepository,
 }
 
 #[async_trait]
@@ -34,9 +32,6 @@ impl EventListener for Projector {
 					let mut budget = self.budget_repository.find_by_id(&id)?;
 					budget.remaining_amount -= amount.amount();
 					self.budget_repository.update(&id, &budget)?;
-				},
-				BudgetEvent::SpenderAssigned { id, spender_id } => {
-					self.budget_spender_repository.insert(id, spender_id)?;
 				},
 			}
 		}

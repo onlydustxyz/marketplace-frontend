@@ -1,18 +1,18 @@
 use std::collections::HashSet;
 
 use derive_more::Constructor;
-use domain::{BudgetId, ProjectId};
+use domain::ProjectId;
 
 use super::Permissions;
 
 #[derive(Constructor)]
 pub(super) struct IdentifiedUser {
-	budgets: HashSet<BudgetId>,
+	projects: HashSet<ProjectId>,
 }
 
 impl Permissions for IdentifiedUser {
-	fn can_spend_budget(&self, budget_id: &BudgetId) -> bool {
-		self.budgets.contains(budget_id)
+	fn can_spend_budget_of_project(&self, project_id: &ProjectId) -> bool {
+		self.projects.contains(project_id)
 	}
 
 	fn can_unassign_project_leader(

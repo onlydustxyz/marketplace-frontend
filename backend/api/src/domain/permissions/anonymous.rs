@@ -1,11 +1,11 @@
-use domain::{BudgetId, ProjectId};
+use domain::ProjectId;
 
 use super::Permissions;
 
 pub(super) struct Anonymous;
 
 impl Permissions for Anonymous {
-	fn can_spend_budget(&self, _budget_id: &BudgetId) -> bool {
+	fn can_spend_budget_of_project(&self, _project_id: &ProjectId) -> bool {
 		false
 	}
 
