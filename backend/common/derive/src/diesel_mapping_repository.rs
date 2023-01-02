@@ -50,6 +50,7 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 	// Build the output, possibly using quasi-quotation
 	let expanded = quote! {
 		use diesel::RunQueryDsl;
+		use diesel::QueryDsl;
 		use diesel::ExpressionMethods;
 		use diesel::query_dsl::filter_dsl::FindDsl;
 
@@ -59,6 +60,15 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 
 				diesel::insert_into(#table)
 					.values((#id1.eq(id1), #id2.eq(id2)))
+					.execute(&*connection)?;
+
+				Ok(())
+			}
+
+			fn delete(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
+				let connection = self.0.connection()?;
+
+				diesel::delete(#table.filter(#id1.eq(id1)).filter(#id2.eq(id2)))
 					.execute(&*connection)?;
 
 				Ok(())

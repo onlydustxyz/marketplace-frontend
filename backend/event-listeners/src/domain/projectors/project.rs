@@ -74,6 +74,8 @@ impl EventListener for Projector {
 				},
 				ProjectEvent::LeaderAssigned { id, leader_id } =>
 					self.project_lead_repository.insert(id, leader_id)?,
+				ProjectEvent::LeaderUnassigned { id, leader_id } =>
+					self.project_lead_repository.delete(id, leader_id)?,
 				ProjectEvent::GithubRepositoryUpdated { id, github_repo_id } => {
 					self.project_repository
 						.update(id, UpdateGitubRepoIdChangeset::new(*github_repo_id))?;

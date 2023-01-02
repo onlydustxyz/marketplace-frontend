@@ -78,6 +78,7 @@ impl IdentifiableAggregate for Event {
 			Event::Project(event) => match event {
 				backend_domain::ProjectEvent::Created { id, .. }
 				| backend_domain::ProjectEvent::LeaderAssigned { id, .. }
+				| backend_domain::ProjectEvent::LeaderUnassigned { id, .. }
 				| backend_domain::ProjectEvent::GithubRepositoryUpdated { id, .. } => id.to_string(),
 			},
 			Event::Payment(event) => match event {
