@@ -9,6 +9,7 @@ interface EstimationComponentProps {
   decreaseNumberOfDays: () => void;
   increaseNumberOfDays: () => void;
   budget: { initialAmount: number; remainingAmount: number };
+  submitDisabled: boolean;
 }
 
 export default function EstimationComponent({
@@ -16,6 +17,7 @@ export default function EstimationComponent({
   decreaseNumberOfDays,
   increaseNumberOfDays,
   budget,
+  submitDisabled,
 }: EstimationComponentProps) {
   const amountToPay = numberOfDays * BASE_RATE_USD;
   const { T } = useT();
@@ -69,7 +71,11 @@ export default function EstimationComponent({
             <div>$ {budget.remainingAmount - amountToPay}</div>
           </div>
         </div>
-        <button type="submit" className=" border-white border-2 px-3 py-2 rounded-md bg-neutral-50 text-black">
+        <button
+          type="submit"
+          disabled={submitDisabled}
+          className=" border-white border-2 px-3 py-2 rounded-md bg-neutral-50 text-black"
+        >
           {T("payment.form.confirm")}
         </button>
       </div>
