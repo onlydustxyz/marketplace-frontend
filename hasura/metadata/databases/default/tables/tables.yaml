@@ -7,7 +7,6 @@
 - "!include auth_user_roles.yaml"
 - "!include auth_user_security_keys.yaml"
 - "!include auth_users.yaml"
-- "!include public_budget_spenders.yaml"
 - "!include public_budgets.yaml"
 - "!include public_github_repo_details.yaml"
 - "!include public_payment_requests.yaml"

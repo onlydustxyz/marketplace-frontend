@@ -1,7 +1,0 @@
-table:
-  name: budget_spenders
-  schema: public
-object_relationships:
-  - name: budget
-    using:
-      foreign_key_constraint_on: budget_id

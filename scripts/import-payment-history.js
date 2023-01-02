@@ -32,9 +32,6 @@ const graphqlAsUser = async (userId, query, variables = undefined) => {
   const projects = JSON.stringify(user.projectsLeaded.map(p => p.projectId))
     .replace("{", "[")
     .replace("}", "]");
-  const budgets = JSON.stringify(user.budgetsOwned.map(b => b.budgetId))
-    .replace("{", "[")
-    .replace("}", "]");
 
   const response = await fetch(GRAPHQL_ENDPOINT, {
     method: "POST",
@@ -43,7 +40,6 @@ const graphqlAsUser = async (userId, query, variables = undefined) => {
       "X-Hasura-role": "registered_user",
       "X-Hasura-user-id": userId,
       "x-hasura-projectsLeaded": projects,
-      "x-hasura-budgetsOwned": budgets,
     },
     body: JSON.stringify({ query, variables }),
   }).then(response => response.json());
@@ -61,9 +57,6 @@ const getProjectLeadInfos = async userId =>
         user(id:$userId) {
           projectsLeaded {
             projectId
-          }
-          budgetsOwned {
-            budgetId
           }
         }
       }`,

@@ -9,10 +9,7 @@ use uuid::Uuid;
 #[derive(Debug, PartialEq, Eq)]
 pub enum Role {
 	Admin,
-	RegisteredUser {
-		lead_projects: HashSet<Uuid>,
-		owned_budgets: HashSet<Uuid>,
-	},
+	RegisteredUser { lead_projects: HashSet<Uuid> },
 	Public,
 }
 
@@ -37,16 +34,7 @@ fn from_role_registered_user(request: &'_ Request<'_>) -> Outcome<Role, ()> {
 			.and_then(|h| serde_json::from_str(&h.replace('{', "[").replace('}', "]")).ok())
 			.unwrap_or_default();
 
-		let owned_budgets: HashSet<Uuid> = request
-			.headers()
-			.get_one("x-hasura-budgetsOwned")
-			.and_then(|h| serde_json::from_str(&h.replace('{', "[").replace('}', "]")).ok())
-			.unwrap_or_default();
-
-		return Outcome::Success(Role::RegisteredUser {
-			lead_projects,
-			owned_budgets,
-		});
+		return Outcome::Success(Role::RegisteredUser { lead_projects });
 	}
 
 	Outcome::Success(Role::Public)
