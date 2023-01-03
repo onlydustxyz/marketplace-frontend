@@ -1,11 +1,11 @@
-use juniper::{graphql_object, FieldResult};
+use juniper::{graphql_object, DefaultScalarValue};
 
-use super::Context;
+use super::{Context, Result};
 use crate::domain::{GithubRepository, GithubUser};
 
 pub struct Query;
 
-#[graphql_object(context=Context)]
+#[graphql_object(context=Context, Scalar = DefaultScalarValue)]
 impl Query {
 	pub fn hello_from_github_proxy(&self) -> &str {
 		"Raclette!"
@@ -15,7 +15,7 @@ impl Query {
 		&self,
 		context: &Context,
 		id: i32,
-	) -> FieldResult<GithubRepository> {
+	) -> Result<GithubRepository> {
 		let repository = context.github_service.fetch_repository_by_id(id as u64).await?;
 		Ok(repository)
 	}
@@ -24,7 +24,7 @@ impl Query {
 		&self,
 		context: &Context,
 		username: String,
-	) -> FieldResult<GithubUser> {
+	) -> Result<GithubUser> {
 		let user = context.github_service.fetch_user_by_name(&username).await?;
 		Ok(user)
 	}

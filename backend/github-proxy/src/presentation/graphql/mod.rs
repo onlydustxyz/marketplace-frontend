@@ -1,6 +1,9 @@
 mod query;
 use query::Query;
 
+mod error;
+pub use error::{Error, Result};
+
 mod context;
 pub use context::Context;
 use juniper::{EmptyMutation, EmptySubscription, RootNode};

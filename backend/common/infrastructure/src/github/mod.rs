@@ -1,10 +1,11 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, fmt::Debug};
 
 use anyhow::anyhow;
 use octocrab::{
 	models::{repos::Content, Repository, User},
 	FromResponse, Octocrab, OctocrabBuilder,
 };
+use olog::tracing::instrument;
 use serde::Deserialize;
 
 mod error;
@@ -30,23 +31,27 @@ impl Client {
 		Ok(Self(instance))
 	}
 
+	#[instrument(skip(self))]
 	pub async fn get_as<U, R>(&self, url: U) -> Result<R, Error>
 	where
-		U: AsRef<str>,
+		U: AsRef<str> + Debug,
 		R: FromResponse,
 	{
 		let result = self.0.get(url, None::<&()>).await?;
 		Ok(result)
 	}
 
+	#[instrument(skip(self))]
 	pub async fn get_repository_by_id(&self, id: u64) -> Result<Repository, Error> {
 		self.get_as(format!("{}repositories/{id}", self.0.base_url)).await
 	}
 
+	#[instrument(skip(self))]
 	pub async fn get_user_by_name(&self, username: &str) -> Result<User, Error> {
 		self.get_as(format!("{}users/{username}", self.0.base_url)).await
 	}
 
+	#[instrument(skip(self))]
 	pub async fn get_raw_file(&self, repo: &Repository, path: &str) -> Result<Content, Error> {
 		let owner = repo
 			.owner

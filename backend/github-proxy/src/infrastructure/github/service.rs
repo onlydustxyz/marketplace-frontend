@@ -1,11 +1,25 @@
-use anyhow::{anyhow, Result};
+use anyhow::anyhow;
 use infrastructure::github;
+use olog::tracing::instrument;
 
-use crate::domain::{GithubFile, GithubFileEncoding, GithubRepository, GithubService, GithubUser};
+use crate::domain::{
+	GithubFile, GithubFileEncoding, GithubRepository, GithubService, GithubServiceError,
+	GithubServiceResult, GithubUser,
+};
+
+impl From<github::Error> for GithubServiceError {
+	fn from(error: github::Error) -> Self {
+		match error {
+			github::Error::NotFound(error) => GithubServiceError::NotFound(error),
+			github::Error::Other(error) => GithubServiceError::Other(error),
+		}
+	}
+}
 
 #[async_trait]
 impl GithubService for github::Client {
-	async fn fetch_repository_by_id(&self, id: u64) -> Result<GithubRepository> {
+	#[instrument(skip(self))]
+	async fn fetch_repository_by_id(&self, id: u64) -> GithubServiceResult<GithubRepository> {
 		let repo = self.get_repository_by_id(id).await?;
 
 		let contributors: Vec<octocrab::models::User> = match &repo.contributors_url {
@@ -16,10 +30,14 @@ impl GithubService for github::Client {
 		let readme = match self.get_raw_file(&repo, "README.md").await {
 			Ok(readme) => Some(readme),
 			Err(github::Error::NotFound(_)) => None,
-			Err(error) => return Err(anyhow!(error)),
+			Err(error) => return Err(error.into()),
 		};
 
-		let owner = repo.owner.ok_or_else(|| anyhow!("Missing owner in github repository"))?;
+		let owner = repo.owner.ok_or_else(|| {
+			GithubServiceError::MissingRepositoryOwner(anyhow!(
+				"Missing owner in github repository"
+			))
+		})?;
 
 		Ok(GithubRepository::new(
 			contributors.into_iter().map(Into::into).collect(),
@@ -28,7 +46,8 @@ impl GithubService for github::Client {
 		))
 	}
 
-	async fn fetch_user_by_name(&self, username: &str) -> Result<GithubUser> {
+	#[instrument(skip(self))]
+	async fn fetch_user_by_name(&self, username: &str) -> GithubServiceResult<GithubUser> {
 		let user = self.get_user_by_name(username).await?;
 		Ok(user.into())
 	}

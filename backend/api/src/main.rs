@@ -12,10 +12,8 @@ use domain::AggregateRootRepository;
 use dotenv::dotenv;
 use infrastructure::{amqp, config, database, github, tracing::Tracer, web3::ens};
 use olog::info;
-use tracing::instrument;
 
 #[tokio::main]
-#[instrument]
 async fn main() -> Result<()> {
 	dotenv().ok();
 	let config: Config = config::load("backend/api/app.yaml")?;
