@@ -176,7 +176,7 @@ describe("As an admin, on retool, I", () => {
                         .unassignProjectLead(projectId, user.id)
                         .asAdmin()
                         .data("unassignProjectLead")
-                        .should("equal", 1)
+                        .should("equal", true)
                         .then(() => {
                             cy.wait(700);
                             cy
