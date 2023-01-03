@@ -14,6 +14,7 @@ pub struct Repository(Arc<Client>);
 #[cfg(test)]
 mockall::mock! {
 	pub Repository {
+		pub fn new(client: Arc<Client>) -> Self;
 		pub fn upsert(&self, entity: &UserInfo)  -> Result<(), infrastructure::database::DatabaseError>;
 	}
 
