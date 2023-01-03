@@ -18,7 +18,7 @@ export default function Card({
           style={{ backgroundImage: `url(${backgroundImageUrl})`, backgroundPosition: "center" }}
         >
           <div
-            className={`flex w-full h-full bg-chineseBlack p-6 border-2 border-neutral-600/90 rounded-xl font-walsheim bg-opacity-50 backdrop-blur-xl ${
+            className={`w-full bg-chineseBlack p-6 border-2 border-neutral-600/90 rounded-xl font-walsheim bg-opacity-50 backdrop-blur-xl ${
               selectable ? "transition hover:bg-opacity-80 hover:border-neutral-300/90 duration-400" : ""
             }`}
           >
@@ -28,7 +28,7 @@ export default function Card({
       )}
       {!backgroundImageUrl && (
         <div
-          className={`flex w-full bg-chineseBlack p-6 border-2 border-neutral-600/70 rounded-xl font-walsheim bg-opacity-50 ${
+          className={`w-full bg-chineseBlack p-6 border-2 border-neutral-600/70 rounded-xl font-walsheim bg-opacity-50 ${
             selectable ? "transition hover:bg-opacity-80 hover:border-neutral-300/70 duration-400" : ""
           }`}
         >
