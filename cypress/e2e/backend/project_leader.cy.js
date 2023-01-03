@@ -3,14 +3,14 @@ describe("As a project leader, I", () => {
     let leader;
 
     before(() => {
-        cy.createUser().then(($user) => {
+        cy.createUser().withGithubProvider(12345).then((user) => {
             cy
-                .createProject($user.id, "Project with budget", 1000, 1234)
+                .createProject(user.id, "Project with budget", 1000, 1234)
                 .asAdmin()
                 .data("createProject")
                 .then(($projectId) => {
                     projectId = $projectId;
-                    leader = $user;
+                    leader = user;
                 })
         });
     });

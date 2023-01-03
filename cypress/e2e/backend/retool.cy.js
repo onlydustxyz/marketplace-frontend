@@ -161,6 +161,48 @@ describe("As an admin, on retool, I", () => {
         );
     });
 
+    it("can invite a user to lead a project", () => {
+        const STARKONQUEST_ID = 481932781;
+
+        cy.createUser().then((initialLeader) =>
+            cy
+                .createProject(initialLeader.id, "Another project", 500, STARKONQUEST_ID)
+                .asAdmin()
+                .data("createProject")
+                .then((projectId) => {
+                    cy.wait(700);
+                    cy.createUser().withGithubProvider(98765).then((user) => {
+                        cy.inviteProjectLeader(projectId, user.githubUserId)
+                        .asAdmin()
+                        .data("inviteProjectLeader")
+                        .should("be.a", "string")
+                        .then((invitationId) => {
+                            cy.acceptProjectLeaderInvitation(invitationId)
+                            .asRegisteredUser(user)
+                            .data("acceptProjectLeaderInvitation")
+                            .should("be.true")
+                            .then(() => {
+                                cy.wait(700);
+                                cy
+                                .graphql({ query: `{
+                                    projectsByPk(id: "${projectId}") {
+                                        projectLeads {
+                                            userId
+                                        }
+                                    }
+                                }`})
+                                .asAnonymous()
+                                .data("projectsByPk")
+                                .its("projectLeads")
+                                .should("deep.include", {userId: user.id});
+                            })
+                        })
+                    })
+                })
+        );
+
+    });
+
 
     it("can remove a leader from a project", () => {
         const STARKONQUEST_ID = 481932781;

@@ -8,7 +8,7 @@ describe("As a simple user, I", () => {
     const STARKONQUEST_ID = 481932781;
 
     before(() => {
-        cy.createUser().then(($user) =>
+        cy.createUser().withGithubProvider(543221).then(($user) =>
             cy
                 .createProject(
                     $user.id,
@@ -174,7 +174,7 @@ describe("As a simple user, I", () => {
     });
 
 
-    it.only("can update my info", () => {
+    it("can update my info", () => {
         let email = "pierre.fabre@gmail.com";
         let location =
             { city: "Paris", country: "France", number: "4", postCode: "75008", street: "avenue des Champs Elysee" };
@@ -186,7 +186,7 @@ describe("As a simple user, I", () => {
         let new_payout_settings =
             { type: "ETHEREUM_NAME", optEthName: "vitalik.eth" };
 
-        cy.createUser().then((user) => {
+        cy.createUser().withGithubProvider(12345).then((user) => {
             cy.updateProfileInfo(email, location, identity, payout_settings)
                 .asRegisteredUser(user)
                 .data("updateProfileInfo")
