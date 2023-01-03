@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Listbox } from "@headlessui/react";
+import { useT } from "talkr";
 
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
@@ -17,7 +18,6 @@ import UpDownChevrons from "src/assets/icons/UpDownChevrons";
 import CheckMark from "src/assets/icons/CheckMark";
 import GithubLink from "src/components/GithubLink";
 import TelegramLink from "src/components/TelegramLink";
-import { useT } from "talkr";
 
 type ProjectDetailsParams = {
   projectId: string;
@@ -108,7 +108,11 @@ export default function ProjectDetails() {
                         <div className="border-4 border-neutral-600 p-2 rounded-2xl">
                           <img
                             className="w-8"
-                            src={projectFromDropdown?.projectDetails?.logoUrl ?? undefined}
+                            src={
+                              projectFromDropdown?.projectDetails?.logoUrl ||
+                              projectFromDropdown?.githubRepo?.content?.logoUrl ||
+                              onlyDustLogo
+                            }
                             alt="Project Logo"
                           />
                         </div>
@@ -119,11 +123,9 @@ export default function ProjectDetails() {
                             {T("project.details.sidebar.contributors")}
                           </div>
                         </div>
-                        <div className="ml-5">
-                          <CheckMark
-                            className={`h-5 w-5 ${projectFromDropdown.id === projectId ? "opacity-100" : "opacity-0"}`}
-                          />
-                        </div>
+                        <CheckMark
+                          className={`h-5 w-5 ${projectFromDropdown.id === projectId ? "opacity-100" : "opacity-0"}`}
+                        />
                       </div>
                     </Listbox.Option>
                   ))}
@@ -270,6 +272,7 @@ export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
           contributors {
             login
           }
+          logoUrl
         }
       }
     }

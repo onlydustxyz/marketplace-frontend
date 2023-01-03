@@ -2305,7 +2305,7 @@ export type GetUserProjectQuery = { __typename?: 'query_root', projectsByPk: { _
 export type GetProjectsForSidebarQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProjectsForSidebarQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', login: string }> } } | null }> };
+export type GetProjectsForSidebarQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string }> } } | null }> };
 
 export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2800,6 +2800,7 @@ export const GetProjectsForSidebarDocument = gql`
         contributors {
           login
         }
+        logoUrl
       }
     }
   }
