@@ -2,6 +2,7 @@ use anyhow::anyhow;
 use infrastructure::github;
 use olog::tracing::instrument;
 
+use super::Contributors;
 use crate::domain::{
 	GithubFile, GithubFileEncoding, GithubRepository, GithubService, GithubServiceError,
 	GithubServiceResult, GithubUser,
@@ -22,7 +23,7 @@ impl GithubService for github::Client {
 	async fn fetch_repository_by_id(&self, id: u64) -> GithubServiceResult<GithubRepository> {
 		let repo = self.get_repository_by_id(id).await?;
 
-		let contributors: Vec<octocrab::models::User> = match &repo.contributors_url {
+		let contributors: Contributors = match &repo.contributors_url {
 			Some(url) => self.get_as(url).await?,
 			None => Default::default(),
 		};
