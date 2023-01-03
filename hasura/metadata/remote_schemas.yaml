@@ -20,6 +20,7 @@
           scalar EthereumName
           scalar Uuid
           type Mutation {
+            acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
             requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, reason: Reason!): Uuid!
             updateProfileInfo(location: Location!, identity: IdentityInput!, email: Email!, payoutSettings: PayoutSettingsInput!): Uuid!
           }
