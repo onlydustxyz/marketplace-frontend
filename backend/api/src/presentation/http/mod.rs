@@ -7,7 +7,9 @@ use infrastructure::{github, web3::ens};
 use presentation::http;
 
 use crate::{
-	infrastructure::database::{ProjectDetailsRepository, UserInfoRepository},
+	infrastructure::database::{
+		PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository, UserInfoRepository,
+	},
 	presentation::graphql,
 };
 
@@ -23,6 +25,7 @@ pub async fn serve(
 	project_repository: AggregateRootRepository<Project>,
 	payment_repository: AggregateRootRepository<Payment>,
 	project_details_repository: ProjectDetailsRepository,
+	pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 	user_info_repository: UserInfoRepository,
 	github: Arc<github::Client>,
 	ens: Arc<ens::Client>,
@@ -34,6 +37,7 @@ pub async fn serve(
 		.manage(project_repository)
 		.manage(payment_repository)
 		.manage(project_details_repository)
+		.manage(pending_project_leader_invitations_repository)
 		.manage(user_info_repository)
 		.manage(github)
 		.manage(ens)

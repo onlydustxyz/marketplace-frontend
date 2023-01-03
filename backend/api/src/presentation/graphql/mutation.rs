@@ -102,7 +102,7 @@ impl Mutation {
 		amount_in_usd: i32,
 		reason: PaymentReason,
 	) -> Result<Uuid> {
-		let caller_id = try_get_caller_user_id(context)?;
+		let caller_id = *context.caller_info()?.user_id();
 
 		if !context.caller_permissions.can_spend_budget_of_project(&project_id.into()) {
 			return Err(Error::NotAuthorized(
@@ -131,7 +131,7 @@ impl Mutation {
 		email: Email,
 		payout_settings: PayoutSettingsInput,
 	) -> Result<Uuid> {
-		let caller_id = try_get_caller_user_id(context)?;
+		let caller_id = *context.caller_info()?.user_id();
 
 		let identity = Identity::try_from(identity).map_err(Error::InvalidRequest)?;
 		let payout_settings =
@@ -158,6 +158,36 @@ impl Mutation {
 		Ok(id)
 	}
 
+	pub async fn invite_project_leader(
+		context: &Context,
+		project_id: Uuid,
+		github_user_id: i32,
+	) -> Result<Uuid> {
+		let invitation_id = context
+			.invite_project_leader_usecase
+			.invite_leader(project_id.into(), (github_user_id as i64).into())
+			.await?;
+
+		Ok(invitation_id.into())
+	}
+
+	pub async fn accept_project_leader_invitation(
+		context: &Context,
+		invitation_id: Uuid,
+	) -> Result<bool> {
+		let caller_info = context.caller_info()?;
+		context
+			.accept_project_leader_invitation_usecase
+			.accept_leader_invitation(
+				&invitation_id.into(),
+				caller_info.user_id(),
+				caller_info.github_user_id(),
+			)
+			.await?;
+
+		Ok(true)
+	}
+
 	pub async fn unassign_project_lead(
 		context: &Context,
 		project_id: Uuid,
@@ -179,8 +209,4 @@ impl Mutation {
 
 		Ok(1)
 	}
-}
-
-fn try_get_caller_user_id(context: &Context) -> Result<UserId> {
-	context.maybe_user_id.user_id().map_err(|e| Error::NotAuthorized(e.to_string()))
 }
