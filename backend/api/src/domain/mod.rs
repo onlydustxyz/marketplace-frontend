@@ -16,3 +16,8 @@ pub use payment::Reason as PaymentReason;
 
 mod specifications;
 pub use specifications::ArePayoutSettingsValid;
+
+mod pending_project_leader_invitation;
+pub use pending_project_leader_invitation::{
+	Id as PendingProjectLeaderInvitationId, PendingProjectLeaderInvitation,
+};
