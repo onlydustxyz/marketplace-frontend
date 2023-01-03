@@ -162,7 +162,7 @@ impl Mutation {
 		context: &Context,
 		project_id: Uuid,
 		user_id: Uuid,
-	) -> Result<i32> {
+	) -> Result<bool> {
 		let project_id = ProjectId::from(project_id);
 		let user_id = UserId::from(user_id);
 
@@ -177,7 +177,7 @@ impl Mutation {
 			.remove_leader(&project_id, &user_id)
 			.await?;
 
-		Ok(1)
+		Ok(true)
 	}
 }
 
