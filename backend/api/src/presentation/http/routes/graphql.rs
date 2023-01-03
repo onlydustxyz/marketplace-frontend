@@ -8,7 +8,9 @@ use rocket::{response::content, State};
 
 use crate::{
 	infrastructure::{
-		database::{ProjectDetailsRepository, UserInfoRepository},
+		database::{
+			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository, UserInfoRepository,
+		},
 		web3::ens,
 	},
 	presentation::graphql::{Context, Schema},
@@ -40,6 +42,9 @@ pub async fn get_graphql_handler(
 	payment_repository: &State<AggregateRootRepository<Payment>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<ProjectDetailsRepository>,
+	pending_project_leader_invitations_repository: &State<
+		PendingProjectLeaderInvitationsRepository,
+	>,
 	user_info_repository: &State<UserInfoRepository>,
 	github: &State<Arc<github::Client>>,
 	ens: &State<Arc<ens::Client>>,
@@ -51,6 +56,7 @@ pub async fn get_graphql_handler(
 		(*payment_repository).clone(),
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
+		(*pending_project_leader_invitations_repository).clone(),
 		(*user_info_repository).clone(),
 		(*github).clone(),
 		(*ens).clone(),
@@ -70,6 +76,9 @@ pub async fn post_graphql_handler(
 	payment_repository: &State<AggregateRootRepository<Payment>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<ProjectDetailsRepository>,
+	pending_project_leader_invitations_repository: &State<
+		PendingProjectLeaderInvitationsRepository,
+	>,
 	user_info_repository: &State<UserInfoRepository>,
 	github: &State<Arc<github::Client>>,
 	ens: &State<Arc<ens::Client>>,
@@ -81,6 +90,7 @@ pub async fn post_graphql_handler(
 		(*payment_repository).clone(),
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
+		(*pending_project_leader_invitations_repository).clone(),
 		(*user_info_repository).clone(),
 		(*github).clone(),
 		(*ens).clone(),

@@ -2,7 +2,9 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use api::{
-	infrastructure::database::{ProjectDetailsRepository, UserInfoRepository},
+	infrastructure::database::{
+		PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository, UserInfoRepository,
+	},
 	presentation::{graphql, http},
 	Config,
 };
@@ -33,6 +35,7 @@ async fn main() -> Result<()> {
 		AggregateRootRepository::new(database.clone()),
 		AggregateRootRepository::new(database.clone()),
 		ProjectDetailsRepository::new(database.clone()),
+		PendingProjectLeaderInvitationsRepository::new(database.clone()),
 		UserInfoRepository::new(database),
 		github,
 		Arc::new(ens::Client::new(config.web3())?),

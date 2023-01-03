@@ -36,8 +36,9 @@ impl Usecase {
 	) -> Result<PaymentId, DomainError> {
 		let project = self.project_repository.find_by_id(&project_id)?;
 		let budget = project.budget();
+		let new_payment_id = PaymentId::new();
 
-		let mut events = budget
+		budget
 			.spend(&Money::from_major(amount_in_usd as i64, crypto::USDC).into())
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
 			.into_iter()
@@ -48,24 +49,22 @@ impl Usecase {
 				})
 			})
 			.map(UniqueMessage::new)
-			.collect::<Vec<_>>();
-
-		let new_payment_id = PaymentId::new();
-		events.extend(
-			Payment::request(
-				new_payment_id,
-				*budget.id(),
-				requestor_id,
-				recipient_id,
-				amount_in_usd,
-				reason,
+			.chain(
+				Payment::request(
+					new_payment_id,
+					*budget.id(),
+					requestor_id,
+					recipient_id,
+					amount_in_usd,
+					reason,
+				)
+				.into_iter()
+				.map(Event::from)
+				.map(UniqueMessage::new),
 			)
-			.into_iter()
-			.map(Event::from)
-			.map(UniqueMessage::new),
-		);
-
-		events.publish(self.event_publisher.clone()).await?;
+			.collect::<Vec<_>>()
+			.publish(self.event_publisher.clone())
+			.await?;
 
 		Ok(new_payment_id)
 	}
