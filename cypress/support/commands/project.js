@@ -84,3 +84,32 @@ Cypress.Commands.add(
         };
     }
 );
+
+Cypress.Commands.add(
+    "inviteProjectLeader",
+    (
+        projectId,
+        githubUserId
+    ) => {
+        return {
+            query: `mutation($projectId: Uuid!, $githubUserId: Int!) {
+                inviteProjectLeader(projectId: $projectId, githubUserId: $githubUserId)
+            }`,
+            variables: { projectId, githubUserId}
+        };
+    }
+);
+
+Cypress.Commands.add(
+    "acceptProjectLeaderInvitation",
+    (
+        invitationId,
+    ) => {
+        return {
+            query: `mutation($invitationId: Uuid!) {
+                acceptProjectLeaderInvitation(invitationId: $invitationId)
+            }`,
+            variables: { invitationId }
+        };
+    }
+);
