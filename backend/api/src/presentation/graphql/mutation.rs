@@ -57,7 +57,6 @@ impl Mutation {
 		github_repo_id: i32,
 		description: Option<String>,
 		telegram_link: Option<String>,
-		user_id: Uuid,
 		logo_url: Option<String>,
 	) -> Result<Uuid> {
 		let project_id = context
@@ -68,7 +67,6 @@ impl Mutation {
 				(github_repo_id as i64).into(),
 				description,
 				telegram_link,
-				user_id.into(),
 				logo_url,
 			)
 			.await?;

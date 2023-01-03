@@ -2,8 +2,8 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{
-	Amount, Budget, BudgetId, DomainError, Event, EventSourcable, GithubRepoExists,
-	GithubRepositoryId, Project, ProjectEvent, ProjectId, Publisher, UniqueMessage, UserId,
+	Amount, Budget, BudgetId, DomainError, Event, GithubRepoExists, GithubRepositoryId, Project,
+	ProjectEvent, ProjectId, Publisher, UniqueMessage,
 };
 
 use crate::{
@@ -38,23 +38,23 @@ impl Usecase {
 		github_repo_id: GithubRepositoryId,
 		description: Option<String>,
 		telegram_link: Option<String>,
-		user_id: UserId,
 		logo_url: Option<String>,
 	) -> Result<ProjectId, DomainError> {
 		let project_id = ProjectId::new();
 
-		self.create_leaded_project(project_id, user_id, name, github_repo_id)
+		Project::create(self.github.clone(), project_id, name, github_repo_id)
 			.await
-			.map_err(DomainError::InvalidInputs)?
+			.map_err(|e| DomainError::InvalidInputs(e.into()))?
 			.into_iter()
 			.chain(
 				Budget::allocate(BudgetId::new(), initial_budget).into_iter().map(|event| {
-					Event::Project(ProjectEvent::Budget {
+					ProjectEvent::Budget {
 						id: project_id,
 						event,
-					})
+					}
 				}),
 			)
+			.map(Event::from)
 			.map(UniqueMessage::new)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
@@ -68,18 +68,5 @@ impl Usecase {
 		))?;
 
 		Ok(project_id)
-	}
-
-	async fn create_leaded_project(
-		&self,
-		project_id: ProjectId,
-		leader_id: UserId,
-		name: String,
-		github_repo_id: GithubRepositoryId,
-	) -> Result<impl Iterator<Item = Event>> {
-		let events = Project::create(self.github.clone(), project_id, name, github_repo_id).await?;
-		let project = <Project as EventSourcable>::from_events(&events);
-
-		Ok(events.into_iter().chain(project.assign_leader(leader_id)?).map(Event::from))
 	}
 }
