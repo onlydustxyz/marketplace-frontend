@@ -79,6 +79,14 @@ diesel::table! {
 }
 
 diesel::table! {
+    pending_project_leader_invitations (id) {
+        id -> Uuid,
+        project_id -> Uuid,
+        github_user_id -> Int8,
+    }
+}
+
+diesel::table! {
     project_details (project_id) {
         project_id -> Uuid,
         description -> Nullable<Text>,
@@ -127,6 +135,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     payment_requests,
     payments,
     payout_settings,
+    pending_project_leader_invitations,
     project_details,
     project_leads,
     projects,
