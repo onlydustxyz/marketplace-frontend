@@ -1,5 +1,5 @@
 mod service;
-pub use service::Service;
+pub use service::{Error as ServiceError, Result as ServiceResult, Service};
 
 mod repository;
 pub use repository::Repository;

@@ -1688,6 +1688,8 @@ dependencies = [
  "reqwest",
  "rocket",
  "serde",
+ "thiserror",
+ "tracing",
 ]
 
 [[package]]

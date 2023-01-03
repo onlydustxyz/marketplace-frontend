@@ -9,6 +9,7 @@ figment = {version ="0.10.8", features = ["env", "toml"]}
 
 # Errors
 anyhow = "1.0.57"
+thiserror = "1.0.31"
 
 # Github
 octocrab = "0.17.0"
@@ -23,6 +24,9 @@ rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 
 # Serde
 serde = {version = "1.0.137", features = ["derive"]}
+
+# Tracing
+tracing = "0.1"
 
 # Utils
 derive_more = "0.99.17"
