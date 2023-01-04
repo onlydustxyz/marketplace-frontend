@@ -2,12 +2,14 @@ interface ProjectCardProps extends React.PropsWithChildren {
   selectable?: boolean;
   backgroundImageUrl?: string;
   backgroundImageClassName?: string;
+  className?: string;
 }
 
 export default function Card({
   selectable = false,
   backgroundImageUrl,
   backgroundImageClassName = "",
+  className = "",
   children,
 }: ProjectCardProps) {
   return (
@@ -20,7 +22,7 @@ export default function Card({
           <div
             className={`w-full bg-chineseBlack p-6 border-2 border-neutral-600/90 rounded-xl font-walsheim bg-opacity-50 backdrop-blur-xl ${
               selectable ? "transition hover:bg-opacity-80 hover:border-neutral-300/90 duration-400" : ""
-            }`}
+            } ${className}`}
           >
             {children}
           </div>
@@ -30,7 +32,7 @@ export default function Card({
         <div
           className={`w-full bg-chineseBlack p-6 border-2 border-neutral-600/70 rounded-xl font-walsheim bg-opacity-50 ${
             selectable ? "transition hover:bg-opacity-80 hover:border-neutral-300/70 duration-400" : ""
-          }`}
+          } ${className}`}
         >
           {children}
         </div>
