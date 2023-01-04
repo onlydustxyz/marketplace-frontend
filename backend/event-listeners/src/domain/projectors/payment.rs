@@ -1,6 +1,7 @@
 use anyhow::Result;
 use async_trait::async_trait;
 use domain::{Event, PaymentEvent, SubscriberCallbackError};
+use tracing::instrument;
 
 use crate::{
 	domain::{EventListener, Payment},
@@ -19,6 +20,7 @@ impl Projector {
 
 #[async_trait]
 impl EventListener for Projector {
+	#[instrument(name = "payment_projection", skip(self))]
 	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
 		if let Event::Payment(PaymentEvent::Processed {
 			id,

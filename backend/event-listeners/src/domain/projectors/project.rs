@@ -57,6 +57,7 @@ impl Projector {
 
 #[async_trait]
 impl EventListener for Projector {
+	#[instrument(name = "project_projection", skip(self))]
 	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
 		if let Event::Project(event) = event {
 			match event {

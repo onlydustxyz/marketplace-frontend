@@ -2,6 +2,7 @@ use anyhow::Result;
 use async_trait::async_trait;
 use derive_more::Constructor;
 use domain::{BudgetEvent, Event, ProjectEvent, SubscriberCallbackError};
+use tracing::instrument;
 
 use crate::{
 	domain::{Budget, EventListener},
@@ -15,6 +16,7 @@ pub struct Projector {
 
 #[async_trait]
 impl EventListener for Projector {
+	#[instrument(name = "budget_projection", skip(self))]
 	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
 		if let Event::Project(ProjectEvent::Budget {
 			id: project_id,
