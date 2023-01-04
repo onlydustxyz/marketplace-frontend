@@ -103,7 +103,7 @@ describe("As a simple user, I", () => {
                 .errors()
                 .its(0)
                 .its("message")
-                .should("eq", "User is not authorized to perform this action");
+                .should("eq", `User '${user.id}' is not authorized to perform this action`);
         });
     });
 

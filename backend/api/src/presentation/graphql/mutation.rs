@@ -104,6 +104,7 @@ impl Mutation {
 
 		if !context.caller_permissions.can_spend_budget_of_project(&project_id.into()) {
 			return Err(Error::NotAuthorized(
+				caller_id,
 				"Project Lead role required".to_string(),
 			));
 		}
@@ -192,17 +193,18 @@ impl Mutation {
 		user_id: Uuid,
 	) -> Result<bool> {
 		let project_id = ProjectId::from(project_id);
-		let user_id = UserId::from(user_id);
+		let caller_id = UserId::from(user_id);
 
-		if !context.caller_permissions.can_unassign_project_leader(&project_id, &user_id) {
+		if !context.caller_permissions.can_unassign_project_leader(&project_id, &caller_id) {
 			return Err(Error::NotAuthorized(
+				caller_id,
 				"Only an admin can unasign an project lead".to_string(),
 			));
 		}
 
 		context
 			.remove_project_leader_usecase
-			.remove_leader(&project_id, &user_id)
+			.remove_leader(&project_id, &caller_id)
 			.await?;
 
 		Ok(true)
