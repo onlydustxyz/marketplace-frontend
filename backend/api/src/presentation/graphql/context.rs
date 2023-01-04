@@ -1,11 +1,8 @@
 use std::sync::Arc;
 
 use derive_getters::Getters;
-use domain::{
-	AggregateRootRepository, Event, GithubUserId, Payment, Project, Publisher, UniqueMessage,
-	UserId,
-};
-use infrastructure::github;
+use domain::{AggregateRootRepository, Event, GithubUserId, Payment, Project, Publisher, UserId};
+use infrastructure::{amqp::UniqueMessage, github};
 use presentation::http::guards::OptionUserId;
 
 use super::{Error, Result};

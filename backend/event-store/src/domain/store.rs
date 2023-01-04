@@ -1,4 +1,5 @@
-use backend_domain::{Event, UniqueMessage};
+use backend_domain::Event;
+use backend_infrastructure::amqp::UniqueMessage;
 use thiserror::Error;
 
 #[derive(Debug, Error)]

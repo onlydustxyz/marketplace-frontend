@@ -2,11 +2,9 @@ use std::sync::Arc;
 
 use ::olog::info;
 use anyhow::Result;
-use backend_domain::{
-	Destination, Event, Publisher, Subscriber, SubscriberCallbackError, UniqueMessage,
-};
+use backend_domain::{Destination, Event, Publisher, Subscriber, SubscriberCallbackError};
 use backend_infrastructure::{
-	amqp::{self, Bus},
+	amqp::{self, Bus, UniqueMessage},
 	config,
 	database::{self, init_pool, Client as DatabaseClient},
 	event_bus::EXCHANGE_NAME,

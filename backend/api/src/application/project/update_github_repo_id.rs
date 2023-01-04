@@ -3,8 +3,9 @@ use std::sync::Arc;
 use anyhow::Result;
 use domain::{
 	AggregateRootRepository, DomainError, Event, GithubRepoExists, GithubRepositoryId, Project,
-	ProjectId, Publisher, UniqueMessage,
+	ProjectId, Publisher,
 };
+use infrastructure::amqp::UniqueMessage;
 
 use crate::domain::Publishable;
 

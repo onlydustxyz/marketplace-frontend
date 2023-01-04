@@ -3,8 +3,9 @@ use std::sync::Arc;
 use anyhow::Result;
 use domain::{
 	Amount, Budget, BudgetId, DomainError, Event, GithubRepoExists, GithubRepositoryId, Project,
-	ProjectEvent, ProjectId, Publisher, UniqueMessage,
+	ProjectEvent, ProjectId, Publisher,
 };
+use infrastructure::amqp::UniqueMessage;
 
 use crate::{
 	domain::{ProjectDetails, Publishable},
