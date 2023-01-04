@@ -18,8 +18,8 @@ pub async fn serve(config: http::Config, github_service: Arc<dyn GithubService>)
 			"/",
 			routes![
 				routes::graphql::graphiql,
-				routes::graphql::get,
-				routes::graphql::post
+				routes::graphql::get_graphql_handler,
+				routes::graphql::post_graphql_handler
 			],
 		)
 		.launch()

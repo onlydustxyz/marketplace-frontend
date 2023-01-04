@@ -3,6 +3,7 @@ use std::sync::Arc;
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use presentation::http::guards::{ApiKey, ApiKeyGuard};
 use rocket::{response::content, State};
+use tracing::instrument;
 
 use crate::{domain::GithubService, presentation::graphql};
 
@@ -20,7 +21,8 @@ impl ApiKey for GraphqlApiKey {
 }
 
 #[get("/graphql?<request>")]
-pub async fn get(
+#[instrument(skip_all, fields(graphql_request = debug(&request)))]
+pub async fn get_graphql_handler(
 	_api_key: ApiKeyGuard<GraphqlApiKey>,
 	github_service: &State<Arc<dyn GithubService>>,
 	request: GraphQLRequest,
@@ -31,7 +33,8 @@ pub async fn get(
 }
 
 #[post("/graphql", data = "<request>")]
-pub async fn post(
+#[instrument(skip_all, fields(graphql_request = debug(&request)))]
+pub async fn post_graphql_handler(
 	_api_key: ApiKeyGuard<GraphqlApiKey>,
 	github_service: &State<Arc<dyn GithubService>>,
 	request: GraphQLRequest,
