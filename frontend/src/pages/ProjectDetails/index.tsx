@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql, QueryResult } from "@apollo/client";
 import { useEffect, useMemo, useState } from "react";
 import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { Listbox } from "@headlessui/react";
@@ -9,7 +9,12 @@ import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { buildGithubLink, decodeBase64ToString } from "src/utils/stringUtils";
-import { GetPublicProjectQuery, GetUserProjectQuery, GetProjectsForSidebarQuery } from "src/__generated/graphql";
+import {
+  GetPublicProjectQuery,
+  GetUserProjectQuery,
+  GetProjectsForSidebarQuery,
+  PendingProjectLeaderInvitationsQuery,
+} from "src/__generated/graphql";
 import Overview from "./Overview";
 import Payments from "./PaymentActions";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
@@ -18,6 +23,9 @@ import UpDownChevrons from "src/assets/icons/UpDownChevrons";
 import CheckMark from "src/assets/icons/CheckMark";
 import GithubLink from "src/components/GithubLink";
 import TelegramLink from "src/components/TelegramLink";
+import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
+import ShootingStar from "src/assets/icons/ShootingStar";
+
 import { RoutePaths } from "src/App";
 
 interface ProjectDetailsProps {
@@ -77,6 +85,12 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
     HasuraUserRole.Public
   );
 
+  const pendingProjectLeaderInvitationsQuery = useHasuraQuery<PendingProjectLeaderInvitationsQuery>(
+    PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
+    HasuraUserRole.RegisteredUser,
+    { skip: !isLoggedIn }
+  );
+
   const availableTabs =
     projectId && ledProjectIds && ledProjectIds.includes(projectId)
       ? [ProjectDetailsTab.Overview, ProjectDetailsTab.Payments]
@@ -115,30 +129,51 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                     <Listbox.Option
                       key={projectFromDropdown.id}
                       value={projectFromDropdown}
-                      className="hover:cursor-pointer p-3 hover:bg-neutral-800 border-neutral-600 duration-300 last:rounded-b-lg"
+                      className={`hover:cursor-pointer p-3 hover:bg-neutral-800 border-neutral-600 duration-300 last:rounded-b-lg ${
+                        hasProjectInvitation(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) &&
+                        "bg-amber-700/20  hover:bg-amber-700/30"
+                      } `}
                     >
-                      <div className="flex flex-row gap-5 items-center justify-items-start">
-                        <div className="border-4 border-neutral-600 p-2 rounded-2xl">
-                          <img
-                            className="w-8"
-                            src={
-                              projectFromDropdown?.projectDetails?.logoUrl ||
-                              projectFromDropdown?.githubRepo?.content?.logoUrl ||
-                              onlyDustLogo
-                            }
-                            alt="Project Logo"
-                          />
-                        </div>
-                        <div className="flex flex-col justify-self-start">
-                          <div className="truncate text-xl font-medium">{projectFromDropdown.name}</div>
-                          <div className="truncate text-lg font-regular text-neutral-500">
-                            {projectFromDropdown.githubRepo?.content?.contributors?.length}{" "}
-                            {T("project.details.sidebar.contributors")}
+                      <div className="flex flex-col gap-5">
+                        <div className="flex flex-row gap-5 items-center">
+                          <div className="border-4 border-neutral-600 p-2 rounded-2xl flex-none">
+                            <img
+                              className="w-8"
+                              src={
+                                projectFromDropdown?.projectDetails?.logoUrl ||
+                                projectFromDropdown?.githubRepo?.content?.logoUrl ||
+                                onlyDustLogo
+                              }
+                              alt="Project Logo"
+                            />
                           </div>
+                          <div className="flex flex-col justify-self-start truncate">
+                            <div className="truncate text-xl font-medium">{projectFromDropdown.name}</div>
+                            <div className="truncate text-lg font-regular text-neutral-500">
+                              {projectFromDropdown.githubRepo?.content?.contributors?.length}{" "}
+                              {T("project.details.sidebar.contributors")}
+                            </div>
+                          </div>
+                          <>
+                            {hasProjectInvitation(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) ? (
+                              <div className="flex flex-row px-2 py-1 rounded-2xl bg-orange-400 items-center gap-1 text-xs text-black">
+                                <ShootingStar />
+                                <div>NEW</div>
+                              </div>
+                            ) : (
+                              <CheckMark
+                                className={`h-5 w-5 ${
+                                  projectFromDropdown.id === projectId ? "opacity-100" : "opacity-0"
+                                }`}
+                              />
+                            )}
+                          </>
                         </div>
-                        <CheckMark
-                          className={`h-5 w-5 ${projectFromDropdown.id === projectId ? "opacity-100" : "opacity-0"}`}
-                        />
+                        {hasProjectInvitation(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) && (
+                          <div className="bg-neutral-100 rounded-xl w-full text-black text-lg text-center p-2">
+                            View invite
+                          </div>
+                        )}
                       </div>
                     </Listbox.Option>
                   ))}
@@ -168,20 +203,32 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
             </div>
           </Sidebar>
           <div className="bg-chineseBlack p-5 flex flex-col basis-4/5">
-            {selectedTab === ProjectDetailsTab.Overview && githubRepo?.content?.contributors && (
-              <Overview
-                decodedReadme={
-                  githubRepo.content.readme?.content && decodeBase64ToString(githubRepo.content.readme.content)
-                }
-                lead={project?.projectLeads?.[0]?.user}
-                githubRepoInfo={{
-                  name: githubRepo.name,
-                  owner: githubRepo.owner,
-                  contributors: githubRepo.content?.contributors,
-                  languages: githubRepo.languages,
-                }}
-              />
-            )}
+            {selectedTab === ProjectDetailsTab.Overview &&
+              githubRepo?.content?.contributors &&
+              projectId &&
+              project?.name && (
+                <Overview
+                  decodedReadme={
+                    githubRepo.content.readme?.content && decodeBase64ToString(githubRepo.content.readme.content)
+                  }
+                  lead={project?.projectLeads?.[0]?.user}
+                  githubRepoInfo={{
+                    name: githubRepo.name,
+                    owner: githubRepo.owner,
+                    contributors: githubRepo.content?.contributors,
+                    languages: githubRepo.languages,
+                  }}
+                >
+                  {project.name && hasProjectInvitation(pendingProjectLeaderInvitationsQuery, projectId) && (
+                    <ProjectLeadInvitation
+                      projectName={project.name}
+                      onClick={() => {
+                        return;
+                      }}
+                    />
+                  )}
+                </Overview>
+              )}
             {selectedTab === ProjectDetailsTab.Payments && projectId && (
               <Payments project={projectFromQuery(projectId, getProjectUserQuery?.data?.projectsByPk)} />
             )}
@@ -202,6 +249,13 @@ const projectFromQuery = (projectId: string, project: any) => ({
   id: projectId,
   budget: project.budgets[0],
 });
+
+const hasProjectInvitation = (
+  pendingProjectLeaderInvitationsQuery: QueryResult<PendingProjectLeaderInvitationsQuery>,
+  projectId: string | undefined
+) =>
+  projectId &&
+  pendingProjectLeaderInvitationsQuery?.data?.pendingProjectLeaderInvitations?.[0]?.projectId === projectId;
 
 const GITHUB_REPO_FIELDS_FRAGMENT = gql`
   fragment ProjectDetailsGithubRepoFields on GithubRepoDetails {
@@ -288,6 +342,14 @@ export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
           logoUrl
         }
       }
+    }
+  }
+`;
+
+const PENDING_PROJECT_LEADER_INVITATIONS_QUERY = gql`
+  query PendingProjectLeaderInvitations {
+    pendingProjectLeaderInvitations {
+      projectId
     }
   }
 `;

@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import { useState } from "react";
 import Card from "src/components/Card";
 import PaymentTable, { mapApiPaymentsToProps } from "src/components/PaymentTable";
+import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import ProjectPaymentTableFallback from "src/components/ProjectPaymentTableFallback";
 import QueryWrapper from "src/components/QueryWrapper";
 import RemainingBudget from "src/components/RemainingBudget";

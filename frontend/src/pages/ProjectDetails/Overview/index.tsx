@@ -6,7 +6,7 @@ import { buildGithubLink, buildLanguageString } from "src/utils/stringUtils";
 import ProjectLead, { Lead } from "src/components/LeadContributor";
 import { Contributor, LanguageMap } from "src/types";
 
-interface OverviewProps {
+interface OverviewProps extends React.PropsWithChildren {
   decodedReadme?: string;
   lead?: Lead | null;
   githubRepoInfo?: {
@@ -17,11 +17,12 @@ interface OverviewProps {
   };
 }
 
-export default function Overview({ decodedReadme, lead, githubRepoInfo }: OverviewProps) {
+export default function Overview({ decodedReadme, lead, githubRepoInfo, children }: OverviewProps) {
   const { T } = useIntl();
   return (
     <div className="flex flex-col gap-8 mt-3">
       <div className="text-3xl font-alfreda">{T("project.details.overview.title")}</div>
+      {children}
       <div className="flex flex-row items-start gap-5">
         {decodedReadme && (
           <div className="flex basis-3/4 flex-1">
