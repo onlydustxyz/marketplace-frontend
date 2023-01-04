@@ -1,7 +1,6 @@
 describe("The user", () => {
   before(() => {
-    cy.createUser()
-      .withGithubProvider(12345)
+    cy.createGithubUser(12345)
       .then(user => {
         cy.signinUser(user)
           .then(user => JSON.stringify(user.session))
@@ -58,8 +57,7 @@ describe("The user", () => {
 
 describe("The company", () => {
   before(() => {
-    cy.createUser()
-      .withGithubProvider(54321)
+    cy.createGithubUser(54321)
       .then(user => {
         cy.signinUser(user)
           .then(user => JSON.stringify(user.session))

@@ -1,11 +1,8 @@
 describe("As a project lead, I", () => {
   beforeEach(function () {
-    cy.createUser()
-      .withGithubProvider(98735558)
+    cy.createGithubUser(98735558)
       .then(user => {
-        cy.createProject(user.id, "Project with budget", 1000, 493591124)
-          .asAdmin()
-          .data("createProject")
+        cy.createProjectWithLeader(user, "Project with budget", 1000, 493591124)
           .as("projectId");
         cy.wait(700);
         cy.signinUser(user)

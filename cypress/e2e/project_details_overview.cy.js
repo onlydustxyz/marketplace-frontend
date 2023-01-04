@@ -4,12 +4,9 @@ const STARKONQUEST_ID = 481932781;
 
 describe("A project without readme", () => {
   beforeEach(() => {
-    cy.createUser()
-      .withGithubProvider(98735558)
+    cy.createGithubUser(98735558)
       .then(user => {
-        cy.createProject(user.id, "Project with budget", 1000, GITHUB_REPO_ID_WITHOUT_README)
-          .asAdmin()
-          .data("createProject")
+        cy.createProjectWithLeader(user, "Project with budget", 1000, GITHUB_REPO_ID_WITHOUT_README)
           .as("projectId");
         cy.wait(500);
         cy.signinUser(user)
@@ -30,12 +27,9 @@ describe("A project without readme", () => {
 
 describe("A project", () => {
   beforeEach(() => {
-    cy.createUser()
-      .withGithubProvider(98735558)
+    cy.createGithubUser(98735558)
       .then(user => {
-        cy.createProject(user.id, "Starkonquest", 1000, STARKONQUEST_ID)
-          .asAdmin()
-          .data("createProject")
+        cy.createProjectWithLeader(user, "Starkonquest", 1000, STARKONQUEST_ID)
           .as("projectId");
         cy.wait(500);
       });
@@ -49,12 +43,9 @@ describe("A project", () => {
 
 describe("An empty project", () => {
     beforeEach(() => {
-      cy.createUser()
-        .withGithubProvider(98735558)
+      cy.createGithubUser(98735558)
         .then(user => {
-          cy.createProject(user.id, "Project with budget", 1000, GITHUB_REPO_ID_EMPTY_REPO)
-            .asAdmin()
-            .data("createProject")
+          cy.createProjectWithLeader(user, "Project with budget", 1000, GITHUB_REPO_ID_EMPTY_REPO)
             .as("projectId");
           cy.wait(500);
           cy.signinUser(user)

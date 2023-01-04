@@ -1,6 +1,6 @@
 import "./common";
 
-Cypress.Commands.add("createUser", () => {
+Cypress.Commands.add("createGithubUser", (githubUserId) => {
     const email = `cypress-${Date.now()}@onlydust.xyz`;
     const password = "Str0ngPassw#ord-94|%";
 
@@ -46,41 +46,29 @@ Cypress.Commands.add("createUser", () => {
                     .data("updateUser.id")
                     .should("be.a", "string")
                     .then(() => {
-                        return {
-                            id: userId,
-                            email,
-                            password,
-                        };
+                        cy.graphql({
+                            query: `mutation($userId: uuid!, $githubUserId: String!) {
+                                insertAuthUserProvider( object: {userId: $userId, providerId: "github", providerUserId: $githubUserId, accessToken: "fake-token"},
+                                                        onConflict: {constraint: user_providers_provider_id_provider_user_id_key, update_columns: userId}) {
+                                    id
+                                }
+                            }`,
+                            variables: { userId, githubUserId: githubUserId.toString() }
+                        })
+                            .asAdmin()
+                            .data()
+                            .its("insertAuthUserProvider.id")
+                            .should("be.a", "string")
+                            .then((_) => ({
+                                id: userId,
+                                email,
+                                password,
+                                githubUserId
+                            }));
                     });
             });
     });
 });
-
-Cypress.Commands.add(
-    "withGithubProvider",
-    {
-        prevSubject: true,
-    },
-    (user, githubUserId) => {
-        cy.graphql({
-            query: `mutation($userId: uuid!, $githubUserId: String!) {
-                insertAuthUserProvider( object: {userId: $userId, providerId: "github", providerUserId: $githubUserId, accessToken: "fake-token"},
-                                        onConflict: {constraint: user_providers_provider_id_provider_user_id_key, update_columns: userId}) {
-                    id
-                }
-            }`,
-            variables: { userId: user.id, githubUserId: githubUserId.toString() }
-        })
-            .asAdmin()
-            .data()
-            .its("insertAuthUserProvider.id")
-            .should("be.a", "string")
-            .then((_) => {
-                user.githubUserId = githubUserId;
-                return user;
-            });
-    }
-);
 
 Cypress.Commands.add("signinUser", (user) => {
     cy.request("POST", "http://localhost:4000/signin/email-password", {

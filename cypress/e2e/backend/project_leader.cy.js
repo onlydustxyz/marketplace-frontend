@@ -3,11 +3,9 @@ describe("As a project leader, I", () => {
     let leader;
 
     before(() => {
-        cy.createUser().withGithubProvider(12345).then((user) => {
+        cy.createGithubUser(12345).then((user) => {
             cy
-                .createProject(user.id, "Project with budget", 1000, 1234)
-                .asAdmin()
-                .data("createProject")
+                .createProjectWithLeader(user, "Project with budget", 1000, 1234)
                 .then(($projectId) => {
                     projectId = $projectId;
                     leader = user;
@@ -16,7 +14,7 @@ describe("As a project leader, I", () => {
     });
 
     it("can request a payment from a project I lead", () => {
-        cy.createUser().then((contributor) => {
+        cy.createGithubUser(55000).then((contributor) => {
             cy.requestPayment(projectId, 500, 55000, { workItems: ["http://link/to/pr"] })
                 .asRegisteredUser(leader)
                 .data("requestPayment")

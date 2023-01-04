@@ -3,10 +3,8 @@ describe("As an admin, on retool, I", () => {
         const projectName = "Cypress test project";
         const STARKONQUEST_ID = 481932781;
 
-        cy.createUser().then((user) => {
-            cy.createProject(user.id, projectName, 500, STARKONQUEST_ID)
-                .asAdmin()
-                .data("createProject")
+        cy.createGithubUser(12345).then((user) => {
+            cy.createProjectWithLeader(user, projectName, 500, STARKONQUEST_ID)
                 .then((projectId) => {
                     // Let the event sourcing magic happen
                     cy.wait(700);
@@ -73,11 +71,9 @@ describe("As an admin, on retool, I", () => {
     });
 
     it("can update project details", () => {
-        cy.createUser().then((user) =>
+        cy.createGithubUser(12345).then((user) =>
             cy
-                .createProject(user.id, "Another project", 500)
-                .asAdmin()
-                .data("createProject")
+                .createProjectWithLeader(user, "Another project", 500)
                 .then((projectId) => {
                     cy.wait(700);
                     cy
@@ -106,11 +102,9 @@ describe("As an admin, on retool, I", () => {
         const FIRST_REPO_ID = 1;
         const SECOND_REPO_ID = 1234;
 
-        cy.createUser().then((user) =>
+        cy.createGithubUser(12344556).then((user) =>
             cy
-                .createProject(user.id, "Another project", 500, FIRST_REPO_ID)
-                .asAdmin()
-                .data("createProject")
+                .createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
                 .then((projectId) => {
                     cy.wait(700);
                     cy
@@ -138,21 +132,17 @@ describe("As an admin, on retool, I", () => {
         const projectName = "Cypress test project";
         const UNEXISTING_REPO_ID = 2147466666;
 
-        cy.createUser().then((user) => {
-            cy.createProject(user.id, projectName, 500, UNEXISTING_REPO_ID)
-                .asAdmin().errors().its(0).its("extensions.reason").should("equal", "Github repository 2147466666 does not exist");
-        });
+        cy.createProject(projectName, 500, UNEXISTING_REPO_ID)
+            .asAdmin().errors().its(0).its("extensions.reason").should("equal", "Github repository 2147466666 does not exist");
     });
 
     it("can't update a project with a repository that doesn't exist", () => {
         const FIRST_REPO_ID = 1;
         const UNEXISTING_REPO_ID = 2147466666;
 
-        cy.createUser().then((user) =>
+        cy.createGithubUser(1213243).then((user) =>
             cy
-                .createProject(user.id, "Another project", 500, FIRST_REPO_ID)
-                .asAdmin()
-                .data("createProject")
+                .createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
                 .then((projectId) => {
                     cy.wait(700);
                         cy.updateProjectGithubRepoId(projectId, UNEXISTING_REPO_ID)
@@ -164,42 +154,40 @@ describe("As an admin, on retool, I", () => {
     it("can invite a user to lead a project", () => {
         const STARKONQUEST_ID = 481932781;
 
-        cy.createUser().then((initialLeader) =>
-            cy
-                .createProject(initialLeader.id, "Another project", 500, STARKONQUEST_ID)
-                .asAdmin()
-                .data("createProject")
-                .then((projectId) => {
-                    cy.wait(700);
-                    cy.createUser().withGithubProvider(98765).then((user) => {
-                        cy.inviteProjectLeader(projectId, user.githubUserId)
-                        .asAdmin()
-                        .data("inviteProjectLeader")
-                        .should("be.a", "string")
-                        .then((invitationId) => {
-                            cy.acceptProjectLeaderInvitation(invitationId)
-                            .asRegisteredUser(user)
-                            .data("acceptProjectLeaderInvitation")
-                            .should("be.true")
-                            .then(() => {
-                                cy.wait(700);
-                                cy
-                                .graphql({ query: `{
-                                    projectsByPk(id: "${projectId}") {
-                                        projectLeads {
-                                            userId
-                                        }
+        cy
+            .createProject("Another project", 500, STARKONQUEST_ID)
+            .asAdmin()
+            .data("createProject")
+            .then((projectId) => {
+                cy.wait(700);
+                cy.createGithubUser(98765).then((user) => {
+                    cy.inviteProjectLeader(projectId, user.githubUserId)
+                    .asAdmin()
+                    .data("inviteProjectLeader")
+                    .should("be.a", "string")
+                    .then((invitationId) => {
+                        cy.acceptProjectLeaderInvitation(invitationId)
+                        .asRegisteredUser(user)
+                        .data("acceptProjectLeaderInvitation")
+                        .should("be.true")
+                        .then(() => {
+                            cy.wait(700);
+                            cy
+                            .graphql({ query: `{
+                                projectsByPk(id: "${projectId}") {
+                                    projectLeads {
+                                        userId
                                     }
-                                }`})
-                                .asAnonymous()
-                                .data("projectsByPk")
-                                .its("projectLeads")
-                                .should("deep.include", {userId: user.id});
-                            })
+                                }
+                            }`})
+                            .asAnonymous()
+                            .data("projectsByPk")
+                            .its("projectLeads")
+                            .should("deep.include", {userId: user.id});
                         })
                     })
                 })
-        );
+            });
 
     });
 
@@ -207,11 +195,9 @@ describe("As an admin, on retool, I", () => {
     it("can remove a leader from a project", () => {
         const STARKONQUEST_ID = 481932781;
 
-        cy.createUser().then((user) =>
+        cy.createGithubUser(12345454).then((user) =>
             cy
-                .createProject(user.id, "Another project", 500, STARKONQUEST_ID)
-                .asAdmin()
-                .data("createProject")
+                .createProjectWithLeader(user, "Another project", 500, STARKONQUEST_ID)
                 .then((projectId) => {
                     cy.wait(700);
                     cy
