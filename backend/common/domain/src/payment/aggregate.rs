@@ -5,8 +5,8 @@ use serde_json::Value;
 use thiserror::Error;
 
 use crate::{
-	specifications, Aggregate, AggregateRoot, Amount, BudgetId, Entity, EventSourcable,
-	GithubUserId, PaymentEvent, PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
+	Aggregate, AggregateRoot, Amount, BudgetId, Entity, EventSourcable, GithubUserId, PaymentEvent,
+	PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
 };
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -46,14 +46,8 @@ impl AggregateRoot for Payment {}
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error("Requestor not found")]
-	RequestorNotFound,
-	#[error("Recipient not found")]
-	RecipientNotFound,
 	#[error("Receipt amount exceeds requested amount")]
 	Overspent,
-	#[error(transparent)]
-	Specification(specifications::Error),
 }
 
 impl Payment {
