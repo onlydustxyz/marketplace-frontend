@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{Message, PaymentEvent, ProjectEvent};
+use crate::{MessagePayload, PaymentEvent, ProjectEvent};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -20,7 +20,7 @@ impl Display for Event {
 	}
 }
 
-impl Message for Event {}
+impl MessagePayload for Event {}
 
 #[cfg(test)]
 mod test {

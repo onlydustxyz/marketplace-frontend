@@ -5,7 +5,7 @@ mod webhook;
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::{Event, Subscriber, SubscriberCallbackError};
+use domain::{Event, Subscriber, SubscriberCallbackError, UniqueMessage};
 use infrastructure::{amqp::ConsumableBus, database, event_bus, github};
 use tokio::task::JoinHandle;
 use webhook::EventWebHook;
@@ -55,9 +55,11 @@ impl<EL: EventListener + 'static> Spawnable for EL {
 	fn spawn(self, bus: ConsumableBus) -> JoinHandle<()> {
 		let listener = Arc::new(self);
 		tokio::spawn(async move {
-			bus.subscribe(|event: Event| notify_event_listener(listener.clone(), event))
-				.await
-				.expect("Failed while trying to project received event");
+			bus.subscribe(|message: UniqueMessage<Event>| {
+				notify_event_listener(listener.clone(), message.payload().clone())
+			})
+			.await
+			.expect("Failed while trying to project received event");
 		})
 	}
 }

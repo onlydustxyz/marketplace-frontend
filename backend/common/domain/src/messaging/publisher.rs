@@ -31,6 +31,7 @@ pub trait Publisher<M: Message + Sync + Send>: Send + Sync {
 mod tests {
 	use futures::FutureExt;
 	use mockall::predicate::eq;
+	use olog::opentelemetry::propagation::Extractor;
 	use rstest::rstest;
 	use serde::{Deserialize, Serialize};
 
@@ -55,7 +56,15 @@ mod tests {
 			self.0.publish(destination, message).await
 		}
 	}
+	impl Extractor for TestMessage {
+		fn get(&self, _key: &str) -> Option<&str> {
+			None
+		}
 
+		fn keys(&self) -> Vec<&str> {
+			Vec::default()
+		}
+	}
 	impl Message for TestMessage {}
 
 	#[rstest]

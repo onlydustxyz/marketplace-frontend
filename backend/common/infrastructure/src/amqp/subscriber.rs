@@ -5,8 +5,10 @@ use async_trait::async_trait;
 use domain::{Message, Subscriber, SubscriberCallbackError, SubscriberError};
 use lapin::{message::Delivery, options::BasicNackOptions};
 use olog::error;
+use opentelemetry::{propagation::TextMapPropagator, sdk::propagation::TraceContextPropagator};
 use serde_json::Error;
-use tracing::instrument;
+use tracing::{instrument, Span};
+use tracing_opentelemetry::OpenTelemetrySpanExt;
 
 use super::ConsumableBus;
 
@@ -54,6 +56,10 @@ impl ConsumableBus {
 		C: Fn(M) -> F + Send + Sync,
 		F: Future<Output = Result<(), SubscriberCallbackError>> + Send,
 	{
+		// Extract parent trace context from message data
+		let parent_context = TraceContextPropagator::new().extract(&message);
+		Span::current().set_parent(parent_context);
+
 		match callback(message.clone()).await {
 			Ok(_) => delivery
 				.ack(Default::default())
@@ -104,6 +110,7 @@ mod tests {
 	use dotenv::dotenv;
 	use lapin::options::QueueDeclareOptions;
 	use mockall::lazy_static;
+	use opentelemetry::propagation::Extractor;
 	use rstest::{fixture, rstest};
 	use serde::{Deserialize, Serialize};
 	use tracing_test::traced_test;
@@ -115,6 +122,15 @@ mod tests {
 		Valid,
 		Invalid,
 		Stop, // special value to end the test
+	}
+	impl Extractor for TestMessage {
+		fn get(&self, _key: &str) -> Option<&str> {
+			None
+		}
+
+		fn keys(&self) -> Vec<&str> {
+			Vec::default()
+		}
 	}
 	impl Message for TestMessage {}
 
