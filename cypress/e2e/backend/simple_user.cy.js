@@ -8,19 +8,17 @@ describe("As a simple user, I", () => {
     const STARKONQUEST_ID = 481932781;
 
     before(() => {
-        cy.createUser().withGithubProvider(543221).then(($user) =>
+        cy.createGithubUser(543221).then((user) =>
             cy
-                .createProject(
-                    $user.id,
+                .createProjectWithLeader(
+                    user,
                     "Project with budget",
                     1000,
                     STARKONQUEST_ID
                 )
-                .asAdmin()
-                .data("createProject")
                 .then(($projectId) => {
                     cy.getProjectBudget($projectId)
-                        .asRegisteredUser($user)
+                        .asRegisteredUser(user)
                         .data("projectsByPk.budgets")
                         .its(0)
                         .its("id")
@@ -28,14 +26,14 @@ describe("As a simple user, I", () => {
                         .then(($budgetId) => {
                             projectId = $projectId;
                             budgetId = $budgetId;
-                            leader = $user;
+                            leader = user;
                         });
                 })
         );
     });
 
     it("can get projects with some details", () => {
-        cy.createUser().then((user) => {
+        cy.createGithubUser(73635365).then((user) => {
             cy.graphql({
                 query: `query {
                 projects {
@@ -66,8 +64,7 @@ describe("As a simple user, I", () => {
             .asRegisteredUser(leader)
             .data()
             .then(() => {
-                cy.createUser()
-                    .withGithubProvider(githubUserId)
+                cy.createGithubUser(githubUserId)
                     .then((user) => {
                         cy.graphql({
                             query: `query {
@@ -100,7 +97,7 @@ describe("As a simple user, I", () => {
     });
 
     it("can't request a payment", () => {
-        cy.createUser().then((user) => {
+        cy.createGithubUser(28464353).then((user) => {
             cy.requestPayment(budgetId, 500, 55000, {})
                 .asRegisteredUser(user)
                 .errors()
@@ -111,7 +108,7 @@ describe("As a simple user, I", () => {
     });
 
     it("can fetch github repository details from a project", () => {
-        cy.createUser().then((user) => {
+        cy.createGithubUser(23982237).then((user) => {
             cy.graphql({
                 query: `{
                 projectsByPk(id: "${projectId}") {
@@ -154,7 +151,7 @@ describe("As a simple user, I", () => {
     });
 
     it("can fetch github user details from name", () => {
-        cy.createUser().then((user) => {
+        cy.createGithubUser(9237643).then((user) => {
             cy.graphql({
                 query: `{
                     fetchUserDetails(username: "abuisset") {
@@ -186,7 +183,7 @@ describe("As a simple user, I", () => {
         let new_payout_settings =
             { type: "ETHEREUM_NAME", optEthName: "vitalik.eth" };
 
-        cy.createUser().withGithubProvider(12345).then((user) => {
+        cy.createGithubUser(12345).then((user) => {
             cy.updateProfileInfo(email, location, identity, payout_settings)
                 .asRegisteredUser(user)
                 .data("updateProfileInfo")

@@ -3,7 +3,6 @@ import "./common";
 Cypress.Commands.add(
     "createProject",
     (
-        userId,
         projectName = "My Project",
         initialBudget = 500,
         githubRepoId = 481932781,
@@ -12,19 +11,42 @@ Cypress.Commands.add(
         logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4"
     ) => {
         return {
-            query: `mutation($projectName: String!, $initialBudget: Int!, $githubRepoId: Int!, $description: String!, $telegramLink: String!, $userId: Uuid!, $logoUrl: String!) {
+            query: `mutation($projectName: String!, $initialBudget: Int!, $githubRepoId: Int!, $description: String!, $telegramLink: String!, $logoUrl: String!) {
                 createProject(
                     name: $projectName,
                     initialBudgetInUsd: $initialBudget,
                     githubRepoId: $githubRepoId,
                     description: $description,
                     telegramLink: $telegramLink,
-                    userId: $userId,
                     logoUrl: $logoUrl
                 )}`,
-        variables: { projectName, initialBudget, githubRepoId, description, telegramLink, userId, logoUrl }};
+        variables: { projectName, initialBudget, githubRepoId, description, telegramLink, logoUrl }};
     }
 );
+
+Cypress.Commands.add(
+    "createProjectWithLeader",
+    (
+        user,
+        projectName = "My Project",
+        initialBudget = 500,
+        githubRepoId = 481932781,
+        description = "My project description",
+        telegramLink = "https://t.me/foo",
+        logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4"
+    ) => {
+        cy.createProject(projectName, initialBudget, githubRepoId, description, telegramLink, logoUrl)
+            .asAdmin()
+            .data("createProject")
+            .then(projectId => {
+                cy.inviteProjectLeader(projectId, user.githubUserId)
+                .asAdmin()
+                .data("inviteProjectLeader")
+                .should("be.a", "string")
+                .then(invitationId => cy.acceptProjectLeaderInvitation(invitationId)).asRegisteredUser(user).then(() => projectId)
+            })
+});
+
 
 Cypress.Commands.add(
     "updateProject",

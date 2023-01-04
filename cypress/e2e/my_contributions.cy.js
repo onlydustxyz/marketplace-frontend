@@ -3,20 +3,16 @@ const CONTRIBUTOR_GITHUB_ID = 373646343;
 
 describe("As a contributor, I", () => {
   beforeEach(function () {
-    cy.createUser()
-      .withGithubProvider(PROJECT_LEAD_GITHUB_ID)
+    cy.createGithubUser(PROJECT_LEAD_GITHUB_ID)
       .then(user => {
-        cy.createProject(user.id, "Project with budget", 1000, 493591124)
-          .asAdmin()
-          .data("createProject")
+        cy.createProjectWithLeader(user, "Project with budget", 1000, 493591124)
           .then(projectId => {
             cy.wait(700);
             cy.requestPayment(projectId, 200, CONTRIBUTOR_GITHUB_ID, {}).asRegisteredUser(user).data()
           });
       });
 
-    cy.createUser()
-      .withGithubProvider(CONTRIBUTOR_GITHUB_ID)
+    cy.createGithubUser(CONTRIBUTOR_GITHUB_ID)
       .then(user => {
         cy.signinUser(user)
           .then(user => JSON.stringify(user.session))
