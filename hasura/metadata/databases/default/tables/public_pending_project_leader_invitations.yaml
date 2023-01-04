@@ -20,3 +20,13 @@ object_relationships:
         remote_table:
           name: projects
           schema: public
+select_permissions:
+  - role: registered_user_specific
+    permission:
+      columns:
+        - github_user_id
+        - id
+        - project_id
+      filter:
+        github_user_id:
+          _eq: X-Hasura-githubUserId
