@@ -21,7 +21,7 @@ export default function Projects() {
         <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
           {data &&
             data.projects.map(project => (
-              <Link key={project.id} className="flex w-11/12 my-3" to={`/project/${project.id}`}>
+              <Link key={project.id} className="flex w-11/12 my-3" to={`/projects/${project.id}`}>
                 <Card selectable={true}>
                   <ProjectInformation
                     name={project.name}

@@ -21,9 +21,10 @@ export enum RoutePaths {
   Projects = "/",
   Login = "/login",
   Profile = "/profile",
-  MyProjects = "/myprojects",
-  ProjectDetails = "/project/:projectId",
-  MyContributions = "/mycontributions",
+  MyProjects = "/my-projects",
+  ProjectDetails = "/projects/:projectId",
+  MyProjectDetails = "/my-projects/:projectId",
+  MyContributions = "/my-contributions",
   CatchAll = "*",
 }
 
@@ -66,6 +67,10 @@ function App() {
         },
         {
           path: RoutePaths.ProjectDetails,
+          element: <ProjectDetails />,
+        },
+        {
+          path: RoutePaths.MyProjectDetails,
           element: <ProjectDetails />,
         },
         {
