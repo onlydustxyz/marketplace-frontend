@@ -58,10 +58,11 @@ async fn store(
 
 async fn publish(
 	message: UniqueMessage<Event>,
-	publisher: Arc<dyn Publisher<Event>>,
+	publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 ) -> Result<(), SubscriberCallbackError> {
+	let message = UniqueMessage::new(message.payload().clone());
 	publisher
-		.publish(Destination::exchange(EXCHANGE_NAME), message.payload())
+		.publish(Destination::exchange(EXCHANGE_NAME), &message)
 		.await
 		.map_err(|e| SubscriberCallbackError::Fatal(e.into()))?;
 	Ok(())
