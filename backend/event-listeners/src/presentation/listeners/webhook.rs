@@ -6,6 +6,7 @@ use domain::{Event, SubscriberCallbackError};
 use olog::{error, info};
 use serde::{ser::SerializeStruct, Serialize, Serializer};
 use serde_json::json;
+use tracing::instrument;
 use url::Url;
 
 use crate::domain::EventListener;
@@ -93,6 +94,7 @@ impl EventListener for EventWebHook {
 	}
 }
 
+#[instrument(skip(client))]
 async fn send_event_to_webhook(client: &reqwest::Client, event: &Event) -> Result<(), Error> {
 	let env_var = std::env::var(WEBHOOK_TARGET_ENV_VAR).map_err(Error::EnvVarNotSet)?;
 	let target = Url::parse(&env_var).map_err(Error::InvalidEnvVar)?;
