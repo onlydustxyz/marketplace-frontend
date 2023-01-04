@@ -297,8 +297,8 @@ const mapFormDataToSchema = ({
 }: Inputs) => {
   const identity: IdentityInput = {
     type: paymentReceiverType,
-    optPerson: lastname && firstname ? { lastname, firstname } : null,
-    optCompany: id && name ? { id, name } : null,
+    optPerson: paymentReceiverType === IdentityType.Person && lastname && firstname ? { lastname, firstname } : null,
+    optCompany: paymentReceiverType === IdentityType.Company && id && name ? { id, name } : null,
   };
 
   const location: Location = {
@@ -311,9 +311,9 @@ const mapFormDataToSchema = ({
 
   const payoutSettings: PayoutSettingsInput = {
     type: payoutSettingsType,
-    optEthAddress: ethWalletAddress || null,
-    optBankAddress: IBAN && BIC ? { IBAN, BIC } : null,
-    optEthName: ethName || null,
+    optEthAddress: payoutSettingsType === PayoutSettingsType.EthereumAddress ? ethWalletAddress : null,
+    optBankAddress: payoutSettingsType === PayoutSettingsType.BankAddress && IBAN && BIC ? { IBAN, BIC } : null,
+    optEthName: payoutSettingsType === PayoutSettingsType.EthereumName ? ethName : null,
   };
 
   const variables: UpdateProfileInfoMutationVariables = { email, identity, location, payoutSettings };

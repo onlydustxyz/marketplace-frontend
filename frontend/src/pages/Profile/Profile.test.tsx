@@ -22,6 +22,7 @@ import {
 
 const INVALID_ETHEREUM_ADDRESS = "0x1234567890";
 const VALID_ETHEREUM_ADDRESS = "0xebec795c9c8bbd61ffc14a6662944748f299cacf";
+const VALID_ENS = "vitalik.eth";
 
 const mockUser: UserInfo = {
   userId: "test-user-id",
@@ -41,6 +42,27 @@ const mockUser: UserInfo = {
   },
   payoutSettings: {
     EthTransfer: { Address: INVALID_ETHEREUM_ADDRESS },
+  },
+};
+
+const mockUserWithEns: UserInfo = {
+  userId: "test-user-id",
+  email: "test@user.email",
+  identity: {
+    Person: {
+      firstname: "Nicolas",
+      lastname: "Ngomai",
+    },
+  },
+  location: {
+    number: "34",
+    street: "rue Lakanal",
+    city: "Grenoble",
+    country: "France",
+    post_code: "38000",
+  },
+  payoutSettings: {
+    EthTransfer: { Name: VALID_ENS },
   },
 };
 
@@ -117,10 +139,12 @@ const buildMockMutationUpdateUser = (userInfo: UserInfo) => {
 
   const payoutSettings: PayoutSettingsInput = userInfo.payoutSettings.EthTransfer
     ? {
-        type: PayoutSettingsType.EthereumAddress,
-        optEthAddress: VALID_ETHEREUM_ADDRESS,
+        type: userInfo.payoutSettings.EthTransfer.Address
+          ? PayoutSettingsType.EthereumAddress
+          : PayoutSettingsType.EthereumName,
+        optEthAddress: userInfo.payoutSettings.EthTransfer.Address ? VALID_ETHEREUM_ADDRESS : null,
         optBankAddress: null,
-        optEthName: null,
+        optEthName: userInfo.payoutSettings.EthTransfer.Name || null,
       }
     : {
         type: PayoutSettingsType.BankAddress,
@@ -157,7 +181,11 @@ describe('"Profile" page for individual', () => {
     renderWithIntl(<ProfilePage />, {
       wrapper: MemoryRouterProviderFactory({
         route: RoutePaths.Profile,
-        mocks: [buildMockProfileQuery(mockUser), buildMockMutationUpdateUser(mockUser)],
+        mocks: [
+          buildMockProfileQuery(mockUser),
+          buildMockMutationUpdateUser(mockUser),
+          buildMockMutationUpdateUser(mockUserWithEns),
+        ],
       }),
     });
   });
@@ -191,6 +219,27 @@ describe('"Profile" page for individual', () => {
       VALID_ETHEREUM_ADDRESS
     );
     await screen.findByDisplayValue(VALID_ETHEREUM_ADDRESS);
+    await userEvent.click(await screen.findByText("Save profile"));
+    await screen.findByText("Success !");
+  });
+
+  it("should send only relevant values to the backend", async () => {
+    // Make sure both Company and individual are filled
+    await userEvent.click(await screen.findByText("Company"));
+    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("ID"), "Company ID");
+    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("Name"), "Company Name");
+    await userEvent.click(await screen.findByText("Individual"));
+
+    // Make sure all of ETH address, Bank wire and ENS are filled
+    await screen.findByDisplayValue(INVALID_ETHEREUM_ADDRESS);
+    await userEvent.click(await screen.findByText("Bank wire"));
+    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("IBAN"), "GB7611315000011234567890138");
+    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("BIC"), "CITTGB2LXXX");
+    await userEvent.click(await screen.findByText("ENS domain"));
+    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("ENS domain"), VALID_ENS);
+    await screen.findByDisplayValue(VALID_ENS);
+
+    // Submit the form, the mock query will take care of checking only relevant values are sent
     await userEvent.click(await screen.findByText("Save profile"));
     await screen.findByText("Success !");
   });
