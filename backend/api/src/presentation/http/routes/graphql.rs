@@ -5,6 +5,7 @@ use infrastructure::github;
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use presentation::http::guards::{ApiKey, ApiKeyGuard, OptionUserId, Role};
 use rocket::{response::content, State};
+use tracing::instrument;
 
 use crate::{
 	infrastructure::{
@@ -32,6 +33,7 @@ pub fn graphiql() -> content::RawHtml<String> {
 
 #[allow(clippy::too_many_arguments)]
 #[get("/graphql?<request>")]
+#[instrument(skip_all, fields(user.ids = debug(&maybe_user_id), user.role = debug(&role), graphql_request = debug(&request)))]
 pub async fn get_graphql_handler(
 	_api_key: ApiKeyGuard<GraphqlApiKey>,
 	role: Role,
@@ -66,6 +68,7 @@ pub async fn get_graphql_handler(
 
 #[allow(clippy::too_many_arguments)]
 #[post("/graphql", data = "<request>")]
+#[instrument(skip_all, fields(user.ids = debug(&maybe_user_id), user.role = debug(&role), graphql_request = debug(&request)))]
 pub async fn post_graphql_handler(
 	_api_key: ApiKeyGuard<GraphqlApiKey>,
 	role: Role,
