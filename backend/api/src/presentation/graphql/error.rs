@@ -1,4 +1,4 @@
-use domain::DomainError;
+use domain::{DomainError, UserId};
 use infrastructure::database::DatabaseError;
 use juniper::{graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
 use thiserror::Error;
@@ -7,8 +7,10 @@ use crate::application::user::update_profile_info::Error as UpdateProfileInfoErr
 
 #[derive(Debug, Error)]
 pub enum Error {
-	#[error("User is not authorized to perform this action")]
-	NotAuthorized(String),
+	#[error("Caller should be authenticated")]
+	NotAuthenticated(String),
+	#[error("User '{0}' is not authorized to perform this action")]
+	NotAuthorized(UserId, String),
 	#[error("Invalid GraphQL request")]
 	InvalidRequest(#[source] anyhow::Error),
 	#[error("Something went wrong on our side")]
@@ -48,7 +50,8 @@ impl From<UpdateProfileInfoError> for Error {
 impl IntoFieldError for Error {
 	fn into_field_error(self) -> FieldError<DefaultScalarValue> {
 		let (msg, reason) = match &self {
-			Self::NotAuthorized(reason) => (self.to_string(), reason.clone()),
+			Self::NotAuthenticated(reason) => (self.to_string(), reason.clone()),
+			Self::NotAuthorized(_, reason) => (self.to_string(), reason.clone()),
 			Self::InvalidRequest(source) => (self.to_string(), source.to_string()),
 			Self::InternalError(source) => (self.to_string(), source.to_string()),
 		};

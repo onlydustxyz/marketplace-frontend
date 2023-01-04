@@ -93,12 +93,15 @@ impl Context {
 	}
 
 	pub fn caller_info(&self) -> Result<CallerInfo> {
+		let user_id =
+			self.caller_info.user_id().map_err(|e| Error::NotAuthenticated(e.to_string()))?;
+
 		let caller_info = CallerInfo {
-			user_id: self.caller_info.user_id().map_err(|e| Error::NotAuthorized(e.to_string()))?,
+			user_id,
 			github_user_id: self
 				.caller_info
 				.github_user_id()
-				.map_err(|e| Error::NotAuthorized(e.to_string()))?,
+				.map_err(|e| Error::NotAuthenticated(e.to_string()))?,
 		};
 		Ok(caller_info)
 	}
