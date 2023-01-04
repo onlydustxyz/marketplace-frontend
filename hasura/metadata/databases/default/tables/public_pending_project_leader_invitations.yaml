@@ -1,0 +1,22 @@
+table:
+  name: pending_project_leader_invitations
+  schema: public
+object_relationships:
+  - name: githubUser
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: github_user_id
+        insertion_order: null
+        remote_table:
+          name: github_users
+          schema: auth
+  - name: project
+    using:
+      manual_configuration:
+        column_mapping:
+          project_id: id
+        insertion_order: null
+        remote_table:
+          name: projects
+          schema: public
