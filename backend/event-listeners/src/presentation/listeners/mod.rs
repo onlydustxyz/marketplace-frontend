@@ -5,8 +5,11 @@ mod webhook;
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::{Event, Subscriber, SubscriberCallbackError, UniqueMessage};
-use infrastructure::{amqp::ConsumableBus, database, event_bus, github};
+use domain::{Event, Subscriber, SubscriberCallbackError};
+use infrastructure::{
+	amqp::{ConsumableBus, UniqueMessage},
+	database, event_bus, github,
+};
 use tokio::task::JoinHandle;
 use webhook::EventWebHook;
 

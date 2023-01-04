@@ -3,9 +3,10 @@ use std::sync::Arc;
 use anyhow::Result;
 use domain::{
 	AggregateRootRepository, Amount, Destination, DomainError, Event, Payment, PaymentId,
-	PaymentReceipt, PaymentReceiptId, Publisher, UniqueMessage,
+	PaymentReceipt, PaymentReceiptId, Publisher,
 };
 use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
+use infrastructure::amqp::UniqueMessage;
 
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,

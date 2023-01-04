@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-use domain::{AggregateRootRepository, Event, Payment, Project, Publisher, UniqueMessage};
-use infrastructure::github;
+use domain::{AggregateRootRepository, Event, Payment, Project, Publisher};
+use infrastructure::{amqp::UniqueMessage, github};
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use presentation::http::guards::{ApiKey, ApiKeyGuard, OptionUserId, Role};
 use rocket::{response::content, State};

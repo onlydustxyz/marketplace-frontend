@@ -1,7 +1,10 @@
-use backend_domain::{Event, UniqueMessage};
-use backend_infrastructure::database::{
-	schema::{event_deduplications, event_deduplications::dsl, events, events::index},
-	Client,
+use backend_domain::Event;
+use backend_infrastructure::{
+	amqp::UniqueMessage,
+	database::{
+		schema::{event_deduplications, event_deduplications::dsl, events, events::index},
+		Client,
+	},
 };
 use diesel::{dsl::exists, prelude::*};
 use olog::error;

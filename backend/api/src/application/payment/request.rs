@@ -3,8 +3,9 @@ use std::sync::Arc;
 use anyhow::Result;
 use domain::{
 	AggregateRootRepository, DomainError, Event, GithubUserId, Payment, PaymentId, Project,
-	ProjectEvent, ProjectId, Publisher, UniqueMessage, UserId,
+	ProjectEvent, ProjectId, Publisher, UserId,
 };
+use infrastructure::amqp::UniqueMessage;
 use rusty_money::{crypto, Money};
 use serde_json::Value;
 

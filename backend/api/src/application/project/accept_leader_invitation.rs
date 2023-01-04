@@ -2,9 +2,9 @@ use std::sync::Arc;
 
 use anyhow::{anyhow, Result};
 use domain::{
-	AggregateRootRepository, DomainError, Event, GithubUserId, Project, Publisher, UniqueMessage,
-	UserId,
+	AggregateRootRepository, DomainError, Event, GithubUserId, Project, Publisher, UserId,
 };
+use infrastructure::amqp::UniqueMessage;
 
 use crate::{
 	domain::{PendingProjectLeaderInvitationId, Publishable},

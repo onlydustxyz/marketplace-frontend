@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
-use ::domain::{AggregateRootRepository, Event, Payment, Project, Publisher, UniqueMessage};
+use ::domain::{AggregateRootRepository, Event, Payment, Project, Publisher};
 use anyhow::Result;
 use http::Config;
-use infrastructure::{github, web3::ens};
+use infrastructure::{amqp::UniqueMessage, github, web3::ens};
 use presentation::http;
 
 use crate::{
