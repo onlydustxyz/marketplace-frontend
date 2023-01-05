@@ -2,6 +2,14 @@
     "contributions": {
         "empty": "No contributions yet"
     },
+    "contributor": {
+        "table": {
+            "contributor": "Contributor",
+            "totalEarned": "Total earned",
+            "paidContributions": "Paid contributions",
+            "leftToPay": "Left to Pay"
+        }
+    },
     "form": {
         "required": "Required"
     },

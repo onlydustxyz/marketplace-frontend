@@ -1,4 +1,5 @@
 import Card from "src/components/Card";
+import ContributorsTable from "src/components/ContributorsTable";
 import { useIntl } from "src/hooks/useIntl";
 
 export default function Contributors() {
@@ -9,7 +10,7 @@ export default function Contributors() {
       <div className="flex flex-row items-start gap-5">
         <div className="flex basis-1/4 flex-1">
           <Card>
-            <div className="flex flex-col gap-3"></div>
+            <ContributorsTable contributors={[]} />
           </Card>
         </div>
       </div>
