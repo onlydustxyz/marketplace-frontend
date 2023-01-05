@@ -8,6 +8,7 @@ use domain::{
 use infrastructure::amqp::UniqueMessage;
 use rusty_money::{crypto, Money};
 use serde_json::Value;
+use tracing::instrument;
 
 use crate::domain::Publishable;
 
@@ -27,6 +28,7 @@ impl Usecase {
 		}
 	}
 
+	#[instrument(skip(self))]
 	pub async fn request(
 		&self,
 		project_id: ProjectId,

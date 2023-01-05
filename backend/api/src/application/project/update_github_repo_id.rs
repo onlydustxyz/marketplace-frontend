@@ -6,6 +6,7 @@ use domain::{
 	ProjectId, Publisher,
 };
 use infrastructure::amqp::UniqueMessage;
+use tracing::instrument;
 
 use crate::domain::Publishable;
 
@@ -28,6 +29,7 @@ impl Usecase {
 		}
 	}
 
+	#[instrument(skip(self))]
 	pub async fn update_project_github_repo_id(
 		&self,
 		project_id: ProjectId,

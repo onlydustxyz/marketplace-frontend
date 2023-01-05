@@ -6,6 +6,7 @@ use domain::{
 	ProjectEvent, ProjectId, Publisher,
 };
 use infrastructure::amqp::UniqueMessage;
+use tracing::instrument;
 
 use crate::{
 	domain::{ProjectDetails, Publishable},
@@ -32,6 +33,7 @@ impl Usecase {
 	}
 
 	#[allow(clippy::too_many_arguments)]
+	#[instrument(skip(self))]
 	pub async fn create(
 		&self,
 		name: String,

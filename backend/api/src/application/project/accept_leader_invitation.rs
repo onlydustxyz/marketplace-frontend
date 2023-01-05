@@ -5,6 +5,7 @@ use domain::{
 	AggregateRootRepository, DomainError, Event, GithubUserId, Project, Publisher, UserId,
 };
 use infrastructure::amqp::UniqueMessage;
+use tracing::instrument;
 
 use crate::{
 	domain::{PendingProjectLeaderInvitationId, Publishable},
@@ -30,6 +31,7 @@ impl Usecase {
 		}
 	}
 
+	#[instrument(skip(self))]
 	pub async fn accept_leader_invitation(
 		&self,
 		invitation_id: &PendingProjectLeaderInvitationId,

@@ -5,6 +5,7 @@ use domain::{
 };
 use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
 use infrastructure::amqp::UniqueMessage;
+use tracing::instrument;
 
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
@@ -22,6 +23,7 @@ impl Usecase {
 		}
 	}
 
+	#[instrument(skip(self))]
 	pub async fn remove_leader(
 		&self,
 		project_id: &ProjectId,
