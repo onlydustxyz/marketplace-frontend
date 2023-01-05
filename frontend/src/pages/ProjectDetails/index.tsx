@@ -6,7 +6,7 @@ import { useT } from "talkr";
 
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { buildGithubLink, decodeBase64ToString } from "src/utils/stringUtils";
 import {
@@ -92,6 +92,17 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
     HasuraUserRole.RegisteredUser,
     { skip: !isLoggedIn }
   );
+
+  const [acceptProjectLeaderInvitation, acceptProjectLeaderInvitationMutation] = useHasuraMutation(
+    ACCEPT_PROJECT_LEADER_INVITATION_MUTATION,
+    HasuraUserRole.RegisteredUser
+  );
+
+  useEffect(() => {
+    if (acceptProjectLeaderInvitationMutation.data) {
+      window.location.reload();
+    }
+  }, [acceptProjectLeaderInvitationMutation]);
 
   const availableTabs =
     projectId && ledProjectIds && ledProjectIds.includes(projectId)
@@ -225,7 +236,12 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                     <ProjectLeadInvitation
                       projectName={project.name}
                       onClick={() => {
-                        return;
+                        acceptProjectLeaderInvitation({
+                          variables: {
+                            invitationId:
+                              pendingProjectLeaderInvitationsQuery?.data?.pendingProjectLeaderInvitations?.[0]?.id,
+                          },
+                        });
                       }}
                     />
                   )}
@@ -338,5 +354,11 @@ export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
         }
       }
     }
+  }
+`;
+
+export const ACCEPT_PROJECT_LEADER_INVITATION_MUTATION = gql`
+  mutation acceptProjectLeaderInvitation($invitationId: Uuid!) {
+    acceptProjectLeaderInvitation(invitationId: $invitationId)
   }
 `;
