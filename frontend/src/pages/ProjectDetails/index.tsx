@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { Listbox } from "@headlessui/react";
 import { useT } from "talkr";
 
@@ -18,6 +18,11 @@ import UpDownChevrons from "src/assets/icons/UpDownChevrons";
 import CheckMark from "src/assets/icons/CheckMark";
 import GithubLink from "src/components/GithubLink";
 import TelegramLink from "src/components/TelegramLink";
+import { RoutePaths } from "src/App";
+
+interface ProjectDetailsProps {
+  onlyMine?: boolean;
+}
 
 type ProjectDetailsParams = {
   projectId: string;
@@ -28,7 +33,7 @@ export enum ProjectDetailsTab {
   Payments = "Payments",
 }
 
-export default function ProjectDetails() {
+export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps) {
   const [selectedTab, setSelectedTab] = useState<ProjectDetailsTab>(ProjectDetailsTab.Overview);
   const { projectId } = useParams<ProjectDetailsParams>();
   const { ledProjectIds, isLoggedIn } = useAuth();
@@ -44,7 +49,12 @@ export default function ProjectDetails() {
   useEffect(() => {
     if (selectedProjectId !== projectId) {
       setSelectedTab(ProjectDetailsTab.Overview);
-      navigate(`/project/${selectedProjectId}`);
+      navigate(
+        generatePath(
+          onlyMine ? RoutePaths.MyProjectDetails : RoutePaths.ProjectDetails,
+          selectedProjectId ? { projectId: selectedProjectId } : undefined
+        )
+      );
     }
   }, [selectedProjectId]);
 
@@ -77,7 +87,10 @@ export default function ProjectDetails() {
   const githubRepo = project?.githubRepo;
   const logoUrl = project?.projectDetails?.logoUrl || project?.githubRepo?.content.logoUrl || onlyDustLogo;
 
-  const projects = getProjectsForSidebarQuery?.data?.projects;
+  const projects = useMemo(
+    () => getProjectsForSidebarQuery?.data?.projects.filter(({ id }) => (onlyMine ? ledProjectIds.includes(id) : true)),
+    [getProjectsForSidebarQuery?.data?.projects, ledProjectIds]
+  );
 
   const component = (
     <>

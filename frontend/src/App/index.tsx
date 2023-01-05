@@ -71,7 +71,7 @@ function App() {
         },
         {
           path: RoutePaths.MyProjectDetails,
-          element: <ProjectDetails />,
+          element: <ProjectDetails onlyMine />,
         },
         {
           path: RoutePaths.CatchAll,
