@@ -1,6 +1,7 @@
 use domain::{DomainError, UserId};
 use infrastructure::database::DatabaseError;
 use juniper::{graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
+use olog::error;
 use thiserror::Error;
 
 use crate::application::user::update_profile_info::Error as UpdateProfileInfoError;
@@ -49,6 +50,8 @@ impl From<UpdateProfileInfoError> for Error {
 
 impl IntoFieldError for Error {
 	fn into_field_error(self) -> FieldError<DefaultScalarValue> {
+		error!(error = format!("{self:?}"), "Error occured");
+
 		let (msg, reason) = match &self {
 			Self::NotAuthenticated(reason) => (self.to_string(), reason.clone()),
 			Self::NotAuthorized(_, reason) => (self.to_string(), reason.clone()),
