@@ -1,137 +1,140 @@
 {
-  "contributions": {
-    "empty": "No contributions yet"
-  },
-  "form": {
-    "required": "Required"
-  },
-  "github": {
-    "invalidLogin": "Invalid Github login",
-    "loggingIn": "Logging in...",
-    "tokenMissing": "Github authentication token missing!"
-  },
-  "images": {
-    "githubLogo": "Github logo",
-    "onlyDustLogo": "OnlyDust logo",
-    "onlyDustTitle": "OnlyDust title"
-  },
-  "navbar": {
-    "logout": "Logout",
-    "myContributions": "My payments",
-    "myProjects": "My projects",
-    "projects": "Browse projects",
-    "signInWithGithub": "Sign in with Github"
-  },
-  "payment": {
+    "contributions": {
+        "empty": "No contributions yet"
+    },
     "form": {
-      "confirm": "Confirm payment",
-      "contributor": "Recipient",
-      "days": "days",
-      "decrease": "-",
-      "increase": "+",
-      "leftToSpend": "Left to spend",
-      "linkToIssue": "Link to GitHub issue",
-      "sent": "Payment request sent!",
-      "submit": "Submit payment",
-      "thisPayment": "This payment",
-      "totalBudget": "Total budget"
+        "required": "Required"
     },
-    "list": "List payments",
-    "status": {
-      "completed": "Completed",
-      "processing": "Processing"
+    "github": {
+        "invalidLogin": "Invalid Github login",
+        "loggingIn": "Logging in...",
+        "tokenMissing": "Github authentication token missing!"
     },
-    "table": {
-      "amount": "AMOUNT",
-      "project": "PROJECT",
-      "status": "PAYMENT STATUS"
+    "images": {
+        "githubLogo": "Github logo",
+        "onlyDustLogo": "OnlyDust logo",
+        "onlyDustTitle": "OnlyDust title"
     },
-    "tableFallback": {
-      "browseProjects": "Browse projects",
-      "contribute": "Contribute to get your first one!",
-      "noPayments": "No payments received yet"
-    }
-  },
-  "profile": {
-    "edit": "Edit profile",
-    "form": {
-      "aboutYou": "About you",
-      "bankWire": "Bank wire",
-      "bic": "BIC",
-      "city": "City",
-      "companyProfile": "Company",
-      "contactInfo": "Contact info",
-      "country": "Country",
-      "email": "Email",
-      "ethName": "ENS domain",
-      "ethWalletAddress": "Ethereum wallet address",
-      "ethereum": "Ethereum",
-      "firstname": "First name",
-      "iban": "IBAN",
-      "id": "ID",
-      "individualProfile": "Individual",
-      "lastname": "Last name",
-      "location": "Location",
-      "name": "Name",
-      "number": "N.",
-      "payoutSettings": "Payout settings",
-      "postCode": "Postal code",
-      "saved": "Your data has been saved!",
-      "send": "Save profile",
-      "street": "Street",
-      "typeOfProfile": "Profile type"
-    }
-  },
-  "project": {
-    "details": {
-      "overview": {
-        "contributors": "Contributors",
-        "githubLinkContent": "Link",
-        "githubLinkTitle": "GitHub",
-        "projectLeader": "Project Leader",
-        "technologies": "Technologies",
-        "title": "Overview",
-        "readmeTitle": "Readme.md"
-      },
-      "payments": {
-        "title": "Payments"
-      },
-      "sidebar": {
-        "contributors": " contributors",
-        "newInvite": "NEW",
-        "backToProjects": "Back to projects"
-      },
-      "tableFallback": {
-        "noPayments": "No payments so far",
-        "send": "Send your first one!",
-        "sendPayment": "Send payment"
-      }
+    "navbar": {
+        "logout": "Logout",
+        "myContributions": "My payments",
+        "myProjects": "My projects",
+        "projects": "Browse projects",
+        "signInWithGithub": "Sign in with Github"
     },
-    "ledBy": "Led by",
+    "payment": {
+        "form": {
+            "confirm": "Confirm payment",
+            "contributor": "Recipient",
+            "days": "days",
+            "decrease": "-",
+            "increase": "+",
+            "leftToSpend": "Left to spend",
+            "linkToIssue": "Link to GitHub issue",
+            "sent": "Payment request sent!",
+            "submit": "Submit payment",
+            "thisPayment": "This payment",
+            "totalBudget": "Total budget"
+        },
+        "list": "List payments",
+        "status": {
+            "completed": "Completed",
+            "processing": "Processing"
+        },
+        "table": {
+            "amount": "AMOUNT",
+            "project": "PROJECT",
+            "status": "PAYMENT STATUS"
+        },
+        "tableFallback": {
+            "browseProjects": "Browse projects",
+            "contribute": "Contribute to get your first one!",
+            "noPayments": "No payments received yet"
+        }
+    },
+    "profile": {
+        "edit": "Edit profile",
+        "form": {
+            "aboutYou": "About you",
+            "bankWire": "Bank wire",
+            "bic": "BIC",
+            "city": "City",
+            "companyProfile": "Company",
+            "contactInfo": "Contact info",
+            "country": "Country",
+            "email": "Email",
+            "ethName": "ENS domain",
+            "ethWalletAddress": "Ethereum wallet address",
+            "ethereum": "Ethereum",
+            "firstname": "First name",
+            "iban": "IBAN",
+            "id": "ID",
+            "individualProfile": "Individual",
+            "lastname": "Last name",
+            "location": "Location",
+            "name": "Name",
+            "number": "N.",
+            "payoutSettings": "Payout settings",
+            "postCode": "Postal code",
+            "saved": "Your data has been saved!",
+            "send": "Save profile",
+            "street": "Street",
+            "typeOfProfile": "Profile type"
+        }
+    },
+    "project": {
+        "details": {
+            "contributors": {
+                "title": "Contributors"
+            },
+            "overview": {
+                "contributors": "Contributors",
+                "githubLinkContent": "Link",
+                "githubLinkTitle": "GitHub",
+                "projectLeader": "Project Leader",
+                "technologies": "Technologies",
+                "title": "Overview",
+                "readmeTitle": "Readme.md"
+            },
+            "payments": {
+                "title": "Payments"
+            },
+            "sidebar": {
+                "contributors": " contributors",
+                "newInvite": "NEW",
+                "backToProjects": "Back to projects"
+            },
+            "tableFallback": {
+                "noPayments": "No payments so far",
+                "send": "Send your first one!",
+                "sendPayment": "Send payment"
+            }
+        },
+        "ledBy": "Led by",
+        "projectLeadInvitation": {
+            "prompt": "You’ve been promoted to Project Lead",
+            "view": "View invite"
+        },
+        "remainingBudget": "Remaining budget"
+    },
     "projectLeadInvitation": {
-      "prompt": "You’ve been promoted to Project Lead",
-      "view": "View invite"
+        "accept": "Accept invite",
+        "prompt": "You’ve been promoted to Project Lead on __projectName__"
     },
-    "remainingBudget": "Remaining budget"
-  },
-  "projectLeadInvitation": {
-    "accept": "Accept invite",
-    "prompt": "You’ve been promoted to Project Lead on __projectName__"
-  },
-  "seniority": {
-    "levels": {
-      "advanced": "Advanced",
-      "expert": "Expert",
-      "junior": "Junior",
-      "senior": "Senior"
+    "seniority": {
+        "levels": {
+            "advanced": "Advanced",
+            "expert": "Expert",
+            "junior": "Junior",
+            "senior": "Senior"
+        },
+        "title": "Seniority"
     },
-    "title": "Seniority"
-  },
-  "state": {
-    "errorOccured": "Oops, an unexpected error occured",
-    "loading": "Loading...",
-    "notResponsive": "This website is only available for desktop now. Mobile version coming soon ...",
-    "success": "Success !"
-  },
-  "tryToRefresh": "Try to refresh the page"
+    "state": {
+        "errorOccured": "Oops, an unexpected error occured",
+        "loading": "Loading...",
+        "notResponsive": "This website is only available for desktop now. Mobile version coming soon ...",
+        "success": "Success !"
+    },
+    "tryToRefresh": "Try to refresh the page"
 }

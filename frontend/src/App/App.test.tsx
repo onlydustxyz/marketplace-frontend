@@ -291,11 +291,12 @@ describe("Integration tests", () => {
 
     expect((await screen.findAllByText(ProjectDetailsTab.Overview)).length).toEqual(2);
     expect(screen.queryByText(ProjectDetailsTab.Payments)).not.toBeInTheDocument();
+    expect(screen.findByText(ProjectDetailsTab.Contributors));
     await screen.findByRole("img", { name: /github logo/i });
     await screen.findByRole("img", { name: /telegram logo/i });
   });
 
-  it("should be able to access the project details page from the my projects list and see both the overview and payment tabs", async () => {
+  it("should be able to access the project details page from the my projects list and see the overview, payment and contributors tabs", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({
@@ -306,6 +307,7 @@ describe("Integration tests", () => {
     userEvent.click(await screen.findByText(TEST_PROJECT_NAME));
     //expect((await screen.findAllByText(ProjectDetailsTab.Overview)).length).toEqual(2);
     await screen.findByText(ProjectDetailsTab.Payments);
+    expect(screen.findByText(ProjectDetailsTab.Contributors));
     await screen.findByRole("img", { name: /github logo/i });
     await screen.findByRole("img", { name: /telegram logo/i });
   });
