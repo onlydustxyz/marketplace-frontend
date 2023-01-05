@@ -51,6 +51,16 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
 
   useEffect(() => {
     if (tokenSet) {
+      try {
+        refreshAccessToken(tokenSet);
+      } catch (e) {
+        setHasRefreshError(true);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (tokenSet) {
       if (accessTokenExpired(tokenSet)) {
         try {
           refreshAccessToken(tokenSet);
