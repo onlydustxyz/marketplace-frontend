@@ -1,5 +1,0 @@
-query FindUserQuery($userId: uuid!) {
-    user(id: $userId) {
-        displayName
-    }
-}
