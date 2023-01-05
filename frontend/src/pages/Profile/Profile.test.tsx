@@ -99,6 +99,14 @@ const accessToken = (userId: string) => ({
   creationDate: new Date().getTime(),
 });
 
+vi.mock("axios", () => ({
+  default: {
+    post: () => ({
+      data: accessToken("test-user-id"),
+    }),
+  },
+}));
+
 expect.extend(matchers);
 
 vi.mock("jwt-decode", () => ({

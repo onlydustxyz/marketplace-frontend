@@ -30,6 +30,14 @@ const TEST_ACCESS_TOKEN = {
   creationDate: new Date().getTime(),
 };
 
+vi.mock("axios", () => ({
+  default: {
+    post: () => ({
+      data: TEST_ACCESS_TOKEN,
+    }),
+  },
+}));
+
 const graphQlMocks = [
   {
     request: {
@@ -101,12 +109,12 @@ const graphQlMocks = [
   },
 ];
 
-describe('"Login" page', () => {
+describe('"ProjectDetails" page', () => {
   beforeAll(() => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(TEST_ACCESS_TOKEN));
   });
 
-  it("should show a pending invitation", async () => {
+  it("should show a pending invitation if the user has been invited", async () => {
     renderWithIntl(
       <Routes>
         <Route path="/projects/:projectId" element={<ProjectDetails />}></Route>
