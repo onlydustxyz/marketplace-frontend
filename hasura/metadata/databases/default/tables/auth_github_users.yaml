@@ -18,6 +18,11 @@ select_permissions:
         - github_user_id
         - user_id
       filter: {}
+  - role: public
+    permission:
+      columns:
+        - user_id
+      filter: {}
   - role: registered_user_specific
     permission:
       columns:
