@@ -28,6 +28,7 @@ import ShootingStar from "src/assets/icons/ShootingStar";
 import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
 
 import { RoutePaths } from "src/App";
+import hasProjectInvitation from "src/utils/hasProjectInvitation";
 
 interface ProjectDetailsProps {
   onlyMine?: boolean;
@@ -69,7 +70,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
 
   const getProjectPublicQuery = useHasuraQuery<GetPublicProjectQuery>(GET_PROJECT_PUBLIC_QUERY, HasuraUserRole.Public, {
     variables: { id: projectId },
-    skip: isLoggedIn,
+    skip: isLoggedIn || !projectId,
   });
 
   const getProjectUserQuery = useHasuraQuery<GetUserProjectQuery>(
@@ -77,7 +78,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
     HasuraUserRole.RegisteredUser,
     {
       variables: { id: projectId },
-      skip: !isLoggedIn,
+      skip: !isLoggedIn || !projectId,
     }
   );
 
@@ -250,13 +251,6 @@ const projectFromQuery = (projectId: string, project: any) => ({
   id: projectId,
   budget: project.budgets[0],
 });
-
-const hasProjectInvitation = (
-  pendingProjectLeaderInvitationsQuery: QueryResult<PendingProjectLeaderInvitationsQuery>,
-  projectId: string | undefined
-) =>
-  projectId &&
-  pendingProjectLeaderInvitationsQuery?.data?.pendingProjectLeaderInvitations?.[0]?.projectId === projectId;
 
 const GITHUB_REPO_FIELDS_FRAGMENT = gql`
   fragment ProjectDetailsGithubRepoFields on GithubRepoDetails {

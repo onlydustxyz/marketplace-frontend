@@ -11,4 +11,4 @@ const Template: ComponentStory<typeof ProjectLeadInvitation> = args => <ProjectL
 
 export const Default = Template.bind({});
 
-Default.args = {}; // put your component's args for the Default story here
+Default.args = {};
