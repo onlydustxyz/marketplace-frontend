@@ -12,6 +12,15 @@ remote_relationships:
               id: $id
         remote_schema: GithubProxy
     name: content
+  - definition:
+      hasura_fields:
+        - id
+      remote_field:
+        fetchRepositoryPRs:
+          arguments:
+            id: $id
+      remote_schema: GithubProxy
+    name: pullRequests
 select_permissions:
   - role: public
     permission:
