@@ -1,7 +1,8 @@
+use domain::GithubRepositoryId;
 use juniper::{graphql_object, DefaultScalarValue};
 
 use super::{Context, Result};
-use crate::domain::{GithubRepository, GithubUser};
+use crate::domain::{GithubPullRequest, GithubRepository, GithubUser};
 
 pub struct Query;
 
@@ -27,5 +28,17 @@ impl Query {
 	) -> Result<GithubUser> {
 		let user = context.github_service.fetch_user_by_name(&username).await?;
 		Ok(user)
+	}
+
+	pub async fn fetch_repository_PRs(
+		&self,
+		context: &Context,
+		id: i32,
+	) -> Result<Vec<GithubPullRequest>> {
+		let repository_id = GithubRepositoryId::from(id as i64);
+
+		let pull_requests = context.github_service.fetch_repository_PRs(&repository_id).await?;
+
+		Ok(pull_requests)
 	}
 }

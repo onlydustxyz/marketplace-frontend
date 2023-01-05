@@ -2,7 +2,7 @@ use std::{collections::HashMap, fmt::Debug};
 
 use anyhow::anyhow;
 use octocrab::{
-	models::{repos::Content, Repository, User},
+	models::{pulls::PullRequest, repos::Content, Repository, User},
 	FromResponse, Octocrab, OctocrabBuilder,
 };
 use olog::tracing::instrument;
@@ -49,6 +49,16 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn get_user_by_name(&self, username: &str) -> Result<User, Error> {
 		self.get_as(format!("{}users/{username}", self.0.base_url)).await
+	}
+
+	#[allow(non_snake_case)]
+	#[instrument(skip(self))]
+	pub async fn get_repository_PRs(&self, id: u64) -> Result<Vec<PullRequest>, Error> {
+		self.get_as(format!(
+			"{}repositories/{id}/pulls?state=all",
+			self.0.base_url
+		))
+		.await
 	}
 
 	#[instrument(skip(self))]

@@ -1,11 +1,13 @@
 use anyhow::anyhow;
+use domain::GithubRepositoryId;
 use infrastructure::github;
 use olog::tracing::instrument;
+use thiserror::Error;
 
 use super::Contributors;
 use crate::domain::{
-	GithubFile, GithubFileEncoding, GithubRepository, GithubService, GithubServiceError,
-	GithubServiceResult, GithubUser,
+	GithubFile, GithubFileEncoding, GithubPullRequest, GithubPullRequestStatus, GithubRepository,
+	GithubService, GithubServiceError, GithubServiceResult, GithubUser,
 };
 
 impl From<github::Error> for GithubServiceError {
@@ -52,6 +54,33 @@ impl GithubService for github::Client {
 		let user = self.get_user_by_name(username).await?;
 		Ok(user.into())
 	}
+
+	#[instrument(skip(self))]
+	async fn fetch_repository_PRs(
+		&self,
+		repository_id: &GithubRepositoryId,
+	) -> GithubServiceResult<Vec<GithubPullRequest>> {
+		let repository_id: u64 = i64::from(*repository_id)
+			.try_into()
+			.expect("Repository id should always be positive");
+
+		let octocrab_pull_requests = self.get_repository_PRs(repository_id).await?;
+		let pull_requests = octocrab_pull_requests
+			.into_iter()
+			.filter_map(|pr| match pr.clone().try_into() {
+				Ok(pr) => Some(pr),
+				Err(e) => {
+					error!(
+						"Failed to process pull request with id '{}' in repo with id '{}': {}",
+						pr.id, repository_id, e
+					);
+					None
+				},
+			})
+			.collect();
+
+		Ok(pull_requests)
+	}
 }
 
 impl From<octocrab::models::User> for GithubUser {
@@ -63,5 +92,75 @@ impl From<octocrab::models::User> for GithubUser {
 impl From<octocrab::models::repos::Content> for GithubFile {
 	fn from(file: octocrab::models::repos::Content) -> Self {
 		Self::new(GithubFileEncoding::Base64, file.content.unwrap_or_default())
+	}
+}
+
+#[derive(Debug, Error)]
+pub enum GithubPullRequestFromOctocrabPullRequestError {
+	#[error("Field '{0}' is not present")]
+	MissingField(String),
+	#[error(transparent)]
+	UnknownStatus(#[from] GithubPullRequestStatusFromOctocrabIssueStateError),
+}
+
+impl TryFrom<octocrab::models::pulls::PullRequest> for GithubPullRequest {
+	type Error = GithubPullRequestFromOctocrabPullRequestError;
+
+	fn try_from(pull_request: octocrab::models::pulls::PullRequest) -> Result<Self, Self::Error> {
+		let id = pull_request
+			.id
+			.0
+			.try_into()
+			.expect("We cannot work with github ids superior to i32::MAX");
+		let title = pull_request
+			.title
+			.ok_or_else(|| Self::Error::MissingField("title".to_string()))?;
+		let assignee_id = pull_request.assignee.map(|assignee| {
+			assignee
+				.id
+				.0
+				.try_into()
+				.expect("We cannot work with github ids superior to i32::MAX")
+		});
+
+		let status = pull_request
+			.state
+			.ok_or_else(|| Self::Error::MissingField("state".to_string()))?
+			.try_into()?;
+		let created_at = pull_request
+			.created_at
+			.ok_or_else(|| Self::Error::MissingField("created_at".to_string()))?;
+
+		Ok(Self::new(
+			id,
+			title,
+			assignee_id,
+			status,
+			created_at,
+			pull_request.closed_at,
+		))
+	}
+}
+
+#[derive(Debug, Error)]
+pub enum GithubPullRequestStatusFromOctocrabIssueStateError {
+	#[error("Unknown octocrab state: '{0}'")]
+	UnknownState(String),
+}
+
+impl TryFrom<octocrab::models::IssueState> for GithubPullRequestStatus {
+	type Error = GithubPullRequestStatusFromOctocrabIssueStateError;
+
+	fn try_from(state: octocrab::models::IssueState) -> Result<Self, Self::Error> {
+		match state {
+			octocrab::models::IssueState::Open => Ok(Self::Open),
+			octocrab::models::IssueState::Closed => Ok(Self::Closed),
+			_ => Err(
+				GithubPullRequestStatusFromOctocrabIssueStateError::UnknownState(format!(
+					"{:?}",
+					state
+				)),
+			),
+		}
 	}
 }

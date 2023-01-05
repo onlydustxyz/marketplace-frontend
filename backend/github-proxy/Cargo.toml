@@ -31,10 +31,12 @@ tracing = "0.1"
 # Utils
 derive_more = "0.99.17"
 dotenv = "0.15.0"
+chrono = "0.4.23"
 
 # Local dependecies
 infrastructure = {path = "../common/infrastructure"}
 presentation = {path = "../common/presentation"}
 olog = {path = "../common/olog"}
+domain = {path = "../common/domain"}
 
 [dev-dependencies]
