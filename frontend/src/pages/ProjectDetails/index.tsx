@@ -159,7 +159,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                             {hasProjectInvitation(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) ? (
                               <div className="flex flex-row px-2 py-1 rounded-2xl bg-orange-400 items-center gap-1 text-xs text-black">
                                 <ShootingStar />
-                                <div>NEW</div>
+                                <div>{T("project.details.sidebar.newInvite")}</div>
                               </div>
                             ) : (
                               <CheckMark
