@@ -83,6 +83,12 @@ impl GithubService for github::Client {
 
 		Ok(pull_requests)
 	}
+
+	#[instrument(skip(self))]
+	async fn fetch_user_by_id(&self, id: u64) -> GithubServiceResult<GithubUser> {
+		let user = self.get_user_by_id(id).await?;
+		Ok(user.into())
+	}
 }
 
 impl From<octocrab::models::User> for GithubUser {
