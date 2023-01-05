@@ -62,6 +62,11 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
+	pub async fn get_user_by_id(&self, id: u64) -> Result<User, Error> {
+		self.get_as(format!("{}user/{id}", self.0.base_url)).await
+	}
+
+	#[instrument(skip(self))]
 	pub async fn get_raw_file(&self, repo: &Repository, path: &str) -> Result<Content, Error> {
 		let owner = repo
 			.owner

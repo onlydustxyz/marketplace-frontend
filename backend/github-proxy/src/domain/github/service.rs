@@ -25,4 +25,5 @@ pub trait Service: Send + Sync {
 		&self,
 		repository_id: &GithubRepositoryId,
 	) -> Result<Vec<PullRequest>>;
+	async fn fetch_user_by_id(&self, id: u64) -> Result<GithubUser>;
 }

@@ -41,4 +41,13 @@ impl Query {
 
 		Ok(pull_requests)
 	}
+
+	pub async fn fetch_user_details_by_id(
+		&self,
+		context: &Context,
+		user_id: i32,
+	) -> Result<GithubUser> {
+		let user = context.github_service.fetch_user_by_id(user_id as u64).await?;
+		Ok(user)
+	}
 }
