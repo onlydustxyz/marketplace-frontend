@@ -611,6 +611,41 @@ export type PayoutSettingsUpdates = {
   where: PayoutSettingsBoolExp;
 };
 
+/** columns and relationships of "pending_project_leader_invitations" */
+export type PendingProjectLeaderInvitations = {
+  __typename?: 'PendingProjectLeaderInvitations';
+  githubUserId: Scalars['bigint'];
+  id: Scalars['uuid'];
+  projectId: Scalars['uuid'];
+};
+
+/** Boolean expression to filter rows from the table "pending_project_leader_invitations". All fields are combined with a logical 'AND'. */
+export type PendingProjectLeaderInvitationsBoolExp = {
+  _and: InputMaybe<Array<PendingProjectLeaderInvitationsBoolExp>>;
+  _not: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
+  _or: InputMaybe<Array<PendingProjectLeaderInvitationsBoolExp>>;
+  githubUserId: InputMaybe<BigintComparisonExp>;
+  id: InputMaybe<UuidComparisonExp>;
+  projectId: InputMaybe<UuidComparisonExp>;
+};
+
+/** Ordering options when selecting data from "pending_project_leader_invitations". */
+export type PendingProjectLeaderInvitationsOrderBy = {
+  githubUserId: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "pending_project_leader_invitations" */
+export enum PendingProjectLeaderInvitationsSelectColumn {
+  /** column name */
+  GithubUserId = 'githubUserId',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ProjectId = 'projectId'
+}
+
 export type PersonIdentity = {
   firstname: Scalars['String'];
   lastname: Scalars['String'];
@@ -1142,6 +1177,7 @@ export type Github_Repo_Details_StreamCursorValueInput = {
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
+  acceptProjectLeaderInvitation: Scalars['Boolean'];
   /** delete data from the table: "payout_settings" */
   deletePayoutSettings: Maybe<PayoutSettingsMutationResponse>;
   /** delete single row from the table: "payout_settings" */
@@ -1178,6 +1214,12 @@ export type Mutation_Root = {
   updateUsers: Maybe<UsersMutationResponse>;
   /** update multiples rows of table: "auth.users" */
   updateUsersMany: Maybe<Array<Maybe<UsersMutationResponse>>>;
+};
+
+
+/** mutation root */
+export type Mutation_RootAcceptProjectLeaderInvitationArgs = {
+  invitationId: Scalars['Uuid'];
 };
 
 
@@ -1435,6 +1477,21 @@ export type Payout_Settings_StreamCursorValueInput = {
   userId: InputMaybe<Scalars['uuid']>;
 };
 
+/** Streaming cursor of the table "pending_project_leader_invitations" */
+export type Pending_Project_Leader_Invitations_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Pending_Project_Leader_Invitations_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Pending_Project_Leader_Invitations_StreamCursorValueInput = {
+  githubUserId: InputMaybe<Scalars['bigint']>;
+  id: InputMaybe<Scalars['uuid']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+};
+
 /** Streaming cursor of the table "project_details" */
 export type Project_Details_StreamCursorInput = {
   /** Stream column input with initial value */
@@ -1519,6 +1576,10 @@ export type Query_Root = {
   payoutSettings: Array<PayoutSettings>;
   /** fetch data from the table: "payout_settings" using primary key columns */
   payoutSettingsByPk: Maybe<PayoutSettings>;
+  /** fetch data from the table: "pending_project_leader_invitations" */
+  pendingProjectLeaderInvitations: Array<PendingProjectLeaderInvitations>;
+  /** fetch data from the table: "pending_project_leader_invitations" using primary key columns */
+  pendingProjectLeaderInvitationsByPk: Maybe<PendingProjectLeaderInvitations>;
   /** fetch data from the table: "project_details" */
   projectDetails: Array<ProjectDetails>;
   /** fetch data from the table: "project_details" using primary key columns */
@@ -1631,6 +1692,20 @@ export type Query_RootPayoutSettingsByPkArgs = {
 };
 
 
+export type Query_RootPendingProjectLeaderInvitationsArgs = {
+  distinctOn: InputMaybe<Array<PendingProjectLeaderInvitationsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<PendingProjectLeaderInvitationsOrderBy>>;
+  where: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
+};
+
+
+export type Query_RootPendingProjectLeaderInvitationsByPkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Query_RootProjectDetailsArgs = {
   distinctOn: InputMaybe<Array<ProjectDetailsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -1737,6 +1812,12 @@ export type Subscription_Root = {
   payoutSettingsByPk: Maybe<PayoutSettings>;
   /** fetch data from the table in a streaming manner: "payout_settings" */
   payoutSettingsStream: Array<PayoutSettings>;
+  /** fetch data from the table: "pending_project_leader_invitations" */
+  pendingProjectLeaderInvitations: Array<PendingProjectLeaderInvitations>;
+  /** fetch data from the table: "pending_project_leader_invitations" using primary key columns */
+  pendingProjectLeaderInvitationsByPk: Maybe<PendingProjectLeaderInvitations>;
+  /** fetch data from the table in a streaming manner: "pending_project_leader_invitations" */
+  pendingProjectLeaderInvitationsStream: Array<PendingProjectLeaderInvitations>;
   /** fetch data from the table: "project_details" */
   projectDetails: Array<ProjectDetails>;
   /** fetch data from the table: "project_details" using primary key columns */
@@ -1888,6 +1969,27 @@ export type Subscription_RootPayoutSettingsStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Payout_Settings_StreamCursorInput>>;
   where: InputMaybe<PayoutSettingsBoolExp>;
+};
+
+
+export type Subscription_RootPendingProjectLeaderInvitationsArgs = {
+  distinctOn: InputMaybe<Array<PendingProjectLeaderInvitationsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<PendingProjectLeaderInvitationsOrderBy>>;
+  where: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
+};
+
+
+export type Subscription_RootPendingProjectLeaderInvitationsByPkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootPendingProjectLeaderInvitationsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Pending_Project_Leader_Invitations_StreamCursorInput>>;
+  where: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
 };
 
 
@@ -2226,6 +2328,11 @@ export type Users_StreamCursorValueInput = {
 
 export type GithubRepoFieldsForProjectCardFragment = { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } };
 
+export type PendingProjectLeaderInvitationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PendingProjectLeaderInvitationsQuery = { __typename?: 'query_root', pendingProjectLeaderInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', projectId: any }> };
+
 export type GetGithubUserIdQueryVariables = Exact<{
   userId: InputMaybe<Scalars['uuid']>;
 }>;
@@ -2343,6 +2450,40 @@ export const ProjectDetailsGithubRepoFieldsFragmentDoc = gql`
   languages
 }
     `;
+export const PendingProjectLeaderInvitationsDocument = gql`
+    query PendingProjectLeaderInvitations {
+  pendingProjectLeaderInvitations {
+    projectId
+  }
+}
+    `;
+
+/**
+ * __usePendingProjectLeaderInvitationsQuery__
+ *
+ * To run a query within a React component, call `usePendingProjectLeaderInvitationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePendingProjectLeaderInvitationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePendingProjectLeaderInvitationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePendingProjectLeaderInvitationsQuery(baseOptions?: Apollo.QueryHookOptions<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>(PendingProjectLeaderInvitationsDocument, options);
+      }
+export function usePendingProjectLeaderInvitationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>(PendingProjectLeaderInvitationsDocument, options);
+        }
+export type PendingProjectLeaderInvitationsQueryHookResult = ReturnType<typeof usePendingProjectLeaderInvitationsQuery>;
+export type PendingProjectLeaderInvitationsLazyQueryHookResult = ReturnType<typeof usePendingProjectLeaderInvitationsLazyQuery>;
+export type PendingProjectLeaderInvitationsQueryResult = Apollo.QueryResult<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>;
 export const GetGithubUserIdDocument = gql`
     query GetGithubUserId($userId: uuid) {
   authGithubUsers(where: {userId: {_eq: $userId}}) {
