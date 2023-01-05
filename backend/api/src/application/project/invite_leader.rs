@@ -1,5 +1,6 @@
 use anyhow::Result;
 use domain::{DomainError, GithubUserId, ProjectId};
+use tracing::instrument;
 
 use crate::{
 	domain::{PendingProjectLeaderInvitation, PendingProjectLeaderInvitationId},
@@ -19,6 +20,7 @@ impl Usecase {
 		}
 	}
 
+	#[instrument(skip(self))]
 	pub async fn invite_leader(
 		&self,
 		project_id: ProjectId,
