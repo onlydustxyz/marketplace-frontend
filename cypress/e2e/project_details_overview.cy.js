@@ -55,7 +55,7 @@ describe("An empty project", () => {
     });
 
     it("should render properly", function () {
-      cy.visit(`http://127.0.0.1:5173/project/${this.projectId}`, {
+      cy.visit(`http://127.0.0.1:5173/projects/${this.projectId}`, {
         onBeforeLoad(win) {
           win.localStorage.setItem("hasura_token", this.token);
         },
