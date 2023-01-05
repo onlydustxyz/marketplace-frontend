@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { generatePath, Link } from "react-router-dom";
+import { RoutePaths } from "src/App";
 import Card from "src/components/Card";
 import ProjectInformation from "src/components/ProjectInformation";
 import { GITHUB_REPO_FIELDS_FOR_PROJECT_CARD_FRAGMENT } from "src/graphql/fragments";
@@ -17,7 +18,11 @@ export default function MyProjects() {
       <div className="text-3xl font-alfreda mt-10">{T("navbar.myProjects")}</div>
       <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
         {ledProjectIds.map((projectId: string) => (
-          <Link key={projectId} className="flex w-11/12 my-3" to={`/my-projects/${projectId}`}>
+          <Link
+            key={projectId}
+            className="flex w-11/12 my-3"
+            to={generatePath(RoutePaths.MyProjectDetails, { projectId })}
+          >
             <MyProjectContainer projectId={projectId} />
           </Link>
         ))}

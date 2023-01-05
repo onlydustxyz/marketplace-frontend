@@ -12,7 +12,7 @@ describe("As a project lead, I", () => {
   });
 
   it("can request a payment", function () {
-    cy.visit(`http://localhost:5173/project/${this.projectId}`, {
+    cy.visit(`http://localhost:5173/projects/${this.projectId}`, {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.token);
       },
