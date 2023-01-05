@@ -2,6 +2,7 @@ use diesel::prelude::*;
 use domain::{Aggregate, Budget, EventStore, EventStoreError, Payment, Project};
 use olog::error;
 use serde_json::Value;
+use tracing::instrument;
 
 use crate::database::{schema::events, Client};
 
@@ -28,6 +29,7 @@ impl NamedAggregate for Budget {
 }
 
 impl<A: NamedAggregate> EventStore<A> for Client {
+	#[instrument(name = "EventStore::list_by_id", skip_all, fields(aggregate_id = aggregate_id.to_string()))]
 	fn list_by_id(&self, aggregate_id: &A::Id) -> Result<Vec<A::Event>, EventStoreError> {
 		let connection = self.connection().map_err(|e| {
 			error!("Failed to connect to database: {e}");
@@ -52,6 +54,7 @@ impl<A: NamedAggregate> EventStore<A> for Client {
 		deserialize_events::<A>(events)
 	}
 
+	#[instrument(name = "EventStore::list", skip_all)]
 	fn list(&self) -> Result<Vec<A::Event>, EventStoreError> {
 		let connection = self.connection().map_err(|e| {
 			error!("Failed to connect to database: {e}");
