@@ -47,6 +47,10 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 	let (entity1, entity2) = find_entities(&input);
 	let (id1, id2) = find_ids(&input);
 
+	let table_ident = &table.path.segments.last().unwrap().ident;
+	let insert_span_name = format!("{}::insert", table_ident);
+	let delete_span_name = format!("{}::delete", table_ident);
+
 	// Build the output, possibly using quasi-quotation
 	let expanded = quote! {
 		use diesel::RunQueryDsl;
@@ -55,6 +59,7 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 		use diesel::query_dsl::filter_dsl::FindDsl;
 
 		impl infrastructure::database::MappingRepository<#entity1, #entity2> for #repository_name {
+			#[tracing::instrument(name = #insert_span_name, skip(self))]
 			fn insert(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 
@@ -65,6 +70,7 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 				Ok(())
 			}
 
+			#[tracing::instrument(name = #delete_span_name, skip(self))]
 			fn delete(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 
