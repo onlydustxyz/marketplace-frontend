@@ -44,36 +44,26 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
   const timerRef = useRef<NodeJS.Timeout>();
 
   const refreshAccessToken = (tokenSet: TokenSet) => {
-    fetchNewAccessToken(tokenSet.refreshToken).then(newTokenSet => {
-      setTokenSet(newTokenSet);
-    });
+    fetchNewAccessToken(tokenSet.refreshToken)
+      .then(newTokenSet => {
+        setTokenSet(newTokenSet);
+      })
+      .catch(() => setHasRefreshError(true));
   };
 
   useEffect(() => {
     if (tokenSet) {
-      try {
-        refreshAccessToken(tokenSet);
-      } catch (e) {
-        setHasRefreshError(true);
-      }
+      refreshAccessToken(tokenSet);
     }
   }, []);
 
   useEffect(() => {
     if (tokenSet) {
       if (accessTokenExpired(tokenSet)) {
-        try {
-          refreshAccessToken(tokenSet);
-        } catch (e) {
-          setHasRefreshError(true);
-        }
+        refreshAccessToken(tokenSet);
       } else {
         timerRef.current = setTimeout(() => {
-          try {
-            refreshAccessToken(tokenSet);
-          } catch (e) {
-            setHasRefreshError(true);
-          }
+          refreshAccessToken(tokenSet);
         }, accessTokenValidityDelay(tokenSet));
       }
     }

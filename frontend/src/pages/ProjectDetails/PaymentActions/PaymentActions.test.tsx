@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
@@ -61,6 +61,14 @@ const graphQlMocks = [
     },
   },
 ];
+
+vi.mock("axios", () => ({
+  default: {
+    post: () => ({
+      data: HASURA_TOKEN_BASIC_TEST_VALUE,
+    }),
+  },
+}));
 
 describe('"ProjectDetails" page', () => {
   beforeAll(() => {

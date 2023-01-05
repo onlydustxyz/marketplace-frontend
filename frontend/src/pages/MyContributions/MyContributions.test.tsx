@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
@@ -19,6 +19,14 @@ const HASURA_TOKEN_BASIC_TEST_VALUE = {
   accessTokenExpiresIn: 900,
   creationDate: new Date().getTime(),
 };
+
+vi.mock("axios", () => ({
+  default: {
+    post: () => ({
+      data: HASURA_TOKEN_BASIC_TEST_VALUE,
+    }),
+  },
+}));
 
 const mockContribution = {
   id: "705e6b37-d0ee-4e87-b681-7009dd691965",

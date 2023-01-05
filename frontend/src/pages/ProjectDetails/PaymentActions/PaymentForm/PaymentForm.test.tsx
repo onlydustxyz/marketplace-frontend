@@ -39,6 +39,14 @@ window.location = {
   reload: vi.fn(),
 };
 
+vi.mock("axios", () => ({
+  default: {
+    post: () => ({
+      data: HASURA_TOKEN_BASIC_TEST_VALUE,
+    }),
+  },
+}));
+
 const graphQlMocks = [
   {
     request: {

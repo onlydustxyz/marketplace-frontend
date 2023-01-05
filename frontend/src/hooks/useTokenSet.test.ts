@@ -57,7 +57,7 @@ describe("useTokenSet", () => {
     (axios.post as Mock).mockResolvedValue({ data: { ...tokenSet, accessToken: updatedAccessToken } });
 
     const { result, waitForValueToChange } = renderWithProvider();
-    expect(axios.post).toHaveBeenCalledOnce();
+    expect(axios.post).toHaveBeenCalledTimes(2);
 
     await waitForValueToChange(() => result.current.tokenSet);
     expect(result.current.tokenSet?.accessToken).toEqual(updatedAccessToken);
@@ -77,10 +77,10 @@ describe("useTokenSet", () => {
     (axios.post as Mock).mockResolvedValue({ data: tokenSet });
 
     renderWithProvider();
-    expect(axios.post).not.toHaveBeenCalledOnce();
+    expect(axios.post).toHaveBeenCalledTimes(1);
 
     vi.advanceTimersByTime(120 * 1000);
-    expect(axios.post).toHaveBeenCalledOnce();
+    expect(axios.post).toHaveBeenCalledTimes(2);
   });
 
   it("should remove the scheduled access token refresh when unmounted", () => {
@@ -97,11 +97,11 @@ describe("useTokenSet", () => {
     (axios.post as Mock).mockResolvedValue({ data: tokenSet });
 
     const { unmount } = renderWithProvider();
-    expect(axios.post).not.toHaveBeenCalledOnce();
+    expect(axios.post).toHaveBeenCalledOnce();
 
     unmount();
     vi.advanceTimersByTime(120 * 1000);
-    expect(axios.post).not.toHaveBeenCalledOnce();
+    expect(axios.post).toHaveBeenCalledOnce();
   });
 
   describe("clearTokenSet", () => {
@@ -129,14 +129,14 @@ describe("useTokenSet", () => {
       (axios.post as Mock).mockResolvedValue({ data: tokenSet });
 
       const { result } = renderWithProvider();
-      expect(axios.post).not.toHaveBeenCalledOnce();
+      expect(axios.post).toHaveBeenCalledOnce();
 
       act(() => {
         result.current.clearTokenSet();
       });
 
       vi.advanceTimersByTime(120 * 1000);
-      expect(axios.post).not.toHaveBeenCalledOnce();
+      expect(axios.post).toHaveBeenCalledOnce();
     });
   });
 
