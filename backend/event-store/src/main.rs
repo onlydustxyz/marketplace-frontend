@@ -46,7 +46,7 @@ async fn store(
 	store: Arc<dyn EventStore>,
 	message: UniqueMessage<Event>,
 ) -> Result<UniqueMessage<Event>, SubscriberCallbackError> {
-	info!(message = message.to_string(), "📨 Received event");
+	info!(message_content = message.to_string(), "📨 Received event");
 	store
 		.append(&message.payload().aggregate_id(), message.clone())
 		.map_err(|e| SubscriberCallbackError::Fatal(e.into()))?;
@@ -58,6 +58,7 @@ async fn publish(
 	message: UniqueMessage<Event>,
 	publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 ) -> Result<(), SubscriberCallbackError> {
+	// Create a new message with same payload so that trace context is right
 	let message = UniqueMessage::new(message.payload().clone());
 	publisher
 		.publish(Destination::exchange(EXCHANGE_NAME), &message)
