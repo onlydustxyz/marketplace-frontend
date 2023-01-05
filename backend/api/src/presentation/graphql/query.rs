@@ -1,5 +1,4 @@
 use juniper::graphql_object;
-use tracing::instrument;
 
 use super::Context;
 
@@ -12,15 +11,6 @@ impl Query {
 	}
 
 	pub fn hello(&self) -> &str {
-		InstrumentableQuery::hello()
-	}
-}
-
-pub struct InstrumentableQuery;
-
-impl InstrumentableQuery {
-	#[instrument]
-	pub fn hello() -> &'static str {
 		olog::info!("So hungry!");
 		"Couscous!"
 	}
