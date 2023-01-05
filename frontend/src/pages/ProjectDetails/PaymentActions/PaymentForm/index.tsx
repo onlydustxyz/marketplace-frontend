@@ -36,6 +36,20 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ project }) => {
 
   const [numberOfDays, setNumberOfDays] = useState(DEFAULT_NUMBER_OF_DAYS);
 
+  const tryIncreaseNumberOfDays = () => {
+    const increment = numberOfDays < 1 ? 0.5 : 1;
+    if (numberOfDays < 20 && project.budget.remainingAmount - (numberOfDays + increment) * BASE_RATE_USD >= 0) {
+      setNumberOfDays(numberOfDays + increment);
+    }
+  };
+
+  const tryDecreaseNumberOfDays = () => {
+    if (numberOfDays > 0.5) {
+      const decrement = numberOfDays == 1 ? 0.5 : 1;
+      setNumberOfDays(numberOfDays - decrement);
+    }
+  };
+
   const [insertPayment] = useHasuraMutation(REQUEST_PAYMENT_MUTATION, HasuraUserRole.RegisteredUser, {
     variables: { projectId: project.id, amount: numberOfDays * BASE_RATE_USD },
   });
@@ -101,14 +115,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ project }) => {
             </Card>
             <EstimationComponent
               numberOfDays={numberOfDays}
-              decreaseNumberOfDays={() => {
-                if (numberOfDays > 1) setNumberOfDays(numberOfDays - 1);
-              }}
-              increaseNumberOfDays={() => {
-                if (numberOfDays < 20 && project.budget.remainingAmount - (numberOfDays + 1) * BASE_RATE_USD >= 0) {
-                  setNumberOfDays(numberOfDays + 1);
-                }
-              }}
+              decreaseNumberOfDays={tryDecreaseNumberOfDays}
+              increaseNumberOfDays={tryIncreaseNumberOfDays}
               budget={{ ...project.budget }}
               submitDisabled={findUserQuery.loading}
             />
