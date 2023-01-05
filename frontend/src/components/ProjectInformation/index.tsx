@@ -60,7 +60,7 @@ export default function ProjectInformation({ name, details, lead, githubRepoInfo
             )}
             {details?.telegramLink && <TelegramLink link={details?.telegramLink} />}
           </div>
-          {githubRepoInfo?.contributors?.length && (
+          {!!githubRepoInfo?.contributors?.length && (
             <NumberOfContributors numberOfContributors={githubRepoInfo?.contributors?.length} />
           )}
         </div>
