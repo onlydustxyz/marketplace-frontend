@@ -257,7 +257,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
             {selectedTab === ProjectDetailsTab.Payments && projectId && (
               <Payments project={projectFromQuery(projectId, getProjectUserQuery?.data?.projectsByPk)} />
             )}
-            {selectedTab === ProjectDetailsTab.Contributors && projectId && <Contributors />}
+            {selectedTab === ProjectDetailsTab.Contributors && projectId && <Contributors projectId={projectId} />}
           </div>
         </div>
       )}
