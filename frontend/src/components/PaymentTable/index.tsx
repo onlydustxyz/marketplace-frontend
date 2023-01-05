@@ -1,37 +1,62 @@
 import { useIntl } from "src/hooks/useIntl";
 import { Currency, Payment, PaymentStatus } from "src/types";
-import PaymentLine from "./PaymentLine";
+import onlyDustLogo from "assets/img/onlydust-logo.png";
+import Table from "../Table";
+import Line from "../Table/Line";
+import Cell from "../Table/Cell";
+import Headers from "../Table/HeaderLine";
+import HeaderCell from "../Table/HeaderCell";
 
 type PropsType = {
   payments: Payment[];
 };
 
 const PaymentTable: React.FC<PropsType> = ({ payments }) => {
+  return (
+    <Table id="payment_table" headers={renderHeaders()}>
+      {renderPayments(payments)}
+    </Table>
+  );
+};
+
+const renderHeaders = () => {
   const { T } = useIntl();
   return (
-    <div className="px-4 mx-4">
-      <table id="payment_table" className="table-fixed w-full text-white text-sm font-medium font-walsheim">
-        <thead className="border-b text-neutral-300 border-neutral-600">
-          <tr>
-            <th scope="col" className="px-6 py-4 text-left w-1/2">
-              {T("payment.table.project")}
-            </th>
-            <th scope="col" className="px-6 py-4 text-left w-1/4">
-              {T("payment.table.amount")}
-            </th>
-            <th scope="col" className="px-6 py-4 text-left w-1/4">
-              {T("payment.table.status")}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {payments.map(payment => (
-            <PaymentLine payment={payment} key={payment.id} />
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <Headers>
+      <HeaderCell className="w-1/2">{T("payment.table.project")}</HeaderCell>
+      <HeaderCell className="w-1/4">{T("payment.table.amount")}</HeaderCell>
+      <HeaderCell className="w-1/4">{T("payment.table.status")}</HeaderCell>
+    </Headers>
   );
+};
+
+const renderPayments = (payments: Payment[]) => {
+  const { T } = useIntl();
+
+  return payments.map(payment => (
+    <Line key={payment.id}>
+      <Cell className="flex flex-row gap-3">
+        <div className="border-4 border-neutral-600 p-2 rounded-2xl">
+          <img className="w-8 max-w-fit" src={payment.project.logoUrl || onlyDustLogo} alt="Project Logo" />
+        </div>
+        <div className="flex flex-col truncate justify-center">
+          <div className="font-bold text-xl">{payment.project.title}</div>
+          {payment.reason && <div className="text-lg truncate">{payment.reason}</div>}
+        </div>
+      </Cell>
+      <Cell>{`${payment.amount.value} ${payment.amount.currency}`}</Cell>
+      <Cell>
+        <div className="border border-neutral-600 rounded-3xl w-fit p-2">
+          {payment.status === PaymentStatus.ACCEPTED && (
+            <span className="text-green-500">{T("payment.status.completed")}</span>
+          )}
+          {payment.status === PaymentStatus.WAITING_PAYMENT && (
+            <span className="text-blue-600">{T("payment.status.processing")}</span>
+          )}
+        </div>
+      </Cell>
+    </Line>
+  ));
 };
 
 // TODO: replace this any with GraphQL-generated ts types
