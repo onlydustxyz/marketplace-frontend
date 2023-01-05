@@ -2407,6 +2407,13 @@ export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ProfileQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', userId: any, identity: any, email: string, location: any, payoutSettings: any }> };
 
+export type GetProjectContributorsQueryVariables = Exact<{
+  projectId: InputMaybe<Scalars['uuid']>;
+}>;
+
+
+export type GetProjectContributorsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', reason: any, amountInUsd: any, recipient: { __typename?: 'AuthGithubUsers', userId: any | null } | null, githubRecipient: { __typename?: 'User', login: string, avatarUrl: string } }> };
+
 export type RequestPaymentMutationVariables = Exact<{
   amount: Scalars['Int'];
   contributorId: Scalars['Int'];
@@ -2741,6 +2748,49 @@ export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Pr
 export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
+export const GetProjectContributorsDocument = gql`
+    query GetProjectContributors($projectId: uuid) {
+  paymentRequests(where: {budget: {projectId: {_eq: $projectId}}}) {
+    reason
+    amountInUsd
+    recipient {
+      userId
+    }
+    githubRecipient {
+      login
+      avatarUrl
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetProjectContributorsQuery__
+ *
+ * To run a query within a React component, call `useGetProjectContributorsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectContributorsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectContributorsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetProjectContributorsQuery(baseOptions?: Apollo.QueryHookOptions<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>(GetProjectContributorsDocument, options);
+      }
+export function useGetProjectContributorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>(GetProjectContributorsDocument, options);
+        }
+export type GetProjectContributorsQueryHookResult = ReturnType<typeof useGetProjectContributorsQuery>;
+export type GetProjectContributorsLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsLazyQuery>;
+export type GetProjectContributorsQueryResult = Apollo.QueryResult<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>;
 export const RequestPaymentDocument = gql`
     mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
   requestPayment(
