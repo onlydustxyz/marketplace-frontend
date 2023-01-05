@@ -25,6 +25,7 @@ import GithubLink from "src/components/GithubLink";
 import TelegramLink from "src/components/TelegramLink";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import ShootingStar from "src/assets/icons/ShootingStar";
+import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
 
 import { RoutePaths } from "src/App";
 
@@ -342,14 +343,6 @@ export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
           logoUrl
         }
       }
-    }
-  }
-`;
-
-const PENDING_PROJECT_LEADER_INVITATIONS_QUERY = gql`
-  query PendingProjectLeaderInvitations {
-    pendingProjectLeaderInvitations {
-      projectId
     }
   }
 `;
