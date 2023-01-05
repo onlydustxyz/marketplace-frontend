@@ -13,6 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTimeUtc: any;
   Email: any;
   EthereumAddress: any;
   EthereumName: any;
@@ -248,6 +249,7 @@ export type GithubRepoDetails = {
   languages: Scalars['jsonb'];
   name: Scalars['String'];
   owner: Scalars['String'];
+  pullRequests: Array<PullRequest>;
 };
 
 
@@ -370,6 +372,7 @@ export type PaymentRequests = {
   /** An object relationship */
   budget: Maybe<Budgets>;
   budgetId: Scalars['uuid'];
+  githubRecipient: User;
   id: Scalars['uuid'];
   /** An array relationship */
   payments: Array<Payments>;
@@ -614,8 +617,12 @@ export type PayoutSettingsUpdates = {
 /** columns and relationships of "pending_project_leader_invitations" */
 export type PendingProjectLeaderInvitations = {
   __typename?: 'PendingProjectLeaderInvitations';
+  /** An object relationship */
+  githubUser: Maybe<AuthGithubUsers>;
   githubUserId: Scalars['bigint'];
   id: Scalars['uuid'];
+  /** An object relationship */
+  project: Maybe<Projects>;
   projectId: Scalars['uuid'];
 };
 
@@ -624,15 +631,19 @@ export type PendingProjectLeaderInvitationsBoolExp = {
   _and: InputMaybe<Array<PendingProjectLeaderInvitationsBoolExp>>;
   _not: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
   _or: InputMaybe<Array<PendingProjectLeaderInvitationsBoolExp>>;
+  githubUser: InputMaybe<AuthGithubUsersBoolExp>;
   githubUserId: InputMaybe<BigintComparisonExp>;
   id: InputMaybe<UuidComparisonExp>;
+  project: InputMaybe<ProjectsBoolExp>;
   projectId: InputMaybe<UuidComparisonExp>;
 };
 
 /** Ordering options when selecting data from "pending_project_leader_invitations". */
 export type PendingProjectLeaderInvitationsOrderBy = {
+  githubUser: InputMaybe<AuthGithubUsersOrderBy>;
   githubUserId: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
+  project: InputMaybe<ProjectsOrderBy>;
   projectId: InputMaybe<OrderBy>;
 };
 
@@ -807,6 +818,16 @@ export enum ProjectsSelectColumn {
   Name = 'name'
 }
 
+export type PullRequest = {
+  __typename?: 'PullRequest';
+  assigneeId: Maybe<Scalars['Int']>;
+  closedAt: Maybe<Scalars['DateTimeUtc']>;
+  createdAt: Scalars['DateTimeUtc'];
+  id: Scalars['Int'];
+  status: Status;
+  title: Scalars['String'];
+};
+
 export type Reason = {
   workItems: InputMaybe<Array<Scalars['String']>>;
 };
@@ -817,6 +838,11 @@ export type Repository = {
   logoUrl: Scalars['String'];
   readme: Maybe<File>;
 };
+
+export enum Status {
+  Closed = 'CLOSED',
+  Open = 'OPEN'
+}
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type StringComparisonExp = {
@@ -1558,7 +1584,9 @@ export type Query_Root = {
   /** fetch data from the table: "budgets" using primary key columns */
   budgetsByPk: Maybe<Budgets>;
   fetchRepositoryDetails: Repository;
+  fetchRepositoryPRs: Array<PullRequest>;
   fetchUserDetails: User;
+  fetchUserDetailsById: User;
   /** fetch data from the table: "github_repo_details" */
   githubRepoDetails: Array<GithubRepoDetails>;
   /** fetch data from the table: "github_repo_details" using primary key columns */
@@ -1631,8 +1659,18 @@ export type Query_RootFetchRepositoryDetailsArgs = {
 };
 
 
+export type Query_RootFetchRepositoryPRsArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type Query_RootFetchUserDetailsArgs = {
   username: Scalars['String'];
+};
+
+
+export type Query_RootFetchUserDetailsByIdArgs = {
+  userId: Scalars['Int'];
 };
 
 

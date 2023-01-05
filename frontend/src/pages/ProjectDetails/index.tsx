@@ -109,7 +109,6 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
     projectId && ledProjectIds && ledProjectIds.includes(projectId)
       ? [ProjectDetailsTab.Overview, ProjectDetailsTab.Payments]
       : [ProjectDetailsTab.Overview];
-  const showTabs = availableTabs.length > 1;
 
   const project = getProjectUserQuery?.data?.projectsByPk || getProjectPublicQuery?.data?.projectsByPk;
   const githubRepo = project?.githubRepo;
@@ -200,21 +199,19 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                   </Listbox.Options>
                 </div>
               </Listbox>
-              {showTabs && (
-                <div className="flex flex-col align-start font-medium text-xl pt-8">
-                  {availableTabs.map((tab: ProjectDetailsTab) => (
-                    <div
-                      key={tab}
-                      className={`p-3 rounded-xl hover:cursor-pointer text-white ${
-                        selectedTab === tab ? "bg-neutral-800" : "text-neutral-400"
-                      }`}
-                      onClick={() => setSelectedTab(tab)}
-                    >
-                      {tab}
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div className="flex flex-col align-start font-medium text-xl pt-8">
+                {availableTabs.map((tab: ProjectDetailsTab) => (
+                  <div
+                    key={tab}
+                    className={`p-3 rounded-xl hover:cursor-pointer text-white ${
+                      selectedTab === tab ? "bg-neutral-800" : "text-neutral-400"
+                    }`}
+                    onClick={() => setSelectedTab(tab)}
+                  >
+                    {tab}
+                  </div>
+                ))}
+              </div>
               <div className="flex flex-row gap-3 pt-8">
                 {project?.githubRepo?.owner && project?.githubRepo?.name && (
                   <GithubLink link={buildGithubLink(project.githubRepo.owner, project.githubRepo.name)} />

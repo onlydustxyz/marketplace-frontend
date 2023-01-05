@@ -268,7 +268,7 @@ describe("Integration tests", () => {
     await screen.findByText(TEST_PROJECT_NAME);
   });
 
-  it("should be able to access the project details page from the projects list and not see any tabs", async () => {
+  it("should be able to access the project details page from the projects list and see the tabs", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({
@@ -289,7 +289,7 @@ describe("Integration tests", () => {
       ).toEqual(TEST_GITHUB_LINK);
     });
 
-    expect((await screen.findAllByText(ProjectDetailsTab.Overview)).length).toEqual(1);
+    expect((await screen.findAllByText(ProjectDetailsTab.Overview)).length).toEqual(2);
     expect(screen.queryByText(ProjectDetailsTab.Payments)).not.toBeInTheDocument();
     await screen.findByRole("img", { name: /github logo/i });
     await screen.findByRole("img", { name: /telegram logo/i });
