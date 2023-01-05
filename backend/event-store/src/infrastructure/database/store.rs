@@ -9,6 +9,7 @@ use backend_infrastructure::{
 use diesel::{dsl::exists, prelude::*};
 use olog::error;
 use serde_json::{to_value as to_json, Value as Json};
+use tracing::instrument;
 
 use crate::{domain::*, infrastructure::database::models};
 
@@ -29,6 +30,7 @@ impl NamedAggregate for Event {
 }
 
 impl EventStore for Client {
+	#[instrument(name = "EventStore::append", skip(self))]
 	fn append(&self, aggregate_id: &str, storable_event: UniqueMessage<Event>) -> Result<()> {
 		let connection = self.connection().map_err(|e| {
 			error!("Failed to connect to database: {e}");
