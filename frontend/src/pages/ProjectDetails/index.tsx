@@ -30,6 +30,7 @@ import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
 import { RoutePaths } from "src/App";
 import hasProjectInvitation from "src/utils/hasProjectInvitation";
 import BackLink from "src/components/BackLink";
+import Contributors from "./Contributors";
 
 interface ProjectDetailsProps {
   onlyMine?: boolean;
@@ -42,6 +43,7 @@ type ProjectDetailsParams = {
 export enum ProjectDetailsTab {
   Overview = "Overview",
   Payments = "Payments",
+  Contributors = "Contributors",
 }
 
 export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps) {
@@ -107,8 +109,8 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
 
   const availableTabs =
     projectId && ledProjectIds && ledProjectIds.includes(projectId)
-      ? [ProjectDetailsTab.Overview, ProjectDetailsTab.Payments]
-      : [ProjectDetailsTab.Overview];
+      ? [ProjectDetailsTab.Overview, ProjectDetailsTab.Payments, ProjectDetailsTab.Contributors]
+      : [ProjectDetailsTab.Overview, ProjectDetailsTab.Contributors];
 
   const project = getProjectUserQuery?.data?.projectsByPk || getProjectPublicQuery?.data?.projectsByPk;
   const githubRepo = project?.githubRepo;
@@ -255,6 +257,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
             {selectedTab === ProjectDetailsTab.Payments && projectId && (
               <Payments project={projectFromQuery(projectId, getProjectUserQuery?.data?.projectsByPk)} />
             )}
+            {selectedTab === ProjectDetailsTab.Contributors && projectId && <Contributors />}
           </div>
         </div>
       )}
