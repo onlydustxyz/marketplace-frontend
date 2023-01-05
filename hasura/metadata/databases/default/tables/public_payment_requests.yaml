@@ -37,30 +37,25 @@ array_relationships:
         table:
           name: payments
           schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - recipient_id
+        remote_field:
+          fetchUserDetailsById:
+            arguments:
+              userId: $recipient_id
+        remote_schema: GithubProxy
+    name: githubRecipient
 select_permissions:
-  - role: project_lead_specific
+  - role: public
     permission:
       columns:
         - amount_in_usd
+        - recipient_id
         - reason
         - budget_id
         - id
-        - recipient_id
         - requestor_id
-      filter:
-        budget:
-          project_id:
-            _in: X-Hasura-projectsLeaded
-  - role: registered_user_specific
-    permission:
-      columns:
-        - amount_in_usd
-        - reason
-        - budget_id
-        - id
-        - recipient_id
-        - requestor_id
-      filter:
-        recipient:
-          user_id:
-            _eq: X-Hasura-User-Id
+      filter: {}
