@@ -88,42 +88,24 @@
         value_from_env: GITHUB_PROXY_GRAPHQL_API_KEY
   comment: ""
   permissions:
-    - role: registered_user
-      definition:
-        schema: |
-          schema {
-            query: Query
-          }
-          type File {
-            content: String!
-            encoding: Encoding!
-          }
-          type Query {
-            fetchRepositoryDetails(id: Int!): Repository!
-            fetchUserDetails(username: String!): User!
-          }
-          type Repository {
-            contributors: [User!]!
-            logoUrl: String!
-            readme: File
-          }
-          type User {
-            avatarUrl: String!
-            id: Int!
-            login: String!
-          }
-          enum Encoding {
-            BASE64
-          }
     - role: public
       definition:
         schema: |
           schema {
             query: Query
           }
+          scalar DateTimeUtc
           type File {
             content: String!
             encoding: Encoding!
+          }
+          type PullRequest {
+            assigneeId: Int
+            closedAt: DateTimeUtc
+            createdAt: DateTimeUtc!
+            id: Int!
+            status: Status!
+            title: String!
           }
           type Query {
             fetchRepositoryDetails(id: Int!): Repository!
@@ -141,4 +123,49 @@
           }
           enum Encoding {
             BASE64
+          }
+          enum Status {
+            CLOSED
+            OPEN
+          }
+    - role: registered_user
+      definition:
+        schema: |
+          schema {
+            query: Query
+          }
+          scalar DateTimeUtc
+          type File {
+            content: String!
+            encoding: Encoding!
+          }
+          type PullRequest {
+            assigneeId: Int
+            closedAt: DateTimeUtc
+            createdAt: DateTimeUtc!
+            id: Int!
+            status: Status!
+            title: String!
+          }
+          type Query {
+            fetchRepositoryDetails(id: Int!): Repository!
+            fetchRepositoryPRs(id: Int!): [PullRequest!]!
+            fetchUserDetails(username: String!): User!
+          }
+          type Repository {
+            contributors: [User!]!
+            logoUrl: String!
+            readme: File
+          }
+          type User {
+            avatarUrl: String!
+            id: Int!
+            login: String!
+          }
+          enum Encoding {
+            BASE64
+          }
+          enum Status {
+            CLOSED
+            OPEN
           }
