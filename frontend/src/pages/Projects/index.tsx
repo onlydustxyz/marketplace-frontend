@@ -60,9 +60,9 @@ export default function Projects() {
                     />
                     {hasProjectInvitation(pendingProjectLeaderInvitationsQuery, project.id) && (
                       <div className="flex flex-row justify-between items-center font-medium p-5 text-lg rounded-xl bg-amber-700/30">
-                        <div>You’ve been promoted to Project Lead</div>
-                        <div className="w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-100 py-2 px-4 text-chineseBlack">
-                          View invite
+                        <div>{T("project.projectLeadInvitation.prompt")}</div>
+                        <div className="w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-100 py-2 px-5 text-chineseBlack">
+                          {T("project.projectLeadInvitation.view")}
                         </div>
                       </div>
                     )}

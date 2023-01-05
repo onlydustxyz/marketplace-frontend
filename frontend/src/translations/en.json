@@ -96,7 +96,8 @@
         "title": "Payments"
       },
       "sidebar": {
-        "contributors": " contributors"
+        "contributors": " contributors",
+        "newInvite": "NEW"
       },
       "tableFallback": {
         "noPayments": "No payments so far",
@@ -105,7 +106,15 @@
       }
     },
     "ledBy": "Led by",
+    "projectLeadInvitation": {
+      "prompt": "You’ve been promoted to Project Lead",
+      "view": "View invite"
+    },
     "remainingBudget": "Remaining budget"
+  },
+  "projectLeadInvitation": {
+    "accept": "Accept invite",
+    "prompt": "You’ve been promoted to Project Lead on __projectName__"
   },
   "seniority": {
     "levels": {
