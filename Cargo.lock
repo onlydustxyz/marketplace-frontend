@@ -1057,9 +1057,22 @@ dependencies = [
  "byteorder",
  "chrono",
  "diesel_derives",
+ "ipnetwork",
+ "libc",
  "pq-sys",
  "serde_json",
  "uuid 0.8.2",
+]
+
+[[package]]
+name = "diesel-tracing"
+version = "0.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ee3a3d2f40251a3f814d3ce78d5d3355002fe81f94cdef8d5ca307fdebe62793"
+dependencies = [
+ "diesel",
+ "ipnetwork",
+ "tracing",
 ]
 
 [[package]]
@@ -2116,6 +2129,7 @@ dependencies = [
  "derive-getters",
  "derive_more",
  "diesel",
+ "diesel-tracing",
  "diesel_migrations",
  "domain",
  "dotenv",
@@ -2186,6 +2200,15 @@ name = "ipnet"
 version = "2.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f88c5561171189e69df9d98bcf18fd5f9558300f7ea7b801eb8a0fd748bd8745"
+
+[[package]]
+name = "ipnetwork"
+version = "0.18.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4088d739b183546b239688ddbc79891831df421773df95e236daf7867866d355"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "isahc"
@@ -4450,6 +4473,7 @@ name = "testing"
 version = "0.1.0"
 dependencies = [
  "diesel",
+ "diesel-tracing",
  "domain",
  "infrastructure",
  "r2d2",

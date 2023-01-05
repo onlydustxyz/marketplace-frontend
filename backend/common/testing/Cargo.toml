@@ -15,6 +15,9 @@ diesel = {version = "1.4.8", default-features = false, features = [
 r2d2 = "0.8.10"
 r2d2-diesel = "1.0.0"
 
+# Tracing
+diesel-tracing = {version = "0.1.6", features = ["postgres"]}
+
 # Utils
 uuid = {version = "0.8.2", default_features = false, features = [
   "v4",

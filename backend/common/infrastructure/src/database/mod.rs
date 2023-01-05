@@ -1,11 +1,11 @@
 pub mod schema;
 
 mod error;
+use diesel_tracing::pg::InstrumentedPgConnection;
 pub use error::Error as DatabaseError;
 
 mod config;
 pub use config::Config;
-use diesel::PgConnection;
 use olog::error;
 use r2d2;
 use r2d2_diesel::ConnectionManager;
@@ -13,8 +13,8 @@ use r2d2_diesel::ConnectionManager;
 mod mapping;
 pub use mapping::Repository as MappingRepository;
 
-type Pool = r2d2::Pool<ConnectionManager<PgConnection>>;
-type PooledConnection = r2d2::PooledConnection<ConnectionManager<PgConnection>>;
+type Pool = r2d2::Pool<ConnectionManager<InstrumentedPgConnection>>;
+type PooledConnection = r2d2::PooledConnection<ConnectionManager<InstrumentedPgConnection>>;
 
 pub fn run_migrations(pool: &Pool) {
 	let connection = pool.get().expect("Unable to get connection from pool");
@@ -50,7 +50,7 @@ impl Client {
 }
 
 pub fn init_pool(config: &Config) -> Result<Pool, DatabaseError> {
-	let manager = ConnectionManager::<PgConnection>::new(config.url());
+	let manager = ConnectionManager::<InstrumentedPgConnection>::new(config.url());
 	let pool = Pool::builder().max_size(*config.pool_max_size()).build(manager)?;
 
 	Ok(pool)
