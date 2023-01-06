@@ -5,10 +5,13 @@ import ContributorIcon from "src/assets/icons/Contributor";
 import Dollar from "src/assets/icons/Dollar";
 import CheckMark from "src/assets/icons/CheckMark";
 import ExternalLink from "src/assets/icons/ExternalLink";
+import DownArrow from "src/assets/icons/DownArrow";
 import HeaderLine from "../Table/HeaderLine";
 import HeaderCell from "../Table/HeaderCell";
 import Line from "../Table/Line";
 import Cell from "../Table/Cell";
+import { useEffect, useState } from "react";
+import _ from "lodash";
 
 type PropsType = {
   contributors: Contributor[];
@@ -22,30 +25,58 @@ export type Contributor = {
   paidContributions: number;
 };
 
+enum Field {
+  Login = "login",
+  TotalEarned = "totalEarned",
+  PaidContributions = "paidContributions",
+}
+
+type Sorting = {
+  field: Field;
+  ascending: boolean;
+};
+
 const ContributorsTable: React.FC<PropsType> = ({ contributors }) => {
+  const [sorting, setSorting] = useState({ field: Field.TotalEarned, ascending: false });
+  const [sortedContributors, setSortedContributors] = useState(contributors);
+
+  useEffect(() => {
+    const sorted = _.sortBy([...contributors], sorting.field);
+    setSortedContributors(sorting.ascending ? sorted : sorted.reverse());
+  }, [sorting, contributors]);
+
+  const applySorting = (field: Field) =>
+    setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : true });
+
   return (
-    <Table id="contributors_table" headers={renderHeaders()}>
-      {renderContributors(contributors)}
+    <Table id="contributors_table" headers={renderHeaders(sorting, applySorting)}>
+      {renderContributors(sortedContributors)}
     </Table>
   );
 };
 
-const renderHeaders = () => {
+const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) => {
   const { T } = useIntl();
+
+  const sortingArrowClassName = (field: Field) =>
+    `${sorting.field === field ? "visible" : "invisible"} ${sorting.ascending && "rotate-180"}`;
 
   return (
     <HeaderLine>
-      <HeaderCell>
+      <HeaderCell onClick={() => applySorting(Field.Login)}>
         <ContributorIcon className="p-px h-4 w-4" />
         <span>{T("contributor.table.contributor")}</span>
+        <DownArrow className={`p-px h-4 w-4 fill-fuchsia-700 ${sortingArrowClassName(Field.Login)}`} />
       </HeaderCell>
-      <HeaderCell>
+      <HeaderCell onClick={() => applySorting(Field.TotalEarned)}>
         <Dollar className="p-px h-4 w-4" />
         <span>{T("contributor.table.totalEarned")}</span>
+        <DownArrow className={`p-px h-4 w-4 fill-fuchsia-700 ${sortingArrowClassName(Field.TotalEarned)}`} />
       </HeaderCell>
-      <HeaderCell>
+      <HeaderCell onClick={() => applySorting(Field.PaidContributions)}>
         <CheckMark className="p-px h-4 w-4" />
         <span>{T("contributor.table.paidContributions")}</span>
+        <DownArrow className={`p-px h-4 w-4 fill-fuchsia-700 ${sortingArrowClassName(Field.PaidContributions)}`} />
       </HeaderCell>
     </HeaderLine>
   );

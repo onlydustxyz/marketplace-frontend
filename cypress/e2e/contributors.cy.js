@@ -21,6 +21,27 @@ describe("As a public user, I", () => {
     cy.contains("Contributors").click();
 
     cy.get("#contributors_table tbody tr:nth-child(1)").within(() => {
+        cy.get("td:nth-child(1)").should("have.text", "abuisset");
+        cy.get("td:nth-child(2)").should("have.text", "500 $");
+        cy.get("td:nth-child(3)").should("have.text", "1");
+    });
+
+    cy.get("#contributors_table tbody tr:nth-child(2)").within(() => {
+          cy.get("td:nth-child(1)").should("have.text", "ofux");
+          cy.get("td:nth-child(2)").should("have.text", "200 $");
+          cy.get("td:nth-child(3)").should("have.text", "3");
+      });
+  });
+
+
+  it("can sort the contributors of a project", function () {
+    cy.visit(`http://localhost:5173/projects/${this.projectId}`);
+
+    cy.contains("Contributors").click();
+    cy.get("#contributors_table thead tr th:nth-child(3)").click();
+    cy.get("#contributors_table thead tr th:nth-child(3)").click(); // sort by paid contributions DESC
+
+    cy.get("#contributors_table tbody tr:nth-child(1)").within(() => {
         cy.get("td:nth-child(1)").should("have.text", "ofux");
         cy.get("td:nth-child(2)").should("have.text", "200 $");
         cy.get("td:nth-child(3)").should("have.text", "3");
