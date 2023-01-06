@@ -90,7 +90,8 @@
         "githubLinkTitle": "GitHub",
         "projectLeader": "Project Leader",
         "technologies": "Technologies",
-        "title": "Overview"
+        "title": "Overview",
+        "readmeTitle": "Readme.md"
       },
       "payments": {
         "title": "Payments"
