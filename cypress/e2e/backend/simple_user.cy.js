@@ -62,13 +62,13 @@ describe("As a simple user, I", () => {
 
         cy.requestPayment(projectId, 500, githubUserId, {})
             .asRegisteredUser(leader)
-            .data()
-            .then(() => {
+            .data("requestPayment")
+            .then((requestId) => {
                 cy.createGithubUser(githubUserId)
                     .then((user) => {
                         cy.graphql({
-                            query: `query {
-                                    paymentRequests {
+                            query: `query($requestId: uuid!) {
+                                    paymentRequestsByPk(id: $requestId) {
                                         id
                                         recipientId
                                         amountInUsd
@@ -77,11 +77,9 @@ describe("As a simple user, I", () => {
                                             userId
                                         }
                                     }
-                                }`})
+                                }`, variables: { requestId }})
                             .asRegisteredUser(user)
-                            .data("paymentRequests")
-                            .should("be.a", "array")
-                            .its(0)
+                            .data("paymentRequestsByPk")
                             .then((paymentRequest) => {
                                 expect(paymentRequest.recipientId).equal(
                                     user.githubUserId
