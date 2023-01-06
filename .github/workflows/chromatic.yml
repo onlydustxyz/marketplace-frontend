@@ -16,7 +16,7 @@ jobs:
       run:
         working-directory: ./frontend
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Install dependencies
         run: yarn
         # 👇 Adds Chromatic as a step in the workflow
