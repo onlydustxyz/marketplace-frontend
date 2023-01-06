@@ -59,10 +59,24 @@ const renderHeaders = () => {
 const renderContributors = (contributors: Contributor[]) =>
   contributors.map(contributor => (
     <Line key={contributor.login}>
-      <Cell>{contributor.login}</Cell>
-      <Cell>{contributor.totalEarned}</Cell>
-      <Cell>{contributor.paidContributions}</Cell>
-      <Cell>{contributor.contributionsLeftToPay}</Cell>
+      <Cell className="space-x-3">
+        <div>
+          <img src={contributor.avatarUrl} className="h-6 rounded-xl border border-gray-100/20" />
+        </div>
+        <div className="flex space-x-1 items-end">
+          <div>
+            <span className="text-fuchsia-300">{contributor.login}</span>
+          </div>
+          {contributor.isRegistered && (
+            <div>
+              <img src={onlyDustLogo} className="h-3.5" />
+            </div>
+          )}
+        </div>
+      </Cell>
+      <Cell>{`${contributor.totalEarned || "-"} $`}</Cell>
+      <Cell>{contributor.paidContributions || "-"}</Cell>
+      <Cell>{contributor.contributionsLeftToPay || "-"}</Cell>
     </Line>
   ));
 

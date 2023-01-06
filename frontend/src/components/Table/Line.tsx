@@ -5,7 +5,7 @@ interface Props extends PropsWithChildren {
 }
 
 const Line: React.FC<Props> = ({ className, children }) => {
-  return <tr className={`border-b border-neutral-600 ${className}`}>{children}</tr>;
+  return <tr className={`border-b border-gray-800 ${className}`}>{children}</tr>;
 };
 
 export default Line;

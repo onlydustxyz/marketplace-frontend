@@ -7,7 +7,7 @@ interface Props extends PropsWithChildren {
 export const Cell: React.FC<Props> = ({ className, children }) => {
   return (
     <td>
-      <div className={`h-10 flex items-center space-x-1 px-6 py-4 text-lg ${className}`}>{children}</div>
+      <div className={`flex items-center my-2 ${className}`}>{children}</div>
     </td>
   );
 };

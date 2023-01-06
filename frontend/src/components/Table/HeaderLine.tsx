@@ -5,7 +5,7 @@ interface Props extends PropsWithChildren {
 }
 
 export const Headers: React.FC<Props> = ({ className, children }) => {
-  return <tr className={`uppercase text-sm leading-4 ${className}`}>{children}</tr>;
+  return <tr className={`uppercase ${className}`}>{children}</tr>;
 };
 
 export default Headers;
