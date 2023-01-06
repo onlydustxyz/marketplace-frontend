@@ -27,6 +27,7 @@ export default function Overview({ decodedReadme, lead, githubRepoInfo, children
         {decodedReadme && (
           <div className="flex basis-3/4 flex-1">
             <Card>
+              <div className="font-medium text-lg pb-4">{T("project.details.overview.readmeTitle")}</div>
               <ReactMarkdown skipHtml={true} remarkPlugins={[[remarkGfm]]} className="prose lg:prose-l prose-invert">
                 {decodedReadme}
               </ReactMarkdown>
