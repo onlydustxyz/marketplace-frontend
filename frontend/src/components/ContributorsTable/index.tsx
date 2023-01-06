@@ -4,7 +4,6 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import ContributorIcon from "src/assets/icons/Contributor";
 import Dollar from "src/assets/icons/Dollar";
 import CheckMark from "src/assets/icons/CheckMark";
-import PullRequest from "src/assets/icons/PullRequest";
 import ExternalLink from "src/assets/icons/ExternalLink";
 import HeaderLine from "../Table/HeaderLine";
 import HeaderCell from "../Table/HeaderCell";
@@ -21,7 +20,6 @@ export type Contributor = {
   isRegistered: boolean;
   totalEarned: number;
   paidContributions: number;
-  contributionsLeftToPay: number;
 };
 
 const ContributorsTable: React.FC<PropsType> = ({ contributors }) => {
@@ -49,10 +47,6 @@ const renderHeaders = () => {
         <CheckMark className="p-px h-4 w-4" />
         <span>{T("contributor.table.paidContributions")}</span>
       </HeaderCell>
-      <HeaderCell>
-        <PullRequest className="p-px h-4 w-4" />
-        <span>{T("contributor.table.leftToPay")}</span>
-      </HeaderCell>
     </HeaderLine>
   );
 };
@@ -78,7 +72,6 @@ const renderContributors = (contributors: Contributor[]) =>
       </Cell>
       <Cell>{`${contributor.totalEarned || "-"} $`}</Cell>
       <Cell>{contributor.paidContributions || "-"}</Cell>
-      <Cell>{contributor.contributionsLeftToPay || "-"}</Cell>
     </Line>
   ));
 
