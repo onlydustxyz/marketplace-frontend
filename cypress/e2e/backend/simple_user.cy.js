@@ -157,11 +157,9 @@ describe("As a simple user, I", () => {
     it("can fetch github repository details from an empty project", () => {
         const GITHUB_REPO_ID_EMPTY_REPO = 584839416;
 
-        cy.createUser().then((user) => {
-          cy.createProject(user.id, "Project with budget", 1000, GITHUB_REPO_ID_EMPTY_REPO)
-            .asAdmin()
-            .data("createProject")
-            .as("projectId").then((projectId) => {
+        cy.createGithubUser(28464353).then((user) => {
+          cy.createProjectWithLeader(user, "Project with budget", 1000, GITHUB_REPO_ID_EMPTY_REPO)
+            .then((projectId) => {
             cy.graphql({
                 query: `{
                 projectsByPk(id: "${projectId}") {
@@ -222,7 +220,6 @@ describe("As a simple user, I", () => {
                 });
         });
     });
-
 
     it("can update my info", () => {
         let email = "pierre.fabre@gmail.com";

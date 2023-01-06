@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use domain::GithubRepositoryId;
 use infrastructure::github;
-use olog::tracing::instrument;
+use olog::{error, tracing::instrument};
 use thiserror::Error;
 
 use super::Contributors;
@@ -67,12 +67,14 @@ impl GithubService for github::Client {
 		let octocrab_pull_requests = self.get_repository_PRs(repository_id).await?;
 		let pull_requests = octocrab_pull_requests
 			.into_iter()
-			.filter_map(|pr| match pr.clone().try_into() {
+			.filter_map(|pr| match GithubPullRequest::try_from(pr.clone()) {
 				Ok(pr) => Some(pr),
 				Err(e) => {
 					error!(
-						"Failed to process pull request with id '{}' in repo with id '{}': {}",
-						pr.id, repository_id, e
+						error = e.to_string(),
+						repository_id = repository_id,
+						pullrequest_id = pr.id.0,
+						"Failed to process pull request"
 					);
 					None
 				},
