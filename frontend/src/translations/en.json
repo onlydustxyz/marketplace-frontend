@@ -98,7 +98,8 @@
       },
       "sidebar": {
         "contributors": " contributors",
-        "newInvite": "NEW"
+        "newInvite": "NEW",
+        "backToProjects": "Back to projects"
       },
       "tableFallback": {
         "noPayments": "No payments so far",
