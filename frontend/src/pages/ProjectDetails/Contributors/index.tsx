@@ -41,7 +41,6 @@ const mapApiPaymentRequestsToContributors = (paymentRequests: any) => {
     const contributor: Contributor = {
       avatarUrl: payment.githubRecipient.avatarUrl,
       login,
-      contributionsLeftToPay: 0,
       isRegistered: !!payment.recipient,
       paidContributions: (contributors.get(login)?.paidContributions || 0) + (payment.reason.work_items?.length || 0),
       totalEarned: (contributors.get(login)?.totalEarned || 0) + payment.amountInUsd,
