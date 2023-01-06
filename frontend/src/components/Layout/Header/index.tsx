@@ -9,10 +9,11 @@ export default function Header() {
   const location = useLocation();
   const { isLoggedIn, roles } = useAuth();
   const { T } = useIntl();
+  const onlyProjects = !roles.includes(HasuraUserRole.RegisteredUser) && !roles.includes(CustomUserRole.ProjectLead);
   return (
     <View
       menuItems={{
-        [RoutePaths.Projects]: T("navbar.projects"),
+        [RoutePaths.Projects]: !onlyProjects ? T("navbar.projects") : undefined,
         [RoutePaths.MyProjects]: roles.includes(CustomUserRole.ProjectLead) ? T("navbar.myProjects") : undefined,
         [RoutePaths.MyContributions]: roles.includes(HasuraUserRole.RegisteredUser)
           ? T("navbar.myContributions")

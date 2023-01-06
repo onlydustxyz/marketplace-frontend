@@ -7,7 +7,7 @@ import MenuItem from "src/components/Layout/Header/MenuItem";
 
 interface HeaderViewProps {
   menuItems: {
-    [RoutePaths.Projects]: string;
+    [RoutePaths.Projects]?: string;
     [RoutePaths.MyProjects]?: string;
     [RoutePaths.MyContributions]?: string;
   };
@@ -21,9 +21,11 @@ export default function HeaderView({ menuItems, selectedMenuItem, isLoggedIn }: 
       <div className="flex flex-row justify-start items-center px-5 py-5 gap-5 text-xl text-neutral-400">
         <OnlyDustLogo />
         <OnlyDustTitle />
-        <MenuItem path={selectedMenuItem} link={RoutePaths.Projects} activeRegex={new RegExp("^(/|/projects.+)$")}>
-          {menuItems[RoutePaths.Projects]}
-        </MenuItem>
+        {Object.keys(menuItems).includes(RoutePaths.Projects) && (
+          <MenuItem path={selectedMenuItem} link={RoutePaths.Projects} activeRegex={new RegExp("^(/|/projects.+)$")}>
+            {menuItems[RoutePaths.Projects]}
+          </MenuItem>
+        )}
         {Object.keys(menuItems).includes(RoutePaths.MyProjects) && (
           <MenuItem path={selectedMenuItem} link={RoutePaths.MyProjects}>
             {menuItems[RoutePaths.MyProjects]}
