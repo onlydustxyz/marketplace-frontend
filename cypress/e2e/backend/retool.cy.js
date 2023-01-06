@@ -222,6 +222,5 @@ describe("As an admin, on retool, I", () => {
                         })
                 })
         );
-
     });
 });

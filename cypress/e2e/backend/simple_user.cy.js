@@ -128,6 +128,9 @@ describe("As a simple user, I", () => {
                         }
                         logoUrl
                     }
+                    pullRequests {
+                        id
+                      }
                   }
                 }
               }`})
@@ -146,9 +149,59 @@ describe("As a simple user, I", () => {
                     expect(repo.content.readme.encoding).equal("BASE64");
                     expect(repo.content.readme.content).to.be.a("string");
                     expect(repo.content.logoUrl).to.be.a("string");
+                    expect(repo.pullRequests).to.not.be.empty;
                 });
         });
     });
+
+    it("can fetch github repository details from an empty project", () => {
+        const GITHUB_REPO_ID_EMPTY_REPO = 584839416;
+
+        cy.createUser().then((user) => {
+          cy.createProject(user.id, "Project with budget", 1000, GITHUB_REPO_ID_EMPTY_REPO)
+            .asAdmin()
+            .data("createProject")
+            .as("projectId").then((projectId) => {
+            cy.graphql({
+                query: `{
+                projectsByPk(id: "${projectId}") {
+                  githubRepo {
+                    id
+                    name
+                    owner
+                    content {
+                        contributors {
+                        id
+                        login
+                        avatarUrl
+                        }
+                        readme {
+                        encoding
+                        content
+                        }
+                        logoUrl
+                    }
+                    pullRequests {
+                        id
+                      }
+                  }
+                }
+              }`})
+                .asRegisteredUser(user)
+                .data("projectsByPk.githubRepo")
+                .then((repo) => {
+                    expect(repo.id).equal(GITHUB_REPO_ID_EMPTY_REPO);
+                    expect(repo.name).equal("empty");
+                    expect(repo.owner).equal("od-mocks");
+                    expect(repo.content.contributors).to.be.empty;
+                    expect(repo.content.readme).to.null;
+                    expect(repo.content.logoUrl).to.be.a("string");
+                    expect(repo.pullRequests).to.be.empty;
+                });
+        });
+    });
+});
+
 
     it("can fetch github user details from name", () => {
         cy.createGithubUser(9237643).then((user) => {

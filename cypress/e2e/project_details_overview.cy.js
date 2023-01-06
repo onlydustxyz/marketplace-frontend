@@ -62,4 +62,4 @@ describe("An empty project", () => {
       });
       cy.contains("Technologies");
     });
-  });
+});
