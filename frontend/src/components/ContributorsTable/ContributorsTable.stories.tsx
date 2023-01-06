@@ -1,6 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Contributor } from "src/types";
-import Contributors from ".";
+import Contributors, { Contributor } from ".";
 
 export default {
   title: "Contributors",

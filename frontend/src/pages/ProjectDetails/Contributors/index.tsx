@@ -1,9 +1,9 @@
 import { gql } from "@apollo/client";
 import Card from "src/components/Card";
-import ContributorsTable from "src/components/ContributorsTable";
+import ContributorsTable, { Contributor } from "src/components/ContributorsTable";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
-import { Contributor, HasuraUserRole } from "src/types";
+import { HasuraUserRole } from "src/types";
 import { GetProjectContributorsQuery } from "src/__generated/graphql";
 
 type PropsType = {
