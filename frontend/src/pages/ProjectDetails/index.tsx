@@ -139,10 +139,8 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                       <div className="border-4 border-neutral-600 p-2 rounded-xl">
                         <img className="w-8 " src={logoUrl} alt="Project Logo" />
                       </div>
-                      <div className="truncate">{project.name}</div>
-                      <div className="ml-5">
-                        <UpDownChevrons className="h-5 w-5 text-gray-400" />
-                      </div>
+                      <div className="truncate flex-1">{project.name}</div>
+                      <UpDownChevrons className="h-5 w-5 fill-gray-400" />
                     </div>
                   </Listbox.Button>
                   <Listbox.Options className="flex flex-col border-2 border-neutral-700 divide-y rounded-2xl">

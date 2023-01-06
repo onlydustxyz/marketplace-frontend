@@ -6,8 +6,8 @@ interface Props extends PropsWithChildren {
 
 export const HeaderCell: React.FC<Props> = ({ className, children }) => {
   return (
-    <th scope="col" className={`px-6 py-4 text-left ${className}`}>
-      {children}
+    <th scope="col" className={`text-left h-full ${className}`}>
+      <div className="h-4 mb-2 flex items-center space-x-1">{children}</div>
     </th>
   );
 };
