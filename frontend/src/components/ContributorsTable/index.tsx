@@ -51,8 +51,10 @@ const renderHeaders = () => {
   );
 };
 
-const renderContributors = (contributors: Contributor[]) =>
-  contributors.map(contributor => (
+const renderContributors = (contributors: Contributor[]) => {
+  const { T } = useIntl();
+
+  return contributors.map(contributor => (
     <Line key={contributor.login} link={`https://github.com/${contributor.login}`}>
       <Cell className="space-x-3">
         <div>
@@ -63,8 +65,13 @@ const renderContributors = (contributors: Contributor[]) =>
             <span className="text-fuchsia-300">{contributor.login}</span>
           </div>
           {contributor.isRegistered && (
-            <div>
+            <div className="relative group/od-logo">
               <img src={onlyDustLogo} className="h-3.5" />
+              <div className="invisible group-hover/od-logo:visible absolute top-6 -left-16 bg-chineseBlack">
+                <div className="bg-white/10 font-normal rounded-lg py-3 px-2 w-36 text-center">
+                  {T("contributor.table.userRegisteredTooltip")}
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -74,5 +81,6 @@ const renderContributors = (contributors: Contributor[]) =>
       <Cell>{contributor.paidContributions || "-"}</Cell>
     </Line>
   ));
+};
 
 export default ContributorsTable;
