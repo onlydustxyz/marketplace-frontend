@@ -5,6 +5,7 @@ import ContributorIcon from "src/assets/icons/Contributor";
 import Dollar from "src/assets/icons/Dollar";
 import CheckMark from "src/assets/icons/CheckMark";
 import PullRequest from "src/assets/icons/PullRequest";
+import ExternalLink from "src/assets/icons/ExternalLink";
 import HeaderLine from "../Table/HeaderLine";
 import HeaderCell from "../Table/HeaderCell";
 import Line from "../Table/Line";
@@ -58,7 +59,7 @@ const renderHeaders = () => {
 
 const renderContributors = (contributors: Contributor[]) =>
   contributors.map(contributor => (
-    <Line key={contributor.login}>
+    <Line key={contributor.login} link={`https://github.com/${contributor.login}`}>
       <Cell className="space-x-3">
         <div>
           <img src={contributor.avatarUrl} className="h-6 rounded-xl border border-gray-100/20" />
@@ -73,6 +74,7 @@ const renderContributors = (contributors: Contributor[]) =>
             </div>
           )}
         </div>
+        <ExternalLink className="h-3 fill-fuchsia-700 invisible group-hover/line:visible" />
       </Cell>
       <Cell>{`${contributor.totalEarned || "-"} $`}</Cell>
       <Cell>{contributor.paidContributions || "-"}</Cell>
