@@ -31,7 +31,7 @@ describe("As a contributor, I", () => {
     cy.contains("My payments").click();
 
     cy.get("#payment_table tbody tr:nth-child(1)").within(() => {
-      cy.get("td:nth-child(2)").should("have.text", "200 USD ");
+      cy.get("td:nth-child(2)").should("have.text", "200 USD");
       cy.get("td:nth-child(3)").should("have.text", "Processing");
     });
   });
