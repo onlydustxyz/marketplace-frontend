@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import Card from "src/components/Card";
+import ContributorsTableFallback from "src/components/ContributorsTableFallback";
 import ContributorsTable, { Contributor } from "src/components/ContributorsTable";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
@@ -17,18 +18,18 @@ const Contributors: React.FC<PropsType> = ({ projectId }) => {
     variables: { projectId },
   });
 
+  const paymentRequests = data?.projectsByPk?.budgets.at(0)?.paymentRequests;
+
   return (
-    <div className="flex flex-col gap-6 mt-3">
+    <div className="flex flex-col gap-6 mt-3 h-full">
       <div className="text-3xl font-alfreda">{T("project.details.contributors.title")}</div>
-      <div className="flex flex-row items-start gap-5">
-        <div className="flex basis-1/4 flex-1">
-          <Card>
-            {data?.paymentRequests && (
-              <ContributorsTable contributors={mapApiPaymentRequestsToContributors(data?.paymentRequests)} />
-            )}
-          </Card>
-        </div>
-      </div>
+      <Card>
+        {paymentRequests?.length ? (
+          <ContributorsTable contributors={mapApiPaymentRequestsToContributors(paymentRequests)} />
+        ) : (
+          <ContributorsTableFallback projectName={data?.projectsByPk?.name} />
+        )}
+      </Card>
     </div>
   );
 };
@@ -53,16 +54,21 @@ const mapApiPaymentRequestsToContributors = (paymentRequests: any) => {
 };
 
 export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
-  query GetProjectContributors($projectId: uuid) {
-    paymentRequests(where: { budget: { projectId: { _eq: $projectId } } }) {
-      reason
-      amountInUsd
-      recipient {
-        userId
-      }
-      githubRecipient {
-        login
-        avatarUrl
+  query GetProjectContributors($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
+      name
+      budgets {
+        paymentRequests {
+          reason
+          amountInUsd
+          recipient {
+            userId
+          }
+          githubRecipient {
+            login
+            avatarUrl
+          }
+        }
       }
     }
   }

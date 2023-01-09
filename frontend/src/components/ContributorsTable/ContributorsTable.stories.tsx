@@ -1,10 +1,11 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Contributors, { Contributor } from ".";
+import ContributorsTable from ".";
+import { Contributor } from ".";
 
 export default {
-  title: "Contributors",
-  component: Contributors,
-} as ComponentMeta<typeof Contributors>;
+  title: "ContributorsTable",
+  component: ContributorsTable,
+} as ComponentMeta<typeof ContributorsTable>;
 
 const mockContributors: Contributor[] = [
   {
@@ -30,6 +31,6 @@ const mockContributors: Contributor[] = [
   },
 ];
 
-const Template: ComponentStory<typeof Contributors> = () => <Contributors contributors={mockContributors} />;
+const Template: ComponentStory<typeof ContributorsTable> = () => <ContributorsTable contributors={mockContributors} />;
 
 export const Default = Template.bind({});
