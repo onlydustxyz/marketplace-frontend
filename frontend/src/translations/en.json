@@ -47,7 +47,8 @@
       "sent": "Payment request sent!",
       "submit": "Submit payment",
       "thisPayment": "This payment",
-      "totalBudget": "Total budget"
+      "totalBudget": "Total budget",
+      "invalidPRLink": "Invalid input, not a link to a github pull request"
     },
     "list": "List payments",
     "status": {
