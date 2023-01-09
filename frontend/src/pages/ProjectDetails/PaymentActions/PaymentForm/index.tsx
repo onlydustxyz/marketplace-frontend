@@ -13,6 +13,8 @@ import { debounce } from "lodash";
 
 const DEFAULT_NUMBER_OF_DAYS = 2;
 
+const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /https:\/\/github\.com\/([\w-]+)\/([\w-]+)\/pull\/\d+/g;
+
 interface PaymentFormProps {
   project: {
     id: string;
@@ -108,7 +110,10 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ project }) => {
                     label={T("payment.form.linkToIssue")}
                     name="linkToIssue"
                     placeholder=""
-                    options={{ required: T("form.required") }}
+                    options={{
+                      required: T("form.required"),
+                      pattern: { value: REGEX_VALID_GITHUB_PULL_REQUEST_URL, message: T("payment.form.invalidPRLink") },
+                    }}
                   />
                 </div>
               </div>

@@ -68,7 +68,7 @@ const graphQlMocks = [
         projectId: "test-project-id",
         amount: 1000,
         contributorId: TEST_USER.githubUser.githubUserId,
-        reason: { workItems: ["test-link-name"] },
+        reason: { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] },
       },
     },
     result: {
@@ -114,7 +114,10 @@ describe('"PaymentForm" component', () => {
   });
 
   it("should be able to request payment when required info is filled and go back to project overview", async () => {
-    await userEvent.type(await screen.findByLabelText(/link to github issue/i), "test-link-name");
+    await userEvent.type(
+      await screen.findByLabelText(/link to github issue/i),
+      "https://github.com/onlydustxyz/marketplace/pull/504"
+    );
     await userEvent.type(await screen.findByLabelText(/recipient/i), TEST_USER.displayName);
     await waitFor(() => {
       expect(graphQlMocks[0].newData).toHaveBeenCalledTimes(1);
@@ -128,10 +131,23 @@ describe('"PaymentForm" component', () => {
   });
 
   it("should display an error when the github username is invalid", async () => {
-    await userEvent.type(await screen.findByLabelText(/link to github issue/i), "test-link-name");
+    await userEvent.type(
+      await screen.findByLabelText(/link to github issue/i),
+      "https://github.com/onlydustxyz/marketplace/pull/504"
+    );
     await userEvent.type(await screen.findByLabelText(/recipient/i), "invalid-username");
     await waitFor(() => {
       const errorMessages = screen.getAllByText(/invalid github login/i);
+      expect(errorMessages.length).toBe(1);
+    });
+  });
+
+  it("should display an error when the reason is not a valid link to a github issue", async () => {
+    await userEvent.type(await screen.findByLabelText(/link to github issue/i), "not-a-link");
+    await userEvent.type(await screen.findByLabelText(/recipient/i), TEST_USER.displayName);
+    await userEvent.click(await screen.findByText(/confirm payment/i));
+    await waitFor(() => {
+      const errorMessages = screen.getAllByText(/invalid input, not a link to a github pull request/i);
       expect(errorMessages.length).toBe(1);
     });
   });
