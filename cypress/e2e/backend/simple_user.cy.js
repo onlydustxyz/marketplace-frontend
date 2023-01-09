@@ -60,7 +60,7 @@ describe("As a simple user, I", () => {
     it("can get payment request as the recipient", () => {
         const githubUserId = newRandomGithubUserId();
 
-        cy.requestPayment(projectId, 500, githubUserId, {})
+        cy.requestPayment(projectId, 500, githubUserId, {workItems: "https://github.com/onlydustxyz/marketplace/pull/504"})
             .asRegisteredUser(leader)
             .data("requestPayment")
             .then((requestId) => {
@@ -96,7 +96,7 @@ describe("As a simple user, I", () => {
 
     it("can't request a payment", () => {
         cy.createGithubUser(28464353).then((user) => {
-            cy.requestPayment(budgetId, 500, 55000, {})
+            cy.requestPayment(budgetId, 500, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
                 .asRegisteredUser(user)
                 .errors()
                 .its(0)

@@ -109,6 +109,8 @@ impl Mutation {
 			));
 		}
 
+		reason.is_valid().map_err(|e| Error::InvalidRequest(e.into()))?;
+
 		let payment_request_id = context
 			.request_payment_usecase
 			.request(

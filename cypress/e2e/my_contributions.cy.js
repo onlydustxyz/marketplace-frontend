@@ -8,7 +8,7 @@ describe("As a contributor, I", () => {
         cy.createProjectWithLeader(user, "Project with budget", 1000, 493591124)
           .then(projectId => {
             cy.waitEvents();
-            cy.requestPayment(projectId, 200, CONTRIBUTOR_GITHUB_ID, {}).asRegisteredUser(user).data()
+            cy.requestPayment(projectId, 200, CONTRIBUTOR_GITHUB_ID, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] }).asRegisteredUser(user).data()
           });
       });
 
