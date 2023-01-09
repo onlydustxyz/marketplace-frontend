@@ -181,7 +181,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                                 </div>
                               ) : (
                                 <CheckMark
-                                  className={`h-5 w-5 ${
+                                  className={`fill-gray-200 h-5 w-5 ${
                                     projectFromDropdown.id === projectId ? "opacity-100" : "opacity-0"
                                   }`}
                                 />
