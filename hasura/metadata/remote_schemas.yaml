@@ -109,8 +109,8 @@
           }
           type Query {
             fetchRepositoryDetails(id: Int!): Repository!
-            helloFromGithubProxy: String!
             fetchUserDetailsById(userId: Int!): User!
+            helloFromGithubProxy: String!
           }
           type Repository {
             contributors: [User!]!
@@ -150,9 +150,9 @@
           }
           type Query {
             fetchRepositoryDetails(id: Int!): Repository!
-            fetchUserDetailsById(userId: Int!): User!
             fetchRepositoryPRs(id: Int!): [PullRequest!]!
             fetchUserDetails(username: String!): User!
+            fetchUserDetailsById(userId: Int!): User!
           }
           type Repository {
             contributors: [User!]!

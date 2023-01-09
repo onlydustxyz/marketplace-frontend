@@ -56,7 +56,14 @@ const graphQlMocks = [
     },
     result: {
       data: {
-        paymentRequests: [mockPaymentRequest, mockPaymentRequest, mockPaymentRequest2],
+        projectsByPk: {
+          name: "test-project",
+          budgets: [
+            {
+              paymentRequests: [mockPaymentRequest, mockPaymentRequest, mockPaymentRequest2],
+            },
+          ],
+        },
       },
     },
   },

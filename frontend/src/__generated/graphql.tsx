@@ -131,10 +131,22 @@ export type Budgets = {
   __typename?: "Budgets";
   id: Scalars["uuid"];
   initialAmount: Maybe<Scalars["numeric"]>;
+  /** An array relationship */
+  paymentRequests: Array<PaymentRequests>;
   /** An object relationship */
   project: Maybe<Projects>;
   projectId: Maybe<Scalars["uuid"]>;
   remainingAmount: Maybe<Scalars["numeric"]>;
+};
+
+
+/** columns and relationships of "budgets" */
+export type BudgetsPaymentRequestsArgs = {
+  distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
+  orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
+  where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
 /** order by aggregate values of table "budgets" */
@@ -159,6 +171,7 @@ export type BudgetsBoolExp = {
   _or: InputMaybe<Array<BudgetsBoolExp>>;
   id: InputMaybe<UuidComparisonExp>;
   initialAmount: InputMaybe<NumericComparisonExp>;
+  paymentRequests: InputMaybe<PaymentRequestsBoolExp>;
   project: InputMaybe<ProjectsBoolExp>;
   projectId: InputMaybe<UuidComparisonExp>;
   remainingAmount: InputMaybe<NumericComparisonExp>;
@@ -168,6 +181,7 @@ export type BudgetsBoolExp = {
 export type BudgetsOrderBy = {
   id: InputMaybe<OrderBy>;
   initialAmount: InputMaybe<OrderBy>;
+  paymentRequestsAggregate: InputMaybe<PaymentRequestsAggregateOrderBy>;
   project: InputMaybe<ProjectsOrderBy>;
   projectId: InputMaybe<OrderBy>;
   remainingAmount: InputMaybe<OrderBy>;
@@ -399,6 +413,21 @@ export type PaymentRequestsPaymentsArgs = {
 /** columns and relationships of "payment_requests" */
 export type PaymentRequestsReasonArgs = {
   path: InputMaybe<Scalars["String"]>;
+};
+
+/** order by aggregate values of table "payment_requests" */
+export type PaymentRequestsAggregateOrderBy = {
+  avg: InputMaybe<Payment_Requests_Avg_Order_By>;
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<Payment_Requests_Max_Order_By>;
+  min: InputMaybe<Payment_Requests_Min_Order_By>;
+  stddev: InputMaybe<Payment_Requests_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Payment_Requests_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Payment_Requests_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Payment_Requests_Sum_Order_By>;
+  var_pop: InputMaybe<Payment_Requests_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Payment_Requests_Var_Samp_Order_By>;
+  variance: InputMaybe<Payment_Requests_Variance_Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "payment_requests". All fields are combined with a logical 'AND'. */
@@ -1398,6 +1427,48 @@ export type Mutation_RootUpdateUsersManyArgs = {
   updates: Array<UsersUpdates>;
 };
 
+/** order by avg() on columns of table "payment_requests" */
+export type Payment_Requests_Avg_Order_By = {
+  amountInUsd: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "payment_requests" */
+export type Payment_Requests_Max_Order_By = {
+  amountInUsd: InputMaybe<OrderBy>;
+  budgetId: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+  requestorId: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "payment_requests" */
+export type Payment_Requests_Min_Order_By = {
+  amountInUsd: InputMaybe<OrderBy>;
+  budgetId: InputMaybe<OrderBy>;
+  id: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+  requestorId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "payment_requests" */
+export type Payment_Requests_Stddev_Order_By = {
+  amountInUsd: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "payment_requests" */
+export type Payment_Requests_Stddev_Pop_Order_By = {
+  amountInUsd: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "payment_requests" */
+export type Payment_Requests_Stddev_Samp_Order_By = {
+  amountInUsd: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+};
+
 /** Streaming cursor of the table "payment_requests" */
 export type Payment_Requests_StreamCursorInput = {
   /** Stream column input with initial value */
@@ -1414,6 +1485,30 @@ export type Payment_Requests_StreamCursorValueInput = {
   reason: InputMaybe<Scalars["jsonb"]>;
   recipientId: InputMaybe<Scalars["bigint"]>;
   requestorId: InputMaybe<Scalars["uuid"]>;
+};
+
+/** order by sum() on columns of table "payment_requests" */
+export type Payment_Requests_Sum_Order_By = {
+  amountInUsd: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "payment_requests" */
+export type Payment_Requests_Var_Pop_Order_By = {
+  amountInUsd: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "payment_requests" */
+export type Payment_Requests_Var_Samp_Order_By = {
+  amountInUsd: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "payment_requests" */
+export type Payment_Requests_Variance_Order_By = {
+  amountInUsd: InputMaybe<OrderBy>;
+  recipientId: InputMaybe<OrderBy>;
 };
 
 /** order by avg() on columns of table "payments" */
@@ -1592,7 +1687,7 @@ export type Query_Root = {
   /** fetch data from the table: "github_repo_details" using primary key columns */
   githubRepoDetailsByPk: Maybe<GithubRepoDetails>;
   hello: Scalars["String"];
-  /** fetch data from the table: "payment_requests" */
+  /** An array relationship */
   paymentRequests: Array<PaymentRequests>;
   /** fetch data from the table: "payment_requests" using primary key columns */
   paymentRequestsByPk: Maybe<PaymentRequests>;
@@ -1832,7 +1927,7 @@ export type Subscription_Root = {
   githubRepoDetailsByPk: Maybe<GithubRepoDetails>;
   /** fetch data from the table in a streaming manner: "github_repo_details" */
   githubRepoDetailsStream: Array<GithubRepoDetails>;
-  /** fetch data from the table: "payment_requests" */
+  /** An array relationship */
   paymentRequests: Array<PaymentRequests>;
   /** fetch data from the table: "payment_requests" using primary key columns */
   paymentRequestsByPk: Maybe<PaymentRequests>;
@@ -2408,11 +2503,11 @@ export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 export type ProfileQuery = { __typename?: "query_root", userInfo: Array<{ __typename?: "UserInfo", userId: any, identity: any, email: string, location: any, payoutSettings: any }> };
 
 export type GetProjectContributorsQueryVariables = Exact<{
-  projectId: InputMaybe<Scalars["uuid"]>;
+  projectId: Scalars["uuid"];
 }>;
 
 
-export type GetProjectContributorsQuery = { __typename?: "query_root", paymentRequests: Array<{ __typename?: "PaymentRequests", reason: any, amountInUsd: any, recipient: { __typename?: "AuthGithubUsers", userId: any | null } | null, githubRecipient: { __typename?: "User", login: string, avatarUrl: string } }> };
+export type GetProjectContributorsQuery = { __typename?: "query_root", projectsByPk: { __typename?: "Projects", name: string, budgets: Array<{ __typename?: "Budgets", paymentRequests: Array<{ __typename?: "PaymentRequests", reason: any, amountInUsd: any, recipient: { __typename?: "AuthGithubUsers", userId: any | null } | null, githubRecipient: { __typename?: "User", login: string, avatarUrl: string } }> }> } | null };
 
 export type RequestPaymentMutationVariables = Exact<{
   amount: Scalars["Int"];
@@ -2749,16 +2844,21 @@ export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
 export const GetProjectContributorsDocument = gql`
-    query GetProjectContributors($projectId: uuid) {
-  paymentRequests(where: {budget: {projectId: {_eq: $projectId}}}) {
-    reason
-    amountInUsd
-    recipient {
-      userId
-    }
-    githubRecipient {
-      login
-      avatarUrl
+    query GetProjectContributors($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    name
+    budgets {
+      paymentRequests {
+        reason
+        amountInUsd
+        recipient {
+          userId
+        }
+        githubRecipient {
+          login
+          avatarUrl
+        }
+      }
     }
   }
 }
@@ -2780,7 +2880,7 @@ export const GetProjectContributorsDocument = gql`
  *   },
  * });
  */
-export function useGetProjectContributorsQuery(baseOptions?: Apollo.QueryHookOptions<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>) {
+export function useGetProjectContributorsQuery(baseOptions: Apollo.QueryHookOptions<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>(GetProjectContributorsDocument, options);
       }

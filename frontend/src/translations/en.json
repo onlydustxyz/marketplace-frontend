@@ -9,6 +9,10 @@
       "paidContributions": "Paid contributions",
       "leftToPay": "Left to Pay",
       "userRegisteredTooltip": "User has linked their OnlyDust profile"
+    },
+    "tableFallback": {
+      "noContributor": "No one has contributed to __projectName__ yet",
+      "relevantProfiles": "Relevant profiles will appear here"
     }
   },
   "form": {
