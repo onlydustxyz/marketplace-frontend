@@ -1,7 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
 import Table from "../Table";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
-import ExternalLink from "src/assets/icons/ExternalLink";
 import HeaderLine from "../Table/HeaderLine";
 import HeaderCell from "../Table/HeaderCell";
 import Line from "../Table/Line";
@@ -12,6 +11,7 @@ import SortingArrow from "./SortingArrow";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";
 import CheckLine from "src/icons/CheckLine";
+import ExternalLinkLine from "src/icons/ExternalLinkLine";
 
 type PropsType = {
   contributors: Contributor[];
@@ -106,7 +106,7 @@ const renderContributors = (contributors: Contributor[]) => {
             </div>
           )}
         </div>
-        <ExternalLink className="h-3 fill-fuchsia-700 invisible group-hover/line:visible" />
+        <ExternalLinkLine className="text-fuchsia-700 invisible group-hover/line:visible" />
       </Cell>
       <Cell>{`${contributor.totalEarned || "-"} $`}</Cell>
       <Cell>{contributor.paidContributions || "-"}</Cell>
