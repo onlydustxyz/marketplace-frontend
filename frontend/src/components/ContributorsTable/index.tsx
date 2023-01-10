@@ -4,13 +4,13 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import ContributorIcon from "src/assets/icons/Contributor";
 import CheckMark from "src/assets/icons/CheckMark";
 import ExternalLink from "src/assets/icons/ExternalLink";
-import DownArrow from "src/assets/icons/DownArrow";
 import HeaderLine from "../Table/HeaderLine";
 import HeaderCell from "../Table/HeaderCell";
 import Line from "../Table/Line";
 import Cell from "../Table/Cell";
 import { useEffect, useState } from "react";
 import _ from "lodash";
+import SortingArrow from "./SortingArrow";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 
 type PropsType = {
@@ -58,25 +58,25 @@ const ContributorsTable: React.FC<PropsType> = ({ contributors }) => {
 const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) => {
   const { T } = useIntl();
 
-  const sortingArrowClassName = (field: Field) =>
-    `${sorting.field === field ? "visible" : "invisible"} ${sorting.ascending && "rotate-180"}`;
-
   return (
     <HeaderLine>
       <HeaderCell onClick={() => applySorting(Field.Login)}>
         <ContributorIcon className="p-px h-4 w-4" />
         <span>{T("contributor.table.contributor")}</span>
-        <DownArrow className={`p-px h-4 w-4 fill-fuchsia-700 ${sortingArrowClassName(Field.Login)}`} />
+        <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Login} />
       </HeaderCell>
       <HeaderCell onClick={() => applySorting(Field.TotalEarned)}>
         <MoneyDollarCircleLine className="p-px font-normal" />
         <span>{T("contributor.table.totalEarned")}</span>
-        <DownArrow className={`p-px h-4 w-4 fill-fuchsia-700 ${sortingArrowClassName(Field.TotalEarned)}`} />
+        <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.TotalEarned} />
       </HeaderCell>
       <HeaderCell onClick={() => applySorting(Field.PaidContributions)}>
         <CheckMark className="p-px h-4 w-4" />
         <span>{T("contributor.table.paidContributions")}</span>
-        <DownArrow className={`p-px h-4 w-4 fill-fuchsia-700 ${sortingArrowClassName(Field.PaidContributions)}`} />
+        <SortingArrow
+          direction={sorting.ascending ? "up" : "down"}
+          visible={sorting.field === Field.PaidContributions}
+        />
       </HeaderCell>
     </HeaderLine>
   );
