@@ -11,7 +11,7 @@ const Line: React.FC<Props> = ({ className, children, link }) => {
   return (
     <tr
       onClick={link ? linkClickHandlerFactory(link) : undefined}
-      className={`group/line border-b border-gray-800 ${link && "hover:bg-white/5"} ${className}`}
+      className={`group/line border-b border-gray-800 ${link && "hover:bg-white/5 cursor-pointer"} ${className}`}
     >
       {children}
     </tr>
