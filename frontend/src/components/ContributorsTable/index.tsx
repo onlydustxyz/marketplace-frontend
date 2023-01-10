@@ -1,7 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
 import Table from "../Table";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
-import ContributorIcon from "src/assets/icons/Contributor";
 import CheckMark from "src/assets/icons/CheckMark";
 import ExternalLink from "src/assets/icons/ExternalLink";
 import HeaderLine from "../Table/HeaderLine";
@@ -12,6 +11,7 @@ import { useEffect, useState } from "react";
 import _ from "lodash";
 import SortingArrow from "./SortingArrow";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
+import User3Line from "src/icons/User3Line";
 
 type PropsType = {
   contributors: Contributor[];
@@ -61,7 +61,7 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
   return (
     <HeaderLine>
       <HeaderCell onClick={() => applySorting(Field.Login)}>
-        <ContributorIcon className="p-px h-4 w-4" />
+        <User3Line className="p-px font-normal" />
         <span>{T("contributor.table.contributor")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Login} />
       </HeaderCell>
