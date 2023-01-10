@@ -133,39 +133,39 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
             )}
             <div className="flex flex-col gap-8 divide-y divide-neutral-700">
               <Listbox value={project} onChange={onChangeProjectFromDropdown}>
-                <div className="flex flex-col gap-3">
-                  <Listbox.Button className="border-2 rounded-2xl hover:cursor-pointer p-3 font-medium text-2xl border-neutral-700">
+                <div className="flex flex-col border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700">
+                  <Listbox.Button className="hover:cursor-pointer p-4 font-medium text-2xl">
                     <div className="flex flex-row gap-3 items-center">
-                      <div className="border-4 border-neutral-600 p-2 rounded-xl">
-                        <img className="w-8 " src={logoUrl} alt="Project Logo" />
-                      </div>
+                      <img
+                        className="outline outline-2 outline-neutral-600 outline-offset-0 rounded-xl w-8 h-8"
+                        src={logoUrl}
+                        alt="Project Logo"
+                      />
                       <div className="truncate flex-1">{project.name}</div>
                       <UpDownChevrons className="h-5 w-5 fill-gray-400" />
                     </div>
                   </Listbox.Button>
-                  <Listbox.Options className="flex flex-col border-2 border-neutral-700 divide-y rounded-2xl">
+                  <Listbox.Options className="flex flex-col divide-y">
                     {projects.map(projectFromDropdown => (
                       <Listbox.Option
                         key={projectFromDropdown.id}
                         value={projectFromDropdown}
-                        className={`hover:cursor-pointer p-3 hover:bg-neutral-800 border-neutral-600 duration-300 last:rounded-b-lg ${
+                        className={`hover:cursor-pointer p-4 hover:bg-neutral-800 border-neutral-600 duration-300 last:rounded-b-lg ${
                           hasProjectInvitation(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) &&
                           "bg-amber-700/20  hover:bg-amber-700/30"
                         } `}
                       >
                         <div className="flex flex-col gap-5">
                           <div className="flex flex-row gap-5 items-center">
-                            <div className="border-4 border-neutral-600 p-2 rounded-2xl flex-none">
-                              <img
-                                className="w-8"
-                                src={
-                                  projectFromDropdown?.projectDetails?.logoUrl ||
-                                  projectFromDropdown?.githubRepo?.content?.logoUrl ||
-                                  onlyDustLogo
-                                }
-                                alt="Project Logo"
-                              />
-                            </div>
+                            <img
+                              className="outline outline-2 outline-neutral-600 outline-offset-0 rounded-xl flex-none w-10 h-10"
+                              src={
+                                projectFromDropdown?.projectDetails?.logoUrl ||
+                                projectFromDropdown?.githubRepo?.content?.logoUrl ||
+                                onlyDustLogo
+                              }
+                              alt="Project Logo"
+                            />
                             <div className="flex flex-col justify-self-start truncate">
                               <div className="truncate text-xl font-medium">{projectFromDropdown.name}</div>
                               <div className="truncate text-lg font-regular text-neutral-500">
