@@ -2,7 +2,6 @@ import { useIntl } from "src/hooks/useIntl";
 import Table from "../Table";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import ContributorIcon from "src/assets/icons/Contributor";
-import Dollar from "src/assets/icons/Dollar";
 import CheckMark from "src/assets/icons/CheckMark";
 import ExternalLink from "src/assets/icons/ExternalLink";
 import DownArrow from "src/assets/icons/DownArrow";
@@ -12,6 +11,7 @@ import Line from "../Table/Line";
 import Cell from "../Table/Cell";
 import { useEffect, useState } from "react";
 import _ from "lodash";
+import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 
 type PropsType = {
   contributors: Contributor[];
@@ -69,7 +69,7 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
         <DownArrow className={`p-px h-4 w-4 fill-fuchsia-700 ${sortingArrowClassName(Field.Login)}`} />
       </HeaderCell>
       <HeaderCell onClick={() => applySorting(Field.TotalEarned)}>
-        <Dollar className="p-px h-4 w-4" />
+        <MoneyDollarCircleLine className="p-px font-normal" />
         <span>{T("contributor.table.totalEarned")}</span>
         <DownArrow className={`p-px h-4 w-4 fill-fuchsia-700 ${sortingArrowClassName(Field.TotalEarned)}`} />
       </HeaderCell>
