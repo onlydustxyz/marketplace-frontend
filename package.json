@@ -35,6 +35,7 @@
     "react-router-dom": "^6.4.3",
     "react-use": "^17.4.0",
     "remark-gfm": "^3.0.1",
+    "remixicon": "^2.5.0",
     "storybook-addon-react-router-v6": "^0.2.1",
     "talkr": "^3.3.8"
   },
