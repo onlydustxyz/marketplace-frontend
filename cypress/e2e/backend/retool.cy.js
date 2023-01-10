@@ -7,7 +7,7 @@ describe("As an admin, on retool, I", () => {
             cy.createProjectWithLeader(user, projectName, 500, STARKONQUEST_ID)
                 .then((projectId) => {
                     // Let the event sourcing magic happen
-                    cy.wait(700);
+                    cy.waitEvents();
 
                     cy.graphql({ query: `{
                     projectsByPk(id: "${projectId}") {
@@ -75,7 +75,7 @@ describe("As an admin, on retool, I", () => {
             cy
                 .createProjectWithLeader(user, "Another project", 500)
                 .then((projectId) => {
-                    cy.wait(700);
+                    cy.waitEvents();
                     cy
                         .updateProject(projectId, "new description")
                         .asAdmin()
@@ -106,13 +106,13 @@ describe("As an admin, on retool, I", () => {
             cy
                 .createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
                 .then((projectId) => {
-                    cy.wait(700);
+                    cy.waitEvents();
                     cy
                         .updateProjectGithubRepoId(projectId, SECOND_REPO_ID)
                         .asAdmin()
                         .data()
                         .then(() => {
-                            cy.wait(700);
+                            cy.waitEvents();
                             cy
                                 .graphql({ query: `{
                                     projectsByPk(id: "${projectId}") {
@@ -144,7 +144,7 @@ describe("As an admin, on retool, I", () => {
             cy
                 .createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
                 .then((projectId) => {
-                    cy.wait(700);
+                    cy.waitEvents();
                         cy.updateProjectGithubRepoId(projectId, UNEXISTING_REPO_ID)
                             .asAdmin().errors().its(0).its("extensions.reason").should("equal", "Github repository 2147466666 does not exist");
                 })
@@ -159,7 +159,7 @@ describe("As an admin, on retool, I", () => {
             .asAdmin()
             .data("createProject")
             .then((projectId) => {
-                cy.wait(700);
+                cy.waitEvents();
                 cy.createGithubUser(98765).then((user) => {
                     cy.inviteProjectLeader(projectId, user.githubUserId)
                     .asAdmin()
@@ -171,7 +171,7 @@ describe("As an admin, on retool, I", () => {
                         .data("acceptProjectLeaderInvitation")
                         .should("be.true")
                         .then(() => {
-                            cy.wait(700);
+                            cy.waitEvents();
                             cy
                             .graphql({ query: `{
                                 projectsByPk(id: "${projectId}") {
@@ -199,14 +199,14 @@ describe("As an admin, on retool, I", () => {
             cy
                 .createProjectWithLeader(user, "Another project", 500, STARKONQUEST_ID)
                 .then((projectId) => {
-                    cy.wait(700);
+                    cy.waitEvents();
                     cy
                         .unassignProjectLead(projectId, user.id)
                         .asAdmin()
                         .data("unassignProjectLead")
                         .should("equal", true)
                         .then(() => {
-                            cy.wait(700);
+                            cy.waitEvents();
                             cy
                                 .graphql({ query: `{
                                     projectsByPk(id: "${projectId}") {

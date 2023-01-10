@@ -7,7 +7,7 @@ describe("As a contributor, I", () => {
       .then(user => {
         cy.createProjectWithLeader(user, "Project with budget", 1000, 493591124)
           .then(projectId => {
-            cy.wait(700);
+            cy.waitEvents();
             cy.requestPayment(projectId, 200, CONTRIBUTOR_GITHUB_ID, {}).asRegisteredUser(user).data()
           });
       });

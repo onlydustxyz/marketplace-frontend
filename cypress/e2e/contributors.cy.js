@@ -7,7 +7,7 @@ describe("As a public user, I", () => {
       .then(user => {
         cy.createProjectWithLeader(user, "Project with budget", 1000, 493591124)
           .as("projectId").then(projectId => {
-            cy.wait(700);
+            cy.waitEvents();
             cy.requestPayment(projectId, 100, OFUX, { workItems: ["pr_link", "pr_link"] }).asRegisteredUser(user).data("requestPayment");
             cy.requestPayment(projectId, 100, OFUX, { workItems: ["pr_link"] }).asRegisteredUser(user).data("requestPayment");
             cy.requestPayment(projectId, 500, ANTHO, { workItems: ["pr_link"] }).asRegisteredUser(user).data("requestPayment");

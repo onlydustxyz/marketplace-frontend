@@ -8,7 +8,7 @@ describe("A project without readme", () => {
       .then(user => {
         cy.createProjectWithLeader(user, "Project with budget", 1000, GITHUB_REPO_ID_WITHOUT_README)
           .as("projectId");
-        cy.wait(500);
+        cy.waitEvents();
         cy.signinUser(user)
           .then(user => JSON.stringify(user.session))
           .as("token");
@@ -31,7 +31,7 @@ describe("A project", () => {
       .then(user => {
         cy.createProjectWithLeader(user, "Starkonquest", 1000, STARKONQUEST_ID)
           .as("projectId");
-        cy.wait(500);
+        cy.waitEvents();
       });
   });
 
@@ -47,7 +47,7 @@ describe("An empty project", () => {
         .then(user => {
           cy.createProjectWithLeader(user, "Project with budget", 1000, GITHUB_REPO_ID_EMPTY_REPO)
             .as("projectId");
-          cy.wait(500);
+          cy.waitEvents();
           cy.signinUser(user)
             .then(user => JSON.stringify(user.session))
             .as("token");
