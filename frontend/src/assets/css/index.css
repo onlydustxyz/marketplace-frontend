@@ -17,10 +17,6 @@
 
   body {
     @apply text-white;
-
-    background: url("src/assets/img/bg.jpeg") fixed top center;
-    background-image: -webkit-image-set(url("src/assets/img/bg.jpeg") 1x);
-    background-image: image-set(url("src/assets/img/bg.jpeg") 1x);
   }
 
   .header {

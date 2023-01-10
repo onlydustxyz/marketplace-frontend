@@ -14,9 +14,11 @@ const Profile: React.FC = () => {
   });
 
   return (
-    <div className="container mx-auto pb-10 mt-10">
-      <div className="text-3xl font-alfreda mb-6">Edit profile</div>
-      <QueryWrapper query={query}>{query.data && <ProfileForm user={query.data.userInfo[0]} />}</QueryWrapper>
+    <div className="bg-space">
+      <div className="container mx-auto pt-6">
+        <div className="text-4xl font-alfreda mb-6">Edit profile</div>
+        <QueryWrapper query={query}>{query.data && <ProfileForm user={query.data.userInfo[0]} />}</QueryWrapper>
+      </div>
     </div>
   );
 };

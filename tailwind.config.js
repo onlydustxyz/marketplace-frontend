@@ -7,6 +7,9 @@ module.exports = {
       colors: {
         chineseBlack: "#110C1F",
       },
+      backgroundImage: {
+        space: "url('src/assets/img/bg.jpeg')",
+      },
     },
   },
 
