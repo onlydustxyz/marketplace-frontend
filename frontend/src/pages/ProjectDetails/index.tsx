@@ -132,7 +132,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                 {T("project.details.sidebar.backToProjects")}
               </BackLink>
             )}
-            <div className="flex flex-col gap-8 divide-y divide-neutral-700">
+            <div className="flex flex-col gap-6 divide-y divide-neutral-700">
               <Listbox value={project} onChange={onChangeProjectFromDropdown}>
                 <div className="flex flex-col border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700">
                   <Listbox.Button className="hover:cursor-pointer p-4 font-medium text-2xl">
@@ -164,9 +164,9 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                               className="w-10 h-10"
                             />
                             <div className="flex flex-col justify-self-start truncate">
-                              <div className="truncate text-xl font-medium">{projectFromDropdown.name}</div>
-                              <div className="truncate text-lg font-regular text-neutral-500">
-                                {projectFromDropdown.githubRepo?.content?.contributors?.length}{" "}
+                              <div className="truncate text-base font-medium">{projectFromDropdown.name}</div>
+                              <div className="truncate text-sm font-regular text-slate-400">
+                                {projectFromDropdown.githubRepo?.content?.contributors?.length ?? 0}{" "}
                                 {T("project.details.sidebar.contributors")}
                               </div>
                             </div>
@@ -196,11 +196,11 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                   </Listbox.Options>
                 </div>
               </Listbox>
-              <div className="flex flex-col align-start font-medium text-xl pt-8">
+              <div className="flex flex-col align-start font-medium text-xl pt-3 pb-2 gap-2">
                 {availableTabs.map((tab: ProjectDetailsTab) => (
                   <div
                     key={tab}
-                    className={`p-3 rounded-xl hover:cursor-pointer text-white ${
+                    className={`rounded-xl hover:cursor-pointer text-white text-base px-4 py-2.5 ${
                       selectedTab === tab ? "bg-neutral-800" : "text-neutral-400"
                     }`}
                     onClick={() => setSelectedTab(tab)}
