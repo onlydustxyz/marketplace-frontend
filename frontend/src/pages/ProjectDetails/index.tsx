@@ -31,6 +31,7 @@ import hasProjectInvitation from "src/utils/hasProjectInvitation";
 import BackLink from "src/components/BackLink";
 import Contributors from "./Contributors";
 import CheckLine from "src/icons/CheckLine";
+import RoundedImage from "src/components/RoundedImage";
 
 interface ProjectDetailsProps {
   onlyMine?: boolean;
@@ -136,11 +137,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                 <div className="flex flex-col border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700">
                   <Listbox.Button className="hover:cursor-pointer p-4 font-medium text-2xl">
                     <div className="flex flex-row gap-3 items-center">
-                      <img
-                        className="outline outline-2 outline-neutral-600 outline-offset-0 rounded-xl w-8 h-8"
-                        src={logoUrl}
-                        alt="Project Logo"
-                      />
+                      <RoundedImage src={logoUrl} alt="Project Logo" className="w-8 h-8" />
                       <div className="truncate flex-1">{project.name}</div>
                       <UpDownChevrons className="h-5 w-5 fill-gray-400" />
                     </div>
@@ -157,14 +154,14 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                       >
                         <div className="flex flex-col gap-5">
                           <div className="flex flex-row gap-5 items-center">
-                            <img
-                              className="outline outline-2 outline-neutral-600 outline-offset-0 rounded-xl flex-none w-10 h-10"
+                            <RoundedImage
                               src={
                                 projectFromDropdown?.projectDetails?.logoUrl ||
                                 projectFromDropdown?.githubRepo?.content?.logoUrl ||
                                 onlyDustLogo
                               }
                               alt="Project Logo"
+                              className="w-10 h-10"
                             />
                             <div className="flex flex-col justify-self-start truncate">
                               <div className="truncate text-xl font-medium">{projectFromDropdown.name}</div>
@@ -212,11 +209,11 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                   </div>
                 ))}
               </div>
-              <div className="flex flex-row gap-3 pt-8">
+              <div className="flex flex-row gap-2 pt-8">
+                {project?.projectDetails?.telegramLink && <TelegramLink link={project.projectDetails.telegramLink} />}
                 {project?.githubRepo?.owner && project?.githubRepo?.name && (
                   <GithubLink link={buildGithubLink(project.githubRepo.owner, project.githubRepo.name)} />
                 )}
-                {project?.projectDetails?.telegramLink && <TelegramLink link={project.projectDetails.telegramLink} />}
               </div>
             </div>
           </Sidebar>
