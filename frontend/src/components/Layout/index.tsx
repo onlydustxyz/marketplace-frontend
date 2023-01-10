@@ -10,7 +10,9 @@ export default function Layout() {
       </div>
       <div className="md:visible invisible">
         <Header />
-        <Outlet />
+        <div className="px-6 bg-black">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

@@ -25,53 +25,55 @@ export default function Projects() {
   );
 
   return (
-    <div className="container mx-auto pb-10 mt-10">
-      <div className="text-3xl font-alfreda">{T("navbar.projects")}</div>
-      <QueryWrapper<GetProjectsQuery> query={getProjectsQuery}>
-        <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
-          {getProjectsQuery.data &&
-            getProjectsQuery.data.projects.map(project => (
-              <Link
-                key={project.id}
-                className="flex w-11/12 my-3"
-                to={generatePath(RoutePaths.ProjectDetails, { projectId: project.id })}
-              >
-                <Card
-                  selectable={true}
-                  className={
-                    hasProjectInvitation(pendingProjectLeaderInvitationsQuery, project.id) ? "bg-amber-700/20" : ""
-                  }
+    <div className="bg-space">
+      <div className="container mx-auto pt-16">
+        <div className="text-5xl font-alfreda">{T("navbar.projects")}</div>
+        <QueryWrapper<GetProjectsQuery> query={getProjectsQuery}>
+          <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
+            {getProjectsQuery.data &&
+              getProjectsQuery.data.projects.map(project => (
+                <Link
+                  key={project.id}
+                  className="flex w-11/12 my-3"
+                  to={generatePath(RoutePaths.ProjectDetails, { projectId: project.id })}
                 >
-                  <div className="flex flex-col gap-5">
-                    <ProjectInformation
-                      name={project.name}
-                      details={{
-                        description: project?.projectDetails?.description,
-                        telegramLink: project?.projectDetails?.telegramLink,
-                        logoUrl: project.projectDetails?.logoUrl || project.githubRepo?.content.logoUrl,
-                      }}
-                      lead={project?.projectLeads?.[0]?.user}
-                      githubRepoInfo={{
-                        owner: project?.githubRepo?.owner,
-                        name: project?.githubRepo?.name,
-                        contributors: project?.githubRepo?.content?.contributors,
-                        languages: project?.githubRepo?.languages,
-                      }}
-                    />
-                    {hasProjectInvitation(pendingProjectLeaderInvitationsQuery, project.id) && (
-                      <div className="flex flex-row justify-between items-center font-medium p-5 text-lg rounded-xl bg-amber-700/30">
-                        <div>{T("project.projectLeadInvitation.prompt")}</div>
-                        <div className="w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-100 py-2 px-5 text-chineseBlack">
-                          {T("project.projectLeadInvitation.view")}
+                  <Card
+                    selectable={true}
+                    className={
+                      hasProjectInvitation(pendingProjectLeaderInvitationsQuery, project.id) ? "bg-amber-700/20" : ""
+                    }
+                  >
+                    <div className="flex flex-col gap-5">
+                      <ProjectInformation
+                        name={project.name}
+                        details={{
+                          description: project?.projectDetails?.description,
+                          telegramLink: project?.projectDetails?.telegramLink,
+                          logoUrl: project.projectDetails?.logoUrl || project.githubRepo?.content.logoUrl,
+                        }}
+                        lead={project?.projectLeads?.[0]?.user}
+                        githubRepoInfo={{
+                          owner: project?.githubRepo?.owner,
+                          name: project?.githubRepo?.name,
+                          contributors: project?.githubRepo?.content?.contributors,
+                          languages: project?.githubRepo?.languages,
+                        }}
+                      />
+                      {hasProjectInvitation(pendingProjectLeaderInvitationsQuery, project.id) && (
+                        <div className="flex flex-row justify-between items-center font-medium p-5 text-lg rounded-xl bg-amber-700/30">
+                          <div>{T("project.projectLeadInvitation.prompt")}</div>
+                          <div className="w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-100 py-2 px-5 text-chineseBlack">
+                            {T("project.projectLeadInvitation.view")}
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                </Card>
-              </Link>
-            ))}
-        </div>
-      </QueryWrapper>
+                      )}
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+          </div>
+        </QueryWrapper>
+      </div>
     </div>
   );
 }
