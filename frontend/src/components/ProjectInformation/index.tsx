@@ -1,10 +1,10 @@
 import onlyDustLogo from "assets/img/onlydust-logo.png";
-import CodeIcon from "src/assets/icons/Code";
 import { buildGithubLink, buildLanguageString } from "src/utils/stringUtils";
 import ProjectLead from "../LeadContributor";
 import { Contributor, LanguageMap } from "src/types";
 import TelegramLink from "../TelegramLink";
 import GithubLink from "../GithubLink";
+import CodeSSlashLine from "src/icons/CodeSSlashLine";
 
 interface ProjectInformationProps {
   name: string;
@@ -44,8 +44,8 @@ export default function ProjectInformation({ name, details, lead, githubRepoInfo
         </div>
         {githubRepoInfo?.languages && (
           <div className="flex flex-row border border-neutral-600 w-fit px-2 py-1 rounded-2xl gap-2 text-md">
-            <div>
-              <CodeIcon className="fill-gray-400" />
+            <div className="flex items-center justify-center">
+              <CodeSSlashLine className="text-gray-400" />
             </div>
             <div>{buildLanguageString(githubRepoInfo?.languages)}</div>
           </div>
