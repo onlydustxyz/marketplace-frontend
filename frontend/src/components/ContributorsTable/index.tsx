@@ -1,7 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
 import Table from "../Table";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
-import CheckMark from "src/assets/icons/CheckMark";
 import ExternalLink from "src/assets/icons/ExternalLink";
 import HeaderLine from "../Table/HeaderLine";
 import HeaderCell from "../Table/HeaderCell";
@@ -12,6 +11,7 @@ import _ from "lodash";
 import SortingArrow from "./SortingArrow";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";
+import CheckLine from "src/icons/CheckLine";
 
 type PropsType = {
   contributors: Contributor[];
@@ -71,7 +71,7 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.TotalEarned} />
       </HeaderCell>
       <HeaderCell onClick={() => applySorting(Field.PaidContributions)}>
-        <CheckMark className="p-px h-4 w-4" />
+        <CheckLine className="p-px font-normal" />
         <span>{T("contributor.table.paidContributions")}</span>
         <SortingArrow
           direction={sorting.ascending ? "up" : "down"}

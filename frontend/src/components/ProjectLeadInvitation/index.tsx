@@ -1,6 +1,6 @@
-import CheckMark from "src/assets/icons/CheckMark";
 import headerElementBackground from "src/assets/img/header-element-background.png";
 import Card from "src/components/Card";
+import CheckLine from "src/icons/CheckLine";
 import { useT } from "talkr";
 
 interface ProjectLeadInvitationProps {
@@ -22,7 +22,7 @@ export default function ProjectLeadInvitation({ projectName, onClick }: ProjectL
           onClick={onClick}
           className="flex flex-row justify-between items-center gap-5 w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-400 px-4 py-3 text-black hover:cursor-pointer"
         >
-          <CheckMark className="fill-black h-5 w-5" />
+          <CheckLine className="text-black font-normal text-xl" />
           <div>{T("projectLeadInvitation.accept")}</div>
         </div>
       </div>

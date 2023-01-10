@@ -1,4 +1,4 @@
-import { gql, QueryResult } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { useEffect, useMemo, useState } from "react";
 import { generatePath, useNavigate, useParams } from "react-router-dom";
 import { Listbox } from "@headlessui/react";
@@ -20,7 +20,6 @@ import Payments from "./PaymentActions";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import Sidebar from "src/components/Sidebar";
 import UpDownChevrons from "src/assets/icons/UpDownChevrons";
-import CheckMark from "src/assets/icons/CheckMark";
 import GithubLink from "src/components/GithubLink";
 import TelegramLink from "src/components/TelegramLink";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
@@ -31,6 +30,7 @@ import { RoutePaths } from "src/App";
 import hasProjectInvitation from "src/utils/hasProjectInvitation";
 import BackLink from "src/components/BackLink";
 import Contributors from "./Contributors";
+import CheckLine from "src/icons/CheckLine";
 
 interface ProjectDetailsProps {
   onlyMine?: boolean;
@@ -180,9 +180,9 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                                   <div>{T("project.details.sidebar.newInvite")}</div>
                                 </div>
                               ) : (
-                                <CheckMark
-                                  className={`fill-gray-200 h-5 w-5 ${
-                                    projectFromDropdown.id === projectId ? "opacity-100" : "opacity-0"
+                                <CheckLine
+                                  className={`text-gray-200 text-lg font-normal ${
+                                    projectFromDropdown.id !== projectId && "invisible"
                                   }`}
                                 />
                               )}
