@@ -4,7 +4,7 @@ describe("As a project lead, I", () => {
       .then(user => {
         cy.createProjectWithLeader(user, "Project with budget", 1000, 493591124)
           .as("projectId");
-        cy.wait(700);
+        cy.waitEvents();
         cy.signinUser(user)
           .then(user => JSON.stringify(user.session))
           .as("token");

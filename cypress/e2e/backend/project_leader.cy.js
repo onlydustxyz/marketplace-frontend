@@ -15,11 +15,12 @@ describe("As a project leader, I", () => {
 
     it("can request a payment from a project I lead", () => {
         cy.createGithubUser(55000).then((contributor) => {
+            cy.waitEvents();
             cy.requestPayment(projectId, 500, 55000, { workItems: ["http://link/to/pr"] })
                 .asRegisteredUser(leader)
                 .data("requestPayment")
                 .then((paymentId) => {
-                    cy.wait(500);
+                    cy.waitEvents();
                     cy.graphql({query: `{
                             paymentRequestsByPk(id: "${paymentId}") {
                       id
@@ -30,7 +31,7 @@ describe("As a project leader, I", () => {
                         .should("be.a", "string");
                 })
                 .then(() => {
-                    cy.wait(500);
+                    cy.waitEvents();
                     cy.graphql({
                         query: `
                         query($projectId: uuid!) {
