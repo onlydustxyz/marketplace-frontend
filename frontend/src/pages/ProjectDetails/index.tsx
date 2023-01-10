@@ -125,7 +125,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
   const component = (
     <>
       {project && projects && (
-        <div className="flex flex-row w-full gap-2 items-stretch p-5">
+        <div className="flex flex-row w-full gap-2 items-stretch">
           <Sidebar>
             {!onlyMine && (
               <BackLink to={RoutePaths.Projects} className="divide-none">
@@ -134,7 +134,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
             )}
             <div className="flex flex-col gap-6 divide-y divide-neutral-700">
               <Listbox value={project} onChange={onChangeProjectFromDropdown}>
-                <div className="flex flex-col border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700">
+                <div className="flex flex-col border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700 bg-white/[0.02]">
                   <Listbox.Button className="hover:cursor-pointer p-4 font-medium text-2xl">
                     <div className="flex flex-row gap-3 items-center">
                       <RoundedImage src={logoUrl} alt="Project Logo" className="w-8 h-8" />
@@ -147,7 +147,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                       <Listbox.Option
                         key={projectFromDropdown.id}
                         value={projectFromDropdown}
-                        className={`hover:cursor-pointer p-4 hover:bg-neutral-800 border-neutral-600 duration-300 last:rounded-b-lg ${
+                        className={`hover:cursor-pointer p-4 hover:bg-white/10 border-neutral-600 duration-300 last:rounded-b-2xl ${
                           hasProjectInvitation(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) &&
                           "bg-amber-700/20  hover:bg-amber-700/30"
                         } `}
@@ -201,7 +201,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                   <div
                     key={tab}
                     className={`rounded-xl hover:cursor-pointer text-white text-base px-4 py-2.5 ${
-                      selectedTab === tab ? "bg-neutral-800" : "text-neutral-400"
+                      selectedTab === tab ? "bg-white/[0.08]" : "text-neutral-400"
                     }`}
                     onClick={() => setSelectedTab(tab)}
                   >
@@ -217,7 +217,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
               </div>
             </div>
           </Sidebar>
-          <div className="bg-chineseBlack p-5 flex flex-col basis-4/5">
+          <div className="bg-space p-5 flex flex-col basis-4/5 rounded-r-2xl">
             {selectedTab === ProjectDetailsTab.Overview &&
               githubRepo?.content?.contributors &&
               projectId &&
