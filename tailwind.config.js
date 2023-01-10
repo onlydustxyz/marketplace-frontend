@@ -10,6 +10,9 @@ module.exports = {
       backgroundImage: {
         space: "url('src/assets/img/bg.jpeg')",
       },
+      backdropBlur: {
+        "4xl": "70px",
+      },
     },
   },
 
