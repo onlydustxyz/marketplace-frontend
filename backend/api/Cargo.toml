@@ -37,7 +37,6 @@ url = "2.2.2"
 juniper = {version = "0.15.10"}
 juniper_rocket = {version = "0.8.2"}
 rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
-schemars = {version = "0.8", features = ["uuid1", "bigdecimal"]}
 
 # Logs
 log = "0.4.17"
@@ -52,7 +51,6 @@ thiserror = "1.0.31"
 # Serde
 serde = {version = "1.0.137", features = ["derive"]}
 serde_json = {version = "1.0.81"}
-serdect = {version = "0.1.0", features = ["alloc"]}
 
 # Datetime
 chrono = "0.4"
@@ -76,8 +74,5 @@ olog = {path = "../common/olog"}
 async-std = {version = "1.12.0", features = ["attributes"]}
 lazy_static = "1.4.0"
 rstest = "0.15.0"
-serde_test = "1.0.140"
-testing = {path = "../common/testing"}
 mockall = "0.11.2"
-assert_matches = "1.5"
 mockall_double = "0.3.0"

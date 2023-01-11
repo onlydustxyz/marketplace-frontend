@@ -51,9 +51,3 @@ uuid = {version = "0.8.2", default_features = false, features = [
   "v4",
   "serde",
 ]}
-
-[dev-dependencies]
-# Unit tests
-async-std = {version = "1.12.0", features = ["attributes"]}
-rstest = "0.15.0"
-testing = {path = "../common/testing"}
