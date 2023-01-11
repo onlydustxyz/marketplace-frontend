@@ -64,6 +64,7 @@ describe("As a simple user, I", () => {
             .asRegisteredUser(leader)
             .data("requestPayment")
             .then((requestId) => {
+                cy.waitEvents()
                 cy.createGithubUser(githubUserId)
                     .then((user) => {
                         cy.graphql({
@@ -156,8 +157,11 @@ describe("As a simple user, I", () => {
         const GITHUB_REPO_ID_EMPTY_REPO = 584839416;
 
         cy.createGithubUser(28464353).then((user) => {
-          cy.createProjectWithLeader(user, "Project with budget", 1000, GITHUB_REPO_ID_EMPTY_REPO)
+          cy.createProject("Project with budget", 1000, GITHUB_REPO_ID_EMPTY_REPO)
+            .asAdmin()
+            .data("createProject")
             .then((projectId) => {
+            cy.waitEvents()
             cy.graphql({
                 query: `{
                 projectsByPk(id: "${projectId}") {
