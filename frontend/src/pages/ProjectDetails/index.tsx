@@ -236,6 +236,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                     githubRepo.content.readme?.content && decodeBase64ToString(githubRepo.content.readme.content)
                   }
                   lead={project?.projectLeads?.[0]?.user}
+                  totalSpentAmountInUsd={project?.totalSpentAmountInUsd}
                   githubRepoInfo={{
                     name: githubRepo.name,
                     owner: githubRepo.owner,
@@ -302,6 +303,7 @@ export const GET_PROJECT_PUBLIC_QUERY = gql`
   query GetPublicProject($id: uuid!) {
     projectsByPk(id: $id) {
       name
+      totalSpentAmountInUsd
       projectDetails {
         description
         telegramLink
@@ -325,6 +327,7 @@ export const GET_PROJECT_USER_QUERY = gql`
   query GetUserProject($id: uuid!) {
     projectsByPk(id: $id) {
       name
+      totalSpentAmountInUsd
       budgets {
         id
         initialAmount
