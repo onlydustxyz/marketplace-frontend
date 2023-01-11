@@ -125,7 +125,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
   const component = (
     <>
       {project && projects && (
-        <div className="flex flex-row w-full gap-2 items-stretch">
+        <div className="flex flex-row w-full gap-2 items-stretch min-h-screen">
           <Sidebar>
             {!onlyMine && (
               <BackLink to={RoutePaths.Projects} className="divide-none">
