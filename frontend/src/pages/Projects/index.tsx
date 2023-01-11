@@ -1,4 +1,6 @@
 import { gql } from "@apollo/client";
+import _ from "lodash";
+import { useEffect, useState } from "react";
 import { generatePath, Link } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Card from "src/components/Card";
@@ -24,14 +26,25 @@ export default function Projects() {
     { skip: !isLoggedIn }
   );
 
+  const [projects, setProjects] = useState(getProjectsQuery.data?.projects);
+
+  useEffect(() => {
+    setProjects(
+      _.sortBy(
+        getProjectsQuery.data?.projects,
+        project => !hasProjectInvitation(pendingProjectLeaderInvitationsQuery, project.id)
+      )
+    );
+  }, [isLoggedIn, getProjectsQuery.data, pendingProjectLeaderInvitationsQuery.data]);
+
   return (
     <div className="bg-space h-full">
       <div className="container mx-auto pt-16 h-full">
         <div className="text-5xl font-alfreda">{T("navbar.projects")}</div>
         <QueryWrapper<GetProjectsQuery> query={getProjectsQuery}>
           <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
-            {getProjectsQuery.data &&
-              getProjectsQuery.data.projects.map(project => (
+            {projects &&
+              projects.map(project => (
                 <Link
                   key={project.id}
                   className="flex w-11/12 my-3"
