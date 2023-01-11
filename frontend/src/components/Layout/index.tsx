@@ -8,9 +8,9 @@ export default function Layout() {
       <div className="md:invisible visible md:h-0">
         <ResponsivityFallback />
       </div>
-      <div className="md:visible invisible">
+      <div className="md:visible invisible h-screen flex flex-col">
         <Header />
-        <div className="px-6">
+        <div className="px-6 flex-1">
           <Outlet />
         </div>
       </div>

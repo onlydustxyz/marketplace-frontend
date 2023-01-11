@@ -25,8 +25,8 @@ export default function Projects() {
   );
 
   return (
-    <div className="bg-space">
-      <div className="container mx-auto pt-16 min-h-screen">
+    <div className="bg-space h-full">
+      <div className="container mx-auto pt-16 h-full">
         <div className="text-5xl font-alfreda">{T("navbar.projects")}</div>
         <QueryWrapper<GetProjectsQuery> query={getProjectsQuery}>
           <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
