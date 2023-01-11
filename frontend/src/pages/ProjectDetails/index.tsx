@@ -133,13 +133,13 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
               </BackLink>
             )}
             <div className="flex flex-col gap-6 divide-y divide-neutral-700 w-full">
-              <Listbox value={project} onChange={onChangeProjectFromDropdown}>
+              <Listbox value={project} onChange={onChangeProjectFromDropdown} disabled={!onlyMine}>
                 <div className="flex flex-col w-full border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700 bg-white/[0.02]">
-                  <Listbox.Button className="hover:cursor-pointer p-4 font-medium text-2xl">
+                  <Listbox.Button className={`p-4 font-medium text-2xl ${onlyMine ? "hover:cursor-pointer" : ""}`}>
                     <div className="flex flex-row gap-3 items-center">
                       <RoundedImage src={logoUrl} alt="Project Logo" className="object-cover w-8 h-8" />
                       <div className="truncate grow text-left">{project.name}</div>
-                      <UpDownChevrons className="h-5 w-5 fill-gray-400" />
+                      {onlyMine && <UpDownChevrons className="h-5 w-5 fill-gray-400" />}
                     </div>
                   </Listbox.Button>
                   <Listbox.Options className="flex flex-col divide-y">
