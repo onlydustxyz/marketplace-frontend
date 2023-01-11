@@ -39,9 +39,11 @@ export default function Projects() {
                 >
                   <Card
                     selectable={true}
-                    className={
-                      hasProjectInvitation(pendingProjectLeaderInvitationsQuery, project.id) ? "bg-amber-700/20" : ""
-                    }
+                    className={`bg-noise-light hover:bg-right ${
+                      hasProjectInvitation(pendingProjectLeaderInvitationsQuery, project.id)
+                        ? "bg-amber-700/20"
+                        : "bg-white/[0.02]"
+                    } `}
                   >
                     <div className="flex flex-col gap-5">
                       <ProjectInformation

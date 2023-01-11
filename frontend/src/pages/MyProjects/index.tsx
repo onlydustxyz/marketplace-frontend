@@ -45,7 +45,7 @@ function MyProjectContainer({ projectId }: MyProjectContainerProps) {
   return (
     <>
       {project && (
-        <Card selectable>
+        <Card selectable className="bg-noise-light bg-white/[0.02]">
           <ProjectInformation
             name={project.name}
             details={{
