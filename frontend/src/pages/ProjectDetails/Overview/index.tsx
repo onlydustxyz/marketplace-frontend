@@ -23,9 +23,9 @@ export default function Overview({ decodedReadme, lead, githubRepoInfo, children
     <div className="flex flex-col gap-8 mt-3">
       <div className="text-3xl font-alfreda">{T("project.details.overview.title")}</div>
       {children}
-      <div className="flex flex-row items-start gap-5">
+      <div className="flex gap-5">
         {decodedReadme && (
-          <div className="flex basis-3/4 flex-1">
+          <div className="basis-3/4">
             <Card>
               <div className="font-medium text-lg pb-4">{T("project.details.overview.readmeTitle")}</div>
               <ReactMarkdown skipHtml={true} remarkPlugins={[[remarkGfm]]} className="prose lg:prose-l prose-invert">
@@ -34,7 +34,7 @@ export default function Overview({ decodedReadme, lead, githubRepoInfo, children
             </Card>
           </div>
         )}
-        <div className="flex basis-1/4 flex-1">
+        <div className="basis-1/4">
           <Card>
             <div className="flex flex-col gap-3">
               {githubRepoInfo?.languages && (

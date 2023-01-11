@@ -125,20 +125,20 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
   const component = (
     <>
       {project && projects && (
-        <div className="flex flex-row w-full gap-2 items-stretch h-full">
+        <div className="flex flex-1 w-full gap-2 h-full">
           <Sidebar>
             {!onlyMine && (
               <BackLink to={RoutePaths.Projects} className="divide-none">
                 {T("project.details.sidebar.backToProjects")}
               </BackLink>
             )}
-            <div className="flex flex-col gap-6 divide-y divide-neutral-700">
+            <div className="flex flex-col gap-6 divide-y divide-neutral-700 w-full">
               <Listbox value={project} onChange={onChangeProjectFromDropdown}>
-                <div className="flex flex-col border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700 bg-white/[0.02]">
+                <div className="flex flex-col w-full border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700 bg-white/[0.02]">
                   <Listbox.Button className="hover:cursor-pointer p-4 font-medium text-2xl">
                     <div className="flex flex-row gap-3 items-center">
                       <RoundedImage src={logoUrl} alt="Project Logo" className="w-8 h-8" />
-                      <div className="truncate flex-1">{project.name}</div>
+                      <div className="truncate grow text-left">{project.name}</div>
                       <UpDownChevrons className="h-5 w-5 fill-gray-400" />
                     </div>
                   </Listbox.Button>
@@ -217,7 +217,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
               </div>
             </div>
           </Sidebar>
-          <div className="bg-space p-5 flex flex-col basis-4/5 rounded-r-2xl">
+          <div className="bg-space p-5 flex flex-col flex-1 rounded-r-2xl">
             {selectedTab === ProjectDetailsTab.Overview &&
               githubRepo?.content?.contributors &&
               projectId &&
