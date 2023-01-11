@@ -2,14 +2,14 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use async_trait::async_trait;
-use domain::{Event, GithubRepositoryId, ProjectEvent, SubscriberCallbackError};
+use domain::{Event, GithubRepositoryId, PaymentEvent, ProjectEvent, SubscriberCallbackError};
 use infrastructure::database::MappingRepository;
 use tracing::instrument;
 
 use crate::{
 	domain::{projections::Project, EventListener, GithubService, GithubServiceError},
 	infrastructure::database::{
-		GithubRepoDetailsRepository, ProjectLeadRepository, ProjectRepository,
+		BudgetRepository, GithubRepoDetailsRepository, ProjectLeadRepository, ProjectRepository,
 		UpdateGitubRepoIdChangeset,
 	},
 };
@@ -19,6 +19,7 @@ pub struct Projector {
 	project_lead_repository: ProjectLeadRepository,
 	github_service: Arc<dyn GithubService>,
 	github_repo_details_repository: GithubRepoDetailsRepository,
+	budget_repository: BudgetRepository,
 }
 
 impl Projector {
@@ -27,12 +28,14 @@ impl Projector {
 		project_lead_repository: ProjectLeadRepository,
 		github_service: Arc<dyn GithubService>,
 		github_repo_details_repository: GithubRepoDetailsRepository,
+		budget_repository: BudgetRepository,
 	) -> Self {
 		Self {
 			project_repository,
 			project_lead_repository,
 			github_service,
 			github_repo_details_repository,
+			budget_repository,
 		}
 	}
 
@@ -59,8 +62,8 @@ impl Projector {
 impl EventListener for Projector {
 	#[instrument(name = "project_projection", skip(self))]
 	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
-		if let Event::Project(event) = event {
-			match event {
+		match event {
+			Event::Project(event) => match event {
 				ProjectEvent::Created {
 					id,
 					name,
@@ -70,6 +73,7 @@ impl EventListener for Projector {
 						*id,
 						name.to_owned(),
 						(*github_repo_id).into(),
+						0,
 					))?;
 					self.project_github_data(github_repo_id).await?;
 				},
@@ -83,7 +87,22 @@ impl EventListener for Projector {
 					self.project_github_data(github_repo_id).await?;
 				},
 				ProjectEvent::Budget { .. } => (),
-			}
+			},
+			Event::Payment(event) => match event {
+				PaymentEvent::Requested {
+					budget_id,
+					amount_in_usd,
+					..
+				} => {
+					let budget = self.budget_repository.find_by_id(budget_id)?;
+					if let Some(project_id) = budget.project_id() {
+						let mut project = self.project_repository.find_by_id(project_id)?;
+						project.total_spent_amount_in_usd += *amount_in_usd as i64;
+						self.project_repository.update(project_id, project)?;
+					}
+				},
+				PaymentEvent::Processed { .. } => (),
+			},
 		}
 
 		Ok(())
