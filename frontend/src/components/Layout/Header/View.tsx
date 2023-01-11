@@ -18,7 +18,7 @@ interface HeaderViewProps {
 export default function HeaderView({ menuItems, selectedMenuItem, isLoggedIn }: HeaderViewProps) {
   return (
     <div className="bg-black font-walsheim">
-      <div className="flex flex-row justify-start items-center px-5 py-5 gap-5 text-xl text-neutral-400">
+      <div className="flex flex-row justify-start items-center p-4 gap-3 text-xl text-neutral-400">
         <OnlyDustLogo />
         <OnlyDustTitle />
         {Object.keys(menuItems).includes(RoutePaths.Projects) && (

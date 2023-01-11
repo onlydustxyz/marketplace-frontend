@@ -3,5 +3,5 @@ import { useIntl } from "src/hooks/useIntl";
 
 export default function OnlyDustLogo() {
   const { T } = useIntl();
-  return <img className="md:w-12 w-6" src={onlyDustLogo} alt={T("images.onlyDustLogo")} />;
+  return <img className="md:w-10 w-6" src={onlyDustLogo} alt={T("images.onlyDustLogo")} />;
 }
