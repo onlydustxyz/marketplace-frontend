@@ -149,7 +149,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                         value={projectFromDropdown}
                         className={`hover:cursor-pointer p-4 hover:bg-white/10 border-neutral-600 duration-300 last:rounded-b-2xl ${
                           hasProjectInvitation(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) &&
-                          "bg-amber-700/20  hover:bg-amber-700/30"
+                          "bg-orange-400/10  hover:bg-amber-700/30"
                         } `}
                       >
                         <div className="flex flex-col gap-5">
@@ -163,7 +163,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                               alt="Project Logo"
                               className="object-cover w-10 h-10"
                             />
-                            <div className="flex flex-col justify-self-start truncate">
+                            <div className="flex flex-col flex-1 justify-self-start truncate">
                               <div className="truncate text-base font-medium">{projectFromDropdown.name}</div>
                               <div className="truncate text-sm font-regular text-slate-400">
                                 {projectFromDropdown.githubRepo?.content?.contributors?.length ?? 0}{" "}
@@ -177,16 +177,14 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                                   <div>{T("project.details.sidebar.newInvite")}</div>
                                 </div>
                               ) : (
-                                <CheckLine
-                                  className={`text-gray-200 text-lg font-normal ${
-                                    projectFromDropdown.id !== projectId && "invisible"
-                                  }`}
-                                />
+                                projectFromDropdown.id === projectId && (
+                                  <CheckLine className="text-gray-200 text-lg font-normal" />
+                                )
                               )}
                             </>
                           </div>
                           {hasProjectInvitation(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) && (
-                            <div className="bg-neutral-100 rounded-xl w-full text-black text-lg text-center p-2">
+                            <div className="bg-neutral-100 rounded-xl w-full text-black text-sm text-center p-2">
                               View invite
                             </div>
                           )}
