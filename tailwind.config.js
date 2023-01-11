@@ -8,6 +8,9 @@ module.exports = {
         chineseBlack: "#110C1F",
       },
       backgroundImage: {
+        "noise-light": "url('src/assets/img/noise-light.png')",
+        "noise-medium": "url('src/assets/img/noise-medium.png')",
+        "noise-heavy": "url('src/assets/img/noise-heavy.png')",
         space: "url('src/assets/img/bg.jpeg')",
       },
       backdropBlur: {
