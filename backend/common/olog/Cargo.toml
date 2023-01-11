@@ -9,16 +9,12 @@ edition = "2021"
 
 # Tracing
 opentelemetry = {version = "0.18.0", features = ["rt-tokio"]}
-opentelemetry-datadog = {version = "0.6.0", features = ["reqwest-client"]}
 tracing = "0.1"
 tracing-log = {version = "0.1", features = ["env_logger"]}
 tracing-opentelemetry = "0.18.0"
 tracing-subscriber = {version = "0.3", features = ["env-filter", "fmt", "json"]}
 log = "0.4.17"
 lazy_static = "1.4.0"
-
-# Errors
-anyhow = "1.0.57"
 
 [dev-dependencies]
 ctor = "0.1.26"
