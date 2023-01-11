@@ -2,6 +2,7 @@
 # https://rust-lang.github.io/rustfmt
 
 version = "Two"
+edition = "2021"
 
 # Basic
 hard_tabs = true
