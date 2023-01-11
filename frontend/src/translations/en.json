@@ -5,9 +5,9 @@
   "contributor": {
     "table": {
       "contributor": "Contributor",
-      "totalEarned": "Total earned",
-      "paidContributions": "Paid contributions",
       "leftToPay": "Left to Pay",
+      "paidContributions": "Paid contributions",
+      "totalEarned": "Total earned",
       "userRegisteredTooltip": "User has linked their OnlyDust profile"
     },
     "tableFallback": {
@@ -42,13 +42,13 @@
       "days": "days",
       "decrease": "-",
       "increase": "+",
+      "invalidPRLink": "Invalid input, not a link to a github pull request",
       "leftToSpend": "Left to spend",
       "linkToIssue": "Link to GitHub issue",
       "sent": "Payment request sent!",
       "submit": "Submit payment",
       "thisPayment": "This payment",
-      "totalBudget": "Total budget",
-      "invalidPRLink": "Invalid input, not a link to a github pull request"
+      "totalBudget": "Total budget"
     },
     "list": "List payments",
     "status": {
@@ -102,21 +102,22 @@
         "title": "Contributors"
       },
       "overview": {
-        "contributors": "Contributors",
+        "contributors": "CONTRIBUTORS",
         "githubLinkContent": "Link",
         "githubLinkTitle": "GitHub",
-        "projectLeader": "Project Leader",
+        "projectLeader": "PROJECT LEAD",
+        "readmeTitle": "Readme.md",
         "technologies": "Technologies",
         "title": "Overview",
-        "readmeTitle": "Readme.md"
+        "totalSpentAmountInUsd": "MONEY GRANTED"
       },
       "payments": {
         "title": "Payments"
       },
       "sidebar": {
+        "backToProjects": "Back to projects",
         "contributors": " contributors",
-        "newInvite": "NEW",
-        "backToProjects": "Back to projects"
+        "newInvite": "NEW"
       },
       "tableFallback": {
         "noPayments": "No payments so far",
