@@ -42,6 +42,7 @@ select_permissions:
     permission:
       columns:
         - github_repo_id
-        - name
         - id
+        - name
+        - total_spent_amount_in_usd
       filter: {}
