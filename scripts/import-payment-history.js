@@ -20,16 +20,16 @@ const graphqlAsAdmin = async (query, variables = undefined) => {
     body: JSON.stringify({ query, variables }),
   }).then(response => response.json());
 
-  if (response.errors) {
-    throw response.errors;
+  if (response.error || response.errors) {
+    throw response.error || response.errors;
   }
 
   return response.data;
 };
 
-const graphqlAsUser = async (userId, query, variables = undefined) => {
-  const user = await getProjectLeadInfos(userId);
-  const projects = JSON.stringify(user.projectsLeaded.map(p => p.projectId))
+const graphqlAsUser = async (user, query, variables = undefined) => {
+  const userInfos = await getProjectLeadInfos(user.id);
+  const projects = JSON.stringify(userInfos.projectsLeaded.map(p => p.projectId))
     .replace("{", "[")
     .replace("}", "]");
 
@@ -38,17 +38,43 @@ const graphqlAsUser = async (userId, query, variables = undefined) => {
     headers: {
       "X-Hasura-Admin-Secret": GRAPHQL_ADMIN_SECRET,
       "X-Hasura-role": "registered_user",
-      "X-Hasura-user-id": userId,
+      "X-Hasura-user-id": user.id,
+      "X-Hasura-githubUserId": user.githubUserId,
       "x-hasura-projectsLeaded": projects,
     },
     body: JSON.stringify({ query, variables }),
   }).then(response => response.json());
 
-  if (response.errors) {
-    throw response.errors;
+  if (response.error || response.errors) {
+    throw response.error || response.errors;
   }
 
-  return response.data;
+  return await response.data;
+};
+
+const getProjectIdFromGithubRepo = async (owner, name) =>
+  graphqlAsAdmin(
+    `query($owner: String!, $name: String!) {
+    projects(where: {githubRepo: {owner: {_eq: $owner}, name: {_eq: $name}}}) {
+      id
+    }
+  }
+  `,
+    { owner, name }
+  ).then(response => response.projects?.at(0));
+
+const findProjectIdFromContributionLink = async contributionLink => {
+  const re = new RegExp("github.com/(?<owner>[^/]+)/(?<name>[^/]+)");
+  const match = contributionLink.match(re);
+
+  const owner = match?.groups?.owner;
+  const name = match?.groups?.name;
+
+  if (!owner || !name) {
+    throw "Could not determine github repository form contribution link";
+  }
+
+  return getProjectIdFromGithubRepo(owner, name);
 };
 
 const getProjectLeadInfos = async userId =>
@@ -63,29 +89,24 @@ const getProjectLeadInfos = async userId =>
     { userId }
   ).then(response => response.user);
 
-const getProjectDetails = async projectName =>
+const getProjectDetails = async projectId =>
   graphqlAsAdmin(
-    `query ($projectName: String!) {
-        projects(where: {name: {_eq: $projectName}}) {
+    `query ($projectId: uuid!) {
+        projectsByPk(id: $projectId) {
           id
           projectLeads {
             userId
-          }
-          budgets {
-            id
+            user {
+              githubUser {
+                githubUserId
+              }
+            }
           }
         }
       }`,
-    { projectName }
+    { projectId }
   ).then(response => {
-    if (response.projects.length == 0) {
-      throw new Error(`Project '${projectName}' not found`);
-    }
-
-    if (response.projects.length > 1) {
-      throw new Error(`More than one project named '${projectName}'`);
-    }
-    return response.projects[0];
+    return response.projectsByPk;
   });
 
 const getGithubUser = async githubLogin =>
@@ -98,17 +119,17 @@ const getGithubUser = async githubLogin =>
     { githubLogin }
   ).then(response => response.fetchUserDetails);
 
-const sendPaymentRequest = async (leaderId, amountInUsd, budgetId, recipientId, workItems) =>
+const sendPaymentRequest = async (projectId, leader, amountInUsd, recipientId, workItems) =>
   nconf.get("simulate")
     ? "fake_payment_id"
     : graphqlAsUser(
-        leaderId,
-        `mutation ($amountInUsd:Int!, $budgetId: Uuid!, $recipientId:Int!, $reason:Reason!) {
-    requestPayment(amountInUsd: $amountInUsd, budgetId: $budgetId, recipientId: $recipientId, reason: $reason)
+        leader,
+        `mutation ($projectId: Uuid!, $amountInUsd:Int!, $recipientId:Int!, $reason:Reason!) {
+    requestPayment(amountInUsd: $amountInUsd, projectId: $projectId, recipientId: $recipientId, reason: $reason)
 }`,
         {
+          projectId,
           amountInUsd,
-          budgetId,
           recipientId,
           reason: { workItems },
         }
@@ -130,39 +151,40 @@ const addEthReceipt = async (amount, currencyCode, paymentId, recipientAddress, 
         }
       ).then(response => response.addEthPaymentReceipt);
 
-const importPayment = async (
-  projectName,
-  recipientGithubHandle,
-  recipientEthAddress,
-  workItems,
-  amount,
-  transactionHash
-) => {
-  console.error(`Processing payment for ${recipientGithubHandle} (${amount} $)`);
-  const project = await getProjectDetails(projectName);
-  const githubUser = await getGithubUser(recipientGithubHandle);
+const importPaymentRequest = async (projectId, recipientGithubHandle, workItems, amount) => {
+  console.error(`[${projectId}] Processing payment for ${recipientGithubHandle} (${amount} $)`);
+  const project = await getProjectDetails(projectId);
 
-  const projectId = project.id;
-  const leaderId = project.projectLeads[0].userId;
-  const budgetId = project.budgets[0].id;
+  if (!recipientGithubHandle?.length) {
+    throw "Missing github user name";
+  }
+  const githubUser = await getGithubUser(recipientGithubHandle);
+  if (githubUser === null) {
+    throw "Invalid github user name";
+  }
+
+  if (!project.projectLeads?.length) {
+    throw "Project has no lead";
+  }
+
+  const leader = {
+    id: project.projectLeads[0].userId,
+    githubUserId: project.projectLeads[0].user.githubUser.githubUserId,
+  };
+
   const recipientGithubId = githubUser.id;
 
-  const paymentId = await sendPaymentRequest(leaderId, amount, budgetId, recipientGithubId, workItems);
-  await sleep(500);
-  const receiptId = await addEthReceipt(amount.toString(), "USDC", paymentId, recipientEthAddress, transactionHash);
+  workItems = workItems.filter(item => /^https:\/\/github.com\/[a-zA-Z_\-0-9.\/]+$/.test(item));
+  if (workItems.length === 0) {
+    throw "No valid contribution link found";
+  }
 
-  return {
-    projectId,
-    budgetId,
-    paymentId,
-    receiptId,
-    requestorId: leaderId,
-    recipientId: recipientGithubId,
-    amount,
-    currency: "USDC",
-    workItems: JSON.stringify(workItems),
-    transactionHash,
-  };
+  return await sendPaymentRequest(projectId, leader, amount, recipientGithubId, workItems);
+};
+
+const importPaymentReceipt = async (paymentId, recipientEthAddress, amount, transactionHash) => {
+  console.error(`Processing payment receipt for ${paymentId} (${amount} $)`);
+  return await addEthReceipt(amount.toString(), "USDC", paymentId, recipientEthAddress, transactionHash);
 };
 
 const importPaymentsFromFile = async (projectName, filename) => {
@@ -170,21 +192,55 @@ const importPaymentsFromFile = async (projectName, filename) => {
 
   for await (const record of fs.createReadStream(filename, "utf-8").pipe(csv.parse({ columns: true, trim: true }))) {
     try {
-      const amount = parseInt(record["Est. Reward ($)"]);
-      if (!isNaN(amount)) {
-        const report = await importPayment(
-          projectName,
-          record["Github Handle"],
-          record["Ethereum Address"],
-          record["PR links"].split(";").map(item => item.trim()),
-          amount,
-          record["Transaction Hash of Payment"]
+      if (!["OK", "IGNORE"].includes(record["import_status"])) {
+        const amount = parseInt(record["amount"]);
+        const ethAddress = record["eth_wallet_address"];
+        const transactionHash = record["transaction_hash"];
+        const contributionLink = record["contribution_link"];
+        const recipientGithubHandle = record["github_username"];
+        const isPaymentCompleted = record["status"] === "COMPLETED";
+
+        if (isNaN(amount)) {
+          throw "Invalid amount";
+        }
+
+        const project = await findProjectIdFromContributionLink(contributionLink);
+        if (!project) {
+          throw "Could not find project from contribution link";
+        }
+
+        if (isPaymentCompleted) {
+          if (!/^0x[a-zA-Z0-9]+$/.test(ethAddress)) {
+            throw "Invalid ETH address";
+          }
+
+          if (!/^0x[a-zA-Z0-9]+$/.test(transactionHash)) {
+            throw "Invalid transaction hash";
+          }
+        }
+
+        const paymentId = await importPaymentRequest(
+          project.id,
+          recipientGithubHandle,
+          contributionLink.split(/[\s,;]+/).map(item => item.trim()),
+          amount
         );
-        reports.push(report);
+
+        if (isPaymentCompleted) {
+          if (!nconf.get("simulate")) {
+            await sleep(500);
+          }
+
+          await importPaymentReceipt(paymentId, ethAddress, amount, transactionHash);
+        }
+
+        record["import_status"] = "OK";
       }
     } catch (error) {
-      console.error(error);
+      console.error(JSON.stringify(error));
+      record["import_status"] = JSON.stringify(error);
     }
+    reports.push(record);
   }
 
   csv.stringify(reports).pipe(process.stdout);
@@ -196,11 +252,6 @@ nconf.argv(
     .usage("Usage: import-payments-history.js -p Kakarot -f kakarot.csv > kakarot_report.csv")
     .strict()
     .options({
-      project: {
-        alias: "p",
-        describe: "The project name to import payments for",
-        demand: true,
-      },
       filename: {
         alias: "f",
         describe: "The path to the CSV file that contains the list of payments to import",
