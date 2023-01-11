@@ -127,6 +127,7 @@ const graphQlMocks = [
       data: {
         projectsByPk: {
           name: TEST_PROJECT_NAME,
+          totalSpentAmountInUsd: 123,
           budgets: [{ initialAmount: 500, remainingAmount: 300 }],
           projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
           projectLeads: [
@@ -159,6 +160,7 @@ const graphQlMocks = [
       data: {
         projectsByPk: {
           name: TEST_PROJECT_NAME,
+          totalSpentAmountInUsd: 123,
           projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
           projectLeads: [
             {
@@ -280,13 +282,9 @@ describe("Integration tests", () => {
     await waitFor(() => {
       screen.getByText(TEST_PROJECT_LEAD_DISPLAY_NAME);
       screen.getByText(TEST_GITHUB_REPO_CONTENT);
-      expect(
-        screen
-          .getByRole("link", {
-            name: /link/i,
-          })
-          .getAttribute("href")
-      ).toEqual(TEST_GITHUB_LINK);
+      screen.getByText(/project lead/i);
+      expect(screen.getAllByText(/contributors/i)).toHaveLength(2);
+      screen.getByText(/money granted/i);
     });
 
     expect((await screen.findAllByText(ProjectDetailsTab.Overview)).length).toEqual(2);
@@ -305,7 +303,6 @@ describe("Integration tests", () => {
       }),
     });
     userEvent.click(await screen.findByText(TEST_PROJECT_NAME));
-    //expect((await screen.findAllByText(ProjectDetailsTab.Overview)).length).toEqual(2);
     await screen.findByText(ProjectDetailsTab.Payments);
     expect(screen.findByText(ProjectDetailsTab.Contributors));
     await screen.findByRole("img", { name: /github logo/i });
