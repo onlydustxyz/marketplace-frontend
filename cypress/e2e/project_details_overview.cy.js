@@ -4,15 +4,13 @@ const STARKONQUEST_ID = 481932781;
 
 describe("A project without readme", () => {
   beforeEach(() => {
-    cy.createGithubUser(98735558)
-      .then(user => {
-        cy.createProjectWithLeader(user, "Project with budget", 1000, GITHUB_REPO_ID_WITHOUT_README)
-          .as("projectId");
-        cy.waitEvents();
-        cy.signinUser(user)
-          .then(user => JSON.stringify(user.session))
-          .as("token");
-      });
+    cy.createGithubUser(98735558).then(user => {
+      cy.createProjectWithLeader(user, "Project with budget", 1000, GITHUB_REPO_ID_WITHOUT_README).as("projectId");
+      cy.waitEvents();
+      cy.signinUser(user)
+        .then(user => JSON.stringify(user.session))
+        .as("token");
+    });
   });
 
   it("should render properly", function () {
@@ -21,45 +19,41 @@ describe("A project without readme", () => {
         win.localStorage.setItem("hasura_token", this.token);
       },
     });
-    cy.contains("Technologies");
+    cy.contains("CONTRIBUTORS");
   });
 });
 
 describe("A project", () => {
   beforeEach(() => {
-    cy.createGithubUser(98735558)
-      .then(user => {
-        cy.createProjectWithLeader(user, "Starkonquest", 1000, STARKONQUEST_ID)
-          .as("projectId");
-        cy.waitEvents();
-      });
+    cy.createGithubUser(98735558).then(user => {
+      cy.createProjectWithLeader(user, "Starkonquest", 1000, STARKONQUEST_ID).as("projectId");
+      cy.waitEvents();
+    });
   });
 
   it("should render properly in public view", function () {
     cy.visit(`http://127.0.0.1:5173/projects/${this.projectId}`);
-    cy.contains("Technologies");
+    cy.contains("CONTRIBUTORS");
   });
 });
 
 describe("An empty project", () => {
-    beforeEach(() => {
-      cy.createGithubUser(98735558)
-        .then(user => {
-          cy.createProjectWithLeader(user, "Project with budget", 1000, GITHUB_REPO_ID_EMPTY_REPO)
-            .as("projectId");
-          cy.waitEvents();
-          cy.signinUser(user)
-            .then(user => JSON.stringify(user.session))
-            .as("token");
-        });
+  beforeEach(() => {
+    cy.createGithubUser(98735558).then(user => {
+      cy.createProjectWithLeader(user, "Project with budget", 1000, GITHUB_REPO_ID_EMPTY_REPO).as("projectId");
+      cy.waitEvents();
+      cy.signinUser(user)
+        .then(user => JSON.stringify(user.session))
+        .as("token");
     });
+  });
 
-    it("should render properly", function () {
-      cy.visit(`http://127.0.0.1:5173/projects/${this.projectId}`, {
-        onBeforeLoad(win) {
-          win.localStorage.setItem("hasura_token", this.token);
-        },
-      });
-      cy.contains("Technologies");
+  it("should render properly", function () {
+    cy.visit(`http://127.0.0.1:5173/projects/${this.projectId}`, {
+      onBeforeLoad(win) {
+        win.localStorage.setItem("hasura_token", this.token);
+      },
     });
+    cy.contains("CONTRIBUTORS");
+  });
 });
