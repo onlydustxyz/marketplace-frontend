@@ -107,6 +107,7 @@ diesel::table! {
         id -> Uuid,
         name -> Text,
         github_repo_id -> Int8,
+        total_spent_amount_in_usd -> Int8,
     }
 }
 
