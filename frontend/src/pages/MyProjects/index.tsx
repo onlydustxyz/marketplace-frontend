@@ -14,18 +14,20 @@ export default function MyProjects() {
   const { T } = useT();
   const { ledProjectIds } = useAuth();
   return (
-    <div className="pt-10">
-      <div className="text-3xl font-alfreda pt-10">{T("navbar.myProjects")}</div>
-      <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
-        {ledProjectIds.map((projectId: string) => (
-          <Link
-            key={projectId}
-            className="flex w-11/12 my-3"
-            to={generatePath(RoutePaths.MyProjectDetails, { projectId })}
-          >
-            <MyProjectContainer projectId={projectId} />
-          </Link>
-        ))}
+    <div className="bg-space">
+      <div className="container mx-auto pt-16 min-h-screen">
+        <div className="text-5xl font-alfreda">{T("navbar.myProjects")}</div>
+        <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
+          {ledProjectIds.map((projectId: string) => (
+            <Link
+              key={projectId}
+              className="flex w-11/12 my-3"
+              to={generatePath(RoutePaths.MyProjectDetails, { projectId })}
+            >
+              <MyProjectContainer projectId={projectId} />
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

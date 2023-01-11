@@ -17,6 +17,7 @@
 
   body {
     @apply text-white;
+    @apply bg-black;
   }
 
   .header {
