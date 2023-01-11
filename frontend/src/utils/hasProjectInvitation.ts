@@ -7,6 +7,8 @@ export default function hasProjectInvitation(
 ) {
   return (
     projectId &&
-    pendingProjectLeaderInvitationsQuery?.data?.pendingProjectLeaderInvitations?.[0]?.projectId === projectId
+    pendingProjectLeaderInvitationsQuery?.data?.pendingProjectLeaderInvitations?.find(
+      invite => invite.projectId === projectId
+    )
   );
 }
