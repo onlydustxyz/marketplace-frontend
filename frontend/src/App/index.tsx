@@ -84,7 +84,15 @@ function App() {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <ScrollToTop />
-      <Suspense fallback={<LoaderFallback />}>{routes}</Suspense>
+      <Suspense
+        fallback={
+          <div className="h-screen">
+            <LoaderFallback />
+          </div>
+        }
+      >
+        {routes}
+      </Suspense>
     </ErrorBoundary>
   );
 }
