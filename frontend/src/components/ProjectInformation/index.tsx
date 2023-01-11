@@ -5,6 +5,7 @@ import { Contributor, LanguageMap } from "src/types";
 import TelegramLink from "../TelegramLink";
 import GithubLink from "../GithubLink";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
+import RoundedImage from "src/components/RoundedImage";
 
 interface ProjectInformationProps {
   name: string;
@@ -34,11 +35,9 @@ export default function ProjectInformation({ name, details, lead, githubRepoInfo
     <div className="flex flex-row w-full divide-x divide-neutral-600 gap-5 justify-items-center font-walsheim">
       <div className="flex flex-col basis-4/12 gap-5 justify-around">
         <div className="flex flex-row gap-3 items-center">
-          <div className="border-4 border-neutral-600 p-2 rounded-2xl">
-            <img className="md:w-8 w-4 hover:opacity-90" src={details?.logoUrl || onlyDustLogo} alt="Project Logo" />
-          </div>
+          <RoundedImage src={details?.logoUrl || onlyDustLogo} alt="Project Logo" className="object-cover w-12 h-12" />
           <div className="flex flex-col">
-            <div className="text-3xl font-medium">{name}</div>
+            <div className="text-2xl font-medium">{name}</div>
             {lead && <ProjectLead {...lead} />}
           </div>
         </div>
