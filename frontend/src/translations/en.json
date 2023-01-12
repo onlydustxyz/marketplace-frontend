@@ -94,7 +94,11 @@
       "send": "Save profile",
       "street": "Street",
       "typeOfProfile": "Profile type"
-    }
+    },
+      "missing": {
+	  "title": "Profile information missing",
+	  "subtitle": "We won’t be able to issue any payment until your profile is completed"
+      }
   },
   "project": {
     "details": {
