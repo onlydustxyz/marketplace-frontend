@@ -212,6 +212,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                       selectedTab === tab ? "bg-white/[0.08]" : "text-neutral-400"
                     }`}
                     onClick={() => setSelectedTab(tab)}
+                    data-testid={`${tab}-tab`}
                   >
                     {tab}
                   </div>

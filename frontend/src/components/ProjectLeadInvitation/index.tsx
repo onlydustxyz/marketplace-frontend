@@ -21,6 +21,7 @@ export default function ProjectLeadInvitation({ projectName, onClick }: ProjectL
         <div
           onClick={onClick}
           className="flex flex-row justify-between items-center gap-2 w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-400 px-4 py-3 text-black hover:cursor-pointer"
+          data-testid="accept-invite-button"
         >
           <CheckLine className="text-black font-normal text-xl" />
           <div>{T("projectLeadInvitation.accept")}</div>

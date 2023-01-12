@@ -57,6 +57,7 @@ export default function Projects() {
                         ? "bg-amber-700/20"
                         : "bg-white/[0.02]"
                     } `}
+                    dataTestId="project-card"
                   >
                     <div className="flex flex-col gap-5">
                       <ProjectInformation
