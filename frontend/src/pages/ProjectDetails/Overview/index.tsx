@@ -32,7 +32,7 @@ export default function Overview({
       {children}
       <div className="flex flex-row gap-5">
         {decodedReadme && (
-          <div className="basis-7/12">
+          <div className="flex-1">
             <Card>
               <div className="font-medium text-lg pb-4">{T("project.details.overview.readmeTitle")}</div>
               <ReactMarkdown skipHtml={true} remarkPlugins={[[remarkGfm]]} className="prose lg:prose-l prose-invert">
@@ -41,7 +41,7 @@ export default function Overview({
             </Card>
           </div>
         )}
-        <Card className="h-fit p-0 basis-5/12">
+        <Card className="h-fit p-0 basis-96">
           <OverviewPanel {...{ lead, githubRepoInfo, totalSpentAmountInUsd }} />
         </Card>
       </div>
