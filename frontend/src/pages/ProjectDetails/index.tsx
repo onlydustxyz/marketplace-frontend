@@ -27,7 +27,7 @@ import ShootingStar from "src/assets/icons/ShootingStar";
 import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
 
 import { RoutePaths } from "src/App";
-import hasProjectInvitation from "src/utils/hasProjectInvitation";
+import getInvitationForProject from "src/utils/getInvitationForProject";
 import BackLink from "src/components/BackLink";
 import Contributors from "./Contributors";
 import CheckLine from "src/icons/CheckLine";
@@ -122,6 +122,8 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
     [getProjectsForSidebarQuery?.data?.projects, ledProjectIds]
   );
 
+  const currentProjectInvitation = getInvitationForProject(pendingProjectLeaderInvitationsQuery, projectId);
+
   const component = (
     <>
       {project && projects && (
@@ -148,7 +150,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                         key={projectFromDropdown.id}
                         value={projectFromDropdown}
                         className={`hover:cursor-pointer p-4 hover:bg-white/10 border-neutral-600 duration-300 last:rounded-b-2xl ${
-                          hasProjectInvitation(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) &&
+                          getInvitationForProject(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) &&
                           "bg-orange-400/10  hover:bg-amber-700/30"
                         } `}
                       >
@@ -171,7 +173,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                               </div>
                             </div>
                             <>
-                              {hasProjectInvitation(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) ? (
+                              {getInvitationForProject(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) ? (
                                 <div className="flex flex-row px-2 py-1 rounded-2xl bg-orange-400 items-center gap-1 text-xs text-black">
                                   <ShootingStar />
                                   <div>{T("project.details.sidebar.newInvite")}</div>
@@ -183,7 +185,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                               )}
                             </>
                           </div>
-                          {hasProjectInvitation(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) && (
+                          {getInvitationForProject(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) && (
                             <div className="bg-neutral-100 rounded-xl w-full text-black text-sm text-center p-2">
                               View invite
                             </div>
@@ -232,14 +234,13 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                     languages: githubRepo.languages,
                   }}
                 >
-                  {project.name && hasProjectInvitation(pendingProjectLeaderInvitationsQuery, projectId) && (
+                  {project.name && currentProjectInvitation && (
                     <ProjectLeadInvitation
                       projectName={project.name}
                       onClick={() => {
                         acceptProjectLeaderInvitation({
                           variables: {
-                            invitationId:
-                              pendingProjectLeaderInvitationsQuery?.data?.pendingProjectLeaderInvitations?.[0]?.id,
+                            invitationId: currentProjectInvitation.id,
                           },
                         });
                       }}
