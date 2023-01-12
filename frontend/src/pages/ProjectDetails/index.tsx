@@ -32,6 +32,7 @@ import BackLink from "src/components/BackLink";
 import Contributors from "./Contributors";
 import CheckLine from "src/icons/CheckLine";
 import RoundedImage from "src/components/RoundedImage";
+import _ from "lodash";
 
 interface ProjectDetailsProps {
   onlyMine?: boolean;
@@ -117,18 +118,17 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
   const githubRepo = project?.githubRepo;
   const logoUrl = project?.projectDetails?.logoUrl || project?.githubRepo?.content.logoUrl || onlyDustLogo;
 
-  const projects = useMemo(
-    () =>
-      getProjectsForSidebarQuery?.data?.projects.filter(
-        ({ id }) =>
-          !onlyMine || ledProjectIds.includes(id) || getInvitationForProject(pendingProjectLeaderInvitationsQuery, id)
-      ),
-    [
-      getProjectsForSidebarQuery?.data?.projects,
-      ledProjectIds,
-      pendingProjectLeaderInvitationsQuery.data?.pendingProjectLeaderInvitations,
-    ]
-  );
+  const projects = useMemo(() => {
+    const projects = getProjectsForSidebarQuery?.data?.projects.filter(
+      ({ id }) =>
+        !onlyMine || ledProjectIds.includes(id) || getInvitationForProject(pendingProjectLeaderInvitationsQuery, id)
+    );
+    return _.sortBy(projects, project => !getInvitationForProject(pendingProjectLeaderInvitationsQuery, project.id));
+  }, [
+    getProjectsForSidebarQuery?.data?.projects,
+    ledProjectIds,
+    pendingProjectLeaderInvitationsQuery.data?.pendingProjectLeaderInvitations,
+  ]);
 
   const currentProjectInvitation = getInvitationForProject(pendingProjectLeaderInvitationsQuery, projectId);
 
