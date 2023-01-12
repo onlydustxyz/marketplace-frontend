@@ -74,8 +74,20 @@ rollback_database() {
     fi
 }
 
+rollback_frontend() {
+    log_info "Switching to only-dust user"
+    execute vercel switch only-dust
+
+    log_info "Listing previous deployments"
+    execute vercel list marketplace --prod
+
+    read -p "Which deployment do you want to rollback to ? (leave blank for 1 deployment) " rollback_deployment
+    execute vercel rollback $rollback_deployment
+}
+
 check_command heroku
 check_command jq
+check_command vercel
 
 stop_apps
 
@@ -90,6 +102,11 @@ if [ $? -eq 0 ]; then
 fi
 
 start_apps
+
+ask "Do you want to rollback the frontend"
+if [ $? -eq 0 ]; then
+    rollback_frontend
+fi
 
 log_info "📌 Do not forget to rollback Retool apps 😉"
 
