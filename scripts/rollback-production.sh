@@ -74,6 +74,9 @@ rollback_database() {
     fi
 }
 
+check_command heroku
+check_command jq
+
 stop_apps
 
 ask "Do you want to rollback the backends"
