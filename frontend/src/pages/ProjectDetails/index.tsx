@@ -118,8 +118,16 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
   const logoUrl = project?.projectDetails?.logoUrl || project?.githubRepo?.content.logoUrl || onlyDustLogo;
 
   const projects = useMemo(
-    () => getProjectsForSidebarQuery?.data?.projects.filter(({ id }) => (onlyMine ? ledProjectIds.includes(id) : true)),
-    [getProjectsForSidebarQuery?.data?.projects, ledProjectIds]
+    () =>
+      getProjectsForSidebarQuery?.data?.projects.filter(
+        ({ id }) =>
+          !onlyMine || ledProjectIds.includes(id) || getInvitationForProject(pendingProjectLeaderInvitationsQuery, id)
+      ),
+    [
+      getProjectsForSidebarQuery?.data?.projects,
+      ledProjectIds,
+      pendingProjectLeaderInvitationsQuery.data?.pendingProjectLeaderInvitations,
+    ]
   );
 
   const currentProjectInvitation = getInvitationForProject(pendingProjectLeaderInvitationsQuery, projectId);
