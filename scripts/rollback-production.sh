@@ -13,6 +13,32 @@ ALL_DB_CONNECTED_APPS=(
     od-event-listeners-$ENVIRONMENT
 )
 
+ALL_BACKENDS=(
+    od-api-$ENVIRONMENT
+    od-github-proxy-$ENVIRONMENT
+    od-event-store-$ENVIRONMENT
+    od-event-listeners-$ENVIRONMENT
+)
+
+manage_apps() {
+    action=$1
+    for app in ${ALL_BACKENDS[@]}; do
+        heroku ps --app $app --json | jq '.[] | .type' | while read dyno; do
+            execute heroku ps:$action $dyno --app $app
+        done
+    done
+}
+
+stop_apps() {
+    log_info "Stopping the apps"
+    manage_apps stop
+}
+
+start_apps() {
+    log_info "Starting back the apps"
+    manage_apps restart
+}
+
 rollback_database() {
     current_database=`heroku addons:info DATABASE -a $DB_BILLING_APP | sed -n 's/=== \(.*\)/\1/p'`
     [ -z $current_database ] && exit_error "Unable to get the current database"
@@ -40,9 +66,13 @@ rollback_database() {
     fi
 }
 
+stop_apps
+
 ask "Do you want to rollback the database"
 if [ $? -eq 0 ]; then
     rollback_database
 fi
+
+start_apps
 
 exit_success
