@@ -1,12 +1,9 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import {
-  ACCEPT_PROJECT_LEADER_INVITATION_MUTATION,
-  PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
-  useProjectLeadInvitations,
-} from "./useProjectLeadInvitations";
+import { ACCEPT_PROJECT_LEADER_INVITATION_MUTATION, useProjectLeadInvitations } from "./useProjectLeadInvitations";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "./useTokenSet";
 import { MemoryRouterProviderFactory } from "src/test/utils";
+import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
 
 const TEST_ACCESS_TOKEN = {
   user: {

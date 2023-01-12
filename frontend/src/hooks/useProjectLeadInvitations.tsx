@@ -3,6 +3,7 @@ import { HasuraUserRole } from "src/types";
 import { PendingProjectLeaderInvitationsQuery } from "src/__generated/graphql";
 import { useAuth } from "./useAuth";
 import { gql } from "@apollo/client";
+import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
 
 export const useProjectLeadInvitations = () => {
   const { user } = useAuth();
@@ -30,15 +31,6 @@ export const useProjectLeadInvitations = () => {
     acceptInvitationResponse,
   };
 };
-
-export const PENDING_PROJECT_LEADER_INVITATIONS_QUERY = gql`
-  query PendingProjectLeaderInvitations {
-    pendingProjectLeaderInvitations {
-      id
-      projectId
-    }
-  }
-`;
 
 export const ACCEPT_PROJECT_LEADER_INVITATION_MUTATION = gql`
   mutation acceptProjectLeaderInvitation($invitationId: Uuid!) {

@@ -4,6 +4,7 @@ import { createContext, PropsWithChildren, useContext, useEffect, useState } fro
 import { generatePath, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import config from "src/config";
+import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
 import { useGithubProfile } from "src/hooks/useAuth/useGithubProfile";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { accessTokenExpired, useTokenSet } from "src/hooks/useTokenSet";
@@ -98,12 +99,3 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
-
-export const PENDING_PROJECT_LEADER_INVITATIONS_QUERY = gql`
-  query PendingProjectLeaderInvitations {
-    pendingProjectLeaderInvitations {
-      id
-      projectId
-    }
-  }
-`;
