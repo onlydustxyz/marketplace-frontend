@@ -32,7 +32,7 @@ import BackLink from "src/components/BackLink";
 import Contributors from "./Contributors";
 import CheckLine from "src/icons/CheckLine";
 import RoundedImage from "src/components/RoundedImage";
-import _ from "lodash";
+import sortBy from "lodash/sortBy";
 
 interface ProjectDetailsProps {
   onlyMine?: boolean;
@@ -123,7 +123,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
       ({ id }) =>
         !onlyMine || ledProjectIds.includes(id) || getInvitationForProject(pendingProjectLeaderInvitationsQuery, id)
     );
-    return _.sortBy(projects, project => !getInvitationForProject(pendingProjectLeaderInvitationsQuery, project.id));
+    return sortBy(projects, project => !getInvitationForProject(pendingProjectLeaderInvitationsQuery, project.id));
   }, [
     getProjectsForSidebarQuery?.data?.projects,
     ledProjectIds,

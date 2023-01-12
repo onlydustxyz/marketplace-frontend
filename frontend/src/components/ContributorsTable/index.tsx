@@ -6,7 +6,7 @@ import HeaderCell from "../Table/HeaderCell";
 import Line from "../Table/Line";
 import Cell from "../Table/Cell";
 import { useEffect, useState } from "react";
-import _ from "lodash";
+import sortBy from "lodash/sortBy";
 import SortingArrow from "./SortingArrow";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";
@@ -41,7 +41,7 @@ const ContributorsTable: React.FC<PropsType> = ({ contributors }) => {
   const [sortedContributors, setSortedContributors] = useState(contributors);
 
   useEffect(() => {
-    const sorted = _.sortBy([...contributors], sorting.field);
+    const sorted = sortBy([...contributors], sorting.field);
     setSortedContributors(sorting.ascending ? sorted : sorted.reverse());
   }, [sorting, contributors]);
 

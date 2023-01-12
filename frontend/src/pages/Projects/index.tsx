@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import _ from "lodash";
+import sortBy from "lodash/sortBy";
 import { useEffect, useState } from "react";
 import { generatePath, Link } from "react-router-dom";
 import { RoutePaths } from "src/App";
@@ -30,7 +30,7 @@ export default function Projects() {
 
   useEffect(() => {
     setProjects(
-      _.sortBy(
+      sortBy(
         getProjectsQuery.data?.projects,
         project => !getInvitationForProject(pendingProjectLeaderInvitationsQuery, project.id)
       )
