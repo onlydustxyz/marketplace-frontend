@@ -19,8 +19,8 @@ export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountIn
     <div className="flex flex-col gap-3 divide-y divide-slate-600/40">
       {lead && (
         <div>
-          <div className="flex flex-row justify-between py-4 pb-1 px-5">
-            <div className="flex flex-row gap-1 items-center">
+          <div className="flex flex-row justify-between py-4 pb-1 px-5 gap-4">
+            <div className="flex flex-row whitespace-nowrap gap-1 items-center">
               <StarLine className="p-px font-normal text-xl text-slate-400" />
               <div className="flex text-md font-medium text-base text-slate-400 uppercase">
                 {T("project.details.overview.projectLeader")}
