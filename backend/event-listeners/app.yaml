@@ -4,6 +4,7 @@ default:
     personal_access_token: $GITHUB_PAT
     headers:
       api-key: $GITHUB_PROXY_GITHUB_API_KEY
+      Fastly-Debug: "1"
 
 local:
   database:
