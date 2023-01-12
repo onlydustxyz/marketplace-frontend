@@ -3,7 +3,7 @@ module.exports = {
   content: ["./index.html", "./frontend/src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      fontFamily: { alfreda: ["Alfreda"], walsheim: ["GT Walsheim"] },
+      fontFamily: { alfreda: ["Alfreda"], walsheim: ["GT Walsheim"], belwe: ["Belwe"] },
       colors: {
         chineseBlack: "#110C1F",
       },

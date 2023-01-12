@@ -2,7 +2,6 @@ import { gql } from "@apollo/client";
 import { useState } from "react";
 import Card from "src/components/Card";
 import PaymentTable, { mapApiPaymentsToProps } from "src/components/PaymentTable";
-import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import ProjectPaymentTableFallback from "src/components/ProjectPaymentTableFallback";
 import QueryWrapper from "src/components/QueryWrapper";
 import RemainingBudget from "src/components/RemainingBudget";
@@ -36,7 +35,7 @@ export default function PaymentActions({ project }: PaymentsProps) {
     <>
       {project && (
         <div className="flex flex-col gap-8 mt-3">
-          <div className="text-3xl font-alfreda">{T("project.details.payments.title")}</div>
+          <div className="text-3xl font-belwe">{T("project.details.payments.title")}</div>
           <div className="flex flex-row items-start gap-5">
             <div className="flex basis-2/3">
               {action === Action.Submit && <PaymentForm project={project} />}
