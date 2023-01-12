@@ -10,6 +10,9 @@ use serde::Deserialize;
 
 mod error;
 pub use error::Error;
+
+use self::logged_response::LoggedResponse;
+mod logged_response;
 mod specifications;
 
 #[derive(Deserialize)]
@@ -37,8 +40,8 @@ impl Client {
 		U: AsRef<str> + Debug,
 		R: FromResponse,
 	{
-		let result = self.0.get(url, None::<&()>).await?;
-		Ok(result)
+		let result: LoggedResponse<R> = self.0.get(url, None::<&()>).await?;
+		Ok(result.0)
 	}
 
 	#[instrument(skip(self))]

@@ -1,6 +1,6 @@
 use std::{collections::HashMap, path::PathBuf};
 
-use olog::error;
+use olog::{debug, error};
 use presentation::http::guards::{ApiKey, ApiKeyGuard};
 use rocket::http::Status;
 
@@ -23,9 +23,10 @@ pub async fn get(
 	params: HashMap<String, String>,
 ) -> Result<Response, Status> {
 	let params: Params = params.into();
-	let request = reqwest::Client::new()
-		.get(format!("https://api.github.com/{}{params}", path.display()))
-		.headers(headers.into());
+	let url = format!("https://api.github.com/{}{params}", path.display());
+	let request = reqwest::Client::new().get(url.clone()).headers(headers.into());
+
+	debug!(url = url, "Forwarding call to Github API");
 
 	let response = request.send().await.map_err(|e| {
 		error!(

@@ -39,6 +39,7 @@ uuid = {version = "0.8.2", default_features = false, features = [
 
 # Github
 octocrab = "0.17.0"
+reqwest = "0.11.13"
 
 # Tracing
 opentelemetry = {version = "0.18.0", features = ["rt-tokio"]}
