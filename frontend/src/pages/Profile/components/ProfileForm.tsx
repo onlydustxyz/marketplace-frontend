@@ -1,7 +1,9 @@
 import { gql } from "@apollo/client";
 import { HasuraUserRole } from "src/types";
-import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
+import { useForm, SubmitHandler, FormProvider, Controller } from "react-hook-form";
 import { Navigate } from "react-router-dom";
+import IBAN from "iban";
+
 import Input from "src/components/FormInput";
 import { useHasuraMutation } from "src/hooks/useHasuraQuery";
 import Radio from "./Radio";
@@ -22,6 +24,7 @@ const ETHEREUM_ADDRESS_REGEXP = /^0x[a-fA-F0-9]{40}$/gi;
 const ENS_DOMAIN_REGEXP = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi;
 const EMAIL_ADDRESS_REGEXP =
   /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+const BIC_REGEXP = /^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/i;
 
 type Inputs = {
   paymentReceiverType: IdentityType;
@@ -246,8 +249,26 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
             )}
             {payoutSettingsType === PayoutSettingsType.BankAddress && (
               <div className="flex flex-row gap-5">
-                <Input name="IBAN" placeholder={T("profile.form.iban")} options={{ required: T("form.required") }} />
-                <Input name="BIC" placeholder={T("profile.form.bic")} options={{ required: T("form.required") }} />
+                <Controller
+                  control={formMethods.control}
+                  name="IBAN"
+                  render={({ field: { onChange, value } }) => {
+                    return (
+                      <Input
+                        name="IBAN"
+                        placeholder={T("profile.form.iban")}
+                        options={{ required: T("form.required"), validate: IBAN.isValid }}
+                        value={value && IBAN.printFormat(value)}
+                        onChange={onChange}
+                      />
+                    );
+                  }}
+                />
+                <Input
+                  name="BIC"
+                  placeholder={T("profile.form.bic")}
+                  options={{ pattern: BIC_REGEXP, required: T("form.required") }}
+                />
               </div>
             )}
           </Card>
