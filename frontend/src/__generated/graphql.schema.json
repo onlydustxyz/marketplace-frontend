@@ -2570,7 +2570,7 @@
             "deprecationReason": null
           },
           {
-            "name": "street",
+            "name": "address",
             "description": null,
             "type": {
               "kind": "NON_NULL",
