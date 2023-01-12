@@ -180,6 +180,39 @@ const buildMockMutationUpdateUser = (userInfo: UserInfo) => {
   };
 };
 
+describe("Missing payment information banner", () => {
+  beforeAll(() => {
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(accessToken(mockUser.userId)));
+  });
+
+  it("should display the information banner if payment info is missing", async () => {
+    renderWithIntl(<ProfilePage />, {
+      wrapper: MemoryRouterProviderFactory({
+        route: RoutePaths.Profile,
+        mocks: [buildMockProfileQuery({ ...mockUser, payoutSettings: {} })],
+      }),
+    });
+    await screen.findByText("Profile information missing");
+  });
+
+  it("shouldn't display the information banner if payment info is correct", async () => {
+    renderWithIntl(<ProfilePage />, {
+      wrapper: MemoryRouterProviderFactory({
+        route: RoutePaths.Profile,
+        mocks: [
+          buildMockProfileQuery({
+            ...mockUser,
+            payoutSettings: { WireTransfer: { IBAN: "test-iban", BIC: "test-bic" } },
+          }),
+        ],
+      }),
+    });
+    await waitFor(() => {
+      expect(screen.queryByText("Profile information missing")).not.toBeInTheDocument();
+    });
+  });
+});
+
 describe('"Profile" page for individual', () => {
   beforeAll(() => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(accessToken(mockUser.userId)));
