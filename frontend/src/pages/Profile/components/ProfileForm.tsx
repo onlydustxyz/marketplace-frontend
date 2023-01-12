@@ -33,8 +33,7 @@ type Inputs = {
   id?: string;
   name?: string;
   email: string;
-  number: string;
-  street: string;
+  address: string;
   postCode: string;
   city: string;
   country: string;
@@ -62,8 +61,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
       id: user?.identity?.Company?.id,
       name: user?.identity?.Company?.name,
       email: user?.email,
-      number: user?.location.number,
-      street: user?.location.street,
+      address: user?.location.address,
       postCode: user?.location.post_code,
       city: user?.location.city,
       country: user?.location.country,
@@ -177,15 +175,9 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
               <div>
                 <div className="mt-3">
                   <Input
-                    label={T("profile.form.number")}
-                    name="number"
-                    placeholder={T("profile.form.number")}
-                    options={{ required: T("form.required") }}
-                  />
-                  <Input
-                    label={T("profile.form.street")}
-                    name="street"
-                    placeholder={T("profile.form.street")}
+                    label={T("profile.form.address")}
+                    name="address"
+                    placeholder={T("profile.form.address")}
                     options={{ required: T("form.required") }}
                   />
                   <div className="flex flex-row gap-5">
@@ -297,8 +289,7 @@ const mapFormDataToSchema = ({
   firstname,
   id,
   name,
-  number,
-  street,
+  address,
   city,
   country,
   paymentReceiverType,
@@ -316,8 +307,7 @@ const mapFormDataToSchema = ({
   };
 
   const location: Location = {
-    number,
-    street,
+    address,
     postCode,
     city,
     country,

@@ -34,8 +34,7 @@ const mockUser: UserInfo = {
     },
   },
   location: {
-    number: "34",
-    street: "rue Lakanal",
+    address: "34 rue Lakanal",
     city: "Grenoble",
     country: "France",
     post_code: "38000",
@@ -55,8 +54,7 @@ const mockUserWithEns: UserInfo = {
     },
   },
   location: {
-    number: "34",
-    street: "rue Lakanal",
+    address: "34 rue Lakanal",
     city: "Grenoble",
     country: "France",
     post_code: "38000",
@@ -76,8 +74,7 @@ const mockCompany: UserInfo = {
     },
   },
   location: {
-    number: "7",
-    street: "big ben street",
+    address: "7 big ben street",
     city: "London",
     country: "United Kingdom",
     post_code: "EC",
@@ -138,8 +135,7 @@ const buildMockMutationUpdateUser = (userInfo: UserInfo) => {
       };
 
   const location: Location = {
-    number: userInfo.location.number,
-    street: userInfo.location.street,
+    address: userInfo.location.address,
     postCode: userInfo.location.post_code,
     city: userInfo.location.city,
     country: userInfo.location.country,

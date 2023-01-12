@@ -343,11 +343,10 @@ export type JsonbComparisonExp = {
 };
 
 export type Location = {
-  city: Scalars['String'];
-  country: Scalars['String'];
-  number: Scalars['String'];
-  postCode: Scalars['String'];
-  street: Scalars['String'];
+  city: Scalars["String"];
+  country: Scalars["String"];
+  postCode: Scalars["String"];
+  address: Scalars["String"];
 };
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
