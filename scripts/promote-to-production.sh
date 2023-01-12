@@ -41,10 +41,16 @@ deploy_backends() {
 
 check_command git
 check_command heroku
+check_command vercel
 
 ask "Do you want to deploy the backends"
 if [ $? -eq 0 ]; then
     deploy_backends
+fi
+
+ask "Do you want to deploy the frontend"
+if [ $? -eq 0 ]; then
+    vercel deploy --prod
 fi
 
 log_info "📌 Do not forget to promote Retool apps 😉"
