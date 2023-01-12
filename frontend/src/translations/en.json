@@ -56,9 +56,9 @@
       "processing": "Processing"
     },
     "table": {
-      "amount": "AMOUNT",
-      "project": "PROJECT",
-      "status": "PAYMENT STATUS"
+      "amount": "Amount",
+      "project": "Project",
+      "status": "Payment Status"
     },
     "tableFallback": {
       "browseProjects": "Browse projects",
