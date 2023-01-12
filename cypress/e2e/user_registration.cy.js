@@ -1,13 +1,13 @@
 import { WAIT_LONG } from "../support/commands/common";
+import IBAN from "iban";
 
 describe("The user", () => {
   before(() => {
-    cy.createGithubUser(12345)
-      .then(user => {
-        cy.signinUser(user)
-          .then(user => JSON.stringify(user.session))
-          .as("token");
-      });
+    cy.createGithubUser(12345).then(user => {
+      cy.signinUser(user)
+        .then(user => JSON.stringify(user.session))
+        .as("token");
+    });
   });
 
   beforeEach(() => {
@@ -60,12 +60,11 @@ describe("The user", () => {
 
 describe("The company", () => {
   before(() => {
-    cy.createGithubUser(54321)
-      .then(user => {
-        cy.signinUser(user)
-          .then(user => JSON.stringify(user.session))
-          .as("token");
-      });
+    cy.createGithubUser(54321).then(user => {
+      cy.signinUser(user)
+        .then(user => JSON.stringify(user.session))
+        .as("token");
+    });
   });
 
   beforeEach(() => {
@@ -113,7 +112,7 @@ describe("The company", () => {
     cy.get("[name=postCode]").should("have.value", this.profile.postCode);
     cy.get("[name=city]").should("have.value", this.profile.city);
     cy.get("[name=country]").should("have.value", this.profile.country);
-    cy.get("[name=IBAN]").should("have.value", this.profile.IBAN);
+    cy.get("[name=IBAN]").should("have.value", IBAN.printFormat(this.profile.IBAN));
     cy.get("[name=BIC]").should("have.value", this.profile.BIC);
   });
 });
