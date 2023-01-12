@@ -1,4 +1,4 @@
-import ProjectLead, { Lead } from "src/components/LeadContributor";
+import ProjectLead, { ProjectLeadProps } from "src/components/LeadContributor";
 import { useIntl } from "src/hooks/useIntl";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StarLine from "src/icons/StarLine";
@@ -9,7 +9,7 @@ interface OverviewPanelProps {
   githubRepoInfo?: {
     contributors?: Contributor[];
   };
-  lead?: Lead | null;
+  lead?: ProjectLeadProps | null;
   totalSpentAmountInUsd?: number;
 }
 

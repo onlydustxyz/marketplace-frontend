@@ -2,13 +2,13 @@ import Card from "src/components/Card";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useIntl } from "src/hooks/useIntl";
-import { Lead } from "src/components/LeadContributor";
+import { ProjectLeadProps } from "src/components/LeadContributor";
 import { Contributor, LanguageMap } from "src/types";
 import OverviewPanel from "./OverviewPanel";
 
 interface OverviewProps extends React.PropsWithChildren {
   decodedReadme?: string;
-  lead?: Lead | null;
+  lead?: ProjectLeadProps | null;
   totalSpentAmountInUsd?: number;
   githubRepoInfo?: {
     owner?: string;
