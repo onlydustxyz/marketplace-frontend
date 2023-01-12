@@ -20,6 +20,7 @@ export default function Projects() {
   const { getInvitationForProject, amIInvitedForProject, allInvitations } = useProjectLeadInvitations();
 
   const getProjectsQuery = useHasuraQuery<GetProjectsQuery>(GET_PROJECTS_QUERY, HasuraUserRole.Public);
+
   const [projects, setProjects] = useState(getProjectsQuery.data?.projects);
 
   useEffect(() => {
