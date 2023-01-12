@@ -39,6 +39,14 @@ start_apps() {
     manage_apps restart
 }
 
+rollback_backends() {
+    for app in ${ALL_BACKENDS[@]}; do
+        execute heroku releases --app $app
+        read -p "Which release do you want to rollback to ? (leave blank for 1 release) " rollback_release
+        execute heroku rollback $rollback_release --app $app
+    done
+}
+
 rollback_database() {
     current_database=`heroku addons:info DATABASE -a $DB_BILLING_APP | sed -n 's/=== \(.*\)/\1/p'`
     [ -z $current_database ] && exit_error "Unable to get the current database"
@@ -67,6 +75,11 @@ rollback_database() {
 }
 
 stop_apps
+
+ask "Do you want to rollback the backends"
+if [ $? -eq 0 ]; then
+    rollback_backends
+fi
 
 ask "Do you want to rollback the database"
 if [ $? -eq 0 ]; then
