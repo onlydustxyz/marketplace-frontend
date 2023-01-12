@@ -111,7 +111,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
 
   const availableTabs =
     projectId && ledProjectIds && ledProjectIds.includes(projectId)
-      ? [ProjectDetailsTab.Overview, ProjectDetailsTab.Payments, ProjectDetailsTab.Contributors]
+      ? [ProjectDetailsTab.Overview, ProjectDetailsTab.Contributors, ProjectDetailsTab.Payments]
       : [ProjectDetailsTab.Overview, ProjectDetailsTab.Contributors];
 
   const project = getProjectUserQuery?.data?.projectsByPk || getProjectPublicQuery?.data?.projectsByPk;
