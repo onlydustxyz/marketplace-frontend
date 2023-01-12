@@ -25,7 +25,7 @@ const MyContributions = () => {
   return (
     <div className="bg-space h-full">
       <div className="container mx-auto pt-16 h-full">
-        <div className="text-5xl font-alfreda">{T("navbar.myContributions")}</div>
+        <div className="text-5xl font-belwe">{T("navbar.myContributions")}</div>
         <QueryWrapper query={query}>
           <div className="mt-10">
             <Card>{hasPayments ? <PaymentTable payments={payments} /> : <PaymentTableFallback />}</Card>

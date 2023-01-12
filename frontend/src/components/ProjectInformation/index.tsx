@@ -31,20 +31,14 @@ interface ProjectInformationProps {
   };
 }
 
-export default function ProjectInformation({
-  name,
-  displayName,
-  details,
-  lead,
-  githubRepoInfo,
-}: ProjectInformationProps) {
+export default function ProjectInformation({ name, details, lead, githubRepoInfo }: ProjectInformationProps) {
   return (
     <div className="flex flex-row w-full divide-x divide-neutral-600 gap-5 justify-items-center font-walsheim">
       <div className="flex flex-col basis-4/12 gap-5 justify-around">
         <div className="flex flex-row gap-3 items-center">
           <RoundedImage src={details?.logoUrl || onlyDustLogo} alt="Project Logo" className="object-cover w-12 h-12" />
           <div className="flex flex-col">
-            <div className="text-2xl font-medium">{name}</div>
+            <div className="text-2xl font-medium font-belwe">{name}</div>
             {lead && (
               <div className="text-md text-neutral-300 font-bold flex flex-row gap-1 items-center">
                 <div>Led by </div>

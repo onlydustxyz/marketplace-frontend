@@ -148,7 +148,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
                   <Listbox.Button className={`p-4 font-medium text-2xl ${onlyMine ? "hover:cursor-pointer" : ""}`}>
                     <div className="flex flex-row gap-3 items-center">
                       <RoundedImage src={logoUrl} alt="Project Logo" className="object-cover w-8 h-8" />
-                      <div className="truncate grow text-left">{project.name}</div>
+                      <div className="truncate grow font-belwe text-left">{project.name}</div>
                       {onlyMine && <UpDownChevrons className="h-5 w-5 fill-gray-400" />}
                     </div>
                   </Listbox.Button>

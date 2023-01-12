@@ -16,7 +16,7 @@ export default function MyProjects() {
   return (
     <div className="bg-space h-full">
       <div className="container mx-auto pt-16 h-full">
-        <div className="text-5xl font-alfreda">{T("navbar.myProjects")}</div>
+        <div className="text-5xl font-belwe">{T("navbar.myProjects")}</div>
         <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
           {ledProjectIds.map((projectId: string) => (
             <Link
