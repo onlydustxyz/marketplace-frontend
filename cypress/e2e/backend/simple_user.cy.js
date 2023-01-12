@@ -222,7 +222,7 @@ describe("As a simple user, I", () => {
     it("can update my info", () => {
         let email = "pierre.fabre@gmail.com";
         let location =
-            { city: "Paris", country: "France", number: "4", postCode: "75008", street: "avenue des Champs Elysee" };
+            { city: "Paris", country: "France", postCode: "75008", address: "4 avenue des Champs Elysee" };
         let identity =
             { type: "PERSON", optPerson: { firstname: "Pierre", lastname: "Fabre" } };
         let payout_settings =
@@ -258,8 +258,7 @@ describe("As a simple user, I", () => {
                             email: email,
                             location: {
                                 city: "Paris",
-                                number: "4",
-                                street: "avenue des Champs Elysee",
+                                address: "4 avenue des Champs Elysee",
                                 country: "France",
                                 post_code: "75008",
                             },
@@ -299,8 +298,7 @@ describe("As a simple user, I", () => {
                             email: email,
                             location: {
                                 city: "Paris",
-                                number: "4",
-                                street: "avenue des Champs Elysee",
+                                address: "4 avenue des Champs Elysee",
                                 country: "France",
                                 post_code: "75008",
                             },
