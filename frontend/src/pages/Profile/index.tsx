@@ -32,9 +32,9 @@ const Profile: React.FC = () => {
 };
 
 function isPaymentInfoMissing(queryResult: QueryResult<ProfileQuery>) {
-  const payoutSettings = queryResult?.data?.userInfo?.[0].payoutSettings;
+  const payoutSettings = queryResult?.data?.userInfo?.[0]?.payoutSettings;
   return (
-    queryResult.data &&
+    queryResult?.data &&
     !(
       payoutSettings?.EthTransfer?.Address ||
       payoutSettings?.EthTransfer?.Name ||
