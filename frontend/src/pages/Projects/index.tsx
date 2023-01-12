@@ -11,7 +11,7 @@ import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
-import hasProjectInvitation from "src/utils/hasProjectInvitation";
+import getInvitationForProject from "src/utils/getInvitationForProject";
 import { GetProjectsQuery, PendingProjectLeaderInvitationsQuery } from "src/__generated/graphql";
 import { useT } from "talkr";
 
@@ -32,7 +32,7 @@ export default function Projects() {
     setProjects(
       _.sortBy(
         getProjectsQuery.data?.projects,
-        project => !hasProjectInvitation(pendingProjectLeaderInvitationsQuery, project.id)
+        project => !getInvitationForProject(pendingProjectLeaderInvitationsQuery, project.id)
       )
     );
   }, [isLoggedIn, getProjectsQuery.data, pendingProjectLeaderInvitationsQuery.data]);
@@ -53,7 +53,7 @@ export default function Projects() {
                   <Card
                     selectable={true}
                     className={`bg-noise-light hover:bg-right ${
-                      hasProjectInvitation(pendingProjectLeaderInvitationsQuery, project.id)
+                      getInvitationForProject(pendingProjectLeaderInvitationsQuery, project.id)
                         ? "bg-amber-700/20"
                         : "bg-white/[0.02]"
                     } `}
@@ -74,7 +74,7 @@ export default function Projects() {
                           languages: project?.githubRepo?.languages,
                         }}
                       />
-                      {hasProjectInvitation(pendingProjectLeaderInvitationsQuery, project.id) && (
+                      {getInvitationForProject(pendingProjectLeaderInvitationsQuery, project.id) && (
                         <div className="flex flex-row justify-between items-center font-medium p-5 text-lg rounded-xl bg-amber-700/30">
                           <div>{T("project.projectLeadInvitation.prompt")}</div>
                           <div className="w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-100 py-2 px-5 text-chineseBlack">
