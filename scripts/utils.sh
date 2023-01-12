@@ -107,3 +107,8 @@ execute() {
     eval 2>&1 $cmd | tee >&2 logs.json
     return ${PIPESTATUS[0]}
 }
+
+check_command() {
+    command=$1
+    which $command > /dev/null || exit_error "'$command' not found. Please install it first."
+}

@@ -8,6 +8,9 @@ slug_commit() {
     heroku releases:info --app $APP --shell | sed -n 's/HEROKU_SLUG_COMMIT=\(.*\)/\1/p'
 }
 
+check_command git
+check_command heroku
+
 log_info "Checking diff to be loaded in production"
 
 execute heroku pipelines:diff --app od-api-staging
