@@ -16,7 +16,5 @@ runs:
 
     - name: Cypress run
       uses: cypress-io/github-action@v5
-      with:
-        spec: "cypress/e2e/${{ matrix.containers }}"
       env:
         CYPRESS_BASE_URL: http://localhost:8080

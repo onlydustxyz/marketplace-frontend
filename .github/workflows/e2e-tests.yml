@@ -29,10 +29,6 @@ jobs:
   e2e_tests:
     name: End-to-end tests
     runs-on: ubuntu-latest-16-cores
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [frontend, backend]
 
     steps:
       - name: Checkout repository
@@ -79,7 +75,6 @@ jobs:
           crate: grcov
 
       - name: Build backend coverage file
-        if: ${{ matrix.containers == "backend" }}
         run: |
           grcov . \
             --binary-path ./target/debug/deps/ \
@@ -92,12 +87,10 @@ jobs:
             -o cobertura.xml
 
       - name: Build frontend coverage file
-        if: ${{ matrix.containers == "frontend" }}
         run: |
           npx nyc report --reporter=cobertura
 
       - name: Upload backend coverage results
-        if: ${{ matrix.containers == "backend" }}
         uses: ./.github/actions/coverage-upload
         with:
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
@@ -105,7 +98,6 @@ jobs:
           file: cobertura.xml
 
       - name: Upload frontend coverage results
-        if: ${{ matrix.containers == "frontend" }}
         uses: ./.github/actions/coverage-upload
         with:
           codecov_token: ${{ secrets.CODECOV_TOKEN }}
@@ -113,7 +105,7 @@ jobs:
           file: coverage/cobertura-coverage.xml
 
       - name: Archive code coverage results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v1
         if: ${{ failure() }}
         with:
           name: cypress-screenshots
