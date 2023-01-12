@@ -17,8 +17,8 @@ export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountIn
   const { T } = useIntl();
   return (
     <div className="flex flex-col gap-3 divide-y divide-slate-600/40">
-      <div>
-        {lead && (
+      {lead && (
+        <div>
           <div className="flex flex-row justify-between py-4 pb-1 px-5">
             <div className="flex flex-row gap-1 items-center">
               <StarLine className="p-px font-normal text-xl text-slate-400" />
@@ -28,8 +28,8 @@ export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountIn
             </div>
             <ProjectLead {...lead} />
           </div>
-        )}
-      </div>
+        </div>
+      )}
       {githubRepoInfo?.contributors?.length !== undefined && (
         <div className="flex flex-row justify-between py-4 pb-1 px-5">
           <div className="flex flex-row gap-1 items-center">
