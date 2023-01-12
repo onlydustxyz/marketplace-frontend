@@ -84,8 +84,8 @@ const mockCompany: UserInfo = {
   },
   payoutSettings: {
     WireTransfer: {
-      BIC: "CITTGB2LXXX",
-      IBAN: "GB7611315000011234567890138",
+      BIC: "BNPCFR21",
+      IBAN: "FR7610107001011234567890129",
     },
   },
 };
@@ -231,6 +231,34 @@ describe('"Profile" page for individual', () => {
     await screen.findByText("Success !");
   });
 
+  it("should not navigate to projects screen when clicking Save profile with invalid IBAN", async () => {
+    // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
+    await userEvent.click(
+      await screen.findByRole("radio", {
+        name: /bank wire/i,
+      })
+    );
+    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("IBAN"), "invalid_iban");
+    await userEvent.click(await screen.findByText("Save profile"));
+    await waitFor(() => {
+      expect(screen.queryByText("Success !")).not.toBeInTheDocument();
+    });
+  });
+
+  it("should not navigate to projects screen when clicking Save profile with invalid BIC", async () => {
+    // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
+    await userEvent.click(
+      await screen.findByRole("radio", {
+        name: /bank wire/i,
+      })
+    );
+    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("BIC"), "invalid_bic");
+    await userEvent.click(await screen.findByText("Save profile"));
+    await waitFor(() => {
+      expect(screen.queryByText("Success !")).not.toBeInTheDocument();
+    });
+  });
+
   it("should send only relevant values to the backend", async () => {
     // Make sure both Company and individual are filled
     await userEvent.click(await screen.findByText("Company"));
@@ -241,8 +269,8 @@ describe('"Profile" page for individual', () => {
     // Make sure all of ETH address, Bank wire and ENS are filled
     await screen.findByDisplayValue(INVALID_ETHEREUM_ADDRESS);
     await userEvent.click(await screen.findByText("Bank wire"));
-    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("IBAN"), "GB7611315000011234567890138");
-    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("BIC"), "CITTGB2LXXX");
+    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("IBAN"), "FR7610107001011234567890129");
+    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("BIC"), "BNPCFR21");
     await userEvent.click(await screen.findByText("ENS domain"));
     await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("ENS domain"), VALID_ENS);
     await screen.findByDisplayValue(VALID_ENS);
