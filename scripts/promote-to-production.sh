@@ -36,6 +36,8 @@ if [ $? -eq 0 ]; then
     do
         execute heroku pipelines:promote --app od-$app-staging --to od-$app-production
     done
+
+    log_info "📌 Do not forget to promote Retool apps 😉"
 fi
 
 exit_success

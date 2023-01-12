@@ -88,4 +88,6 @@ fi
 
 start_apps
 
+log_info "📌 Do not forget to rollback Retool apps 😉"
+
 exit_success
