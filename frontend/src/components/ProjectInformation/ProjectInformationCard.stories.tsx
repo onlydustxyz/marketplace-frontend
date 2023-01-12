@@ -1,16 +1,16 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import ProjectInformationView from "./View";
+import ProjectInformation from ".";
 import Card from "../Card";
 
 export default {
   title: "ProjectInformation",
-  component: ProjectInformationView,
-} as ComponentMeta<typeof ProjectInformationView>;
+  component: ProjectInformation,
+} as ComponentMeta<typeof ProjectInformation>;
 
-const Template: ComponentStory<typeof ProjectInformationView> = args => (
+const Template: ComponentStory<typeof ProjectInformation> = args => (
   <Card>
-    <ProjectInformationView {...args} />
+    <ProjectInformation {...args} />
   </Card>
 );
 
