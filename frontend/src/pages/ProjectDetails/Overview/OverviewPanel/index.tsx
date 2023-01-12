@@ -22,7 +22,7 @@ export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountIn
           <div className="flex flex-row justify-between py-4 pb-1 px-5">
             <div className="flex flex-row gap-1 items-center">
               <StarLine className="p-px font-normal text-xl text-slate-400" />
-              <div className="flex text-md font-medium text-base text-slate-400">
+              <div className="flex text-md font-medium text-base text-slate-400 uppercase">
                 {T("project.details.overview.projectLeader")}
               </div>
             </div>
@@ -34,7 +34,7 @@ export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountIn
         <div className="flex flex-row justify-between py-4 pb-1 px-5">
           <div className="flex flex-row gap-1 items-center">
             <User3Line className="p-px font-normal text-xl text-slate-400" />
-            <div className="flex text-md font-medium text-base text-slate-400">
+            <div className="flex text-md font-medium text-base text-slate-400 uppercase">
               {T("project.details.overview.contributors")}
             </div>
           </div>
@@ -52,7 +52,7 @@ export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountIn
         <div className="flex flex-row justify-between py-4 px-5">
           <div className="flex flex-row gap-1 items-center">
             <MoneyDollarCircleLine className="p-px font-normal text-xl text-slate-400" />
-            <div className="flex text-md font-medium text-base text-slate-400">
+            <div className="flex text-md font-medium text-base text-slate-400 uppercase">
               {T("project.details.overview.totalSpentAmountInUsd")}
             </div>
           </div>
