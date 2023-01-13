@@ -6,6 +6,7 @@ use octocrab::{
 	FromResponse, Octocrab, OctocrabBuilder,
 };
 use olog::tracing::instrument;
+use reqwest::Url;
 use serde::Deserialize;
 
 mod error;
@@ -92,6 +93,20 @@ impl Client {
 			.pop()
 			.ok_or_else(|| Error::NotFound(anyhow!("Could not find {path} in repository")))
 	}
+
+	pub fn fix_github_host(&self, url: &Option<Url>) -> anyhow::Result<Option<Url>> {
+		Ok(match url {
+			Some(url) => Some(
+				format!(
+					"{}{}",
+					self.0.base_url.as_str().trim_end_matches('/'),
+					url.path()
+				)
+				.parse()?,
+			),
+			None => None,
+		})
+	}
 }
 
 trait AddHeaders: Sized {
@@ -104,5 +119,34 @@ impl AddHeaders for OctocrabBuilder {
 			self = self.add_header(key.parse()?, value.clone());
 		}
 		Ok(self)
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use rstest::rstest;
+
+	use super::*;
+
+	#[rstest]
+	#[case("http://plop.fr/github/", Some("https://api.github.com/repos/ning-rain/evens/contributors".parse().unwrap()), Some("http://plop.fr/github/repos/ning-rain/evens/contributors".parse().unwrap()))]
+	#[case("http://plop.fr/github", Some("https://api.github.com/repos/ning-rain/evens/contributors".parse().unwrap()), Some("http://plop.fr/github/repos/ning-rain/evens/contributors".parse().unwrap()))]
+	#[case("http://plop.fr/github/", Some("https://api.github.com".parse().unwrap()), Some("http://plop.fr/github/".parse().unwrap()))]
+	#[case("http://plop.fr/github", Some("https://api.github.com".parse().unwrap()), Some("http://plop.fr/github/".parse().unwrap()))]
+	#[case("http://plop.fr/github/", None, None)]
+	fn fix_github_host(
+		#[case] base_url: &str,
+		#[case] url: Option<reqwest::Url>,
+		#[case] expected_url: Option<reqwest::Url>,
+	) {
+		let client = Client::new(&Config {
+			base_url: base_url.to_string(),
+			personal_access_token: "".to_string(),
+			headers: HashMap::new(),
+		})
+		.unwrap();
+
+		let result_url = client.fix_github_host(&url).unwrap();
+		assert_eq!(result_url, expected_url);
 	}
 }

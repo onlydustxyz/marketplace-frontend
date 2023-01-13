@@ -25,7 +25,10 @@ impl GithubService for github::Client {
 	async fn fetch_repository_by_id(&self, id: u64) -> GithubServiceResult<GithubRepository> {
 		let repo = self.get_repository_by_id(id).await?;
 
-		let contributors: Contributors = match &repo.contributors_url {
+		let contributors: Contributors = match self
+			.fix_github_host(&repo.contributors_url)
+			.map_err(GithubServiceError::Other)?
+		{
 			Some(url) => self.get_as(url).await?,
 			None => Default::default(),
 		};
