@@ -2,7 +2,7 @@ use std::io::Cursor;
 
 use anyhow::Result;
 use olog::error;
-use reqwest::header::HeaderMap;
+use reqwest::header::{HeaderMap, HeaderValue, CACHE_CONTROL};
 use rocket::{
 	http::{hyper::body::Bytes, Status},
 	response::{Responder, Response as RocketResponse, Result as ResponseResult},
@@ -40,11 +40,27 @@ impl<'r, 'o: 'r> Responder<'r, 'o> for Response {
 
 impl Response {
 	pub async fn from_reqwest_response(response: reqwest::Response) -> Result<Self> {
+		let headers = Self::override_cache_control(response.headers().clone())?;
+
 		Ok(Self {
 			status: response.status().as_u16(),
-			headers: response.headers().clone(),
+			headers,
 			body: response.bytes().await?,
 		})
+	}
+
+	fn override_cache_control(mut headers: HeaderMap) -> Result<HeaderMap> {
+		if headers.contains_key(CACHE_CONTROL) {
+			let cache_control = headers
+				.entry(CACHE_CONTROL)
+				.or_insert(HeaderValue::from_static("public, max-age=60, s-maxage=60"));
+
+			*cache_control = HeaderValue::from_str(
+				cache_control.to_str()?.replace("private", "public").as_str(),
+			)?;
+		}
+
+		Ok(headers)
 	}
 }
 
@@ -60,5 +76,60 @@ impl WithHeaders for rocket::response::Builder<'_> {
 			}
 		}
 		Ok(self)
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use reqwest::header::{CACHE_CONTROL, HOST};
+	use rstest::rstest;
+
+	use super::*;
+
+	#[rstest]
+	fn override_cache_control_private() {
+		let mut headers = HeaderMap::new();
+
+		headers.insert(HOST, "example.com".parse().unwrap());
+		headers.insert(
+			CACHE_CONTROL,
+			"private, max-age=60, s-maxage=60".parse().unwrap(),
+		);
+
+		let headers = Response::override_cache_control(headers).unwrap();
+		assert_eq!(headers.get(HOST).unwrap(), &"example.com");
+		assert_eq!(
+			headers.get(CACHE_CONTROL).unwrap(),
+			&"public, max-age=60, s-maxage=60"
+		);
+	}
+
+	#[rstest]
+	fn override_cache_control_public() {
+		let mut headers = HeaderMap::new();
+
+		headers.insert(HOST, "example.com".parse().unwrap());
+		headers.insert(
+			CACHE_CONTROL,
+			"public, max-age=60, s-maxage=60".parse().unwrap(),
+		);
+
+		let headers = Response::override_cache_control(headers).unwrap();
+		assert_eq!(headers.get(HOST).unwrap(), &"example.com");
+		assert_eq!(
+			headers.get(CACHE_CONTROL).unwrap(),
+			&"public, max-age=60, s-maxage=60"
+		);
+	}
+
+	#[rstest]
+	fn override_cache_control_none() {
+		let mut headers = HeaderMap::new();
+
+		headers.insert(HOST, "example.com".parse().unwrap());
+
+		let headers = Response::override_cache_control(headers).unwrap();
+		assert_eq!(headers.get(HOST).unwrap(), &"example.com");
+		assert!(!headers.contains_key(CACHE_CONTROL));
 	}
 }

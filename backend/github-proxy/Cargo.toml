@@ -40,3 +40,4 @@ olog = {path = "../common/olog"}
 domain = {path = "../common/domain"}
 
 [dev-dependencies]
+rstest = "0.15.0"

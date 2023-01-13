@@ -157,6 +157,20 @@
         {
             "type": "lldb",
             "request": "launch",
+            "name": "Debug executable 'github-proxy'",
+            "cargo": {
+                "args": ["build", "--bin=github-proxy", "--package=github-proxy"],
+                "filter": {
+                    "name": "github-proxy",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
             "name": "Debug unit tests in executable 'event-store'",
             "cargo": {
                 "args": [
