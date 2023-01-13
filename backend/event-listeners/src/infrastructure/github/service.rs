@@ -24,7 +24,9 @@ impl GithubService for github::Client {
 		let repo_id: i64 = (*github_repo_id).into();
 		let repo = self.get_repository_by_id(repo_id as u64).await?;
 
-		let languages: Value = if let Some(url) = repo.languages_url {
+		let languages: Value = if let Some(url) =
+			self.fix_github_host(&repo.languages_url).map_err(GithubServiceError::Other)?
+		{
 			self.get_as(url).await?
 		} else {
 			Default::default()
