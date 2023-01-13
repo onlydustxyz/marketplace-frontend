@@ -94,7 +94,6 @@ services:
       AUTH_LOG_LEVEL: info
       AUTH_CLIENT_URL: http://localhost:5173/login
       AUTH_PROVIDER_GITHUB_ENABLED: "true"
-      AUTH_PROVIDER_GITHUB_SCOPE: user
       AUTH_SERVER_URL: http://localhost:4000
       AUTH_PROVIDER_GITHUB_CLIENT_ID: ${AUTH_PROVIDER_GITHUB_CLIENT_ID:-my_github_client_id}
       AUTH_PROVIDER_GITHUB_CLIENT_SECRET: ${AUTH_PROVIDER_GITHUB_CLIENT_SECRET:-my_github_client_secret}
