@@ -35,10 +35,6 @@ import RoundedImage from "src/components/RoundedImage";
 import sortBy from "lodash/sortBy";
 import { useSession } from "src/hooks/useSession";
 
-interface ProjectDetailsProps {
-  onlyMine?: boolean;
-}
-
 type ProjectDetailsParams = {
   projectId: string;
 };
@@ -49,7 +45,7 @@ export enum ProjectDetailsTab {
   Contributors = "Contributors",
 }
 
-export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps) {
+export default function ProjectDetails() {
   const [selectedTab, setSelectedTab] = useState<ProjectDetailsTab>(ProjectDetailsTab.Overview);
   const { projectId } = useParams<ProjectDetailsParams>();
   const { ledProjectIds, isLoggedIn } = useAuth();
@@ -64,23 +60,24 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
 
   const { lastVisitedProjectId, setLastVisitedProjectId } = useSession();
 
+  const pendingProjectLeaderInvitationsQuery = useHasuraQuery<PendingProjectLeaderInvitationsQuery>(
+    PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
+    HasuraUserRole.RegisteredUser,
+    { skip: !isLoggedIn }
+  );
+
   useEffect(() => {
-    if (selectedProjectId !== projectId) {
+    if (selectedProjectId && selectedProjectId !== projectId) {
       setSelectedTab(ProjectDetailsTab.Overview);
-      navigate(
-        generatePath(
-          onlyMine ? RoutePaths.MyProjectDetails : RoutePaths.ProjectDetails,
-          selectedProjectId ? { projectId: selectedProjectId } : undefined
-        )
-      );
+      navigate(generatePath(RoutePaths.MyProjectDetails, { projectId: selectedProjectId }));
     }
   }, [selectedProjectId]);
 
   useEffect(() => {
-    if (selectedProjectId && selectedProjectId !== lastVisitedProjectId() && onlyMine) {
-      setLastVisitedProjectId(selectedProjectId);
+    if (projectId && projectId !== lastVisitedProjectId() && isProjectMine(projectId)) {
+      setLastVisitedProjectId(projectId);
     }
-  }, [selectedProjectId]);
+  }, [projectId, pendingProjectLeaderInvitationsQuery.data?.pendingProjectLeaderInvitations]);
 
   const getProjectPublicQuery = useHasuraQuery<GetPublicProjectQuery>(GET_PROJECT_PUBLIC_QUERY, HasuraUserRole.Public, {
     variables: { id: projectId },
@@ -101,12 +98,6 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
     HasuraUserRole.Public
   );
 
-  const pendingProjectLeaderInvitationsQuery = useHasuraQuery<PendingProjectLeaderInvitationsQuery>(
-    PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
-    HasuraUserRole.RegisteredUser,
-    { skip: !isLoggedIn }
-  );
-
   const [acceptProjectLeaderInvitation, acceptProjectLeaderInvitationMutation] = useHasuraMutation(
     ACCEPT_PROJECT_LEADER_INVITATION_MUTATION,
     HasuraUserRole.RegisteredUser
@@ -118,6 +109,12 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
     }
   }, [acceptProjectLeaderInvitationMutation]);
 
+  const isProjectMine = (projectId: string) => {
+    return (
+      ledProjectIds.includes(projectId) || !!getInvitationForProject(pendingProjectLeaderInvitationsQuery, projectId)
+    );
+  };
+
   const availableTabs =
     projectId && ledProjectIds && ledProjectIds.includes(projectId)
       ? [ProjectDetailsTab.Overview, ProjectDetailsTab.Contributors, ProjectDetailsTab.Payments]
@@ -128,10 +125,7 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
   const logoUrl = project?.projectDetails?.logoUrl || project?.githubRepo?.content.logoUrl || onlyDustLogo;
 
   const projects = useMemo(() => {
-    const projects = getProjectsForSidebarQuery?.data?.projects.filter(
-      ({ id }) =>
-        !onlyMine || ledProjectIds.includes(id) || getInvitationForProject(pendingProjectLeaderInvitationsQuery, id)
-    );
+    const projects = getProjectsForSidebarQuery?.data?.projects.filter(({ id }) => isProjectMine(id));
     return sortBy(projects, project => !getInvitationForProject(pendingProjectLeaderInvitationsQuery, project.id));
   }, [
     getProjectsForSidebarQuery?.data?.projects,
@@ -141,24 +135,28 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
 
   const currentProjectInvitation = getInvitationForProject(pendingProjectLeaderInvitationsQuery, projectId);
 
+  const currentProjectIsMine = projectId && isProjectMine(projectId);
+
   const component = (
     <>
       {project && projects && (
         <div className="flex flex-1 w-full gap-2 h-full">
           <Sidebar>
-            {!onlyMine && (
+            {!currentProjectIsMine && (
               <BackLink to={RoutePaths.Projects} className="divide-none">
                 {T("project.details.sidebar.backToProjects")}
               </BackLink>
             )}
             <div className="flex flex-col gap-6 divide-y divide-neutral-700 w-full">
-              <Listbox value={project} onChange={onChangeProjectFromDropdown} disabled={!onlyMine}>
+              <Listbox value={project} onChange={onChangeProjectFromDropdown} disabled={!currentProjectIsMine}>
                 <div className="flex flex-col w-full border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700 bg-white/[0.02]">
-                  <Listbox.Button className={`p-4 font-medium text-2xl ${onlyMine ? "hover:cursor-pointer" : ""}`}>
+                  <Listbox.Button
+                    className={`p-4 font-medium text-2xl ${currentProjectIsMine ? "hover:cursor-pointer" : ""}`}
+                  >
                     <div className="flex flex-row gap-3 items-center">
                       <RoundedImage src={logoUrl} alt="Project Logo" className="object-cover w-8 h-8" />
                       <div className="truncate grow font-belwe text-left">{project.name}</div>
-                      {onlyMine && <UpDownChevrons className="h-5 w-5 fill-gray-400" />}
+                      {currentProjectIsMine && <UpDownChevrons className="h-5 w-5 fill-gray-400" />}
                     </div>
                   </Listbox.Button>
                   <Listbox.Options className="flex flex-col divide-y">
