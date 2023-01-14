@@ -13,18 +13,21 @@ import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import "src/assets/fonts/BelweBdBt/stylesheet.css";
 import { IntlProvider } from "src/hooks/useIntl";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
+import { SessionProvider } from "./hooks/useSession";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <IntlProvider>
       <BrowserRouter>
-        <TokenSetProvider>
-          <ApolloWrapper>
-            <AuthProvider>
-              <App />
-            </AuthProvider>
-          </ApolloWrapper>
-        </TokenSetProvider>
+        <SessionProvider>
+          <TokenSetProvider>
+            <ApolloWrapper>
+              <AuthProvider>
+                <App />
+              </AuthProvider>
+            </ApolloWrapper>
+          </TokenSetProvider>
+        </SessionProvider>
       </BrowserRouter>
     </IntlProvider>
   </React.StrictMode>
