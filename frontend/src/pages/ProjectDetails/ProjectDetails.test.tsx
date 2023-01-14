@@ -1,5 +1,5 @@
 import { describe, expect, it, Mock, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
 expect.extend(matchers);
@@ -170,7 +170,7 @@ describe('"ProjectDetails" page', () => {
 
   beforeEach(() => {
     window.localStorage.removeItem(LOCAL_STORAGE_SESSION_KEY);
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("should show a pending invitation if the user has been invited", async () => {
@@ -198,7 +198,7 @@ describe('"ProjectDetails" page', () => {
 
     renderWithIntl(
       <Routes>
-        <Route path="/projects/:projectId" element={<ProjectDetails onlyMine />}></Route>
+        <Route path="/projects/:projectId" element={<ProjectDetails />}></Route>
       </Routes>,
       {
         wrapper: MemoryRouterProviderFactory({
@@ -215,7 +215,7 @@ describe('"ProjectDetails" page', () => {
   it("should store the project id if the user has been invited as project lead", async () => {
     renderWithIntl(
       <Routes>
-        <Route path="/projects/:projectId" element={<ProjectDetails onlyMine />}></Route>
+        <Route path="/projects/:projectId" element={<ProjectDetails />}></Route>
       </Routes>,
       {
         wrapper: MemoryRouterProviderFactory({
@@ -224,9 +224,12 @@ describe('"ProjectDetails" page', () => {
         }),
       }
     );
-    expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_SESSION_KEY) || "{}").lastVisitedProjectId).toBe(
-      TEST_PROJECT_ID
-    );
+
+    await waitFor(() => {
+      expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_SESSION_KEY) || "{}").lastVisitedProjectId).toBe(
+        TEST_PROJECT_ID
+      );
+    });
   });
 
   it("should not store the project id if not project led nor invited", async () => {
