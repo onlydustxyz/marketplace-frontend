@@ -2474,17 +2474,24 @@ export type GetFirstLeadProjectIdQuery = { __typename?: 'query_root', user: { __
 
 export type GithubRepoFieldsForProjectCardFragment = { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } };
 
-export type PendingProjectLeaderInvitationsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PendingProjectLeaderInvitationsQuery = { __typename?: 'query_root', pendingProjectLeaderInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, projectId: any }> };
-
 export type GetGithubUserIdQueryVariables = Exact<{
   userId: InputMaybe<Scalars['uuid']>;
 }>;
 
 
 export type GetGithubUserIdQuery = { __typename?: 'query_root', authGithubUsers: Array<{ __typename?: 'AuthGithubUsers', githubUserId: any | null }> };
+
+export type PendingProjectLeaderInvitationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PendingProjectLeaderInvitationsQuery = { __typename?: 'query_root', pendingProjectLeaderInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, projectId: any }> };
+
+export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
+  invitationId: Scalars['Uuid'];
+}>;
+
+
+export type AcceptProjectLeaderInvitationMutation = { __typename?: 'mutation_root', acceptProjectLeaderInvitation: boolean };
 
 export type GetPaymentRequestsQueryVariables = Exact<{
   githubId: Scalars['bigint'];
@@ -2560,13 +2567,6 @@ export type GetProjectsForSidebarQueryVariables = Exact<{ [key: string]: never; 
 
 export type GetProjectsForSidebarQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string }> } } | null }> };
 
-export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
-  invitationId: Scalars['Uuid'];
-}>;
-
-
-export type AcceptProjectLeaderInvitationMutation = { __typename?: 'mutation_root', acceptProjectLeaderInvitation: boolean };
-
 export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -2640,41 +2640,6 @@ export function useGetFirstLeadProjectIdLazyQuery(baseOptions?: Apollo.LazyQuery
 export type GetFirstLeadProjectIdQueryHookResult = ReturnType<typeof useGetFirstLeadProjectIdQuery>;
 export type GetFirstLeadProjectIdLazyQueryHookResult = ReturnType<typeof useGetFirstLeadProjectIdLazyQuery>;
 export type GetFirstLeadProjectIdQueryResult = Apollo.QueryResult<GetFirstLeadProjectIdQuery, GetFirstLeadProjectIdQueryVariables>;
-export const PendingProjectLeaderInvitationsDocument = gql`
-    query PendingProjectLeaderInvitations {
-  pendingProjectLeaderInvitations {
-    id
-    projectId
-  }
-}
-    `;
-
-/**
- * __usePendingProjectLeaderInvitationsQuery__
- *
- * To run a query within a React component, call `usePendingProjectLeaderInvitationsQuery` and pass it any options that fit your needs.
- * When your component renders, `usePendingProjectLeaderInvitationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePendingProjectLeaderInvitationsQuery({
- *   variables: {
- *   },
- * });
- */
-export function usePendingProjectLeaderInvitationsQuery(baseOptions?: Apollo.QueryHookOptions<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>(PendingProjectLeaderInvitationsDocument, options);
-      }
-export function usePendingProjectLeaderInvitationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>(PendingProjectLeaderInvitationsDocument, options);
-        }
-export type PendingProjectLeaderInvitationsQueryHookResult = ReturnType<typeof usePendingProjectLeaderInvitationsQuery>;
-export type PendingProjectLeaderInvitationsLazyQueryHookResult = ReturnType<typeof usePendingProjectLeaderInvitationsLazyQuery>;
-export type PendingProjectLeaderInvitationsQueryResult = Apollo.QueryResult<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>;
 export const GetGithubUserIdDocument = gql`
     query GetGithubUserId($userId: uuid) {
   authGithubUsers(where: {userId: {_eq: $userId}}) {
@@ -2710,6 +2675,72 @@ export function useGetGithubUserIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetGithubUserIdQueryHookResult = ReturnType<typeof useGetGithubUserIdQuery>;
 export type GetGithubUserIdLazyQueryHookResult = ReturnType<typeof useGetGithubUserIdLazyQuery>;
 export type GetGithubUserIdQueryResult = Apollo.QueryResult<GetGithubUserIdQuery, GetGithubUserIdQueryVariables>;
+export const PendingProjectLeaderInvitationsDocument = gql`
+    query PendingProjectLeaderInvitations {
+  pendingProjectLeaderInvitations {
+    id
+    projectId
+  }
+}
+    `;
+
+/**
+ * __usePendingProjectLeaderInvitationsQuery__
+ *
+ * To run a query within a React component, call `usePendingProjectLeaderInvitationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePendingProjectLeaderInvitationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePendingProjectLeaderInvitationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePendingProjectLeaderInvitationsQuery(baseOptions?: Apollo.QueryHookOptions<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>(PendingProjectLeaderInvitationsDocument, options);
+      }
+export function usePendingProjectLeaderInvitationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>(PendingProjectLeaderInvitationsDocument, options);
+        }
+export type PendingProjectLeaderInvitationsQueryHookResult = ReturnType<typeof usePendingProjectLeaderInvitationsQuery>;
+export type PendingProjectLeaderInvitationsLazyQueryHookResult = ReturnType<typeof usePendingProjectLeaderInvitationsLazyQuery>;
+export type PendingProjectLeaderInvitationsQueryResult = Apollo.QueryResult<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>;
+export const AcceptProjectLeaderInvitationDocument = gql`
+    mutation acceptProjectLeaderInvitation($invitationId: Uuid!) {
+  acceptProjectLeaderInvitation(invitationId: $invitationId)
+}
+    `;
+export type AcceptProjectLeaderInvitationMutationFn = Apollo.MutationFunction<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>;
+
+/**
+ * __useAcceptProjectLeaderInvitationMutation__
+ *
+ * To run a mutation, you first call `useAcceptProjectLeaderInvitationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptProjectLeaderInvitationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [acceptProjectLeaderInvitationMutation, { data, loading, error }] = useAcceptProjectLeaderInvitationMutation({
+ *   variables: {
+ *      invitationId: // value for 'invitationId'
+ *   },
+ * });
+ */
+export function useAcceptProjectLeaderInvitationMutation(baseOptions?: Apollo.MutationHookOptions<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>(AcceptProjectLeaderInvitationDocument, options);
+      }
+export type AcceptProjectLeaderInvitationMutationHookResult = ReturnType<typeof useAcceptProjectLeaderInvitationMutation>;
+export type AcceptProjectLeaderInvitationMutationResult = Apollo.MutationResult<AcceptProjectLeaderInvitationMutation>;
+export type AcceptProjectLeaderInvitationMutationOptions = Apollo.BaseMutationOptions<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>;
 export const GetPaymentRequestsDocument = gql`
     query GetPaymentRequests($githubId: bigint!) {
   paymentRequests(where: {recipientId: {_eq: $githubId}}) {
@@ -3172,37 +3203,6 @@ export function useGetProjectsForSidebarLazyQuery(baseOptions?: Apollo.LazyQuery
 export type GetProjectsForSidebarQueryHookResult = ReturnType<typeof useGetProjectsForSidebarQuery>;
 export type GetProjectsForSidebarLazyQueryHookResult = ReturnType<typeof useGetProjectsForSidebarLazyQuery>;
 export type GetProjectsForSidebarQueryResult = Apollo.QueryResult<GetProjectsForSidebarQuery, GetProjectsForSidebarQueryVariables>;
-export const AcceptProjectLeaderInvitationDocument = gql`
-    mutation acceptProjectLeaderInvitation($invitationId: Uuid!) {
-  acceptProjectLeaderInvitation(invitationId: $invitationId)
-}
-    `;
-export type AcceptProjectLeaderInvitationMutationFn = Apollo.MutationFunction<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>;
-
-/**
- * __useAcceptProjectLeaderInvitationMutation__
- *
- * To run a mutation, you first call `useAcceptProjectLeaderInvitationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAcceptProjectLeaderInvitationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [acceptProjectLeaderInvitationMutation, { data, loading, error }] = useAcceptProjectLeaderInvitationMutation({
- *   variables: {
- *      invitationId: // value for 'invitationId'
- *   },
- * });
- */
-export function useAcceptProjectLeaderInvitationMutation(baseOptions?: Apollo.MutationHookOptions<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>(AcceptProjectLeaderInvitationDocument, options);
-      }
-export type AcceptProjectLeaderInvitationMutationHookResult = ReturnType<typeof useAcceptProjectLeaderInvitationMutation>;
-export type AcceptProjectLeaderInvitationMutationResult = Apollo.MutationResult<AcceptProjectLeaderInvitationMutation>;
-export type AcceptProjectLeaderInvitationMutationOptions = Apollo.BaseMutationOptions<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>;
 export const GetProjectsDocument = gql`
     query GetProjects {
   projects {

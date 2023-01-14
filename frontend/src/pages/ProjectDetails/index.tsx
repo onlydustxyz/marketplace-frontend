@@ -6,15 +6,10 @@ import { useT } from "talkr";
 
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
-import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { buildGithubLink, decodeBase64ToString } from "src/utils/stringUtils";
-import {
-  GetPublicProjectQuery,
-  GetUserProjectQuery,
-  GetProjectsForSidebarQuery,
-  PendingProjectLeaderInvitationsQuery,
-} from "src/__generated/graphql";
+import { GetPublicProjectQuery, GetUserProjectQuery, GetProjectsForSidebarQuery } from "src/__generated/graphql";
 import Overview from "./Overview";
 import Payments from "./PaymentActions";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
@@ -24,16 +19,15 @@ import GithubLink from "src/components/GithubLink";
 import TelegramLink from "src/components/TelegramLink";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import ShootingStar from "src/assets/icons/ShootingStar";
-import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
 
 import { RoutePaths } from "src/App";
-import getInvitationForProject from "src/utils/getInvitationForProject";
 import BackLink from "src/components/BackLink";
 import Contributors from "./Contributors";
 import CheckLine from "src/icons/CheckLine";
 import RoundedImage from "src/components/RoundedImage";
 import sortBy from "lodash/sortBy";
 import { useSession } from "src/hooks/useSession";
+import { useProjectLeadInvitations } from "src/hooks/useProjectLeadInvitations";
 
 type ProjectDetailsParams = {
   projectId: string;
@@ -48,8 +42,11 @@ export enum ProjectDetailsTab {
 export default function ProjectDetails() {
   const [selectedTab, setSelectedTab] = useState<ProjectDetailsTab>(ProjectDetailsTab.Overview);
   const { projectId } = useParams<ProjectDetailsParams>();
-  const { ledProjectIds, isLoggedIn } = useAuth();
+  const { isLoggedIn, ledProjectIds } = useAuth();
   const [selectedProjectId, setSelectedProjectId] = useState(projectId);
+  const { lastVisitedProjectId, setLastVisitedProjectId } = useSession();
+  const { getInvitationForProject, amIInvitedForProject, allInvitations, acceptInvitation, acceptInvitationResponse } =
+    useProjectLeadInvitations();
 
   const navigate = useNavigate();
   const { T } = useT();
@@ -57,14 +54,6 @@ export default function ProjectDetails() {
   const onChangeProjectFromDropdown = (project: any) => {
     setSelectedProjectId(project.id);
   };
-
-  const { lastVisitedProjectId, setLastVisitedProjectId } = useSession();
-
-  const pendingProjectLeaderInvitationsQuery = useHasuraQuery<PendingProjectLeaderInvitationsQuery>(
-    PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
-    HasuraUserRole.RegisteredUser,
-    { skip: !isLoggedIn }
-  );
 
   useEffect(() => {
     if (selectedProjectId && selectedProjectId !== projectId) {
@@ -77,7 +66,7 @@ export default function ProjectDetails() {
     if (projectId && projectId !== lastVisitedProjectId() && isProjectMine(projectId)) {
       setLastVisitedProjectId(projectId);
     }
-  }, [projectId, pendingProjectLeaderInvitationsQuery.data?.pendingProjectLeaderInvitations]);
+  }, [projectId, allInvitations]);
 
   const getProjectPublicQuery = useHasuraQuery<GetPublicProjectQuery>(GET_PROJECT_PUBLIC_QUERY, HasuraUserRole.Public, {
     variables: { id: projectId },
@@ -98,22 +87,13 @@ export default function ProjectDetails() {
     HasuraUserRole.Public
   );
 
-  const [acceptProjectLeaderInvitation, acceptProjectLeaderInvitationMutation] = useHasuraMutation(
-    ACCEPT_PROJECT_LEADER_INVITATION_MUTATION,
-    HasuraUserRole.RegisteredUser
-  );
-
   useEffect(() => {
-    if (acceptProjectLeaderInvitationMutation.data) {
+    if (acceptInvitationResponse.data) {
       window.location.reload();
     }
-  }, [acceptProjectLeaderInvitationMutation]);
+  }, [acceptInvitationResponse.data]);
 
-  const isProjectMine = (projectId: string) => {
-    return (
-      ledProjectIds.includes(projectId) || !!getInvitationForProject(pendingProjectLeaderInvitationsQuery, projectId)
-    );
-  };
+  const isProjectMine = (projectId: string) => ledProjectIds.includes(projectId) || !!amIInvitedForProject(projectId);
 
   const availableTabs =
     projectId && ledProjectIds && ledProjectIds.includes(projectId)
@@ -126,14 +106,8 @@ export default function ProjectDetails() {
 
   const projects = useMemo(() => {
     const projects = getProjectsForSidebarQuery?.data?.projects.filter(({ id }) => isProjectMine(id));
-    return sortBy(projects, project => !getInvitationForProject(pendingProjectLeaderInvitationsQuery, project.id));
-  }, [
-    getProjectsForSidebarQuery?.data?.projects,
-    ledProjectIds,
-    pendingProjectLeaderInvitationsQuery.data?.pendingProjectLeaderInvitations,
-  ]);
-
-  const currentProjectInvitation = getInvitationForProject(pendingProjectLeaderInvitationsQuery, projectId);
+    return sortBy(projects, project => !amIInvitedForProject(project.id));
+  }, [getProjectsForSidebarQuery?.data?.projects, ledProjectIds, allInvitations]);
 
   const currentProjectIsMine = projectId && isProjectMine(projectId);
 
@@ -165,8 +139,7 @@ export default function ProjectDetails() {
                         key={projectFromDropdown.id}
                         value={projectFromDropdown}
                         className={`hover:cursor-pointer p-4 hover:bg-white/10 border-neutral-600 duration-300 last:rounded-b-2xl ${
-                          getInvitationForProject(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) &&
-                          "bg-orange-400/10  hover:bg-amber-700/30"
+                          getInvitationForProject(projectFromDropdown.id) && "bg-orange-400/10  hover:bg-amber-700/30"
                         } `}
                       >
                         <div className="flex flex-col gap-5">
@@ -188,7 +161,7 @@ export default function ProjectDetails() {
                               </div>
                             </div>
                             <>
-                              {getInvitationForProject(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) ? (
+                              {getInvitationForProject(projectFromDropdown.id) ? (
                                 <div className="flex flex-row px-2 py-1 rounded-2xl bg-orange-400 items-center gap-1 text-xs text-black">
                                   <ShootingStar />
                                   <div>{T("project.details.sidebar.newInvite")}</div>
@@ -200,7 +173,7 @@ export default function ProjectDetails() {
                               )}
                             </>
                           </div>
-                          {getInvitationForProject(pendingProjectLeaderInvitationsQuery, projectFromDropdown.id) && (
+                          {getInvitationForProject(projectFromDropdown.id) && (
                             <div className="bg-neutral-100 rounded-xl w-full text-black text-sm text-center p-2">
                               View invite
                             </div>
@@ -251,13 +224,13 @@ export default function ProjectDetails() {
                     languages: githubRepo.languages,
                   }}
                 >
-                  {project.name && currentProjectInvitation && (
+                  {project.name && amIInvitedForProject(projectId) && (
                     <ProjectLeadInvitation
                       projectName={project.name}
                       onClick={() => {
-                        acceptProjectLeaderInvitation({
+                        acceptInvitation({
                           variables: {
-                            invitationId: currentProjectInvitation.id,
+                            invitationId: getInvitationForProject(projectId)?.id,
                           },
                         });
                       }}
@@ -375,11 +348,5 @@ export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
         }
       }
     }
-  }
-`;
-
-export const ACCEPT_PROJECT_LEADER_INVITATION_MUTATION = gql`
-  mutation acceptProjectLeaderInvitation($invitationId: Uuid!) {
-    acceptProjectLeaderInvitation(invitationId: $invitationId)
   }
 `;
