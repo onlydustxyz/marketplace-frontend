@@ -9,7 +9,6 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { GET_PROJECTS_QUERY } from "src/pages/Projects";
 import { GET_PROFILE_QUERY } from "src/pages/Profile";
 import { CLAIMS_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
-import { GET_MY_PROJECT_QUERY } from "src/pages/MyProjects";
 import { ProjectDetailsTab, GET_PROJECT_USER_QUERY, GET_PROJECTS_FOR_SIDEBAR_QUERY } from "src/pages/ProjectDetails";
 import { buildGithubLink } from "src/utils/stringUtils";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
@@ -33,7 +32,6 @@ const TEST_GITHUB_REPO_CONTENT = "test-github-repo-content";
 const TEST_GITHUB_CONTRIBUTOR_LOGIN = "test-github-contributor-login";
 const TEST_PROJECT_LEAD_DISPLAY_NAME = "test-project-lead-display-name";
 const TEST_PROJECT_LEAD_AVATAR_URL = "http://foo.bar/plop.png";
-const TEST_GITHUB_LINK = buildGithubLink(TEST_GITHUB_REPO_OWNER, TEST_GITHUB_REPO_NAME);
 
 expect.extend(matchers);
 
@@ -113,39 +111,6 @@ const graphQlMocks = [
     result: {
       data: {
         user: { id: TEST_USER_ID, email: TEST_USER_EMAIL, metadata: {} },
-      },
-    },
-  },
-  {
-    request: {
-      query: GET_MY_PROJECT_QUERY,
-      variables: {
-        id: TEST_PROJECT_ID,
-      },
-    },
-    result: {
-      data: {
-        projectsByPk: {
-          name: TEST_PROJECT_NAME,
-          totalSpentAmountInUsd: 123,
-          budgets: [{ initialAmount: 500, remainingAmount: 300 }],
-          projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
-          projectLeads: [
-            {
-              user: {
-                displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
-                avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
-              },
-            },
-          ],
-          githubRepo: {
-            name: TEST_GITHUB_REPO_NAME,
-            owner: TEST_GITHUB_REPO_OWNER,
-            content: {
-              contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
-            },
-          },
-        },
       },
     },
   },
@@ -259,17 +224,6 @@ describe("Integration tests", () => {
     await screen.findByText(TEST_PROJECT_NAME);
   });
 
-  it("should be able to access the my projects page when having a token with the right jwt in local storage", async () => {
-    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
-    renderWithIntl(<App />, {
-      wrapper: MemoryRouterProviderFactory({
-        route: `${RoutePaths.MyProjects}`,
-        mocks: graphQlMocks,
-      }),
-    });
-    await screen.findByText(TEST_PROJECT_NAME);
-  });
-
   it("should be able to access the project details page from the projects list and see the tabs", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
     renderWithIntl(<App />, {
@@ -298,7 +252,7 @@ describe("Integration tests", () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({
-        route: `${RoutePaths.MyProjects}`,
+        route: `${RoutePaths.Projects}`,
         mocks: graphQlMocks,
       }),
     });
@@ -313,7 +267,7 @@ describe("Integration tests", () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({
-        route: `${RoutePaths.MyProjects}`,
+        route: `${RoutePaths.Projects}`,
         mocks: graphQlMocks,
       }),
     });
