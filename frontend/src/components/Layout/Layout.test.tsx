@@ -8,6 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import { renderWithIntl } from "src/test/utils";
 import { MockedProvider } from "@apollo/client/testing";
 import { LOCAL_STORAGE_TOKEN_SET_KEY, TokenSetProvider } from "src/hooks/useTokenSet";
+import { SessionProvider } from "src/hooks/useSession";
 
 expect.extend(matchers);
 
@@ -30,11 +31,13 @@ describe('"Layout" component', () => {
   it("should always display the onlydust logo", async () => {
     renderWithIntl(
       <MockedProvider>
-        <TokenSetProvider>
-          <AuthProvider>
-            <Layout />
-          </AuthProvider>
-        </TokenSetProvider>
+        <SessionProvider>
+          <TokenSetProvider>
+            <AuthProvider>
+              <Layout />
+            </AuthProvider>
+          </TokenSetProvider>
+        </SessionProvider>
       </MockedProvider>,
       { wrapper: BrowserRouter }
     );
@@ -46,11 +49,13 @@ describe('"Layout" component', () => {
   it("should display the github logo when there is no hasura jwt in the local storage", async () => {
     renderWithIntl(
       <MockedProvider>
-        <TokenSetProvider>
-          <AuthProvider>
-            <Layout />
-          </AuthProvider>
-        </TokenSetProvider>
+        <SessionProvider>
+          <TokenSetProvider>
+            <AuthProvider>
+              <Layout />
+            </AuthProvider>
+          </TokenSetProvider>
+        </SessionProvider>
       </MockedProvider>,
       { wrapper: BrowserRouter }
     );
@@ -63,11 +68,13 @@ describe('"Layout" component', () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_TEST_VALUE));
     renderWithIntl(
       <MockedProvider>
-        <TokenSetProvider>
-          <AuthProvider>
-            <Layout />
-          </AuthProvider>
-        </TokenSetProvider>
+        <SessionProvider>
+          <TokenSetProvider>
+            <AuthProvider>
+              <Layout />
+            </AuthProvider>
+          </TokenSetProvider>
+        </SessionProvider>
       </MockedProvider>,
       { wrapper: BrowserRouter }
     );

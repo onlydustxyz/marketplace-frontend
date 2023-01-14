@@ -2465,6 +2465,13 @@ export type Users_StreamCursorValueInput = {
   phoneNumberVerified: InputMaybe<Scalars['Boolean']>;
 };
 
+export type GetFirstLeadProjectIdQueryVariables = Exact<{
+  userId: Scalars['uuid'];
+}>;
+
+
+export type GetFirstLeadProjectIdQuery = { __typename?: 'query_root', user: { __typename?: 'users', projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any }> } | null };
+
 export type GithubRepoFieldsForProjectCardFragment = { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -2596,6 +2603,43 @@ export const ProjectDetailsGithubRepoFieldsFragmentDoc = gql`
   languages
 }
     `;
+export const GetFirstLeadProjectIdDocument = gql`
+    query GetFirstLeadProjectId($userId: uuid!) {
+  user(id: $userId) {
+    projectsLeaded(limit: 1) {
+      projectId
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetFirstLeadProjectIdQuery__
+ *
+ * To run a query within a React component, call `useGetFirstLeadProjectIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFirstLeadProjectIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFirstLeadProjectIdQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetFirstLeadProjectIdQuery(baseOptions: Apollo.QueryHookOptions<GetFirstLeadProjectIdQuery, GetFirstLeadProjectIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFirstLeadProjectIdQuery, GetFirstLeadProjectIdQueryVariables>(GetFirstLeadProjectIdDocument, options);
+      }
+export function useGetFirstLeadProjectIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFirstLeadProjectIdQuery, GetFirstLeadProjectIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFirstLeadProjectIdQuery, GetFirstLeadProjectIdQueryVariables>(GetFirstLeadProjectIdDocument, options);
+        }
+export type GetFirstLeadProjectIdQueryHookResult = ReturnType<typeof useGetFirstLeadProjectIdQuery>;
+export type GetFirstLeadProjectIdLazyQueryHookResult = ReturnType<typeof useGetFirstLeadProjectIdLazyQuery>;
+export type GetFirstLeadProjectIdQueryResult = Apollo.QueryResult<GetFirstLeadProjectIdQuery, GetFirstLeadProjectIdQueryVariables>;
 export const PendingProjectLeaderInvitationsDocument = gql`
     query PendingProjectLeaderInvitations {
   pendingProjectLeaderInvitations {
