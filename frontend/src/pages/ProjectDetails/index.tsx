@@ -33,6 +33,7 @@ import Contributors from "./Contributors";
 import CheckLine from "src/icons/CheckLine";
 import RoundedImage from "src/components/RoundedImage";
 import sortBy from "lodash/sortBy";
+import { useSession } from "src/hooks/useSession";
 
 interface ProjectDetailsProps {
   onlyMine?: boolean;
@@ -61,6 +62,8 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
     setSelectedProjectId(project.id);
   };
 
+  const { lastVisitedProjectId, setLastVisitedProjectId } = useSession();
+
   useEffect(() => {
     if (selectedProjectId !== projectId) {
       setSelectedTab(ProjectDetailsTab.Overview);
@@ -70,6 +73,12 @@ export default function ProjectDetails({ onlyMine = false }: ProjectDetailsProps
           selectedProjectId ? { projectId: selectedProjectId } : undefined
         )
       );
+    }
+  }, [selectedProjectId]);
+
+  useEffect(() => {
+    if (selectedProjectId && selectedProjectId !== lastVisitedProjectId() && onlyMine) {
+      setLastVisitedProjectId(selectedProjectId);
     }
   }, [selectedProjectId]);
 
