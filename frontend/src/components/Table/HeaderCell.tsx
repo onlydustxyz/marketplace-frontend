@@ -7,7 +7,7 @@ interface Props extends PropsWithChildren {
 
 export const HeaderCell: React.FC<Props> = ({ className, onClick, children }) => {
   return (
-    <th scope="col" className={`text-left h-full ${className}`} onClick={onClick}>
+    <th scope="col" className={`text-left h-full ${onClick && "hover:cursor-pointer"} ${className}`} onClick={onClick}>
       <div className="h-4 mb-2 flex items-center space-x-1">{children}</div>
     </th>
   );
