@@ -9,11 +9,10 @@ import ErrorFallback from "src/components/ErrorFallback";
 const Login = lazy(() => import("src/pages/Login"));
 const Projects = lazy(() => import("src/pages/Projects"));
 const Profile = lazy(() => import("src/pages/Profile"));
-const MyProjects = lazy(() => import("src/pages/MyProjects"));
 const MyContributions = lazy(() => import("src/pages/MyContributions"));
 const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
 
-import { CustomUserRole, HasuraUserRole } from "src/types";
+import { HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/LoaderFallback";
 import ScrollToTop from "src/components/ScrollToTop";
 
@@ -21,7 +20,6 @@ export enum RoutePaths {
   Projects = "/",
   Login = "/login",
   Profile = "/profile",
-  MyProjects = "/my-projects",
   ProjectDetails = "/projects/:projectId",
   MyProjectDetails = "/my-projects/:projectId",
   MyContributions = "/my-contributions",
@@ -50,14 +48,6 @@ function App() {
           element: (
             <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
               <MyContributions />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: RoutePaths.MyProjects,
-          element: (
-            <ProtectedRoute requiredRole={CustomUserRole.ProjectLead}>
-              <MyProjects />
             </ProtectedRoute>
           ),
         },

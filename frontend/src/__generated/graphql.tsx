@@ -2486,13 +2486,6 @@ export type GetPaymentRequestsQueryVariables = Exact<{
 
 export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', project: { __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', logoUrl: string } } | null } | null } | null }> };
 
-export type MyProjectQueryVariables = Exact<{
-  id: Scalars['uuid'];
-}>;
-
-
-export type MyProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
-
 export type UpdateProfileInfoMutationVariables = Exact<{
   email: Scalars['Email'];
   identity: IdentityInput;
@@ -2729,49 +2722,6 @@ export function useGetPaymentRequestsLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetPaymentRequestsQueryHookResult = ReturnType<typeof useGetPaymentRequestsQuery>;
 export type GetPaymentRequestsLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsLazyQuery>;
 export type GetPaymentRequestsQueryResult = Apollo.QueryResult<GetPaymentRequestsQuery, GetPaymentRequestsQueryVariables>;
-export const MyProjectDocument = gql`
-    query MyProject($id: uuid!) {
-  projectsByPk(id: $id) {
-    name
-    projectDetails {
-      description
-      telegramLink
-      logoUrl
-    }
-    githubRepo {
-      ...GithubRepoFieldsForProjectCard
-    }
-  }
-}
-    ${GithubRepoFieldsForProjectCardFragmentDoc}`;
-
-/**
- * __useMyProjectQuery__
- *
- * To run a query within a React component, call `useMyProjectQuery` and pass it any options that fit your needs.
- * When your component renders, `useMyProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMyProjectQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useMyProjectQuery(baseOptions: Apollo.QueryHookOptions<MyProjectQuery, MyProjectQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MyProjectQuery, MyProjectQueryVariables>(MyProjectDocument, options);
-      }
-export function useMyProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyProjectQuery, MyProjectQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MyProjectQuery, MyProjectQueryVariables>(MyProjectDocument, options);
-        }
-export type MyProjectQueryHookResult = ReturnType<typeof useMyProjectQuery>;
-export type MyProjectLazyQueryHookResult = ReturnType<typeof useMyProjectLazyQuery>;
-export type MyProjectQueryResult = Apollo.QueryResult<MyProjectQuery, MyProjectQueryVariables>;
 export const UpdateProfileInfoDocument = gql`
     mutation updateProfileInfo($email: Email!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
   updateProfileInfo(
