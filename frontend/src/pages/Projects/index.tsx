@@ -16,7 +16,7 @@ import { useT } from "talkr";
 
 export default function Projects() {
   const { T } = useT();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, ledProjectIds } = useAuth();
   const { getInvitationForProject, amIInvitedForProject, allInvitations } = useProjectLeadInvitations();
 
   const getProjectsQuery = useHasuraQuery<GetProjectsQuery>(GET_PROJECTS_QUERY, HasuraUserRole.Public);
@@ -25,6 +25,8 @@ export default function Projects() {
   useEffect(() => {
     setProjects(sortBy(getProjectsQuery.data?.projects, project => !amIInvitedForProject(project.id)));
   }, [isLoggedIn, getProjectsQuery.data, allInvitations]);
+
+  const isProjectMine = (projectId: string) => ledProjectIds.includes(projectId) || amIInvitedForProject(projectId);
 
   return (
     <div className="bg-space h-full">
@@ -37,7 +39,12 @@ export default function Projects() {
                 <Link
                   key={project.id}
                   className="flex w-11/12 my-3"
-                  to={generatePath(RoutePaths.ProjectDetails, { projectId: project.id })}
+                  to={generatePath(
+                    isProjectMine(project.id) ? RoutePaths.MyProjectDetails : RoutePaths.ProjectDetails,
+                    {
+                      projectId: project.id,
+                    }
+                  )}
                 >
                   <Card
                     selectable={true}
