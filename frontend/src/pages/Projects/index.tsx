@@ -7,35 +7,24 @@ import Card from "src/components/Card";
 import ProjectInformation from "src/components/ProjectInformation";
 import QueryWrapper from "src/components/QueryWrapper";
 import { GITHUB_REPO_FIELDS_FOR_PROJECT_CARD_FRAGMENT } from "src/graphql/fragments";
-import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useProjectLeadInvitations } from "src/hooks/useProjectLeadInvitations";
 import { HasuraUserRole } from "src/types";
-import getInvitationForProject from "src/utils/getInvitationForProject";
-import { GetProjectsQuery, PendingProjectLeaderInvitationsQuery } from "src/__generated/graphql";
+import { GetProjectsQuery } from "src/__generated/graphql";
 import { useT } from "talkr";
 
 export default function Projects() {
   const { T } = useT();
   const { isLoggedIn } = useAuth();
+  const { getInvitationForProject, amIInvitedForProject, allInvitations } = useProjectLeadInvitations();
 
   const getProjectsQuery = useHasuraQuery<GetProjectsQuery>(GET_PROJECTS_QUERY, HasuraUserRole.Public);
-  const pendingProjectLeaderInvitationsQuery = useHasuraQuery<PendingProjectLeaderInvitationsQuery>(
-    PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
-    HasuraUserRole.RegisteredUser,
-    { skip: !isLoggedIn }
-  );
-
   const [projects, setProjects] = useState(getProjectsQuery.data?.projects);
 
   useEffect(() => {
-    setProjects(
-      sortBy(
-        getProjectsQuery.data?.projects,
-        project => !getInvitationForProject(pendingProjectLeaderInvitationsQuery, project.id)
-      )
-    );
-  }, [isLoggedIn, getProjectsQuery.data, pendingProjectLeaderInvitationsQuery.data]);
+    setProjects(sortBy(getProjectsQuery.data?.projects, project => !amIInvitedForProject(project.id)));
+  }, [isLoggedIn, getProjectsQuery.data, allInvitations]);
 
   return (
     <div className="bg-space h-full">
@@ -53,9 +42,7 @@ export default function Projects() {
                   <Card
                     selectable={true}
                     className={`bg-noise-light hover:bg-right ${
-                      getInvitationForProject(pendingProjectLeaderInvitationsQuery, project.id)
-                        ? "bg-amber-700/20"
-                        : "bg-white/[0.02]"
+                      getInvitationForProject(project.id) ? "bg-amber-700/20" : "bg-white/[0.02]"
                     } `}
                     dataTestId="project-card"
                   >
@@ -75,7 +62,7 @@ export default function Projects() {
                           languages: project?.githubRepo?.languages,
                         }}
                       />
-                      {getInvitationForProject(pendingProjectLeaderInvitationsQuery, project.id) && (
+                      {getInvitationForProject(project.id) && (
                         <div className="flex flex-row justify-between items-center font-medium p-5 text-lg rounded-xl bg-amber-700/30">
                           <div>{T("project.projectLeadInvitation.prompt")}</div>
                           <div className="w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-100 py-2 px-5 text-chineseBlack">
