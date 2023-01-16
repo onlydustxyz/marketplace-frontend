@@ -65,11 +65,6 @@ export default function ProjectDetails() {
   useEffect(() => {
     if (projectId && projectId !== lastVisitedProjectId() && isProjectMine(projectId)) {
       setLastVisitedProjectId(projectId);
-      navigate(
-        generatePath(RoutePaths.MyProjectDetails, {
-          projectId,
-        })
-      );
     }
   }, [projectId, ledProjectIds, allInvitations]);
 
