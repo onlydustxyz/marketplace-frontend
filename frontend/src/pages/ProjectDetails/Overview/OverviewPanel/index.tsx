@@ -4,6 +4,7 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StarLine from "src/icons/StarLine";
 import User3Line from "src/icons/User3Line";
 import { Contributor } from "src/types";
+import * as CurrencyFormat from "react-currency-format";
 
 interface OverviewPanelProps {
   githubRepoInfo?: {
@@ -56,7 +57,9 @@ export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountIn
               {T("project.details.overview.totalSpentAmountInUsd")}
             </div>
           </div>
-          <div className="flex text-lg text-neutral-300 font-bold">$ {totalSpentAmountInUsd}</div>
+          <div className="flex text-lg text-neutral-300 font-bold">
+            <CurrencyFormat value={totalSpentAmountInUsd} displayType={"text"} thousandSeparator={true} prefix={"$ "} />
+          </div>
         </div>
       )}
     </div>
