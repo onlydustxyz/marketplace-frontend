@@ -4,7 +4,7 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StarLine from "src/icons/StarLine";
 import User3Line from "src/icons/User3Line";
 import { Contributor } from "src/types";
-import * as CurrencyFormat from "react-currency-format";
+import CurrencyFormat from "react-currency-format";
 
 interface OverviewPanelProps {
   githubRepoInfo?: {

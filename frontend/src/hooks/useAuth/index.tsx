@@ -1,10 +1,9 @@
-import { useApolloClient } from "@apollo/client";
+import { gql, useApolloClient } from "@apollo/client";
 import axios from "axios";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { generatePath, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import config from "src/config";
-import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
 import { useGithubProfile } from "src/hooks/useAuth/useGithubProfile";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { accessTokenExpired, useTokenSet } from "src/hooks/useTokenSet";
@@ -50,7 +49,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     if (pendingProjectLeaderInvitationsLazyQueryResult?.data?.pendingProjectLeaderInvitations?.[0].projectId) {
       navigate(
-        generatePath(RoutePaths.ProjectDetails, {
+        generatePath(RoutePaths.MyProjectDetails, {
           projectId: pendingProjectLeaderInvitationsLazyQueryResult.data.pendingProjectLeaderInvitations[0].projectId,
         })
       );
@@ -97,3 +96,12 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
+
+export const PENDING_PROJECT_LEADER_INVITATIONS_QUERY = gql`
+  query PendingProjectLeaderInvitations {
+    pendingProjectLeaderInvitations {
+      id
+      projectId
+    }
+  }
+`;
