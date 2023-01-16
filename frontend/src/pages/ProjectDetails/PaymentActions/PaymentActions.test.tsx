@@ -78,7 +78,8 @@ describe('"ProjectDetails" page', () => {
   beforeEach(() => {
     renderWithIntl(
       <PaymentActions
-        project={{ id: "test-project-id", budget: { initialAmount: 100, remainingAmount: 40, id: TEST_BUDGET_ID } }}
+        projectId="test-project-id"
+        budget={{ initialAmount: 100, remainingAmount: 40, id: TEST_BUDGET_ID }}
       />,
       {
         wrapper: MemoryRouterProviderFactory({

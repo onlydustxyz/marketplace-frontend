@@ -7,10 +7,10 @@ import { Contributor, LanguageMap } from "src/types";
 import OverviewPanel from "./OverviewPanel";
 
 interface OverviewProps extends React.PropsWithChildren {
-  decodedReadme?: string;
   lead?: ProjectLeadProps | null;
   totalSpentAmountInUsd?: number;
   githubRepoInfo?: {
+    decodedReadme?: string;
     owner?: string;
     name?: string;
     contributors?: Contributor[];
@@ -18,25 +18,19 @@ interface OverviewProps extends React.PropsWithChildren {
   };
 }
 
-export default function Overview({
-  decodedReadme,
-  lead,
-  totalSpentAmountInUsd,
-  githubRepoInfo,
-  children,
-}: OverviewProps) {
+export default function Overview({ lead, totalSpentAmountInUsd, githubRepoInfo, children }: OverviewProps) {
   const { T } = useIntl();
   return (
     <div className="flex flex-col gap-8 mt-3">
       <div className="text-3xl font-belwe">{T("project.details.overview.title")}</div>
       {children}
       <div className="flex flex-row gap-5">
-        {decodedReadme && (
+        {githubRepoInfo?.decodedReadme && (
           <div className="flex-1">
             <Card>
               <div className="font-medium text-lg pb-4">{T("project.details.overview.readmeTitle")}</div>
               <ReactMarkdown skipHtml={true} remarkPlugins={[[remarkGfm]]} className="prose lg:prose-l prose-invert">
-                {decodedReadme}
+                {githubRepoInfo.decodedReadme}
               </ReactMarkdown>
             </Card>
           </div>

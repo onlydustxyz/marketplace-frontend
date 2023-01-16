@@ -2553,7 +2553,7 @@ export type GetPublicProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetPublicProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, totalSpentAmountInUsd: any, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
+export type GetPublicProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, totalSpentAmountInUsd: any, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
 
 export type GetUserProjectQueryVariables = Exact<{
   id: Scalars['uuid'];
@@ -3063,6 +3063,7 @@ export const GetPublicProjectDocument = gql`
       logoUrl
     }
     projectLeads {
+      userId
       user {
         displayName
         avatarUrl
