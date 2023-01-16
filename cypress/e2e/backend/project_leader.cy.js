@@ -21,14 +21,7 @@ describe("As a project leader, I", () => {
                 .data("requestPayment")
                 .then((paymentId) => {
                     cy.waitEvents();
-                    cy.graphql({query: `{
-                            paymentRequestsByPk(id: "${paymentId}") {
-                      id
-                    }
-                  }`})
-                        .asAdmin()
-                        .data("paymentRequestsByPk.id")
-                        .should("be.a", "string");
+                    cy.paymentRequestShouldExist(paymentId);
                 })
                 .then(() => {
                     cy.waitEvents();

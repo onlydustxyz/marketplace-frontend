@@ -223,4 +223,32 @@ describe("As an admin, on retool, I", () => {
                 })
         );
     });
+
+    it("can cancel a payment request", () => {
+        const STARKONQUEST_ID = 481932781;
+
+        cy.createGithubUser(12345454).then((leader) =>
+            cy
+                .createProjectWithLeader(leader, "Another project", 500, STARKONQUEST_ID)
+                .then((projectId) => {
+                    cy.waitEvents();
+                    cy.requestPayment(projectId, 500, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
+                        .asRegisteredUser(leader)
+                        .data("requestPayment")
+                        .then((paymentId) => {
+                            cy.waitEvents();
+                            cy.paymentRequestShouldExist(paymentId);
+
+                            cy.cancelPaymentRequest(paymentId)
+                                .asAdmin()
+                                .data("cancelPaymentRequest")
+                                .should("equal", paymentId)
+                                .then(() => {
+                                    cy.waitEvents();
+                                    cy.paymentRequestShouldNotExist(paymentId);
+                                });
+                        });
+                })
+        );
+    });
 });
