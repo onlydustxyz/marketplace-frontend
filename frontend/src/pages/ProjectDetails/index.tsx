@@ -65,8 +65,13 @@ export default function ProjectDetails() {
   useEffect(() => {
     if (projectId && projectId !== lastVisitedProjectId() && isProjectMine(projectId)) {
       setLastVisitedProjectId(projectId);
+      navigate(
+        generatePath(RoutePaths.MyProjectDetails, {
+          projectId,
+        })
+      );
     }
-  }, [projectId, allInvitations]);
+  }, [projectId, ledProjectIds, allInvitations]);
 
   const getProjectPublicQuery = useHasuraQuery<GetPublicProjectQuery>(GET_PROJECT_PUBLIC_QUERY, HasuraUserRole.Public, {
     variables: { id: projectId },
