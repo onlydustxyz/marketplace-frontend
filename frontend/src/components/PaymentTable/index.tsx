@@ -1,6 +1,5 @@
 import { useIntl } from "src/hooks/useIntl";
 import { Currency, Payment, PaymentStatus } from "src/types";
-import onlyDustLogo from "assets/img/onlydust-logo.png";
 import Table from "../Table";
 import Line from "../Table/Line";
 import Cell from "../Table/Cell";
@@ -8,8 +7,22 @@ import Headers from "../Table/HeaderLine";
 import HeaderCell from "../Table/HeaderCell";
 
 type PropsType = {
-  payments: Payment[];
+  payments: PaymentRequest[];
 };
+
+interface PaymentRequest {
+  id: string;
+  recipient: {
+    login: string;
+    avatarUrl: string;
+  };
+  amount: {
+    value: number;
+    currency: string;
+  };
+  reason: string;
+  status: PaymentStatus;
+}
 
 const PaymentTable: React.FC<PropsType> = ({ payments }) => {
   return (
@@ -30,17 +43,17 @@ const renderHeaders = () => {
   );
 };
 
-const renderPayments = (payments: Payment[]) => {
+const renderPayments = (payments: PaymentRequest[]) => {
   const { T } = useIntl();
 
   return payments.map(payment => (
     <Line key={payment.id}>
       <Cell className="flex flex-row gap-3">
         <div className="border-4 border-neutral-600 p-2 rounded-2xl">
-          <img className="w-8 max-w-fit" src={payment.project.logoUrl || onlyDustLogo} alt="Project Logo" />
+          <img className="w-8 max-w-fit" src={payment.recipient.avatarUrl} alt="Project Logo" />
         </div>
         <div className="flex flex-col truncate justify-center">
-          <div className="font-bold text-xl">{payment.project.title}</div>
+          <div className="font-bold text-xl">{payment.recipient.login}</div>
           {payment.reason && <div className="text-lg truncate">{payment.reason}</div>}
         </div>
       </Cell>

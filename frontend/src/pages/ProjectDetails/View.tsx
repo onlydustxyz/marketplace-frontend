@@ -4,16 +4,13 @@ import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import Contributors from "./Contributors";
 import { ProjectDetails } from ".";
 import ProjectsSidebar from "./Sidebar";
-import { User } from "src/types";
 
 interface Props {
-  user: User | null;
   currentProject: ProjectDetails;
-  allProjects: ProjectDetails[];
-  onChangeProjectFromDropdown: (project: unknown) => void;
+  onProjectSelected: (projectId: string) => void;
   selectedTab: ProjectDetailsTab;
   availableTabs: ProjectDetailsTab[];
-  onTabClicked: (tab: ProjectDetailsTab) => void;
+  onTabSelected: (tab: ProjectDetailsTab) => void;
   onInvitationAccepted: (invitationId: string) => void;
 }
 
@@ -24,26 +21,22 @@ export enum ProjectDetailsTab {
 }
 
 export default function View({
-  user,
   currentProject,
-  allProjects,
-  onChangeProjectFromDropdown,
+  onProjectSelected,
   selectedTab,
   availableTabs,
-  onTabClicked,
+  onTabSelected,
   onInvitationAccepted,
 }: Props) {
   return (
     <div className="flex flex-1 w-full gap-2 h-full">
       <ProjectsSidebar
         {...{
-          user,
           currentProject,
-          allProjects,
-          onChangeProjectFromDropdown,
+          onProjectSelected,
           selectedTab,
           availableTabs,
-          onTabClicked,
+          onTabSelected,
         }}
       />
       <div className="bg-space p-5 flex flex-col flex-1 rounded-r-2xl">
@@ -57,9 +50,7 @@ export default function View({
             )}
           </Overview>
         )}
-        {selectedTab === ProjectDetailsTab.Payments && currentProject.budget && (
-          <Payments projectId={currentProject.id} budget={currentProject.budget} />
-        )}
+        {selectedTab === ProjectDetailsTab.Payments && <Payments projectId={currentProject.id} />}
         {selectedTab === ProjectDetailsTab.Contributors && <Contributors projectId={currentProject.id} />}
       </div>
     </div>

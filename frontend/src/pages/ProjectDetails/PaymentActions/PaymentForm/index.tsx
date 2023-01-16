@@ -16,23 +16,20 @@ const DEFAULT_NUMBER_OF_DAYS = 2;
 const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /https:\/\/github\.com\/([\w-]+)\/([\w-]+)\/pull\/\d+/g;
 
 interface PaymentFormProps {
-  project: {
-    id: string;
-    budget: {
-      remainingAmount: number;
-      initialAmount: number;
-      id: string;
-    };
+  projectId: string;
+  budget: {
+    remainingAmount: number;
+    initialAmount: number;
   };
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = ({ project }) => {
+const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
   const { T } = useIntl();
   const formMethods = useForm<Inputs>({
     defaultValues: {
       linkToIssue: "",
       contributor: "",
-      remainingBudget: project.budget?.remainingAmount,
+      remainingBudget: budget.remainingAmount,
     },
   });
 
@@ -40,7 +37,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ project }) => {
 
   const tryIncreaseNumberOfDays = () => {
     const increment = numberOfDays < 1 ? 0.5 : 1;
-    if (numberOfDays < 20 && project.budget.remainingAmount - (numberOfDays + increment) * BASE_RATE_USD >= 0) {
+    if (numberOfDays < 20 && budget.remainingAmount - (numberOfDays + increment) * BASE_RATE_USD >= 0) {
       setNumberOfDays(numberOfDays + increment);
     }
   };
@@ -53,7 +50,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ project }) => {
   };
 
   const [insertPayment] = useHasuraMutation(REQUEST_PAYMENT_MUTATION, HasuraUserRole.RegisteredUser, {
-    variables: { projectId: project.id, amount: numberOfDays * BASE_RATE_USD },
+    variables: { projectId, amount: numberOfDays * BASE_RATE_USD },
   });
 
   const { handleSubmit, setError, clearErrors } = formMethods;
@@ -122,7 +119,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ project }) => {
               numberOfDays={numberOfDays}
               decreaseNumberOfDays={tryDecreaseNumberOfDays}
               increaseNumberOfDays={tryIncreaseNumberOfDays}
-              budget={{ ...project.budget }}
+              budget={budget}
               submitDisabled={findUserQuery.loading}
             />
           </div>

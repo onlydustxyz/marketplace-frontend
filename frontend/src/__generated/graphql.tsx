@@ -2539,33 +2539,24 @@ export type FindUserQueryForPaymentFormQueryVariables = Exact<{
 
 export type FindUserQueryForPaymentFormQuery = { __typename?: 'query_root', fetchUserDetails: { __typename?: 'User', id: number } };
 
-export type GetPaymentRequestsForBudgetIdQueryVariables = Exact<{
-  budgetId: Scalars['uuid'];
+export type GetPaymentRequestsForProjectQueryVariables = Exact<{
+  projectId: Scalars['uuid'];
 }>;
 
 
-export type GetPaymentRequestsForBudgetIdQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', project: { __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', logoUrl: string } } | null } | null } | null }> };
-
-export type ProjectDetailsGithubRepoFieldsFragment = { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } };
-
-export type GetPublicProjectQueryVariables = Exact<{
-  id: Scalars['uuid'];
-}>;
-
-
-export type GetPublicProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, totalSpentAmountInUsd: any, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
-
-export type GetUserProjectQueryVariables = Exact<{
-  id: Scalars['uuid'];
-}>;
-
-
-export type GetUserProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, totalSpentAmountInUsd: any, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any | null, remainingAmount: any | null }>, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
+export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', budgets: Array<{ __typename?: 'Budgets', initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, githubRecipient: { __typename?: 'User', login: string, avatarUrl: string }, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> }> }> } | null };
 
 export type GetProjectsForSidebarQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetProjectsForSidebarQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string }> } } | null }> };
+
+export type GetProjectQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, totalSpentAmountInUsd: any, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
 
 export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2577,23 +2568,6 @@ export const GithubRepoFieldsForProjectCardFragmentDoc = gql`
   name
   owner
   content {
-    contributors {
-      login
-      avatarUrl
-    }
-    logoUrl
-  }
-  languages
-}
-    `;
-export const ProjectDetailsGithubRepoFieldsFragmentDoc = gql`
-    fragment ProjectDetailsGithubRepoFields on GithubRepoDetails {
-  name
-  owner
-  content {
-    readme {
-      content
-    }
     contributors {
       login
       avatarUrl
@@ -2996,28 +2970,23 @@ export function useFindUserQueryForPaymentFormLazyQuery(baseOptions?: Apollo.Laz
 export type FindUserQueryForPaymentFormQueryHookResult = ReturnType<typeof useFindUserQueryForPaymentFormQuery>;
 export type FindUserQueryForPaymentFormLazyQueryHookResult = ReturnType<typeof useFindUserQueryForPaymentFormLazyQuery>;
 export type FindUserQueryForPaymentFormQueryResult = Apollo.QueryResult<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>;
-export const GetPaymentRequestsForBudgetIdDocument = gql`
-    query GetPaymentRequestsForBudgetId($budgetId: uuid!) {
-  paymentRequests(where: {budgetId: {_eq: $budgetId}}) {
-    id
-    payments {
-      amount
-      currencyCode
-    }
-    amountInUsd
-    reason
-    budget {
-      project {
+export const GetPaymentRequestsForProjectDocument = gql`
+    query GetPaymentRequestsForProject($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    budgets {
+      initialAmount
+      remainingAmount
+      paymentRequests {
         id
-        name
-        projectDetails {
-          description
-          logoUrl
+        githubRecipient {
+          login
+          avatarUrl
         }
-        githubRepo {
-          content {
-            logoUrl
-          }
+        amountInUsd
+        reason
+        payments {
+          amount
+          currencyCode
         }
       }
     }
@@ -3026,138 +2995,32 @@ export const GetPaymentRequestsForBudgetIdDocument = gql`
     `;
 
 /**
- * __useGetPaymentRequestsForBudgetIdQuery__
+ * __useGetPaymentRequestsForProjectQuery__
  *
- * To run a query within a React component, call `useGetPaymentRequestsForBudgetIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPaymentRequestsForBudgetIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetPaymentRequestsForProjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPaymentRequestsForProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetPaymentRequestsForBudgetIdQuery({
+ * const { data, loading, error } = useGetPaymentRequestsForProjectQuery({
  *   variables: {
- *      budgetId: // value for 'budgetId'
+ *      projectId: // value for 'projectId'
  *   },
  * });
  */
-export function useGetPaymentRequestsForBudgetIdQuery(baseOptions: Apollo.QueryHookOptions<GetPaymentRequestsForBudgetIdQuery, GetPaymentRequestsForBudgetIdQueryVariables>) {
+export function useGetPaymentRequestsForProjectQuery(baseOptions: Apollo.QueryHookOptions<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPaymentRequestsForBudgetIdQuery, GetPaymentRequestsForBudgetIdQueryVariables>(GetPaymentRequestsForBudgetIdDocument, options);
+        return Apollo.useQuery<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>(GetPaymentRequestsForProjectDocument, options);
       }
-export function useGetPaymentRequestsForBudgetIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaymentRequestsForBudgetIdQuery, GetPaymentRequestsForBudgetIdQueryVariables>) {
+export function useGetPaymentRequestsForProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPaymentRequestsForBudgetIdQuery, GetPaymentRequestsForBudgetIdQueryVariables>(GetPaymentRequestsForBudgetIdDocument, options);
+          return Apollo.useLazyQuery<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>(GetPaymentRequestsForProjectDocument, options);
         }
-export type GetPaymentRequestsForBudgetIdQueryHookResult = ReturnType<typeof useGetPaymentRequestsForBudgetIdQuery>;
-export type GetPaymentRequestsForBudgetIdLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsForBudgetIdLazyQuery>;
-export type GetPaymentRequestsForBudgetIdQueryResult = Apollo.QueryResult<GetPaymentRequestsForBudgetIdQuery, GetPaymentRequestsForBudgetIdQueryVariables>;
-export const GetPublicProjectDocument = gql`
-    query GetPublicProject($id: uuid!) {
-  projectsByPk(id: $id) {
-    name
-    totalSpentAmountInUsd
-    projectDetails {
-      description
-      telegramLink
-      logoUrl
-    }
-    projectLeads {
-      userId
-      user {
-        displayName
-        avatarUrl
-      }
-    }
-    githubRepo {
-      ...ProjectDetailsGithubRepoFields
-    }
-  }
-}
-    ${ProjectDetailsGithubRepoFieldsFragmentDoc}`;
-
-/**
- * __useGetPublicProjectQuery__
- *
- * To run a query within a React component, call `useGetPublicProjectQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPublicProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetPublicProjectQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetPublicProjectQuery(baseOptions: Apollo.QueryHookOptions<GetPublicProjectQuery, GetPublicProjectQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPublicProjectQuery, GetPublicProjectQueryVariables>(GetPublicProjectDocument, options);
-      }
-export function useGetPublicProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPublicProjectQuery, GetPublicProjectQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPublicProjectQuery, GetPublicProjectQueryVariables>(GetPublicProjectDocument, options);
-        }
-export type GetPublicProjectQueryHookResult = ReturnType<typeof useGetPublicProjectQuery>;
-export type GetPublicProjectLazyQueryHookResult = ReturnType<typeof useGetPublicProjectLazyQuery>;
-export type GetPublicProjectQueryResult = Apollo.QueryResult<GetPublicProjectQuery, GetPublicProjectQueryVariables>;
-export const GetUserProjectDocument = gql`
-    query GetUserProject($id: uuid!) {
-  projectsByPk(id: $id) {
-    name
-    totalSpentAmountInUsd
-    budgets {
-      id
-      initialAmount
-      remainingAmount
-    }
-    projectDetails {
-      description
-      telegramLink
-      logoUrl
-    }
-    projectLeads {
-      user {
-        displayName
-        avatarUrl
-      }
-    }
-    githubRepo {
-      ...ProjectDetailsGithubRepoFields
-    }
-  }
-}
-    ${ProjectDetailsGithubRepoFieldsFragmentDoc}`;
-
-/**
- * __useGetUserProjectQuery__
- *
- * To run a query within a React component, call `useGetUserProjectQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUserProjectQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetUserProjectQuery(baseOptions: Apollo.QueryHookOptions<GetUserProjectQuery, GetUserProjectQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserProjectQuery, GetUserProjectQueryVariables>(GetUserProjectDocument, options);
-      }
-export function useGetUserProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserProjectQuery, GetUserProjectQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserProjectQuery, GetUserProjectQueryVariables>(GetUserProjectDocument, options);
-        }
-export type GetUserProjectQueryHookResult = ReturnType<typeof useGetUserProjectQuery>;
-export type GetUserProjectLazyQueryHookResult = ReturnType<typeof useGetUserProjectLazyQuery>;
-export type GetUserProjectQueryResult = Apollo.QueryResult<GetUserProjectQuery, GetUserProjectQueryVariables>;
+export type GetPaymentRequestsForProjectQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectQuery>;
+export type GetPaymentRequestsForProjectLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectLazyQuery>;
+export type GetPaymentRequestsForProjectQueryResult = Apollo.QueryResult<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>;
 export const GetProjectsForSidebarDocument = gql`
     query GetProjectsForSidebar {
   projects {
@@ -3204,6 +3067,69 @@ export function useGetProjectsForSidebarLazyQuery(baseOptions?: Apollo.LazyQuery
 export type GetProjectsForSidebarQueryHookResult = ReturnType<typeof useGetProjectsForSidebarQuery>;
 export type GetProjectsForSidebarLazyQueryHookResult = ReturnType<typeof useGetProjectsForSidebarLazyQuery>;
 export type GetProjectsForSidebarQueryResult = Apollo.QueryResult<GetProjectsForSidebarQuery, GetProjectsForSidebarQueryVariables>;
+export const GetProjectDocument = gql`
+    query GetProject($id: uuid!) {
+  projectsByPk(id: $id) {
+    name
+    totalSpentAmountInUsd
+    projectDetails {
+      description
+      telegramLink
+      logoUrl
+    }
+    projectLeads {
+      userId
+      user {
+        displayName
+        avatarUrl
+      }
+    }
+    githubRepo {
+      name
+      owner
+      content {
+        readme {
+          content
+        }
+        contributors {
+          login
+          avatarUrl
+        }
+        logoUrl
+      }
+      languages
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetProjectQuery__
+ *
+ * To run a query within a React component, call `useGetProjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetProjectQuery(baseOptions: Apollo.QueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
+      }
+export function useGetProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
+        }
+export type GetProjectQueryHookResult = ReturnType<typeof useGetProjectQuery>;
+export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQuery>;
+export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;
 export const GetProjectsDocument = gql`
     query GetProjects {
   projects {
