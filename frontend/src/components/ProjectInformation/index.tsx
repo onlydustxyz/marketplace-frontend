@@ -1,6 +1,5 @@
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { buildGithubLink, buildLanguageString } from "src/utils/stringUtils";
-import ProjectLead from "../LeadContributor";
 import { Contributor, LanguageMap } from "src/types";
 import TelegramLink from "../TelegramLink";
 import GithubLink from "../GithubLink";

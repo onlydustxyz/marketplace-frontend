@@ -9,9 +9,9 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { GET_PROJECTS_QUERY } from "src/pages/Projects";
 import { GET_PROFILE_QUERY } from "src/pages/Profile";
 import { CLAIMS_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
-import { ProjectDetailsTab, GET_PROJECT_USER_QUERY, GET_PROJECTS_FOR_SIDEBAR_QUERY } from "src/pages/ProjectDetails";
-import { buildGithubLink } from "src/utils/stringUtils";
+import { ProjectDetailsTab, GET_PROJECT_QUERY } from "src/pages/ProjectDetails";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
+import { GET_PROJECTS_FOR_SIDEBAR_QUERY } from "src/pages/ProjectDetails/Sidebar";
 
 const AUTH_CODE_TEST_VALUE = "code";
 const LOGGING_IN_TEXT_QUERY = /logging in.../i;
@@ -32,6 +32,7 @@ const TEST_GITHUB_REPO_CONTENT = "test-github-repo-content";
 const TEST_GITHUB_CONTRIBUTOR_LOGIN = "test-github-contributor-login";
 const TEST_PROJECT_LEAD_DISPLAY_NAME = "test-project-lead-display-name";
 const TEST_PROJECT_LEAD_AVATAR_URL = "http://foo.bar/plop.png";
+const TEST_PROJECT_LEAD_USER_ID = "test-lead-user-id";
 
 expect.extend(matchers);
 
@@ -80,7 +81,7 @@ const graphQlMocks = [
           {
             id: TEST_PROJECT_ID,
             name: TEST_PROJECT_NAME,
-            projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
+            projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION, logoUrl: null },
             projectLeads: [
               {
                 user: {
@@ -94,6 +95,7 @@ const graphQlMocks = [
               owner: TEST_GITHUB_REPO_OWNER,
               content: {
                 contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+                logoUrl: null,
               },
             },
           },
@@ -116,7 +118,7 @@ const graphQlMocks = [
   },
   {
     request: {
-      query: GET_PROJECT_USER_QUERY,
+      query: GET_PROJECT_QUERY,
       variables: {
         id: TEST_PROJECT_ID,
       },
@@ -129,6 +131,7 @@ const graphQlMocks = [
           projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
           projectLeads: [
             {
+              userId: TEST_PROJECT_LEAD_USER_ID,
               user: {
                 displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
                 avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
@@ -142,8 +145,9 @@ const graphQlMocks = [
               readme: {
                 content: btoa(TEST_GITHUB_REPO_CONTENT),
               },
-              contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+              contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN, avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL }],
             },
+            languages: {},
           },
         },
       },
@@ -159,18 +163,7 @@ const graphQlMocks = [
           {
             id: TEST_PROJECT_ID,
             name: TEST_PROJECT_NAME,
-            projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
-            projectLeads: [
-              {
-                user: {
-                  displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
-                  avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
-                },
-              },
-            ],
             githubRepo: {
-              name: TEST_GITHUB_REPO_NAME,
-              owner: TEST_GITHUB_REPO_OWNER,
               content: {
                 contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
               },

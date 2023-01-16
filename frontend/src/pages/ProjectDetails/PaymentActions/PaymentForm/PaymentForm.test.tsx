@@ -11,7 +11,6 @@ import PaymentForm from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-user-name", githubUser: { githubUserId: 748483646584 } };
-const TEST_BUDGET_ID = "test-budget-id";
 
 const HASURA_TOKEN_BASIC_TEST_VALUE = {
   user: {
@@ -84,9 +83,7 @@ describe('"PaymentForm" component', () => {
 
   beforeEach(() => {
     renderWithIntl(
-      <PaymentForm
-        project={{ id: "test-project-id", budget: { initialAmount: 10000, remainingAmount: 4000, id: TEST_BUDGET_ID } }}
-      />,
+      <PaymentForm projectId={"test-project-id"} budget={{ initialAmount: 10000, remainingAmount: 4000 }} />,
       {
         wrapper: MemoryRouterProviderFactory({
           route: `${RoutePaths.ProjectDetails}/test-project-id`,

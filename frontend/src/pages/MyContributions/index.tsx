@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import Card from "src/components/Card";
-import PaymentTable, { mapApiPaymentsToProps } from "src/components/PaymentTable";
 import PaymentTableFallback from "src/components/PaymentTableFallback";
+import PayoutTable, { mapApiPaymentsToProps } from "src/components/PayoutTable";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
@@ -28,7 +28,7 @@ const MyContributions = () => {
         <div className="text-5xl font-belwe">{T("navbar.myContributions")}</div>
         <QueryWrapper query={query}>
           <div className="mt-10">
-            <Card>{hasPayments ? <PaymentTable payments={payments} /> : <PaymentTableFallback />}</Card>
+            <Card>{hasPayments ? <PayoutTable payments={payments} /> : <PaymentTableFallback />}</Card>
           </div>
         </QueryWrapper>
       </div>
