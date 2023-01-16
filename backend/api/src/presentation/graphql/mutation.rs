@@ -50,6 +50,11 @@ impl Mutation {
 		Ok(payment_id.into())
 	}
 
+	pub async fn cancel_payment_request(context: &Context, payment_id: Uuid) -> Result<Uuid> {
+		context.cancel_payment_usecase.cancel(payment_id.into()).await?;
+		Ok(payment_id)
+	}
+
 	pub async fn create_project(
 		context: &Context,
 		name: String,
