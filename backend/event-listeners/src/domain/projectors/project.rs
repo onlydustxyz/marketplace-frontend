@@ -101,7 +101,7 @@ impl EventListener for Projector {
 						self.project_repository.update(project_id, project)?;
 					}
 				},
-				PaymentEvent::Processed { .. } => (),
+				PaymentEvent::Processed { .. } | PaymentEvent::Cancelled { .. } => (),
 			},
 		}
 

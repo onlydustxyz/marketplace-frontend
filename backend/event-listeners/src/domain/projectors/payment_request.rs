@@ -1,6 +1,7 @@
 use anyhow::Result;
 use async_trait::async_trait;
 use domain::{Event, PaymentEvent, SubscriberCallbackError};
+use infrastructure::database::DatabaseError;
 use tracing::instrument;
 
 use crate::{
@@ -22,24 +23,31 @@ impl Projector {
 impl EventListener for Projector {
 	#[instrument(name = "payment_request_projection", skip(self))]
 	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
-		if let Event::Payment(PaymentEvent::Requested {
-			id,
-			budget_id,
-			requestor_id,
-			recipient_id,
-			amount_in_usd,
-			reason,
-		}) = event
-		{
-			self.repository.insert(&PaymentRequest::new(
-				*id,
-				*budget_id,
-				*requestor_id,
-				*recipient_id,
-				*amount_in_usd as i64,
-				reason.clone(),
-			))?
+		match event {
+			Event::Payment(event) => match event {
+				PaymentEvent::Requested {
+					id,
+					budget_id,
+					requestor_id,
+					recipient_id,
+					amount_in_usd,
+					reason,
+				} => self
+					.repository
+					.insert(&PaymentRequest::new(
+						*id,
+						*budget_id,
+						*requestor_id,
+						*recipient_id,
+						*amount_in_usd as i64,
+						reason.clone(),
+					))
+					.map_err(DatabaseError::into),
+				PaymentEvent::Cancelled { id } =>
+					self.repository.delete(id).map_err(DatabaseError::into),
+				PaymentEvent::Processed { .. } => Ok(()),
+			},
+			_ => Ok(()),
 		}
-		Ok(())
 	}
 }

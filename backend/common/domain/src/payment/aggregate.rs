@@ -10,10 +10,18 @@ use crate::{
 };
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
+enum Status {
+	#[default]
+	Active,
+	Cancelled,
+}
+
+#[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Payment {
 	id: PaymentId,
 	requested_usd_amount: Decimal,
 	paid_usd_amount: Decimal,
+	status: Status,
 }
 
 impl Entity for Payment {
@@ -34,6 +42,10 @@ impl EventSourcable for Payment {
 				requested_usd_amount: Decimal::new(*amount_in_usd as i64, 0),
 				..self
 			},
+			PaymentEvent::Cancelled { id: _ } => Self {
+				status: Status::Cancelled,
+				..self
+			},
 			PaymentEvent::Processed { amount, .. } => Self {
 				paid_usd_amount: self.paid_usd_amount + amount.amount(),
 				..self
@@ -48,6 +60,10 @@ impl AggregateRoot for Payment {}
 pub enum Error {
 	#[error("Receipt amount exceeds requested amount")]
 	Overspent,
+	#[error("Payment is not cancellable")]
+	NotCancellable,
+	#[error("Payment has been cancelled")]
+	Cancelled,
 }
 
 impl Payment {
@@ -76,6 +92,8 @@ impl Payment {
 		amount: Amount,
 		receipt: PaymentReceipt,
 	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+		self.only_active()?;
+
 		// TODO: Handle currency conversion when needed
 		if self.paid_usd_amount + amount.amount() > self.requested_usd_amount {
 			return Err(Error::Overspent);
@@ -96,6 +114,32 @@ impl Payment {
 		}];
 
 		Ok(events)
+	}
+
+	pub fn cancel(&self) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+		self.only_active()?;
+		self.only_cancellable()?;
+
+		info!(id = self.id.to_string(), "Payment request cancelled",);
+
+		let events = vec![PaymentEvent::Cancelled { id: self.id }];
+
+		Ok(events)
+	}
+
+	fn only_active(&self) -> Result<(), Error> {
+		match self.status {
+			Status::Active => Ok(()),
+			Status::Cancelled => Err(Error::Cancelled),
+		}
+	}
+
+	fn only_cancellable(&self) -> Result<(), Error> {
+		if self.paid_usd_amount.is_zero() {
+			Ok(())
+		} else {
+			Err(Error::NotCancellable)
+		}
 	}
 }
 
@@ -184,6 +228,11 @@ mod tests {
 	}
 
 	#[fixture]
+	fn payment_cancelled_event(payment_id: PaymentId) -> PaymentEvent {
+		PaymentEvent::Cancelled { id: payment_id }
+	}
+
+	#[fixture]
 	async fn requested_payment(
 		payment_id: PaymentId,
 		budget_id: BudgetId,
@@ -200,6 +249,26 @@ mod tests {
 			amount_in_usd,
 			reason,
 		);
+		Payment::from_events(&events)
+	}
+
+	#[fixture]
+	async fn cancelled_payment(#[future] requested_payment: Payment) -> Payment {
+		let events = requested_payment.await.cancel().unwrap();
+		Payment::from_events(&events)
+	}
+
+	#[fixture]
+	async fn processed_payment(
+		#[future] requested_payment: Payment,
+		payment_receipt_id: PaymentReceiptId,
+		amount: Amount,
+		receipt: PaymentReceipt,
+	) -> Payment {
+		let events = requested_payment
+			.await
+			.add_receipt(payment_receipt_id, amount, receipt)
+			.unwrap();
 		Payment::from_events(&events)
 	}
 
@@ -251,6 +320,42 @@ mod tests {
 
 		let result = payment.add_receipt(payment_receipt_id, amount, receipt);
 		assert_matches!(result, Err(Error::Overspent));
+	}
+
+	#[rstest]
+	async fn test_add_receipt_fails_if_cancelled(
+		payment_receipt_id: PaymentReceiptId,
+		amount: Amount,
+		receipt: PaymentReceipt,
+		#[future] cancelled_payment: Payment,
+	) {
+		let result = cancelled_payment.await.add_receipt(payment_receipt_id, amount, receipt);
+
+		assert_matches!(result, Err(Error::Cancelled));
+	}
+
+	#[rstest]
+	async fn test_cancel(
+		#[future] requested_payment: Payment,
+		payment_cancelled_event: PaymentEvent,
+	) {
+		let events = requested_payment.await.cancel().expect("Problem when cancelling payment");
+
+		assert_eq!(events, vec![payment_cancelled_event]);
+	}
+
+	#[rstest]
+	async fn test_cancel_fails_if_cancelled(#[future] cancelled_payment: Payment) {
+		let result = cancelled_payment.await.cancel();
+
+		assert_matches!(result, Err(Error::Cancelled));
+	}
+
+	#[rstest]
+	async fn test_cancel_fails_if_processed(#[future] processed_payment: Payment) {
+		let result = processed_payment.await.cancel();
+
+		assert_matches!(result, Err(Error::NotCancellable));
 	}
 
 	#[rstest]

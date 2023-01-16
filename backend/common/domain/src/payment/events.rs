@@ -15,6 +15,9 @@ pub enum Event {
 		amount_in_usd: u32,
 		reason: Value,
 	},
+	Cancelled {
+		id: PaymentId,
+	},
 	Processed {
 		id: PaymentId,
 		receipt_id: PaymentReceiptId,
