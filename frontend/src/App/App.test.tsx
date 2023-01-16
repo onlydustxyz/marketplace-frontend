@@ -248,21 +248,6 @@ describe("Integration tests", () => {
     await screen.findByRole("img", { name: /telegram logo/i });
   });
 
-  it("should be able to access the project details page from the my projects list and see the overview, payment and contributors tabs", async () => {
-    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
-    renderWithIntl(<App />, {
-      wrapper: MemoryRouterProviderFactory({
-        route: `${RoutePaths.Projects}`,
-        mocks: graphQlMocks,
-      }),
-    });
-    userEvent.click(await screen.findByText(TEST_PROJECT_NAME));
-    await screen.findByText(ProjectDetailsTab.Payments);
-    expect(screen.findByText(ProjectDetailsTab.Contributors));
-    await screen.findByRole("img", { name: /github logo/i });
-    await screen.findByRole("img", { name: /telegram logo/i });
-  });
-
   it("should redirect to project list when logging out", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(<App />, {
