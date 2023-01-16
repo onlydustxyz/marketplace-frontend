@@ -22,6 +22,7 @@ pub struct Context {
 	caller_info: OptionUserId,
 	pub request_payment_usecase: application::payment::request::Usecase,
 	pub process_payment_usecase: application::payment::process::Usecase,
+	pub cancel_payment_usecase: application::payment::cancel::Usecase,
 	pub create_project_usecase: application::project::create::Usecase,
 	pub remove_project_leader_usecase: application::project::remove_leader::Usecase,
 	pub invite_project_leader_usecase: application::project::invite_leader::Usecase,
@@ -54,6 +55,10 @@ impl Context {
 				project_repository.clone(),
 			),
 			process_payment_usecase: application::payment::process::Usecase::new(
+				event_publisher.to_owned(),
+				payment_repository.clone(),
+			),
+			cancel_payment_usecase: application::payment::cancel::Usecase::new(
 				event_publisher.to_owned(),
 				payment_repository,
 			),
