@@ -1,6 +1,7 @@
 use std::io::Cursor;
 
 use anyhow::Result;
+use infrastructure::github::DebugTechnicalHeaders;
 use olog::error;
 use reqwest::header::{HeaderMap, HeaderValue, CACHE_CONTROL};
 use rocket::{
@@ -40,6 +41,7 @@ impl<'r, 'o: 'r> Responder<'r, 'o> for Response {
 
 impl Response {
 	pub async fn from_reqwest_response(response: reqwest::Response) -> Result<Self> {
+		response.debug_technical_headers("Received response from Github API");
 		let headers = Self::override_cache_control(response.headers().clone())?;
 
 		Ok(Self {
