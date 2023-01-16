@@ -27,8 +27,8 @@ export interface ProjectDetails {
   id: string;
   name: string;
   logoUrl: string;
-  telegramLink?: string;
-  leads: User[];
+  telegramLink?: string | null;
+  leads: { id: string; displayName: string; avatarUrl: string }[];
   invitationId?: string;
   totalSpentAmountInUsd?: number;
   githubRepoInfo?: {
@@ -93,6 +93,7 @@ export default function ProjectDetails() {
       // TODO: Have all projects in one single query
       invitationId: getInvitationForProject(projectId)?.id,
       totalSpentAmountInUsd: project.totalSpentAmountInUsd,
+      telegramLink: project.projectDetails?.telegramLink,
       githubRepoInfo: {
         name: project.githubRepo?.name,
         owner: project.githubRepo?.owner,
@@ -105,8 +106,8 @@ export default function ProjectDetails() {
     };
 
   return (
-    projectFromQuery && (
-      <QueryWrapper query={getProjectQuery}>
+    <QueryWrapper query={getProjectQuery}>
+      {projectFromQuery && (
         <View
           currentProject={projectFromQuery}
           availableTabs={availableTabs}
@@ -121,8 +122,8 @@ export default function ProjectDetails() {
           }}
           onProjectSelected={(projectId: string) => setSelectedProjectId(projectId)}
         />
-      </QueryWrapper>
-    )
+      )}
+    </QueryWrapper>
   );
 }
 

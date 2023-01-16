@@ -1,5 +1,5 @@
 import { useIntl } from "src/hooks/useIntl";
-import { PaymentStatus } from "src/types";
+import { Currency, Payment, PaymentStatus } from "src/types";
 import Table from "../Table";
 import Line from "../Table/Line";
 import Cell from "../Table/Cell";
@@ -7,24 +7,10 @@ import Headers from "../Table/HeaderLine";
 import HeaderCell from "../Table/HeaderCell";
 
 type PropsType = {
-  payments: PaymentRequest[];
+  payments: Payment[];
 };
 
-export interface PaymentRequest {
-  id: string;
-  recipient: {
-    login: string;
-    avatarUrl: string;
-  };
-  amount: {
-    value: number;
-    currency: string;
-  };
-  reason: string;
-  status: PaymentStatus;
-}
-
-const PaymentTable: React.FC<PropsType> = ({ payments }) => {
+const PayoutTable: React.FC<PropsType> = ({ payments }) => {
   return (
     <Table id="payment_table" headers={renderHeaders()}>
       {renderPayments(payments)}
@@ -43,17 +29,17 @@ const renderHeaders = () => {
   );
 };
 
-const renderPayments = (payments: PaymentRequest[]) => {
+const renderPayments = (payments: Payment[]) => {
   const { T } = useIntl();
 
   return payments.map(payment => (
     <Line key={payment.id}>
       <Cell className="flex flex-row gap-3">
         <div className="border-4 border-neutral-600 p-2 rounded-2xl">
-          <img className="w-8 max-w-fit" src={payment.recipient.avatarUrl} alt="Project Logo" />
+          <img className="w-8 max-w-fit" src={payment.project.logoUrl} alt="Project Logo" />
         </div>
         <div className="flex flex-col truncate justify-center">
-          <div className="font-bold text-xl">{payment.recipient.login}</div>
+          <div className="font-bold text-xl">{payment.project.title}</div>
           {payment.reason && <div className="text-lg truncate">{payment.reason}</div>}
         </div>
       </Cell>
@@ -72,4 +58,29 @@ const renderPayments = (payments: PaymentRequest[]) => {
   ));
 };
 
-export default PaymentTable;
+// TODO: replace this any with GraphQL-generated ts types
+export const mapApiPaymentsToProps = (apiPayment: any): Payment => {
+  const amount = { value: apiPayment.amountInUsd, currency: Currency.USD };
+  const project = apiPayment.budget.project;
+  const reason = apiPayment.reason?.work_items?.at(0);
+  const getPaidAmount = (payments: { amount: number }[]) =>
+    payments.reduce((total: number, payment: { amount: number }) => total + payment.amount, 0);
+
+  return {
+    id: apiPayment.id,
+    amount,
+    reason,
+    project: {
+      id: project.id,
+      title: project.name,
+      description: project.projectDetails.description,
+      logoUrl: project.projectDetails.logoUrl || project.githubRepo?.content?.logoUrl,
+    },
+    status:
+      getPaidAmount(apiPayment.payments) === apiPayment.amountInUsd
+        ? PaymentStatus.ACCEPTED
+        : PaymentStatus.WAITING_PAYMENT,
+  };
+};
+
+export default PayoutTable;

@@ -59,7 +59,7 @@ export default function Projects() {
                         details={{
                           description: project?.projectDetails?.description,
                           telegramLink: project?.projectDetails?.telegramLink,
-                          logoUrl: project.projectDetails?.logoUrl || project.githubRepo?.content.logoUrl,
+                          logoUrl: project.projectDetails?.logoUrl || project.githubRepo?.content?.logoUrl,
                         }}
                         lead={project?.projectLeads?.[0]?.user}
                         githubRepoInfo={{

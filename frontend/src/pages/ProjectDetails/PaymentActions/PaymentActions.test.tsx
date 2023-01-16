@@ -3,13 +3,13 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import PaymentActions, { GET_BUDGET_PAYMENTS_QUERY } from ".";
+import PaymentActions, { GET_PAYMENT_REQUESTS_FOR_PROJECT } from ".";
 import { RoutePaths } from "src/App";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 
 expect.extend(matchers);
 
-const TEST_BUDGET_ID = "test-budget-id";
+const TEST_PROJECT_ID = "test-project-id";
 const TEST_USER_ID = "test-user-id";
 
 const HASURA_TOKEN_BASIC_TEST_VALUE = {
@@ -23,6 +23,10 @@ const HASURA_TOKEN_BASIC_TEST_VALUE = {
 
 const mockContribution = {
   id: "705e6b37-d0ee-4e87-b681-7009dd691965",
+  githubRecipient: {
+    login: "ofux",
+    avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
+  },
   payments: [
     {
       amount: 100,
@@ -35,28 +39,27 @@ const mockContribution = {
   ],
   amountInUsd: 200,
   reason: { work_items: ["link_to_pr"] },
-  budget: {
-    project: {
-      id: "632d5da7-e590-4815-85ea-82a5585e6049",
-      name: "MyAwesomeProject",
-      projectDetails: {
-        description: "SOOOOOO awesome",
-      },
-    },
-  },
 };
 
 const graphQlMocks = [
   {
     request: {
-      query: GET_BUDGET_PAYMENTS_QUERY,
+      query: GET_PAYMENT_REQUESTS_FOR_PROJECT,
       variables: {
-        budgetId: TEST_BUDGET_ID,
+        projectId: TEST_PROJECT_ID,
       },
     },
     result: {
       data: {
-        paymentRequests: [mockContribution],
+        projectsByPk: {
+          budgets: [
+            {
+              initialAmount: 100,
+              remainingAmount: 40,
+              paymentRequests: [mockContribution],
+            },
+          ],
+        },
       },
     },
   },
@@ -76,18 +79,12 @@ describe('"ProjectDetails" page', () => {
   });
 
   beforeEach(() => {
-    renderWithIntl(
-      <PaymentActions
-        projectId="test-project-id"
-        budget={{ initialAmount: 100, remainingAmount: 40, id: TEST_BUDGET_ID }}
-      />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          route: `${RoutePaths.ProjectDetails}/test-project-id`,
-          mocks: graphQlMocks,
-        }),
-      }
-    );
+    renderWithIntl(<PaymentActions projectId={TEST_PROJECT_ID} />, {
+      wrapper: MemoryRouterProviderFactory({
+        route: `${RoutePaths.ProjectDetails}/test-project-id`,
+        mocks: graphQlMocks,
+      }),
+    });
   });
 
   it("should render the submit payment buttons", async () => {
@@ -100,7 +97,7 @@ describe('"ProjectDetails" page', () => {
 
   it("should render the payments table", async () => {
     expect(await screen.findByText(mockContribution.reason.work_items[0])).toBeInTheDocument();
-    expect(await screen.findByText(mockContribution.budget.project.name)).toBeInTheDocument();
+    expect(await screen.findByText(mockContribution.githubRecipient.login)).toBeInTheDocument();
     expect(await screen.findByText("200 USD")).toBeInTheDocument();
     expect(await screen.findByText("Completed")).toBeInTheDocument();
   });

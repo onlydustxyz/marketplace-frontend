@@ -7,12 +7,13 @@ expect.extend(matchers);
 import { generatePath, Route, Routes } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import ProjectDetails, { GET_PROJECTS_FOR_SIDEBAR_QUERY, GET_PROJECT_USER_QUERY } from ".";
+import ProjectDetails, { GET_PROJECT_QUERY } from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import jwtDecode from "jwt-decode";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/hooks/useProjectLeadInvitations";
+import { GET_PROJECTS_FOR_SIDEBAR_QUERY } from "./Sidebar";
 
 const TEST_LED_PROJECT_ID = "test-led-project-id";
 const TEST_PROJECT_ID = "test-project-id";
@@ -25,6 +26,7 @@ const TEST_GITHUB_REPO_OWNER = "test-github-repo-owner";
 const TEST_GITHUB_CONTRIBUTOR_LOGIN = "test-github-contributor-login";
 const TEST_PROJECT_LEAD_DISPLAY_NAME = "test-project-lead-display-name";
 const TEST_PROJECT_LEAD_AVATAR_URL = "http://foo.bar/plop.png";
+const TEST_INVITATION_ID = "test-invitation-id";
 
 const TEST_ACCESS_TOKEN = {
   user: {
@@ -48,7 +50,7 @@ vi.mock("jwt-decode");
 const graphQlMocks = [
   {
     request: {
-      query: GET_PROJECT_USER_QUERY,
+      query: GET_PROJECT_QUERY,
       variables: {
         id: TEST_PROJECT_ID,
       },
@@ -57,14 +59,11 @@ const graphQlMocks = [
       data: {
         projectsByPk: {
           name: TEST_PROJECT_NAME,
-          budgets: {
-            id: "test-budget-id",
-            initialAmount: 10000,
-            remainingAmount: 9000,
-          },
-          projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
+          totalSpentAmountInUsd: 1000,
+          projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION, logoUrl: null },
           projectLeads: [
             {
+              userId: "test-user-id",
               user: {
                 displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
                 avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
@@ -75,8 +74,11 @@ const graphQlMocks = [
             name: TEST_GITHUB_REPO_NAME,
             owner: TEST_GITHUB_REPO_OWNER,
             content: {
-              contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+              readme: null,
+              contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN, avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL }],
+              logoUrl: null,
             },
+            languages: {},
           },
         },
       },
@@ -84,7 +86,7 @@ const graphQlMocks = [
   },
   {
     request: {
-      query: GET_PROJECT_USER_QUERY,
+      query: GET_PROJECT_QUERY,
       variables: {
         id: TEST_LED_PROJECT_ID,
       },
@@ -93,14 +95,11 @@ const graphQlMocks = [
       data: {
         projectsByPk: {
           name: TEST_LED_PROJECT_NAME,
-          budgets: {
-            id: "test-budget-id",
-            initialAmount: 10000,
-            remainingAmount: 9000,
-          },
-          projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
+          totalSpentAmountInUsd: 1000,
+          projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION, logoUrl: null },
           projectLeads: [
             {
+              userId: "test-user-id",
               user: {
                 displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
                 avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
@@ -111,8 +110,11 @@ const graphQlMocks = [
             name: TEST_GITHUB_REPO_NAME,
             owner: TEST_GITHUB_REPO_OWNER,
             content: {
-              contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+              readme: null,
+              contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN, avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL }],
+              logoUrl: TEST_PROJECT_LEAD_AVATAR_URL,
             },
+            languages: {},
           },
         },
       },
@@ -131,6 +133,7 @@ const graphQlMocks = [
               logoUrl: "test-github-logo-url",
               content: {
                 contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+                logoUrl: null,
               },
             },
           },
@@ -142,6 +145,7 @@ const graphQlMocks = [
               logoUrl: "test-github-logo-url",
               content: {
                 contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+                logoUrl: null,
               },
             },
           },
@@ -155,6 +159,7 @@ const graphQlMocks = [
       data: {
         pendingProjectLeaderInvitations: [
           {
+            id: TEST_INVITATION_ID,
             projectId: TEST_PROJECT_ID,
           },
         ],
