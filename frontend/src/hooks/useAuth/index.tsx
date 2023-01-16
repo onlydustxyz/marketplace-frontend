@@ -1,13 +1,16 @@
 import { useApolloClient } from "@apollo/client";
 import axios from "axios";
-import { createContext, PropsWithChildren, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
+import { generatePath, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import config from "src/config";
+import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
 import { useGithubProfile } from "src/hooks/useAuth/useGithubProfile";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { accessTokenExpired, useTokenSet } from "src/hooks/useTokenSet";
-import { RefreshToken, User, UserRole } from "src/types";
+import { HasuraUserRole, RefreshToken, User, UserRole } from "src/types";
+import { PendingProjectLeaderInvitationsQuery } from "src/__generated/graphql";
+import { useHasuraLazyQuery } from "../useHasuraQuery";
 
 type AuthContextType = {
   login: (refreshToken: RefreshToken) => void;
@@ -22,16 +25,37 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const { tokenSet, setFromRefreshToken, clearTokenSet, hasRefreshError } = useTokenSet();
-  const tokenIsRefreshed = !(tokenSet?.accessToken && accessTokenExpired(tokenSet));
-
   const navigate = useNavigate();
+  const { tokenSet, setFromRefreshToken, clearTokenSet, hasRefreshError } = useTokenSet();
+
+  const [launchPendingProjectLeaderInvitationsLazyQuery, pendingProjectLeaderInvitationsLazyQueryResult] =
+    useHasuraLazyQuery<PendingProjectLeaderInvitationsQuery>(
+      PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
+      HasuraUserRole.RegisteredUser
+    );
+
+  const [startPendingProjectInvitationsQuery, setStartPendingProjectInvitationsQuery] = useState(false);
 
   const login = async (refreshToken: RefreshToken) => {
     await setFromRefreshToken(refreshToken);
     await client.clearStore();
+    setStartPendingProjectInvitationsQuery(true);
     navigate(RoutePaths.Projects);
   };
+
+  useEffect(() => {
+    if (startPendingProjectInvitationsQuery) launchPendingProjectLeaderInvitationsLazyQuery();
+  }, [startPendingProjectInvitationsQuery]);
+
+  useEffect(() => {
+    if (pendingProjectLeaderInvitationsLazyQueryResult?.data?.pendingProjectLeaderInvitations?.[0].projectId) {
+      navigate(
+        generatePath(RoutePaths.ProjectDetails, {
+          projectId: pendingProjectLeaderInvitationsLazyQueryResult.data.pendingProjectLeaderInvitations[0].projectId,
+        })
+      );
+    }
+  }, [pendingProjectLeaderInvitationsLazyQueryResult?.data?.pendingProjectLeaderInvitations?.[0]?.projectId]);
 
   const client = useApolloClient();
 
@@ -49,6 +73,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   }
 
   const { isLoggedIn, roles, ledProjectIds } = useRoles(tokenSet?.accessToken);
+  const tokenIsRefreshed = !(tokenSet?.accessToken && accessTokenExpired(tokenSet));
+
   const { githubUserId } = useGithubProfile(roles, tokenSet?.user?.id, tokenIsRefreshed);
 
   const value = {
