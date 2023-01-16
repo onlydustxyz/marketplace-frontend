@@ -84,7 +84,8 @@ impl IdentifiableAggregate for Event {
 			},
 			Event::Payment(event) => match event {
 				backend_domain::PaymentEvent::Requested { id, .. }
-				| backend_domain::PaymentEvent::Processed { id, .. } => id.to_string(),
+				| backend_domain::PaymentEvent::Processed { id, .. }
+				| backend_domain::PaymentEvent::Cancelled { id } => id.to_string(),
 			},
 		}
 	}
