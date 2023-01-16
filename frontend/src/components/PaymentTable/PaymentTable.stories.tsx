@@ -4,7 +4,7 @@ import { Currency, PaymentStatus } from "src/types";
 import PaymentTable, { PaymentRequest } from ".";
 
 export default {
-  title: "Payments",
+  title: "PaymentTable",
   component: PaymentTable,
 } as ComponentMeta<typeof PaymentTable>;
 
