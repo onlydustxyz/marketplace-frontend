@@ -12,8 +12,10 @@ use serde::Deserialize;
 mod error;
 pub use error::Error;
 
-use self::logged_response::LoggedResponse;
 mod logged_response;
+pub use logged_response::DebugTechnicalHeaders;
+use logged_response::LoggedResponse;
+
 mod specifications;
 
 #[derive(Deserialize)]
