@@ -7,6 +7,8 @@ import ProfileForm from "./components/ProfileForm";
 import { ProfileQuery } from "src/__generated/graphql";
 import InfoMissingBanner from "./components/InfoMissingBanner";
 import { useIntl } from "src/hooks/useIntl";
+import { useNavigate, useLocation } from "react-router-dom";
+import { RoutePaths } from "src/App";
 
 const Profile: React.FC = () => {
   const { isLoggedIn } = useAuth();
@@ -15,6 +17,13 @@ const Profile: React.FC = () => {
     skip: !isLoggedIn,
     fetchPolicy: "network-only",
   });
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const navigateBack = () => {
+    navigate(location.state?.prev || RoutePaths.ProjectDetails);
+  };
 
   return (
     <div className="bg-space h-full">
@@ -26,6 +35,7 @@ const Profile: React.FC = () => {
               <button
                 type="button"
                 className="bg-white/5 backdrop-blur-4xl text-base text-neutral-50 border-neutral-50 whitespace-nowrap border px-6 py-4 rounded-xl font-semibold"
+                onClick={navigateBack}
               >
                 {T("profile.form.cancel")}
               </button>

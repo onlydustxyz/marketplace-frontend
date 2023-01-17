@@ -1,12 +1,13 @@
 import { useAuth } from "src/hooks/useAuth";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
 
 const ProfileButton = () => {
   const { user, logout } = useAuth();
+  const location = useLocation();
   const { avatarUrl, displayName } = user ?? { avatarUrl: null, displayName: "My Account" };
   const { T } = useIntl();
   return (
@@ -44,6 +45,7 @@ const ProfileButton = () => {
                 {({ active }) => (
                   <Link
                     to={RoutePaths.Profile}
+                    state={{ prev: location }}
                     className={`${
                       active ? "bg-violet-500 text-white" : "text-gray-900"
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm cursor-pointer`}
