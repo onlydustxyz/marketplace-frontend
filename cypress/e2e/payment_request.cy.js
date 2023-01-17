@@ -1,3 +1,5 @@
+import { WAIT_LONG } from "../support/commands/common";
+
 describe("As a project lead, I", () => {
   beforeEach(function () {
     cy.createGithubUser(98735558)
@@ -24,7 +26,7 @@ describe("As a project lead, I", () => {
     cy.contains("Submit payment").click();
     cy.get("[name=contributor").type("AnthonyBuisset");
     cy.get("[name=linkToIssue").type("https://github.com/onlydustxyz/starkonquest/pull/68");
-    cy.wait(1000);
+    cy.wait(WAIT_LONG);
     cy.contains("Confirm payment").click();
 
     cy.reload();
