@@ -58,6 +58,7 @@ diesel::table! {
         recipient_id -> Int8,
         amount_in_usd -> Int8,
         reason -> Jsonb,
+        requested_at -> Timestamp,
     }
 }
 

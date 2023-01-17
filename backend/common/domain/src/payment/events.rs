@@ -1,5 +1,6 @@
 use std::fmt::Display;
 
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -14,6 +15,7 @@ pub enum Event {
 		recipient_id: GithubUserId,
 		amount_in_usd: u32,
 		reason: Value,
+		requested_at: NaiveDateTime,
 	},
 	Cancelled {
 		id: PaymentId,

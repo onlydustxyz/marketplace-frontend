@@ -1,3 +1,4 @@
+use chrono::NaiveDateTime;
 use derive_more::Constructor;
 use domain::{BudgetId, GithubUserId, PaymentId, UserId};
 use infrastructure::database::schema::payment_requests;
@@ -11,4 +12,5 @@ pub struct PaymentRequest {
 	recipient_id: GithubUserId,
 	amount_in_usd: i64,
 	reason: Value,
+	requested_at: NaiveDateTime,
 }

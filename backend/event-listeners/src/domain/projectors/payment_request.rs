@@ -32,6 +32,7 @@ impl EventListener for Projector {
 					recipient_id,
 					amount_in_usd,
 					reason,
+					requested_at,
 				} => self
 					.repository
 					.insert(&PaymentRequest::new(
@@ -41,6 +42,7 @@ impl EventListener for Projector {
 						*recipient_id,
 						*amount_in_usd as i64,
 						reason.clone(),
+						*requested_at,
 					))
 					.map_err(DatabaseError::into),
 				PaymentEvent::Cancelled { id } =>

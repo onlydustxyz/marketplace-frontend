@@ -1,3 +1,4 @@
+use chrono::Utc;
 use olog::info;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
@@ -83,6 +84,7 @@ impl Payment {
 			recipient_id,
 			amount_in_usd,
 			reason,
+			requested_at: Utc::now().naive_utc(),
 		}]
 	}
 
@@ -367,6 +369,7 @@ mod tests {
 		amount_in_usd: u32,
 		reason: Value,
 	) {
+		let before = Utc::now();
 		let events = Payment::request(
 			payment_id,
 			budget_id,
@@ -375,8 +378,17 @@ mod tests {
 			amount_in_usd,
 			reason.clone(),
 		);
+		let after = Utc::now();
 
 		assert_eq!(events.len(), 1);
+		let requested_at = match &events[0] {
+			PaymentEvent::Requested { requested_at, .. } => *requested_at,
+			_ => panic!("Should be a Payment::Requested event"),
+		};
+
+		assert!(requested_at >= before.naive_utc());
+		assert!(requested_at <= after.naive_utc());
+
 		assert_eq!(
 			events[0],
 			PaymentEvent::Requested {
@@ -386,6 +398,7 @@ mod tests {
 				recipient_id,
 				amount_in_usd,
 				reason,
+				requested_at,
 			}
 		);
 	}
@@ -399,6 +412,7 @@ mod tests {
 			recipient_id: Default::default(),
 			amount_in_usd: Default::default(),
 			reason: Default::default(),
+			requested_at: Default::default(),
 		};
 
 		let payment = Payment::from_events(&[event]);
