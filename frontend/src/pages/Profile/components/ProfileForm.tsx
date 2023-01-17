@@ -94,7 +94,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
 
   return (
     <FormProvider {...formMethods}>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+      <form id="profile-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <div className="flex flex-row gap-3 items-stretch">
           <Card>
             <div className="flex flex-col gap-5">
