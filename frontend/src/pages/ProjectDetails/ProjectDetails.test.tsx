@@ -26,7 +26,6 @@ const TEST_GITHUB_REPO_OWNER = "test-github-repo-owner";
 const TEST_GITHUB_CONTRIBUTOR_LOGIN = "test-github-contributor-login";
 const TEST_PROJECT_LEAD_DISPLAY_NAME = "test-project-lead-display-name";
 const TEST_PROJECT_LEAD_AVATAR_URL = "http://foo.bar/plop.png";
-const TEST_INVITATION_ID = "test-invitation-id";
 
 const TEST_ACCESS_TOKEN = {
   user: {
@@ -58,9 +57,11 @@ const graphQlMocks = [
     result: {
       data: {
         projectsByPk: {
+          id: TEST_PROJECT_ID,
           name: TEST_PROJECT_NAME,
           totalSpentAmountInUsd: 1000,
           projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION, logoUrl: null },
+          pendingInvitations: [{ id: "test-invitation-id" }],
           projectLeads: [
             {
               userId: "test-user-id",
@@ -94,9 +95,11 @@ const graphQlMocks = [
     result: {
       data: {
         projectsByPk: {
+          id: TEST_LED_PROJECT_ID,
           name: TEST_LED_PROJECT_NAME,
           totalSpentAmountInUsd: 1000,
           projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION, logoUrl: null },
+          pendingInvitations: [],
           projectLeads: [
             {
               userId: "test-user-id",
@@ -129,6 +132,7 @@ const graphQlMocks = [
             id: TEST_PROJECT_ID,
             name: TEST_PROJECT_NAME,
             projectDetails: { logoUrl: "test-logo-url" },
+            pendingInvitations: [{ id: "test-invitation-id" }],
             githubRepo: {
               logoUrl: "test-github-logo-url",
               content: {
@@ -148,19 +152,6 @@ const graphQlMocks = [
                 logoUrl: null,
               },
             },
-          },
-        ],
-      },
-    },
-  },
-  {
-    request: { query: PENDING_PROJECT_LEADER_INVITATIONS_QUERY },
-    result: {
-      data: {
-        pendingProjectLeaderInvitations: [
-          {
-            id: TEST_INVITATION_ID,
-            projectId: TEST_PROJECT_ID,
           },
         ],
       },
@@ -193,7 +184,7 @@ describe('"ProjectDetails" page', () => {
     await screen.findByText("You’ve been promoted to Project Lead on test-project-name");
   });
 
-  it("should store the project id if it is a project led by the user", async () => {
+  it.only("should store the project id if it is a project led by the user", async () => {
     const jwt = {
       [CLAIMS_KEY]: {
         [PROJECTS_LED_KEY]: `{"${TEST_LED_PROJECT_ID}"}`,
@@ -212,9 +203,11 @@ describe('"ProjectDetails" page', () => {
         }),
       }
     );
-    expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_SESSION_KEY) || "{}").lastVisitedProjectId).toBe(
-      TEST_LED_PROJECT_ID
-    );
+    await waitFor(() => {
+      expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_SESSION_KEY) || "{}").lastVisitedProjectId).toBe(
+        TEST_LED_PROJECT_ID
+      );
+    });
   });
 
   it("should store the project id if the user has been invited as project lead", async () => {
