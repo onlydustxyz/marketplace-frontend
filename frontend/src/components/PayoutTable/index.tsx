@@ -5,6 +5,7 @@ import Line from "../Table/Line";
 import Cell from "../Table/Cell";
 import Headers from "../Table/HeaderLine";
 import HeaderCell from "../Table/HeaderCell";
+import onlyDustLogo from "assets/img/onlydust-logo.png";
 
 type PropsType = {
   payments: Payment[];
@@ -36,7 +37,7 @@ const renderPayments = (payments: Payment[]) => {
     <Line key={payment.id}>
       <Cell className="flex flex-row gap-3">
         <div className="border-4 border-neutral-600 p-2 rounded-2xl">
-          <img className="w-8 max-w-fit" src={payment.project.logoUrl} alt="Project Logo" />
+          <img className="w-8 max-w-fit" src={payment.project.logoUrl || onlyDustLogo} alt="Project Logo" />
         </div>
         <div className="flex flex-col truncate justify-center">
           <div className="font-bold text-xl">{payment.project.title}</div>
