@@ -92,6 +92,7 @@
       "postCode": "Postal code",
       "saved": "Your data has been saved!",
       "send": "Save profile",
+      "cancel": "Cancel",
       "street": "Street",
       "typeOfProfile": "Profile type"
     },

@@ -81,7 +81,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
     },
   });
   const { handleSubmit } = formMethods;
-  const [updateUser, { data, loading }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser);
+  const [updateUser, { data }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser);
   const success = !!data;
 
   const onSubmit: SubmitHandler<Inputs> = async formData => {
@@ -273,15 +273,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
             )}
           </Card>
         </div>
-        <div className="self-end">
-          <button
-            type="submit"
-            className="self-start bg-neutral-50 text-xl text-black border-2 px-4 py-2 rounded-md font-medium"
-          >
-            {success ? T("state.success") : loading ? T("state.loading") : T("profile.form.send")}
-          </button>
-          {success && <Navigate to={RoutePaths.Projects} />}
-        </div>
+        {success && <Navigate to={RoutePaths.Projects} />}
       </form>
     </FormProvider>
   );
