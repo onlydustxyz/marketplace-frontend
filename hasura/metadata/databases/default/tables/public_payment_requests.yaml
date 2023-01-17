@@ -53,9 +53,10 @@ select_permissions:
     permission:
       columns:
         - amount_in_usd
-        - recipient_id
-        - reason
         - budget_id
         - id
+        - reason
+        - recipient_id
+        - requested_at
         - requestor_id
       filter: {}
