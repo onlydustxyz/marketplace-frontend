@@ -1,4 +1,5 @@
-import "./common";
+import { WAIT_SHORT } from "./common";
+
 
 Cypress.Commands.add(
     "requestPayment",
@@ -12,7 +13,8 @@ Cypress.Commands.add(
                 projectId,
                 recipientId,
                 reason
-            }
+            },
+            wait: WAIT_SHORT,
         };
     }
 );
@@ -26,7 +28,8 @@ Cypress.Commands.add(
             }`,
             variables: {
                 paymentId
-            }
+            },
+            wait: WAIT_SHORT,
         };
     }
 );

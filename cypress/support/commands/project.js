@@ -1,4 +1,4 @@
-import "./common";
+import { WAIT_SHORT, WAIT_LONG } from "./common";
 
 Cypress.Commands.add(
     "createProject",
@@ -20,7 +20,9 @@ Cypress.Commands.add(
                     telegramLink: $telegramLink,
                     logoUrl: $logoUrl
                 )}`,
-        variables: { projectName, initialBudget, githubRepoId, description, telegramLink, logoUrl }};
+            variables: { projectName, initialBudget, githubRepoId, description, telegramLink, logoUrl },
+            wait: WAIT_LONG,
+        };
     }
 );
 
@@ -55,14 +57,15 @@ Cypress.Commands.add(
         description = "My project description",
         telegramLink = "https://t.me/foo",
         logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4"
-        ) => ({
-            query: `mutation($projectId: Uuid!, $description: String!, $telegramLink: String!, $logoUrl: String!) { updateProject(
-                id: $projectId,
-                description: $description,
-                telegramLink: $telegramLink,
-                logoUrl: $logoUrl
-            )}`,
-        variables: { projectId, description, telegramLink, logoUrl }
+    ) => ({
+        query: `mutation($projectId: Uuid!, $description: String!, $telegramLink: String!, $logoUrl: String!) { updateProject(
+            id: $projectId,
+            description: $description,
+            telegramLink: $telegramLink,
+            logoUrl: $logoUrl
+        )}`,
+        variables: { projectId, description, telegramLink, logoUrl },
+        wait: WAIT_LONG,
     })
 );
 
@@ -87,7 +90,8 @@ Cypress.Commands.add(
             query: `mutation($id: Uuid!, $githubRepoId: Int!) {
                 updateProjectGithubRepoId(id: $id, githubRepoId: $githubRepoId)
             }`,
-            variables: { id, githubRepoId }
+            variables: { id, githubRepoId },
+            wait: WAIT_LONG,
         };
     }
 );
@@ -102,7 +106,8 @@ Cypress.Commands.add(
             query: `mutation($projectId: Uuid!, $userId: Uuid!) {
                 unassignProjectLead(projectId: $projectId, userId: $userId)
             }`,
-            variables: { projectId, userId}
+            variables: { projectId, userId},
+            wait: WAIT_SHORT,
         };
     }
 );
@@ -117,7 +122,8 @@ Cypress.Commands.add(
             query: `mutation($projectId: Uuid!, $githubUserId: Int!) {
                 inviteProjectLeader(projectId: $projectId, githubUserId: $githubUserId)
             }`,
-            variables: { projectId, githubUserId}
+            variables: { projectId, githubUserId},
+            wait: WAIT_SHORT,
         };
     }
 );
@@ -131,7 +137,8 @@ Cypress.Commands.add(
             query: `mutation($invitationId: Uuid!) {
                 acceptProjectLeaderInvitation(invitationId: $invitationId)
             }`,
-            variables: { invitationId }
+            variables: { invitationId },
+            wait: WAIT_SHORT,
         };
     }
 );

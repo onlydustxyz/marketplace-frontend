@@ -6,9 +6,6 @@ describe("As an admin, on retool, I", () => {
         cy.createGithubUser(12345).then((user) => {
             cy.createProjectWithLeader(user, projectName, 500, STARKONQUEST_ID)
                 .then((projectId) => {
-                    // Let the event sourcing magic happen
-                    cy.waitEvents();
-
                     cy.graphql({ query: `{
                     projectsByPk(id: "${projectId}") {
                       githubRepo {
@@ -75,14 +72,11 @@ describe("As an admin, on retool, I", () => {
             cy
                 .createProjectWithLeader(user, "Another project", 500)
                 .then((projectId) => {
-                    cy.waitEvents();
-                    cy
-                        .updateProject(projectId, "new description")
+                    cy.updateProject(projectId, "new description")
                         .asAdmin()
                         .data()
                         .then(() =>
-                            cy
-                                .graphql({ query: `{
+                            cy.graphql({ query: `{
                                     projectsByPk(id: "${projectId}") {
                                     projectDetails {
                                         description
@@ -103,18 +97,13 @@ describe("As an admin, on retool, I", () => {
         const SECOND_REPO_ID = 1234;
 
         cy.createGithubUser(12344556).then((user) =>
-            cy
-                .createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
+            cy.createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
                 .then((projectId) => {
-                    cy.waitEvents();
-                    cy
-                        .updateProjectGithubRepoId(projectId, SECOND_REPO_ID)
+                    cy.updateProjectGithubRepoId(projectId, SECOND_REPO_ID)
                         .asAdmin()
                         .data()
                         .then(() => {
-                            cy.waitEvents();
-                            cy
-                                .graphql({ query: `{
+                            cy.graphql({ query: `{
                                     projectsByPk(id: "${projectId}") {
                                         githubRepoId
                                     }
@@ -141,12 +130,10 @@ describe("As an admin, on retool, I", () => {
         const UNEXISTING_REPO_ID = 2147466666;
 
         cy.createGithubUser(1213243).then((user) =>
-            cy
-                .createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
+            cy.createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
                 .then((projectId) => {
-                    cy.waitEvents();
-                        cy.updateProjectGithubRepoId(projectId, UNEXISTING_REPO_ID)
-                            .asAdmin().errors().its(0).its("extensions.reason").should("equal", "Github repository 2147466666 does not exist");
+                    cy.updateProjectGithubRepoId(projectId, UNEXISTING_REPO_ID)
+                        .asAdmin().errors().its(0).its("extensions.reason").should("equal", "Github repository 2147466666 does not exist");
                 })
         );
     });
@@ -159,7 +146,6 @@ describe("As an admin, on retool, I", () => {
             .asAdmin()
             .data("createProject")
             .then((projectId) => {
-                cy.waitEvents();
                 cy.createGithubUser(98765).then((user) => {
                     cy.inviteProjectLeader(projectId, user.githubUserId)
                     .asAdmin()
@@ -171,9 +157,7 @@ describe("As an admin, on retool, I", () => {
                         .data("acceptProjectLeaderInvitation")
                         .should("be.true")
                         .then(() => {
-                            cy.waitEvents();
-                            cy
-                            .graphql({ query: `{
+                            cy.graphql({ query: `{
                                 projectsByPk(id: "${projectId}") {
                                     projectLeads {
                                         userId
@@ -199,16 +183,12 @@ describe("As an admin, on retool, I", () => {
             cy
                 .createProjectWithLeader(user, "Another project", 500, STARKONQUEST_ID)
                 .then((projectId) => {
-                    cy.waitEvents();
-                    cy
-                        .unassignProjectLead(projectId, user.id)
+                    cy.unassignProjectLead(projectId, user.id)
                         .asAdmin()
                         .data("unassignProjectLead")
                         .should("equal", true)
                         .then(() => {
-                            cy.waitEvents();
-                            cy
-                                .graphql({ query: `{
+                            cy.graphql({ query: `{
                                     projectsByPk(id: "${projectId}") {
                                         projectLeads {
                                             userId
@@ -231,20 +211,16 @@ describe("As an admin, on retool, I", () => {
             cy
                 .createProjectWithLeader(leader, "Another project", 500, STARKONQUEST_ID)
                 .then((projectId) => {
-                    cy.waitEvents();
                     cy.requestPayment(projectId, 500, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
                         .asRegisteredUser(leader)
                         .data("requestPayment")
                         .then((paymentId) => {
-                            cy.waitEvents();
                             cy.paymentRequestShouldExist(paymentId);
-
                             cy.cancelPaymentRequest(paymentId)
                                 .asAdmin()
                                 .data("cancelPaymentRequest")
                                 .should("equal", paymentId)
                                 .then(() => {
-                                    cy.waitEvents();
                                     cy.paymentRequestShouldNotExist(paymentId);
                                 });
                         });

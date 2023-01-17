@@ -7,7 +7,6 @@ describe("As a public user, I", () => {
       .then(user => {
         cy.createProjectWithLeader(user, "Project with budget", 1000, 493591124)
           .as("projectId").then(projectId => {
-            cy.waitEvents();
             cy.requestPayment(projectId, 100, OFUX, { workItems: ["https://github.com/onlydustxyz/starkonquest/pull/68", "https://github.com/onlydustxyz/starkonquest/pull/68"] }).asRegisteredUser(user).data("requestPayment");
             cy.requestPayment(projectId, 100, OFUX, { workItems: ["https://github.com/onlydustxyz/starkonquest/pull/68"] }).asRegisteredUser(user).data("requestPayment");
             cy.requestPayment(projectId, 500, ANTHO, { workItems: ["https://github.com/onlydustxyz/starkonquest/pull/68"] }).asRegisteredUser(user).data("requestPayment");
