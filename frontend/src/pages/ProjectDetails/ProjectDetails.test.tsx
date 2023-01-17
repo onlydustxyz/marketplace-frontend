@@ -184,7 +184,7 @@ describe('"ProjectDetails" page', () => {
     await screen.findByText("You’ve been promoted to Project Lead on test-project-name");
   });
 
-  it.only("should store the project id if it is a project led by the user", async () => {
+  it("should store the project id if it is a project led by the user", async () => {
     const jwt = {
       [CLAIMS_KEY]: {
         [PROJECTS_LED_KEY]: `{"${TEST_LED_PROJECT_ID}"}`,
