@@ -30,26 +30,26 @@ const Profile: React.FC = () => {
       <div className="px-8 pt-16 h-full w-full">
         <div className="flex mb-6 items-center">
           <span className="text-3xl font-belwe font-normal w-full">{T("profile.edit")}</span>
-          <div className="flex flex-col gap-6">
-            <div className="flex space-x-6">
-              <button
-                type="button"
-                data-testId="profile-form-cancel-button"
-                className="bg-white/5 backdrop-blur-4xl text-base text-neutral-50 border-neutral-50 whitespace-nowrap border px-6 py-4 rounded-xl font-semibold"
-                onClick={navigateBack}
-              >
-                {T("profile.form.cancel")}
-              </button>
-              <button
-                type="submit"
-                form="profile-form"
-                data-testId="profile-form-submit-button"
-                className="bg-neutral-50 text-base text-slate-900 whitespace-nowrap border-2 px-6 py-4 rounded-xl font-semibold shadow-inner"
-              >
-                {T("profile.form.send")}
-              </button>
-            </div>
+          <div className="flex space-x-6">
+            <button
+              type="button"
+              data-testId="profile-form-cancel-button"
+              className="bg-white/5 backdrop-blur-4xl text-base text-neutral-50 border-neutral-50 whitespace-nowrap border px-6 py-4 rounded-xl font-semibold"
+              onClick={navigateBack}
+            >
+              {T("profile.form.cancel")}
+            </button>
+            <button
+              type="submit"
+              form="profile-form"
+              data-testId="profile-form-submit-button"
+              className="bg-neutral-50 text-base text-slate-900 whitespace-nowrap border-2 px-6 py-4 rounded-xl font-semibold shadow-inner"
+            >
+              {T("profile.form.send")}
+            </button>
           </div>
+        </div>
+        <div className="flex flex-col gap-6">
           {getProfileQuery.data && (
             <QueryWrapper query={getProfileQuery}>
               {isPaymentInfoMissing(getProfileQuery) && <InfoMissingBanner />}
