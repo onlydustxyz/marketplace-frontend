@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
-import sortBy from "lodash/sortBy";
-import { useEffect, useState } from "react";
+import { sortBy } from "lodash";
+import { useMemo } from "react";
 import { generatePath, Link } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Card from "src/components/Card";
@@ -9,25 +9,25 @@ import QueryWrapper from "src/components/QueryWrapper";
 import { GITHUB_REPO_FIELDS_FOR_PROJECT_CARD_FRAGMENT } from "src/graphql/fragments";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
-import { useProjectLeadInvitations } from "src/hooks/useProjectLeadInvitations";
 import { HasuraUserRole } from "src/types";
 import { GetProjectsQuery } from "src/__generated/graphql";
 import { useT } from "talkr";
 
 export default function Projects() {
   const { T } = useT();
-  const { isLoggedIn, ledProjectIds } = useAuth();
-  const { getInvitationForProject, amIInvitedForProject, allInvitations } = useProjectLeadInvitations();
+  const { ledProjectIds, githubUserId } = useAuth();
 
-  const getProjectsQuery = useHasuraQuery<GetProjectsQuery>(GET_PROJECTS_QUERY, HasuraUserRole.Public);
+  const getProjectsQuery = useHasuraQuery<GetProjectsQuery>(GET_PROJECTS_QUERY, HasuraUserRole.Public, {
+    variables: { githubUserId },
+  });
 
-  const [projects, setProjects] = useState(getProjectsQuery.data?.projects);
+  const projects = useMemo(
+    () => sortBy(getProjectsQuery.data?.projects, p => !p.pendingInvitations.length),
+    [getProjectsQuery.data?.projects]
+  );
 
-  useEffect(() => {
-    setProjects(sortBy(getProjectsQuery.data?.projects, project => !amIInvitedForProject(project.id)));
-  }, [isLoggedIn, getProjectsQuery.data, allInvitations]);
-
-  const isProjectMine = (projectId: string) => ledProjectIds.includes(projectId) || amIInvitedForProject(projectId);
+  const isProjectMine = (project: any) =>
+    ledProjectIds.includes(project?.id) || project?.pendingInvitations?.length > 0;
 
   return (
     <div className="bg-space h-full">
@@ -50,7 +50,7 @@ export default function Projects() {
                   <Card
                     selectable={true}
                     className={`bg-noise-light hover:bg-right ${
-                      getInvitationForProject(project.id) ? "bg-amber-700/20" : "bg-white/[0.02]"
+                      project.pendingInvitations.length > 0 ? "bg-amber-700/20" : "bg-white/[0.02]"
                     } `}
                     dataTestId="project-card"
                   >
@@ -70,7 +70,7 @@ export default function Projects() {
                           languages: project?.githubRepo?.languages,
                         }}
                       />
-                      {getInvitationForProject(project.id) && (
+                      {project.pendingInvitations.length > 0 && (
                         <div className="flex flex-row justify-between items-center font-medium p-5 text-lg rounded-xl bg-amber-700/30">
                           <div>{T("project.projectLeadInvitation.prompt")}</div>
                           <div className="w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-100 py-2 px-5 text-chineseBlack">
@@ -91,7 +91,7 @@ export default function Projects() {
 
 export const GET_PROJECTS_QUERY = gql`
   ${GITHUB_REPO_FIELDS_FOR_PROJECT_CARD_FRAGMENT}
-  query GetProjects {
+  query GetProjects($githubUserId: bigint = 0) {
     projects {
       id
       name
@@ -99,6 +99,9 @@ export const GET_PROJECTS_QUERY = gql`
         description
         telegramLink
         logoUrl
+      }
+      pendingInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
+        id
       }
       projectLeads {
         user {

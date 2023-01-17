@@ -90,6 +90,7 @@ const graphQlMocks = [
                 },
               },
             ],
+            pendingInvitations: [],
             githubRepo: {
               name: TEST_GITHUB_REPO_NAME,
               owner: TEST_GITHUB_REPO_OWNER,
@@ -138,6 +139,7 @@ const graphQlMocks = [
               },
             },
           ],
+          pendingInvitations: [],
           githubRepo: {
             name: TEST_GITHUB_REPO_NAME,
             owner: TEST_GITHUB_REPO_OWNER,
@@ -163,6 +165,7 @@ const graphQlMocks = [
           {
             id: TEST_PROJECT_ID,
             name: TEST_PROJECT_NAME,
+            pendingInvitations: [],
             githubRepo: {
               content: {
                 contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
