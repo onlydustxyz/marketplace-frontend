@@ -2631,6 +2631,7 @@ export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', pro
 
 export type GetProjectsForSidebarQueryVariables = Exact<{
   ledProjectIds: InputMaybe<Array<Scalars['uuid']> | Scalars['uuid']>;
+  githubUserId: InputMaybe<Scalars['bigint']>;
 }>;
 
 
@@ -2643,10 +2644,12 @@ export type GetProjectQueryVariables = Exact<{
 
 export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, totalSpentAmountInUsd: any, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
 
-export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetProjectsQueryVariables = Exact<{
+  githubUserId?: InputMaybe<Scalars['bigint']>;
+}>;
 
 
-export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null }> };
+export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null }> };
 
 export const GithubRepoFieldsForProjectCardFragmentDoc = gql`
     fragment GithubRepoFieldsForProjectCard on GithubRepoDetails {
@@ -3107,17 +3110,14 @@ export type GetPaymentRequestsForProjectQueryHookResult = ReturnType<typeof useG
 export type GetPaymentRequestsForProjectLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectLazyQuery>;
 export type GetPaymentRequestsForProjectQueryResult = Apollo.QueryResult<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>;
 export const GetProjectsForSidebarDocument = gql`
-    query GetProjectsForSidebar($ledProjectIds: [uuid!]) {
-  projects(
-    where: {_or: [{id: {_in: $ledProjectIds}}, {pendingInvitations: {}}]}
-    orderBy: {pendingInvitationsAggregate: {count: DESC}}
-  ) {
+    query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
+  projects(where: {_or: [{id: {_in: $ledProjectIds}}, {pendingInvitations: {}}]}) {
     id
     name
     projectDetails {
       logoUrl
     }
-    pendingInvitations {
+    pendingInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
       id
     }
     githubRepo {
@@ -3145,6 +3145,7 @@ export const GetProjectsForSidebarDocument = gql`
  * const { data, loading, error } = useGetProjectsForSidebarQuery({
  *   variables: {
  *      ledProjectIds: // value for 'ledProjectIds'
+ *      githubUserId: // value for 'githubUserId'
  *   },
  * });
  */
@@ -3223,7 +3224,7 @@ export type GetProjectQueryHookResult = ReturnType<typeof useGetProjectQuery>;
 export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQuery>;
 export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;
 export const GetProjectsDocument = gql`
-    query GetProjects {
+    query GetProjects($githubUserId: bigint = 0) {
   projects {
     id
     name
@@ -3231,6 +3232,9 @@ export const GetProjectsDocument = gql`
       description
       telegramLink
       logoUrl
+    }
+    pendingInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
+      id
     }
     projectLeads {
       user {
@@ -3257,6 +3261,7 @@ export const GetProjectsDocument = gql`
  * @example
  * const { data, loading, error } = useGetProjectsQuery({
  *   variables: {
+ *      githubUserId: // value for 'githubUserId'
  *   },
  * });
  */
