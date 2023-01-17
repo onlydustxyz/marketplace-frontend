@@ -2639,10 +2639,11 @@ export type GetProjectsForSidebarQuery = { __typename?: 'query_root', projects: 
 
 export type GetProjectQueryVariables = Exact<{
   id: Scalars['uuid'];
+  githubUserId?: InputMaybe<Scalars['bigint']>;
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, totalSpentAmountInUsd: any, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
+export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, name: string, totalSpentAmountInUsd: any, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
 
 export type GetProjectsQueryVariables = Exact<{
   githubUserId?: InputMaybe<Scalars['bigint']>;
@@ -3111,13 +3112,16 @@ export type GetPaymentRequestsForProjectLazyQueryHookResult = ReturnType<typeof 
 export type GetPaymentRequestsForProjectQueryResult = Apollo.QueryResult<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>;
 export const GetProjectsForSidebarDocument = gql`
     query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
-  projects(where: {_or: [{id: {_in: $ledProjectIds}}, {pendingInvitations: {}}]}) {
+  projects(
+    where: {_or: [{id: {_in: $ledProjectIds}}, {pendingInvitations: {githubUserId: {_eq: $githubUserId}}}]}
+    orderBy: {pendingInvitationsAggregate: {count: DESC}}
+  ) {
     id
     name
     projectDetails {
       logoUrl
     }
-    pendingInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
+    pendingInvitations {
       id
     }
     githubRepo {
@@ -3161,14 +3165,18 @@ export type GetProjectsForSidebarQueryHookResult = ReturnType<typeof useGetProje
 export type GetProjectsForSidebarLazyQueryHookResult = ReturnType<typeof useGetProjectsForSidebarLazyQuery>;
 export type GetProjectsForSidebarQueryResult = Apollo.QueryResult<GetProjectsForSidebarQuery, GetProjectsForSidebarQueryVariables>;
 export const GetProjectDocument = gql`
-    query GetProject($id: uuid!) {
+    query GetProject($id: uuid!, $githubUserId: bigint = 0) {
   projectsByPk(id: $id) {
+    id
     name
     totalSpentAmountInUsd
     projectDetails {
       description
       telegramLink
       logoUrl
+    }
+    pendingInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
+      id
     }
     projectLeads {
       userId
@@ -3209,6 +3217,7 @@ export const GetProjectDocument = gql`
  * const { data, loading, error } = useGetProjectQuery({
  *   variables: {
  *      id: // value for 'id'
+ *      githubUserId: // value for 'githubUserId'
  *   },
  * });
  */

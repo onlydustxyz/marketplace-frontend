@@ -6,8 +6,6 @@ import { GetProjectsForSidebarQuery } from "src/__generated/graphql";
 import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
-import { useMemo } from "react";
-import { sortBy } from "lodash";
 
 interface Props {
   currentProject: ProjectDetails;
@@ -37,10 +35,7 @@ export default function ProjectsSidebar({
     }
   );
 
-  const projects = useMemo(
-    () => sortBy(getProjectsForSidebarQuery?.data?.projects, p => !p.pendingInvitations.length),
-    [getProjectsForSidebarQuery?.data?.projects]
-  );
+  const projects = getProjectsForSidebarQuery?.data?.projects || [];
 
   return (
     <View
@@ -67,13 +62,18 @@ const projectFromQuery = (project: any) => ({
 
 export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
   query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
-    projects(where: { _or: [{ id: { _in: $ledProjectIds } }, { pendingInvitations: {} }] }) {
+    projects(
+      where: {
+        _or: [{ id: { _in: $ledProjectIds } }, { pendingInvitations: { githubUserId: { _eq: $githubUserId } } }]
+      }
+      orderBy: { pendingInvitationsAggregate: { count: DESC } }
+    ) {
       id
       name
       projectDetails {
         logoUrl
       }
-      pendingInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
+      pendingInvitations {
         id
       }
       githubRepo {
