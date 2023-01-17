@@ -1,12 +1,11 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::{
-	AggregateRootRepository, Destination, DomainError, Event, Payment, PaymentId, Publisher,
-};
-use event_store::bus::QUEUE_NAME as EVENT_STORE_QUEUE;
+use domain::{AggregateRootRepository, DomainError, Event, Payment, PaymentId, Publisher};
 use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
+
+use crate::domain::Publishable;
 
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
@@ -27,18 +26,15 @@ impl Usecase {
 	#[instrument(skip(self))]
 	pub async fn cancel(&self, payment_id: PaymentId) -> Result<(), DomainError> {
 		let payment = self.payment_repository.find_by_id(&payment_id)?;
-		let events: Vec<_> = payment
+		payment
 			.cancel()
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
 			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)
-			.collect();
-
-		self.event_publisher
-			.publish_many(Destination::queue(EVENT_STORE_QUEUE), &events)
+			.collect::<Vec<_>>()
+			.publish(self.event_publisher.clone())
 			.await?;
-
 		Ok(())
 	}
 }
