@@ -29,12 +29,22 @@
 
 ## 🎗️ Prerequisites
 
-### 1. Setup your environment
+### 1. Install nix and direnv
+
+> Do note that this step is a work in progress in the Nix experimentation.
+
+```
+brew install nix direnv
+direnv allow
+direnv reload
+```
+
+### 2. Setup your environment
 
 Create the `.env` file with the correct environment variables.
 Copy the `.env.example` file and modify the values according to your setup.
 
-### 2. Start the docker stack
+### 3. Start the docker stack
 
 Make sure `docker-compose` is installed (see [Installation instructions](https://docs.docker.com/compose/install/)).
 
@@ -42,7 +52,7 @@ Make sure `docker-compose` is installed (see [Installation instructions](https:/
 docker-compose up -d
 ```
 
-### 3. Setup the database
+### 4. Setup the database
 
 Make sure `Diesel CLI` is installed (see [installation instructions](https://diesel.rs/guides/getting-started)):
 
@@ -100,6 +110,7 @@ make hasura/start # Apply metadata and start the console
 
 Make sure the docker is up and running.
 Then run the following command:
+
 ```
 cargo test
 ```
@@ -107,25 +118,27 @@ cargo test
 ### End-to-end testing
 
 Make sure cypress is installed:
+
 ```
 yarn --cwd testing/cypress install
 ```
 
 Then run e2e tests:
+
 ```
 yarn --cwd testing/cypress cypress:open
 ```
 
 ## Migrate database
 
--   To create a new migration, start running
+- To create a new migration, start running
 
 ```
 diesel migration generate <your-migration-name>
 ```
 
--   Edit the generated files with your SQL code for `up.sql` and `down.sql`
--   Test your migration up and down by running
+- Edit the generated files with your SQL code for `up.sql` and `down.sql`
+- Test your migration up and down by running
 
 ```
 diesel migration run
@@ -133,7 +146,7 @@ diesel migration revert
 diesel migration run
 ```
 
--   The file `schema.rs` should be then automatically updated
+- The file `schema.rs` should be then automatically updated
 
 ## Monitoring
 
