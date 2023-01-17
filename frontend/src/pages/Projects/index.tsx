@@ -32,7 +32,7 @@ export default function Projects() {
     <div className="bg-space h-full">
       <div className="container mx-auto pt-16 h-full">
         <div className="text-5xl font-belwe">{T("navbar.projects")}</div>
-        <QueryWrapper<GetProjectsQuery> query={getProjectsQuery}>
+        <QueryWrapper query={getProjectsQuery}>
           <div className="px-10 flex flex-col align-center items-center gap-5 mt-10">
             {projects &&
               projects.map(project => (
