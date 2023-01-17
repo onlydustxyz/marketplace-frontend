@@ -1,3 +1,5 @@
+import { WAIT_LONG } from "../support/commands/common";
+
 describe("The user", () => {
   before(() => {
     cy.createGithubUser(12345)
@@ -19,7 +21,7 @@ describe("The user", () => {
       },
     });
 
-    cy.get("[value=PERSON]").click();
+    cy.get("[value=PERSON]").click().wait(100);
     cy.get("[name=firstname]").clear().type(this.profile.firstname);
     cy.get("[name=lastname]").clear().type(this.profile.lastname);
     cy.get("[name=email]").clear().type(this.profile.email);
@@ -28,10 +30,11 @@ describe("The user", () => {
     cy.get("[name=postCode]").clear().type(this.profile.postCode);
     cy.get("[name=city]").clear().type(this.profile.city);
     cy.get("[name=country]").clear().type(this.profile.country);
-    cy.get("[value=ETHEREUM_ADDRESS]").click();
+
+    cy.get("[value=ETHEREUM_ADDRESS]").click().wait(100);
     cy.get("[name=ethWalletAddress]").clear().type(this.profile.ethWalletAddress);
 
-    cy.contains("Save profile").click();
+    cy.contains("Save profile").click().wait(WAIT_LONG);
 
     cy.contains("Browse projects");
   });
@@ -76,7 +79,7 @@ describe("The company", () => {
       },
     });
 
-    cy.get("[value=COMPANY]").click();
+    cy.get("[value=COMPANY]").click().wait(100);
     cy.get("[name=id]").clear().type(this.profile.id);
     cy.get("[name=name]").clear().type(this.profile.name);
     cy.get("[name=email]").clear().type(this.profile.email);
@@ -85,11 +88,12 @@ describe("The company", () => {
     cy.get("[name=postCode]").clear().type(this.profile.postCode);
     cy.get("[name=city]").clear().type(this.profile.city);
     cy.get("[name=country]").clear().type(this.profile.country);
-    cy.get("[value=BANK_ADDRESS]").click();
+    cy.get("[value=BANK_ADDRESS]").click().wait(100);
     cy.get("[name=IBAN]").clear().type(this.profile.IBAN);
     cy.get("[name=BIC]").clear().type(this.profile.BIC);
 
     cy.contains("Save profile").click();
+    cy.wait(WAIT_LONG);
 
     cy.contains("Browse projects");
   });

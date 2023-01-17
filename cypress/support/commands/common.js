@@ -1,7 +1,7 @@
 const GRAPHQL_TIMEOUT = 10000;
 const READ_BODY_PROPERTY_TIMEOUT = 100;
 export const WAIT_SHORT = 100;
-export const WAIT_LONG = 500;
+export const WAIT_LONG = 700;
 
 Cypress.Commands.add("graphql", (query) => {
     return query;
