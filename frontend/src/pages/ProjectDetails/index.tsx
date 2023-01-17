@@ -3,14 +3,13 @@ import { useEffect, useState } from "react";
 import { generatePath, useNavigate, useParams } from "react-router-dom";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { Contributor, HasuraUserRole, LanguageMap } from "src/types";
 import { decodeBase64ToString } from "src/utils/stringUtils";
 import { GetProjectQuery } from "src/__generated/graphql";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { RoutePaths } from "src/App";
 import { useSession } from "src/hooks/useSession";
-import { useProjectLeadInvitations } from "src/hooks/useProjectLeadInvitations";
 import View from "./View";
 
 type ProjectDetailsParams = {
@@ -44,8 +43,12 @@ export default function ProjectDetails() {
   const { projectId } = useParams<ProjectDetailsParams>();
   const { ledProjectIds, githubUserId } = useAuth();
   const { lastVisitedProjectId, setLastVisitedProjectId } = useSession();
-  const { acceptInvitation, acceptInvitationResponse } = useProjectLeadInvitations();
   const navigate = useNavigate();
+
+  const [acceptInvitation, acceptInvitationResponse] = useHasuraMutation(
+    ACCEPT_PROJECT_LEADER_INVITATION_MUTATION,
+    HasuraUserRole.RegisteredUser
+  );
 
   const [selectedTab, setSelectedTab] = useState(ProjectDetailsTab.Overview);
   const [selectedProjectId, setSelectedProjectId] = useState(projectId);
@@ -161,5 +164,11 @@ export const GET_PROJECT_QUERY = gql`
         languages
       }
     }
+  }
+`;
+
+const ACCEPT_PROJECT_LEADER_INVITATION_MUTATION = gql`
+  mutation acceptProjectLeaderInvitation($invitationId: Uuid!) {
+    acceptProjectLeaderInvitation(invitationId: $invitationId)
   }
 `;
