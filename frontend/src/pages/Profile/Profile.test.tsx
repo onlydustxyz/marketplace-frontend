@@ -176,7 +176,7 @@ const buildMockMutationUpdateUser = (userInfo: UserInfo) => {
       query: UPDATE_USER_MUTATION,
       variables,
     },
-    result: { data: { updateProfileInfo: userInfo.userId } },
+    newData: vi.fn(() => ({ data: { updateProfileInfo: userInfo.userId } })),
   };
 };
 
@@ -214,6 +214,10 @@ describe("Missing payment information banner", () => {
 });
 
 describe('"Profile" page for individual', () => {
+  const profileQueryMock = buildMockProfileQuery(mockUser);
+  const updateUserMock = buildMockMutationUpdateUser(mockUser);
+  const updateEnsUserMock = buildMockMutationUpdateUser(mockUserWithEns);
+
   beforeAll(() => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(accessToken(mockUser.userId)));
   });
@@ -222,11 +226,7 @@ describe('"Profile" page for individual', () => {
     renderWithIntl(<ProfilePage />, {
       wrapper: MemoryRouterProviderFactory({
         route: RoutePaths.Profile,
-        mocks: [
-          buildMockProfileQuery(mockUser),
-          buildMockMutationUpdateUser(mockUser),
-          buildMockMutationUpdateUser(mockUserWithEns),
-        ],
+        mocks: [profileQueryMock, updateUserMock, updateEnsUserMock],
       }),
     });
   });
@@ -260,8 +260,10 @@ describe('"Profile" page for individual', () => {
       VALID_ETHEREUM_ADDRESS
     );
     await screen.findByDisplayValue(VALID_ETHEREUM_ADDRESS);
-    await userEvent.click(await screen.findByText("Save profile"));
-    await screen.findByText("Success !");
+    await userEvent.click(await screen.findByTestId("profile-form-submit-button"));
+    await waitFor(() => {
+      expect(updateUserMock.newData).toHaveBeenCalledOnce();
+    });
   });
 
   it("should not navigate to projects screen when clicking Save profile with invalid IBAN", async () => {
@@ -309,12 +311,17 @@ describe('"Profile" page for individual', () => {
     await screen.findByDisplayValue(VALID_ENS);
 
     // Submit the form, the mock query will take care of checking only relevant values are sent
-    await userEvent.click(await screen.findByText("Save profile"));
-    await screen.findByText("Success !");
+    await userEvent.click(await screen.findByTestId("profile-form-submit-button"));
+    await waitFor(() => {
+      expect(updateUserMock.newData).toHaveBeenCalledOnce();
+    });
   });
 });
 
 describe('"Profile" page for company', () => {
+  const profileQueryMock = buildMockProfileQuery(mockCompany);
+  const updateUserMock = buildMockMutationUpdateUser(mockCompany);
+
   beforeAll(() => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(accessToken(mockCompany.userId)));
   });
@@ -323,27 +330,33 @@ describe('"Profile" page for company', () => {
     renderWithIntl(<ProfilePage />, {
       wrapper: MemoryRouterProviderFactory({
         route: RoutePaths.Profile,
-        mocks: [buildMockProfileQuery(mockCompany), buildMockMutationUpdateUser(mockCompany)],
+        mocks: [profileQueryMock, updateUserMock],
       }),
     });
+    vi.clearAllMocks();
   });
 
   it("should display error when required field missing", async () => {
     await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Name"));
     expect((await screen.findByLabelText<HTMLInputElement>("Name")).value).toBe("");
-    await userEvent.click(await screen.findByText("Save profile"));
+    await userEvent.click(await screen.findByTestId("profile-form-submit-button"));
     await waitFor(() => {
       const errorMessages = screen.getAllByText("Required");
       expect(errorMessages.length).toBe(1);
     });
   });
 
-  it("should navigate to projects screen on success", async () => {
-    // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
-    await userEvent.click(await screen.findByText("Save profile"));
+  it("should trigger the update upon form submit", async () => {
+    await userEvent.click(await screen.findByTestId("profile-form-submit-button"));
     await waitFor(() => {
-      const successMessage = screen.getByText("Success !");
-      expect(successMessage).toBeInTheDocument();
+      expect(updateUserMock.newData).toHaveBeenCalledOnce();
+    });
+  });
+
+  it("should not trigger the update upon cancel", async () => {
+    await userEvent.click(await screen.findByTestId("profile-form-cancel-button"));
+    await waitFor(() => {
+      expect(updateUserMock.newData).not.toHaveBeenCalled();
     });
   });
 });

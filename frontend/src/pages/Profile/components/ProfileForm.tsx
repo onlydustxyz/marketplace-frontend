@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { HasuraUserRole } from "src/types";
 import { useForm, SubmitHandler, FormProvider, Controller } from "react-hook-form";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import IBAN from "iban";
 
 import Input from "src/components/FormInput";
@@ -83,6 +83,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
   const { handleSubmit } = formMethods;
   const [updateUser, { data }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser);
   const success = !!data;
+  const location = useLocation();
 
   const onSubmit: SubmitHandler<Inputs> = async formData => {
     await updateUser(mapFormDataToSchema(formData));
@@ -273,7 +274,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
             )}
           </Card>
         </div>
-        {success && <Navigate to={RoutePaths.Projects} />}
+        {success && <Navigate to={location.state?.prev || RoutePaths.Projects} />}
       </form>
     </FormProvider>
   );
