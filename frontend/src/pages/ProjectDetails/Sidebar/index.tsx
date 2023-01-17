@@ -5,9 +5,6 @@ import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { GetProjectsForSidebarQuery } from "src/__generated/graphql";
 import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
-import { useMemo } from "react";
-import { sortBy } from "lodash";
-import { useProjectLeadInvitations } from "src/hooks/useProjectLeadInvitations";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 
 interface Props {
@@ -26,30 +23,19 @@ export default function ProjectsSidebar({
   onTabSelected,
 }: Props) {
   const { isLoggedIn, ledProjectIds } = useAuth();
-  const { amIInvitedForProject, allInvitations } = useProjectLeadInvitations();
 
-  const isProjectMine = (projectId: string) => ledProjectIds.includes(projectId) || !!amIInvitedForProject(projectId);
+  const isProjectMine = (project: ProjectDetails) => ledProjectIds.includes(project.id) || !!project.invitationId;
 
   const getProjectsForSidebarQuery = useHasuraQuery<GetProjectsForSidebarQuery>(
     GET_PROJECTS_FOR_SIDEBAR_QUERY,
-    HasuraUserRole.Public,
+    HasuraUserRole.RegisteredUser,
     {
+      variables: { ledProjectIds },
       skip: !isLoggedIn,
     }
   );
 
-  const projects = useMemo(() => {
-    const projects = getProjectsForSidebarQuery?.data?.projects.filter(({ id }) => isProjectMine(id));
-    return sortBy(projects, project => !amIInvitedForProject(project.id));
-  }, [getProjectsForSidebarQuery?.data?.projects, ledProjectIds, allInvitations]);
-
-  const projectFromQuery = (project: any) => ({
-    id: project.id,
-    name: project.name,
-    logoUrl: project.projectDetails?.logoUrl || project.githubRepo?.content?.logoUrl || onlyDustLogo,
-    nbContributors: project.githubRepo?.content?.contributors?.length || 0,
-    withInvitation: amIInvitedForProject(project.id),
-  });
+  const projects = getProjectsForSidebarQuery?.data?.projects || [];
 
   return (
     <View
@@ -61,18 +47,32 @@ export default function ProjectsSidebar({
         onTabSelected,
       }}
       allProjects={projects.map(project => projectFromQuery(project))}
-      expandable={isProjectMine(currentProject.id)}
+      expandable={isProjectMine(currentProject)}
     />
   );
 }
 
+const projectFromQuery = (project: any) => ({
+  id: project.id,
+  name: project.name,
+  logoUrl: project.projectDetails?.logoUrl || project.githubRepo?.content?.logoUrl || onlyDustLogo,
+  nbContributors: project.githubRepo?.content?.contributors?.length || 0,
+  withInvitation: project.pendingInvitations?.at(0)?.id,
+});
+
 export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
-  query GetProjectsForSidebar {
-    projects {
+  query GetProjectsForSidebar($ledProjectIds: [uuid!]) {
+    projects(
+      where: { _or: [{ id: { _in: $ledProjectIds } }, { pendingInvitations: {} }] }
+      orderBy: { pendingInvitationsAggregate: { count: DESC } }
+    ) {
       id
       name
       projectDetails {
         logoUrl
+      }
+      pendingInvitations {
+        id
       }
       githubRepo {
         content {
