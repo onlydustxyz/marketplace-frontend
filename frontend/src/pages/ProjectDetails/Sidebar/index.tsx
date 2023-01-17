@@ -3,7 +3,6 @@ import { HasuraUserRole } from "src/types";
 import View from "./View";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { GetProjectsForSidebarQuery } from "src/__generated/graphql";
-import QueryWrapper from "src/components/QueryWrapper";
 import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
 import { useMemo } from "react";
@@ -53,19 +52,17 @@ export default function ProjectsSidebar({
   });
 
   return (
-    <QueryWrapper query={getProjectsForSidebarQuery}>
-      <View
-        {...{
-          currentProject,
-          onProjectSelected,
-          selectedTab,
-          availableTabs,
-          onTabSelected,
-        }}
-        allProjects={projects.map(project => projectFromQuery(project))}
-        expandable={isProjectMine(currentProject.id)}
-      />
-    </QueryWrapper>
+    <View
+      {...{
+        currentProject,
+        onProjectSelected,
+        selectedTab,
+        availableTabs,
+        onTabSelected,
+      }}
+      allProjects={projects.map(project => projectFromQuery(project))}
+      expandable={isProjectMine(currentProject.id)}
+    />
   );
 }
 
