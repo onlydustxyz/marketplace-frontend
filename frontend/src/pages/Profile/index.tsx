@@ -6,9 +6,11 @@ import QueryWrapper from "src/components/QueryWrapper";
 import ProfileForm from "./components/ProfileForm";
 import { ProfileQuery } from "src/__generated/graphql";
 import InfoMissingBanner from "./components/InfoMissingBanner";
+import { useIntl } from "src/hooks/useIntl";
 
 const Profile: React.FC = () => {
   const { isLoggedIn } = useAuth();
+  const { T } = useIntl();
   const getProfileQuery = useHasuraQuery<ProfileQuery>(GET_PROFILE_QUERY, HasuraUserRole.RegisteredUser, {
     skip: !isLoggedIn,
     fetchPolicy: "network-only",
@@ -16,9 +18,25 @@ const Profile: React.FC = () => {
 
   return (
     <div className="bg-space h-full">
-      <div className="container mx-auto pt-16 h-full">
-        <div className="flex flex-col gap-6">
-          <div className="text-4xl font-alfreda mb-6">Edit profile</div>
+      <div className="px-8 pt-16 h-full w-full">
+        <div className="flex mb-6 items-center">
+          <span className="text-3xl font-belwe font-normal w-full">{T("profile.edit")}</span>
+          <div className="flex flex-col gap-6">
+            <div className="flex space-x-6">
+              <button
+                type="button"
+                className="bg-white/5 backdrop-blur-4xl text-base text-neutral-50 border-neutral-50 whitespace-nowrap border px-6 py-4 rounded-xl font-semibold"
+              >
+                {T("profile.form.cancel")}
+              </button>
+              <button
+                type="submit"
+                className="bg-neutral-50 text-base text-slate-900 whitespace-nowrap border-2 px-6 py-4 rounded-xl font-semibold shadow-inner"
+              >
+                {T("profile.form.send")}
+              </button>
+            </div>
+          </div>
           {getProfileQuery.data && (
             <QueryWrapper query={getProfileQuery}>
               {isPaymentInfoMissing(getProfileQuery) && <InfoMissingBanner />}
