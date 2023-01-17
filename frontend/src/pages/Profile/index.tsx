@@ -41,6 +41,7 @@ const Profile: React.FC = () => {
               </button>
               <button
                 type="submit"
+                form="profile-form"
                 className="bg-neutral-50 text-base text-slate-900 whitespace-nowrap border-2 px-6 py-4 rounded-xl font-semibold shadow-inner"
               >
                 {T("profile.form.send")}
