@@ -9,7 +9,7 @@ import { useRoles } from "src/hooks/useAuth/useRoles";
 import { accessTokenExpired, useTokenSet } from "src/hooks/useTokenSet";
 import { HasuraUserRole, RefreshToken, User, UserRole } from "src/types";
 import { PendingProjectLeaderInvitationsQuery } from "src/__generated/graphql";
-import { useHasuraLazyQuery } from "../useHasuraQuery";
+import { useHasuraQuery } from "../useHasuraQuery";
 
 type AuthContextType = {
   login: (refreshToken: RefreshToken) => void;
@@ -27,34 +27,36 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const { tokenSet, setFromRefreshToken, clearTokenSet, hasRefreshError } = useTokenSet();
 
-  const [launchPendingProjectLeaderInvitationsLazyQuery, pendingProjectLeaderInvitationsLazyQueryResult] =
-    useHasuraLazyQuery<PendingProjectLeaderInvitationsQuery>(
-      PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
-      HasuraUserRole.RegisteredUser
-    );
+  const [skipProjectLeaderInvitationsQuery, setSkipProjectLeaderInvitationsQuery] = useState(true);
 
-  const [startPendingProjectInvitationsQuery, setStartPendingProjectInvitationsQuery] = useState(false);
+  const pendingProjectLeaderInvitationsQueryResult = useHasuraQuery<PendingProjectLeaderInvitationsQuery>(
+    PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
+    HasuraUserRole.RegisteredUser,
+    { skip: skipProjectLeaderInvitationsQuery }
+  );
+
+  useEffect(() => {
+    if (pendingProjectLeaderInvitationsQueryResult.data) {
+      setSkipProjectLeaderInvitationsQuery(true);
+    }
+  }, [pendingProjectLeaderInvitationsQueryResult.data]);
 
   const login = async (refreshToken: RefreshToken) => {
     await setFromRefreshToken(refreshToken);
     await client.clearStore();
-    setStartPendingProjectInvitationsQuery(true);
+    setSkipProjectLeaderInvitationsQuery(false);
     navigate(RoutePaths.Projects);
   };
 
   useEffect(() => {
-    if (startPendingProjectInvitationsQuery) launchPendingProjectLeaderInvitationsLazyQuery();
-  }, [startPendingProjectInvitationsQuery]);
-
-  useEffect(() => {
-    if (pendingProjectLeaderInvitationsLazyQueryResult?.data?.pendingProjectLeaderInvitations?.[0]?.projectId) {
+    if (pendingProjectLeaderInvitationsQueryResult?.data?.pendingProjectLeaderInvitations?.[0]?.projectId) {
       navigate(
         generatePath(RoutePaths.MyProjectDetails, {
-          projectId: pendingProjectLeaderInvitationsLazyQueryResult.data.pendingProjectLeaderInvitations[0].projectId,
+          projectId: pendingProjectLeaderInvitationsQueryResult.data.pendingProjectLeaderInvitations[0].projectId,
         })
       );
     }
-  }, [pendingProjectLeaderInvitationsLazyQueryResult?.data?.pendingProjectLeaderInvitations?.[0]?.projectId]);
+  }, [pendingProjectLeaderInvitationsQueryResult?.data?.pendingProjectLeaderInvitations?.[0]?.projectId]);
 
   const client = useApolloClient();
 
@@ -71,8 +73,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     logout();
   }
 
-  const { isLoggedIn, roles, ledProjectIds } = useRoles(tokenSet?.accessToken);
   const tokenIsRefreshed = !(tokenSet?.accessToken && accessTokenExpired(tokenSet));
+  const { isLoggedIn, roles, ledProjectIds } = useRoles(tokenSet?.accessToken);
 
   const { githubUserId } = useGithubProfile(roles, tokenSet?.user?.id, tokenIsRefreshed);
 
