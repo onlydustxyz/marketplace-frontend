@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   }, [startPendingProjectInvitationsQuery]);
 
   useEffect(() => {
-    if (pendingProjectLeaderInvitationsLazyQueryResult?.data?.pendingProjectLeaderInvitations?.[0].projectId) {
+    if (pendingProjectLeaderInvitationsLazyQueryResult?.data?.pendingProjectLeaderInvitations?.[0]?.projectId) {
       navigate(
         generatePath(RoutePaths.MyProjectDetails, {
           projectId: pendingProjectLeaderInvitationsLazyQueryResult.data.pendingProjectLeaderInvitations[0].projectId,
