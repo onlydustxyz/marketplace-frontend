@@ -6,6 +6,14 @@ import Cell from "../Table/Cell";
 import Headers from "../Table/HeaderLine";
 import HeaderCell from "../Table/HeaderCell";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(relativeTime);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 type PropsType = {
   payments: Payment[];
@@ -23,6 +31,7 @@ const renderHeaders = () => {
   const { T } = useIntl();
   return (
     <Headers>
+      <HeaderCell className="w-1/4">{T("payment.table.date")}</HeaderCell>
       <HeaderCell className="w-1/2">{T("payment.table.project")}</HeaderCell>
       <HeaderCell className="w-1/4">{T("payment.table.amount")}</HeaderCell>
       <HeaderCell className="w-1/4">{T("payment.table.status")}</HeaderCell>
@@ -35,6 +44,7 @@ const renderPayments = (payments: Payment[]) => {
 
   return payments.map(payment => (
     <Line key={payment.id}>
+      <Cell> {dayjs.tz(payment.requestedAt, dayjs.tz.guess()).fromNow()} </Cell>
       <Cell className="flex flex-row gap-3">
         <div className="border-4 border-neutral-600 p-2 rounded-2xl">
           <img className="w-8 max-w-fit" src={payment.project.logoUrl || onlyDustLogo} alt="Project Logo" />
@@ -64,11 +74,13 @@ export const mapApiPaymentsToProps = (apiPayment: any): Payment => {
   const amount = { value: apiPayment.amountInUsd, currency: Currency.USD };
   const project = apiPayment.budget.project;
   const reason = apiPayment.reason?.work_items?.at(0);
+  const requestedAt = apiPayment.requestedAt;
   const getPaidAmount = (payments: { amount: number }[]) =>
     payments.reduce((total: number, payment: { amount: number }) => total + payment.amount, 0);
 
   return {
     id: apiPayment.id,
+    requestedAt: requestedAt,
     amount,
     reason,
     project: {

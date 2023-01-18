@@ -40,6 +40,7 @@ export const GET_MY_CONTRIBUTIONS_QUERY = gql`
   query GetPaymentRequests($githubId: bigint!) {
     paymentRequests(where: { recipientId: { _eq: $githubId } }) {
       id
+      requestedAt
       payments {
         amount
         currencyCode
