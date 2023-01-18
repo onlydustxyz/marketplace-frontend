@@ -11,7 +11,6 @@ pub enum Identity {
 #[derive(Default, Debug, Clone, Serialize, Deserialize, GraphQLInputObject)]
 pub struct CompanyIdentity {
 	name: String,
-	id: String,
 }
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize, GraphQLInputObject)]
