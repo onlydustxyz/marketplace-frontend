@@ -73,6 +73,7 @@
       "bankWire": "Bank wire",
       "bic": "BIC",
       "city": "City",
+      "companyName": "Company name",
       "companyProfile": "Company",
       "contactInfo": "Contact info",
       "country": "Country",
@@ -82,11 +83,9 @@
       "ethereum": "Ethereum",
       "firstname": "First name",
       "iban": "IBAN",
-      "id": "ID",
       "individualProfile": "Individual",
       "lastname": "Last name",
       "location": "Location",
-      "name": "Name",
       "number": "N.",
       "payoutSettings": "Payout settings",
       "postCode": "Postal code",
@@ -97,8 +96,8 @@
       "typeOfProfile": "Profile type"
     },
     "missing": {
-      "title": "Profile information missing",
-      "subtitle": "We won’t be able to issue any payment until your profile is completed"
+      "subtitle": "We won’t be able to issue any payment until your profile is completed",
+      "title": "Profile information missing"
     }
   },
   "project": {
