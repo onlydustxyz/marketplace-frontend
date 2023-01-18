@@ -2,17 +2,20 @@ import { createContext, PropsWithChildren, useContext, useEffect, useState } fro
 
 type Props = {
   message?: string;
+  isError: boolean;
   showToaster: (message: string, options?: ToasterOptions) => void;
 };
 
 type ToasterOptions = {
   duration?: number;
+  isError?: boolean;
 };
 
 type StrictToasterOptions = Required<ToasterOptions>;
 
 const DEFAULT_TOASTER_OPTIONS: StrictToasterOptions = {
   duration: 4500,
+  isError: false,
 };
 
 const ToasterContext = createContext<Props | null>(null);
@@ -34,7 +37,7 @@ export const ToasterProvider = ({ children }: PropsWithChildren) => {
     return () => clearTimeout(timer);
   }, [message, options]);
 
-  const value = { message, showToaster };
+  const value = { message, isError: options.isError, showToaster };
   return <ToasterContext.Provider value={value}>{children}</ToasterContext.Provider>;
 };
 

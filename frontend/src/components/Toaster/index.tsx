@@ -6,7 +6,7 @@ type Props = {
 };
 
 export const Toaster = ({ className }: Props) => {
-  const { message } = useToaster();
+  const { message, isError } = useToaster();
 
-  return <View {...{ message, className }} />;
+  return <View {...{ message, isError, className }} />;
 };
