@@ -3,6 +3,7 @@ import { HasuraUserRole } from "src/types";
 import { useForm, SubmitHandler, FormProvider, Controller } from "react-hook-form";
 import { Navigate, useLocation } from "react-router-dom";
 import IBAN from "iban";
+import { Switch } from "@headlessui/react";
 
 import Input from "src/components/FormInput";
 import { useHasuraMutation } from "src/hooks/useHasuraQuery";
@@ -27,11 +28,10 @@ const EMAIL_ADDRESS_REGEXP =
 const BIC_REGEXP = /^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/i;
 
 type Inputs = {
-  paymentReceiverType: IdentityType;
+  isCompanyProfile: boolean;
   firstname?: string;
   lastname?: string;
-  id?: string;
-  name?: string;
+  companyName?: string;
   email: string;
   address: string;
   postCode: string;
@@ -51,15 +51,10 @@ type PropsType = {
 const ProfileForm: React.FC<PropsType> = ({ user }) => {
   const formMethods = useForm<Inputs>({
     defaultValues: {
-      paymentReceiverType: user?.identity.Person
-        ? IdentityType.Person
-        : user?.identity.Company
-        ? IdentityType.Company
-        : IdentityType.Person,
+      isCompanyProfile: user?.identity?.Company,
       firstname: user?.identity?.Person?.firstname,
       lastname: user?.identity.Person?.lastname,
-      id: user?.identity?.Company?.id,
-      name: user?.identity?.Company?.name,
+      companyName: user?.identity?.Company?.name,
       email: user?.email,
       address: user?.location.address,
       postCode: user?.location.post_code,
@@ -88,7 +83,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
   };
 
   const payoutSettingsType = formMethods.watch("payoutSettingsType");
-  const paymentReceiverType = formMethods.watch("paymentReceiverType");
+  const isCompanyProfile = formMethods.watch("isCompanyProfile");
   const { T } = useIntl();
 
   return (
@@ -98,59 +93,57 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
           <Card>
             <div className="flex flex-col gap-5">
               <div>
-                <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
-                  <div className="font-medium text-lg">{T("profile.form.aboutYou")}</div>
-                  <div>
-                    {paymentReceiverType === IdentityType.Person && (
-                      <div className="flex flex-row gap-5 pt-3">
-                        <Input
-                          label={T("profile.form.firstname")}
-                          name="firstname"
-                          placeholder={T("profile.form.firstname")}
-                          options={{ required: T("form.required") }}
-                        />
-                        <Input
-                          label={T("profile.form.lastname")}
-                          name="lastname"
-                          placeholder={T("profile.form.lastname")}
-                          options={{ required: T("form.required") }}
-                        />
-                      </div>
-                    )}
-                    {paymentReceiverType === IdentityType.Company && (
-                      <div className="flex flex-row gap-5">
-                        <Input
-                          label={T("profile.form.id")}
-                          name="id"
-                          placeholder={T("profile.form.id")}
-                          options={{ required: T("form.required") }}
-                        />
-                        <Input
-                          label={T("profile.form.name")}
-                          name="name"
-                          placeholder={T("profile.form.name")}
-                          options={{ required: T("form.required") }}
-                        />
-                      </div>
-                    )}
+                <div className="flex flex-col gap-2 divide-y divide-solid divide-neutral-600 ">
+                  <div className="flex flex-row justify-between">
+                    <div className="font-medium text-lg">{T("profile.form.aboutYou")}</div>
+                    <div className="flex flex-row items-center gap-2">
+                      <Controller
+                        name="isCompanyProfile"
+                        control={formMethods.control}
+                        render={({ field: { onChange, value } }) => {
+                          return (
+                            <Switch
+                              checked={!!value}
+                              onChange={onChange}
+                              className={`flex ${
+                                value ? "bg-fuchsia-500/90 justify-end" : "bg-gray-200 justify-start"
+                              } h-6 w-10 items-center rounded-full p-1`}
+                            >
+                              <span className={`h-5 w-5 transform rounded-full bg-white transition`} />
+                            </Switch>
+                          );
+                        }}
+                      />
+                      <div>Company profile</div>
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col font-medium text-neutral-300 gap-2">
-                  <div>{T("profile.form.typeOfProfile")}</div>
-                  <div className="flex flex-row gap-3">
-                    <Radio
-                      name="paymentReceiverType"
-                      options={[
-                        {
-                          value: IdentityType.Person,
-                          label: T("profile.form.individualProfile"),
-                        },
-                        {
-                          value: IdentityType.Company,
-                          label: T("profile.form.companyProfile"),
-                        },
-                      ]}
-                    />
+                  <div>
+                    <div className="flex flex-row gap-5 pt-3">
+                      {!isCompanyProfile && (
+                        <>
+                          <Input
+                            label={T("profile.form.firstname")}
+                            name="firstname"
+                            placeholder={T("profile.form.firstname")}
+                            options={{ required: T("form.required") }}
+                          />
+                          <Input
+                            label={T("profile.form.lastname")}
+                            name="lastname"
+                            placeholder={T("profile.form.lastname")}
+                            options={{ required: T("form.required") }}
+                          />
+                        </>
+                      )}
+                      {isCompanyProfile && (
+                        <Input
+                          label={T("profile.form.companyName")}
+                          name="companyName"
+                          placeholder={T("profile.form.companyName")}
+                          options={{ required: T("form.required") }}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -287,12 +280,11 @@ const mapFormDataToSchema = ({
   email,
   lastname,
   firstname,
-  id,
-  name,
   address,
+  companyName,
   city,
   country,
-  paymentReceiverType,
+  isCompanyProfile,
   postCode,
   payoutSettingsType,
   ethWalletAddress,
@@ -301,9 +293,9 @@ const mapFormDataToSchema = ({
   BIC,
 }: Inputs) => {
   const identity: IdentityInput = {
-    type: paymentReceiverType,
-    optPerson: paymentReceiverType === IdentityType.Person && lastname && firstname ? { lastname, firstname } : null,
-    optCompany: paymentReceiverType === IdentityType.Company && id && name ? { id, name } : null,
+    type: isCompanyProfile ? IdentityType.Company : IdentityType.Person,
+    optPerson: !isCompanyProfile && lastname && firstname ? { lastname, firstname } : null,
+    optCompany: isCompanyProfile && companyName ? { name: companyName } : null,
   };
 
   const location: Location = {

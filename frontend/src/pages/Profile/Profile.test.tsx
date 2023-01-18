@@ -130,7 +130,7 @@ const buildMockMutationUpdateUser = (userInfo: UserInfo) => {
       }
     : {
         type: IdentityType.Company,
-        optCompany: { id: userInfo.identity.Company?.id, name: userInfo.identity.Company?.name },
+        optCompany: { name: userInfo.identity.Company?.name },
         optPerson: null,
       };
 
@@ -292,10 +292,9 @@ describe('"Profile" page for individual', () => {
 
   it("should send only relevant values to the backend", async () => {
     // Make sure both Company and individual are filled
-    await userEvent.click(await screen.findByText("Company"));
-    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("ID"), "Company ID");
-    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("Name"), "Company Name");
-    await userEvent.click(await screen.findByText("Individual"));
+    await userEvent.click(await screen.findByRole("switch"));
+    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("Company name"), "Company Name");
+    await userEvent.click(await screen.findByRole("switch"));
 
     // Make sure all of ETH address, Bank wire and ENS are filled
     await screen.findByDisplayValue(INVALID_ETHEREUM_ADDRESS);
@@ -333,8 +332,8 @@ describe('"Profile" page for company', () => {
   });
 
   it("should display error when required field missing", async () => {
-    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Name"));
-    expect((await screen.findByLabelText<HTMLInputElement>("Name")).value).toBe("");
+    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Company name"));
+    expect((await screen.findByLabelText<HTMLInputElement>("Company name")).value).toBe("");
     await userEvent.click(await screen.findByTestId("profile-form-submit-button"));
     await waitFor(() => {
       const errorMessages = screen.getAllByText("Required");
