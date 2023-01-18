@@ -33,7 +33,7 @@ const Profile: React.FC = () => {
           <div className="flex space-x-6">
             <button
               type="button"
-              data-testId="profile-form-cancel-button"
+              data-testid="profile-form-cancel-button"
               className="bg-white/5 backdrop-blur-4xl text-base text-neutral-50 border-neutral-50 whitespace-nowrap border px-6 py-4 rounded-xl font-semibold"
               onClick={navigateBack}
             >
@@ -42,7 +42,7 @@ const Profile: React.FC = () => {
             <button
               type="submit"
               form="profile-form"
-              data-testId="profile-form-submit-button"
+              data-testid="profile-form-submit-button"
               className="bg-neutral-50 text-base text-slate-900 whitespace-nowrap border-2 px-6 py-4 rounded-xl font-semibold shadow-inner"
             >
               {T("profile.form.send")}
