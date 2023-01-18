@@ -358,3 +358,32 @@ describe('"Profile" page for company', () => {
     });
   });
 });
+
+describe("Upon graphql request failure", () => {
+  beforeAll(() => {
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(accessToken(mockUser.userId)));
+  });
+
+  beforeEach(() => {
+    renderWithIntl(<ProfilePage />, {
+      wrapper: MemoryRouterProviderFactory({
+        route: RoutePaths.Profile,
+        mocks: [
+          {
+            request: {
+              query: UPDATE_USER_MUTATION,
+            },
+            error: "invalid values",
+          },
+        ],
+      }),
+    });
+  });
+
+  it("should display error toaster", async () => {
+    await userEvent.click(await screen.findByTestId("profile-form-submit-button"));
+    await waitFor(() => {
+      expect(screen.getByTestId("toaster-message")).toBeVisible();
+    });
+  });
+});

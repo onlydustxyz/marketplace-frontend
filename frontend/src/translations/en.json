@@ -152,7 +152,7 @@
         "title": "Seniority"
     },
     "state": {
-        "errorOccured": "Oops, an unexpected error occured",
+        "errorOccured": "An error just occurred, please try again. Contact us at contact@onlydust.xyz if the problem persists",
         "loading": "Loading...",
         "notResponsive": "This website is only available for desktop now. Mobile version coming soon ...",
         "success": "Success !"
