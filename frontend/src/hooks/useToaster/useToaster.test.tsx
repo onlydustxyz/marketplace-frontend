@@ -7,10 +7,10 @@ describe("Toaster component", () => {
   it("should be visible for a given period of time", async () => {
     const { result } = renderWithProvider();
 
-    expect(result.current.message).toBeUndefined();
+    expect(result.current.visible).toBe(false);
     result.current.showToaster("Message", { duration: 100 });
-    await waitFor(() => expect(result.current.message).toBe("Message"));
+    await waitFor(() => expect(result.current.visible).toBe(true));
 
-    await waitFor(() => expect(result.current.message).toBeUndefined, { timeout: 105 });
+    await waitFor(() => expect(result.current.visible).toBe(false), { timeout: 105 });
   });
 });

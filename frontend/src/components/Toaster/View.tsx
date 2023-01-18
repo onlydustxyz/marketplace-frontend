@@ -2,18 +2,19 @@ import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 
 interface Props {
-  message?: string;
+  message: string;
+  visible: boolean;
   isError: boolean;
   className?: string;
 }
 
-export default function View({ message, isError, className }: Props) {
+export default function View({ message, visible, isError, className }: Props) {
   return (
     <div
       data-testid="toaster-message"
-      className={`${message ? "visible" : "invisible"} rounded-2xl p-0.5 ${
+      className={`${visible ? "opacity-100" : "opacity-0"} rounded-2xl p-0.5 ${
         isError ? "bg-orange-500" : "bg-multi-color-gradient"
-      } w-fit ${className}`}
+      } w-fit transition ${className}`}
     >
       <div className={"flex items-center p-6 gap-2 bg-chineseBlack backdrop-blur-xl rounded-2xl"}>
         {isError ? (
