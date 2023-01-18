@@ -22,6 +22,7 @@ describe("The user", () => {
     });
 
     cy.wait(1000);
+    cy.get("[data-testid=PERSON]").click().wait(100);
     cy.get("[name=firstname]").clear().type(this.profile.firstname);
     cy.get("[name=lastname]").clear().type(this.profile.lastname);
     cy.get("[name=email]").clear().type(this.profile.email);
@@ -30,8 +31,8 @@ describe("The user", () => {
     cy.get("[name=city]").clear().type(this.profile.city);
     cy.get("[name=country]").clear().type(this.profile.country);
 
-    cy.get("[value=ETHEREUM_ADDRESS]").click().wait(100);
-    cy.get("[name=ethWalletAddress]").clear().type(this.profile.ethWalletAddress);
+    cy.get("[data-testid=ETHEREUM_IDENTITY]").click().wait(100);
+    cy.get("[name=ethIdentity]").clear().type(this.profile.ethWalletAddress);
 
     cy.contains("Save profile").click().wait(WAIT_LONG);
 
@@ -52,7 +53,8 @@ describe("The user", () => {
     cy.get("[name=postCode]").should("have.value", this.profile.postCode);
     cy.get("[name=city]").should("have.value", this.profile.city);
     cy.get("[name=country]").should("have.value", this.profile.country);
-    cy.get("[name=ethWalletAddress]").should("have.value", this.profile.ethWalletAddress);
+    cy.get("[id=ETHEREUM_IDENTITY]").should("be.checked");
+    cy.get("[name=ethIdentity]").should("have.value", this.profile.ethWalletAddress);
   });
 });
 
@@ -84,7 +86,7 @@ describe("The company", () => {
     cy.get("[name=postCode]").clear().type(this.profile.postCode);
     cy.get("[name=city]").clear().type(this.profile.city);
     cy.get("[name=country]").clear().type(this.profile.country);
-    cy.get("[value=BANK_ADDRESS]").click().wait(100);
+    cy.get("[data-testid=BANK_ADDRESS]").click().wait(100);
     cy.get("[name=IBAN]").clear().type(this.profile.IBAN);
     cy.get("[name=BIC]").clear().type(this.profile.BIC);
 
@@ -107,6 +109,7 @@ describe("The company", () => {
     cy.get("[name=postCode]").should("have.value", this.profile.postCode);
     cy.get("[name=city]").should("have.value", this.profile.city);
     cy.get("[name=country]").should("have.value", this.profile.country);
+    cy.get("[id=BANK_ADDRESS]").should("be.checked");
     cy.get("[name=IBAN]").should("have.value", IBAN.printFormat(this.profile.IBAN));
     cy.get("[name=BIC]").should("have.value", this.profile.BIC);
   });
