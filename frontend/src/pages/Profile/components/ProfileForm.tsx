@@ -21,8 +21,9 @@ import {
 import Card from "src/components/Card";
 import { RoutePaths } from "src/App";
 
-const ETHEREUM_ADDRESS_REGEXP = /^0x[a-fA-F0-9]{40}$/gi;
-const ENS_DOMAIN_REGEXP = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi;
+const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
+const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
+  /(^0x[a-fA-F0-9]{40}$)|(^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$)/gi;
 const EMAIL_ADDRESS_REGEXP =
   /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 const BIC_REGEXP = /^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/i;
@@ -37,9 +38,8 @@ type Inputs = {
   postCode: string;
   city: string;
   country: string;
-  payoutSettingsType: PayoutSettingsType;
-  ethWalletAddress?: string;
-  ethName?: string;
+  payoutSettingsType: PayoutSettingsDisplayType;
+  ethIdentity?: string;
   IBAN?: string;
   BIC?: string;
 };
@@ -47,6 +47,11 @@ type Inputs = {
 type PropsType = {
   user?: UserInfo;
 };
+
+enum PayoutSettingsDisplayType {
+  BankAddress = "BANK_ADDRESS",
+  EthereumIdentity = "ETHEREUM_IDENTITY",
+}
 
 const ProfileForm: React.FC<PropsType> = ({ user }) => {
   const formMethods = useForm<Inputs>({
@@ -61,14 +66,13 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
       city: user?.location.city,
       country: user?.location.country,
       payoutSettingsType: user?.payoutSettings.EthTransfer?.Address
-        ? PayoutSettingsType.EthereumAddress
+        ? PayoutSettingsDisplayType.EthereumIdentity
         : user?.payoutSettings.EthTransfer?.Domain
-        ? PayoutSettingsType.EthereumName
+        ? PayoutSettingsDisplayType.EthereumIdentity
         : user?.payoutSettings.WireTransfer
-        ? PayoutSettingsType.BankAddress
-        : PayoutSettingsType.EthereumAddress,
-      ethWalletAddress: user?.payoutSettings.EthTransfer?.Address,
-      ethName: user?.payoutSettings.EthTransfer?.Name,
+        ? PayoutSettingsDisplayType.BankAddress
+        : PayoutSettingsDisplayType.EthereumIdentity,
+      ethIdentity: user?.payoutSettings.EthTransfer?.Address || user?.payoutSettings.EthTransfer?.Name,
       IBAN: user?.payoutSettings.WireTransfer?.IBAN,
       BIC: user?.payoutSettings.WireTransfer?.BIC,
     },
@@ -152,10 +156,10 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                   <div className="font-medium text-lg">{T("profile.form.contactInfo")}</div>
                   <div className="pt-3">
                     <Input
-                      label={T("profile.form.email")}
+                      label={T("profile.form.emailAddress")}
                       name="email"
                       options={{ pattern: EMAIL_ADDRESS_REGEXP, required: T("form.required") }}
-                      placeholder={T("profile.form.email")}
+                      placeholder={T("profile.form.emailPlaceholder")}
                     />
                   </div>
                 </div>
@@ -175,16 +179,19 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                   />
                   <div className="flex flex-row gap-5">
                     <Input
+                      label={T("profile.form.postCode")}
                       name="postCode"
                       placeholder={T("profile.form.postCode")}
                       options={{ required: T("form.required") }}
                     />
                     <Input
+                      label={T("profile.form.city")}
                       name="city"
                       placeholder={T("profile.form.city")}
                       options={{ required: T("form.required") }}
                     />
                     <Input
+                      label={T("profile.form.country")}
                       name="country"
                       placeholder={T("profile.form.country")}
                       options={{ required: T("form.required") }}
@@ -202,15 +209,11 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                       name="payoutSettingsType"
                       options={[
                         {
-                          value: PayoutSettingsType.EthereumAddress,
-                          label: T("profile.form.ethereum"),
+                          value: PayoutSettingsDisplayType.EthereumIdentity,
+                          label: T("profile.form.cryptoWire"),
                         },
                         {
-                          value: PayoutSettingsType.EthereumName,
-                          label: T("profile.form.ethName"),
-                        },
-                        {
-                          value: PayoutSettingsType.BankAddress,
+                          value: PayoutSettingsDisplayType.BankAddress,
                           label: T("profile.form.bankWire"),
                         },
                       ]}
@@ -219,21 +222,15 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                 </div>
               </div>
             </div>
-            {payoutSettingsType === PayoutSettingsType.EthereumAddress && (
+            {payoutSettingsType === PayoutSettingsDisplayType.EthereumIdentity && (
               <Input
-                name="ethWalletAddress"
-                placeholder={T("profile.form.ethWalletAddress")}
-                options={{ pattern: ETHEREUM_ADDRESS_REGEXP, required: T("form.required") }}
+                label={T("profile.form.ethIdentity")}
+                name="ethIdentity"
+                placeholder={T("profile.form.ethIdentityPlaceholder")}
+                options={{ pattern: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP, required: T("form.required") }}
               />
             )}
-            {payoutSettingsType === PayoutSettingsType.EthereumName && (
-              <Input
-                name="ethName"
-                placeholder={T("profile.form.ethName")}
-                options={{ pattern: ENS_DOMAIN_REGEXP, required: T("form.required") }}
-              />
-            )}
-            {payoutSettingsType === PayoutSettingsType.BankAddress && (
+            {payoutSettingsType === PayoutSettingsDisplayType.BankAddress && (
               <div className="flex flex-row gap-5">
                 <Controller
                   control={formMethods.control}
@@ -241,6 +238,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                   render={({ field: { onChange, value } }) => {
                     return (
                       <Input
+                        label={T("profile.form.iban")}
                         name="IBAN"
                         placeholder={T("profile.form.iban")}
                         options={{ required: T("form.required"), validate: IBAN.isValid }}
@@ -251,6 +249,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                   }}
                 />
                 <Input
+                  label={T("profile.form.bic")}
                   name="BIC"
                   placeholder={T("profile.form.bic")}
                   options={{ pattern: BIC_REGEXP, required: T("form.required") }}
@@ -287,8 +286,7 @@ const mapFormDataToSchema = ({
   isCompanyProfile,
   postCode,
   payoutSettingsType,
-  ethWalletAddress,
-  ethName,
+  ethIdentity,
   IBAN,
   BIC,
 }: Inputs) => {
@@ -305,11 +303,18 @@ const mapFormDataToSchema = ({
     country,
   };
 
+  const payoutType: PayoutSettingsType =
+    payoutSettingsType === PayoutSettingsDisplayType.EthereumIdentity
+      ? ethIdentity && ENS_DOMAIN_REGEXP.test(ethIdentity)
+        ? PayoutSettingsType.EthereumName
+        : PayoutSettingsType.EthereumAddress
+      : PayoutSettingsType.BankAddress;
+  console.log(payoutType, ethIdentity, ethIdentity && ENS_DOMAIN_REGEXP.test(ethIdentity));
   const payoutSettings: PayoutSettingsInput = {
-    type: payoutSettingsType,
-    optEthAddress: payoutSettingsType === PayoutSettingsType.EthereumAddress ? ethWalletAddress : null,
-    optBankAddress: payoutSettingsType === PayoutSettingsType.BankAddress && IBAN && BIC ? { IBAN, BIC } : null,
-    optEthName: payoutSettingsType === PayoutSettingsType.EthereumName ? ethName : null,
+    type: payoutType,
+    optEthAddress: payoutType === PayoutSettingsType.EthereumAddress ? ethIdentity : null,
+    optBankAddress: payoutType === PayoutSettingsType.BankAddress && IBAN && BIC ? { IBAN, BIC } : null,
+    optEthName: payoutType === PayoutSettingsType.EthereumName ? ethIdentity : null,
   };
 
   const variables: UpdateProfileInfoMutationVariables = { email, identity, location, payoutSettings };
