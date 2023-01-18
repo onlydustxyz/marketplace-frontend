@@ -89,6 +89,7 @@
       "location": "Location",
       "number": "N.",
       "payoutSettings": "Payment preferences",
+      "payoutSettingsType": "Profile type",
       "postCode": "Zip code",
       "saved": "Your data has been saved!",
       "send": "Save profile",

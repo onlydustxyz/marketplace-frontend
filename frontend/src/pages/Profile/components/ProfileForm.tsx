@@ -7,7 +7,7 @@ import { Switch } from "@headlessui/react";
 
 import Input from "src/components/FormInput";
 import { useHasuraMutation } from "src/hooks/useHasuraQuery";
-import Radio from "./Radio";
+import ProfileRadioGroup from "./ProfileRadioGroup";
 import { useIntl } from "src/hooks/useIntl";
 import {
   IdentityType,
@@ -205,16 +205,17 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                 <div className="font-medium text-lg">{T("profile.form.payoutSettings")}</div>
                 <div>
                   <div className="flex flex-row gap-3 font-medium text-neutral-300 mt-3">
-                    <Radio
+                    <ProfileRadioGroup
                       name="payoutSettingsType"
+                      label={T("profile.form.payoutSettingsType")}
                       options={[
-                        {
-                          value: PayoutSettingsDisplayType.EthereumIdentity,
-                          label: T("profile.form.cryptoWire"),
-                        },
                         {
                           value: PayoutSettingsDisplayType.BankAddress,
                           label: T("profile.form.bankWire"),
+                        },
+                        {
+                          value: PayoutSettingsDisplayType.EthereumIdentity,
+                          label: T("profile.form.cryptoWire"),
                         },
                       ]}
                     />
