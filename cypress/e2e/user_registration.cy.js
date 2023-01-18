@@ -21,7 +21,7 @@ describe("The user", () => {
       },
     });
 
-    cy.get("[value=PERSON]").click().wait(100);
+    cy.wait(1000);
     cy.get("[name=firstname]").clear().type(this.profile.firstname);
     cy.get("[name=lastname]").clear().type(this.profile.lastname);
     cy.get("[name=email]").clear().type(this.profile.email);
@@ -76,9 +76,9 @@ describe("The company", () => {
       },
     });
 
-    cy.get("[value=COMPANY]").click().wait(100);
-    cy.get("[name=id]").clear().type(this.profile.id);
-    cy.get("[name=name]").clear().type(this.profile.name);
+    cy.wait(1000);
+    cy.get('[role="switch"]').click().wait(100);
+    cy.get("[name=companyName]").clear().type(this.profile.name);
     cy.get("[name=email]").clear().type(this.profile.email);
     cy.get("[name=address]").clear().type(this.profile.address);
     cy.get("[name=postCode]").clear().type(this.profile.postCode);
@@ -101,8 +101,7 @@ describe("The company", () => {
       },
     });
 
-    cy.get("[name=id]").should("have.value", this.profile.id);
-    cy.get("[name=name]").should("have.value", this.profile.name);
+    cy.get("[name=companyName]").should("have.value", this.profile.name);
     cy.get("[name=email]").should("have.value", this.profile.email);
     cy.get("[name=address]").should("have.value", this.profile.address);
     cy.get("[name=postCode]").should("have.value", this.profile.postCode);
