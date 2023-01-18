@@ -233,7 +233,6 @@ export type CitextComparisonExp = {
 };
 
 export type CompanyIdentity = {
-  id: Scalars['String'];
   name: Scalars['String'];
 };
 
@@ -343,10 +342,10 @@ export type JsonbComparisonExp = {
 };
 
 export type Location = {
-  city: Scalars["String"];
-  country: Scalars["String"];
-  postCode: Scalars["String"];
-  address: Scalars["String"];
+  address: Scalars['String'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  postCode: Scalars['String'];
 };
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
