@@ -1,4 +1,4 @@
-import { gql, useApolloClient } from "@apollo/client";
+import { useApolloClient } from "@apollo/client";
 import axios from "axios";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { generatePath, useNavigate } from "react-router-dom";
