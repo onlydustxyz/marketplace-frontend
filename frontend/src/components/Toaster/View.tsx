@@ -14,9 +14,9 @@ export default function View({ message, visible, isError, className }: Props) {
       data-testid="toaster-message"
       className={`${visible ? "opacity-100" : "opacity-0"} rounded-2xl p-0.5 ${
         isError ? "bg-orange-500" : "bg-multi-color-gradient"
-      } w-fit transition ${className}`}
+      } w-fit max-w-xl transition ${className}`}
     >
-      <div className={"flex items-center p-6 gap-2 bg-chineseBlack backdrop-blur-xl rounded-2xl"}>
+      <div className={"flex items-center text-center p-6 gap-2 bg-chineseBlack backdrop-blur-xl rounded-2xl"}>
         {isError ? (
           <ErrorWarningLine className="font-semibold text-2xl text-orange-500" />
         ) : (

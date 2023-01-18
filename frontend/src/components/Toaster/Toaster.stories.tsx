@@ -25,3 +25,12 @@ export const Error = Template.bind(
     isError: true,
   }
 );
+
+export const LongError = Template.bind(
+  {},
+  {
+    message: "Oops somthing bad happened! This is a very long error message with a lot of content.",
+    visible: true,
+    isError: true,
+  }
+);
