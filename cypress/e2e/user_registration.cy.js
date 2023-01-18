@@ -22,7 +22,6 @@ describe("The user", () => {
     });
 
     cy.wait(1000);
-    cy.get("[data-testid=PERSON]").click().wait(100);
     cy.get("[name=firstname]").clear().type(this.profile.firstname);
     cy.get("[name=lastname]").clear().type(this.profile.lastname);
     cy.get("[name=email]").clear().type(this.profile.email);
