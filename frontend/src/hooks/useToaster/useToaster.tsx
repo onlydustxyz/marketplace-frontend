@@ -1,8 +1,9 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 
 type Props = {
-  message?: string;
+  message: string;
   isError: boolean;
+  visible: boolean;
   showToaster: (message: string, options?: ToasterOptions) => void;
 };
 
@@ -21,23 +22,27 @@ const DEFAULT_TOASTER_OPTIONS: StrictToasterOptions = {
 const ToasterContext = createContext<Props | null>(null);
 
 export const ToasterProvider = ({ children }: PropsWithChildren) => {
-  const [message, setMessage] = useState<string | undefined>(undefined);
+  const [message, setMessage] = useState<string>("");
+  const [visible, setVisible] = useState(false);
   const [options, setOptions] = useState<StrictToasterOptions>(DEFAULT_TOASTER_OPTIONS);
 
   const showToaster = (message: string, options?: ToasterOptions) => {
     setOptions({ ...DEFAULT_TOASTER_OPTIONS, ...options });
     setMessage(message);
+    setVisible(true);
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setMessage(undefined);
-    }, options.duration);
+    if (visible) {
+      const timer = setTimeout(() => {
+        setVisible(false);
+      }, options.duration);
 
-    return () => clearTimeout(timer);
-  }, [message, options]);
+      return () => clearTimeout(timer);
+    }
+  }, [visible]);
 
-  const value = { message, isError: options.isError, showToaster };
+  const value = { message, visible, isError: options.isError, showToaster };
   return <ToasterContext.Provider value={value}>{children}</ToasterContext.Provider>;
 };
 

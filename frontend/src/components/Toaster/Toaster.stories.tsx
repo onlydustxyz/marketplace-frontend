@@ -12,6 +12,7 @@ export const Default = Template.bind(
   {},
   {
     message: "Payment information successfully updated",
+    visible: true,
     isError: false,
   }
 );
@@ -20,6 +21,7 @@ export const Error = Template.bind(
   {},
   {
     message: "Oops somthing bad happened!",
+    visible: true,
     isError: true,
   }
 );
