@@ -311,6 +311,7 @@ describe('"Profile" page for individual', () => {
     await userEvent.click(await screen.findByTestId("profile-form-submit-button"));
     await waitFor(() => {
       expect(updateUserMock.newData).toHaveBeenCalledOnce();
+      expect(screen.getByTestId("toaster-message")).toBeVisible();
     });
   });
 });
