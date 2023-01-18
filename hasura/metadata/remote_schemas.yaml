@@ -41,7 +41,6 @@
             IBAN: String!
           }
           input CompanyIdentity {
-            id: String!
             name: String!
           }
           input IdentityInput {
