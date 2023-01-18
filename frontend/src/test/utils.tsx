@@ -7,6 +7,8 @@ import { RoutePaths } from "src/App";
 import { IntlProvider } from "src/hooks/useIntl";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { SessionProvider } from "src/hooks/useSession";
+import { ToasterProvider } from "src/hooks/useToaster/useToaster";
+import { Toaster } from "src/components/Toaster";
 
 interface MemoryRouterProviderFactoryProps {
   route?: string;
@@ -17,15 +19,20 @@ export const MemoryRouterProviderFactory =
   ({ route = RoutePaths.CatchAll, mocks }: MemoryRouterProviderFactoryProps) =>
   ({ children }: PropsWithChildren) =>
     (
-      <SessionProvider>
-        <TokenSetProvider>
-          <MockedProvider mocks={mocks} addTypename={false}>
-            <MemoryRouter initialEntries={[route]}>
-              <AuthProvider>{children}</AuthProvider>
-            </MemoryRouter>
-          </MockedProvider>
-        </TokenSetProvider>
-      </SessionProvider>
+      <ToasterProvider>
+        <SessionProvider>
+          <TokenSetProvider>
+            <MockedProvider mocks={mocks} addTypename={false}>
+              <MemoryRouter initialEntries={[route]}>
+                <AuthProvider>
+                  {children}
+                  <Toaster />
+                </AuthProvider>
+              </MemoryRouter>
+            </MockedProvider>
+          </TokenSetProvider>
+        </SessionProvider>
+      </ToasterProvider>
     );
 
 export const renderWithIntl = (ui: React.ReactElement, options?: RenderOptions) =>

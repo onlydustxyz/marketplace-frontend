@@ -20,6 +20,8 @@ import {
 } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import { RoutePaths } from "src/App";
+import { useEffect } from "react";
+import { useToaster } from "src/hooks/useToaster/useToaster";
 
 const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
 const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
@@ -81,6 +83,13 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
   const [updateUser, { data }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser);
   const success = !!data;
   const location = useLocation();
+  const { showToaster } = useToaster();
+
+  useEffect(() => {
+    if (success) {
+      showToaster(T("profile.form.success"));
+    }
+  }, [success]);
 
   const onSubmit: SubmitHandler<Inputs> = async formData => {
     await updateUser(mapFormDataToSchema(formData));
