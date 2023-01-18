@@ -310,7 +310,7 @@ const mapFormDataToSchema = ({
         ? PayoutSettingsType.EthereumName
         : PayoutSettingsType.EthereumAddress
       : PayoutSettingsType.BankAddress;
-  console.log(payoutType, ethIdentity, ethIdentity && ENS_DOMAIN_REGEXP.test(ethIdentity));
+
   const payoutSettings: PayoutSettingsInput = {
     type: payoutType,
     optEthAddress: payoutType === PayoutSettingsType.EthereumAddress ? ethIdentity : null,
