@@ -80,7 +80,11 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
     },
   });
   const { handleSubmit } = formMethods;
-  const [updateUser, { data }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser);
+  const [updateUser, { data, error }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser, {
+    context: {
+      ignoreGraphQLErrors: true, // tell ApolloWrapper to ignore the errors
+    },
+  });
   const success = !!data;
   const location = useLocation();
   const { showToaster } = useToaster();
@@ -88,8 +92,10 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
   useEffect(() => {
     if (success) {
       showToaster(T("profile.form.success"));
+    } else if (error) {
+      showToaster(T("state.errorOccured"), { isError: true });
     }
-  }, [success]);
+  }, [success, error]);
 
   const onSubmit: SubmitHandler<Inputs> = async formData => {
     await updateUser(mapFormDataToSchema(formData));
