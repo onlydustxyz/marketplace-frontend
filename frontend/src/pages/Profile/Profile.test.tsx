@@ -228,9 +228,9 @@ describe('"Profile" page for individual', () => {
   });
 
   it("should display error when required field missing", async () => {
-    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Email"));
+    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Email address"));
     await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("First name"));
-    expect((await screen.findByLabelText<HTMLInputElement>("Email")).value).toBe("");
+    expect((await screen.findByLabelText<HTMLInputElement>("Email address")).value).toBe("");
     await userEvent.click(await screen.findByText("Save profile"));
     await waitFor(() => {
       const errorMessages = screen.getAllByText("Required");
@@ -249,10 +249,11 @@ describe('"Profile" page for individual', () => {
   it("should navigate to projects screen when clicking Save profile with valid Ethereum address", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
 
+    await userEvent.click(await screen.findByText("Crypto wire"));
     await screen.findByDisplayValue(INVALID_ETHEREUM_ADDRESS);
-    await userEvent.clear(await screen.findByPlaceholderText<HTMLInputElement>("Ethereum wallet address"));
+    await userEvent.clear(await screen.findByPlaceholderText<HTMLInputElement>("ETH address or ENS name"));
     await userEvent.type(
-      await screen.findByPlaceholderText<HTMLInputElement>("Ethereum wallet address"),
+      await screen.findByPlaceholderText<HTMLInputElement>("ETH address or ENS name"),
       VALID_ETHEREUM_ADDRESS
     );
     await screen.findByDisplayValue(VALID_ETHEREUM_ADDRESS);
@@ -298,11 +299,12 @@ describe('"Profile" page for individual', () => {
 
     // Make sure all of ETH address, Bank wire and ENS are filled
     await screen.findByDisplayValue(INVALID_ETHEREUM_ADDRESS);
+    await userEvent.clear(await screen.findByPlaceholderText<HTMLInputElement>("ETH address or ENS name"));
     await userEvent.click(await screen.findByText("Bank wire"));
     await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("IBAN"), "FR7610107001011234567890129");
     await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("BIC"), "BNPCFR21");
-    await userEvent.click(await screen.findByText("ENS domain"));
-    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("ENS domain"), VALID_ENS);
+    await userEvent.click(await screen.findByText("Crypto wire"));
+    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("ETH address or ENS name"), VALID_ENS);
     await screen.findByDisplayValue(VALID_ENS);
 
     // Submit the form, the mock query will take care of checking only relevant values are sent
