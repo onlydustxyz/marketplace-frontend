@@ -49,7 +49,7 @@ const MyContributions = () => {
               <InfoMissingBanner>
                 <Link
                   to={RoutePaths.Profile}
-                  className="flex flex-row justify-between items-center gap-2 w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-400 px-4 py-3 text-black hover:cursor-pointer"
+                  className="flex flex-row justify-between items-center gap-2 w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-400 px-6 py-4 text-black text-base font-medium hover:cursor-pointer"
                 >
                   <div data-testid="accept-invite-button">
                     <div>{T("profile.missing.button")}</div>
