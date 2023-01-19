@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
-import MyContributionsPage, { GET_MY_CONTRIBUTIONS_QUERY } from ".";
+import MyContributionsPage, { GET_MY_CONTRIBUTIONS_QUERY, GET_PAYOUT_SETTINGS_QUERY } from ".";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
@@ -72,6 +72,21 @@ const buildMockMyContributionsQuery = (
   },
 });
 
+const buidlMockPayoutSettingsQuery = (payoutSettings: any) => ({
+  request: {
+    query: GET_PAYOUT_SETTINGS_QUERY,
+  },
+  result: {
+    data: {
+      userInfo: [
+        {
+          payoutSettings,
+        },
+      ],
+    },
+  },
+});
+
 describe('"MyContributions" page', () => {
   beforeAll(() => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
@@ -100,5 +115,33 @@ describe('"MyContributions" page', () => {
     expect(await screen.findByText(mockContribution.budget.project.name)).toBeInTheDocument();
     expect(await screen.findByText("200 USD")).toBeInTheDocument();
     expect(await screen.findByText("Completed")).toBeInTheDocument();
+  });
+
+  it("should display banner when there are payments but no payout info", async () => {
+    renderWithIntl(<MyContributionsPage />, {
+      wrapper: MemoryRouterProviderFactory({
+        route: RoutePaths.Profile,
+        mocks: [buildMockMyContributionsQuery(userId), buidlMockPayoutSettingsQuery(undefined)],
+      }),
+    });
+    expect(await screen.findByText("Complete payment information")).toBeInTheDocument();
+  });
+
+  it("should not display banner when there are payments and payout info", async () => {
+    renderWithIntl(<MyContributionsPage />, {
+      wrapper: MemoryRouterProviderFactory({
+        route: RoutePaths.Profile,
+        mocks: [
+          buildMockMyContributionsQuery(userId),
+          buidlMockPayoutSettingsQuery({ EthTransfer: { Name: "vitalik.eth" } }),
+        ],
+      }),
+    });
+
+    expect(await screen.findByText(mockContribution.reason.work_items[0])).toBeInTheDocument();
+    expect(await screen.findByText(mockContribution.budget.project.name)).toBeInTheDocument();
+    expect(await screen.findByText("200 USD")).toBeInTheDocument();
+    expect(await screen.findByText("Completed")).toBeInTheDocument();
+    expect(screen.queryByText("Complete payment information")).not.toBeInTheDocument();
   });
 });
