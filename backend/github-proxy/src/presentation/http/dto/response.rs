@@ -52,14 +52,25 @@ impl Response {
 	}
 
 	fn override_cache_control(mut headers: HeaderMap) -> Result<HeaderMap> {
-		if headers.contains_key(CACHE_CONTROL) {
-			let cache_control = headers
-				.entry(CACHE_CONTROL)
-				.or_insert(HeaderValue::from_static("public, max-age=60, s-maxage=60"));
+		// - `public` makes the content cacheable by Fastly.
+		// - `max-age=60, s-maxage=60` tells Fastly that the content in cache expires after 60s.
+		//   This seems to be the default for responses coming from Github API.
+		// - `stale-while-revalidate=30` tells Fastly to continue to deliver cached content up to
+		//   30s after it expired, while refreshing the data in background. Note that refreshing
+		//   content uses the Etag mechnism with 304 responses, so it won't affect our remaining
+		//   rate limit if the content didn't change.
+		// - `stale-if-error=600` tells Fastly to contine to deliver cached content up to 10 minutes
+		//   after it expired in case the remote server (ie. Github API) responds with an error.
+		//   This allows our app to keep working during 10m in case Github API is down.
+		let custom_cache_control = HeaderValue::from_static(
+			"public, max-age=60, s-maxage=60, stale-while-revalidate=30, stale-if-error=600",
+		);
 
-			*cache_control = HeaderValue::from_str(
-				cache_control.to_str()?.replace("private", "public").as_str(),
-			)?;
+		if headers.contains_key(CACHE_CONTROL) {
+			let cache_control =
+				headers.entry(CACHE_CONTROL).or_insert(custom_cache_control.clone());
+
+			*cache_control = custom_cache_control;
 		}
 
 		Ok(headers)
@@ -102,25 +113,7 @@ mod tests {
 		assert_eq!(headers.get(HOST).unwrap(), &"example.com");
 		assert_eq!(
 			headers.get(CACHE_CONTROL).unwrap(),
-			&"public, max-age=60, s-maxage=60"
-		);
-	}
-
-	#[rstest]
-	fn override_cache_control_public() {
-		let mut headers = HeaderMap::new();
-
-		headers.insert(HOST, "example.com".parse().unwrap());
-		headers.insert(
-			CACHE_CONTROL,
-			"public, max-age=60, s-maxage=60".parse().unwrap(),
-		);
-
-		let headers = Response::override_cache_control(headers).unwrap();
-		assert_eq!(headers.get(HOST).unwrap(), &"example.com");
-		assert_eq!(
-			headers.get(CACHE_CONTROL).unwrap(),
-			&"public, max-age=60, s-maxage=60"
+			&"public, max-age=60, s-maxage=60, stale-while-revalidate=30, stale-if-error=600"
 		);
 	}
 
