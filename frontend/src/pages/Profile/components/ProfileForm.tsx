@@ -217,7 +217,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
               <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
                 <div className="font-medium text-lg">{T("profile.form.payoutSettings")}</div>
                 <div>
-                  <div className="flex flex-row gap-3 font-medium text-neutral-300 mt-3">
+                  <div className="flex flex-row gap-3 font-medium text-neutral-300 mt-3 w-fit">
                     <ProfileRadioGroup
                       name="payoutSettingsType"
                       label={T("profile.form.payoutSettingsType")}
