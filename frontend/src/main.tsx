@@ -14,6 +14,7 @@ import "src/assets/fonts/BelweBdBt/stylesheet.css";
 import { IntlProvider } from "src/hooks/useIntl";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { SessionProvider } from "./hooks/useSession";
+import { ToasterProvider } from "./hooks/useToaster/useToaster";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -21,11 +22,13 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <BrowserRouter>
         <SessionProvider>
           <TokenSetProvider>
-            <ApolloWrapper>
-              <AuthProvider>
-                <App />
-              </AuthProvider>
-            </ApolloWrapper>
+            <ToasterProvider>
+              <ApolloWrapper>
+                <AuthProvider>
+                  <App />
+                </AuthProvider>
+              </ApolloWrapper>
+            </ToasterProvider>
           </TokenSetProvider>
         </SessionProvider>
       </BrowserRouter>

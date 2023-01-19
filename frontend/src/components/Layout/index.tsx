@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import { ToasterProvider } from "src/hooks/useToaster/useToaster";
 import ResponsivityFallback from "../ResponsivityFallback";
 import { Toaster } from "../Toaster";
 
@@ -14,10 +13,8 @@ export default function Layout() {
       <div className="md:visible invisible h-screen flex flex-col">
         <Header />
         <div className="px-6 flex-1">
-          <ToasterProvider>
-            <Outlet />
-            <Toaster className="absolute bottom-8 left-8" />
-          </ToasterProvider>
+          <Outlet />
+          <Toaster className="absolute bottom-8 left-8" />
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ import { renderWithIntl } from "src/test/utils";
 import { MockedProvider } from "@apollo/client/testing";
 import { LOCAL_STORAGE_TOKEN_SET_KEY, TokenSetProvider } from "src/hooks/useTokenSet";
 import { SessionProvider } from "src/hooks/useSession";
+import { ToasterProvider } from "src/hooks/useToaster/useToaster";
 
 expect.extend(matchers);
 
@@ -30,15 +31,17 @@ describe('"Layout" component', () => {
 
   it("should always display the onlydust logo", async () => {
     renderWithIntl(
-      <MockedProvider>
-        <SessionProvider>
-          <TokenSetProvider>
-            <AuthProvider>
-              <Layout />
-            </AuthProvider>
-          </TokenSetProvider>
-        </SessionProvider>
-      </MockedProvider>,
+      <ToasterProvider>
+        <MockedProvider>
+          <SessionProvider>
+            <TokenSetProvider>
+              <AuthProvider>
+                <Layout />
+              </AuthProvider>
+            </TokenSetProvider>
+          </SessionProvider>
+        </MockedProvider>
+      </ToasterProvider>,
       { wrapper: BrowserRouter }
     );
     await screen.findByRole("img", {
@@ -48,15 +51,17 @@ describe('"Layout" component', () => {
 
   it("should display the github logo when there is no hasura jwt in the local storage", async () => {
     renderWithIntl(
-      <MockedProvider>
-        <SessionProvider>
-          <TokenSetProvider>
-            <AuthProvider>
-              <Layout />
-            </AuthProvider>
-          </TokenSetProvider>
-        </SessionProvider>
-      </MockedProvider>,
+      <ToasterProvider>
+        <MockedProvider>
+          <SessionProvider>
+            <TokenSetProvider>
+              <AuthProvider>
+                <Layout />
+              </AuthProvider>
+            </TokenSetProvider>
+          </SessionProvider>
+        </MockedProvider>
+      </ToasterProvider>,
       { wrapper: BrowserRouter }
     );
     await screen.findByRole("img", {
@@ -67,15 +72,17 @@ describe('"Layout" component', () => {
   it("should display the onlydust logo and title if there is no hasura jwt", () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_TEST_VALUE));
     renderWithIntl(
-      <MockedProvider>
-        <SessionProvider>
-          <TokenSetProvider>
-            <AuthProvider>
-              <Layout />
-            </AuthProvider>
-          </TokenSetProvider>
-        </SessionProvider>
-      </MockedProvider>,
+      <ToasterProvider>
+        <MockedProvider>
+          <SessionProvider>
+            <TokenSetProvider>
+              <AuthProvider>
+                <Layout />
+              </AuthProvider>
+            </TokenSetProvider>
+          </SessionProvider>
+        </MockedProvider>
+      </ToasterProvider>,
       { wrapper: BrowserRouter }
     );
     expect(

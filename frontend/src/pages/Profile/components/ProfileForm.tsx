@@ -82,7 +82,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
   const { handleSubmit } = formMethods;
   const [updateUser, { data, error }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser, {
     context: {
-      ignoreGraphQLErrors: true, // tell ApolloWrapper to ignore the errors
+      graphqlErrorDisplay: "toaster",
     },
   });
   const success = !!data;
@@ -92,8 +92,6 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
   useEffect(() => {
     if (success) {
       showToaster(T("profile.form.success"));
-    } else if (error) {
-      showToaster(T("state.errorOccured"), { isError: true });
     }
   }, [success, error]);
 
