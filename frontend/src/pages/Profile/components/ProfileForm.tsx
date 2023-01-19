@@ -123,10 +123,14 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                               checked={!!value}
                               onChange={onChange}
                               className={`flex ${
-                                value ? "bg-fuchsia-500/90 justify-end" : "bg-gray-200 justify-start"
-                              } h-6 w-10 items-center rounded-full p-1`}
+                                value ? "bg-fuchsia-500/90" : "bg-gray-200"
+                              } h-6 w-10 items-center rounded-full p-1 transition duration-200`}
                             >
-                              <span className={"h-5 w-5 transform rounded-full bg-white transition"} />
+                              <span
+                                className={`h-5 w-5 transform rounded-full bg-white transition duration-200 ${
+                                  value ? "translate-x-3" : "translate-x-0"
+                                }`}
+                              />
                             </Switch>
                           );
                         }}
