@@ -2596,6 +2596,11 @@ export type GetPaymentRequestsQueryVariables = Exact<{
 
 export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', project: { __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', logoUrl: string } } | null } | null } | null }> };
 
+export type PayoutSettingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PayoutSettingsQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', payoutSettings: any }> };
+
 export type UpdateProfileInfoMutationVariables = Exact<{
   email: Scalars['Email'];
   identity: IdentityInput;
@@ -2850,6 +2855,40 @@ export function useGetPaymentRequestsLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetPaymentRequestsQueryHookResult = ReturnType<typeof useGetPaymentRequestsQuery>;
 export type GetPaymentRequestsLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsLazyQuery>;
 export type GetPaymentRequestsQueryResult = Apollo.QueryResult<GetPaymentRequestsQuery, GetPaymentRequestsQueryVariables>;
+export const PayoutSettingsDocument = gql`
+    query PayoutSettings {
+  userInfo {
+    payoutSettings
+  }
+}
+    `;
+
+/**
+ * __usePayoutSettingsQuery__
+ *
+ * To run a query within a React component, call `usePayoutSettingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePayoutSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePayoutSettingsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePayoutSettingsQuery(baseOptions?: Apollo.QueryHookOptions<PayoutSettingsQuery, PayoutSettingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PayoutSettingsQuery, PayoutSettingsQueryVariables>(PayoutSettingsDocument, options);
+      }
+export function usePayoutSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PayoutSettingsQuery, PayoutSettingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PayoutSettingsQuery, PayoutSettingsQueryVariables>(PayoutSettingsDocument, options);
+        }
+export type PayoutSettingsQueryHookResult = ReturnType<typeof usePayoutSettingsQuery>;
+export type PayoutSettingsLazyQueryHookResult = ReturnType<typeof usePayoutSettingsLazyQuery>;
+export type PayoutSettingsQueryResult = Apollo.QueryResult<PayoutSettingsQuery, PayoutSettingsQueryVariables>;
 export const UpdateProfileInfoDocument = gql`
     mutation updateProfileInfo($email: Email!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
   updateProfileInfo(
