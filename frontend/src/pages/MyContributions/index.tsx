@@ -12,6 +12,7 @@ import isPayoutInfoMissing from "src/utils/isPayoutInfoMissing";
 import { GetPaymentRequestsQuery, PayoutSettingsQuery } from "src/__generated/graphql";
 import { useT } from "talkr";
 import InfoMissingBanner from "../Profile/components/InfoMissingBanner";
+import CompletePaymentInformationButton from "./CompletePaymentInformationButton";
 
 const MyContributions = () => {
   const { githubUserId } = useAuth();
@@ -47,14 +48,11 @@ const MyContributions = () => {
           <div className="mt-10 h-full">
             {isPayoutInfoMissing(getPayoutSettingsQuery) && hasPendingPaymentsRequests(getPaymentRequestsQuery) && (
               <InfoMissingBanner>
-                <Link
-                  to={RoutePaths.Profile}
-                  className="flex flex-row justify-between items-center gap-2 w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-400 px-6 py-4 text-black text-base font-medium hover:cursor-pointer"
-                >
-                  <div data-testid="accept-invite-button">
+                <CompletePaymentInformationButton>
+                  <Link to={RoutePaths.Profile}>
                     <div>{T("profile.missing.button")}</div>
-                  </div>
-                </Link>
+                  </Link>
+                </CompletePaymentInformationButton>
               </InfoMissingBanner>
             )}
           </div>
