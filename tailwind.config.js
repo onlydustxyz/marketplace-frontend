@@ -8,7 +8,7 @@ module.exports = {
         chineseBlack: "#110C1F",
       },
       animation: {
-        "spin-invert-slow": "spin-invert 4s linear",
+        "spin-invert-slow": "spin-invert 4s linear infinite",
       },
       keyframes: {
         "spin-invert": {

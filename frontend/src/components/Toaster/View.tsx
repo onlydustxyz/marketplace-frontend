@@ -17,7 +17,7 @@ export default function View({ message, visible, isError, className }: Props) {
       } absolute rounded-2xl p-0.5 overflow-hidden transition duration-300 ${className}`}
     >
       <div
-        className={`relative flex items-center bg-black rounded-2xl before:absolute before:-z-10 before:h-screen before:w-screen ${
+        className={`relative flex justify-center items-center bg-black rounded-2xl before:absolute before:-z-10 before:h-screen before:w-screen ${
           isError ? "before:bg-orange-500" : "before:bg-multi-color-gradient before:animate-spin-invert-slow"
         }`}
       >
