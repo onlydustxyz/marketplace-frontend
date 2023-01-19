@@ -50,7 +50,9 @@ export default function Projects() {
                   <Card
                     selectable={true}
                     className={`bg-noise-light hover:bg-right ${
-                      project.pendingInvitations.length > 0 ? "bg-amber-700/20" : "bg-white/[0.02]"
+                      project.pendingInvitations.length > 0
+                        ? "bg-amber-700/20"
+                        : "bg-white/[0.02] hover:bg-white/[0.04]"
                     } `}
                     dataTestId="project-card"
                   >
