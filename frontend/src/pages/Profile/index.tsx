@@ -9,6 +9,7 @@ import InfoMissingBanner from "./components/InfoMissingBanner";
 import { useIntl } from "src/hooks/useIntl";
 import { useNavigate, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import isPayoutInfoMissing from "src/utils/isPayoutInfoMissing";
 
 const Profile: React.FC = () => {
   const { isLoggedIn } = useAuth();
@@ -52,7 +53,7 @@ const Profile: React.FC = () => {
         <div className="flex flex-col gap-6">
           {getProfileQuery.data && (
             <QueryWrapper query={getProfileQuery}>
-              {isPaymentInfoMissing(getProfileQuery) && <InfoMissingBanner />}
+              {isPayoutInfoMissing(getProfileQuery) && <InfoMissingBanner />}
               {getProfileQuery.data && <ProfileForm user={getProfileQuery.data.userInfo[0]} />}
             </QueryWrapper>
           )}
@@ -61,18 +62,6 @@ const Profile: React.FC = () => {
     </div>
   );
 };
-
-function isPaymentInfoMissing(queryResult: QueryResult<ProfileQuery>) {
-  const payoutSettings = queryResult?.data?.userInfo?.[0]?.payoutSettings;
-  return (
-    queryResult?.data &&
-    !(
-      payoutSettings?.EthTransfer?.Address ||
-      payoutSettings?.EthTransfer?.Name ||
-      (payoutSettings?.WireTransfer?.IBAN && payoutSettings?.WireTransfer?.BIC)
-    )
-  );
-}
 
 export const GET_PROFILE_QUERY = gql`
   query Profile {
