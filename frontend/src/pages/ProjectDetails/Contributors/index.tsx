@@ -29,7 +29,7 @@ const Contributors: React.FC<PropsType> = ({ projectId }) => {
     <QueryWrapper query={getProjectContributorsQuery}>
       <div className="flex flex-col gap-6 mt-3 h-full">
         <div className="text-3xl font-belwe">{T("project.details.contributors.title")}</div>
-        <Card>
+        <Card className="h-full">
           {paymentRequests?.length ? (
             <ContributorsTable contributors={mapApiPaymentRequestsToContributors(paymentRequests)} />
           ) : (

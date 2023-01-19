@@ -107,7 +107,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
     <FormProvider {...formMethods}>
       <form id="profile-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <div className="flex flex-row gap-3 items-stretch">
-          <Card>
+          <Card className="basis-1/2">
             <div className="flex flex-col gap-5">
               <div>
                 <div className="flex flex-col gap-2 divide-y divide-solid divide-neutral-600 ">
@@ -183,7 +183,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
               </div>
             </div>
           </Card>
-          <Card>
+          <Card className="basis-1/2">
             <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
               <div className="font-medium text-lg">{T("profile.form.location")}</div>
               <div>
