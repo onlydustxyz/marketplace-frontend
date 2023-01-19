@@ -32,7 +32,7 @@ interface ProjectInformationProps {
 
 export default function ProjectInformation({ name, details, lead, githubRepoInfo }: ProjectInformationProps) {
   return (
-    <div className="flex flex-row w-full divide-x divide-neutral-600 gap-6 justify-items-center font-walsheim">
+    <div className="flex flex-row w-full divide-x divide-stone-100/[0.08] gap-6 justify-items-center font-walsheim">
       <div className="flex flex-col basis-4/12 gap-y-5">
         <div className="flex flex-row gap-4 items-start">
           <RoundedImage src={details?.logoUrl || onlyDustLogo} alt="Project Logo" size="lg" className="mt-1" />
@@ -58,7 +58,7 @@ export default function ProjectInformation({ name, details, lead, githubRepoInfo
       </div>
       <div className="flex flex-col basis-8/12 pl-6 gap-5 justify-between">
         <div className="text-lg line-clamp-3">{details?.description}</div>
-        <div className="flex flex-row divide-x divide-neutral-600">
+        <div className="flex flex-row divide-x divide-stone-100/[0.08]">
           <div className="flex flex-row gap-2 pr-6">
             {details?.telegramLink && <TelegramLink link={details?.telegramLink} />}
             {githubRepoInfo?.owner && githubRepoInfo?.name && (
@@ -80,7 +80,7 @@ interface NumberOfContributorsProps {
 
 function NumberOfContributors({ numberOfContributors }: NumberOfContributorsProps) {
   return (
-    <div className="flex flex-row w-full justify-center items-center text-xl">
+    <div className="flex flex-row justify-center items-center text-sm pl-6">
       {numberOfContributors} contributor
       {numberOfContributors <= 1 ? "" : "s"}
     </div>
