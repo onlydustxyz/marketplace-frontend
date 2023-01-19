@@ -16,8 +16,12 @@ select_permissions:
         - request_id
       filter:
         paymentRequest:
-          requestor_id:
-            _eq: X-Hasura-User-Id
+          budget:
+            project:
+              projectLeads:
+                user:
+                  id:
+                    _eq: X-Hasura-User-Id
   - role: registered_user_specific
     permission:
       columns:
