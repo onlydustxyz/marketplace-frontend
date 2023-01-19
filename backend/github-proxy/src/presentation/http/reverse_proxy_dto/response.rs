@@ -1,6 +1,7 @@
 use std::io::Cursor;
 
 use anyhow::Result;
+use derive_getters::Getters;
 use infrastructure::github::DebugTechnicalHeaders;
 use olog::error;
 use reqwest::header::{HeaderMap, HeaderValue, CACHE_CONTROL};
@@ -9,6 +10,17 @@ use rocket::{
 	response::{Responder, Response as RocketResponse, Result as ResponseResult},
 	Request,
 };
+use serde::Deserialize;
+
+#[derive(Clone, Deserialize, Getters)]
+pub struct Config {
+	response_headers: ResponseHeadersConfig,
+}
+
+#[derive(Clone, Deserialize, Getters)]
+pub struct ResponseHeadersConfig {
+	cache_control: String,
+}
 
 pub struct Response {
 	status: u16,
@@ -40,9 +52,12 @@ impl<'r, 'o: 'r> Responder<'r, 'o> for Response {
 }
 
 impl Response {
-	pub async fn from_reqwest_response(response: reqwest::Response) -> Result<Self> {
+	pub async fn from_reqwest_response(
+		response: reqwest::Response,
+		config: Config,
+	) -> Result<Self> {
 		response.debug_technical_headers("Received response from Github API");
-		let headers = Self::override_cache_control(response.headers().clone())?;
+		let headers = Self::override_cache_control(response.headers().clone(), config)?;
 
 		Ok(Self {
 			status: response.status().as_u16(),
@@ -51,25 +66,13 @@ impl Response {
 		})
 	}
 
-	fn override_cache_control(mut headers: HeaderMap) -> Result<HeaderMap> {
-		// - `public` makes the content cacheable by Fastly.
-		// - `max-age=60, s-maxage=60` tells Fastly that the content in cache expires after 60s.
-		//   This seems to be the default for responses coming from Github API.
-		// - `stale-while-revalidate=30` tells Fastly to continue to deliver cached content up to
-		//   30s after it expired, while refreshing the data in background. Note that refreshing
-		//   content uses the Etag mechnism with 304 responses, so it won't affect our remaining
-		//   rate limit if the content didn't change.
-		// - `stale-if-error=600` tells Fastly to contine to deliver cached content up to 10 minutes
-		//   after it expired in case the remote server (ie. Github API) responds with an error.
-		//   This allows our app to keep working during 10m in case Github API is down.
-		let custom_cache_control = HeaderValue::from_static(
-			"public, max-age=60, s-maxage=60, stale-while-revalidate=30, stale-if-error=600",
-		);
-
+	fn override_cache_control(mut headers: HeaderMap, config: Config) -> Result<HeaderMap> {
 		if headers.contains_key(CACHE_CONTROL) {
+			let custom_cache_control =
+				HeaderValue::from_str(config.response_headers().cache_control())?;
+
 			let cache_control =
 				headers.entry(CACHE_CONTROL).or_insert(custom_cache_control.clone());
-
 			*cache_control = custom_cache_control;
 		}
 
@@ -95,12 +98,23 @@ impl WithHeaders for rocket::response::Builder<'_> {
 #[cfg(test)]
 mod tests {
 	use reqwest::header::{CACHE_CONTROL, HOST};
-	use rstest::rstest;
+	use rstest::{fixture, rstest};
 
 	use super::*;
 
+	#[fixture]
+	fn config() -> Config {
+		Config {
+			response_headers: ResponseHeadersConfig {
+				cache_control:
+					"public, max-age=60, s-maxage=60, stale-while-revalidate=30, stale-if-error=600"
+						.to_string(),
+			},
+		}
+	}
+
 	#[rstest]
-	fn override_cache_control_private() {
+	fn override_cache_control_private(config: Config) {
 		let mut headers = HeaderMap::new();
 
 		headers.insert(HOST, "example.com".parse().unwrap());
@@ -109,7 +123,7 @@ mod tests {
 			"private, max-age=60, s-maxage=60".parse().unwrap(),
 		);
 
-		let headers = Response::override_cache_control(headers).unwrap();
+		let headers = Response::override_cache_control(headers, config).unwrap();
 		assert_eq!(headers.get(HOST).unwrap(), &"example.com");
 		assert_eq!(
 			headers.get(CACHE_CONTROL).unwrap(),
@@ -118,12 +132,12 @@ mod tests {
 	}
 
 	#[rstest]
-	fn override_cache_control_none() {
+	fn override_cache_control_none(config: Config) {
 		let mut headers = HeaderMap::new();
 
 		headers.insert(HOST, "example.com".parse().unwrap());
 
-		let headers = Response::override_cache_control(headers).unwrap();
+		let headers = Response::override_cache_control(headers, config).unwrap();
 		assert_eq!(headers.get(HOST).unwrap(), &"example.com");
 		assert!(!headers.contains_key(CACHE_CONTROL));
 	}

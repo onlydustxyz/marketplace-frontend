@@ -4,4 +4,4 @@ mod response;
 
 pub use headers::Headers;
 pub use params::Params;
-pub use response::Response;
+pub use response::{Config, Response};
