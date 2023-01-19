@@ -2,9 +2,9 @@ use std::{collections::HashMap, path::PathBuf};
 
 use olog::{debug, error};
 use presentation::http::guards::{ApiKey, ApiKeyGuard};
-use rocket::http::Status;
+use rocket::{http::Status, State};
 
-use crate::presentation::http::dto::{Headers, Params, Response};
+use crate::presentation::http::reverse_proxy_dto::{self, Headers, Params, Response};
 
 #[derive(Default)]
 pub struct GithubApiKey;
@@ -18,6 +18,7 @@ impl ApiKey for GithubApiKey {
 #[get("/github/<path..>?<params..>")]
 pub async fn get(
 	_api_key: ApiKeyGuard<GithubApiKey>,
+	config: &State<reverse_proxy_dto::Config>,
 	headers: Headers,
 	path: PathBuf,
 	params: HashMap<String, String>,
@@ -36,7 +37,7 @@ pub async fn get(
 		Status::InternalServerError
 	})?;
 
-	Response::from_reqwest_response(response).await.map_err(|e| {
+	Response::from_reqwest_response(response, (*config).clone()).await.map_err(|e| {
 		error!(
 			error = e.to_string(),
 			"Failed to decode Github API response"

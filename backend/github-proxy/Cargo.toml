@@ -32,6 +32,7 @@ tracing = "0.1"
 derive_more = "0.99.17"
 dotenv = "0.15.0"
 chrono = "0.4.23"
+derive-getters = "0.2.0"
 
 # Local dependecies
 infrastructure = {path = "../common/infrastructure"}
