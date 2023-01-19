@@ -15,7 +15,7 @@ const MyContributions = () => {
   const query = useHasuraQuery<GetPaymentRequestsQuery>(GET_MY_CONTRIBUTIONS_QUERY, HasuraUserRole.RegisteredUser, {
     variables: { githubId: githubUserId },
     context: {
-      ignoreGraphQLErrors: true, // tell ApolloWrapper to ignore the errors
+      graphqlErrorDisplay: "none", // tell ApolloWrapper to ignore the errors
     },
   });
   const { data } = query;

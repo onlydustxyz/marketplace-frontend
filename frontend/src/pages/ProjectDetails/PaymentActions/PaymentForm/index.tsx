@@ -66,7 +66,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
         username: contributorLogin,
       },
       context: {
-        ignoreGraphQLErrors: true, // tell ApolloWrapper to ignore the errors
+        graphqlErrorDisplay: "none", // tell ApolloWrapper to ignore the errors
       },
     }
   );
