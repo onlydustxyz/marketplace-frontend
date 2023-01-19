@@ -45,10 +45,10 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
 
   return (
     <QueryWrapper query={query}>
-      <div className="flex flex-col gap-8 mt-3">
+      <div className="flex flex-col gap-8 mt-3 h-full">
         <div className="text-3xl font-belwe">{T("project.details.payments.title")}</div>
-        <div className="flex flex-row items-start gap-5">
-          <div className="flex basis-2/3">
+        <div className="flex flex-row items-start gap-5 h-full">
+          <div className="flex basis-2/3 self-stretch">
             {action === Action.Submit && <PaymentForm {...{ projectId, budget }} />}
             {action === Action.List && (
               <Card>

@@ -23,15 +23,13 @@ const MyContributions = () => {
   const hasPayments = payments && payments.length > 0;
 
   return (
-    <div className="bg-space h-full">
-      <div className="container mx-auto pt-16 h-full">
-        <div className="text-5xl font-belwe">{T("navbar.myContributions")}</div>
-        <QueryWrapper query={query}>
-          <div className="mt-10">
-            <Card>{hasPayments ? <PayoutTable payments={payments} /> : <PaymentTableFallback />}</Card>
-          </div>
-        </QueryWrapper>
-      </div>
+    <div className="bg-space h-full flex flex-col p-6">
+      <div className="text-5xl font-belwe">{T("navbar.myContributions")}</div>
+      <QueryWrapper query={query}>
+        <Card className="mt-10 h-full">
+          {hasPayments ? <PayoutTable payments={payments} /> : <PaymentTableFallback />}
+        </Card>
+      </QueryWrapper>
     </div>
   );
 };
