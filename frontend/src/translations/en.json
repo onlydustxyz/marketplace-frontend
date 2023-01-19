@@ -57,9 +57,9 @@
     },
     "table": {
       "amount": "Amount",
+      "date": "Date",
       "project": "Project",
-      "status": "Payment Status",
-      "date": "Date"
+      "status": "Payment Status"
     },
     "tableFallback": {
       "browseProjects": "Browse projects",
@@ -80,11 +80,11 @@
       "companyProfile": "Company",
       "contactInfo": "Contact information",
       "country": "Country",
+      "cryptoWire": "Crypto wire",
       "emailAddress": "Email address",
       "emailPlaceholder": "example@onlydust.co",
       "ethIdentity": "ETH address or ENS name",
       "ethIdentityPlaceholder": "ETH address or ENS name",
-      "cryptoWire": "Crypto wire",
       "firstname": "First name",
       "iban": "IBAN",
       "individualProfile": "Individual",
@@ -99,8 +99,9 @@
       "typeOfProfile": "Profile type"
     },
     "missing": {
+      "button": "Complete payment information",
       "subtitle": "We won’t be able to issue any payment until your profile is completed",
-      "title": "Profile information missing"
+      "title": "Payment information missing"
     }
   },
   "project": {
