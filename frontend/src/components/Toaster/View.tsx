@@ -12,17 +12,23 @@ export default function View({ message, visible, isError, className }: Props) {
   return (
     <div
       data-testid="toaster-message"
-      className={`${visible ? "opacity-100" : "opacity-0"} rounded-2xl p-0.5 ${
-        isError ? "bg-orange-500" : "bg-multi-color-gradient"
-      } w-fit max-w-xl transition duration-300 ${className}`}
+      className={`${
+        visible ? "opacity-100" : "opacity-0"
+      } absolute rounded-2xl p-0.5 overflow-hidden transition duration-300 ${className}`}
     >
-      <div className={"flex items-center text-center p-6 gap-2 bg-chineseBlack backdrop-blur-xl rounded-2xl"}>
-        {isError ? (
-          <ErrorWarningLine className="font-semibold text-2xl text-orange-500" />
-        ) : (
-          <CheckLine className="font-semibold text-2xl" />
-        )}
-        <span className="font-walsheim font-semibold text-lg">{message}</span>
+      <div
+        className={`relative flex items-center bg-black rounded-2xl before:absolute before:-z-10 before:h-screen before:w-screen ${
+          isError ? "before:bg-orange-500" : "before:bg-multi-color-gradient before:animate-spin-invert-slow"
+        }`}
+      >
+        <div className="rounded-2xl bg-noise-medium bg-white/[0.04] flex items-center text-center w-fit max-w-xl p-6 gap-2">
+          {isError ? (
+            <ErrorWarningLine className="font-semibold text-2xl text-orange-500" />
+          ) : (
+            <CheckLine className="font-semibold text-2xl" />
+          )}
+          <span className="font-walsheim font-semibold text-lg">{message}</span>
+        </div>
       </div>
     </div>
   );

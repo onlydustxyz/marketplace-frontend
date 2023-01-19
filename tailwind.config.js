@@ -7,6 +7,15 @@ module.exports = {
       colors: {
         chineseBlack: "#110C1F",
       },
+      animation: {
+        "spin-invert-slow": "spin-invert 4s linear",
+      },
+      keyframes: {
+        "spin-invert": {
+          from: { transform: "rotate(0.0deg)" },
+          to: { transform: "rotate(-360.0deg)" },
+        },
+      },
       backgroundImage: {
         "noise-light": "url('src/assets/img/noise-light.png')",
         "noise-medium": "url('src/assets/img/noise-medium.png')",
