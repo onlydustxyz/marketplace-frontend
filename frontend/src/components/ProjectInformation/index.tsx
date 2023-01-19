@@ -35,7 +35,7 @@ export default function ProjectInformation({ name, details, lead, githubRepoInfo
     <div className="flex flex-row w-full divide-x divide-neutral-600 gap-5 justify-items-center font-walsheim">
       <div className="flex flex-col basis-4/12 gap-5 justify-around">
         <div className="flex flex-row gap-3 items-center">
-          <RoundedImage src={details?.logoUrl || onlyDustLogo} alt="Project Logo" className="object-cover w-12 h-12" />
+          <RoundedImage src={details?.logoUrl || onlyDustLogo} alt="Project Logo" size="lg" />
           <div className="flex flex-col">
             <div className="text-2xl font-medium font-belwe">{name}</div>
             {lead && (
@@ -60,10 +60,10 @@ export default function ProjectInformation({ name, details, lead, githubRepoInfo
         <div className="text-lg line-clamp-3 h-20">{details?.description}</div>
         <div className="flex flex-row divide-x divide-neutral-600">
           <div className="flex flex-row gap-3 pr-5">
+            {details?.telegramLink && <TelegramLink link={details?.telegramLink} />}
             {githubRepoInfo?.owner && githubRepoInfo?.name && (
               <GithubLink link={buildGithubLink(githubRepoInfo?.owner, githubRepoInfo?.name)} />
             )}
-            {details?.telegramLink && <TelegramLink link={details?.telegramLink} />}
           </div>
           {!!githubRepoInfo?.contributors?.length && (
             <NumberOfContributors numberOfContributors={githubRepoInfo?.contributors?.length} />

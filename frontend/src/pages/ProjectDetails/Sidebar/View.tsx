@@ -60,7 +60,7 @@ export default function View({
             <div className="flex flex-col w-full border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700 bg-white/[0.02] absolute backdrop-blur-4xl z-10">
               <Listbox.Button className={`p-4 font-medium text-2xl ${expandable ? "hover:cursor-pointer" : ""}`}>
                 <div className="flex flex-row gap-3 items-center">
-                  <RoundedImage src={currentProject.logoUrl} alt="Project Logo" className="object-cover w-8 h-8" />
+                  <RoundedImage src={currentProject.logoUrl} alt="Project Logo" size="sm" />
                   <div className="truncate grow font-belwe text-left">{currentProject.name}</div>
                   {expandable && <UpDownChevrons className="h-5 w-5 fill-gray-400" />}
                 </div>
@@ -76,7 +76,7 @@ export default function View({
                   >
                     <div className="flex flex-col gap-5">
                       <div className="flex flex-row gap-5 items-center">
-                        <RoundedImage src={project.logoUrl} alt="Project Logo" className="object-cover w-10 h-10" />
+                        <RoundedImage src={project.logoUrl} alt="Project Logo" size="md" />
                         <div className="flex flex-col flex-1 justify-self-start truncate">
                           <div className="truncate text-base font-medium">{project.name}</div>
                           <div className="truncate text-sm font-regular text-slate-400">
