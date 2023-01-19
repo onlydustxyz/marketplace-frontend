@@ -126,7 +126,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                                 value ? "bg-fuchsia-500/90 justify-end" : "bg-gray-200 justify-start"
                               } h-6 w-10 items-center rounded-full p-1`}
                             >
-                              <span className={`h-5 w-5 transform rounded-full bg-white transition`} />
+                              <span className={"h-5 w-5 transform rounded-full bg-white transition"} />
                             </Switch>
                           );
                         }}
