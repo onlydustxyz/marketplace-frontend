@@ -62,8 +62,8 @@ export default function ProjectInformation({
           </div>
         )}
       </div>
-      <div className="flex flex-col basis-8/12 pl-6 gap-5 justify-between">
-        <div className="text-lg line-clamp-3">{details?.description}</div>
+      <div className="flex flex-col basis-8/12 pl-6 gap-6">
+        <div className="line-clamp-3">{details?.description}</div>
         <div className="flex flex-row divide-x divide-stone-100/[0.08]">
           <div className="flex flex-row gap-2 pr-6">
             {details?.telegramLink && <TelegramLink link={details?.telegramLink} />}
