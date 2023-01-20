@@ -11,7 +11,7 @@ import { HasuraUserRole } from "src/types";
 import isPayoutInfoMissing from "src/utils/isPayoutInfoMissing";
 import { GetPaymentRequestsQuery, PayoutSettingsQuery } from "src/__generated/graphql";
 import { useT } from "talkr";
-import InfoMissingBanner from "../Profile/components/InfoMissingBanner";
+import InfoMissingBanner from "src/components/InfoMissingBanner";
 import CompletePaymentInformationButton from "./CompletePaymentInformationButton";
 
 const MyContributions = () => {
