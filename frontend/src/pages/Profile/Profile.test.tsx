@@ -188,7 +188,7 @@ describe("Missing payment information banner", () => {
         mocks: [buildMockProfileQuery({ ...mockUser, payoutSettings: {} })],
       }),
     });
-    await screen.findByText("Profile information missing");
+    await screen.findByText("Payment information missing");
   });
 
   it("shouldn't display the information banner if payment info is correct", async () => {
@@ -204,7 +204,7 @@ describe("Missing payment information banner", () => {
       }),
     });
     await waitFor(() => {
-      expect(screen.queryByText("Profile information missing")).not.toBeInTheDocument();
+      expect(screen.queryByText("Payment information missing")).not.toBeInTheDocument();
     });
   });
 });
