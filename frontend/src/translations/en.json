@@ -105,9 +105,15 @@
     }
   },
   "project": {
+    "amountGranted": "__amount__ granted",
     "details": {
       "contributors": {
-        "title": "Contributors"
+        "title": "Contributors",
+        "count": {
+          "zero": "No contributor",
+          "one": "1 contributor",
+          "many": "__count__ contributors"
+        }
       },
       "overview": {
         "contributors": "CONTRIBUTORS",

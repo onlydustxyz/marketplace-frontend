@@ -4,6 +4,7 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StarLine from "src/icons/StarLine";
 import User3Line from "src/icons/User3Line";
 import { Contributor } from "src/types";
+import { formatDollars } from "src/utils/money";
 
 interface OverviewPanelProps {
   githubRepoInfo?: {
@@ -56,11 +57,7 @@ export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountIn
               {T("project.details.overview.totalSpentAmountInUsd")}
             </div>
           </div>
-          <div className="flex text-lg text-neutral-300 font-bold">
-            {Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(
-              totalSpentAmountInUsd
-            )}
-          </div>
+          <div className="flex text-lg text-neutral-300 font-bold">{formatDollars(totalSpentAmountInUsd)}</div>
         </div>
       )}
     </div>

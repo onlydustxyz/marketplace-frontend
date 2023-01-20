@@ -5,14 +5,13 @@ import TelegramLink from "../TelegramLink";
 import GithubLink from "../GithubLink";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import RoundedImage from "src/components/RoundedImage";
+import { useIntl } from "src/hooks/useIntl";
+import { formatDollars } from "src/utils/money";
 
 interface ProjectInformationProps {
   name: string;
   displayName?: string;
-  budget?: {
-    remainingAmount: number;
-    initialAmount: number;
-  } | null;
+  totalSpentAmountInUsd?: number;
   details?: {
     description?: string | null;
     telegramLink?: string | null;
@@ -30,7 +29,14 @@ interface ProjectInformationProps {
   };
 }
 
-export default function ProjectInformation({ name, details, lead, githubRepoInfo }: ProjectInformationProps) {
+export default function ProjectInformation({
+  name,
+  totalSpentAmountInUsd,
+  details,
+  lead,
+  githubRepoInfo,
+}: ProjectInformationProps) {
+  const { T } = useIntl();
   return (
     <div className="flex flex-row w-full divide-x divide-stone-100/[0.08] gap-6 justify-items-center font-walsheim">
       <div className="flex flex-col basis-4/12 gap-y-5">
@@ -65,24 +71,16 @@ export default function ProjectInformation({ name, details, lead, githubRepoInfo
               <GithubLink link={buildGithubLink(githubRepoInfo?.owner, githubRepoInfo?.name)} />
             )}
           </div>
-          {!!githubRepoInfo?.contributors?.length && (
-            <NumberOfContributors numberOfContributors={githubRepoInfo?.contributors?.length} />
-          )}
+          <div className="flex text-sm gap-4 items-center pl-6">
+            {!!githubRepoInfo?.contributors?.length && (
+              <span>{T("project.details.contributors.count", { count: githubRepoInfo?.contributors?.length })}</span>
+            )}
+            {totalSpentAmountInUsd !== undefined && (
+              <span>{T("project.amountGranted", { amount: formatDollars(totalSpentAmountInUsd) })}</span>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-interface NumberOfContributorsProps {
-  numberOfContributors: number;
-}
-
-function NumberOfContributors({ numberOfContributors }: NumberOfContributorsProps) {
-  return (
-    <div className="flex flex-row justify-center items-center text-sm pl-6">
-      {numberOfContributors} contributor
-      {numberOfContributors <= 1 ? "" : "s"}
     </div>
   );
 }
