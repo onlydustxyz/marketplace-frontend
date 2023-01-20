@@ -26,7 +26,7 @@ deploy_backends() {
         # 4. event-store: to handle new events
         for app in github-proxy api event-listeners event-store
         do
-            echo execute heroku pipelines:promote --app od-$app-staging --to od-$app-production
+            execute heroku pipelines:promote --app od-$app-staging --to od-$app-production
         done
 
         log_info "Checking diff in environment variables"
