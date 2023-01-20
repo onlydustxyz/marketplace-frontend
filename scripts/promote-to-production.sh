@@ -16,16 +16,6 @@ deploy_backends() {
     log_info "Checking diff to be loaded in production"
     execute "git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' $production_commit..$staging_commit"
 
-    log_info "Checking diff in environment variables"
-
-    execute git diff $production_commit..$staging_commit -- docker-compose.yml .env.example
-    DIFF=`cat $LOG_FILE`
-    if [ -n "$DIFF" ]; then
-        log_warning "Some diff have been found, make sure to update the environment variables 🧐"
-    else
-        log_success "No diff found, you are good to go 🥳"
-    fi
-
     ask "OK to continue"
     if [ $? -eq 0 ]; then
         # The order of the apps matters:
@@ -37,6 +27,15 @@ deploy_backends() {
         do
             execute heroku pipelines:promote --app od-$app-staging --to od-$app-production
         done
+
+        log_info "Checking diff in environment variables"
+        execute git diff $production_commit..$staging_commit -- docker-compose.yml .env.example
+        DIFF=`cat $LOG_FILE`
+        if [ -n "$DIFF" ]; then
+            log_warning "Some diff have been found, make sure to update the environment variables 🧐"
+        else
+            log_success "No diff found, you are good to go 🥳"
+        fi
     fi
 }
 
