@@ -55,7 +55,7 @@ rollback_database() {
 
     read -p "How much time in the past do you want to rollback to ? (e.g. 1 hour) " rollback_time
     execute heroku addons:create heroku-postgresql:standard-0 --rollback DATABASE --by \'$rollback_time\' --app $DB_BILLING_APP
-    rollback_database=`sed -n 's/\(.*\) is being created in the background. .*/\1/p' logs.json`
+    rollback_database=`sed -n 's/\(.*\) is being created in the background. .*/\1/p' $LOG_FILE`
     [ -z $rollback_database ] && exit_error "Unable to create the rollback database"
     log_info "Rollback database: $rollback_database"
 

@@ -18,7 +18,7 @@ deploy_backends() {
     production_commit=`slug_commit od-api-production`
 
     execute git diff $production_commit..$staging_commit -- docker-compose.yml
-    DIFF=`cat logs.json`
+    DIFF=`cat $LOG_FILE`
     if [ -n "$DIFF" ]; then
         log_warning "Some diff have been found, make sure to update the environment variables 🧐"
     else
