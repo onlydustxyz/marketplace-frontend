@@ -9,13 +9,14 @@ slug_commit() {
 }
 
 deploy_backends() {
-    log_info "Checking diff to be loaded in production"
-    execute heroku pipelines:diff --app od-api-staging
-
-    log_info "Checking diff in environment variables"
-
+    log_info "Retrieving apps infos..."
     staging_commit=`slug_commit od-api-staging`
     production_commit=`slug_commit od-api-production`
+
+    log_info "Checking diff to be loaded in production"
+    execute "git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' $production_commit..$staging_commit"
+
+    log_info "Checking diff in environment variables"
 
     execute git diff $production_commit..$staging_commit -- docker-compose.yml
     DIFF=`cat $LOG_FILE`
