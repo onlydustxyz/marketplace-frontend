@@ -293,16 +293,6 @@ export const UPDATE_USER_MUTATION = gql`
   }
 `;
 
-const getPayoutType = (payoutSettingsType: PayoutSettingsDisplayType, ethIdentity: string | undefined) => {
-  if (payoutSettingsType === PayoutSettingsDisplayType.BankAddress) {
-    return PayoutSettingsType.BankAddress;
-  }
-  if (ethIdentity && ENS_DOMAIN_REGEXP.test(ethIdentity)) {
-    return PayoutSettingsType.EthereumName;
-  }
-  return PayoutSettingsType.EthereumAddress;
-};
-
 const mapFormDataToSchema = ({
   email,
   lastname,
@@ -331,7 +321,12 @@ const mapFormDataToSchema = ({
     country,
   };
 
-  const payoutType = getPayoutType(payoutSettingsType, ethIdentity);
+  const payoutType =
+    payoutSettingsType === PayoutSettingsDisplayType.BankAddress
+      ? PayoutSettingsType.BankAddress
+      : ethIdentity?.match(ENS_DOMAIN_REGEXP)
+      ? PayoutSettingsType.EthereumName
+      : PayoutSettingsType.EthereumAddress;
 
   const payoutSettings: PayoutSettingsInput = {
     type: payoutType,
