@@ -71,6 +71,7 @@ export default function Projects() {
                           contributors: project?.githubRepo?.content?.contributors,
                           languages: project?.githubRepo?.languages,
                         }}
+                        totalSpentAmountInUsd={project?.totalSpentAmountInUsd}
                       />
                       {project.pendingInvitations.length > 0 && (
                         <div className="flex flex-row justify-between items-center font-medium p-5 text-lg rounded-xl bg-amber-700/30">
@@ -97,6 +98,7 @@ export const GET_PROJECTS_QUERY = gql`
     projects {
       id
       name
+      totalSpentAmountInUsd
       projectDetails {
         description
         telegramLink
