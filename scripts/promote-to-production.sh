@@ -16,6 +16,7 @@ deploy_backends() {
     log_info "Checking diff to be loaded in production"
     execute "git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' $production_commit..$staging_commit"
 
+    echo
     ask "OK to continue"
     if [ $? -eq 0 ]; then
         # The order of the apps matters:
@@ -25,14 +26,23 @@ deploy_backends() {
         # 4. event-store: to handle new events
         for app in github-proxy api event-listeners event-store
         do
-            execute heroku pipelines:promote --app od-$app-staging --to od-$app-production
+            echo execute heroku pipelines:promote --app od-$app-staging --to od-$app-production
         done
 
         log_info "Checking diff in environment variables"
-        execute git diff $production_commit..$staging_commit -- docker-compose.yml .env.example
-        DIFF=`cat $LOG_FILE`
+        DIFF=`git diff $production_commit..$staging_commit -- docker-compose.yml .env.example`
         if [ -n "$DIFF" ]; then
+            echo $DIFF
             log_warning "Some diff have been found, make sure to update the environment variables 🧐"
+        else
+            log_success "No diff found, you are good to go 🥳"
+        fi
+
+        log_info "Checking diff in hasura metadata"
+        DIFF=`git diff $production_commit..$staging_commit -- hasura/metadata`
+        if [ -n "$DIFF" ]; then
+            log_warning "Some diff have been found, make sure to reload hasura metadata 🧐"
+            log_warning "https://od-hasura-production.herokuapp.com/"
         else
             log_success "No diff found, you are good to go 🥳"
         fi
