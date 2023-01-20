@@ -27,6 +27,10 @@ module.exports = {
       backdropBlur: {
         "4xl": "70px",
       },
+      boxShadow: {
+        "inner-bottom-sm": "inset 0 -2px 4px 0 rgb(0 0 0 / 0.05)",
+        "inner-bottom-md": "inset 0 -2px 4px 0 rgb(0 0 0 / 0.5)",
+      },
     },
   },
 
