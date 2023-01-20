@@ -42,12 +42,12 @@ export default function ProjectInformation({
       <div className="flex flex-col basis-4/12 gap-y-5">
         <div className="flex flex-row gap-4 items-start">
           <RoundedImage src={details?.logoUrl || onlyDustLogo} alt="Project Logo" size="lg" className="mt-1" />
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-0.5">
             <div className="text-2xl font-medium font-belwe">{name}</div>
             {lead && (
               <div className="text-md text-neutral-300 font-bold flex flex-row gap-1 items-center">
-                <div>Led by </div>
-                <div className="text-purple-700">{lead?.displayName}</div>{" "}
+                <div className="whitespace-nowrap">Led by </div>
+                <div className="text-purple-700 truncate">{lead?.displayName}</div>{" "}
                 <img src={lead?.avatarUrl} className="w-3 md:w-4 h-3 md:h-4 rounded-full" />
               </div>
             )}
