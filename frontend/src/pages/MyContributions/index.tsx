@@ -45,7 +45,7 @@ const MyContributions = () => {
       <div className="container mx-auto pt-16 h-full">
         <div className="text-5xl font-belwe">{T("navbar.myContributions")}</div>
         <QueryWrapper query={getPaymentRequestsQuery}>
-          <div className="mt-10 h-full">
+          <div className="my-10">
             {isPayoutInfoMissing(getPayoutSettingsQuery) && hasPendingPaymentsRequests(getPaymentRequestsQuery) && (
               <InfoMissingBanner>
                 <CompletePaymentInformationButton>
@@ -56,7 +56,7 @@ const MyContributions = () => {
               </InfoMissingBanner>
             )}
           </div>
-          <div>
+          <div className="mb-10">
             <Card>{hasPayments ? <PayoutTable payments={payments} /> : <PaymentTableFallback />}</Card>
           </div>
         </QueryWrapper>
