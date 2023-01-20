@@ -12,15 +12,15 @@ deploy_backends() {
     log_info "Checking diff to be loaded in production"
     execute heroku pipelines:diff --app od-api-staging
 
-    log_info "Checking diff in docker-compose"
+    log_info "Checking diff in environment variables"
 
     staging_commit=`slug_commit od-api-staging`
     production_commit=`slug_commit od-api-production`
 
-    DIFF=`execute git diff $production_commit..$staging_commit -- docker-compose.yml`
+    execute git diff $production_commit..$staging_commit -- docker-compose.yml
+    DIFF=`cat logs.json`
     if [ -n "$DIFF" ]; then
         log_warning "Some diff have been found, make sure to update the environment variables 🧐"
-        echo $DIFF
     else
         log_success "No diff found, you are good to go 🥳"
     fi
@@ -50,7 +50,7 @@ fi
 
 ask "Do you want to deploy the frontend"
 if [ $? -eq 0 ]; then
-    vercel deploy --prod
+    execute vercel deploy --prod
 fi
 
 log_info "📌 Do not forget to promote Retool apps 😉"
