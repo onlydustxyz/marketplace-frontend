@@ -6,18 +6,46 @@
 ENV=$1
 DD_API_KEY=$2
 
-for SERVICE in github-proxy api event-listeners event-store
-do
-    APPNAME="od-$SERVICE-$ENV"
+add_log_drain() {
+    SERVICE=$1
+    SUBDOMAIN=$2
 
     HOST=""
     if [ $ENV = "staging" ]; then
-        HOST='staging.api.onlydust.xyz'
+        HOST="staging.${SUBDOMAIN}.onlydust.xyz"
     elif [ $ENV = "production" ]; then
-        HOST='api.onlydust.xyz'
+        HOST="${SUBDOMAIN}.onlydust.xyz"
     else
         exit 1
     fi
+
+    APPNAME="od-$SERVICE-$ENV"
+    echo "Adding log drains for application $APPNAME with {SERVICE=$SERVICE, ENV=$ENV, HOST=$HOST}"
+    # Add drain for logs
+    heroku drains:add "https://http-intake.logs.datadoghq.eu/api/v2/logs/?dd-api-key=${DD_API_KEY}&ddsource=heroku&env=${ENV}&service=${SERVICE}&host=${HOST}" -a $APPNAME
+    echo "Done."
+}
+
+#################### DRAINS ONLY ####################
+
+add_log_drain hasura hasura
+add_log_drain hasura-auth auth
+
+
+#################### AGENT + DRAIN ####################
+
+HOST=""
+if [ $ENV = "staging" ]; then
+    HOST='staging.api.onlydust.xyz'
+elif [ $ENV = "production" ]; then
+    HOST='api.onlydust.xyz'
+else
+    exit 1
+fi
+
+for SERVICE in github-proxy api event-listeners event-store
+do
+    APPNAME="od-$SERVICE-$ENV"
 
     echo "Installing Datadog agent for application $APPNAME with {SERVICE=$SERVICE, ENV=$ENV, HOST=$HOST}"
 
