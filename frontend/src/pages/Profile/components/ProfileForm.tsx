@@ -3,7 +3,6 @@ import { HasuraUserRole } from "src/types";
 import { useForm, SubmitHandler, FormProvider, Controller } from "react-hook-form";
 import { Navigate, useLocation } from "react-router-dom";
 import IBAN from "iban";
-import { Switch } from "@headlessui/react";
 
 import Input from "src/components/FormInput";
 import { useHasuraMutation } from "src/hooks/useHasuraQuery";
@@ -22,6 +21,7 @@ import Card from "src/components/Card";
 import { RoutePaths } from "src/App";
 import { useEffect } from "react";
 import { useToaster } from "src/hooks/useToaster/useToaster";
+import FormToggle from "src/components/FormToggle";
 
 const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
 const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
@@ -114,28 +114,11 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                   <div className="flex flex-row justify-between">
                     <div className="font-medium text-lg">{T("profile.form.aboutYou")}</div>
                     <div className="flex flex-row items-center gap-2">
-                      <Controller
+                      <FormToggle
                         name="isCompanyProfile"
+                        label={T("profile.form.companyProfile")}
                         control={formMethods.control}
-                        render={({ field: { onChange, value } }) => {
-                          return (
-                            <Switch
-                              checked={!!value}
-                              onChange={onChange}
-                              className={`flex ${
-                                value ? "bg-fuchsia-500/90" : "bg-gray-200"
-                              } h-6 w-10 items-center rounded-full p-1 transition duration-200`}
-                            >
-                              <span
-                                className={`h-5 w-5 transform rounded-full bg-white transition duration-200 ${
-                                  value ? "translate-x-3" : "translate-x-0"
-                                }`}
-                              />
-                            </Switch>
-                          );
-                        }}
                       />
-                      <div>Company profile</div>
                     </div>
                   </div>
                   <div>
