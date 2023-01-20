@@ -41,7 +41,10 @@ const ContributorsTable: React.FC<PropsType> = ({ contributors }) => {
   const [sortedContributors, setSortedContributors] = useState(contributors);
 
   useEffect(() => {
-    const sorted = sortBy([...contributors], sorting.field);
+    const sorted = sortBy([...contributors], contributor => {
+      const f = contributor[sorting.field];
+      return typeof f === "string" ? f.toLocaleLowerCase() : f;
+    });
     setSortedContributors(sorting.ascending ? sorted : sorted.reverse());
   }, [sorting, contributors]);
 
