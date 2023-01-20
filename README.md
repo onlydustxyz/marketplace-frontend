@@ -1,5 +1,5 @@
 <div align="center">
-  <h1 align="center">Marketplace backend</h1>
+  <h1 align="center">Marketplace</h1>
   <p align="center">
     <a href="https://discord.gg/onlydust">
         <img src="https://img.shields.io/badge/Discord-6666FF?style=for-the-badge&logo=discord&logoColor=white">
@@ -20,12 +20,14 @@
 </h3>
 </div>
 
+
 > ## ⚠️ WARNING! ⚠️
 >
 > This repo contains highly experimental code.
 > Expect rapid iteration.
 
-## 🎟️ Description
+
+# 📡 Backend
 
 ## 🎗️ Prerequisites
 
@@ -176,8 +178,77 @@ $~ heroku drains --json --app onlydust-backend-production
 ]
 ```
 
-## 🫶 Contributing
+# 📺 Frontend
 
-## 📄 License
 
-**marketplace-backend** is released under [MIT](LICENSE).
+## 🎟️ Description
+
+This repository contains the code for the OnlyDust marketplace frontend.
+
+## 🎗️ Prerequisites
+
+Install [yarn](https://classic.yarnpkg.com/en/docs/install).
+
+## 📦 Installation
+
+```bash
+yarn install
+```
+
+## 🔬 Usage
+
+To run in development mode
+
+```bash
+yarn dev
+```
+
+### 📚 Storybook
+
+To view components in isolation using [Storybook](https://storybook.js.org/)
+
+```bash
+yarn storybook
+```
+
+It can be useful to reset the Storybook cache when some updates are not showing correctly
+
+```bash
+yarn storybook --no-manager-cache
+```
+
+### 🕸 GraphQL codegen
+
+To generate types from the Hasura GraphQL schema during development
+
+```bash
+yarn generate --watch
+```
+
+Use the `HASURA_URL` and `HASURA_SECRET_KEY` environment variables to connect to a custom Hasura environment
+
+
+## 🌡️ Testing
+
+
+### Unit/integration
+
+```bash
+yarn test
+```
+
+## 🛠 Build
+
+```bash
+yarn build
+```
+
+To run build locally :
+
+```bash
+yarn preview
+```
+
+# 📄 License
+
+**marketplace** is released under [MIT](LICENSE).
