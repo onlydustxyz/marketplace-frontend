@@ -58,7 +58,7 @@ export default function ProjectInformation({
             <div className="flex items-center justify-center">
               <CodeSSlashLine className="text-gray-400" />
             </div>
-            <div>{buildLanguageString(githubRepoInfo?.languages)}</div>
+            <div className="text-white">{buildLanguageString(githubRepoInfo?.languages)}</div>
           </div>
         )}
       </div>
