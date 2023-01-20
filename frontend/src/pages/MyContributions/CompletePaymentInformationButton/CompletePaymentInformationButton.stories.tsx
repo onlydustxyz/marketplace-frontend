@@ -7,7 +7,11 @@ export default {
   component: CompletePaymentInformationButton,
 } as ComponentMeta<typeof CompletePaymentInformationButton>;
 
-const Template: ComponentStory<typeof CompletePaymentInformationButton> = () => <CompletePaymentInformationButton />;
+const Template: ComponentStory<typeof CompletePaymentInformationButton> = () => (
+  <CompletePaymentInformationButton>
+    <div>Complete payment information</div>
+  </CompletePaymentInformationButton>
+);
 
 export const Default = Template.bind({});
 

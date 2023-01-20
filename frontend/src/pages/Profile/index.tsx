@@ -1,11 +1,11 @@
-import { gql, QueryResult } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useAuth } from "src/hooks/useAuth";
 import { HasuraUserRole } from "src/types";
 import QueryWrapper from "src/components/QueryWrapper";
 import ProfileForm from "./components/ProfileForm";
 import { ProfileQuery } from "src/__generated/graphql";
-import InfoMissingBanner from "./components/InfoMissingBanner";
+import InfoMissingBanner from "src/components/InfoMissingBanner";
 import { useIntl } from "src/hooks/useIntl";
 import { useNavigate, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";

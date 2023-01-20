@@ -14,12 +14,12 @@ export const Default = Template.bind({});
 
 Default.args = {}; // put your component's args for the Default story here
 
-export const WithButton = Template.bind({
+export const WithButton = Template.bind({});
+
+WithButton.args = {
   children: (
     <CompletePaymentInformationButton>
       <div>Complete payment information</div>
     </CompletePaymentInformationButton>
   ),
-});
-
-WithButton.args = {}; // put your component's args for the Default story here
+}; // put your component's args for the Default story here
