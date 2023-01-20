@@ -16,7 +16,7 @@
   }
 
   body {
-    @apply text-white;
+    @apply text-greyscale-50;
     @apply bg-black;
   }
 
