@@ -18,7 +18,7 @@ deploy_backends() {
 
     log_info "Checking diff in environment variables"
 
-    execute git diff $production_commit..$staging_commit -- docker-compose.yml
+    execute git diff $production_commit..$staging_commit -- docker-compose.yml .env.example
     DIFF=`cat $LOG_FILE`
     if [ -n "$DIFF" ]; then
         log_warning "Some diff have been found, make sure to update the environment variables 🧐"
