@@ -22,10 +22,8 @@ const MyContributions = () => {
     GET_MY_CONTRIBUTIONS_QUERY,
     HasuraUserRole.RegisteredUser,
     {
-      variables: { githubId: githubUserId },
-      context: {
-        graphqlErrorDisplay: "none",
-      },
+      variables: { githubUserId },
+      skip: !githubUserId,
     }
   );
   const getPayoutSettingsQuery = useHasuraQuery<PayoutSettingsQuery>(
@@ -70,8 +68,8 @@ function hasPendingPaymentsRequests(queryResult: QueryResult<GetPaymentRequestsQ
 }
 
 export const GET_MY_CONTRIBUTIONS_QUERY = gql`
-  query GetPaymentRequests($githubId: bigint!) {
-    paymentRequests(where: { recipientId: { _eq: $githubId } }) {
+  query GetPaymentRequests($githubUserId: bigint!) {
+    paymentRequests(where: { recipientId: { _eq: $githubUserId } }) {
       id
       requestedAt
       payments {

@@ -2590,7 +2590,7 @@ export type GetGithubUserIdQueryVariables = Exact<{
 export type GetGithubUserIdQuery = { __typename?: 'query_root', authGithubUsers: Array<{ __typename?: 'AuthGithubUsers', githubUserId: any | null }> };
 
 export type GetPaymentRequestsQueryVariables = Exact<{
-  githubId: Scalars['bigint'];
+  githubUserId: Scalars['bigint'];
 }>;
 
 
@@ -2799,8 +2799,8 @@ export type GetGithubUserIdQueryHookResult = ReturnType<typeof useGetGithubUserI
 export type GetGithubUserIdLazyQueryHookResult = ReturnType<typeof useGetGithubUserIdLazyQuery>;
 export type GetGithubUserIdQueryResult = Apollo.QueryResult<GetGithubUserIdQuery, GetGithubUserIdQueryVariables>;
 export const GetPaymentRequestsDocument = gql`
-    query GetPaymentRequests($githubId: bigint!) {
-  paymentRequests(where: {recipientId: {_eq: $githubId}}) {
+    query GetPaymentRequests($githubUserId: bigint!) {
+  paymentRequests(where: {recipientId: {_eq: $githubUserId}}) {
     id
     requestedAt
     payments {
@@ -2840,7 +2840,7 @@ export const GetPaymentRequestsDocument = gql`
  * @example
  * const { data, loading, error } = useGetPaymentRequestsQuery({
  *   variables: {
- *      githubId: // value for 'githubId'
+ *      githubUserId: // value for 'githubUserId'
  *   },
  * });
  */
