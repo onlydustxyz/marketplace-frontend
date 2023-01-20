@@ -1,5 +1,7 @@
 #!/bin/bash
 
+LOG_FILE=$0.log
+
 # Color
 RED='\033[1;91m'
 GREEN='\033[1;92m'
@@ -104,7 +106,7 @@ ask() {
 execute() {
     cmd=$*
     log_command $cmd
-    eval 2>&1 $cmd | tee >&2 logs.json
+    eval 2>&1 $cmd | tee >&2 $LOG_FILE
     return ${PIPESTATUS[0]}
 }
 
