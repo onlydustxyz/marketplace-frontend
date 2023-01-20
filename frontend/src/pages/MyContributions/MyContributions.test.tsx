@@ -1,20 +1,22 @@
-import { describe, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { describe, expect, it, Mock, vi } from "vitest";
+import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
 import MyContributionsPage, { GET_MY_CONTRIBUTIONS_QUERY, GET_PAYOUT_SETTINGS_QUERY } from ".";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
+import { useGithubProfile } from "src/hooks/useAuth/useGithubProfile";
 
 expect.extend(matchers);
 
 const userId = "33f15d41-5383-4a73-b96b-347ece03513a";
+const githubUserId = 666;
 
 const HASURA_TOKEN_BASIC_TEST_VALUE = {
   user: {
     id: userId,
   },
+  githubUserId,
   accessToken: "SOME_TOKEN",
   accessTokenExpiresIn: 900,
   creationDate: new Date().getTime(),
@@ -27,6 +29,8 @@ vi.mock("axios", () => ({
     }),
   },
 }));
+
+vi.mock("src/hooks/useAuth/useGithubProfile");
 
 const mockContribution = {
   id: "705e6b37-d0ee-4e87-b681-7009dd691965",
@@ -56,13 +60,13 @@ const mockContribution = {
 };
 
 const buildMockMyContributionsQuery = (
-  userId: string,
+  githubUserId: number,
   paymentRequests: Record<string, unknown>[] = [mockContribution]
 ) => ({
   request: {
     query: GET_MY_CONTRIBUTIONS_QUERY,
     variables: {
-      userId: undefined,
+      githubUserId,
     },
   },
   result: {
@@ -88,15 +92,40 @@ const buidlMockPayoutSettingsQuery = (payoutSettings: any) => ({
 });
 
 describe('"MyContributions" page', () => {
-  beforeAll(() => {
-    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
+  beforeEach(() => {
+    (useGithubProfile as Mock).mockReturnValue({ githubUserId });
+  });
+
+  it("should not render when githubUserId is undefined", async () => {
+    (useGithubProfile as Mock).mockReturnValue({ githubUserId: undefined });
+
+    const queryMock = {
+      request: {
+        query: GET_MY_CONTRIBUTIONS_QUERY,
+        variables: {
+          githubUserId,
+        },
+      },
+      newData: vi.fn(() => ({})),
+    };
+
+    renderWithIntl(<MyContributionsPage />, {
+      wrapper: MemoryRouterProviderFactory({
+        route: RoutePaths.Profile,
+        mocks: [queryMock],
+      }),
+    });
+
+    await waitFor(() => {
+      expect(queryMock.newData).not.toHaveBeenCalled();
+    });
   });
 
   it("should print message when no contributions returned", async () => {
     renderWithIntl(<MyContributionsPage />, {
       wrapper: MemoryRouterProviderFactory({
         route: RoutePaths.Profile,
-        mocks: [buildMockMyContributionsQuery(userId, [])],
+        mocks: [buildMockMyContributionsQuery(githubUserId, [])],
       }),
     });
 
@@ -107,7 +136,7 @@ describe('"MyContributions" page', () => {
     renderWithIntl(<MyContributionsPage />, {
       wrapper: MemoryRouterProviderFactory({
         route: RoutePaths.Profile,
-        mocks: [buildMockMyContributionsQuery(userId)],
+        mocks: [buildMockMyContributionsQuery(githubUserId)],
       }),
     });
 
@@ -121,7 +150,7 @@ describe('"MyContributions" page', () => {
     renderWithIntl(<MyContributionsPage />, {
       wrapper: MemoryRouterProviderFactory({
         route: RoutePaths.Profile,
-        mocks: [buildMockMyContributionsQuery(userId), buidlMockPayoutSettingsQuery(undefined)],
+        mocks: [buildMockMyContributionsQuery(githubUserId), buidlMockPayoutSettingsQuery(undefined)],
       }),
     });
     expect(await screen.findByText("Complete payment information")).toBeInTheDocument();
@@ -132,7 +161,7 @@ describe('"MyContributions" page', () => {
       wrapper: MemoryRouterProviderFactory({
         route: RoutePaths.Profile,
         mocks: [
-          buildMockMyContributionsQuery(userId),
+          buildMockMyContributionsQuery(githubUserId),
           buidlMockPayoutSettingsQuery({ EthTransfer: { Name: "vitalik.eth" } }),
         ],
       }),
