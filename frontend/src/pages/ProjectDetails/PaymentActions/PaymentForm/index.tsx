@@ -13,7 +13,7 @@ import { debounce } from "lodash";
 
 const DEFAULT_NUMBER_OF_DAYS = 2;
 
-const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /https:\/\/github\.com\/([\w-]+)\/([\w-]+)\/pull\/\d+/g;
+export const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/pull\/\d+/;
 
 interface PaymentFormProps {
   projectId: string;
