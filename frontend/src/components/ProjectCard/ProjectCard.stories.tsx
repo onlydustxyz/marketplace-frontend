@@ -1,21 +1,25 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentStory } from "@storybook/react";
+import { JSXElementConstructor } from "react";
 
 import ProjectCard from ".";
 
 export default {
-  title: "Project",
-  component: ProjectCard,
-} as ComponentMeta<typeof ProjectCard>;
+  title: "ProjectCard",
+  argTypes: {
+    width: { control: { type: "range", min: 800, max: 1200, step: 100 } },
+  },
+};
 
-const Template: ComponentStory<typeof ProjectCard> = args => (
-  <div className="w-2/3">
-    <ProjectCard {...args} />
+const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
+  <div style={{ width: args.width }}>
+    <ProjectCard {...props} pendingInvitations={args.withInvitation ? props.pendingInvitations : []} />
   </div>
 );
 
-export const Card = Template.bind({});
+export const Default = Template.bind({});
 
-Card.args = {
+const props = {
+  id: 123,
   name: "ZeroSync",
   projectDetails: {
     telegramLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
@@ -44,9 +48,17 @@ Card.args = {
     languages: { Ejs: 2200, Rust: 1000 },
   },
   totalSpentAmountInUsd: 47550,
+  pendingInvitations: [{ id: "croute" }],
 };
 
-Card.parameters = {
+const args = {
+  withInvitation: false,
+  width: 800,
+};
+
+Default.args = args;
+
+Default.parameters = {
   backgrounds: {
     default: "space",
   },
