@@ -1,4 +1,5 @@
 import Card from "src/components/Card";
+import { formatDollars } from "src/utils/money";
 import { useT } from "talkr";
 
 export const BASE_RATE_USD = 500;
@@ -59,15 +60,15 @@ export default function EstimationComponent({
         <div className="flex flex-col gap-3 font-medium">
           <div className="flex flex-row justify-between">
             <div>{T("payment.form.totalBudget")}</div>
-            <div>$ {budget.initialAmount}</div>
+            <div>{formatDollars(budget.initialAmount)}</div>
           </div>
           <div className="flex flex-row justify-between">
             <div>{T("payment.form.thisPayment")}</div>
-            <div className="text-purple-600">$ {amountToPay}</div>
+            <div className="text-purple-600">{formatDollars(amountToPay)}</div>
           </div>
           <div className="flex flex-row justify-between">
             <div>{T("payment.form.leftToSpend")}</div>
-            <div>$ {budget.remainingAmount - amountToPay}</div>
+            <div>{formatDollars(budget.remainingAmount - amountToPay)}</div>
           </div>
         </div>
         <button
