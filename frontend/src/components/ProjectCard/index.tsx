@@ -26,8 +26,8 @@ export default function ProjectCard({
     <Card
       selectable={true}
       className={`bg-noise-light hover:bg-right ${
-        pendingInvitations?.length > 0 ? "bg-amber-700/20" : "bg-white/2 hover:bg-white/4"
-      } `}
+        pendingInvitations?.length > 0 && "bg-orange-500/8 hover:bg-orange-500/12"
+      }`}
       dataTestId="project-card"
     >
       <div className="flex flex-col gap-5">
@@ -78,9 +78,9 @@ export default function ProjectCard({
           </div>
         </div>
         {pendingInvitations?.length > 0 && (
-          <div className="flex flex-row justify-between items-center font-medium p-5 text-lg rounded-xl bg-amber-700/30">
-            <div>{T("project.projectLeadInvitation.prompt")}</div>
-            <div className="w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-100 py-2 px-5 text-chineseBlack">
+          <div className="flex flex-row justify-between items-center font-medium p-5 text-lg rounded-xl bg-orange-500/8">
+            <div className="text-white">{T("project.projectLeadInvitation.prompt")}</div>
+            <div className="w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-100 py-2 px-5 text-spaceBlue-900">
               {T("project.projectLeadInvitation.view")}
             </div>
           </div>
