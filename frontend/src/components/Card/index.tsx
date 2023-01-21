@@ -33,7 +33,7 @@ export default function Card({
       )}
       {!backgroundImageUrl && (
         <div
-          className={`w-full bg-white/[0.02] backdrop-blur-4xl p-6 border border-stone-100/[0.08] rounded-2xl font-walsheim ${
+          className={`w-full bg-white/2 backdrop-blur-4xl p-6 border border-stone-100/8 rounded-2xl font-walsheim ${
             selectable ? "transition hover:bg-opacity-80 hover:border-stone-100/[0.12] duration-300" : ""
           } ${className}`}
           data-testid={dataTestId}

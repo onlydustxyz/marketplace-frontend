@@ -69,6 +69,11 @@ module.exports = {
       outlineWidth: {
         3: "3px",
       },
+      opacity: {
+        2: "0.02",
+        4: "0.04",
+        8: "0.08",
+      },
     },
   },
 
