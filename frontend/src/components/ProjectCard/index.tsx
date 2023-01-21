@@ -1,4 +1,5 @@
 import onlyDustLogo from "assets/img/onlydust-logo.png";
+import Button, { ButtonSize } from "src/components/Button";
 import Card, { CardBorder } from "src/components/Card";
 import GithubLink from "src/components/GithubLink";
 import RoundedImage from "src/components/RoundedImage";
@@ -81,9 +82,7 @@ export default function ProjectCard({
         {pendingInvitations?.length > 0 && (
           <div className="flex flex-row justify-between items-center font-medium p-4 rounded-xl bg-orange-500/8">
             <div className="text-white">{T("project.projectLeadInvitation.prompt")}</div>
-            <div className="w-fit rounded-xl bg-neutral-100 shadow-inner shadow-neutral-100 font-sm py-1.5 px-4 text-spaceBlue-900">
-              {T("project.projectLeadInvitation.view")}
-            </div>
+            <Button size={ButtonSize.Small}>{T("project.projectLeadInvitation.view")}</Button>
           </div>
         )}
       </div>

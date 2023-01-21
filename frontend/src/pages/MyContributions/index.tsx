@@ -12,7 +12,7 @@ import isPayoutInfoMissing from "src/utils/isPayoutInfoMissing";
 import { GetPaymentRequestsQuery, PayoutSettingsQuery } from "src/__generated/graphql";
 import { useT } from "talkr";
 import InfoMissingBanner from "src/components/InfoMissingBanner";
-import CompletePaymentInformationButton from "./CompletePaymentInformationButton";
+import Button from "src/components/Button";
 
 const MyContributions = () => {
   const { githubUserId } = useAuth();
@@ -46,11 +46,11 @@ const MyContributions = () => {
           <div className="my-10">
             {isPayoutInfoMissing(getPayoutSettingsQuery) && hasPendingPaymentsRequests(getPaymentRequestsQuery) && (
               <InfoMissingBanner>
-                <CompletePaymentInformationButton>
+                <Button>
                   <Link to={RoutePaths.Profile}>
                     <div>{T("profile.missing.button")}</div>
                   </Link>
-                </CompletePaymentInformationButton>
+                </Button>
               </InfoMissingBanner>
             )}
           </div>
