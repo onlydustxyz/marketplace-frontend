@@ -1,5 +1,5 @@
 import onlyDustLogo from "assets/img/onlydust-logo.png";
-import Card from "src/components/Card";
+import Card, { CardBorder } from "src/components/Card";
 import GithubLink from "src/components/GithubLink";
 import RoundedImage from "src/components/RoundedImage";
 import TelegramLink from "src/components/TelegramLink";
@@ -28,6 +28,7 @@ export default function ProjectCard({
       className={`bg-noise-light hover:bg-right ${
         pendingInvitations?.length > 0 && "bg-orange-500/8 hover:bg-orange-500/12"
       }`}
+      border={CardBorder.Medium}
       dataTestId="project-card"
     >
       <div className="flex flex-col gap-5">
