@@ -4,7 +4,7 @@ import CheckLine from "src/icons/CheckLine";
 import { useT } from "talkr";
 
 interface ProjectLeadInvitationProps {
-  projectName: string;
+  projectName?: string;
   onClick: () => void;
 }
 

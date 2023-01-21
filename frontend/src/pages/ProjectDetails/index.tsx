@@ -24,7 +24,7 @@ export enum ProjectDetailsTab {
 
 export interface ProjectDetails {
   id: string;
-  name: string;
+  name?: string;
   logoUrl: string;
   telegramLink?: string | null;
   leads: { id: string; displayName: string; avatarUrl: string }[];
@@ -109,21 +109,21 @@ export default function ProjectDetails() {
   );
 }
 
-const projectFromQuery = (project: any) => ({
-  id: project.id,
-  name: project.name,
-  logoUrl: project.projectDetails?.logoUrl || project.githubRepo?.content?.logoUrl || onlyDustLogo,
-  leads: project.projectLeads?.map((lead: any) => ({ id: lead.userId, ...lead.user })) || [],
-  invitationId: project.pendingInvitations.at(0)?.id,
-  totalSpentAmountInUsd: project.totalSpentAmountInUsd,
-  telegramLink: project.projectDetails?.telegramLink,
+const projectFromQuery = (project: GetProjectQuery["projectsByPk"]) => ({
+  id: project?.id,
+  name: project?.name,
+  logoUrl: project?.projectDetails?.logoUrl || project?.githubRepo?.content?.logoUrl || onlyDustLogo,
+  leads: project?.projectLeads?.map((lead: any) => ({ id: lead.userId, ...lead.user })) || [],
+  invitationId: project?.pendingInvitations.at(0)?.id,
+  totalSpentAmountInUsd: project?.totalSpentAmountInUsd,
+  telegramLink: project?.projectDetails?.telegramLink,
   githubRepoInfo: {
-    name: project.githubRepo?.name,
-    owner: project.githubRepo?.owner,
-    contributors: project.githubRepo?.content?.contributors,
-    languages: project.githubRepo?.languages,
+    name: project?.githubRepo?.name,
+    owner: project?.githubRepo?.owner,
+    contributors: project?.githubRepo?.content?.contributors,
+    languages: project?.githubRepo?.languages,
     decodedReadme:
-      project.githubRepo?.content?.readme?.content && decodeBase64ToString(project.githubRepo.content.readme.content),
+      project?.githubRepo?.content?.readme?.content && decodeBase64ToString(project?.githubRepo.content.readme.content),
   },
 });
 
