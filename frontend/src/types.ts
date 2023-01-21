@@ -1,5 +1,10 @@
 export type Branded<T, B> = T & { __brand: B };
 
+// https://stackoverflow.com/questions/41253310/typescript-retrieve-element-type-information-from-array-type
+export type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType extends readonly (infer ElementType)[]
+  ? ElementType
+  : never;
+
 export enum HasuraUserRole {
   Public = "public",
   RegisteredUser = "registered_user",

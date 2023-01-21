@@ -18,10 +18,6 @@ export const Default = Template.bind({});
 
 Default.args = {
   name: "test",
-  budget: {
-    remainingAmount: 2000,
-    initialAmount: 10000,
-  },
   details: {
     telegramLink: "https://web.telegram.org/z/",
     description: "EVM interpreter written in Cairo, a sort of ZK-EVM emulator, leveraging STARK proof system.",
