@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import CompletePaymentInformationButton from "src/pages/MyContributions/CompletePaymentInformationButton";
+import Button from "src/components/Button";
 
 import InfoMissingBanner from ".";
 
@@ -18,8 +18,8 @@ export const WithButton = Template.bind({});
 
 WithButton.args = {
   children: (
-    <CompletePaymentInformationButton>
+    <Button>
       <div>Complete payment information</div>
-    </CompletePaymentInformationButton>
+    </Button>
   ),
 }; // put your component's args for the Default story here
