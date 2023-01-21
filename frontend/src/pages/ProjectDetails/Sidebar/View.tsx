@@ -57,7 +57,7 @@ export default function View({
             }}
             disabled={!expandable}
           >
-            <div className="flex flex-col w-full border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700 bg-white/[0.02] absolute backdrop-blur-4xl z-10">
+            <div className="flex flex-col w-full border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700 bg-white/2 absolute backdrop-blur-4xl z-10">
               <Listbox.Button className={`p-4 font-medium text-2xl ${expandable ? "hover:cursor-pointer" : ""}`}>
                 <div className="flex flex-row gap-3 items-center">
                   <RoundedImage src={currentProject.logoUrl} alt="Project Logo" size="sm" />
@@ -113,7 +113,7 @@ export default function View({
             <div
               key={tab}
               className={`rounded-xl hover:cursor-pointer text-white text-base px-4 py-2.5 ${
-                selectedTab === tab ? "bg-white/[0.08]" : "text-neutral-400"
+                selectedTab === tab ? "bg-white/8" : "text-neutral-400"
               }`}
               onClick={() => onTabSelected(tab)}
               data-testid={`${tab}-tab`}

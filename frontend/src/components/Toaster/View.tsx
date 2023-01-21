@@ -21,7 +21,7 @@ export default function View({ message, visible, isError, className }: Props) {
           isError ? "before:bg-orange-500" : "before:bg-multi-color-gradient before:animate-spin-invert-slow"
         }`}
       >
-        <div className="rounded-2xl bg-noise-medium bg-white/[0.04] flex items-center text-center w-fit max-w-xl p-6 gap-2">
+        <div className="rounded-2xl bg-noise-medium bg-white/4 flex items-center text-center w-fit max-w-xl p-6 gap-2">
           {isError ? (
             <ErrorWarningLine className="font-semibold text-2xl text-orange-500" />
           ) : (

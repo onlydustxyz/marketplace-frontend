@@ -26,12 +26,12 @@ export default function ProjectCard({
     <Card
       selectable={true}
       className={`bg-noise-light hover:bg-right ${
-        pendingInvitations?.length > 0 ? "bg-amber-700/20" : "bg-white/[0.02] hover:bg-white/[0.04]"
+        pendingInvitations?.length > 0 ? "bg-amber-700/20" : "bg-white/2 hover:bg-white/4"
       } `}
       dataTestId="project-card"
     >
       <div className="flex flex-col gap-5">
-        <div className="flex flex-row w-full divide-x divide-stone-100/[0.08] gap-6 justify-items-center font-walsheim">
+        <div className="flex flex-row w-full divide-x divide-stone-100/8 gap-6 justify-items-center font-walsheim">
           <div className="flex flex-col basis-4/12 gap-y-5">
             <div className="flex flex-row gap-4 items-start">
               <RoundedImage src={logoUrl} alt="Project Logo" size="lg" className="mt-1" />
@@ -57,7 +57,7 @@ export default function ProjectCard({
           </div>
           <div className="flex flex-col basis-8/12 pl-6 gap-6">
             <div className="line-clamp-3">{projectDetails?.description}</div>
-            <div className="flex flex-row divide-x divide-stone-100/[0.08]">
+            <div className="flex flex-row divide-x divide-stone-100/8">
               <div className="flex flex-row gap-2 pr-6">
                 {projectDetails?.telegramLink && <TelegramLink link={projectDetails?.telegramLink} />}
                 {githubRepo?.owner && githubRepo?.name && (
