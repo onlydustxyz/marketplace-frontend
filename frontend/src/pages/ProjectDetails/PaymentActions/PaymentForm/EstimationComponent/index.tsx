@@ -1,4 +1,3 @@
-import headerElementBackground from "src/assets/img/header-element-background.png";
 import Card from "src/components/Card";
 import { useT } from "talkr";
 
@@ -22,7 +21,7 @@ export default function EstimationComponent({
   const amountToPay = numberOfDays * BASE_RATE_USD;
   const { T } = useT();
   return (
-    <Card backgroundImageUrl={headerElementBackground}>
+    <Card>
       <div className="flex flex-col gap-10 items-stretch justify-items-center w-full">
         <div className="flex flex-row justify-between items-center">
           <div className="text-3xl">

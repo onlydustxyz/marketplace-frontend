@@ -1,46 +1,29 @@
-interface ProjectCardProps extends React.PropsWithChildren {
+export enum CardBorder {
+  Light = "light",
+  Medium = "medium",
+}
+interface CardProps extends React.PropsWithChildren {
   selectable?: boolean;
-  backgroundImageUrl?: string;
-  backgroundImageClassName?: string;
   className?: string;
   dataTestId?: string;
+  border?: CardBorder;
 }
 
 export default function Card({
   selectable = false,
-  backgroundImageUrl,
-  backgroundImageClassName = "",
   className = "",
+  border = CardBorder.Light,
   dataTestId,
   children,
-}: ProjectCardProps) {
+}: CardProps) {
   return (
-    <>
-      {backgroundImageUrl && (
-        <div
-          className={`w-full rounded-xl ${backgroundImageClassName}`}
-          style={{ backgroundImage: `url(${backgroundImageUrl})`, backgroundPosition: "center" }}
-          data-testid={dataTestId}
-        >
-          <div
-            className={`w-full bg-chineseBlack p-6 border-2 border-neutral-600/90 rounded-2xl font-walsheim bg-opacity-50 backdrop-blur-xl ${
-              selectable ? "transition hover:bg-opacity-80 hover:border-neutral-300/90 duration-400" : ""
-            } ${className}`}
-          >
-            {children}
-          </div>
-        </div>
-      )}
-      {!backgroundImageUrl && (
-        <div
-          className={`w-full bg-white/2 backdrop-blur-4xl p-6 border border-stone-100/8 rounded-2xl font-walsheim ${
-            selectable ? "transition hover:bg-opacity-80 hover:border-stone-100/[0.12] duration-300" : ""
-          } ${className}`}
-          data-testid={dataTestId}
-        >
-          {children}
-        </div>
-      )}
-    </>
+    <div
+      className={`${className} w-full bg-white/2 backdrop-blur-lg p-6 border rounded-2xl font-walsheim ${
+        selectable ? "transition duration-300 hover:bg-white/4" : ""
+      } ${border === CardBorder.Light ? "border-greyscale-50/8" : "border-greyscale-50/12"} `}
+      data-testid={dataTestId}
+    >
+      {children}
+    </div>
   );
 }
