@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import ProjectCard from ".";
 
 export default {
-  title: "ProjectCard",
+  title: "Project",
   component: ProjectCard,
 } as ComponentMeta<typeof ProjectCard>;
 
@@ -13,9 +13,9 @@ const Template: ComponentStory<typeof ProjectCard> = args => (
   </div>
 );
 
-export const Default = Template.bind({});
+export const Card = Template.bind({});
 
-Default.args = {
+Card.args = {
   name: "ZeroSync",
   projectDetails: {
     telegramLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
@@ -26,7 +26,7 @@ Default.args = {
   projectLeads: [
     {
       user: {
-        displayName: "oscar666",
+        displayName: "oscarwroche",
         avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
       },
     },
@@ -35,10 +35,19 @@ Default.args = {
     owner: "facebook",
     name: "react",
     content: {
-      contributors: [{ login: "oscar666", avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4" }],
+      contributors: [
+        { login: "oscarwroche", avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4" },
+        { login: "ofux", avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4" },
+      ],
       logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
     },
     languages: { Ejs: 2200, Rust: 1000 },
   },
   totalSpentAmountInUsd: 47550,
+};
+
+Card.parameters = {
+  backgrounds: {
+    default: "space",
+  },
 };
