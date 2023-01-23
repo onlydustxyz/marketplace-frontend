@@ -33,21 +33,21 @@ const Profile: React.FC = () => {
         <div className="flex mb-6 items-center">
           <span className="text-3xl font-belwe font-normal w-full">{T("profile.edit")}</span>
           <div className="flex space-x-6">
-            <Button size={ButtonSize.Large} type={ButtonType.Secondary}>
-              <button type="button" data-testid="profile-form-cancel-button" onClick={navigateBack}>
+            <button type="button" data-testid="profile-form-cancel-button" onClick={navigateBack}>
+              <Button size={ButtonSize.Large} type={ButtonType.Secondary}>
                 <div>{T("profile.form.cancel")}</div>
-              </button>
-            </Button>
-            <Button size={ButtonSize.Large} type={ButtonType.Primary}>
-              <button
-                type="submit"
-                form="profile-form"
-                data-testid="profile-form-submit-button"
-                className="whitespace-nowrap"
-              >
+              </Button>
+            </button>
+            <button
+              type="submit"
+              form="profile-form"
+              data-testid="profile-form-submit-button"
+              className="whitespace-nowrap"
+            >
+              <Button size={ButtonSize.Large} type={ButtonType.Primary}>
                 <div>{T("profile.form.send")}</div>
-              </button>
-            </Button>
+              </Button>
+            </button>
           </div>
         </div>
         <div className="flex flex-col gap-6">

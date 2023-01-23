@@ -46,11 +46,11 @@ const MyContributions = () => {
           <div className="my-10">
             {isPayoutInfoMissing(getPayoutSettingsQuery) && hasPendingPaymentsRequests(getPaymentRequestsQuery) && (
               <InfoMissingBanner>
-                <Button>
-                  <Link to={RoutePaths.Profile}>
+                <Link to={RoutePaths.Profile}>
+                  <Button>
                     <div>{T("profile.missing.button")}</div>
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </InfoMissingBanner>
             )}
           </div>
