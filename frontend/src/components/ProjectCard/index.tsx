@@ -40,9 +40,9 @@ export default function ProjectCard({
               <div className="flex flex-col gap-0.5">
                 <div className="text-2xl font-medium font-belwe">{name}</div>
                 {lead && (
-                  <div className="text-md text-neutral-300 font-bold flex flex-row gap-1 items-center">
+                  <div className="text-sm flex flex-row text-spaceBlue-200 gap-1 items-center">
                     <div className="whitespace-nowrap">{T("project.ledBy")}</div>
-                    <div className="text-purple-700 truncate">{lead?.displayName}</div>{" "}
+                    <div className="truncate">{lead?.displayName}</div>{" "}
                     <img src={lead?.avatarUrl} className="w-3 md:w-4 h-3 md:h-4 rounded-full" />
                   </div>
                 )}
@@ -58,7 +58,7 @@ export default function ProjectCard({
             )}
           </div>
           <div className="flex flex-col basis-8/12 pl-6 gap-6">
-            <div className="line-clamp-3">{projectDetails?.description}</div>
+            <div className="line-clamp-2">{projectDetails?.description}</div>
             <div className="flex flex-row divide-x divide-stone-100/8">
               <div className="flex flex-row gap-2 pr-6">
                 {projectDetails?.telegramLink && <TelegramLink link={projectDetails?.telegramLink} />}
