@@ -12,7 +12,7 @@ const Template: ComponentStory<typeof InfoMissingBanner> = args => <InfoMissingB
 
 export const Default = Template.bind({});
 
-Default.args = {}; // put your component's args for the Default story here
+Default.args = {};
 
 export const WithButton = Template.bind({});
 
@@ -22,4 +22,4 @@ WithButton.args = {
       <div>Complete payout information</div>
     </Button>
   ),
-}; // put your component's args for the Default story here
+};
