@@ -12,7 +12,7 @@ export default function ProjectLeadInvitation({ projectName, onClick }: ProjectL
   const { T } = useT();
   return (
     <ImageCard backgroundImageUrl={headerElementBackground} backgroundSize={BackgroundSize.Cover}>
-      <div className="flex flex-row justify-between items-center font-medium px-3 py-1">
+      <div className="flex flex-row justify-between items-center font-medium px-6 py-5">
         <div className="text-lg">{T("projectLeadInvitation.prompt", { projectName })}</div>
         <div
           onClick={onClick}
