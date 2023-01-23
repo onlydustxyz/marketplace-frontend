@@ -13,7 +13,6 @@ import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import jwtDecode from "jwt-decode";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { GET_PROJECTS_FOR_SIDEBAR_QUERY } from "./Sidebar";
-import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
 
 const TEST_LED_PROJECT_ID = "test-led-project-id";
 const TEST_PROJECT_ID = "test-project-id";

@@ -5,7 +5,7 @@ import matchers from "@testing-library/jest-dom/matchers";
 import MyContributionsPage, { GET_MY_CONTRIBUTIONS_QUERY, GET_PAYOUT_SETTINGS_QUERY } from ".";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import { useGithubProfile } from "src/hooks/useAuth/useGithubProfile";
+import { useRoles } from "src/hooks/useAuth/useRoles";
 
 expect.extend(matchers);
 
@@ -30,7 +30,7 @@ vi.mock("axios", () => ({
   },
 }));
 
-vi.mock("src/hooks/useAuth/useGithubProfile");
+vi.mock("src/hooks/useAuth/useRoles");
 
 const mockContribution = {
   id: "705e6b37-d0ee-4e87-b681-7009dd691965",
@@ -93,11 +93,11 @@ const buidlMockPayoutSettingsQuery = (payoutSettings: any) => ({
 
 describe('"MyContributions" page', () => {
   beforeEach(() => {
-    (useGithubProfile as Mock).mockReturnValue({ githubUserId });
+    (useRoles as Mock).mockReturnValue({ githubUserId });
   });
 
   it("should not render when githubUserId is undefined", async () => {
-    (useGithubProfile as Mock).mockReturnValue({ githubUserId: undefined });
+    (useRoles as Mock).mockReturnValue({ githubUserId: undefined });
 
     const queryMock = {
       request: {

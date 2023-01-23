@@ -5,7 +5,6 @@ import { generatePath, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import config from "src/config";
 import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
-import { useGithubProfile } from "src/hooks/useAuth/useGithubProfile";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { accessTokenExpired, useTokenSet } from "src/hooks/useTokenSet";
 import { HasuraUserRole, RefreshToken, User, UserRole } from "src/types";
@@ -75,9 +74,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   }
 
   const tokenIsRefreshed = !(tokenSet?.accessToken && accessTokenExpired(tokenSet));
-  const { isLoggedIn, roles, ledProjectIds } = useRoles(tokenSet?.accessToken);
-
-  const { githubUserId } = useGithubProfile(roles, tokenSet?.user?.id, tokenIsRefreshed);
+  const { isLoggedIn, roles, ledProjectIds, githubUserId } = useRoles(tokenSet?.accessToken);
 
   const value = {
     user: tokenSet ? tokenSet.user : null,

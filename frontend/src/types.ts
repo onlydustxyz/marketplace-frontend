@@ -86,10 +86,12 @@ type Locale = "en" | "fr";
 
 export const CLAIMS_KEY = "https://hasura.io/jwt/claims";
 export const PROJECTS_LED_KEY = "x-hasura-projectsLeaded";
+export const GITHUB_USERID_KEY = "x-hasura-githubUserId";
 
 export interface HasuraJWT {
   [CLAIMS_KEY]?: {
     [PROJECTS_LED_KEY]?: string;
+    [GITHUB_USERID_KEY]?: string;
   };
 }
 

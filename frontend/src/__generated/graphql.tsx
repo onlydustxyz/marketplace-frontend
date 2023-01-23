@@ -2582,13 +2582,6 @@ export type PendingProjectLeaderInvitationsQueryVariables = Exact<{ [key: string
 
 export type PendingProjectLeaderInvitationsQuery = { __typename?: 'query_root', pendingProjectLeaderInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, projectId: any }> };
 
-export type GetGithubUserIdQueryVariables = Exact<{
-  userId: InputMaybe<Scalars['uuid']>;
-}>;
-
-
-export type GetGithubUserIdQuery = { __typename?: 'query_root', authGithubUsers: Array<{ __typename?: 'AuthGithubUsers', githubUserId: any | null }> };
-
 export type GetPaymentRequestsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
@@ -2763,41 +2756,6 @@ export function usePendingProjectLeaderInvitationsLazyQuery(baseOptions?: Apollo
 export type PendingProjectLeaderInvitationsQueryHookResult = ReturnType<typeof usePendingProjectLeaderInvitationsQuery>;
 export type PendingProjectLeaderInvitationsLazyQueryHookResult = ReturnType<typeof usePendingProjectLeaderInvitationsLazyQuery>;
 export type PendingProjectLeaderInvitationsQueryResult = Apollo.QueryResult<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>;
-export const GetGithubUserIdDocument = gql`
-    query GetGithubUserId($userId: uuid) {
-  authGithubUsers(where: {userId: {_eq: $userId}}) {
-    githubUserId
-  }
-}
-    `;
-
-/**
- * __useGetGithubUserIdQuery__
- *
- * To run a query within a React component, call `useGetGithubUserIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetGithubUserIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetGithubUserIdQuery({
- *   variables: {
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useGetGithubUserIdQuery(baseOptions?: Apollo.QueryHookOptions<GetGithubUserIdQuery, GetGithubUserIdQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetGithubUserIdQuery, GetGithubUserIdQueryVariables>(GetGithubUserIdDocument, options);
-      }
-export function useGetGithubUserIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGithubUserIdQuery, GetGithubUserIdQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetGithubUserIdQuery, GetGithubUserIdQueryVariables>(GetGithubUserIdDocument, options);
-        }
-export type GetGithubUserIdQueryHookResult = ReturnType<typeof useGetGithubUserIdQuery>;
-export type GetGithubUserIdLazyQueryHookResult = ReturnType<typeof useGetGithubUserIdLazyQuery>;
-export type GetGithubUserIdQueryResult = Apollo.QueryResult<GetGithubUserIdQuery, GetGithubUserIdQueryVariables>;
 export const GetPaymentRequestsDocument = gql`
     query GetPaymentRequests($githubUserId: bigint!) {
   paymentRequests(where: {recipientId: {_eq: $githubUserId}}) {
