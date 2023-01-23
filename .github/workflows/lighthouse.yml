@@ -1,0 +1,17 @@
+name: Lighthouse CI
+on:
+  schedule:
+  - cron: '0 */2 * * *'
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            https://app.onlydust.xyz/
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          configPath: ./lighthouse/config.json

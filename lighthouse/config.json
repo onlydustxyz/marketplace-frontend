@@ -1,0 +1,13 @@
+{
+  "ci": {
+    "collect": {
+      "settings": {
+        "skipAudits": ["redirects-http"],
+        "disableStorageReset": true,
+        "maxWaitForLoad": 90000,
+        "throttlingMethod": "devtools",
+        "configPath": "./lighthouse/customConfig.js"
+      }
+    }
+  }
+}
