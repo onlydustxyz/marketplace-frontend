@@ -41,7 +41,7 @@ export default function ProjectCard({
                 <div className="text-2xl font-medium font-belwe">{name}</div>
                 {lead && (
                   <div className="text-md text-neutral-300 font-bold flex flex-row gap-1 items-center">
-                    <div className="whitespace-nowrap">Led by </div>
+                    <div className="whitespace-nowrap">{T("project.ledBy")}</div>
                     <div className="text-purple-700 truncate">{lead?.displayName}</div>{" "}
                     <img src={lead?.avatarUrl} className="w-3 md:w-4 h-3 md:h-4 rounded-full" />
                   </div>
