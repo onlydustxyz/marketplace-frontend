@@ -13,13 +13,13 @@ const View = ({ checked, label, onChange }: Props) => (
       onChange={onChange}
       className={`flex ${
         checked
-          ? "bg-spacePurple-500 hover:bg-spacePurple-600"
+          ? "bg-spacePurple-500 border border-spacePurple-500 hover:bg-spacePurple-600 hover:border-spacePurple-600"
           : "bg-white/[0.08] border border-white/0 hover:border hover:border-greyscale-50/[0.08]"
-      } h-5 w-9 items-center rounded-full p-1 transition duration-300`}
+      } h-5 w-9 items-center px-px rounded-full transition duration-300`}
     >
       <span
         className={`h-4 w-4 transform rounded-full bg-greyscale-50 transition duration-300 ${
-          checked ? "translate-x-3" : "translate-x-0"
+          checked ? "translate-x-4" : "translate-x-0"
         }`}
       />
     </Switch>
