@@ -1,7 +1,7 @@
 default:
   github:
     base_url: $GITHUB_BASE_URL
-    personal_access_token: $GITHUB_PAT
+    personal_access_tokens: $GITHUB_PAT
     headers:
       api-key: $GITHUB_PROXY_GITHUB_API_KEY
       Fastly-Debug: "1"
