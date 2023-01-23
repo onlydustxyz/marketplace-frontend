@@ -99,9 +99,9 @@
       "typeOfProfile": "Profile type"
     },
     "missing": {
-      "button": "Complete payment information",
-      "subtitle": "We won’t be able to issue any payment until your profile is completed",
-      "title": "Payment information missing"
+      "button": "Complete payout information",
+      "subtitle": "We won’t be able to issue any payment until your payout information is completed",
+      "title": "Payout information missing"
     }
   },
   "project": {
