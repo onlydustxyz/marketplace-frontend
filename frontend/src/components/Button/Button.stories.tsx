@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { JSXElementConstructor } from "react";
-import Button, { ButtonSize } from ".";
+import Button, { ButtonSize, ButtonType } from ".";
 
 export default {
   title: "Button",
@@ -9,6 +9,12 @@ export default {
       control: {
         type: "select",
         options: [ButtonSize.Small, ButtonSize.Large],
+      },
+    },
+    type: {
+      control: {
+        type: "select",
+        options: [ButtonType.Primary, ButtonType.Secondary],
       },
     },
   },
