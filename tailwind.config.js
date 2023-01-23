@@ -21,6 +21,9 @@ module.exports = {
         orange: {
           500: "#FF9000",
         },
+        pink: {
+          500: "#E80CE1",
+        },
         spaceBlue: {
           50: "#E3E5EA",
           100: "#BABDCE",
