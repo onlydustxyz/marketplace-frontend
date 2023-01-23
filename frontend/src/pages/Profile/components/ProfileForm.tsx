@@ -108,7 +108,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
       <form id="profile-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <div className="flex flex-row gap-3 items-stretch">
           <Card className="basis-1/2">
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col">
               <div>
                 <div className="flex flex-col gap-2 divide-y divide-solid divide-neutral-600 ">
                   <div className="flex flex-row justify-between">
