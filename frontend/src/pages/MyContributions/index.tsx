@@ -13,6 +13,7 @@ import { GetPaymentRequestsQuery, PayoutSettingsQuery } from "src/__generated/gr
 import { useT } from "talkr";
 import InfoMissingBanner from "src/components/InfoMissingBanner";
 import Button from "src/components/Button";
+import TotalEarnings from "./TotalEarnings";
 
 const MyContributions = () => {
   const { githubUserId } = useAuth();
@@ -37,6 +38,7 @@ const MyContributions = () => {
   const { data: paymentRequestsQueryData } = getPaymentRequestsQuery;
   const payments = paymentRequestsQueryData?.paymentRequests?.map(mapApiPaymentsToProps);
   const hasPayments = payments && payments.length > 0;
+  const totalEarnings = hasPayments && payments.reduce((acc, p) => acc + p.amount.value, 0);
 
   return (
     <div className="bg-space h-full">
@@ -54,8 +56,9 @@ const MyContributions = () => {
               </InfoMissingBanner>
             )}
           </div>
-          <div className="mb-10">
+          <div className="flex gap-4 mb-10">
             <Card>{hasPayments ? <PayoutTable payments={payments} /> : <PaymentTableFallback />}</Card>
+            {totalEarnings && <TotalEarnings amount={totalEarnings} />}
           </div>
         </QueryWrapper>
       </div>
