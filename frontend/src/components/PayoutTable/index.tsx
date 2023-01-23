@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -46,9 +47,7 @@ const renderPayments = (payments: Payment[]) => {
     <Line key={payment.id}>
       <Cell> {dayjs.tz(payment.requestedAt, dayjs.tz.guess()).fromNow()} </Cell>
       <Cell className="flex flex-row gap-3">
-        <div className="border-4 border-neutral-600 p-2 rounded-2xl">
-          <img className="w-8 max-w-fit" src={payment.project.logoUrl || onlyDustLogo} alt="Project Logo" />
-        </div>
+        <RoundedImage src={payment.project.logoUrl || onlyDustLogo} alt={payment.project.title} />
         <div className="flex flex-col truncate justify-center">
           <div className="font-bold text-xl">{payment.project.title}</div>
           {payment.reason && <div className="text-lg truncate">{payment.reason}</div>}

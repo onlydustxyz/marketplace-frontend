@@ -12,6 +12,7 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";
 import CheckLine from "src/icons/CheckLine";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
+import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 
 type PropsType = {
   contributors: Contributor[];
@@ -92,7 +93,7 @@ const renderContributors = (contributors: Contributor[]) => {
     <Line key={contributor.login} link={`https://github.com/${contributor.login}`}>
       <Cell className="space-x-3">
         <div>
-          <img src={contributor.avatarUrl} className="h-6 rounded-xl border border-gray-100/20" />
+          <RoundedImage src={contributor.avatarUrl} alt={contributor.login} size={ImageSize.ExtraSmall} />
         </div>
         <div className="flex space-x-1 items-end">
           <div>

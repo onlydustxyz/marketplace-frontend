@@ -2,7 +2,7 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import Button, { ButtonSize } from "src/components/Button";
 import Card, { CardBorder } from "src/components/Card";
 import GithubLink from "src/components/GithubLink";
-import RoundedImage from "src/components/RoundedImage";
+import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import TelegramLink from "src/components/TelegramLink";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
@@ -36,7 +36,7 @@ export default function ProjectCard({
         <div className="flex flex-row w-full divide-x divide-stone-100/8 gap-6 justify-items-center font-walsheim">
           <div className="flex flex-col basis-4/12 gap-y-5">
             <div className="flex flex-row gap-4 items-start">
-              <RoundedImage src={logoUrl} alt="Project Logo" size="lg" className="mt-1" />
+              <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.Large} className="mt-1" />
               <div className="flex flex-col gap-0.5">
                 <div className="text-2xl font-medium font-belwe">{name}</div>
                 {lead && (
