@@ -107,10 +107,10 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
     <FormProvider {...formMethods}>
       <form id="profile-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <div className="flex flex-row gap-3 items-stretch">
-          <Card className="basis-1/2">
+          <Card className="basis-1/2 p-8">
             <div className="flex flex-col">
               <div>
-                <div className="flex flex-col gap-2 divide-y divide-solid divide-neutral-600 ">
+                <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
                   <div className="flex flex-row justify-between">
                     <div className="font-medium text-lg">{T("profile.form.aboutYou")}</div>
                     <div className="flex flex-row items-center gap-2">
@@ -122,7 +122,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                     </div>
                   </div>
                   <div>
-                    <div className="flex flex-row gap-5 pt-3">
+                    <div className="flex flex-row gap-5 pt-5">
                       {!isCompanyProfile && (
                         <>
                           <Input
@@ -154,7 +154,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
               <div>
                 <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
                   <div className="font-medium text-lg">{T("profile.form.contactInfo")}</div>
-                  <div className="pt-3">
+                  <div className="pt-5">
                     <Input
                       label={T("profile.form.emailAddress")}
                       name="email"
@@ -166,11 +166,11 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
               </div>
             </div>
           </Card>
-          <Card className="basis-1/2">
+          <Card className="basis-1/2 p-8">
             <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
               <div className="font-medium text-lg">{T("profile.form.location")}</div>
               <div>
-                <div className="mt-3">
+                <div className="mt-5">
                   <Input
                     label={T("profile.form.address")}
                     name="address"
@@ -201,10 +201,10 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
               </div>
             </div>
             <div className="flex flex-col">
-              <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
+              <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600">
                 <div className="font-medium text-lg">{T("profile.form.payoutSettings")}</div>
                 <div>
-                  <div className="flex flex-row gap-3 font-medium text-neutral-300 mt-3 w-fit">
+                  <div className="flex flex-row gap-3 font-medium text-neutral-300 mt-5 w-fit">
                     <ProfileRadioGroup
                       name="payoutSettingsType"
                       label={T("profile.form.payoutSettingsType")}
