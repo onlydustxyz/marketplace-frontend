@@ -4,6 +4,7 @@ import {
   AccessToken,
   CLAIMS_KEY,
   CustomUserRole,
+  GITHUB_USERID_KEY,
   HasuraJWT,
   HasuraUserRole,
   PROJECTS_LED_KEY,
@@ -36,9 +37,25 @@ function getRoleListFromJwt(jwtString?: AccessToken) {
   return newRoleList;
 }
 
+function getGithubUserIdFromJwt(jwt: HasuraJWT) {
+  const githubUserId = parseInt(jwt?.[CLAIMS_KEY]?.[GITHUB_USERID_KEY] || "");
+  return isNaN(githubUserId) ? undefined : githubUserId;
+}
+
 export const useRoles = (accessToken?: AccessToken) => {
   const roles = useMemo(() => {
     return getRoleListFromJwt(accessToken);
+  }, [accessToken]);
+
+  const githubUserId = useMemo(() => {
+    if (accessToken && roles.includes(HasuraUserRole.RegisteredUser)) {
+      try {
+        const decodedToken = jwtDecode<HasuraJWT>(accessToken);
+        return getGithubUserIdFromJwt(decodedToken);
+      } catch (e) {
+        console.error(`Error decoding JWT: ${e}`);
+      }
+    }
   }, [accessToken]);
 
   const ledProjectIds = useMemo(() => {
@@ -53,5 +70,5 @@ export const useRoles = (accessToken?: AccessToken) => {
     return !(roles.includes(HasuraUserRole.Public) && roles.length === 1);
   }, [roles]);
 
-  return { roles, ledProjectIds, isLoggedIn };
+  return { roles, ledProjectIds, isLoggedIn, githubUserId };
 };
