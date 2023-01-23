@@ -53,7 +53,7 @@
     },
     "list": "List payments",
     "status": {
-      "completed": "Completed",
+      "complete": "Complete",
       "processing": "Processing",
       "payoutInfoMissing": "Payout info missing"
     },
