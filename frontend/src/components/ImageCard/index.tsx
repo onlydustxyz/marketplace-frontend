@@ -7,14 +7,12 @@ export enum BackgroundSize {
 interface ImageCardProps extends React.PropsWithChildren {
   backgroundImageUrl: string;
   backgroundSize?: BackgroundSize;
-  className?: string;
   dataTestId?: string;
 }
 
 export default function ImageCard({
   backgroundImageUrl,
   backgroundSize = BackgroundSize.Auto,
-  className = "",
   dataTestId,
   children,
 }: ImageCardProps) {
@@ -28,7 +26,7 @@ export default function ImageCard({
       }}
       data-testid={dataTestId}
     >
-      <div className={`w-full bg-noise-heavy p-6 rounded-2xl font-walsheim ${className}`}>{children}</div>
+      <div className={"w-full bg-noise-heavy rounded-2xl font-walsheim"}>{children}</div>
     </div>
   );
 }

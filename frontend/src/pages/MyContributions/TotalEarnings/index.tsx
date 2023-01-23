@@ -11,9 +11,11 @@ export default function TotalEarnings({ amount }: Props) {
   const { T } = useIntl();
 
   return (
-    <ImageCard backgroundImageUrl={backgroundImage} backgroundSize={BackgroundSize.Cover} className="flex flex-col p-8">
-      <span className="text-base font-walsheim text-white font-semibold">{T("contributor.totalEarnings")}</span>
-      <span className="text-5xl font-belwe text-greyscale-50 font-normal">{formatDollars(amount)}</span>
+    <ImageCard backgroundImageUrl={backgroundImage} backgroundSize={BackgroundSize.Cover}>
+      <div className="flex flex-col p-8">
+        <span className="text-base font-walsheim text-white font-semibold">{T("contributor.totalEarnings")}</span>
+        <span className="text-5xl font-belwe text-greyscale-50 font-normal">{formatDollars(amount)}</span>
+      </div>
     </ImageCard>
   );
 }
