@@ -10,6 +10,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { useNavigate, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import isPayoutInfoMissing from "src/utils/isPayoutInfoMissing";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
 
 const Profile: React.FC = () => {
   const { isLoggedIn } = useAuth();
@@ -32,22 +33,21 @@ const Profile: React.FC = () => {
         <div className="flex mb-6 items-center">
           <span className="text-3xl font-belwe font-normal w-full">{T("profile.edit")}</span>
           <div className="flex space-x-6">
-            <button
-              type="button"
-              data-testid="profile-form-cancel-button"
-              className="bg-white/5 backdrop-blur-4xl text-base text-neutral-50 border-neutral-50 whitespace-nowrap border px-6 py-4 rounded-xl font-semibold"
-              onClick={navigateBack}
-            >
-              {T("profile.form.cancel")}
-            </button>
-            <button
-              type="submit"
-              form="profile-form"
-              data-testid="profile-form-submit-button"
-              className="bg-neutral-50 text-base text-slate-900 whitespace-nowrap border-2 px-6 py-4 rounded-xl font-semibold shadow-inner"
-            >
-              {T("profile.form.send")}
-            </button>
+            <Button size={ButtonSize.Large} type={ButtonType.Secondary}>
+              <button type="button" data-testid="profile-form-cancel-button" onClick={navigateBack}>
+                <div>{T("profile.form.cancel")}</div>
+              </button>
+            </Button>
+            <Button size={ButtonSize.Large} type={ButtonType.Primary}>
+              <button
+                type="submit"
+                form="profile-form"
+                data-testid="profile-form-submit-button"
+                className="whitespace-nowrap"
+              >
+                <div>{T("profile.form.send")}</div>
+              </button>
+            </Button>
           </div>
         </div>
         <div className="flex flex-col gap-6">
