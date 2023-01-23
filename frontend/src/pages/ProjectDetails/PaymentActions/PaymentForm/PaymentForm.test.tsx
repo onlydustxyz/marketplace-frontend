@@ -159,6 +159,10 @@ describe.each([
   { link: "https://github.com/onlydustxyz/marketplace/issues/504", shouldMatch: false },
   { link: "https://github.com/onlydustxyz/pull/504", shouldMatch: false },
   { link: "https://github.com/onlydustxyz/marketplace/pull/", shouldMatch: false },
+  {
+    link: "https://github.com/onlydustxyz/marketplace/pull/504, https://github.com/onlydustxyz/marketplace/pull/505",
+    shouldMatch: false,
+  },
   { link: "not-a-link", shouldMatch: false },
 ])("Github PR validation regexp", ({ link, shouldMatch }) => {
   test(`should ${shouldMatch ? "" : "not "}match link '${link}'`, async () => {
