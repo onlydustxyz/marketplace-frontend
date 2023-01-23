@@ -13,7 +13,7 @@ export default function View({ message, visible, isError, className }: Props) {
     <div
       data-testid="toaster-message"
       className={`${
-        visible ? "opacity-100" : "opacity-0"
+        visible ? "opacity-100 visible" : "opacity-0 invisible"
       } absolute rounded-2xl p-0.5 overflow-hidden transition duration-300 ${className}`}
     >
       <div
