@@ -18,7 +18,7 @@ type ButtonProps = {
 export default function Button({ size = ButtonSize.Large, type = ButtonType.Primary, children }: ButtonProps) {
   return (
     <div
-      className={`flex flex-row justify-between items-center gap-2 w-fit rounded-xl hover:cursor-pointer shadow-bottom-sm hover:shadow-none ${
+      className={`flex flex-row justify-between items-center gap-2 w-fit h-14 rounded-xl font-walsheim hover:cursor-pointer shadow-bottom-sm hover:shadow-none ${
         size === ButtonSize.Small ? "text-sm px-4 py-1.5" : "px-6 py-4"
       } ${
         type === ButtonType.Primary
