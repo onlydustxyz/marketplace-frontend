@@ -1,4 +1,4 @@
-import "./common";
+import { WAIT_LONG } from "./common";
 
 Cypress.Commands.add("createGithubUser", (githubUserId) => {
     const email = `cypress-${Date.now()}@onlydust.xyz`;
@@ -93,4 +93,31 @@ Cypress.Commands.add(
         }`,
         variables: { email, identity, location, payoutSettings }
     })
+);
+
+Cypress.Commands.add(
+    "fillPayoutSettings",
+    (token) => {
+        cy.fixture("profiles/james_bond").then((profile) => {
+            cy.visit("http://127.0.0.1:5173/profile", {
+                onBeforeLoad(win) {
+                    win.localStorage.setItem("hasura_token", token);
+                },
+            });
+            cy.wait(500);
+
+            cy.get("[name=firstname]").clear().type(profile.firstname);
+            cy.get("[name=lastname]").clear().type(profile.lastname);
+            cy.get("[name=email]").clear().type(profile.email);
+            cy.get("[name=address]").clear().type(profile.address);
+            cy.get("[name=postCode]").clear().type(profile.postCode);
+            cy.get("[name=city]").clear().type(profile.city);
+            cy.get("[name=country]").clear().type(profile.country);
+
+            cy.get("[data-testid=ETHEREUM_IDENTITY]").click().wait(100);
+            cy.get("[name=ethIdentity]").clear().type(profile.ethWalletAddress);
+
+            cy.contains("Save profile").click().wait(WAIT_LONG);
+        });
+    }
 );

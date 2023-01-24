@@ -15,26 +15,7 @@ describe("The user", () => {
   });
 
   it("can fill their personal info", function () {
-    cy.visit("http://127.0.0.1:5173/profile", {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", this.token);
-      },
-    });
-
-    cy.wait(1000);
-    cy.get("[name=firstname]").clear().type(this.profile.firstname);
-    cy.get("[name=lastname]").clear().type(this.profile.lastname);
-    cy.get("[name=email]").clear().type(this.profile.email);
-    cy.get("[name=address]").clear().type(this.profile.address);
-    cy.get("[name=postCode]").clear().type(this.profile.postCode);
-    cy.get("[name=city]").clear().type(this.profile.city);
-    cy.get("[name=country]").clear().type(this.profile.country);
-
-    cy.get("[data-testid=ETHEREUM_IDENTITY]").click().wait(100);
-    cy.get("[name=ethIdentity]").clear().type(this.profile.ethWalletAddress);
-
-    cy.contains("Save profile").click().wait(WAIT_LONG);
-
+    cy.fillPayoutSettings(this.token)
     cy.contains("Browse projects");
   });
 

@@ -20,12 +20,20 @@ describe("As a contributor, I", () => {
   });
 
   it("can see the list of my payments", function () {
-    console.log(this.token);
-    cy.visit(`http://localhost:5173`, {
+    cy.visit(`http://127.0.0.1:5173`, {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.token);
       },
     });
+
+    cy.contains("My payments").click();
+
+    cy.get("#payment_table tbody tr:nth-child(1)").within(() => {
+      cy.get("td:nth-child(3)").should("have.text", "200 USD");
+      cy.get("td:nth-child(4)").should("have.text", "Payout info missing");
+    });
+
+    cy.fillPayoutSettings(this.token);
 
     cy.contains("My payments").click();
 
