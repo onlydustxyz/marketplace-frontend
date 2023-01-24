@@ -18,7 +18,7 @@ const mockContributors: Contributor[] = [
   {
     login: "AnthonyBuisset",
     avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
-    isRegistered: false,
+    isRegistered: true,
     totalEarned: 500,
     paidContributions: 1,
   },
