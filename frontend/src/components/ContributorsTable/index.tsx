@@ -13,6 +13,7 @@ import User3Line from "src/icons/User3Line";
 import CheckLine from "src/icons/CheckLine";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
+import Tooltip from "../Tooltip";
 
 type PropsType = {
   contributors: Contributor[];
@@ -102,10 +103,8 @@ const renderContributors = (contributors: Contributor[]) => {
           {contributor.isRegistered && (
             <div className="relative group/od-logo">
               <img src={onlyDustLogo} className="h-3.5" />
-              <div className="invisible group-hover/od-logo:visible absolute top-6 -left-16 bg-chineseBlack">
-                <div className="bg-white/10 font-normal rounded-lg py-3 px-2 w-36 text-center">
-                  {T("contributor.table.userRegisteredTooltip")}
-                </div>
+              <div className="invisible group-hover/od-logo:visible absolute top-5 -left-16 w-36">
+                <Tooltip>{T("contributor.table.userRegisteredTooltip")}</Tooltip>
               </div>
             </div>
           )}
