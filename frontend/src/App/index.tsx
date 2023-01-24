@@ -13,7 +13,7 @@ const MyContributions = lazy(() => import("src/pages/MyContributions"));
 const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
 
 import { HasuraUserRole } from "src/types";
-import LoaderFallback from "src/components/LoaderFallback";
+import LoaderFallback from "src/components/Loader";
 import ScrollToTop from "src/components/ScrollToTop";
 
 export enum RoutePaths {

@@ -1,5 +1,5 @@
 import { QueryResult } from "@apollo/client";
-import LoaderFallback from "src/components/LoaderFallback";
+import LoaderFallback from "src/components/Loader";
 import ErrorFallback from "../ErrorFallback";
 
 interface PropsType<T> extends React.PropsWithChildren {
