@@ -36,6 +36,12 @@ const mockPayments: Payment[] = [
   },
 ];
 
-const Template: ComponentStory<typeof Payments> = () => <Payments payments={mockPayments} />;
+const Template: ComponentStory<typeof Payments> = args => (
+  <Payments payments={mockPayments} payoutInfoMissing={args.payoutInfoMissing} />
+);
 
 export const Default = Template.bind({});
+
+Default.args = {
+  payoutInfoMissing: false,
+};

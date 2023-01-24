@@ -21,6 +21,7 @@ dayjs.extend(timezone);
 
 type PropsType = {
   payments: Payment[];
+  payoutInfoMissing: boolean;
 };
 
 enum Field {
@@ -38,7 +39,7 @@ type Sorting = {
 const REPO_NAME = /([^/]+)\/pull\/\d+$/;
 const ISSUE_NUMBER = /\/(\d+)$/;
 
-const PayoutTable: React.FC<PropsType> = ({ payments }) => {
+const PayoutTable: React.FC<PropsType> = ({ payments, payoutInfoMissing }) => {
   const [sorting, setSorting] = useState({ field: Field.Date, ascending: false });
   const [sortedPayments, setSortedPayments] = useState(payments);
 
@@ -71,7 +72,7 @@ const PayoutTable: React.FC<PropsType> = ({ payments }) => {
 
   return (
     <Table id="payment_table" headers={renderHeaders(sorting, applySorting)}>
-      {renderPayments(sortedPayments)}
+      {renderPayments(sortedPayments, payoutInfoMissing)}
     </Table>
   );
 };
@@ -100,7 +101,7 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
   );
 };
 
-const renderPayments = (payments: Payment[]) => {
+const renderPayments = (payments: Payment[], payoutInfoMissing: boolean) => {
   const { T } = useIntl();
 
   return payments.map(payment => (
@@ -116,10 +117,11 @@ const renderPayments = (payments: Payment[]) => {
       <Cell>{`${payment.amount.value} ${payment.amount.currency}`}</Cell>
       <Cell>
         <div className="border border-neutral-600 rounded-3xl w-fit p-2">
-          {payment.status === PaymentStatus.ACCEPTED && (
+          {payoutInfoMissing && <span className="text-orange-500">{T("payment.status.payoutInfoMissing")}</span>}
+          {!payoutInfoMissing && payment.status === PaymentStatus.ACCEPTED && (
             <span className="text-green-500">{T("payment.status.completed")}</span>
           )}
-          {payment.status === PaymentStatus.WAITING_PAYMENT && (
+          {!payoutInfoMissing && payment.status === PaymentStatus.WAITING_PAYMENT && (
             <span className="text-blue-600">{T("payment.status.processing")}</span>
           )}
         </div>
