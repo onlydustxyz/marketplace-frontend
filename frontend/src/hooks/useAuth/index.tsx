@@ -11,7 +11,7 @@ import { HasuraUserRole, RefreshToken, User, UserRole } from "src/types";
 import { PendingProjectLeaderInvitationsQuery } from "src/__generated/graphql";
 import { useHasuraQuery } from "../useHasuraQuery";
 
-type AuthContextType = {
+export type AuthContextType = {
   login: (refreshToken: RefreshToken) => void;
   logout: () => Promise<void>;
   user: User | null;
@@ -21,7 +21,7 @@ type AuthContextType = {
   githubUserId?: number;
 };
 
-const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();

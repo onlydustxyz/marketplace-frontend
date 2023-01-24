@@ -16,12 +16,12 @@ const ProfileButton = () => {
         <div>
           <Menu.Button
             className="
-	      inline-flex w-full justify-center border-solid border-slate-400 border px-4 py-2 items-center
+	      inline-flex w-full justify-center border-solid border-slate-400 border px-3 py-1.5 items-center
 							rounded-3xl bg-black bg-opacity-20 text-sm font-medium text-white
 							hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
             data-testid="profile-button"
           >
-            {avatarUrl && <img className="w-4 rounded-full mr-4" src={avatarUrl} />}
+            {avatarUrl && <img className="w-8 rounded-full mr-4" src={avatarUrl} />}
             {displayName}
           </Menu.Button>
         </div>
