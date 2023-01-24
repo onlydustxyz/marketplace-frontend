@@ -153,7 +153,7 @@ describe('"MyContributions" page', () => {
         mocks: [buildMockMyContributionsQuery(githubUserId), buidlMockPayoutSettingsQuery(undefined)],
       }),
     });
-    expect(await screen.findByText("Complete payment information")).toBeInTheDocument();
+    expect(await screen.findByText("Complete payout information")).toBeInTheDocument();
   });
 
   it("should not display banner when there are payments and payout info", async () => {
