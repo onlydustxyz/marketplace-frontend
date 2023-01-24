@@ -54,7 +54,8 @@
     "list": "List payments",
     "status": {
       "completed": "Completed",
-      "processing": "Processing"
+      "processing": "Processing",
+      "payoutInfoMissing": "Payout info missing"
     },
     "table": {
       "amount": "Amount",

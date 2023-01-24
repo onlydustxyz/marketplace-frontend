@@ -39,6 +39,7 @@ const MyContributions = () => {
   const payments = paymentRequestsQueryData?.paymentRequests?.map(mapApiPaymentsToProps);
   const hasPayments = payments && payments.length > 0;
   const totalEarnings = hasPayments && payments.reduce((acc, p) => acc + p.amount.value, 0);
+  const payoutInfoMissing = !!isPayoutInfoMissing(getPayoutSettingsQuery);
 
   return (
     <div className="bg-space h-full">
@@ -46,7 +47,7 @@ const MyContributions = () => {
         <div className="text-5xl font-belwe">{T("navbar.myContributions")}</div>
         <QueryWrapper query={getPaymentRequestsQuery}>
           <div className="my-10">
-            {isPayoutInfoMissing(getPayoutSettingsQuery) && hasPendingPaymentsRequests(getPaymentRequestsQuery) && (
+            {payoutInfoMissing && hasPendingPaymentsRequests(getPaymentRequestsQuery) && (
               <InfoMissingBanner>
                 <Link to={RoutePaths.Profile}>
                   <Button>
@@ -57,7 +58,13 @@ const MyContributions = () => {
             )}
           </div>
           <div className="flex gap-4 mb-10">
-            <Card>{hasPayments ? <PayoutTable payments={payments} /> : <PaymentTableFallback />}</Card>
+            <Card>
+              {hasPayments ? (
+                <PayoutTable payments={payments} payoutInfoMissing={payoutInfoMissing} />
+              ) : (
+                <PaymentTableFallback />
+              )}
+            </Card>
             {totalEarnings && <TotalEarnings amount={totalEarnings} />}
           </div>
         </QueryWrapper>
