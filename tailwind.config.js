@@ -48,6 +48,7 @@ module.exports = {
       },
       animation: {
         "spin-invert-slow": "spin-invert 4s linear infinite",
+        "spin-medium": "spin 2s linear infinite",
       },
       keyframes: {
         "spin-invert": {

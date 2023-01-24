@@ -1,8 +1,11 @@
-import { useIntl } from "src/hooks/useIntl";
+import atomLogo from "assets/img/atom.png";
 
-const Loader: React.FC = () => {
-  const { T } = useIntl();
-  return <div className="flex justify-center mt-10 text-2xl">{T("state.loading")}</div>;
-};
-
-export default Loader;
+export default function Loader() {
+  return (
+    <div className="h-full flex-grow flex flex-col items-center justify-center text-center">
+      <div className="w-24 animate-spin-medium">
+        <img src={atomLogo}></img>
+      </div>
+    </div>
+  );
+}
