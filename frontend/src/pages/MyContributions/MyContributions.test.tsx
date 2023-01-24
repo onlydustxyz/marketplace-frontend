@@ -143,7 +143,7 @@ describe('"MyContributions" page', () => {
     expect(await screen.findByText(mockContribution.reason.work_items[0])).toBeInTheDocument();
     expect(await screen.findByText(mockContribution.budget.project.name)).toBeInTheDocument();
     expect(await screen.findByText("200 USD")).toBeInTheDocument();
-    expect(await screen.findByText("Completed")).toBeInTheDocument();
+    expect(await screen.findByText(/complete/i)).toBeInTheDocument();
   });
 
   it("should display banner when there are payments but no payout info", async () => {
@@ -170,7 +170,7 @@ describe('"MyContributions" page', () => {
     expect(await screen.findByText(mockContribution.reason.work_items[0])).toBeInTheDocument();
     expect(await screen.findByText(mockContribution.budget.project.name)).toBeInTheDocument();
     expect(await screen.findByText("200 USD")).toBeInTheDocument();
-    expect(await screen.findByText("Completed")).toBeInTheDocument();
+    expect(await screen.findByText(/complete/i)).toBeInTheDocument();
     expect(screen.queryByText("Complete payment information")).not.toBeInTheDocument();
   });
 });

@@ -6,6 +6,7 @@ import Cell from "../Table/Cell";
 import Headers from "../Table/HeaderLine";
 import HeaderCell from "../Table/HeaderCell";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
+import PayoutStatus from "../PayoutStatus";
 
 type PropsType = {
   payments: PaymentRequest[];
@@ -58,14 +59,7 @@ const renderPayments = (payments: PaymentRequest[]) => {
       </Cell>
       <Cell>{`${payment.amount.value} ${payment.amount.currency}`}</Cell>
       <Cell>
-        <div className="border border-neutral-600 rounded-3xl w-fit p-2">
-          {payment.status === PaymentStatus.ACCEPTED && (
-            <span className="text-green-500">{T("payment.status.completed")}</span>
-          )}
-          {payment.status === PaymentStatus.WAITING_PAYMENT && (
-            <span className="text-blue-600">{T("payment.status.processing")}</span>
-          )}
-        </div>
+        <PayoutStatus {...{ status: payment.status, payoutInfoMissing: false }} />
       </Cell>
     </Line>
   ));

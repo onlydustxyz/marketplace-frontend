@@ -14,6 +14,7 @@ import RoundedImage from "src/components/RoundedImage";
 import { useEffect, useState } from "react";
 import { sortBy } from "lodash";
 import SortingArrow from "../ContributorsTable/SortingArrow";
+import PayoutStatus from "../PayoutStatus";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -102,8 +103,6 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
 };
 
 const renderPayments = (payments: Payment[], payoutInfoMissing: boolean) => {
-  const { T } = useIntl();
-
   return payments.map(payment => (
     <Line key={payment.id}>
       <Cell> {dayjs.tz(payment.requestedAt, dayjs.tz.guess()).fromNow()} </Cell>
@@ -116,15 +115,7 @@ const renderPayments = (payments: Payment[], payoutInfoMissing: boolean) => {
       </Cell>
       <Cell>{`${payment.amount.value} ${payment.amount.currency}`}</Cell>
       <Cell>
-        <div className="border border-neutral-600 rounded-3xl w-fit p-2">
-          {payoutInfoMissing && <span className="text-orange-500">{T("payment.status.payoutInfoMissing")}</span>}
-          {!payoutInfoMissing && payment.status === PaymentStatus.ACCEPTED && (
-            <span className="text-green-500">{T("payment.status.completed")}</span>
-          )}
-          {!payoutInfoMissing && payment.status === PaymentStatus.WAITING_PAYMENT && (
-            <span className="text-blue-600">{T("payment.status.processing")}</span>
-          )}
-        </div>
+        <PayoutStatus {...{ status: payment.status, payoutInfoMissing }} />
       </Cell>
     </Line>
   ));
