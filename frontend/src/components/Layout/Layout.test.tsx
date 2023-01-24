@@ -64,9 +64,7 @@ describe('"Layout" component', () => {
       </ToasterProvider>,
       { wrapper: BrowserRouter }
     );
-    await screen.findByRole("img", {
-      name: GITHUB_LOGO_NAME_QUERY,
-    });
+    await screen.findByRole("githubLogo");
   });
 
   it("should display the onlydust logo and title if there is no hasura jwt", () => {

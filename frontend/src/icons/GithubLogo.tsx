@@ -3,5 +3,5 @@ interface Props {
 }
 
 export default function GithubLogo({ className }: Props) {
-  return <i className={`ri-github-fill ${className}`} />;
+  return <i role="githubLogo" className={`ri-github-fill ${className}`} />;
 }
