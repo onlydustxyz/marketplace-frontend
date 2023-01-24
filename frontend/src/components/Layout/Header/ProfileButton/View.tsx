@@ -14,18 +14,15 @@ const View = ({ avatarUrl, displayName, logout }: Props) => {
   const location = useLocation();
   const { T } = useIntl();
   return (
-    <div className="relative w-56 text-right">
-      <Menu as="div" className="relative inline-block text-left">
+    <div className="relative">
+      <Menu as="div" className="relative inline-block">
         <div>
           <Menu.Button
-            className="
-	      inline-flex w-full justify-center border-solid border-slate-400 border px-3 py-1.5 items-center
-							rounded-3xl bg-black bg-opacity-20 text-sm font-medium text-white
-							hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+            className="flex gap-2 m-0.5 justify-center outline outline-1 outline-greyscale-50/12 px-2 py-1.5 items-center rounded-full text-sm font-belwe hover:bg-noise-medium hover:outline-2 ui-open:bg-noise-medium ui-open:outline-2"
             data-testid="profile-button"
           >
-            {avatarUrl && <img className="w-8 rounded-full mr-4" src={avatarUrl} />}
-            {displayName}
+            {avatarUrl && <img className="w-8 rounded-full" src={avatarUrl} />}
+            <div className="mr-1">{displayName}</div>
           </Menu.Button>
         </div>
         <Transition
