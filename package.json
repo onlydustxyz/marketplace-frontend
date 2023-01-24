@@ -22,6 +22,7 @@
     "@graphql-codegen/typescript": "^2.8.5",
     "@graphql-codegen/typescript-operations": "^2.5.10",
     "@graphql-codegen/typescript-react-apollo": "^3.3.7",
+    "@headlessui/tailwindcss": "^0.1.2",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@types/react-currency-format": "^1.0.0",
     "axios": "^1.1.3",
