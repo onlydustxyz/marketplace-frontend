@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { sortBy } from "lodash";
 import SortingArrow from "../ContributorsTable/SortingArrow";
 import PayoutStatus from "../PayoutStatus";
+import GithubPRLink, { LinkColor } from "./GithubPRLink";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -110,7 +111,7 @@ const renderPayments = (payments: Payment[], payoutInfoMissing: boolean) => {
         <RoundedImage src={payment.project.logoUrl || onlyDustLogo} alt={payment.project.title} />
         <div className="flex flex-col truncate justify-center">
           <div className="font-bold text-xl">{payment.project.title}</div>
-          {payment.reason && <div className="text-lg truncate">{payment.reason}</div>}
+          {payment.reason && <GithubPRLink link={payment.reason} linkColor={LinkColor.Grey}></GithubPRLink>}
         </div>
       </Cell>
       <Cell>{`${payment.amount.value} ${payment.amount.currency}`}</Cell>
