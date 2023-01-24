@@ -19,7 +19,7 @@ export const WithButton = Template.bind({});
 WithButton.args = {
   children: (
     <Button>
-      <div>Complete payment information</div>
+      <div>Complete payout information</div>
     </Button>
   ),
 }; // put your component's args for the Default story here
