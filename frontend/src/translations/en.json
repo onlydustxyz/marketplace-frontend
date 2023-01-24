@@ -55,7 +55,12 @@
     "status": {
       "complete": "Complete",
       "processing": "Processing",
-      "payoutInfoMissing": "Payout info missing"
+      "payoutInfoMissing": "Payout info missing",
+      "tooltip": {
+        "complete": "Payment successful",
+        "processing": "Payment is being processed by our team",
+        "payoutInfoMissing": "Fill in your payment information to get paid"
+      }
     },
     "table": {
       "amount": "Amount",
