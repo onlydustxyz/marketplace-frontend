@@ -30,7 +30,7 @@ describe("As a contributor, I", () => {
 
     cy.get("#payment_table tbody tr:nth-child(1)").within(() => {
       cy.get("td:nth-child(3)").should("have.text", "200 USD");
-      cy.get("td:nth-child(4)").should("have.text", "Payout info missing");
+      cy.get("td:nth-child(4)").should("have.text", "Payout info missing" + "Fill in your payment information to get paid");
     });
 
     cy.fillPayoutSettings(this.token);
@@ -39,7 +39,7 @@ describe("As a contributor, I", () => {
 
     cy.get("#payment_table tbody tr:nth-child(1)").within(() => {
       cy.get("td:nth-child(3)").should("have.text", "200 USD");
-      cy.get("td:nth-child(4)").should("have.text", "Processing");
+      cy.get("td:nth-child(4)").should("have.text", "Processing" + "Payment is being processed by our team");
     });
   });
 });
