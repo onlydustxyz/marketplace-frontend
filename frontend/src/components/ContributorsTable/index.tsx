@@ -103,7 +103,7 @@ const renderContributors = (contributors: Contributor[]) => {
           {contributor.isRegistered && (
             <div className="relative group/od-logo">
               <img src={onlyDustLogo} className="h-3.5" />
-              <div className="invisible group-hover/od-logo:visible absolute top-5 -left-16 w-36">
+              <div className="invisible group-hover/od-logo:visible absolute top-5 -left-16 w-36 z-10">
                 <Tooltip>{T("contributor.table.userRegisteredTooltip")}</Tooltip>
               </div>
             </div>
