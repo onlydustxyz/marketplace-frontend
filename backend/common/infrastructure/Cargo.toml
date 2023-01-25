@@ -11,7 +11,7 @@ version = "0.0.1"
 
 [dependencies]
 # Config
-figment = {version ="0.10.8", features = ["yaml"]}
+figment = {version = "0.10.8", features = ["yaml"]}
 
 # Async
 async-trait = "0.1.56"
@@ -38,16 +38,16 @@ uuid = {version = "0.8.2", default_features = false, features = [
 ]}
 
 # Github
-octocrab = "0.17.0"
+octocrab = {git = "https://github.com/onlydustxyz/octocrab.git", branch = "with-cache"}
 reqwest = "0.11.13"
 
 # Tracing
+diesel-tracing = {version = "0.1.6", features = ["postgres"]}
 opentelemetry = {version = "0.18.0", features = ["rt-tokio"]}
 opentelemetry-datadog = {version = "0.6.0", features = ["reqwest-client"]}
 tracing = "0.1"
 tracing-opentelemetry = "0.18.0"
 tracing-subscriber = {version = "0.3", features = ["env-filter", "fmt", "json"]}
-diesel-tracing = {version = "0.1.6", features = ["postgres"]}
 
 # Errors
 anyhow = "1.0.57"
@@ -64,10 +64,10 @@ chrono = "0.4"
 derive-getters = "0.2.0"
 derive_more = "0.99.17"
 itertools = "0.10.3"
+lazy_static = "1.4.0"
 rand = "0.8.5"
 regex = "1.7.0"
 url = "2.2.2"
-lazy_static = "1.4.0"
 
 # Web3
 web3 = "0.18.0"
@@ -78,10 +78,10 @@ olog = {path = "../olog"}
 
 [dev-dependencies]
 async-std = {version = "1.12.0", features = ["attributes"]}
+ctor = "0.1.26"
+dotenv = "0.15.0"
+figment = {version = "0.10.8", features = ["test"]}
+mockall = "0.11.2"
 rand = "0.8.5"
 rstest = "0.15.0"
 tracing-test = "0.2.3"
-dotenv = "0.15.0"
-mockall = "0.11.2"
-figment = {version ="0.10.8", features = ["test"]}
-ctor = "0.1.26"
