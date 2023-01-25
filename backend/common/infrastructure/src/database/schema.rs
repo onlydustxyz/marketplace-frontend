@@ -115,10 +115,10 @@ diesel::table! {
 diesel::table! {
     user_info (user_id) {
         user_id -> Uuid,
-        identity -> Jsonb,
-        location -> Jsonb,
-        email -> Text,
-        payout_settings -> Jsonb,
+        identity -> Nullable<Jsonb>,
+        location -> Nullable<Jsonb>,
+        email -> Nullable<Text>,
+        payout_settings -> Nullable<Jsonb>,
     }
 }
 
