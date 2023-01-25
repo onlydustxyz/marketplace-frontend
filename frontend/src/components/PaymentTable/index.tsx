@@ -46,10 +46,8 @@ const renderHeaders = () => {
 };
 
 const renderPayments = (payments: PaymentRequest[]) => {
-  const { T } = useIntl();
-
   return payments.map(payment => (
-    <Line key={payment.id}>
+    <Line key={payment.id} highlightOnHover={200}>
       <Cell className="flex flex-row gap-3">
         <RoundedImage src={payment.recipient.avatarUrl} alt={payment.recipient.login} size={ImageSize.Medium} />
         <div className="flex flex-col truncate justify-center">

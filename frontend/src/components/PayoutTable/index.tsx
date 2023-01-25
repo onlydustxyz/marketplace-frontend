@@ -113,7 +113,7 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
 
 const renderPayments = (payments: Payment[], payoutInfoMissing: boolean) => {
   return payments.map(payment => (
-    <Line key={payment.id} className="transition duration-200 hover:bg-white/4 outline-offset-0 hover:outline-2">
+    <Line key={payment.id} highlightOnHover={200}>
       <Cell> {dayjs.tz(payment.requestedAt, dayjs.tz.guess()).fromNow()} </Cell>
       <Cell className="flex flex-row gap-3">
         <RoundedImage src={payment.project.logoUrl || onlyDustLogo} alt={payment.project.title} />
