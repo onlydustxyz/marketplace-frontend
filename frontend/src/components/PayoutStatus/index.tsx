@@ -38,13 +38,9 @@ export default function PayoutStatus({ status, payoutInfoMissing }: Props) {
 const getStatusLabel = (status: PaymentStatus, payoutInfoMissing: boolean) => {
   const { T } = useIntl();
 
-  if (payoutInfoMissing) {
-    return T("payment.status.payoutInfoMissing");
-  }
-
   switch (status) {
     case PaymentStatus.WAITING_PAYMENT:
-      return T("payment.status.processing");
+      return payoutInfoMissing ? T("payment.status.payoutInfoMissing") : T("payment.status.processing");
     case PaymentStatus.ACCEPTED:
       return T("payment.status.complete");
   }
