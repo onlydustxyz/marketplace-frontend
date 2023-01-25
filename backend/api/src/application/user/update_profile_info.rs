@@ -42,18 +42,20 @@ impl Usecase {
 	pub async fn update_profile_info(
 		&self,
 		caller_id: UserId,
-		identity: Identity,
-		location: Location,
-		email: Email,
-		payout_settings: PayoutSettings,
+		identity: Option<Identity>,
+		location: Option<Location>,
+		email: Option<Email>,
+		payout_settings: Option<PayoutSettings>,
 	) -> Result<()> {
-		if !self
-			.payout_settings_are_valid
-			.is_satisfied_by(&payout_settings)
-			.await
-			.map_err(|e| Error::Internal(anyhow!(e)))?
-		{
-			return Err(Error::InvalidInput(anyhow!("Invalid payout settings")));
+		if let Some(payout_settings_value) = &payout_settings {
+			if !self
+				.payout_settings_are_valid
+				.is_satisfied_by(payout_settings_value)
+				.await
+				.map_err(|e| Error::Internal(anyhow!(e)))?
+			{
+				return Err(Error::InvalidInput(anyhow!("Invalid payout settings")));
+			}
 		}
 
 		let user_info = UserInfo::new(caller_id, identity, location, email, payout_settings);
@@ -94,10 +96,10 @@ mod tests {
 		let result = usecase
 			.update_profile_info(
 				Default::default(),
-				Identity::Person(Default::default()),
+				Some(Identity::Person(Default::default())),
 				Default::default(),
 				Default::default(),
-				payout_settings,
+				Some(payout_settings),
 			)
 			.await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
@@ -117,10 +119,10 @@ mod tests {
 		let result = usecase
 			.update_profile_info(
 				Default::default(),
-				Identity::Person(Default::default()),
+				Some(Identity::Person(Default::default())),
 				Default::default(),
 				Default::default(),
-				payout_settings,
+				Some(payout_settings),
 			)
 			.await;
 		assert!(result.is_err());

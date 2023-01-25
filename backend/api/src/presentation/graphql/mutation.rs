@@ -9,10 +9,12 @@ use uuid::Uuid;
 use super::{Context, Error, Result};
 use crate::{
 	domain::{
-		user_info::{Email, Identity, Location, PayoutSettings},
+		user_info::{Email, EthereumIdentity, Identity, Location, PayoutSettings},
 		PaymentReason, ProjectDetails,
 	},
-	presentation::http::dto::{IdentityInput, PayoutSettingsInput},
+	presentation::http::dto::{
+		IdentityInput, IdentityType, PayoutSettingsInput, PayoutSettingsType,
+	},
 };
 
 pub struct Mutation;
@@ -132,16 +134,36 @@ impl Mutation {
 
 	pub async fn update_profile_info(
 		context: &Context,
-		location: Location,
-		identity: IdentityInput,
-		email: Email,
-		payout_settings: PayoutSettingsInput,
+		location: Option<Location>,
+		identity: Option<IdentityInput>,
+		email: Option<Email>,
+		payout_settings: Option<PayoutSettingsInput>,
 	) -> Result<Uuid> {
 		let caller_id = *context.caller_info()?.user_id();
 
-		let identity = Identity::try_from(identity).map_err(Error::InvalidRequest)?;
-		let payout_settings =
-			PayoutSettings::try_from(payout_settings).map_err(Error::InvalidRequest)?;
+		let identity = match identity {
+			Some(identity_value) => match identity_value.r#type {
+				Some(IdentityType::Company) => identity_value.opt_company.map(Identity::Company),
+				Some(IdentityType::Person) => identity_value.opt_person.map(Identity::Person),
+				None => None,
+			},
+			None => None,
+		};
+
+		let payout_settings = match payout_settings {
+			Some(payout_settings_value) => match payout_settings_value.r#type {
+				Some(PayoutSettingsType::EthereumAddress) => payout_settings_value
+					.opt_eth_address
+					.map(|address| PayoutSettings::EthTransfer(EthereumIdentity::Address(address))),
+				Some(PayoutSettingsType::EthereumName) => payout_settings_value
+					.opt_eth_name
+					.map(|name| PayoutSettings::EthTransfer(EthereumIdentity::Name(name))),
+				Some(PayoutSettingsType::BankAddress) =>
+					payout_settings_value.opt_bank_address.map(PayoutSettings::WireTransfer),
+				None => None,
+			},
+			None => None,
+		};
 
 		context
 			.update_user_info_usecase
