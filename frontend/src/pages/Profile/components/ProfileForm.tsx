@@ -15,6 +15,7 @@ import {
   PayoutSettingsInput,
   Location,
   IdentityInput,
+  UpdateProfileInfoMutationVariables,
 } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import { RoutePaths } from "src/App";
@@ -292,18 +293,36 @@ const mapFormDataToSchema = ({
   IBAN,
   BIC,
 }: Inputs) => {
-  const identity: IdentityInput = {
-    type: isCompanyProfile ? IdentityType.Company : IdentityType.Person,
-    optPerson: !isCompanyProfile ? { firstname: firstname ?? null, lastname: lastname ?? null } : null,
-    optCompany: isCompanyProfile ? { name: companyName ?? null } : null,
+  const variables: UpdateProfileInfoMutationVariables = {
+    email: email || null,
+    identity: null,
+    location: null,
+    payoutSettings: null,
   };
 
-  const location: Location = {
-    address,
-    postCode,
-    city,
-    country,
-  };
+  if (!isCompanyProfile && (firstname || lastname)) {
+    variables.identity = {
+      type: IdentityType.Person,
+      optPerson: { firstname: firstname || null, lastname: lastname || null },
+      optCompany: null,
+    };
+  }
+  if (isCompanyProfile && companyName) {
+    variables.identity = {
+      type: IdentityType.Company,
+      optPerson: null,
+      optCompany: { name: companyName },
+    };
+  }
+
+  if (address || postCode || city || country) {
+    variables.location = {
+      address: address || null,
+      postCode: postCode || null,
+      city: city || null,
+      country: country || null,
+    };
+  }
 
   const payoutType =
     payoutSettingsType === PayoutSettingsDisplayType.BankAddress
@@ -312,14 +331,32 @@ const mapFormDataToSchema = ({
       ? PayoutSettingsType.EthereumName
       : PayoutSettingsType.EthereumAddress;
 
-  const payoutSettings: PayoutSettingsInput = {
-    optEthAddress: payoutType === PayoutSettingsType.EthereumAddress && ethIdentity ? ethIdentity : null,
-    optBankAddress: payoutType === PayoutSettingsType.BankAddress ? { IBAN: IBAN ?? null, BIC: BIC ?? null } : null,
-    optEthName: payoutType === PayoutSettingsType.EthereumName && ethIdentity ? ethIdentity : null,
-    type: payoutType,
-  };
+  if (payoutType === PayoutSettingsType.EthereumAddress && ethIdentity) {
+    variables.payoutSettings = {
+      optEthAddress: ethIdentity,
+      optBankAddress: null,
+      optEthName: null,
+      type: PayoutSettingsType.EthereumAddress,
+    };
+  }
+  if (payoutType === PayoutSettingsType.EthereumName && ethIdentity) {
+    variables.payoutSettings = {
+      optEthAddress: null,
+      optBankAddress: null,
+      optEthName: ethIdentity,
+      type: PayoutSettingsType.EthereumName,
+    };
+  }
+  if (payoutType === PayoutSettingsType.BankAddress && IBAN && BIC) {
+    variables.payoutSettings = {
+      optEthAddress: null,
+      optBankAddress: { IBAN, BIC },
+      optEthName: null,
+      type: PayoutSettingsType.BankAddress,
+    };
+  }
 
-  return { variables: { email, identity, location, payoutSettings } };
+  return { variables };
 };
 
 export default ProfileForm;
