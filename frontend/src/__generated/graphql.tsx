@@ -97,8 +97,8 @@ export enum AuthGithubUsersSelectColumn {
 }
 
 export type BankAddress = {
-  BIC: Scalars['String'];
-  IBAN: Scalars['String'];
+  BIC: InputMaybe<Scalars['String']>;
+  IBAN: InputMaybe<Scalars['String']>;
 };
 
 /** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
@@ -234,7 +234,7 @@ export type CitextComparisonExp = {
 };
 
 export type CompanyIdentity = {
-  name: Scalars['String'];
+  name: InputMaybe<Scalars['String']>;
 };
 
 /** ordering argument of a cursor */
@@ -306,7 +306,7 @@ export enum GithubRepoDetailsSelectColumn {
 export type IdentityInput = {
   optCompany: InputMaybe<CompanyIdentity>;
   optPerson: InputMaybe<PersonIdentity>;
-  type: IdentityType;
+  type: InputMaybe<IdentityType>;
 };
 
 export enum IdentityType {
@@ -343,10 +343,10 @@ export type JsonbComparisonExp = {
 };
 
 export type Location = {
-  address: Scalars['String'];
-  city: Scalars['String'];
-  country: Scalars['String'];
-  postCode: Scalars['String'];
+  address: InputMaybe<Scalars['String']>;
+  city: InputMaybe<Scalars['String']>;
+  country: InputMaybe<Scalars['String']>;
+  postCode: InputMaybe<Scalars['String']>;
 };
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
@@ -577,7 +577,7 @@ export type PayoutSettingsInput = {
   optBankAddress: InputMaybe<BankAddress>;
   optEthAddress: InputMaybe<Scalars['EthereumAddress']>;
   optEthName: InputMaybe<Scalars['EthereumName']>;
-  type: PayoutSettingsType;
+  type: InputMaybe<PayoutSettingsType>;
 };
 
 /** input type for inserting data into table "payout_settings" */
@@ -706,8 +706,8 @@ export enum PendingProjectLeaderInvitationsSelectColumn {
 }
 
 export type PersonIdentity = {
-  firstname: Scalars['String'];
-  lastname: Scalars['String'];
+  firstname: InputMaybe<Scalars['String']>;
+  lastname: InputMaybe<Scalars['String']>;
 };
 
 /** columns and relationships of "project_details" */
@@ -980,10 +980,10 @@ export type User = {
 /** columns and relationships of "user_info" */
 export type UserInfo = {
   __typename?: 'UserInfo';
-  email: Scalars['String'];
-  identity: Scalars['jsonb'];
-  location: Scalars['jsonb'];
-  payoutSettings: Scalars['jsonb'];
+  email: Maybe<Scalars['String']>;
+  identity: Maybe<Scalars['jsonb']>;
+  location: Maybe<Scalars['jsonb']>;
+  payoutSettings: Maybe<Scalars['jsonb']>;
   userId: Scalars['uuid'];
 };
 
@@ -1412,10 +1412,10 @@ export type Mutation_RootUpdatePayoutSettingsManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateProfileInfoArgs = {
-  email: Scalars['Email'];
-  identity: IdentityInput;
-  location: Location;
-  payoutSettings: PayoutSettingsInput;
+  email: InputMaybe<Scalars['Email']>;
+  identity: InputMaybe<IdentityInput>;
+  location: InputMaybe<Location>;
+  payoutSettings: InputMaybe<PayoutSettingsInput>;
 };
 
 
@@ -2592,13 +2592,13 @@ export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentReques
 export type PayoutSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PayoutSettingsQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', payoutSettings: any }> };
+export type PayoutSettingsQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', payoutSettings: any | null }> };
 
 export type UpdateProfileInfoMutationVariables = Exact<{
-  email: Scalars['Email'];
-  identity: IdentityInput;
-  location: Location;
-  payoutSettings: PayoutSettingsInput;
+  email: InputMaybe<Scalars['Email']>;
+  identity: InputMaybe<IdentityInput>;
+  location: InputMaybe<Location>;
+  payoutSettings: InputMaybe<PayoutSettingsInput>;
 }>;
 
 
@@ -2607,7 +2607,7 @@ export type UpdateProfileInfoMutation = { __typename?: 'mutation_root', updatePr
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ProfileQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', userId: any, identity: any, email: string, location: any, payoutSettings: any }> };
+export type ProfileQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', userId: any, identity: any | null, email: string | null, location: any | null, payoutSettings: any | null }> };
 
 export type GetProjectContributorsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -2848,7 +2848,7 @@ export type PayoutSettingsQueryHookResult = ReturnType<typeof usePayoutSettingsQ
 export type PayoutSettingsLazyQueryHookResult = ReturnType<typeof usePayoutSettingsLazyQuery>;
 export type PayoutSettingsQueryResult = Apollo.QueryResult<PayoutSettingsQuery, PayoutSettingsQueryVariables>;
 export const UpdateProfileInfoDocument = gql`
-    mutation updateProfileInfo($email: Email!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
+    mutation updateProfileInfo($email: Email, $identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
   updateProfileInfo(
     identity: $identity
     location: $location
