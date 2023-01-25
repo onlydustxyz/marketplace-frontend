@@ -22,7 +22,7 @@
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
             requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, reason: Reason!): Uuid!
-            updateProfileInfo(location: Location!, identity: IdentityInput!, email: Email!, payoutSettings: PayoutSettingsInput!): Uuid!
+            updateProfileInfo(location: Location, identity: IdentityInput, email: Email, payoutSettings: PayoutSettingsInput): Uuid!
           }
           type Query {
             hello: String!
@@ -37,32 +37,32 @@
             ETHEREUM_NAME
           }
           input BankAddress {
-            BIC: String!
-            IBAN: String!
+            BIC: String
+            IBAN: String
           }
           input CompanyIdentity {
-            name: String!
+            name: String
           }
           input IdentityInput {
             optCompany: CompanyIdentity
             optPerson: PersonIdentity
-            type: IdentityType!
+            type: IdentityType
           }
           input Location {
-            city: String!
-            country: String!
-            postCode: String!
-            address: String!
+            city: String
+            country: String
+            postCode: String
+            address: String
           }
           input PayoutSettingsInput {
             optBankAddress: BankAddress
             optEthAddress: EthereumAddress
             optEthName: EthereumName
-            type: PayoutSettingsType!
+            type: PayoutSettingsType
           }
           input PersonIdentity {
-            firstname: String!
-            lastname: String!
+            firstname: String
+            lastname: String
           }
           input Reason {
             workItems: [String!]
