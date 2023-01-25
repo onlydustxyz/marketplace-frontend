@@ -15,11 +15,17 @@ export enum Width {
   Full = "full",
 }
 
+export enum Height {
+  Fit = "fit",
+  Full = "full",
+}
+
 interface ImageCardProps extends React.PropsWithChildren {
   backgroundImageUrl: string;
   backgroundSize?: BackgroundSize;
   backgroundNoise?: BackgroundNoise;
   width?: Width;
+  height?: Height;
   dataTestId?: string;
 }
 
@@ -28,12 +34,17 @@ export default function ImageCard({
   backgroundSize = BackgroundSize.Auto,
   backgroundNoise = BackgroundNoise.Heavy,
   width = Width.Full,
+  height = Height.Full,
   dataTestId,
   children,
 }: ImageCardProps) {
   return (
     <div
-      className={`${width === Width.Fit ? "w-fit" : "w-full"} rounded-2xl`}
+      className={`
+        ${width === Width.Fit ? "w-fit" : "w-full"}
+        ${height === Height.Fit ? "h-fit" : "h-full"}
+        rounded-2xl
+      `}
       style={{
         background: `url(${backgroundImageUrl}), rgba(255, 255, 255, 0.08)`,
         backgroundPosition: "center",
