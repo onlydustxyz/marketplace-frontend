@@ -4,7 +4,7 @@ import OnlyDustLogo from "./OnlyDustLogo";
 import OnlyDustTitle from "./OnlyDustTitle";
 import ProfileButton from "./ProfileButton";
 import MenuItem from "src/components/Layout/Header/MenuItem";
-import { generatePath } from "react-router-dom";
+import { generatePath, Link } from "react-router-dom";
 
 interface HeaderViewProps {
   menuItems: {
@@ -19,15 +19,17 @@ interface HeaderViewProps {
 
 export default function HeaderView({ menuItems, selectedMenuItem, isLoggedIn, lastVisitedProjectId }: HeaderViewProps) {
   return (
-    <div className="bg-black font-walsheim flex flex-row justify-start items-center py-4 px-6 gap-3 text-xl text-neutral-400">
-      <OnlyDustLogo />
-      <OnlyDustTitle />
-      {Object.keys(menuItems).includes(RoutePaths.Projects) && (
+    <div className="bg-black font-walsheim flex flex-row justify-start items-center py-4 px-6 gap-8 text-xl text-neutral-400">
+      <Link to={RoutePaths.Projects} className="flex items-center w-fit gap-3 ">
+        <OnlyDustLogo />
+        <OnlyDustTitle />
+      </Link>
+      {menuItems[RoutePaths.Projects] && (
         <MenuItem path={selectedMenuItem} link={RoutePaths.Projects} activeRegex={new RegExp("^(/|/projects.+)$")}>
           {menuItems[RoutePaths.Projects]}
         </MenuItem>
       )}
-      {Object.keys(menuItems).includes(RoutePaths.MyProjectDetails) && lastVisitedProjectId && (
+      {menuItems[RoutePaths.MyProjectDetails] && lastVisitedProjectId && (
         <MenuItem
           path={selectedMenuItem}
           link={generatePath(RoutePaths.MyProjectDetails, { projectId: lastVisitedProjectId })}
@@ -35,7 +37,7 @@ export default function HeaderView({ menuItems, selectedMenuItem, isLoggedIn, la
           {menuItems[RoutePaths.MyProjectDetails]}
         </MenuItem>
       )}
-      {Object.keys(menuItems).includes(RoutePaths.MyContributions) && (
+      {menuItems[RoutePaths.MyContributions] && (
         <MenuItem path={selectedMenuItem} link={RoutePaths.MyContributions}>
           {menuItems[RoutePaths.MyContributions]}
         </MenuItem>
