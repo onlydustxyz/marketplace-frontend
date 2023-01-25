@@ -34,8 +34,8 @@ pub use location::Location;
 pub struct UserInfo {
 	#[diesel(deserialize_as = "uuid::Uuid")]
 	user_id: UserId,
-	identity: Identity,
-	location: Location,
-	email: Email,
-	payout_settings: PayoutSettings,
+	identity: Option<Identity>,
+	location: Option<Location>,
+	email: Option<Email>,
+	payout_settings: Option<PayoutSettings>,
 }

@@ -132,16 +132,25 @@ impl Mutation {
 
 	pub async fn update_profile_info(
 		context: &Context,
-		location: Location,
-		identity: IdentityInput,
-		email: Email,
-		payout_settings: PayoutSettingsInput,
+		location: Option<Location>,
+		identity: Option<IdentityInput>,
+		email: Option<Email>,
+		payout_settings: Option<PayoutSettingsInput>,
 	) -> Result<Uuid> {
 		let caller_id = *context.caller_info()?.user_id();
 
-		let identity = Identity::try_from(identity).map_err(Error::InvalidRequest)?;
-		let payout_settings =
-			PayoutSettings::try_from(payout_settings).map_err(Error::InvalidRequest)?;
+		let identity = match identity {
+			Some(identity_value) =>
+				Some(Identity::try_from(identity_value).map_err(Error::InvalidRequest)?),
+			None => None,
+		};
+
+		let payout_settings = match payout_settings {
+			Some(payout_settings_value) => Some(
+				PayoutSettings::try_from(payout_settings_value).map_err(Error::InvalidRequest)?,
+			),
+			None => None,
+		};
 
 		context
 			.update_user_info_usecase
