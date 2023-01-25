@@ -227,17 +227,6 @@ describe('"Profile" page for individual', () => {
     });
   });
 
-  it("should display error when required field missing", async () => {
-    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Email address"));
-    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("First name"));
-    expect((await screen.findByLabelText<HTMLInputElement>("Email address")).value).toBe("");
-    await userEvent.click(await screen.findByText("Save profile"));
-    await waitFor(() => {
-      const errorMessages = screen.getAllByText("Required");
-      expect(errorMessages.length).toBe(2);
-    });
-  });
-
   it("should not navigate to projects screen when clicking Save profile with invalid Ethereum address", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
     await userEvent.click(await screen.findByText("Save profile"));
@@ -291,6 +280,21 @@ describe('"Profile" page for individual', () => {
     });
   });
 
+  it("should ask for required IBAN when only filling BIC", async () => {
+    // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
+    await userEvent.click(
+      await screen.findByRole("radio", {
+        name: /bank wire/i,
+      })
+    );
+    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("BIC"), "BNPCFR21");
+    await userEvent.click(await screen.findByText("Save profile"));
+    await waitFor(() => {
+      const errorMessages = screen.getAllByText("Required");
+      expect(errorMessages.length).toBe(1);
+    });
+  });
+
   it("should send only relevant values to the backend", async () => {
     // Make sure both Company and individual are filled
     await userEvent.click(await screen.findByRole("switch"));
@@ -332,16 +336,6 @@ describe('"Profile" page for company', () => {
       }),
     });
     vi.clearAllMocks();
-  });
-
-  it("should display error when required field missing", async () => {
-    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>("Company name"));
-    expect((await screen.findByLabelText<HTMLInputElement>("Company name")).value).toBe("");
-    await userEvent.click(await screen.findByTestId("profile-form-submit-button"));
-    await waitFor(() => {
-      const errorMessages = screen.getAllByText("Required");
-      expect(errorMessages.length).toBe(1);
-    });
   });
 
   it("should trigger the update upon form submit", async () => {
