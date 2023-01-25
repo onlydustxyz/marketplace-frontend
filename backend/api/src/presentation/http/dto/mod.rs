@@ -1,5 +1,5 @@
 mod identity;
-pub use identity::IdentityInput;
+pub use identity::*;
 
 mod payout_settings;
-pub use payout_settings::PayoutSettingsInput;
+pub use payout_settings::*;
