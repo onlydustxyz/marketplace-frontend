@@ -16,6 +16,10 @@ import { sortBy } from "lodash";
 import SortingArrow from "../ContributorsTable/SortingArrow";
 import PayoutStatus from "../PayoutStatus";
 import GithubPRLink, { LinkColor } from "./GithubPRLink";
+import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
+import FocusLine from "src/icons/FocusLine";
+import FolderLine from "src/icons/FolderLine";
+import TimeLine from "src/icons/TimeLine";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -84,18 +88,22 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
   return (
     <Headers>
       <HeaderCell className="w-1/4" onClick={() => applySorting(Field.Date)}>
+        <TimeLine className="p-px font-normal" />
         <span>{T("payment.table.date")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Date} />
       </HeaderCell>
       <HeaderCell className="w-1/2" onClick={() => applySorting(Field.Contribution)}>
+        <FolderLine className="p-px font-normal" />
         <span>{T("payment.table.project")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Contribution} />
       </HeaderCell>
       <HeaderCell className="w-1/4" onClick={() => applySorting(Field.Amount)}>
+        <MoneyDollarCircleLine className="p-px font-normal" />
         <span>{T("payment.table.amount")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Amount} />
       </HeaderCell>
       <HeaderCell className="w-1/4" onClick={() => applySorting(Field.Status)}>
+        <FocusLine className="p-px font-normal" />
         <span>{T("payment.table.status")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Status} />
       </HeaderCell>
