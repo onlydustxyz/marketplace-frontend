@@ -1,17 +1,20 @@
 import { PropsWithChildren } from "react";
-import { linkClickHandlerFactory } from "src/utils/clickHandler";
 
 interface Props extends PropsWithChildren {
   className?: string;
   clickable?: boolean;
-  link?: string;
+  highlightOnHover?: number;
 }
 
-const Line: React.FC<Props> = ({ className, children, link }) => {
+const Line: React.FC<Props> = ({ className, children, highlightOnHover }) => {
   return (
     <tr
-      onClick={link ? linkClickHandlerFactory(link) : undefined}
-      className={`group/line border-b border-gray-800 ${link && "hover:bg-white/5 cursor-pointer"} ${className}`}
+      className={`group/line border-b border-gray-800
+        ${
+          highlightOnHover &&
+          `transition duration-${highlightOnHover} hover:bg-white/4 outline-offset-0 hover:outline-2`
+        }
+        ${className}`}
     >
       {children}
     </tr>

@@ -14,6 +14,7 @@ import CheckLine from "src/icons/CheckLine";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import Tooltip from "../Tooltip";
+import { linkClickHandlerFactory } from "src/utils/clickHandler";
 
 type PropsType = {
   contributors: Contributor[];
@@ -91,26 +92,28 @@ const renderContributors = (contributors: Contributor[]) => {
   const { T } = useIntl();
 
   return contributors.map(contributor => (
-    <Line key={contributor.login} link={`https://github.com/${contributor.login}`}>
-      <Cell className="space-x-3">
-        <div>
-          <RoundedImage src={contributor.avatarUrl} alt={contributor.login} size={ImageSize.ExtraSmall} />
-        </div>
-        <div className="flex space-x-1 items-end">
+    <Line key={contributor.login} highlightOnHover={200}>
+      <div onClick={linkClickHandlerFactory(`https://github.com/${contributor.login}`)} className="w-fit">
+        <Cell className="space-x-3">
           <div>
-            <span className="text-fuchsia-300">{contributor.login}</span>
+            <RoundedImage src={contributor.avatarUrl} alt={contributor.login} size={ImageSize.ExtraSmall} />
           </div>
-          {contributor.isRegistered && (
-            <div className="relative group/od-logo">
-              <img src={onlyDustLogo} className="h-3.5" />
-              <div className="invisible group-hover/od-logo:visible absolute top-5 -left-16 w-36 z-10">
-                <Tooltip>{T("contributor.table.userRegisteredTooltip")}</Tooltip>
-              </div>
+          <div className="flex space-x-1 items-end">
+            <div>
+              <span className="text-fuchsia-300">{contributor.login}</span>
             </div>
-          )}
-        </div>
-        <ExternalLinkLine className="text-fuchsia-700 invisible group-hover/line:visible" />
-      </Cell>
+            {contributor.isRegistered && (
+              <div className="relative group/od-logo">
+                <img src={onlyDustLogo} className="h-3.5" />
+                <div className="invisible group-hover/od-logo:visible absolute top-5 -left-16 w-36 z-10">
+                  <Tooltip>{T("contributor.table.userRegisteredTooltip")}</Tooltip>
+                </div>
+              </div>
+            )}
+          </div>
+          <ExternalLinkLine className="text-fuchsia-700 invisible group-hover/line:visible" />
+        </Cell>
+      </div>
       <Cell>{`${contributor.totalEarned || "-"} $`}</Cell>
       <Cell>{contributor.paidContributions || "-"}</Cell>
     </Line>
