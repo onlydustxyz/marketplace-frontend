@@ -11,7 +11,6 @@ import { useIntl } from "src/hooks/useIntl";
 import {
   IdentityType,
   PayoutSettingsType,
-  UpdateProfileInfoMutationVariables,
   UserInfo,
   PayoutSettingsInput,
   Location,
@@ -35,7 +34,7 @@ type Inputs = {
   firstname?: string;
   lastname?: string;
   companyName?: string;
-  email: string;
+  email?: string | null;
   address: string;
   postCode: string;
   city: string;
@@ -60,23 +59,23 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
     defaultValues: {
       isCompanyProfile: user?.identity?.Company,
       firstname: user?.identity?.Person?.firstname,
-      lastname: user?.identity.Person?.lastname,
+      lastname: user?.identity?.Person?.lastname,
       companyName: user?.identity?.Company?.name,
       email: user?.email,
-      address: user?.location.address,
-      postCode: user?.location.post_code,
-      city: user?.location.city,
-      country: user?.location.country,
-      payoutSettingsType: user?.payoutSettings.EthTransfer?.Address
+      address: user?.location?.address,
+      postCode: user?.location?.post_code,
+      city: user?.location?.city,
+      country: user?.location?.country,
+      payoutSettingsType: user?.payoutSettings?.EthTransfer?.Address
         ? PayoutSettingsDisplayType.EthereumIdentity
-        : user?.payoutSettings.EthTransfer?.Domain
+        : user?.payoutSettings?.EthTransfer?.Domain
         ? PayoutSettingsDisplayType.EthereumIdentity
-        : user?.payoutSettings.WireTransfer
+        : user?.payoutSettings?.WireTransfer
         ? PayoutSettingsDisplayType.BankAddress
         : PayoutSettingsDisplayType.EthereumIdentity,
-      ethIdentity: user?.payoutSettings.EthTransfer?.Address || user?.payoutSettings.EthTransfer?.Name,
-      IBAN: user?.payoutSettings.WireTransfer?.IBAN,
-      BIC: user?.payoutSettings.WireTransfer?.BIC,
+      ethIdentity: user?.payoutSettings?.EthTransfer?.Address || user?.payoutSettings?.EthTransfer?.Name,
+      IBAN: user?.payoutSettings?.WireTransfer?.IBAN,
+      BIC: user?.payoutSettings?.WireTransfer?.BIC,
     },
   });
   const { handleSubmit } = formMethods;
@@ -101,6 +100,9 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
 
   const payoutSettingsType = formMethods.watch("payoutSettingsType");
   const isCompanyProfile = formMethods.watch("isCompanyProfile");
+  const IBANValue = formMethods.watch("IBAN");
+  const BICValue = formMethods.watch("BIC");
+
   const { T } = useIntl();
 
   return (
@@ -129,13 +131,11 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                             label={T("profile.form.firstname")}
                             name="firstname"
                             placeholder={T("profile.form.firstname")}
-                            options={{ required: T("form.required") }}
                           />
                           <Input
                             label={T("profile.form.lastname")}
                             name="lastname"
                             placeholder={T("profile.form.lastname")}
-                            options={{ required: T("form.required") }}
                           />
                         </>
                       )}
@@ -144,7 +144,6 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                           label={T("profile.form.companyName")}
                           name="companyName"
                           placeholder={T("profile.form.companyName")}
-                          options={{ required: T("form.required") }}
                         />
                       )}
                     </div>
@@ -158,7 +157,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                     <Input
                       label={T("profile.form.emailAddress")}
                       name="email"
-                      options={{ pattern: EMAIL_ADDRESS_REGEXP, required: T("form.required") }}
+                      options={{ pattern: EMAIL_ADDRESS_REGEXP }}
                       placeholder={T("profile.form.emailPlaceholder")}
                     />
                   </div>
@@ -171,31 +170,15 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
               <div className="font-medium text-lg">{T("profile.form.location")}</div>
               <div>
                 <div className="mt-5">
-                  <Input
-                    label={T("profile.form.address")}
-                    name="address"
-                    placeholder={T("profile.form.address")}
-                    options={{ required: T("form.required") }}
-                  />
+                  <Input label={T("profile.form.address")} name="address" placeholder={T("profile.form.address")} />
                   <div className="flex flex-row gap-5">
                     <Input
                       label={T("profile.form.postCode")}
                       name="postCode"
                       placeholder={T("profile.form.postCode")}
-                      options={{ required: T("form.required") }}
                     />
-                    <Input
-                      label={T("profile.form.city")}
-                      name="city"
-                      placeholder={T("profile.form.city")}
-                      options={{ required: T("form.required") }}
-                    />
-                    <Input
-                      label={T("profile.form.country")}
-                      name="country"
-                      placeholder={T("profile.form.country")}
-                      options={{ required: T("form.required") }}
-                    />
+                    <Input label={T("profile.form.city")} name="city" placeholder={T("profile.form.city")} />
+                    <Input label={T("profile.form.country")} name="country" placeholder={T("profile.form.country")} />
                   </div>
                 </div>
               </div>
@@ -228,7 +211,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                 label={T("profile.form.ethIdentity")}
                 name="ethIdentity"
                 placeholder={T("profile.form.ethIdentityPlaceholder")}
-                options={{ pattern: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP, required: T("form.required") }}
+                options={{ pattern: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP }}
               />
             )}
             {payoutSettingsType === PayoutSettingsDisplayType.BankAddress && (
@@ -242,18 +225,36 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
                         label={T("profile.form.iban")}
                         name="IBAN"
                         placeholder={T("profile.form.iban")}
-                        options={{ required: T("form.required"), validate: IBAN.isValid }}
+                        options={{
+                          required: { value: !!BICValue, message: T("form.required") },
+                          validate: value => {
+                            return !value?.trim() || IBAN.isValid(value);
+                          },
+                        }}
                         value={value && IBAN.printFormat(value)}
                         onChange={onChange}
                       />
                     );
                   }}
                 />
-                <Input
-                  label={T("profile.form.bic")}
+                <Controller
+                  control={formMethods.control}
                   name="BIC"
-                  placeholder={T("profile.form.bic")}
-                  options={{ pattern: BIC_REGEXP, required: T("form.required") }}
+                  render={({ field: { onChange, value } }) => {
+                    return (
+                      <Input
+                        label={T("profile.form.bic")}
+                        name="BIC"
+                        placeholder={T("profile.form.bic")}
+                        options={{
+                          pattern: BIC_REGEXP,
+                          required: { value: !!IBANValue?.trim(), message: T("form.required") },
+                        }}
+                        value={value}
+                        onChange={onChange}
+                      />
+                    );
+                  }}
                 />
               </div>
             )}
@@ -267,10 +268,10 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
 
 export const UPDATE_USER_MUTATION = gql`
   mutation updateProfileInfo(
-    $email: Email!
-    $identity: IdentityInput!
-    $location: Location!
-    $payoutSettings: PayoutSettingsInput!
+    $email: Email
+    $identity: IdentityInput
+    $location: Location
+    $payoutSettings: PayoutSettingsInput
   ) {
     updateProfileInfo(identity: $identity, location: $location, payoutSettings: $payoutSettings, email: $email)
   }
@@ -293,8 +294,8 @@ const mapFormDataToSchema = ({
 }: Inputs) => {
   const identity: IdentityInput = {
     type: isCompanyProfile ? IdentityType.Company : IdentityType.Person,
-    optPerson: !isCompanyProfile && lastname && firstname ? { lastname, firstname } : null,
-    optCompany: isCompanyProfile && companyName ? { name: companyName } : null,
+    optPerson: !isCompanyProfile ? { firstname: firstname ?? null, lastname: lastname ?? null } : null,
+    optCompany: isCompanyProfile ? { name: companyName ?? null } : null,
   };
 
   const location: Location = {
@@ -312,17 +313,13 @@ const mapFormDataToSchema = ({
       : PayoutSettingsType.EthereumAddress;
 
   const payoutSettings: PayoutSettingsInput = {
+    optEthAddress: payoutType === PayoutSettingsType.EthereumAddress && ethIdentity ? ethIdentity : null,
+    optBankAddress: payoutType === PayoutSettingsType.BankAddress ? { IBAN: IBAN ?? null, BIC: BIC ?? null } : null,
+    optEthName: payoutType === PayoutSettingsType.EthereumName && ethIdentity ? ethIdentity : null,
     type: payoutType,
-    optEthAddress: payoutType === PayoutSettingsType.EthereumAddress ? ethIdentity : null,
-    optBankAddress: payoutType === PayoutSettingsType.BankAddress && IBAN && BIC ? { IBAN, BIC } : null,
-    optEthName: payoutType === PayoutSettingsType.EthereumName ? ethIdentity : null,
   };
 
-  const variables: UpdateProfileInfoMutationVariables = { email, identity, location, payoutSettings };
-
-  return {
-    variables,
-  };
+  return { variables: { email, identity, location, payoutSettings } };
 };
 
 export default ProfileForm;
