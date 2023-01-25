@@ -10,11 +10,11 @@ pub enum Identity {
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize, GraphQLInputObject)]
 pub struct CompanyIdentity {
-	name: String,
+	name: Option<String>,
 }
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize, GraphQLInputObject)]
 pub struct PersonIdentity {
-	firstname: String,
-	lastname: String,
+	firstname: Option<String>,
+	lastname: Option<String>,
 }

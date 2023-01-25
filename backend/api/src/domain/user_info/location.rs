@@ -14,8 +14,8 @@ use serde::{Deserialize, Serialize};
 )]
 #[sql_type = "diesel::sql_types::Jsonb"]
 pub struct Location {
-	address: String,
-	post_code: String,
-	city: String,
-	country: String,
+	address: Option<String>,
+	post_code: Option<String>,
+	city: Option<String>,
+	country: Option<String>,
 }

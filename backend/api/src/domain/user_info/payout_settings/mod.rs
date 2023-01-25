@@ -17,6 +17,6 @@ pub enum PayoutSettings {
 #[derive(Debug, Clone, Serialize, Deserialize, GraphQLInputObject, PartialEq, Eq)]
 #[allow(non_snake_case)]
 pub struct BankAddress {
-	BIC: String,
-	IBAN: String,
+	BIC: Option<String>,
+	IBAN: Option<String>,
 }
