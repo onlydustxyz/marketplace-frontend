@@ -31,6 +31,7 @@ pub use location::Location;
 )]
 #[table_name = "user_info"]
 #[primary_key(user_id)]
+#[changeset_options(treat_none_as_null = "true")]
 pub struct UserInfo {
 	#[diesel(deserialize_as = "uuid::Uuid")]
 	user_id: UserId,
