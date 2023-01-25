@@ -9,7 +9,7 @@ interface LinkProps {
 }
 
 export enum LinkColor {
-  Grey = "text-neutral-400",
+  Grey = "text-spaceBlue-200",
 }
 
 export default function GithubPRLink({ link, linkColor }: LinkProps) {
@@ -19,11 +19,11 @@ export default function GithubPRLink({ link, linkColor }: LinkProps) {
     linkText = `#${matches[1]} · View on Github`;
   }
   return (
-    <div className="group/github-pr-link flex flex-row gap-2 w-fit items-center hover:cursor-pointer">
+    <div className="group/github-pr-link flex flex-row gap-1 w-fit items-center hover:cursor-pointer">
       <div className={`${linkColor} flex group-hover/github-pr-link:underline`} onClick={linkClickHandlerFactory(link)}>
         {linkText}
       </div>
-      <ExternalLinkLine className="flex text-fuchsia-700 invisible group-hover/github-pr-link:visible" />
+      <ExternalLinkLine className="flex text-spacePurple-500 invisible group-hover/github-pr-link:visible" />
     </div>
   );
 }
