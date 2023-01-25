@@ -15,6 +15,6 @@ pub struct CompanyIdentity {
 
 #[derive(Default, Debug, Clone, Serialize, Deserialize, GraphQLInputObject)]
 pub struct PersonIdentity {
-	firstname: String,
-	lastname: String,
+	firstname: Option<String>,
+	lastname: Option<String>,
 }
