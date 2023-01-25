@@ -113,17 +113,17 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
 
 const renderPayments = (payments: Payment[], payoutInfoMissing: boolean) => {
   return payments.map(payment => (
-    <Line key={payment.id}>
-      <Cell> {dayjs.tz(payment.requestedAt, dayjs.tz.guess()).fromNow()} </Cell>
+    <Line key={payment.id} className="transition duration-200 hover:bg-white/4 outline-offset-0 hover:outline-2">
+      <Cell className="px-3"> {dayjs.tz(payment.requestedAt, dayjs.tz.guess()).fromNow()} </Cell>
       <Cell className="flex flex-row gap-3">
         <RoundedImage src={payment.project.logoUrl || onlyDustLogo} alt={payment.project.title} />
         <div className="flex flex-col truncate justify-center">
-          <div className="font-bold text-xl">{payment.project.title}</div>
+          <div className="font-normal text-base font-belwe">{payment.project.title}</div>
           {payment.reason && <GithubPRLink link={payment.reason} linkColor={LinkColor.Grey}></GithubPRLink>}
         </div>
       </Cell>
-      <Cell>{`${payment.amount.value} ${payment.amount.currency}`}</Cell>
-      <Cell>
+      <Cell className="px-3">{`${payment.amount.value} ${payment.amount.currency}`}</Cell>
+      <Cell className="px-3">
         <PayoutStatus {...{ status: payment.status, payoutInfoMissing }} />
       </Cell>
     </Line>
