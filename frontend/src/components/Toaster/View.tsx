@@ -19,10 +19,10 @@ export default function View({ message, visible, isError }: Props) {
     >
       <div
         className={classNames(
-          "relative flex justify-center items-center bg-black rounded-2xl before:absolute before:-z-10 before:h-screen before:w-screen",
+          "relative flex justify-center items-center rounded-2xl before:absolute before:-z-10 before:h-screen before:w-screen",
           {
-            "before:bg-orange-500": isError,
-            "before:bg-multi-color-gradient before:animate-spin-invert-slow": !isError,
+            "bg-orange-900 before:bg-orange-500": isError,
+            "bg-spaceBlue-900 before:bg-multi-color-gradient before:animate-spin-invert-slow": !isError,
           }
         )}
       >

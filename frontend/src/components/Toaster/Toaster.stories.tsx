@@ -20,7 +20,7 @@ export const Default = Template.bind(
 export const Error = Template.bind(
   {},
   {
-    message: "Oops somthing bad happened!",
+    message: "Oops something bad happened!",
     visible: true,
     isError: true,
   }
