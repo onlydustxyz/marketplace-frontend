@@ -44,5 +44,12 @@ module.exports = {
     ],
     "@typescript-eslint/no-namespace": "off",
   },
-  ignorePatterns: ["frontend/dist/*", "frontend/test/*", "cypress/*", "app.json", "scripts/*"],
+  ignorePatterns: [
+    "frontend/dist/*",
+    "frontend/test/*",
+    "frontend/src/__generated",
+    "cypress/*",
+    "app.json",
+    "scripts/*",
+  ],
 };
