@@ -1,8 +1,7 @@
 import { gql, QueryResult } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Card from "src/components/Card";
-import PaymentTableFallback from "src/components/PaymentTableFallback";
 import PayoutTable, { mapApiPaymentsToProps } from "src/components/PayoutTable";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
@@ -38,6 +37,11 @@ const MyContributions = () => {
   const { data: paymentRequestsQueryData } = getPaymentRequestsQuery;
   const payments = paymentRequestsQueryData?.paymentRequests?.map(mapApiPaymentsToProps);
   const hasPayments = payments && payments.length > 0;
+
+  if (hasPayments === false) {
+    return <Navigate to={RoutePaths.Projects} />;
+  }
+
   const totalEarnings = hasPayments && payments.reduce((acc, p) => acc + p.amount.value, 0);
   const payoutInfoMissing = !!isPayoutInfoMissing(getPayoutSettingsQuery);
 
@@ -58,13 +62,7 @@ const MyContributions = () => {
             )}
           </div>
           <div className="flex gap-4 mb-10">
-            <Card>
-              {hasPayments ? (
-                <PayoutTable payments={payments} payoutInfoMissing={payoutInfoMissing} />
-              ) : (
-                <PaymentTableFallback />
-              )}
-            </Card>
+            <Card>{payments && <PayoutTable payments={payments} payoutInfoMissing={payoutInfoMissing} />}</Card>
             {totalEarnings && <TotalEarnings amount={totalEarnings} />}
           </div>
         </QueryWrapper>
