@@ -11,6 +11,7 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { RoutePaths } from "src/App";
 import { useSession } from "src/hooks/useSession";
 import View from "./View";
+import { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
 
 type ProjectDetailsParams = {
   projectId: string;
@@ -128,40 +129,16 @@ const projectFromQuery = (project: GetProjectQuery["projectsByPk"]) => ({
 });
 
 export const GET_PROJECT_QUERY = gql`
+  ${PROJECT_CARD_FRAGMENT}
   query GetProject($id: uuid!, $githubUserId: bigint = 0) {
     projectsByPk(id: $id) {
-      id
-      name
-      totalSpentAmountInUsd
-      projectDetails {
-        description
-        telegramLink
-        logoUrl
-      }
-      pendingInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
-        id
-      }
-      projectLeads {
-        userId
-        user {
-          displayName
-          avatarUrl
-        }
-      }
+      ...ProjectCardFields
       githubRepo {
-        name
-        owner
         content {
           readme {
             content
           }
-          contributors {
-            login
-            avatarUrl
-          }
-          logoUrl
         }
-        languages
       }
     }
   }
