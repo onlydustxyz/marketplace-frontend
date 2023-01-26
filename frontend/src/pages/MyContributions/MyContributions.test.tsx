@@ -121,7 +121,7 @@ describe('"MyContributions" page', () => {
     });
   });
 
-  it("should print message when no contributions returned", async () => {
+  it("should navigate to home when no contributions returned", async () => {
     renderWithIntl(<MyContributionsPage />, {
       wrapper: MemoryRouterProviderFactory({
         route: RoutePaths.Profile,
@@ -129,7 +129,7 @@ describe('"MyContributions" page', () => {
       }),
     });
 
-    expect(await screen.findByText("No payments received yet")).toBeInTheDocument();
+    expect(window.location.pathname).toEqual("/");
   });
 
   it("should render contributions table", async () => {
