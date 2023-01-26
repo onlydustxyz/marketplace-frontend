@@ -19,6 +19,7 @@ export default function View({ technologies, onTechnologiesChange }: Props) {
         icon={FilterDropDownIcon.Technology}
         options={technologies}
         onChange={onTechnologiesChange}
+        dataTestId="technologies-filter-dropdown"
       />
     </Card>
   );
