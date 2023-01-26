@@ -15,7 +15,7 @@ type ToasterOptions = {
 type StrictToasterOptions = Required<ToasterOptions>;
 
 const DEFAULT_TOASTER_OPTIONS: StrictToasterOptions = {
-  duration: 4500,
+  duration: 6000,
   isError: false,
 };
 
