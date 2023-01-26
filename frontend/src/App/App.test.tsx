@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event";
 import App, { RoutePaths } from ".";
 import { AUTH_CODE_QUERY_KEY } from "src/pages/Login";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import { GET_PROJECTS_QUERY } from "src/pages/Projects";
+import { GET_PROJECTS_QUERY } from "src/pages/Projects/AllProjects";
 import { GET_PROFILE_QUERY } from "src/pages/Profile";
 import { CLAIMS_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
 import { ProjectDetailsTab, GET_PROJECT_QUERY } from "src/pages/ProjectDetails";
