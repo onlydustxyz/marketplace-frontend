@@ -14,18 +14,22 @@ type Props = {
   selectedLabel: string;
   options: string[];
   onChange?: (values: string[]) => void;
+  dataTestId?: string;
 };
 
 const ICONS = {
   [FilterDropDownIcon.Technology]: technologyIcon,
 };
 
-export default function FilterDropDown({ icon, defaultLabel, selectedLabel, options, onChange }: Props) {
+export default function FilterDropDown({ icon, defaultLabel, selectedLabel, options, onChange, dataTestId }: Props) {
   return (
     <Listbox onChange={onChange} multiple>
       {({ value }) => (
         <>
-          <Listbox.Button className="w-full flex items-center justify-between py-2 backdrop-blur-lg drop-shadow-bottom-sm border-b border-greyscale-50/12 hover:cursor-pointer">
+          <Listbox.Button
+            data-testid={dataTestId}
+            className="w-full flex items-center justify-between py-2 backdrop-blur-lg drop-shadow-bottom-sm border-b border-greyscale-50/12 hover:cursor-pointer"
+          >
             <div className="flex gap-2 items-center">
               <img className="w-6 h-6" src={ICONS[icon]} />
               <span className="font-medium text-greyscale-50 text-sm font-walsheim">
