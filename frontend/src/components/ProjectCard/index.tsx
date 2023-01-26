@@ -48,7 +48,7 @@ export default function ProjectCard({
                 )}
               </div>
             </div>
-            {githubRepo?.languages && (
+            {githubRepo?.languages && Object.keys(githubRepo?.languages).length > 0 && (
               <div className="flex flex-row border border-neutral-600 w-fit px-3 py-1 rounded-2xl gap-2 text-md">
                 <div className="flex items-center justify-center">
                   <CodeSSlashLine className="text-gray-400" />
