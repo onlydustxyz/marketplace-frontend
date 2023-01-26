@@ -11,12 +11,20 @@ import { HasuraUserRole } from "src/types";
 import { GetProjectsQuery } from "src/__generated/graphql";
 import { Project } from "..";
 
-export default function AllProjects() {
+type Props = {
+  technologies: string[];
+};
+
+export default function AllProjects({ technologies }: Props) {
   const { ledProjectIds, githubUserId } = useAuth();
 
-  const getProjectsQuery = useHasuraQuery<GetProjectsQuery>(GET_PROJECTS_QUERY, HasuraUserRole.Public, {
-    variables: { githubUserId },
-  });
+  const getProjectsQuery = useHasuraQuery<GetProjectsQuery>(
+    buildGetProjectsQuery(technologies),
+    HasuraUserRole.Public,
+    {
+      variables: { githubUserId, languages: technologies },
+    }
+  );
 
   const projects = useMemo(
     () => sortBy(getProjectsQuery.data?.projects, p => !p.pendingInvitations.length),
@@ -45,10 +53,21 @@ export default function AllProjects() {
   );
 }
 
-export const GET_PROJECTS_QUERY = gql`
+const buildQueryArgs = (technologies: string[]) => (technologies.length ? ", $languages: [String!]" : "");
+
+const buildQueryFilters = (technologies: string[]) => {
+  let filters = "";
+  if (technologies.length) {
+    filters += "{githubRepo: {languages: {_hasKeysAny: $languages}}}";
+  }
+
+  return filters.length ? `(where: ${filters})` : "";
+};
+
+export const buildGetProjectsQuery = (technologies: string[]) => gql`
   ${PROJECT_CARD_FRAGMENT}
-  query GetProjects($githubUserId: bigint = 0) {
-    projects {
+  query GetProjects($githubUserId: bigint = 0${buildQueryArgs(technologies)}) {
+    projects${buildQueryFilters(technologies)} {
       ...ProjectCardFields
     }
   }
