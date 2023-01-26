@@ -36,33 +36,33 @@ const View = ({ avatarUrl, displayName, logout }: Props) => {
         >
           <Menu.Items
             className="
-							absolute right-0 mt-2 w-56 origin-top-right
-							divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5
-							focus:outline-none z-10"
+							absolute right-0 mt-3 w-56 origin-top-right
+							divide-y divide-stone-100/8 rounded-md bg-white/2 backdrop-blur-4xl shadow-lg ring-1 ring-stone-100/8
+							focus:outline-none z-10 overflow-hidden"
           >
-            <div className="px-1 py-1">
+            <div className="">
               <Menu.Item>
                 {({ active }) => (
                   <Link
                     to={RoutePaths.Profile}
                     state={{ prev: location }}
                     className={`${
-                      active ? "bg-violet-500 text-white" : "text-gray-900"
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm cursor-pointer`}
+                      active ? "bg-white/4" : "bg-white/2"
+                    } group flex w-full items-center p-3 text-sm cursor-pointer text-greyscale-50`}
                   >
                     {T("profile.edit")}
                   </Link>
                 )}
               </Menu.Item>
             </div>
-            <div className="px-1 py-1">
+            <div className="">
               <Menu.Item>
                 {({ active }) => (
                   <button
                     onClick={logout}
                     className={`${
-                      active ? "bg-violet-500 text-white" : "text-gray-900"
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      active ? "bg-white/4" : "bg-white/2"
+                    } group flex w-full items-center p-3 text-sm text-greyscale-50`}
                     data-testid="logout-button"
                   >
                     {T("navbar.logout")}
