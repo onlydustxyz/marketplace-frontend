@@ -56,6 +56,7 @@ const graphQlMocks = [
     result: {
       data: {
         projectsByPk: {
+          __typename: "Projects",
           id: TEST_PROJECT_ID,
           name: TEST_PROJECT_NAME,
           totalSpentAmountInUsd: 1000,
@@ -94,6 +95,7 @@ const graphQlMocks = [
     result: {
       data: {
         projectsByPk: {
+          __typename: "Projects",
           id: TEST_LED_PROJECT_ID,
           name: TEST_LED_PROJECT_NAME,
           totalSpentAmountInUsd: 1000,

@@ -1,3 +1,4 @@
+import { gql } from "@apollo/client";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import Button, { ButtonSize } from "src/components/Button";
 import Card, { CardBorder } from "src/components/Card";
@@ -89,3 +90,37 @@ export default function ProjectCard({
     </Card>
   );
 }
+
+export const PROJECT_CARD_FRAGMENT = gql`
+  fragment ProjectCardFields on Projects {
+    id
+    name
+    totalSpentAmountInUsd
+    projectDetails {
+      description
+      telegramLink
+      logoUrl
+    }
+    pendingInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
+      id
+    }
+    projectLeads {
+      user {
+        displayName
+        avatarUrl
+      }
+    }
+    githubRepo {
+      name
+      owner
+      content {
+        contributors {
+          login
+          avatarUrl
+        }
+        logoUrl
+      }
+      languages
+    }
+  }
+`;

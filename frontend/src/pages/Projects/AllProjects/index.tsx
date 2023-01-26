@@ -3,9 +3,8 @@ import { sortBy } from "lodash";
 import { useMemo } from "react";
 import { generatePath, Link } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import ProjectCard from "src/components/ProjectCard";
+import ProjectCard, { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
 import QueryWrapper from "src/components/QueryWrapper";
-import { GITHUB_REPO_FIELDS_FOR_PROJECT_CARD_FRAGMENT } from "src/graphql/fragments";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
@@ -47,29 +46,10 @@ export default function AllProjects() {
 }
 
 export const GET_PROJECTS_QUERY = gql`
-  ${GITHUB_REPO_FIELDS_FOR_PROJECT_CARD_FRAGMENT}
+  ${PROJECT_CARD_FRAGMENT}
   query GetProjects($githubUserId: bigint = 0) {
     projects {
-      id
-      name
-      totalSpentAmountInUsd
-      projectDetails {
-        description
-        telegramLink
-        logoUrl
-      }
-      pendingInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
-        id
-      }
-      projectLeads {
-        user {
-          displayName
-          avatarUrl
-        }
-      }
-      githubRepo {
-        ...GithubRepoFieldsForProjectCard
-      }
+      ...ProjectCardFields
     }
   }
 `;

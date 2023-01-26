@@ -2661,7 +2661,7 @@ export type GetProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, name: string, totalSpentAmountInUsd: any, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null } | null };
+export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, name: string, totalSpentAmountInUsd: any, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }> } | null };
 
 export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
   invitationId: Scalars['Uuid'];
@@ -2682,18 +2682,37 @@ export type GetAllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllTechnologiesQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', githubRepo: { __typename?: 'GithubRepoDetails', languages: any } | null }> };
 
-export const GithubRepoFieldsForProjectCardFragmentDoc = gql`
-    fragment GithubRepoFieldsForProjectCard on GithubRepoDetails {
+export const ProjectCardFieldsFragmentDoc = gql`
+    fragment ProjectCardFields on Projects {
+  id
   name
-  owner
-  content {
-    contributors {
-      login
-      avatarUrl
-    }
+  totalSpentAmountInUsd
+  projectDetails {
+    description
+    telegramLink
     logoUrl
   }
-  languages
+  pendingInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
+    id
+  }
+  projectLeads {
+    user {
+      displayName
+      avatarUrl
+    }
+  }
+  githubRepo {
+    name
+    owner
+    content {
+      contributors {
+        login
+        avatarUrl
+      }
+      logoUrl
+    }
+    languages
+  }
 }
     `;
 export const GetFirstLeadProjectIdDocument = gql`
@@ -3201,42 +3220,17 @@ export type GetProjectsForSidebarQueryResult = Apollo.QueryResult<GetProjectsFor
 export const GetProjectDocument = gql`
     query GetProject($id: uuid!, $githubUserId: bigint = 0) {
   projectsByPk(id: $id) {
-    id
-    name
-    totalSpentAmountInUsd
-    projectDetails {
-      description
-      telegramLink
-      logoUrl
-    }
-    pendingInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
-      id
-    }
-    projectLeads {
-      userId
-      user {
-        displayName
-        avatarUrl
-      }
-    }
+    ...ProjectCardFields
     githubRepo {
-      name
-      owner
       content {
         readme {
           content
         }
-        contributors {
-          login
-          avatarUrl
-        }
-        logoUrl
       }
-      languages
     }
   }
 }
-    `;
+    ${ProjectCardFieldsFragmentDoc}`;
 
 /**
  * __useGetProjectQuery__
@@ -3300,29 +3294,10 @@ export type AcceptProjectLeaderInvitationMutationOptions = Apollo.BaseMutationOp
 export const GetProjectsDocument = gql`
     query GetProjects($githubUserId: bigint = 0) {
   projects {
-    id
-    name
-    totalSpentAmountInUsd
-    projectDetails {
-      description
-      telegramLink
-      logoUrl
-    }
-    pendingInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
-      id
-    }
-    projectLeads {
-      user {
-        displayName
-        avatarUrl
-      }
-    }
-    githubRepo {
-      ...GithubRepoFieldsForProjectCard
-    }
+    ...ProjectCardFields
   }
 }
-    ${GithubRepoFieldsForProjectCardFragmentDoc}`;
+    ${ProjectCardFieldsFragmentDoc}`;
 
 /**
  * __useGetProjectsQuery__

@@ -79,6 +79,7 @@ const graphQlMocks = [
       data: {
         projects: [
           {
+            __typename: "Projects",
             id: TEST_PROJECT_ID,
             name: TEST_PROJECT_NAME,
             projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION, logoUrl: null },
@@ -127,6 +128,7 @@ const graphQlMocks = [
     result: {
       data: {
         projectsByPk: {
+          __typename: "Projects",
           name: TEST_PROJECT_NAME,
           totalSpentAmountInUsd: 123,
           projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
