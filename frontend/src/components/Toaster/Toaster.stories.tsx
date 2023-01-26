@@ -1,36 +1,18 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentStory } from "@storybook/react";
+import { JSXElementConstructor } from "react";
 import Toaster from "./View";
 
 export default {
   title: "Toaster",
-  component: Toaster,
-} as ComponentMeta<typeof Toaster>;
+};
 
-const Template: ComponentStory<typeof Toaster> = args => <Toaster {...args} />;
+const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => <Toaster {...args} />;
 
-export const Default = Template.bind(
-  {},
-  {
-    message: "Payment information successfully updated",
-    visible: true,
-    isError: false,
-  }
-);
+const args = {
+  message: "Payment information successfully updated",
+  visible: true,
+  isError: false,
+};
 
-export const Error = Template.bind(
-  {},
-  {
-    message: "Oops something bad happened!",
-    visible: true,
-    isError: true,
-  }
-);
-
-export const LongError = Template.bind(
-  {},
-  {
-    message: "Oops somthing bad happened! This is a very long error message with a lot of content.",
-    visible: true,
-    isError: true,
-  }
-);
+export const Default = Template.bind({});
+Default.args = args;
