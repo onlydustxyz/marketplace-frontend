@@ -2677,6 +2677,11 @@ export type GetProjectsQueryVariables = Exact<{
 
 export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, name: string, totalSpentAmountInUsd: any, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null }> };
 
+export type GetAllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllTechnologiesQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', githubRepo: { __typename?: 'GithubRepoDetails', languages: any } | null }> };
+
 export const GithubRepoFieldsForProjectCardFragmentDoc = gql`
     fragment GithubRepoFieldsForProjectCard on GithubRepoDetails {
   name
@@ -3346,3 +3351,39 @@ export function useGetProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetProjectsQueryHookResult = ReturnType<typeof useGetProjectsQuery>;
 export type GetProjectsLazyQueryHookResult = ReturnType<typeof useGetProjectsLazyQuery>;
 export type GetProjectsQueryResult = Apollo.QueryResult<GetProjectsQuery, GetProjectsQueryVariables>;
+export const GetAllTechnologiesDocument = gql`
+    query GetAllTechnologies {
+  projects {
+    githubRepo {
+      languages
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllTechnologiesQuery__
+ *
+ * To run a query within a React component, call `useGetAllTechnologiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllTechnologiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllTechnologiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllTechnologiesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllTechnologiesQuery, GetAllTechnologiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllTechnologiesQuery, GetAllTechnologiesQueryVariables>(GetAllTechnologiesDocument, options);
+      }
+export function useGetAllTechnologiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllTechnologiesQuery, GetAllTechnologiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllTechnologiesQuery, GetAllTechnologiesQueryVariables>(GetAllTechnologiesDocument, options);
+        }
+export type GetAllTechnologiesQueryHookResult = ReturnType<typeof useGetAllTechnologiesQuery>;
+export type GetAllTechnologiesLazyQueryHookResult = ReturnType<typeof useGetAllTechnologiesLazyQuery>;
+export type GetAllTechnologiesQueryResult = Apollo.QueryResult<GetAllTechnologiesQuery, GetAllTechnologiesQueryVariables>;
