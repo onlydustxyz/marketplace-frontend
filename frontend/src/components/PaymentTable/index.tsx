@@ -4,7 +4,7 @@ import Table from "../Table";
 import Line from "../Table/Line";
 import Cell from "../Table/Cell";
 import Headers from "../Table/HeaderLine";
-import HeaderCell from "../Table/HeaderCell";
+import HeaderCell, { HeaderCellWidth } from "../Table/HeaderCell";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import PayoutStatus from "../PayoutStatus";
 
@@ -38,9 +38,15 @@ const renderHeaders = () => {
   const { T } = useIntl();
   return (
     <Headers>
-      <HeaderCell className="w-1/2">{T("payment.table.project")}</HeaderCell>
-      <HeaderCell className="w-1/4">{T("payment.table.amount")}</HeaderCell>
-      <HeaderCell className="w-1/4">{T("payment.table.status")}</HeaderCell>
+      <HeaderCell width={HeaderCellWidth.Half} horizontalMargin>
+        {T("payment.table.project")}
+      </HeaderCell>
+      <HeaderCell width={HeaderCellWidth.Quarter} horizontalMargin>
+        {T("payment.table.amount")}
+      </HeaderCell>
+      <HeaderCell width={HeaderCellWidth.Quarter} horizontalMargin>
+        {T("payment.table.status")}
+      </HeaderCell>
     </Headers>
   );
 };

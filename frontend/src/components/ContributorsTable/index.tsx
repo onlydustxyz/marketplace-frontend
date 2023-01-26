@@ -2,7 +2,7 @@ import { useIntl } from "src/hooks/useIntl";
 import Table from "../Table";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import HeaderLine from "../Table/HeaderLine";
-import HeaderCell from "../Table/HeaderCell";
+import HeaderCell, { HeaderCellWidth } from "../Table/HeaderCell";
 import Line from "../Table/Line";
 import Cell from "../Table/Cell";
 import { useEffect, useState } from "react";
@@ -65,25 +65,26 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
   const { T } = useIntl();
 
   return (
-    <HeaderLine>
+    <HeaderLine className="text-sm">
       <HeaderCell onClick={() => applySorting(Field.Login)}>
-        <User3Line className="p-px font-normal" />
-        <span>{T("contributor.table.contributor")}</span>
+        <User3Line className="p-px text-sm text-white" />
+        <span className="text-spaceBlue-200 ">{T("contributor.table.contributor")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Login} />
       </HeaderCell>
       <HeaderCell onClick={() => applySorting(Field.TotalEarned)}>
-        <MoneyDollarCircleLine className="p-px font-normal" />
-        <span>{T("contributor.table.totalEarned")}</span>
+        <MoneyDollarCircleLine className="p-px text-sm text-white" />
+        <span className="text-spaceBlue-200 ">{T("contributor.table.totalEarned")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.TotalEarned} />
       </HeaderCell>
       <HeaderCell onClick={() => applySorting(Field.PaidContributions)}>
-        <CheckLine className="p-px font-normal" />
-        <span>{T("contributor.table.paidContributions")}</span>
+        <CheckLine className="p-px  text-sm text-white" />
+        <span className="text-spaceBlue-200 ">{T("contributor.table.paidContributions")}</span>
         <SortingArrow
           direction={sorting.ascending ? "up" : "down"}
           visible={sorting.field === Field.PaidContributions}
         />
       </HeaderCell>
+      <HeaderCell width={HeaderCellWidth.Quarter} />
     </HeaderLine>
   );
 };

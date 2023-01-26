@@ -4,7 +4,7 @@ import Table from "../Table";
 import Line from "../Table/Line";
 import Cell from "../Table/Cell";
 import Headers from "../Table/HeaderLine";
-import HeaderCell from "../Table/HeaderCell";
+import HeaderCell, { HeaderCellWidth } from "../Table/HeaderCell";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -87,22 +87,22 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
   const { T } = useIntl();
   return (
     <Headers>
-      <HeaderCell className="w-1/4" onClick={() => applySorting(Field.Date)}>
+      <HeaderCell width={HeaderCellWidth.Quarter} onClick={() => applySorting(Field.Date)} horizontalMargin>
         <TimeLine className="p-px font-normal" />
         <span>{T("payment.table.date")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Date} />
       </HeaderCell>
-      <HeaderCell className="w-1/2" onClick={() => applySorting(Field.Contribution)}>
+      <HeaderCell width={HeaderCellWidth.Half} onClick={() => applySorting(Field.Contribution)} horizontalMargin>
         <FolderLine className="p-px font-normal" />
         <span>{T("payment.table.project")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Contribution} />
       </HeaderCell>
-      <HeaderCell className="w-1/4" onClick={() => applySorting(Field.Amount)}>
+      <HeaderCell width={HeaderCellWidth.Quarter} onClick={() => applySorting(Field.Amount)} horizontalMargin>
         <MoneyDollarCircleLine className="p-px font-normal" />
         <span>{T("payment.table.amount")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Amount} />
       </HeaderCell>
-      <HeaderCell className="w-1/4" onClick={() => applySorting(Field.Status)}>
+      <HeaderCell width={HeaderCellWidth.Quarter} onClick={() => applySorting(Field.Status)} horizontalMargin>
         <FocusLine className="p-px font-normal" />
         <span>{T("payment.table.status")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Status} />
