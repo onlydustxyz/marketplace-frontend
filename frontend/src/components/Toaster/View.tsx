@@ -12,13 +12,10 @@ export default function View({ message, visible, isError }: Props) {
   return (
     <div
       data-testid="toaster-message"
-      className={classNames(
-        "abosolute rounded-2xl p-0.5 overflow-hidden transition duration-300 z-10 bottom-8 left-8",
-        {
-          "opacity-100 visible": visible,
-          "opacity-0 invisible": !visible,
-        }
-      )}
+      className={classNames("fixed rounded-2xl p-0.5 overflow-hidden transition duration-300 z-10 bottom-8 left-8", {
+        "opacity-100 visible": visible,
+        "opacity-0 invisible": !visible,
+      })}
     >
       <div
         className={classNames(
