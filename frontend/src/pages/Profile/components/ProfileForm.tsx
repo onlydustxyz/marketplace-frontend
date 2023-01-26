@@ -109,7 +109,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
   return (
     <FormProvider {...formMethods}>
       <form id="profile-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-        <div className="flex flex-row gap-3 items-stretch">
+        <div className="flex flex-row gap-6 items-stretch">
           <Card className="basis-1/2 p-8">
             <div className="flex flex-col">
               <div>
