@@ -20,6 +20,7 @@ module.exports = {
         },
         orange: {
           500: "#FF9000",
+          900: "#331D00",
         },
         pink: {
           500: "#E80CE1",
