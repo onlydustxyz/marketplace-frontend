@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { PropsWithChildren } from "react";
 
 interface Props extends PropsWithChildren {
@@ -9,12 +10,9 @@ interface Props extends PropsWithChildren {
 const Line: React.FC<Props> = ({ className, children, highlightOnHover }) => {
   return (
     <tr
-      className={`group/line border-b border-gray-800
-        ${
-          highlightOnHover &&
-          `transition duration-${highlightOnHover} hover:bg-white/4 outline-offset-0 hover:outline-2`
-        }
-        ${className}`}
+      className={classNames(`group/line border-b border-gray-800 ${className}`, {
+        highlightOnHover: `transition duration-${highlightOnHover} hover:bg-white/4 outline-offset-0 hover:outline-2`,
+      })}
     >
       {children}
     </tr>
