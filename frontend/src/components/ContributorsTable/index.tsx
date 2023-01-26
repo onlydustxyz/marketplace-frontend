@@ -100,7 +100,7 @@ const renderContributors = (contributors: Contributor[]) => {
           </div>
           <div className="flex space-x-1 items-end">
             <div>
-              <span className="text-fuchsia-300">{contributor.login}</span>
+              <span className="text-spacePurple-200">{contributor.login}</span>
             </div>
             {contributor.isRegistered && (
               <div className="relative group/od-logo">
@@ -111,7 +111,7 @@ const renderContributors = (contributors: Contributor[]) => {
               </div>
             )}
           </div>
-          <ExternalLinkLine className="text-fuchsia-700 invisible group-hover/line:visible" />
+          <ExternalLinkLine className="text-spacePurple-500 invisible group-hover/line:visible" />
         </Cell>
       </div>
       <Cell>{`${contributor.totalEarned || "-"} $`}</Cell>
