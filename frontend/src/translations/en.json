@@ -157,6 +157,13 @@
     "accept": "Accept invite",
     "prompt": "You’ve been promoted to Project Lead on __projectName__"
   },
+  "filter": {
+    "title": "Filter",
+    "technologies": {
+      "all": "All technologies",
+      "some": "Technologies"
+    }
+  },
   "seniority": {
     "levels": {
       "advanced": "Advanced",
