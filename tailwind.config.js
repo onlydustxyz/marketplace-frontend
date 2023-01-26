@@ -73,6 +73,9 @@ module.exports = {
       boxShadow: {
         "bottom-sm": "0px 2px 4px rgba(0, 0, 0, 0.32), inset 0px -1px 2px 1px rgba(0, 0, 0, 0.32)",
       },
+      dropShadow: {
+        "bottom-sm": "0px 8px 32px rgba(0, 0, 0, 0.16)",
+      },
       outlineWidth: {
         3: "3px",
       },
