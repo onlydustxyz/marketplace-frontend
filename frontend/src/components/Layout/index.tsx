@@ -14,7 +14,7 @@ export default function Layout() {
         <Header />
         <div className="px-6 flex-1">
           <Outlet />
-          <Toaster className="z-10 bottom-8 left-8" />
+          <Toaster />
         </div>
       </div>
     </div>

@@ -1,12 +1,8 @@
 import { useToaster } from "src/hooks/useToaster/useToaster";
 import View from "./View";
 
-type Props = {
-  className?: string;
-};
-
-export const Toaster = ({ className }: Props) => {
+export const Toaster = () => {
   const { message, visible, isError } = useToaster();
 
-  return <View {...{ message, visible, isError, className }} />;
+  return <View {...{ message, visible, isError }} />;
 };
