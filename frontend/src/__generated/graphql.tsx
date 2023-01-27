@@ -2382,7 +2382,9 @@ export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequ
 
 export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, name: string, totalSpentAmountInUsd: any, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null };
 
-export type PendingProjectLeaderInvitationsQueryVariables = Exact<{ [key: string]: never; }>;
+export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
+  githubUserId: InputMaybe<Scalars['bigint']>;
+}>;
 
 
 export type PendingProjectLeaderInvitationsQuery = { __typename?: 'query_root', pendingProjectLeaderInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, projectId: any }> };
@@ -2593,8 +2595,8 @@ export type GetPaymentRequestIdsQueryHookResult = ReturnType<typeof useGetPaymen
 export type GetPaymentRequestIdsLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestIdsLazyQuery>;
 export type GetPaymentRequestIdsQueryResult = Apollo.QueryResult<GetPaymentRequestIdsQuery, GetPaymentRequestIdsQueryVariables>;
 export const PendingProjectLeaderInvitationsDocument = gql`
-    query PendingProjectLeaderInvitations {
-  pendingProjectLeaderInvitations {
+    query PendingProjectLeaderInvitations($githubUserId: bigint) {
+  pendingProjectLeaderInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
     id
     projectId
   }
@@ -2613,6 +2615,7 @@ export const PendingProjectLeaderInvitationsDocument = gql`
  * @example
  * const { data, loading, error } = usePendingProjectLeaderInvitationsQuery({
  *   variables: {
+ *      githubUserId: // value for 'githubUserId'
  *   },
  * });
  */
