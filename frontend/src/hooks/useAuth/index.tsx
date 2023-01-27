@@ -1,10 +1,9 @@
-import { useApolloClient } from "@apollo/client";
+import { gql, useApolloClient } from "@apollo/client";
 import axios from "axios";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { generatePath, useNavigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import config from "src/config";
-import { PENDING_PROJECT_LEADER_INVITATIONS_QUERY } from "src/graphql/queries";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { accessTokenExpired, useTokenSet } from "src/hooks/useTokenSet";
 import { HasuraUserRole, RefreshToken, User, UserRole } from "src/types";
@@ -27,13 +26,15 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const { tokenSet, setFromRefreshToken, clearTokenSet, hasRefreshError } = useTokenSet();
+  const tokenIsRefreshed = !(tokenSet?.accessToken && accessTokenExpired(tokenSet));
+  const { isLoggedIn, roles, ledProjectIds, githubUserId } = useRoles(tokenSet?.accessToken);
 
   const [skipProjectLeaderInvitationsQuery, setSkipProjectLeaderInvitationsQuery] = useState(true);
 
   const pendingProjectLeaderInvitationsQueryResult = useHasuraQuery<PendingProjectLeaderInvitationsQuery>(
     PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
     HasuraUserRole.RegisteredUser,
-    { skip: skipProjectLeaderInvitationsQuery }
+    { variables: { githubUserId }, skip: skipProjectLeaderInvitationsQuery || !githubUserId }
   );
 
   useEffect(() => {
@@ -74,9 +75,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     logout();
   }
 
-  const tokenIsRefreshed = !(tokenSet?.accessToken && accessTokenExpired(tokenSet));
-  const { isLoggedIn, roles, ledProjectIds, githubUserId } = useRoles(tokenSet?.accessToken);
-
   const value = {
     user: tokenSet ? tokenSet.user : null,
     login,
@@ -106,3 +104,12 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
+
+const PENDING_PROJECT_LEADER_INVITATIONS_QUERY = gql`
+  query PendingProjectLeaderInvitations($githubUserId: bigint) {
+    pendingProjectLeaderInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
+      id
+      projectId
+    }
+  }
+`;
