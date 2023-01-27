@@ -6,8 +6,8 @@ import { onError } from "@apollo/client/link/error";
 import config from "src/config";
 import ErrorFallback from "../ErrorFallback";
 import { useTokenSet } from "src/hooks/useTokenSet";
-import { useToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
+import { useShowToaster } from "src/hooks/useToaster";
 
 type ErrorDisplay = "screen" | "toaster" | "none";
 
@@ -16,7 +16,7 @@ const DEFAULT_ERROR_DISPLAY: ErrorDisplay = "screen";
 const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const [displayError, setDisplayError] = useState(false);
   const { tokenSet } = useTokenSet();
-  const { showToaster } = useToaster();
+  const showToaster = useShowToaster();
   const { T } = useIntl();
 
   const AuthenticationLink = setContext((_, { headers }) => {
