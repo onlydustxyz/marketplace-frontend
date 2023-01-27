@@ -12,9 +12,6 @@ import {
   IdentityType,
   PayoutSettingsType,
   UserInfo,
-  PayoutSettingsInput,
-  Location,
-  IdentityInput,
   UpdateProfileInfoMutationVariables,
 } from "src/__generated/graphql";
 import Card from "src/components/Card";
