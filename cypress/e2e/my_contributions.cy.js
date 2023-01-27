@@ -29,7 +29,7 @@ describe("As a contributor, I", () => {
     cy.contains("My payments").click();
 
     cy.get("#payment_table tbody tr:nth-child(1)").within(() => {
-      cy.get("td:nth-child(3)").should("have.text", "200 USD");
+      cy.get("td:nth-child(3)").should("have.text", "$200");
       cy.get("td:nth-child(4)").should("have.text", "Payout info missing" + "Fill in your payment information to get paid");
     });
 
@@ -38,7 +38,7 @@ describe("As a contributor, I", () => {
     cy.contains("My payments").click();
 
     cy.get("#payment_table tbody tr:nth-child(1)").within(() => {
-      cy.get("td:nth-child(3)").should("have.text", "200 USD");
+      cy.get("td:nth-child(3)").should("have.text", "$200");
       cy.get("td:nth-child(4)").should("have.text", "Processing" + "Payment is being processed by our team");
     });
   });
