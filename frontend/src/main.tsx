@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import ApolloWrapper from "src/components/ApolloWrapper";
 import { AuthProvider } from "src/hooks/useAuth";
 import App from "./App";
+import "./datadog";
 
 import "src/assets/css/index.css";
 import "remixicon/fonts/remixicon.css";
