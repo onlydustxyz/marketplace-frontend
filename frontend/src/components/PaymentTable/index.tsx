@@ -1,5 +1,5 @@
 import { useIntl } from "src/hooks/useIntl";
-import { PaymentStatus } from "src/types";
+import { Currency, PaymentStatus } from "src/types";
 import Table from "../Table";
 import Line from "../Table/Line";
 import Cell from "../Table/Cell";
@@ -7,6 +7,7 @@ import Headers from "../Table/HeaderLine";
 import HeaderCell, { HeaderCellWidth } from "../Table/HeaderCell";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import PayoutStatus from "../PayoutStatus";
+import { formatMoneyAmount } from "src/utils/money";
 
 type PropsType = {
   payments: PaymentRequest[];
@@ -20,7 +21,7 @@ export interface PaymentRequest {
   };
   amount: {
     value: number;
-    currency: string;
+    currency: Currency;
   };
   reason: string;
   status: PaymentStatus;
@@ -61,7 +62,7 @@ const renderPayments = (payments: PaymentRequest[]) => {
           {payment.reason && <div className="text-lg truncate">{payment.reason}</div>}
         </div>
       </Cell>
-      <Cell>{`${payment.amount.value} ${payment.amount.currency}`}</Cell>
+      <Cell>{formatMoneyAmount(payment.amount.value, payment.amount.currency)}</Cell>
       <Cell>
         <PayoutStatus {...{ status: payment.status, payoutInfoMissing: false }} />
       </Cell>
