@@ -8,10 +8,11 @@ import { AUTH_CODE_QUERY_KEY } from "src/pages/Login";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { GET_PROFILE_QUERY } from "src/pages/Profile";
 import { CLAIMS_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
-import { ProjectDetailsTab, GET_PROJECT_QUERY } from "src/pages/ProjectDetails";
+import { GET_PROJECT_QUERY } from "src/pages/ProjectDetails";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { GET_PROJECTS_FOR_SIDEBAR_QUERY } from "src/pages/ProjectDetails/Sidebar";
 import { buildGetProjectsQuery } from "src/pages/Projects/AllProjects";
+import { ProjectDetailsTab } from "src/pages/ProjectDetails/ProjectDetailsContext";
 
 const AUTH_CODE_TEST_VALUE = "code";
 const LOGGING_IN_TEXT_QUERY = /logging in.../i;

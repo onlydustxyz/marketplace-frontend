@@ -6,6 +6,7 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentActions, { GET_PAYMENT_REQUESTS_FOR_PROJECT } from ".";
 import { RoutePaths } from "src/App";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
+import { ProjectDetailsProvider } from "../ProjectDetailsContext";
 
 expect.extend(matchers);
 
@@ -79,12 +80,17 @@ describe('"ProjectDetails" page', () => {
   });
 
   beforeEach(() => {
-    renderWithIntl(<PaymentActions projectId={TEST_PROJECT_ID} />, {
-      wrapper: MemoryRouterProviderFactory({
-        route: `${RoutePaths.ProjectDetails}/test-project-id`,
-        mocks: graphQlMocks,
-      }),
-    });
+    renderWithIntl(
+      <ProjectDetailsProvider>
+        <PaymentActions projectId={TEST_PROJECT_ID} />
+      </ProjectDetailsProvider>,
+      {
+        wrapper: MemoryRouterProviderFactory({
+          route: `${RoutePaths.ProjectDetails}/test-project-id`,
+          mocks: graphQlMocks,
+        }),
+      }
+    );
   });
 
   it("should render the submit payment buttons", async () => {
