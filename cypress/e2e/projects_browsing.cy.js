@@ -10,7 +10,6 @@ describe("As a visitor, I", () => {
   it("can filter projects by technology", function () {
     cy.visit(`http://localhost:5173/`);
 
-    cy.get('[data-testid="technologies-filter-dropdown"]').click();
     cy.contains('Cairo').click();
     cy.contains('Starkonquest');
     cy.contains('Marketplace').should('not.exist');;

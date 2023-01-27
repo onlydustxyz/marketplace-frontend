@@ -1,6 +1,7 @@
 import { Listbox, Transition } from "@headlessui/react";
 import technologyIcon from "assets/img/technology.svg";
 import classNames from "classnames";
+import { useState } from "react";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import Badge, { BadgeSize } from "../Badge";
 
@@ -22,12 +23,15 @@ const ICONS = {
 };
 
 export default function FilterDropDown({ icon, defaultLabel, selectedLabel, options, onChange, dataTestId }: Props) {
+  const [open, setOpen] = useState(true);
+
   return (
     <Listbox onChange={onChange} multiple>
       {({ value }) => (
         <>
           <Listbox.Button
             data-testid={dataTestId}
+            onClick={() => setOpen(!open)}
             className="w-full flex items-center justify-between py-2 drop-shadow-bottom-sm border-b border-greyscale-50/12 hover:cursor-pointer"
           >
             <div className="flex gap-2 items-center">
@@ -38,12 +42,18 @@ export default function FilterDropDown({ icon, defaultLabel, selectedLabel, opti
             </div>
             <div className="flex gap-2 items-center">
               {value.length > 0 && <Badge size={BadgeSize.Medium} value={value.length} />}
-              <div className="ui-not-open:-rotate-180 ui-open:-rotate-90 transition duration-300">
+              <div
+                className={classNames("transition duration-300", {
+                  "-rotate-180": !open,
+                  "-rotate-90": open,
+                })}
+              >
                 <ArrowLeftSLine className="text-greyscale-50 font-medium" />
               </div>
             </div>
           </Listbox.Button>
           <Transition
+            show={open}
             enter="transition duration-300 ease-out"
             enterFrom="transform -translate-y-1/3 opacity-0"
             enterTo="transform translate-y-0 opacity-100"
@@ -51,12 +61,12 @@ export default function FilterDropDown({ icon, defaultLabel, selectedLabel, opti
             leaveFrom="transform translate-y-0 opacity-100"
             leaveTo="transform -translate-y-1/3 opacity-0"
           >
-            <Listbox.Options as="div" className="py-3 flex flex-wrap gap-x-2 gap-y-3">
+            <Listbox.Options static as="div" className="py-3 flex flex-wrap gap-x-2 gap-y-3">
               {options.map(option => (
                 <Listbox.Option
                   key={option}
-                  value={option}
                   as="div"
+                  value={option}
                   className={classNames(
                     "py-1 px-2 w-fit text-neutral-100 font-walsheim font-normal text-xs bg-white/8 border border-greyscale-50/8 rounded-lg",
                     "hover:cursor-pointer",
