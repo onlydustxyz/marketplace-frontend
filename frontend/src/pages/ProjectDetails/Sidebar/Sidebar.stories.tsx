@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ProjectDetailsTab } from "..";
+import { ProjectDetailsTab } from "../ProjectDetailsContext";
 import View from "./View";
 
 export default {
@@ -37,7 +37,7 @@ const Template: ComponentStory<typeof View> = () => (
       onProjectSelected: empty,
       selectedTab,
       availableTabs,
-      onTabSelected: empty,
+      dispatch: empty,
     }}
   />
 );
