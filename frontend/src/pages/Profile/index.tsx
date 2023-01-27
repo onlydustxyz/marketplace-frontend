@@ -28,7 +28,7 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="bg-space h-full">
+    <div className="bg-space h-full rounded-3xl">
       <div className="px-8 pt-16 h-full w-full">
         <div className="flex mb-6 items-center">
           <span className="text-3xl font-belwe font-normal w-full">{T("profile.edit")}</span>

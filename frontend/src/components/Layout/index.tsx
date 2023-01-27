@@ -12,7 +12,7 @@ export default function Layout() {
       </div>
       <div className="md:visible invisible h-screen flex flex-col">
         <Header />
-        <div className="px-6 flex-1">
+        <div className="px-6 pb-6 flex-1">
           <Outlet />
           <Toaster />
         </div>
