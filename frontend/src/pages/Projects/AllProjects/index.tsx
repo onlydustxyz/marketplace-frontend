@@ -36,7 +36,7 @@ export default function AllProjects({ technologies }: Props) {
 
   return (
     <QueryWrapper query={getProjectsQuery}>
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 grow">
         {projects &&
           projects.map(project => (
             <Link
