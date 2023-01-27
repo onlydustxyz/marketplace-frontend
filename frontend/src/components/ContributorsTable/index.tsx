@@ -138,7 +138,7 @@ const renderContributors = (contributors: Contributor[]) => {
         >
           <Button type={ButtonType.Secondary} size={ButtonSize.Small}>
             <SendPlane2Line className="text-white" />
-            <div>Send payment</div>
+            <div>{T("project.details.contributors.sendPayment")}</div>
           </Button>
         </div>
       </Cell>
