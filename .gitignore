@@ -37,6 +37,7 @@ dist-ssr
 *.local
 coverage
 .nyc_output
+.vite/
 
 # Cypress
 cypress/screenshots
