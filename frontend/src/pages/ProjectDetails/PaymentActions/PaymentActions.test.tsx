@@ -104,7 +104,7 @@ describe('"ProjectDetails" page', () => {
   it("should render the payments table", async () => {
     expect(await screen.findByText(mockContribution.reason.work_items[0])).toBeInTheDocument();
     expect(await screen.findByText(mockContribution.githubRecipient.login)).toBeInTheDocument();
-    expect(await screen.findByText("200 USD")).toBeInTheDocument();
+    expect(await screen.findByText("$200")).toBeInTheDocument();
     expect(await screen.findByText(/complete/i)).toBeInTheDocument();
   });
 
