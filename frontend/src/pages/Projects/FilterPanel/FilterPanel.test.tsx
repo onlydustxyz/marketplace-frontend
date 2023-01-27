@@ -1,5 +1,5 @@
-import { describe, expect, it, Mock, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import FilterPanel, { GET_ALL_TECHNOLOGIES_QUERY } from ".";
 import { renderWithIntl, MemoryRouterProviderFactory } from "src/test/utils";
@@ -20,6 +20,7 @@ const graphQlMocks = [
           { githubRepo: { languages: { Rust: 1234, Shell: 123 } } }, // 2 languages with one same as above
           { githubRepo: { languages: { TypeScript: 1234 } } }, // 1 languages
           { githubRepo: { languages: {} } }, // No language
+          { githubRepo: null }, // No repo
         ],
       },
     },
