@@ -36,8 +36,9 @@ const View = ({ avatarUrl, displayName, logout }: Props) => {
         >
           <Menu.Items
             className="
-							absolute right-0 mt-3 w-56 origin-top-right
+							absolute right-0 mt-3 w-36 origin-top-right
 							divide-y divide-stone-100/8 rounded-md bg-white/2 backdrop-blur-4xl shadow-lg ring-1 ring-stone-100/8
+                            text-greyscale-50 text-sm font-walsheim
 							focus:outline-none z-10 overflow-hidden"
           >
             <div className="">
@@ -48,7 +49,7 @@ const View = ({ avatarUrl, displayName, logout }: Props) => {
                     state={{ prev: location }}
                     className={`${
                       active ? "bg-white/4" : "bg-white/2"
-                    } group flex w-full items-center p-3 text-sm cursor-pointer text-greyscale-50`}
+                    } group flex w-full items-center px-4 py-3 cursor-pointer`}
                   >
                     {T("profile.edit")}
                   </Link>
@@ -62,7 +63,7 @@ const View = ({ avatarUrl, displayName, logout }: Props) => {
                     onClick={logout}
                     className={`${
                       active ? "bg-white/4" : "bg-white/2"
-                    } group flex w-full items-center p-3 text-sm text-greyscale-50`}
+                    } group flex w-full items-center px-4 py-3 cursor-pointer`}
                     data-testid="logout-button"
                   >
                     {T("navbar.logout")}
