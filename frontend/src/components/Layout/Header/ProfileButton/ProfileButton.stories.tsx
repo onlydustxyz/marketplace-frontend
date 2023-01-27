@@ -9,7 +9,11 @@ export default {
   decorators: [withRouter],
 } as ComponentMeta<typeof ProfileButton>;
 
-const Template: ComponentStory<typeof ProfileButton> = args => <ProfileButton {...args} />;
+const Template: ComponentStory<typeof ProfileButton> = args => (
+  <div className="ml-32">
+    <ProfileButton {...args} />
+  </div>
+);
 
 export const Default = Template.bind({});
 
