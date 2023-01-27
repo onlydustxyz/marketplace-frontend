@@ -17,13 +17,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    event_filters (indexer_id, source_contract) {
-        indexer_id -> Text,
-        source_contract -> Text,
-    }
-}
-
-diesel::table! {
     events (index) {
         index -> Int4,
         timestamp -> Timestamp,
@@ -40,13 +33,6 @@ diesel::table! {
         owner -> Text,
         name -> Text,
         languages -> Jsonb,
-    }
-}
-
-diesel::table! {
-    indexers (id) {
-        id -> Text,
-        index_head -> Int8,
     }
 }
 
@@ -69,13 +55,6 @@ diesel::table! {
         currency_code -> Text,
         receipt -> Jsonb,
         request_id -> Uuid,
-    }
-}
-
-diesel::table! {
-    payout_settings (user_id) {
-        user_id -> Uuid,
-        eth_wallet_address -> Nullable<Text>,
     }
 }
 
@@ -130,13 +109,10 @@ diesel::joinable!(project_leads -> projects (project_id));
 diesel::allow_tables_to_appear_in_same_query!(
     budgets,
     event_deduplications,
-    event_filters,
     events,
     github_repo_details,
-    indexers,
     payment_requests,
     payments,
-    payout_settings,
     pending_project_leader_invitations,
     project_details,
     project_leads,

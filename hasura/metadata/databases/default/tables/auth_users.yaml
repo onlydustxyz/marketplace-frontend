@@ -100,15 +100,6 @@ object_relationships:
         remote_table:
           name: github_users
           schema: auth
-  - name: payoutSettings
-    using:
-      manual_configuration:
-        column_mapping:
-          id: user_id
-        insertion_order: null
-        remote_table:
-          name: payout_settings
-          schema: public
 array_relationships:
   - name: projectsLeaded
     using:
