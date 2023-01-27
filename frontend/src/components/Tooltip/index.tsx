@@ -24,10 +24,8 @@ export default function Tooltip({ children, direction = TooltipDirection.Up }: P
       })}
     >
       <Tip direction={direction} />
-      <div className="bg-white/8 backdrop-blur-lg rounded-lg">
-        <div className="bg-noise-heavy font-normal font-walsheim text-center text-xs text-greyscale-50 rounded-lg py-2 px-3">
-          {children}
-        </div>
+      <div className="bg-white/8 backdrop-blur-lg font-normal font-walsheim text-center text-xs text-greyscale-50 rounded-lg py-2 px-3">
+        {children}
       </div>
     </div>
   );
