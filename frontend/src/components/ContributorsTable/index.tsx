@@ -4,8 +4,8 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import HeaderLine from "../Table/HeaderLine";
 import HeaderCell, { HeaderCellWidth } from "../Table/HeaderCell";
 import Line from "../Table/Line";
-import Cell from "../Table/Cell";
-import { useEffect, useState } from "react";
+import Cell, { CellHeight } from "../Table/Cell";
+import { useContext, useEffect, useState } from "react";
 import sortBy from "lodash/sortBy";
 import SortingArrow from "./SortingArrow";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
@@ -15,6 +15,14 @@ import ExternalLinkLine from "src/icons/ExternalLinkLine";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import Tooltip from "../Tooltip";
 import { linkClickHandlerFactory } from "src/utils/clickHandler";
+import Button, { ButtonSize, ButtonType } from "../Button";
+import SendPlane2Line from "src/icons/SendPlane2Line";
+import {
+  PaymentAction,
+  ProjectDetailsActionType,
+  ProjectDetailsDispatchContext,
+  ProjectDetailsTab,
+} from "src/pages/ProjectDetails/ProjectDetailsContext";
 
 type PropsType = {
   contributors: Contributor[];
@@ -92,10 +100,15 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
 const renderContributors = (contributors: Contributor[]) => {
   const { T } = useIntl();
 
+  const dispatch = useContext(ProjectDetailsDispatchContext);
+
   return contributors.map(contributor => (
     <Line key={contributor.login} highlightOnHover={200}>
-      <div onClick={linkClickHandlerFactory(`https://github.com/${contributor.login}`)} className="w-fit">
-        <Cell className="space-x-3">
+      <Cell className="space-x-3" height={CellHeight.Small}>
+        <div
+          onClick={linkClickHandlerFactory(`https://github.com/${contributor.login}`)}
+          className="flex flex-row items-center gap-1"
+        >
           <div>
             <RoundedImage src={contributor.avatarUrl} alt={contributor.login} size={ImageSize.ExtraSmall} />
           </div>
@@ -113,10 +126,22 @@ const renderContributors = (contributors: Contributor[]) => {
             )}
           </div>
           <ExternalLinkLine className="text-spacePurple-500 invisible group-hover/line:visible" />
-        </Cell>
-      </div>
-      <Cell>{`${contributor.totalEarned || "-"} $`}</Cell>
-      <Cell>{contributor.paidContributions || "-"}</Cell>
+        </div>
+      </Cell>
+      <Cell height={CellHeight.Small}>{`${contributor.totalEarned || "-"} $`}</Cell>
+      <Cell height={CellHeight.Small}>{contributor.paidContributions || "-"}</Cell>
+      <Cell height={CellHeight.Small}>
+        <div
+          onClick={() => {
+            dispatch({ type: ProjectDetailsActionType.SelectPaymentAction, selectedPaymentAction: PaymentAction.Send });
+          }}
+        >
+          <Button type={ButtonType.Secondary} size={ButtonSize.Small}>
+            <SendPlane2Line className="text-white" />
+            <div>Send payment</div>
+          </Button>
+        </div>
+      </Cell>
     </Line>
   ));
 };
