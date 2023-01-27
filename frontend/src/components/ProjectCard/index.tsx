@@ -8,7 +8,7 @@ import TelegramLink from "src/components/TelegramLink";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import { Project } from "src/pages/Projects";
-import { formatDollars } from "src/utils/money";
+import { formatMoneyAmount } from "src/utils/money";
 import { buildGithubLink, buildLanguageString } from "src/utils/stringUtils";
 
 type ProjectCardProps = Project;
@@ -74,7 +74,7 @@ export default function ProjectCard({
                   </span>
                 )}
                 {totalSpentAmountInUsd !== undefined && (
-                  <span>{T("project.amountGranted", { amount: formatDollars(totalSpentAmountInUsd) })}</span>
+                  <span>{T("project.amountGranted", { amount: formatMoneyAmount(totalSpentAmountInUsd) })}</span>
                 )}
               </div>
             </div>

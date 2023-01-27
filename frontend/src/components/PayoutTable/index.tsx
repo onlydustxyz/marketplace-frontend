@@ -20,6 +20,7 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import FocusLine from "src/icons/FocusLine";
 import FolderLine from "src/icons/FolderLine";
 import TimeLine from "src/icons/TimeLine";
+import { formatMoneyAmount } from "src/utils/money";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -122,7 +123,7 @@ const renderPayments = (payments: Payment[], payoutInfoMissing: boolean) => {
           {payment.reason && <GithubPRLink link={payment.reason} linkColor={LinkColor.Grey}></GithubPRLink>}
         </div>
       </Cell>
-      <Cell>{`${payment.amount.value} ${payment.amount.currency}`}</Cell>
+      <Cell>{formatMoneyAmount(payment.amount.value, payment.amount.currency)}</Cell>
       <Cell>
         <PayoutStatus {...{ status: payment.status, payoutInfoMissing }} />
       </Cell>
