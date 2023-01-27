@@ -95,7 +95,7 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Half} onClick={() => applySorting(Field.Contribution)} horizontalMargin>
         <FolderLine className="p-px font-normal" />
-        <span>{T("payment.table.project")}</span>
+        <span>{T("payment.table.contribution")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Contribution} />
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Quarter} onClick={() => applySorting(Field.Amount)} horizontalMargin>
