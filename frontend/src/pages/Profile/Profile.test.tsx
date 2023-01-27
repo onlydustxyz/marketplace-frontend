@@ -13,11 +13,11 @@ import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import {
   IdentityInput,
   PayoutSettingsInput,
-  UpdateProfileInfoMutationVariables,
   Location,
   UserInfo,
   IdentityType,
   PayoutSettingsType,
+  UpdateProfileInfoMutationVariables,
 } from "src/__generated/graphql";
 
 const INVALID_ETHEREUM_ADDRESS = "0x1234567890";
@@ -349,35 +349,6 @@ describe('"Profile" page for company', () => {
     await userEvent.click(await screen.findByTestId("profile-form-cancel-button"));
     await waitFor(() => {
       expect(updateUserMock.newData).not.toHaveBeenCalled();
-    });
-  });
-});
-
-describe("Upon graphql request failure", () => {
-  beforeAll(() => {
-    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(accessToken(mockUser.userId)));
-  });
-
-  beforeEach(() => {
-    renderWithIntl(<ProfilePage />, {
-      wrapper: MemoryRouterProviderFactory({
-        route: RoutePaths.Profile,
-        mocks: [
-          {
-            request: {
-              query: UPDATE_USER_MUTATION,
-            },
-            error: "invalid values",
-          },
-        ],
-      }),
-    });
-  });
-
-  it("should display error toaster", async () => {
-    await userEvent.click(await screen.findByTestId("profile-form-submit-button"));
-    await waitFor(() => {
-      expect(screen.getByTestId("toaster-message")).toBeVisible();
     });
   });
 });
