@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
+import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from "react";
 
 type Toaster = {
   message: string;
@@ -28,11 +28,14 @@ export const ToasterProvider = ({ children }: PropsWithChildren) => {
   const [visible, setVisible] = useState(false);
   const [options, setOptions] = useState<StrictShowToasterOptions>(DEFAULT_TOASTER_OPTIONS);
 
-  const showToaster = (message: string, options?: ShowToasterOptions) => {
-    setOptions({ ...DEFAULT_TOASTER_OPTIONS, ...options });
-    setMessage(message);
-    setVisible(true);
-  };
+  const showToaster = useMemo(
+    () => (message: string, options?: ShowToasterOptions) => {
+      setOptions({ ...DEFAULT_TOASTER_OPTIONS, ...options });
+      setMessage(message);
+      setVisible(true);
+    },
+    []
+  );
 
   useEffect(() => {
     if (visible) {
