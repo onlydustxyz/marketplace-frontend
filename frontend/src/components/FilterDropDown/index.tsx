@@ -28,7 +28,7 @@ export default function FilterDropDown({ icon, defaultLabel, selectedLabel, opti
         <>
           <Listbox.Button
             data-testid={dataTestId}
-            className="w-full flex items-center justify-between py-2 backdrop-blur-lg drop-shadow-bottom-sm border-b border-greyscale-50/12 hover:cursor-pointer"
+            className="w-full flex items-center justify-between py-2 drop-shadow-bottom-sm border-b border-greyscale-50/12 hover:cursor-pointer"
           >
             <div className="flex gap-2 items-center">
               <img className="w-6 h-6" src={ICONS[icon]} />
