@@ -9,7 +9,7 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { MockedProvider } from "@apollo/client/testing";
 import { LOCAL_STORAGE_TOKEN_SET_KEY, TokenSetProvider } from "src/hooks/useTokenSet";
 import { SessionProvider } from "src/hooks/useSession";
-import { ToasterProvider } from "src/hooks/useToaster/useToaster";
+import { ToasterProvider } from "src/hooks/useToaster";
 import { GET_MY_CONTRIBUTION_IDS_QUERY } from "./Header";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { HasuraUserRole } from "src/types";

@@ -7,7 +7,7 @@ import { RoutePaths } from "src/App";
 import { IntlProvider } from "src/hooks/useIntl";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { SessionProvider } from "src/hooks/useSession";
-import { ToasterProvider } from "src/hooks/useToaster/useToaster";
+import { ToasterProvider } from "src/hooks/useToaster";
 import { Toaster } from "src/components/Toaster";
 
 interface MemoryRouterProviderFactoryProps {

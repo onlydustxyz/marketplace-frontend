@@ -6,7 +6,7 @@ import { onError } from "@apollo/client/link/error";
 import config from "src/config";
 import ErrorFallback from "../ErrorFallback";
 import { useTokenSet } from "src/hooks/useTokenSet";
-import { useToaster } from "src/hooks/useToaster/useToaster";
+import { useToaster } from "src/hooks/useToaster";
 import { useIntl } from "src/hooks/useIntl";
 
 type ErrorDisplay = "screen" | "toaster" | "none";

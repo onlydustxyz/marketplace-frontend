@@ -17,7 +17,7 @@ import {
 import Card from "src/components/Card";
 import { RoutePaths } from "src/App";
 import { useEffect } from "react";
-import { useToaster } from "src/hooks/useToaster/useToaster";
+import { useToaster } from "src/hooks/useToaster";
 import FormToggle from "src/components/FormToggle";
 
 const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
