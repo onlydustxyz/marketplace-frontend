@@ -15,7 +15,7 @@ import "src/assets/fonts/BelweBdBt/stylesheet.css";
 import { IntlProvider } from "src/hooks/useIntl";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { SessionProvider } from "./hooks/useSession";
-import { ToasterProvider } from "./hooks/useToaster/useToaster";
+import { ToasterProvider } from "./hooks/useToaster";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
