@@ -120,7 +120,8 @@
           "zero": "No contributor",
           "one": "1 contributor",
           "many": "__count__ contributors"
-        }
+        },
+        "sendPayment": "Send payment"
       },
       "overview": {
         "contributors": "CONTRIBUTORS",
