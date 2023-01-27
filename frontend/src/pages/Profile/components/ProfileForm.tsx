@@ -17,7 +17,7 @@ import {
 import Card from "src/components/Card";
 import { RoutePaths } from "src/App";
 import { useEffect } from "react";
-import { useToaster } from "src/hooks/useToaster";
+import { useShowToaster } from "src/hooks/useToaster";
 import FormToggle from "src/components/FormToggle";
 
 const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
@@ -84,7 +84,7 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
   });
   const success = !!data;
   const location = useLocation();
-  const { showToaster } = useToaster();
+  const showToaster = useShowToaster();
 
   useEffect(() => {
     if (success) {

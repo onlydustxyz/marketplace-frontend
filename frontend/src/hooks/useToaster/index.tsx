@@ -1,32 +1,34 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 
-type Props = {
+type Toaster = {
   message: string;
   isError: boolean;
   visible: boolean;
-  showToaster: (message: string, options?: ToasterOptions) => void;
 };
 
-type ToasterOptions = {
+type ShowToaster = (message: string, options?: ShowToasterOptions) => void;
+
+type ShowToasterOptions = {
   duration?: number;
   isError?: boolean;
 };
 
-type StrictToasterOptions = Required<ToasterOptions>;
+type StrictShowToasterOptions = Required<ShowToasterOptions>;
 
-const DEFAULT_TOASTER_OPTIONS: StrictToasterOptions = {
+const DEFAULT_TOASTER_OPTIONS: StrictShowToasterOptions = {
   duration: 6000,
   isError: false,
 };
 
-const ToasterContext = createContext<Props | null>(null);
+const ToasterContext = createContext<Toaster | null>(null);
+const ShowToasterContext = createContext<ShowToaster | null>(null);
 
 export const ToasterProvider = ({ children }: PropsWithChildren) => {
   const [message, setMessage] = useState<string>("");
   const [visible, setVisible] = useState(false);
-  const [options, setOptions] = useState<StrictToasterOptions>(DEFAULT_TOASTER_OPTIONS);
+  const [options, setOptions] = useState<StrictShowToasterOptions>(DEFAULT_TOASTER_OPTIONS);
 
-  const showToaster = (message: string, options?: ToasterOptions) => {
+  const showToaster = (message: string, options?: ShowToasterOptions) => {
     setOptions({ ...DEFAULT_TOASTER_OPTIONS, ...options });
     setMessage(message);
     setVisible(true);
@@ -42,14 +44,25 @@ export const ToasterProvider = ({ children }: PropsWithChildren) => {
     }
   }, [visible]);
 
-  const value = { message, visible, isError: options.isError, showToaster };
-  return <ToasterContext.Provider value={value}>{children}</ToasterContext.Provider>;
+  return (
+    <ToasterContext.Provider value={{ message, visible, isError: options.isError }}>
+      <ShowToasterContext.Provider value={showToaster}>{children}</ShowToasterContext.Provider>
+    </ToasterContext.Provider>
+  );
 };
 
-export const useToaster = (): Props => {
+export const useToaster = (): Toaster => {
   const context = useContext(ToasterContext);
   if (!context) {
     throw new Error("useToaster must be used within an ToasterProvider");
+  }
+  return context;
+};
+
+export const useShowToaster = (): ShowToaster => {
+  const context = useContext(ShowToasterContext);
+  if (!context) {
+    throw new Error("useShowToaster must be used within an ToasterProvider");
   }
   return context;
 };
