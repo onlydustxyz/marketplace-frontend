@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { useState } from "react";
+import { useContext } from "react";
 import Card from "src/components/Card";
 import PaymentTable from "src/components/PaymentTable";
 import ProjectPaymentTableFallback from "src/components/ProjectPaymentTableFallback";
@@ -9,12 +9,13 @@ import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { Currency, HasuraUserRole, PaymentStatus } from "src/types";
 import { GetPaymentRequestsForProjectQuery } from "src/__generated/graphql";
+import {
+  PaymentAction,
+  ProjectDetailsActionType,
+  ProjectDetailsContext,
+  ProjectDetailsDispatchContext,
+} from "../ProjectDetailsContext";
 import PaymentForm from "./PaymentForm";
-
-enum Action {
-  List = "List",
-  Submit = "Submit",
-}
 
 interface PaymentsProps {
   projectId: string;
@@ -23,7 +24,8 @@ interface PaymentsProps {
 export default function PaymentActions({ projectId }: PaymentsProps) {
   const { T } = useIntl();
 
-  const [action, setAction] = useState<Action>(Action.List);
+  const state = useContext(ProjectDetailsContext);
+  const dispatch = useContext(ProjectDetailsDispatchContext);
 
   const query = useHasuraQuery<GetPaymentRequestsForProjectQuery>(
     GET_PAYMENT_REQUESTS_FOR_PROJECT,
@@ -49,13 +51,20 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
         <div className="text-3xl font-belwe">{T("project.details.payments.title")}</div>
         <div className="flex flex-row items-start gap-5 h-full">
           <div className="flex basis-2/3 self-stretch">
-            {action === Action.Submit && <PaymentForm {...{ projectId, budget }} />}
-            {action === Action.List && (
+            {state.paymentAction === PaymentAction.Send && <PaymentForm {...{ projectId, budget }} />}
+            {state.paymentAction === PaymentAction.List && (
               <Card>
                 {payments.length > 0 ? (
                   <PaymentTable payments={payments.map(mapPaymentRequestsFromQuery)} />
                 ) : (
-                  <ProjectPaymentTableFallback onClick={() => setAction(Action.Submit)} />
+                  <ProjectPaymentTableFallback
+                    onClick={() =>
+                      dispatch({
+                        type: ProjectDetailsActionType.SelectPaymentAction,
+                        selectedPaymentAction: PaymentAction.Send,
+                      })
+                    }
+                  />
                 )}
               </Card>
             )}
@@ -67,9 +76,15 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
                 {budget.remainingAmount > 0 && (
                   <div
                     className="bg-neutral-50 rounded-xl w-fit p-3 hover:cursor-pointer text-black"
-                    onClick={() => setAction(action === Action.List ? Action.Submit : Action.List)}
+                    onClick={() =>
+                      dispatch({
+                        type: ProjectDetailsActionType.SelectPaymentAction,
+                        selectedPaymentAction:
+                          state.paymentAction === PaymentAction.List ? PaymentAction.Send : PaymentAction.List,
+                      })
+                    }
                   >
-                    {T(action === Action.List ? "payment.form.submit" : "payment.list")}
+                    {T(state.paymentAction === PaymentAction.List ? "payment.form.submit" : "payment.list")}
                   </div>
                 )}
               </div>
