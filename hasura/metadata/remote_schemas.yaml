@@ -49,10 +49,10 @@
             type: IdentityType!
           }
           input Location {
+            address: String
             city: String
             country: String
             postCode: String
-            address: String
           }
           input PayoutSettingsInput {
             optBankAddress: BankAddress
