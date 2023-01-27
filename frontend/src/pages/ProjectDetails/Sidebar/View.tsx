@@ -8,18 +8,19 @@ import { RoutePaths } from "src/App";
 import BackLink from "src/components/BackLink";
 import CheckLine from "src/icons/CheckLine";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
-import { ProjectDetails, ProjectDetailsTab } from "..";
+import { ProjectDetails } from "..";
 import { useIntl } from "src/hooks/useIntl";
 import { buildGithubLink } from "src/utils/stringUtils";
+import { ProjectDetailsAction, ProjectDetailsActionType, ProjectDetailsTab } from "../ProjectDetailsContext";
 
 interface Props {
   expandable: boolean;
   currentProject: ProjectDetails;
   allProjects: SidebarProjectDetails[];
   onProjectSelected: (projectId: string) => void;
-  selectedTab: ProjectDetailsTab;
   availableTabs: ProjectDetailsTab[];
-  onTabSelected: (tab: ProjectDetailsTab) => void;
+  selectedTab: ProjectDetailsTab;
+  dispatch: (action: ProjectDetailsAction) => void;
 }
 
 interface SidebarProjectDetails {
@@ -35,9 +36,9 @@ export default function View({
   currentProject,
   allProjects,
   onProjectSelected,
-  selectedTab,
   availableTabs,
-  onTabSelected,
+  selectedTab,
+  dispatch,
 }: Props) {
   const { T } = useIntl();
 
@@ -115,7 +116,7 @@ export default function View({
               className={`rounded-xl hover:cursor-pointer text-white text-base px-4 py-2.5 ${
                 selectedTab === tab ? "bg-white/8" : "text-neutral-400"
               }`}
-              onClick={() => onTabSelected(tab)}
+              onClick={() => dispatch({ type: ProjectDetailsActionType.SelectTab, selectedTab: tab })}
               data-testid={`${tab}-tab`}
             >
               {tab}

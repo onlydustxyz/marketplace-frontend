@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { generatePath, useNavigate, useParams } from "react-router-dom";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
@@ -12,16 +12,17 @@ import { RoutePaths } from "src/App";
 import { useSession } from "src/hooks/useSession";
 import View from "./View";
 import { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
+import {
+  ProjectDetailsProvider,
+  ProjectDetailsContext,
+  ProjectDetailsDispatchContext,
+  ProjectDetailsTab,
+  ProjectDetailsActionType,
+} from "./ProjectDetailsContext";
 
 type ProjectDetailsParams = {
   projectId: string;
 };
-
-export enum ProjectDetailsTab {
-  Overview = "Overview",
-  Payments = "Payments",
-  Contributors = "Contributors",
-}
 
 export interface ProjectDetails {
   id: string;
@@ -40,7 +41,7 @@ export interface ProjectDetails {
   };
 }
 
-export default function ProjectDetails() {
+function ProjectDetailsComponent() {
   const { projectId } = useParams<ProjectDetailsParams>();
   const { ledProjectIds, githubUserId } = useAuth();
   const { lastVisitedProjectId, setLastVisitedProjectId } = useSession();
@@ -51,7 +52,9 @@ export default function ProjectDetails() {
     HasuraUserRole.RegisteredUser
   );
 
-  const [selectedTab, setSelectedTab] = useState(ProjectDetailsTab.Overview);
+  const state = useContext(ProjectDetailsContext);
+  const dispatch = useContext(ProjectDetailsDispatchContext);
+
   const [selectedProjectId, setSelectedProjectId] = useState(projectId);
 
   const getProjectQuery = useHasuraQuery<GetProjectQuery>(GET_PROJECT_QUERY, HasuraUserRole.Public, {
@@ -63,7 +66,7 @@ export default function ProjectDetails() {
 
   useEffect(() => {
     if (selectedProjectId && selectedProjectId !== projectId) {
-      setSelectedTab(ProjectDetailsTab.Overview);
+      dispatch({ type: ProjectDetailsActionType.SelectTab, selectedTab: ProjectDetailsTab.Overview });
       navigate(generatePath(RoutePaths.MyProjectDetails, { projectId: selectedProjectId }));
     }
   }, [selectedProjectId]);
@@ -94,8 +97,7 @@ export default function ProjectDetails() {
         <View
           currentProject={projectFromQuery(project)}
           availableTabs={availableTabs}
-          onTabSelected={setSelectedTab}
-          selectedTab={selectedTab}
+          selectedTab={state.tab}
           onInvitationAccepted={(invitationId: string) => {
             acceptInvitation({
               variables: {
@@ -149,3 +151,11 @@ const ACCEPT_PROJECT_LEADER_INVITATION_MUTATION = gql`
     acceptProjectLeaderInvitation(invitationId: $invitationId)
   }
 `;
+
+export default function ProjectDetails() {
+  return (
+    <ProjectDetailsProvider>
+      <ProjectDetailsComponent />
+    </ProjectDetailsProvider>
+  );
+}

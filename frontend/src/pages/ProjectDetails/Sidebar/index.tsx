@@ -1,4 +1,4 @@
-import { ProjectDetailsTab, ProjectDetails } from "..";
+import { ProjectDetails } from "..";
 import { HasuraUserRole } from "src/types";
 import View from "./View";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
@@ -6,23 +6,19 @@ import { GetProjectsForSidebarQuery } from "src/__generated/graphql";
 import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
+import { useContext } from "react";
+import { ProjectDetailsContext, ProjectDetailsDispatchContext, ProjectDetailsTab } from "../ProjectDetailsContext";
 
 interface Props {
   currentProject: ProjectDetails;
   onProjectSelected: (projectId: string) => void;
-  selectedTab: ProjectDetailsTab;
   availableTabs: ProjectDetailsTab[];
-  onTabSelected: (tab: ProjectDetailsTab) => void;
 }
 
-export default function ProjectsSidebar({
-  currentProject,
-  onProjectSelected,
-  selectedTab,
-  availableTabs,
-  onTabSelected,
-}: Props) {
+export default function ProjectsSidebar({ currentProject, onProjectSelected, availableTabs }: Props) {
   const { isLoggedIn, ledProjectIds, githubUserId } = useAuth();
+  const state = useContext(ProjectDetailsContext);
+  const dispatch = useContext(ProjectDetailsDispatchContext);
 
   const isProjectMine = (project: ProjectDetails) => ledProjectIds.includes(project.id) || !!project.invitationId;
 
@@ -42,9 +38,9 @@ export default function ProjectsSidebar({
       {...{
         currentProject,
         onProjectSelected,
-        selectedTab,
         availableTabs,
-        onTabSelected,
+        selectedTab: state.tab,
+        dispatch,
       }}
       allProjects={projects.map(project => projectFromQuery(project))}
       expandable={isProjectMine(currentProject)}

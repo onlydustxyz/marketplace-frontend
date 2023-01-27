@@ -4,20 +4,14 @@ import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import Contributors from "./Contributors";
 import { ProjectDetails } from ".";
 import ProjectsSidebar from "./Sidebar";
+import { ProjectDetailsTab } from "./ProjectDetailsContext";
 
 interface Props {
   currentProject: ProjectDetails;
   onProjectSelected: (projectId: string) => void;
   selectedTab: ProjectDetailsTab;
   availableTabs: ProjectDetailsTab[];
-  onTabSelected: (tab: ProjectDetailsTab) => void;
   onInvitationAccepted: (invitationId: string) => void;
-}
-
-export enum ProjectDetailsTab {
-  Overview = "Overview",
-  Payments = "Payments",
-  Contributors = "Contributors",
 }
 
 export default function View({
@@ -25,7 +19,6 @@ export default function View({
   onProjectSelected,
   selectedTab,
   availableTabs,
-  onTabSelected,
   onInvitationAccepted,
 }: Props) {
   return (
@@ -36,7 +29,6 @@ export default function View({
           onProjectSelected,
           selectedTab,
           availableTabs,
-          onTabSelected,
         }}
       />
       <div className="bg-space p-5 flex flex-col flex-1 rounded-r-2xl">
