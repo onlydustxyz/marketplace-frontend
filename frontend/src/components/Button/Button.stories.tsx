@@ -8,7 +8,7 @@ export default {
     size: {
       control: {
         type: "select",
-        options: [ButtonSize.Small, ButtonSize.Large],
+        options: [ButtonSize.Medium, ButtonSize.Large],
       },
     },
     type: {
