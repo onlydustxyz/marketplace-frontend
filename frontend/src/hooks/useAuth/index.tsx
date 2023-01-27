@@ -10,6 +10,7 @@ import { accessTokenExpired, useTokenSet } from "src/hooks/useTokenSet";
 import { HasuraUserRole, RefreshToken, User, UserRole } from "src/types";
 import { PendingProjectLeaderInvitationsQuery } from "src/__generated/graphql";
 import { useHasuraQuery } from "../useHasuraQuery";
+import { datadogRum } from "@datadog/browser-rum";
 
 export type AuthContextType = {
   login: (refreshToken: RefreshToken) => void;
@@ -85,6 +86,15 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     ledProjectIds,
     githubUserId,
   };
+
+  if (value.user) {
+    datadogRum.setUser({
+      id: value.user.id,
+      name: value.user.displayName,
+    });
+  } else {
+    datadogRum.clearUser();
+  }
 
   return <>{tokenIsRefreshed && <AuthContext.Provider value={value}>{children}</AuthContext.Provider>}</>;
 };
