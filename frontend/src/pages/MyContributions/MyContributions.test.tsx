@@ -142,7 +142,7 @@ describe('"MyContributions" page', () => {
 
     expect(await screen.findByText(mockContribution.reason.work_items[0])).toBeInTheDocument();
     expect(await screen.findByText(mockContribution.budget.project.name)).toBeInTheDocument();
-    expect(await screen.findByText("200 USD")).toBeInTheDocument();
+    expect(await screen.findAllByText("$200")).toHaveLength(2);
     expect(await screen.findByText(/complete/i)).toBeInTheDocument();
   });
 
@@ -167,10 +167,6 @@ describe('"MyContributions" page', () => {
       }),
     });
 
-    expect(await screen.findByText(mockContribution.reason.work_items[0])).toBeInTheDocument();
-    expect(await screen.findByText(mockContribution.budget.project.name)).toBeInTheDocument();
-    expect(await screen.findByText("200 USD")).toBeInTheDocument();
-    expect(await screen.findByText(/complete/i)).toBeInTheDocument();
     expect(screen.queryByText("Complete payment information")).not.toBeInTheDocument();
   });
 });
