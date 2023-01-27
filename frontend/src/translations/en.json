@@ -65,7 +65,7 @@
     "table": {
       "amount": "Amount",
       "date": "Date",
-      "project": "Project",
+      "contribution": "Contribution",
       "status": "Payment Status"
     },
     "tableFallback": {

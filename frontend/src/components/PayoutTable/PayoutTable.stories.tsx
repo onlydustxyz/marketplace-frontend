@@ -1,12 +1,12 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Currency, Payment, PaymentStatus } from "src/types";
 
-import Payments from ".";
+import PayoutTable from ".";
 
 export default {
   title: "Payments",
-  component: Payments,
-} as ComponentMeta<typeof Payments>;
+  component: PayoutTable,
+} as ComponentMeta<typeof PayoutTable>;
 
 const mockPayments: Payment[] = [
   {
@@ -36,8 +36,8 @@ const mockPayments: Payment[] = [
   },
 ];
 
-const Template: ComponentStory<typeof Payments> = args => (
-  <Payments payments={mockPayments} payoutInfoMissing={args.payoutInfoMissing} />
+const Template: ComponentStory<typeof PayoutTable> = args => (
+  <PayoutTable payments={mockPayments} payoutInfoMissing={args.payoutInfoMissing} />
 );
 
 export const Default = Template.bind({});
