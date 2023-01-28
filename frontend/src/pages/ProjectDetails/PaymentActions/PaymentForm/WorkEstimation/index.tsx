@@ -4,7 +4,7 @@ import { useT } from "talkr";
 
 export const BASE_RATE_USD = 500;
 
-interface EstimationComponentProps {
+interface Props {
   numberOfDays: number;
   decreaseNumberOfDays: () => void;
   increaseNumberOfDays: () => void;
@@ -12,13 +12,13 @@ interface EstimationComponentProps {
   submitDisabled: boolean;
 }
 
-export default function EstimationComponent({
+export default function WorkEstimation({
   numberOfDays,
   decreaseNumberOfDays,
   increaseNumberOfDays,
   budget,
   submitDisabled,
-}: EstimationComponentProps) {
+}: Props) {
   const amountToPay = numberOfDays * BASE_RATE_USD;
   const { T } = useT();
   return (
