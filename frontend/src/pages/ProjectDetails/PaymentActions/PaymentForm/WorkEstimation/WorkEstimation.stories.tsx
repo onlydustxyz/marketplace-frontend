@@ -1,15 +1,15 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import EstimationComponent from ".";
+import WorkEstimation from ".";
 
 export default {
-  title: "EstimationComponent",
-  component: EstimationComponent,
-} as ComponentMeta<typeof EstimationComponent>;
+  title: "WorkEstimation",
+  component: WorkEstimation,
+} as ComponentMeta<typeof WorkEstimation>;
 
-const Template: ComponentStory<typeof EstimationComponent> = args => (
+const Template: ComponentStory<typeof WorkEstimation> = args => (
   <div className="w-96">
-    <EstimationComponent {...args} />
+    <WorkEstimation {...args} />
   </div>
 );
 

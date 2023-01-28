@@ -7,7 +7,7 @@ import Input from "src/components/FormInput";
 import { useEffect, useState } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import Card from "src/components/Card";
-import EstimationComponent, { BASE_RATE_USD } from "./EstimationComponent";
+import WorkEstimation, { BASE_RATE_USD } from "./WorkEstimation";
 import { FindUserQueryForPaymentFormQuery } from "src/__generated/graphql";
 import { debounce } from "lodash";
 
@@ -115,7 +115,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
                 </div>
               </div>
             </Card>
-            <EstimationComponent
+            <WorkEstimation
               numberOfDays={numberOfDays}
               decreaseNumberOfDays={tryDecreaseNumberOfDays}
               increaseNumberOfDays={tryIncreaseNumberOfDays}
