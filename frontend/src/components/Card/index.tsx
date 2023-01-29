@@ -9,12 +9,14 @@ interface CardProps extends React.PropsWithChildren {
   className?: string;
   dataTestId?: string;
   border?: CardBorder;
+  padded?: boolean;
 }
 
 export default function Card({
   selectable = false,
   className = "",
   border = CardBorder.Light,
+  padded = true,
   dataTestId,
   children,
 }: CardProps) {
@@ -22,9 +24,12 @@ export default function Card({
     <div
       className={classNames(
         className,
-        "w-full p-6 rounded-2xl font-walsheim",
+        "w-full rounded-2xl font-walsheim",
         "outline outline-1",
         "bg-white/2 backdrop-blur-lg",
+        {
+          "p-6": padded,
+        },
         {
           "transition duration-300 hover:bg-white/4 outline-offset-0 hover:outline-2": selectable,
         },
