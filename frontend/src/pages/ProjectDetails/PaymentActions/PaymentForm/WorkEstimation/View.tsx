@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import Button, { Width } from "src/components/Button";
 import Card from "src/components/Card";
 import { Steps } from "src/hooks/useWorkEstimation";
 import { formatMoneyAmount } from "src/utils/money";
@@ -30,13 +31,14 @@ export default function WorkEstimation({
       <div
         className={classNames(
           "flex flex-col gap-10 items-stretch justify-items-center",
-          "p-6 w-full",
+          "p-8 w-full",
           "bg-space-card bg-top bg-contain bg-no-repeat"
         )}
       >
         <div className="flex flex-row justify-between items-center">
-          <div className="text-3xl">
-            <span className="font-walsheim font-black">{T("payment.form.steps." + steps, { count: stepNumber })}</span>
+          <div className="font-belwe">
+            <span className="text-5xl mr-2">{stepNumber}</span>
+            <span className="text-2xl">{T("payment.form.steps." + steps, { count: stepNumber })}</span>{" "}
           </div>
           <div className="flex flex-row gap-3 text-white items-center">
             <div className="border rounded-xl w-fit py-2 px-4 hover:cursor-pointer" onClick={tryDecreaseNumberOfDays}>
@@ -81,14 +83,14 @@ export default function WorkEstimation({
             <div>{formatMoneyAmount(budget.remainingAmount - amountToPay)}</div>
           </div>
         </div>
-        <button
-          type="submit"
-          disabled={submitDisabled}
-          className=" border-white border-2 px-3 py-2 rounded-md bg-neutral-50 text-black"
-        >
-          {T("payment.form.confirm")}
-        </button>
       </div>
+      {!submitDisabled && (
+        <div className="p-6 w-full">
+          <Button htmlType="submit" width={Width.Full}>
+            <span>{T("payment.form.confirm")}</span>
+          </Button>
+        </div>
+      )}
     </Card>
   );
 }

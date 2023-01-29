@@ -49,12 +49,12 @@
       "sent": "Payment request sent!",
       "steps": {
         "days": {
-          "one": "1 day",
-          "many": "__count__ days"
+          "one": "day",
+          "many": "days"
         },
         "hours": {
-          "one": "1 hour",
-          "many": "__count__ hours"
+          "one": "hour",
+          "many": "hours"
         }
       },
       "submit": "Submit payment",
