@@ -110,7 +110,7 @@ export const useWorkEstimation = (
   }, [steps, stepNumber]);
 
   const increaseButtonDisabled = useMemo(() => {
-    if ((stepNumber + 1) * rates[steps] > budget.remainingAmount) {
+    if ((stepNumber + 1) * rates[steps] > Math.min(budget.remainingAmount, maxSteps[Steps.Days] * rates[Steps.Days])) {
       return true;
     }
     return false;
