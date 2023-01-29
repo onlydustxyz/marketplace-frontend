@@ -47,6 +47,16 @@
       "leftToSpend": "Left to spend",
       "linkToIssue": "Link to GitHub issue",
       "sent": "Payment request sent!",
+      "steps": {
+        "days": {
+          "one": "1 day",
+          "many": "__count__ days"
+        },
+        "hours": {
+          "one": "1 hour",
+          "many": "__count__ hours"
+        }
+      },
       "submit": "Submit payment",
       "thisPayment": "This payment",
       "totalBudget": "Total budget"
