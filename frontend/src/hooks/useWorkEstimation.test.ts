@@ -68,6 +68,17 @@ describe("useWorkEstimation", () => {
     });
     expect(result.current.increaseButtonDisabled).toBe(false);
   });
+
+  it("should give an increase button disabled status when estimation is at max days steps", () => {
+    const { result } = renderHook(() => useWorkEstimation(onChange, budget));
+    expect(result.current.increaseButtonDisabled).toBe(false);
+    for (let i = 0; i <= 18; i++) {
+      act(() => {
+        result.current.tryIncreaseNumberOfDays();
+      });
+    }
+    expect(result.current.increaseButtonDisabled).toBe(true);
+  });
 });
 
 describe("reducer", () => {
