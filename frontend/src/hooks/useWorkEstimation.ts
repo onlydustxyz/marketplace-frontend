@@ -109,6 +109,13 @@ export const useWorkEstimation = (
     return false;
   }, [steps, stepNumber]);
 
+  const increaseButtonDisabled = useMemo(() => {
+    if ((stepNumber + 1) * rates[steps] > budget.remainingAmount) {
+      return true;
+    }
+    return false;
+  }, [steps, stepNumber]);
+
   const tryIncreaseNumberOfDays = useCallback(() => dispatch(Action.Increase), []);
   const tryDecreaseNumberOfDays = useCallback(() => dispatch(Action.Decrease), []);
 
@@ -119,5 +126,6 @@ export const useWorkEstimation = (
     tryDecreaseNumberOfDays,
     steps,
     decreaseButtonDisabled,
+    increaseButtonDisabled,
   };
 };
