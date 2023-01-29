@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import Button, { Width } from "src/components/Button";
+import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import { Steps } from "src/hooks/useWorkEstimation";
 import { formatMoneyAmount } from "src/utils/money";
@@ -41,11 +41,15 @@ export default function WorkEstimation({
             <span className="text-2xl">{T("payment.form.steps." + steps, { count: stepNumber })}</span>{" "}
           </div>
           <div className="flex flex-row gap-3 text-white items-center">
-            <div className="border rounded-xl w-fit py-2 px-4 hover:cursor-pointer" onClick={tryDecreaseNumberOfDays}>
-              {T("payment.form.decrease")}
+            <div onClick={tryDecreaseNumberOfDays}>
+              <Button size={ButtonSize.Small} type={ButtonType.Secondary}>
+                {T("payment.form.decrease")}
+              </Button>
             </div>
-            <div className="border rounded-xl w-fit py-2 px-4 hover:cursor-pointer" onClick={tryIncreaseNumberOfDays}>
-              {T("payment.form.increase")}
+            <div onClick={tryIncreaseNumberOfDays}>
+              <Button size={ButtonSize.Small} type={ButtonType.Secondary}>
+                {T("payment.form.increase")}
+              </Button>
             </div>
           </div>
         </div>
