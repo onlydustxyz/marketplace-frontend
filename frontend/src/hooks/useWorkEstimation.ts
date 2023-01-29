@@ -96,7 +96,7 @@ export const useWorkEstimation = (
   const [estimationState, dispatch] = useReducer(reducer, initialStep);
   const { stepNumber, steps } = estimationState;
 
-  const amountToPay = useMemo(() => stepNumber * rates[steps], [stepNumber, steps]);
+  const amountToPay = useMemo(() => Math.ceil(stepNumber * rates[steps]), [stepNumber, steps]);
 
   useEffect(() => {
     onChange(amountToPay);
