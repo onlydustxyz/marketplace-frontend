@@ -6,6 +6,7 @@ import {
   getInitialStep,
   getReducer,
   Steps,
+  stepSizes,
   useWorkEstimation,
 } from "src/hooks/useWorkEstimation";
 import { describe, expect, it, vi, beforeEach, test } from "vitest";
@@ -40,7 +41,7 @@ describe("useWorkEstimation", () => {
       result.current.tryIncreaseNumberOfDays();
     });
     expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith(initialAmountToPay + DAY_RATE_USD);
+    expect(onChange).toHaveBeenCalledWith(initialAmountToPay + DAY_RATE_USD / 2);
   });
 
   it("should give a decrease button disabled status when estimation is 1 hour", () => {
@@ -72,7 +73,7 @@ describe("useWorkEstimation", () => {
   it("should give an increase button disabled status when estimation is at max days steps", () => {
     const { result } = renderHook(() => useWorkEstimation(onChange, budget));
     expect(result.current.increaseButtonDisabled).toBe(false);
-    for (let i = 0; i <= 18; i++) {
+    for (let i = 0; i <= 36; i++) {
       act(() => {
         result.current.tryIncreaseNumberOfDays();
       });
@@ -101,7 +102,7 @@ describe("reducer", () => {
     const action = Action.Increase;
     const nextState = reducer(state, action);
 
-    expect(nextState.stepNumber).toBe(2);
+    expect(nextState.stepNumber).toBe(1 + stepSizes[Steps.Days]);
   });
 
   it("descreases days", () => {
@@ -112,7 +113,7 @@ describe("reducer", () => {
     const action = Action.Decrease;
     const nextState = reducer(state, action);
 
-    expect(nextState.stepNumber).toBe(1);
+    expect(nextState.stepNumber).toBe(2 - stepSizes[Steps.Days]);
   });
 
   it("switches from hours to days", () => {
@@ -166,7 +167,7 @@ describe("reducer", () => {
   it("does not exceed budget in days", () => {
     const lowBudget = {
       initialAmount: 200,
-      remainingAmount: 5499,
+      remainingAmount: 5249,
     };
     const reducer = getReducer(lowBudget);
 
@@ -180,7 +181,7 @@ describe("reducer", () => {
     expect(nextState.stepNumber).toBe(10);
   });
 
-  it("does not exceed budget in days", () => {
+  it("does not exceed budget in hours", () => {
     const lowBudget = {
       initialAmount: 110,
       remainingAmount: 312,
