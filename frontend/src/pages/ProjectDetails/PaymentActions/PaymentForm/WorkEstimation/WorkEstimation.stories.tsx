@@ -16,11 +16,7 @@ const Template: ComponentStory<typeof WorkEstimation> = args => (
 export const Default = Template.bind({});
 
 Default.args = {
-  numberOfDays: 2,
-  decreaseNumberOfDays: () => {
-    return;
-  },
-  increaseNumberOfDays: () => {
+  onChange: () => {
     return;
   },
   budget: { initialAmount: 50000, remainingAmount: 30000 },

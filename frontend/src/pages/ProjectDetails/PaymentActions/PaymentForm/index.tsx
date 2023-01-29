@@ -7,11 +7,9 @@ import Input from "src/components/FormInput";
 import { useEffect, useState } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import Card from "src/components/Card";
-import WorkEstimation, { BASE_RATE_USD } from "./WorkEstimation";
+import WorkEstimation from "./WorkEstimation";
 import { FindUserQueryForPaymentFormQuery } from "src/__generated/graphql";
 import { debounce } from "lodash";
-
-const DEFAULT_NUMBER_OF_DAYS = 2;
 
 export const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/pull\/\d+$/;
 
@@ -33,24 +31,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
     },
   });
 
-  const [numberOfDays, setNumberOfDays] = useState(DEFAULT_NUMBER_OF_DAYS);
-
-  const tryIncreaseNumberOfDays = () => {
-    const increment = numberOfDays < 1 ? 0.5 : 1;
-    if (numberOfDays < 20 && budget.remainingAmount - (numberOfDays + increment) * BASE_RATE_USD >= 0) {
-      setNumberOfDays(numberOfDays + increment);
-    }
-  };
-
-  const tryDecreaseNumberOfDays = () => {
-    if (numberOfDays > 0.5) {
-      const decrement = numberOfDays == 1 ? 0.5 : 1;
-      setNumberOfDays(numberOfDays - decrement);
-    }
-  };
-
   const [insertPayment] = useHasuraMutation(REQUEST_PAYMENT_MUTATION, HasuraUserRole.RegisteredUser, {
-    variables: { projectId, amount: numberOfDays * BASE_RATE_USD },
+    variables: { projectId },
   });
 
   const { handleSubmit, setError, clearErrors } = formMethods;
@@ -82,6 +64,10 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
   const onSubmit: SubmitHandler<Inputs> = async formData => {
     await insertPayment(mapFormDataToSchema(formData, findUserQuery.data?.fetchUserDetails.id));
     window.location.reload();
+  };
+
+  const onOnWorkEstimationChange = (amount: number) => {
+    formMethods.setValue("amountToWire", amount);
   };
 
   return (
@@ -116,9 +102,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
               </div>
             </Card>
             <WorkEstimation
-              numberOfDays={numberOfDays}
-              decreaseNumberOfDays={tryDecreaseNumberOfDays}
-              increaseNumberOfDays={tryIncreaseNumberOfDays}
+              onChange={onOnWorkEstimationChange}
               budget={budget}
               submitDisabled={findUserQuery.loading}
             />
@@ -143,10 +127,11 @@ export const FIND_USER_QUERY = gql`
   }
 `;
 
-const mapFormDataToSchema = ({ linkToIssue }: Inputs, contributorId?: number) => {
+const mapFormDataToSchema = ({ linkToIssue, amountToWire }: Inputs, contributorId?: number) => {
   return {
     variables: {
       contributorId,
+      amount: amountToWire,
       reason: {
         workItems: [linkToIssue],
       },
