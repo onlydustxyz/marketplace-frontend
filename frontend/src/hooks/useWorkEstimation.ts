@@ -29,7 +29,7 @@ const maxSteps = {
 
 const rates = {
   [Steps.Days]: DAY_RATE_USD,
-  [Steps.Hours]: DAY_RATE_USD / 8,
+  [Steps.Hours]: DAY_RATE_USD / (maxSteps[Steps.Hours] + 1),
 };
 
 export const getInitialStep = (budget: Budget): State => {
@@ -102,19 +102,12 @@ export const useWorkEstimation = (
     onChange(amountToPay);
   }, [amountToPay]);
 
-  const decreaseButtonDisabled = useMemo(() => {
-    if (steps === Steps.Hours && stepNumber === 1) {
-      return true;
-    }
-    return false;
-  }, [steps, stepNumber]);
+  const decreaseButtonDisabled = useMemo(() => steps === Steps.Hours && stepNumber === 1, [steps, stepNumber]);
 
-  const increaseButtonDisabled = useMemo(() => {
-    if ((stepNumber + 1) * rates[steps] > Math.min(budget.remainingAmount, maxSteps[Steps.Days] * rates[Steps.Days])) {
-      return true;
-    }
-    return false;
-  }, [steps, stepNumber]);
+  const increaseButtonDisabled = useMemo(
+    () => (stepNumber + 1) * rates[steps] > Math.min(budget.remainingAmount, maxSteps[Steps.Days] * rates[Steps.Days]),
+    [steps, stepNumber]
+  );
 
   const tryIncreaseNumberOfDays = useCallback(() => dispatch(Action.Increase), []);
   const tryDecreaseNumberOfDays = useCallback(() => dispatch(Action.Decrease), []);
