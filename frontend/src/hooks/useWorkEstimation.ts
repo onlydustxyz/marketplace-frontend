@@ -102,6 +102,13 @@ export const useWorkEstimation = (
     onChange(amountToPay);
   }, [amountToPay]);
 
+  const decreaseButtonDisabled = useMemo(() => {
+    if (steps === Steps.Hours && stepNumber === 1) {
+      return true;
+    }
+    return false;
+  }, [steps, stepNumber]);
+
   const tryIncreaseNumberOfDays = useCallback(() => dispatch(Action.Increase), []);
   const tryDecreaseNumberOfDays = useCallback(() => dispatch(Action.Decrease), []);
 
@@ -111,5 +118,6 @@ export const useWorkEstimation = (
     tryIncreaseNumberOfDays,
     tryDecreaseNumberOfDays,
     steps,
+    decreaseButtonDisabled,
   };
 };
