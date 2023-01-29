@@ -153,16 +153,22 @@ describe("reducer", () => {
 });
 
 describe("getInitialStep", () => {
-  test.each([[3, Steps.Hours, 190]])(
-    "returns %i %s for an initial budget of %i",
-    (expectedStepNumber, expectedSteps, remainingBudget) => {
-      const budget = {
-        initialAmount: 100,
-        remainingAmount: remainingBudget,
-      };
-      const initialStep = getInitialStep(budget);
-      expect(initialStep.stepNumber).toBe(expectedStepNumber);
-      expect(initialStep.steps).toBe(expectedSteps);
-    }
-  );
+  test.each([
+    [0, Steps.Hours, 7],
+    [1, Steps.Hours, 70],
+    [3, Steps.Hours, 190],
+    [1, Steps.Days, 500],
+    [1, Steps.Days, 999],
+    [2, Steps.Days, 1000],
+    [2, Steps.Days, 1500],
+    [2, Steps.Days, 99999999],
+  ])("returns %i %s for an initial budget of %i", (expectedStepNumber, expectedSteps, remainingBudget) => {
+    const budget = {
+      initialAmount: 100,
+      remainingAmount: remainingBudget,
+    };
+    const initialStep = getInitialStep(budget);
+    expect(initialStep.stepNumber).toBe(expectedStepNumber);
+    expect(initialStep.steps).toBe(expectedSteps);
+  });
 });

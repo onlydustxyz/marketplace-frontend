@@ -33,8 +33,15 @@ const rates = {
 };
 
 export const getInitialStep = (budget: Budget): State => {
+  if (budget.remainingAmount < DAY_RATE_USD) {
+    return {
+      stepNumber: Math.floor(budget.remainingAmount / rates[Steps.Hours]),
+      steps: Steps.Hours,
+    };
+  }
+
   return {
-    stepNumber: DEFAULT_NUMBER_OF_DAYS,
+    stepNumber: Math.min(DEFAULT_NUMBER_OF_DAYS, Math.floor(budget.remainingAmount / rates[Steps.Days])),
     steps: Steps.Days,
   };
 };
