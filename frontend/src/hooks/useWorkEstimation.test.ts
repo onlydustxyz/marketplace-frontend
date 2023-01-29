@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react-hooks";
-import { BASE_RATE_USD, DEFAULT_NUMBER_OF_DAYS, useWorkEstimation } from "src/hooks/useWorkEstimation";
+import { BASE_RATE_USD, DEFAULT_NUMBER_OF_DAYS, Steps, useWorkEstimation } from "src/hooks/useWorkEstimation";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 
 describe("useWorkEstimation", () => {
