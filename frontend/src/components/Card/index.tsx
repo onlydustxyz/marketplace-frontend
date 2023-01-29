@@ -1,3 +1,5 @@
+import classNames from "classnames";
+
 export enum CardBorder {
   Light = "light",
   Medium = "medium",
@@ -18,9 +20,19 @@ export default function Card({
 }: CardProps) {
   return (
     <div
-      className={`${className} w-full bg-white/2 backdrop-blur-lg p-6 outline outline-1 rounded-2xl font-walsheim ${
-        selectable ? "transition duration-300 hover:bg-white/4 outline-offset-0 hover:outline-2" : ""
-      } ${border === CardBorder.Light ? "outline-greyscale-50/8" : "outline-greyscale-50/12"} `}
+      className={classNames(
+        className,
+        "w-full p-6 rounded-2xl font-walsheim",
+        "outline outline-1",
+        "bg-white/2 backdrop-blur-lg",
+        {
+          "transition duration-300 hover:bg-white/4 outline-offset-0 hover:outline-2": selectable,
+        },
+        {
+          "outline-greyscale-50/8": border === CardBorder.Light,
+          "outline-greyscale-50/12": border === CardBorder.Medium,
+        }
+      )}
       data-testid={dataTestId}
     >
       {children}

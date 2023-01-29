@@ -1,3 +1,5 @@
+import classNames from "classnames";
+
 export enum BackgroundSize {
   Cover = "cover",
   Contain = "contain",
@@ -40,11 +42,17 @@ export default function ImageCard({
 }: ImageCardProps) {
   return (
     <div
-      className={`
-        ${width === Width.Fit ? "w-fit" : "w-full"}
-        ${height === Height.Fit ? "h-fit" : "h-full"}
-        rounded-2xl
-      `}
+      className={classNames(
+        "rounded-2xl",
+        {
+          "w-fit": width === Width.Fit,
+          "w-full": width === Width.Full,
+        },
+        {
+          "h-fit": height === Height.Fit,
+          "h-full": height === Height.Full,
+        }
+      )}
       style={{
         background: `url(${backgroundImageUrl}), rgba(255, 255, 255, 0.08)`,
         backgroundPosition: "center",
@@ -53,7 +61,18 @@ export default function ImageCard({
       data-testid={dataTestId}
     >
       <div
-        className={`${width === Width.Fit ? "w-fit" : "w-full"} bg-noise-${backgroundNoise} rounded-2xl font-walsheim`}
+        className={classNames(
+          "rounded-2xl font-walsheim",
+          {
+            "w-fit": width === Width.Fit,
+            "w-full": width === Width.Full,
+          },
+          {
+            "bg-noise-light": backgroundNoise === BackgroundNoise.Light,
+            "bg-noise-medium": backgroundNoise === BackgroundNoise.Medium,
+            "bg-noise-heavy": backgroundNoise === BackgroundNoise.Heavy,
+          }
+        )}
       >
         {children}
       </div>
