@@ -55,6 +55,19 @@ describe("useWorkEstimation", () => {
     });
     expect(result.current.decreaseButtonDisabled).toBe(true);
   });
+
+  it("should give an increase button disabled status when estimation is at budget maximum", () => {
+    const lowBudget = {
+      initialAmount: 200,
+      remainingAmount: 200,
+    };
+    const { result } = renderHook(() => useWorkEstimation(onChange, lowBudget));
+    expect(result.current.increaseButtonDisabled).toBe(true);
+    act(() => {
+      result.current.tryDecreaseNumberOfDays();
+    });
+    expect(result.current.increaseButtonDisabled).toBe(false);
+  });
 });
 
 describe("reducer", () => {
