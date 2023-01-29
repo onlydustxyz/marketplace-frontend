@@ -3,11 +3,12 @@ import {
   Action,
   DAY_RATE_USD,
   DEFAULT_NUMBER_OF_DAYS,
+  getInitialStep,
   getReducer,
   Steps,
   useWorkEstimation,
 } from "src/hooks/useWorkEstimation";
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { describe, expect, it, vi, beforeEach, test } from "vitest";
 
 const budget = {
   initialAmount: 200,
@@ -149,4 +150,19 @@ describe("reducer", () => {
 
     expect(nextState.stepNumber).toBe(4);
   });
+});
+
+describe("getInitialStep", () => {
+  test.each([[3, Steps.Hours, 190]])(
+    "returns %i %s for an initial budget of %i",
+    (expectedStepNumber, expectedSteps, remainingBudget) => {
+      const budget = {
+        initialAmount: 100,
+        remainingAmount: remainingBudget,
+      };
+      const initialStep = getInitialStep(budget);
+      expect(initialStep.stepNumber).toBe(expectedStepNumber);
+      expect(initialStep.steps).toBe(expectedSteps);
+    }
+  );
 });

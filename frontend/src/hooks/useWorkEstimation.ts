@@ -7,7 +7,7 @@ export enum Steps {
   Hours = "hours",
 }
 
-type Budget = {
+export type Budget = {
   initialAmount: number;
   remainingAmount: number;
 };
