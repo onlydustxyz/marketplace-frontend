@@ -107,9 +107,9 @@ export const useWorkEstimation = (
     onChange(amountToPay);
   }, [amountToPay]);
 
-  const decreaseButtonDisabled = useMemo(() => steps === Steps.Hours && stepNumber === 1, [steps, stepNumber]);
+  const canDecrease = useMemo(() => steps === Steps.Hours && stepNumber === 1, [steps, stepNumber]);
 
-  const increaseButtonDisabled = useMemo(
+  const canIncrease = useMemo(
     () =>
       (stepNumber + stepSizes[steps]) * rates[steps] >
       Math.min(budget.remainingAmount, maxSteps[Steps.Days] * rates[Steps.Days]),
@@ -125,7 +125,7 @@ export const useWorkEstimation = (
     tryIncreaseNumberOfDays,
     tryDecreaseNumberOfDays,
     steps,
-    decreaseButtonDisabled,
-    increaseButtonDisabled,
+    canDecrease,
+    canIncrease,
   };
 };
