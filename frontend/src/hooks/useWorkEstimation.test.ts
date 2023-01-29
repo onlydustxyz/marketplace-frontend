@@ -42,6 +42,19 @@ describe("useWorkEstimation", () => {
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith(initialAmountToPay + DAY_RATE_USD);
   });
+
+  it("should give a decrease button disabled status when estimation is 1 hour", () => {
+    const veryLowBudget = {
+      initialAmount: 200,
+      remainingAmount: 150,
+    };
+    const { result } = renderHook(() => useWorkEstimation(onChange, veryLowBudget));
+    expect(result.current.decreaseButtonDisabled).toBe(false);
+    act(() => {
+      result.current.tryDecreaseNumberOfDays();
+    });
+    expect(result.current.decreaseButtonDisabled).toBe(true);
+  });
 });
 
 describe("reducer", () => {
