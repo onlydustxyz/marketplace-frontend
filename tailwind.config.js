@@ -76,6 +76,7 @@ module.exports = {
         "noise-light": "url('src/assets/img/noise-light.png')",
         "noise-medium": "url('src/assets/img/noise-medium.png')",
         "noise-heavy": "url('src/assets/img/noise-heavy.png')",
+        "space-card": "url('src/assets/img/space-card-bg.png')",
         space: `
             url('src/assets/img/dust-top-right.png'),
             url('src/assets/img/dust-btm-left.png'),

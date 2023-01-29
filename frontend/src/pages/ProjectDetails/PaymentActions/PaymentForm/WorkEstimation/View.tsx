@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import Card from "src/components/Card";
 import { Steps } from "src/hooks/useWorkEstimation";
 import { formatMoneyAmount } from "src/utils/money";
@@ -25,8 +26,14 @@ export default function WorkEstimation({
   const { T } = useT();
 
   return (
-    <Card>
-      <div className="flex flex-col gap-10 items-stretch justify-items-center w-full">
+    <Card padded={false}>
+      <div
+        className={classNames(
+          "flex flex-col gap-10 items-stretch justify-items-center",
+          "p-6 w-full",
+          "bg-space-card bg-top bg-contain bg-no-repeat"
+        )}
+      >
         <div className="flex flex-row justify-between items-center">
           <div className="text-3xl">
             <span className="font-walsheim font-black">{T("payment.form.steps." + steps, { count: stepNumber })}</span>
