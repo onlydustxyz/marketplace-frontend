@@ -79,6 +79,15 @@ describe("useWorkEstimation", () => {
     }
     expect(result.current.increaseButtonDisabled).toBe(true);
   });
+
+  it("should give integer amounts", () => {
+    const lowBudget = {
+      initialAmount: 200,
+      remainingAmount: 200,
+    };
+    const { result } = renderHook(() => useWorkEstimation(onChange, lowBudget));
+    expect(result.current.amountToPay).toBe(188);
+  });
 });
 
 describe("reducer", () => {
