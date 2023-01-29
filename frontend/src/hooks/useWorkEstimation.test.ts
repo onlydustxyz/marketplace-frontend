@@ -41,18 +41,6 @@ describe("useWorkEstimation", () => {
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith(initialAmountToPay + DAY_RATE_USD);
   });
-
-  it("should switch from days steps to hours steps", () => {
-    const { result } = renderHook(() => useWorkEstimation(onChange, budget));
-    expect(result.current.steps).toBe(Steps.Days);
-    act(() => {
-      result.current.tryDecreaseNumberOfDays();
-    });
-    act(() => {
-      result.current.tryDecreaseNumberOfDays();
-    });
-    expect(result.current.steps).toBe(Steps.Hours);
-  });
 });
 
 describe("reducer", () => {

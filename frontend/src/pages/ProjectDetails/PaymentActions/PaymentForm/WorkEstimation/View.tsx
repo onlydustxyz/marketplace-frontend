@@ -1,4 +1,5 @@
 import Card from "src/components/Card";
+import { Steps } from "src/hooks/useWorkEstimation";
 import { formatMoneyAmount } from "src/utils/money";
 import { useT } from "talkr";
 
@@ -6,7 +7,8 @@ interface Props {
   budget: { initialAmount: number; remainingAmount: number };
   submitDisabled: boolean;
   amountToPay: number;
-  numberOfDays: number;
+  stepNumber: number;
+  steps: Steps;
   tryIncreaseNumberOfDays: () => void;
   tryDecreaseNumberOfDays: () => void;
 }
@@ -17,7 +19,8 @@ export default function WorkEstimation({
   budget,
   amountToPay,
   submitDisabled,
-  numberOfDays,
+  stepNumber,
+  steps,
 }: Props) {
   const { T } = useT();
 
@@ -26,7 +29,7 @@ export default function WorkEstimation({
       <div className="flex flex-col gap-10 items-stretch justify-items-center w-full">
         <div className="flex flex-row justify-between items-center">
           <div className="text-3xl">
-            <span className="font-walsheim font-black">{numberOfDays}</span> <span>{T("payment.form.days")}</span>
+            <span className="font-walsheim font-black">{T("payment.form.steps." + steps, { count: stepNumber })}</span>
           </div>
           <div className="flex flex-row gap-3 text-white items-center">
             <div className="border rounded-xl w-fit py-2 px-4 hover:cursor-pointer" onClick={tryDecreaseNumberOfDays}>

@@ -8,13 +8,13 @@ interface Props {
 }
 
 export default function WorkEstimation({ onChange, budget, submitDisabled }: Props) {
-  const { amountToPay, numberOfDays, tryDecreaseNumberOfDays, tryIncreaseNumberOfDays } = useWorkEstimation(
+  const { amountToPay, stepNumber, steps, tryDecreaseNumberOfDays, tryIncreaseNumberOfDays } = useWorkEstimation(
     onChange,
     budget
   );
   return (
     <View
-      {...{ amountToPay, numberOfDays, tryDecreaseNumberOfDays, tryIncreaseNumberOfDays, budget, submitDisabled }}
+      {...{ amountToPay, stepNumber, steps, tryDecreaseNumberOfDays, tryIncreaseNumberOfDays, budget, submitDisabled }}
     />
   );
 }
