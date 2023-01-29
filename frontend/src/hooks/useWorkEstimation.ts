@@ -32,6 +32,13 @@ const rates = {
   [Steps.Hours]: DAY_RATE_USD / 8,
 };
 
+export const getInitialStep = (budget: Budget): State => {
+  return {
+    stepNumber: DEFAULT_NUMBER_OF_DAYS,
+    steps: Steps.Days,
+  };
+};
+
 export const getReducer = (budget: Budget) => (state: State, action: Action) => {
   switch (action) {
     case Action.Increase: {
@@ -78,7 +85,8 @@ export const useWorkEstimation = (
   budget: { initialAmount: number; remainingAmount: number }
 ) => {
   const reducer = useMemo(() => getReducer(budget), [budget]);
-  const [estimationState, dispatch] = useReducer(reducer, { stepNumber: DEFAULT_NUMBER_OF_DAYS, steps: Steps.Days });
+  const initialStep = useMemo(() => getInitialStep(budget), [budget]);
+  const [estimationState, dispatch] = useReducer(reducer, initialStep);
   const { stepNumber, steps } = estimationState;
 
   const amountToPay = useMemo(() => stepNumber * rates[steps], [stepNumber, steps]);
