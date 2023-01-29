@@ -32,6 +32,11 @@ const rates = {
   [Steps.Hours]: DAY_RATE_USD / (maxSteps[Steps.Hours] + 1),
 };
 
+export const stepSizes = {
+  [Steps.Days]: 0.5,
+  [Steps.Hours]: 1,
+};
+
 export const getInitialStep = (budget: Budget): State => {
   if (budget.remainingAmount < DAY_RATE_USD) {
     return {
@@ -50,7 +55,7 @@ export const getReducer = (budget: Budget) => (state: State, action: Action) => 
   switch (action) {
     case Action.Increase: {
       let nextState: State = {
-        stepNumber: state.stepNumber + 1,
+        stepNumber: state.stepNumber + stepSizes[state.steps],
         steps: state.steps,
       };
       if (state.steps === Steps.Hours && state.stepNumber === maxSteps[state.steps]) {
@@ -70,7 +75,7 @@ export const getReducer = (budget: Budget) => (state: State, action: Action) => 
     }
     case Action.Decrease: {
       let nextState: State = {
-        stepNumber: state.stepNumber - 1,
+        stepNumber: state.stepNumber - stepSizes[state.steps],
         steps: state.steps,
       };
       if (state.steps === Steps.Days && state.stepNumber === 1) {
@@ -105,7 +110,9 @@ export const useWorkEstimation = (
   const decreaseButtonDisabled = useMemo(() => steps === Steps.Hours && stepNumber === 1, [steps, stepNumber]);
 
   const increaseButtonDisabled = useMemo(
-    () => (stepNumber + 1) * rates[steps] > Math.min(budget.remainingAmount, maxSteps[Steps.Days] * rates[Steps.Days]),
+    () =>
+      (stepNumber + stepSizes[steps]) * rates[steps] >
+      Math.min(budget.remainingAmount, maxSteps[Steps.Days] * rates[Steps.Days]),
     [steps, stepNumber]
   );
 
