@@ -44,41 +44,41 @@ describe("useWorkEstimation", () => {
     expect(onChange).toHaveBeenCalledWith(initialAmountToPay + DAY_RATE_USD / 2);
   });
 
-  it("should give a decrease button disabled status when estimation is 1 hour", () => {
+  it("should forbid decreasing when estimation is 1 hour", () => {
     const veryLowBudget = {
       initialAmount: 200,
       remainingAmount: 150,
     };
     const { result } = renderHook(() => useWorkEstimation(onChange, veryLowBudget));
-    expect(result.current.decreaseButtonDisabled).toBe(false);
+    expect(result.current.canDecrease).toBe(false);
     act(() => {
       result.current.tryDecreaseNumberOfDays();
     });
-    expect(result.current.decreaseButtonDisabled).toBe(true);
+    expect(result.current.canDecrease).toBe(true);
   });
 
-  it("should give an increase button disabled status when estimation is at budget maximum", () => {
+  it("should forbid increasing when estimation is at budget maximum", () => {
     const lowBudget = {
       initialAmount: 200,
       remainingAmount: 200,
     };
     const { result } = renderHook(() => useWorkEstimation(onChange, lowBudget));
-    expect(result.current.increaseButtonDisabled).toBe(true);
+    expect(result.current.canIncrease).toBe(true);
     act(() => {
       result.current.tryDecreaseNumberOfDays();
     });
-    expect(result.current.increaseButtonDisabled).toBe(false);
+    expect(result.current.canIncrease).toBe(false);
   });
 
-  it("should give an increase button disabled status when estimation is at max days steps", () => {
+  it("should forbid increasing when estimation is at max days steps", () => {
     const { result } = renderHook(() => useWorkEstimation(onChange, budget));
-    expect(result.current.increaseButtonDisabled).toBe(false);
+    expect(result.current.canIncrease).toBe(false);
     for (let i = 0; i <= 36; i++) {
       act(() => {
         result.current.tryIncreaseNumberOfDays();
       });
     }
-    expect(result.current.increaseButtonDisabled).toBe(true);
+    expect(result.current.canIncrease).toBe(true);
   });
 
   it("should give integer amounts", () => {
