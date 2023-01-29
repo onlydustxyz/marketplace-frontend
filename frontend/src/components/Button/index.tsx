@@ -35,7 +35,7 @@ export default function Button({
     <button
       className={classNames(
         "flex flex-row justify-center items-center gap-2",
-        "rounded-xl font-walsheim shadow-bottom-sm font-medium",
+        "rounded-xl font-walsheim drop-shadow-bottom-sm font-medium",
         "hover:cursor-pointer hover:shadow-none",
         {
           "w-full": width === Width.Full,
