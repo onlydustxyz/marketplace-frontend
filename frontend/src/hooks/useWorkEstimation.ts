@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
-const BASE_RATE_USD = 500;
-const DEFAULT_NUMBER_OF_DAYS = 2;
+export const BASE_RATE_USD = 500;
+export const DEFAULT_NUMBER_OF_DAYS = 2;
 
 export const useWorkEstimation = (
   onChange: (amount: number) => void,
