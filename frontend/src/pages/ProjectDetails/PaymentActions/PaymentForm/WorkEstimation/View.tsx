@@ -4,6 +4,7 @@ import Card from "src/components/Card";
 import { Steps } from "src/hooks/useWorkEstimation";
 import Add from "src/icons/Add";
 import Subtract from "src/icons/Subtract";
+import BudgetBar from "src/pages/ProjectDetails/PaymentActions/PaymentForm/WorkEstimation/BudgetBar";
 import { formatMoneyAmount } from "src/utils/money";
 import { useT } from "talkr";
 
@@ -63,26 +64,7 @@ export default function WorkEstimation({
               </div>
             </div>
           </div>
-          <div className="w-full bg-purple-200 rounded-full h-2">
-            <div
-              className="bg-stripe-pattern h-full rounded-full"
-              style={{
-                width: `${Math.floor(
-                  ((budget.initialAmount - budget.remainingAmount + amountToPay) * 100) / budget.initialAmount
-                )}%`,
-              }}
-            >
-              <div
-                className="bg-purple-500 h-full rounded-full"
-                style={{
-                  width: `${Math.floor(
-                    ((budget.initialAmount - budget.remainingAmount) * 100) /
-                      (budget.initialAmount - budget.remainingAmount + amountToPay)
-                  )}%`,
-                }}
-              ></div>
-            </div>
-          </div>
+          <BudgetBar budget={budget} pendingSpending={amountToPay} displayPendingSpending={!disabled} />
           <div className="flex flex-col text-sm">
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("payment.form.totalBudget")}</div>
