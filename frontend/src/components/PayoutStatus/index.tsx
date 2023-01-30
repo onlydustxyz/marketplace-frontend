@@ -12,64 +12,86 @@ type Props = {
 export default function PayoutStatus({ status, payoutInfoMissing }: Props) {
   return (
     <div className="relative group/payout-status flex flex-row justify-center">
-      <Tag
-        label={getStatusLabel(status, payoutInfoMissing)}
-        size={TagSize.Medium}
-        icon={getStatusIcon(status, payoutInfoMissing)}
-        iconColor={payoutInfoMissing ? TagIconColor.Pink : TagIconColor.Grey}
-        borderColor={payoutInfoMissing ? TagBorderColor.MultiColor : TagBorderColor.Grey}
-      />
-      <div
-        className={classNames(
-          "absolute z-10 translate-y-10 invisible group-hover/payout-status:visible flex justify-center",
-          {
-            "w-52": payoutInfoMissing,
-            "w-44": !payoutInfoMissing && status === PaymentStatus.WAITING_PAYMENT,
-            "w-36": !payoutInfoMissing && status === PaymentStatus.ACCEPTED,
-          }
-        )}
-      >
-        <Tooltip>{getTooltipText(status, payoutInfoMissing)}</Tooltip>
-      </div>
+      {buildTag(status, payoutInfoMissing)}
     </div>
   );
 }
 
-const getStatusLabel = (status: PaymentStatus, payoutInfoMissing: boolean) => {
-  const { T } = useIntl();
-
+const buildTag = (status: PaymentStatus, payoutInfoMissing: boolean) => {
   switch (status) {
     case PaymentStatus.WAITING_PAYMENT:
-      return payoutInfoMissing ? T("payment.status.payoutInfoMissing") : T("payment.status.processing");
+      return payoutInfoMissing ? tagPayoutInfoMissing() : tagProcessing();
     case PaymentStatus.ACCEPTED:
-      return T("payment.status.complete");
+      return tagComplete();
   }
 };
 
-const getStatusIcon = (status: PaymentStatus, payoutInfoMissing: boolean) => {
-  if (payoutInfoMissing) {
-    return TagIcon.Warning;
-  }
-
-  switch (status) {
-    case PaymentStatus.WAITING_PAYMENT:
-      return TagIcon.Time;
-    case PaymentStatus.ACCEPTED:
-      return TagIcon.Check;
-  }
-};
-
-const getTooltipText = (status: PaymentStatus, payoutInfoMissing: boolean) => {
+const tagComplete = () => {
   const { T } = useIntl();
 
-  if (payoutInfoMissing) {
-    return T("payment.status.tooltip.payoutInfoMissing");
-  }
+  return (
+    <>
+      <Tag
+        label={T("payment.status.complete")}
+        size={TagSize.Medium}
+        icon={TagIcon.Check}
+        iconColor={TagIconColor.Grey}
+        borderColor={TagBorderColor.Grey}
+      />
+      <div
+        className={classNames(
+          "absolute z-10 translate-y-10 invisible group-hover/payout-status:visible flex justify-center w-36"
+        )}
+      >
+        <Tooltip>{T("payment.status.tooltip.complete")}</Tooltip>
+      </div>
+    </>
+  );
+};
 
-  switch (status) {
-    case PaymentStatus.WAITING_PAYMENT:
-      return T("payment.status.tooltip.processing");
-    case PaymentStatus.ACCEPTED:
-      return T("payment.status.tooltip.complete");
-  }
+const tagProcessing = () => {
+  const { T } = useIntl();
+
+  return (
+    <>
+      <Tag
+        label={T("payment.status.processing")}
+        size={TagSize.Medium}
+        icon={TagIcon.Time}
+        iconColor={TagIconColor.Grey}
+        borderColor={TagBorderColor.Grey}
+      />
+      <div
+        className={classNames(
+          "absolute z-10 translate-y-10 invisible group-hover/payout-status:visible flex justify-center w-44"
+        )}
+      >
+        <Tooltip>{T("payment.status.tooltip.processing")}</Tooltip>
+      </div>
+    </>
+  );
+};
+
+const tagPayoutInfoMissing = () => {
+  const { T } = useIntl();
+
+  return (
+    <>
+      <Tag
+        label={T("payment.status.payoutInfoMissing")}
+        size={TagSize.Medium}
+        icon={TagIcon.Warning}
+        iconColor={TagIconColor.Pink}
+        borderColor={TagBorderColor.MultiColor}
+        whitespaceNoWrap={true}
+      />
+      <div
+        className={classNames(
+          "absolute z-10 translate-y-10 invisible group-hover/payout-status:visible flex justify-center w-52"
+        )}
+      >
+        <Tooltip>{T("payment.status.tooltip.payoutInfoMissing")}</Tooltip>
+      </div>
+    </>
+  );
 };

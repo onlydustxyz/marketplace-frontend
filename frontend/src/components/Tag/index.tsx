@@ -29,6 +29,7 @@ export type TagProps = {
   icon?: TagIcon;
   iconColor?: TagIconColor;
   borderColor?: TagBorderColor;
+  whitespaceNoWrap?: boolean;
 };
 
 export default function Tag({
@@ -37,6 +38,7 @@ export default function Tag({
   icon,
   iconColor = TagIconColor.Grey,
   borderColor = TagBorderColor.Grey,
+  whitespaceNoWrap = false,
 }: TagProps) {
   return (
     <div className="w-fit rounded-full p-px overflow-hidden">
@@ -72,7 +74,7 @@ export default function Tag({
             )}
           />
         )}
-        <span className="text-center">{label}</span>
+        <span className={classNames("text-center", { "whitespace-nowrap": whitespaceNoWrap })}>{label}</span>
       </div>
     </div>
   );
