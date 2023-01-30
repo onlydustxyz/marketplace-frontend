@@ -56,12 +56,11 @@ const PayoutTable: React.FC<PropsType> = ({ payments, payoutInfoMissing }) => {
         case Field.Date:
           return payment.requestedAt;
         case Field.Contribution: {
-          const repoName = payment.reason.match(REPO_NAME);
           const issueNumber = payment.reason.match(ISSUE_NUMBER);
-          return `${repoName}${issueNumber}`;
+          return `${payment.project.title}${issueNumber}`;
         }
         case Field.Amount:
-          return payment.amount;
+          return payment.amount.value;
         case Field.Status:
           switch (payment.status) {
             case PaymentStatus.WAITING_PAYMENT:
