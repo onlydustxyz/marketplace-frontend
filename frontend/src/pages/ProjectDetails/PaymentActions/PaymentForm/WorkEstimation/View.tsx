@@ -2,6 +2,8 @@ import classNames from "classnames";
 import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import { Steps } from "src/hooks/useWorkEstimation";
+import Add from "src/icons/Add";
+import Subtract from "src/icons/Subtract";
 import { formatMoneyAmount } from "src/utils/money";
 import { useT } from "talkr";
 
@@ -38,12 +40,16 @@ export default function WorkEstimation({
             <div className="flex flex-row gap-3 text-white items-center">
               <div onClick={tryDecreaseNumberOfDays}>
                 <Button size={ButtonSize.Small} type={ButtonType.Secondary}>
-                  {T("payment.form.decrease")}
+                  <div className="absolute top-1">
+                    <Subtract />
+                  </div>
                 </Button>
               </div>
               <div onClick={tryIncreaseNumberOfDays}>
                 <Button size={ButtonSize.Small} type={ButtonType.Secondary}>
-                  {T("payment.form.increase")}
+                  <div className="absolute top-1">
+                    <Add />
+                  </div>
                 </Button>
               </div>
             </div>
