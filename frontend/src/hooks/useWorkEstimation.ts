@@ -84,7 +84,7 @@ export const getReducer = (budget: Budget) => (state: State, action: Action) => 
           steps: Steps.Hours,
         };
       }
-      if (state.steps === Steps.Hours && state.stepNumber === 1) {
+      if (state.steps === Steps.Hours && state.stepNumber <= 1) {
         nextState = state;
       }
       return nextState;
@@ -107,11 +107,11 @@ export const useWorkEstimation = (
     onChange(amountToPay);
   }, [amountToPay]);
 
-  const canDecrease = useMemo(() => steps === Steps.Hours && stepNumber === 1, [steps, stepNumber]);
+  const canDecrease = useMemo(() => steps === Steps.Days || stepNumber > 1, [steps, stepNumber]);
 
   const canIncrease = useMemo(
     () =>
-      (stepNumber + stepSizes[steps]) * rates[steps] >
+      (stepNumber + stepSizes[steps]) * rates[steps] <=
       Math.min(budget.remainingAmount, maxSteps[Steps.Days] * rates[Steps.Days]),
     [steps, stepNumber]
   );

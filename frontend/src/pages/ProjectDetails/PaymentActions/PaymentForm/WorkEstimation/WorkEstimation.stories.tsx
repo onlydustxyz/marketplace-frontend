@@ -14,6 +14,7 @@ const Template: ComponentStory<typeof WorkEstimation> = args => (
 );
 
 export const Default = Template.bind({});
+export const NoBudget = Template.bind({});
 
 Default.args = {
   onChange: () => {
@@ -23,6 +24,19 @@ Default.args = {
 };
 
 Default.parameters = {
+  backgrounds: {
+    default: "space",
+  },
+};
+
+NoBudget.args = {
+  onChange: () => {
+    return;
+  },
+  budget: { initialAmount: 5000, remainingAmount: 0 },
+};
+
+NoBudget.parameters = {
   backgrounds: {
     default: "space",
   },

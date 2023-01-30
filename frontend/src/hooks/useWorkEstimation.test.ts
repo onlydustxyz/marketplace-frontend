@@ -50,11 +50,11 @@ describe("useWorkEstimation", () => {
       remainingAmount: 150,
     };
     const { result } = renderHook(() => useWorkEstimation(onChange, veryLowBudget));
-    expect(result.current.canDecrease).toBe(false);
+    expect(result.current.canDecrease).toBe(true);
     act(() => {
       result.current.tryDecreaseNumberOfDays();
     });
-    expect(result.current.canDecrease).toBe(true);
+    expect(result.current.canDecrease).toBe(false);
   });
 
   it("should forbid increasing when estimation is at budget maximum", () => {
@@ -63,22 +63,22 @@ describe("useWorkEstimation", () => {
       remainingAmount: 200,
     };
     const { result } = renderHook(() => useWorkEstimation(onChange, lowBudget));
-    expect(result.current.canIncrease).toBe(true);
+    expect(result.current.canIncrease).toBe(false);
     act(() => {
       result.current.tryDecreaseNumberOfDays();
     });
-    expect(result.current.canIncrease).toBe(false);
+    expect(result.current.canIncrease).toBe(true);
   });
 
   it("should forbid increasing when estimation is at max days steps", () => {
     const { result } = renderHook(() => useWorkEstimation(onChange, budget));
-    expect(result.current.canIncrease).toBe(false);
+    expect(result.current.canIncrease).toBe(true);
     for (let i = 0; i <= 36; i++) {
       act(() => {
         result.current.tryIncreaseNumberOfDays();
       });
     }
-    expect(result.current.canIncrease).toBe(true);
+    expect(result.current.canIncrease).toBe(false);
   });
 
   it("should give integer amounts", () => {
@@ -197,10 +197,38 @@ describe("reducer", () => {
 
     expect(nextState.stepNumber).toBe(4);
   });
+
+  it("does not change when budget is too low", () => {
+    const closeToZeroBudget = {
+      initialAmount: 110,
+      remainingAmount: 1,
+    };
+    const reducer = getReducer(closeToZeroBudget);
+
+    const state = {
+      stepNumber: 0,
+      steps: Steps.Hours,
+    };
+    {
+      const action = Action.Increase;
+      const nextState = reducer(state, action);
+
+      expect(nextState.stepNumber).toBe(0);
+      expect(nextState.steps).toBe(Steps.Hours);
+    }
+    {
+      const action = Action.Decrease;
+      const nextState = reducer(state, action);
+
+      expect(nextState.stepNumber).toBe(0);
+      expect(nextState.steps).toBe(Steps.Hours);
+    }
+  });
 });
 
 describe("getInitialStep", () => {
   test.each([
+    [0, Steps.Hours, 0],
     [0, Steps.Hours, 7],
     [1, Steps.Hours, 70],
     [3, Steps.Hours, 190],
