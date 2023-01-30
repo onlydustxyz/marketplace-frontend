@@ -13,6 +13,7 @@ import { useT } from "talkr";
 import InfoMissingBanner from "src/components/InfoMissingBanner";
 import Button from "src/components/Button";
 import TotalEarnings from "./TotalEarnings";
+import Background from "src/components/Background";
 
 const MyContributions = () => {
   const { githubUserId } = useAuth();
@@ -46,7 +47,7 @@ const MyContributions = () => {
   const payoutInfoMissing = !!isPayoutInfoMissing(getPayoutSettingsQuery);
 
   return (
-    <div className="bg-space bg-no-repeat bg-fixed h-full rounded-3xl">
+    <Background>
       <div className="container mx-auto pt-16 h-full">
         <div className="text-5xl font-belwe">{T("navbar.myContributions")}</div>
         <QueryWrapper query={getPaymentRequestsQuery}>
@@ -67,7 +68,7 @@ const MyContributions = () => {
           </div>
         </QueryWrapper>
       </div>
-    </div>
+    </Background>
   );
 };
 
