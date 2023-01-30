@@ -1,6 +1,6 @@
 import { ChangeEventHandler } from "react";
 import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
-import View from "./View";
+import View, { InputErrorType } from "./View";
 
 type PropsType = {
   label: string;
@@ -10,6 +10,7 @@ type PropsType = {
   loading?: boolean;
   options?: RegisterOptions;
   value?: string | number;
+  errorType?: InputErrorType;
   onChange?: ChangeEventHandler<any>;
 };
 
@@ -19,6 +20,7 @@ export default function Input({
   placeholder,
   name,
   value,
+  errorType,
   loading,
   options,
   onChange,
@@ -32,6 +34,7 @@ export default function Input({
         name,
         label,
         error: errors[name],
+        errorType: errorType || InputErrorType.Normal,
         loading,
         placeholder,
         type,

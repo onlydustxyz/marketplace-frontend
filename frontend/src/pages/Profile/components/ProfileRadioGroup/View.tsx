@@ -14,7 +14,7 @@ type PropsType = {
 export default function View({ label, options, register }: PropsType) {
   return (
     <label className="flex flex-col flex-grow gap-2 mb-6">
-      <div className="font-medium text-sm text-neutral-100">{label}</div>
+      <div className="font-medium text-sm text-greyscale-50/70 tracking-tight">{label}</div>
       <div className="flex flex-row items-center gap-2">
         {options.map(option => (
           <div className="flex" key={option.value}>
