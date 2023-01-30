@@ -1,6 +1,6 @@
 import { ComponentStory } from "@storybook/react";
 import { JSXElementConstructor } from "react";
-import Tag, { TagBorderColor, TagIcon, TagIconColor, TagProps, TagSize } from ".";
+import Tag, { TagBackgroundColor, TagBorderColor, TagIcon, TagIconColor, TagProps, TagSize } from ".";
 
 export default {
   title: "Tag",
@@ -27,6 +27,12 @@ export default {
       control: {
         type: "select",
         options: [TagIconColor.Grey, TagIconColor.Orange, TagIconColor.Pink],
+      },
+    },
+    backgroundColor: {
+      control: {
+        type: "select",
+        options: [TagBackgroundColor.WhiteTransparent, TagBackgroundColor.SpaceBlueOpaque],
       },
     },
   },

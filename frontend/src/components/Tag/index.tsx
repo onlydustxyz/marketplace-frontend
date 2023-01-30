@@ -23,12 +23,18 @@ export enum TagBorderColor {
   MultiColor = "multi-color",
 }
 
+export enum TagBackgroundColor {
+  SpaceBlueOpaque = "space-blue-opaque",
+  WhiteTransparent = "white-transparent",
+}
+
 export type TagProps = {
   size: TagSize;
   label: string;
   icon?: TagIcon;
   iconColor?: TagIconColor;
   borderColor?: TagBorderColor;
+  backgroundColor?: TagBackgroundColor;
   whitespaceNoWrap?: boolean;
 };
 
@@ -38,13 +44,14 @@ export default function Tag({
   icon,
   iconColor = TagIconColor.Grey,
   borderColor = TagBorderColor.Grey,
+  backgroundColor = TagBackgroundColor.WhiteTransparent,
   whitespaceNoWrap = false,
 }: TagProps) {
   return (
     <div className="w-fit rounded-full p-px overflow-hidden">
       <div
         className={classNames(
-          "flex items-center justify-center w-fit gap-1 bg-spaceBlue-900 rounded-full font-walsheim font-medium text-white relative",
+          "flex items-center justify-center w-fit gap-1 rounded-full font-walsheim font-medium text-white relative",
           "before:absolute before:h-screen before:w-screen before:-z-10",
           {
             "py-1 px-2 text-xs": size === TagSize.Small,
@@ -52,8 +59,12 @@ export default function Tag({
             "py-2 px-4 text-sm": size === TagSize.Large,
           },
           {
-            "before:bg-greyscale-50/8": borderColor === TagBorderColor.Grey,
+            "border border-greyscale-50/8": borderColor === TagBorderColor.Grey,
             "before:bg-multi-color-gradient before:animate-spin-invert-slow": borderColor === TagBorderColor.MultiColor,
+          },
+          {
+            "bg-spaceBlue-900": backgroundColor === TagBackgroundColor.SpaceBlueOpaque,
+            "bg-white/2": backgroundColor === TagBackgroundColor.WhiteTransparent,
           }
         )}
       >
