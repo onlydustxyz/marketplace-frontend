@@ -10,6 +10,8 @@ import { useT } from "talkr";
 interface Props {
   budget: { initialAmount: number; remainingAmount: number };
   submitDisabled: boolean;
+  canIncrease: boolean;
+  canDecrease: boolean;
   amountToPay: number;
   stepNumber: number;
   steps: Steps;
@@ -18,6 +20,8 @@ interface Props {
 }
 
 export default function WorkEstimation({
+  canIncrease,
+  canDecrease,
   tryIncreaseNumberOfDays,
   tryDecreaseNumberOfDays,
   budget,
@@ -39,14 +43,14 @@ export default function WorkEstimation({
             </div>
             <div className="flex flex-row gap-3 text-white items-center">
               <div onClick={tryDecreaseNumberOfDays}>
-                <Button size={ButtonSize.Small} type={ButtonType.Secondary}>
+                <Button size={ButtonSize.Small} type={ButtonType.Secondary} disabled={canDecrease}>
                   <div className="absolute top-1">
                     <Subtract />
                   </div>
                 </Button>
               </div>
               <div onClick={tryIncreaseNumberOfDays}>
-                <Button size={ButtonSize.Small} type={ButtonType.Secondary}>
+                <Button size={ButtonSize.Small} type={ButtonType.Secondary} disabled={canIncrease}>
                   <div className="absolute top-1">
                     <Add />
                   </div>
