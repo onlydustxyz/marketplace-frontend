@@ -28,17 +28,6 @@ vi.mock("jwt-decode", () => ({
   default: () => ({ [CLAIMS_KEY]: { [PROJECTS_LED_KEY]: '{"test-project-id"}' } }),
 }));
 
-const location: Location = window.location;
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-delete (window.location as any);
-
-window.location = {
-  ...location,
-  reload: vi.fn(),
-};
-
 vi.mock("axios", () => ({
   default: {
     post: () => ({
@@ -113,9 +102,8 @@ describe('"PaymentForm" component', () => {
     });
     await userEvent.click(await screen.findByText(/confirm payment/i));
     await waitFor(() => {
-      expect(window.location.reload).toHaveBeenCalledTimes(1);
-      vi.restoreAllMocks();
-      window.location = location;
+      expect(screen.getByLabelText(RECIPIENT_INPUT_LABEL)).toHaveValue("");
+      expect(screen.getByLabelText(PR_LINK_INPUT_LABEL)).toHaveValue("");
     });
   });
 
