@@ -84,6 +84,7 @@ module.exports = {
         `,
         "multi-color-gradient":
           "conic-gradient(from 180deg at 50% 50%, #02FFE0 -8.58deg, #0100C8 16.28deg, #8F00F3 47.6deg, #0B0CCB 82.17deg, #5504EC 125.37deg, #E504A2 165.23deg, #FF7202 179.49deg, #0500CA 206.97deg, #5F00FA 254.68deg, #B501FF 288.89deg, #FF4838 296.73deg, #FB404B 310.19deg, #9138FD 320.15deg, #417CFB 334.77deg, #02FFE0 351.42deg, #0100C8 376.28deg)",
+        "stripe-pattern": "url('src/assets/img/stripe-pattern.svg')",
       },
       backgroundPosition: {
         space: "right top, bottom left",

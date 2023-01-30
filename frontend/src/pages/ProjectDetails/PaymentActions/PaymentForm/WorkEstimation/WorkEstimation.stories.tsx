@@ -19,7 +19,7 @@ Default.args = {
   onChange: () => {
     return;
   },
-  budget: { initialAmount: 50000, remainingAmount: 30000 },
+  budget: { initialAmount: 5000, remainingAmount: 3000 },
 };
 
 Default.parameters = {
