@@ -41,8 +41,6 @@
       "confirm": "Confirm payment",
       "contributor": "Recipient",
       "days": "days",
-      "decrease": "-",
-      "increase": "+",
       "invalidPRLink": "Invalid input, not a link to a github pull request",
       "leftToSpend": "Left to spend",
       "linkToIssue": "Link to GitHub issue",
