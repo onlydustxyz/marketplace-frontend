@@ -5,7 +5,7 @@ import ContributorsTable, { Contributor } from "src/components/ContributorsTable
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { HasuraUserRole } from "src/types";
-import { GetProjectContributorsQuery } from "src/__generated/graphql";
+import { GetProjectContributorsQuery, GetProjectRemainingBudgetQuery } from "src/__generated/graphql";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 
@@ -27,7 +27,17 @@ const Contributors: React.FC<PropsType> = ({ projectId }) => {
     }
   );
 
+  const getProjectRemainingBudget = useHasuraQuery<GetProjectRemainingBudgetQuery>(
+    GET_PROJECT_REMAINING_BUDGET_QUERY,
+    HasuraUserRole.RegisteredUser,
+    {
+      variables: { projectId },
+      skip: !isProjectLeader,
+    }
+  );
+
   const paymentRequests = getProjectContributorsQuery.data?.projectsByPk?.budgets.at(0)?.paymentRequests;
+  const remainingBudget = getProjectRemainingBudget.data?.projectsByPk?.budgets.at(0)?.remainingAmount;
 
   return (
     <QueryWrapper query={getProjectContributorsQuery}>
@@ -38,6 +48,7 @@ const Contributors: React.FC<PropsType> = ({ projectId }) => {
             <ContributorsTable
               contributors={mapApiPaymentRequestsToContributors(paymentRequests)}
               isProjectLeader={isProjectLeader}
+              remainingBudget={remainingBudget}
             />
           ) : (
             <ContributorsTableFallback projectName={getProjectContributorsQuery.data?.projectsByPk?.name} />
@@ -83,6 +94,16 @@ export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
             avatarUrl
           }
         }
+      }
+    }
+  }
+`;
+
+export const GET_PROJECT_REMAINING_BUDGET_QUERY = gql`
+  query GetProjectRemainingBudget($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
+      budgets {
+        remainingAmount
       }
     }
   }

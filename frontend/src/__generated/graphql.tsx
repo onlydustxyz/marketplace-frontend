@@ -551,28 +551,6 @@ export enum PaymentsSelectColumn {
   RequestId = 'requestId'
 }
 
-/** columns and relationships of "payout_settings" */
-export type PayoutSettings = {
-  __typename?: 'PayoutSettings';
-  ethWalletAddress: Maybe<Scalars['String']>;
-  userId: Scalars['uuid'];
-};
-
-/** Boolean expression to filter rows from the table "payout_settings". All fields are combined with a logical 'AND'. */
-export type PayoutSettingsBoolExp = {
-  _and: InputMaybe<Array<PayoutSettingsBoolExp>>;
-  _not: InputMaybe<PayoutSettingsBoolExp>;
-  _or: InputMaybe<Array<PayoutSettingsBoolExp>>;
-  ethWalletAddress: InputMaybe<StringComparisonExp>;
-  userId: InputMaybe<UuidComparisonExp>;
-};
-
-/** unique or primary key constraints on table "payout_settings" */
-export enum PayoutSettingsConstraint {
-  /** unique or primary key constraint on columns "user_id" */
-  PayoutSettingsPkey = 'payout_settings_pkey'
-}
-
 export type PayoutSettingsInput = {
   optBankAddress: InputMaybe<BankAddress>;
   optEthAddress: InputMaybe<Scalars['EthereumAddress']>;
@@ -580,72 +558,11 @@ export type PayoutSettingsInput = {
   type: PayoutSettingsType;
 };
 
-/** input type for inserting data into table "payout_settings" */
-export type PayoutSettingsInsertInput = {
-  ethWalletAddress: InputMaybe<Scalars['String']>;
-  userId: InputMaybe<Scalars['uuid']>;
-};
-
-/** response of any mutation on the table "payout_settings" */
-export type PayoutSettingsMutationResponse = {
-  __typename?: 'PayoutSettingsMutationResponse';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<PayoutSettings>;
-};
-
-/** on_conflict condition type for table "payout_settings" */
-export type PayoutSettingsOnConflict = {
-  constraint: PayoutSettingsConstraint;
-  update_columns: Array<PayoutSettingsUpdateColumn>;
-  where: InputMaybe<PayoutSettingsBoolExp>;
-};
-
-/** Ordering options when selecting data from "payout_settings". */
-export type PayoutSettingsOrderBy = {
-  ethWalletAddress: InputMaybe<OrderBy>;
-  userId: InputMaybe<OrderBy>;
-};
-
-/** primary key columns input for table: payout_settings */
-export type PayoutSettingsPkColumnsInput = {
-  userId: Scalars['uuid'];
-};
-
-/** select columns of table "payout_settings" */
-export enum PayoutSettingsSelectColumn {
-  /** column name */
-  EthWalletAddress = 'ethWalletAddress',
-  /** column name */
-  UserId = 'userId'
-}
-
-/** input type for updating data in table "payout_settings" */
-export type PayoutSettingsSetInput = {
-  ethWalletAddress: InputMaybe<Scalars['String']>;
-  userId: InputMaybe<Scalars['uuid']>;
-};
-
 export enum PayoutSettingsType {
   BankAddress = 'BANK_ADDRESS',
   EthereumAddress = 'ETHEREUM_ADDRESS',
   EthereumName = 'ETHEREUM_NAME'
 }
-
-/** update columns of table "payout_settings" */
-export enum PayoutSettingsUpdateColumn {
-  /** column name */
-  EthWalletAddress = 'ethWalletAddress',
-  /** column name */
-  UserId = 'userId'
-}
-
-export type PayoutSettingsUpdates = {
-  /** sets the columns of the filtered rows to the given values */
-  _set: InputMaybe<PayoutSettingsSetInput>;
-  where: PayoutSettingsBoolExp;
-};
 
 /** columns and relationships of "pending_project_leader_invitations" */
 export type PendingProjectLeaderInvitations = {
@@ -1284,29 +1201,15 @@ export type Github_Repo_Details_StreamCursorValueInput = {
 export type Mutation_Root = {
   __typename?: 'mutation_root';
   acceptProjectLeaderInvitation: Scalars['Boolean'];
-  /** delete data from the table: "payout_settings" */
-  deletePayoutSettings: Maybe<PayoutSettingsMutationResponse>;
-  /** delete single row from the table: "payout_settings" */
-  deletePayoutSettingsByPk: Maybe<PayoutSettings>;
   /** delete data from the table: "user_info" */
   deleteUserInfo: Maybe<UserInfoMutationResponse>;
   /** delete single row from the table: "user_info" */
   deleteUserInfoByPk: Maybe<UserInfo>;
-  /** insert data into the table: "payout_settings" */
-  insertPayoutSettings: Maybe<PayoutSettingsMutationResponse>;
-  /** insert a single row into the table: "payout_settings" */
-  insertPayoutSettingsOne: Maybe<PayoutSettings>;
   /** insert data into the table: "user_info" */
   insertUserInfo: Maybe<UserInfoMutationResponse>;
   /** insert a single row into the table: "user_info" */
   insertUserInfoOne: Maybe<UserInfo>;
   requestPayment: Scalars['Uuid'];
-  /** update data of the table: "payout_settings" */
-  updatePayoutSettings: Maybe<PayoutSettingsMutationResponse>;
-  /** update single row of the table: "payout_settings" */
-  updatePayoutSettingsByPk: Maybe<PayoutSettings>;
-  /** update multiples rows of table: "payout_settings" */
-  updatePayoutSettingsMany: Maybe<Array<Maybe<PayoutSettingsMutationResponse>>>;
   updateProfileInfo: Scalars['Uuid'];
   /** update single row of the table: "auth.users" */
   updateUser: Maybe<Users>;
@@ -1330,18 +1233,6 @@ export type Mutation_RootAcceptProjectLeaderInvitationArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDeletePayoutSettingsArgs = {
-  where: PayoutSettingsBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDeletePayoutSettingsByPkArgs = {
-  userId: Scalars['uuid'];
-};
-
-
-/** mutation root */
 export type Mutation_RootDeleteUserInfoArgs = {
   where: UserInfoBoolExp;
 };
@@ -1350,20 +1241,6 @@ export type Mutation_RootDeleteUserInfoArgs = {
 /** mutation root */
 export type Mutation_RootDeleteUserInfoByPkArgs = {
   userId: Scalars['uuid'];
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertPayoutSettingsArgs = {
-  objects: Array<PayoutSettingsInsertInput>;
-  onConflict: InputMaybe<PayoutSettingsOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertPayoutSettingsOneArgs = {
-  object: PayoutSettingsInsertInput;
-  onConflict: InputMaybe<PayoutSettingsOnConflict>;
 };
 
 
@@ -1387,26 +1264,6 @@ export type Mutation_RootRequestPaymentArgs = {
   projectId: Scalars['Uuid'];
   reason: Reason;
   recipientId: Scalars['Int'];
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdatePayoutSettingsArgs = {
-  _set: InputMaybe<PayoutSettingsSetInput>;
-  where: PayoutSettingsBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdatePayoutSettingsByPkArgs = {
-  _set: InputMaybe<PayoutSettingsSetInput>;
-  pk_columns: PayoutSettingsPkColumnsInput;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdatePayoutSettingsManyArgs = {
-  updates: Array<PayoutSettingsUpdates>;
 };
 
 
@@ -1638,20 +1495,6 @@ export type Payments_Variance_Order_By = {
   amount: InputMaybe<OrderBy>;
 };
 
-/** Streaming cursor of the table "payout_settings" */
-export type Payout_Settings_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Payout_Settings_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Payout_Settings_StreamCursorValueInput = {
-  ethWalletAddress: InputMaybe<Scalars['String']>;
-  userId: InputMaybe<Scalars['uuid']>;
-};
-
 /** order by avg() on columns of table "pending_project_leader_invitations" */
 export type Pending_Project_Leader_Invitations_Avg_Order_By = {
   githubUserId: InputMaybe<OrderBy>;
@@ -1804,10 +1647,6 @@ export type Query_Root = {
   payments: Array<Payments>;
   /** fetch data from the table: "payments" using primary key columns */
   paymentsByPk: Maybe<Payments>;
-  /** fetch data from the table: "payout_settings" */
-  payoutSettings: Array<PayoutSettings>;
-  /** fetch data from the table: "payout_settings" using primary key columns */
-  payoutSettingsByPk: Maybe<PayoutSettings>;
   /** fetch data from the table: "pending_project_leader_invitations" */
   pendingProjectLeaderInvitations: Array<PendingProjectLeaderInvitations>;
   /** fetch data from the table: "pending_project_leader_invitations" using primary key columns */
@@ -1917,20 +1756,6 @@ export type Query_RootPaymentsArgs = {
 
 export type Query_RootPaymentsByPkArgs = {
   id: Scalars['uuid'];
-};
-
-
-export type Query_RootPayoutSettingsArgs = {
-  distinctOn: InputMaybe<Array<PayoutSettingsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<PayoutSettingsOrderBy>>;
-  where: InputMaybe<PayoutSettingsBoolExp>;
-};
-
-
-export type Query_RootPayoutSettingsByPkArgs = {
-  userId: Scalars['uuid'];
 };
 
 
@@ -2048,12 +1873,6 @@ export type Subscription_Root = {
   paymentsByPk: Maybe<Payments>;
   /** fetch data from the table in a streaming manner: "payments" */
   paymentsStream: Array<Payments>;
-  /** fetch data from the table: "payout_settings" */
-  payoutSettings: Array<PayoutSettings>;
-  /** fetch data from the table: "payout_settings" using primary key columns */
-  payoutSettingsByPk: Maybe<PayoutSettings>;
-  /** fetch data from the table in a streaming manner: "payout_settings" */
-  payoutSettingsStream: Array<PayoutSettings>;
   /** fetch data from the table: "pending_project_leader_invitations" */
   pendingProjectLeaderInvitations: Array<PendingProjectLeaderInvitations>;
   /** fetch data from the table: "pending_project_leader_invitations" using primary key columns */
@@ -2190,27 +2009,6 @@ export type Subscription_RootPaymentsStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Payments_StreamCursorInput>>;
   where: InputMaybe<PaymentsBoolExp>;
-};
-
-
-export type Subscription_RootPayoutSettingsArgs = {
-  distinctOn: InputMaybe<Array<PayoutSettingsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<PayoutSettingsOrderBy>>;
-  where: InputMaybe<PayoutSettingsBoolExp>;
-};
-
-
-export type Subscription_RootPayoutSettingsByPkArgs = {
-  userId: Scalars['uuid'];
-};
-
-
-export type Subscription_RootPayoutSettingsStreamArgs = {
-  batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Payout_Settings_StreamCursorInput>>;
-  where: InputMaybe<PayoutSettingsBoolExp>;
 };
 
 
@@ -2375,12 +2173,12 @@ export type Users = {
   locale: Maybe<Scalars['String']>;
   metadata: Maybe<Scalars['jsonb']>;
   newEmail: Maybe<Scalars['citext']>;
-  /** An object relationship */
-  payoutSettings: Maybe<PayoutSettings>;
   phoneNumber: Maybe<Scalars['String']>;
   phoneNumberVerified: Maybe<Scalars['Boolean']>;
   /** An array relationship */
   projectsLeaded: Array<ProjectLeads>;
+  /** An object relationship */
+  userInfo: Maybe<UserInfo>;
 };
 
 
@@ -2423,10 +2221,10 @@ export type UsersBoolExp = {
   locale: InputMaybe<StringComparisonExp>;
   metadata: InputMaybe<JsonbComparisonExp>;
   newEmail: InputMaybe<CitextComparisonExp>;
-  payoutSettings: InputMaybe<PayoutSettingsBoolExp>;
   phoneNumber: InputMaybe<StringComparisonExp>;
   phoneNumberVerified: InputMaybe<BooleanComparisonExp>;
   projectsLeaded: InputMaybe<ProjectLeadsBoolExp>;
+  userInfo: InputMaybe<UserInfoBoolExp>;
 };
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
@@ -2469,10 +2267,10 @@ export type UsersOrderBy = {
   locale: InputMaybe<OrderBy>;
   metadata: InputMaybe<OrderBy>;
   newEmail: InputMaybe<OrderBy>;
-  payoutSettings: InputMaybe<PayoutSettingsOrderBy>;
   phoneNumber: InputMaybe<OrderBy>;
   phoneNumberVerified: InputMaybe<OrderBy>;
   projectsLeadedAggregate: InputMaybe<ProjectLeadsAggregateOrderBy>;
+  userInfo: InputMaybe<UserInfoOrderBy>;
 };
 
 /** primary key columns input for table: auth.users */
@@ -2622,6 +2420,13 @@ export type GetProjectContributorsQueryVariables = Exact<{
 
 
 export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, budgets: Array<{ __typename?: 'Budgets', paymentRequests: Array<{ __typename?: 'PaymentRequests', reason: any, amountInUsd: any, recipient: { __typename?: 'AuthGithubUsers', userId: any | null } | null, githubRecipient: { __typename?: 'User', login: string, avatarUrl: string } }> }> } | null };
+
+export type GetProjectRemainingBudgetQueryVariables = Exact<{
+  projectId: Scalars['uuid'];
+}>;
+
+
+export type GetProjectRemainingBudgetQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', budgets: Array<{ __typename?: 'Budgets', remainingAmount: any | null }> } | null };
 
 export type RequestPaymentMutationVariables = Exact<{
   amount: Scalars['Int'];
@@ -3038,6 +2843,43 @@ export function useGetProjectContributorsLazyQuery(baseOptions?: Apollo.LazyQuer
 export type GetProjectContributorsQueryHookResult = ReturnType<typeof useGetProjectContributorsQuery>;
 export type GetProjectContributorsLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsLazyQuery>;
 export type GetProjectContributorsQueryResult = Apollo.QueryResult<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>;
+export const GetProjectRemainingBudgetDocument = gql`
+    query GetProjectRemainingBudget($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    budgets {
+      remainingAmount
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetProjectRemainingBudgetQuery__
+ *
+ * To run a query within a React component, call `useGetProjectRemainingBudgetQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectRemainingBudgetQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectRemainingBudgetQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetProjectRemainingBudgetQuery(baseOptions: Apollo.QueryHookOptions<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>(GetProjectRemainingBudgetDocument, options);
+      }
+export function useGetProjectRemainingBudgetLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>(GetProjectRemainingBudgetDocument, options);
+        }
+export type GetProjectRemainingBudgetQueryHookResult = ReturnType<typeof useGetProjectRemainingBudgetQuery>;
+export type GetProjectRemainingBudgetLazyQueryHookResult = ReturnType<typeof useGetProjectRemainingBudgetLazyQuery>;
+export type GetProjectRemainingBudgetQueryResult = Apollo.QueryResult<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>;
 export const RequestPaymentDocument = gql`
     mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
   requestPayment(

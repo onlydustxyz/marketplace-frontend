@@ -8,7 +8,8 @@
       "leftToPay": "Left to Pay",
       "paidContributions": "Paid contributions",
       "totalEarned": "Total earned",
-      "userRegisteredTooltip": "User has linked their OnlyDust profile"
+      "userRegisteredTooltip": "User has linked their OnlyDust profile",
+      "noBudgetLeft": "There's no more budget for this project, please contact OnlyDust to ask for a refill."
     },
     "tableFallback": {
       "noContributor": "No one has contributed to __projectName__ yet",
