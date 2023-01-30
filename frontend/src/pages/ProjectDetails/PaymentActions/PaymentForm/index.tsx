@@ -3,11 +3,9 @@ import { HasuraUserRole } from "src/types";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { Inputs } from "./types";
-import Input from "src/components/FormInput";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useIntl } from "src/hooks/useIntl";
-import Card from "src/components/Card";
-import WorkEstimation from "./WorkEstimation";
+import View from "./View";
 import { FindUserQueryForPaymentFormQuery } from "src/__generated/graphql";
 import { debounce } from "lodash";
 
@@ -61,52 +59,39 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
     }
   }, [findUserQuery.error]);
 
-  const onSubmit: SubmitHandler<Inputs> = async formData => {
+  const onValidSubmit: SubmitHandler<Inputs> = useCallback(async formData => {
     await insertPayment(mapFormDataToSchema(formData, findUserQuery.data?.fetchUserDetails.id));
     window.location.reload();
-  };
+  }, []);
 
-  const onOnWorkEstimationChange = (amount: number) => {
-    formMethods.setValue("amountToWire", amount);
-  };
+  const onWorkEstimationChange = useCallback(
+    (amount: number) => {
+      formMethods.setValue("amountToWire", amount);
+    },
+    [formMethods]
+  );
+
+  const onContributorLoginChange = useCallback(
+    debounce(({ target }) => setContributorLogin(target.value), 500),
+    [setContributorLogin]
+  );
+
+  const validateContributorLogin = useCallback(
+    () => !!findUserQuery.data?.fetchUserDetails.id || T("github.invalidLogin"),
+    [findUserQuery.data?.fetchUserDetails.id]
+  );
 
   return (
     <>
       <FormProvider {...formMethods}>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 justify-between w-full">
-          <div className="flex flex-col gap-3">
-            <Card>
-              <div className="flex flex-col gap-8 w-full">
-                <div className="flex flex-col">
-                  <Input
-                    label={T("payment.form.contributor")}
-                    name="contributor"
-                    placeholder="Github login"
-                    options={{
-                      required: T("form.required"),
-                      validate: () => !!findUserQuery.data?.fetchUserDetails.id || T("github.invalidLogin"),
-                    }}
-                    onChange={debounce(({ target }) => setContributorLogin(target.value), 500)}
-                    loading={findUserQuery.loading}
-                  />
-                  <Input
-                    label={T("payment.form.linkToIssue")}
-                    name="linkToIssue"
-                    placeholder=""
-                    options={{
-                      required: T("form.required"),
-                      pattern: { value: REGEX_VALID_GITHUB_PULL_REQUEST_URL, message: T("payment.form.invalidPRLink") },
-                    }}
-                  />
-                </div>
-              </div>
-            </Card>
-            <WorkEstimation
-              onChange={onOnWorkEstimationChange}
-              budget={budget}
-              submitDisabled={findUserQuery.loading}
-            />
-          </div>
+        <form onSubmit={handleSubmit(onValidSubmit)} className="flex flex-col gap-3 justify-between w-full">
+          <View
+            budget={budget}
+            loading={findUserQuery.loading}
+            onContributorLoginChange={onContributorLoginChange}
+            onWorkEstimationChange={onWorkEstimationChange}
+            validateContributorLogin={validateContributorLogin}
+          />
         </form>
       </FormProvider>
     </>
