@@ -31,7 +31,7 @@ export default function View({
           availableTabs,
         }}
       />
-      <div className="bg-space p-5 flex flex-col flex-1 rounded-r-2xl">
+      <div className="bg-space bg-no-repeat bg-fixed p-5 flex flex-col flex-1 rounded-r-2xl">
         {selectedTab === ProjectDetailsTab.Overview && currentProject.githubRepoInfo?.contributors && (
           <Overview {...currentProject} lead={{ ...currentProject.leads[0] }}>
             {currentProject.invitationId && (
