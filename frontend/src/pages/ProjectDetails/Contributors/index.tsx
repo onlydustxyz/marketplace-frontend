@@ -7,6 +7,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { HasuraUserRole } from "src/types";
 import { GetProjectContributorsQuery } from "src/__generated/graphql";
 import QueryWrapper from "src/components/QueryWrapper";
+import { useAuth } from "src/hooks/useAuth";
 
 type PropsType = {
   projectId: string;
@@ -14,6 +15,9 @@ type PropsType = {
 
 const Contributors: React.FC<PropsType> = ({ projectId }) => {
   const { T } = useIntl();
+  const { ledProjectIds } = useAuth();
+
+  const isProjectLeader = !!ledProjectIds.find(element => element === projectId);
 
   const getProjectContributorsQuery = useHasuraQuery<GetProjectContributorsQuery>(
     GET_PROJECT_CONTRIBUTORS_QUERY,
@@ -31,7 +35,10 @@ const Contributors: React.FC<PropsType> = ({ projectId }) => {
         <div className="text-3xl font-belwe">{T("project.details.contributors.title")}</div>
         <Card className="h-full">
           {paymentRequests?.length ? (
-            <ContributorsTable contributors={mapApiPaymentRequestsToContributors(paymentRequests)} />
+            <ContributorsTable
+              contributors={mapApiPaymentRequestsToContributors(paymentRequests)}
+              isProjectLeader={isProjectLeader}
+            />
           ) : (
             <ContributorsTableFallback projectName={getProjectContributorsQuery.data?.projectsByPk?.name} />
           )}

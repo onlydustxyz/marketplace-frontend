@@ -21,11 +21,11 @@ import {
   PaymentAction,
   ProjectDetailsActionType,
   ProjectDetailsDispatchContext,
-  ProjectDetailsTab,
 } from "src/pages/ProjectDetails/ProjectDetailsContext";
 
 type PropsType = {
   contributors: Contributor[];
+  isProjectLeader: boolean;
 };
 
 export type Contributor = {
@@ -47,7 +47,7 @@ type Sorting = {
   ascending: boolean;
 };
 
-const ContributorsTable: React.FC<PropsType> = ({ contributors }) => {
+const ContributorsTable: React.FC<PropsType> = ({ contributors, isProjectLeader }) => {
   const [sorting, setSorting] = useState({ field: Field.TotalEarned, ascending: false });
   const [sortedContributors, setSortedContributors] = useState(contributors);
 
@@ -63,13 +63,13 @@ const ContributorsTable: React.FC<PropsType> = ({ contributors }) => {
     setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : true });
 
   return (
-    <Table id="contributors_table" headers={renderHeaders(sorting, applySorting)}>
-      {renderContributors(sortedContributors)}
+    <Table id="contributors_table" headers={renderHeaders(sorting, applySorting, isProjectLeader)}>
+      {renderContributors(sortedContributors, isProjectLeader)}
     </Table>
   );
 };
 
-const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) => {
+const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void, isProjectLeader: boolean) => {
   const { T } = useIntl();
 
   return (
@@ -92,12 +92,12 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
           visible={sorting.field === Field.PaidContributions}
         />
       </HeaderCell>
-      <HeaderCell width={HeaderCellWidth.Quarter} />
+      {isProjectLeader && <HeaderCell width={HeaderCellWidth.Quarter} />}
     </HeaderLine>
   );
 };
 
-const renderContributors = (contributors: Contributor[]) => {
+const renderContributors = (contributors: Contributor[], isProjectLeader: boolean) => {
   const { T } = useIntl();
 
   const dispatch = useContext(ProjectDetailsDispatchContext);
@@ -130,18 +130,23 @@ const renderContributors = (contributors: Contributor[]) => {
       </Cell>
       <Cell height={CellHeight.Small}>{`${contributor.totalEarned || "-"} $`}</Cell>
       <Cell height={CellHeight.Small}>{contributor.paidContributions || "-"}</Cell>
-      <Cell height={CellHeight.Small}>
-        <div
-          onClick={() => {
-            dispatch({ type: ProjectDetailsActionType.SelectPaymentAction, selectedPaymentAction: PaymentAction.Send });
-          }}
-        >
-          <Button type={ButtonType.Secondary} size={ButtonSize.Small}>
-            <SendPlane2Line />
-            <div>{T("project.details.contributors.sendPayment")}</div>
-          </Button>
-        </div>
-      </Cell>
+      {isProjectLeader && (
+        <Cell height={CellHeight.Small}>
+          <div
+            onClick={() => {
+              dispatch({
+                type: ProjectDetailsActionType.SelectPaymentAction,
+                selectedPaymentAction: PaymentAction.Send,
+              });
+            }}
+          >
+            <Button type={ButtonType.Secondary} size={ButtonSize.Small}>
+              <SendPlane2Line />
+              <div>{T("project.details.contributors.sendPayment")}</div>
+            </Button>
+          </div>
+        </Cell>
+      )}
     </Line>
   ));
 };
