@@ -49,10 +49,9 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
     <QueryWrapper query={query}>
       <div className="flex flex-col gap-8 mt-3 h-full">
         <div className="text-3xl font-belwe">{T("project.details.payments.title")}</div>
-        <div className="flex flex-row items-start gap-5 h-full">
-          <div className="flex basis-2/3 self-stretch">
-            {state.paymentAction === PaymentAction.Send && <PaymentForm {...{ projectId, budget }} />}
-            {state.paymentAction === PaymentAction.List && (
+        {state.paymentAction === PaymentAction.List && (
+          <div className="flex flex-row items-start gap-5 h-full">
+            <div className="flex basis-3/5 self-stretch">
               <Card>
                 {payments.length > 0 ? (
                   <PaymentTable payments={payments.map(mapPaymentRequestsFromQuery)} />
@@ -67,30 +66,31 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
                   />
                 )}
               </Card>
-            )}
+            </div>
+            <div className="flex basis-2/5">
+              <Card>
+                <div className="flex flex-col gap-10 items-stretch w-full">
+                  <RemainingBudget {...budget} />
+                  {budget.remainingAmount > 0 && (
+                    <div
+                      className="bg-neutral-50 rounded-xl w-fit p-3 hover:cursor-pointer text-black"
+                      onClick={() =>
+                        dispatch({
+                          type: ProjectDetailsActionType.SelectPaymentAction,
+                          selectedPaymentAction:
+                            state.paymentAction === PaymentAction.List ? PaymentAction.Send : PaymentAction.List,
+                        })
+                      }
+                    >
+                      {T(state.paymentAction === PaymentAction.List ? "payment.form.submit" : "payment.list")}
+                    </div>
+                  )}
+                </div>
+              </Card>
+            </div>
           </div>
-          <div className="flex basis-1/3">
-            <Card>
-              <div className="flex flex-col gap-10 items-stretch w-full">
-                <RemainingBudget {...budget} />
-                {budget.remainingAmount > 0 && (
-                  <div
-                    className="bg-neutral-50 rounded-xl w-fit p-3 hover:cursor-pointer text-black"
-                    onClick={() =>
-                      dispatch({
-                        type: ProjectDetailsActionType.SelectPaymentAction,
-                        selectedPaymentAction:
-                          state.paymentAction === PaymentAction.List ? PaymentAction.Send : PaymentAction.List,
-                      })
-                    }
-                  >
-                    {T(state.paymentAction === PaymentAction.List ? "payment.form.submit" : "payment.list")}
-                  </div>
-                )}
-              </div>
-            </Card>
-          </div>
-        </div>
+        )}
+        {state.paymentAction === PaymentAction.Send && <PaymentForm {...{ projectId, budget }} />}
       </div>
     </QueryWrapper>
   );
