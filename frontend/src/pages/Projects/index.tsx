@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Background from "src/components/Background";
 import { ArrayElement } from "src/types";
 import { GetProjectsQuery } from "src/__generated/graphql";
 import { useT } from "talkr";
@@ -13,7 +14,7 @@ export default function Projects() {
   const [technologies, setTechnologies] = useState<string[]>([]);
 
   return (
-    <div className="bg-space bg-no-repeat bg-fixed h-full rounded-3xl">
+    <Background>
       <div className="container mx-auto pt-16 pb-8 h-full">
         <div className="text-5xl font-belwe">{T("navbar.projects")}</div>
         <div className="flex mt-8 gap-6">
@@ -23,6 +24,6 @@ export default function Projects() {
           <AllProjects technologies={technologies} />
         </div>
       </div>
-    </div>
+    </Background>
   );
 }

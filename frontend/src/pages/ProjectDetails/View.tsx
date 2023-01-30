@@ -4,6 +4,7 @@ import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import Contributors from "./Contributors";
 import { ProjectDetails } from ".";
 import ProjectsSidebar from "./Sidebar";
+import Background from "src/components/Background";
 import { ProjectDetailsTab } from "./ProjectDetailsContext";
 
 interface Props {
@@ -31,20 +32,22 @@ export default function View({
           availableTabs,
         }}
       />
-      <div className="bg-space bg-no-repeat bg-fixed p-5 flex flex-col flex-1 rounded-r-2xl">
-        {selectedTab === ProjectDetailsTab.Overview && currentProject.githubRepoInfo?.contributors && (
-          <Overview {...currentProject} lead={{ ...currentProject.leads[0] }}>
-            {currentProject.invitationId && (
-              <ProjectLeadInvitation
-                projectName={currentProject.name}
-                onClick={() => currentProject.invitationId && onInvitationAccepted(currentProject.invitationId)}
-              />
-            )}
-          </Overview>
-        )}
-        {selectedTab === ProjectDetailsTab.Payments && <Payments projectId={currentProject.id} />}
-        {selectedTab === ProjectDetailsTab.Contributors && <Contributors projectId={currentProject.id} />}
-      </div>
+      <Background>
+        <div className="p-5 flex flex-col flex-1">
+          {selectedTab === ProjectDetailsTab.Overview && currentProject.githubRepoInfo?.contributors && (
+            <Overview {...currentProject} lead={{ ...currentProject.leads[0] }}>
+              {currentProject.invitationId && (
+                <ProjectLeadInvitation
+                  projectName={currentProject.name}
+                  onClick={() => currentProject.invitationId && onInvitationAccepted(currentProject.invitationId)}
+                />
+              )}
+            </Overview>
+          )}
+          {selectedTab === ProjectDetailsTab.Payments && <Payments projectId={currentProject.id} />}
+          {selectedTab === ProjectDetailsTab.Contributors && <Contributors projectId={currentProject.id} />}
+        </div>
+      </Background>
     </div>
   );
 }
