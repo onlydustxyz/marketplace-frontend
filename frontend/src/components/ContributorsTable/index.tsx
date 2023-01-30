@@ -22,10 +22,12 @@ import {
   ProjectDetailsActionType,
   ProjectDetailsDispatchContext,
 } from "src/pages/ProjectDetails/ProjectDetailsContext";
+import { rates } from "src/hooks/useWorkEstimation";
 
 type PropsType = {
   contributors: Contributor[];
   isProjectLeader: boolean;
+  remainingBudget: number;
 };
 
 export type Contributor = {
@@ -47,7 +49,7 @@ type Sorting = {
   ascending: boolean;
 };
 
-const ContributorsTable: React.FC<PropsType> = ({ contributors, isProjectLeader }) => {
+const ContributorsTable: React.FC<PropsType> = ({ contributors, isProjectLeader, remainingBudget }) => {
   const [sorting, setSorting] = useState({ field: Field.TotalEarned, ascending: false });
   const [sortedContributors, setSortedContributors] = useState(contributors);
 
@@ -64,7 +66,7 @@ const ContributorsTable: React.FC<PropsType> = ({ contributors, isProjectLeader 
 
   return (
     <Table id="contributors_table" headers={renderHeaders(sorting, applySorting, isProjectLeader)}>
-      {renderContributors(sortedContributors, isProjectLeader)}
+      {renderContributors(sortedContributors, isProjectLeader, remainingBudget)}
     </Table>
   );
 };
@@ -97,10 +99,12 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void, i
   );
 };
 
-const renderContributors = (contributors: Contributor[], isProjectLeader: boolean) => {
+const renderContributors = (contributors: Contributor[], isProjectLeader: boolean, remainingBudget: number) => {
   const { T } = useIntl();
 
   const dispatch = useContext(ProjectDetailsDispatchContext);
+
+  const isSendingNewPaymentDisabled = remainingBudget < rates.hours;
 
   return contributors.map(contributor => (
     <Line key={contributor.login} highlightOnHover={200}>
@@ -134,16 +138,21 @@ const renderContributors = (contributors: Contributor[], isProjectLeader: boolea
         <Cell height={CellHeight.Small}>
           <div
             onClick={() => {
-              dispatch({
-                type: ProjectDetailsActionType.SelectPaymentAction,
-                selectedPaymentAction: PaymentAction.Send,
-              });
+              !isSendingNewPaymentDisabled &&
+                dispatch({
+                  type: ProjectDetailsActionType.SelectPaymentAction,
+                  selectedPaymentAction: PaymentAction.Send,
+                });
             }}
+            className="group/sendPaymentButton relative"
           >
-            <Button type={ButtonType.Secondary} size={ButtonSize.Small}>
+            <Button type={ButtonType.Secondary} size={ButtonSize.Small} disabled={isSendingNewPaymentDisabled}>
               <SendPlane2Line />
               <div>{T("project.details.contributors.sendPayment")}</div>
             </Button>
+            <div className="invisible group-hover/sendPaymentButton:visible absolute z-10 w-fit">
+              <Tooltip>{T("contributor.table.noBudgetLeft")}</Tooltip>
+            </div>
           </div>
         </Cell>
       )}

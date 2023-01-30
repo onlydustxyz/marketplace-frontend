@@ -32,7 +32,7 @@ const mockContributors: Contributor[] = [
 ];
 
 const Template: ComponentStory<typeof ContributorsTable> = () => (
-  <ContributorsTable contributors={mockContributors} isProjectLeader={false} />
+  <ContributorsTable contributors={mockContributors} isProjectLeader={false} remainingBudget={10000} />
 );
 
 export const Default = Template.bind({});

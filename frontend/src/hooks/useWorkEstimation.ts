@@ -27,7 +27,7 @@ const maxSteps = {
   [Steps.Hours]: 7,
 };
 
-const rates = {
+export const rates = {
   [Steps.Days]: DAY_RATE_USD,
   [Steps.Hours]: DAY_RATE_USD / (maxSteps[Steps.Hours] + 1),
 };
