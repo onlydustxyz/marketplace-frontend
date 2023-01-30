@@ -30,6 +30,7 @@ export const Default = Template.bind({});
 
 const args = {
   text: "Complete payment information",
+  disabled: false,
 };
 
 Default.args = args;
