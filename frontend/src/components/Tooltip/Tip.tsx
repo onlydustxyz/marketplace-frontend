@@ -8,7 +8,7 @@ type Props = {
 export default function Tip({ direction }: Props) {
   return (
     <div
-      className={classNames("fill-white/8 backdrop-blur-lg", {
+      className={classNames("fill-greyscale-800", {
         "rotate-180": [TooltipDirection.Down, TooltipDirection.Right].includes(direction),
       })}
     >
