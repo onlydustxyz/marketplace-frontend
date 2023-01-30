@@ -11,6 +11,16 @@ object_relationships:
         remote_table:
           name: users
           schema: auth
+array_relationships:
+  - name: paymentRequests
+    using:
+      manual_configuration:
+        column_mapping:
+          github_user_id: recipient_id
+        insertion_order: null
+        remote_table:
+          name: payment_requests
+          schema: public
 select_permissions:
   - role: project_lead_specific
     permission:

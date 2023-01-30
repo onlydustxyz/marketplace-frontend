@@ -32,6 +32,6 @@ select_permissions:
         - request_id
       filter:
         paymentRequest:
-          recipient:
-            user_id:
-              _eq: X-Hasura-User-Id
+          recipient_id:
+            _eq: X-Hasura-githubUserId
+      allow_aggregations: true
