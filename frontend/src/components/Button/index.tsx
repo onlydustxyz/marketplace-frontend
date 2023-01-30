@@ -20,7 +20,7 @@ export enum Width {
 type ButtonProps = {
   size?: ButtonSize;
   type?: ButtonType;
-  htmlType?: "submit";
+  htmlType?: "button" | "submit";
   width?: Width;
   disabled?: boolean;
 } & PropsWithChildren;
@@ -30,7 +30,7 @@ export default function Button({
   type = ButtonType.Primary,
   width = Width.Fit,
   disabled = false,
-  htmlType,
+  htmlType = "button",
   children,
 }: ButtonProps) {
   return (

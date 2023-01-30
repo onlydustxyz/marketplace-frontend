@@ -59,10 +59,13 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
     }
   }, [findUserQuery.error]);
 
-  const onValidSubmit: SubmitHandler<Inputs> = useCallback(async formData => {
-    await insertPayment(mapFormDataToSchema(formData, findUserQuery.data?.fetchUserDetails.id));
-    window.location.reload();
-  }, []);
+  const onValidSubmit: SubmitHandler<Inputs> = useCallback(
+    async formData => {
+      await insertPayment(mapFormDataToSchema(formData, findUserQuery.data?.fetchUserDetails.id));
+      window.location.reload();
+    },
+    [findUserQuery.data?.fetchUserDetails.id]
+  );
 
   const onWorkEstimationChange = useCallback(
     (amount: number) => {
