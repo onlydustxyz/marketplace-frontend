@@ -11,15 +11,18 @@ export default function Login() {
   const [searchParams] = useSearchParams();
   const refreshToken = searchParams.get(AUTH_CODE_QUERY_KEY);
   const { T } = useIntl();
+
   useEffect(() => {
     if (refreshToken) {
       login(refreshToken as RefreshToken);
     }
   }, [refreshToken]);
+
   return (
     <>
-      {refreshToken && <div className="flex justify-center mt-10 text-2xl">{T("github.loggingIn")}</div>}
-      {!refreshToken && (
+      {refreshToken ? (
+        <div className="flex justify-center mt-10 text-2xl">{T("github.loggingIn")}</div>
+      ) : (
         <div className="flex justify-center mt-10 text-2xl text-red-600">{T("github.tokenMissing")}</div>
       )}
     </>

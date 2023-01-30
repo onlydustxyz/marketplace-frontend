@@ -29,24 +29,18 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const tokenIsRefreshed = !(tokenSet?.accessToken && accessTokenExpired(tokenSet));
   const { isLoggedIn, roles, ledProjectIds, githubUserId } = useRoles(tokenSet?.accessToken);
 
-  const [skipProjectLeaderInvitationsQuery, setSkipProjectLeaderInvitationsQuery] = useState(true);
-
   const pendingProjectLeaderInvitationsQueryResult = useHasuraQuery<PendingProjectLeaderInvitationsQuery>(
     PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
     HasuraUserRole.RegisteredUser,
-    { variables: { githubUserId }, skip: skipProjectLeaderInvitationsQuery || !githubUserId }
-  );
-
-  useEffect(() => {
-    if (pendingProjectLeaderInvitationsQueryResult.data) {
-      setSkipProjectLeaderInvitationsQuery(true);
+    {
+      variables: { githubUserId },
+      skip: !githubUserId,
     }
-  }, [pendingProjectLeaderInvitationsQueryResult.data]);
+  );
 
   const login = async (refreshToken: RefreshToken) => {
     await setFromRefreshToken(refreshToken);
     await client.clearStore();
-    setSkipProjectLeaderInvitationsQuery(false);
     navigate(RoutePaths.Projects);
   };
 
