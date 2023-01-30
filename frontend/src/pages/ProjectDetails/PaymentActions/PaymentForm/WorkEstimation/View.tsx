@@ -30,9 +30,9 @@ export default function WorkEstimation({
     <Card padded={false}>
       <div
         className={classNames(
-          "flex flex-col gap-10 items-stretch justify-items-center",
+          "flex flex-col gap-5 items-stretch justify-items-center",
           "p-8 w-full",
-          "bg-space-card bg-top bg-contain bg-no-repeat"
+          "bg-space-card bg-top bg-cover bg-no-repeat"
         )}
       >
         <div className="flex flex-row justify-between items-center">
@@ -73,17 +73,17 @@ export default function WorkEstimation({
             ></div>
           </div>
         </div>
-        <div className="flex flex-col gap-3 font-medium">
+        <div className="flex flex-col text-sm">
           <div className="flex flex-row justify-between">
-            <div>{T("payment.form.totalBudget")}</div>
+            <div className="text-greyscale-300">{T("payment.form.totalBudget")}</div>
             <div>{formatMoneyAmount(budget.initialAmount)}</div>
           </div>
           <div className="flex flex-row justify-between">
-            <div>{T("payment.form.thisPayment")}</div>
-            <div className="text-purple-600">{formatMoneyAmount(amountToPay)}</div>
+            <div className="text-greyscale-300">{T("payment.form.thisPayment")}</div>
+            <div className="text-purple-500">{formatMoneyAmount(amountToPay)}</div>
           </div>
           <div className="flex flex-row justify-between">
-            <div>{T("payment.form.leftToSpend")}</div>
+            <div className="text-greyscale-300">{T("payment.form.leftToSpend")}</div>
             <div>{formatMoneyAmount(budget.remainingAmount - amountToPay)}</div>
           </div>
         </div>
