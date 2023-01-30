@@ -10,7 +10,7 @@ import { useT } from "talkr";
 
 interface Props {
   budget: { initialAmount: number; remainingAmount: number };
-  submitDisabled: boolean;
+  disabled: boolean;
   canIncrease: boolean;
   canDecrease: boolean;
   amountToPay: number;
@@ -27,7 +27,7 @@ export default function WorkEstimation({
   tryDecreaseNumberOfDays,
   budget,
   amountToPay,
-  submitDisabled,
+  disabled,
   stepNumber,
   steps,
 }: Props) {
@@ -67,7 +67,7 @@ export default function WorkEstimation({
               </div>
             </div>
           </div>
-          <BudgetBar budget={budget} pendingSpending={amountToPay} displayPendingSpending={!submitDisabled} />
+          <BudgetBar budget={budget} pendingSpending={amountToPay} displayPendingSpending={!disabled} />
           <div className="flex flex-col text-sm">
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("payment.form.remainingBudget")}</div>
@@ -83,7 +83,7 @@ export default function WorkEstimation({
             </div>
           </div>
         </div>
-        {!submitDisabled && (
+        {!disabled && (
           <div className="p-6 pt-5 w-full">
             <Button htmlType="submit" width={Width.Full}>
               <span>{T("payment.form.confirm")}</span>
