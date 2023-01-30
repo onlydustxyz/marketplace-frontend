@@ -45,6 +45,7 @@
       "invalidPRLink": "Invalid input, not a link to a github pull request",
       "leftToSpend": "Left to spend",
       "linkToIssue": "Link to GitHub issue",
+      "remainingBudget": "Remaining budget",
       "sent": "Payment request sent!",
       "steps": {
         "days": {
@@ -58,8 +59,7 @@
         }
       },
       "submit": "Submit payment",
-      "thisPayment": "This payment",
-      "totalBudget": "Total budget"
+      "thisPayment": "This payment"
     },
     "list": "List payments",
     "status": {
