@@ -4,12 +4,14 @@ import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { Inputs } from "./types";
 import Input from "src/components/FormInput";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import Card from "src/components/Card";
 import WorkEstimation from "./WorkEstimation";
 import { FindUserQueryForPaymentFormQuery } from "src/__generated/graphql";
 import { debounce } from "lodash";
+import { useShowToaster } from "src/hooks/useToaster";
+import { PaymentAction, ProjectDetailsActionType, ProjectDetailsDispatchContext } from "../../ProjectDetailsContext";
 
 export const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/pull\/\d+$/;
 
@@ -23,6 +25,8 @@ interface PaymentFormProps {
 
 const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
   const { T } = useIntl();
+  const showToaster = useShowToaster();
+  const dispatch = useContext(ProjectDetailsDispatchContext);
   const formMethods = useForm<Inputs>({
     defaultValues: {
       linkToIssue: "",
@@ -63,7 +67,12 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
 
   const onSubmit: SubmitHandler<Inputs> = async formData => {
     await insertPayment(mapFormDataToSchema(formData, findUserQuery.data?.fetchUserDetails.id));
-    window.location.reload();
+
+    dispatch({
+      type: ProjectDetailsActionType.SelectPaymentAction,
+      selectedPaymentAction: PaymentAction.List,
+    });
+    showToaster("Payment successfully sent", { duration: 2000 });
   };
 
   const onOnWorkEstimationChange = (amount: number) => {
