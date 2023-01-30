@@ -23,6 +23,7 @@ type ButtonProps = {
   htmlType?: "button" | "submit";
   width?: Width;
   disabled?: boolean;
+  [otherProp: string]: unknown;
 } & PropsWithChildren;
 
 export default function Button({
@@ -32,6 +33,7 @@ export default function Button({
   disabled = false,
   htmlType = "button",
   children,
+  ...otherButtonProps
 }: ButtonProps) {
   return (
     <button
@@ -80,6 +82,7 @@ export default function Button({
       )}
       type={htmlType}
       disabled={disabled}
+      {...otherButtonProps}
     >
       {children}
     </button>
