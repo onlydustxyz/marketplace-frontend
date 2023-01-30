@@ -18,6 +18,18 @@ module.exports = {
           800: "#313030",
           900: "#181818",
         },
+        midBlue: {
+          50: "#E6E6F8",
+          100: "#CCCEF2",
+          200: "#999DE4",
+          300: "#666BD7",
+          400: "#333AC9",
+          500: "#0009BC",
+          600: "#000796",
+          700: "#000571",
+          800: "#00044B",
+          900: "#000113",
+        },
         orange: {
           500: "#FF9000",
           900: "#331D00",
@@ -64,9 +76,19 @@ module.exports = {
         "noise-light": "url('src/assets/img/noise-light.png')",
         "noise-medium": "url('src/assets/img/noise-medium.png')",
         "noise-heavy": "url('src/assets/img/noise-heavy.png')",
-        space: "url('src/assets/img/bg.jpeg')",
+        space: `
+            url('src/assets/img/dust-top-right.png'),
+            url('src/assets/img/dust-btm-left.png'),
+            linear-gradient(180deg, #000113 0%, #181818 100%)
+        `,
         "multi-color-gradient":
           "conic-gradient(from 180deg at 50% 50%, #02FFE0 -8.58deg, #0100C8 16.28deg, #8F00F3 47.6deg, #0B0CCB 82.17deg, #5504EC 125.37deg, #E504A2 165.23deg, #FF7202 179.49deg, #0500CA 206.97deg, #5F00FA 254.68deg, #B501FF 288.89deg, #FF4838 296.73deg, #FB404B 310.19deg, #9138FD 320.15deg, #417CFB 334.77deg, #02FFE0 351.42deg, #0100C8 376.28deg)",
+      },
+      backgroundPosition: {
+        space: "right top, bottom left",
+      },
+      backgroundSize: {
+        space: "auto, auto, 100%",
       },
       backdropBlur: {
         "4xl": "70px",

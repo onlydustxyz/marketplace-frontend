@@ -46,7 +46,7 @@ const MyContributions = () => {
   const payoutInfoMissing = !!isPayoutInfoMissing(getPayoutSettingsQuery);
 
   return (
-    <div className="bg-space h-full rounded-3xl">
+    <div className="bg-space bg-no-repeat bg-fixed h-full rounded-3xl">
       <div className="container mx-auto pt-16 h-full">
         <div className="text-5xl font-belwe">{T("navbar.myContributions")}</div>
         <QueryWrapper query={getPaymentRequestsQuery}>

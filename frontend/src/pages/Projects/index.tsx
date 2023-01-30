@@ -13,7 +13,7 @@ export default function Projects() {
   const [technologies, setTechnologies] = useState<string[]>([]);
 
   return (
-    <div className="bg-space h-full rounded-3xl">
+    <div className="bg-space bg-no-repeat bg-fixed h-full rounded-3xl">
       <div className="container mx-auto pt-16 pb-8 h-full">
         <div className="text-5xl font-belwe">{T("navbar.projects")}</div>
         <div className="flex mt-8 gap-6">
