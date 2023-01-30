@@ -73,6 +73,7 @@ export const PENDING_USER_PAYMENTS_AND_PAYOUT_SETTINGS = gql`
   query PendingUserPaymentsAndPayoutSettings($userId: uuid!) {
     user(id: $userId) {
       userInfo {
+        userId
         payoutSettings
       }
       githubUser {
