@@ -30,7 +30,7 @@ export default function WorkEstimation({
 
   return (
     <Card padded={false}>
-      <div className={classNames("divide-y divide-greyscale-50/8", "bg-space-card bg-top bg-contain bg-no-repeat")}>
+      <div className={classNames("divide-y divide-greyscale-50/8", "bg-space-card bg-top bg-cover bg-no-repeat")}>
         <div className={classNames("flex flex-col gap-5 items-stretch justify-items-center", "p-8 pb-5 w-full")}>
           <div className="flex flex-row justify-between items-center">
             <div className="font-belwe">
