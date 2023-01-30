@@ -28,14 +28,8 @@ export default function WorkEstimation({
 
   return (
     <Card padded={false}>
-      <div className="divide-y divide-greyscale-50/8">
-        <div
-          className={classNames(
-            "flex flex-col gap-5 items-stretch justify-items-center",
-            "p-8 pb-5 w-full",
-            "bg-space-card bg-top bg-cover bg-no-repeat"
-          )}
-        >
+      <div className={classNames("divide-y divide-greyscale-50/8", "bg-space-card bg-top bg-contain bg-no-repeat")}>
+        <div className={classNames("flex flex-col gap-5 items-stretch justify-items-center", "p-8 pb-5 w-full")}>
           <div className="flex flex-row justify-between items-center">
             <div className="font-belwe">
               <span className="text-5xl mr-2">{stepNumber}</span>
@@ -54,9 +48,9 @@ export default function WorkEstimation({
               </div>
             </div>
           </div>
-          <div className="w-full bg-purple-400 rounded-full h-3">
+          <div className="w-full bg-purple-200 rounded-full h-2">
             <div
-              className="bg-purple-600 h-3 rounded-full"
+              className="bg-stripe-pattern h-full rounded-full"
               style={{
                 width: `${Math.floor(
                   ((budget.initialAmount - budget.remainingAmount + amountToPay) * 100) / budget.initialAmount
@@ -64,7 +58,7 @@ export default function WorkEstimation({
               }}
             >
               <div
-                className="bg-purple-800 h-3 rounded-full"
+                className="bg-purple-500 h-full rounded-full"
                 style={{
                   width: `${Math.floor(
                     ((budget.initialAmount - budget.remainingAmount) * 100) /
