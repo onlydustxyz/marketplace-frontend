@@ -6,25 +6,21 @@ type Props = {
 
 const BudgetBar = ({ budget, pendingSpending }: Props) => {
   return (
-    <div className="w-full bg-purple-200 rounded-full h-2">
+    <div className="w-full bg-purple-200 rounded-full h-2 relative">
       <div
-        className="bg-stripe-pattern h-full rounded-full"
+        className="bg-stripe-pattern h-2 rounded-full absolute inset-y-0 left-0"
         style={{
           width: `${Math.floor(
             ((budget.initialAmount - budget.remainingAmount + pendingSpending) * 100) / budget.initialAmount
           )}%`,
         }}
-      >
-        <div
-          className="bg-purple-500 h-full rounded-full"
-          style={{
-            width: `${Math.floor(
-              ((budget.initialAmount - budget.remainingAmount) * 100) /
-                (budget.initialAmount - budget.remainingAmount + pendingSpending)
-            )}%`,
-          }}
-        />
-      </div>
+      />
+      <div
+        className="bg-purple-500 h-2 rounded-full absolute inset-y-0 left-0"
+        style={{
+          width: `${Math.floor(((budget.initialAmount - budget.remainingAmount) * 100) / budget.initialAmount)}%`,
+        }}
+      />
     </div>
   );
 };

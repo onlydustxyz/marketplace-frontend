@@ -64,7 +64,7 @@ export default function WorkEstimation({
               </div>
             </div>
           </div>
-          <BudgetBar budget={budget} pendingSpending={amountToPay} displayPendingSpending={!disabled} />
+          <BudgetBar budget={budget} pendingSpending={amountToPay} displayPendingSpending={!submitDisabled} />
           <div className="flex flex-col text-sm">
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("payment.form.totalBudget")}</div>
