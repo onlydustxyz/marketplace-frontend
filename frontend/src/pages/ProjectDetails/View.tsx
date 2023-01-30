@@ -4,7 +4,7 @@ import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import Contributors from "./Contributors";
 import { ProjectDetails } from ".";
 import ProjectsSidebar from "./Sidebar";
-import Background from "src/components/Background";
+import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { ProjectDetailsTab } from "./ProjectDetailsContext";
 
 interface Props {
@@ -32,7 +32,7 @@ export default function View({
           availableTabs,
         }}
       />
-      <Background>
+      <Background roundedBorders={BackgroundRoundedBorders.Right}>
         <div className="p-5 flex flex-col flex-1">
           {selectedTab === ProjectDetailsTab.Overview && currentProject.githubRepoInfo?.contributors && (
             <Overview {...currentProject} lead={{ ...currentProject.leads[0] }}>

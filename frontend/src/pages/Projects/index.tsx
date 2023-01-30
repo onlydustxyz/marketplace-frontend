@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Background from "src/components/Background";
+import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { ArrayElement } from "src/types";
 import { GetProjectsQuery } from "src/__generated/graphql";
 import { useT } from "talkr";
@@ -14,7 +14,7 @@ export default function Projects() {
   const [technologies, setTechnologies] = useState<string[]>([]);
 
   return (
-    <Background>
+    <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <div className="container mx-auto pt-16 pb-8 h-full">
         <div className="text-5xl font-belwe">{T("navbar.projects")}</div>
         <div className="flex mt-8 gap-6">

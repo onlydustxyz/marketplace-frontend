@@ -11,7 +11,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import isPayoutInfoMissing from "src/utils/isPayoutInfoMissing";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
-import Background from "src/components/Background";
+import Background, { BackgroundRoundedBorders } from "src/components/Background";
 
 const Profile: React.FC = () => {
   const { isLoggedIn } = useAuth();
@@ -29,7 +29,7 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <Background>
+    <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <div className="px-8 pt-16 h-full w-full">
         <div className="flex mb-6 items-center">
           <span className="text-3xl font-belwe font-normal w-full">{T("profile.edit")}</span>
