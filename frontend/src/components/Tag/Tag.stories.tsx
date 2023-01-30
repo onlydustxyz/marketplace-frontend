@@ -37,6 +37,7 @@ const Template: ComponentStory<JSXElementConstructor<TagProps>> = args => <Tag {
 const args = {
   size: TagSize.Medium,
   label: "Processing",
+  whitespaceNoWrap: false,
 };
 
 export const Default = Template.bind({});
