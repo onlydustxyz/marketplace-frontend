@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
+import { getMostUsedLanguages } from "src/utils/languages";
 import { GetAllTechnologiesQuery } from "src/__generated/graphql";
 import View from "./View";
 
@@ -12,7 +13,7 @@ export default function FilterPanel({ onTechnologiesChange }: Props) {
   const technologiesQuery = useHasuraQuery<GetAllTechnologiesQuery>(GET_ALL_TECHNOLOGIES_QUERY, HasuraUserRole.Public);
 
   const technologies = new Set(
-    technologiesQuery.data?.projects.map(p => Object.keys(p.githubRepo?.languages || {}).slice(0, 2)).flat()
+    technologiesQuery.data?.projects.map(p => getMostUsedLanguages(p.githubRepo?.languages)).flat()
   );
 
   return (

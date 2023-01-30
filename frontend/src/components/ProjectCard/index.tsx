@@ -8,8 +8,9 @@ import TelegramLink from "src/components/TelegramLink";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import { Project } from "src/pages/Projects";
+import { buildLanguageString } from "src/utils/languages";
 import { formatMoneyAmount } from "src/utils/money";
-import { buildGithubLink, buildLanguageString } from "src/utils/stringUtils";
+import { buildGithubLink } from "src/utils/stringUtils";
 
 type ProjectCardProps = Project;
 
