@@ -12,9 +12,15 @@ type PropsType = {
   error?: {
     message?: string;
   };
+  errorType: InputErrorType;
   register?: UseFormRegisterReturn<string>;
   onChange?: ChangeEventHandler<any>;
 };
+
+export enum InputErrorType {
+  Normal = "normal",
+  Wide = "wide",
+}
 
 const View: React.FC<PropsType> = ({
   label,
@@ -24,11 +30,12 @@ const View: React.FC<PropsType> = ({
   value,
   loading,
   error,
+  errorType,
   register,
   onChange,
 }) => (
-  <label html-for={name} className="flex flex-col flex-grow gap-2 text-greyscale-50 font-walsheim">
-    <div className="font-medium text-sm">{label}</div>
+  <label html-for={name} className="flex flex-col flex-grow gap-2 text-greyscale-50/70 font-walsheim">
+    <div className="font-medium text-sm tracking-tight">{label}</div>
     <div>
       <div className="relative flex items-center">
         <input
@@ -37,14 +44,19 @@ const View: React.FC<PropsType> = ({
           placeholder={placeholder}
           type={type}
           className={`w-full h-11 bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 placeholder:text-greyscale-50/60 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900
-          ${error && "border outline-1 outline-rose-600 border-rose-600"}`}
+          ${error && errorType === InputErrorType.Normal && "border outline-1 outline-rose-600 border-rose-600"}`}
           value={value}
           {...register}
           onChange={onChange}
         />
         {loading && <LoaderIcon className="flex animate-spin place-items-center absolute right-0 mr-3" />}
       </div>
-      <span className="text-rose-600 text-sm ml-3">{error?.message ? error.message.toString() : "\u00A0"}</span>
+      {errorType === InputErrorType.Normal && (
+        <span className="text-rose-600 text-sm ml-3">{error?.message ? error.message.toString() : "\u00A0"}</span>
+      )}
+      {error && errorType === InputErrorType.Wide && error.message && (
+        <span className="text-rose-600 text-sm ml-3">{error?.message ? error.message.toString() : "\u00A0"}</span>
+      )}
     </div>
   </label>
 );

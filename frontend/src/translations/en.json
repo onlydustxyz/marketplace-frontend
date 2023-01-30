@@ -44,7 +44,8 @@
       "estimate": "Estimate time spent",
       "invalidPRLink": "Invalid input, not a link to a github pull request",
       "leftToSpend": "Left to spend",
-      "linkToIssue": "Link to GitHub issue",
+      "linkToIssueTitle": "Contribution to pay",
+      "linkToIssueInputLabel": "Please add a link to the corresponding pull request on Github",
       "remainingBudget": "Remaining budget",
       "sent": "Payment request sent!",
       "steps": {
