@@ -38,6 +38,10 @@ export default function Button({
         "rounded-xl font-walsheim drop-shadow-bottom-sm font-medium",
         "hover:cursor-pointer hover:shadow-none",
         {
+          "shadow-bottom-sm": type === ButtonType.Primary,
+          "drop-shadow-bottom-sm": type === ButtonType.Secondary,
+        },
+        {
           "w-full": width === Width.Full,
           "w-fit": width === Width.Fit,
         },
