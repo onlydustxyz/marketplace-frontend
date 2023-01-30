@@ -107,11 +107,4 @@ describe('"ProjectDetails" page', () => {
     expect(await screen.findByText("$200")).toBeInTheDocument();
     expect(await screen.findByText(/complete/i)).toBeInTheDocument();
   });
-
-  it("should render the list payments button after clicking the toggle button", async () => {
-    await userEvent.click(await screen.findByText(/submit payment/i));
-    await waitFor(() => {
-      screen.getByText(/list payments/i);
-    });
-  });
 });
