@@ -38,16 +38,19 @@ export default function WorkEstimation({
       <div
         className={classNames(
           "divide-y divide-greyscale-50/8",
-          "bg-space-card bg-top bg-cover bg-no-repeat rounded-2xl"
+          "bg-space-card bg-top bg-contain 2xl:bg-cover bg-no-repeat rounded-2xl"
         )}
       >
         <div className={classNames("flex flex-col gap-5 items-stretch justify-items-center", "p-8 pb-5 w-full")}>
           <div className="flex flex-row justify-between items-center">
-            <div className="font-belwe">
-              {stepNumber > 0 && <span className="text-5xl mr-2">{stepNumber}</span>}
-              <span className="text-2xl">{T("payment.form.steps." + steps, { count: stepNumber })}</span>{" "}
+            <div className="flex flex-col gap-1">
+              <div className="font-semibold">{T("payment.form.estimate")}</div>
+              <div className="font-belwe">
+                {stepNumber > 0 && <span className="text-5xl mr-2">{stepNumber}</span>}
+                <span className="text-2xl">{T("payment.form.steps." + steps, { count: stepNumber })}</span>{" "}
+              </div>
             </div>
-            <div className="flex flex-row gap-3 text-white items-center">
+            <div className="flex flex-row gap-3 text-white items-center pt-2">
               <div onClick={tryDecreaseNumberOfDays}>
                 <Button size={ButtonSize.Small} type={ButtonType.Secondary} disabled={!canDecrease}>
                   <div className="absolute top-1">
@@ -68,15 +71,15 @@ export default function WorkEstimation({
           <div className="flex flex-col text-sm">
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("payment.form.totalBudget")}</div>
-              <div>{formatMoneyAmount(budget.initialAmount)}</div>
+              <div className="font-semibold">{formatMoneyAmount(budget.initialAmount)}</div>
             </div>
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("payment.form.thisPayment")}</div>
-              <div className="text-purple-500">{formatMoneyAmount(amountToPay)}</div>
+              <div className="text-purple-500 font-semibold">{formatMoneyAmount(amountToPay)}</div>
             </div>
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("payment.form.leftToSpend")}</div>
-              <div>{formatMoneyAmount(budget.remainingAmount - amountToPay)}</div>
+              <div className="font-semibold">{formatMoneyAmount(budget.remainingAmount - amountToPay)}</div>
             </div>
           </div>
         </div>

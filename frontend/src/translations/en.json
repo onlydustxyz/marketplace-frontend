@@ -41,6 +41,7 @@
       "confirm": "Confirm payment",
       "contributor": "Recipient",
       "days": "days",
+      "estimate": "Estimate time spent",
       "invalidPRLink": "Invalid input, not a link to a github pull request",
       "leftToSpend": "Left to spend",
       "linkToIssue": "Link to GitHub issue",
