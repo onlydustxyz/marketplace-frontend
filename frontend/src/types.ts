@@ -75,6 +75,15 @@ export enum PaymentStatus {
   WAITING_PAYMENT = "WAITING_PAYMENT",
 }
 
+export function getPaymentStatusOrder(status: PaymentStatus): number {
+  switch (status) {
+    case PaymentStatus.WAITING_PAYMENT:
+      return 0;
+    case PaymentStatus.ACCEPTED:
+      return 1;
+  }
+}
+
 export type Project = {
   id: string;
   title: string;
