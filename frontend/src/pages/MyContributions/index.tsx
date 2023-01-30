@@ -13,7 +13,7 @@ import { useT } from "talkr";
 import InfoMissingBanner from "src/components/InfoMissingBanner";
 import Button from "src/components/Button";
 import TotalEarnings from "./TotalEarnings";
-import Background from "src/components/Background";
+import Background, { BackgroundRoundedBorders } from "src/components/Background";
 
 const MyContributions = () => {
   const { githubUserId } = useAuth();
@@ -47,7 +47,7 @@ const MyContributions = () => {
   const payoutInfoMissing = !!isPayoutInfoMissing(getPayoutSettingsQuery);
 
   return (
-    <Background>
+    <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <div className="container mx-auto pt-16 h-full">
         <div className="text-5xl font-belwe">{T("navbar.myContributions")}</div>
         <QueryWrapper query={getPaymentRequestsQuery}>
