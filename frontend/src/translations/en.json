@@ -51,6 +51,7 @@
           "many": "days"
         },
         "hours": {
+          "zero": "No budget left",
           "one": "hour",
           "many": "hours"
         }

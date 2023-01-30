@@ -38,19 +38,19 @@ export default function WorkEstimation({
         <div className={classNames("flex flex-col gap-5 items-stretch justify-items-center", "p-8 pb-5 w-full")}>
           <div className="flex flex-row justify-between items-center">
             <div className="font-belwe">
-              <span className="text-5xl mr-2">{stepNumber}</span>
+              {stepNumber > 0 && <span className="text-5xl mr-2">{stepNumber}</span>}
               <span className="text-2xl">{T("payment.form.steps." + steps, { count: stepNumber })}</span>{" "}
             </div>
             <div className="flex flex-row gap-3 text-white items-center">
               <div onClick={tryDecreaseNumberOfDays}>
-                <Button size={ButtonSize.Small} type={ButtonType.Secondary} disabled={canDecrease}>
+                <Button size={ButtonSize.Small} type={ButtonType.Secondary} disabled={!canDecrease}>
                   <div className="absolute top-1">
                     <Subtract />
                   </div>
                 </Button>
               </div>
               <div onClick={tryIncreaseNumberOfDays}>
-                <Button size={ButtonSize.Small} type={ButtonType.Secondary} disabled={canIncrease}>
+                <Button size={ButtonSize.Small} type={ButtonType.Secondary} disabled={!canIncrease}>
                   <div className="absolute top-1">
                     <Add />
                   </div>
