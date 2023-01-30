@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import Tag, { TagBorderColor, TagIcon, TagIconColor, TagSize } from "src/components/Tag";
+import Tag, { TagBackgroundColor, TagBorderColor, TagIcon, TagIconColor, TagSize } from "src/components/Tag";
 import { useIntl } from "src/hooks/useIntl";
 import { PaymentStatus } from "src/types";
 import Tooltip from "../Tooltip";
@@ -83,6 +83,7 @@ const tagPayoutInfoMissing = () => {
         icon={TagIcon.Warning}
         iconColor={TagIconColor.Pink}
         borderColor={TagBorderColor.MultiColor}
+        backgroundColor={TagBackgroundColor.SpaceBlueOpaque}
         whitespaceNoWrap={true}
       />
       <div
