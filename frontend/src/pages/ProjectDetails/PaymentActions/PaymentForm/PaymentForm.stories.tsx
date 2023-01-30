@@ -5,7 +5,13 @@ import PaymentForm from "./View";
 
 export default {
   title: "PaymentForm",
-  component: PaymentForm,
+  argTypes: {
+    loading: {
+      table: {
+        disable: true,
+      },
+    },
+  },
 } as ComponentMeta<typeof PaymentForm>;
 
 const Template: ComponentStory<typeof PaymentForm> = args => {
@@ -34,6 +40,28 @@ Default.args = {
 };
 
 Default.parameters = {
+  backgrounds: {
+    default: "space",
+  },
+};
+
+export const Loading = Template.bind({});
+
+Loading.args = {
+  loading: true,
+  budget: { initialAmount: 5000, remainingAmount: 3000 },
+  onWorkEstimationChange: () => {
+    return;
+  },
+  onContributorLoginChange: () => {
+    return;
+  },
+  validateContributorLogin: () => {
+    return true;
+  },
+};
+
+Loading.parameters = {
   backgrounds: {
     default: "space",
   },
