@@ -21,6 +21,7 @@ Default.args = {
     return;
   },
   budget: { initialAmount: 5000, remainingAmount: 3000 },
+  disabled: false,
 };
 
 Default.parameters = {
@@ -34,6 +35,7 @@ NoBudget.args = {
     return;
   },
   budget: { initialAmount: 5000, remainingAmount: 0 },
+  disabled: false,
 };
 
 NoBudget.parameters = {

@@ -73,7 +73,7 @@ const View: React.FC<Props> = ({
         </div>
       </div>
       <div className="basis-2/5">
-        <WorkEstimation onChange={onWorkEstimationChange} budget={budget} submitDisabled={loading} />
+        <WorkEstimation onChange={onWorkEstimationChange} budget={budget} disabled={loading} />
       </div>
     </div>
   );
