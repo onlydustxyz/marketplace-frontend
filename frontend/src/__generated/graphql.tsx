@@ -2540,7 +2540,7 @@ export type GetFirstLeadProjectIdQueryVariables = Exact<{
 }>;
 
 
-export type GetFirstLeadProjectIdQuery = { __typename?: 'query_root', user: { __typename?: 'users', projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any }> } | null };
+export type GetFirstLeadProjectIdQuery = { __typename?: 'query_root', user: { __typename?: 'users', id: any | null, projectsLeaded: Array<{ __typename?: 'ProjectLeads', projectId: any }> } | null };
 
 export type GetPaymentRequestIdsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
@@ -2563,7 +2563,7 @@ export type PendingUserPaymentsAndPayoutSettingsQueryVariables = Exact<{
 }>;
 
 
-export type PendingUserPaymentsAndPayoutSettingsQuery = { __typename?: 'query_root', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', payoutSettings: any | null } | null, githubUser: { __typename?: 'AuthGithubUsers', paymentRequests: Array<{ __typename?: 'PaymentRequests', amountInUsd: any, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> } | null } | null };
+export type PendingUserPaymentsAndPayoutSettingsQuery = { __typename?: 'query_root', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', userId: any, payoutSettings: any | null } | null, githubUser: { __typename?: 'AuthGithubUsers', paymentRequests: Array<{ __typename?: 'PaymentRequests', amountInUsd: any, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> } | null } | null };
 
 export type GetPaymentRequestsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
@@ -2701,6 +2701,7 @@ export const ProjectCardFieldsFragmentDoc = gql`
 export const GetFirstLeadProjectIdDocument = gql`
     query GetFirstLeadProjectId($userId: uuid!) {
   user(id: $userId) {
+    id
     projectsLeaded(limit: 1) {
       projectId
     }
@@ -2810,6 +2811,7 @@ export const PendingUserPaymentsAndPayoutSettingsDocument = gql`
     query PendingUserPaymentsAndPayoutSettings($userId: uuid!) {
   user(id: $userId) {
     userInfo {
+      userId
       payoutSettings
     }
     githubUser {

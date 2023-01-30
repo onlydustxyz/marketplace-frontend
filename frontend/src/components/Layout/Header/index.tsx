@@ -58,6 +58,7 @@ export default function Header() {
 export const GET_FIRST_LEAD_PROJECT_ID = gql`
   query GetFirstLeadProjectId($userId: uuid!) {
     user(id: $userId) {
+      id
       projectsLeaded(limit: 1) {
         projectId
       }
