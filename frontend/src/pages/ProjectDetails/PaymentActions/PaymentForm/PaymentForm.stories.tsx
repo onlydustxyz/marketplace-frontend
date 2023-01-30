@@ -11,11 +11,9 @@ export default {
 const Template: ComponentStory<typeof PaymentForm> = args => {
   const methods = useForm();
   return (
-    <div className="w-96">
-      <FormProvider {...methods}>
-        <PaymentForm {...args} />
-      </FormProvider>
-    </div>
+    <FormProvider {...methods}>
+      <PaymentForm {...args} />
+    </FormProvider>
   );
 };
 
