@@ -6,7 +6,7 @@ type Props = {
 
 const BudgetBar = ({ budget, pendingSpending }: Props) => {
   return (
-    <div className="w-full bg-purple-200 rounded-full h-2 relative">
+    <div className="w-full bg-purple-200 rounded-full h-2 relative overflow-hidden">
       <div
         className="bg-stripe-pattern h-2 rounded-full absolute inset-y-0 left-0"
         style={{
