@@ -23,14 +23,17 @@ import {
   ProjectDetailsDispatchContext,
 } from "src/pages/ProjectDetails/ProjectDetailsContext";
 import { rates } from "src/hooks/useWorkEstimation";
+import { gql } from "@apollo/client";
+import { ContributorsTableFieldsFragment } from "src/__generated/graphql";
 
 type PropsType = {
-  contributors: Contributor[];
+  contributors: ContributorsTableFieldsFragment[];
   isProjectLeader: boolean;
   remainingBudget: number;
+  projectId: string;
 };
 
-export type Contributor = {
+type Contributor = {
   login: string;
   avatarUrl: string;
   isRegistered: boolean;
@@ -49,9 +52,26 @@ type Sorting = {
   ascending: boolean;
 };
 
-const ContributorsTable: React.FC<PropsType> = ({ contributors, isProjectLeader, remainingBudget }) => {
+const ContributorsTable: React.FC<PropsType> = ({
+  contributors: contributorFragments,
+  isProjectLeader,
+  remainingBudget,
+  projectId,
+}) => {
+  const contributors = contributorFragments.map(c => {
+    const paymentRequests = c.paymentRequests?.filter(r => r.budget?.projectId === projectId) || [];
+
+    return {
+      login: c.login,
+      avatarUrl: c.avatarUrl,
+      isRegistered: !!c.user?.userId,
+      totalEarned: paymentRequests.reduce((acc, r) => acc + r.amountInUsd || 0, 0),
+      paidContributions: paymentRequests.reduce((acc, r) => acc + r.reason.work_items?.length, 0) || 0,
+    };
+  });
+
   const [sorting, setSorting] = useState({ field: Field.TotalEarned, ascending: false });
-  const [sortedContributors, setSortedContributors] = useState(contributors);
+  const [sortedContributors, setSortedContributors] = useState<Contributor[]>(contributors);
 
   useEffect(() => {
     const sorted = sortBy([...contributors], contributor => {
@@ -59,7 +79,7 @@ const ContributorsTable: React.FC<PropsType> = ({ contributors, isProjectLeader,
       return typeof f === "string" ? f.toLocaleLowerCase() : f;
     });
     setSortedContributors(sorting.ascending ? sorted : sorted.reverse());
-  }, [sorting, contributors]);
+  }, [sorting]);
 
   const applySorting = (field: Field) =>
     setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : true });
@@ -161,3 +181,22 @@ const renderContributors = (contributors: Contributor[], isProjectLeader: boolea
 };
 
 export default ContributorsTable;
+
+export const CONTRIBUTORS_TABLE_FRAGMENT = gql`
+  fragment ContributorsTableFields on User {
+    id
+    login
+    avatarUrl
+    user {
+      userId
+    }
+    paymentRequests {
+      id
+      budget {
+        projectId
+      }
+      amountInUsd
+      reason
+    }
+  }
+`;
