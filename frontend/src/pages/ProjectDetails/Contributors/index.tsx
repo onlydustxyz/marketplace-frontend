@@ -43,13 +43,13 @@ const Contributors: React.FC<PropsType> = ({ projectId }) => {
     <QueryWrapper query={getProjectContributorsQuery}>
       <div className="flex flex-col gap-6 mt-3 h-full">
         <div className="text-3xl font-belwe">{T("project.details.contributors.title")}</div>
-        <Card className="h-full">
-          {contributors.length ? (
-            <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />
-          ) : (
-            <ContributorsTableFallback projectName={getProjectContributorsQuery.data?.projectsByPk?.name} />
-          )}
-        </Card>
+        {contributors.length ? (
+          <Card className="h-full">
+            <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />{" "}
+          </Card>
+        ) : (
+          <ContributorsTableFallback projectName={getProjectContributorsQuery.data?.projectsByPk?.name} />
+        )}
       </div>
     </QueryWrapper>
   );

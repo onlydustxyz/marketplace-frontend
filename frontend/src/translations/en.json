@@ -13,7 +13,7 @@
     },
     "tableFallback": {
       "noContributor": "No one has contributed to __projectName__ yet",
-      "relevantProfiles": "Relevant profiles will appear here"
+      "relevantProfiles": "Relevant profiles will appear here."
     },
     "totalEarnings": "Total earnings"
   },
