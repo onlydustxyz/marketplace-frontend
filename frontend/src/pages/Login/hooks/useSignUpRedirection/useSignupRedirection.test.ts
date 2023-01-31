@@ -59,7 +59,7 @@ describe("useSignupRedirection", () => {
     await waitFor(() => expect(result.current.url).toBe(generatePath(RoutePaths.ProjectDetails, { projectId })));
   });
 
-  it("should return ProfilePage if pending payments and no payout settings", async () => {
+  it("should return MyContributions if pending payments and no payout settings", async () => {
     const mock = pendingPaymentsMock.newData.mockReturnValue({
       data: {
         user: {
@@ -81,7 +81,7 @@ describe("useSignupRedirection", () => {
 
     await waitFor(() => {
       expect(mock).toBeCalledTimes(1);
-      expect(result.current.url).toBe(RoutePaths.Profile);
+      expect(result.current.url).toBe(RoutePaths.MyContributions);
     });
   });
 
@@ -137,7 +137,7 @@ describe("useSignupRedirection", () => {
     });
   });
 
-  it("should return Profile if both invited and pending payments with no payout settings", async () => {
+  it("should return MyContributions if both invited and pending payments with no payout settings", async () => {
     const mock = pendingPaymentsMock.newData.mockReturnValue({
       data: {
         user: {
@@ -159,7 +159,7 @@ describe("useSignupRedirection", () => {
 
     await waitFor(() => {
       expect(mock).toBeCalledTimes(1);
-      expect(result.current.url).toBe(RoutePaths.Profile);
+      expect(result.current.url).toBe(RoutePaths.MyContributions);
     });
   });
 });

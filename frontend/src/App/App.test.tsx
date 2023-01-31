@@ -19,6 +19,7 @@ import {
 } from "src/pages/Login/hooks/useSignUpRedirection";
 import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import { generatePath } from "react-router-dom";
+import { GET_MY_CONTRIBUTIONS_QUERY } from "src/pages/MyContributions";
 
 const AUTH_CODE_TEST_VALUE = "code";
 const LOGGING_IN_TEXT_QUERY = /logging in.../i;
@@ -251,6 +252,47 @@ const pendingPaymentsMock = {
   },
 };
 
+const paymentRequestsMock = {
+  request: {
+    query: GET_MY_CONTRIBUTIONS_QUERY,
+    variables: {
+      githubUserId: TEST_GITHUB_USER_ID,
+    },
+  },
+  result: {
+    data: {
+      paymentRequests: [
+        {
+          id: "705e6b37-d0ee-4e87-b681-7009dd691965",
+          payments: [
+            {
+              amount: 100,
+              currencyCode: "USD",
+            },
+            {
+              amount: 100,
+              currencyCode: "USD",
+            },
+          ],
+          amountInUsd: 200,
+          reason: { work_items: ["link_to_pr"] },
+          budget: {
+            project: {
+              id: "632d5da7-e590-4815-85ea-82a5585e6049",
+              name: "MyAwesomeProject",
+              projectDetails: {
+                description: "SOOOOOO awesome",
+                logoUrl: null,
+              },
+              githubRepo: null,
+            },
+          },
+        },
+      ],
+    },
+  },
+};
+
 Object.defineProperty(window, "innerWidth", { writable: true, configurable: true, value: 2000 });
 
 describe("Integration tests", () => {
@@ -344,10 +386,10 @@ describe("Integration tests", () => {
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({
         route: `${RoutePaths.Login}?${AUTH_CODE_QUERY_KEY}=${AUTH_CODE_TEST_VALUE}`,
-        mocks: [...graphQlMocks, pendingPaymentsMock],
+        mocks: [...graphQlMocks, pendingPaymentsMock, paymentRequestsMock],
       }),
     });
-    await screen.findByTestId("profile-form-submit-button");
+    await screen.findByText("MyAwesomeProject");
   });
 
   it("should redirect to last visited page if not first sign-in", async () => {
