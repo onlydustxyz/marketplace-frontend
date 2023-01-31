@@ -9,7 +9,7 @@ import { decodeBase64ToString } from "src/utils/stringUtils";
 import { GetProjectQuery } from "src/__generated/graphql";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { RoutePaths } from "src/App";
-import { useSession } from "src/hooks/useSession";
+import { SessionMethod, useSessionDispatch, useSession } from "src/hooks/useSession";
 import View from "./View";
 import { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
 import {
@@ -44,7 +44,8 @@ export interface ProjectDetails {
 function ProjectDetailsComponent() {
   const { projectId } = useParams<ProjectDetailsParams>();
   const { ledProjectIds, githubUserId } = useAuth();
-  const { lastVisitedProjectId, setLastVisitedProjectId } = useSession();
+  const { lastVisitedProjectId } = useSession();
+  const dispatchSession = useSessionDispatch();
   const navigate = useNavigate();
 
   const [acceptInvitation, acceptInvitationResponse] = useHasuraMutation(
@@ -73,10 +74,10 @@ function ProjectDetailsComponent() {
 
   useEffect(() => {
     if (
-      (project && project.id !== lastVisitedProjectId() && ledProjectIds.includes(project.id)) ||
+      (project && project.id !== lastVisitedProjectId && ledProjectIds.includes(project.id)) ||
       !!project?.pendingInvitations.length
     ) {
-      setLastVisitedProjectId(project.id);
+      dispatchSession({ method: SessionMethod.SetLastVisitedProjectId, value: project.id });
     }
   }, [project, ledProjectIds]);
 

@@ -1,39 +1,55 @@
-import { createContext, PropsWithChildren, useContext } from "react";
+import { createContext, PropsWithChildren, useContext, useEffect, useReducer } from "react";
 import { useLocalStorage } from "react-use";
-import { Session } from "src/types";
 
 export const LOCAL_STORAGE_SESSION_KEY = "session";
 
-type SessionContextType = {
-  lastVisitedProjectId: () => string | undefined;
-  setLastVisitedProjectId: (projectId: string) => void;
+type Session = {
+  lastVisitedProjectId?: string;
 };
 
-const SessionContext = createContext<SessionContextType | null>(null);
+export const SessionContext = createContext({});
+export const SessionDispatchContext = createContext((action: Action) => {
+  return;
+});
 
-export const SessionProvider = ({ children }: PropsWithChildren) => {
-  const [session, setSession] = useLocalStorage<Session | null>(LOCAL_STORAGE_SESSION_KEY);
+export function SessionProvider({ children }: PropsWithChildren) {
+  const [storage, setStorage] = useLocalStorage<Session>(LOCAL_STORAGE_SESSION_KEY);
+  const [session, dispatch] = useReducer(reduce, storage || {});
 
-  const setLastVisitedProjectId = (projectId: string) => {
-    setSession({ ...session, lastVisitedProjectId: projectId });
-  };
+  useEffect(() => setStorage(session), [session]);
 
-  const lastVisitedProjectId = () => {
-    return session?.lastVisitedProjectId;
-  };
+  return (
+    <SessionContext.Provider value={session}>
+      <SessionDispatchContext.Provider value={dispatch}>{children}</SessionDispatchContext.Provider>
+    </SessionContext.Provider>
+  );
+}
 
-  const value = {
-    lastVisitedProjectId,
-    setLastVisitedProjectId,
-  };
-
-  return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
-};
-
-export const useSession = (): SessionContextType => {
+export const useSession = (): Session => {
   const context = useContext(SessionContext);
   if (!context) {
     throw new Error("useSession must be used within an SessionProvider");
   }
   return context;
 };
+
+export const useSessionDispatch = () => {
+  const context = useContext(SessionDispatchContext);
+  if (!context) {
+    throw new Error("useSessionDispatch must be used within an SessionProvider");
+  }
+  return context;
+};
+
+export enum SessionMethod {
+  SetLastVisitedProjectId = "lastVisitedProjectId",
+}
+
+type Action = {
+  method: SessionMethod;
+  value: string;
+};
+
+function reduce(state: Session, action: Action): Session {
+  return { ...state, [action.method]: action.value };
+}

@@ -50,7 +50,7 @@ export default function Header() {
       }}
       isLoggedIn={isLoggedIn}
       selectedMenuItem={location.pathname}
-      lastVisitedProjectId={lastVisitedProjectId() || data?.user?.projectsLeaded[0]?.projectId}
+      lastVisitedProjectId={lastVisitedProjectId || data?.user?.projectsLeaded[0]?.projectId}
     />
   );
 }
