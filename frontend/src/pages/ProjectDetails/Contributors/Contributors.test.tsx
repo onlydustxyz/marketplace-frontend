@@ -104,7 +104,7 @@ describe('"ProjectDetails" page', () => {
 
   it("should render the contributors table", async () => {
     await screen.findByText(/contributors/i);
-    await screen.findByText(/2000/i);
+    await screen.findByText(/2,000/i);
     await screen.findByText(/500/i);
   });
 });
