@@ -6,10 +6,12 @@ import { Budget } from "src/hooks/useWorkEstimation";
 import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/pages/ProjectDetails/PaymentActions/PaymentForm";
 import { ChangeEventHandler } from "react";
 import { InputErrorType } from "src/components/FormInput/View";
+import { useFormContext } from "react-hook-form";
 
 interface Props {
   budget: Budget;
   loading: boolean;
+  disableWorkEstimation: boolean;
   onWorkEstimationChange: (workEstimation: number) => void;
   onContributorLoginChange: ChangeEventHandler;
   validateContributorLogin: () => boolean | string;
@@ -18,11 +20,13 @@ interface Props {
 const View: React.FC<Props> = ({
   budget,
   loading,
+  disableWorkEstimation,
   onContributorLoginChange,
   onWorkEstimationChange,
   validateContributorLogin,
 }) => {
   const { T } = useIntl();
+  const { register } = useFormContext();
 
   return (
     <div className="flex flex-row items-start gap-5 h-full">
@@ -55,7 +59,7 @@ const View: React.FC<Props> = ({
                 <div className="flex flex-row pt-3">
                   <Input
                     label={T("payment.form.issueLink.inputLabel")}
-                    name="linkToIssue"
+                    {...register("linkToIssue")}
                     placeholder={T("payment.form.issueLink.placeholder")}
                     errorType={InputErrorType.Banner}
                     options={{
@@ -73,7 +77,7 @@ const View: React.FC<Props> = ({
         </div>
       </div>
       <div className="basis-2/5">
-        <WorkEstimation onChange={onWorkEstimationChange} budget={budget} disabled={loading} />
+        <WorkEstimation onChange={onWorkEstimationChange} budget={budget} disabled={disableWorkEstimation} />
       </div>
     </div>
   );

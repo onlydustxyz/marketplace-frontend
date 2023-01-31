@@ -52,6 +52,7 @@
         "error": "You can only include 1 pull request per payment request"
       },
       "days": "days",
+      "disabled": "Select a contributor and enter link to pull request to send payment",
       "estimate": "Estimate time spent",
       "leftToSpend": "Left to spend",
       "remainingBudget": "Remaining budget",
