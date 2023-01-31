@@ -15,9 +15,16 @@ interface HeaderViewProps {
   selectedMenuItem: string;
   isLoggedIn: boolean;
   lastVisitedProjectId: string;
+  onLogin?: () => void;
 }
 
-export default function HeaderView({ menuItems, selectedMenuItem, isLoggedIn, lastVisitedProjectId }: HeaderViewProps) {
+export default function HeaderView({
+  menuItems,
+  selectedMenuItem,
+  isLoggedIn,
+  lastVisitedProjectId,
+  onLogin,
+}: HeaderViewProps) {
   return (
     <div className="bg-black font-walsheim flex flex-row justify-start items-center py-4 px-6 gap-8 text-xl text-neutral-400">
       <Link to={RoutePaths.Projects} className="flex items-center w-fit gap-3 ">
@@ -43,7 +50,7 @@ export default function HeaderView({ menuItems, selectedMenuItem, isLoggedIn, la
         </MenuItem>
       )}
       <div className="flex flex-1 text-base text-white justify-end">
-        {!isLoggedIn ? <GithubLink /> : <ProfileButton />}
+        {!isLoggedIn ? <GithubLink onClick={onLogin} /> : <ProfileButton />}
       </div>
     </div>
   );

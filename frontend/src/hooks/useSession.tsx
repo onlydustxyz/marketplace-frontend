@@ -5,6 +5,8 @@ export const LOCAL_STORAGE_SESSION_KEY = "session";
 
 type Session = {
   lastVisitedProjectId?: string;
+  lastLoginTime?: string;
+  visitedPageBeforeLogin?: string;
 };
 
 export const SessionContext = createContext({});
@@ -43,6 +45,8 @@ export const useSessionDispatch = () => {
 
 export enum SessionMethod {
   SetLastVisitedProjectId = "lastVisitedProjectId",
+  SetLastLoginTime = "lastLoginTime",
+  SetVisitedPageBeforeLogin = "visitedPageBeforeLogin",
 }
 
 type Action = {
