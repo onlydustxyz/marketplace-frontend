@@ -4,6 +4,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: { alfreda: ["Alfreda"], walsheim: ["GT Walsheim"], belwe: ["Belwe"] },
+      spacing: {
+        110: "27.5rem",
+      },
       colors: {
         chineseBlack: "#110C1F",
         greyscale: {
