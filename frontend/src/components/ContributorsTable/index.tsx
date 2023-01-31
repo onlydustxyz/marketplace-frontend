@@ -25,6 +25,8 @@ import {
 import { rates } from "src/hooks/useWorkEstimation";
 import { gql } from "@apollo/client";
 import { ContributorsTableFieldsFragment } from "src/__generated/graphql";
+import { formatMoneyAmount } from "src/utils/money";
+import { Currency } from "src/types";
 
 type PropsType = {
   contributors: ContributorsTableFieldsFragment[];
@@ -161,7 +163,9 @@ const renderContributors = (contributors: Contributor[], isProjectLeader: boolea
           </div>
         </div>
       </Cell>
-      <Cell height={CellHeight.Small} horizontalMargin={false}>{`$ ${contributor.totalEarned || "-"}`}</Cell>
+      <Cell height={CellHeight.Small} horizontalMargin={false}>{`${
+        formatMoneyAmount(contributor.totalEarned, Currency.USD) || "-"
+      }`}</Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {contributor.paidContributions || "-"}
       </Cell>
