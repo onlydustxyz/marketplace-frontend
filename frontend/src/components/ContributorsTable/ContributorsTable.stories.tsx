@@ -63,13 +63,20 @@ const mockContributors: ContributorsTableFieldsFragment[] = [
   },
 ];
 
-const Template: ComponentStory<typeof ContributorsTable> = () => (
+const Template: ComponentStory<typeof ContributorsTable> = args => (
   <ContributorsTable
     contributors={mockContributors}
-    isProjectLeader={false}
-    remainingBudget={10000}
+    isProjectLeader={args.isProjectLeader}
+    remainingBudget={args.remainingBudget}
     projectId={TEST_PROJECT_ID}
   />
 );
 
 export const Default = Template.bind({});
+Default.args = { isProjectLeader: false, remainingBudget: 10000 };
+
+export const ProjectLeader = Template.bind({});
+ProjectLeader.args = { isProjectLeader: true, remainingBudget: 1000 };
+
+export const ProjectLeaderNoMoreBudget = Template.bind({});
+ProjectLeaderNoMoreBudget.args = { isProjectLeader: true, remainingBudget: 0 };
