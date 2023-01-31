@@ -3,12 +3,13 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
 
-import { FIND_USER_QUERY, REQUEST_PAYMENT_MUTATION, REGEX_VALID_GITHUB_PULL_REQUEST_URL } from ".";
+import { REQUEST_PAYMENT_MUTATION, REGEX_VALID_GITHUB_PULL_REQUEST_URL } from ".";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentForm from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
+import { FIND_USER_QUERY } from "src/hooks/useIsGithubLoginValid";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-user-name", githubUser: { githubUserId: 748483646584 } };
 

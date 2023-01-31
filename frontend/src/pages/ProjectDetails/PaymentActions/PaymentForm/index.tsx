@@ -1,13 +1,13 @@
 import { gql } from "@apollo/client";
 import { HasuraUserRole } from "src/types";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
-import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useHasuraMutation } from "src/hooks/useHasuraQuery";
 import { Inputs } from "./types";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
-import { FindUserQueryForPaymentFormQuery } from "src/__generated/graphql";
 import { debounce } from "lodash";
+import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
 
 export const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/pull\/\d+$/;
 
@@ -21,6 +21,7 @@ interface PaymentFormProps {
 
 const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
   const { T } = useIntl();
+
   const formMethods = useForm<Inputs>({
     defaultValues: {
       remainingBudget: budget.remainingAmount,
@@ -33,22 +34,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
 
   const { handleSubmit, setError, clearErrors } = formMethods;
 
-  const [contributorLogin, setContributorLogin] = useState("");
   const linkToIssue = formMethods.watch("linkToIssue");
-
-  const findUserQuery = useHasuraQuery<FindUserQueryForPaymentFormQuery>(
-    FIND_USER_QUERY,
-    HasuraUserRole.RegisteredUser,
-    {
-      skip: !contributorLogin,
-      variables: {
-        username: contributorLogin,
-      },
-      context: {
-        graphqlErrorDisplay: "none", // tell ApolloWrapper to ignore the errors
-      },
-    }
-  );
+  const findUserQuery = useFindGithubUser();
 
   useEffect(() => {
     if (findUserQuery.error) {
@@ -60,10 +47,10 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
 
   const onValidSubmit: SubmitHandler<Inputs> = useCallback(
     async formData => {
-      await insertPayment(mapFormDataToSchema(formData, findUserQuery.data?.fetchUserDetails.id));
+      await insertPayment(mapFormDataToSchema(formData, findUserQuery.userId));
       window.location.reload();
     },
-    [findUserQuery.data?.fetchUserDetails.id]
+    [findUserQuery.userId]
   );
 
   const onWorkEstimationChange = useCallback(
@@ -73,19 +60,16 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
     [formMethods]
   );
 
-  const onContributorLoginChange = useCallback(
-    debounce(({ target }) => setContributorLogin(target.value), 500),
-    [setContributorLogin]
-  );
+  const onContributorLoginChange = debounce(({ target }) => findUserQuery.trigger(target.value), 500);
 
   const validateContributorLogin = useCallback(
-    () => !!findUserQuery.data?.fetchUserDetails.id || T("github.invalidLogin"),
-    [findUserQuery.data?.fetchUserDetails.id]
+    () => !!findUserQuery.userId || T("github.invalidLogin"),
+    [findUserQuery.userId]
   );
 
   const disableWorkEstimation = useMemo(
-    () => !!findUserQuery.error || !findUserQuery.data?.fetchUserDetails?.id || !linkToIssue,
-    [findUserQuery.error, findUserQuery.data?.fetchUserDetails?.id, linkToIssue]
+    () => !!findUserQuery.error || !findUserQuery.userId || !linkToIssue,
+    [findUserQuery.error, findUserQuery.userId, linkToIssue]
   );
 
   return (
@@ -109,14 +93,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
 export const REQUEST_PAYMENT_MUTATION = gql`
   mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
     requestPayment(amountInUsd: $amount, projectId: $projectId, reason: $reason, recipientId: $contributorId)
-  }
-`;
-
-export const FIND_USER_QUERY = gql`
-  query FindUserQueryForPaymentForm($username: String!) {
-    fetchUserDetails(username: $username) {
-      id
-    }
   }
 `;
 
