@@ -30,32 +30,40 @@ const View: React.FC<Props> = ({
         <div className="flex flex-col gap-6 w-full">
           <div className="flex flex-col">
             <Card>
-              <Input
-                label={T("payment.form.contributor")}
-                name="contributor"
-                placeholder="Github login"
-                options={{
-                  required: T("form.required"),
-                  validate: validateContributorLogin,
-                }}
-                onChange={onContributorLoginChange}
-                loading={loading}
-              />
+              <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
+                <div className="font-medium text-lg">{T("payment.form.contributor.title")}</div>
+                <div className="flex flex-row pt-5">
+                  <Input
+                    label={T("payment.form.contributor.inputLabel")}
+                    name="contributor"
+                    placeholder={T("payment.form.contributor.placeholder")}
+                    options={{
+                      required: T("form.required"),
+                      validate: validateContributorLogin,
+                    }}
+                    onChange={onContributorLoginChange}
+                    loading={loading}
+                  />
+                </div>
+              </div>
             </Card>
           </div>
           <div className="flex flex-col">
             <Card>
               <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
-                <div className="font-medium text-lg">{T("payment.form.linkToIssueTitle")}</div>
+                <div className="font-medium text-lg">{T("payment.form.issueLink.title")}</div>
                 <div className="flex flex-row pt-5">
                   <Input
-                    label={T("payment.form.linkToIssueInputLabel")}
+                    label={T("payment.form.issueLink.inputLabel")}
                     name="linkToIssue"
-                    placeholder=""
+                    placeholder={T("payment.form.issueLink.placeholder")}
                     errorType={InputErrorType.Banner}
                     options={{
                       required: T("form.required"),
-                      pattern: { value: REGEX_VALID_GITHUB_PULL_REQUEST_URL, message: T("payment.form.invalidPRLink") },
+                      pattern: {
+                        value: REGEX_VALID_GITHUB_PULL_REQUEST_URL,
+                        message: T("payment.form.issueLink.error"),
+                      },
                     }}
                   />
                 </div>
