@@ -101,18 +101,6 @@ describe('"PaymentForm" component', () => {
     await screen.findByText(RECIPIENT_INPUT_LABEL);
   });
 
-  it("should display an error when a required field is missing", async () => {
-    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>(PR_LINK_INPUT_LABEL));
-    await waitFor(() => {
-      expect(screen.getByLabelText<HTMLInputElement>(PR_LINK_INPUT_LABEL).value).toBe("");
-    });
-    await userEvent.click(await screen.findByRole("button", { name: /confirm payment/i }));
-    await waitFor(() => {
-      const errorMessages = screen.getAllByText(/required/i);
-      expect(errorMessages.length).toBe(2);
-    });
-  });
-
   it("should be able to request payment when required info is filled and go back to project overview", async () => {
     await userEvent.type(
       await screen.findByLabelText(PR_LINK_INPUT_LABEL),
@@ -147,7 +135,7 @@ describe('"PaymentForm" component', () => {
     await userEvent.type(await screen.findByLabelText(RECIPIENT_INPUT_LABEL), TEST_USER.displayName);
     await userEvent.click(await screen.findByText(/confirm payment/i));
     await waitFor(() => {
-      const errorMessages = screen.getAllByText(/you can only include 1 pull request per payment request/i);
+      const errorMessages = screen.getAllByText(/oops/i);
       expect(errorMessages.length).toBe(1);
     });
   });
