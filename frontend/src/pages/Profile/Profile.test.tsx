@@ -291,7 +291,6 @@ describe('"Profile" page for individual', () => {
     await userEvent.click(await screen.findByText("Save profile"));
     await waitFor(() => {
       const errorMessages = screen.getAllByText("Required");
-      console.log("YOLOOOOOOOO", errorMessages.length);
       expect(errorMessages.length).toBe(1);
     });
   });
