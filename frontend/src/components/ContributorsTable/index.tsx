@@ -129,7 +129,7 @@ const renderContributors = (contributors: Contributor[], isProjectLeader: boolea
   const isSendingNewPaymentDisabled = remainingBudget < rates.hours;
 
   return contributors.map(contributor => (
-    <Line key={contributor.login} highlightOnHover={200}>
+    <Line key={contributor.login} highlightOnHover={200} className="h-10">
       <Cell height={CellHeight.Small} horizontalMargin={false} className="-ml-px">
         <div
           onClick={linkClickHandlerFactory(`https://github.com/${contributor.login}`)}
@@ -169,8 +169,8 @@ const renderContributors = (contributors: Contributor[], isProjectLeader: boolea
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {contributor.paidContributions || "-"}
       </Cell>
-      {isProjectLeader && (
-        <Cell height={CellHeight.Small} horizontalMargin={false} className="invisible group-hover/line:visible">
+      <Cell height={CellHeight.Small} horizontalMargin={false} className="invisible group-hover/line:visible">
+        {isProjectLeader && (
           <div
             onClick={() => {
               !isSendingNewPaymentDisabled &&
@@ -185,12 +185,14 @@ const renderContributors = (contributors: Contributor[], isProjectLeader: boolea
               <SendPlane2Line />
               <div>{T("project.details.contributors.sendPayment")}</div>
             </Button>
-            <div className="invisible group-hover/sendPaymentButton:visible absolute z-10 w-fit">
-              <Tooltip>{T("contributor.table.noBudgetLeft")}</Tooltip>
-            </div>
+            {isSendingNewPaymentDisabled && (
+              <div className="invisible group-hover/sendPaymentButton:visible absolute z-10 w-fit">
+                <Tooltip>{T("contributor.table.noBudgetLeft")}</Tooltip>
+              </div>
+            )}
           </div>
-        </Cell>
-      )}
+        )}
+      </Cell>
     </Line>
   ));
 };
