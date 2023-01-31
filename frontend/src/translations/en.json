@@ -39,13 +39,20 @@
   "payment": {
     "form": {
       "confirm": "Confirm payment",
-      "contributor": "Recipient",
+      "contributor": {
+        "title": "Send payment to",
+        "inputLabel": "Please select the contributor you would like to send a payment to",
+        "placeholder": "Search for contributor"
+      },
+      "issueLink": {
+        "title": "Contribution to pay",
+        "inputLabel": "Please add a link to the corresponding pull request on Github",
+        "placeholder": "Enter pull request link here",
+        "error": "You can only include 1 pull request per payment request"
+      },
       "days": "days",
       "estimate": "Estimate time spent",
-      "invalidPRLink": "You can only include 1 pull request per payment request",
       "leftToSpend": "Left to spend",
-      "linkToIssueTitle": "Contribution to pay",
-      "linkToIssueInputLabel": "Please add a link to the corresponding pull request on Github",
       "remainingBudget": "Remaining budget",
       "sent": "Payment request sent!",
       "steps": {
