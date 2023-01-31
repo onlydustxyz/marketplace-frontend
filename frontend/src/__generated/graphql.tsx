@@ -36,6 +36,8 @@ export type AuthGithubUsers = {
   id: Maybe<Scalars['uuid']>;
   /** An array relationship */
   paymentRequests: Array<PaymentRequests>;
+  /** An aggregate relationship */
+  paymentRequestsAggregate: PaymentRequestsAggregate;
   providerId: Maybe<Scalars['String']>;
   providerUserId: Maybe<Scalars['String']>;
   refreshToken: Maybe<Scalars['String']>;
@@ -55,6 +57,16 @@ export type AuthGithubUsersPaymentRequestsArgs = {
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
+
+/** columns and relationships of "auth.github_users" */
+export type AuthGithubUsersPaymentRequestsAggregateArgs = {
+  distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
+  where: InputMaybe<PaymentRequestsBoolExp>;
+};
+
 /** Boolean expression to filter rows from the table "auth.github_users". All fields are combined with a logical 'AND'. */
 export type AuthGithubUsersBoolExp = {
   _and: InputMaybe<Array<AuthGithubUsersBoolExp>>;
@@ -65,6 +77,7 @@ export type AuthGithubUsersBoolExp = {
   githubUserId: InputMaybe<BigintComparisonExp>;
   id: InputMaybe<UuidComparisonExp>;
   paymentRequests: InputMaybe<PaymentRequestsBoolExp>;
+  paymentRequests_aggregate: InputMaybe<Payment_Requests_Aggregate_Bool_Exp>;
   providerId: InputMaybe<StringComparisonExp>;
   providerUserId: InputMaybe<StringComparisonExp>;
   refreshToken: InputMaybe<StringComparisonExp>;
@@ -148,6 +161,8 @@ export type Budgets = {
   initialAmount: Maybe<Scalars['numeric']>;
   /** An array relationship */
   paymentRequests: Array<PaymentRequests>;
+  /** An aggregate relationship */
+  paymentRequestsAggregate: PaymentRequestsAggregate;
   /** An object relationship */
   project: Maybe<Projects>;
   projectId: Maybe<Scalars['uuid']>;
@@ -157,6 +172,16 @@ export type Budgets = {
 
 /** columns and relationships of "budgets" */
 export type BudgetsPaymentRequestsArgs = {
+  distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
+  where: InputMaybe<PaymentRequestsBoolExp>;
+};
+
+
+/** columns and relationships of "budgets" */
+export type BudgetsPaymentRequestsAggregateArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -187,6 +212,7 @@ export type BudgetsBoolExp = {
   id: InputMaybe<UuidComparisonExp>;
   initialAmount: InputMaybe<NumericComparisonExp>;
   paymentRequests: InputMaybe<PaymentRequestsBoolExp>;
+  paymentRequests_aggregate: InputMaybe<Payment_Requests_Aggregate_Bool_Exp>;
   project: InputMaybe<ProjectsBoolExp>;
   projectId: InputMaybe<UuidComparisonExp>;
   remainingAmount: InputMaybe<NumericComparisonExp>;
@@ -454,6 +480,36 @@ export type PaymentRequestsReasonArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
+/** aggregated selection of "payment_requests" */
+export type PaymentRequestsAggregate = {
+  __typename?: 'PaymentRequestsAggregate';
+  aggregate: Maybe<PaymentRequestsAggregateFields>;
+  nodes: Array<PaymentRequests>;
+};
+
+/** aggregate fields of "payment_requests" */
+export type PaymentRequestsAggregateFields = {
+  __typename?: 'PaymentRequestsAggregateFields';
+  avg: Maybe<PaymentRequestsAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<PaymentRequestsMaxFields>;
+  min: Maybe<PaymentRequestsMinFields>;
+  stddev: Maybe<PaymentRequestsStddevFields>;
+  stddevPop: Maybe<PaymentRequestsStddev_PopFields>;
+  stddevSamp: Maybe<PaymentRequestsStddev_SampFields>;
+  sum: Maybe<PaymentRequestsSumFields>;
+  varPop: Maybe<PaymentRequestsVar_PopFields>;
+  varSamp: Maybe<PaymentRequestsVar_SampFields>;
+  variance: Maybe<PaymentRequestsVarianceFields>;
+};
+
+
+/** aggregate fields of "payment_requests" */
+export type PaymentRequestsAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<PaymentRequestsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
 /** order by aggregate values of table "payment_requests" */
 export type PaymentRequestsAggregateOrderBy = {
   avg: InputMaybe<Payment_Requests_Avg_Order_By>;
@@ -467,6 +523,13 @@ export type PaymentRequestsAggregateOrderBy = {
   var_pop: InputMaybe<Payment_Requests_Var_Pop_Order_By>;
   var_samp: InputMaybe<Payment_Requests_Var_Samp_Order_By>;
   variance: InputMaybe<Payment_Requests_Variance_Order_By>;
+};
+
+/** aggregate avg on columns */
+export type PaymentRequestsAvgFields = {
+  __typename?: 'PaymentRequestsAvgFields';
+  amountInUsd: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "payment_requests". All fields are combined with a logical 'AND'. */
@@ -486,6 +549,28 @@ export type PaymentRequestsBoolExp = {
   requestedAt: InputMaybe<TimestampComparisonExp>;
   requestor: InputMaybe<UsersBoolExp>;
   requestorId: InputMaybe<UuidComparisonExp>;
+};
+
+/** aggregate max on columns */
+export type PaymentRequestsMaxFields = {
+  __typename?: 'PaymentRequestsMaxFields';
+  amountInUsd: Maybe<Scalars['bigint']>;
+  budgetId: Maybe<Scalars['uuid']>;
+  id: Maybe<Scalars['uuid']>;
+  recipientId: Maybe<Scalars['bigint']>;
+  requestedAt: Maybe<Scalars['timestamp']>;
+  requestorId: Maybe<Scalars['uuid']>;
+};
+
+/** aggregate min on columns */
+export type PaymentRequestsMinFields = {
+  __typename?: 'PaymentRequestsMinFields';
+  amountInUsd: Maybe<Scalars['bigint']>;
+  budgetId: Maybe<Scalars['uuid']>;
+  id: Maybe<Scalars['uuid']>;
+  recipientId: Maybe<Scalars['bigint']>;
+  requestedAt: Maybe<Scalars['timestamp']>;
+  requestorId: Maybe<Scalars['uuid']>;
 };
 
 /** Ordering options when selecting data from "payment_requests". */
@@ -520,6 +605,55 @@ export enum PaymentRequestsSelectColumn {
   /** column name */
   RequestorId = 'requestorId'
 }
+
+/** aggregate stddev on columns */
+export type PaymentRequestsStddevFields = {
+  __typename?: 'PaymentRequestsStddevFields';
+  amountInUsd: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type PaymentRequestsStddev_PopFields = {
+  __typename?: 'PaymentRequestsStddev_popFields';
+  amountInUsd: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type PaymentRequestsStddev_SampFields = {
+  __typename?: 'PaymentRequestsStddev_sampFields';
+  amountInUsd: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type PaymentRequestsSumFields = {
+  __typename?: 'PaymentRequestsSumFields';
+  amountInUsd: Maybe<Scalars['bigint']>;
+  recipientId: Maybe<Scalars['bigint']>;
+};
+
+/** aggregate var_pop on columns */
+export type PaymentRequestsVar_PopFields = {
+  __typename?: 'PaymentRequestsVar_popFields';
+  amountInUsd: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type PaymentRequestsVar_SampFields = {
+  __typename?: 'PaymentRequestsVar_sampFields';
+  amountInUsd: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type PaymentRequestsVarianceFields = {
+  __typename?: 'PaymentRequestsVarianceFields';
+  amountInUsd: Maybe<Scalars['Float']>;
+  recipientId: Maybe<Scalars['Float']>;
+};
 
 /** columns and relationships of "payments" */
 export type Payments = {
@@ -1028,6 +1162,29 @@ export type User = {
   avatarUrl: Scalars['String'];
   id: Scalars['Int'];
   login: Scalars['String'];
+  /** An array relationship */
+  paymentRequests: Array<PaymentRequests>;
+  /** An aggregate relationship */
+  paymentRequestsAggregate: PaymentRequestsAggregate;
+  user: Maybe<AuthGithubUsers>;
+};
+
+
+export type UserPaymentRequestsArgs = {
+  distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
+  where: InputMaybe<PaymentRequestsBoolExp>;
+};
+
+
+export type UserPaymentRequestsAggregateArgs = {
+  distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
+  where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
 /** columns and relationships of "user_info" */
@@ -1471,6 +1628,17 @@ export type Mutation_RootUpdateUsersManyArgs = {
   updates: Array<UsersUpdates>;
 };
 
+export type Payment_Requests_Aggregate_Bool_Exp = {
+  count: InputMaybe<Payment_Requests_Aggregate_Bool_Exp_Count>;
+};
+
+export type Payment_Requests_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<PaymentRequestsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<PaymentRequestsBoolExp>;
+  predicate: IntComparisonExp;
+};
+
 /** order by avg() on columns of table "payment_requests" */
 export type Payment_Requests_Avg_Order_By = {
   amountInUsd: InputMaybe<OrderBy>;
@@ -1788,6 +1956,8 @@ export type Query_Root = {
   hello: Scalars['String'];
   /** An array relationship */
   paymentRequests: Array<PaymentRequests>;
+  /** An aggregate relationship */
+  paymentRequestsAggregate: PaymentRequestsAggregate;
   /** fetch data from the table: "payment_requests" using primary key columns */
   paymentRequestsByPk: Maybe<PaymentRequests>;
   /** An array relationship */
@@ -1881,6 +2051,15 @@ export type Query_RootGithubRepoDetailsByPkArgs = {
 
 
 export type Query_RootPaymentRequestsArgs = {
+  distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
+  where: InputMaybe<PaymentRequestsBoolExp>;
+};
+
+
+export type Query_RootPaymentRequestsAggregateArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -2021,6 +2200,8 @@ export type Subscription_Root = {
   githubRepoDetailsStream: Array<GithubRepoDetails>;
   /** An array relationship */
   paymentRequests: Array<PaymentRequests>;
+  /** An aggregate relationship */
+  paymentRequestsAggregate: PaymentRequestsAggregate;
   /** fetch data from the table: "payment_requests" using primary key columns */
   paymentRequestsByPk: Maybe<PaymentRequests>;
   /** fetch data from the table in a streaming manner: "payment_requests" */
@@ -2131,6 +2312,15 @@ export type Subscription_RootGithubRepoDetailsStreamArgs = {
 
 
 export type Subscription_RootPaymentRequestsArgs = {
+  distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
+  where: InputMaybe<PaymentRequestsBoolExp>;
+};
+
+
+export type Subscription_RootPaymentRequestsAggregateArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -2535,6 +2725,8 @@ export type Users_StreamCursorValueInput = {
   phoneNumberVerified: InputMaybe<Scalars['Boolean']>;
 };
 
+export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', projectId: any | null } | null }> };
+
 export type GetFirstLeadProjectIdQueryVariables = Exact<{
   userId: Scalars['uuid'];
 }>;
@@ -2597,7 +2789,7 @@ export type GetProjectContributorsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', name: string, budgets: Array<{ __typename?: 'Budgets', paymentRequests: Array<{ __typename?: 'PaymentRequests', reason: any, amountInUsd: any, recipient: { __typename?: 'AuthGithubUsers', userId: any | null } | null, githubRecipient: { __typename?: 'User', login: string, avatarUrl: string } }> }> } | null };
+export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, name: string, githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', projectId: any | null } | null }> }> } } | null } | null };
 
 export type GetProjectRemainingBudgetQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -2665,6 +2857,24 @@ export type GetAllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllTechnologiesQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', githubRepo: { __typename?: 'GithubRepoDetails', languages: any } | null }> };
 
+export const ContributorsTableFieldsFragmentDoc = gql`
+    fragment ContributorsTableFields on User {
+  id
+  login
+  avatarUrl
+  user {
+    userId
+  }
+  paymentRequests {
+    id
+    budget {
+      projectId
+    }
+    amountInUsd
+    reason
+  }
+}
+    `;
 export const ProjectCardFieldsFragmentDoc = gql`
     fragment ProjectCardFields on Projects {
   id
@@ -3028,23 +3238,18 @@ export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVa
 export const GetProjectContributorsDocument = gql`
     query GetProjectContributors($projectId: uuid!) {
   projectsByPk(id: $projectId) {
+    id
     name
-    budgets {
-      paymentRequests {
-        reason
-        amountInUsd
-        recipient {
-          userId
-        }
-        githubRecipient {
-          login
-          avatarUrl
+    githubRepo {
+      content {
+        contributors {
+          ...ContributorsTableFields
         }
       }
     }
   }
 }
-    `;
+    ${ContributorsTableFieldsFragmentDoc}`;
 
 /**
  * __useGetProjectContributorsQuery__
