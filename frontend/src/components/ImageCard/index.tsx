@@ -1,15 +1,26 @@
 import classNames from "classnames";
 
+export enum BackgroundPosition {
+  Center = "center",
+  TopLeft = "top left",
+}
+
 export enum BackgroundSize {
   Cover = "cover",
   Contain = "contain",
   Auto = "auto",
+  Zoomed = "190%",
 }
 
 export enum BackgroundNoise {
   Light = "light",
   Medium = "medium",
   Heavy = "heavy",
+}
+
+export enum BackgroundBlur {
+  None = "none",
+  Heavy = "backdrop-blur-4xl",
 }
 
 export enum Width {
@@ -24,8 +35,10 @@ export enum Height {
 
 interface ImageCardProps extends React.PropsWithChildren {
   backgroundImageUrl: string;
+  backgroundPosition?: BackgroundPosition;
   backgroundSize?: BackgroundSize;
   backgroundNoise?: BackgroundNoise;
+  backgroundBlur?: BackgroundBlur;
   width?: Width;
   height?: Height;
   dataTestId?: string;
@@ -33,8 +46,10 @@ interface ImageCardProps extends React.PropsWithChildren {
 
 export default function ImageCard({
   backgroundImageUrl,
+  backgroundPosition = BackgroundPosition.Center,
   backgroundSize = BackgroundSize.Auto,
   backgroundNoise = BackgroundNoise.Heavy,
+  backgroundBlur = BackgroundBlur.None,
   width = Width.Full,
   height = Height.Full,
   dataTestId,
@@ -55,7 +70,7 @@ export default function ImageCard({
       )}
       style={{
         background: `url(${backgroundImageUrl}), rgba(255, 255, 255, 0.08)`,
-        backgroundPosition: "center",
+        backgroundPosition,
         backgroundSize,
       }}
       data-testid={dataTestId}
@@ -71,6 +86,9 @@ export default function ImageCard({
             "bg-noise-light": backgroundNoise === BackgroundNoise.Light,
             "bg-noise-medium": backgroundNoise === BackgroundNoise.Medium,
             "bg-noise-heavy": backgroundNoise === BackgroundNoise.Heavy,
+          },
+          {
+            "backdrop-blur-4xl": backgroundBlur === BackgroundBlur.Heavy,
           }
         )}
       >

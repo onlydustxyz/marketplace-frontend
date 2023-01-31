@@ -43,7 +43,7 @@
       "contributor": "Recipient",
       "days": "days",
       "estimate": "Estimate time spent",
-      "invalidPRLink": "Invalid input, not a link to a github pull request",
+      "invalidPRLink": "You can only include 1 pull request per payment request",
       "leftToSpend": "Left to spend",
       "linkToIssueTitle": "Contribution to pay",
       "linkToIssueInputLabel": "Please add a link to the corresponding pull request on Github",
