@@ -24,10 +24,6 @@ export type TokenSet = {
   user: User;
 };
 
-export type Session = {
-  lastVisitedProjectId: string;
-};
-
 export type AccessToken = Branded<string, "AccessToken">;
 export type RefreshToken = Branded<Uuid, "RefreshToken">;
 
