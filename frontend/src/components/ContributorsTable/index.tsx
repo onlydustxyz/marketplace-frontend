@@ -70,7 +70,7 @@ const ContributorsTable: React.FC<PropsType> = ({
     };
   });
 
-  const [sorting, setSorting] = useState({ field: Field.TotalEarned, ascending: false });
+  const [sorting, setSorting] = useState({ field: Field.PaidContributions, ascending: false });
   const [sortedContributors, setSortedContributors] = useState<Contributor[]>(contributors);
 
   useEffect(() => {
