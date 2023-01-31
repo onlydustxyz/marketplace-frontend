@@ -24,7 +24,7 @@ export const HeaderCell: React.FC<Props> = ({ onClick, children, horizontalMargi
       })}
       onClick={onClick}
     >
-      <div className="h-4 mb-2 flex items-center space-x-1 font-medium">{children}</div>
+      <div className="h-4 mb-2 flex items-center space-x-1.5 font-medium">{children}</div>
     </th>
   );
 };
