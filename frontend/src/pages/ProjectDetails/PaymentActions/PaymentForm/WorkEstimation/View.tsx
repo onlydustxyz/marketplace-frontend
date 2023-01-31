@@ -69,7 +69,9 @@ export default function WorkEstimation({
               </div>
             </div>
           )}
-          {disabled && <div className="font-semibold text-center mt-2 mb-5 px-2">{T("payment.form.disabled")}</div>}
+          {disabled && (
+            <div className="font-semibold text-center mt-2 mb-5 px-2 py-px">{T("payment.form.disabled")}</div>
+          )}
           <BudgetBar budget={budget} pendingSpending={amountToPay} displayPendingSpending={!disabled} />
           <div className="flex flex-col text-sm font-medium">
             <div className="flex flex-row justify-between">
