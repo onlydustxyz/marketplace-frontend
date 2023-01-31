@@ -38,7 +38,7 @@ const View: React.FC<PropsType> = ({
   register,
   onChange,
 }) => (
-  <label html-for={name} className="flex flex-col flex-grow gap-2 text-greyscale-50/70 font-walsheim">
+  <label html-for={name} className="flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim">
     <div className="font-medium text-sm tracking-tight">{label}</div>
     <div className={classNames("flex flex-col", { "gap-8": errorType === InputErrorType.Banner })}>
       <div className="relative flex items-center">
