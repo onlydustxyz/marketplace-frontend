@@ -43,7 +43,7 @@ export default function ProjectsSidebar({ currentProject, onProjectSelected, ava
         dispatch,
       }}
       allProjects={projects.map(project => projectFromQuery(project))}
-      expandable={isProjectMine(currentProject)}
+      expandable={isProjectMine(currentProject) && projects.length > 1}
     />
   );
 }
