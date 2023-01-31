@@ -164,7 +164,7 @@ const renderContributors = (contributors: Contributor[], isProjectLeader: boolea
         </div>
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>{`${
-        formatMoneyAmount(contributor.totalEarned, Currency.USD) || "-"
+        contributor?.totalEarned ? formatMoneyAmount(contributor.totalEarned, Currency.USD) : "-"
       }`}</Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {contributor.paidContributions || "-"}
