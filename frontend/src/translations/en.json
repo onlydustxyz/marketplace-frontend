@@ -49,7 +49,7 @@
         "title": "Contribution to pay",
         "inputLabel": "Please add a link to the corresponding pull request on Github",
         "placeholder": "Enter pull request link here",
-        "error": "You can only include 1 pull request per payment request"
+        "error": "Oops, this doesn't look like a pull request"
       },
       "days": "days",
       "disabled": "Select a contributor and enter link to pull request to send payment",
