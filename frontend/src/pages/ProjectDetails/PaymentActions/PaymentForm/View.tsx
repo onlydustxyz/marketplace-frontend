@@ -29,10 +29,10 @@ const View: React.FC<Props> = ({
       <div className="basis-3/5 self-stretch">
         <div className="flex flex-col gap-6 w-full">
           <div className="flex flex-col">
-            <Card>
+            <Card className="px-8 pb-3">
               <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
                 <div className="font-medium text-lg">{T("payment.form.contributor.title")}</div>
-                <div className="flex flex-row pt-5">
+                <div className="flex flex-row pt-3">
                   <Input
                     label={T("payment.form.contributor.inputLabel")}
                     name="contributor"
@@ -49,10 +49,10 @@ const View: React.FC<Props> = ({
             </Card>
           </div>
           <div className="flex flex-col">
-            <Card>
+            <Card className="px-8 pb-8">
               <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
                 <div className="font-medium text-lg">{T("payment.form.issueLink.title")}</div>
-                <div className="flex flex-row pt-5">
+                <div className="flex flex-row pt-3">
                   <Input
                     label={T("payment.form.issueLink.inputLabel")}
                     name="linkToIssue"
