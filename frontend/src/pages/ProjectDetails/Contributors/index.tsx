@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import Card from "src/components/Card";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
-import ContributorsTable, { Contributor } from "src/components/ContributorsTable";
+import ContributorsTable, { CONTRIBUTORS_TABLE_FRAGMENT } from "src/components/ContributorsTable";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { HasuraUserRole } from "src/types";
@@ -36,7 +36,7 @@ const Contributors: React.FC<PropsType> = ({ projectId }) => {
     }
   );
 
-  const paymentRequests = getProjectContributorsQuery.data?.projectsByPk?.budgets.at(0)?.paymentRequests;
+  const contributors = getProjectContributorsQuery.data?.projectsByPk?.githubRepo?.content.contributors || [];
   const remainingBudget = getProjectRemainingBudget.data?.projectsByPk?.budgets.at(0)?.remainingAmount;
 
   return (
@@ -44,12 +44,8 @@ const Contributors: React.FC<PropsType> = ({ projectId }) => {
       <div className="flex flex-col gap-6 mt-3 h-full">
         <div className="text-3xl font-belwe">{T("project.details.contributors.title")}</div>
         <Card className="h-full">
-          {paymentRequests?.length ? (
-            <ContributorsTable
-              contributors={mapApiPaymentRequestsToContributors(paymentRequests)}
-              isProjectLeader={isProjectLeader}
-              remainingBudget={remainingBudget}
-            />
+          {contributors.length ? (
+            <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />
           ) : (
             <ContributorsTableFallback projectName={getProjectContributorsQuery.data?.projectsByPk?.name} />
           )}
@@ -59,39 +55,16 @@ const Contributors: React.FC<PropsType> = ({ projectId }) => {
   );
 };
 
-const mapApiPaymentRequestsToContributors = (paymentRequests: any) => {
-  const contributors: Map<string, Contributor> = new Map();
-  paymentRequests.forEach((payment: any) => {
-    const login = payment.githubRecipient.login;
-
-    const contributor: Contributor = {
-      avatarUrl: payment.githubRecipient.avatarUrl,
-      login,
-      isRegistered: !!payment.recipient,
-      paidContributions: (contributors.get(login)?.paidContributions || 0) + (payment.reason.work_items?.length || 0),
-      totalEarned: (contributors.get(login)?.totalEarned || 0) + payment.amountInUsd,
-    };
-
-    contributors.set(login, contributor);
-  });
-
-  return Array.from(contributors.values());
-};
-
 export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
+  ${CONTRIBUTORS_TABLE_FRAGMENT}
   query GetProjectContributors($projectId: uuid!) {
     projectsByPk(id: $projectId) {
+      id
       name
-      budgets {
-        paymentRequests {
-          reason
-          amountInUsd
-          recipient {
-            userId
-          }
-          githubRecipient {
-            login
-            avatarUrl
+      githubRepo {
+        content {
+          contributors {
+            ...ContributorsTableFields
           }
         }
       }
