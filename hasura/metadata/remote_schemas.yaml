@@ -169,3 +169,26 @@
             CLOSED
             OPEN
           }
+  remote_relationships:
+    - relationships:
+        - definition:
+            to_source:
+              field_mapping:
+                id: recipient_id
+              relationship_type: array
+              source: default
+              table:
+                name: payment_requests
+                schema: public
+          name: paymentRequests
+        - definition:
+            to_source:
+              field_mapping:
+                id: github_user_id
+              relationship_type: object
+              source: default
+              table:
+                name: github_users
+                schema: auth
+          name: user
+      type_name: User

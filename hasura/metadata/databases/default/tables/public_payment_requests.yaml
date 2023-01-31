@@ -60,3 +60,4 @@ select_permissions:
         - requested_at
         - requestor_id
       filter: {}
+      allow_aggregations: true
