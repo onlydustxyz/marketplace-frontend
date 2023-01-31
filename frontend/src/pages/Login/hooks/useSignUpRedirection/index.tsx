@@ -49,7 +49,7 @@ const getRedirectionUrl = (
     );
 
   if (missingPayoutInfo && pendingPaymentRequests && pendingPaymentRequests.length > 0) {
-    return RoutePaths.Profile;
+    return RoutePaths.MyContributions;
   }
 
   const projectId = pendingProjectLeaderInvitationsQuery?.data?.pendingProjectLeaderInvitations?.[0]?.projectId;
