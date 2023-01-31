@@ -20,7 +20,7 @@ export enum BackgroundNoise {
 
 export enum BackgroundBlur {
   None = "none",
-  Heavy = "backdrop-blur-4xl",
+  Heavy = "heavy",
 }
 
 export enum Width {
