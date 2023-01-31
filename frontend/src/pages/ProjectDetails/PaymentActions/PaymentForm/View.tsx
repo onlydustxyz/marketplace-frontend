@@ -52,7 +52,7 @@ const View: React.FC<Props> = ({
                     label={T("payment.form.linkToIssueInputLabel")}
                     name="linkToIssue"
                     placeholder=""
-                    errorType={InputErrorType.Wide}
+                    errorType={InputErrorType.Banner}
                     options={{
                       required: T("form.required"),
                       pattern: { value: REGEX_VALID_GITHUB_PULL_REQUEST_URL, message: T("payment.form.invalidPRLink") },

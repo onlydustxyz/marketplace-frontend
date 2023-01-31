@@ -1,6 +1,10 @@
 import { ChangeEventHandler, memo } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
+import RiErrorWarningLine from "src/icons/RiErrorWarningLine";
+import ImageCard, { BackgroundBlur, BackgroundNoise, BackgroundPosition, BackgroundSize } from "../ImageCard";
+import headerElementBackground from "src/assets/img/alert-bg.png";
+import classNames from "classnames";
 
 type PropsType = {
   name: string;
@@ -19,7 +23,7 @@ type PropsType = {
 
 export enum InputErrorType {
   Normal = "normal",
-  Wide = "wide",
+  Banner = "banner",
 }
 
 const View: React.FC<PropsType> = ({
@@ -36,7 +40,7 @@ const View: React.FC<PropsType> = ({
 }) => (
   <label html-for={name} className="flex flex-col flex-grow gap-2 text-greyscale-50/70 font-walsheim">
     <div className="font-medium text-sm tracking-tight">{label}</div>
-    <div>
+    <div className={classNames("flex flex-col", { "gap-8": errorType === InputErrorType.Banner })}>
       <div className="relative flex items-center">
         <input
           key={name}
@@ -54,8 +58,25 @@ const View: React.FC<PropsType> = ({
       {errorType === InputErrorType.Normal && (
         <span className="text-rose-600 text-sm ml-3">{error?.message ? error.message.toString() : "\u00A0"}</span>
       )}
-      {error && errorType === InputErrorType.Wide && error.message && (
-        <span className="text-rose-600 text-sm ml-3">{error?.message ? error.message.toString() : "\u00A0"}</span>
+      {error && errorType === InputErrorType.Banner && error.message && (
+        <div className="flex">
+          <ImageCard
+            backgroundImageUrl={headerElementBackground}
+            backgroundPosition={BackgroundPosition.TopLeft}
+            backgroundSize={BackgroundSize.Zoomed}
+            backgroundNoise={BackgroundNoise.Light}
+            backgroundBlur={BackgroundBlur.Heavy}
+          >
+            <div className="flex flex-row justify-between py-5 px-6">
+              <div className="flex flex-row justify-start items-center font-medium text-white gap-4">
+                <RiErrorWarningLine className="px-3 py-2.5 text-3xl rounded-2xl bg-white/10" />
+                <div className="flex flex-col ">
+                  <div className="text-lg">{error.message.toString()}</div>
+                </div>
+              </div>
+            </div>
+          </ImageCard>
+        </div>
       )}
     </div>
   </label>
