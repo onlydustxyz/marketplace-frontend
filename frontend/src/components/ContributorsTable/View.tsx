@@ -28,7 +28,7 @@ type Props = {
   contributors: Contributor[];
   isProjectLeader: boolean;
   remainingBudget: number;
-  onPaymentRequested: () => void;
+  onPaymentRequested: (contributor: Contributor) => void;
 };
 
 export default function View({ contributors, isProjectLeader, remainingBudget, onPaymentRequested }: Props) {
