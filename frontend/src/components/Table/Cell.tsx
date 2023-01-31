@@ -8,16 +8,23 @@ export enum CellHeight {
 
 interface CellProps extends PropsWithChildren {
   height?: CellHeight;
+  horizontalMargin?: boolean;
   className?: string;
 }
 
-export const Cell: React.FC<CellProps> = ({ height = CellHeight.Tall, className, children }) => {
+export const Cell: React.FC<CellProps> = ({
+  height = CellHeight.Tall,
+  horizontalMargin = true,
+  className,
+  children,
+}) => {
   return (
     <td>
       <div
-        className={classNames(`flex items-center px-3 ${className}`, {
+        className={classNames(`flex items-center text-greyscale-50 font-normal ${className}`, {
           "py-4": height === CellHeight.Tall,
-          "py-1": height === CellHeight.Small,
+          "py-px": height === CellHeight.Small,
+          "px-3": horizontalMargin,
         })}
       >
         {children}

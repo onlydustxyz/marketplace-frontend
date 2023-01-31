@@ -11,7 +11,7 @@ const Line: React.FC<Props> = ({ className, children, highlightOnHover }) => {
   return (
     <tr
       className={classNames(`group/line border-b border-gray-800 ${className}`, {
-        "transition duration-200 hover:bg-white/4 outline-offset-0 hover:outline-2": highlightOnHover,
+        "transition duration-200 hover:bg-white/5 outline-offset-0 hover:outline-2": highlightOnHover,
       })}
     >
       {children}

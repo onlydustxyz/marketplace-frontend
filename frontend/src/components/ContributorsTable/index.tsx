@@ -97,17 +97,17 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void, i
   return (
     <HeaderLine className="text-sm">
       <HeaderCell onClick={() => applySorting(Field.Login)}>
-        <User3Line className="p-px text-sm text-white" />
+        <User3Line className="text-sm text-white" />
         <span className="text-spaceBlue-200 ">{T("contributor.table.contributor")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Login} />
       </HeaderCell>
       <HeaderCell onClick={() => applySorting(Field.TotalEarned)}>
-        <MoneyDollarCircleLine className="p-px text-sm text-white" />
+        <MoneyDollarCircleLine className="text-sm text-white" />
         <span className="text-spaceBlue-200 ">{T("contributor.table.totalEarned")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.TotalEarned} />
       </HeaderCell>
       <HeaderCell onClick={() => applySorting(Field.PaidContributions)}>
-        <CheckLine className="p-px  text-sm text-white" />
+        <CheckLine className="text-sm text-white" />
         <span className="text-spaceBlue-200 ">{T("contributor.table.paidContributions")}</span>
         <SortingArrow
           direction={sorting.ascending ? "up" : "down"}
@@ -128,34 +128,40 @@ const renderContributors = (contributors: Contributor[], isProjectLeader: boolea
 
   return contributors.map(contributor => (
     <Line key={contributor.login} highlightOnHover={200}>
-      <Cell className="space-x-3" height={CellHeight.Small}>
+      <Cell height={CellHeight.Small} horizontalMargin={false} className="-ml-px">
         <div
           onClick={linkClickHandlerFactory(`https://github.com/${contributor.login}`)}
-          className="flex flex-row items-center gap-1"
+          className="flex flex-row items-center gap-2.5 group-hover/line:cursor-pointer"
         >
           <div>
             <RoundedImage src={contributor.avatarUrl} alt={contributor.login} size={ImageSize.ExtraSmall} />
           </div>
-          <div className="flex space-x-1 items-end">
+          <div className="flex gap-1.5">
             <div>
-              <span className="text-spacePurple-200">{contributor.login}</span>
+              <span className="text-spacePurple-200 font-medium group-hover/line:underline decoration-1 underline-offset-1">
+                {contributor.login}
+              </span>
             </div>
             {contributor.isRegistered && (
               <div className="relative group/od-logo">
-                <img src={onlyDustLogo} className="h-3.5" />
+                <img src={onlyDustLogo} className="h-3.5 mt-px" />
                 <div className="invisible group-hover/od-logo:visible absolute top-5 -left-16 w-36 z-10">
                   <Tooltip>{T("contributor.table.userRegisteredTooltip")}</Tooltip>
                 </div>
               </div>
             )}
           </div>
-          <ExternalLinkLine className="text-spacePurple-500 invisible group-hover/line:visible" />
+          <div className="ml-1 mt-0.5">
+            <ExternalLinkLine className="text-spacePurple-500 invisible group-hover/line:visible" />
+          </div>
         </div>
       </Cell>
-      <Cell height={CellHeight.Small}>{`${contributor.totalEarned || "-"} $`}</Cell>
-      <Cell height={CellHeight.Small}>{contributor.paidContributions || "-"}</Cell>
+      <Cell height={CellHeight.Small} horizontalMargin={false}>{`$ ${contributor.totalEarned || "-"}`}</Cell>
+      <Cell height={CellHeight.Small} horizontalMargin={false}>
+        {contributor.paidContributions || "-"}
+      </Cell>
       {isProjectLeader && (
-        <Cell height={CellHeight.Small}>
+        <Cell height={CellHeight.Small} horizontalMargin={false} className="invisible group-hover/line:visible">
           <div
             onClick={() => {
               !isSendingNewPaymentDisabled &&
