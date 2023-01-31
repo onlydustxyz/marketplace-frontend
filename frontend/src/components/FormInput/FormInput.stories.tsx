@@ -1,19 +1,25 @@
 import { ComponentStory } from "@storybook/react";
 import { JSXElementConstructor } from "react";
-import FormInput from "./View";
+import FormInput, { InputErrorType } from "./View";
 
 export default {
   title: "FormInput",
 };
 
 const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
-  <FormInput {...props} loading={args.loading} error={args.error ? { message: args.errorMessage } : undefined} />
+  <FormInput
+    {...props}
+    loading={args.loading}
+    error={args.error ? { message: args.errorMessage } : undefined}
+    errorType={args.errorType}
+  />
 );
 
 const args = {
   loading: false,
   error: false,
   errorMessage: "Invalid value",
+  errorType: InputErrorType.Normal,
 };
 
 const props = {

@@ -76,6 +76,9 @@ const graphQlMocks = [
   },
 ];
 
+const RECIPIENT_INPUT_LABEL = /Please select the contributor you would like to send a payment to/i;
+const PR_LINK_INPUT_LABEL = /Please add a link to the corresponding pull request on Github/i;
+
 describe('"PaymentForm" component', () => {
   beforeAll(() => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
@@ -94,14 +97,14 @@ describe('"PaymentForm" component', () => {
   });
 
   it("should show the right input / button labels", async () => {
-    await screen.findByText(/link to github issue/i);
-    await screen.findByText(/recipient/i);
+    await screen.findByText(PR_LINK_INPUT_LABEL);
+    await screen.findByText(RECIPIENT_INPUT_LABEL);
   });
 
   it("should display an error when a required field is missing", async () => {
-    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>(/link to github issue/i));
+    await userEvent.clear(await screen.findByLabelText<HTMLInputElement>(PR_LINK_INPUT_LABEL));
     await waitFor(() => {
-      expect(screen.getByLabelText<HTMLInputElement>(/link to github issue/i).value).toBe("");
+      expect(screen.getByLabelText<HTMLInputElement>(PR_LINK_INPUT_LABEL).value).toBe("");
     });
     await userEvent.click(await screen.findByRole("button", { name: /confirm payment/i }));
     await waitFor(() => {
@@ -112,10 +115,10 @@ describe('"PaymentForm" component', () => {
 
   it("should be able to request payment when required info is filled and go back to project overview", async () => {
     await userEvent.type(
-      await screen.findByLabelText(/link to github issue/i),
+      await screen.findByLabelText(PR_LINK_INPUT_LABEL),
       "https://github.com/onlydustxyz/marketplace/pull/504"
     );
-    await userEvent.type(await screen.findByLabelText(/recipient/i), TEST_USER.displayName);
+    await userEvent.type(await screen.findByLabelText(RECIPIENT_INPUT_LABEL), TEST_USER.displayName);
     await waitFor(() => {
       expect(graphQlMocks[0].newData).toHaveBeenCalledTimes(1);
     });
@@ -129,10 +132,10 @@ describe('"PaymentForm" component', () => {
 
   it("should display an error when the github username is invalid", async () => {
     await userEvent.type(
-      await screen.findByLabelText(/link to github issue/i),
+      await screen.findByLabelText(PR_LINK_INPUT_LABEL),
       "https://github.com/onlydustxyz/marketplace/pull/504"
     );
-    await userEvent.type(await screen.findByLabelText(/recipient/i), "invalid-username");
+    await userEvent.type(await screen.findByLabelText(RECIPIENT_INPUT_LABEL), "invalid-username");
     await waitFor(() => {
       const errorMessages = screen.getAllByText(/invalid github login/i);
       expect(errorMessages.length).toBe(1);
@@ -140,11 +143,11 @@ describe('"PaymentForm" component', () => {
   });
 
   it("should display an error when the reason is not a valid link to a github issue", async () => {
-    await userEvent.type(await screen.findByLabelText(/link to github issue/i), "not-a-link");
-    await userEvent.type(await screen.findByLabelText(/recipient/i), TEST_USER.displayName);
+    await userEvent.type(await screen.findByLabelText(PR_LINK_INPUT_LABEL), "not-a-link");
+    await userEvent.type(await screen.findByLabelText(RECIPIENT_INPUT_LABEL), TEST_USER.displayName);
     await userEvent.click(await screen.findByText(/confirm payment/i));
     await waitFor(() => {
-      const errorMessages = screen.getAllByText(/invalid input, not a link to a github pull request/i);
+      const errorMessages = screen.getAllByText(/you can only include 1 pull request per payment request/i);
       expect(errorMessages.length).toBe(1);
     });
   });
