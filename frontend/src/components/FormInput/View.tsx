@@ -47,8 +47,10 @@ const View: React.FC<PropsType> = ({
           id={name}
           placeholder={placeholder}
           type={type}
-          className={`w-full h-11 bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 placeholder:text-greyscale-50/60 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900
-          ${error && errorType === InputErrorType.Normal && "border outline-1 outline-rose-600 border-rose-600"}`}
+          className={classNames(
+            "w-full h-11 bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 placeholder:text-greyscale-50/60 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
+            { "border outline-1 outline-rose-600 border-rose-600": error && errorType === InputErrorType.Normal }
+          )}
           value={value}
           {...register}
           onChange={onChange}
@@ -58,7 +60,7 @@ const View: React.FC<PropsType> = ({
       {errorType === InputErrorType.Normal && (
         <span className="text-rose-600 text-sm ml-3">{error?.message ? error.message.toString() : "\u00A0"}</span>
       )}
-      {error && errorType === InputErrorType.Banner && error.message && (
+      {error?.message && errorType === InputErrorType.Banner && (
         <div className="flex">
           <ImageCard
             backgroundImageUrl={headerElementBackground}
