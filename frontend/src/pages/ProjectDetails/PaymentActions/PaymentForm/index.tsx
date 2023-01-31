@@ -3,7 +3,7 @@ import { HasuraUserRole } from "src/types";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { Inputs } from "./types";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
 import { FindUserQueryForPaymentFormQuery } from "src/__generated/graphql";
@@ -23,8 +23,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
   const { T } = useIntl();
   const formMethods = useForm<Inputs>({
     defaultValues: {
-      linkToIssue: "",
-      contributor: "",
       remainingBudget: budget.remainingAmount,
     },
   });
@@ -36,6 +34,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
   const { handleSubmit, setError, clearErrors } = formMethods;
 
   const [contributorLogin, setContributorLogin] = useState("");
+  const linkToIssue = formMethods.watch("linkToIssue");
 
   const findUserQuery = useHasuraQuery<FindUserQueryForPaymentFormQuery>(
     FIND_USER_QUERY,
@@ -84,6 +83,11 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
     [findUserQuery.data?.fetchUserDetails.id]
   );
 
+  const disableWorkEstimation = useMemo(
+    () => !!findUserQuery.error || !findUserQuery.data?.fetchUserDetails?.id || !linkToIssue,
+    [findUserQuery.error, findUserQuery.data?.fetchUserDetails?.id, linkToIssue]
+  );
+
   return (
     <>
       <FormProvider {...formMethods}>
@@ -91,6 +95,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
           <View
             budget={budget}
             loading={findUserQuery.loading}
+            disableWorkEstimation={disableWorkEstimation}
             onContributorLoginChange={onContributorLoginChange}
             onWorkEstimationChange={onWorkEstimationChange}
             validateContributorLogin={validateContributorLogin}
