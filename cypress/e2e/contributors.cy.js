@@ -70,3 +70,30 @@ describe("As a public user, I", () => {
     });
   });
 });
+
+describe("As a project lead, I", () => {
+const ANTHO = 43467246;
+
+  beforeEach(function () {
+    cy.createGithubUser(98735558)
+      .then(user => {
+        cy.createProjectWithLeader(user, "Project with budget", 100000, 493591124).as("projectId")
+        cy.signinUser(user)
+          .then(user => JSON.stringify(user.session))
+          .as("token");
+      });
+  });
+
+  it.skip("can request a payment for a contributor", function () {
+    cy.visit(`http://localhost:5173/projects/${this.projectId}`, {
+        onBeforeLoad(win) {
+          win.localStorage.setItem("hasura_token", this.token);
+        },
+      });
+
+    cy.contains("Contributors").click();
+
+    cy.get('[data-testid="send-payment-button"]').first().click({force: true});
+    cy.get('[name="contributor"]').should("have.value", "tdelabro");
+});
+});
