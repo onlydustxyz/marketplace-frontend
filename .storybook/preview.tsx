@@ -24,7 +24,7 @@ export const parameters = {
       },
       {
         name: "space",
-        value: "url(https://app.onlydust.xyz/assets/bg.361ad89c.jpeg)",
+        value: "url(https://cdn.jsdelivr.net/gh/onlydustxyz/marketplace@2.0/frontend/src/assets/img/bg-space.png)",
       },
     ],
   },
