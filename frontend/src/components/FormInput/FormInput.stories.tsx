@@ -4,6 +4,14 @@ import FormInput, { InputErrorType } from "./View";
 
 export default {
   title: "FormInput",
+  argTypes: {
+    errorType: {
+      control: {
+        type: "select",
+        options: [InputErrorType.Normal, InputErrorType.Banner],
+      },
+    },
+  },
 };
 
 const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
