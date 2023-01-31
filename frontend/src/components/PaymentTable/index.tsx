@@ -56,7 +56,7 @@ const renderPayments = (payments: PaymentRequest[]) => {
   return payments.map(payment => (
     <Line key={payment.id} highlightOnHover={200}>
       <Cell className="flex flex-row gap-3">
-        <RoundedImage src={payment.recipient.avatarUrl} alt={payment.recipient.login} size={ImageSize.Medium} />
+        <RoundedImage src={payment.recipient.avatarUrl} alt={payment.recipient.login} size={ImageSize.Large} />
         <div className="flex flex-col truncate justify-center">
           <div className="font-bold text-xl">{payment.recipient.login}</div>
           {payment.reason && <div className="text-lg truncate">{payment.reason}</div>}
