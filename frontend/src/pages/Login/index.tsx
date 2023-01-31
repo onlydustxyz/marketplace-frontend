@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { RoutePaths } from "src/App";
 import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
+import { SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
 import { RefreshToken } from "src/types";
 import useSignupRedirection from "./hooks/useSignUpRedirection";
 
@@ -14,6 +16,9 @@ export default function Login() {
   const { T } = useIntl();
   const navigate = useNavigate();
   const { loading, url } = useSignupRedirection({ userId: user?.id, githubUserId });
+  const { lastLoginTime, visitedPageBeforeLogin } = useSession();
+  const dispatchSession = useSessionDispatch();
+
   useEffect(() => {
     if (refreshToken) {
       login(refreshToken as RefreshToken);
@@ -21,8 +26,14 @@ export default function Login() {
   }, [refreshToken]);
 
   useEffect(() => {
-    if (isLoggedIn && !loading) {
-      navigate(url);
+    if (isLoggedIn) {
+      if (!lastLoginTime && !loading) {
+        dispatchSession({ method: SessionMethod.SetLastLoginTime, value: Date.now().toString() });
+        navigate(url);
+      } else if (lastLoginTime) {
+        dispatchSession({ method: SessionMethod.SetLastLoginTime, value: Date.now().toString() });
+        navigate(visitedPageBeforeLogin || RoutePaths.Projects);
+      }
     }
   }, [isLoggedIn, loading]);
 

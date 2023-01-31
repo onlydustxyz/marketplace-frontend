@@ -4,7 +4,7 @@ import { RoutePaths } from "src/App";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
-import { useSession } from "src/hooks/useSession";
+import { SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
 import { CustomUserRole, HasuraUserRole } from "src/types";
 import { GetFirstLeadProjectIdQuery, GetPaymentRequestIdsQuery } from "src/__generated/graphql";
 import View from "./View";
@@ -14,6 +14,7 @@ export default function Header() {
   const { isLoggedIn, roles, user, githubUserId } = useAuth();
   const { T } = useIntl();
   const { lastVisitedProjectId } = useSession();
+  const dispatchSession = useSessionDispatch();
 
   const { data } = useHasuraQuery<GetFirstLeadProjectIdQuery>(
     GET_FIRST_LEAD_PROJECT_ID,
@@ -51,6 +52,7 @@ export default function Header() {
       isLoggedIn={isLoggedIn}
       selectedMenuItem={location.pathname}
       lastVisitedProjectId={lastVisitedProjectId || data?.user?.projectsLeaded[0]?.projectId}
+      onLogin={() => dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: location.pathname })}
     />
   );
 }
