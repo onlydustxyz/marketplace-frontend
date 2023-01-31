@@ -133,7 +133,7 @@ const renderContributors = (contributors: Contributor[], isProjectLeader: boolea
       <Cell height={CellHeight.Small} horizontalMargin={false} className="-ml-px">
         <div
           onClick={linkClickHandlerFactory(`https://github.com/${contributor.login}`)}
-          className="flex flex-row items-center gap-2.5 group-hover/line:cursor-pointer"
+          className="flex flex-row items-center gap-3 group-hover/line:cursor-pointer"
         >
           <div>
             <RoundedImage
