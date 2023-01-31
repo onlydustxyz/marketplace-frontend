@@ -12,7 +12,7 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";
 import CheckLine from "src/icons/CheckLine";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
-import RoundedImage, { ImageSize } from "src/components/RoundedImage";
+import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import Tooltip from "../Tooltip";
 import { linkClickHandlerFactory } from "src/utils/clickHandler";
 import Button, { ButtonSize, ButtonType } from "../Button";
@@ -134,7 +134,12 @@ const renderContributors = (contributors: Contributor[], isProjectLeader: boolea
           className="flex flex-row items-center gap-2.5 group-hover/line:cursor-pointer"
         >
           <div>
-            <RoundedImage src={contributor.avatarUrl} alt={contributor.login} size={ImageSize.ExtraSmall} />
+            <RoundedImage
+              src={contributor.avatarUrl}
+              alt={contributor.login}
+              size={ImageSize.Small}
+              rounding={Rounding.Circle}
+            />
           </div>
           <div className="flex gap-1.5">
             <div>
