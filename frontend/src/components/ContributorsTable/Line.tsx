@@ -16,7 +16,7 @@ type Props = {
   contributor: Contributor;
   isProjectLeader: boolean;
   isSendingNewPaymentDisabled: boolean;
-  onPaymentRequested: () => void;
+  onPaymentRequested: (contributor: Contributor) => void;
 };
 
 export default function ContributorLine({
@@ -70,7 +70,7 @@ export default function ContributorLine({
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false} className="invisible group-hover/line:visible">
         {isProjectLeader && (
-          <div onClick={onPaymentRequested} className="group/sendPaymentButton relative">
+          <div onClick={() => onPaymentRequested(contributor)} className="group/sendPaymentButton relative">
             <Button type={ButtonType.Secondary} size={ButtonSize.Small} disabled={isSendingNewPaymentDisabled}>
               <SendPlane2Line />
               <div>{T("project.details.contributors.sendPayment")}</div>

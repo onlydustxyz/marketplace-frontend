@@ -5,9 +5,11 @@ import {
   ProjectDetailsDispatchContext,
 } from "src/pages/ProjectDetails/ProjectDetailsContext";
 import { rates } from "src/hooks/useWorkEstimation";
+import { generatePath, useNavigate } from "react-router-dom";
 import { gql } from "@apollo/client";
 import { ContributorsTableFieldsFragment } from "src/__generated/graphql";
-import View from "./View";
+import View, { Contributor } from "./View";
+import { RoutePaths } from "src/App";
 
 type PropsType = {
   contributors: ContributorsTableFieldsFragment[];
@@ -35,14 +37,18 @@ const ContributorsTable: React.FC<PropsType> = ({
   });
 
   const dispatch = useContext(ProjectDetailsDispatchContext);
+  const navigate = useNavigate();
 
   const isSendingNewPaymentDisabled = remainingBudget < rates.hours;
 
-  const onPaymentRequested = () => {
+  const onPaymentRequested = (contributor: Contributor) => {
     if (!isSendingNewPaymentDisabled) {
       dispatch({
         type: ProjectDetailsActionType.SelectPaymentAction,
         selectedPaymentAction: PaymentAction.Send,
+      });
+      navigate(generatePath(RoutePaths.MyProjectDetails, { projectId }), {
+        state: { recipientGithubLogin: contributor.login },
       });
     }
   };

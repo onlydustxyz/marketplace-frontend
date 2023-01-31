@@ -8,6 +8,7 @@ import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
 import { debounce } from "lodash";
 import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
+import { useLocation } from "react-router-dom";
 
 export const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/pull\/\d+$/;
 
@@ -21,9 +22,19 @@ interface PaymentFormProps {
 
 const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
   const { T } = useIntl();
+  const location = useLocation();
+
+  const defaultContributor = location.state?.recipientGithubLogin;
+
+  useEffect(() => {
+    if (defaultContributor) {
+      findUserQuery.trigger(defaultContributor);
+    }
+  }, [defaultContributor]);
 
   const formMethods = useForm<Inputs>({
     defaultValues: {
+      contributor: defaultContributor,
       remainingBudget: budget.remainingAmount,
     },
   });
