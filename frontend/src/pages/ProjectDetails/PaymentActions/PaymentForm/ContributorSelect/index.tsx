@@ -99,6 +99,9 @@ const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
             avatarUrl
             id
             login
+            user {
+              userId
+            }
           }
         }
       }
