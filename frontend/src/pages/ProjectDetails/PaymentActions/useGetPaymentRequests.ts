@@ -10,11 +10,14 @@ import {
 } from "src/__generated/graphql";
 
 export default function useGetPaymentRequests(projectId: string) {
-  const fetchAllGithubRecipients = (query: OnNewPaymentRequestsSubscription) => {
+  const fetchAllGithubRecipients = async (query: OnNewPaymentRequestsSubscription) => {
     const allRecipientIds = new Set(
       query.projectsByPk?.budgets.map(b => b.paymentRequests.map(r => r.recipientId)).flat() || []
     );
-    allRecipientIds.forEach(id => getGithubUser({ variables: { githubUserId: id } }));
+
+    for (const id of allRecipientIds) {
+      await getGithubUser({ variables: { githubUserId: id } });
+    }
   };
 
   const getPaymentRequestsQuery = useHasuraSubscription<OnNewPaymentRequestsSubscription>(
