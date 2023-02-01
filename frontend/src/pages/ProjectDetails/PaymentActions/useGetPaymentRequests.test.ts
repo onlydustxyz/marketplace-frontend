@@ -4,7 +4,7 @@ import { renderHook } from "@testing-library/react-hooks";
 import { GithubUserFragment, PaymentRequestFragment } from "src/__generated/graphql";
 import useGetPaymentRequests, {
   GET_GITHUB_USER_QUERY,
-  GET_PAYMENT_REQUESTS_FOR_PROJECT,
+  PAYMENT_REQUESTS_FOR_PROJECT_SUBSCRIPTION,
 } from "./useGetPaymentRequests";
 
 const PROJECT_ID = "project-id";
@@ -42,7 +42,7 @@ const mockGithubUser = (githubUserId: number): GithubUserFragment => ({
 
 const getPaymentRequestsMock = {
   request: {
-    query: GET_PAYMENT_REQUESTS_FOR_PROJECT,
+    query: PAYMENT_REQUESTS_FOR_PROJECT_SUBSCRIPTION,
     variables: { projectId: PROJECT_ID },
   },
   result: {

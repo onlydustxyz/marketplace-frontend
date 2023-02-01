@@ -7,7 +7,7 @@ import { RoutePaths } from "src/App";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { ProjectDetailsProvider } from "../ProjectDetailsContext";
 import { GithubUserFragment, PaymentRequestFragment } from "src/__generated/graphql";
-import { GET_GITHUB_USER_QUERY, GET_PAYMENT_REQUESTS_FOR_PROJECT } from "./useGetPaymentRequests";
+import { GET_GITHUB_USER_QUERY, PAYMENT_REQUESTS_FOR_PROJECT_SUBSCRIPTION } from "./useGetPaymentRequests";
 
 expect.extend(matchers);
 
@@ -52,7 +52,7 @@ const githubUserMock: GithubUserFragment = {
 const graphQlMocks = [
   {
     request: {
-      query: GET_PAYMENT_REQUESTS_FOR_PROJECT,
+      query: PAYMENT_REQUESTS_FOR_PROJECT_SUBSCRIPTION,
       variables: {
         projectId: TEST_PROJECT_ID,
       },

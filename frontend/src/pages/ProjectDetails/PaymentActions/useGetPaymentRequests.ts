@@ -1,28 +1,28 @@
 import { gql } from "@apollo/client";
 import { useState } from "react";
-import { useHasuraLazyQuery, useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useHasuraLazyQuery, useHasuraSubscription } from "src/hooks/useHasuraQuery";
 import { Currency, HasuraUserRole, PaymentStatus } from "src/types";
 import {
   GetGithubUserQuery,
-  GetPaymentRequestsForProjectQuery,
+  OnNewPaymentRequestsSubscription,
   GithubUserFragment,
   PaymentRequestFragment,
 } from "src/__generated/graphql";
 
 export default function useGetPaymentRequests(projectId: string) {
-  const fetchAllGithubRecipients = (query: GetPaymentRequestsForProjectQuery) => {
+  const fetchAllGithubRecipients = (query: OnNewPaymentRequestsSubscription) => {
     const allRecipientIds = new Set(
       query.projectsByPk?.budgets.map(b => b.paymentRequests.map(r => r.recipientId)).flat() || []
     );
     allRecipientIds.forEach(id => getGithubUser({ variables: { githubUserId: id } }));
   };
 
-  const getPaymentRequestsQuery = useHasuraQuery<GetPaymentRequestsForProjectQuery>(
-    GET_PAYMENT_REQUESTS_FOR_PROJECT,
+  const getPaymentRequestsQuery = useHasuraSubscription<OnNewPaymentRequestsSubscription>(
+    PAYMENT_REQUESTS_FOR_PROJECT_SUBSCRIPTION,
     HasuraUserRole.RegisteredUser,
     {
       variables: { projectId },
-      onCompleted: fetchAllGithubRecipients,
+      onData: ({ data }) => data.data && fetchAllGithubRecipients(data.data),
     }
   );
 
@@ -86,9 +86,9 @@ const PAYMENT_REQUEST_FRAGMENT = gql`
   }
 `;
 
-export const GET_PAYMENT_REQUESTS_FOR_PROJECT = gql`
+export const PAYMENT_REQUESTS_FOR_PROJECT_SUBSCRIPTION = gql`
   ${PAYMENT_REQUEST_FRAGMENT}
-  query GetPaymentRequestsForProject($projectId: uuid!) {
+  subscription OnNewPaymentRequests($projectId: uuid!) {
     projectsByPk(id: $projectId) {
       id
       budgets {
