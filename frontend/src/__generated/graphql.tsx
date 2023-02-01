@@ -2820,7 +2820,7 @@ export type GetPaymentRequestsForProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', budgets: Array<{ __typename?: 'Budgets', initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, githubRecipient: { __typename?: 'User', login: string, avatarUrl: string }, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> }> }> } | null };
+export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', budgets: Array<{ __typename?: 'Budgets', initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, requestedAt: any, githubRecipient: { __typename?: 'User', login: string, avatarUrl: string }, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, recipient: { __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', payoutSettings: any | null } | null } | null } | null }> }> } | null };
 
 export type GetProjectsForSidebarQueryVariables = Exact<{
   ledProjectIds: InputMaybe<Array<Scalars['uuid']> | Scalars['uuid']>;
@@ -3406,6 +3406,14 @@ export const GetPaymentRequestsForProjectDocument = gql`
         payments {
           amount
           currencyCode
+        }
+        requestedAt
+        recipient {
+          user {
+            userInfo {
+              payoutSettings
+            }
+          }
         }
       }
     }
