@@ -26,42 +26,13 @@ const Template: ComponentStory<typeof PaymentForm> = args => {
 export const Default = Template.bind({});
 
 Default.args = {
-  loading: false,
   budget: { initialAmount: 5000, remainingAmount: 3000 },
   onWorkEstimationChange: () => {
     return;
-  },
-  onContributorLoginChange: () => {
-    return;
-  },
-  validateContributorLogin: () => {
-    return true;
   },
 };
 
 Default.parameters = {
-  backgrounds: {
-    default: "space",
-  },
-};
-
-export const Loading = Template.bind({});
-
-Loading.args = {
-  loading: true,
-  budget: { initialAmount: 5000, remainingAmount: 3000 },
-  onWorkEstimationChange: () => {
-    return;
-  },
-  onContributorLoginChange: () => {
-    return;
-  },
-  validateContributorLogin: () => {
-    return true;
-  },
-};
-
-Loading.parameters = {
   backgrounds: {
     default: "space",
   },

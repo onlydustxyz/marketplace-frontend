@@ -4,27 +4,16 @@ import Card from "src/components/Card";
 import WorkEstimation from "./WorkEstimation";
 import { Budget } from "src/hooks/useWorkEstimation";
 import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/pages/ProjectDetails/PaymentActions/PaymentForm";
-import { ChangeEventHandler } from "react";
 import { InputErrorType } from "src/components/FormInput/View";
 import { useFormContext } from "react-hook-form";
+import ContributorSelect from "src/pages/ProjectDetails/PaymentActions/PaymentForm/ContributorSelect";
 
 interface Props {
   budget: Budget;
-  loading: boolean;
-  disableWorkEstimation: boolean;
   onWorkEstimationChange: (workEstimation: number) => void;
-  onContributorLoginChange: ChangeEventHandler;
-  validateContributorLogin: () => boolean | string;
 }
 
-const View: React.FC<Props> = ({
-  budget,
-  loading,
-  disableWorkEstimation,
-  onContributorLoginChange,
-  onWorkEstimationChange,
-  validateContributorLogin,
-}) => {
+const View: React.FC<Props> = ({ budget, onWorkEstimationChange }) => {
   const { T } = useIntl();
   const { register } = useFormContext();
 
@@ -37,17 +26,7 @@ const View: React.FC<Props> = ({
               <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
                 <div className="font-medium text-lg">{T("payment.form.contributor.title")}</div>
                 <div className="flex flex-row pt-3">
-                  <Input
-                    label={T("payment.form.contributor.inputLabel")}
-                    name="contributor"
-                    placeholder={T("payment.form.contributor.placeholder")}
-                    options={{
-                      required: T("form.required"),
-                      validate: validateContributorLogin,
-                    }}
-                    onChange={onContributorLoginChange}
-                    loading={loading}
-                  />
+                  <ContributorSelect />
                 </div>
               </div>
             </Card>
@@ -77,7 +56,7 @@ const View: React.FC<Props> = ({
         </div>
       </div>
       <div className="basis-2/5">
-        <WorkEstimation onChange={onWorkEstimationChange} budget={budget} disabled={disableWorkEstimation} />
+        <WorkEstimation onChange={onWorkEstimationChange} budget={budget} />
       </div>
     </div>
   );

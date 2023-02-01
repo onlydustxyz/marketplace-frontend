@@ -1,6 +1,7 @@
 export type Inputs = {
   linkToIssue: string;
-  contributor: string;
+  contributorHandle: string;
+  contributorId: number;
   memo: string;
   remainingBudget: number;
   seniority: number;
