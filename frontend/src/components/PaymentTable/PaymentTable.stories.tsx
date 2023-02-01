@@ -31,6 +31,22 @@ const mockPayments: PaymentRequest[] = [
     status: PaymentStatus.WAITING_PAYMENT,
     requestedAt: new Date("2020-01-01"),
   },
+  {
+    amount: { value: 100, currency: Currency.USD },
+    id: "6397226d-0461-4451-962c-a61e36fd324b",
+    recipient: {
+      login: "ofux",
+      avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
+    },
+    reason: "Link to my perfect PR",
+    status: PaymentStatus.WAITING_PAYMENT,
+    requestedAt: new Date("2020-01-01"),
+    recipientPayoutSettings: {
+      EthTransfer: {
+        Address: "vitalik.eth",
+      },
+    },
+  },
 ];
 
 const Template: ComponentStory<typeof PaymentTable> = () => <PaymentTable payments={mockPayments} />;
