@@ -2,11 +2,12 @@ import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import PaymentActions, { GET_GITHUB_USER_QUERY, GET_PAYMENT_REQUESTS_FOR_PROJECT } from ".";
+import PaymentActions from ".";
 import { RoutePaths } from "src/App";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { ProjectDetailsProvider } from "../ProjectDetailsContext";
 import { GithubUserFragment, PaymentRequestFragment } from "src/__generated/graphql";
+import { GET_GITHUB_USER_QUERY, GET_PAYMENT_REQUESTS_FOR_PROJECT } from "./useGetPaymentRequests";
 
 expect.extend(matchers);
 
