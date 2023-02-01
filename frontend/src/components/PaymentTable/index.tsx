@@ -12,6 +12,7 @@ import TimeLine from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import GithubPRLink, { LinkColor } from "../PayoutTable/GithubPRLink";
 import Folder3Line from "src/icons/Folder3Line";
+import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 
 type PropsType = {
   payments: PaymentRequest[];
@@ -53,7 +54,8 @@ const renderHeaders = () => {
         <span>{T("payment.table.contribution")}</span>
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Quarter} horizontalMargin>
-        {T("payment.table.amount")}
+        <MoneyDollarCircleLine className="pl-px font-normal" />
+        <span>{T("payment.table.amount")}</span>
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Quarter} horizontalMargin>
         {T("payment.table.status")}
@@ -73,7 +75,9 @@ const renderPayments = (payments: PaymentRequest[]) => {
           {payment.reason && <GithubPRLink link={payment.reason} linkColor={LinkColor.Grey}></GithubPRLink>}
         </div>
       </Cell>
-      <Cell>{formatMoneyAmount(payment.amount.value, payment.amount.currency)}</Cell>
+      <Cell>
+        <span className="font-walsheim">{formatMoneyAmount(payment.amount.value, payment.amount.currency)}</span>
+      </Cell>
       <Cell>
         <PayoutStatus {...{ status: payment.status, payoutInfoMissing: false }} />
       </Cell>
