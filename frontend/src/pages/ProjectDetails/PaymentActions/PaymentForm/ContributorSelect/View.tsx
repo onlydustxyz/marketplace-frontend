@@ -4,11 +4,11 @@ import { useIntl } from "src/hooks/useIntl";
 
 type Props = {
   loading: boolean;
-  onContributorLoginChange: ChangeEventHandler;
+  onChange: ChangeEventHandler<HTMLInputElement>;
   validateContributorLogin: () => boolean | string;
 };
 
-const View = ({ loading, validateContributorLogin, onContributorLoginChange }: Props) => {
+const View = ({ loading, onChange, validateContributorLogin }: Props) => {
   const { T } = useIntl();
 
   return (
@@ -20,7 +20,7 @@ const View = ({ loading, validateContributorLogin, onContributorLoginChange }: P
         required: T("form.required"),
         validate: validateContributorLogin,
       }}
-      onChange={onContributorLoginChange}
+      onChange={onChange}
       loading={loading}
     />
   );

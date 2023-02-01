@@ -1,5 +1,5 @@
 import { debounce } from "lodash";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import { useIntl } from "src/hooks/useIntl";
@@ -8,11 +8,13 @@ import View from "./View";
 
 const ContributorSelect = () => {
   const { T } = useIntl();
-  const { setValue, setError, clearErrors } = useFormContext();
+  const { setValue, setError, clearErrors, watch, register } = useFormContext();
   const findUserQuery = useFindGithubUser();
   const location = useLocation();
 
   const defaultContributor = location.state?.recipientGithubLogin;
+
+  const contributorHandle = watch("contributorHandle");
 
   useEffect(() => {
     if (defaultContributor) {
@@ -35,7 +37,13 @@ const ContributorSelect = () => {
     }
   }, [findUserQuery.error]);
 
-  const onContributorLoginChange = debounce(({ target }) => findUserQuery.trigger(target.value), 500);
+  useEffect(() => {
+    if (contributorHandle) {
+      onContributorLoginChange(contributorHandle);
+    }
+  }, [contributorHandle]);
+
+  const onContributorLoginChange = useMemo(() => debounce(handle => findUserQuery.trigger(handle), 500), []);
   const validateContributorLogin = useCallback(
     () => !!findUserQuery.userId || T("github.invalidLogin"),
     [findUserQuery.userId]
@@ -44,8 +52,8 @@ const ContributorSelect = () => {
   return (
     <View
       loading={findUserQuery.loading}
-      onContributorLoginChange={onContributorLoginChange}
       validateContributorLogin={validateContributorLogin}
+      onChange={register("contributorHandle").onChange}
     />
   );
 };
