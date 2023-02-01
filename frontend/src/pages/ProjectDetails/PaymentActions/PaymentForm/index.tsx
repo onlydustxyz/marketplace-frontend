@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
 import { debounce } from "lodash";
+import { useShowToaster } from "src/hooks/useToaster";
 import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
 import { useLocation } from "react-router-dom";
 
@@ -22,25 +23,31 @@ interface PaymentFormProps {
 
 const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
   const { T } = useIntl();
+  const showToaster = useShowToaster();
   const location = useLocation();
 
   const defaultContributor = location.state?.recipientGithubLogin;
 
   useEffect(() => {
     if (defaultContributor) {
+      formMethods.setValue("contributor", defaultContributor);
       findUserQuery.trigger(defaultContributor);
     }
   }, [defaultContributor]);
 
   const formMethods = useForm<Inputs>({
     defaultValues: {
-      contributor: defaultContributor,
       remainingBudget: budget.remainingAmount,
     },
   });
 
   const [insertPayment] = useHasuraMutation(REQUEST_PAYMENT_MUTATION, HasuraUserRole.RegisteredUser, {
     variables: { projectId },
+    onCompleted: () => {
+      showToaster(T("payment.form.sent"));
+      formMethods.resetField("linkToIssue");
+      formMethods.resetField("contributor");
+    },
   });
 
   const { handleSubmit, setError, clearErrors } = formMethods;
@@ -57,10 +64,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
   }, [findUserQuery.error]);
 
   const onValidSubmit: SubmitHandler<Inputs> = useCallback(
-    async formData => {
-      await insertPayment(mapFormDataToSchema(formData, findUserQuery.userId));
-      window.location.reload();
-    },
+    async formData => await insertPayment(mapFormDataToSchema(formData, findUserQuery.userId)),
     [findUserQuery.userId]
   );
 

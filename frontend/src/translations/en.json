@@ -56,7 +56,7 @@
       "estimate": "Estimate time spent",
       "leftToSpend": "Left to spend",
       "remainingBudget": "Remaining budget",
-      "sent": "Payment request sent!",
+      "sent": "Payment successfully sent",
       "steps": {
         "days": {
           "one": "day",
