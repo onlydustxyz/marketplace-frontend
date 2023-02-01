@@ -2815,12 +2815,23 @@ export type RequestPaymentMutationVariables = Exact<{
 
 export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
 
+export type PaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> };
+
 export type GetPaymentRequestsForProjectQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', budgets: Array<{ __typename?: 'Budgets', initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, githubRecipient: { __typename?: 'User', login: string, avatarUrl: string }, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> }> }> } | null };
+export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> }> }> } | null };
+
+export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string };
+
+export type GetGithubUserQueryVariables = Exact<{
+  githubUserId: Scalars['Int'];
+}>;
+
+
+export type GetGithubUserQuery = { __typename?: 'query_root', fetchUserDetailsById: { __typename?: 'User', id: number, login: string, avatarUrl: string } };
 
 export type GetProjectsForSidebarQueryVariables = Exact<{
   ledProjectIds: InputMaybe<Array<Scalars['uuid']> | Scalars['uuid']>;
@@ -2906,6 +2917,25 @@ export const ProjectCardFieldsFragmentDoc = gql`
     }
     languages
   }
+}
+    `;
+export const PaymentRequestFragmentDoc = gql`
+    fragment PaymentRequest on PaymentRequests {
+  id
+  recipientId
+  amountInUsd
+  reason
+  payments {
+    amount
+    currencyCode
+  }
+}
+    `;
+export const GithubUserFragmentDoc = gql`
+    fragment GithubUser on User {
+  id
+  login
+  avatarUrl
 }
     `;
 export const GetFirstLeadProjectIdDocument = gql`
@@ -3392,26 +3422,18 @@ export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<RequestPa
 export const GetPaymentRequestsForProjectDocument = gql`
     query GetPaymentRequestsForProject($projectId: uuid!) {
   projectsByPk(id: $projectId) {
+    id
     budgets {
+      id
       initialAmount
       remainingAmount
       paymentRequests {
-        id
-        githubRecipient {
-          login
-          avatarUrl
-        }
-        amountInUsd
-        reason
-        payments {
-          amount
-          currencyCode
-        }
+        ...PaymentRequest
       }
     }
   }
 }
-    `;
+    ${PaymentRequestFragmentDoc}`;
 
 /**
  * __useGetPaymentRequestsForProjectQuery__
@@ -3440,6 +3462,41 @@ export function useGetPaymentRequestsForProjectLazyQuery(baseOptions?: Apollo.La
 export type GetPaymentRequestsForProjectQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectQuery>;
 export type GetPaymentRequestsForProjectLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectLazyQuery>;
 export type GetPaymentRequestsForProjectQueryResult = Apollo.QueryResult<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>;
+export const GetGithubUserDocument = gql`
+    query GetGithubUser($githubUserId: Int!) {
+  fetchUserDetailsById(userId: $githubUserId) {
+    ...GithubUser
+  }
+}
+    ${GithubUserFragmentDoc}`;
+
+/**
+ * __useGetGithubUserQuery__
+ *
+ * To run a query within a React component, call `useGetGithubUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGithubUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGithubUserQuery({
+ *   variables: {
+ *      githubUserId: // value for 'githubUserId'
+ *   },
+ * });
+ */
+export function useGetGithubUserQuery(baseOptions: Apollo.QueryHookOptions<GetGithubUserQuery, GetGithubUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGithubUserQuery, GetGithubUserQueryVariables>(GetGithubUserDocument, options);
+      }
+export function useGetGithubUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGithubUserQuery, GetGithubUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGithubUserQuery, GetGithubUserQueryVariables>(GetGithubUserDocument, options);
+        }
+export type GetGithubUserQueryHookResult = ReturnType<typeof useGetGithubUserQuery>;
+export type GetGithubUserLazyQueryHookResult = ReturnType<typeof useGetGithubUserLazyQuery>;
+export type GetGithubUserQueryResult = Apollo.QueryResult<GetGithubUserQuery, GetGithubUserQueryVariables>;
 export const GetProjectsForSidebarDocument = gql`
     query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
   projects(

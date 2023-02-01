@@ -15,7 +15,7 @@ type PropsType = {
 
 export interface PaymentRequest {
   id: string;
-  recipient: {
+  recipient?: {
     login: string;
     avatarUrl: string;
   };
@@ -56,11 +56,15 @@ const renderPayments = (payments: PaymentRequest[]) => {
   return payments.map(payment => (
     <Line key={payment.id} highlightOnHover={200}>
       <Cell className="flex flex-row gap-3">
-        <RoundedImage src={payment.recipient.avatarUrl} alt={payment.recipient.login} size={ImageSize.Large} />
-        <div className="flex flex-col truncate justify-center">
-          <div className="font-bold text-xl">{payment.recipient.login}</div>
-          {payment.reason && <div className="text-lg truncate">{payment.reason}</div>}
-        </div>
+        {payment.recipient && (
+          <>
+            <RoundedImage src={payment.recipient.avatarUrl} alt={payment.recipient.login} size={ImageSize.Large} />
+            <div className="flex flex-col truncate justify-center">
+              <div className="font-bold text-xl">{payment.recipient.login}</div>
+              {payment.reason && <div className="text-lg truncate">{payment.reason}</div>}
+            </div>
+          </>
+        )}
       </Cell>
       <Cell>{formatMoneyAmount(payment.amount.value, payment.amount.currency)}</Cell>
       <Cell>
