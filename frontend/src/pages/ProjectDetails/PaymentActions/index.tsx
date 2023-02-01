@@ -109,6 +109,7 @@ const mapPaymentRequestsFromQuery = (paymentRequest: any) => {
       getPaidAmount(paymentRequest.payments) === paymentRequest.amountInUsd
         ? PaymentStatus.ACCEPTED
         : PaymentStatus.WAITING_PAYMENT,
+    requestedAt: paymentRequest.requestedAt,
   };
 };
 
@@ -130,6 +131,7 @@ export const GET_PAYMENT_REQUESTS_FOR_PROJECT = gql`
             amount
             currencyCode
           }
+          requestedAt
         }
       }
     }

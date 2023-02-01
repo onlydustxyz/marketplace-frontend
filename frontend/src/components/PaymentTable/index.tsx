@@ -8,6 +8,15 @@ import HeaderCell, { HeaderCellWidth } from "../Table/HeaderCell";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import PayoutStatus from "../PayoutStatus";
 import { formatMoneyAmount } from "src/utils/money";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import TimeLine from "src/icons/TimeLine";
+
+dayjs.extend(relativeTime);
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 type PropsType = {
   payments: PaymentRequest[];
@@ -25,6 +34,7 @@ export interface PaymentRequest {
   };
   reason: string;
   status: PaymentStatus;
+  requestedAt: Date;
 }
 
 const PaymentTable: React.FC<PropsType> = ({ payments }) => {
@@ -39,6 +49,10 @@ const renderHeaders = () => {
   const { T } = useIntl();
   return (
     <Headers>
+      <HeaderCell width={HeaderCellWidth.Sixth} horizontalMargin>
+        <TimeLine className="p-px font-normal" />
+        <span>{T("payment.table.date")}</span>
+      </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Half} horizontalMargin>
         {T("payment.table.project")}
       </HeaderCell>
@@ -55,6 +69,7 @@ const renderHeaders = () => {
 const renderPayments = (payments: PaymentRequest[]) => {
   return payments.map(payment => (
     <Line key={payment.id} highlightOnHover={200}>
+      <Cell> {dayjs.tz(payment.requestedAt, dayjs.tz.guess()).fromNow()} </Cell>
       <Cell className="flex flex-row gap-3">
         <RoundedImage src={payment.recipient.avatarUrl} alt={payment.recipient.login} size={ImageSize.Large} />
         <div className="flex flex-col truncate justify-center">
