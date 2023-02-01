@@ -40,6 +40,7 @@ const mockContribution = {
   ],
   amountInUsd: 200,
   reason: { work_items: ["link_to_pr"] },
+  requestedAt: new Date(),
 };
 
 const graphQlMocks = [
@@ -106,5 +107,6 @@ describe('"ProjectDetails" page', () => {
     expect(await screen.findByText(mockContribution.githubRecipient.login)).toBeInTheDocument();
     expect(await screen.findByText("$200")).toBeInTheDocument();
     expect(await screen.findByText(/complete/i)).toBeInTheDocument();
+    expect(await screen.findByText(/a few seconds ago/i)).toBeInTheDocument();
   });
 });
