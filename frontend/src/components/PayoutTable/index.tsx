@@ -6,10 +6,6 @@ import Cell from "../Table/Cell";
 import Headers from "../Table/HeaderLine";
 import HeaderCell, { HeaderCellWidth } from "../Table/HeaderCell";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import RoundedImage from "src/components/RoundedImage";
 import { useEffect, useState } from "react";
 import SortingArrow from "../ContributorsTable/SortingArrow";
@@ -20,10 +16,7 @@ import FocusLine from "src/icons/FocusLine";
 import FolderLine from "src/icons/FolderLine";
 import TimeLine from "src/icons/TimeLine";
 import { formatMoneyAmount } from "src/utils/money";
-
-dayjs.extend(relativeTime);
-dayjs.extend(utc);
-dayjs.extend(timezone);
+import displayRelativeDate from "src/utils/displayRelativeDate";
 
 type PropsType = {
   payments: Payment[];
@@ -111,7 +104,7 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
 const renderPayments = (payments: Payment[], payoutInfoMissing: boolean) => {
   return payments.map(payment => (
     <Line key={payment.id} highlightOnHover={200}>
-      <Cell> {dayjs.tz(payment.requestedAt, dayjs.tz.guess()).fromNow()} </Cell>
+      <Cell>{displayRelativeDate(payment.requestedAt)}</Cell>
       <Cell className="flex flex-row gap-3">
         <RoundedImage src={payment.project.logoUrl || onlyDustLogo} alt={payment.project.title} />
         <div className="flex flex-col truncate justify-center">

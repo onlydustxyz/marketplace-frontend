@@ -12,7 +12,7 @@ const mockPayments: Payment[] = [
   {
     amount: { value: 200, currency: Currency.ETH },
     id: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
-    requestedAt: "2017-01-17 16:34:45.283595",
+    requestedAt: new Date("2017-01-17 16:34:45.283595"),
     project: {
       description: "This project is sooooo awesome",
       id: "a4441ead-737a-4feb-8700-60f0721776ff",
@@ -25,7 +25,7 @@ const mockPayments: Payment[] = [
   {
     amount: { value: 100, currency: Currency.USD },
     id: "6397226d-0461-4451-962c-a61e36fd324b",
-    requestedAt: "2020-01-17 16:34:45.283595",
+    requestedAt: new Date("2020-01-17 16:34:45.283595"),
     project: {
       description: "This project is kind of good",
       id: "fea3c754-bf35-4f2b-aabc-ff345105322e",
