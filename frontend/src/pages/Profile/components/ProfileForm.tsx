@@ -42,6 +42,7 @@ type Inputs = {
 
 type PropsType = {
   user?: UserInfo;
+  setSaveButtonDisabled: (disabled: boolean) => void;
 };
 
 enum PayoutSettingsDisplayType {
@@ -49,7 +50,7 @@ enum PayoutSettingsDisplayType {
   EthereumIdentity = "ETHEREUM_IDENTITY",
 }
 
-const ProfileForm: React.FC<PropsType> = ({ user }) => {
+const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
   const formMethods = useForm<Inputs>({
     defaultValues: {
       isCompanyProfile: user?.identity?.Company,
@@ -76,12 +77,14 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
   const { handleSubmit } = formMethods;
   const showToaster = useShowToaster();
 
-  const [updateUser] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser, {
+  const [updateUser, { loading }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser, {
     context: {
       graphqlErrorDisplay: "toaster",
     },
     onCompleted: () => showToaster(T("profile.form.success")),
   });
+
+  setSaveButtonDisabled(loading);
 
   const onSubmit: SubmitHandler<Inputs> = formData => {
     updateUser(mapFormDataToSchema(formData));
