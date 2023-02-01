@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 import { HasuraUserRole } from "src/types";
 import { useForm, SubmitHandler, FormProvider, Controller } from "react-hook-form";
-import { Navigate, useLocation } from "react-router-dom";
 import IBAN from "iban";
 
 import Input from "src/components/FormInput";
@@ -15,7 +14,6 @@ import {
   UpdateProfileInfoMutationVariables,
 } from "src/__generated/graphql";
 import Card from "src/components/Card";
-import { RoutePaths } from "src/App";
 import { useEffect } from "react";
 import { useShowToaster } from "src/hooks/useToaster";
 import FormToggle from "src/components/FormToggle";
@@ -83,7 +81,6 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
     },
   });
   const success = !!data;
-  const location = useLocation();
   const showToaster = useShowToaster();
 
   useEffect(() => {
@@ -258,7 +255,6 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
             )}
           </Card>
         </div>
-        {success && <Navigate to={location.state?.prev || RoutePaths.Projects} />}
       </form>
     </FormProvider>
   );
