@@ -14,7 +14,6 @@ import {
   UpdateProfileInfoMutationVariables,
 } from "src/__generated/graphql";
 import Card from "src/components/Card";
-import { useEffect } from "react";
 import { useShowToaster } from "src/hooks/useToaster";
 import FormToggle from "src/components/FormToggle";
 
@@ -75,22 +74,17 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
     },
   });
   const { handleSubmit } = formMethods;
-  const [updateUser, { data, error }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser, {
+  const showToaster = useShowToaster();
+
+  const [updateUser] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser, {
     context: {
       graphqlErrorDisplay: "toaster",
     },
+    onCompleted: () => showToaster(T("profile.form.success")),
   });
-  const success = !!data;
-  const showToaster = useShowToaster();
 
-  useEffect(() => {
-    if (success) {
-      showToaster(T("profile.form.success"));
-    }
-  }, [success, error]);
-
-  const onSubmit: SubmitHandler<Inputs> = async formData => {
-    await updateUser(mapFormDataToSchema(formData));
+  const onSubmit: SubmitHandler<Inputs> = formData => {
+    updateUser(mapFormDataToSchema(formData));
   };
 
   const payoutSettingsType = formMethods.watch("payoutSettingsType");
