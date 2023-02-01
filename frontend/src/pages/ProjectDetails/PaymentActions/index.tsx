@@ -7,7 +7,7 @@ import QueryWrapper from "src/components/QueryWrapper";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { Currency, HasuraUserRole, PaymentStatus } from "src/types";
-import { GetPaymentRequestsForProjectQuery } from "src/__generated/graphql";
+import { GetPaymentRequestsForProjectQuery, PaymentRequests } from "src/__generated/graphql";
 import {
   PaymentAction,
   ProjectDetailsActionType,
@@ -101,6 +101,7 @@ const mapPaymentRequestsFromQuery = (paymentRequest: any) => {
         ? PaymentStatus.ACCEPTED
         : PaymentStatus.WAITING_PAYMENT,
     requestedAt: paymentRequest.requestedAt,
+    recipientPayoutSettings: paymentRequest?.recipient?.user?.userInfo?.payoutSettings,
   };
 };
 
@@ -123,6 +124,13 @@ export const GET_PAYMENT_REQUESTS_FOR_PROJECT = gql`
             currencyCode
           }
           requestedAt
+          recipient {
+            user {
+              userInfo {
+                payoutSettings
+              }
+            }
+          }
         }
       }
     }
