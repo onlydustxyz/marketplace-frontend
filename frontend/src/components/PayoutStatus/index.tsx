@@ -7,20 +7,21 @@ import Tooltip from "../Tooltip";
 type Props = {
   status: PaymentStatus;
   payoutInfoMissing: boolean;
+  isProjectLeaderView?: boolean;
 };
 
-export default function PayoutStatus({ status, payoutInfoMissing }: Props) {
+export default function PayoutStatus({ status, payoutInfoMissing, isProjectLeaderView = false }: Props) {
   return (
     <div className="relative group/payout-status flex flex-row justify-center">
-      {buildTag(status, payoutInfoMissing)}
+      {buildTag(status, payoutInfoMissing, isProjectLeaderView)}
     </div>
   );
 }
 
-const buildTag = (status: PaymentStatus, payoutInfoMissing: boolean) => {
+const buildTag = (status: PaymentStatus, payoutInfoMissing: boolean, isProjectLeaderView: boolean) => {
   switch (status) {
     case PaymentStatus.WAITING_PAYMENT:
-      return payoutInfoMissing ? tagPayoutInfoMissing() : tagProcessing();
+      return payoutInfoMissing ? tagPayoutInfoMissing(isProjectLeaderView) : tagProcessing();
     case PaymentStatus.ACCEPTED:
       return tagComplete();
   }
@@ -72,17 +73,17 @@ const tagProcessing = () => {
   );
 };
 
-const tagPayoutInfoMissing = () => {
+const tagPayoutInfoMissing = (isProjectLeaderView: boolean) => {
   const { T } = useIntl();
 
   return (
     <>
       <Tag
-        label={T("payment.status.payoutInfoMissing")}
+        label={isProjectLeaderView ? T("payment.status.pending") : T("payment.status.payoutInfoMissing")}
         size={TagSize.Medium}
         icon={TagIcon.Warning}
         iconColor={TagIconColor.Pink}
-        borderColor={TagBorderColor.MultiColor}
+        borderColor={isProjectLeaderView ? TagBorderColor.Grey : TagBorderColor.MultiColor}
         backgroundColor={TagBackgroundColor.SpaceBlueOpaque}
         whitespaceNoWrap={true}
       />
@@ -91,7 +92,9 @@ const tagPayoutInfoMissing = () => {
           "absolute z-10 translate-y-10 invisible group-hover/payout-status:visible flex justify-center w-52"
         )}
       >
-        <Tooltip>{T("payment.status.tooltip.payoutInfoMissing")}</Tooltip>
+        <Tooltip>
+          {isProjectLeaderView ? T("payment.status.tooltip.pending") : T("payment.status.tooltip.payoutInfoMissing")}
+        </Tooltip>
       </div>
     </>
   );
