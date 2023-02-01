@@ -3,13 +3,15 @@ import { HasuraUserRole } from "src/types";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { useHasuraMutation } from "src/hooks/useHasuraQuery";
 import { Inputs } from "./types";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
 import { debounce } from "lodash";
 import { useShowToaster } from "src/hooks/useToaster";
 import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
 import { useLocation } from "react-router-dom";
+import { PaymentAction, ProjectDetailsActionType, ProjectDetailsDispatchContext } from "../../ProjectDetailsContext";
+import PaymentActions from "..";
 
 export const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/pull\/\d+$/;
 
@@ -27,6 +29,8 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
   const location = useLocation();
 
   const defaultContributor = location.state?.recipientGithubLogin;
+
+  const dispatch = useContext(ProjectDetailsDispatchContext);
 
   useEffect(() => {
     if (defaultContributor) {
@@ -47,6 +51,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
       showToaster(T("payment.form.sent"));
       formMethods.resetField("linkToIssue");
       formMethods.resetField("contributor");
+      dispatch({ type: ProjectDetailsActionType.SelectPaymentAction, selectedPaymentAction: PaymentAction.List });
     },
   });
 
