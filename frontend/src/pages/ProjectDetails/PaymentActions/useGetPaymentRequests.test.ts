@@ -98,5 +98,8 @@ describe("useGetPaymentRequests", () => {
 
     expect(result.current.data?.budget).toEqual({ initialAmount: 1000, remainingAmount: 400 });
     expect(result.current.data?.paymentRequests).toHaveLength(3);
+    expect(result.current.data?.paymentRequests?.at(0)?.recipient.id).toBe(GITHUB_USER_ID_1);
+    expect(result.current.data?.paymentRequests?.at(1)?.recipient.id).toBe(GITHUB_USER_ID_1);
+    expect(result.current.data?.paymentRequests?.at(2)?.recipient.id).toBe(GITHUB_USER_ID_2);
   });
 });
