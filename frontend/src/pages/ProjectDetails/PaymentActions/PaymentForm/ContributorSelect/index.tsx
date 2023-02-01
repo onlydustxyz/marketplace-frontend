@@ -1,3 +1,4 @@
+import { gql } from "@apollo/client";
 import { debounce } from "lodash";
 import { useCallback, useEffect, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
@@ -63,3 +64,19 @@ const ContributorSelect = ({ projectId }: Props) => {
 };
 
 export default ContributorSelect;
+
+const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
+  query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
+      githubRepo {
+        content {
+          contributors {
+            avatarUrl
+            id
+            login
+          }
+        }
+      }
+    }
+  }
+`;
