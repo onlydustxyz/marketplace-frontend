@@ -40,7 +40,7 @@ const renderHeaders = () => {
   return (
     <Headers>
       <HeaderCell width={HeaderCellWidth.Half} horizontalMargin>
-        {T("payment.table.project")}
+        {T("payment.table.contribution")}
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Quarter} horizontalMargin>
         {T("payment.table.amount")}
