@@ -1,14 +1,10 @@
-import { gql } from "@apollo/client";
 import { useContext } from "react";
 import Card from "src/components/Card";
 import PaymentTable from "src/components/PaymentTable";
 import ProjectPaymentTableFallback from "src/components/ProjectPaymentTableFallback";
 import QueryWrapper from "src/components/QueryWrapper";
 import RemainingBudget from "src/components/RemainingBudget";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
-import { Currency, HasuraUserRole, PaymentStatus } from "src/types";
-import { GetPaymentRequestsForProjectQuery } from "src/__generated/graphql";
 import {
   PaymentAction,
   ProjectDetailsActionType,
@@ -16,6 +12,7 @@ import {
   ProjectDetailsDispatchContext,
 } from "../ProjectDetailsContext";
 import PaymentForm from "./PaymentForm";
+import useGetPaymentRequests from "./useGetPaymentRequests";
 
 interface PaymentsProps {
   projectId: string;
@@ -27,23 +24,9 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
   const state = useContext(ProjectDetailsContext);
   const dispatch = useContext(ProjectDetailsDispatchContext);
 
-  const query = useHasuraQuery<GetPaymentRequestsForProjectQuery>(
-    GET_PAYMENT_REQUESTS_FOR_PROJECT,
-    HasuraUserRole.RegisteredUser,
-    {
-      variables: { projectId },
-    }
-  );
-
-  const budget = query.data?.projectsByPk?.budgets.reduce(
-    (acc, b) => ({
-      remainingAmount: acc.remainingAmount + b.remainingAmount,
-      initialAmount: acc.initialAmount + b.initialAmount,
-    }),
-    { initialAmount: 0, remainingAmount: 0 }
-  ) || { initialAmount: 0, remainingAmount: 0 };
-
-  const payments = query.data?.projectsByPk?.budgets.map(b => b.paymentRequests).flat() || [];
+  const query = useGetPaymentRequests(projectId);
+  const payments = query.data?.paymentRequests || [];
+  const budget = query.data?.budget || { initialAmount: 0, remainingAmount: 0 };
 
   return (
     <QueryWrapper query={query}>
@@ -54,7 +37,7 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
             <div className="flex basis-3/5 self-stretch">
               <Card>
                 {payments.length > 0 ? (
-                  <PaymentTable payments={payments.map(mapPaymentRequestsFromQuery)} />
+                  <PaymentTable payments={payments} />
                 ) : (
                   <ProjectPaymentTableFallback
                     onClick={() =>
@@ -95,43 +78,3 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
     </QueryWrapper>
   );
 }
-
-const mapPaymentRequestsFromQuery = (paymentRequest: any) => {
-  const getPaidAmount = (payments: { amount: number }[]) =>
-    payments.reduce((total: number, payment: { amount: number }) => total + payment.amount, 0);
-
-  return {
-    id: paymentRequest.id,
-    amount: { value: paymentRequest.amountInUsd, currency: Currency.USD },
-    recipient: paymentRequest.githubRecipient,
-    reason: paymentRequest.reason?.work_items?.at(0),
-    status:
-      getPaidAmount(paymentRequest.payments) === paymentRequest.amountInUsd
-        ? PaymentStatus.ACCEPTED
-        : PaymentStatus.WAITING_PAYMENT,
-  };
-};
-
-export const GET_PAYMENT_REQUESTS_FOR_PROJECT = gql`
-  query GetPaymentRequestsForProject($projectId: uuid!) {
-    projectsByPk(id: $projectId) {
-      budgets {
-        initialAmount
-        remainingAmount
-        paymentRequests {
-          id
-          githubRecipient {
-            login
-            avatarUrl
-          }
-          amountInUsd
-          reason
-          payments {
-            amount
-            currencyCode
-          }
-        }
-      }
-    }
-  }
-`;

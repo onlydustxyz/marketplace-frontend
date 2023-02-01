@@ -2815,12 +2815,23 @@ export type RequestPaymentMutationVariables = Exact<{
 
 export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
 
-export type GetPaymentRequestsForProjectQueryVariables = Exact<{
+export type PaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> };
+
+export type OnNewPaymentRequestsSubscriptionVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', budgets: Array<{ __typename?: 'Budgets', initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, githubRecipient: { __typename?: 'User', login: string, avatarUrl: string }, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> }> }> } | null };
+export type OnNewPaymentRequestsSubscription = { __typename?: 'subscription_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> }> }> } | null };
+
+export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string };
+
+export type GetGithubUserQueryVariables = Exact<{
+  githubUserId: Scalars['Int'];
+}>;
+
+
+export type GetGithubUserQuery = { __typename?: 'query_root', fetchUserDetailsById: { __typename?: 'User', id: number, login: string, avatarUrl: string } };
 
 export type GetProjectsForSidebarQueryVariables = Exact<{
   ledProjectIds: InputMaybe<Array<Scalars['uuid']> | Scalars['uuid']>;
@@ -2906,6 +2917,25 @@ export const ProjectCardFieldsFragmentDoc = gql`
     }
     languages
   }
+}
+    `;
+export const PaymentRequestFragmentDoc = gql`
+    fragment PaymentRequest on PaymentRequests {
+  id
+  recipientId
+  amountInUsd
+  reason
+  payments {
+    amount
+    currencyCode
+  }
+}
+    `;
+export const GithubUserFragmentDoc = gql`
+    fragment GithubUser on User {
+  id
+  login
+  avatarUrl
 }
     `;
 export const GetFirstLeadProjectIdDocument = gql`
@@ -3389,57 +3419,79 @@ export function useRequestPaymentMutation(baseOptions?: Apollo.MutationHookOptio
 export type RequestPaymentMutationHookResult = ReturnType<typeof useRequestPaymentMutation>;
 export type RequestPaymentMutationResult = Apollo.MutationResult<RequestPaymentMutation>;
 export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<RequestPaymentMutation, RequestPaymentMutationVariables>;
-export const GetPaymentRequestsForProjectDocument = gql`
-    query GetPaymentRequestsForProject($projectId: uuid!) {
+export const OnNewPaymentRequestsDocument = gql`
+    subscription OnNewPaymentRequests($projectId: uuid!) {
   projectsByPk(id: $projectId) {
+    id
     budgets {
+      id
       initialAmount
       remainingAmount
       paymentRequests {
-        id
-        githubRecipient {
-          login
-          avatarUrl
-        }
-        amountInUsd
-        reason
-        payments {
-          amount
-          currencyCode
-        }
+        ...PaymentRequest
       }
     }
   }
 }
-    `;
+    ${PaymentRequestFragmentDoc}`;
 
 /**
- * __useGetPaymentRequestsForProjectQuery__
+ * __useOnNewPaymentRequestsSubscription__
  *
- * To run a query within a React component, call `useGetPaymentRequestsForProjectQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPaymentRequestsForProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useOnNewPaymentRequestsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOnNewPaymentRequestsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetPaymentRequestsForProjectQuery({
+ * const { data, loading, error } = useOnNewPaymentRequestsSubscription({
  *   variables: {
  *      projectId: // value for 'projectId'
  *   },
  * });
  */
-export function useGetPaymentRequestsForProjectQuery(baseOptions: Apollo.QueryHookOptions<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>) {
+export function useOnNewPaymentRequestsSubscription(baseOptions: Apollo.SubscriptionHookOptions<OnNewPaymentRequestsSubscription, OnNewPaymentRequestsSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>(GetPaymentRequestsForProjectDocument, options);
+        return Apollo.useSubscription<OnNewPaymentRequestsSubscription, OnNewPaymentRequestsSubscriptionVariables>(OnNewPaymentRequestsDocument, options);
       }
-export function useGetPaymentRequestsForProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>) {
+export type OnNewPaymentRequestsSubscriptionHookResult = ReturnType<typeof useOnNewPaymentRequestsSubscription>;
+export type OnNewPaymentRequestsSubscriptionResult = Apollo.SubscriptionResult<OnNewPaymentRequestsSubscription>;
+export const GetGithubUserDocument = gql`
+    query GetGithubUser($githubUserId: Int!) {
+  fetchUserDetailsById(userId: $githubUserId) {
+    ...GithubUser
+  }
+}
+    ${GithubUserFragmentDoc}`;
+
+/**
+ * __useGetGithubUserQuery__
+ *
+ * To run a query within a React component, call `useGetGithubUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGithubUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGithubUserQuery({
+ *   variables: {
+ *      githubUserId: // value for 'githubUserId'
+ *   },
+ * });
+ */
+export function useGetGithubUserQuery(baseOptions: Apollo.QueryHookOptions<GetGithubUserQuery, GetGithubUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGithubUserQuery, GetGithubUserQueryVariables>(GetGithubUserDocument, options);
+      }
+export function useGetGithubUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGithubUserQuery, GetGithubUserQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>(GetPaymentRequestsForProjectDocument, options);
+          return Apollo.useLazyQuery<GetGithubUserQuery, GetGithubUserQueryVariables>(GetGithubUserDocument, options);
         }
-export type GetPaymentRequestsForProjectQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectQuery>;
-export type GetPaymentRequestsForProjectLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectLazyQuery>;
-export type GetPaymentRequestsForProjectQueryResult = Apollo.QueryResult<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>;
+export type GetGithubUserQueryHookResult = ReturnType<typeof useGetGithubUserQuery>;
+export type GetGithubUserLazyQueryHookResult = ReturnType<typeof useGetGithubUserLazyQuery>;
+export type GetGithubUserQueryResult = Apollo.QueryResult<GetGithubUserQuery, GetGithubUserQueryVariables>;
 export const GetProjectsForSidebarDocument = gql`
     query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
   projects(
