@@ -1,17 +1,17 @@
-import { Listbox } from "@headlessui/react";
-import classNames from "classnames";
-import { ChangeEventHandler, useCallback, Fragment, useState } from "react";
+import { ChangeEventHandler, useCallback, useState } from "react";
+import Card from "src/components/Card";
+import Contributor from "src/components/Contributor";
 import Input from "src/components/FormInput";
 import { useIntl } from "src/hooks/useIntl";
-import { Contributor } from "src/pages/ProjectDetails/PaymentActions/PaymentForm/types";
+import { Contributor as ContributorType } from "src/pages/ProjectDetails/PaymentActions/PaymentForm/types";
 
 type Props = {
   loading: boolean;
   onContributorHandleChange: (handle: string) => void;
-  onContributorChange: (contributor: Contributor) => void;
+  onContributorChange: (contributor: ContributorType) => void;
   validateContributorLogin: () => boolean | string;
-  contributors: { avatarUrl: string; login: string; id: number }[];
-  contributor: Contributor;
+  contributors: ContributorType[];
+  contributor: ContributorType;
 };
 
 const View = ({ loading, contributors, onContributorHandleChange, validateContributorLogin }: Props) => {
@@ -23,7 +23,7 @@ const View = ({ loading, contributors, onContributorHandleChange, validateContri
     [onContributorHandleChange]
   );
   const onContributorChange = useCallback(
-    (contributor: Contributor) => {
+    (contributor: ContributorType) => {
       onContributorHandleChange(contributor.login);
     },
     [onContributorHandleChange]
@@ -31,38 +31,39 @@ const View = ({ loading, contributors, onContributorHandleChange, validateContri
   const [opened, setOpened] = useState(false);
 
   return (
-    <div className="relative z-10">
-      <Listbox onChange={onContributorChange}>
-        <Listbox.Button as={Fragment}>
-          <Input
-            label={T("payment.form.contributor.inputLabel")}
-            name="contributorHandle"
-            placeholder={T("payment.form.contributor.placeholder")}
-            options={{
-              required: T("form.required"),
-              validate: validateContributorLogin,
-            }}
-            onChange={onHandleChange}
-            onFocus={() => setOpened(true)}
-            onBlur={() => setOpened(false)}
-            loading={loading}
-          />
-        </Listbox.Button>
-        <div
-          className={classNames({
-            "opacity-0": !opened,
-            "opacity-100": opened,
-          })}
-        >
-          <Listbox.Options static className="absolute">
-            {contributors.map(contributor => (
-              <Listbox.Option key={contributor.id} value={contributor}>
-                {contributor.login}
-              </Listbox.Option>
-            ))}
-          </Listbox.Options>
-        </div>
-      </Listbox>
+    <div className="relative">
+      <Input
+        label={T("payment.form.contributor.inputLabel")}
+        name="contributorHandle"
+        placeholder={T("payment.form.contributor.placeholder")}
+        options={{
+          required: T("form.required"),
+          validate: validateContributorLogin,
+        }}
+        onChange={onHandleChange}
+        onFocus={() => setOpened(true)}
+        onBlur={() => setOpened(false)}
+        loading={loading}
+      />
+      {opened && (
+        <Card className="absolute bg-spaceBlue-900" padded={false}>
+          {contributors.map(contributor => (
+            <div
+              key={contributor.id}
+              className="px-4 py-3 hover:bg-white/2 cursor-pointer"
+              onClick={() => onContributorChange(contributor)}
+            >
+              <Contributor
+                contributor={{
+                  avatarUrl: contributor.avatarUrl,
+                  login: contributor.login,
+                  isRegistered: !!contributor.user?.userId,
+                }}
+              />
+            </div>
+          ))}
+        </Card>
+      )}
     </div>
   );
 };

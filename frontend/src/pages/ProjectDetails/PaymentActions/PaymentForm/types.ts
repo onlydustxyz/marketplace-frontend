@@ -2,6 +2,9 @@ export type Contributor = {
   id: number;
   login: string;
   avatarUrl: string;
+  user: {
+    userId: string;
+  } | null;
 };
 
 export type Inputs = {
