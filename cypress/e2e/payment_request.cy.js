@@ -29,8 +29,6 @@ describe("As a project lead, I", () => {
     cy.wait(WAIT_LONG);
     cy.contains("Confirm payment").click();
 
-    cy.reload();
-    cy.contains("Payments").click();
     cy.get("#remainingBudget").should("have.text", "$0");
   });
 
