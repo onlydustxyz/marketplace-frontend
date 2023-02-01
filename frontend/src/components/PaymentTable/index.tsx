@@ -5,11 +5,13 @@ import Line from "../Table/Line";
 import Cell from "../Table/Cell";
 import Headers from "../Table/HeaderLine";
 import HeaderCell, { HeaderCellWidth } from "../Table/HeaderCell";
-import RoundedImage, { ImageSize } from "src/components/RoundedImage";
+import RoundedImage, { Rounding } from "src/components/RoundedImage";
 import PayoutStatus from "../PayoutStatus";
 import { formatMoneyAmount } from "src/utils/money";
 import TimeLine from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
+import GithubPRLink, { LinkColor } from "../PayoutTable/GithubPRLink";
+import Folder3Line from "src/icons/Folder3Line";
 
 type PropsType = {
   payments: PaymentRequest[];
@@ -43,11 +45,12 @@ const renderHeaders = () => {
   return (
     <Headers>
       <HeaderCell width={HeaderCellWidth.Sixth} horizontalMargin>
-        <TimeLine className="p-px font-normal" />
+        <TimeLine className="pl-px font-normal" />
         <span>{T("payment.table.date")}</span>
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Half} horizontalMargin>
-        {T("payment.table.project")}
+        <Folder3Line className="pl-px font-normal" />
+        <span>{T("payment.table.contribution")}</span>
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Quarter} horizontalMargin>
         {T("payment.table.amount")}
@@ -64,10 +67,10 @@ const renderPayments = (payments: PaymentRequest[]) => {
     <Line key={payment.id} highlightOnHover={200}>
       <Cell>{displayRelativeDate(payment.requestedAt)}</Cell>
       <Cell className="flex flex-row gap-3">
-        <RoundedImage src={payment.recipient.avatarUrl} alt={payment.recipient.login} size={ImageSize.Large} />
-        <div className="flex flex-col truncate justify-center">
-          <div className="font-bold text-xl">{payment.recipient.login}</div>
-          {payment.reason && <div className="text-lg truncate">{payment.reason}</div>}
+        <RoundedImage src={payment.recipient.avatarUrl} alt={payment.recipient.login} rounding={Rounding.Circle} />
+        <div className="flex flex-col truncate justify-center pb-0.5">
+          <div className="font-medium text-sm text-greyscale-50 font-walsheim">{payment.recipient.login}</div>
+          {payment.reason && <GithubPRLink link={payment.reason} linkColor={LinkColor.Grey}></GithubPRLink>}
         </div>
       </Cell>
       <Cell>{formatMoneyAmount(payment.amount.value, payment.amount.currency)}</Cell>
