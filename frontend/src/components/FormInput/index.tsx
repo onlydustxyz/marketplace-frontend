@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, FocusEventHandler } from "react";
 import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
 import View, { InputErrorType } from "./View";
 
@@ -11,7 +11,9 @@ type PropsType = {
   options?: RegisterOptions;
   value?: string | number;
   errorType?: InputErrorType;
-  onChange?: ChangeEventHandler<any>;
+  onChange?: ChangeEventHandler<unknown>;
+  onFocus?: FocusEventHandler<unknown>;
+  onBlur?: FocusEventHandler<unknown>;
 };
 
 export default function Input({
@@ -24,6 +26,8 @@ export default function Input({
   loading,
   options,
   onChange,
+  onBlur,
+  onFocus,
 }: PropsType) {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
@@ -41,6 +45,8 @@ export default function Input({
         value,
         register: register(name, options),
         onChange,
+        onBlur,
+        onFocus,
       }}
     />
   );

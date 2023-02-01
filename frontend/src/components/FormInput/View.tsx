@@ -1,4 +1,4 @@
-import { ChangeEventHandler, memo } from "react";
+import { ChangeEventHandler, FocusEventHandler, memo } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
 import RiErrorWarningLine from "src/icons/RiErrorWarningLine";
@@ -18,7 +18,9 @@ type PropsType = {
   };
   errorType: InputErrorType;
   register?: UseFormRegisterReturn<string>;
-  onChange?: ChangeEventHandler<any>;
+  onChange?: ChangeEventHandler<unknown>;
+  onFocus?: FocusEventHandler<unknown>;
+  onBlur?: FocusEventHandler<unknown>;
 };
 
 export enum InputErrorType {
@@ -37,6 +39,8 @@ const View: React.FC<PropsType> = ({
   errorType,
   register,
   onChange,
+  onBlur,
+  onFocus,
 }) => (
   <label html-for={name} className="flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim">
     <div className="font-medium text-sm tracking-tight">{label}</div>
@@ -54,6 +58,8 @@ const View: React.FC<PropsType> = ({
           value={value}
           {...register}
           onChange={onChange}
+          onBlur={onBlur}
+          onFocus={onFocus}
         />
         {loading && <LoaderIcon className="flex animate-spin place-items-center absolute right-0 mr-3" />}
       </div>
