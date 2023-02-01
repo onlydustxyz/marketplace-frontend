@@ -9,11 +9,12 @@ import { useFormContext } from "react-hook-form";
 import ContributorSelect from "src/pages/ProjectDetails/PaymentActions/PaymentForm/ContributorSelect";
 
 interface Props {
+  projectId: string;
   budget: Budget;
   onWorkEstimationChange: (workEstimation: number) => void;
 }
 
-const View: React.FC<Props> = ({ budget, onWorkEstimationChange }) => {
+const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) => {
   const { T } = useIntl();
   const { register } = useFormContext();
 
@@ -26,7 +27,7 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange }) => {
               <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
                 <div className="font-medium text-lg">{T("payment.form.contributor.title")}</div>
                 <div className="flex flex-row pt-3">
-                  <ContributorSelect />
+                  <ContributorSelect projectId={projectId} />
                 </div>
               </div>
             </Card>

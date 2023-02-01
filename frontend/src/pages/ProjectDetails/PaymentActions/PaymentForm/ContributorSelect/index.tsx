@@ -6,7 +6,11 @@ import { useIntl } from "src/hooks/useIntl";
 import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
 import View from "./View";
 
-const ContributorSelect = () => {
+type Props = {
+  projectId: string;
+};
+
+const ContributorSelect = ({ projectId }: Props) => {
   const { T } = useIntl();
   const { setValue, setError, clearErrors, watch, register } = useFormContext();
   const findUserQuery = useFindGithubUser();

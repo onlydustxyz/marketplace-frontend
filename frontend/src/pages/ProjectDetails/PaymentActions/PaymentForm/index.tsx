@@ -69,7 +69,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
     <>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onValidSubmit)} className="flex flex-col gap-3 justify-between w-full">
-          <View budget={budget} onWorkEstimationChange={onWorkEstimationChange} />
+          <View budget={budget} projectId={projectId} onWorkEstimationChange={onWorkEstimationChange} />
         </form>
       </FormProvider>
     </>
