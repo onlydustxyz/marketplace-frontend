@@ -16,12 +16,12 @@ export default function WorkEstimation({ onChange, budget }: Props) {
       errors: { contributorHandle: contributorHandleError },
     },
   } = useFormContext();
-  const contributorId = useWatch({ name: "contributorId" });
+  const contributor = useWatch({ name: "contributor" });
   const linkToIssue = useWatch({ name: "linkToIssue" });
 
   const disabled = useMemo(
-    () => !!contributorHandleError || !contributorId || !linkToIssue,
-    [contributorHandleError, contributorId, linkToIssue]
+    () => !!contributorHandleError || !contributor || !linkToIssue,
+    [contributorHandleError, contributor, linkToIssue]
   );
   return (
     <View

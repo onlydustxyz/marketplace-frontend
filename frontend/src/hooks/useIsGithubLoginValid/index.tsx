@@ -17,7 +17,7 @@ export default function useFindGithubUser() {
   return {
     trigger: (username: string) => trigger({ variables: { username } }),
     loading: query.loading,
-    userId: query.data?.fetchUserDetails.id,
+    user: query.data?.fetchUserDetails,
     error: query.error,
   };
 }
@@ -26,6 +26,8 @@ export const FIND_USER_QUERY = gql`
   query FindUserQueryForPaymentForm($username: String!) {
     fetchUserDetails(username: $username) {
       id
+      avatarUrl
+      login
     }
   }
 `;

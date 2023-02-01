@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
+import { Contributor } from "src/pages/ProjectDetails/PaymentActions/PaymentForm/types";
 import { HasuraUserRole } from "src/types";
 import { GetProjectContributorsForPaymentSelectQuery } from "src/__generated/graphql";
 import View from "./View";
@@ -16,7 +17,7 @@ type Props = {
 
 const ContributorSelect = ({ projectId }: Props) => {
   const { T } = useIntl();
-  const { setValue, setError, clearErrors, watch, register } = useFormContext();
+  const { setValue, setError, clearErrors, watch } = useFormContext();
   const findUserQuery = useFindGithubUser();
   const location = useLocation();
   const getProjectContributorsQuery = useHasuraQuery<GetProjectContributorsForPaymentSelectQuery>(
@@ -28,8 +29,15 @@ const ContributorSelect = ({ projectId }: Props) => {
   );
 
   const defaultContributor = location.state?.recipientGithubLogin;
+  const onContributorHandleChange = useCallback((handle: string) => {
+    setValue("contributorHandle", handle);
+  }, []);
+  const onContributorChange = useCallback((contributor: Contributor) => {
+    setValue("contributor", contributor);
+  }, []);
 
   const contributorHandle = watch("contributorHandle");
+  const contributor = watch("contributor");
 
   useEffect(() => {
     if (defaultContributor) {
@@ -39,10 +47,10 @@ const ContributorSelect = ({ projectId }: Props) => {
   }, [defaultContributor]);
 
   useEffect(() => {
-    if (findUserQuery.userId) {
-      setValue("contributorId", findUserQuery.userId);
+    if (findUserQuery.user) {
+      setValue("contributor", findUserQuery.user);
     }
-  }, [findUserQuery.userId]);
+  }, [findUserQuery.user]);
 
   useEffect(() => {
     if (findUserQuery.error) {
@@ -60,8 +68,8 @@ const ContributorSelect = ({ projectId }: Props) => {
 
   const onContributorLoginChange = useMemo(() => debounce(handle => findUserQuery.trigger(handle), 500), []);
   const validateContributorLogin = useCallback(
-    () => !!findUserQuery.userId || T("github.invalidLogin"),
-    [findUserQuery.userId]
+    () => !!findUserQuery.user || T("github.invalidLogin"),
+    [findUserQuery.user]
   );
   const contributors = useMemo(
     () => getProjectContributorsQuery.data?.projectsByPk?.githubRepo?.content?.contributors ?? [],
@@ -72,8 +80,10 @@ const ContributorSelect = ({ projectId }: Props) => {
     <View
       loading={findUserQuery.loading || getProjectContributorsQuery.loading}
       validateContributorLogin={validateContributorLogin}
-      onChange={register("contributorHandle").onChange}
+      onContributorHandleChange={onContributorHandleChange}
+      onContributorChange={onContributorChange}
       contributors={contributors}
+      contributor={contributor}
     />
   );
 };

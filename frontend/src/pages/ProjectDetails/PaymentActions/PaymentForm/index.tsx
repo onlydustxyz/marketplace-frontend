@@ -9,6 +9,7 @@ import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useLocation } from "react-router-dom";
 import { PaymentAction, ProjectDetailsActionType, ProjectDetailsDispatchContext } from "../../ProjectDetailsContext";
+import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
 
 export const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/pull\/\d+$/;
 
@@ -24,6 +25,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const location = useLocation();
+  const findUserQuery = useFindGithubUser();
 
   const defaultContributor = location.state?.recipientGithubLogin;
 
@@ -31,7 +33,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
 
   useEffect(() => {
     if (defaultContributor) {
-      formMethods.setValue("contributorId", defaultContributor);
+      formMethods.setValue("contributorHandle", defaultContributor);
       findUserQuery.trigger(defaultContributor);
     }
   }, [defaultContributor]);
@@ -47,7 +49,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
       showToaster(T("payment.form.sent"));
       formMethods.resetField("linkToIssue");
       formMethods.resetField("contributorHandle");
-      formMethods.resetField("contributorId");
+      formMethods.resetField("contributor");
       dispatch({ type: ProjectDetailsActionType.SelectPaymentAction, selectedPaymentAction: PaymentAction.List });
     },
   });
@@ -82,10 +84,10 @@ export const REQUEST_PAYMENT_MUTATION = gql`
   }
 `;
 
-const mapFormDataToSchema = ({ linkToIssue, amountToWire, contributorId }: Inputs) => {
+const mapFormDataToSchema = ({ linkToIssue, amountToWire, contributor }: Inputs) => {
   return {
     variables: {
-      contributorId,
+      contributorId: contributor.id,
       amount: amountToWire,
       reason: {
         workItems: [linkToIssue],

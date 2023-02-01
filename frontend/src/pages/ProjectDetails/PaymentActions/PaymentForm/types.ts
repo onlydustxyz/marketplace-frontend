@@ -1,7 +1,13 @@
+export type Contributor = {
+  id: number;
+  login: string;
+  avatarUrl: string;
+};
+
 export type Inputs = {
   linkToIssue: string;
   contributorHandle: string;
-  contributorId: number;
+  contributor: Contributor;
   memo: string;
   remainingBudget: number;
   seniority: number;

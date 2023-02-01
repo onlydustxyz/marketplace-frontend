@@ -1,16 +1,25 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, useCallback } from "react";
 import Input from "src/components/FormInput";
 import { useIntl } from "src/hooks/useIntl";
+import { Contributor } from "src/pages/ProjectDetails/PaymentActions/PaymentForm/types";
 
 type Props = {
   loading: boolean;
-  onChange: ChangeEventHandler<HTMLInputElement>;
+  onContributorHandleChange: (handle: string) => void;
+  onContributorChange: (contributor: Contributor) => void;
   validateContributorLogin: () => boolean | string;
   contributors: { avatarUrl: string; login: string; id: number }[];
+  contributor: Contributor;
 };
 
-const View = ({ loading, onChange, validateContributorLogin }: Props) => {
+const View = ({ loading, onContributorHandleChange, validateContributorLogin }: Props) => {
   const { T } = useIntl();
+  const onHandleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
+    event => {
+      onContributorHandleChange(event.target.value);
+    },
+    [onContributorHandleChange]
+  );
 
   return (
     <Input
@@ -21,7 +30,7 @@ const View = ({ loading, onChange, validateContributorLogin }: Props) => {
         required: T("form.required"),
         validate: validateContributorLogin,
       }}
-      onChange={onChange}
+      onChange={onHandleChange}
       loading={loading}
     />
   );
