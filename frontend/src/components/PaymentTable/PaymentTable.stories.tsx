@@ -18,7 +18,7 @@ const mockPayments: PaymentRequest[] = [
     },
     status: PaymentStatus.ACCEPTED,
     reason: "PR#1",
-    requestedAt: new Date(),
+    requestedAt: new Date("2017-01-01"),
   },
   {
     amount: { value: 100, currency: Currency.USD },
@@ -29,7 +29,7 @@ const mockPayments: PaymentRequest[] = [
     },
     reason: "Link to my perfect PR",
     status: PaymentStatus.WAITING_PAYMENT,
-    requestedAt: new Date("2023-01-01"),
+    requestedAt: new Date("2020-01-01"),
   },
 ];
 
