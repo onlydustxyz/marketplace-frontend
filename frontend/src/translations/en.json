@@ -165,14 +165,18 @@
         "noPayments": "No payments so far",
         "send": "Send your first one!",
         "sendPayment": "Send payment"
+      },
+      "remainingBudget": {
+        "title": "Remaining budget",
+        "leftToSpend": "left to spend",
+        "newPayment": "New payment"
       }
     },
     "ledBy": "Led by",
     "projectLeadInvitation": {
       "prompt": "You’ve been promoted to Project Lead",
       "view": "View invite"
-    },
-    "remainingBudget": "Remaining budget"
+    }
   },
   "projectLeadInvitation": {
     "accept": "Accept invite",
