@@ -3,8 +3,11 @@ import { debounce } from "lodash";
 import { useCallback, useEffect, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import { useLocation } from "react-router-dom";
+import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
+import { HasuraUserRole } from "src/types";
+import { GetProjectContributorsForPaymentSelectQuery } from "src/__generated/graphql";
 import View from "./View";
 
 type Props = {
@@ -16,6 +19,13 @@ const ContributorSelect = ({ projectId }: Props) => {
   const { setValue, setError, clearErrors, watch, register } = useFormContext();
   const findUserQuery = useFindGithubUser();
   const location = useLocation();
+  const getProjectContributorsQuery = useHasuraQuery<GetProjectContributorsForPaymentSelectQuery>(
+    GET_PROJECT_CONTRIBUTORS_QUERY,
+    HasuraUserRole.Public,
+    {
+      variables: { projectId },
+    }
+  );
 
   const defaultContributor = location.state?.recipientGithubLogin;
 
@@ -53,12 +63,17 @@ const ContributorSelect = ({ projectId }: Props) => {
     () => !!findUserQuery.userId || T("github.invalidLogin"),
     [findUserQuery.userId]
   );
+  const contributors = useMemo(
+    () => getProjectContributorsQuery.data?.projectsByPk?.githubRepo?.content?.contributors ?? [],
+    [getProjectContributorsQuery.data]
+  );
 
   return (
     <View
-      loading={findUserQuery.loading}
+      loading={findUserQuery.loading || getProjectContributorsQuery.loading}
       validateContributorLogin={validateContributorLogin}
       onChange={register("contributorHandle").onChange}
+      contributors={contributors}
     />
   );
 };

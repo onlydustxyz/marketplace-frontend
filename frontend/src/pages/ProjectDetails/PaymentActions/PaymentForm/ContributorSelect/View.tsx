@@ -6,6 +6,7 @@ type Props = {
   loading: boolean;
   onChange: ChangeEventHandler<HTMLInputElement>;
   validateContributorLogin: () => boolean | string;
+  contributors: { avatarUrl: string; login: string; id: number }[];
 };
 
 const View = ({ loading, onChange, validateContributorLogin }: Props) => {
