@@ -55,7 +55,7 @@ const Profile: React.FC = () => {
         <div className="flex flex-col gap-6">
           {getProfileQuery.data && (
             <QueryWrapper query={getProfileQuery}>
-              {isPayoutInfoMissing(getProfileQuery) && <InfoMissingBanner />}
+              {isPayoutInfoMissing(getProfileQuery?.data?.userInfo?.[0]?.payoutSettings) && <InfoMissingBanner />}
               {getProfileQuery.data && <ProfileForm user={getProfileQuery.data.userInfo[0]} />}
             </QueryWrapper>
           )}

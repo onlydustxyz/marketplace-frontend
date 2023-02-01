@@ -102,3 +102,14 @@ export interface HasuraJWT {
 export type LanguageMap = { [languageName: string]: number };
 
 export type Contributor = { login: string; avatarUrl: string };
+
+export type PayoutSettings = {
+  EthTransfer?: {
+    Address?: string;
+    Name?: string;
+  };
+  WireTransfer?: {
+    IBAN?: string;
+    BIC?: string;
+  };
+};
