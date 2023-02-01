@@ -1,5 +1,5 @@
 import { useIntl } from "src/hooks/useIntl";
-import { Currency, PaymentStatus } from "src/types";
+import { Currency, PaymentStatus, PayoutSettings } from "src/types";
 import Table from "../Table";
 import Line from "../Table/Line";
 import Cell from "../Table/Cell";
@@ -13,6 +13,8 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import GithubPRLink, { LinkColor } from "../PayoutTable/GithubPRLink";
 import Folder3Line from "src/icons/Folder3Line";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
+import FocusLine from "src/icons/FocusLine";
+import isPayoutInfoMissing from "src/utils/isPayoutInfoMissing";
 
 type PropsType = {
   payments: PaymentRequest[];
@@ -31,6 +33,7 @@ export interface PaymentRequest {
   reason: string;
   status: PaymentStatus;
   requestedAt: Date;
+  recipientPayoutSettings?: PayoutSettings;
 }
 
 const PaymentTable: React.FC<PropsType> = ({ payments }) => {
@@ -58,31 +61,35 @@ const renderHeaders = () => {
         <span>{T("payment.table.amount")}</span>
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Quarter} horizontalMargin>
-        {T("payment.table.status")}
+        <FocusLine className="p-px font-normal" />
+        <span>{T("payment.table.status")}</span>
       </HeaderCell>
     </Headers>
   );
 };
 
 const renderPayments = (payments: PaymentRequest[]) => {
-  return payments.map(payment => (
-    <Line key={payment.id} highlightOnHover={200}>
-      <Cell>{displayRelativeDate(payment.requestedAt)}</Cell>
-      <Cell className="flex flex-row gap-3">
-        <RoundedImage src={payment.recipient.avatarUrl} alt={payment.recipient.login} rounding={Rounding.Circle} />
-        <div className="flex flex-col truncate justify-center pb-0.5">
-          <div className="font-medium text-sm text-greyscale-50 font-walsheim">{payment.recipient.login}</div>
-          {payment.reason && <GithubPRLink link={payment.reason} linkColor={LinkColor.Grey}></GithubPRLink>}
-        </div>
-      </Cell>
-      <Cell>
-        <span className="font-walsheim">{formatMoneyAmount(payment.amount.value, payment.amount.currency)}</span>
-      </Cell>
-      <Cell>
-        <PayoutStatus {...{ status: payment.status, payoutInfoMissing: false }} />
-      </Cell>
-    </Line>
-  ));
+  return payments.map(payment => {
+    const payoutInfoMissing = !!isPayoutInfoMissing(payment.recipientPayoutSettings);
+    return (
+      <Line key={payment.id} highlightOnHover={200}>
+        <Cell>{displayRelativeDate(payment.requestedAt)}</Cell>
+        <Cell className="flex flex-row gap-3">
+          <RoundedImage src={payment.recipient.avatarUrl} alt={payment.recipient.login} rounding={Rounding.Circle} />
+          <div className="flex flex-col truncate justify-center pb-0.5">
+            <div className="font-medium text-sm text-greyscale-50 font-walsheim">{payment.recipient.login}</div>
+            {payment.reason && <GithubPRLink link={payment.reason} linkColor={LinkColor.Grey}></GithubPRLink>}
+          </div>
+        </Cell>
+        <Cell>
+          <span className="font-walsheim">{formatMoneyAmount(payment.amount.value, payment.amount.currency)}</span>
+        </Cell>
+        <Cell>
+          <PayoutStatus {...{ status: payment.status, payoutInfoMissing }} isProjectLeaderView />
+        </Cell>
+      </Line>
+    );
+  });
 };
 
 export default PaymentTable;
