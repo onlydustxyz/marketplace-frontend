@@ -93,8 +93,8 @@ describe('"ProjectDetails" page', () => {
     );
   });
 
-  it("should render the submit payment buttons", async () => {
-    await screen.findByText(/submit payment/i);
+  it("should render the new payment buttons", async () => {
+    await screen.findByText(/new payment/i);
   });
 
   it("should render the remaining budget", async () => {

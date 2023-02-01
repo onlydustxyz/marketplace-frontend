@@ -4,7 +4,6 @@ import Card from "src/components/Card";
 import PaymentTable from "src/components/PaymentTable";
 import ProjectPaymentTableFallback from "src/components/ProjectPaymentTableFallback";
 import QueryWrapper from "src/components/QueryWrapper";
-import RemainingBudget from "src/components/RemainingBudget";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { Currency, HasuraUserRole, PaymentStatus } from "src/types";
@@ -16,6 +15,7 @@ import {
   ProjectDetailsDispatchContext,
 } from "../ProjectDetailsContext";
 import PaymentForm from "./PaymentForm";
+import RemainingBudget from "./RemainingBudget";
 
 interface PaymentsProps {
   projectId: string;
@@ -68,25 +68,16 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
               </Card>
             </div>
             <div className="flex basis-2/5">
-              <Card>
-                <div className="flex flex-col gap-10 items-stretch w-full">
-                  <RemainingBudget {...budget} />
-                  {budget.remainingAmount > 0 && (
-                    <div
-                      className="bg-neutral-50 rounded-xl w-fit p-3 hover:cursor-pointer text-black"
-                      onClick={() =>
-                        dispatch({
-                          type: ProjectDetailsActionType.SelectPaymentAction,
-                          selectedPaymentAction:
-                            state.paymentAction === PaymentAction.List ? PaymentAction.Send : PaymentAction.List,
-                        })
-                      }
-                    >
-                      {T(state.paymentAction === PaymentAction.List ? "payment.form.submit" : "payment.list")}
-                    </div>
-                  )}
-                </div>
-              </Card>
+              <RemainingBudget
+                budget={budget}
+                disabled={budget.remainingAmount === 0 || payments.length === 0}
+                onClickNewPayment={() =>
+                  dispatch({
+                    type: ProjectDetailsActionType.SelectPaymentAction,
+                    selectedPaymentAction: PaymentAction.Send,
+                  })
+                }
+              />
             </div>
           </div>
         )}
