@@ -42,7 +42,6 @@ export type User = {
   roles: HasuraUserRole[];
 };
 
-type Date = string;
 type Url = string;
 type Uuid = string;
 export type Email = string;
