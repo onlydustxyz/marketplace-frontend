@@ -41,16 +41,16 @@ runs:
       uses: ifaxity/wait-on-action@v1
       with:
         resource: http://localhost:8000
-        timeout: 120000
+        timeout: 180000
 
     - name: Wait for event-listeners to be up
       uses: ifaxity/wait-on-action@v1
       with:
         resource: http-get://localhost:8081/graphiql
-        timeout: 120000
+        timeout: 180000
 
     - name: Wait for github-proxy to be up
       uses: ifaxity/wait-on-action@v1
       with:
         resource: http://localhost:8001
-        timeout: 120000
+        timeout: 180000
