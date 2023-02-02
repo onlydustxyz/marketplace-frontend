@@ -27,7 +27,6 @@ impl DebugTechnicalHeaders for reqwest::Response {
 			status = self.status().to_string(),
 			header_x_cache = self.get_header_as_str("X-Cache"),
 			header_x_cache_hits = self.get_header_as_str("X-Cache-Hits"),
-			header_fastly_debug_ttl = self.get_header_as_str("Fastly-Debug-TTL"),
 			header_age = self.get_header_as_str("Age"),
 			header_cache_control = self.get_header_as_str("Cache-Control"),
 			header_etag = self.get_header_as_str("Etag"),

@@ -8,29 +8,12 @@ default:
     personal_access_tokens: $GITHUB_PAT
     headers:
       api-key: $GITHUB_PROXY_GITHUB_API_KEY
-      Fastly-Debug: "1"
-  reverse_proxy:
-    response_headers:
-      # - `public` makes the content cacheable by Fastly.
-      # - `max-age=60, s-maxage=60` tells Fastly that the content in cache expires after 60s.
-      #   This seems to be the default for responses coming from Github API.
-      # - `stale-while-revalidate=86400` tells Fastly to continue to deliver cached content up to
-      #   1 day after it expired, while refreshing the data in background. Note that refreshing
-      #   content uses the Etag mechnism with 304 responses, so it won't affect our remaining
-      #   rate limit if the content didn't change.
-      # - `stale-if-error=600` tells Fastly to contine to deliver cached content up to 10 minutes
-      #   after it expired in case the remote server (ie. Github API) responds with an error.
-      #   This allows our app to keep working during 10m in case Github API is down.
-      cache_control: $GITHUB_REVERSE_PROXY_CACHE_CONTROL
 
 local:
   tracer:
     json: false
     ansi: true
     location: true
-  reverse_proxy:
-    response_headers:
-      cache_control: public, max-age=60, s-maxage=60, stale-while-revalidate=86400, stale-if-error=600
 
 production:
   tracer:

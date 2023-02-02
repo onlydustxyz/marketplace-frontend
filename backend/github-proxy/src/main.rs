@@ -16,14 +16,13 @@ mod presentation;
 
 use serde::Deserialize;
 
-use self::{http::ReverseProxyConfig, presentation::http};
+use self::presentation::http;
 
 #[derive(Deserialize)]
 struct Config {
 	http: ::presentation::http::Config,
 	tracer: tracing::Config,
 	github: github::Config,
-	reverse_proxy: ReverseProxyConfig,
 }
 
 #[rocket::main]
@@ -33,7 +32,7 @@ async fn main() -> Result<()> {
 	let _tracer = Tracer::init(&config.tracer, "github-proxy")?;
 
 	let github_client = Arc::new(github::Client::new(&config.github)?);
-	http::serve(config.http, config.reverse_proxy, github_client).await?;
+	http::serve(config.http, github_client).await?;
 
 	info!("👋 Gracefully shut down");
 	Ok(())

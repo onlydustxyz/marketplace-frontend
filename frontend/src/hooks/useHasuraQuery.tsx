@@ -8,6 +8,9 @@ import {
   OperationVariables,
   useLazyQuery,
   LazyQueryResultTuple,
+  useSubscription,
+  SubscriptionResult,
+  SubscriptionHookOptions,
 } from "@apollo/client";
 import merge from "lodash/merge";
 import { HasuraUserRole } from "src/types";
@@ -34,4 +37,12 @@ export const useHasuraMutation = <T,>(
   options: MutationHookOptions<T> = {}
 ) => {
   return useMutation<T>(query, merge(options, { context: { headers: { "X-Hasura-Role": role } } }));
+};
+
+export const useHasuraSubscription = <T, V = OperationVariables>(
+  query: TypedDocumentNode<T, V>,
+  role: HasuraUserRole,
+  options: SubscriptionHookOptions<T, V> = {}
+): SubscriptionResult<T, V> => {
+  return useSubscription(query, merge(options, { context: { headers: { "X-Hasura-Role": role } } }));
 };

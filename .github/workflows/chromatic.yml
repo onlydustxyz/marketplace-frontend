@@ -6,6 +6,8 @@ on:
   push:
     branches:
       - "main"
+      - "hotfix/**"
+      - "epic/**"
 
 jobs:
   chromatic-deployment:
