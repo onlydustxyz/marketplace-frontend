@@ -25,6 +25,7 @@ describe("As a project lead, I", () => {
 
     cy.contains("Submit payment").click();
     cy.get("[name=contributorHandle").type("AnthonyBuisset");
+    cy.get("[name=contributorHandle").blur();
     cy.get("[name=linkToIssue").type("https://github.com/onlydustxyz/starkonquest/pull/68");
     cy.wait(WAIT_LONG);
     cy.contains("Confirm payment").click();
