@@ -87,7 +87,7 @@ const ContributorSelect = ({ projectId }: Props) => {
 
 export default ContributorSelect;
 
-export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
+export const GITHUB_CONTRIBUTOR_FRAGMENT = gql`
   ${GITHUB_USER_FRAGMENT}
   fragment GithubContributor on User {
     ...GithubUser
@@ -95,6 +95,10 @@ export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
       userId
     }
   }
+`;
+
+export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
+  ${GITHUB_CONTRIBUTOR_FRAGMENT}
   query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
     projectsByPk(id: $projectId) {
       githubRepo {

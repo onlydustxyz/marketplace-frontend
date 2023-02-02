@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import { useHasuraLazyQuery } from "src/hooks/useHasuraQuery";
+import { GITHUB_CONTRIBUTOR_FRAGMENT } from "src/pages/ProjectDetails/PaymentActions/PaymentForm/ContributorSelect";
 import { HasuraUserRole } from "src/types";
 import { FindUserQueryForPaymentFormQuery } from "src/__generated/graphql";
 
@@ -23,11 +24,10 @@ export default function useFindGithubUser() {
 }
 
 export const FIND_USER_QUERY = gql`
+  ${GITHUB_CONTRIBUTOR_FRAGMENT}
   query FindUserQueryForPaymentForm($username: String!) {
     fetchUserDetails(username: $username) {
-      id
-      avatarUrl
-      login
+      ...GithubContributor
     }
   }
 `;

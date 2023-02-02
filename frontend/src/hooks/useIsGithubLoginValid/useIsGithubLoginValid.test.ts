@@ -17,6 +17,7 @@ const findUserQueryMock = {
         id: GITHUB_USER_ID,
         avatarUrl: "https://avatars.githubusercontent.com/u/12346587?v=4",
         login: GITHUB_USER_LOGIN,
+        user: null,
       },
     },
   },
