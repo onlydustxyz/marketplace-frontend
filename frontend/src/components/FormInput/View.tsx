@@ -18,6 +18,9 @@ type PropsType = {
   errorType: InputErrorType;
   register: UseFormRegisterReturn<string>;
   onFocus?: FocusEventHandler<unknown>;
+  prefixComponent?: React.ReactNode;
+  suffixComponent?: React.ReactNode;
+  inputClassName?: string;
 };
 
 export enum InputErrorType {
@@ -35,6 +38,9 @@ const View: React.FC<PropsType> = ({
   errorType,
   register,
   onFocus,
+  prefixComponent,
+  suffixComponent,
+  inputClassName,
 }) => (
   <label html-for={name} className="flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim">
     <div className="font-medium text-sm tracking-tight">{label}</div>
@@ -47,13 +53,19 @@ const View: React.FC<PropsType> = ({
           type={type}
           className={classNames(
             "w-full h-11 bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 placeholder:text-greyscale-400 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
-            { "border outline-1 outline-rose-600 border-rose-600": error && errorType === InputErrorType.Normal }
+            { "border outline-1 outline-rose-600 border-rose-600": error && errorType === InputErrorType.Normal },
+            inputClassName
           )}
           value={value}
           {...register}
           onFocus={onFocus}
         />
-        {loading && <LoaderIcon className="flex animate-spin place-items-center absolute right-0 mr-3" />}
+        {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}
+        {loading ? (
+          <LoaderIcon className="flex animate-spin place-items-center absolute right-0 mr-3" />
+        ) : (
+          suffixComponent
+        )}
       </div>
       {errorType === InputErrorType.Normal && (
         <span className="text-rose-600 text-sm ml-3">{error?.message ? error.message.toString() : "\u00A0"}</span>

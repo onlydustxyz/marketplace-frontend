@@ -2748,7 +2748,7 @@ export type FindUserQueryForPaymentFormQueryVariables = Exact<{
 }>;
 
 
-export type FindUserQueryForPaymentFormQuery = { __typename?: 'query_root', fetchUserDetails: { __typename?: 'User', id: number, avatarUrl: string, login: string } };
+export type FindUserQueryForPaymentFormQuery = { __typename?: 'query_root', fetchUserDetails: { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -3031,12 +3031,10 @@ export type GetPaymentRequestIdsQueryResult = Apollo.QueryResult<GetPaymentReque
 export const FindUserQueryForPaymentFormDocument = gql`
     query FindUserQueryForPaymentForm($username: String!) {
   fetchUserDetails(username: $username) {
-    id
-    avatarUrl
-    login
+    ...GithubContributor
   }
 }
-    `;
+    ${GithubContributorFragmentDoc}`;
 
 /**
  * __useFindUserQueryForPaymentFormQuery__

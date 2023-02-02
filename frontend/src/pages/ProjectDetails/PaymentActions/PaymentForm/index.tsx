@@ -40,6 +40,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
   const formMethods = useForm<Inputs>({
     defaultValues: {
       remainingBudget: budget.remainingAmount,
+      contributorHandle: null,
     },
   });
 

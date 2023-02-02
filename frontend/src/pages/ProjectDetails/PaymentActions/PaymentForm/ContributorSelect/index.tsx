@@ -5,10 +5,9 @@ import { useFormContext } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
-import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
-import { GITHUB_USER_FRAGMENT } from "src/pages/ProjectDetails/PaymentActions/useGetPaymentRequests";
+import useFindGithubUser, { GITHUB_CONTRIBUTOR_FRAGMENT } from "src/hooks/useIsGithubLoginValid";
 import { HasuraUserRole } from "src/types";
-import { GetProjectContributorsForPaymentSelectQuery, GithubContributorFragment } from "src/__generated/graphql";
+import { GetProjectContributorsForPaymentSelectQuery } from "src/__generated/graphql";
 import View from "./View";
 
 type Props = {
@@ -32,9 +31,6 @@ const ContributorSelect = ({ projectId }: Props) => {
   const onContributorHandleChange = useCallback((handle: string) => {
     setValue("contributorHandle", handle);
   }, []);
-  const onContributorChange = useCallback((contributor: GithubContributorFragment) => {
-    setValue("contributor", contributor);
-  }, []);
 
   const contributorHandle = watch("contributorHandle");
   const contributor = watch("contributor");
@@ -53,15 +49,19 @@ const ContributorSelect = ({ projectId }: Props) => {
   }, [findUserQuery.user]);
 
   useEffect(() => {
-    if (findUserQuery.error) {
+    if (findUserQuery.error && contributorHandle !== "") {
       setError("contributorHandle", { message: T("github.invalidLogin") });
+      setValue("contributor", null);
     } else {
       clearErrors("contributorHandle");
     }
   }, [findUserQuery.error]);
 
   useEffect(() => {
-    if (contributorHandle) {
+    if (contributorHandle === "") {
+      setValue("contributor", null);
+    }
+    if (contributorHandle !== null) {
       onContributorLoginChange(contributorHandle);
     }
   }, [contributorHandle]);
@@ -81,7 +81,6 @@ const ContributorSelect = ({ projectId }: Props) => {
       loading={findUserQuery.loading || getProjectContributorsQuery.loading}
       validateContributorLogin={validateContributorLogin}
       onContributorHandleChange={onContributorHandleChange}
-      onContributorChange={onContributorChange}
       contributors={contributors}
       contributor={contributor}
     />
@@ -91,13 +90,7 @@ const ContributorSelect = ({ projectId }: Props) => {
 export default ContributorSelect;
 
 export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
-  ${GITHUB_USER_FRAGMENT}
-  fragment GithubContributor on User {
-    ...GithubUser
-    user {
-      userId
-    }
-  }
+  ${GITHUB_CONTRIBUTOR_FRAGMENT}
   query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
     projectsByPk(id: $projectId) {
       githubRepo {

@@ -15,6 +15,9 @@ type PropsType = {
   onChange?: ChangeEventHandler<unknown>;
   onFocus?: FocusEventHandler<unknown>;
   onBlur?: FocusEventHandler<unknown>;
+  prefixComponent?: React.ReactNode;
+  suffixComponent?: React.ReactNode;
+  inputClassName?: string;
 };
 
 export default function Input({
@@ -29,6 +32,9 @@ export default function Input({
   onChange,
   onBlur,
   onFocus,
+  prefixComponent,
+  suffixComponent,
+  inputClassName,
 }: PropsType) {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
@@ -53,6 +59,9 @@ export default function Input({
         value,
         register: overridenRegister,
         onFocus,
+        prefixComponent,
+        suffixComponent,
+        inputClassName,
       }}
     />
   );

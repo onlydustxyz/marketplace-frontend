@@ -43,6 +43,7 @@
       "contributor": {
         "title": "Send payment to",
         "inputLabel": "Please select the contributor you would like to send a payment to",
+        "needsToSignup": "__contributor__ will have to sign up to OnlyDust to receive their payment",
         "placeholder": "Search for contributor"
       },
       "issueLink": {
