@@ -2,7 +2,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { PaymentWithRecipientInfo } from "src/types";
 import Table from "../Table";
 import Line from "../Table/Line";
-import Cell from "../Table/Cell";
+import Cell, { CellHeight } from "../Table/Cell";
 import Headers from "../Table/HeaderLine";
 import HeaderCell, { HeaderCellWidth } from "../Table/HeaderCell";
 import RoundedImage, { Rounding } from "src/components/RoundedImage";
@@ -36,7 +36,7 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
   const { T } = useIntl();
   return (
     <Headers>
-      <HeaderCell width={HeaderCellWidth.Sixth} horizontalMargin onClick={() => applySorting(Field.Date)}>
+      <HeaderCell width={HeaderCellWidth.Quarter} horizontalMargin onClick={() => applySorting(Field.Date)}>
         <TimeLine className="pl-px font-normal" />
         <span>{T("payment.table.date")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Date} />
@@ -52,7 +52,7 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Amount} />
       </HeaderCell>
       <HeaderCell width={HeaderCellWidth.Quarter} onClick={() => applySorting(Field.Status)} horizontalMargin>
-        <FocusLine className="p-px font-normal" />
+        <FocusLine className="pl-0.5 font-normal" />
         <span>{T("payment.table.status")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Status} />
       </HeaderCell>
@@ -67,8 +67,8 @@ const renderPayments = (payments: PaymentWithRecipientInfo[]) => {
       <>
         {payment && payment.recipient && (
           <Line key={payment.id} highlightOnHover={200}>
-            <Cell>{displayRelativeDate(payment.requestedAt)}</Cell>
-            <Cell className="flex flex-row gap-3">
+            <Cell height={CellHeight.Medium}>{displayRelativeDate(payment.requestedAt)}</Cell>
+            <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
               <RoundedImage
                 src={payment.recipient.avatarUrl}
                 alt={payment.recipient.login}
@@ -79,10 +79,10 @@ const renderPayments = (payments: PaymentWithRecipientInfo[]) => {
                 {payment.reason && <GithubPRLink link={payment.reason} linkColor={LinkColor.Grey}></GithubPRLink>}
               </div>
             </Cell>
-            <Cell>
+            <Cell height={CellHeight.Medium}>
               <span className="font-walsheim">{formatMoneyAmount(payment.amount.value, payment.amount.currency)}</span>
             </Cell>
-            <Cell>
+            <Cell height={CellHeight.Medium}>
               <PayoutStatus {...{ status: payment.status, payoutInfoMissing }} isProjectLeaderView />
             </Cell>
           </Line>
