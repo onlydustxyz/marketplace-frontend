@@ -2,7 +2,9 @@ use std::sync::Arc;
 
 use ::olog::info;
 use anyhow::Result;
-use backend_domain::{Destination, Event, Publisher, Subscriber, SubscriberCallbackError};
+use backend_domain::{
+	AggregateEvent, Destination, Event, Publisher, Subscriber, SubscriberCallbackError,
+};
 use backend_infrastructure::{
 	amqp::{self, Bus, UniqueMessage},
 	config,
@@ -67,7 +69,6 @@ async fn publish(
 	Ok(())
 }
 
-// TODO: remove once events are type safe
 trait IdentifiableAggregate {
 	fn aggregate_id(&self) -> String;
 }
@@ -75,18 +76,8 @@ trait IdentifiableAggregate {
 impl IdentifiableAggregate for Event {
 	fn aggregate_id(&self) -> String {
 		match &self {
-			Event::Project(event) => match event {
-				backend_domain::ProjectEvent::Created { id, .. }
-				| backend_domain::ProjectEvent::LeaderAssigned { id, .. }
-				| backend_domain::ProjectEvent::LeaderUnassigned { id, .. }
-				| backend_domain::ProjectEvent::GithubRepositoryUpdated { id, .. }
-				| backend_domain::ProjectEvent::Budget { id, .. } => id.to_string(),
-			},
-			Event::Payment(event) => match event {
-				backend_domain::PaymentEvent::Requested { id, .. }
-				| backend_domain::PaymentEvent::Processed { id, .. }
-				| backend_domain::PaymentEvent::Cancelled { id } => id.to_string(),
-			},
+			Event::Project(event) => event.aggregate_id().to_string(),
+			Event::Payment(event) => event.aggregate_id().to_string(),
 		}
 	}
 }

@@ -2,12 +2,20 @@ use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{Amount, BudgetId};
+use crate::{AggregateEvent, Amount, Budget, BudgetId};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	Allocated { id: BudgetId, amount: Amount },
 	Spent { id: BudgetId, amount: Amount },
+}
+
+impl AggregateEvent<Budget> for Event {
+	fn aggregate_id(&self) -> &BudgetId {
+		match self {
+			Self::Allocated { id, .. } | Self::Spent { id, .. } => id,
+		}
+	}
 }
 
 impl Display for Event {

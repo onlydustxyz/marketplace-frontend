@@ -5,7 +5,11 @@ use serde::{de::DeserializeOwned, Serialize};
 use crate::Entity;
 
 pub trait Aggregate: Entity + Send + Sync + Default + Sized {
-	type Event: Serialize + DeserializeOwned + Debug + Display + Clone;
+	type Event: Serialize + DeserializeOwned + Debug + Display + Clone + Event<Self>;
+}
+
+pub trait Event<A: Aggregate> {
+	fn aggregate_id(&self) -> &A::Id;
 }
 
 pub trait EventSourcable: Aggregate {

@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{BudgetEvent, GithubRepositoryId, ProjectId, UserId};
+use crate::{AggregateEvent, BudgetEvent, GithubRepositoryId, Project, ProjectId, UserId};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -27,6 +27,18 @@ pub enum Event {
 		id: ProjectId,
 		event: BudgetEvent,
 	},
+}
+
+impl AggregateEvent<Project> for Event {
+	fn aggregate_id(&self) -> &ProjectId {
+		match self {
+			Self::Created { id, .. }
+			| Self::LeaderAssigned { id, .. }
+			| Self::LeaderUnassigned { id, .. }
+			| Self::GithubRepositoryUpdated { id, .. }
+			| Self::Budget { id, .. } => id,
+		}
+	}
 }
 
 impl Display for Event {

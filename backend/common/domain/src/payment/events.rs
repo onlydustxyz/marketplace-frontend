@@ -4,7 +4,10 @@ use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-use crate::{Amount, BudgetId, GithubUserId, PaymentId, PaymentReceipt, PaymentReceiptId, UserId};
+use crate::{
+	AggregateEvent, Amount, BudgetId, GithubUserId, Payment, PaymentId, PaymentReceipt,
+	PaymentReceiptId, UserId,
+};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -26,6 +29,14 @@ pub enum Event {
 		amount: Amount,
 		receipt: PaymentReceipt,
 	},
+}
+
+impl AggregateEvent<Payment> for Event {
+	fn aggregate_id(&self) -> &PaymentId {
+		match self {
+			Self::Requested { id, .. } | Self::Processed { id, .. } | Self::Cancelled { id } => id,
+		}
+	}
 }
 
 impl From<Event> for crate::Event {
