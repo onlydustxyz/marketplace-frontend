@@ -14,7 +14,6 @@ import RiErrorWarningLine from "src/icons/RiErrorWarningLine";
 type Props = {
   loading: boolean;
   onContributorHandleChange: (handle: string) => void;
-  onContributorChange: (contributor: GithubContributorFragment) => void;
   validateContributorLogin: () => boolean | string;
   contributors: GithubContributorFragment[];
   contributor?: GithubContributorFragment;

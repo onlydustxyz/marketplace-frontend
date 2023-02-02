@@ -32,9 +32,6 @@ const ContributorSelect = ({ projectId }: Props) => {
   const onContributorHandleChange = useCallback((handle: string) => {
     setValue("contributorHandle", handle);
   }, []);
-  const onContributorChange = useCallback((contributor: GithubContributorFragment) => {
-    setValue("contributor", contributor);
-  }, []);
 
   const contributorHandle = watch("contributorHandle");
   const contributor = watch("contributor");
@@ -82,7 +79,6 @@ const ContributorSelect = ({ projectId }: Props) => {
       loading={findUserQuery.loading || getProjectContributorsQuery.loading}
       validateContributorLogin={validateContributorLogin}
       onContributorHandleChange={onContributorHandleChange}
-      onContributorChange={onContributorChange}
       contributors={contributors}
       contributor={contributor}
     />
