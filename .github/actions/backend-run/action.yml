@@ -16,7 +16,7 @@ runs:
     - name: Run the api
       shell: bash
       run: |
-        cargo run &> api.out.log &
+        cargo run -p api &> api.out.log &
         echo "api_pid=$!" >> $GITHUB_ENV
 
     - name: Run the event-listeners
