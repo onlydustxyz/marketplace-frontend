@@ -60,11 +60,12 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 
 		impl infrastructure::database::MappingRepository<#entity1, #entity2> for #repository_name {
 			#[tracing::instrument(name = #insert_span_name, skip(self))]
-			fn insert(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
+			fn upsert(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 
 				diesel::insert_into(#table)
 					.values((#id1.eq(id1), #id2.eq(id2)))
+					.on_conflict_do_nothing()
 					.execute(&*connection)?;
 
 				Ok(())

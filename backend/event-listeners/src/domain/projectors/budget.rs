@@ -25,7 +25,7 @@ impl EventListener for Projector {
 		{
 			match event {
 				BudgetEvent::Allocated { id, amount } => {
-					self.budget_repository.insert(&Budget::new(
+					self.budget_repository.upsert(&Budget::new(
 						*id,
 						Some(*project_id),
 						*amount.amount(),

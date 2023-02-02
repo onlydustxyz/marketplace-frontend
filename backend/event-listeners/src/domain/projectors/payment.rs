@@ -29,7 +29,7 @@ impl EventListener for Projector {
 			receipt,
 		}) = event
 		{
-			self.repository.insert(&Payment::new(
+			self.repository.upsert(&Payment::new(
 				*receipt_id,
 				*amount.amount(),
 				amount.currency().to_string(),
