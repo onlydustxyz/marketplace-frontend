@@ -23,7 +23,7 @@ describe("As a project lead, I", () => {
     cy.contains("Payments").click();
     cy.get("#remainingBudget").should("have.text", "$1,000");
 
-    cy.contains("Send payment").click();
+    cy.contains("New payment").click();
     cy.get("[name=contributor").type("AnthonyBuisset");
     cy.get("[name=linkToIssue").type("https://github.com/onlydustxyz/starkonquest/pull/68");
     cy.wait(WAIT_LONG);

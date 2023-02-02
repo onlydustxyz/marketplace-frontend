@@ -7,7 +7,7 @@ import QueryWrapper from "src/components/QueryWrapper";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { Currency, HasuraUserRole, PaymentStatus } from "src/types";
-import { GetPaymentRequestsForProjectQuery, PaymentRequests } from "src/__generated/graphql";
+import { GetPaymentRequestsForProjectQuery } from "src/__generated/graphql";
 import {
   PaymentAction,
   ProjectDetailsActionType,
@@ -52,10 +52,12 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
         {state.paymentAction === PaymentAction.List && (
           <div className="flex flex-row items-start gap-5 h-full">
             <div className="flex basis-2/3 self-stretch">
-              <Card>
-                {payments.length > 0 ? (
+              {payments.length > 0 ? (
+                <Card>
                   <PaymentTable payments={payments.map(mapPaymentRequestsFromQuery)} />
-                ) : (
+                </Card>
+              ) : (
+                <Card className="p-16">
                   <ProjectPaymentTableFallback
                     onClick={() =>
                       dispatch({
@@ -64,8 +66,8 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
                       })
                     }
                   />
-                )}
-              </Card>
+                </Card>
+              )}
             </div>
             <div className="flex basis-1/3">
               <RemainingBudget
