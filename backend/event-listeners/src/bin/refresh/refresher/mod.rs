@@ -31,7 +31,13 @@ where
 {
 	async fn refresh(&self, id: &str) -> Result<()> {
 		let id = A::Id::from_str(id).map_err(|_| anyhow!("Unable to parse aggregate id"))?;
-		for event in self.event_store.list_by_id(&id)? {
+		let events = self.event_store.list_by_id(&id)?;
+
+		if events.is_empty() {
+			return Err(anyhow!("No event found"));
+		}
+
+		for event in events {
 			let event: Event = event.into();
 			for projector in &self.projectors {
 				projector.on_event(&event).await?;
