@@ -50,14 +50,27 @@ export type PhoneNumber = string;
 export type Payment = {
   id: string;
   requestedAt: Date;
-  project: Project;
   reason: string;
   amount: {
     value: number;
     currency: Currency;
   };
   status: PaymentStatus;
+  recipient?: {
+    avatarUrl: string;
+    login: string;
+  };
+  recipientPayoutSettings?: PayoutSettings;
+  project?: Project;
 };
+
+export interface PaymentWithRecipientInfo extends Payment {
+  recipient: {
+    avatarUrl: string;
+    login: string;
+  };
+  recipientPayoutSettings: PayoutSettings;
+}
 
 export enum Currency {
   USD = "USD",
