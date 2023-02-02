@@ -62,7 +62,7 @@ const ContributorSelect = ({ projectId }: Props) => {
   }, [findUserQuery.error]);
 
   useEffect(() => {
-    if (contributorHandle) {
+    if (contributorHandle !== null) {
       onContributorLoginChange(contributorHandle);
     }
   }, [contributorHandle]);
