@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 import { HasuraUserRole } from "src/types";
 import { useForm, SubmitHandler, FormProvider, Controller } from "react-hook-form";
-import { Navigate, useLocation } from "react-router-dom";
 import IBAN from "iban";
 
 import Input from "src/components/FormInput";
@@ -15,8 +14,6 @@ import {
   UpdateProfileInfoMutationVariables,
 } from "src/__generated/graphql";
 import Card from "src/components/Card";
-import { RoutePaths } from "src/App";
-import { useEffect } from "react";
 import { useShowToaster } from "src/hooks/useToaster";
 import FormToggle from "src/components/FormToggle";
 
@@ -45,6 +42,7 @@ type Inputs = {
 
 type PropsType = {
   user?: UserInfo;
+  setSaveButtonDisabled: (disabled: boolean) => void;
 };
 
 enum PayoutSettingsDisplayType {
@@ -52,7 +50,7 @@ enum PayoutSettingsDisplayType {
   EthereumIdentity = "ETHEREUM_IDENTITY",
 }
 
-const ProfileForm: React.FC<PropsType> = ({ user }) => {
+const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
   const formMethods = useForm<Inputs>({
     defaultValues: {
       isCompanyProfile: user?.identity?.Company,
@@ -77,23 +75,19 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
     },
   });
   const { handleSubmit } = formMethods;
-  const [updateUser, { data, error }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser, {
+  const showToaster = useShowToaster();
+
+  const [updateUser, { loading }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser, {
     context: {
       graphqlErrorDisplay: "toaster",
     },
+    onCompleted: () => showToaster(T("profile.form.success")),
   });
-  const success = !!data;
-  const location = useLocation();
-  const showToaster = useShowToaster();
 
-  useEffect(() => {
-    if (success) {
-      showToaster(T("profile.form.success"));
-    }
-  }, [success, error]);
+  setSaveButtonDisabled(loading);
 
-  const onSubmit: SubmitHandler<Inputs> = async formData => {
-    await updateUser(mapFormDataToSchema(formData));
+  const onSubmit: SubmitHandler<Inputs> = formData => {
+    updateUser(mapFormDataToSchema(formData));
   };
 
   const payoutSettingsType = formMethods.watch("payoutSettingsType");
@@ -258,7 +252,6 @@ const ProfileForm: React.FC<PropsType> = ({ user }) => {
             )}
           </Card>
         </div>
-        {success && <Navigate to={location.state?.prev || RoutePaths.Projects} />}
       </form>
     </FormProvider>
   );

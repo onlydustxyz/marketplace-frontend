@@ -16,7 +16,7 @@ describe("The user", () => {
 
   it("can fill their personal info", function () {
     cy.fillPayoutSettings(this.token)
-    cy.contains("Browse projects");
+    cy.contains("Payment information successfully updated");
   });
 
   it("can see their personal info pre-filled", function () {
@@ -73,7 +73,7 @@ describe("The company", () => {
     cy.contains("Save profile").click();
     cy.wait(WAIT_LONG);
 
-    cy.contains("Browse projects");
+    cy.contains("Payment information successfully updated");
   });
 
   it("can see their personal info pre-filled", function () {
