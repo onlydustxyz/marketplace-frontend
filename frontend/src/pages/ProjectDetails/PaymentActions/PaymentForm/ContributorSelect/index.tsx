@@ -90,7 +90,7 @@ const ContributorSelect = ({ projectId }: Props) => {
 
 export default ContributorSelect;
 
-const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
+export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
   query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
     projectsByPk(id: $projectId) {
       githubRepo {
