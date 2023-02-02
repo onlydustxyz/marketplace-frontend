@@ -17,9 +17,17 @@ type Props = {
   validateContributorLogin: () => boolean | string;
   contributors: GithubContributorFragment[];
   contributor?: GithubContributorFragment;
+  clear: () => void;
 };
 
-const View = ({ loading, contributor, contributors, onContributorHandleChange, validateContributorLogin }: Props) => {
+const View = ({
+  loading,
+  contributor,
+  contributors,
+  onContributorHandleChange,
+  validateContributorLogin,
+  clear,
+}: Props) => {
   const { T } = useIntl();
   const onHandleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     event => {
