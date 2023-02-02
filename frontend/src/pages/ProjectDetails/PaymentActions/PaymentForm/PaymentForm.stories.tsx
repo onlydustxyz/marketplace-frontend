@@ -22,8 +22,10 @@ export default {
 const projectId = "yolo";
 const BERNARDSTANISLAS = {
   avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
-  id: "4435377",
+  id: 4435377,
   login: "bernardstanislas",
+  user: null,
+  __typename: "User",
 };
 
 const mocks = [
@@ -39,12 +41,7 @@ const mocks = [
         projectsByPk: {
           githubRepo: {
             content: {
-              contributors: [
-                {
-                  ...BERNARDSTANISLAS,
-                  user: null,
-                },
-              ],
+              contributors: [BERNARDSTANISLAS],
             },
           },
         },
@@ -73,7 +70,7 @@ const Template: ComponentStory<typeof PaymentForm> = args => {
     },
   });
   return (
-    <MockedProvider mocks={mocks} addTypename={false}>
+    <MockedProvider mocks={mocks}>
       <FormProvider {...methods}>
         <PaymentForm {...args} />
       </FormProvider>
