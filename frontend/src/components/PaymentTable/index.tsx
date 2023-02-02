@@ -36,17 +36,17 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
   const { T } = useIntl();
   return (
     <Headers>
-      <HeaderCell width={HeaderCellWidth.Quarter} horizontalMargin onClick={() => applySorting(Field.Date)}>
+      <HeaderCell width={HeaderCellWidth.Sixth} horizontalMargin onClick={() => applySorting(Field.Date)}>
         <TimeLine className="pl-px font-normal" />
         <span>{T("payment.table.date")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Date} />
       </HeaderCell>
-      <HeaderCell width={HeaderCellWidth.Half} horizontalMargin onClick={() => applySorting(Field.Contribution)}>
+      <HeaderCell width={HeaderCellWidth.Third} horizontalMargin onClick={() => applySorting(Field.Contribution)}>
         <Folder3Line className="pl-px font-normal" />
         <span>{T("payment.table.contribution")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Contribution} />
       </HeaderCell>
-      <HeaderCell width={HeaderCellWidth.Quarter} onClick={() => applySorting(Field.Amount)} horizontalMargin>
+      <HeaderCell width={HeaderCellWidth.Sixth} onClick={() => applySorting(Field.Amount)} horizontalMargin>
         <MoneyDollarCircleLine className="pl-px font-normal" />
         <span>{T("payment.table.amount")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Amount} />
