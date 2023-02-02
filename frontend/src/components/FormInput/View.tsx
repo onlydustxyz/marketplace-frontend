@@ -52,7 +52,7 @@ const View: React.FC<PropsType> = ({
           placeholder={placeholder}
           type={type}
           className={classNames(
-            "w-full h-11 bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 placeholder:text-greyscale-400 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
+            "w-full h-11 bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 text-greyscale-50 placeholder:text-greyscale-400 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
             { "border outline-1 outline-rose-600 border-rose-600": error && errorType === InputErrorType.Normal },
             inputClassName
           )}

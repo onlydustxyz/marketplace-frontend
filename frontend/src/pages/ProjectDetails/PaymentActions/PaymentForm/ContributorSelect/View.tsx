@@ -10,6 +10,7 @@ import { useIntl } from "src/hooks/useIntl";
 import SearchLine from "src/icons/SearchLine";
 import { GithubContributorFragment } from "src/__generated/graphql";
 import RiErrorWarningLine from "src/icons/RiErrorWarningLine";
+import CloseLine from "src/icons/CloseLine";
 
 type Props = {
   loading: boolean;
@@ -17,9 +18,17 @@ type Props = {
   validateContributorLogin: () => boolean | string;
   contributors: GithubContributorFragment[];
   contributor?: GithubContributorFragment;
+  clear: () => void;
 };
 
-const View = ({ loading, contributor, contributors, onContributorHandleChange, validateContributorLogin }: Props) => {
+const View = ({
+  loading,
+  contributor,
+  contributors,
+  onContributorHandleChange,
+  validateContributorLogin,
+  clear,
+}: Props) => {
   const { T } = useIntl();
   const onHandleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     event => {
@@ -42,6 +51,12 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
       <SearchLine className="ml-2" />
     );
 
+  const suffixComponent = contributor && (
+    <div className="absolute right-0 cursor-pointer pr-4 text-greyscale-50" onClick={() => clear()}>
+      <CloseLine />
+    </div>
+  );
+
   return (
     <div className="w-full">
       <div className="relative">
@@ -59,6 +74,7 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
           onBlur={() => setOpened(false)}
           loading={loading}
           prefixComponent={prefixComponent}
+          suffixComponent={suffixComponent}
         />
 
         <Transition

@@ -31,6 +31,10 @@ const ContributorSelect = ({ projectId }: Props) => {
   const onContributorHandleChange = useCallback((handle: string) => {
     setValue("contributorHandle", handle);
   }, []);
+  const clear = useCallback(() => {
+    setValue("contributorHandle", null);
+    setValue("contributor", null);
+  }, []);
 
   const contributorHandle = watch("contributorHandle");
   const contributor = watch("contributor");
@@ -83,6 +87,7 @@ const ContributorSelect = ({ projectId }: Props) => {
       onContributorHandleChange={onContributorHandleChange}
       contributors={contributors}
       contributor={contributor}
+      clear={clear}
     />
   );
 };
