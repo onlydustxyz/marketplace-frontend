@@ -3,7 +3,9 @@ import { ChangeEventHandler, useCallback, useState } from "react";
 import Card from "src/components/Card";
 import Contributor from "src/components/Contributor";
 import Input from "src/components/FormInput";
+import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
+import SearchLine from "src/icons/SearchLine";
 import { GithubContributorFragment } from "src/__generated/graphql";
 
 type Props = {
@@ -12,10 +14,10 @@ type Props = {
   onContributorChange: (contributor: GithubContributorFragment) => void;
   validateContributorLogin: () => boolean | string;
   contributors: GithubContributorFragment[];
-  contributor: GithubContributorFragment;
+  contributor?: GithubContributorFragment;
 };
 
-const View = ({ loading, contributors, onContributorHandleChange, validateContributorLogin }: Props) => {
+const View = ({ loading, contributor, contributors, onContributorHandleChange, validateContributorLogin }: Props) => {
   const { T } = useIntl();
   const onHandleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     event => {
@@ -31,9 +33,16 @@ const View = ({ loading, contributors, onContributorHandleChange, validateContri
   );
   const [opened, setOpened] = useState(false);
 
+  const prefixComponent = contributor ? (
+    <RoundedImage src={contributor.avatarUrl} size={ImageSize.Small} alt={contributor.login} />
+  ) : (
+    <SearchLine className="ml-2" />
+  );
+
   return (
     <div className="relative w-full">
       <Input
+        inputClassName="pl-12"
         label={T("payment.form.contributor.inputLabel")}
         name="contributorHandle"
         placeholder={T("payment.form.contributor.placeholder")}
@@ -45,6 +54,7 @@ const View = ({ loading, contributors, onContributorHandleChange, validateContri
         onFocus={() => setOpened(true)}
         onBlur={() => setOpened(false)}
         loading={loading}
+        prefixComponent={prefixComponent}
       />
       <Transition
         className="absolute w-full"
