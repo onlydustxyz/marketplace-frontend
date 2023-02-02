@@ -51,7 +51,7 @@ const View = ({ loading, contributors, onContributorHandleChange, validateContri
             <div
               key={contributor.id}
               className="px-4 py-3 hover:bg-white/2 cursor-pointer"
-              onClick={() => onContributorChange(contributor)}
+              onMouseDown={() => onContributorChange(contributor)}
             >
               <Contributor
                 contributor={{
