@@ -46,7 +46,13 @@ const graphQlMocks = [
     },
     newData: vi.fn(() => ({
       data: {
-        fetchUserDetails: { id: TEST_USER.githubUser.githubUserId },
+        fetchUserDetails: {
+          id: TEST_USER.githubUser.githubUserId,
+          login: TEST_USER.displayName,
+          avatarUrl: "",
+          user: null,
+          __typename: "User",
+        },
       },
     })),
   },
