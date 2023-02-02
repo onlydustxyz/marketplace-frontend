@@ -9,6 +9,8 @@ use event_listeners::domain::EventListener;
 mod registry;
 pub use registry::{Registrable, Registry};
 
+pub mod project;
+
 #[derive(Constructor)]
 pub struct Refresher<A: Aggregate> {
 	event_store: Arc<dyn EventStore<A>>,
