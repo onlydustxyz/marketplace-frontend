@@ -43,8 +43,8 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
     );
 
   return (
-    <div>
-      <div className="relative w-full">
+    <div className="w-full">
+      <div className="relative">
         <Input
           inputClassName="pl-12"
           label={T("payment.form.contributor.inputLabel")}
