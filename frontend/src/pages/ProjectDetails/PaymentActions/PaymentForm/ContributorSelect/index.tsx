@@ -55,6 +55,7 @@ const ContributorSelect = ({ projectId }: Props) => {
   useEffect(() => {
     if (findUserQuery.error) {
       setError("contributorHandle", { message: T("github.invalidLogin") });
+      setValue("contributor", null);
     } else {
       clearErrors("contributorHandle");
     }
