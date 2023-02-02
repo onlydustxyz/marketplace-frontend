@@ -51,7 +51,7 @@ export default function Tag({
     <div className="w-fit rounded-full p-px overflow-hidden">
       <div
         className={classNames(
-          "flex items-center justify-center w-fit gap-1 rounded-full font-walsheim font-medium text-white relative",
+          "flex items-center justify-center w-fit gap-1 rounded-full font-walsheim font-medium text-white relative h-7",
           "before:absolute before:h-screen before:w-screen before:-z-10",
           {
             "py-1 px-2 text-xs": size === TagSize.Small,
