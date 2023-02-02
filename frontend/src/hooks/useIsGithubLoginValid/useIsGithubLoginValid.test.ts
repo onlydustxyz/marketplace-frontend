@@ -15,6 +15,8 @@ const findUserQueryMock = {
     data: {
       fetchUserDetails: {
         id: GITHUB_USER_ID,
+        avatarUrl: "https://avatars.githubusercontent.com/u/12346587?v=4",
+        login: GITHUB_USER_LOGIN,
       },
     },
   },
@@ -34,7 +36,7 @@ describe("useIsGithubLoginValid", () => {
     expect(result.current.loading).toBe(true);
     await waitFor(() => {
       expect(result.current.loading).toBe(false);
-      expect(result.current.userId).toBe(GITHUB_USER_ID);
+      expect(result.current.user?.id).toBe(GITHUB_USER_ID);
     });
   });
 });

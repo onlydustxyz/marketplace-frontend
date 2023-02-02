@@ -1,4 +1,4 @@
-import { ChangeEventHandler, memo } from "react";
+import { FocusEventHandler, memo } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
 import RiErrorWarningLine from "src/icons/RiErrorWarningLine";
@@ -7,7 +7,6 @@ import headerElementBackground from "src/assets/img/alert-bg.png";
 import classNames from "classnames";
 
 type PropsType = {
-  name: string;
   label: string;
   type: string;
   placeholder?: string;
@@ -17,8 +16,8 @@ type PropsType = {
     message?: string;
   };
   errorType: InputErrorType;
-  register?: UseFormRegisterReturn<string>;
-  onChange?: ChangeEventHandler<any>;
+  register: UseFormRegisterReturn<string>;
+  onFocus?: FocusEventHandler<unknown>;
 };
 
 export enum InputErrorType {
@@ -30,21 +29,20 @@ const View: React.FC<PropsType> = ({
   label,
   type = "text",
   placeholder,
-  name,
   value,
   loading,
   error,
   errorType,
   register,
-  onChange,
+  onFocus,
 }) => (
   <label html-for={name} className="flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim">
     <div className="font-medium text-sm tracking-tight">{label}</div>
     <div className={classNames("flex flex-col", { "gap-8": errorType === InputErrorType.Banner })}>
       <div className="relative flex items-center">
         <input
-          key={name}
-          id={name}
+          key={register.name}
+          id={register.name}
           placeholder={placeholder}
           type={type}
           className={classNames(
@@ -53,7 +51,7 @@ const View: React.FC<PropsType> = ({
           )}
           value={value}
           {...register}
-          onChange={onChange}
+          onFocus={onFocus}
         />
         {loading && <LoaderIcon className="flex animate-spin place-items-center absolute right-0 mr-3" />}
       </div>
