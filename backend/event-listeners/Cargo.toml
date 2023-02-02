@@ -24,6 +24,9 @@ diesel = {version = "1.4.8", default-features = false, features = [
   "chrono",
 ]}
 
+# CLI
+clap = { version = "4.1.4", features = ["derive"] }
+
 # Core types
 uuid = {version = "0.8.2", default_features = false, features = [
   "v4",
