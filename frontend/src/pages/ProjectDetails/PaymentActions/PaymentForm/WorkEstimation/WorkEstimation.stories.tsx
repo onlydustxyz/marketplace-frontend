@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { Steps } from "src/hooks/useWorkEstimation";
 
-import WorkEstimation from ".";
+import WorkEstimation from "./View";
 
 export default {
   title: "WorkEstimation",
@@ -14,31 +15,18 @@ const Template: ComponentStory<typeof WorkEstimation> = args => (
 );
 
 export const Default = Template.bind({});
-export const NoBudget = Template.bind({});
 
 Default.args = {
-  onChange: () => {
-    return;
-  },
   budget: { initialAmount: 5000, remainingAmount: 3000 },
   disabled: false,
+  canIncrease: true,
+  canDecrease: true,
+  amountToPay: 1000,
+  stepNumber: 3,
+  steps: Steps.Days,
 };
 
 Default.parameters = {
-  backgrounds: {
-    default: "space",
-  },
-};
-
-NoBudget.args = {
-  onChange: () => {
-    return;
-  },
-  budget: { initialAmount: 5000, remainingAmount: 0 },
-  disabled: false,
-};
-
-NoBudget.parameters = {
   backgrounds: {
     default: "space",
   },
