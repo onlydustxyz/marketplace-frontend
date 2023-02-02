@@ -5,10 +5,9 @@ import { useFormContext } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
-import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
-import { GITHUB_USER_FRAGMENT } from "src/pages/ProjectDetails/PaymentActions/useGetPaymentRequests";
+import useFindGithubUser, { GITHUB_CONTRIBUTOR_FRAGMENT } from "src/hooks/useIsGithubLoginValid";
 import { HasuraUserRole } from "src/types";
-import { GetProjectContributorsForPaymentSelectQuery, GithubContributorFragment } from "src/__generated/graphql";
+import { GetProjectContributorsForPaymentSelectQuery } from "src/__generated/graphql";
 import View from "./View";
 
 type Props = {
@@ -86,16 +85,6 @@ const ContributorSelect = ({ projectId }: Props) => {
 };
 
 export default ContributorSelect;
-
-export const GITHUB_CONTRIBUTOR_FRAGMENT = gql`
-  ${GITHUB_USER_FRAGMENT}
-  fragment GithubContributor on User {
-    ...GithubUser
-    user {
-      userId
-    }
-  }
-`;
 
 export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
   ${GITHUB_CONTRIBUTOR_FRAGMENT}

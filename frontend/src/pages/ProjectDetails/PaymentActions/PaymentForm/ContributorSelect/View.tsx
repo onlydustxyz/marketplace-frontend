@@ -35,11 +35,12 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
   );
   const [opened, setOpened] = useState(false);
 
-  const prefixComponent = contributor ? (
-    <RoundedImage src={contributor.avatarUrl} size={ImageSize.Small} alt={contributor.login} />
-  ) : (
-    <SearchLine className="ml-2" />
-  );
+  const prefixComponent =
+    contributor && !loading ? (
+      <RoundedImage src={contributor.avatarUrl} size={ImageSize.Small} alt={contributor.login} />
+    ) : (
+      <SearchLine className="ml-2" />
+    );
 
   return (
     <div>

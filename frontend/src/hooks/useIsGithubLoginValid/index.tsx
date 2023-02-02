@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { useHasuraLazyQuery } from "src/hooks/useHasuraQuery";
-import { GITHUB_CONTRIBUTOR_FRAGMENT } from "src/pages/ProjectDetails/PaymentActions/PaymentForm/ContributorSelect";
+import { GITHUB_USER_FRAGMENT } from "src/pages/ProjectDetails/PaymentActions/useGetPaymentRequests";
 import { HasuraUserRole } from "src/types";
 import { FindUserQueryForPaymentFormQuery } from "src/__generated/graphql";
 
@@ -22,6 +22,16 @@ export default function useFindGithubUser() {
     error: query.error,
   };
 }
+
+export const GITHUB_CONTRIBUTOR_FRAGMENT = gql`
+  ${GITHUB_USER_FRAGMENT}
+  fragment GithubContributor on User {
+    ...GithubUser
+    user {
+      userId
+    }
+  }
+`;
 
 export const FIND_USER_QUERY = gql`
   ${GITHUB_CONTRIBUTOR_FRAGMENT}
