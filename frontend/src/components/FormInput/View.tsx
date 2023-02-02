@@ -18,6 +18,8 @@ type PropsType = {
   errorType: InputErrorType;
   register: UseFormRegisterReturn<string>;
   onFocus?: FocusEventHandler<unknown>;
+  prefixComponent?: React.ReactNode;
+  suffixComponent?: React.ReactNode;
 };
 
 export enum InputErrorType {
@@ -35,6 +37,8 @@ const View: React.FC<PropsType> = ({
   errorType,
   register,
   onFocus,
+  prefixComponent,
+  suffixComponent,
 }) => (
   <label html-for={name} className="flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim">
     <div className="font-medium text-sm tracking-tight">{label}</div>
@@ -53,7 +57,12 @@ const View: React.FC<PropsType> = ({
           {...register}
           onFocus={onFocus}
         />
-        {loading && <LoaderIcon className="flex animate-spin place-items-center absolute right-0 mr-3" />}
+        {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}
+        {loading ? (
+          <LoaderIcon className="flex animate-spin place-items-center absolute right-0 mr-3" />
+        ) : (
+          suffixComponent
+        )}
       </div>
       {errorType === InputErrorType.Normal && (
         <span className="text-rose-600 text-sm ml-3">{error?.message ? error.message.toString() : "\u00A0"}</span>
