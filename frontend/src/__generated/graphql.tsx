@@ -2805,12 +2805,14 @@ export type GetProjectRemainingBudgetQueryVariables = Exact<{
 
 export type GetProjectRemainingBudgetQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', budgets: Array<{ __typename?: 'Budgets', remainingAmount: any | null }> } | null };
 
+export type GithubContributorFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null };
+
 export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', avatarUrl: string, id: number, login: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } } | null } | null };
+export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } } | null } | null };
 
 export type RequestPaymentMutationVariables = Exact<{
   amount: Scalars['Int'];
@@ -2926,6 +2928,21 @@ export const ProjectCardFieldsFragmentDoc = gql`
   }
 }
     `;
+export const GithubUserFragmentDoc = gql`
+    fragment GithubUser on User {
+  id
+  login
+  avatarUrl
+}
+    `;
+export const GithubContributorFragmentDoc = gql`
+    fragment GithubContributor on User {
+  ...GithubUser
+  user {
+    userId
+  }
+}
+    ${GithubUserFragmentDoc}`;
 export const PaymentRequestFragmentDoc = gql`
     fragment PaymentRequest on PaymentRequests {
   id
@@ -2936,13 +2953,6 @@ export const PaymentRequestFragmentDoc = gql`
     amount
     currencyCode
   }
-}
-    `;
-export const GithubUserFragmentDoc = gql`
-    fragment GithubUser on User {
-  id
-  login
-  avatarUrl
 }
     `;
 export const GetFirstLeadProjectIdDocument = gql`
@@ -3395,18 +3405,13 @@ export const GetProjectContributorsForPaymentSelectDocument = gql`
     githubRepo {
       content {
         contributors {
-          avatarUrl
-          id
-          login
-          user {
-            userId
-          }
+          ...GithubContributor
         }
       }
     }
   }
 }
-    `;
+    ${GithubContributorFragmentDoc}`;
 
 /**
  * __useGetProjectContributorsForPaymentSelectQuery__

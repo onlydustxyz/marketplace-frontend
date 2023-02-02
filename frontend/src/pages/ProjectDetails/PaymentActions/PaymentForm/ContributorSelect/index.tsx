@@ -6,9 +6,9 @@ import { useLocation } from "react-router-dom";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
-import { Contributor } from "src/pages/ProjectDetails/PaymentActions/PaymentForm/types";
+import { GITHUB_USER_FRAGMENT } from "src/pages/ProjectDetails/PaymentActions/useGetPaymentRequests";
 import { HasuraUserRole } from "src/types";
-import { GetProjectContributorsForPaymentSelectQuery } from "src/__generated/graphql";
+import { GetProjectContributorsForPaymentSelectQuery, GithubContributorFragment } from "src/__generated/graphql";
 import View from "./View";
 
 type Props = {
@@ -32,7 +32,7 @@ const ContributorSelect = ({ projectId }: Props) => {
   const onContributorHandleChange = useCallback((handle: string) => {
     setValue("contributorHandle", handle);
   }, []);
-  const onContributorChange = useCallback((contributor: Contributor) => {
+  const onContributorChange = useCallback((contributor: GithubContributorFragment) => {
     setValue("contributor", contributor);
   }, []);
 
@@ -91,17 +91,19 @@ const ContributorSelect = ({ projectId }: Props) => {
 export default ContributorSelect;
 
 export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
+  ${GITHUB_USER_FRAGMENT}
+  fragment GithubContributor on User {
+    ...GithubUser
+    user {
+      userId
+    }
+  }
   query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
     projectsByPk(id: $projectId) {
       githubRepo {
         content {
           contributors {
-            avatarUrl
-            id
-            login
-            user {
-              userId
-            }
+            ...GithubContributor
           }
         }
       }

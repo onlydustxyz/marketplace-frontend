@@ -1,16 +1,9 @@
-export type Contributor = {
-  id: number;
-  login: string;
-  avatarUrl: string;
-  user: {
-    userId: string;
-  } | null;
-};
+import { GithubContributorFragment } from "src/__generated/graphql";
 
 export type Inputs = {
   linkToIssue: string;
   contributorHandle: string;
-  contributor: Contributor;
+  contributor: GithubContributorFragment;
   memo: string;
   remainingBudget: number;
   seniority: number;

@@ -106,7 +106,7 @@ export const PAYMENT_REQUESTS_FOR_PROJECT_SUBSCRIPTION = gql`
   }
 `;
 
-const GITHUB_USER_FRAGMENT = gql`
+export const GITHUB_USER_FRAGMENT = gql`
   fragment GithubUser on User {
     id
     login

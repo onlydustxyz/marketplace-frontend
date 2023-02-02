@@ -4,15 +4,15 @@ import Card from "src/components/Card";
 import Contributor from "src/components/Contributor";
 import Input from "src/components/FormInput";
 import { useIntl } from "src/hooks/useIntl";
-import { Contributor as ContributorType } from "src/pages/ProjectDetails/PaymentActions/PaymentForm/types";
+import { GithubContributorFragment } from "src/__generated/graphql";
 
 type Props = {
   loading: boolean;
   onContributorHandleChange: (handle: string) => void;
-  onContributorChange: (contributor: ContributorType) => void;
+  onContributorChange: (contributor: GithubContributorFragment) => void;
   validateContributorLogin: () => boolean | string;
-  contributors: ContributorType[];
-  contributor: ContributorType;
+  contributors: GithubContributorFragment[];
+  contributor: GithubContributorFragment;
 };
 
 const View = ({ loading, contributors, onContributorHandleChange, validateContributorLogin }: Props) => {
@@ -24,7 +24,7 @@ const View = ({ loading, contributors, onContributorHandleChange, validateContri
     [onContributorHandleChange]
   );
   const onContributorChange = useCallback(
-    (contributor: ContributorType) => {
+    (contributor: GithubContributorFragment) => {
       onContributorHandleChange(contributor.login);
     },
     [onContributorHandleChange]
