@@ -6,6 +6,9 @@ use derive_more::Constructor;
 use domain::{Aggregate, Event, EventStore};
 use event_listeners::domain::EventListener;
 
+mod registry;
+pub use registry::{Registrable, Registry};
+
 #[derive(Constructor)]
 pub struct Refresher<A: Aggregate> {
 	event_store: Arc<dyn EventStore<A>>,
