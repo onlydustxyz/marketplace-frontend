@@ -9,6 +9,7 @@ use event_listeners::domain::EventListener;
 mod registry;
 pub use registry::{Registrable, Registry};
 
+pub mod payment;
 pub mod project;
 
 #[derive(Constructor)]
