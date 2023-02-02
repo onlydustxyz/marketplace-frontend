@@ -5,7 +5,6 @@ import WorkEstimation from "./WorkEstimation";
 import { Budget } from "src/hooks/useWorkEstimation";
 import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/pages/ProjectDetails/PaymentActions/PaymentForm";
 import { InputErrorType } from "src/components/FormInput/View";
-import { useFormContext } from "react-hook-form";
 import ContributorSelect from "src/pages/ProjectDetails/PaymentActions/PaymentForm/ContributorSelect";
 
 interface Props {
@@ -16,7 +15,6 @@ interface Props {
 
 const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) => {
   const { T } = useIntl();
-  const { register } = useFormContext();
 
   return (
     <div className="flex flex-row items-start gap-5 h-full">
@@ -36,7 +34,7 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
               <div className="flex flex-row pt-3">
                 <Input
                   label={T("payment.form.issueLink.inputLabel")}
-                  {...register("linkToIssue")}
+                  name="linkToIssue"
                   placeholder={T("payment.form.issueLink.placeholder")}
                   errorType={InputErrorType.Banner}
                   options={{
