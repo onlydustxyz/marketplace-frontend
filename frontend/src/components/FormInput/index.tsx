@@ -1,3 +1,4 @@
+import { defaults } from "lodash";
 import { ChangeEventHandler, FocusEventHandler } from "react";
 import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
 import View, { InputErrorType } from "./View";
@@ -31,11 +32,18 @@ export default function Input({
 }: PropsType) {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
+  const overridenRegister = defaults(
+    {
+      onChange,
+      onBlur,
+      name,
+    },
+    register(name, options)
+  );
 
   return (
     <View
       {...{
-        name,
         label,
         error: errors[name],
         errorType: errorType || InputErrorType.Normal,
@@ -43,9 +51,7 @@ export default function Input({
         placeholder,
         type,
         value,
-        register: register(name, options),
-        onChange,
-        onBlur,
+        register: overridenRegister,
         onFocus,
       }}
     />

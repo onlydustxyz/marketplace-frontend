@@ -35,6 +35,16 @@ const props = {
   label: "Label",
   type: "text",
   placeholder: "Placeholder",
+  register: {
+    onChange: () => {
+      return Promise.resolve();
+    },
+    onBlur: () => {
+      return Promise.resolve();
+    },
+    ref: () => "yolo",
+    name: "yolo",
+  },
 };
 
 export const Default = Template.bind({});
