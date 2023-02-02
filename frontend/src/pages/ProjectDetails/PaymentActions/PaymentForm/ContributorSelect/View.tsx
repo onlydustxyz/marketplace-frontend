@@ -1,3 +1,4 @@
+import { Transition } from "@headlessui/react";
 import { ChangeEventHandler, useCallback, useState } from "react";
 import Card from "src/components/Card";
 import Contributor from "src/components/Contributor";
@@ -31,7 +32,7 @@ const View = ({ loading, contributors, onContributorHandleChange, validateContri
   const [opened, setOpened] = useState(false);
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <Input
         label={T("payment.form.contributor.inputLabel")}
         name="contributorHandle"
@@ -45,8 +46,17 @@ const View = ({ loading, contributors, onContributorHandleChange, validateContri
         onBlur={() => setOpened(false)}
         loading={loading}
       />
-      {opened && (
-        <Card className="absolute bg-spaceBlue-900" padded={false}>
+      <Transition
+        className="absolute w-full"
+        show={opened}
+        enter="transition duration-200 ease-out"
+        enterFrom="transform -translate-y-1/3 opacity-0"
+        enterTo="transform translate-y-0 opacity-100"
+        leave="transition duration-200 ease-out"
+        leaveFrom="transform translate-y-0 opacity-100"
+        leaveTo="transform -translate-y-1/3 opacity-0"
+      >
+        <Card className="bg-spaceBlue-900" padded={false}>
           {contributors.map(contributor => (
             <div
               key={contributor.id}
@@ -63,7 +73,7 @@ const View = ({ loading, contributors, onContributorHandleChange, validateContri
             </div>
           ))}
         </Card>
-      )}
+      </Transition>
     </div>
   );
 };
