@@ -14,6 +14,7 @@ type PropsType = {
   loading?: boolean;
   error?: {
     message?: string;
+    type?: string;
   };
   errorType: InputErrorType;
   register: UseFormRegisterReturn<string>;
@@ -26,6 +27,8 @@ type PropsType = {
 export enum InputErrorType {
   Normal = "normal",
   Banner = "banner",
+  Pattern = "pattern",
+  Validate = "validate",
 }
 
 const View: React.FC<PropsType> = ({
@@ -42,7 +45,7 @@ const View: React.FC<PropsType> = ({
   suffixComponent,
   inputClassName,
 }) => (
-  <label html-for={name} className="flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim">
+  <label html-for={register.name} className="flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim">
     <div className="font-medium text-sm tracking-tight">{label}</div>
     <div className={classNames("flex flex-col", { "gap-8": errorType === InputErrorType.Banner })}>
       <div className="relative flex items-center">
@@ -67,6 +70,9 @@ const View: React.FC<PropsType> = ({
           suffixComponent
         )}
       </div>
+      {(error?.type === InputErrorType.Pattern || error?.type === InputErrorType.Validate) && (
+        <span className="text-rose-600 text-sm ml-3">{`${label} is invalid`}</span>
+      )}
       {errorType === InputErrorType.Normal && (
         <span className="text-rose-600 text-sm ml-3">{error?.message ? error.message.toString() : "\u00A0"}</span>
       )}
