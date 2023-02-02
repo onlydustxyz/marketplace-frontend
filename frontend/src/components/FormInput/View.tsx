@@ -20,6 +20,7 @@ type PropsType = {
   onFocus?: FocusEventHandler<unknown>;
   prefixComponent?: React.ReactNode;
   suffixComponent?: React.ReactNode;
+  inputClassName?: string;
 };
 
 export enum InputErrorType {
@@ -39,6 +40,7 @@ const View: React.FC<PropsType> = ({
   onFocus,
   prefixComponent,
   suffixComponent,
+  inputClassName,
 }) => (
   <label html-for={name} className="flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim">
     <div className="font-medium text-sm tracking-tight">{label}</div>
@@ -51,7 +53,8 @@ const View: React.FC<PropsType> = ({
           type={type}
           className={classNames(
             "w-full h-11 bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 placeholder:text-greyscale-400 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
-            { "border outline-1 outline-rose-600 border-rose-600": error && errorType === InputErrorType.Normal }
+            { "border outline-1 outline-rose-600 border-rose-600": error && errorType === InputErrorType.Normal },
+            inputClassName
           )}
           value={value}
           {...register}
