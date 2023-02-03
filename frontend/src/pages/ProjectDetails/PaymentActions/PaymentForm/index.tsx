@@ -42,6 +42,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
       remainingBudget: budget.remainingAmount,
       contributorHandle: null,
     },
+    mode: "all",
   });
 
   const [insertPayment] = useHasuraMutation(REQUEST_PAYMENT_MUTATION, HasuraUserRole.RegisteredUser, {

@@ -38,7 +38,6 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
                   placeholder={T("payment.form.issueLink.placeholder")}
                   errorType={InputErrorType.Banner}
                   options={{
-                    required: T("form.required"),
                     pattern: {
                       value: REGEX_VALID_GITHUB_PULL_REQUEST_URL,
                       message: T("payment.form.issueLink.error"),

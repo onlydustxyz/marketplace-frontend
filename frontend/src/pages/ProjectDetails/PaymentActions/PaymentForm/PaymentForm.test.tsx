@@ -128,7 +128,6 @@ describe('"PaymentForm" component', () => {
   it("should display an error when the reason is not a valid link to a github issue", async () => {
     await userEvent.type(await screen.findByLabelText(PR_LINK_INPUT_LABEL), "not-a-link");
     await userEvent.type(await screen.findByLabelText(RECIPIENT_INPUT_LABEL), TEST_USER.displayName);
-    await userEvent.click(await screen.findByText(/confirm payment/i));
     await waitFor(() => {
       const errorMessages = screen.getAllByText(/oops/i);
       expect(errorMessages.length).toBe(1);
