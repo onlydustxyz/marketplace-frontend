@@ -4,6 +4,7 @@ import { PropsWithChildren } from "react";
 export enum ButtonSize {
   Small = "small",
   Medium = "medium",
+  LargeLowHeight = "large-low-height",
   Large = "large",
 }
 
@@ -57,6 +58,7 @@ export default function Button({
         },
         {
           "px-6 py-4 h-14": size === ButtonSize.Large,
+          "px-4 py-1.5 h-12": size === ButtonSize.LargeLowHeight,
           "text-sm px-4 py-1.5 h-14": size === ButtonSize.Medium,
           "text-sm px-4 py-2 h-8": size === ButtonSize.Small,
         },

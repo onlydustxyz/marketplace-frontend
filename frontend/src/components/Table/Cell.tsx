@@ -3,6 +3,7 @@ import { PropsWithChildren } from "react";
 
 export enum CellHeight {
   Small = "Small",
+  Medium = "Medium",
   Tall = "Tall",
 }
 
@@ -23,6 +24,7 @@ export const Cell: React.FC<CellProps> = ({
       <div
         className={classNames(`flex items-center text-greyscale-50 font-normal ${className}`, {
           "py-4": height === CellHeight.Tall,
+          "py-3": height === CellHeight.Medium,
           "py-px": height === CellHeight.Small,
           "px-3": horizontalMargin,
         })}

@@ -40,6 +40,12 @@ const paymentRequestMock: PaymentRequestFragment = {
   ],
   amountInUsd: 200,
   reason: { work_items: ["link_to_pr"] },
+  requestedAt: new Date(),
+  recipient: {
+    user: {
+      userInfo: { payoutSettings: null },
+    },
+  },
 };
 
 const githubUserMock: GithubUserFragment = {
@@ -113,8 +119,8 @@ describe('"ProjectDetails" page', () => {
     );
   });
 
-  it("should render the submit payment buttons", async () => {
-    await screen.findByText(/submit payment/i);
+  it("should render the new payment buttons", async () => {
+    await screen.findByText(/new payment/i);
   });
 
   it("should render the remaining budget", async () => {
@@ -126,5 +132,6 @@ describe('"ProjectDetails" page', () => {
     expect(await screen.findByText(githubUserMock.login)).toBeInTheDocument();
     expect(await screen.findByText("$200")).toBeInTheDocument();
     expect(await screen.findByText(/complete/i)).toBeInTheDocument();
+    expect(await screen.findByText(/a few seconds ago/i)).toBeInTheDocument();
   });
 });

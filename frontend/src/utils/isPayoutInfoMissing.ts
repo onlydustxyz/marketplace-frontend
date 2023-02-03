@@ -1,14 +1,10 @@
-import { QueryResult } from "@apollo/client";
-import { PayoutSettingsQuery, ProfileQuery } from "src/__generated/graphql";
+import { PayoutSettings } from "src/types";
 
-export default function isPayoutInfoMissing(queryResult: QueryResult<ProfileQuery> | QueryResult<PayoutSettingsQuery>) {
-  const payoutSettings = queryResult?.data?.userInfo?.[0]?.payoutSettings;
-  return (
-    queryResult?.data &&
-    !(
-      payoutSettings?.EthTransfer?.Address ||
+export default function isPayoutInfoMissing(payoutSettings: PayoutSettings | undefined) {
+  return !(
+    payoutSettings &&
+    (payoutSettings?.EthTransfer?.Address ||
       payoutSettings?.EthTransfer?.Name ||
-      (payoutSettings?.WireTransfer?.IBAN && payoutSettings?.WireTransfer?.BIC)
-    )
+      (payoutSettings?.WireTransfer?.IBAN && payoutSettings?.WireTransfer?.BIC))
   );
 }

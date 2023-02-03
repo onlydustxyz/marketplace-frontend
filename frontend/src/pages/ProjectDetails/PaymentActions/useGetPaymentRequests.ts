@@ -55,6 +55,8 @@ export default function useGetPaymentRequests(projectId: string) {
       },
       reason: paymentRequest.reason?.work_items?.at(0),
       status: paidAmount === paymentRequest.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT,
+      requestedAt: paymentRequest.requestedAt,
+      recipientPayoutSettings: paymentRequest?.recipient?.user?.userInfo?.payoutSettings,
     };
   };
 
@@ -85,6 +87,14 @@ const PAYMENT_REQUEST_FRAGMENT = gql`
     payments {
       amount
       currencyCode
+    }
+    requestedAt
+    recipient {
+      user {
+        userInfo {
+          payoutSettings
+        }
+      }
     }
   }
 `;
