@@ -11,7 +11,12 @@ import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { ProjectDetails } from "..";
 import { useIntl } from "src/hooks/useIntl";
 import { buildGithubLink } from "src/utils/stringUtils";
-import { ProjectDetailsAction, ProjectDetailsActionType, ProjectDetailsTab } from "../ProjectDetailsContext";
+import {
+  PaymentAction,
+  ProjectDetailsAction,
+  ProjectDetailsActionType,
+  ProjectDetailsTab,
+} from "../ProjectDetailsContext";
 
 interface Props {
   expandable: boolean;
@@ -116,7 +121,13 @@ export default function View({
               className={`rounded-xl hover:cursor-pointer text-white text-base px-4 py-2.5 ${
                 selectedTab === tab ? "bg-white/8" : "text-neutral-400"
               }`}
-              onClick={() => dispatch({ type: ProjectDetailsActionType.SelectTab, selectedTab: tab })}
+              onClick={() =>
+                dispatch(
+                  tab !== ProjectDetailsTab.Payments
+                    ? { type: ProjectDetailsActionType.SelectTab, selectedTab: tab }
+                    : { type: ProjectDetailsActionType.SelectPaymentAction, selectedPaymentAction: PaymentAction.List }
+                )
+              }
               data-testid={`${tab}-tab`}
             >
               {tab}
