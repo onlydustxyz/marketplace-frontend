@@ -8,5 +8,5 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export default function displayRelativeDate(date: Date) {
-  return dayjs.tz(date, dayjs.tz.guess()).fromNow();
+  return dayjs.utc(date).tz(dayjs.tz.guess()).fromNow();
 }
