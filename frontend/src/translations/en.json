@@ -49,6 +49,7 @@
       "confirm": "Confirm payment",
       "contributor": {
         "inputLabel": "Please select the contributor you would like to send a payment to",
+        "needsToSignup": "__contributor__ will have to sign up to OnlyDust to receive their payment",
         "placeholder": "Search for contributor",
         "title": "Send payment to"
       },
@@ -63,7 +64,7 @@
       },
       "leftToSpend": "Left to spend",
       "remainingBudget": "Remaining budget",
-      "sent": "Payment request sent!",
+      "sent": "Payment successfully sent",
       "steps": {
         "days": {
           "many": "days",
@@ -176,9 +177,9 @@
         "newInvite": "NEW"
       },
       "tableFallback": {
+        "newPayment": "New payment",
         "noPayments": "No payments so far",
-        "send": "Send your first one!",
-        "newPayment": "New payment"
+        "send": "Send your first one!"
       }
     },
     "ledBy": "Led by",

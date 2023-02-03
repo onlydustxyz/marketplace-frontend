@@ -28,17 +28,6 @@ vi.mock("jwt-decode", () => ({
   default: () => ({ [CLAIMS_KEY]: { [PROJECTS_LED_KEY]: '{"test-project-id"}' } }),
 }));
 
-const location: Location = window.location;
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-delete (window.location as any);
-
-window.location = {
-  ...location,
-  reload: vi.fn(),
-};
-
 vi.mock("axios", () => ({
   default: {
     post: () => ({
@@ -57,7 +46,13 @@ const graphQlMocks = [
     },
     newData: vi.fn(() => ({
       data: {
-        fetchUserDetails: { id: TEST_USER.githubUser.githubUserId },
+        fetchUserDetails: {
+          id: TEST_USER.githubUser.githubUserId,
+          login: TEST_USER.displayName,
+          avatarUrl: "",
+          user: null,
+          __typename: "User",
+        },
       },
     })),
   },
@@ -113,9 +108,8 @@ describe('"PaymentForm" component', () => {
     });
     await userEvent.click(await screen.findByText(/confirm payment/i));
     await waitFor(() => {
-      expect(window.location.reload).toHaveBeenCalledTimes(1);
-      vi.restoreAllMocks();
-      window.location = location;
+      expect(screen.getByLabelText(RECIPIENT_INPUT_LABEL)).toHaveValue("");
+      expect(screen.getByLabelText(PR_LINK_INPUT_LABEL)).toHaveValue("");
     });
   });
 
@@ -134,7 +128,6 @@ describe('"PaymentForm" component', () => {
   it("should display an error when the reason is not a valid link to a github issue", async () => {
     await userEvent.type(await screen.findByLabelText(PR_LINK_INPUT_LABEL), "not-a-link");
     await userEvent.type(await screen.findByLabelText(RECIPIENT_INPUT_LABEL), TEST_USER.displayName);
-    await userEvent.click(await screen.findByText(/confirm payment/i));
     await waitFor(() => {
       const errorMessages = screen.getAllByText(/oops/i);
       expect(errorMessages.length).toBe(1);

@@ -2748,7 +2748,7 @@ export type FindUserQueryForPaymentFormQueryVariables = Exact<{
 }>;
 
 
-export type FindUserQueryForPaymentFormQuery = { __typename?: 'query_root', fetchUserDetails: { __typename?: 'User', id: number } };
+export type FindUserQueryForPaymentFormQuery = { __typename?: 'query_root', fetchUserDetails: { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -2804,6 +2804,15 @@ export type GetProjectRemainingBudgetQueryVariables = Exact<{
 
 
 export type GetProjectRemainingBudgetQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', budgets: Array<{ __typename?: 'Budgets', remainingAmount: any | null }> } | null };
+
+export type GithubContributorFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null };
+
+export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
+  projectId: Scalars['uuid'];
+}>;
+
+
+export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } } | null } | null };
 
 export type RequestPaymentMutationVariables = Exact<{
   amount: Scalars['Int'];
@@ -2919,6 +2928,21 @@ export const ProjectCardFieldsFragmentDoc = gql`
   }
 }
     `;
+export const GithubUserFragmentDoc = gql`
+    fragment GithubUser on User {
+  id
+  login
+  avatarUrl
+}
+    `;
+export const GithubContributorFragmentDoc = gql`
+    fragment GithubContributor on User {
+  ...GithubUser
+  user {
+    userId
+  }
+}
+    ${GithubUserFragmentDoc}`;
 export const PaymentRequestFragmentDoc = gql`
     fragment PaymentRequest on PaymentRequests {
   id
@@ -2937,13 +2961,6 @@ export const PaymentRequestFragmentDoc = gql`
       }
     }
   }
-}
-    `;
-export const GithubUserFragmentDoc = gql`
-    fragment GithubUser on User {
-  id
-  login
-  avatarUrl
 }
     `;
 export const GetFirstLeadProjectIdDocument = gql`
@@ -3022,10 +3039,10 @@ export type GetPaymentRequestIdsQueryResult = Apollo.QueryResult<GetPaymentReque
 export const FindUserQueryForPaymentFormDocument = gql`
     query FindUserQueryForPaymentForm($username: String!) {
   fetchUserDetails(username: $username) {
-    id
+    ...GithubContributor
   }
 }
-    `;
+    ${GithubContributorFragmentDoc}`;
 
 /**
  * __useFindUserQueryForPaymentFormQuery__
@@ -3388,6 +3405,47 @@ export function useGetProjectRemainingBudgetLazyQuery(baseOptions?: Apollo.LazyQ
 export type GetProjectRemainingBudgetQueryHookResult = ReturnType<typeof useGetProjectRemainingBudgetQuery>;
 export type GetProjectRemainingBudgetLazyQueryHookResult = ReturnType<typeof useGetProjectRemainingBudgetLazyQuery>;
 export type GetProjectRemainingBudgetQueryResult = Apollo.QueryResult<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>;
+export const GetProjectContributorsForPaymentSelectDocument = gql`
+    query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    githubRepo {
+      content {
+        contributors {
+          ...GithubContributor
+        }
+      }
+    }
+  }
+}
+    ${GithubContributorFragmentDoc}`;
+
+/**
+ * __useGetProjectContributorsForPaymentSelectQuery__
+ *
+ * To run a query within a React component, call `useGetProjectContributorsForPaymentSelectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectContributorsForPaymentSelectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectContributorsForPaymentSelectQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetProjectContributorsForPaymentSelectQuery(baseOptions: Apollo.QueryHookOptions<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>(GetProjectContributorsForPaymentSelectDocument, options);
+      }
+export function useGetProjectContributorsForPaymentSelectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>(GetProjectContributorsForPaymentSelectDocument, options);
+        }
+export type GetProjectContributorsForPaymentSelectQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelectQuery>;
+export type GetProjectContributorsForPaymentSelectLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelectLazyQuery>;
+export type GetProjectContributorsForPaymentSelectQueryResult = Apollo.QueryResult<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>;
 export const RequestPaymentDocument = gql`
     mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
   requestPayment(
