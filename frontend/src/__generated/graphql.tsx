@@ -2815,14 +2815,14 @@ export type RequestPaymentMutationVariables = Exact<{
 
 export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
 
-export type PaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> };
+export type PaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, requestedAt: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, recipient: { __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', payoutSettings: any | null } | null } | null } | null };
 
 export type OnNewPaymentRequestsSubscriptionVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type OnNewPaymentRequestsSubscription = { __typename?: 'subscription_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> }> }> } | null };
+export type OnNewPaymentRequestsSubscription = { __typename?: 'subscription_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, requestedAt: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, recipient: { __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', payoutSettings: any | null } | null } | null } | null }> }> } | null };
 
 export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string };
 
@@ -2928,6 +2928,14 @@ export const PaymentRequestFragmentDoc = gql`
   payments {
     amount
     currencyCode
+  }
+  requestedAt
+  recipient {
+    user {
+      userInfo {
+        payoutSettings
+      }
+    }
   }
 }
     `;

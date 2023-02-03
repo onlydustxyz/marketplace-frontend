@@ -44,7 +44,7 @@ const MyContributions = () => {
   }
 
   const totalEarnings = hasPayments && payments.reduce((acc, p) => acc + p.amount.value, 0);
-  const payoutInfoMissing = !!isPayoutInfoMissing(getPayoutSettingsQuery);
+  const payoutInfoMissing = !!isPayoutInfoMissing(getPayoutSettingsQuery?.data?.userInfo?.[0]?.payoutSettings);
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>

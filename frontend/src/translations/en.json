@@ -6,16 +6,23 @@
     "table": {
       "contributor": "Contributor",
       "leftToPay": "Left to Pay",
+      "noBudgetLeft": "There's no more budget for this project, please contact OnlyDust to ask for a refill.",
       "paidContributions": "Paid contributions",
       "totalEarned": "Total earned",
-      "userRegisteredTooltip": "User has linked their OnlyDust profile",
-      "noBudgetLeft": "There's no more budget for this project, please contact OnlyDust to ask for a refill."
+      "userRegisteredTooltip": "User has linked their OnlyDust profile"
     },
     "tableFallback": {
       "noContributor": "No one has contributed to __projectName__ yet",
       "relevantProfiles": "Relevant profiles will appear here."
     },
     "totalEarnings": "Total earnings"
+  },
+  "filter": {
+    "technologies": {
+      "all": "All technologies",
+      "some": "Technologies"
+    },
+    "title": "Filter"
   },
   "form": {
     "required": "Required"
@@ -41,31 +48,31 @@
     "form": {
       "confirm": "Confirm payment",
       "contributor": {
-        "title": "Send payment to",
         "inputLabel": "Please select the contributor you would like to send a payment to",
-        "placeholder": "Search for contributor"
-      },
-      "issueLink": {
-        "title": "Contribution to pay",
-        "inputLabel": "Please add a link to the corresponding pull request on Github",
-        "placeholder": "Enter pull request link here",
-        "error": "Oops, this doesn't look like a pull request"
+        "placeholder": "Search for contributor",
+        "title": "Send payment to"
       },
       "days": "days",
       "disabled": "Select a contributor and enter link to pull request to send payment",
       "estimate": "Estimate time spent",
+      "issueLink": {
+        "error": "Oops, this doesn't look like a pull request",
+        "inputLabel": "Please add a link to the corresponding pull request on Github",
+        "placeholder": "Enter pull request link here",
+        "title": "Contribution to pay"
+      },
       "leftToSpend": "Left to spend",
       "remainingBudget": "Remaining budget",
       "sent": "Payment request sent!",
       "steps": {
         "days": {
-          "one": "day",
-          "many": "days"
+          "many": "days",
+          "one": "day"
         },
         "hours": {
-          "zero": "No budget left",
+          "many": "hours",
           "one": "hour",
-          "many": "hours"
+          "zero": "No budget left"
         }
       },
       "submit": "Submit payment",
@@ -74,19 +81,21 @@
     "list": "List payments",
     "status": {
       "complete": "Complete",
-      "processing": "Processing",
       "payoutInfoMissing": "Payout info missing",
+      "pending": "Pending",
+      "processing": "Processing",
       "tooltip": {
         "complete": "Payment successful",
-        "processing": "Payment is being processed by our team",
-        "payoutInfoMissing": "Fill in your payment information to get paid"
+        "payoutInfoMissing": "Fill in your payment information to get paid",
+        "pending": "Contributor needs to sign up on OnlyDust and to complete payout info to get paid",
+        "processing": "Payment is being processed by our team"
       }
     },
     "table": {
       "amount": "Amount",
-      "date": "Date",
       "contribution": "Contribution",
-      "status": "Payment Status"
+      "date": "Date",
+      "status": "Status"
     },
     "tableFallback": {
       "browseProjects": "Browse projects",
@@ -135,13 +144,13 @@
     "amountGranted": "__amount__ granted",
     "details": {
       "contributors": {
-        "title": "Contributors",
         "count": {
-          "zero": "No contributor",
+          "many": "__count__ contributors",
           "one": "1 contributor",
-          "many": "__count__ contributors"
+          "zero": "No contributor"
         },
-        "sendPayment": "Send payment"
+        "sendPayment": "Send payment",
+        "title": "Contributors"
       },
       "overview": {
         "contributors": "CONTRIBUTORS",
@@ -156,6 +165,11 @@
       "payments": {
         "title": "Payments"
       },
+      "remainingBudget": {
+        "leftToSpend": "left to spend",
+        "newPayment": "New payment",
+        "title": "Remaining budget"
+      },
       "sidebar": {
         "backToProjects": "Back to projects",
         "contributors": " contributors",
@@ -164,26 +178,18 @@
       "tableFallback": {
         "noPayments": "No payments so far",
         "send": "Send your first one!",
-        "sendPayment": "Send payment"
+        "newPayment": "New payment"
       }
     },
     "ledBy": "Led by",
     "projectLeadInvitation": {
       "prompt": "You’ve been promoted to Project Lead",
       "view": "View invite"
-    },
-    "remainingBudget": "Remaining budget"
+    }
   },
   "projectLeadInvitation": {
     "accept": "Accept invite",
     "prompt": "You’ve been promoted to Project Lead on __projectName__"
-  },
-  "filter": {
-    "title": "Filter",
-    "technologies": {
-      "all": "All technologies",
-      "some": "Technologies"
-    }
   },
   "seniority": {
     "levels": {

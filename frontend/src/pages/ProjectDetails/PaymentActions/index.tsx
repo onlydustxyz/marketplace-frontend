@@ -3,7 +3,6 @@ import Card from "src/components/Card";
 import PaymentTable from "src/components/PaymentTable";
 import ProjectPaymentTableFallback from "src/components/ProjectPaymentTableFallback";
 import QueryWrapper from "src/components/QueryWrapper";
-import RemainingBudget from "src/components/RemainingBudget";
 import { useIntl } from "src/hooks/useIntl";
 import {
   PaymentAction,
@@ -12,6 +11,7 @@ import {
   ProjectDetailsDispatchContext,
 } from "../ProjectDetailsContext";
 import PaymentForm from "./PaymentForm";
+import RemainingBudget from "./RemainingBudget";
 import useGetPaymentRequests from "./useGetPaymentRequests";
 
 interface PaymentsProps {
@@ -34,11 +34,13 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
         <div className="text-3xl font-belwe">{T("project.details.payments.title")}</div>
         {state.paymentAction === PaymentAction.List && (
           <div className="flex flex-row items-start gap-5 h-full">
-            <div className="flex basis-3/5 self-stretch">
-              <Card>
-                {payments.length > 0 ? (
+            <div className="flex basis-2/3 self-stretch">
+              {payments.length > 0 ? (
+                <Card>
                   <PaymentTable payments={payments} />
-                ) : (
+                </Card>
+              ) : (
+                <Card className="p-16">
                   <ProjectPaymentTableFallback
                     onClick={() =>
                       dispatch({
@@ -47,29 +49,20 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
                       })
                     }
                   />
-                )}
-              </Card>
+                </Card>
+              )}
             </div>
-            <div className="flex basis-2/5">
-              <Card>
-                <div className="flex flex-col gap-10 items-stretch w-full">
-                  <RemainingBudget {...budget} />
-                  {budget.remainingAmount > 0 && (
-                    <div
-                      className="bg-neutral-50 rounded-xl w-fit p-3 hover:cursor-pointer text-black"
-                      onClick={() =>
-                        dispatch({
-                          type: ProjectDetailsActionType.SelectPaymentAction,
-                          selectedPaymentAction:
-                            state.paymentAction === PaymentAction.List ? PaymentAction.Send : PaymentAction.List,
-                        })
-                      }
-                    >
-                      {T(state.paymentAction === PaymentAction.List ? "payment.form.submit" : "payment.list")}
-                    </div>
-                  )}
-                </div>
-              </Card>
+            <div className="flex basis-1/3">
+              <RemainingBudget
+                budget={budget}
+                disabled={budget.remainingAmount === 0 || payments.length === 0}
+                onClickNewPayment={() =>
+                  dispatch({
+                    type: ProjectDetailsActionType.SelectPaymentAction,
+                    selectedPaymentAction: PaymentAction.Send,
+                  })
+                }
+              />
             </div>
           </div>
         )}

@@ -1,17 +1,12 @@
 import { useIntl } from "src/hooks/useIntl";
-import { Currency, getPaymentStatusOrder, Payment, PaymentStatus } from "src/types";
+import { Currency, Payment, PaymentStatus } from "src/types";
 import Table from "../Table";
 import Line from "../Table/Line";
 import Cell from "../Table/Cell";
 import Headers from "../Table/HeaderLine";
 import HeaderCell, { HeaderCellWidth } from "../Table/HeaderCell";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import RoundedImage from "src/components/RoundedImage";
-import { useEffect, useState } from "react";
 import SortingArrow from "../ContributorsTable/SortingArrow";
 import PayoutStatus from "../PayoutStatus";
 import GithubPRLink, { LinkColor } from "./GithubPRLink";
@@ -20,58 +15,16 @@ import FocusLine from "src/icons/FocusLine";
 import FolderLine from "src/icons/FolderLine";
 import TimeLine from "src/icons/TimeLine";
 import { formatMoneyAmount } from "src/utils/money";
-
-dayjs.extend(relativeTime);
-dayjs.extend(utc);
-dayjs.extend(timezone);
+import displayRelativeDate from "src/utils/displayRelativeDate";
+import usePaymentSorting, { Field, Sorting } from "src/hooks/usePaymentSorting";
 
 type PropsType = {
   payments: Payment[];
   payoutInfoMissing: boolean;
 };
 
-enum Field {
-  Date,
-  Contribution,
-  Amount,
-  Status,
-}
-
-type Sorting = {
-  field: Field;
-  ascending: boolean;
-};
-
-const ISSUE_NUMBER = /pull\/(\d+)$/;
-
 const PayoutTable: React.FC<PropsType> = ({ payments, payoutInfoMissing }) => {
-  const [sorting, setSorting] = useState({ field: Field.Date, ascending: false });
-  const [sortedPayments, setSortedPayments] = useState(payments);
-
-  useEffect(() => {
-    const sorted = [...payments].sort((p1, p2) => {
-      switch (sorting.field) {
-        case Field.Date: {
-          const requestedAt1 = new Date(p1.requestedAt);
-          const requestedAt2 = new Date(p2.requestedAt);
-          return requestedAt1.getTime() - requestedAt2.getTime();
-        }
-        case Field.Contribution: {
-          const issueNumber1 = p1.reason.match(ISSUE_NUMBER) || ["", ""];
-          const issueNumber2 = p2.reason.match(ISSUE_NUMBER) || ["", ""];
-          return `${p1.project.title}${issueNumber1[1]}`.localeCompare(`${p2.project.title}${issueNumber2[1]}`);
-        }
-        case Field.Amount:
-          return p1.amount.value - p2.amount.value;
-        case Field.Status:
-          return getPaymentStatusOrder(p1.status) - getPaymentStatusOrder(p2.status);
-      }
-    });
-    setSortedPayments(sorting.ascending ? sorted : sorted.reverse());
-  }, [sorting, payments]);
-
-  const applySorting = (field: Field) =>
-    setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : true });
+  const { sortedPayments, sorting, applySorting } = usePaymentSorting(payments);
 
   return (
     <Table id="payment_table" headers={renderHeaders(sorting, applySorting)}>
@@ -111,11 +64,11 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
 const renderPayments = (payments: Payment[], payoutInfoMissing: boolean) => {
   return payments.map(payment => (
     <Line key={payment.id} highlightOnHover={200}>
-      <Cell> {dayjs.tz(payment.requestedAt, dayjs.tz.guess()).fromNow()} </Cell>
+      <Cell>{displayRelativeDate(payment.requestedAt)}</Cell>
       <Cell className="flex flex-row gap-3">
-        <RoundedImage src={payment.project.logoUrl || onlyDustLogo} alt={payment.project.title} />
+        <RoundedImage src={payment?.project?.logoUrl || onlyDustLogo} alt={payment?.project?.title || ""} />
         <div className="flex flex-col truncate justify-center">
-          <div className="font-normal text-base font-belwe">{payment.project.title}</div>
+          <div className="font-normal text-base font-belwe">{payment?.project?.title}</div>
           {payment.reason && <GithubPRLink link={payment.reason} linkColor={LinkColor.Grey}></GithubPRLink>}
         </div>
       </Cell>
