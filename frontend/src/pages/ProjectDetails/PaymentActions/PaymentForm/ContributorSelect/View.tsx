@@ -87,22 +87,24 @@ const View = ({
           leaveFrom="transform translate-y-0 opacity-100"
           leaveTo="transform -translate-y-1/3 opacity-0"
         >
-          <Card className="bg-spaceBlue-900" padded={false}>
-            {contributors.map(contributor => (
-              <div
-                key={contributor.id}
-                className="px-4 py-3 hover:bg-white/2 cursor-pointer"
-                onMouseDown={() => onContributorChange(contributor)}
-              >
-                <Contributor
-                  contributor={{
-                    avatarUrl: contributor.avatarUrl,
-                    login: contributor.login,
-                    isRegistered: !!contributor.user?.userId,
-                  }}
-                />
-              </div>
-            ))}
+          <Card className="bg-spaceBlue-900 h-60 overflow-hidden" padded={false}>
+            <div className="overflow-scroll h-60">
+              {contributors.map(contributor => (
+                <div
+                  key={contributor.id}
+                  className="px-4 py-3 hover:bg-white/2 cursor-pointer"
+                  onMouseDown={() => onContributorChange(contributor)}
+                >
+                  <Contributor
+                    contributor={{
+                      avatarUrl: contributor.avatarUrl,
+                      login: contributor.login,
+                      isRegistered: !!contributor.user?.userId,
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
           </Card>
         </Transition>
       </div>
