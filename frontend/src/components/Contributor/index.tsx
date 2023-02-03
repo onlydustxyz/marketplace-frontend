@@ -38,8 +38,8 @@ const Contributor = ({ onClick, contributor }: Props) => {
       <div className="flex items-center gap-1.5">
         <div>
           <span
-            className={classNames("text-spacePurple-200 font-medium text-sm", {
-              "group-hover/line:underline decoration-1 underline-offset-1": clickable,
+            className={classNames("text-greyscale-50 font-medium text-sm", {
+              "text-spacePurple-200 group-hover/line:underline decoration-1 underline-offset-1": clickable,
             })}
           >
             {contributor.login}
