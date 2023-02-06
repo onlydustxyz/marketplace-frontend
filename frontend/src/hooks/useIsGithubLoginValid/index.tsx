@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import { useHasuraLazyQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { FindUserQueryForPaymentFormQuery } from "src/__generated/graphql";
-import { GITHUB_USER_FRAGMENT } from "../usePaymentRequests";
+import { GITHUB_USER_FRAGMENT } from "../useGithubUser";
 
 export default function useFindGithubUser() {
   const [trigger, query] = useHasuraLazyQuery<FindUserQueryForPaymentFormQuery>(

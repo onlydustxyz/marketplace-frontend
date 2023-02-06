@@ -1,11 +1,8 @@
 import { MockedProvider } from "@apollo/client/testing";
 import { waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
-import { GithubUserFragment, PaymentRequestFragment } from "src/__generated/graphql";
-import usePaymentRequests, {
-  GET_GITHUB_USER_QUERY,
-  PAYMENT_REQUESTS_FOR_PROJECT_SUBSCRIPTION,
-} from "./usePaymentRequests";
+import { PaymentRequestFragment } from "src/__generated/graphql";
+import usePaymentRequests, { PAYMENT_REQUESTS_FOR_PROJECT_SUBSCRIPTION } from "./usePaymentRequests";
 
 const PROJECT_ID = "project-id";
 const GITHUB_USER_ID_1 = 123456;
@@ -39,13 +36,6 @@ const mockPaymentRequest = (githubUserId: number): PaymentRequestFragment => ({
   },
 });
 
-const mockGithubUser = (githubUserId: number): GithubUserFragment => ({
-  __typename: "User",
-  id: githubUserId,
-  login: "ofux",
-  avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
-});
-
 const getPaymentRequestsMock = {
   request: {
     query: PAYMENT_REQUESTS_FOR_PROJECT_SUBSCRIPTION,
@@ -70,42 +60,24 @@ const getPaymentRequestsMock = {
   },
 };
 
-const mockGetGithubUserQuery = (githubUserId: number) => ({
-  request: {
-    query: GET_GITHUB_USER_QUERY,
-    variables: {
-      githubUserId: githubUserId,
-    },
-  },
-  result: {
-    data: {
-      fetchUserDetailsById: mockGithubUser(githubUserId),
-    },
-  },
-});
-
 const render = (projectId: string) =>
   renderHook(() => usePaymentRequests({ projectId }), {
     wrapper: MockedProvider,
     initialProps: {
-      mocks: [
-        getPaymentRequestsMock,
-        mockGetGithubUserQuery(GITHUB_USER_ID_1),
-        mockGetGithubUserQuery(GITHUB_USER_ID_2),
-      ],
+      mocks: [getPaymentRequestsMock],
     },
   });
 
 describe("useGetPaymentRequests", () => {
-  it("should return merge results between payment requests and github recipients", async () => {
+  it("should return all payment requests for given project", async () => {
     const { result } = render(PROJECT_ID);
     expect(result.current.loading).toBe(true);
     await waitFor(() => expect(result.current.loading).toBe(false));
 
     expect(result.current.data?.budget).toEqual({ initialAmount: 1000, remainingAmount: 400 });
     expect(result.current.data?.paymentRequests).toHaveLength(3);
-    expect(result.current.data?.paymentRequests?.at(0)?.recipient.id).toBe(GITHUB_USER_ID_1);
-    expect(result.current.data?.paymentRequests?.at(1)?.recipient.id).toBe(GITHUB_USER_ID_1);
-    expect(result.current.data?.paymentRequests?.at(2)?.recipient.id).toBe(GITHUB_USER_ID_2);
+    expect(result.current.data?.paymentRequests?.at(0)?.recipientId).toBe(GITHUB_USER_ID_1);
+    expect(result.current.data?.paymentRequests?.at(1)?.recipientId).toBe(GITHUB_USER_ID_1);
+    expect(result.current.data?.paymentRequests?.at(2)?.recipientId).toBe(GITHUB_USER_ID_2);
   });
 });

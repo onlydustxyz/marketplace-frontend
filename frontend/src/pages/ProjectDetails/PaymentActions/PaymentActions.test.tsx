@@ -7,7 +7,8 @@ import { RoutePaths } from "src/App";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { ProjectDetailsProvider } from "../ProjectDetailsContext";
 import { GithubUserFragment, PaymentRequestFragment } from "src/__generated/graphql";
-import { GET_GITHUB_USER_QUERY, PAYMENT_REQUESTS_FOR_PROJECT_SUBSCRIPTION } from "src/hooks/usePaymentRequests";
+import { PAYMENT_REQUESTS_FOR_PROJECT_SUBSCRIPTION } from "src/hooks/usePaymentRequests";
+import { GET_GITHUB_USER_QUERY } from "src/hooks/useGithubUser";
 
 expect.extend(matchers);
 

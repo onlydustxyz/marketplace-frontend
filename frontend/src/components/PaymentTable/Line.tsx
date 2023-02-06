@@ -7,6 +7,7 @@ import { formatMoneyAmount } from "src/utils/money";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import GithubPRLink, { LinkColor } from "../PayoutTable/GithubPRLink";
 import isPayoutInfoMissing from "src/utils/isPayoutInfoMissing";
+import useGithubUser from "src/hooks/useGithubUser";
 
 type Props = {
   payment: PaymentWithRecipientInfo;
@@ -14,16 +15,17 @@ type Props = {
 
 export default function PaymentLine({ payment }: Props) {
   const payoutInfoMissing = !!isPayoutInfoMissing(payment.recipientPayoutSettings);
+  const { data: recipient } = useGithubUser(payment.recipientId);
 
   return (
     <>
-      {payment && payment.recipient && (
+      {payment && recipient && (
         <Line key={payment.id} highlightOnHover={200}>
           <Cell height={CellHeight.Medium}>{displayRelativeDate(payment.requestedAt)}</Cell>
           <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
-            <RoundedImage src={payment.recipient.avatarUrl} alt={payment.recipient.login} rounding={Rounding.Circle} />
+            <RoundedImage src={recipient.avatarUrl} alt={recipient.login} rounding={Rounding.Circle} />
             <div className="flex flex-col truncate justify-center pb-0.5">
-              <div className="font-medium text-sm text-greyscale-50 font-walsheim">{payment.recipient.login}</div>
+              <div className="font-medium text-sm text-greyscale-50 font-walsheim">{recipient.login}</div>
               {payment.reason && <GithubPRLink link={payment.reason} linkColor={LinkColor.Grey}></GithubPRLink>}
             </div>
           </Cell>

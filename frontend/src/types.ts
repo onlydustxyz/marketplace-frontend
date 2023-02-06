@@ -56,19 +56,12 @@ export type Payment = {
     currency: Currency;
   };
   status: PaymentStatus;
-  recipient?: {
-    avatarUrl: string;
-    login: string;
-  };
+  recipientId: number;
   recipientPayoutSettings?: PayoutSettings;
   project?: Project;
 };
 
 export interface PaymentWithRecipientInfo extends Payment {
-  recipient: {
-    avatarUrl: string;
-    login: string;
-  };
   recipientPayoutSettings: PayoutSettings;
 }
 
