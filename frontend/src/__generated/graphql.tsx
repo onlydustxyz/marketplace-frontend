@@ -2763,12 +2763,12 @@ export type FindUserQueryForPaymentFormQuery = { __typename?: 'query_root', fetc
 
 export type PaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, requestedAt: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> };
 
-export type OnNewPaymentRequestsSubscriptionVariables = Exact<{
+export type GetPaymentRequestsForProjectQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type OnNewPaymentRequestsSubscription = { __typename?: 'subscription_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, requestedAt: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> }> }> } | null };
+export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, requestedAt: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> }> }> } | null };
 
 export type RequestPaymentMutationVariables = Exact<{
   amount: Scalars['Int'];
@@ -3101,8 +3101,8 @@ export function useFindUserQueryForPaymentFormLazyQuery(baseOptions?: Apollo.Laz
 export type FindUserQueryForPaymentFormQueryHookResult = ReturnType<typeof useFindUserQueryForPaymentFormQuery>;
 export type FindUserQueryForPaymentFormLazyQueryHookResult = ReturnType<typeof useFindUserQueryForPaymentFormLazyQuery>;
 export type FindUserQueryForPaymentFormQueryResult = Apollo.QueryResult<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>;
-export const OnNewPaymentRequestsDocument = gql`
-    subscription OnNewPaymentRequests($projectId: uuid!) {
+export const GetPaymentRequestsForProjectDocument = gql`
+    query GetPaymentRequestsForProject($projectId: uuid!) {
   projectsByPk(id: $projectId) {
     id
     budgets {
@@ -3118,27 +3118,32 @@ export const OnNewPaymentRequestsDocument = gql`
     ${PaymentRequestFragmentDoc}`;
 
 /**
- * __useOnNewPaymentRequestsSubscription__
+ * __useGetPaymentRequestsForProjectQuery__
  *
- * To run a query within a React component, call `useOnNewPaymentRequestsSubscription` and pass it any options that fit your needs.
- * When your component renders, `useOnNewPaymentRequestsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetPaymentRequestsForProjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPaymentRequestsForProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useOnNewPaymentRequestsSubscription({
+ * const { data, loading, error } = useGetPaymentRequestsForProjectQuery({
  *   variables: {
  *      projectId: // value for 'projectId'
  *   },
  * });
  */
-export function useOnNewPaymentRequestsSubscription(baseOptions: Apollo.SubscriptionHookOptions<OnNewPaymentRequestsSubscription, OnNewPaymentRequestsSubscriptionVariables>) {
+export function useGetPaymentRequestsForProjectQuery(baseOptions: Apollo.QueryHookOptions<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<OnNewPaymentRequestsSubscription, OnNewPaymentRequestsSubscriptionVariables>(OnNewPaymentRequestsDocument, options);
+        return Apollo.useQuery<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>(GetPaymentRequestsForProjectDocument, options);
       }
-export type OnNewPaymentRequestsSubscriptionHookResult = ReturnType<typeof useOnNewPaymentRequestsSubscription>;
-export type OnNewPaymentRequestsSubscriptionResult = Apollo.SubscriptionResult<OnNewPaymentRequestsSubscription>;
+export function useGetPaymentRequestsForProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>(GetPaymentRequestsForProjectDocument, options);
+        }
+export type GetPaymentRequestsForProjectQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectQuery>;
+export type GetPaymentRequestsForProjectLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectLazyQuery>;
+export type GetPaymentRequestsForProjectQueryResult = Apollo.QueryResult<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>;
 export const RequestPaymentDocument = gql`
     mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
   requestPayment(
