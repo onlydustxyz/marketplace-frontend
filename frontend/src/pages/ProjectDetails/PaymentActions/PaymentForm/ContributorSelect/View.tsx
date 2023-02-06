@@ -11,6 +11,7 @@ import SearchLine from "src/icons/SearchLine";
 import { GithubContributorFragment } from "src/__generated/graphql";
 import RiErrorWarningLine from "src/icons/RiErrorWarningLine";
 import CloseLine from "src/icons/CloseLine";
+import classNames from "classnames";
 
 type Props = {
   loading: boolean;
@@ -88,7 +89,12 @@ const View = ({
           leaveTo="transform -translate-y-1/3 opacity-0"
         >
           <Card className="bg-spaceBlue-900" padded={false}>
-            <div className="overflow-auto max-h-60">
+            <div
+              className={classNames(
+                "overflow-auto max-h-60",
+                "scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
+              )}
+            >
               {contributors.map(contributor => (
                 <div
                   key={contributor.id}
