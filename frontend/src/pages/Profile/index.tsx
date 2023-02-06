@@ -12,6 +12,7 @@ import { RoutePaths } from "src/App";
 import isPayoutInfoMissing from "src/utils/isPayoutInfoMissing";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
+import { useState } from "react";
 
 const Profile: React.FC = () => {
   const { isLoggedIn } = useAuth();
@@ -27,6 +28,8 @@ const Profile: React.FC = () => {
   const navigateBack = () => {
     navigate(location.state?.prev || RoutePaths.Projects);
   };
+
+  const [saveButtonDisabled, setSaveButtonDisabled] = useState(false);
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
@@ -46,6 +49,7 @@ const Profile: React.FC = () => {
                 htmlType="submit"
                 form="profile-form"
                 data-testid="profile-form-submit-button"
+                disabled={saveButtonDisabled}
               >
                 <div>{T("profile.form.send")}</div>
               </Button>
@@ -56,7 +60,9 @@ const Profile: React.FC = () => {
           {getProfileQuery.data && (
             <QueryWrapper query={getProfileQuery}>
               {isPayoutInfoMissing(getProfileQuery?.data?.userInfo?.[0]?.payoutSettings) && <InfoMissingBanner />}
-              {getProfileQuery.data && <ProfileForm user={getProfileQuery.data.userInfo[0]} />}
+              {getProfileQuery.data && (
+                <ProfileForm user={getProfileQuery.data.userInfo[0]} setSaveButtonDisabled={setSaveButtonDisabled} />
+              )}
             </QueryWrapper>
           )}
         </div>
