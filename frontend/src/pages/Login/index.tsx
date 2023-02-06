@@ -6,6 +6,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
 import { RefreshToken } from "src/types";
 import useSignupRedirection from "./hooks/useSignUpRedirection";
+import Loader from "src/components/Loader";
 
 export const AUTH_CODE_QUERY_KEY = "refreshToken";
 
@@ -40,7 +41,7 @@ export default function Login() {
   return (
     <>
       {refreshToken ? (
-        <div className="flex justify-center mt-10 text-2xl">{T("github.loggingIn")}</div>
+        <Loader />
       ) : (
         <div className="flex justify-center mt-10 text-2xl text-red-600">{T("github.tokenMissing")}</div>
       )}

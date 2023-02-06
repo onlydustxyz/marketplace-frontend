@@ -307,7 +307,6 @@ describe("Integration tests", () => {
         mocks: graphQlMocks,
       }),
     });
-    await screen.findByText(LOGGING_IN_TEXT_QUERY);
     await screen.findByText(TEST_PROJECT_NAME);
     expect(screen.queryByText(LOGGING_IN_TEXT_QUERY)).not.toBeInTheDocument();
   });
