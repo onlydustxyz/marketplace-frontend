@@ -1,5 +1,13 @@
 import { PropsWithChildren, useState } from "react";
-import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink, ApolloLink, split } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+  ApolloLink,
+  split,
+  SuspenseCache,
+} from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
@@ -84,10 +92,16 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     cache: new InMemoryCache(),
   });
 
+  const suspenseCache = new SuspenseCache();
+
   return (
     <>
       {displayError && <ErrorFallback />}
-      {!displayError && <ApolloProvider client={client}>{children}</ApolloProvider>}
+      {!displayError && (
+        <ApolloProvider client={client} suspenseCache={suspenseCache}>
+          {children}
+        </ApolloProvider>
+      )}
     </>
   );
 };

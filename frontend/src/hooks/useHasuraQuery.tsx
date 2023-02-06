@@ -11,6 +11,9 @@ import {
   useSubscription,
   SubscriptionResult,
   SubscriptionHookOptions,
+  useSuspenseQuery_experimental,
+  UseSuspenseQueryResult,
+  SuspenseQueryHookOptions,
 } from "@apollo/client";
 import merge from "lodash/merge";
 import { HasuraUserRole } from "src/types";
@@ -29,6 +32,14 @@ export const useHasuraLazyQuery = <T, V = OperationVariables>(
   options: QueryHookOptions<T, V> = {}
 ): LazyQueryResultTuple<T, V> => {
   return useLazyQuery(query, merge(options, { context: { headers: { "X-Hasura-Role": role } } }));
+};
+
+export const useHasuraSuspensedQuery = <T, V extends OperationVariables = OperationVariables>(
+  query: TypedDocumentNode<T, V>,
+  role: HasuraUserRole,
+  options: SuspenseQueryHookOptions<T, V> = {}
+): UseSuspenseQueryResult<T, V> => {
+  return useSuspenseQuery_experimental(query, merge(options, { context: { headers: { "X-Hasura-Role": role } } }));
 };
 
 export const useHasuraMutation = <T,>(
