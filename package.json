@@ -16,7 +16,7 @@
     "cypress:run": "cypress run"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.1",
+    "@apollo/client": "3.8.0-alpha.5",
     "@datadog/browser-rum": "^4.31.0",
     "@graphql-codegen/cli": "^2.16.1",
     "@graphql-codegen/introspection": "^2.2.3",
