@@ -2,10 +2,10 @@ import { MockedProvider } from "@apollo/client/testing";
 import { waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 import { GithubUserFragment, PaymentRequestFragment } from "src/__generated/graphql";
-import useGetPaymentRequests, {
+import usePaymentRequests, {
   GET_GITHUB_USER_QUERY,
   PAYMENT_REQUESTS_FOR_PROJECT_SUBSCRIPTION,
-} from "./useGetPaymentRequests";
+} from "./usePaymentRequests";
 
 const PROJECT_ID = "project-id";
 const GITHUB_USER_ID_1 = 123456;
@@ -85,7 +85,7 @@ const mockGetGithubUserQuery = (githubUserId: number) => ({
 });
 
 const render = (projectId: string) =>
-  renderHook(() => useGetPaymentRequests(projectId), {
+  renderHook(() => usePaymentRequests(projectId), {
     wrapper: MockedProvider,
     initialProps: {
       mocks: [

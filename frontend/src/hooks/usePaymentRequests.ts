@@ -9,7 +9,7 @@ import {
   PaymentRequestFragment,
 } from "src/__generated/graphql";
 
-export default function useGetPaymentRequests(projectId: string) {
+export default function usePaymentRequests(projectId: string) {
   const fetchAllGithubRecipients = async (query: OnNewPaymentRequestsSubscription) => {
     const allRecipientIds = new Set(
       query.projectsByPk?.budgets.map(b => b.paymentRequests.map(r => r.recipientId)).flat() || []
