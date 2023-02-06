@@ -18,6 +18,7 @@
 # Python
 .env
 .env.*
+!.env.staging
 !.env.example
 !.env.test
 
