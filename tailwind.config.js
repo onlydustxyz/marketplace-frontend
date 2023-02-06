@@ -116,5 +116,11 @@ module.exports = {
     },
   },
 
-  plugins: [require("@tailwindcss/typography"), require("@tailwindcss/line-clamp"), require("@headlessui/tailwindcss")],
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/line-clamp"),
+    require("@headlessui/tailwindcss"),
+    /* eslint-disable @typescript-eslint/no-var-requires */
+    require("tailwind-scrollbar")({ nocompatible: true }),
+  ],
 };
