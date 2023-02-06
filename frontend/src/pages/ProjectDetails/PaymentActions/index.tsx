@@ -1,5 +1,6 @@
-import { useContext } from "react";
+import { Suspense, useContext } from "react";
 import Card from "src/components/Card";
+import Loader from "src/components/Loader";
 import PaymentTable from "src/components/PaymentTable";
 import ProjectPaymentTableFallback from "src/components/ProjectPaymentTableFallback";
 import QueryWrapper from "src/components/QueryWrapper";
@@ -37,7 +38,9 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
             <div className="flex">
               {payments.length > 0 ? (
                 <Card>
-                  <PaymentTable payments={payments} />
+                  <Suspense fallback={<Loader />}>
+                    <PaymentTable payments={payments} />
+                  </Suspense>
                 </Card>
               ) : (
                 <Card className="p-16">

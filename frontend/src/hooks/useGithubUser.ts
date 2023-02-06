@@ -1,10 +1,10 @@
 import { gql } from "@apollo/client";
 import { HasuraUserRole } from "src/types";
 import { GetGithubUserQuery } from "src/__generated/graphql";
-import { useHasuraQuery } from "./useHasuraQuery";
+import { useHasuraSuspensedQuery } from "./useHasuraQuery";
 
 export default function useGithubUser(githubUserId: number) {
-  const getGithubUserQuery = useHasuraQuery<GetGithubUserQuery>(GET_GITHUB_USER_QUERY, HasuraUserRole.Public, {
+  const getGithubUserQuery = useHasuraSuspensedQuery<GetGithubUserQuery>(GET_GITHUB_USER_QUERY, HasuraUserRole.Public, {
     variables: { githubUserId },
   });
 

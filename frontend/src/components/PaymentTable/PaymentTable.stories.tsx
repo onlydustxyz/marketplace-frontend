@@ -1,3 +1,4 @@
+import { SuspenseCache } from "@apollo/client";
 import { MockedProvider } from "@apollo/client/testing";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { GET_GITHUB_USER_QUERY } from "src/hooks/useGithubUser";
@@ -64,8 +65,10 @@ const mocks = [
   },
 ];
 
+const suspenseCache = new SuspenseCache();
+
 const Template: ComponentStory<typeof PaymentTable> = () => (
-  <MockedProvider mocks={mocks}>
+  <MockedProvider mocks={mocks} suspenseCache={suspenseCache}>
     <PaymentTable payments={mockPayments} />
   </MockedProvider>
 );
