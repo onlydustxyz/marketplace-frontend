@@ -56,7 +56,7 @@ export type Payment = {
     currency: Currency;
   };
   status: PaymentStatus;
-  recipientId: number;
+  recipientId?: number;
   recipientPayoutSettings?: PayoutSettings;
   project?: Project;
 };
