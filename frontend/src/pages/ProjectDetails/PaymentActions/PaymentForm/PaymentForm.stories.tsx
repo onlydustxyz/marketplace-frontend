@@ -27,6 +27,34 @@ const BERNARDSTANISLAS = {
   user: null,
   __typename: "User",
 };
+const OSCARWROCHE = {
+  login: "oscarwroche",
+  avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
+  id: 21149076,
+  user: null,
+  __typename: "User",
+};
+const OFUX = {
+  login: "ofux",
+  avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
+  id: 595505,
+  user: { userId: "yolo" },
+  __typename: "User",
+};
+const ANTHONYBUISSET = {
+  login: "anthonybuisson",
+  avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+  id: 43467246,
+  user: null,
+  __typename: "User",
+};
+const TDELABRO = {
+  login: "tdelabro",
+  avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
+  id: 34384633,
+  user: null,
+  __typename: "User",
+};
 
 const mocks = [
   {
@@ -41,7 +69,18 @@ const mocks = [
         projectsByPk: {
           githubRepo: {
             content: {
-              contributors: [BERNARDSTANISLAS],
+              contributors: [
+                BERNARDSTANISLAS,
+                OSCARWROCHE,
+                OFUX,
+                ANTHONYBUISSET,
+                TDELABRO,
+                OSCARWROCHE,
+                OFUX,
+                ANTHONYBUISSET,
+                TDELABRO,
+                BERNARDSTANISLAS,
+              ],
             },
           },
         },
