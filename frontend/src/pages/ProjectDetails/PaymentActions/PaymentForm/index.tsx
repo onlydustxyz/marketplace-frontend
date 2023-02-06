@@ -1,7 +1,4 @@
-import { gql } from "@apollo/client";
-import { HasuraUserRole } from "src/types";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
-import { useHasuraMutation } from "src/hooks/useHasuraQuery";
 import { Inputs } from "./types";
 import { useCallback, useContext, useEffect } from "react";
 import { useIntl } from "src/hooks/useIntl";
@@ -10,6 +7,7 @@ import { useShowToaster } from "src/hooks/useToaster";
 import { useLocation } from "react-router-dom";
 import { PaymentAction, ProjectDetailsActionType, ProjectDetailsDispatchContext } from "../../ProjectDetailsContext";
 import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
+import usePaymentRequests from "src/hooks/usePaymentRequests";
 
 export const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/pull\/\d+$/;
 
@@ -30,24 +28,9 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
   const defaultContributor = location.state?.recipientGithubLogin;
 
   const dispatch = useContext(ProjectDetailsDispatchContext);
-
-  useEffect(() => {
-    if (defaultContributor) {
-      formMethods.setValue("contributorHandle", defaultContributor);
-      findUserQuery.trigger(defaultContributor);
-    }
-  }, [defaultContributor]);
-  const formMethods = useForm<Inputs>({
-    defaultValues: {
-      remainingBudget: budget.remainingAmount,
-      contributorHandle: null,
-    },
-    mode: "all",
-  });
-
-  const [insertPayment] = useHasuraMutation(REQUEST_PAYMENT_MUTATION, HasuraUserRole.RegisteredUser, {
-    variables: { projectId },
-    onCompleted: () => {
+  const { requestNewPayment } = usePaymentRequests({
+    projectId,
+    onNewPaymentRequested: () => {
       showToaster(T("payment.form.sent"));
       formMethods.resetField("linkToIssue");
       formMethods.resetField("contributorHandle");
@@ -56,10 +39,25 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
     },
   });
 
+  useEffect(() => {
+    if (defaultContributor) {
+      formMethods.setValue("contributorHandle", defaultContributor);
+      findUserQuery.trigger(defaultContributor);
+    }
+  }, [defaultContributor]);
+
+  const formMethods = useForm<Inputs>({
+    defaultValues: {
+      remainingBudget: budget.remainingAmount,
+      contributorHandle: null,
+    },
+    mode: "all",
+  });
+
   const { handleSubmit } = formMethods;
 
   const onValidSubmit: SubmitHandler<Inputs> = useCallback(async formData => {
-    await insertPayment(mapFormDataToSchema(formData));
+    await requestNewPayment(mapFormDataToSchema(formData));
   }, []);
 
   const onWorkEstimationChange = useCallback(
@@ -83,12 +81,6 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
     </>
   );
 };
-
-export const REQUEST_PAYMENT_MUTATION = gql`
-  mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
-    requestPayment(amountInUsd: $amount, projectId: $projectId, reason: $reason, recipientId: $contributorId)
-  }
-`;
 
 const mapFormDataToSchema = ({ linkToIssue, amountToWire, contributor }: Inputs) => {
   return {

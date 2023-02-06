@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { useState } from "react";
-import { useHasuraLazyQuery, useHasuraSubscription } from "src/hooks/useHasuraQuery";
+import { useHasuraLazyQuery, useHasuraMutation, useHasuraSubscription } from "src/hooks/useHasuraQuery";
 import { Currency, HasuraUserRole, PaymentStatus } from "src/types";
 import {
   GetGithubUserQuery,
@@ -9,7 +9,12 @@ import {
   PaymentRequestFragment,
 } from "src/__generated/graphql";
 
-export default function usePaymentRequests(projectId: string) {
+type Params = {
+  projectId: string;
+  onNewPaymentRequested?(): void;
+};
+
+export default function usePaymentRequests({ projectId, onNewPaymentRequested }: Params) {
   const fetchAllGithubRecipients = async (query: OnNewPaymentRequestsSubscription) => {
     const allRecipientIds = new Set(
       query.projectsByPk?.budgets.map(b => b.paymentRequests.map(r => r.recipientId)).flat() || []
@@ -39,6 +44,13 @@ export default function usePaymentRequests(projectId: string) {
 
   const [getGithubUser] = useHasuraLazyQuery<GetGithubUserQuery>(GET_GITHUB_USER_QUERY, HasuraUserRole.RegisteredUser, {
     onCompleted: addGithubRecipient,
+  });
+
+  const [requestNewPayment] = useHasuraMutation(REQUEST_PAYMENT_MUTATION, HasuraUserRole.RegisteredUser, {
+    variables: { projectId },
+    onCompleted: () => {
+      onNewPaymentRequested && onNewPaymentRequested();
+    },
   });
 
   const toPaymentRequest = (paymentRequest: PaymentRequestFragment) => {
@@ -75,6 +87,7 @@ export default function usePaymentRequests(projectId: string) {
         .flat()
         .map(toPaymentRequest),
     },
+    requestNewPayment,
   };
 }
 
@@ -130,5 +143,11 @@ export const GET_GITHUB_USER_QUERY = gql`
     fetchUserDetailsById(userId: $githubUserId) {
       ...GithubUser
     }
+  }
+`;
+
+export const REQUEST_PAYMENT_MUTATION = gql`
+  mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
+    requestPayment(amountInUsd: $amount, projectId: $projectId, reason: $reason, recipientId: $contributorId)
   }
 `;

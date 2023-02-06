@@ -2770,6 +2770,16 @@ export type GetGithubUserQueryVariables = Exact<{
 
 export type GetGithubUserQuery = { __typename?: 'query_root', fetchUserDetailsById: { __typename?: 'User', id: number, login: string, avatarUrl: string } };
 
+export type RequestPaymentMutationVariables = Exact<{
+  amount: Scalars['Int'];
+  contributorId: Scalars['Int'];
+  projectId: Scalars['Uuid'];
+  reason: Reason;
+}>;
+
+
+export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
+
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
 }>;
@@ -2831,16 +2841,6 @@ export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
 
 
 export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } } | null } | null };
-
-export type RequestPaymentMutationVariables = Exact<{
-  amount: Scalars['Int'];
-  contributorId: Scalars['Int'];
-  projectId: Scalars['Uuid'];
-  reason: Reason;
-}>;
-
-
-export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
 
 export type GetProjectsForSidebarQueryVariables = Exact<{
   ledProjectIds: InputMaybe<Array<Scalars['uuid']> | Scalars['uuid']>;
@@ -3144,6 +3144,45 @@ export function useGetGithubUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetGithubUserQueryHookResult = ReturnType<typeof useGetGithubUserQuery>;
 export type GetGithubUserLazyQueryHookResult = ReturnType<typeof useGetGithubUserLazyQuery>;
 export type GetGithubUserQueryResult = Apollo.QueryResult<GetGithubUserQuery, GetGithubUserQueryVariables>;
+export const RequestPaymentDocument = gql`
+    mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
+  requestPayment(
+    amountInUsd: $amount
+    projectId: $projectId
+    reason: $reason
+    recipientId: $contributorId
+  )
+}
+    `;
+export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMutation, RequestPaymentMutationVariables>;
+
+/**
+ * __useRequestPaymentMutation__
+ *
+ * To run a mutation, you first call `useRequestPaymentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRequestPaymentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [requestPaymentMutation, { data, loading, error }] = useRequestPaymentMutation({
+ *   variables: {
+ *      amount: // value for 'amount'
+ *      contributorId: // value for 'contributorId'
+ *      projectId: // value for 'projectId'
+ *      reason: // value for 'reason'
+ *   },
+ * });
+ */
+export function useRequestPaymentMutation(baseOptions?: Apollo.MutationHookOptions<RequestPaymentMutation, RequestPaymentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RequestPaymentMutation, RequestPaymentMutationVariables>(RequestPaymentDocument, options);
+      }
+export type RequestPaymentMutationHookResult = ReturnType<typeof useRequestPaymentMutation>;
+export type RequestPaymentMutationResult = Apollo.MutationResult<RequestPaymentMutation>;
+export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<RequestPaymentMutation, RequestPaymentMutationVariables>;
 export const PendingProjectLeaderInvitationsDocument = gql`
     query PendingProjectLeaderInvitations($githubUserId: bigint) {
   pendingProjectLeaderInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
@@ -3519,45 +3558,6 @@ export function useGetProjectContributorsForPaymentSelectLazyQuery(baseOptions?:
 export type GetProjectContributorsForPaymentSelectQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelectQuery>;
 export type GetProjectContributorsForPaymentSelectLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelectLazyQuery>;
 export type GetProjectContributorsForPaymentSelectQueryResult = Apollo.QueryResult<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>;
-export const RequestPaymentDocument = gql`
-    mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
-  requestPayment(
-    amountInUsd: $amount
-    projectId: $projectId
-    reason: $reason
-    recipientId: $contributorId
-  )
-}
-    `;
-export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMutation, RequestPaymentMutationVariables>;
-
-/**
- * __useRequestPaymentMutation__
- *
- * To run a mutation, you first call `useRequestPaymentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRequestPaymentMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [requestPaymentMutation, { data, loading, error }] = useRequestPaymentMutation({
- *   variables: {
- *      amount: // value for 'amount'
- *      contributorId: // value for 'contributorId'
- *      projectId: // value for 'projectId'
- *      reason: // value for 'reason'
- *   },
- * });
- */
-export function useRequestPaymentMutation(baseOptions?: Apollo.MutationHookOptions<RequestPaymentMutation, RequestPaymentMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RequestPaymentMutation, RequestPaymentMutationVariables>(RequestPaymentDocument, options);
-      }
-export type RequestPaymentMutationHookResult = ReturnType<typeof useRequestPaymentMutation>;
-export type RequestPaymentMutationResult = Apollo.MutationResult<RequestPaymentMutation>;
-export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<RequestPaymentMutation, RequestPaymentMutationVariables>;
 export const GetProjectsForSidebarDocument = gql`
     query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
   projects(

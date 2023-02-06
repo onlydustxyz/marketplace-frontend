@@ -24,7 +24,7 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
   const state = useContext(ProjectDetailsContext);
   const dispatch = useContext(ProjectDetailsDispatchContext);
 
-  const query = usePaymentRequests(projectId);
+  const query = usePaymentRequests({ projectId });
   const payments = query.data?.paymentRequests || [];
   const budget = query.data?.budget || { initialAmount: 0, remainingAmount: 0 };
 
