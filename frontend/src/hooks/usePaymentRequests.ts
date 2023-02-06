@@ -24,20 +24,6 @@ export default function usePaymentRequests({ projectId, onNewPaymentRequested }:
     },
   });
 
-  const toPaymentRequest = (paymentRequest: PaymentRequestFragment) => {
-    const paidAmount = paymentRequest.payments.reduce((total, payment) => total + payment.amount, 0);
-
-    return {
-      id: paymentRequest.id,
-      amount: { value: paymentRequest.amountInUsd, currency: Currency.USD },
-      recipientId: paymentRequest.recipientId,
-      reason: paymentRequest.reason?.work_items?.at(0),
-      status: paidAmount === paymentRequest.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT,
-      requestedAt: paymentRequest.requestedAt,
-      recipientPayoutSettings: paymentRequest?.recipient?.user?.userInfo?.payoutSettings,
-    };
-  };
-
   return {
     ...getPaymentRequestsQuery,
     data: getPaymentRequestsQuery.data && {
@@ -56,6 +42,20 @@ export default function usePaymentRequests({ projectId, onNewPaymentRequested }:
     requestNewPayment,
   };
 }
+
+const toPaymentRequest = (paymentRequest: PaymentRequestFragment) => {
+  const paidAmount = paymentRequest.payments.reduce((total, payment) => total + payment.amount, 0);
+
+  return {
+    id: paymentRequest.id,
+    amount: { value: paymentRequest.amountInUsd, currency: Currency.USD },
+    recipientId: paymentRequest.recipientId,
+    reason: paymentRequest.reason?.work_items?.at(0),
+    status: paidAmount === paymentRequest.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT,
+    requestedAt: paymentRequest.requestedAt,
+    recipientPayoutSettings: paymentRequest?.recipient?.user?.userInfo?.payoutSettings,
+  };
+};
 
 const PAYMENT_REQUEST_FRAGMENT = gql`
   fragment PaymentRequest on PaymentRequests {
