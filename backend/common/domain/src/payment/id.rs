@@ -1,4 +1,4 @@
-use derive_more::{Display, From, Into};
+use derive_more::{Display, From, FromStr, Into};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -18,6 +18,7 @@ use uuid::Uuid;
 	AsExpression,
 	FromToSql,
 	FromSqlRow,
+	FromStr,
 )]
 #[sql_type = "diesel::sql_types::Uuid"]
 pub struct Id(Uuid);

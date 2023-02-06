@@ -69,7 +69,7 @@ impl EventListener for Projector {
 					name,
 					github_repo_id,
 				} => {
-					self.project_repository.insert(&Project::new(
+					self.project_repository.upsert(&Project::new(
 						*id,
 						name.to_owned(),
 						(*github_repo_id).into(),
@@ -78,7 +78,7 @@ impl EventListener for Projector {
 					self.project_github_data(github_repo_id).await?;
 				},
 				ProjectEvent::LeaderAssigned { id, leader_id } =>
-					self.project_lead_repository.insert(id, leader_id)?,
+					self.project_lead_repository.upsert(id, leader_id)?,
 				ProjectEvent::LeaderUnassigned { id, leader_id } =>
 					self.project_lead_repository.delete(id, leader_id)?,
 				ProjectEvent::GithubRepositoryUpdated { id, github_repo_id } => {

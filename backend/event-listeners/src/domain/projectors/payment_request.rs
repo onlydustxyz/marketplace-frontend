@@ -35,7 +35,7 @@ impl EventListener for Projector {
 					requested_at,
 				} => self
 					.repository
-					.insert(&PaymentRequest::new(
+					.upsert(&PaymentRequest::new(
 						*id,
 						*budget_id,
 						*requestor_id,

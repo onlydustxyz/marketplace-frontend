@@ -5,7 +5,7 @@ mod event;
 pub use event::Event;
 
 mod aggregate;
-pub use aggregate::{Aggregate, EventSourcable};
+pub use aggregate::{Aggregate, Event as AggregateEvent, EventSourcable};
 
 mod entity;
 pub use entity::Entity;

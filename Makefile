@@ -43,7 +43,7 @@ db/load-fixtures: db/up
 	@echo "To have a fresh dump, you can use db/update-staging-dump"
 
 api/start: docker/up
-	cargo run
+	cargo run -p api
 
 hasura/start:
 	yarn --cwd ./hasura start
