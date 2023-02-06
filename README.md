@@ -20,12 +20,10 @@
 </h3>
 </div>
 
-
 > ## ⚠️ WARNING! ⚠️
 >
 > This repo contains highly experimental code.
 > Expect rapid iteration.
-
 
 # 📡 Backend
 
@@ -180,7 +178,6 @@ $~ heroku drains --json --app onlydust-backend-production
 
 # 📺 Frontend
 
-
 ## 🎟️ Description
 
 This repository contains the code for the OnlyDust marketplace frontend.
@@ -201,6 +198,12 @@ To run in development mode
 
 ```bash
 yarn dev
+```
+
+To run in development mode with a the staging backend
+
+```bash
+yarn dev --mode staging
 ```
 
 ### 📚 Storybook
@@ -227,9 +230,7 @@ yarn generate --watch
 
 Use the `HASURA_URL` and `HASURA_SECRET_KEY` environment variables to connect to a custom Hasura environment
 
-
 ## 🌡️ Testing
-
 
 ### Unit/integration
 
