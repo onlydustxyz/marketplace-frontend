@@ -75,7 +75,6 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     }
 
     if (networkError) {
-      setDisplayError(true);
       console.error(`[Network error]: ${networkError}`);
     }
   });
