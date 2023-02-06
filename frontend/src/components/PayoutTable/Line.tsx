@@ -6,16 +6,31 @@ import PayoutStatus from "../PayoutStatus";
 import GithubPRLink, { LinkColor } from "./GithubPRLink";
 import { formatMoneyAmount } from "src/utils/money";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { Payment } from "src/types";
+import { getPaymentStatusOrder, Payment } from "src/types";
+import { Field, SortingFields } from "src/hooks/usePaymentSorting";
+import { useEffect } from "react";
 
 type Props = {
   payment: Payment;
   payoutInfoMissing: boolean;
+  setSortingFields: (sortingFields: SortingFields) => void;
 };
 
-export default function PaymentLine({ payment, payoutInfoMissing }: Props) {
+const ISSUE_NUMBER = /pull\/(\d+)$/;
+
+export default function PaymentLine({ payment, payoutInfoMissing, setSortingFields }: Props) {
+  useEffect(() => {
+    const issueNumber = payment.reason?.match(ISSUE_NUMBER) || ["", ""];
+    setSortingFields({
+      [Field.Date]: payment.requestedAt,
+      [Field.Contribution]: payment.project?.title?.toLocaleLowerCase() + issueNumber[1].padStart(10, "0"),
+      [Field.Amount]: payment.amount.value,
+      [Field.Status]: getPaymentStatusOrder(payoutInfoMissing ? "payout_missing" : payment.status),
+    });
+  }, []);
+
   return (
-    <Line key={payment.id} highlightOnHover={200}>
+    <Line highlightOnHover={200}>
       <Cell>{displayRelativeDate(payment.requestedAt)}</Cell>
       <Cell className="flex flex-row gap-3">
         <RoundedImage src={payment?.project?.logoUrl || onlyDustLogo} alt={payment?.project?.title || ""} />

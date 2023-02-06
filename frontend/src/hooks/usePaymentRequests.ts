@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { useHasuraMutation, useHasuraSubscription } from "src/hooks/useHasuraQuery";
-import { Currency, HasuraUserRole, PaymentStatus } from "src/types";
-import { OnNewPaymentRequestsSubscription, PaymentRequestFragment } from "src/__generated/graphql";
+import { HasuraUserRole } from "src/types";
+import { OnNewPaymentRequestsSubscription } from "src/__generated/graphql";
 
 type Params = {
   projectId: string;
@@ -34,28 +34,11 @@ export default function usePaymentRequests({ projectId, onNewPaymentRequested }:
         }),
         { initialAmount: 0, remainingAmount: 0 }
       ),
-      paymentRequests: getPaymentRequestsQuery.data.projectsByPk?.budgets
-        .map(b => b.paymentRequests)
-        .flat()
-        .map(toPaymentRequest),
+      paymentRequests: getPaymentRequestsQuery.data.projectsByPk?.budgets.map(b => b.paymentRequests).flat(),
     },
     requestNewPayment,
   };
 }
-
-const toPaymentRequest = (paymentRequest: PaymentRequestFragment) => {
-  const paidAmount = paymentRequest.payments.reduce((total, payment) => total + payment.amount, 0);
-
-  return {
-    id: paymentRequest.id,
-    amount: { value: paymentRequest.amountInUsd, currency: Currency.USD },
-    recipientId: paymentRequest.recipientId,
-    reason: paymentRequest.reason?.work_items?.at(0),
-    status: paidAmount === paymentRequest.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT,
-    requestedAt: paymentRequest.requestedAt,
-    recipientPayoutSettings: paymentRequest?.recipient?.user?.userInfo?.payoutSettings,
-  };
-};
 
 const PAYMENT_REQUEST_FRAGMENT = gql`
   fragment PaymentRequest on PaymentRequests {

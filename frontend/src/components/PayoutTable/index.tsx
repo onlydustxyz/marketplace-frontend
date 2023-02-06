@@ -1,21 +1,35 @@
-import { Currency, Payment, PaymentStatus } from "src/types";
+import { Currency, Payment, PaymentStatus, Sortable } from "src/types";
 import Table from "../Table";
-import usePaymentSorting from "src/hooks/usePaymentSorting";
+import usePaymentSorting, { SortingFields } from "src/hooks/usePaymentSorting";
 import PaymentLine from "./Line";
 import Headers from "./Headers";
+import { useMemo, useState } from "react";
 
 type PropsType = {
-  payments: Payment[];
+  payments: (Payment & Sortable)[];
   payoutInfoMissing: boolean;
 };
 
 const PayoutTable: React.FC<PropsType> = ({ payments, payoutInfoMissing }) => {
-  const { sortedPayments, sorting, applySorting } = usePaymentSorting(payments);
+  const [paymentSortingFields, setPaymentSortingFields] = useState<Record<string, SortingFields>>({});
+  const { sort, sorting, applySorting } = usePaymentSorting();
+
+  const sortablePayments = useMemo(
+    () => payments.map(p => ({ ...p, sortingFields: paymentSortingFields[p.id] })),
+    [paymentSortingFields]
+  );
+
+  const sortedPayments = useMemo(() => sort(sortablePayments), [sort, sortablePayments]);
 
   return (
     <Table id="payment_table" headers={<Headers sorting={sorting} applySorting={applySorting} />}>
       {sortedPayments.map(p => (
-        <PaymentLine payment={p} payoutInfoMissing={payoutInfoMissing} />
+        <PaymentLine
+          key={p.id}
+          payment={p}
+          payoutInfoMissing={payoutInfoMissing}
+          setSortingFields={fields => setPaymentSortingFields(existing => ({ ...existing, [p.id]: fields }))}
+        />
       ))}
     </Table>
   );

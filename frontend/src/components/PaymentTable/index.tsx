@@ -1,20 +1,34 @@
-import { PaymentWithRecipientInfo } from "src/types";
+import { Sortable } from "src/types";
 import Table from "../Table";
-import usePaymentSorting from "src/hooks/usePaymentSorting";
+import usePaymentSorting, { SortingFields } from "src/hooks/usePaymentSorting";
 import Headers from "./Headers";
 import PaymentLine from "./Line";
+import { PaymentRequestFragment } from "src/__generated/graphql";
+import { useMemo, useState } from "react";
 
 type Props = {
-  payments: PaymentWithRecipientInfo[];
+  payments: (PaymentRequestFragment & Sortable)[];
 };
 
 export default function PaymentTable({ payments }: Props) {
-  const { sortedPayments, sorting, applySorting } = usePaymentSorting(payments);
+  const [paymentSortingFields, setPaymentSortingFields] = useState<Record<string, SortingFields>>({});
+  const { sort, sorting, applySorting } = usePaymentSorting();
+
+  const sortablePayments = useMemo(
+    () => payments.map(p => ({ ...p, sortingFields: paymentSortingFields[p.id] })),
+    [paymentSortingFields]
+  );
+
+  const sortedPayments = useMemo(() => sort(sortablePayments), [sort, sortablePayments]);
 
   return (
     <Table id="payment_table" headers={<Headers {...{ sorting, applySorting }} />}>
       {sortedPayments.map(p => (
-        <PaymentLine payment={p} />
+        <PaymentLine
+          key={p.id}
+          payment={p}
+          setSortingFields={fields => setPaymentSortingFields(existing => ({ ...existing, [p.id]: fields }))}
+        />
       ))}
     </Table>
   );
