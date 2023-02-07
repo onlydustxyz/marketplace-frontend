@@ -7,6 +7,7 @@ import {
   ApolloLink,
   split,
   SuspenseCache,
+  disableFragmentWarnings,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
@@ -23,6 +24,8 @@ import { getMainDefinition } from "@apollo/client/utilities";
 type ErrorDisplay = "screen" | "toaster" | "none";
 
 const DEFAULT_ERROR_DISPLAY: ErrorDisplay = "screen";
+
+disableFragmentWarnings();
 
 const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const [displayError, setDisplayError] = useState(false);
