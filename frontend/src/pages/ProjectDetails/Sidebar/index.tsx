@@ -67,12 +67,14 @@ export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
       id
       name
       projectDetails {
+        projectId
         logoUrl
       }
       pendingInvitations {
         id
       }
       githubRepo {
+        id
         content {
           contributors {
             login

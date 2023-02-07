@@ -22,6 +22,7 @@ const props = {
   id: 123,
   name: "ZeroSync",
   projectDetails: {
+    projectId: "123",
     telegramLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
     description:
       "Don't trust. Verify. ZeroSync allows to verify Bitcoin's chain state in an instant. No need to download hundreds of gigabytes of blocks. A compact cryptographic proof suffices to validate the entire history of transactions and everyone's current balances.",
@@ -36,9 +37,11 @@ const props = {
     },
   ],
   githubRepo: {
+    id: 12345,
     owner: "facebook",
     name: "react",
     content: {
+      id: 12345,
       contributors: [
         { login: "oscarwroche", avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4" },
         { login: "ofux", avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4" },

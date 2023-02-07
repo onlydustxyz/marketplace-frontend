@@ -98,6 +98,7 @@ export const PROJECT_CARD_FRAGMENT = gql`
     name
     totalSpentAmountInUsd
     projectDetails {
+      projectId
       description
       telegramLink
       logoUrl
@@ -112,6 +113,7 @@ export const PROJECT_CARD_FRAGMENT = gql`
       }
     }
     githubRepo {
+      id
       name
       owner
       content {

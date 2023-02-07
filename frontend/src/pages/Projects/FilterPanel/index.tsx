@@ -28,6 +28,7 @@ export const GET_ALL_TECHNOLOGIES_QUERY = gql`
   query GetAllTechnologies {
     projects {
       githubRepo {
+        id
         languages
       }
     }
