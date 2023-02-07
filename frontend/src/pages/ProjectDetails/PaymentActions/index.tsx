@@ -35,7 +35,7 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
         <div className="text-3xl font-belwe">{T("project.details.payments.title")}</div>
         {state.paymentAction === PaymentAction.List && (
           <div className="flex flex-row items-start gap-5 h-full">
-            <div className="flex">
+            <div className="flex basis-2/3">
               {payments.length > 0 ? (
                 <Card>
                   <Suspense fallback={<Loader />}>
@@ -55,7 +55,7 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
                 </Card>
               )}
             </div>
-            <div className="flex">
+            <div className="flex basis-1/3">
               <RemainingBudget
                 budget={budget}
                 disabled={budget.remainingAmount === 0 || payments.length === 0}
