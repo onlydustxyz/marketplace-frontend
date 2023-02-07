@@ -98,7 +98,9 @@ export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
   ${GITHUB_CONTRIBUTOR_FRAGMENT}
   query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
     projectsByPk(id: $projectId) {
+      id
       githubRepo {
+        id
         content {
           contributors {
             ...GithubContributor

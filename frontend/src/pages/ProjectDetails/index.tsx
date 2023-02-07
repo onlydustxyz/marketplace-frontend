@@ -137,6 +137,7 @@ export const GET_PROJECT_QUERY = gql`
     projectsByPk(id: $id) {
       ...ProjectCardFields
       githubRepo {
+        id
         content {
           readme {
             content

@@ -89,7 +89,13 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
 
   const client = new ApolloClient({
     link: ApolloLink.from([ErrorLink, AuthenticationLink, splitLink]),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        ProjectDetails: {
+          keyFields: ["projectId"],
+        },
+      },
+    }),
   });
 
   const suspenseCache = new SuspenseCache();

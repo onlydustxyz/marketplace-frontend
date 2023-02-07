@@ -62,6 +62,7 @@ export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
       id
       name
       githubRepo {
+        id
         content {
           contributors {
             ...ContributorsTableFields
@@ -75,7 +76,9 @@ export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
 export const GET_PROJECT_REMAINING_BUDGET_QUERY = gql`
   query GetProjectRemainingBudget($projectId: uuid!) {
     projectsByPk(id: $projectId) {
+      id
       budgets {
+        id
         remainingAmount
       }
     }
