@@ -117,6 +117,7 @@ export const PROJECT_CARD_FRAGMENT = gql`
       name
       owner
       content {
+        id
         contributors {
           login
           avatarUrl

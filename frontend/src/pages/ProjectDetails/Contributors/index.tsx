@@ -64,6 +64,7 @@ export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
       githubRepo {
         id
         content {
+          id
           contributors {
             ...ContributorsTableFields
           }

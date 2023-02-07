@@ -139,6 +139,7 @@ export const GET_PROJECT_QUERY = gql`
       githubRepo {
         id
         content {
+          id
           readme {
             content
           }
