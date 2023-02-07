@@ -82,6 +82,7 @@ export const GET_MY_CONTRIBUTIONS_QUERY = gql`
       amountInUsd
       reason
       budget {
+        id
         project {
           id
           name

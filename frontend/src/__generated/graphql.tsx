@@ -2726,7 +2726,7 @@ export type Users_StreamCursorValueInput = {
   phoneNumberVerified: InputMaybe<Scalars['Boolean']>;
 };
 
-export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', projectId: any | null } | null }> };
+export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> };
 
 export type GetFirstLeadProjectIdQueryVariables = Exact<{
   userId: Scalars['uuid'];
@@ -2807,7 +2807,7 @@ export type GetPaymentRequestsQueryVariables = Exact<{
 }>;
 
 
-export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', project: { __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', projectId: any, description: string | null, logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, logoUrl: string } } | null } | null } | null }> };
+export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', projectId: any, description: string | null, logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, logoUrl: string } } | null } | null } | null }> };
 
 export type UpdateProfileInfoMutationVariables = Exact<{
   email: InputMaybe<Scalars['Email']>;
@@ -2829,7 +2829,7 @@ export type GetProjectContributorsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, name: string, githubRepo: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', projectId: any | null } | null }> }> } } | null } | null };
+export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, name: string, githubRepo: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } } | null } | null };
 
 export type GetProjectRemainingBudgetQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -2891,6 +2891,7 @@ export const ContributorsTableFieldsFragmentDoc = gql`
   paymentRequests {
     id
     budget {
+      id
       projectId
     }
     amountInUsd
@@ -3324,6 +3325,7 @@ export const GetPaymentRequestsDocument = gql`
     amountInUsd
     reason
     budget {
+      id
       project {
         id
         name

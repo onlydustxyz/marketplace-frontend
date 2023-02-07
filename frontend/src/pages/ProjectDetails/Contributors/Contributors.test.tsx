@@ -5,7 +5,7 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { RoutePaths } from "src/App";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import Contributors, { GET_PROJECT_CONTRIBUTORS_QUERY } from ".";
-import { ContributorsTableFieldsFragment } from "src/__generated/graphql";
+import { ContributorsTableFieldsFragment, PaymentRequestFragment } from "src/__generated/graphql";
 import { generatePath } from "react-router-dom";
 
 expect.extend(matchers);
@@ -34,7 +34,7 @@ const mockPaymentRequest = {
   reason: {
     work_items: ["", ""],
   },
-  budget: { projectId: TEST_PROJECT_ID },
+  budget: { id: "budget-id", projectId: TEST_PROJECT_ID },
 };
 
 const mockPaymentRequest2 = {
@@ -43,7 +43,7 @@ const mockPaymentRequest2 = {
   reason: {
     work_items: [""],
   },
-  budget: { projectId: TEST_PROJECT_ID },
+  budget: { id: "budget-id", projectId: TEST_PROJECT_ID },
 };
 
 const contributor1: ContributorsTableFieldsFragment = {
