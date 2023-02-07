@@ -73,8 +73,18 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
       IBAN: user?.payoutSettings?.WireTransfer?.IBAN,
       BIC: user?.payoutSettings?.WireTransfer?.BIC,
     },
+    mode: "onBlur",
+    reValidateMode: "onBlur",
+    shouldFocusError: false,
   });
-  const { handleSubmit } = formMethods;
+  const {
+    watch,
+    control,
+    handleSubmit,
+    formState: { touchedFields },
+    clearErrors,
+    trigger,
+  } = formMethods;
   const showToaster = useShowToaster();
 
   const [updateUser, { loading }] = useHasuraMutation(UPDATE_USER_MUTATION, HasuraUserRole.RegisteredUser, {
@@ -90,10 +100,10 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
     updateUser(mapFormDataToSchema(formData));
   };
 
-  const payoutSettingsType = formMethods.watch("payoutSettingsType");
-  const isCompanyProfile = formMethods.watch("isCompanyProfile");
-  const IBANValue = formMethods.watch("IBAN");
-  const BICValue = formMethods.watch("BIC");
+  const payoutSettingsType = watch("payoutSettingsType");
+  const isCompanyProfile = watch("isCompanyProfile");
+  const IBANValue = watch("IBAN");
+  const BICValue = watch("BIC");
 
   const { T } = useIntl();
 
@@ -108,11 +118,7 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
                   <div className="flex flex-row justify-between">
                     <div className="font-medium text-lg">{T("profile.form.aboutYou")}</div>
                     <div className="flex flex-row items-center gap-2">
-                      <FormToggle
-                        name="isCompanyProfile"
-                        label={T("profile.form.companyProfile")}
-                        control={formMethods.control}
-                      />
+                      <FormToggle name="isCompanyProfile" label={T("profile.form.companyProfile")} control={control} />
                     </div>
                   </div>
                   <div>
@@ -151,6 +157,7 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
                       name="email"
                       options={{ pattern: EMAIL_ADDRESS_REGEXP }}
                       placeholder={T("profile.form.emailPlaceholder")}
+                      onFocus={() => clearErrors("email")}
                     />
                   </div>
                 </div>
@@ -209,9 +216,9 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
             {payoutSettingsType === PayoutSettingsDisplayType.BankAddress && (
               <div className="flex flex-row gap-5">
                 <Controller
-                  control={formMethods.control}
+                  control={control}
                   name="IBAN"
-                  render={({ field: { onChange, value } }) => {
+                  render={({ field: { onChange, value, onBlur } }) => {
                     return (
                       <Input
                         label={T("profile.form.iban")}
@@ -225,14 +232,21 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
                         }}
                         value={value && IBAN.printFormat(value)}
                         onChange={onChange}
+                        onBlur={() => {
+                          if (touchedFields.BIC) {
+                            trigger("BIC");
+                          }
+                          onBlur();
+                        }}
+                        onFocus={() => clearErrors("IBAN")}
                       />
                     );
                   }}
                 />
                 <Controller
-                  control={formMethods.control}
+                  control={control}
                   name="BIC"
-                  render={({ field: { onChange, value } }) => {
+                  render={({ field: { onChange, value, onBlur } }) => {
                     return (
                       <Input
                         label={T("profile.form.bic")}
@@ -244,6 +258,13 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
                         }}
                         value={value}
                         onChange={onChange}
+                        onBlur={() => {
+                          if (touchedFields.IBAN) {
+                            trigger("IBAN");
+                          }
+                          onBlur();
+                        }}
+                        onFocus={() => clearErrors("BIC")}
                       />
                     );
                   }}
