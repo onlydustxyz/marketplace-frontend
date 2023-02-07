@@ -1,3 +1,5 @@
+import { SortingFields } from "./hooks/usePaymentSorting";
+
 export type Branded<T, B> = T & { __brand: B };
 
 // https://stackoverflow.com/questions/41253310/typescript-retrieve-element-type-information-from-array-type
@@ -56,21 +58,14 @@ export type Payment = {
     currency: Currency;
   };
   status: PaymentStatus;
-  recipient?: {
-    avatarUrl: string;
-    login: string;
-  };
+  recipientId?: number;
   recipientPayoutSettings?: PayoutSettings;
   project?: Project;
 };
 
-export interface PaymentWithRecipientInfo extends Payment {
-  recipient: {
-    avatarUrl: string;
-    login: string;
-  };
-  recipientPayoutSettings: PayoutSettings;
-}
+export type Sortable = {
+  sortingFields?: SortingFields;
+};
 
 export enum Currency {
   USD = "USD",
@@ -83,12 +78,14 @@ export enum PaymentStatus {
   WAITING_PAYMENT = "WAITING_PAYMENT",
 }
 
-export function getPaymentStatusOrder(status: PaymentStatus): number {
+export function getPaymentStatusOrder(status: PaymentStatus | "payout_missing"): number {
   switch (status) {
     case PaymentStatus.WAITING_PAYMENT:
       return 0;
     case PaymentStatus.ACCEPTED:
       return 1;
+    default:
+      return -1;
   }
 }
 

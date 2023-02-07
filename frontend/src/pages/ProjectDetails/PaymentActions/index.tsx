@@ -1,9 +1,11 @@
-import { useContext } from "react";
+import { Suspense, useContext } from "react";
 import Card from "src/components/Card";
+import Loader from "src/components/Loader";
 import PaymentTable from "src/components/PaymentTable";
 import ProjectPaymentTableFallback from "src/components/ProjectPaymentTableFallback";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useIntl } from "src/hooks/useIntl";
+import usePaymentRequests from "src/hooks/usePaymentRequests";
 import {
   PaymentAction,
   ProjectDetailsActionType,
@@ -12,7 +14,6 @@ import {
 } from "../ProjectDetailsContext";
 import PaymentForm from "./PaymentForm";
 import RemainingBudget from "./RemainingBudget";
-import useGetPaymentRequests from "./useGetPaymentRequests";
 
 interface PaymentsProps {
   projectId: string;
@@ -24,7 +25,7 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
   const state = useContext(ProjectDetailsContext);
   const dispatch = useContext(ProjectDetailsDispatchContext);
 
-  const query = useGetPaymentRequests(projectId);
+  const query = usePaymentRequests({ projectId });
   const payments = query.data?.paymentRequests || [];
   const budget = query.data?.budget || { initialAmount: 0, remainingAmount: 0 };
 
@@ -37,7 +38,9 @@ export default function PaymentActions({ projectId }: PaymentsProps) {
             <div className="flex">
               {payments.length > 0 ? (
                 <Card>
-                  <PaymentTable payments={payments} />
+                  <Suspense fallback={<Loader />}>
+                    <PaymentTable payments={payments} />
+                  </Suspense>
                 </Card>
               ) : (
                 <Card className="p-16">

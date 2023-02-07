@@ -2743,12 +2743,42 @@ export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequ
 
 export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, name: string, totalSpentAmountInUsd: any, projectDetails: { __typename?: 'ProjectDetails', description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', name: string, owner: string, languages: any, content: { __typename?: 'Repository', logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null };
 
+export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string };
+
+export type GetGithubUserQueryVariables = Exact<{
+  githubUserId: Scalars['Int'];
+}>;
+
+
+export type GetGithubUserQuery = { __typename?: 'query_root', fetchUserDetailsById: { __typename?: 'User', id: number, login: string, avatarUrl: string } };
+
+export type GithubContributorFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null };
+
 export type FindUserQueryForPaymentFormQueryVariables = Exact<{
   username: Scalars['String'];
 }>;
 
 
 export type FindUserQueryForPaymentFormQuery = { __typename?: 'query_root', fetchUserDetails: { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } };
+
+export type PaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, requestedAt: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, recipient: { __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', payoutSettings: any | null } | null } | null } | null };
+
+export type OnNewPaymentRequestsSubscriptionVariables = Exact<{
+  projectId: Scalars['uuid'];
+}>;
+
+
+export type OnNewPaymentRequestsSubscription = { __typename?: 'subscription_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, requestedAt: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, recipient: { __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', payoutSettings: any | null } | null } | null } | null }> }> } | null };
+
+export type RequestPaymentMutationVariables = Exact<{
+  amount: Scalars['Int'];
+  contributorId: Scalars['Int'];
+  projectId: Scalars['Uuid'];
+  reason: Reason;
+}>;
+
+
+export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -2805,42 +2835,12 @@ export type GetProjectRemainingBudgetQueryVariables = Exact<{
 
 export type GetProjectRemainingBudgetQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', budgets: Array<{ __typename?: 'Budgets', remainingAmount: any | null }> } | null };
 
-export type GithubContributorFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null };
-
 export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
 export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } } | null } | null };
-
-export type RequestPaymentMutationVariables = Exact<{
-  amount: Scalars['Int'];
-  contributorId: Scalars['Int'];
-  projectId: Scalars['Uuid'];
-  reason: Reason;
-}>;
-
-
-export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
-
-export type PaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, requestedAt: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, recipient: { __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', payoutSettings: any | null } | null } | null } | null };
-
-export type OnNewPaymentRequestsSubscriptionVariables = Exact<{
-  projectId: Scalars['uuid'];
-}>;
-
-
-export type OnNewPaymentRequestsSubscription = { __typename?: 'subscription_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, requestedAt: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, recipient: { __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', payoutSettings: any | null } | null } | null } | null }> }> } | null };
-
-export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string };
-
-export type GetGithubUserQueryVariables = Exact<{
-  githubUserId: Scalars['Int'];
-}>;
-
-
-export type GetGithubUserQuery = { __typename?: 'query_root', fetchUserDetailsById: { __typename?: 'User', id: number, login: string, avatarUrl: string } };
 
 export type GetProjectsForSidebarQueryVariables = Exact<{
   ledProjectIds: InputMaybe<Array<Scalars['uuid']> | Scalars['uuid']>;
@@ -3036,6 +3036,41 @@ export function useGetPaymentRequestIdsLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type GetPaymentRequestIdsQueryHookResult = ReturnType<typeof useGetPaymentRequestIdsQuery>;
 export type GetPaymentRequestIdsLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestIdsLazyQuery>;
 export type GetPaymentRequestIdsQueryResult = Apollo.QueryResult<GetPaymentRequestIdsQuery, GetPaymentRequestIdsQueryVariables>;
+export const GetGithubUserDocument = gql`
+    query GetGithubUser($githubUserId: Int!) {
+  fetchUserDetailsById(userId: $githubUserId) {
+    ...GithubUser
+  }
+}
+    ${GithubUserFragmentDoc}`;
+
+/**
+ * __useGetGithubUserQuery__
+ *
+ * To run a query within a React component, call `useGetGithubUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGithubUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGithubUserQuery({
+ *   variables: {
+ *      githubUserId: // value for 'githubUserId'
+ *   },
+ * });
+ */
+export function useGetGithubUserQuery(baseOptions: Apollo.QueryHookOptions<GetGithubUserQuery, GetGithubUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGithubUserQuery, GetGithubUserQueryVariables>(GetGithubUserDocument, options);
+      }
+export function useGetGithubUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGithubUserQuery, GetGithubUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGithubUserQuery, GetGithubUserQueryVariables>(GetGithubUserDocument, options);
+        }
+export type GetGithubUserQueryHookResult = ReturnType<typeof useGetGithubUserQuery>;
+export type GetGithubUserLazyQueryHookResult = ReturnType<typeof useGetGithubUserLazyQuery>;
+export type GetGithubUserQueryResult = Apollo.QueryResult<GetGithubUserQuery, GetGithubUserQueryVariables>;
 export const FindUserQueryForPaymentFormDocument = gql`
     query FindUserQueryForPaymentForm($username: String!) {
   fetchUserDetails(username: $username) {
@@ -3071,6 +3106,83 @@ export function useFindUserQueryForPaymentFormLazyQuery(baseOptions?: Apollo.Laz
 export type FindUserQueryForPaymentFormQueryHookResult = ReturnType<typeof useFindUserQueryForPaymentFormQuery>;
 export type FindUserQueryForPaymentFormLazyQueryHookResult = ReturnType<typeof useFindUserQueryForPaymentFormLazyQuery>;
 export type FindUserQueryForPaymentFormQueryResult = Apollo.QueryResult<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>;
+export const OnNewPaymentRequestsDocument = gql`
+    subscription OnNewPaymentRequests($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    id
+    budgets {
+      id
+      initialAmount
+      remainingAmount
+      paymentRequests {
+        ...PaymentRequest
+      }
+    }
+  }
+}
+    ${PaymentRequestFragmentDoc}`;
+
+/**
+ * __useOnNewPaymentRequestsSubscription__
+ *
+ * To run a query within a React component, call `useOnNewPaymentRequestsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOnNewPaymentRequestsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnNewPaymentRequestsSubscription({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useOnNewPaymentRequestsSubscription(baseOptions: Apollo.SubscriptionHookOptions<OnNewPaymentRequestsSubscription, OnNewPaymentRequestsSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<OnNewPaymentRequestsSubscription, OnNewPaymentRequestsSubscriptionVariables>(OnNewPaymentRequestsDocument, options);
+      }
+export type OnNewPaymentRequestsSubscriptionHookResult = ReturnType<typeof useOnNewPaymentRequestsSubscription>;
+export type OnNewPaymentRequestsSubscriptionResult = Apollo.SubscriptionResult<OnNewPaymentRequestsSubscription>;
+export const RequestPaymentDocument = gql`
+    mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
+  requestPayment(
+    amountInUsd: $amount
+    projectId: $projectId
+    reason: $reason
+    recipientId: $contributorId
+  )
+}
+    `;
+export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMutation, RequestPaymentMutationVariables>;
+
+/**
+ * __useRequestPaymentMutation__
+ *
+ * To run a mutation, you first call `useRequestPaymentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRequestPaymentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [requestPaymentMutation, { data, loading, error }] = useRequestPaymentMutation({
+ *   variables: {
+ *      amount: // value for 'amount'
+ *      contributorId: // value for 'contributorId'
+ *      projectId: // value for 'projectId'
+ *      reason: // value for 'reason'
+ *   },
+ * });
+ */
+export function useRequestPaymentMutation(baseOptions?: Apollo.MutationHookOptions<RequestPaymentMutation, RequestPaymentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RequestPaymentMutation, RequestPaymentMutationVariables>(RequestPaymentDocument, options);
+      }
+export type RequestPaymentMutationHookResult = ReturnType<typeof useRequestPaymentMutation>;
+export type RequestPaymentMutationResult = Apollo.MutationResult<RequestPaymentMutation>;
+export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<RequestPaymentMutation, RequestPaymentMutationVariables>;
 export const PendingProjectLeaderInvitationsDocument = gql`
     query PendingProjectLeaderInvitations($githubUserId: bigint) {
   pendingProjectLeaderInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
@@ -3446,118 +3558,6 @@ export function useGetProjectContributorsForPaymentSelectLazyQuery(baseOptions?:
 export type GetProjectContributorsForPaymentSelectQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelectQuery>;
 export type GetProjectContributorsForPaymentSelectLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelectLazyQuery>;
 export type GetProjectContributorsForPaymentSelectQueryResult = Apollo.QueryResult<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>;
-export const RequestPaymentDocument = gql`
-    mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
-  requestPayment(
-    amountInUsd: $amount
-    projectId: $projectId
-    reason: $reason
-    recipientId: $contributorId
-  )
-}
-    `;
-export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMutation, RequestPaymentMutationVariables>;
-
-/**
- * __useRequestPaymentMutation__
- *
- * To run a mutation, you first call `useRequestPaymentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRequestPaymentMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [requestPaymentMutation, { data, loading, error }] = useRequestPaymentMutation({
- *   variables: {
- *      amount: // value for 'amount'
- *      contributorId: // value for 'contributorId'
- *      projectId: // value for 'projectId'
- *      reason: // value for 'reason'
- *   },
- * });
- */
-export function useRequestPaymentMutation(baseOptions?: Apollo.MutationHookOptions<RequestPaymentMutation, RequestPaymentMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RequestPaymentMutation, RequestPaymentMutationVariables>(RequestPaymentDocument, options);
-      }
-export type RequestPaymentMutationHookResult = ReturnType<typeof useRequestPaymentMutation>;
-export type RequestPaymentMutationResult = Apollo.MutationResult<RequestPaymentMutation>;
-export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<RequestPaymentMutation, RequestPaymentMutationVariables>;
-export const OnNewPaymentRequestsDocument = gql`
-    subscription OnNewPaymentRequests($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    id
-    budgets {
-      id
-      initialAmount
-      remainingAmount
-      paymentRequests {
-        ...PaymentRequest
-      }
-    }
-  }
-}
-    ${PaymentRequestFragmentDoc}`;
-
-/**
- * __useOnNewPaymentRequestsSubscription__
- *
- * To run a query within a React component, call `useOnNewPaymentRequestsSubscription` and pass it any options that fit your needs.
- * When your component renders, `useOnNewPaymentRequestsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useOnNewPaymentRequestsSubscription({
- *   variables: {
- *      projectId: // value for 'projectId'
- *   },
- * });
- */
-export function useOnNewPaymentRequestsSubscription(baseOptions: Apollo.SubscriptionHookOptions<OnNewPaymentRequestsSubscription, OnNewPaymentRequestsSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<OnNewPaymentRequestsSubscription, OnNewPaymentRequestsSubscriptionVariables>(OnNewPaymentRequestsDocument, options);
-      }
-export type OnNewPaymentRequestsSubscriptionHookResult = ReturnType<typeof useOnNewPaymentRequestsSubscription>;
-export type OnNewPaymentRequestsSubscriptionResult = Apollo.SubscriptionResult<OnNewPaymentRequestsSubscription>;
-export const GetGithubUserDocument = gql`
-    query GetGithubUser($githubUserId: Int!) {
-  fetchUserDetailsById(userId: $githubUserId) {
-    ...GithubUser
-  }
-}
-    ${GithubUserFragmentDoc}`;
-
-/**
- * __useGetGithubUserQuery__
- *
- * To run a query within a React component, call `useGetGithubUserQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetGithubUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetGithubUserQuery({
- *   variables: {
- *      githubUserId: // value for 'githubUserId'
- *   },
- * });
- */
-export function useGetGithubUserQuery(baseOptions: Apollo.QueryHookOptions<GetGithubUserQuery, GetGithubUserQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetGithubUserQuery, GetGithubUserQueryVariables>(GetGithubUserDocument, options);
-      }
-export function useGetGithubUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGithubUserQuery, GetGithubUserQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetGithubUserQuery, GetGithubUserQueryVariables>(GetGithubUserDocument, options);
-        }
-export type GetGithubUserQueryHookResult = ReturnType<typeof useGetGithubUserQuery>;
-export type GetGithubUserLazyQueryHookResult = ReturnType<typeof useGetGithubUserLazyQuery>;
-export type GetGithubUserQueryResult = Apollo.QueryResult<GetGithubUserQuery, GetGithubUserQueryVariables>;
 export const GetProjectsForSidebarDocument = gql`
     query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
   projects(
