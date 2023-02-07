@@ -36,7 +36,7 @@ const renderHeaders = (sorting: Sorting, applySorting: (field: Field) => void) =
   const { T } = useIntl();
   return (
     <Headers>
-      <HeaderCell width={HeaderCellWidth.Sixth} horizontalMargin onClick={() => applySorting(Field.Date)}>
+      <HeaderCell width={HeaderCellWidth.Quarter} horizontalMargin onClick={() => applySorting(Field.Date)}>
         <TimeLine className="pl-px font-normal" />
         <span>{T("payment.table.date")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Date} />
