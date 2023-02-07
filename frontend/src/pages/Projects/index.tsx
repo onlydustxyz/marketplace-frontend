@@ -17,7 +17,7 @@ export default function Projects() {
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <div className="container mx-auto pt-16 pb-8 h-full">
         <div className="text-5xl font-belwe">{T("navbar.projects")}</div>
-        <div className="flex mt-8 gap-6">
+        <div className="flex mt-8 gap-6 h-full">
           <div className="basis-80 shrink-0">
             <FilterPanel onTechnologiesChange={setTechnologies} />
           </div>

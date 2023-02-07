@@ -33,7 +33,7 @@ export default function View({
         }}
       />
       <Background roundedBorders={BackgroundRoundedBorders.Right}>
-        <div className="p-5 flex flex-col flex-1">
+        <div className="h-full p-5 flex flex-col flex-1">
           {selectedTab === ProjectDetailsTab.Overview && currentProject.githubRepoInfo?.contributors && (
             <Overview {...currentProject} lead={{ ...currentProject.leads[0] }}>
               {currentProject.invitationId && (
