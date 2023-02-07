@@ -88,11 +88,11 @@ const View = ({
           leaveFrom="transform translate-y-0 opacity-100"
           leaveTo="transform -translate-y-1/3 opacity-0"
         >
-          <Card className="bg-spaceBlue-900" padded={false}>
+          <Card className="bg-spaceBlue-900 pr-1" padded={false}>
             <div
               className={classNames(
                 "overflow-auto max-h-60",
-                "scrollbar-thin scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
+                "scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
               )}
             >
               {contributors.map(contributor => (

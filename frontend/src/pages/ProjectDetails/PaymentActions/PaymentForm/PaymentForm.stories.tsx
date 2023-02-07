@@ -42,7 +42,7 @@ const OFUX = {
   __typename: "User",
 };
 const ANTHONYBUISSET = {
-  login: "anthonybuisson",
+  login: "anthonybuisset",
   avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
   id: 43467246,
   user: null,
