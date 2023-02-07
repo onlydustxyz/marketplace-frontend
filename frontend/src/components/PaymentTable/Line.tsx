@@ -6,11 +6,11 @@ import PayoutStatus from "../PayoutStatus";
 import { formatMoneyAmount } from "src/utils/money";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import GithubPRLink, { LinkColor } from "../PayoutTable/GithubPRLink";
-import isPayoutInfoMissing from "src/utils/isPayoutInfoMissing";
 import useGithubUser from "src/hooks/useGithubUser";
 import { Field, SortingFields } from "src/hooks/usePaymentSorting";
 import { useEffect } from "react";
 import { PaymentRequestFragment } from "src/__generated/graphql";
+import usePayoutSettings from "src/hooks/usePayoutSettings";
 
 type Props = {
   payment: PaymentRequestFragment & Sortable;
@@ -20,7 +20,7 @@ type Props = {
 const ISSUE_NUMBER = /pull\/(\d+)$/;
 
 export default function PaymentLine({ payment, setSortingFields }: Props) {
-  const payoutInfoMissing = !!isPayoutInfoMissing(payment.recipient?.user?.userInfo?.payoutSettings);
+  const { valid: payoutSettingsValid } = usePayoutSettings(payment.recipientId);
   const { data: recipient } = useGithubUser(payment.recipientId);
 
   const paidAmount = payment.payments.reduce((total, payment) => total + payment.amount, 0);
@@ -28,13 +28,13 @@ export default function PaymentLine({ payment, setSortingFields }: Props) {
   const paymentReason = payment.reason?.work_items?.at(0);
 
   useEffect(() => {
-    if (recipient?.login) {
+    if (recipient?.login && usePayoutSettings != undefined) {
       const issueNumber = paymentReason?.match(ISSUE_NUMBER) || ["", ""];
       setSortingFields({
         [Field.Date]: new Date(payment.requestedAt),
         [Field.Contribution]: recipient.login.toLocaleLowerCase() + issueNumber[1].padStart(10, "0"),
         [Field.Amount]: payment.amountInUsd,
-        [Field.Status]: getPaymentStatusOrder(payoutInfoMissing ? "payout_missing" : paymentStatus),
+        [Field.Status]: getPaymentStatusOrder(payoutSettingsValid ? paymentStatus : "payout_missing"),
       });
     }
   }, [recipient?.login]);
@@ -55,7 +55,7 @@ export default function PaymentLine({ payment, setSortingFields }: Props) {
             <span className="font-walsheim">{formatMoneyAmount(payment.amountInUsd, Currency.USD)}</span>
           </Cell>
           <Cell height={CellHeight.Medium}>
-            <PayoutStatus {...{ status: paymentStatus, payoutInfoMissing }} isProjectLeaderView />
+            <PayoutStatus {...{ status: paymentStatus, payoutInfoMissing: !payoutSettingsValid }} isProjectLeaderView />
           </Cell>
         </Line>
       )}

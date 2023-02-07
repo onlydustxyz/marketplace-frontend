@@ -9,13 +9,13 @@ import InfoMissingBanner from "src/components/InfoMissingBanner";
 import { useIntl } from "src/hooks/useIntl";
 import { useNavigate, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import isPayoutInfoMissing from "src/utils/isPayoutInfoMissing";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { useState } from "react";
+import usePayoutSettings from "src/hooks/usePayoutSettings";
 
 const Profile: React.FC = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, githubUserId } = useAuth();
   const { T } = useIntl();
   const getProfileQuery = useHasuraQuery<ProfileQuery>(GET_PROFILE_QUERY, HasuraUserRole.RegisteredUser, {
     skip: !isLoggedIn,
@@ -24,6 +24,8 @@ const Profile: React.FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { valid: payoutSettingsValid } = usePayoutSettings(githubUserId);
 
   const navigateBack = () => {
     navigate(location.state?.prev || RoutePaths.Projects);
@@ -59,7 +61,7 @@ const Profile: React.FC = () => {
         <div className="flex flex-col gap-6">
           {getProfileQuery.data && (
             <QueryWrapper query={getProfileQuery}>
-              {isPayoutInfoMissing(getProfileQuery?.data?.userInfo?.[0]?.payoutSettings) && <InfoMissingBanner />}
+              {!payoutSettingsValid && <InfoMissingBanner />}
               {getProfileQuery.data && (
                 <ProfileForm user={getProfileQuery.data.userInfo[0]} setSaveButtonDisabled={setSaveButtonDisabled} />
               )}

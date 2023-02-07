@@ -2,10 +2,11 @@ import { describe, expect, it, Mock, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
-import MyContributionsPage, { GET_MY_CONTRIBUTIONS_QUERY, GET_PAYOUT_SETTINGS_QUERY } from ".";
+import MyContributionsPage, { GET_MY_CONTRIBUTIONS_QUERY } from ".";
 import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { useRoles } from "src/hooks/useAuth/useRoles";
+import { GET_USER_PAYOUT_SETTINGS } from "src/hooks/usePayoutSettings";
 
 expect.extend(matchers);
 
@@ -78,13 +79,18 @@ const buildMockMyContributionsQuery = (
 
 const buidlMockPayoutSettingsQuery = (payoutSettings: any) => ({
   request: {
-    query: GET_PAYOUT_SETTINGS_QUERY,
+    query: GET_USER_PAYOUT_SETTINGS,
+    variables: { githubUserId },
   },
   result: {
     data: {
-      userInfo: [
+      authGithubUsers: [
         {
-          payoutSettings,
+          user: {
+            userInfo: {
+              payoutSettings,
+            },
+          },
         },
       ],
     },
