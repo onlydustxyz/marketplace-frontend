@@ -1,3 +1,4 @@
+import { useIntl } from "src/hooks/useIntl";
 import ExternalLinkLine from "src/icons/ExternalLinkLine";
 import { linkClickHandlerFactory } from "src/utils/clickHandler";
 
@@ -13,10 +14,11 @@ export enum LinkColor {
 }
 
 export default function GithubPRLink({ link, linkColor }: LinkProps) {
+  const { T } = useIntl();
   let linkText = link;
   const matches = REGEX_GITHUB_PULL_REQUEST_URL.exec(link);
   if (matches !== null) {
-    linkText = `#${matches[1]} · View on Github`;
+    linkText = T("payment.table.githubLink", { pullRequestNumber: matches[1] });
   }
   return (
     <div className="group/github-pr-link flex flex-row gap-1 w-fit items-center hover:cursor-pointer">
