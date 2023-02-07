@@ -50,7 +50,10 @@ export default function View({ contributors, isProjectLeader, remainingBudget, o
   return (
     <Table id="contributors_table" headers={<Headers {...{ sorting, applySorting, isProjectLeader }} />}>
       {sortedContributors.map(contributor => (
-        <ContributorLine {...{ contributor, isProjectLeader, isSendingNewPaymentDisabled, onPaymentRequested }} />
+        <ContributorLine
+          key={contributor.login}
+          {...{ contributor, isProjectLeader, isSendingNewPaymentDisabled, onPaymentRequested }}
+        />
       ))}
     </Table>
   );
