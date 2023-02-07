@@ -46,6 +46,7 @@ impl GithubService for github::Client {
 		})?;
 
 		Ok(GithubRepository::new(
+			id as i32,
 			contributors.into_iter().map(Into::into).collect(),
 			readme.map(Into::into),
 			owner.avatar_url.to_string(),

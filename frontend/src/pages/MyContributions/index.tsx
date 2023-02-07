@@ -99,6 +99,7 @@ export const GET_MY_CONTRIBUTIONS_QUERY = gql`
           githubRepo {
             id
             content {
+              id
               logoUrl
             }
           }
