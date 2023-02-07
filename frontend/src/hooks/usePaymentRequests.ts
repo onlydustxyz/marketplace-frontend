@@ -51,13 +51,6 @@ const PAYMENT_REQUEST_FRAGMENT = gql`
       currencyCode
     }
     requestedAt
-    recipient {
-      user {
-        userInfo {
-          payoutSettings
-        }
-      }
-    }
   }
 `;
 

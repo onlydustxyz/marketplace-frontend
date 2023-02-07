@@ -29,11 +29,6 @@ const mockPaymentRequest = (githubUserId: number): PaymentRequestFragment => ({
   __typename: "PaymentRequests",
   recipientId: githubUserId,
   requestedAt: new Date(),
-  recipient: {
-    user: {
-      userInfo: { payoutSettings: null },
-    },
-  },
 });
 
 const getPaymentRequestsMock = {

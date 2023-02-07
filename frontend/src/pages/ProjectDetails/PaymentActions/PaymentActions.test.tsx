@@ -42,11 +42,6 @@ const paymentRequestMock: PaymentRequestFragment = {
   amountInUsd: 200,
   reason: { work_items: ["link_to_pr"] },
   requestedAt: new Date(),
-  recipient: {
-    user: {
-      userInfo: { payoutSettings: null },
-    },
-  },
 };
 
 const githubUserMock: GithubUserFragment = {

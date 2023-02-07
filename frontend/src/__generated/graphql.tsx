@@ -2761,14 +2761,14 @@ export type FindUserQueryForPaymentFormQueryVariables = Exact<{
 
 export type FindUserQueryForPaymentFormQuery = { __typename?: 'query_root', fetchUserDetails: { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } };
 
-export type PaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, requestedAt: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, recipient: { __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', payoutSettings: any | null } | null } | null } | null };
+export type PaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, requestedAt: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> };
 
 export type OnNewPaymentRequestsSubscriptionVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type OnNewPaymentRequestsSubscription = { __typename?: 'subscription_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, requestedAt: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, recipient: { __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', payoutSettings: any | null } | null } | null } | null }> }> } | null };
+export type OnNewPaymentRequestsSubscription = { __typename?: 'subscription_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any | null, remainingAmount: any | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, requestedAt: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> }> }> } | null };
 
 export type RequestPaymentMutationVariables = Exact<{
   amount: Scalars['Int'];
@@ -2779,6 +2779,13 @@ export type RequestPaymentMutationVariables = Exact<{
 
 
 export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
+
+export type GetUserPayoutSettingsQueryVariables = Exact<{
+  githubUserId: Scalars['bigint'];
+}>;
+
+
+export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', authGithubUsers: Array<{ __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', payoutSettings: any | null } | null } | null }> };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -2800,11 +2807,6 @@ export type GetPaymentRequestsQueryVariables = Exact<{
 
 
 export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', project: { __typename?: 'Projects', id: any, name: string, projectDetails: { __typename?: 'ProjectDetails', description: string | null, logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', logoUrl: string } } | null } | null } | null }> };
-
-export type PayoutSettingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type PayoutSettingsQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', payoutSettings: any | null }> };
 
 export type UpdateProfileInfoMutationVariables = Exact<{
   email: InputMaybe<Scalars['Email']>;
@@ -2954,13 +2956,6 @@ export const PaymentRequestFragmentDoc = gql`
     currencyCode
   }
   requestedAt
-  recipient {
-    user {
-      userInfo {
-        payoutSettings
-      }
-    }
-  }
 }
     `;
 export const GetFirstLeadProjectIdDocument = gql`
@@ -3183,6 +3178,45 @@ export function useRequestPaymentMutation(baseOptions?: Apollo.MutationHookOptio
 export type RequestPaymentMutationHookResult = ReturnType<typeof useRequestPaymentMutation>;
 export type RequestPaymentMutationResult = Apollo.MutationResult<RequestPaymentMutation>;
 export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<RequestPaymentMutation, RequestPaymentMutationVariables>;
+export const GetUserPayoutSettingsDocument = gql`
+    query GetUserPayoutSettings($githubUserId: bigint!) {
+  authGithubUsers(where: {githubUserId: {_eq: $githubUserId}}) {
+    user {
+      userInfo {
+        payoutSettings
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserPayoutSettingsQuery__
+ *
+ * To run a query within a React component, call `useGetUserPayoutSettingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserPayoutSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserPayoutSettingsQuery({
+ *   variables: {
+ *      githubUserId: // value for 'githubUserId'
+ *   },
+ * });
+ */
+export function useGetUserPayoutSettingsQuery(baseOptions: Apollo.QueryHookOptions<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>(GetUserPayoutSettingsDocument, options);
+      }
+export function useGetUserPayoutSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>(GetUserPayoutSettingsDocument, options);
+        }
+export type GetUserPayoutSettingsQueryHookResult = ReturnType<typeof useGetUserPayoutSettingsQuery>;
+export type GetUserPayoutSettingsLazyQueryHookResult = ReturnType<typeof useGetUserPayoutSettingsLazyQuery>;
+export type GetUserPayoutSettingsQueryResult = Apollo.QueryResult<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>;
 export const PendingProjectLeaderInvitationsDocument = gql`
     query PendingProjectLeaderInvitations($githubUserId: bigint) {
   pendingProjectLeaderInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
@@ -3326,40 +3360,6 @@ export function useGetPaymentRequestsLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type GetPaymentRequestsQueryHookResult = ReturnType<typeof useGetPaymentRequestsQuery>;
 export type GetPaymentRequestsLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsLazyQuery>;
 export type GetPaymentRequestsQueryResult = Apollo.QueryResult<GetPaymentRequestsQuery, GetPaymentRequestsQueryVariables>;
-export const PayoutSettingsDocument = gql`
-    query PayoutSettings {
-  userInfo {
-    payoutSettings
-  }
-}
-    `;
-
-/**
- * __usePayoutSettingsQuery__
- *
- * To run a query within a React component, call `usePayoutSettingsQuery` and pass it any options that fit your needs.
- * When your component renders, `usePayoutSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = usePayoutSettingsQuery({
- *   variables: {
- *   },
- * });
- */
-export function usePayoutSettingsQuery(baseOptions?: Apollo.QueryHookOptions<PayoutSettingsQuery, PayoutSettingsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PayoutSettingsQuery, PayoutSettingsQueryVariables>(PayoutSettingsDocument, options);
-      }
-export function usePayoutSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PayoutSettingsQuery, PayoutSettingsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PayoutSettingsQuery, PayoutSettingsQueryVariables>(PayoutSettingsDocument, options);
-        }
-export type PayoutSettingsQueryHookResult = ReturnType<typeof usePayoutSettingsQuery>;
-export type PayoutSettingsLazyQueryHookResult = ReturnType<typeof usePayoutSettingsLazyQuery>;
-export type PayoutSettingsQueryResult = Apollo.QueryResult<PayoutSettingsQuery, PayoutSettingsQueryVariables>;
 export const UpdateProfileInfoDocument = gql`
     mutation updateProfileInfo($email: Email, $identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
   updateProfileInfo(

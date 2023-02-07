@@ -7,13 +7,13 @@ import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
-import isPayoutInfoMissing from "src/utils/isPayoutInfoMissing";
-import { GetPaymentRequestsQuery, PayoutSettingsQuery } from "src/__generated/graphql";
+import { GetPaymentRequestsQuery } from "src/__generated/graphql";
 import { useT } from "talkr";
 import InfoMissingBanner from "src/components/InfoMissingBanner";
 import Button from "src/components/Button";
 import TotalEarnings from "./TotalEarnings";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
+import usePayoutSettings from "src/hooks/usePayoutSettings";
 
 const MyContributions = () => {
   const { githubUserId } = useAuth();
@@ -27,13 +27,8 @@ const MyContributions = () => {
       skip: !githubUserId,
     }
   );
-  const getPayoutSettingsQuery = useHasuraQuery<PayoutSettingsQuery>(
-    GET_PAYOUT_SETTINGS_QUERY,
-    HasuraUserRole.RegisteredUser,
-    {
-      fetchPolicy: "network-only",
-    }
-  );
+
+  const { valid: payoutSettingsValid } = usePayoutSettings(githubUserId);
 
   const { data: paymentRequestsQueryData } = getPaymentRequestsQuery;
   const payments = paymentRequestsQueryData?.paymentRequests?.map(mapApiPaymentsToProps);
@@ -44,7 +39,6 @@ const MyContributions = () => {
   }
 
   const totalEarnings = hasPayments && payments.reduce((acc, p) => acc + p.amount.value, 0);
-  const payoutInfoMissing = !!isPayoutInfoMissing(getPayoutSettingsQuery?.data?.userInfo?.[0]?.payoutSettings);
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
@@ -52,7 +46,7 @@ const MyContributions = () => {
         <div className="text-5xl font-belwe">{T("navbar.myContributions")}</div>
         <QueryWrapper query={getPaymentRequestsQuery}>
           <div className="my-10">
-            {payoutInfoMissing && hasPendingPaymentsRequests(getPaymentRequestsQuery) && (
+            {!payoutSettingsValid && hasPendingPaymentsRequests(getPaymentRequestsQuery) && (
               <InfoMissingBanner>
                 <Link to={RoutePaths.Profile}>
                   <Button>
@@ -63,7 +57,7 @@ const MyContributions = () => {
             )}
           </div>
           <div className="flex gap-4 mb-10">
-            <Card>{payments && <PayoutTable payments={payments} payoutInfoMissing={payoutInfoMissing} />}</Card>
+            <Card>{payments && <PayoutTable payments={payments} payoutInfoMissing={!payoutSettingsValid} />}</Card>
             {totalEarnings && <TotalEarnings amount={totalEarnings} />}
           </div>
         </QueryWrapper>
@@ -102,14 +96,6 @@ export const GET_MY_CONTRIBUTIONS_QUERY = gql`
           }
         }
       }
-    }
-  }
-`;
-
-export const GET_PAYOUT_SETTINGS_QUERY = gql`
-  query PayoutSettings {
-    userInfo {
-      payoutSettings
     }
   }
 `;
