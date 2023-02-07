@@ -16,6 +16,7 @@ import {
 import Card from "src/components/Card";
 import { useShowToaster } from "src/hooks/useToaster";
 import FormToggle from "src/components/FormToggle";
+import { useEffect } from "react";
 
 const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
 const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
@@ -84,7 +85,7 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
     onCompleted: () => showToaster(T("profile.form.success")),
   });
 
-  setSaveButtonDisabled(loading);
+  useEffect(() => setSaveButtonDisabled(loading), [loading]);
 
   const onSubmit: SubmitHandler<Inputs> = formData => {
     updateUser(mapFormDataToSchema(formData));
