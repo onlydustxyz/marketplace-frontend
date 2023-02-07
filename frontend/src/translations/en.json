@@ -97,7 +97,7 @@
       "contribution": "Contribution",
       "date": "Date",
       "status": "Status",
-      "githubLink": "__pullRequestNumber__ · Github"
+      "githubLink": "#__pullRequestNumber__ · Github"
     },
     "tableFallback": {
       "browseProjects": "Browse projects",
