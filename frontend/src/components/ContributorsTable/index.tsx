@@ -78,6 +78,7 @@ export const CONTRIBUTORS_TABLE_FRAGMENT = gql`
     paymentRequests {
       id
       budget {
+        id
         projectId
       }
       amountInUsd
