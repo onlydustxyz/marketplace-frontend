@@ -16,7 +16,7 @@ export default function GithubPRLink({ link, linkColor }: LinkProps) {
   let linkText = link;
   const matches = REGEX_GITHUB_PULL_REQUEST_URL.exec(link);
   if (matches !== null) {
-    linkText = `#${matches[1]} · View on Github`;
+    linkText = `#${matches[1]} · Github`;
   }
   return (
     <div className="group/github-pr-link flex flex-row gap-1 w-fit items-center hover:cursor-pointer">
