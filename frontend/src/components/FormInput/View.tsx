@@ -22,6 +22,7 @@ type PropsType = {
   prefixComponent?: React.ReactNode;
   suffixComponent?: React.ReactNode;
   inputClassName?: string;
+  showValidationErrors: boolean;
 };
 
 export enum InputErrorType {
@@ -44,6 +45,7 @@ const View: React.FC<PropsType> = ({
   prefixComponent,
   suffixComponent,
   inputClassName,
+  showValidationErrors,
 }) => (
   <label html-for={register.name} className="flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim">
     <div className="font-medium text-sm tracking-tight">{label}</div>
@@ -70,7 +72,7 @@ const View: React.FC<PropsType> = ({
           suffixComponent
         )}
       </div>
-      {(error?.type === InputErrorType.Pattern || error?.type === InputErrorType.Validate) && (
+      {showValidationErrors && (error?.type === InputErrorType.Pattern || error?.type === InputErrorType.Validate) && (
         <span className="text-rose-600 text-sm ml-3">{`${label} is invalid`}</span>
       )}
       {errorType === InputErrorType.Normal && (

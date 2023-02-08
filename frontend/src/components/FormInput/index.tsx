@@ -18,6 +18,7 @@ type PropsType = {
   prefixComponent?: React.ReactNode;
   suffixComponent?: React.ReactNode;
   inputClassName?: string;
+  showValidationErrors?: boolean;
 };
 
 export default function Input({
@@ -35,6 +36,7 @@ export default function Input({
   prefixComponent,
   suffixComponent,
   inputClassName,
+  showValidationErrors = true,
 }: PropsType) {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
@@ -62,6 +64,7 @@ export default function Input({
         prefixComponent,
         suffixComponent,
         inputClassName,
+        showValidationErrors,
       }}
     />
   );
