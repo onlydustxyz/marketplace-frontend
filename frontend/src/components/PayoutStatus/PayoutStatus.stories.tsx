@@ -18,6 +18,7 @@ export default {
 const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => <PayoutStatus {...args} />;
 
 const args = {
+  id: "status-id",
   status: PaymentStatus.WAITING_PAYMENT,
   payoutInfoMissing: false,
 };

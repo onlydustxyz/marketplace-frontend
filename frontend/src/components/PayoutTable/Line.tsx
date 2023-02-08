@@ -41,7 +41,7 @@ export default function PaymentLine({ payment, payoutInfoMissing, setSortingFiel
       </Cell>
       <Cell>{formatMoneyAmount(payment.amount.value, payment.amount.currency)}</Cell>
       <Cell>
-        <PayoutStatus {...{ status: payment.status, payoutInfoMissing }} />
+        <PayoutStatus {...{ id: `payout-status-${payment.id}`, status: payment.status, payoutInfoMissing }} />
       </Cell>
     </Line>
   );

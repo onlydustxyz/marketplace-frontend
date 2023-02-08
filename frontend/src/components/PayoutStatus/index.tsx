@@ -1,84 +1,75 @@
-import classNames from "classnames";
 import Tag, { TagBackgroundColor, TagBorderColor, TagIcon, TagIconColor, TagSize } from "src/components/Tag";
 import { useIntl } from "src/hooks/useIntl";
 import { PaymentStatus } from "src/types";
 import Tooltip from "../Tooltip";
 
 type Props = {
+  id: string;
   status: PaymentStatus;
   payoutInfoMissing: boolean;
   isProjectLeaderView?: boolean;
 };
 
-export default function PayoutStatus({ status, payoutInfoMissing, isProjectLeaderView = false }: Props) {
-  return (
-    <div className="relative group/payout-status flex flex-row justify-center">
-      {buildTag(status, payoutInfoMissing, isProjectLeaderView)}
-    </div>
-  );
+export default function PayoutStatus({ id, status, payoutInfoMissing, isProjectLeaderView = false }: Props) {
+  return buildTag(id, status, payoutInfoMissing, isProjectLeaderView);
 }
 
-const buildTag = (status: PaymentStatus, payoutInfoMissing: boolean, isProjectLeaderView: boolean) => {
+const buildTag = (id: string, status: PaymentStatus, payoutInfoMissing: boolean, isProjectLeaderView: boolean) => {
   switch (status) {
     case PaymentStatus.WAITING_PAYMENT:
-      return payoutInfoMissing ? tagPayoutInfoMissing(isProjectLeaderView) : tagProcessing();
+      return payoutInfoMissing ? tagPayoutInfoMissing(id, isProjectLeaderView) : tagProcessing(id);
     case PaymentStatus.ACCEPTED:
-      return tagComplete();
+      return tagComplete(id);
   }
 };
 
-const tagComplete = () => {
+const tagComplete = (id: string) => {
   const { T } = useIntl();
 
   return (
     <>
       <Tag
+        id={id}
         label={T("payment.status.complete")}
         size={TagSize.Medium}
         icon={TagIcon.Check}
         iconColor={TagIconColor.Grey}
         borderColor={TagBorderColor.Grey}
       />
-      <div
-        className={classNames(
-          "absolute z-10 translate-y-10 invisible group-hover/payout-status:visible flex justify-center w-36"
-        )}
-      >
-        <Tooltip>{T("payment.status.tooltip.complete")}</Tooltip>
-      </div>
+      <Tooltip anchorId={id}>
+        <div className="w-36">{T("payment.status.tooltip.complete")}</div>
+      </Tooltip>
     </>
   );
 };
 
-const tagProcessing = () => {
+const tagProcessing = (id: string) => {
   const { T } = useIntl();
 
   return (
     <>
       <Tag
+        id={id}
         label={T("payment.status.processing")}
         size={TagSize.Medium}
         icon={TagIcon.Time}
         iconColor={TagIconColor.Grey}
         borderColor={TagBorderColor.Grey}
       />
-      <div
-        className={classNames(
-          "absolute z-10 translate-y-10 invisible group-hover/payout-status:visible flex justify-center w-44"
-        )}
-      >
-        <Tooltip>{T("payment.status.tooltip.processing")}</Tooltip>
-      </div>
+      <Tooltip anchorId={id}>
+        <div className="w-44">{T("payment.status.tooltip.processing")}</div>
+      </Tooltip>
     </>
   );
 };
 
-const tagPayoutInfoMissing = (isProjectLeaderView: boolean) => {
+const tagPayoutInfoMissing = (id: string, isProjectLeaderView: boolean) => {
   const { T } = useIntl();
 
   return (
     <>
       <Tag
+        id={id}
         label={isProjectLeaderView ? T("payment.status.pending") : T("payment.status.payoutInfoMissing")}
         size={TagSize.Medium}
         icon={TagIcon.Warning}
@@ -87,15 +78,11 @@ const tagPayoutInfoMissing = (isProjectLeaderView: boolean) => {
         backgroundColor={TagBackgroundColor.SpaceBlueOpaque}
         whitespaceNoWrap={true}
       />
-      <div
-        className={classNames(
-          "absolute z-10 translate-y-10 invisible group-hover/payout-status:visible flex justify-center w-52"
-        )}
-      >
-        <Tooltip>
+      <Tooltip anchorId={id}>
+        <div className="w-52">
           {isProjectLeaderView ? T("payment.status.tooltip.pending") : T("payment.status.tooltip.payoutInfoMissing")}
-        </Tooltip>
-      </div>
+        </div>
+      </Tooltip>
     </>
   );
 };
