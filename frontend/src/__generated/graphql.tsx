@@ -3567,14 +3567,13 @@ export const GetProjectsForSidebarDocument = gql`
     query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
   projects(
     where: {_or: [{id: {_in: $ledProjectIds}}, {pendingInvitations: {githubUserId: {_eq: $githubUserId}}}]}
-    orderBy: {pendingInvitationsAggregate: {count: DESC}}
   ) {
     id
     name
     projectDetails {
       logoUrl
     }
-    pendingInvitations {
+    pendingInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
       id
     }
     githubRepo {
