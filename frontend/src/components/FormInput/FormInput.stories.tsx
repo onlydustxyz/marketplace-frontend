@@ -20,6 +20,7 @@ const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
     loading={args.loading}
     error={args.error ? { message: args.errorMessage } : undefined}
     errorType={args.errorType}
+    showValidationErrors={true}
   />
 );
 

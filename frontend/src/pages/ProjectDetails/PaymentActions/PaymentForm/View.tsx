@@ -43,6 +43,7 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
                       message: T("payment.form.issueLink.error"),
                     },
                   }}
+                  showValidationErrors={false}
                 />
               </div>
             </div>
