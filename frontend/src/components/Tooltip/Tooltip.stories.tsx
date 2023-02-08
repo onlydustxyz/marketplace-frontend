@@ -1,26 +1,31 @@
 import { ComponentStory } from "@storybook/react";
 import { JSXElementConstructor } from "react";
-import Tooltip, { TooltipDirection } from ".";
+import Tooltip, { TooltipPosition } from ".";
 
 export default {
   title: "Tooltip",
   argTypes: {
-    direction: {
+    position: {
       control: {
         type: "select",
-        options: [TooltipDirection.Up, TooltipDirection.Down, TooltipDirection.Left, TooltipDirection.Right],
+        options: [TooltipPosition.Bottom, TooltipPosition.Top, TooltipPosition.Left, TooltipPosition.Right],
       },
     },
   },
 };
 
 const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
-  <Tooltip direction={args.direction}>{args.text}</Tooltip>
+  <div className="w-96 h-96 flex items-center justify-center">
+    <span id="anchor-id">Hover me!</span>
+    <Tooltip anchorId="anchor-id" position={args.position}>
+      {args.text}
+    </Tooltip>
+  </div>
 );
 
 const args = {
   text: "Fill in your payment information to get paid",
-  direction: TooltipDirection.Up,
+  position: TooltipPosition.Bottom,
 };
 
 export const Default = Template.bind({});

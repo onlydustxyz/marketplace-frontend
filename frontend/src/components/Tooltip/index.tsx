@@ -1,32 +1,38 @@
-import classNames from "classnames";
 import { PropsWithChildren } from "react";
-import Tip from "./Tip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
-export enum TooltipDirection {
-  Up = "up",
-  Down = "down",
+export enum TooltipPosition {
+  Top = "top",
+  Bottom = "bottom",
   Left = "left",
   Right = "right",
 }
 
 type Props = {
-  direction?: TooltipDirection;
+  anchorId: string;
+  position?: TooltipPosition;
 } & PropsWithChildren;
 
-export default function Tooltip({ children, direction = TooltipDirection.Up }: Props) {
+export default function Tooltip({ anchorId, position = TooltipPosition.Bottom, children }: Props) {
   return (
-    <div
-      className={classNames("flex items-center justify-items-center w-fit h-fit", {
-        "flex-col": direction === TooltipDirection.Up,
-        "flex-col-reverse": direction === TooltipDirection.Down,
-        "flex-row-reverse": direction === TooltipDirection.Right,
-        "flex-row": direction === TooltipDirection.Left,
-      })}
+    <ReactTooltip
+      anchorId={anchorId}
+      place={position}
+      style={{
+        background: "#313030",
+        fontFamily: "GT Walsheim",
+        fontWeight: 400,
+        textAlign: "center",
+        fontSize: "0.75rem",
+        lineHeight: "1rem",
+        color: "#F3F0EE",
+        borderRadius: 8,
+        padding: "12 8",
+        opacity: 100,
+        zIndex: 10,
+      }}
     >
-      <Tip direction={direction} />
-      <div className="bg-greyscale-800 font-normal font-walsheim text-center text-xs text-greyscale-50 rounded-lg py-2 px-3">
-        {children}
-      </div>
-    </div>
+      {children}
+    </ReactTooltip>
   );
 }

@@ -1,6 +1,7 @@
 import "tailwindcss/tailwind.css";
 import "src/assets/css/index.css";
 import "remixicon/fonts/remixicon.css";
+import "react-tooltip/dist/react-tooltip.css";
 import "src/assets/fonts/Alfreda/stylesheet.css";
 import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import "src/assets/fonts/BelweBdBt/stylesheet.css";
