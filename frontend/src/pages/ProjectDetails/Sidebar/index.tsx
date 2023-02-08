@@ -8,6 +8,7 @@ import { useAuth } from "src/hooks/useAuth";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { useContext } from "react";
 import { ProjectDetailsContext, ProjectDetailsDispatchContext, ProjectDetailsTab } from "../ProjectDetailsContext";
+import { sortBy } from "lodash";
 
 interface Props {
   currentProject: ProjectDetails;
@@ -31,7 +32,8 @@ export default function ProjectsSidebar({ currentProject, onProjectSelected, ava
     }
   );
 
-  const projects = getProjectsForSidebarQuery?.data?.projects || [];
+  const projects = getProjectsForSidebarQuery?.data?.projects.map(project => projectFromQuery(project)) || [];
+  const sortedProjects = sortBy([...projects], ["withInvitation", "name"]);
 
   return (
     <View
@@ -42,8 +44,8 @@ export default function ProjectsSidebar({ currentProject, onProjectSelected, ava
         selectedTab: state.tab,
         dispatch,
       }}
-      allProjects={projects.map(project => projectFromQuery(project))}
-      expandable={isProjectMine(currentProject) && projects.length > 1}
+      allProjects={sortedProjects}
+      expandable={isProjectMine(currentProject) && sortedProjects.length > 1}
     />
   );
 }
@@ -62,7 +64,6 @@ export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
       where: {
         _or: [{ id: { _in: $ledProjectIds } }, { pendingInvitations: { githubUserId: { _eq: $githubUserId } } }]
       }
-      orderBy: { pendingInvitationsAggregate: { count: DESC } }
     ) {
       id
       name
@@ -70,7 +71,7 @@ export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
         projectId
         logoUrl
       }
-      pendingInvitations {
+      pendingInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
         id
       }
       githubRepo {
