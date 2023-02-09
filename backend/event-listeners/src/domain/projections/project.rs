@@ -7,5 +7,4 @@ pub struct Project {
 	id: ProjectId,
 	name: String,
 	github_repo_id: i64,
-	pub total_spent_amount_in_usd: i64,
 }

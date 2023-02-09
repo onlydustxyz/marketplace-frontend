@@ -6,6 +6,7 @@ diesel::table! {
         project_id -> Nullable<Uuid>,
         initial_amount -> Numeric,
         remaining_amount -> Numeric,
+        spent_amount -> Numeric,
     }
 }
 
@@ -98,7 +99,6 @@ diesel::table! {
         id -> Uuid,
         name -> Text,
         github_repo_id -> Int8,
-        total_spent_amount_in_usd -> Int8,
     }
 }
 

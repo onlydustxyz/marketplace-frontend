@@ -70,7 +70,6 @@ impl EventListener for Projector {
 						*id,
 						name.to_owned(),
 						(*github_repo_id).into(),
-						0,
 					))?;
 					self.project_github_data(github_repo_id).await?;
 				},

@@ -53,5 +53,4 @@ select_permissions:
         - github_repo_id
         - id
         - name
-        - total_spent_amount_in_usd
       filter: {}
