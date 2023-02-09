@@ -34,7 +34,7 @@ impl Usecase {
 		receipt: PaymentReceipt,
 	) -> Result<PaymentReceiptId, DomainError> {
 		let new_receipt_id = PaymentReceiptId::new();
-		let project = self.project_repository.find_by_id(&project_id)?;
+		let project = self.project_repository.find_by_id(project_id)?;
 		let events: Vec<_> = project
 			.add_payment_receipt(payment_id, new_receipt_id, amount, receipt)
 			.await

@@ -61,10 +61,7 @@ impl Budget {
 	}
 
 	pub fn cancel_payment_request(&self, payment_id: &PaymentId) -> Result<Vec<BudgetEvent>> {
-		let payment = self
-			.payments
-			.get(payment_id)
-			.ok_or_else(|| Error::PaymentNotFound(*payment_id))?;
+		let payment = self.payments.get(payment_id).ok_or(Error::PaymentNotFound(*payment_id))?;
 		Ok(payment
 			.cancel()?
 			.into_iter()
@@ -79,10 +76,7 @@ impl Budget {
 		amount: Amount,
 		receipt: PaymentReceipt,
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		let payment = self
-			.payments
-			.get(payment_id)
-			.ok_or_else(|| Error::PaymentNotFound(*payment_id))?;
+		let payment = self.payments.get(payment_id).ok_or(Error::PaymentNotFound(*payment_id))?;
 
 		Ok(payment
 			.add_receipt(receipt_id, amount, receipt)?

@@ -23,25 +23,29 @@ impl EventListener for Projector {
 	#[instrument(name = "payment_projection", skip(self))]
 	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
 		let Event::Project(event) = event;
-		if let ProjectEvent::Budget { event, .. } = event {
-			if let BudgetEvent::Payment { event, .. } = event {
-				if let PaymentEvent::Processed {
-					id,
-					receipt_id,
-					amount,
-					receipt,
-				} = event
-				{
-					self.repository.upsert(&Payment::new(
-						*receipt_id,
-						*amount.amount(),
-						amount.currency().to_string(),
-						serde_json::to_value(receipt)
-							.map_err(|e| SubscriberCallbackError::Discard(e.into()))?,
-						(*id).into(),
-					))?
-				}
-			}
+		if let ProjectEvent::Budget {
+			event:
+				BudgetEvent::Payment {
+					event:
+						PaymentEvent::Processed {
+							id,
+							receipt_id,
+							amount,
+							receipt,
+						},
+					..
+				},
+			..
+		} = event
+		{
+			self.repository.upsert(&Payment::new(
+				*receipt_id,
+				*amount.amount(),
+				amount.currency().to_string(),
+				serde_json::to_value(receipt)
+					.map_err(|e| SubscriberCallbackError::Discard(e.into()))?,
+				(*id).into(),
+			))?
 		}
 		Ok(())
 	}

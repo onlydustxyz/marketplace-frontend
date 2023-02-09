@@ -39,14 +39,14 @@ impl EventListener for Projector {
 					event,
 				} => match event {
 					PaymentEvent::Requested { amount, .. } => {
-						let mut budget = self.budget_repository.find_by_id(&budget_id)?;
+						let mut budget = self.budget_repository.find_by_id(budget_id)?;
 						budget.remaining_amount -= amount.amount();
 						self.budget_repository.update(budget_id, &budget)?;
 					},
 					PaymentEvent::Cancelled { id: payment_id } => {
 						let payment_request =
 							self.payment_request_repository.find_by_id(payment_id)?;
-						let mut budget = self.budget_repository.find_by_id(&budget_id)?;
+						let mut budget = self.budget_repository.find_by_id(budget_id)?;
 						budget.remaining_amount -= Decimal::from(*payment_request.amount_in_usd());
 						self.budget_repository.update(budget_id, &budget)?;
 					},

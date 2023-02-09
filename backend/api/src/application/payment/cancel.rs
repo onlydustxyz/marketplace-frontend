@@ -31,9 +31,9 @@ impl Usecase {
 		project_id: &ProjectId,
 		payment_id: &PaymentId,
 	) -> Result<(), DomainError> {
-		let project = self.project_repository.find_by_id(&project_id)?;
+		let project = self.project_repository.find_by_id(project_id)?;
 		project
-			.cancel_payment_request(&payment_id)
+			.cancel_payment_request(payment_id)
 			.await
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
 			.into_iter()
