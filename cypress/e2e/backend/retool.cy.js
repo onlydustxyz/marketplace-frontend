@@ -216,7 +216,7 @@ describe("As an admin, on retool, I", () => {
                         .data("requestPayment")
                         .then((paymentId) => {
                             cy.paymentRequestShouldExist(paymentId);
-                            cy.cancelPaymentRequest(paymentId)
+                            cy.cancelPaymentRequest(projectId, paymentId)
                                 .asAdmin()
                                 .data("cancelPaymentRequest")
                                 .should("equal", paymentId)
