@@ -14,9 +14,9 @@ pub struct Amount {
 	currency: Currency,
 }
 
-impl ToString for Amount {
-	fn to_string(&self) -> String {
-		format!("{} {}", self.amount, self.currency)
+impl std::fmt::Display for Amount {
+	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+		write!(f, "{} {}", self.amount, self.currency)
 	}
 }
 

@@ -69,6 +69,7 @@ derive = {path = "../common/derive"}
 olog = {path = "../common/olog"}
 
 [dev-dependencies]
+async-std = {version = "1.12.0", features = ["attributes"]}
 assert_matches = "1.5"
 envtestkit = "1.1.2"
 mockito = "0.31.0"

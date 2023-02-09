@@ -1,6 +1,6 @@
 use anyhow::Result;
 use async_trait::async_trait;
-use domain::{Event, PaymentEvent, SubscriberCallbackError};
+use domain::{BudgetEvent, Event, PaymentEvent, ProjectEvent, SubscriberCallbackError};
 use tracing::instrument;
 
 use crate::{
@@ -22,21 +22,26 @@ impl Projector {
 impl EventListener for Projector {
 	#[instrument(name = "payment_projection", skip(self))]
 	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
-		if let Event::Payment(PaymentEvent::Processed {
-			id,
-			receipt_id,
-			amount,
-			receipt,
-		}) = event
-		{
-			self.repository.upsert(&Payment::new(
-				*receipt_id,
-				*amount.amount(),
-				amount.currency().to_string(),
-				serde_json::to_value(receipt)
-					.map_err(|e| SubscriberCallbackError::Discard(e.into()))?,
-				(*id).into(),
-			))?
+		let Event::Project(event) = event;
+		if let ProjectEvent::Budget { event, .. } = event {
+			if let BudgetEvent::Payment { event, .. } = event {
+				if let PaymentEvent::Processed {
+					id,
+					receipt_id,
+					amount,
+					receipt,
+				} = event
+				{
+					self.repository.upsert(&Payment::new(
+						*receipt_id,
+						*amount.amount(),
+						amount.currency().to_string(),
+						serde_json::to_value(receipt)
+							.map_err(|e| SubscriberCallbackError::Discard(e.into()))?,
+						(*id).into(),
+					))?
+				}
+			}
 		}
 		Ok(())
 	}
