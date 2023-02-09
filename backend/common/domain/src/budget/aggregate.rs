@@ -1,7 +1,14 @@
+use std::collections::HashMap;
+
 use derive_getters::Getters;
+use rust_decimal::Decimal;
+use serde_json::Value;
 use thiserror::Error;
 
-use crate::{Aggregate, Amount, BudgetEvent, BudgetId, Entity, EventSourcable};
+use crate::{
+	Aggregate, AggregateEvent, Amount, BudgetEvent, BudgetId, Entity, EventSourcable, GithubUserId,
+	Payment, PaymentId, UserId,
+};
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -16,7 +23,8 @@ type Result<T> = std::result::Result<T, Error>;
 #[derive(Default, Debug, Clone, PartialEq, Eq, Getters)]
 pub struct Budget {
 	id: BudgetId,
-	remaining_amount: Amount,
+	allocated_amount: Amount,
+	payments: HashMap<PaymentId, Payment>,
 }
 
 impl Budget {
@@ -24,19 +32,34 @@ impl Budget {
 		vec![BudgetEvent::Allocated { id, amount }]
 	}
 
-	pub fn spend(&self, amount: &Amount) -> Result<Vec<BudgetEvent>> {
-		if self.remaining_amount.currency() != amount.currency() {
+	pub fn request_payment(
+		&self,
+		payment_id: PaymentId,
+		requestor_id: UserId,
+		recipient_id: GithubUserId,
+		amount: Amount,
+		reason: Value,
+	) -> Result<Vec<BudgetEvent>> {
+		if self.allocated_amount.currency() != amount.currency() {
 			return Err(Error::InvalidCurrency);
 		}
 
-		if &self.remaining_amount < amount {
+		if self.spent_amount() + amount.amount() > *self.allocated_amount.amount() {
 			return Err(Error::Overspent);
 		}
 
-		Ok(vec![BudgetEvent::Spent {
-			id: self.id,
-			amount: amount.clone(),
-		}])
+		Ok(
+			Payment::request(payment_id, requestor_id, recipient_id, amount, reason)
+				.into_iter()
+				.map(|event| BudgetEvent::Payment { id: self.id, event })
+				.collect(),
+		)
+	}
+
+	fn spent_amount(&self) -> Decimal {
+		self.payments.values().fold(Decimal::ZERO, |amount, payment| {
+			amount + payment.requested_usd_amount()
+		})
 	}
 }
 
@@ -49,15 +72,22 @@ impl Aggregate for Budget {
 }
 
 impl EventSourcable for Budget {
-	fn apply_event(self, event: &Self::Event) -> Self {
+	fn apply_event(mut self, event: &Self::Event) -> Self {
 		match event {
 			BudgetEvent::Allocated { id, amount, .. } => Self {
 				id: *id,
-				remaining_amount: amount.clone(),
+				allocated_amount: amount.clone(),
+				..Default::default()
 			},
-			BudgetEvent::Spent { amount, .. } => Self {
-				remaining_amount: self.remaining_amount - amount,
-				..self
+			BudgetEvent::Spent { .. } => self,
+			BudgetEvent::Payment { event, .. } => {
+				let payment_id = event.aggregate_id();
+
+				self.payments
+					.entry(*payment_id)
+					.and_modify(|payment| *payment = payment.clone().apply_event(event))
+					.or_insert_with(|| Payment::default().apply_event(event));
+				self
 			},
 		}
 	}
@@ -119,32 +149,50 @@ mod tests {
 	}
 
 	#[rstest]
-	fn spend_budget(
-		amount: Amount,
-		budget_allocated_event: BudgetEvent,
-		budget_spent_event: BudgetEvent,
-	) {
+	fn spend_budget(amount: Amount, budget_allocated_event: BudgetEvent) {
 		let budget = Budget::from_events(&[budget_allocated_event]);
-		let result = budget.spend(&amount);
+		let result = budget.request_payment(
+			Default::default(),
+			Default::default(),
+			Default::default(),
+			amount,
+			Default::default(),
+		);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
 		let events = result.unwrap();
-		assert_eq!(events, vec![budget_spent_event]);
+		assert_matches!(
+			events[0],
+			BudgetEvent::Payment {
+				id: _,
+				event: PaymentEvent::Requested { .. }
+			}
+		);
 	}
 
 	#[rstest]
 	fn overspend_budget(amount: Amount, budget_allocated_event: BudgetEvent) {
 		let budget = Budget::from_events(&[budget_allocated_event]);
-		let result = budget.spend(&(amount * 2));
+		let result = budget.request_payment(
+			Default::default(),
+			Default::default(),
+			Default::default(),
+			Amount::new(amount.amount() * dec!(2), amount.currency().clone()),
+			Default::default(),
+		);
 		assert_matches!(result, Err(Error::Overspent));
 	}
 
 	#[rstest]
 	fn spend_in_different_currency(budget_allocated_event: BudgetEvent) {
 		let budget = Budget::from_events(&[budget_allocated_event]);
-		let result = budget.spend(&Amount::new(
-			dec!(10),
-			crate::Currency::Crypto("USDT".to_string()),
-		));
+		let result = budget.request_payment(
+			Default::default(),
+			Default::default(),
+			Default::default(),
+			Amount::new(dec!(10), crate::Currency::Crypto("USDT".to_string())),
+			Default::default(),
+		);
+
 		assert_matches!(result, Err(Error::InvalidCurrency));
 	}
 }

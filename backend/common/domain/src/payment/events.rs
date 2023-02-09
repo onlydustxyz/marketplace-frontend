@@ -5,18 +5,17 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 use crate::{
-	AggregateEvent, Amount, BudgetId, GithubUserId, Payment, PaymentId, PaymentReceipt,
-	PaymentReceiptId, UserId,
+	AggregateEvent, Amount, GithubUserId, Payment, PaymentId, PaymentReceipt, PaymentReceiptId,
+	UserId,
 };
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	Requested {
 		id: PaymentId,
-		budget_id: BudgetId,
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
-		amount_in_usd: u32,
+		amount: Amount,
 		reason: Value,
 		requested_at: NaiveDateTime,
 	},

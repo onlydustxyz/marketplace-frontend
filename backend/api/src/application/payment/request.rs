@@ -2,8 +2,8 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{
-	AggregateRootRepository, DomainError, Event, GithubUserId, Payment, PaymentId, Project,
-	ProjectEvent, ProjectId, Publisher, UserId,
+	AggregateRootRepository, DomainError, Event, GithubUserId, PaymentId, Project, ProjectEvent,
+	ProjectId, Publisher, UserId,
 };
 use infrastructure::amqp::UniqueMessage;
 use rusty_money::{crypto, Money};
@@ -42,7 +42,13 @@ impl Usecase {
 		let new_payment_id = PaymentId::new();
 
 		budget
-			.spend(&Money::from_major(amount_in_usd as i64, crypto::USDC).into())
+			.request_payment(
+				new_payment_id,
+				requestor_id,
+				recipient_id,
+				Money::from_major(amount_in_usd as i64, crypto::USDC).into(),
+				reason,
+			)
 			.map_err(|e| DomainError::InvalidInputs(e.into()))?
 			.into_iter()
 			.map(|event| {
@@ -52,19 +58,6 @@ impl Usecase {
 				})
 			})
 			.map(UniqueMessage::new)
-			.chain(
-				Payment::request(
-					new_payment_id,
-					*budget.id(),
-					requestor_id,
-					recipient_id,
-					amount_in_usd,
-					reason,
-				)
-				.into_iter()
-				.map(Event::from)
-				.map(UniqueMessage::new),
-			)
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;
