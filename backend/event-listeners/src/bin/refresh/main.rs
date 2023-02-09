@@ -25,7 +25,6 @@ async fn main() -> Result<()> {
 	let mut registry = Registry::new();
 
 	refresher::project::create(database.clone(), github).register(&mut registry, "Project")?;
-	refresher::payment::create(database).register(&mut registry, "Payment")?;
 
 	let (aggregate_name, aggregate_id) = cli::Args::parse().dissolve();
 
