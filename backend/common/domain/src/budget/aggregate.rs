@@ -7,7 +7,7 @@ use thiserror::Error;
 
 use crate::{
 	Aggregate, AggregateEvent, Amount, BudgetEvent, BudgetId, Entity, EventSourcable, GithubUserId,
-	Payment, PaymentId, UserId,
+	Payment, PaymentError, PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
 };
 
 #[derive(Debug, Error)]
@@ -16,6 +16,10 @@ pub enum Error {
 	Overspent,
 	#[error("Invalid currency")]
 	InvalidCurrency,
+	#[error("Payment not found {0}")]
+	PaymentNotFound(PaymentId),
+	#[error(transparent)]
+	Payment(#[from] PaymentError),
 }
 
 type Result<T> = std::result::Result<T, Error>;
@@ -54,6 +58,37 @@ impl Budget {
 				.map(|event| BudgetEvent::Payment { id: self.id, event })
 				.collect(),
 		)
+	}
+
+	pub fn cancel_payment_request(&self, payment_id: &PaymentId) -> Result<Vec<BudgetEvent>> {
+		let payment = self
+			.payments
+			.get(payment_id)
+			.ok_or_else(|| Error::PaymentNotFound(*payment_id))?;
+		Ok(payment
+			.cancel()?
+			.into_iter()
+			.map(|event| BudgetEvent::Payment { id: self.id, event })
+			.collect())
+	}
+
+	pub async fn add_payment_receipt(
+		&self,
+		payment_id: &PaymentId,
+		receipt_id: PaymentReceiptId,
+		amount: Amount,
+		receipt: PaymentReceipt,
+	) -> Result<Vec<<Self as Aggregate>::Event>> {
+		let payment = self
+			.payments
+			.get(payment_id)
+			.ok_or_else(|| Error::PaymentNotFound(*payment_id))?;
+
+		Ok(payment
+			.add_receipt(receipt_id, amount, receipt)?
+			.into_iter()
+			.map(|event| BudgetEvent::Payment { id: self.id, event })
+			.collect())
 	}
 
 	fn spent_amount(&self) -> Decimal {

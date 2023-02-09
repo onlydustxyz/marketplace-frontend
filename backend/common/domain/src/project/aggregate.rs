@@ -172,6 +172,34 @@ impl Project {
 			.map(|event| ProjectEvent::Budget { id: self.id, event })
 			.collect())
 	}
+
+	pub async fn cancel_payment_request(
+		&self,
+		payment_id: &PaymentId,
+	) -> Result<Vec<<Self as Aggregate>::Event>> {
+		Ok(self
+			.budget
+			.cancel_payment_request(payment_id)?
+			.into_iter()
+			.map(|event| ProjectEvent::Budget { id: self.id, event })
+			.collect())
+	}
+
+	pub async fn add_payment_receipt(
+		&self,
+		payment_id: &PaymentId,
+		receipt_id: PaymentReceiptId,
+		amount: Amount,
+		receipt: PaymentReceipt,
+	) -> Result<Vec<<Self as Aggregate>::Event>> {
+		Ok(self
+			.budget
+			.add_payment_receipt(payment_id, receipt_id, amount, receipt)
+			.await?
+			.into_iter()
+			.map(|event| ProjectEvent::Budget { id: self.id, event })
+			.collect())
+	}
 }
 
 #[cfg(test)]
