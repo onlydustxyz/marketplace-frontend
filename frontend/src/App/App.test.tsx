@@ -116,7 +116,13 @@ const SINGLE_PROJECT_RESULT = {
     projectsByPk: {
       __typename: "Projects",
       name: TEST_PROJECT_NAME,
-      totalSpentAmountInUsd: 123,
+      budgetsAggregate: {
+        aggregate: {
+          sum: {
+            spentAmount: 123,
+          },
+        },
+      },
       projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
       projectLeads: [
         {

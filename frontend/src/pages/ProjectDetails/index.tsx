@@ -119,7 +119,7 @@ const projectFromQuery = (project: GetProjectQuery["projectsByPk"]) => ({
   logoUrl: project?.projectDetails?.logoUrl || project?.githubRepo?.content?.logoUrl || onlyDustLogo,
   leads: project?.projectLeads?.map((lead: any) => ({ id: lead.userId, ...lead.user })) || [],
   invitationId: project?.pendingInvitations.at(0)?.id,
-  totalSpentAmountInUsd: project?.totalSpentAmountInUsd,
+  totalSpentAmountInUsd: project?.budgetsAggregate.aggregate?.sum?.spentAmount,
   telegramLink: project?.projectDetails?.telegramLink,
   githubRepoInfo: {
     name: project?.githubRepo?.name,
