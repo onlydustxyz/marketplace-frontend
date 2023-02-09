@@ -34,7 +34,6 @@ impl EventListener for Projector {
 						*amount.amount(),
 					))?;
 				},
-				BudgetEvent::Spent { .. } => {},
 				BudgetEvent::Payment {
 					id: budget_id,
 					event,

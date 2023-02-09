@@ -79,7 +79,6 @@ impl EventSourcable for Budget {
 				allocated_amount: amount.clone(),
 				..Default::default()
 			},
-			BudgetEvent::Spent { .. } => self,
 			BudgetEvent::Payment { event, .. } => {
 				let payment_id = event.aggregate_id();
 
@@ -123,14 +122,6 @@ mod tests {
 	#[fixture]
 	fn budget_allocated_event(budget_id: &BudgetId, amount: Amount) -> BudgetEvent {
 		BudgetEvent::Allocated {
-			id: *budget_id,
-			amount,
-		}
-	}
-
-	#[fixture]
-	fn budget_spent_event(budget_id: &BudgetId, amount: Amount) -> BudgetEvent {
-		BudgetEvent::Spent {
 			id: *budget_id,
 			amount,
 		}
