@@ -61,13 +61,13 @@ const buildQueryFilters = (technologies: string[]) => {
     filters += "{githubRepo: {languages: {_hasKeysAny: $languages}}}";
   }
 
-  return filters.length ? `(where: ${filters})` : "";
+  return filters.length ? `where: ${filters}, ` : "";
 };
 
 export const buildGetProjectsQuery = (technologies: string[]) => gql`
   ${PROJECT_CARD_FRAGMENT}
   query GetProjects($githubUserId: bigint = 0${buildQueryArgs(technologies)}) {
-    projects${buildQueryFilters(technologies)} {
+    projects(${buildQueryFilters(technologies)}orderBy: {totalSpentAmountInUsd: DESC}) {
       ...ProjectCardFields
     }
   }
