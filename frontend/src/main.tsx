@@ -12,6 +12,7 @@ import "remixicon/fonts/remixicon.css";
 import "src/assets/fonts/Alfreda/stylesheet.css";
 import "src/assets/fonts/GTWalsheimPro/stylesheet.css";
 import "src/assets/fonts/BelweBdBt/stylesheet.css";
+import "react-tooltip/dist/react-tooltip.css";
 import { IntlProvider } from "src/hooks/useIntl";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { SessionProvider } from "./hooks/useSession";

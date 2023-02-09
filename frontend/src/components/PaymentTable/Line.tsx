@@ -55,7 +55,14 @@ export default function PaymentLine({ payment, setSortingFields }: Props) {
             <span className="font-walsheim">{formatMoneyAmount(payment.amountInUsd, Currency.USD)}</span>
           </Cell>
           <Cell height={CellHeight.Medium}>
-            <PayoutStatus {...{ status: paymentStatus, payoutInfoMissing: !payoutSettingsValid }} isProjectLeaderView />
+            <PayoutStatus
+              {...{
+                id: `payment-status-${payment.id}`,
+                status: paymentStatus,
+                payoutInfoMissing: !payoutSettingsValid,
+              }}
+              isProjectLeaderView
+            />
           </Cell>
         </Line>
       )}

@@ -29,6 +29,7 @@ export enum TagBackgroundColor {
 }
 
 export type TagProps = {
+  id?: string;
   size: TagSize;
   label: string;
   icon?: TagIcon;
@@ -39,6 +40,7 @@ export type TagProps = {
 };
 
 export default function Tag({
+  id,
   size,
   label,
   icon,
@@ -48,7 +50,7 @@ export default function Tag({
   whitespaceNoWrap = false,
 }: TagProps) {
   return (
-    <div className="w-fit rounded-full p-px overflow-hidden">
+    <div id={id} className="w-fit rounded-full p-px overflow-hidden">
       <div
         className={classNames(
           "flex items-center justify-center w-fit gap-1 rounded-full font-walsheim font-medium text-white relative h-7",

@@ -46,12 +46,17 @@ const Contributor = ({ onClick, contributor }: Props) => {
           </span>
         </div>
         {contributor.isRegistered && (
-          <div className="relative group/od-logo">
-            <img src={onlyDustLogo} className="h-3.5 mt-px" />
-            <div className="invisible group-hover/od-logo:visible absolute top-5 -left-16 w-36 z-10">
-              <Tooltip>{T("contributor.table.userRegisteredTooltip")}</Tooltip>
-            </div>
-          </div>
+          <>
+            <img
+              id={`od-logo-${contributor.login}`}
+              src={onlyDustLogo}
+              className="h-3.5 mt-px"
+              data-tooltip-content={T("contributor.table.userRegisteredTooltip")}
+            />
+            <Tooltip anchorId={`od-logo-${contributor.login}`}>
+              <div className="w-36">{T("contributor.table.userRegisteredTooltip")}</div>
+            </Tooltip>
+          </>
         )}
       </div>
       {clickable && (
