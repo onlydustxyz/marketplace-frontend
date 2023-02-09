@@ -24,7 +24,6 @@ impl NamedAggregate for Event {
 	fn aggregate_name(&self) -> &str {
 		match self {
 			Event::Project(_) => "PROJECT",
-			Event::Payment(_) => "PAYMENT",
 		}
 	}
 }
@@ -93,7 +92,6 @@ impl EventStore for Client {
 fn serialize_event(event: &Event) -> Result<Json> {
 	match event {
 		Event::Project(event) => to_json(event),
-		Event::Payment(event) => to_json(event),
 	}
 	.map_err(|e| {
 		error!("Failed to serialize event {event:?}: {e}");

@@ -7,8 +7,8 @@ use serde_json::Value;
 use thiserror::Error;
 
 use crate::{
-	Aggregate, AggregateRoot, Amount, Entity, EventSourcable, GithubUserId, PaymentEvent,
-	PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
+	Aggregate, Amount, Entity, EventSourcable, GithubUserId, PaymentEvent, PaymentId,
+	PaymentReceipt, PaymentReceiptId, UserId,
 };
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -53,8 +53,6 @@ impl EventSourcable for Payment {
 		}
 	}
 }
-
-impl AggregateRoot for Payment {}
 
 #[derive(Debug, Error)]
 pub enum Error {
