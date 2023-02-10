@@ -13,8 +13,10 @@ deploy_backends() {
     staging_commit=`slug_commit od-api-staging`
     production_commit=`slug_commit od-api-production`
 
+    print "Checking diff from $production_commit to $staging_commit"
+
     log_info "Checking diff to be loaded in production"
-    execute "git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' $production_commit..$staging_commit"
+    git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' $production_commit..$staging_commit | tee
 
     echo
     ask "OK to continue"
