@@ -240,7 +240,7 @@ describe("As an admin, on retool, I", () => {
                         .data("requestPayment")
                         .then((paymentId) => {
                             cy.paymentRequestShouldExist(paymentId);
-                            cy.addEthPaymentReceipt("500", "ETH", paymentId, {type: "ETHEREUM_ADDRESS", optEthAddress: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"}, "0x5b48f0c340e70e63c011ca41495ff423b9a4fe6975c58df0f066d80fe4d2dcca")
+                            cy.addEthPaymentReceipt(projectId, paymentId, "500", "ETH", {type: "ETHEREUM_ADDRESS", optEthAddress: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"}, "0x5b48f0c340e70e63c011ca41495ff423b9a4fe6975c58df0f066d80fe4d2dcca")
                                 .asAdmin().data("addEthPaymentReceipt").then((receipt_id) => {
                                     cy.paymentRequestShouldBePaid(paymentId, receipt_id);
                                 });
@@ -261,7 +261,7 @@ describe("As an admin, on retool, I", () => {
                         .data("requestPayment")
                         .then((paymentId) => {
                             cy.paymentRequestShouldExist(paymentId);
-                            cy.addEthPaymentReceipt("500", "ETH", paymentId, {type: "ETHEREUM_NAME", optEthName: "vitalik.eth"}, "0x5b48f0c340e70e63c011ca41495ff423b9a4fe6975c58df0f066d80fe4d2dcca")
+                            cy.addEthPaymentReceipt(projectId, paymentId, "500", "ETH", {type: "ETHEREUM_NAME", optEthName: "vitalik.eth"}, "0x5b48f0c340e70e63c011ca41495ff423b9a4fe6975c58df0f066d80fe4d2dcca")
                                 .asAdmin().data("addEthPaymentReceipt").then((receipt_id) => {
                                     cy.paymentRequestShouldBePaid(paymentId, receipt_id);
                                 });

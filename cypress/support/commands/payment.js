@@ -83,15 +83,16 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
     "addEthPaymentReceipt",
-    (amount, currencyCode, paymentId, recipientIdentity, transactionHash) => {
+    (projectId, paymentId, amount, currencyCode, recipientIdentity, transactionHash) => {
         return {
-            query: `mutation($amount:String!, $currencyCode:String!, $paymentId:Uuid!, $recipientIdentity:EthereumIdentityInput!, $transactionHash:String!) {
-                addEthPaymentReceipt(amount: $amount, currencyCode: $currencyCode, paymentId: $paymentId, recipientIdentity: $recipientIdentity, transactionHash: $transactionHash)
+            query: `mutation($projectId:Uuid!, $paymentId:Uuid!, $amount:String!, $currencyCode:String!, $recipientIdentity:EthereumIdentityInput!, $transactionHash:String!) {
+                addEthPaymentReceipt(projectId: $projectId, paymentId: $paymentId, amount: $amount, currencyCode: $currencyCode, recipientIdentity: $recipientIdentity, transactionHash: $transactionHash)
               }`,
             variables: {
+                projectId,
+                paymentId,
                 amount,
                 currencyCode,
-                paymentId,
                 recipientIdentity,
                 transactionHash
             },
