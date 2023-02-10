@@ -14,25 +14,11 @@ import {
 } from "../ProjectDetailsContext";
 import { sortBy } from "lodash";
 import { ProjectRoutePaths } from "src/App";
+import { useIntl } from "src/hooks/useIntl";
 
 export type ProjectDetailsTab = {
   label: string;
   path: string;
-};
-
-const AvailableTabs: Record<string, ProjectDetailsTab> = {
-  overview: {
-    label: "Overview",
-    path: ProjectRoutePaths.Overview,
-  },
-  contributors: {
-    label: "Contributors",
-    path: ProjectRoutePaths.Contributors,
-  },
-  payments: {
-    label: "Payments",
-    path: ProjectRoutePaths.Payments,
-  },
 };
 
 interface Props {
@@ -43,6 +29,7 @@ interface Props {
 
 export default function ProjectsSidebar({ currentProject, onProjectSelected, availableTabs__deprecated }: Props) {
   const { isLoggedIn, ledProjectIds, githubUserId } = useAuth();
+  const { T } = useIntl();
   const state = useContext(ProjectDetailsContext);
   const dispatch = useContext(ProjectDetailsDispatchContext);
 
@@ -59,6 +46,21 @@ export default function ProjectsSidebar({ currentProject, onProjectSelected, ava
 
   const projects = getProjectsForSidebarQuery?.data?.projects.map(project => projectFromQuery(project)) || [];
   const sortedProjects = sortBy([...projects], ["withInvitation", "name"]);
+
+  const AvailableTabs: Record<string, ProjectDetailsTab> = {
+    overview: {
+      label: T("project.details.overview.title"),
+      path: ProjectRoutePaths.Overview,
+    },
+    contributors: {
+      label: T("project.details.contributors.title"),
+      path: ProjectRoutePaths.Contributors,
+    },
+    payments: {
+      label: T("project.details.payments.title"),
+      path: ProjectRoutePaths.Payments,
+    },
+  };
 
   const availableTabs = isProjectMine(currentProject)
     ? [AvailableTabs.overview, AvailableTabs.contributors, AvailableTabs.payments]
