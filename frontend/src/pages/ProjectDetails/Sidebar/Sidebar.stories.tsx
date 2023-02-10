@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ProjectDetailsTab } from "../ProjectDetailsContext";
+import { ProjectDetailsTab__deprecated } from "../ProjectDetailsContext";
 import View from "./View";
 
 export default {
@@ -7,7 +7,11 @@ export default {
   component: View,
 } as ComponentMeta<typeof View>;
 
-const availableTabs = [ProjectDetailsTab.Overview, ProjectDetailsTab.Contributors, ProjectDetailsTab.Payments];
+const availableTabs = [
+  ProjectDetailsTab__deprecated.Overview,
+  ProjectDetailsTab__deprecated.Contributors,
+  ProjectDetailsTab__deprecated.Payments,
+];
 const currentProject = {
   id: "test-projct-id",
   name: "Our project",
@@ -24,7 +28,7 @@ const currentProject = {
 };
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const empty = () => {};
-const selectedTab = ProjectDetailsTab.Overview;
+const selectedTab = ProjectDetailsTab__deprecated.Overview;
 const expandable = true;
 const allProjects = [currentProject, currentProject, currentProject];
 

@@ -1,15 +1,15 @@
 import { ProjectDetails } from ".";
 import ProjectsSidebar from "./Sidebar";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import { ProjectDetailsTab } from "./ProjectDetailsContext";
+import { ProjectDetailsTab__deprecated } from "./ProjectDetailsContext";
 import { Outlet } from "react-router-dom";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 
 interface Props {
   currentProject: ProjectDetails;
   onProjectSelected: (projectId: string) => void;
-  selectedTab: ProjectDetailsTab;
-  availableTabs__deprecated: ProjectDetailsTab[];
+  selectedTab: ProjectDetailsTab__deprecated;
+  availableTabs__deprecated: ProjectDetailsTab__deprecated[];
   onInvitationAccepted: (invitationId: string) => void;
 }
 

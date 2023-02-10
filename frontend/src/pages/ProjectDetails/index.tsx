@@ -17,7 +17,7 @@ import {
   ProjectDetailsProvider,
   ProjectDetailsContext,
   ProjectDetailsDispatchContext,
-  ProjectDetailsTab,
+  ProjectDetailsTab__deprecated,
   ProjectDetailsActionType,
 } from "./ProjectDetailsContext";
 import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
@@ -69,7 +69,7 @@ function ProjectDetailsComponent() {
 
   useEffect(() => {
     if (selectedProjectId && selectedProjectId !== projectId) {
-      dispatch({ type: ProjectDetailsActionType.SelectTab, selectedTab: ProjectDetailsTab.Overview });
+      dispatch({ type: ProjectDetailsActionType.SelectTab, selectedTab: ProjectDetailsTab__deprecated.Overview });
       navigate(generatePath(RoutePaths.MyProjectDetails, { projectId: selectedProjectId }));
     }
   }, [selectedProjectId]);
@@ -91,8 +91,12 @@ function ProjectDetailsComponent() {
 
   const availableTabs__deprecated =
     projectId && ledProjectIds && ledProjectIds.includes(projectId)
-      ? [ProjectDetailsTab.Overview, ProjectDetailsTab.Contributors, ProjectDetailsTab.Payments]
-      : [ProjectDetailsTab.Overview, ProjectDetailsTab.Contributors];
+      ? [
+          ProjectDetailsTab__deprecated.Overview,
+          ProjectDetailsTab__deprecated.Contributors,
+          ProjectDetailsTab__deprecated.Payments,
+        ]
+      : [ProjectDetailsTab__deprecated.Overview, ProjectDetailsTab__deprecated.Contributors];
 
   const sidebarUrlsEnabled = isFeatureEnabled(FeatureFlags.PROJECT_SIDEBAR_URLS);
 

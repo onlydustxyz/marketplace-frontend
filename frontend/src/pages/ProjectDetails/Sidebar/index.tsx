@@ -7,13 +7,17 @@ import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { useContext } from "react";
-import { ProjectDetailsContext, ProjectDetailsDispatchContext, ProjectDetailsTab } from "../ProjectDetailsContext";
+import {
+  ProjectDetailsContext,
+  ProjectDetailsDispatchContext,
+  ProjectDetailsTab__deprecated,
+} from "../ProjectDetailsContext";
 import { sortBy } from "lodash";
 
 interface Props {
   currentProject: ProjectDetails;
   onProjectSelected: (projectId: string) => void;
-  availableTabs__deprecated: ProjectDetailsTab[];
+  availableTabs__deprecated: ProjectDetailsTab__deprecated[];
 }
 
 export default function ProjectsSidebar({ currentProject, onProjectSelected, availableTabs__deprecated }: Props) {

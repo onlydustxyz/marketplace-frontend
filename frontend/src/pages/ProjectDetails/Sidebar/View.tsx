@@ -15,7 +15,7 @@ import {
   PaymentAction,
   ProjectDetailsAction,
   ProjectDetailsActionType,
-  ProjectDetailsTab,
+  ProjectDetailsTab__deprecated,
 } from "../ProjectDetailsContext";
 
 interface Props {
@@ -23,8 +23,8 @@ interface Props {
   currentProject: ProjectDetails;
   allProjects: SidebarProjectDetails[];
   onProjectSelected: (projectId: string) => void;
-  availableTabs__deprecated: ProjectDetailsTab[];
-  selectedTab: ProjectDetailsTab;
+  availableTabs__deprecated: ProjectDetailsTab__deprecated[];
+  selectedTab: ProjectDetailsTab__deprecated;
   dispatch: (action: ProjectDetailsAction) => void;
 }
 
@@ -123,7 +123,7 @@ export default function View({
               }`}
               onClick={() =>
                 dispatch(
-                  tab !== ProjectDetailsTab.Payments
+                  tab !== ProjectDetailsTab__deprecated.Payments
                     ? { type: ProjectDetailsActionType.SelectTab, selectedTab: tab }
                     : { type: ProjectDetailsActionType.SelectPaymentAction, selectedPaymentAction: PaymentAction.List }
                 )

@@ -12,7 +12,7 @@ import { GET_PROJECT_QUERY } from "src/pages/ProjectDetails";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { GET_PROJECTS_FOR_SIDEBAR_QUERY } from "src/pages/ProjectDetails/Sidebar";
 import { buildGetProjectsQuery } from "src/pages/Projects/AllProjects";
-import { ProjectDetailsTab } from "src/pages/ProjectDetails/ProjectDetailsContext";
+import { ProjectDetailsTab__deprecated } from "src/pages/ProjectDetails/ProjectDetailsContext";
 import {
   PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
   PENDING_USER_PAYMENTS_AND_PAYOUT_SETTINGS,
@@ -357,9 +357,9 @@ describe("Integration tests", () => {
       screen.getByText(/money granted/i);
     });
 
-    expect((await screen.findAllByText(ProjectDetailsTab.Overview)).length).toEqual(2);
-    expect(screen.queryByText(ProjectDetailsTab.Payments)).not.toBeInTheDocument();
-    expect(screen.findByText(ProjectDetailsTab.Contributors));
+    expect((await screen.findAllByText(ProjectDetailsTab__deprecated.Overview)).length).toEqual(2);
+    expect(screen.queryByText(ProjectDetailsTab__deprecated.Payments)).not.toBeInTheDocument();
+    expect(screen.findByText(ProjectDetailsTab__deprecated.Contributors));
     await screen.findByRole("img", { name: /github logo/i });
     await screen.findByRole("img", { name: /telegram logo/i });
   });
