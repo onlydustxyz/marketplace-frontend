@@ -10,15 +10,10 @@ import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useOutletContext } from "react-router-dom";
 
-type PropsType = {
-  projectId?: string;
-};
-
-const Contributors: React.FC<PropsType> = props => {
+const Contributors: React.FC = () => {
   const { T } = useIntl();
   const { ledProjectIds } = useAuth();
-  const outletContext: { projectId: string } = useOutletContext();
-  const projectId = props.projectId ?? outletContext.projectId;
+  const { projectId } = useOutletContext<{ projectId: string }>();
 
   const isProjectLeader = !!ledProjectIds.find(element => element === projectId);
 
