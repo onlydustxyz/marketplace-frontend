@@ -5,28 +5,25 @@ import { useIntl } from "src/hooks/useIntl";
 import { ProjectLeadProps } from "src/components/LeadContributor";
 import { Contributor, LanguageMap } from "src/types";
 import OverviewPanel from "./OverviewPanel";
-import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 import { useOutletContext } from "react-router-dom";
+import { ReactNode } from "react";
 
-interface OverviewProps extends React.PropsWithChildren {
-  lead?: ProjectLeadProps | null;
-  totalSpentAmountInUsd?: number;
-  githubRepoInfo?: {
+type OutletContext = {
+  lead: ProjectLeadProps | null;
+  totalSpentAmountInUsd: number;
+  githubRepoInfo: {
     decodedReadme?: string;
     owner?: string;
     name?: string;
     contributors?: Contributor[];
     languages: LanguageMap;
   };
-}
+  children: ReactNode;
+};
 
-export default function Overview(props: OverviewProps) {
+const Overview: React.FC = () => {
   const { T } = useIntl();
-  const sidebarUrlsEnabled = isFeatureEnabled(FeatureFlags.PROJECT_SIDEBAR_URLS);
-  const outletContext = useOutletContext();
-  const { lead, totalSpentAmountInUsd, githubRepoInfo, children } = sidebarUrlsEnabled
-    ? (outletContext as OverviewProps)
-    : props;
+  const { lead, totalSpentAmountInUsd, githubRepoInfo, children } = useOutletContext<OutletContext>();
 
   return (
     <div className="flex flex-col gap-8 mt-3">
@@ -49,4 +46,6 @@ export default function Overview(props: OverviewProps) {
       </div>
     </div>
   );
-}
+};
+
+export default Overview;
