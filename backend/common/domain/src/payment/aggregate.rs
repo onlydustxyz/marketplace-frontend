@@ -1,4 +1,5 @@
 use chrono::Utc;
+use derive_getters::Getters;
 use olog::info;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
@@ -6,18 +7,18 @@ use serde_json::Value;
 use thiserror::Error;
 
 use crate::{
-	Aggregate, AggregateRoot, Amount, BudgetId, Entity, EventSourcable, GithubUserId, PaymentEvent,
-	PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
+	Aggregate, Amount, Entity, EventSourcable, GithubUserId, PaymentEvent, PaymentId,
+	PaymentReceipt, PaymentReceiptId, UserId,
 };
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
-enum Status {
+pub enum Status {
 	#[default]
 	Active,
 	Cancelled,
 }
 
-#[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize, Getters)]
 pub struct Payment {
 	id: PaymentId,
 	requested_usd_amount: Decimal,
@@ -36,11 +37,9 @@ impl Aggregate for Payment {
 impl EventSourcable for Payment {
 	fn apply_event(self, event: &Self::Event) -> Self {
 		match event {
-			PaymentEvent::Requested {
-				id, amount_in_usd, ..
-			} => Self {
+			PaymentEvent::Requested { id, amount, .. } => Self {
 				id: *id,
-				requested_usd_amount: Decimal::new(*amount_in_usd as i64, 0),
+				requested_usd_amount: *amount.amount(), // TODO: handle currencies
 				..self
 			},
 			PaymentEvent::Cancelled { id: _ } => Self {
@@ -48,14 +47,12 @@ impl EventSourcable for Payment {
 				..self
 			},
 			PaymentEvent::Processed { amount, .. } => Self {
-				paid_usd_amount: self.paid_usd_amount + amount.amount(),
+				paid_usd_amount: self.paid_usd_amount + amount.amount(), // TODO: handle currencies
 				..self
 			},
 		}
 	}
 }
-
-impl AggregateRoot for Payment {}
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -71,18 +68,16 @@ impl Payment {
 	#[cfg_attr(feature = "cargo-clippy", allow(clippy::too_many_arguments))]
 	pub fn request(
 		id: PaymentId,
-		budget_id: BudgetId,
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
-		amount_in_usd: u32,
+		amount: Amount,
 		reason: Value,
 	) -> Vec<<Self as Aggregate>::Event> {
 		vec![PaymentEvent::Requested {
 			id,
-			budget_id,
 			requestor_id,
 			recipient_id,
-			amount_in_usd,
+			amount,
 			reason,
 			requested_at: Utc::now().naive_utc(),
 		}]
@@ -155,16 +150,11 @@ mod tests {
 	use uuid::Uuid;
 
 	use super::*;
-	use crate::{BlockchainNetwork, BudgetId, Currency, EthereumAddress, PaymentReceiptId, UserId};
+	use crate::{BlockchainNetwork, Currency, EthereumAddress, PaymentReceiptId, UserId};
 
 	#[fixture]
 	fn payment_receipt_id() -> PaymentReceiptId {
 		Uuid::from_str("00000000-aaaa-495e-9f4c-038ec0ebecb1").unwrap().into()
-	}
-
-	#[fixture]
-	fn budget_id() -> BudgetId {
-		Uuid::from_str("11111111-aaaa-495e-9f4c-038ec0ebecb1").unwrap().into()
 	}
 
 	#[fixture]
@@ -237,20 +227,12 @@ mod tests {
 	#[fixture]
 	async fn requested_payment(
 		payment_id: PaymentId,
-		budget_id: BudgetId,
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
-		amount_in_usd: u32,
+		amount: Amount,
 		reason: Value,
 	) -> Payment {
-		let events = Payment::request(
-			payment_id,
-			budget_id,
-			requestor_id,
-			recipient_id,
-			amount_in_usd,
-			reason,
-		);
+		let events = Payment::request(payment_id, requestor_id, recipient_id, amount, reason);
 		Payment::from_events(&events)
 	}
 
@@ -363,19 +345,17 @@ mod tests {
 	#[rstest]
 	async fn test_request(
 		payment_id: PaymentId,
-		budget_id: BudgetId,
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
-		amount_in_usd: u32,
+		amount: Amount,
 		reason: Value,
 	) {
 		let before = Utc::now();
 		let events = Payment::request(
 			payment_id,
-			budget_id,
 			requestor_id,
 			recipient_id,
-			amount_in_usd,
+			amount.clone(),
 			reason.clone(),
 		);
 		let after = Utc::now();
@@ -393,10 +373,9 @@ mod tests {
 			events[0],
 			PaymentEvent::Requested {
 				id: payment_id,
-				budget_id,
 				requestor_id,
 				recipient_id,
-				amount_in_usd,
+				amount,
 				reason,
 				requested_at,
 			}
@@ -407,10 +386,9 @@ mod tests {
 	fn test_event_sourced(payment_id: PaymentId) {
 		let event = PaymentEvent::Requested {
 			id: payment_id,
-			budget_id: Default::default(),
 			requestor_id: Default::default(),
 			recipient_id: Default::default(),
-			amount_in_usd: Default::default(),
+			amount: Default::default(),
 			reason: Default::default(),
 			requested_at: Default::default(),
 		};

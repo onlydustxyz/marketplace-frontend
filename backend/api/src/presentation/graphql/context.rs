@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use derive_getters::Getters;
-use domain::{AggregateRootRepository, Event, GithubUserId, Payment, Project, Publisher, UserId};
+use domain::{AggregateRootRepository, Event, GithubUserId, Project, Publisher, UserId};
 use infrastructure::{amqp::UniqueMessage, github};
 use presentation::http::guards::OptionUserId;
 
@@ -39,7 +39,6 @@ impl Context {
 		caller_permissions: Box<dyn Permissions>,
 		caller_info: OptionUserId,
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		payment_repository: AggregateRootRepository<Payment>,
 		project_repository: AggregateRootRepository<Project>,
 		project_details_repository: ProjectDetailsRepository,
 		pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
@@ -56,11 +55,11 @@ impl Context {
 			),
 			process_payment_usecase: application::payment::process::Usecase::new(
 				event_publisher.to_owned(),
-				payment_repository.clone(),
+				project_repository.clone(),
 			),
 			cancel_payment_usecase: application::payment::cancel::Usecase::new(
 				event_publisher.to_owned(),
-				payment_repository,
+				project_repository.clone(),
 			),
 			create_project_usecase: application::project::create::Usecase::new(
 				event_publisher.to_owned(),

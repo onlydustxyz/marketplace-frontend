@@ -24,15 +24,15 @@ pub use project::{Event as ProjectEvent, Id as ProjectId, Project};
 
 mod payment;
 pub use payment::{
-	Event as PaymentEvent, Id as PaymentId, Payment, Receipt as PaymentReceipt,
-	ReceiptId as PaymentReceiptId,
+	Error as PaymentError, Event as PaymentEvent, Id as PaymentId, Payment,
+	Receipt as PaymentReceipt, ReceiptId as PaymentReceiptId,
 };
 
 mod user;
 pub use user::{Entity as User, Id as UserId};
 
 mod budget;
-pub use budget::{Budget, Event as BudgetEvent, Id as BudgetId};
+pub use budget::{Budget, Error as BudgetError, Event as BudgetEvent, Id as BudgetId};
 
 pub mod aggregate_root;
 #[cfg(test)]

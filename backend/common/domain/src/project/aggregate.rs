@@ -1,7 +1,8 @@
-use std::{collections::HashSet, sync::Arc};
+use std::{collections::HashSet, iter::once, sync::Arc};
 
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
+use serde_json::Value;
 use thiserror::Error;
 
 use crate::*;
@@ -18,7 +19,11 @@ pub enum Error {
 	GithubRepositoryNotFound(GithubRepositoryId),
 	#[error(transparent)]
 	Infrastructure(anyhow::Error),
+	#[error(transparent)]
+	Budget(#[from] BudgetError),
 }
+
+type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, Getters, Dissolve, Constructor)]
 pub struct Project {
@@ -84,7 +89,8 @@ impl Project {
 		id: ProjectId,
 		name: String,
 		github_repo_id: GithubRepositoryId,
-	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+		initial_budget: Amount,
+	) -> Result<Vec<<Self as Aggregate>::Event>> {
 		if !github_repo_exists
 			.is_statified_by(&github_repo_id)
 			.await
@@ -93,17 +99,20 @@ impl Project {
 			return Err(Error::GithubRepositoryNotFound(github_repo_id));
 		}
 
-		Ok(vec![ProjectEvent::Created {
+		let events = Budget::allocate(BudgetId::new(), initial_budget)
+			.into_iter()
+			.map(|event| ProjectEvent::Budget { id, event });
+
+		Ok(once(ProjectEvent::Created {
 			id,
 			name,
 			github_repo_id,
-		}])
+		})
+		.chain(events)
+		.collect())
 	}
 
-	pub fn assign_leader(
-		&self,
-		leader_id: UserId,
-	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+	pub fn assign_leader(&self, leader_id: UserId) -> Result<Vec<<Self as Aggregate>::Event>> {
 		if self.leaders.contains(&leader_id) {
 			return Err(Error::LeaderAlreadyAssigned);
 		}
@@ -114,10 +123,7 @@ impl Project {
 		}])
 	}
 
-	pub fn unassign_leader(
-		&self,
-		leader_id: UserId,
-	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+	pub fn unassign_leader(&self, leader_id: UserId) -> Result<Vec<<Self as Aggregate>::Event>> {
 		if !self.leaders.contains(&leader_id) {
 			return Err(Error::NotLeader);
 		}
@@ -132,7 +138,7 @@ impl Project {
 		&self,
 		github_repo_exists: Arc<dyn GithubRepoExists>,
 		github_repo_id: GithubRepositoryId,
-	) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+	) -> Result<Vec<<Self as Aggregate>::Event>> {
 		if self.github_repo_id == github_repo_id {
 			return Err(Error::AlreadyProjectGithubRepository);
 		}
@@ -150,6 +156,50 @@ impl Project {
 			github_repo_id,
 		}])
 	}
+
+	pub async fn request_payment(
+		&self,
+		payment_id: PaymentId,
+		requestor_id: UserId,
+		recipient_id: GithubUserId,
+		amount: Amount,
+		reason: Value,
+	) -> Result<Vec<<Self as Aggregate>::Event>> {
+		Ok(self
+			.budget
+			.request_payment(payment_id, requestor_id, recipient_id, amount, reason)?
+			.into_iter()
+			.map(|event| ProjectEvent::Budget { id: self.id, event })
+			.collect())
+	}
+
+	pub async fn cancel_payment_request(
+		&self,
+		payment_id: &PaymentId,
+	) -> Result<Vec<<Self as Aggregate>::Event>> {
+		Ok(self
+			.budget
+			.cancel_payment_request(payment_id)?
+			.into_iter()
+			.map(|event| ProjectEvent::Budget { id: self.id, event })
+			.collect())
+	}
+
+	pub async fn add_payment_receipt(
+		&self,
+		payment_id: &PaymentId,
+		receipt_id: PaymentReceiptId,
+		amount: Amount,
+		receipt: PaymentReceipt,
+	) -> Result<Vec<<Self as Aggregate>::Event>> {
+		Ok(self
+			.budget
+			.add_payment_receipt(payment_id, receipt_id, amount, receipt)
+			.await?
+			.into_iter()
+			.map(|event| ProjectEvent::Budget { id: self.id, event })
+			.collect())
+	}
 }
 
 #[cfg(test)]
@@ -160,6 +210,7 @@ mod tests {
 	use assert_matches::assert_matches;
 	use mockall::predicate::eq;
 	use rstest::{fixture, rstest};
+	use rust_decimal_macros::dec;
 	use uuid::Uuid;
 
 	use super::*;
@@ -186,6 +237,11 @@ mod tests {
 	}
 
 	#[fixture]
+	fn initial_budget() -> Amount {
+		Amount::new(dec!(1000), Currency::Crypto("USDC".to_string()))
+	}
+
+	#[fixture]
 	fn project_created(project_id: ProjectId) -> ProjectEvent {
 		ProjectEvent::Created {
 			id: project_id,
@@ -199,6 +255,7 @@ mod tests {
 		project_id: ProjectId,
 		project_name: &str,
 		github_repo_id: GithubRepositoryId,
+		initial_budget: Amount,
 	) {
 		let mut github_repo_exists_specification = MockGithubRepoExists::new();
 		github_repo_exists_specification
@@ -211,17 +268,25 @@ mod tests {
 			project_id,
 			project_name.to_string(),
 			github_repo_id,
+			initial_budget,
 		)
 		.await
 		.unwrap();
 
-		assert_eq!(events.len(), 1);
+		assert_eq!(events.len(), 2);
 		assert_eq!(
 			events[0],
 			ProjectEvent::Created {
 				id: project_id,
 				name: project_name.to_string(),
 				github_repo_id
+			}
+		);
+		assert_matches!(
+			events[1],
+			ProjectEvent::Budget {
+				id: _,
+				event: BudgetEvent::Allocated { .. }
 			}
 		);
 	}
@@ -231,6 +296,7 @@ mod tests {
 		project_id: ProjectId,
 		project_name: &str,
 		github_repo_id: GithubRepositoryId,
+		initial_budget: Amount,
 	) {
 		let mut github_repo_exists_specification = MockGithubRepoExists::new();
 		github_repo_exists_specification
@@ -243,6 +309,7 @@ mod tests {
 			project_id,
 			project_name.to_string(),
 			github_repo_id,
+			initial_budget,
 		)
 		.await;
 
@@ -255,6 +322,7 @@ mod tests {
 		project_id: ProjectId,
 		project_name: &str,
 		github_repo_id: GithubRepositoryId,
+		initial_budget: Amount,
 	) {
 		let mut github_repo_exists_specification = MockGithubRepoExists::new();
 		github_repo_exists_specification
@@ -267,6 +335,7 @@ mod tests {
 			project_id,
 			project_name.to_string(),
 			github_repo_id,
+			initial_budget,
 		)
 		.await;
 

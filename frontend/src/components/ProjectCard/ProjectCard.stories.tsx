@@ -50,7 +50,13 @@ const props = {
     },
     languages: { Ejs: 2200, Rust: 1000 },
   },
-  totalSpentAmountInUsd: 47550,
+  budgetsAggregate: {
+    aggregate: {
+      sum: {
+        spentAmount: 47550,
+      },
+    },
+  },
   pendingInvitations: [{ id: "croute" }],
 };
 

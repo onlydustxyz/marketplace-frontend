@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use domain::{AggregateRootRepository, Event, Payment, Project, Publisher};
+use domain::{AggregateRootRepository, Event, Project, Publisher};
 use infrastructure::{amqp::UniqueMessage, github};
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use presentation::http::guards::{ApiKey, ApiKeyGuard, OptionUserId, Role};
@@ -41,7 +41,6 @@ pub async fn get_graphql_handler(
 	request: GraphQLRequest,
 	schema: &State<Schema>,
 	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
-	payment_repository: &State<AggregateRootRepository<Payment>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<ProjectDetailsRepository>,
 	pending_project_leader_invitations_repository: &State<
@@ -55,7 +54,6 @@ pub async fn get_graphql_handler(
 		role.into(),
 		maybe_user_id,
 		(*event_publisher).clone(),
-		(*payment_repository).clone(),
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
 		(*pending_project_leader_invitations_repository).clone(),
@@ -76,7 +74,6 @@ pub async fn post_graphql_handler(
 	request: GraphQLRequest,
 	schema: &State<Schema>,
 	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
-	payment_repository: &State<AggregateRootRepository<Payment>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<ProjectDetailsRepository>,
 	pending_project_leader_invitations_repository: &State<
@@ -90,7 +87,6 @@ pub async fn post_graphql_handler(
 		role.into(),
 		maybe_user_id,
 		(*event_publisher).clone(),
-		(*payment_repository).clone(),
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
 		(*pending_project_leader_invitations_repository).clone(),

@@ -1,7 +1,8 @@
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use async_trait::async_trait;
-use domain::{Event, PaymentEvent, SubscriberCallbackError};
+use domain::{BudgetEvent, Event, PaymentEvent, ProjectEvent, SubscriberCallbackError};
 use infrastructure::database::DatabaseError;
+use rust_decimal::prelude::ToPrimitive;
 use tracing::instrument;
 
 use crate::{
@@ -23,14 +24,21 @@ impl Projector {
 impl EventListener for Projector {
 	#[instrument(name = "payment_request_projection", skip(self))]
 	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
-		match event {
-			Event::Payment(event) => match event {
+		let Event::Project(event) = event;
+		if let ProjectEvent::Budget {
+			event: BudgetEvent::Payment {
+				id: budget_id,
+				event,
+			},
+			..
+		} = event
+		{
+			return match event {
 				PaymentEvent::Requested {
 					id,
-					budget_id,
 					requestor_id,
 					recipient_id,
-					amount_in_usd,
+					amount,
 					reason,
 					requested_at,
 				} => self
@@ -40,7 +48,11 @@ impl EventListener for Projector {
 						*budget_id,
 						*requestor_id,
 						*recipient_id,
-						*amount_in_usd as i64,
+						amount.amount().to_i64().ok_or_else(|| {
+							SubscriberCallbackError::Fatal(anyhow!(
+								"Failed to project invalid amount {amount}"
+							))
+						})?,
 						reason.clone(),
 						*requested_at,
 					))
@@ -48,8 +60,9 @@ impl EventListener for Projector {
 				PaymentEvent::Cancelled { id } =>
 					self.repository.delete(id).map_err(DatabaseError::into),
 				PaymentEvent::Processed { .. } => Ok(()),
-			},
-			_ => Ok(()),
+			};
 		}
+
+		Ok(())
 	}
 }

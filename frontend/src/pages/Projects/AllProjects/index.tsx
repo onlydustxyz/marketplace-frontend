@@ -67,7 +67,7 @@ const buildQueryFilters = (technologies: string[]) => {
 export const buildGetProjectsQuery = (technologies: string[]) => gql`
   ${PROJECT_CARD_FRAGMENT}
   query GetProjects($githubUserId: bigint = 0${buildQueryArgs(technologies)}) {
-    projects(${buildQueryFilters(technologies)}orderBy: {totalSpentAmountInUsd: DESC}) {
+    projects(${buildQueryFilters(technologies)}orderBy: {budgetsAggregate: {sum: {spentAmount: DESC}}}) {
       ...ProjectCardFields
     }
   }

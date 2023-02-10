@@ -21,6 +21,7 @@ pub struct Mutation;
 impl Mutation {
 	pub async fn add_eth_payment_receipt(
 		context: &Context,
+		project_id: Uuid,
 		payment_id: Uuid,
 		amount: String,
 		currency_code: String,
@@ -36,8 +37,9 @@ impl Mutation {
 
 		let payment_id = context
 			.process_payment_usecase
-			.add_receipt(
-				payment_id.into(),
+			.add_payment_receipt(
+				&project_id.into(),
+				&payment_id.into(),
 				Amount::new(*amount.amount(), Currency::Crypto(currency_code)),
 				PaymentReceipt::OnChainPayment {
 					network: BlockchainNetwork::Ethereum,
@@ -50,8 +52,15 @@ impl Mutation {
 		Ok(payment_id.into())
 	}
 
-	pub async fn cancel_payment_request(context: &Context, payment_id: Uuid) -> Result<Uuid> {
-		context.cancel_payment_usecase.cancel(payment_id.into()).await?;
+	pub async fn cancel_payment_request(
+		context: &Context,
+		project_id: Uuid,
+		payment_id: Uuid,
+	) -> Result<Uuid> {
+		context
+			.cancel_payment_usecase
+			.cancel(&project_id.into(), &payment_id.into())
+			.await?;
 		Ok(payment_id)
 	}
 

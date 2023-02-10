@@ -59,7 +59,13 @@ const graphQlMocks = [
           __typename: "Projects",
           id: TEST_PROJECT_ID,
           name: TEST_PROJECT_NAME,
-          totalSpentAmountInUsd: 1000,
+          budgetsAggregate: {
+            aggregate: {
+              sum: {
+                spentAmount: 1000,
+              },
+            },
+          },
           projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION, logoUrl: null },
           pendingInvitations: [{ id: "test-invitation-id" }],
           projectLeads: [
@@ -98,7 +104,13 @@ const graphQlMocks = [
           __typename: "Projects",
           id: TEST_LED_PROJECT_ID,
           name: TEST_LED_PROJECT_NAME,
-          totalSpentAmountInUsd: 1000,
+          budgetsAggregate: {
+            aggregate: {
+              sum: {
+                spentAmount: 1000,
+              },
+            },
+          },
           projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION, logoUrl: null },
           pendingInvitations: [],
           projectLeads: [

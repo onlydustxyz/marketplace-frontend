@@ -2,8 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{
-	Amount, Budget, BudgetId, DomainError, Event, GithubRepoExists, GithubRepositoryId, Project,
-	ProjectEvent, ProjectId, Publisher,
+	Amount, DomainError, Event, GithubRepoExists, GithubRepositoryId, Project, ProjectId, Publisher,
 };
 use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
@@ -45,23 +44,21 @@ impl Usecase {
 	) -> Result<ProjectId, DomainError> {
 		let project_id = ProjectId::new();
 
-		Project::create(self.github.clone(), project_id, name, github_repo_id)
-			.await
-			.map_err(|e| DomainError::InvalidInputs(e.into()))?
-			.into_iter()
-			.chain(
-				Budget::allocate(BudgetId::new(), initial_budget).into_iter().map(|event| {
-					ProjectEvent::Budget {
-						id: project_id,
-						event,
-					}
-				}),
-			)
-			.map(Event::from)
-			.map(UniqueMessage::new)
-			.collect::<Vec<_>>()
-			.publish(self.event_publisher.clone())
-			.await?;
+		Project::create(
+			self.github.clone(),
+			project_id,
+			name,
+			github_repo_id,
+			initial_budget,
+		)
+		.await
+		.map_err(|e| DomainError::InvalidInputs(e.into()))?
+		.into_iter()
+		.map(Event::from)
+		.map(UniqueMessage::new)
+		.collect::<Vec<_>>()
+		.publish(self.event_publisher.clone())
+		.await?;
 
 		self.project_details_repository.upsert(&ProjectDetails::new(
 			project_id,

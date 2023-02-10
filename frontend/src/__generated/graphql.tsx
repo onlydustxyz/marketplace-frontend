@@ -167,6 +167,7 @@ export type Budgets = {
   project: Maybe<Projects>;
   projectId: Maybe<Scalars['uuid']>;
   remainingAmount: Maybe<Scalars['numeric']>;
+  spentAmount: Maybe<Scalars['numeric']>;
 };
 
 
@@ -189,6 +190,36 @@ export type BudgetsPaymentRequestsAggregateArgs = {
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
+/** aggregated selection of "budgets" */
+export type BudgetsAggregate = {
+  __typename?: 'BudgetsAggregate';
+  aggregate: Maybe<BudgetsAggregateFields>;
+  nodes: Array<Budgets>;
+};
+
+/** aggregate fields of "budgets" */
+export type BudgetsAggregateFields = {
+  __typename?: 'BudgetsAggregateFields';
+  avg: Maybe<BudgetsAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<BudgetsMaxFields>;
+  min: Maybe<BudgetsMinFields>;
+  stddev: Maybe<BudgetsStddevFields>;
+  stddevPop: Maybe<BudgetsStddev_PopFields>;
+  stddevSamp: Maybe<BudgetsStddev_SampFields>;
+  sum: Maybe<BudgetsSumFields>;
+  varPop: Maybe<BudgetsVar_PopFields>;
+  varSamp: Maybe<BudgetsVar_SampFields>;
+  variance: Maybe<BudgetsVarianceFields>;
+};
+
+
+/** aggregate fields of "budgets" */
+export type BudgetsAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<BudgetsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
 /** order by aggregate values of table "budgets" */
 export type BudgetsAggregateOrderBy = {
   avg: InputMaybe<Budgets_Avg_Order_By>;
@@ -204,6 +235,14 @@ export type BudgetsAggregateOrderBy = {
   variance: InputMaybe<Budgets_Variance_Order_By>;
 };
 
+/** aggregate avg on columns */
+export type BudgetsAvgFields = {
+  __typename?: 'BudgetsAvgFields';
+  initialAmount: Maybe<Scalars['Float']>;
+  remainingAmount: Maybe<Scalars['Float']>;
+  spentAmount: Maybe<Scalars['Float']>;
+};
+
 /** Boolean expression to filter rows from the table "budgets". All fields are combined with a logical 'AND'. */
 export type BudgetsBoolExp = {
   _and: InputMaybe<Array<BudgetsBoolExp>>;
@@ -216,6 +255,27 @@ export type BudgetsBoolExp = {
   project: InputMaybe<ProjectsBoolExp>;
   projectId: InputMaybe<UuidComparisonExp>;
   remainingAmount: InputMaybe<NumericComparisonExp>;
+  spentAmount: InputMaybe<NumericComparisonExp>;
+};
+
+/** aggregate max on columns */
+export type BudgetsMaxFields = {
+  __typename?: 'BudgetsMaxFields';
+  id: Maybe<Scalars['uuid']>;
+  initialAmount: Maybe<Scalars['numeric']>;
+  projectId: Maybe<Scalars['uuid']>;
+  remainingAmount: Maybe<Scalars['numeric']>;
+  spentAmount: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate min on columns */
+export type BudgetsMinFields = {
+  __typename?: 'BudgetsMinFields';
+  id: Maybe<Scalars['uuid']>;
+  initialAmount: Maybe<Scalars['numeric']>;
+  projectId: Maybe<Scalars['uuid']>;
+  remainingAmount: Maybe<Scalars['numeric']>;
+  spentAmount: Maybe<Scalars['numeric']>;
 };
 
 /** Ordering options when selecting data from "budgets". */
@@ -226,6 +286,7 @@ export type BudgetsOrderBy = {
   project: InputMaybe<ProjectsOrderBy>;
   projectId: InputMaybe<OrderBy>;
   remainingAmount: InputMaybe<OrderBy>;
+  spentAmount: InputMaybe<OrderBy>;
 };
 
 /** select columns of table "budgets" */
@@ -237,8 +298,66 @@ export enum BudgetsSelectColumn {
   /** column name */
   ProjectId = 'projectId',
   /** column name */
-  RemainingAmount = 'remainingAmount'
+  RemainingAmount = 'remainingAmount',
+  /** column name */
+  SpentAmount = 'spentAmount'
 }
+
+/** aggregate stddev on columns */
+export type BudgetsStddevFields = {
+  __typename?: 'BudgetsStddevFields';
+  initialAmount: Maybe<Scalars['Float']>;
+  remainingAmount: Maybe<Scalars['Float']>;
+  spentAmount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type BudgetsStddev_PopFields = {
+  __typename?: 'BudgetsStddev_popFields';
+  initialAmount: Maybe<Scalars['Float']>;
+  remainingAmount: Maybe<Scalars['Float']>;
+  spentAmount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type BudgetsStddev_SampFields = {
+  __typename?: 'BudgetsStddev_sampFields';
+  initialAmount: Maybe<Scalars['Float']>;
+  remainingAmount: Maybe<Scalars['Float']>;
+  spentAmount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type BudgetsSumFields = {
+  __typename?: 'BudgetsSumFields';
+  initialAmount: Maybe<Scalars['numeric']>;
+  remainingAmount: Maybe<Scalars['numeric']>;
+  spentAmount: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate var_pop on columns */
+export type BudgetsVar_PopFields = {
+  __typename?: 'BudgetsVar_popFields';
+  initialAmount: Maybe<Scalars['Float']>;
+  remainingAmount: Maybe<Scalars['Float']>;
+  spentAmount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type BudgetsVar_SampFields = {
+  __typename?: 'BudgetsVar_sampFields';
+  initialAmount: Maybe<Scalars['Float']>;
+  remainingAmount: Maybe<Scalars['Float']>;
+  spentAmount: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type BudgetsVarianceFields = {
+  __typename?: 'BudgetsVarianceFields';
+  initialAmount: Maybe<Scalars['Float']>;
+  remainingAmount: Maybe<Scalars['Float']>;
+  spentAmount: Maybe<Scalars['Float']>;
+};
 
 /** Boolean expression to compare columns of type "citext". All fields are combined with logical 'AND'. */
 export type CitextComparisonExp = {
@@ -987,6 +1106,8 @@ export type Projects = {
   __typename?: 'Projects';
   /** An array relationship */
   budgets: Array<Budgets>;
+  /** An aggregate relationship */
+  budgetsAggregate: BudgetsAggregate;
   /** An object relationship */
   githubRepo: Maybe<GithubRepoDetails>;
   githubRepoId: Scalars['bigint'];
@@ -998,12 +1119,21 @@ export type Projects = {
   projectDetails: Maybe<ProjectDetails>;
   /** An array relationship */
   projectLeads: Array<ProjectLeads>;
-  totalSpentAmountInUsd: Scalars['bigint'];
 };
 
 
 /** columns and relationships of "projects" */
 export type ProjectsBudgetsArgs = {
+  distinctOn: InputMaybe<Array<BudgetsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<BudgetsOrderBy>>;
+  where: InputMaybe<BudgetsBoolExp>;
+};
+
+
+/** columns and relationships of "projects" */
+export type ProjectsBudgetsAggregateArgs = {
   distinctOn: InputMaybe<Array<BudgetsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -1037,6 +1167,7 @@ export type ProjectsBoolExp = {
   _not: InputMaybe<ProjectsBoolExp>;
   _or: InputMaybe<Array<ProjectsBoolExp>>;
   budgets: InputMaybe<BudgetsBoolExp>;
+  budgets_aggregate: InputMaybe<Budgets_Aggregate_Bool_Exp>;
   githubRepo: InputMaybe<GithubRepoDetailsBoolExp>;
   githubRepoId: InputMaybe<BigintComparisonExp>;
   id: InputMaybe<UuidComparisonExp>;
@@ -1044,7 +1175,6 @@ export type ProjectsBoolExp = {
   pendingInvitations: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
   projectDetails: InputMaybe<ProjectDetailsBoolExp>;
   projectLeads: InputMaybe<ProjectLeadsBoolExp>;
-  totalSpentAmountInUsd: InputMaybe<BigintComparisonExp>;
 };
 
 /** Ordering options when selecting data from "projects". */
@@ -1057,7 +1187,6 @@ export type ProjectsOrderBy = {
   pendingInvitationsAggregate: InputMaybe<PendingProjectLeaderInvitationsAggregateOrderBy>;
   projectDetails: InputMaybe<ProjectDetailsOrderBy>;
   projectLeadsAggregate: InputMaybe<ProjectLeadsAggregateOrderBy>;
-  totalSpentAmountInUsd: InputMaybe<OrderBy>;
 };
 
 /** select columns of table "projects" */
@@ -1067,9 +1196,7 @@ export enum ProjectsSelectColumn {
   /** column name */
   Id = 'id',
   /** column name */
-  Name = 'name',
-  /** column name */
-  TotalSpentAmountInUsd = 'totalSpentAmountInUsd'
+  Name = 'name'
 }
 
 export type PullRequest = {
@@ -1395,10 +1522,22 @@ export type Auth_Github_Users_StreamCursorValueInput = {
   userId: InputMaybe<Scalars['uuid']>;
 };
 
+export type Budgets_Aggregate_Bool_Exp = {
+  count: InputMaybe<Budgets_Aggregate_Bool_Exp_Count>;
+};
+
+export type Budgets_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<BudgetsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+  filter: InputMaybe<BudgetsBoolExp>;
+  predicate: IntComparisonExp;
+};
+
 /** order by avg() on columns of table "budgets" */
 export type Budgets_Avg_Order_By = {
   initialAmount: InputMaybe<OrderBy>;
   remainingAmount: InputMaybe<OrderBy>;
+  spentAmount: InputMaybe<OrderBy>;
 };
 
 /** order by max() on columns of table "budgets" */
@@ -1407,6 +1546,7 @@ export type Budgets_Max_Order_By = {
   initialAmount: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
   remainingAmount: InputMaybe<OrderBy>;
+  spentAmount: InputMaybe<OrderBy>;
 };
 
 /** order by min() on columns of table "budgets" */
@@ -1415,24 +1555,28 @@ export type Budgets_Min_Order_By = {
   initialAmount: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
   remainingAmount: InputMaybe<OrderBy>;
+  spentAmount: InputMaybe<OrderBy>;
 };
 
 /** order by stddev() on columns of table "budgets" */
 export type Budgets_Stddev_Order_By = {
   initialAmount: InputMaybe<OrderBy>;
   remainingAmount: InputMaybe<OrderBy>;
+  spentAmount: InputMaybe<OrderBy>;
 };
 
 /** order by stddev_pop() on columns of table "budgets" */
 export type Budgets_Stddev_Pop_Order_By = {
   initialAmount: InputMaybe<OrderBy>;
   remainingAmount: InputMaybe<OrderBy>;
+  spentAmount: InputMaybe<OrderBy>;
 };
 
 /** order by stddev_samp() on columns of table "budgets" */
 export type Budgets_Stddev_Samp_Order_By = {
   initialAmount: InputMaybe<OrderBy>;
   remainingAmount: InputMaybe<OrderBy>;
+  spentAmount: InputMaybe<OrderBy>;
 };
 
 /** Streaming cursor of the table "budgets" */
@@ -1449,30 +1593,35 @@ export type Budgets_StreamCursorValueInput = {
   initialAmount: InputMaybe<Scalars['numeric']>;
   projectId: InputMaybe<Scalars['uuid']>;
   remainingAmount: InputMaybe<Scalars['numeric']>;
+  spentAmount: InputMaybe<Scalars['numeric']>;
 };
 
 /** order by sum() on columns of table "budgets" */
 export type Budgets_Sum_Order_By = {
   initialAmount: InputMaybe<OrderBy>;
   remainingAmount: InputMaybe<OrderBy>;
+  spentAmount: InputMaybe<OrderBy>;
 };
 
 /** order by var_pop() on columns of table "budgets" */
 export type Budgets_Var_Pop_Order_By = {
   initialAmount: InputMaybe<OrderBy>;
   remainingAmount: InputMaybe<OrderBy>;
+  spentAmount: InputMaybe<OrderBy>;
 };
 
 /** order by var_samp() on columns of table "budgets" */
 export type Budgets_Var_Samp_Order_By = {
   initialAmount: InputMaybe<OrderBy>;
   remainingAmount: InputMaybe<OrderBy>;
+  spentAmount: InputMaybe<OrderBy>;
 };
 
 /** order by variance() on columns of table "budgets" */
 export type Budgets_Variance_Order_By = {
   initialAmount: InputMaybe<OrderBy>;
   remainingAmount: InputMaybe<OrderBy>;
+  spentAmount: InputMaybe<OrderBy>;
 };
 
 /** Streaming cursor of the table "github_repo_details" */
@@ -1935,7 +2084,6 @@ export type Projects_StreamCursorValueInput = {
   githubRepoId: InputMaybe<Scalars['bigint']>;
   id: InputMaybe<Scalars['uuid']>;
   name: InputMaybe<Scalars['String']>;
-  totalSpentAmountInUsd: InputMaybe<Scalars['bigint']>;
 };
 
 export type Query_Root = {
@@ -1944,6 +2092,8 @@ export type Query_Root = {
   authGithubUsers: Array<AuthGithubUsers>;
   /** An array relationship */
   budgets: Array<Budgets>;
+  /** An aggregate relationship */
+  budgetsAggregate: BudgetsAggregate;
   /** fetch data from the table: "budgets" using primary key columns */
   budgetsByPk: Maybe<Budgets>;
   fetchRepositoryDetails: Repository;
@@ -2004,6 +2154,15 @@ export type Query_RootAuthGithubUsersArgs = {
 
 
 export type Query_RootBudgetsArgs = {
+  distinctOn: InputMaybe<Array<BudgetsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<BudgetsOrderBy>>;
+  where: InputMaybe<BudgetsBoolExp>;
+};
+
+
+export type Query_RootBudgetsAggregateArgs = {
   distinctOn: InputMaybe<Array<BudgetsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -2189,6 +2348,8 @@ export type Subscription_Root = {
   authGithubUsersStream: Array<AuthGithubUsers>;
   /** An array relationship */
   budgets: Array<Budgets>;
+  /** An aggregate relationship */
+  budgetsAggregate: BudgetsAggregate;
   /** fetch data from the table: "budgets" using primary key columns */
   budgetsByPk: Maybe<Budgets>;
   /** fetch data from the table in a streaming manner: "budgets" */
@@ -2271,6 +2432,15 @@ export type Subscription_RootAuthGithubUsersStreamArgs = {
 
 
 export type Subscription_RootBudgetsArgs = {
+  distinctOn: InputMaybe<Array<BudgetsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<BudgetsOrderBy>>;
+  where: InputMaybe<BudgetsBoolExp>;
+};
+
+
+export type Subscription_RootBudgetsAggregateArgs = {
   distinctOn: InputMaybe<Array<BudgetsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -2742,7 +2912,7 @@ export type GetPaymentRequestIdsQueryVariables = Exact<{
 
 export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> };
 
-export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, name: string, totalSpentAmountInUsd: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', id: any, name: string, owner: string, languages: any, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null };
+export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, name: string, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', id: any, name: string, owner: string, languages: any, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null };
 
 export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string };
 
@@ -2859,7 +3029,7 @@ export type GetProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, name: string, totalSpentAmountInUsd: any, githubRepo: { __typename?: 'GithubRepoDetails', id: any, name: string, owner: string, languages: any, content: { __typename?: 'Repository', id: number, logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null, projectDetails: { __typename?: 'ProjectDetails', projectId: any, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }> } | null };
+export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, name: string, githubRepo: { __typename?: 'GithubRepoDetails', id: any, name: string, owner: string, languages: any, content: { __typename?: 'Repository', id: number, logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }> } | null };
 
 export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
   invitationId: Scalars['Uuid'];
@@ -2873,7 +3043,7 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, name: string, totalSpentAmountInUsd: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', id: any, name: string, owner: string, languages: any, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null }> };
+export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, name: string, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', id: any, name: string, owner: string, languages: any, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null }> };
 
 export type GetAllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2903,7 +3073,13 @@ export const ProjectCardFieldsFragmentDoc = gql`
     fragment ProjectCardFields on Projects {
   id
   name
-  totalSpentAmountInUsd
+  budgetsAggregate {
+    aggregate {
+      sum {
+        spentAmount
+      }
+    }
+  }
   projectDetails {
     projectId
     description
@@ -3713,7 +3889,7 @@ export type AcceptProjectLeaderInvitationMutationResult = Apollo.MutationResult<
 export type AcceptProjectLeaderInvitationMutationOptions = Apollo.BaseMutationOptions<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>;
 export const GetProjectsDocument = gql`
     query GetProjects($githubUserId: bigint = 0) {
-  projects {
+  projects(orderBy: {budgetsAggregate: {sum: {spentAmount: DESC}}}) {
     ...ProjectCardFields
   }
 }

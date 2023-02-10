@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use ::domain::{AggregateRootRepository, Event, Payment, Project, Publisher};
+use ::domain::{AggregateRootRepository, Event, Project, Publisher};
 use anyhow::Result;
 use http::Config;
 use infrastructure::{amqp::UniqueMessage, github, web3::ens};
@@ -23,7 +23,6 @@ pub async fn serve(
 	schema: graphql::Schema,
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_repository: AggregateRootRepository<Project>,
-	payment_repository: AggregateRootRepository<Payment>,
 	project_details_repository: ProjectDetailsRepository,
 	pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 	user_info_repository: UserInfoRepository,
@@ -35,7 +34,6 @@ pub async fn serve(
 		.manage(schema)
 		.manage(event_publisher)
 		.manage(project_repository)
-		.manage(payment_repository)
 		.manage(project_details_repository)
 		.manage(pending_project_leader_invitations_repository)
 		.manage(user_info_repository)

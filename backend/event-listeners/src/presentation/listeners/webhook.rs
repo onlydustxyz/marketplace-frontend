@@ -114,24 +114,37 @@ mod tests {
 	use std::ffi::OsString;
 
 	use assert_matches::assert_matches;
+	use domain::{ProjectEvent, ProjectId};
 	use envtestkit::{
 		lock::{lock_read, lock_test},
 		set_env,
 	};
 	use mockito;
-	use testing::fixtures::{
-		self,
-		payment::{recipient_address, transaction_hash},
-	};
+	use rstest::*;
 
 	use super::*;
 
+	#[fixture]
+	#[once]
+	fn project_id() -> ProjectId {
+		uuid::Uuid::new_v4().into()
+	}
+
+	#[fixture]
+	fn project_created_event(project_id: &ProjectId) -> ProjectEvent {
+		ProjectEvent::Created {
+			id: *project_id,
+			name: "my project".to_string(),
+			github_repo_id: 1234.into(),
+		}
+	}
+
 	#[allow(clippy::await_holding_lock)]
-	#[tokio::test]
-	async fn env_variable_not_set() {
+	#[rstest]
+	async fn env_variable_not_set(project_created_event: ProjectEvent) {
 		let _lock = lock_read();
 
-		let event: Event = fixtures::payment::events::payment_processed().into();
+		let event: Event = project_created_event.into();
 
 		assert_matches!(
 			send_event_to_webhook(&reqwest::Client::new(), &event).await,
@@ -140,12 +153,12 @@ mod tests {
 	}
 
 	#[allow(clippy::await_holding_lock)]
-	#[tokio::test]
-	async fn env_variable_invalid() {
+	#[rstest]
+	async fn env_variable_invalid(project_created_event: ProjectEvent) {
 		let _lock = lock_test();
 		let _test = set_env(OsString::from(WEBHOOK_TARGET_ENV_VAR), "Some random junk");
 
-		let event: Event = fixtures::payment::events::payment_processed().into();
+		let event: Event = project_created_event.into();
 
 		assert_matches!(
 			send_event_to_webhook(&reqwest::Client::new(), &event).await,
@@ -154,8 +167,9 @@ mod tests {
 	}
 
 	#[allow(clippy::await_holding_lock)]
+	#[rstest]
 	#[tokio::test]
-	async fn http_call_fail() {
+	async fn http_call_fail(project_created_event: ProjectEvent) {
 		let server_url = mockito::server_url();
 		let _m = mockito::mock("POST", "/webhook").with_status(400).expect(1).create();
 
@@ -165,7 +179,7 @@ mod tests {
 		let _lock = lock_test();
 		let _test = set_env(OsString::from(WEBHOOK_TARGET_ENV_VAR), &target_url);
 
-		let event: Event = fixtures::payment::events::payment_processed().into();
+		let event: Event = project_created_event.into();
 
 		assert_matches!(
 			send_event_to_webhook(&reqwest::Client::new(), &event).await,
@@ -175,34 +189,21 @@ mod tests {
 		assert!(_m.matched());
 	}
 
-	#[test]
-	fn webhook_event_serialize() {
-		let event: Event = fixtures::payment::events::payment_processed().into();
+	#[rstest]
+	fn webhook_event_serialize(project_created_event: ProjectEvent, project_id: &ProjectId) {
+		let event: Event = project_created_event.into();
 
 		let webhook_event = WebhookEvent::new(event);
 
 		let json_value = serde_json::to_value(&webhook_event).unwrap();
 
-		let recipient_address = recipient_address();
-		let transaction_hash = transaction_hash();
-
 		let expected_json_value = json!({
-			"aggregate_name":"Payment",
-			"event_name":"Processed",
-			"payload": {
-				"id":"abad1756-18ba-42e2-8cbf-83369cecfb38",
-				"receipt_id":"b5db0b56-ab3e-4bd1-b9a2-6a3d41f35b8f",
-				"amount": {
-					"amount":"500.45",
-					"currency": {"Crypto":"USDC"}
-				},
-				"receipt": {
-					"OnChainPayment": {
-						"network":"Ethereum",
-						"recipient_address": recipient_address,
-						"transaction_hash": transaction_hash,
-					}
-				}
+			"aggregate_name":"Project",
+			"event_name":"Created",
+			"payload":{
+				"id": project_id.to_string(),
+				"name": "my project",
+				"github_repo_id": 1234
 			}
 		});
 

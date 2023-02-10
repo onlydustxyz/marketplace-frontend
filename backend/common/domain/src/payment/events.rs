@@ -5,18 +5,17 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 use crate::{
-	AggregateEvent, Amount, BudgetId, GithubUserId, Payment, PaymentId, PaymentReceipt,
-	PaymentReceiptId, UserId,
+	AggregateEvent, Amount, GithubUserId, Payment, PaymentId, PaymentReceipt, PaymentReceiptId,
+	UserId,
 };
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	Requested {
 		id: PaymentId,
-		budget_id: BudgetId,
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
-		amount_in_usd: u32,
+		amount: Amount,
 		reason: Value,
 		requested_at: NaiveDateTime,
 	},
@@ -39,12 +38,6 @@ impl AggregateEvent<Payment> for Event {
 	}
 }
 
-impl From<Event> for crate::Event {
-	fn from(event: Event) -> Self {
-		Self::Payment(event)
-	}
-}
-
 impl Display for Event {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(
@@ -60,9 +53,6 @@ mod tests {
 	use assert_json_diff::assert_json_eq;
 	use serde_json::{json, Value};
 	use testing::fixtures::payment::{events, recipient_address, transaction_hash};
-
-	use super::*;
-	use crate::{BlockchainNetwork, Currency};
 
 	#[test]
 	fn test_display() {
@@ -90,25 +80,5 @@ mod tests {
 				}
 			})
 		);
-	}
-
-	#[test]
-	fn test_to_domain_event() {
-		let event = Event::Processed {
-			id: Default::default(),
-			receipt_id: Default::default(),
-			amount: Amount::new(
-				"500.45".parse().unwrap(),
-				Currency::Crypto("USDC".to_string()),
-			),
-			receipt: PaymentReceipt::OnChainPayment {
-				network: BlockchainNetwork::Ethereum,
-				recipient_address: Default::default(),
-				transaction_hash: Default::default(),
-			},
-		};
-
-		let domain_event: crate::Event = event.clone().into();
-		assert_eq!(domain_event, crate::Event::Payment(event));
 	}
 }

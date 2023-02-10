@@ -31,7 +31,6 @@ async fn main() -> Result<()> {
 		graphql::create_schema(),
 		Arc::new(amqp::Bus::default(config.amqp()).await?),
 		AggregateRootRepository::new(database.clone()),
-		AggregateRootRepository::new(database.clone()),
 		ProjectDetailsRepository::new(database.clone()),
 		PendingProjectLeaderInvitationsRepository::new(database.clone()),
 		UserInfoRepository::new(database),

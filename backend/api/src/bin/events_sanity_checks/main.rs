@@ -9,9 +9,16 @@ use infrastructure::{
 	database::{init_pool, Client as DatabaseClient},
 	tracing::Tracer,
 };
+use olog::error;
 
 #[tokio::main]
-async fn main() -> Result<()> {
+async fn main() {
+	if let Err(error) = try_run().await {
+		error!(error = error.to_string(), "Events are corrupted");
+	}
+}
+
+async fn try_run() -> Result<()> {
 	dotenv().ok();
 	let config: Config = config::load("backend/api/app.yaml")?;
 	let _tracer = Tracer::init(config.tracer(), "events_sanity_checks")?;

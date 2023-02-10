@@ -6,6 +6,7 @@ diesel::table! {
         project_id -> Nullable<Uuid>,
         initial_amount -> Numeric,
         remaining_amount -> Numeric,
+        spent_amount -> Numeric,
     }
 }
 
@@ -18,6 +19,17 @@ diesel::table! {
 
 diesel::table! {
     events (index) {
+        index -> Int4,
+        timestamp -> Timestamp,
+        aggregate_name -> Varchar,
+        aggregate_id -> Varchar,
+        payload -> Jsonb,
+        metadata -> Nullable<Jsonb>,
+    }
+}
+
+diesel::table! {
+    events_backup (index) {
         index -> Int4,
         timestamp -> Timestamp,
         aggregate_name -> Varchar,
@@ -87,7 +99,6 @@ diesel::table! {
         id -> Uuid,
         name -> Text,
         github_repo_id -> Int8,
-        total_spent_amount_in_usd -> Int8,
     }
 }
 
@@ -110,6 +121,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     budgets,
     event_deduplications,
     events,
+    events_backup,
     github_repo_details,
     payment_requests,
     payments,

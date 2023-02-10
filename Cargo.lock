@@ -1183,6 +1183,7 @@ version = "1.0.0"
 dependencies = [
  "anyhow",
  "assert_matches",
+ "async-std",
  "async-trait",
  "chrono",
  "clap",
@@ -1195,6 +1196,7 @@ dependencies = [
  "envtestkit",
  "futures",
  "infrastructure",
+ "itertools",
  "juniper",
  "juniper_warp",
  "lazy_static",

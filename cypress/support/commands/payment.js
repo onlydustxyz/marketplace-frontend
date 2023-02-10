@@ -21,12 +21,13 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
     "cancelPaymentRequest",
-    (paymentId) => {
+    (projectId, paymentId) => {
         return {
-            query: `mutation($paymentId: Uuid!) {
-                cancelPaymentRequest(paymentId: $paymentId)
+            query: `mutation($projectId: Uuid!, $paymentId: Uuid!) {
+                cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId)
             }`,
             variables: {
+                projectId,
                 paymentId
             },
             wait: WAIT_SHORT,

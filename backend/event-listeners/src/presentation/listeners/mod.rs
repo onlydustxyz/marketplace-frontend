@@ -41,11 +41,13 @@ pub async fn spawn_all(
 			ProjectLeadRepository::new(database.clone()),
 			github,
 			GithubRepoDetailsRepository::new(database.clone()),
-			BudgetRepository::new(database.clone()),
 		)
 		.spawn(event_bus::consumer(config.amqp(), "projects").await?),
-		BudgetProjector::new(BudgetRepository::new(database.clone()))
-			.spawn(event_bus::consumer(config.amqp(), "budgets").await?),
+		BudgetProjector::new(
+			PaymentRequestRepository::new(database.clone()),
+			BudgetRepository::new(database.clone()),
+		)
+		.spawn(event_bus::consumer(config.amqp(), "budgets").await?),
 	];
 
 	Ok(handles.into())

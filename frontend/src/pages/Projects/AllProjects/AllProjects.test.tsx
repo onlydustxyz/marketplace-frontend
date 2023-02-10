@@ -13,14 +13,26 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS = {
         __typename: "Projects",
         id: "1",
         name: "project1",
-        totalSpentAmountInUsd: 1000,
+        budgetsAggregate: {
+          aggregate: {
+            sum: {
+              spentAmount: 1000,
+            },
+          },
+        },
         pendingInvitations: [],
       },
       {
         __typename: "Projects",
         id: "2",
         name: "project2",
-        totalSpentAmountInUsd: 999,
+        budgetsAggregate: {
+          aggregate: {
+            sum: {
+              spentAmount: 999,
+            },
+          },
+        },
         pendingInvitations: [],
       },
     ],
@@ -34,21 +46,39 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION = {
         __typename: "Projects",
         id: "1",
         name: "project1",
-        totalSpentAmountInUsd: 1000,
+        budgetsAggregate: {
+          aggregate: {
+            sum: {
+              spentAmount: 1000,
+            },
+          },
+        },
         pendingInvitations: [],
       },
       {
         __typename: "Projects",
         id: "2",
         name: "project1",
-        totalSpentAmountInUsd: 999,
+        budgetsAggregate: {
+          aggregate: {
+            sum: {
+              spentAmount: 999,
+            },
+          },
+        },
         pendingInvitations: [],
       },
       {
         __typename: "Projects",
         id: "3",
         name: "project2",
-        totalSpentAmountInUsd: 0,
+        budgetsAggregate: {
+          aggregate: {
+            sum: {
+              spentAmount: 0,
+            },
+          },
+        },
         pendingInvitations: ["test"],
       },
     ],

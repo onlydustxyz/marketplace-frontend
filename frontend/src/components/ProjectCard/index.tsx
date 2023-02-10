@@ -20,11 +20,13 @@ export default function ProjectCard({
   projectDetails,
   githubRepo,
   projectLeads,
-  totalSpentAmountInUsd,
+  budgetsAggregate,
 }: ProjectCardProps) {
   const { T } = useIntl();
   const lead = projectLeads?.[0]?.user;
   const logoUrl = projectDetails?.logoUrl || githubRepo?.content?.logoUrl || onlyDustLogo;
+  const totalSpentAmountInUsd = budgetsAggregate?.aggregate?.sum?.spentAmount;
+
   return (
     <Card
       selectable={true}
@@ -96,7 +98,13 @@ export const PROJECT_CARD_FRAGMENT = gql`
   fragment ProjectCardFields on Projects {
     id
     name
-    totalSpentAmountInUsd
+    budgetsAggregate {
+      aggregate {
+        sum {
+          spentAmount
+        }
+      }
+    }
     projectDetails {
       projectId
       description

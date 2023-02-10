@@ -1,16 +1,18 @@
 use anyhow::Result;
 use async_trait::async_trait;
 use derive_more::Constructor;
-use domain::{BudgetEvent, Event, ProjectEvent, SubscriberCallbackError};
+use domain::{BudgetEvent, Event, PaymentEvent, ProjectEvent, SubscriberCallbackError};
+use rust_decimal::Decimal;
 use tracing::instrument;
 
 use crate::{
 	domain::{Budget, EventListener},
-	infrastructure::database::BudgetRepository,
+	infrastructure::database::{BudgetRepository, PaymentRequestRepository},
 };
 
 #[derive(Constructor)]
 pub struct Projector {
+	payment_request_repository: PaymentRequestRepository,
 	budget_repository: BudgetRepository,
 }
 
@@ -32,11 +34,23 @@ impl EventListener for Projector {
 						*amount.amount(),
 					))?;
 				},
-				BudgetEvent::Spent { id, amount } => {
-					let id = *id;
-					let mut budget = self.budget_repository.find_by_id(&id)?;
-					budget.remaining_amount -= amount.amount();
-					self.budget_repository.update(&id, &budget)?;
+				BudgetEvent::Payment {
+					id: budget_id,
+					event,
+				} => match event {
+					PaymentEvent::Requested { amount, .. } => {
+						let mut budget = self.budget_repository.find_by_id(budget_id)?;
+						budget.remaining_amount -= amount.amount();
+						self.budget_repository.update(budget_id, &budget)?;
+					},
+					PaymentEvent::Cancelled { id: payment_id } => {
+						let payment_request =
+							self.payment_request_repository.find_by_id(payment_id)?;
+						let mut budget = self.budget_repository.find_by_id(budget_id)?;
+						budget.remaining_amount -= Decimal::from(*payment_request.amount_in_usd());
+						self.budget_repository.update(budget_id, &budget)?;
+					},
+					PaymentEvent::Processed { .. } => (),
 				},
 			}
 		}
