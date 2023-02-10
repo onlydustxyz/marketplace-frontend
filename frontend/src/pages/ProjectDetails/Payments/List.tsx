@@ -15,6 +15,7 @@ const PaymentList: React.FC = () => {
     payments: (PaymentRequestFragment & Sortable)[];
     budget: { initialAmount: number; remainingAmount: number };
   }>();
+  // TODO: remove this in favor of a link
   const navigateToNewPayment = () => {
     navigate(ProjectPaymentsRoutePaths.New);
   };
@@ -35,11 +36,7 @@ const PaymentList: React.FC = () => {
         )}
       </div>
       <div className="flex basis-1/3">
-        <RemainingBudget
-          budget={budget}
-          disabled={budget.remainingAmount === 0 || payments.length === 0}
-          onClickNewPayment__deprecated={navigateToNewPayment}
-        />
+        <RemainingBudget budget={budget} disabled={budget.remainingAmount === 0 || payments.length === 0} />
       </div>
     </div>
   );

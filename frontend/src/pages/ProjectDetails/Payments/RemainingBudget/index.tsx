@@ -3,7 +3,6 @@ import { ProjectPaymentsRoutePaths } from "src/App";
 import Button, { ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import CurrencyLine from "src/icons/CurrencyLine";
-import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 import { formatMoneyAmount } from "src/utils/money";
 import { useT } from "talkr";
 import BudgetBar from "../PaymentForm/WorkEstimation/BudgetBar";
@@ -11,13 +10,11 @@ import BudgetBar from "../PaymentForm/WorkEstimation/BudgetBar";
 interface Props {
   budget: { initialAmount: number; remainingAmount: number };
   disabled: boolean;
-  onClickNewPayment__deprecated: () => void;
 }
 
-export default function RemainingBudget({ budget, disabled, onClickNewPayment__deprecated }: Props) {
+export default function RemainingBudget({ budget, disabled }: Props) {
   const { T } = useT();
 
-  const sidebarUrlsEnabled = isFeatureEnabled(FeatureFlags.PROJECT_SIDEBAR_URLS);
   return (
     <Card className="p-8">
       <div className="flex flex-col">
@@ -32,20 +29,13 @@ export default function RemainingBudget({ budget, disabled, onClickNewPayment__d
           <span>{Math.round((budget.remainingAmount / budget.initialAmount) * 100)}% </span>
           <span>{T("project.details.remainingBudget.leftToSpend")}</span>
         </div>
-        {!disabled && sidebarUrlsEnabled ? (
+        {!disabled && (
           <Link to={ProjectPaymentsRoutePaths.New} className="pt-6">
             <Button width={Width.Full} size={ButtonSize.LargeLowHeight}>
               <CurrencyLine />
               <span>{T("project.details.remainingBudget.newPayment")}</span>
             </Button>
           </Link>
-        ) : (
-          <div className="pt-6" onClick={onClickNewPayment__deprecated}>
-            <Button width={Width.Full} size={ButtonSize.LargeLowHeight}>
-              <CurrencyLine />
-              <span>{T("project.details.remainingBudget.newPayment")}</span>
-            </Button>
-          </div>
         )}
       </div>
     </Card>
