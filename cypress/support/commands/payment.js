@@ -61,3 +61,22 @@ Cypress.Commands.add(
         .should("be.null");
     }
 );
+
+Cypress.Commands.add(
+    "addEthPaymentReceipt",
+    (amount, currencyCode, paymentId, recipientIdentity, transactionHash) => {
+        return {
+            query: `mutation($amount:String!, $currencyCode:String!, $paymentId:Uuid!, $recipientIdentity:recipientIdentity!, $transactionHash:String!) {
+                addEthPaymentReceipt(amount: $amount, currencyCode: $currencyCode, paymentId: $paymentId, recipientAddress: $recipientAddress, transactionHash: $transactionHash)
+              }`,
+            variables: {
+                amount,
+                currencyCode,
+                paymentId,
+                recipientIdentity,
+                transactionHash
+            },
+            wait: WAIT_SHORT,
+        };
+    }
+);

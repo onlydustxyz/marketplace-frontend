@@ -22,7 +22,7 @@ impl Mutation {
 		payment_id: Uuid,
 		amount: String,
 		currency_code: String,
-		recipient_address: EthereumIdentityInput,
+		recipient_identity: EthereumIdentityInput,
 		transaction_hash: String,
 	) -> Result<Uuid> {
 		let currency = crypto::find(&currency_code).ok_or_else(|| {
@@ -32,13 +32,13 @@ impl Mutation {
 		let amount = Money::from_str(&amount, currency)
 			.map_err(|e| Error::InvalidRequest(anyhow::Error::msg(e)))?;
 
-		let eth_identity = recipient_address.try_into().map_err(Error::InvalidRequest)?;
+		let eth_identity = recipient_identity.try_into().map_err(Error::InvalidRequest)?;
 		let ethereum_address = match eth_identity {
 			domain::EthereumIdentity::Address(addr) => addr,
 			domain::EthereumIdentity::Name(name) => context.ens.eth_address(name.as_str()).await?,
 		};
 
-		let payment_id = context
+		let receipt_id = context
 			.process_payment_usecase
 			.add_receipt(
 				payment_id.into(),
@@ -51,7 +51,7 @@ impl Mutation {
 			)
 			.await?;
 
-		Ok(payment_id.into())
+		Ok(receipt_id.into())
 	}
 
 	pub async fn cancel_payment_request(context: &Context, payment_id: Uuid) -> Result<Uuid> {
