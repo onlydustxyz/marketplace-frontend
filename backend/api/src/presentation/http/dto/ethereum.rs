@@ -28,7 +28,7 @@ impl TryFrom<EthereumIdentityInput> for EthereumIdentity {
 						"type was set to `ETHEREUM_ADDRESS` without the matching `optEthAddress` field being provided"
 					)
 				})
-				.map(|address| EthereumIdentity::Address(address)),
+				.map(EthereumIdentity::Address),
 			EthereumIdentityType::EthereumName => value
 				.opt_eth_name
 				.ok_or_else(|| {
@@ -36,7 +36,7 @@ impl TryFrom<EthereumIdentityInput> for EthereumIdentity {
 						"type was set to `ETHEREUM_NAME` without the matching `optEthName` field being provided"
 					)
 				})
-				.map(|name| EthereumIdentity::Name(name)),
+				.map(EthereumIdentity::Name),
 		}
 	}
 }

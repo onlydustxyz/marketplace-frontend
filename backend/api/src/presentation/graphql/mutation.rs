@@ -33,7 +33,11 @@ impl Mutation {
 		let amount = Money::from_str(&amount, currency)
 			.map_err(|e| Error::InvalidRequest(anyhow::Error::msg(e)))?;
 
-		let recipient_address = recipient_address.try_into().map_err(Error::InvalidRequest)?;
+		let eth_identity = recipient_address.try_into().map_err(Error::InvalidRequest)?;
+		let ethereum_address = match eth_identity {
+			domain::EthereumIdentity::Address(addr) => addr,
+			domain::EthereumIdentity::Name(name) => context.ens.eth_address(name.as_str()).await?,
+		};
 
 		let payment_id = context
 			.process_payment_usecase
@@ -43,7 +47,7 @@ impl Mutation {
 				Amount::new(*amount.amount(), Currency::Crypto(currency_code)),
 				PaymentReceipt::OnChainPayment {
 					network: BlockchainNetwork::Ethereum,
-					recipient_address,
+					recipient_address: ethereum_address,
 					transaction_hash,
 				},
 			)
