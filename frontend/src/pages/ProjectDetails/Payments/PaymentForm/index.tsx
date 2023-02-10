@@ -4,7 +4,7 @@ import { useCallback, useContext, useEffect } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
-import { useLocation, useOutletContext } from "react-router-dom";
+import { generatePath, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import {
   PaymentAction__deprecated,
   ProjectDetailsActionType__deprecated,
@@ -12,6 +12,8 @@ import {
 } from "../../ProjectDetailsContext";
 import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
+import { ProjectRoutePaths, RoutePaths } from "src/App";
+import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
 export const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/pull\/\d+$/;
 
@@ -27,6 +29,7 @@ const PaymentForm: React.FC<PaymentFormProps> = props => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const location = useLocation();
+  const navigate = useNavigate();
   const findUserQuery = useFindGithubUser();
   const outletContext = useOutletContext<{
     projectId: string;
@@ -41,17 +44,23 @@ const PaymentForm: React.FC<PaymentFormProps> = props => {
   const defaultContributor = location.state?.recipientGithubLogin;
 
   const dispatch__deprecated = useContext(ProjectDetailsDispatchContext__deprecated);
+  const sidebarUrlsEnabled = isFeatureEnabled(FeatureFlags.PROJECT_SIDEBAR_URLS);
+
   const { requestNewPayment } = usePaymentRequests({
     projectId,
     onNewPaymentRequested: () => {
       showToaster(T("payment.form.sent"));
-      formMethods.resetField("linkToIssue");
-      formMethods.resetField("contributorHandle");
-      formMethods.resetField("contributor");
-      dispatch__deprecated({
-        type: ProjectDetailsActionType__deprecated.SelectPaymentAction,
-        selectedPaymentAction: PaymentAction__deprecated.List,
-      });
+      if (sidebarUrlsEnabled) {
+        navigate(generatePath(RoutePaths.MyProjectDetails, { projectId }) + "/" + ProjectRoutePaths.Payments);
+      } else {
+        formMethods.resetField("linkToIssue");
+        formMethods.resetField("contributorHandle");
+        formMethods.resetField("contributor");
+        dispatch__deprecated({
+          type: ProjectDetailsActionType__deprecated.SelectPaymentAction,
+          selectedPaymentAction: PaymentAction__deprecated.List,
+        });
+      }
     },
   });
 
