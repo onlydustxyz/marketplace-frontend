@@ -1196,6 +1196,7 @@ dependencies = [
  "envtestkit",
  "futures",
  "infrastructure",
+ "itertools",
  "juniper",
  "juniper_warp",
  "lazy_static",
