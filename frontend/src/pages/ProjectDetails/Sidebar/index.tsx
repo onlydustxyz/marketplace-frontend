@@ -14,6 +14,26 @@ import {
 } from "../ProjectDetailsContext";
 import { sortBy } from "lodash";
 
+export type ProjectDetailsTab = {
+  label: string;
+  path: string;
+};
+
+const AvailableTabs: Record<string, ProjectDetailsTab> = {
+  overview: {
+    label: "Overview",
+    path: "",
+  },
+  contributors: {
+    label: "Contributors",
+    path: "contributors",
+  },
+  payments: {
+    label: "Payments",
+    path: "payments",
+  },
+};
+
 interface Props {
   currentProject: ProjectDetails;
   onProjectSelected: (projectId: string) => void;
@@ -39,11 +59,15 @@ export default function ProjectsSidebar({ currentProject, onProjectSelected, ava
   const projects = getProjectsForSidebarQuery?.data?.projects.map(project => projectFromQuery(project)) || [];
   const sortedProjects = sortBy([...projects], ["withInvitation", "name"]);
 
+  const availableTabs = isProjectMine(currentProject)
+    ? [AvailableTabs.overview, AvailableTabs.contributors, AvailableTabs.payments]
+    : [AvailableTabs.overview, AvailableTabs.contributors];
   return (
     <View
       {...{
         currentProject,
         onProjectSelected,
+        availableTabs,
         availableTabs__deprecated,
         selectedTab: state.tab,
         dispatch,
