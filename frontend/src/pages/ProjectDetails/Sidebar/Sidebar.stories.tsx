@@ -1,7 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
 import { withRouter } from "storybook-addon-react-router-v6";
-import { ProjectDetailsTab__deprecated } from "../ProjectDetailsContext";
 import View from "./View";
 
 export default {
@@ -10,12 +9,16 @@ export default {
   decorators: [withRouter],
 } as ComponentMeta<typeof View>;
 
-const availableTabs__deprecated = [
-  ProjectDetailsTab__deprecated.Overview,
-  ProjectDetailsTab__deprecated.Contributors,
-  ProjectDetailsTab__deprecated.Payments,
+const availableTabs: ProjectDetailsTab[] = [
+  {
+    label: "Overview",
+    path: "overview",
+  },
+  {
+    label: "Contributors",
+    path: "contributors",
+  },
 ];
-const availableTabs: ProjectDetailsTab[] = [];
 
 const currentProject = {
   id: "test-project-id",
@@ -46,9 +49,6 @@ const otherProject = {
   withInvitation: false,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const empty = () => {};
-const selectedTab = ProjectDetailsTab__deprecated.Overview;
 const expandable = true;
 const allProjects = [currentProject, otherProject];
 
@@ -58,11 +58,7 @@ const Template: ComponentStory<typeof View> = () => (
       expandable,
       currentProject,
       allProjects,
-      onProjectSelected: empty,
-      selectedTab,
       availableTabs,
-      availableTabs__deprecated,
-      dispatch: empty,
       projectLead: true,
     }}
   />

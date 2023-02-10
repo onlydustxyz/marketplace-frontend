@@ -6,12 +6,6 @@ import { GetProjectsForSidebarQuery } from "src/__generated/graphql";
 import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
-import { useContext } from "react";
-import {
-  ProjectDetailsContext__deprecated,
-  ProjectDetailsDispatchContext__deprecated,
-  ProjectDetailsTab__deprecated,
-} from "../ProjectDetailsContext";
 import { sortBy } from "lodash";
 import { ProjectRoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
@@ -23,14 +17,11 @@ export type ProjectDetailsTab = {
 
 interface Props {
   currentProject: ProjectDetails;
-  availableTabs__deprecated: ProjectDetailsTab__deprecated[];
 }
 
-export default function ProjectsSidebar({ currentProject, availableTabs__deprecated }: Props) {
+export default function ProjectsSidebar({ currentProject }: Props) {
   const { isLoggedIn, ledProjectIds, githubUserId } = useAuth();
   const { T } = useIntl();
-  const state__deprecated = useContext(ProjectDetailsContext__deprecated);
-  const dispatch__deprecated = useContext(ProjectDetailsDispatchContext__deprecated);
 
   const isProjectMine = (project: ProjectDetails) => ledProjectIds.includes(project.id) || !!project.invitationId;
 
@@ -66,13 +57,8 @@ export default function ProjectsSidebar({ currentProject, availableTabs__depreca
     : [AvailableTabs.overview, AvailableTabs.contributors];
   return (
     <View
-      {...{
-        currentProject,
-        availableTabs,
-        availableTabs__deprecated,
-        selectedTab: state__deprecated.tab,
-        dispatch: dispatch__deprecated,
-      }}
+      availableTabs={availableTabs}
+      currentProject={currentProject}
       allProjects={sortedProjects}
       projectLead={isProjectMine(currentProject)}
       expandable={isProjectMine(currentProject) && sortedProjects.length > 1}

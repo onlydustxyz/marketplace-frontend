@@ -26,13 +26,7 @@ export default function View({ currentProject, selectedTab, availableTabs__depre
   };
   return (
     <div className="flex flex-1 w-full gap-2 h-full">
-      <ProjectsSidebar
-        {...{
-          currentProject,
-          selectedTab,
-          availableTabs__deprecated,
-        }}
-      />
+      <ProjectsSidebar currentProject={currentProject} />
       <Background roundedBorders={BackgroundRoundedBorders.Right}>
         <div className="h-full p-5 flex flex-col flex-1">
           <Outlet context={outletContext} />
