@@ -12,6 +12,7 @@ const Profile = lazy(() => import("src/pages/Profile"));
 const MyContributions = lazy(() => import("src/pages/MyContributions"));
 const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
 const ProjectDetailsOverview = lazy(() => import("src/pages/ProjectDetails/Overview"));
+const ProjectDetailsContributors = lazy(() => import("src/pages/ProjectDetails/Contributors"));
 
 import { HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/Loader";
@@ -41,7 +42,7 @@ function App() {
     },
     {
       path: ProjectRoutePaths.Contributors,
-      element: <ProjectDetailsOverview />,
+      element: <ProjectDetailsContributors />,
     },
     {
       path: ProjectRoutePaths.Payments,
