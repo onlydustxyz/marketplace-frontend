@@ -46,6 +46,7 @@ const Template: ComponentStory<typeof View> = () => (
       availableTabs,
       availableTabs__deprecated,
       dispatch: empty,
+      projectLead: true,
     }}
   />
 );

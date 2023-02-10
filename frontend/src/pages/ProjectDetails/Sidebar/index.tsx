@@ -23,11 +23,10 @@ export type ProjectDetailsTab = {
 
 interface Props {
   currentProject: ProjectDetails;
-  onProjectSelected: (projectId: string) => void;
   availableTabs__deprecated: ProjectDetailsTab__deprecated[];
 }
 
-export default function ProjectsSidebar({ currentProject, onProjectSelected, availableTabs__deprecated }: Props) {
+export default function ProjectsSidebar({ currentProject, availableTabs__deprecated }: Props) {
   const { isLoggedIn, ledProjectIds, githubUserId } = useAuth();
   const { T } = useIntl();
   const state__deprecated = useContext(ProjectDetailsContext__deprecated);
@@ -69,13 +68,13 @@ export default function ProjectsSidebar({ currentProject, onProjectSelected, ava
     <View
       {...{
         currentProject,
-        onProjectSelected,
         availableTabs,
         availableTabs__deprecated,
         selectedTab: state__deprecated.tab,
         dispatch: dispatch__deprecated,
       }}
       allProjects={sortedProjects}
+      projectLead={isProjectMine(currentProject)}
       expandable={isProjectMine(currentProject) && sortedProjects.length > 1}
     />
   );

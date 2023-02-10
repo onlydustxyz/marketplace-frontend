@@ -9,25 +9,17 @@ import { ProjectDetailsTab__deprecated } from "./ProjectDetailsContext";
 
 interface Props {
   currentProject: ProjectDetails;
-  onProjectSelected: (projectId: string) => void;
   selectedTab: ProjectDetailsTab__deprecated;
   availableTabs__deprecated: ProjectDetailsTab__deprecated[];
   onInvitationAccepted: (invitationId: string) => void;
 }
 
-export default function View({
-  currentProject,
-  onProjectSelected,
-  selectedTab,
-  availableTabs__deprecated,
-  onInvitationAccepted,
-}: Props) {
+export default function View({ currentProject, selectedTab, availableTabs__deprecated, onInvitationAccepted }: Props) {
   return (
     <div className="flex flex-1 w-full gap-2 h-full">
       <ProjectsSidebar
         {...{
           currentProject,
-          onProjectSelected,
           selectedTab,
           availableTabs__deprecated,
         }}

@@ -7,19 +7,12 @@ import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 
 interface Props {
   currentProject: ProjectDetails;
-  onProjectSelected: (projectId: string) => void;
   selectedTab: ProjectDetailsTab__deprecated;
   availableTabs__deprecated: ProjectDetailsTab__deprecated[];
   onInvitationAccepted: (invitationId: string) => void;
 }
 
-export default function View({
-  currentProject,
-  onProjectSelected,
-  selectedTab,
-  availableTabs__deprecated,
-  onInvitationAccepted,
-}: Props) {
+export default function View({ currentProject, selectedTab, availableTabs__deprecated, onInvitationAccepted }: Props) {
   const outletContext = {
     ...currentProject,
     lead: currentProject.leads[0],
@@ -36,7 +29,6 @@ export default function View({
       <ProjectsSidebar
         {...{
           currentProject,
-          onProjectSelected,
           selectedTab,
           availableTabs__deprecated,
         }}

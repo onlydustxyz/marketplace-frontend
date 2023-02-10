@@ -19,18 +19,18 @@ import {
 } from "../ProjectDetailsContext";
 import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
 import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
-import { NavLink } from "react-router-dom";
+import { generatePath, NavLink, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
 interface Props {
   expandable: boolean;
   currentProject: ProjectDetails;
   allProjects: SidebarProjectDetails[];
-  onProjectSelected: (projectId: string) => void;
   availableTabs: ProjectDetailsTab[];
   availableTabs__deprecated: ProjectDetailsTab__deprecated[];
   selectedTab: ProjectDetailsTab__deprecated;
   dispatch: (action: ProjectDetailsAction__deprecated) => void;
+  projectLead: boolean;
 }
 
 interface SidebarProjectDetails {
@@ -45,13 +45,14 @@ export default function View({
   expandable,
   currentProject,
   allProjects,
-  onProjectSelected,
   availableTabs,
   availableTabs__deprecated,
   selectedTab,
   dispatch,
+  projectLead,
 }: Props) {
   const { T } = useIntl();
+  const navigate = useNavigate();
   const sidebarUrlsEnabled = isFeatureEnabled(FeatureFlags.PROJECT_SIDEBAR_URLS);
 
   return (
@@ -65,9 +66,13 @@ export default function View({
         <div className="relative h-16">
           <Listbox
             value={currentProject}
-            onChange={project => {
-              onProjectSelected(project.id);
-            }}
+            onChange={project =>
+              navigate(
+                generatePath(projectLead ? RoutePaths.MyProjectDetails : RoutePaths.ProjectDetails, {
+                  projectId: project.id,
+                })
+              )
+            }
             disabled={!expandable}
           >
             <div className="flex flex-col w-full border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700 bg-white/2 absolute backdrop-blur-4xl z-10">

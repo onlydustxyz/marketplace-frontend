@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
-import { useContext, useEffect, useState } from "react";
-import { generatePath, useNavigate, useParams } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
@@ -8,7 +8,6 @@ import { Contributor, HasuraUserRole, LanguageMap } from "src/types";
 import { decodeBase64ToString } from "src/utils/stringUtils";
 import { GetProjectQuery } from "src/__generated/graphql";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
-import { RoutePaths } from "src/App";
 import { SessionMethod, useSessionDispatch, useSession } from "src/hooks/useSession";
 import View from "./View";
 import View__deprecated from "./View__deprecated";
@@ -16,9 +15,7 @@ import { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
 import {
   ProjectDetailsProvider__deprectaed,
   ProjectDetailsContext__deprecated,
-  ProjectDetailsDispatchContext__deprecated,
   ProjectDetailsTab__deprecated,
-  ProjectDetailsActionType__deprecated,
 } from "./ProjectDetailsContext";
 import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
@@ -48,7 +45,6 @@ function ProjectDetailsComponent() {
   const { ledProjectIds, githubUserId } = useAuth();
   const { lastVisitedProjectId } = useSession();
   const dispatchSession = useSessionDispatch();
-  const navigate = useNavigate();
 
   const [acceptInvitation, acceptInvitationResponse] = useHasuraMutation(
     ACCEPT_PROJECT_LEADER_INVITATION_MUTATION,
@@ -56,9 +52,6 @@ function ProjectDetailsComponent() {
   );
 
   const state__deprecated = useContext(ProjectDetailsContext__deprecated);
-  const dispatch__deprecated = useContext(ProjectDetailsDispatchContext__deprecated);
-
-  const [selectedProjectId, setSelectedProjectId] = useState(projectId);
 
   const getProjectQuery = useHasuraQuery<GetProjectQuery>(GET_PROJECT_QUERY, HasuraUserRole.Public, {
     variables: { id: projectId, githubUserId },
@@ -66,16 +59,6 @@ function ProjectDetailsComponent() {
   });
 
   const project = getProjectQuery.data?.projectsByPk;
-
-  useEffect(() => {
-    if (selectedProjectId && selectedProjectId !== projectId) {
-      dispatch__deprecated({
-        type: ProjectDetailsActionType__deprecated.SelectTab,
-        selectedTab: ProjectDetailsTab__deprecated.Overview,
-      });
-      navigate(generatePath(RoutePaths.MyProjectDetails, { projectId: selectedProjectId }));
-    }
-  }, [selectedProjectId]);
 
   useEffect(() => {
     if (
@@ -118,7 +101,6 @@ function ProjectDetailsComponent() {
                 },
               });
             }}
-            onProjectSelected={(projectId: string) => setSelectedProjectId(projectId)}
           />
         ) : (
           <View__deprecated
@@ -132,7 +114,6 @@ function ProjectDetailsComponent() {
                 },
               });
             }}
-            onProjectSelected={(projectId: string) => setSelectedProjectId(projectId)}
           />
         ))}
     </QueryWrapper>
