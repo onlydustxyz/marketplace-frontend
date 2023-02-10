@@ -3,7 +3,6 @@ import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import FilterPanel, { GET_ALL_TECHNOLOGIES_QUERY } from ".";
 import { renderWithIntl, MemoryRouterProviderFactory } from "src/test/utils";
-import { RoutePaths } from "src/App";
 import userEvent from "@testing-library/user-event";
 
 expect.extend(matchers);
@@ -35,7 +34,6 @@ describe("FilterPanel", () => {
   it("should should display first 2 technologies of projects and be sorted", async () => {
     renderWithIntl(<FilterPanel />, {
       wrapper: MemoryRouterProviderFactory({
-        route: RoutePaths.Projects,
         mocks: graphQlMocks,
       }),
     });
