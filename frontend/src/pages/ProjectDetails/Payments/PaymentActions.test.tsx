@@ -5,7 +5,7 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentActions from ".";
 import { RoutePaths } from "src/App";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import { ProjectDetailsProvider } from "../ProjectDetailsContext";
+import { ProjectDetailsProvider__deprectaed } from "../ProjectDetailsContext";
 import { GithubUserFragment, PaymentRequestFragment } from "src/__generated/graphql";
 import { PAYMENT_REQUESTS_FOR_PROJECT_QUERY } from "src/hooks/usePaymentRequests";
 import { GET_GITHUB_USER_QUERY } from "src/hooks/useGithubUser";
@@ -103,9 +103,9 @@ describe('"ProjectDetails" page', () => {
 
   beforeEach(() => {
     renderWithIntl(
-      <ProjectDetailsProvider>
+      <ProjectDetailsProvider__deprectaed>
         <PaymentActions projectId={TEST_PROJECT_ID} />
-      </ProjectDetailsProvider>,
+      </ProjectDetailsProvider__deprectaed>,
       {
         wrapper: MemoryRouterProviderFactory({
           route: `${RoutePaths.ProjectDetails}/test-project-id`,

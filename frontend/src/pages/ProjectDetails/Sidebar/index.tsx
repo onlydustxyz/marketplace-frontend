@@ -8,8 +8,8 @@ import { useAuth } from "src/hooks/useAuth";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { useContext } from "react";
 import {
-  ProjectDetailsContext,
-  ProjectDetailsDispatchContext,
+  ProjectDetailsContext__deprecated,
+  ProjectDetailsDispatchContext__deprecated,
   ProjectDetailsTab__deprecated,
 } from "../ProjectDetailsContext";
 import { sortBy } from "lodash";
@@ -30,8 +30,8 @@ interface Props {
 export default function ProjectsSidebar({ currentProject, onProjectSelected, availableTabs__deprecated }: Props) {
   const { isLoggedIn, ledProjectIds, githubUserId } = useAuth();
   const { T } = useIntl();
-  const state = useContext(ProjectDetailsContext);
-  const dispatch = useContext(ProjectDetailsDispatchContext);
+  const state__deprecated = useContext(ProjectDetailsContext__deprecated);
+  const dispatch__deprecated = useContext(ProjectDetailsDispatchContext__deprecated);
 
   const isProjectMine = (project: ProjectDetails) => ledProjectIds.includes(project.id) || !!project.invitationId;
 
@@ -72,8 +72,8 @@ export default function ProjectsSidebar({ currentProject, onProjectSelected, ava
         onProjectSelected,
         availableTabs,
         availableTabs__deprecated,
-        selectedTab: state.tab,
-        dispatch,
+        selectedTab: state__deprecated.tab,
+        dispatch: dispatch__deprecated,
       }}
       allProjects={sortedProjects}
       expandable={isProjectMine(currentProject) && sortedProjects.length > 1}

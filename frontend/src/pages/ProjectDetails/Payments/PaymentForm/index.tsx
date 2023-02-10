@@ -5,7 +5,11 @@ import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
 import { useLocation, useOutletContext } from "react-router-dom";
-import { PaymentAction, ProjectDetailsActionType, ProjectDetailsDispatchContext } from "../../ProjectDetailsContext";
+import {
+  PaymentAction__deprecated,
+  ProjectDetailsActionType__deprecated,
+  ProjectDetailsDispatchContext__deprecated,
+} from "../../ProjectDetailsContext";
 import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
 
@@ -36,7 +40,7 @@ const PaymentForm: React.FC<PaymentFormProps> = props => {
 
   const defaultContributor = location.state?.recipientGithubLogin;
 
-  const dispatch = useContext(ProjectDetailsDispatchContext);
+  const dispatch__deprecated = useContext(ProjectDetailsDispatchContext__deprecated);
   const { requestNewPayment } = usePaymentRequests({
     projectId,
     onNewPaymentRequested: () => {
@@ -44,7 +48,10 @@ const PaymentForm: React.FC<PaymentFormProps> = props => {
       formMethods.resetField("linkToIssue");
       formMethods.resetField("contributorHandle");
       formMethods.resetField("contributor");
-      dispatch({ type: ProjectDetailsActionType.SelectPaymentAction, selectedPaymentAction: PaymentAction.List });
+      dispatch__deprecated({
+        type: ProjectDetailsActionType__deprecated.SelectPaymentAction,
+        selectedPaymentAction: PaymentAction__deprecated.List,
+      });
     },
   });
 

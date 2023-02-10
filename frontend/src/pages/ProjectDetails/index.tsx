@@ -14,11 +14,11 @@ import View from "./View";
 import View__deprecated from "./View__deprecated";
 import { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
 import {
-  ProjectDetailsProvider,
-  ProjectDetailsContext,
-  ProjectDetailsDispatchContext,
+  ProjectDetailsProvider__deprectaed,
+  ProjectDetailsContext__deprecated,
+  ProjectDetailsDispatchContext__deprecated,
   ProjectDetailsTab__deprecated,
-  ProjectDetailsActionType,
+  ProjectDetailsActionType__deprecated,
 } from "./ProjectDetailsContext";
 import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
@@ -55,8 +55,8 @@ function ProjectDetailsComponent() {
     HasuraUserRole.RegisteredUser
   );
 
-  const state = useContext(ProjectDetailsContext);
-  const dispatch = useContext(ProjectDetailsDispatchContext);
+  const state__deprecated = useContext(ProjectDetailsContext__deprecated);
+  const dispatch__deprecated = useContext(ProjectDetailsDispatchContext__deprecated);
 
   const [selectedProjectId, setSelectedProjectId] = useState(projectId);
 
@@ -69,7 +69,10 @@ function ProjectDetailsComponent() {
 
   useEffect(() => {
     if (selectedProjectId && selectedProjectId !== projectId) {
-      dispatch({ type: ProjectDetailsActionType.SelectTab, selectedTab: ProjectDetailsTab__deprecated.Overview });
+      dispatch__deprecated({
+        type: ProjectDetailsActionType__deprecated.SelectTab,
+        selectedTab: ProjectDetailsTab__deprecated.Overview,
+      });
       navigate(generatePath(RoutePaths.MyProjectDetails, { projectId: selectedProjectId }));
     }
   }, [selectedProjectId]);
@@ -107,7 +110,7 @@ function ProjectDetailsComponent() {
           <View
             currentProject={projectFromQuery(project)}
             availableTabs__deprecated={availableTabs__deprecated}
-            selectedTab={state.tab}
+            selectedTab={state__deprecated.tab}
             onInvitationAccepted={(invitationId: string) => {
               acceptInvitation({
                 variables: {
@@ -121,7 +124,7 @@ function ProjectDetailsComponent() {
           <View__deprecated
             currentProject={projectFromQuery(project)}
             availableTabs__deprecated={availableTabs__deprecated}
-            selectedTab={state.tab}
+            selectedTab={state__deprecated.tab}
             onInvitationAccepted={(invitationId: string) => {
               acceptInvitation({
                 variables: {
@@ -180,8 +183,8 @@ const ACCEPT_PROJECT_LEADER_INVITATION_MUTATION = gql`
 
 export default function ProjectDetails() {
   return (
-    <ProjectDetailsProvider>
+    <ProjectDetailsProvider__deprectaed>
       <ProjectDetailsComponent />
-    </ProjectDetailsProvider>
+    </ProjectDetailsProvider__deprectaed>
   );
 }

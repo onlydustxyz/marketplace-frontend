@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useReducer } from "react";
 
-export enum PaymentAction {
+export enum PaymentAction__deprecated {
   List = "List",
   Send = "Send",
 }
@@ -11,45 +11,56 @@ export enum ProjectDetailsTab__deprecated {
   Contributors = "Contributors",
 }
 
-interface ProjectDetailsState {
+interface ProjectDetailsState__deprecated {
   tab: ProjectDetailsTab__deprecated;
-  paymentAction: PaymentAction;
+  paymentAction: PaymentAction__deprecated;
 }
 
-export enum ProjectDetailsActionType {
+export enum ProjectDetailsActionType__deprecated {
   SelectTab = "SelectTab",
   SelectPaymentAction = "SelectPaymentAction",
 }
 
-export type ProjectDetailsAction =
+export type ProjectDetailsAction__deprecated =
   | {
-      type: ProjectDetailsActionType.SelectTab;
+      type: ProjectDetailsActionType__deprecated.SelectTab;
       selectedTab: ProjectDetailsTab__deprecated;
     }
-  | { type: ProjectDetailsActionType.SelectPaymentAction; selectedPaymentAction: PaymentAction };
+  | {
+      type: ProjectDetailsActionType__deprecated.SelectPaymentAction;
+      selectedPaymentAction: PaymentAction__deprecated;
+    };
 
-const projectDetailsInitialState = { tab: ProjectDetailsTab__deprecated.Overview, paymentAction: PaymentAction.List };
+const projectDetailsInitialState = {
+  tab: ProjectDetailsTab__deprecated.Overview,
+  paymentAction: PaymentAction__deprecated.List,
+};
 
-export const ProjectDetailsContext = createContext(projectDetailsInitialState);
-export const ProjectDetailsDispatchContext = createContext((action: ProjectDetailsAction) => {
+export const ProjectDetailsContext__deprecated = createContext(projectDetailsInitialState);
+export const ProjectDetailsDispatchContext__deprecated = createContext((action: ProjectDetailsAction__deprecated) => {
   return;
 });
 
-export function ProjectDetailsProvider({ children }: PropsWithChildren) {
-  const [projectDetailsState, dispatch] = useReducer(projectDetailsReducer, projectDetailsInitialState);
+export function ProjectDetailsProvider__deprectaed({ children }: PropsWithChildren) {
+  const [projectDetailsState, dispatch] = useReducer(projectDetailsReducer__deprecated, projectDetailsInitialState);
 
   return (
-    <ProjectDetailsContext.Provider value={projectDetailsState}>
-      <ProjectDetailsDispatchContext.Provider value={dispatch}>{children}</ProjectDetailsDispatchContext.Provider>
-    </ProjectDetailsContext.Provider>
+    <ProjectDetailsContext__deprecated.Provider value={projectDetailsState}>
+      <ProjectDetailsDispatchContext__deprecated.Provider value={dispatch}>
+        {children}
+      </ProjectDetailsDispatchContext__deprecated.Provider>
+    </ProjectDetailsContext__deprecated.Provider>
   );
 }
 
-export function projectDetailsReducer(state: ProjectDetailsState, action: ProjectDetailsAction) {
+export function projectDetailsReducer__deprecated(
+  state: ProjectDetailsState__deprecated,
+  action: ProjectDetailsAction__deprecated
+) {
   switch (action.type) {
-    case ProjectDetailsActionType.SelectTab:
+    case ProjectDetailsActionType__deprecated.SelectTab:
       return { ...state, tab: action.selectedTab };
-    case ProjectDetailsActionType.SelectPaymentAction:
+    case ProjectDetailsActionType__deprecated.SelectPaymentAction:
       return { ...state, tab: ProjectDetailsTab__deprecated.Payments, paymentAction: action.selectedPaymentAction };
     default:
       throw Error("Unknown project details action.");

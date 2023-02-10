@@ -12,9 +12,9 @@ import { ProjectDetails } from "..";
 import { useIntl } from "src/hooks/useIntl";
 import { buildGithubLink } from "src/utils/stringUtils";
 import {
-  PaymentAction,
-  ProjectDetailsAction,
-  ProjectDetailsActionType,
+  PaymentAction__deprecated,
+  ProjectDetailsAction__deprecated,
+  ProjectDetailsActionType__deprecated,
   ProjectDetailsTab__deprecated,
 } from "../ProjectDetailsContext";
 import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
@@ -30,7 +30,7 @@ interface Props {
   availableTabs: ProjectDetailsTab[];
   availableTabs__deprecated: ProjectDetailsTab__deprecated[];
   selectedTab: ProjectDetailsTab__deprecated;
-  dispatch: (action: ProjectDetailsAction) => void;
+  dispatch: (action: ProjectDetailsAction__deprecated) => void;
 }
 
 interface SidebarProjectDetails {
@@ -132,10 +132,10 @@ export default function View({
                 onClick={() =>
                   dispatch(
                     tab !== ProjectDetailsTab__deprecated.Payments
-                      ? { type: ProjectDetailsActionType.SelectTab, selectedTab: tab }
+                      ? { type: ProjectDetailsActionType__deprecated.SelectTab, selectedTab: tab }
                       : {
-                          type: ProjectDetailsActionType.SelectPaymentAction,
-                          selectedPaymentAction: PaymentAction.List,
+                          type: ProjectDetailsActionType__deprecated.SelectPaymentAction,
+                          selectedPaymentAction: PaymentAction__deprecated.List,
                         }
                   )
                 }

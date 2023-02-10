@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import {
-  PaymentAction,
-  ProjectDetailsActionType,
-  ProjectDetailsDispatchContext,
+  PaymentAction__deprecated,
+  ProjectDetailsActionType__deprecated,
+  ProjectDetailsDispatchContext__deprecated,
 } from "src/pages/ProjectDetails/ProjectDetailsContext";
 import { rates } from "src/hooks/useWorkEstimation";
 import { generatePath, useNavigate } from "react-router-dom";
@@ -36,16 +36,16 @@ const ContributorsTable: React.FC<PropsType> = ({
     };
   });
 
-  const dispatch = useContext(ProjectDetailsDispatchContext);
+  const dispatch__deprecated = useContext(ProjectDetailsDispatchContext__deprecated);
   const navigate = useNavigate();
 
   const isSendingNewPaymentDisabled = remainingBudget < rates.hours;
 
   const onPaymentRequested = (contributor: Contributor) => {
     if (!isSendingNewPaymentDisabled) {
-      dispatch({
-        type: ProjectDetailsActionType.SelectPaymentAction,
-        selectedPaymentAction: PaymentAction.Send,
+      dispatch__deprecated({
+        type: ProjectDetailsActionType__deprecated.SelectPaymentAction,
+        selectedPaymentAction: PaymentAction__deprecated.Send,
       });
       navigate(generatePath(RoutePaths.MyProjectDetails, { projectId }), {
         state: { recipientGithubLogin: contributor.login },

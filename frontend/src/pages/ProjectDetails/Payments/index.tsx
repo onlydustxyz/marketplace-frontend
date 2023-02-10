@@ -5,7 +5,7 @@ import { useIntl } from "src/hooks/useIntl";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
 import PaymentList from "src/pages/ProjectDetails/Payments/List";
 import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
-import { PaymentAction, ProjectDetailsContext } from "../ProjectDetailsContext";
+import { PaymentAction__deprecated, ProjectDetailsContext__deprecated } from "../ProjectDetailsContext";
 import PaymentForm from "./PaymentForm";
 
 interface PaymentsProps {
@@ -15,7 +15,7 @@ interface PaymentsProps {
 const Payments: React.FC<PaymentsProps> = props => {
   const { T } = useIntl();
 
-  const state = useContext(ProjectDetailsContext);
+  const state__deprecated = useContext(ProjectDetailsContext__deprecated);
   const parentOutletContext = useOutletContext<{ projectId: string }>();
 
   const { projectId = parentOutletContext.projectId } = props;
@@ -37,8 +37,12 @@ const Payments: React.FC<PaymentsProps> = props => {
         {sidebarUrlsEnabled && <Outlet context={outletContext} />}
         {!sidebarUrlsEnabled && (
           <>
-            {state.paymentAction === PaymentAction.List && <PaymentList payments={payments} budget={budget} />}
-            {state.paymentAction === PaymentAction.Send && <PaymentForm {...{ projectId, budget }} />}
+            {state__deprecated.paymentAction === PaymentAction__deprecated.List && (
+              <PaymentList payments={payments} budget={budget} />
+            )}
+            {state__deprecated.paymentAction === PaymentAction__deprecated.Send && (
+              <PaymentForm {...{ projectId, budget }} />
+            )}
           </>
         )}
       </div>

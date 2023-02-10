@@ -7,9 +7,9 @@ import PaymentTable from "src/components/PaymentTable";
 import ProjectPaymentTableFallback from "src/components/ProjectPaymentTableFallback";
 import RemainingBudget from "src/pages/ProjectDetails/Payments/RemainingBudget";
 import {
-  PaymentAction,
-  ProjectDetailsActionType,
-  ProjectDetailsDispatchContext,
+  PaymentAction__deprecated,
+  ProjectDetailsActionType__deprecated,
+  ProjectDetailsDispatchContext__deprecated,
 } from "src/pages/ProjectDetails/ProjectDetailsContext";
 import { Sortable } from "src/types";
 import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
@@ -21,7 +21,7 @@ type Props = {
 };
 
 const PaymentList: React.FC<Props> = props => {
-  const dispatch__deprecated = useContext(ProjectDetailsDispatchContext);
+  const dispatch__deprecated = useContext(ProjectDetailsDispatchContext__deprecated);
   const navigate = useNavigate();
   const outletContext = useOutletContext<{
     payments: (PaymentRequestFragment & Sortable)[];
@@ -34,8 +34,8 @@ const PaymentList: React.FC<Props> = props => {
       navigate(ProjectPaymentsRoutePaths.New);
     } else {
       dispatch__deprecated({
-        type: ProjectDetailsActionType.SelectPaymentAction,
-        selectedPaymentAction: PaymentAction.Send,
+        type: ProjectDetailsActionType__deprecated.SelectPaymentAction,
+        selectedPaymentAction: PaymentAction__deprecated.Send,
       });
     }
   };
