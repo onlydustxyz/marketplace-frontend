@@ -9,7 +9,7 @@ interface Props {
   currentProject: ProjectDetails;
   onProjectSelected: (projectId: string) => void;
   selectedTab: ProjectDetailsTab;
-  availableTabs: ProjectDetailsTab[];
+  availableTabs__deprecated: ProjectDetailsTab[];
   onInvitationAccepted: (invitationId: string) => void;
 }
 
@@ -17,7 +17,7 @@ export default function View({
   currentProject,
   onProjectSelected,
   selectedTab,
-  availableTabs,
+  availableTabs__deprecated,
   onInvitationAccepted,
 }: Props) {
   const outletContext = {
@@ -38,7 +38,7 @@ export default function View({
           currentProject,
           onProjectSelected,
           selectedTab,
-          availableTabs,
+          availableTabs__deprecated,
         }}
       />
       <Background roundedBorders={BackgroundRoundedBorders.Right}>

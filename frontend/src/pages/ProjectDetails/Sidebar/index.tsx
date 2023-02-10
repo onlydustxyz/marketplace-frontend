@@ -13,10 +13,10 @@ import { sortBy } from "lodash";
 interface Props {
   currentProject: ProjectDetails;
   onProjectSelected: (projectId: string) => void;
-  availableTabs: ProjectDetailsTab[];
+  availableTabs__deprecated: ProjectDetailsTab[];
 }
 
-export default function ProjectsSidebar({ currentProject, onProjectSelected, availableTabs }: Props) {
+export default function ProjectsSidebar({ currentProject, onProjectSelected, availableTabs__deprecated }: Props) {
   const { isLoggedIn, ledProjectIds, githubUserId } = useAuth();
   const state = useContext(ProjectDetailsContext);
   const dispatch = useContext(ProjectDetailsDispatchContext);
@@ -40,7 +40,7 @@ export default function ProjectsSidebar({ currentProject, onProjectSelected, ava
       {...{
         currentProject,
         onProjectSelected,
-        availableTabs,
+        availableTabs__deprecated,
         selectedTab: state.tab,
         dispatch,
       }}

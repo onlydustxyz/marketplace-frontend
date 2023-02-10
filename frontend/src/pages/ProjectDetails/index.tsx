@@ -89,7 +89,7 @@ function ProjectDetailsComponent() {
     }
   }, [acceptInvitationResponse.data]);
 
-  const availableTabs =
+  const availableTabs__deprecated =
     projectId && ledProjectIds && ledProjectIds.includes(projectId)
       ? [ProjectDetailsTab.Overview, ProjectDetailsTab.Contributors, ProjectDetailsTab.Payments]
       : [ProjectDetailsTab.Overview, ProjectDetailsTab.Contributors];
@@ -102,7 +102,7 @@ function ProjectDetailsComponent() {
         (sidebarUrlsEnabled ? (
           <View
             currentProject={projectFromQuery(project)}
-            availableTabs={availableTabs}
+            availableTabs__deprecated={availableTabs__deprecated}
             selectedTab={state.tab}
             onInvitationAccepted={(invitationId: string) => {
               acceptInvitation({
@@ -116,7 +116,7 @@ function ProjectDetailsComponent() {
         ) : (
           <View__deprecated
             currentProject={projectFromQuery(project)}
-            availableTabs={availableTabs}
+            availableTabs__deprecated={availableTabs__deprecated}
             selectedTab={state.tab}
             onInvitationAccepted={(invitationId: string) => {
               acceptInvitation({

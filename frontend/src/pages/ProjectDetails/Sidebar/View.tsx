@@ -23,7 +23,7 @@ interface Props {
   currentProject: ProjectDetails;
   allProjects: SidebarProjectDetails[];
   onProjectSelected: (projectId: string) => void;
-  availableTabs: ProjectDetailsTab[];
+  availableTabs__deprecated: ProjectDetailsTab[];
   selectedTab: ProjectDetailsTab;
   dispatch: (action: ProjectDetailsAction) => void;
 }
@@ -41,7 +41,7 @@ export default function View({
   currentProject,
   allProjects,
   onProjectSelected,
-  availableTabs,
+  availableTabs__deprecated,
   selectedTab,
   dispatch,
 }: Props) {
@@ -115,7 +115,7 @@ export default function View({
           </Listbox>
         </div>
         <div className="flex flex-col align-start font-medium text-xl pt-3 pb-2 gap-2">
-          {availableTabs.map(tab => (
+          {availableTabs__deprecated.map(tab => (
             <div
               key={tab}
               className={`rounded-xl hover:cursor-pointer text-white text-base px-4 py-2.5 ${
