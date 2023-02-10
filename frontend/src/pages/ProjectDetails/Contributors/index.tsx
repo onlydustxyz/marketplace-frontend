@@ -8,14 +8,17 @@ import { HasuraUserRole } from "src/types";
 import { GetProjectContributorsQuery, GetProjectRemainingBudgetQuery } from "src/__generated/graphql";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
+import { useOutletContext } from "react-router-dom";
 
 type PropsType = {
-  projectId: string;
+  projectId?: string;
 };
 
-const Contributors: React.FC<PropsType> = ({ projectId }) => {
+const Contributors: React.FC<PropsType> = props => {
   const { T } = useIntl();
   const { ledProjectIds } = useAuth();
+  const outletContext: { projectId: string } = useOutletContext();
+  const projectId = props.projectId ?? outletContext.projectId;
 
   const isProjectLeader = !!ledProjectIds.find(element => element === projectId);
 
