@@ -84,15 +84,15 @@ describe('"PaymentForm" component', () => {
   });
 
   beforeEach(() => {
-    renderWithIntl(
-      <PaymentForm projectId={"test-project-id"} budget={{ initialAmount: 10000, remainingAmount: 4000 }} />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          route: generatePath(RoutePaths.ProjectDetails, { projectId: TEST_PROJECT_ID }),
-          mocks: graphQlMocks,
-        }),
-      }
-    );
+    renderWithIntl(<PaymentForm />, {
+      wrapper: MemoryRouterProviderFactory({
+        mocks: graphQlMocks,
+        context: {
+          projectId: TEST_PROJECT_ID,
+          budget: { initialAmount: 10000, remainingAmount: 4000 },
+        },
+      }),
+    });
   });
 
   it("should show the right input / button labels", async () => {
@@ -110,10 +110,7 @@ describe('"PaymentForm" component', () => {
       expect(graphQlMocks[0].newData).toHaveBeenCalledTimes(1);
     });
     await userEvent.click(await screen.findByText(/confirm payment/i));
-    await waitFor(() => {
-      expect(screen.getByLabelText(RECIPIENT_INPUT_LABEL)).toHaveValue("");
-      expect(screen.getByLabelText(PR_LINK_INPUT_LABEL)).toHaveValue("");
-    });
+    await screen.findByText("Payment successfully sent");
   });
 
   it("should display an error when the github username is invalid", async () => {
