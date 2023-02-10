@@ -59,7 +59,7 @@ const PaymentList: React.FC<Props> = props => {
         <RemainingBudget
           budget={budget}
           disabled={budget.remainingAmount === 0 || payments.length === 0}
-          onClickNewPayment={navigateToNewPayment}
+          onClickNewPayment__deprecated={navigateToNewPayment}
         />
       </div>
     </div>
