@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { useRoutes } from "react-router-dom";
+import { RouteObject, useRoutes } from "react-router-dom";
 
 import Layout from "src/components/Layout";
 import ProtectedRoute from "src/components/ProtectedRoute";
@@ -28,6 +28,12 @@ export enum RoutePaths {
 }
 
 function App() {
+  const projectRoutes: RouteObject[] = [
+    {
+      index: true,
+      element: <ProjectDetailsOverview />,
+    },
+  ];
   const routes = useRoutes([
     {
       element: <Layout />,
@@ -59,22 +65,12 @@ function App() {
         {
           path: RoutePaths.ProjectDetails,
           element: <ProjectDetails />,
-          children: [
-            {
-              index: true,
-              element: <ProjectDetailsOverview />,
-            },
-          ],
+          children: projectRoutes,
         },
         {
           path: RoutePaths.MyProjectDetails,
           element: <ProjectDetails />,
-          children: [
-            {
-              index: true,
-              element: <ProjectDetailsOverview />,
-            },
-          ],
+          children: projectRoutes,
         },
         {
           path: RoutePaths.CatchAll,
