@@ -1,4 +1,5 @@
 import { Suspense, useContext } from "react";
+import { useOutletContext } from "react-router-dom";
 import Card from "src/components/Card";
 import Loader from "src/components/Loader";
 import PaymentTable from "src/components/PaymentTable";
@@ -13,12 +14,17 @@ import { Sortable } from "src/types";
 import { PaymentRequestFragment } from "src/__generated/graphql";
 
 type Props = {
-  payments: (PaymentRequestFragment & Sortable)[];
-  budget: { initialAmount: number; remainingAmount: number };
+  payments?: (PaymentRequestFragment & Sortable)[];
+  budget?: { initialAmount: number; remainingAmount: number };
 };
 
-const PaymentList: React.FC<Props> = ({ payments, budget }) => {
+const PaymentList: React.FC<Props> = props => {
   const dispatch = useContext(ProjectDetailsDispatchContext);
+  const outletContext = useOutletContext<{
+    payments: (PaymentRequestFragment & Sortable)[];
+    budget: { initialAmount: number; remainingAmount: number };
+  }>();
+  const { payments = outletContext.payments, budget = outletContext.budget } = props;
 
   return (
     <div className="flex flex-row items-start gap-5 h-full">

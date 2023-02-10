@@ -4,7 +4,7 @@ import { useCallback, useContext, useEffect } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
-import { useLocation } from "react-router-dom";
+import { useLocation, useOutletContext } from "react-router-dom";
 import { PaymentAction, ProjectDetailsActionType, ProjectDetailsDispatchContext } from "../../ProjectDetailsContext";
 import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
@@ -12,18 +12,27 @@ import usePaymentRequests from "src/hooks/usePaymentRequests";
 export const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/pull\/\d+$/;
 
 interface PaymentFormProps {
-  projectId: string;
-  budget: {
+  projectId?: string;
+  budget?: {
     remainingAmount: number;
     initialAmount: number;
   };
 }
 
-const PaymentForm: React.FC<PaymentFormProps> = ({ projectId, budget }) => {
+const PaymentForm: React.FC<PaymentFormProps> = props => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
   const location = useLocation();
   const findUserQuery = useFindGithubUser();
+  const outletContext = useOutletContext<{
+    projectId: string;
+    budget: {
+      remainingAmount: number;
+      initialAmount: number;
+    };
+  }>();
+
+  const { projectId = outletContext.projectId, budget = outletContext.budget } = props;
 
   const defaultContributor = location.state?.recipientGithubLogin;
 

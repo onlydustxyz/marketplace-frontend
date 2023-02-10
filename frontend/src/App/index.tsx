@@ -13,6 +13,9 @@ const MyContributions = lazy(() => import("src/pages/MyContributions"));
 const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
 const ProjectDetailsOverview = lazy(() => import("src/pages/ProjectDetails/Overview"));
 const ProjectDetailsContributors = lazy(() => import("src/pages/ProjectDetails/Contributors"));
+const ProjectDetailsPayments = lazy(() => import("src/pages/ProjectDetails/Payments"));
+const ProjectDetailsPaymentsList = lazy(() => import("src/pages/ProjectDetails/Payments/List"));
+const ProjectDetailsPaymentForm = lazy(() => import("src/pages/ProjectDetails/Payments/PaymentForm"));
 
 import { HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/Loader";
@@ -34,6 +37,11 @@ export enum ProjectRoutePaths {
   Payments = "payments",
 }
 
+export enum ProjectPaymentsRoutePaths {
+  List = "",
+  New = "new",
+}
+
 function App() {
   const projectRoutes: RouteObject[] = [
     {
@@ -46,7 +54,17 @@ function App() {
     },
     {
       path: ProjectRoutePaths.Payments,
-      element: <ProjectDetailsOverview />,
+      element: <ProjectDetailsPayments />,
+      children: [
+        {
+          index: true,
+          element: <ProjectDetailsPaymentsList />,
+        },
+        {
+          path: ProjectPaymentsRoutePaths.New,
+          element: <ProjectDetailsPaymentForm />,
+        },
+      ],
     },
   ];
   const routes = useRoutes([
