@@ -1,18 +1,15 @@
 import { ProjectDetails } from ".";
 import ProjectsSidebar from "./Sidebar";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
-import { ProjectDetailsTab__deprecated } from "./ProjectDetailsContext";
 import { Outlet } from "react-router-dom";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 
 interface Props {
   currentProject: ProjectDetails;
-  selectedTab: ProjectDetailsTab__deprecated;
-  availableTabs__deprecated: ProjectDetailsTab__deprecated[];
   onInvitationAccepted: (invitationId: string) => void;
 }
 
-export default function View({ currentProject, selectedTab, availableTabs__deprecated, onInvitationAccepted }: Props) {
+export default function View({ currentProject, onInvitationAccepted }: Props) {
   const outletContext = {
     ...currentProject,
     lead: currentProject.leads[0],

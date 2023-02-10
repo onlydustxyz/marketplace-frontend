@@ -1,16 +1,9 @@
-import { useContext } from "react";
-import {
-  PaymentAction__deprecated,
-  ProjectDetailsActionType__deprecated,
-  ProjectDetailsDispatchContext__deprecated,
-} from "src/pages/ProjectDetails/ProjectDetailsContext";
 import { rates } from "src/hooks/useWorkEstimation";
 import { generatePath, useNavigate } from "react-router-dom";
 import { gql } from "@apollo/client";
 import { ContributorsTableFieldsFragment } from "src/__generated/graphql";
 import View, { Contributor } from "./View";
 import { ProjectPaymentsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
-import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
 type PropsType = {
   contributors: ContributorsTableFieldsFragment[];
@@ -37,34 +30,22 @@ const ContributorsTable: React.FC<PropsType> = ({
     };
   });
 
-  const dispatch__deprecated = useContext(ProjectDetailsDispatchContext__deprecated);
   const navigate = useNavigate();
 
-  const sidebarUrlsEnabled = isFeatureEnabled(FeatureFlags.PROJECT_SIDEBAR_URLS);
   const isSendingNewPaymentDisabled = remainingBudget < rates.hours;
 
   const onPaymentRequested = (contributor: Contributor) => {
     if (!isSendingNewPaymentDisabled) {
-      if (sidebarUrlsEnabled) {
-        navigate(
-          generatePath(RoutePaths.MyProjectDetails, { projectId }) +
-            "/" +
-            ProjectRoutePaths.Payments +
-            "/" +
-            ProjectPaymentsRoutePaths.New,
-          {
-            state: { recipientGithubLogin: contributor.login },
-          }
-        );
-      } else {
-        dispatch__deprecated({
-          type: ProjectDetailsActionType__deprecated.SelectPaymentAction,
-          selectedPaymentAction: PaymentAction__deprecated.Send,
-        });
-        navigate(generatePath(RoutePaths.MyProjectDetails, { projectId }), {
+      navigate(
+        generatePath(RoutePaths.MyProjectDetails, { projectId }) +
+          "/" +
+          ProjectRoutePaths.Payments +
+          "/" +
+          ProjectPaymentsRoutePaths.New,
+        {
           state: { recipientGithubLogin: contributor.login },
-        });
-      }
+        }
+      );
     }
   };
 

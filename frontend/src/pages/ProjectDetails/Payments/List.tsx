@@ -1,4 +1,4 @@
-import { Suspense, useContext } from "react";
+import { Suspense } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { ProjectPaymentsRoutePaths } from "src/App";
 import Card from "src/components/Card";
@@ -6,38 +6,17 @@ import Loader from "src/components/Loader";
 import PaymentTable from "src/components/PaymentTable";
 import ProjectPaymentTableFallback from "src/components/ProjectPaymentTableFallback";
 import RemainingBudget from "src/pages/ProjectDetails/Payments/RemainingBudget";
-import {
-  PaymentAction__deprecated,
-  ProjectDetailsActionType__deprecated,
-  ProjectDetailsDispatchContext__deprecated,
-} from "src/pages/ProjectDetails/ProjectDetailsContext";
 import { Sortable } from "src/types";
-import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 import { PaymentRequestFragment } from "src/__generated/graphql";
 
-type Props = {
-  payments?: (PaymentRequestFragment & Sortable)[];
-  budget?: { initialAmount: number; remainingAmount: number };
-};
-
-const PaymentList: React.FC<Props> = props => {
-  const dispatch__deprecated = useContext(ProjectDetailsDispatchContext__deprecated);
+const PaymentList: React.FC = () => {
   const navigate = useNavigate();
-  const outletContext = useOutletContext<{
+  const { payments, budget } = useOutletContext<{
     payments: (PaymentRequestFragment & Sortable)[];
     budget: { initialAmount: number; remainingAmount: number };
   }>();
-  const { payments = outletContext.payments, budget = outletContext.budget } = props;
-  const sidebarUrlsEnabled = isFeatureEnabled(FeatureFlags.PROJECT_SIDEBAR_URLS);
   const navigateToNewPayment = () => {
-    if (sidebarUrlsEnabled) {
-      navigate(ProjectPaymentsRoutePaths.New);
-    } else {
-      dispatch__deprecated({
-        type: ProjectDetailsActionType__deprecated.SelectPaymentAction,
-        selectedPaymentAction: PaymentAction__deprecated.Send,
-      });
-    }
+    navigate(ProjectPaymentsRoutePaths.New);
   };
 
   return (

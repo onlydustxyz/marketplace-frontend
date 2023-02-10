@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
@@ -10,14 +10,7 @@ import { GetProjectQuery } from "src/__generated/graphql";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { SessionMethod, useSessionDispatch, useSession } from "src/hooks/useSession";
 import View from "./View";
-import View__deprecated from "./View__deprecated";
 import { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
-import {
-  ProjectDetailsProvider__deprectaed,
-  ProjectDetailsContext__deprecated,
-  ProjectDetailsTab__deprecated,
-} from "./ProjectDetailsContext";
-import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
 type ProjectDetailsParams = {
   projectId: string;
@@ -40,7 +33,7 @@ export interface ProjectDetails {
   };
 }
 
-function ProjectDetailsComponent() {
+const ProjectDetails: React.FC = () => {
   const { projectId } = useParams<ProjectDetailsParams>();
   const { ledProjectIds, githubUserId } = useAuth();
   const { lastVisitedProjectId } = useSession();
@@ -50,8 +43,6 @@ function ProjectDetailsComponent() {
     ACCEPT_PROJECT_LEADER_INVITATION_MUTATION,
     HasuraUserRole.RegisteredUser
   );
-
-  const state__deprecated = useContext(ProjectDetailsContext__deprecated);
 
   const getProjectQuery = useHasuraQuery<GetProjectQuery>(GET_PROJECT_QUERY, HasuraUserRole.Public, {
     variables: { id: projectId, githubUserId },
@@ -75,50 +66,23 @@ function ProjectDetailsComponent() {
     }
   }, [acceptInvitationResponse.data]);
 
-  const availableTabs__deprecated =
-    projectId && ledProjectIds && ledProjectIds.includes(projectId)
-      ? [
-          ProjectDetailsTab__deprecated.Overview,
-          ProjectDetailsTab__deprecated.Contributors,
-          ProjectDetailsTab__deprecated.Payments,
-        ]
-      : [ProjectDetailsTab__deprecated.Overview, ProjectDetailsTab__deprecated.Contributors];
-
-  const sidebarUrlsEnabled = isFeatureEnabled(FeatureFlags.PROJECT_SIDEBAR_URLS);
-
   return (
     <QueryWrapper query={getProjectQuery}>
-      {project &&
-        (sidebarUrlsEnabled ? (
-          <View
-            currentProject={projectFromQuery(project)}
-            availableTabs__deprecated={availableTabs__deprecated}
-            selectedTab={state__deprecated.tab}
-            onInvitationAccepted={(invitationId: string) => {
-              acceptInvitation({
-                variables: {
-                  invitationId,
-                },
-              });
-            }}
-          />
-        ) : (
-          <View__deprecated
-            currentProject={projectFromQuery(project)}
-            availableTabs__deprecated={availableTabs__deprecated}
-            selectedTab={state__deprecated.tab}
-            onInvitationAccepted={(invitationId: string) => {
-              acceptInvitation({
-                variables: {
-                  invitationId,
-                },
-              });
-            }}
-          />
-        ))}
+      {project && (
+        <View
+          currentProject={projectFromQuery(project)}
+          onInvitationAccepted={(invitationId: string) => {
+            acceptInvitation({
+              variables: {
+                invitationId,
+              },
+            });
+          }}
+        />
+      )}
     </QueryWrapper>
   );
-}
+};
 
 const projectFromQuery = (project: GetProjectQuery["projectsByPk"]) => ({
   id: project?.id,
@@ -162,10 +126,4 @@ const ACCEPT_PROJECT_LEADER_INVITATION_MUTATION = gql`
   }
 `;
 
-export default function ProjectDetails() {
-  return (
-    <ProjectDetailsProvider__deprectaed>
-      <ProjectDetailsComponent />
-    </ProjectDetailsProvider__deprectaed>
-  );
-}
+export default ProjectDetails;
