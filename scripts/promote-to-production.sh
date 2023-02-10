@@ -31,6 +31,15 @@ deploy_backends() {
             execute heroku pipelines:promote --app od-$app-staging --to od-$app-production
         done
 
+        while [[ "$(curl -s -o /dev/null -L -w ''%{http_code}'' api.onlydust.xyz/health)" != "200" ]]
+        do
+            echo "Waiting for api to be up..."
+            sleep 2
+        done
+
+        log_info Checking events sanity
+        heroku run -a od-api-production events_sanity_checks
+
         log_info "Checking diff in environment variables"
         DIFF=`git diff $production_commit..$staging_commit -- docker-compose.yml .env.example`
         if [ -n "$DIFF" ]; then
