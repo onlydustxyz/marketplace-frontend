@@ -61,7 +61,9 @@ export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountIn
               {T("project.details.overview.totalSpentAmountInUsd")}
             </div>
           </div>
-          <div className="flex text-lg text-neutral-300 font-bold">{formatMoneyAmount(totalSpentAmountInUsd)}</div>
+          <div data-testid="money-granted-amount" className="flex text-lg text-neutral-300 font-bold">
+            {formatMoneyAmount(totalSpentAmountInUsd)}
+          </div>
         </div>
       )}
     </div>
