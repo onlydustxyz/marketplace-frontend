@@ -1,17 +1,8 @@
-#[cfg(test)]
 use derive_more::Constructor;
-use domain::EthereumAddress;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub enum EthereumIdentity {
-	Address(EthereumAddress),
-	Name(EthereumName),
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Constructor)]
 #[serde(transparent)]
-#[cfg_attr(test, derive(Constructor))]
 pub struct EthereumName(String);
 
 impl EthereumName {

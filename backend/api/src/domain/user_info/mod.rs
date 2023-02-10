@@ -11,7 +11,7 @@ mod identity;
 pub use identity::{CompanyIdentity, Identity, PersonIdentity};
 
 mod payout_settings;
-pub use payout_settings::{BankAddress, EthereumIdentity, EthereumName, PayoutSettings};
+pub use payout_settings::{BankAddress, PayoutSettings};
 
 mod location;
 pub use location::Location;

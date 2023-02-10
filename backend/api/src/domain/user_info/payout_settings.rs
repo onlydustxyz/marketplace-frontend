@@ -1,9 +1,6 @@
-mod ethereum;
-
+use domain::EthereumIdentity;
 use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
-
-pub use self::ethereum::{EthereumIdentity, EthereumName};
 
 #[derive(
 	Debug, Clone, Serialize, Deserialize, AsExpression, FromToSql, FromSqlRow, PartialEq, Eq,
