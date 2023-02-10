@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
 import { ProjectDetailsTab__deprecated } from "../ProjectDetailsContext";
 import View from "./View";
 
@@ -7,11 +8,13 @@ export default {
   component: View,
 } as ComponentMeta<typeof View>;
 
-const availableTabs = [
+const availableTabs__deprecated = [
   ProjectDetailsTab__deprecated.Overview,
   ProjectDetailsTab__deprecated.Contributors,
   ProjectDetailsTab__deprecated.Payments,
 ];
+const availableTabs: ProjectDetailsTab[] = [];
+
 const currentProject = {
   id: "test-projct-id",
   name: "Our project",
@@ -41,6 +44,7 @@ const Template: ComponentStory<typeof View> = () => (
       onProjectSelected: empty,
       selectedTab,
       availableTabs,
+      availableTabs__deprecated,
       dispatch: empty,
     }}
   />
