@@ -1,4 +1,4 @@
-use domain::{Amount, BlockchainNetwork, Currency, EthereumIdentity, PaymentEvent, PaymentReceipt};
+use domain::{Amount, BlockchainNetwork, Currency, PaymentEvent, PaymentReceipt};
 
 use super::*;
 
@@ -12,7 +12,7 @@ pub fn payment_processed() -> PaymentEvent {
 		),
 		receipt: PaymentReceipt::OnChainPayment {
 			network: BlockchainNetwork::Ethereum,
-			recipient_address: EthereumIdentity::Address(recipient_address().try_into().unwrap()),
+			recipient_address: recipient_address().try_into().unwrap(),
 			transaction_hash: transaction_hash(),
 		},
 	}

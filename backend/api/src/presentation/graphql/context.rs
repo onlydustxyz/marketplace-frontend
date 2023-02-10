@@ -31,6 +31,7 @@ pub struct Context {
 	pub update_project_github_repo_id_usecase: application::project::update_github_repo_id::Usecase,
 	pub project_details_repository: ProjectDetailsRepository,
 	pub update_user_info_usecase: application::user::update_profile_info::Usecase,
+	pub ens: Arc<ens::Client>,
 }
 
 impl Context {
@@ -89,8 +90,9 @@ impl Context {
 			project_details_repository,
 			update_user_info_usecase: application::user::update_profile_info::Usecase::new(
 				user_info_repository,
-				ArePayoutSettingsValid::new(ens),
+				ArePayoutSettingsValid::new(ens.clone()),
 			),
+			ens,
 		}
 	}
 

@@ -209,7 +209,7 @@ mod tests {
 	fn receipt() -> PaymentReceipt {
 		PaymentReceipt::OnChainPayment {
 			network: BlockchainNetwork::Ethereum,
-			recipient_address: EthereumAddress::try_from(recipient_address()).unwrap().into(),
+			recipient_address: EthereumAddress::try_from(recipient_address()).unwrap(),
 			transaction_hash: transaction_hash(),
 		}
 	}
