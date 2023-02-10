@@ -227,4 +227,46 @@ describe("As an admin, on retool, I", () => {
                 })
         );
     });
+
+    it("can register an ethereum payment by eth address", () => {
+        const STARKONQUEST_ID = 481932781;
+
+        cy.createGithubUser(12345454).then((leader) =>
+            cy
+                .createProjectWithLeader(leader, "Another project", 500, STARKONQUEST_ID)
+                .then((projectId) => {
+                    cy.requestPayment(projectId, 500, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
+                        .asRegisteredUser(leader)
+                        .data("requestPayment")
+                        .then((paymentId) => {
+                            cy.paymentRequestShouldExist(paymentId);
+                            cy.addEthPaymentReceipt("500", "ETH", paymentId, {type: "ETHEREUM_ADDRESS", optEthAddress: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"}, "0x5b48f0c340e70e63c011ca41495ff423b9a4fe6975c58df0f066d80fe4d2dcca")
+                                .asAdmin().data("addEthPaymentReceipt").then((receipt_id) => {
+                                    cy.paymentRequestShouldBePaid(paymentId, receipt_id);
+                                });
+                        });
+                })
+        );
+    });
+
+    it("can register an ethereum payment by eth name", () => {
+        const STARKONQUEST_ID = 481932781;
+
+        cy.createGithubUser(12345454).then((leader) =>
+            cy
+                .createProjectWithLeader(leader, "Another project", 500, STARKONQUEST_ID)
+                .then((projectId) => {
+                    cy.requestPayment(projectId, 500, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
+                        .asRegisteredUser(leader)
+                        .data("requestPayment")
+                        .then((paymentId) => {
+                            cy.paymentRequestShouldExist(paymentId);
+                            cy.addEthPaymentReceipt("500", "ETH", paymentId, {type: "ETHEREUM_NAME", optEthName: "vitalik.eth"}, "0x5b48f0c340e70e63c011ca41495ff423b9a4fe6975c58df0f066d80fe4d2dcca")
+                                .asAdmin().data("addEthPaymentReceipt").then((receipt_id) => {
+                                    cy.paymentRequestShouldBePaid(paymentId, receipt_id);
+                                });
+                        });
+                })
+        );
+    });
 });
