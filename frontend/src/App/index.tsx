@@ -27,10 +27,24 @@ export enum RoutePaths {
   CatchAll = "*",
 }
 
+export enum ProjectRoutePaths {
+  Overview = "",
+  Contributors = "contributors",
+  Payments = "payments",
+}
+
 function App() {
   const projectRoutes: RouteObject[] = [
     {
       index: true,
+      element: <ProjectDetailsOverview />,
+    },
+    {
+      path: ProjectRoutePaths.Contributors,
+      element: <ProjectDetailsOverview />,
+    },
+    {
+      path: ProjectRoutePaths.Payments,
       element: <ProjectDetailsOverview />,
     },
   ];

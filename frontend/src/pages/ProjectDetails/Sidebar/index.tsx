@@ -13,6 +13,7 @@ import {
   ProjectDetailsTab__deprecated,
 } from "../ProjectDetailsContext";
 import { sortBy } from "lodash";
+import { ProjectRoutePaths } from "src/App";
 
 export type ProjectDetailsTab = {
   label: string;
@@ -22,15 +23,15 @@ export type ProjectDetailsTab = {
 const AvailableTabs: Record<string, ProjectDetailsTab> = {
   overview: {
     label: "Overview",
-    path: "",
+    path: ProjectRoutePaths.Overview,
   },
   contributors: {
     label: "Contributors",
-    path: "contributors",
+    path: ProjectRoutePaths.Contributors,
   },
   payments: {
     label: "Payments",
-    path: "payments",
+    path: ProjectRoutePaths.Payments,
   },
 };
 

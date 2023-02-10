@@ -155,6 +155,7 @@ export default function View({
                     "text-neutral-400": !isActive,
                   })
                 }
+                end
               >
                 {tab.label}
               </NavLink>
