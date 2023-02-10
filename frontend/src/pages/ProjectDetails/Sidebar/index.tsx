@@ -7,17 +7,29 @@ import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { useContext } from "react";
-import { ProjectDetailsContext, ProjectDetailsDispatchContext, ProjectDetailsTab } from "../ProjectDetailsContext";
+import {
+  ProjectDetailsContext,
+  ProjectDetailsDispatchContext,
+  ProjectDetailsTab__deprecated,
+} from "../ProjectDetailsContext";
 import { sortBy } from "lodash";
+import { ProjectRoutePaths } from "src/App";
+import { useIntl } from "src/hooks/useIntl";
+
+export type ProjectDetailsTab = {
+  label: string;
+  path: string;
+};
 
 interface Props {
   currentProject: ProjectDetails;
   onProjectSelected: (projectId: string) => void;
-  availableTabs: ProjectDetailsTab[];
+  availableTabs__deprecated: ProjectDetailsTab__deprecated[];
 }
 
-export default function ProjectsSidebar({ currentProject, onProjectSelected, availableTabs }: Props) {
+export default function ProjectsSidebar({ currentProject, onProjectSelected, availableTabs__deprecated }: Props) {
   const { isLoggedIn, ledProjectIds, githubUserId } = useAuth();
+  const { T } = useIntl();
   const state = useContext(ProjectDetailsContext);
   const dispatch = useContext(ProjectDetailsDispatchContext);
 
@@ -35,12 +47,31 @@ export default function ProjectsSidebar({ currentProject, onProjectSelected, ava
   const projects = getProjectsForSidebarQuery?.data?.projects.map(project => projectFromQuery(project)) || [];
   const sortedProjects = sortBy([...projects], ["withInvitation", "name"]);
 
+  const AvailableTabs: Record<string, ProjectDetailsTab> = {
+    overview: {
+      label: T("project.details.overview.title"),
+      path: ProjectRoutePaths.Overview,
+    },
+    contributors: {
+      label: T("project.details.contributors.title"),
+      path: ProjectRoutePaths.Contributors,
+    },
+    payments: {
+      label: T("project.details.payments.title"),
+      path: ProjectRoutePaths.Payments,
+    },
+  };
+
+  const availableTabs = isProjectMine(currentProject)
+    ? [AvailableTabs.overview, AvailableTabs.contributors, AvailableTabs.payments]
+    : [AvailableTabs.overview, AvailableTabs.contributors];
   return (
     <View
       {...{
         currentProject,
         onProjectSelected,
         availableTabs,
+        availableTabs__deprecated,
         selectedTab: state.tab,
         dispatch,
       }}

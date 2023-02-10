@@ -15,8 +15,12 @@ import {
   PaymentAction,
   ProjectDetailsAction,
   ProjectDetailsActionType,
-  ProjectDetailsTab,
+  ProjectDetailsTab__deprecated,
 } from "../ProjectDetailsContext";
+import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
+import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
+import { NavLink } from "react-router-dom";
+import classNames from "classnames";
 
 interface Props {
   expandable: boolean;
@@ -24,7 +28,8 @@ interface Props {
   allProjects: SidebarProjectDetails[];
   onProjectSelected: (projectId: string) => void;
   availableTabs: ProjectDetailsTab[];
-  selectedTab: ProjectDetailsTab;
+  availableTabs__deprecated: ProjectDetailsTab__deprecated[];
+  selectedTab: ProjectDetailsTab__deprecated;
   dispatch: (action: ProjectDetailsAction) => void;
 }
 
@@ -42,10 +47,12 @@ export default function View({
   allProjects,
   onProjectSelected,
   availableTabs,
+  availableTabs__deprecated,
   selectedTab,
   dispatch,
 }: Props) {
   const { T } = useIntl();
+  const sidebarUrlsEnabled = isFeatureEnabled(FeatureFlags.PROJECT_SIDEBAR_URLS);
 
   return (
     <Sidebar>
@@ -115,24 +122,44 @@ export default function View({
           </Listbox>
         </div>
         <div className="flex flex-col align-start font-medium text-xl pt-3 pb-2 gap-2">
-          {availableTabs.map(tab => (
-            <div
-              key={tab}
-              className={`rounded-xl hover:cursor-pointer text-white text-base px-4 py-2.5 ${
-                selectedTab === tab ? "bg-white/8" : "text-neutral-400"
-              }`}
-              onClick={() =>
-                dispatch(
-                  tab !== ProjectDetailsTab.Payments
-                    ? { type: ProjectDetailsActionType.SelectTab, selectedTab: tab }
-                    : { type: ProjectDetailsActionType.SelectPaymentAction, selectedPaymentAction: PaymentAction.List }
-                )
-              }
-              data-testid={`${tab}-tab`}
-            >
-              {tab}
-            </div>
-          ))}
+          {!sidebarUrlsEnabled &&
+            availableTabs__deprecated.map(tab => (
+              <div
+                key={tab}
+                className={`rounded-xl hover:cursor-pointer text-white text-base px-4 py-2.5 ${
+                  selectedTab === tab ? "bg-white/8" : "text-neutral-400"
+                }`}
+                onClick={() =>
+                  dispatch(
+                    tab !== ProjectDetailsTab__deprecated.Payments
+                      ? { type: ProjectDetailsActionType.SelectTab, selectedTab: tab }
+                      : {
+                          type: ProjectDetailsActionType.SelectPaymentAction,
+                          selectedPaymentAction: PaymentAction.List,
+                        }
+                  )
+                }
+                data-testid={`${tab}-tab`}
+              >
+                {tab}
+              </div>
+            ))}
+          {sidebarUrlsEnabled &&
+            availableTabs.map(tab => (
+              <NavLink
+                key={tab.path}
+                to={tab.path}
+                className={({ isActive }) =>
+                  classNames("rounded-xl hover:cursor-pointer text-white text-base px-4 py-2.5", {
+                    "bg-white/8": isActive,
+                    "text-neutral-400": !isActive,
+                  })
+                }
+                end
+              >
+                {tab.label}
+              </NavLink>
+            ))}
         </div>
         <div className="flex flex-row gap-2 pt-8">
           {currentProject.telegramLink && <TelegramLink link={currentProject.telegramLink} />}

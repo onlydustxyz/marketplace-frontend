@@ -11,14 +11,16 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { RoutePaths } from "src/App";
 import { SessionMethod, useSessionDispatch, useSession } from "src/hooks/useSession";
 import View from "./View";
+import View__deprecated from "./View__deprecated";
 import { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
 import {
   ProjectDetailsProvider,
   ProjectDetailsContext,
   ProjectDetailsDispatchContext,
-  ProjectDetailsTab,
+  ProjectDetailsTab__deprecated,
   ProjectDetailsActionType,
 } from "./ProjectDetailsContext";
+import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
 type ProjectDetailsParams = {
   projectId: string;
@@ -67,7 +69,7 @@ function ProjectDetailsComponent() {
 
   useEffect(() => {
     if (selectedProjectId && selectedProjectId !== projectId) {
-      dispatch({ type: ProjectDetailsActionType.SelectTab, selectedTab: ProjectDetailsTab.Overview });
+      dispatch({ type: ProjectDetailsActionType.SelectTab, selectedTab: ProjectDetailsTab__deprecated.Overview });
       navigate(generatePath(RoutePaths.MyProjectDetails, { projectId: selectedProjectId }));
     }
   }, [selectedProjectId]);
@@ -87,28 +89,49 @@ function ProjectDetailsComponent() {
     }
   }, [acceptInvitationResponse.data]);
 
-  const availableTabs =
+  const availableTabs__deprecated =
     projectId && ledProjectIds && ledProjectIds.includes(projectId)
-      ? [ProjectDetailsTab.Overview, ProjectDetailsTab.Contributors, ProjectDetailsTab.Payments]
-      : [ProjectDetailsTab.Overview, ProjectDetailsTab.Contributors];
+      ? [
+          ProjectDetailsTab__deprecated.Overview,
+          ProjectDetailsTab__deprecated.Contributors,
+          ProjectDetailsTab__deprecated.Payments,
+        ]
+      : [ProjectDetailsTab__deprecated.Overview, ProjectDetailsTab__deprecated.Contributors];
+
+  const sidebarUrlsEnabled = isFeatureEnabled(FeatureFlags.PROJECT_SIDEBAR_URLS);
 
   return (
     <QueryWrapper query={getProjectQuery}>
-      {project && (
-        <View
-          currentProject={projectFromQuery(project)}
-          availableTabs={availableTabs}
-          selectedTab={state.tab}
-          onInvitationAccepted={(invitationId: string) => {
-            acceptInvitation({
-              variables: {
-                invitationId,
-              },
-            });
-          }}
-          onProjectSelected={(projectId: string) => setSelectedProjectId(projectId)}
-        />
-      )}
+      {project &&
+        (sidebarUrlsEnabled ? (
+          <View
+            currentProject={projectFromQuery(project)}
+            availableTabs__deprecated={availableTabs__deprecated}
+            selectedTab={state.tab}
+            onInvitationAccepted={(invitationId: string) => {
+              acceptInvitation({
+                variables: {
+                  invitationId,
+                },
+              });
+            }}
+            onProjectSelected={(projectId: string) => setSelectedProjectId(projectId)}
+          />
+        ) : (
+          <View__deprecated
+            currentProject={projectFromQuery(project)}
+            availableTabs__deprecated={availableTabs__deprecated}
+            selectedTab={state.tab}
+            onInvitationAccepted={(invitationId: string) => {
+              acceptInvitation({
+                variables: {
+                  invitationId,
+                },
+              });
+            }}
+            onProjectSelected={(projectId: string) => setSelectedProjectId(projectId)}
+          />
+        ))}
     </QueryWrapper>
   );
 }

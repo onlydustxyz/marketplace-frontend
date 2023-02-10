@@ -5,14 +5,14 @@ export enum PaymentAction {
   Send = "Send",
 }
 
-export enum ProjectDetailsTab {
+export enum ProjectDetailsTab__deprecated {
   Overview = "Overview",
   Payments = "Payments",
   Contributors = "Contributors",
 }
 
 interface ProjectDetailsState {
-  tab: ProjectDetailsTab;
+  tab: ProjectDetailsTab__deprecated;
   paymentAction: PaymentAction;
 }
 
@@ -24,11 +24,11 @@ export enum ProjectDetailsActionType {
 export type ProjectDetailsAction =
   | {
       type: ProjectDetailsActionType.SelectTab;
-      selectedTab: ProjectDetailsTab;
+      selectedTab: ProjectDetailsTab__deprecated;
     }
   | { type: ProjectDetailsActionType.SelectPaymentAction; selectedPaymentAction: PaymentAction };
 
-const projectDetailsInitialState = { tab: ProjectDetailsTab.Overview, paymentAction: PaymentAction.List };
+const projectDetailsInitialState = { tab: ProjectDetailsTab__deprecated.Overview, paymentAction: PaymentAction.List };
 
 export const ProjectDetailsContext = createContext(projectDetailsInitialState);
 export const ProjectDetailsDispatchContext = createContext((action: ProjectDetailsAction) => {
@@ -50,7 +50,7 @@ export function projectDetailsReducer(state: ProjectDetailsState, action: Projec
     case ProjectDetailsActionType.SelectTab:
       return { ...state, tab: action.selectedTab };
     case ProjectDetailsActionType.SelectPaymentAction:
-      return { ...state, tab: ProjectDetailsTab.Payments, paymentAction: action.selectedPaymentAction };
+      return { ...state, tab: ProjectDetailsTab__deprecated.Payments, paymentAction: action.selectedPaymentAction };
     default:
       throw Error("Unknown project details action.");
   }

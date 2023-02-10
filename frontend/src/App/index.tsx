@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { useRoutes } from "react-router-dom";
+import { RouteObject, useRoutes } from "react-router-dom";
 
 import Layout from "src/components/Layout";
 import ProtectedRoute from "src/components/ProtectedRoute";
@@ -11,6 +11,7 @@ const Projects = lazy(() => import("src/pages/Projects"));
 const Profile = lazy(() => import("src/pages/Profile"));
 const MyContributions = lazy(() => import("src/pages/MyContributions"));
 const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
+const ProjectDetailsOverview = lazy(() => import("src/pages/ProjectDetails/Overview"));
 
 import { HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/Loader";
@@ -26,7 +27,27 @@ export enum RoutePaths {
   CatchAll = "*",
 }
 
+export enum ProjectRoutePaths {
+  Overview = "",
+  Contributors = "contributors",
+  Payments = "payments",
+}
+
 function App() {
+  const projectRoutes: RouteObject[] = [
+    {
+      index: true,
+      element: <ProjectDetailsOverview />,
+    },
+    {
+      path: ProjectRoutePaths.Contributors,
+      element: <ProjectDetailsOverview />,
+    },
+    {
+      path: ProjectRoutePaths.Payments,
+      element: <ProjectDetailsOverview />,
+    },
+  ];
   const routes = useRoutes([
     {
       element: <Layout />,
@@ -58,10 +79,12 @@ function App() {
         {
           path: RoutePaths.ProjectDetails,
           element: <ProjectDetails />,
+          children: projectRoutes,
         },
         {
           path: RoutePaths.MyProjectDetails,
           element: <ProjectDetails />,
+          children: projectRoutes,
         },
         {
           path: RoutePaths.CatchAll,
