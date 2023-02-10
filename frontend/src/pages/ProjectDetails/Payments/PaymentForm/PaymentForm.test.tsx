@@ -11,6 +11,7 @@ import PaymentForm from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { FIND_USER_QUERY } from "src/hooks/useIsGithubLoginValid";
 import { REQUEST_PAYMENT_MUTATION } from "src/hooks/usePaymentRequests";
+import { generatePath } from "react-router-dom";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-user-name", githubUser: { githubUserId: 748483646584 } };
 
@@ -37,6 +38,7 @@ vi.mock("axios", () => ({
   },
 }));
 
+const TEST_PROJECT_ID = "test-project-id";
 const graphQlMocks = [
   {
     request: {
@@ -61,7 +63,7 @@ const graphQlMocks = [
     request: {
       query: REQUEST_PAYMENT_MUTATION,
       variables: {
-        projectId: "test-project-id",
+        projectId: TEST_PROJECT_ID,
         amount: 1000,
         contributorId: TEST_USER.githubUser.githubUserId,
         reason: { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] },
@@ -86,7 +88,7 @@ describe('"PaymentForm" component', () => {
       <PaymentForm projectId={"test-project-id"} budget={{ initialAmount: 10000, remainingAmount: 4000 }} />,
       {
         wrapper: MemoryRouterProviderFactory({
-          route: `${RoutePaths.ProjectDetails}/test-project-id`,
+          route: generatePath(RoutePaths.ProjectDetails, { projectId: TEST_PROJECT_ID }),
           mocks: graphQlMocks,
         }),
       }
