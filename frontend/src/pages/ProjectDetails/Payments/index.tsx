@@ -2,7 +2,7 @@ import { useContext } from "react";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useIntl } from "src/hooks/useIntl";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
-import PaymentList from "src/pages/ProjectDetails/PaymentActions/List";
+import PaymentList from "src/pages/ProjectDetails/Payments/List";
 import { PaymentAction, ProjectDetailsContext } from "../ProjectDetailsContext";
 import PaymentForm from "./PaymentForm";
 

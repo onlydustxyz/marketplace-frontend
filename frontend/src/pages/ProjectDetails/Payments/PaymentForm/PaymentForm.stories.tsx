@@ -2,7 +2,7 @@ import { MockedProvider } from "@apollo/client/testing";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FIND_USER_QUERY } from "src/hooks/useIsGithubLoginValid";
-import { GET_PROJECT_CONTRIBUTORS_QUERY } from "src/pages/ProjectDetails/PaymentActions/PaymentForm/ContributorSelect";
+import { GET_PROJECT_CONTRIBUTORS_QUERY } from "src/pages/ProjectDetails/Payments/PaymentForm/ContributorSelect";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 import PaymentForm from "./View";

@@ -3,7 +3,7 @@ import Card from "src/components/Card";
 import Loader from "src/components/Loader";
 import PaymentTable from "src/components/PaymentTable";
 import ProjectPaymentTableFallback from "src/components/ProjectPaymentTableFallback";
-import RemainingBudget from "src/pages/ProjectDetails/PaymentActions/RemainingBudget";
+import RemainingBudget from "src/pages/ProjectDetails/Payments/RemainingBudget";
 import {
   PaymentAction,
   ProjectDetailsActionType,

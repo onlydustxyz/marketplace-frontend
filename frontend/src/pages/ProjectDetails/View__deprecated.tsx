@@ -1,5 +1,5 @@
 import Overview from "./Overview";
-import Payments from "./PaymentActions";
+import Payments from "./Payments";
 import ProjectLeadInvitation from "src/components/ProjectLeadInvitation";
 import Contributors from "./Contributors";
 import { ProjectDetails } from ".";

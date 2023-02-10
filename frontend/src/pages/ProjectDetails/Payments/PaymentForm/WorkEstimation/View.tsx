@@ -4,7 +4,7 @@ import Card from "src/components/Card";
 import { Steps } from "src/hooks/useWorkEstimation";
 import Add from "src/icons/Add";
 import Subtract from "src/icons/Subtract";
-import BudgetBar from "src/pages/ProjectDetails/PaymentActions/PaymentForm/WorkEstimation/BudgetBar";
+import BudgetBar from "src/pages/ProjectDetails/Payments/PaymentForm/WorkEstimation/BudgetBar";
 import { formatMoneyAmount } from "src/utils/money";
 import { useT } from "talkr";
 
