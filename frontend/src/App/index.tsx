@@ -11,6 +11,7 @@ const Projects = lazy(() => import("src/pages/Projects"));
 const Profile = lazy(() => import("src/pages/Profile"));
 const MyContributions = lazy(() => import("src/pages/MyContributions"));
 const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
+const ProjectDetailsOverview = lazy(() => import("src/pages/ProjectDetails/Overview"));
 
 import { HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/Loader";
@@ -58,10 +59,22 @@ function App() {
         {
           path: RoutePaths.ProjectDetails,
           element: <ProjectDetails />,
+          children: [
+            {
+              index: true,
+              element: <ProjectDetailsOverview />,
+            },
+          ],
         },
         {
           path: RoutePaths.MyProjectDetails,
           element: <ProjectDetails />,
+          children: [
+            {
+              index: true,
+              element: <ProjectDetailsOverview />,
+            },
+          ],
         },
         {
           path: RoutePaths.CatchAll,
