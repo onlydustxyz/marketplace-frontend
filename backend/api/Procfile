@@ -1,3 +1,3 @@
 web: ROCKET_PORT=$PORT ./target/release/api
 release: ./hasura/update-metadata.sh
-events_sanity_checks: ./target/release/events_sanity_checks
+events_sanity_checks: RUST_LOG=info ./target/release/events_sanity_checks
