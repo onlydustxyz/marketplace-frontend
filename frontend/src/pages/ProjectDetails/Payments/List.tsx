@@ -1,5 +1,6 @@
 import { Suspense, useContext } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { ProjectPaymentsRoutePaths } from "src/App";
 import Card from "src/components/Card";
 import Loader from "src/components/Loader";
 import PaymentTable from "src/components/PaymentTable";
@@ -11,6 +12,7 @@ import {
   ProjectDetailsDispatchContext,
 } from "src/pages/ProjectDetails/ProjectDetailsContext";
 import { Sortable } from "src/types";
+import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 import { PaymentRequestFragment } from "src/__generated/graphql";
 
 type Props = {
@@ -19,12 +21,24 @@ type Props = {
 };
 
 const PaymentList: React.FC<Props> = props => {
-  const dispatch = useContext(ProjectDetailsDispatchContext);
+  const dispatch__deprecated = useContext(ProjectDetailsDispatchContext);
+  const navigate = useNavigate();
   const outletContext = useOutletContext<{
     payments: (PaymentRequestFragment & Sortable)[];
     budget: { initialAmount: number; remainingAmount: number };
   }>();
   const { payments = outletContext.payments, budget = outletContext.budget } = props;
+  const sidebarUrlsEnabled = isFeatureEnabled(FeatureFlags.PROJECT_SIDEBAR_URLS);
+  const navigateToNewPayment = () => {
+    if (sidebarUrlsEnabled) {
+      navigate(ProjectPaymentsRoutePaths.New);
+    } else {
+      dispatch__deprecated({
+        type: ProjectDetailsActionType.SelectPaymentAction,
+        selectedPaymentAction: PaymentAction.Send,
+      });
+    }
+  };
 
   return (
     <div className="flex flex-row items-start gap-5 h-full">
@@ -37,14 +51,7 @@ const PaymentList: React.FC<Props> = props => {
           </Card>
         ) : (
           <Card className="p-16">
-            <ProjectPaymentTableFallback
-              onClick={() =>
-                dispatch({
-                  type: ProjectDetailsActionType.SelectPaymentAction,
-                  selectedPaymentAction: PaymentAction.Send,
-                })
-              }
-            />
+            <ProjectPaymentTableFallback onClick={navigateToNewPayment} />
           </Card>
         )}
       </div>
@@ -52,12 +59,7 @@ const PaymentList: React.FC<Props> = props => {
         <RemainingBudget
           budget={budget}
           disabled={budget.remainingAmount === 0 || payments.length === 0}
-          onClickNewPayment={() =>
-            dispatch({
-              type: ProjectDetailsActionType.SelectPaymentAction,
-              selectedPaymentAction: PaymentAction.Send,
-            })
-          }
+          onClickNewPayment={navigateToNewPayment}
         />
       </div>
     </div>
