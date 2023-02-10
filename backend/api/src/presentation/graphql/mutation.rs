@@ -1,7 +1,5 @@
 use anyhow::anyhow;
-use domain::{
-	Amount, BlockchainNetwork, Currency, EthereumAddress, PaymentReceipt, ProjectId, UserId,
-};
+use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt, ProjectId, UserId};
 use juniper::{graphql_object, DefaultScalarValue};
 use rusty_money::{crypto, Money};
 use uuid::Uuid;
@@ -12,7 +10,7 @@ use crate::{
 		user_info::{Email, Identity, Location, PayoutSettings},
 		PaymentReason, ProjectDetails,
 	},
-	presentation::http::dto::{IdentityInput, PayoutSettingsInput},
+	presentation::http::dto::{EthereumIdentityInput, IdentityInput, PayoutSettingsInput},
 };
 
 pub struct Mutation;
@@ -25,7 +23,7 @@ impl Mutation {
 		payment_id: Uuid,
 		amount: String,
 		currency_code: String,
-		recipient_address: EthereumAddress,
+		recipient_address: EthereumIdentityInput,
 		transaction_hash: String,
 	) -> Result<Uuid> {
 		let currency = crypto::find(&currency_code).ok_or_else(|| {
@@ -34,6 +32,8 @@ impl Mutation {
 
 		let amount = Money::from_str(&amount, currency)
 			.map_err(|e| Error::InvalidRequest(anyhow::Error::msg(e)))?;
+
+		let recipient_address = recipient_address.try_into().map_err(Error::InvalidRequest)?;
 
 		let payment_id = context
 			.process_payment_usecase

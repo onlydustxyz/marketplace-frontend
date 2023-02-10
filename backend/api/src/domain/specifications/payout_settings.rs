@@ -2,13 +2,11 @@ use std::sync::Arc;
 
 use anyhow::{anyhow, Result};
 use derive_more::Constructor;
+use domain::EthereumIdentity;
 #[cfg(test)]
 use mockall::mock;
 
-use crate::{
-	domain::user_info::{EthereumIdentity, PayoutSettings},
-	infrastructure::web3::ens,
-};
+use crate::{domain::user_info::PayoutSettings, infrastructure::web3::ens};
 
 #[derive(Constructor)]
 pub struct IsValid {
@@ -39,11 +37,11 @@ mock! {
 
 #[cfg(test)]
 mod tests {
+	use domain::EthereumName;
 	use mockall::predicate::eq;
 	use rstest::{fixture, rstest};
 
 	use super::*;
-	use crate::domain::user_info::EthereumName;
 
 	const ENS_NAME: &str = "vitalik.eth";
 
