@@ -49,14 +49,8 @@ deploy_backends() {
             log_success "No diff found, you are good to go 🥳"
         fi
 
-        log_info "Checking diff in hasura metadata"
-        DIFF=`git diff $production_commit..$staging_commit -- hasura/metadata`
-        if [ -n "$DIFF" ]; then
-            log_warning "Some diff have been found, make sure to reload hasura metadata 🧐"
-            log_warning "https://od-hasura-production.herokuapp.com/"
-        else
-            log_success "No diff found, you are good to go 🥳"
-        fi
+        log_info "Reloading hasura metadata"
+        heroku run -a od-api-production hasura metadata reload
     fi
 }
 

@@ -9,7 +9,5 @@ set -ueo pipefail
 
 export HASURA_GRAPHQL_DISABLE_INTERACTIVE=true
 
-echo "Update metadata"
-
 cd hasura
-./lib/hasura metadata apply
+./lib/hasura $*
