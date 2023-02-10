@@ -1,6 +1,5 @@
 import { Suspense } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import { ProjectPaymentsRoutePaths } from "src/App";
+import { useOutletContext } from "react-router-dom";
 import Card from "src/components/Card";
 import Loader from "src/components/Loader";
 import PaymentTable from "src/components/PaymentTable";
@@ -10,15 +9,10 @@ import { Sortable } from "src/types";
 import { PaymentRequestFragment } from "src/__generated/graphql";
 
 const PaymentList: React.FC = () => {
-  const navigate = useNavigate();
   const { payments, budget } = useOutletContext<{
     payments: (PaymentRequestFragment & Sortable)[];
     budget: { initialAmount: number; remainingAmount: number };
   }>();
-  // TODO: remove this in favor of a link
-  const navigateToNewPayment = () => {
-    navigate(ProjectPaymentsRoutePaths.New);
-  };
 
   return (
     <div className="flex flex-row items-start gap-5 h-full">
@@ -31,7 +25,7 @@ const PaymentList: React.FC = () => {
           </Card>
         ) : (
           <Card className="p-16">
-            <ProjectPaymentTableFallback onClick={navigateToNewPayment} />
+            <ProjectPaymentTableFallback />
           </Card>
         )}
       </div>
