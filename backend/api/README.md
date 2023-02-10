@@ -14,3 +14,9 @@ To perform sanity checks on the event store, simply run the following command
 ```bash
 cargo run -p api --bin events_sanity_checks
 ```
+
+Or in staging/production:
+
+```bash
+heroky run -a od-api-staging events_sanity_checks
+```

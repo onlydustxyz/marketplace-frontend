@@ -13,8 +13,10 @@ deploy_backends() {
     staging_commit=`slug_commit od-api-staging`
     production_commit=`slug_commit od-api-production`
 
+    print "Checking diff from $production_commit to $staging_commit"
+
     log_info "Checking diff to be loaded in production"
-    execute "git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' $production_commit..$staging_commit"
+    git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' $production_commit..$staging_commit | tee
 
     echo
     ask "OK to continue"
@@ -29,6 +31,15 @@ deploy_backends() {
             execute heroku pipelines:promote --app od-$app-staging --to od-$app-production
         done
 
+        while [[ "$(curl -s -o /dev/null -L -w ''%{http_code}'' api.onlydust.xyz/health)" != "200" ]]
+        do
+            echo "Waiting for api to be up..."
+            sleep 2
+        done
+
+        log_info Checking events sanity
+        heroku run -a od-api-production events_sanity_checks
+
         log_info "Checking diff in environment variables"
         DIFF=`git diff $production_commit..$staging_commit -- docker-compose.yml .env.example`
         if [ -n "$DIFF" ]; then
@@ -38,14 +49,8 @@ deploy_backends() {
             log_success "No diff found, you are good to go 🥳"
         fi
 
-        log_info "Checking diff in hasura metadata"
-        DIFF=`git diff $production_commit..$staging_commit -- hasura/metadata`
-        if [ -n "$DIFF" ]; then
-            log_warning "Some diff have been found, make sure to reload hasura metadata 🧐"
-            log_warning "https://od-hasura-production.herokuapp.com/"
-        else
-            log_success "No diff found, you are good to go 🥳"
-        fi
+        log_info "Reloading hasura metadata"
+        heroku run -a od-api-production hasura metadata reload
     fi
 }
 

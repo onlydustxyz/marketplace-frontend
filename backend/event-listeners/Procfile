@@ -1,2 +1,2 @@
 web: WEBSERVER_PORT=$PORT ./target/release/event-listeners
-refresh: ./target/release/refresh
+refresh: RUST_LOG=info ./target/release/refresh

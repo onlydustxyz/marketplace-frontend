@@ -1,0 +1,29 @@
+default:
+  http:
+    api_keys:
+      graphql: $BACKEND_GRAPHQL_API_KEY
+  github:
+    base_url: $GITHUB_BASE_URL
+    personal_access_tokens: $GITHUB_PAT
+    headers:
+      api-key: $GITHUB_PROXY_GITHUB_API_KEY
+  web3:
+    url: https://mainnet.infura.io/v3/$INFURA_API_KEY
+  tracer:
+    json: false
+    ansi: true
+    location: false
+
+local:
+  database:
+    url: postgres://postgres:postgres@localhost/marketplace_db
+    pool_max_size: 20
+  amqp:
+    url: "amqp://127.0.0.1:5672/%2f"
+
+production:
+  database:
+    url: $DATABASE_URL
+    pool_max_size: 3
+  amqp:
+    url: $CLOUDAMQP_URL
