@@ -3,7 +3,6 @@ import { PropsWithChildren } from "react";
 import { MockedProvider } from "@apollo/client/testing";
 import { AuthProvider } from "src/hooks/useAuth";
 import { render, RenderOptions } from "@testing-library/react";
-import { RoutePaths } from "src/App";
 import { IntlProvider } from "src/hooks/useIntl";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { SessionProvider } from "src/hooks/useSession";
