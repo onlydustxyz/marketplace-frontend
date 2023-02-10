@@ -8,4 +8,4 @@ mod events;
 pub use events::Event;
 
 mod aggregate;
-pub use aggregate::{Error, Payment};
+pub use aggregate::{Error, Payment, Status};

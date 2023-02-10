@@ -7,7 +7,7 @@ use thiserror::Error;
 
 use crate::{
 	Aggregate, AggregateEvent, Amount, BudgetEvent, BudgetId, Entity, EventSourcable, GithubUserId,
-	Payment, PaymentError, PaymentId, PaymentReceipt, PaymentReceiptId, UserId,
+	Payment, PaymentError, PaymentId, PaymentReceipt, PaymentReceiptId, PaymentStatus, UserId,
 };
 
 #[derive(Debug, Error)]
@@ -86,9 +86,12 @@ impl Budget {
 	}
 
 	fn spent_amount(&self) -> Decimal {
-		self.payments.values().fold(Decimal::ZERO, |amount, payment| {
-			amount + payment.requested_usd_amount()
-		})
+		self.payments
+			.values()
+			.filter(|payment| *payment.status() != PaymentStatus::Cancelled)
+			.fold(Decimal::ZERO, |amount, payment| {
+				amount + payment.requested_usd_amount()
+			})
 	}
 }
 
@@ -144,6 +147,12 @@ mod tests {
 	}
 
 	#[fixture]
+	#[once]
+	fn payment_id() -> PaymentId {
+		Uuid::new_v4().into()
+	}
+
+	#[fixture]
 	fn amount() -> Amount {
 		Amount::new(dec!(500), crate::Currency::Crypto("USDC".to_string()))
 	}
@@ -187,6 +196,37 @@ mod tests {
 				event: PaymentEvent::Requested { .. }
 			}
 		);
+	}
+
+	#[rstest]
+	fn spend_and_cancel_budget(
+		amount: Amount,
+		payment_id: &PaymentId,
+		budget_allocated_event: BudgetEvent,
+	) {
+		let budget = Budget::from_events(&[budget_allocated_event]);
+		let result = budget.request_payment(
+			*payment_id,
+			Default::default(),
+			Default::default(),
+			amount.clone(),
+			Default::default(),
+		);
+		assert!(result.is_ok(), "{}", result.err().unwrap());
+
+		let budget = budget.apply_events(&result.unwrap());
+		let result = budget.cancel_payment_request(payment_id);
+		assert!(result.is_ok(), "{}", result.err().unwrap());
+
+		let budget = budget.apply_events(&result.unwrap());
+		let result = budget.request_payment(
+			*payment_id,
+			Default::default(),
+			Default::default(),
+			amount,
+			Default::default(),
+		);
+		assert!(result.is_ok(), "{}", result.err().unwrap());
 	}
 
 	#[rstest]
