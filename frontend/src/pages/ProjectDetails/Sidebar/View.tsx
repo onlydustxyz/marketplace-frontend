@@ -117,6 +117,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
                   "text-neutral-400": !isActive,
                 })
               }
+              data-testid={`${tab.label}-tab`}
               end
             >
               {tab.label}
