@@ -24,11 +24,15 @@ export const MemoryRouterProviderFactory =
           <TokenSetProvider>
             <MockedProvider mocks={mocks} addTypename={false}>
               <MemoryRouter initialEntries={[route]}>
-                <Routes>
-                  <Route path="/" element={<Outlet context={context} />}>
-                    <Route index element={<AuthProvider>{children}</AuthProvider>} />
-                  </Route>
-                </Routes>
+                {context ? (
+                  <Routes>
+                    <Route path="/" element={<Outlet context={context} />}>
+                      <Route index element={<AuthProvider>{children}</AuthProvider>} />
+                    </Route>
+                  </Routes>
+                ) : (
+                  <AuthProvider>{children}</AuthProvider>
+                )}
               </MemoryRouter>
             </MockedProvider>
           </TokenSetProvider>
