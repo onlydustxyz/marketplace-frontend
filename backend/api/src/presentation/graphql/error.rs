@@ -1,5 +1,5 @@
 use domain::{DomainError, UserId};
-use infrastructure::database::DatabaseError;
+use infrastructure::{database::DatabaseError, web3::ens};
 use juniper::{graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
 use olog::error;
 use thiserror::Error;
@@ -44,6 +44,16 @@ impl From<UpdateProfileInfoError> for Error {
 			UpdateProfileInfoError::Repository(e) => e.into(),
 			UpdateProfileInfoError::Internal(e) => Self::InternalError(e),
 			UpdateProfileInfoError::InvalidInput(e) => Self::InvalidRequest(e),
+		}
+	}
+}
+
+impl From<ens::Error> for Error {
+	fn from(error: ens::Error) -> Self {
+		match error {
+			ens::Error::InvalidProviderUrl(_) => Self::InternalError(error.into()),
+			ens::Error::Contract(_) => Self::InternalError(error.into()),
+			ens::Error::NotRegistered => Self::InvalidRequest(error.into()),
 		}
 	}
 }

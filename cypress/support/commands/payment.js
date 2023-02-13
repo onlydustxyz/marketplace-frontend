@@ -62,3 +62,41 @@ Cypress.Commands.add(
         .should("be.null");
     }
 );
+
+Cypress.Commands.add(
+    "paymentRequestShouldBePaid",
+    (paymentRequestId, paymentId) => {
+        return cy.graphql({query: `{
+            paymentRequestsByPk(id: "${paymentRequestId}") {
+              payments {
+                id
+              }
+            }
+          }`})
+        .asAdmin()
+        .data("paymentRequestsByPk")
+        .should("deep.equal", { payments:
+            [{"id": paymentId}]
+        });
+    }
+);
+
+Cypress.Commands.add(
+    "addEthPaymentReceipt",
+    (projectId, paymentId, amount, currencyCode, recipientIdentity, transactionHash) => {
+        return {
+            query: `mutation($projectId:Uuid!, $paymentId:Uuid!, $amount:String!, $currencyCode:String!, $recipientIdentity:EthereumIdentityInput!, $transactionHash:String!) {
+                addEthPaymentReceipt(projectId: $projectId, paymentId: $paymentId, amount: $amount, currencyCode: $currencyCode, recipientIdentity: $recipientIdentity, transactionHash: $transactionHash)
+              }`,
+            variables: {
+                projectId,
+                paymentId,
+                amount,
+                currencyCode,
+                recipientIdentity,
+                transactionHash
+            },
+            wait: WAIT_SHORT,
+        };
+    }
+);

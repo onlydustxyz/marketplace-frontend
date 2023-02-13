@@ -67,11 +67,11 @@ impl Usecase {
 
 #[cfg(test)]
 mod tests {
+	use domain::{EthereumIdentity, EthereumName};
 	use mockall::predicate::eq;
 	use rstest::{fixture, rstest};
 
 	use super::*;
-	use crate::domain::user_info::{EthereumIdentity, EthereumName};
 
 	#[fixture]
 	fn payout_settings() -> PayoutSettings {

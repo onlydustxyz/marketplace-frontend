@@ -1,7 +1,5 @@
 use anyhow::anyhow;
-use domain::{
-	Amount, BlockchainNetwork, Currency, EthereumAddress, PaymentReceipt, ProjectId, UserId,
-};
+use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt, ProjectId, UserId};
 use juniper::{graphql_object, DefaultScalarValue};
 use rusty_money::{crypto, Money};
 use uuid::Uuid;
@@ -12,7 +10,7 @@ use crate::{
 		user_info::{Email, Identity, Location, PayoutSettings},
 		PaymentReason, ProjectDetails,
 	},
-	presentation::http::dto::{IdentityInput, PayoutSettingsInput},
+	presentation::http::dto::{EthereumIdentityInput, IdentityInput, PayoutSettingsInput},
 };
 
 pub struct Mutation;
@@ -25,7 +23,7 @@ impl Mutation {
 		payment_id: Uuid,
 		amount: String,
 		currency_code: String,
-		recipient_address: EthereumAddress,
+		recipient_identity: EthereumIdentityInput,
 		transaction_hash: String,
 	) -> Result<Uuid> {
 		let currency = crypto::find(&currency_code).ok_or_else(|| {
@@ -35,7 +33,13 @@ impl Mutation {
 		let amount = Money::from_str(&amount, currency)
 			.map_err(|e| Error::InvalidRequest(anyhow::Error::msg(e)))?;
 
-		let payment_id = context
+		let eth_identity = recipient_identity.try_into().map_err(Error::InvalidRequest)?;
+		let ethereum_address = match eth_identity {
+			domain::EthereumIdentity::Address(addr) => addr,
+			domain::EthereumIdentity::Name(name) => context.ens.eth_address(name.as_str()).await?,
+		};
+
+		let receipt_id = context
 			.process_payment_usecase
 			.add_payment_receipt(
 				&project_id.into(),
@@ -43,13 +47,13 @@ impl Mutation {
 				Amount::new(*amount.amount(), Currency::Crypto(currency_code)),
 				PaymentReceipt::OnChainPayment {
 					network: BlockchainNetwork::Ethereum,
-					recipient_address,
+					recipient_address: ethereum_address,
 					transaction_hash,
 				},
 			)
 			.await?;
 
-		Ok(payment_id.into())
+		Ok(receipt_id.into())
 	}
 
 	pub async fn cancel_payment_request(
