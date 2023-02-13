@@ -23,7 +23,7 @@ export default function ProjectsSidebar({ currentProject }: Props) {
   const { isLoggedIn, ledProjectIds, githubUserId } = useAuth();
   const { T } = useIntl();
 
-  const isProjectMine = (project: ProjectDetails) => ledProjectIds.includes(project.id) || !!project.invitationId;
+  const isProjectMine = (project: ProjectDetails) => ledProjectIds.includes(project.id);
 
   const getProjectsForSidebarQuery = useHasuraQuery<GetProjectsForSidebarQuery>(
     GET_PROJECTS_FOR_SIDEBAR_QUERY,
