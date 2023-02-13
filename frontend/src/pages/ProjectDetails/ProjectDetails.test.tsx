@@ -13,6 +13,7 @@ import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import jwtDecode from "jwt-decode";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { GET_PROJECTS_FOR_SIDEBAR_QUERY } from "./Sidebar";
+import Overview from "src/pages/ProjectDetails/Overview";
 
 const TEST_LED_PROJECT_ID = "test-led-project-id";
 const TEST_PROJECT_ID = "test-project-id";
@@ -185,7 +186,9 @@ describe('"ProjectDetails" page', () => {
   it("should show a pending invitation if the user has been invited", async () => {
     renderWithIntl(
       <Routes>
-        <Route path="/projects/:projectId" element={<ProjectDetails />}></Route>
+        <Route path="/projects/:projectId" element={<ProjectDetails />}>
+          <Route index element={<Overview />} />
+        </Route>
       </Routes>,
       {
         wrapper: MemoryRouterProviderFactory({
