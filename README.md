@@ -214,12 +214,6 @@ To view components in isolation using [Storybook](https://storybook.js.org/)
 yarn storybook
 ```
 
-It can be useful to reset the Storybook cache when some updates are not showing correctly
-
-```bash
-yarn storybook --no-manager-cache
-```
-
 ### 🕸 GraphQL codegen
 
 To generate types from the Hasura GraphQL schema during development
