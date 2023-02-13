@@ -34,8 +34,6 @@ pub async fn spawn_all(
 			.spawn(event_bus::consumer(config.amqp(), "event-webhooks").await?),
 		PaymentProjector::new(PaymentRepository::new(database.clone()))
 			.spawn(event_bus::consumer(config.amqp(), "payments").await?),
-		PaymentRequestProjector::new(PaymentRequestRepository::new(database.clone()))
-			.spawn(event_bus::consumer(config.amqp(), "payment_requests").await?),
 		ProjectProjector::new(
 			ProjectRepository::new(database.clone()),
 			ProjectLeadRepository::new(database.clone()),
