@@ -17,6 +17,7 @@ interface MemoryRouterProviderFactoryProps<M = any, C = any> {
 
 export const MemoryRouterProviderFactory =
   ({ route = "/", mocks, context }: MemoryRouterProviderFactoryProps) =>
+  // eslint-disable-next-line react/display-name
   ({ children }: PropsWithChildren) =>
     (
       <ToasterProvider>
