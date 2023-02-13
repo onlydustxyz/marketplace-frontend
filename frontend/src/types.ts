@@ -33,6 +33,7 @@ export type User = {
   id: Uuid;
   createdAt: Date;
   displayName: string;
+  email: string;
   avatarUrl: Url | null;
   locale: Locale;
   isAnonymous: boolean;

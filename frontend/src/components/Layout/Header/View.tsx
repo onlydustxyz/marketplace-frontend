@@ -5,6 +5,7 @@ import OnlyDustTitle from "./OnlyDustTitle";
 import ProfileButton from "./ProfileButton";
 import MenuItem from "src/components/Layout/Header/MenuItem";
 import { generatePath, Link } from "react-router-dom";
+import FeedbackButton from "./FeedbackButton";
 
 interface HeaderViewProps {
   menuItems: {
@@ -49,8 +50,11 @@ export default function HeaderView({
           {menuItems[RoutePaths.MyContributions]}
         </MenuItem>
       )}
-      <div className="flex flex-1 text-base text-white justify-end">
-        {!isLoggedIn ? <GithubLink onClick={onLogin} /> : <ProfileButton />}
+      <div className="flex flex-1 flex-row gap-4 justify-end">
+        {isLoggedIn && <FeedbackButton />}
+        <div className="flex text-base text-white">
+          {!isLoggedIn ? <GithubLink onClick={onLogin} /> : <ProfileButton />}
+        </div>
       </div>
     </div>
   );

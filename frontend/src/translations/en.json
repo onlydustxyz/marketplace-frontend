@@ -43,7 +43,11 @@
     "myProjects": "My projects",
     "projects__deprecated": "Browse projects",
     "projects": "Projects",
-    "signInWithGithub": "Connect"
+    "signInWithGithub": "Connect",
+    "feedback": {
+      "button": "Feedback",
+      "popupTitle": "Feedback form"
+    }
   },
   "payment": {
     "form": {
