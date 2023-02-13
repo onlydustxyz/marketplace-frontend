@@ -13,11 +13,13 @@
     "chromatic": "npx chromatic --project-token=2118ca8bdd40",
     "generate": "graphql-codegen --config codegen.ts",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "postbuild": "./scripts/upload-sourcemaps.sh"
   },
   "dependencies": {
     "@apollo/client": "3.8.0-alpha.5",
     "@datadog/browser-rum": "^4.31.0",
+    "@datadog/datadog-ci": "^2.4.0",
     "@graphql-codegen/cli": "^2.16.1",
     "@graphql-codegen/introspection": "^2.2.3",
     "@graphql-codegen/typescript": "^2.8.5",
