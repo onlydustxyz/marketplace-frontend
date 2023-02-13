@@ -5,21 +5,17 @@ import {
   ApolloProvider,
   createHttpLink,
   ApolloLink,
-  split,
   SuspenseCache,
   disableFragmentWarnings,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
-import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import { createClient } from "graphql-ws";
 
 import config from "src/config";
 import ErrorFallback from "../ErrorFallback";
-import { useTokenSet } from "src/hooks/useTokenSet";
+import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
-import { getMainDefinition } from "@apollo/client/utilities";
 
 type ErrorDisplay = "screen" | "toaster" | "none";
 
@@ -29,43 +25,29 @@ disableFragmentWarnings();
 
 const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const [displayError, setDisplayError] = useState(false);
-  const { tokenSet } = useTokenSet();
   const showToaster = useShowToaster();
   const { T } = useIntl();
 
   const AuthenticationLink = setContext((_, { headers }) => {
-    const authorizationHeaders = tokenSet?.accessToken ? { Authorization: `Bearer ${tokenSet?.accessToken}` } : {};
-    return {
-      headers: {
-        ...headers,
-        ...authorizationHeaders,
-      },
-    };
+    try {
+      const tokenSetString = localStorage.getItem(LOCAL_STORAGE_TOKEN_SET_KEY);
+      const tokenSet = tokenSetString ? JSON.parse(tokenSetString) : undefined;
+      const authorizationHeaders = tokenSet?.accessToken ? { Authorization: `Bearer ${tokenSet?.accessToken}` } : {};
+      return {
+        headers: {
+          ...headers,
+          ...authorizationHeaders,
+        },
+      };
+    } catch (e) {
+      console.error(`Error parsing token set: ${e}`);
+      return { headers };
+    }
   });
 
   const HttpLink = createHttpLink({
     uri: `${config.HASURA_BASE_URL}/v1/graphql`,
   });
-
-  const WsLink = new GraphQLWsLink(
-    createClient({
-      url: `${config.HASURA_BASE_WS_URL}/v1/graphql`,
-      connectionParams: {
-        headers: {
-          Authorization: `Bearer ${tokenSet?.accessToken}`,
-        },
-      },
-    })
-  );
-
-  const splitLink = split(
-    ({ query }) => {
-      const definition = getMainDefinition(query);
-      return definition.kind === "OperationDefinition" && definition.operation === "subscription";
-    },
-    WsLink,
-    HttpLink
-  );
 
   const ErrorLink = onError(({ graphQLErrors, networkError, operation }) => {
     if (graphQLErrors) {
@@ -91,7 +73,7 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   });
 
   const client = new ApolloClient({
-    link: ApolloLink.from([ErrorLink, AuthenticationLink, splitLink]),
+    link: ApolloLink.from([ErrorLink, AuthenticationLink, HttpLink]),
     cache: new InMemoryCache({
       typePolicies: {
         ProjectDetails: {
