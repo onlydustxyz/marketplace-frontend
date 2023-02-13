@@ -32,8 +32,6 @@ pub async fn spawn_all(
 		Logger.spawn(event_bus::consumer(config.amqp(), "logger").await?),
 		EventWebHook::new(reqwest)
 			.spawn(event_bus::consumer(config.amqp(), "event-webhooks").await?),
-		PaymentProjector::new(PaymentRepository::new(database.clone()))
-			.spawn(event_bus::consumer(config.amqp(), "payments").await?),
 		ProjectProjector::new(
 			ProjectRepository::new(database.clone()),
 			ProjectLeadRepository::new(database.clone()),
@@ -43,6 +41,7 @@ pub async fn spawn_all(
 		.spawn(event_bus::consumer(config.amqp(), "projects").await?),
 		BudgetProjector::new(
 			PaymentRequestRepository::new(database.clone()),
+			PaymentRepository::new(database.clone()),
 			BudgetRepository::new(database.clone()),
 		)
 		.spawn(event_bus::consumer(config.amqp(), "budgets").await?),

@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use domain::Project;
 use event_listeners::{
-	domain::{BudgetProjector, PaymentProjector, ProjectProjector},
+	domain::{BudgetProjector, ProjectProjector},
 	infrastructure::database::{
 		BudgetRepository, GithubRepoDetailsRepository, PaymentRepository, PaymentRequestRepository,
 		ProjectLeadRepository, ProjectRepository,
@@ -22,17 +22,12 @@ pub fn create(database: Arc<database::Client>, github: Arc<github::Client>) -> i
 
 	let budget_projector = BudgetProjector::new(
 		PaymentRequestRepository::new(database.clone()),
+		PaymentRepository::new(database.clone()),
 		BudgetRepository::new(database.clone()),
 	);
 
-	let payment_projector = PaymentProjector::new(PaymentRepository::new(database.clone()));
-
 	Refresher::<Project>::new(
 		database,
-		vec![
-			Arc::new(project_projector),
-			Arc::new(budget_projector),
-			Arc::new(payment_projector),
-		],
+		vec![Arc::new(project_projector), Arc::new(budget_projector)],
 	)
 }

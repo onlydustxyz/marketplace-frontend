@@ -6,13 +6,14 @@ use rust_decimal::{prelude::ToPrimitive, Decimal};
 use tracing::instrument;
 
 use crate::{
-	domain::{Budget, EventListener, PaymentRequest},
-	infrastructure::database::{BudgetRepository, PaymentRequestRepository},
+	domain::{Budget, EventListener, Payment, PaymentRequest},
+	infrastructure::database::{BudgetRepository, PaymentRepository, PaymentRequestRepository},
 };
 
 #[derive(Constructor)]
 pub struct Projector {
 	payment_request_repository: PaymentRequestRepository,
+	payment_repository: PaymentRepository,
 	budget_repository: BudgetRepository,
 }
 
@@ -72,7 +73,19 @@ impl EventListener for Projector {
 						self.budget_repository.update(budget_id, &budget)?;
 						self.payment_request_repository.delete(payment_id)?;
 					},
-					PaymentEvent::Processed { .. } => (),
+					PaymentEvent::Processed {
+						id: payment_id,
+						receipt_id,
+						amount,
+						receipt,
+					} => self.payment_repository.upsert(&Payment::new(
+						*receipt_id,
+						*amount.amount(),
+						amount.currency().to_string(),
+						serde_json::to_value(receipt)
+							.map_err(|e| SubscriberCallbackError::Discard(e.into()))?,
+						(*payment_id).into(),
+					))?,
 				},
 			}
 		}
