@@ -19,6 +19,8 @@ module.exports = {
     "plugin:prettier/recommended",
     "plugin:storybook/recommended",
     "plugin:storybook/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
   ],
   plugins: ["@typescript-eslint", "prettier"],
   rules: {
@@ -43,6 +45,8 @@ module.exports = {
       },
     ],
     "@typescript-eslint/no-namespace": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
   },
   ignorePatterns: [
     "frontend/dist/*",
