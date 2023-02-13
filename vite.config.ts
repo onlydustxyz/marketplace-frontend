@@ -24,6 +24,9 @@ export default defineConfig({
   define: {
     APP_COMMIT_HASH: JSON.stringify(child.execSync("git rev-parse --short HEAD").toString()),
   },
+  build: {
+    sourcemap: true,
+  },
   test: {
     globals: true,
     environment: "jsdom",

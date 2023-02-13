@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, ReactNode, Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { RouteObject, useRoutes } from "react-router-dom";
 
@@ -20,6 +20,7 @@ const ProjectDetailsPaymentForm = lazy(() => import("src/pages/ProjectDetails/Pa
 import { HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/Loader";
 import ScrollToTop from "src/components/ScrollToTop";
+import ErrorTrigger from "src/pages/ErrorTrigger";
 
 export enum RoutePaths {
   Projects = "/",
@@ -29,6 +30,7 @@ export enum RoutePaths {
   MyProjectDetails = "/my-projects/:projectId",
   MyContributions = "/my-contributions",
   CatchAll = "*",
+  Error = "/error",
 }
 
 export enum ProjectRoutePaths {
@@ -108,6 +110,10 @@ function App() {
         {
           path: RoutePaths.CatchAll,
           element: <Projects />,
+        },
+        {
+          path: RoutePaths.Error,
+          element: <ErrorTrigger />,
         },
       ],
     },
