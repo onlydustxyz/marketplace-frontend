@@ -6,7 +6,6 @@ import matchers from "@testing-library/jest-dom/matchers";
 import ProfilePage from ".";
 import { GET_PROFILE_QUERY } from "src/pages/Profile";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
-import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { UPDATE_USER_MUTATION } from "./components/ProfileForm";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
@@ -184,7 +183,6 @@ describe("Missing payment information banner", () => {
   it("should display the information banner if payment info is missing", async () => {
     renderWithIntl(<ProfilePage />, {
       wrapper: MemoryRouterProviderFactory({
-        route: RoutePaths.Profile,
         mocks: [buildMockProfileQuery({ ...mockUser, payoutSettings: {} })],
       }),
     });
@@ -194,7 +192,6 @@ describe("Missing payment information banner", () => {
   it("shouldn't display the information banner if payment info is correct", async () => {
     renderWithIntl(<ProfilePage />, {
       wrapper: MemoryRouterProviderFactory({
-        route: RoutePaths.Profile,
         mocks: [
           buildMockProfileQuery({
             ...mockUser,
@@ -221,7 +218,6 @@ describe('"Profile" page for individual', () => {
   beforeEach(() => {
     renderWithIntl(<ProfilePage />, {
       wrapper: MemoryRouterProviderFactory({
-        route: RoutePaths.Profile,
         mocks: [profileQueryMock, updateUserMock, updateEnsUserMock],
       }),
     });
@@ -331,7 +327,6 @@ describe('"Profile" page for company', () => {
   beforeEach(() => {
     renderWithIntl(<ProfilePage />, {
       wrapper: MemoryRouterProviderFactory({
-        route: RoutePaths.Profile,
         mocks: [profileQueryMock, updateUserMock],
       }),
     });

@@ -5,7 +5,6 @@ import matchers from "@testing-library/jest-dom/matchers";
 
 import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from ".";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
-import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentForm from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
@@ -37,6 +36,7 @@ vi.mock("axios", () => ({
   },
 }));
 
+const TEST_PROJECT_ID = "test-project-id";
 const graphQlMocks = [
   {
     request: {
@@ -61,7 +61,7 @@ const graphQlMocks = [
     request: {
       query: REQUEST_PAYMENT_MUTATION,
       variables: {
-        projectId: "test-project-id",
+        projectId: TEST_PROJECT_ID,
         amount: 1000,
         contributorId: TEST_USER.githubUser.githubUserId,
         reason: { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] },
@@ -82,15 +82,15 @@ describe('"PaymentForm" component', () => {
   });
 
   beforeEach(() => {
-    renderWithIntl(
-      <PaymentForm projectId={"test-project-id"} budget={{ initialAmount: 10000, remainingAmount: 4000 }} />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          route: `${RoutePaths.ProjectDetails}/test-project-id`,
-          mocks: graphQlMocks,
-        }),
-      }
-    );
+    renderWithIntl(<PaymentForm />, {
+      wrapper: MemoryRouterProviderFactory({
+        mocks: graphQlMocks,
+        context: {
+          projectId: TEST_PROJECT_ID,
+          budget: { initialAmount: 10000, remainingAmount: 4000 },
+        },
+      }),
+    });
   });
 
   it("should show the right input / button labels", async () => {
@@ -108,10 +108,7 @@ describe('"PaymentForm" component', () => {
       expect(graphQlMocks[0].newData).toHaveBeenCalledTimes(1);
     });
     await userEvent.click(await screen.findByText(/confirm payment/i));
-    await waitFor(() => {
-      expect(screen.getByLabelText(RECIPIENT_INPUT_LABEL)).toHaveValue("");
-      expect(screen.getByLabelText(PR_LINK_INPUT_LABEL)).toHaveValue("");
-    });
+    await screen.findByText("Payment successfully sent");
   });
 
   it("should display an error when the github username is invalid", async () => {

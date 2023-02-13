@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import { ProjectPaymentsRoutePaths } from "src/App";
 import Button, { ButtonSize, Width } from "src/components/Button";
 import Card from "src/components/Card";
 import CurrencyLine from "src/icons/CurrencyLine";
@@ -8,10 +10,9 @@ import BudgetBar from "../PaymentForm/WorkEstimation/BudgetBar";
 interface Props {
   budget: { initialAmount: number; remainingAmount: number };
   disabled: boolean;
-  onClickNewPayment: () => void;
 }
 
-export default function RemainingBudget({ budget, disabled, onClickNewPayment }: Props) {
+export default function RemainingBudget({ budget, disabled }: Props) {
   const { T } = useT();
 
   return (
@@ -29,12 +30,12 @@ export default function RemainingBudget({ budget, disabled, onClickNewPayment }:
           <span>{T("project.details.remainingBudget.leftToSpend")}</span>
         </div>
         {!disabled && (
-          <div className="pt-6" onClick={onClickNewPayment}>
+          <Link to={ProjectPaymentsRoutePaths.New} className="pt-6">
             <Button width={Width.Full} size={ButtonSize.LargeLowHeight}>
               <CurrencyLine />
               <span>{T("project.details.remainingBudget.newPayment")}</span>
             </Button>
-          </div>
+          </Link>
         )}
       </div>
     </Card>

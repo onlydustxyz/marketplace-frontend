@@ -2,17 +2,13 @@ import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import PaymentActions from ".";
-import { RoutePaths } from "src/App";
+import PaymentsList from "./List";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import { ProjectDetailsProvider } from "../ProjectDetailsContext";
 import { GithubUserFragment, PaymentRequestFragment } from "src/__generated/graphql";
-import { PAYMENT_REQUESTS_FOR_PROJECT_QUERY } from "src/hooks/usePaymentRequests";
 import { GET_GITHUB_USER_QUERY } from "src/hooks/useGithubUser";
 
 expect.extend(matchers);
 
-const TEST_PROJECT_ID = "test-project-id";
 const TEST_USER_ID = "test-user-id";
 const GITHUB_USER_ID = 12345;
 
@@ -54,27 +50,6 @@ const githubUserMock: GithubUserFragment = {
 const graphQlMocks = [
   {
     request: {
-      query: PAYMENT_REQUESTS_FOR_PROJECT_QUERY,
-      variables: {
-        projectId: TEST_PROJECT_ID,
-      },
-    },
-    result: {
-      data: {
-        projectsByPk: {
-          budgets: [
-            {
-              initialAmount: 100,
-              remainingAmount: 40,
-              paymentRequests: [paymentRequestMock],
-            },
-          ],
-        },
-      },
-    },
-  },
-  {
-    request: {
       query: GET_GITHUB_USER_QUERY,
       variables: {
         githubUserId: GITHUB_USER_ID,
@@ -96,23 +71,24 @@ vi.mock("axios", () => ({
   },
 }));
 
-describe('"ProjectDetails" page', () => {
+describe("PaymentsList page", () => {
   beforeAll(() => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
   });
 
   beforeEach(() => {
-    renderWithIntl(
-      <ProjectDetailsProvider>
-        <PaymentActions projectId={TEST_PROJECT_ID} />
-      </ProjectDetailsProvider>,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          route: `${RoutePaths.ProjectDetails}/test-project-id`,
-          mocks: graphQlMocks,
-        }),
-      }
-    );
+    renderWithIntl(<PaymentsList />, {
+      wrapper: MemoryRouterProviderFactory({
+        mocks: graphQlMocks,
+        context: {
+          payments: [paymentRequestMock],
+          budget: {
+            initialAmount: 100,
+            remainingAmount: 40,
+          },
+        },
+      }),
+    });
   });
 
   it("should render the new payment buttons", async () => {

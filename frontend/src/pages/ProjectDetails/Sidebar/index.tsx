@@ -6,12 +6,6 @@ import { GetProjectsForSidebarQuery } from "src/__generated/graphql";
 import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
-import { useContext } from "react";
-import {
-  ProjectDetailsContext,
-  ProjectDetailsDispatchContext,
-  ProjectDetailsTab__deprecated,
-} from "../ProjectDetailsContext";
 import { sortBy } from "lodash";
 import { ProjectRoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
@@ -23,17 +17,13 @@ export type ProjectDetailsTab = {
 
 interface Props {
   currentProject: ProjectDetails;
-  onProjectSelected: (projectId: string) => void;
-  availableTabs__deprecated: ProjectDetailsTab__deprecated[];
 }
 
-export default function ProjectsSidebar({ currentProject, onProjectSelected, availableTabs__deprecated }: Props) {
+export default function ProjectsSidebar({ currentProject }: Props) {
   const { isLoggedIn, ledProjectIds, githubUserId } = useAuth();
   const { T } = useIntl();
-  const state = useContext(ProjectDetailsContext);
-  const dispatch = useContext(ProjectDetailsDispatchContext);
 
-  const isProjectMine = (project: ProjectDetails) => ledProjectIds.includes(project.id) || !!project.invitationId;
+  const isProjectMine = (project: ProjectDetails) => ledProjectIds.includes(project.id);
 
   const getProjectsForSidebarQuery = useHasuraQuery<GetProjectsForSidebarQuery>(
     GET_PROJECTS_FOR_SIDEBAR_QUERY,
@@ -67,15 +57,10 @@ export default function ProjectsSidebar({ currentProject, onProjectSelected, ava
     : [AvailableTabs.overview, AvailableTabs.contributors];
   return (
     <View
-      {...{
-        currentProject,
-        onProjectSelected,
-        availableTabs,
-        availableTabs__deprecated,
-        selectedTab: state.tab,
-        dispatch,
-      }}
+      availableTabs={availableTabs}
+      currentProject={currentProject}
       allProjects={sortedProjects}
+      projectLead={isProjectMine(currentProject)}
       expandable={isProjectMine(currentProject) && sortedProjects.length > 1}
     />
   );

@@ -1,13 +1,11 @@
 import paymentLogo from "assets/img/payment.png";
+import { Link } from "react-router-dom";
+import { ProjectPaymentsRoutePaths } from "src/App";
 import CurrencyLine from "src/icons/CurrencyLine";
 import { useT } from "talkr";
 import Button, { ButtonSize, Width } from "../Button";
 
-interface ProjectPaymentTableFallbackProps {
-  onClick: () => void;
-}
-
-export default function ProjectPaymentTableFallback({ onClick }: ProjectPaymentTableFallbackProps) {
+const ProjectPaymentTableFallback: React.FC = () => {
   const { T } = useT();
   return (
     <div className="flex flex-col items-center gap-8 w-full p-2">
@@ -22,12 +20,14 @@ export default function ProjectPaymentTableFallback({ onClick }: ProjectPaymentT
           {T("project.details.tableFallback.send")}
         </span>
       </div>
-      <div onClick={onClick}>
+      <Link to={ProjectPaymentsRoutePaths.New}>
         <Button width={Width.Full} size={ButtonSize.Large}>
           <CurrencyLine />
           <span>{T("project.details.tableFallback.newPayment")}</span>
         </Button>
-      </div>
+      </Link>
     </div>
   );
-}
+};
+
+export default ProjectPaymentTableFallback;

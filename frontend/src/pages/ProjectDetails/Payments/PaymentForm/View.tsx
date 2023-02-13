@@ -3,9 +3,9 @@ import { useIntl } from "src/hooks/useIntl";
 import Card from "src/components/Card";
 import WorkEstimation from "./WorkEstimation";
 import { Budget } from "src/hooks/useWorkEstimation";
-import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/pages/ProjectDetails/PaymentActions/PaymentForm";
+import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/pages/ProjectDetails/Payments/PaymentForm";
 import { InputErrorType } from "src/components/FormInput/View";
-import ContributorSelect from "src/pages/ProjectDetails/PaymentActions/PaymentForm/ContributorSelect";
+import ContributorSelect from "src/pages/ProjectDetails/Payments/PaymentForm/ContributorSelect";
 
 interface Props {
   projectId: string;

@@ -2,11 +2,9 @@ import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import { RoutePaths } from "src/App";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import Contributors, { GET_PROJECT_CONTRIBUTORS_QUERY } from ".";
-import { ContributorsTableFieldsFragment, PaymentRequestFragment } from "src/__generated/graphql";
-import { generatePath } from "react-router-dom";
+import { ContributorsTableFieldsFragment } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
@@ -94,10 +92,10 @@ describe('"ProjectDetails" page', () => {
   });
 
   beforeEach(() => {
-    renderWithIntl(<Contributors projectId={TEST_PROJECT_ID} />, {
+    renderWithIntl(<Contributors />, {
       wrapper: MemoryRouterProviderFactory({
-        route: generatePath(RoutePaths.ProjectDetails, { projectId: TEST_PROJECT_ID }),
         mocks: graphQlMocks,
+        context: { projectId: TEST_PROJECT_ID },
       }),
     });
   });

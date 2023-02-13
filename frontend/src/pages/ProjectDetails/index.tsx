@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
-import { useContext, useEffect, useState } from "react";
-import { generatePath, useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
@@ -8,19 +8,9 @@ import { Contributor, HasuraUserRole, LanguageMap } from "src/types";
 import { decodeBase64ToString } from "src/utils/stringUtils";
 import { GetProjectQuery } from "src/__generated/graphql";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
-import { RoutePaths } from "src/App";
 import { SessionMethod, useSessionDispatch, useSession } from "src/hooks/useSession";
 import View from "./View";
-import View__deprecated from "./View__deprecated";
 import { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
-import {
-  ProjectDetailsProvider,
-  ProjectDetailsContext,
-  ProjectDetailsDispatchContext,
-  ProjectDetailsTab__deprecated,
-  ProjectDetailsActionType,
-} from "./ProjectDetailsContext";
-import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
 type ProjectDetailsParams = {
   projectId: string;
@@ -43,22 +33,16 @@ export interface ProjectDetails {
   };
 }
 
-function ProjectDetailsComponent() {
+const ProjectDetails: React.FC = () => {
   const { projectId } = useParams<ProjectDetailsParams>();
   const { ledProjectIds, githubUserId } = useAuth();
   const { lastVisitedProjectId } = useSession();
   const dispatchSession = useSessionDispatch();
-  const navigate = useNavigate();
 
   const [acceptInvitation, acceptInvitationResponse] = useHasuraMutation(
     ACCEPT_PROJECT_LEADER_INVITATION_MUTATION,
     HasuraUserRole.RegisteredUser
   );
-
-  const state = useContext(ProjectDetailsContext);
-  const dispatch = useContext(ProjectDetailsDispatchContext);
-
-  const [selectedProjectId, setSelectedProjectId] = useState(projectId);
 
   const getProjectQuery = useHasuraQuery<GetProjectQuery>(GET_PROJECT_QUERY, HasuraUserRole.Public, {
     variables: { id: projectId, githubUserId },
@@ -66,13 +50,6 @@ function ProjectDetailsComponent() {
   });
 
   const project = getProjectQuery.data?.projectsByPk;
-
-  useEffect(() => {
-    if (selectedProjectId && selectedProjectId !== projectId) {
-      dispatch({ type: ProjectDetailsActionType.SelectTab, selectedTab: ProjectDetailsTab__deprecated.Overview });
-      navigate(generatePath(RoutePaths.MyProjectDetails, { projectId: selectedProjectId }));
-    }
-  }, [selectedProjectId]);
 
   useEffect(() => {
     if (
@@ -89,52 +66,23 @@ function ProjectDetailsComponent() {
     }
   }, [acceptInvitationResponse.data]);
 
-  const availableTabs__deprecated =
-    projectId && ledProjectIds && ledProjectIds.includes(projectId)
-      ? [
-          ProjectDetailsTab__deprecated.Overview,
-          ProjectDetailsTab__deprecated.Contributors,
-          ProjectDetailsTab__deprecated.Payments,
-        ]
-      : [ProjectDetailsTab__deprecated.Overview, ProjectDetailsTab__deprecated.Contributors];
-
-  const sidebarUrlsEnabled = isFeatureEnabled(FeatureFlags.PROJECT_SIDEBAR_URLS);
-
   return (
     <QueryWrapper query={getProjectQuery}>
-      {project &&
-        (sidebarUrlsEnabled ? (
-          <View
-            currentProject={projectFromQuery(project)}
-            availableTabs__deprecated={availableTabs__deprecated}
-            selectedTab={state.tab}
-            onInvitationAccepted={(invitationId: string) => {
-              acceptInvitation({
-                variables: {
-                  invitationId,
-                },
-              });
-            }}
-            onProjectSelected={(projectId: string) => setSelectedProjectId(projectId)}
-          />
-        ) : (
-          <View__deprecated
-            currentProject={projectFromQuery(project)}
-            availableTabs__deprecated={availableTabs__deprecated}
-            selectedTab={state.tab}
-            onInvitationAccepted={(invitationId: string) => {
-              acceptInvitation({
-                variables: {
-                  invitationId,
-                },
-              });
-            }}
-            onProjectSelected={(projectId: string) => setSelectedProjectId(projectId)}
-          />
-        ))}
+      {project && (
+        <View
+          currentProject={projectFromQuery(project)}
+          onInvitationAccepted={(invitationId: string) => {
+            acceptInvitation({
+              variables: {
+                invitationId,
+              },
+            });
+          }}
+        />
+      )}
     </QueryWrapper>
   );
-}
+};
 
 const projectFromQuery = (project: GetProjectQuery["projectsByPk"]) => ({
   id: project?.id,
@@ -178,10 +126,4 @@ const ACCEPT_PROJECT_LEADER_INVITATION_MUTATION = gql`
   }
 `;
 
-export default function ProjectDetails() {
-  return (
-    <ProjectDetailsProvider>
-      <ProjectDetailsComponent />
-    </ProjectDetailsProvider>
-  );
-}
+export default ProjectDetails;

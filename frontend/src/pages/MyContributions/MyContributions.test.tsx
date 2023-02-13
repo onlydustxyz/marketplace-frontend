@@ -3,7 +3,6 @@ import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
 import MyContributionsPage, { GET_MY_CONTRIBUTIONS_QUERY } from ".";
-import { RoutePaths } from "src/App";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { GET_USER_PAYOUT_SETTINGS } from "src/hooks/usePayoutSettings";
@@ -117,7 +116,6 @@ describe('"MyContributions" page', () => {
 
     renderWithIntl(<MyContributionsPage />, {
       wrapper: MemoryRouterProviderFactory({
-        route: RoutePaths.Profile,
         mocks: [queryMock],
       }),
     });
@@ -130,7 +128,6 @@ describe('"MyContributions" page', () => {
   it("should navigate to home when no contributions returned", async () => {
     renderWithIntl(<MyContributionsPage />, {
       wrapper: MemoryRouterProviderFactory({
-        route: RoutePaths.Profile,
         mocks: [buildMockMyContributionsQuery(githubUserId, [])],
       }),
     });
@@ -141,7 +138,6 @@ describe('"MyContributions" page', () => {
   it("should render contributions table", async () => {
     renderWithIntl(<MyContributionsPage />, {
       wrapper: MemoryRouterProviderFactory({
-        route: RoutePaths.Profile,
         mocks: [buildMockMyContributionsQuery(githubUserId)],
       }),
     });
@@ -155,7 +151,6 @@ describe('"MyContributions" page', () => {
   it("should display banner when there are payments but no payout info", async () => {
     renderWithIntl(<MyContributionsPage />, {
       wrapper: MemoryRouterProviderFactory({
-        route: RoutePaths.Profile,
         mocks: [buildMockMyContributionsQuery(githubUserId), buidlMockPayoutSettingsQuery(undefined)],
       }),
     });
@@ -165,7 +160,6 @@ describe('"MyContributions" page', () => {
   it("should not display banner when there are payments and payout info", async () => {
     renderWithIntl(<MyContributionsPage />, {
       wrapper: MemoryRouterProviderFactory({
-        route: RoutePaths.Profile,
         mocks: [
           buildMockMyContributionsQuery(githubUserId),
           buidlMockPayoutSettingsQuery({ EthTransfer: { Name: "vitalik.eth" } }),

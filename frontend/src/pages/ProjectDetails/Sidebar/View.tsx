@@ -11,26 +11,16 @@ import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { ProjectDetails } from "..";
 import { useIntl } from "src/hooks/useIntl";
 import { buildGithubLink } from "src/utils/stringUtils";
-import {
-  PaymentAction,
-  ProjectDetailsAction,
-  ProjectDetailsActionType,
-  ProjectDetailsTab__deprecated,
-} from "../ProjectDetailsContext";
 import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
-import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
-import { NavLink } from "react-router-dom";
+import { generatePath, NavLink, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
 interface Props {
   expandable: boolean;
   currentProject: ProjectDetails;
   allProjects: SidebarProjectDetails[];
-  onProjectSelected: (projectId: string) => void;
   availableTabs: ProjectDetailsTab[];
-  availableTabs__deprecated: ProjectDetailsTab__deprecated[];
-  selectedTab: ProjectDetailsTab__deprecated;
-  dispatch: (action: ProjectDetailsAction) => void;
+  projectLead: boolean;
 }
 
 interface SidebarProjectDetails {
@@ -41,18 +31,9 @@ interface SidebarProjectDetails {
   withInvitation: boolean;
 }
 
-export default function View({
-  expandable,
-  currentProject,
-  allProjects,
-  onProjectSelected,
-  availableTabs,
-  availableTabs__deprecated,
-  selectedTab,
-  dispatch,
-}: Props) {
+export default function View({ expandable, currentProject, allProjects, availableTabs, projectLead }: Props) {
   const { T } = useIntl();
-  const sidebarUrlsEnabled = isFeatureEnabled(FeatureFlags.PROJECT_SIDEBAR_URLS);
+  const navigate = useNavigate();
 
   return (
     <Sidebar>
@@ -65,9 +46,13 @@ export default function View({
         <div className="relative h-16">
           <Listbox
             value={currentProject}
-            onChange={project => {
-              onProjectSelected(project.id);
-            }}
+            onChange={project =>
+              navigate(
+                generatePath(projectLead ? RoutePaths.MyProjectDetails : RoutePaths.ProjectDetails, {
+                  projectId: project.id,
+                })
+              )
+            }
             disabled={!expandable}
           >
             <div className="flex flex-col w-full border-2 rounded-2xl border-neutral-700 divide-y divide-neutral-700 bg-white/2 absolute backdrop-blur-4xl z-10">
@@ -122,44 +107,22 @@ export default function View({
           </Listbox>
         </div>
         <div className="flex flex-col align-start font-medium text-xl pt-3 pb-2 gap-2">
-          {!sidebarUrlsEnabled &&
-            availableTabs__deprecated.map(tab => (
-              <div
-                key={tab}
-                className={`rounded-xl hover:cursor-pointer text-white text-base px-4 py-2.5 ${
-                  selectedTab === tab ? "bg-white/8" : "text-neutral-400"
-                }`}
-                onClick={() =>
-                  dispatch(
-                    tab !== ProjectDetailsTab__deprecated.Payments
-                      ? { type: ProjectDetailsActionType.SelectTab, selectedTab: tab }
-                      : {
-                          type: ProjectDetailsActionType.SelectPaymentAction,
-                          selectedPaymentAction: PaymentAction.List,
-                        }
-                  )
-                }
-                data-testid={`${tab}-tab`}
-              >
-                {tab}
-              </div>
-            ))}
-          {sidebarUrlsEnabled &&
-            availableTabs.map(tab => (
-              <NavLink
-                key={tab.path}
-                to={tab.path}
-                className={({ isActive }) =>
-                  classNames("rounded-xl hover:cursor-pointer text-white text-base px-4 py-2.5", {
-                    "bg-white/8": isActive,
-                    "text-neutral-400": !isActive,
-                  })
-                }
-                end
-              >
-                {tab.label}
-              </NavLink>
-            ))}
+          {availableTabs.map(tab => (
+            <NavLink
+              key={tab.path}
+              to={tab.path}
+              className={({ isActive }) =>
+                classNames("rounded-xl hover:cursor-pointer text-white text-base px-4 py-2.5", {
+                  "bg-white/8": isActive,
+                  "text-neutral-400": !isActive,
+                })
+              }
+              data-testid={`${tab.label}-tab`}
+              end
+            >
+              {tab.label}
+            </NavLink>
+          ))}
         </div>
         <div className="flex flex-row gap-2 pt-8">
           {currentProject.telegramLink && <TelegramLink link={currentProject.telegramLink} />}
