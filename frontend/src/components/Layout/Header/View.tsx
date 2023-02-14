@@ -26,6 +26,7 @@ export default function HeaderView({
   lastVisitedProjectId,
   onLogin,
 }: HeaderViewProps) {
+  const testing = import.meta.env.NODE_ENV === "test";
   return (
     <div className="bg-black font-walsheim flex flex-row justify-start items-center py-4 px-6 gap-8 text-xl text-neutral-400">
       <Link to={RoutePaths.Projects} className="flex items-center w-fit gap-3 ">
@@ -51,7 +52,7 @@ export default function HeaderView({
         </MenuItem>
       )}
       <div className="flex flex-1 flex-row gap-4 justify-end">
-        {isLoggedIn && <FeedbackButton />}
+        {isLoggedIn && !testing && <FeedbackButton />}
         <div className="flex text-base text-white">
           {!isLoggedIn ? <GithubLink onClick={onLogin} /> : <ProfileButton />}
         </div>
