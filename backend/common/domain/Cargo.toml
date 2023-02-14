@@ -23,6 +23,7 @@ uuid = {version = "0.8.2", default_features = false, features = [
 ]}
 rust_decimal = "1.26.1"
 rusty-money = {version = "0.4.1", features = ["iso", "crypto"]}
+iban_validate = {version = "4.0.1", features = ["serde"]}
 
 # Errors
 anyhow = "1.0.57"

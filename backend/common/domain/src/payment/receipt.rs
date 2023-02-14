@@ -1,4 +1,5 @@
 use derive_more::{Display, From, Into};
+use iban::Iban;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -36,5 +37,9 @@ pub enum Receipt {
 		network: BlockchainNetwork,
 		recipient_address: EthereumAddress,
 		transaction_hash: TransactionHash,
+	},
+	FiatPayment {
+		recipient_iban: Iban,
+		transaction_reference: String,
 	},
 }

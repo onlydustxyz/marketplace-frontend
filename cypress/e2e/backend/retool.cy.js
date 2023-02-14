@@ -269,4 +269,25 @@ describe("As an admin, on retool, I", () => {
                 })
         );
     });
+
+    it("can register a fiat payment", () => {
+        const STARKONQUEST_ID = 481932781;
+
+        cy.createGithubUser(12345454).then((leader) =>
+            cy
+                .createProjectWithLeader(leader, "Another project", 500, STARKONQUEST_ID)
+                .then((projectId) => {
+                    cy.requestPayment(projectId, 500, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
+                        .asRegisteredUser(leader)
+                        .data("requestPayment")
+                        .then((paymentId) => {
+                            cy.paymentRequestShouldExist(paymentId);
+                            cy.addFiatPaymentReceipt(projectId, paymentId, "500", "EUR", "DE44500105175407324931", "my totaly custom payment reference")
+                                .asAdmin().data("addFiatPaymentReceipt").then((receipt_id) => {
+                                    cy.paymentRequestShouldBePaid(paymentId, receipt_id);
+                                });
+                        });
+                })
+        );
+    });
 });
