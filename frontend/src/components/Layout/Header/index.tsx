@@ -44,7 +44,10 @@ export default function Header() {
       ? T("navbar.myProjects")
       : undefined;
   const myContributionsMenuItem = hasPayments ? T("navbar.myContributions") : undefined;
-  const projectsMenuItem = myProjectsMenuItem || myContributionsMenuItem ? T("navbar.projects") : undefined;
+  const projectsMenuItem =
+    myProjectsMenuItem || myContributionsMenuItem
+      ? T(isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS) ? "navbar.projects" : "navbar.projects__deprecated")
+      : undefined;
 
   return (
     <View
