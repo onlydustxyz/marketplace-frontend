@@ -2898,6 +2898,13 @@ export type Users_StreamCursorValueInput = {
 
 export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> };
 
+export type UserIdentityQueryVariables = Exact<{
+  userId: Scalars['uuid'];
+}>;
+
+
+export type UserIdentityQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', identity: any | null }> };
+
 export type GetFirstLeadProjectIdQueryVariables = Exact<{
   userId: Scalars['uuid'];
 }>;
@@ -3139,6 +3146,41 @@ export const PaymentRequestFragmentDoc = gql`
   requestedAt
 }
     `;
+export const UserIdentityDocument = gql`
+    query UserIdentity($userId: uuid!) {
+  userInfo(where: {userId: {_eq: $userId}}) {
+    identity
+  }
+}
+    `;
+
+/**
+ * __useUserIdentityQuery__
+ *
+ * To run a query within a React component, call `useUserIdentityQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserIdentityQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserIdentityQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUserIdentityQuery(baseOptions: Apollo.QueryHookOptions<UserIdentityQuery, UserIdentityQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserIdentityQuery, UserIdentityQueryVariables>(UserIdentityDocument, options);
+      }
+export function useUserIdentityLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserIdentityQuery, UserIdentityQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserIdentityQuery, UserIdentityQueryVariables>(UserIdentityDocument, options);
+        }
+export type UserIdentityQueryHookResult = ReturnType<typeof useUserIdentityQuery>;
+export type UserIdentityLazyQueryHookResult = ReturnType<typeof useUserIdentityLazyQuery>;
+export type UserIdentityQueryResult = Apollo.QueryResult<UserIdentityQuery, UserIdentityQueryVariables>;
 export const GetFirstLeadProjectIdDocument = gql`
     query GetFirstLeadProjectId($userId: uuid!) {
   user(id: $userId) {
