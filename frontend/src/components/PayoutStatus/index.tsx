@@ -17,13 +17,13 @@ export default function PayoutStatus({ id, status, payoutInfoMissing, isProjectL
 const buildTag = (id: string, status: PaymentStatus, payoutInfoMissing: boolean, isProjectLeaderView: boolean) => {
   switch (status) {
     case PaymentStatus.WAITING_PAYMENT:
-      return payoutInfoMissing ? tagPayoutInfoMissing(id, isProjectLeaderView) : tagProcessing(id);
+      return payoutInfoMissing ? PayoutInfoMissingTag(id, isProjectLeaderView) : ProcessingTag(id);
     case PaymentStatus.ACCEPTED:
-      return tagComplete(id);
+      return CompleteTag(id);
   }
 };
 
-const tagComplete = (id: string) => {
+const CompleteTag = (id: string) => {
   const { T } = useIntl();
 
   return (
@@ -43,7 +43,7 @@ const tagComplete = (id: string) => {
   );
 };
 
-const tagProcessing = (id: string) => {
+const ProcessingTag = (id: string) => {
   const { T } = useIntl();
 
   return (
@@ -63,7 +63,7 @@ const tagProcessing = (id: string) => {
   );
 };
 
-const tagPayoutInfoMissing = (id: string, isProjectLeaderView: boolean) => {
+const PayoutInfoMissingTag = (id: string, isProjectLeaderView: boolean) => {
   const { T } = useIntl();
 
   return (
