@@ -49,11 +49,3 @@ export const useHasuraMutation = <T,>(
 ) => {
   return useMutation<T>(query, merge(options, { context: { headers: { "X-Hasura-Role": role } } }));
 };
-
-export const useHasuraSubscription = <T, V = OperationVariables>(
-  query: TypedDocumentNode<T, V>,
-  role: HasuraUserRole,
-  options: SubscriptionHookOptions<T, V> = {}
-): SubscriptionResult<T, V> => {
-  return useSubscription(query, merge(options, { context: { headers: { "X-Hasura-Role": role } } }));
-};
