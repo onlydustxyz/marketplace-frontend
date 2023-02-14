@@ -14,6 +14,7 @@ import { buildGithubLink } from "src/utils/stringUtils";
 import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
 import { generatePath, NavLink, useNavigate } from "react-router-dom";
 import classNames from "classnames";
+import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
 interface Props {
   expandable: boolean;
@@ -48,9 +49,14 @@ export default function View({ expandable, currentProject, allProjects, availabl
             value={currentProject}
             onChange={project =>
               navigate(
-                generatePath(projectLead ? RoutePaths.MyProjectDetails : RoutePaths.ProjectDetails, {
-                  projectId: project.id,
-                })
+                generatePath(
+                  !isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS) && projectLead
+                    ? RoutePaths.MyProjectDetails__deprecated
+                    : RoutePaths.ProjectDetails,
+                  {
+                    projectId: project.id,
+                  }
+                )
               )
             }
             disabled={!expandable}

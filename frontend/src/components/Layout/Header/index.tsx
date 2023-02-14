@@ -8,6 +8,7 @@ import { SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSess
 import { CustomUserRole, HasuraUserRole } from "src/types";
 import { GetFirstLeadProjectIdQuery, GetPaymentRequestIdsQuery } from "src/__generated/graphql";
 import View from "./View";
+import { isFeatureEnabled, FeatureFlags } from "src/utils/featureFlags";
 
 export default function Header() {
   const location = useLocation();
@@ -38,7 +39,10 @@ export default function Header() {
   const hasPayments =
     paymentRequestIdsQueryData?.paymentRequests && paymentRequestIdsQueryData.paymentRequests.length > 0;
 
-  const myProjectsMenuItem = roles.includes(CustomUserRole.ProjectLead) ? T("navbar.myProjects") : undefined;
+  const myProjectsMenuItem =
+    !isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS) && roles.includes(CustomUserRole.ProjectLead)
+      ? T("navbar.myProjects")
+      : undefined;
   const myContributionsMenuItem = hasPayments ? T("navbar.myContributions") : undefined;
   const projectsMenuItem = myProjectsMenuItem || myContributionsMenuItem ? T("navbar.projects") : undefined;
 
@@ -46,7 +50,7 @@ export default function Header() {
     <View
       menuItems={{
         [RoutePaths.Projects]: projectsMenuItem,
-        [RoutePaths.MyProjectDetails]: myProjectsMenuItem,
+        [RoutePaths.MyProjectDetails__deprecated]: myProjectsMenuItem,
         [RoutePaths.MyContributions]: myContributionsMenuItem,
       }}
       isLoggedIn={isLoggedIn}
