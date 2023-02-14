@@ -10,13 +10,14 @@ import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 import { GetProjectsQuery } from "src/__generated/graphql";
-import { Project } from "..";
+import { Project, ProjectOwnershipType } from "..";
 
 type Props = {
   technologies: string[];
+  projectOwnershipType: ProjectOwnershipType;
 };
 
-export default function AllProjects({ technologies }: Props) {
+export default function AllProjects({ technologies, projectOwnershipType }: Props) {
   const { ledProjectIds, githubUserId } = useAuth();
 
   const getProjectsQuery = useHasuraQuery<GetProjectsQuery>(
@@ -27,10 +28,13 @@ export default function AllProjects({ technologies }: Props) {
     }
   );
 
-  const projects = useMemo(
-    () => sortBy(getProjectsQuery.data?.projects, p => !p.pendingInvitations.length),
-    [getProjectsQuery.data?.projects]
-  );
+  const projects = useMemo(() => {
+    let projects = getProjectsQuery.data?.projects;
+    if (projects && projectOwnershipType === ProjectOwnershipType.Mine) {
+      projects = projects.filter(project => ledProjectIds.includes(project.id));
+    }
+    return sortBy(projects, p => !p.pendingInvitations.length);
+  }, [getProjectsQuery.data?.projects, ledProjectIds, projectOwnershipType]);
 
   const isProjectMine__deprecated = (project: Project) =>
     ledProjectIds.includes(project?.id) || project?.pendingInvitations?.length > 0;
