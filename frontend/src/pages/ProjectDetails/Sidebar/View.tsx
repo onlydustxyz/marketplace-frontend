@@ -38,7 +38,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
 
   return (
     <Sidebar>
-      {!expandable && (
+      {(isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS) || !expandable) && (
         <BackLink to={RoutePaths.Projects} className="divide-none">
           {T("project.details.sidebar.backToProjects")}
         </BackLink>
