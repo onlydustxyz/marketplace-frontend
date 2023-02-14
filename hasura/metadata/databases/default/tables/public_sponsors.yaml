@@ -1,0 +1,19 @@
+table:
+  name: sponsors
+  schema: public
+array_relationships:
+  - name: sponsorProjects
+    using:
+      foreign_key_constraint_on:
+        column: sponsor_id
+        table:
+          name: projects_sponsors
+          schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - id
+        - name
+        - logo_url
+      filter: {}

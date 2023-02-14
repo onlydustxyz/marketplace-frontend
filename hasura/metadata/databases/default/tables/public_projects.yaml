@@ -46,6 +46,13 @@ array_relationships:
         table:
           name: project_leads
           schema: public
+  - name: projectSponsors
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          name: projects_sponsors
+          schema: public
 select_permissions:
   - role: public
     permission:
