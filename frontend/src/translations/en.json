@@ -41,7 +41,8 @@
     "logout": "Logout",
     "myContributions": "My payments",
     "myProjects": "My projects",
-    "projects": "Browse projects",
+    "projects__deprecated": "Browse projects",
+    "projects": "Projects",
     "signInWithGithub": "Connect"
   },
   "payment": {
