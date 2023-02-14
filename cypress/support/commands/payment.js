@@ -100,3 +100,23 @@ Cypress.Commands.add(
         };
     }
 );
+
+Cypress.Commands.add(
+    "addFiatPaymentReceipt",
+    (projectId, paymentId, amount, currencyCode, recipientIban, transactionReference) => {
+        return {
+            query: `mutation($projectId:Uuid!, $paymentId:Uuid!, $amount:String!, $currencyCode:String!, $recipientIban:String!, $transactionReference:String!) {
+                addFiatPaymentReceipt(projectId: $projectId, paymentId: $paymentId, amount: $amount, currencyCode: $currencyCode, recipientIban: $recipientIban, transactionReference: $transactionReference)
+              }`,
+            variables: {
+                projectId,
+                paymentId,
+                amount,
+                currencyCode,
+                recipientIban,
+                transactionReference,
+            },
+            wait: WAIT_SHORT,
+        };
+    }
+);
