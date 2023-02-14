@@ -21,13 +21,14 @@ import { HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/Loader";
 import ScrollToTop from "src/components/ScrollToTop";
 import ErrorTrigger from "src/pages/ErrorTrigger";
+import { isFeatureEnabled, FeatureFlags } from "src/utils/featureFlags";
 
 export enum RoutePaths {
   Projects = "/",
   Login = "/login",
   Profile = "/profile",
   ProjectDetails = "/projects/:projectId",
-  MyProjectDetails = "/my-projects/:projectId",
+  MyProjectDetails__deprecated = "/my-projects/:projectId",
   MyContributions = "/my-contributions",
   CatchAll = "*",
   Error = "/error",
@@ -72,50 +73,90 @@ function App() {
   const routes = useRoutes([
     {
       element: <Layout />,
-      children: [
-        {
-          path: RoutePaths.Projects,
-          element: <Projects />,
-        },
-        {
-          path: RoutePaths.Profile,
-          element: (
-            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <Profile />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: RoutePaths.MyContributions,
-          element: (
-            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <MyContributions />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: RoutePaths.Login,
-          element: <Login />,
-        },
-        {
-          path: RoutePaths.ProjectDetails,
-          element: <ProjectDetails />,
-          children: projectRoutes,
-        },
-        {
-          path: RoutePaths.MyProjectDetails,
-          element: <ProjectDetails />,
-          children: projectRoutes,
-        },
-        {
-          path: RoutePaths.CatchAll,
-          element: <Projects />,
-        },
-        {
-          path: RoutePaths.Error,
-          element: <ErrorTrigger />,
-        },
-      ],
+      children: isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS)
+        ? [
+            {
+              path: RoutePaths.Projects,
+              element: <Projects />,
+            },
+            {
+              path: RoutePaths.Profile,
+              element: (
+                <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
+                  <Profile />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: RoutePaths.MyContributions,
+              element: (
+                <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
+                  <MyContributions />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: RoutePaths.Login,
+              element: <Login />,
+            },
+            {
+              path: RoutePaths.ProjectDetails,
+              element: <ProjectDetails />,
+              children: projectRoutes,
+            },
+            {
+              path: RoutePaths.CatchAll,
+              element: <Projects />,
+            },
+            {
+              path: RoutePaths.Error,
+              element: <ErrorTrigger />,
+            },
+          ]
+        : [
+            {
+              path: RoutePaths.Projects,
+              element: <Projects />,
+            },
+            {
+              path: RoutePaths.Profile,
+              element: (
+                <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
+                  <Profile />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: RoutePaths.MyContributions,
+              element: (
+                <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
+                  <MyContributions />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: RoutePaths.Login,
+              element: <Login />,
+            },
+            {
+              path: RoutePaths.ProjectDetails,
+              element: <ProjectDetails />,
+              children: projectRoutes,
+            },
+            {
+              path: RoutePaths.MyProjectDetails__deprecated,
+              element: <ProjectDetails />,
+              children: projectRoutes,
+            },
+            {
+              path: RoutePaths.CatchAll,
+              element: <Projects />,
+            },
+            {
+              path: RoutePaths.Error,
+              element: <ErrorTrigger />,
+            },
+          ],
     },
   ]);
 

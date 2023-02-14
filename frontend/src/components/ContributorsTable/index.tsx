@@ -4,6 +4,7 @@ import { gql } from "@apollo/client";
 import { ContributorsTableFieldsFragment } from "src/__generated/graphql";
 import View, { Contributor } from "./View";
 import { ProjectPaymentsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
+import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
 type PropsType = {
   contributors: ContributorsTableFieldsFragment[];
@@ -37,7 +38,12 @@ const ContributorsTable: React.FC<PropsType> = ({
   const onPaymentRequested = (contributor: Contributor) => {
     if (!isSendingNewPaymentDisabled) {
       navigate(
-        generatePath(RoutePaths.MyProjectDetails, { projectId }) +
+        generatePath(
+          isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS)
+            ? RoutePaths.ProjectDetails
+            : RoutePaths.MyProjectDetails__deprecated,
+          { projectId }
+        ) +
           "/" +
           ProjectRoutePaths.Payments +
           "/" +

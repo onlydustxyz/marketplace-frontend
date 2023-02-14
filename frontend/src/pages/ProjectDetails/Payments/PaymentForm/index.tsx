@@ -8,6 +8,7 @@ import { generatePath, useLocation, useNavigate, useOutletContext } from "react-
 import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
+import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
 export const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/pull\/\d+$/;
 
@@ -31,7 +32,16 @@ const PaymentForm: React.FC = () => {
     projectId,
     onNewPaymentRequested: () => {
       showToaster(T("payment.form.sent"));
-      navigate(generatePath(RoutePaths.MyProjectDetails, { projectId }) + "/" + ProjectRoutePaths.Payments);
+      navigate(
+        generatePath(
+          isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS)
+            ? RoutePaths.ProjectDetails
+            : RoutePaths.MyProjectDetails__deprecated,
+          { projectId }
+        ) +
+          "/" +
+          ProjectRoutePaths.Payments
+      );
     },
   });
 

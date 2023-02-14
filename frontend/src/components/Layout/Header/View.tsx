@@ -9,7 +9,7 @@ import { generatePath, Link } from "react-router-dom";
 interface HeaderViewProps {
   menuItems: {
     [RoutePaths.Projects]?: string;
-    [RoutePaths.MyProjectDetails]?: string;
+    [RoutePaths.MyProjectDetails__deprecated]?: string;
     [RoutePaths.MyContributions]?: string;
   };
   selectedMenuItem: string;
@@ -36,12 +36,12 @@ export default function HeaderView({
           {menuItems[RoutePaths.Projects]}
         </MenuItem>
       )}
-      {menuItems[RoutePaths.MyProjectDetails] && lastVisitedProjectId && (
+      {menuItems[RoutePaths.MyProjectDetails__deprecated] && lastVisitedProjectId && (
         <MenuItem
           path={selectedMenuItem}
-          link={generatePath(RoutePaths.MyProjectDetails, { projectId: lastVisitedProjectId })}
+          link={generatePath(RoutePaths.MyProjectDetails__deprecated, { projectId: lastVisitedProjectId })}
         >
-          {menuItems[RoutePaths.MyProjectDetails]}
+          {menuItems[RoutePaths.MyProjectDetails__deprecated]}
         </MenuItem>
       )}
       {menuItems[RoutePaths.MyContributions] && (

@@ -8,6 +8,7 @@ import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
+import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 import { GetProjectsQuery } from "src/__generated/graphql";
 import { Project } from "..";
 
@@ -31,7 +32,7 @@ export default function AllProjects({ technologies }: Props) {
     [getProjectsQuery.data?.projects]
   );
 
-  const isProjectMine = (project: Project) =>
+  const isProjectMine__deprecated = (project: Project) =>
     ledProjectIds.includes(project?.id) || project?.pendingInvitations?.length > 0;
 
   return (
@@ -41,9 +42,14 @@ export default function AllProjects({ technologies }: Props) {
           projects.map(project => (
             <Link
               key={project.id}
-              to={generatePath(isProjectMine(project) ? RoutePaths.MyProjectDetails : RoutePaths.ProjectDetails, {
-                projectId: project.id,
-              })}
+              to={generatePath(
+                !isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS) && isProjectMine__deprecated(project)
+                  ? RoutePaths.MyProjectDetails__deprecated
+                  : RoutePaths.ProjectDetails,
+                {
+                  projectId: project.id,
+                }
+              )}
             >
               <ProjectCard {...project} />
             </Link>
