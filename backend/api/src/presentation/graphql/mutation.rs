@@ -1,7 +1,8 @@
 use anyhow::anyhow;
 use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt, ProjectId, UserId};
+use iban::Iban;
 use juniper::{graphql_object, DefaultScalarValue};
-use rusty_money::{crypto, Money};
+use rusty_money::Money;
 use uuid::Uuid;
 
 use super::{Context, Error, Result};
@@ -26,7 +27,7 @@ impl Mutation {
 		recipient_identity: EthereumIdentityInput,
 		transaction_hash: String,
 	) -> Result<Uuid> {
-		let currency = crypto::find(&currency_code).ok_or_else(|| {
+		let currency = rusty_money::crypto::find(&currency_code).ok_or_else(|| {
 			Error::InvalidRequest(anyhow!("Unknown currency code: {currency_code}"))
 		})?;
 
@@ -49,6 +50,41 @@ impl Mutation {
 					network: BlockchainNetwork::Ethereum,
 					recipient_address: ethereum_address,
 					transaction_hash,
+				},
+			)
+			.await?;
+
+		Ok(receipt_id.into())
+	}
+
+	pub async fn add_fiat_payment_receipt(
+		context: &Context,
+		project_id: Uuid,
+		payment_id: Uuid,
+		amount: String,
+		currency_code: String,
+		recipient_iban: String,
+		transaction_reference: String,
+	) -> Result<Uuid> {
+		let currency = rusty_money::iso::find(&currency_code).ok_or_else(|| {
+			Error::InvalidRequest(anyhow!("Unknown currency code: {currency_code}"))
+		})?;
+
+		let amount = Money::from_str(&amount, currency)
+			.map_err(|e| Error::InvalidRequest(anyhow::Error::msg(e)))?;
+
+		let recipient_iban =
+			recipient_iban.parse::<Iban>().map_err(|e| Error::InvalidRequest(e.into()))?;
+
+		let receipt_id = context
+			.process_payment_usecase
+			.add_payment_receipt(
+				&project_id.into(),
+				&payment_id.into(),
+				Amount::new(*amount.amount(), Currency::Crypto(currency_code)),
+				PaymentReceipt::FiatPayment {
+					recipient_iban,
+					transaction_reference,
 				},
 			)
 			.await?;
@@ -81,7 +117,7 @@ impl Mutation {
 			.create_project_usecase
 			.create(
 				name,
-				Money::from_major(initial_budget_in_usd as i64, crypto::USDC).into(),
+				Money::from_major(initial_budget_in_usd as i64, rusty_money::crypto::USDC).into(),
 				(github_repo_id as i64).into(),
 				description,
 				telegram_link,

@@ -141,6 +141,7 @@ dependencies = [
  "email_address",
  "event-store",
  "futures",
+ "iban_validate",
  "infrastructure",
  "juniper",
  "juniper_rocket",
@@ -1029,6 +1030,7 @@ dependencies = [
  "derive_more",
  "diesel",
  "futures",
+ "iban_validate",
  "juniper",
  "log",
  "mockall",
@@ -1801,6 +1803,16 @@ checksum = "0703ae284fc167426161c2e3f1da3ea71d94b21bedbcc9494e92b28e334e3dca"
 dependencies = [
  "cxx",
  "cxx-build",
+]
+
+[[package]]
+name = "iban_validate"
+version = "4.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cc1d358f7ae89819e8656f1b495c9d760a9ca315998b12d589dc516c9f81ed08"
+dependencies = [
+ "arrayvec",
+ "serde",
 ]
 
 [[package]]
