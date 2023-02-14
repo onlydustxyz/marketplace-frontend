@@ -1,5 +1,6 @@
 import { ComponentStory } from "@storybook/react";
 import { JSXElementConstructor } from "react";
+import { ProjectOwnershipType } from "..";
 import FilterPanel from "./View";
 
 export default {
@@ -15,7 +16,22 @@ const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
 
 const args = {
   technologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
+  projectOwnershipType: ProjectOwnershipType.All,
+  setProjectOwnershipType: () => {
+    return;
+  },
+  isProjectLeader: false,
 };
 
-export const Default = Template.bind({});
-Default.args = args;
+export const AllProjects = Template.bind({});
+AllProjects.args = args;
+
+export const MyProjects = Template.bind({});
+MyProjects.args = {
+  technologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
+  projectOwnershipType: ProjectOwnershipType.Mine,
+  setProjectOwnershipType: () => {
+    return;
+  },
+  isProjectLeader: true,
+};

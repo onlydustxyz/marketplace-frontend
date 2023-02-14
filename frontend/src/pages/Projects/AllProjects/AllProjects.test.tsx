@@ -3,6 +3,7 @@ import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import AllProjects, { buildGetProjectsQuery } from ".";
+import { ProjectOwnershipType } from "..";
 
 expect.extend(matchers);
 
@@ -101,7 +102,7 @@ describe("All projects", () => {
   });
 
   it("should sort by money granted desc if no pending invitations", async () => {
-    renderWithIntl(<AllProjects technologies={[]} />, {
+    renderWithIntl(<AllProjects technologies={[]} projectOwnershipType={ProjectOwnershipType.All} />, {
       wrapper: MemoryRouterProviderFactory({
         mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_NO_INVITATIONS),
       }),
@@ -112,7 +113,7 @@ describe("All projects", () => {
   });
 
   it("should sort by pending invitation, then money granted desc if pendign invitations", async () => {
-    renderWithIntl(<AllProjects technologies={[]} />, {
+    renderWithIntl(<AllProjects technologies={[]} projectOwnershipType={ProjectOwnershipType.All} />, {
       wrapper: MemoryRouterProviderFactory({
         mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_WITH_INVITATION),
       }),

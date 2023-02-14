@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
+import { useAuth } from "src/hooks/useAuth";
 import { ArrayElement } from "src/types";
 import { GetProjectsQuery } from "src/__generated/graphql";
 import { useT } from "talkr";
@@ -15,6 +16,7 @@ export enum ProjectOwnershipType {
 
 export default function Projects() {
   const { T } = useT();
+  const { ledProjectIds } = useAuth();
 
   const [technologies, setTechnologies] = useState<string[]>([]);
   const [projectOwnershipType, setProjectOwnershipType] = useState(ProjectOwnershipType.All);
@@ -29,6 +31,7 @@ export default function Projects() {
               onTechnologiesChange={setTechnologies}
               projectOwnershipType={projectOwnershipType}
               setProjectOwnershipType={setProjectOwnershipType}
+              isProjectLeader={!!ledProjectIds.length}
             />
           </div>
           <AllProjects technologies={technologies} projectOwnershipType={projectOwnershipType} />

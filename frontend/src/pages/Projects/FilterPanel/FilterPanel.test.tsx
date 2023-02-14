@@ -1,9 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
+import userEvent from "@testing-library/user-event";
 import FilterPanel, { GET_ALL_TECHNOLOGIES_QUERY } from ".";
 import { renderWithIntl, MemoryRouterProviderFactory } from "src/test/utils";
-import userEvent from "@testing-library/user-event";
+import { ProjectOwnershipType } from "..";
 
 expect.extend(matchers);
 
@@ -32,11 +33,20 @@ describe("FilterPanel", () => {
   });
 
   it("should should display first 2 technologies of projects and be sorted", async () => {
-    renderWithIntl(<FilterPanel />, {
-      wrapper: MemoryRouterProviderFactory({
-        mocks: graphQlMocks,
-      }),
-    });
+    renderWithIntl(
+      <FilterPanel
+        projectOwnershipType={ProjectOwnershipType.All}
+        setProjectOwnershipType={() => {
+          return;
+        }}
+        isProjectLeader={false}
+      />,
+      {
+        wrapper: MemoryRouterProviderFactory({
+          mocks: graphQlMocks,
+        }),
+      }
+    );
 
     userEvent.click(await screen.findByRole("button"));
 

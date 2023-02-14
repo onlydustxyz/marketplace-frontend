@@ -17,11 +17,11 @@
     },
     "totalEarnings": "Total earnings"
   },
-    "filter": {
-	"ownership": {
-	    "all": "All projects",
-	    "mine": "Mine only"
-	},
+  "filter": {
+    "ownership": {
+      "all": "All projects",
+      "mine": "Mine only"
+    },
     "technologies": {
       "all": "All technologies",
       "some": "Technologies"

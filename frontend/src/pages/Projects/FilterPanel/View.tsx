@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { useAuth } from "src/hooks/useAuth";
 import { useIntl } from "src/hooks/useIntl";
 import StarLine from "src/icons/StarLine";
 import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
@@ -12,6 +11,7 @@ type Props = {
   onTechnologiesChange?: (technologies: string[]) => void;
   projectOwnershipType: ProjectOwnershipType;
   setProjectOwnershipType: (projectType: ProjectOwnershipType) => void;
+  isProjectLeader: boolean;
 };
 
 export default function View({
@@ -19,14 +19,14 @@ export default function View({
   onTechnologiesChange,
   projectOwnershipType,
   setProjectOwnershipType,
+  isProjectLeader,
 }: Props) {
   const { T } = useIntl();
-  const { ledProjectIds } = useAuth();
 
   return (
     <Card className="flex flex-col h-fit w-full p-6 gap-0.5">
       <span className="font-belwe font-normal text-base text-greyscale-50">{T("filter.title")}</span>
-      {!!ledProjectIds.length && isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS) ? (
+      {isProjectLeader && isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS) ? (
         <div className="flex flex-row py-3 gap-2">
           <OwnershipTypeButton
             selected={projectOwnershipType === ProjectOwnershipType.All}

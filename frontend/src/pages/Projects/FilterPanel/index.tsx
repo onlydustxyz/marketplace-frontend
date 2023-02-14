@@ -10,9 +10,15 @@ type Props = {
   onTechnologiesChange?: (technologies: string[]) => void;
   projectOwnershipType: ProjectOwnershipType;
   setProjectOwnershipType: (projectType: ProjectOwnershipType) => void;
+  isProjectLeader: boolean;
 };
 
-export default function FilterPanel({ onTechnologiesChange, projectOwnershipType, setProjectOwnershipType }: Props) {
+export default function FilterPanel({
+  onTechnologiesChange,
+  projectOwnershipType,
+  setProjectOwnershipType,
+  isProjectLeader,
+}: Props) {
   const technologiesQuery = useHasuraQuery<GetAllTechnologiesQuery>(GET_ALL_TECHNOLOGIES_QUERY, HasuraUserRole.Public);
 
   const technologies = new Set(
@@ -25,6 +31,7 @@ export default function FilterPanel({ onTechnologiesChange, projectOwnershipType
       onTechnologiesChange={onTechnologiesChange}
       projectOwnershipType={projectOwnershipType}
       setProjectOwnershipType={setProjectOwnershipType}
+      isProjectLeader={isProjectLeader}
     />
   );
 }
