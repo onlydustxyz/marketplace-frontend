@@ -131,6 +131,7 @@ impl Mutation {
 	pub async fn update_project(
 		context: &Context,
 		id: Uuid,
+		name: String,
 		description: Option<String>,
 		telegram_link: Option<String>,
 		logo_url: Option<String>,
@@ -139,6 +140,7 @@ impl Mutation {
 
 		context.project_details_repository.upsert(&ProjectDetails::new(
 			project_id,
+			name,
 			description,
 			telegram_link,
 			logo_url,

@@ -47,7 +47,6 @@ impl Usecase {
 		Project::create(
 			self.github.clone(),
 			project_id,
-			name,
 			github_repo_id,
 			initial_budget,
 		)
@@ -62,6 +61,7 @@ impl Usecase {
 
 		self.project_details_repository.upsert(&ProjectDetails::new(
 			project_id,
+			name,
 			description,
 			telegram_link,
 			logo_url,

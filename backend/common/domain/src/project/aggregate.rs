@@ -28,7 +28,6 @@ type Result<T> = std::result::Result<T, Error>;
 #[derive(Default, Debug, Clone, PartialEq, Eq, Getters, Dissolve, Constructor)]
 pub struct Project {
 	id: ProjectId,
-	name: String,
 	github_repo_id: GithubRepositoryId,
 	leaders: HashSet<UserId>,
 	budget: Budget,
@@ -53,13 +52,8 @@ impl From<ProjectEvent> for Event {
 impl EventSourcable for Project {
 	fn apply_event(mut self, event: &Self::Event) -> Self {
 		match event {
-			ProjectEvent::Created {
-				id,
-				name,
-				github_repo_id,
-			} => Project {
+			ProjectEvent::Created { id, github_repo_id } => Project {
 				id: *id,
-				name: name.to_owned(),
 				github_repo_id: github_repo_id.to_owned(),
 				..Default::default()
 			},
@@ -87,7 +81,6 @@ impl Project {
 	pub async fn create(
 		github_repo_exists: Arc<dyn GithubRepoExists>,
 		id: ProjectId,
-		name: String,
 		github_repo_id: GithubRepositoryId,
 		initial_budget: Amount,
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
@@ -103,13 +96,7 @@ impl Project {
 			.into_iter()
 			.map(|event| ProjectEvent::Budget { id, event });
 
-		Ok(once(ProjectEvent::Created {
-			id,
-			name,
-			github_repo_id,
-		})
-		.chain(events)
-		.collect())
+		Ok(once(ProjectEvent::Created { id, github_repo_id }).chain(events).collect())
 	}
 
 	pub fn assign_leader(&self, leader_id: UserId) -> Result<Vec<<Self as Aggregate>::Event>> {
@@ -222,11 +209,6 @@ mod tests {
 	}
 
 	#[fixture]
-	fn project_name() -> &'static str {
-		"My cool project"
-	}
-
-	#[fixture]
 	fn leader_id() -> UserId {
 		Uuid::from_str("f2e47686-6cfa-403d-be32-795c6aa78fff").unwrap().into()
 	}
@@ -245,7 +227,6 @@ mod tests {
 	fn project_created(project_id: ProjectId) -> ProjectEvent {
 		ProjectEvent::Created {
 			id: project_id,
-			name: "La barbe de la femme à Georges Moustaki".to_string(),
 			github_repo_id: 12345.into(),
 		}
 	}
@@ -253,7 +234,6 @@ mod tests {
 	#[rstest]
 	async fn test_create(
 		project_id: ProjectId,
-		project_name: &str,
 		github_repo_id: GithubRepositoryId,
 		initial_budget: Amount,
 	) {
@@ -266,7 +246,6 @@ mod tests {
 		let events = Project::create(
 			Arc::new(github_repo_exists_specification),
 			project_id,
-			project_name.to_string(),
 			github_repo_id,
 			initial_budget,
 		)
@@ -278,7 +257,6 @@ mod tests {
 			events[0],
 			ProjectEvent::Created {
 				id: project_id,
-				name: project_name.to_string(),
 				github_repo_id
 			}
 		);
@@ -294,7 +272,6 @@ mod tests {
 	#[rstest]
 	async fn test_create_with_unexisting_github_repo(
 		project_id: ProjectId,
-		project_name: &str,
 		github_repo_id: GithubRepositoryId,
 		initial_budget: Amount,
 	) {
@@ -307,7 +284,6 @@ mod tests {
 		let result = Project::create(
 			Arc::new(github_repo_exists_specification),
 			project_id,
-			project_name.to_string(),
 			github_repo_id,
 			initial_budget,
 		)
@@ -320,7 +296,6 @@ mod tests {
 	#[rstest]
 	async fn test_create_with_internal_error(
 		project_id: ProjectId,
-		project_name: &str,
 		github_repo_id: GithubRepositoryId,
 		initial_budget: Amount,
 	) {
@@ -333,7 +308,6 @@ mod tests {
 		let result = Project::create(
 			Arc::new(github_repo_exists_specification),
 			project_id,
-			project_name.to_string(),
 			github_repo_id,
 			initial_budget,
 		)

@@ -8,7 +8,6 @@ use crate::{AggregateEvent, BudgetEvent, GithubRepositoryId, Project, ProjectId,
 pub enum Event {
 	Created {
 		id: ProjectId,
-		name: String,
 		github_repo_id: GithubRepositoryId,
 	},
 	LeaderAssigned {

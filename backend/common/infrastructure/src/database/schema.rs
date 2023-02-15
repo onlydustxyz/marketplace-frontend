@@ -84,6 +84,7 @@ diesel::table! {
         description -> Nullable<Text>,
         telegram_link -> Nullable<Text>,
         logo_url -> Nullable<Text>,
+        name -> Text,
     }
 }
 
@@ -97,7 +98,6 @@ diesel::table! {
 diesel::table! {
     projects (id) {
         id -> Uuid,
-        name -> Text,
         github_repo_id -> Int8,
     }
 }
