@@ -15,12 +15,12 @@ export default function Layout() {
         </div>
       )}
       <div
-        className={classNames("h-screen flex flex-col", {
+        className={classNames("min-h-screen flex flex-col", {
           "md:visible invisible ": !RESPONSIVE,
         })}
       >
         <Header />
-        <div className="px-6 pb-6 flex-1">
+        <div className="px-2 sm:px-6 pb-2 sm:pb-6 flex-1">
           <Outlet />
           <Toaster />
         </div>
