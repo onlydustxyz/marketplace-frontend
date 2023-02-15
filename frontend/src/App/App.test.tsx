@@ -18,7 +18,7 @@ import {
 } from "src/pages/Login/hooks/useSignUpRedirection";
 import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import { generatePath } from "react-router-dom";
-import { GET_MY_CONTRIBUTIONS_QUERY } from "src/pages/MyContributions";
+import { GET_PAYMENTS_QUERY } from "src/pages/Payments";
 
 const AUTH_CODE_TEST_VALUE = "code";
 const LOGGING_IN_TEXT_QUERY = /logging in.../i;
@@ -259,7 +259,7 @@ const pendingPaymentsMock = {
 
 const paymentRequestsMock = {
   request: {
-    query: GET_MY_CONTRIBUTIONS_QUERY,
+    query: GET_PAYMENTS_QUERY,
     variables: {
       githubUserId: TEST_GITHUB_USER_ID,
     },

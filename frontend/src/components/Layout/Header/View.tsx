@@ -10,7 +10,7 @@ import FeedbackButton from "./FeedbackButton";
 interface HeaderViewProps {
   menuItems: {
     [RoutePaths.Projects]?: string;
-    [RoutePaths.MyContributions]?: string;
+    [RoutePaths.Payments]?: string;
   };
   selectedMenuItem: string;
   isLoggedIn: boolean;
@@ -30,9 +30,9 @@ export default function HeaderView({ menuItems, selectedMenuItem, isLoggedIn, on
           {menuItems[RoutePaths.Projects]}
         </MenuItem>
       )}
-      {menuItems[RoutePaths.MyContributions] && (
-        <MenuItem path={selectedMenuItem} link={RoutePaths.MyContributions}>
-          {menuItems[RoutePaths.MyContributions]}
+      {menuItems[RoutePaths.Payments] && (
+        <MenuItem path={selectedMenuItem} link={RoutePaths.Payments}>
+          {menuItems[RoutePaths.Payments]}
         </MenuItem>
       )}
       <div className="flex flex-1 flex-row gap-4 justify-end">

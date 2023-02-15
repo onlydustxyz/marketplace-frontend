@@ -2,7 +2,7 @@ import { describe, expect, it, Mock, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
-import MyContributionsPage, { GET_MY_CONTRIBUTIONS_QUERY } from ".";
+import PaymentsPage, { GET_PAYMENTS_QUERY } from ".";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { GET_USER_PAYOUT_SETTINGS } from "src/hooks/usePayoutSettings";
@@ -59,12 +59,12 @@ const mockContribution = {
   },
 };
 
-const buildMockMyContributionsQuery = (
+const buildMockPaymentsQuery = (
   githubUserId: number,
   paymentRequests: Record<string, unknown>[] = [mockContribution]
 ) => ({
   request: {
-    query: GET_MY_CONTRIBUTIONS_QUERY,
+    query: GET_PAYMENTS_QUERY,
     variables: {
       githubUserId,
     },
@@ -96,7 +96,7 @@ const buidlMockPayoutSettingsQuery = (payoutSettings: any) => ({
   },
 });
 
-describe('"MyContributions" page', () => {
+describe('"Payments" page', () => {
   beforeEach(() => {
     (useRoles as Mock).mockReturnValue({ githubUserId });
   });
@@ -106,7 +106,7 @@ describe('"MyContributions" page', () => {
 
     const queryMock = {
       request: {
-        query: GET_MY_CONTRIBUTIONS_QUERY,
+        query: GET_PAYMENTS_QUERY,
         variables: {
           githubUserId,
         },
@@ -114,7 +114,7 @@ describe('"MyContributions" page', () => {
       newData: vi.fn(() => ({})),
     };
 
-    renderWithIntl(<MyContributionsPage />, {
+    renderWithIntl(<PaymentsPage />, {
       wrapper: MemoryRouterProviderFactory({
         mocks: [queryMock],
       }),
@@ -126,9 +126,9 @@ describe('"MyContributions" page', () => {
   });
 
   it("should navigate to home when no contributions returned", async () => {
-    renderWithIntl(<MyContributionsPage />, {
+    renderWithIntl(<PaymentsPage />, {
       wrapper: MemoryRouterProviderFactory({
-        mocks: [buildMockMyContributionsQuery(githubUserId, [])],
+        mocks: [buildMockPaymentsQuery(githubUserId, [])],
       }),
     });
 
@@ -136,9 +136,9 @@ describe('"MyContributions" page', () => {
   });
 
   it("should render contributions table", async () => {
-    renderWithIntl(<MyContributionsPage />, {
+    renderWithIntl(<PaymentsPage />, {
       wrapper: MemoryRouterProviderFactory({
-        mocks: [buildMockMyContributionsQuery(githubUserId)],
+        mocks: [buildMockPaymentsQuery(githubUserId)],
       }),
     });
 
@@ -149,19 +149,19 @@ describe('"MyContributions" page', () => {
   });
 
   it("should display banner when there are payments but no payout info", async () => {
-    renderWithIntl(<MyContributionsPage />, {
+    renderWithIntl(<PaymentsPage />, {
       wrapper: MemoryRouterProviderFactory({
-        mocks: [buildMockMyContributionsQuery(githubUserId), buidlMockPayoutSettingsQuery(undefined)],
+        mocks: [buildMockPaymentsQuery(githubUserId), buidlMockPayoutSettingsQuery(undefined)],
       }),
     });
     expect(await screen.findByText("Complete payout information")).toBeInTheDocument();
   });
 
   it("should not display banner when there are payments and payout info", async () => {
-    renderWithIntl(<MyContributionsPage />, {
+    renderWithIntl(<PaymentsPage />, {
       wrapper: MemoryRouterProviderFactory({
         mocks: [
-          buildMockMyContributionsQuery(githubUserId),
+          buildMockPaymentsQuery(githubUserId),
           buidlMockPayoutSettingsQuery({ EthTransfer: { Name: "vitalik.eth" } }),
         ],
       }),

@@ -75,7 +75,7 @@ export const Default = Template.bind({});
 Default.args = {
   menuItems: {
     [RoutePaths.Projects]: "Projects",
-    [RoutePaths.MyContributions]: "Payments",
+    [RoutePaths.Payments]: "Payments",
   },
   isLoggedIn: false,
   selectedMenuItem: RoutePaths.Projects,
