@@ -116,7 +116,7 @@ impl Mutation {
 		let project_id = context
 			.create_project_usecase
 			.create(
-				name,
+				name.try_into()?,
 				Money::from_major(initial_budget_in_usd as i64, rusty_money::crypto::USDC).into(),
 				(github_repo_id as i64).into(),
 				description,

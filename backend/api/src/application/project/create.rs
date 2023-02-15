@@ -10,6 +10,7 @@ use tracing::instrument;
 use crate::{
 	domain::{ProjectDetails, Publishable},
 	infrastructure::database::ProjectDetailsRepository,
+	presentation::http::dto::NonEmptyTrimmedString,
 };
 
 pub struct Usecase {
@@ -35,7 +36,7 @@ impl Usecase {
 	#[instrument(skip(self))]
 	pub async fn create(
 		&self,
-		name: String,
+		name: NonEmptyTrimmedString,
 		initial_budget: Amount,
 		github_repo_id: GithubRepositoryId,
 		description: Option<String>,
@@ -61,7 +62,7 @@ impl Usecase {
 
 		self.project_details_repository.upsert(&ProjectDetails::new(
 			project_id,
-			name,
+			name.into_inner(),
 			description,
 			telegram_link,
 			logo_url,
