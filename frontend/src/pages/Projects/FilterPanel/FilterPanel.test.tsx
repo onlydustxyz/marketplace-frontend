@@ -57,4 +57,24 @@ describe("FilterPanel", () => {
     expect(allOptions[2]).toHaveTextContent("Shell");
     expect(allOptions[3]).toHaveTextContent("TypeScript");
   });
+
+  it("should should display first 2 technologies of projects and be sorted", async () => {
+    renderWithIntl(
+      <FilterPanel
+        projectOwnershipType={ProjectOwnershipType.All}
+        setProjectOwnershipType={() => {
+          return;
+        }}
+        isProjectLeader={true}
+      />,
+      {
+        wrapper: MemoryRouterProviderFactory({
+          mocks: graphQlMocks,
+        }),
+      }
+    );
+
+    await screen.findByText(/all projects/i);
+    await screen.findByText(/mine only/i);
+  });
 });

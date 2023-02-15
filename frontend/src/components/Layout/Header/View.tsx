@@ -4,28 +4,20 @@ import OnlyDustLogo from "./OnlyDustLogo";
 import OnlyDustTitle from "./OnlyDustTitle";
 import ProfileButton from "./ProfileButton";
 import MenuItem from "src/components/Layout/Header/MenuItem";
-import { generatePath, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import FeedbackButton from "./FeedbackButton";
 
 interface HeaderViewProps {
   menuItems: {
     [RoutePaths.Projects]?: string;
-    [RoutePaths.MyProjectDetails__deprecated]?: string;
     [RoutePaths.MyContributions]?: string;
   };
   selectedMenuItem: string;
   isLoggedIn: boolean;
-  lastVisitedProjectId: string;
   onLogin?: () => void;
 }
 
-export default function HeaderView({
-  menuItems,
-  selectedMenuItem,
-  isLoggedIn,
-  lastVisitedProjectId,
-  onLogin,
-}: HeaderViewProps) {
+export default function HeaderView({ menuItems, selectedMenuItem, isLoggedIn, onLogin }: HeaderViewProps) {
   const testing = import.meta.env.NODE_ENV === "test";
   return (
     <div className="bg-black font-walsheim flex flex-row justify-start items-center py-4 px-6 gap-8 text-xl text-neutral-400">
@@ -36,14 +28,6 @@ export default function HeaderView({
       {menuItems[RoutePaths.Projects] && (
         <MenuItem path={selectedMenuItem} link={RoutePaths.Projects} activeRegex={new RegExp("^(/|/projects.+)$")}>
           {menuItems[RoutePaths.Projects]}
-        </MenuItem>
-      )}
-      {menuItems[RoutePaths.MyProjectDetails__deprecated] && lastVisitedProjectId && (
-        <MenuItem
-          path={selectedMenuItem}
-          link={generatePath(RoutePaths.MyProjectDetails__deprecated, { projectId: lastVisitedProjectId })}
-        >
-          {menuItems[RoutePaths.MyProjectDetails__deprecated]}
         </MenuItem>
       )}
       {menuItems[RoutePaths.MyContributions] && (

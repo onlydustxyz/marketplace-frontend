@@ -14,7 +14,6 @@ import { buildGithubLink } from "src/utils/stringUtils";
 import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
 import { generatePath, NavLink, useNavigate } from "react-router-dom";
 import classNames from "classnames";
-import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
 interface Props {
   expandable: boolean;
@@ -38,25 +37,18 @@ export default function View({ expandable, currentProject, allProjects, availabl
 
   return (
     <Sidebar>
-      {(isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS) || !expandable) && (
-        <BackLink to={RoutePaths.Projects} className="divide-none">
-          {T("project.details.sidebar.backToProjects")}
-        </BackLink>
-      )}
+      <BackLink to={RoutePaths.Projects} className="divide-none">
+        {T("project.details.sidebar.backToProjects")}
+      </BackLink>
       <div className="flex flex-col gap-6 divide-y divide-neutral-700 w-full">
         <div className="relative h-16">
           <Listbox
             value={currentProject}
             onChange={project =>
               navigate(
-                generatePath(
-                  !isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS) && projectLead
-                    ? RoutePaths.MyProjectDetails__deprecated
-                    : RoutePaths.ProjectDetails,
-                  {
-                    projectId: project.id,
-                  }
-                )
+                generatePath(RoutePaths.ProjectDetails, {
+                  projectId: project.id,
+                })
               )
             }
             disabled={!expandable}

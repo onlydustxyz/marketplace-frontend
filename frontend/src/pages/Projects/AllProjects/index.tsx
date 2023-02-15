@@ -8,9 +8,8 @@ import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
-import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 import { GetProjectsQuery } from "src/__generated/graphql";
-import { Project, ProjectOwnershipType } from "..";
+import { ProjectOwnershipType } from "..";
 
 type Props = {
   technologies: string[];
@@ -36,9 +35,6 @@ export default function AllProjects({ technologies, projectOwnershipType }: Prop
     return sortBy(projects, p => !p.pendingInvitations.length);
   }, [getProjectsQuery.data?.projects, ledProjectIds, projectOwnershipType]);
 
-  const isProjectMine__deprecated = (project: Project) =>
-    ledProjectIds.includes(project?.id) || project?.pendingInvitations?.length > 0;
-
   return (
     <QueryWrapper query={getProjectsQuery}>
       <div className="flex flex-col gap-5 grow">
@@ -46,14 +42,9 @@ export default function AllProjects({ technologies, projectOwnershipType }: Prop
           projects.map(project => (
             <Link
               key={project.id}
-              to={generatePath(
-                !isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS) && isProjectMine__deprecated(project)
-                  ? RoutePaths.MyProjectDetails__deprecated
-                  : RoutePaths.ProjectDetails,
-                {
-                  projectId: project.id,
-                }
-              )}
+              to={generatePath(RoutePaths.ProjectDetails, {
+                projectId: project.id,
+              })}
             >
               <ProjectCard {...project} />
             </Link>

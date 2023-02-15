@@ -4,29 +4,16 @@ import { RoutePaths } from "src/App";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
-import { SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSession";
-import { CustomUserRole, HasuraUserRole } from "src/types";
-import { GetFirstLeadProjectIdQuery, GetPaymentRequestIdsQuery } from "src/__generated/graphql";
+import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
+import { HasuraUserRole } from "src/types";
+import { GetPaymentRequestIdsQuery } from "src/__generated/graphql";
 import View from "./View";
-import { isFeatureEnabled, FeatureFlags } from "src/utils/featureFlags";
 
 export default function Header() {
   const location = useLocation();
-  const { isLoggedIn, roles, user, githubUserId } = useAuth();
+  const { isLoggedIn, githubUserId } = useAuth();
   const { T } = useIntl();
-  const { lastVisitedProjectId } = useSession();
   const dispatchSession = useSessionDispatch();
-
-  const { data } = useHasuraQuery<GetFirstLeadProjectIdQuery>(
-    GET_FIRST_LEAD_PROJECT_ID,
-    HasuraUserRole.RegisteredUser,
-    {
-      skip: !roles.includes(CustomUserRole.ProjectLead),
-      variables: {
-        userId: user?.id,
-      },
-    }
-  );
 
   const { data: paymentRequestIdsQueryData } = useHasuraQuery<GetPaymentRequestIdsQuery>(
     GET_MY_CONTRIBUTION_IDS_QUERY,
@@ -39,41 +26,21 @@ export default function Header() {
   const hasPayments =
     paymentRequestIdsQueryData?.paymentRequests && paymentRequestIdsQueryData.paymentRequests.length > 0;
 
-  const myProjectsMenuItem =
-    !isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS) && roles.includes(CustomUserRole.ProjectLead)
-      ? T("navbar.myProjects")
-      : undefined;
   const myContributionsMenuItem = hasPayments ? T("navbar.myContributions") : undefined;
-  const projectsMenuItem =
-    myProjectsMenuItem || myContributionsMenuItem
-      ? T(isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS) ? "navbar.projects" : "navbar.projects__deprecated")
-      : undefined;
+  const projectsMenuItem = myContributionsMenuItem ? T("navbar.projects") : undefined;
 
   return (
     <View
       menuItems={{
         [RoutePaths.Projects]: projectsMenuItem,
-        [RoutePaths.MyProjectDetails__deprecated]: myProjectsMenuItem,
         [RoutePaths.MyContributions]: myContributionsMenuItem,
       }}
       isLoggedIn={isLoggedIn}
       selectedMenuItem={location.pathname}
-      lastVisitedProjectId={lastVisitedProjectId || data?.user?.projectsLeaded[0]?.projectId}
       onLogin={() => dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: location.pathname })}
     />
   );
 }
-
-export const GET_FIRST_LEAD_PROJECT_ID = gql`
-  query GetFirstLeadProjectId($userId: uuid!) {
-    user(id: $userId) {
-      id
-      projectsLeaded(limit: 1) {
-        projectId
-      }
-    }
-  }
-`;
 
 export const GET_MY_CONTRIBUTION_IDS_QUERY = gql`
   query GetPaymentRequestIds($githubUserId: bigint!) {
