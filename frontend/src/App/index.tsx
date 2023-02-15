@@ -9,7 +9,7 @@ import ErrorFallback from "src/components/ErrorFallback";
 const Login = lazy(() => import("src/pages/Login"));
 const Projects = lazy(() => import("src/pages/Projects"));
 const Profile = lazy(() => import("src/pages/Profile"));
-const MyContributions = lazy(() => import("src/pages/MyContributions"));
+const Payments = lazy(() => import("src/pages/Payments"));
 const ProjectDetails = lazy(() => import("src/pages/ProjectDetails"));
 const ProjectDetailsOverview = lazy(() => import("src/pages/ProjectDetails/Overview"));
 const ProjectDetailsContributors = lazy(() => import("src/pages/ProjectDetails/Contributors"));
@@ -27,7 +27,7 @@ export enum RoutePaths {
   Login = "/login",
   Profile = "/profile",
   ProjectDetails = "/projects/:projectId",
-  MyContributions = "/my-contributions",
+  Payments = "/payments",
   CatchAll = "*",
   Error = "/error",
 }
@@ -85,10 +85,10 @@ function App() {
           ),
         },
         {
-          path: RoutePaths.MyContributions,
+          path: RoutePaths.Payments,
           element: (
             <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>
-              <MyContributions />
+              <Payments />
             </ProtectedRoute>
           ),
         },

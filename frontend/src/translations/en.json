@@ -43,9 +43,7 @@
   },
   "navbar": {
     "logout": "Logout",
-    "myContributions": "My payments",
-    "myProjects": "My projects",
-    "projects__deprecated": "Browse projects",
+    "payments": "Payments",
     "projects": "Projects",
     "signInWithGithub": "Connect",
     "feedback": {

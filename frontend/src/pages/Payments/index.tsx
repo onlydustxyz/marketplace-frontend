@@ -15,12 +15,12 @@ import TotalEarnings from "./TotalEarnings";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 
-const MyContributions = () => {
+const Payments = () => {
   const { githubUserId } = useAuth();
   const { T } = useT();
 
   const getPaymentRequestsQuery = useHasuraQuery<GetPaymentRequestsQuery>(
-    GET_MY_CONTRIBUTIONS_QUERY,
+    GET_PAYMENTS_QUERY,
     HasuraUserRole.RegisteredUser,
     {
       variables: { githubUserId },
@@ -43,7 +43,7 @@ const MyContributions = () => {
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
       <div className="container mx-auto pt-16 h-full">
-        <div className="text-5xl font-belwe">{T("navbar.myContributions")}</div>
+        <div className="text-5xl font-belwe">{T("navbar.payments")}</div>
         <QueryWrapper query={getPaymentRequestsQuery}>
           <div className="my-10">
             {!payoutSettingsValid && hasPendingPaymentsRequests(getPaymentRequestsQuery) && (
@@ -70,7 +70,7 @@ function hasPendingPaymentsRequests(queryResult: QueryResult<GetPaymentRequestsQ
   return !!queryResult?.data?.paymentRequests?.length;
 }
 
-export const GET_MY_CONTRIBUTIONS_QUERY = gql`
+export const GET_PAYMENTS_QUERY = gql`
   query GetPaymentRequests($githubUserId: bigint!) {
     paymentRequests(where: { recipientId: { _eq: $githubUserId } }) {
       id
@@ -104,4 +104,4 @@ export const GET_MY_CONTRIBUTIONS_QUERY = gql`
   }
 `;
 
-export default MyContributions;
+export default Payments;

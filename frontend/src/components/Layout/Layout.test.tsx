@@ -42,7 +42,7 @@ vi.mock("axios", () => ({
 
 vi.mock("src/hooks/useAuth/useRoles");
 
-const buildMockMyContributionsQuery = (githubUserId: number, paymentRequests: Record<string, unknown>[] = []) => ({
+const buildMockPaymentsQuery = (githubUserId: number, paymentRequests: Record<string, unknown>[] = []) => ({
   request: {
     query: GET_MY_CONTRIBUTION_IDS_QUERY,
     variables: {
@@ -61,7 +61,7 @@ describe('"Layout" component', () => {
     window.localStorage.clear();
   });
 
-  it("should not render My Payments menu item when githubUserId is undefined", async () => {
+  it("should not render Payments menu item when githubUserId is undefined", async () => {
     (useRoles as Mock).mockReturnValue({
       isLoggedIn: true,
       roles: [HasuraUserRole.RegisteredUser],
@@ -88,10 +88,10 @@ describe('"Layout" component', () => {
     await waitFor(() => {
       expect(queryMock.newData).not.toHaveBeenCalled();
     });
-    expect(screen.queryByText("My payments")).not.toBeInTheDocument();
+    expect(screen.queryByText("Payments")).not.toBeInTheDocument();
   });
 
-  it("should not render My Payments menu item if user has no payment", async () => {
+  it("should not render Payments menu item if user has no payment", async () => {
     (useRoles as Mock).mockReturnValue({
       isLoggedIn: true,
       roles: [HasuraUserRole.RegisteredUser],
@@ -101,11 +101,11 @@ describe('"Layout" component', () => {
 
     renderWithIntl(<Layout />, {
       wrapper: MemoryRouterProviderFactory({
-        mocks: [buildMockMyContributionsQuery(githubUserId, [])],
+        mocks: [buildMockPaymentsQuery(githubUserId, [])],
       }),
     });
 
-    expect(screen.queryByText("My payments")).not.toBeInTheDocument();
+    expect(screen.queryByText("Payments")).not.toBeInTheDocument();
   });
 
   it("should render My Payments menu item if user has some payments", async () => {
@@ -118,11 +118,11 @@ describe('"Layout" component', () => {
 
     renderWithIntl(<Layout />, {
       wrapper: MemoryRouterProviderFactory({
-        mocks: [buildMockMyContributionsQuery(githubUserId, [{ id: "705e6b37-d0ee-4e87-b681-7009dd691965" }])],
+        mocks: [buildMockPaymentsQuery(githubUserId, [{ id: "705e6b37-d0ee-4e87-b681-7009dd691965" }])],
       }),
     });
 
-    expect(await screen.findByText("My payments")).toBeInTheDocument();
+    expect(await screen.findByText("Payments")).toBeInTheDocument();
   });
 
   it("should always display the onlydust logo", async () => {

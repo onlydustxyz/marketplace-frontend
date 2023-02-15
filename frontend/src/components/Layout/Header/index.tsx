@@ -26,14 +26,14 @@ export default function Header() {
   const hasPayments =
     paymentRequestIdsQueryData?.paymentRequests && paymentRequestIdsQueryData.paymentRequests.length > 0;
 
-  const myContributionsMenuItem = hasPayments ? T("navbar.myContributions") : undefined;
+  const myContributionsMenuItem = hasPayments ? T("navbar.payments") : undefined;
   const projectsMenuItem = myContributionsMenuItem ? T("navbar.projects") : undefined;
 
   return (
     <View
       menuItems={{
         [RoutePaths.Projects]: projectsMenuItem,
-        [RoutePaths.MyContributions]: myContributionsMenuItem,
+        [RoutePaths.Payments]: myContributionsMenuItem,
       }}
       isLoggedIn={isLoggedIn}
       selectedMenuItem={location.pathname}
