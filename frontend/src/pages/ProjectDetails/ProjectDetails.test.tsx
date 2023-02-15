@@ -59,7 +59,6 @@ const graphQlMocks = [
         projectsByPk: {
           __typename: "Projects",
           id: TEST_PROJECT_ID,
-          name: TEST_PROJECT_NAME,
           budgetsAggregate: {
             aggregate: {
               sum: {
@@ -67,7 +66,12 @@ const graphQlMocks = [
               },
             },
           },
-          projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION, logoUrl: null },
+          projectDetails: {
+            name: TEST_PROJECT_NAME,
+            telegramLink: TEST_TELEGRAM_LINK,
+            description: TEST_DESCRIPTION,
+            logoUrl: null,
+          },
           pendingInvitations: [{ id: "test-invitation-id" }],
           projectLeads: [
             {
@@ -104,7 +108,6 @@ const graphQlMocks = [
         projectsByPk: {
           __typename: "Projects",
           id: TEST_LED_PROJECT_ID,
-          name: TEST_LED_PROJECT_NAME,
           budgetsAggregate: {
             aggregate: {
               sum: {
@@ -112,7 +115,12 @@ const graphQlMocks = [
               },
             },
           },
-          projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION, logoUrl: null },
+          projectDetails: {
+            name: TEST_LED_PROJECT_NAME,
+            telegramLink: TEST_TELEGRAM_LINK,
+            description: TEST_DESCRIPTION,
+            logoUrl: null,
+          },
           pendingInvitations: [],
           projectLeads: [
             {
@@ -144,8 +152,10 @@ const graphQlMocks = [
         projects: [
           {
             id: TEST_PROJECT_ID,
-            name: TEST_PROJECT_NAME,
-            projectDetails: { logoUrl: "test-logo-url" },
+            projectDetails: {
+              name: TEST_PROJECT_NAME,
+              logoUrl: "test-logo-url",
+            },
             pendingInvitations: [{ id: "test-invitation-id" }],
             githubRepo: {
               logoUrl: "test-github-logo-url",
@@ -157,8 +167,7 @@ const graphQlMocks = [
           },
           {
             id: TEST_LED_PROJECT_ID,
-            name: TEST_LED_PROJECT_NAME,
-            projectDetails: { logoUrl: "test-logo-url" },
+            projectDetails: { name: TEST_LED_PROJECT_NAME, logoUrl: "test-logo-url" },
             githubRepo: {
               logoUrl: "test-github-logo-url",
               content: {

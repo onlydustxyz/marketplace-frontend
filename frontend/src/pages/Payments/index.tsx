@@ -85,9 +85,9 @@ export const GET_PAYMENTS_QUERY = gql`
         id
         project {
           id
-          name
           projectDetails {
             projectId
+            name
             description
             logoUrl
           }

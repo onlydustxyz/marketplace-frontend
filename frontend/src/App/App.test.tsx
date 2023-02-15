@@ -86,8 +86,12 @@ const ALL_PROJECTS_RESULT = {
       {
         __typename: "Projects",
         id: TEST_PROJECT_ID,
-        name: TEST_PROJECT_NAME,
-        projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION, logoUrl: null },
+        projectDetails: {
+          name: TEST_PROJECT_NAME,
+          telegramLink: TEST_TELEGRAM_LINK,
+          description: TEST_DESCRIPTION,
+          logoUrl: null,
+        },
         projectLeads: [
           {
             user: {
@@ -114,7 +118,6 @@ const SINGLE_PROJECT_RESULT = {
   data: {
     projectsByPk: {
       __typename: "Projects",
-      name: TEST_PROJECT_NAME,
       budgetsAggregate: {
         aggregate: {
           sum: {
@@ -122,7 +125,7 @@ const SINGLE_PROJECT_RESULT = {
           },
         },
       },
-      projectDetails: { telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
+      projectDetails: { name: TEST_PROJECT_NAME, telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
       projectLeads: [
         {
           userId: TEST_PROJECT_LEAD_USER_ID,
