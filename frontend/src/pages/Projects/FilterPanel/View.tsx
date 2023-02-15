@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import { useIntl } from "src/hooks/useIntl";
 import StarLine from "src/icons/StarLine";
-import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 import { ProjectOwnershipType } from "..";
 import Card from "../../../components/Card";
 import FilterDropDown, { FilterDropDownIcon } from "../../../components/FilterDropDown";
@@ -26,7 +25,7 @@ export default function View({
   return (
     <Card className="flex flex-col h-fit w-full p-6 gap-0.5">
       <span className="font-belwe font-normal text-base text-greyscale-50">{T("filter.title")}</span>
-      {isProjectLeader && isFeatureEnabled(FeatureFlags.MERGE_MY_PROJECTS) ? (
+      {isProjectLeader ? (
         <div className="flex flex-row py-3 gap-2">
           <OwnershipTypeButton
             selected={projectOwnershipType === ProjectOwnershipType.All}
