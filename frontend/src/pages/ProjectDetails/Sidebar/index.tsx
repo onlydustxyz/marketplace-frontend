@@ -68,7 +68,7 @@ export default function ProjectsSidebar({ currentProject }: Props) {
 
 const projectFromQuery = (project: any) => ({
   id: project.id,
-  name: project.name,
+  name: project.projectDetails?.name,
   logoUrl: project.projectDetails?.logoUrl || project.githubRepo?.content?.logoUrl || onlyDustLogo,
   nbContributors: project.githubRepo?.content?.contributors?.length || 0,
   withInvitation: project.pendingInvitations?.at(0)?.id,
@@ -82,9 +82,9 @@ export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
       }
     ) {
       id
-      name
       projectDetails {
         projectId
+        name
         logoUrl
       }
       pendingInvitations(where: { githubUserId: { _eq: $githubUserId } }) {

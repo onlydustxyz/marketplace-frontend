@@ -61,16 +61,8 @@ impl EventListener for Projector {
 	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
 		match event {
 			Event::Project(event) => match event {
-				ProjectEvent::Created {
-					id,
-					name,
-					github_repo_id,
-				} => {
-					self.project_repository.upsert(&Project::new(
-						*id,
-						name.to_owned(),
-						(*github_repo_id).into(),
-					))?;
+				ProjectEvent::Created { id, github_repo_id } => {
+					self.project_repository.upsert(&Project::new(*id, (*github_repo_id).into()))?;
 					self.project_github_data(github_repo_id).await?;
 				},
 				ProjectEvent::LeaderAssigned { id, leader_id } =>

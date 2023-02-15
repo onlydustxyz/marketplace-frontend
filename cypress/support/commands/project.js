@@ -54,17 +54,19 @@ Cypress.Commands.add(
     "updateProject",
     (
         projectId,
+        name = "My Project",
         description = "My project description",
         telegramLink = "https://t.me/foo",
         logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4"
     ) => ({
-        query: `mutation($projectId: Uuid!, $description: String!, $telegramLink: String!, $logoUrl: String!) { updateProject(
+        query: `mutation($projectId: Uuid!, $name: String!, $description: String!, $telegramLink: String!, $logoUrl: String!) { updateProject(
             id: $projectId,
+            name: $name,
             description: $description,
             telegramLink: $telegramLink,
             logoUrl: $logoUrl
         )}`,
-        variables: { projectId, description, telegramLink, logoUrl },
+        variables: { projectId, name, description, telegramLink, logoUrl },
         wait: WAIT_LONG,
     })
 );

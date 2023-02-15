@@ -46,7 +46,9 @@ const Contributors: React.FC = () => {
             <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />{" "}
           </Card>
         ) : (
-          <ContributorsTableFallback projectName={getProjectContributorsQuery.data?.projectsByPk?.name} />
+          <ContributorsTableFallback
+            projectName={getProjectContributorsQuery.data?.projectsByPk?.projectDetails?.name}
+          />
         )}
       </div>
     </QueryWrapper>
@@ -58,7 +60,10 @@ export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
   query GetProjectContributors($projectId: uuid!) {
     projectsByPk(id: $projectId) {
       id
-      name
+      projectDetails {
+        projectId
+        name
+      }
       githubRepo {
         id
         content {

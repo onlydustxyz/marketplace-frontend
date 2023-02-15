@@ -5,6 +5,7 @@ select_permissions:
   - role: public
     permission:
       columns:
+        - name
         - description
         - logo_url
         - project_id

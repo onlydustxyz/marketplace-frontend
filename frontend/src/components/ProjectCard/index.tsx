@@ -16,7 +16,6 @@ type ProjectCardProps = Project;
 
 export default function ProjectCard({
   pendingInvitations,
-  name,
   projectDetails,
   githubRepo,
   projectLeads,
@@ -24,6 +23,7 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   const { T } = useIntl();
   const lead = projectLeads?.[0]?.user;
+  const name = projectDetails?.name || "";
   const logoUrl = projectDetails?.logoUrl || githubRepo?.content?.logoUrl || onlyDustLogo;
   const totalSpentAmountInUsd = budgetsAggregate?.aggregate?.sum?.spentAmount;
 
@@ -97,7 +97,6 @@ export default function ProjectCard({
 export const PROJECT_CARD_FRAGMENT = gql`
   fragment ProjectCardFields on Projects {
     id
-    name
     budgetsAggregate {
       aggregate {
         sum {
@@ -107,6 +106,7 @@ export const PROJECT_CARD_FRAGMENT = gql`
     }
     projectDetails {
       projectId
+      name
       description
       telegramLink
       logoUrl

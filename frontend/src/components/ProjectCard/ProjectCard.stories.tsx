@@ -20,9 +20,9 @@ export const Default = Template.bind({});
 
 const props = {
   id: 123,
-  name: "ZeroSync",
   projectDetails: {
     projectId: "123",
+    name: "ZeroSync",
     telegramLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
     description:
       "Don't trust. Verify. ZeroSync allows to verify Bitcoin's chain state in an instant. No need to download hundreds of gigabytes of blocks. A compact cryptographic proof suffices to validate the entire history of transactions and everyone's current balances.",

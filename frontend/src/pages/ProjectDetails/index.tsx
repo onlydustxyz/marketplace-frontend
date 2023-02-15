@@ -86,7 +86,7 @@ const ProjectDetails: React.FC = () => {
 
 const projectFromQuery = (project: GetProjectQuery["projectsByPk"]) => ({
   id: project?.id,
-  name: project?.name,
+  name: project?.projectDetails?.name,
   logoUrl: project?.projectDetails?.logoUrl || project?.githubRepo?.content?.logoUrl || onlyDustLogo,
   leads: project?.projectLeads?.map((lead: any) => ({ id: lead.userId, ...lead.user })) || [],
   invitationId: project?.pendingInvitations.at(0)?.id,

@@ -53,18 +53,24 @@ describe("As an admin, on retool, I", () => {
 
                     cy.graphql({ query: `{
                         projects(where: {id: {_eq: "${projectId}"}}) {
-                            name
+                            projectDetails {
+                                name
+                            }
                         }
                     }`})
                         .asAnonymous()
                         .its("body")
                         .should("deep.equal", {
                             data: {
-                                projects: [{ name: projectName }],
+                                projects: [{ projectDetails: { name: projectName }}],
                             },
                         });
                 });
         });
+    });
+
+    it("cannot create a project with an empty name", () => {
+        cy.createProject("").asAdmin().errors();
     });
 
     it("can update project details", () => {
@@ -72,21 +78,24 @@ describe("As an admin, on retool, I", () => {
             cy
                 .createProjectWithLeader(user, "Another project", 500)
                 .then((projectId) => {
-                    cy.updateProject(projectId, "new description")
+                    cy.updateProject(projectId, "new name", "new description")
                         .asAdmin()
                         .data()
                         .then(() =>
                             cy.graphql({ query: `{
                                     projectsByPk(id: "${projectId}") {
-                                    projectDetails {
-                                        description
-                                    }
+                                        projectDetails {
+                                            name
+                                            description
+                                        }
                                     }
                                 }`})
                                 .asAnonymous()
                                 .data("projectsByPk.projectDetails")
-                                .its("description")
-                                .should("equal", "new description")
+                                .should("deep.equal", {
+                                    name: "new name",
+                                    description: "new description",
+                                })
                         )
                 })
         );
