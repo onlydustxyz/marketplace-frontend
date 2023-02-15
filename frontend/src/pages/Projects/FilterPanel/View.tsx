@@ -5,13 +5,13 @@ import { ProjectOwnershipType } from "..";
 import Card from "../../../components/Card";
 import FilterDropDown, { FilterDropDownIcon } from "../../../components/FilterDropDown";
 
-type Props = {
+export interface FilterPanelViewProps {
   technologies: string[];
   onTechnologiesChange?: (technologies: string[]) => void;
   projectOwnershipType: ProjectOwnershipType;
   setProjectOwnershipType: (projectType: ProjectOwnershipType) => void;
   isProjectLeader: boolean;
-};
+}
 
 export default function View({
   technologies,
@@ -19,7 +19,7 @@ export default function View({
   projectOwnershipType,
   setProjectOwnershipType,
   isProjectLeader,
-}: Props) {
+}: FilterPanelViewProps) {
   const { T } = useIntl();
 
   return (
