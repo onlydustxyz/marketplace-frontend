@@ -52,5 +52,4 @@ select_permissions:
       columns:
         - github_repo_id
         - id
-        - name
       filter: {}
