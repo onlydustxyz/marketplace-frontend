@@ -1,6 +1,6 @@
 describe("The application", () => {
     it("should answer on Hasura queries", () => {
-        cy.graphql({query: "{ projects { name } }"})
+        cy.graphql({query: "{ projects { id } }"})
             .asAnonymous()
             .data("projects")
             .should("be.a", "array");
