@@ -33,7 +33,6 @@ export default function FeedbackButton() {
           iframeProps={{ title: T("navbar.feedback.popupTitle") }}
           opacity={100}
           position="right"
-          enableSandbox={true}
           hidden={{
             firstname: identity?.firstname || "",
             lastname: identity?.lastname || "",
