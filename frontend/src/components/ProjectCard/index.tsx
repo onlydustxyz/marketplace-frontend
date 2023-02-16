@@ -56,7 +56,7 @@ export default function ProjectCard({
                   <div className="text-sm flex flex-row text-spaceBlue-200 gap-1 items-center pt-0.5">
                     <div className="whitespace-nowrap">{T("project.ledBy")}</div>
                     <div className="truncate">{lead?.displayName}</div>{" "}
-                    <img src={lead?.avatarUrl} className="w-3 md:w-4 h-3 md:h-4 rounded-full" />
+                    <img src={lead?.avatarUrl} className="w-4 h-4 rounded-full" />
                   </div>
                 )}
               </div>
