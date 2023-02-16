@@ -10,7 +10,8 @@ use tracing::instrument;
 use crate::{
 	infrastructure::{
 		database::{
-			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository, UserInfoRepository,
+			GithubRepoRepository, PendingProjectLeaderInvitationsRepository,
+			ProjectDetailsRepository, ProjectGithubRepoRepository, UserInfoRepository,
 		},
 		web3::ens,
 	},
@@ -43,6 +44,8 @@ pub async fn get_graphql_handler(
 	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<ProjectDetailsRepository>,
+	github_repo_repository: &State<GithubRepoRepository>,
+	project_github_repo_repository: &State<ProjectGithubRepoRepository>,
 	pending_project_leader_invitations_repository: &State<
 		PendingProjectLeaderInvitationsRepository,
 	>,
@@ -56,6 +59,8 @@ pub async fn get_graphql_handler(
 		(*event_publisher).clone(),
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
+		(*github_repo_repository).clone(),
+		(*project_github_repo_repository).clone(),
 		(*pending_project_leader_invitations_repository).clone(),
 		(*user_info_repository).clone(),
 		(*github).clone(),
@@ -76,6 +81,8 @@ pub async fn post_graphql_handler(
 	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<ProjectDetailsRepository>,
+	github_repo_repository: &State<GithubRepoRepository>,
+	project_github_repo_repository: &State<ProjectGithubRepoRepository>,
 	pending_project_leader_invitations_repository: &State<
 		PendingProjectLeaderInvitationsRepository,
 	>,
@@ -89,6 +96,8 @@ pub async fn post_graphql_handler(
 		(*event_publisher).clone(),
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
+		(*github_repo_repository).clone(),
+		(*project_github_repo_repository).clone(),
 		(*pending_project_leader_invitations_repository).clone(),
 		(*user_info_repository).clone(),
 		(*github).clone(),
