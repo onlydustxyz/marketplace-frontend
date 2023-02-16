@@ -1061,6 +1061,112 @@ export enum ProjectDetailsSelectColumn {
   TelegramLink = 'telegramLink'
 }
 
+/** columns and relationships of "project_github_repo_view" */
+export type ProjectGithubRepoView = {
+  __typename?: 'ProjectGithubRepoView';
+  content: Repository;
+  id: Maybe<Scalars['bigint']>;
+  languages: Maybe<Scalars['jsonb']>;
+  name: Maybe<Scalars['String']>;
+  owner: Maybe<Scalars['String']>;
+  projectId: Maybe<Scalars['uuid']>;
+  pullRequests: Array<PullRequest>;
+};
+
+
+/** columns and relationships of "project_github_repo_view" */
+export type ProjectGithubRepoViewLanguagesArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+/** Boolean expression to filter rows from the table "project_github_repo_view". All fields are combined with a logical 'AND'. */
+export type ProjectGithubRepoViewBoolExp = {
+  _and: InputMaybe<Array<ProjectGithubRepoViewBoolExp>>;
+  _not: InputMaybe<ProjectGithubRepoViewBoolExp>;
+  _or: InputMaybe<Array<ProjectGithubRepoViewBoolExp>>;
+  id: InputMaybe<BigintComparisonExp>;
+  languages: InputMaybe<JsonbComparisonExp>;
+  name: InputMaybe<StringComparisonExp>;
+  owner: InputMaybe<StringComparisonExp>;
+  projectId: InputMaybe<UuidComparisonExp>;
+};
+
+/** Ordering options when selecting data from "project_github_repo_view". */
+export type ProjectGithubRepoViewOrderBy = {
+  id: InputMaybe<OrderBy>;
+  languages: InputMaybe<OrderBy>;
+  name: InputMaybe<OrderBy>;
+  owner: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "project_github_repo_view" */
+export enum ProjectGithubRepoViewSelectColumn {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Languages = 'languages',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Owner = 'owner',
+  /** column name */
+  ProjectId = 'projectId'
+}
+
+/** columns and relationships of "project_github_repos" */
+export type ProjectGithubRepos = {
+  __typename?: 'ProjectGithubRepos';
+  /** An object relationship */
+  githubRepoDetails: Maybe<GithubRepoDetails>;
+  githubRepoId: Scalars['bigint'];
+  /** An object relationship */
+  project: Maybe<Projects>;
+  projectId: Scalars['uuid'];
+};
+
+/** order by aggregate values of table "project_github_repos" */
+export type ProjectGithubReposAggregateOrderBy = {
+  avg: InputMaybe<Project_Github_Repos_Avg_Order_By>;
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<Project_Github_Repos_Max_Order_By>;
+  min: InputMaybe<Project_Github_Repos_Min_Order_By>;
+  stddev: InputMaybe<Project_Github_Repos_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Project_Github_Repos_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Project_Github_Repos_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Project_Github_Repos_Sum_Order_By>;
+  var_pop: InputMaybe<Project_Github_Repos_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Project_Github_Repos_Var_Samp_Order_By>;
+  variance: InputMaybe<Project_Github_Repos_Variance_Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "project_github_repos". All fields are combined with a logical 'AND'. */
+export type ProjectGithubReposBoolExp = {
+  _and: InputMaybe<Array<ProjectGithubReposBoolExp>>;
+  _not: InputMaybe<ProjectGithubReposBoolExp>;
+  _or: InputMaybe<Array<ProjectGithubReposBoolExp>>;
+  githubRepoDetails: InputMaybe<GithubRepoDetailsBoolExp>;
+  githubRepoId: InputMaybe<BigintComparisonExp>;
+  project: InputMaybe<ProjectsBoolExp>;
+  projectId: InputMaybe<UuidComparisonExp>;
+};
+
+/** Ordering options when selecting data from "project_github_repos". */
+export type ProjectGithubReposOrderBy = {
+  githubRepoDetails: InputMaybe<GithubRepoDetailsOrderBy>;
+  githubRepoId: InputMaybe<OrderBy>;
+  project: InputMaybe<ProjectsOrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "project_github_repos" */
+export enum ProjectGithubReposSelectColumn {
+  /** column name */
+  GithubRepoId = 'githubRepoId',
+  /** column name */
+  ProjectId = 'projectId'
+}
+
 /** columns and relationships of "project_leads" */
 export type ProjectLeads = {
   __typename?: 'ProjectLeads';
@@ -1114,8 +1220,9 @@ export type Projects = {
   /** An aggregate relationship */
   budgetsAggregate: BudgetsAggregate;
   /** An object relationship */
-  githubRepo: Maybe<GithubRepoDetails>;
-  githubRepoId: Scalars['bigint'];
+  githubRepo: Maybe<ProjectGithubRepoView>;
+  /** An array relationship */
+  githubRepos: Array<ProjectGithubRepos>;
   id: Scalars['uuid'];
   /** An array relationship */
   pendingInvitations: Array<PendingProjectLeaderInvitations>;
@@ -1147,6 +1254,16 @@ export type ProjectsBudgetsAggregateArgs = {
 
 
 /** columns and relationships of "projects" */
+export type ProjectsGithubReposArgs = {
+  distinctOn: InputMaybe<Array<ProjectGithubReposSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectGithubReposOrderBy>>;
+  where: InputMaybe<ProjectGithubReposBoolExp>;
+};
+
+
+/** columns and relationships of "projects" */
 export type ProjectsPendingInvitationsArgs = {
   distinctOn: InputMaybe<Array<PendingProjectLeaderInvitationsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -1172,8 +1289,8 @@ export type ProjectsBoolExp = {
   _or: InputMaybe<Array<ProjectsBoolExp>>;
   budgets: InputMaybe<BudgetsBoolExp>;
   budgets_aggregate: InputMaybe<Budgets_Aggregate_Bool_Exp>;
-  githubRepo: InputMaybe<GithubRepoDetailsBoolExp>;
-  githubRepoId: InputMaybe<BigintComparisonExp>;
+  githubRepo: InputMaybe<ProjectGithubRepoViewBoolExp>;
+  githubRepos: InputMaybe<ProjectGithubReposBoolExp>;
   id: InputMaybe<UuidComparisonExp>;
   pendingInvitations: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
   projectDetails: InputMaybe<ProjectDetailsBoolExp>;
@@ -1183,8 +1300,8 @@ export type ProjectsBoolExp = {
 /** Ordering options when selecting data from "projects". */
 export type ProjectsOrderBy = {
   budgetsAggregate: InputMaybe<BudgetsAggregateOrderBy>;
-  githubRepo: InputMaybe<GithubRepoDetailsOrderBy>;
-  githubRepoId: InputMaybe<OrderBy>;
+  githubRepo: InputMaybe<ProjectGithubRepoViewOrderBy>;
+  githubReposAggregate: InputMaybe<ProjectGithubReposAggregateOrderBy>;
   id: InputMaybe<OrderBy>;
   pendingInvitationsAggregate: InputMaybe<PendingProjectLeaderInvitationsAggregateOrderBy>;
   projectDetails: InputMaybe<ProjectDetailsOrderBy>;
@@ -1193,8 +1310,6 @@ export type ProjectsOrderBy = {
 
 /** select columns of table "projects" */
 export enum ProjectsSelectColumn {
-  /** column name */
-  GithubRepoId = 'githubRepoId',
   /** column name */
   Id = 'id'
 }
@@ -2046,6 +2161,89 @@ export type Project_Details_StreamCursorValueInput = {
   telegramLink: InputMaybe<Scalars['String']>;
 };
 
+/** Streaming cursor of the table "project_github_repo_view" */
+export type Project_Github_Repo_View_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Project_Github_Repo_View_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Project_Github_Repo_View_StreamCursorValueInput = {
+  id: InputMaybe<Scalars['bigint']>;
+  languages: InputMaybe<Scalars['jsonb']>;
+  name: InputMaybe<Scalars['String']>;
+  owner: InputMaybe<Scalars['String']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+};
+
+/** order by avg() on columns of table "project_github_repos" */
+export type Project_Github_Repos_Avg_Order_By = {
+  githubRepoId: InputMaybe<OrderBy>;
+};
+
+/** order by max() on columns of table "project_github_repos" */
+export type Project_Github_Repos_Max_Order_By = {
+  githubRepoId: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "project_github_repos" */
+export type Project_Github_Repos_Min_Order_By = {
+  githubRepoId: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev() on columns of table "project_github_repos" */
+export type Project_Github_Repos_Stddev_Order_By = {
+  githubRepoId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_pop() on columns of table "project_github_repos" */
+export type Project_Github_Repos_Stddev_Pop_Order_By = {
+  githubRepoId: InputMaybe<OrderBy>;
+};
+
+/** order by stddev_samp() on columns of table "project_github_repos" */
+export type Project_Github_Repos_Stddev_Samp_Order_By = {
+  githubRepoId: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "project_github_repos" */
+export type Project_Github_Repos_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Project_Github_Repos_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Project_Github_Repos_StreamCursorValueInput = {
+  githubRepoId: InputMaybe<Scalars['bigint']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+};
+
+/** order by sum() on columns of table "project_github_repos" */
+export type Project_Github_Repos_Sum_Order_By = {
+  githubRepoId: InputMaybe<OrderBy>;
+};
+
+/** order by var_pop() on columns of table "project_github_repos" */
+export type Project_Github_Repos_Var_Pop_Order_By = {
+  githubRepoId: InputMaybe<OrderBy>;
+};
+
+/** order by var_samp() on columns of table "project_github_repos" */
+export type Project_Github_Repos_Var_Samp_Order_By = {
+  githubRepoId: InputMaybe<OrderBy>;
+};
+
+/** order by variance() on columns of table "project_github_repos" */
+export type Project_Github_Repos_Variance_Order_By = {
+  githubRepoId: InputMaybe<OrderBy>;
+};
+
 /** order by max() on columns of table "project_leads" */
 export type Project_Leads_Max_Order_By = {
   projectId: InputMaybe<OrderBy>;
@@ -2082,7 +2280,6 @@ export type Projects_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Projects_StreamCursorValueInput = {
-  githubRepoId: InputMaybe<Scalars['bigint']>;
   id: InputMaybe<Scalars['uuid']>;
 };
 
@@ -2125,6 +2322,12 @@ export type Query_Root = {
   projectDetails: Array<ProjectDetails>;
   /** fetch data from the table: "project_details" using primary key columns */
   projectDetailsByPk: Maybe<ProjectDetails>;
+  /** fetch data from the table: "project_github_repo_view" */
+  projectGithubRepoView: Array<ProjectGithubRepoView>;
+  /** fetch data from the table: "project_github_repos" */
+  projectGithubRepos: Array<ProjectGithubRepos>;
+  /** fetch data from the table: "project_github_repos" using primary key columns */
+  projectGithubReposByPk: Maybe<ProjectGithubRepos>;
   /** An array relationship */
   projectLeads: Array<ProjectLeads>;
   /** fetch data from the table: "project_leads" using primary key columns */
@@ -2284,6 +2487,30 @@ export type Query_RootProjectDetailsByPkArgs = {
 };
 
 
+export type Query_RootProjectGithubRepoViewArgs = {
+  distinctOn: InputMaybe<Array<ProjectGithubRepoViewSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectGithubRepoViewOrderBy>>;
+  where: InputMaybe<ProjectGithubRepoViewBoolExp>;
+};
+
+
+export type Query_RootProjectGithubReposArgs = {
+  distinctOn: InputMaybe<Array<ProjectGithubReposSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectGithubReposOrderBy>>;
+  where: InputMaybe<ProjectGithubReposBoolExp>;
+};
+
+
+export type Query_RootProjectGithubReposByPkArgs = {
+  githubRepoId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
+};
+
+
 export type Query_RootProjectLeadsArgs = {
   distinctOn: InputMaybe<Array<ProjectLeadsSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -2388,6 +2615,16 @@ export type Subscription_Root = {
   projectDetailsByPk: Maybe<ProjectDetails>;
   /** fetch data from the table in a streaming manner: "project_details" */
   projectDetailsStream: Array<ProjectDetails>;
+  /** fetch data from the table: "project_github_repo_view" */
+  projectGithubRepoView: Array<ProjectGithubRepoView>;
+  /** fetch data from the table in a streaming manner: "project_github_repo_view" */
+  projectGithubRepoViewStream: Array<ProjectGithubRepoView>;
+  /** fetch data from the table: "project_github_repos" */
+  projectGithubRepos: Array<ProjectGithubRepos>;
+  /** fetch data from the table: "project_github_repos" using primary key columns */
+  projectGithubReposByPk: Maybe<ProjectGithubRepos>;
+  /** fetch data from the table in a streaming manner: "project_github_repos" */
+  projectGithubReposStream: Array<ProjectGithubRepos>;
   /** An array relationship */
   projectLeads: Array<ProjectLeads>;
   /** fetch data from the table: "project_leads" using primary key columns */
@@ -2581,6 +2818,44 @@ export type Subscription_RootProjectDetailsStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Project_Details_StreamCursorInput>>;
   where: InputMaybe<ProjectDetailsBoolExp>;
+};
+
+
+export type Subscription_RootProjectGithubRepoViewArgs = {
+  distinctOn: InputMaybe<Array<ProjectGithubRepoViewSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectGithubRepoViewOrderBy>>;
+  where: InputMaybe<ProjectGithubRepoViewBoolExp>;
+};
+
+
+export type Subscription_RootProjectGithubRepoViewStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Project_Github_Repo_View_StreamCursorInput>>;
+  where: InputMaybe<ProjectGithubRepoViewBoolExp>;
+};
+
+
+export type Subscription_RootProjectGithubReposArgs = {
+  distinctOn: InputMaybe<Array<ProjectGithubReposSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectGithubReposOrderBy>>;
+  where: InputMaybe<ProjectGithubReposBoolExp>;
+};
+
+
+export type Subscription_RootProjectGithubReposByPkArgs = {
+  githubRepoId: Scalars['bigint'];
+  projectId: Scalars['uuid'];
+};
+
+
+export type Subscription_RootProjectGithubReposStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Project_Github_Repos_StreamCursorInput>>;
+  where: InputMaybe<ProjectGithubReposBoolExp>;
 };
 
 
@@ -2912,7 +3187,7 @@ export type GetPaymentRequestIdsQueryVariables = Exact<{
 
 export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> };
 
-export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', id: any, name: string, owner: string, languages: any, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null };
+export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null };
 
 export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string };
 
@@ -2977,7 +3252,7 @@ export type GetPaymentRequestsQueryVariables = Exact<{
 }>;
 
 
-export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, description: string | null, logoUrl: string | null } | null, githubRepo: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, logoUrl: string } } | null } | null } | null }> };
+export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, description: string | null, logoUrl: string | null } | null, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string } } | null } | null } | null }> };
 
 export type UpdateProfileInfoMutationVariables = Exact<{
   email: InputMaybe<Scalars['Email']>;
@@ -2999,7 +3274,7 @@ export type GetProjectContributorsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string } | null, githubRepo: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } } | null } | null };
+export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string } | null, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } } | null } | null };
 
 export type GetProjectRemainingBudgetQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -3013,7 +3288,7 @@ export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepo: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } } | null } | null };
+export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } } | null } | null };
 
 export type GetProjectsForSidebarQueryVariables = Exact<{
   ledProjectIds: InputMaybe<Array<Scalars['uuid']> | Scalars['uuid']>;
@@ -3021,7 +3296,7 @@ export type GetProjectsForSidebarQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsForSidebarQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, githubRepo: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string }> } } | null }> };
+export type GetProjectsForSidebarQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string }> } } | null }> };
 
 export type GetProjectQueryVariables = Exact<{
   id: Scalars['uuid'];
@@ -3029,7 +3304,7 @@ export type GetProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepo: { __typename?: 'GithubRepoDetails', id: any, name: string, owner: string, languages: any, content: { __typename?: 'Repository', id: number, logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }> } | null };
+export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }> } | null };
 
 export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
   invitationId: Scalars['Uuid'];
@@ -3043,12 +3318,12 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'GithubRepoDetails', id: any, name: string, owner: string, languages: any, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null }> };
+export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null }> };
 
 export type GetAllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllTechnologiesQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', githubRepo: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null }> };
+export type GetAllTechnologiesQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, languages: any | null } | null }> };
 
 export const ContributorsTableFieldsFragmentDoc = gql`
     fragment ContributorsTableFields on User {
