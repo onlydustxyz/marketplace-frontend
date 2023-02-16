@@ -315,7 +315,7 @@ describe("Integration tests", () => {
         mocks: graphQlMocks,
       }),
     });
-    await screen.findByText(TEST_PROJECT_NAME);
+    await screen.findAllByText(TEST_PROJECT_NAME);
     expect(screen.queryByText(LOGGING_IN_TEXT_QUERY)).not.toBeInTheDocument();
   });
 
@@ -339,7 +339,7 @@ describe("Integration tests", () => {
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({ route: RoutePaths.Profile, mocks: graphQlMocks }),
     });
-    await screen.findByText(TEST_PROJECT_NAME);
+    await screen.findAllByText(TEST_PROJECT_NAME);
   });
 
   it("should be able to access the project details page from the projects list and see the tabs", async () => {
@@ -350,7 +350,7 @@ describe("Integration tests", () => {
         mocks: graphQlMocks,
       }),
     });
-    userEvent.click(await screen.findByText(TEST_PROJECT_NAME));
+    userEvent.click((await screen.findAllByText(TEST_PROJECT_NAME))[0]);
     await waitFor(() => {
       screen.getByText(TEST_PROJECT_LEAD_DISPLAY_NAME);
       screen.getByText(TEST_GITHUB_REPO_CONTENT);
@@ -376,7 +376,7 @@ describe("Integration tests", () => {
     });
     userEvent.click(await screen.findByTestId(PROFILE_BUTTON_TEST_ID));
     userEvent.click(await screen.findByTestId(LOGOUT_BUTTON_TEST_ID));
-    await screen.findByText(TEST_PROJECT_NAME);
+    await screen.findAllByText(TEST_PROJECT_NAME);
   });
 
   it("should redirect to project details with pending invitation at first sign-in", async () => {

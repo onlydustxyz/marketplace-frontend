@@ -1,8 +1,6 @@
 import { gql } from "@apollo/client";
 import { sortBy } from "lodash";
 import { useMemo } from "react";
-import { generatePath, Link } from "react-router-dom";
-import { RoutePaths } from "src/App";
 import ProjectCard, { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
