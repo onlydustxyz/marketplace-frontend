@@ -38,7 +38,7 @@ export default function ProjectCard({
     >
       <div className="flex flex-col gap-5">
         <div className="flex flex-col sm:flex-row w-full sm:divide-x divide-stone-100/8 gap-4 sm:gap-6 justify-items-center font-walsheim">
-          <div className="sm:flex flex-col basis-4/12 gap-y-5">
+          <div className="sm:flex flex-col basis-1/3 min-w-0 gap-y-5">
             <div className="flex gap-4 items-start">
               <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.ExtraLarge} className="mt-1" />
               <div className="min-w-0">
@@ -61,7 +61,7 @@ export default function ProjectCard({
               </div>
             )}
           </div>
-          <div className="flex flex-col basis-8/12 sm:pl-6 gap-4 sm:gap-6">
+          <div className="flex flex-col basis-2/3 sm:pl-6 gap-4 sm:gap-6">
             <div className="line-clamp-2">{projectDetails?.description}</div>
             <div className="flex flex-row sm:divide-x divide-stone-100/8">
               <div className="hidden sm:flex flex-row gap-2 pr-6">
