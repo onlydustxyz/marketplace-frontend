@@ -11,7 +11,8 @@ use crate::{
 	domain::{ArePayoutSettingsValid, Permissions},
 	infrastructure::{
 		database::{
-			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository, UserInfoRepository,
+			GithubRepoRepository, PendingProjectLeaderInvitationsRepository,
+			ProjectDetailsRepository, ProjectGithubRepoRepository, UserInfoRepository,
 		},
 		web3::ens,
 	},
@@ -42,6 +43,8 @@ impl Context {
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		project_repository: AggregateRootRepository<Project>,
 		project_details_repository: ProjectDetailsRepository,
+		github_repo_repository: GithubRepoRepository,
+		project_github_repo_repository: ProjectGithubRepoRepository,
 		pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 		user_info_repository: UserInfoRepository,
 		github: Arc<github::Client>,
@@ -65,6 +68,9 @@ impl Context {
 			create_project_usecase: application::project::create::Usecase::new(
 				event_publisher.to_owned(),
 				project_details_repository.clone(),
+				github_repo_repository.clone(),
+				project_github_repo_repository.clone(),
+				github.clone(),
 				github.clone(),
 			),
 			remove_project_leader_usecase: application::project::remove_leader::Usecase::new(
@@ -78,12 +84,13 @@ impl Context {
 				application::project::accept_leader_invitation::Usecase::new(
 					event_publisher.to_owned(),
 					pending_project_leader_invitations_repository,
-					project_repository.clone(),
+					project_repository,
 				),
 			update_project_github_repo_id_usecase:
 				application::project::update_github_repo_id::Usecase::new(
-					event_publisher.to_owned(),
-					project_repository,
+					project_github_repo_repository,
+					github_repo_repository,
+					github.clone(),
 					github,
 				),
 			project_details_repository,

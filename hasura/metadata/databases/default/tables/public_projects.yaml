@@ -6,10 +6,10 @@ object_relationships:
     using:
       manual_configuration:
         column_mapping:
-          github_repo_id: id
+          id: project_id
         insertion_order: null
         remote_table:
-          name: github_repo_details
+          name: project_github_repo_view
           schema: public
   - name: projectDetails
     using:
@@ -29,6 +29,15 @@ array_relationships:
         insertion_order: null
         remote_table:
           name: budgets
+          schema: public
+  - name: githubRepos
+    using:
+      manual_configuration:
+        column_mapping:
+          id: project_id
+        insertion_order: null
+        remote_table:
+          name: project_github_repos
           schema: public
   - name: pendingInvitations
     using:
@@ -57,6 +66,5 @@ select_permissions:
   - role: public
     permission:
       columns:
-        - github_repo_id
         - id
       filter: {}

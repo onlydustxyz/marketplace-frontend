@@ -1,0 +1,29 @@
+table:
+  name: project_github_repos
+  schema: public
+object_relationships:
+  - name: githubRepoDetails
+    using:
+      manual_configuration:
+        column_mapping:
+          github_repo_id: id
+        insertion_order: null
+        remote_table:
+          name: github_repo_details
+          schema: public
+  - name: project
+    using:
+      manual_configuration:
+        column_mapping:
+          project_id: id
+        insertion_order: null
+        remote_table:
+          name: projects
+          schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - project_id
+        - github_repo_id
+      filter: {}

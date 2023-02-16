@@ -1,32 +1,39 @@
 use std::sync::Arc;
 
-use anyhow::Result;
-use domain::{
-	AggregateRootRepository, DomainError, Event, GithubRepoExists, GithubRepositoryId, Project,
-	ProjectId, Publisher,
-};
-use infrastructure::amqp::UniqueMessage;
+use anyhow::{anyhow, Result};
+use domain::{DomainError, GithubRepositoryId, ProjectId};
 use tracing::instrument;
 
-use crate::domain::Publishable;
-
+use crate::{
+	domain::{GithubRepoExists, GithubService},
+	infrastructure::database::{GithubRepoRepository, ProjectGithubRepoRepository},
+};
 pub struct Usecase {
-	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-	project_repository: AggregateRootRepository<Project>,
-	github: Arc<dyn GithubRepoExists>,
+	project_github_repo_repository: ProjectGithubRepoRepository,
+	github_repo_repository: GithubRepoRepository,
+	github_repo_exists: Arc<dyn GithubRepoExists>,
+	github_service: Arc<dyn GithubService>,
 }
 
 impl Usecase {
 	pub fn new(
-		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		project_repository: AggregateRootRepository<Project>,
-		github: Arc<dyn GithubRepoExists>,
+		project_github_repo_repository: ProjectGithubRepoRepository,
+		github_repo_repository: GithubRepoRepository,
+		github_repo_exists: Arc<dyn GithubRepoExists>,
+		github_service: Arc<dyn GithubService>,
 	) -> Self {
 		Self {
-			event_publisher,
-			project_repository,
-			github,
+			project_github_repo_repository,
+			github_repo_repository,
+			github_repo_exists,
+			github_service,
 		}
+	}
+
+	async fn update_github_repo_details(&self, github_repo_id: &GithubRepositoryId) -> Result<()> {
+		let repo = self.github_service.fetch_repository_details(github_repo_id).await?;
+		self.github_repo_repository.upsert(&repo)?;
+		Ok(())
 	}
 
 	#[instrument(skip(self))]
@@ -35,21 +42,23 @@ impl Usecase {
 		project_id: ProjectId,
 		github_repo_id: GithubRepositoryId,
 	) -> Result<ProjectId, DomainError> {
-		let project = self.project_repository.find_by_id(&project_id)?;
-
-		let events = project
-			.update_github_repository(self.github.clone(), github_repo_id)
+		if !self
+			.github_repo_exists
+			.is_statified_by(&github_repo_id)
 			.await
-			.map_err(|e| DomainError::InvalidInputs(e.into()))?;
+			.map_err(DomainError::InternalError)?
+		{
+			return Err(DomainError::InvalidInputs(anyhow!(
+				"Github repository {github_repo_id} does not exist"
+			)));
+		}
 
-		events
-			.into_iter()
-			.map(Event::from)
-			.map(UniqueMessage::new)
-			.collect::<Vec<_>>()
-			.publish(self.event_publisher.clone())
-			.await?;
+		self.update_github_repo_details(&github_repo_id)
+			.await
+			.map_err(DomainError::InvalidInputs)?;
 
+		self.project_github_repo_repository.delete_all_GithubRepos_of(&project_id)?;
+		self.project_github_repo_repository.upsert(&project_id, &github_repo_id)?;
 		Ok(project_id)
 	}
 }

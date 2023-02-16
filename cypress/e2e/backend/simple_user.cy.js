@@ -37,7 +37,6 @@ describe("As a simple user, I", () => {
             cy.graphql({
                 query: `query {
                 projects {
-                  githubRepoId
                   id
                   projectDetails {
                     name

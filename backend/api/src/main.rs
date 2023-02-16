@@ -3,7 +3,8 @@ use std::sync::Arc;
 use anyhow::Result;
 use api::{
 	infrastructure::database::{
-		PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository, UserInfoRepository,
+		GithubRepoRepository, PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
+		ProjectGithubRepoRepository, UserInfoRepository,
 	},
 	presentation::{graphql, http},
 	Config,
@@ -32,6 +33,8 @@ async fn main() -> Result<()> {
 		Arc::new(amqp::Bus::default(config.amqp()).await?),
 		AggregateRootRepository::new(database.clone()),
 		ProjectDetailsRepository::new(database.clone()),
+		GithubRepoRepository::new(database.clone()),
+		ProjectGithubRepoRepository::new(database.clone()),
 		PendingProjectLeaderInvitationsRepository::new(database.clone()),
 		UserInfoRepository::new(database),
 		github,

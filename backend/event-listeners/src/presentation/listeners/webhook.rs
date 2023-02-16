@@ -132,10 +132,7 @@ mod tests {
 
 	#[fixture]
 	fn project_created_event(project_id: &ProjectId) -> ProjectEvent {
-		ProjectEvent::Created {
-			id: *project_id,
-			github_repo_id: 1234.into(),
-		}
+		ProjectEvent::Created { id: *project_id }
 	}
 
 	#[allow(clippy::await_holding_lock)]
@@ -201,7 +198,6 @@ mod tests {
 			"event_name":"Created",
 			"payload":{
 				"id": project_id.to_string(),
-				"github_repo_id": 1234
 			}
 		});
 
