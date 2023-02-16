@@ -5,15 +5,10 @@ import ProjectCard from ".";
 
 export default {
   title: "ProjectCard",
-  argTypes: {
-    width: { control: { type: "range", min: 800, max: 1200, step: 100 } },
-  },
 };
 
 const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
-  <div style={{ width: args.width }}>
-    <ProjectCard {...props} pendingInvitations={args.withInvitation ? props.pendingInvitations : []} />
-  </div>
+  <ProjectCard {...props} pendingInvitations={args.withInvitation ? props.pendingInvitations : []} />
 );
 
 export const Default = Template.bind({});
@@ -62,7 +57,6 @@ const props = {
 
 const args = {
   withInvitation: false,
-  width: 800,
 };
 
 Default.args = args;
