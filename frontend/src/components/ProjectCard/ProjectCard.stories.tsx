@@ -10,19 +10,18 @@ export default {
 };
 
 const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
-  <ProjectCard {...props} pendingInvitations={args.withInvitation ? props.pendingInvitations : []} />
+  <ProjectCard {...props(args)} pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []} />
 );
 
 export const Default = Template.bind({});
 
-const props = {
+const props = (args: { name: string; description: string }) => ({
   id: 123,
   projectDetails: {
     projectId: "123",
-    name: "ZeroSync",
+    name: args.name,
     telegramLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
-    description:
-      "Don't trust. Verify. ZeroSync allows to verify Bitcoin's chain state in an instant. No need to download hundreds of gigabytes of blocks. A compact cryptographic proof suffices to validate the entire history of transactions and everyone's current balances.",
+    description: args.description,
     logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
   },
   projectLeads: [
@@ -55,9 +54,12 @@ const props = {
     },
   },
   pendingInvitations: [{ id: "croute" }],
-};
+});
 
 const args = {
+  name: "ZeroSync",
+  description:
+    "Don't trust. Verify. ZeroSync allows to verify Bitcoin's chain state in an instant. No need to download hundreds of gigabytes of blocks. A compact cryptographic proof suffices to validate the entire history of transactions and everyone's current balances.",
   withInvitation: false,
 };
 
