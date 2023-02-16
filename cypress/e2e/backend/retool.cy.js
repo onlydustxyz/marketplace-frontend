@@ -114,12 +114,14 @@ describe("As an admin, on retool, I", () => {
                         .then(() => {
                             cy.graphql({ query: `{
                                     projectsByPk(id: "${projectId}") {
-                                        githubRepoId
+                                        githubRepo {
+                                            id
+                                        }
                                     }
                                 }`})
                                 .asAnonymous()
                                 .data("projectsByPk")
-                                .its("githubRepoId")
+                                .its("githubRepo.id")
                                 .should("equal", SECOND_REPO_ID)
                         })
                 })
