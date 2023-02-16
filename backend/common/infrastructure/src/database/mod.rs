@@ -10,9 +10,6 @@ use olog::error;
 use r2d2;
 use r2d2_diesel::ConnectionManager;
 
-mod mapping;
-pub use mapping::Repository as MappingRepository;
-
 type Pool = r2d2::Pool<ConnectionManager<InstrumentedPgConnection>>;
 type PooledConnection = r2d2::PooledConnection<ConnectionManager<InstrumentedPgConnection>>;
 

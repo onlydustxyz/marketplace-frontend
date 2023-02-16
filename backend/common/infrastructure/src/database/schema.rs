@@ -89,6 +89,13 @@ diesel::table! {
 }
 
 diesel::table! {
+    project_github_repos (project_id, github_repo_id) {
+        project_id -> Uuid,
+        github_repo_id -> Int8,
+    }
+}
+
+diesel::table! {
     project_leads (project_id, user_id) {
         project_id -> Uuid,
         user_id -> Uuid,
@@ -98,7 +105,6 @@ diesel::table! {
 diesel::table! {
     projects (id) {
         id -> Uuid,
-        github_repo_id -> Int8,
     }
 }
 
@@ -127,6 +133,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     payments,
     pending_project_leader_invitations,
     project_details,
+    project_github_repos,
     project_leads,
     projects,
     user_info,
