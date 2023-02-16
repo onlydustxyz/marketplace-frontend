@@ -20,8 +20,6 @@ mod logged_response;
 pub use logged_response::DebugTechnicalHeaders;
 use logged_response::LoggedResponse;
 
-mod specifications;
-
 #[derive(Deserialize)]
 pub struct Config {
 	base_url: String,
