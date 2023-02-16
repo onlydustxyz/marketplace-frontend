@@ -49,7 +49,7 @@ impl Usecase {
 			.map_err(DomainError::InternalError)?
 		{
 			return Err(DomainError::InvalidInputs(anyhow!(
-				"Github repository with ID {github_repo_id} does not exist"
+				"Github repository {github_repo_id} does not exist"
 			)));
 		}
 

@@ -69,6 +69,7 @@ impl Context {
 				event_publisher.to_owned(),
 				project_details_repository.clone(),
 				github_repo_repository.clone(),
+				project_github_repo_repository.clone(),
 				github.clone(),
 				github.clone(),
 			),

@@ -7,7 +7,9 @@ use tracing::instrument;
 
 use crate::{
 	domain::{GithubRepoExists, GithubService, ProjectDetails, Publishable},
-	infrastructure::database::{GithubRepoRepository, ProjectDetailsRepository},
+	infrastructure::database::{
+		GithubRepoRepository, ProjectDetailsRepository, ProjectGithubRepoRepository,
+	},
 	presentation::http::dto::NonEmptyTrimmedString,
 };
 
@@ -15,6 +17,7 @@ pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_details_repository: ProjectDetailsRepository,
 	github_repo_repository: GithubRepoRepository,
+	project_github_repo_repository: ProjectGithubRepoRepository,
 	github_repo_exists: Arc<dyn GithubRepoExists>,
 	github_service: Arc<dyn GithubService>,
 }
@@ -24,6 +27,7 @@ impl Usecase {
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		project_details_repository: ProjectDetailsRepository,
 		github_repo_repository: GithubRepoRepository,
+		project_github_repo_repository: ProjectGithubRepoRepository,
 		github_repo_exists: Arc<dyn GithubRepoExists>,
 		github_service: Arc<dyn GithubService>,
 	) -> Self {
@@ -31,6 +35,7 @@ impl Usecase {
 			event_publisher,
 			project_details_repository,
 			github_repo_repository,
+			project_github_repo_repository,
 			github_repo_exists,
 			github_service,
 		}
@@ -62,7 +67,7 @@ impl Usecase {
 			.map_err(DomainError::InternalError)?
 		{
 			return Err(DomainError::InvalidInputs(anyhow!(
-				"Github repository with ID {github_repo_id} does not exist"
+				"Github repository {github_repo_id} does not exist"
 			)));
 		}
 
@@ -87,6 +92,8 @@ impl Usecase {
 		self.update_github_repo_details(&github_repo_id)
 			.await
 			.map_err(DomainError::InvalidInputs)?;
+
+		self.project_github_repo_repository.upsert(&project_id, &github_repo_id)?;
 
 		Ok(project_id)
 	}
