@@ -93,8 +93,8 @@ const projectFromQuery = (project: GetProjectQuery["projectsByPk"]) => ({
   totalSpentAmountInUsd: project?.budgetsAggregate.aggregate?.sum?.spentAmount,
   telegramLink: project?.projectDetails?.telegramLink,
   githubRepoInfo: {
-    name: project?.githubRepo?.name,
-    owner: project?.githubRepo?.owner,
+    name: project?.githubRepo?.name || undefined,
+    owner: project?.githubRepo?.owner || undefined,
     contributors: project?.githubRepo?.content?.contributors,
     languages: project?.githubRepo?.languages,
     decodedReadme:
