@@ -1,38 +1,43 @@
 import { gql } from "@apollo/client";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
+import { generatePath, Link } from "react-router-dom";
+import { RoutePaths } from "src/App";
 import Button, { ButtonSize } from "src/components/Button";
 import Card, { CardBorder } from "src/components/Card";
 import GithubLink from "src/components/GithubLink";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import TelegramLink from "src/components/TelegramLink";
+import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import { Project } from "src/pages/Projects";
 import { buildLanguageString } from "src/utils/languages";
 import { formatMoneyAmount } from "src/utils/money";
 import { buildGithubLink } from "src/utils/stringUtils";
+import { useMediaQuery } from "usehooks-ts";
 
 type ProjectCardProps = Project & {
   selectable?: boolean;
 };
 
 export default function ProjectCard({
+  id,
   pendingInvitations,
   projectDetails,
   githubRepo,
   projectLeads,
   budgetsAggregate,
-  selectable = false,
 }: ProjectCardProps) {
   const { T } = useIntl();
+  const isSm = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.sm}px)`);
   const lead = projectLeads?.[0]?.user;
   const name = projectDetails?.name || "";
   const logoUrl = projectDetails?.logoUrl || githubRepo?.content?.logoUrl || onlyDustLogo;
   const totalSpentAmountInUsd = budgetsAggregate?.aggregate?.sum?.spentAmount;
 
-  return (
+  const card = (
     <Card
-      selectable={selectable}
+      selectable={!isSm}
       className={`bg-noise-light hover:bg-right ${
         pendingInvitations?.length > 0 && "bg-orange-500/8 hover:bg-orange-500/12"
       }`}
@@ -94,6 +99,17 @@ export default function ProjectCard({
         )}
       </div>
     </Card>
+  );
+  return isSm ? (
+    card
+  ) : (
+    <Link
+      to={generatePath(RoutePaths.ProjectDetails, {
+        projectId: id,
+      })}
+    >
+      {card}
+    </Link>
   );
 }
 
