@@ -12,6 +12,9 @@ import Header from "./View";
 export default {
   title: "Header",
   component: Header,
+  parameters: {
+    chromatic: { viewports: [320, 1440] },
+  },
   decorators: [withRouter],
 } as ComponentMeta<typeof Header>;
 

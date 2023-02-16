@@ -1,6 +1,6 @@
 import postcss from "postcss";
 import * as tailwindcss from "../tailwind.config";
-import viteConfig from "../vite.config";
+
 const config = {
   stories: ["../frontend/src/**/*.mdx", "../frontend/src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
@@ -33,5 +33,9 @@ const config = {
   docs: {
     autodocs: true,
   },
+  env: config => ({
+    ...config,
+    VITE_FF_RESPONSIVENESS: "true",
+  }),
 };
 export default config;
