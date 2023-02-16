@@ -8,13 +8,12 @@ import { SuspenseCache } from "@apollo/client";
 import { MockedProvider } from "@apollo/client/testing";
 
 import Header from "./View";
+import { responsiveChromatic } from "src/test/utils";
 
 export default {
   title: "Header",
   component: Header,
-  parameters: {
-    chromatic: { viewports: [320, 1440] },
-  },
+  parameters: responsiveChromatic,
   decorators: [withRouter],
 } as ComponentMeta<typeof Header>;
 
