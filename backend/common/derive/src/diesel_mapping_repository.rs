@@ -51,6 +51,18 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 	let insert_span_name = format!("{}::insert", table_ident);
 	let delete_span_name = format!("{}::delete", table_ident);
 
+	let entity1_ident = entity1.path.get_ident().unwrap();
+	let entity2_ident = entity2.path.get_ident().unwrap();
+
+	let delete_all_entity1_of = syn::Ident::new(
+		&format!("delete_all_{entity1_ident}s_of"),
+		entity1_ident.span(),
+	);
+	let delete_all_entity2_of = syn::Ident::new(
+		&format!("delete_all_{entity2_ident}s_of"),
+		entity2_ident.span(),
+	);
+
 	// Build the output, possibly using quasi-quotation
 	let expanded = quote! {
 		use diesel::RunQueryDsl;
@@ -58,9 +70,9 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 		use diesel::ExpressionMethods;
 		use diesel::query_dsl::filter_dsl::FindDsl;
 
-		impl infrastructure::database::MappingRepository<#entity1, #entity2> for #repository_name {
+		impl #repository_name {
 			#[tracing::instrument(name = #insert_span_name, skip(self))]
-			fn upsert(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
+			pub fn upsert(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 
 				diesel::insert_into(#table)
@@ -72,10 +84,32 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 			}
 
 			#[tracing::instrument(name = #delete_span_name, skip(self))]
-			fn delete(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
+			pub fn delete(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 
 				diesel::delete(#table.filter(#id1.eq(id1)).filter(#id2.eq(id2)))
+					.execute(&*connection)?;
+
+				Ok(())
+			}
+
+			#[tracing::instrument(name = #delete_span_name, skip(self))]
+			#[allow(non_snake_case)]
+			pub fn #delete_all_entity2_of(&self, id1: &<#entity1 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
+				let connection = self.0.connection()?;
+
+				diesel::delete(#table.filter(#id1.eq(id1)))
+					.execute(&*connection)?;
+
+				Ok(())
+			}
+
+			#[tracing::instrument(name = #delete_span_name, skip(self))]
+			#[allow(non_snake_case)]
+			pub fn #delete_all_entity1_of(&self, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
+				let connection = self.0.connection()?;
+
+				diesel::delete(#table.filter(#id2.eq(id2)))
 					.execute(&*connection)?;
 
 				Ok(())
