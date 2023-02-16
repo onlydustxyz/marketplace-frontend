@@ -19,4 +19,4 @@ WHERE
 	payload ? 'Created';
 
 -- Delete GithubRepositoryUpdated events
-DELETE events WHERE aggregate_name = 'PROJECT' AND payload ? 'GithubRepositoryUpdated';
+DELETE FROM events WHERE aggregate_name = 'PROJECT' AND payload ? 'GithubRepositoryUpdated';
