@@ -7,13 +7,33 @@ mod diesel_mapping_repository;
 mod diesel_repository;
 mod from_to_sql;
 
+/// Implements a mapping repository between two entities using Diesel.
 #[proc_macro_derive(DieselMappingRepository, attributes(table, entities, ids))]
 pub fn diesel_mapping_repository(input: TokenStream) -> TokenStream {
 	let derive_input: DeriveInput = syn::parse(input).unwrap();
 	diesel_mapping_repository::impl_diesel_mapping_repository(derive_input)
 }
 
-#[proc_macro_derive(DieselRepository, attributes(entity, table, id))]
+/// Implements a repository for this entity using Diesel.
+///
+/// ```compile_fail
+/// #[derive(DieselRepository, Constructor, Clone)]
+/// #[entity(ProjectDetails)]
+/// #[table(dsl::project_details)]
+/// #[id(dsl::project_id)]
+/// pub struct Repository(Arc<Client>);
+/// ```
+///
+/// You can also choose which part of the repository to implement thanks to the #[features]
+/// attribute: ```compile_fail
+/// #[derive(DieselRepository, Constructor, Clone)]
+/// #[entity(ProjectDetails)]
+/// #[table(dsl::project_details)]
+/// #[id(dsl::project_id)]
+/// #[features(select, insert, update, delete)]
+/// pub struct Repository(Arc<Client>);
+/// ```
+#[proc_macro_derive(DieselRepository, attributes(entity, table, id, features))]
 pub fn diesel_repository(input: TokenStream) -> TokenStream {
 	let derive_input: DeriveInput = syn::parse(input).unwrap();
 	diesel_repository::impl_diesel_repository(derive_input)
