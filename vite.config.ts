@@ -28,6 +28,7 @@ export default defineConfig({
     sourcemap: true,
   },
   test: {
+    setupFiles: ["frontend/src/test/setup.ts"],
     globals: true,
     environment: "jsdom",
   },
