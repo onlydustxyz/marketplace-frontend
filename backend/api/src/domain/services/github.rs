@@ -3,7 +3,7 @@ use async_trait::async_trait;
 use domain::GithubRepositoryId;
 use thiserror::Error;
 
-use crate::domain::GithubRepoDetail;
+use crate::domain::GithubRepo;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -20,5 +20,5 @@ pub trait Service: Send + Sync {
 	async fn fetch_repository_details(
 		&self,
 		github_repo_id: &GithubRepositoryId,
-	) -> Result<GithubRepoDetail, Error>;
+	) -> Result<GithubRepo, Error>;
 }

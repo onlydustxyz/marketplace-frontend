@@ -4,7 +4,7 @@ use domain::GithubRepositoryId;
 use infrastructure::github;
 use serde_json::Value;
 
-use crate::domain::{GithubRepoDetail, GithubService, GithubServiceError};
+use crate::domain::{GithubRepo, GithubService, GithubServiceError};
 
 impl From<github::Error> for GithubServiceError {
 	fn from(error: github::Error) -> Self {
@@ -20,7 +20,7 @@ impl GithubService for github::Client {
 	async fn fetch_repository_details(
 		&self,
 		github_repo_id: &GithubRepositoryId,
-	) -> Result<GithubRepoDetail, GithubServiceError> {
+	) -> Result<GithubRepo, GithubServiceError> {
 		let repo_id: i64 = (*github_repo_id).into();
 		let repo = self.get_repository_by_id(repo_id as u64).await?;
 
@@ -38,7 +38,7 @@ impl GithubService for github::Client {
 			))
 		})?;
 
-		Ok(GithubRepoDetail::new(
+		Ok(GithubRepo::new(
 			*github_repo_id,
 			owner.login,
 			repo.name,
