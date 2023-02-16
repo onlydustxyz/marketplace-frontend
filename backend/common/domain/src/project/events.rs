@@ -2,30 +2,14 @@ use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{AggregateEvent, BudgetEvent, GithubRepositoryId, Project, ProjectId, UserId};
+use crate::{AggregateEvent, BudgetEvent, Project, ProjectId, UserId};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
-	Created {
-		id: ProjectId,
-		github_repo_id: GithubRepositoryId,
-	},
-	LeaderAssigned {
-		id: ProjectId,
-		leader_id: UserId,
-	},
-	LeaderUnassigned {
-		id: ProjectId,
-		leader_id: UserId,
-	},
-	GithubRepositoryUpdated {
-		id: ProjectId,
-		github_repo_id: GithubRepositoryId,
-	},
-	Budget {
-		id: ProjectId,
-		event: BudgetEvent,
-	},
+	Created { id: ProjectId },
+	LeaderAssigned { id: ProjectId, leader_id: UserId },
+	LeaderUnassigned { id: ProjectId, leader_id: UserId },
+	Budget { id: ProjectId, event: BudgetEvent },
 }
 
 impl AggregateEvent<Project> for Event {
@@ -34,7 +18,6 @@ impl AggregateEvent<Project> for Event {
 			Self::Created { id, .. }
 			| Self::LeaderAssigned { id, .. }
 			| Self::LeaderUnassigned { id, .. }
-			| Self::GithubRepositoryUpdated { id, .. }
 			| Self::Budget { id, .. } => id,
 		}
 	}
