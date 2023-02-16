@@ -25,7 +25,9 @@ pub fn diesel_mapping_repository(input: TokenStream) -> TokenStream {
 /// ```
 ///
 /// You can also choose which part of the repository to implement thanks to the #[features]
-/// attribute: ```compile_fail
+/// attribute:
+///
+/// ```compile_fail
 /// #[derive(DieselRepository, Constructor, Clone)]
 /// #[entity(ProjectDetails)]
 /// #[table(dsl::project_details)]
