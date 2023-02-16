@@ -15,7 +15,7 @@ export default function Layout() {
         </div>
       )}
       <div
-        className={classNames("min-h-screen flex flex-col", {
+        className={classNames("h-screen flex flex-col", {
           "md:visible invisible ": !RESPONSIVE,
         })}
       >
