@@ -13,6 +13,7 @@
 - "!include public_payments.yaml"
 - "!include public_pending_project_leader_invitations.yaml"
 - "!include public_project_details.yaml"
+- "!include public_project_github_repo_view.yaml"
 - "!include public_project_github_repos.yaml"
 - "!include public_project_leads.yaml"
 - "!include public_projects.yaml"
