@@ -12,7 +12,9 @@ import { buildLanguageString } from "src/utils/languages";
 import { formatMoneyAmount } from "src/utils/money";
 import { buildGithubLink } from "src/utils/stringUtils";
 
-type ProjectCardProps = Project;
+type ProjectCardProps = Project & {
+  selectable?: boolean;
+};
 
 export default function ProjectCard({
   pendingInvitations,
@@ -20,6 +22,7 @@ export default function ProjectCard({
   githubRepo,
   projectLeads,
   budgetsAggregate,
+  selectable = false,
 }: ProjectCardProps) {
   const { T } = useIntl();
   const lead = projectLeads?.[0]?.user;
@@ -29,7 +32,7 @@ export default function ProjectCard({
 
   return (
     <Card
-      selectable={true}
+      selectable={selectable}
       className={`bg-noise-light hover:bg-right ${
         pendingInvitations?.length > 0 && "bg-orange-500/8 hover:bg-orange-500/12"
       }`}
