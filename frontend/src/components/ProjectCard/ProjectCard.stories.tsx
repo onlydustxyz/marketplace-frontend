@@ -28,13 +28,13 @@ const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
 
 export const Default = Template.bind({});
 
-const props = (args: { name: string; description: string }) => ({
+const props = (args: { name: string; shortDescription: string }) => ({
   id: 123,
   projectDetails: {
     projectId: "123",
     name: args.name,
     telegramLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
-    description: args.description,
+    shortDescription: args.shortDescription,
     logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
   },
   projectLeads: [
@@ -71,7 +71,7 @@ const props = (args: { name: string; description: string }) => ({
 
 const args = {
   name: "ZeroSync",
-  description:
+  shortDescription:
     "Don't trust. Verify. ZeroSync allows to verify Bitcoin's chain state in an instant. No need to download hundreds of gigabytes of blocks. A compact cryptographic proof suffices to validate the entire history of transactions and everyone's current balances.",
   withInvitation: false,
 };

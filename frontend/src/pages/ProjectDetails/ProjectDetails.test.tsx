@@ -69,7 +69,7 @@ const graphQlMocks = [
           projectDetails: {
             name: TEST_PROJECT_NAME,
             telegramLink: TEST_TELEGRAM_LINK,
-            description: TEST_DESCRIPTION,
+            shortDescription: TEST_DESCRIPTION,
             logoUrl: null,
           },
           pendingInvitations: [{ id: "test-invitation-id" }],
@@ -118,7 +118,7 @@ const graphQlMocks = [
           projectDetails: {
             name: TEST_LED_PROJECT_NAME,
             telegramLink: TEST_TELEGRAM_LINK,
-            description: TEST_DESCRIPTION,
+            shortDescription: TEST_DESCRIPTION,
             logoUrl: null,
           },
           pendingInvitations: [],

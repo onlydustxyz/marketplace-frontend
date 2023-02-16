@@ -81,10 +81,11 @@ diesel::table! {
 diesel::table! {
     project_details (project_id) {
         project_id -> Uuid,
-        description -> Nullable<Text>,
         telegram_link -> Nullable<Text>,
         logo_url -> Nullable<Text>,
         name -> Text,
+        short_description -> Text,
+        long_description -> Text,
     }
 }
 
@@ -109,6 +110,22 @@ diesel::table! {
 }
 
 diesel::table! {
+    projects_sponsors (id) {
+        id -> Uuid,
+        project_id -> Nullable<Uuid>,
+        sponsor_id -> Nullable<Uuid>,
+    }
+}
+
+diesel::table! {
+    sponsors (id) {
+        id -> Uuid,
+        name -> Nullable<Text>,
+        logo_url -> Nullable<Text>,
+    }
+}
+
+diesel::table! {
     user_info (user_id) {
         user_id -> Uuid,
         identity -> Nullable<Jsonb>,
@@ -122,6 +139,8 @@ diesel::joinable!(budgets -> projects (project_id));
 diesel::joinable!(payment_requests -> budgets (budget_id));
 diesel::joinable!(payments -> payment_requests (request_id));
 diesel::joinable!(project_leads -> projects (project_id));
+diesel::joinable!(projects_sponsors -> projects (project_id));
+diesel::joinable!(projects_sponsors -> sponsors (sponsor_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
     budgets,
@@ -136,5 +155,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     project_github_repos,
     project_leads,
     projects,
+    projects_sponsors,
+    sponsors,
     user_info,
 );

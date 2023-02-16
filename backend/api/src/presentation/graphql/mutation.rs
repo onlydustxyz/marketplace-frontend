@@ -11,7 +11,9 @@ use crate::{
 		user_info::{Email, Identity, Location, PayoutSettings},
 		PaymentReason, ProjectDetails,
 	},
-	presentation::http::dto::{EthereumIdentityInput, IdentityInput, PayoutSettingsInput},
+	presentation::http::dto::{
+		EthereumIdentityInput, IdentityInput, NonEmptyTrimmedString, PayoutSettingsInput,
+	},
 };
 
 pub struct Mutation;
@@ -109,9 +111,10 @@ impl Mutation {
 		name: String,
 		initial_budget_in_usd: i32,
 		github_repo_id: i32,
-		description: Option<String>,
 		telegram_link: Option<String>,
 		logo_url: Option<String>,
+		short_description: String,
+		long_description: String,
 	) -> Result<Uuid> {
 		let project_id = context
 			.create_project_usecase
@@ -119,9 +122,10 @@ impl Mutation {
 				name.try_into()?,
 				Money::from_major(initial_budget_in_usd as i64, rusty_money::crypto::USDC).into(),
 				(github_repo_id as i64).into(),
-				description,
 				telegram_link,
 				logo_url,
+				short_description.try_into()?,
+				long_description.try_into()?,
 			)
 			.await?;
 
@@ -132,18 +136,23 @@ impl Mutation {
 		context: &Context,
 		id: Uuid,
 		name: String,
-		description: Option<String>,
 		telegram_link: Option<String>,
 		logo_url: Option<String>,
+		short_description: String,
+		long_description: String,
 	) -> Result<Uuid> {
 		let project_id = id.into();
+
+		let valid_short_description = NonEmptyTrimmedString::try_from(short_description)?;
+		let valid_long_description = NonEmptyTrimmedString::try_from(long_description)?;
 
 		context.project_details_repository.upsert(&ProjectDetails::new(
 			project_id,
 			name,
-			description,
 			telegram_link,
 			logo_url,
+			valid_short_description.into(),
+			valid_long_description.into(),
 		))?;
 
 		Ok(id)

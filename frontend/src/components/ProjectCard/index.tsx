@@ -71,7 +71,7 @@ export default function ProjectCard({
             )}
           </div>
           <div className="flex flex-col basis-2/3 sm:pl-6 gap-4 sm:gap-6">
-            <div className="line-clamp-2">{projectDetails?.description}</div>
+            <div className="line-clamp-2">{projectDetails?.shortDescription}</div>
             <div className="flex flex-row sm:divide-x divide-stone-100/8">
               <div className="hidden sm:flex flex-row gap-2 pr-6">
                 {projectDetails?.telegramLink && <TelegramLink link={projectDetails?.telegramLink} />}
@@ -127,9 +127,9 @@ export const PROJECT_CARD_FRAGMENT = gql`
     projectDetails {
       projectId
       name
-      description
       telegramLink
       logoUrl
+      shortDescription
     }
     pendingInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
       id

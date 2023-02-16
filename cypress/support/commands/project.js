@@ -6,21 +6,23 @@ Cypress.Commands.add(
         projectName = "My Project",
         initialBudget = 500,
         githubRepoId = 481932781,
-        description = "My project description",
         telegramLink = "https://t.me/foo",
-        logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4"
+        logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4",
+        shortDescription = "My project description",
+        longDescription = "This project certainly aim to do stuff",
     ) => {
         return {
-            query: `mutation($projectName: String!, $initialBudget: Int!, $githubRepoId: Int!, $description: String!, $telegramLink: String!, $logoUrl: String!) {
+            query: `mutation($projectName: String!, $initialBudget: Int!, $githubRepoId: Int!, $telegramLink: String!, $logoUrl: String!, $shortDescription: String!, $longDescription: String!) {
                 createProject(
                     name: $projectName,
                     initialBudgetInUsd: $initialBudget,
                     githubRepoId: $githubRepoId,
-                    description: $description,
                     telegramLink: $telegramLink,
-                    logoUrl: $logoUrl
+                    logoUrl: $logoUrl,
+                    shortDescription: $shortDescription,
+                    longDescription: $longDescription,
                 )}`,
-            variables: { projectName, initialBudget, githubRepoId, description, telegramLink, logoUrl },
+            variables: { projectName, initialBudget, githubRepoId, telegramLink, logoUrl, shortDescription: shortDescription, longDescription: longDescription },
             wait: WAIT_LONG,
         };
     }
@@ -33,11 +35,12 @@ Cypress.Commands.add(
         projectName = "My Project",
         initialBudget = 500,
         githubRepoId = 481932781,
-        description = "My project description",
         telegramLink = "https://t.me/foo",
-        logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4"
+        logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4",
+        shortDescription = "My project description",
+        longDescription = "This project certainly aim to do stuff",
     ) => {
-        cy.createProject(projectName, initialBudget, githubRepoId, description, telegramLink, logoUrl)
+        cy.createProject(projectName, initialBudget, githubRepoId, telegramLink, logoUrl, shortDescription, longDescription)
             .asAdmin()
             .data("createProject")
             .then(projectId => {
@@ -55,18 +58,20 @@ Cypress.Commands.add(
     (
         projectId,
         name = "My Project",
-        description = "My project description",
         telegramLink = "https://t.me/foo",
-        logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4"
+        logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4",
+        shortDescription = "My project description",
+        longDescription = "This project certainly aim to do stuff",
     ) => ({
-        query: `mutation($projectId: Uuid!, $name: String!, $description: String!, $telegramLink: String!, $logoUrl: String!) { updateProject(
+        query: `mutation($projectId: Uuid!, $name: String!, $telegramLink: String!, $logoUrl: String!, $shortDescription: String!, $longDescription: String!) { updateProject(
             id: $projectId,
             name: $name,
-            description: $description,
             telegramLink: $telegramLink,
             logoUrl: $logoUrl
+            shortDescription: $shortDescription,
+            longDescription: $longDescription,
         )}`,
-        variables: { projectId, name, description, telegramLink, logoUrl },
+        variables: { projectId, name, telegramLink, logoUrl, shortDescription, longDescription },
         wait: WAIT_LONG,
     })
 );

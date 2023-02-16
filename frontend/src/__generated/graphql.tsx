@@ -1019,10 +1019,11 @@ export type PersonIdentity = {
 /** columns and relationships of "project_details" */
 export type ProjectDetails = {
   __typename?: 'ProjectDetails';
-  description: Maybe<Scalars['String']>;
   logoUrl: Maybe<Scalars['String']>;
+  longDescription: Scalars['String'];
   name: Scalars['String'];
   projectId: Scalars['uuid'];
+  shortDescription: Scalars['String'];
   telegramLink: Maybe<Scalars['String']>;
 };
 
@@ -1031,32 +1032,36 @@ export type ProjectDetailsBoolExp = {
   _and: InputMaybe<Array<ProjectDetailsBoolExp>>;
   _not: InputMaybe<ProjectDetailsBoolExp>;
   _or: InputMaybe<Array<ProjectDetailsBoolExp>>;
-  description: InputMaybe<StringComparisonExp>;
   logoUrl: InputMaybe<StringComparisonExp>;
+  longDescription: InputMaybe<StringComparisonExp>;
   name: InputMaybe<StringComparisonExp>;
   projectId: InputMaybe<UuidComparisonExp>;
+  shortDescription: InputMaybe<StringComparisonExp>;
   telegramLink: InputMaybe<StringComparisonExp>;
 };
 
 /** Ordering options when selecting data from "project_details". */
 export type ProjectDetailsOrderBy = {
-  description: InputMaybe<OrderBy>;
   logoUrl: InputMaybe<OrderBy>;
+  longDescription: InputMaybe<OrderBy>;
   name: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
+  shortDescription: InputMaybe<OrderBy>;
   telegramLink: InputMaybe<OrderBy>;
 };
 
 /** select columns of table "project_details" */
 export enum ProjectDetailsSelectColumn {
   /** column name */
-  Description = 'description',
-  /** column name */
   LogoUrl = 'logoUrl',
+  /** column name */
+  LongDescription = 'longDescription',
   /** column name */
   Name = 'name',
   /** column name */
   ProjectId = 'projectId',
+  /** column name */
+  ShortDescription = 'shortDescription',
   /** column name */
   TelegramLink = 'telegramLink'
 }
@@ -1230,6 +1235,8 @@ export type Projects = {
   projectDetails: Maybe<ProjectDetails>;
   /** An array relationship */
   projectLeads: Array<ProjectLeads>;
+  /** An array relationship */
+  projectSponsors: Array<ProjectsSponsors>;
 };
 
 
@@ -1282,6 +1289,16 @@ export type ProjectsProjectLeadsArgs = {
   where: InputMaybe<ProjectLeadsBoolExp>;
 };
 
+
+/** columns and relationships of "projects" */
+export type ProjectsProjectSponsorsArgs = {
+  distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsSponsorsOrderBy>>;
+  where: InputMaybe<ProjectsSponsorsBoolExp>;
+};
+
 /** Boolean expression to filter rows from the table "projects". All fields are combined with a logical 'AND'. */
 export type ProjectsBoolExp = {
   _and: InputMaybe<Array<ProjectsBoolExp>>;
@@ -1295,6 +1312,7 @@ export type ProjectsBoolExp = {
   pendingInvitations: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
   projectDetails: InputMaybe<ProjectDetailsBoolExp>;
   projectLeads: InputMaybe<ProjectLeadsBoolExp>;
+  projectSponsors: InputMaybe<ProjectsSponsorsBoolExp>;
 };
 
 /** Ordering options when selecting data from "projects". */
@@ -1306,12 +1324,63 @@ export type ProjectsOrderBy = {
   pendingInvitationsAggregate: InputMaybe<PendingProjectLeaderInvitationsAggregateOrderBy>;
   projectDetails: InputMaybe<ProjectDetailsOrderBy>;
   projectLeadsAggregate: InputMaybe<ProjectLeadsAggregateOrderBy>;
+  projectSponsorsAggregate: InputMaybe<ProjectsSponsorsAggregateOrderBy>;
 };
 
 /** select columns of table "projects" */
 export enum ProjectsSelectColumn {
   /** column name */
   Id = 'id'
+}
+
+/** columns and relationships of "projects_sponsors" */
+export type ProjectsSponsors = {
+  __typename?: 'ProjectsSponsors';
+  id: Scalars['uuid'];
+  /** An object relationship */
+  project: Maybe<Projects>;
+  projectId: Maybe<Scalars['uuid']>;
+  /** An object relationship */
+  sponsor: Maybe<Sponsors>;
+  sponsorId: Maybe<Scalars['uuid']>;
+};
+
+/** order by aggregate values of table "projects_sponsors" */
+export type ProjectsSponsorsAggregateOrderBy = {
+  count: InputMaybe<OrderBy>;
+  max: InputMaybe<Projects_Sponsors_Max_Order_By>;
+  min: InputMaybe<Projects_Sponsors_Min_Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "projects_sponsors". All fields are combined with a logical 'AND'. */
+export type ProjectsSponsorsBoolExp = {
+  _and: InputMaybe<Array<ProjectsSponsorsBoolExp>>;
+  _not: InputMaybe<ProjectsSponsorsBoolExp>;
+  _or: InputMaybe<Array<ProjectsSponsorsBoolExp>>;
+  id: InputMaybe<UuidComparisonExp>;
+  project: InputMaybe<ProjectsBoolExp>;
+  projectId: InputMaybe<UuidComparisonExp>;
+  sponsor: InputMaybe<SponsorsBoolExp>;
+  sponsorId: InputMaybe<UuidComparisonExp>;
+};
+
+/** Ordering options when selecting data from "projects_sponsors". */
+export type ProjectsSponsorsOrderBy = {
+  id: InputMaybe<OrderBy>;
+  project: InputMaybe<ProjectsOrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  sponsor: InputMaybe<SponsorsOrderBy>;
+  sponsorId: InputMaybe<OrderBy>;
+};
+
+/** select columns of table "projects_sponsors" */
+export enum ProjectsSponsorsSelectColumn {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ProjectId = 'projectId',
+  /** column name */
+  SponsorId = 'sponsorId'
 }
 
 export type PullRequest = {
@@ -1335,6 +1404,55 @@ export type Repository = {
   logoUrl: Scalars['String'];
   readme: Maybe<File>;
 };
+
+/** columns and relationships of "sponsors" */
+export type Sponsors = {
+  __typename?: 'Sponsors';
+  id: Scalars['uuid'];
+  logoUrl: Maybe<Scalars['String']>;
+  name: Maybe<Scalars['String']>;
+  /** An array relationship */
+  sponsorProjects: Array<ProjectsSponsors>;
+};
+
+
+/** columns and relationships of "sponsors" */
+export type SponsorsSponsorProjectsArgs = {
+  distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsSponsorsOrderBy>>;
+  where: InputMaybe<ProjectsSponsorsBoolExp>;
+};
+
+/** Boolean expression to filter rows from the table "sponsors". All fields are combined with a logical 'AND'. */
+export type SponsorsBoolExp = {
+  _and: InputMaybe<Array<SponsorsBoolExp>>;
+  _not: InputMaybe<SponsorsBoolExp>;
+  _or: InputMaybe<Array<SponsorsBoolExp>>;
+  id: InputMaybe<UuidComparisonExp>;
+  logoUrl: InputMaybe<StringComparisonExp>;
+  name: InputMaybe<StringComparisonExp>;
+  sponsorProjects: InputMaybe<ProjectsSponsorsBoolExp>;
+};
+
+/** Ordering options when selecting data from "sponsors". */
+export type SponsorsOrderBy = {
+  id: InputMaybe<OrderBy>;
+  logoUrl: InputMaybe<OrderBy>;
+  name: InputMaybe<OrderBy>;
+  sponsorProjectsAggregate: InputMaybe<ProjectsSponsorsAggregateOrderBy>;
+};
+
+/** select columns of table "sponsors" */
+export enum SponsorsSelectColumn {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LogoUrl = 'logoUrl',
+  /** column name */
+  Name = 'name'
+}
 
 export enum Status {
   Closed = 'CLOSED',
@@ -2154,10 +2272,11 @@ export type Project_Details_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Project_Details_StreamCursorValueInput = {
-  description: InputMaybe<Scalars['String']>;
   logoUrl: InputMaybe<Scalars['String']>;
+  longDescription: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   projectId: InputMaybe<Scalars['uuid']>;
+  shortDescription: InputMaybe<Scalars['String']>;
   telegramLink: InputMaybe<Scalars['String']>;
 };
 
@@ -2270,6 +2389,35 @@ export type Project_Leads_StreamCursorValueInput = {
   userId: InputMaybe<Scalars['uuid']>;
 };
 
+/** order by max() on columns of table "projects_sponsors" */
+export type Projects_Sponsors_Max_Order_By = {
+  id: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  sponsorId: InputMaybe<OrderBy>;
+};
+
+/** order by min() on columns of table "projects_sponsors" */
+export type Projects_Sponsors_Min_Order_By = {
+  id: InputMaybe<OrderBy>;
+  projectId: InputMaybe<OrderBy>;
+  sponsorId: InputMaybe<OrderBy>;
+};
+
+/** Streaming cursor of the table "projects_sponsors" */
+export type Projects_Sponsors_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Projects_Sponsors_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Projects_Sponsors_StreamCursorValueInput = {
+  id: InputMaybe<Scalars['uuid']>;
+  projectId: InputMaybe<Scalars['uuid']>;
+  sponsorId: InputMaybe<Scalars['uuid']>;
+};
+
 /** Streaming cursor of the table "projects" */
 export type Projects_StreamCursorInput = {
   /** Stream column input with initial value */
@@ -2336,6 +2484,14 @@ export type Query_Root = {
   projects: Array<Projects>;
   /** fetch data from the table: "projects" using primary key columns */
   projectsByPk: Maybe<Projects>;
+  /** fetch data from the table: "projects_sponsors" */
+  projectsSponsors: Array<ProjectsSponsors>;
+  /** fetch data from the table: "projects_sponsors" using primary key columns */
+  projectsSponsorsByPk: Maybe<ProjectsSponsors>;
+  /** fetch data from the table: "sponsors" */
+  sponsors: Array<Sponsors>;
+  /** fetch data from the table: "sponsors" using primary key columns */
+  sponsorsByPk: Maybe<Sponsors>;
   /** fetch data from the table: "auth.users" using primary key columns */
   user: Maybe<Users>;
   /** fetch data from the table: "user_info" */
@@ -2540,6 +2696,34 @@ export type Query_RootProjectsByPkArgs = {
 };
 
 
+export type Query_RootProjectsSponsorsArgs = {
+  distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsSponsorsOrderBy>>;
+  where: InputMaybe<ProjectsSponsorsBoolExp>;
+};
+
+
+export type Query_RootProjectsSponsorsByPkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootSponsorsArgs = {
+  distinctOn: InputMaybe<Array<SponsorsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<SponsorsOrderBy>>;
+  where: InputMaybe<SponsorsBoolExp>;
+};
+
+
+export type Query_RootSponsorsByPkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Query_RootUserArgs = {
   id: Scalars['uuid'];
 };
@@ -2565,6 +2749,21 @@ export type Query_RootUsersArgs = {
   offset: InputMaybe<Scalars['Int']>;
   orderBy: InputMaybe<Array<UsersOrderBy>>;
   where: InputMaybe<UsersBoolExp>;
+};
+
+/** Streaming cursor of the table "sponsors" */
+export type Sponsors_StreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: Sponsors_StreamCursorValueInput;
+  /** cursor ordering */
+  ordering: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Sponsors_StreamCursorValueInput = {
+  id: InputMaybe<Scalars['uuid']>;
+  logoUrl: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['String']>;
 };
 
 export type Subscription_Root = {
@@ -2635,8 +2834,20 @@ export type Subscription_Root = {
   projects: Array<Projects>;
   /** fetch data from the table: "projects" using primary key columns */
   projectsByPk: Maybe<Projects>;
+  /** fetch data from the table: "projects_sponsors" */
+  projectsSponsors: Array<ProjectsSponsors>;
+  /** fetch data from the table: "projects_sponsors" using primary key columns */
+  projectsSponsorsByPk: Maybe<ProjectsSponsors>;
+  /** fetch data from the table in a streaming manner: "projects_sponsors" */
+  projectsSponsorsStream: Array<ProjectsSponsors>;
   /** fetch data from the table in a streaming manner: "projects" */
   projectsStream: Array<Projects>;
+  /** fetch data from the table: "sponsors" */
+  sponsors: Array<Sponsors>;
+  /** fetch data from the table: "sponsors" using primary key columns */
+  sponsorsByPk: Maybe<Sponsors>;
+  /** fetch data from the table in a streaming manner: "sponsors" */
+  sponsorsStream: Array<Sponsors>;
   /** fetch data from the table: "auth.users" using primary key columns */
   user: Maybe<Users>;
   /** fetch data from the table: "user_info" */
@@ -2895,10 +3106,52 @@ export type Subscription_RootProjectsByPkArgs = {
 };
 
 
+export type Subscription_RootProjectsSponsorsArgs = {
+  distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<ProjectsSponsorsOrderBy>>;
+  where: InputMaybe<ProjectsSponsorsBoolExp>;
+};
+
+
+export type Subscription_RootProjectsSponsorsByPkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootProjectsSponsorsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Projects_Sponsors_StreamCursorInput>>;
+  where: InputMaybe<ProjectsSponsorsBoolExp>;
+};
+
+
 export type Subscription_RootProjectsStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Projects_StreamCursorInput>>;
   where: InputMaybe<ProjectsBoolExp>;
+};
+
+
+export type Subscription_RootSponsorsArgs = {
+  distinctOn: InputMaybe<Array<SponsorsSelectColumn>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  orderBy: InputMaybe<Array<SponsorsOrderBy>>;
+  where: InputMaybe<SponsorsBoolExp>;
+};
+
+
+export type Subscription_RootSponsorsByPkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootSponsorsStreamArgs = {
+  batchSize: Scalars['Int'];
+  cursor: Array<InputMaybe<Sponsors_StreamCursorInput>>;
+  where: InputMaybe<SponsorsBoolExp>;
 };
 
 
@@ -3187,7 +3440,7 @@ export type GetPaymentRequestIdsQueryVariables = Exact<{
 
 export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> };
 
-export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null };
+export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null };
 
 export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string };
 
@@ -3252,7 +3505,7 @@ export type GetPaymentRequestsQueryVariables = Exact<{
 }>;
 
 
-export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, description: string | null, logoUrl: string | null } | null, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string } } | null } | null } | null }> };
+export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string } } | null } | null } | null }> };
 
 export type UpdateProfileInfoMutationVariables = Exact<{
   email: InputMaybe<Scalars['Email']>;
@@ -3304,7 +3557,7 @@ export type GetProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }> } | null };
+export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }> } | null };
 
 export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
   invitationId: Scalars['Uuid'];
@@ -3318,7 +3571,7 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, description: string | null, telegramLink: string | null, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null }> };
+export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null }> };
 
 export type GetAllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3357,9 +3610,9 @@ export const ProjectCardFieldsFragmentDoc = gql`
   projectDetails {
     projectId
     name
-    description
     telegramLink
     logoUrl
+    shortDescription
   }
   pendingInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
     id
@@ -3779,7 +4032,7 @@ export const GetPaymentRequestsDocument = gql`
         projectDetails {
           projectId
           name
-          description
+          shortDescription
           logoUrl
         }
         githubRepo {

@@ -89,7 +89,7 @@ const ALL_PROJECTS_RESULT = {
         projectDetails: {
           name: TEST_PROJECT_NAME,
           telegramLink: TEST_TELEGRAM_LINK,
-          description: TEST_DESCRIPTION,
+          shortDescription: TEST_DESCRIPTION,
           logoUrl: null,
         },
         projectLeads: [
@@ -289,7 +289,7 @@ const paymentRequestsMock = {
               id: "632d5da7-e590-4815-85ea-82a5585e6049",
               name: "MyAwesomeProject",
               projectDetails: {
-                description: "SOOOOOO awesome",
+                shortDescription: "SOOOOOO awesome",
                 logoUrl: null,
               },
               githubRepo: null,
