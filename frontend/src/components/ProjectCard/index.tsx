@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { generatePath, Link } from "react-router-dom";
 import { RoutePaths } from "src/App";
+import classNames from "classnames";
 import Button, { ButtonSize } from "src/components/Button";
 import Card, { CardBorder } from "src/components/Card";
 import GithubLink from "src/components/GithubLink";
@@ -38,9 +39,9 @@ export default function ProjectCard({
   const card = (
     <Card
       selectable={!isSm}
-      className={`bg-noise-light hover:bg-right ${
-        pendingInvitations?.length > 0 && "bg-orange-500/8 hover:bg-orange-500/12"
-      }`}
+      className={classNames("bg-noise-light hover:bg-right", {
+        "sm:bg-orange-500/8 sm:hover:bg-orange-500/12": pendingInvitations?.length > 0,
+      })}
       border={CardBorder.Medium}
       dataTestId="project-card"
     >
@@ -92,7 +93,7 @@ export default function ProjectCard({
           </div>
         </div>
         {pendingInvitations?.length > 0 && (
-          <div className="flex flex-row justify-between items-center font-medium px-6 py-4 rounded-xl bg-orange-500/8">
+          <div className="hidden sm:flex flex-row justify-between items-center font-medium px-6 py-4 rounded-xl bg-orange-500/8">
             <div className="text-white">{T("project.projectLeadInvitation.prompt")}</div>
             <Button size={ButtonSize.Small}>{T("project.projectLeadInvitation.view")}</Button>
           </div>
