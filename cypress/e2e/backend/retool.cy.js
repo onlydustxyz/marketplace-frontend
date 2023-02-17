@@ -128,7 +128,7 @@ describe("As an admin, on retool, I", () => {
         );
     });
 
-    it("can link a github repository with a project", () => {
+    it("can link and unlink a github repository with a project", () => {
         const FIRST_REPO_ID = 602953043;
         const SECOND_REPO_ID = 602953640;
 
@@ -165,7 +165,35 @@ describe("As an admin, on retool, I", () => {
                                         name: "cool.repo.B"
                                       }
                                     }
-                                ]);
+                                ])
+                                .then(() => {
+                                    cy.unlinkGithubRepoFromProject(projectId, FIRST_REPO_ID)
+                                        .asAdmin()
+                                        .data()
+                                        .then(() => {
+                                            cy.graphql({ query: `{
+                                                    projectsByPk(id: "${projectId}") {
+                                                        githubRepos(orderBy: {githubRepoId: ASC}) {
+                                                            githubRepoId
+                                                            githubRepoDetails {
+                                                                name
+                                                            }
+                                                        }
+                                                    }
+                                                }`})
+                                                .asAnonymous()
+                                                .data("projectsByPk")
+                                                .its("githubRepos")
+                                                .should("deep.equal", [
+                                                    {
+                                                        githubRepoId: SECOND_REPO_ID,
+                                                        githubRepoDetails: {
+                                                            name: "cool.repo.B"
+                                                        }
+                                                    }
+                                                ])
+                                        })
+                                })
                         })
                 })
         );
