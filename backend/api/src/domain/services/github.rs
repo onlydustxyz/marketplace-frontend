@@ -1,6 +1,8 @@
 use anyhow::Result;
 use async_trait::async_trait;
 use domain::GithubRepositoryId;
+#[cfg(test)]
+use mockall::automock;
 use thiserror::Error;
 
 use crate::domain::GithubRepo;
@@ -15,6 +17,7 @@ pub enum Error {
 	Other(anyhow::Error),
 }
 
+#[cfg_attr(test, automock)]
 #[async_trait]
 pub trait Service: Send + Sync {
 	async fn fetch_repository_details(

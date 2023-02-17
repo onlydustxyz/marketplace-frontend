@@ -95,7 +95,7 @@ impl Usecase {
 			.await
 			.map_err(DomainError::InvalidInputs)?;
 
-		self.project_github_repo_repository.upsert(&project_id, &github_repo_id)?;
+		self.project_github_repo_repository.try_insert(&project_id, &github_repo_id)?;
 
 		Ok(project_id)
 	}

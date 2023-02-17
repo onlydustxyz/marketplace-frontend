@@ -9,7 +9,9 @@ mod pending_project_leader_invitations;
 pub use pending_project_leader_invitations::Repository as PendingProjectLeaderInvitationsRepository;
 
 mod project_github_repo;
+#[cfg_attr(test, mockall_double::double)]
 pub use project_github_repo::Repository as ProjectGithubRepoRepository;
 
 mod github_repo;
+#[cfg_attr(test, mockall_double::double)]
 pub use github_repo::Repository as GithubRepoRepository;

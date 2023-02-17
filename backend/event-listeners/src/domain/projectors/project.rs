@@ -35,7 +35,7 @@ impl EventListener for Projector {
 					self.project_repository.try_insert(&Project::new(*id))?;
 				},
 				ProjectEvent::LeaderAssigned { id, leader_id } =>
-					self.project_lead_repository.upsert(id, leader_id)?,
+					self.project_lead_repository.try_insert(id, leader_id)?,
 				ProjectEvent::LeaderUnassigned { id, leader_id } =>
 					self.project_lead_repository.delete(id, leader_id)?,
 				ProjectEvent::Budget { .. } => (),

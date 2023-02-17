@@ -18,9 +18,13 @@ mod payment;
 pub use payment::Reason as PaymentReason;
 
 mod specifications;
+#[cfg(test)]
+pub use specifications::MockGithubRepoExists;
 pub use specifications::{ArePayoutSettingsValid, GithubRepoExists};
 
 mod services;
+#[cfg(test)]
+pub use services::MockGithubService;
 pub use services::{GithubService, GithubServiceError};
 
 mod pending_project_leader_invitation;

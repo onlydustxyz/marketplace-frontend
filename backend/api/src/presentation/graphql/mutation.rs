@@ -158,6 +158,19 @@ impl Mutation {
 		Ok(id)
 	}
 
+	pub async fn link_github_repo(
+		context: &Context,
+		project_id: Uuid,
+		github_repo_id: i32,
+	) -> Result<Uuid> {
+		context
+			.link_github_repo_usecase
+			.link_github_repo(project_id.into(), (github_repo_id as i64).into())
+			.await?;
+
+		Ok(project_id)
+	}
+
 	pub async fn request_payment(
 		context: &Context,
 		project_id: Uuid,
