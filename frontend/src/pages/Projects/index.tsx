@@ -23,10 +23,10 @@ export default function Projects() {
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
-      <div className="container mx-auto pt-16 pb-8 h-full">
-        <div className="text-5xl font-belwe">{T("navbar.projects")}</div>
-        <div className="flex mt-8 gap-6 h-full">
-          <div className="basis-80 shrink-0">
+      <div className="container mx-auto pt-8 sm:pt-16 pb-8 px-4 h-full">
+        <div className="hidden sm:block text-5xl font-belwe">{T("navbar.projects")}</div>
+        <div className="flex sm:mt-8 gap-6 h-full">
+          <div className="hidden sm:block basis-80 shrink-0">
             <FilterPanel
               onTechnologiesChange={setTechnologies}
               projectOwnershipType={projectOwnershipType}

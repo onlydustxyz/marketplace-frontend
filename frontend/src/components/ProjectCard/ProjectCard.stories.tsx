@@ -1,31 +1,40 @@
 import { ComponentStory } from "@storybook/react";
 import { JSXElementConstructor } from "react";
+import { responsiveChromatic } from "src/test/utils";
+import { withRouter } from "storybook-addon-react-router-v6";
 
 import ProjectCard from ".";
 
 export default {
   title: "ProjectCard",
-  argTypes: {
-    width: { control: { type: "range", min: 800, max: 1200, step: 100 } },
-  },
+  parameters: responsiveChromatic,
+  decorators: [withRouter],
 };
 
 const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
-  <div style={{ width: args.width }}>
-    <ProjectCard {...props} pendingInvitations={args.withInvitation ? props.pendingInvitations : []} />
-  </div>
+  <>
+    <div className="hidden sm:block">
+      <ProjectCard
+        {...props(args)}
+        pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []}
+        selectable
+      />
+    </div>
+    <div className="sm:hidden">
+      <ProjectCard {...props(args)} pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []} />
+    </div>
+  </>
 );
 
 export const Default = Template.bind({});
 
-const props = {
+const props = (args: { name: string; description: string }) => ({
   id: 123,
   projectDetails: {
     projectId: "123",
-    name: "ZeroSync",
+    name: args.name,
     telegramLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
-    description:
-      "Don't trust. Verify. ZeroSync allows to verify Bitcoin's chain state in an instant. No need to download hundreds of gigabytes of blocks. A compact cryptographic proof suffices to validate the entire history of transactions and everyone's current balances.",
+    description: args.description,
     logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
   },
   projectLeads: [
@@ -58,11 +67,13 @@ const props = {
     },
   },
   pendingInvitations: [{ id: "croute" }],
-};
+});
 
 const args = {
+  name: "ZeroSync",
+  description:
+    "Don't trust. Verify. ZeroSync allows to verify Bitcoin's chain state in an instant. No need to download hundreds of gigabytes of blocks. A compact cryptographic proof suffices to validate the entire history of transactions and everyone's current balances.",
   withInvitation: false,
-  width: 800,
 };
 
 Default.args = args;

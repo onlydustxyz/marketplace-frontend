@@ -1,8 +1,6 @@
 import { gql } from "@apollo/client";
 import { sortBy } from "lodash";
 import { useMemo } from "react";
-import { generatePath, Link } from "react-router-dom";
-import { RoutePaths } from "src/App";
 import ProjectCard, { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
@@ -38,17 +36,7 @@ export default function AllProjects({ technologies, projectOwnershipType }: Prop
   return (
     <QueryWrapper query={getProjectsQuery}>
       <div className="flex flex-col gap-5 grow">
-        {projects &&
-          projects.map(project => (
-            <Link
-              key={project.id}
-              to={generatePath(RoutePaths.ProjectDetails, {
-                projectId: project.id,
-              })}
-            >
-              <ProjectCard {...project} />
-            </Link>
-          ))}
+        {projects && projects.map(project => <ProjectCard key={project.id} {...project} />)}
       </div>
     </QueryWrapper>
   );

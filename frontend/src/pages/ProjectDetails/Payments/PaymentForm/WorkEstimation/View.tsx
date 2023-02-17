@@ -41,7 +41,12 @@ export default function WorkEstimation({
           "bg-contain 2xl:bg-cover": !disabled,
         })}
       >
-        <div className={classNames("flex flex-col gap-5 items-stretch justify-items-center", "p-8 pb-5 w-full")}>
+        <div
+          className={classNames("flex flex-col gap-5 items-stretch justify-items-center", {
+            "px-8 py-6": !disabled,
+            "p-6": disabled,
+          })}
+        >
           {!disabled && (
             <div className="flex flex-col gap-1">
               <div className="font-semibold">{T("payment.form.estimate")}</div>

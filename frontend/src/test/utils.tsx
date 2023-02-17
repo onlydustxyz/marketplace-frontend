@@ -44,3 +44,7 @@ export const MemoryRouterProviderFactory =
 
 export const renderWithIntl = (ui: React.ReactElement, options?: RenderOptions) =>
   render(<IntlProvider>{ui}</IntlProvider>, options);
+
+export const responsiveChromatic = {
+  chromatic: { viewports: [320, 1440] },
+};
