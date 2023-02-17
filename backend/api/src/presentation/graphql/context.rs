@@ -25,6 +25,7 @@ pub struct Context {
 	pub process_payment_usecase: application::payment::process::Usecase,
 	pub cancel_payment_usecase: application::payment::cancel::Usecase,
 	pub create_project_usecase: application::project::create::Usecase,
+	pub link_github_repo_usecase: application::project::link_github_repo::Usecase,
 	pub remove_project_leader_usecase: application::project::remove_leader::Usecase,
 	pub invite_project_leader_usecase: application::project::invite_leader::Usecase,
 	pub accept_project_leader_invitation_usecase:
@@ -68,6 +69,12 @@ impl Context {
 			create_project_usecase: application::project::create::Usecase::new(
 				event_publisher.to_owned(),
 				project_details_repository.clone(),
+				github_repo_repository.clone(),
+				project_github_repo_repository.clone(),
+				github.clone(),
+				github.clone(),
+			),
+			link_github_repo_usecase: application::project::link_github_repo::Usecase::new(
 				github_repo_repository.clone(),
 				project_github_repo_repository.clone(),
 				github.clone(),
