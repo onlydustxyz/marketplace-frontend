@@ -210,14 +210,6 @@ describe("As an admin, on retool, I", () => {
         );
     });
 
-    it("can't create a project with a repository that doesn't exist", () => {
-        const projectName = "Cypress test project";
-        const UNEXISTING_REPO_ID = 2147466666;
-
-        cy.createProject(projectName, 500, UNEXISTING_REPO_ID)
-            .asAdmin().errors().its(0).its("extensions.reason").should("equal", "Github repository 2147466666 does not exist");
-    });
-
     it("can't update a project with a repository that doesn't exist", () => {
         const FIRST_REPO_ID = 1;
         const UNEXISTING_REPO_ID = 2147466666;
@@ -245,10 +237,8 @@ describe("As an admin, on retool, I", () => {
     });
 
     it("can invite a user to lead a project", () => {
-        const STARKONQUEST_ID = 481932781;
-
         cy
-            .createProject("Another project", 500, STARKONQUEST_ID)
+            .createProject("Another project")
             .asAdmin()
             .data("createProject")
             .then((projectId) => {

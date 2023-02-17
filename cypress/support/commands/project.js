@@ -5,24 +5,22 @@ Cypress.Commands.add(
     (
         projectName = "My Project",
         initialBudget = 500,
-        githubRepoId = 481932781,
         telegramLink = "https://t.me/foo",
         logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4",
         shortDescription = "My project description",
         longDescription = "This project certainly aim to do stuff",
     ) => {
         return {
-            query: `mutation($projectName: String!, $initialBudget: Int!, $githubRepoId: Int!, $telegramLink: String!, $logoUrl: String!, $shortDescription: String!, $longDescription: String!) {
+            query: `mutation($projectName: String!, $initialBudget: Int!, $telegramLink: String!, $logoUrl: String!, $shortDescription: String!, $longDescription: String!) {
                 createProject(
                     name: $projectName,
                     initialBudgetInUsd: $initialBudget,
-                    githubRepoId: $githubRepoId,
                     telegramLink: $telegramLink,
                     logoUrl: $logoUrl,
                     shortDescription: $shortDescription,
                     longDescription: $longDescription,
                 )}`,
-            variables: { projectName, initialBudget, githubRepoId, telegramLink, logoUrl, shortDescription: shortDescription, longDescription: longDescription },
+            variables: { projectName, initialBudget, telegramLink, logoUrl, shortDescription: shortDescription, longDescription: longDescription },
             wait: WAIT_LONG,
         };
     }
@@ -40,7 +38,7 @@ Cypress.Commands.add(
         shortDescription = "My project description",
         longDescription = "This project certainly aim to do stuff",
     ) => {
-        cy.createProject(projectName, initialBudget, githubRepoId, telegramLink, logoUrl, shortDescription, longDescription)
+        cy.createProject(projectName, initialBudget, telegramLink, logoUrl, shortDescription, longDescription)
             .asAdmin()
             .data("createProject")
             .then(projectId => {
@@ -49,6 +47,11 @@ Cypress.Commands.add(
                 .data("inviteProjectLeader")
                 .should("be.a", "string")
                 .then(invitationId => cy.acceptProjectLeaderInvitation(invitationId)).asRegisteredUser(user).then(() => projectId)
+
+                cy.linkGithubRepoWithProject(projectId, githubRepoId)
+                .asAdmin()
+                .data("linkGithubRepo")
+                .should("be.a", "string")
             })
 });
 
