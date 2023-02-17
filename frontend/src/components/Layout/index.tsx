@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { RESPONSIVE } from "src/utils/featureFlags";
 import ResponsivityFallback from "../ResponsivityFallback";
 import { Toaster } from "../Toaster";
@@ -7,16 +7,19 @@ import { Toaster } from "../Toaster";
 import Header from "./Header";
 
 export default function Layout() {
+  const location = useLocation();
+  const homepage = location.pathname === "/";
+
   return (
     <div>
-      {!RESPONSIVE && (
-        <div className="md:invisible visible md:h-0">
+      {(!RESPONSIVE || !homepage) && (
+        <div className="md:invisible md:h-0">
           <ResponsivityFallback />
         </div>
       )}
       <div
         className={classNames("h-screen flex flex-col", {
-          "md:visible invisible ": !RESPONSIVE,
+          "invisible md:visible": !RESPONSIVE,
         })}
       >
         <Header />
