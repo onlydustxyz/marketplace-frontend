@@ -93,8 +93,9 @@ export function getPaymentStatusOrder(status: PaymentStatus | "payout_missing"):
 export type Project = {
   id: string;
   title: string;
-  description: string;
   logoUrl?: string;
+  shortDescription: string;
+  longDescription?: string;
 };
 
 type Locale = "en" | "fr";

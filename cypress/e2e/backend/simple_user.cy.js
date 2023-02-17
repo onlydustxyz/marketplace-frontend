@@ -40,7 +40,8 @@ describe("As a simple user, I", () => {
                   id
                   projectDetails {
                     name
-                    description
+                    shortDescription
+                    longDescription
                   }
                   projectLeads {
                     user {

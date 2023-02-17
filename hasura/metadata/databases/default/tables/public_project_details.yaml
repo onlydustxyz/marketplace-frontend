@@ -6,8 +6,9 @@ select_permissions:
     permission:
       columns:
         - name
-        - description
         - logo_url
         - project_id
         - telegram_link
+        - short_description
+        - long_description
       filter: {}

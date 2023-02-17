@@ -54,9 +54,10 @@ impl Usecase {
 		name: NonEmptyTrimmedString,
 		initial_budget: Amount,
 		github_repo_id: GithubRepositoryId,
-		description: Option<String>,
 		telegram_link: Option<String>,
 		logo_url: Option<String>,
+		short_description: NonEmptyTrimmedString,
+		long_description: NonEmptyTrimmedString,
 	) -> Result<ProjectId, DomainError> {
 		let project_id = ProjectId::new();
 
@@ -83,10 +84,11 @@ impl Usecase {
 
 		self.project_details_repository.upsert(&ProjectDetails::new(
 			project_id,
-			name.into_inner(),
-			description,
+			name.into(),
 			telegram_link,
 			logo_url,
+			short_description.into(),
+			long_description.into(),
 		))?;
 
 		self.update_github_repo_details(&github_repo_id)

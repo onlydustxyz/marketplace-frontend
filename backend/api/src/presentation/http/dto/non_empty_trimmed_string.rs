@@ -23,13 +23,8 @@ impl NonEmptyTrimmedString {
 	}
 
 	/// Returns a reference to the contained value.
-	pub fn get(&self) -> &str {
+	pub fn as_str(&self) -> &str {
 		&self.0
-	}
-
-	/// Consume the `NonEmptyString` to get the internal `String` out.
-	pub fn into_inner(self) -> String {
-		self.0
 	}
 }
 
@@ -38,6 +33,12 @@ impl TryFrom<String> for NonEmptyTrimmedString {
 
 	fn try_from(value: String) -> Result<Self, Self::Error> {
 		Self::new(value).map_err(DomainError::InvalidInputs)
+	}
+}
+
+impl From<NonEmptyTrimmedString> for String {
+	fn from(value: NonEmptyTrimmedString) -> Self {
+		value.0
 	}
 }
 
@@ -71,16 +72,16 @@ mod tests {
 	#[test]
 	fn what_goes_in_comes_out() {
 		assert_eq!(
-			NonEmptyTrimmedString::new("string".to_owned()).unwrap().into_inner(),
-			"string".to_owned()
+			NonEmptyTrimmedString::new("string".to_owned()).unwrap().as_str(),
+			"string"
 		);
 	}
 
 	#[test]
 	fn what_goes_in_comes_out_trimmed() {
 		assert_eq!(
-			NonEmptyTrimmedString::new(" string ".to_owned()).unwrap().into_inner(),
-			"string".to_owned()
+			NonEmptyTrimmedString::new(" string ".to_owned()).unwrap().as_str(),
+			"string"
 		);
 	}
 }

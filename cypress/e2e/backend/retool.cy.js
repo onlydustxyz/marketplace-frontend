@@ -78,7 +78,7 @@ describe("As an admin, on retool, I", () => {
             cy
                 .createProjectWithLeader(user, "Another project", 500)
                 .then((projectId) => {
-                    cy.updateProject(projectId, "new name", "new description")
+                    cy.updateProject(projectId, "new name", "https://t.me/bar")
                         .asAdmin()
                         .data()
                         .then(() =>
@@ -86,7 +86,7 @@ describe("As an admin, on retool, I", () => {
                                     projectsByPk(id: "${projectId}") {
                                         projectDetails {
                                             name
-                                            description
+                                            telegramLink
                                         }
                                     }
                                 }`})
@@ -94,7 +94,7 @@ describe("As an admin, on retool, I", () => {
                                 .data("projectsByPk.projectDetails")
                                 .should("deep.equal", {
                                     name: "new name",
-                                    description: "new description",
+                                    telegramLink: "https://t.me/bar",
                                 })
                         )
                 })

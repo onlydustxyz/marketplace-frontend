@@ -88,7 +88,7 @@ export const GET_PAYMENTS_QUERY = gql`
           projectDetails {
             projectId
             name
-            description
+            shortDescription
             logoUrl
           }
           githubRepo {

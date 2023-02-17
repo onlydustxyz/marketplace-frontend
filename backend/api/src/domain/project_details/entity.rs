@@ -21,26 +21,29 @@ use serde::{Deserialize, Serialize};
 pub struct ProjectDetails {
 	#[diesel(deserialize_as = "uuid::Uuid")]
 	project_id: ProjectId,
-	description: Option<String>,
 	telegram_link: Option<String>,
 	logo_url: Option<String>,
 	name: String,
+	short_description: String,
+	long_description: String,
 }
 
 impl ProjectDetails {
 	pub fn new(
 		project_id: ProjectId,
 		name: String,
-		description: Option<String>,
 		telegram_link: Option<String>,
 		logo_url: Option<String>,
+		short_description: String,
+		long_description: String,
 	) -> Self {
 		Self {
 			project_id,
-			description,
 			telegram_link,
 			logo_url,
 			name,
+			short_description,
+			long_description,
 		}
 	}
 }

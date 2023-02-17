@@ -52,7 +52,7 @@ export const mapApiPaymentsToProps = (apiPayment: any): Payment => {
     project: {
       id: project.id,
       title: project.name,
-      description: project.projectDetails.description,
+      shortDescription: project.projectDetails.shortDescription,
       logoUrl: project.projectDetails.logoUrl || project.githubRepo?.content?.logoUrl,
     },
     status:
