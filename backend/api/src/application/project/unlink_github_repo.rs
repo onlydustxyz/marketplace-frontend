@@ -24,7 +24,7 @@ impl Usecase {
 		&self,
 		github_repo_id: &GithubRepositoryId,
 	) -> Result<(), DomainError> {
-		let projects = self.project_github_repo_repository.find_all_Projects_of(github_repo_id)?;
+		let projects = self.project_github_repo_repository.find_all_projects_of(github_repo_id)?;
 		if projects.is_empty() {
 			self.github_repo_repository.delete(github_repo_id)?;
 		}
@@ -90,7 +90,7 @@ mod tests {
 			.returning(|_, _| Ok(()));
 
 		project_github_repo_repository
-			.expect_find_all_Projects_of()
+			.expect_find_all_projects_of()
 			.once()
 			.with(eq(github_repo_id))
 			.returning(move |_| Ok(vec![]));
@@ -121,7 +121,7 @@ mod tests {
 			.returning(|_, _| Ok(()));
 
 		project_github_repo_repository
-			.expect_find_all_Projects_of()
+			.expect_find_all_projects_of()
 			.once()
 			.with(eq(github_repo_id))
 			.returning(move |_| Ok(vec![(other_project_id, github_repo_id)]));
