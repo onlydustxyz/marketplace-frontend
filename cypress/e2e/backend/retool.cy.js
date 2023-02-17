@@ -128,6 +128,49 @@ describe("As an admin, on retool, I", () => {
         );
     });
 
+    it("can link a github repository with a project", () => {
+        const FIRST_REPO_ID = 602953043;
+        const SECOND_REPO_ID = 602953640;
+
+        cy.createGithubUser(12344556).then((user) =>
+            cy.createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
+                .then((projectId) => {
+                    cy.linkGithubRepoWithProject(projectId, SECOND_REPO_ID)
+                        .asAdmin()
+                        .data()
+                        .then(() => {
+                            cy.graphql({ query: `{
+                                    projectsByPk(id: "${projectId}") {
+                                        githubRepos(orderBy: {githubRepoId: ASC}) {
+                                            githubRepoId
+                                            githubRepoDetails {
+                                                name
+                                            }
+                                        }
+                                    }
+                                }`})
+                                .asAnonymous()
+                                .data("projectsByPk")
+                                .its("githubRepos")
+                                .should("deep.equal", [
+                                    {
+                                      githubRepoId: FIRST_REPO_ID,
+                                      githubRepoDetails: {
+                                        name: "cool-repo-A"
+                                      }
+                                    },
+                                    {
+                                      githubRepoId: SECOND_REPO_ID,
+                                      githubRepoDetails: {
+                                        name: "cool.repo.B"
+                                      }
+                                    }
+                                ]);
+                        })
+                })
+        );
+    });
+
     it("can't create a project with a repository that doesn't exist", () => {
         const projectName = "Cypress test project";
         const UNEXISTING_REPO_ID = 2147466666;
@@ -144,6 +187,19 @@ describe("As an admin, on retool, I", () => {
             cy.createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
                 .then((projectId) => {
                     cy.updateProjectGithubRepoId(projectId, UNEXISTING_REPO_ID)
+                        .asAdmin().errors().its(0).its("extensions.reason").should("equal", "Github repository 2147466666 does not exist");
+                })
+        );
+    });
+
+    it("can't link a repository that doesn't exist with a project", () => {
+        const FIRST_REPO_ID = 602953043;
+        const UNEXISTING_REPO_ID = 2147466666;
+
+        cy.createGithubUser(1213243).then((user) =>
+            cy.createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
+                .then((projectId) => {
+                    cy.linkGithubRepoWithProject(projectId, UNEXISTING_REPO_ID)
                         .asAdmin().errors().its(0).its("extensions.reason").should("equal", "Github repository 2147466666 does not exist");
                 })
         );

@@ -99,6 +99,22 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
+    "linkGithubRepoWithProject",
+    (
+        projectId,
+        githubRepoId
+    ) => {
+        return {
+            query: `mutation($projectId: Uuid!, $githubRepoId: Int!) {
+                linkGithubRepo(projectId: $projectId, githubRepoId: $githubRepoId)
+            }`,
+            variables: { projectId, githubRepoId },
+            wait: WAIT_SHORT,
+        };
+    }
+);
+
+Cypress.Commands.add(
     "unassignProjectLead",
     (
         projectId,
