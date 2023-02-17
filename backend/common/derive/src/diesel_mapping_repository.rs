@@ -48,8 +48,8 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 	let (id1, id2) = find_ids(&input);
 
 	let table_ident = &table.path.segments.last().unwrap().ident;
-	let insert_span_name = format!("{}::insert", table_ident);
-	let delete_span_name = format!("{}::delete", table_ident);
+	let insert_span_name = format!("{table_ident}::insert");
+	let delete_span_name = format!("{table_ident}::delete");
 
 	let entity1_ident = entity1.path.get_ident().unwrap();
 	let entity2_ident = entity2.path.get_ident().unwrap();
@@ -62,6 +62,21 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 		&format!("delete_all_{entity2_ident}s_of"),
 		entity2_ident.span(),
 	);
+
+	let delete_all_entity1_of_span_name = format!("{table_ident}::{delete_all_entity1_of}");
+	let delete_all_entity2_of_span_name = format!("{table_ident}::{delete_all_entity2_of}");
+
+	let find_all_entity1_of = syn::Ident::new(
+		&format!("find_all_{entity1_ident}s_of"),
+		entity1_ident.span(),
+	);
+	let find_all_entity2_of = syn::Ident::new(
+		&format!("find_all_{entity2_ident}s_of"),
+		entity2_ident.span(),
+	);
+
+	let find_all_entity1_of_span_name = format!("{table_ident}::{find_all_entity1_of}");
+	let find_all_entity2_of_span_name = format!("{table_ident}::{find_all_entity2_of}");
 
 	// Build the output, possibly using quasi-quotation
 	let expanded = quote! {
@@ -93,7 +108,7 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 				Ok(())
 			}
 
-			#[tracing::instrument(name = #delete_span_name, skip(self))]
+			#[tracing::instrument(name = #delete_all_entity2_of_span_name, skip(self))]
 			#[allow(non_snake_case)]
 			pub fn #delete_all_entity2_of(&self, id1: &<#entity1 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
@@ -104,7 +119,7 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 				Ok(())
 			}
 
-			#[tracing::instrument(name = #delete_span_name, skip(self))]
+			#[tracing::instrument(name = #delete_all_entity1_of_span_name, skip(self))]
 			#[allow(non_snake_case)]
 			pub fn #delete_all_entity1_of(&self, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
@@ -113,6 +128,44 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 					.execute(&*connection)?;
 
 				Ok(())
+			}
+
+			#[tracing::instrument(name = #find_all_entity2_of_span_name, skip(self))]
+			#[allow(non_snake_case)]
+			pub fn #find_all_entity2_of(
+				&self,
+				id1: &<#entity1 as domain::Entity>::Id,
+			) -> Result<
+				Vec<(<#entity1 as domain::Entity>::Id, <#entity2 as domain::Entity>::Id)>,
+				infrastructure::database::DatabaseError,
+			> {
+				let connection = self.0.connection()?;
+
+				let result = #table.filter(#id1.eq(id1)).load::<(
+					<#entity1 as domain::Entity>::Id,
+					<#entity2 as domain::Entity>::Id,
+				)>(&*connection)?;
+
+				Ok(result)
+			}
+
+			#[tracing::instrument(name = #find_all_entity1_of_span_name, skip(self))]
+			#[allow(non_snake_case)]
+			pub fn #find_all_entity1_of(
+				&self,
+				id2: &<#entity2 as domain::Entity>::Id,
+			) -> Result<
+				Vec<(<#entity1 as domain::Entity>::Id, <#entity2 as domain::Entity>::Id)>,
+				infrastructure::database::DatabaseError,
+			> {
+				let connection = self.0.connection()?;
+
+				let result = #table.filter(#id2.eq(id2)).load::<(
+					<#entity1 as domain::Entity>::Id,
+					<#entity2 as domain::Entity>::Id,
+				)>(&*connection)?;
+
+				Ok(result)
 			}
 		}
 	};

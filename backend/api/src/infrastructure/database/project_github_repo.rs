@@ -17,8 +17,11 @@ mockall::mock! {
 	pub Repository {
 		pub fn new(client: Arc<Client>) -> Self;
 		pub fn try_insert(&self, id1: &<Project as domain::Entity>::Id, id2: &<GithubRepo as domain::Entity>::Id)  -> Result<(), infrastructure::database::DatabaseError>;
+		pub fn delete(&self, id1: &<Project as domain::Entity>::Id, id2: &<GithubRepo as domain::Entity>::Id)  -> Result<(), infrastructure::database::DatabaseError>;
 		#[allow(non_snake_case)]
 		pub fn delete_all_GithubRepos_of(&self, id1: &<Project as domain::Entity>::Id)  -> Result<(), infrastructure::database::DatabaseError>;
+		#[allow(non_snake_case)]
+		pub fn find_all_Projects_of(&self, id1: &<GithubRepo as domain::Entity>::Id)  -> Result<Vec<(<Project as domain::Entity>::Id, <GithubRepo as domain::Entity>::Id)>, infrastructure::database::DatabaseError>;
 	}
 
 	impl Clone for Repository {
