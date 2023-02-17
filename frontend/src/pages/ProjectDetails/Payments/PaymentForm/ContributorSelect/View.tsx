@@ -47,7 +47,7 @@ const View = ({
 
   const prefixComponent =
     contributor && !loading ? (
-      <RoundedImage src={contributor.avatarUrl} size={ImageSize.Sm} alt={contributor.login} />
+      <RoundedImage src={contributor.avatarUrl} size={ImageSize.Small} alt={contributor.login} />
     ) : (
       <SearchLine className="ml-2" />
     );

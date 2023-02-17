@@ -50,7 +50,7 @@ export default function OverviewPanel({
                   key={contributor.login}
                   src={contributor.avatarUrl}
                   alt={contributor.login}
-                  size={ImageSize.Xxs}
+                  size={ImageSize.ExtraSmall}
                   rounding={Rounding.Circle}
                 />
               ))}

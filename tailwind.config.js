@@ -104,7 +104,7 @@ module.exports = {
       dropShadow: {
         "bottom-sm": "0px 8px 32px rgba(0, 0, 0, 0.16)",
       },
-      outlineWidth: {
+      borderWidth: {
         3: "3px",
       },
       opacity: {
