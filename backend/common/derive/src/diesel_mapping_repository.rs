@@ -1,6 +1,7 @@
+use convert_case::{Case, Casing};
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{Type, TypePath, TypeTuple};
+use syn::{Ident, Type, TypePath, TypeTuple};
 
 use super::find_attr;
 
@@ -41,6 +42,10 @@ fn find_ids(input: &syn::DeriveInput) -> (TypePath, TypePath) {
 	(id1, id2)
 }
 
+fn ident_to_snake_case(ident: &Ident) -> String {
+	ident.to_string().from_case(Case::UpperCamel).to_case(Case::Snake)
+}
+
 pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 	let repository_name = input.ident.clone();
 	let table: TypePath = find_attr(&input, "table");
@@ -55,11 +60,11 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 	let entity2_ident = entity2.path.get_ident().unwrap();
 
 	let delete_all_entity1_of = syn::Ident::new(
-		&format!("delete_all_{entity1_ident}s_of"),
+		&format!("delete_all_{}s_of", ident_to_snake_case(entity1_ident)),
 		entity1_ident.span(),
 	);
 	let delete_all_entity2_of = syn::Ident::new(
-		&format!("delete_all_{entity2_ident}s_of"),
+		&format!("delete_all_{}s_of", ident_to_snake_case(entity2_ident)),
 		entity2_ident.span(),
 	);
 
@@ -67,11 +72,11 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 	let delete_all_entity2_of_span_name = format!("{table_ident}::{delete_all_entity2_of}");
 
 	let find_all_entity1_of = syn::Ident::new(
-		&format!("find_all_{entity1_ident}s_of"),
+		&format!("find_all_{}s_of", ident_to_snake_case(entity1_ident)),
 		entity1_ident.span(),
 	);
 	let find_all_entity2_of = syn::Ident::new(
-		&format!("find_all_{entity2_ident}s_of"),
+		&format!("find_all_{}s_of", ident_to_snake_case(entity2_ident)),
 		entity2_ident.span(),
 	);
 
@@ -109,7 +114,6 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 			}
 
 			#[tracing::instrument(name = #delete_all_entity2_of_span_name, skip(self))]
-			#[allow(non_snake_case)]
 			pub fn #delete_all_entity2_of(&self, id1: &<#entity1 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 
@@ -120,7 +124,6 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 			}
 
 			#[tracing::instrument(name = #delete_all_entity1_of_span_name, skip(self))]
-			#[allow(non_snake_case)]
 			pub fn #delete_all_entity1_of(&self, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 
@@ -131,7 +134,6 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 			}
 
 			#[tracing::instrument(name = #find_all_entity2_of_span_name, skip(self))]
-			#[allow(non_snake_case)]
 			pub fn #find_all_entity2_of(
 				&self,
 				id1: &<#entity1 as domain::Entity>::Id,
@@ -150,7 +152,6 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 			}
 
 			#[tracing::instrument(name = #find_all_entity1_of_span_name, skip(self))]
-			#[allow(non_snake_case)]
 			pub fn #find_all_entity1_of(
 				&self,
 				id2: &<#entity2 as domain::Entity>::Id,

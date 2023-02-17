@@ -9,11 +9,9 @@ use super::{Context, Error, Result};
 use crate::{
 	domain::{
 		user_info::{Email, Identity, Location, PayoutSettings},
-		PaymentReason, ProjectDetails,
+		PaymentReason,
 	},
-	presentation::http::dto::{
-		EthereumIdentityInput, IdentityInput, NonEmptyTrimmedString, PayoutSettingsInput,
-	},
+	presentation::http::dto::{EthereumIdentityInput, IdentityInput, PayoutSettingsInput},
 };
 
 pub struct Mutation;
@@ -134,24 +132,22 @@ impl Mutation {
 		context: &Context,
 		id: Uuid,
 		name: String,
-		telegram_link: Option<String>,
-		logo_url: Option<String>,
 		short_description: String,
 		long_description: String,
+		telegram_link: Option<String>,
+		logo_url: Option<String>,
 	) -> Result<Uuid> {
-		let project_id = id.into();
-
-		let valid_short_description = NonEmptyTrimmedString::try_from(short_description)?;
-		let valid_long_description = NonEmptyTrimmedString::try_from(long_description)?;
-
-		context.project_details_repository.upsert(&ProjectDetails::new(
-			project_id,
-			name,
-			telegram_link,
-			logo_url,
-			valid_short_description.into(),
-			valid_long_description.into(),
-		))?;
+		context
+			.update_project_usecase
+			.update_details(
+				id.into(),
+				name.try_into()?,
+				short_description.try_into()?,
+				long_description.try_into()?,
+				telegram_link,
+				logo_url,
+			)
+			.await?;
 
 		Ok(id)
 	}
