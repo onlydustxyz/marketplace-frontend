@@ -3,15 +3,18 @@ import { createContext, PropsWithChildren, useContext, useEffect, useRef, useSta
 import { useLocalStorage } from "react-use";
 import config from "src/config";
 import { RefreshToken, TokenSet } from "src/types";
+import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
 export const LOCAL_STORAGE_TOKEN_SET_KEY = "hasura_token";
 const ACCESS_TOKEN_VALIDITY_TIME_THRESHOLD = 30;
 
 type TokenSetContextType = {
   tokenSet?: TokenSet | null;
+  setTokenSet?: (tokenSet: TokenSet | null) => void;
   clearTokenSet: () => void;
   setFromRefreshToken: (refreshToken: RefreshToken) => Promise<void>;
   hasRefreshError: boolean;
+  setHasRefreshError: (hasRefreshError: boolean) => void;
 };
 
 export const accessTokenValidityDelay = (token: TokenSet): number => {
@@ -41,7 +44,7 @@ const TokenSetContext = createContext<TokenSetContextType | null>(null);
 export const TokenSetProvider = ({ children }: PropsWithChildren) => {
   const [tokenSet, setTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY);
   const [hasRefreshError, setHasRefreshError] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout>();
+  const timerRef__deprecated = useRef<NodeJS.Timeout>();
 
   const refreshAccessToken = (tokenSet: TokenSet) => {
     fetchNewAccessToken(tokenSet.refreshToken)
@@ -58,20 +61,22 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   useEffect(() => {
-    if (tokenSet) {
-      if (accessTokenExpired(tokenSet)) {
-        refreshAccessToken(tokenSet);
-      } else {
-        timerRef.current = setTimeout(() => {
+    if (!isFeatureEnabled(FeatureFlags.REMOVE_TIMER_BASED_TOKEN_RELOAD)) {
+      if (tokenSet) {
+        if (accessTokenExpired(tokenSet)) {
           refreshAccessToken(tokenSet);
-        }, accessTokenValidityDelay(tokenSet));
+        } else {
+          timerRef__deprecated.current = setTimeout(() => {
+            refreshAccessToken(tokenSet);
+          }, accessTokenValidityDelay(tokenSet));
+        }
       }
+      return () => {
+        if (timerRef__deprecated.current) {
+          clearTimeout(timerRef__deprecated.current);
+        }
+      };
     }
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
   }, [tokenSet?.accessToken]);
 
   const setFromRefreshToken = async (refreshToken: RefreshToken) => {
@@ -85,9 +90,11 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
 
   const value = {
     tokenSet,
+    setTokenSet,
     clearTokenSet,
     setFromRefreshToken,
     hasRefreshError,
+    setHasRefreshError,
   };
 
   return <TokenSetContext.Provider value={value}>{children}</TokenSetContext.Provider>;
