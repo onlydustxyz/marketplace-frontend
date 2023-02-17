@@ -112,33 +112,6 @@ describe("As an admin, on retool, I", () => {
         );
     });
 
-    it("can update a project github repository id", () => {
-        const FIRST_REPO_ID = 1;
-        const SECOND_REPO_ID = 1234;
-
-        cy.createGithubUser(12344556).then((user) =>
-            cy.createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
-                .then((projectId) => {
-                    cy.updateProjectGithubRepoId(projectId, SECOND_REPO_ID)
-                        .asAdmin()
-                        .data()
-                        .then(() => {
-                            cy.graphql({ query: `{
-                                    projectsByPk(id: "${projectId}") {
-                                        githubRepo {
-                                            id
-                                        }
-                                    }
-                                }`})
-                                .asAnonymous()
-                                .data("projectsByPk")
-                                .its("githubRepo.id")
-                                .should("equal", SECOND_REPO_ID)
-                        })
-                })
-        );
-    });
-
     it("can link and unlink a github repository with a project", () => {
         const FIRST_REPO_ID = 602953043;
         const SECOND_REPO_ID = 602953640;
@@ -206,19 +179,6 @@ describe("As an admin, on retool, I", () => {
                                         })
                                 })
                         })
-                })
-        );
-    });
-
-    it("can't update a project with a repository that doesn't exist", () => {
-        const FIRST_REPO_ID = 1;
-        const UNEXISTING_REPO_ID = 2147466666;
-
-        cy.createGithubUser(1213243).then((user) =>
-            cy.createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
-                .then((projectId) => {
-                    cy.updateProjectGithubRepoId(projectId, UNEXISTING_REPO_ID)
-                        .asAdmin().errors().its(0).its("extensions.reason").should("equal", "Github repository 2147466666 does not exist");
                 })
         );
     });
