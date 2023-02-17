@@ -30,7 +30,7 @@ export default function ProjectCard({
   budgetsAggregate,
 }: ProjectCardProps) {
   const { T } = useIntl();
-  const isXl = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.xl}px)`);
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const lead = projectLeads?.[0]?.user;
   const name = projectDetails?.name || "";
   const logoUrl = projectDetails?.logoUrl || githubRepo?.content?.logoUrl || onlyDustLogo;
@@ -38,7 +38,7 @@ export default function ProjectCard({
 
   const card = (
     <Card
-      selectable={!isXl}
+      selectable={isXl}
       className={classNames("bg-noise-light hover:bg-right", {
         "xl:bg-orange-500/8 xl:hover:bg-orange-500/12": pendingInvitations?.length > 0,
       })}
@@ -102,8 +102,6 @@ export default function ProjectCard({
     </Card>
   );
   return isXl ? (
-    card
-  ) : (
     <Link
       to={generatePath(RoutePaths.ProjectDetails, {
         projectId: id,
@@ -111,6 +109,8 @@ export default function ProjectCard({
     >
       {card}
     </Link>
+  ) : (
+    card
   );
 }
 
