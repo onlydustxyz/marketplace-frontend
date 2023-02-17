@@ -40,7 +40,7 @@ export default function ProjectCard({
     <Card
       selectable={!isXl}
       className={classNames("bg-noise-light hover:bg-right", {
-        "lg:bg-orange-500/8 lg:hover:bg-orange-500/12": pendingInvitations?.length > 0,
+        "xl:bg-orange-500/8 xl:hover:bg-orange-500/12": pendingInvitations?.length > 0,
       })}
       border={CardBorder.Medium}
       dataTestId="project-card"
@@ -93,7 +93,7 @@ export default function ProjectCard({
           </div>
         </div>
         {pendingInvitations?.length > 0 && (
-          <div className="hidden lg:flex flex-row justify-between items-center font-medium px-6 py-4 rounded-xl bg-orange-500/8">
+          <div className="hidden xl:flex flex-row justify-between items-center font-medium px-6 py-4 rounded-xl bg-orange-500/8">
             <div className="text-white">{T("project.projectLeadInvitation.prompt")}</div>
             <Button size={ButtonSize.Small}>{T("project.projectLeadInvitation.view")}</Button>
           </div>

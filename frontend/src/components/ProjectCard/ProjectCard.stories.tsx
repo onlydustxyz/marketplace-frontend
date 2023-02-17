@@ -12,18 +12,7 @@ export default {
 };
 
 const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
-  <>
-    <div className="hidden sm:block">
-      <ProjectCard
-        {...props(args)}
-        pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []}
-        selectable
-      />
-    </div>
-    <div className="sm:hidden">
-      <ProjectCard {...props(args)} pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []} />
-    </div>
-  </>
+  <ProjectCard {...props(args)} pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []} />
 );
 
 export const Default = Template.bind({});
