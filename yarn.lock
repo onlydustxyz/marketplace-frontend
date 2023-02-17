@@ -4093,6 +4093,11 @@ anymatch@^3.0.3, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
+apollo-link-token-refresh@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/apollo-link-token-refresh/-/apollo-link-token-refresh-0.4.0.tgz#5ba6c3f46509e64c95f20fb719b8abeddc09fad6"
+  integrity sha512-5P5nH//asgoz01r6tUYiBbHIuVwEEsBmA9WJ8LEiNtZcOq8AXdfR8aV4Pw/B86P3lRi1ykd8xyZLCHpLro9v+Q==
+
 app-root-dir@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/app-root-dir/-/app-root-dir-1.0.2.tgz#38187ec2dea7577fff033ffcb12172692ff6e118"
