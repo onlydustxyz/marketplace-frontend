@@ -8,6 +8,7 @@ import { useRoles } from "src/hooks/useAuth/useRoles";
 import { accessTokenExpired, useTokenSet } from "src/hooks/useTokenSet";
 import { RefreshToken, User, UserRole } from "src/types";
 import { datadogRum } from "@datadog/browser-rum";
+import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
 export type AuthContextType = {
   login: (refreshToken: RefreshToken) => void;
@@ -45,6 +46,10 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   if (hasRefreshError) {
     logout();
+  }
+
+  if (!tokenIsRefreshed && isFeatureEnabled(FeatureFlags.REMOVE_TIMER_BASED_TOKEN_RELOAD)) {
+    setFromRefreshToken(tokenSet.refreshToken);
   }
 
   const value = {
