@@ -16,7 +16,7 @@ pub struct Repository(Arc<Client>);
 mockall::mock! {
 	pub Repository {
 		pub fn new(client: Arc<Client>) -> Self;
-		pub fn upsert(&self, id1: &<Project as domain::Entity>::Id, id2: &<GithubRepo as domain::Entity>::Id)  -> Result<(), infrastructure::database::DatabaseError>;
+		pub fn try_insert(&self, id1: &<Project as domain::Entity>::Id, id2: &<GithubRepo as domain::Entity>::Id)  -> Result<(), infrastructure::database::DatabaseError>;
 		#[allow(non_snake_case)]
 		pub fn delete_all_GithubRepos_of(&self, id1: &<Project as domain::Entity>::Id)  -> Result<(), infrastructure::database::DatabaseError>;
 	}

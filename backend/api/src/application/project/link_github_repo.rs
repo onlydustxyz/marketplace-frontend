@@ -42,7 +42,7 @@ impl Usecase {
 		project_id: &ProjectId,
 		github_repo_id: &GithubRepositoryId,
 	) -> Result<(), DomainError> {
-		self.project_github_repo_repository.upsert(project_id, github_repo_id)?;
+		self.project_github_repo_repository.try_insert(project_id, github_repo_id)?;
 		Ok(())
 	}
 
@@ -132,7 +132,7 @@ mod tests {
 
 		let mut project_github_repo_repository = ProjectGithubRepoRepository::default();
 		project_github_repo_repository
-			.expect_upsert()
+			.expect_try_insert()
 			.once()
 			.with(eq(project_id), eq(github_repo_id))
 			.returning(|_, _| Ok(()));
@@ -166,7 +166,7 @@ mod tests {
 		github_repo_repository.expect_upsert().never();
 
 		let mut project_github_repo_repository = ProjectGithubRepoRepository::default();
-		project_github_repo_repository.expect_upsert().never();
+		project_github_repo_repository.expect_try_insert().never();
 
 		let usecase = Usecase::new(
 			github_repo_repository,
