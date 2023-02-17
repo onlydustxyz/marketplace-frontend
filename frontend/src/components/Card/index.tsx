@@ -28,7 +28,7 @@ export default function Card({
         "outline outline-1",
         "bg-white/2 backdrop-blur-lg",
         {
-          "p-4 sm:p-6": padded,
+          "p-4 lg:p-6": padded,
         },
         {
           "transition duration-300 hover:bg-white/4 outline-offset-0 hover:outline-2": selectable,
