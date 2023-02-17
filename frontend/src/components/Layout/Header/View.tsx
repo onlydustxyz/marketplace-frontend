@@ -22,14 +22,14 @@ interface HeaderViewProps {
 export default function HeaderView({ menuItems, selectedMenuItem, isLoggedIn, onLogin }: HeaderViewProps) {
   const testing = import.meta.env.NODE_ENV === "test";
   return (
-    <div className={classNames("bg-black", "py-4 px-6 gap-3 sm:gap-8", "font-walsheim text-xl text-neutral-400")}>
+    <div className={classNames("bg-black", "py-4 px-6 gap-3 xl:gap-8", "font-walsheim text-xl text-neutral-400")}>
       {RESPONSIVE ? (
         <>
-          <div className="flex sm:hidden gap-3 justify-center items-center">
+          <div className="flex xl:hidden gap-3 justify-center items-center">
             <OnlyDustLogo />
             <OnlyDustTitle />
           </div>
-          <div className="hidden sm:flex gap-8 items-center">
+          <div className="hidden xl:flex gap-8 items-center">
             <Link to={RoutePaths.Projects} className="flex items-center w-fit gap-3 ">
               <OnlyDustLogo />
               <OnlyDustTitle />

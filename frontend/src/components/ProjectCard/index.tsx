@@ -30,7 +30,7 @@ export default function ProjectCard({
   budgetsAggregate,
 }: ProjectCardProps) {
   const { T } = useIntl();
-  const isSm = useMediaQuery(`(max-width: ${viewportConfig.breakpoints.sm}px)`);
+  const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const lead = projectLeads?.[0]?.user;
   const name = projectDetails?.name || "";
   const logoUrl = projectDetails?.logoUrl || githubRepo?.content?.logoUrl || onlyDustLogo;
@@ -38,16 +38,16 @@ export default function ProjectCard({
 
   const card = (
     <Card
-      selectable={!isSm}
+      selectable={isXl}
       className={classNames("bg-noise-light hover:bg-right", {
-        "sm:bg-orange-500/8 sm:hover:bg-orange-500/12": pendingInvitations?.length > 0,
+        "xl:bg-orange-500/8 xl:hover:bg-orange-500/12": pendingInvitations?.length > 0,
       })}
       border={CardBorder.Medium}
       dataTestId="project-card"
     >
       <div className="flex flex-col gap-5">
-        <div className="flex flex-col sm:flex-row w-full sm:divide-x divide-stone-100/8 gap-4 sm:gap-6 justify-items-center font-walsheim">
-          <div className="sm:flex flex-col basis-1/3 min-w-0 gap-y-5">
+        <div className="flex flex-col lg:flex-row w-full lg:divide-x divide-stone-100/8 gap-4 lg:gap-6 justify-items-center font-walsheim">
+          <div className="lg:flex flex-col basis-1/3 min-w-0 gap-y-5">
             <div className="flex gap-4 items-start">
               <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.ExtraLarge} className="mt-1" />
               <div className="min-w-0">
@@ -62,7 +62,7 @@ export default function ProjectCard({
               </div>
             </div>
             {githubRepo?.languages && Object.keys(githubRepo?.languages).length > 0 && (
-              <div className="hidden sm:flex flex-row border border-neutral-600 w-fit px-3 py-1 rounded-2xl gap-2 text-md">
+              <div className="hidden lg:flex flex-row border border-neutral-600 w-fit px-3 py-1 rounded-2xl gap-2 text-md">
                 <div className="flex items-center justify-center">
                   <CodeSSlashLine className="text-gray-400" />
                 </div>
@@ -70,16 +70,16 @@ export default function ProjectCard({
               </div>
             )}
           </div>
-          <div className="flex flex-col basis-2/3 sm:pl-6 gap-4 sm:gap-6">
+          <div className="flex flex-col basis-2/3 lg:pl-6 gap-4 lg:gap-6">
             <div className="line-clamp-2">{projectDetails?.shortDescription}</div>
-            <div className="flex flex-row sm:divide-x divide-stone-100/8">
-              <div className="hidden sm:flex flex-row gap-2 pr-6">
+            <div className="flex flex-row lg:divide-x divide-stone-100/8">
+              <div className="hidden lg:flex flex-row gap-2 pr-6">
                 {projectDetails?.telegramLink && <TelegramLink link={projectDetails?.telegramLink} />}
                 {githubRepo?.owner && githubRepo?.name && (
                   <GithubLink link={buildGithubLink(githubRepo?.owner, githubRepo?.name)} />
                 )}
               </div>
-              <div className="flex text-sm gap-4 items-center sm:pl-6">
+              <div className="flex text-sm gap-4 items-center lg:pl-6">
                 {!!githubRepo?.content.contributors?.length && (
                   <span>
                     {T("project.details.contributors.count", { count: githubRepo?.content.contributors?.length })}
@@ -93,7 +93,7 @@ export default function ProjectCard({
           </div>
         </div>
         {pendingInvitations?.length > 0 && (
-          <div className="hidden sm:flex flex-row justify-between items-center font-medium px-6 py-4 rounded-xl bg-orange-500/8">
+          <div className="hidden xl:flex flex-row justify-between items-center font-medium px-6 py-4 rounded-xl bg-orange-500/8">
             <div className="text-white">{T("project.projectLeadInvitation.prompt")}</div>
             <Button size={ButtonSize.Small}>{T("project.projectLeadInvitation.view")}</Button>
           </div>
@@ -101,9 +101,7 @@ export default function ProjectCard({
       </div>
     </Card>
   );
-  return isSm ? (
-    card
-  ) : (
+  return isXl ? (
     <Link
       to={generatePath(RoutePaths.ProjectDetails, {
         projectId: id,
@@ -111,6 +109,8 @@ export default function ProjectCard({
     >
       {card}
     </Link>
+  ) : (
+    card
   );
 }
 

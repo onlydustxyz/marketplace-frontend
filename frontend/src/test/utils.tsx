@@ -8,6 +8,7 @@ import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { SessionProvider } from "src/hooks/useSession";
 import { ToasterProvider } from "src/hooks/useToaster";
 import { Toaster } from "src/components/Toaster";
+import { viewportConfig } from "src/config";
 
 interface MemoryRouterProviderFactoryProps<M = any, C = any> {
   route?: string;
@@ -46,5 +47,7 @@ export const renderWithIntl = (ui: React.ReactElement, options?: RenderOptions) 
   render(<IntlProvider>{ui}</IntlProvider>, options);
 
 export const responsiveChromatic = {
-  chromatic: { viewports: [320, 1440] },
+  chromatic: {
+    viewports: [viewportConfig.breakpoints.sm, viewportConfig.breakpoints.lg, viewportConfig.breakpoints.xl],
+  },
 };
