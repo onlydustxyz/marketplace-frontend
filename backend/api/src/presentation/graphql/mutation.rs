@@ -244,19 +244,6 @@ impl Mutation {
 		Ok(caller_id.into())
 	}
 
-	pub async fn update_project_github_repo_id(
-		context: &Context,
-		id: Uuid,
-		github_repo_id: i32,
-	) -> Result<Uuid> {
-		context
-			.update_project_github_repo_id_usecase
-			.update_project_github_repo_id(id.into(), (github_repo_id as i64).into())
-			.await?;
-
-		Ok(id)
-	}
-
 	pub async fn invite_project_leader(
 		context: &Context,
 		project_id: Uuid,

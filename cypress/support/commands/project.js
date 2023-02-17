@@ -91,22 +91,6 @@ Cypress.Commands.add("getProjectBudget", (projectId) => {
 });
 
 Cypress.Commands.add(
-    "updateProjectGithubRepoId",
-    (
-        id,
-        githubRepoId
-    ) => {
-        return {
-            query: `mutation($id: Uuid!, $githubRepoId: Int!) {
-                updateProjectGithubRepoId(id: $id, githubRepoId: $githubRepoId)
-            }`,
-            variables: { id, githubRepoId },
-            wait: WAIT_LONG,
-        };
-    }
-);
-
-Cypress.Commands.add(
     "linkGithubRepoWithProject",
     (
         projectId,

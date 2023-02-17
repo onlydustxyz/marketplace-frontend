@@ -31,7 +31,6 @@ pub struct Context {
 	pub invite_project_leader_usecase: application::project::invite_leader::Usecase,
 	pub accept_project_leader_invitation_usecase:
 		application::project::accept_leader_invitation::Usecase,
-	pub update_project_github_repo_id_usecase: application::project::update_github_repo_id::Usecase,
 	pub project_details_repository: ProjectDetailsRepository,
 	pub update_user_info_usecase: application::user::update_profile_info::Usecase,
 	pub ens: Arc<ens::Client>,
@@ -75,11 +74,11 @@ impl Context {
 				github_repo_repository.clone(),
 				project_github_repo_repository.clone(),
 				github.clone(),
-				github.clone(),
+				github,
 			),
 			unlink_github_repo_usecase: application::project::unlink_github_repo::Usecase::new(
-				github_repo_repository.clone(),
-				project_github_repo_repository.clone(),
+				github_repo_repository,
+				project_github_repo_repository,
 			),
 			remove_project_leader_usecase: application::project::remove_leader::Usecase::new(
 				event_publisher.to_owned(),
@@ -93,13 +92,6 @@ impl Context {
 					event_publisher.to_owned(),
 					pending_project_leader_invitations_repository,
 					project_repository,
-				),
-			update_project_github_repo_id_usecase:
-				application::project::update_github_repo_id::Usecase::new(
-					project_github_repo_repository,
-					github_repo_repository,
-					github.clone(),
-					github,
 				),
 			project_details_repository,
 			update_user_info_usecase: application::user::update_profile_info::Usecase::new(
