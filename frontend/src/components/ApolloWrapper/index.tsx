@@ -57,8 +57,10 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
             authorization: tokenSetResponse.accessToken ? `Bearer ${tokenSetResponse.accessToken}` : "",
           },
         }));
+        return { [accessTokenField]: tokenSetResponse };
+      } else {
+        throw new Error("No access token in token refresh response");
       }
-      return { [accessTokenField]: tokenSetResponse };
     },
     handleError: error => {
       console.error(error);
