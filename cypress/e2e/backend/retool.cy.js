@@ -1,10 +1,10 @@
 describe("As an admin, on retool, I", () => {
     it("can create a project", () => {
         const projectName = "Cypress test project";
-        const STARKONQUEST_ID = 481932781;
+        const REPO_ID = 602953043;
 
         cy.createGithubUser(12345).then((user) => {
-            cy.createProjectWithLeader(user, projectName, 500, STARKONQUEST_ID)
+            cy.createProjectWithLeader(user, projectName, 500, REPO_ID)
                 .then((projectId) => {
                     cy.graphql({ query: `{
                     projectsByPk(id: "${projectId}") {
@@ -14,16 +14,27 @@ describe("As an admin, on retool, I", () => {
                         name
                         languages
                       }
+                      projectDetails {
+                        name
+                        shortDescription
+                        longDescription
+                      }
                     }
                   }`})
                         .asAnonymous()
-                        .data("projectsByPk.githubRepo")
-                        .then(details => {
-                            expect(details.id).to.equal(STARKONQUEST_ID);
-                            expect(details.owner).to.equal("onlydustxyz");
-                            expect(details.name).to.equal("starkonquest");
-                            expect(details.languages).to.be.an("object");
-                            expect(details.languages).to.have.property("Cairo");
+                        .data("projectsByPk")
+                        .should("deep.equal", {
+                            githubRepo: {
+                                id: REPO_ID,
+                                owner: "od-mocks",
+                                name: "cool-repo-A",
+                                languages: { Rust: 512 }
+                            },
+                            projectDetails: {
+                                name: projectName,
+                                shortDescription: "My project description",
+                                longDescription: "This project certainly aim to do stuff"
+                            }
                         });
 
                     cy.graphql({ query: `{
