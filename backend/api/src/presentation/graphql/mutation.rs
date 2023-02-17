@@ -139,7 +139,7 @@ impl Mutation {
 	) -> Result<Uuid> {
 		context
 			.update_project_usecase
-			.update(
+			.update_details(
 				id.into(),
 				name.try_into()?,
 				short_description.try_into()?,

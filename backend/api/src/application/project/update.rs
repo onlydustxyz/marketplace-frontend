@@ -20,7 +20,7 @@ impl Usecase {
 
 	#[allow(clippy::too_many_arguments)]
 	#[instrument(skip(self))]
-	pub async fn update(
+	pub async fn update_details(
 		&self,
 		project_id: ProjectId,
 		name: NonEmptyTrimmedString,
