@@ -109,23 +109,21 @@ impl Mutation {
 	pub async fn create_project(
 		context: &Context,
 		name: String,
-		initial_budget_in_usd: i32,
-		github_repo_id: i32,
-		telegram_link: Option<String>,
-		logo_url: Option<String>,
 		short_description: String,
 		long_description: String,
+		initial_budget_in_usd: i32,
+		telegram_link: Option<String>,
+		logo_url: Option<String>,
 	) -> Result<Uuid> {
 		let project_id = context
 			.create_project_usecase
 			.create(
 				name.try_into()?,
-				Money::from_major(initial_budget_in_usd as i64, rusty_money::crypto::USDC).into(),
-				(github_repo_id as i64).into(),
-				telegram_link,
-				logo_url,
 				short_description.try_into()?,
 				long_description.try_into()?,
+				Money::from_major(initial_budget_in_usd as i64, rusty_money::crypto::USDC).into(),
+				telegram_link,
+				logo_url,
 			)
 			.await?;
 

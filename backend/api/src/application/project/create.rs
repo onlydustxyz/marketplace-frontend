@@ -1,50 +1,30 @@
 use std::sync::Arc;
 
-use anyhow::{anyhow, Result};
-use domain::{Amount, DomainError, Event, GithubRepositoryId, Project, ProjectId, Publisher};
+use anyhow::Result;
+use domain::{Amount, DomainError, Event, Project, ProjectId, Publisher};
 use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
 
 use crate::{
-	domain::{GithubRepoExists, GithubService, ProjectDetails, Publishable},
-	infrastructure::database::{
-		GithubRepoRepository, ProjectDetailsRepository, ProjectGithubRepoRepository,
-	},
+	domain::{ProjectDetails, Publishable},
+	infrastructure::database::ProjectDetailsRepository,
 	presentation::http::dto::NonEmptyTrimmedString,
 };
 
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_details_repository: ProjectDetailsRepository,
-	github_repo_repository: GithubRepoRepository,
-	project_github_repo_repository: ProjectGithubRepoRepository,
-	github_repo_exists: Arc<dyn GithubRepoExists>,
-	github_service: Arc<dyn GithubService>,
 }
 
 impl Usecase {
 	pub fn new(
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		project_details_repository: ProjectDetailsRepository,
-		github_repo_repository: GithubRepoRepository,
-		project_github_repo_repository: ProjectGithubRepoRepository,
-		github_repo_exists: Arc<dyn GithubRepoExists>,
-		github_service: Arc<dyn GithubService>,
 	) -> Self {
 		Self {
 			event_publisher,
 			project_details_repository,
-			github_repo_repository,
-			project_github_repo_repository,
-			github_repo_exists,
-			github_service,
 		}
-	}
-
-	async fn update_github_repo_details(&self, github_repo_id: &GithubRepositoryId) -> Result<()> {
-		let repo = self.github_service.fetch_repository_details(github_repo_id).await?;
-		self.github_repo_repository.upsert(&repo)?;
-		Ok(())
 	}
 
 	#[allow(clippy::too_many_arguments)]
@@ -52,25 +32,13 @@ impl Usecase {
 	pub async fn create(
 		&self,
 		name: NonEmptyTrimmedString,
-		initial_budget: Amount,
-		github_repo_id: GithubRepositoryId,
-		telegram_link: Option<String>,
-		logo_url: Option<String>,
 		short_description: NonEmptyTrimmedString,
 		long_description: NonEmptyTrimmedString,
+		initial_budget: Amount,
+		telegram_link: Option<String>,
+		logo_url: Option<String>,
 	) -> Result<ProjectId, DomainError> {
 		let project_id = ProjectId::new();
-
-		if !self
-			.github_repo_exists
-			.is_statified_by(&github_repo_id)
-			.await
-			.map_err(DomainError::InternalError)?
-		{
-			return Err(DomainError::InvalidInputs(anyhow!(
-				"Github repository {github_repo_id} does not exist"
-			)));
-		}
 
 		Project::create(project_id, initial_budget)
 			.await
@@ -90,12 +58,6 @@ impl Usecase {
 			short_description.into(),
 			long_description.into(),
 		))?;
-
-		self.update_github_repo_details(&github_repo_id)
-			.await
-			.map_err(DomainError::InvalidInputs)?;
-
-		self.project_github_repo_repository.try_insert(&project_id, &github_repo_id)?;
 
 		Ok(project_id)
 	}

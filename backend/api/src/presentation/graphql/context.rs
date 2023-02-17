@@ -70,10 +70,6 @@ impl Context {
 			create_project_usecase: application::project::create::Usecase::new(
 				event_publisher.to_owned(),
 				project_details_repository.clone(),
-				github_repo_repository.clone(),
-				project_github_repo_repository.clone(),
-				github.clone(),
-				github.clone(),
 			),
 			link_github_repo_usecase: application::project::link_github_repo::Usecase::new(
 				github_repo_repository.clone(),
