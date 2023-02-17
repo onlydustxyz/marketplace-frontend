@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import { Outlet, useLocation } from "react-router-dom";
-import { RESPONSIVE } from "src/utils/featureFlags";
 import ResponsivityFallback from "../ResponsivityFallback";
 import { Toaster } from "../Toaster";
 
@@ -12,14 +11,14 @@ export default function Layout() {
 
   return (
     <div>
-      {(!RESPONSIVE || !homepage) && (
+      {!homepage && (
         <div className="md:invisible md:h-0">
           <ResponsivityFallback />
         </div>
       )}
       <div
         className={classNames("h-screen flex flex-col", {
-          "invisible md:visible": !RESPONSIVE,
+          "invisible md:visible": !homepage,
         })}
       >
         <Header />
