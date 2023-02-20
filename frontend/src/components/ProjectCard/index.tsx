@@ -16,7 +16,7 @@ import { buildLanguageString } from "src/utils/languages";
 import { formatMoneyAmount } from "src/utils/money";
 import { buildGithubLink } from "src/utils/stringUtils";
 import { useMediaQuery } from "usehooks-ts";
-import { ProjectLeadFragmentDoc } from "src/__generated/graphql";
+import { ProjectLeadFragmentDoc, SponsorFragmentDoc } from "src/__generated/graphql";
 
 type ProjectCardProps = Project & {
   selectable?: boolean;
@@ -117,6 +117,7 @@ export default function ProjectCard({
 
 export const PROJECT_CARD_FRAGMENT = gql`
   ${ProjectLeadFragmentDoc}
+  ${SponsorFragmentDoc}
   fragment ProjectCardFields on Projects {
     id
     budgetsAggregate {
@@ -154,6 +155,11 @@ export const PROJECT_CARD_FRAGMENT = gql`
         logoUrl
       }
       languages
+    }
+    projectSponsors {
+      sponsor {
+        ...Sponsor
+      }
     }
   }
 `;

@@ -4,6 +4,7 @@ export enum SectionIcon {
   Star = "ri-star-line",
   User = "ri-user-3-line",
   Funds = "ri-funds-line",
+  Service = "ri-service-line",
 }
 
 type Props = {

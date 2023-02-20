@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import { useIntl } from "src/hooks/useIntl";
 import { Contributor } from "src/types";
 import { formatMoneyAmount } from "src/utils/money";
-import { ProjectLeadFragment } from "src/__generated/graphql";
+import { ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 import ClickableUser from "./ClickableUser";
 import Section, { SectionIcon } from "./Section";
 
@@ -10,9 +10,10 @@ interface OverviewPanelProps {
   contributors?: Contributor[];
   leads?: ProjectLeadFragment[];
   totalSpentAmountInUsd?: number;
+  sponsors: SponsorFragment[];
 }
 
-export default function OverviewPanel({ contributors, leads, totalSpentAmountInUsd }: OverviewPanelProps) {
+export default function OverviewPanel({ contributors, leads, totalSpentAmountInUsd, sponsors }: OverviewPanelProps) {
   const { T } = useIntl();
   return (
     <div className="flex flex-col gap-3 divide-y divide-greyscale-50/8">
@@ -53,6 +54,15 @@ export default function OverviewPanel({ contributors, leads, totalSpentAmountInU
           </div>
         </Section>
       )}
+      {sponsors.length > 0 && (
+        <Section icon={SectionIcon.Service} title={T("project.details.overview.sponsors")}>
+          <div className="flex flex-row flex-wrap gap-3">
+            {sponsors.map(sponsor => (
+              <ClickableUser key={sponsor.id} name={sponsor.name} logoUrl={sponsor.logoUrl} url={sponsor.url} />
+            ))}
+          </div>
+        </Section>
+      )}
     </div>
   );
 }
@@ -61,5 +71,14 @@ export const PROJECT_LEAD_FRAGMENT = gql`
   fragment ProjectLead on users {
     displayName
     avatarUrl
+  }
+`;
+
+export const SPONSOR_FRAGMENT = gql`
+  fragment Sponsor on Sponsors {
+    id
+    name
+    logoUrl
+    url
   }
 `;

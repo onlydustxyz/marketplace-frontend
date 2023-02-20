@@ -3440,7 +3440,7 @@ export type GetPaymentRequestIdsQueryVariables = Exact<{
 
 export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> };
 
-export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null };
+export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string | null, url: string | null } }> };
 
 export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string };
 
@@ -3538,6 +3538,8 @@ export type GetProjectRemainingBudgetQuery = { __typename?: 'query_root', projec
 
 export type ProjectLeadFragment = { __typename?: 'users', displayName: string, avatarUrl: string };
 
+export type SponsorFragment = { __typename?: 'Sponsors', id: any, name: string, logoUrl: string | null, url: string | null };
+
 export type GetProjectContributorsForPaymentSelect__DeprecatedQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
@@ -3566,7 +3568,7 @@ export type GetProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }> } | null };
+export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string | null, url: string | null } }> } | null };
 
 export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
   invitationId: Scalars['Uuid'];
@@ -3580,7 +3582,7 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null }> };
+export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string | null, url: string | null } }> }> };
 
 export type GetAllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3610,6 +3612,14 @@ export const ProjectLeadFragmentDoc = gql`
     fragment ProjectLead on users {
   displayName
   avatarUrl
+}
+    `;
+export const SponsorFragmentDoc = gql`
+    fragment Sponsor on Sponsors {
+  id
+  name
+  logoUrl
+  url
 }
     `;
 export const ProjectCardFieldsFragmentDoc = gql`
@@ -3651,8 +3661,14 @@ export const ProjectCardFieldsFragmentDoc = gql`
     }
     languages
   }
+  projectSponsors {
+    sponsor {
+      ...Sponsor
+    }
+  }
 }
-    ${ProjectLeadFragmentDoc}`;
+    ${ProjectLeadFragmentDoc}
+${SponsorFragmentDoc}`;
 export const GithubUserFragmentDoc = gql`
     fragment GithubUser on User {
   id
