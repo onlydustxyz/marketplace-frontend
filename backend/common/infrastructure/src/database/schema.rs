@@ -119,8 +119,9 @@ diesel::table! {
 diesel::table! {
     sponsors (id) {
         id -> Uuid,
-        name -> Nullable<Text>,
+        name -> Text,
         logo_url -> Nullable<Text>,
+        url -> Nullable<Text>,
     }
 }
 
