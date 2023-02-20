@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import ExternalLink from "src/components/ExternalLink";
+import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import { Contributor } from "src/types";
 import { formatMoneyAmount } from "src/utils/money";
@@ -44,10 +45,12 @@ export default function OverviewPanel({
           <div className="flex flex-row items-center text-sm text-greyscale-50 font-normal gap-2">
             <div className="flex flex-row -space-x-1">
               {contributors.slice(0, 3).map(contributor => (
-                <img
+                <RoundedImage
                   key={contributor.login}
                   src={contributor.avatarUrl}
-                  className="w-3 md:w-4 h-3 md:h-4 rounded-full"
+                  alt={contributor.login}
+                  size={ImageSize.ExtraExtraSmall}
+                  rounding={Rounding.Circle}
                 />
               ))}
             </div>

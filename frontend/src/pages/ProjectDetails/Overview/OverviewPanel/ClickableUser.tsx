@@ -1,4 +1,5 @@
 import ExternalLink from "src/components/ExternalLink";
+import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 
 type Props = {
   name: string;
@@ -8,9 +9,9 @@ type Props = {
 
 export default function ClickableUser({ name, url, logoUrl }: Props) {
   return (
-    <div className="flex flex-row gap-2 items-center text-greyscale-50 truncate text-sm font-normal">
-      {logoUrl && <img src={logoUrl} className="w-3 md:w-4 h-3 md:h-4 rounded-full" />}
-      {url ? <ExternalLink {...{ url, text: name }} /> : <>{name}</>}
+    <div className="flex flex-row gap-2 items-center text-greyscale-50 text-sm font-normal">
+      {logoUrl && <RoundedImage alt={name} rounding={Rounding.Circle} size={ImageSize.Small} src={logoUrl} />}
+      <div className="truncate">{url ? <ExternalLink {...{ url, text: name }} /> : <>{name}</>}</div>
     </div>
   );
 }
