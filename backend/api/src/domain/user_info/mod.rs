@@ -1,7 +1,7 @@
 use ::infrastructure::database::schema::*;
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
-use domain::UserId;
+use domain::{Entity, UserId};
 use serde::{Deserialize, Serialize};
 
 mod email;
@@ -39,4 +39,8 @@ pub struct UserInfo {
 	location: Option<Location>,
 	email: Option<Email>,
 	payout_settings: Option<PayoutSettings>,
+}
+
+impl Entity for UserInfo {
+	type Id = UserId;
 }
