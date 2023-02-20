@@ -207,7 +207,9 @@ const graphQlMocks = [
         projects: [
           {
             id: TEST_PROJECT_ID,
-            name: TEST_PROJECT_NAME,
+            projectDetails: {
+              name: TEST_PROJECT_NAME,
+            },
             pendingInvitations: [],
             githubRepo: {
               content: {
@@ -287,10 +289,10 @@ const paymentRequestsMock = {
           budget: {
             project: {
               id: "632d5da7-e590-4815-85ea-82a5585e6049",
-              name: "MyAwesomeProject",
               projectDetails: {
                 shortDescription: "SOOOOOO awesome",
                 logoUrl: null,
+                name: "MyAwesomeProject",
               },
               githubRepo: null,
             },

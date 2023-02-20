@@ -49,10 +49,10 @@ const mockContribution = {
   budget: {
     project: {
       id: "632d5da7-e590-4815-85ea-82a5585e6049",
-      name: "MyAwesomeProject",
       projectDetails: {
         shortDescription: "SOOOOOO awesome",
         logoUrl: null,
+        name: "MyAwesomeProject",
       },
       githubRepo: null,
     },
@@ -143,7 +143,7 @@ describe('"Payments" page', () => {
     });
 
     expect(await screen.findByText(mockContribution.reason.work_items[0])).toBeInTheDocument();
-    expect(await screen.findByText(mockContribution.budget.project.name)).toBeInTheDocument();
+    expect(await screen.findByText(mockContribution.budget.project.projectDetails.name)).toBeInTheDocument();
     expect(await screen.findAllByText("$200")).toHaveLength(2);
     expect(await screen.findAllByText(/complete/i)).toHaveLength(3); // two for the banner and one for the line field
   });
