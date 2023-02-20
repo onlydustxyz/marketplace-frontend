@@ -28,6 +28,10 @@ pub struct ProjectDetails {
 	long_description: String,
 }
 
+impl domain::Entity for ProjectDetails {
+	type Id = ProjectId;
+}
+
 impl ProjectDetails {
 	pub fn new(
 		project_id: ProjectId,

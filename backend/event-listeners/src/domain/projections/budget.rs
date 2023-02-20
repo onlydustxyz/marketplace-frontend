@@ -13,6 +13,10 @@ pub struct Budget {
 	pub remaining_amount: Decimal,
 }
 
+impl domain::Entity for Budget {
+	type Id = BudgetId;
+}
+
 impl<ST> Queryable<ST, Pg> for Budget
 where
 	(BudgetId, Option<ProjectId>, Decimal, Decimal, Decimal): Queryable<ST, Pg>,

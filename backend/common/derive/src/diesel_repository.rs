@@ -1,8 +1,9 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{punctuated::Punctuated, NestedMeta, Token, TypePath};
+use syn::{punctuated::Punctuated, Ident, NestedMeta, Token, TypePath};
 
 use super::find_attr;
+use crate::has_attr;
 
 pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 	// Parse the input into an ast
@@ -20,12 +21,10 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 	let delete_span_name = format!("{}::delete", table_ident);
 	let clear_span_name = format!("{}::clear", table_ident);
 
-	let select_methods = if features.is_none()
-		|| features.as_ref().unwrap().contains(&"select".to_string())
-	{
+	let select_methods = if has_feature(&features, "select") {
 		quote! {
 			#[tracing::instrument(name = #find_by_id_span_name, skip(self))]
-			pub fn find_by_id(&self, id: <&#entity_type as ::domain::Entity>::Id) -> Result<#entity_type, infrastructure::database::DatabaseError> {
+			pub fn find_by_id(&self, id: &<#entity_type as ::domain::Entity>::Id) -> Result<#entity_type, infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 				let entity = #table.find(*id).first(&*connection)?;
 				Ok(entity)
@@ -35,9 +34,7 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 		quote! {}
 	};
 
-	let insert_methods = if features.is_none()
-		|| features.as_ref().unwrap().contains(&"insert".to_string())
-	{
+	let insert_methods = if has_feature(&features, "insert") {
 		quote! {
 			#[tracing::instrument(name = #insert_span_name, skip(self))]
 			pub fn insert(&self, entity: &#entity_type) -> Result<(), infrastructure::database::DatabaseError> {
@@ -60,12 +57,10 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 		quote! {}
 	};
 
-	let update_methods = if features.is_none()
-		|| features.as_ref().unwrap().contains(&"update".to_string())
-	{
+	let update_methods = if has_feature(&features, "update") {
 		quote! {
 			#[tracing::instrument(name = #update_span_name, skip(self, change_set))]
-			pub fn update<A: AsChangeset<Target = #table, Changeset = C>, C: QueryFragment<Pg>>(&self, id: <&#entity_type as ::domain::Entity>::Id, change_set: A) -> Result<(), infrastructure::database::DatabaseError> {
+			pub fn update<A: AsChangeset<Target = #table, Changeset = C>, C: QueryFragment<Pg>>(&self, id: &<#entity_type as ::domain::Entity>::Id, change_set: A) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 				diesel::update(#table)
 					.filter(#id.eq(id))
@@ -77,10 +72,7 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 	} else {
 		quote! {}
 	};
-	let upsert_methods = if features.is_none()
-		|| (features.as_ref().unwrap().contains(&"insert".to_string())
-			&& features.as_ref().unwrap().contains(&"update".to_string()))
-	{
+	let upsert_methods = if has_feature(&features, "insert") && has_feature(&features, "update") {
 		quote! {
 			#[tracing::instrument(name = #upsert_span_name, skip(self))]
 			pub fn upsert(&self, entity: &#entity_type)  -> Result<(), infrastructure::database::DatabaseError> {
@@ -98,12 +90,10 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 		quote! {}
 	};
 
-	let delete_methods = if features.is_none()
-		|| features.as_ref().unwrap().contains(&"delete".to_string())
-	{
+	let delete_methods = if has_feature(&features, "delete") {
 		quote! {
 			#[tracing::instrument(name = #delete_span_name, skip(self))]
-			pub fn delete(&self, id: <&#entity_type as ::domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
+			pub fn delete(&self, id: &<#entity_type as ::domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 				diesel::delete(#table).filter(#id.eq(id)).execute(&*connection)?;
 				Ok(())
@@ -116,6 +106,12 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 				Ok(())
 			}
 		}
+	} else {
+		quote! {}
+	};
+
+	let mocks = if has_attr(&derive_input, "mock") {
+		impl_mocks(&repository_name, &entity_type, &table, &features)
 	} else {
 		quote! {}
 	};
@@ -135,10 +131,88 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 			#upsert_methods
 			#delete_methods
 		}
+
+		#mocks
 	};
 
 	// Hand the output tokens back to the compiler
 	TokenStream::from(expanded)
+}
+
+fn impl_mocks(
+	repository_name: &Ident,
+	entity_type: &TypePath,
+	table: &TypePath,
+	features: &Option<Vec<String>>,
+) -> quote::__private::TokenStream {
+	let select_methods = if has_feature(features, "select") {
+		quote! {
+			pub fn find_by_id(&self, id: &<#entity_type as ::domain::Entity>::Id) -> Result<#entity_type, infrastructure::database::DatabaseError>;
+		}
+	} else {
+		quote! {}
+	};
+
+	let insert_methods = if has_feature(features, "insert") {
+		quote! {
+			pub fn insert(&self, entity: &#entity_type) -> Result<(), infrastructure::database::DatabaseError>;
+			pub fn try_insert(&self, entity: &#entity_type) -> Result<(), infrastructure::database::DatabaseError>;
+		}
+	} else {
+		quote! {}
+	};
+
+	let update_methods = if has_feature(features, "update") {
+		quote! {
+			pub fn update<
+					A: AsChangeset<Target = #table, Changeset = C> + 'static,
+					C: QueryFragment<Pg> + 'static
+				>(&self, id: &<#entity_type as ::domain::Entity>::Id, change_set: A) -> Result<(), infrastructure::database::DatabaseError>;
+		}
+	} else {
+		quote! {}
+	};
+	let upsert_methods = if has_feature(features, "insert") && has_feature(features, "update") {
+		quote! {
+			pub fn upsert(&self, entity: &#entity_type)  -> Result<(), infrastructure::database::DatabaseError>;
+		}
+	} else {
+		quote! {}
+	};
+
+	let delete_methods = if has_feature(features, "delete") {
+		quote! {
+			pub fn delete(&self, id: &<#entity_type as ::domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError>;
+			pub fn clear(&self) -> Result<(), infrastructure::database::DatabaseError>;
+		}
+	} else {
+		quote! {}
+	};
+
+	// Build the output
+	let expanded = quote! {
+		#[cfg(test)]
+		mockall::mock! {
+			pub #repository_name {
+				pub fn new(client: std::sync::Arc<infrastructure::database::Client>) -> Self;
+				#select_methods
+				#insert_methods
+				#update_methods
+				#upsert_methods
+				#delete_methods
+			}
+
+			impl Clone for #repository_name {
+				fn clone(&self) -> Self;
+			}
+		}
+	};
+
+	expanded
+}
+
+fn has_feature(features: &Option<Vec<String>>, feature: &str) -> bool {
+	features.is_none() || features.as_ref().unwrap().contains(&feature.to_string())
 }
 
 fn parse_features_attribute(derive_input: &syn::DeriveInput) -> Option<Vec<String>> {

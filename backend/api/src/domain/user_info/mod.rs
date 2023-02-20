@@ -40,3 +40,7 @@ pub struct UserInfo {
 	email: Option<Email>,
 	payout_settings: Option<PayoutSettings>,
 }
+
+impl domain::Entity for UserInfo {
+	type Id = UserId;
+}

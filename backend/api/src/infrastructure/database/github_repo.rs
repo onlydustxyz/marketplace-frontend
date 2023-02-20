@@ -9,17 +9,5 @@ use crate::domain::GithubRepo;
 #[entity(GithubRepo)]
 #[table(dsl::github_repo_details)]
 #[id(dsl::id)]
+#[mock]
 pub struct Repository(Arc<Client>);
-
-#[cfg(test)]
-mockall::mock! {
-	pub Repository {
-		pub fn new(client: Arc<Client>) -> Self;
-		pub fn upsert(&self, entity: &GithubRepo)  -> Result<(), infrastructure::database::DatabaseError>;
-		pub fn delete(&self, id: &<GithubRepo as domain::Entity>::Id)  -> Result<(), infrastructure::database::DatabaseError>;
-	}
-
-	impl Clone for Repository {
-		fn clone(&self) -> Self;
-	}
-}

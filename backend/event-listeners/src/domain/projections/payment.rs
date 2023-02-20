@@ -13,3 +13,7 @@ pub struct Payment {
 	receipt: Value,
 	request_id: Uuid,
 }
+
+impl domain::Entity for Payment {
+	type Id = PaymentReceiptId;
+}

@@ -4,6 +4,7 @@ use quote::quote;
 use syn::{Ident, Type, TypePath, TypeTuple};
 
 use super::find_attr;
+use crate::has_attr;
 
 trait UnwrapAsPath {
 	fn unwrap_as_path(&self) -> TypePath;
@@ -82,6 +83,20 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 
 	let find_all_entity1_of_span_name = format!("{table_ident}::{find_all_entity1_of}");
 	let find_all_entity2_of_span_name = format!("{table_ident}::{find_all_entity2_of}");
+
+	let mocks = if has_attr(&input, "mock") {
+		impl_mocks(
+			&repository_name,
+			&entity1,
+			&entity2,
+			&delete_all_entity1_of,
+			&delete_all_entity2_of,
+			&find_all_entity1_of,
+			&find_all_entity2_of,
+		)
+	} else {
+		quote! {}
+	};
 
 	// Build the output, possibly using quasi-quotation
 	let expanded = quote! {
@@ -169,8 +184,54 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 				Ok(result)
 			}
 		}
+
+		#mocks
 	};
 
 	// Hand the output tokens back to the compiler
 	TokenStream::from(expanded)
+}
+
+fn impl_mocks(
+	repository_name: &Ident,
+	entity1: &TypePath,
+	entity2: &TypePath,
+	delete_all_entity1_of: &Ident,
+	delete_all_entity2_of: &Ident,
+	find_all_entity1_of: &Ident,
+	find_all_entity2_of: &Ident,
+) -> quote::__private::TokenStream {
+	// Build the output
+	let expanded = quote! {
+		#[cfg(test)]
+		mockall::mock! {
+			pub #repository_name {
+				pub fn new(client: std::sync::Arc<infrastructure::database::Client>) -> Self;
+				pub fn try_insert(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError>;
+				pub fn delete(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError>;
+				pub fn #delete_all_entity2_of(&self, id1: &<#entity1 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError>;
+				pub fn #delete_all_entity1_of(&self, id2: &<#entity2 as domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError>;
+				pub fn #find_all_entity2_of(
+					&self,
+					id1: &<#entity1 as domain::Entity>::Id,
+				) -> Result<
+					Vec<(<#entity1 as domain::Entity>::Id, <#entity2 as domain::Entity>::Id)>,
+					infrastructure::database::DatabaseError,
+				>;
+				pub fn #find_all_entity1_of(
+					&self,
+					id2: &<#entity2 as domain::Entity>::Id,
+				) -> Result<
+					Vec<(<#entity1 as domain::Entity>::Id, <#entity2 as domain::Entity>::Id)>,
+					infrastructure::database::DatabaseError,
+				>;
+			}
+
+			impl Clone for #repository_name {
+				fn clone(&self) -> Self;
+			}
+		}
+	};
+
+	expanded
 }
