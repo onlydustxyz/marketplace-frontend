@@ -5,8 +5,10 @@ import { useIntl } from "src/hooks/useIntl";
 import { ProjectLeadProps } from "src/components/LeadContributor";
 import { Contributor, LanguageMap } from "src/types";
 import OverviewPanel__deprecated from "./OverviewPanel__deprecated";
+import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
 import { ReactNode } from "react";
+import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
 type OutletContext = {
   lead: ProjectLeadProps | null;
@@ -41,7 +43,11 @@ const Overview: React.FC = () => {
           </div>
         )}
         <Card className="h-fit p-0 basis-96">
-          <OverviewPanel__deprecated {...{ lead, githubRepoInfo, totalSpentAmountInUsd }} />
+          {isFeatureEnabled(FeatureFlags.SHOW_SPONSORS) ? (
+            <OverviewPanel {...{ lead, githubRepoInfo, totalSpentAmountInUsd }} />
+          ) : (
+            <OverviewPanel__deprecated {...{ lead, githubRepoInfo, totalSpentAmountInUsd }} />
+          )}
         </Card>
       </div>
     </div>
