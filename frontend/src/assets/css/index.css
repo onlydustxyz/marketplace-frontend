@@ -70,4 +70,17 @@
       radial-gradient(100% 131.98% at 91.28% 0%, rgba(0, 255, 228, 0.5) 0%, rgba(174, 0, 255, 0.5) 100%),
       radial-gradient(85.71% 143.47% at 5.13% 14.29%, #0009bc 0%, #ff9000 100%);
   }
+
+  .rounded-lg.pseudo-outline::before {
+    border-radius: 10px;
+  }
+  .rounded-2xl.pseudo-outline::before {
+    border-radius: 18px;
+  }
+  .rounded-lg.pseudo-outline-2::before {
+    border-radius: 9px;
+  }
+  .rounded-2xl.pseudo-outline-2::before {
+    border-radius: 17px;
+  }
 }

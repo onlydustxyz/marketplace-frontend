@@ -26,7 +26,6 @@ export default function Card({
         className,
         "w-full rounded-2xl font-walsheim",
         "pseudo-outline",
-        "before:rounded-[18px]", // 2xl = 16px + 2 * [border size] = 18px
         "bg-white/2 backdrop-blur-lg",
         {
           "p-4 lg:p-6": padded,
