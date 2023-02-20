@@ -24,7 +24,7 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 	let select_methods = if has_feature(&features, "select") {
 		quote! {
 			#[tracing::instrument(name = #find_by_id_span_name, skip(self))]
-			pub fn find_by_id(&self, id: <&#entity_type as ::domain::Entity>::Id) -> Result<#entity_type, infrastructure::database::DatabaseError> {
+			pub fn find_by_id(&self, id: &<#entity_type as ::domain::Entity>::Id) -> Result<#entity_type, infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 				let entity = #table.find(*id).first(&*connection)?;
 				Ok(entity)
@@ -60,7 +60,7 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 	let update_methods = if has_feature(&features, "update") {
 		quote! {
 			#[tracing::instrument(name = #update_span_name, skip(self, change_set))]
-			pub fn update<A: AsChangeset<Target = #table, Changeset = C>, C: QueryFragment<Pg>>(&self, id: <&#entity_type as ::domain::Entity>::Id, change_set: A) -> Result<(), infrastructure::database::DatabaseError> {
+			pub fn update<A: AsChangeset<Target = #table, Changeset = C>, C: QueryFragment<Pg>>(&self, id: &<#entity_type as ::domain::Entity>::Id, change_set: A) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 				diesel::update(#table)
 					.filter(#id.eq(id))
@@ -93,7 +93,7 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 	let delete_methods = if has_feature(&features, "delete") {
 		quote! {
 			#[tracing::instrument(name = #delete_span_name, skip(self))]
-			pub fn delete(&self, id: <&#entity_type as ::domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
+			pub fn delete(&self, id: &<#entity_type as ::domain::Entity>::Id) -> Result<(), infrastructure::database::DatabaseError> {
 				let connection = self.0.connection()?;
 				diesel::delete(#table).filter(#id.eq(id)).execute(&*connection)?;
 				Ok(())

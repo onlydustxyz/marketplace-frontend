@@ -25,3 +25,7 @@ pub struct PendingProjectLeaderInvitation {
 	project_id: ProjectId,
 	github_user_id: GithubUserId,
 }
+
+impl domain::Entity for PendingProjectLeaderInvitation {
+	type Id = PendingProjectLeaderInvitationId;
+}

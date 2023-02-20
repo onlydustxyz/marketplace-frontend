@@ -15,3 +15,7 @@ pub struct PaymentRequest {
 	reason: Value,
 	requested_at: NaiveDateTime,
 }
+
+impl domain::Entity for PaymentRequest {
+	type Id = PaymentId;
+}
