@@ -1,10 +1,8 @@
 import ProjectLead, { ProjectLeadProps } from "src/components/LeadContributor";
 import { useIntl } from "src/hooks/useIntl";
-import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
-import StarLine from "src/icons/StarLine";
-import User3Line from "src/icons/User3Line";
 import { Contributor } from "src/types";
 import { formatMoneyAmount } from "src/utils/money";
+import Section, { SectionIcon } from "./Section";
 
 interface OverviewPanelProps {
   contributors?: Contributor[];
@@ -17,26 +15,12 @@ export default function OverviewPanel({ contributors, lead, totalSpentAmountInUs
   return (
     <div className="flex flex-col gap-3 divide-y divide-slate-600/40">
       {lead && (
-        <div>
-          <div className="flex flex-row justify-between py-4 pb-1 px-5 gap-4">
-            <div className="flex flex-row whitespace-nowrap gap-1 items-center">
-              <StarLine className="p-px font-normal text-xl text-slate-400" />
-              <div className="flex text-md font-medium text-base text-slate-400 uppercase">
-                {T("project.details.overview.projectLeader")}
-              </div>
-            </div>
-            <ProjectLead {...lead} />
-          </div>
-        </div>
+        <Section icon={SectionIcon.Star} title={T("project.details.overview.projectLeader")}>
+          <ProjectLead {...lead} />
+        </Section>
       )}
       {contributors?.length !== undefined && (
-        <div className="flex flex-row justify-between py-4 pb-1 px-5">
-          <div className="flex flex-row gap-1 items-center">
-            <User3Line className="p-px font-normal text-xl text-slate-400" />
-            <div className="flex text-md font-medium text-base text-slate-400 uppercase">
-              {T("project.details.overview.contributors")}
-            </div>
-          </div>
+        <Section icon={SectionIcon.User} title={T("project.details.overview.contributors")}>
           <div className="flex flex-row items-center text-lg text-neutral-300 font-bold gap-2">
             <div className="flex flex-row gap-px">
               {contributors.slice(0, 3).map(contributor => (
@@ -49,20 +33,14 @@ export default function OverviewPanel({ contributors, lead, totalSpentAmountInUs
             </div>
             <div>{contributors.length}</div>
           </div>
-        </div>
+        </Section>
       )}
       {totalSpentAmountInUsd !== undefined && (
-        <div className="flex flex-row justify-between py-4 px-5">
-          <div className="flex flex-row gap-1 items-center">
-            <MoneyDollarCircleLine className="p-px font-normal text-xl text-slate-400" />
-            <div className="flex text-md font-medium text-base text-slate-400 uppercase">
-              {T("project.details.overview.totalSpentAmountInUsd")}
-            </div>
-          </div>
+        <Section icon={SectionIcon.Money} title={T("project.details.overview.totalSpentAmountInUsd")}>
           <div data-testid="money-granted-amount" className="flex text-lg text-neutral-300 font-bold">
             {formatMoneyAmount(totalSpentAmountInUsd)}
           </div>
-        </div>
+        </Section>
       )}
     </div>
   );
