@@ -1336,13 +1336,12 @@ export enum ProjectsSelectColumn {
 /** columns and relationships of "projects_sponsors" */
 export type ProjectsSponsors = {
   __typename?: 'ProjectsSponsors';
-  id: Scalars['uuid'];
   /** An object relationship */
-  project: Maybe<Projects>;
-  projectId: Maybe<Scalars['uuid']>;
+  project: Projects;
+  projectId: Scalars['uuid'];
   /** An object relationship */
-  sponsor: Maybe<Sponsors>;
-  sponsorId: Maybe<Scalars['uuid']>;
+  sponsor: Sponsors;
+  sponsorId: Scalars['uuid'];
 };
 
 /** order by aggregate values of table "projects_sponsors" */
@@ -1357,7 +1356,6 @@ export type ProjectsSponsorsBoolExp = {
   _and: InputMaybe<Array<ProjectsSponsorsBoolExp>>;
   _not: InputMaybe<ProjectsSponsorsBoolExp>;
   _or: InputMaybe<Array<ProjectsSponsorsBoolExp>>;
-  id: InputMaybe<UuidComparisonExp>;
   project: InputMaybe<ProjectsBoolExp>;
   projectId: InputMaybe<UuidComparisonExp>;
   sponsor: InputMaybe<SponsorsBoolExp>;
@@ -1366,7 +1364,6 @@ export type ProjectsSponsorsBoolExp = {
 
 /** Ordering options when selecting data from "projects_sponsors". */
 export type ProjectsSponsorsOrderBy = {
-  id: InputMaybe<OrderBy>;
   project: InputMaybe<ProjectsOrderBy>;
   projectId: InputMaybe<OrderBy>;
   sponsor: InputMaybe<SponsorsOrderBy>;
@@ -1375,8 +1372,6 @@ export type ProjectsSponsorsOrderBy = {
 
 /** select columns of table "projects_sponsors" */
 export enum ProjectsSponsorsSelectColumn {
-  /** column name */
-  Id = 'id',
   /** column name */
   ProjectId = 'projectId',
   /** column name */
@@ -1410,9 +1405,10 @@ export type Sponsors = {
   __typename?: 'Sponsors';
   id: Scalars['uuid'];
   logoUrl: Maybe<Scalars['String']>;
-  name: Maybe<Scalars['String']>;
+  name: Scalars['String'];
   /** An array relationship */
   sponsorProjects: Array<ProjectsSponsors>;
+  url: Maybe<Scalars['String']>;
 };
 
 
@@ -1434,6 +1430,7 @@ export type SponsorsBoolExp = {
   logoUrl: InputMaybe<StringComparisonExp>;
   name: InputMaybe<StringComparisonExp>;
   sponsorProjects: InputMaybe<ProjectsSponsorsBoolExp>;
+  url: InputMaybe<StringComparisonExp>;
 };
 
 /** Ordering options when selecting data from "sponsors". */
@@ -1442,6 +1439,7 @@ export type SponsorsOrderBy = {
   logoUrl: InputMaybe<OrderBy>;
   name: InputMaybe<OrderBy>;
   sponsorProjectsAggregate: InputMaybe<ProjectsSponsorsAggregateOrderBy>;
+  url: InputMaybe<OrderBy>;
 };
 
 /** select columns of table "sponsors" */
@@ -1451,7 +1449,9 @@ export enum SponsorsSelectColumn {
   /** column name */
   LogoUrl = 'logoUrl',
   /** column name */
-  Name = 'name'
+  Name = 'name',
+  /** column name */
+  Url = 'url'
 }
 
 export enum Status {
@@ -2391,14 +2391,12 @@ export type Project_Leads_StreamCursorValueInput = {
 
 /** order by max() on columns of table "projects_sponsors" */
 export type Projects_Sponsors_Max_Order_By = {
-  id: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
   sponsorId: InputMaybe<OrderBy>;
 };
 
 /** order by min() on columns of table "projects_sponsors" */
 export type Projects_Sponsors_Min_Order_By = {
-  id: InputMaybe<OrderBy>;
   projectId: InputMaybe<OrderBy>;
   sponsorId: InputMaybe<OrderBy>;
 };
@@ -2413,7 +2411,6 @@ export type Projects_Sponsors_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Projects_Sponsors_StreamCursorValueInput = {
-  id: InputMaybe<Scalars['uuid']>;
   projectId: InputMaybe<Scalars['uuid']>;
   sponsorId: InputMaybe<Scalars['uuid']>;
 };
@@ -2706,7 +2703,8 @@ export type Query_RootProjectsSponsorsArgs = {
 
 
 export type Query_RootProjectsSponsorsByPkArgs = {
-  id: Scalars['uuid'];
+  projectId: Scalars['uuid'];
+  sponsorId: Scalars['uuid'];
 };
 
 
@@ -2764,6 +2762,7 @@ export type Sponsors_StreamCursorValueInput = {
   id: InputMaybe<Scalars['uuid']>;
   logoUrl: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
+  url: InputMaybe<Scalars['String']>;
 };
 
 export type Subscription_Root = {
@@ -3116,7 +3115,8 @@ export type Subscription_RootProjectsSponsorsArgs = {
 
 
 export type Subscription_RootProjectsSponsorsByPkArgs = {
-  id: Scalars['uuid'];
+  projectId: Scalars['uuid'];
+  sponsorId: Scalars['uuid'];
 };
 
 
