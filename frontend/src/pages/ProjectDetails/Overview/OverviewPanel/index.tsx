@@ -36,7 +36,7 @@ export default function OverviewPanel({ contributors, lead, totalSpentAmountInUs
         </Section>
       )}
       {totalSpentAmountInUsd !== undefined && (
-        <Section icon={SectionIcon.Money} title={T("project.details.overview.totalSpentAmountInUsd")}>
+        <Section icon={SectionIcon.Funds} title={T("project.details.overview.totalSpentAmountInUsd")}>
           <div data-testid="money-granted-amount" className="text-sm text-greyscale-50 font-normal">
             {formatMoneyAmount(totalSpentAmountInUsd)}
           </div>

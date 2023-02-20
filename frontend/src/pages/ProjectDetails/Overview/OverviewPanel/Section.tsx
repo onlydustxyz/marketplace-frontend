@@ -3,7 +3,7 @@ import { PropsWithChildren } from "react";
 export enum SectionIcon {
   Star = "ri-star-line",
   User = "ri-user-3-line",
-  Money = "ri-money-dollar-circle-line",
+  Funds = "ri-funds-line",
 }
 
 type Props = {
