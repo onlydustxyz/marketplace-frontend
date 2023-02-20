@@ -110,10 +110,9 @@ diesel::table! {
 }
 
 diesel::table! {
-    projects_sponsors (id) {
-        id -> Uuid,
-        project_id -> Nullable<Uuid>,
-        sponsor_id -> Nullable<Uuid>,
+    projects_sponsors (project_id, sponsor_id) {
+        project_id -> Uuid,
+        sponsor_id -> Uuid,
     }
 }
 
