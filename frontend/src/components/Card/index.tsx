@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { onePxBorderPosition } from "src/utils/classnames";
 
 export enum CardBorder {
   Light = "light",
@@ -26,8 +25,7 @@ export default function Card({
       className={classNames(
         className,
         "w-full rounded-2xl font-walsheim",
-        "relative",
-        onePxBorderPosition,
+        "pseudo-outline",
         "before:rounded-[18px]", // 2xl = 16px + 2 * [border size] = 18px
         "bg-white/2 backdrop-blur-lg",
         {
@@ -35,8 +33,7 @@ export default function Card({
         },
         {
           "transition duration-300 hover:bg-white/4": selectable,
-          "before:hover:-top-0.5 before:hover:-left-0.5 before:hover:-right-0.5 before:hover:-bottom-0.5": selectable,
-          "before:hover:border-2": selectable,
+          "hover:pseudo-outline-2": selectable,
         },
         {
           "before:border-greyscale-50/8": border === CardBorder.Light,

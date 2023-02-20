@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const plugin = require("tailwindcss/plugin");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./index.html", "./frontend/src/**/*.{js,ts,jsx,tsx}"],
@@ -122,5 +125,34 @@ module.exports = {
     require("@headlessui/tailwindcss"),
     /* eslint-disable @typescript-eslint/no-var-requires */
     require("tailwind-scrollbar")({ nocompatible: true }),
+    plugin(function ({ addComponents }) {
+      const pseudoOutline = {
+        position: "relative",
+        "&:before": {
+          content: "''",
+          position: "absolute",
+          "z-index": "-1",
+          "border-width": "1px",
+          top: "-1px",
+          right: "-1px",
+          bottom: "-1px",
+          left: "-1px",
+        },
+      };
+      addComponents({
+        ".pseudo-outline": pseudoOutline,
+        ".pseudo-outline-2": {
+          ...pseudoOutline,
+          "&:before": {
+            ...pseudoOutline["&:before"],
+            "border-width": "2px",
+            top: "-2px",
+            right: "-2px",
+            bottom: "-2px",
+            left: "-2px",
+          },
+        },
+      });
+    }),
   ],
 };
