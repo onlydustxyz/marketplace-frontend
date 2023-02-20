@@ -1,4 +1,4 @@
-import ProjectLead, { ProjectLeadProps } from "src/components/LeadContributor";
+import ProjectLead__deprecated, { ProjectLeadProps } from "src/components/LeadContributor__deprecated";
 import { useIntl } from "src/hooks/useIntl";
 import { Contributor } from "src/types";
 import { formatMoneyAmount } from "src/utils/money";
@@ -16,7 +16,7 @@ export default function OverviewPanel({ contributors, lead, totalSpentAmountInUs
     <div className="flex flex-col gap-3 divide-y divide-greyscale-50/8">
       {lead && (
         <Section icon={SectionIcon.Star} title={T("project.details.overview.projectLeader")}>
-          <ProjectLead {...lead} />
+          <ProjectLead__deprecated {...lead} />
         </Section>
       )}
       {contributors?.length !== undefined && (

@@ -1,4 +1,4 @@
-import ProjectLead, { ProjectLeadProps } from "src/components/LeadContributor";
+import ProjectLead__deprecated, { ProjectLeadProps } from "src/components/LeadContributor__deprecated";
 import { useIntl } from "src/hooks/useIntl";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StarLine from "src/icons/StarLine";
@@ -27,7 +27,7 @@ export default function OverviewPanel__deprecated({ githubRepoInfo, lead, totalS
                 {T("project.details.overview.projectLeader")}
               </div>
             </div>
-            <ProjectLead {...lead} />
+            <ProjectLead__deprecated {...lead} />
           </div>
         </div>
       )}

@@ -5,7 +5,7 @@ export interface ProjectLeadProps {
   avatarUrl?: string;
 }
 
-export default function ProjectLead({ displayName, avatarUrl }: ProjectLeadProps) {
+export default function ProjectLead__deprecated({ displayName, avatarUrl }: ProjectLeadProps) {
   const { user } = useAuth();
   return (
     <div className="text-md text-neutral-300 font-bold flex flex-row gap-2 items-center">
