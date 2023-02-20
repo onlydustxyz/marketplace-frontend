@@ -1,11 +1,9 @@
 import { useAuth } from "src/hooks/useAuth";
+import { ProjectLeadFragment } from "src/__generated/graphql";
 
-export interface ProjectLeadProps {
-  displayName?: string;
-  avatarUrl?: string;
-}
+type Props = ProjectLeadFragment;
 
-export default function ProjectLead__deprecated({ displayName, avatarUrl }: ProjectLeadProps) {
+export default function ProjectLead__deprecated({ displayName, avatarUrl }: Props) {
   const { user } = useAuth();
   return (
     <div className="text-md text-neutral-300 font-bold flex flex-row gap-2 items-center">

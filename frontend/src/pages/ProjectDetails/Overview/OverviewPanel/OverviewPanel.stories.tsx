@@ -46,7 +46,7 @@ Default.args = {
     { login: "oscarwroche", avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4" },
   ],
   lead: {
-    displayName: "Oscar Roche",
+    displayName: "oscarwroche",
     avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
   },
   totalSpentAmountInUsd: 135642,

@@ -1,13 +1,14 @@
+import { gql } from "@apollo/client";
 import { useIntl } from "src/hooks/useIntl";
 import { Contributor } from "src/types";
 import { formatMoneyAmount } from "src/utils/money";
-import { GithubUserFragment } from "src/__generated/graphql";
+import { ProjectLeadFragment } from "src/__generated/graphql";
 import ClickableUser from "./ClickableUser";
 import Section, { SectionIcon } from "./Section";
 
 interface OverviewPanelProps {
   contributors?: Contributor[];
-  lead?: GithubUserFragment;
+  lead?: ProjectLeadFragment;
   totalSpentAmountInUsd?: number;
 }
 
@@ -17,10 +18,14 @@ export default function OverviewPanel({ contributors, lead, totalSpentAmountInUs
     <div className="flex flex-col gap-3 divide-y divide-greyscale-50/8">
       {lead && (
         <Section icon={SectionIcon.Star} title={T("project.details.overview.projectLeader")}>
-          <ClickableUser name={lead.login} logoUrl={lead.avatarUrl} url={`https://github.com/${lead.login}`} />
+          <ClickableUser
+            name={lead.displayName}
+            logoUrl={lead.avatarUrl}
+            url={`https://github.com/${lead.displayName}`}
+          />
         </Section>
       )}
-      {contributors?.length !== undefined && (
+      {contributors?.length && (
         <Section icon={SectionIcon.User} title={T("project.details.overview.contributors")}>
           <div className="flex flex-row items-center text-sm text-greyscale-50 font-normal gap-2">
             <div className="flex flex-row gap-px">
@@ -46,3 +51,10 @@ export default function OverviewPanel({ contributors, lead, totalSpentAmountInUs
     </div>
   );
 }
+
+export const PROJECT_LEAD_FRAGMENT = gql`
+  fragment ProjectLead on users {
+    displayName
+    avatarUrl
+  }
+`;

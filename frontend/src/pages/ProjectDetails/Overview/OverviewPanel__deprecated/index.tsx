@@ -1,16 +1,17 @@
-import ProjectLead__deprecated, { ProjectLeadProps } from "src/components/LeadContributor__deprecated";
+import ProjectLead__deprecated from "src/components/LeadContributor__deprecated";
 import { useIntl } from "src/hooks/useIntl";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import StarLine from "src/icons/StarLine";
 import User3Line from "src/icons/User3Line";
 import { Contributor } from "src/types";
 import { formatMoneyAmount } from "src/utils/money";
+import { ProjectLeadFragment } from "src/__generated/graphql";
 
 interface OverviewPanelProps {
   githubRepoInfo?: {
     contributors?: Contributor[];
   };
-  lead?: ProjectLeadProps | null;
+  lead?: ProjectLeadFragment | null;
   totalSpentAmountInUsd?: number;
 }
 

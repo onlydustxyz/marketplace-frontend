@@ -8,10 +8,10 @@ import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
 import { ReactNode } from "react";
 import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
-import { GithubUserFragment } from "src/__generated/graphql";
+import { ProjectLeadFragment } from "src/__generated/graphql";
 
 type OutletContext = {
-  lead?: GithubUserFragment;
+  lead?: ProjectLeadFragment;
   totalSpentAmountInUsd: number;
   githubRepoInfo: {
     decodedReadme?: string;

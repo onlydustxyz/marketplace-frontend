@@ -3536,6 +3536,8 @@ export type GetProjectRemainingBudgetQueryVariables = Exact<{
 
 export type GetProjectRemainingBudgetQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, remainingAmount: any | null }> } | null };
 
+export type ProjectLeadFragment = { __typename?: 'users', displayName: string, avatarUrl: string };
+
 export type GetProjectContributorsForPaymentSelect__DeprecatedQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
@@ -3604,6 +3606,12 @@ export const ContributorsTableFieldsFragmentDoc = gql`
   }
 }
     `;
+export const ProjectLeadFragmentDoc = gql`
+    fragment ProjectLead on users {
+  displayName
+  avatarUrl
+}
+    `;
 export const ProjectCardFieldsFragmentDoc = gql`
     fragment ProjectCardFields on Projects {
   id
@@ -3626,8 +3634,7 @@ export const ProjectCardFieldsFragmentDoc = gql`
   }
   projectLeads {
     user {
-      displayName
-      avatarUrl
+      ...ProjectLead
     }
   }
   githubRepo {
@@ -3645,7 +3652,7 @@ export const ProjectCardFieldsFragmentDoc = gql`
     languages
   }
 }
-    `;
+    ${ProjectLeadFragmentDoc}`;
 export const GithubUserFragmentDoc = gql`
     fragment GithubUser on User {
   id
