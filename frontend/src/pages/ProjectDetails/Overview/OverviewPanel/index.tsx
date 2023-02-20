@@ -13,7 +13,7 @@ interface OverviewPanelProps {
 export default function OverviewPanel({ contributors, lead, totalSpentAmountInUsd }: OverviewPanelProps) {
   const { T } = useIntl();
   return (
-    <div className="flex flex-col gap-3 divide-y divide-slate-600/40">
+    <div className="flex flex-col gap-3 divide-y divide-greyscale-50/8">
       {lead && (
         <Section icon={SectionIcon.Star} title={T("project.details.overview.projectLeader")}>
           <ProjectLead {...lead} />
@@ -21,7 +21,7 @@ export default function OverviewPanel({ contributors, lead, totalSpentAmountInUs
       )}
       {contributors?.length !== undefined && (
         <Section icon={SectionIcon.User} title={T("project.details.overview.contributors")}>
-          <div className="flex flex-row items-center text-lg text-neutral-300 font-bold gap-2">
+          <div className="flex flex-row items-center text-sm text-greyscale-50 font-normal gap-2">
             <div className="flex flex-row gap-px">
               {contributors.slice(0, 3).map(contributor => (
                 <img
@@ -37,7 +37,7 @@ export default function OverviewPanel({ contributors, lead, totalSpentAmountInUs
       )}
       {totalSpentAmountInUsd !== undefined && (
         <Section icon={SectionIcon.Money} title={T("project.details.overview.totalSpentAmountInUsd")}>
-          <div data-testid="money-granted-amount" className="flex text-lg text-neutral-300 font-bold">
+          <div data-testid="money-granted-amount" className="text-sm text-greyscale-50 font-normal">
             {formatMoneyAmount(totalSpentAmountInUsd)}
           </div>
         </Section>
