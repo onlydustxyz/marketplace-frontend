@@ -21,12 +21,14 @@ type OutletContext = {
     languages: LanguageMap;
   };
   sponsors: SponsorFragment[];
+  telegramLink: string | null;
   children: ReactNode;
 };
 
 const Overview: React.FC = () => {
   const { T } = useIntl();
-  const { leads, totalSpentAmountInUsd, githubRepoInfo, sponsors, children } = useOutletContext<OutletContext>();
+  const { leads, totalSpentAmountInUsd, githubRepoInfo, sponsors, telegramLink, children } =
+    useOutletContext<OutletContext>();
 
   return (
     <div className="flex flex-col gap-8 mt-3">
@@ -45,7 +47,9 @@ const Overview: React.FC = () => {
         )}
         <Card className="h-fit p-0 basis-96">
           {isFeatureEnabled(FeatureFlags.SHOW_SPONSORS) ? (
-            <OverviewPanel {...{ leads, contributors: githubRepoInfo.contributors, totalSpentAmountInUsd, sponsors }} />
+            <OverviewPanel
+              {...{ leads, contributors: githubRepoInfo.contributors, totalSpentAmountInUsd, sponsors, telegramLink }}
+            />
           ) : (
             <OverviewPanel__deprecated {...{ lead: leads?.at(0), githubRepoInfo, totalSpentAmountInUsd }} />
           )}

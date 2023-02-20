@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import ExternalLink from "src/components/ExternalLink";
 import { useIntl } from "src/hooks/useIntl";
 import { Contributor } from "src/types";
 import { formatMoneyAmount } from "src/utils/money";
@@ -11,9 +12,16 @@ interface OverviewPanelProps {
   leads?: ProjectLeadFragment[];
   totalSpentAmountInUsd?: number;
   sponsors: SponsorFragment[];
+  telegramLink: string | null;
 }
 
-export default function OverviewPanel({ contributors, leads, totalSpentAmountInUsd, sponsors }: OverviewPanelProps) {
+export default function OverviewPanel({
+  contributors,
+  leads,
+  totalSpentAmountInUsd,
+  sponsors,
+  telegramLink,
+}: OverviewPanelProps) {
   const { T } = useIntl();
   return (
     <div className="flex flex-col gap-3 divide-y divide-greyscale-50/8">
@@ -60,6 +68,13 @@ export default function OverviewPanel({ contributors, leads, totalSpentAmountInU
             {sponsors.map(sponsor => (
               <ClickableUser key={sponsor.id} name={sponsor.name} logoUrl={sponsor.logoUrl} url={sponsor.url} />
             ))}
+          </div>
+        </Section>
+      )}
+      {telegramLink && (
+        <Section icon={SectionIcon.Telegram} title={T("project.details.overview.telegram")}>
+          <div className="text-spacePurple-500 font-semibold text-sm">
+            <ExternalLink text={telegramLink} url={telegramLink} />
           </div>
         </Section>
       )}
