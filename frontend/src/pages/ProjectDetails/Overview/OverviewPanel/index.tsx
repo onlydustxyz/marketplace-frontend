@@ -33,7 +33,7 @@ export default function OverviewPanel({ contributors, leads, totalSpentAmountInU
       {contributors?.length && (
         <Section icon={SectionIcon.User} title={T("project.details.overview.contributors")}>
           <div className="flex flex-row items-center text-sm text-greyscale-50 font-normal gap-2">
-            <div className="flex flex-row gap-px">
+            <div className="flex flex-row -space-x-1">
               {contributors.slice(0, 3).map(contributor => (
                 <img
                   key={contributor.login}
