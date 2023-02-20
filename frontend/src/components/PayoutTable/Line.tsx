@@ -3,7 +3,7 @@ import Cell from "../Table/Cell";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import RoundedImage from "src/components/RoundedImage";
 import PayoutStatus from "../PayoutStatus";
-import GithubPRLink, { LinkColor } from "./GithubPRLink";
+import GithubPRLink from "./GithubPRLink";
 import { formatMoneyAmount } from "src/utils/money";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { getPaymentStatusOrder, Payment } from "src/types";
@@ -36,7 +36,7 @@ export default function PaymentLine({ payment, payoutInfoMissing, setSortingFiel
         <RoundedImage src={payment?.project?.logoUrl || onlyDustLogo} alt={payment?.project?.title || ""} />
         <div className="flex flex-col truncate justify-center">
           <div className="font-normal text-base font-belwe">{payment?.project?.title}</div>
-          {payment.reason && <GithubPRLink link={payment.reason} linkColor={LinkColor.Grey}></GithubPRLink>}
+          {payment.reason && <GithubPRLink link={payment.reason}></GithubPRLink>}
         </div>
       </Cell>
       <Cell>{formatMoneyAmount(payment.amount.value, payment.amount.currency)}</Cell>
