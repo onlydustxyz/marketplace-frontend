@@ -12,7 +12,6 @@ select_permissions:
   - role: public
     permission:
       columns:
-        - id
         - project_id
         - sponsor_id
       filter: {}
