@@ -2,16 +2,16 @@ import Card from "src/components/Card";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useIntl } from "src/hooks/useIntl";
-import { ProjectLeadProps } from "src/components/LeadContributor__deprecated";
 import { Contributor, LanguageMap } from "src/types";
 import OverviewPanel__deprecated from "./OverviewPanel__deprecated";
 import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
 import { ReactNode } from "react";
 import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
+import { GithubUserFragment } from "src/__generated/graphql";
 
 type OutletContext = {
-  lead: ProjectLeadProps | null;
+  lead?: GithubUserFragment;
   totalSpentAmountInUsd: number;
   githubRepoInfo: {
     decodedReadme?: string;

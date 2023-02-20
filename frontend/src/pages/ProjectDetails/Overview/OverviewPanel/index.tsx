@@ -1,12 +1,13 @@
-import ProjectLead__deprecated, { ProjectLeadProps } from "src/components/LeadContributor__deprecated";
 import { useIntl } from "src/hooks/useIntl";
 import { Contributor } from "src/types";
 import { formatMoneyAmount } from "src/utils/money";
+import { GithubUserFragment } from "src/__generated/graphql";
+import ClickableUser from "./ClickableUser";
 import Section, { SectionIcon } from "./Section";
 
 interface OverviewPanelProps {
   contributors?: Contributor[];
-  lead?: ProjectLeadProps | null;
+  lead?: GithubUserFragment;
   totalSpentAmountInUsd?: number;
 }
 
@@ -16,7 +17,7 @@ export default function OverviewPanel({ contributors, lead, totalSpentAmountInUs
     <div className="flex flex-col gap-3 divide-y divide-greyscale-50/8">
       {lead && (
         <Section icon={SectionIcon.Star} title={T("project.details.overview.projectLeader")}>
-          <ProjectLead__deprecated {...lead} />
+          <ClickableUser name={lead.login} logoUrl={lead.avatarUrl} url={`https://github.com/${lead.login}`} />
         </Section>
       )}
       {contributors?.length !== undefined && (
