@@ -7,14 +7,12 @@ import { Contributor } from "src/types";
 import { formatMoneyAmount } from "src/utils/money";
 
 interface OverviewPanelProps {
-  githubRepoInfo?: {
-    contributors?: Contributor[];
-  };
+  contributors?: Contributor[];
   lead?: ProjectLeadProps | null;
   totalSpentAmountInUsd?: number;
 }
 
-export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountInUsd }: OverviewPanelProps) {
+export default function OverviewPanel({ contributors, lead, totalSpentAmountInUsd }: OverviewPanelProps) {
   const { T } = useIntl();
   return (
     <div className="flex flex-col gap-3 divide-y divide-slate-600/40">
@@ -31,7 +29,7 @@ export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountIn
           </div>
         </div>
       )}
-      {githubRepoInfo?.contributors?.length !== undefined && (
+      {contributors?.length !== undefined && (
         <div className="flex flex-row justify-between py-4 pb-1 px-5">
           <div className="flex flex-row gap-1 items-center">
             <User3Line className="p-px font-normal text-xl text-slate-400" />
@@ -41,7 +39,7 @@ export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountIn
           </div>
           <div className="flex flex-row items-center text-lg text-neutral-300 font-bold gap-2">
             <div className="flex flex-row gap-px">
-              {githubRepoInfo.contributors.slice(0, 3).map(contributor => (
+              {contributors.slice(0, 3).map(contributor => (
                 <img
                   key={contributor.login}
                   src={contributor.avatarUrl}
@@ -49,7 +47,7 @@ export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountIn
                 />
               ))}
             </div>
-            <div>{githubRepoInfo.contributors.length}</div>
+            <div>{contributors.length}</div>
           </div>
         </div>
       )}

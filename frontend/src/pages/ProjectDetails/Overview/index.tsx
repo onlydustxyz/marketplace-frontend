@@ -44,7 +44,7 @@ const Overview: React.FC = () => {
         )}
         <Card className="h-fit p-0 basis-96">
           {isFeatureEnabled(FeatureFlags.SHOW_SPONSORS) ? (
-            <OverviewPanel {...{ lead, githubRepoInfo, totalSpentAmountInUsd }} />
+            <OverviewPanel {...{ lead, contributors: githubRepoInfo.contributors, totalSpentAmountInUsd }} />
           ) : (
             <OverviewPanel__deprecated {...{ lead, githubRepoInfo, totalSpentAmountInUsd }} />
           )}
