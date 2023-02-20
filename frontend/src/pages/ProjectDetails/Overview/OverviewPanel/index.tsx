@@ -8,21 +8,26 @@ import Section, { SectionIcon } from "./Section";
 
 interface OverviewPanelProps {
   contributors?: Contributor[];
-  lead?: ProjectLeadFragment;
+  leads?: ProjectLeadFragment[];
   totalSpentAmountInUsd?: number;
 }
 
-export default function OverviewPanel({ contributors, lead, totalSpentAmountInUsd }: OverviewPanelProps) {
+export default function OverviewPanel({ contributors, leads, totalSpentAmountInUsd }: OverviewPanelProps) {
   const { T } = useIntl();
   return (
     <div className="flex flex-col gap-3 divide-y divide-greyscale-50/8">
-      {lead && (
+      {leads?.length && (
         <Section icon={SectionIcon.Star} title={T("project.details.overview.projectLeader")}>
-          <ClickableUser
-            name={lead.displayName}
-            logoUrl={lead.avatarUrl}
-            url={`https://github.com/${lead.displayName}`}
-          />
+          <div className="flex flex-row flex-wrap gap-3">
+            {leads.map(lead => (
+              <ClickableUser
+                key={lead.displayName}
+                name={lead.displayName}
+                logoUrl={lead.avatarUrl}
+                url={`https://github.com/${lead.displayName}`}
+              />
+            ))}
+          </div>
         </Section>
       )}
       {contributors?.length && (

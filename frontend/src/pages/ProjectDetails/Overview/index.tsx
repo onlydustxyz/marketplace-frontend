@@ -11,7 +11,7 @@ import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 import { ProjectLeadFragment } from "src/__generated/graphql";
 
 type OutletContext = {
-  lead?: ProjectLeadFragment;
+  leads?: ProjectLeadFragment[];
   totalSpentAmountInUsd: number;
   githubRepoInfo: {
     decodedReadme?: string;
@@ -25,7 +25,7 @@ type OutletContext = {
 
 const Overview: React.FC = () => {
   const { T } = useIntl();
-  const { lead, totalSpentAmountInUsd, githubRepoInfo, children } = useOutletContext<OutletContext>();
+  const { leads, totalSpentAmountInUsd, githubRepoInfo, children } = useOutletContext<OutletContext>();
 
   return (
     <div className="flex flex-col gap-8 mt-3">
@@ -44,9 +44,9 @@ const Overview: React.FC = () => {
         )}
         <Card className="h-fit p-0 basis-96">
           {isFeatureEnabled(FeatureFlags.SHOW_SPONSORS) ? (
-            <OverviewPanel {...{ lead, contributors: githubRepoInfo.contributors, totalSpentAmountInUsd }} />
+            <OverviewPanel {...{ leads, contributors: githubRepoInfo.contributors, totalSpentAmountInUsd }} />
           ) : (
-            <OverviewPanel__deprecated {...{ lead, githubRepoInfo, totalSpentAmountInUsd }} />
+            <OverviewPanel__deprecated {...{ lead: leads?.at(0), githubRepoInfo, totalSpentAmountInUsd }} />
           )}
         </Card>
       </div>
