@@ -4,7 +4,7 @@ import remarkGfm from "remark-gfm";
 import { useIntl } from "src/hooks/useIntl";
 import { ProjectLeadProps } from "src/components/LeadContributor";
 import { Contributor, LanguageMap } from "src/types";
-import OverviewPanel from "./OverviewPanel";
+import OverviewPanel__deprecated from "./OverviewPanel__deprecated";
 import { useOutletContext } from "react-router-dom";
 import { ReactNode } from "react";
 
@@ -41,7 +41,7 @@ const Overview: React.FC = () => {
           </div>
         )}
         <Card className="h-fit p-0 basis-96">
-          <OverviewPanel {...{ lead, githubRepoInfo, totalSpentAmountInUsd }} />
+          <OverviewPanel__deprecated {...{ lead, githubRepoInfo, totalSpentAmountInUsd }} />
         </Card>
       </div>
     </div>

@@ -14,7 +14,7 @@ interface OverviewPanelProps {
   totalSpentAmountInUsd?: number;
 }
 
-export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountInUsd }: OverviewPanelProps) {
+export default function OverviewPanel__deprecated({ githubRepoInfo, lead, totalSpentAmountInUsd }: OverviewPanelProps) {
   const { T } = useIntl();
   return (
     <div className="flex flex-col gap-3 divide-y divide-slate-600/40">
