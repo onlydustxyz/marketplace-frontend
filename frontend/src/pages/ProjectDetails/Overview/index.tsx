@@ -45,7 +45,7 @@ const Overview: React.FC = () => {
             </Card>
           </div>
         )}
-        <Card className="h-fit p-0 basis-96">
+        <Card className="h-fit p-0 basis-96" padded={!isFeatureEnabled(FeatureFlags.SHOW_SPONSORS)}>
           {isFeatureEnabled(FeatureFlags.SHOW_SPONSORS) ? (
             <OverviewPanel
               {...{ leads, contributors: githubRepoInfo.contributors, totalSpentAmountInUsd, sponsors, telegramLink }}
