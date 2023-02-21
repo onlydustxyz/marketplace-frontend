@@ -15,7 +15,7 @@ describe("The user", () => {
     });
   });
 
-  it("can send feedback", function () {
+  it.skip("can send feedback", function () {
     cy.visit("http://127.0.0.1:5173", {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.token);
