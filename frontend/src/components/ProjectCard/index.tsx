@@ -166,10 +166,8 @@ function ProjectCard({
               </div>
             </div>
             {githubRepo?.languages && Object.keys(githubRepo?.languages).length > 0 && (
-              <div className="hidden lg:flex flex-row border border-neutral-600 w-fit px-3 py-1 rounded-2xl gap-2 text-sm">
-                <div className="flex items-center justify-center">
-                  <CodeSSlashLine className="text-gray-400" />
-                </div>
+              <div className="hidden lg:flex flex-row border border-neutral-600 w-fit px-3 py-1 rounded-2xl gap-2 text-sm items-center">
+                <CodeSSlashLine className="text-greyscale-50" />
                 <div className="text-white">{buildLanguageString(githubRepo?.languages)}</div>
               </div>
             )}
