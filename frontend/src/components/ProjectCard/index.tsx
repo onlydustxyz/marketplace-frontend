@@ -6,7 +6,7 @@ import classNames from "classnames";
 import Button, { ButtonSize } from "src/components/Button";
 import Card, { CardBorder } from "src/components/Card";
 import GithubLink from "src/components/GithubLink";
-import RoundedImage, { ImageSize } from "src/components/RoundedImage";
+import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import TelegramLink from "src/components/TelegramLink";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
@@ -19,7 +19,8 @@ import { useMediaQuery } from "usehooks-ts";
 import { ProjectLeadFragmentDoc, SponsorFragmentDoc } from "src/__generated/graphql";
 import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 import User3Line from "src/icons/User3Line";
-import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
+import FundsLine from "src/icons/FundsLine";
+import Tooltip, { TooltipPosition } from "../Tooltip";
 
 type ProjectCardProps = Project & {
   selectable?: boolean;
@@ -125,6 +126,7 @@ function ProjectCard({
   githubRepo,
   projectLeads,
   budgetsAggregate,
+  projectSponsors,
 }: ProjectCardProps) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
@@ -132,6 +134,8 @@ function ProjectCard({
   const name = projectDetails?.name || "";
   const logoUrl = projectDetails?.logoUrl || githubRepo?.content?.logoUrl || onlyDustLogo;
   const totalSpentAmountInUsd = budgetsAggregate?.aggregate?.sum?.spentAmount;
+
+  const topSponsors = projectSponsors.map(projectSponsor => projectSponsor.sponsor).slice(0, 3);
 
   const card = (
     <Card
@@ -159,10 +163,8 @@ function ProjectCard({
               </div>
             </div>
             {githubRepo?.languages && Object.keys(githubRepo?.languages).length > 0 && (
-              <div className="hidden lg:flex flex-row border border-neutral-600 w-fit px-3 py-1 rounded-2xl gap-2 text-sm">
-                <div className="flex items-center justify-center">
-                  <CodeSSlashLine className="text-gray-400" />
-                </div>
+              <div className="hidden lg:flex flex-row border border-neutral-600 w-fit px-3 py-1 rounded-2xl gap-2 text-sm items-center">
+                <CodeSSlashLine className="text-greyscale-50" />
                 <div className="text-white">{buildLanguageString(githubRepo?.languages)}</div>
               </div>
             )}
@@ -171,14 +173,41 @@ function ProjectCard({
             <div className="line-clamp-2 ml-px">{projectDetails?.shortDescription}</div>
             <div className="flex flex-row gap-2">
               {!!githubRepo?.content.contributors?.length && (
-                <div className="flex flex-row border border-neutral-600 w-fit px-2 py-1 rounded-2xl gap-1 lg:gap-2 text-xs">
+                <div
+                  className="h-6 flex flex-row border border-neutral-600 w-fit px-2 py-1.5
+				rounded-2xl gap-1 text-xs items-center"
+                >
                   <User3Line />
                   {T("project.details.contributors.count", { count: githubRepo?.content.contributors?.length })}
                 </div>
               )}
               {totalSpentAmountInUsd !== undefined && (
-                <div className="flex flex-row border border-neutral-600 w-fit px-2 py-1 rounded-2xl gap-2 text-xs">
-                  <MoneyDollarCircleLine />
+                <div
+                  className="h-6 flex flex-row border border-neutral-600 w-fit px-2 py-1.5 rounded-2xl gap-1 text-xs items-center"
+                  id={`sponsor-list-${id}`}
+                >
+                  {projectSponsors.length ? (
+                    <>
+                      <Tooltip anchorId={`sponsor-list-${id}`} position={TooltipPosition.Top}>
+                        <div className="w-fit">{`Funded by ${topSponsors
+                          .map(sponsor => sponsor.name)
+                          .join(", ")}`}</div>
+                      </Tooltip>
+                      <div className="flex flex-row -space-x-1">
+                        {topSponsors.map(sponsor => (
+                          <RoundedImage
+                            key={sponsor.id}
+                            src={sponsor.logoUrl}
+                            alt={sponsor.name}
+                            size={ImageSize.Xxs}
+                            rounding={Rounding.Circle}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <FundsLine />
+                  )}
                   {T("project.amountGranted", { amount: formatMoneyAmount(totalSpentAmountInUsd) })}
                 </div>
               )}

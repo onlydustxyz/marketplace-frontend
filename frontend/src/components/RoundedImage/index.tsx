@@ -1,6 +1,7 @@
 import classNames from "classnames";
 
 export enum ImageSize {
+  Xxs = "Xxs",
   Xs = "xs",
   Sm = "sm",
   Md = "md",
@@ -54,6 +55,7 @@ export default function RoundedImage({
             "rounded-full": rounding === Rounding.Circle,
           },
           {
+            "h-4 w-4": size === ImageSize.Xxs,
             "h-5 w-5": size === ImageSize.Xs,
             "h-6 w-6": size === ImageSize.Sm,
             "h-8 w-8": size === ImageSize.Md,
