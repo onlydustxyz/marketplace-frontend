@@ -135,10 +135,7 @@ function ProjectCard({
   const logoUrl = projectDetails?.logoUrl || githubRepo?.content?.logoUrl || onlyDustLogo;
   const totalSpentAmountInUsd = budgetsAggregate?.aggregate?.sum?.spentAmount;
 
-  const topSponsors = projectSponsors
-    .map(projectSponsor => projectSponsor.sponsor)
-    .filter(sponsor => sponsor.logoUrl)
-    .slice(0, 3);
+  const topSponsors = projectSponsors.map(projectSponsor => projectSponsor.sponsor).slice(0, 3);
 
   const card = (
     <Card
@@ -198,17 +195,13 @@ function ProjectCard({
                       </Tooltip>
                       <div className="flex flex-row -space-x-1">
                         {topSponsors.map(sponsor => (
-                          <>
-                            {sponsor.logoUrl && (
-                              <RoundedImage
-                                key={sponsor.id}
-                                src={sponsor.logoUrl}
-                                alt={sponsor.name}
-                                size={ImageSize.Xxs}
-                                rounding={Rounding.Circle}
-                              />
-                            )}
-                          </>
+                          <RoundedImage
+                            key={sponsor.id}
+                            src={sponsor.logoUrl}
+                            alt={sponsor.name}
+                            size={ImageSize.Xxs}
+                            rounding={Rounding.Circle}
+                          />
                         ))}
                       </div>
                     </>
