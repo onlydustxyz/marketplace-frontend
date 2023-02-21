@@ -12,7 +12,6 @@
 **/types
 .idea
 .next
-cypress/
 # files
 *.env
 *.log

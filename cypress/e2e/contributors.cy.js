@@ -4,40 +4,40 @@ describe("As a public user, I", () => {
   beforeEach(function () {
     cy.fixture("repos.json").as("repos");
     cy.createGithubUser(98735558).then(user => {
-    cy.createProjectWithLeader(user, "Project with budget", 100000, this.repos.A.id)
+      cy.createProjectWithLeader(user, "Project with budget", 100000, this.repos.A.id)
         .as("projectId")
         .then(projectId => {
-        cy.requestPayment(projectId, 100, OFUX, {
+          cy.requestPayment(projectId, 100, OFUX, {
             workItems: [
-            "https://github.com/od-mocks/cool-repo-A/pull/1",
-            "https://github.com/od-mocks/cool-repo-A/pull/2",
+              "https://github.com/od-mocks/cool-repo-A/pull/1",
+              "https://github.com/od-mocks/cool-repo-A/pull/2",
             ],
-        })
+          })
             .asRegisteredUser(user)
             .data("requestPayment");
-        cy.requestPayment(projectId, 100, OFUX, {
+          cy.requestPayment(projectId, 100, OFUX, {
             workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
-        })
+          })
             .asRegisteredUser(user)
             .data("requestPayment");
-        cy.requestPayment(projectId, 500, OFUX, {
+          cy.requestPayment(projectId, 500, OFUX, {
             workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
-        })
+          })
             .asRegisteredUser(user)
             .data("requestPayment");
-        cy.requestPayment(projectId, 500, OFUX, {
+          cy.requestPayment(projectId, 500, OFUX, {
             workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
-        })
+          })
             .asRegisteredUser(user)
             .data("requestPayment");
-        cy.requestPayment(projectId, 2000, OFUX, {
+          cy.requestPayment(projectId, 2000, OFUX, {
             workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
-        })
+          })
             .asRegisteredUser(user)
             .data("requestPayment");
-        cy.requestPayment(projectId, 10000, OFUX, {
+          cy.requestPayment(projectId, 10000, OFUX, {
             workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
-        })
+          })
             .asRegisteredUser(user)
             .data("requestPayment");
         });
@@ -74,25 +74,24 @@ describe("As a public user, I", () => {
 
 describe("As a project lead, I", () => {
   beforeEach(function () {
-    cy.createGithubUser(98735558)
-      .then(user => {
-        cy.createProjectWithLeader(user, "Project with budget", 100000).as("projectId")
-        cy.signinUser(user)
-          .then(user => JSON.stringify(user.session))
-          .as("token");
-      });
+    cy.createGithubUser(98735558).then(user => {
+      cy.createProjectWithLeader(user, "Project with budget", 100000).as("projectId");
+      cy.signinUser(user)
+        .then(user => JSON.stringify(user.session))
+        .as("token");
+    });
   });
 
   it("can request a payment for a contributor", function () {
     cy.visit(`http://localhost:5173/projects/${this.projectId}`, {
-        onBeforeLoad(win) {
-          win.localStorage.setItem("hasura_token", this.token);
-        },
-      });
+      onBeforeLoad(win) {
+        win.localStorage.setItem("hasura_token", this.token);
+      },
+    });
 
     cy.contains("Contributors").click();
 
-    cy.get('[data-testid="send-payment-button"]').first().click({force: true});
+    cy.get('[data-testid="send-payment-button"]').first().click({ force: true });
     cy.get('[name="contributorHandle"]').should("have.value", "AnthonyBuisset");
-});
+  });
 });

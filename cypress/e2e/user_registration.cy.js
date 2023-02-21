@@ -15,7 +15,7 @@ describe("The user", () => {
   });
 
   it("can fill their personal info", function () {
-    cy.fillPayoutSettings(this.token)
+    cy.fillPayoutSettings(this.token);
     cy.contains("Payment information successfully updated");
   });
 
