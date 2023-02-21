@@ -70,4 +70,44 @@
       radial-gradient(100% 131.98% at 91.28% 0%, rgba(0, 255, 228, 0.5) 0%, rgba(174, 0, 255, 0.5) 100%),
       radial-gradient(85.71% 143.47% at 5.13% 14.29%, #0009bc 0%, #ff9000 100%);
   }
+
+  .rounded-lg.pseudo-outline::before {
+    border-radius: 9px;
+  }
+  .rounded-xl.pseudo-outline::before {
+    border-radius: 13px;
+  }
+  .rounded-2xl.pseudo-outline::before {
+    border-radius: 17px;
+  }
+  .rounded-lg.pseudo-outline-2::before {
+    border-radius: 10px;
+  }
+  .rounded-xl.pseudo-outline-2::before {
+    border-radius: 14px;
+  }
+  .rounded-2xl.pseudo-outline-2::before {
+    border-radius: 18px;
+  }
+  .rounded-lg.pseudo-outline-3::before {
+    border-radius: 11px;
+  }
+  .rounded-xl.pseudo-outline-3::before {
+    border-radius: 15px;
+  }
+  .rounded-2xl.pseudo-outline-3::before {
+    border-radius: 19px;
+  }
+  .rounded-lg.pseudo-outline-4::before {
+    border-radius: 12px;
+  }
+  .rounded-xl.pseudo-outline-4::before {
+    border-radius: 16px;
+  }
+  .rounded-2xl.pseudo-outline-4::before {
+    border-radius: 20px;
+  }
+  .rounded-full[class^='pseudo-outline']::before, .rounded-full[class*=' pseudo-outline']::before {
+    border-radius: 9999px;
+  }
 }

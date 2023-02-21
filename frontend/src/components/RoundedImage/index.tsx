@@ -1,7 +1,6 @@
 import classNames from "classnames";
 
 export enum ImageSize {
-  Xxs = "xxs",
   Xs = "xs",
   Sm = "sm",
   Md = "md",
@@ -30,23 +29,41 @@ export default function RoundedImage({
   rounding = Rounding.Corners,
 }: RoundedImageProps) {
   return (
-    <img
+    <div
       className={classNames(
-        "outline outline-greyscale-50/20 outline-offset-0 object-cover",
+        "before:border-greyscale-50/20",
+        "h-fit w-fit",
         {
-          "outline-1 h-5 w-5": size === ImageSize.Xxs,
-          "outline-1 h-6 w-6": size === ImageSize.Xs,
-          "outline-2 h-6 w-6": size === ImageSize.Sm,
-          "outline-2 h-8 w-8": size === ImageSize.Md,
-          "outline-3 h-10 w-10": size === ImageSize.Lg,
-          "outline-4 h-12 w-12": size === ImageSize.Xl,
+          "pseudo-outline": size === ImageSize.Xs,
+          "pseudo-outline-2": size === ImageSize.Sm || size === ImageSize.Md,
+          "pseudo-outline-3": size === ImageSize.Lg,
+          "pseudo-outline-4": size === ImageSize.Xl,
+        },
+        {
           "rounded-xl": rounding === Rounding.Corners,
           "rounded-full": rounding === Rounding.Circle,
         },
         className
       )}
-      alt={alt}
-      src={src}
-    />
+    >
+      <img
+        className={classNames(
+          "object-cover",
+          {
+            "rounded-xl": rounding === Rounding.Corners,
+            "rounded-full": rounding === Rounding.Circle,
+          },
+          {
+            "h-5 w-5": size === ImageSize.Xs,
+            "h-6 w-6": size === ImageSize.Sm,
+            "h-8 w-8": size === ImageSize.Md,
+            "h-10 w-10": size === ImageSize.Lg,
+            "h-12 w-12": size === ImageSize.Xl,
+          }
+        )}
+        alt={alt}
+        src={src}
+      />
+    </div>
   );
 }

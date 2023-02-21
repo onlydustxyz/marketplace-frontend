@@ -25,17 +25,18 @@ export default function Card({
       className={classNames(
         className,
         "w-full rounded-2xl font-walsheim",
-        "outline outline-1",
+        "pseudo-outline",
         "bg-white/2 backdrop-blur-lg",
         {
           "p-4 lg:p-6": padded,
         },
         {
-          "transition duration-300 hover:bg-white/4 outline-offset-0 hover:outline-2": selectable,
+          "transition duration-300 hover:bg-white/4": selectable,
+          "hover:pseudo-outline-2": selectable,
         },
         {
-          "outline-greyscale-50/8": border === CardBorder.Light,
-          "outline-greyscale-50/12": border === CardBorder.Medium,
+          "before:border-greyscale-50/8": border === CardBorder.Light,
+          "before:border-greyscale-50/12": border === CardBorder.Medium,
         }
       )}
       data-testid={dataTestId}

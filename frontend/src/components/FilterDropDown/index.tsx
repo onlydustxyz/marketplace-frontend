@@ -70,7 +70,10 @@ export default function FilterDropDown({ icon, defaultLabel, selectedLabel, opti
                   className={classNames(
                     "py-1 px-2 w-fit text-neutral-100 font-walsheim font-normal text-xs bg-white/8 border border-greyscale-50/8 rounded-lg",
                     "hover:cursor-pointer",
-                    "ui-selected:border-transparent ui-selected:outline ui-selected:outline-2 ui-selected:outline-spacePurple-500 ui-selected:bg-spacePurple-900"
+                    "ui-selected:pseudo-outline-2",
+                    "ui-selected:before:z-10",
+                    "ui-selected:before:border-spacePurple-500",
+                    "ui-selected:border-transparent ui-selected:bg-spacePurple-900"
                   )}
                 >
                   {option}

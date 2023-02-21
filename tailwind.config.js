@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const plugin = require("tailwindcss/plugin");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./index.html", "./frontend/src/**/*.{js,ts,jsx,tsx}"],
@@ -104,7 +107,7 @@ module.exports = {
       dropShadow: {
         "bottom-sm": "0px 8px 32px rgba(0, 0, 0, 0.16)",
       },
-      outlineWidth: {
+      borderWidth: {
         3: "3px",
       },
       opacity: {
@@ -122,5 +125,38 @@ module.exports = {
     require("@headlessui/tailwindcss"),
     /* eslint-disable @typescript-eslint/no-var-requires */
     require("tailwind-scrollbar")({ nocompatible: true }),
+    plugin(function ({ addComponents }) {
+      const pseudoOutline = {
+        position: "relative",
+        "&:before": {
+          content: "''",
+          position: "absolute",
+          "z-index": "-1",
+          "border-width": "1px",
+          top: "-1px",
+          right: "-1px",
+          bottom: "-1px",
+          left: "-1px",
+        },
+      };
+      const variantSizes = [2, 3, 4];
+      addComponents({
+        ".pseudo-outline": pseudoOutline,
+        ...variantSizes.reduce((acc, size) => {
+          acc[`.pseudo-outline-${size}`] = {
+            ...pseudoOutline,
+            "&:before": {
+              ...pseudoOutline["&:before"],
+              "border-width": `${size}px`,
+              top: `-${size}px`,
+              right: `-${size}px`,
+              bottom: `-${size}px`,
+              left: `-${size}px`,
+            },
+          };
+          return acc;
+        }, {}),
+      });
+    }),
   ],
 };
