@@ -16,6 +16,7 @@ type Props = {
   onClick?: MouseEventHandler<HTMLElement>;
   contributor: Contributor;
 };
+
 const Contributor = ({ onClick, contributor }: Props) => {
   const { T } = useIntl();
   const clickable = onClick !== undefined;
