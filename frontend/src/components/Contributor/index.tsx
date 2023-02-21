@@ -31,7 +31,7 @@ const Contributor = ({ onClick, contributor }: Props) => {
         <RoundedImage
           src={contributor.avatarUrl}
           alt={contributor.login}
-          size={ImageSize.Small}
+          size={ImageSize.Sm}
           rounding={Rounding.Circle}
         />
       </div>

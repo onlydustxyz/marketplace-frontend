@@ -9,7 +9,7 @@ export default {
       control: {
         type: "select",
       },
-      options: [ImageSize.ExtraSmall, ImageSize.Small, ImageSize.Medium, ImageSize.Large, ImageSize.ExtraLarge],
+      options: [ImageSize.Xs, ImageSize.Sm, ImageSize.Md, ImageSize.Lg, ImageSize.Xl],
     },
     rounding: {
       control: {
@@ -27,7 +27,7 @@ export const Default = Template.bind({});
 const args = {
   src: "https://www.soswildlifecontrol.com/wp-content/uploads/2017/02/Raccoon-Closeup.jpg",
   alt: "A damn raccoon",
-  size: ImageSize.Medium,
+  size: ImageSize.Md,
   rounding: Rounding.Corners,
 };
 

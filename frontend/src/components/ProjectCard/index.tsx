@@ -50,7 +50,7 @@ export default function ProjectCard({
         <div className="flex flex-col lg:flex-row w-full lg:divide-x divide-stone-100/8 gap-4 lg:gap-6 justify-items-center font-walsheim">
           <div className="lg:flex flex-col basis-1/3 min-w-0 gap-y-5">
             <div className="flex gap-4">
-              <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.ExtraLarge} className="mt-1" />
+              <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.Xl} className="mt-1" />
               <div className="min-w-0">
                 <div className="text-2xl font-medium font-belwe truncate">{name}</div>
                 {lead && (

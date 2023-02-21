@@ -1,11 +1,11 @@
 import classNames from "classnames";
 
 export enum ImageSize {
-  ExtraSmall = "xs",
-  Small = "sm",
-  Medium = "md",
-  Large = "lg",
-  ExtraLarge = "xl",
+  Xs = "xs",
+  Sm = "sm",
+  Md = "md",
+  Lg = "lg",
+  Xl = "xl",
 }
 
 export enum Rounding {
@@ -25,7 +25,7 @@ export default function RoundedImage({
   src,
   alt,
   className,
-  size = ImageSize.Large,
+  size = ImageSize.Lg,
   rounding = Rounding.Corners,
 }: RoundedImageProps) {
   return (
@@ -34,10 +34,10 @@ export default function RoundedImage({
         "before:border-greyscale-50/20",
         "h-fit w-fit",
         {
-          "pseudo-outline": size === ImageSize.ExtraSmall,
-          "pseudo-outline-2": size === ImageSize.Small || size === ImageSize.Medium,
-          "pseudo-outline-3": size === ImageSize.Large,
-          "pseudo-outline-4": size === ImageSize.ExtraLarge,
+          "pseudo-outline": size === ImageSize.Xs,
+          "pseudo-outline-2": size === ImageSize.Sm || size === ImageSize.Md,
+          "pseudo-outline-3": size === ImageSize.Lg,
+          "pseudo-outline-4": size === ImageSize.Xl,
         },
         {
           "rounded-xl": rounding === Rounding.Corners,
@@ -54,11 +54,11 @@ export default function RoundedImage({
             "rounded-full": rounding === Rounding.Circle,
           },
           {
-            "h-5 w-5": size === ImageSize.ExtraSmall,
-            "h-6 w-6": size === ImageSize.Small,
-            "h-8 w-8": size === ImageSize.Medium,
-            "h-10 w-10": size === ImageSize.Large,
-            "h-12 w-12": size === ImageSize.ExtraLarge,
+            "h-5 w-5": size === ImageSize.Xs,
+            "h-6 w-6": size === ImageSize.Sm,
+            "h-8 w-8": size === ImageSize.Md,
+            "h-10 w-10": size === ImageSize.Lg,
+            "h-12 w-12": size === ImageSize.Xl,
           }
         )}
         alt={alt}
