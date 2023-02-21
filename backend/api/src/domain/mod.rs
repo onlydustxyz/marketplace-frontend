@@ -31,3 +31,6 @@ mod pending_project_leader_invitation;
 pub use pending_project_leader_invitation::{
 	Id as PendingProjectLeaderInvitationId, PendingProjectLeaderInvitation,
 };
+
+mod sponsor;
+pub use sponsor::{Id as SponsorId, Sponsor};

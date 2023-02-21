@@ -9,7 +9,7 @@ use presentation::http;
 use crate::{
 	infrastructure::database::{
 		GithubRepoRepository, PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
-		ProjectGithubRepoRepository, UserInfoRepository,
+		ProjectGithubRepoRepository, ProjectSponsorRepository, UserInfoRepository,
 	},
 	presentation::graphql,
 };
@@ -27,6 +27,7 @@ pub async fn serve(
 	project_details_repository: ProjectDetailsRepository,
 	github_repo_repository: GithubRepoRepository,
 	project_github_repo_repository: ProjectGithubRepoRepository,
+	project_sponsor_repository: ProjectSponsorRepository,
 	pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 	user_info_repository: UserInfoRepository,
 	github: Arc<github::Client>,
@@ -40,6 +41,7 @@ pub async fn serve(
 		.manage(project_details_repository)
 		.manage(github_repo_repository)
 		.manage(project_github_repo_repository)
+		.manage(project_sponsor_repository)
 		.manage(pending_project_leader_invitations_repository)
 		.manage(user_info_repository)
 		.manage(github)

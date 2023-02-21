@@ -12,7 +12,8 @@ use crate::{
 	infrastructure::{
 		database::{
 			GithubRepoRepository, PendingProjectLeaderInvitationsRepository,
-			ProjectDetailsRepository, ProjectGithubRepoRepository, UserInfoRepository,
+			ProjectDetailsRepository, ProjectGithubRepoRepository, ProjectSponsorRepository,
+			UserInfoRepository,
 		},
 		web3::ens,
 	},
@@ -28,6 +29,8 @@ pub struct Context {
 	pub update_project_usecase: application::project::update::Usecase,
 	pub link_github_repo_usecase: application::project::link_github_repo::Usecase,
 	pub unlink_github_repo_usecase: application::project::unlink_github_repo::Usecase,
+	pub add_sponsor_usecase: application::project::add_sponsor::Usecase,
+	pub remove_sponsor_usecase: application::project::remove_sponsor::Usecase,
 	pub remove_project_leader_usecase: application::project::remove_leader::Usecase,
 	pub invite_project_leader_usecase: application::project::invite_leader::Usecase,
 	pub accept_project_leader_invitation_usecase:
@@ -47,6 +50,7 @@ impl Context {
 		project_details_repository: ProjectDetailsRepository,
 		github_repo_repository: GithubRepoRepository,
 		project_github_repo_repository: ProjectGithubRepoRepository,
+		project_sponsor_repository: ProjectSponsorRepository,
 		pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 		user_info_repository: UserInfoRepository,
 		github: Arc<github::Client>,
@@ -83,6 +87,12 @@ impl Context {
 			unlink_github_repo_usecase: application::project::unlink_github_repo::Usecase::new(
 				github_repo_repository,
 				project_github_repo_repository,
+			),
+			add_sponsor_usecase: application::project::add_sponsor::Usecase::new(
+				project_sponsor_repository.clone(),
+			),
+			remove_sponsor_usecase: application::project::remove_sponsor::Usecase::new(
+				project_sponsor_repository,
 			),
 			remove_project_leader_usecase: application::project::remove_leader::Usecase::new(
 				event_publisher.to_owned(),

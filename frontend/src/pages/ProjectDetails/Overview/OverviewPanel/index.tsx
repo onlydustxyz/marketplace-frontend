@@ -68,7 +68,7 @@ export default function OverviewPanel({
       )}
       {sponsors.length > 0 && (
         <Section icon={SectionIcon.Service} title={T("project.details.overview.sponsors")}>
-          <div className="flex flex-row flex-wrap gap-3">
+          <div data-testid="sponsors" className="flex flex-row flex-wrap gap-3">
             {sponsors.map(sponsor => (
               <ClickableUser key={sponsor.id} name={sponsor.name} logoUrl={sponsor.logoUrl} url={sponsor.url} />
             ))}
@@ -77,7 +77,7 @@ export default function OverviewPanel({
       )}
       {telegramLink && (
         <Section icon={SectionIcon.Telegram} title={T("project.details.overview.telegram")}>
-          <div className="text-spacePurple-500 font-semibold text-sm">
+          <div data-testid="telegram-link" className="text-spacePurple-500 font-semibold text-sm">
             <ExternalLink text={telegramLink} url={telegramLink} />
           </div>
         </Section>
