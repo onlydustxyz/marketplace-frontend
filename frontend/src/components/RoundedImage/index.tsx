@@ -1,11 +1,12 @@
 import classNames from "classnames";
 
 export enum ImageSize {
-  ExtraSmall = "xs",
-  Small = "sm",
-  Medium = "md",
-  Large = "lg",
-  ExtraLarge = "xl",
+  Xxs = "xxs",
+  Xs = "xs",
+  Sm = "sm",
+  Md = "md",
+  Lg = "lg",
+  Xl = "xl",
 }
 
 export enum Rounding {
@@ -25,7 +26,7 @@ export default function RoundedImage({
   src,
   alt,
   className,
-  size = ImageSize.Large,
+  size = ImageSize.Lg,
   rounding = Rounding.Corners,
 }: RoundedImageProps) {
   return (
@@ -33,11 +34,12 @@ export default function RoundedImage({
       className={classNames(
         "outline outline-greyscale-50/20 outline-offset-0 object-cover",
         {
-          "outline-1 h-6 w-6": size === ImageSize.ExtraSmall,
-          "outline-2 h-6 w-6": size === ImageSize.Small,
-          "outline-2 h-8 w-8": size === ImageSize.Medium,
-          "outline-3 h-10 w-10": size === ImageSize.Large,
-          "outline-4 h-12 w-12": size === ImageSize.ExtraLarge,
+          "outline-1 h-5 w-5": size === ImageSize.Xxs,
+          "outline-1 h-6 w-6": size === ImageSize.Xs,
+          "outline-2 h-6 w-6": size === ImageSize.Sm,
+          "outline-2 h-8 w-8": size === ImageSize.Md,
+          "outline-3 h-10 w-10": size === ImageSize.Lg,
+          "outline-4 h-12 w-12": size === ImageSize.Xl,
           "rounded-xl": rounding === Rounding.Corners,
           "rounded-full": rounding === Rounding.Circle,
         },

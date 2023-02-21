@@ -13,7 +13,8 @@ select_permissions:
   - role: public
     permission:
       columns:
-        - id
-        - name
         - logo_url
+        - name
+        - url
+        - id
       filter: {}

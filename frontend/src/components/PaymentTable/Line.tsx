@@ -5,7 +5,7 @@ import RoundedImage, { Rounding } from "src/components/RoundedImage";
 import PayoutStatus from "../PayoutStatus";
 import { formatMoneyAmount } from "src/utils/money";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import GithubPRLink, { LinkColor } from "../PayoutTable/GithubPRLink";
+import GithubPRLink from "../PayoutTable/GithubPRLink";
 import useGithubUser from "src/hooks/useGithubUser";
 import { Field, SortingFields } from "src/hooks/usePaymentSorting";
 import { useEffect } from "react";
@@ -48,7 +48,7 @@ export default function PaymentLine({ payment, setSortingFields }: Props) {
             <RoundedImage src={recipient.avatarUrl} alt={recipient.login} rounding={Rounding.Circle} />
             <div className="flex flex-col truncate justify-center pb-0.5">
               <div className="font-medium text-sm text-greyscale-50 font-walsheim">{recipient.login}</div>
-              {paymentReason && <GithubPRLink link={paymentReason} linkColor={LinkColor.Grey}></GithubPRLink>}
+              {paymentReason && <GithubPRLink link={paymentReason}></GithubPRLink>}
             </div>
           </Cell>
           <Cell height={CellHeight.Medium}>

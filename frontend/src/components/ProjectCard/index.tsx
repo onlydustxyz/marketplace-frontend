@@ -16,6 +16,7 @@ import { buildLanguageString } from "src/utils/languages";
 import { formatMoneyAmount } from "src/utils/money";
 import { buildGithubLink } from "src/utils/stringUtils";
 import { useMediaQuery } from "usehooks-ts";
+import { ProjectLeadFragmentDoc, SponsorFragmentDoc } from "src/__generated/graphql";
 
 type ProjectCardProps = Project & {
   selectable?: boolean;
@@ -49,7 +50,7 @@ export default function ProjectCard({
         <div className="flex flex-col lg:flex-row w-full lg:divide-x divide-stone-100/8 gap-4 lg:gap-6 justify-items-center font-walsheim">
           <div className="lg:flex flex-col basis-1/3 min-w-0 gap-y-5">
             <div className="flex gap-4 items-start">
-              <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.ExtraLarge} className="mt-1" />
+              <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.Xl} className="mt-1" />
               <div className="min-w-0">
                 <div className="text-2xl font-medium font-belwe truncate">{name}</div>
                 {lead && (
@@ -115,6 +116,8 @@ export default function ProjectCard({
 }
 
 export const PROJECT_CARD_FRAGMENT = gql`
+  ${ProjectLeadFragmentDoc}
+  ${SponsorFragmentDoc}
   fragment ProjectCardFields on Projects {
     id
     budgetsAggregate {
@@ -136,8 +139,7 @@ export const PROJECT_CARD_FRAGMENT = gql`
     }
     projectLeads {
       user {
-        displayName
-        avatarUrl
+        ...ProjectLead
       }
     }
     githubRepo {
@@ -153,6 +155,11 @@ export const PROJECT_CARD_FRAGMENT = gql`
         logoUrl
       }
       languages
+    }
+    projectSponsors {
+      sponsor {
+        ...Sponsor
+      }
     }
   }
 `;

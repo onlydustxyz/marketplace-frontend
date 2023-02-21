@@ -1,71 +1,103 @@
-import ProjectLead, { ProjectLeadProps } from "src/components/LeadContributor";
+import { gql } from "@apollo/client";
+import Card from "src/components/Card";
+import ExternalLink from "src/components/ExternalLink";
+import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
-import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
-import StarLine from "src/icons/StarLine";
-import User3Line from "src/icons/User3Line";
 import { Contributor } from "src/types";
 import { formatMoneyAmount } from "src/utils/money";
+import { ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
+import ClickableUser from "./ClickableUser";
+import Section, { SectionIcon } from "./Section";
 
 interface OverviewPanelProps {
-  githubRepoInfo?: {
-    contributors?: Contributor[];
-  };
-  lead?: ProjectLeadProps | null;
+  contributors?: Contributor[];
+  leads?: ProjectLeadFragment[];
   totalSpentAmountInUsd?: number;
+  sponsors: SponsorFragment[];
+  telegramLink: string | null;
 }
 
-export default function OverviewPanel({ githubRepoInfo, lead, totalSpentAmountInUsd }: OverviewPanelProps) {
+export default function OverviewPanel({
+  contributors,
+  leads,
+  totalSpentAmountInUsd,
+  sponsors,
+  telegramLink,
+}: OverviewPanelProps) {
   const { T } = useIntl();
   return (
-    <div className="flex flex-col gap-3 divide-y divide-slate-600/40">
-      {lead && (
-        <div>
-          <div className="flex flex-row justify-between py-4 pb-1 px-5 gap-4">
-            <div className="flex flex-row whitespace-nowrap gap-1 items-center">
-              <StarLine className="p-px font-normal text-xl text-slate-400" />
-              <div className="flex text-md font-medium text-base text-slate-400 uppercase">
-                {T("project.details.overview.projectLeader")}
-              </div>
-            </div>
-            <ProjectLead {...lead} />
+    <Card className="h-fit p-0 basis-96 flex flex-col divide-y divide-greyscale-50/8" padded={false}>
+      {leads?.length && (
+        <Section icon={SectionIcon.Star} title={T("project.details.overview.projectLeader")}>
+          <div className="flex flex-row flex-wrap gap-3">
+            {leads.map(lead => (
+              <ClickableUser
+                key={lead.displayName}
+                name={lead.displayName}
+                logoUrl={lead.avatarUrl}
+                url={`https://github.com/${lead.displayName}`}
+              />
+            ))}
           </div>
-        </div>
+        </Section>
       )}
-      {githubRepoInfo?.contributors?.length !== undefined && (
-        <div className="flex flex-row justify-between py-4 pb-1 px-5">
-          <div className="flex flex-row gap-1 items-center">
-            <User3Line className="p-px font-normal text-xl text-slate-400" />
-            <div className="flex text-md font-medium text-base text-slate-400 uppercase">
-              {T("project.details.overview.contributors")}
-            </div>
-          </div>
-          <div className="flex flex-row items-center text-lg text-neutral-300 font-bold gap-2">
-            <div className="flex flex-row gap-px">
-              {githubRepoInfo.contributors.slice(0, 3).map(contributor => (
-                <img
+      {contributors?.length && (
+        <Section icon={SectionIcon.User} title={T("project.details.overview.contributors")}>
+          <div className="flex flex-row items-center text-sm text-greyscale-50 font-normal gap-2">
+            <div className="flex flex-row -space-x-1">
+              {contributors.slice(0, 3).map(contributor => (
+                <RoundedImage
                   key={contributor.login}
                   src={contributor.avatarUrl}
-                  className="w-3 md:w-4 h-3 md:h-4 rounded-full"
+                  alt={contributor.login}
+                  size={ImageSize.Xxs}
+                  rounding={Rounding.Circle}
                 />
               ))}
             </div>
-            <div>{githubRepoInfo.contributors.length}</div>
+            <div>{contributors.length}</div>
           </div>
-        </div>
+        </Section>
       )}
       {totalSpentAmountInUsd !== undefined && (
-        <div className="flex flex-row justify-between py-4 px-5">
-          <div className="flex flex-row gap-1 items-center">
-            <MoneyDollarCircleLine className="p-px font-normal text-xl text-slate-400" />
-            <div className="flex text-md font-medium text-base text-slate-400 uppercase">
-              {T("project.details.overview.totalSpentAmountInUsd")}
-            </div>
-          </div>
-          <div data-testid="money-granted-amount" className="flex text-lg text-neutral-300 font-bold">
+        <Section icon={SectionIcon.Funds} title={T("project.details.overview.totalSpentAmountInUsd")}>
+          <div data-testid="money-granted-amount" className="text-sm text-greyscale-50 font-normal">
             {formatMoneyAmount(totalSpentAmountInUsd)}
           </div>
-        </div>
+        </Section>
       )}
-    </div>
+      {sponsors.length > 0 && (
+        <Section icon={SectionIcon.Service} title={T("project.details.overview.sponsors")}>
+          <div className="flex flex-row flex-wrap gap-3">
+            {sponsors.map(sponsor => (
+              <ClickableUser key={sponsor.id} name={sponsor.name} logoUrl={sponsor.logoUrl} url={sponsor.url} />
+            ))}
+          </div>
+        </Section>
+      )}
+      {telegramLink && (
+        <Section icon={SectionIcon.Telegram} title={T("project.details.overview.telegram")}>
+          <div className="text-spacePurple-500 font-semibold text-sm">
+            <ExternalLink text={telegramLink} url={telegramLink} />
+          </div>
+        </Section>
+      )}
+    </Card>
   );
 }
+
+export const PROJECT_LEAD_FRAGMENT = gql`
+  fragment ProjectLead on users {
+    displayName
+    avatarUrl
+  }
+`;
+
+export const SPONSOR_FRAGMENT = gql`
+  fragment Sponsor on Sponsors {
+    id
+    name
+    logoUrl
+    url
+  }
+`;

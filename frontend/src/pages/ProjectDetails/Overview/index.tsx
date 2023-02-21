@@ -2,14 +2,16 @@ import Card from "src/components/Card";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useIntl } from "src/hooks/useIntl";
-import { ProjectLeadProps } from "src/components/LeadContributor";
 import { Contributor, LanguageMap } from "src/types";
+import OverviewPanel__deprecated from "./OverviewPanel__deprecated";
 import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
 import { ReactNode } from "react";
+import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
+import { ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 
 type OutletContext = {
-  lead: ProjectLeadProps | null;
+  leads?: ProjectLeadFragment[];
   totalSpentAmountInUsd: number;
   githubRepoInfo: {
     decodedReadme?: string;
@@ -18,12 +20,15 @@ type OutletContext = {
     contributors?: Contributor[];
     languages: LanguageMap;
   };
+  sponsors: SponsorFragment[];
+  telegramLink: string | null;
   children: ReactNode;
 };
 
 const Overview: React.FC = () => {
   const { T } = useIntl();
-  const { lead, totalSpentAmountInUsd, githubRepoInfo, children } = useOutletContext<OutletContext>();
+  const { leads, totalSpentAmountInUsd, githubRepoInfo, sponsors, telegramLink, children } =
+    useOutletContext<OutletContext>();
 
   return (
     <div className="flex flex-col gap-8 mt-3">
@@ -40,9 +45,15 @@ const Overview: React.FC = () => {
             </Card>
           </div>
         )}
-        <Card className="h-fit p-0 basis-96">
-          <OverviewPanel {...{ lead, githubRepoInfo, totalSpentAmountInUsd }} />
-        </Card>
+        {isFeatureEnabled(FeatureFlags.SHOW_SPONSORS) ? (
+          <OverviewPanel
+            {...{ leads, contributors: githubRepoInfo.contributors, totalSpentAmountInUsd, sponsors, telegramLink }}
+          />
+        ) : (
+          <Card className="h-fit p-0 basis-96">
+            <OverviewPanel__deprecated {...{ lead: leads?.at(0), githubRepoInfo, totalSpentAmountInUsd }} />
+          </Card>
+        )}
       </div>
     </div>
   );

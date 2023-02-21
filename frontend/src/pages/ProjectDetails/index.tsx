@@ -6,7 +6,7 @@ import { useAuth } from "src/hooks/useAuth";
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { Contributor, HasuraUserRole, LanguageMap } from "src/types";
 import { decodeBase64ToString } from "src/utils/stringUtils";
-import { GetProjectQuery } from "src/__generated/graphql";
+import { GetProjectQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { SessionMethod, useSessionDispatch, useSession } from "src/hooks/useSession";
 import View from "./View";
@@ -21,7 +21,7 @@ export interface ProjectDetails {
   name?: string;
   logoUrl: string;
   telegramLink?: string | null;
-  leads: { id: string; displayName: string; avatarUrl: string }[];
+  leads: ({ id: string } & ProjectLeadFragment)[];
   invitationId?: string;
   totalSpentAmountInUsd?: number;
   githubRepoInfo?: {
@@ -31,6 +31,7 @@ export interface ProjectDetails {
     contributors?: Contributor[];
     languages: LanguageMap;
   };
+  sponsors: SponsorFragment[];
 }
 
 const ProjectDetails: React.FC = () => {
@@ -84,7 +85,7 @@ const ProjectDetails: React.FC = () => {
   );
 };
 
-const projectFromQuery = (project: GetProjectQuery["projectsByPk"]) => ({
+const projectFromQuery = (project: GetProjectQuery["projectsByPk"]): ProjectDetails => ({
   id: project?.id,
   name: project?.projectDetails?.name,
   logoUrl: project?.projectDetails?.logoUrl || project?.githubRepo?.content?.logoUrl || onlyDustLogo,
@@ -100,6 +101,7 @@ const projectFromQuery = (project: GetProjectQuery["projectsByPk"]) => ({
     decodedReadme:
       project?.githubRepo?.content?.readme?.content && decodeBase64ToString(project?.githubRepo.content.readme.content),
   },
+  sponsors: project?.projectSponsors?.map(projectSponsor => projectSponsor.sponsor) || [],
 });
 
 export const GET_PROJECT_QUERY = gql`

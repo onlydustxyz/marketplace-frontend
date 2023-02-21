@@ -12,7 +12,7 @@ interface Props {
 export default function View({ currentProject, onInvitationAccepted }: Props) {
   const outletContext = {
     ...currentProject,
-    lead: currentProject.leads[0],
+    leads: currentProject.leads,
     projectId: currentProject.id,
     children: currentProject.invitationId && (
       <ProjectLeadInvitation
