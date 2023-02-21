@@ -1,10 +1,14 @@
 describe("As an admin, on retool, I", () => {
-    it("can create a project", () => {
+    beforeEach(() => {
+        cy.fixture("repos.json").as("repos");
+    });
+
+    it("can create a project", function () {
         const projectName = "Cypress test project";
-        const REPO_ID = 602953043;
+        const REPO = this.repos.A;
 
         cy.createGithubUser(12345).then((user) => {
-            cy.createProjectWithLeader(user, projectName, 500, REPO_ID)
+            cy.createProjectWithLeader(user, projectName, 500, REPO.id)
                 .then((projectId) => {
                     cy.graphql({ query: `{
                     projectsByPk(id: "${projectId}") {
@@ -25,10 +29,10 @@ describe("As an admin, on retool, I", () => {
                         .data("projectsByPk")
                         .should("deep.equal", {
                             githubRepo: {
-                                id: REPO_ID,
-                                owner: "od-mocks",
-                                name: "cool-repo-A",
-                                languages: { Rust: 512 }
+                                id: REPO.id,
+                                owner: REPO.owner,
+                                name: REPO.name,
+                                languages: REPO.languages
                             },
                             projectDetails: {
                                 name: projectName,
@@ -80,14 +84,14 @@ describe("As an admin, on retool, I", () => {
         });
     });
 
-    it("cannot create a project with an empty name", () => {
+    it("cannot create a project with an empty name", function () {
         cy.createProject("").asAdmin().errors();
     });
 
-    it("can update project details", () => {
+    it("can update project details", function () {
         cy.createGithubUser(12345).then((user) =>
             cy
-                .createProjectWithLeader(user, "Another project", 500)
+                .createProjectWithLeader(user, "some name")
                 .then((projectId) => {
                     cy.updateProject(projectId, "new name", "https://t.me/bar")
                         .asAdmin()
@@ -112,14 +116,13 @@ describe("As an admin, on retool, I", () => {
         );
     });
 
-    it("can link and unlink a github repository with a project", () => {
-        const FIRST_REPO_ID = 602953043;
-        const SECOND_REPO_ID = 602953640;
+    it("can link and unlink a github repository with a project", function () {
+        const REPOS = this.repos;
 
         cy.createGithubUser(12344556).then((user) =>
-            cy.createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
+            cy.createProjectWithLeader(user, "Another project", 500, REPOS.A.id)
                 .then((projectId) => {
-                    cy.linkGithubRepoWithProject(projectId, SECOND_REPO_ID)
+                    cy.linkGithubRepoWithProject(projectId, REPOS.B.id)
                         .asAdmin()
                         .data()
                         .then(() => {
@@ -138,20 +141,20 @@ describe("As an admin, on retool, I", () => {
                                 .its("githubRepos")
                                 .should("deep.equal", [
                                     {
-                                      githubRepoId: FIRST_REPO_ID,
+                                      githubRepoId: REPOS.A.id,
                                       githubRepoDetails: {
-                                        name: "cool-repo-A"
+                                        name: REPOS.A.name
                                       }
                                     },
                                     {
-                                      githubRepoId: SECOND_REPO_ID,
+                                      githubRepoId: REPOS.B.id,
                                       githubRepoDetails: {
-                                        name: "cool.repo.B"
+                                        name: REPOS.B.name
                                       }
                                     }
                                 ])
                                 .then(() => {
-                                    cy.unlinkGithubRepoFromProject(projectId, FIRST_REPO_ID)
+                                    cy.unlinkGithubRepoFromProject(projectId, REPOS.A.id)
                                         .asAdmin()
                                         .data()
                                         .then(() => {
@@ -170,9 +173,9 @@ describe("As an admin, on retool, I", () => {
                                                 .its("githubRepos")
                                                 .should("deep.equal", [
                                                     {
-                                                        githubRepoId: SECOND_REPO_ID,
+                                                        githubRepoId: REPOS.B.id,
                                                         githubRepoDetails: {
-                                                            name: "cool.repo.B"
+                                                            name: REPOS.B.name
                                                         }
                                                     }
                                                 ])
@@ -183,20 +186,19 @@ describe("As an admin, on retool, I", () => {
         );
     });
 
-    it("can't link a repository that doesn't exist with a project", () => {
-        const FIRST_REPO_ID = 602953043;
-        const UNEXISTING_REPO_ID = 2147466666;
+    it("can't link a repository that doesn't exist with a project", function () {
+        const REPOS = this.repos;
 
         cy.createGithubUser(1213243).then((user) =>
-            cy.createProjectWithLeader(user, "Another project", 500, FIRST_REPO_ID)
+            cy.createProjectWithLeader(user, "Another project", 500, REPOS.A.id)
                 .then((projectId) => {
-                    cy.linkGithubRepoWithProject(projectId, UNEXISTING_REPO_ID)
+                    cy.linkGithubRepoWithProject(projectId, REPOS.unexisting.id)
                         .asAdmin().errors().its(0).its("extensions.reason").should("equal", "Github repository 2147466666 does not exist");
                 })
         );
     });
 
-    it("can invite a user to lead a project", () => {
+    it("can invite a user to lead a project", function () {
         cy
             .createProject("Another project")
             .asAdmin()
@@ -232,12 +234,12 @@ describe("As an admin, on retool, I", () => {
     });
 
 
-    it("can remove a leader from a project", () => {
-        const STARKONQUEST_ID = 481932781;
+    it("can remove a leader from a project", function () {
+        const REPO = this.repos.A;
 
         cy.createGithubUser(12345454).then((user) =>
             cy
-                .createProjectWithLeader(user, "Another project", 500, STARKONQUEST_ID)
+                .createProjectWithLeader(user, "Without leader", 500, REPO.id)
                 .then((projectId) => {
                     cy.unassignProjectLead(projectId, user.id)
                         .asAdmin()
@@ -260,12 +262,12 @@ describe("As an admin, on retool, I", () => {
         );
     });
 
-    it("can cancel a payment request", () => {
-        const STARKONQUEST_ID = 481932781;
+    it("can cancel a payment request", function () {
+        const REPO = this.repos.A;
 
         cy.createGithubUser(12345454).then((leader) =>
             cy
-                .createProjectWithLeader(leader, "Another project", 500, STARKONQUEST_ID)
+                .createProjectWithLeader(leader, "Another project", 500, REPO.id)
                 .then((projectId) => {
                     cy.requestPayment(projectId, 500, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
                         .asRegisteredUser(leader)
@@ -284,12 +286,10 @@ describe("As an admin, on retool, I", () => {
         );
     });
 
-    it("can register an ethereum payment by eth address", () => {
-        const STARKONQUEST_ID = 481932781;
-
+    it("can register an ethereum payment by eth address", function () {
         cy.createGithubUser(12345454).then((leader) =>
             cy
-                .createProjectWithLeader(leader, "Another project", 500, STARKONQUEST_ID)
+                .createProjectWithLeader(leader, "Another project", 500)
                 .then((projectId) => {
                     cy.requestPayment(projectId, 500, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
                         .asRegisteredUser(leader)
@@ -305,12 +305,10 @@ describe("As an admin, on retool, I", () => {
         );
     });
 
-    it("can register an ethereum payment by eth name", () => {
-        const STARKONQUEST_ID = 481932781;
-
+    it("can register an ethereum payment by eth name", function () {
         cy.createGithubUser(12345454).then((leader) =>
             cy
-                .createProjectWithLeader(leader, "Another project", 500, STARKONQUEST_ID)
+                .createProjectWithLeader(leader, "Another project", 500)
                 .then((projectId) => {
                     cy.requestPayment(projectId, 500, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
                         .asRegisteredUser(leader)
@@ -326,12 +324,10 @@ describe("As an admin, on retool, I", () => {
         );
     });
 
-    it("can register a fiat payment", () => {
-        const STARKONQUEST_ID = 481932781;
-
+    it("can register a fiat payment", function () {
         cy.createGithubUser(12345454).then((leader) =>
             cy
-                .createProjectWithLeader(leader, "Another project", 500, STARKONQUEST_ID)
+                .createProjectWithLeader(leader, "Another project", 500)
                 .then((projectId) => {
                     cy.requestPayment(projectId, 500, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
                         .asRegisteredUser(leader)

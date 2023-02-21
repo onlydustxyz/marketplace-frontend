@@ -32,7 +32,7 @@ Cypress.Commands.add(
         user,
         projectName = "My Project",
         initialBudget = 500,
-        githubRepoId = 481932781,
+        githubRepoId = 0,
         telegramLink = "https://t.me/foo",
         logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4",
         shortDescription = "My project description",
@@ -48,10 +48,12 @@ Cypress.Commands.add(
                 .should("be.a", "string")
                 .then(invitationId => cy.acceptProjectLeaderInvitation(invitationId)).asRegisteredUser(user).then(() => projectId)
 
-                cy.linkGithubRepoWithProject(projectId, githubRepoId)
-                .asAdmin()
-                .data("linkGithubRepo")
-                .should("be.a", "string")
+                cy.fixture("repos.json").then(repos => {
+                    cy.linkGithubRepoWithProject(projectId, githubRepoId === 0 ? repos.A.id : githubRepoId)
+                    .asAdmin()
+                    .data("linkGithubRepo")
+                    .should("be.a", "string")
+                })
             })
 });
 

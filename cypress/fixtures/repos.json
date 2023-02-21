@@ -1,0 +1,36 @@
+{
+    "A": {
+        "id": 602953043,
+        "name": "cool-repo-A",
+        "owner": "od-mocks",
+        "languages": {
+            "Rust": 512
+        }
+    },
+    "B": {
+        "id": 602953640,
+        "name": "cool.repo.B",
+        "owner": "od-mocks",
+        "languages": {
+            "HTML": 158
+        }
+    },
+    "noReadme": {
+        "id": 584840242,
+        "name": "no-readme",
+        "owner": "od-mocks",
+        "languages": {}
+    },
+    "empty": {
+        "id": 584839416,
+        "name": "empty",
+        "owner": "od-mocks",
+        "languages": {}
+    },
+    "unexisting": {
+        "id": 2147466666,
+        "name": "",
+        "owner": "",
+        "languages": {}
+    }
+}
