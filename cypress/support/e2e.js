@@ -20,6 +20,7 @@ import '@cypress/code-coverage/support'
 import "./commands/common";
 import "./commands/payment";
 import "./commands/project";
+import "./commands/sponsor";
 import "./commands/user";
 
 // Alternatively you can use CommonJS syntax:
