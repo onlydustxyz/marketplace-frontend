@@ -26,7 +26,7 @@ export default function OverviewPanel({
 }: OverviewPanelProps) {
   const { T } = useIntl();
   return (
-    <Card className="h-fit p-0 basis-96 flex flex-col gap-3 divide-y divide-greyscale-50/8" padded={false}>
+    <Card className="h-fit p-0 basis-96 flex flex-col divide-y divide-greyscale-50/8" padded={false}>
       {leads?.length && (
         <Section icon={SectionIcon.Star} title={T("project.details.overview.projectLeader")}>
           <div className="flex flex-row flex-wrap gap-3">

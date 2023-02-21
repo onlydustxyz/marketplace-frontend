@@ -34,7 +34,7 @@ export default function RoundedImage({
       className={classNames(
         "outline outline-greyscale-50/20 outline-offset-0 object-cover",
         {
-          "outline-1 h-4 w-4": size === ImageSize.Xxs,
+          "outline-1 h-5 w-5": size === ImageSize.Xxs,
           "outline-1 h-6 w-6": size === ImageSize.Xs,
           "outline-2 h-6 w-6": size === ImageSize.Sm,
           "outline-2 h-8 w-8": size === ImageSize.Md,
