@@ -2,7 +2,6 @@ import { Listbox } from "@headlessui/react";
 import Sidebar from "src/components/Sidebar";
 import UpDownChevrons from "src/assets/icons/UpDownChevrons";
 import GithubLink from "src/components/GithubLink";
-import TelegramLink from "src/components/TelegramLink";
 import ShootingStar from "src/assets/icons/ShootingStar";
 import { RoutePaths } from "src/App";
 import BackLink from "src/components/BackLink";
@@ -123,7 +122,6 @@ export default function View({ expandable, currentProject, allProjects, availabl
           ))}
         </div>
         <div className="flex flex-row gap-2 pt-8">
-          {currentProject.telegramLink && <TelegramLink link={currentProject.telegramLink} />}
           {currentProject.githubRepoInfo?.owner && currentProject.githubRepoInfo.name && (
             <GithubLink
               link={buildGithubLink(currentProject.githubRepoInfo.owner, currentProject.githubRepoInfo.name)}
