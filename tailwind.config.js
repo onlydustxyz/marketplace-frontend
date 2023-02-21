@@ -139,19 +139,23 @@ module.exports = {
           left: "-1px",
         },
       };
+      const variantSizes = [2, 3, 4];
       addComponents({
         ".pseudo-outline": pseudoOutline,
-        ".pseudo-outline-2": {
-          ...pseudoOutline,
-          "&:before": {
-            ...pseudoOutline["&:before"],
-            "border-width": "2px",
-            top: "-2px",
-            right: "-2px",
-            bottom: "-2px",
-            left: "-2px",
-          },
-        },
+        ...variantSizes.reduce((acc, size) => {
+          acc[`.pseudo-outline-${size}`] = {
+            ...pseudoOutline,
+            "&:before": {
+              ...pseudoOutline["&:before"],
+              "border-width": `${size}px`,
+              top: `-${size}px`,
+              right: `-${size}px`,
+              bottom: `-${size}px`,
+              left: `-${size}px`,
+            },
+          };
+          return acc;
+        }, {}),
       });
     }),
   ],

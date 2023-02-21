@@ -31,21 +31,17 @@ export default function RoundedImage({
   return (
     <div
       className={classNames(
-        "relative before:absolute before:content-['']",
         "before:border-greyscale-50/20",
         "h-fit w-fit",
         {
-          "before:-inset-px before:border": size === ImageSize.ExtraSmall,
-          "before:-inset-0.5 before:border-2": size === ImageSize.Small || size === ImageSize.Medium,
-          "before:-inset-[3px] before:border-3": size === ImageSize.Large,
-          "before:-inset-1 before:border-4": size === ImageSize.ExtraLarge,
+          "pseudo-outline": size === ImageSize.ExtraSmall,
+          "pseudo-outline-2": size === ImageSize.Small || size === ImageSize.Medium,
+          "pseudo-outline-3": size === ImageSize.Large,
+          "pseudo-outline-4": size === ImageSize.ExtraLarge,
         },
         {
-          "before:rounded-[14px]":
-            (size === ImageSize.Small || size === ImageSize.Medium) && rounding === Rounding.Corners,
-          "before:rounded-[15px]": size === ImageSize.Large && rounding === Rounding.Corners,
-          "before:rounded-2xl": size === ImageSize.ExtraLarge && rounding === Rounding.Corners,
-          "before:rounded-full": rounding === Rounding.Circle,
+          "rounded-xl": rounding === Rounding.Corners,
+          "rounded-full": rounding === Rounding.Circle,
         },
         className
       )}

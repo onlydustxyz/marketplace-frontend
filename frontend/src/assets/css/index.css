@@ -72,15 +72,42 @@
   }
 
   .rounded-lg.pseudo-outline::before {
-    border-radius: 10px;
-  }
-  .rounded-2xl.pseudo-outline::before {
-    border-radius: 18px;
-  }
-  .rounded-lg.pseudo-outline-2::before {
     border-radius: 9px;
   }
-  .rounded-2xl.pseudo-outline-2::before {
+  .rounded-xl.pseudo-outline::before {
+    border-radius: 13px;
+  }
+  .rounded-2xl.pseudo-outline::before {
     border-radius: 17px;
+  }
+  .rounded-lg.pseudo-outline-2::before {
+    border-radius: 10px;
+  }
+  .rounded-xl.pseudo-outline-2::before {
+    border-radius: 14px;
+  }
+  .rounded-2xl.pseudo-outline-2::before {
+    border-radius: 18px;
+  }
+  .rounded-lg.pseudo-outline-3::before {
+    border-radius: 11px;
+  }
+  .rounded-xl.pseudo-outline-3::before {
+    border-radius: 15px;
+  }
+  .rounded-2xl.pseudo-outline-3::before {
+    border-radius: 19px;
+  }
+  .rounded-lg.pseudo-outline-4::before {
+    border-radius: 12px;
+  }
+  .rounded-xl.pseudo-outline-4::before {
+    border-radius: 16px;
+  }
+  .rounded-2xl.pseudo-outline-4::before {
+    border-radius: 20px;
+  }
+  .rounded-full[class^='pseudo-outline']::before, .rounded-full[class*=' pseudo-outline']::before {
+    border-radius: 9999px;
   }
 }
