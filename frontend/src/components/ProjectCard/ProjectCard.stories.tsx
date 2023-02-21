@@ -56,6 +56,7 @@ const props = (args: { name: string; shortDescription: string }) => ({
     },
   },
   pendingInvitations: [{ id: "croute" }],
+  projectSponsors: [],
 });
 
 const args = {

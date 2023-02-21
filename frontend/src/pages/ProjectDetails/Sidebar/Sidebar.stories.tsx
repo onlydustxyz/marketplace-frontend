@@ -33,6 +33,7 @@ const currentProject = {
   ],
   nbContributors: 4,
   withInvitation: false,
+  sponsors: [],
 };
 const otherProject = {
   id: "other-project-id",
