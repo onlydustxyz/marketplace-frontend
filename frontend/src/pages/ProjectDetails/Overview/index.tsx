@@ -45,15 +45,15 @@ const Overview: React.FC = () => {
             </Card>
           </div>
         )}
-        <Card className="h-fit p-0 basis-96" padded={!isFeatureEnabled(FeatureFlags.SHOW_SPONSORS)}>
-          {isFeatureEnabled(FeatureFlags.SHOW_SPONSORS) ? (
-            <OverviewPanel
-              {...{ leads, contributors: githubRepoInfo.contributors, totalSpentAmountInUsd, sponsors, telegramLink }}
-            />
-          ) : (
+        {isFeatureEnabled(FeatureFlags.SHOW_SPONSORS) ? (
+          <OverviewPanel
+            {...{ leads, contributors: githubRepoInfo.contributors, totalSpentAmountInUsd, sponsors, telegramLink }}
+          />
+        ) : (
+          <Card className="h-fit p-0 basis-96">
             <OverviewPanel__deprecated {...{ lead: leads?.at(0), githubRepoInfo, totalSpentAmountInUsd }} />
-          )}
-        </Card>
+          </Card>
+        )}
       </div>
     </div>
   );
