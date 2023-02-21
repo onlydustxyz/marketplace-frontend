@@ -292,4 +292,28 @@ impl Mutation {
 
 		Ok(true)
 	}
+
+	pub fn add_sponsor_to_project(
+		context: &Context,
+		project_id: Uuid,
+		sponsor_id: Uuid,
+	) -> Result<Uuid> {
+		context
+			.add_sponsor_usecase
+			.add_sponsor(&project_id.into(), &sponsor_id.into())?;
+
+		Ok(project_id)
+	}
+
+	pub fn remove_sponsor_from_project(
+		context: &Context,
+		project_id: Uuid,
+		sponsor_id: Uuid,
+	) -> Result<Uuid> {
+		context
+			.remove_sponsor_usecase
+			.remove_sponsor(&project_id.into(), &sponsor_id.into())?;
+
+		Ok(project_id)
+	}
 }
