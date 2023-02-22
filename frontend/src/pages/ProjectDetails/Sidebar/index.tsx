@@ -60,7 +60,6 @@ export default function ProjectsSidebar({ currentProject }: Props) {
       availableTabs={availableTabs}
       currentProject={currentProject}
       allProjects={sortedProjects}
-      projectLead={isProjectMine(currentProject)}
       expandable={isProjectMine(currentProject) && sortedProjects.length > 1}
     />
   );
