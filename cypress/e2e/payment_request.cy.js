@@ -23,9 +23,9 @@ describe("As a project lead, I", () => {
     cy.get("#remainingBudget").should("have.text", "$1,000");
 
     cy.contains("New payment").click();
-    cy.get("[name=contributorHandle").type("AnthonyBuisset");
-    cy.get("[name=contributorHandle").blur();
-    cy.get("[name=linkToIssue").type("https://github.com/od-mocks/cool-repo-A/pull/2");
+    cy.get("[name=contributorHandle]").type("AnthonyBuisset");
+    cy.get("[name=contributorHandle]").blur();
+    cy.get("[name=linkToIssue]").type("https://github.com/od-mocks/cool-repo-A/pull/2");
     cy.wait(WAIT_LONG);
     cy.contains("Confirm payment").click();
 
