@@ -19,7 +19,6 @@ interface Props {
   currentProject: ProjectDetails;
   allProjects: SidebarProjectDetails[];
   availableTabs: ProjectDetailsTab[];
-  projectLead: boolean;
 }
 
 interface SidebarProjectDetails {
@@ -30,7 +29,7 @@ interface SidebarProjectDetails {
   withInvitation: boolean;
 }
 
-export default function View({ expandable, currentProject, allProjects, availableTabs, projectLead }: Props) {
+export default function View({ expandable, currentProject, allProjects, availableTabs }: Props) {
   const { T } = useIntl();
   const navigate = useNavigate();
 

@@ -3,11 +3,9 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useIntl } from "src/hooks/useIntl";
 import { Contributor, LanguageMap } from "src/types";
-import OverviewPanel__deprecated from "./OverviewPanel__deprecated";
 import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
 import { ReactNode } from "react";
-import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 import { ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 
 type OutletContext = {
@@ -45,15 +43,9 @@ const Overview: React.FC = () => {
             </Card>
           </div>
         )}
-        {isFeatureEnabled(FeatureFlags.SHOW_SPONSORS) ? (
-          <OverviewPanel
-            {...{ leads, contributors: githubRepoInfo.contributors, totalSpentAmountInUsd, sponsors, telegramLink }}
-          />
-        ) : (
-          <Card className="h-fit p-0 basis-96">
-            <OverviewPanel__deprecated {...{ lead: leads?.at(0), githubRepoInfo, totalSpentAmountInUsd }} />
-          </Card>
-        )}
+        <OverviewPanel
+          {...{ leads, contributors: githubRepoInfo.contributors, totalSpentAmountInUsd, sponsors, telegramLink }}
+        />
       </div>
     </div>
   );

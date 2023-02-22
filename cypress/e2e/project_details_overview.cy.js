@@ -63,9 +63,8 @@ describe("A project", () => {
     cy.reload();
     cy.get('[data-testid="money-granted-amount"]').should("have.text", "$200");
 
-    // TODO: Uncomment when SHOW_SPONSORS feature flag is cleaned-up
-    // cy.get('[data-testid="sponsors"]').should("have.text", "Starknet Foundation");
-    // cy.get('[data-testid="telegram-link"]').should("have.text", "https://t.me/foo");
+    cy.get('[data-testid="sponsors"]').should("have.text", "Starknet Foundation");
+    cy.get('[data-testid="telegram-link"]').should("have.text", "https://t.me/foo");
   });
 });
 

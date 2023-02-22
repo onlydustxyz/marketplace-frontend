@@ -35,7 +35,7 @@ export default function RoundedImage({
         "before:border-greyscale-50/20",
         "h-fit w-fit",
         {
-          "pseudo-outline": size === ImageSize.Xs,
+          "pseudo-outline": size === ImageSize.Xs || size === ImageSize.Xxs,
           "pseudo-outline-2": size === ImageSize.Sm || size === ImageSize.Md,
           "pseudo-outline-3": size === ImageSize.Lg,
           "pseudo-outline-4": size === ImageSize.Xl,

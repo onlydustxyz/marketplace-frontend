@@ -1,29 +1,15 @@
-import { ComponentStory } from "@storybook/react";
-import { JSXElementConstructor } from "react";
-import { responsiveChromatic } from "src/test/utils";
-import { withRouter } from "storybook-addon-react-router-v6";
-
+import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import ProjectCard from ".";
+import { screen } from "@testing-library/react";
+import { Project } from "src/pages/Projects";
 
-export default {
-  title: "ProjectCard",
-  parameters: responsiveChromatic,
-  decorators: [withRouter],
-};
-
-const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
-  <ProjectCard {...props(args)} pendingInvitations={args.withInvitation ? props(args).pendingInvitations : []} />
-);
-
-export const Default = Template.bind({});
-
-const props = (args: { name: string; shortDescription: string }) => ({
+const PROJECT: Project = {
   id: 123,
   projectDetails: {
     projectId: "123",
-    name: args.name,
+    name: "ZeroSync",
     telegramLink: "https://app.onlydust.xyz/projects/92f022a9-dbd8-446f-a2a5-b161ccb4541c",
-    shortDescription: args.shortDescription,
+    shortDescription: "A short description",
     logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
   },
   projectLeads: [
@@ -73,28 +59,28 @@ const props = (args: { name: string; shortDescription: string }) => ({
         url: "https://ethereum.org/en/foundation/",
       },
     },
-    {
-      sponsor: {
-        id: 3,
-        name: "Theodo",
-        logoUrl: "https://upload.wikimedia.org/wikipedia/fr/thumb/d/dd/Logo-theodo.png/280px-Logo-theodo.png",
-        url: "https://www.theodo.fr/",
-      },
-    },
   ],
+};
+
+describe("'ProjectCard' component", () => {
+  it("should display the sponsors logos", () => {
+    renderWithIntl(<ProjectCard {...PROJECT} />, {
+      wrapper: MemoryRouterProviderFactory({}),
+    });
+
+    const sponsorsLogo = screen.getByTestId(`sponsor-list-${PROJECT.id}`).getElementsByTagName("img");
+    expect(sponsorsLogo).toHaveLength(2);
+  });
+
+  it("should display at most 3 sponsors logos", () => {
+    renderWithIntl(
+      <ProjectCard {...PROJECT} projectSponsors={[...PROJECT.projectSponsors, ...PROJECT.projectSponsors]} />,
+      {
+        wrapper: MemoryRouterProviderFactory({}),
+      }
+    );
+
+    const sponsorsLogo = screen.getByTestId(`sponsor-list-${PROJECT.id}`).getElementsByTagName("img");
+    expect(sponsorsLogo).toHaveLength(3);
+  });
 });
-
-const args = {
-  name: "ZeroSync",
-  shortDescription:
-    "Don't trust. Verify. ZeroSync allows to verify Bitcoin's chain state in an instant. No need to download hundreds of gigabytes of blocks. A compact cryptographic proof suffices to validate the entire history of transactions and everyone's current balances.",
-  withInvitation: false,
-};
-
-Default.args = args;
-
-Default.parameters = {
-  backgrounds: {
-    default: "space",
-  },
-};
