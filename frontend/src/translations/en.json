@@ -42,14 +42,14 @@
     "onlyDustTitle": "OnlyDust title"
   },
   "navbar": {
-    "logout": "Logout",
-    "payments": "Payments",
-    "projects": "Projects",
-    "signInWithGithub": "Connect",
     "feedback": {
       "button": "Feedback",
       "popupTitle": "Feedback form"
-    }
+    },
+    "logout": "Logout",
+    "payments": "Payments",
+    "projects": "Projects",
+    "signInWithGithub": "Connect"
   },
   "payment": {
     "form": {
@@ -103,8 +103,8 @@
       "amount": "Amount",
       "contribution": "Contribution",
       "date": "Date",
-      "status": "Status",
-      "githubLink": "#__pullRequestNumber__ · Github"
+      "githubLink": "#__pullRequestNumber__ · Github",
+      "status": "Status"
     },
     "tableFallback": {
       "browseProjects": "Browse projects",
@@ -192,6 +192,7 @@
         "send": "Send your first one!"
       }
     },
+    "fundedBy": "Funded by __topSponsorsString__",
     "ledBy": "Led by",
     "projectLeadInvitation": {
       "prompt": "You’ve been promoted to Project Lead",
