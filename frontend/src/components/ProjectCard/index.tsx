@@ -97,7 +97,6 @@ export default function ProjectCard({
                           {T("project.fundedBy", {
                             topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
                           })}
-                          `
                         </div>
                       </Tooltip>
                       <div className="flex flex-row -space-x-1">
