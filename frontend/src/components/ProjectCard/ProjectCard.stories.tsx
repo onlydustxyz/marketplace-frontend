@@ -56,7 +56,24 @@ const props = (args: { name: string; shortDescription: string }) => ({
     },
   },
   pendingInvitations: [{ id: "croute" }],
-  projectSponsors: [],
+  projectSponsors: [
+    {
+      sponsor: {
+        id: 1,
+        name: "Starknet",
+        logoUrl: "https://starkware.co/wp-content/uploads/2021/07/Group-177.svg",
+        url: "https://starkware.co/starknet/",
+      },
+    },
+    {
+      sponsor: {
+        id: 2,
+        name: "Ethereum Foundation",
+        logoUrl: "https://logotyp.us/files/ethereum-foundation.svg",
+        url: "https://ethereum.org/en/foundation/",
+      },
+    },
+  ],
 });
 
 const args = {
