@@ -1,6 +1,5 @@
 import { PropsWithChildren } from "react";
 import LoaderFallback from "src/components/Loader";
-import ErrorFallback from "../ErrorFallback";
 
 type QueryResult<T, E> = {
   data?: T;
@@ -20,7 +19,6 @@ const QueryWrapper = <T, E>({ query, children }: PropsType<T, E>) => {
     <>
       {loading && <LoaderFallback />}
       {data && children}
-      {error && <ErrorFallback />}
     </>
   );
 };
