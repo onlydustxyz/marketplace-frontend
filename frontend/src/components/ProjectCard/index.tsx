@@ -93,9 +93,12 @@ export default function ProjectCard({
                   {projectSponsors?.length ? (
                     <>
                       <Tooltip anchorId={`sponsor-list-${id}`} position={TooltipPosition.Top}>
-                        <div className="w-fit">{`Funded by ${topSponsors
-                          .map(sponsor => sponsor.name)
-                          .join(", ")}`}</div>
+                        <div className="w-fit">
+                          {T("project.fundedBy", {
+                            topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
+                          })}
+                          `
+                        </div>
                       </Tooltip>
                       <div className="flex flex-row -space-x-1">
                         {topSponsors.map(sponsor => (
@@ -112,7 +115,9 @@ export default function ProjectCard({
                   ) : (
                     <FundsLine />
                   )}
-                  {T("project.amountGranted", { amount: formatMoneyAmount(totalSpentAmountInUsd) })}
+                  {isXl
+                    ? T("project.amountGranted", { amount: formatMoneyAmount(totalSpentAmountInUsd) })
+                    : formatMoneyAmount(totalSpentAmountInUsd)}
                 </div>
               )}
             </div>
