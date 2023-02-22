@@ -73,6 +73,14 @@ const props = (args: { name: string; shortDescription: string }) => ({
         url: "https://ethereum.org/en/foundation/",
       },
     },
+    {
+      sponsor: {
+        id: 3,
+        name: "Theodo",
+        logoUrl: "https://upload.wikimedia.org/wikipedia/fr/thumb/d/dd/Logo-theodo.png/280px-Logo-theodo.png",
+        url: "https://www.theodo.fr/",
+      },
+    },
   ],
 });
 
