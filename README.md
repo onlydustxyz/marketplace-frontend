@@ -247,3 +247,7 @@ yarn preview
 # 📄 License
 
 **marketplace** is released under [MIT](LICENSE).
+
+# Acknowledgements
+
+This project is tested with BrowserStack.
