@@ -88,6 +88,7 @@ export default function ProjectCard({
                 <div
                   className="h-6 flex flex-row border border-neutral-600 w-fit px-2 py-1.5 rounded-2xl gap-1 text-xs items-center"
                   id={`sponsor-list-${id}`}
+                  data-testid={`sponsor-list-${id}`}
                 >
                   {projectSponsors?.length ? (
                     <>
