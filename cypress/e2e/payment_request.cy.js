@@ -5,7 +5,7 @@ describe("As a project lead, I", () => {
     cy.createGithubUser(98735558)
       .as("user")
       .then(user => {
-        cy.createProjectWithLeader(user, "Project with budget", 1000, 493591124).as("projectId");
+        cy.createProjectWithLeader(user, "Project with budget", 1000).as("projectId");
         cy.signinUser(user)
           .then(user => JSON.stringify(user.session))
           .as("token");
@@ -23,9 +23,9 @@ describe("As a project lead, I", () => {
     cy.get("#remainingBudget").should("have.text", "$1,000");
 
     cy.contains("New payment").click();
-    cy.get("[name=contributorHandle").type("AnthonyBuisset");
-    cy.get("[name=contributorHandle").blur();
-    cy.get("[name=linkToIssue").type("https://github.com/onlydustxyz/starkonquest/pull/68");
+    cy.get("[name=contributorHandle]").type("AnthonyBuisset");
+    cy.get("[name=contributorHandle]").blur();
+    cy.get("[name=linkToIssue]").type("https://github.com/od-mocks/cool-repo-A/pull/2");
     cy.wait(WAIT_LONG);
     cy.contains("Confirm payment").click();
 

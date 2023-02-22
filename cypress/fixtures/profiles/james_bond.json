@@ -1,10 +1,10 @@
 {
-    "firstname": "James",
-    "lastname": "Bond",
-    "email": "james.bond@mi6.com",
-    "address": "007 Big Ben Street",
-    "postCode": "007GB",
-    "city": "London",
-    "country": "GB",
-    "ethWalletAddress": "0x4675c7e5baafbffbca748158becba61ef3b0a263"
+  "firstname": "James",
+  "lastname": "Bond",
+  "email": "james.bond@mi6.com",
+  "address": "007 Big Ben Street",
+  "postCode": "007GB",
+  "city": "London",
+  "country": "GB",
+  "ethWalletAddress": "0x4675c7e5baafbffbca748158becba61ef3b0a263"
 }

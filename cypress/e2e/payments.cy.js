@@ -4,9 +4,9 @@ const CONTRIBUTOR_GITHUB_ID = 373646343;
 describe("As a contributor, I", () => {
   beforeEach(function () {
     cy.createGithubUser(PROJECT_LEAD_GITHUB_ID).then(user => {
-      cy.createProjectWithLeader(user, "Project with budget", 1000, 493591124).then(projectId => {
+      cy.createProjectWithLeader(user, "Project with budget", 1000).then(projectId => {
         cy.requestPayment(projectId, 200, CONTRIBUTOR_GITHUB_ID, {
-          workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"],
+          workItems: ["https://github.com/od-mocks/cool-repo-A/pull/3"],
         })
           .asRegisteredUser(user)
           .data();
