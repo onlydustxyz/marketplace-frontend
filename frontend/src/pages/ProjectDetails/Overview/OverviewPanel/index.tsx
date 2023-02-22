@@ -27,7 +27,7 @@ export default function OverviewPanel({
   const { T } = useIntl();
   return (
     <Card className="h-fit p-0 basis-96 flex flex-col divide-y divide-greyscale-50/8" padded={false}>
-      {leads?.length && (
+      {leads && leads.length > 0 && (
         <Section icon={SectionIcon.Star} title={T("project.details.overview.projectLeader")}>
           <div className="flex flex-row flex-wrap gap-3">
             {leads.map(lead => (
@@ -41,7 +41,7 @@ export default function OverviewPanel({
           </div>
         </Section>
       )}
-      {contributors?.length && (
+      {contributors && contributors.length > 0 && (
         <Section icon={SectionIcon.User} title={T("project.details.overview.contributors")}>
           <div className="flex flex-row items-center text-sm text-greyscale-50 font-normal gap-2">
             <div className="flex flex-row -space-x-1">
