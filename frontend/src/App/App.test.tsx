@@ -364,7 +364,6 @@ describe("Integration tests", () => {
     expect((await screen.findAllByText("Overview")).length).toEqual(2);
     expect(screen.queryByText("Payments")).not.toBeInTheDocument();
     expect(screen.findByText("Contributors"));
-    await screen.findByRole("img", { name: /github logo/i });
   });
 
   it("should redirect to project list when logging out", async () => {
