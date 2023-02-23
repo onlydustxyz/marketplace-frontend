@@ -3522,12 +3522,14 @@ export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ProfileQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', userId: any, identity: any | null, email: string | null, location: any | null, payoutSettings: any | null }> };
 
+export type GithubRepoContributorsFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } } | null };
+
 export type GetProjectContributorsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string } | null, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } } | null } | null };
+export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } } | null }> } | null };
 
 export type GetProjectRemainingBudgetQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -3589,25 +3591,6 @@ export type GetAllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllTechnologiesQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, languages: any | null } | null }> };
 
-export const ContributorsTableFieldsFragmentDoc = gql`
-    fragment ContributorsTableFields on User {
-  id
-  login
-  avatarUrl
-  user {
-    userId
-  }
-  paymentRequests {
-    id
-    budget {
-      id
-      projectId
-    }
-    amountInUsd
-    reason
-  }
-}
-    `;
 export const ProjectLeadFragmentDoc = gql`
     fragment ProjectLead on users {
   displayName
@@ -3697,6 +3680,39 @@ export const PaymentRequestFragmentDoc = gql`
   requestedAt
 }
     `;
+export const ContributorsTableFieldsFragmentDoc = gql`
+    fragment ContributorsTableFields on User {
+  id
+  login
+  avatarUrl
+  user {
+    userId
+  }
+  paymentRequests {
+    id
+    budget {
+      id
+      projectId
+    }
+    amountInUsd
+    reason
+  }
+}
+    `;
+export const GithubRepoContributorsFieldsFragmentDoc = gql`
+    fragment GithubRepoContributorsFields on ProjectGithubRepos {
+  githubRepoId
+  githubRepoDetails {
+    id
+    content {
+      id
+      contributors {
+        ...ContributorsTableFields
+      }
+    }
+  }
+}
+    ${ContributorsTableFieldsFragmentDoc}`;
 export const UserIdentityDocument = gql`
     query UserIdentity($userId: uuid!) {
   userInfo(where: {userId: {_eq: $userId}}) {
@@ -4190,18 +4206,12 @@ export const GetProjectContributorsDocument = gql`
       projectId
       name
     }
-    githubRepo {
-      id
-      content {
-        id
-        contributors {
-          ...ContributorsTableFields
-        }
-      }
+    githubRepos {
+      ...GithubRepoContributorsFields
     }
   }
 }
-    ${ContributorsTableFieldsFragmentDoc}`;
+    ${GithubRepoContributorsFieldsFragmentDoc}`;
 
 /**
  * __useGetProjectContributorsQuery__
