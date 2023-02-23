@@ -7,19 +7,23 @@ describe("As a simple user, I", () => {
 
   before(() => {
     cy.createGithubUser(543221).then(user =>
-      cy.createProjectWithLeader(user, "Project with budget", 1000).then($projectId => {
-        cy.getProjectBudget($projectId)
-          .asRegisteredUser(user)
-          .data("projectsByPk.budgets")
-          .its(0)
-          .its("id")
-          .should("be.a", "string")
-          .then($budgetId => {
-            globalProjectId = $projectId;
-            globalBudgetId = $budgetId;
-            globalLeader = user;
-          });
-      })
+      cy
+        .createProject("Project with budget")
+        .withLeader(user)
+        .withRepo()
+        .then($projectId => {
+          cy.getProjectBudget($projectId)
+            .asRegisteredUser(user)
+            .data("projectsByPk.budgets")
+            .its(0)
+            .its("id")
+            .should("be.a", "string")
+            .then($budgetId => {
+              globalProjectId = $projectId;
+              globalBudgetId = $budgetId;
+              globalLeader = user;
+            });
+        })
     );
   });
 
@@ -152,9 +156,11 @@ describe("As a simple user, I", () => {
     const REPOS = this.repos;
 
     cy.createGithubUser(28464353).then(user => {
-      cy.createProjectWithLeader(user, "Project with budget", 1000, REPOS.empty.id).then(projectId => {
-        cy.graphql({
-          query: `{
+      cy.createProject("Project with budget")
+        .withRepo(REPOS.empty.id)
+        .then(projectId => {
+          cy.graphql({
+            query: `{
                 projectsByPk(id: "${projectId}") {
                   githubRepo {
                     id
@@ -178,19 +184,19 @@ describe("As a simple user, I", () => {
                   }
                 }
               }`,
-        })
-          .asRegisteredUser(user)
-          .data("projectsByPk.githubRepo")
-          .then(repo => {
-            expect(repo.id).equal(REPOS.empty.id);
-            expect(repo.name).equal(REPOS.empty.name);
-            expect(repo.owner).equal(REPOS.empty.owner);
-            expect(repo.content.contributors).to.be.empty;
-            expect(repo.content.readme).to.null;
-            expect(repo.content.logoUrl).to.be.a("string");
-            expect(repo.pullRequests).to.be.empty;
-          });
-      });
+          })
+            .asRegisteredUser(user)
+            .data("projectsByPk.githubRepo")
+            .then(repo => {
+              expect(repo.id).equal(REPOS.empty.id);
+              expect(repo.name).equal(REPOS.empty.name);
+              expect(repo.owner).equal(REPOS.empty.owner);
+              expect(repo.content.contributors).to.be.empty;
+              expect(repo.content.readme).to.null;
+              expect(repo.content.logoUrl).to.be.a("string");
+              expect(repo.pullRequests).to.be.empty;
+            });
+        });
     });
   });
 

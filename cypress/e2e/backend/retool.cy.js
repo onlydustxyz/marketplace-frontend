@@ -8,9 +8,12 @@ describe("As an admin, on retool, I", () => {
     const REPO = this.repos.A;
 
     cy.createGithubUser(12345).then(user => {
-      cy.createProjectWithLeader(user, projectName, 500, REPO.id).then(projectId => {
-        cy.graphql({
-          query: `{
+      cy.createProject(projectName, 500)
+        .withLeader(user)
+        .withRepo(REPO.id)
+        .then(projectId => {
+          cy.graphql({
+            query: `{
                     projectsByPk(id: "${projectId}") {
                       githubRepo {
                         id
@@ -25,68 +28,68 @@ describe("As an admin, on retool, I", () => {
                       }
                     }
                   }`,
-        })
-          .asAnonymous()
-          .data("projectsByPk")
-          .should("deep.equal", {
-            githubRepo: {
-              id: REPO.id,
-              owner: REPO.owner,
-              name: REPO.name,
-              languages: REPO.languages,
-            },
-            projectDetails: {
-              name: projectName,
-              shortDescription: "My project description",
-              longDescription: "This project certainly aim to do stuff",
-            },
-          });
+          })
+            .asAnonymous()
+            .data("projectsByPk")
+            .should("deep.equal", {
+              githubRepo: {
+                id: REPO.id,
+                owner: REPO.owner,
+                name: REPO.name,
+                languages: REPO.languages,
+              },
+              projectDetails: {
+                name: projectName,
+                shortDescription: "My project description",
+                longDescription: "This project certainly aim to do stuff",
+              },
+            });
 
-        cy.graphql({
-          query: `{
+          cy.graphql({
+            query: `{
                 projectsByPk(id: "${projectId}") {
                     projectLeads {
                     userId
                     }
                 }
             }`,
-        })
-          .asAnonymous()
-          .data("projectsByPk.projectLeads")
-          .its(0)
-          .its("userId")
-          .should("equal", user.id);
+          })
+            .asAnonymous()
+            .data("projectsByPk.projectLeads")
+            .its(0)
+            .its("userId")
+            .should("equal", user.id);
 
-        cy.graphql({
-          query: `{
+          cy.graphql({
+            query: `{
                 projectsByPk(id: "${projectId}") {
                     projectDetails {
                         logoUrl
                     }
                 }
             }`,
-        })
-          .asAnonymous()
-          .data("projectsByPk.projectDetails.logoUrl")
-          .should("be.a", "string");
+          })
+            .asAnonymous()
+            .data("projectsByPk.projectDetails.logoUrl")
+            .should("be.a", "string");
 
-        cy.graphql({
-          query: `{
+          cy.graphql({
+            query: `{
                 projects(where: {id: {_eq: "${projectId}"}}) {
                     projectDetails {
                         name
                     }
                 }
             }`,
-        })
-          .asAnonymous()
-          .its("body")
-          .should("deep.equal", {
-            data: {
-              projects: [{ projectDetails: { name: projectName } }],
-            },
-          });
-      });
+          })
+            .asAnonymous()
+            .its("body")
+            .should("deep.equal", {
+              data: {
+                projects: [{ projectDetails: { name: projectName } }],
+              },
+            });
+        });
     });
   });
 
@@ -96,7 +99,7 @@ describe("As an admin, on retool, I", () => {
 
   it("can update project details", function () {
     cy.createGithubUser(12345).then(user =>
-      cy.createProjectWithLeader(user, "some name").then(projectId => {
+      cy.createProject("some name").then(projectId => {
         cy.updateProject(projectId, "new name", "https://t.me/bar")
           .asAdmin()
           .data()
@@ -127,13 +130,16 @@ describe("As an admin, on retool, I", () => {
     const REPOS = this.repos;
 
     cy.createGithubUser(12344556).then(user =>
-      cy.createProjectWithLeader(user, "Another project", 500, REPOS.A.id).then(projectId => {
-        cy.linkGithubRepoWithProject(projectId, REPOS.B.id)
-          .asAdmin()
-          .data()
-          .then(() => {
-            cy.graphql({
-              query: `{
+      cy
+        .createProject("Another project", 500)
+        .withRepo(REPOS.A.id)
+        .then(projectId => {
+          cy.linkGithubRepoWithProject(projectId, REPOS.B.id)
+            .asAdmin()
+            .data()
+            .then(() => {
+              cy.graphql({
+                query: `{
                     projectsByPk(id: "${projectId}") {
                         githubRepos(orderBy: {githubRepoId: ASC}) {
                             githubRepoId
@@ -143,31 +149,31 @@ describe("As an admin, on retool, I", () => {
                         }
                     }
                 }`,
-            })
-              .asAnonymous()
-              .data("projectsByPk")
-              .its("githubRepos")
-              .should("deep.equal", [
-                {
-                  githubRepoId: REPOS.A.id,
-                  githubRepoDetails: {
-                    name: REPOS.A.name,
+              })
+                .asAnonymous()
+                .data("projectsByPk")
+                .its("githubRepos")
+                .should("deep.equal", [
+                  {
+                    githubRepoId: REPOS.A.id,
+                    githubRepoDetails: {
+                      name: REPOS.A.name,
+                    },
                   },
-                },
-                {
-                  githubRepoId: REPOS.B.id,
-                  githubRepoDetails: {
-                    name: REPOS.B.name,
+                  {
+                    githubRepoId: REPOS.B.id,
+                    githubRepoDetails: {
+                      name: REPOS.B.name,
+                    },
                   },
-                },
-              ])
-              .then(() => {
-                cy.unlinkGithubRepoFromProject(projectId, REPOS.A.id)
-                  .asAdmin()
-                  .data()
-                  .then(() => {
-                    cy.graphql({
-                      query: `{
+                ])
+                .then(() => {
+                  cy.unlinkGithubRepoFromProject(projectId, REPOS.A.id)
+                    .asAdmin()
+                    .data()
+                    .then(() => {
+                      cy.graphql({
+                        query: `{
                             projectsByPk(id: "${projectId}") {
                                 githubRepos(orderBy: {githubRepoId: ASC}) {
                                     githubRepoId
@@ -177,22 +183,22 @@ describe("As an admin, on retool, I", () => {
                                 }
                             }
                         }`,
-                    })
-                      .asAnonymous()
-                      .data("projectsByPk")
-                      .its("githubRepos")
-                      .should("deep.equal", [
-                        {
-                          githubRepoId: REPOS.B.id,
-                          githubRepoDetails: {
-                            name: REPOS.B.name,
+                      })
+                        .asAnonymous()
+                        .data("projectsByPk")
+                        .its("githubRepos")
+                        .should("deep.equal", [
+                          {
+                            githubRepoId: REPOS.B.id,
+                            githubRepoDetails: {
+                              name: REPOS.B.name,
+                            },
                           },
-                        },
-                      ]);
-                  });
-              });
-          });
-      })
+                        ]);
+                    });
+                });
+            });
+        })
     );
   });
 
@@ -200,14 +206,17 @@ describe("As an admin, on retool, I", () => {
     const REPOS = this.repos;
 
     cy.createGithubUser(1213243).then(user =>
-      cy.createProjectWithLeader(user, "Another project", 500, REPOS.A.id).then(projectId => {
-        cy.linkGithubRepoWithProject(projectId, REPOS.unexisting.id)
-          .asAdmin()
-          .errors()
-          .its(0)
-          .its("extensions.reason")
-          .should("equal", "Github repository 2147466666 does not exist");
-      })
+      cy
+        .createProject("Another project")
+        .withRepo(REPOS.A.id)
+        .then(projectId => {
+          cy.linkGithubRepoWithProject(projectId, REPOS.unexisting.id)
+            .asAdmin()
+            .errors()
+            .its(0)
+            .its("extensions.reason")
+            .should("equal", "Github repository 2147466666 does not exist");
+        })
     );
   });
 
@@ -244,30 +253,31 @@ describe("As an admin, on retool, I", () => {
   });
 
   it("can remove a leader from a project", function () {
-    const REPO = this.repos.A;
-
     cy.createGithubUser(12345454).then(user =>
-      cy.createProjectWithLeader(user, "Without leader", 500, REPO.id).then(projectId => {
-        cy.unassignProjectLead(projectId, user.id)
-          .asAdmin()
-          .data("unassignProjectLead")
-          .should("equal", true)
-          .then(() => {
-            cy.graphql({
-              query: `{
+      cy
+        .createProject("Without leader")
+        .withLeader(user)
+        .then(projectId => {
+          cy.unassignProjectLead(projectId, user.id)
+            .asAdmin()
+            .data("unassignProjectLead")
+            .should("equal", true)
+            .then(() => {
+              cy.graphql({
+                query: `{
                     projectsByPk(id: "${projectId}") {
                         projectLeads {
                             userId
                         }
                     }
                 }`,
-            })
-              .asAnonymous()
-              .data("projectsByPk")
-              .its("projectLeads")
-              .should("be.empty");
-          });
-      })
+              })
+                .asAnonymous()
+                .data("projectsByPk")
+                .its("projectLeads")
+                .should("be.empty");
+            });
+        })
     );
   });
 
@@ -275,99 +285,123 @@ describe("As an admin, on retool, I", () => {
     const REPO = this.repos.A;
 
     cy.createGithubUser(12345454).then(leader =>
-      cy.createProjectWithLeader(leader, "Another project", 500, REPO.id).then(projectId => {
-        cy.requestPayment(projectId, 500, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
-          .asRegisteredUser(leader)
-          .data("requestPayment")
-          .then(paymentId => {
-            cy.paymentRequestShouldExist(paymentId);
-            cy.cancelPaymentRequest(projectId, paymentId)
-              .asAdmin()
-              .data("cancelPaymentRequest")
-              .should("equal", paymentId)
-              .then(() => {
-                cy.paymentRequestShouldNotExist(paymentId);
-              });
-          });
-      })
+      cy
+        .createProject("Another project", 500)
+        .withLeader(leader)
+        .withRepo(REPO.id)
+        .then(projectId => {
+          cy.requestPayment(projectId, 500, 55000, {
+            workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"],
+          })
+            .asRegisteredUser(leader)
+            .data("requestPayment")
+            .then(paymentId => {
+              cy.paymentRequestShouldExist(paymentId);
+              cy.cancelPaymentRequest(projectId, paymentId)
+                .asAdmin()
+                .data("cancelPaymentRequest")
+                .should("equal", paymentId)
+                .then(() => {
+                  cy.paymentRequestShouldNotExist(paymentId);
+                });
+            });
+        })
     );
   });
 
   it("can register an ethereum payment by eth address", function () {
     cy.createGithubUser(12345454).then(leader =>
-      cy.createProjectWithLeader(leader, "Another project", 500).then(projectId => {
-        cy.requestPayment(projectId, 500, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
-          .asRegisteredUser(leader)
-          .data("requestPayment")
-          .then(paymentId => {
-            cy.paymentRequestShouldExist(paymentId);
-            cy.addEthPaymentReceipt(
-              projectId,
-              paymentId,
-              "500",
-              "ETH",
-              { type: "ETHEREUM_ADDRESS", optEthAddress: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045" },
-              "0x5b48f0c340e70e63c011ca41495ff423b9a4fe6975c58df0f066d80fe4d2dcca"
-            )
-              .asAdmin()
-              .data("addEthPaymentReceipt")
-              .then(receipt_id => {
-                cy.paymentRequestShouldBePaid(paymentId, receipt_id);
-              });
-          });
-      })
+      cy
+        .createProject("Another project", 500)
+        .withLeader(leader)
+        .withRepo()
+        .then(projectId => {
+          cy.requestPayment(projectId, 500, 55000, {
+            workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"],
+          })
+            .asRegisteredUser(leader)
+            .data("requestPayment")
+            .then(paymentId => {
+              cy.paymentRequestShouldExist(paymentId);
+              cy.addEthPaymentReceipt(
+                projectId,
+                paymentId,
+                "500",
+                "ETH",
+                { type: "ETHEREUM_ADDRESS", optEthAddress: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045" },
+                "0x5b48f0c340e70e63c011ca41495ff423b9a4fe6975c58df0f066d80fe4d2dcca"
+              )
+                .asAdmin()
+                .data("addEthPaymentReceipt")
+                .then(receipt_id => {
+                  cy.paymentRequestShouldBePaid(paymentId, receipt_id);
+                });
+            });
+        })
     );
   });
 
   it("can register an ethereum payment by eth name", function () {
     cy.createGithubUser(12345454).then(leader =>
-      cy.createProjectWithLeader(leader, "Another project", 500).then(projectId => {
-        cy.requestPayment(projectId, 500, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
-          .asRegisteredUser(leader)
-          .data("requestPayment")
-          .then(paymentId => {
-            cy.paymentRequestShouldExist(paymentId);
-            cy.addEthPaymentReceipt(
-              projectId,
-              paymentId,
-              "500",
-              "ETH",
-              { type: "ETHEREUM_NAME", optEthName: "vitalik.eth" },
-              "0x5b48f0c340e70e63c011ca41495ff423b9a4fe6975c58df0f066d80fe4d2dcca"
-            )
-              .asAdmin()
-              .data("addEthPaymentReceipt")
-              .then(receipt_id => {
-                cy.paymentRequestShouldBePaid(paymentId, receipt_id);
-              });
-          });
-      })
+      cy
+        .createProject("Another project", 500)
+        .withLeader(leader)
+        .withRepo()
+        .then(projectId => {
+          cy.requestPayment(projectId, 500, 55000, {
+            workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"],
+          })
+            .asRegisteredUser(leader)
+            .data("requestPayment")
+            .then(paymentId => {
+              cy.paymentRequestShouldExist(paymentId);
+              cy.addEthPaymentReceipt(
+                projectId,
+                paymentId,
+                "500",
+                "ETH",
+                { type: "ETHEREUM_NAME", optEthName: "vitalik.eth" },
+                "0x5b48f0c340e70e63c011ca41495ff423b9a4fe6975c58df0f066d80fe4d2dcca"
+              )
+                .asAdmin()
+                .data("addEthPaymentReceipt")
+                .then(receipt_id => {
+                  cy.paymentRequestShouldBePaid(paymentId, receipt_id);
+                });
+            });
+        })
     );
   });
 
   it("can register a fiat payment", function () {
     cy.createGithubUser(12345454).then(leader =>
-      cy.createProjectWithLeader(leader, "Another project", 500).then(projectId => {
-        cy.requestPayment(projectId, 500, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
-          .asRegisteredUser(leader)
-          .data("requestPayment")
-          .then(paymentId => {
-            cy.paymentRequestShouldExist(paymentId);
-            cy.addFiatPaymentReceipt(
-              projectId,
-              paymentId,
-              "500",
-              "EUR",
-              "DE44500105175407324931",
-              "my totaly custom payment reference"
-            )
-              .asAdmin()
-              .data("addFiatPaymentReceipt")
-              .then(receipt_id => {
-                cy.paymentRequestShouldBePaid(paymentId, receipt_id);
-              });
-          });
-      })
+      cy
+        .createProject("Another project", 500)
+        .withLeader(leader)
+        .withRepo()
+        .then(projectId => {
+          cy.requestPayment(projectId, 500, 55000, {
+            workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"],
+          })
+            .asRegisteredUser(leader)
+            .data("requestPayment")
+            .then(paymentId => {
+              cy.paymentRequestShouldExist(paymentId);
+              cy.addFiatPaymentReceipt(
+                projectId,
+                paymentId,
+                "500",
+                "EUR",
+                "DE44500105175407324931",
+                "my totaly custom payment reference"
+              )
+                .asAdmin()
+                .data("addFiatPaymentReceipt")
+                .then(receipt_id => {
+                  cy.paymentRequestShouldBePaid(paymentId, receipt_id);
+                });
+            });
+        })
     );
   });
 });
