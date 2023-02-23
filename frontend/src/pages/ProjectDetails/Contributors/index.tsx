@@ -5,7 +5,12 @@ import ContributorsTable, { CONTRIBUTORS_TABLE_FRAGMENT } from "src/components/C
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { HasuraUserRole } from "src/types";
-import { GetProjectContributorsQuery, GetProjectRemainingBudgetQuery } from "src/__generated/graphql";
+import {
+  ContributorsTableFieldsFragment,
+  GetProjectContributorsQuery,
+  GetProjectRemainingBudgetQuery,
+  GithubRepoContributorsFieldsFragment,
+} from "src/__generated/graphql";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useOutletContext } from "react-router-dom";
@@ -34,7 +39,9 @@ const Contributors: React.FC = () => {
     }
   );
 
-  const contributors = getProjectContributorsQuery.data?.projectsByPk?.githubRepo?.content.contributors || [];
+  const contributors = getDeduplicatedAggregatedContributors(
+    getProjectContributorsQuery.data?.projectsByPk?.githubRepos || []
+  );
   const remainingBudget = getProjectRemainingBudget.data?.projectsByPk?.budgets.at(0)?.remainingAmount;
 
   return (
@@ -55,8 +62,33 @@ const Contributors: React.FC = () => {
   );
 };
 
-export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
+export const getDeduplicatedAggregatedContributors = function (
+  githubRepos: GithubRepoContributorsFieldsFragment[]
+): ContributorsTableFieldsFragment[] {
+  const flatten_users = githubRepos
+    .flatMap(repo => repo.githubRepoDetails?.content?.contributors)
+    .flatMap(user => (user ? [user] : []));
+  return [...new Set(flatten_users)];
+};
+
+export const GITHUB_REPO_CONTRIBUTORS_FRAGMENT = gql`
   ${CONTRIBUTORS_TABLE_FRAGMENT}
+  fragment GithubRepoContributorsFields on ProjectGithubRepos {
+    githubRepoId
+    githubRepoDetails {
+      id
+      content {
+        id
+        contributors {
+          ...ContributorsTableFields
+        }
+      }
+    }
+  }
+`;
+
+export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
+  ${GITHUB_REPO_CONTRIBUTORS_FRAGMENT}
   query GetProjectContributors($projectId: uuid!) {
     projectsByPk(id: $projectId) {
       id
@@ -64,14 +96,8 @@ export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
         projectId
         name
       }
-      githubRepo {
-        id
-        content {
-          id
-          contributors {
-            ...ContributorsTableFields
-          }
-        }
+      githubRepos {
+        ...GithubRepoContributorsFields
       }
     }
   }
