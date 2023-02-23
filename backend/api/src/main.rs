@@ -30,7 +30,7 @@ async fn main() -> Result<()> {
 	http::serve(
 		config.http().clone(),
 		graphql::create_schema(),
-		Arc::new(amqp::Bus::default(config.amqp()).await?),
+		Arc::new(amqp::Bus::new(config.amqp()).await?),
 		AggregateRootRepository::new(database.clone()),
 		ProjectDetailsRepository::new(database.clone()),
 		GithubRepoRepository::new(database.clone()),
