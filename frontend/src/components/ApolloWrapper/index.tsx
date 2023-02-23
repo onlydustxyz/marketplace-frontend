@@ -20,10 +20,15 @@ import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import { TokenSet } from "src/types";
 import axios from "axios";
+import { RetryLink } from "@apollo/client/link/retry";
 
 type ErrorDisplay = "screen" | "toaster" | "none";
 
 const DEFAULT_ERROR_DISPLAY: ErrorDisplay = "screen";
+
+enum GraphQLErrorMessage {
+  ConnectionError = "connection error",
+}
 
 disableFragmentWarnings();
 
@@ -87,11 +92,14 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     uri: `${config.HASURA_BASE_URL}/v1/graphql`,
   });
 
-  const ErrorLink = onError(({ graphQLErrors, networkError, operation }) => {
+  const ErrorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
     if (graphQLErrors) {
-      graphQLErrors.forEach(({ message, locations, path }) =>
-        console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
-      );
+      graphQLErrors.forEach(({ message, locations, path }) => {
+        console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+        if (message === GraphQLErrorMessage.ConnectionError) {
+          return forward(operation);
+        }
+      });
 
       switch ((operation.getContext().graphqlErrorDisplay || DEFAULT_ERROR_DISPLAY) as ErrorDisplay) {
         case "screen":
@@ -110,8 +118,10 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     }
   });
 
+  const retryLink = new RetryLink();
+
   const client = new ApolloClient({
-    link: ApolloLink.from([ErrorLink, AuthenticationLink, TokenLink, HttpLink]),
+    link: ApolloLink.from([ErrorLink, retryLink, AuthenticationLink, TokenLink, HttpLink]),
     cache: new InMemoryCache({
       typePolicies: {
         ProjectDetails: {
@@ -161,11 +171,14 @@ const ApolloWrapper__deprecated: React.FC<PropsWithChildren> = ({ children }) =>
     uri: `${config.HASURA_BASE_URL}/v1/graphql`,
   });
 
-  const ErrorLink = onError(({ graphQLErrors, networkError, operation }) => {
+  const ErrorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
     if (graphQLErrors) {
-      graphQLErrors.forEach(({ message, locations, path }) =>
-        console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
-      );
+      graphQLErrors.forEach(({ message, locations, path }) => {
+        console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+        if (message === GraphQLErrorMessage.ConnectionError) {
+          return forward(operation);
+        }
+      });
 
       switch ((operation.getContext().graphqlErrorDisplay || DEFAULT_ERROR_DISPLAY) as ErrorDisplay) {
         case "screen":
@@ -184,8 +197,10 @@ const ApolloWrapper__deprecated: React.FC<PropsWithChildren> = ({ children }) =>
     }
   });
 
+  const retryLink = new RetryLink();
+
   const client = new ApolloClient({
-    link: ApolloLink.from([ErrorLink, AuthenticationLink, HttpLink]),
+    link: ApolloLink.from([ErrorLink, retryLink, AuthenticationLink, HttpLink]),
     cache: new InMemoryCache({
       typePolicies: {
         ProjectDetails: {
