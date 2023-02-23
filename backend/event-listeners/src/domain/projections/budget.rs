@@ -9,7 +9,7 @@ use rust_decimal::Decimal;
 pub struct Budget {
 	id: BudgetId,
 	project_id: Option<ProjectId>,
-	initial_amount: Decimal,
+	pub initial_amount: Decimal,
 	pub remaining_amount: Decimal,
 }
 

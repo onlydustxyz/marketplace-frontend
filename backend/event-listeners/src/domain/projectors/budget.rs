@@ -27,13 +27,22 @@ impl EventListener for Projector {
 		}) = event
 		{
 			match event {
-				BudgetEvent::Allocated { id, amount } => {
+				BudgetEvent::Created { id: budget_id, .. } => {
 					self.budget_repository.upsert(&Budget::new(
-						*id,
+						*budget_id,
 						Some(*project_id),
-						*amount.amount(),
-						*amount.amount(),
+						Decimal::ZERO,
+						Decimal::ZERO,
 					))?;
+				},
+				BudgetEvent::Allocated {
+					id: budget_id,
+					amount,
+				} => {
+					let mut budget = self.budget_repository.find_by_id(budget_id)?;
+					budget.remaining_amount += amount;
+					budget.initial_amount += amount;
+					self.budget_repository.update(budget_id, &budget)?;
 				},
 				BudgetEvent::Payment {
 					id: budget_id,

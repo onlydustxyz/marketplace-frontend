@@ -73,9 +73,10 @@ impl Project {
 		id: ProjectId,
 		initial_budget: Amount,
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		let events = Budget::allocate(BudgetId::new(), initial_budget)
-			.into_iter()
-			.map(|event| ProjectEvent::Budget { id, event });
+		let mut events = Budget::create(BudgetId::new(), initial_budget.currency().clone());
+		events.append(&mut Budget::from_events(&events).allocate(*initial_budget.amount()));
+
+		let events = events.into_iter().map(|event| ProjectEvent::Budget { id, event });
 
 		Ok(once(ProjectEvent::Created { id }).chain(events).collect())
 	}
@@ -183,10 +184,17 @@ mod tests {
 	async fn test_create(project_id: ProjectId, initial_budget: Amount) {
 		let events = Project::create(project_id, initial_budget).await.unwrap();
 
-		assert_eq!(events.len(), 2);
+		assert_eq!(events.len(), 3);
 		assert_eq!(events[0], ProjectEvent::Created { id: project_id });
 		assert_matches!(
 			events[1],
+			ProjectEvent::Budget {
+				id: _,
+				event: BudgetEvent::Created { .. }
+			}
+		);
+		assert_matches!(
+			events[2],
 			ProjectEvent::Budget {
 				id: _,
 				event: BudgetEvent::Allocated { .. }
