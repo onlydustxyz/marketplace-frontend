@@ -120,13 +120,6 @@ export default function View({ expandable, currentProject, allProjects, availabl
             </NavLink>
           ))}
         </div>
-        <div className="flex flex-row gap-2 pt-8">
-          {currentProject.githubRepoInfo?.owner && currentProject.githubRepoInfo.name && (
-            <GithubLink
-              link={buildGithubLink(currentProject.githubRepoInfo.owner, currentProject.githubRepoInfo.name)}
-            />
-          )}
-        </div>
       </div>
     </Sidebar>
   );
