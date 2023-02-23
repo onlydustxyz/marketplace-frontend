@@ -10,7 +10,7 @@ pub async fn consumer(
 	config: &Config,
 	queue_name: &'static str,
 ) -> Result<ConsumableBus, BusError> {
-	let bus = Bus::default(config)
+	let bus = Bus::new(config)
 		.await?
 		.with_queue(
 			queue_name,

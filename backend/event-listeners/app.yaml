@@ -4,6 +4,9 @@ default:
     personal_access_tokens: $GITHUB_PAT
     headers:
       api-key: $GITHUB_PROXY_GITHUB_API_KEY
+  amqp:
+    connection_retry_interval_ms: 6000
+    connection_retry_count: 100
 
 local:
   database:

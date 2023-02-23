@@ -5,7 +5,7 @@ use olog::info;
 pub const QUEUE_NAME: &str = "event-store";
 
 pub async fn consumer(config: &Config) -> Result<ConsumableBus, BusError> {
-	let event_bus = Bus::default(config)
+	let event_bus = Bus::new(config)
 		.await?
 		.with_queue(
 			QUEUE_NAME,

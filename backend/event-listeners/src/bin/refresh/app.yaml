@@ -8,6 +8,9 @@ default:
     json: false
     ansi: true
     location: false
+  amqp:
+    connection_retry_interval_ms: 6000
+    connection_retry_count: 1
 
 local:
   database:

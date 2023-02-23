@@ -209,12 +209,12 @@ mod tests {
 	#[once]
 	fn config() -> Config {
 		// TODO: Find a better way to have a test configuration for integration tests
-		Config::new("amqp://127.0.0.1:5672/%2f".to_string())
+		Config::new("amqp://127.0.0.1:5672/%2f".to_string(), 200, 0)
 	}
 
 	#[fixture]
 	async fn bus(config: &Config) -> Bus {
-		Bus::default(config).await.unwrap()
+		Bus::new(config).await.unwrap()
 	}
 
 	#[rstest]
