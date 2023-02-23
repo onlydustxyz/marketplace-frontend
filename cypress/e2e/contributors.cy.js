@@ -1,10 +1,13 @@
 describe("As a public user, I", () => {
   const OFUX = 595505;
 
-  beforeEach(function () {
+  before(function () {
     cy.fixture("repos.json").as("repos");
     cy.createGithubUser(98735558).then(user => {
-      cy.createProjectWithLeader(user, "Project with budget", 100000, this.repos.A.id)
+      cy.createProject("Project with budget", 100000)
+        .withLeader(user)
+        .withRepo(this.repos.A.id)
+        .withRepo(this.repos.B.id)
         .as("projectId")
         .then(projectId => {
           cy.requestPayment(projectId, 100, OFUX, {
@@ -55,6 +58,12 @@ describe("As a public user, I", () => {
       cy.get("td:nth-child(3)").should("have.text", "7");
     });
 
+    cy.get("#contributors_table tbody tr:nth-child(2)").within(() => {
+      cy.get("td:nth-child(1)").should(div => expect(div.text()).to.include("AnthonyBuisset"));
+      cy.get("td:nth-child(2)").should("have.text", "-");
+      cy.get("td:nth-child(3)").should("have.text", "-");
+    });
+
     cy.get("#contributors_table tbody tr").its("length").should("equal", 2);
   });
 
@@ -68,6 +77,12 @@ describe("As a public user, I", () => {
       cy.get("td:nth-child(1)").should("have.text", "AnthonyBuisset");
       cy.get("td:nth-child(2)").should("have.text", "-");
       cy.get("td:nth-child(3)").should("have.text", "-");
+    });
+
+    cy.get("#contributors_table tbody tr:nth-child(2)").within(() => {
+      cy.get("td:nth-child(1)").should(div => expect(div.text()).to.include("ofux"));
+      cy.get("td:nth-child(2)").should("have.text", "$13,200");
+      cy.get("td:nth-child(3)").should("have.text", "7");
     });
   });
 });
