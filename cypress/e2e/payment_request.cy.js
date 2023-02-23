@@ -33,12 +33,11 @@ describe("As a project lead, I", () => {
   });
 
   it("can accept an invitation to become project lead", function () {
-    cy.createProject("Project without invite").asAdmin();
-    cy.createProject("Project without invite").asAdmin();
-    cy.createProject("Project with invite")
-      .asAdmin()
-      .data("createProject")
-      .then(projectId => cy.inviteProjectLeader(projectId, this.user.githubUserId).asAdmin());
+    cy.createProject("Project without invite");
+    cy.createProject("Project without invite");
+    cy.createProject("Project with invite").then(projectId =>
+      cy.inviteProjectLeader(projectId, this.user.githubUserId).asAdmin()
+    );
 
     cy.visit("http://localhost:5173/", {
       onBeforeLoad(win) {
