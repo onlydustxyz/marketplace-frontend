@@ -2,22 +2,23 @@ import Card from "src/components/Card";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useIntl } from "src/hooks/useIntl";
-import { Contributor, LanguageMap } from "src/types";
 import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
 import { ReactNode } from "react";
-import { ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
+import { GetProjectContributorsForOverviewQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
+import { gql } from "@apollo/client";
+import { useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { HasuraUserRole } from "src/types";
+import { uniqBy } from "lodash";
+import isDefined from "src/utils/isDefined";
 
 type OutletContext = {
   leads?: ProjectLeadFragment[];
   totalSpentAmountInUsd: number;
   githubRepoInfo: {
     decodedReadme?: string;
-    owner?: string;
-    name?: string;
-    contributors?: Contributor[];
-    languages: LanguageMap;
   };
+  projectId: string;
   sponsors: SponsorFragment[];
   telegramLink: string | null;
   children: ReactNode;
@@ -25,8 +26,21 @@ type OutletContext = {
 
 const Overview: React.FC = () => {
   const { T } = useIntl();
-  const { leads, totalSpentAmountInUsd, githubRepoInfo, sponsors, telegramLink, children } =
+  const { leads, totalSpentAmountInUsd, githubRepoInfo, sponsors, telegramLink, children, projectId } =
     useOutletContext<OutletContext>();
+
+  const getProjectContributorsForOverview = useHasuraQuery<GetProjectContributorsForOverviewQuery>(
+    GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_QUERY,
+    HasuraUserRole.Public,
+    { variables: { projectId } }
+  );
+
+  const contributors = uniqBy(
+    getProjectContributorsForOverview?.data?.projectsByPk?.githubRepos
+      .map(githubRepo => githubRepo?.githubRepoDetails?.content?.contributors)
+      .flat(),
+    contributor => contributor?.login
+  ).filter(isDefined);
 
   return (
     <div className="flex flex-col gap-8 mt-3">
@@ -43,12 +57,27 @@ const Overview: React.FC = () => {
             </Card>
           </div>
         )}
-        <OverviewPanel
-          {...{ leads, contributors: githubRepoInfo.contributors, totalSpentAmountInUsd, sponsors, telegramLink }}
-        />
+        <OverviewPanel {...{ leads, contributors, totalSpentAmountInUsd, sponsors, telegramLink }} />
       </div>
     </div>
   );
 };
+
+export const GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_QUERY = gql`
+  query GetProjectContributorsForOverview($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
+      githubRepos {
+        githubRepoDetails {
+          content {
+            contributors {
+              login
+              avatarUrl
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 export default Overview;
