@@ -74,7 +74,7 @@ impl Project {
 		initial_budget: Amount,
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
 		let mut events = Budget::create(BudgetId::new(), initial_budget.currency().clone());
-		events.append(&mut Budget::from_events(&events).allocate(*initial_budget.amount()));
+		events.append(&mut Budget::from_events(&events).allocate(*initial_budget.amount())?);
 
 		let events = events.into_iter().map(|event| ProjectEvent::Budget { id, event });
 

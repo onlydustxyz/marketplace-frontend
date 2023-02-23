@@ -37,11 +37,15 @@ impl Budget {
 		vec![BudgetEvent::Created { id, currency }]
 	}
 
-	pub fn allocate(&self, amount: Decimal) -> Vec<BudgetEvent> {
-		vec![BudgetEvent::Allocated {
+	pub fn allocate(&self, diff: Decimal) -> Result<Vec<BudgetEvent>> {
+		if *self.allocated_amount.amount() + diff < self.spent_amount() {
+			return Err(Error::Overspent);
+		}
+
+		Ok(vec![BudgetEvent::Allocated {
 			id: self.id,
-			amount,
-		}]
+			amount: diff,
+		}])
 	}
 
 	pub fn request_payment(
@@ -206,7 +210,9 @@ mod tests {
 		budget_allocated_event: BudgetEvent,
 	) {
 		let budget = Budget::from_events(&[budget_created_event]);
-		assert_eq!(budget.allocate(amount), vec![budget_allocated_event]);
+		let result = budget.allocate(amount);
+		assert!(result.is_ok(), "{}", result.err().unwrap());
+		assert_eq!(result.unwrap(), vec![budget_allocated_event]);
 	}
 
 	#[rstest]
@@ -324,8 +330,9 @@ mod tests {
 		let budget = budget.apply_events(&events);
 
 		// refill
-		let events = budget.allocate(amount);
-		let budget = budget.apply_events(&events);
+		let result = budget.allocate(amount);
+		assert!(result.is_ok(), "{}", result.err().unwrap());
+		let budget = budget.apply_events(&result.unwrap());
 
 		// start spending again !
 		let events = budget
@@ -341,5 +348,63 @@ mod tests {
 
 		// no more budget !
 		assert_eq!(&budget.spent_amount(), budget.allocated_amount.amount());
+	}
+
+	#[rstest]
+	fn cut_budget(
+		amount: Decimal,
+		currency: Currency,
+		budget_created_event: BudgetEvent,
+		budget_allocated_event: BudgetEvent,
+	) {
+		let budget = Budget::from_events(&[
+			budget_created_event,
+			budget_allocated_event.clone(),
+			budget_allocated_event,
+		]);
+
+		let events = budget
+			.request_payment(
+				PaymentId::new(),
+				Default::default(),
+				Default::default(),
+				Amount::new(amount, currency),
+				Default::default(),
+			)
+			.unwrap();
+		let budget = budget.apply_events(&events);
+
+		// cut budget
+		let result = budget.allocate(-amount);
+		assert!(result.is_ok(), "{}", result.err().unwrap());
+		let budget = budget.apply_events(&result.unwrap());
+
+		// no more budget !
+		assert_eq!(&budget.spent_amount(), budget.allocated_amount.amount());
+	}
+
+	#[rstest]
+	fn cannot_cut_budget_below_spent(
+		amount: Decimal,
+		currency: Currency,
+		budget_created_event: BudgetEvent,
+		budget_allocated_event: BudgetEvent,
+	) {
+		let budget = Budget::from_events(&[budget_created_event, budget_allocated_event]);
+
+		let events = budget
+			.request_payment(
+				PaymentId::new(),
+				Default::default(),
+				Default::default(),
+				Amount::new(amount, currency),
+				Default::default(),
+			)
+			.unwrap();
+		let budget = budget.apply_events(&events);
+
+		// cut budget fails
+		let result = budget.allocate(-amount);
+		assert_matches!(result, Err(Error::Overspent));
 	}
 }
