@@ -1,5 +1,5 @@
 mod aggregate;
-pub use aggregate::Project;
+pub use aggregate::{Error, Project};
 
 mod events;
 pub use events::Event;

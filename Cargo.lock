@@ -155,6 +155,7 @@ dependencies = [
  "reqwest",
  "rocket",
  "rstest",
+ "rust_decimal",
  "rusty-money",
  "serde",
  "serde_json",

@@ -97,7 +97,7 @@ impl Budget {
 			.collect())
 	}
 
-	fn spent_amount(&self) -> Decimal {
+	pub fn spent_amount(&self) -> Decimal {
 		self.payments
 			.values()
 			.filter(|payment| *payment.status() != PaymentStatus::Cancelled)
