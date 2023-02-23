@@ -152,6 +152,26 @@ impl Mutation {
 		Ok(id)
 	}
 
+	pub async fn update_budget_allocation(
+		context: &Context,
+		project_id: Uuid,
+		new_remaining_amount_in_usd: i32,
+	) -> Result<bool> {
+		context
+			.update_budget_allocation_usecase
+			.update_allocation(
+				&project_id.into(),
+				Money::from_major(
+					new_remaining_amount_in_usd as i64,
+					rusty_money::crypto::USDC,
+				)
+				.amount(),
+			)
+			.await?;
+
+		Ok(true)
+	}
+
 	pub async fn link_github_repo(
 		context: &Context,
 		project_id: Uuid,
