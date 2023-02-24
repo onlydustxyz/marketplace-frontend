@@ -10,6 +10,7 @@ describe("As a simple user, I", () => {
       cy
         .createProject("Project with budget")
         .withLeader(user)
+        .withBudget(500)
         .withRepo()
         .then($projectId => {
           cy.getProjectBudget($projectId)
@@ -157,6 +158,7 @@ describe("As a simple user, I", () => {
 
     cy.createGithubUser(28464353).then(user => {
       cy.createProject("Project with budget")
+        .withBudget(500)
         .withRepo(REPOS.empty.id)
         .then(projectId => {
           cy.graphql({

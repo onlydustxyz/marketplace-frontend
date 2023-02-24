@@ -4,8 +4,9 @@ const CONTRIBUTOR_GITHUB_ID = 373646343;
 describe("As a contributor, I", () => {
   beforeEach(function () {
     cy.createGithubUser(PROJECT_LEAD_GITHUB_ID).then(user => {
-      cy.createProject("Project with budget", 1000)
+      cy.createProject("Project with budget")
         .withLeader(user)
+        .withBudget(1000)
         .withRepo()
         .then(projectId => {
           cy.requestPayment(projectId, 200, CONTRIBUTOR_GITHUB_ID, {
@@ -24,7 +25,7 @@ describe("As a contributor, I", () => {
   });
 
   it("can see the list of my payments", function () {
-    cy.visit(`http://127.0.0.1:5173`, {
+    cy.visit("http://127.0.0.1:5173", {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.token);
       },

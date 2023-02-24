@@ -4,8 +4,9 @@ describe("As a public user, I", () => {
   before(function () {
     cy.fixture("repos.json").as("repos");
     cy.createGithubUser(98735558).then(user => {
-      cy.createProject("Project with budget", 100000)
+      cy.createProject("Project with budget")
         .withLeader(user)
+        .withBudget(100000)
         .withRepo(this.repos.A.id)
         .withRepo(this.repos.B.id)
         .as("projectId")
@@ -59,12 +60,18 @@ describe("As a public user, I", () => {
     });
 
     cy.get("#contributors_table tbody tr:nth-child(2)").within(() => {
+      cy.get("td:nth-child(1)").should(div => expect(div.text()).to.include("oscarwroche"));
+      cy.get("td:nth-child(2)").should("have.text", "-");
+      cy.get("td:nth-child(3)").should("have.text", "-");
+    });
+
+    cy.get("#contributors_table tbody tr:nth-child(3)").within(() => {
       cy.get("td:nth-child(1)").should(div => expect(div.text()).to.include("AnthonyBuisset"));
       cy.get("td:nth-child(2)").should("have.text", "-");
       cy.get("td:nth-child(3)").should("have.text", "-");
     });
 
-    cy.get("#contributors_table tbody tr").its("length").should("equal", 2);
+    cy.get("#contributors_table tbody tr").its("length").should("equal", 3);
   });
 
   it("can sort the contributors of a project", function () {
@@ -74,7 +81,7 @@ describe("As a public user, I", () => {
     cy.get("#contributors_table thead tr th:nth-child(1)").click(); // sort by contributor name ASC
 
     cy.get("#contributors_table tbody tr:nth-child(1)").within(() => {
-      cy.get("td:nth-child(1)").should("have.text", "AnthonyBuisset");
+      cy.get("td:nth-child(1)").should(div => expect(div.text()).to.include("AnthonyBuisset"));
       cy.get("td:nth-child(2)").should("have.text", "-");
       cy.get("td:nth-child(3)").should("have.text", "-");
     });
@@ -90,7 +97,7 @@ describe("As a public user, I", () => {
 describe("As a project lead, I", () => {
   beforeEach(function () {
     cy.createGithubUser(98735558).then(user => {
-      cy.createProject("Project with budget", 100000).withLeader(user).withRepo().as("projectId");
+      cy.createProject("Project with budget").withLeader(user).withBudget(100000).withRepo().as("projectId");
       cy.signinUser(user)
         .then(user => JSON.stringify(user.session))
         .as("token");
