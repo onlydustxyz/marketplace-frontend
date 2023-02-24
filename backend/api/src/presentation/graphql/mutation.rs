@@ -109,7 +109,6 @@ impl Mutation {
 		name: String,
 		short_description: String,
 		long_description: String,
-		initial_budget_in_usd: i32,
 		telegram_link: Option<String>,
 		logo_url: Option<String>,
 	) -> Result<Uuid> {
@@ -119,7 +118,6 @@ impl Mutation {
 				name.try_into()?,
 				short_description.try_into()?,
 				long_description.try_into()?,
-				Money::from_major(initial_budget_in_usd as i64, rusty_money::crypto::USDC).into(),
 				telegram_link,
 				logo_url,
 			)

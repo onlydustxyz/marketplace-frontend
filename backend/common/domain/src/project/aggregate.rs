@@ -1,4 +1,4 @@
-use std::{collections::HashSet, iter::once};
+use std::collections::HashSet;
 
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
@@ -70,16 +70,8 @@ impl EventSourcable for Project {
 }
 
 impl Project {
-	pub async fn create(
-		id: ProjectId,
-		initial_budget: Amount,
-	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		let mut events = Budget::create(BudgetId::new(), initial_budget.currency().clone());
-		events.append(&mut Budget::from_events(&events).allocate(*initial_budget.amount())?);
-
-		let events = events.into_iter().map(|event| ProjectEvent::Budget { id, event });
-
-		Ok(once(ProjectEvent::Created { id }).chain(events).collect())
+	pub fn create(id: ProjectId) -> Vec<<Self as Aggregate>::Event> {
+		vec![ProjectEvent::Created { id }]
 	}
 
 	pub fn allocate_budget(&self, diff: &Decimal) -> Result<Vec<<Self as Aggregate>::Event>> {
@@ -227,25 +219,11 @@ mod tests {
 	}
 
 	#[rstest]
-	async fn test_create(project_id: ProjectId, initial_budget: Amount) {
-		let events = Project::create(project_id, initial_budget).await.unwrap();
+	async fn test_create(project_id: ProjectId) {
+		let events = Project::create(project_id);
 
-		assert_eq!(events.len(), 3);
+		assert_eq!(events.len(), 1);
 		assert_eq!(events[0], ProjectEvent::Created { id: project_id });
-		assert_matches!(
-			events[1],
-			ProjectEvent::Budget {
-				id: _,
-				event: BudgetEvent::Created { .. }
-			}
-		);
-		assert_matches!(
-			events[2],
-			ProjectEvent::Budget {
-				id: _,
-				event: BudgetEvent::Allocated { .. }
-			}
-		);
 	}
 
 	#[rstest]
