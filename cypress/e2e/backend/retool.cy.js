@@ -8,8 +8,9 @@ describe("As an admin, on retool, I", () => {
     const REPO = this.repos.A;
 
     cy.createGithubUser(12345).then(user => {
-      cy.createProject(projectName, 500)
+      cy.createProject(projectName)
         .withLeader(user)
+        .withBudget(500)
         .withRepo(REPO.id)
         .then(projectId => {
           cy.graphql({
@@ -131,7 +132,8 @@ describe("As an admin, on retool, I", () => {
 
     cy.createGithubUser(12344556).then(user =>
       cy
-        .createProject("Another project", 500)
+        .createProject("Another project")
+        .withBudget(500)
         .withRepo(REPOS.A.id)
         .then(projectId => {
           cy.linkGithubRepoWithProject(projectId, REPOS.B.id)
@@ -286,8 +288,9 @@ describe("As an admin, on retool, I", () => {
 
     cy.createGithubUser(12345454).then(leader =>
       cy
-        .createProject("Another project", 500)
+        .createProject("Another project")
         .withLeader(leader)
+        .withBudget(500)
         .withRepo(REPO.id)
         .then(projectId => {
           cy.requestPayment(projectId, 500, 55000, {
@@ -309,18 +312,29 @@ describe("As an admin, on retool, I", () => {
     );
   });
 
-  it.only("can cut a project budget", function () {
+  it("can cut a project budget", function () {
     const REPO = this.repos.A;
 
     cy.createGithubUser(12345454).then(leader =>
-      cy.createProjectWithLeader(leader, "Another project", 500, REPO.id).then(projectId => {
-        cy.requestPayment(projectId, 200, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
-          .asRegisteredUser(leader)
-          .data("requestPayment")
-          .then(() => {
-            cy.updateBudgetAllocation(projectId, 0).then(() => {
-              cy.graphql({
-                query: `
+      cy
+        .createProject("Another project")
+        .withLeader(leader)
+        .withBudget(500)
+        .withRepo(REPO.id)
+        .then(projectId => {
+          cy.requestPayment(projectId, 200, 55000, {
+            workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"],
+          })
+            .asRegisteredUser(leader)
+            .data("requestPayment")
+            .then(() => {
+              cy.updateBudgetAllocation(projectId, 0)
+                .asAdmin()
+                .data("updateBudgetAllocation")
+                .should("be.a", "string")
+                .then(() => {
+                  cy.graphql({
+                    query: `
                           query($projectId: uuid!) {
                               projectsByPk(id:$projectId) {
                                   budgets {
@@ -328,24 +342,25 @@ describe("As an admin, on retool, I", () => {
                                   }
                               }
                           }`,
-                variables: { projectId },
-              })
-                .asAdmin()
-                .data("projectsByPk.budgets")
-                .its(0)
-                .its("remainingAmount")
-                .should("equal", 0);
+                    variables: { projectId },
+                  })
+                    .asAdmin()
+                    .data("projectsByPk.budgets")
+                    .its(0)
+                    .its("remainingAmount")
+                    .should("equal", 0);
+                });
             });
-          });
-      })
+        })
     );
   });
 
   it("can register an ethereum payment by eth address", function () {
     cy.createGithubUser(12345454).then(leader =>
       cy
-        .createProject("Another project", 500)
+        .createProject("Another project")
         .withLeader(leader)
+        .withBudget(500)
         .withRepo()
         .then(projectId => {
           cy.requestPayment(projectId, 500, 55000, {
@@ -376,8 +391,9 @@ describe("As an admin, on retool, I", () => {
   it("can register an ethereum payment by eth name", function () {
     cy.createGithubUser(12345454).then(leader =>
       cy
-        .createProject("Another project", 500)
+        .createProject("Another project")
         .withLeader(leader)
+        .withBudget(500)
         .withRepo()
         .then(projectId => {
           cy.requestPayment(projectId, 500, 55000, {
@@ -408,8 +424,9 @@ describe("As an admin, on retool, I", () => {
   it("can register a fiat payment", function () {
     cy.createGithubUser(12345454).then(leader =>
       cy
-        .createProject("Another project", 500)
+        .createProject("Another project")
         .withLeader(leader)
+        .withBudget(500)
         .withRepo()
         .then(projectId => {
           cy.requestPayment(projectId, 500, 55000, {

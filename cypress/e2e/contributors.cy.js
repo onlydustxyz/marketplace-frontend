@@ -4,8 +4,9 @@ describe("As a public user, I", () => {
   before(function () {
     cy.fixture("repos.json").as("repos");
     cy.createGithubUser(98735558).then(user => {
-      cy.createProject("Project with budget", 100000)
+      cy.createProject("Project with budget")
         .withLeader(user)
+        .withBudget(100000)
         .withRepo(this.repos.A.id)
         .withRepo(this.repos.B.id)
         .as("projectId")
@@ -90,7 +91,7 @@ describe("As a public user, I", () => {
 describe("As a project lead, I", () => {
   beforeEach(function () {
     cy.createGithubUser(98735558).then(user => {
-      cy.createProject("Project with budget", 100000).withLeader(user).withRepo().as("projectId");
+      cy.createProject("Project with budget").withLeader(user).withBudget(100000).withRepo().as("projectId");
       cy.signinUser(user)
         .then(user => JSON.stringify(user.session))
         .as("token");
