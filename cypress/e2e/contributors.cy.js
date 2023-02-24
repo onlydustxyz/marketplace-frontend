@@ -91,6 +91,12 @@ describe("As a public user, I", () => {
       cy.get("td:nth-child(2)").should("have.text", "$13,200");
       cy.get("td:nth-child(3)").should("have.text", "7");
     });
+
+    cy.get("#contributors_table tbody tr:nth-child(3)").within(() => {
+      cy.get("td:nth-child(1)").should(div => expect(div.text()).to.include("oscarwroche"));
+      cy.get("td:nth-child(2)").should("have.text", "-");
+      cy.get("td:nth-child(3)").should("have.text", "-");
+    });
   });
 });
 
