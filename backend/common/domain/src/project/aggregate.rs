@@ -2,7 +2,6 @@ use std::collections::HashSet;
 
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
-use rust_decimal::Decimal;
 use serde_json::Value;
 use thiserror::Error;
 
@@ -14,6 +13,8 @@ pub enum Error {
 	LeaderAlreadyAssigned,
 	#[error("User is not a project leader")]
 	NotLeader,
+	#[error("Budget must be created first")]
+	NoBudget,
 	#[error(transparent)]
 	Infrastructure(anyhow::Error),
 	#[error(transparent)]
@@ -27,7 +28,7 @@ pub struct Project {
 	id: ProjectId,
 	github_repo_id: GithubRepositoryId,
 	leaders: HashSet<UserId>,
-	budget: Budget,
+	budget: Option<Budget>,
 }
 
 impl Entity for Project {
@@ -61,9 +62,9 @@ impl EventSourcable for Project {
 				self.leaders.remove(leader_id);
 				self
 			},
-			ProjectEvent::Budget { event, .. } => {
-				self.budget = self.budget.apply_event(event);
-				self
+			ProjectEvent::Budget { event, .. } => Self {
+				budget: Some(self.budget.unwrap_or_default().apply_event(event)),
+				..self
 			},
 		}
 	}
@@ -74,14 +75,20 @@ impl Project {
 		vec![ProjectEvent::Created { id }]
 	}
 
-	pub fn allocate_budget(&self, diff: &Decimal) -> Result<Vec<<Self as Aggregate>::Event>> {
-		let events = self
-			.budget
-			.allocate(*diff)?
+	pub fn allocate_budget(&self, diff: &Amount) -> Result<Vec<<Self as Aggregate>::Event>> {
+		let events = match self.budget.as_ref() {
+			Some(budget) => budget.allocate(*diff.amount())?,
+			None => {
+				let events = Budget::create(BudgetId::new(), diff.currency().clone());
+				let budget = Budget::from_events(&events);
+				events.into_iter().chain(budget.allocate(*diff.amount())?).collect()
+			},
+		};
+
+		Ok(events
 			.into_iter()
 			.map(|event| ProjectEvent::Budget { id: self.id, event })
-			.collect();
-		Ok(events)
+			.collect())
 	}
 
 	pub fn assign_leader(&self, leader_id: UserId) -> Result<Vec<<Self as Aggregate>::Event>> {
@@ -116,6 +123,8 @@ impl Project {
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
 		Ok(self
 			.budget
+			.as_ref()
+			.ok_or(Error::NoBudget)?
 			.request_payment(payment_id, requestor_id, recipient_id, amount, reason)?
 			.into_iter()
 			.map(|event| ProjectEvent::Budget { id: self.id, event })
@@ -128,6 +137,8 @@ impl Project {
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
 		Ok(self
 			.budget
+			.as_ref()
+			.ok_or(Error::NoBudget)?
 			.cancel_payment_request(payment_id)?
 			.into_iter()
 			.map(|event| ProjectEvent::Budget { id: self.id, event })
@@ -143,6 +154,8 @@ impl Project {
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
 		Ok(self
 			.budget
+			.as_ref()
+			.ok_or(Error::NoBudget)?
 			.add_payment_receipt(payment_id, receipt_id, amount, receipt)
 			.await?
 			.into_iter()
@@ -258,12 +271,19 @@ mod tests {
 	fn allocate_budget(project_created: ProjectEvent, initial_budget: Amount) {
 		let project = Project::from_events(&[project_created]);
 		let events = project
-			.allocate_budget(initial_budget.amount())
+			.allocate_budget(&initial_budget)
 			.expect("Failed while allocating budget");
 
-		assert_eq!(events.len(), 1);
+		assert_eq!(events.len(), 2);
 		assert_matches!(
 			events[0],
+			ProjectEvent::Budget {
+				id: _,
+				event: BudgetEvent::Created { .. }
+			}
+		);
+		assert_matches!(
+			events[1],
 			ProjectEvent::Budget {
 				id: _,
 				event: BudgetEvent::Allocated { .. }

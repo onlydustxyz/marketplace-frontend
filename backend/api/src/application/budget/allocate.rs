@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use domain::{AggregateRootRepository, DomainError, Event, Project, ProjectId, Publisher};
+use domain::{AggregateRootRepository, Amount, DomainError, Event, Project, ProjectId, Publisher};
 use infrastructure::amqp::UniqueMessage;
 use rust_decimal::Decimal;
 use tracing::instrument;
@@ -27,12 +27,15 @@ impl Usecase {
 	pub async fn update_allocation(
 		&self,
 		project_id: &ProjectId,
-		new_remaining_amount: &Decimal,
+		new_remaining_amount: &Amount,
 	) -> Result<(), DomainError> {
 		let project = self.project_repository.find_by_id(project_id)?;
-		let diff_amount = project.budget().spent_amount()
-			- project.budget().allocated_amount().amount()
-			+ new_remaining_amount;
+
+		let current_remaining_amount = project.budget().as_ref().map_or(Decimal::ZERO, |b| {
+			b.allocated_amount().amount() - b.spent_amount()
+		});
+
+		let diff_amount = new_remaining_amount - current_remaining_amount;
 
 		project
 			.allocate_budget(&diff_amount)

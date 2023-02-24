@@ -159,11 +159,11 @@ impl Mutation {
 			.update_budget_allocation_usecase
 			.update_allocation(
 				&project_id.into(),
-				Money::from_major(
+				&Money::from_major(
 					new_remaining_amount_in_usd as i64,
 					rusty_money::crypto::USDC,
 				)
-				.amount(),
+				.into(),
 			)
 			.await?;
 
