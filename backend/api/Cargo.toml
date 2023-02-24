@@ -62,6 +62,7 @@ rusty-money = {version = "0.4.1", features = ["iso", "crypto"]}
 derive-getters = "0.2.0"
 email_address = "0.2.4"
 iban_validate = {version = "4.0.1", features = ["serde"]}
+rust_decimal = "1.26.1"
 
 # Local dependecies
 domain = {path = "../common/domain", features = ["rocket"]}

@@ -1,19 +1,21 @@
 use std::fmt::Display;
 
+use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
-use crate::{AggregateEvent, Amount, Budget, BudgetId, PaymentEvent};
+use crate::{AggregateEvent, Budget, BudgetId, Currency, PaymentEvent};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
-	Allocated { id: BudgetId, amount: Amount },
+	Created { id: BudgetId, currency: Currency },
+	Allocated { id: BudgetId, amount: Decimal },
 	Payment { id: BudgetId, event: PaymentEvent },
 }
 
 impl AggregateEvent<Budget> for Event {
 	fn aggregate_id(&self) -> &BudgetId {
 		match self {
-			Self::Allocated { id, .. } | Self::Payment { id, .. } => id,
+			Self::Created { id, .. } | Self::Allocated { id, .. } | Self::Payment { id, .. } => id,
 		}
 	}
 }

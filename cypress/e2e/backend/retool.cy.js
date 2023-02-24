@@ -296,6 +296,38 @@ describe("As an admin, on retool, I", () => {
     );
   });
 
+  it.only("can cut a project budget", function () {
+    const REPO = this.repos.A;
+
+    cy.createGithubUser(12345454).then(leader =>
+      cy.createProjectWithLeader(leader, "Another project", 500, REPO.id).then(projectId => {
+        cy.requestPayment(projectId, 200, 55000, { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] })
+          .asRegisteredUser(leader)
+          .data("requestPayment")
+          .then(() => {
+            cy.updateBudgetAllocation(projectId, 0).then(() => {
+              cy.graphql({
+                query: `
+                          query($projectId: uuid!) {
+                              projectsByPk(id:$projectId) {
+                                  budgets {
+                                      remainingAmount
+                                  }
+                              }
+                          }`,
+                variables: { projectId },
+              })
+                .asAdmin()
+                .data("projectsByPk.budgets")
+                .its(0)
+                .its("remainingAmount")
+                .should("equal", 0);
+            });
+          });
+      })
+    );
+  });
+
   it("can register an ethereum payment by eth address", function () {
     cy.createGithubUser(12345454).then(leader =>
       cy.createProjectWithLeader(leader, "Another project", 500).then(projectId => {

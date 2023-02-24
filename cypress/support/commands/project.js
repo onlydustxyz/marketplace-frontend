@@ -103,6 +103,20 @@ Cypress.Commands.add("getProjectBudget", projectId => {
   };
 });
 
+Cypress.Commands.add("updateBudgetAllocation", (projectId, amount) => {
+  return cy
+    .graphql({
+      query: `mutation ($projectId: Uuid!, $amount: Int!) {
+          updateBudgetAllocation(projectId: $projectId, newRemainingAmountInUsd: $amount)
+      }`,
+      variables: { projectId, amount },
+      wait: WAIT_LONG,
+    })
+    .asAdmin()
+    .data("updateBudgetAllocation")
+    .should("equal", true);
+});
+
 Cypress.Commands.add("linkGithubRepoWithProject", (projectId, githubRepoId) => {
   return {
     query: `mutation($projectId: Uuid!, $githubRepoId: Int!) {

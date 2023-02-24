@@ -1,4 +1,4 @@
-use std::ops::{Mul, Sub};
+use std::ops::{Add, Mul, Sub};
 
 use derive_getters::Getters;
 use derive_more::Display;
@@ -17,6 +17,17 @@ pub struct Amount {
 impl std::fmt::Display for Amount {
 	fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
 		write!(f, "{} {}", self.amount, self.currency)
+	}
+}
+
+impl Add<&Decimal> for Amount {
+	type Output = Self;
+
+	fn add(self, rhs: &Decimal) -> Self::Output {
+		Self {
+			amount: self.amount + rhs,
+			..self
+		}
 	}
 }
 
@@ -84,6 +95,15 @@ mod tests {
 		assert_eq!(
 			Amount::new(dec!(125), Currency::Crypto("USDC".to_string())),
 			Money::from_major(125, crypto::USDC).into()
+		);
+	}
+
+	#[test]
+	fn add() {
+		let amount1 = Amount::new(dec!(125), Currency::Crypto("USDC".to_string()));
+		assert_eq!(
+			Amount::new(dec!(130), Currency::Crypto("USDC".to_string())),
+			amount1 + &dec!(5)
 		);
 	}
 

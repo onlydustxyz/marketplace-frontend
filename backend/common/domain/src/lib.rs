@@ -20,7 +20,7 @@ pub use messaging::{
 };
 
 mod project;
-pub use project::{Event as ProjectEvent, Id as ProjectId, Project};
+pub use project::{Error as ProjectError, Event as ProjectEvent, Id as ProjectId, Project};
 
 mod payment;
 pub use payment::{

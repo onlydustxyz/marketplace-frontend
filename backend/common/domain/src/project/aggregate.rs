@@ -2,6 +2,7 @@ use std::{collections::HashSet, iter::once};
 
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
+use rust_decimal::Decimal;
 use serde_json::Value;
 use thiserror::Error;
 
@@ -73,11 +74,22 @@ impl Project {
 		id: ProjectId,
 		initial_budget: Amount,
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
-		let events = Budget::allocate(BudgetId::new(), initial_budget)
-			.into_iter()
-			.map(|event| ProjectEvent::Budget { id, event });
+		let mut events = Budget::create(BudgetId::new(), initial_budget.currency().clone());
+		events.append(&mut Budget::from_events(&events).allocate(*initial_budget.amount())?);
+
+		let events = events.into_iter().map(|event| ProjectEvent::Budget { id, event });
 
 		Ok(once(ProjectEvent::Created { id }).chain(events).collect())
+	}
+
+	pub fn allocate_budget(&self, diff: &Decimal) -> Result<Vec<<Self as Aggregate>::Event>> {
+		let events = self
+			.budget
+			.allocate(*diff)?
+			.into_iter()
+			.map(|event| ProjectEvent::Budget { id: self.id, event })
+			.collect();
+		Ok(events)
 	}
 
 	pub fn assign_leader(&self, leader_id: UserId) -> Result<Vec<<Self as Aggregate>::Event>> {
@@ -170,6 +182,11 @@ mod tests {
 	}
 
 	#[fixture]
+	fn budget_id() -> BudgetId {
+		Uuid::from_str("9859fcd9-b357-495e-9f4c-038ec12fecb1").unwrap().into()
+	}
+
+	#[fixture]
 	fn initial_budget() -> Amount {
 		Amount::new(dec!(1000), Currency::Crypto("USDC".to_string()))
 	}
@@ -179,14 +196,51 @@ mod tests {
 		ProjectEvent::Created { id: project_id }
 	}
 
+	#[fixture]
+	fn budget_created(
+		project_id: ProjectId,
+		budget_id: BudgetId,
+		initial_budget: Amount,
+	) -> ProjectEvent {
+		ProjectEvent::Budget {
+			id: project_id,
+			event: BudgetEvent::Created {
+				id: budget_id,
+				currency: initial_budget.currency().clone(),
+			},
+		}
+	}
+
+	#[fixture]
+	fn budget_allocated(
+		project_id: ProjectId,
+		budget_id: BudgetId,
+		initial_budget: Amount,
+	) -> ProjectEvent {
+		ProjectEvent::Budget {
+			id: project_id,
+			event: BudgetEvent::Allocated {
+				id: budget_id,
+				amount: *initial_budget.amount(),
+			},
+		}
+	}
+
 	#[rstest]
 	async fn test_create(project_id: ProjectId, initial_budget: Amount) {
 		let events = Project::create(project_id, initial_budget).await.unwrap();
 
-		assert_eq!(events.len(), 2);
+		assert_eq!(events.len(), 3);
 		assert_eq!(events[0], ProjectEvent::Created { id: project_id });
 		assert_matches!(
 			events[1],
+			ProjectEvent::Budget {
+				id: _,
+				event: BudgetEvent::Created { .. }
+			}
+		);
+		assert_matches!(
+			events[2],
 			ProjectEvent::Budget {
 				id: _,
 				event: BudgetEvent::Allocated { .. }
@@ -220,5 +274,22 @@ mod tests {
 
 		assert!(result.is_err());
 		assert_matches!(result.unwrap_err(), Error::LeaderAlreadyAssigned);
+	}
+
+	#[rstest]
+	fn allocate_budget(project_created: ProjectEvent, initial_budget: Amount) {
+		let project = Project::from_events(&[project_created]);
+		let events = project
+			.allocate_budget(initial_budget.amount())
+			.expect("Failed while allocating budget");
+
+		assert_eq!(events.len(), 1);
+		assert_matches!(
+			events[0],
+			ProjectEvent::Budget {
+				id: _,
+				event: BudgetEvent::Allocated { .. }
+			}
+		);
 	}
 }
