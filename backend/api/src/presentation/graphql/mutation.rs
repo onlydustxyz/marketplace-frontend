@@ -12,7 +12,7 @@ use crate::{
 		PaymentReason,
 	},
 	presentation::{
-		dto::{ProjectGithubRepoMapping, ProjectSponsorMapping},
+		dto::{ProjectGithubRepoMapping, ProjectSponsorMapping, ProjectUserMapping},
 		http::dto::{EthereumIdentityInput, IdentityInput, PayoutSettingsInput},
 	},
 };
@@ -297,7 +297,7 @@ impl Mutation {
 		context: &Context,
 		project_id: Uuid,
 		user_id: Uuid,
-	) -> Result<bool> {
+	) -> Result<ProjectUserMapping> {
 		let project_id = ProjectId::from(project_id);
 		let caller_id = UserId::from(user_id);
 
@@ -313,7 +313,7 @@ impl Mutation {
 			.remove_leader(&project_id, &caller_id)
 			.await?;
 
-		Ok(true)
+		Ok(ProjectUserMapping::new(project_id.into(), user_id))
 	}
 
 	pub fn add_sponsor_to_project(

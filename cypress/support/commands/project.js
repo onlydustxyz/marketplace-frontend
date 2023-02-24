@@ -144,7 +144,9 @@ Cypress.Commands.add("unlinkGithubRepoFromProject", (projectId, githubRepoId) =>
 Cypress.Commands.add("unassignProjectLead", (projectId, userId) => {
   return {
     query: `mutation($projectId: Uuid!, $userId: Uuid!) {
-                unassignProjectLead(projectId: $projectId, userId: $userId)
+                unassignProjectLead(projectId: $projectId, userId: $userId) {
+                    projectId
+                }
             }`,
     variables: { projectId, userId },
     wait: WAIT_SHORT,
