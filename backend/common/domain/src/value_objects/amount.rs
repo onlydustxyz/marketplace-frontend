@@ -1,4 +1,4 @@
-use std::ops::{Add, Mul, Sub};
+use std::ops::{Add, Deref, Mul, Sub};
 
 use derive_getters::Getters;
 use derive_more::Display;
@@ -42,6 +42,17 @@ impl Sub<&Self> for Amount {
 		Self {
 			amount: self.amount - rhs.amount,
 			..self
+		}
+	}
+}
+
+impl Sub<Decimal> for &Amount {
+	type Output = <Self as Deref>::Target;
+
+	fn sub(self, rhs: Decimal) -> Self::Output {
+		Amount {
+			amount: self.amount - rhs,
+			currency: self.currency.clone(),
 		}
 	}
 }
@@ -114,6 +125,15 @@ mod tests {
 		assert_eq!(
 			Amount::new(dec!(120), Currency::Crypto("USDC".to_string())),
 			amount1 - &amount2
+		);
+	}
+
+	#[test]
+	fn substract_decimal() {
+		let amount1 = Amount::new(dec!(125), Currency::Crypto("USDC".to_string()));
+		assert_eq!(
+			Amount::new(dec!(120), Currency::Crypto("USDC".to_string())),
+			&amount1 - dec!(5)
 		);
 	}
 

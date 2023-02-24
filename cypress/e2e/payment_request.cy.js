@@ -5,7 +5,7 @@ describe("As a project lead, I", () => {
     cy.createGithubUser(98735558)
       .as("user")
       .then(user => {
-        cy.createProject("Project with budget", 1000).withLeader(user).withRepo().as("projectId");
+        cy.createProject("Project with budget").withLeader(user).withBudget(1000).withRepo().as("projectId");
         cy.signinUser(user)
           .then(user => JSON.stringify(user.session))
           .as("token");
@@ -33,11 +33,11 @@ describe("As a project lead, I", () => {
   });
 
   it("can accept an invitation to become project lead", function () {
-    cy.createProject("Project without invite");
-    cy.createProject("Project without invite");
-    cy.createProject("Project with invite").then(projectId =>
-      cy.inviteProjectLeader(projectId, this.user.githubUserId).asAdmin()
-    );
+    cy.createProject("Project without invite").withBudget(500);
+    cy.createProject("Project without invite").withBudget(500);
+    cy.createProject("Project with invite")
+      .withBudget(500)
+      .then(projectId => cy.inviteProjectLeader(projectId, this.user.githubUserId).asAdmin());
 
     cy.visit("http://localhost:5173/", {
       onBeforeLoad(win) {

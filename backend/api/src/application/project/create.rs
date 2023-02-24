@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::{Amount, DomainError, Event, Project, ProjectId, Publisher};
+use domain::{DomainError, Event, Project, ProjectId, Publisher};
 use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
 
@@ -34,15 +34,12 @@ impl Usecase {
 		name: NonEmptyTrimmedString,
 		short_description: NonEmptyTrimmedString,
 		long_description: NonEmptyTrimmedString,
-		initial_budget: Amount,
 		telegram_link: Option<String>,
 		logo_url: Option<String>,
 	) -> Result<ProjectId, DomainError> {
 		let project_id = ProjectId::new();
 
-		Project::create(project_id, initial_budget)
-			.await
-			.map_err(|e| DomainError::InvalidInputs(e.into()))?
+		Project::create(project_id)
 			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)
