@@ -60,12 +60,18 @@ describe("As a public user, I", () => {
     });
 
     cy.get("#contributors_table tbody tr:nth-child(2)").within(() => {
+      cy.get("td:nth-child(1)").should(div => expect(div.text()).to.include("oscarwroche"));
+      cy.get("td:nth-child(2)").should("have.text", "-");
+      cy.get("td:nth-child(3)").should("have.text", "-");
+    });
+
+    cy.get("#contributors_table tbody tr:nth-child(3)").within(() => {
       cy.get("td:nth-child(1)").should(div => expect(div.text()).to.include("AnthonyBuisset"));
       cy.get("td:nth-child(2)").should("have.text", "-");
       cy.get("td:nth-child(3)").should("have.text", "-");
     });
 
-    cy.get("#contributors_table tbody tr").its("length").should("equal", 2);
+    cy.get("#contributors_table tbody tr").its("length").should("equal", 3);
   });
 
   it("can sort the contributors of a project", function () {
@@ -75,7 +81,7 @@ describe("As a public user, I", () => {
     cy.get("#contributors_table thead tr th:nth-child(1)").click(); // sort by contributor name ASC
 
     cy.get("#contributors_table tbody tr:nth-child(1)").within(() => {
-      cy.get("td:nth-child(1)").should("have.text", "AnthonyBuisset");
+      cy.get("td:nth-child(1)").should(div => expect(div.text()).to.include("AnthonyBuisset"));
       cy.get("td:nth-child(2)").should("have.text", "-");
       cy.get("td:nth-child(3)").should("have.text", "-");
     });
