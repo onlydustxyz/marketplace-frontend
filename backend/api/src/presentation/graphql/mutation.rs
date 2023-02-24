@@ -279,7 +279,7 @@ impl Mutation {
 	pub async fn accept_project_leader_invitation(
 		context: &Context,
 		invitation_id: Uuid,
-	) -> Result<bool> {
+	) -> Result<Uuid> {
 		let caller_info = context.caller_info()?;
 		context
 			.accept_project_leader_invitation_usecase
@@ -290,7 +290,7 @@ impl Mutation {
 			)
 			.await?;
 
-		Ok(true)
+		Ok(invitation_id)
 	}
 
 	pub async fn unassign_project_lead(
