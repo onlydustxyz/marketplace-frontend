@@ -41,7 +41,7 @@ export default function OverviewPanel({
           </div>
         </Section>
       )}
-      {contributors && contributors.length > 0 && (
+      {contributors && contributors?.length > 0 && (
         <Section icon={SectionIcon.User} title={T("project.details.overview.contributors")}>
           <div className="flex flex-row items-center text-sm text-greyscale-50 font-normal gap-2">
             <div className="flex flex-row -space-x-1">
@@ -66,7 +66,7 @@ export default function OverviewPanel({
           </div>
         </Section>
       )}
-      {sponsors.length > 0 && (
+      {sponsors?.length > 0 && (
         <Section icon={SectionIcon.Service} title={T("project.details.overview.sponsors")}>
           <div data-testid="sponsors" className="flex flex-row flex-wrap gap-3">
             {sponsors.map(sponsor => (
