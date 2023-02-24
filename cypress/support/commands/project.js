@@ -72,46 +72,12 @@ Cypress.Commands.add(
   },
   (projectId, githubRepoId) => {
     cy.fixture("repos.json").then(repos => {
-      cy.linkGithubRepoWithProject(projectId, githubRepoId === 0 ? repos.A.id : githubRepoId)
+      cy.linkGithubRepoWithProject(projectId, !githubRepoId ? repos.A.id : githubRepoId)
         .asAdmin()
         .data("linkGithubRepo")
         .should("be.a", "string")
         .then(() => projectId);
     });
-  }
-);
-
-Cypress.Commands.add(
-  "createProjectWithLeader",
-  (
-    user,
-    projectName = "My Project",
-    initialBudget = 500,
-    githubRepoId = 0,
-    telegramLink = "https://t.me/foo",
-    logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4",
-    shortDescription = "My project description",
-    longDescription = "This project certainly aim to do stuff"
-  ) => {
-    cy.callCreateProjectMutation(projectName, initialBudget, telegramLink, logoUrl, shortDescription, longDescription)
-      .asAdmin()
-      .data("createProject")
-      .then(projectId => {
-        cy.inviteProjectLeader(projectId, user.githubUserId)
-          .asAdmin()
-          .data("inviteProjectLeader")
-          .should("be.a", "string")
-          .then(invitationId => cy.acceptProjectLeaderInvitation(invitationId))
-          .asRegisteredUser(user)
-          .then(() => projectId);
-
-        cy.fixture("repos.json").then(repos => {
-          cy.linkGithubRepoWithProject(projectId, githubRepoId === 0 ? repos.A.id : githubRepoId)
-            .asAdmin()
-            .data("linkGithubRepo")
-            .should("be.a", "string");
-        });
-      });
   }
 );
 
