@@ -154,8 +154,8 @@ impl Mutation {
 		context: &Context,
 		project_id: Uuid,
 		new_remaining_amount_in_usd: i32,
-	) -> Result<bool> {
-		context
+	) -> Result<Uuid> {
+		let budget_id = context
 			.update_budget_allocation_usecase
 			.update_allocation(
 				&project_id.into(),
@@ -167,7 +167,7 @@ impl Mutation {
 			)
 			.await?;
 
-		Ok(true)
+		Ok(budget_id.into())
 	}
 
 	pub async fn link_github_repo(

@@ -1,6 +1,10 @@
 use std::sync::Arc;
 
-use domain::{AggregateRootRepository, Amount, DomainError, Event, Project, ProjectId, Publisher};
+use anyhow::anyhow;
+use domain::{
+	AggregateRootRepository, Amount, BudgetId, DomainError, Event, EventSourcable, Project,
+	ProjectId, Publisher,
+};
 use infrastructure::amqp::UniqueMessage;
 use rust_decimal::Decimal;
 use tracing::instrument;
@@ -28,7 +32,7 @@ impl Usecase {
 		&self,
 		project_id: &ProjectId,
 		new_remaining_amount: &Amount,
-	) -> Result<(), DomainError> {
+	) -> Result<BudgetId, DomainError> {
 		let project = self.project_repository.find_by_id(project_id)?;
 
 		let current_remaining_amount = project.budget().as_ref().map_or(Decimal::ZERO, |b| {
@@ -37,9 +41,13 @@ impl Usecase {
 
 		let diff_amount = new_remaining_amount - current_remaining_amount;
 
-		project
+		let events = project
 			.allocate_budget(&diff_amount)
-			.map_err(|error| DomainError::InvalidInputs(error.into()))?
+			.map_err(|error| DomainError::InvalidInputs(error.into()))?;
+
+		let project = project.apply_events(&events);
+
+		events
 			.into_iter()
 			.map(Event::from)
 			.map(UniqueMessage::new)
@@ -47,6 +55,10 @@ impl Usecase {
 			.publish(self.event_publisher.clone())
 			.await?;
 
-		Ok(())
+		let budget = project.budget().as_ref().ok_or(DomainError::InternalError(anyhow!(
+			"Failed while allocating budget"
+		)))?;
+
+		Ok(*budget.id())
 	}
 }
