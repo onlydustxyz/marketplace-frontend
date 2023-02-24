@@ -6,18 +6,25 @@ import AllProjects, { buildGetProjectsQuery } from ".";
 import { ProjectOwnershipType } from "..";
 import { CLAIMS_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
+import { GetProjectsQueryResult } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
 const TEST_PROJECT_ID = "2";
 
-const ALL_PROJECTS_RESULT_NO_INVITATIONS = {
+const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"] } = {
   data: {
     projects: [
       {
         __typename: "Projects",
         id: "1",
-        name: "project1",
+        projectDetails: {
+          projectId: "1",
+          name: "project1",
+          shortDescription: "short description",
+          logoUrl: null,
+          telegramLink: null,
+        },
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -26,11 +33,35 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS = {
           },
         },
         pendingInvitations: [],
+        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectSponsors: [],
+        githubRepos: [
+          {
+            githubRepoId: 123456,
+            githubRepoDetails: {
+              id: 123456,
+              owner: "owner",
+              name: "name",
+              languages: [],
+              content: {
+                id: 123456,
+                contributors: [],
+                logoUrl: "logo",
+              },
+            },
+          },
+        ],
       },
       {
         __typename: "Projects",
         id: "2",
-        name: "project2",
+        projectDetails: {
+          projectId: "2",
+          name: "project2",
+          shortDescription: "short description",
+          logoUrl: null,
+          telegramLink: null,
+        },
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -39,18 +70,42 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS = {
           },
         },
         pendingInvitations: [],
+        githubRepos: [
+          {
+            githubRepoId: 123456,
+            githubRepoDetails: {
+              id: 123456,
+              owner: "owner",
+              name: "name",
+              languages: [],
+              content: {
+                id: 123456,
+                contributors: [],
+                logoUrl: "logo",
+              },
+            },
+          },
+        ],
+        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectSponsors: [],
       },
     ],
   },
 };
 
-const ALL_PROJECTS_RESULT_WITH_INVITATION = {
+const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"] } = {
   data: {
     projects: [
       {
         __typename: "Projects",
         id: "1",
-        name: "project1",
+        projectDetails: {
+          projectId: "1",
+          name: "project-1",
+          logoUrl: null,
+          shortDescription: "short description",
+          telegramLink: null,
+        },
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -59,11 +114,35 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION = {
           },
         },
         pendingInvitations: [],
+        githubRepos: [
+          {
+            githubRepoId: 123456,
+            githubRepoDetails: {
+              id: 123456,
+              owner: "owner",
+              name: "name",
+              languages: [],
+              content: {
+                id: 123456,
+                contributors: [],
+                logoUrl: "logo",
+              },
+            },
+          },
+        ],
+        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectSponsors: [],
       },
       {
         __typename: "Projects",
         id: "2",
-        name: "project1",
+        projectDetails: {
+          projectId: "2",
+          name: "project-2",
+          logoUrl: null,
+          shortDescription: "short description",
+          telegramLink: null,
+        },
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -72,11 +151,35 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION = {
           },
         },
         pendingInvitations: [],
+        githubRepos: [
+          {
+            githubRepoId: 123456,
+            githubRepoDetails: {
+              id: 123456,
+              owner: "owner",
+              name: "name",
+              languages: [],
+              content: {
+                id: 123456,
+                contributors: [],
+                logoUrl: "logo",
+              },
+            },
+          },
+        ],
+        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectSponsors: [],
       },
       {
         __typename: "Projects",
         id: "3",
-        name: "project2",
+        projectDetails: {
+          projectId: "3",
+          name: "project-3",
+          logoUrl: null,
+          shortDescription: "short description",
+          telegramLink: null,
+        },
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -84,13 +187,31 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION = {
             },
           },
         },
-        pendingInvitations: ["test"],
+        pendingInvitations: [{ id: "invitation-1" }],
+        githubRepos: [
+          {
+            githubRepoId: 123456,
+            githubRepoDetails: {
+              id: 123456,
+              owner: "owner",
+              name: "name",
+              languages: [],
+              content: {
+                id: 123456,
+                contributors: [],
+                logoUrl: "logo",
+              },
+            },
+          },
+        ],
+        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectSponsors: [],
       },
     ],
   },
 };
 
-const buildGraphQlMocks = (projectsQueryResult: any) => [
+const buildGraphQlMocks = (projectsQueryResult: { data: GetProjectsQueryResult["data"] }) => [
   {
     request: {
       query: buildGetProjectsQuery([]),
