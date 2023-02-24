@@ -43,6 +43,13 @@ const graphQlMocks = [
                 },
               },
             },
+            {
+              githubRepoDetails: {
+                content: {
+                  contributors: [{ login: "test-login", avatarUrl: "test-url" }],
+                },
+              },
+            },
           ],
         },
       },
@@ -66,6 +73,9 @@ describe("Overview component", () => {
 
   it("should render the contributors element of the panel", async () => {
     await screen.findByText(/contributors/i);
+  });
+
+  it("should deduplicate users", async () => {
     await screen.findByText(/1/i);
   });
 });
