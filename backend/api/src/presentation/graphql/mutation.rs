@@ -11,7 +11,10 @@ use crate::{
 		user_info::{Email, Identity, Location, PayoutSettings},
 		PaymentReason,
 	},
-	presentation::http::dto::{EthereumIdentityInput, IdentityInput, PayoutSettingsInput},
+	presentation::{
+		dto::ProjectGithubRepoMapping,
+		http::dto::{EthereumIdentityInput, IdentityInput, PayoutSettingsInput},
+	},
 };
 
 pub struct Mutation;
@@ -176,26 +179,26 @@ impl Mutation {
 		context: &Context,
 		project_id: Uuid,
 		github_repo_id: i32,
-	) -> Result<Uuid> {
+	) -> Result<ProjectGithubRepoMapping> {
 		context
 			.link_github_repo_usecase
 			.link_github_repo(project_id.into(), (github_repo_id as i64).into())
 			.await?;
 
-		Ok(project_id)
+		Ok(ProjectGithubRepoMapping::new(project_id, github_repo_id))
 	}
 
 	pub async fn unlink_github_repo(
 		context: &Context,
 		project_id: Uuid,
 		github_repo_id: i32,
-	) -> Result<Uuid> {
+	) -> Result<ProjectGithubRepoMapping> {
 		context
 			.unlink_github_repo_usecase
 			.unlink_github_repo(project_id.into(), (github_repo_id as i64).into())
 			.await?;
 
-		Ok(project_id)
+		Ok(ProjectGithubRepoMapping::new(project_id, github_repo_id))
 	}
 
 	pub async fn request_payment(

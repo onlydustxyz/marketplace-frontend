@@ -60,7 +60,7 @@ Cypress.Commands.add(
         cy.fixture("repos.json").then(repos => {
           cy.linkGithubRepoWithProject(projectId, githubRepoId === 0 ? repos.A.id : githubRepoId)
             .asAdmin()
-            .data("linkGithubRepo")
+            .data("linkGithubRepo.projectId")
             .should("be.a", "string");
         });
       });
@@ -120,7 +120,9 @@ Cypress.Commands.add("updateBudgetAllocation", (projectId, amount) => {
 Cypress.Commands.add("linkGithubRepoWithProject", (projectId, githubRepoId) => {
   return {
     query: `mutation($projectId: Uuid!, $githubRepoId: Int!) {
-                linkGithubRepo(projectId: $projectId, githubRepoId: $githubRepoId)
+                linkGithubRepo(projectId: $projectId, githubRepoId: $githubRepoId) {
+                    projectId
+                }
             }`,
     variables: { projectId, githubRepoId },
     wait: WAIT_SHORT,
@@ -130,7 +132,9 @@ Cypress.Commands.add("linkGithubRepoWithProject", (projectId, githubRepoId) => {
 Cypress.Commands.add("unlinkGithubRepoFromProject", (projectId, githubRepoId) => {
   return {
     query: `mutation($projectId: Uuid!, $githubRepoId: Int!) {
-                unlinkGithubRepo(projectId: $projectId, githubRepoId: $githubRepoId)
+                unlinkGithubRepo(projectId: $projectId, githubRepoId: $githubRepoId) {
+                    projectId
+                }
             }`,
     variables: { projectId, githubRepoId },
     wait: WAIT_SHORT,
