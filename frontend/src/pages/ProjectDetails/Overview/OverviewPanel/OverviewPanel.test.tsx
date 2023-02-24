@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import Overview, { GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_QUERY } from ".";
+import OverviewPanel, { GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY } from ".";
 
 expect.extend(matchers);
 
@@ -22,12 +22,14 @@ vi.mock("axios", () => ({
   },
 }));
 
+const TEST_PROJECT_ID = "test-project-id";
+
 const graphQlMocks = [
   {
     request: {
-      query: GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_QUERY,
+      query: GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY,
       variables: {
-        projectId: "test-project-id",
+        projectId: TEST_PROJECT_ID,
       },
     },
     result: {
@@ -54,10 +56,10 @@ describe("Overview component", () => {
   });
 
   beforeEach(() => {
-    renderWithIntl(<Overview />, {
+    renderWithIntl(<OverviewPanel sponsors={[]} telegramLink="test-telegram-link" projectId={TEST_PROJECT_ID} />, {
       wrapper: MemoryRouterProviderFactory({
         mocks: graphQlMocks,
-        context: { projectId: "test-project-id" },
+        context: { projectId: TEST_PROJECT_ID },
       }),
     });
   });

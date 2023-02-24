@@ -1,30 +1,46 @@
 import { gql } from "@apollo/client";
+import { uniqBy } from "lodash";
 import Card from "src/components/Card";
 import ExternalLink from "src/components/ExternalLink";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
+import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
-import { Contributor } from "src/types";
+import { Contributor, HasuraUserRole } from "src/types";
+import isDefined from "src/utils/isDefined";
 import { formatMoneyAmount } from "src/utils/money";
-import { ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
+import { GetProjectContributorsForOverviewQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 import ClickableUser from "./ClickableUser";
 import Section, { SectionIcon } from "./Section";
 
 interface OverviewPanelProps {
-  contributors?: Contributor[];
   leads?: ProjectLeadFragment[];
   totalSpentAmountInUsd?: number;
   sponsors: SponsorFragment[];
   telegramLink: string | null;
+  projectId: string;
 }
 
 export default function OverviewPanel({
-  contributors,
+  projectId,
   leads,
   totalSpentAmountInUsd,
   sponsors,
   telegramLink,
 }: OverviewPanelProps) {
   const { T } = useIntl();
+  const getProjectContributorsForOverview = useHasuraQuery<GetProjectContributorsForOverviewQuery>(
+    GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY,
+    HasuraUserRole.Public,
+    { variables: { projectId } }
+  );
+
+  const contributors = uniqBy(
+    getProjectContributorsForOverview?.data?.projectsByPk?.githubRepos
+      .map(githubRepo => githubRepo?.githubRepoDetails?.content?.contributors)
+      .flat(),
+    contributor => contributor?.login
+  ).filter(isDefined);
+
   return (
     <Card className="h-fit p-0 basis-96 flex flex-col divide-y divide-greyscale-50/8" padded={false}>
       {leads && leads.length > 0 && (
@@ -41,7 +57,7 @@ export default function OverviewPanel({
           </div>
         </Section>
       )}
-      {contributors && contributors?.length > 0 && (
+      {contributors && contributors.length > 0 && (
         <Section icon={SectionIcon.User} title={T("project.details.overview.contributors")}>
           <div className="flex flex-row items-center text-sm text-greyscale-50 font-normal gap-2">
             <div className="flex flex-row -space-x-1">
@@ -99,5 +115,22 @@ export const SPONSOR_FRAGMENT = gql`
     name
     logoUrl
     url
+  }
+`;
+
+export const GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY = gql`
+  query GetProjectContributorsForOverview($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
+      githubRepos {
+        githubRepoDetails {
+          content {
+            contributors {
+              login
+              avatarUrl
+            }
+          }
+        }
+      }
+    }
   }
 `;

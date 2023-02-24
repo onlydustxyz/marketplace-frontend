@@ -19,7 +19,7 @@ import {
 import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import { generatePath } from "react-router-dom";
 import { GET_PAYMENTS_QUERY } from "src/pages/Payments";
-import { GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_QUERY } from "src/pages/ProjectDetails/Overview";
+import { GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY } from "src/pages/ProjectDetails/Overview/OverviewPanel";
 
 const AUTH_CODE_TEST_VALUE = "code";
 const LOGGING_IN_TEXT_QUERY = /logging in.../i;
@@ -223,7 +223,7 @@ const graphQlMocks = [
     },
   },
   {
-    request: { query: GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_QUERY },
+    request: { query: GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY },
     result: {
       data: {
         projectsByPk: {
