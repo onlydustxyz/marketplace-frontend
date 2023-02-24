@@ -20,24 +20,28 @@ Cypress.Commands.add("addSponsorToProject", (projectId, sponsorId) => {
   return cy
     .graphql({
       query: `mutation($projectId: Uuid!, $sponsorId: Uuid!) {
-                addSponsorToProject(projectId: $projectId, sponsorId: $sponsorId)
+                addSponsorToProject(projectId: $projectId, sponsorId: $sponsorId) {
+                    projectId
+                }
             }`,
       variables: { projectId, sponsorId },
       wait: WAIT_SHORT,
     })
     .asAdmin()
-    .data("addSponsorToProject");
+    .data("addSponsorToProject.projectId");
 });
 
 Cypress.Commands.add("removeSponsorFromProject", (projectId, sponsorId) => {
   return cy
     .graphql({
       query: `mutation($projectId: Uuid!, $sponsorId: Uuid!) {
-                removeSponsorFromProject(projectId: $projectId, sponsorId: $sponsorId)
+                removeSponsorFromProject(projectId: $projectId, sponsorId: $sponsorId) {
+                    projectId
+                }
             }`,
       variables: { projectId, sponsorId },
       wait: WAIT_SHORT,
     })
     .asAdmin()
-    .data("removeSponsorFromProject");
+    .data("removeSponsorFromProject.projectId");
 });

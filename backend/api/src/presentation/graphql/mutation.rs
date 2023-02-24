@@ -12,7 +12,7 @@ use crate::{
 		PaymentReason,
 	},
 	presentation::{
-		dto::ProjectGithubRepoMapping,
+		dto::{ProjectGithubRepoMapping, ProjectSponsorMapping},
 		http::dto::{EthereumIdentityInput, IdentityInput, PayoutSettingsInput},
 	},
 };
@@ -320,23 +320,23 @@ impl Mutation {
 		context: &Context,
 		project_id: Uuid,
 		sponsor_id: Uuid,
-	) -> Result<Uuid> {
+	) -> Result<ProjectSponsorMapping> {
 		context
 			.add_sponsor_usecase
 			.add_sponsor(&project_id.into(), &sponsor_id.into())?;
 
-		Ok(project_id)
+		Ok(ProjectSponsorMapping::new(project_id, sponsor_id))
 	}
 
 	pub fn remove_sponsor_from_project(
 		context: &Context,
 		project_id: Uuid,
 		sponsor_id: Uuid,
-	) -> Result<Uuid> {
+	) -> Result<ProjectSponsorMapping> {
 		context
 			.remove_sponsor_usecase
 			.remove_sponsor(&project_id.into(), &sponsor_id.into())?;
 
-		Ok(project_id)
+		Ok(ProjectSponsorMapping::new(project_id, sponsor_id))
 	}
 }
