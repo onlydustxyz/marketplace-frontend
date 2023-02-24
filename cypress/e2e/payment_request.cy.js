@@ -5,7 +5,7 @@ describe("As a project lead, I", () => {
     cy.createGithubUser(98735558)
       .as("user")
       .then(user => {
-        cy.createProjectWithLeader(user, "Project with budget", 1000).as("projectId");
+        cy.createProject("Project with budget", 1000).withLeader(user).withRepo().as("projectId");
         cy.signinUser(user)
           .then(user => JSON.stringify(user.session))
           .as("token");

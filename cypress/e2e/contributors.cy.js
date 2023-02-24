@@ -90,7 +90,7 @@ describe("As a public user, I", () => {
 describe("As a project lead, I", () => {
   beforeEach(function () {
     cy.createGithubUser(98735558).then(user => {
-      cy.createProjectWithLeader(user, "Project with budget", 100000).as("projectId");
+      cy.createProject("Project with budget", 100000).withLeader(user).withRepo().as("projectId");
       cy.signinUser(user)
         .then(user => JSON.stringify(user.session))
         .as("token");
