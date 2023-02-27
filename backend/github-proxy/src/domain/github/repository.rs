@@ -9,4 +9,7 @@ pub struct Repository {
 	contributors: Vec<GithubUser>,
 	readme: Option<GithubFile>,
 	logo_url: String,
+	description: String,
+	stars: i32,
+	forks_count: i32,
 }
