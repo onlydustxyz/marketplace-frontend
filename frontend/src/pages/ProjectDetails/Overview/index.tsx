@@ -13,6 +13,8 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import classNames from "classnames";
 import Book from "src/assets/icons/Book";
 import Badge, { BadgeSize } from "src/components/Badge";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 type OutletContext = {
   leads?: ProjectLeadFragment[];
@@ -56,7 +58,13 @@ export default function Overview() {
                   "p-6": logoUrl === onlyDustLogo,
                 })}
               />
-              <span className="text-greyscale-50 font-walsheim font-normal text-sm text-justify">{description}</span>
+              <ReactMarkdown
+                skipHtml={true}
+                remarkPlugins={[[remarkGfm]]}
+                className="text-greyscale-50 font-walsheim font-normal text-sm text-justify max-w-full prose prose-invert"
+              >
+                {description}
+              </ReactMarkdown>
             </Card>
             <Card className="flex flex-col gap-4">
               <div className="flex flex-row font-walsheim font-medium text-base text-greyscale-50 items-center border-b border-greyscale-50/8 pb-2 justify-between">
@@ -98,5 +106,10 @@ export const GET_PROJECT_OVERVIEW_DETAILS = gql`
 `;
 
 const LOREM_IPSUM = `
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue.
+Lorem ipsum dolor sit amet, consectetur *adipiscing elit*. Sed non risus. **Suspendisse lectus** tortor, dignissim sit amet:
+- adipiscing nec
+- ultricies sed
+- dolor.
+
+Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue.
 `;
