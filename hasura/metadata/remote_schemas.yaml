@@ -113,9 +113,12 @@
           }
           type Repository {
             contributors: [User!]!
+            description: String!
+            forksCount: Int!
             id: Int!
             logoUrl: String!
             readme: File
+            stars: Int!
           }
           type User {
             avatarUrl: String!
@@ -155,9 +158,12 @@
           }
           type Repository {
             contributors: [User!]!
+            description: String!
+            forksCount: Int!
             id: Int!
             logoUrl: String!
             readme: File
+            stars: Int!
           }
           type User {
             avatarUrl: String!
