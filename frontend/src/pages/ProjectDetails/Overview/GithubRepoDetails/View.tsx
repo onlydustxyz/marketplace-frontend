@@ -12,7 +12,7 @@ type Props = Omit<GithubRepoStaticDetailsFragment & GithubRepoDynamicDetailsFrag
 
 export default function View({ owner, name, description, languages, stars, forksCount }: Props) {
   return (
-    <Card className="flex flex-col gap-3 font-walsheim text-greyscale-50 font-normal relative">
+    <Card className="flex flex-col gap-3 font-walsheim text-greyscale-50 font-normal relative p-6" padded={false}>
       {owner && name && (
         <div className="absolute top-3 right-3">
           <GithubLink link={buildGithubLink(owner, name)} />
@@ -24,11 +24,11 @@ export default function View({ owner, name, description, languages, stars, forks
           {getMostUsedLanguages(languages, 1)[0]}
         </div>
       )}
-      <div className="flex flex-col text-base">
-        <span className="font-medium">{name}</span>
-        <span className="my-2 text-greyscale-200">{description}</span>
+      <div className="flex flex-col">
+        <span className="font-medium text-base">{name}</span>
+        <span className="my-2 text-greyscale-200 text-sm">{description}</span>
       </div>
-      <div className="flex flex-row gap-5 text-greyscale-200">
+      <div className="flex flex-row gap-5 text-greyscale-200 text-sm font-medium">
         <div className="flex flex-row gap-1">
           <StarLine />
           {stars}

@@ -2,6 +2,7 @@ import Card from "src/components/Card";
 import ExternalLink from "src/components/ExternalLink";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
+import isDefined from "src/utils/isDefined";
 import { formatMoneyAmount } from "src/utils/money";
 import { ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 import ClickableUser from "./ClickableUser";
@@ -29,12 +30,14 @@ export default function OverviewPanelView({
 }: OverviewPanelViewProps) {
   const { T } = useIntl();
 
+  const projectLeads = leads?.filter(lead => isDefined(lead?.displayName)) || [];
+
   return (
     <Card className="h-fit p-0 basis-96 flex flex-col divide-y divide-greyscale-50/8" padded={false}>
-      {leads && leads.length > 0 && (
+      {projectLeads.length > 0 && (
         <Section icon={SectionIcon.Star} title={T("project.details.overview.projectLeader")}>
           <div className="flex flex-row flex-wrap gap-3">
-            {leads.map(lead => (
+            {projectLeads.map(lead => (
               <ClickableUser
                 key={lead.displayName}
                 name={lead.displayName}

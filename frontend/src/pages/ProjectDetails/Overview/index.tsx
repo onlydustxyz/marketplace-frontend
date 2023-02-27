@@ -49,7 +49,7 @@ export default function Overview() {
       {children}
       <div className="flex flex-row gap-6">
         <QueryWrapper query={{ data, loading }}>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 w-full">
             <Card className="px-6 py-4 flex flex-row gap-6 items-center">
               <img
                 alt={data?.projectsByPk?.projectDetails?.name}
