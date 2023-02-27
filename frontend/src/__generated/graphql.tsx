@@ -3546,6 +3546,13 @@ export type GithubRepoStaticDetailsFragment = { __typename?: 'GithubRepoDetails'
 
 export type GithubRepoDynamicDetailsFragment = { __typename?: 'Repository', id: number, description: string, stars: number, forksCount: number };
 
+export type GetGithubRepositoryDetailsQueryVariables = Exact<{
+  githubRepoId: Scalars['bigint'];
+}>;
+
+
+export type GetGithubRepositoryDetailsQuery = { __typename?: 'query_root', githubRepoDetailsByPk: { __typename?: 'GithubRepoDetails', id: any, owner: string, name: string, languages: any, content: { __typename?: 'Repository', id: number, description: string, stars: number, forksCount: number } } | null };
+
 export type ProjectLeadFragment = { __typename?: 'users', displayName: string, avatarUrl: string };
 
 export type SponsorFragment = { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null };
@@ -4331,6 +4338,45 @@ export function useGetProjectRemainingBudgetLazyQuery(baseOptions?: Apollo.LazyQ
 export type GetProjectRemainingBudgetQueryHookResult = ReturnType<typeof useGetProjectRemainingBudgetQuery>;
 export type GetProjectRemainingBudgetLazyQueryHookResult = ReturnType<typeof useGetProjectRemainingBudgetLazyQuery>;
 export type GetProjectRemainingBudgetQueryResult = Apollo.QueryResult<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>;
+export const GetGithubRepositoryDetailsDocument = gql`
+    query GetGithubRepositoryDetails($githubRepoId: bigint!) {
+  githubRepoDetailsByPk(id: $githubRepoId) {
+    ...GithubRepoStaticDetails
+    content {
+      ...GithubRepoDynamicDetails
+    }
+  }
+}
+    ${GithubRepoStaticDetailsFragmentDoc}
+${GithubRepoDynamicDetailsFragmentDoc}`;
+
+/**
+ * __useGetGithubRepositoryDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetGithubRepositoryDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGithubRepositoryDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGithubRepositoryDetailsQuery({
+ *   variables: {
+ *      githubRepoId: // value for 'githubRepoId'
+ *   },
+ * });
+ */
+export function useGetGithubRepositoryDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>(GetGithubRepositoryDetailsDocument, options);
+      }
+export function useGetGithubRepositoryDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>(GetGithubRepositoryDetailsDocument, options);
+        }
+export type GetGithubRepositoryDetailsQueryHookResult = ReturnType<typeof useGetGithubRepositoryDetailsQuery>;
+export type GetGithubRepositoryDetailsLazyQueryHookResult = ReturnType<typeof useGetGithubRepositoryDetailsLazyQuery>;
+export type GetGithubRepositoryDetailsQueryResult = Apollo.QueryResult<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>;
 export const GetProjectContributorsForOverviewDocument = gql`
     query GetProjectContributorsForOverview($projectId: uuid!) {
   projectsByPk(id: $projectId) {

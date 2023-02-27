@@ -8,14 +8,16 @@ import { getMostUsedLanguages } from "src/utils/languages";
 import { buildGithubLink } from "src/utils/stringUtils";
 import { GithubRepoDynamicDetailsFragment, GithubRepoStaticDetailsFragment } from "src/__generated/graphql";
 
-type Props = GithubRepoStaticDetailsFragment & GithubRepoDynamicDetailsFragment;
+type Props = Omit<GithubRepoStaticDetailsFragment & GithubRepoDynamicDetailsFragment, "__typename">;
 
 export default function View({ owner, name, description, languages, stars, forksCount }: Props) {
   return (
     <Card className="flex flex-col gap-3 font-walsheim text-greyscale-50 font-normal relative">
-      <div className="absolute top-3 right-3">
-        <GithubLink link={buildGithubLink(owner, name)} />
-      </div>
+      {owner && name && (
+        <div className="absolute top-3 right-3">
+          <GithubLink link={buildGithubLink(owner, name)} />
+        </div>
+      )}
       {Object.keys(languages).length > 0 && (
         <div className="w-fit flex flex-row border border-greyscale-50/8 px-2 py-1 rounded-full gap-1 text-xs items-center">
           <CodeSSlashLine />
