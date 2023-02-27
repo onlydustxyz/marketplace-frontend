@@ -10,10 +10,15 @@ import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import { Project } from "src/pages/Projects";
-import { buildLanguageString } from "src/utils/languages";
+import { buildLanguageString, getDeduplicatedAggregatedLanguages } from "src/utils/languages";
 import { formatMoneyAmount } from "src/utils/money";
 import { useMediaQuery } from "usehooks-ts";
-import { ProjectLeadFragmentDoc, SponsorFragmentDoc } from "src/__generated/graphql";
+import {
+  ProjectCardContributorsFieldsFragment,
+  ProjectCardGithubRepoFieldsFragment,
+  ProjectLeadFragmentDoc,
+  SponsorFragmentDoc,
+} from "src/__generated/graphql";
 import User3Line from "src/icons/User3Line";
 import FundsLine from "src/icons/FundsLine";
 import Tooltip, { TooltipPosition } from "../Tooltip";
@@ -28,7 +33,7 @@ export default function ProjectCard({
   id,
   pendingInvitations,
   projectDetails,
-  githubRepo,
+  githubRepos,
   projectLeads,
   budgetsAggregate,
   projectSponsors,
@@ -38,6 +43,8 @@ export default function ProjectCard({
   const totalSpentAmountInUsd = budgetsAggregate?.aggregate?.sum?.spentAmount;
 
   const topSponsors = projectSponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
+  const contributors = getDeduplicatedAggregatedContributors(githubRepos);
+  const languages = getDeduplicatedAggregatedLanguages(githubRepos);
 
   const card = (
     <Card
@@ -54,25 +61,28 @@ export default function ProjectCard({
             <ProjectTitle
               projectName={projectDetails?.name || ""}
               projectLeads={projectLeads?.map(lead => lead.user).filter(isDefined) || []}
-              logoUrl={projectDetails?.logoUrl || githubRepo?.content?.logoUrl || onlyDustLogo}
+              logoUrl={projectDetails?.logoUrl || onlyDustLogo}
             />
-            {githubRepo?.languages && Object.keys(githubRepo?.languages).length > 0 && (
+            {Object.keys(languages).length > 0 && (
               <div className="hidden lg:flex flex-row border border-neutral-600 w-fit px-3 py-1 rounded-2xl gap-2 text-sm items-center">
                 <CodeSSlashLine className="text-greyscale-50" />
-                <div className="text-white">{buildLanguageString(githubRepo?.languages)}</div>
+                <div className="text-white" data-testid={`languages-${id}`}>
+                  {buildLanguageString(languages)}
+                </div>
               </div>
             )}
           </div>
           <div className="flex flex-col basis-2/3 lg:pl-6 gap-4 lg:gap-4 justify-center">
             <div className="line-clamp-2 ml-px">{projectDetails?.shortDescription}</div>
             <div className="flex flex-row gap-2">
-              {!!githubRepo?.content.contributors?.length && (
+              {contributors.length > 0 && (
                 <div
                   className="h-6 flex flex-row border border-neutral-600 w-fit px-2 py-1.5
 				rounded-2xl gap-1 text-xs items-center"
+                  data-testid={`contributor-count-${id}`}
                 >
                   <User3Line />
-                  {T("project.details.contributors.count", { count: githubRepo?.content.contributors?.length })}
+                  {T("project.details.contributors.count", { count: contributors.length })}
                 </div>
               )}
               {totalSpentAmountInUsd !== undefined && (
@@ -135,9 +145,48 @@ export default function ProjectCard({
   );
 }
 
+export const getDeduplicatedAggregatedContributors = function (
+  githubRepos: ProjectCardGithubRepoFieldsFragment[] | undefined
+): ProjectCardContributorsFieldsFragment[] {
+  if (githubRepos === undefined) {
+    return [];
+  }
+  const flatten_users = githubRepos
+    .flatMap(repo => repo.githubRepoDetails?.content?.contributors)
+    .flatMap(user => (user ? [user] : []));
+  return [...new Set(flatten_users)];
+};
+
+export const PROJECT_CARD_CONTRIBUTORS_FRAGMENT = gql`
+  fragment ProjectCardContributorsFields on User {
+    id
+  }
+`;
+
+export const PROJECT_CARD_GITHUB_REPOS_FRAGMENT = gql`
+  ${PROJECT_CARD_CONTRIBUTORS_FRAGMENT}
+  fragment ProjectCardGithubRepoFields on ProjectGithubRepos {
+    githubRepoId
+    githubRepoDetails {
+      id
+      name
+      owner
+      languages
+      content {
+        id
+        logoUrl
+        contributors {
+          ...ProjectCardContributorsFields
+        }
+      }
+    }
+  }
+`;
+
 export const PROJECT_CARD_FRAGMENT = gql`
   ${ProjectLeadFragmentDoc}
   ${SponsorFragmentDoc}
+  ${PROJECT_CARD_GITHUB_REPOS_FRAGMENT}
   fragment ProjectCardFields on Projects {
     id
     budgetsAggregate {
@@ -162,19 +211,8 @@ export const PROJECT_CARD_FRAGMENT = gql`
         ...ProjectLead
       }
     }
-    githubRepo {
-      id
-      name
-      owner
-      content {
-        id
-        contributors {
-          login
-          avatarUrl
-        }
-        logoUrl
-      }
-      languages
+    githubRepos {
+      ...ProjectCardGithubRepoFields
     }
     projectSponsors {
       sponsor {
