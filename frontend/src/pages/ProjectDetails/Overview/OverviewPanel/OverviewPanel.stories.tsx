@@ -2,7 +2,7 @@ import { ComponentStory } from "@storybook/react";
 import { AuthContext, AuthContextType } from "src/hooks/useAuth";
 import { User } from "src/types";
 
-import OverviewPanel from ".";
+import OverviewPanelView from "./View";
 
 export default {
   title: "OverviewPanel",
@@ -30,9 +30,9 @@ const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
   return <AuthContext.Provider value={mockedValue}>{children}</AuthContext.Provider>;
 };
 
-const Template: ComponentStory<typeof OverviewPanel> = args => (
+const Template: ComponentStory<typeof OverviewPanelView> = args => (
   <MockAuthProvider>
-    <OverviewPanel {...args} />
+    <OverviewPanelView {...args} />
   </MockAuthProvider>
 );
 export const Default = Template.bind({});
