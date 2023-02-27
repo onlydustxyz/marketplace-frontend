@@ -1,9 +1,18 @@
 import { useIntl } from "src/hooks/useIntl";
-import { Contributor } from "src/types";
+import { Contributor, HasuraUserRole } from "src/types";
 import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
 import { ReactNode } from "react";
-import { ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
+import { GetProjectOverviewDetailsQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
+import { gql } from "@apollo/client";
+import { useHasuraQuery } from "src/hooks/useHasuraQuery";
+import QueryWrapper from "src/components/QueryWrapper";
+import Card from "src/components/Card";
+import GithubRepoDetails from "./GithubRepoDetails";
+import onlyDustLogo from "assets/img/onlydust-logo.png";
+import classNames from "classnames";
+import Book from "src/assets/icons/Book";
+import Badge, { BadgeSize } from "src/components/Badge";
 
 type OutletContext = {
   leads?: ProjectLeadFragment[];
@@ -15,20 +24,79 @@ type OutletContext = {
   children: ReactNode;
 };
 
-const Overview: React.FC = () => {
+export default function Overview() {
   const { T } = useIntl();
   const { leads, totalSpentAmountInUsd, contributors, sponsors, telegramLink, children, projectId } =
     useOutletContext<OutletContext>();
+
+  const { data, loading } = useHasuraQuery<GetProjectOverviewDetailsQuery>(
+    GET_PROJECT_OVERVIEW_DETAILS,
+    HasuraUserRole.Public,
+    {
+      variables: { projectId },
+    }
+  );
+
+  const logoUrl = data?.projectsByPk?.projectDetails?.logoUrl || onlyDustLogo;
+  const description = data?.projectsByPk?.projectDetails?.longDescription || LOREM_IPSUM;
+  const githubReposCount = data?.projectsByPk?.githubRepos.length || 0;
 
   return (
     <div className="flex flex-col gap-8 mt-3">
       <div className="text-3xl font-belwe">{T("project.details.overview.title")}</div>
       {children}
-      <div className="flex flex-row gap-5">
+      <div className="flex flex-row gap-6">
+        <QueryWrapper query={{ data, loading }}>
+          <div className="flex flex-col gap-4">
+            <Card className="px-6 py-4 flex flex-row gap-6 items-center">
+              <img
+                alt={data?.projectsByPk?.projectDetails?.name}
+                src={logoUrl}
+                className={classNames("w-32 h-32 flex-shrink-0 rounded-lg bg-spaceBlue-800", {
+                  "p-6": logoUrl === onlyDustLogo,
+                })}
+              />
+              <span className="text-greyscale-50 font-walsheim font-normal text-sm text-justify">{description}</span>
+            </Card>
+            <Card className="flex flex-col gap-4">
+              <div className="flex flex-row font-walsheim font-medium text-base text-greyscale-50 items-center border-b border-greyscale-50/8 pb-2 justify-between">
+                <div className="flex flex-row gap-3">
+                  <Book className="w-6 h-6 fill-white" />
+                  {T("project.details.overview.repositories")}
+                </div>
+                <Badge value={githubReposCount} size={BadgeSize.Small} />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {data?.projectsByPk?.githubRepos.map(githubRepo => (
+                  <GithubRepoDetails key={githubRepo.githubRepoId} githubRepoId={githubRepo.githubRepoId} />
+                ))}
+              </div>
+            </Card>
+          </div>
+        </QueryWrapper>
         <OverviewPanel {...{ leads, projectId, contributors, totalSpentAmountInUsd, sponsors, telegramLink }} />
       </div>
     </div>
   );
-};
+}
 
-export default Overview;
+export const GET_PROJECT_OVERVIEW_DETAILS = gql`
+  query GetProjectOverviewDetails($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
+      id
+      projectDetails {
+        projectId
+        name
+        longDescription
+        logoUrl
+      }
+      githubRepos {
+        githubRepoId
+      }
+    }
+  }
+`;
+
+const LOREM_IPSUM = `
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue.
+`;

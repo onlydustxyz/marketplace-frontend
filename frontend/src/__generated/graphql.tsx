@@ -3564,6 +3564,13 @@ export type GetProjectContributorsForOverviewQueryVariables = Exact<{
 
 export type GetProjectContributorsForOverviewQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null }> } | null };
 
+export type GetProjectOverviewDetailsQueryVariables = Exact<{
+  projectId: Scalars['uuid'];
+}>;
+
+
+export type GetProjectOverviewDetailsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, longDescription: string, logoUrl: string | null } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any }> } | null };
+
 export type GetProjectContributorsForPaymentSelect__DeprecatedQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
@@ -4421,6 +4428,50 @@ export function useGetProjectContributorsForOverviewLazyQuery(baseOptions?: Apol
 export type GetProjectContributorsForOverviewQueryHookResult = ReturnType<typeof useGetProjectContributorsForOverviewQuery>;
 export type GetProjectContributorsForOverviewLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsForOverviewLazyQuery>;
 export type GetProjectContributorsForOverviewQueryResult = Apollo.QueryResult<GetProjectContributorsForOverviewQuery, GetProjectContributorsForOverviewQueryVariables>;
+export const GetProjectOverviewDetailsDocument = gql`
+    query GetProjectOverviewDetails($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    id
+    projectDetails {
+      projectId
+      name
+      longDescription
+      logoUrl
+    }
+    githubRepos {
+      githubRepoId
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetProjectOverviewDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetProjectOverviewDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectOverviewDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectOverviewDetailsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetProjectOverviewDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>(GetProjectOverviewDetailsDocument, options);
+      }
+export function useGetProjectOverviewDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>(GetProjectOverviewDetailsDocument, options);
+        }
+export type GetProjectOverviewDetailsQueryHookResult = ReturnType<typeof useGetProjectOverviewDetailsQuery>;
+export type GetProjectOverviewDetailsLazyQueryHookResult = ReturnType<typeof useGetProjectOverviewDetailsLazyQuery>;
+export type GetProjectOverviewDetailsQueryResult = Apollo.QueryResult<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>;
 export const GetProjectContributorsForPaymentSelect__DeprecatedDocument = gql`
     query GetProjectContributorsForPaymentSelect__deprecated($projectId: uuid!) {
   projectsByPk(id: $projectId) {

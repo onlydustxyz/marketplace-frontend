@@ -173,11 +173,11 @@
         "githubLinkContent": "Link",
         "githubLinkTitle": "GitHub",
         "projectLeader": "PROJECT LEAD",
-        "readmeTitle": "Readme.md",
+        "repositories": "Repositories",
         "sponsors": "Sponsors",
         "technologies": "Technologies",
         "telegram": "Telegram",
-        "title": "Overview",
+        "title": "Project overview",
         "totalSpentAmountInUsd": "MONEY GRANTED"
       },
       "payments": {
