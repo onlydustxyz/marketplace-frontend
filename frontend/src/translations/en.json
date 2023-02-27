@@ -161,6 +161,13 @@
         "sendPayment": "Send payment",
         "title": "Contributors"
       },
+      "githubRepos": {
+        "count": {
+          "many": "__count__ repositories",
+          "one": "1 repository",
+          "zero": "No repository"
+        }
+      },
       "overview": {
         "contributors": "CONTRIBUTORS",
         "githubLinkContent": "Link",

@@ -113,6 +113,15 @@ describe("'ProjectCard' component", () => {
     expect(sponsorsLogo).toHaveLength(3);
   });
 
+  it("should display the repository count", () => {
+    renderWithIntl(<ProjectCard {...PROJECT} />, {
+      wrapper: MemoryRouterProviderFactory({}),
+    });
+
+    const repositoryCountString = screen.getByTestId(`github-repo-count-${PROJECT.id}`);
+    expect(repositoryCountString.textContent).toContain("2 repositories");
+  });
+
   it("should display the contributor count", () => {
     renderWithIntl(<ProjectCard {...PROJECT} />, {
       wrapper: MemoryRouterProviderFactory({}),

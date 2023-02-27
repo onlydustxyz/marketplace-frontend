@@ -24,6 +24,8 @@ import FundsLine from "src/icons/FundsLine";
 import Tooltip, { TooltipPosition } from "../Tooltip";
 import ProjectTitle from "./ProjectTitle";
 import isDefined from "src/utils/isDefined";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
+import Tag from "./Tag";
 
 type ProjectCardProps = Project & {
   selectable?: boolean;
@@ -75,22 +77,20 @@ export default function ProjectCard({
           <div className="flex flex-col basis-2/3 lg:pl-6 gap-4 lg:gap-4 justify-center">
             <div className="line-clamp-2 ml-px">{projectDetails?.shortDescription}</div>
             <div className="flex flex-row gap-2">
+              {githubRepos && githubRepos.length > 0 && (
+                <Tag testid={`github-repo-count-${id}`}>
+                  <GitRepositoryLine />
+                  {T("project.details.githubRepos.count", { count: githubRepos.length })}
+                </Tag>
+              )}
               {contributors.length > 0 && (
-                <div
-                  className="h-6 flex flex-row border border-neutral-600 w-fit px-2 py-1.5
-				rounded-2xl gap-1 text-xs items-center"
-                  data-testid={`contributor-count-${id}`}
-                >
+                <Tag testid={`contributor-count-${id}`}>
                   <User3Line />
                   {T("project.details.contributors.count", { count: contributors.length })}
-                </div>
+                </Tag>
               )}
               {totalSpentAmountInUsd !== undefined && (
-                <div
-                  className="h-6 flex flex-row border border-neutral-600 w-fit px-2 py-1.5 rounded-2xl gap-1 text-xs items-center"
-                  id={`sponsor-list-${id}`}
-                  data-testid={`sponsor-list-${id}`}
-                >
+                <Tag id={`sponsor-list-${id}`} testid={`sponsor-list-${id}`}>
                   {projectSponsors?.length ? (
                     <>
                       <Tooltip anchorId={`sponsor-list-${id}`} position={TooltipPosition.Top}>
@@ -118,7 +118,7 @@ export default function ProjectCard({
                   {isXl
                     ? T("project.amountGranted", { amount: formatMoneyAmount(totalSpentAmountInUsd) })
                     : formatMoneyAmount(totalSpentAmountInUsd)}
-                </div>
+                </Tag>
               )}
             </div>
           </div>
