@@ -3542,6 +3542,10 @@ export type GetProjectRemainingBudgetQueryVariables = Exact<{
 
 export type GetProjectRemainingBudgetQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, remainingAmount: any | null }> } | null };
 
+export type GithubRepoStaticDetailsFragment = { __typename?: 'GithubRepoDetails', id: any, owner: string, name: string, languages: any };
+
+export type GithubRepoDynamicDetailsFragment = { __typename?: 'Repository', id: number, description: string, stars: number, forksCount: number };
+
 export type ProjectLeadFragment = { __typename?: 'users', displayName: string, avatarUrl: string };
 
 export type SponsorFragment = { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null };
@@ -3736,6 +3740,22 @@ export const GithubRepoContributorsFieldsFragmentDoc = gql`
   }
 }
     ${ContributorsTableFieldsFragmentDoc}`;
+export const GithubRepoStaticDetailsFragmentDoc = gql`
+    fragment GithubRepoStaticDetails on GithubRepoDetails {
+  id
+  owner
+  name
+  languages
+}
+    `;
+export const GithubRepoDynamicDetailsFragmentDoc = gql`
+    fragment GithubRepoDynamicDetails on Repository {
+  id
+  description
+  stars
+  forksCount
+}
+    `;
 export const GithubRepoLanguagesFieldsFragmentDoc = gql`
     fragment GithubRepoLanguagesFields on ProjectGithubRepos {
   githubRepoId
