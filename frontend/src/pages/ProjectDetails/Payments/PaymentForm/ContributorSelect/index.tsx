@@ -14,6 +14,7 @@ import {
 import View from "./View";
 import { uniqBy } from "lodash";
 import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
+import isDefined from "src/utils/isDefined";
 
 type Props = {
   projectId: string;
@@ -187,10 +188,6 @@ const ContributorSelect = ({ projectId }: Props) => {
 export default isFeatureEnabled(FeatureFlags.MULTIPLE_REPOSITORIES_PER_PROJECT)
   ? ContributorSelect
   : ContributorSelect__deprecated;
-
-function isDefined<T>(argument: T | undefined): argument is T {
-  return argument !== undefined;
-}
 
 export const GET_PROJECT_CONTRIBUTORS_QUERY__deprecated = gql`
   ${GITHUB_CONTRIBUTOR_FRAGMENT}

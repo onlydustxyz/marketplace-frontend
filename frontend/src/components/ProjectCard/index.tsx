@@ -17,6 +17,8 @@ import { ProjectLeadFragmentDoc, SponsorFragmentDoc } from "src/__generated/grap
 import User3Line from "src/icons/User3Line";
 import FundsLine from "src/icons/FundsLine";
 import Tooltip, { TooltipPosition } from "../Tooltip";
+import ProjectTitle from "./ProjectTitle";
+import isDefined from "src/utils/isDefined";
 
 type ProjectCardProps = Project & {
   selectable?: boolean;
@@ -33,9 +35,6 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-  const lead = projectLeads?.[0]?.user;
-  const name = projectDetails?.name || "";
-  const logoUrl = projectDetails?.logoUrl || githubRepo?.content?.logoUrl || onlyDustLogo;
   const totalSpentAmountInUsd = budgetsAggregate?.aggregate?.sum?.spentAmount;
 
   const topSponsors = projectSponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
@@ -52,19 +51,11 @@ export default function ProjectCard({
       <div className="flex flex-col gap-5">
         <div className="flex flex-col lg:flex-row w-full lg:divide-x divide-stone-100/8 gap-4 lg:gap-6 justify-items-center font-walsheim">
           <div className="lg:flex flex-col basis-1/3 min-w-0 gap-y-5">
-            <div className="flex gap-4 items-start">
-              <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.Xl} className="mt-1" />
-              <div className="min-w-0">
-                <div className="text-2xl font-medium font-belwe truncate">{name}</div>
-                {lead && (
-                  <div className="text-sm flex flex-row text-spaceBlue-200 gap-1 items-center pt-0.5">
-                    <div className="whitespace-nowrap">{T("project.ledBy")}</div>
-                    <div className="truncate">{lead?.displayName}</div>{" "}
-                    <img src={lead?.avatarUrl} className="w-4 h-4 rounded-full" />
-                  </div>
-                )}
-              </div>
-            </div>
+            <ProjectTitle
+              projectName={projectDetails?.name || ""}
+              projectLeads={projectLeads?.map(lead => lead.user).filter(isDefined) || []}
+              logoUrl={projectDetails?.logoUrl || githubRepo?.content?.logoUrl || onlyDustLogo}
+            />
             {githubRepo?.languages && Object.keys(githubRepo?.languages).length > 0 && (
               <div className="hidden lg:flex flex-row border border-neutral-600 w-fit px-3 py-1 rounded-2xl gap-2 text-sm items-center">
                 <CodeSSlashLine className="text-greyscale-50" />

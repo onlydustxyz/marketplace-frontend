@@ -193,7 +193,11 @@
       }
     },
     "fundedBy": "Funded by __topSponsorsString__",
-    "ledBy": "Led by",
+    "ledBy": {
+      "many": "__count__ project leads",
+      "one": "Led by __name__",
+      "zero": ""
+    },
     "projectLeadInvitation": {
       "prompt": "You’ve been promoted to Project Lead",
       "view": "View invite"
