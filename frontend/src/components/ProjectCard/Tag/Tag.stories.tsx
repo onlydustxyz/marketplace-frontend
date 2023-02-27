@@ -4,7 +4,7 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Tag from ".";
 
 export default {
-  title: "Tag",
+  title: "ProjectCardTag",
   component: Tag,
 } as ComponentMeta<typeof Tag>;
 
