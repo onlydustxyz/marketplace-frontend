@@ -64,20 +64,36 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
       },
     },
   ].slice(0, args.projectLeadsCount),
-  githubRepo: {
-    id: 12345,
-    owner: "facebook",
-    name: "react",
-    content: {
-      id: 12345,
-      contributors: [
-        { login: "oscarwroche", avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4" },
-        { login: "ofux", avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4" },
-      ],
-      logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
+  githubRepos: [
+    {
+      githubRepoId: 12345,
+      githubRepoDetails: {
+        id: 12345,
+        owner: "facebook",
+        name: "react",
+        languages: { Ejs: 2200, Rust: 1000 },
+        content: {
+          id: 12345,
+          logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
+          contributors: [{ id: 100 }, { id: 837 }],
+        },
+      },
     },
-    languages: { Ejs: 2200, Rust: 1000 },
-  },
+    {
+      githubRepoId: 666,
+      githubRepoDetails: {
+        id: 666,
+        owner: "chuck",
+        name: "norris",
+        languages: { Pascal: 1000000, Rust: 3000 },
+        content: {
+          id: 666,
+          logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
+          contributors: [{ id: 100 }, { id: 777 }],
+        },
+      },
+    },
+  ],
   budgetsAggregate: {
     aggregate: {
       sum: {

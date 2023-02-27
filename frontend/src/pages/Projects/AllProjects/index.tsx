@@ -47,7 +47,7 @@ const buildQueryArgs = (technologies: string[]) => (technologies.length ? ", $la
 const buildQueryFilters = (technologies: string[]) => {
   let filters = "";
   if (technologies.length) {
-    filters += "{githubRepo: {languages: {_hasKeysAny: $languages}}}";
+    filters += "{githubRepos: {githubRepoDetails: {languages: {_hasKeysAny: $languages}}}}";
   }
 
   return filters.length ? `where: ${filters}, ` : "";
