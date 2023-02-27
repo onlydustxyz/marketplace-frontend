@@ -169,12 +169,9 @@ export const PROJECT_CARD_GITHUB_REPOS_FRAGMENT = gql`
     githubRepoId
     githubRepoDetails {
       id
-      name
-      owner
       languages
       content {
         id
-        logoUrl
         contributors {
           ...ProjectCardContributorsFields
         }
