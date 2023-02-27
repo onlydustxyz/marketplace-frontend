@@ -3443,7 +3443,11 @@ export type GetPaymentRequestIdsQueryVariables = Exact<{
 
 export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> };
 
-export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> };
+export type ProjectCardContributorsFieldsFragment = { __typename?: 'User', id: number };
+
+export type ProjectCardGithubRepoFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, name: string, owner: string, languages: any, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', id: number }> } } | null };
+
+export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, name: string, owner: string, languages: any, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', id: number }> } } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> };
 
 export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string };
 
@@ -3580,7 +3584,7 @@ export type GetProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, readme: { __typename?: 'File', content: string } | null, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> } | null };
+export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, content: { __typename?: 'Repository', id: number, readme: { __typename?: 'File', content: string } | null } } | null, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, name: string, owner: string, languages: any, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', id: number }> } } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> } | null };
 
 export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
   invitationId: Scalars['Uuid'];
@@ -3594,12 +3598,14 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, name: string | null, owner: string | null, languages: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> }> };
+export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, name: string, owner: string, languages: any, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', id: number }> } } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> }> };
 
 export type GetAllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllTechnologiesQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, languages: any | null } | null }> };
+export type GetAllTechnologiesQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null }> }> };
+
+export type GithubRepoLanguagesFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null };
 
 export const ProjectLeadFragmentDoc = gql`
     fragment ProjectLead on users {
@@ -3607,6 +3613,29 @@ export const ProjectLeadFragmentDoc = gql`
   avatarUrl
 }
     `;
+export const ProjectCardContributorsFieldsFragmentDoc = gql`
+    fragment ProjectCardContributorsFields on User {
+  id
+}
+    `;
+export const ProjectCardGithubRepoFieldsFragmentDoc = gql`
+    fragment ProjectCardGithubRepoFields on ProjectGithubRepos {
+  githubRepoId
+  githubRepoDetails {
+    id
+    name
+    owner
+    languages
+    content {
+      id
+      logoUrl
+      contributors {
+        ...ProjectCardContributorsFields
+      }
+    }
+  }
+}
+    ${ProjectCardContributorsFieldsFragmentDoc}`;
 export const SponsorFragmentDoc = gql`
     fragment Sponsor on Sponsors {
   id
@@ -3640,19 +3669,8 @@ export const ProjectCardFieldsFragmentDoc = gql`
       ...ProjectLead
     }
   }
-  githubRepo {
-    id
-    name
-    owner
-    content {
-      id
-      contributors {
-        login
-        avatarUrl
-      }
-      logoUrl
-    }
-    languages
+  githubRepos {
+    ...ProjectCardGithubRepoFields
   }
   projectSponsors {
     sponsor {
@@ -3661,6 +3679,7 @@ export const ProjectCardFieldsFragmentDoc = gql`
   }
 }
     ${ProjectLeadFragmentDoc}
+${ProjectCardGithubRepoFieldsFragmentDoc}
 ${SponsorFragmentDoc}`;
 export const GithubUserFragmentDoc = gql`
     fragment GithubUser on User {
@@ -3723,6 +3742,15 @@ export const GithubRepoContributorsFieldsFragmentDoc = gql`
   }
 }
     ${ContributorsTableFieldsFragmentDoc}`;
+export const GithubRepoLanguagesFieldsFragmentDoc = gql`
+    fragment GithubRepoLanguagesFields on ProjectGithubRepos {
+  githubRepoId
+  githubRepoDetails {
+    id
+    languages
+  }
+}
+    `;
 export const UserIdentityDocument = gql`
     query UserIdentity($userId: uuid!) {
   userInfo(where: {userId: {_eq: $userId}}) {
@@ -4592,13 +4620,13 @@ export type GetProjectsQueryResult = Apollo.QueryResult<GetProjectsQuery, GetPro
 export const GetAllTechnologiesDocument = gql`
     query GetAllTechnologies {
   projects {
-    githubRepo {
-      id
-      languages
+    id
+    githubRepos {
+      ...GithubRepoLanguagesFields
     }
   }
 }
-    `;
+    ${GithubRepoLanguagesFieldsFragmentDoc}`;
 
 /**
  * __useGetAllTechnologiesQuery__

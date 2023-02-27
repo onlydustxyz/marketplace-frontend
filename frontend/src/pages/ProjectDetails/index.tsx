@@ -88,16 +88,17 @@ const ProjectDetails: React.FC = () => {
 const projectFromQuery = (project: GetProjectQuery["projectsByPk"]): ProjectDetails => ({
   id: project?.id,
   name: project?.projectDetails?.name,
-  logoUrl: project?.projectDetails?.logoUrl || project?.githubRepo?.content?.logoUrl || onlyDustLogo,
+  logoUrl: project?.projectDetails?.logoUrl || onlyDustLogo,
   leads: project?.projectLeads?.map((lead: any) => ({ id: lead.userId, ...lead.user })) || [],
   invitationId: project?.pendingInvitations.at(0)?.id,
   totalSpentAmountInUsd: project?.budgetsAggregate.aggregate?.sum?.spentAmount,
   telegramLink: project?.projectDetails?.telegramLink,
+  //TODO: change this entirely
   githubRepoInfo: {
-    name: project?.githubRepo?.name || undefined,
-    owner: project?.githubRepo?.owner || undefined,
-    contributors: project?.githubRepo?.content?.contributors,
-    languages: project?.githubRepo?.languages,
+    name: (project?.githubRepos?.length === 1 && project?.githubRepos[0].githubRepoDetails?.name) || undefined,
+    owner: (project?.githubRepos?.length === 1 && project?.githubRepos[0].githubRepoDetails?.owner) || undefined,
+    contributors: undefined,
+    languages: (project?.githubRepos?.length === 1 && project?.githubRepos[0].githubRepoDetails?.languages) || {},
     decodedReadme:
       project?.githubRepo?.content?.readme?.content && decodeBase64ToString(project?.githubRepo.content.readme.content),
   },
