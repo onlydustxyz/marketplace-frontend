@@ -2,7 +2,6 @@ import Card from "src/components/Card";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useIntl } from "src/hooks/useIntl";
-import { Contributor, LanguageMap } from "src/types";
 import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
 import { ReactNode } from "react";
@@ -13,11 +12,8 @@ type OutletContext = {
   totalSpentAmountInUsd: number;
   githubRepoInfo: {
     decodedReadme?: string;
-    owner?: string;
-    name?: string;
-    contributors?: Contributor[];
-    languages: LanguageMap;
   };
+  projectId: string;
   sponsors: SponsorFragment[];
   telegramLink: string | null;
   children: ReactNode;
@@ -25,7 +21,7 @@ type OutletContext = {
 
 const Overview: React.FC = () => {
   const { T } = useIntl();
-  const { leads, totalSpentAmountInUsd, githubRepoInfo, sponsors, telegramLink, children } =
+  const { leads, totalSpentAmountInUsd, githubRepoInfo, sponsors, telegramLink, children, projectId } =
     useOutletContext<OutletContext>();
 
   return (
@@ -43,9 +39,7 @@ const Overview: React.FC = () => {
             </Card>
           </div>
         )}
-        <OverviewPanel
-          {...{ leads, contributors: githubRepoInfo.contributors, totalSpentAmountInUsd, sponsors, telegramLink }}
-        />
+        <OverviewPanel {...{ leads, totalSpentAmountInUsd, projectId, sponsors, telegramLink }} />
       </div>
     </div>
   );
