@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import { LanguageMap } from "src/types";
 import { GithubRepoLanguagesFieldsFragment } from "src/__generated/graphql";
+import isDefined from "./isDefined";
 
 export const getMostUsedLanguages = (languageMap: LanguageMap, count = 2) => {
   if (!languageMap) {
@@ -32,7 +33,7 @@ export const getDeduplicatedAggregatedLanguages = function (
   }
   return githubRepos
     .map(repo => repo.githubRepoDetails?.languages)
-    .filter((languages): languages is LanguageMap => !!languages) // ⚠️ runtime type guard
+    .filter(isDefined) // ⚠️ runtime type guard
     .reduce((aggregated_languages, languages) => {
       for (const [language, line_count] of Object.entries(languages)) {
         if (aggregated_languages[language]) {
