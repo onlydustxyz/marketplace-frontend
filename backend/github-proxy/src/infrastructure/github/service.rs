@@ -50,6 +50,9 @@ impl GithubService for github::Client {
 			contributors.into_iter().map(Into::into).collect(),
 			readme.map(Into::into),
 			owner.avatar_url.to_string(),
+			repo.description.unwrap_or_default(),
+			repo.stargazers_count.unwrap_or_default() as i32,
+			repo.forks_count.unwrap_or_default() as i32,
 		))
 	}
 

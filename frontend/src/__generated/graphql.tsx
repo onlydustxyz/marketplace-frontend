@@ -1395,9 +1395,12 @@ export type Reason = {
 export type Repository = {
   __typename?: 'Repository';
   contributors: Array<User>;
+  description: Scalars['String'];
+  forksCount: Scalars['Int'];
   id: Scalars['Int'];
   logoUrl: Scalars['String'];
   readme: Maybe<File>;
+  stars: Scalars['Int'];
 };
 
 /** columns and relationships of "sponsors" */
