@@ -17,7 +17,7 @@ const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
 
 export const Default = Template.bind({});
 
-const props = (args: { name: string; shortDescription: string }) => ({
+const props = (args: { name: string; shortDescription: string; projectLeadsCount: number }) => ({
   id: 123,
   projectDetails: {
     projectId: "123",
@@ -33,7 +33,37 @@ const props = (args: { name: string; shortDescription: string }) => ({
         avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
       },
     },
-  ],
+    {
+      user: {
+        displayName: "AnthonyBuisset",
+        avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+      },
+    },
+    {
+      user: {
+        displayName: "ofux",
+        avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
+      },
+    },
+    {
+      user: {
+        displayName: "tdelabro",
+        avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
+      },
+    },
+    {
+      user: {
+        displayName: "BernardStanislas",
+        avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
+      },
+    },
+    {
+      user: {
+        displayName: "gregcha",
+        avatarUrl: "https://avatars.githubusercontent.com/u/8642470?v=4",
+      },
+    },
+  ].slice(0, args.projectLeadsCount),
   githubRepo: {
     id: 12345,
     owner: "facebook",
@@ -89,6 +119,7 @@ const args = {
   shortDescription:
     "Don't trust. Verify. ZeroSync allows to verify Bitcoin's chain state in an instant. No need to download hundreds of gigabytes of blocks. A compact cryptographic proof suffices to validate the entire history of transactions and everyone's current balances.",
   withInvitation: false,
+  projectLeadsCount: 1,
 };
 
 Default.args = args;
