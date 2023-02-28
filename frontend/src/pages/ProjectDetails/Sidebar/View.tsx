@@ -1,7 +1,6 @@
 import { Listbox } from "@headlessui/react";
 import Sidebar from "src/components/Sidebar";
 import UpDownChevrons from "src/assets/icons/UpDownChevrons";
-import GithubLink from "src/components/GithubLink";
 import ShootingStar from "src/assets/icons/ShootingStar";
 import { RoutePaths } from "src/App";
 import BackLink from "src/components/BackLink";
@@ -9,7 +8,6 @@ import CheckLine from "src/icons/CheckLine";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { ProjectDetails } from "..";
 import { useIntl } from "src/hooks/useIntl";
-import { buildGithubLink } from "src/utils/stringUtils";
 import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
 import { generatePath, NavLink, useNavigate } from "react-router-dom";
 import classNames from "classnames";

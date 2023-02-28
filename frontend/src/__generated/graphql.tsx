@@ -3542,6 +3542,17 @@ export type GetProjectRemainingBudgetQueryVariables = Exact<{
 
 export type GetProjectRemainingBudgetQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, remainingAmount: any | null }> } | null };
 
+export type GithubRepoStaticDetailsFragment = { __typename?: 'GithubRepoDetails', id: any, owner: string, name: string, languages: any };
+
+export type GithubRepoDynamicDetailsFragment = { __typename?: 'Repository', id: number, description: string, stars: number, forksCount: number };
+
+export type GetGithubRepositoryDetailsQueryVariables = Exact<{
+  githubRepoId: Scalars['bigint'];
+}>;
+
+
+export type GetGithubRepositoryDetailsQuery = { __typename?: 'query_root', githubRepoDetailsByPk: { __typename?: 'GithubRepoDetails', id: any, owner: string, name: string, languages: any, content: { __typename?: 'Repository', id: number, description: string, stars: number, forksCount: number } } | null };
+
 export type ProjectLeadFragment = { __typename?: 'users', displayName: string, avatarUrl: string };
 
 export type SponsorFragment = { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null };
@@ -3552,6 +3563,13 @@ export type GetProjectContributorsForOverviewQueryVariables = Exact<{
 
 
 export type GetProjectContributorsForOverviewQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } } | null }> } | null };
+
+export type GetProjectOverviewDetailsQueryVariables = Exact<{
+  projectId: Scalars['uuid'];
+}>;
+
+
+export type GetProjectOverviewDetailsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, longDescription: string, logoUrl: string | null } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any }> } | null };
 
 export type GetProjectContributorsForPaymentSelect__DeprecatedQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -3581,7 +3599,7 @@ export type GetProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, content: { __typename?: 'Repository', id: number, readme: { __typename?: 'File', content: string } | null } } | null, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> } | null };
+export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', user: { __typename?: 'users', displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> } | null };
 
 export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
   invitationId: Scalars['Uuid'];
@@ -3736,6 +3754,22 @@ export const GithubRepoContributorsFieldsFragmentDoc = gql`
   }
 }
     ${ContributorsTableFieldsFragmentDoc}`;
+export const GithubRepoStaticDetailsFragmentDoc = gql`
+    fragment GithubRepoStaticDetails on GithubRepoDetails {
+  id
+  owner
+  name
+  languages
+}
+    `;
+export const GithubRepoDynamicDetailsFragmentDoc = gql`
+    fragment GithubRepoDynamicDetails on Repository {
+  id
+  description
+  stars
+  forksCount
+}
+    `;
 export const GithubRepoLanguagesFieldsFragmentDoc = gql`
     fragment GithubRepoLanguagesFields on ProjectGithubRepos {
   githubRepoId
@@ -4311,6 +4345,45 @@ export function useGetProjectRemainingBudgetLazyQuery(baseOptions?: Apollo.LazyQ
 export type GetProjectRemainingBudgetQueryHookResult = ReturnType<typeof useGetProjectRemainingBudgetQuery>;
 export type GetProjectRemainingBudgetLazyQueryHookResult = ReturnType<typeof useGetProjectRemainingBudgetLazyQuery>;
 export type GetProjectRemainingBudgetQueryResult = Apollo.QueryResult<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>;
+export const GetGithubRepositoryDetailsDocument = gql`
+    query GetGithubRepositoryDetails($githubRepoId: bigint!) {
+  githubRepoDetailsByPk(id: $githubRepoId) {
+    ...GithubRepoStaticDetails
+    content {
+      ...GithubRepoDynamicDetails
+    }
+  }
+}
+    ${GithubRepoStaticDetailsFragmentDoc}
+${GithubRepoDynamicDetailsFragmentDoc}`;
+
+/**
+ * __useGetGithubRepositoryDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetGithubRepositoryDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGithubRepositoryDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGithubRepositoryDetailsQuery({
+ *   variables: {
+ *      githubRepoId: // value for 'githubRepoId'
+ *   },
+ * });
+ */
+export function useGetGithubRepositoryDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>(GetGithubRepositoryDetailsDocument, options);
+      }
+export function useGetGithubRepositoryDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>(GetGithubRepositoryDetailsDocument, options);
+        }
+export type GetGithubRepositoryDetailsQueryHookResult = ReturnType<typeof useGetGithubRepositoryDetailsQuery>;
+export type GetGithubRepositoryDetailsLazyQueryHookResult = ReturnType<typeof useGetGithubRepositoryDetailsLazyQuery>;
+export type GetGithubRepositoryDetailsQueryResult = Apollo.QueryResult<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>;
 export const GetProjectContributorsForOverviewDocument = gql`
     query GetProjectContributorsForOverview($projectId: uuid!) {
   projectsByPk(id: $projectId) {
@@ -4355,6 +4428,50 @@ export function useGetProjectContributorsForOverviewLazyQuery(baseOptions?: Apol
 export type GetProjectContributorsForOverviewQueryHookResult = ReturnType<typeof useGetProjectContributorsForOverviewQuery>;
 export type GetProjectContributorsForOverviewLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsForOverviewLazyQuery>;
 export type GetProjectContributorsForOverviewQueryResult = Apollo.QueryResult<GetProjectContributorsForOverviewQuery, GetProjectContributorsForOverviewQueryVariables>;
+export const GetProjectOverviewDetailsDocument = gql`
+    query GetProjectOverviewDetails($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    id
+    projectDetails {
+      projectId
+      name
+      longDescription
+      logoUrl
+    }
+    githubRepos {
+      githubRepoId
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetProjectOverviewDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetProjectOverviewDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectOverviewDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectOverviewDetailsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetProjectOverviewDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>(GetProjectOverviewDetailsDocument, options);
+      }
+export function useGetProjectOverviewDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>(GetProjectOverviewDetailsDocument, options);
+        }
+export type GetProjectOverviewDetailsQueryHookResult = ReturnType<typeof useGetProjectOverviewDetailsQuery>;
+export type GetProjectOverviewDetailsLazyQueryHookResult = ReturnType<typeof useGetProjectOverviewDetailsLazyQuery>;
+export type GetProjectOverviewDetailsQueryResult = Apollo.QueryResult<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>;
 export const GetProjectContributorsForPaymentSelect__DeprecatedDocument = gql`
     query GetProjectContributorsForPaymentSelect__deprecated($projectId: uuid!) {
   projectsByPk(id: $projectId) {
@@ -4504,15 +4621,6 @@ export const GetProjectDocument = gql`
     query GetProject($id: uuid!, $githubUserId: bigint = 0) {
   projectsByPk(id: $id) {
     ...ProjectCardFields
-    githubRepo {
-      id
-      content {
-        id
-        readme {
-          content
-        }
-      }
-    }
   }
 }
     ${ProjectCardFieldsFragmentDoc}`;
