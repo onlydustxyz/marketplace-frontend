@@ -35,7 +35,10 @@ export default function OverviewPanelView({
   return (
     <Card className="h-fit p-0 basis-96 flex flex-col divide-y divide-greyscale-50/8" padded={false}>
       {projectLeads.length > 0 && (
-        <Section icon={SectionIcon.Star} title={T("project.details.overview.projectLeader")}>
+        <Section
+          icon={SectionIcon.Star}
+          title={T("project.details.overview.projectLeader", { count: projectLeads.length })}
+        >
           <div className="flex flex-row flex-wrap gap-3">
             {projectLeads.map(lead => (
               <ClickableUser
@@ -49,7 +52,10 @@ export default function OverviewPanelView({
         </Section>
       )}
       {contributors && contributors.length > 0 && (
-        <Section icon={SectionIcon.User} title={T("project.details.overview.contributors")}>
+        <Section
+          icon={SectionIcon.User}
+          title={T("project.details.overview.contributors", { count: contributors.length })}
+        >
           <div className="flex flex-row items-center text-sm text-greyscale-50 font-normal gap-2">
             <div className="flex flex-row -space-x-1">
               {contributors.slice(0, 3).map(contributor => (
@@ -74,7 +80,7 @@ export default function OverviewPanelView({
         </Section>
       )}
       {sponsors?.length > 0 && (
-        <Section icon={SectionIcon.Service} title={T("project.details.overview.sponsors")}>
+        <Section icon={SectionIcon.Service} title={T("project.details.overview.sponsors", { count: sponsors.length })}>
           <div data-testid="sponsors" className="flex flex-row flex-wrap gap-3">
             {sponsors.map(sponsor => (
               <ClickableUser key={sponsor.id} name={sponsor.name} logoUrl={sponsor.logoUrl} url={sponsor.url} />

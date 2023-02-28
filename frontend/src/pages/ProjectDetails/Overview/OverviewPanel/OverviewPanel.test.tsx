@@ -72,7 +72,7 @@ describe("Overview component", () => {
   });
 
   it("should render the contributors element of the panel", async () => {
-    await screen.findByText(/contributors/i);
+    await screen.findByText(/contributor/i);
   });
 
   it("should deduplicate users", async () => {
