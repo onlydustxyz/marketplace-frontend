@@ -21,7 +21,7 @@ describe("As a contributor, I", () => {
   });
 
   it("can see the list of my payments", function () {
-    cy.visit(`http://127.0.0.1:5173`, {
+    cy.visit("http://127.0.0.1:5173", {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.token);
       },
@@ -43,7 +43,10 @@ describe("As a contributor, I", () => {
 
     cy.get("#payment_table tbody tr:nth-child(1)").within(() => {
       cy.get("td:nth-child(3)").should("have.text", "$200");
-      cy.get("td:nth-child(4)").should("have.text", "Processing" + "Payment is being processed by our team");
+      cy.get("td:nth-child(4)").should(
+        "have.text",
+        "Processing" + "Payment is being processed by our team. Typically 3 to 5 days to receive payment"
+      );
     });
   });
 });
