@@ -16,11 +16,12 @@ export type TagProps = {
   id?: string;
   size: TagSize;
   borderColor?: TagBorderColor;
+  testid?: string;
 } & PropsWithChildren;
 
-export default function Tag({ id, size, borderColor = TagBorderColor.Grey, children }: TagProps) {
+export default function Tag({ id, size, borderColor = TagBorderColor.Grey, testid, children }: TagProps) {
   return (
-    <div id={id} className="w-fit rounded-full p-px overflow-hidden">
+    <div data-testid={testid} id={id} className="w-fit rounded-full p-px overflow-hidden">
       <div
         className={classNames(
           "flex items-center justify-center w-fit gap-1 rounded-full font-walsheim font-medium text-white relative h-7",

@@ -25,7 +25,7 @@ import Tooltip, { TooltipPosition } from "../Tooltip";
 import ProjectTitle from "./ProjectTitle";
 import isDefined from "src/utils/isDefined";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import Tag from "./Tag";
+import Tag, { TagSize } from "../Tag";
 
 type ProjectCardProps = Project & {
   selectable?: boolean;
@@ -78,19 +78,19 @@ export default function ProjectCard({
             <div className="line-clamp-2 ml-px">{projectDetails?.shortDescription}</div>
             <div className="flex flex-row gap-2">
               {githubRepos && githubRepos.length > 0 && (
-                <Tag testid={`github-repo-count-${id}`}>
+                <Tag testid={`github-repo-count-${id}`} size={TagSize.Small}>
                   <GitRepositoryLine />
                   {T("project.details.githubRepos.count", { count: githubRepos.length })}
                 </Tag>
               )}
               {contributors.length > 0 && (
-                <Tag testid={`contributor-count-${id}`}>
+                <Tag testid={`contributor-count-${id}`} size={TagSize.Small}>
                   <User3Line />
                   {T("project.details.contributors.count", { count: contributors.length })}
                 </Tag>
               )}
               {totalSpentAmountInUsd !== undefined && (
-                <Tag id={`sponsor-list-${id}`} testid={`sponsor-list-${id}`}>
+                <Tag id={`sponsor-list-${id}`} testid={`sponsor-list-${id}`} size={TagSize.Small}>
                   {projectSponsors?.length ? (
                     <>
                       <Tooltip anchorId={`sponsor-list-${id}`} position={TooltipPosition.Top}>
