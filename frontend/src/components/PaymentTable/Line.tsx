@@ -34,7 +34,7 @@ export default function PaymentLine({ payment, setSortingFields }: Props) {
         [Field.Date]: new Date(payment.requestedAt),
         [Field.Contribution]: recipient.login.toLocaleLowerCase() + issueNumber[1].padStart(10, "0"),
         [Field.Amount]: payment.amountInUsd,
-        [Field.Status]: getPaymentStatusOrder(payoutSettingsValid ? paymentStatus : "payout_missing"),
+        [Field.Status]: getPaymentStatusOrder(paymentStatus),
       });
     }
   }, [recipient?.login]);

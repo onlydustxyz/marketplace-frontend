@@ -25,7 +25,7 @@ export default function PaymentLine({ payment, payoutInfoMissing, setSortingFiel
       [Field.Date]: payment.requestedAt,
       [Field.Contribution]: payment.project?.title?.toLocaleLowerCase() + issueNumber[1].padStart(10, "0"),
       [Field.Amount]: payment.amount.value,
-      [Field.Status]: getPaymentStatusOrder(payoutInfoMissing ? "payout_missing" : payment.status),
+      [Field.Status]: getPaymentStatusOrder(payment.status),
     });
   }, []);
 
