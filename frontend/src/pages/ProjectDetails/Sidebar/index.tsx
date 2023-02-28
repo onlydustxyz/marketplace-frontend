@@ -2,13 +2,19 @@ import { ProjectDetails } from "..";
 import { HasuraUserRole } from "src/types";
 import View from "./View";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
-import { GetProjectsForSidebarQuery } from "src/__generated/graphql";
+import {
+  GetProjectsForSidebarQuery,
+  GithubRepoContributorsFieldsFragmentDoc,
+  SidebarProjectDetailsFragment,
+} from "src/__generated/graphql";
 import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { sortBy } from "lodash";
 import { ProjectRoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
+import { getDeduplicatedAggregatedContributors } from "../Contributors";
+import isDefined from "src/utils/isDefined";
 
 export type ProjectDetailsTab = {
   label: string;
@@ -60,45 +66,45 @@ export default function ProjectsSidebar({ currentProject }: Props) {
       availableTabs={availableTabs}
       currentProject={currentProject}
       allProjects={sortedProjects}
-      expandable={isProjectMine(currentProject) && sortedProjects.length > 1}
+      expandable={
+        (isProjectMine(currentProject) || isDefined(currentProject.invitationId)) && sortedProjects.length > 1
+      }
     />
   );
 }
 
-const projectFromQuery = (project: any) => ({
+const projectFromQuery = (project: SidebarProjectDetailsFragment) => ({
   id: project.id,
-  name: project.projectDetails?.name,
-  logoUrl: project.projectDetails?.logoUrl || project.githubRepo?.content?.logoUrl || onlyDustLogo,
-  nbContributors: project.githubRepo?.content?.contributors?.length || 0,
+  name: project.projectDetails?.name || "",
+  logoUrl: project.projectDetails?.logoUrl || onlyDustLogo,
+  nbContributors: getDeduplicatedAggregatedContributors(project.githubRepos).length,
   withInvitation: project.pendingInvitations?.at(0)?.id,
 });
 
 export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
+  ${GithubRepoContributorsFieldsFragmentDoc}
+  fragment SidebarProjectDetails on Projects {
+    id
+    projectDetails {
+      projectId
+      name
+      logoUrl
+    }
+    pendingInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
+      id
+    }
+    githubRepos {
+      ...GithubRepoContributorsFields
+    }
+  }
+
   query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
     projects(
       where: {
         _or: [{ id: { _in: $ledProjectIds } }, { pendingInvitations: { githubUserId: { _eq: $githubUserId } } }]
       }
     ) {
-      id
-      projectDetails {
-        projectId
-        name
-        logoUrl
-      }
-      pendingInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
-        id
-      }
-      githubRepo {
-        id
-        content {
-          id
-          contributors {
-            login
-          }
-          logoUrl
-        }
-      }
+      ...SidebarProjectDetails
     }
   }
 `;

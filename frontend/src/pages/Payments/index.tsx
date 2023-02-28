@@ -91,13 +91,6 @@ export const GET_PAYMENTS_QUERY = gql`
             shortDescription
             logoUrl
           }
-          githubRepo {
-            id
-            content {
-              id
-              logoUrl
-            }
-          }
         }
       }
     }

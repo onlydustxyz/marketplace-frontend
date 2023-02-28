@@ -365,12 +365,13 @@ describe("All projects", () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN));
     renderWithIntl(<AllProjects technologies={[]} projectOwnershipType={ProjectOwnershipType.Mine} />, {
       wrapper: MemoryRouterProviderFactory({
-        mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_NO_INVITATIONS),
+        mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_WITH_INVITATION),
       }),
     });
     const moneyGrantedElementsInOrderOfAppearance = await screen.findAllByText("granted", { exact: false });
-    expect(moneyGrantedElementsInOrderOfAppearance).toHaveLength(1);
-    expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("$999 granted");
+    expect(moneyGrantedElementsInOrderOfAppearance).toHaveLength(2);
+    expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("$0 granted");
+    expect(moneyGrantedElementsInOrderOfAppearance[1]).toHaveTextContent("$999 granted");
   });
 
   it("should only show valid projects", async () => {

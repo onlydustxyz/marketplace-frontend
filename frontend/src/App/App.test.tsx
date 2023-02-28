@@ -26,6 +26,7 @@ import {
   GetProjectContributorsForOverviewQueryResult,
   GetProjectOverviewDetailsQueryResult,
   GetProjectQueryResult,
+  GetProjectsForSidebarQueryResult,
   GetProjectsQueryResult,
   PendingProjectLeaderInvitationsQueryResult,
   PendingUserPaymentsAndPayoutSettingsQueryResult,
@@ -264,17 +265,34 @@ const graphQlMocks = [
           {
             id: TEST_PROJECT_ID,
             projectDetails: {
+              projectId: TEST_PROJECT_ID,
               name: TEST_PROJECT_NAME,
+              logoUrl: null,
             },
             pendingInvitations: [],
-            githubRepo: {
-              content: {
-                contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN, avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL }],
+            githubRepos: [
+              {
+                githubRepoId: TEST_GITHUB_REPO_ID,
+                githubRepoDetails: {
+                  id: TEST_GITHUB_REPO_ID,
+                  content: {
+                    id: TEST_GITHUB_REPO_ID,
+                    contributors: [
+                      {
+                        id: TEST_GITHUB_USER_ID,
+                        login: TEST_GITHUB_CONTRIBUTOR_LOGIN,
+                        avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
+                        user: { userId: TEST_USER_ID },
+                        paymentRequests: [],
+                      },
+                    ],
+                  },
+                },
               },
-            },
+            ],
           },
         ],
-      },
+      } as GetProjectsForSidebarQueryResult["data"],
     },
   },
   {
@@ -377,6 +395,7 @@ const paymentRequestsMock = {
           amountInUsd: 200,
           reason: { work_items: ["link_to_pr"] },
           budget: {
+            id: "budget-1",
             project: {
               id: "632d5da7-e590-4815-85ea-82a5585e6049",
               projectDetails: {
@@ -384,7 +403,6 @@ const paymentRequestsMock = {
                 logoUrl: null,
                 name: "MyAwesomeProject",
               },
-              githubRepo: null,
             },
           },
         },

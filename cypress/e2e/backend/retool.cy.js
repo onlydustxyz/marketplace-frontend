@@ -14,13 +14,15 @@ describe("As an admin, on retool, I", () => {
         .withRepo(REPO.id)
         .then(projectId => {
           cy.graphql({
-            query: `{
-                    projectsByPk(id: "${projectId}") {
-                      githubRepo {
-                        id
-                        owner
-                        name
-                        languages
+            query: `query ($projectId: uuid!){
+                    projectsByPk(id: $projectId) {
+                      githubRepos {
+                        githubRepoDetails {
+                          id
+                          owner
+                          name
+                          languages
+                        }
                       }
                       projectDetails {
                         name
@@ -29,16 +31,21 @@ describe("As an admin, on retool, I", () => {
                       }
                     }
                   }`,
+            variables: { projectId },
           })
             .asAnonymous()
             .data("projectsByPk")
             .should("deep.equal", {
-              githubRepo: {
-                id: REPO.id,
-                owner: REPO.owner,
-                name: REPO.name,
-                languages: REPO.languages,
-              },
+              githubRepos: [
+                {
+                  githubRepoDetails: {
+                    id: REPO.id,
+                    owner: REPO.owner,
+                    name: REPO.name,
+                    languages: REPO.languages,
+                  },
+                },
+              ],
               projectDetails: {
                 name: projectName,
                 shortDescription: "My project description",

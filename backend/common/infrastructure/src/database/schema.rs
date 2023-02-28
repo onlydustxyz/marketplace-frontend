@@ -29,17 +29,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    events_backup (index) {
-        index -> Int4,
-        timestamp -> Timestamp,
-        aggregate_name -> Varchar,
-        aggregate_id -> Varchar,
-        payload -> Jsonb,
-        metadata -> Nullable<Jsonb>,
-    }
-}
-
-diesel::table! {
     github_repo_details (id) {
         id -> Int8,
         owner -> Text,
@@ -146,7 +135,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     budgets,
     event_deduplications,
     events,
-    events_backup,
     github_repo_details,
     payment_requests,
     payments,
