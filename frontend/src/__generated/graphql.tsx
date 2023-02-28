@@ -1066,59 +1066,6 @@ export enum ProjectDetailsSelectColumn {
   TelegramLink = 'telegramLink'
 }
 
-/** columns and relationships of "project_github_repo_view" */
-export type ProjectGithubRepoView = {
-  __typename?: 'ProjectGithubRepoView';
-  content: Repository;
-  id: Maybe<Scalars['bigint']>;
-  languages: Maybe<Scalars['jsonb']>;
-  name: Maybe<Scalars['String']>;
-  owner: Maybe<Scalars['String']>;
-  projectId: Maybe<Scalars['uuid']>;
-  pullRequests: Array<PullRequest>;
-};
-
-
-/** columns and relationships of "project_github_repo_view" */
-export type ProjectGithubRepoViewLanguagesArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-/** Boolean expression to filter rows from the table "project_github_repo_view". All fields are combined with a logical 'AND'. */
-export type ProjectGithubRepoViewBoolExp = {
-  _and: InputMaybe<Array<ProjectGithubRepoViewBoolExp>>;
-  _not: InputMaybe<ProjectGithubRepoViewBoolExp>;
-  _or: InputMaybe<Array<ProjectGithubRepoViewBoolExp>>;
-  id: InputMaybe<BigintComparisonExp>;
-  languages: InputMaybe<JsonbComparisonExp>;
-  name: InputMaybe<StringComparisonExp>;
-  owner: InputMaybe<StringComparisonExp>;
-  projectId: InputMaybe<UuidComparisonExp>;
-};
-
-/** Ordering options when selecting data from "project_github_repo_view". */
-export type ProjectGithubRepoViewOrderBy = {
-  id: InputMaybe<OrderBy>;
-  languages: InputMaybe<OrderBy>;
-  name: InputMaybe<OrderBy>;
-  owner: InputMaybe<OrderBy>;
-  projectId: InputMaybe<OrderBy>;
-};
-
-/** select columns of table "project_github_repo_view" */
-export enum ProjectGithubRepoViewSelectColumn {
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Languages = 'languages',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  Owner = 'owner',
-  /** column name */
-  ProjectId = 'projectId'
-}
-
 /** columns and relationships of "project_github_repos" */
 export type ProjectGithubRepos = {
   __typename?: 'ProjectGithubRepos';
@@ -1224,8 +1171,6 @@ export type Projects = {
   budgets: Array<Budgets>;
   /** An aggregate relationship */
   budgetsAggregate: BudgetsAggregate;
-  /** An object relationship */
-  githubRepo: Maybe<ProjectGithubRepoView>;
   /** An array relationship */
   githubRepos: Array<ProjectGithubRepos>;
   id: Scalars['uuid'];
@@ -1306,7 +1251,6 @@ export type ProjectsBoolExp = {
   _or: InputMaybe<Array<ProjectsBoolExp>>;
   budgets: InputMaybe<BudgetsBoolExp>;
   budgets_aggregate: InputMaybe<Budgets_Aggregate_Bool_Exp>;
-  githubRepo: InputMaybe<ProjectGithubRepoViewBoolExp>;
   githubRepos: InputMaybe<ProjectGithubReposBoolExp>;
   id: InputMaybe<UuidComparisonExp>;
   pendingInvitations: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
@@ -1318,7 +1262,6 @@ export type ProjectsBoolExp = {
 /** Ordering options when selecting data from "projects". */
 export type ProjectsOrderBy = {
   budgetsAggregate: InputMaybe<BudgetsAggregateOrderBy>;
-  githubRepo: InputMaybe<ProjectGithubRepoViewOrderBy>;
   githubReposAggregate: InputMaybe<ProjectGithubReposAggregateOrderBy>;
   id: InputMaybe<OrderBy>;
   pendingInvitationsAggregate: InputMaybe<PendingProjectLeaderInvitationsAggregateOrderBy>;
@@ -2283,23 +2226,6 @@ export type Project_Details_StreamCursorValueInput = {
   telegramLink: InputMaybe<Scalars['String']>;
 };
 
-/** Streaming cursor of the table "project_github_repo_view" */
-export type Project_Github_Repo_View_StreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: Project_Github_Repo_View_StreamCursorValueInput;
-  /** cursor ordering */
-  ordering: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Project_Github_Repo_View_StreamCursorValueInput = {
-  id: InputMaybe<Scalars['bigint']>;
-  languages: InputMaybe<Scalars['jsonb']>;
-  name: InputMaybe<Scalars['String']>;
-  owner: InputMaybe<Scalars['String']>;
-  projectId: InputMaybe<Scalars['uuid']>;
-};
-
 /** order by avg() on columns of table "project_github_repos" */
 export type Project_Github_Repos_Avg_Order_By = {
   githubRepoId: InputMaybe<OrderBy>;
@@ -2470,8 +2396,6 @@ export type Query_Root = {
   projectDetails: Array<ProjectDetails>;
   /** fetch data from the table: "project_details" using primary key columns */
   projectDetailsByPk: Maybe<ProjectDetails>;
-  /** fetch data from the table: "project_github_repo_view" */
-  projectGithubRepoView: Array<ProjectGithubRepoView>;
   /** fetch data from the table: "project_github_repos" */
   projectGithubRepos: Array<ProjectGithubRepos>;
   /** fetch data from the table: "project_github_repos" using primary key columns */
@@ -2643,15 +2567,6 @@ export type Query_RootProjectDetailsByPkArgs = {
 };
 
 
-export type Query_RootProjectGithubRepoViewArgs = {
-  distinctOn: InputMaybe<Array<ProjectGithubRepoViewSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<ProjectGithubRepoViewOrderBy>>;
-  where: InputMaybe<ProjectGithubRepoViewBoolExp>;
-};
-
-
 export type Query_RootProjectGithubReposArgs = {
   distinctOn: InputMaybe<Array<ProjectGithubReposSelectColumn>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -2816,10 +2731,6 @@ export type Subscription_Root = {
   projectDetailsByPk: Maybe<ProjectDetails>;
   /** fetch data from the table in a streaming manner: "project_details" */
   projectDetailsStream: Array<ProjectDetails>;
-  /** fetch data from the table: "project_github_repo_view" */
-  projectGithubRepoView: Array<ProjectGithubRepoView>;
-  /** fetch data from the table in a streaming manner: "project_github_repo_view" */
-  projectGithubRepoViewStream: Array<ProjectGithubRepoView>;
   /** fetch data from the table: "project_github_repos" */
   projectGithubRepos: Array<ProjectGithubRepos>;
   /** fetch data from the table: "project_github_repos" using primary key columns */
@@ -3031,22 +2942,6 @@ export type Subscription_RootProjectDetailsStreamArgs = {
   batchSize: Scalars['Int'];
   cursor: Array<InputMaybe<Project_Details_StreamCursorInput>>;
   where: InputMaybe<ProjectDetailsBoolExp>;
-};
-
-
-export type Subscription_RootProjectGithubRepoViewArgs = {
-  distinctOn: InputMaybe<Array<ProjectGithubRepoViewSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  orderBy: InputMaybe<Array<ProjectGithubRepoViewOrderBy>>;
-  where: InputMaybe<ProjectGithubRepoViewBoolExp>;
-};
-
-
-export type Subscription_RootProjectGithubRepoViewStreamArgs = {
-  batchSize: Scalars['Int'];
-  cursor: Array<InputMaybe<Project_Github_Repo_View_StreamCursorInput>>;
-  where: InputMaybe<ProjectGithubRepoViewBoolExp>;
 };
 
 

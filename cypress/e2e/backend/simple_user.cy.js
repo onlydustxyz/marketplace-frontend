@@ -114,31 +114,33 @@ describe("As a simple user, I", () => {
       cy.graphql({
         query: `{
                 projectsByPk(id: "${globalProjectId}") {
-                  githubRepo {
-                    id
-                    name
-                    owner
-                    content {
+                  githubRepos {
+                    githubRepoDetails {
+                      id
+                      name
+                      owner
+                      content {
                         contributors {
-                        id
-                        login
-                        avatarUrl
+                          id
+                          login
+                          avatarUrl
                         }
                         readme {
-                        encoding
-                        content
+                          encoding
+                          content
                         }
                         logoUrl
-                    }
-                    pullRequests {
+                      }
+                      pullRequests {
                         id
                       }
+                    }
                   }
                 }
               }`,
       })
         .asRegisteredUser(user)
-        .data("projectsByPk.githubRepo")
+        .data("projectsByPk.githubRepos[0].githubRepoDetails")
         .then(repo => {
           expect(repo.id).equal(REPO.id);
           expect(repo.name).equal(REPO.name);
@@ -164,31 +166,33 @@ describe("As a simple user, I", () => {
           cy.graphql({
             query: `{
                 projectsByPk(id: "${projectId}") {
-                  githubRepo {
-                    id
-                    name
-                    owner
-                    content {
+                  githubRepos {
+                    githubRepoDetails {
+                      id
+                      name
+                      owner
+                      content {
                         contributors {
-                        id
-                        login
-                        avatarUrl
+                          id
+                          login
+                          avatarUrl
                         }
                         readme {
-                        encoding
-                        content
+                          encoding
+                          content
                         }
                         logoUrl
-                    }
-                    pullRequests {
+                      }
+                      pullRequests {
                         id
                       }
+                    }
                   }
                 }
               }`,
           })
             .asRegisteredUser(user)
-            .data("projectsByPk.githubRepo")
+            .data("projectsByPk.githubRepos[0].githubRepoDetails")
             .then(repo => {
               expect(repo.id).equal(REPOS.empty.id);
               expect(repo.name).equal(REPOS.empty.name);
