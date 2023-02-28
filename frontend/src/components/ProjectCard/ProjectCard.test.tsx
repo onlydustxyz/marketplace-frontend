@@ -24,12 +24,9 @@ const githubRepo1: ProjectCardGithubRepoFieldsFragment = {
   githubRepoId: 1000,
   githubRepoDetails: {
     id: 1000,
-    name: "repoA",
-    owner: "AAA",
     languages: { Cairo: 1000, Rust: 100, HTML: 150 },
     content: {
       id: 1000,
-      logoUrl: "http://plop.fr/plop.jpg",
       contributors: [contributor1, contributor2],
     },
   },
@@ -40,12 +37,9 @@ const githubRepo2: ProjectCardGithubRepoFieldsFragment = {
   githubRepoId: 1001,
   githubRepoDetails: {
     id: 1001,
-    name: "repoB",
-    owner: "BBB",
     languages: { Rust: 80, Go: 40, Cairo: 2000 },
     content: {
       id: 1001,
-      logoUrl: "http://plop.fr/plop.jpg",
       contributors: [contributor1, contributor3],
     },
   },
@@ -117,6 +111,15 @@ describe("'ProjectCard' component", () => {
 
     const sponsorsLogo = screen.getByTestId(`sponsor-list-${PROJECT.id}`).getElementsByTagName("img");
     expect(sponsorsLogo).toHaveLength(3);
+  });
+
+  it("should display the repository count", () => {
+    renderWithIntl(<ProjectCard {...PROJECT} />, {
+      wrapper: MemoryRouterProviderFactory({}),
+    });
+
+    const repositoryCountString = screen.getByTestId(`github-repo-count-${PROJECT.id}`);
+    expect(repositoryCountString.textContent).toContain("2 repositories");
   });
 
   it("should display the contributor count", () => {
