@@ -28,7 +28,9 @@ export default function AllProjects({ technologies, projectOwnershipType }: Prop
   const projects = useMemo(() => {
     let projects = getProjectsQuery.data?.projects;
     if (projects && projectOwnershipType === ProjectOwnershipType.Mine) {
-      projects = projects.filter(project => ledProjectIds.includes(project.id));
+      projects = projects.filter(
+        project => ledProjectIds.includes(project.id) || project.pendingInvitations.length > 0
+      );
     }
     return sortBy(projects?.filter(isProjectVisible), p => !p.pendingInvitations.length);
   }, [getProjectsQuery.data?.projects, ledProjectIds, projectOwnershipType]);
