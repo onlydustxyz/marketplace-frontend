@@ -3574,13 +3574,6 @@ export type GetProjectOverviewDetailsQueryVariables = Exact<{
 
 export type GetProjectOverviewDetailsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, longDescription: string, logoUrl: string | null } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any }> } | null };
 
-export type GetProjectContributorsForPaymentSelect__DeprecatedQueryVariables = Exact<{
-  projectId: Scalars['uuid'];
-}>;
-
-
-export type GetProjectContributorsForPaymentSelect__DeprecatedQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } } | null } | null };
-
 export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
@@ -4489,50 +4482,6 @@ export function useGetProjectOverviewDetailsLazyQuery(baseOptions?: Apollo.LazyQ
 export type GetProjectOverviewDetailsQueryHookResult = ReturnType<typeof useGetProjectOverviewDetailsQuery>;
 export type GetProjectOverviewDetailsLazyQueryHookResult = ReturnType<typeof useGetProjectOverviewDetailsLazyQuery>;
 export type GetProjectOverviewDetailsQueryResult = Apollo.QueryResult<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>;
-export const GetProjectContributorsForPaymentSelect__DeprecatedDocument = gql`
-    query GetProjectContributorsForPaymentSelect__deprecated($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    id
-    githubRepo {
-      id
-      content {
-        id
-        contributors {
-          ...GithubContributor
-        }
-      }
-    }
-  }
-}
-    ${GithubContributorFragmentDoc}`;
-
-/**
- * __useGetProjectContributorsForPaymentSelect__DeprecatedQuery__
- *
- * To run a query within a React component, call `useGetProjectContributorsForPaymentSelect__DeprecatedQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetProjectContributorsForPaymentSelect__DeprecatedQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetProjectContributorsForPaymentSelect__DeprecatedQuery({
- *   variables: {
- *      projectId: // value for 'projectId'
- *   },
- * });
- */
-export function useGetProjectContributorsForPaymentSelect__DeprecatedQuery(baseOptions: Apollo.QueryHookOptions<GetProjectContributorsForPaymentSelect__DeprecatedQuery, GetProjectContributorsForPaymentSelect__DeprecatedQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProjectContributorsForPaymentSelect__DeprecatedQuery, GetProjectContributorsForPaymentSelect__DeprecatedQueryVariables>(GetProjectContributorsForPaymentSelect__DeprecatedDocument, options);
-      }
-export function useGetProjectContributorsForPaymentSelect__DeprecatedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectContributorsForPaymentSelect__DeprecatedQuery, GetProjectContributorsForPaymentSelect__DeprecatedQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProjectContributorsForPaymentSelect__DeprecatedQuery, GetProjectContributorsForPaymentSelect__DeprecatedQueryVariables>(GetProjectContributorsForPaymentSelect__DeprecatedDocument, options);
-        }
-export type GetProjectContributorsForPaymentSelect__DeprecatedQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelect__DeprecatedQuery>;
-export type GetProjectContributorsForPaymentSelect__DeprecatedLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelect__DeprecatedLazyQuery>;
-export type GetProjectContributorsForPaymentSelect__DeprecatedQueryResult = Apollo.QueryResult<GetProjectContributorsForPaymentSelect__DeprecatedQuery, GetProjectContributorsForPaymentSelect__DeprecatedQueryVariables>;
 export const GetProjectContributorsForPaymentSelectDocument = gql`
     query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
   projectsByPk(id: $projectId) {
