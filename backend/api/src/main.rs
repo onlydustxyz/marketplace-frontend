@@ -2,9 +2,13 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use api::{
-	infrastructure::database::{
-		GithubRepoRepository, PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
-		ProjectGithubRepoRepository, ProjectSponsorRepository, UserInfoRepository,
+	infrastructure::{
+		database::{
+			GithubRepoRepository, PendingProjectLeaderInvitationsRepository,
+			ProjectDetailsRepository, ProjectGithubRepoRepository, ProjectSponsorRepository,
+			UserInfoRepository,
+		},
+		simple_storage,
 	},
 	presentation::{graphql, http},
 	Config,
@@ -26,6 +30,7 @@ async fn main() -> Result<()> {
 	database.run_migrations()?;
 
 	let github = Arc::new(github::Client::new(config.github())?);
+	let simple_storage = Arc::new(simple_storage::Client::new(config.s3()).await);
 
 	http::serve(
 		config.http().clone(),
@@ -40,6 +45,7 @@ async fn main() -> Result<()> {
 		UserInfoRepository::new(database),
 		github,
 		Arc::new(ens::Client::new(config.web3())?),
+		simple_storage,
 	)
 	.await?;
 
