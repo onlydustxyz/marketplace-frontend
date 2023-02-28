@@ -1395,9 +1395,12 @@ export type Reason = {
 export type Repository = {
   __typename?: 'Repository';
   contributors: Array<User>;
+  description: Scalars['String'];
+  forksCount: Scalars['Int'];
   id: Scalars['Int'];
   logoUrl: Scalars['String'];
   readme: Maybe<File>;
+  stars: Scalars['Int'];
 };
 
 /** columns and relationships of "sponsors" */
@@ -3509,7 +3512,7 @@ export type GetPaymentRequestsQueryVariables = Exact<{
 }>;
 
 
-export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string } } | null } | null } | null }> };
+export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null } | null } | null }> };
 
 export type UpdateProfileInfoMutationVariables = Exact<{
   email: InputMaybe<Scalars['Email']>;
@@ -3585,13 +3588,15 @@ export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
 
 export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } } | null }> } | null };
 
+export type SidebarProjectDetailsFragment = { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } } | null }> };
+
 export type GetProjectsForSidebarQueryVariables = Exact<{
   ledProjectIds: InputMaybe<Array<Scalars['uuid']> | Scalars['uuid']>;
   githubUserId: InputMaybe<Scalars['bigint']>;
 }>;
 
 
-export type GetProjectsForSidebarQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, githubRepo: { __typename?: 'ProjectGithubRepoView', id: any | null, content: { __typename?: 'Repository', id: number, logoUrl: string, contributors: Array<{ __typename?: 'User', login: string }> } } | null }> };
+export type GetProjectsForSidebarQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } } | null }> }> };
 
 export type GetProjectQueryVariables = Exact<{
   id: Scalars['uuid'];
@@ -3724,6 +3729,22 @@ export const PaymentRequestFragmentDoc = gql`
   requestedAt
 }
     `;
+export const GithubRepoStaticDetailsFragmentDoc = gql`
+    fragment GithubRepoStaticDetails on GithubRepoDetails {
+  id
+  owner
+  name
+  languages
+}
+    `;
+export const GithubRepoDynamicDetailsFragmentDoc = gql`
+    fragment GithubRepoDynamicDetails on Repository {
+  id
+  description
+  stars
+  forksCount
+}
+    `;
 export const ContributorsTableFieldsFragmentDoc = gql`
     fragment ContributorsTableFields on User {
   id
@@ -3757,22 +3778,22 @@ export const GithubRepoContributorsFieldsFragmentDoc = gql`
   }
 }
     ${ContributorsTableFieldsFragmentDoc}`;
-export const GithubRepoStaticDetailsFragmentDoc = gql`
-    fragment GithubRepoStaticDetails on GithubRepoDetails {
+export const SidebarProjectDetailsFragmentDoc = gql`
+    fragment SidebarProjectDetails on Projects {
   id
-  owner
-  name
-  languages
+  projectDetails {
+    projectId
+    name
+    logoUrl
+  }
+  pendingInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
+    id
+  }
+  githubRepos {
+    ...GithubRepoContributorsFields
+  }
 }
-    `;
-export const GithubRepoDynamicDetailsFragmentDoc = gql`
-    fragment GithubRepoDynamicDetails on Repository {
-  id
-  description
-  stars
-  forksCount
-}
-    `;
+    ${GithubRepoContributorsFieldsFragmentDoc}`;
 export const GithubRepoLanguagesFieldsFragmentDoc = gql`
     fragment GithubRepoLanguagesFields on ProjectGithubRepos {
   githubRepoId
@@ -4149,13 +4170,6 @@ export const GetPaymentRequestsDocument = gql`
           name
           shortDescription
           logoUrl
-        }
-        githubRepo {
-          id
-          content {
-            id
-            logoUrl
-          }
         }
       }
     }
@@ -4569,28 +4583,10 @@ export const GetProjectsForSidebarDocument = gql`
   projects(
     where: {_or: [{id: {_in: $ledProjectIds}}, {pendingInvitations: {githubUserId: {_eq: $githubUserId}}}]}
   ) {
-    id
-    projectDetails {
-      projectId
-      name
-      logoUrl
-    }
-    pendingInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
-      id
-    }
-    githubRepo {
-      id
-      content {
-        id
-        contributors {
-          login
-        }
-        logoUrl
-      }
-    }
+    ...SidebarProjectDetails
   }
 }
-    `;
+    ${SidebarProjectDetailsFragmentDoc}`;
 
 /**
  * __useGetProjectsForSidebarQuery__
