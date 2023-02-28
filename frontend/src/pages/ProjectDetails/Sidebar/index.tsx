@@ -14,6 +14,7 @@ import { sortBy } from "lodash";
 import { ProjectRoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
 import { getDeduplicatedAggregatedContributors } from "../Contributors";
+import isDefined from "src/utils/isDefined";
 
 export type ProjectDetailsTab = {
   label: string;
@@ -65,7 +66,9 @@ export default function ProjectsSidebar({ currentProject }: Props) {
       availableTabs={availableTabs}
       currentProject={currentProject}
       allProjects={sortedProjects}
-      expandable={isProjectMine(currentProject) && sortedProjects.length > 1}
+      expandable={
+        (isProjectMine(currentProject) || isDefined(currentProject.invitationId)) && sortedProjects.length > 1
+      }
     />
   );
 }
