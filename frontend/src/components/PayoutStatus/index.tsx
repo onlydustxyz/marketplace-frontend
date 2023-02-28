@@ -1,5 +1,8 @@
-import Tag, { TagBackgroundColor, TagBorderColor, TagIcon, TagIconColor, TagSize } from "src/components/Tag";
+import Tag, { TagBorderColor, TagSize } from "src/components/Tag";
 import { useIntl } from "src/hooks/useIntl";
+import CheckLine from "src/icons/CheckLine";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
 import Tooltip from "../Tooltip";
 
@@ -28,14 +31,10 @@ const CompleteTag = (id: string) => {
 
   return (
     <>
-      <Tag
-        id={id}
-        label={T("payment.status.complete")}
-        size={TagSize.Medium}
-        icon={TagIcon.Check}
-        iconColor={TagIconColor.Grey}
-        borderColor={TagBorderColor.Grey}
-      />
+      <Tag id={id} size={TagSize.Medium}>
+        <CheckLine className="text-greyscale-50" />
+        <span className="text-greyscale-50">{T("payment.status.complete")}</span>
+      </Tag>
       <Tooltip anchorId={id}>
         <div className="w-36">{T("payment.status.tooltip.complete")}</div>
       </Tooltip>
@@ -48,14 +47,10 @@ const ProcessingTag = (id: string) => {
 
   return (
     <>
-      <Tag
-        id={id}
-        label={T("payment.status.processing")}
-        size={TagSize.Medium}
-        icon={TagIcon.Time}
-        iconColor={TagIconColor.Grey}
-        borderColor={TagBorderColor.Grey}
-      />
+      <Tag id={id} size={TagSize.Medium}>
+        <Time className="text-greyscale-50" />
+        <span className="text-greyscale-50">{T("payment.status.processing")}</span>
+      </Tag>
       <Tooltip anchorId={id}>
         <div className="w-44">{T("payment.status.tooltip.processing")}</div>
       </Tooltip>
@@ -70,14 +65,14 @@ const PayoutInfoMissingTag = (id: string, isProjectLeaderView: boolean) => {
     <>
       <Tag
         id={id}
-        label={isProjectLeaderView ? T("payment.status.pending") : T("payment.status.payoutInfoMissing")}
         size={TagSize.Medium}
-        icon={TagIcon.Warning}
-        iconColor={TagIconColor.Pink}
         borderColor={isProjectLeaderView ? TagBorderColor.Grey : TagBorderColor.MultiColor}
-        backgroundColor={TagBackgroundColor.SpaceBlueOpaque}
-        whitespaceNoWrap={true}
-      />
+      >
+        <ErrorWarningLine className="text-pink-500" />
+        <span className="text-greyscale-50 whitespace-nowrap">
+          {isProjectLeaderView ? T("payment.status.pending") : T("payment.status.payoutInfoMissing")}
+        </span>
+      </Tag>
       <Tooltip anchorId={id}>
         <div className="w-52">
           {isProjectLeaderView ? T("payment.status.tooltip.pending") : T("payment.status.tooltip.payoutInfoMissing")}

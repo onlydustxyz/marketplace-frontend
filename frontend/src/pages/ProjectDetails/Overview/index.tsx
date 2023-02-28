@@ -11,10 +11,10 @@ import Card from "src/components/Card";
 import GithubRepoDetails from "./GithubRepoDetails";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import classNames from "classnames";
-import Book from "src/assets/icons/Book";
 import Badge, { BadgeSize } from "src/components/Badge";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
 
 type OutletContext = {
   leads?: ProjectLeadFragment[];
@@ -69,7 +69,7 @@ export default function Overview() {
             <Card className="flex flex-col gap-4">
               <div className="flex flex-row font-walsheim font-medium text-base text-greyscale-50 items-center border-b border-greyscale-50/8 pb-2 justify-between">
                 <div className="flex flex-row gap-3">
-                  <Book className="w-6 h-6 fill-white" />
+                  <GitRepositoryLine className="w-6 h-6 text-white" />
                   {T("project.details.overview.repositories")}
                 </div>
                 <Badge value={githubReposCount} size={BadgeSize.Small} />

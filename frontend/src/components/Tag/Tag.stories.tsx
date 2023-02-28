@@ -1,6 +1,7 @@
 import { ComponentStory } from "@storybook/react";
-import { JSXElementConstructor } from "react";
-import Tag, { TagBackgroundColor, TagBorderColor, TagIcon, TagIconColor, TagProps, TagSize } from ".";
+import { JSXElementConstructor, PropsWithChildren } from "react";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import Tag, { TagBorderColor, TagSize } from ".";
 
 export default {
   title: "Tag",
@@ -17,37 +18,22 @@ export default {
         options: [TagBorderColor.Grey, TagBorderColor.MultiColor],
       },
     },
-    icon: {
-      control: {
-        type: "select",
-        options: [TagIcon.Check, TagIcon.Time, TagIcon.Warning],
-      },
-    },
-    iconColor: {
-      control: {
-        type: "select",
-        options: [TagIconColor.Grey, TagIconColor.Orange, TagIconColor.Pink],
-      },
-    },
-    backgroundColor: {
-      control: {
-        type: "select",
-        options: [TagBackgroundColor.WhiteTransparent, TagBackgroundColor.SpaceBlueOpaque],
-      },
-    },
   },
 };
 
-const Template: ComponentStory<JSXElementConstructor<TagProps>> = args => <Tag {...args} />;
+const Template: ComponentStory<JSXElementConstructor<typeof args & PropsWithChildren>> = args => <Tag {...args} />;
 
 const args = {
   size: TagSize.Medium,
-  label: "Processing",
-  whitespaceNoWrap: false,
+  borderColor: TagBorderColor.Grey,
 };
 
 export const Default = Template.bind({});
-Default.args = args;
+Default.args = {
+  ...args,
+  children: <>Processing</>,
+};
+
 Default.parameters = {
   backgrounds: {
     default: "space",
@@ -57,9 +43,31 @@ Default.parameters = {
 export const WithIcon = Template.bind({});
 WithIcon.args = {
   ...args,
-  icon: TagIcon.Time,
+  children: (
+    <>
+      <ErrorWarningLine className="text-orange-500" /> Processing
+    </>
+  ),
 };
+
 WithIcon.parameters = {
+  backgrounds: {
+    default: "space",
+  },
+};
+
+export const MultiColor = Template.bind({});
+MultiColor.args = {
+  ...args,
+  borderColor: TagBorderColor.MultiColor,
+  children: (
+    <>
+      <ErrorWarningLine className="text-pink-500" /> Payment info needed
+    </>
+  ),
+};
+
+MultiColor.parameters = {
   backgrounds: {
     default: "space",
   },
