@@ -101,6 +101,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
         __typename: "Projects",
         id: TEST_PROJECT_ID,
         projectDetails: {
+          __typename: "ProjectDetails",
           projectId: TEST_PROJECT_ID,
           name: TEST_PROJECT_NAME,
           telegramLink: TEST_TELEGRAM_LINK,
@@ -116,9 +117,10 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
           },
         ],
         pendingInvitations: [],
-        githubRepos: [],
+        githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
         projectSponsors: [],
         budgetsAggregate: { aggregate: { sum: { spentAmount: 100 } } },
+        budgets: [{ id: "budget-1" }],
       },
     ],
   },
@@ -156,6 +158,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
       pendingInvitations: [{ id: "invitation-id" }],
       githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
       projectSponsors: [],
+      budgets: [{ id: "budget-1" }],
     },
   },
 };

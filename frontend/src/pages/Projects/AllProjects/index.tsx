@@ -6,7 +6,7 @@ import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
-import { GetProjectsQuery } from "src/__generated/graphql";
+import { GetProjectsQuery, ProjectCardFieldsFragment } from "src/__generated/graphql";
 import { ProjectOwnershipType } from "..";
 
 type Props = {
@@ -30,7 +30,7 @@ export default function AllProjects({ technologies, projectOwnershipType }: Prop
     if (projects && projectOwnershipType === ProjectOwnershipType.Mine) {
       projects = projects.filter(project => ledProjectIds.includes(project.id));
     }
-    return sortBy(projects, p => !p.pendingInvitations.length);
+    return sortBy(projects?.filter(isProjectVisible), p => !p.pendingInvitations.length);
   }, [getProjectsQuery.data?.projects, ledProjectIds, projectOwnershipType]);
 
   return (
@@ -51,6 +51,15 @@ const buildQueryFilters = (technologies: string[]) => {
   }
 
   return filters.length ? `where: ${filters}, ` : "";
+};
+
+const isProjectVisible = (project: ProjectCardFieldsFragment) => {
+  const hasLeaders = project.projectLeads.length > 0;
+  const hasRepos = project.githubRepos.length > 0;
+  const hasBudget = project.budgets.length > 0;
+  const hasInvitation = project.pendingInvitations.length > 0;
+
+  return (hasLeaders && hasRepos && hasBudget) || hasInvitation;
 };
 
 export const buildGetProjectsQuery = (technologies: string[]) => gql`

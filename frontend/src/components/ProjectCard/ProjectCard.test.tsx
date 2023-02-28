@@ -70,6 +70,7 @@ const PROJECT: Project = {
       },
     },
   },
+  budgets: [{ id: "budget-1" }],
   pendingInvitations: [{ id: "croute" }],
   projectSponsors: [
     {
