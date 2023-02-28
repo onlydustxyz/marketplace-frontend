@@ -169,15 +169,24 @@
         }
       },
       "overview": {
-        "contributors": "CONTRIBUTORS",
+        "contributors": {
+          "one": "Contributor",
+          "many": "Contributors"
+        },
         "githubLinkContent": "Link",
         "githubLinkTitle": "GitHub",
-        "projectLeader": "PROJECT LEAD",
-        "readmeTitle": "Readme.md",
-        "sponsors": "Sponsors",
+        "projectLeader": {
+          "one": "Project lead",
+          "many": "Project leads"
+        },
+        "repositories": "Repositories",
+        "sponsors": {
+          "one": "Sponsor",
+          "many": "Sponsors"
+        },
         "technologies": "Technologies",
         "telegram": "Telegram",
-        "title": "Overview",
+        "title": "Project overview",
         "totalSpentAmountInUsd": "MONEY GRANTED"
       },
       "payments": {
