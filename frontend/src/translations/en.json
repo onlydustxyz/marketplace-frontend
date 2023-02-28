@@ -96,7 +96,7 @@
         "complete": "Payment successful",
         "payoutInfoMissing": "Fill in your payment information to get paid",
         "pending": "Contributor needs to sign up on OnlyDust and to complete payout info to get paid",
-        "processing": "Payment is being processed by our team"
+        "processing": "Payment is being processed by our team. Typically 3 to 5 days to receive payment"
       }
     },
     "table": {
