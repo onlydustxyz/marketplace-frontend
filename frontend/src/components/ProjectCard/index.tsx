@@ -193,6 +193,9 @@ export const PROJECT_CARD_FRAGMENT = gql`
         }
       }
     }
+    budgets {
+      id
+    }
     projectDetails {
       projectId
       name

@@ -94,6 +94,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
       },
     },
   ],
+  budgets: [{ id: "budget-1" }],
   budgetsAggregate: {
     aggregate: {
       sum: {
