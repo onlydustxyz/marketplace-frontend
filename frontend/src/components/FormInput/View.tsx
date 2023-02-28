@@ -1,10 +1,10 @@
 import { FocusEventHandler, memo } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
-import RiErrorWarningLine from "src/icons/RiErrorWarningLine";
 import ImageCard, { BackgroundBlur, BackgroundNoise, BackgroundPosition, BackgroundSize } from "../ImageCard";
 import headerElementBackground from "src/assets/img/alert-bg.png";
 import classNames from "classnames";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
 
 type PropsType = {
   label: string;
@@ -89,7 +89,7 @@ const View: React.FC<PropsType> = ({
           >
             <div className="flex flex-row justify-between py-5 px-6">
               <div className="flex flex-row justify-start items-center font-medium text-white gap-4">
-                <RiErrorWarningLine className="px-3 py-2.5 text-3xl rounded-2xl bg-white/10" />
+                <ErrorWarningLine className="px-3 py-2.5 text-3xl rounded-2xl bg-white/10" />
                 <div className="flex flex-col ">
                   <div className="text-lg">{error.message.toString()}</div>
                 </div>

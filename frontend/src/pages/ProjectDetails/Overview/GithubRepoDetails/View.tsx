@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import Card from "src/components/Card";
 import GithubLink from "src/components/GithubLink";
+import Tag, { TagSize } from "src/components/Tag";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import ForkLine from "src/icons/ForkLine";
 import StarLine from "src/icons/StarLine";
@@ -19,10 +20,10 @@ export default function View({ owner, name, description, languages, stars, forks
         </div>
       )}
       {Object.keys(languages).length > 0 && (
-        <div className="w-fit flex flex-row border border-greyscale-50/8 px-2 py-1 rounded-full gap-1 text-xs items-center">
+        <Tag size={TagSize.Small}>
           <CodeSSlashLine />
           {getMostUsedLanguages(languages, 1)[0]}
-        </div>
+        </Tag>
       )}
       <div className="flex flex-col">
         <span className="font-medium text-base">{name}</span>

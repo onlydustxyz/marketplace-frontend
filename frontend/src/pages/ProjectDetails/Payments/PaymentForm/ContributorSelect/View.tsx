@@ -9,9 +9,9 @@ import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import SearchLine from "src/icons/SearchLine";
 import { GithubContributorFragment } from "src/__generated/graphql";
-import RiErrorWarningLine from "src/icons/RiErrorWarningLine";
 import CloseLine from "src/icons/CloseLine";
 import classNames from "classnames";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
 
 type Props = {
   loading: boolean;
@@ -119,7 +119,7 @@ const View = ({
           <ImageCard backgroundImageUrl={headerElementBackground} backgroundSize={BackgroundSize.Cover}>
             <div className="flex flex-row justify-between py-5 px-6">
               <div className="flex flex-row justify-start items-center font-medium gap-4">
-                <RiErrorWarningLine className="px-3 py-2.5 text-3xl rounded-2xl bg-white/10" />
+                <ErrorWarningLine className="px-3 py-2.5 text-3xl rounded-2xl bg-white/10" />
                 <div className="flex flex-col ">
                   <div className="text-lg font-medium">
                     {T("payment.form.contributor.needsToSignup", { contributor: contributor.login })}
