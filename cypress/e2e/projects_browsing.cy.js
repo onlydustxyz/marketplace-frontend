@@ -17,6 +17,8 @@ describe("As a visitor, I", () => {
     cy.contains("Plop AB");
     cy.contains("2 contributors");
     cy.contains("3 contributors");
+    cy.contains("1 repository");
+    cy.contains("2 repositories");
 
     // Filtering
     cy.contains("Rust");

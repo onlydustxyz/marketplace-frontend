@@ -95,8 +95,8 @@ const projectFromQuery = (project: GetProjectQuery["projectsByPk"]): ProjectDeta
   telegramLink: project?.projectDetails?.telegramLink,
   //TODO: change this entirely
   githubRepoInfo: {
-    name: (project?.githubRepos?.length === 1 && project?.githubRepos[0].githubRepoDetails?.name) || undefined,
-    owner: (project?.githubRepos?.length === 1 && project?.githubRepos[0].githubRepoDetails?.owner) || undefined,
+    name: undefined,
+    owner: undefined,
     contributors: undefined,
     languages: (project?.githubRepos?.length === 1 && project?.githubRepos[0].githubRepoDetails?.languages) || {},
     decodedReadme:
