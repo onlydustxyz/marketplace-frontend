@@ -125,10 +125,6 @@ describe("As a simple user, I", () => {
                           login
                           avatarUrl
                         }
-                        readme {
-                          encoding
-                          content
-                        }
                         logoUrl
                       }
                       pullRequests {
@@ -147,8 +143,6 @@ describe("As a simple user, I", () => {
           expect(repo.owner).equal(REPO.owner);
           expect(repo.content.contributors).to.be.an("array");
           expect(repo.content.contributors[0]).to.have.all.keys(["id", "login", "avatarUrl"]);
-          expect(repo.content.readme.encoding).equal("BASE64");
-          expect(repo.content.readme.content).to.be.a("string");
           expect(repo.content.logoUrl).to.be.a("string");
           expect(repo.pullRequests).to.not.be.empty;
         });
@@ -177,10 +171,6 @@ describe("As a simple user, I", () => {
                           login
                           avatarUrl
                         }
-                        readme {
-                          encoding
-                          content
-                        }
                         logoUrl
                       }
                       pullRequests {
@@ -198,7 +188,6 @@ describe("As a simple user, I", () => {
               expect(repo.name).equal(REPOS.empty.name);
               expect(repo.owner).equal(REPOS.empty.owner);
               expect(repo.content.contributors).to.be.empty;
-              expect(repo.content.readme).to.null;
               expect(repo.content.logoUrl).to.be.a("string");
               expect(repo.pullRequests).to.be.empty;
             });

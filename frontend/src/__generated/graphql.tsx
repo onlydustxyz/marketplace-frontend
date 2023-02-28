@@ -404,16 +404,6 @@ export enum CursorOrdering {
   Desc = 'DESC'
 }
 
-export enum Encoding {
-  Base64 = 'BASE64'
-}
-
-export type File = {
-  __typename?: 'File';
-  content: Scalars['String'];
-  encoding: Encoding;
-};
-
 /** columns and relationships of "github_repo_details" */
 export type GithubRepoDetails = {
   __typename?: 'GithubRepoDetails';
@@ -1342,7 +1332,6 @@ export type Repository = {
   forksCount: Scalars['Int'];
   id: Scalars['Int'];
   logoUrl: Scalars['String'];
-  readme: Maybe<File>;
   stars: Scalars['Int'];
 };
 
