@@ -18,7 +18,7 @@ export default function Section({ title, icon, children }: Props) {
     <div className="flex flex-col py-4 px-6 gap-2">
       <div className="flex flex-row whitespace-nowrap gap-1 items-center text-spaceBlue-200">
         <i className={`${icon} p-px font-normal text-xl`} />
-        <span className="text-md font-semibold text-sm uppercase">{title}</span>
+        <span className="text-md font-medium text-sm uppercase">{title}</span>
       </div>
       {children}
     </div>
