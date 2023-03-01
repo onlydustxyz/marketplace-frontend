@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { GET_GITHUB_USER_QUERY } from "src/hooks/useGithubUser";
 import { GET_USER_PAYOUT_SETTINGS } from "src/hooks/usePayoutSettings";
 import { Currency } from "src/types";
-import { PaymentRequestFragment } from "src/__generated/graphql";
+import { PaymentRequestFragment, UserPayoutSettingsFragment } from "src/__generated/graphql";
 
 import PaymentTable from ".";
 
@@ -85,7 +85,17 @@ const mocks = [
     },
     result: {
       data: {
-        authGithubUsers: [{ user: { userInfo: { payoutSettings: { EthTransfer: { Name: "vitalik.eth" } } } } }],
+        authGithubUsers: [
+          {
+            user: {
+              userInfo: {
+                __typename: "UserInfo",
+                payoutSettings: { EthTransfer: { Name: "vitalik.eth" } },
+                arePayoutSettingsValid: true,
+              } as UserPayoutSettingsFragment,
+            },
+          },
+        ],
       },
     },
   },

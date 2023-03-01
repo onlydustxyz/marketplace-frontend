@@ -4,7 +4,7 @@ import { useAuth } from "src/hooks/useAuth";
 import { HasuraUserRole } from "src/types";
 import QueryWrapper from "src/components/QueryWrapper";
 import ProfileForm from "./components/ProfileForm";
-import { ProfileQuery } from "src/__generated/graphql";
+import { ProfileQuery, UserPayoutSettingsFragmentDoc } from "src/__generated/graphql";
 import InfoMissingBanner from "src/components/InfoMissingBanner";
 import { useIntl } from "src/hooks/useIntl";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -74,13 +74,14 @@ const Profile: React.FC = () => {
 };
 
 export const GET_PROFILE_QUERY = gql`
+  ${UserPayoutSettingsFragmentDoc}
   query Profile {
     userInfo {
       userId
       identity
       email
       location
-      payoutSettings
+      ...UserPayoutSettings
     }
   }
 `;

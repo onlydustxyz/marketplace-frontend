@@ -24,6 +24,7 @@ const VALID_ETHEREUM_ADDRESS = "0xebec795c9c8bbd61ffc14a6662944748f299cacf";
 const VALID_ENS = "vitalik.eth";
 
 const mockUser: UserInfo = {
+  __typename: "UserInfo",
   userId: "test-user-id",
   email: "test@user.email",
   identity: {
@@ -41,9 +42,11 @@ const mockUser: UserInfo = {
   payoutSettings: {
     EthTransfer: { Address: INVALID_ETHEREUM_ADDRESS },
   },
+  arePayoutSettingsValid: true,
 };
 
 const mockUserWithEns: UserInfo = {
+  __typename: "UserInfo",
   userId: "test-user-id",
   email: "test@user.email",
   identity: {
@@ -61,9 +64,11 @@ const mockUserWithEns: UserInfo = {
   payoutSettings: {
     EthTransfer: { Name: VALID_ENS },
   },
+  arePayoutSettingsValid: true,
 };
 
 const mockCompany: UserInfo = {
+  __typename: "UserInfo",
   userId: "test-company-id",
   email: "james.bond@mi6.uk",
   identity: {
@@ -84,6 +89,7 @@ const mockCompany: UserInfo = {
       IBAN: "FR7610107001011234567890129",
     },
   },
+  arePayoutSettingsValid: true,
 };
 
 const accessToken = (userId: string) => ({

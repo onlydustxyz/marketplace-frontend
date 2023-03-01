@@ -7,20 +7,25 @@ describe("As a project lead, I", () => {
     cy.createGithubUser(98735558)
       .as("user")
       .then(user => {
-        cy.createProject("Project with budget").withLeader(user).withBudget(1000).withRepo().as("projectId");
-        cy.signinUser(user)
-          .then(user => JSON.stringify(user.session))
-          .as("token");
-      });
+        cy.createGithubUser(21149076)
+          .as("otherUser")
+          .then(otherUser => {
+            cy.createProject("Project with budget")
+              .withLeader(user)
+              .withLeader(otherUser)
+              .withBudget(1000)
+              .withRepo()
+              .as("projectId");
 
-    cy.createGithubUser(21149076)
-      .as("otherUser")
-      .then(user =>
-        cy
-          .signinUser(user)
-          .then(user => JSON.stringify(user.session))
-          .as("otherToken")
-      );
+            cy.signinUser(user)
+              .then(user => JSON.stringify(user.session))
+              .as("token");
+
+            cy.signinUser(otherUser)
+              .then(user => JSON.stringify(user.session))
+              .as("otherToken");
+          });
+      });
 
     cy.createGithubUser(43467246)
       .as("paymentRecipient")
@@ -53,15 +58,17 @@ describe("As a project lead, I", () => {
   });
 
   it("can request a payment and other project leads can see the update", function () {
-    cy.visit("http://localhost:5173/profile", {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", this.paymentRecipientToken);
-      },
-    });
+    const showPaymentsAsOtherLeader = () => {
+      cy.visit(`http://localhost:5173/projects/${this.projectId}`, {
+        onBeforeLoad(win) {
+          win.localStorage.setItem("hasura_token", this.otherToken);
+        },
+      });
 
-    cy.get("[name=ethIdentity]").clear().type(TEST_ETH_ADDRESS);
-    cy.contains("Save profile").click();
+      cy.contains("Payments").click();
+    };
 
+    // 1. Request a payment, payment is "pending"
     cy.visit(`http://localhost:5173/projects/${this.projectId}`, {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.token);
@@ -78,8 +85,23 @@ describe("As a project lead, I", () => {
     cy.wait(WAIT_LONG);
     cy.contains("Confirm payment").click();
 
-    cy.get("#remainingBudget").should("have.text", "$0");
+    showPaymentsAsOtherLeader();
+    cy.get("#payment_table").contains("Pending");
 
+    // 2. Edit profile info, payment is "processing"
+    cy.visit("http://localhost:5173/profile", {
+      onBeforeLoad(win) {
+        win.localStorage.setItem("hasura_token", this.paymentRecipientToken);
+      },
+    });
+
+    cy.get("[name=ethIdentity]").clear().type(TEST_ETH_ADDRESS);
+    cy.contains("Save profile").click();
+
+    showPaymentsAsOtherLeader();
+    cy.get("#payment_table").contains("Processing");
+
+    // 3. Add receipt, payment is "complete"
     cy.graphql({
       query: `{ paymentRequests(where: {budget: {projectId: {_eq: "${this.projectId}"}}, _and: {recipientId: {_eq: 43467246}}})
 	    {
@@ -111,22 +133,7 @@ describe("As a project lead, I", () => {
           })
       );
 
-    cy.inviteProjectLeader(this.projectId, this.otherUser.githubUserId)
-      .asAdmin()
-      .data("inviteProjectLeader")
-      .should("be.a", "string")
-      .then(invitationId => cy.acceptProjectLeaderInvitation(invitationId))
-      .asRegisteredUser(this.otherUser)
-      .then(() => this.projectId);
-
-    cy.visit(`http://localhost:5173/projects/${this.projectId}`, {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", this.otherToken);
-      },
-    });
-
-    cy.contains("Payments").click();
-    cy.get("#remainingBudget").should("have.text", "$0");
+    showPaymentsAsOtherLeader();
     cy.get("#payment_table").contains("Complete");
   });
 
