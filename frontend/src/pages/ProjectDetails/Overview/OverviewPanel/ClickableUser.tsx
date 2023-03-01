@@ -9,7 +9,7 @@ type Props = {
 
 export default function ClickableUser({ name, url, logoUrl }: Props) {
   return (
-    <div className="flex flex-row gap-2 items-center text-greyscale-50 text-sm font-normal">
+    <div className="flex flex-row gap-2 items-center text-greyscale-50 text-sm font-medium">
       {logoUrl && <RoundedImage alt={name} rounding={Rounding.Circle} size={ImageSize.Sm} src={logoUrl} />}
       <div className="truncate">{url ? <ExternalLink {...{ url, text: name }} /> : <>{name}</>}</div>
     </div>
