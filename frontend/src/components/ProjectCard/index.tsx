@@ -90,35 +90,39 @@ export default function ProjectCard({
                 </Tag>
               )}
               {totalSpentAmountInUsd !== undefined && (
-                <Tag id={`sponsor-list-${id}`} testid={`sponsor-list-${id}`} size={TagSize.Small}>
-                  {projectSponsors?.length ? (
-                    <>
-                      <Tooltip anchorId={`sponsor-list-${id}`} position={TooltipPosition.Top}>
-                        <div className="w-fit">
-                          {T("project.fundedBy", {
-                            topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
-                          })}
+                <>
+                  <Tag id={`sponsor-list-${id}`} testid={`sponsor-list-${id}`} size={TagSize.Small}>
+                    {projectSponsors?.length ? (
+                      <>
+                        <div className="flex flex-row -space-x-1">
+                          {topSponsors.map(sponsor => (
+                            <RoundedImage
+                              key={sponsor.id}
+                              src={sponsor.logoUrl}
+                              alt={sponsor.name}
+                              size={ImageSize.Xxs}
+                              rounding={Rounding.Circle}
+                            />
+                          ))}
                         </div>
-                      </Tooltip>
-                      <div className="flex flex-row -space-x-1">
-                        {topSponsors.map(sponsor => (
-                          <RoundedImage
-                            key={sponsor.id}
-                            src={sponsor.logoUrl}
-                            alt={sponsor.name}
-                            size={ImageSize.Xxs}
-                            rounding={Rounding.Circle}
-                          />
-                        ))}
+                      </>
+                    ) : (
+                      <FundsLine />
+                    )}
+                    {isXl
+                      ? T("project.amountGranted", { amount: formatMoneyAmount(totalSpentAmountInUsd) })
+                      : formatMoneyAmount(totalSpentAmountInUsd)}
+                  </Tag>
+                  {projectSponsors?.length > 0 && (
+                    <Tooltip anchorId={`sponsor-list-${id}`} position={TooltipPosition.Top}>
+                      <div className="w-fit">
+                        {T("project.fundedBy", {
+                          topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
+                        })}
                       </div>
-                    </>
-                  ) : (
-                    <FundsLine />
+                    </Tooltip>
                   )}
-                  {isXl
-                    ? T("project.amountGranted", { amount: formatMoneyAmount(totalSpentAmountInUsd) })
-                    : formatMoneyAmount(totalSpentAmountInUsd)}
-                </Tag>
+                </>
               )}
             </div>
           </div>
