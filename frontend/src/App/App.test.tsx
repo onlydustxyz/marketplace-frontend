@@ -194,7 +194,7 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
         logoUrl: null,
         longDescription: "This is the long description",
       },
-      githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID }],
+      githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: { content: { stars: 1000 } } }],
     },
   },
 };
