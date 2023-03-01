@@ -14,7 +14,7 @@ type Props = Omit<GithubRepoStaticDetailsFragment & GithubRepoDynamicDetailsFrag
 export default function View({ owner, name, description, languages, stars, forksCount }: Props) {
   return (
     <Card className="flex flex-row justify-between p-3" padded={false}>
-      <div className="flex flex-col justify-between gap-3 font-walsheim text-greyscale-50 font-normal p-3">
+      <div className="flex flex-col justify-between gap-3 font-walsheim text-greyscale-50 font-normal p-3 w-5/6">
         {Object.keys(languages).length > 0 && (
           <Tag size={TagSize.Small}>
             <CodeSSlashLine />
@@ -23,7 +23,7 @@ export default function View({ owner, name, description, languages, stars, forks
         )}
         <div className="flex flex-col">
           <span className="font-medium text-base">{name}</span>
-          <span className="my-2 text-greyscale-200 text-sm">{description}</span>
+          <span className="my-2 text-greyscale-200 text-sm line-clamp-2">{description}</span>
         </div>
         <div className="flex flex-row gap-5 text-greyscale-200 text-sm font-medium">
           <div className="flex flex-row gap-1">
