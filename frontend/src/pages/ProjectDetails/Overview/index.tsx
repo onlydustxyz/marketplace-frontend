@@ -2,8 +2,13 @@ import { useIntl } from "src/hooks/useIntl";
 import { Contributor, HasuraUserRole } from "src/types";
 import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
-import { ReactNode } from "react";
-import { GetProjectOverviewDetailsQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
+import { ReactNode, useEffect, useState } from "react";
+import {
+  GetProjectOverviewDetailsQuery,
+  ProjectGithubReposSelectColumn,
+  ProjectLeadFragment,
+  SponsorFragment,
+} from "src/__generated/graphql";
 import { gql } from "@apollo/client";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import QueryWrapper from "src/components/QueryWrapper";
@@ -43,6 +48,22 @@ export default function Overview() {
   const description = data?.projectsByPk?.projectDetails?.longDescription || LOREM_IPSUM;
   const githubReposCount = data?.projectsByPk?.githubRepos.length || 0;
 
+  const githubRepos = data?.projectsByPk?.githubRepos;
+
+  const [sortedGithubRepos, setSortedGithubRepos] = useState(githubRepos);
+
+  useEffect(() => {
+    if (githubRepos) {
+      const githubReposCopy = [...githubRepos];
+      githubReposCopy.sort(
+        (githubRepoA, githubRepoB) =>
+          (githubRepoB?.githubRepoDetails?.content?.stars ?? 0) - (githubRepoA?.githubRepoDetails?.content?.stars ?? 0)
+      );
+      console.log(githubReposCopy);
+      setSortedGithubRepos(githubReposCopy);
+    }
+  }, [githubRepos]);
+
   return (
     <div className="flex flex-col gap-8 mt-3">
       <div className="text-3xl font-belwe">{T("project.details.overview.title")}</div>
@@ -75,9 +96,10 @@ export default function Overview() {
                 <Badge value={githubReposCount} size={BadgeSize.Small} />
               </div>
               <div className="grid grid-cols-2 gap-3">
-                {data?.projectsByPk?.githubRepos.map(githubRepo => (
-                  <GithubRepoDetails key={githubRepo.githubRepoId} githubRepoId={githubRepo.githubRepoId} />
-                ))}
+                {sortedGithubRepos &&
+                  sortedGithubRepos.map(githubRepo => (
+                    <GithubRepoDetails key={githubRepo.githubRepoId} githubRepoId={githubRepo.githubRepoId} />
+                  ))}
               </div>
             </Card>
           </div>
@@ -100,6 +122,11 @@ export const GET_PROJECT_OVERVIEW_DETAILS = gql`
       }
       githubRepos {
         githubRepoId
+        githubRepoDetails {
+          content {
+            stars
+          }
+        }
       }
     }
   }
