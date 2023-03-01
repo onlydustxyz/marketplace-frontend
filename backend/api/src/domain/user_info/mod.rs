@@ -1,6 +1,7 @@
 use ::infrastructure::database::schema::*;
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
+use diesel::{pg::Pg, Queryable};
 use domain::UserId;
 use serde::{Deserialize, Serialize};
 
@@ -26,7 +27,6 @@ pub use location::Location;
 	Identifiable,
 	Serialize,
 	Deserialize,
-	Queryable,
 	AsChangeset,
 )]
 #[table_name = "user_info"]
@@ -43,4 +43,36 @@ pub struct UserInfo {
 
 impl domain::Entity for UserInfo {
 	type Id = UserId;
+}
+
+impl<ST> Queryable<ST, Pg> for UserInfo
+where
+	(
+		UserId,
+		Option<Identity>,
+		Option<Location>,
+		Option<Email>,
+		Option<PayoutSettings>,
+		bool,
+	): Queryable<ST, Pg>,
+{
+	type Row = <(
+		UserId,
+		Option<Identity>,
+		Option<Location>,
+		Option<Email>,
+		Option<PayoutSettings>,
+		bool,
+	) as Queryable<ST, Pg>>::Row;
+
+	fn build(row: Self::Row) -> Self {
+		let (user_id, identity, location, email, payout_settings, _) = Queryable::build(row);
+		Self {
+			user_id,
+			identity,
+			location,
+			email,
+			payout_settings,
+		}
+	}
 }
