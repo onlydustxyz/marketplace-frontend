@@ -59,7 +59,6 @@ export default function Overview() {
         (githubRepoA, githubRepoB) =>
           (githubRepoB?.githubRepoDetails?.content?.stars ?? 0) - (githubRepoA?.githubRepoDetails?.content?.stars ?? 0)
       );
-      console.log(githubReposCopy);
       setSortedGithubRepos(githubReposCopy);
     }
   }, [githubRepos]);
