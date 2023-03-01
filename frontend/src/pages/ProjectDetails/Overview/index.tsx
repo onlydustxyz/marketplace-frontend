@@ -68,8 +68,8 @@ export default function Overview() {
             </Card>
             <Card className="flex flex-col gap-4">
               <div className="flex flex-row font-walsheim font-medium text-base text-greyscale-50 items-center border-b border-greyscale-50/8 pb-2 justify-between">
-                <div className="flex flex-row gap-3">
-                  <GitRepositoryLine className="w-6 h-6 text-white" />
+                <div className="flex flex-row items-center gap-3">
+                  <GitRepositoryLine className="text-white text-2xl" />
                   {T("project.details.overview.repositories")}
                 </div>
                 <Badge value={githubReposCount} size={BadgeSize.Small} />
