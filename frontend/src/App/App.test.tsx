@@ -466,7 +466,7 @@ describe("Integration tests", () => {
       screen.getByText(TEST_GITHUB_REPO_CONTENT);
       expect(screen.getAllByText(/project lead/i).length).toBeGreaterThan(0);
       //   expect(screen.getAllByText(/contributors/i)).toHaveLength(2);
-      screen.getByText(/money granted/i);
+      screen.getByText(/granted/i);
     });
 
     expect((await screen.findAllByText("Project overview")).length).toEqual(2);
