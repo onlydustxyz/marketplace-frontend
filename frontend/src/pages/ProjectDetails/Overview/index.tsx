@@ -90,7 +90,7 @@ export default function Overview() {
               <div className="flex flex-row font-walsheim font-medium text-base text-greyscale-50 items-center border-b border-greyscale-50/8 pb-2 justify-between">
                 <div className="flex flex-row items-center gap-3">
                   <GitRepositoryLine className="text-white text-2xl" />
-                  {T("project.details.overview.repositories")}
+                  {T("project.details.overview.repositories.title")}
                 </div>
                 <Badge value={githubReposCount} size={BadgeSize.Small} />
               </div>
