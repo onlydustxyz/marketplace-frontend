@@ -25,7 +25,7 @@ export default function View({ owner, name, description, languages, stars, forks
         )}
         <div className="flex flex-col">
           <span className="font-medium text-base">{name}</span>
-          <span className="my-2 text-greyscale-200 text-sm line-clamp-2">
+          <span className={`my-2 text-greyscale-200 text-sm line-clamp-2 ${!description && "italic"}`}>
             {description || T("project.details.overview.repositories.descriptionPlaceholder")}
           </span>
         </div>

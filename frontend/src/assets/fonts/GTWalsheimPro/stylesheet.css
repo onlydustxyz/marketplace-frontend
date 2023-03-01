@@ -56,56 +56,56 @@
 
 @font-face {
   font-family: "GT Walsheim";
-  src: url("GT-Walsheim-Pro-Thin.ttf") format("truetype");
+  src: url("GT-Walsheim-Pro-Thin-Oblique.ttf") format("truetype");
   font-style: italic;
   font-weight: 100;
 }
 
 @font-face {
   font-family: "GT Walsheim";
-  src: url("GT-Walsheim-Pro-Ultra-Light.ttf") format("truetype");
+  src: url("GT-Walsheim-Pro-Ultra-Light-Oblique.ttf") format("truetype");
   font-style: italic;
   font-weight: 200;
 }
 
 @font-face {
   font-family: "GT Walsheim";
-  src: url("GT-Walsheim-Pro-Light.ttf") format("truetype");
+  src: url("GT-Walsheim-Pro-Light-Oblique.ttf") format("truetype");
   font-style: italic;
   font-weight: 300;
 }
 
 @font-face {
   font-family: "GT Walsheim";
-  src: url("GT-Walsheim-Pro-Regular.ttf") format("truetype");
+  src: url("GT-Walsheim-Pro-Regular-Oblique.ttf") format("truetype");
   font-style: italic;
   font-weight: 400;
 }
 
 @font-face {
   font-family: "GT Walsheim";
-  src: url("GT-Walsheim-Pro-Medium.ttf") format("truetype");
+  src: url("GT-Walsheim-Pro-Medium-Oblique.ttf") format("truetype");
   font-style: italic;
   font-weight: 500;
 }
 
 @font-face {
   font-family: "GT Walsheim";
-  src: url("GT-Walsheim-Pro-Bold.ttf") format("truetype");
+  src: url("GT-Walsheim-Pro-Bold-Oblique.ttf") format("truetype");
   font-style: italic;
   font-weight: 700;
 }
 
 @font-face {
   font-family: "GT Walsheim";
-  src: url("GT-Walsheim-Pro-Ultra-Bold.ttf") format("truetype");
+  src: url("GT-Walsheim-Pro-Ultra-Bold-Oblique.ttf") format("truetype");
   font-style: italic;
   font-weight: 800;
 }
 
 @font-face {
   font-family: "GT Walsheim";
-  src: url("GT-Walsheim-Pro-Black.ttf") format("truetype");
+  src: url("GT-Walsheim-Pro-Black-Oblique.ttf") format("truetype");
   font-style: italic;
   font-weight: 900;
 }
