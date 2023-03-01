@@ -93,10 +93,6 @@
             query: Query
           }
           scalar DateTimeUtc
-          type File {
-            content: String!
-            encoding: Encoding!
-          }
           type PullRequest {
             assigneeId: Int
             closedAt: DateTimeUtc
@@ -113,17 +109,16 @@
           }
           type Repository {
             contributors: [User!]!
+            description: String!
+            forksCount: Int!
             id: Int!
             logoUrl: String!
-            readme: File
+            stars: Int!
           }
           type User {
             avatarUrl: String!
             id: Int!
             login: String!
-          }
-          enum Encoding {
-            BASE64
           }
           enum Status {
             CLOSED
@@ -136,10 +131,6 @@
             query: Query
           }
           scalar DateTimeUtc
-          type File {
-            content: String!
-            encoding: Encoding!
-          }
           type PullRequest {
             assigneeId: Int
             closedAt: DateTimeUtc
@@ -155,17 +146,16 @@
           }
           type Repository {
             contributors: [User!]!
+            description: String!
+            forksCount: Int!
             id: Int!
             logoUrl: String!
-            readme: File
+            stars: Int!
           }
           type User {
             avatarUrl: String!
             id: Int!
             login: String!
-          }
-          enum Encoding {
-            BASE64
           }
           enum Status {
             CLOSED

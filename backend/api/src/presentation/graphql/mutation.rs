@@ -109,7 +109,6 @@ impl Mutation {
 		name: String,
 		short_description: String,
 		long_description: String,
-		initial_budget_in_usd: i32,
 		telegram_link: Option<String>,
 		logo_url: Option<String>,
 	) -> Result<Uuid> {
@@ -119,7 +118,6 @@ impl Mutation {
 				name.try_into()?,
 				short_description.try_into()?,
 				long_description.try_into()?,
-				Money::from_major(initial_budget_in_usd as i64, rusty_money::crypto::USDC).into(),
 				telegram_link,
 				logo_url,
 			)
@@ -156,20 +154,20 @@ impl Mutation {
 		context: &Context,
 		project_id: Uuid,
 		new_remaining_amount_in_usd: i32,
-	) -> Result<bool> {
-		context
+	) -> Result<Uuid> {
+		let budget_id = context
 			.update_budget_allocation_usecase
 			.update_allocation(
 				&project_id.into(),
-				Money::from_major(
+				&Money::from_major(
 					new_remaining_amount_in_usd as i64,
 					rusty_money::crypto::USDC,
 				)
-				.amount(),
+				.into(),
 			)
 			.await?;
 
-		Ok(true)
+		Ok(budget_id.into())
 	}
 
 	pub async fn link_github_repo(

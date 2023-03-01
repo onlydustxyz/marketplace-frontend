@@ -6,8 +6,8 @@ use thiserror::Error;
 
 use super::Contributors;
 use crate::domain::{
-	GithubFile, GithubFileEncoding, GithubPullRequest, GithubPullRequestStatus, GithubRepository,
-	GithubService, GithubServiceError, GithubServiceResult, GithubUser,
+	GithubPullRequest, GithubPullRequestStatus, GithubRepository, GithubService,
+	GithubServiceError, GithubServiceResult, GithubUser,
 };
 
 impl From<github::Error> for GithubServiceError {
@@ -33,12 +33,6 @@ impl GithubService for github::Client {
 			None => Default::default(),
 		};
 
-		let readme = match self.get_raw_file(&repo, "README.md").await {
-			Ok(readme) => Some(readme),
-			Err(github::Error::NotFound(_)) => None,
-			Err(error) => return Err(error.into()),
-		};
-
 		let owner = repo.owner.ok_or_else(|| {
 			GithubServiceError::MissingRepositoryOwner(anyhow!(
 				"Missing owner in github repository"
@@ -48,8 +42,10 @@ impl GithubService for github::Client {
 		Ok(GithubRepository::new(
 			id as i32,
 			contributors.into_iter().map(Into::into).collect(),
-			readme.map(Into::into),
 			owner.avatar_url.to_string(),
+			repo.description.unwrap_or_default(),
+			repo.stargazers_count.unwrap_or_default() as i32,
+			repo.forks_count.unwrap_or_default() as i32,
 		))
 	}
 
@@ -98,12 +94,6 @@ impl GithubService for github::Client {
 impl From<octocrab::models::User> for GithubUser {
 	fn from(user: octocrab::models::User) -> Self {
 		Self::new(user.id.0 as i32, user.login, user.avatar_url.to_string())
-	}
-}
-
-impl From<octocrab::models::repos::Content> for GithubFile {
-	fn from(file: octocrab::models::repos::Content) -> Self {
-		Self::new(GithubFileEncoding::Base64, file.content.unwrap_or_default())
 	}
 }
 

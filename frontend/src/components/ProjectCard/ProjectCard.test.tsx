@@ -1,7 +1,49 @@
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import ProjectCard from ".";
+import ProjectCard, { getDeduplicatedAggregatedContributors } from ".";
 import { screen } from "@testing-library/react";
 import { Project } from "src/pages/Projects";
+import { ProjectCardContributorsFieldsFragment, ProjectCardGithubRepoFieldsFragment } from "src/__generated/graphql";
+
+const contributor1: ProjectCardContributorsFieldsFragment = {
+  __typename: "User",
+  id: 123456,
+};
+
+const contributor2: ProjectCardContributorsFieldsFragment = {
+  __typename: "User",
+  id: 123457,
+};
+
+const contributor3: ProjectCardContributorsFieldsFragment = {
+  __typename: "User",
+  id: 123458,
+};
+
+const githubRepo1: ProjectCardGithubRepoFieldsFragment = {
+  __typename: "ProjectGithubRepos",
+  githubRepoId: 1000,
+  githubRepoDetails: {
+    id: 1000,
+    languages: { Cairo: 1000, Rust: 100, HTML: 150 },
+    content: {
+      id: 1000,
+      contributors: [contributor1, contributor2],
+    },
+  },
+};
+
+const githubRepo2: ProjectCardGithubRepoFieldsFragment = {
+  __typename: "ProjectGithubRepos",
+  githubRepoId: 1001,
+  githubRepoDetails: {
+    id: 1001,
+    languages: { Rust: 80, Go: 40, Cairo: 2000 },
+    content: {
+      id: 1001,
+      contributors: [contributor1, contributor3],
+    },
+  },
+};
 
 const PROJECT: Project = {
   id: 123,
@@ -20,20 +62,7 @@ const PROJECT: Project = {
       },
     },
   ],
-  githubRepo: {
-    id: 12345,
-    owner: "facebook",
-    name: "react",
-    content: {
-      id: 12345,
-      contributors: [
-        { login: "oscarwroche", avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4" },
-        { login: "ofux", avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4" },
-      ],
-      logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
-    },
-    languages: { Ejs: 2200, Rust: 1000 },
-  },
+  githubRepos: [githubRepo1, githubRepo2],
   budgetsAggregate: {
     aggregate: {
       sum: {
@@ -41,6 +70,7 @@ const PROJECT: Project = {
       },
     },
   },
+  budgets: [{ id: "budget-1" }],
   pendingInvitations: [{ id: "croute" }],
   projectSponsors: [
     {
@@ -82,5 +112,43 @@ describe("'ProjectCard' component", () => {
 
     const sponsorsLogo = screen.getByTestId(`sponsor-list-${PROJECT.id}`).getElementsByTagName("img");
     expect(sponsorsLogo).toHaveLength(3);
+  });
+
+  it("should display the repository count", () => {
+    renderWithIntl(<ProjectCard {...PROJECT} />, {
+      wrapper: MemoryRouterProviderFactory({}),
+    });
+
+    const repositoryCountString = screen.getByTestId(`github-repo-count-${PROJECT.id}`);
+    expect(repositoryCountString.textContent).toContain("2 repositories");
+  });
+
+  it("should display the contributor count", () => {
+    renderWithIntl(<ProjectCard {...PROJECT} />, {
+      wrapper: MemoryRouterProviderFactory({}),
+    });
+
+    const contributorCountString = screen.getByTestId(`contributor-count-${PROJECT.id}`);
+    expect(contributorCountString.textContent).toContain("3 contributors");
+  });
+
+  it("should display the languages", () => {
+    renderWithIntl(<ProjectCard {...PROJECT} />, {
+      wrapper: MemoryRouterProviderFactory({}),
+    });
+
+    const languagesString = screen.getByTestId(`languages-${PROJECT.id}`);
+    expect(languagesString.textContent).toContain("cairo, rust");
+  });
+});
+
+describe.each([
+  { repos: [], expected_contributors: [] },
+  { repos: [githubRepo1], expected_contributors: [contributor1, contributor2] },
+  { repos: [githubRepo1, githubRepo2], expected_contributors: [contributor1, contributor2, contributor3] },
+])("Listing contributors", ({ repos, expected_contributors }) => {
+  test("should aggregate and deduplicate contributors of Github repos", async () => {
+    const contributors = getDeduplicatedAggregatedContributors(repos);
+    expect(contributors).toEqual(expected_contributors);
   });
 });

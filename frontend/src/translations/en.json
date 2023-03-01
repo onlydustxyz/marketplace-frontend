@@ -161,16 +161,32 @@
         "sendPayment": "Send payment",
         "title": "Contributors"
       },
+      "githubRepos": {
+        "count": {
+          "many": "__count__ repositories",
+          "one": "1 repository",
+          "zero": "No repository"
+        }
+      },
       "overview": {
-        "contributors": "CONTRIBUTORS",
+        "contributors": {
+          "one": "Contributor",
+          "many": "Contributors"
+        },
         "githubLinkContent": "Link",
         "githubLinkTitle": "GitHub",
-        "projectLeader": "PROJECT LEAD",
-        "readmeTitle": "Readme.md",
-        "sponsors": "Sponsors",
+        "projectLeader": {
+          "one": "Project lead",
+          "many": "Project leads"
+        },
+        "repositories": "Repositories",
+        "sponsors": {
+          "one": "Sponsor",
+          "many": "Sponsors"
+        },
         "technologies": "Technologies",
         "telegram": "Telegram",
-        "title": "Overview",
+        "title": "Project overview",
         "totalSpentAmountInUsd": "MONEY GRANTED"
       },
       "payments": {
@@ -193,7 +209,11 @@
       }
     },
     "fundedBy": "Funded by __topSponsorsString__",
-    "ledBy": "Led by",
+    "ledBy": {
+      "many": "__count__ project leads",
+      "one": "Led by __name__",
+      "zero": ""
+    },
     "projectLeadInvitation": {
       "prompt": "You’ve been promoted to Project Lead",
       "view": "View invite"

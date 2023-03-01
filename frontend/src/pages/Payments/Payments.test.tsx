@@ -54,7 +54,6 @@ const mockContribution = {
         logoUrl: null,
         name: "MyAwesomeProject",
       },
-      githubRepo: null,
     },
   },
 };

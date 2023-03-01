@@ -34,7 +34,9 @@ const currentProject = {
   nbContributors: 4,
   withInvitation: false,
   sponsors: [],
+  languages: {},
 };
+
 const otherProject = {
   id: "other-project-id",
   name: "Other project",

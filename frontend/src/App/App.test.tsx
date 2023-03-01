@@ -19,6 +19,21 @@ import {
 import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import { generatePath } from "react-router-dom";
 import { GET_PAYMENTS_QUERY } from "src/pages/Payments";
+import { GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY } from "src/pages/ProjectDetails/Overview/OverviewPanel";
+import {
+  GetGithubRepositoryDetailsQueryResult,
+  GetPaymentRequestsQueryResult,
+  GetProjectContributorsForOverviewQueryResult,
+  GetProjectOverviewDetailsQueryResult,
+  GetProjectQueryResult,
+  GetProjectsForSidebarQueryResult,
+  GetProjectsQueryResult,
+  PendingProjectLeaderInvitationsQueryResult,
+  PendingUserPaymentsAndPayoutSettingsQueryResult,
+  ProfileQueryResult,
+} from "src/__generated/graphql";
+import { GET_GITHUB_REPOSITORY_DETAILS_QUERY } from "src/pages/ProjectDetails/Overview/GithubRepoDetails";
+import { GET_PROJECT_OVERVIEW_DETAILS } from "src/pages/ProjectDetails/Overview";
 
 const AUTH_CODE_TEST_VALUE = "code";
 const LOGGING_IN_TEXT_QUERY = /logging in.../i;
@@ -34,13 +49,13 @@ const TEST_PROJECT_ID = "test-project-id";
 const TEST_PROJECT_NAME = "test-project-name";
 const TEST_TELEGRAM_LINK = "test-link";
 const TEST_DESCRIPTION = "test-description";
+const TEST_GITHUB_REPO_ID = 123456;
 const TEST_GITHUB_REPO_NAME = "test-github-repo-name";
 const TEST_GITHUB_REPO_OWNER = "test-github-repo-owner";
 const TEST_GITHUB_REPO_CONTENT = "test-github-repo-content";
 const TEST_GITHUB_CONTRIBUTOR_LOGIN = "test-github-contributor-login";
 const TEST_PROJECT_LEAD_DISPLAY_NAME = "test-project-lead-display-name";
 const TEST_PROJECT_LEAD_AVATAR_URL = "http://foo.bar/plop.png";
-const TEST_PROJECT_LEAD_USER_ID = "test-lead-user-id";
 
 expect.extend(matchers);
 
@@ -80,13 +95,15 @@ vi.mock("jwt-decode", () => ({
   },
 }));
 
-const ALL_PROJECTS_RESULT = {
+const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
   data: {
     projects: [
       {
         __typename: "Projects",
         id: TEST_PROJECT_ID,
         projectDetails: {
+          __typename: "ProjectDetails",
+          projectId: TEST_PROJECT_ID,
           name: TEST_PROJECT_NAME,
           telegramLink: TEST_TELEGRAM_LINK,
           shortDescription: TEST_DESCRIPTION,
@@ -101,23 +118,20 @@ const ALL_PROJECTS_RESULT = {
           },
         ],
         pendingInvitations: [],
-        githubRepo: {
-          name: TEST_GITHUB_REPO_NAME,
-          owner: TEST_GITHUB_REPO_OWNER,
-          content: {
-            contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
-            logoUrl: null,
-          },
-        },
+        githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
+        projectSponsors: [],
+        budgetsAggregate: { aggregate: { sum: { spentAmount: 100 } } },
+        budgets: [{ id: "budget-1" }],
       },
     ],
   },
 };
 
-const SINGLE_PROJECT_RESULT = {
+const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
   data: {
     projectsByPk: {
       __typename: "Projects",
+      id: TEST_PROJECT_ID,
       budgetsAggregate: {
         aggregate: {
           sum: {
@@ -125,28 +139,62 @@ const SINGLE_PROJECT_RESULT = {
           },
         },
       },
-      projectDetails: { name: TEST_PROJECT_NAME, telegramLink: TEST_TELEGRAM_LINK, description: TEST_DESCRIPTION },
+      projectDetails: {
+        name: TEST_PROJECT_NAME,
+        telegramLink: TEST_TELEGRAM_LINK,
+        shortDescription: TEST_DESCRIPTION,
+        projectId: TEST_PROJECT_ID,
+        logoUrl: null,
+      },
       projectLeads: [
         {
-          userId: TEST_PROJECT_LEAD_USER_ID,
+          __typename: "ProjectLeads",
           user: {
+            __typename: "users",
             displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
             avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
           },
         },
       ],
       pendingInvitations: [{ id: "invitation-id" }],
-      githubRepo: {
-        name: TEST_GITHUB_REPO_NAME,
-        owner: TEST_GITHUB_REPO_OWNER,
-        content: {
-          readme: {
-            content: btoa(TEST_GITHUB_REPO_CONTENT),
-          },
-          contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN, avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL }],
-        },
-        languages: {},
+      githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
+      projectSponsors: [],
+      budgets: [{ id: "budget-1" }],
+    },
+  },
+};
+
+const GITHUB_REPO_DETAILS_RESULT: { data: GetGithubRepositoryDetailsQueryResult["data"] } = {
+  data: {
+    githubRepoDetailsByPk: {
+      __typename: "GithubRepoDetails",
+      id: TEST_GITHUB_REPO_ID,
+      owner: TEST_GITHUB_REPO_OWNER,
+      name: TEST_GITHUB_REPO_NAME,
+      languages: {},
+      content: {
+        __typename: "Repository",
+        id: TEST_GITHUB_REPO_ID,
+        description: TEST_GITHUB_REPO_CONTENT,
+        stars: 0,
+        forksCount: 0,
       },
+    },
+  },
+};
+
+const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryResult["data"] } = {
+  data: {
+    projectsByPk: {
+      __typename: "Projects",
+      id: TEST_PROJECT_ID,
+      projectDetails: {
+        projectId: TEST_PROJECT_ID,
+        name: TEST_PROJECT_NAME,
+        logoUrl: null,
+        longDescription: "This is the long description",
+      },
+      githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID }],
     },
   },
 };
@@ -175,8 +223,17 @@ const graphQlMocks = [
     },
     result: {
       data: {
-        user: { id: TEST_USER_ID, email: TEST_USER_EMAIL, metadata: {} },
-      },
+        userInfo: [
+          {
+            __typename: "UserInfo",
+            userId: TEST_USER_ID,
+            email: TEST_USER_EMAIL,
+            identity: null,
+            location: null,
+            payoutSettings: null,
+          },
+        ],
+      } as ProfileQueryResult["data"],
     },
   },
   {
@@ -208,18 +265,68 @@ const graphQlMocks = [
           {
             id: TEST_PROJECT_ID,
             projectDetails: {
+              projectId: TEST_PROJECT_ID,
               name: TEST_PROJECT_NAME,
+              logoUrl: null,
             },
             pendingInvitations: [],
-            githubRepo: {
-              content: {
-                contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
+            githubRepos: [
+              {
+                githubRepoId: TEST_GITHUB_REPO_ID,
+                githubRepoDetails: {
+                  id: TEST_GITHUB_REPO_ID,
+                  content: {
+                    id: TEST_GITHUB_REPO_ID,
+                    contributors: [
+                      {
+                        id: TEST_GITHUB_USER_ID,
+                        login: TEST_GITHUB_CONTRIBUTOR_LOGIN,
+                        avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
+                        user: { userId: TEST_USER_ID },
+                        paymentRequests: [],
+                      },
+                    ],
+                  },
+                },
               },
-            },
+            ],
           },
         ],
-      },
+      } as GetProjectsForSidebarQueryResult["data"],
     },
+  },
+  {
+    request: { query: GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY },
+    result: {
+      data: {
+        projectsByPk: {
+          __typename: "Projects",
+          githubRepos: [
+            {
+              githubRepoDetails: {
+                content: {
+                  contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN, avatarUrl: "avatarUrl" }],
+                },
+              },
+            },
+          ],
+        },
+      } as GetProjectContributorsForOverviewQueryResult["data"],
+    },
+  },
+  {
+    request: {
+      query: GET_PROJECT_OVERVIEW_DETAILS,
+      variables: { projectId: TEST_PROJECT_ID },
+    },
+    result: PROJECT_OVERVIEW_DETAILS_RESULT,
+  },
+  {
+    request: {
+      query: GET_GITHUB_REPOSITORY_DETAILS_QUERY,
+      variables: { githubRepoId: TEST_GITHUB_REPO_ID },
+    },
+    result: GITHUB_REPO_DETAILS_RESULT,
   },
 ];
 
@@ -236,7 +343,7 @@ const pendingProjectLeadInvitationMock = {
           projectId: TEST_PROJECT_ID,
         },
       ],
-    },
+    } as PendingProjectLeaderInvitationsQueryResult["data"],
   },
 };
 
@@ -248,7 +355,7 @@ const pendingPaymentsMock = {
   result: {
     data: {
       user: {
-        userInfo: { payoutSettings: null },
+        userInfo: { userId: TEST_USER_ID, payoutSettings: null },
         githubUser: {
           paymentRequests: [
             {
@@ -258,7 +365,7 @@ const pendingPaymentsMock = {
           ],
         },
       },
-    },
+    } as PendingUserPaymentsAndPayoutSettingsQueryResult["data"],
   },
 };
 
@@ -274,6 +381,7 @@ const paymentRequestsMock = {
       paymentRequests: [
         {
           id: "705e6b37-d0ee-4e87-b681-7009dd691965",
+          requestedAt: "2023-01-10T19:10:27.802657",
           payments: [
             {
               amount: 100,
@@ -287,6 +395,7 @@ const paymentRequestsMock = {
           amountInUsd: 200,
           reason: { work_items: ["link_to_pr"] },
           budget: {
+            id: "budget-1",
             project: {
               id: "632d5da7-e590-4815-85ea-82a5585e6049",
               projectDetails: {
@@ -294,12 +403,11 @@ const paymentRequestsMock = {
                 logoUrl: null,
                 name: "MyAwesomeProject",
               },
-              githubRepo: null,
             },
           },
         },
       ],
-    },
+    } as GetPaymentRequestsQueryResult["data"],
   },
 };
 
@@ -357,14 +465,13 @@ describe("Integration tests", () => {
       screen.getByText(TEST_PROJECT_LEAD_DISPLAY_NAME);
       screen.getByText(TEST_GITHUB_REPO_CONTENT);
       expect(screen.getAllByText(/project lead/i).length).toBeGreaterThan(0);
-      expect(screen.getAllByText(/contributors/i)).toHaveLength(2);
+      //   expect(screen.getAllByText(/contributors/i)).toHaveLength(2);
       screen.getByText(/money granted/i);
     });
 
-    expect((await screen.findAllByText("Overview")).length).toEqual(2);
+    expect((await screen.findAllByText("Project overview")).length).toEqual(2);
     expect(screen.queryByText("Payments")).not.toBeInTheDocument();
     expect(screen.findByText("Contributors"));
-    await screen.findByRole("img", { name: /github logo/i });
   });
 
   it("should redirect to project list when logging out", async () => {

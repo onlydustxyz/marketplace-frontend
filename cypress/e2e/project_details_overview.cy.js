@@ -4,7 +4,11 @@ describe("A project without readme", () => {
   beforeEach(function () {
     cy.fixture("repos.json").as("repos");
     cy.createGithubUser(98735558).then(user => {
-      cy.createProjectWithLeader(user, "Project with budget", 1000, this.repos.noReadme.id).as("projectId");
+      cy.createProject("Project with budget")
+        .withLeader(user)
+        .withBudget(1000)
+        .withRepo(this.repos.noReadme.id)
+        .as("projectId");
       cy.signinUser(user)
         .then(user => JSON.stringify(user.session))
         .as("token");
@@ -27,7 +31,10 @@ describe("A project", () => {
     cy.createGithubUser(98735558)
       .as("user")
       .then(user => {
-        cy.createProjectWithLeader(user, "Project A", 1000, this.repos.A.id)
+        cy.createProject("Project A")
+          .withBudget(1000)
+          .withLeader(user)
+          .withRepo(this.repos.A.id)
           .as("projectId")
           .then(projectId =>
             cy
@@ -72,7 +79,11 @@ describe("An empty project", () => {
   beforeEach(function () {
     cy.fixture("repos.json").as("repos");
     cy.createGithubUser(98735558).then(user => {
-      cy.createProjectWithLeader(user, "Project with empty repo", 1000, this.repos.empty.id).as("projectId");
+      cy.createProject("Project with empty repo")
+        .withLeader(user)
+        .withBudget(1000)
+        .withRepo(this.repos.empty.id)
+        .as("projectId");
       cy.signinUser(user)
         .then(user => JSON.stringify(user.session))
         .as("token");

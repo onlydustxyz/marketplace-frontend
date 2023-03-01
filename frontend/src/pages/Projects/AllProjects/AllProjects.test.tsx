@@ -6,18 +6,26 @@ import AllProjects, { buildGetProjectsQuery } from ".";
 import { ProjectOwnershipType } from "..";
 import { CLAIMS_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
+import { GetProjectsQueryResult, ProjectCardFieldsFragment } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
 const TEST_PROJECT_ID = "2";
 
-const ALL_PROJECTS_RESULT_NO_INVITATIONS = {
+const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"] } = {
   data: {
     projects: [
       {
         __typename: "Projects",
         id: "1",
-        name: "project1",
+        projectDetails: {
+          projectId: "1",
+          name: "project1",
+          shortDescription: "short description",
+          logoUrl: null,
+          telegramLink: null,
+        },
+        budgets: [{ id: "budget-1" }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -26,11 +34,33 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS = {
           },
         },
         pendingInvitations: [],
+        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectSponsors: [],
+        githubRepos: [
+          {
+            githubRepoId: 123456,
+            githubRepoDetails: {
+              id: 123456,
+              languages: [],
+              content: {
+                id: 123456,
+                contributors: [],
+              },
+            },
+          },
+        ],
       },
       {
         __typename: "Projects",
         id: "2",
-        name: "project2",
+        projectDetails: {
+          projectId: "2",
+          name: "project2",
+          shortDescription: "short description",
+          logoUrl: null,
+          telegramLink: null,
+        },
+        budgets: [{ id: "budget-2" }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -39,18 +69,40 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS = {
           },
         },
         pendingInvitations: [],
+        githubRepos: [
+          {
+            githubRepoId: 123456,
+            githubRepoDetails: {
+              id: 123456,
+              languages: [],
+              content: {
+                id: 123456,
+                contributors: [],
+              },
+            },
+          },
+        ],
+        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectSponsors: [],
       },
     ],
   },
 };
 
-const ALL_PROJECTS_RESULT_WITH_INVITATION = {
+const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"] } = {
   data: {
     projects: [
       {
         __typename: "Projects",
         id: "1",
-        name: "project1",
+        projectDetails: {
+          projectId: "1",
+          name: "project-1",
+          logoUrl: null,
+          shortDescription: "short description",
+          telegramLink: null,
+        },
+        budgets: [{ id: "budget-1" }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -59,11 +111,33 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION = {
           },
         },
         pendingInvitations: [],
+        githubRepos: [
+          {
+            githubRepoId: 123456,
+            githubRepoDetails: {
+              id: 123456,
+              languages: [],
+              content: {
+                id: 123456,
+                contributors: [],
+              },
+            },
+          },
+        ],
+        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectSponsors: [],
       },
       {
         __typename: "Projects",
         id: "2",
-        name: "project1",
+        projectDetails: {
+          projectId: "2",
+          name: "project-2",
+          logoUrl: null,
+          shortDescription: "short description",
+          telegramLink: null,
+        },
+        budgets: [{ id: "budget-2" }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -72,11 +146,33 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION = {
           },
         },
         pendingInvitations: [],
+        githubRepos: [
+          {
+            githubRepoId: 123456,
+            githubRepoDetails: {
+              id: 123456,
+              languages: [],
+              content: {
+                id: 123456,
+                contributors: [],
+              },
+            },
+          },
+        ],
+        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectSponsors: [],
       },
       {
         __typename: "Projects",
         id: "3",
-        name: "project2",
+        projectDetails: {
+          projectId: "3",
+          name: "project-3",
+          logoUrl: null,
+          shortDescription: "short description",
+          telegramLink: null,
+        },
+        budgets: [{ id: "budget-3" }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -84,13 +180,124 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION = {
             },
           },
         },
-        pendingInvitations: ["test"],
+        pendingInvitations: [{ id: "invitation-1" }],
+        githubRepos: [
+          {
+            githubRepoId: 123456,
+            githubRepoDetails: {
+              id: 123456,
+              languages: [],
+              content: {
+                id: 123456,
+                contributors: [],
+              },
+            },
+          },
+        ],
+        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectSponsors: [],
       },
     ],
   },
 };
 
-const buildGraphQlMocks = (projectsQueryResult: any) => [
+const projectWithNoBudget: ProjectCardFieldsFragment = {
+  __typename: "Projects",
+  id: "project-with-no-budget",
+  budgets: [],
+  budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
+  projectDetails: {
+    projectId: "project-with-no-budget",
+    name: "No budget",
+    shortDescription: "This project has no budget yet",
+    telegramLink: null,
+    logoUrl: null,
+  },
+  githubRepos: [
+    {
+      githubRepoId: 123456,
+      githubRepoDetails: {
+        id: 123456,
+        languages: [],
+        content: {
+          id: 123456,
+          contributors: [],
+        },
+      },
+    },
+  ],
+  pendingInvitations: [],
+  projectLeads: [{ user: { displayName: "leader", avatarUrl: "avatar" } }],
+  projectSponsors: [],
+};
+
+const projectWithNoRepo: ProjectCardFieldsFragment = {
+  __typename: "Projects",
+  id: "project-with-no-repo",
+  budgets: [{ id: "budget-1" }],
+  budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
+  projectDetails: {
+    projectId: "project-with-no-repo",
+    name: "No budget",
+    shortDescription: "This project has no repo yet",
+    telegramLink: null,
+    logoUrl: null,
+  },
+  githubRepos: [],
+  pendingInvitations: [],
+  projectLeads: [{ user: { displayName: "leader", avatarUrl: "avatar" } }],
+  projectSponsors: [],
+};
+
+const projectWithNoLeader: ProjectCardFieldsFragment = {
+  __typename: "Projects",
+  id: "project-with-no-leader",
+  budgets: [{ id: "budget-1" }],
+  budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
+  projectDetails: {
+    projectId: "project-with-no-leader",
+    name: "No budget",
+    shortDescription: "This project has no leader yet",
+    telegramLink: null,
+    logoUrl: null,
+  },
+  githubRepos: [
+    {
+      githubRepoId: 123456,
+      githubRepoDetails: {
+        id: 123456,
+        languages: [],
+        content: {
+          id: 123456,
+          contributors: [],
+        },
+      },
+    },
+  ],
+  pendingInvitations: [],
+  projectLeads: [],
+  projectSponsors: [],
+};
+
+const projectInvalidWithInvite: ProjectCardFieldsFragment = {
+  __typename: "Projects",
+  id: "project-with-only-invite",
+  budgets: [],
+  budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
+  projectDetails: {
+    projectId: "project-with-only-invite",
+    name: "Nothing but invited",
+    shortDescription: "This project has just been created and will only be visible to the invited leader",
+    telegramLink: null,
+    logoUrl: null,
+  },
+  githubRepos: [],
+  pendingInvitations: [{ id: "invitation-1" }],
+  projectLeads: [],
+  projectSponsors: [],
+};
+
+const buildGraphQlMocks = (projectsQueryResult: { data: GetProjectsQueryResult["data"] }) => [
   {
     request: {
       query: buildGetProjectsQuery([]),
@@ -158,11 +365,28 @@ describe("All projects", () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN));
     renderWithIntl(<AllProjects technologies={[]} projectOwnershipType={ProjectOwnershipType.Mine} />, {
       wrapper: MemoryRouterProviderFactory({
-        mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_NO_INVITATIONS),
+        mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_WITH_INVITATION),
       }),
     });
     const moneyGrantedElementsInOrderOfAppearance = await screen.findAllByText("granted", { exact: false });
-    expect(moneyGrantedElementsInOrderOfAppearance).toHaveLength(1);
-    expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("$999 granted");
+    expect(moneyGrantedElementsInOrderOfAppearance).toHaveLength(2);
+    expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("$0 granted");
+    expect(moneyGrantedElementsInOrderOfAppearance[1]).toHaveTextContent("$999 granted");
+  });
+
+  it("should only show valid projects", async () => {
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN));
+    renderWithIntl(<AllProjects technologies={[]} projectOwnershipType={ProjectOwnershipType.All} />, {
+      wrapper: MemoryRouterProviderFactory({
+        mocks: [
+          ...buildGraphQlMocks({
+            data: { projects: [projectWithNoBudget, projectWithNoLeader, projectWithNoRepo, projectInvalidWithInvite] },
+          }),
+        ],
+      }),
+    });
+    const allProjectCards = await screen.findAllByTestId("project-card");
+    expect(allProjectCards).toHaveLength(1);
+    expect(screen.getByText("Nothing but invited"));
   });
 });

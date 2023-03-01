@@ -82,16 +82,6 @@ const graphQlMocks = [
               },
             },
           ],
-          githubRepo: {
-            name: TEST_GITHUB_REPO_NAME,
-            owner: TEST_GITHUB_REPO_OWNER,
-            content: {
-              readme: null,
-              contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN, avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL }],
-              logoUrl: null,
-            },
-            languages: {},
-          },
         },
       },
     },
@@ -131,16 +121,6 @@ const graphQlMocks = [
               },
             },
           ],
-          githubRepo: {
-            name: TEST_GITHUB_REPO_NAME,
-            owner: TEST_GITHUB_REPO_OWNER,
-            content: {
-              readme: null,
-              contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN, avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL }],
-              logoUrl: TEST_PROJECT_LEAD_AVATAR_URL,
-            },
-            languages: {},
-          },
         },
       },
     },
@@ -157,24 +137,10 @@ const graphQlMocks = [
               logoUrl: "test-logo-url",
             },
             pendingInvitations: [{ id: "test-invitation-id" }],
-            githubRepo: {
-              logoUrl: "test-github-logo-url",
-              content: {
-                contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
-                logoUrl: null,
-              },
-            },
           },
           {
             id: TEST_LED_PROJECT_ID,
             projectDetails: { name: TEST_LED_PROJECT_NAME, logoUrl: "test-logo-url" },
-            githubRepo: {
-              logoUrl: "test-github-logo-url",
-              content: {
-                contributors: [{ login: TEST_GITHUB_CONTRIBUTOR_LOGIN }],
-                logoUrl: null,
-              },
-            },
           },
         ],
       },

@@ -10,13 +10,22 @@ import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import { Project } from "src/pages/Projects";
-import { buildLanguageString } from "src/utils/languages";
+import { buildLanguageString, getDeduplicatedAggregatedLanguages } from "src/utils/languages";
 import { formatMoneyAmount } from "src/utils/money";
 import { useMediaQuery } from "usehooks-ts";
-import { ProjectLeadFragmentDoc, SponsorFragmentDoc } from "src/__generated/graphql";
+import {
+  ProjectCardContributorsFieldsFragment,
+  ProjectCardGithubRepoFieldsFragment,
+  ProjectLeadFragmentDoc,
+  SponsorFragmentDoc,
+} from "src/__generated/graphql";
 import User3Line from "src/icons/User3Line";
 import FundsLine from "src/icons/FundsLine";
 import Tooltip, { TooltipPosition } from "../Tooltip";
+import ProjectTitle from "./ProjectTitle";
+import isDefined from "src/utils/isDefined";
+import GitRepositoryLine from "src/icons/GitRepositoryLine";
+import Tag, { TagSize } from "../Tag";
 
 type ProjectCardProps = Project & {
   selectable?: boolean;
@@ -26,19 +35,18 @@ export default function ProjectCard({
   id,
   pendingInvitations,
   projectDetails,
-  githubRepo,
+  githubRepos,
   projectLeads,
   budgetsAggregate,
   projectSponsors,
 }: ProjectCardProps) {
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
-  const lead = projectLeads?.[0]?.user;
-  const name = projectDetails?.name || "";
-  const logoUrl = projectDetails?.logoUrl || githubRepo?.content?.logoUrl || onlyDustLogo;
   const totalSpentAmountInUsd = budgetsAggregate?.aggregate?.sum?.spentAmount;
 
   const topSponsors = projectSponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
+  const contributors = getDeduplicatedAggregatedContributors(githubRepos);
+  const languages = getDeduplicatedAggregatedLanguages(githubRepos);
 
   const card = (
     <Card
@@ -52,44 +60,37 @@ export default function ProjectCard({
       <div className="flex flex-col gap-5">
         <div className="flex flex-col lg:flex-row w-full lg:divide-x divide-stone-100/8 gap-4 lg:gap-6 justify-items-center font-walsheim">
           <div className="lg:flex flex-col basis-1/3 min-w-0 gap-y-5">
-            <div className="flex gap-4 items-start">
-              <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.Xl} className="mt-1" />
-              <div className="min-w-0">
-                <div className="text-2xl font-medium font-belwe truncate">{name}</div>
-                {lead && (
-                  <div className="text-sm flex flex-row text-spaceBlue-200 gap-1 items-center pt-0.5">
-                    <div className="whitespace-nowrap">{T("project.ledBy")}</div>
-                    <div className="truncate">{lead?.displayName}</div>{" "}
-                    <img src={lead?.avatarUrl} className="w-4 h-4 rounded-full" />
-                  </div>
-                )}
-              </div>
-            </div>
-            {githubRepo?.languages && Object.keys(githubRepo?.languages).length > 0 && (
+            <ProjectTitle
+              projectName={projectDetails?.name || ""}
+              projectLeads={projectLeads?.map(lead => lead.user).filter(isDefined) || []}
+              logoUrl={projectDetails?.logoUrl || onlyDustLogo}
+            />
+            {Object.keys(languages).length > 0 && (
               <div className="hidden lg:flex flex-row border border-neutral-600 w-fit px-3 py-1 rounded-2xl gap-2 text-sm items-center">
                 <CodeSSlashLine className="text-greyscale-50" />
-                <div className="text-white">{buildLanguageString(githubRepo?.languages)}</div>
+                <div className="text-white" data-testid={`languages-${id}`}>
+                  {buildLanguageString(languages)}
+                </div>
               </div>
             )}
           </div>
           <div className="flex flex-col basis-2/3 lg:pl-6 gap-4 lg:gap-4 justify-center">
             <div className="line-clamp-2 ml-px">{projectDetails?.shortDescription}</div>
             <div className="flex flex-row gap-2">
-              {!!githubRepo?.content.contributors?.length && (
-                <div
-                  className="h-6 flex flex-row border border-neutral-600 w-fit px-2 py-1.5
-				rounded-2xl gap-1 text-xs items-center"
-                >
+              {githubRepos && githubRepos.length > 0 && (
+                <Tag testid={`github-repo-count-${id}`} size={TagSize.Small}>
+                  <GitRepositoryLine />
+                  {T("project.details.githubRepos.count", { count: githubRepos.length })}
+                </Tag>
+              )}
+              {contributors.length > 0 && (
+                <Tag testid={`contributor-count-${id}`} size={TagSize.Small}>
                   <User3Line />
-                  {T("project.details.contributors.count", { count: githubRepo?.content.contributors?.length })}
-                </div>
+                  {T("project.details.contributors.count", { count: contributors.length })}
+                </Tag>
               )}
               {totalSpentAmountInUsd !== undefined && (
-                <div
-                  className="h-6 flex flex-row border border-neutral-600 w-fit px-2 py-1.5 rounded-2xl gap-1 text-xs items-center"
-                  id={`sponsor-list-${id}`}
-                  data-testid={`sponsor-list-${id}`}
-                >
+                <Tag id={`sponsor-list-${id}`} testid={`sponsor-list-${id}`} size={TagSize.Small}>
                   {projectSponsors?.length ? (
                     <>
                       <Tooltip anchorId={`sponsor-list-${id}`} position={TooltipPosition.Top}>
@@ -117,7 +118,7 @@ export default function ProjectCard({
                   {isXl
                     ? T("project.amountGranted", { amount: formatMoneyAmount(totalSpentAmountInUsd) })
                     : formatMoneyAmount(totalSpentAmountInUsd)}
-                </div>
+                </Tag>
               )}
             </div>
           </div>
@@ -144,9 +145,45 @@ export default function ProjectCard({
   );
 }
 
+export const getDeduplicatedAggregatedContributors = function (
+  githubRepos: ProjectCardGithubRepoFieldsFragment[] | undefined
+): ProjectCardContributorsFieldsFragment[] {
+  if (githubRepos === undefined) {
+    return [];
+  }
+  const flatten_users = githubRepos
+    .flatMap(repo => repo.githubRepoDetails?.content?.contributors)
+    .flatMap(user => (user ? [user] : []));
+  return [...new Set(flatten_users)];
+};
+
+export const PROJECT_CARD_CONTRIBUTORS_FRAGMENT = gql`
+  fragment ProjectCardContributorsFields on User {
+    id
+  }
+`;
+
+export const PROJECT_CARD_GITHUB_REPOS_FRAGMENT = gql`
+  ${PROJECT_CARD_CONTRIBUTORS_FRAGMENT}
+  fragment ProjectCardGithubRepoFields on ProjectGithubRepos {
+    githubRepoId
+    githubRepoDetails {
+      id
+      languages
+      content {
+        id
+        contributors {
+          ...ProjectCardContributorsFields
+        }
+      }
+    }
+  }
+`;
+
 export const PROJECT_CARD_FRAGMENT = gql`
   ${ProjectLeadFragmentDoc}
   ${SponsorFragmentDoc}
+  ${PROJECT_CARD_GITHUB_REPOS_FRAGMENT}
   fragment ProjectCardFields on Projects {
     id
     budgetsAggregate {
@@ -155,6 +192,9 @@ export const PROJECT_CARD_FRAGMENT = gql`
           spentAmount
         }
       }
+    }
+    budgets {
+      id
     }
     projectDetails {
       projectId
@@ -171,19 +211,8 @@ export const PROJECT_CARD_FRAGMENT = gql`
         ...ProjectLead
       }
     }
-    githubRepo {
-      id
-      name
-      owner
-      content {
-        id
-        contributors {
-          login
-          avatarUrl
-        }
-        logoUrl
-      }
-      languages
+    githubRepos {
+      ...ProjectCardGithubRepoFields
     }
     projectSponsors {
       sponsor {

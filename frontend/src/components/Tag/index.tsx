@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { PropsWithChildren } from "react";
 
 export enum TagSize {
   Small = "small",
@@ -6,51 +7,21 @@ export enum TagSize {
   Large = "large",
 }
 
-export enum TagIcon {
-  Check = "check",
-  Time = "time",
-  Warning = "error-warning",
-}
-
-export enum TagIconColor {
-  Grey = "grey",
-  Orange = "orange",
-  Pink = "pink",
-}
-
 export enum TagBorderColor {
   Grey = "grey",
   MultiColor = "multi-color",
 }
 
-export enum TagBackgroundColor {
-  SpaceBlueOpaque = "space-blue-opaque",
-  WhiteTransparent = "white-transparent",
-}
-
 export type TagProps = {
   id?: string;
   size: TagSize;
-  label: string;
-  icon?: TagIcon;
-  iconColor?: TagIconColor;
   borderColor?: TagBorderColor;
-  backgroundColor?: TagBackgroundColor;
-  whitespaceNoWrap?: boolean;
-};
+  testid?: string;
+} & PropsWithChildren;
 
-export default function Tag({
-  id,
-  size,
-  label,
-  icon,
-  iconColor = TagIconColor.Grey,
-  borderColor = TagBorderColor.Grey,
-  backgroundColor = TagBackgroundColor.WhiteTransparent,
-  whitespaceNoWrap = false,
-}: TagProps) {
+export default function Tag({ id, size, borderColor = TagBorderColor.Grey, testid, children }: TagProps) {
   return (
-    <div id={id} className="w-fit rounded-full p-px overflow-hidden">
+    <div data-testid={testid} id={id} className="w-fit rounded-full p-px overflow-hidden">
       <div
         className={classNames(
           "flex items-center justify-center w-fit gap-1 rounded-full font-walsheim font-medium text-white relative h-7",
@@ -65,29 +36,12 @@ export default function Tag({
             "before:bg-multi-color-gradient before:animate-spin-invert-slow": borderColor === TagBorderColor.MultiColor,
           },
           {
-            "bg-spaceBlue-900": backgroundColor === TagBackgroundColor.SpaceBlueOpaque,
-            "bg-white/2": backgroundColor === TagBackgroundColor.WhiteTransparent,
+            "bg-spaceBlue-900": borderColor === TagBorderColor.MultiColor,
+            "bg-white/2": borderColor === TagBorderColor.Grey,
           }
         )}
       >
-        {icon && (
-          <i
-            className={classNames(
-              `ri-${icon}-line`,
-              {
-                "text-xs": size === TagSize.Small,
-                "text-sm": size === TagSize.Medium,
-                "text-base": size === TagSize.Large,
-              },
-              {
-                "text-greyscale-50": iconColor === TagIconColor.Grey,
-                "text-orange-500": iconColor === TagIconColor.Orange,
-                "text-pink-500": iconColor === TagIconColor.Pink,
-              }
-            )}
-          />
-        )}
-        <span className={classNames("text-center", { "whitespace-nowrap": whitespaceNoWrap })}>{label}</span>
+        {children}
       </div>
     </div>
   );

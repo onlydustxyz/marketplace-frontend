@@ -1,20 +1,18 @@
 import { WAIT_SHORT, WAIT_LONG } from "./common";
 
 Cypress.Commands.add(
-  "createProject",
+  "callCreateProjectMutation",
   (
     projectName = "My Project",
-    initialBudget = 500,
     telegramLink = "https://t.me/foo",
     logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4",
     shortDescription = "My project description",
     longDescription = "This project certainly aim to do stuff"
   ) => {
     return {
-      query: `mutation($projectName: String!, $initialBudget: Int!, $telegramLink: String!, $logoUrl: String!, $shortDescription: String!, $longDescription: String!) {
+      query: `mutation($projectName: String!, $telegramLink: String!, $logoUrl: String!, $shortDescription: String!, $longDescription: String!) {
                 createProject(
                     name: $projectName,
-                    initialBudgetInUsd: $initialBudget,
                     telegramLink: $telegramLink,
                     logoUrl: $logoUrl,
                     shortDescription: $shortDescription,
@@ -22,7 +20,6 @@ Cypress.Commands.add(
                 )}`,
       variables: {
         projectName,
-        initialBudget,
         telegramLink,
         logoUrl,
         shortDescription: shortDescription,
@@ -34,36 +31,63 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
-  "createProjectWithLeader",
+  "createProject",
   (
-    user,
     projectName = "My Project",
-    initialBudget = 500,
-    githubRepoId = 0,
     telegramLink = "https://t.me/foo",
     logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4",
     shortDescription = "My project description",
     longDescription = "This project certainly aim to do stuff"
   ) => {
-    cy.createProject(projectName, initialBudget, telegramLink, logoUrl, shortDescription, longDescription)
+    cy.callCreateProjectMutation(projectName, telegramLink, logoUrl, shortDescription, longDescription)
       .asAdmin()
-      .data("createProject")
-      .then(projectId => {
-        cy.inviteProjectLeader(projectId, user.githubUserId)
-          .asAdmin()
-          .data("inviteProjectLeader")
-          .should("be.a", "string")
-          .then(invitationId => cy.acceptProjectLeaderInvitation(invitationId))
-          .asRegisteredUser(user)
-          .then(() => projectId);
+      .data("createProject");
+  }
+);
 
-        cy.fixture("repos.json").then(repos => {
-          cy.linkGithubRepoWithProject(projectId, githubRepoId === 0 ? repos.A.id : githubRepoId)
-            .asAdmin()
-            .data("linkGithubRepo")
-            .should("be.a", "string");
-        });
-      });
+Cypress.Commands.add(
+  "withLeader",
+  {
+    prevSubject: true,
+  },
+  (projectId, user) => {
+    cy.inviteProjectLeader(projectId, user.githubUserId)
+      .asAdmin()
+      .data("inviteProjectLeader")
+      .should("be.a", "string")
+      .then(invitationId => cy.acceptProjectLeaderInvitation(invitationId))
+      .asRegisteredUser(user)
+      .then(() => projectId);
+  }
+);
+
+Cypress.Commands.add(
+  "withRepo",
+  {
+    prevSubject: true,
+  },
+  (projectId, githubRepoId) => {
+    cy.fixture("repos.json").then(repos => {
+      cy.linkGithubRepoWithProject(projectId, !githubRepoId ? repos.A.id : githubRepoId)
+        .asAdmin()
+        .data("linkGithubRepo")
+        .should("be.a", "string")
+        .then(() => projectId);
+    });
+  }
+);
+
+Cypress.Commands.add(
+  "withBudget",
+  {
+    prevSubject: true,
+  },
+  (projectId, amount) => {
+    cy.updateBudgetAllocation(projectId, amount)
+      .asAdmin()
+      .data("updateBudgetAllocation")
+      .should("be.a", "string")
+      .then(() => projectId);
   }
 );
 
@@ -104,17 +128,13 @@ Cypress.Commands.add("getProjectBudget", projectId => {
 });
 
 Cypress.Commands.add("updateBudgetAllocation", (projectId, amount) => {
-  return cy
-    .graphql({
-      query: `mutation ($projectId: Uuid!, $amount: Int!) {
+  return {
+    query: `mutation ($projectId: Uuid!, $amount: Int!) {
           updateBudgetAllocation(projectId: $projectId, newRemainingAmountInUsd: $amount)
       }`,
-      variables: { projectId, amount },
-      wait: WAIT_LONG,
-    })
-    .asAdmin()
-    .data("updateBudgetAllocation")
-    .should("equal", true);
+    variables: { projectId, amount },
+    wait: WAIT_LONG,
+  };
 });
 
 Cypress.Commands.add("linkGithubRepoWithProject", (projectId, githubRepoId) => {

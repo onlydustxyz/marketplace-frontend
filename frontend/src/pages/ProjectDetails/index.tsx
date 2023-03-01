@@ -4,8 +4,7 @@ import { useParams } from "react-router-dom";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
-import { Contributor, HasuraUserRole, LanguageMap } from "src/types";
-import { decodeBase64ToString } from "src/utils/stringUtils";
+import { HasuraUserRole, LanguageMap } from "src/types";
 import { GetProjectQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { SessionMethod, useSessionDispatch, useSession } from "src/hooks/useSession";
@@ -24,13 +23,7 @@ export interface ProjectDetails {
   leads: ({ id: string } & ProjectLeadFragment)[];
   invitationId?: string;
   totalSpentAmountInUsd?: number;
-  githubRepoInfo?: {
-    decodedReadme?: string;
-    owner?: string;
-    name?: string;
-    contributors?: Contributor[];
-    languages: LanguageMap;
-  };
+  languages: LanguageMap;
   sponsors: SponsorFragment[];
 }
 
@@ -88,19 +81,12 @@ const ProjectDetails: React.FC = () => {
 const projectFromQuery = (project: GetProjectQuery["projectsByPk"]): ProjectDetails => ({
   id: project?.id,
   name: project?.projectDetails?.name,
-  logoUrl: project?.projectDetails?.logoUrl || project?.githubRepo?.content?.logoUrl || onlyDustLogo,
+  logoUrl: project?.projectDetails?.logoUrl || onlyDustLogo,
   leads: project?.projectLeads?.map((lead: any) => ({ id: lead.userId, ...lead.user })) || [],
   invitationId: project?.pendingInvitations.at(0)?.id,
   totalSpentAmountInUsd: project?.budgetsAggregate.aggregate?.sum?.spentAmount,
   telegramLink: project?.projectDetails?.telegramLink,
-  githubRepoInfo: {
-    name: project?.githubRepo?.name || undefined,
-    owner: project?.githubRepo?.owner || undefined,
-    contributors: project?.githubRepo?.content?.contributors,
-    languages: project?.githubRepo?.languages,
-    decodedReadme:
-      project?.githubRepo?.content?.readme?.content && decodeBase64ToString(project?.githubRepo.content.readme.content),
-  },
+  languages: (project?.githubRepos?.length === 1 && project?.githubRepos[0].githubRepoDetails?.languages) || {},
   sponsors: project?.projectSponsors?.map(projectSponsor => projectSponsor.sponsor) || [],
 });
 
@@ -109,15 +95,6 @@ export const GET_PROJECT_QUERY = gql`
   query GetProject($id: uuid!, $githubUserId: bigint = 0) {
     projectsByPk(id: $id) {
       ...ProjectCardFields
-      githubRepo {
-        id
-        content {
-          id
-          readme {
-            content
-          }
-        }
-      }
     }
   }
 `;

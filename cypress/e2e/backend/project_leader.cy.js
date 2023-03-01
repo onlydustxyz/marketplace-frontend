@@ -4,10 +4,14 @@ describe("As a project leader, I", () => {
 
   before(() => {
     cy.createGithubUser(12345).then(user => {
-      cy.createProjectWithLeader(user, "Project with budget", 1000).then($projectId => {
-        projectId = $projectId;
-        leader = user;
-      });
+      cy.createProject("Project with budget")
+        .withLeader(user)
+        .withBudget(1000)
+        .withRepo()
+        .then($projectId => {
+          projectId = $projectId;
+          leader = user;
+        });
     });
   });
 
