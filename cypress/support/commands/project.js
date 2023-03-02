@@ -10,7 +10,7 @@ Cypress.Commands.add(
     longDescription = "This project certainly aim to do stuff"
   ) => {
     return {
-      query: `mutation($projectName: String!, $telegramLink: String!, $logoUrl: Url!, $shortDescription: String!, $longDescription: String!) {
+      query: `mutation($projectName: String!, $telegramLink: Url!, $logoUrl: Url!, $shortDescription: String!, $longDescription: String!) {
                 createProject(
                     name: $projectName,
                     telegramLink: $telegramLink,
@@ -95,13 +95,13 @@ Cypress.Commands.add(
   "updateProject",
   (
     projectId,
-    name = "My Project",
-    telegramLink = "https://t.me/foo",
-    logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4",
-    shortDescription = "My project description",
-    longDescription = "This project certainly aim to do stuff"
+    name = undefined,
+    telegramLink = undefined,
+    logoUrl = undefined,
+    shortDescription = undefined,
+    longDescription = undefined
   ) => ({
-    query: `mutation($projectId: Uuid!, $name: String!, $telegramLink: String!, $logoUrl: String!, $shortDescription: String!, $longDescription: String!) { updateProject(
+    query: `mutation($projectId: Uuid!, $name: String, $telegramLink: Url, $logoUrl: Url, $shortDescription: String, $longDescription: String) { updateProject(
             id: $projectId,
             name: $name,
             telegramLink: $telegramLink,

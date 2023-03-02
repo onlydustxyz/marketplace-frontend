@@ -21,13 +21,16 @@ describe("A project without readme", () => {
         win.localStorage.setItem("hasura_token", this.token);
       },
     });
-    cy.contains("CONTRIBUTORS");
+    cy.contains("Project overview");
   });
 });
 
 describe("A project", () => {
+  let sponsorName;
   beforeEach(function () {
     cy.fixture("repos.json").as("repos");
+    sponsorName = Math.random() + " sponsor"; // 😱😱😱😱😱😱 mandatory because we check unicity of sponsor names and DB is not reset between tests!
+
     cy.createGithubUser(98735558)
       .as("user")
       .then(user => {
@@ -38,7 +41,7 @@ describe("A project", () => {
           .as("projectId")
           .then(projectId =>
             cy
-              .createSponsor("Starknet Foundation", "https://starkware.co/wp-content/uploads/2021/07/Group-177.svg")
+              .createSponsor(sponsorName, "https://starkware.co/wp-content/uploads/2021/07/Group-177.svg")
               .then(sponsorId => cy.addSponsorToProject(projectId, sponsorId))
           );
       });
@@ -46,10 +49,10 @@ describe("A project", () => {
 
   it("should render properly in public view", function () {
     cy.visit(`http://127.0.0.1:5173/projects/${this.projectId}`);
-    cy.contains("CONTRIBUTORS");
+    cy.contains("Project overview");
   });
 
-  it.only("should display project overview panel", function () {
+  it("should display project overview panel", function () {
     cy.visit(`http://127.0.0.1:5173/projects/${this.projectId}`);
     cy.get('[data-testid="money-granted-amount"]').should("have.text", "$0");
 
@@ -70,7 +73,7 @@ describe("A project", () => {
     cy.reload();
     cy.get('[data-testid="money-granted-amount"]').should("have.text", "$200");
 
-    cy.get('[data-testid="sponsors"]').should("have.text", "Starknet Foundation");
+    cy.get('[data-testid="sponsors"]').should("have.text", sponsorName);
     cy.get('[data-testid="telegram-link"]').should("have.text", "https://t.me/foo");
   });
 });
@@ -96,6 +99,6 @@ describe("An empty project", () => {
         win.localStorage.setItem("hasura_token", this.token);
       },
     });
-    cy.contains("CONTRIBUTORS");
+    cy.contains("Project overview");
   });
 });

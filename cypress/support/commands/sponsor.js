@@ -3,17 +3,29 @@ import { WAIT_SHORT } from "./common";
 Cypress.Commands.add("createSponsor", (name, logoUrl, url) => {
   return cy
     .graphql({
-      query: `mutation createSponsor($name: String!, $logoUrl: String!, $url: String) {
-                insertSponsorsOne(object: {name: $name, logoUrl: $logoUrl, url: $url}, onConflict: {constraint: sponsors_name_key, update_columns: [name, logoUrl, url]}) {
-                  id
-                }
+      query: `mutation($name: String!, $logoUrl: Url!, $url: Url) {
+                createSponsor(name: $name, logoUrl: $logoUrl, url: $url)
               }
               `,
       variables: { name, logoUrl, url },
       wait: WAIT_SHORT,
     })
     .asAdmin()
-    .data("insertSponsorsOne.id");
+    .data("createSponsor");
+});
+
+Cypress.Commands.add("updateSponsor", (sponsorId, name = undefined, logoUrl = undefined, url = undefined) => {
+  return cy
+    .graphql({
+      query: `mutation($sponsorId: Uuid!, $name: String, $logoUrl: Url, $url: Url) {
+                  updateSponsor(sponsorId: $sponsorId, name: $name, logoUrl: $logoUrl, url: $url)
+                }
+                `,
+      variables: { sponsorId, name, logoUrl, url },
+      wait: WAIT_SHORT,
+    })
+    .asAdmin()
+    .data("updateSponsor");
 });
 
 Cypress.Commands.add("addSponsorToProject", (projectId, sponsorId) => {
