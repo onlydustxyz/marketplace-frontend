@@ -8,10 +8,10 @@ interface LinkProps {
 export default function GithubLink({ link }: LinkProps) {
   return (
     <div
-      className="flex justify-center border rounded-xl grayscale border-neutral-100 bg-white/5 hover:opacity-60 hover:cursor-pointer md:w-10 w-6 md:h-10 h-6"
+      className="flex justify-center border rounded-xl grayscale border-neutral-100 bg-white/5 hover:opacity-60 hover:cursor-pointer w-8 h-8"
       onClick={linkClickHandlerFactory(link)}
     >
-      <img className="fill-neutral-100 w-5" alt="GitHub Logo" src={githubLogo} />
+      <img className="fill-neutral-100 w-3.5" alt="GitHub Logo" src={githubLogo} />
     </div>
   );
 }

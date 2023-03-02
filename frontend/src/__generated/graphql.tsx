@@ -3456,7 +3456,7 @@ export type GetProjectOverviewDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectOverviewDetailsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, longDescription: string, logoUrl: string | null } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any }> } | null };
+export type GetProjectOverviewDetailsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, longDescription: string, logoUrl: string | null } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', stars: number } } | null }> } | null };
 
 export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -4334,6 +4334,11 @@ export const GetProjectOverviewDetailsDocument = gql`
     }
     githubRepos {
       githubRepoId
+      githubRepoDetails {
+        content {
+          stars
+        }
+      }
     }
   }
 }

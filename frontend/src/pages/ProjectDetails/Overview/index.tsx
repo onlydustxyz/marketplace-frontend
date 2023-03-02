@@ -2,8 +2,13 @@ import { useIntl } from "src/hooks/useIntl";
 import { Contributor, HasuraUserRole } from "src/types";
 import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
-import { ReactNode } from "react";
-import { GetProjectOverviewDetailsQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
+import { ReactNode, useEffect, useState } from "react";
+import {
+  GetProjectOverviewDetailsQuery,
+  ProjectGithubReposSelectColumn,
+  ProjectLeadFragment,
+  SponsorFragment,
+} from "src/__generated/graphql";
 import { gql } from "@apollo/client";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import QueryWrapper from "src/components/QueryWrapper";
@@ -43,6 +48,21 @@ export default function Overview() {
   const description = data?.projectsByPk?.projectDetails?.longDescription || LOREM_IPSUM;
   const githubReposCount = data?.projectsByPk?.githubRepos.length || 0;
 
+  const githubRepos = data?.projectsByPk?.githubRepos;
+
+  const [sortedGithubRepos, setSortedGithubRepos] = useState(githubRepos);
+
+  useEffect(() => {
+    if (githubRepos) {
+      const githubReposCopy = [...githubRepos];
+      githubReposCopy.sort(
+        (githubRepoA, githubRepoB) =>
+          (githubRepoB?.githubRepoDetails?.content?.stars ?? 0) - (githubRepoA?.githubRepoDetails?.content?.stars ?? 0)
+      );
+      setSortedGithubRepos(githubReposCopy);
+    }
+  }, [githubRepos]);
+
   return (
     <div className="flex flex-col gap-8 mt-3">
       <div className="text-3xl font-belwe">{T("project.details.overview.title")}</div>
@@ -68,16 +88,17 @@ export default function Overview() {
             </Card>
             <Card className="flex flex-col gap-4">
               <div className="flex flex-row font-walsheim font-medium text-base text-greyscale-50 items-center border-b border-greyscale-50/8 pb-2 justify-between">
-                <div className="flex flex-row gap-3">
-                  <GitRepositoryLine className="w-6 h-6 text-white" />
-                  {T("project.details.overview.repositories")}
+                <div className="flex flex-row items-center gap-3">
+                  <GitRepositoryLine className="text-white text-2xl" />
+                  {T("project.details.overview.repositories.title")}
                 </div>
                 <Badge value={githubReposCount} size={BadgeSize.Small} />
               </div>
               <div className="grid grid-cols-2 gap-3">
-                {data?.projectsByPk?.githubRepos.map(githubRepo => (
-                  <GithubRepoDetails key={githubRepo.githubRepoId} githubRepoId={githubRepo.githubRepoId} />
-                ))}
+                {sortedGithubRepos &&
+                  sortedGithubRepos.map(githubRepo => (
+                    <GithubRepoDetails key={githubRepo.githubRepoId} githubRepoId={githubRepo.githubRepoId} />
+                  ))}
               </div>
             </Card>
           </div>
@@ -100,6 +121,11 @@ export const GET_PROJECT_OVERVIEW_DETAILS = gql`
       }
       githubRepos {
         githubRepoId
+        githubRepoDetails {
+          content {
+            stars
+          }
+        }
       }
     }
   }

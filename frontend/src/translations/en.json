@@ -170,24 +170,27 @@
       },
       "overview": {
         "contributors": {
-          "one": "Contributor",
-          "many": "Contributors"
+          "many": "Contributors",
+          "one": "Contributor"
         },
         "githubLinkContent": "Link",
         "githubLinkTitle": "GitHub",
         "projectLeader": {
-          "one": "Project lead",
-          "many": "Project leads"
+          "many": "Project leads",
+          "one": "Project lead"
         },
-        "repositories": "Repositories",
+        "repositories": {
+          "descriptionPlaceholder": "This repository has no description",
+          "title": "Repositories"
+        },
         "sponsors": {
-          "one": "Sponsor",
-          "many": "Sponsors"
+          "many": "Sponsors",
+          "one": "Sponsor"
         },
         "technologies": "Technologies",
         "telegram": "Telegram",
         "title": "Project overview",
-        "totalSpentAmountInUsd": "MONEY GRANTED"
+        "totalSpentAmountInUsd": "GRANTED"
       },
       "payments": {
         "title": "Payments"
@@ -198,7 +201,7 @@
         "title": "Remaining budget"
       },
       "sidebar": {
-        "backToProjects": "Back to projects",
+        "backToProjects": "All projects",
         "contributors": " contributors",
         "newInvite": "NEW"
       },
