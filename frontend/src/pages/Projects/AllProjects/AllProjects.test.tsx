@@ -25,7 +25,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           logoUrl: null,
           telegramLink: null,
         },
-        budgets: [{ id: "budget-1" }],
+        budgets: [{ id: "budget-1", paymentRequests: [] }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -34,7 +34,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           },
         },
         pendingInvitations: [],
-        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
         githubRepos: [
           {
@@ -60,7 +60,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           logoUrl: null,
           telegramLink: null,
         },
-        budgets: [{ id: "budget-2" }],
+        budgets: [{ id: "budget-2", paymentRequests: [] }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -82,7 +82,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
             },
           },
         ],
-        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
       },
     ],
@@ -102,7 +102,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           shortDescription: "short description",
           telegramLink: null,
         },
-        budgets: [{ id: "budget-1" }],
+        budgets: [{ id: "budget-1", paymentRequests: [] }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -124,7 +124,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         ],
-        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
       },
       {
@@ -137,7 +137,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           shortDescription: "short description",
           telegramLink: null,
         },
-        budgets: [{ id: "budget-2" }],
+        budgets: [{ id: "budget-2", paymentRequests: [] }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -159,7 +159,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         ],
-        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
       },
       {
@@ -172,7 +172,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           shortDescription: "short description",
           telegramLink: null,
         },
-        budgets: [{ id: "budget-3" }],
+        budgets: [{ id: "budget-3", paymentRequests: [] }],
         budgetsAggregate: {
           aggregate: {
             sum: {
@@ -194,7 +194,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         ],
-        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { id: "user-1", displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
       },
     ],
@@ -227,14 +227,14 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
     },
   ],
   pendingInvitations: [],
-  projectLeads: [{ userId: "user-1", user: { displayName: "leader", avatarUrl: "avatar" } }],
+  projectLeads: [{ userId: "user-1", user: { id: "user-1", displayName: "leader", avatarUrl: "avatar" } }],
   projectSponsors: [],
 };
 
 const projectWithNoRepo: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-repo",
-  budgets: [{ id: "budget-1" }],
+  budgets: [{ id: "budget-1", paymentRequests: [] }],
   budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
   projectDetails: {
     projectId: "project-with-no-repo",
@@ -245,14 +245,14 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
   },
   githubRepos: [],
   pendingInvitations: [],
-  projectLeads: [{ userId: "user-1", user: { displayName: "leader", avatarUrl: "avatar" } }],
+  projectLeads: [{ userId: "user-1", user: { id: "user-1", displayName: "leader", avatarUrl: "avatar" } }],
   projectSponsors: [],
 };
 
 const projectWithNoLeader: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-leader",
-  budgets: [{ id: "budget-1" }],
+  budgets: [{ id: "budget-1", paymentRequests: [] }],
   budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
   projectDetails: {
     projectId: "project-with-no-leader",
@@ -300,7 +300,7 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
 const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-leader-and-invite",
-  budgets: [{ id: "budget-1" }],
+  budgets: [{ id: "budget-1", paymentRequests: [] }],
   budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
   projectDetails: {
     projectId: "project-with-no-leader",

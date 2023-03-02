@@ -76,12 +76,13 @@ const getProjectMock = {
           {
             userId: "test-user-id",
             user: {
+              id: "test-user-id",
               displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
               avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
             },
           },
         ],
-        budgets: [{ id: "budget-1" }],
+        budgets: [{ id: "budget-1", paymentRequests: [] }],
         githubRepos: [{ githubRepoId: 123456, githubRepoDetails: null }],
         projectSponsors: [],
       },
@@ -120,12 +121,13 @@ const getLedProjectMock = {
           {
             userId: "test-user-id",
             user: {
+              id: "test-user-id",
               displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
               avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
             },
           },
         ],
-        budgets: [{ id: "budget-1" }],
+        budgets: [{ id: "budget-1", paymentRequests: [] }],
         githubRepos: [{ githubRepoId: 123456, githubRepoDetails: null }],
         projectSponsors: [],
       },
