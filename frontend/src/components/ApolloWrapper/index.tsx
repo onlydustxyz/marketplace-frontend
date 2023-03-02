@@ -96,10 +96,11 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     if (graphQLErrors) {
       graphQLErrors.forEach(({ message, locations, path }) => {
         console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
-        if (message === GraphQLErrorMessage.ConnectionError) {
-          return forward(operation);
-        }
       });
+
+      if (graphQLErrors.find(graphQLError => graphQLError.message === GraphQLErrorMessage.ConnectionError)) {
+        return forward(operation);
+      }
 
       switch ((operation.getContext().graphqlErrorDisplay || DEFAULT_ERROR_DISPLAY) as ErrorDisplay) {
         case "screen":
