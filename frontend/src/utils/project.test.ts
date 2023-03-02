@@ -1,12 +1,9 @@
-import { renderHook } from "@testing-library/react-hooks";
 import { range } from "lodash";
 import { ContributorsTableFieldsFragment, ProjectContributorsFragment } from "src/__generated/graphql";
-import useProjectContributors from "./useProjectContributors";
+import { getContributors } from "./project";
 
 const REPO1_ID = 123456;
 const REPO2_ID = 321654;
-
-const render = (project: ProjectContributorsFragment) => renderHook(() => useProjectContributors(project));
 
 const [contributor1, contributor2, contributor3, contributor4, contributor5]: ContributorsTableFieldsFragment[] = range(
   5
@@ -59,7 +56,7 @@ const project: ProjectContributorsFragment = {
 
 describe("useProjectContributors", () => {
   test("should return deduplicated contributors", async () => {
-    const { result } = render(project);
-    expect(result.current.contributors).toHaveLength(5);
+    const { contributors } = getContributors(project);
+    expect(contributors).toHaveLength(5);
   });
 });

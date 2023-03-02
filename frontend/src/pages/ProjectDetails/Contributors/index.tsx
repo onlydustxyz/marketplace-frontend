@@ -9,7 +9,7 @@ import { GetProjectContributorsQuery, GetProjectRemainingBudgetQuery } from "src
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useOutletContext } from "react-router-dom";
-import useProjectContributors from "src/hooks/useProjectContributors";
+import { getContributors } from "src/utils/project";
 
 const Contributors: React.FC = () => {
   const { T } = useIntl();
@@ -35,7 +35,7 @@ const Contributors: React.FC = () => {
     }
   );
 
-  const { contributors } = useProjectContributors(getProjectContributorsQuery.data?.projectsByPk);
+  const { contributors } = getContributors(getProjectContributorsQuery.data?.projectsByPk);
 
   const remainingBudget = getProjectRemainingBudget.data?.projectsByPk?.budgets.at(0)?.remainingAmount;
 

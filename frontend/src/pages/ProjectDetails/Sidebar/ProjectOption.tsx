@@ -3,7 +3,7 @@ import ShootingStar from "src/assets/icons/ShootingStar";
 import CheckLine from "src/icons/CheckLine";
 import RoundedImage from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
-import useProjectContributors from "src/hooks/useProjectContributors";
+import { getContributors } from "src/utils/project";
 import { SidebarProjectDetails } from "./View";
 import { ProjectContributorsFragment } from "src/__generated/graphql";
 
@@ -14,7 +14,7 @@ interface Props {
 
 export default function ProjectOption({ project, isSelected }: Props) {
   const { T } = useIntl();
-  const { contributors } = useProjectContributors(project);
+  const { contributors } = getContributors(project);
   const nbContributors = contributors.length;
 
   return (

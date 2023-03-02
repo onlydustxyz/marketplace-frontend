@@ -21,7 +21,7 @@ import ProjectTitle from "./ProjectTitle";
 import isDefined from "src/utils/isDefined";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Tag, { TagSize } from "../Tag";
-import useProjectContributors from "src/hooks/useProjectContributors";
+import { getContributors } from "src/utils/project";
 
 type ProjectCardProps = Project & {
   selectable?: boolean;
@@ -42,7 +42,7 @@ export default function ProjectCard({
   const totalSpentAmountInUsd = budgetsAggregate?.aggregate?.sum?.spentAmount;
 
   const topSponsors = projectSponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
-  const { contributors } = useProjectContributors({ githubRepos, budgets });
+  const { contributors } = getContributors({ githubRepos, budgets });
   const languages = getDeduplicatedAggregatedLanguages(githubRepos);
 
   const card = (
