@@ -77,7 +77,7 @@ impl Context {
 			create_project_usecase: application::project::create::Usecase::new(
 				event_publisher.to_owned(),
 				project_details_repository.clone(),
-				simple_storage,
+				simple_storage.clone(),
 			),
 			update_budget_allocation_usecase: application::budget::allocate::Usecase::new(
 				event_publisher.to_owned(),
@@ -85,6 +85,7 @@ impl Context {
 			),
 			update_project_usecase: application::project::update::Usecase::new(
 				project_details_repository.clone(),
+				simple_storage,
 			),
 			link_github_repo_usecase: application::project::link_github_repo::Usecase::new(
 				github_repo_repository.clone(),
