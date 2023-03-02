@@ -5,15 +5,11 @@ import ContributorsTable, { CONTRIBUTORS_TABLE_FRAGMENT } from "src/components/C
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { HasuraUserRole } from "src/types";
-import {
-  ContributorsTableFieldsFragment,
-  GetProjectContributorsQuery,
-  GetProjectRemainingBudgetQuery,
-  GithubRepoContributorsFieldsFragment,
-} from "src/__generated/graphql";
+import { GetProjectContributorsQuery, GetProjectRemainingBudgetQuery } from "src/__generated/graphql";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useOutletContext } from "react-router-dom";
+import useProjectContributors from "src/hooks/useProjectContributors";
 
 const Contributors: React.FC = () => {
   const { T } = useIntl();
@@ -39,9 +35,8 @@ const Contributors: React.FC = () => {
     }
   );
 
-  const contributors = getDeduplicatedAggregatedContributors(
-    getProjectContributorsQuery.data?.projectsByPk?.githubRepos || []
-  );
+  const { contributors } = useProjectContributors(getProjectContributorsQuery.data?.projectsByPk);
+
   const remainingBudget = getProjectRemainingBudget.data?.projectsByPk?.budgets.at(0)?.remainingAmount;
 
   return (
@@ -60,15 +55,6 @@ const Contributors: React.FC = () => {
       </div>
     </QueryWrapper>
   );
-};
-
-export const getDeduplicatedAggregatedContributors = function (
-  githubRepos: GithubRepoContributorsFieldsFragment[]
-): ContributorsTableFieldsFragment[] {
-  const flatten_users = githubRepos
-    .flatMap(repo => repo.githubRepoDetails?.content?.contributors)
-    .flatMap(user => (user ? [user] : []));
-  return [...new Set(flatten_users)];
 };
 
 export const GITHUB_REPO_CONTRIBUTORS_FRAGMENT = gql`
@@ -98,6 +84,15 @@ export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
       }
       githubRepos {
         ...GithubRepoContributorsFields
+      }
+      budgets {
+        id
+        paymentRequests {
+          id
+          githubRecipient {
+            ...ContributorsTableFields
+          }
+        }
       }
     }
   }
