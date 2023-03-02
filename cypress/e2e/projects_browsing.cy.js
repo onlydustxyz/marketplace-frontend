@@ -2,7 +2,7 @@ describe("As a visitor, I", () => {
   before(function () {
     cy.fixture("repos.json").as("repos");
     cy.createGithubUser(98735558).then(user => {
-      cy.createProject("Croute A").withLeader(user).withBudget(500).withRepo(this.repos.A.id);
+      cy.createProject("Croute A").withLeader(user).withBudget(500).withRepo(this.repos.A.id).as("projectId");
       cy.createProject("Yolo B").withLeader(user).withBudget(500).withRepo(this.repos.B.id);
       cy.createProject("Plop AB").withLeader(user).withBudget(500).withRepo(this.repos.A.id).withRepo(this.repos.B.id);
     });
@@ -29,5 +29,36 @@ describe("As a visitor, I", () => {
     cy.contains("Croute A");
     cy.contains("Yolo B").should("not.exist");
     cy.contains("Plop AB");
+  });
+
+  it("cannot access restricted projects page", function () {
+    cy.visit(`http://localhost:5173/projects/${this.projectId}/payments`);
+    cy.location().should(loc => {
+      expect(loc.pathname).to.eq(`/projects/${this.projectId}`);
+    });
+  });
+});
+
+describe("As a registered user, I", () => {
+  before(function () {
+    cy.fixture("repos.json").as("repos");
+    cy.createGithubUser(98735558).then(user => {
+      cy.createProject("Croute A").withLeader(user).withBudget(500).withRepo(this.repos.A.id).as("projectId");
+      cy.createProject("Yolo B").withLeader(user).withBudget(500).withRepo(this.repos.B.id);
+      cy.createProject("Plop AB").withLeader(user).withBudget(500).withRepo(this.repos.A.id).withRepo(this.repos.B.id);
+    });
+    cy.createGithubUser(123456).as("token");
+  });
+
+  it("cannot access restricted projects page", function () {
+    cy.visit(`http://localhost:5173/projects/${this.projectId}/payments`, {
+      onBeforeLoad(win) {
+        win.localStorage.setItem("hasura_token", this.token);
+      },
+    });
+
+    cy.location().should(loc => {
+      expect(loc.pathname).to.eq(`/projects/${this.projectId}`);
+    });
   });
 });
