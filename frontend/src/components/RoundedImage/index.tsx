@@ -33,7 +33,7 @@ export default function RoundedImage({
     <div
       className={classNames(
         "before:border-greyscale-50/20",
-        "h-fit w-fit",
+        "h-fit w-fit shrink-0",
         {
           "pseudo-outline": size === ImageSize.Xs || size === ImageSize.Xxs,
           "pseudo-outline-2": size === ImageSize.Sm || size === ImageSize.Md,
