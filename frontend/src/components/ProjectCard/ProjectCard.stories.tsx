@@ -1,6 +1,7 @@
 import { ComponentStory } from "@storybook/react";
 import { JSXElementConstructor } from "react";
 import { responsiveChromatic } from "src/test/utils";
+import { Project } from "src/pages/Projects";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 import ProjectCard from ".";
@@ -17,7 +18,7 @@ const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
 
 export const Default = Template.bind({});
 
-const props = (args: { name: string; shortDescription: string; projectLeadsCount: number }) => ({
+const props = (args: { name: string; shortDescription: string; projectLeadsCount: number }): Project => ({
   id: 123,
   projectDetails: {
     projectId: "123",
@@ -81,12 +82,9 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
       githubRepoId: 12345,
       githubRepoDetails: {
         id: 12345,
-        owner: "facebook",
-        name: "react",
         languages: { Ejs: 2200, Rust: 1000 },
         content: {
           id: 12345,
-          logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
           contributors: [{ id: 100 }, { id: 837 }],
         },
       },
@@ -95,18 +93,15 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
       githubRepoId: 666,
       githubRepoDetails: {
         id: 666,
-        owner: "chuck",
-        name: "norris",
         languages: { Pascal: 1000000, Rust: 3000 },
         content: {
           id: 666,
-          logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
           contributors: [{ id: 100 }, { id: 777 }],
         },
       },
     },
   ],
-  budgets: [{ id: "budget-1" }],
+  budgets: [{ id: "budget-1", paymentRequests: [] }],
   budgetsAggregate: {
     aggregate: {
       sum: {

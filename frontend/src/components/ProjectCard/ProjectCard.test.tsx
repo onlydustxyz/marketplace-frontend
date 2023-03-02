@@ -1,25 +1,30 @@
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import ProjectCard, { getDeduplicatedAggregatedContributors } from ".";
+import ProjectCard from ".";
 import { screen } from "@testing-library/react";
 import { Project } from "src/pages/Projects";
-import { ProjectCardContributorsFieldsFragment, ProjectCardGithubRepoFieldsFragment } from "src/__generated/graphql";
+import {
+  ContributorIdFragment,
+  ProjectCardGithubRepoFieldsFragment,
+  ProjectContributorsFragment,
+} from "src/__generated/graphql";
+import { ArrayElement } from "src/types";
 
-const contributor1: ProjectCardContributorsFieldsFragment = {
+const contributor1: ContributorIdFragment = {
   __typename: "User",
   id: 123456,
 };
 
-const contributor2: ProjectCardContributorsFieldsFragment = {
+const contributor2: ContributorIdFragment = {
   __typename: "User",
   id: 123457,
 };
 
-const contributor3: ProjectCardContributorsFieldsFragment = {
+const contributor3: ContributorIdFragment = {
   __typename: "User",
   id: 123458,
 };
 
-const githubRepo1: ProjectCardGithubRepoFieldsFragment = {
+const githubRepo1: ProjectCardGithubRepoFieldsFragment & ArrayElement<ProjectContributorsFragment["githubRepos"]> = {
   __typename: "ProjectGithubRepos",
   githubRepoId: 1000,
   githubRepoDetails: {
@@ -32,7 +37,7 @@ const githubRepo1: ProjectCardGithubRepoFieldsFragment = {
   },
 };
 
-const githubRepo2: ProjectCardGithubRepoFieldsFragment = {
+const githubRepo2: ProjectCardGithubRepoFieldsFragment & ArrayElement<ProjectContributorsFragment["githubRepos"]> = {
   __typename: "ProjectGithubRepos",
   githubRepoId: 1001,
   githubRepoDetails: {
@@ -72,7 +77,7 @@ const PROJECT: Project = {
       },
     },
   },
-  budgets: [{ id: "budget-1" }],
+  budgets: [{ id: "budget-1", paymentRequests: [] }],
   pendingInvitations: [{ id: "croute" }],
   projectSponsors: [
     {
@@ -141,16 +146,5 @@ describe("'ProjectCard' component", () => {
 
     const languagesString = screen.getByTestId(`languages-${PROJECT.id}`);
     expect(languagesString.textContent).toContain("cairo, rust");
-  });
-});
-
-describe.each([
-  { repos: [], expected_contributors: [] },
-  { repos: [githubRepo1], expected_contributors: [contributor1, contributor2] },
-  { repos: [githubRepo1, githubRepo2], expected_contributors: [contributor1, contributor2, contributor3] },
-])("Listing contributors", ({ repos, expected_contributors }) => {
-  test("should aggregate and deduplicate contributors of Github repos", async () => {
-    const contributors = getDeduplicatedAggregatedContributors(repos);
-    expect(contributors).toEqual(expected_contributors);
   });
 });
