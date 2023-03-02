@@ -4,7 +4,7 @@ use std::{
 	str::FromStr,
 };
 
-use anyhow::anyhow;
+use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use rusoto_core::Region;
 use rusoto_s3::{PutObjectRequest, S3Client, StreamingBody, S3};
@@ -27,23 +27,17 @@ pub struct Client {
 }
 
 impl Client {
-	pub async fn new(config: &Config) -> Self {
-		let s3_client = S3Client::new(
-			Region::from_str(config.bucket_region.as_str())
-				.unwrap_or_else(|_| panic!("Invalid AWS region {}", config.bucket_region)),
-		);
+	pub async fn new(config: &Config) -> Result<Self> {
+		let s3_client = S3Client::new(Region::from_str(config.bucket_region.as_str())?);
 
 		// Check credentials as soon as the client is created
-		s3_client
-			.list_buckets()
-			.await
-			.expect("Could not list buckets. Check your AWS credentials.");
+		s3_client.list_buckets().await?;
 
-		Self {
+		Ok(Self {
 			s3_client,
 			images_bucket_name: config.images_bucket_name.clone(),
 			images_bucket_region: config.bucket_region.clone(),
-		}
+		})
 	}
 }
 
