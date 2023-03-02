@@ -23,6 +23,7 @@ pub struct Config {
 pub struct Client {
 	s3_client: S3Client,
 	images_bucket_name: String,
+	images_bucket_region: String,
 }
 
 impl Client {
@@ -41,6 +42,7 @@ impl Client {
 		Self {
 			s3_client,
 			images_bucket_name: config.images_bucket_name.clone(),
+			images_bucket_region: config.bucket_region.clone(),
 		}
 	}
 }
@@ -88,8 +90,11 @@ impl ImageStoreService for Client {
 			.map_err(|e| ImageStoreServiceError::Other(e.into()))?;
 
 		Ok(Url::parse(
-			format!("https://onlydust-app-images.s3.eu-west-1.amazonaws.com/{object_name}")
-				.as_str(),
+			format!(
+				"https://{}.s3.{}.amazonaws.com/{object_name}",
+				self.images_bucket_name, self.images_bucket_region
+			)
+			.as_str(),
 		)
 		.map_err(|e| ImageStoreServiceError::Other(e.into()))?)
 	}
