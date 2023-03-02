@@ -61,7 +61,7 @@ const isProjectVisible = (project: ProjectCardFieldsFragment) => {
   const hasBudget = project.budgets.length > 0;
   const hasInvitation = project.pendingInvitations.length > 0;
 
-  return (hasLeaders && hasRepos && hasBudget) || hasInvitation;
+  return hasRepos && hasBudget && (hasLeaders || hasInvitation);
 };
 
 export const buildGetProjectsQuery = (technologies: string[]) => gql`

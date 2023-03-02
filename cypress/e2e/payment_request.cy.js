@@ -53,7 +53,7 @@ describe("As a project lead, I", () => {
   });
 
   it("can request a payment and other project leads can see the update", function () {
-    cy.visit(`http://localhost:5173/profile`, {
+    cy.visit("http://localhost:5173/profile", {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.paymentRecipientToken);
       },
@@ -135,6 +135,7 @@ describe("As a project lead, I", () => {
     cy.createProject("Project without invite").withBudget(500);
     cy.createProject("Project with invite")
       .withBudget(500)
+      .withRepo()
       .then(projectId => cy.inviteProjectLeader(projectId, this.user.githubUserId).asAdmin());
 
     cy.visit("http://localhost:5173/", {
