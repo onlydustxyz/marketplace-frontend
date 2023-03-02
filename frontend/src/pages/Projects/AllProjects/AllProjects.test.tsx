@@ -297,6 +297,36 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
   projectSponsors: [],
 };
 
+const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
+  __typename: "Projects",
+  id: "project-with-no-leader-and-invite",
+  budgets: [{ id: "budget-1" }],
+  budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
+  projectDetails: {
+    projectId: "project-with-no-leader",
+    name: "No leader but invite",
+    shortDescription: "This project has no leader yet",
+    telegramLink: null,
+    logoUrl: null,
+  },
+  githubRepos: [
+    {
+      githubRepoId: 123456,
+      githubRepoDetails: {
+        id: 123456,
+        languages: [],
+        content: {
+          id: 123456,
+          contributors: [],
+        },
+      },
+    },
+  ],
+  pendingInvitations: [{ id: "invitation-1" }],
+  projectLeads: [],
+  projectSponsors: [],
+};
+
 const buildGraphQlMocks = (projectsQueryResult: { data: GetProjectsQueryResult["data"] }) => [
   {
     request: {
@@ -380,13 +410,21 @@ describe("All projects", () => {
       wrapper: MemoryRouterProviderFactory({
         mocks: [
           ...buildGraphQlMocks({
-            data: { projects: [projectWithNoBudget, projectWithNoLeader, projectWithNoRepo, projectInvalidWithInvite] },
+            data: {
+              projects: [
+                projectWithNoBudget,
+                projectWithNoLeader,
+                projectWithNoRepo,
+                projectInvalidWithInvite,
+                projectWithNoLeaderAndInvite,
+              ],
+            },
           }),
         ],
       }),
     });
     const allProjectCards = await screen.findAllByTestId("project-card");
     expect(allProjectCards).toHaveLength(1);
-    expect(screen.getByText("Nothing but invited"));
+    expect(screen.getByText("No leader but invite"));
   });
 });
