@@ -42,7 +42,7 @@ type Inputs = {
 };
 
 type PropsType = {
-  user?: UserInfo;
+  user?: UserInfo | null;
   setSaveButtonDisabled: (disabled: boolean) => void;
 };
 

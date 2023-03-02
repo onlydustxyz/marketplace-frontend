@@ -69,7 +69,7 @@ const mockUserWithEns: UserInfo = {
 
 const mockCompany: UserInfo = {
   __typename: "UserInfo",
-  userId: "test-company-id",
+  userId: "test-user-id",
   email: "james.bond@mi6.uk",
   identity: {
     Company: {
@@ -118,10 +118,11 @@ vi.mock("jwt-decode", () => ({
 const buildMockProfileQuery = (userResponse: UserInfo) => ({
   request: {
     query: GET_PROFILE_QUERY,
+    variables: { userId: userResponse.userId },
   },
   result: {
     data: {
-      userInfo: [userResponse],
+      userInfoByPk: userResponse,
     },
   },
 });
@@ -229,7 +230,7 @@ describe('"Profile" page for individual', () => {
     });
   });
 
-  it("should not navigate to projects screen when clicking Save profile with invalid Ethereum address", async () => {
+  it("should not save profile when clicking Save profile with invalid Ethereum address", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
     await userEvent.click(await screen.findByText("Save profile"));
     await waitFor(() => {
@@ -237,7 +238,7 @@ describe('"Profile" page for individual', () => {
     });
   });
 
-  it("should navigate to projects screen when clicking Save profile with valid Ethereum address", async () => {
+  it("should save profile when clicking Save profile with valid Ethereum address", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
 
     await userEvent.click(await screen.findByText("Crypto wire"));

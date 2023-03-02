@@ -3416,10 +3416,12 @@ export type UpdateProfileInfoMutationVariables = Exact<{
 
 export type UpdateProfileInfoMutation = { __typename?: 'mutation_root', updateProfileInfo: any };
 
-export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
+export type ProfileQueryVariables = Exact<{
+  userId: Scalars['uuid'];
+}>;
 
 
-export type ProfileQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', userId: any, identity: any | null, email: string | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean | null }> };
+export type ProfileQuery = { __typename?: 'query_root', userInfoByPk: { __typename?: 'UserInfo', userId: any, identity: any | null, email: string | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean | null } | null };
 
 export type GithubRepoContributorsFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } } | null };
 
@@ -4155,8 +4157,8 @@ export type UpdateProfileInfoMutationHookResult = ReturnType<typeof useUpdatePro
 export type UpdateProfileInfoMutationResult = Apollo.MutationResult<UpdateProfileInfoMutation>;
 export type UpdateProfileInfoMutationOptions = Apollo.BaseMutationOptions<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>;
 export const ProfileDocument = gql`
-    query Profile {
-  userInfo {
+    query Profile($userId: uuid!) {
+  userInfoByPk(userId: $userId) {
     userId
     identity
     email
@@ -4178,10 +4180,11 @@ export const ProfileDocument = gql`
  * @example
  * const { data, loading, error } = useProfileQuery({
  *   variables: {
+ *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useProfileQuery(baseOptions?: Apollo.QueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
+export function useProfileQuery(baseOptions: Apollo.QueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
       }

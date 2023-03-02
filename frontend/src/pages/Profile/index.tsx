@@ -15,10 +15,11 @@ import { useState } from "react";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 
 const Profile: React.FC = () => {
-  const { isLoggedIn, githubUserId } = useAuth();
+  const { isLoggedIn, githubUserId, user } = useAuth();
   const { T } = useIntl();
   const getProfileQuery = useHasuraQuery<ProfileQuery>(GET_PROFILE_QUERY, HasuraUserRole.RegisteredUser, {
-    skip: !isLoggedIn,
+    skip: !isLoggedIn || !user?.id,
+    variables: { userId: user?.id },
     fetchPolicy: "network-only",
   });
 
@@ -63,7 +64,7 @@ const Profile: React.FC = () => {
             <QueryWrapper query={getProfileQuery}>
               {!payoutSettingsValid && <InfoMissingBanner />}
               {getProfileQuery.data && (
-                <ProfileForm user={getProfileQuery.data.userInfo[0]} setSaveButtonDisabled={setSaveButtonDisabled} />
+                <ProfileForm user={getProfileQuery.data.userInfoByPk} setSaveButtonDisabled={setSaveButtonDisabled} />
               )}
             </QueryWrapper>
           )}
@@ -75,8 +76,8 @@ const Profile: React.FC = () => {
 
 export const GET_PROFILE_QUERY = gql`
   ${UserPayoutSettingsFragmentDoc}
-  query Profile {
-    userInfo {
+  query Profile($userId: uuid!) {
+    userInfoByPk(userId: $userId) {
       userId
       identity
       email
