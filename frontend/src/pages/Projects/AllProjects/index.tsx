@@ -8,6 +8,7 @@ import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { GetProjectsQuery, ProjectCardFieldsFragment } from "src/__generated/graphql";
 import { ProjectOwnershipType } from "..";
+import AllProjectsFallback from "./AllProjectsFallback";
 
 type Props = {
   technologies: string[];
@@ -38,7 +39,11 @@ export default function AllProjects({ technologies, projectOwnershipType }: Prop
   return (
     <QueryWrapper query={getProjectsQuery}>
       <div className="flex flex-col gap-5 grow">
-        {projects && projects.map(project => <ProjectCard key={project.id} {...project} />)}
+        {projects && projects.length > 0 ? (
+          projects.map(project => <ProjectCard key={project.id} {...project} />)
+        ) : (
+          <AllProjectsFallback />
+        )}
       </div>
     </QueryWrapper>
   );
