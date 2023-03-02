@@ -15,6 +15,7 @@ use crate::{
 			ProjectDetailsRepository, ProjectGithubRepoRepository, ProjectSponsorRepository,
 			UserInfoRepository,
 		},
+		simple_storage,
 		web3::ens,
 	},
 };
@@ -56,6 +57,7 @@ impl Context {
 		user_info_repository: UserInfoRepository,
 		github: Arc<github::Client>,
 		ens: Arc<ens::Client>,
+		simple_storage: Arc<simple_storage::Client>,
 	) -> Self {
 		Self {
 			caller_permissions,
@@ -75,6 +77,7 @@ impl Context {
 			create_project_usecase: application::project::create::Usecase::new(
 				event_publisher.to_owned(),
 				project_details_repository.clone(),
+				simple_storage,
 			),
 			update_budget_allocation_usecase: application::budget::allocate::Usecase::new(
 				event_publisher.to_owned(),

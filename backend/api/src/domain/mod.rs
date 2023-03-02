@@ -23,9 +23,9 @@ pub use specifications::MockGithubRepoExists;
 pub use specifications::{ArePayoutSettingsValid, GithubRepoExists};
 
 mod services;
+pub use services::{GithubService, GithubServiceError, ImageStoreService, ImageStoreServiceError};
 #[cfg(test)]
-pub use services::MockGithubService;
-pub use services::{GithubService, GithubServiceError};
+pub use services::{MockGithubService, MockImageStoreService};
 
 mod pending_project_leader_invitation;
 pub use pending_project_leader_invitation::{
