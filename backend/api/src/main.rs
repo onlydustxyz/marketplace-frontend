@@ -6,7 +6,7 @@ use api::{
 		database::{
 			GithubRepoRepository, PendingProjectLeaderInvitationsRepository,
 			ProjectDetailsRepository, ProjectGithubRepoRepository, ProjectSponsorRepository,
-			UserInfoRepository,
+			SponsorRepository, UserInfoRepository,
 		},
 		simple_storage,
 	},
@@ -40,6 +40,7 @@ async fn main() -> Result<()> {
 		ProjectDetailsRepository::new(database.clone()),
 		GithubRepoRepository::new(database.clone()),
 		ProjectGithubRepoRepository::new(database.clone()),
+		SponsorRepository::new(database.clone()),
 		ProjectSponsorRepository::new(database.clone()),
 		PendingProjectLeaderInvitationsRepository::new(database.clone()),
 		UserInfoRepository::new(database),

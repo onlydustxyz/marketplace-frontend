@@ -7,7 +7,7 @@ use reqwest::Url;
 use tracing::instrument;
 
 use crate::{
-	domain::{ImageStoreService, Sponsor, SponsorId},
+	domain::{ImageStoreService, SponsorId},
 	infrastructure::database::SponsorRepository,
 	presentation::http::dto::NonEmptyTrimmedString,
 };
@@ -44,7 +44,7 @@ impl Usecase {
 		}
 		if let Some(logo_url) = logo_url {
 			let stored_logo_url = self.image_store.store_image(&logo_url).await?.to_string();
-			sponsor = sponsor.with_logo_url(stored_logo_url.to_string());
+			sponsor = sponsor.with_logo_url(stored_logo_url);
 		}
 		if let Some(url) = url.explicit() {
 			sponsor = sponsor.with_url(url.map(|url| url.to_string()))
@@ -65,7 +65,7 @@ mod tests {
 	use rstest::{fixture, rstest};
 
 	use super::*;
-	use crate::domain::{ImageStoreServiceError, MockImageStoreService};
+	use crate::domain::{ImageStoreServiceError, MockImageStoreService, Sponsor};
 
 	#[fixture]
 	fn sponsor_id() -> SponsorId {
@@ -102,14 +102,13 @@ mod tests {
 			.returning(|_| Ok(Url::parse("http://img-store.com/1234.jpg").unwrap()));
 
 		let mut sponsor_repository = SponsorRepository::default();
-		let sponsor_id_clone = sponsor_id.clone();
 		sponsor_repository
 			.expect_find_by_id()
 			.with(eq(sponsor_id))
 			.once()
 			.returning(move |_| {
 				Ok(Sponsor::new(
-					sponsor_id_clone,
+					sponsor_id,
 					"old name".to_string(),
 					"http://sponsor.org/old-image.jpg".to_string(),
 					None,
@@ -144,14 +143,13 @@ mod tests {
 			.returning(|_| Err(ImageStoreServiceError::NotFound(anyhow!("404"))));
 
 		let mut sponsor_repository = SponsorRepository::default();
-		let sponsor_id_clone = sponsor_id.clone();
 		sponsor_repository
 			.expect_find_by_id()
 			.with(eq(sponsor_id))
 			.once()
 			.returning(move |_| {
 				Ok(Sponsor::new(
-					sponsor_id_clone,
+					sponsor_id,
 					"old name".to_string(),
 					"http://sponsor.org/old-image.jpg".to_string(),
 					None,

@@ -13,7 +13,7 @@ use crate::{
 		database::{
 			GithubRepoRepository, PendingProjectLeaderInvitationsRepository,
 			ProjectDetailsRepository, ProjectGithubRepoRepository, ProjectSponsorRepository,
-			UserInfoRepository,
+			SponsorRepository, UserInfoRepository,
 		},
 		simple_storage,
 		web3::ens,
@@ -31,6 +31,8 @@ pub struct Context {
 	pub update_project_usecase: application::project::update::Usecase,
 	pub link_github_repo_usecase: application::project::link_github_repo::Usecase,
 	pub unlink_github_repo_usecase: application::project::unlink_github_repo::Usecase,
+	pub create_sponsor_usecase: application::sponsor::create::Usecase,
+	pub update_sponsor_usecase: application::sponsor::update::Usecase,
 	pub add_sponsor_usecase: application::project::add_sponsor::Usecase,
 	pub remove_sponsor_usecase: application::project::remove_sponsor::Usecase,
 	pub remove_project_leader_usecase: application::project::remove_leader::Usecase,
@@ -52,6 +54,7 @@ impl Context {
 		project_details_repository: ProjectDetailsRepository,
 		github_repo_repository: GithubRepoRepository,
 		project_github_repo_repository: ProjectGithubRepoRepository,
+		sponsor_repository: SponsorRepository,
 		project_sponsor_repository: ProjectSponsorRepository,
 		pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 		user_info_repository: UserInfoRepository,
@@ -85,7 +88,7 @@ impl Context {
 			),
 			update_project_usecase: application::project::update::Usecase::new(
 				project_details_repository.clone(),
-				simple_storage,
+				simple_storage.clone(),
 			),
 			link_github_repo_usecase: application::project::link_github_repo::Usecase::new(
 				github_repo_repository.clone(),
@@ -96,6 +99,14 @@ impl Context {
 			unlink_github_repo_usecase: application::project::unlink_github_repo::Usecase::new(
 				github_repo_repository,
 				project_github_repo_repository,
+			),
+			create_sponsor_usecase: application::sponsor::create::Usecase::new(
+				sponsor_repository.clone(),
+				simple_storage.clone(),
+			),
+			update_sponsor_usecase: application::sponsor::update::Usecase::new(
+				sponsor_repository,
+				simple_storage,
 			),
 			add_sponsor_usecase: application::project::add_sponsor::Usecase::new(
 				project_sponsor_repository.clone(),
