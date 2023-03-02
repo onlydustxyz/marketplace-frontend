@@ -30,6 +30,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     {
       userId: "user-1",
       user: {
+        id: "user-1",
         displayName: "oscarwroche",
         avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
       },
@@ -37,6 +38,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     {
       userId: "user-2",
       user: {
+        id: "user-2",
         displayName: "AnthonyBuisset",
         avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
       },
@@ -44,6 +46,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     {
       userId: "user-3",
       user: {
+        id: "user-3",
         displayName: "ofux",
         avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
       },
@@ -51,6 +54,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     {
       userId: "user-4",
       user: {
+        id: "user-4",
         displayName: "tdelabro",
         avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
       },
@@ -58,6 +62,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     {
       userId: "user-5",
       user: {
+        id: "user-5",
         displayName: "BernardStanislas",
         avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
       },
@@ -65,6 +70,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     {
       userId: "user-6",
       user: {
+        id: "user-6",
         displayName: "gregcha",
         avatarUrl: "https://avatars.githubusercontent.com/u/8642470?v=4",
       },

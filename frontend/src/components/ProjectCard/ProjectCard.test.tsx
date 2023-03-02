@@ -58,6 +58,7 @@ const PROJECT: Project = {
     {
       userId: "user-1",
       user: {
+        id: "user-1",
         displayName: "oscarwroche",
         avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
       },

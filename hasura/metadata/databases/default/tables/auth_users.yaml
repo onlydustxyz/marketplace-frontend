@@ -153,6 +153,7 @@ select_permissions:
       columns:
         - avatar_url
         - display_name
+        - id
       filter: {}
   - role: registered_user_specific
     permission:
