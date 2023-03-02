@@ -4,12 +4,13 @@ import RoundedImage, { ImageSize, Rounding } from "../RoundedImage";
 import Tooltip, { TooltipPosition } from "../Tooltip";
 
 type Props = {
+  projectId: string;
   projectName: string;
   projectLeads: ProjectLeadFragment[];
   logoUrl: string;
 };
 
-const ProjectLeads = ({ leads }: { leads: ProjectLeadFragment[] }) => {
+const ProjectLeads = ({ leads, id }: { leads: ProjectLeadFragment[]; id: string }) => {
   const { T } = useIntl();
 
   return (
@@ -17,7 +18,7 @@ const ProjectLeads = ({ leads }: { leads: ProjectLeadFragment[] }) => {
       <div className="whitespace-nowrap truncate">
         {T("project.ledBy", { name: leads[0]?.displayName, count: leads.length })}
       </div>
-      <div className="flex flex-row -space-x-1" id="projectLeads">
+      <div className="flex flex-row -space-x-1" id={`projectLeads-${id}`}>
         {leads.map(lead => (
           <RoundedImage
             rounding={Rounding.Circle}
@@ -29,7 +30,7 @@ const ProjectLeads = ({ leads }: { leads: ProjectLeadFragment[] }) => {
         ))}
       </div>
       {leads.length > 1 && (
-        <Tooltip anchorId="projectLeads" position={TooltipPosition.Top}>
+        <Tooltip anchorId={`projectLeads-${id}`} position={TooltipPosition.Top}>
           {new Intl.ListFormat("en-US", { style: "narrow" }).format(leads.map(lead => lead.displayName))}
         </Tooltip>
       )}
@@ -37,13 +38,13 @@ const ProjectLeads = ({ leads }: { leads: ProjectLeadFragment[] }) => {
   );
 };
 
-export default function ProjectTitle({ projectName, projectLeads, logoUrl }: Props) {
+export default function ProjectTitle({ projectId, projectName, projectLeads, logoUrl }: Props) {
   return (
     <div className="flex gap-4 items-start">
       <RoundedImage src={logoUrl} alt="Project Logo" size={ImageSize.Xl} className="mt-1" />
       <div className="min-w-0">
         <div className="text-2xl font-medium font-belwe truncate">{projectName}</div>
-        <ProjectLeads leads={projectLeads} />
+        <ProjectLeads id={projectId} leads={projectLeads} />
       </div>
     </div>
   );
