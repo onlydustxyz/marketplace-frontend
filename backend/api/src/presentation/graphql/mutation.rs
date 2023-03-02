@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt, ProjectId, UserId};
 use iban::Iban;
-use juniper::{graphql_object, DefaultScalarValue};
+use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use rusty_money::Money;
 use url::Url;
 use uuid::Uuid;
@@ -12,7 +12,9 @@ use crate::{
 		user_info::{Email, Identity, Location, PayoutSettings},
 		PaymentReason,
 	},
-	presentation::http::dto::{EthereumIdentityInput, IdentityInput, PayoutSettingsInput},
+	presentation::http::dto::{
+		EthereumIdentityInput, IdentityInput, OptionalNonEmptyTrimmedString, PayoutSettingsInput,
+	},
 };
 
 pub struct Mutation;
@@ -110,7 +112,7 @@ impl Mutation {
 		name: String,
 		short_description: String,
 		long_description: String,
-		telegram_link: Option<String>,
+		telegram_link: Option<Url>,
 		logo_url: Option<Url>,
 		initial_budget: Option<i32>,
 	) -> Result<Uuid> {
@@ -134,19 +136,19 @@ impl Mutation {
 	pub async fn update_project(
 		context: &Context,
 		id: Uuid,
-		name: String,
-		short_description: String,
-		long_description: String,
-		telegram_link: Option<String>,
-		logo_url: Option<String>,
+		name: Option<String>,
+		short_description: Option<String>,
+		long_description: Option<String>,
+		telegram_link: Nullable<Url>,
+		logo_url: Nullable<Url>,
 	) -> Result<Uuid> {
 		context
 			.update_project_usecase
 			.update_details(
 				id.into(),
-				name.try_into()?,
-				short_description.try_into()?,
-				long_description.try_into()?,
+				OptionalNonEmptyTrimmedString::try_from(name)?.into(),
+				OptionalNonEmptyTrimmedString::try_from(short_description)?.into(),
+				OptionalNonEmptyTrimmedString::try_from(long_description)?.into(),
 				telegram_link,
 				logo_url,
 			)
@@ -314,6 +316,38 @@ impl Mutation {
 			.await?;
 
 		Ok(true)
+	}
+
+	pub async fn create_sponsor(
+		context: &Context,
+		name: String,
+		logo_url: Url,
+		url: Option<Url>,
+	) -> Result<Uuid> {
+		let sponsor_id =
+			context.create_sponsor_usecase.create(name.try_into()?, logo_url, url).await?;
+
+		Ok(sponsor_id.into())
+	}
+
+	pub async fn update_sponsor(
+		context: &Context,
+		sponsor_id: Uuid,
+		name: Option<String>,
+		logo_url: Option<Url>,
+		url: Nullable<Url>,
+	) -> Result<Uuid> {
+		let sponsor_id = context
+			.update_sponsor_usecase
+			.update(
+				sponsor_id.into(),
+				OptionalNonEmptyTrimmedString::try_from(name)?.into(),
+				logo_url,
+				url,
+			)
+			.await?;
+
+		Ok(sponsor_id.into())
 	}
 
 	pub fn add_sponsor_to_project(

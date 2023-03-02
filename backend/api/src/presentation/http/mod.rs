@@ -11,7 +11,7 @@ use crate::{
 		database::{
 			GithubRepoRepository, PendingProjectLeaderInvitationsRepository,
 			ProjectDetailsRepository, ProjectGithubRepoRepository, ProjectSponsorRepository,
-			UserInfoRepository,
+			SponsorRepository, UserInfoRepository,
 		},
 		simple_storage,
 	},
@@ -31,6 +31,7 @@ pub async fn serve(
 	project_details_repository: ProjectDetailsRepository,
 	github_repo_repository: GithubRepoRepository,
 	project_github_repo_repository: ProjectGithubRepoRepository,
+	sponsor_repository: SponsorRepository,
 	project_sponsor_repository: ProjectSponsorRepository,
 	pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 	user_info_repository: UserInfoRepository,
@@ -46,6 +47,7 @@ pub async fn serve(
 		.manage(project_details_repository)
 		.manage(github_repo_repository)
 		.manage(project_github_repo_repository)
+		.manage(sponsor_repository)
 		.manage(project_sponsor_repository)
 		.manage(pending_project_leader_invitations_repository)
 		.manage(user_info_repository)

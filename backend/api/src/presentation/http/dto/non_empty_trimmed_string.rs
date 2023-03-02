@@ -42,6 +42,25 @@ impl From<NonEmptyTrimmedString> for String {
 	}
 }
 
+pub struct OptionalNonEmptyTrimmedString(Option<NonEmptyTrimmedString>);
+
+impl TryFrom<Option<String>> for OptionalNonEmptyTrimmedString {
+	type Error = DomainError;
+
+	fn try_from(value: Option<String>) -> Result<Self, Self::Error> {
+		Ok(match value {
+			Some(value) => Self(Some(value.try_into()?)),
+			None => Self(None),
+		})
+	}
+}
+
+impl From<OptionalNonEmptyTrimmedString> for Option<NonEmptyTrimmedString> {
+	fn from(value: OptionalNonEmptyTrimmedString) -> Self {
+		value.0
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	use assert_matches::assert_matches;

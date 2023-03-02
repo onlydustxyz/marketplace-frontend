@@ -9,4 +9,5 @@ use crate::domain::ProjectDetails;
 #[entity(ProjectDetails)]
 #[table(dsl::project_details)]
 #[id(dsl::project_id)]
+#[mock]
 pub struct Repository(Arc<Client>);

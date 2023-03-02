@@ -1,6 +1,7 @@
 use ::domain::ProjectId;
 use ::infrastructure::database::schema::*;
 use derive_getters::{Dissolve, Getters};
+use derive_setters::Setters;
 use serde::{Deserialize, Serialize};
 
 #[derive(
@@ -8,6 +9,7 @@ use serde::{Deserialize, Serialize};
 	Debug,
 	Clone,
 	Getters,
+	Setters,
 	Dissolve,
 	Insertable,
 	Serialize,
@@ -15,9 +17,11 @@ use serde::{Deserialize, Serialize};
 	Queryable,
 	AsChangeset,
 	Identifiable,
+	PartialEq,
 )]
 #[table_name = "project_details"]
 #[primary_key(project_id)]
+#[setters(prefix = "with_")]
 pub struct ProjectDetails {
 	#[diesel(deserialize_as = "uuid::Uuid")]
 	project_id: ProjectId,

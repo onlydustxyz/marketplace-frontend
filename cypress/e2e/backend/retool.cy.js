@@ -121,7 +121,7 @@ describe("As an admin, on retool, I", () => {
     cy.callCreateProjectMutation({ projectName: "" }).asAdmin().errors();
   });
 
-  it("can update project details", function () {
+  it("can partially update project details", function () {
     cy.createGithubUser(12345).then(user =>
       cy.createProject("some name").then(projectId => {
         cy.updateProject(projectId, "new name", "https://t.me/bar")
@@ -135,6 +135,7 @@ describe("As an admin, on retool, I", () => {
                             projectDetails {
                                 name
                                 telegramLink
+                                shortDescription
                             }
                         }
                     }`,
@@ -144,10 +145,39 @@ describe("As an admin, on retool, I", () => {
               .should("deep.equal", {
                 name: "new name",
                 telegramLink: "https://t.me/bar",
+                shortDescription: "My project description",
               })
           );
       })
     );
+  });
+
+  it("can create and partially update sponsor", function () {
+    const sponsorName1 = Math.random() + " sponsor 1"; // 😱😱😱😱😱😱 mandatory because we check unicity of sponsor names and DB is not reset between tests!
+    const sponsorName2 = Math.random() + " sponsor 2"; // 😱😱😱😱😱😱 mandatory because we check unicity of sponsor names and DB is not reset between tests!
+
+    cy.createSponsor(
+      sponsorName1,
+      "https://www.visit.alsace/wp-content/uploads/2019/05/thio-pate-en-croute-karine-faby-1600x900.jpg",
+      "https://croute.fr"
+    ).then(sponsorId => {
+      cy.updateSponsor(sponsorId, sponsorName2).then(() => {
+        cy.graphql({
+          query: `{
+                sponsorsByPk(id: "${sponsorId}") {
+                    name
+                    url
+                }
+            }`,
+        })
+          .asAnonymous()
+          .data("sponsorsByPk")
+          .should("deep.equal", {
+            name: sponsorName2,
+            url: "https://croute.fr/",
+          });
+      });
+    });
   });
 
   it("can link and unlink a github repository with a project", function () {
