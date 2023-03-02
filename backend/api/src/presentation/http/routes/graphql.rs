@@ -14,6 +14,7 @@ use crate::{
 			ProjectDetailsRepository, ProjectGithubRepoRepository, ProjectSponsorRepository,
 			UserInfoRepository,
 		},
+		simple_storage,
 		web3::ens,
 	},
 	presentation::graphql::{Context, Schema},
@@ -54,6 +55,7 @@ pub async fn get_graphql_handler(
 	user_info_repository: &State<UserInfoRepository>,
 	github: &State<Arc<github::Client>>,
 	ens: &State<Arc<ens::Client>>,
+	simple_storage: &State<Arc<simple_storage::Client>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		role.into(),
@@ -68,6 +70,7 @@ pub async fn get_graphql_handler(
 		(*user_info_repository).clone(),
 		(*github).clone(),
 		(*ens).clone(),
+		(*simple_storage).clone(),
 	);
 	request.execute(schema, &context).await
 }
@@ -93,6 +96,7 @@ pub async fn post_graphql_handler(
 	user_info_repository: &State<UserInfoRepository>,
 	github: &State<Arc<github::Client>>,
 	ens: &State<Arc<ens::Client>>,
+	simple_storage: &State<Arc<simple_storage::Client>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
 		role.into(),
@@ -107,6 +111,7 @@ pub async fn post_graphql_handler(
 		(*user_info_repository).clone(),
 		(*github).clone(),
 		(*ens).clone(),
+		(*simple_storage).clone(),
 	);
 	request.execute(schema, &context).await
 }

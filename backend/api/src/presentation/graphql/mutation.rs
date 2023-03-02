@@ -3,6 +3,7 @@ use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt, ProjectId, Use
 use iban::Iban;
 use juniper::{graphql_object, DefaultScalarValue};
 use rusty_money::Money;
+use url::Url;
 use uuid::Uuid;
 
 use super::{Context, Error, Result};
@@ -110,7 +111,7 @@ impl Mutation {
 		short_description: String,
 		long_description: String,
 		telegram_link: Option<String>,
-		logo_url: Option<String>,
+		logo_url: Option<Url>,
 		initial_budget: Option<i32>,
 	) -> Result<Uuid> {
 		let project_id = context

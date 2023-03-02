@@ -7,9 +7,13 @@ use infrastructure::{amqp::UniqueMessage, github, web3::ens};
 use presentation::http;
 
 use crate::{
-	infrastructure::database::{
-		GithubRepoRepository, PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
-		ProjectGithubRepoRepository, ProjectSponsorRepository, UserInfoRepository,
+	infrastructure::{
+		database::{
+			GithubRepoRepository, PendingProjectLeaderInvitationsRepository,
+			ProjectDetailsRepository, ProjectGithubRepoRepository, ProjectSponsorRepository,
+			UserInfoRepository,
+		},
+		simple_storage,
 	},
 	presentation::graphql,
 };
@@ -32,6 +36,7 @@ pub async fn serve(
 	user_info_repository: UserInfoRepository,
 	github: Arc<github::Client>,
 	ens: Arc<ens::Client>,
+	simple_storage: Arc<simple_storage::Client>,
 ) -> Result<()> {
 	let _ = rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config)
@@ -46,6 +51,7 @@ pub async fn serve(
 		.manage(user_info_repository)
 		.manage(github)
 		.manage(ens)
+		.manage(simple_storage)
 		.mount("/", routes![http::routes::health_check,])
 		.mount(
 			"/",

@@ -11,7 +11,7 @@ Cypress.Commands.add(
     initialBudget,
   }) => {
     return {
-      query: `mutation ($projectName: String!, $telegramLink: String!, $logoUrl: String!, $shortDescription: String!, $longDescription: String!, $initialBudget: Int) {
+      query: `mutation ($projectName: String!, $telegramLink: String!, $logoUrl: Url!, $shortDescription: String!, $longDescription: String!, $initialBudget: Int) {
                 createProject(
                     name: $projectName,
                     telegramLink: $telegramLink,
