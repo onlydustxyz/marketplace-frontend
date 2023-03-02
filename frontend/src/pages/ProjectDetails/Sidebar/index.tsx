@@ -4,7 +4,7 @@ import View from "./View";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import {
   GetProjectsForSidebarQuery,
-  GithubRepoContributorsFieldsFragmentDoc,
+  ProjectContributorsFragmentDoc,
   SidebarProjectDetailsFragment,
 } from "src/__generated/graphql";
 import { gql } from "@apollo/client";
@@ -13,7 +13,6 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { sortBy } from "lodash";
 import { ProjectRoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";
-import { getDeduplicatedAggregatedContributors } from "../Contributors";
 import isDefined from "src/utils/isDefined";
 
 export type ProjectDetailsTab = {
@@ -74,16 +73,16 @@ export default function ProjectsSidebar({ currentProject }: Props) {
 }
 
 const projectFromQuery = (project: SidebarProjectDetailsFragment) => ({
-  id: project.id,
+  ...project,
   name: project.projectDetails?.name || "",
   logoUrl: project.projectDetails?.logoUrl || onlyDustLogo,
-  nbContributors: getDeduplicatedAggregatedContributors(project.githubRepos).length,
   withInvitation: project.pendingInvitations?.at(0)?.id,
 });
 
 export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
-  ${GithubRepoContributorsFieldsFragmentDoc}
+  ${ProjectContributorsFragmentDoc}
   fragment SidebarProjectDetails on Projects {
+    ...ProjectContributors
     id
     projectDetails {
       projectId
@@ -92,9 +91,6 @@ export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
     }
     pendingInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
       id
-    }
-    githubRepos {
-      ...GithubRepoContributorsFields
     }
   }
 
