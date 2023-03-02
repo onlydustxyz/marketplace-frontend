@@ -112,7 +112,7 @@ impl Mutation {
 		name: String,
 		short_description: String,
 		long_description: String,
-		telegram_link: Option<String>,
+		telegram_link: Option<Url>,
 		logo_url: Option<Url>,
 	) -> Result<Uuid> {
 		let project_id = context

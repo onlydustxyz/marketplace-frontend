@@ -38,7 +38,7 @@ impl Usecase {
 		name: NonEmptyTrimmedString,
 		short_description: NonEmptyTrimmedString,
 		long_description: NonEmptyTrimmedString,
-		telegram_link: Option<String>,
+		telegram_link: Option<Url>,
 		logo_url: Option<Url>,
 	) -> Result<ProjectId, DomainError> {
 		let project_id = ProjectId::new();
@@ -59,7 +59,7 @@ impl Usecase {
 		self.project_details_repository.upsert(&ProjectDetails::new(
 			project_id,
 			name.into(),
-			telegram_link,
+			telegram_link.map(|url| url.to_string()),
 			stored_logo_url,
 			short_description.into(),
 			long_description.into(),
