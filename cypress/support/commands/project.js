@@ -2,28 +2,31 @@ import { WAIT_SHORT, WAIT_LONG } from "./common";
 
 Cypress.Commands.add(
   "callCreateProjectMutation",
-  (
+  ({
     projectName = "My Project",
     telegramLink = "https://t.me/foo",
     logoUrl = "https://avatars.githubusercontent.com/u/98735558?v=4",
     shortDescription = "My project description",
-    longDescription = "This project certainly aim to do stuff"
-  ) => {
+    longDescription = "This project certainly aim to do stuff",
+    initialBudget,
+  }) => {
     return {
-      query: `mutation($projectName: String!, $telegramLink: String!, $logoUrl: String!, $shortDescription: String!, $longDescription: String!) {
+      query: `mutation ($projectName: String!, $telegramLink: String!, $logoUrl: String!, $shortDescription: String!, $longDescription: String!, $initialBudget: Int) {
                 createProject(
                     name: $projectName,
                     telegramLink: $telegramLink,
                     logoUrl: $logoUrl,
                     shortDescription: $shortDescription,
                     longDescription: $longDescription,
+                    initialBudget: $initialBudget,
                 )}`,
       variables: {
         projectName,
         telegramLink,
         logoUrl,
-        shortDescription: shortDescription,
-        longDescription: longDescription,
+        shortDescription,
+        longDescription,
+        initialBudget,
       },
       wait: WAIT_LONG,
     };
@@ -39,7 +42,7 @@ Cypress.Commands.add(
     shortDescription = "My project description",
     longDescription = "This project certainly aim to do stuff"
   ) => {
-    cy.callCreateProjectMutation(projectName, telegramLink, logoUrl, shortDescription, longDescription)
+    cy.callCreateProjectMutation({ projectName, telegramLink, logoUrl, shortDescription, longDescription })
       .asAdmin()
       .data("createProject");
   }
