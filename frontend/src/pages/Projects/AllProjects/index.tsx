@@ -6,7 +6,7 @@ import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
-import { isVisible } from "src/utils/project";
+import { isProjectVisible } from "src/utils/project";
 import { GetProjectsQuery } from "src/__generated/graphql";
 import { ProjectOwnershipType } from "..";
 import AllProjectsFallback from "./AllProjectsFallback";
@@ -17,7 +17,7 @@ type Props = {
 };
 
 export default function AllProjects({ technologies, projectOwnershipType }: Props) {
-  const { ledProjectIds, githubUserId } = useAuth();
+  const { ledProjectIds, githubUserId, isLoggedIn } = useAuth();
 
   const getProjectsQuery = useHasuraQuery<GetProjectsQuery>(
     buildGetProjectsQuery(technologies),
@@ -29,13 +29,13 @@ export default function AllProjects({ technologies, projectOwnershipType }: Prop
 
   const projects = useMemo(() => {
     let projects = getProjectsQuery.data?.projects;
-    if (projects && projectOwnershipType === ProjectOwnershipType.Mine) {
+    if (projects && isLoggedIn && projectOwnershipType === ProjectOwnershipType.Mine) {
       projects = projects.filter(
         project => ledProjectIds.includes(project.id) || project.pendingInvitations.length > 0
       );
     }
-    return sortBy(projects?.filter(isVisible), p => !p.pendingInvitations.length);
-  }, [getProjectsQuery.data?.projects, ledProjectIds, projectOwnershipType]);
+    return sortBy(projects?.filter(isProjectVisible), p => !p.pendingInvitations.length);
+  }, [getProjectsQuery.data?.projects, ledProjectIds, projectOwnershipType, isLoggedIn]);
 
   return (
     <QueryWrapper query={getProjectsQuery}>

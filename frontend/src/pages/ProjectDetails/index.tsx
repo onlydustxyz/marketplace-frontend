@@ -10,7 +10,7 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { SessionMethod, useSessionDispatch, useSession } from "src/hooks/useSession";
 import View from "./View";
 import { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
-import { isVisible } from "src/utils/project";
+import { isProjectVisible } from "src/utils/project";
 import { RoutePaths } from "src/App";
 
 type ProjectDetailsParams = {
@@ -65,7 +65,7 @@ const ProjectDetails: React.FC = () => {
   return (
     <QueryWrapper query={getProjectQuery}>
       {project !== undefined &&
-        (isVisible(project) ? (
+        (isProjectVisible(project) ? (
           <View
             currentProject={projectFromQuery(project)}
             onInvitationAccepted={(invitationId: string) => {

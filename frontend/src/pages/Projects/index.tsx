@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLocalStorage } from "react-use";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { useAuth } from "src/hooks/useAuth";
 import { ArrayElement } from "src/types";
@@ -14,12 +14,19 @@ export enum ProjectOwnershipType {
   Mine = "Mine",
 }
 
+export interface ProjectFilter {
+  ownershipType: ProjectOwnershipType;
+  technologies: string[];
+}
+
 export default function Projects() {
   const { T } = useT();
   const { ledProjectIds } = useAuth();
 
-  const [technologies, setTechnologies] = useState<string[]>([]);
-  const [projectOwnershipType, setProjectOwnershipType] = useState(ProjectOwnershipType.All);
+  const [projectFilter, setProjectFilter] = useLocalStorage<ProjectFilter>("PROJECT_FILTER", {
+    ownershipType: ProjectOwnershipType.All,
+    technologies: [],
+  });
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
@@ -27,14 +34,17 @@ export default function Projects() {
         <div className="hidden xl:block text-5xl font-belwe">{T("navbar.projects")}</div>
         <div className="flex xl:mt-8 gap-6 h-full">
           <div className="hidden xl:block basis-80 shrink-0">
-            <FilterPanel
-              onTechnologiesChange={setTechnologies}
-              projectOwnershipType={projectOwnershipType}
-              setProjectOwnershipType={setProjectOwnershipType}
-              isProjectLeader={!!ledProjectIds.length}
-            />
+            {projectFilter && (
+              <FilterPanel
+                projectFilter={projectFilter}
+                setProjectFilter={setProjectFilter}
+                isProjectLeader={!!ledProjectIds.length}
+              />
+            )}
           </div>
-          <AllProjects technologies={technologies} projectOwnershipType={projectOwnershipType} />
+          {projectFilter && projectFilter.technologies && projectFilter.ownershipType && (
+            <AllProjects technologies={projectFilter.technologies} projectOwnershipType={projectFilter.ownershipType} />
+          )}
         </div>
       </div>
     </Background>
