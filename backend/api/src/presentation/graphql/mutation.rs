@@ -111,6 +111,7 @@ impl Mutation {
 		long_description: String,
 		telegram_link: Option<String>,
 		logo_url: Option<String>,
+		initial_budget: Option<i32>,
 	) -> Result<Uuid> {
 		let project_id = context
 			.create_project_usecase
@@ -120,6 +121,9 @@ impl Mutation {
 				long_description.try_into()?,
 				telegram_link,
 				logo_url,
+				initial_budget.map(|initial_budget| {
+					Money::from_major(initial_budget as i64, rusty_money::crypto::USDC).into()
+				}),
 			)
 			.await?;
 

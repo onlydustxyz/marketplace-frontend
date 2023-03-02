@@ -8,9 +8,10 @@ describe("As an admin, on retool, I", () => {
     const REPO = this.repos.A;
 
     cy.createGithubUser(12345).then(user => {
-      cy.createProject(projectName)
+      cy.callCreateProjectMutation({ projectName, initialBudget: 500 })
+        .asAdmin()
+        .data("createProject")
         .withLeader(user)
-        .withBudget(500)
         .withRepo(REPO.id)
         .then(projectId => {
           cy.graphql({
@@ -83,6 +84,21 @@ describe("As an admin, on retool, I", () => {
 
           cy.graphql({
             query: `{
+                    projectsByPk(id: "${projectId}") {
+                        budgets {
+                            initialAmount
+                          }
+                    }
+                }`,
+          })
+            .asAdmin()
+            .data("projectsByPk.budgets")
+            .its(0)
+            .its("initialAmount")
+            .should("equal", 500);
+
+          cy.graphql({
+            query: `{
                 projects(where: {id: {_eq: "${projectId}"}}) {
                     projectDetails {
                         name
@@ -102,7 +118,7 @@ describe("As an admin, on retool, I", () => {
   });
 
   it("cannot create a project with an empty name", function () {
-    cy.callCreateProjectMutation("").asAdmin().errors();
+    cy.callCreateProjectMutation({ projectName: "" }).asAdmin().errors();
   });
 
   it("can update project details", function () {
