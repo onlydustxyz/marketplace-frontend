@@ -208,10 +208,11 @@
           "one": "1 contributor",
           "zero": "No contributor"
         },
-        "overview": "Overview",
-        "newInvite": "NEW"
+        "newInvite": "NEW",
+        "overview": "Overview"
       },
       "tableFallback": {
+        "disabledButtonTooltip": "There's no more budget for this project, please contact OnlyDust to ask for a refill.",
         "newPayment": "New payment",
         "noPayments": "No payments so far",
         "send": "Send your first one!"
@@ -228,16 +229,16 @@
       "view": "View invite"
     }
   },
+  "projectLeadInvitation": {
+    "accept": "Accept invite",
+    "prompt": "You’ve been promoted to Project Lead on __projectName__"
+  },
   "projects": {
     "fallback": {
       "clearFiltersButton": "Clear filters",
       "subTitle": "Try removing a filter",
       "title": "Nothing to show"
     }
-  },
-  "projectLeadInvitation": {
-    "accept": "Accept invite",
-    "prompt": "You’ve been promoted to Project Lead on __projectName__"
   },
   "seniority": {
     "levels": {
