@@ -225,16 +225,14 @@ const graphQlMocks = [
     },
     result: {
       data: {
-        userInfo: [
-          {
-            __typename: "UserInfo",
-            userId: TEST_USER_ID,
-            email: TEST_USER_EMAIL,
-            identity: null,
-            location: null,
-            payoutSettings: null,
-          },
-        ],
+        userInfoByPk: {
+          __typename: "UserInfo",
+          userId: TEST_USER_ID,
+          email: TEST_USER_EMAIL,
+          identity: null,
+          location: null,
+          payoutSettings: null,
+        },
       } as ProfileQueryResult["data"],
     },
   },

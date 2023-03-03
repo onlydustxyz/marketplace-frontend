@@ -1486,6 +1486,7 @@ export type UserPaymentRequestsAggregateArgs = {
 /** columns and relationships of "user_info" */
 export type UserInfo = {
   __typename?: 'UserInfo';
+  arePayoutSettingsValid: Maybe<Scalars['Boolean']>;
   email: Maybe<Scalars['String']>;
   identity: Maybe<Scalars['jsonb']>;
   location: Maybe<Scalars['jsonb']>;
@@ -1523,6 +1524,7 @@ export type UserInfoBoolExp = {
   _and: InputMaybe<Array<UserInfoBoolExp>>;
   _not: InputMaybe<UserInfoBoolExp>;
   _or: InputMaybe<Array<UserInfoBoolExp>>;
+  arePayoutSettingsValid: InputMaybe<BooleanComparisonExp>;
   email: InputMaybe<StringComparisonExp>;
   identity: InputMaybe<JsonbComparisonExp>;
   location: InputMaybe<JsonbComparisonExp>;
@@ -1584,6 +1586,7 @@ export type UserInfoOnConflict = {
 
 /** Ordering options when selecting data from "user_info". */
 export type UserInfoOrderBy = {
+  arePayoutSettingsValid: InputMaybe<OrderBy>;
   email: InputMaybe<OrderBy>;
   identity: InputMaybe<OrderBy>;
   location: InputMaybe<OrderBy>;
@@ -1605,6 +1608,8 @@ export type UserInfoPrependInput = {
 
 /** select columns of table "user_info" */
 export enum UserInfoSelectColumn {
+  /** column name */
+  ArePayoutSettingsValid = 'arePayoutSettingsValid',
   /** column name */
   Email = 'email',
   /** column name */
@@ -3093,6 +3098,7 @@ export type User_Info_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type User_Info_StreamCursorValueInput = {
+  arePayoutSettingsValid: InputMaybe<Scalars['Boolean']>;
   email: InputMaybe<Scalars['String']>;
   identity: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['jsonb']>;
@@ -3370,12 +3376,14 @@ export type RequestPaymentMutationVariables = Exact<{
 
 export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
 
+export type UserPayoutSettingsFragment = { __typename?: 'UserInfo', payoutSettings: any | null, arePayoutSettingsValid: boolean | null };
+
 export type GetUserPayoutSettingsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
 
 
-export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', authGithubUsers: Array<{ __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', payoutSettings: any | null } | null } | null }> };
+export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', authGithubUsers: Array<{ __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', payoutSettings: any | null, arePayoutSettingsValid: boolean | null } | null } | null }> };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -3408,10 +3416,12 @@ export type UpdateProfileInfoMutationVariables = Exact<{
 
 export type UpdateProfileInfoMutation = { __typename?: 'mutation_root', updateProfileInfo: any };
 
-export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
+export type ProfileQueryVariables = Exact<{
+  userId: Scalars['uuid'];
+}>;
 
 
-export type ProfileQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', userId: any, identity: any | null, email: string | null, location: any | null, payoutSettings: any | null }> };
+export type ProfileQuery = { __typename?: 'query_root', userInfoByPk: { __typename?: 'UserInfo', userId: any, identity: any | null, email: string | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean | null } | null };
 
 export type GithubRepoContributorsFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } } | null };
 
@@ -3607,6 +3617,12 @@ export const PaymentRequestFragmentDoc = gql`
     currencyCode
   }
   requestedAt
+}
+    `;
+export const UserPayoutSettingsFragmentDoc = gql`
+    fragment UserPayoutSettings on UserInfo {
+  payoutSettings
+  arePayoutSettingsValid
 }
     `;
 export const GithubRepoStaticDetailsFragmentDoc = gql`
@@ -3927,12 +3943,12 @@ export const GetUserPayoutSettingsDocument = gql`
   authGithubUsers(where: {githubUserId: {_eq: $githubUserId}}) {
     user {
       userInfo {
-        payoutSettings
+        ...UserPayoutSettings
       }
     }
   }
 }
-    `;
+    ${UserPayoutSettingsFragmentDoc}`;
 
 /**
  * __useGetUserPayoutSettingsQuery__
@@ -4141,16 +4157,16 @@ export type UpdateProfileInfoMutationHookResult = ReturnType<typeof useUpdatePro
 export type UpdateProfileInfoMutationResult = Apollo.MutationResult<UpdateProfileInfoMutation>;
 export type UpdateProfileInfoMutationOptions = Apollo.BaseMutationOptions<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>;
 export const ProfileDocument = gql`
-    query Profile {
-  userInfo {
+    query Profile($userId: uuid!) {
+  userInfoByPk(userId: $userId) {
     userId
     identity
     email
     location
-    payoutSettings
+    ...UserPayoutSettings
   }
 }
-    `;
+    ${UserPayoutSettingsFragmentDoc}`;
 
 /**
  * __useProfileQuery__
@@ -4164,10 +4180,11 @@ export const ProfileDocument = gql`
  * @example
  * const { data, loading, error } = useProfileQuery({
  *   variables: {
+ *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useProfileQuery(baseOptions?: Apollo.QueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
+export function useProfileQuery(baseOptions: Apollo.QueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
       }

@@ -4,7 +4,7 @@ import { useAuth } from "src/hooks/useAuth";
 import { HasuraUserRole } from "src/types";
 import QueryWrapper from "src/components/QueryWrapper";
 import ProfileForm from "./components/ProfileForm";
-import { ProfileQuery } from "src/__generated/graphql";
+import { ProfileQuery, UserPayoutSettingsFragmentDoc } from "src/__generated/graphql";
 import InfoMissingBanner from "src/components/InfoMissingBanner";
 import { useIntl } from "src/hooks/useIntl";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -15,10 +15,11 @@ import { useState } from "react";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 
 const Profile: React.FC = () => {
-  const { isLoggedIn, githubUserId } = useAuth();
+  const { isLoggedIn, githubUserId, user } = useAuth();
   const { T } = useIntl();
   const getProfileQuery = useHasuraQuery<ProfileQuery>(GET_PROFILE_QUERY, HasuraUserRole.RegisteredUser, {
-    skip: !isLoggedIn,
+    skip: !isLoggedIn || !user?.id,
+    variables: { userId: user?.id },
     fetchPolicy: "network-only",
   });
 
@@ -63,7 +64,7 @@ const Profile: React.FC = () => {
             <QueryWrapper query={getProfileQuery}>
               {!payoutSettingsValid && <InfoMissingBanner />}
               {getProfileQuery.data && (
-                <ProfileForm user={getProfileQuery.data.userInfo[0]} setSaveButtonDisabled={setSaveButtonDisabled} />
+                <ProfileForm user={getProfileQuery.data.userInfoByPk} setSaveButtonDisabled={setSaveButtonDisabled} />
               )}
             </QueryWrapper>
           )}
@@ -74,13 +75,14 @@ const Profile: React.FC = () => {
 };
 
 export const GET_PROFILE_QUERY = gql`
-  query Profile {
-    userInfo {
+  ${UserPayoutSettingsFragmentDoc}
+  query Profile($userId: uuid!) {
+    userInfoByPk(userId: $userId) {
       userId
       identity
       email
       location
-      payoutSettings
+      ...UserPayoutSettings
     }
   }
 `;

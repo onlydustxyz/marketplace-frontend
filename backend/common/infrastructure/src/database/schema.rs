@@ -121,6 +121,7 @@ diesel::table! {
         location -> Nullable<Jsonb>,
         email -> Nullable<Text>,
         payout_settings -> Nullable<Jsonb>,
+        are_payout_settings_valid -> Bool,
     }
 }
 

@@ -24,6 +24,7 @@ const VALID_ETHEREUM_ADDRESS = "0xebec795c9c8bbd61ffc14a6662944748f299cacf";
 const VALID_ENS = "vitalik.eth";
 
 const mockUser: UserInfo = {
+  __typename: "UserInfo",
   userId: "test-user-id",
   email: "test@user.email",
   identity: {
@@ -41,9 +42,11 @@ const mockUser: UserInfo = {
   payoutSettings: {
     EthTransfer: { Address: INVALID_ETHEREUM_ADDRESS },
   },
+  arePayoutSettingsValid: true,
 };
 
 const mockUserWithEns: UserInfo = {
+  __typename: "UserInfo",
   userId: "test-user-id",
   email: "test@user.email",
   identity: {
@@ -61,10 +64,12 @@ const mockUserWithEns: UserInfo = {
   payoutSettings: {
     EthTransfer: { Name: VALID_ENS },
   },
+  arePayoutSettingsValid: true,
 };
 
 const mockCompany: UserInfo = {
-  userId: "test-company-id",
+  __typename: "UserInfo",
+  userId: "test-user-id",
   email: "james.bond@mi6.uk",
   identity: {
     Company: {
@@ -84,6 +89,7 @@ const mockCompany: UserInfo = {
       IBAN: "FR7610107001011234567890129",
     },
   },
+  arePayoutSettingsValid: true,
 };
 
 const accessToken = (userId: string) => ({
@@ -112,10 +118,11 @@ vi.mock("jwt-decode", () => ({
 const buildMockProfileQuery = (userResponse: UserInfo) => ({
   request: {
     query: GET_PROFILE_QUERY,
+    variables: { userId: userResponse.userId },
   },
   result: {
     data: {
-      userInfo: [userResponse],
+      userInfoByPk: userResponse,
     },
   },
 });
@@ -223,7 +230,7 @@ describe('"Profile" page for individual', () => {
     });
   });
 
-  it("should not navigate to projects screen when clicking Save profile with invalid Ethereum address", async () => {
+  it("should not save profile when clicking Save profile with invalid Ethereum address", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
     await userEvent.click(await screen.findByText("Save profile"));
     await waitFor(() => {
@@ -231,7 +238,7 @@ describe('"Profile" page for individual', () => {
     });
   });
 
-  it("should navigate to projects screen when clicking Save profile with valid Ethereum address", async () => {
+  it("should save profile when clicking Save profile with valid Ethereum address", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
 
     await userEvent.click(await screen.findByText("Crypto wire"));
