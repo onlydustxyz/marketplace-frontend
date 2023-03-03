@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import onlyDustLogo from "assets/img/onlydust-logo.png";
+import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { generatePath, Link } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import classNames from "classnames";
