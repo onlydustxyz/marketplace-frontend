@@ -2,15 +2,17 @@ import classNames from "classnames";
 import { PropsWithChildren } from "react";
 
 export enum ButtonSize {
-  Small = "small",
-  Medium = "medium",
-  LargeLowHeight = "large-low-height",
-  Large = "large",
+  Xs = "xs",
+  Sm = "sm",
+  Md = "md",
+  LgLowHeight = "lg-low-height",
+  Lg = "lg",
 }
 
 export enum ButtonType {
   Primary = "primary",
   Secondary = "secondary",
+  Ternary = "ternary",
 }
 
 export enum Width {
@@ -28,7 +30,7 @@ type ButtonProps = {
 } & PropsWithChildren;
 
 export default function Button({
-  size = ButtonSize.Large,
+  size = ButtonSize.Lg,
   type = ButtonType.Primary,
   width = Width.Fit,
   disabled = false,
@@ -39,10 +41,10 @@ export default function Button({
   return (
     <button
       className={classNames(
-        "flex flex-row justify-center items-center gap-2",
-        "rounded-xl font-walsheim drop-shadow-bottom-sm font-medium",
+        "flex flex-row justify-center items-center",
+        "font-walsheim drop-shadow-bottom-sm font-medium",
         {
-          "curost-pointer": !disabled,
+          "cursor-pointer": !disabled,
           "cursor-not-allowed": disabled,
         },
         {
@@ -57,10 +59,11 @@ export default function Button({
           "w-fit": width === Width.Fit,
         },
         {
-          "px-6 py-4 h-14": size === ButtonSize.Large,
-          "px-4 py-1.5 h-12": size === ButtonSize.LargeLowHeight,
-          "text-sm px-4 py-1.5 h-14": size === ButtonSize.Medium,
-          "text-sm px-4 py-2 h-8": size === ButtonSize.Small,
+          "px-6 py-4 h-14 gap-3 rounded-xl": size === ButtonSize.Lg,
+          "px-4 py-1.5 h-12 gap-3 rounded-xl": size === ButtonSize.LgLowHeight,
+          "text-sm px-4 py-1.5 h-14 gap-2 rounded-xl": size === ButtonSize.Md,
+          "text-sm px-4 py-2 h-8 gap-2 rounded-large": size === ButtonSize.Sm,
+          "text-xs px-2 py-1 h-6 gap-1 rounded-lg": size === ButtonSize.Xs,
         },
         {
           "bg-greyscale-50": type === ButtonType.Primary,
@@ -69,10 +72,12 @@ export default function Button({
         {
           "text-spaceBlue-900": type === ButtonType.Primary && !disabled,
           "text-greyscale-50": type === ButtonType.Secondary && !disabled,
-          "text-spaceBlue-500": disabled,
+          "text-spacePurple-500": type === ButtonType.Ternary && !disabled,
+          "text-spaceBlue-500": (type === ButtonType.Primary || type === ButtonType.Secondary) && disabled,
+          "text-greyscale-600": type === ButtonType.Ternary && disabled,
         },
         {
-          "bg-spaceBlue-800": disabled,
+          "bg-spaceBlue-800": (type === ButtonType.Primary || type === ButtonType.Secondary) && disabled,
           "border-spaceBlue-500": type === ButtonType.Secondary && disabled,
         },
         {
@@ -80,6 +85,7 @@ export default function Button({
             type === ButtonType.Primary && !disabled,
           "hover:text-spacePurple-400 hover:bg-spacePurple-900 hover:border-spacePurple-400":
             type === ButtonType.Secondary && !disabled,
+          "hover:text-spacePurple-400 hover:bg-spacePurple-900": type === ButtonType.Ternary && !disabled,
         }
       )}
       type={htmlType}

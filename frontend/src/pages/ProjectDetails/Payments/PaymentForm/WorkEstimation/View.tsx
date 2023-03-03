@@ -57,14 +57,14 @@ export default function WorkEstimation({
                 </div>
                 <div className="flex flex-row gap-3 text-white items-center">
                   <div onClick={tryDecreaseNumberOfDays}>
-                    <Button size={ButtonSize.Small} type={ButtonType.Secondary} disabled={!canDecrease}>
+                    <Button size={ButtonSize.Sm} type={ButtonType.Secondary} disabled={!canDecrease}>
                       <div className="absolute top-1">
                         <Subtract />
                       </div>
                     </Button>
                   </div>
                   <div onClick={tryIncreaseNumberOfDays}>
-                    <Button size={ButtonSize.Small} type={ButtonType.Secondary} disabled={!canIncrease}>
+                    <Button size={ButtonSize.Sm} type={ButtonType.Secondary} disabled={!canIncrease}>
                       <div className="absolute top-1">
                         <Add />
                       </div>

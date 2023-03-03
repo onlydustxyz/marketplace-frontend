@@ -29,6 +29,16 @@ describe("As a visitor, I", () => {
     cy.contains("Croute A");
     cy.contains("Yolo B").should("not.exist");
     cy.contains("Plop AB");
+
+    // Clear filters
+    cy.contains("Clear all").click();
+    cy.contains("Croute A");
+    cy.contains("Yolo B");
+    cy.contains("Plop AB");
+    cy.contains("2 contributors");
+    cy.contains("3 contributors");
+    cy.contains("1 repository");
+    cy.contains("2 repositories");
   });
 
   it("cannot access restricted projects page", function () {

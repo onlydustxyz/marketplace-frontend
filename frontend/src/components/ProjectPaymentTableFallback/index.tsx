@@ -21,7 +21,7 @@ const ProjectPaymentTableFallback: React.FC = () => {
         </span>
       </div>
       <Link to={ProjectPaymentsRoutePaths.New}>
-        <Button width={Width.Full} size={ButtonSize.Large}>
+        <Button width={Width.Full} size={ButtonSize.Lg}>
           <CurrencyLine />
           <span>{T("project.details.tableFallback.newPayment")}</span>
         </Button>

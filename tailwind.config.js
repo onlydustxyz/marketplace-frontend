@@ -6,6 +6,9 @@ module.exports = {
   content: ["./index.html", "./frontend/src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      borderRadius: {
+        large: "10px",
+      },
       fontFamily: { alfreda: ["Alfreda"], walsheim: ["GT Walsheim"], belwe: ["Belwe"] },
       spacing: {
         110: "27.5rem",

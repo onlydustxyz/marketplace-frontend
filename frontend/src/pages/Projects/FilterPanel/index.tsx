@@ -14,10 +14,11 @@ import View from "./View";
 type Props = {
   projectFilter: ProjectFilter;
   setProjectFilter: (projectFilter: ProjectFilter) => void;
+  clearProjectFilter: () => void;
   isProjectLeader: boolean;
 };
 
-export default function FilterPanel({ projectFilter, setProjectFilter, isProjectLeader }: Props) {
+export default function FilterPanel({ projectFilter, setProjectFilter, clearProjectFilter, isProjectLeader }: Props) {
   const technologiesQuery = useHasuraQuery<GetAllTechnologiesQuery>(GET_ALL_TECHNOLOGIES_QUERY, HasuraUserRole.Public);
 
   const availableTechnologies = new Set(
@@ -32,6 +33,7 @@ export default function FilterPanel({ projectFilter, setProjectFilter, isProject
       availableTechnologies={Array.from(availableTechnologies).sort((t1: string, t2: string) => t1.localeCompare(t2))}
       projectFilter={projectFilter}
       setProjectFilter={setProjectFilter}
+      clearProjectFilter={clearProjectFilter}
       isProjectLeader={isProjectLeader}
     />
   );

@@ -1,8 +1,13 @@
 import Card from "src/components/Card";
 import categories from "src/assets/img/categories.png";
 import { useIntl } from "src/hooks/useIntl";
+import Button from "src/components/Button";
 
-export default function AllProjectsFallback() {
+type Props = {
+  clearFilters: () => void;
+};
+
+export default function AllProjectsFallback({ clearFilters }: Props) {
   const { T } = useIntl();
 
   return (
@@ -13,6 +18,9 @@ export default function AllProjectsFallback() {
         <span className="text-spaceBlue-200 font-walsheim font-normal text-base">
           {T("projects.fallback.subTitle")}
         </span>
+      </div>
+      <div onClick={clearFilters}>
+        <Button>{T("projects.fallback.clearFiltersButton")}</Button>
       </div>
     </Card>
   );

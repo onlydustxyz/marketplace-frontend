@@ -1,5 +1,7 @@
 import classNames from "classnames";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
+import Refresh from "src/icons/Refresh";
 import StarLine from "src/icons/StarLine";
 import { ProjectFilter, ProjectOwnershipType } from "..";
 import Card from "../../../components/Card";
@@ -10,19 +12,29 @@ export interface FilterPanelViewProps {
   isProjectLeader: boolean;
   projectFilter: ProjectFilter;
   setProjectFilter: (projectFilter: ProjectFilter) => void;
+  clearProjectFilter: () => void;
 }
 
 export default function View({
   availableTechnologies,
   projectFilter,
   setProjectFilter,
+  clearProjectFilter,
   isProjectLeader,
 }: FilterPanelViewProps) {
   const { T } = useIntl();
 
   return (
     <Card className="flex flex-col h-fit w-full p-6 gap-0.5">
-      <span className="font-belwe font-normal text-base text-greyscale-50">{T("filter.title")}</span>
+      <div className="flex flex-row justify-between items-center">
+        <span className="font-belwe font-normal text-base text-greyscale-50">{T("filter.title")}</span>
+        <div onClick={clearProjectFilter}>
+          <Button type={ButtonType.Ternary} size={ButtonSize.Xs}>
+            <Refresh />
+            {T("filter.clearButton")}
+          </Button>
+        </div>
+      </div>
       {isProjectLeader ? (
         <div className="flex flex-row py-3 gap-2">
           <OwnershipTypeButton

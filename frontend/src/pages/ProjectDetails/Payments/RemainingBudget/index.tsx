@@ -31,7 +31,7 @@ export default function RemainingBudget({ budget, disabled }: Props) {
         </div>
         {!disabled && (
           <Link to={ProjectPaymentsRoutePaths.New} className="pt-6">
-            <Button width={Width.Full} size={ButtonSize.LargeLowHeight}>
+            <Button width={Width.Full} size={ButtonSize.LgLowHeight}>
               <CurrencyLine />
               <span>{T("project.details.remainingBudget.newPayment")}</span>
             </Button>

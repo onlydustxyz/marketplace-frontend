@@ -19,6 +19,7 @@ const allProjectsArgs = {
   setProjectFilter: () => {
     return;
   },
+  clearProjectFilter: Function.prototype(),
   isProjectLeader: false,
 };
 
@@ -39,6 +40,7 @@ const allProjectsForProjectLeaderArgs = {
   setProjectFilter: () => {
     return;
   },
+  clearProjectFilter: Function.prototype(),
   isProjectLeader: true,
 };
 
@@ -56,6 +58,7 @@ const myProjectsArgs = {
   setProjectFilter: () => {
     return;
   },
+  clearProjectFilter: Function.prototype(),
   isProjectLeader: true,
 };
 
