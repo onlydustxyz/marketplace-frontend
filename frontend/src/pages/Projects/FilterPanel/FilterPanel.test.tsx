@@ -92,8 +92,8 @@ describe("FilterPanel", () => {
   it("should display first 2 technologies of projects and be sorted", async () => {
     renderWithIntl(
       <FilterPanel
-        projectOwnershipType={ProjectOwnershipType.All}
-        setProjectOwnershipType={() => {
+        projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [] }}
+        setProjectFilter={() => {
           return;
         }}
         isProjectLeader={false}
@@ -119,8 +119,8 @@ describe("FilterPanel", () => {
   it("should display 'Mine only' when user is leader'", async () => {
     renderWithIntl(
       <FilterPanel
-        projectOwnershipType={ProjectOwnershipType.All}
-        setProjectOwnershipType={() => {
+        projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [] }}
+        setProjectFilter={() => {
           return;
         }}
         isProjectLeader={true}
