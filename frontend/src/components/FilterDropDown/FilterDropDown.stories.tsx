@@ -23,5 +23,9 @@ const args = {
 };
 
 export const Default = {
-  render: () => <FilterDropDown {...args} />,
+  render: () => (
+    <div style={{ width: args.width }}>
+      <FilterDropDown {...args} />
+    </div>
+  ),
 };
