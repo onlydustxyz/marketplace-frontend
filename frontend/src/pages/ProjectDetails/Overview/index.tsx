@@ -2,13 +2,8 @@ import { useIntl } from "src/hooks/useIntl";
 import { Contributor, HasuraUserRole } from "src/types";
 import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
-import { ReactNode, useEffect, useState } from "react";
-import {
-  GetProjectOverviewDetailsQuery,
-  ProjectGithubReposSelectColumn,
-  ProjectLeadFragment,
-  SponsorFragment,
-} from "src/__generated/graphql";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import { GetProjectOverviewDetailsQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 import { gql } from "@apollo/client";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import QueryWrapper from "src/components/QueryWrapper";
@@ -20,6 +15,7 @@ import Badge, { BadgeSize } from "src/components/Badge";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
+import { useContainerDimensions } from "./useContainerDimensions";
 
 type OutletContext = {
   leads?: ProjectLeadFragment[];
@@ -52,6 +48,10 @@ export default function Overview() {
 
   const [sortedGithubRepos, setSortedGithubRepos] = useState(githubRepos);
 
+  const descriptionRef = useRef(null);
+  const { height: descriptionHeight } = useContainerDimensions(descriptionRef);
+  console.log(descriptionHeight);
+
   useEffect(() => {
     if (githubRepos) {
       const githubReposCopy = [...githubRepos];
@@ -70,7 +70,12 @@ export default function Overview() {
       <div className="flex flex-row gap-6">
         <QueryWrapper query={{ data, loading }}>
           <div className="flex flex-col gap-4 w-full">
-            <Card className="px-6 py-4 flex flex-row gap-6 items-center">
+            <Card
+              className={classNames("px-6 py-4 flex flex-row gap-6", {
+                "items-start": descriptionHeight > 128,
+                "items-center": descriptionHeight <= 128,
+              })}
+            >
               <img
                 alt={data?.projectsByPk?.projectDetails?.name}
                 src={logoUrl}
@@ -78,13 +83,15 @@ export default function Overview() {
                   "p-6": logoUrl === onlyDustLogo,
                 })}
               />
-              <ReactMarkdown
-                skipHtml={true}
-                remarkPlugins={[[remarkGfm]]}
-                className="text-greyscale-50 font-walsheim font-normal text-sm text-justify max-w-full prose prose-invert"
-              >
-                {description}
-              </ReactMarkdown>
+              <div ref={descriptionRef}>
+                <ReactMarkdown
+                  skipHtml={true}
+                  remarkPlugins={[[remarkGfm]]}
+                  className="text-greyscale-50 font-walsheim font-normal text-sm text-justify max-w-full prose prose-invert"
+                >
+                  {description}
+                </ReactMarkdown>
+              </div>
             </Card>
             <Card className="flex flex-col gap-4">
               <div className="flex flex-row font-walsheim font-medium text-base text-greyscale-50 items-center border-b border-greyscale-50/8 pb-2 justify-between">

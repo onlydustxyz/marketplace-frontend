@@ -61,6 +61,7 @@ export default function ProjectCard({
         <div className="flex flex-col lg:flex-row w-full lg:divide-x divide-stone-100/8 gap-4 lg:gap-6 justify-items-center font-walsheim">
           <div className="lg:flex flex-col basis-1/3 min-w-0 gap-y-5">
             <ProjectTitle
+              projectId={id}
               projectName={projectDetails?.name || ""}
               projectLeads={projectLeads?.map(lead => lead.user).filter(isDefined) || []}
               logoUrl={projectDetails?.logoUrl || onlyDustLogo}
@@ -211,6 +212,7 @@ export const PROJECT_CARD_FRAGMENT = gql`
       id
     }
     projectLeads {
+      userId
       user {
         ...ProjectLead
       }

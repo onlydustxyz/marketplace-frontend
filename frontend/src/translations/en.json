@@ -202,7 +202,12 @@
       },
       "sidebar": {
         "backToProjects": "All projects",
-        "contributors": " contributors",
+        "contributors": {
+          "many": "__count__ contributors",
+          "one": "1 contributor",
+          "zero": "No contributor"
+        },
+        "overview": "Overview",
         "newInvite": "NEW"
       },
       "tableFallback": {

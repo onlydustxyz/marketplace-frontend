@@ -28,36 +28,42 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
   },
   projectLeads: [
     {
+      userId: "user-1",
       user: {
         displayName: "oscarwroche",
         avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
       },
     },
     {
+      userId: "user-2",
       user: {
         displayName: "AnthonyBuisset",
         avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
       },
     },
     {
+      userId: "user-3",
       user: {
         displayName: "ofux",
         avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
       },
     },
     {
+      userId: "user-4",
       user: {
         displayName: "tdelabro",
         avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
       },
     },
     {
+      userId: "user-5",
       user: {
         displayName: "BernardStanislas",
         avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
       },
     },
     {
+      userId: "user-6",
       user: {
         displayName: "gregcha",
         avatarUrl: "https://avatars.githubusercontent.com/u/8642470?v=4",

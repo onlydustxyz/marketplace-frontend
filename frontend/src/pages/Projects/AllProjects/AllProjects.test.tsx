@@ -34,7 +34,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           },
         },
         pendingInvitations: [],
-        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
         githubRepos: [
           {
@@ -82,7 +82,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
             },
           },
         ],
-        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
       },
     ],
@@ -124,7 +124,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         ],
-        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
       },
       {
@@ -159,7 +159,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         ],
-        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
       },
       {
@@ -194,7 +194,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         ],
-        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
       },
     ],
@@ -227,7 +227,7 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
     },
   ],
   pendingInvitations: [],
-  projectLeads: [{ user: { displayName: "leader", avatarUrl: "avatar" } }],
+  projectLeads: [{ userId: "user-1", user: { displayName: "leader", avatarUrl: "avatar" } }],
   projectSponsors: [],
 };
 
@@ -245,7 +245,7 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
   },
   githubRepos: [],
   pendingInvitations: [],
-  projectLeads: [{ user: { displayName: "leader", avatarUrl: "avatar" } }],
+  projectLeads: [{ userId: "user-1", user: { displayName: "leader", avatarUrl: "avatar" } }],
   projectSponsors: [],
 };
 
@@ -292,6 +292,36 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
     logoUrl: null,
   },
   githubRepos: [],
+  pendingInvitations: [{ id: "invitation-1" }],
+  projectLeads: [],
+  projectSponsors: [],
+};
+
+const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
+  __typename: "Projects",
+  id: "project-with-no-leader-and-invite",
+  budgets: [{ id: "budget-1" }],
+  budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
+  projectDetails: {
+    projectId: "project-with-no-leader",
+    name: "No leader but invite",
+    shortDescription: "This project has no leader yet",
+    telegramLink: null,
+    logoUrl: null,
+  },
+  githubRepos: [
+    {
+      githubRepoId: 123456,
+      githubRepoDetails: {
+        id: 123456,
+        languages: [],
+        content: {
+          id: 123456,
+          contributors: [],
+        },
+      },
+    },
+  ],
   pendingInvitations: [{ id: "invitation-1" }],
   projectLeads: [],
   projectSponsors: [],
@@ -380,14 +410,22 @@ describe("All projects", () => {
       wrapper: MemoryRouterProviderFactory({
         mocks: [
           ...buildGraphQlMocks({
-            data: { projects: [projectWithNoBudget, projectWithNoLeader, projectWithNoRepo, projectInvalidWithInvite] },
+            data: {
+              projects: [
+                projectWithNoBudget,
+                projectWithNoLeader,
+                projectWithNoRepo,
+                projectInvalidWithInvite,
+                projectWithNoLeaderAndInvite,
+              ],
+            },
           }),
         ],
       }),
     });
     const allProjectCards = await screen.findAllByTestId("project-card");
     expect(allProjectCards).toHaveLength(1);
-    expect(screen.getByText("Nothing but invited"));
+    expect(screen.getByText("No leader but invite"));
   });
 
   it("should display fallback screen when no project", async () => {

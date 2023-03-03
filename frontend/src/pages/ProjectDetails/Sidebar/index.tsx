@@ -45,7 +45,7 @@ export default function ProjectsSidebar({ currentProject }: Props) {
 
   const AvailableTabs: Record<string, ProjectDetailsTab> = {
     overview: {
-      label: T("project.details.overview.title"),
+      label: T("project.details.sidebar.overview"),
       path: ProjectRoutePaths.Overview,
     },
     contributors: {

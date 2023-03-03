@@ -10,6 +10,7 @@ interface CardProps extends React.PropsWithChildren {
   dataTestId?: string;
   border?: CardBorder;
   padded?: boolean;
+  blurred?: boolean;
 }
 
 export default function Card({
@@ -17,6 +18,7 @@ export default function Card({
   className = "",
   border = CardBorder.Light,
   padded = true,
+  blurred = true,
   dataTestId,
   children,
 }: CardProps) {
@@ -26,9 +28,12 @@ export default function Card({
         className,
         "w-full rounded-2xl font-walsheim",
         "pseudo-outline",
-        "bg-white/2 backdrop-blur-lg",
+        "bg-white/2",
         {
           "p-4 lg:p-6": padded,
+        },
+        {
+          "backdrop-blur-lg": blurred,
         },
         {
           "transition duration-300 hover:bg-white/4": selectable,

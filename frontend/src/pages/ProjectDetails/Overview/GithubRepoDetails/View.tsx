@@ -15,7 +15,7 @@ type Props = Omit<GithubRepoStaticDetailsFragment & GithubRepoDynamicDetailsFrag
 export default function View({ owner, name, description, languages, stars, forksCount }: Props) {
   const { T } = useIntl();
   return (
-    <Card className="flex flex-row justify-between p-3" padded={false}>
+    <Card className="flex flex-row justify-between p-3" padded={false} blurred={false}>
       <div className="flex flex-col justify-between font-walsheim text-greyscale-50 font-normal p-3 w-5/6 gap-5">
         <div className="flex flex-col gap-2 justify-start">
           {Object.keys(languages).length > 0 && (

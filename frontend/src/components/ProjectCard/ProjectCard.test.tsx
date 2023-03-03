@@ -56,6 +56,7 @@ const PROJECT: Project = {
   },
   projectLeads: [
     {
+      userId: "user-1",
       user: {
         displayName: "oscarwroche",
         avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",

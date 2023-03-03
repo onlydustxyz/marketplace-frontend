@@ -17,7 +17,7 @@ const ProjectDetailsPayments = lazy(() => import("src/pages/ProjectDetails/Payme
 const ProjectDetailsPaymentsList = lazy(() => import("src/pages/ProjectDetails/Payments/List"));
 const ProjectDetailsPaymentForm = lazy(() => import("src/pages/ProjectDetails/Payments/PaymentForm"));
 
-import { HasuraUserRole } from "src/types";
+import { CustomUserRole, HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/Loader";
 import ScrollToTop from "src/components/ScrollToTop";
 import ErrorTrigger from "src/pages/ErrorTrigger";
@@ -55,7 +55,11 @@ function App() {
     },
     {
       path: ProjectRoutePaths.Payments,
-      element: <ProjectDetailsPayments />,
+      element: (
+        <ProtectedRoute requiredRole={CustomUserRole.ProjectLead} redirectTo={RoutePaths.ProjectDetails}>
+          <ProjectDetailsPayments />
+        </ProtectedRoute>
+      ),
       children: [
         {
           index: true,
