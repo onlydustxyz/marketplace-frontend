@@ -18,6 +18,7 @@
     "totalEarnings": "Total earnings"
   },
   "filter": {
+    "clearButton": "Clear all",
     "ownership": {
       "all": "All projects",
       "mine": "Mine only"

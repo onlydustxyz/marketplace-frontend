@@ -136,6 +136,7 @@ describe("FilterPanel", () => {
         setProjectFilter={() => {
           return;
         }}
+        clearProjectFilter={Function.prototype()}
         isProjectLeader={false}
       />,
       {
@@ -144,8 +145,6 @@ describe("FilterPanel", () => {
         }),
       }
     );
-
-    userEvent.click(await screen.findByRole("button"));
 
     const allOptions = await screen.findAllByRole("option");
     expect(allOptions.length).toBe(6);
@@ -164,6 +163,7 @@ describe("FilterPanel", () => {
         setProjectFilter={() => {
           return;
         }}
+        clearProjectFilter={Function.prototype()}
         isProjectLeader={true}
       />,
       {
@@ -184,6 +184,7 @@ describe("FilterPanel", () => {
         setProjectFilter={() => {
           return;
         }}
+        clearProjectFilter={Function.prototype()}
         isProjectLeader={true}
       />,
       {

@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useLocalStorage } from "react-use";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { useAuth } from "src/hooks/useAuth";
@@ -21,16 +22,17 @@ export interface ProjectFilter {
 
 const PROJECT_FILTER_KEY = "project_filter";
 
+const DEFAULT_FILTER: ProjectFilter = {
+  ownershipType: ProjectOwnershipType.All,
+  technologies: [],
+};
+
 export default function Projects() {
   const { T } = useT();
   const { ledProjectIds } = useAuth();
 
-  const defaultFilter: ProjectFilter = {
-    ownershipType: ProjectOwnershipType.All,
-    technologies: [],
-  };
-
-  const [projectFilter, setProjectFilter] = useLocalStorage(PROJECT_FILTER_KEY, defaultFilter);
+  const [projectFilter, setProjectFilter] = useLocalStorage(PROJECT_FILTER_KEY, DEFAULT_FILTER);
+  const clearProjectFilter = useCallback(() => setProjectFilter(DEFAULT_FILTER), [setProjectFilter]);
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
@@ -42,6 +44,7 @@ export default function Projects() {
               <FilterPanel
                 projectFilter={projectFilter}
                 setProjectFilter={setProjectFilter}
+                clearProjectFilter={clearProjectFilter}
                 isProjectLeader={!!ledProjectIds.length}
               />
             )}
@@ -50,7 +53,7 @@ export default function Projects() {
             <AllProjects
               technologies={projectFilter.technologies}
               projectOwnershipType={projectFilter.ownershipType}
-              clearFilters={() => setProjectFilter(defaultFilter)}
+              clearFilters={clearProjectFilter}
             />
           )}
         </div>
