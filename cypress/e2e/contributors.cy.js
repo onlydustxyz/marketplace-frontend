@@ -1,55 +1,8 @@
 describe("As a public user, I", () => {
   const OFUX = 595505;
 
-  beforeEach(function () {
-    cy.fixture("repos.json").as("repos");
-    cy.createGithubUser(98735558).then(user => {
-      cy.createProject("Project with budget")
-        .withLeader(user)
-        .withBudget(100000)
-        .withRepo(this.repos.A.id)
-        .withRepo(this.repos.B.id)
-        .as("projectId")
-        .then(projectId => {
-          cy.requestPayment(projectId, 100, OFUX, {
-            workItems: [
-              "https://github.com/od-mocks/cool-repo-A/pull/1",
-              "https://github.com/od-mocks/cool-repo-A/pull/2",
-            ],
-          })
-            .asRegisteredUser(user)
-            .data("requestPayment");
-          cy.requestPayment(projectId, 100, OFUX, {
-            workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
-          })
-            .asRegisteredUser(user)
-            .data("requestPayment");
-          cy.requestPayment(projectId, 500, OFUX, {
-            workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
-          })
-            .asRegisteredUser(user)
-            .data("requestPayment");
-          cy.requestPayment(projectId, 500, OFUX, {
-            workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
-          })
-            .asRegisteredUser(user)
-            .data("requestPayment");
-          cy.requestPayment(projectId, 2000, OFUX, {
-            workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
-          })
-            .asRegisteredUser(user)
-            .data("requestPayment");
-          cy.requestPayment(projectId, 10000, OFUX, {
-            workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
-          })
-            .asRegisteredUser(user)
-            .data("requestPayment");
-        });
-    });
-  });
-
   it("can see the contributors of a project", function () {
-    cy.visit(`http://localhost:5173/projects/${this.projectId}`);
+    cy.visit(`http://localhost:5173/projects/${this.projects["Project A"].id}`);
 
     cy.contains("Contributors").click();
 
@@ -75,7 +28,7 @@ describe("As a public user, I", () => {
   });
 
   it("can sort the contributors of a project", function () {
-    cy.visit(`http://localhost:5173/projects/${this.projectId}`);
+    cy.visit(`http://localhost:5173/projects/${this.projects["Project A"].id}`);
 
     cy.contains("Contributors").click();
     cy.get("#contributors_table thead tr th:nth-child(1)").click(); // sort by contributor name ASC
@@ -100,6 +53,7 @@ describe("As a public user, I", () => {
   });
 });
 
+//TODO
 describe("As a project lead, I", () => {
   beforeEach(function () {
     cy.createGithubUser(98735558).then(user => {

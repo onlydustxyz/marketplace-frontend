@@ -7,5 +7,14 @@
     "initialBudget": 50000,
     "leaders": ["TokioRs", "Olivier"],
     "repos": ["kakarot"]
+  },
+  "Project A": {
+    "shortDescription": "A",
+    "longDescription": "AAA",
+    "telegramLink": "https://t.me/a",
+    "logoUrl": "https://avatars.githubusercontent.com/u/121887739?s=400&v=4",
+    "initialBudget": 100000,
+    "leaders": ["TokioRs"],
+    "repos": ["A", "B"]
   }
 }
