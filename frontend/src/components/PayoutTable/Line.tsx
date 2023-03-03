@@ -1,6 +1,6 @@
 import Line from "../Table/Line";
 import Cell from "../Table/Cell";
-import onlyDustLogo from "assets/img/onlydust-logo.png";
+import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import RoundedImage from "src/components/RoundedImage";
 import PayoutStatus from "../PayoutStatus";
 import GithubPRLink from "./GithubPRLink";

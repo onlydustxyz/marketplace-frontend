@@ -9,7 +9,7 @@ import {
 } from "src/__generated/graphql";
 import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
-import onlyDustLogo from "assets/img/onlydust-logo.png";
+import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { sortBy } from "lodash";
 import { ProjectRoutePaths } from "src/App";
 import { useIntl } from "src/hooks/useIntl";

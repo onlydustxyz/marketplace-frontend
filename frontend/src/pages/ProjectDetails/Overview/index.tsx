@@ -9,7 +9,7 @@ import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import QueryWrapper from "src/components/QueryWrapper";
 import Card from "src/components/Card";
 import GithubRepoDetails from "./GithubRepoDetails";
-import onlyDustLogo from "assets/img/onlydust-logo.png";
+import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import classNames from "classnames";
 import Badge, { BadgeSize } from "src/components/Badge";
 import ReactMarkdown from "react-markdown";
@@ -79,9 +79,7 @@ export default function Overview() {
               <img
                 alt={data?.projectsByPk?.projectDetails?.name}
                 src={logoUrl}
-                className={classNames("w-32 h-32 flex-shrink-0 rounded-lg bg-spaceBlue-800", {
-                  "p-6": logoUrl === onlyDustLogo,
-                })}
+                className="w-32 h-32 flex-shrink-0 rounded-lg bg-spaceBlue-900"
               />
               <div ref={descriptionRef}>
                 <ReactMarkdown

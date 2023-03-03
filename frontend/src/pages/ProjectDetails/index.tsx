@@ -6,7 +6,7 @@ import { useAuth } from "src/hooks/useAuth";
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole, LanguageMap } from "src/types";
 import { GetProjectQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
-import onlyDustLogo from "assets/img/onlydust-logo.png";
+import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import { SessionMethod, useSessionDispatch, useSession } from "src/hooks/useSession";
 import View from "./View";
 import { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
