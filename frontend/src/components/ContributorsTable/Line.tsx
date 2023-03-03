@@ -42,19 +42,22 @@ export default function ContributorLine({
       <Cell height={CellHeight.Small} horizontalMargin={false} className="invisible group-hover/line:visible">
         {isProjectLeader && (
           <>
-            <Button
-              type={ButtonType.Secondary}
-              size={ButtonSize.Sm}
-              disabled={isSendingNewPaymentDisabled}
-              onClick={() => onPaymentRequested(contributor)}
-              id="sendPaymentButton"
-              data-testid="send-payment-button"
-            >
-              <SendPlane2Line />
-              <div>{T("project.details.contributors.sendPayment")}</div>
-            </Button>
+            <div id={`sendPaymentButton-${contributor.login}`}>
+              <Button
+                type={ButtonType.Secondary}
+                size={ButtonSize.Sm}
+                disabled={isSendingNewPaymentDisabled}
+                onClick={() => onPaymentRequested(contributor)}
+                data-testid="send-payment-button"
+              >
+                <SendPlane2Line />
+                <div>{T("project.details.contributors.sendPayment")}</div>
+              </Button>
+            </div>
             {isSendingNewPaymentDisabled && (
-              <Tooltip anchorId="sendPaymentButton">{T("contributor.table.noBudgetLeft")}</Tooltip>
+              <Tooltip anchorId={`sendPaymentButton-${contributor.login}`}>
+                {T("contributor.table.noBudgetLeft")}
+              </Tooltip>
             )}
           </>
         )}
