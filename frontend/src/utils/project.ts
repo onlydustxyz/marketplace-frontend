@@ -4,7 +4,7 @@ import { uniqBy } from "lodash";
 import isDefined from "src/utils/isDefined";
 import { ContributorIdFragment } from "src/__generated/graphql";
 
-export function isVisible(project: VisibleProjectFragment | null) {
+export function isProjectVisible<T extends VisibleProjectFragment>(project: T | null) {
   if (!project) {
     return false;
   }

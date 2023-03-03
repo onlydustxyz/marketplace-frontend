@@ -1,23 +1,21 @@
 import classNames from "classnames";
 import { useIntl } from "src/hooks/useIntl";
 import StarLine from "src/icons/StarLine";
-import { ProjectOwnershipType } from "..";
+import { ProjectFilter, ProjectOwnershipType } from "..";
 import Card from "../../../components/Card";
 import FilterDropDown, { FilterDropDownIcon } from "../../../components/FilterDropDown";
 
 export interface FilterPanelViewProps {
-  technologies: string[];
-  onTechnologiesChange?: (technologies: string[]) => void;
-  projectOwnershipType: ProjectOwnershipType;
-  setProjectOwnershipType: (projectType: ProjectOwnershipType) => void;
+  availableTechnologies: string[];
   isProjectLeader: boolean;
+  projectFilter: ProjectFilter;
+  setProjectFilter: (projectFilter: ProjectFilter) => void;
 }
 
 export default function View({
-  technologies,
-  onTechnologiesChange,
-  projectOwnershipType,
-  setProjectOwnershipType,
+  availableTechnologies,
+  projectFilter,
+  setProjectFilter,
   isProjectLeader,
 }: FilterPanelViewProps) {
   const { T } = useIntl();
@@ -28,14 +26,14 @@ export default function View({
       {isProjectLeader ? (
         <div className="flex flex-row py-3 gap-2">
           <OwnershipTypeButton
-            selected={projectOwnershipType === ProjectOwnershipType.All}
-            onClick={() => setProjectOwnershipType(ProjectOwnershipType.All)}
+            selected={projectFilter.ownershipType === ProjectOwnershipType.All}
+            onClick={() => setProjectFilter({ ...projectFilter, ownershipType: ProjectOwnershipType.All })}
           >
             {T("filter.ownership.all")}
           </OwnershipTypeButton>
           <OwnershipTypeButton
-            selected={projectOwnershipType === ProjectOwnershipType.Mine}
-            onClick={() => setProjectOwnershipType(ProjectOwnershipType.Mine)}
+            selected={projectFilter.ownershipType === ProjectOwnershipType.Mine}
+            onClick={() => setProjectFilter({ ...projectFilter, ownershipType: ProjectOwnershipType.Mine })}
           >
             <span className="flex flex-row items-center gap-1">
               <StarLine className="text-base" /> {T("filter.ownership.mine")}
@@ -49,8 +47,9 @@ export default function View({
         defaultLabel={T("filter.technologies.all")}
         selectedLabel={T("filter.technologies.some")}
         icon={FilterDropDownIcon.Technology}
-        options={technologies}
-        onChange={onTechnologiesChange}
+        options={availableTechnologies}
+        projectFilter={projectFilter}
+        setProjectFilter={setProjectFilter}
         dataTestId="technologies-filter-dropdown"
       />
     </Card>

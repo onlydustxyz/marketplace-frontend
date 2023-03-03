@@ -3119,7 +3119,7 @@ export type Users = {
   emailVerified: Maybe<Scalars['Boolean']>;
   /** An object relationship */
   githubUser: Maybe<AuthGithubUsers>;
-  id: Scalars['uuid'];
+  id: Maybe<Scalars['uuid']>;
   isAnonymous: Maybe<Scalars['Boolean']>;
   locale: Maybe<Scalars['String']>;
   metadata: Maybe<Scalars['jsonb']>;
@@ -3508,7 +3508,7 @@ export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __
 export type GetAllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllTechnologiesQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null }> }> };
+export type GetAllTechnologiesQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgets: Array<{ __typename?: 'Budgets', id: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }> }> };
 
 export type GithubRepoLanguagesFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null };
 
@@ -4628,13 +4628,14 @@ export type GetProjectsQueryResult = Apollo.QueryResult<GetProjectsQuery, GetPro
 export const GetAllTechnologiesDocument = gql`
     query GetAllTechnologies {
   projects {
-    id
+    ...VisibleProject
     githubRepos {
       ...GithubRepoLanguagesFields
     }
   }
 }
-    ${GithubRepoLanguagesFieldsFragmentDoc}`;
+    ${VisibleProjectFragmentDoc}
+${GithubRepoLanguagesFieldsFragmentDoc}`;
 
 /**
  * __useGetAllTechnologiesQuery__

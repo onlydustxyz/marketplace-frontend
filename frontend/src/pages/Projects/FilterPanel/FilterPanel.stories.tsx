@@ -10,35 +10,59 @@ export default {
   ),
 };
 
-export const AllProjects = {
-  args: {
-    technologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
-    projectOwnershipType: ProjectOwnershipType.All,
-    setProjectOwnershipType: () => {
-      return;
-    },
-    isProjectLeader: false,
+const allProjectsArgs = {
+  projectFilter: {
+    technologies: [],
+    ownershipType: ProjectOwnershipType.All,
   },
+  availableTechnologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
+  setProjectFilter: () => {
+    return;
+  },
+  isProjectLeader: false,
+};
+
+export const AllProjects = {
+  render: () => (
+    <div style={{ width: 400 }}>
+      <FilterPanel {...allProjectsArgs} />
+    </div>
+  ),
+};
+
+const allProjectsForProjectLeaderArgs = {
+  availableTechnologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
+  projectFilter: {
+    ownershipType: ProjectOwnershipType.All,
+    technologies: [],
+  },
+  setProjectFilter: () => {
+    return;
+  },
+  isProjectLeader: true,
 };
 
 export const AllProjectsForProjectLeader = {
-  args: {
-    technologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
-    projectOwnershipType: ProjectOwnershipType.All,
-    setProjectOwnershipType: () => {
-      return;
-    },
-    isProjectLeader: true,
+  render: () => (
+    <div style={{ width: 400 }}>
+      <FilterPanel {...allProjectsForProjectLeaderArgs} />
+    </div>
+  ),
+};
+
+const myProjectsArgs = {
+  availableTechnologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
+  projectFilter: { technologies: [], ownershipType: ProjectOwnershipType.Mine },
+  setProjectFilter: () => {
+    return;
   },
+  isProjectLeader: true,
 };
 
 export const MyProjects = {
-  args: {
-    technologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
-    projectOwnershipType: ProjectOwnershipType.Mine,
-    setProjectOwnershipType: () => {
-      return;
-    },
-    isProjectLeader: true,
-  },
+  render: () => (
+    <div style={{ width: 400 }}>
+      <FilterPanel {...myProjectsArgs} />
+    </div>
+  ),
 };

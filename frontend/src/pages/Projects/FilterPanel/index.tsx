@@ -6,47 +6,43 @@ import {
   getMostUsedLanguages,
   GITHUB_REPOS_LANGUAGES_FRAGMENT,
 } from "src/utils/languages";
+import { isProjectVisible, VISIBLE_PROJECT_FRAGMENT } from "src/utils/project";
 import { GetAllTechnologiesQuery } from "src/__generated/graphql";
-import { ProjectOwnershipType } from "..";
+import { ProjectFilter } from "..";
 import View from "./View";
 
 type Props = {
-  onTechnologiesChange?: (technologies: string[]) => void;
-  projectOwnershipType: ProjectOwnershipType;
-  setProjectOwnershipType: (projectType: ProjectOwnershipType) => void;
+  projectFilter: ProjectFilter;
+  setProjectFilter: (projectFilter: ProjectFilter) => void;
   isProjectLeader: boolean;
 };
 
-export default function FilterPanel({
-  onTechnologiesChange,
-  projectOwnershipType,
-  setProjectOwnershipType,
-  isProjectLeader,
-}: Props) {
+export default function FilterPanel({ projectFilter, setProjectFilter, isProjectLeader }: Props) {
   const technologiesQuery = useHasuraQuery<GetAllTechnologiesQuery>(GET_ALL_TECHNOLOGIES_QUERY, HasuraUserRole.Public);
 
-  const technologies = new Set(
+  const availableTechnologies = new Set(
     technologiesQuery.data?.projects
+      .filter(isProjectVisible)
       .map(p => getMostUsedLanguages(getDeduplicatedAggregatedLanguages(p.githubRepos)))
       .flat()
   );
 
   return (
     <View
-      technologies={Array.from(technologies).sort((t1: string, t2: string) => t1.localeCompare(t2))}
-      onTechnologiesChange={onTechnologiesChange}
-      projectOwnershipType={projectOwnershipType}
-      setProjectOwnershipType={setProjectOwnershipType}
+      availableTechnologies={Array.from(availableTechnologies).sort((t1: string, t2: string) => t1.localeCompare(t2))}
+      projectFilter={projectFilter}
+      setProjectFilter={setProjectFilter}
       isProjectLeader={isProjectLeader}
     />
   );
 }
 
 export const GET_ALL_TECHNOLOGIES_QUERY = gql`
+  ${VISIBLE_PROJECT_FRAGMENT}
   ${GITHUB_REPOS_LANGUAGES_FRAGMENT}
   query GetAllTechnologies {
     projects {
-      id
+      ...VisibleProject
       githubRepos {
         ...GithubRepoLanguagesFields
       }

@@ -3,6 +3,7 @@ import technologyIcon from "assets/img/technology.svg";
 import classNames from "classnames";
 import { useState } from "react";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
+import { ProjectFilter } from "src/pages/Projects";
 import Badge, { BadgeSize } from "../Badge";
 
 export enum FilterDropDownIcon {
@@ -14,19 +15,37 @@ type Props = {
   defaultLabel: string;
   selectedLabel: string;
   options: string[];
-  onChange?: (values: string[]) => void;
   dataTestId?: string;
+  projectFilter: ProjectFilter;
+  setProjectFilter: (projectFilter: ProjectFilter) => void;
 };
 
 const ICONS = {
   [FilterDropDownIcon.Technology]: technologyIcon,
 };
 
-export default function FilterDropDown({ icon, defaultLabel, selectedLabel, options, onChange, dataTestId }: Props) {
+export default function FilterDropDown({
+  icon,
+  defaultLabel,
+  selectedLabel,
+  options,
+  projectFilter,
+  setProjectFilter,
+  dataTestId,
+}: Props) {
   const [open, setOpen] = useState(true);
 
   return (
-    <Listbox onChange={onChange} multiple>
+    <Listbox
+      onChange={technologies =>
+        setProjectFilter({
+          ...projectFilter,
+          technologies,
+        })
+      }
+      multiple
+      defaultValue={projectFilter.technologies}
+    >
       {({ value }) => (
         <>
           <Listbox.Button
