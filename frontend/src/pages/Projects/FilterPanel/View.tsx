@@ -13,7 +13,7 @@ export interface FilterPanelViewProps {
 }
 
 export default function View({
-  availableTechnologies: technologies,
+  availableTechnologies,
   projectFilter,
   setProjectFilter,
   isProjectLeader,
@@ -47,7 +47,7 @@ export default function View({
         defaultLabel={T("filter.technologies.all")}
         selectedLabel={T("filter.technologies.some")}
         icon={FilterDropDownIcon.Technology}
-        options={technologies}
+        options={availableTechnologies}
         projectFilter={projectFilter}
         setProjectFilter={setProjectFilter}
         dataTestId="technologies-filter-dropdown"
