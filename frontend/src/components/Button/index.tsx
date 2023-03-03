@@ -12,6 +12,7 @@ export enum ButtonSize {
 export enum ButtonType {
   Primary = "primary",
   Secondary = "secondary",
+  Ternary = "ternary",
 }
 
 export enum Width {
@@ -43,7 +44,7 @@ export default function Button({
         "flex flex-row justify-center items-center",
         "font-walsheim drop-shadow-bottom-sm font-medium",
         {
-          "curost-pointer": !disabled,
+          "cursor-pointer": !disabled,
           "cursor-not-allowed": disabled,
         },
         {
@@ -71,10 +72,12 @@ export default function Button({
         {
           "text-spaceBlue-900": type === ButtonType.Primary && !disabled,
           "text-greyscale-50": type === ButtonType.Secondary && !disabled,
-          "text-spaceBlue-500": disabled,
+          "text-spacePurple-500": type === ButtonType.Ternary && !disabled,
+          "text-spaceBlue-500": (type === ButtonType.Primary || type === ButtonType.Secondary) && disabled,
+          "text-greyscale-600": type === ButtonType.Ternary && disabled,
         },
         {
-          "bg-spaceBlue-800": disabled,
+          "bg-spaceBlue-800": (type === ButtonType.Primary || type === ButtonType.Secondary) && disabled,
           "border-spaceBlue-500": type === ButtonType.Secondary && disabled,
         },
         {
@@ -82,6 +85,7 @@ export default function Button({
             type === ButtonType.Primary && !disabled,
           "hover:text-spacePurple-400 hover:bg-spacePurple-900 hover:border-spacePurple-400":
             type === ButtonType.Secondary && !disabled,
+          "hover:text-spacePurple-400 hover:bg-spacePurple-900": type === ButtonType.Ternary && !disabled,
         }
       )}
       type={htmlType}

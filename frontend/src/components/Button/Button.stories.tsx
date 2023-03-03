@@ -9,7 +9,7 @@ export default {
       options: [ButtonSize.Xs, ButtonSize.Sm, ButtonSize.Md, ButtonSize.Lg, ButtonSize.LgLowHeight],
     },
     type: {
-      options: [ButtonType.Primary, ButtonType.Secondary],
+      options: [ButtonType.Primary, ButtonType.Secondary, ButtonType.Ternary],
     },
     width: {
       options: [Width.Full, Width.Fit],
