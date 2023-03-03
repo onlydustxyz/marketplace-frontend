@@ -3,7 +3,8 @@ describe("As a simple user, I", () => {
   let globalBudgetId;
   let globalLeader;
 
-  before(() => {
+  beforeEach(() => {
+    cy.fixture("repos.json").as("repos");
     cy.createGithubUser(543221).then(user =>
       cy
         .createProject("Project with budget")
@@ -24,10 +25,6 @@ describe("As a simple user, I", () => {
             });
         })
     );
-  });
-
-  beforeEach(() => {
-    cy.fixture("repos.json").as("repos");
   });
 
   it("can get projects with some details", function () {

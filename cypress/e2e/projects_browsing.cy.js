@@ -1,5 +1,5 @@
 describe("As a visitor, I", () => {
-  before(function () {
+  beforeEach(function () {
     cy.fixture("repos.json").as("repos");
     cy.createGithubUser(98735558).then(user => {
       cy.createProject("Croute A").withLeader(user).withBudget(500).withRepo(this.repos.A.id).as("projectId");

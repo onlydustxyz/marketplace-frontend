@@ -1,7 +1,7 @@
 describe("As a public user, I", () => {
   const OFUX = 595505;
 
-  before(function () {
+  beforeEach(function () {
     cy.fixture("repos.json").as("repos");
     cy.createGithubUser(98735558).then(user => {
       cy.createProject("Project with budget")

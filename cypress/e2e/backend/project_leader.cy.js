@@ -2,7 +2,7 @@ describe("As a project leader, I", () => {
   let projectId;
   let leader;
 
-  before(() => {
+  beforeEach(() => {
     cy.createGithubUser(12345).then(user => {
       cy.createProject("Project with budget")
         .withLeader(user)

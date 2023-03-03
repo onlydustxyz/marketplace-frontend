@@ -22,6 +22,26 @@ import "./commands/payment";
 import "./commands/project";
 import "./commands/sponsor";
 import "./commands/user";
+import "./commands/populate/db_utils";
+import "./commands/populate/all";
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+// Before all tests, populate and save data
+before(function () {
+  cy.cleanupDB();
+  cy.populateAll();
+  cy.dumpDB();
+});
+
+// Before each test, restore the DB as it was before running the first test.
+//
+// IMPORTANT: do NOT use before() to populate data in your tests,
+// because it will be overriden by this restoration. Use beforeEach() instead.
+beforeEach(function () {
+  cy.restoreDB();
+});
+
+// Once all tests are done, restore the DB so it is populated as it was before running the first test.
+// This lets you have a local DB with some data for your manual tests.
+after(function () {
+  cy.restoreDB();
+});

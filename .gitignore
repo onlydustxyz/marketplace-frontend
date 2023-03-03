@@ -43,6 +43,7 @@ coverage
 # Cypress
 cypress/screenshots
 cypress/videos
+cypress/marketplace_db_dump
 
 # Logs
 logs
