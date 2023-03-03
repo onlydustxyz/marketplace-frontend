@@ -222,6 +222,12 @@
       "view": "View invite"
     }
   },
+  "projects": {
+    "fallback": {
+      "subTitle": "Try removing a filter",
+      "title": "Nothing to show"
+    }
+  },
   "projectLeadInvitation": {
     "accept": "Accept invite",
     "prompt": "You’ve been promoted to Project Lead on __projectName__"

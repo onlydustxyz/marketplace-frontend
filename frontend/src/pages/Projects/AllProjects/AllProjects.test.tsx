@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import AllProjects, { buildGetProjectsQuery } from ".";
@@ -388,5 +388,20 @@ describe("All projects", () => {
     const allProjectCards = await screen.findAllByTestId("project-card");
     expect(allProjectCards).toHaveLength(1);
     expect(screen.getByText("Nothing but invited"));
+  });
+
+  it("should display fallback screen when no project", async () => {
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN));
+    renderWithIntl(<AllProjects technologies={[]} projectOwnershipType={ProjectOwnershipType.All} />, {
+      wrapper: MemoryRouterProviderFactory({
+        mocks: [
+          ...buildGraphQlMocks({
+            data: { projects: [] },
+          }),
+        ],
+      }),
+    });
+
+    await waitFor(() => expect(screen.getByText("Nothing to show")));
   });
 });
