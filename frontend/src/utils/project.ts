@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { VisibleProjectFragment } from "src/__generated/graphql";
 
-export function isProjectVisible(project: VisibleProjectFragment | null) {
+export function isProjectVisible<T extends VisibleProjectFragment>(project: T | null) {
   if (!project) {
     return false;
   }

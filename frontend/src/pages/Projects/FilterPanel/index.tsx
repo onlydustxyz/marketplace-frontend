@@ -6,6 +6,7 @@ import {
   getMostUsedLanguages,
   GITHUB_REPOS_LANGUAGES_FRAGMENT,
 } from "src/utils/languages";
+import { isProjectVisible } from "src/utils/project";
 import { GetAllTechnologiesQuery } from "src/__generated/graphql";
 import { ProjectFilter } from "..";
 import View from "./View";
@@ -21,6 +22,7 @@ export default function FilterPanel({ projectFilter, setProjectFilter, isProject
 
   const availableTechnologies = new Set(
     technologiesQuery.data?.projects
+      .filter(isProjectVisible)
       .map(p => getMostUsedLanguages(getDeduplicatedAggregatedLanguages(p.githubRepos)))
       .flat()
   );
@@ -40,8 +42,17 @@ export const GET_ALL_TECHNOLOGIES_QUERY = gql`
   query GetAllTechnologies {
     projects {
       id
+      projectLeads {
+        userId
+      }
       githubRepos {
         ...GithubRepoLanguagesFields
+      }
+      budgets {
+        id
+      }
+      pendingInvitations {
+        id
       }
     }
   }
