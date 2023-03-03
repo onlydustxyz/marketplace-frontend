@@ -3500,7 +3500,7 @@ export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __
 export type GetAllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllTechnologiesQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }> }> };
+export type GetAllTechnologiesQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgets: Array<{ __typename?: 'Budgets', id: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }> }> };
 
 export type GithubRepoLanguagesFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null };
 
@@ -4579,22 +4579,14 @@ export type GetProjectsQueryResult = Apollo.QueryResult<GetProjectsQuery, GetPro
 export const GetAllTechnologiesDocument = gql`
     query GetAllTechnologies {
   projects {
-    id
-    projectLeads {
-      userId
-    }
+    ...VisibleProject
     githubRepos {
       ...GithubRepoLanguagesFields
     }
-    budgets {
-      id
-    }
-    pendingInvitations {
-      id
-    }
   }
 }
-    ${GithubRepoLanguagesFieldsFragmentDoc}`;
+    ${VisibleProjectFragmentDoc}
+${GithubRepoLanguagesFieldsFragmentDoc}`;
 
 /**
  * __useGetAllTechnologiesQuery__
