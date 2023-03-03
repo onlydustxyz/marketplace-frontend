@@ -1,0 +1,11 @@
+{
+  "Kakarot": {
+    "shortDescription": "EVM interpreter written in Cairo, a sort of ZK-EVM emulator, leveraging STARK proof system.",
+    "longDescription": "Kakarot is an Ethereum Virtual Machine written in Cairo. It means it can be deployed on StarkNet, a layer 2 scaling solution for Ethereum, and run any EVM bytecode program. Hence, Kakarot can be used to run Ethereum smart contracts on StarkNet. Kakarot is the super sayajin zkEVM! Why? Because: It's over 9000!!!!!.",
+    "telegramLink": "https://t.me/kakarot",
+    "logoUrl": "https://github.com/sayajin-labs/kakarot/raw/main/docs/img/kakarot_github_banner.png",
+    "initialBudget": 50000,
+    "leaders": ["TokioRs", "Olivier"],
+    "repos": ["kakarot"]
+  }
+}

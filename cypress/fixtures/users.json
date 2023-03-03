@@ -1,0 +1,110 @@
+{
+  "TokioRs": {
+    "createProfile": true,
+    "github": {
+      "id": 20248544,
+      "login": "tokio-rs"
+    },
+    "email": "rust@tokio.com",
+    "identity": {
+      "type": "COMPANY",
+      "optCompany": {
+        "name": "TokioRs"
+      }
+    },
+    "location": {
+      "address": "4564 30th St",
+      "city": "San Diego",
+      "country": "USA",
+      "postCode": "92116"
+    },
+    "payoutSettings": {
+      "type": "BANK_ADDRESS",
+      "optBankAddress": {
+        "BIC": "BNPCFR21",
+        "IBAN": "FR7610107001011234567890129"
+      }
+    }
+  },
+
+  "Olivier": {
+    "createProfile": true,
+    "github": {
+      "id": 595505,
+      "login": "ofux"
+    },
+    "email": "olivier@mymail.org",
+    "identity": {
+      "type": "PERSON",
+      "optPerson": {
+        "firstname": "Olivier",
+        "lastname": "Fufifo"
+      }
+    },
+    "location": {
+      "address": "12 rue des Fougères",
+      "city": "Paris",
+      "country": "FR",
+      "postCode": "75005"
+    },
+    "payoutSettings": {
+      "type": "BANK_ADDRESS",
+      "optBankAddress": {
+        "BIC": "BNPAFRPPXXX",
+        "IBAN": "FR7630004000031234567890143"
+      }
+    }
+  },
+
+  "Anthony": {
+    "createProfile": true,
+    "github": {
+      "id": 43467246,
+      "login": "AnthonyBuisset"
+    },
+    "email": "antho@foo-mail.org",
+    "identity": {
+      "type": "PERSON",
+      "optPerson": {
+        "firstname": "Anthony",
+        "lastname": "Bubibo"
+      }
+    },
+    "location": {
+      "address": "1 chemin du Cherche-midi",
+      "city": "Nice",
+      "country": "FR",
+      "postCode": "06100"
+    },
+    "payoutSettings": {
+      "type": "ETHEREUM_ADDRESS",
+      "optEthAddress": "0xb0E28d8e010d10a78e8ffB5BCDd607A3bEe366b7"
+    }
+  },
+
+  "Oscar": {
+    "createProfile": false,
+    "github": {
+      "id": 21149076,
+      "login": "oscarwroche"
+    },
+    "email": "oscar@super-mail.org",
+    "identity": {
+      "type": "PERSON",
+      "optPerson": {
+        "firstname": "Oscar",
+        "lastname": "Eau de Roche"
+      }
+    },
+    "location": {
+      "address": "55 Rue du Faubourg Saint-Honoré",
+      "city": "Paris",
+      "country": "FR",
+      "postCode": "75008"
+    },
+    "payoutSettings": {
+      "type": "ETHEREUM_NAME",
+      "optEthName": "vitalik.eth"
+    }
+  }
+}

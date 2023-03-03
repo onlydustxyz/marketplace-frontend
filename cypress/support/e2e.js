@@ -23,6 +23,8 @@ import "./commands/project";
 import "./commands/sponsor";
 import "./commands/user";
 import "./commands/populate/db_utils";
+import "./commands/populate/users";
+import "./commands/populate/projects";
 import "./commands/populate/all";
 
 // Before all tests, populate and save data
