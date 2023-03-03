@@ -44,7 +44,7 @@ export default function ContributorLine({
           <>
             <Button
               type={ButtonType.Secondary}
-              size={ButtonSize.Small}
+              size={ButtonSize.Sm}
               disabled={isSendingNewPaymentDisabled}
               onClick={() => onPaymentRequested(contributor)}
               id="sendPaymentButton"

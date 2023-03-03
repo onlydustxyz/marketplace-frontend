@@ -2,10 +2,11 @@ import classNames from "classnames";
 import { PropsWithChildren } from "react";
 
 export enum ButtonSize {
-  Small = "small",
-  Medium = "medium",
-  LargeLowHeight = "large-low-height",
-  Large = "large",
+  Xs = "xs",
+  Sm = "sm",
+  Md = "md",
+  LgLowHeight = "lg-low-height",
+  Lg = "lg",
 }
 
 export enum ButtonType {
@@ -28,7 +29,7 @@ type ButtonProps = {
 } & PropsWithChildren;
 
 export default function Button({
-  size = ButtonSize.Large,
+  size = ButtonSize.Lg,
   type = ButtonType.Primary,
   width = Width.Fit,
   disabled = false,
@@ -39,8 +40,8 @@ export default function Button({
   return (
     <button
       className={classNames(
-        "flex flex-row justify-center items-center gap-2",
-        "rounded-xl font-walsheim drop-shadow-bottom-sm font-medium",
+        "flex flex-row justify-center items-center",
+        "font-walsheim drop-shadow-bottom-sm font-medium",
         {
           "curost-pointer": !disabled,
           "cursor-not-allowed": disabled,
@@ -57,10 +58,11 @@ export default function Button({
           "w-fit": width === Width.Fit,
         },
         {
-          "px-6 py-4 h-14": size === ButtonSize.Large,
-          "px-4 py-1.5 h-12": size === ButtonSize.LargeLowHeight,
-          "text-sm px-4 py-1.5 h-14": size === ButtonSize.Medium,
-          "text-sm px-4 py-2 h-8": size === ButtonSize.Small,
+          "px-6 py-4 h-14 gap-3 rounded-xl": size === ButtonSize.Lg,
+          "px-4 py-1.5 h-12 gap-3 rounded-xl": size === ButtonSize.LgLowHeight,
+          "text-sm px-4 py-1.5 h-14 gap-2 rounded-xl": size === ButtonSize.Md,
+          "text-sm px-4 py-2 h-8 gap-2 rounded-large": size === ButtonSize.Sm,
+          "text-xs px-2 py-1 h-6 gap-1 rounded-lg": size === ButtonSize.Xs,
         },
         {
           "bg-greyscale-50": type === ButtonType.Primary,

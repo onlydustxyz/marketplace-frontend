@@ -41,13 +41,13 @@ const Profile: React.FC = () => {
           <span className="text-3xl font-belwe font-normal w-full">{T("profile.edit")}</span>
           <div className="flex space-x-6">
             <div onClick={navigateBack}>
-              <Button size={ButtonSize.Large} type={ButtonType.Secondary} data-testid="profile-form-cancel-button">
+              <Button size={ButtonSize.Lg} type={ButtonType.Secondary} data-testid="profile-form-cancel-button">
                 <div>{T("profile.form.cancel")}</div>
               </Button>
             </div>
             <div className="whitespace-nowrap">
               <Button
-                size={ButtonSize.Large}
+                size={ButtonSize.Lg}
                 type={ButtonType.Primary}
                 htmlType="submit"
                 form="profile-form"

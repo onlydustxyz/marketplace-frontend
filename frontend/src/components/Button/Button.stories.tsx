@@ -1,36 +1,31 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { JSXElementConstructor } from "react";
-import Button, { ButtonSize, ButtonType } from ".";
+import Button, { ButtonSize, ButtonType, Width } from ".";
 
 export default {
   title: "Button",
+  component: Button,
   argTypes: {
     size: {
-      control: {
-        type: "select",
-        options: [ButtonSize.Medium, ButtonSize.Large],
-      },
+      control: { type: "select" },
+      options: [ButtonSize.Xs, ButtonSize.Sm, ButtonSize.Md, ButtonSize.Lg, ButtonSize.LgLowHeight],
     },
     type: {
-      control: {
-        type: "select",
-        options: [ButtonType.Primary, ButtonType.Secondary],
-      },
+      options: [ButtonType.Primary, ButtonType.Secondary],
+    },
+    width: {
+      options: [Width.Full, Width.Fit],
     },
   },
-} as ComponentMeta<typeof Button>;
-
-const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
-  <Button {...args}>
-    <div>{args.text}</div>
-  </Button>
-);
-
-export const Default = Template.bind({});
-
-const args = {
-  text: "Complete payment information",
-  disabled: false,
 };
 
-Default.args = args;
+export const Default = {
+  render: (args: typeof Button) => <Button {...args}>{"Complete payment information"}</Button>,
+};
+
+export const WithIcon = {
+  render: (args: typeof Button) => (
+    <Button {...args}>
+      <i className="ri-send-plane-2-line" />
+      {"Complete payment information"}
+    </Button>
+  ),
+};
