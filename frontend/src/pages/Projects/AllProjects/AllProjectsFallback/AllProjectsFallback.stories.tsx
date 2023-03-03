@@ -1,17 +1,13 @@
-import { ComponentStory } from "@storybook/react";
-import { JSXElementConstructor } from "react";
 import AllProjectsFallback from ".";
 
 export default {
   title: "AllProjectsFallback",
+  component: AllProjectsFallback,
 };
 
-const Template: ComponentStory<JSXElementConstructor<typeof AllProjectsFallback>> = () => <AllProjectsFallback />;
-
-export const Default = Template.bind({});
-
-Default.parameters = {
-  backgrounds: {
-    default: "space",
+export const Default = {
+  render: () => <AllProjectsFallback clearFilters={Function.prototype()} />,
+  parameters: {
+    backgrounds: { default: "space" },
   },
 };

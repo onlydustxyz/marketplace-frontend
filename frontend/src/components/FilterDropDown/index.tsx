@@ -44,7 +44,7 @@ export default function FilterDropDown({
         })
       }
       multiple
-      defaultValue={projectFilter.technologies}
+      value={projectFilter.technologies}
     >
       {({ value }) => (
         <>

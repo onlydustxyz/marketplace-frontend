@@ -25,10 +25,12 @@ export default function Projects() {
   const { T } = useT();
   const { ledProjectIds } = useAuth();
 
-  const [projectFilter, setProjectFilter] = useLocalStorage<ProjectFilter>(PROJECT_FILTER_KEY, {
+  const defaultFilter: ProjectFilter = {
     ownershipType: ProjectOwnershipType.All,
     technologies: [],
-  });
+  };
+
+  const [projectFilter, setProjectFilter] = useLocalStorage(PROJECT_FILTER_KEY, defaultFilter);
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
@@ -45,7 +47,11 @@ export default function Projects() {
             )}
           </div>
           {projectFilter && projectFilter.technologies && projectFilter.ownershipType && (
-            <AllProjects technologies={projectFilter.technologies} projectOwnershipType={projectFilter.ownershipType} />
+            <AllProjects
+              technologies={projectFilter.technologies}
+              projectOwnershipType={projectFilter.ownershipType}
+              clearFilters={() => setProjectFilter(defaultFilter)}
+            />
           )}
         </div>
       </div>

@@ -12,11 +12,12 @@ import { ProjectOwnershipType } from "..";
 import AllProjectsFallback from "./AllProjectsFallback";
 
 type Props = {
+  clearFilters: () => void;
   technologies: string[];
   projectOwnershipType: ProjectOwnershipType;
 };
 
-export default function AllProjects({ technologies, projectOwnershipType }: Props) {
+export default function AllProjects({ clearFilters, technologies, projectOwnershipType }: Props) {
   const { ledProjectIds, githubUserId, isLoggedIn } = useAuth();
 
   const getProjectsQuery = useHasuraQuery<GetProjectsQuery>(
@@ -43,7 +44,7 @@ export default function AllProjects({ technologies, projectOwnershipType }: Prop
         {projects && projects.length > 0 ? (
           projects.map(project => <ProjectCard key={project.id} {...project} />)
         ) : (
-          <AllProjectsFallback />
+          <AllProjectsFallback clearFilters={clearFilters} />
         )}
       </div>
     </QueryWrapper>

@@ -229,6 +229,7 @@
   },
   "projects": {
     "fallback": {
+      "clearFiltersButton": "Clear filters",
       "subTitle": "Try removing a filter",
       "title": "Nothing to show"
     }
