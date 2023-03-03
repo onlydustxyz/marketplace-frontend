@@ -72,7 +72,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
                         <div className="flex flex-col flex-1 justify-self-start truncate">
                           <div className="truncate text-base font-medium">{project.name}</div>
                           <div className="truncate text-sm font-regular text-slate-400">
-                            {project.nbContributors} {T("project.details.sidebar.contributors")}
+                            {T("project.details.sidebar.contributors", { count: project.nbContributors })}
                           </div>
                         </div>
                         <>

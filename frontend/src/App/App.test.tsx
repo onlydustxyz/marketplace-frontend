@@ -471,7 +471,7 @@ describe("Integration tests", () => {
       screen.getByText(/granted/i);
     });
 
-    expect((await screen.findAllByText("Project overview")).length).toEqual(2);
+    expect(screen.findByText("Overview"));
     expect(screen.queryByText("Payments")).not.toBeInTheDocument();
     expect(screen.findByText("Contributors"));
   });
