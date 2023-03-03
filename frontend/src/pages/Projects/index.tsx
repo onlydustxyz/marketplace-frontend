@@ -19,11 +19,13 @@ export interface ProjectFilter {
   technologies: string[];
 }
 
+const PROJECT_FILTER_KEY = "project_filter";
+
 export default function Projects() {
   const { T } = useT();
   const { ledProjectIds } = useAuth();
 
-  const [projectFilter, setProjectFilter] = useLocalStorage<ProjectFilter>("PROJECT_FILTER", {
+  const [projectFilter, setProjectFilter] = useLocalStorage<ProjectFilter>(PROJECT_FILTER_KEY, {
     ownershipType: ProjectOwnershipType.All,
     technologies: [],
   });
