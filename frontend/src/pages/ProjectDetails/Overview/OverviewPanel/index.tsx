@@ -33,6 +33,7 @@ export default function OverviewPanel({ projectId, ...props }: OverviewPanelProp
 
 export const PROJECT_LEAD_FRAGMENT = gql`
   fragment ProjectLead on users {
+    id
     displayName
     avatarUrl
   }

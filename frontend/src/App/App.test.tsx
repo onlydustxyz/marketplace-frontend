@@ -113,6 +113,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
           {
             userId: TEST_USER_ID,
             user: {
+              id: TEST_USER_ID,
               displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
               avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
             },
@@ -122,7 +123,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
         githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
         projectSponsors: [],
         budgetsAggregate: { aggregate: { sum: { spentAmount: 100 } } },
-        budgets: [{ id: "budget-1" }],
+        budgets: [{ id: "budget-1", paymentRequests: [] }],
       },
     ],
   },
@@ -153,6 +154,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
           userId: TEST_USER_ID,
           user: {
             __typename: "users",
+            id: TEST_USER_ID,
             displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
             avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
           },
@@ -161,7 +163,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
       pendingInvitations: [{ id: "invitation-id" }],
       githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
       projectSponsors: [],
-      budgets: [{ id: "budget-1" }],
+      budgets: [{ id: "budget-1", paymentRequests: [] }],
     },
   },
 };
@@ -280,16 +282,13 @@ const graphQlMocks = [
                     contributors: [
                       {
                         id: TEST_GITHUB_USER_ID,
-                        login: TEST_GITHUB_CONTRIBUTOR_LOGIN,
-                        avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
-                        user: { userId: TEST_USER_ID },
-                        paymentRequests: [],
                       },
                     ],
                   },
                 },
               },
             ],
+            budgets: [],
           },
         ],
       } as GetProjectsForSidebarQueryResult["data"],

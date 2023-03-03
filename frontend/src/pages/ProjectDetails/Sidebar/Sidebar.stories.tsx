@@ -1,7 +1,10 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { range } from "lodash";
 import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
+import { ProjectContributorsFragment } from "src/__generated/graphql";
 import { withRouter } from "storybook-addon-react-router-v6";
-import View from "./View";
+import { ProjectDetails } from "..";
+import View, { SidebarProjectDetails } from "./View";
 
 export default {
   title: "ProjectsSidebar",
@@ -20,7 +23,11 @@ const availableTabs: ProjectDetailsTab[] = [
   },
 ];
 
-const currentProject = {
+const contributors = range(4).map(id => ({
+  id,
+}));
+
+const currentProject: ProjectDetails & SidebarProjectDetails & ProjectContributorsFragment = {
   id: "test-project-id",
   name: "Our project",
   logoUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
@@ -31,13 +38,14 @@ const currentProject = {
       avatarUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
     },
   ],
-  nbContributors: 4,
-  withInvitation: false,
   sponsors: [],
   languages: {},
+  withInvitation: false,
+  githubRepos: [{ githubRepoId: 123456, githubRepoDetails: { id: 123456, content: { id: 123456, contributors } } }],
+  budgets: [],
 };
 
-const otherProject = {
+const otherProject: ProjectDetails & SidebarProjectDetails & ProjectContributorsFragment = {
   id: "other-project-id",
   name: "Other project",
   logoUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
@@ -48,8 +56,11 @@ const otherProject = {
       avatarUrl: "https://avatars.githubusercontent.com/u/98735558?v=4",
     },
   ],
-  nbContributors: 4,
+  sponsors: [],
+  languages: {},
   withInvitation: false,
+  githubRepos: [{ githubRepoId: 123456, githubRepoDetails: { id: 123456, content: { id: 123456, contributors } } }],
+  budgets: [],
 };
 
 const expandable = true;

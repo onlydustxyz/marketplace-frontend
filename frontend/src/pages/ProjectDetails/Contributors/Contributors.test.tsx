@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import Contributors, { getDeduplicatedAggregatedContributors, GET_PROJECT_CONTRIBUTORS_QUERY } from ".";
+import Contributors, { GET_PROJECT_CONTRIBUTORS_QUERY } from ".";
 import { ContributorsTableFieldsFragment, GithubRepoContributorsFieldsFragment } from "src/__generated/graphql";
 
 expect.extend(matchers);
@@ -136,16 +136,5 @@ describe('"ProjectDetails" page', () => {
     await screen.findByText(/ofux/i);
     await screen.findByText(/AnthonyBuisset/i);
     await screen.findByText(/oscarwroche/i);
-  });
-});
-
-describe.each([
-  { repos: [], expected_contributors: [] },
-  { repos: [githubRepo1], expected_contributors: [contributor1, contributor2] },
-  { repos: [githubRepo1, githubRepo2], expected_contributors: [contributor1, contributor2, contributor3] },
-])("Listing contributors", ({ repos, expected_contributors }) => {
-  test("should aggregate and deduplicate contributors of Github repos", async () => {
-    const contributors = getDeduplicatedAggregatedContributors(repos);
-    expect(contributors).toEqual(expected_contributors);
   });
 });

@@ -24,7 +24,7 @@ const ProjectLeads = ({ leads, id }: { leads: ProjectLeadFragment[]; id: string 
             rounding={Rounding.Circle}
             alt={lead.displayName}
             size={ImageSize.Xxs}
-            key={lead.displayName}
+            key={lead.id}
             src={lead.avatarUrl}
           />
         ))}

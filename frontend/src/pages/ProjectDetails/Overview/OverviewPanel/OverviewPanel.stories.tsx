@@ -46,9 +46,9 @@ Default.args = {
     { login: "oscarwroche", avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4" },
   ],
   leads: [
-    { displayName: "anthonybuisset", avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4" },
-    { displayName: "bernardstanislas", avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4" },
-    { displayName: "oscarwroche", avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4" },
+    { id: "user-1", displayName: "anthonybuisset", avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4" },
+    { id: "user-2", displayName: "bernardstanislas", avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4" },
+    { id: "user-3", displayName: "oscarwroche", avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4" },
   ],
   sponsors: [
     {

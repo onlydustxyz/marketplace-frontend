@@ -1,6 +1,7 @@
 import { ComponentStory } from "@storybook/react";
 import { JSXElementConstructor } from "react";
 import { responsiveChromatic } from "src/test/utils";
+import { Project } from "src/pages/Projects";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 import ProjectCard from ".";
@@ -17,7 +18,7 @@ const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
 
 export const Default = Template.bind({});
 
-const props = (args: { name: string; shortDescription: string; projectLeadsCount: number }) => ({
+const props = (args: { name: string; shortDescription: string; projectLeadsCount: number }): Project => ({
   id: 123,
   projectDetails: {
     projectId: "123",
@@ -30,6 +31,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     {
       userId: "user-1",
       user: {
+        id: "user-1",
         displayName: "oscarwroche",
         avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
       },
@@ -37,6 +39,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     {
       userId: "user-2",
       user: {
+        id: "user-2",
         displayName: "AnthonyBuisset",
         avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
       },
@@ -44,6 +47,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     {
       userId: "user-3",
       user: {
+        id: "user-3",
         displayName: "ofux",
         avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
       },
@@ -51,6 +55,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     {
       userId: "user-4",
       user: {
+        id: "user-4",
         displayName: "tdelabro",
         avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
       },
@@ -58,6 +63,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     {
       userId: "user-5",
       user: {
+        id: "user-5",
         displayName: "BernardStanislas",
         avatarUrl: "https://avatars.githubusercontent.com/u/4435377?v=4",
       },
@@ -65,6 +71,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     {
       userId: "user-6",
       user: {
+        id: "user-6",
         displayName: "gregcha",
         avatarUrl: "https://avatars.githubusercontent.com/u/8642470?v=4",
       },
@@ -75,12 +82,9 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
       githubRepoId: 12345,
       githubRepoDetails: {
         id: 12345,
-        owner: "facebook",
-        name: "react",
         languages: { Ejs: 2200, Rust: 1000 },
         content: {
           id: 12345,
-          logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
           contributors: [{ id: 100 }, { id: 837 }],
         },
       },
@@ -89,18 +93,23 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
       githubRepoId: 666,
       githubRepoDetails: {
         id: 666,
-        owner: "chuck",
-        name: "norris",
         languages: { Pascal: 1000000, Rust: 3000 },
         content: {
           id: 666,
-          logoUrl: "https://avatars.githubusercontent.com/u/115809607?v=4",
           contributors: [{ id: 100 }, { id: 777 }],
         },
       },
     },
   ],
-  budgets: [{ id: "budget-1" }],
+  budgets: [
+    {
+      id: "budget-1",
+      paymentRequests: [
+        { id: "payment-1", githubRecipient: { id: 777 } },
+        { id: "payment-2", githubRecipient: { id: 778 } },
+      ],
+    },
+  ],
   budgetsAggregate: {
     aggregate: {
       sum: {

@@ -13,12 +13,7 @@ import { Project } from "src/pages/Projects";
 import { buildLanguageString, getDeduplicatedAggregatedLanguages } from "src/utils/languages";
 import { formatMoneyAmount } from "src/utils/money";
 import { useMediaQuery } from "usehooks-ts";
-import {
-  ProjectCardContributorsFieldsFragment,
-  ProjectCardGithubRepoFieldsFragment,
-  ProjectLeadFragmentDoc,
-  SponsorFragmentDoc,
-} from "src/__generated/graphql";
+import { ProjectContributorsFragmentDoc, ProjectLeadFragmentDoc, SponsorFragmentDoc } from "src/__generated/graphql";
 import User3Line from "src/icons/User3Line";
 import FundsLine from "src/icons/FundsLine";
 import Tooltip, { TooltipPosition } from "../Tooltip";
@@ -26,6 +21,7 @@ import ProjectTitle from "./ProjectTitle";
 import isDefined from "src/utils/isDefined";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Tag, { TagSize } from "../Tag";
+import { getContributors } from "src/utils/project";
 
 type ProjectCardProps = Project & {
   selectable?: boolean;
@@ -38,6 +34,7 @@ export default function ProjectCard({
   githubRepos,
   projectLeads,
   budgetsAggregate,
+  budgets,
   projectSponsors,
 }: ProjectCardProps) {
   const { T } = useIntl();
@@ -45,7 +42,7 @@ export default function ProjectCard({
   const totalSpentAmountInUsd = budgetsAggregate?.aggregate?.sum?.spentAmount;
 
   const topSponsors = projectSponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
-  const contributors = getDeduplicatedAggregatedContributors(githubRepos);
+  const { contributors } = getContributors({ githubRepos, budgets });
   const languages = getDeduplicatedAggregatedLanguages(githubRepos);
 
   const card = (
@@ -150,37 +147,12 @@ export default function ProjectCard({
   );
 }
 
-export const getDeduplicatedAggregatedContributors = function (
-  githubRepos: ProjectCardGithubRepoFieldsFragment[] | undefined
-): ProjectCardContributorsFieldsFragment[] {
-  if (githubRepos === undefined) {
-    return [];
-  }
-  const flatten_users = githubRepos
-    .flatMap(repo => repo.githubRepoDetails?.content?.contributors)
-    .flatMap(user => (user ? [user] : []));
-  return [...new Set(flatten_users)];
-};
-
-export const PROJECT_CARD_CONTRIBUTORS_FRAGMENT = gql`
-  fragment ProjectCardContributorsFields on User {
-    id
-  }
-`;
-
 export const PROJECT_CARD_GITHUB_REPOS_FRAGMENT = gql`
-  ${PROJECT_CARD_CONTRIBUTORS_FRAGMENT}
   fragment ProjectCardGithubRepoFields on ProjectGithubRepos {
     githubRepoId
     githubRepoDetails {
       id
       languages
-      content {
-        id
-        contributors {
-          ...ProjectCardContributorsFields
-        }
-      }
     }
   }
 `;
@@ -188,9 +160,11 @@ export const PROJECT_CARD_GITHUB_REPOS_FRAGMENT = gql`
 export const PROJECT_CARD_FRAGMENT = gql`
   ${ProjectLeadFragmentDoc}
   ${SponsorFragmentDoc}
+  ${ProjectContributorsFragmentDoc}
   ${PROJECT_CARD_GITHUB_REPOS_FRAGMENT}
   fragment ProjectCardFields on Projects {
     id
+    ...ProjectContributors
     budgetsAggregate {
       aggregate {
         sum {
