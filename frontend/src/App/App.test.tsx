@@ -111,6 +111,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
         },
         projectLeads: [
           {
+            userId: TEST_USER_ID,
             user: {
               displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
               avatarUrl: TEST_PROJECT_LEAD_AVATAR_URL,
@@ -149,6 +150,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
       projectLeads: [
         {
           __typename: "ProjectLeads",
+          userId: TEST_USER_ID,
           user: {
             __typename: "users",
             displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,

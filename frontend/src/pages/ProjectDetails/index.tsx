@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
@@ -10,6 +10,8 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { SessionMethod, useSessionDispatch, useSession } from "src/hooks/useSession";
 import View from "./View";
 import { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
+import { isVisible } from "src/utils/project";
+import { RoutePaths } from "src/App";
 
 type ProjectDetailsParams = {
   projectId: string;
@@ -62,18 +64,21 @@ const ProjectDetails: React.FC = () => {
 
   return (
     <QueryWrapper query={getProjectQuery}>
-      {project && (
-        <View
-          currentProject={projectFromQuery(project)}
-          onInvitationAccepted={(invitationId: string) => {
-            acceptInvitation({
-              variables: {
-                invitationId,
-              },
-            });
-          }}
-        />
-      )}
+      {project !== undefined &&
+        (isVisible(project) ? (
+          <View
+            currentProject={projectFromQuery(project)}
+            onInvitationAccepted={(invitationId: string) => {
+              acceptInvitation({
+                variables: {
+                  invitationId,
+                },
+              });
+            }}
+          />
+        ) : (
+          <Navigate to={RoutePaths.Projects} />
+        ))}
     </QueryWrapper>
   );
 };

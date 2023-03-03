@@ -34,7 +34,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           },
         },
         pendingInvitations: [],
-        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
         githubRepos: [
           {
@@ -82,7 +82,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
             },
           },
         ],
-        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
       },
     ],
@@ -124,7 +124,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         ],
-        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
       },
       {
@@ -159,7 +159,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         ],
-        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
       },
       {
@@ -194,7 +194,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         ],
-        projectLeads: [{ user: { displayName: "project lead", avatarUrl: "avatar" } }],
+        projectLeads: [{ userId: "user-1", user: { displayName: "project lead", avatarUrl: "avatar" } }],
         projectSponsors: [],
       },
     ],
@@ -227,7 +227,7 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
     },
   ],
   pendingInvitations: [],
-  projectLeads: [{ user: { displayName: "leader", avatarUrl: "avatar" } }],
+  projectLeads: [{ userId: "user-1", user: { displayName: "leader", avatarUrl: "avatar" } }],
   projectSponsors: [],
 };
 
@@ -245,7 +245,7 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
   },
   githubRepos: [],
   pendingInvitations: [],
-  projectLeads: [{ user: { displayName: "leader", avatarUrl: "avatar" } }],
+  projectLeads: [{ userId: "user-1", user: { displayName: "leader", avatarUrl: "avatar" } }],
   projectSponsors: [],
 };
 
