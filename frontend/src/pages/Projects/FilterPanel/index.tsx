@@ -6,7 +6,7 @@ import {
   getMostUsedLanguages,
   GITHUB_REPOS_LANGUAGES_FRAGMENT,
 } from "src/utils/languages";
-import { isProjectVisible } from "src/utils/project";
+import { isProjectVisible, VISIBLE_PROJECT_FRAGMENT } from "src/utils/project";
 import { GetAllTechnologiesQuery } from "src/__generated/graphql";
 import { ProjectFilter } from "..";
 import View from "./View";
@@ -38,21 +38,13 @@ export default function FilterPanel({ projectFilter, setProjectFilter, isProject
 }
 
 export const GET_ALL_TECHNOLOGIES_QUERY = gql`
+  ${VISIBLE_PROJECT_FRAGMENT}
   ${GITHUB_REPOS_LANGUAGES_FRAGMENT}
   query GetAllTechnologies {
     projects {
-      id
-      projectLeads {
-        userId
-      }
+      ...VisibleProject
       githubRepos {
         ...GithubRepoLanguagesFields
-      }
-      budgets {
-        id
-      }
-      pendingInvitations {
-        id
       }
     }
   }
