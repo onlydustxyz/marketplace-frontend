@@ -4,8 +4,13 @@ import { ProjectPaymentsRoutePaths } from "src/App";
 import CurrencyLine from "src/icons/CurrencyLine";
 import { useT } from "talkr";
 import Button, { ButtonSize, Width } from "../Button";
+import Tooltip, { TooltipPosition } from "../Tooltip";
 
-const ProjectPaymentTableFallback: React.FC = () => {
+interface ProjectPaymentTableFallbackProps {
+  disabled?: boolean;
+}
+
+const ProjectPaymentTableFallback = ({ disabled = false }: ProjectPaymentTableFallbackProps) => {
   const { T } = useT();
   return (
     <div className="flex flex-col items-center gap-8 w-full p-2">
@@ -20,12 +25,26 @@ const ProjectPaymentTableFallback: React.FC = () => {
           {T("project.details.tableFallback.send")}
         </span>
       </div>
-      <Link to={ProjectPaymentsRoutePaths.New}>
-        <Button width={Width.Full} size={ButtonSize.Lg}>
-          <CurrencyLine />
-          <span>{T("project.details.tableFallback.newPayment")}</span>
-        </Button>
-      </Link>
+      {disabled ? (
+        <>
+          <div id="disabled-new-payment-button">
+            <Button size={ButtonSize.Lg} disabled>
+              <CurrencyLine />
+              <span>{T("project.details.tableFallback.newPayment")}</span>
+            </Button>
+          </div>
+          <Tooltip anchorId="disabled-new-payment-button" position={TooltipPosition.Bottom}>
+            <div className="w-fit">{T("project.details.tableFallback.disabledButtonTooltip")}</div>
+          </Tooltip>
+        </>
+      ) : (
+        <Link to={ProjectPaymentsRoutePaths.New}>
+          <Button width={Width.Full} size={ButtonSize.Lg}>
+            <CurrencyLine />
+            <span>{T("project.details.tableFallback.newPayment")}</span>
+          </Button>
+        </Link>
+      )}
     </div>
   );
 };

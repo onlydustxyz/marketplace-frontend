@@ -25,7 +25,7 @@ const PaymentList: React.FC = () => {
           </Card>
         ) : (
           <Card className="p-16">
-            <ProjectPaymentTableFallback />
+            <ProjectPaymentTableFallback disabled={budget.initialAmount === 0 || budget.remainingAmount === 0} />
           </Card>
         )}
       </div>
