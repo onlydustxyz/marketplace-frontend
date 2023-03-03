@@ -38,6 +38,10 @@ juniper = {version = "0.15.10"}
 juniper_rocket = {version = "0.8.2"}
 rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 
+# AWS
+rusoto_core = "0.48.0"
+rusoto_s3 = "0.48.0"
+
 # Logs
 log = "0.4.17"
 
@@ -60,9 +64,11 @@ derive_more = "0.99.17"
 dotenv = "0.15.0"
 rusty-money = {version = "0.4.1", features = ["iso", "crypto"]}
 derive-getters = "0.2.0"
+derive_setters = "0.1.5"
 email_address = "0.2.4"
 iban_validate = {version = "4.0.1", features = ["serde"]}
 rust_decimal = "1.26.1"
+infer = "0.12.0"
 
 # Local dependecies
 domain = {path = "../common/domain", features = ["rocket"]}

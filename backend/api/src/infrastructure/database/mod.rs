@@ -1,4 +1,5 @@
 mod project_details;
+#[cfg_attr(test, mockall_double::double)]
 pub use project_details::Repository as ProjectDetailsRepository;
 
 mod user_info;
@@ -18,3 +19,7 @@ pub use github_repo::Repository as GithubRepoRepository;
 
 mod project_sponsor;
 pub use project_sponsor::Repository as ProjectSponsorRepository;
+
+mod sponsor;
+#[cfg_attr(test, mockall_double::double)]
+pub use sponsor::Repository as SponsorRepository;

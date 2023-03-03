@@ -7,9 +7,13 @@ use infrastructure::{amqp::UniqueMessage, github, web3::ens};
 use presentation::http;
 
 use crate::{
-	infrastructure::database::{
-		GithubRepoRepository, PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
-		ProjectGithubRepoRepository, ProjectSponsorRepository, UserInfoRepository,
+	infrastructure::{
+		database::{
+			GithubRepoRepository, PendingProjectLeaderInvitationsRepository,
+			ProjectDetailsRepository, ProjectGithubRepoRepository, ProjectSponsorRepository,
+			SponsorRepository, UserInfoRepository,
+		},
+		simple_storage,
 	},
 	presentation::graphql,
 };
@@ -27,11 +31,13 @@ pub async fn serve(
 	project_details_repository: ProjectDetailsRepository,
 	github_repo_repository: GithubRepoRepository,
 	project_github_repo_repository: ProjectGithubRepoRepository,
+	sponsor_repository: SponsorRepository,
 	project_sponsor_repository: ProjectSponsorRepository,
 	pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 	user_info_repository: UserInfoRepository,
 	github: Arc<github::Client>,
 	ens: Arc<ens::Client>,
+	simple_storage: Arc<simple_storage::Client>,
 ) -> Result<()> {
 	let _ = rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config)
@@ -41,11 +47,13 @@ pub async fn serve(
 		.manage(project_details_repository)
 		.manage(github_repo_repository)
 		.manage(project_github_repo_repository)
+		.manage(sponsor_repository)
 		.manage(project_sponsor_repository)
 		.manage(pending_project_leader_invitations_repository)
 		.manage(user_info_repository)
 		.manage(github)
 		.manage(ens)
+		.manage(simple_storage)
 		.mount("/", routes![http::routes::health_check,])
 		.mount(
 			"/",

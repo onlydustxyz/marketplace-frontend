@@ -12,6 +12,9 @@ default:
   amqp:
     connection_retry_interval_ms: 6000
     connection_retry_count: 100
+  s3:
+    images_bucket_name: onlydust-app-images
+    bucket_region: eu-west-1
 
 local:
   database:

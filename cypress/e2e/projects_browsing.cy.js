@@ -4,7 +4,15 @@ describe("As a visitor, I", () => {
     cy.createGithubUser(98735558).then(user => {
       cy.createProject("Croute A").withLeader(user).withBudget(500).withRepo(this.repos.A.id).as("projectId");
       cy.createProject("Yolo B").withLeader(user).withBudget(500).withRepo(this.repos.B.id);
-      cy.createProject("Plop AB").withLeader(user).withBudget(500).withRepo(this.repos.A.id).withRepo(this.repos.B.id);
+      cy.createProject(
+        "Plop AB With Logo",
+        "https://t.me/plopab",
+        "https://avatars.githubusercontent.com/u/121887739?v=4"
+      )
+        .withLeader(user)
+        .withBudget(500)
+        .withRepo(this.repos.A.id)
+        .withRepo(this.repos.B.id);
     });
   });
 
@@ -14,7 +22,12 @@ describe("As a visitor, I", () => {
     // Projects
     cy.contains("Croute A");
     cy.contains("Yolo B");
-    cy.contains("Plop AB");
+    cy.contains("Plop AB With Logo")
+      .should("exist")
+      .closest("a")
+      .find("img")
+      .should("have.attr", "src")
+      .should("include", "https://onlydust-app-images.s3.eu-west-1.amazonaws.com/14623987721662397761.png");
     cy.contains("2 contributors");
     cy.contains("3 contributors");
     cy.contains("1 repository");
@@ -28,7 +41,7 @@ describe("As a visitor, I", () => {
     cy.contains("Rust").click();
     cy.contains("Croute A");
     cy.contains("Yolo B").should("not.exist");
-    cy.contains("Plop AB");
+    cy.contains("Plop AB With Logo");
 
     // Clear filters
     cy.contains("Clear all").click();
