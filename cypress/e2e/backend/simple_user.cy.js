@@ -1,5 +1,3 @@
-import { newRandomGithubUserId } from "../../support/utils";
-
 describe("As a simple user, I", () => {
   let globalProjectId;
   let globalBudgetId;
@@ -59,7 +57,7 @@ describe("As a simple user, I", () => {
   });
 
   it("can get payment request as the recipient", function () {
-    const githubUserId = newRandomGithubUserId();
+    const githubUserId = 123456;
 
     cy.requestPayment(globalProjectId, 500, githubUserId, {
       workItems: "https://github.com/onlydustxyz/marketplace/pull/504",

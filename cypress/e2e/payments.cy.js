@@ -1,5 +1,5 @@
 const PROJECT_LEAD_GITHUB_ID = 73634734;
-const CONTRIBUTOR_GITHUB_ID = 373646343;
+const CONTRIBUTOR_GITHUB_ID = 37364634;
 
 describe("As a contributor, I", () => {
   beforeEach(function () {
