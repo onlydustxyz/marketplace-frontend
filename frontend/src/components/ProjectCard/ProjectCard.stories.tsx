@@ -101,7 +101,15 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
       },
     },
   ],
-  budgets: [{ id: "budget-1", paymentRequests: [] }],
+  budgets: [
+    {
+      id: "budget-1",
+      paymentRequests: [
+        { id: "payment-1", githubRecipient: { id: 777 } },
+        { id: "payment-2", githubRecipient: { id: 778 } },
+      ],
+    },
+  ],
   budgetsAggregate: {
     aggregate: {
       sum: {
