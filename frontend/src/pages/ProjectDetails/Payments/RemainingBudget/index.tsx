@@ -26,7 +26,7 @@ export default function RemainingBudget({ budget, disabled }: Props) {
           <BudgetBar budget={budget} pendingSpending={0} displayPendingSpending={false} />
         </div>
         <div className="text-white text-sm">
-          <span>{Math.round((budget.remainingAmount / budget.initialAmount) * 100)}% </span>
+          <span>{Math.round(budget.initialAmount ? (budget.remainingAmount / budget.initialAmount) * 100 : 0)}% </span>
           <span>{T("project.details.remainingBudget.leftToSpend")}</span>
         </div>
         {!disabled && (
