@@ -30,9 +30,13 @@ import "./commands/populate/all";
 
 // Before all tests, populate and save data
 before(function () {
+  cy.log("Cleaning up and populating DB...");
+  const startTime = new Date();
   cy.cleanupDB();
   cy.populateAll();
   cy.dumpDB();
+  const elapsedTime = new Date() - startTime;
+  cy.log(`Done in ${elapsedTime}ms`);
 });
 
 // Before each test, restore the DB as it was before running the first test.
@@ -40,7 +44,11 @@ before(function () {
 // IMPORTANT: do NOT use before() to populate data in your tests,
 // because it will be overriden by this restoration. Use beforeEach() instead.
 beforeEach(function () {
+  cy.log("Restoring DB...");
+  const startTime = new Date();
   cy.restoreDB();
+  const elapsedTime = new Date() - startTime;
+  cy.log(`Done in ${elapsedTime}ms`);
 });
 
 // Once all tests are done, restore the DB so it is populated as it was before running the first test.
