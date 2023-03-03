@@ -25,6 +25,7 @@ import "./commands/user";
 import "./commands/populate/db_utils";
 import "./commands/populate/users";
 import "./commands/populate/projects";
+import "./commands/populate/payments";
 import "./commands/populate/all";
 
 // Before all tests, populate and save data

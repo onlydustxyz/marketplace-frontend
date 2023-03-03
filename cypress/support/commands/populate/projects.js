@@ -10,14 +10,17 @@ Cypress.Commands.add("populateProjects", function () {
             project.telegramLink,
             project.logoUrl,
             project.shortDescription,
-            project.longDescription,
-            project.initialBudget
+            project.longDescription
           ).then(projectId => {
             augmented_projects[projectName] = {
               id: projectId,
               name: projectName,
               ...project,
             };
+
+            if (project.initialBudget !== undefined) {
+              cy.wrap(projectId).withBudget(project.initialBudget);
+            }
 
             for (const leaderKey of project.leaders) {
               const leader = users[leaderKey];
