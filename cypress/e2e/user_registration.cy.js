@@ -2,13 +2,16 @@ import { WAIT_LONG } from "../support/commands/common";
 import IBAN from "iban";
 
 describe("The user", () => {
-  beforeEach(() => {
-    cy.fixture("profiles/james_bond").as("profile");
+  before(() => {
     cy.createGithubUser(12345).then(user => {
       cy.signinUser(user)
         .then(user => JSON.stringify(user.session))
         .as("token");
     });
+  });
+
+  beforeEach(() => {
+    cy.fixture("profiles/james_bond").as("profile");
   });
 
   it("can fill their personal info", function () {
@@ -36,13 +39,16 @@ describe("The user", () => {
 });
 
 describe("The company", () => {
-  beforeEach(() => {
-    cy.fixture("profiles/mi6").as("profile");
+  before(() => {
     cy.createGithubUser(54321).then(user => {
       cy.signinUser(user)
         .then(user => JSON.stringify(user.session))
         .as("token");
     });
+  });
+
+  beforeEach(() => {
+    cy.fixture("profiles/mi6").as("profile");
   });
 
   it("can fill their personal info", function () {
