@@ -28,13 +28,14 @@ import "./commands/populate/projects";
 import "./commands/populate/payments";
 import "./commands/populate/all";
 
-// Before each test, restore the DB as it was before running the first test.
-//
-// IMPORTANT: do NOT use before() to populate data in your tests,
-// because it will be overriden by this restoration. Use beforeEach() instead.
-beforeEach(function () {
+// Before each test suite (ie. each test file), restore the DB as it was right after populating data.
+before(function () {
   cy.log("Restoring DB...");
   cy.restoreDB();
+});
+
+// Before each test, restore the fixtures created right after populatin data.
+beforeEach(function () {
   cy.log("Restoring fixtures of populated data...");
   cy.fixtureOrDefault("populated/users.json", "users");
   cy.fixtureOrDefault("populated/projects.json", "projects");
