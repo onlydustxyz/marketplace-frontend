@@ -18,6 +18,7 @@ Cypress.Commands.add("populateUsers", function () {
       });
     }
 
+    cy.writeFile("cypress/fixtures/populated/users.json", augmented_users);
     cy.wrap(augmented_users).as("users");
   });
 });

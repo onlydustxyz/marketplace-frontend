@@ -40,6 +40,7 @@ Cypress.Commands.add("populateProjects", function () {
           });
         }
 
+        cy.writeFile("cypress/fixtures/populated/projects.json", augmented_projects);
         cy.wrap(augmented_projects).as("projects");
       });
     });
