@@ -133,6 +133,6 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add("fixtureOrDefault", (path, as) => {
-  cy.exec(`if [[ ! -f "cypress/fixtures/${path}" ]]; then; echo "{}" > cypress/fixtures/${path}; fi`);
+  cy.exec(`if [ ! -f "cypress/fixtures/${path}" ]; then echo "{}" > cypress/fixtures/${path}; fi`);
   cy.fixture(path).as(as);
 });

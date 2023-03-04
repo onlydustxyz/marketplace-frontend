@@ -37,8 +37,8 @@ before(function () {
 // Before each test, restore the fixtures created right after populatin data.
 beforeEach(function () {
   cy.log("Restoring fixtures of populated data...");
-  cy.fixtureOrDefault("populated/users.json", "users");
-  cy.fixtureOrDefault("populated/projects.json", "projects");
+  cy.fixtureOrDefault("__generated/users.json", "users");
+  cy.fixtureOrDefault("__generated/projects.json", "projects");
 });
 
 // Once all tests are done, restore the DB so it is populated as it was before running the first test.
