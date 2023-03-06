@@ -19,6 +19,7 @@ type PropsType = {
   suffixComponent?: React.ReactNode;
   inputClassName?: string;
   showValidationErrors?: boolean;
+  requiredForPayment?: boolean;
 };
 
 export default function Input({
@@ -37,6 +38,7 @@ export default function Input({
   suffixComponent,
   inputClassName,
   showValidationErrors = true,
+  requiredForPayment = false,
 }: PropsType) {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
@@ -65,6 +67,7 @@ export default function Input({
         suffixComponent,
         inputClassName,
         showValidationErrors,
+        requiredForPayment,
       }}
     />
   );

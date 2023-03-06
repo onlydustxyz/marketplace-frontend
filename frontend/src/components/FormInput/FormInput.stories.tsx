@@ -1,5 +1,3 @@
-import { ComponentStory } from "@storybook/react";
-import { JSXElementConstructor } from "react";
 import FormInput, { InputErrorType } from "./View";
 
 export default {
@@ -8,27 +6,20 @@ export default {
     errorType: {
       control: {
         type: "select",
-        options: [InputErrorType.Normal, InputErrorType.Banner],
       },
+      options: [InputErrorType.Normal, InputErrorType.Banner],
     },
+    error: { type: "boolean" },
+    loading: { type: "boolean" },
+    requiredForPayment: { type: "boolean" },
   },
 };
 
-const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => (
-  <FormInput
-    {...props}
-    loading={args.loading}
-    error={args.error ? { message: args.errorMessage } : undefined}
-    errorType={args.errorType}
-    showValidationErrors={true}
-  />
-);
-
-const args = {
-  loading: false,
-  error: false,
-  errorMessage: "Invalid value",
-  errorType: InputErrorType.Normal,
+type Props = {
+  loading: boolean;
+  error: boolean;
+  errorType: InputErrorType;
+  requiredForPayment: boolean;
 };
 
 const props = {
@@ -48,5 +39,15 @@ const props = {
   },
 };
 
-export const Default = Template.bind({});
-Default.args = args;
+export const Default = {
+  render: (args: Props) => (
+    <FormInput
+      {...props}
+      loading={args.loading}
+      error={args.error ? { message: "Invalid value" } : undefined}
+      errorType={args.errorType}
+      showValidationErrors={true}
+      requiredForPayment={args.requiredForPayment}
+    />
+  ),
+};

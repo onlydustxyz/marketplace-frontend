@@ -23,6 +23,7 @@ type PropsType = {
   suffixComponent?: React.ReactNode;
   inputClassName?: string;
   showValidationErrors: boolean;
+  requiredForPayment: boolean;
 };
 
 export enum InputErrorType {
@@ -46,9 +47,13 @@ const View: React.FC<PropsType> = ({
   suffixComponent,
   inputClassName,
   showValidationErrors,
+  requiredForPayment,
 }) => (
   <label htmlFor={register.name} className="flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim">
-    <div className="font-medium text-sm tracking-tight">{label}</div>
+    <div className="font-medium text-sm tracking-tight">
+      {label}
+      {requiredForPayment && <span className="text-orange-500">{"*"}</span>}
+    </div>
     <div className={classNames("flex flex-col", { "gap-8": errorType === InputErrorType.Banner })}>
       <div className="relative flex items-center">
         <input
