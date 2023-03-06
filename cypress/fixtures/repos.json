@@ -32,5 +32,18 @@
     "name": "",
     "owner": "",
     "languages": {}
+  },
+  "kakarot": {
+    "id": 545531678,
+    "name": "kakarot",
+    "owner": "sayajin-labs",
+    "languages": {
+      "Cairo": 759611,
+      "Python": 238626,
+      "Solidity": 49001,
+      "Shell": 15765,
+      "Makefile": 3390,
+      "Dockerfile": 1778
+    }
   }
 }

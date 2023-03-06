@@ -7,7 +7,7 @@ const getIframeBody = () => {
 };
 
 describe("The user", () => {
-  before(() => {
+  beforeEach(() => {
     cy.createGithubUser(12345).then(user => {
       cy.signinUser(user)
         .then(user => JSON.stringify(user.session))

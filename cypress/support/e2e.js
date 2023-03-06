@@ -22,6 +22,28 @@ import "./commands/payment";
 import "./commands/project";
 import "./commands/sponsor";
 import "./commands/user";
+import "./commands/populate/db_utils";
+import "./commands/populate/users";
+import "./commands/populate/projects";
+import "./commands/populate/payments";
+import "./commands/populate/all";
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+// Before each test suite (ie. each test file), restore the DB as it was right after populating data.
+before(function () {
+  cy.log("Restoring DB...");
+  cy.restoreDB();
+});
+
+// Before each test, restore the fixtures created right after populatin data.
+beforeEach(function () {
+  cy.log("Restoring fixtures of populated data...");
+  cy.fixtureOrDefault("__generated/users.json", "users");
+  cy.fixtureOrDefault("__generated/projects.json", "projects");
+});
+
+// Once all tests are done, restore the DB so it is populated as it was before running the first test.
+// This lets you have a local DB with some data for your manual tests.
+after(function () {
+  cy.log("Restoring DB...");
+  cy.restoreDB();
+});

@@ -69,6 +69,7 @@ email_address = "0.2.4"
 iban_validate = {version = "4.0.1", features = ["serde"]}
 rust_decimal = "1.26.1"
 infer = "0.12.0"
+tokio-retry = "0.3"
 
 # Local dependecies
 domain = {path = "../common/domain", features = ["rocket"]}

@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-require("dotenv").config({
+const env = require("dotenv").config({
   path: ".env",
-});
+}).parsed;
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { defineConfig } = require("cypress");
 
@@ -25,6 +25,7 @@ module.exports = defineConfig({
   },
   env: {
     hasuraAdminSecret: process.env.HASURA_GRAPHQL_ADMIN_SECRET,
+    ...env,
   },
   video: false,
   defaultCommandTimeout: 15000,

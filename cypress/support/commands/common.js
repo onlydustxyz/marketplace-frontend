@@ -79,6 +79,7 @@ Cypress.Commands.add(
         });
       })
       .then(response => {
+        //TODO: remove this once refactoring with populated data is done
         if (query.wait) {
           cy.wait(query.wait).then(() => {
             return response;
@@ -131,3 +132,8 @@ Cypress.Commands.add(
     cy.wrap(response, { timeout: READ_BODY_PROPERTY_TIMEOUT }).should("have.property", "body").property("errors");
   }
 );
+
+Cypress.Commands.add("fixtureOrDefault", (path, as) => {
+  cy.exec(`if [ ! -f "cypress/fixtures/${path}" ]; then echo "{}" > cypress/fixtures/${path}; fi`);
+  cy.fixture(path).as(as);
+});

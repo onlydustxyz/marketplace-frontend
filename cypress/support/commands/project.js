@@ -54,7 +54,7 @@ Cypress.Commands.add(
     prevSubject: true,
   },
   (projectId, user) => {
-    cy.inviteProjectLeader(projectId, user.githubUserId)
+    cy.inviteProjectLeader(projectId, user.githubUserId || user.github.id)
       .asAdmin()
       .data("inviteProjectLeader")
       .should("be.a", "string")

@@ -14,7 +14,14 @@ runs:
       shell: bash
       run: yarn
 
+    - name: Install psql and pg_dump
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install --yes --no-install-recommends postgresql-client
+
     - name: Cypress run
       uses: cypress-io/github-action@v5
       env:
         CYPRESS_BASE_URL: http://localhost:8080
+        DATABASE_URL: postgres://postgres:postgres@localhost/marketplace_db

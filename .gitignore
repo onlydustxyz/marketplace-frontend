@@ -43,6 +43,8 @@ coverage
 # Cypress
 cypress/screenshots
 cypress/videos
+cypress/marketplace_db_dump
+cypress/fixtures/__generated/*.json
 
 # Logs
 logs
