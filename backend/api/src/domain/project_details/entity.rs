@@ -22,6 +22,7 @@ use serde::{Deserialize, Serialize};
 #[table_name = "project_details"]
 #[primary_key(project_id)]
 #[setters(prefix = "with_")]
+#[changeset_options(treat_none_as_null = "true")]
 pub struct ProjectDetails {
 	#[diesel(deserialize_as = "uuid::Uuid")]
 	project_id: ProjectId,
