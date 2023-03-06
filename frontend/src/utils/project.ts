@@ -18,7 +18,7 @@ export const isProjectVisible =
       githubUserId &&
       project.pendingInvitations.map(pendingInvitation => pendingInvitation.githubUserId).includes(githubUserId);
 
-    return hasRepos && hasBudget && (hasLeaders || (githubUserId && hasInvitation));
+    return hasRepos && hasBudget && (hasLeaders || hasInvitation);
   };
 
 export const VISIBLE_PROJECT_FRAGMENT = gql`
