@@ -113,12 +113,7 @@ export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
         paymentRequests {
           id
           githubRecipient {
-            id
-            login
-            avatarUrl
-            user {
-              userId
-            }
+            ...GithubContributor
           }
         }
       }
