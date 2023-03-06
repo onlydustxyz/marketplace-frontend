@@ -160,7 +160,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
           },
         },
       ],
-      pendingInvitations: [{ id: "invitation-id" }],
+      pendingInvitations: [{ id: "invitation-id", githubUserId: "github-user-id" }],
       githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
       projectSponsors: [],
       budgets: [{ id: "budget-1", paymentRequests: [] }],

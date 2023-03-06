@@ -180,7 +180,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         },
-        pendingInvitations: [{ id: "invitation-1" }],
+        pendingInvitations: [{ id: "invitation-1", githubUserId: "github-user-id" }],
         githubRepos: [
           {
             githubRepoId: 123456,
@@ -292,7 +292,7 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
     logoUrl: null,
   },
   githubRepos: [],
-  pendingInvitations: [{ id: "invitation-1" }],
+  pendingInvitations: [{ id: "invitation-1", githubUserId: "github-user-id" }],
   projectLeads: [],
   projectSponsors: [],
 };
@@ -322,7 +322,7 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
       },
     },
   ],
-  pendingInvitations: [{ id: "invitation-1" }],
+  pendingInvitations: [{ id: "invitation-1", githubUserId: "github-user-id" }],
   projectLeads: [],
   projectSponsors: [],
 };
