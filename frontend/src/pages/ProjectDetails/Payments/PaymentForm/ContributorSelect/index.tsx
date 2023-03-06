@@ -9,8 +9,7 @@ import useFindGithubUser, { GITHUB_CONTRIBUTOR_FRAGMENT } from "src/hooks/useIsG
 import { HasuraUserRole } from "src/types";
 import { GetProjectContributorsForPaymentSelectQuery } from "src/__generated/graphql";
 import View from "./View";
-import { uniqBy } from "lodash";
-import isDefined from "src/utils/isDefined";
+import { getContributors } from "src/utils/project";
 
 type Props = {
   projectId: string;
@@ -78,15 +77,8 @@ export default function ContributorSelect({ projectId }: Props) {
     () => !!findUserQuery.user || T("github.invalidLogin"),
     [findUserQuery.user]
   );
-  const contributors = useMemo(
-    () =>
-      uniqBy(
-        getProjectContributorsQuery.data?.projectsByPk?.githubRepos
-          .map(githubRepo => githubRepo?.githubRepoDetails?.content?.contributors)
-          .filter(isDefined)
-          .flat(),
-        contributor => contributor?.id
-      ),
+  const { contributors } = useMemo(
+    () => getContributors(getProjectContributorsQuery.data?.projectsByPk),
     [getProjectContributorsQuery.data]
   );
 
@@ -113,6 +105,19 @@ export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
             id
             contributors {
               ...GithubContributor
+            }
+          }
+        }
+      }
+      budgets {
+        paymentRequests {
+          id
+          githubRecipient {
+            id
+            login
+            avatarUrl
+            user {
+              userId
             }
           }
         }
