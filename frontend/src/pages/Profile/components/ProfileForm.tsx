@@ -17,6 +17,7 @@ import Card from "src/components/Card";
 import { useShowToaster } from "src/hooks/useToaster";
 import FormToggle from "src/components/FormToggle";
 import { useEffect } from "react";
+import Callout from "src/components/Callout";
 
 const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
 const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
@@ -139,11 +140,14 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
                         </>
                       )}
                       {isCompanyProfile && (
-                        <Input
-                          label={T("profile.form.companyName")}
-                          name="companyName"
-                          placeholder={T("profile.form.companyName")}
-                        />
+                        <div className="flex flex-col w-full gap-2">
+                          <Callout>{T("profile.form.companyNeedsInvoiceCallout")}</Callout>
+                          <Input
+                            label={T("profile.form.companyName")}
+                            name="companyName"
+                            placeholder={T("profile.form.companyName")}
+                          />
+                        </div>
                       )}
                     </div>
                   </div>
