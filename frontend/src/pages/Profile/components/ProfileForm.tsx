@@ -19,6 +19,8 @@ import FormToggle from "src/components/FormToggle";
 import { useEffect } from "react";
 import Callout from "src/components/Callout";
 import Tag, { TagSize } from "src/components/Tag";
+import classNames from "classnames";
+import CheckLine from "src/icons/CheckLine";
 
 const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
 const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
@@ -46,6 +48,7 @@ type Inputs = {
 type PropsType = {
   user?: UserInfo | null;
   setSaveButtonDisabled: (disabled: boolean) => void;
+  payoutSettingsValid: boolean;
 };
 
 enum PayoutSettingsDisplayType {
@@ -53,7 +56,7 @@ enum PayoutSettingsDisplayType {
   EthereumIdentity = "ETHEREUM_IDENTITY",
 }
 
-const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
+const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled, payoutSettingsValid }) => {
   const formMethods = useForm<Inputs>({
     defaultValues: {
       isCompanyProfile: user?.identity?.Company,
@@ -119,7 +122,19 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
               <div>
                 <div className="flex flex-row justify-end mb-2">
                   <Tag size={TagSize.Medium}>
-                    <span className="text-orange-500">{T("profile.form.payoutSettingsRequiredTag")}</span>
+                    <span
+                      className={classNames({
+                        "text-orange-500": !payoutSettingsValid,
+                      })}
+                    >
+                      {payoutSettingsValid ? (
+                        <>
+                          <CheckLine /> {T("profile.form.payoutSettingsValidTag")}
+                        </>
+                      ) : (
+                        T("profile.form.payoutSettingsRequiredTag")
+                      )}
+                    </span>
                   </Tag>
                 </div>
                 <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">

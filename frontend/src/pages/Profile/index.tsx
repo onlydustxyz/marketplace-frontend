@@ -62,7 +62,11 @@ const Profile: React.FC = () => {
           {getProfileQuery.data && (
             <QueryWrapper query={getProfileQuery}>
               {getProfileQuery.data && (
-                <ProfileForm user={getProfileQuery.data.userInfoByPk} setSaveButtonDisabled={setSaveButtonDisabled} />
+                <ProfileForm
+                  user={getProfileQuery.data.userInfoByPk}
+                  setSaveButtonDisabled={setSaveButtonDisabled}
+                  payoutSettingsValid={payoutSettingsValid}
+                />
               )}
             </QueryWrapper>
           )}

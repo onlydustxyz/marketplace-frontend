@@ -141,6 +141,7 @@
       "payoutSettings": "Payout information",
       "payoutSettingsRequiredTag": "* required to receive payments",
       "payoutSettingsType": "Preferred method",
+      "payoutSettingsValidTag": "You’re able to receive payments",
       "postCode": "Zip code",
       "send": "Save profile",
       "success": "Payment information successfully updated",
