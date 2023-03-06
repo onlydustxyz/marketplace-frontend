@@ -79,6 +79,7 @@ Cypress.Commands.add(
         });
       })
       .then(response => {
+        //TODO: remove this once refactoring with populated data is done
         if (query.wait) {
           cy.wait(query.wait).then(() => {
             return response;

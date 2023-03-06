@@ -28,36 +28,31 @@
         "amount": 100,
         "reason": {
           "workItems": ["https://github.com/od-mocks/cool-repo-A/pull/1"]
-        },
-        "receipts": []
+        }
       },
       {
         "amount": 500,
         "reason": {
           "workItems": ["https://github.com/od-mocks/cool-repo-A/pull/1"]
-        },
-        "receipts": []
+        }
       },
       {
         "amount": 500,
         "reason": {
           "workItems": ["https://github.com/od-mocks/cool-repo-A/pull/1"]
-        },
-        "receipts": []
+        }
       },
       {
         "amount": 2000,
         "reason": {
           "workItems": ["https://github.com/od-mocks/cool-repo-A/pull/1"]
-        },
-        "receipts": []
+        }
       },
       {
         "amount": 10000,
         "reason": {
           "workItems": ["https://github.com/od-mocks/cool-repo-A/pull/1"]
-        },
-        "receipts": []
+        }
       }
     ]
   }

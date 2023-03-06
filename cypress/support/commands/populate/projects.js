@@ -22,7 +22,7 @@ Cypress.Commands.add("populateProjects", function () {
               cy.wrap(projectId).withBudget(project.initialBudget);
             }
 
-            for (const leaderKey of project.leaders) {
+            for (const leaderKey of project.leaders || []) {
               const leader = users[leaderKey];
               if (!leader) {
                 throw new Error(`User ${leaderKey} does not exist in users fixture`);
@@ -30,7 +30,7 @@ Cypress.Commands.add("populateProjects", function () {
               cy.wrap(projectId).withLeader(leader);
             }
 
-            for (const repoKey of project.repos) {
+            for (const repoKey of project.repos || []) {
               const repo = repos[repoKey];
               if (!repo) {
                 throw new Error(`Repo ${repoKey} does not exist in repos fixture`);

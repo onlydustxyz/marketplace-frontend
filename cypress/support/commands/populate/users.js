@@ -10,8 +10,9 @@ Cypress.Commands.add("populateUsers", function () {
           ...user,
         };
 
-        if (user.createProfile === true) {
-          cy.updateProfileInfo(user.email, user.location, user.identity, user.payoutSettings)
+        if (user.profile) {
+          const profile = user.profile;
+          cy.updateProfileInfo(user.email, profile.location, profile.identity, profile.payoutSettings)
             .asRegisteredUser(registered_user)
             .data("updateProfileInfo");
         }

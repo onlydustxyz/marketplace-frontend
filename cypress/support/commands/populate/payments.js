@@ -22,7 +22,7 @@ Cypress.Commands.add("populatePayments", function () {
               .asRegisteredUser(requestor)
               .data("requestPayment")
               .then(paymentId => {
-                for (const receipt of paymentItem.receipts) {
+                for (const receipt of paymentItem.receipts || []) {
                   if (receipt.transactionHash) {
                     cy.addEthPaymentReceipt(
                       project.id,
