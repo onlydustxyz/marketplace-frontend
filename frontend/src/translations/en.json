@@ -135,6 +135,7 @@
       "firstname": "First name",
       "iban": "IBAN",
       "individualProfile": "Individual",
+      "invalidCryptoSettings": "Please enter a valid ETH address or ENS domain",
       "lastname": "Last name",
       "location": "Location",
       "number": "N.",

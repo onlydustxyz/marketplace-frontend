@@ -256,7 +256,12 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled, payoutS
                 label={T("profile.form.ethIdentity")}
                 name="ethIdentity"
                 placeholder={T("profile.form.ethIdentityPlaceholder")}
-                options={{ pattern: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP }}
+                options={{
+                  pattern: {
+                    value: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP,
+                    message: T("profile.form.invalidCryptoSettings"),
+                  },
+                }}
                 requiredForPayment={true}
               />
             )}
