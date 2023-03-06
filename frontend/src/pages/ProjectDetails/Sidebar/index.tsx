@@ -41,7 +41,9 @@ export default function ProjectsSidebar({ currentProject }: Props) {
   );
 
   const projects =
-    getProjectsForSidebarQuery?.data?.projects.filter(isProjectVisible).map(project => projectFromQuery(project)) || [];
+    getProjectsForSidebarQuery?.data?.projects
+      .filter(isProjectVisible(githubUserId))
+      .map(project => projectFromQuery(project)) || [];
   const sortedProjects = sortBy([...projects], ["withInvitation", "name"]);
 
   const AvailableTabs: Record<string, ProjectDetailsTab> = {
@@ -83,6 +85,7 @@ const projectFromQuery = (project: SidebarProjectDetailsFragment) => ({
 
 export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
   ${ProjectContributorsFragmentDoc}
+  ${VISIBLE_PROJECT_FRAGMENT}
   fragment SidebarProjectDetails on Projects {
     ...ProjectContributors
     id
@@ -91,7 +94,7 @@ export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
       name
       logoUrl
     }
-    pendingInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
+    pendingInvitations {
       id
     }
   }
@@ -103,9 +106,7 @@ export const GET_PROJECTS_FOR_SIDEBAR_QUERY = gql`
       }
     ) {
       ...SidebarProjectDetails
-      projectLeads {
-        userId
-      }
+      ...VisibleProject
     }
   }
 `;

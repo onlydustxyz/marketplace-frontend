@@ -182,8 +182,9 @@ export const PROJECT_CARD_FRAGMENT = gql`
       logoUrl
       shortDescription
     }
-    pendingInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
+    pendingInvitations {
       id
+      githubUserId
     }
     projectLeads {
       userId
