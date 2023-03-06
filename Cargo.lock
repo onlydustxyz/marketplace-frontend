@@ -165,6 +165,7 @@ dependencies = [
  "serde_json",
  "thiserror",
  "tokio",
+ "tokio-retry",
  "tracing",
  "url",
  "uuid 0.8.2",

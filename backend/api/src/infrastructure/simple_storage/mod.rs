@@ -2,6 +2,7 @@ use std::{
 	collections::hash_map::DefaultHasher,
 	hash::{Hash, Hasher},
 	str::FromStr,
+	sync::Arc,
 };
 
 use anyhow::{anyhow, Result};
@@ -9,6 +10,7 @@ use async_trait::async_trait;
 use rusoto_core::Region;
 use rusoto_s3::{PutObjectRequest, S3Client, StreamingBody, S3};
 use serde::Deserialize;
+use tokio_retry::{strategy::FixedInterval, Retry};
 use url::Url;
 
 use crate::domain::{ImageStoreService, ImageStoreServiceError};
@@ -21,7 +23,7 @@ pub struct Config {
 
 #[derive(Clone)]
 pub struct Client {
-	s3_client: S3Client,
+	s3_client: Arc<S3Client>,
 	images_bucket_name: String,
 	images_bucket_region: String,
 }
@@ -34,7 +36,7 @@ impl Client {
 		s3_client.list_buckets().await?;
 
 		Ok(Self {
-			s3_client,
+			s3_client: Arc::new(s3_client),
 			images_bucket_name: config.images_bucket_name.clone(),
 			images_bucket_region: config.bucket_region.clone(),
 		})
@@ -73,15 +75,7 @@ impl ImageStoreService for Client {
 			get_image_extension(&image_binary_data)?
 		);
 
-		self.s3_client
-			.put_object(PutObjectRequest {
-				bucket: self.images_bucket_name.clone(),
-				key: object_name.to_string(),
-				body: Some(StreamingBody::from(image_binary_data)),
-				..Default::default()
-			})
-			.await
-			.map_err(|e| ImageStoreServiceError::Other(e.into()))?;
+		self.upload_data_to_s3(object_name.clone(), image_binary_data).await?;
 
 		Ok(Url::parse(
 			format!(
@@ -92,6 +86,42 @@ impl ImageStoreService for Client {
 		)
 		.map_err(|e| ImageStoreServiceError::Other(e.into()))?)
 	}
+}
+
+impl Client {
+	async fn upload_data_to_s3(
+		&self,
+		object_name: String,
+		image_binary_data: Vec<u8>,
+	) -> Result<(), ImageStoreServiceError> {
+		Retry::spawn(FixedInterval::from_millis(500).take(2), move || {
+			put_object(
+				self.s3_client.clone(),
+				self.images_bucket_name.clone(),
+				object_name.clone(),
+				image_binary_data.clone(),
+			)
+		})
+		.await
+	}
+}
+
+async fn put_object(
+	s3_client: Arc<S3Client>,
+	images_bucket_name: String,
+	object_name: String,
+	image_binary_data: Vec<u8>,
+) -> Result<(), ImageStoreServiceError> {
+	s3_client
+		.put_object(PutObjectRequest {
+			bucket: images_bucket_name,
+			key: object_name,
+			body: Some(StreamingBody::from(image_binary_data)),
+			..Default::default()
+		})
+		.await
+		.map_err(|e| ImageStoreServiceError::Other(e.into()))?;
+	Ok(())
 }
 
 fn calculate_hash<T: Hash>(t: &T) -> u64 {
