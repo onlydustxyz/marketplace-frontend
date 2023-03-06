@@ -1,7 +1,7 @@
 import { defaults } from "lodash";
 import { ChangeEventHandler, FocusEventHandler } from "react";
 import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
-import View, { InputErrorType } from "./View";
+import View, { InputErrorDisplay } from "./View";
 
 type PropsType = {
   label: string;
@@ -11,7 +11,7 @@ type PropsType = {
   loading?: boolean;
   options?: RegisterOptions;
   value?: string | number;
-  errorType?: InputErrorType;
+  errorDisplay?: InputErrorDisplay;
   onChange?: ChangeEventHandler<unknown>;
   onFocus?: FocusEventHandler<unknown>;
   onBlur?: FocusEventHandler<unknown>;
@@ -28,7 +28,7 @@ export default function Input({
   placeholder,
   name,
   value,
-  errorType,
+  errorDisplay = InputErrorDisplay.Normal,
   loading,
   options,
   onChange,
@@ -56,7 +56,7 @@ export default function Input({
       {...{
         label,
         error: errors[name],
-        errorType: errorType || InputErrorType.Normal,
+        errorDisplay,
         loading,
         placeholder,
         type,

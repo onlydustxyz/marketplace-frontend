@@ -16,7 +16,7 @@ type PropsType = {
     message?: string;
     type?: string;
   };
-  errorType: InputErrorType;
+  errorDisplay: InputErrorDisplay;
   register: UseFormRegisterReturn<string>;
   onFocus?: FocusEventHandler<unknown>;
   prefixComponent?: React.ReactNode;
@@ -26,9 +26,12 @@ type PropsType = {
   requiredForPayment: boolean;
 };
 
-export enum InputErrorType {
+export enum InputErrorDisplay {
   Normal = "normal",
   Banner = "banner",
+}
+
+enum InputErrorType {
   Pattern = "pattern",
   Validate = "validate",
 }
@@ -40,7 +43,7 @@ const View: React.FC<PropsType> = ({
   value,
   loading,
   error,
-  errorType,
+  errorDisplay,
   register,
   onFocus,
   prefixComponent,
@@ -48,63 +51,71 @@ const View: React.FC<PropsType> = ({
   inputClassName,
   showValidationErrors,
   requiredForPayment,
-}) => (
-  <label htmlFor={register.name} className="flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim">
-    <div className="font-medium text-sm tracking-tight">
-      {label}
-      {requiredForPayment && <span className="text-orange-500">{"*"}</span>}
-    </div>
-    <div className={classNames("flex flex-col", { "gap-8": errorType === InputErrorType.Banner })}>
-      <div className="relative flex items-center">
-        <input
-          key={register.name}
-          id={register.name}
-          placeholder={placeholder}
-          type={type}
-          className={classNames(
-            "w-full h-11 bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 text-greyscale-50 placeholder:text-greyscale-400 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
-            { "border outline-1 outline-rose-600 border-rose-600": error && errorType === InputErrorType.Normal },
-            inputClassName
-          )}
-          value={value}
-          {...register}
-          onFocus={onFocus}
-        />
-        {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}
-        {loading ? (
-          <LoaderIcon className="flex animate-spin place-items-center absolute right-0 mr-3" />
-        ) : (
-          suffixComponent
-        )}
+}) => {
+  const isValidationError = error?.type === InputErrorType.Pattern || error?.type === InputErrorType.Validate;
+  const showError = error && (!isValidationError || showValidationErrors) && errorDisplay === InputErrorDisplay.Normal;
+
+  return (
+    <label htmlFor={register.name} className="flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim mb-6">
+      <div className="font-medium text-sm tracking-tight">
+        {label}
+        {requiredForPayment && <span className="text-orange-500">{"*"}</span>}
       </div>
-      {showValidationErrors && (error?.type === InputErrorType.Pattern || error?.type === InputErrorType.Validate) && (
-        <span className="text-rose-600 text-sm ml-3">{`${label} is invalid`}</span>
-      )}
-      {errorType === InputErrorType.Normal && (
-        <span className="text-rose-600 text-sm ml-3">{error?.message ? error.message.toString() : "\u00A0"}</span>
-      )}
-      {error?.message && errorType === InputErrorType.Banner && (
-        <div className="flex">
-          <ImageCard
-            backgroundImageUrl={headerElementBackground}
-            backgroundPosition={BackgroundPosition.TopLeft}
-            backgroundSize={BackgroundSize.Zoomed}
-            backgroundNoise={BackgroundNoise.Light}
-            backgroundBlur={BackgroundBlur.Heavy}
-          >
-            <div className="flex flex-row justify-between py-5 px-6">
-              <div className="flex flex-row justify-start items-center font-medium text-white gap-4">
-                <ErrorWarningLine className="px-3 py-2.5 text-3xl rounded-2xl bg-white/10" />
-                <div className="flex flex-col ">
-                  <div className="text-lg">{error.message.toString()}</div>
+      <div
+        className={classNames("flex flex-col", {
+          "gap-8": errorDisplay === InputErrorDisplay.Banner,
+        })}
+      >
+        <div className="relative flex items-center">
+          <input
+            key={register.name}
+            id={register.name}
+            placeholder={placeholder}
+            type={type}
+            className={classNames(
+              "w-full h-11 bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 text-greyscale-50 placeholder:text-greyscale-400 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
+              { "border outline-1 border-orange-500": showError },
+              inputClassName
+            )}
+            value={value}
+            {...register}
+            onFocus={onFocus}
+          />
+          {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}
+          {loading ? (
+            <LoaderIcon className="flex animate-spin place-items-center absolute right-0 mr-3" />
+          ) : (
+            suffixComponent
+          )}
+        </div>
+        {error?.message && errorDisplay === InputErrorDisplay.Banner && (
+          <div className="flex">
+            <ImageCard
+              backgroundImageUrl={headerElementBackground}
+              backgroundPosition={BackgroundPosition.TopLeft}
+              backgroundSize={BackgroundSize.Zoomed}
+              backgroundNoise={BackgroundNoise.Light}
+              backgroundBlur={BackgroundBlur.Heavy}
+            >
+              <div className="flex flex-row justify-between py-5 px-6">
+                <div className="flex flex-row justify-start items-center font-medium text-white gap-4">
+                  <ErrorWarningLine className="px-3 py-2.5 text-3xl rounded-2xl bg-white/10" />
+                  <div className="flex flex-col ">
+                    <div className="text-lg">{error.message.toString()}</div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </ImageCard>
+            </ImageCard>
+          </div>
+        )}
+      </div>
+      {showError && (
+        <div className="text-orange-500 text-base flex flex-row items-center gap-1">
+          <ErrorWarningLine /> {error?.message?.toString() || "\u00A0"}
         </div>
       )}
-    </div>
-  </label>
-);
+    </label>
+  );
+};
 
 export default memo(View);

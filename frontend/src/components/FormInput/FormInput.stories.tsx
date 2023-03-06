@@ -1,4 +1,4 @@
-import FormInput, { InputErrorType } from "./View";
+import FormInput, { InputErrorDisplay } from "./View";
 
 export default {
   title: "FormInput",
@@ -7,7 +7,7 @@ export default {
       control: {
         type: "select",
       },
-      options: [InputErrorType.Normal, InputErrorType.Banner],
+      options: [InputErrorDisplay.Normal, InputErrorDisplay.Banner],
     },
     error: { type: "boolean" },
     loading: { type: "boolean" },
@@ -18,7 +18,7 @@ export default {
 type Props = {
   loading: boolean;
   error: boolean;
-  errorType: InputErrorType;
+  errorType: InputErrorDisplay;
   requiredForPayment: boolean;
 };
 
@@ -45,7 +45,7 @@ export const Default = {
       {...props}
       loading={args.loading}
       error={args.error ? { message: "Invalid value" } : undefined}
-      errorType={args.errorType}
+      errorDisplay={args.errorType}
       showValidationErrors={true}
       requiredForPayment={args.requiredForPayment}
     />

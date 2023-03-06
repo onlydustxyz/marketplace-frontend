@@ -193,8 +193,8 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled, payoutS
               </div>
             </div>
           </Card>
-          <Card className="basis-1/2 p-8">
-            <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
+          <Card padded={false} className="basis-1/2 p-8 pb-2">
+            <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600">
               <div className="font-medium text-lg">{T("profile.form.location")}</div>
               <div>
                 <div className="mt-5">
