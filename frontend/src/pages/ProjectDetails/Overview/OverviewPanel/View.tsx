@@ -89,9 +89,9 @@ export default function OverviewPanelView({
         </Section>
       )}
       {telegramLink && (
-        <Section icon={SectionIcon.Telegram} title={T("project.details.overview.telegram")}>
-          <div data-testid="telegram-link" className="text-spacePurple-500 font-semibold text-sm">
-            <ExternalLink text={telegramLink} url={telegramLink} />
+        <Section icon={SectionIcon.Link} title={T("project.details.overview.moreInfo")}>
+          <div data-testid="more-info-link" className="text-spacePurple-500 font-semibold text-sm">
+            <ExternalLink text={telegramLink.replace(/^https?:\/\//i, "")} url={telegramLink} />
           </div>
         </Section>
       )}
