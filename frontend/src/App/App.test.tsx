@@ -289,6 +289,7 @@ const graphQlMocks = [
               },
             ],
             budgets: [],
+            projectLeads: [],
           },
         ],
       } as GetProjectsForSidebarQueryResult["data"],
