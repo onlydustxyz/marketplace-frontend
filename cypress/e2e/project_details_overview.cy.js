@@ -74,7 +74,7 @@ describe("A project", () => {
     cy.get('[data-testid="money-granted-amount"]').should("have.text", "$200");
 
     cy.get('[data-testid="sponsors"]').should("have.text", sponsorName);
-    cy.get('[data-testid="more-info-link"]').should("have.text", "https://t.me/foo");
+    cy.get('[data-testid="more-info-link"]').should("have.text", "t.me/foo");
   });
 });
 
