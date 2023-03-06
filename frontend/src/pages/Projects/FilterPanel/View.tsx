@@ -13,6 +13,7 @@ export interface FilterPanelViewProps {
   projectFilter: ProjectFilter;
   setProjectFilter: (projectFilter: ProjectFilter) => void;
   clearProjectFilter: () => void;
+  isProjectFilterCleared: () => boolean;
 }
 
 export default function View({
@@ -21,6 +22,7 @@ export default function View({
   setProjectFilter,
   clearProjectFilter,
   isProjectLeader,
+  isProjectFilterCleared,
 }: FilterPanelViewProps) {
   const { T } = useIntl();
 
@@ -28,12 +30,14 @@ export default function View({
     <Card className="flex flex-col h-fit w-full p-6 gap-0.5">
       <div className="flex flex-row justify-between items-center">
         <span className="font-belwe font-normal text-base text-greyscale-50">{T("filter.title")}</span>
-        <div onClick={clearProjectFilter}>
-          <Button type={ButtonType.Ternary} size={ButtonSize.Xs}>
-            <Refresh />
-            {T("filter.clearButton")}
-          </Button>
-        </div>
+        {!isProjectFilterCleared() && (
+          <div onClick={clearProjectFilter}>
+            <Button type={ButtonType.Ternary} size={ButtonSize.Xs}>
+              <Refresh />
+              {T("filter.clearButton")}
+            </Button>
+          </div>
+        )}
       </div>
       {isProjectLeader ? (
         <div className="flex flex-row py-3 gap-2">

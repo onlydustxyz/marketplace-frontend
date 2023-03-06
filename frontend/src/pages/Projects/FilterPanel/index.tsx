@@ -15,10 +15,17 @@ type Props = {
   projectFilter: ProjectFilter;
   setProjectFilter: (projectFilter: ProjectFilter) => void;
   clearProjectFilter: () => void;
+  isProjectFilterCleared: () => boolean;
   isProjectLeader: boolean;
 };
 
-export default function FilterPanel({ projectFilter, setProjectFilter, clearProjectFilter, isProjectLeader }: Props) {
+export default function FilterPanel({
+  projectFilter,
+  setProjectFilter,
+  clearProjectFilter,
+  isProjectFilterCleared,
+  isProjectLeader,
+}: Props) {
   const technologiesQuery = useHasuraQuery<GetAllTechnologiesQuery>(GET_ALL_TECHNOLOGIES_QUERY, HasuraUserRole.Public);
 
   const availableTechnologies = new Set(
@@ -34,6 +41,7 @@ export default function FilterPanel({ projectFilter, setProjectFilter, clearProj
       projectFilter={projectFilter}
       setProjectFilter={setProjectFilter}
       clearProjectFilter={clearProjectFilter}
+      isProjectFilterCleared={isProjectFilterCleared}
       isProjectLeader={isProjectLeader}
     />
   );

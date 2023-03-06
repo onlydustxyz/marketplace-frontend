@@ -45,6 +45,7 @@ export default function Projects() {
                 projectFilter={projectFilter}
                 setProjectFilter={setProjectFilter}
                 clearProjectFilter={clearProjectFilter}
+                isProjectFilterCleared={() => projectFilter === DEFAULT_FILTER}
                 isProjectLeader={!!ledProjectIds.length}
               />
             )}
