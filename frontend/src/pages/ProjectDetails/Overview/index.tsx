@@ -50,7 +50,6 @@ export default function Overview() {
 
   const descriptionRef = useRef(null);
   const { height: descriptionHeight } = useContainerDimensions(descriptionRef);
-  console.log(descriptionHeight);
 
   useEffect(() => {
     if (githubRepos) {
