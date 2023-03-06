@@ -139,6 +139,7 @@
       "location": "Location",
       "number": "N.",
       "payoutSettings": "Payout information",
+      "payoutSettingsRequiredTag": "* required to receive payments",
       "payoutSettingsType": "Preferred method",
       "postCode": "Zip code",
       "send": "Save profile",

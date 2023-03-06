@@ -18,6 +18,7 @@ import { useShowToaster } from "src/hooks/useToaster";
 import FormToggle from "src/components/FormToggle";
 import { useEffect } from "react";
 import Callout from "src/components/Callout";
+import Tag, { TagSize } from "src/components/Tag";
 
 const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
 const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
@@ -116,6 +117,11 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
           <Card className="basis-1/2 p-8">
             <div className="flex flex-col">
               <div>
+                <div className="flex flex-row justify-end mb-2">
+                  <Tag size={TagSize.Medium}>
+                    <span className="text-orange-500">{T("profile.form.payoutSettingsRequiredTag")}</span>
+                  </Tag>
+                </div>
                 <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
                   <div className="flex flex-row justify-between">
                     <div className="font-medium text-lg">{T("profile.form.aboutYou")}</div>
