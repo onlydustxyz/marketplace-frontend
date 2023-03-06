@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
-import userEvent from "@testing-library/user-event";
 import FilterPanel, { GET_ALL_TECHNOLOGIES_QUERY } from ".";
 import { renderWithIntl, MemoryRouterProviderFactory } from "src/test/utils";
 import { ProjectOwnershipType } from "..";
@@ -137,6 +136,7 @@ describe("FilterPanel", () => {
           return;
         }}
         clearProjectFilter={Function.prototype()}
+        isProjectFilterCleared={() => false}
         isProjectLeader={false}
       />,
       {
@@ -164,6 +164,7 @@ describe("FilterPanel", () => {
           return;
         }}
         clearProjectFilter={Function.prototype()}
+        isProjectFilterCleared={() => false}
         isProjectLeader={true}
       />,
       {
@@ -185,6 +186,7 @@ describe("FilterPanel", () => {
           return;
         }}
         clearProjectFilter={Function.prototype()}
+        isProjectFilterCleared={() => false}
         isProjectLeader={true}
       />,
       {
@@ -195,5 +197,30 @@ describe("FilterPanel", () => {
     );
     await screen.findByText(/go/i);
     expect(screen.queryByText(/elisp/i)).toBeNull();
+  });
+
+  test.each([true, false])("should not display clear all button if filter is cleared", async isProjectFilterCleared => {
+    renderWithIntl(
+      <FilterPanel
+        projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [] }}
+        setProjectFilter={() => {
+          return;
+        }}
+        clearProjectFilter={Function.prototype()}
+        isProjectFilterCleared={() => isProjectFilterCleared}
+        isProjectLeader={true}
+      />,
+      {
+        wrapper: MemoryRouterProviderFactory({
+          mocks: graphQlMocks,
+        }),
+      }
+    );
+
+    if (isProjectFilterCleared) {
+      expect(screen.queryByText(/clear all/i)).not.toBeInTheDocument();
+    } else {
+      expect(screen.queryByText(/clear all/i)).toBeInTheDocument();
+    }
   });
 });
