@@ -277,9 +277,9 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled, payoutS
                         name="IBAN"
                         placeholder={T("profile.form.iban")}
                         options={{
-                          required: { value: !!BICValue, message: T("form.required") },
+                          required: { value: !!BICValue, message: T("profile.form.ibanRequired") },
                           validate: value => {
-                            return !value?.trim() || IBAN.isValid(value);
+                            return !value?.trim() || IBAN.isValid(value) || T("profile.form.ibanInvalid");
                           },
                         }}
                         requiredForPayment={true}
@@ -306,8 +306,11 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled, payoutS
                         name="BIC"
                         placeholder={T("profile.form.bic")}
                         options={{
-                          pattern: BIC_REGEXP,
-                          required: { value: !!IBANValue?.trim(), message: T("form.required") },
+                          pattern: { value: BIC_REGEXP, message: T("profile.form.bicInvalid") },
+                          required: {
+                            value: !!IBANValue?.trim(),
+                            message: T("profile.form.bicRequired"),
+                          },
                         }}
                         requiredForPayment={true}
                         value={value}

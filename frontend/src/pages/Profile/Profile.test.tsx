@@ -284,7 +284,7 @@ describe('"Profile" page for individual', () => {
     await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("BIC"), "BNPCFR21");
     await userEvent.click(await screen.findByText("Save profile"));
     await waitFor(() => {
-      const errorMessages = screen.getAllByText("Required");
+      const errorMessages = screen.getAllByText("Your IBAN is required");
       expect(errorMessages.length).toBe(1);
     });
   });
