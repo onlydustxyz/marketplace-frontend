@@ -24,6 +24,7 @@ use crate::domain::SponsorId;
 )]
 #[table_name = "sponsors"]
 #[setters(prefix = "with_")]
+#[changeset_options(treat_none_as_null = "true")]
 pub struct Sponsor {
 	id: SponsorId,
 	name: String,
