@@ -4,13 +4,14 @@ import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import AllProjects, { buildGetProjectsQuery } from ".";
 import { ProjectOwnershipType } from "..";
-import { CLAIMS_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
+import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { GetProjectsQueryResult, ProjectCardFieldsFragment } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
 const TEST_PROJECT_ID = "2";
+const TEST_GITHUB_USER_ID = 123456;
 
 const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"] } = {
   data: {
@@ -180,7 +181,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
             },
           },
         },
-        pendingInvitations: [{ id: "invitation-1", githubUserId: "github-user-id" }],
+        pendingInvitations: [{ id: "invitation-1", githubUserId: TEST_GITHUB_USER_ID }],
         githubRepos: [
           {
             githubRepoId: 123456,
@@ -292,7 +293,37 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
     logoUrl: null,
   },
   githubRepos: [],
-  pendingInvitations: [{ id: "invitation-1", githubUserId: "github-user-id" }],
+  pendingInvitations: [{ id: "invitation-1", githubUserId: TEST_GITHUB_USER_ID }],
+  projectLeads: [],
+  projectSponsors: [],
+};
+
+const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
+  __typename: "Projects",
+  id: "project-with-no-leader-and-invite-for-wrong-user",
+  budgets: [{ id: "budget-1", paymentRequests: [] }],
+  budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
+  projectDetails: {
+    projectId: "project-with-no-leader",
+    name: "No leader but invite",
+    shortDescription: "This project has no leader yet",
+    telegramLink: null,
+    logoUrl: null,
+  },
+  githubRepos: [
+    {
+      githubRepoId: 123456,
+      githubRepoDetails: {
+        id: 123456,
+        languages: [],
+        content: {
+          id: 123456,
+          contributors: [],
+        },
+      },
+    },
+  ],
+  pendingInvitations: [{ id: "invitation-1", githubUserId: 654321 }],
   projectLeads: [],
   projectSponsors: [],
 };
@@ -322,16 +353,16 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
       },
     },
   ],
-  pendingInvitations: [{ id: "invitation-1", githubUserId: "github-user-id" }],
+  pendingInvitations: [{ id: "invitation-1", githubUserId: TEST_GITHUB_USER_ID }],
   projectLeads: [],
   projectSponsors: [],
 };
 
-const buildGraphQlMocks = (projectsQueryResult: { data: GetProjectsQueryResult["data"] }) => [
+const buildGraphQlMocks = (projectsQueryResult: { data: GetProjectsQueryResult["data"] }, githubUserId?: number) => [
   {
     request: {
       query: buildGetProjectsQuery([]),
-      variables: { languages: [] },
+      variables: { languages: [], githubUserId },
     },
     result: projectsQueryResult,
   },
@@ -358,7 +389,7 @@ vi.mock("axios", () => ({
 vi.mock("jwt-decode", () => ({
   default: (jwt: string) => {
     return {
-      [CLAIMS_KEY]: { [PROJECTS_LED_KEY]: `{"${TEST_PROJECT_ID}"}` },
+      [CLAIMS_KEY]: { [PROJECTS_LED_KEY]: `{"${TEST_PROJECT_ID}"}`, [GITHUB_USERID_KEY]: TEST_GITHUB_USER_ID },
     };
   },
 }));
@@ -415,7 +446,7 @@ describe("All projects", () => {
       />,
       {
         wrapper: MemoryRouterProviderFactory({
-          mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_WITH_INVITATION),
+          mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_WITH_INVITATION, TEST_GITHUB_USER_ID),
         }),
       }
     );
@@ -436,17 +467,21 @@ describe("All projects", () => {
       {
         wrapper: MemoryRouterProviderFactory({
           mocks: [
-            ...buildGraphQlMocks({
-              data: {
-                projects: [
-                  projectWithNoBudget,
-                  projectWithNoLeader,
-                  projectWithNoRepo,
-                  projectInvalidWithInvite,
-                  projectWithNoLeaderAndInvite,
-                ],
+            ...buildGraphQlMocks(
+              {
+                data: {
+                  projects: [
+                    projectWithNoBudget,
+                    projectWithNoLeader,
+                    projectWithNoRepo,
+                    projectInvalidWithInvite,
+                    projectWithNoLeaderAndInviteForWrongUser,
+                    projectWithNoLeaderAndInvite,
+                  ],
+                },
               },
-            }),
+              TEST_GITHUB_USER_ID
+            ),
           ],
         }),
       }
@@ -467,9 +502,12 @@ describe("All projects", () => {
       {
         wrapper: MemoryRouterProviderFactory({
           mocks: [
-            ...buildGraphQlMocks({
-              data: { projects: [] },
-            }),
+            ...buildGraphQlMocks(
+              {
+                data: { projects: [] },
+              },
+              TEST_GITHUB_USER_ID
+            ),
           ],
         }),
       }
