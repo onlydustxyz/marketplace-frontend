@@ -126,6 +126,7 @@
       "cancel": "Cancel",
       "city": "City",
       "companyName": "Company name",
+      "companyNeedsInvoiceCallout": "As a company, you’ll need to share an invoice for each payment in order to receive the funds.",
       "companyProfile": "Company profile",
       "contactInfo": "Contact information",
       "country": "Country",
