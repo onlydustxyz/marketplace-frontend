@@ -152,11 +152,13 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled, payoutS
                             label={T("profile.form.firstname")}
                             name="firstname"
                             placeholder={T("profile.form.firstname")}
+                            requiredForPayment={true}
                           />
                           <Input
                             label={T("profile.form.lastname")}
                             name="lastname"
                             placeholder={T("profile.form.lastname")}
+                            requiredForPayment={true}
                           />
                         </>
                       )}
@@ -167,6 +169,7 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled, payoutS
                             label={T("profile.form.companyName")}
                             name="companyName"
                             placeholder={T("profile.form.companyName")}
+                            requiredForPayment={true}
                           />
                         </div>
                       )}
@@ -195,15 +198,31 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled, payoutS
               <div className="font-medium text-lg">{T("profile.form.location")}</div>
               <div>
                 <div className="mt-5">
-                  <Input label={T("profile.form.address")} name="address" placeholder={T("profile.form.address")} />
+                  <Input
+                    label={T("profile.form.address")}
+                    name="address"
+                    placeholder={T("profile.form.address")}
+                    requiredForPayment={true}
+                  />
                   <div className="flex flex-row gap-5">
                     <Input
                       label={T("profile.form.postCode")}
                       name="postCode"
                       placeholder={T("profile.form.postCode")}
+                      requiredForPayment={true}
                     />
-                    <Input label={T("profile.form.city")} name="city" placeholder={T("profile.form.city")} />
-                    <Input label={T("profile.form.country")} name="country" placeholder={T("profile.form.country")} />
+                    <Input
+                      label={T("profile.form.city")}
+                      name="city"
+                      placeholder={T("profile.form.city")}
+                      requiredForPayment={true}
+                    />
+                    <Input
+                      label={T("profile.form.country")}
+                      name="country"
+                      placeholder={T("profile.form.country")}
+                      requiredForPayment={true}
+                    />
                   </div>
                 </div>
               </div>
@@ -216,6 +235,7 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled, payoutS
                     <ProfileRadioGroup
                       name="payoutSettingsType"
                       label={T("profile.form.payoutSettingsType")}
+                      requiredForPayment={true}
                       options={[
                         {
                           value: PayoutSettingsDisplayType.BankAddress,
@@ -237,6 +257,7 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled, payoutS
                 name="ethIdentity"
                 placeholder={T("profile.form.ethIdentityPlaceholder")}
                 options={{ pattern: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP }}
+                requiredForPayment={true}
               />
             )}
             {payoutSettingsType === PayoutSettingsDisplayType.BankAddress && (
@@ -256,6 +277,7 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled, payoutS
                             return !value?.trim() || IBAN.isValid(value);
                           },
                         }}
+                        requiredForPayment={true}
                         value={value && IBAN.printFormat(value)}
                         onChange={onChange}
                         onBlur={() => {
@@ -282,6 +304,7 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled, payoutS
                           pattern: BIC_REGEXP,
                           required: { value: !!IBANValue?.trim(), message: T("form.required") },
                         }}
+                        requiredForPayment={true}
                         value={value}
                         onChange={onChange}
                         onBlur={() => {
