@@ -15,7 +15,6 @@ import Badge, { BadgeSize } from "src/components/Badge";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import { useContainerDimensions } from "./useContainerDimensions";
 
 type OutletContext = {
   leads?: ProjectLeadFragment[];
@@ -48,9 +47,6 @@ export default function Overview() {
 
   const [sortedGithubRepos, setSortedGithubRepos] = useState(githubRepos);
 
-  const descriptionRef = useRef(null);
-  const { height: descriptionHeight } = useContainerDimensions(descriptionRef);
-
   useEffect(() => {
     if (githubRepos) {
       const githubReposCopy = [...githubRepos];
@@ -69,18 +65,13 @@ export default function Overview() {
       <div className="flex flex-row gap-6">
         <QueryWrapper query={{ data, loading }}>
           <div className="flex flex-col gap-4 w-full">
-            <Card
-              className={classNames("px-6 py-4 flex flex-row gap-6", {
-                "items-start": descriptionHeight > 128,
-                "items-center": descriptionHeight <= 128,
-              })}
-            >
+            <Card className={classNames("px-6 py-4 flex flex-row gap-6")}>
               <img
                 alt={data?.projectsByPk?.projectDetails?.name}
                 src={logoUrl}
                 className="w-32 h-32 flex-shrink-0 rounded-lg bg-spaceBlue-900"
               />
-              <div ref={descriptionRef}>
+              <div className="self-center">
                 <ReactMarkdown
                   skipHtml={true}
                   remarkPlugins={[[remarkGfm]]}
