@@ -71,7 +71,7 @@ const getProjectMock = {
           shortDescription: TEST_DESCRIPTION,
           logoUrl: null,
         },
-        pendingInvitations: [{ id: "test-invitation-id" }],
+        pendingInvitations: [{ id: "test-invitation-id", githubUserId: "github-user-id" }],
         projectLeads: [
           {
             userId: "test-user-id",

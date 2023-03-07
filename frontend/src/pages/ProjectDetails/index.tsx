@@ -65,7 +65,7 @@ const ProjectDetails: React.FC = () => {
   return (
     <QueryWrapper query={getProjectQuery}>
       {project !== undefined &&
-        (isProjectVisible(project) ? (
+        (isProjectVisible(githubUserId)(project) ? (
           <View
             currentProject={projectFromQuery(project)}
             onInvitationAccepted={(invitationId: string) => {

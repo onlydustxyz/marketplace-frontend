@@ -35,7 +35,7 @@ export default function AllProjects({ clearFilters, technologies, projectOwnersh
         project => ledProjectIds.includes(project.id) || project.pendingInvitations.length > 0
       );
     }
-    return sortBy(projects?.filter(isProjectVisible), p => !p.pendingInvitations.length);
+    return sortBy(projects?.filter(isProjectVisible(githubUserId)), p => !p.pendingInvitations.length);
   }, [getProjectsQuery.data?.projects, ledProjectIds, projectOwnershipType, isLoggedIn]);
 
   return (

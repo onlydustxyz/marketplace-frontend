@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import {
@@ -26,11 +27,12 @@ export default function FilterPanel({
   isProjectFilterCleared,
   isProjectLeader,
 }: Props) {
+  const { githubUserId } = useAuth();
   const technologiesQuery = useHasuraQuery<GetAllTechnologiesQuery>(GET_ALL_TECHNOLOGIES_QUERY, HasuraUserRole.Public);
 
   const availableTechnologies = new Set(
     technologiesQuery.data?.projects
-      .filter(isProjectVisible)
+      .filter(isProjectVisible(githubUserId))
       .map(p => getMostUsedLanguages(getDeduplicatedAggregatedLanguages(p.githubRepos)))
       .flat()
   );

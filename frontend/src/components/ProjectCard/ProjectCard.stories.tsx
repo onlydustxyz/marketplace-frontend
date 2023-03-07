@@ -117,7 +117,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
       },
     },
   },
-  pendingInvitations: [{ id: "croute" }],
+  pendingInvitations: [{ id: "croute", githubUserId: "github-user-id" }],
   projectSponsors: [
     {
       sponsor: {

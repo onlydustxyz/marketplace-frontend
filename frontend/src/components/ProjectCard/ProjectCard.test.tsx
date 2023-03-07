@@ -78,7 +78,7 @@ const PROJECT: Project = {
     },
   },
   budgets: [{ id: "budget-1", paymentRequests: [] }],
-  pendingInvitations: [{ id: "croute" }],
+  pendingInvitations: [{ id: "croute", githubUserId: "github-user-id" }],
   projectSponsors: [
     {
       sponsor: {
