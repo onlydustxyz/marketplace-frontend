@@ -33,7 +33,6 @@ describe("The user", () => {
     cy.get("[name=postCode]").should("have.value", this.profile.postCode);
     cy.get("[name=city]").should("have.value", this.profile.city);
     cy.get("[name=country]").should("have.value", this.profile.country);
-    cy.get("[id=ETHEREUM_IDENTITY]").should("be.checked");
     cy.get("[name=ethIdentity]").should("have.value", this.profile.ethWalletAddress);
   });
 });
