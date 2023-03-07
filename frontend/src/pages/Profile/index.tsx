@@ -25,7 +25,7 @@ const Profile: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { valid: payoutSettingsValid } = usePayoutSettings(githubUserId);
+  const { valid: payoutSettingsValid, refetch } = usePayoutSettings(githubUserId);
 
   const navigateBack = () => {
     navigate(location.state?.prev || RoutePaths.Projects);
@@ -66,6 +66,7 @@ const Profile: React.FC = () => {
                   user={getProfileQuery.data.userInfoByPk}
                   setSaveButtonDisabled={setSaveButtonDisabled}
                   payoutSettingsValid={payoutSettingsValid}
+                  onUserProfileUpdated={refetch}
                 />
               )}
             </QueryWrapper>

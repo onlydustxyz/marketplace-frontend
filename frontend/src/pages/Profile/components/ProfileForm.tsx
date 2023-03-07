@@ -49,6 +49,7 @@ type PropsType = {
   user?: UserInfo | null;
   setSaveButtonDisabled: (disabled: boolean) => void;
   payoutSettingsValid: boolean;
+  onUserProfileUpdated: () => void;
 };
 
 enum PayoutSettingsDisplayType {
@@ -56,7 +57,12 @@ enum PayoutSettingsDisplayType {
   EthereumIdentity = "ETHEREUM_IDENTITY",
 }
 
-const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled, payoutSettingsValid }) => {
+const ProfileForm: React.FC<PropsType> = ({
+  user,
+  setSaveButtonDisabled,
+  payoutSettingsValid,
+  onUserProfileUpdated,
+}) => {
   const formMethods = useForm<Inputs>({
     defaultValues: {
       isCompanyProfile: user?.identity?.Company,
@@ -97,7 +103,10 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled, payoutS
     context: {
       graphqlErrorDisplay: "toaster",
     },
-    onCompleted: () => showToaster(T("profile.form.success")),
+    onCompleted: () => {
+      showToaster(T("profile.form.success"));
+      onUserProfileUpdated();
+    },
   });
 
   useEffect(() => setSaveButtonDisabled(loading), [loading]);
