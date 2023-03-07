@@ -1,6 +1,6 @@
 import { MemoryRouter, Outlet, Route, Routes } from "react-router-dom";
 import { PropsWithChildren } from "react";
-import { MockedProvider } from "@apollo/client/testing";
+import { MockedProvider, MockedResponse } from "@apollo/client/testing";
 import { AuthProvider } from "src/hooks/useAuth";
 import { render, RenderOptions } from "@testing-library/react";
 import { IntlProvider } from "src/hooks/useIntl";
@@ -10,10 +10,10 @@ import { ToasterProvider } from "src/hooks/useToaster";
 import { Toaster } from "src/components/Toaster";
 import { viewportConfig } from "src/config";
 
-interface MemoryRouterProviderFactoryProps<M = any, C = any> {
+interface MemoryRouterProviderFactoryProps {
   route?: string;
-  mocks?: M;
-  context?: C;
+  mocks?: ReadonlyArray<MockedResponse>;
+  context?: unknown;
 }
 
 export const MemoryRouterProviderFactory =

@@ -379,6 +379,7 @@ const paymentRequestsMock = {
     data: {
       paymentRequests: [
         {
+          __typename: "PaymentRequests",
           id: "705e6b37-d0ee-4e87-b681-7009dd691965",
           requestedAt: "2023-01-10T19:10:27.802657",
           payments: [

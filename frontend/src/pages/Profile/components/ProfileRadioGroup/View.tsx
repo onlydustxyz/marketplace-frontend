@@ -8,7 +8,7 @@ type Option = {
 type PropsType = {
   label?: string;
   options: Option[];
-  register?: UseFormRegisterReturn<any>;
+  register?: UseFormRegisterReturn;
 };
 
 export default function View({ label, options, register }: PropsType) {

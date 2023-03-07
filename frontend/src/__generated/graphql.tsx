@@ -3397,6 +3397,8 @@ export type PendingUserPaymentsAndPayoutSettingsQueryVariables = Exact<{
 
 export type PendingUserPaymentsAndPayoutSettingsQuery = { __typename?: 'query_root', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', userId: any, payoutSettings: any | null } | null, githubUser: { __typename?: 'AuthGithubUsers', paymentRequests: Array<{ __typename?: 'PaymentRequests', amountInUsd: any, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> } | null } | null };
 
+export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null } | null } | null };
+
 export type GetPaymentRequestsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
@@ -3645,6 +3647,30 @@ export const UserPayoutSettingsFragmentDoc = gql`
     fragment UserPayoutSettings on UserInfo {
   payoutSettings
   arePayoutSettingsValid
+}
+    `;
+export const UserPaymentRequestFragmentDoc = gql`
+    fragment UserPaymentRequest on PaymentRequests {
+  id
+  requestedAt
+  payments {
+    amount
+    currencyCode
+  }
+  amountInUsd
+  reason
+  budget {
+    id
+    project {
+      id
+      projectDetails {
+        projectId
+        name
+        shortDescription
+        logoUrl
+      }
+    }
+  }
 }
     `;
 export const ContributorsTableFieldsFragmentDoc = gql`
@@ -4087,29 +4113,10 @@ export type PendingUserPaymentsAndPayoutSettingsQueryResult = Apollo.QueryResult
 export const GetPaymentRequestsDocument = gql`
     query GetPaymentRequests($githubUserId: bigint!) {
   paymentRequests(where: {recipientId: {_eq: $githubUserId}}) {
-    id
-    requestedAt
-    payments {
-      amount
-      currencyCode
-    }
-    amountInUsd
-    reason
-    budget {
-      id
-      project {
-        id
-        projectDetails {
-          projectId
-          name
-          shortDescription
-          logoUrl
-        }
-      }
-    }
+    ...UserPaymentRequest
   }
 }
-    `;
+    ${UserPaymentRequestFragmentDoc}`;
 
 /**
  * __useGetPaymentRequestsQuery__

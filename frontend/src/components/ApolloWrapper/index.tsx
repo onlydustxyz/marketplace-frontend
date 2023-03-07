@@ -56,7 +56,7 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     },
     handleResponse: (operation, accessTokenField) => (tokenSetResponse: TokenSet) => {
       if (tokenSetResponse.accessToken) {
-        operation.setContext(({ headers }: { headers: any }) => ({
+        operation.setContext(({ headers }: { headers: Record<string, string> }) => ({
           headers: {
             ...headers,
             authorization: tokenSetResponse.accessToken ? `Bearer ${tokenSetResponse.accessToken}` : "",
