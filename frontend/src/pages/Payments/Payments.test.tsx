@@ -6,6 +6,7 @@ import PaymentsPage, { GET_PAYMENTS_QUERY } from ".";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { GET_USER_PAYOUT_SETTINGS } from "src/hooks/usePayoutSettings";
+import { UserPayoutSettingsFragment } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
@@ -75,7 +76,7 @@ const buildMockPaymentsQuery = (
   },
 });
 
-const buidlMockPayoutSettingsQuery = (payoutSettings: any) => ({
+const buidlMockPayoutSettingsQuery = (userInfo: UserPayoutSettingsFragment) => ({
   request: {
     query: GET_USER_PAYOUT_SETTINGS,
     variables: { githubUserId },
@@ -85,9 +86,7 @@ const buidlMockPayoutSettingsQuery = (payoutSettings: any) => ({
       authGithubUsers: [
         {
           user: {
-            userInfo: {
-              payoutSettings,
-            },
+            userInfo,
           },
         },
       ],
@@ -150,7 +149,10 @@ describe('"Payments" page', () => {
   it("should display banner when there are payments but no payout info", async () => {
     renderWithIntl(<PaymentsPage />, {
       wrapper: MemoryRouterProviderFactory({
-        mocks: [buildMockPaymentsQuery(githubUserId), buidlMockPayoutSettingsQuery(undefined)],
+        mocks: [
+          buildMockPaymentsQuery(githubUserId),
+          buidlMockPayoutSettingsQuery({ payoutSettings: null, arePayoutSettingsValid: false }),
+        ],
       }),
     });
     expect(await screen.findByText("Complete payout information")).toBeInTheDocument();
@@ -161,7 +163,10 @@ describe('"Payments" page', () => {
       wrapper: MemoryRouterProviderFactory({
         mocks: [
           buildMockPaymentsQuery(githubUserId),
-          buidlMockPayoutSettingsQuery({ EthTransfer: { Name: "vitalik.eth" } }),
+          buidlMockPayoutSettingsQuery({
+            payoutSettings: { EthTransfer: { Name: "vitalik.eth" } },
+            arePayoutSettingsValid: true,
+          }),
         ],
       }),
     });

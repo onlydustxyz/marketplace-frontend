@@ -2,12 +2,12 @@ import { gql, QueryResult } from "@apollo/client";
 import { Link, Navigate } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import Card from "src/components/Card";
-import PayoutTable, { mapApiPaymentsToProps } from "src/components/PayoutTable";
+import PayoutTable from "src/components/PayoutTable";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
-import { HasuraUserRole } from "src/types";
-import { GetPaymentRequestsQuery } from "src/__generated/graphql";
+import { Currency, HasuraUserRole, Payment, PaymentStatus } from "src/types";
+import { GetPaymentRequestsQuery, GetPaymentRequestsQueryResult } from "src/__generated/graphql";
 import { useT } from "talkr";
 import InfoMissingBanner from "src/components/InfoMissingBanner";
 import Button from "src/components/Button";
@@ -69,6 +69,32 @@ const Payments = () => {
 function hasPendingPaymentsRequests(queryResult: QueryResult<GetPaymentRequestsQuery>) {
   return !!queryResult?.data?.paymentRequests?.length;
 }
+
+const mapApiPaymentsToProps = (apiPayment: GetPaymentRequestsQueryResult["data"]["paymentRequests"]): Payment => {
+  const amount = { value: apiPayment.amountInUsd, currency: Currency.USD };
+  const project = apiPayment.budget.project;
+  const reason = apiPayment.reason?.work_items?.at(0);
+  const requestedAt = apiPayment.requestedAt;
+  const getPaidAmount = (payments: { amount: number }[]) =>
+    payments.reduce((total: number, payment: { amount: number }) => total + payment.amount, 0);
+
+  return {
+    id: apiPayment.id,
+    requestedAt: requestedAt,
+    amount,
+    reason,
+    project: {
+      id: project.id,
+      title: project.projectDetails.name,
+      shortDescription: project.projectDetails.shortDescription,
+      logoUrl: project.projectDetails.logoUrl,
+    },
+    status:
+      getPaidAmount(apiPayment.payments) === apiPayment.amountInUsd
+        ? PaymentStatus.ACCEPTED
+        : PaymentStatus.WAITING_PAYMENT,
+  };
+};
 
 export const GET_PAYMENTS_QUERY = gql`
   query GetPaymentRequests($githubUserId: bigint!) {
