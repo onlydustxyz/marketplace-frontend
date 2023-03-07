@@ -11,9 +11,10 @@ export enum TooltipPosition {
 type Props = {
   anchorId: string;
   position?: TooltipPosition;
+  visible?: boolean;
 } & PropsWithChildren;
 
-export default function Tooltip({ anchorId, position = TooltipPosition.Bottom, children }: Props) {
+export default function Tooltip({ anchorId, position = TooltipPosition.Bottom, visible = true, children }: Props) {
   return (
     <ReactTooltip
       anchorId={anchorId}
@@ -28,7 +29,7 @@ export default function Tooltip({ anchorId, position = TooltipPosition.Bottom, c
         color: "#F3F0EE",
         borderRadius: 8,
         padding: "12 8",
-        opacity: 100,
+        opacity: visible ? 100 : 0,
         zIndex: 10,
       }}
     >

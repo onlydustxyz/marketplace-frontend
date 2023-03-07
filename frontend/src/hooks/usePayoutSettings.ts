@@ -16,7 +16,7 @@ export default function usePayoutSettings(githubUserId?: number) {
   return {
     ...query,
     data: payoutSettings,
-    valid: !!valid,
+    valid,
   };
 }
 
