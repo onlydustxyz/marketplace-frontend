@@ -187,15 +187,6 @@ describe("Missing payment information banner", () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(accessToken(mockUser.userId)));
   });
 
-  it("should display the information banner if payment info is missing", async () => {
-    renderWithIntl(<ProfilePage />, {
-      wrapper: MemoryRouterProviderFactory({
-        mocks: [buildMockProfileQuery({ ...mockUser, payoutSettings: {} })],
-      }),
-    });
-    await screen.findByText("Payout information missing");
-  });
-
   it("shouldn't display the information banner if payment info is correct", async () => {
     renderWithIntl(<ProfilePage />, {
       wrapper: MemoryRouterProviderFactory({

@@ -5,7 +5,6 @@ import { HasuraUserRole } from "src/types";
 import QueryWrapper from "src/components/QueryWrapper";
 import ProfileForm from "./components/ProfileForm";
 import { ProfileQuery, UserPayoutSettingsFragmentDoc } from "src/__generated/graphql";
-import InfoMissingBanner from "src/components/InfoMissingBanner";
 import { useIntl } from "src/hooks/useIntl";
 import { useNavigate, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
@@ -62,7 +61,6 @@ const Profile: React.FC = () => {
         <div className="flex flex-col gap-6">
           {getProfileQuery.data && (
             <QueryWrapper query={getProfileQuery}>
-              {!payoutSettingsValid && <InfoMissingBanner />}
               {getProfileQuery.data && (
                 <ProfileForm user={getProfileQuery.data.userInfoByPk} setSaveButtonDisabled={setSaveButtonDisabled} />
               )}
