@@ -136,7 +136,7 @@ const buildMockMutationUpdateUser = (userInfo: UserInfo) => {
       }
     : {
         type: IdentityType.Company,
-        optCompany: { name: userInfo.identity.Company?.name },
+        optCompany: { name: userInfo.identity.Company?.name, identificationNumber: null, owner: null },
         optPerson: null,
       };
 
