@@ -29,7 +29,10 @@ export default function AllProjects({ clearFilters, technologies, projectOwnersh
   );
 
   const projects = useMemo(() => {
-    let projects = getProjectsQuery.data?.projects;
+    let projects = getProjectsQuery.data?.projects.map(p => ({
+      ...p,
+      pendingInvitations: p.pendingInvitations.filter(i => i.githubUserId === githubUserId),
+    }));
     if (projects && isLoggedIn && projectOwnershipType === ProjectOwnershipType.Mine) {
       projects = projects.filter(
         project => ledProjectIds.includes(project.id) || project.pendingInvitations.length > 0

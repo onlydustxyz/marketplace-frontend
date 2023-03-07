@@ -67,7 +67,7 @@ const ProjectDetails: React.FC = () => {
       {project !== undefined &&
         (isProjectVisible(githubUserId)(project) ? (
           <View
-            currentProject={projectFromQuery(project)}
+            currentProject={projectFromQuery(project, githubUserId)}
             onInvitationAccepted={(invitationId: string) => {
               acceptInvitation({
                 variables: {
@@ -83,12 +83,12 @@ const ProjectDetails: React.FC = () => {
   );
 };
 
-const projectFromQuery = (project: GetProjectQuery["projectsByPk"]): ProjectDetails => ({
+const projectFromQuery = (project: GetProjectQuery["projectsByPk"], githubUserId?: number): ProjectDetails => ({
   id: project?.id,
   name: project?.projectDetails?.name,
   logoUrl: project?.projectDetails?.logoUrl || onlyDustLogo,
   leads: project?.projectLeads?.map((lead: any) => ({ id: lead.userId, ...lead.user })) || [],
-  invitationId: project?.pendingInvitations.at(0)?.id,
+  invitationId: project?.pendingInvitations.filter(i => i.githubUserId === githubUserId).at(0)?.id,
   totalSpentAmountInUsd: project?.budgetsAggregate.aggregate?.sum?.spentAmount,
   telegramLink: project?.projectDetails?.telegramLink,
   languages: (project?.githubRepos?.length === 1 && project?.githubRepos[0].githubRepoDetails?.languages) || {},
