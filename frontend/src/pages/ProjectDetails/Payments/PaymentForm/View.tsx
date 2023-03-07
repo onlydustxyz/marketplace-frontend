@@ -4,7 +4,7 @@ import Card from "src/components/Card";
 import WorkEstimation from "./WorkEstimation";
 import { Budget } from "src/hooks/useWorkEstimation";
 import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/pages/ProjectDetails/Payments/PaymentForm";
-import { InputErrorType } from "src/components/FormInput/View";
+import { InputErrorDisplay } from "src/components/FormInput/View";
 import ContributorSelect from "src/pages/ProjectDetails/Payments/PaymentForm/ContributorSelect";
 
 interface Props {
@@ -36,7 +36,7 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
                   label={T("payment.form.issueLink.inputLabel")}
                   name="linkToIssue"
                   placeholder={T("payment.form.issueLink.placeholder")}
-                  errorType={InputErrorType.Banner}
+                  errorDisplay={InputErrorDisplay.Banner}
                   options={{
                     pattern: {
                       value: REGEX_VALID_GITHUB_PULL_REQUEST_URL,

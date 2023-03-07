@@ -1,11 +1,16 @@
-import { ComponentStory } from "@storybook/react";
 import ProfileRadioGroup from "./View";
 
 export default {
   title: "ProfileRadioGroup",
+  component: ProfileRadioGroup,
+  argTypes: {
+    requiredForPayment: { type: "boolean" },
+  },
 };
 
-const Template: ComponentStory<typeof ProfileRadioGroup> = () => <ProfileRadioGroup {...props} />;
+type Args = {
+  requiredForPayment: boolean;
+};
 
 const props = {
   label: "Preferred method",
@@ -13,6 +18,9 @@ const props = {
     { value: "ETH", label: "Eth wire" },
     { value: "BANK", label: "Crypto wire" },
   ],
+  requiredForPayment: false,
 };
 
-export const Default = Template.bind({});
+export const Default = {
+  render: (args: Args) => <ProfileRadioGroup {...props} {...args} />,
+};

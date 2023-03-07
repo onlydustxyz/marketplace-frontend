@@ -9,12 +9,16 @@ type PropsType = {
   label?: string;
   options: Option[];
   register?: UseFormRegisterReturn;
+  requiredForPayment: boolean;
 };
 
-export default function View({ label, options, register }: PropsType) {
+export default function View({ label, options, register, requiredForPayment }: PropsType) {
   return (
     <label className="flex flex-col flex-grow gap-2 mb-6">
-      <div className="font-medium text-sm text-greyscale-300 tracking-tight">{label}</div>
+      <div className="font-medium text-sm text-greyscale-300 tracking-tight">
+        {label}
+        {requiredForPayment && <span className="text-orange-500">{"*"}</span>}
+      </div>
       <div className="flex flex-row items-center gap-2">
         {options.map(option => (
           <div className="flex" key={option.value}>

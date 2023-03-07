@@ -18,6 +18,9 @@ import { useShowToaster } from "src/hooks/useToaster";
 import FormToggle from "src/components/FormToggle";
 import { useEffect } from "react";
 import Callout from "src/components/Callout";
+import Tag, { TagSize } from "src/components/Tag";
+import classNames from "classnames";
+import CheckLine from "src/icons/CheckLine";
 
 const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
 const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
@@ -45,6 +48,8 @@ type Inputs = {
 type PropsType = {
   user?: UserInfo | null;
   setSaveButtonDisabled: (disabled: boolean) => void;
+  payoutSettingsValid: boolean;
+  onUserProfileUpdated: () => void;
 };
 
 enum PayoutSettingsDisplayType {
@@ -52,7 +57,12 @@ enum PayoutSettingsDisplayType {
   EthereumIdentity = "ETHEREUM_IDENTITY",
 }
 
-const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
+const ProfileForm: React.FC<PropsType> = ({
+  user,
+  setSaveButtonDisabled,
+  payoutSettingsValid,
+  onUserProfileUpdated,
+}) => {
   const formMethods = useForm<Inputs>({
     defaultValues: {
       isCompanyProfile: user?.identity?.Company,
@@ -93,7 +103,10 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
     context: {
       graphqlErrorDisplay: "toaster",
     },
-    onCompleted: () => showToaster(T("profile.form.success")),
+    onCompleted: () => {
+      showToaster(T("profile.form.success"));
+      onUserProfileUpdated();
+    },
   });
 
   useEffect(() => setSaveButtonDisabled(loading), [loading]);
@@ -116,6 +129,23 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
           <Card className="basis-1/2 p-8">
             <div className="flex flex-col">
               <div>
+                <div className="flex flex-row justify-end mb-2">
+                  <Tag size={TagSize.Medium}>
+                    <span
+                      className={classNames({
+                        "text-orange-500": !payoutSettingsValid,
+                      })}
+                    >
+                      {payoutSettingsValid ? (
+                        <>
+                          <CheckLine /> {T("profile.form.payoutSettingsValidTag")}
+                        </>
+                      ) : (
+                        T("profile.form.payoutSettingsRequiredTag")
+                      )}
+                    </span>
+                  </Tag>
+                </div>
                 <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
                   <div className="flex flex-row justify-between">
                     <div className="font-medium text-lg">{T("profile.form.aboutYou")}</div>
@@ -131,11 +161,13 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
                             label={T("profile.form.firstname")}
                             name="firstname"
                             placeholder={T("profile.form.firstname")}
+                            requiredForPayment={true}
                           />
                           <Input
                             label={T("profile.form.lastname")}
                             name="lastname"
                             placeholder={T("profile.form.lastname")}
+                            requiredForPayment={true}
                           />
                         </>
                       )}
@@ -146,6 +178,7 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
                             label={T("profile.form.companyName")}
                             name="companyName"
                             placeholder={T("profile.form.companyName")}
+                            requiredForPayment={true}
                           />
                         </div>
                       )}
@@ -169,20 +202,36 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
               </div>
             </div>
           </Card>
-          <Card className="basis-1/2 p-8">
-            <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
+          <Card padded={false} className="basis-1/2 p-8 pb-2">
+            <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600">
               <div className="font-medium text-lg">{T("profile.form.location")}</div>
               <div>
                 <div className="mt-5">
-                  <Input label={T("profile.form.address")} name="address" placeholder={T("profile.form.address")} />
+                  <Input
+                    label={T("profile.form.address")}
+                    name="address"
+                    placeholder={T("profile.form.address")}
+                    requiredForPayment={true}
+                  />
                   <div className="flex flex-row gap-5">
                     <Input
                       label={T("profile.form.postCode")}
                       name="postCode"
                       placeholder={T("profile.form.postCode")}
+                      requiredForPayment={true}
                     />
-                    <Input label={T("profile.form.city")} name="city" placeholder={T("profile.form.city")} />
-                    <Input label={T("profile.form.country")} name="country" placeholder={T("profile.form.country")} />
+                    <Input
+                      label={T("profile.form.city")}
+                      name="city"
+                      placeholder={T("profile.form.city")}
+                      requiredForPayment={true}
+                    />
+                    <Input
+                      label={T("profile.form.country")}
+                      name="country"
+                      placeholder={T("profile.form.country")}
+                      requiredForPayment={true}
+                    />
                   </div>
                 </div>
               </div>
@@ -195,6 +244,7 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
                     <ProfileRadioGroup
                       name="payoutSettingsType"
                       label={T("profile.form.payoutSettingsType")}
+                      requiredForPayment={true}
                       options={[
                         {
                           value: PayoutSettingsDisplayType.BankAddress,
@@ -215,7 +265,13 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
                 label={T("profile.form.ethIdentity")}
                 name="ethIdentity"
                 placeholder={T("profile.form.ethIdentityPlaceholder")}
-                options={{ pattern: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP }}
+                options={{
+                  pattern: {
+                    value: ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP,
+                    message: T("profile.form.invalidCryptoSettings"),
+                  },
+                }}
+                requiredForPayment={true}
               />
             )}
             {payoutSettingsType === PayoutSettingsDisplayType.BankAddress && (
@@ -230,11 +286,12 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
                         name="IBAN"
                         placeholder={T("profile.form.iban")}
                         options={{
-                          required: { value: !!BICValue, message: T("form.required") },
+                          required: { value: !!BICValue, message: T("profile.form.ibanRequired") },
                           validate: value => {
-                            return !value?.trim() || IBAN.isValid(value);
+                            return !value?.trim() || IBAN.isValid(value) || T("profile.form.ibanInvalid");
                           },
                         }}
+                        requiredForPayment={true}
                         value={value && IBAN.printFormat(value)}
                         onChange={onChange}
                         onBlur={() => {
@@ -258,9 +315,13 @@ const ProfileForm: React.FC<PropsType> = ({ user, setSaveButtonDisabled }) => {
                         name="BIC"
                         placeholder={T("profile.form.bic")}
                         options={{
-                          pattern: BIC_REGEXP,
-                          required: { value: !!IBANValue?.trim(), message: T("form.required") },
+                          pattern: { value: BIC_REGEXP, message: T("profile.form.bicInvalid") },
+                          required: {
+                            value: !!IBANValue?.trim(),
+                            message: T("profile.form.bicRequired"),
+                          },
                         }}
+                        requiredForPayment={true}
                         value={value}
                         onChange={onChange}
                         onBlur={() => {
