@@ -393,7 +393,9 @@ export type CitextComparisonExp = {
 };
 
 export type CompanyIdentity = {
-  name: Scalars['String'];
+  identificationNumber: InputMaybe<Scalars['String']>;
+  name: InputMaybe<Scalars['String']>;
+  owner: InputMaybe<PersonIdentity>;
 };
 
 /** ordering argument of a cursor */

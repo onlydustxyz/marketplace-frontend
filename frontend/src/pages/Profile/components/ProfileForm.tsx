@@ -33,7 +33,10 @@ type Inputs = {
   isCompanyProfile: boolean;
   firstname?: string;
   lastname?: string;
+  companyOwnerFirstName?: string;
+  companyOwnerLastName?: string;
   companyName?: string;
+  identificationNumber?: string;
   email?: string | null;
   address: string;
   postCode: string;
@@ -68,7 +71,10 @@ const ProfileForm: React.FC<PropsType> = ({
       isCompanyProfile: user?.identity?.Company,
       firstname: user?.identity?.Person?.firstname,
       lastname: user?.identity?.Person?.lastname,
+      companyOwnerFirstName: user?.identity?.Company?.owner?.firstname,
+      companyOwnerLastName: user?.identity?.Company?.owner?.lastname,
       companyName: user?.identity?.Company?.name,
+      identificationNumber: user?.identity?.Company?.identification_number,
       email: user?.email,
       address: user?.location?.address,
       postCode: user?.location?.post_code,
@@ -96,6 +102,7 @@ const ProfileForm: React.FC<PropsType> = ({
     formState: { touchedFields },
     clearErrors,
     trigger,
+    setValue,
   } = formMethods;
   const showToaster = useShowToaster();
 
@@ -109,8 +116,6 @@ const ProfileForm: React.FC<PropsType> = ({
     },
   });
 
-  useEffect(() => setSaveButtonDisabled(loading), [loading]);
-
   const onSubmit: SubmitHandler<Inputs> = formData => {
     updateUser(mapFormDataToSchema(formData));
   };
@@ -119,6 +124,13 @@ const ProfileForm: React.FC<PropsType> = ({
   const isCompanyProfile = watch("isCompanyProfile");
   const IBANValue = watch("IBAN");
   const BICValue = watch("BIC");
+
+  useEffect(() => setSaveButtonDisabled(loading), [loading]);
+  useEffect(() => {
+    if (!isCompanyProfile) {
+      setValue("payoutSettingsType", PayoutSettingsDisplayType.EthereumIdentity);
+    }
+  }, [isCompanyProfile]);
 
   const { T } = useIntl();
 
@@ -153,36 +165,56 @@ const ProfileForm: React.FC<PropsType> = ({
                       <FormToggle name="isCompanyProfile" label={T("profile.form.companyProfile")} control={control} />
                     </div>
                   </div>
-                  <div>
-                    <div className="flex flex-row gap-5 pt-5">
-                      {!isCompanyProfile && (
-                        <>
-                          <Input
-                            label={T("profile.form.firstname")}
-                            name="firstname"
-                            placeholder={T("profile.form.firstname")}
-                            requiredForPayment={true}
-                          />
-                          <Input
-                            label={T("profile.form.lastname")}
-                            name="lastname"
-                            placeholder={T("profile.form.lastname")}
-                            requiredForPayment={true}
-                          />
-                        </>
-                      )}
-                      {isCompanyProfile && (
-                        <div className="flex flex-col w-full gap-2">
-                          <Callout>{T("profile.form.companyNeedsInvoiceCallout")}</Callout>
+                  <div className="flex flex-col pt-5">
+                    {isCompanyProfile && (
+                      <div className="flex flex-col">
+                        <Callout>{T("profile.form.companyNeedsInvoiceCallout")}</Callout>
+                        <div className="flex flex-row gap-5 w-full pt-5">
                           <Input
                             label={T("profile.form.companyName")}
                             name="companyName"
                             placeholder={T("profile.form.companyName")}
                             requiredForPayment={true}
                           />
+                          <Input
+                            label={T("profile.form.identificationNumber")}
+                            name="identificationNumber"
+                            placeholder={T("profile.form.identificationNumber")}
+                            requiredForPayment={true}
+                          />
                         </div>
-                      )}
-                    </div>
+                        <div className="flex flex-row gap-5 w-full">
+                          <Input
+                            label={T("profile.form.companyOwnerFirstName")}
+                            name="companyOwnerFirstName"
+                            placeholder={T("profile.form.companyOwnerFirstName")}
+                            requiredForPayment={true}
+                          />
+                          <Input
+                            label={T("profile.form.companyOwnerLastName")}
+                            name="companyOwnerLastName"
+                            placeholder={T("profile.form.companyOwnerLastName")}
+                            requiredForPayment={true}
+                          />
+                        </div>
+                      </div>
+                    )}
+                    {!isCompanyProfile && (
+                      <div className="flex flex-row gap-5 w-full">
+                        <Input
+                          label={T("profile.form.firstname")}
+                          name="firstname"
+                          placeholder={T("profile.form.firstname")}
+                          requiredForPayment={true}
+                        />
+                        <Input
+                          label={T("profile.form.lastname")}
+                          name="lastname"
+                          placeholder={T("profile.form.lastname")}
+                          requiredForPayment={true}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -236,30 +268,32 @@ const ProfileForm: React.FC<PropsType> = ({
                 </div>
               </div>
             </div>
-            <div className="flex flex-col">
-              <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600">
-                <div className="font-medium text-lg">{T("profile.form.payoutSettings")}</div>
-                <div>
-                  <div className="flex flex-row gap-3 font-medium text-neutral-300 mt-5 w-fit">
-                    <ProfileRadioGroup
-                      name="payoutSettingsType"
-                      label={T("profile.form.payoutSettingsType")}
-                      requiredForPayment={true}
-                      options={[
-                        {
-                          value: PayoutSettingsDisplayType.BankAddress,
-                          label: T("profile.form.bankWire"),
-                        },
-                        {
-                          value: PayoutSettingsDisplayType.EthereumIdentity,
-                          label: T("profile.form.cryptoWire"),
-                        },
-                      ]}
-                    />
+            {isCompanyProfile && (
+              <div className="flex flex-col">
+                <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600">
+                  <div className="font-medium text-lg">{T("profile.form.payoutSettings")}</div>
+                  <div>
+                    <div className="flex flex-row gap-3 font-medium text-neutral-300 mt-5 w-fit">
+                      <ProfileRadioGroup
+                        name="payoutSettingsType"
+                        label={T("profile.form.payoutSettingsType")}
+                        requiredForPayment={true}
+                        options={[
+                          {
+                            value: PayoutSettingsDisplayType.BankAddress,
+                            label: T("profile.form.bankWire"),
+                          },
+                          {
+                            value: PayoutSettingsDisplayType.EthereumIdentity,
+                            label: T("profile.form.cryptoWire"),
+                          },
+                        ]}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
             {payoutSettingsType === PayoutSettingsDisplayType.EthereumIdentity && (
               <Input
                 label={T("profile.form.ethIdentity")}
@@ -369,6 +403,9 @@ const mapFormDataToSchema = ({
   ethIdentity,
   IBAN,
   BIC,
+  identificationNumber,
+  companyOwnerFirstName,
+  companyOwnerLastName,
 }: Inputs) => {
   const variables: UpdateProfileInfoMutationVariables = {
     email: email || null,
@@ -380,15 +417,25 @@ const mapFormDataToSchema = ({
   if (!isCompanyProfile && (firstname || lastname)) {
     variables.identity = {
       type: IdentityType.Person,
-      optPerson: { firstname: firstname || null, lastname: lastname || null },
+      optPerson: {
+        firstname: firstname || null,
+        lastname: lastname || null,
+      },
       optCompany: null,
     };
   }
-  if (isCompanyProfile && companyName) {
+  if (isCompanyProfile && (companyOwnerFirstName || companyOwnerLastName || companyName || identificationNumber)) {
     variables.identity = {
       type: IdentityType.Company,
+      optCompany: {
+        name: companyName || null,
+        identificationNumber: identificationNumber || null,
+        owner: {
+          firstname: companyOwnerFirstName || null,
+          lastname: companyOwnerLastName || null,
+        },
+      },
       optPerson: null,
-      optCompany: { name: companyName },
     };
   }
 
