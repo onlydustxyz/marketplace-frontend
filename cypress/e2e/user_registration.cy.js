@@ -60,6 +60,9 @@ describe("The company", () => {
     cy.wait(1000);
     cy.get('[role="switch"]').click().wait(100);
     cy.get("[name=companyName]").clear().type(this.profile.name);
+    cy.get("[name=identificationNumber]").clear().type(this.profile.identificationNumber);
+    cy.get("[name=companyOwnerFirstName]").clear().type(this.profile.companyOwnerFirstName);
+    cy.get("[name=companyOwnerLastName]").clear().type(this.profile.companyOwnerLastName);
     cy.get("[name=email]").clear().type(this.profile.email);
     cy.get("[name=address]").clear().type(this.profile.address);
     cy.get("[name=postCode]").clear().type(this.profile.postCode);
@@ -83,6 +86,9 @@ describe("The company", () => {
     });
 
     cy.get("[name=companyName]").should("have.value", this.profile.name);
+    cy.get("[name=identificationNumber]").should("have.value", this.profile.identificationNumber);
+    cy.get("[name=companyOwnerFirstName]").should("have.value", this.profile.companyOwnerFirstName);
+    cy.get("[name=companyOwnerLastName]").should("have.value", this.profile.companyOwnerLastName);
     cy.get("[name=email]").should("have.value", this.profile.email);
     cy.get("[name=address]").should("have.value", this.profile.address);
     cy.get("[name=postCode]").should("have.value", this.profile.postCode);
