@@ -4,7 +4,7 @@ import { UseFormRegisterReturn } from "react-hook-form";
 type Option = {
   value: string;
   label: string;
-  icon: ReactElement;
+  icon?: ReactElement;
 };
 
 type PropsType = {
