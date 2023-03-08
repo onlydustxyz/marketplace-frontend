@@ -115,6 +115,9 @@
   },
   "profile": {
     "edit": "Edit profile",
+    "button": {
+      "payoutSettingsInvalidTooltip": "You’re unable to receive payments. Click to fill up required info"
+    },
     "form": {
       "aboutYou": "About you",
       "address": "Street address",
