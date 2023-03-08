@@ -1,8 +1,10 @@
+import { ReactElement } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 
 type Option = {
   value: string;
   label: string;
+  icon?: ReactElement;
 };
 
 type PropsType = {
@@ -26,8 +28,9 @@ export default function View({ label, options, register, requiredForPayment }: P
             <label
               data-testid={option.value}
               htmlFor={option.value}
-              className="flex h-8 items-center cursor-pointer select-none border border-greyscale-50/[0.08] rounded-2xl py-2 px-3 text-sm font-normal text-neutral-100 peer-checked:bg-spacePurple-900 peer-checked:outline-double peer-checked:outline-spacePurple-500 peer-checked:outline-1 peer-checked:border-spacePurple-500"
+              className="flex gap-1 w-fit h-9 items-center cursor-pointer select-none border border-greyscale-50/[0.08] rounded-xl py-2 px-3 text-sm font-normal text-neutral-100 peer-checked:bg-spacePurple-900 peer-checked:outline-double peer-checked:outline-spacePurple-500 peer-checked:outline-1 peer-checked:border-spacePurple-500"
             >
+              {option.icon}
               {option.label}
             </label>
           </div>
