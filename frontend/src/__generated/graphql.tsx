@@ -398,6 +398,13 @@ export type CompanyIdentity = {
   owner: InputMaybe<PersonIdentity>;
 };
 
+export type ContactInformation = {
+  discord: InputMaybe<Scalars['String']>;
+  email: InputMaybe<Scalars['Email']>;
+  telegram: InputMaybe<Scalars['String']>;
+  twitter: InputMaybe<Scalars['String']>;
+};
+
 /** ordering argument of a cursor */
 export enum CursorOrdering {
   /** ascending ordering of the cursor */
@@ -1489,11 +1496,17 @@ export type UserPaymentRequestsAggregateArgs = {
 export type UserInfo = {
   __typename?: 'UserInfo';
   arePayoutSettingsValid: Maybe<Scalars['Boolean']>;
-  email: Maybe<Scalars['String']>;
+  contactInformation: Maybe<Scalars['jsonb']>;
   identity: Maybe<Scalars['jsonb']>;
   location: Maybe<Scalars['jsonb']>;
   payoutSettings: Maybe<Scalars['jsonb']>;
   userId: Scalars['uuid'];
+};
+
+
+/** columns and relationships of "user_info" */
+export type UserInfoContactInformationArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -1516,6 +1529,7 @@ export type UserInfoPayoutSettingsArgs = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type UserInfoAppendInput = {
+  contactInformation: InputMaybe<Scalars['jsonb']>;
   identity: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['jsonb']>;
   payoutSettings: InputMaybe<Scalars['jsonb']>;
@@ -1527,7 +1541,7 @@ export type UserInfoBoolExp = {
   _not: InputMaybe<UserInfoBoolExp>;
   _or: InputMaybe<Array<UserInfoBoolExp>>;
   arePayoutSettingsValid: InputMaybe<BooleanComparisonExp>;
-  email: InputMaybe<StringComparisonExp>;
+  contactInformation: InputMaybe<JsonbComparisonExp>;
   identity: InputMaybe<JsonbComparisonExp>;
   location: InputMaybe<JsonbComparisonExp>;
   payoutSettings: InputMaybe<JsonbComparisonExp>;
@@ -1542,6 +1556,7 @@ export enum UserInfoConstraint {
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type UserInfoDeleteAtPathInput = {
+  contactInformation: InputMaybe<Array<Scalars['String']>>;
   identity: InputMaybe<Array<Scalars['String']>>;
   location: InputMaybe<Array<Scalars['String']>>;
   payoutSettings: InputMaybe<Array<Scalars['String']>>;
@@ -1549,6 +1564,7 @@ export type UserInfoDeleteAtPathInput = {
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type UserInfoDeleteElemInput = {
+  contactInformation: InputMaybe<Scalars['Int']>;
   identity: InputMaybe<Scalars['Int']>;
   location: InputMaybe<Scalars['Int']>;
   payoutSettings: InputMaybe<Scalars['Int']>;
@@ -1556,6 +1572,7 @@ export type UserInfoDeleteElemInput = {
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type UserInfoDeleteKeyInput = {
+  contactInformation: InputMaybe<Scalars['String']>;
   identity: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   payoutSettings: InputMaybe<Scalars['String']>;
@@ -1563,7 +1580,7 @@ export type UserInfoDeleteKeyInput = {
 
 /** input type for inserting data into table "user_info" */
 export type UserInfoInsertInput = {
-  email: InputMaybe<Scalars['String']>;
+  contactInformation: InputMaybe<Scalars['jsonb']>;
   identity: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['jsonb']>;
   payoutSettings: InputMaybe<Scalars['jsonb']>;
@@ -1589,7 +1606,7 @@ export type UserInfoOnConflict = {
 /** Ordering options when selecting data from "user_info". */
 export type UserInfoOrderBy = {
   arePayoutSettingsValid: InputMaybe<OrderBy>;
-  email: InputMaybe<OrderBy>;
+  contactInformation: InputMaybe<OrderBy>;
   identity: InputMaybe<OrderBy>;
   location: InputMaybe<OrderBy>;
   payoutSettings: InputMaybe<OrderBy>;
@@ -1603,6 +1620,7 @@ export type UserInfoPkColumnsInput = {
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type UserInfoPrependInput = {
+  contactInformation: InputMaybe<Scalars['jsonb']>;
   identity: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['jsonb']>;
   payoutSettings: InputMaybe<Scalars['jsonb']>;
@@ -1613,7 +1631,7 @@ export enum UserInfoSelectColumn {
   /** column name */
   ArePayoutSettingsValid = 'arePayoutSettingsValid',
   /** column name */
-  Email = 'email',
+  ContactInformation = 'contactInformation',
   /** column name */
   Identity = 'identity',
   /** column name */
@@ -1626,7 +1644,7 @@ export enum UserInfoSelectColumn {
 
 /** input type for updating data in table "user_info" */
 export type UserInfoSetInput = {
-  email: InputMaybe<Scalars['String']>;
+  contactInformation: InputMaybe<Scalars['jsonb']>;
   identity: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['jsonb']>;
   payoutSettings: InputMaybe<Scalars['jsonb']>;
@@ -1636,7 +1654,7 @@ export type UserInfoSetInput = {
 /** update columns of table "user_info" */
 export enum UserInfoUpdateColumn {
   /** column name */
-  Email = 'email',
+  ContactInformation = 'contactInformation',
   /** column name */
   Identity = 'identity',
   /** column name */
@@ -1887,7 +1905,7 @@ export type Mutation_RootRequestPaymentArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateProfileInfoArgs = {
-  email: InputMaybe<Scalars['Email']>;
+  contactInformation: InputMaybe<ContactInformation>;
   identity: InputMaybe<IdentityInput>;
   location: InputMaybe<Location>;
   payoutSettings: InputMaybe<PayoutSettingsInput>;
@@ -3101,7 +3119,7 @@ export type User_Info_StreamCursorInput = {
 /** Initial value of the column from where the streaming should start */
 export type User_Info_StreamCursorValueInput = {
   arePayoutSettingsValid: InputMaybe<Scalars['Boolean']>;
-  email: InputMaybe<Scalars['String']>;
+  contactInformation: InputMaybe<Scalars['jsonb']>;
   identity: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['jsonb']>;
   payoutSettings: InputMaybe<Scalars['jsonb']>;
@@ -3407,7 +3425,7 @@ export type GetPaymentRequestsQueryVariables = Exact<{
 export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null } | null } | null }> };
 
 export type UpdateProfileInfoMutationVariables = Exact<{
-  email: InputMaybe<Scalars['Email']>;
+  contactInformation: InputMaybe<ContactInformation>;
   identity: InputMaybe<IdentityInput>;
   location: InputMaybe<Location>;
   payoutSettings: InputMaybe<PayoutSettingsInput>;
@@ -3421,7 +3439,7 @@ export type ProfileQueryVariables = Exact<{
 }>;
 
 
-export type ProfileQuery = { __typename?: 'query_root', userInfoByPk: { __typename?: 'UserInfo', userId: any, identity: any | null, email: string | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean | null } | null };
+export type ProfileQuery = { __typename?: 'query_root', userInfoByPk: { __typename?: 'UserInfo', userId: any, identity: any | null, contactInformation: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean | null } | null };
 
 export type GithubRepoContributorsFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } } | null };
 
@@ -4144,12 +4162,12 @@ export type GetPaymentRequestsQueryHookResult = ReturnType<typeof useGetPaymentR
 export type GetPaymentRequestsLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsLazyQuery>;
 export type GetPaymentRequestsQueryResult = Apollo.QueryResult<GetPaymentRequestsQuery, GetPaymentRequestsQueryVariables>;
 export const UpdateProfileInfoDocument = gql`
-    mutation updateProfileInfo($email: Email, $identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
+    mutation updateProfileInfo($contactInformation: ContactInformation, $identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
   updateProfileInfo(
     identity: $identity
     location: $location
     payoutSettings: $payoutSettings
-    email: $email
+    contactInformation: $contactInformation
   )
 }
     `;
@@ -4168,7 +4186,7 @@ export type UpdateProfileInfoMutationFn = Apollo.MutationFunction<UpdateProfileI
  * @example
  * const [updateProfileInfoMutation, { data, loading, error }] = useUpdateProfileInfoMutation({
  *   variables: {
- *      email: // value for 'email'
+ *      contactInformation: // value for 'contactInformation'
  *      identity: // value for 'identity'
  *      location: // value for 'location'
  *      payoutSettings: // value for 'payoutSettings'
@@ -4187,7 +4205,7 @@ export const ProfileDocument = gql`
   userInfoByPk(userId: $userId) {
     userId
     identity
-    email
+    contactInformation
     location
     ...UserPayoutSettings
   }
