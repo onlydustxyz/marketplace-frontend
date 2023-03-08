@@ -50,7 +50,7 @@ deploy_backends() {
         fi
 
         log_info "Reloading hasura metadata"
-        heroku run -a od-api-production hasura metadata reload
+        heroku run -a od-api-production hasura metadata reload --skip-update-check
     fi
 }
 
