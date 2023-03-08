@@ -26,7 +26,12 @@ const VALID_ENS = "vitalik.eth";
 const mockUser: UserInfo = {
   __typename: "UserInfo",
   userId: "test-user-id",
-  email: "test@user.email",
+  contactInformation: {
+    email: "test@user.email",
+    discord: "test-discord",
+    telegram: "test-telegram",
+    twitter: "test-twitter",
+  },
   identity: {
     Person: {
       firstname: "Nicolas",
@@ -48,7 +53,12 @@ const mockUser: UserInfo = {
 const mockUserWithEns: UserInfo = {
   __typename: "UserInfo",
   userId: "test-user-id",
-  email: "test@user.email",
+  contactInformation: {
+    email: "test@user.email",
+    discord: "test-discord",
+    telegram: "test-telegram",
+    twitter: "test-twitter",
+  },
   identity: {
     Person: {
       firstname: "Nicolas",
@@ -70,7 +80,12 @@ const mockUserWithEns: UserInfo = {
 const mockCompany: UserInfo = {
   __typename: "UserInfo",
   userId: "test-user-id",
-  email: "james.bond@mi6.uk",
+  contactInformation: {
+    email: "james.bond@mi6.uk",
+    discord: "test-discord",
+    telegram: "test-telegram",
+    twitter: "test-twitter",
+  },
   identity: {
     Company: {
       id: "007",
@@ -95,7 +110,12 @@ const mockCompany: UserInfo = {
 const mockCompanyWithEns: UserInfo = {
   __typename: "UserInfo",
   userId: "test-user-id",
-  email: "james.bond@mi6.uk",
+  contactInformation: {
+    email: "james.bond@mi6.uk",
+    discord: "test-discord",
+    telegram: "test-telegram",
+    twitter: "test-twitter",
+  },
   identity: {
     Company: {
       id: "007",
@@ -193,7 +213,7 @@ const buildMockMutationUpdateUser = (userInfo: UserInfo) => {
       };
 
   const variables: UpdateProfileInfoMutationVariables = {
-    email: userInfo.email,
+    contactInformation: userInfo.contactInformation,
     identity,
     location,
     payoutSettings,

@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     roles,
     ledProjectIds,
     githubUserId,
-    githubEmail: tokenSet?.user.email,
+    githubEmail: tokenSet?.user?.email,
   };
 
   if (value.user) {
