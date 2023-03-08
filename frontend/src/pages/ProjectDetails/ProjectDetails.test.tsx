@@ -11,7 +11,7 @@ import ProjectDetails, { GET_PROJECT_QUERY } from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import jwtDecode from "jwt-decode";
-import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
+import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY } from "src/types";
 import { GET_PROJECTS_FOR_SIDEBAR_QUERY } from "./Sidebar";
 import Overview from "src/pages/ProjectDetails/Overview";
 import { GetProjectQueryResult } from "src/__generated/graphql";
@@ -43,7 +43,15 @@ vi.mock("axios", () => ({
   },
 }));
 
-vi.mock("jwt-decode");
+const TEST_GITHUB_USER_ID = 123456;
+
+vi.mock("jwt-decode", () => ({
+  default: (jwt: string) => {
+    return {
+      [CLAIMS_KEY]: { [PROJECTS_LED_KEY]: `{"${TEST_LED_PROJECT_ID}"}`, [GITHUB_USERID_KEY]: TEST_GITHUB_USER_ID },
+    };
+  },
+}));
 
 const getProjectMock = {
   request: {
@@ -71,7 +79,7 @@ const getProjectMock = {
           shortDescription: TEST_DESCRIPTION,
           logoUrl: null,
         },
-        pendingInvitations: [{ id: "test-invitation-id", githubUserId: "github-user-id" }],
+        pendingInvitations: [{ id: "test-invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
         projectLeads: [
           {
             userId: "test-user-id",
@@ -146,7 +154,7 @@ const getProjectForSidebarMock = {
             name: TEST_PROJECT_NAME,
             logoUrl: "test-logo-url",
           },
-          pendingInvitations: [{ id: "test-invitation-id" }],
+          pendingInvitations: [{ id: "test-invitation-id", githhubUserId: TEST_GITHUB_USER_ID }],
         },
         {
           id: TEST_LED_PROJECT_ID,
@@ -187,13 +195,6 @@ describe('"ProjectDetails" page', () => {
   });
 
   it("should store the project id if it is a project led by the user", async () => {
-    const jwt = {
-      [CLAIMS_KEY]: {
-        [PROJECTS_LED_KEY]: `{"${TEST_LED_PROJECT_ID}"}`,
-      },
-    };
-    (jwtDecode as Mock).mockReturnValue(jwt);
-
     renderWithIntl(
       <Routes>
         <Route path="/projects/:projectId" element={<ProjectDetails />}></Route>

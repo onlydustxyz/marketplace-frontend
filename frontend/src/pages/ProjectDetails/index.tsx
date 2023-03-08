@@ -41,7 +41,7 @@ const ProjectDetails: React.FC = () => {
   );
 
   const getProjectQuery = useHasuraQuery<GetProjectQuery>(GET_PROJECT_QUERY, HasuraUserRole.Public, {
-    variables: { id: projectId, githubUserId },
+    variables: { id: projectId },
     skip: !projectId,
   });
 
@@ -97,7 +97,7 @@ const projectFromQuery = (project: GetProjectQuery["projectsByPk"], githubUserId
 
 export const GET_PROJECT_QUERY = gql`
   ${PROJECT_CARD_FRAGMENT}
-  query GetProject($id: uuid!, $githubUserId: bigint = 0) {
+  query GetProject($id: uuid!) {
     projectsByPk(id: $id) {
       ...ProjectCardFields
     }

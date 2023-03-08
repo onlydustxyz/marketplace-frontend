@@ -24,7 +24,7 @@ export default function AllProjects({ clearFilters, technologies, projectOwnersh
     buildGetProjectsQuery(technologies),
     HasuraUserRole.Public,
     {
-      variables: { githubUserId, languages: technologies },
+      variables: { languages: technologies },
     }
   );
 
@@ -54,7 +54,7 @@ export default function AllProjects({ clearFilters, technologies, projectOwnersh
   );
 }
 
-const buildQueryArgs = (technologies: string[]) => (technologies.length ? ", $languages: [String!]" : "");
+const buildQueryArgs = (technologies: string[]) => (technologies.length ? "$languages: [String!]" : "");
 
 const buildQueryFilters = (technologies: string[]) => {
   let filters = "";
@@ -67,7 +67,7 @@ const buildQueryFilters = (technologies: string[]) => {
 
 export const buildGetProjectsQuery = (technologies: string[]) => gql`
   ${PROJECT_CARD_FRAGMENT}
-  query GetProjects($githubUserId: bigint = 0${buildQueryArgs(technologies)}) {
+  query GetProjects${technologies.length ? "($languages: [String!])" : ""} {
     projects(${buildQueryFilters(technologies)}orderBy: {budgetsAggregate: {sum: {spentAmount: DESC}}}) {
       ...ProjectCardFields
     }

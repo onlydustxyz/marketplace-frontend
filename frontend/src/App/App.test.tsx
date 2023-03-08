@@ -160,7 +160,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
           },
         },
       ],
-      pendingInvitations: [{ id: "invitation-id", githubUserId: "github-user-id" }],
+      pendingInvitations: [{ id: "invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
       githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
       projectSponsors: [],
       budgets: [{ id: "budget-1", paymentRequests: [] }],
@@ -207,14 +207,14 @@ const graphQlMocks = [
   {
     request: {
       query: buildGetProjectsQuery([]),
-      variables: { githubUserId: TEST_GITHUB_USER_ID, languages: [] },
+      variables: { languages: [] },
     },
     result: ALL_PROJECTS_RESULT,
   },
   {
     request: {
       query: buildGetProjectsQuery([]),
-      variables: { githubUserId: undefined, languages: [] },
+      variables: { languages: [] },
     },
     result: ALL_PROJECTS_RESULT,
   },
@@ -251,7 +251,6 @@ const graphQlMocks = [
     request: {
       query: GET_PROJECT_QUERY,
       variables: {
-        githubUserId: TEST_GITHUB_USER_ID,
         id: TEST_PROJECT_ID,
       },
     },
