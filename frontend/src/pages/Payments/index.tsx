@@ -50,8 +50,11 @@ const Payments = () => {
             <Card>{payments && <PayoutTable payments={payments} payoutInfoMissing={!payoutSettingsValid} />}</Card>
             <div className="flex flex-col gap-4">
               {totalEarnings && <TotalEarnings amount={totalEarnings} />}
-              {pendingPaymentsRequests.length > 0 && invoiceNeeded && (
-                <InvoiceSubmission pendingPaymentRequestsCount={pendingPaymentsRequests.length} />
+              {pendingPaymentsRequests.length > 0 && invoiceNeeded && githubUserId && (
+                <InvoiceSubmission
+                  paymentRequestsIds={pendingPaymentsRequests.map(r => r.id)}
+                  githubUserId={githubUserId}
+                />
               )}
             </div>
           </div>

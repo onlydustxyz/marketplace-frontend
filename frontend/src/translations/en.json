@@ -43,6 +43,9 @@
     "onlyDustTitle": "OnlyDust title"
   },
   "invoiceSubmission": {
+    "sidePanel": {
+      "title": "Send invoice"
+    },
     "submitButton": "Add invoice",
     "title": "Invoice needed",
     "text": {

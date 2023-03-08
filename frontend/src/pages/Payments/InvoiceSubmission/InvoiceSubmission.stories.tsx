@@ -8,7 +8,7 @@ export default {
 export const Default = {
   render: () => (
     <div style={{ width: 320 }}>
-      <InvoiceSubmission pendingPaymentRequestsCount={3} />
+      <InvoiceSubmission paymentRequestsIds={["payment-1", "payment-2", "payment-3"]} githubUserId={123456} />
     </div>
   ),
 };
