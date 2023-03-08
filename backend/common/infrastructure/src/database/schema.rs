@@ -119,9 +119,9 @@ diesel::table! {
         user_id -> Uuid,
         identity -> Nullable<Jsonb>,
         location -> Nullable<Jsonb>,
-        email -> Nullable<Text>,
         payout_settings -> Nullable<Jsonb>,
         are_payout_settings_valid -> Bool,
+        contact_information -> Nullable<Jsonb>,
     }
 }
 
