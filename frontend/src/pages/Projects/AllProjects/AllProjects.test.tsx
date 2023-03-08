@@ -362,7 +362,7 @@ const buildGraphQlMocks = (projectsQueryResult: { data: GetProjectsQueryResult["
   {
     request: {
       query: buildGetProjectsQuery([]),
-      variables: { languages: [], githubUserId },
+      variables: { languages: [] },
     },
     result: projectsQueryResult,
   },
@@ -418,6 +418,7 @@ describe("All projects", () => {
   });
 
   it("should sort by pending invitation, then money granted desc if pending invitations", async () => {
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN));
     renderWithIntl(
       <AllProjects
         technologies={[]}
