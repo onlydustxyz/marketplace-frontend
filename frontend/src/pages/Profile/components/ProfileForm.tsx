@@ -162,52 +162,50 @@ const ProfileForm: React.FC<PropsType> = ({
     <FormProvider {...formMethods}>
       <form id="profile-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <div className="flex flex-row gap-6 items-stretch">
-          <Card className="basis-1/2 p-8">
-            <div className="flex flex-col">
-              <div>
-                <div className="flex flex-row justify-end mb-2">
-                  <Tag size={TagSize.Medium}>
-                    <span
-                      className={classNames({
-                        "text-orange-500": !payoutSettingsValid,
-                      })}
-                    >
-                      {payoutSettingsValid ? (
-                        <>
-                          <CheckLine /> {T("profile.form.payoutSettingsValidTag")}
-                        </>
-                      ) : (
-                        T("profile.form.payoutSettingsRequiredTag")
-                      )}
-                    </span>
-                  </Tag>
-                </div>
-                <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
-                  <div className="flex flex-row justify-between">
-                    <div className="font-medium text-lg">{T("profile.form.aboutYou")}</div>
-                  </div>
+          <Card className="basis-1/2 p-8 pb-3" padded={false}>
+            <div>
+              <div className="flex flex-col gap-2 divide-y divide-solid divide-neutral-600 ">
+                <div className="flex flex-row justify-between items-center">
+                  <div className="font-medium text-lg">{T("profile.form.payoutInformation")}</div>
                   <div>
-                    <div className="flex flex-row gap-3 font-medium text-neutral-300 mt-5 w-fit">
-                      <ProfileRadioGroup
-                        name="profileType"
-                        label={T("profile.form.profileType")}
-                        requiredForPayment={true}
-                        options={[
-                          {
-                            value: ProfileType.Individual,
-                            label: T("profile.form.profileTypeIndividual"),
-                            icon: <User3Line className="text-xl" />,
-                          },
-                          {
-                            value: ProfileType.Company,
-                            label: T("profile.form.profileTypeCompany"),
-                            icon: <BuildingLine className="text-xl" />,
-                          },
-                        ]}
-                      />
-                    </div>
+                    <Tag size={TagSize.Medium}>
+                      <span
+                        className={classNames({
+                          "text-orange-500": !payoutSettingsValid,
+                        })}
+                      >
+                        {payoutSettingsValid ? (
+                          <>
+                            <CheckLine /> {T("profile.form.payoutSettingsValidTag")}
+                          </>
+                        ) : (
+                          T("profile.form.payoutSettingsRequiredTag")
+                        )}
+                      </span>
+                    </Tag>
                   </div>
-                  <div className="flex flex-col pt-5">
+                </div>
+                <div>
+                  <div className="flex flex-row gap-3 font-medium text-neutral-300 mt-5 w-fit">
+                    <ProfileRadioGroup
+                      name="profileType"
+                      label={T("profile.form.profileType")}
+                      requiredForPayment={true}
+                      options={[
+                        {
+                          value: ProfileType.Individual,
+                          label: T("profile.form.profileTypeIndividual"),
+                          icon: <User3Line className="text-xl" />,
+                        },
+                        {
+                          value: ProfileType.Company,
+                          label: T("profile.form.profileTypeCompany"),
+                          icon: <BuildingLine className="text-xl" />,
+                        },
+                      ]}
+                    />
+                  </div>
+                  <div className="flex flex-col">
                     {profileType === ProfileType.Company && (
                       <div className="flex flex-col">
                         <Callout>{T("profile.form.companyNeedsInvoiceCallout")}</Callout>
@@ -261,65 +259,53 @@ const ProfileForm: React.FC<PropsType> = ({
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600">
-              <div className="font-medium text-lg">{T("profile.form.location")}</div>
-              <div>
-                <div className="mt-5">
-                  <Input
-                    label={T("profile.form.address")}
-                    name="address"
-                    placeholder={T("profile.form.address")}
-                    requiredForPayment={true}
-                  />
-                  <div className="flex flex-row gap-5">
-                    <Input
-                      label={T("profile.form.postCode")}
-                      name="postCode"
-                      placeholder={T("profile.form.postCode")}
-                      requiredForPayment={true}
-                    />
-                    <Input
-                      label={T("profile.form.city")}
-                      name="city"
-                      placeholder={T("profile.form.city")}
-                      requiredForPayment={true}
-                    />
-                    <Input
-                      label={T("profile.form.country")}
-                      name="country"
-                      placeholder={T("profile.form.country")}
-                      requiredForPayment={true}
-                    />
-                  </div>
-                </div>
+            <div>
+              <Input
+                label={T("profile.form.address")}
+                name="address"
+                placeholder={T("profile.form.address")}
+                requiredForPayment={true}
+              />
+              <div className="flex flex-row gap-5">
+                <Input
+                  label={T("profile.form.postCode")}
+                  name="postCode"
+                  placeholder={T("profile.form.postCode")}
+                  requiredForPayment={true}
+                />
+                <Input
+                  label={T("profile.form.city")}
+                  name="city"
+                  placeholder={T("profile.form.city")}
+                  requiredForPayment={true}
+                />
+                <Input
+                  label={T("profile.form.country")}
+                  name="country"
+                  placeholder={T("profile.form.country")}
+                  requiredForPayment={true}
+                />
               </div>
             </div>
             {profileType === ProfileType.Company && (
-              <div className="flex flex-col">
-                <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600">
-                  <div className="font-medium text-lg">{T("profile.form.payoutSettings")}</div>
-                  <div>
-                    <div className="flex flex-row gap-3 font-medium text-neutral-300 mt-5 w-fit">
-                      <ProfileRadioGroup
-                        name="payoutSettingsType"
-                        label={T("profile.form.payoutSettingsType")}
-                        requiredForPayment={true}
-                        options={[
-                          {
-                            value: PayoutSettingsDisplayType.BankAddress,
-                            label: T("profile.form.bankWire"),
-                            icon: <BankLine className="text-xl" />,
-                          },
-                          {
-                            value: PayoutSettingsDisplayType.EthereumIdentity,
-                            label: T("profile.form.cryptoWire"),
-                            icon: <BitcoinLine className="text-xl" />,
-                          },
-                        ]}
-                      />
-                    </div>
-                  </div>
-                </div>
+              <div className="flex flex-row gap-3 font-medium text-neutral-300 w-fit">
+                <ProfileRadioGroup
+                  name="payoutSettingsType"
+                  label={T("profile.form.payoutSettingsType")}
+                  requiredForPayment={true}
+                  options={[
+                    {
+                      value: PayoutSettingsDisplayType.BankAddress,
+                      label: T("profile.form.bankWire"),
+                      icon: <BankLine className="text-xl" />,
+                    },
+                    {
+                      value: PayoutSettingsDisplayType.EthereumIdentity,
+                      label: T("profile.form.cryptoWire"),
+                      icon: <BitcoinLine className="text-xl" />,
+                    },
+                  ]}
+                />
               </div>
             )}
             {payoutSettingsType === PayoutSettingsDisplayType.EthereumIdentity && (
@@ -400,9 +386,9 @@ const ProfileForm: React.FC<PropsType> = ({
               </div>
             )}
           </Card>
-          <Card padded={false} className="basis-1/2 p-8 pb-2">
-            <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
-              <div className="font-medium text-lg">{T("profile.form.contactInfo")}</div>
+          <Card className="basis-1/2 p-8" padded={false}>
+            <div className="flex flex-col gap-2 divide-y divide-solid divide-neutral-600 ">
+              <div className="font-medium text-lg mb-px">{T("profile.form.contactInfo")}</div>
               <div className="flex flex-col pt-5">
                 <Input
                   label={T("profile.form.email")}
