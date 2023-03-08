@@ -24,6 +24,11 @@ import classNames from "classnames";
 import CheckLine from "src/icons/CheckLine";
 import BuildingLine from "src/icons/BuildingLine";
 import User3Line from "src/icons/User3Line";
+import MailLine from "src/icons/MailLine";
+import TwitterFill from "src/icons/TwitterFill";
+import TelegramFill from "src/icons/TelegramFill";
+import DiscordFill from "src/icons/DiscordFill";
+import { useAuth } from "src/hooks/useAuth";
 
 const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
 const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
@@ -40,7 +45,6 @@ type Inputs = {
   companyOwnerLastName?: string;
   companyName?: string;
   identificationNumber?: string;
-  email?: string | null;
   address: string;
   postCode: string;
   city: string;
@@ -49,6 +53,10 @@ type Inputs = {
   ethIdentity?: string;
   IBAN?: string;
   BIC?: string;
+  email?: string | null;
+  telegram?: string | null;
+  discord?: string | null;
+  twitter?: string | null;
 };
 
 type PropsType = {
@@ -74,6 +82,7 @@ const ProfileForm: React.FC<PropsType> = ({
   payoutSettingsValid,
   onUserProfileUpdated,
 }) => {
+  const { githubEmail } = useAuth();
   const formMethods = useForm<Inputs>({
     defaultValues: {
       profileType: user?.identity?.Company ? ProfileType.Company : ProfileType.Individual,
@@ -83,7 +92,6 @@ const ProfileForm: React.FC<PropsType> = ({
       companyOwnerLastName: user?.identity?.Company?.owner?.lastname,
       companyName: user?.identity?.Company?.name,
       identificationNumber: user?.identity?.Company?.identification_number,
-      email: user?.email,
       address: user?.location?.address,
       postCode: user?.location?.post_code,
       city: user?.location?.city,
@@ -98,6 +106,10 @@ const ProfileForm: React.FC<PropsType> = ({
       ethIdentity: user?.payoutSettings?.EthTransfer?.Address || user?.payoutSettings?.EthTransfer?.Name,
       IBAN: user?.payoutSettings?.WireTransfer?.IBAN,
       BIC: user?.payoutSettings?.WireTransfer?.BIC,
+      email: user?.contactInformation?.email || githubEmail,
+      telegram: user?.contactInformation?.telegram,
+      discord: user?.contactInformation?.discord,
+      twitter: user?.contactInformation?.twitter,
     },
     mode: "onBlur",
     reValidateMode: "onBlur",
@@ -132,6 +144,10 @@ const ProfileForm: React.FC<PropsType> = ({
   const profileType = watch("profileType");
   const IBANValue = watch("IBAN");
   const BICValue = watch("BIC");
+  const email = watch("email");
+  const discord = watch("discord");
+  const telegram = watch("telegram");
+  const twitter = watch("twitter");
 
   useEffect(() => setSaveButtonDisabled(loading), [loading]);
   useEffect(() => {
@@ -244,23 +260,7 @@ const ProfileForm: React.FC<PropsType> = ({
                   </div>
                 </div>
               </div>
-              <div>
-                <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
-                  <div className="font-medium text-lg">{T("profile.form.contactInfo")}</div>
-                  <div className="pt-5">
-                    <Input
-                      label={T("profile.form.emailAddress")}
-                      name="email"
-                      options={{ pattern: EMAIL_ADDRESS_REGEXP }}
-                      placeholder={T("profile.form.emailPlaceholder")}
-                      onFocus={() => clearErrors("email")}
-                    />
-                  </div>
-                </div>
-              </div>
             </div>
-          </Card>
-          <Card padded={false} className="basis-1/2 p-8 pb-2">
             <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600">
               <div className="font-medium text-lg">{T("profile.form.location")}</div>
               <div>
@@ -400,6 +400,59 @@ const ProfileForm: React.FC<PropsType> = ({
               </div>
             )}
           </Card>
+          <Card padded={false} className="basis-1/2 p-8 pb-2">
+            <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
+              <div className="font-medium text-lg">{T("profile.form.contactInfo")}</div>
+              <div className="flex flex-col pt-5">
+                <Input
+                  label={T("profile.form.email")}
+                  name="email"
+                  options={{ pattern: EMAIL_ADDRESS_REGEXP }}
+                  placeholder={T("profile.form.emailPlaceholder")}
+                  onFocus={() => clearErrors("email")}
+                  inputClassName="pl-11"
+                  prefixComponent={
+                    <div className={`text-xl mt-1 ${email && email.length > 0 && " text-white"}`}>
+                      <MailLine />
+                    </div>
+                  }
+                />
+                <Input
+                  label={T("profile.form.telegram")}
+                  name="telegram"
+                  placeholder={T("profile.form.telegramPlaceholder")}
+                  inputClassName="pl-11"
+                  prefixComponent={
+                    <div className={`text-xl mt-1 ${telegram && telegram.length > 0 && "text-white"}`}>
+                      <TelegramFill />
+                    </div>
+                  }
+                />
+                <Input
+                  label={T("profile.form.discord")}
+                  name="discord"
+                  placeholder={T("profile.form.discordPlaceholder")}
+                  inputClassName="pl-11"
+                  prefixComponent={
+                    <div className={`text-xl mt-1 ${discord && discord.length > 0 && "text-white"}`}>
+                      <DiscordFill />
+                    </div>
+                  }
+                />
+                <Input
+                  label={T("profile.form.twitter")}
+                  name="twitter"
+                  placeholder={T("profile.form.twitterPlaceholder")}
+                  inputClassName="pl-11"
+                  prefixComponent={
+                    <div className={`text-xl mt-1 ${twitter && twitter.length > 0 && " text-white"}`}>
+                      <TwitterFill />
+                    </div>
+                  }
+                />
+              </div>
+            </div>
+          </Card>
         </div>
       </form>
     </FormProvider>
@@ -408,18 +461,22 @@ const ProfileForm: React.FC<PropsType> = ({
 
 export const UPDATE_USER_MUTATION = gql`
   mutation updateProfileInfo(
-    $email: Email
+    $contactInformation: ContactInformation
     $identity: IdentityInput
     $location: Location
     $payoutSettings: PayoutSettingsInput
   ) {
-    updateProfileInfo(identity: $identity, location: $location, payoutSettings: $payoutSettings, email: $email)
+    updateProfileInfo(
+      identity: $identity
+      location: $location
+      payoutSettings: $payoutSettings
+      contactInformation: $contactInformation
+    )
   }
 `;
 
 const mapFormDataToSchema = ({
   profileType,
-  email,
   lastname,
   firstname,
   address,
@@ -434,13 +491,26 @@ const mapFormDataToSchema = ({
   identificationNumber,
   companyOwnerFirstName,
   companyOwnerLastName,
+  email,
+  telegram,
+  discord,
+  twitter,
 }: Inputs) => {
   const variables: UpdateProfileInfoMutationVariables = {
-    email: email || null,
+    contactInformation: null,
     identity: null,
     location: null,
     payoutSettings: null,
   };
+
+  if (email || telegram || discord || twitter) {
+    variables.contactInformation = {
+      email: email || null,
+      telegram: telegram || null,
+      discord: discord || null,
+      twitter: twitter || null,
+    };
+  }
 
   if (profileType === ProfileType.Individual && (firstname || lastname)) {
     variables.identity = {

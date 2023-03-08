@@ -83,7 +83,7 @@ export const GET_PROFILE_QUERY = gql`
     userInfoByPk(userId: $userId) {
       userId
       identity
-      email
+      contactInformation
       location
       ...UserPayoutSettings
     }
