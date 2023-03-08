@@ -5,7 +5,7 @@ use thiserror::Error;
 
 use crate::{
 	domain::{
-		user_info::{Email, Identity, Location, PayoutSettings},
+		user_info::{ContactInformation, Identity, Location, PayoutSettings},
 		ArePayoutSettingsValid, UserInfo,
 	},
 	infrastructure::database::UserInfoRepository,
@@ -44,8 +44,8 @@ impl Usecase {
 		caller_id: UserId,
 		identity: Option<Identity>,
 		location: Option<Location>,
-		email: Option<Email>,
 		payout_settings: Option<PayoutSettings>,
+		contact_information: Option<ContactInformation>,
 	) -> Result<()> {
 		if let Some(payout_settings_value) = &payout_settings {
 			if !self
@@ -58,7 +58,13 @@ impl Usecase {
 			}
 		}
 
-		let user_info = UserInfo::new(caller_id, identity, location, email, payout_settings);
+		let user_info = UserInfo::new(
+			caller_id,
+			identity,
+			location,
+			payout_settings,
+			contact_information,
+		);
 		self.user_info_repository.upsert(&user_info)?;
 
 		Ok(())
