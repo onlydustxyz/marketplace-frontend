@@ -18,6 +18,7 @@ export type AuthContextType = {
   roles: UserRole[];
   ledProjectIds: string[];
   githubUserId?: number;
+  githubEmail?: string;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -60,6 +61,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     roles,
     ledProjectIds,
     githubUserId,
+    githubEmail: tokenSet?.user.email,
   };
 
   if (value.user) {
