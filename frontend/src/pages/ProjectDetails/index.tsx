@@ -22,7 +22,7 @@ export interface ProjectDetails {
   name?: string;
   logoUrl: string;
   telegramLink?: string | null;
-  leads: ({ id: string } & ProjectLeadFragment)[];
+  leads: ({ id: string } & Partial<ProjectLeadFragment>)[];
   invitationId?: string;
   totalSpentAmountInUsd?: number;
   languages: LanguageMap;
@@ -83,11 +83,16 @@ const ProjectDetails: React.FC = () => {
   );
 };
 
+type ProjectLead = {
+  userId: string;
+  user: ProjectLeadFragment | null;
+};
+
 const projectFromQuery = (project: GetProjectQuery["projectsByPk"], githubUserId?: number): ProjectDetails => ({
   id: project?.id,
   name: project?.projectDetails?.name,
   logoUrl: project?.projectDetails?.logoUrl || onlyDustLogo,
-  leads: project?.projectLeads?.map((lead: any) => ({ id: lead.userId, ...lead.user })) || [],
+  leads: project?.projectLeads?.map((lead: ProjectLead) => ({ id: lead.userId, ...lead.user })) || [],
   invitationId: project?.pendingInvitations.filter(i => i.githubUserId === githubUserId).at(0)?.id,
   totalSpentAmountInUsd: project?.budgetsAggregate.aggregate?.sum?.spentAmount,
   telegramLink: project?.projectDetails?.telegramLink,

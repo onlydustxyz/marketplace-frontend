@@ -7,6 +7,7 @@ import { SessionMethod, useSession, useSessionDispatch } from "src/hooks/useSess
 import { RefreshToken } from "src/types";
 import useSignupRedirection from "./hooks/useSignUpRedirection";
 import Loader from "src/components/Loader";
+import usePayoutSettings from "src/hooks/usePayoutSettings";
 
 export const AUTH_CODE_QUERY_KEY = "refreshToken";
 

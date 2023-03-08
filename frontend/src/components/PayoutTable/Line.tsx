@@ -6,9 +6,27 @@ import PayoutStatus from "../PayoutStatus";
 import GithubPRLink from "./GithubPRLink";
 import { formatMoneyAmount } from "src/utils/money";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { getPaymentStatusOrder, Payment } from "src/types";
+import { Currency, getPaymentStatusOrder, PaymentStatus, PayoutSettings } from "src/types";
 import { Field, SortingFields } from "src/hooks/usePaymentSorting";
 import { useEffect } from "react";
+
+export type Payment = {
+  id: string;
+  requestedAt: Date;
+  reason: string;
+  amount: {
+    value: number;
+    currency: Currency;
+  };
+  status: PaymentStatus;
+  recipientId?: number;
+  recipientPayoutSettings?: PayoutSettings;
+  project?: {
+    id: string;
+    title: string;
+    logoUrl?: string | null;
+  } | null;
+};
 
 type Props = {
   payment: Payment;

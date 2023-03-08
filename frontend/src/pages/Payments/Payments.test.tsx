@@ -6,6 +6,7 @@ import PaymentsPage, { GET_PAYMENTS_QUERY } from ".";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { GET_USER_PAYOUT_SETTINGS } from "src/hooks/usePayoutSettings";
+import { UserPaymentRequestFragment, UserPayoutSettingsFragment } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
@@ -32,8 +33,10 @@ vi.mock("axios", () => ({
 
 vi.mock("src/hooks/useAuth/useRoles");
 
-const mockContribution = {
+const mockContribution: UserPaymentRequestFragment = {
+  __typename: "PaymentRequests",
   id: "705e6b37-d0ee-4e87-b681-7009dd691965",
+  requestedAt: "2023-01-10T19:10:27.802657",
   payments: [
     {
       amount: 100,
@@ -47,9 +50,11 @@ const mockContribution = {
   amountInUsd: 200,
   reason: { work_items: ["link_to_pr"] },
   budget: {
+    id: "budget-1",
     project: {
       id: "632d5da7-e590-4815-85ea-82a5585e6049",
       projectDetails: {
+        projectId: "632d5da7-e590-4815-85ea-82a5585e6049",
         shortDescription: "SOOOOOO awesome",
         logoUrl: null,
         name: "MyAwesomeProject",
@@ -75,7 +80,7 @@ const buildMockPaymentsQuery = (
   },
 });
 
-const buidlMockPayoutSettingsQuery = (payoutSettings: any) => ({
+const buidlMockPayoutSettingsQuery = (userInfo: UserPayoutSettingsFragment) => ({
   request: {
     query: GET_USER_PAYOUT_SETTINGS,
     variables: { githubUserId },
@@ -85,9 +90,7 @@ const buidlMockPayoutSettingsQuery = (payoutSettings: any) => ({
       authGithubUsers: [
         {
           user: {
-            userInfo: {
-              payoutSettings,
-            },
+            userInfo,
           },
         },
       ],
@@ -142,7 +145,7 @@ describe('"Payments" page', () => {
     });
 
     expect(await screen.findByText(mockContribution.reason.work_items[0])).toBeInTheDocument();
-    expect(await screen.findByText(mockContribution.budget.project.projectDetails.name)).toBeInTheDocument();
+    expect(await screen.findByText(mockContribution.budget?.project?.projectDetails?.name || "")).toBeInTheDocument();
     expect(await screen.findAllByText("$200")).toHaveLength(2);
     expect(await screen.findAllByText(/complete/i)).toHaveLength(3); // two for the banner and one for the line field
   });
@@ -150,7 +153,10 @@ describe('"Payments" page', () => {
   it("should display banner when there are payments but no payout info", async () => {
     renderWithIntl(<PaymentsPage />, {
       wrapper: MemoryRouterProviderFactory({
-        mocks: [buildMockPaymentsQuery(githubUserId), buidlMockPayoutSettingsQuery(undefined)],
+        mocks: [
+          buildMockPaymentsQuery(githubUserId),
+          buidlMockPayoutSettingsQuery({ payoutSettings: null, arePayoutSettingsValid: false }),
+        ],
       }),
     });
     expect(await screen.findByText("Complete payout information")).toBeInTheDocument();
@@ -161,7 +167,10 @@ describe('"Payments" page', () => {
       wrapper: MemoryRouterProviderFactory({
         mocks: [
           buildMockPaymentsQuery(githubUserId),
-          buidlMockPayoutSettingsQuery({ EthTransfer: { Name: "vitalik.eth" } }),
+          buidlMockPayoutSettingsQuery({
+            payoutSettings: { EthTransfer: { Name: "vitalik.eth" } },
+            arePayoutSettingsValid: true,
+          }),
         ],
       }),
     });

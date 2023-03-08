@@ -2,11 +2,9 @@ import { gql, OperationVariables, QueryResult } from "@apollo/client";
 import { generatePath } from "react-router-dom";
 import { RoutePaths } from "src/App";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
+import usePayoutSettings from "src/hooks/usePayoutSettings";
 import { HasuraUserRole } from "src/types";
-import {
-  PendingProjectLeaderInvitationsQuery,
-  PendingUserPaymentsAndPayoutSettingsQuery,
-} from "src/__generated/graphql";
+import { PendingProjectLeaderInvitationsQuery, PendingUserPaymentsQuery } from "src/__generated/graphql";
 
 export type User = {
   githubUserId?: number;
@@ -23,8 +21,10 @@ export default function useSignupRedirection({ githubUserId, userId }: User) {
     }
   );
 
-  const pendingUserPaymentsAndPayoutSettingsQuery = useHasuraQuery<PendingUserPaymentsAndPayoutSettingsQuery>(
-    PENDING_USER_PAYMENTS_AND_PAYOUT_SETTINGS,
+  const { valid: payoutSettingsValid } = usePayoutSettings(githubUserId);
+
+  const pendingUserPaymentsAndPayoutSettingsQuery = useHasuraQuery<PendingUserPaymentsQuery>(
+    PENDING_USER_PAYMENTS,
     HasuraUserRole.RegisteredUser,
     {
       variables: { userId: userId },
@@ -34,15 +34,19 @@ export default function useSignupRedirection({ githubUserId, userId }: User) {
 
   return {
     loading: pendingProjectLeaderInvitationsQuery.loading || pendingUserPaymentsAndPayoutSettingsQuery.loading,
-    url: getRedirectionUrl(pendingProjectLeaderInvitationsQuery, pendingUserPaymentsAndPayoutSettingsQuery),
+    url: getRedirectionUrl(
+      pendingProjectLeaderInvitationsQuery,
+      pendingUserPaymentsAndPayoutSettingsQuery,
+      payoutSettingsValid === false
+    ),
   };
 }
 
 const getRedirectionUrl = (
   pendingProjectLeaderInvitationsQuery: QueryResult<PendingProjectLeaderInvitationsQuery, OperationVariables>,
-  pendingUserPaymentsAndPayoutSettingsQuery: QueryResult<PendingUserPaymentsAndPayoutSettingsQuery, OperationVariables>
+  pendingUserPaymentsAndPayoutSettingsQuery: QueryResult<PendingUserPaymentsQuery, OperationVariables>,
+  missingPayoutInfo: boolean
 ) => {
-  const missingPayoutInfo = !pendingUserPaymentsAndPayoutSettingsQuery.data?.user?.userInfo?.payoutSettings;
   const pendingPaymentRequests =
     pendingUserPaymentsAndPayoutSettingsQuery.data?.user?.githubUser?.paymentRequests.filter(
       r => r.amountInUsd > r.paymentsAggregate.aggregate?.sum?.amount
@@ -69,13 +73,9 @@ export const PENDING_PROJECT_LEADER_INVITATIONS_QUERY = gql`
   }
 `;
 
-export const PENDING_USER_PAYMENTS_AND_PAYOUT_SETTINGS = gql`
-  query PendingUserPaymentsAndPayoutSettings($userId: uuid!) {
+export const PENDING_USER_PAYMENTS = gql`
+  query PendingUserPayments($userId: uuid!) {
     user(id: $userId) {
-      userInfo {
-        userId
-        payoutSettings
-      }
       githubUser {
         paymentRequests {
           amountInUsd

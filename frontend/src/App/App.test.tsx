@@ -14,7 +14,7 @@ import { GET_PROJECTS_FOR_SIDEBAR_QUERY } from "src/pages/ProjectDetails/Sidebar
 import { buildGetProjectsQuery } from "src/pages/Projects/AllProjects";
 import {
   PENDING_PROJECT_LEADER_INVITATIONS_QUERY,
-  PENDING_USER_PAYMENTS_AND_PAYOUT_SETTINGS,
+  PENDING_USER_PAYMENTS,
 } from "src/pages/Login/hooks/useSignUpRedirection";
 import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
 import { generatePath } from "react-router-dom";
@@ -29,7 +29,7 @@ import {
   GetProjectsForSidebarQueryResult,
   GetProjectsQueryResult,
   PendingProjectLeaderInvitationsQueryResult,
-  PendingUserPaymentsAndPayoutSettingsQueryResult,
+  PendingUserPaymentsQueryResult,
   ProfileQueryResult,
 } from "src/__generated/graphql";
 import { GET_GITHUB_REPOSITORY_DETAILS_QUERY } from "src/pages/ProjectDetails/Overview/GithubRepoDetails";
@@ -348,13 +348,12 @@ const pendingProjectLeadInvitationMock = {
 
 const pendingPaymentsMock = {
   request: {
-    query: PENDING_USER_PAYMENTS_AND_PAYOUT_SETTINGS,
+    query: PENDING_USER_PAYMENTS,
     variables: { userId: TEST_USER_ID },
   },
   result: {
     data: {
       user: {
-        userInfo: { userId: TEST_USER_ID, payoutSettings: null },
         githubUser: {
           paymentRequests: [
             {
@@ -364,7 +363,7 @@ const pendingPaymentsMock = {
           ],
         },
       },
-    } as PendingUserPaymentsAndPayoutSettingsQueryResult["data"],
+    } as PendingUserPaymentsQueryResult["data"],
   },
 };
 
@@ -379,6 +378,7 @@ const paymentRequestsMock = {
     data: {
       paymentRequests: [
         {
+          __typename: "PaymentRequests",
           id: "705e6b37-d0ee-4e87-b681-7009dd691965",
           requestedAt: "2023-01-10T19:10:27.802657",
           payments: [

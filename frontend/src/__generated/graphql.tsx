@@ -3390,12 +3390,14 @@ export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
 
 export type PendingProjectLeaderInvitationsQuery = { __typename?: 'query_root', pendingProjectLeaderInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, projectId: any }> };
 
-export type PendingUserPaymentsAndPayoutSettingsQueryVariables = Exact<{
+export type PendingUserPaymentsQueryVariables = Exact<{
   userId: Scalars['uuid'];
 }>;
 
 
-export type PendingUserPaymentsAndPayoutSettingsQuery = { __typename?: 'query_root', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', userId: any, payoutSettings: any | null } | null, githubUser: { __typename?: 'AuthGithubUsers', paymentRequests: Array<{ __typename?: 'PaymentRequests', amountInUsd: any, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> } | null } | null };
+export type PendingUserPaymentsQuery = { __typename?: 'query_root', user: { __typename?: 'users', githubUser: { __typename?: 'AuthGithubUsers', paymentRequests: Array<{ __typename?: 'PaymentRequests', amountInUsd: any, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> } | null } | null };
+
+export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null } | null } | null };
 
 export type GetPaymentRequestsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
@@ -3645,6 +3647,30 @@ export const UserPayoutSettingsFragmentDoc = gql`
     fragment UserPayoutSettings on UserInfo {
   payoutSettings
   arePayoutSettingsValid
+}
+    `;
+export const UserPaymentRequestFragmentDoc = gql`
+    fragment UserPaymentRequest on PaymentRequests {
+  id
+  requestedAt
+  payments {
+    amount
+    currencyCode
+  }
+  amountInUsd
+  reason
+  budget {
+    id
+    project {
+      id
+      projectDetails {
+        projectId
+        name
+        shortDescription
+        logoUrl
+      }
+    }
+  }
 }
     `;
 export const ContributorsTableFieldsFragmentDoc = gql`
@@ -4034,13 +4060,9 @@ export function usePendingProjectLeaderInvitationsLazyQuery(baseOptions?: Apollo
 export type PendingProjectLeaderInvitationsQueryHookResult = ReturnType<typeof usePendingProjectLeaderInvitationsQuery>;
 export type PendingProjectLeaderInvitationsLazyQueryHookResult = ReturnType<typeof usePendingProjectLeaderInvitationsLazyQuery>;
 export type PendingProjectLeaderInvitationsQueryResult = Apollo.QueryResult<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>;
-export const PendingUserPaymentsAndPayoutSettingsDocument = gql`
-    query PendingUserPaymentsAndPayoutSettings($userId: uuid!) {
+export const PendingUserPaymentsDocument = gql`
+    query PendingUserPayments($userId: uuid!) {
   user(id: $userId) {
-    userInfo {
-      userId
-      payoutSettings
-    }
     githubUser {
       paymentRequests {
         amountInUsd
@@ -4058,58 +4080,39 @@ export const PendingUserPaymentsAndPayoutSettingsDocument = gql`
     `;
 
 /**
- * __usePendingUserPaymentsAndPayoutSettingsQuery__
+ * __usePendingUserPaymentsQuery__
  *
- * To run a query within a React component, call `usePendingUserPaymentsAndPayoutSettingsQuery` and pass it any options that fit your needs.
- * When your component renders, `usePendingUserPaymentsAndPayoutSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `usePendingUserPaymentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePendingUserPaymentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = usePendingUserPaymentsAndPayoutSettingsQuery({
+ * const { data, loading, error } = usePendingUserPaymentsQuery({
  *   variables: {
  *      userId: // value for 'userId'
  *   },
  * });
  */
-export function usePendingUserPaymentsAndPayoutSettingsQuery(baseOptions: Apollo.QueryHookOptions<PendingUserPaymentsAndPayoutSettingsQuery, PendingUserPaymentsAndPayoutSettingsQueryVariables>) {
+export function usePendingUserPaymentsQuery(baseOptions: Apollo.QueryHookOptions<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PendingUserPaymentsAndPayoutSettingsQuery, PendingUserPaymentsAndPayoutSettingsQueryVariables>(PendingUserPaymentsAndPayoutSettingsDocument, options);
+        return Apollo.useQuery<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>(PendingUserPaymentsDocument, options);
       }
-export function usePendingUserPaymentsAndPayoutSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PendingUserPaymentsAndPayoutSettingsQuery, PendingUserPaymentsAndPayoutSettingsQueryVariables>) {
+export function usePendingUserPaymentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PendingUserPaymentsAndPayoutSettingsQuery, PendingUserPaymentsAndPayoutSettingsQueryVariables>(PendingUserPaymentsAndPayoutSettingsDocument, options);
+          return Apollo.useLazyQuery<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>(PendingUserPaymentsDocument, options);
         }
-export type PendingUserPaymentsAndPayoutSettingsQueryHookResult = ReturnType<typeof usePendingUserPaymentsAndPayoutSettingsQuery>;
-export type PendingUserPaymentsAndPayoutSettingsLazyQueryHookResult = ReturnType<typeof usePendingUserPaymentsAndPayoutSettingsLazyQuery>;
-export type PendingUserPaymentsAndPayoutSettingsQueryResult = Apollo.QueryResult<PendingUserPaymentsAndPayoutSettingsQuery, PendingUserPaymentsAndPayoutSettingsQueryVariables>;
+export type PendingUserPaymentsQueryHookResult = ReturnType<typeof usePendingUserPaymentsQuery>;
+export type PendingUserPaymentsLazyQueryHookResult = ReturnType<typeof usePendingUserPaymentsLazyQuery>;
+export type PendingUserPaymentsQueryResult = Apollo.QueryResult<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>;
 export const GetPaymentRequestsDocument = gql`
     query GetPaymentRequests($githubUserId: bigint!) {
   paymentRequests(where: {recipientId: {_eq: $githubUserId}}) {
-    id
-    requestedAt
-    payments {
-      amount
-      currencyCode
-    }
-    amountInUsd
-    reason
-    budget {
-      id
-      project {
-        id
-        projectDetails {
-          projectId
-          name
-          shortDescription
-          logoUrl
-        }
-      }
-    }
+    ...UserPaymentRequest
   }
 }
-    `;
+    ${UserPaymentRequestFragmentDoc}`;
 
 /**
  * __useGetPaymentRequestsQuery__

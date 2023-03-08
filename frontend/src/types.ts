@@ -50,20 +50,6 @@ type Uuid = string;
 export type Email = string;
 export type PhoneNumber = string;
 
-export type Payment = {
-  id: string;
-  requestedAt: Date;
-  reason: string;
-  amount: {
-    value: number;
-    currency: Currency;
-  };
-  status: PaymentStatus;
-  recipientId?: number;
-  recipientPayoutSettings?: PayoutSettings;
-  project?: Project;
-};
-
 export type Sortable = {
   sortingFields?: SortingFields;
 };
@@ -89,14 +75,6 @@ export function getPaymentStatusOrder(status: PaymentStatus | "payout_missing"):
       return -1;
   }
 }
-
-export type Project = {
-  id: string;
-  title: string;
-  logoUrl?: string;
-  shortDescription: string;
-  longDescription?: string;
-};
 
 type Locale = "en" | "fr";
 

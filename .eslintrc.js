@@ -45,6 +45,7 @@ module.exports = {
       },
     ],
     "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-explicit-any": "error",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
   },
