@@ -3485,7 +3485,6 @@ export type GetProjectsForSidebarQuery = { __typename?: 'query_root', projects: 
 
 export type GetProjectQueryVariables = Exact<{
   id: Scalars['uuid'];
-  githubUserId?: InputMaybe<Scalars['bigint']>;
 }>;
 
 
@@ -3498,9 +3497,7 @@ export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
 
 export type AcceptProjectLeaderInvitationMutation = { __typename?: 'mutation_root', acceptProjectLeaderInvitation: boolean };
 
-export type GetProjectsQueryVariables = Exact<{
-  githubUserId?: InputMaybe<Scalars['bigint']>;
-}>;
+export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } }> }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, user: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> }> };
@@ -4536,7 +4533,7 @@ export type GetProjectsForSidebarQueryHookResult = ReturnType<typeof useGetProje
 export type GetProjectsForSidebarLazyQueryHookResult = ReturnType<typeof useGetProjectsForSidebarLazyQuery>;
 export type GetProjectsForSidebarQueryResult = Apollo.QueryResult<GetProjectsForSidebarQuery, GetProjectsForSidebarQueryVariables>;
 export const GetProjectDocument = gql`
-    query GetProject($id: uuid!, $githubUserId: bigint = 0) {
+    query GetProject($id: uuid!) {
   projectsByPk(id: $id) {
     ...ProjectCardFields
   }
@@ -4556,7 +4553,6 @@ export const GetProjectDocument = gql`
  * const { data, loading, error } = useGetProjectQuery({
  *   variables: {
  *      id: // value for 'id'
- *      githubUserId: // value for 'githubUserId'
  *   },
  * });
  */
@@ -4603,7 +4599,7 @@ export type AcceptProjectLeaderInvitationMutationHookResult = ReturnType<typeof 
 export type AcceptProjectLeaderInvitationMutationResult = Apollo.MutationResult<AcceptProjectLeaderInvitationMutation>;
 export type AcceptProjectLeaderInvitationMutationOptions = Apollo.BaseMutationOptions<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>;
 export const GetProjectsDocument = gql`
-    query GetProjects($githubUserId: bigint = 0) {
+    query GetProjects {
   projects(orderBy: {budgetsAggregate: {sum: {spentAmount: DESC}}}) {
     ...ProjectCardFields
   }
@@ -4622,7 +4618,6 @@ export const GetProjectsDocument = gql`
  * @example
  * const { data, loading, error } = useGetProjectsQuery({
  *   variables: {
- *      githubUserId: // value for 'githubUserId'
  *   },
  * });
  */
