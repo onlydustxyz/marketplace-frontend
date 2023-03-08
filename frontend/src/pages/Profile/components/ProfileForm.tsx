@@ -15,7 +15,6 @@ import {
 } from "src/__generated/graphql";
 import Card from "src/components/Card";
 import { useShowToaster } from "src/hooks/useToaster";
-import FormToggle from "src/components/FormToggle";
 import { useEffect } from "react";
 import Callout from "src/components/Callout";
 import BankLine from "src/icons/BankLine";
@@ -23,6 +22,8 @@ import BitcoinLine from "src/icons/BitcoinLine";
 import Tag, { TagSize } from "src/components/Tag";
 import classNames from "classnames";
 import CheckLine from "src/icons/CheckLine";
+import BuildingLine from "src/icons/BuildingLine";
+import User3Line from "src/icons/User3Line";
 
 const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
 const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
@@ -32,7 +33,7 @@ const EMAIL_ADDRESS_REGEXP =
 const BIC_REGEXP = /^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/i;
 
 type Inputs = {
-  isCompanyProfile: boolean;
+  profileType: ProfileType;
   firstname?: string;
   lastname?: string;
   companyOwnerFirstName?: string;
@@ -62,6 +63,11 @@ enum PayoutSettingsDisplayType {
   EthereumIdentity = "ETHEREUM_IDENTITY",
 }
 
+enum ProfileType {
+  Company = "COMPANY",
+  Individual = "INDIVIDUAL",
+}
+
 const ProfileForm: React.FC<PropsType> = ({
   user,
   setSaveButtonDisabled,
@@ -70,7 +76,7 @@ const ProfileForm: React.FC<PropsType> = ({
 }) => {
   const formMethods = useForm<Inputs>({
     defaultValues: {
-      isCompanyProfile: user?.identity?.Company,
+      profileType: user?.identity?.Company ? ProfileType.Company : ProfileType.Individual,
       firstname: user?.identity?.Person?.firstname,
       lastname: user?.identity?.Person?.lastname,
       companyOwnerFirstName: user?.identity?.Company?.owner?.firstname,
@@ -123,16 +129,16 @@ const ProfileForm: React.FC<PropsType> = ({
   };
 
   const payoutSettingsType = watch("payoutSettingsType");
-  const isCompanyProfile = watch("isCompanyProfile");
+  const profileType = watch("profileType");
   const IBANValue = watch("IBAN");
   const BICValue = watch("BIC");
 
   useEffect(() => setSaveButtonDisabled(loading), [loading]);
   useEffect(() => {
-    if (!isCompanyProfile) {
+    if (profileType === ProfileType.Individual) {
       setValue("payoutSettingsType", PayoutSettingsDisplayType.EthereumIdentity);
     }
-  }, [isCompanyProfile]);
+  }, [profileType]);
 
   const { T } = useIntl();
 
@@ -163,12 +169,30 @@ const ProfileForm: React.FC<PropsType> = ({
                 <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600 ">
                   <div className="flex flex-row justify-between">
                     <div className="font-medium text-lg">{T("profile.form.aboutYou")}</div>
-                    <div className="flex flex-row items-center gap-2">
-                      <FormToggle name="isCompanyProfile" label={T("profile.form.companyProfile")} control={control} />
+                  </div>
+                  <div>
+                    <div className="flex flex-row gap-3 font-medium text-neutral-300 mt-5 w-fit">
+                      <ProfileRadioGroup
+                        name="profileType"
+                        label={T("profile.form.profileType")}
+                        requiredForPayment={true}
+                        options={[
+                          {
+                            value: ProfileType.Individual,
+                            label: T("profile.form.profileTypeIndividual"),
+                            icon: <User3Line className="text-xl" />,
+                          },
+                          {
+                            value: ProfileType.Company,
+                            label: T("profile.form.profileTypeCompany"),
+                            icon: <BuildingLine className="text-xl" />,
+                          },
+                        ]}
+                      />
                     </div>
                   </div>
                   <div className="flex flex-col pt-5">
-                    {isCompanyProfile && (
+                    {profileType === ProfileType.Company && (
                       <div className="flex flex-col">
                         <Callout>{T("profile.form.companyNeedsInvoiceCallout")}</Callout>
                         <div className="flex flex-row gap-5 w-full pt-5">
@@ -201,7 +225,7 @@ const ProfileForm: React.FC<PropsType> = ({
                         </div>
                       </div>
                     )}
-                    {!isCompanyProfile && (
+                    {profileType === ProfileType.Individual && (
                       <div className="flex flex-row gap-5 w-full">
                         <Input
                           label={T("profile.form.firstname")}
@@ -270,7 +294,7 @@ const ProfileForm: React.FC<PropsType> = ({
                 </div>
               </div>
             </div>
-            {isCompanyProfile && (
+            {profileType === ProfileType.Company && (
               <div className="flex flex-col">
                 <div className="flex flex-col gap-1 divide-y divide-solid divide-neutral-600">
                   <div className="font-medium text-lg">{T("profile.form.payoutSettings")}</div>
@@ -394,6 +418,7 @@ export const UPDATE_USER_MUTATION = gql`
 `;
 
 const mapFormDataToSchema = ({
+  profileType,
   email,
   lastname,
   firstname,
@@ -401,7 +426,6 @@ const mapFormDataToSchema = ({
   companyName,
   city,
   country,
-  isCompanyProfile,
   postCode,
   payoutSettingsType,
   ethIdentity,
@@ -418,7 +442,7 @@ const mapFormDataToSchema = ({
     payoutSettings: null,
   };
 
-  if (!isCompanyProfile && (firstname || lastname)) {
+  if (profileType === ProfileType.Individual && (firstname || lastname)) {
     variables.identity = {
       type: IdentityType.Person,
       optPerson: {
@@ -428,7 +452,10 @@ const mapFormDataToSchema = ({
       optCompany: null,
     };
   }
-  if (isCompanyProfile && (companyOwnerFirstName || companyOwnerLastName || companyName || identificationNumber)) {
+  if (
+    profileType === ProfileType.Company &&
+    (companyOwnerFirstName || companyOwnerLastName || companyName || identificationNumber)
+  ) {
     variables.identity = {
       type: IdentityType.Company,
       optCompany: {

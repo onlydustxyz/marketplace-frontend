@@ -116,6 +116,9 @@
   "profile": {
     "edit": "Edit profile",
     "form": {
+      "profileType": "Account type",
+      "profileTypeIndividual": "Individual",
+      "profileTypeCompany": "Company",
       "aboutYou": "About you",
       "address": "Street address",
       "bankWire": "Bank wire",
@@ -128,7 +131,6 @@
       "companyNeedsInvoiceCallout": "As a company, you’ll need to share an invoice for each payment in order to receive the funds.",
       "companyOwnerFirstName": "First name",
       "companyOwnerLastName": "Last name",
-      "companyProfile": "Company profile",
       "contactInfo": "Contact information",
       "country": "Country",
       "cryptoWire": "Crypto wire",
@@ -141,7 +143,6 @@
       "ibanInvalid": "Please enter a valid IBAN",
       "ibanRequired": "Your IBAN is required",
       "identificationNumber": "Identification number",
-      "individualProfile": "Individual",
       "invalidCryptoSettings": "Please enter a valid ETH address or ENS domain",
       "lastname": "Last name",
       "location": "Location",
@@ -152,8 +153,7 @@
       "payoutSettingsValidTag": "You’re able to receive payments",
       "postCode": "Zip code",
       "send": "Save profile",
-      "success": "Payment information successfully updated",
-      "typeOfProfile": "Profile type"
+      "success": "Payment information successfully updated"
     },
     "missing": {
       "button": "Complete payout information",
