@@ -42,6 +42,14 @@
     "onlyDustLogo": "OnlyDust logo",
     "onlyDustTitle": "OnlyDust title"
   },
+  "invoiceSubmission": {
+    "submitButton": "Add invoice",
+    "title": "Invoice needed",
+    "text": {
+      "one": "Please send us an invoice for your pending payment",
+      "many": "Please send us an invoice for your __count__ pending payments"
+    }
+  },
   "navbar": {
     "feedback": {
       "button": "Feedback",
