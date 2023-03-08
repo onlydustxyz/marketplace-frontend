@@ -3,6 +3,13 @@
 SCRIPT_DIR=`readlink -f $0 | xargs dirname`
 . $SCRIPT_DIR/utils.sh
 
+check_uptodate_with_main() {
+    current_branch=`git branch --show-current`
+    [ $current_branch != "main" ] && exit_error "You are not on 'main' branch"
+    git pull
+    [ $? -ne 0 ] && exit_error "Unable to pull with remote"
+}
+
 slug_commit() {
     APP=$1
     heroku releases:info --app $APP --shell | sed -n 's/HEROKU_SLUG_COMMIT=\(.*\)/\1/p'
@@ -57,6 +64,8 @@ deploy_backends() {
 check_command git
 check_command heroku
 check_command vercel
+
+check_uptodate_with_main
 
 ask "Do you want to deploy the backends"
 if [ $? -eq 0 ]; then
