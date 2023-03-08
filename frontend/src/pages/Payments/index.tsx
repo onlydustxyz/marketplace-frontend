@@ -47,7 +47,15 @@ const Payments = () => {
         <div className="text-5xl font-belwe">{T("navbar.payments")}</div>
         <QueryWrapper query={getPaymentRequestsQuery}>
           <div className="flex gap-4 mb-10">
-            <Card>{payments && <PayoutTable payments={payments} payoutInfoMissing={!payoutSettingsValid} />}</Card>
+            <Card>
+              {payments && (
+                <PayoutTable
+                  payments={payments}
+                  payoutInfoMissing={!payoutSettingsValid}
+                  invoiceNeeded={invoiceNeeded}
+                />
+              )}
+            </Card>
             <div className="flex flex-col gap-4">
               {totalEarnings && <TotalEarnings amount={totalEarnings} />}
               {pendingPaymentsRequests.length > 0 && invoiceNeeded && githubUserId && (

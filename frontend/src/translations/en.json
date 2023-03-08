@@ -101,11 +101,13 @@
     "list": "List payments",
     "status": {
       "complete": "Complete",
+      "invoicePending": "Pending invoice",
       "payoutInfoMissing": "Payout info missing",
       "pending": "Pending",
       "processing": "Processing",
       "tooltip": {
         "complete": "Payment successful",
+        "invoicePending": "An invoice is required to process your payment. Please wait up to 5 days if you already sent it.",
         "payoutInfoMissing": "Fill in your payment information to get paid",
         "pending": "Contributor needs to sign up on OnlyDust and to complete payout info to get paid",
         "processing": "Payment is being processed by our team. Typically 3 to 5 days to receive payment"

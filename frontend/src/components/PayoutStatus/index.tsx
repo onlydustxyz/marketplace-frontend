@@ -10,17 +10,34 @@ type Props = {
   id: string;
   status: PaymentStatus;
   payoutInfoMissing: boolean;
+  invoiceNeeded?: boolean;
   isProjectLeaderView?: boolean;
 };
 
-export default function PayoutStatus({ id, status, payoutInfoMissing, isProjectLeaderView = false }: Props) {
-  return buildTag(id, status, payoutInfoMissing, isProjectLeaderView);
+export default function PayoutStatus({
+  id,
+  status,
+  payoutInfoMissing,
+  isProjectLeaderView = false,
+  invoiceNeeded,
+}: Props) {
+  return buildTag(id, status, payoutInfoMissing, isProjectLeaderView, !!invoiceNeeded);
 }
 
-const buildTag = (id: string, status: PaymentStatus, payoutInfoMissing: boolean, isProjectLeaderView: boolean) => {
+const buildTag = (
+  id: string,
+  status: PaymentStatus,
+  payoutInfoMissing: boolean,
+  isProjectLeaderView: boolean,
+  invoiceNeeded: boolean
+) => {
   switch (status) {
     case PaymentStatus.WAITING_PAYMENT:
-      return payoutInfoMissing ? PayoutInfoMissingTag(id, isProjectLeaderView) : ProcessingTag(id);
+      return payoutInfoMissing
+        ? PayoutInfoMissingTag(id, isProjectLeaderView)
+        : invoiceNeeded && !isProjectLeaderView
+        ? InvoiceNeededTag(id)
+        : ProcessingTag(id);
     case PaymentStatus.ACCEPTED:
       return CompleteTag(id);
   }
@@ -77,6 +94,22 @@ const PayoutInfoMissingTag = (id: string, isProjectLeaderView: boolean) => {
         <div className="w-52">
           {isProjectLeaderView ? T("payment.status.tooltip.pending") : T("payment.status.tooltip.payoutInfoMissing")}
         </div>
+      </Tooltip>
+    </>
+  );
+};
+
+const InvoiceNeededTag = (id: string) => {
+  const { T } = useIntl();
+
+  return (
+    <>
+      <Tag id={id} size={TagSize.Medium} borderColor={TagBorderColor.MultiColor}>
+        <ErrorWarningLine className="text-pink-500" />
+        <span className="text-greyscale-50 whitespace-nowrap">{T("payment.status.invoicePending")}</span>
+      </Tag>
+      <Tooltip anchorId={id}>
+        <div className="w-64">{T("payment.status.tooltip.invoicePending")}</div>
       </Tooltip>
     </>
   );

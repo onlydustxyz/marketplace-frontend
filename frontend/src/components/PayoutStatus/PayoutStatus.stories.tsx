@@ -1,5 +1,3 @@
-import { ComponentStory } from "@storybook/react";
-import { JSXElementConstructor } from "react";
 import { PaymentStatus } from "src/types";
 import PayoutStatus from ".";
 
@@ -9,32 +7,48 @@ export default {
     status: {
       control: {
         type: "select",
-        options: [PaymentStatus.WAITING_PAYMENT, PaymentStatus.ACCEPTED],
       },
+      options: [PaymentStatus.WAITING_PAYMENT, PaymentStatus.ACCEPTED],
     },
+    payoutInfoMissing: { control: { type: "boolean" } },
+    invoiceNeeded: { control: { type: "boolean" } },
+    isProjectLeaderView: { control: { type: "boolean" } },
   },
 };
 
-const Template: ComponentStory<JSXElementConstructor<typeof args>> = args => <PayoutStatus {...args} />;
+type Props = {
+  id: string;
+  status: PaymentStatus;
+  payoutInfoMissing: boolean;
+  invoiceNeeded: boolean;
+  isProjectLeaderView: boolean;
+};
 
-const args = {
+const props = {
   id: "status-id",
   status: PaymentStatus.WAITING_PAYMENT,
   payoutInfoMissing: false,
+  invoiceNeeded: false,
+  isProjectLeaderView: false,
 };
 
-export const Default = Template.bind({});
-Default.args = args;
-Default.parameters = {
-  backgrounds: {
-    default: "space",
+export const Default = {
+  render: (args: Props) => <PayoutStatus {...props} {...args} />,
+  parameters: {
+    backgrounds: { default: "space" },
   },
 };
 
-export const PayoutInfoMissing = Template.bind({});
-PayoutInfoMissing.args = { ...args, payoutInfoMissing: true };
-PayoutInfoMissing.parameters = {
-  backgrounds: {
-    default: "space",
+export const PayoutInfoMissing = {
+  render: (args: Props) => <PayoutStatus {...props} {...{ payoutInfoMissing: true }} {...args} />,
+  parameters: {
+    backgrounds: { default: "space" },
+  },
+};
+
+export const PendingInvoice = {
+  render: (args: Props) => <PayoutStatus {...props} {...{ invoiceNeeded: true }} {...args} />,
+  parameters: {
+    backgrounds: { default: "space" },
   },
 };

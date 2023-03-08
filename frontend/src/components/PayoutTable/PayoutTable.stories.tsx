@@ -38,11 +38,12 @@ const mockPayments: Payment[] = [
 ];
 
 const Template: ComponentStory<typeof PayoutTable> = args => (
-  <PayoutTable payments={mockPayments} payoutInfoMissing={args.payoutInfoMissing} />
+  <PayoutTable payments={mockPayments} payoutInfoMissing={args.payoutInfoMissing} invoiceNeeded={args.invoiceNeeded} />
 );
 
 export const Default = Template.bind({});
 
 Default.args = {
   payoutInfoMissing: false,
+  invoiceNeeded: false,
 };
