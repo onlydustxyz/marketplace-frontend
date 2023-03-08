@@ -41,7 +41,9 @@
             IBAN: String!
           }
           input CompanyIdentity {
-            name: String!
+            identificationNumber: String
+            name: String
+            owner: PersonIdentity
           }
           input IdentityInput {
             optCompany: CompanyIdentity

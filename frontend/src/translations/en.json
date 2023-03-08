@@ -129,6 +129,8 @@
       "city": "City",
       "companyName": "Company name",
       "companyNeedsInvoiceCallout": "As a company, you’ll need to share an invoice for each payment in order to receive the funds.",
+      "companyOwnerFirstName": "First name",
+      "companyOwnerLastName": "Last name",
       "companyProfile": "Company profile",
       "contactInfo": "Contact information",
       "country": "Country",
@@ -141,6 +143,7 @@
       "iban": "IBAN",
       "ibanInvalid": "Please enter a valid IBAN",
       "ibanRequired": "Your IBAN is required",
+      "identificationNumber": "Identification number",
       "individualProfile": "Individual",
       "invalidCryptoSettings": "Please enter a valid ETH address or ENS domain",
       "lastname": "Last name",
@@ -187,6 +190,7 @@
         },
         "githubLinkContent": "Link",
         "githubLinkTitle": "GitHub",
+        "moreInfo": "More info",
         "projectLeader": {
           "many": "Project leads",
           "one": "Project lead"
@@ -200,7 +204,6 @@
           "one": "Sponsor"
         },
         "technologies": "Technologies",
-        "moreInfo": "More info",
         "title": "Project overview",
         "totalSpentAmountInUsd": "GRANTED"
       },
