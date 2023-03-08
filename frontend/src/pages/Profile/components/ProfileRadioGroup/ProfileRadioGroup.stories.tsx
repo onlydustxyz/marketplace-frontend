@@ -1,3 +1,4 @@
+import BankLine from "src/icons/BankLine";
 import ProfileRadioGroup from "./View";
 
 export default {
@@ -16,7 +17,7 @@ const props = {
   label: "Preferred method",
   options: [
     { value: "ETH", label: "Eth wire" },
-    { value: "BANK", label: "Crypto wire" },
+    { value: "BANK", label: "Crypto wire", icon: <BankLine className="text-xl" /> },
   ],
   requiredForPayment: false,
 };
