@@ -58,7 +58,7 @@ describe("The company", () => {
     });
 
     cy.wait(1000);
-    cy.get('[role="switch"]').click().wait(100);
+    cy.get("[data-testid=COMPANY]").click().wait(100);
     cy.get("[name=companyName]").clear().type(this.profile.name);
     cy.get("[name=identificationNumber]").clear().type(this.profile.identificationNumber);
     cy.get("[name=companyOwnerFirstName]").clear().type(this.profile.companyOwnerFirstName);
