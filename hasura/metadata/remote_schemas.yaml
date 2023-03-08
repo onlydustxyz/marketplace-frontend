@@ -22,7 +22,7 @@
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
             requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, reason: Reason!): Uuid!
-            updateProfileInfo(location: Location, identity: IdentityInput, email: Email, payoutSettings: PayoutSettingsInput): Uuid!
+            updateProfileInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput, contactInformation: ContactInformation): Uuid!
           }
           type Query {
             hello: String!
@@ -44,6 +44,12 @@
             identificationNumber: String
             name: String
             owner: PersonIdentity
+          }
+          input ContactInformation {
+            discord: String
+            email: Email
+            telegram: String
+            twitter: String
           }
           input IdentityInput {
             optCompany: CompanyIdentity
