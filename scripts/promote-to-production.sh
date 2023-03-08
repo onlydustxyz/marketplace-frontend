@@ -65,7 +65,9 @@ fi
 
 ask "Do you want to deploy the frontend"
 if [ $? -eq 0 ]; then
-    execute vercel deploy --prod
+    execute vercel pull --environment production
+    execute vercel build --prod
+    execute vercel deploy --prod --prebuilt
 fi
 
 log_info "📌 Do not forget to promote Retool apps 😉"
