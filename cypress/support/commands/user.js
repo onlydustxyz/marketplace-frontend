@@ -110,8 +110,6 @@ Cypress.Commands.add("fillPayoutSettings", token => {
     cy.get("[name=postCode]").clear().type(profile.postCode);
     cy.get("[name=city]").clear().type(profile.city);
     cy.get("[name=country]").clear().type(profile.country);
-
-    cy.get("[data-testid=ETHEREUM_IDENTITY]").click().wait(100);
     cy.get("[name=ethIdentity]").clear().type(profile.ethWalletAddress);
 
     cy.contains("Save profile").click().wait(WAIT_LONG);

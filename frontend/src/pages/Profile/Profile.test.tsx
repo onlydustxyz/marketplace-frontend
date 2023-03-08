@@ -92,6 +92,28 @@ const mockCompany: UserInfo = {
   arePayoutSettingsValid: true,
 };
 
+const mockCompanyWithEns: UserInfo = {
+  __typename: "UserInfo",
+  userId: "test-user-id",
+  email: "james.bond@mi6.uk",
+  identity: {
+    Company: {
+      id: "007",
+      name: "MI6",
+    },
+  },
+  location: {
+    address: "7 big ben street",
+    city: "London",
+    country: "United Kingdom",
+    post_code: "EC",
+  },
+  payoutSettings: {
+    EthTransfer: { Name: VALID_ENS },
+  },
+  arePayoutSettingsValid: true,
+};
+
 const accessToken = (userId: string) => ({
   user: {
     id: userId,
@@ -136,7 +158,11 @@ const buildMockMutationUpdateUser = (userInfo: UserInfo) => {
       }
     : {
         type: IdentityType.Company,
-        optCompany: { name: userInfo.identity.Company?.name },
+        optCompany: {
+          name: userInfo.identity.Company?.name,
+          identificationNumber: null,
+          owner: { firstname: null, lastname: null },
+        },
         optPerson: null,
       };
 
@@ -232,7 +258,6 @@ describe('"Profile" page for individual', () => {
   it("should save profile when clicking Save profile with valid Ethereum address", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
 
-    await userEvent.click(await screen.findByText("Crypto wire"));
     await screen.findByDisplayValue(INVALID_ETHEREUM_ADDRESS);
     await userEvent.clear(await screen.findByPlaceholderText<HTMLInputElement>("ETH address or ENS name"));
     await userEvent.type(
@@ -248,6 +273,7 @@ describe('"Profile" page for individual', () => {
 
   it("should not navigate to projects screen when clicking Save profile with invalid IBAN", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
+    await userEvent.click(await screen.findByRole("switch"));
     await userEvent.click(
       await screen.findByRole("radio", {
         name: /bank wire/i,
@@ -257,6 +283,39 @@ describe('"Profile" page for individual', () => {
     await userEvent.click(await screen.findByText("Save profile"));
     await waitFor(() => {
       expect(screen.queryByText("Success !")).not.toBeInTheDocument();
+    });
+  });
+});
+
+describe('"Profile" page for company', () => {
+  const profileQueryMock = buildMockProfileQuery(mockCompany);
+  const updateCompanyMock = buildMockMutationUpdateUser(mockCompany);
+  const updateEnsCompanyMock = buildMockMutationUpdateUser(mockCompanyWithEns);
+
+  beforeAll(() => {
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(accessToken(mockCompany.userId)));
+  });
+
+  beforeEach(() => {
+    renderWithIntl(<ProfilePage />, {
+      wrapper: MemoryRouterProviderFactory({
+        mocks: [profileQueryMock, updateCompanyMock, updateEnsCompanyMock],
+      }),
+    });
+    vi.clearAllMocks();
+  });
+
+  it("should trigger the update upon form submit", async () => {
+    await userEvent.click(await screen.findByTestId("profile-form-submit-button"));
+    await waitFor(() => {
+      expect(updateCompanyMock.newData).toHaveBeenCalledOnce();
+    });
+  });
+
+  it("should not trigger the update upon cancel", async () => {
+    await userEvent.click(await screen.findByTestId("profile-form-cancel-button"));
+    await waitFor(() => {
+      expect(updateCompanyMock.newData).not.toHaveBeenCalled();
     });
   });
 
@@ -281,6 +340,7 @@ describe('"Profile" page for individual', () => {
         name: /bank wire/i,
       })
     );
+    await userEvent.clear(await screen.findByPlaceholderText<HTMLInputElement>("IBAN"));
     await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("BIC"), "BNPCFR21");
     await userEvent.click(await screen.findByText("Save profile"));
     await waitFor(() => {
@@ -290,14 +350,7 @@ describe('"Profile" page for individual', () => {
   });
 
   it("should send only relevant values to the backend", async () => {
-    // Make sure both Company and individual are filled
-    await userEvent.click(await screen.findByRole("switch"));
-    await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("Company name"), "Company Name");
-    await userEvent.click(await screen.findByRole("switch"));
-
     // Make sure all of ETH address, Bank wire and ENS are filled
-    await screen.findByDisplayValue(INVALID_ETHEREUM_ADDRESS);
-    await userEvent.clear(await screen.findByPlaceholderText<HTMLInputElement>("ETH address or ENS name"));
     await userEvent.click(await screen.findByText("Bank wire"));
     await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("IBAN"), "FR7610107001011234567890129");
     await userEvent.type(await screen.findByPlaceholderText<HTMLInputElement>("BIC"), "BNPCFR21");
@@ -308,40 +361,8 @@ describe('"Profile" page for individual', () => {
     // Submit the form, the mock query will take care of checking only relevant values are sent
     await userEvent.click(await screen.findByTestId("profile-form-submit-button"));
     await waitFor(() => {
-      expect(updateUserMock.newData).toHaveBeenCalledOnce();
+      expect(updateEnsCompanyMock.newData).toHaveBeenCalledOnce();
       expect(screen.getByTestId("toaster-message")).toBeVisible();
-    });
-  });
-});
-
-describe('"Profile" page for company', () => {
-  const profileQueryMock = buildMockProfileQuery(mockCompany);
-  const updateUserMock = buildMockMutationUpdateUser(mockCompany);
-
-  beforeAll(() => {
-    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(accessToken(mockCompany.userId)));
-  });
-
-  beforeEach(() => {
-    renderWithIntl(<ProfilePage />, {
-      wrapper: MemoryRouterProviderFactory({
-        mocks: [profileQueryMock, updateUserMock],
-      }),
-    });
-    vi.clearAllMocks();
-  });
-
-  it("should trigger the update upon form submit", async () => {
-    await userEvent.click(await screen.findByTestId("profile-form-submit-button"));
-    await waitFor(() => {
-      expect(updateUserMock.newData).toHaveBeenCalledOnce();
-    });
-  });
-
-  it("should not trigger the update upon cancel", async () => {
-    await userEvent.click(await screen.findByTestId("profile-form-cancel-button"));
-    await waitFor(() => {
-      expect(updateUserMock.newData).not.toHaveBeenCalled();
     });
   });
 });
