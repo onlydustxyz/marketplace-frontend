@@ -10,6 +10,12 @@ check_uptodate_with_main() {
     [ $? -ne 0 ] && exit_error "Unable to pull with remote"
 }
 
+check_cwd() {
+    root_dir=`git rev-parse --show-toplevel`
+    [ $? -ne 0 ] && exit_error "You are not in a git directory"
+    [ `pwd` != $root_dir ] && exit_error "Please run this script from the root directory: $root_dir"
+}
+
 slug_commit() {
     APP=$1
     heroku releases:info --app $APP --shell | sed -n 's/HEROKU_SLUG_COMMIT=\(.*\)/\1/p'
@@ -65,6 +71,7 @@ check_command git
 check_command heroku
 check_command vercel
 
+check_cwd
 check_uptodate_with_main
 
 ask "Do you want to deploy the backends"
