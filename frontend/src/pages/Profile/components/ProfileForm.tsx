@@ -18,6 +18,8 @@ import { useShowToaster } from "src/hooks/useToaster";
 import FormToggle from "src/components/FormToggle";
 import { useEffect } from "react";
 import Callout from "src/components/Callout";
+import BankLine from "src/icons/BankLine";
+import BitcoinLine from "src/icons/BitcoinLine";
 import Tag, { TagSize } from "src/components/Tag";
 import classNames from "classnames";
 import CheckLine from "src/icons/CheckLine";
@@ -282,10 +284,12 @@ const ProfileForm: React.FC<PropsType> = ({
                           {
                             value: PayoutSettingsDisplayType.BankAddress,
                             label: T("profile.form.bankWire"),
+                            icon: <BankLine className="text-xl" />,
                           },
                           {
                             value: PayoutSettingsDisplayType.EthereumIdentity,
                             label: T("profile.form.cryptoWire"),
+                            icon: <BitcoinLine className="text-xl" />,
                           },
                         ]}
                       />
