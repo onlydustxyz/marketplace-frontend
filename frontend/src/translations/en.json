@@ -119,7 +119,7 @@
       "profileType": "Account type",
       "profileTypeIndividual": "Individual",
       "profileTypeCompany": "Company",
-      "aboutYou": "About you",
+      "payoutInformation": "Payout information",
       "address": "Street address",
       "bankWire": "Bank wire",
       "bic": "BIC",
@@ -134,7 +134,9 @@
       "contactInfo": "Contact information",
       "country": "Country",
       "cryptoWire": "Crypto wire",
-      "emailAddress": "Email address",
+      "discord": "Discord",
+      "discordPlaceholder": "Discord",
+      "email": "Email address",
       "emailPlaceholder": "example@onlydust.co",
       "ethIdentity": "ETH address or ENS name",
       "ethIdentityPlaceholder": "ETH address or ENS name",
@@ -153,7 +155,12 @@
       "payoutSettingsValidTag": "You’re able to receive payments",
       "postCode": "Zip code",
       "send": "Save profile",
-      "success": "Payment information successfully updated"
+      "success": "Profile information successfully updated",
+      "telegram": "Telegram",
+      "telegramPlaceholder": "Telegram",
+      "twitter": "Twitter",
+      "twitterPlaceholder": "Twitter",
+      "typeOfProfile": "Profile type"
     },
     "missing": {
       "button": "Complete payout information",
