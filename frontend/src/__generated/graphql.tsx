@@ -3394,14 +3394,14 @@ export type RequestPaymentMutationVariables = Exact<{
 
 export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
 
-export type UserPayoutSettingsFragment = { __typename?: 'UserInfo', payoutSettings: any | null, arePayoutSettingsValid: boolean | null };
+export type UserPayoutSettingsFragment = { __typename?: 'UserInfo', identity: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean | null };
 
 export type GetUserPayoutSettingsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
 
 
-export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', authGithubUsers: Array<{ __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', payoutSettings: any | null, arePayoutSettingsValid: boolean | null } | null } | null }> };
+export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', authGithubUsers: Array<{ __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', identity: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean | null } | null } | null }> };
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
   githubUserId: InputMaybe<Scalars['bigint']>;
@@ -3665,6 +3665,7 @@ export const PaymentRequestFragmentDoc = gql`
     `;
 export const UserPayoutSettingsFragmentDoc = gql`
     fragment UserPayoutSettings on UserInfo {
+  identity
   payoutSettings
   arePayoutSettingsValid
 }
