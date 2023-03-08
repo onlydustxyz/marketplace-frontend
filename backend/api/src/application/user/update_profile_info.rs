@@ -104,8 +104,8 @@ mod tests {
 				Default::default(),
 				Some(Identity::Person(Default::default())),
 				Default::default(),
-				Default::default(),
 				Some(payout_settings),
+				Default::default(),
 			)
 			.await;
 		assert!(result.is_ok(), "{}", result.err().unwrap());
@@ -127,8 +127,8 @@ mod tests {
 				Default::default(),
 				Some(Identity::Person(Default::default())),
 				Default::default(),
-				Default::default(),
 				Some(payout_settings),
+				Default::default(),
 			)
 			.await;
 		assert!(result.is_err());
