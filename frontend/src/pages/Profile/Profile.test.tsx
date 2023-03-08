@@ -273,7 +273,7 @@ describe('"Profile" page for individual', () => {
 
   it("should not navigate to projects screen when clicking Save profile with invalid IBAN", async () => {
     // This triggers an error message 'Missing field updateUser'. The related issue on Apollo: https://github.com/apollographql/apollo-client/issues/8677
-    await userEvent.click(await screen.findByRole("switch"));
+    await userEvent.click(await screen.findByTestId("COMPANY"));
     await userEvent.click(
       await screen.findByRole("radio", {
         name: /bank wire/i,
