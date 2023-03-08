@@ -13,6 +13,7 @@ import TotalEarnings from "./TotalEarnings";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 import { Payment } from "src/components/PayoutTable/Line";
+import InvoiceSubmission from "./InvoiceSubmission";
 
 const Payments = () => {
   const { githubUserId } = useAuth();
@@ -27,11 +28,12 @@ const Payments = () => {
     }
   );
 
-  const { valid: payoutSettingsValid } = usePayoutSettings(githubUserId);
+  const { valid: payoutSettingsValid, invoiceNeeded } = usePayoutSettings(githubUserId);
 
   const { data: paymentRequestsQueryData } = getPaymentRequestsQuery;
   const payments = paymentRequestsQueryData?.paymentRequests?.map(mapApiPaymentsToProps);
   const hasPayments = payments && payments.length > 0;
+  const pendingPaymentsRequests = payments?.filter(p => p.status === PaymentStatus.WAITING_PAYMENT) || [];
 
   if (hasPayments === false) {
     return <Navigate to={RoutePaths.Projects} />;
@@ -46,7 +48,12 @@ const Payments = () => {
         <QueryWrapper query={getPaymentRequestsQuery}>
           <div className="flex gap-4 mb-10">
             <Card>{payments && <PayoutTable payments={payments} payoutInfoMissing={!payoutSettingsValid} />}</Card>
-            {totalEarnings && <TotalEarnings amount={totalEarnings} />}
+            <div className="flex flex-col gap-4">
+              {totalEarnings && <TotalEarnings amount={totalEarnings} />}
+              {pendingPaymentsRequests.length > 0 && invoiceNeeded && (
+                <InvoiceSubmission pendingPaymentRequestsCount={pendingPaymentsRequests.length} />
+              )}
+            </div>
           </div>
         </QueryWrapper>
       </div>

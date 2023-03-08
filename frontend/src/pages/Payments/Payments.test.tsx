@@ -42,10 +42,6 @@ const mockContribution: UserPaymentRequestFragment = {
       amount: 100,
       currencyCode: "USD",
     },
-    {
-      amount: 100,
-      currencyCode: "USD",
-    },
   ],
   amountInUsd: 200,
   reason: { work_items: ["link_to_pr"] },
@@ -80,7 +76,7 @@ const buildMockPaymentsQuery = (
   },
 });
 
-const buidlMockPayoutSettingsQuery = (userInfo: UserPayoutSettingsFragment) => ({
+const buidlMockPayoutSettingsQuery = (arePayoutSettingsValid: boolean) => ({
   request: {
     query: GET_USER_PAYOUT_SETTINGS,
     variables: { githubUserId },
@@ -90,7 +86,9 @@ const buidlMockPayoutSettingsQuery = (userInfo: UserPayoutSettingsFragment) => (
       authGithubUsers: [
         {
           user: {
-            userInfo,
+            userInfo: {
+              arePayoutSettingsValid,
+            },
           },
         },
       ],
@@ -147,6 +145,6 @@ describe('"Payments" page', () => {
     expect(await screen.findByText(mockContribution.reason.work_items[0])).toBeInTheDocument();
     expect(await screen.findByText(mockContribution.budget?.project?.projectDetails?.name || "")).toBeInTheDocument();
     expect(await screen.findAllByText("$200")).toHaveLength(2);
-    expect(await screen.findAllByText(/complete/i)).toHaveLength(1); // two for the banner and one for the line field
+    expect(await screen.findAllByText(/Payout info missing/i)).toHaveLength(1);
   });
 });
