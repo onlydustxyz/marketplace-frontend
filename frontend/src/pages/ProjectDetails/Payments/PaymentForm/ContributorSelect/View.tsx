@@ -76,14 +76,14 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
           <Card className="bg-spaceBlue-900 pr-1" padded={false}>
             <div
               className={classNames(
-                "overflow-auto max-h-60",
+                "overflow-auto max-h-60 px-4 divide-y divide-greyscale-50/8",
                 "scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
               )}
             >
               {contributors.map(contributor => (
                 <div
                   key={contributor.id}
-                  className="px-4 py-3 hover:bg-white/2 cursor-pointer"
+                  className="py-3 hover:bg-white/2 cursor-pointer"
                   onMouseDown={() => onContributorChange(contributor)}
                 >
                   <Contributor
