@@ -7,11 +7,11 @@ import ImageCard, { BackgroundSize } from "src/components/ImageCard";
 import headerElementBackground from "src/assets/img/alert-bg.png";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
-import SearchLine from "src/icons/SearchLine";
 import { GithubContributorFragment } from "src/__generated/graphql";
 import CloseLine from "src/icons/CloseLine";
 import classNames from "classnames";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import User3Line from "src/icons/User3Line";
 
 type Props = {
   loading: boolean;
@@ -49,7 +49,7 @@ const View = ({
     contributor && !loading ? (
       <RoundedImage src={contributor.avatarUrl} size={ImageSize.Sm} alt={contributor.login} />
     ) : (
-      <SearchLine className="ml-2" />
+      <User3Line className="ml-2" />
     );
 
   const suffixComponent = contributor && (
