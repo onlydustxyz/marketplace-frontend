@@ -14,6 +14,9 @@ export default {
     width: {
       options: [Width.Full, Width.Fit],
     },
+    iconOnly: {
+      control: { type: "boolean" },
+    },
   },
 };
 
@@ -26,6 +29,14 @@ export const WithIcon = {
     <Button {...args}>
       <i className="ri-send-plane-2-line" />
       {"Complete payment information"}
+    </Button>
+  ),
+};
+
+export const IconOnly = {
+  render: (args: typeof Button) => (
+    <Button iconOnly {...args}>
+      <i className="ri-send-plane-2-line" />
     </Button>
   ),
 };
