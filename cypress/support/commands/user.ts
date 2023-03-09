@@ -1,4 +1,37 @@
-import { WAIT_LONG } from "./common";
+import { GraphQLRequest, Uuid, WAIT_LONG } from "./common";
+
+export {};
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      createGithubUser(githubUserId: number, email?: string, displayName?: string): Chainable<SignedUpUser>;
+      signinUser(user: SignedUpUser): Chainable<SignedInUser>;
+
+      updateProfileInfo(
+        email: string,
+        location: object,
+        identity: object,
+        payoutSettings: object
+      ): Chainable<GraphQLRequest>;
+
+      fillPayoutSettings(token: any): Chainable<any>;
+    }
+  }
+}
+
+export type SignedUpUser = {
+  id: Uuid;
+  email: string;
+  password: string;
+  githubUserId: number;
+};
+
+export type SignedInUser = SignedUpUser & { session: UserSession };
+
+export type UserSession = {
+  accessToken: string;
+};
 
 Cypress.Commands.add(
   "createGithubUser",
@@ -87,12 +120,14 @@ Cypress.Commands.add("signinUser", user => {
     });
 });
 
-Cypress.Commands.add("updateProfileInfo", (email, location, identity, payoutSettings) => ({
-  query: `mutation($email: Email!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
+Cypress.Commands.add("updateProfileInfo", (email, location, identity, payoutSettings) =>
+  cy.wrap({
+    query: `mutation($email: Email!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
             updateProfileInfo(email: $email, identity: $identity, location: $location, payoutSettings: $payoutSettings)
         }`,
-  variables: { email, identity, location, payoutSettings },
-}));
+    variables: { email, identity, location, payoutSettings },
+  })
+);
 
 Cypress.Commands.add("fillPayoutSettings", token => {
   cy.fixture("profiles/james_bond").then(profile => {

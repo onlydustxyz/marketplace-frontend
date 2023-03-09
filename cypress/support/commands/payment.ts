@@ -1,7 +1,37 @@
-import { WAIT_SHORT } from "./common";
+import { GraphQLRequest, Uuid, WAIT_SHORT } from "./common";
+
+export {};
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      requestPayment(projectId: Uuid, amount: number, recipientId: number, reason: object): Chainable<GraphQLRequest>;
+      cancelPaymentRequest(projectId: Uuid, paymentId: Uuid): Chainable<GraphQLRequest>;
+      paymentRequestShouldExist(paymentId: Uuid): Chainable<any>;
+      paymentRequestShouldNotExist(paymentId: Uuid): Chainable<any>;
+      paymentRequestShouldBePaid(paymentRequestId: Uuid, paymentId: Uuid): Chainable<any>;
+      addEthPaymentReceipt(
+        projectId: Uuid,
+        paymentId: Uuid,
+        amount: string,
+        currencyCode: string,
+        recipientIdentity: object,
+        transactionHash: string
+      ): Chainable<GraphQLRequest>;
+      addFiatPaymentReceipt(
+        projectId: Uuid,
+        paymentId: Uuid,
+        amount: string,
+        currencyCode: string,
+        recipientIban: string,
+        transactionReference: string
+      ): Chainable<GraphQLRequest>;
+    }
+  }
+}
 
 Cypress.Commands.add("requestPayment", (projectId, amount, recipientId, reason) => {
-  return {
+  return cy.wrap({
     query: `mutation($amount: Int!, $projectId: Uuid!, $recipientId: Int!, $reason: Reason!) {
                 requestPayment(amountInUsd: $amount, projectId: $projectId, recipientId: $recipientId, reason: $reason)
             }`,
@@ -12,11 +42,11 @@ Cypress.Commands.add("requestPayment", (projectId, amount, recipientId, reason) 
       reason,
     },
     wait: WAIT_SHORT,
-  };
+  });
 });
 
 Cypress.Commands.add("cancelPaymentRequest", (projectId, paymentId) => {
-  return {
+  return cy.wrap({
     query: `mutation($projectId: Uuid!, $paymentId: Uuid!) {
                 cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId)
             }`,
@@ -25,7 +55,7 @@ Cypress.Commands.add("cancelPaymentRequest", (projectId, paymentId) => {
       paymentId,
     },
     wait: WAIT_SHORT,
-  };
+  });
 });
 
 Cypress.Commands.add("paymentRequestShouldExist", paymentId => {
@@ -75,7 +105,7 @@ Cypress.Commands.add("paymentRequestShouldBePaid", (paymentRequestId, paymentId)
 Cypress.Commands.add(
   "addEthPaymentReceipt",
   (projectId, paymentId, amount, currencyCode, recipientIdentity, transactionHash) => {
-    return {
+    return cy.wrap({
       query: `mutation($projectId:Uuid!, $paymentId:Uuid!, $amount:String!, $currencyCode:String!, $recipientIdentity:EthereumIdentityInput!, $transactionHash:String!) {
                 addEthPaymentReceipt(projectId: $projectId, paymentId: $paymentId, amount: $amount, currencyCode: $currencyCode, recipientIdentity: $recipientIdentity, transactionHash: $transactionHash)
               }`,
@@ -88,14 +118,14 @@ Cypress.Commands.add(
         transactionHash,
       },
       wait: WAIT_SHORT,
-    };
+    });
   }
 );
 
 Cypress.Commands.add(
   "addFiatPaymentReceipt",
   (projectId, paymentId, amount, currencyCode, recipientIban, transactionReference) => {
-    return {
+    return cy.wrap({
       query: `mutation($projectId:Uuid!, $paymentId:Uuid!, $amount:String!, $currencyCode:String!, $recipientIban:String!, $transactionReference:String!) {
                 addFiatPaymentReceipt(projectId: $projectId, paymentId: $paymentId, amount: $amount, currencyCode: $currencyCode, recipientIban: $recipientIban, transactionReference: $transactionReference)
               }`,
@@ -108,6 +138,6 @@ Cypress.Commands.add(
         transactionReference,
       },
       wait: WAIT_SHORT,
-    };
+    });
   }
 );

@@ -1,3 +1,15 @@
+export {};
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      dumpDB(): Chainable<number>;
+      restoreDB(): Chainable<number>;
+      cleanupDB(): Chainable<number>;
+    }
+  }
+}
+
 Cypress.Commands.add("dumpDB", function () {
   const DATABASE_URL = Cypress.env("DATABASE_URL") || "$DATABASE_URL";
   cy.exec(`pg_dump --clean ${DATABASE_URL} > "cypress/marketplace_db_dump"`).its("code").should("eq", 0);

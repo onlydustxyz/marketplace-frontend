@@ -18,10 +18,10 @@ import "@cypress/code-coverage/support";
 
 // Import commands.js using ES2015 syntax:
 import "./commands/common";
+import "./commands/user";
 import "./commands/payment";
 import "./commands/project";
 import "./commands/sponsor";
-import "./commands/user";
 import "./commands/populate/db_utils";
 import "./commands/populate/users";
 import "./commands/populate/projects";

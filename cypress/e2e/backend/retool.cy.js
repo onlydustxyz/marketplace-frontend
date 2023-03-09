@@ -124,7 +124,7 @@ describe("As an admin, on retool, I", () => {
   it("can partially update project details", function () {
     cy.createGithubUser(12345).then(user =>
       cy.createProject("some name").then(projectId => {
-        cy.updateProject(projectId, "new name", "https://t.me/bar")
+        cy.updateProject(projectId, { name: "new name", telegramLink: "https://t.me/bar" })
           .asAdmin()
           .data()
           .then(() =>
