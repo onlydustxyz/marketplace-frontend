@@ -67,10 +67,9 @@
     "form": {
       "confirm": "Confirm payment",
       "contributor": {
-        "inputLabel": "Please select the contributor you would like to send a payment to",
         "needsToSignup": "__contributor__ will have to sign up to OnlyDust to receive their payment",
         "placeholder": "Search for contributor",
-        "title": "Send payment to"
+        "title": "Recipient"
       },
       "days": "days",
       "disabled": "Select a contributor and enter link to pull request to send payment",

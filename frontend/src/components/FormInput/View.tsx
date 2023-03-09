@@ -7,7 +7,7 @@ import classNames from "classnames";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 
 type PropsType = {
-  label: string;
+  label?: string;
   type: string;
   placeholder?: string;
   value?: string | number;
@@ -57,10 +57,12 @@ const View: React.FC<PropsType> = ({
 
   return (
     <label htmlFor={register.name} className="flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim mb-6">
-      <div className="font-medium text-sm tracking-tight">
-        {label}
-        {requiredForPayment && <span className="text-orange-500 pl-0.5">{"*"}</span>}
-      </div>
+      {label && (
+        <div className="font-medium text-sm tracking-tight">
+          {label}
+          {requiredForPayment && <span className="text-orange-500 pl-0.5">{"*"}</span>}
+        </div>
+      )}
       <div
         className={classNames("flex flex-col", {
           "gap-8": errorDisplay === InputErrorDisplay.Banner,

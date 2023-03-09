@@ -63,7 +63,6 @@ const View = ({
       <div className="relative">
         <Input
           inputClassName="pl-12"
-          label={T("payment.form.contributor.inputLabel")}
           name="contributorHandle"
           placeholder={T("payment.form.contributor.placeholder")}
           options={{
