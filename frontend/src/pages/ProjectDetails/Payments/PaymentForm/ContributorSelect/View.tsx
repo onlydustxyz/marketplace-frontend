@@ -45,62 +45,65 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
     );
 
   return (
-    <div className="w-full z-10">
-      <div className="relative">
-        <Input
-          inputClassName="pl-12"
-          name="contributorHandle"
-          placeholder={opened ? undefined : T("payment.form.contributor.placeholder")}
-          options={{
-            required: T("form.required"),
-            validate: validateContributorLogin,
-          }}
-          onChange={onHandleChange}
-          onFocus={() => setOpened(true)}
-          onBlur={() => setOpened(false)}
-          loading={loading}
-          prefixComponent={prefixComponent}
-          suffixComponent={<ArrowDownSLine className="absolute text-2xl right-0 pr-4 text-spaceBlue-200" />}
-        />
-
+    <div className="w-full">
+      <div className="relative z-10">
         <Transition
           className="absolute w-full"
           show={opened}
           enter="transition duration-200 ease-out"
-          enterFrom="transform -translate-y-1/3 opacity-0"
-          enterTo="transform translate-y-0 opacity-100"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
           leave="transition duration-200 ease-out"
-          leaveFrom="transform translate-y-0 opacity-100"
-          leaveTo="transform -translate-y-1/3 opacity-0"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
         >
           <Card className="bg-spaceBlue-900 pr-1" padded={false}>
-            <div
-              className={classNames(
-                "overflow-auto max-h-60 px-4 divide-y divide-greyscale-50/8",
-                "scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
-              )}
-            >
-              {contributors.map(contributor => (
-                <div
-                  key={contributor.id}
-                  className="py-3 hover:bg-white/2 cursor-pointer"
-                  onMouseDown={() => onContributorChange(contributor)}
-                >
-                  <Contributor
-                    contributor={{
-                      avatarUrl: contributor.avatarUrl,
-                      login: contributor.login,
-                      isRegistered: !!contributor.user?.userId,
-                    }}
-                  />
-                </div>
-              ))}
+            <div className="pt-20">
+              <div
+                className={classNames(
+                  "overflow-auto max-h-60 px-4 divide-y divide-greyscale-50/8",
+                  "scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
+                )}
+              >
+                {contributors.map(contributor => (
+                  <div
+                    key={contributor.id}
+                    className="py-3 hover:bg-white/2 cursor-pointer"
+                    onMouseDown={() => onContributorChange(contributor)}
+                  >
+                    <Contributor
+                      contributor={{
+                        avatarUrl: contributor.avatarUrl,
+                        login: contributor.login,
+                        isRegistered: !!contributor.user?.userId,
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </Card>
         </Transition>
+        <div className="px-4 pt-4 z-20">
+          <Input
+            inputClassName="pl-12"
+            name="contributorHandle"
+            placeholder={opened ? undefined : T("payment.form.contributor.placeholder")}
+            options={{
+              required: T("form.required"),
+              validate: validateContributorLogin,
+            }}
+            onChange={onHandleChange}
+            onFocus={() => setOpened(true)}
+            onBlur={() => setOpened(false)}
+            loading={loading}
+            prefixComponent={prefixComponent}
+            suffixComponent={<ArrowDownSLine className="absolute text-2xl right-0 pr-4 text-spaceBlue-200" />}
+          />
+        </div>
       </div>
       {contributor && !contributor.user && (
-        <div className="h-22 mb-4">
+        <div className="h-22 mb-4 mx-4">
           <ImageCard backgroundImageUrl={headerElementBackground} backgroundSize={BackgroundSize.Cover}>
             <div className="flex flex-row justify-between py-5 px-6">
               <div className="flex flex-row justify-start items-center font-medium gap-4">

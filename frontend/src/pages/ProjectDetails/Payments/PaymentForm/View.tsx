@@ -11,7 +11,6 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useNavigate } from "react-router-dom";
 import CloseLine from "src/icons/CloseLine";
 import Title from "../../Title";
-import { PropsWithChildren } from "react";
 
 interface Props {
   projectId: string;
@@ -19,15 +18,14 @@ interface Props {
   onWorkEstimationChange: (workEstimation: number) => void;
 }
 
-type SectionProps = {
+type TitleProps = {
   title: string;
-} & PropsWithChildren;
+};
 
-function Section({ title, children }: SectionProps) {
+function SectionTitle({ title }: TitleProps) {
   return (
-    <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
-      <div className="font-normal font-belwe text-base text-greyscale-50">{title}</div>
-      <div className="flex flex-row pt-3">{children}</div>
+    <div className="font-normal font-belwe text-base text-greyscale-50 pb-2 mb-3 mx-4 border-b border-b-greyscale-50/8">
+      {title}
     </div>
   );
 }
@@ -50,15 +48,15 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
           {T("project.details.payments.new.title")}
         </div>
       </Title>
-      <div className="flex flex-row items-start gap-4 h-full">
+      <div className="flex flex-row items-start gap-5 h-full">
         <div className="basis-3/5 self-stretch">
           <div className="flex flex-col gap-6 w-full">
-            <Card className="px-8 pb-3">
-              <Section title={T("payment.form.contributor.title")}>
-                <ContributorSelect projectId={projectId} />
-              </Section>
+            <Card className="px-4 py-6" padded={false}>
+              <SectionTitle title={T("payment.form.contributor.title")} />
+              <ContributorSelect projectId={projectId} />
               {contributor && (
-                <Section title={T("payment.form.issueLink.title")}>
+                <SectionTitle title={T("payment.form.issueLink.title")} />
+              <div className="mx-4">
                   <Input
                     label={T("payment.form.issueLink.inputLabel")}
                     name="linkToIssue"
@@ -72,7 +70,7 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
                     }}
                     showValidationErrors={false}
                   />
-                </Section>
+                </div>
               )}
             </Card>
           </div>
