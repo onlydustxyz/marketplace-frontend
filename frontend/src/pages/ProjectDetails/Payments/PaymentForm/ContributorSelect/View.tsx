@@ -15,6 +15,7 @@ import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { useFormContext } from "react-hook-form";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import Tooltip from "src/components/Tooltip";
+import { sortBy } from "lodash";
 
 type Props = {
   loading: boolean;
@@ -64,7 +65,7 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
                   "scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
                 )}
               >
-                {contributors.map(contributor => (
+                {sortBy(contributors, c => c.login.toLocaleLowerCase()).map(contributor => (
                   <div
                     key={contributor.id}
                     className="py-3 hover:bg-white/2 cursor-pointer"
