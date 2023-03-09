@@ -26,7 +26,7 @@ type SectionProps = {
 function Section({ title, children }: SectionProps) {
   return (
     <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
-      <div className="font-medium text-lg">{title}</div>
+      <div className="font-normal font-belwe text-base text-greyscale-50">{title}</div>
       <div className="flex flex-row pt-3">{children}</div>
     </div>
   );
