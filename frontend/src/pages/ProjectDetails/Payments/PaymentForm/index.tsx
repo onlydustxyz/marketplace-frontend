@@ -69,7 +69,7 @@ const PaymentForm: React.FC = () => {
         <form
           autoComplete="off"
           onSubmit={handleSubmit(onValidSubmit)}
-          className="flex flex-col gap-3 justify-between w-full"
+          className="flex flex-col gap-6 justify-between w-full"
         >
           <View budget={budget} projectId={projectId} onWorkEstimationChange={onWorkEstimationChange} />
         </form>
