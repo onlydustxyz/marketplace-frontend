@@ -53,7 +53,7 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
       <div className="flex flex-row items-start gap-4 h-full">
         <div className="basis-3/5 self-stretch">
           <div className="flex flex-col gap-6 w-full">
-            <Card className="px-8 pb-3 z-10">
+            <Card className="px-8 pb-3">
               <Section title={T("payment.form.contributor.title")}>
                 <ContributorSelect projectId={projectId} />
               </Section>

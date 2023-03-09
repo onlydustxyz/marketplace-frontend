@@ -59,7 +59,7 @@ const View = ({
   );
 
   return (
-    <div className="w-full">
+    <div className="w-full z-10">
       <div className="relative">
         <Input
           inputClassName="pl-12"
