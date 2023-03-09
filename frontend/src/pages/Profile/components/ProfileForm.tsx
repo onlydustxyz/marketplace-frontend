@@ -26,7 +26,6 @@ import BuildingLine from "src/icons/BuildingLine";
 import User3Line from "src/icons/User3Line";
 import MailLine from "src/icons/MailLine";
 import TwitterFill from "src/icons/TwitterFill";
-import TelegramFill from "src/icons/TelegramFill";
 import DiscordFill from "src/icons/DiscordFill";
 import { useAuth } from "src/hooks/useAuth";
 import Telegram from "src/assets/icons/Telegram";
