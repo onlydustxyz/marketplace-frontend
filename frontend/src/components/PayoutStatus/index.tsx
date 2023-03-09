@@ -50,7 +50,7 @@ const CompleteTag = (id: string) => {
     <>
       <Tag id={id} size={TagSize.Medium}>
         <CheckLine className="text-greyscale-50" />
-        <span className="text-greyscale-50">{T("payment.status.complete")}</span>
+        <span className="text-greyscale-50 font-normal">{T("payment.status.complete")}</span>
       </Tag>
       <Tooltip anchorId={id}>
         <div className="w-36">{T("payment.status.tooltip.complete")}</div>
@@ -66,7 +66,7 @@ const ProcessingTag = (id: string) => {
     <>
       <Tag id={id} size={TagSize.Medium}>
         <Time className="text-greyscale-50" />
-        <span className="text-greyscale-50">{T("payment.status.processing")}</span>
+        <span className="text-greyscale-50 font-normal">{T("payment.status.processing")}</span>
       </Tag>
       <Tooltip anchorId={id}>
         <div className="w-44">{T("payment.status.tooltip.processing")}</div>
@@ -86,7 +86,7 @@ const PayoutInfoMissingTag = (id: string, isProjectLeaderView: boolean) => {
         borderColor={isProjectLeaderView ? TagBorderColor.Grey : TagBorderColor.MultiColor}
       >
         <ErrorWarningLine className="text-pink-500" />
-        <span className="text-greyscale-50 whitespace-nowrap">
+        <span className="text-greyscale-50 whitespace-nowrap font-normal">
           {isProjectLeaderView ? T("payment.status.pending") : T("payment.status.payoutInfoMissing")}
         </span>
       </Tag>
@@ -106,7 +106,7 @@ const InvoiceNeededTag = (id: string) => {
     <>
       <Tag id={id} size={TagSize.Medium} borderColor={TagBorderColor.MultiColor}>
         <ErrorWarningLine className="text-pink-500" />
-        <span className="text-greyscale-50 whitespace-nowrap">{T("payment.status.invoicePending")}</span>
+        <span className="text-greyscale-50 whitespace-nowrap font-normal">{T("payment.status.invoicePending")}</span>
       </Tag>
       <Tooltip anchorId={id}>
         <div className="w-64">{T("payment.status.tooltip.invoicePending")}</div>
