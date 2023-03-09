@@ -151,7 +151,7 @@
       "number": "N.",
       "payoutSettings": "Payout information",
       "payoutSettingsRequiredTag": "* required to receive payments",
-      "payoutSettingsType": "Preferred method",
+      "payoutSettingsType": "Preferred payment method",
       "payoutSettingsValidTag": "You’re able to receive payments",
       "postCode": "Zip code",
       "send": "Save profile",
