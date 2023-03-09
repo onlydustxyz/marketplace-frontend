@@ -8,10 +8,10 @@ import headerElementBackground from "src/assets/img/alert-bg.png";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import { GithubContributorFragment } from "src/__generated/graphql";
-import CloseLine from "src/icons/CloseLine";
 import classNames from "classnames";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import User3Line from "src/icons/User3Line";
+import ArrowDownSLine from "src/icons/ArrowDownSLine";
 
 type Props = {
   loading: boolean;
@@ -19,17 +19,9 @@ type Props = {
   validateContributorLogin: () => boolean | string;
   contributors: GithubContributorFragment[];
   contributor?: GithubContributorFragment;
-  clear: () => void;
 };
 
-const View = ({
-  loading,
-  contributor,
-  contributors,
-  onContributorHandleChange,
-  validateContributorLogin,
-  clear,
-}: Props) => {
+const View = ({ loading, contributor, contributors, onContributorHandleChange, validateContributorLogin }: Props) => {
   const { T } = useIntl();
   const onHandleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     event => {
@@ -52,12 +44,6 @@ const View = ({
       <User3Line className="ml-2" />
     );
 
-  const suffixComponent = contributor && (
-    <div className="absolute right-0 cursor-pointer pr-4 text-greyscale-50" onClick={() => clear()}>
-      <CloseLine />
-    </div>
-  );
-
   return (
     <div className="w-full z-10">
       <div className="relative">
@@ -74,7 +60,7 @@ const View = ({
           onBlur={() => setOpened(false)}
           loading={loading}
           prefixComponent={prefixComponent}
-          suffixComponent={suffixComponent}
+          suffixComponent={<ArrowDownSLine className="absolute text-2xl right-0 pr-4 text-spaceBlue-200" />}
         />
 
         <Transition
