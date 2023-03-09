@@ -21,7 +21,7 @@ export default function useSignupRedirection({ githubUserId, userId }: User) {
     }
   );
 
-  const { valid: payoutSettingsValid } = usePayoutSettings(githubUserId);
+  const { valid } = usePayoutSettings(githubUserId);
 
   const pendingUserPaymentsAndPayoutSettingsQuery = useHasuraQuery<PendingUserPaymentsQuery>(
     PENDING_USER_PAYMENTS,
@@ -34,11 +34,7 @@ export default function useSignupRedirection({ githubUserId, userId }: User) {
 
   return {
     loading: pendingProjectLeaderInvitationsQuery.loading || pendingUserPaymentsAndPayoutSettingsQuery.loading,
-    url: getRedirectionUrl(
-      pendingProjectLeaderInvitationsQuery,
-      pendingUserPaymentsAndPayoutSettingsQuery,
-      payoutSettingsValid === false
-    ),
+    url: getRedirectionUrl(pendingProjectLeaderInvitationsQuery, pendingUserPaymentsAndPayoutSettingsQuery, !valid),
   };
 }
 

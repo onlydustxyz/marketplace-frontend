@@ -98,7 +98,7 @@ describe("useSignupRedirection", () => {
       },
     });
 
-    const { result } = render({ userId }, [pendingPaymentsMock, payoutSettingsMock]);
+    const { result } = render({ userId, githubUserId }, [pendingPaymentsMock, payoutSettingsMock]);
     expect(result.current.loading).toBe(true);
 
     await waitFor(() => {
