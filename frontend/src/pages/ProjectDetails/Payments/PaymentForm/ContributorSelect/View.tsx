@@ -13,6 +13,8 @@ import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import User3Line from "src/icons/User3Line";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { useFormContext } from "react-hook-form";
+import onlyDustLogo from "assets/img/onlydust-logo.png";
+import Tooltip from "src/components/Tooltip";
 
 type Props = {
   loading: boolean;
@@ -38,7 +40,8 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
   );
   const [opened, setOpened] = useState(false);
 
-  const { register } = useFormContext();
+  const { register, setFocus, watch } = useFormContext();
+  const contributorHandle = watch("contributorHandle");
 
   return (
     <div className="w-full">
@@ -83,7 +86,7 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
         <div className="px-4 pt-4">
           <div
             className={classNames(
-              "w-full h-11 border rounded-xl px-4 py-3 z-20 mb-8",
+              "w-full h-11 border rounded-xl px-4 py-3 z-20 mb-8 cursor-text",
               "flex flex-row items-center justify-between",
               "font-walsheim font-normal text-base",
               {
@@ -91,6 +94,7 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
                 "outline outline-1 outline-spacePurple-500 border-spacePurple-500 bg-spacePurple-900": opened,
               }
             )}
+            onClick={() => setFocus("contributorHandle")}
           >
             <div className="flex flex-row items-center w-full">
               {contributor && !loading ? (
@@ -104,7 +108,7 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
                 />
               )}
               <input
-                className={classNames("placeholder:text-greyscale-400 bg-transparent border-0 outline-none w-full")}
+                className={classNames("placeholder:text-greyscale-400 bg-transparent border-0 outline-none")}
                 placeholder={opened ? undefined : T("payment.form.contributor.placeholder")}
                 {...register("contributorHandle", {
                   required: T("form.required"),
@@ -113,7 +117,21 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
                 onChange={onHandleChange}
                 onFocus={() => setOpened(true)}
                 onBlur={() => setOpened(false)}
+                size={contributorHandle ? contributorHandle.length : 30}
               />
+              {contributor?.user?.userId && (
+                <>
+                  <img
+                    id={"od-logo-selected"}
+                    src={onlyDustLogo}
+                    className="h-3.5 mt-px -ml-2"
+                    data-tooltip-content={T("contributor.table.userRegisteredTooltip")}
+                  />
+                  <Tooltip anchorId={"od-logo-selected"}>
+                    <div className="w-36">{T("contributor.table.userRegisteredTooltip")}</div>
+                  </Tooltip>
+                </>
+              )}
             </div>
             {loading ? (
               <LoaderIcon className="animate-spin" />
