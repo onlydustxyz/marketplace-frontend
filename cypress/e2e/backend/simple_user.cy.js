@@ -223,7 +223,7 @@ describe("As a simple user, I", () => {
     let new_payout_settings = { type: "ETHEREUM_NAME", optEthName: "vitalik.eth" };
 
     cy.createGithubUser(12345).then(user => {
-      cy.updateProfileInfo(email, location, identity, payout_settings)
+      cy.updateProfileInfo({ email }, location, identity, payout_settings)
         .asRegisteredUser(user)
         .data("updateProfileInfo")
         .should("eq", user.id)
@@ -232,7 +232,7 @@ describe("As a simple user, I", () => {
             query: `{
                     userInfoByPk(userId: "${user.id}") {
                         identity
-                        email
+                        contactInformation
                         location
                         payoutSettings
                     }
@@ -247,7 +247,12 @@ describe("As a simple user, I", () => {
                   firstname: "Pierre",
                 },
               },
-              email: email,
+              contactInformation: {
+                email: email,
+                discord: null,
+                twitter: null,
+                telegram: null,
+              },
               location: {
                 city: "Paris",
                 address: "4 avenue des Champs Elysee",
@@ -257,13 +262,15 @@ describe("As a simple user, I", () => {
               payoutSettings: { EthTransfer: { Address: "0x0123" } },
             });
         })
-        .then(() => cy.updateProfileInfo(email, location, identity, new_payout_settings).asRegisteredUser(user).data())
+        .then(() =>
+          cy.updateProfileInfo({ email }, location, identity, new_payout_settings).asRegisteredUser(user).data()
+        )
         .then(() => {
           cy.graphql({
             query: `{
                     userInfoByPk(userId: "${user.id}") {
                         identity
-                        email
+                        contactInformation
                         location
                         payoutSettings
                       }
@@ -278,7 +285,12 @@ describe("As a simple user, I", () => {
                   firstname: "Pierre",
                 },
               },
-              email: email,
+              contactInformation: {
+                email: email,
+                discord: null,
+                twitter: null,
+                telegram: null,
+              },
               location: {
                 city: "Paris",
                 address: "4 avenue des Champs Elysee",

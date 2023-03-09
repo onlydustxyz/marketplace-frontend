@@ -87,11 +87,11 @@ Cypress.Commands.add("signinUser", user => {
     });
 });
 
-Cypress.Commands.add("updateProfileInfo", (email, location, identity, payoutSettings) => ({
-  query: `mutation($email: Email!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
-            updateProfileInfo(email: $email, identity: $identity, location: $location, payoutSettings: $payoutSettings)
+Cypress.Commands.add("updateProfileInfo", (contactInformation, location, identity, payoutSettings) => ({
+  query: `mutation($contactInformation: ContactInformation!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
+            updateProfileInfo(contactInformation: $contactInformation, identity: $identity, location: $location, payoutSettings: $payoutSettings)
         }`,
-  variables: { email, identity, location, payoutSettings },
+  variables: { contactInformation, identity, location, payoutSettings },
 }));
 
 Cypress.Commands.add("fillPayoutSettings", token => {
@@ -106,6 +106,9 @@ Cypress.Commands.add("fillPayoutSettings", token => {
     cy.get("[name=firstname]").clear().type(profile.firstname);
     cy.get("[name=lastname]").clear().type(profile.lastname);
     cy.get("[name=email]").clear().type(profile.email);
+    cy.get("[name=telegram]").clear().type(profile.telegram);
+    cy.get("[name=twitter]").clear().type(profile.twitter);
+    cy.get("[name=discord]").clear().type(profile.discord);
     cy.get("[name=address]").clear().type(profile.address);
     cy.get("[name=postCode]").clear().type(profile.postCode);
     cy.get("[name=city]").clear().type(profile.city);

@@ -6,9 +6,12 @@
   "companyOwnerFirstName": "Richard",
   "companyOwnerLastName": "Moore",
   "country": "GB",
+  "discord": "discord",
   "email": "admin@mi6.com",
   "id": "007",
   "identificationNumber": "MI6007",
   "name": "MI6",
-  "postCode": "007GB"
+  "postCode": "007GB",
+  "telegram": "telegram",
+  "twitter": "twitter"
 }
