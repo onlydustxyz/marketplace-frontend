@@ -102,10 +102,10 @@
             title: String!
           }
           type Query {
-            fetchRepositoryDetails(id: Int!): Repository!
-            fetchRepositoryPRs(id: Int!): [PullRequest!]!
-            fetchUserDetails(username: String!): User!
-            fetchUserDetailsById(userId: Int!): User!
+            fetchRepositoryDetails(id: Int!): Repository
+            fetchRepositoryPRs(id: Int!): [PullRequest!]
+            fetchUserDetails(username: String!): User
+            fetchUserDetailsById(userId: Int!): User
           }
           type Repository {
             contributors: [User!]!
@@ -140,8 +140,8 @@
             title: String!
           }
           type Query {
-            fetchRepositoryDetails(id: Int!): Repository!
-            fetchUserDetailsById(userId: Int!): User!
+            fetchRepositoryDetails(id: Int!): Repository
+            fetchUserDetailsById(userId: Int!): User
             helloFromGithubProxy: String!
           }
           type Repository {
