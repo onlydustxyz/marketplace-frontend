@@ -1,7 +1,8 @@
 use domain::GithubRepositoryId;
 use juniper::{graphql_object, DefaultScalarValue};
+use olog::{error, warn};
 
-use super::Context;
+use super::{Context, Error};
 use crate::domain::{GithubPullRequest, GithubRepository, GithubUser};
 
 pub struct Query;
@@ -17,7 +18,13 @@ impl Query {
 		context: &Context,
 		id: i32,
 	) -> Option<GithubRepository> {
-		context.github_service.fetch_repository_by_id(id as u64).await.ok()
+		context
+			.github_service
+			.fetch_repository_by_id(id as u64)
+			.await
+			.map_err(Error::from)
+			.logged()
+			.ok()
 	}
 
 	pub async fn fetch_user_details(
@@ -25,7 +32,13 @@ impl Query {
 		context: &Context,
 		username: String,
 	) -> Option<GithubUser> {
-		context.github_service.fetch_user_by_name(&username).await.ok()
+		context
+			.github_service
+			.fetch_user_by_name(&username)
+			.await
+			.map_err(Error::from)
+			.logged()
+			.ok()
 	}
 
 	pub async fn fetch_repository_PRs(
@@ -34,7 +47,13 @@ impl Query {
 		id: i32,
 	) -> Option<Vec<GithubPullRequest>> {
 		let repository_id = GithubRepositoryId::from(id as i64);
-		context.github_service.fetch_repository_PRs(&repository_id).await.ok()
+		context
+			.github_service
+			.fetch_repository_PRs(&repository_id)
+			.await
+			.map_err(Error::from)
+			.logged()
+			.ok()
 	}
 
 	pub async fn fetch_user_details_by_id(
@@ -42,6 +61,28 @@ impl Query {
 		context: &Context,
 		user_id: i32,
 	) -> Option<GithubUser> {
-		context.github_service.fetch_user_by_id(user_id as u64).await.ok()
+		context
+			.github_service
+			.fetch_user_by_id(user_id as u64)
+			.await
+			.map_err(Error::from)
+			.logged()
+			.ok()
+	}
+}
+
+trait Logged {
+	fn logged(self) -> Self;
+}
+
+impl<T> Logged for Result<T, Error> {
+	fn logged(self) -> Self {
+		if let Err(error) = &self {
+			match error {
+				Error::InvalidRequest(_) => warn!(error = format!("{error:?}"), "Bad request"),
+				Error::InternalError(_) => error!(error = format!("{error:?}"), "Error occured"),
+			};
+		}
+		self
 	}
 }
