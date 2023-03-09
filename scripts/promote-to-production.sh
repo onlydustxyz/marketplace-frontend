@@ -3,6 +3,19 @@
 SCRIPT_DIR=`readlink -f $0 | xargs dirname`
 . $SCRIPT_DIR/utils.sh
 
+check_uptodate_with_main() {
+    current_branch=`git branch --show-current`
+    [ $current_branch != "main" ] && exit_error "You are not on 'main' branch"
+    git pull
+    [ $? -ne 0 ] && exit_error "Unable to pull with remote"
+}
+
+check_cwd() {
+    root_dir=`git rev-parse --show-toplevel`
+    [ $? -ne 0 ] && exit_error "You are not in a git directory"
+    [ `pwd` != $root_dir ] && exit_error "Please run this script from the root directory: $root_dir"
+}
+
 slug_commit() {
     APP=$1
     heroku releases:info --app $APP --shell | sed -n 's/HEROKU_SLUG_COMMIT=\(.*\)/\1/p'
@@ -50,13 +63,16 @@ deploy_backends() {
         fi
 
         log_info "Reloading hasura metadata"
-        heroku run -a od-api-production hasura metadata reload
+        heroku run -a od-api-production hasura metadata reload --skip-update-check
     fi
 }
 
 check_command git
 check_command heroku
 check_command vercel
+
+check_cwd
+check_uptodate_with_main
 
 ask "Do you want to deploy the backends"
 if [ $? -eq 0 ]; then
@@ -65,7 +81,9 @@ fi
 
 ask "Do you want to deploy the frontend"
 if [ $? -eq 0 ]; then
-    execute vercel deploy --prod
+    execute vercel pull --environment production
+    execute vercel build --prod
+    execute vercel deploy --prod --prebuilt
 fi
 
 log_info "📌 Do not forget to promote Retool apps 😉"
