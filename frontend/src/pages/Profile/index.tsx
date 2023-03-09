@@ -35,7 +35,7 @@ const Profile: React.FC = () => {
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
-      <div className="px-8 py-8 h-full w-full">
+      <div className="px-8 pt-8 pb-6 h-full w-full">
         <div className="flex mb-8 items-center">
           <span className="text-3xl font-belwe font-normal w-full">{T("profile.edit")}</span>
           <div className="flex space-x-6">
