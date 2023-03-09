@@ -6,6 +6,9 @@ import { Budget } from "src/hooks/useWorkEstimation";
 import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/pages/ProjectDetails/Payments/PaymentForm";
 import { InputErrorType } from "src/components/FormInput/View";
 import ContributorSelect from "src/pages/ProjectDetails/Payments/PaymentForm/ContributorSelect";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import { useNavigate } from "react-router-dom";
+import CloseLine from "src/icons/CloseLine";
 
 interface Props {
   projectId: string;
@@ -15,10 +18,18 @@ interface Props {
 
 const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) => {
   const { T } = useIntl();
+  const navigate = useNavigate();
 
   return (
     <>
-      <div className="text-3xl font-belwe">{T("project.details.payments.new.title")}</div>
+      <div className="flex flex-row gap-3 items-center">
+        <div onClick={() => navigate(-1)}>
+          <Button type={ButtonType.Secondary} size={ButtonSize.Sm} iconOnly>
+            <CloseLine />
+          </Button>
+        </div>
+        <div className="text-3xl font-belwe">{T("project.details.payments.new.title")}</div>
+      </div>
       <div className="flex flex-row items-start gap-5 h-full">
         <div className="basis-3/5 self-stretch">
           <div className="flex flex-col gap-6 w-full">
