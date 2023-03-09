@@ -1,7 +1,7 @@
 use domain::GithubRepositoryId;
 use juniper::{graphql_object, DefaultScalarValue};
 
-use super::{Context, Result};
+use super::Context;
 use crate::domain::{GithubPullRequest, GithubRepository, GithubUser};
 
 pub struct Query;
@@ -16,38 +16,32 @@ impl Query {
 		&self,
 		context: &Context,
 		id: i32,
-	) -> Result<GithubRepository> {
-		let repository = context.github_service.fetch_repository_by_id(id as u64).await?;
-		Ok(repository)
+	) -> Option<GithubRepository> {
+		context.github_service.fetch_repository_by_id(id as u64).await.ok()
 	}
 
 	pub async fn fetch_user_details(
 		&self,
 		context: &Context,
 		username: String,
-	) -> Result<GithubUser> {
-		let user = context.github_service.fetch_user_by_name(&username).await?;
-		Ok(user)
+	) -> Option<GithubUser> {
+		context.github_service.fetch_user_by_name(&username).await.ok()
 	}
 
 	pub async fn fetch_repository_PRs(
 		&self,
 		context: &Context,
 		id: i32,
-	) -> Result<Vec<GithubPullRequest>> {
+	) -> Option<Vec<GithubPullRequest>> {
 		let repository_id = GithubRepositoryId::from(id as i64);
-
-		let pull_requests = context.github_service.fetch_repository_PRs(&repository_id).await?;
-
-		Ok(pull_requests)
+		context.github_service.fetch_repository_PRs(&repository_id).await.ok()
 	}
 
 	pub async fn fetch_user_details_by_id(
 		&self,
 		context: &Context,
 		user_id: i32,
-	) -> Result<GithubUser> {
-		let user = context.github_service.fetch_user_by_id(user_id as u64).await?;
-		Ok(user)
+	) -> Option<GithubUser> {
+		context.github_service.fetch_user_by_id(user_id as u64).await.ok()
 	}
 }
