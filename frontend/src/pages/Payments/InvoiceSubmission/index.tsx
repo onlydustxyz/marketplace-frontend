@@ -13,7 +13,7 @@ export default function InvoiceSubmission({ githubUserId, paymentRequestsIds }: 
   const { T } = useIntl();
 
   return (
-    <Card>
+    <Card padded={false} className="py-5 px-6">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-1 font-walsheim text-white">
           <span className="text-lg font-medium">{T("invoiceSubmission.title")}</span>
