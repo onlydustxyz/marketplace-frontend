@@ -1,5 +1,7 @@
+import { __POPULATE } from "../support/e2e";
+
 describe("Once and before all test suites, ", () => {
-  it("cleanup and populate some data", function () {
+  it(__POPULATE, function () {
     cy.cleanupDB();
     cy.populateAll();
     cy.dumpDB();
