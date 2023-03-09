@@ -29,6 +29,7 @@ import TwitterFill from "src/icons/TwitterFill";
 import TelegramFill from "src/icons/TelegramFill";
 import DiscordFill from "src/icons/DiscordFill";
 import { useAuth } from "src/hooks/useAuth";
+import Telegram from "src/assets/icons/Telegram";
 
 const ENS_DOMAIN_REGEXP = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?$/gi;
 const ETHEREUM_ADDRESS_OR_ENV_DOMAIN_REGEXP =
@@ -396,9 +397,9 @@ const ProfileForm: React.FC<PropsType> = ({
                   options={{ pattern: EMAIL_ADDRESS_REGEXP }}
                   placeholder={T("profile.form.emailPlaceholder")}
                   onFocus={() => clearErrors("email")}
-                  inputClassName="pl-11"
+                  inputClassName="pl-12"
                   prefixComponent={
-                    <div className={`text-xl mt-1 ${email && email.length > 0 && " text-white"}`}>
+                    <div className={`text-xl mt-1 pl-1 ${email && email.length > 0 && " text-white"}`}>
                       <MailLine />
                     </div>
                   }
@@ -407,21 +408,10 @@ const ProfileForm: React.FC<PropsType> = ({
                   label={T("profile.form.telegram")}
                   name="telegram"
                   placeholder={T("profile.form.telegramPlaceholder")}
-                  inputClassName="pl-11"
+                  inputClassName="pl-12"
                   prefixComponent={
-                    <div className={`text-xl mt-1 ${telegram && telegram.length > 0 && "text-white"}`}>
-                      <TelegramFill />
-                    </div>
-                  }
-                />
-                <Input
-                  label={T("profile.form.discord")}
-                  name="discord"
-                  placeholder={T("profile.form.discordPlaceholder")}
-                  inputClassName="pl-11"
-                  prefixComponent={
-                    <div className={`text-xl mt-1 ${discord && discord.length > 0 && "text-white"}`}>
-                      <DiscordFill />
+                    <div className="pl-1">
+                      <Telegram className={telegram && telegram.length > 0 ? "fill-white" : ""} size={19} />
                     </div>
                   }
                 />
@@ -429,10 +419,21 @@ const ProfileForm: React.FC<PropsType> = ({
                   label={T("profile.form.twitter")}
                   name="twitter"
                   placeholder={T("profile.form.twitterPlaceholder")}
-                  inputClassName="pl-11"
+                  inputClassName="pl-12"
                   prefixComponent={
-                    <div className={`text-xl mt-1 ${twitter && twitter.length > 0 && " text-white"}`}>
+                    <div className={`text-xl mt-1 pl-1 ${twitter && twitter.length > 0 && " text-white"}`}>
                       <TwitterFill />
+                    </div>
+                  }
+                />
+                <Input
+                  label={T("profile.form.discord")}
+                  name="discord"
+                  placeholder={T("profile.form.discordPlaceholder")}
+                  inputClassName="pl-12"
+                  prefixComponent={
+                    <div className={`text-xl mt-1 pl-1 ${discord && discord.length > 0 && "text-white"}`}>
+                      <DiscordFill />
                     </div>
                   }
                 />
