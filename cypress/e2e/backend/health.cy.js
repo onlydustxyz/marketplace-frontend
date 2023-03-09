@@ -25,4 +25,10 @@ describe("The application", () => {
       status: "ok",
     });
   });
+
+  it("should return OK for errors in github proxy", () => {
+    cy.graphql({ query: "{ fetchRepositoryDetails(id: 0) { id } }" }).asAnonymous().data().should("deep.equal", {
+      fetchRepositoryDetails: null,
+    });
+  });
 });
