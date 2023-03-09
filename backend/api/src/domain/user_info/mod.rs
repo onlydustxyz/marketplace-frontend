@@ -6,7 +6,9 @@ use domain::UserId;
 use serde::{Deserialize, Serialize};
 
 mod email;
-pub use email::Email;
+
+mod contact_information;
+pub use contact_information::ContactInformation;
 
 mod identity;
 pub use identity::{CompanyIdentity, Identity, PersonIdentity};
@@ -37,8 +39,8 @@ pub struct UserInfo {
 	user_id: UserId,
 	identity: Option<Identity>,
 	location: Option<Location>,
-	email: Option<Email>,
 	payout_settings: Option<PayoutSettings>,
+	contact_information: Option<ContactInformation>,
 }
 
 impl domain::Entity for UserInfo {
@@ -51,28 +53,29 @@ where
 		UserId,
 		Option<Identity>,
 		Option<Location>,
-		Option<Email>,
 		Option<PayoutSettings>,
 		bool,
+		Option<ContactInformation>,
 	): Queryable<ST, Pg>,
 {
 	type Row = <(
 		UserId,
 		Option<Identity>,
 		Option<Location>,
-		Option<Email>,
 		Option<PayoutSettings>,
 		bool,
+		Option<ContactInformation>,
 	) as Queryable<ST, Pg>>::Row;
 
 	fn build(row: Self::Row) -> Self {
-		let (user_id, identity, location, email, payout_settings, _) = Queryable::build(row);
+		let (user_id, identity, location, payout_settings, _, contact_information) =
+			Queryable::build(row);
 		Self {
 			user_id,
 			identity,
 			location,
-			email,
 			payout_settings,
+			contact_information,
 		}
 	}
 }

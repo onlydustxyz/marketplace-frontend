@@ -9,7 +9,7 @@ use uuid::Uuid;
 use super::{Context, Error, Result};
 use crate::{
 	domain::{
-		user_info::{Email, Identity, Location, PayoutSettings},
+		user_info::{ContactInformation, Identity, Location, PayoutSettings},
 		PaymentReason,
 	},
 	presentation::http::dto::{
@@ -239,8 +239,8 @@ impl Mutation {
 		context: &Context,
 		location: Option<Location>,
 		identity: Option<IdentityInput>,
-		email: Option<Email>,
 		payout_settings: Option<PayoutSettingsInput>,
+		contact_information: Option<ContactInformation>,
 	) -> Result<Uuid> {
 		let caller_id = *context.caller_info()?.user_id();
 
@@ -259,7 +259,13 @@ impl Mutation {
 
 		context
 			.update_user_info_usecase
-			.update_profile_info(caller_id, identity, location, email, payout_settings)
+			.update_profile_info(
+				caller_id,
+				identity,
+				location,
+				payout_settings,
+				contact_information,
+			)
 			.await?;
 
 		Ok(caller_id.into())

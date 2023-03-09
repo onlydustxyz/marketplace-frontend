@@ -16,7 +16,7 @@ describe("The user", () => {
 
   it("can fill their personal info", function () {
     cy.fillPayoutSettings(this.token);
-    cy.contains("Payment information successfully updated");
+    cy.contains("Changes saved");
   });
 
   it("can see their personal info pre-filled", function () {
@@ -29,6 +29,9 @@ describe("The user", () => {
     cy.get("[name=firstname]").should("have.value", this.profile.firstname);
     cy.get("[name=lastname]").should("have.value", this.profile.lastname);
     cy.get("[name=email]").should("have.value", this.profile.email);
+    cy.get("[name=twitter]").should("have.value", this.profile.twitter);
+    cy.get("[name=discord]").should("have.value", this.profile.discord);
+    cy.get("[name=telegram]").should("have.value", this.profile.telegram);
     cy.get("[name=address]").should("have.value", this.profile.address);
     cy.get("[name=postCode]").should("have.value", this.profile.postCode);
     cy.get("[name=city]").should("have.value", this.profile.city);
@@ -64,6 +67,9 @@ describe("The company", () => {
     cy.get("[name=companyOwnerFirstName]").clear().type(this.profile.companyOwnerFirstName);
     cy.get("[name=companyOwnerLastName]").clear().type(this.profile.companyOwnerLastName);
     cy.get("[name=email]").clear().type(this.profile.email);
+    cy.get("[name=telegram]").clear().type(this.profile.telegram);
+    cy.get("[name=twitter]").clear().type(this.profile.twitter);
+    cy.get("[name=discord]").clear().type(this.profile.discord);
     cy.get("[name=address]").clear().type(this.profile.address);
     cy.get("[name=postCode]").clear().type(this.profile.postCode);
     cy.get("[name=city]").clear().type(this.profile.city);
@@ -75,7 +81,7 @@ describe("The company", () => {
     cy.contains("Save profile").click();
     cy.wait(WAIT_LONG);
 
-    cy.contains("Payment information successfully updated");
+    cy.contains("Changes saved");
   });
 
   it("can see their personal info pre-filled", function () {
@@ -90,6 +96,9 @@ describe("The company", () => {
     cy.get("[name=companyOwnerFirstName]").should("have.value", this.profile.companyOwnerFirstName);
     cy.get("[name=companyOwnerLastName]").should("have.value", this.profile.companyOwnerLastName);
     cy.get("[name=email]").should("have.value", this.profile.email);
+    cy.get("[name=twitter]").should("have.value", this.profile.twitter);
+    cy.get("[name=discord]").should("have.value", this.profile.discord);
+    cy.get("[name=telegram]").should("have.value", this.profile.telegram);
     cy.get("[name=address]").should("have.value", this.profile.address);
     cy.get("[name=postCode]").should("have.value", this.profile.postCode);
     cy.get("[name=city]").should("have.value", this.profile.city);

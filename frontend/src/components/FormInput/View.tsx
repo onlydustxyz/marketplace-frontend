@@ -59,7 +59,7 @@ const View: React.FC<PropsType> = ({
     <label htmlFor={register.name} className="flex flex-col flex-grow gap-2 text-greyscale-300 font-walsheim mb-6">
       <div className="font-medium text-sm tracking-tight">
         {label}
-        {requiredForPayment && <span className="text-orange-500">{"*"}</span>}
+        {requiredForPayment && <span className="text-orange-500 pl-0.5">{"*"}</span>}
       </div>
       <div
         className={classNames("flex flex-col", {
