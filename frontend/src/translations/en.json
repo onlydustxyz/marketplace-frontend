@@ -68,7 +68,7 @@
       "confirm": "Confirm payment",
       "contributor": {
         "needsToSignup": "__contributor__ will have to sign up to OnlyDust to receive their payment",
-        "placeholder": "Search for contributor",
+        "placeholder": "Search by Github handle",
         "title": "Recipient"
       },
       "days": "days",
