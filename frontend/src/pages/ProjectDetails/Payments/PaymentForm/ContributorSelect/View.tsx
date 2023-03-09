@@ -16,6 +16,7 @@ import { useFormContext } from "react-hook-form";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import Tooltip from "src/components/Tooltip";
 import { sortBy } from "lodash";
+import { useTextWidth } from "@tag0/use-text-width";
 
 type Props = {
   loading: boolean;
@@ -43,6 +44,8 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
 
   const { register, setFocus, watch } = useFormContext();
   const contributorHandle = watch("contributorHandle");
+
+  const inputTextWidth = useTextWidth({ text: contributorHandle, font: "500 16px GT Walsheim" });
 
   return (
     <div className="w-full">
@@ -97,7 +100,7 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
             )}
             onClick={() => setFocus("contributorHandle")}
           >
-            <div className="flex flex-row items-center w-full">
+            <div className="flex flex-row items-center w-full gap-2">
               {contributor && !loading ? (
                 <RoundedImage src={contributor.avatarUrl} size={ImageSize.Sm} alt={contributor.login} />
               ) : (
@@ -109,7 +112,9 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
                 />
               )}
               <input
-                className={classNames("placeholder:text-greyscale-400 bg-transparent border-0 outline-none")}
+                className={classNames(
+                  "placeholder:text-greyscale-400 bg-transparent border-0 outline-none text-greyscale-50 font-walsheim font-medium text-base"
+                )}
                 placeholder={opened ? undefined : T("payment.form.contributor.placeholder")}
                 {...register("contributorHandle", {
                   required: T("form.required"),
@@ -118,14 +123,14 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
                 onChange={onHandleChange}
                 onFocus={() => setOpened(true)}
                 onBlur={() => setOpened(false)}
-                size={contributorHandle ? contributorHandle.length : 30}
+                style={{ width: inputTextWidth + 4 || 200, padding: 0 }}
               />
               {contributor?.user?.userId && (
                 <>
                   <img
                     id={"od-logo-selected"}
                     src={onlyDustLogo}
-                    className="h-3.5 mt-px -ml-2"
+                    className="h-3.5 mt-px"
                     data-tooltip-content={T("contributor.table.userRegisteredTooltip")}
                   />
                   <Tooltip anchorId={"od-logo-selected"}>
