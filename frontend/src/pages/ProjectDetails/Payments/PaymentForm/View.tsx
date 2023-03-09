@@ -46,9 +46,7 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
                   <ContributorSelect projectId={projectId} />
                 </div>
               </div>
-            </Card>
-            {contributor && (
-              <Card className="px-8 pb-8 z-0">
+              {contributor && (
                 <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
                   <div className="font-medium text-lg">{T("payment.form.issueLink.title")}</div>
                   <div className="flex flex-row pt-3">
@@ -67,8 +65,8 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
                     />
                   </div>
                 </div>
-              </Card>
-            )}
+              )}
+            </Card>
           </div>
         </div>
         <div className="basis-2/5">
