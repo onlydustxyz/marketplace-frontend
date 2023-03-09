@@ -131,7 +131,7 @@ Cypress.Commands.add("updateProfileInfo", (email, location, identity, payoutSett
 
 Cypress.Commands.add("fillPayoutSettings", token => {
   cy.fixture("profiles/james_bond").then(profile => {
-    cy.visit("http://127.0.0.1:5173/profile", {
+    cy.visit("http://localhost:5173/profile", {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", token);
       },

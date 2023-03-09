@@ -89,14 +89,7 @@ describe("As a project lead, I", () => {
     cy.get("#payment_table").contains("Pending");
 
     // 2. Edit profile info, payment is "processing"
-    cy.visit("http://localhost:5173/profile", {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", this.paymentRecipientToken);
-      },
-    });
-
-    cy.get("[name=ethIdentity]").clear().type(TEST_ETH_ADDRESS);
-    cy.contains("Save profile").click();
+    cy.fillPayoutSettings(this.paymentRecipientToken);
 
     showPaymentsAsOtherLeader();
     cy.get("#payment_table").contains("Processing");
