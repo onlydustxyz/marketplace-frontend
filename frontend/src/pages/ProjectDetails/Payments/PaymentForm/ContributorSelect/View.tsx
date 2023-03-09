@@ -50,7 +50,7 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
         <Input
           inputClassName="pl-12"
           name="contributorHandle"
-          placeholder={T("payment.form.contributor.placeholder")}
+          placeholder={opened ? undefined : T("payment.form.contributor.placeholder")}
           options={{
             required: T("form.required"),
             validate: validateContributorLogin,
