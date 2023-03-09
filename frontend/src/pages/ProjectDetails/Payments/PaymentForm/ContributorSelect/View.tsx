@@ -2,7 +2,7 @@ import { Transition } from "@headlessui/react";
 import { ChangeEventHandler, useCallback, useState } from "react";
 import Card from "src/components/Card";
 import Contributor from "src/components/Contributor";
-import Input from "src/components/FormInput";
+import LoaderIcon from "src/assets/icons/Loader";
 import ImageCard, { BackgroundSize } from "src/components/ImageCard";
 import headerElementBackground from "src/assets/img/alert-bg.png";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
@@ -12,6 +12,7 @@ import classNames from "classnames";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import User3Line from "src/icons/User3Line";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
+import { useFormContext } from "react-hook-form";
 
 type Props = {
   loading: boolean;
@@ -37,18 +38,13 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
   );
   const [opened, setOpened] = useState(false);
 
-  const prefixComponent =
-    contributor && !loading ? (
-      <RoundedImage src={contributor.avatarUrl} size={ImageSize.Sm} alt={contributor.login} />
-    ) : (
-      <User3Line className="ml-2" />
-    );
+  const { register } = useFormContext();
 
   return (
     <div className="w-full">
       <div className="relative z-10">
         <Transition
-          className="absolute w-full"
+          className="absolute w-full -z-10"
           show={opened}
           enter="transition duration-200 ease-out"
           enterFrom="opacity-0"
@@ -84,22 +80,52 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
             </div>
           </Card>
         </Transition>
-        <div className="px-4 pt-4 z-20">
-          <Input
-            inputClassName="pl-12"
-            name="contributorHandle"
-            placeholder={opened ? undefined : T("payment.form.contributor.placeholder")}
-            options={{
-              required: T("form.required"),
-              validate: validateContributorLogin,
-            }}
-            onChange={onHandleChange}
-            onFocus={() => setOpened(true)}
-            onBlur={() => setOpened(false)}
-            loading={loading}
-            prefixComponent={prefixComponent}
-            suffixComponent={<ArrowDownSLine className="absolute text-2xl right-0 pr-4 text-spaceBlue-200" />}
-          />
+        <div className="px-4 pt-4">
+          <div
+            className={classNames(
+              "w-full h-11 border rounded-xl px-4 py-3 z-20 mb-8",
+              "flex flex-row items-center justify-between",
+              "font-walsheim font-normal text-base",
+              {
+                "border-greyscale-50/8 bg-white/5": !opened,
+                "outline outline-1 outline-spacePurple-500 border-spacePurple-500 bg-spacePurple-900": opened,
+              }
+            )}
+          >
+            <div className="flex flex-row items-center w-full">
+              {contributor && !loading ? (
+                <RoundedImage src={contributor.avatarUrl} size={ImageSize.Sm} alt={contributor.login} />
+              ) : (
+                <User3Line
+                  className={classNames({
+                    "text-spaceBlue-200": !opened,
+                    "text-spacePurple-500": opened,
+                  })}
+                />
+              )}
+              <input
+                className={classNames("placeholder:text-greyscale-400 bg-transparent border-0 outline-none w-full")}
+                placeholder={opened ? undefined : T("payment.form.contributor.placeholder")}
+                {...register("contributorHandle", {
+                  required: T("form.required"),
+                  validate: validateContributorLogin,
+                })}
+                onChange={onHandleChange}
+                onFocus={() => setOpened(true)}
+                onBlur={() => setOpened(false)}
+              />
+            </div>
+            {loading ? (
+              <LoaderIcon className="animate-spin" />
+            ) : (
+              <ArrowDownSLine
+                className={classNames("text-2xl", {
+                  "text-spaceBlue-200": !opened,
+                  "text-spacePurple-500": opened,
+                })}
+              />
+            )}
+          </div>
         </div>
       </div>
       {contributor && !contributor.user && (

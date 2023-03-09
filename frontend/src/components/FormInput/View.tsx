@@ -7,7 +7,7 @@ import classNames from "classnames";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 
 type PropsType = {
-  label?: string;
+  label: string;
   type: string;
   placeholder?: string;
   value?: string | number;

@@ -4,7 +4,7 @@ import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
 import View, { InputErrorDisplay } from "./View";
 
 type PropsType = {
-  label?: string;
+  label: string;
   type?: string;
   placeholder?: string;
   name: string;
