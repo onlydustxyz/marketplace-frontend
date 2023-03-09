@@ -105,7 +105,7 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
                 <RoundedImage src={contributor.avatarUrl} size={ImageSize.Sm} alt={contributor.login} />
               ) : (
                 <User3Line
-                  className={classNames({
+                  className={classNames("text-2xl", {
                     "text-spaceBlue-200": !opened,
                     "text-spacePurple-500": opened,
                   })}
