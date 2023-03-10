@@ -73,6 +73,23 @@ impl Query {
 			.logged()
 			.ok()
 	}
+
+	pub async fn search_users(
+		&self,
+		context: &Context,
+		query: String,
+		sort: String,
+		order: String,
+	) -> Option<Vec<GithubUser>> {
+		context
+			.github_service()
+			.ok()?
+			.search_users(&query, &sort, &order)
+			.await
+			.map_err(Error::from)
+			.logged()
+			.ok()
+	}
 }
 
 trait Logged {

@@ -92,6 +92,26 @@ impl Client {
 		next_octocrab
 	}
 
+	/// Search users using the Github Search API
+	/// See https://docs.github.com/en/rest/search?apiVersion=2022-11-28#search-users for more info.
+	#[instrument(skip(self))]
+	pub async fn search_users(
+		&self,
+		query: &str,
+		sort: &str,
+		order: &str,
+	) -> Result<Vec<User>, Error> {
+		Ok(self
+			.octocrab()
+			.search()
+			.users(query)
+			.sort(sort)
+			.order(order)
+			.send()
+			.await?
+			.items)
+	}
+
 	#[instrument(skip(self))]
 	pub async fn get_as<U, R>(&self, url: U) -> Result<R, Error>
 	where
