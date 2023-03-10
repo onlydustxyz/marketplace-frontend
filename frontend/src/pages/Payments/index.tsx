@@ -40,11 +40,13 @@ const Payments = () => {
   }
 
   const totalEarnings = hasPayments && payments.reduce((acc, p) => acc + p.amount.value, 0);
+  const invoiceSubmissionNeeded =
+    pendingPaymentsRequests.length > 0 && invoiceNeeded && githubUserId && userInfos && payoutSettingsValid;
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
-      <div className="container mx-auto pt-16 h-full">
-        <div className="text-5xl font-belwe">{T("navbar.payments")}</div>
+      <div className="container flex flex-col mx-auto py-6 px-8 gap-6 h-full">
+        <div className="text-3xl font-belwe">{T("navbar.payments")}</div>
         <QueryWrapper query={getPaymentRequestsQuery}>
           <div className="flex gap-4 mb-10">
             <Card>
@@ -58,7 +60,7 @@ const Payments = () => {
             </Card>
             <div className="flex flex-col gap-4">
               {totalEarnings && <TotalEarnings amount={totalEarnings} />}
-              {pendingPaymentsRequests.length > 0 && invoiceNeeded && githubUserId && userInfos && (
+              {invoiceSubmissionNeeded && (
                 <InvoiceSubmission
                   paymentRequests={pendingPaymentsRequests}
                   githubUserId={githubUserId}

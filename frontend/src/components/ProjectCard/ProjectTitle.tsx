@@ -16,9 +16,11 @@ const ProjectLeads = ({ leads, id }: { leads: ProjectLeadFragment[]; id: string 
 
   return (
     <div className="text-sm flex flex-row text-spaceBlue-200 gap-1 items-center pt-0.5">
-      <div className="whitespace-nowrap truncate">
-        {T("project.ledBy", { name: leads[0]?.displayName, count: leads.length })}
-      </div>
+      {leads.length > 0 && (
+        <div className="whitespace-nowrap truncate">
+          {T("project.ledBy", { name: leads[0]?.displayName, count: leads.length })}
+        </div>
+      )}
       <div className="flex flex-row -space-x-1" id={`projectLeads-${id}`}>
         {leads.map(lead => (
           <RoundedImage

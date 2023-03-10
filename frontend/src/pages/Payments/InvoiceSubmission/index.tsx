@@ -34,6 +34,7 @@ export default function InvoiceSubmission({ paymentRequests, ...props }: Props) 
           medium="snippet"
           hidden={buildHiddenFields({ ...props, paymentRequests })}
           transitiveSearchParams={true}
+          as="div"
         >
           <Button width={Width.Full}>
             <Attachment2 className="text-xl" />
