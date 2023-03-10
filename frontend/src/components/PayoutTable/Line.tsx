@@ -31,12 +31,13 @@ export type Payment = {
 type Props = {
   payment: Payment;
   payoutInfoMissing: boolean;
+  invoiceNeeded: boolean;
   setSortingFields: (sortingFields: SortingFields) => void;
 };
 
 const ISSUE_NUMBER = /pull\/(\d+)$/;
 
-export default function PaymentLine({ payment, payoutInfoMissing, setSortingFields }: Props) {
+export default function PaymentLine({ payment, payoutInfoMissing, invoiceNeeded, setSortingFields }: Props) {
   useEffect(() => {
     const issueNumber = payment.reason?.match(ISSUE_NUMBER) || ["", ""];
     setSortingFields({
@@ -59,7 +60,9 @@ export default function PaymentLine({ payment, payoutInfoMissing, setSortingFiel
       </Cell>
       <Cell>{formatMoneyAmount(payment.amount.value, payment.amount.currency)}</Cell>
       <Cell>
-        <PayoutStatus {...{ id: `payout-status-${payment.id}`, status: payment.status, payoutInfoMissing }} />
+        <PayoutStatus
+          {...{ id: `payout-status-${payment.id}`, status: payment.status, payoutInfoMissing, invoiceNeeded }}
+        />
       </Cell>
     </Line>
   );

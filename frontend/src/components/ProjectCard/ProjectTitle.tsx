@@ -1,4 +1,5 @@
 import { useIntl } from "src/hooks/useIntl";
+import { formatList } from "src/utils/list";
 import { ProjectLeadFragment } from "src/__generated/graphql";
 import RoundedImage, { ImageSize, Rounding } from "../RoundedImage";
 import Tooltip, { TooltipPosition } from "../Tooltip";
@@ -31,7 +32,7 @@ const ProjectLeads = ({ leads, id }: { leads: ProjectLeadFragment[]; id: string 
       </div>
       {leads.length > 1 && (
         <Tooltip anchorId={`projectLeads-${id}`} position={TooltipPosition.Top}>
-          {new Intl.ListFormat("en-US", { style: "narrow" }).format(leads.map(lead => lead.displayName))}
+          {formatList(leads.map(lead => lead.displayName))}
         </Tooltip>
       )}
     </div>

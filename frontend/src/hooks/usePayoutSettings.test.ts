@@ -9,7 +9,7 @@ const GITHUB_USER_ID = 12345;
 const render = (mocks: MockedResponse[]) =>
   renderHook(() => usePayoutSettings(GITHUB_USER_ID), { wrapper: MockedProvider, initialProps: { mocks } });
 
-const mockGetPayoutSettingsQuery = <T>(payoutSettings: T, arePayoutSettingsValid: boolean) => ({
+const mockGetPayoutSettingsQuery = <T, I>(payoutSettings: T, arePayoutSettingsValid: boolean, identity?: I) => ({
   request: {
     query: GET_USER_PAYOUT_SETTINGS,
     variables: { githubUserId: GITHUB_USER_ID },
@@ -21,6 +21,7 @@ const mockGetPayoutSettingsQuery = <T>(payoutSettings: T, arePayoutSettingsValid
           user: {
             userInfo: {
               __typename: "UserInfo",
+              identity,
               payoutSettings,
               arePayoutSettingsValid,
             } as UserPayoutSettingsFragment,
@@ -62,6 +63,15 @@ describe("usePayoutSettings", () => {
 
     await waitFor(() => expect(result.current.loading).toBe(false));
     expect(result.current.valid).toBe(arePayoutSettingsValid);
-    expect(result.current.data).toEqual(payoutSettings);
+    expect(result.current.data?.payoutSettings).toEqual(payoutSettings);
+    expect(result.current.invoiceNeeded).toBe(false);
+  });
+
+  it("should return whether the user is registered as a company", async () => {
+    const { result } = render([mockGetPayoutSettingsQuery(null, false, { Company: { name: "MyCompany" } })]);
+    expect(result.current.loading).toBe(true);
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+    expect(result.current.invoiceNeeded).toBe(true);
   });
 });

@@ -8,9 +8,10 @@ import { useMemo, useState } from "react";
 type PropsType = {
   payments: (Payment & Sortable)[];
   payoutInfoMissing: boolean;
+  invoiceNeeded: boolean;
 };
 
-const PayoutTable: React.FC<PropsType> = ({ payments, payoutInfoMissing }) => {
+const PayoutTable: React.FC<PropsType> = ({ payments, payoutInfoMissing, invoiceNeeded }) => {
   const [paymentSortingFields, setPaymentSortingFields] = useState<Record<string, SortingFields>>({});
   const { sort, sorting, applySorting } = usePaymentSorting();
 
@@ -28,6 +29,7 @@ const PayoutTable: React.FC<PropsType> = ({ payments, payoutInfoMissing }) => {
           key={p.id}
           payment={p}
           payoutInfoMissing={payoutInfoMissing}
+          invoiceNeeded={invoiceNeeded}
           setSortingFields={fields => setPaymentSortingFields(existing => ({ ...existing, [p.id]: fields }))}
         />
       ))}
