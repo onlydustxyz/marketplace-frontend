@@ -21,9 +21,9 @@ export default function useSignupRedirection({ githubUserId, userId }: User) {
     }
   );
 
-  const { valid: payoutSettingsValid } = usePayoutSettings(githubUserId);
+  const { valid: validPayoutInfo, loading: payoutSettingsQueryLoading } = usePayoutSettings(githubUserId);
 
-  const pendingUserPaymentsAndPayoutSettingsQuery = useHasuraQuery<PendingUserPaymentsQuery>(
+  const pendingUserPaymentsQuery = useHasuraQuery<PendingUserPaymentsQuery>(
     PENDING_USER_PAYMENTS,
     HasuraUserRole.RegisteredUser,
     {
@@ -33,26 +33,23 @@ export default function useSignupRedirection({ githubUserId, userId }: User) {
   );
 
   return {
-    loading: pendingProjectLeaderInvitationsQuery.loading || pendingUserPaymentsAndPayoutSettingsQuery.loading,
-    url: getRedirectionUrl(
-      pendingProjectLeaderInvitationsQuery,
-      pendingUserPaymentsAndPayoutSettingsQuery,
-      payoutSettingsValid === false
-    ),
+    loading:
+      pendingProjectLeaderInvitationsQuery.loading || pendingUserPaymentsQuery.loading || payoutSettingsQueryLoading,
+    url: getRedirectionUrl(pendingProjectLeaderInvitationsQuery, pendingUserPaymentsQuery, validPayoutInfo),
   };
 }
 
 const getRedirectionUrl = (
   pendingProjectLeaderInvitationsQuery: QueryResult<PendingProjectLeaderInvitationsQuery, OperationVariables>,
   pendingUserPaymentsAndPayoutSettingsQuery: QueryResult<PendingUserPaymentsQuery, OperationVariables>,
-  missingPayoutInfo: boolean
+  validPayoutInfo: boolean | null | undefined
 ) => {
   const pendingPaymentRequests =
     pendingUserPaymentsAndPayoutSettingsQuery.data?.user?.githubUser?.paymentRequests.filter(
       r => r.amountInUsd > r.paymentsAggregate.aggregate?.sum?.amount
     );
 
-  if (missingPayoutInfo && pendingPaymentRequests && pendingPaymentRequests.length > 0) {
+  if (!validPayoutInfo && pendingPaymentRequests && pendingPaymentRequests.length > 0) {
     return RoutePaths.Payments;
   }
 
