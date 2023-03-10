@@ -228,7 +228,10 @@
         "totalSpentAmountInUsd": "GRANTED"
       },
       "payments": {
-        "title": "Payments"
+        "title": "Payments",
+        "new": {
+          "title": "Send payment"
+        }
       },
       "remainingBudget": {
         "leftToSpend": "left to spend",

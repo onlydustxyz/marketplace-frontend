@@ -2,7 +2,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { Contributor, HasuraUserRole } from "src/types";
 import OverviewPanel from "./OverviewPanel";
 import { useOutletContext } from "react-router-dom";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { GetProjectOverviewDetailsQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 import { gql } from "@apollo/client";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
@@ -15,6 +15,7 @@ import Badge, { BadgeSize } from "src/components/Badge";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
+import Title from "../Title";
 
 type OutletContext = {
   leads?: ProjectLeadFragment[];
@@ -59,8 +60,8 @@ export default function Overview() {
   }, [githubRepos]);
 
   return (
-    <div className="flex flex-col gap-8 mt-3">
-      <div className="text-3xl font-belwe">{T("project.details.overview.title")}</div>
+    <>
+      <Title>{T("project.details.overview.title")}</Title>
       {children}
       <div className="flex flex-row gap-6">
         <QueryWrapper query={{ data, loading }}>
@@ -100,7 +101,7 @@ export default function Overview() {
         </QueryWrapper>
         <OverviewPanel {...{ leads, projectId, contributors, totalSpentAmountInUsd, sponsors, telegramLink }} />
       </div>
-    </div>
+    </>
   );
 }
 
