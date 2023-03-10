@@ -33,6 +33,18 @@ const contributors: GithubContributorFragment[] = [
     avatarUrl: "https://avatars.githubusercontent.com/u/21149076?v=4",
     user: { userId: "user-id" },
   },
+  {
+    id: 5555,
+    login: "gregoire",
+    avatarUrl: "https://avatars.githubusercontent.com/u/8642470?v=4",
+    user: { userId: "user-id" },
+  },
+  {
+    id: 6666,
+    login: "timothee",
+    avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
+    user: { userId: "user-id" },
+  },
 ];
 
 const Template: ComponentStory<typeof ContributorsSelect> = () => {
