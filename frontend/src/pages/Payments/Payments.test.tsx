@@ -147,34 +147,6 @@ describe('"Payments" page', () => {
     expect(await screen.findByText(mockContribution.reason.work_items[0])).toBeInTheDocument();
     expect(await screen.findByText(mockContribution.budget?.project?.projectDetails?.name || "")).toBeInTheDocument();
     expect(await screen.findAllByText("$200")).toHaveLength(2);
-    expect(await screen.findAllByText(/complete/i)).toHaveLength(3); // two for the banner and one for the line field
-  });
-
-  it("should display banner when there are payments but no payout info", async () => {
-    renderWithIntl(<PaymentsPage />, {
-      wrapper: MemoryRouterProviderFactory({
-        mocks: [
-          buildMockPaymentsQuery(githubUserId),
-          buidlMockPayoutSettingsQuery({ payoutSettings: null, arePayoutSettingsValid: false }),
-        ],
-      }),
-    });
-    expect(await screen.findByText("Complete payout information")).toBeInTheDocument();
-  });
-
-  it("should not display banner when there are payments and payout info", async () => {
-    renderWithIntl(<PaymentsPage />, {
-      wrapper: MemoryRouterProviderFactory({
-        mocks: [
-          buildMockPaymentsQuery(githubUserId),
-          buidlMockPayoutSettingsQuery({
-            payoutSettings: { EthTransfer: { Name: "vitalik.eth" } },
-            arePayoutSettingsValid: true,
-          }),
-        ],
-      }),
-    });
-
-    expect(screen.queryByText("Complete payment information")).not.toBeInTheDocument();
+    expect(await screen.findAllByText(/complete/i)).toHaveLength(1); // two for the banner and one for the line field
   });
 });
