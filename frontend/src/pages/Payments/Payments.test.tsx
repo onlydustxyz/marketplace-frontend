@@ -5,8 +5,7 @@ import matchers from "@testing-library/jest-dom/matchers";
 import PaymentsPage, { GET_PAYMENTS_QUERY } from ".";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { useRoles } from "src/hooks/useAuth/useRoles";
-import { GET_USER_PAYOUT_SETTINGS } from "src/hooks/usePayoutSettings";
-import { UserPaymentRequestFragment, UserPayoutSettingsFragment } from "src/__generated/graphql";
+import { UserPaymentRequestFragment } from "src/__generated/graphql";
 
 expect.extend(matchers);
 
@@ -72,26 +71,6 @@ const buildMockPaymentsQuery = (
   result: {
     data: {
       paymentRequests,
-    },
-  },
-});
-
-const buidlMockPayoutSettingsQuery = (arePayoutSettingsValid: boolean) => ({
-  request: {
-    query: GET_USER_PAYOUT_SETTINGS,
-    variables: { githubUserId },
-  },
-  result: {
-    data: {
-      authGithubUsers: [
-        {
-          user: {
-            userInfo: {
-              arePayoutSettingsValid,
-            },
-          },
-        },
-      ],
     },
   },
 });
