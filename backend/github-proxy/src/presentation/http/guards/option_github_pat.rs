@@ -4,6 +4,8 @@ use rocket::{
 	Request,
 };
 
+const GITHUB_ACCESS_TOKEN_HEADER: &str = "x-hasura-githubAccessToken";
+
 #[derive(Debug, PartialEq, Eq)]
 pub struct OptionGithubPat {
 	github_pat: Option<String>,
@@ -26,7 +28,7 @@ impl<'r> FromRequest<'r> for OptionGithubPat {
 	type Error = ();
 
 	async fn from_request(request: &'r Request<'_>) -> Outcome<OptionGithubPat, ()> {
-		match request.headers().get_one("x-github-pat") {
+		match request.headers().get_one(GITHUB_ACCESS_TOKEN_HEADER) {
 			Some(github_pat) => Outcome::Success(OptionGithubPat {
 				github_pat: Some(github_pat.to_string()),
 			}),
@@ -54,7 +56,10 @@ mod tests {
 	#[rstest]
 	async fn from_request_with_github_pat_header(client: Client) {
 		let mut request: LocalRequest = client.post("/v1/graphql");
-		request.add_header(Header::new("x-github-pat", "foooooooobaaaaaaaar"));
+		request.add_header(Header::new(
+			GITHUB_ACCESS_TOKEN_HEADER,
+			"foooooooobaaaaaaaar",
+		));
 
 		let result = OptionGithubPat::from_request(&request).await;
 		assert_eq!(
