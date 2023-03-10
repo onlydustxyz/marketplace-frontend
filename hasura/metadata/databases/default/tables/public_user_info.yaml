@@ -11,7 +11,7 @@ insert_permissions:
         - identity
         - location
         - payout_settings
-        - email
+        - contact_information
         - user_id
 select_permissions:
   - role: public
@@ -26,7 +26,7 @@ select_permissions:
         - identity
         - location
         - payout_settings
-        - email
+        - contact_information
         - user_id
       filter:
         user_id:
@@ -38,7 +38,7 @@ update_permissions:
         - identity
         - location
         - payout_settings
-        - email
+        - contact_information
         - user_id
       filter:
         user_id:

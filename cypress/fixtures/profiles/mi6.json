@@ -1,11 +1,17 @@
 {
-  "id": "007",
-  "name": "MI6",
-  "email": "admin@mi6.com",
-  "address": "007 Big Ben Street",
-  "postCode": "007GB",
-  "city": "London",
-  "country": "GB",
+  "BIC": "BNPCFR21",
   "IBAN": "FR7610107001011234567890129",
-  "BIC": "BNPCFR21"
+  "address": "007 Big Ben Street",
+  "city": "London",
+  "companyOwnerFirstName": "Richard",
+  "companyOwnerLastName": "Moore",
+  "country": "GB",
+  "discord": "discord",
+  "email": "admin@mi6.com",
+  "id": "007",
+  "identificationNumber": "MI6007",
+  "name": "MI6",
+  "postCode": "007GB",
+  "telegram": "telegram",
+  "twitter": "twitter"
 }

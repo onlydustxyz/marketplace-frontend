@@ -16,11 +16,11 @@ describe("The user", () => {
 
   it("can fill their personal info", function () {
     cy.fillPayoutSettings(this.token);
-    cy.contains("Payment information successfully updated");
+    cy.contains("Changes saved");
   });
 
   it("can see their personal info pre-filled", function () {
-    cy.visit("http://127.0.0.1:5173/profile", {
+    cy.visit("http://localhost:5173/profile", {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.token);
       },
@@ -29,11 +29,13 @@ describe("The user", () => {
     cy.get("[name=firstname]").should("have.value", this.profile.firstname);
     cy.get("[name=lastname]").should("have.value", this.profile.lastname);
     cy.get("[name=email]").should("have.value", this.profile.email);
+    cy.get("[name=twitter]").should("have.value", this.profile.twitter);
+    cy.get("[name=discord]").should("have.value", this.profile.discord);
+    cy.get("[name=telegram]").should("have.value", this.profile.telegram);
     cy.get("[name=address]").should("have.value", this.profile.address);
     cy.get("[name=postCode]").should("have.value", this.profile.postCode);
     cy.get("[name=city]").should("have.value", this.profile.city);
     cy.get("[name=country]").should("have.value", this.profile.country);
-    cy.get("[id=ETHEREUM_IDENTITY]").should("be.checked");
     cy.get("[name=ethIdentity]").should("have.value", this.profile.ethWalletAddress);
   });
 });
@@ -52,16 +54,22 @@ describe("The company", () => {
   });
 
   it("can fill their personal info", function () {
-    cy.visit("http://127.0.0.1:5173/profile", {
+    cy.visit("http://localhost:5173/profile", {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.token);
       },
     });
 
     cy.wait(1000);
-    cy.get('[role="switch"]').click().wait(100);
+    cy.get("[data-testid=COMPANY]").click().wait(100);
     cy.get("[name=companyName]").clear().type(this.profile.name);
+    cy.get("[name=identificationNumber]").clear().type(this.profile.identificationNumber);
+    cy.get("[name=companyOwnerFirstName]").clear().type(this.profile.companyOwnerFirstName);
+    cy.get("[name=companyOwnerLastName]").clear().type(this.profile.companyOwnerLastName);
     cy.get("[name=email]").clear().type(this.profile.email);
+    cy.get("[name=telegram]").clear().type(this.profile.telegram);
+    cy.get("[name=twitter]").clear().type(this.profile.twitter);
+    cy.get("[name=discord]").clear().type(this.profile.discord);
     cy.get("[name=address]").clear().type(this.profile.address);
     cy.get("[name=postCode]").clear().type(this.profile.postCode);
     cy.get("[name=city]").clear().type(this.profile.city);
@@ -73,18 +81,24 @@ describe("The company", () => {
     cy.contains("Save profile").click();
     cy.wait(WAIT_LONG);
 
-    cy.contains("Payment information successfully updated");
+    cy.contains("Changes saved");
   });
 
   it("can see their personal info pre-filled", function () {
-    cy.visit("http://127.0.0.1:5173/profile", {
+    cy.visit("http://localhost:5173/profile", {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.token);
       },
     });
 
     cy.get("[name=companyName]").should("have.value", this.profile.name);
+    cy.get("[name=identificationNumber]").should("have.value", this.profile.identificationNumber);
+    cy.get("[name=companyOwnerFirstName]").should("have.value", this.profile.companyOwnerFirstName);
+    cy.get("[name=companyOwnerLastName]").should("have.value", this.profile.companyOwnerLastName);
     cy.get("[name=email]").should("have.value", this.profile.email);
+    cy.get("[name=twitter]").should("have.value", this.profile.twitter);
+    cy.get("[name=discord]").should("have.value", this.profile.discord);
+    cy.get("[name=telegram]").should("have.value", this.profile.telegram);
     cy.get("[name=address]").should("have.value", this.profile.address);
     cy.get("[name=postCode]").should("have.value", this.profile.postCode);
     cy.get("[name=city]").should("have.value", this.profile.city);

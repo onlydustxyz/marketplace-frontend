@@ -5,7 +5,6 @@ import { HasuraUserRole } from "src/types";
 import QueryWrapper from "src/components/QueryWrapper";
 import ProfileForm from "./components/ProfileForm";
 import { ProfileQuery, UserPayoutSettingsFragmentDoc } from "src/__generated/graphql";
-import InfoMissingBanner from "src/components/InfoMissingBanner";
 import { useIntl } from "src/hooks/useIntl";
 import { useNavigate, useLocation } from "react-router-dom";
 import { RoutePaths } from "src/App";
@@ -26,7 +25,7 @@ const Profile: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { valid: payoutSettingsValid } = usePayoutSettings(githubUserId);
+  const { valid: payoutSettingsValid, refetch } = usePayoutSettings(githubUserId);
 
   const navigateBack = () => {
     navigate(location.state?.prev || RoutePaths.Projects);
@@ -36,8 +35,8 @@ const Profile: React.FC = () => {
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
-      <div className="px-8 pt-16 h-full w-full">
-        <div className="flex mb-6 items-center">
+      <div className="px-8 pt-8 pb-6 h-full w-full">
+        <div className="flex mb-8 items-center">
           <span className="text-3xl font-belwe font-normal w-full">{T("profile.edit")}</span>
           <div className="flex space-x-6">
             <div onClick={navigateBack}>
@@ -59,16 +58,18 @@ const Profile: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-6">
-          {getProfileQuery.data && (
-            <QueryWrapper query={getProfileQuery}>
-              {!payoutSettingsValid && <InfoMissingBanner />}
-              {getProfileQuery.data && (
-                <ProfileForm user={getProfileQuery.data.userInfoByPk} setSaveButtonDisabled={setSaveButtonDisabled} />
-              )}
-            </QueryWrapper>
-          )}
-        </div>
+        {getProfileQuery.data && (
+          <QueryWrapper query={getProfileQuery}>
+            {getProfileQuery.data && (
+              <ProfileForm
+                user={getProfileQuery.data.userInfoByPk}
+                setSaveButtonDisabled={setSaveButtonDisabled}
+                payoutSettingsValid={payoutSettingsValid}
+                onUserProfileUpdated={refetch}
+              />
+            )}
+          </QueryWrapper>
+        )}
       </div>
     </Background>
   );
@@ -80,7 +81,7 @@ export const GET_PROFILE_QUERY = gql`
     userInfoByPk(userId: $userId) {
       userId
       identity
-      email
+      contactInformation
       location
       ...UserPayoutSettings
     }

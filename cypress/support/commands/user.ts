@@ -9,7 +9,7 @@ declare global {
       signinUser(user: SignedUpUser): Chainable<SignedInUser>;
 
       updateProfileInfo(
-        email: string,
+        contactInformation: object,
         location: object,
         identity: object,
         payoutSettings: object
@@ -120,18 +120,18 @@ Cypress.Commands.add("signinUser", user => {
     });
 });
 
-Cypress.Commands.add("updateProfileInfo", (email, location, identity, payoutSettings) =>
+Cypress.Commands.add("updateProfileInfo", (contactInformation, location, identity, payoutSettings) =>
   cy.wrap({
-    query: `mutation($email: Email!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
-            updateProfileInfo(email: $email, identity: $identity, location: $location, payoutSettings: $payoutSettings)
+    query: `mutation($contactInformation: ContactInformation!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
+            updateProfileInfo(contactInformation: $contactInformation, identity: $identity, location: $location, payoutSettings: $payoutSettings)
         }`,
-    variables: { email, identity, location, payoutSettings },
+    variables: { contactInformation, identity, location, payoutSettings },
   })
 );
 
 Cypress.Commands.add("fillPayoutSettings", token => {
   cy.fixture("profiles/james_bond").then(profile => {
-    cy.visit("http://127.0.0.1:5173/profile", {
+    cy.visit("http://localhost:5173/profile", {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", token);
       },
@@ -141,12 +141,13 @@ Cypress.Commands.add("fillPayoutSettings", token => {
     cy.get("[name=firstname]").clear().type(profile.firstname);
     cy.get("[name=lastname]").clear().type(profile.lastname);
     cy.get("[name=email]").clear().type(profile.email);
+    cy.get("[name=telegram]").clear().type(profile.telegram);
+    cy.get("[name=twitter]").clear().type(profile.twitter);
+    cy.get("[name=discord]").clear().type(profile.discord);
     cy.get("[name=address]").clear().type(profile.address);
     cy.get("[name=postCode]").clear().type(profile.postCode);
     cy.get("[name=city]").clear().type(profile.city);
     cy.get("[name=country]").clear().type(profile.country);
-
-    cy.get("[data-testid=ETHEREUM_IDENTITY]").click().wait(100);
     cy.get("[name=ethIdentity]").clear().type(profile.ethWalletAddress);
 
     cy.contains("Save profile").click().wait(WAIT_LONG);

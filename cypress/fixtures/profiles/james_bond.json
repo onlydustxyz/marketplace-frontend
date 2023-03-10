@@ -1,7 +1,10 @@
 {
   "firstname": "James",
   "lastname": "Bond",
-  "email": "james.bond@mi6.com",
+    "email": "james.bond@mi6.com",
+        "telegram": "telegram",
+    "twitter": "twitter",
+    "discord": "discord",
   "address": "007 Big Ben Street",
   "postCode": "007GB",
   "city": "London",

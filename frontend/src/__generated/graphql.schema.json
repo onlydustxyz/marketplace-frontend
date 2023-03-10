@@ -2799,16 +2799,95 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "identificationNumber",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "name",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "owner",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "PersonIdentity",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ContactInformation",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "discord",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "email",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Email",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "telegram",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "twitter",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -10947,12 +11026,25 @@
             "deprecationReason": null
           },
           {
-            "name": "email",
+            "name": "contactInformation",
             "description": null,
-            "args": [],
+            "args": [
+              {
+                "name": "path",
+                "description": "JSON select path",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "jsonb",
               "ofType": null
             },
             "isDeprecated": false,
@@ -11061,6 +11153,18 @@
         "description": "append existing jsonb value of filtered columns with new jsonb value",
         "fields": null,
         "inputFields": [
+          {
+            "name": "contactInformation",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "identity",
             "description": null,
@@ -11173,11 +11277,11 @@
             "deprecationReason": null
           },
           {
-            "name": "email",
+            "name": "contactInformation",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "StringComparisonExp",
+              "name": "JsonbComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -11261,6 +11365,26 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "contactInformation",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "identity",
             "description": null,
             "type": {
@@ -11332,6 +11456,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "contactInformation",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "identity",
             "description": null,
             "type": {
@@ -11378,6 +11514,18 @@
         "description": "delete key/value pair or string element. key/value pairs are matched based on their key value",
         "fields": null,
         "inputFields": [
+          {
+            "name": "contactInformation",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "identity",
             "description": null,
@@ -11426,11 +11574,11 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "email",
+            "name": "contactInformation",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "jsonb",
               "ofType": null
             },
             "defaultValue": null,
@@ -11623,7 +11771,7 @@
             "deprecationReason": null
           },
           {
-            "name": "email",
+            "name": "contactInformation",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -11721,6 +11869,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "contactInformation",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "jsonb",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "identity",
             "description": null,
             "type": {
@@ -11776,7 +11936,7 @@
             "deprecationReason": null
           },
           {
-            "name": "email",
+            "name": "contactInformation",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -11815,11 +11975,11 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "email",
+            "name": "contactInformation",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "jsonb",
               "ofType": null
             },
             "defaultValue": null,
@@ -11888,7 +12048,7 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "email",
+            "name": "contactInformation",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -14351,11 +14511,11 @@
             "description": null,
             "args": [
               {
-                "name": "email",
+                "name": "contactInformation",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Email",
+                  "kind": "INPUT_OBJECT",
+                  "name": "ContactInformation",
                   "ofType": null
                 },
                 "defaultValue": null,
@@ -22869,11 +23029,11 @@
             "deprecationReason": null
           },
           {
-            "name": "email",
+            "name": "contactInformation",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "jsonb",
               "ofType": null
             },
             "defaultValue": null,

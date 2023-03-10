@@ -232,7 +232,7 @@ const graphQlMocks = [
         userInfoByPk: {
           __typename: "UserInfo",
           userId: TEST_USER_ID,
-          email: TEST_USER_EMAIL,
+          contactInformation: { email: TEST_USER_EMAIL },
           identity: null,
           location: null,
           payoutSettings: null,
