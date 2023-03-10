@@ -1,5 +1,3 @@
-use juniper::{graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
-use olog::{error, warn};
 use thiserror::Error;
 
 use crate::domain::GithubServiceError;
@@ -21,20 +19,3 @@ impl From<GithubServiceError> for Error {
 		}
 	}
 }
-
-impl IntoFieldError for Error {
-	fn into_field_error(self) -> FieldError<DefaultScalarValue> {
-		match &self {
-			Self::InvalidRequest(_) => warn!(error = format!("{self:?}"), "Bad request"),
-			Self::InternalError(_) => error!(error = format!("{self:?}"), "Error occured"),
-		};
-
-		let (msg, reason) = match &self {
-			Self::InvalidRequest(source) | Self::InternalError(source) =>
-				(self.to_string(), source.to_string()),
-		};
-		FieldError::new(msg, graphql_value!({ "reason": reason }))
-	}
-}
-
-pub type Result<T> = std::result::Result<T, Error>;
