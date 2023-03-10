@@ -11,13 +11,13 @@ export default function usePayoutSettings(githubUserId?: number) {
     fetchPolicy: "network-only",
   });
 
-  const payoutSettings = query.data?.authGithubUsers.at(0)?.user?.userInfo?.payoutSettings;
+  const userInfo = query.data?.authGithubUsers.at(0)?.user?.userInfo;
   const valid = query.data?.authGithubUsers.at(0)?.user?.userInfo?.arePayoutSettingsValid;
   const invoiceNeeded = isDefined(query.data?.authGithubUsers.at(0)?.user?.userInfo?.identity?.Company);
 
   return {
     ...query,
-    data: payoutSettings,
+    data: userInfo,
     valid,
     invoiceNeeded,
   };
@@ -26,6 +26,7 @@ export default function usePayoutSettings(githubUserId?: number) {
 const USER_PAYOUT_SETTINGS_FRAGMENT = gql`
   fragment UserPayoutSettings on UserInfo {
     identity
+    location
     payoutSettings
     arePayoutSettingsValid
   }

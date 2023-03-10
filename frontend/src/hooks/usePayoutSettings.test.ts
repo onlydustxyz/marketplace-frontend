@@ -63,7 +63,7 @@ describe("usePayoutSettings", () => {
 
     await waitFor(() => expect(result.current.loading).toBe(false));
     expect(result.current.valid).toBe(arePayoutSettingsValid);
-    expect(result.current.data).toEqual(payoutSettings);
+    expect(result.current.data?.payoutSettings).toEqual(payoutSettings);
     expect(result.current.invoiceNeeded).toBe(false);
   });
 

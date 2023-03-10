@@ -28,7 +28,7 @@ const Payments = () => {
     }
   );
 
-  const { valid: payoutSettingsValid, invoiceNeeded } = usePayoutSettings(githubUserId);
+  const { valid: payoutSettingsValid, invoiceNeeded, data: userInfos } = usePayoutSettings(githubUserId);
 
   const { data: paymentRequestsQueryData } = getPaymentRequestsQuery;
   const payments = paymentRequestsQueryData?.paymentRequests?.map(mapApiPaymentsToProps);
@@ -58,10 +58,11 @@ const Payments = () => {
             </Card>
             <div className="flex flex-col gap-4">
               {totalEarnings && <TotalEarnings amount={totalEarnings} />}
-              {pendingPaymentsRequests.length > 0 && invoiceNeeded && githubUserId && (
+              {pendingPaymentsRequests.length > 0 && invoiceNeeded && githubUserId && userInfos && (
                 <InvoiceSubmission
-                  paymentRequestsIds={pendingPaymentsRequests.map(r => r.id)}
+                  paymentRequests={pendingPaymentsRequests}
                   githubUserId={githubUserId}
+                  userInfos={userInfos}
                 />
               )}
             </div>
