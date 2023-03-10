@@ -20,7 +20,7 @@ mod logged_response;
 pub use logged_response::DebugTechnicalHeaders;
 use logged_response::LoggedResponse;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct Config {
 	base_url: String,
 	personal_access_tokens: String,
@@ -65,6 +65,22 @@ impl Client {
 
 		Ok(Self {
 			octocrab_clients: octocrab_clients?,
+			next_octocrab_clients_index: Arc::new(Mutex::new(0)),
+		})
+	}
+
+	pub fn new_with_personal_access_token(
+		config: &Config,
+		personal_access_token: String,
+	) -> anyhow::Result<Self> {
+		Ok(Self {
+			octocrab_clients: vec![
+				Octocrab::builder()
+					.base_url(&config.base_url)?
+					.personal_token(personal_access_token)
+					.add_headers(&config.headers)?
+					.build()?,
+			],
 			next_octocrab_clients_index: Arc::new(Mutex::new(0)),
 		})
 	}
