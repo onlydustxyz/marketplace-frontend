@@ -3213,6 +3213,11 @@
     express "^4.17.3"
     file-system-cache "^2.0.0"
 
+"@tag0/use-text-width@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@tag0/use-text-width/-/use-text-width-1.2.0.tgz#2f7327be5a5f732d0d33a3eace6cb529b898b93d"
+  integrity sha512-4R6FKpxrqbHNo3Z0/if4iKRaXsw4BBadty2vCFudOUnE8oW33JvPZiEHZpKqCav+lLsCEAjflUASqO1nyP9NJw==
+
 "@tailwindcss/line-clamp@^0.4.2":
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/@tailwindcss/line-clamp/-/line-clamp-0.4.2.tgz#f353c5a8ab2c939c6267ac5b907f012e5ee130f9"

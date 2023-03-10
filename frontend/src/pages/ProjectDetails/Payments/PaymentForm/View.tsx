@@ -41,6 +41,18 @@ function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
   }
 }
 
+type TitleProps = {
+  title: string;
+};
+
+function SectionTitle({ title }: TitleProps) {
+  return (
+    <div className="font-normal font-belwe text-base text-greyscale-50 pb-2 mb-3 mx-4 border-b border-b-greyscale-50/8">
+      {title}
+    </div>
+  );
+}
+
 const View: React.FC<Props> = ({ budget, onWorkEstimationChange, onWorkItemsChange, projectId }) => {
   const { T } = useIntl();
 
@@ -65,15 +77,13 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, onWorkItemsChan
           {T("project.details.payments.new.title")}
         </div>
       </Title>
-      <div className="flex flex-row items-start gap-4 h-full">
+      <div className="flex flex-row items-start gap-5 h-full">
         <div className="basis-3/5 self-stretch">
           <div className="flex flex-col gap-6 w-full">
-            <Card className="px-8 pb-3 z-10">
-              <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
-                <div className="font-medium text-lg">{T("payment.form.contributor.title")}</div>
-                <div className="flex flex-row pt-3">
-                  <ContributorSelect projectId={projectId} />
-                </div>
+            <Card className="px-4 py-6 flex flex-col gap-8" padded={false}>
+              <div>
+                <SectionTitle title={T("payment.form.contributor.title")} />
+                <ContributorSelect projectId={projectId} />
               </div>
             </Card>
             {contributor && (
