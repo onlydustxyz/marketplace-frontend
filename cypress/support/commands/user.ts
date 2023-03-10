@@ -81,13 +81,17 @@ Cypress.Commands.add(
             .should("be.a", "string")
             .then(() => {
               cy.graphql({
-                query: `mutation($userId: uuid!, $githubUserId: String!) {
-                                insertAuthUserProvider( object: {userId: $userId, providerId: "github", providerUserId: $githubUserId, accessToken: "fake-token"},
+                query: `mutation($userId: uuid!, $githubUserId: String!, $accessToken: String!) {
+                                insertAuthUserProvider( object: {userId: $userId, providerId: "github", providerUserId: $githubUserId, accessToken: $accessToken},
                                                         onConflict: {constraint: user_providers_provider_id_provider_user_id_key, update_columns: userId}) {
                                     id
                                 }
                             }`,
-                variables: { userId, githubUserId: githubUserId.toString() },
+                variables: {
+                  userId,
+                  githubUserId: githubUserId.toString(),
+                  accessToken: Cypress.env("githubAccessTokenForE2eTestsUsers"),
+                },
               })
                 .asAdmin()
                 .data()
