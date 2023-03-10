@@ -104,6 +104,22 @@ impl GithubService for github::Client {
 		let user = self.get_user_by_id(id).await?;
 		Ok(user.into())
 	}
+
+	#[instrument(skip(self))]
+	async fn search_users(
+		&self,
+		query: &str,
+		sort: &str,
+		order: &str,
+	) -> GithubServiceResult<Vec<GithubUser>> {
+		let users = self
+			.search_users(query, sort, order)
+			.await?
+			.into_iter()
+			.map(GithubUser::from)
+			.collect();
+		Ok(users)
+	}
 }
 
 impl From<octocrab::models::User> for GithubUser {
