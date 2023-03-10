@@ -54,8 +54,8 @@ where
 		Option<Identity>,
 		Option<Location>,
 		Option<PayoutSettings>,
-		bool,
 		Option<ContactInformation>,
+		bool,
 	): Queryable<ST, Pg>,
 {
 	type Row = <(
@@ -63,12 +63,12 @@ where
 		Option<Identity>,
 		Option<Location>,
 		Option<PayoutSettings>,
-		bool,
 		Option<ContactInformation>,
+		bool,
 	) as Queryable<ST, Pg>>::Row;
 
 	fn build(row: Self::Row) -> Self {
-		let (user_id, identity, location, payout_settings, _, contact_information) =
+		let (user_id, identity, location, payout_settings, contact_information, _) =
 			Queryable::build(row);
 		Self {
 			user_id,
