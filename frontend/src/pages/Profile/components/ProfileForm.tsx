@@ -62,7 +62,7 @@ type Inputs = {
 type PropsType = {
   user?: UserInfo | null;
   setSaveButtonDisabled: (disabled: boolean) => void;
-  payoutSettingsValid: boolean;
+  payoutSettingsValid: boolean | null | undefined;
   onUserProfileUpdated: () => void;
 };
 

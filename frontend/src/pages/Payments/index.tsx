@@ -54,10 +54,6 @@ const Payments = () => {
   );
 };
 
-function hasPendingPaymentsRequests(queryResult: QueryResult<GetPaymentRequestsQuery>) {
-  return !!queryResult?.data?.paymentRequests?.length;
-}
-
 const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Payment => {
   const amount = { value: apiPayment.amountInUsd, currency: Currency.USD };
   const project = apiPayment.budget?.project;
