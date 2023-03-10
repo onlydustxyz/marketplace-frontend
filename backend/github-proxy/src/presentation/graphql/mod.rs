@@ -2,7 +2,7 @@ mod query;
 use query::Query;
 
 mod error;
-pub use error::{Error, Result};
+pub use error::Error;
 
 mod context;
 pub use context::Context;
