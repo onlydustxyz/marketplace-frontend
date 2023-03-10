@@ -88,7 +88,7 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
         <div className="px-4 pt-4">
           <div
             className={classNames(
-              "w-full h-11 border rounded-xl px-4 py-3 z-20 mb-8 cursor-text",
+              "w-full h-11 border rounded-xl px-4 py-3 z-20 cursor-text",
               "flex flex-row items-center justify-between",
               "font-walsheim font-normal text-base",
               {
@@ -151,7 +151,7 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
         </div>
       </div>
       {contributor && !contributor.user && (
-        <div className="mx-4">
+        <div className="mx-4 mt-8">
           <Callout>
             <div className="flex flex-col gap-1">
               <span className="text-base font-medium">
