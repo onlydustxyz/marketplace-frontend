@@ -20,7 +20,7 @@ describe("The user", () => {
   });
 
   it("can see their personal info pre-filled", function () {
-    cy.visit("http://127.0.0.1:5173/profile", {
+    cy.visit("http://localhost:5173/profile", {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.token);
       },
@@ -54,7 +54,7 @@ describe("The company", () => {
   });
 
   it("can fill their personal info", function () {
-    cy.visit("http://127.0.0.1:5173/profile", {
+    cy.visit("http://localhost:5173/profile", {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.token);
       },
@@ -85,7 +85,7 @@ describe("The company", () => {
   });
 
   it("can see their personal info pre-filled", function () {
-    cy.visit("http://127.0.0.1:5173/profile", {
+    cy.visit("http://localhost:5173/profile", {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.token);
       },

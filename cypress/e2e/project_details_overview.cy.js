@@ -16,7 +16,7 @@ describe("A project without readme", () => {
   });
 
   it("should render properly", function () {
-    cy.visit(`http://127.0.0.1:5173/projects/${this.projectId}`, {
+    cy.visit(`http://localhost:5173/projects/${this.projectId}`, {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.token);
       },
@@ -48,12 +48,12 @@ describe("A project", () => {
   });
 
   it("should render properly in public view", function () {
-    cy.visit(`http://127.0.0.1:5173/projects/${this.projectId}`);
+    cy.visit(`http://localhost:5173/projects/${this.projectId}`);
     cy.contains("Project overview");
   });
 
   it("should display project overview panel", function () {
-    cy.visit(`http://127.0.0.1:5173/projects/${this.projectId}`);
+    cy.visit(`http://localhost:5173/projects/${this.projectId}`);
     cy.get('[data-testid="money-granted-amount"]').should("have.text", "$0");
 
     cy.requestPayment(this.projectId, 500, OFUX, { workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"] })
@@ -94,7 +94,7 @@ describe("An empty project", () => {
   });
 
   it("should render properly", function () {
-    cy.visit(`http://127.0.0.1:5173/projects/${this.projectId}`, {
+    cy.visit(`http://localhost:5173/projects/${this.projectId}`, {
       onBeforeLoad(win) {
         win.localStorage.setItem("hasura_token", this.token);
       },
