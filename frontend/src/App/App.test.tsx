@@ -31,9 +31,11 @@ import {
   PendingProjectLeaderInvitationsQueryResult,
   PendingUserPaymentsQueryResult,
   ProfileQueryResult,
+  UserPayoutSettingsFragment,
 } from "src/__generated/graphql";
 import { GET_GITHUB_REPOSITORY_DETAILS_QUERY } from "src/pages/ProjectDetails/Overview/GithubRepoDetails";
 import { GET_PROJECT_OVERVIEW_DETAILS } from "src/pages/ProjectDetails/Overview";
+import { GET_USER_PAYOUT_SETTINGS } from "src/hooks/usePayoutSettings";
 
 const AUTH_CODE_TEST_VALUE = "code";
 const LOGGING_IN_TEXT_QUERY = /logging in.../i;
@@ -410,6 +412,28 @@ const paymentRequestsMock = {
   },
 };
 
+const payoutSettingsMock = {
+  request: {
+    query: GET_USER_PAYOUT_SETTINGS,
+    variables: { githubUserId: TEST_GITHUB_USER_ID },
+  },
+  result: {
+    data: {
+      authGithubUsers: [
+        {
+          user: {
+            userInfo: {
+              __typename: "UserInfo",
+              payoutSettings: null,
+              arePayoutSettingsValid: false,
+            } as UserPayoutSettingsFragment,
+          },
+        },
+      ],
+    },
+  },
+};
+
 Object.defineProperty(window, "innerWidth", { writable: true, configurable: true, value: 2000 });
 
 describe("Integration tests", () => {
@@ -497,10 +521,11 @@ describe("Integration tests", () => {
   });
 
   it("should redirect to profile page if pending payments and missing payout info at first sign-in", async () => {
+    window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_WITH_VALID_JWT_TEST_VALUE));
     renderWithIntl(<App />, {
       wrapper: MemoryRouterProviderFactory({
         route: `${RoutePaths.Login}?${AUTH_CODE_QUERY_KEY}=${AUTH_CODE_TEST_VALUE}`,
-        mocks: [...graphQlMocks, pendingPaymentsMock, paymentRequestsMock],
+        mocks: [...graphQlMocks, pendingPaymentsMock, paymentRequestsMock, payoutSettingsMock],
       }),
     });
     await screen.findByText("MyAwesomeProject");
