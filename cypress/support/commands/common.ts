@@ -1,10 +1,35 @@
+export {};
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      fixtureOrDefault(path: string, as: string): Chainable<any>;
+      graphql(query: GraphQLRequest): Chainable<GraphQLRequest>;
+      asAnonymous(): Chainable<Response<any>>;
+      asAdmin(): Chainable<Response<any>>;
+      asRegisteredUser(user: any): Chainable<Response<any>>;
+      property(property: string): Chainable<any>;
+      data(path?: string): Chainable<any>;
+      errors(): Chainable<any>;
+    }
+  }
+}
+
+export type Url = string;
+export type Uuid = string;
+export type GraphQLRequest = {
+  query: string;
+  variables?: object;
+  wait?: number;
+};
+
 const GRAPHQL_TIMEOUT = 10000;
 const READ_BODY_PROPERTY_TIMEOUT = 100;
 export const WAIT_SHORT = 100;
 export const WAIT_LONG = 700;
 
 Cypress.Commands.add("graphql", query => {
-  return query;
+  return cy.wrap(query);
 });
 
 Cypress.Commands.add(
@@ -12,7 +37,7 @@ Cypress.Commands.add(
   {
     prevSubject: true,
   },
-  query => {
+  (query: GraphQLRequest) => {
     expect(JSON.stringify(query)).to.be.a("string");
     cy.request({
       method: "POST",
@@ -36,7 +61,7 @@ Cypress.Commands.add(
   {
     prevSubject: true,
   },
-  query => {
+  (query: GraphQLRequest) => {
     expect(JSON.stringify(query)).to.be.a("string");
     cy.request({
       method: "POST",
@@ -61,9 +86,9 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "asRegisteredUser",
   {
-    prevSubject: "optional",
+    prevSubject: true,
   },
-  (query, user) => {
+  (query: GraphQLRequest, user: any) => {
     cy.signinUser(user)
       .then(({ session }) => {
         expect(JSON.stringify(query)).to.be.a("string");
@@ -96,7 +121,7 @@ Cypress.Commands.add(
   {
     prevSubject: true,
   },
-  (object, property) => {
+  (object: object, property: string) => {
     cy.wrap(object, { timeout: READ_BODY_PROPERTY_TIMEOUT })
       .should($object => {
         expect($object, JSON.stringify($object)).to.have.deep.nested.property(property).that.is.not.null;
@@ -110,12 +135,12 @@ Cypress.Commands.add(
   {
     prevSubject: true,
   },
-  (response, path = null) => {
+  (response: Cypress.Response<any>, path?: string) => {
     cy.wrap(response, { timeout: READ_BODY_PROPERTY_TIMEOUT })
       .should("have.property", "body")
       .property("data")
       .then(data => {
-        if (path !== null) {
+        if (path) {
           return cy.wrap(data).property(path);
         }
         return data;
@@ -128,7 +153,7 @@ Cypress.Commands.add(
   {
     prevSubject: true,
   },
-  response => {
+  (response: Cypress.Response<any>) => {
     cy.wrap(response, { timeout: READ_BODY_PROPERTY_TIMEOUT }).should("have.property", "body").property("errors");
   }
 );

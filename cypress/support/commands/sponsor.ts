@@ -1,4 +1,17 @@
-import { WAIT_SHORT } from "./common";
+import { Url, Uuid, WAIT_SHORT } from "./common";
+
+export {};
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      createSponsor(name: string, logoUrl: Url, url?: Url): Chainable<any>;
+      updateSponsor(sponsorId: Uuid, name?: string, logoUrl?: Url, url?: Url): Chainable<any>;
+      addSponsorToProject(projectId: Uuid, sponsorId: Uuid): Chainable<any>;
+      removeSponsorFromProject(projectId: Uuid, sponsorId: Uuid): Chainable<any>;
+    }
+  }
+}
 
 Cypress.Commands.add("createSponsor", (name, logoUrl, url) => {
   return cy

@@ -101,7 +101,7 @@ jobs:
 
   hasura_inconsistencies:
     name: Database and GraphQL Schema consistency
-    runs-on: ubuntu-latest-4-cores
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -133,7 +133,7 @@ jobs:
 
   unit_tests:
     name: Unit tests
-    runs-on: ubuntu-latest-8-cores
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

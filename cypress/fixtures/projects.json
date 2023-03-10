@@ -16,5 +16,21 @@
     "initialBudget": 100000,
     "leaders": ["TokioRs"],
     "repos": ["A", "B"]
+  },
+  "Project B": {
+    "shortDescription": "B",
+    "longDescription": "BBB",
+    "telegramLink": "https://t.me/b",
+    "logoUrl": "https://raw.githubusercontent.com/od-mocks/cool.repo.B/main/logo-b.png",
+    "initialBudget": 20000,
+    "leaders": ["Oscar"],
+    "pendingLeaderInvitations": ["Anthony"],
+    "repos": ["B"]
+  },
+  "RepoLess": {
+    "shortDescription": "A project without any repo",
+    "longDescription": "A project without any repo is like un repas sans fromage",
+    "initialBudget": 20000,
+    "pendingLeaderInvitations": ["Olivier"]
   }
 }
