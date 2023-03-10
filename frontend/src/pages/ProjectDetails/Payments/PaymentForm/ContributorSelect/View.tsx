@@ -3,13 +3,10 @@ import { ChangeEventHandler, useCallback, useState } from "react";
 import Card from "src/components/Card";
 import Contributor from "src/components/Contributor";
 import LoaderIcon from "src/assets/icons/Loader";
-import ImageCard, { BackgroundSize } from "src/components/ImageCard";
-import headerElementBackground from "src/assets/img/alert-bg.png";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { useIntl } from "src/hooks/useIntl";
 import { GithubContributorFragment } from "src/__generated/graphql";
 import classNames from "classnames";
-import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import User3Line from "src/icons/User3Line";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import { useFormContext } from "react-hook-form";
@@ -17,6 +14,7 @@ import onlyDustLogo from "assets/img/onlydust-logo.png";
 import Tooltip from "src/components/Tooltip";
 import { sortBy } from "lodash";
 import { useTextWidth } from "@tag0/use-text-width";
+import Callout from "src/components/Callout";
 
 type Props = {
   loading: boolean;
@@ -153,19 +151,15 @@ const View = ({ loading, contributor, contributors, onContributorHandleChange, v
         </div>
       </div>
       {contributor && !contributor.user && (
-        <div className="h-22 mb-4 mx-4">
-          <ImageCard backgroundImageUrl={headerElementBackground} backgroundSize={BackgroundSize.Cover}>
-            <div className="flex flex-row justify-between py-5 px-6">
-              <div className="flex flex-row justify-start items-center font-medium gap-4">
-                <ErrorWarningLine className="px-3 py-2.5 text-3xl rounded-2xl bg-white/10" />
-                <div className="flex flex-col ">
-                  <div className="text-lg font-medium">
-                    {T("payment.form.contributor.needsToSignup", { contributor: contributor.login })}
-                  </div>
-                </div>
-              </div>
+        <div className="mx-4">
+          <Callout>
+            <div className="flex flex-col gap-1">
+              <span className="text-base font-medium">
+                {T("payment.form.contributor.needsToSignup.title", { contributor: contributor.login })}
+              </span>
+              <span>{T("payment.form.contributor.needsToSignup.details")}</span>
             </div>
-          </ImageCard>
+          </Callout>
         </div>
       )}
     </div>

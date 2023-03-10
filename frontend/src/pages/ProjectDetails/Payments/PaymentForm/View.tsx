@@ -51,25 +51,29 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
       <div className="flex flex-row items-start gap-5 h-full">
         <div className="basis-3/5 self-stretch">
           <div className="flex flex-col gap-6 w-full">
-            <Card className="px-4 py-6" padded={false}>
-              <SectionTitle title={T("payment.form.contributor.title")} />
-              <ContributorSelect projectId={projectId} />
+            <Card className="px-4 py-6 flex flex-col gap-8" padded={false}>
+              <div>
+                <SectionTitle title={T("payment.form.contributor.title")} />
+                <ContributorSelect projectId={projectId} />
+              </div>
               {contributor && (
-                <SectionTitle title={T("payment.form.issueLink.title")} />
-              <div className="mx-4">
-                  <Input
-                    label={T("payment.form.issueLink.inputLabel")}
-                    name="linkToIssue"
-                    placeholder={T("payment.form.issueLink.placeholder")}
-                    errorDisplay={InputErrorDisplay.Banner}
-                    options={{
-                      pattern: {
-                        value: REGEX_VALID_GITHUB_PULL_REQUEST_URL,
-                        message: T("payment.form.issueLink.error"),
-                      },
-                    }}
-                    showValidationErrors={false}
-                  />
+                <div>
+                  <SectionTitle title={T("payment.form.issueLink.title")} />
+                  <div className="mx-4">
+                    <Input
+                      label={T("payment.form.issueLink.inputLabel")}
+                      name="linkToIssue"
+                      placeholder={T("payment.form.issueLink.placeholder")}
+                      errorDisplay={InputErrorDisplay.Banner}
+                      options={{
+                        pattern: {
+                          value: REGEX_VALID_GITHUB_PULL_REQUEST_URL,
+                          message: T("payment.form.issueLink.error"),
+                        },
+                      }}
+                      showValidationErrors={false}
+                    />
+                  </div>
                 </div>
               )}
             </Card>
