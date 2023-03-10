@@ -9,7 +9,7 @@ declare global {
       signinUser(user: SignedUpUser): Chainable<SignedInUser>;
 
       updateProfileInfo(
-        email: string,
+        contactInformation: object,
         location: object,
         identity: object,
         payoutSettings: object
