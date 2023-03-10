@@ -19,7 +19,8 @@ impl Query {
 		id: i32,
 	) -> Option<GithubRepository> {
 		context
-			.github_service
+			.github_service()
+			.ok()?
 			.fetch_repository_by_id(id as u64)
 			.await
 			.map_err(Error::from)
@@ -33,7 +34,8 @@ impl Query {
 		username: String,
 	) -> Option<GithubUser> {
 		context
-			.github_service
+			.github_service()
+			.ok()?
 			.fetch_user_by_name(&username)
 			.await
 			.map_err(Error::from)
@@ -48,7 +50,8 @@ impl Query {
 	) -> Option<Vec<GithubPullRequest>> {
 		let repository_id = GithubRepositoryId::from(id as i64);
 		context
-			.github_service
+			.github_service()
+			.ok()?
 			.fetch_repository_PRs(&repository_id)
 			.await
 			.map_err(Error::from)
@@ -78,8 +81,26 @@ impl Query {
 		user_id: i32,
 	) -> Option<GithubUser> {
 		context
-			.github_service
+			.github_service()
+			.ok()?
 			.fetch_user_by_id(user_id as u64)
+			.await
+			.map_err(Error::from)
+			.logged()
+			.ok()
+	}
+
+	pub async fn search_users(
+		&self,
+		context: &Context,
+		query: String,
+		sort: String,
+		order: String,
+	) -> Option<Vec<GithubUser>> {
+		context
+			.github_service()
+			.ok()?
+			.search_users(&query, &sort, &order)
 			.await
 			.map_err(Error::from)
 			.logged()

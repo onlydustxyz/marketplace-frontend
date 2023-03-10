@@ -1654,6 +1654,8 @@ name = "github-proxy"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "async-std",
+ "async-trait",
  "chrono",
  "derive-getters",
  "derive_more",

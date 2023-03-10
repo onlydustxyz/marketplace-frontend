@@ -4,6 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+
+# Async
+async-trait = "0.1.56"
+
 # Config
 figment = {version ="0.10.8", features = ["env", "toml"]}
 
@@ -42,3 +46,4 @@ domain = {path = "../common/domain"}
 
 [dev-dependencies]
 rstest = "0.15.0"
+async-std = {version = "1.12.0", features = ["attributes"]}
