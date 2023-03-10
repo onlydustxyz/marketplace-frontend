@@ -26,6 +26,7 @@ type ButtonProps = {
   htmlType?: "button" | "submit";
   width?: Width;
   disabled?: boolean;
+  iconOnly?: boolean;
   [otherProp: string]: unknown;
 } & PropsWithChildren;
 
@@ -35,6 +36,7 @@ export default function Button({
   width = Width.Fit,
   disabled = false,
   htmlType = "button",
+  iconOnly = false,
   children,
   ...otherButtonProps
 }: ButtonProps) {
@@ -59,11 +61,23 @@ export default function Button({
           "w-fit": width === Width.Fit,
         },
         {
-          "px-6 py-4 h-14 gap-3 rounded-xl": size === ButtonSize.Lg,
-          "px-4 py-1.5 h-12 gap-3 rounded-xl": size === ButtonSize.LgLowHeight,
-          "text-sm px-4 py-1.5 h-14 gap-2 rounded-xl": size === ButtonSize.Md,
-          "text-sm px-4 py-2 h-8 gap-2 rounded-large": size === ButtonSize.Sm,
-          "text-xs px-2 py-1 h-6 gap-1 rounded-lg": size === ButtonSize.Xs,
+          "h-14 gap-3 rounded-xl": size === ButtonSize.Lg,
+          "h-12 gap-3 rounded-xl": size === ButtonSize.LgLowHeight,
+          "text-sm h-14 gap-2 rounded-xl": size === ButtonSize.Md,
+          "text-sm h-8 gap-2 rounded-large": size === ButtonSize.Sm,
+          "text-xs h-6 gap-1 rounded-lg": size === ButtonSize.Xs,
+        },
+        !iconOnly && {
+          "px-6 py-4": size === ButtonSize.Lg,
+          "px-4 py-1.5": size === (ButtonSize.LgLowHeight || ButtonSize.Md),
+          "px-4 py-2": size === ButtonSize.Sm,
+          "px-2 py-1": size === ButtonSize.Xs,
+        },
+        iconOnly && {
+          "p-4 w-14 h-14": size === ButtonSize.Lg,
+          "p-3.5 w-12 h-12": size === (ButtonSize.LgLowHeight || ButtonSize.Md),
+          "p-2 w-8 h-8": size === ButtonSize.Sm,
+          "p-1 w-6 h-6": size === ButtonSize.Xs,
         },
         {
           "bg-greyscale-50": type === ButtonType.Primary,

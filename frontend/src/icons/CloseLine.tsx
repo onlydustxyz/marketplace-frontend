@@ -1,3 +1,7 @@
-export default function CloseLine() {
-  return <i className="ri-close-line" />;
+type Props = {
+  className?: string;
+};
+
+export default function CloseLine({ className }: Props) {
+  return <i className={`ri-close-line ${className}`} />;
 }

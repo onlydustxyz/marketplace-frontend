@@ -117,7 +117,9 @@ const Template: ComponentStory<typeof PaymentForm> = args => {
   return (
     <MockedProvider mocks={mocks}>
       <FormProvider {...methods}>
-        <PaymentForm {...args} />
+        <div className="flex flex-col gap-6">
+          <PaymentForm {...args} />
+        </div>
       </FormProvider>
     </MockedProvider>
   );

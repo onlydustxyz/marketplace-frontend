@@ -10,6 +10,7 @@ import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useOutletContext } from "react-router-dom";
 import { getContributors } from "src/utils/project";
+import Title from "../Title";
 
 const Contributors: React.FC = () => {
   const { T } = useIntl();
@@ -41,18 +42,14 @@ const Contributors: React.FC = () => {
 
   return (
     <QueryWrapper query={getProjectContributorsQuery}>
-      <div className="flex flex-col gap-6 mt-3 h-full">
-        <div className="text-3xl font-belwe">{T("project.details.contributors.title")}</div>
-        {contributors.length ? (
-          <Card className="h-full">
-            <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />{" "}
-          </Card>
-        ) : (
-          <ContributorsTableFallback
-            projectName={getProjectContributorsQuery.data?.projectsByPk?.projectDetails?.name}
-          />
-        )}
-      </div>
+      <Title>{T("project.details.contributors.title")}</Title>
+      {contributors.length ? (
+        <Card className="h-full">
+          <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />{" "}
+        </Card>
+      ) : (
+        <ContributorsTableFallback projectName={getProjectContributorsQuery.data?.projectsByPk?.projectDetails?.name} />
+      )}
     </QueryWrapper>
   );
 };

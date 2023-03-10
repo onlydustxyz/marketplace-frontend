@@ -12,7 +12,7 @@ export default function BackLink({ to, className = "", children }: BackLinkProps
       <Link to={to}>
         <div className={`flex flex-row gap-3 items-center ${className}`}>
           <ArrowLeftSLine className="border border-neutral-100 rounded-lg p-1 w-6 h-6 flex items-center justify-center text-neutral-100" />
-          <div className="font-belwe text-lg">{children}</div>
+          <div className="font-belwe text-base">{children}</div>
         </div>
       </Link>
     </div>
