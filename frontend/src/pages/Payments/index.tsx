@@ -40,6 +40,8 @@ const Payments = () => {
   }
 
   const totalEarnings = hasPayments && payments.reduce((acc, p) => acc + p.amount.value, 0);
+  const invoiceSubmissionNeeded =
+    pendingPaymentsRequests.length > 0 && invoiceNeeded && githubUserId && userInfos && payoutSettingsValid;
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
@@ -58,7 +60,7 @@ const Payments = () => {
             </Card>
             <div className="flex flex-col gap-4">
               {totalEarnings && <TotalEarnings amount={totalEarnings} />}
-              {pendingPaymentsRequests.length > 0 && invoiceNeeded && githubUserId && userInfos && (
+              {invoiceSubmissionNeeded && (
                 <InvoiceSubmission
                   paymentRequests={pendingPaymentsRequests}
                   githubUserId={githubUserId}
