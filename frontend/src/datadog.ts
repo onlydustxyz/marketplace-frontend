@@ -17,7 +17,10 @@ if (import.meta.env.VITE_ENV && import.meta.env.VITE_ENABLE_DATADOG_RUM === "tru
     trackUserInteractions: true,
     trackResources: true,
     trackLongTasks: true,
+    trackFrustrations: true,
     defaultPrivacyLevel: "allow",
+    proxy: "https://gateway.onlydust.xyz/datadog",
+    enableExperimentalFeatures: ["clickmap"],
   });
 
   datadogRum.startSessionReplayRecording();
