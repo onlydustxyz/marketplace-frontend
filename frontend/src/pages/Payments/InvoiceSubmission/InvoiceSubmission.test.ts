@@ -11,7 +11,7 @@ const paymentRequests: Payment[] = range(1, 4).map(id => ({
     currency: Currency.USD,
   },
   reason: "",
-  requestedAt: new Date(),
+  requestedAt: new Date(`December ${id + 10}, 2022`),
   status: PaymentStatus.WAITING_PAYMENT,
 }));
 
@@ -59,7 +59,9 @@ describe("buildHiddenFields", () => {
   it("should build hidden fields", () => {
     const hiddenFields = buildHiddenFields({ githubUserId, userInfos, paymentRequests });
     expect(hiddenFields.github_id).toBe("123456");
-    expect(hiddenFields.request_ids).toBe("ABC11 ($2,100), ABC22 ($2,200), ABC33 ($2,300)");
+    expect(hiddenFields.request_ids).toBe(
+      "#ABC11 - Dec 11, 2022 ($2,100), #ABC22 - Dec 12, 2022 ($2,200), #ABC33 - Dec 13, 2022 ($2,300)"
+    );
     expect(hiddenFields.company_name).toBe("My Company");
     expect(hiddenFields.company_number).toBe("1234567890");
     expect(hiddenFields.first_name).toBe("James");
