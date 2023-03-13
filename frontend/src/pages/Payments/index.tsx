@@ -85,7 +85,7 @@ const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Payment 
 
   return {
     id: apiPayment.id,
-    requestedAt: requestedAt,
+    requestedAt,
     amount,
     reason,
     project: project &&
