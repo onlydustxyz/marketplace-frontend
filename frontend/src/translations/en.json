@@ -37,6 +37,13 @@
     "loggingIn": "Logging in...",
     "tokenMissing": "Github authentication token missing!"
   },
+  "githubIssue": {
+    "status": {
+      "closed": "Closed __closedAt__",
+      "merged": "Merged __mergedAt__",
+      "open": "Open"
+    }
+  },
   "images": {
     "githubLogo": "Github logo",
     "onlyDustLogo": "OnlyDust logo",
