@@ -7,6 +7,7 @@ import Link from "src/icons/Link";
 import Input from "src/components/FormInput";
 import Toggle from "./Toggle";
 import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "..";
+import EmptyState from "./EmptyState";
 
 type Props = {
   open: boolean;
@@ -68,6 +69,7 @@ export default function WorkItemSidePanel({ open, setOpen }: Props) {
               </div>
             )}
           </div>
+          <EmptyState />
         </Dialog.Panel>
       </Dialog>
     </Transition>

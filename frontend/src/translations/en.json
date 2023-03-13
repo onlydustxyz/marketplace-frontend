@@ -91,7 +91,11 @@
           "label": "Add specific PR using URL"
         },
         "subTitle": "Add contributions that should be part of this payment",
-        "title": "Work items"
+        "title": "Work items",
+        "emptyState": {
+          "title": "Nothing to show",
+          "subtitle": "Add work items using their links"
+        }
       },
       "leftToSpend": "Left to spend",
       "remainingBudget": "Remaining budget",
