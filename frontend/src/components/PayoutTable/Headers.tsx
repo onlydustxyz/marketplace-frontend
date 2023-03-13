@@ -22,7 +22,7 @@ export default function Headers({ sorting, applySorting }: Props) {
         <span>{T("payment.table.date")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Date} />
       </HeaderCell>
-      <HeaderCell width={HeaderCellWidth.Half} onClick={() => applySorting(Field.Contribution)} horizontalMargin>
+      <HeaderCell width={HeaderCellWidth.Third} onClick={() => applySorting(Field.Contribution)} horizontalMargin>
         <FolderLine className="p-px font-normal" />
         <span>{T("payment.table.contribution")}</span>
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Contribution} />

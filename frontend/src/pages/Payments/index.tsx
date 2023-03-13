@@ -45,7 +45,7 @@ const Payments = () => {
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
-      <div className="container flex flex-col mx-auto pt-16 pb-8 gap-6 h-full">
+      <div className="container flex flex-col mx-auto pt-16 pb-8 gap-6 h-full px-8">
         <div className="text-5xl font-belwe">{T("navbar.payments")}</div>
         <QueryWrapper query={getPaymentRequestsQuery}>
           <div className="flex gap-4 mb-10">
