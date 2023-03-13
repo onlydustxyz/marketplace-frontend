@@ -52,7 +52,11 @@ export function buildHiddenFields({ githubUserId, paymentRequests, userInfos }: 
     github_id: githubUserId.toString(),
     request_ids: formatList(
       paymentRequests.map(
-        p => `#${pretty(p.id)} - ${formatDate(p.requestedAt)} (${formatMoneyAmount(p.amount.value, p.amount.currency)})`
+        p =>
+          `#${pretty(p.id)} - ${formatDate(new Date(p.requestedAt))} (${formatMoneyAmount(
+            p.amount.value,
+            p.amount.currency
+          )})`
       )
     ),
     company_name: userInfos.identity.Company.name,
