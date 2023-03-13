@@ -51,6 +51,11 @@ export default function ContributorSelect({ projectId }: Props) {
   useEffect(() => {
     if (findUserQuery.user) {
       setValue("contributor", findUserQuery.user);
+      clearErrors("contributorHandle");
+    }
+    if (findUserQuery.user === null) {
+      setError("contributorHandle", { message: T("github.invalidLogin") });
+      setValue("contributor", null);
     }
   }, [findUserQuery.user]);
 
