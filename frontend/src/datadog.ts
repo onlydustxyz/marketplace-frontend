@@ -19,7 +19,7 @@ if (import.meta.env.VITE_ENV && import.meta.env.VITE_ENABLE_DATADOG_RUM === "tru
     trackLongTasks: true,
     trackFrustrations: true,
     defaultPrivacyLevel: "allow",
-    proxy: "https://gateway.onlydust.xyz/datadog",
+    proxy: import.meta.env.VITE_DATADOG_RUM_INTAKE_PROXY_URL,
     enableExperimentalFeatures: ["clickmap"],
   });
 
