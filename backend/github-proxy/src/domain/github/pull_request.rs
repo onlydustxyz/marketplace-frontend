@@ -11,6 +11,7 @@ pub enum Status {
 #[derive(Constructor, GraphQLObject)]
 pub struct PullRequest {
 	id: i32,
+	number: i32,
 	title: String,
 	assignee_id: Option<i32>,
 	status: Status,

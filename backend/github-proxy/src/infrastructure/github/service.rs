@@ -114,6 +114,12 @@ impl TryFrom<octocrab::models::pulls::PullRequest> for GithubPullRequest {
 			.0
 			.try_into()
 			.expect("We cannot work with github ids superior to i32::MAX");
+
+		let number = pull_request
+			.number
+			.try_into()
+			.expect("We cannot work with github PR number superior to i32::MAX");
+
 		let title = pull_request
 			.title
 			.ok_or_else(|| Self::Error::MissingField("title".to_string()))?;
@@ -135,6 +141,7 @@ impl TryFrom<octocrab::models::pulls::PullRequest> for GithubPullRequest {
 
 		Ok(Self::new(
 			id,
+			number,
 			title,
 			assignee_id,
 			status,
