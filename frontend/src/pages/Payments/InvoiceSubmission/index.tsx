@@ -4,6 +4,7 @@ import Card from "src/components/Card";
 import { Payment } from "src/components/PayoutTable/Line";
 import { useIntl } from "src/hooks/useIntl";
 import Attachment2 from "src/icons/Attachment2";
+import { formatDate } from "src/utils/date";
 import { pretty } from "src/utils/id";
 import { formatList } from "src/utils/list";
 import { formatMoneyAmount } from "src/utils/money";
@@ -50,7 +51,9 @@ export function buildHiddenFields({ githubUserId, paymentRequests, userInfos }: 
   return {
     github_id: githubUserId.toString(),
     request_ids: formatList(
-      paymentRequests.map(p => `${pretty(p.id)} (${formatMoneyAmount(p.amount.value, p.amount.currency)})`)
+      paymentRequests.map(
+        p => `#${pretty(p.id)} - ${formatDate(p.requestedAt)} (${formatMoneyAmount(p.amount.value, p.amount.currency)})`
+      )
     ),
     company_name: userInfos.identity.Company.name,
     company_number: userInfos.identity.Company.identification_number,
