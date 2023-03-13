@@ -1,5 +1,5 @@
 import headerElementBackground from "src/assets/img/header-element-background.png";
-import ImageCard, { BackgroundSize } from "src/components/ImageCard";
+import ImageCard, { BackgroundSize, Height } from "src/components/ImageCard";
 import CheckLine from "src/icons/CheckLine";
 import { useT } from "talkr";
 
@@ -11,7 +11,7 @@ interface ProjectLeadInvitationProps {
 export default function ProjectLeadInvitation({ projectName, onClick }: ProjectLeadInvitationProps) {
   const { T } = useT();
   return (
-    <ImageCard backgroundImageUrl={headerElementBackground} backgroundSize={BackgroundSize.Cover}>
+    <ImageCard backgroundImageUrl={headerElementBackground} backgroundSize={BackgroundSize.Cover} height={Height.Fit}>
       <div className="flex flex-row justify-between items-center font-medium px-6 py-5">
         <div className="text-lg">{T("projectLeadInvitation.prompt", { projectName })}</div>
         <div
