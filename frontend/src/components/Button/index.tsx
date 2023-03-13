@@ -69,7 +69,7 @@ export default function Button({
         },
         !iconOnly && {
           "px-6 py-4": size === ButtonSize.Lg,
-          "px-4 py-1.5": size === (ButtonSize.LgLowHeight || ButtonSize.Md),
+          "px-4 py-3.5": size === ButtonSize.LgLowHeight || ButtonSize.Md,
           "px-4 py-2": size === ButtonSize.Sm,
           "px-2 py-1": size === ButtonSize.Xs,
         },

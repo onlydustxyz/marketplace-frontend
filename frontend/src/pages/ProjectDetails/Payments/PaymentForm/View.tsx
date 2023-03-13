@@ -1,16 +1,16 @@
-import Input from "src/components/FormInput";
 import { useIntl } from "src/hooks/useIntl";
 import Card from "src/components/Card";
 import WorkEstimation from "./WorkEstimation";
 import { Budget } from "src/hooks/useWorkEstimation";
-import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/pages/ProjectDetails/Payments/PaymentForm";
-import { InputErrorDisplay } from "src/components/FormInput/View";
 import ContributorSelect from "src/pages/ProjectDetails/Payments/PaymentForm/ContributorSelect";
 import { useWatch } from "react-hook-form";
-import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import { useNavigate } from "react-router-dom";
 import CloseLine from "src/icons/CloseLine";
 import Title from "../../Title";
+import Add from "src/icons/Add";
+import { useState } from "react";
+import WorkItemSidePanel from "./WorkItemSidePanel";
 
 interface Props {
   projectId: string;
@@ -23,6 +23,7 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
 
   const contributor = useWatch({ name: "contributor" });
   const navigate = useNavigate();
+  const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   return (
     <>
@@ -48,26 +49,21 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
               </div>
             </Card>
             {contributor && (
-              <Card className="px-8 pb-8 z-0">
-                <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
-                  <div className="font-medium text-lg">{T("payment.form.issueLink.title")}</div>
-                  <div className="flex flex-row pt-3">
-                    <Input
-                      label={T("payment.form.issueLink.inputLabel")}
-                      name="linkToIssue"
-                      placeholder={T("payment.form.issueLink.placeholder")}
-                      errorDisplay={InputErrorDisplay.Banner}
-                      options={{
-                        pattern: {
-                          value: REGEX_VALID_GITHUB_PULL_REQUEST_URL,
-                          message: T("payment.form.issueLink.error"),
-                        },
-                      }}
-                      showValidationErrors={false}
-                    />
+              <>
+                <Card className="flex flex-col px-8 pb-8 z-0 gap-8">
+                  <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
+                    <div className="font-medium text-lg">{T("payment.form.workItems.title")}</div>
+                    <span className="pt-3 text-greyscale-300">{T("payment.form.workItems.subTitle")}</span>
                   </div>
-                </div>
-              </Card>
+                  <div onClick={() => setSidePanelOpen(true)}>
+                    <Button size={ButtonSize.Md} type={ButtonType.Secondary} width={Width.Full}>
+                      <Add />
+                      {T("payment.form.workItems.add")}
+                    </Button>
+                  </div>
+                </Card>
+                <WorkItemSidePanel open={sidePanelOpen} setOpen={setSidePanelOpen} />
+              </>
             )}
           </div>
         </div>
