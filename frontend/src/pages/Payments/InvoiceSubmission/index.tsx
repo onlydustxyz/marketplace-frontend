@@ -48,19 +48,19 @@ export default function InvoiceSubmission({ paymentRequests, ...props }: Props) 
 
 export function buildHiddenFields({ githubUserId, paymentRequests, userInfos }: Props): Record<string, string> {
   return {
-    githubID: githubUserId.toString(),
-    requestIDs: formatList(
+    github_id: githubUserId.toString(),
+    request_ids: formatList(
       paymentRequests.map(p => `${pretty(p.id)} (${formatMoneyAmount(p.amount.value, p.amount.currency)})`)
     ),
-    companyName: userInfos.identity.Company.name,
-    companyNumber: userInfos.identity.Company.identification_number,
-    firstName: userInfos.identity.Company.owner.firstname,
-    lastName: userInfos.identity.Company.owner.lastname,
-    streetAddress: userInfos.location.address,
-    zipCode: userInfos.location.post_code,
+    company_name: userInfos.identity.Company.name,
+    company_number: userInfos.identity.Company.identification_number,
+    first_name: userInfos.identity.Company.owner.firstname,
+    last_name: userInfos.identity.Company.owner.lastname,
+    street_address: userInfos.location.address,
+    zip_code: userInfos.location.post_code,
     city: userInfos.location.city,
     country: userInfos.location.country,
-    payoutInfo: userInfos.payoutSettings.EthTransfer?.Address
+    payout_info: userInfos.payoutSettings.EthTransfer?.Address
       ? `ETH Address: ${userInfos.payoutSettings.EthTransfer?.Address}`
       : userInfos.payoutSettings.EthTransfer?.Name
       ? `ENS Domain: ${userInfos.payoutSettings.EthTransfer?.Name}`
@@ -68,7 +68,7 @@ export function buildHiddenFields({ githubUserId, paymentRequests, userInfos }: 
           `IBAN: ${userInfos.payoutSettings.WireTransfer?.IBAN}`,
           `BIC: ${userInfos.payoutSettings.WireTransfer?.BIC}`,
         ]),
-    totalAmount: formatMoneyAmount(
+    total_amount: formatMoneyAmount(
       paymentRequests.map(p => p.amount.value).reduce((acc, amount) => acc + amount, 0),
       paymentRequests.at(0)?.amount.currency
     ),

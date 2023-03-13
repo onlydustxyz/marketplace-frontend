@@ -58,17 +58,17 @@ const githubUserId = 123456;
 describe("buildHiddenFields", () => {
   it("should build hidden fields", () => {
     const hiddenFields = buildHiddenFields({ githubUserId, userInfos, paymentRequests });
-    expect(hiddenFields.githubID).toBe("123456");
-    expect(hiddenFields.requestIDs).toBe("ABC11 ($2,100), ABC22 ($2,200), ABC33 ($2,300)");
-    expect(hiddenFields.companyName).toBe("My Company");
-    expect(hiddenFields.companyNumber).toBe("1234567890");
-    expect(hiddenFields.firstName).toBe("James");
-    expect(hiddenFields.lastName).toBe("Bond");
-    expect(hiddenFields.streetAddress).toBe("007 Big Ben Street");
-    expect(hiddenFields.zipCode).toBe("007GB");
+    expect(hiddenFields.github_id).toBe("123456");
+    expect(hiddenFields.request_ids).toBe("ABC11 ($2,100), ABC22 ($2,200), ABC33 ($2,300)");
+    expect(hiddenFields.company_name).toBe("My Company");
+    expect(hiddenFields.company_number).toBe("1234567890");
+    expect(hiddenFields.first_name).toBe("James");
+    expect(hiddenFields.last_name).toBe("Bond");
+    expect(hiddenFields.street_address).toBe("007 Big Ben Street");
+    expect(hiddenFields.zip_code).toBe("007GB");
     expect(hiddenFields.city).toBe("London");
     expect(hiddenFields.country).toBe("England");
-    expect(hiddenFields.totalAmount).toBe("$6,600");
+    expect(hiddenFields.total_amount).toBe("$6,600");
   });
 
   it("should build hidden fields for ENS Domain", () => {
@@ -77,7 +77,7 @@ describe("buildHiddenFields", () => {
       userInfos: { ...userInfos, ...ens },
       paymentRequests,
     });
-    expect(hiddenFields.payoutInfo).toBe("ENS Domain: 007.eth");
+    expect(hiddenFields.payout_info).toBe("ENS Domain: 007.eth");
   });
 
   it("should build hidden fields for ETH address", () => {
@@ -86,7 +86,7 @@ describe("buildHiddenFields", () => {
       userInfos: { ...userInfos, ...ethAddress },
       paymentRequests,
     });
-    expect(hiddenFields.payoutInfo).toBe("ETH Address: 0x4675c7e5baafbffbca748158becba61ef3b0a263");
+    expect(hiddenFields.payout_info).toBe("ETH Address: 0x4675c7e5baafbffbca748158becba61ef3b0a263");
   });
 
   it("should build hidden fields for ETH address", () => {
@@ -95,6 +95,6 @@ describe("buildHiddenFields", () => {
       userInfos: { ...userInfos, ...wireTransfer },
       paymentRequests,
     });
-    expect(hiddenFields.payoutInfo).toBe("IBAN: FR0614508000708483648722R33, BIC: AGFBFRCC");
+    expect(hiddenFields.payout_info).toBe("IBAN: FR0614508000708483648722R33, BIC: AGFBFRCC");
   });
 });
