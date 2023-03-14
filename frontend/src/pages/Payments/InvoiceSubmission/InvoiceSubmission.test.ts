@@ -59,7 +59,8 @@ describe("buildHiddenFields", () => {
   it("should build hidden fields", () => {
     const hiddenFields = buildHiddenFields({ githubUserId, userInfos, paymentRequests });
     expect(hiddenFields.github_id).toBe("123456");
-    expect(hiddenFields.request_ids).toBe(
+    expect(hiddenFields.request_ids).toBe("abc1111111,abc2222222,abc3333333");
+    expect(hiddenFields.pretty_requests).toBe(
       "#ABC11 - Dec 11, 2022 ($2,100), #ABC22 - Dec 12, 2022 ($2,200), #ABC33 - Dec 13, 2022 ($2,300)"
     );
     expect(hiddenFields.company_name).toBe("My Company");
