@@ -10,11 +10,19 @@ type Props = {
   projectId: string;
   open: boolean;
   setOpen: (value: boolean) => void;
+  contributorHandle: string;
   workItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
 };
 
-export default function WorkItemSidePanel({ projectId, open, setOpen, workItems, onWorkItemAdded }: Props) {
+export default function WorkItemSidePanel({
+  projectId,
+  contributorHandle,
+  open,
+  setOpen,
+  workItems,
+  onWorkItemAdded,
+}: Props) {
   const { T } = useIntl();
 
   return (
@@ -40,7 +48,12 @@ export default function WorkItemSidePanel({ projectId, open, setOpen, workItems,
             </Button>
           </div>
           <div className="font-belwe font-normal text-2xl text-greyscale-50">{T("payment.form.workItems.add")}</div>
-          <PullRequests projectId={projectId} workItems={workItems} onWorkItemAdded={onWorkItemAdded} />
+          <PullRequests
+            projectId={projectId}
+            contributorHandle={contributorHandle}
+            workItems={workItems}
+            onWorkItemAdded={onWorkItemAdded}
+          />
         </Dialog.Panel>
       </Dialog>
     </Transition>

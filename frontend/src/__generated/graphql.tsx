@@ -17,6 +17,7 @@ export type Scalars = {
   Email: any;
   EthereumAddress: any;
   EthereumName: any;
+  Url: any;
   Uuid: any;
   bigint: any;
   citext: any;
@@ -421,7 +422,7 @@ export type GithubRepoDetails = {
   languages: Scalars['jsonb'];
   name: Scalars['String'];
   owner: Scalars['String'];
-  pullRequests: Maybe<Array<PullRequest>>;
+  pullRequests: Maybe<Array<Issue>>;
 };
 
 
@@ -483,6 +484,19 @@ export type IntComparisonExp = {
   _lte: InputMaybe<Scalars['Int']>;
   _neq: InputMaybe<Scalars['Int']>;
   _nin: InputMaybe<Array<Scalars['Int']>>;
+};
+
+export type Issue = {
+  __typename?: 'Issue';
+  assigneeId: Maybe<Scalars['Int']>;
+  closedAt: Maybe<Scalars['DateTimeUtc']>;
+  createdAt: Scalars['DateTimeUtc'];
+  id: Scalars['Int'];
+  mergedAt: Maybe<Scalars['DateTimeUtc']>;
+  number: Scalars['Int'];
+  repositoryUrl: Scalars['Url'];
+  status: Status;
+  title: Scalars['String'];
 };
 
 export type JsonbCastExp = {
@@ -1319,18 +1333,6 @@ export enum ProjectsSponsorsSelectColumn {
   /** column name */
   SponsorId = 'sponsorId'
 }
-
-export type PullRequest = {
-  __typename?: 'PullRequest';
-  assigneeId: Maybe<Scalars['Int']>;
-  closedAt: Maybe<Scalars['DateTimeUtc']>;
-  createdAt: Scalars['DateTimeUtc'];
-  id: Scalars['Int'];
-  mergedAt: Maybe<Scalars['DateTimeUtc']>;
-  number: Scalars['Int'];
-  status: Status;
-  title: Scalars['String'];
-};
 
 export type Reason = {
   workItems: InputMaybe<Array<Scalars['String']>>;
@@ -2384,9 +2386,9 @@ export type Query_Root = {
   budgetsAggregate: BudgetsAggregate;
   /** fetch data from the table: "budgets" using primary key columns */
   budgetsByPk: Maybe<Budgets>;
-  fetchPullRequest: Maybe<PullRequest>;
+  fetchPullRequest: Maybe<Issue>;
   fetchRepositoryDetails: Maybe<Repository>;
-  fetchRepositoryPRs: Maybe<Array<PullRequest>>;
+  fetchRepositoryPRs: Maybe<Array<Issue>>;
   fetchUserDetails: Maybe<User>;
   fetchUserDetailsById: Maybe<User>;
   /** fetch data from the table: "github_repo_details" */
@@ -2430,6 +2432,7 @@ export type Query_Root = {
   projectsSponsors: Array<ProjectsSponsors>;
   /** fetch data from the table: "projects_sponsors" using primary key columns */
   projectsSponsorsByPk: Maybe<ProjectsSponsors>;
+  searchIssues: Maybe<Array<Issue>>;
   /** fetch data from the table: "sponsors" */
   sponsors: Array<Sponsors>;
   /** fetch data from the table: "sponsors" using primary key columns */
@@ -2648,6 +2651,15 @@ export type Query_RootProjectsSponsorsArgs = {
 export type Query_RootProjectsSponsorsByPkArgs = {
   projectId: Scalars['uuid'];
   sponsorId: Scalars['uuid'];
+};
+
+
+export type Query_RootSearchIssuesArgs = {
+  order: InputMaybe<Scalars['String']>;
+  page: InputMaybe<Scalars['Int']>;
+  perPage: InputMaybe<Scalars['Int']>;
+  query: Scalars['String'];
+  sort: InputMaybe<Scalars['String']>;
 };
 
 
@@ -3350,9 +3362,7 @@ export type Users_StreamCursorValueInput = {
 
 export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> };
 
-export type RepositoryDetailsForGithubIssueFragment = { __typename?: 'GithubRepoDetails', owner: string, name: string };
-
-export type PullRequestDetailsFragment = { __typename?: 'PullRequest', id: number, number: number, status: Status, title: string, createdAt: any, closedAt: any | null, mergedAt: any | null };
+export type IssueDetailsFragment = { __typename?: 'Issue', id: number, number: number, status: Status, title: string, createdAt: any, closedAt: any | null, mergedAt: any | null, repositoryUrl: any };
 
 export type UserIdentityQueryVariables = Exact<{
   userId: Scalars['uuid'];
@@ -3517,7 +3527,28 @@ export type FetchPullRequestQueryVariables = Exact<{
 }>;
 
 
-export type FetchPullRequestQuery = { __typename?: 'query_root', fetchPullRequest: { __typename?: 'PullRequest', id: number, number: number, status: Status, title: string, createdAt: any, closedAt: any | null, mergedAt: any | null } | null };
+export type FetchPullRequestQuery = { __typename?: 'query_root', fetchPullRequest: { __typename?: 'Issue', id: number, number: number, status: Status, title: string, createdAt: any, closedAt: any | null, mergedAt: any | null, repositoryUrl: any } | null };
+
+export type SearchIssuesQueryVariables = Exact<{
+  query: Scalars['String'];
+  order: InputMaybe<Scalars['String']>;
+  sort: InputMaybe<Scalars['String']>;
+  perPage: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchIssuesQuery = { __typename?: 'query_root', searchIssues: Array<{ __typename?: 'Issue', id: number, number: number, status: Status, title: string, createdAt: any, closedAt: any | null, mergedAt: any | null, repositoryUrl: any }> | null };
+
+export type RepositoryOwnerAndNameFragment = { __typename?: 'GithubRepoDetails', owner: string, name: string };
+
+export type PaymentRequestReasonFragment = { __typename?: 'PaymentRequests', id: any, reason: any };
+
+export type GetPaidWorkItemsQueryVariables = Exact<{
+  projectId: Scalars['uuid'];
+}>;
+
+
+export type GetPaidWorkItemsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', owner: string, name: string } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, reason: any }> }> } | null };
 
 export type SidebarProjectDetailsFragment = { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }> };
 
@@ -3561,14 +3592,8 @@ export type ContributorIdFragment = { __typename?: 'User', id: number };
 
 export type ProjectContributorsFragment = { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }> };
 
-export const RepositoryDetailsForGithubIssueFragmentDoc = gql`
-    fragment RepositoryDetailsForGithubIssue on GithubRepoDetails {
-  owner
-  name
-}
-    `;
-export const PullRequestDetailsFragmentDoc = gql`
-    fragment PullRequestDetails on PullRequest {
+export const IssueDetailsFragmentDoc = gql`
+    fragment IssueDetails on Issue {
   id
   number
   status
@@ -3576,6 +3601,7 @@ export const PullRequestDetailsFragmentDoc = gql`
   createdAt
   closedAt
   mergedAt
+  repositoryUrl
 }
     `;
 export const ContributorIdFragmentDoc = gql`
@@ -3783,6 +3809,18 @@ export const GithubRepoDynamicDetailsFragmentDoc = gql`
   description
   stars
   forksCount
+}
+    `;
+export const RepositoryOwnerAndNameFragmentDoc = gql`
+    fragment RepositoryOwnerAndName on GithubRepoDetails {
+  owner
+  name
+}
+    `;
+export const PaymentRequestReasonFragmentDoc = gql`
+    fragment PaymentRequestReason on PaymentRequests {
+  id
+  reason
 }
     `;
 export const SidebarProjectDetailsFragmentDoc = gql`
@@ -4565,10 +4603,10 @@ export const FetchPullRequestDocument = gql`
     repoName: $repoName
     prNumber: $prNumber
   ) {
-    ...PullRequestDetails
+    ...IssueDetails
   }
 }
-    ${PullRequestDetailsFragmentDoc}`;
+    ${IssueDetailsFragmentDoc}`;
 
 /**
  * __useFetchPullRequestQuery__
@@ -4599,6 +4637,90 @@ export function useFetchPullRequestLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type FetchPullRequestQueryHookResult = ReturnType<typeof useFetchPullRequestQuery>;
 export type FetchPullRequestLazyQueryHookResult = ReturnType<typeof useFetchPullRequestLazyQuery>;
 export type FetchPullRequestQueryResult = Apollo.QueryResult<FetchPullRequestQuery, FetchPullRequestQueryVariables>;
+export const SearchIssuesDocument = gql`
+    query searchIssues($query: String!, $order: String, $sort: String, $perPage: Int) {
+  searchIssues(query: $query, order: $order, sort: $sort, perPage: $perPage) {
+    ...IssueDetails
+  }
+}
+    ${IssueDetailsFragmentDoc}`;
+
+/**
+ * __useSearchIssuesQuery__
+ *
+ * To run a query within a React component, call `useSearchIssuesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchIssuesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchIssuesQuery({
+ *   variables: {
+ *      query: // value for 'query'
+ *      order: // value for 'order'
+ *      sort: // value for 'sort'
+ *      perPage: // value for 'perPage'
+ *   },
+ * });
+ */
+export function useSearchIssuesQuery(baseOptions: Apollo.QueryHookOptions<SearchIssuesQuery, SearchIssuesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchIssuesQuery, SearchIssuesQueryVariables>(SearchIssuesDocument, options);
+      }
+export function useSearchIssuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchIssuesQuery, SearchIssuesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchIssuesQuery, SearchIssuesQueryVariables>(SearchIssuesDocument, options);
+        }
+export type SearchIssuesQueryHookResult = ReturnType<typeof useSearchIssuesQuery>;
+export type SearchIssuesLazyQueryHookResult = ReturnType<typeof useSearchIssuesLazyQuery>;
+export type SearchIssuesQueryResult = Apollo.QueryResult<SearchIssuesQuery, SearchIssuesQueryVariables>;
+export const GetPaidWorkItemsDocument = gql`
+    query getPaidWorkItems($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    githubRepos {
+      githubRepoDetails {
+        ...RepositoryOwnerAndName
+      }
+    }
+    budgets {
+      id
+      paymentRequests {
+        ...PaymentRequestReason
+      }
+    }
+  }
+}
+    ${RepositoryOwnerAndNameFragmentDoc}
+${PaymentRequestReasonFragmentDoc}`;
+
+/**
+ * __useGetPaidWorkItemsQuery__
+ *
+ * To run a query within a React component, call `useGetPaidWorkItemsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPaidWorkItemsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPaidWorkItemsQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetPaidWorkItemsQuery(baseOptions: Apollo.QueryHookOptions<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>(GetPaidWorkItemsDocument, options);
+      }
+export function useGetPaidWorkItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>(GetPaidWorkItemsDocument, options);
+        }
+export type GetPaidWorkItemsQueryHookResult = ReturnType<typeof useGetPaidWorkItemsQuery>;
+export type GetPaidWorkItemsLazyQueryHookResult = ReturnType<typeof useGetPaidWorkItemsLazyQuery>;
+export type GetPaidWorkItemsQueryResult = Apollo.QueryResult<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>;
 export const GetProjectsForSidebarDocument = gql`
     query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
   projects(

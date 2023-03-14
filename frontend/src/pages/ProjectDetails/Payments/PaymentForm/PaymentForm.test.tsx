@@ -56,7 +56,7 @@ const fetchPrMock: MockedResponse = {
   newData: vi.fn(() => ({
     data: {
       fetchPullRequest: {
-        __typename: "PullRequest",
+        __typename: "Issue",
         id: 123456789,
         title: "A cool PR",
         status: Status.Merged,

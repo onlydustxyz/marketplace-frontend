@@ -9,6 +9,7 @@ import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { WorkItem } from "src/components/GithubIssue";
+import { parseApiRepositoryLink } from "src/utils/github";
 
 const PaymentForm: React.FC = () => {
   const { T } = useIntl();
@@ -66,9 +67,10 @@ const PaymentForm: React.FC = () => {
     (workItems: WorkItem[]) =>
       formMethods.setValue(
         "workItems",
-        workItems.map(
-          ({ repository, issue }) => `https://github.com/${repository.owner}/${repository.name}/pull/${issue.number}`
-        )
+        workItems.map(workItem => {
+          const { owner, name } = parseApiRepositoryLink(workItem.repositoryUrl);
+          return `https://github.com/${owner}/${name}/pull/${workItem.number}`;
+        })
       ),
     [formMethods]
   );

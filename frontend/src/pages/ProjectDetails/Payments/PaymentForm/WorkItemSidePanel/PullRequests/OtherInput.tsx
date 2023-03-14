@@ -4,7 +4,7 @@ import { useIntl } from "src/hooks/useIntl";
 import Input from "src/components/FormInput";
 import { WorkItem } from "src/components/GithubIssue";
 import { gql } from "@apollo/client";
-import { FetchPullRequestQuery, PullRequestDetailsFragmentDoc } from "src/__generated/graphql";
+import { FetchPullRequestQuery, IssueDetailsFragmentDoc } from "src/__generated/graphql";
 import { useHasuraLazyQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { useFormContext, useFormState } from "react-hook-form";
@@ -25,13 +25,7 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
     {
       onCompleted: data => {
         if (data.fetchPullRequest) {
-          onWorkItemAdded({
-            issue: data.fetchPullRequest,
-            repository: {
-              name: repoName,
-              owner: repoOwner,
-            },
-          });
+          onWorkItemAdded(data.fetchPullRequest);
           resetField(INPUT_NAME);
         } else {
           setError(INPUT_NAME, {
@@ -92,10 +86,10 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
 }
 
 const FETCH_PR_DETAILS = gql`
-  ${PullRequestDetailsFragmentDoc}
+  ${IssueDetailsFragmentDoc}
   query fetchPullRequest($repoOwner: String!, $repoName: String!, $prNumber: Int!) {
     fetchPullRequest(repoOwner: $repoOwner, repoName: $repoName, prNumber: $prNumber) {
-      ...PullRequestDetails
+      ...IssueDetails
     }
   }
 `;

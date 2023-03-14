@@ -8,12 +8,13 @@ import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import Link from "src/icons/Link";
 import { HasuraUserRole } from "src/types";
-import { parsePullRequestLink } from "src/utils/github";
+import { parseApiRepositoryLink, parsePullRequestLink } from "src/utils/github";
 import isDefined from "src/utils/isDefined";
 import {
-  PullRequestDetailsFragmentDoc,
-  RepositoryDetailsForGithubIssueFragmentDoc,
-  SearchPullRequestsQuery,
+  GetPaidWorkItemsQuery,
+  IssueDetailsFragmentDoc,
+  RepositoryOwnerAndNameFragment,
+  SearchIssuesQuery,
 } from "src/__generated/graphql";
 import EmptyState from "../EmptyState";
 import Toggle from "../Toggle";
@@ -21,11 +22,15 @@ import OtherPrInput from "./OtherInput";
 
 type Props = {
   projectId: string;
+  contributorHandle: string;
   workItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
 };
 
-export default function PullRequests({ projectId, workItems, onWorkItemAdded }: Props) {
+export const buildQuery = (githubRepos: RepositoryOwnerAndNameFragment[], author: string) =>
+  `${githubRepos.map(r => `repo:${r.owner}/${r.name}`).join(" ")} is:pr author:${author}`;
+
+export default function PullRequests({ projectId, contributorHandle, workItems, onWorkItemAdded }: Props) {
   const { T } = useIntl();
 
   const [addOtherPrEnabled, setAddOtherPrEnabled] = useState(false);
@@ -36,40 +41,42 @@ export default function PullRequests({ projectId, workItems, onWorkItemAdded }: 
     showToaster(T("payment.form.workItems.pullRequestedAddedToaster"));
   };
 
-  const searchPrQuery = useHasuraQuery<SearchPullRequestsQuery>(SEARCH_PULLREQUESTS, HasuraUserRole.RegisteredUser, {
+  const getPaidItemsQuery = useHasuraQuery<GetPaidWorkItemsQuery>(GET_PAID_WORK_ITEMS, HasuraUserRole.RegisteredUser, {
     variables: { projectId },
   });
 
-  const pulls: WorkItem[] = useMemo(
-    () =>
-      searchPrQuery.data?.projectsByPk?.githubRepos
-        .map(repo => repo.githubRepoDetails)
-        .filter(isDefined)
-        .flatMap(repository => repository.pullRequests?.map(issue => ({ issue, repository: repository })) || []) || [],
-    [searchPrQuery.data?.projectsByPk?.githubRepos]
-  );
+  const searchPrQuery = useHasuraQuery<SearchIssuesQuery>(SEARCH_PULLREQUESTS, HasuraUserRole.RegisteredUser, {
+    variables: {
+      query: buildQuery(
+        getPaidItemsQuery.data?.projectsByPk?.githubRepos.map(r => r.githubRepoDetails).filter(isDefined) || [],
+        contributorHandle
+      ),
+      order: "desc",
+      sort: "created",
+      perPage: 100,
+    },
+    skip: !getPaidItemsQuery.data?.projectsByPk?.githubRepos,
+  });
+
+  const pulls: WorkItem[] = useMemo(() => searchPrQuery.data?.searchIssues || [], [searchPrQuery.data?.searchIssues]);
 
   const paidItems = useMemo(
     () =>
-      searchPrQuery.data?.projectsByPk?.budgets
+      getPaidItemsQuery.data?.projectsByPk?.budgets
         .flatMap(b => b.paymentRequests)
         .flatMap(p => p.reason.work_items)
         .map(parsePullRequestLink) || [],
-    [searchPrQuery.data?.projectsByPk?.budgets]
+    [getPaidItemsQuery.data?.projectsByPk?.budgets]
   );
 
   const elligiblePulls = useMemo(
     () =>
       sortBy(
-        differenceWith(
-          differenceBy(pulls, workItems, "issue.id"),
-          paidItems,
-          (pr, paidItem) =>
-            pr.repository.owner === paidItem.repoOwner &&
-            pr.repository.name === paidItem.repoName &&
-            pr.issue.number === paidItem.prNumber
-        ),
-        "issue.createdAt"
+        differenceWith(differenceBy(pulls, workItems, "id"), paidItems, (pr, paidItem) => {
+          const { owner, name } = parseApiRepositoryLink(pr.repositoryUrl);
+          return owner === paidItem.repoOwner && name === paidItem.repoName && pr.number === paidItem.prNumber;
+        }),
+        "createdAt"
       ).reverse(),
     [pulls, paidItems, workItems]
   );
@@ -86,11 +93,16 @@ export default function PullRequests({ projectId, workItems, onWorkItemAdded }: 
         />
         {addOtherPrEnabled && <OtherPrInput onWorkItemAdded={onPullRequestAdded} />}
       </div>
-      <QueryWrapper query={searchPrQuery}>
+      <QueryWrapper
+        query={{
+          data: searchPrQuery.data && getPaidItemsQuery.data,
+          loading: searchPrQuery.loading || getPaidItemsQuery.loading,
+        }}
+      >
         {elligiblePulls.length > 0 ? (
           <div>
             {elligiblePulls.map(pr => (
-              <GithubIssue key={pr.issue.id} {...pr} action={Action.Add} onClick={() => onPullRequestAdded(pr)} />
+              <GithubIssue key={pr.id} workItem={pr} action={Action.Add} onClick={() => onPullRequestAdded(pr)} />
             ))}{" "}
           </div>
         ) : (
@@ -102,27 +114,36 @@ export default function PullRequests({ projectId, workItems, onWorkItemAdded }: 
 }
 
 const SEARCH_PULLREQUESTS = gql`
-  ${PullRequestDetailsFragmentDoc}
-  ${RepositoryDetailsForGithubIssueFragmentDoc}
+  ${IssueDetailsFragmentDoc}
+  query searchIssues($query: String!, $order: String, $sort: String, $perPage: Int) {
+    searchIssues(query: $query, order: $order, sort: $sort, perPage: $perPage) {
+      ...IssueDetails
+    }
+  }
+`;
+
+const GET_PAID_WORK_ITEMS = gql`
+  fragment RepositoryOwnerAndName on GithubRepoDetails {
+    owner
+    name
+  }
+
   fragment PaymentRequestReason on PaymentRequests {
     id
     reason
   }
 
-  query searchPullRequests($projectId: uuid!) {
+  query getPaidWorkItems($projectId: uuid!) {
     projectsByPk(id: $projectId) {
+      githubRepos {
+        githubRepoDetails {
+          ...RepositoryOwnerAndName
+        }
+      }
       budgets {
         id
         paymentRequests {
           ...PaymentRequestReason
-        }
-      }
-      githubRepos {
-        githubRepoDetails {
-          ...RepositoryDetailsForGithubIssue
-          pullRequests {
-            ...PullRequestDetails
-          }
         }
       }
     }
