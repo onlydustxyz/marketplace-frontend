@@ -18,11 +18,14 @@ export enum Action {
   Remove = "remove",
 }
 
-export type Props = {
-  action?: Action;
+export type WorkItem = {
   repository: RepositoryDetailsForGithubIssueFragment;
   issue: PullRequestDetailsFragment;
 };
+
+export type Props = {
+  action?: Action;
+} & WorkItem;
 
 export default function GithubIssue({ action, repository, issue }: Props) {
   return (
