@@ -50,7 +50,8 @@ export default function InvoiceSubmission({ paymentRequests, ...props }: Props) 
 export function buildHiddenFields({ githubUserId, paymentRequests, userInfos }: Props): Record<string, string> {
   return {
     github_id: githubUserId.toString(),
-    request_ids: formatList(
+    request_ids: paymentRequests.map(p => p.id).join(","),
+    pretty_requests: formatList(
       paymentRequests.map(
         p =>
           `#${pretty(p.id)} - ${formatDate(new Date(p.requestedAt))} (${formatMoneyAmount(
