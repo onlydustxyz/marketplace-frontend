@@ -41,8 +41,6 @@ type Inputs = {
   profileType: ProfileType;
   firstname?: string;
   lastname?: string;
-  companyOwnerFirstName?: string;
-  companyOwnerLastName?: string;
   companyName?: string;
   identificationNumber?: string;
   address: string;
@@ -86,10 +84,10 @@ const ProfileForm: React.FC<PropsType> = ({
   const formMethods = useForm<Inputs>({
     defaultValues: {
       profileType: user?.identity?.Company ? ProfileType.Company : ProfileType.Individual,
-      firstname: user?.identity?.Person?.firstname,
-      lastname: user?.identity?.Person?.lastname,
-      companyOwnerFirstName: user?.identity?.Company?.owner?.firstname,
-      companyOwnerLastName: user?.identity?.Company?.owner?.lastname,
+      firstname: user?.identity?.Company
+        ? user?.identity?.Company?.owner?.firstname
+        : user?.identity?.Person?.firstname,
+      lastname: user?.identity?.Company ? user?.identity?.Company?.owner?.lastname : user?.identity?.Person?.lastname,
       companyName: user?.identity?.Company?.name,
       identificationNumber: user?.identity?.Company?.identification_number,
       address: user?.location?.address,
@@ -226,13 +224,13 @@ const ProfileForm: React.FC<PropsType> = ({
                         <div className="flex flex-row gap-5 w-full">
                           <Input
                             label={T("profile.form.companyOwnerFirstName")}
-                            name="companyOwnerFirstName"
+                            name="firstname"
                             placeholder={T("profile.form.companyOwnerFirstName")}
                             requiredForPayment={true}
                           />
                           <Input
                             label={T("profile.form.companyOwnerLastName")}
-                            name="companyOwnerLastName"
+                            name="lastname"
                             placeholder={T("profile.form.companyOwnerLastName")}
                             requiredForPayment={true}
                           />
@@ -475,8 +473,6 @@ const mapFormDataToSchema = ({
   IBAN,
   BIC,
   identificationNumber,
-  companyOwnerFirstName,
-  companyOwnerLastName,
   email,
   telegram,
   discord,
@@ -508,18 +504,15 @@ const mapFormDataToSchema = ({
       optCompany: null,
     };
   }
-  if (
-    profileType === ProfileType.Company &&
-    (companyOwnerFirstName || companyOwnerLastName || companyName || identificationNumber)
-  ) {
+  if (profileType === ProfileType.Company && (firstname || lastname || companyName || identificationNumber)) {
     variables.identity = {
       type: IdentityType.Company,
       optCompany: {
         name: companyName || null,
         identificationNumber: identificationNumber || null,
         owner: {
-          firstname: companyOwnerFirstName || null,
-          lastname: companyOwnerLastName || null,
+          firstname: firstname || null,
+          lastname: lastname || null,
         },
       },
       optPerson: null,
