@@ -17,7 +17,7 @@ type Props = {
 
 export default function WorkItemSidePanel({ open, setOpen, onWorkItemAdded }: Props) {
   const { T } = useIntl();
-  const [addOtherPrEnabled, setAddOtherPrEnabled] = useState(true);
+  const [addOtherPrEnabled, setAddOtherPrEnabled] = useState(false);
 
   return (
     <Transition
