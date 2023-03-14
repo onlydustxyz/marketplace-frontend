@@ -494,10 +494,8 @@ export type Issue = {
   id: Scalars['Int'];
   mergedAt: Maybe<Scalars['DateTimeUtc']>;
   number: Scalars['Int'];
-  repositoryUrl: Scalars['Url'];
   status: Status;
   title: Scalars['String'];
-  userHtmlUrl: Scalars['Url'];
 };
 
 export type JsonbCastExp = {
@@ -1344,8 +1342,9 @@ export type Repository = {
   contributors: Array<User>;
   description: Scalars['String'];
   forksCount: Scalars['Int'];
+  htmlUrl: Scalars['Url'];
   id: Scalars['Int'];
-  logoUrl: Scalars['String'];
+  logoUrl: Scalars['Url'];
   stars: Scalars['Int'];
 };
 
@@ -1470,7 +1469,8 @@ export type TimestamptzComparisonExp = {
 
 export type User = {
   __typename?: 'User';
-  avatarUrl: Scalars['String'];
+  avatarUrl: Scalars['Url'];
+  htmlUrl: Scalars['Url'];
   id: Scalars['Int'];
   login: Scalars['String'];
   /** An array relationship */
@@ -3361,9 +3361,9 @@ export type Users_StreamCursorValueInput = {
   phoneNumberVerified: InputMaybe<Scalars['Boolean']>;
 };
 
-export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> };
+export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> };
 
-export type IssueDetailsFragment = { __typename?: 'Issue', id: number, number: number, status: Status, title: string, createdAt: any, closedAt: any | null, mergedAt: any | null, repositoryUrl: any };
+export type IssueDetailsFragment = { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null };
 
 export type UserIdentityQueryVariables = Exact<{
   userId: Scalars['uuid'];
@@ -3383,23 +3383,23 @@ export type ProjectCardGithubRepoFieldsFragment = { __typename?: 'ProjectGithubR
 
 export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, user: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> };
 
-export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string };
+export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: any };
 
 export type GetGithubUserQueryVariables = Exact<{
   githubUserId: Scalars['Int'];
 }>;
 
 
-export type GetGithubUserQuery = { __typename?: 'query_root', fetchUserDetailsById: { __typename?: 'User', id: number, login: string, avatarUrl: string } | null };
+export type GetGithubUserQuery = { __typename?: 'query_root', fetchUserDetailsById: { __typename?: 'User', id: number, login: string, avatarUrl: any } | null };
 
-export type GithubContributorFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null };
+export type GithubContributorFragment = { __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null };
 
 export type FindUserQueryForPaymentFormQueryVariables = Exact<{
   username: Scalars['String'];
 }>;
 
 
-export type FindUserQueryForPaymentFormQuery = { __typename?: 'query_root', fetchUserDetails: { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null };
+export type FindUserQueryForPaymentFormQuery = { __typename?: 'query_root', fetchUserDetails: { __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null };
 
 export type PaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, reason: any, requestedAt: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> };
 
@@ -3441,7 +3441,7 @@ export type PendingUserPaymentsQueryVariables = Exact<{
 }>;
 
 
-export type PendingUserPaymentsQuery = { __typename?: 'query_root', user: { __typename?: 'users', githubUser: { __typename?: 'AuthGithubUsers', paymentRequests: Array<{ __typename?: 'PaymentRequests', amountInUsd: any, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> } | null } | null };
+export type PendingUserPaymentsQuery = { __typename?: 'query_root', user: { __typename?: 'users', githubUser: { __typename?: 'AuthGithubUsers', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> } | null } | null };
 
 export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null } | null } | null };
 
@@ -3469,14 +3469,14 @@ export type ProfileQueryVariables = Exact<{
 
 export type ProfileQuery = { __typename?: 'query_root', userInfoByPk: { __typename?: 'UserInfo', userId: any, identity: any | null, contactInformation: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean | null } | null };
 
-export type GithubRepoContributorsFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } | null } | null };
+export type GithubRepoContributorsFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } | null } | null };
 
 export type GetProjectContributorsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> } | null }> }> } | null };
+export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> } | null }> }> } | null };
 
 export type GetProjectRemainingBudgetQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -3487,14 +3487,14 @@ export type GetProjectRemainingBudgetQuery = { __typename?: 'query_root', projec
 
 export type GithubRepoStaticDetailsFragment = { __typename?: 'GithubRepoDetails', id: any, owner: string, name: string, languages: any };
 
-export type GithubRepoDynamicDetailsFragment = { __typename?: 'Repository', id: number, description: string, stars: number, forksCount: number };
+export type GithubRepoDynamicDetailsFragment = { __typename?: 'Repository', id: number, description: string, stars: number, forksCount: number, htmlUrl: any };
 
 export type GetGithubRepositoryDetailsQueryVariables = Exact<{
   githubRepoId: Scalars['bigint'];
 }>;
 
 
-export type GetGithubRepositoryDetailsQuery = { __typename?: 'query_root', githubRepoDetailsByPk: { __typename?: 'GithubRepoDetails', id: any, owner: string, name: string, languages: any, content: { __typename?: 'Repository', id: number, description: string, stars: number, forksCount: number } | null } | null };
+export type GetGithubRepositoryDetailsQuery = { __typename?: 'query_root', githubRepoDetailsByPk: { __typename?: 'GithubRepoDetails', id: any, owner: string, name: string, languages: any, content: { __typename?: 'Repository', id: number, description: string, stars: number, forksCount: number, htmlUrl: any } | null } | null };
 
 export type ProjectLeadFragment = { __typename?: 'users', id: any, displayName: string, avatarUrl: string };
 
@@ -3505,7 +3505,7 @@ export type GetProjectContributorsForOverviewQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectContributorsForOverviewQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', login: string, avatarUrl: string }> } | null } | null }> } | null };
+export type GetProjectContributorsForOverviewQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', login: string, avatarUrl: any }> } | null } | null }> } | null };
 
 export type GetProjectOverviewDetailsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -3519,7 +3519,7 @@ export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> } | null };
+export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> } | null };
 
 export type FetchPullRequestQueryVariables = Exact<{
   repoOwner: Scalars['String'];
@@ -3528,7 +3528,7 @@ export type FetchPullRequestQueryVariables = Exact<{
 }>;
 
 
-export type FetchPullRequestQuery = { __typename?: 'query_root', fetchPullRequest: { __typename?: 'Issue', id: number, number: number, status: Status, title: string, createdAt: any, closedAt: any | null, mergedAt: any | null, repositoryUrl: any } | null };
+export type FetchPullRequestQuery = { __typename?: 'query_root', fetchPullRequest: { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null };
 
 export type SearchIssuesQueryVariables = Exact<{
   query: Scalars['String'];
@@ -3538,11 +3538,9 @@ export type SearchIssuesQueryVariables = Exact<{
 }>;
 
 
-export type SearchIssuesQuery = { __typename?: 'query_root', searchIssues: Array<{ __typename?: 'Issue', id: number, number: number, status: Status, title: string, createdAt: any, closedAt: any | null, mergedAt: any | null, repositoryUrl: any }> | null };
+export type SearchIssuesQuery = { __typename?: 'query_root', searchIssues: Array<{ __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null }> | null };
 
 export type RepositoryOwnerAndNameFragment = { __typename?: 'GithubRepoDetails', owner: string, name: string };
-
-export type PaymentRequestReasonFragment = { __typename?: 'PaymentRequests', id: any, reason: any };
 
 export type GetPaidWorkItemsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -3599,10 +3597,10 @@ export const IssueDetailsFragmentDoc = gql`
   number
   status
   title
+  htmlUrl
   createdAt
   closedAt
   mergedAt
-  repositoryUrl
 }
     `;
 export const ContributorIdFragmentDoc = gql`
@@ -3768,6 +3766,7 @@ export const ContributorsTableFieldsFragmentDoc = gql`
   id
   login
   avatarUrl
+  htmlUrl
   user {
     userId
   }
@@ -3810,18 +3809,13 @@ export const GithubRepoDynamicDetailsFragmentDoc = gql`
   description
   stars
   forksCount
+  htmlUrl
 }
     `;
 export const RepositoryOwnerAndNameFragmentDoc = gql`
     fragment RepositoryOwnerAndName on GithubRepoDetails {
   owner
   name
-}
-    `;
-export const PaymentRequestReasonFragmentDoc = gql`
-    fragment PaymentRequestReason on PaymentRequests {
-  id
-  reason
 }
     `;
 export const SidebarProjectDetailsFragmentDoc = gql`
@@ -4167,6 +4161,7 @@ export const PendingUserPaymentsDocument = gql`
   user(id: $userId) {
     githubUser {
       paymentRequests {
+        id
         amountInUsd
         paymentsAggregate {
           aggregate {
@@ -4559,6 +4554,7 @@ export const GetProjectContributorsForPaymentSelectDocument = gql`
       }
     }
     budgets {
+      id
       paymentRequests {
         id
         githubRecipient {
@@ -4687,13 +4683,13 @@ export const GetPaidWorkItemsDocument = gql`
     budgets {
       id
       paymentRequests {
-        ...PaymentRequestReason
+        id
+        reason
       }
     }
   }
 }
-    ${RepositoryOwnerAndNameFragmentDoc}
-${PaymentRequestReasonFragmentDoc}`;
+    ${RepositoryOwnerAndNameFragmentDoc}`;
 
 /**
  * __useGetPaidWorkItemsQuery__
