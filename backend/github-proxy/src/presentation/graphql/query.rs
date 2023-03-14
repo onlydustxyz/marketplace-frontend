@@ -56,6 +56,22 @@ impl Query {
 			.ok()
 	}
 
+	pub async fn fetch_pull_request(
+		&self,
+		context: &Context,
+		repo_owner: String,
+		repo_name: String,
+		pr_number: i32,
+	) -> Option<GithubPullRequest> {
+		context
+			.github_service
+			.fetch_pull_request(&repo_owner, &repo_name, pr_number as u64)
+			.await
+			.map_err(Error::from)
+			.logged()
+			.ok()
+	}
+
 	pub async fn fetch_user_details_by_id(
 		&self,
 		context: &Context,
