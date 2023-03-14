@@ -93,6 +93,7 @@
           "placeholder": "github.com/example/repo/pull/472",
           "label": "Add specific PR using URL"
         },
+        "pullRequestedAddedToaster": "Pull request added",
         "subTitle": "Add contributions that should be part of this payment",
         "title": "Work items",
         "emptyState": {

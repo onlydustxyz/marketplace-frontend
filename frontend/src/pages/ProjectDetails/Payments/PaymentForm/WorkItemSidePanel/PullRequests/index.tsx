@@ -5,6 +5,7 @@ import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
+import { useShowToaster } from "src/hooks/useToaster";
 import Link from "src/icons/Link";
 import { HasuraUserRole } from "src/types";
 import { parsePullRequestLink } from "src/utils/github";
@@ -28,6 +29,12 @@ export default function PullRequests({ projectId, workItems, onWorkItemAdded }: 
   const { T } = useIntl();
 
   const [addOtherPrEnabled, setAddOtherPrEnabled] = useState(false);
+  const showToaster = useShowToaster();
+
+  const onPullRequestAdded = (pr: WorkItem) => {
+    onWorkItemAdded(pr);
+    showToaster(T("payment.form.workItems.pullRequestedAddedToaster"));
+  };
 
   const searchPrQuery = useHasuraQuery<SearchPullRequestsQuery>(SEARCH_PULLREQUESTS, HasuraUserRole.RegisteredUser, {
     variables: { projectId },
@@ -74,13 +81,13 @@ export default function PullRequests({ projectId, workItems, onWorkItemAdded }: 
           label={T("payment.form.workItems.addOtherPR.button")}
           testId="add-other-pr-toggle"
         />
-        {addOtherPrEnabled && <OtherPrInput onWorkItemAdded={onWorkItemAdded} />}
+        {addOtherPrEnabled && <OtherPrInput onWorkItemAdded={onPullRequestAdded} />}
       </div>
       <QueryWrapper query={searchPrQuery}>
         {elligiblePulls.length > 0 ? (
           <div>
             {elligiblePulls.map(pr => (
-              <GithubIssue key={pr.issue.id} {...pr} action={Action.Add} onClick={() => onWorkItemAdded(pr)} />
+              <GithubIssue key={pr.issue.id} {...pr} action={Action.Add} onClick={() => onPullRequestAdded(pr)} />
             ))}{" "}
           </div>
         ) : (
