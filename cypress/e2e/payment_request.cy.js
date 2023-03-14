@@ -1,6 +1,21 @@
-import { WAIT_LONG } from "../support/commands/common";
+import { WAIT_LONG, WAIT_SHORT } from "../support/commands/common";
 
 const TEST_ETH_ADDRESS = "0x3cd05ab88fbf996c0784e54f74195815bfa866de";
+
+function requestPayment({ contributor, issues }) {
+  cy.get("[name=contributorHandle]").type(contributor);
+  cy.get("[data-testid=add-work-item-btn]").click();
+  cy.get("[data-testid=add-other-pr-toggle]").click();
+
+  for (const issue of issues) {
+    cy.get("[name=otherPrLink]").type(issue);
+    cy.get("[data-testid=add-other-pr-btn]").click();
+    cy.wait(WAIT_SHORT);
+  }
+
+  cy.get("[data-testid=close-add-work-item-panel-btn]").click();
+  cy.contains("Confirm payment").click();
+}
 
 describe("As a project lead, I", () => {
   beforeEach(function () {
@@ -48,12 +63,10 @@ describe("As a project lead, I", () => {
     cy.get("#remainingBudget").should("have.text", "$1,000");
 
     cy.contains("New payment").click();
-    cy.get("[name=contributorHandle]").type("AnthonyBuisset");
-    cy.get("[name=contributorHandle]").blur();
-    cy.get("[name=linkToIssue]").type("https://github.com/od-mocks/cool-repo-A/pull/2");
-    cy.wait(WAIT_LONG);
-    cy.contains("Confirm payment").click();
-
+    requestPayment({
+      contributor: "AnthonyBuisset",
+      issues: ["https://github.com/od-mocks/cool-repo-A/pull/1", "https://github.com/od-mocks/cool-repo-A/pull/2"],
+    });
     cy.get("#remainingBudget").should("have.text", "$0");
   });
 
@@ -79,11 +92,10 @@ describe("As a project lead, I", () => {
     cy.get("#remainingBudget").should("have.text", "$1,000");
 
     cy.contains("New payment").click();
-    cy.get("[name=contributorHandle]").type("AnthonyBuisset");
-    cy.get("[name=contributorHandle]").blur();
-    cy.get("[name=linkToIssue]").type("https://github.com/od-mocks/cool-repo-A/pull/2");
-    cy.wait(WAIT_LONG);
-    cy.contains("Confirm payment").click();
+    requestPayment({
+      contributor: "AnthonyBuisset",
+      issues: ["https://github.com/od-mocks/cool-repo-A/pull/2"],
+    });
 
     showPaymentsAsOtherLeader();
     cy.get("#payment_table").contains("Pending");
