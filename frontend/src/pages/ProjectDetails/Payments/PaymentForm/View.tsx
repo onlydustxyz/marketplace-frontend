@@ -21,10 +21,14 @@ interface Props {
   onWorkItemsChange: (workItems: WorkItem[]) => void;
 }
 
-type WorkItemAction = {
-  action: "add" | "remove";
-  workItem: WorkItem;
-};
+type WorkItemAction =
+  | {
+      action: "add" | "remove";
+      workItem: WorkItem;
+    }
+  | {
+      action: "clear";
+    };
 
 function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
   switch (action.action) {
@@ -32,6 +36,8 @@ function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
       return sortBy(uniqBy([...workItems, action.workItem], "issue.id"), ["repo.owner", "repo.name", "issue.number"]);
     case "remove":
       return workItems.filter(w => w !== action.workItem);
+    case "clear":
+      return [];
   }
 }
 
@@ -39,11 +45,12 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, onWorkItemsChan
   const { T } = useIntl();
 
   const contributor = useWatch({ name: "contributor" });
+  const contributorHandle = useWatch({ name: "contributorHandle" });
   const navigate = useNavigate();
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
-
   const [workItems, dispatchWorkItems] = useReducer(workItemsReducer, []);
 
+  useEffect(() => dispatchWorkItems({ action: "clear" }), [contributorHandle]);
   useEffect(() => onWorkItemsChange(workItems), [workItems, onWorkItemsChange]);
 
   return (
