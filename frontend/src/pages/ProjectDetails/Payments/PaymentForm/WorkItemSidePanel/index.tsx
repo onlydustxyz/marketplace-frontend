@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import CloseLine from "src/icons/CloseLine";
@@ -23,7 +23,7 @@ type Props = {
 
 const OTHER_PR_LINK_INPUT_NAME = "otherPrLink";
 
-export default function WorkItemSidePanel({ open, setOpen }: Props) {
+export default function WorkItemSidePanel({ open, setOpen, onWorkItemAdded }: Props) {
   const { T } = useIntl();
   const [addOtherPrEnabled, setAddOtherPrEnabled] = useState(true);
 
@@ -32,12 +32,18 @@ export default function WorkItemSidePanel({ open, setOpen }: Props) {
     HasuraUserRole.RegisteredUser,
     {
       onCompleted: data => {
-        if (!data.fetchPullRequest) {
-          setError(OTHER_PR_LINK_INPUT_NAME, {
-            type: "validate",
-            message: T("payment.form.workItems.addOtherPR.invalidPrLink"),
-          });
-        }
+        data.fetchPullRequest
+          ? onWorkItemAdded({
+              issue: data.fetchPullRequest,
+              repository: {
+                name: repoName,
+                owner: repoOwner,
+              },
+            })
+          : setError(OTHER_PR_LINK_INPUT_NAME, {
+              type: "validate",
+              message: T("payment.form.workItems.addOtherPR.invalidPrLink"),
+            });
       },
     }
   );
@@ -47,15 +53,18 @@ export default function WorkItemSidePanel({ open, setOpen }: Props) {
   const otherPrLink = watch(OTHER_PR_LINK_INPUT_NAME);
   const otherPrLinkError = errors[OTHER_PR_LINK_INPUT_NAME];
 
-  const validateOtherPR = () => {
+  const [repoOwner, repoName, prNumber] = useMemo(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, repoOwner, repoName, prNumber] = otherPrLink.match(REGEX_VALID_GITHUB_PULL_REQUEST_URL);
+    const [_, repoOwner, repoName, prNumber] = otherPrLink?.match(REGEX_VALID_GITHUB_PULL_REQUEST_URL) || [];
+    return [repoOwner, repoName, parseInt(prNumber)];
+  }, [otherPrLink]);
 
+  const validateOtherPR = () => {
     fetchPullRequest({
       variables: {
         repoOwner,
         repoName,
-        prNumber: parseInt(prNumber),
+        prNumber,
       },
     });
   };

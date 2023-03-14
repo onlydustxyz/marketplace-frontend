@@ -12,6 +12,7 @@ import Add from "src/icons/Add";
 import { useReducer, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
+import { sortBy, uniqBy } from "lodash";
 
 interface Props {
   projectId: string;
@@ -27,7 +28,7 @@ type WorkItemAction = {
 function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
   switch (action.action) {
     case "add":
-      return [...workItems, action.workItem];
+      return sortBy(uniqBy([...workItems, action.workItem], "issue.id"), ["repo.owner", "repo.name", "issue.number"]);
     case "remove":
       return workItems.filter(w => w !== action.workItem);
   }
@@ -72,8 +73,13 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
                     <div className="font-medium text-lg">{T("payment.form.workItems.title")}</div>
                     <div className="flex flex-col gap-3">
                       <div className="pt-3 text-greyscale-300">{T("payment.form.workItems.subTitle")}</div>
-                      {workItems.map(w => (
-                        <GithubIssue key={w.issue.id} {...w} action={Action.Remove} />
+                      {workItems.map(workItem => (
+                        <GithubIssue
+                          key={workItem.issue.id}
+                          {...workItem}
+                          action={Action.Remove}
+                          onClick={() => dispatchWorkItems({ action: "remove", workItem })}
+                        />
                       ))}
                     </div>
                   </div>

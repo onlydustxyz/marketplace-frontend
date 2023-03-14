@@ -25,16 +25,19 @@ export type WorkItem = {
 
 export type Props = {
   action?: Action;
+  onClick?: () => void;
 } & WorkItem;
 
-export default function GithubIssue({ action, repository, issue }: Props) {
+export default function GithubIssue({ action, repository, issue, onClick }: Props) {
   return (
     <Card padded={false} blurred={false} className="p-4 flex flex-row gap-3">
       {action && (
-        <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
-          {action === Action.Add && <Add />}
-          {action === Action.Remove && <Subtract />}
-        </Button>
+        <div onClick={onClick}>
+          <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
+            {action === Action.Add && <Add />}
+            {action === Action.Remove && <Subtract />}
+          </Button>
+        </div>
       )}
       <div className="flex flex-col gap-2 font-walsheim ">
         <div className="font-medium text-sm text-greyscale-50">
@@ -90,7 +93,6 @@ function IssueStatus({ issue }: { issue: PullRequestDetailsFragment }) {
 
 export const GITHUB_ISSUE_FRAGMENTS = gql`
   fragment RepositoryDetailsForGithubIssue on GithubRepoDetails {
-    id
     owner
     name
   }
