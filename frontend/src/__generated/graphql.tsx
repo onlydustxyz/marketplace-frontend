@@ -2384,6 +2384,7 @@ export type Query_Root = {
   budgetsAggregate: BudgetsAggregate;
   /** fetch data from the table: "budgets" using primary key columns */
   budgetsByPk: Maybe<Budgets>;
+  fetchPullRequest: Maybe<PullRequest>;
   fetchRepositoryDetails: Maybe<Repository>;
   fetchRepositoryPRs: Maybe<Array<PullRequest>>;
   fetchUserDetails: Maybe<User>;
@@ -2473,6 +2474,13 @@ export type Query_RootBudgetsAggregateArgs = {
 
 export type Query_RootBudgetsByPkArgs = {
   id: Scalars['uuid'];
+};
+
+
+export type Query_RootFetchPullRequestArgs = {
+  prNumber: Scalars['Int'];
+  repoName: Scalars['String'];
+  repoOwner: Scalars['String'];
 };
 
 
@@ -3342,7 +3350,7 @@ export type Users_StreamCursorValueInput = {
 
 export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> };
 
-export type RepositoryDetailsForGithubIssueFragment = { __typename?: 'GithubRepoDetails', id: any, owner: string, name: string };
+export type RepositoryDetailsForGithubIssueFragment = { __typename?: 'GithubRepoDetails', owner: string, name: string };
 
 export type PullRequestDetailsFragment = { __typename?: 'PullRequest', id: number, number: number, status: Status, title: string, createdAt: any, closedAt: any | null, mergedAt: any | null };
 
@@ -3502,6 +3510,15 @@ export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
 
 export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: string, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> } | null };
 
+export type FetchPullRequestQueryVariables = Exact<{
+  repoOwner: Scalars['String'];
+  repoName: Scalars['String'];
+  prNumber: Scalars['Int'];
+}>;
+
+
+export type FetchPullRequestQuery = { __typename?: 'query_root', fetchPullRequest: { __typename?: 'PullRequest', id: number, number: number, status: Status, title: string, createdAt: any, closedAt: any | null, mergedAt: any | null } | null };
+
 export type SidebarProjectDetailsFragment = { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }> };
 
 export type GetProjectsForSidebarQueryVariables = Exact<{
@@ -3546,7 +3563,6 @@ export type ProjectContributorsFragment = { __typename?: 'Projects', githubRepos
 
 export const RepositoryDetailsForGithubIssueFragmentDoc = gql`
     fragment RepositoryDetailsForGithubIssue on GithubRepoDetails {
-  id
   owner
   name
 }
@@ -4542,6 +4558,47 @@ export function useGetProjectContributorsForPaymentSelectLazyQuery(baseOptions?:
 export type GetProjectContributorsForPaymentSelectQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelectQuery>;
 export type GetProjectContributorsForPaymentSelectLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelectLazyQuery>;
 export type GetProjectContributorsForPaymentSelectQueryResult = Apollo.QueryResult<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>;
+export const FetchPullRequestDocument = gql`
+    query fetchPullRequest($repoOwner: String!, $repoName: String!, $prNumber: Int!) {
+  fetchPullRequest(
+    repoOwner: $repoOwner
+    repoName: $repoName
+    prNumber: $prNumber
+  ) {
+    ...PullRequestDetails
+  }
+}
+    ${PullRequestDetailsFragmentDoc}`;
+
+/**
+ * __useFetchPullRequestQuery__
+ *
+ * To run a query within a React component, call `useFetchPullRequestQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchPullRequestQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchPullRequestQuery({
+ *   variables: {
+ *      repoOwner: // value for 'repoOwner'
+ *      repoName: // value for 'repoName'
+ *      prNumber: // value for 'prNumber'
+ *   },
+ * });
+ */
+export function useFetchPullRequestQuery(baseOptions: Apollo.QueryHookOptions<FetchPullRequestQuery, FetchPullRequestQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FetchPullRequestQuery, FetchPullRequestQueryVariables>(FetchPullRequestDocument, options);
+      }
+export function useFetchPullRequestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FetchPullRequestQuery, FetchPullRequestQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FetchPullRequestQuery, FetchPullRequestQueryVariables>(FetchPullRequestDocument, options);
+        }
+export type FetchPullRequestQueryHookResult = ReturnType<typeof useFetchPullRequestQuery>;
+export type FetchPullRequestLazyQueryHookResult = ReturnType<typeof useFetchPullRequestLazyQuery>;
+export type FetchPullRequestQueryResult = Apollo.QueryResult<FetchPullRequestQuery, FetchPullRequestQueryVariables>;
 export const GetProjectsForSidebarDocument = gql`
     query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
   projects(
