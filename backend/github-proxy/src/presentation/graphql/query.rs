@@ -3,7 +3,7 @@ use juniper::{graphql_object, DefaultScalarValue};
 use olog::{error, warn};
 
 use super::{Context, Error};
-use crate::domain::{GithubPullRequest, GithubRepository, GithubUser};
+use crate::domain::{GithubIssue, GithubRepository, GithubUser};
 
 pub struct Query;
 
@@ -47,7 +47,7 @@ impl Query {
 		&self,
 		context: &Context,
 		id: i32,
-	) -> Option<Vec<GithubPullRequest>> {
+	) -> Option<Vec<GithubIssue>> {
 		let repository_id = GithubRepositoryId::from(id as i64);
 		context
 			.github_service()
@@ -65,7 +65,7 @@ impl Query {
 		repo_owner: String,
 		repo_name: String,
 		pr_number: i32,
-	) -> Option<GithubPullRequest> {
+	) -> Option<GithubIssue> {
 		context
 			.github_service()
 			.ok()?
@@ -124,7 +124,7 @@ impl Query {
 		order: Option<String>,
 		per_page: Option<i32>,
 		page: Option<i32>,
-	) -> Option<Vec<GithubPullRequest>> {
+	) -> Option<Vec<GithubIssue>> {
 		context
 			.github_service()
 			.ok()?

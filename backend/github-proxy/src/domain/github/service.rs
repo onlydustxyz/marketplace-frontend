@@ -1,7 +1,7 @@
 use domain::GithubRepositoryId;
 use thiserror::Error;
 
-use super::PullRequest;
+use super::Issue;
 use crate::domain::{GithubRepository, GithubUser};
 
 #[derive(Debug, Error)]
@@ -21,16 +21,13 @@ pub type Result<T> = std::result::Result<T, Error>;
 pub trait Service: Send + Sync {
 	async fn fetch_repository_by_id(&self, id: u64) -> Result<GithubRepository>;
 	async fn fetch_user_by_name(&self, username: &str) -> Result<GithubUser>;
-	async fn fetch_repository_PRs(
-		&self,
-		repository_id: &GithubRepositoryId,
-	) -> Result<Vec<PullRequest>>;
+	async fn fetch_repository_PRs(&self, repository_id: &GithubRepositoryId) -> Result<Vec<Issue>>;
 	async fn fetch_pull_request(
 		&self,
 		repo_owner: &str,
 		repo_name: &str,
 		pr_number: u64,
-	) -> Result<PullRequest>;
+	) -> Result<Issue>;
 	async fn fetch_user_by_id(&self, id: u64) -> Result<GithubUser>;
 
 	async fn search_users(
@@ -49,5 +46,5 @@ pub trait Service: Send + Sync {
 		order: Option<String>,
 		per_page: Option<u8>,
 		page: Option<u32>,
-	) -> Result<Vec<PullRequest>>;
+	) -> Result<Vec<Issue>>;
 }
