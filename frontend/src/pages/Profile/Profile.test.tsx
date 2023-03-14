@@ -23,6 +23,8 @@ const INVALID_ETHEREUM_ADDRESS = "0x1234567890";
 const VALID_ETHEREUM_ADDRESS = "0xebec795c9c8bbd61ffc14a6662944748f299cacf";
 const VALID_ENS = "vitalik.eth";
 
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
+
 const mockUser: UserInfo = {
   __typename: "UserInfo",
   userId: "test-user-id",
