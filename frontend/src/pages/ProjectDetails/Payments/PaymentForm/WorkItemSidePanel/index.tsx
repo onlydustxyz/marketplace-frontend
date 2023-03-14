@@ -32,23 +32,26 @@ export default function WorkItemSidePanel({ open, setOpen, onWorkItemAdded }: Pr
     HasuraUserRole.RegisteredUser,
     {
       onCompleted: data => {
-        data.fetchPullRequest
-          ? onWorkItemAdded({
-              issue: data.fetchPullRequest,
-              repository: {
-                name: repoName,
-                owner: repoOwner,
-              },
-            })
-          : setError(OTHER_PR_LINK_INPUT_NAME, {
-              type: "validate",
-              message: T("payment.form.workItems.addOtherPR.invalidPrLink"),
-            });
+        if (data.fetchPullRequest) {
+          onWorkItemAdded({
+            issue: data.fetchPullRequest,
+            repository: {
+              name: repoName,
+              owner: repoOwner,
+            },
+          });
+          resetField(OTHER_PR_LINK_INPUT_NAME);
+        } else {
+          setError(OTHER_PR_LINK_INPUT_NAME, {
+            type: "validate",
+            message: T("payment.form.workItems.addOtherPR.invalidPrLink"),
+          });
+        }
       },
     }
   );
 
-  const { watch, setError } = useFormContext();
+  const { watch, setError, resetField } = useFormContext();
   const { errors } = useFormState({ name: OTHER_PR_LINK_INPUT_NAME });
   const otherPrLink = watch(OTHER_PR_LINK_INPUT_NAME);
   const otherPrLinkError = errors[OTHER_PR_LINK_INPUT_NAME];
