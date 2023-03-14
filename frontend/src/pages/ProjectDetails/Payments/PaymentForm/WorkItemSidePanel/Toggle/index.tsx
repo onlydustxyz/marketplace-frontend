@@ -3,15 +3,17 @@ import { Switch } from "@headlessui/react";
 import classNames from "classnames";
 
 type Props = {
+  testId?: string;
   label?: string;
   icon?: ReactElement;
   enabled: boolean;
   setEnabled: (value: boolean) => void;
 };
 
-const Toggle: React.FC<Props> = ({ label, icon, enabled, setEnabled }) => {
+const Toggle: React.FC<Props> = ({ testId, label, icon, enabled, setEnabled }) => {
   return (
     <Switch
+      data-testid={testId}
       checked={enabled}
       onChange={setEnabled}
       className={classNames(

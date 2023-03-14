@@ -81,7 +81,7 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
             },
           }}
         />
-        <div className="-mt-0.5" onClick={validateOtherPR}>
+        <div className="-mt-0.5" onClick={validateOtherPR} data-testid="add-other-pr-btn">
           <Button
             size={ButtonSize.LgLowHeight}
             type={ButtonType.Secondary}

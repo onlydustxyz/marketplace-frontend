@@ -93,7 +93,7 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, onWorkItemsChan
                       ))}
                     </div>
                   </div>
-                  <div onClick={() => setSidePanelOpen(true)}>
+                  <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn">
                     <Button size={ButtonSize.Md} type={ButtonType.Secondary} width={Width.Full}>
                       <Add />
                       {T("payment.form.workItems.add")}
