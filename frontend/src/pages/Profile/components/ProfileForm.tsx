@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { HasuraUserRole } from "src/types";
-import { useForm, SubmitHandler, FormProvider, Controller } from "react-hook-form";
+import { useForm, SubmitHandler, FormProvider, Controller, SubmitErrorHandler } from "react-hook-form";
 import IBAN from "iban";
 
 import Input from "src/components/FormInput";
@@ -138,6 +138,13 @@ const ProfileForm: React.FC<PropsType> = ({
     updateUser(mapFormDataToSchema(formData));
   };
 
+  const onSubmitError: SubmitErrorHandler<Inputs> = () => {
+    const errorLabel = document.querySelector("label > div.text-orange-500");
+    if (errorLabel) {
+      errorLabel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   const payoutSettingsType = watch("payoutSettingsType");
   const profileType = watch("profileType");
   const IBANValue = watch("IBAN");
@@ -158,7 +165,7 @@ const ProfileForm: React.FC<PropsType> = ({
 
   return (
     <FormProvider {...formMethods}>
-      <form id="profile-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+      <form id="profile-form" onSubmit={handleSubmit(onSubmit, onSubmitError)} className="flex flex-col gap-5">
         <div className="flex flex-row gap-6 items-stretch">
           <Card className="basis-1/2 p-8 pb-3" padded={false}>
             <div>
