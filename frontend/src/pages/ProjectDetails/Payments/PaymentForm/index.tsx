@@ -8,6 +8,7 @@ import { generatePath, useLocation, useNavigate, useOutletContext } from "react-
 import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
+import { WorkItem } from "src/components/GithubIssue";
 
 export const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/pull\/(\d+)$/;
 
@@ -63,6 +64,17 @@ const PaymentForm: React.FC = () => {
     [formMethods]
   );
 
+  const onWorkItemsChange = useCallback(
+    (workItems: WorkItem[]) =>
+      formMethods.setValue(
+        "workItems",
+        workItems.map(
+          ({ repository, issue }) => `https://github.com/${repository.owner}/${repository.name}/pull/${issue.number}`
+        )
+      ),
+    [formMethods]
+  );
+
   return (
     <>
       <FormProvider {...formMethods}>
@@ -71,21 +83,24 @@ const PaymentForm: React.FC = () => {
           onSubmit={handleSubmit(onValidSubmit)}
           className="flex flex-col gap-6 justify-between w-full"
         >
-          <View budget={budget} projectId={projectId} onWorkEstimationChange={onWorkEstimationChange} />
+          <View
+            budget={budget}
+            projectId={projectId}
+            onWorkEstimationChange={onWorkEstimationChange}
+            onWorkItemsChange={onWorkItemsChange}
+          />
         </form>
       </FormProvider>
     </>
   );
 };
 
-const mapFormDataToSchema = ({ linkToIssue, amountToWire, contributor }: Inputs) => {
+const mapFormDataToSchema = ({ workItems, amountToWire, contributor }: Inputs) => {
   return {
     variables: {
       contributorId: contributor.id,
       amount: amountToWire,
-      reason: {
-        workItems: [linkToIssue],
-      },
+      reason: { workItems },
     },
   };
 };

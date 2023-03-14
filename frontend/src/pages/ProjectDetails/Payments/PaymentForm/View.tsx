@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import CloseLine from "src/icons/CloseLine";
 import Title from "../../Title";
 import Add from "src/icons/Add";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import { sortBy, uniqBy } from "lodash";
@@ -18,6 +18,7 @@ interface Props {
   projectId: string;
   budget: Budget;
   onWorkEstimationChange: (workEstimation: number) => void;
+  onWorkItemsChange: (workItems: WorkItem[]) => void;
 }
 
 type WorkItemAction = {
@@ -34,7 +35,7 @@ function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
   }
 }
 
-const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) => {
+const View: React.FC<Props> = ({ budget, onWorkEstimationChange, onWorkItemsChange, projectId }) => {
   const { T } = useIntl();
 
   const contributor = useWatch({ name: "contributor" });
@@ -42,6 +43,8 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   const [workItems, dispatchWorkItems] = useReducer(workItemsReducer, []);
+
+  useEffect(() => onWorkItemsChange(workItems), [workItems, onWorkItemsChange]);
 
   return (
     <>
@@ -100,7 +103,11 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
           </div>
         </div>
         <div className="basis-2/5">
-          <WorkEstimation onChange={onWorkEstimationChange} budget={budget} />
+          <WorkEstimation
+            onChange={onWorkEstimationChange}
+            budget={budget}
+            disabled={!contributor || workItems.length === 0}
+          />
         </div>
       </div>
     </>
