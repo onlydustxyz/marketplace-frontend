@@ -33,4 +33,6 @@ pub trait Service: Send + Sync {
 	) -> Result<PullRequest>;
 	async fn fetch_user_by_id(&self, id: u64) -> Result<GithubUser>;
 	async fn search_users(&self, query: &str, sort: &str, order: &str) -> Result<Vec<GithubUser>>;
+	async fn search_issues(&self, query: &str, sort: &str, order: &str)
+	-> Result<Vec<PullRequest>>;
 }

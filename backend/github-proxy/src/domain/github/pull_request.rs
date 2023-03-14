@@ -3,6 +3,7 @@
 use chrono::{DateTime, Utc};
 use derive_more::Constructor;
 use juniper::{GraphQLEnum, GraphQLObject};
+use url::Url;
 
 #[derive(GraphQLEnum)]
 pub enum Status {
@@ -16,6 +17,7 @@ pub struct PullRequest {
 	id: i32,
 	number: i32,
 	title: String,
+	repository_url: Url,
 	assignee_id: Option<i32>,
 	status: Status,
 	created_at: DateTime<Utc>,

@@ -67,7 +67,8 @@ impl Query {
 		pr_number: i32,
 	) -> Option<GithubPullRequest> {
 		context
-			.github_service
+			.github_service()
+			.ok()?
 			.fetch_pull_request(&repo_owner, &repo_name, pr_number as u64)
 			.await
 			.map_err(Error::from)
@@ -101,6 +102,23 @@ impl Query {
 			.github_service()
 			.ok()?
 			.search_users(&query, &sort, &order)
+			.await
+			.map_err(Error::from)
+			.logged()
+			.ok()
+	}
+
+	pub async fn search_issues(
+		&self,
+		context: &Context,
+		query: String,
+		sort: String,
+		order: String,
+	) -> Option<Vec<GithubPullRequest>> {
+		context
+			.github_service()
+			.ok()?
+			.search_issues(&query, &sort, &order)
 			.await
 			.map_err(Error::from)
 			.logged()

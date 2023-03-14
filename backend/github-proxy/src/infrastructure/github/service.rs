@@ -120,6 +120,28 @@ impl GithubService for github::Client {
 			.collect();
 		Ok(users)
 	}
+
+	#[instrument(skip(self))]
+	async fn search_issues(
+		&self,
+		query: &str,
+		sort: &str,
+		order: &str,
+	) -> GithubServiceResult<Vec<GithubPullRequest>> {
+		let issues = self
+			.search_issues(query, sort, order)
+			.await?
+			.into_iter()
+			.filter_map(|issue| match GithubPullRequest::try_from(issue) {
+				Ok(issue) => Some(issue),
+				Err(error) => {
+					error!(error = error.to_string(), "Failed to map Octocrab issue");
+					None
+				},
+			})
+			.collect();
+		Ok(issues)
+	}
 }
 
 impl From<octocrab::models::User> for GithubUser {
@@ -134,6 +156,43 @@ pub enum GithubPullRequestFromOctocrabPullRequestError {
 	MissingField(String),
 	#[error(transparent)]
 	UnknownStatus(#[from] GithubPullRequestStatusFromOctocrabPullRequestError),
+}
+
+impl TryFrom<octocrab::models::issues::Issue> for GithubPullRequest {
+	type Error = GithubPullRequestFromOctocrabPullRequestError;
+
+	fn try_from(issue: octocrab::models::issues::Issue) -> Result<Self, Self::Error> {
+		let id = issue
+			.id
+			.0
+			.try_into()
+			.expect("We cannot work with github ids superior to i32::MAX");
+
+		let number = issue
+			.number
+			.try_into()
+			.expect("We cannot work with github PR number superior to i32::MAX");
+
+		let assignee_id = issue.assignee.as_ref().map(|assignee| {
+			assignee
+				.id
+				.0
+				.try_into()
+				.expect("We cannot work with github ids superior to i32::MAX")
+		});
+
+		Ok(Self::new(
+			id,
+			number,
+			issue.title,
+			issue.repository_url,
+			assignee_id,
+			GithubPullRequestStatus::Open, // TODO
+			issue.created_at,
+			None, // TODO
+			issue.closed_at,
+		))
+	}
 }
 
 impl TryFrom<octocrab::models::pulls::PullRequest> for GithubPullRequest {
@@ -170,10 +229,16 @@ impl TryFrom<octocrab::models::pulls::PullRequest> for GithubPullRequest {
 			.created_at
 			.ok_or_else(|| Self::Error::MissingField("created_at".to_string()))?;
 
+		let repository_url = pull_request
+			.repo
+			.ok_or_else(|| Self::Error::MissingField("repo".to_string()))?
+			.url;
+
 		Ok(Self::new(
 			id,
 			number,
 			title,
+			repository_url,
 			assignee_id,
 			status,
 			created_at,

@@ -6,7 +6,7 @@ use std::{
 
 use anyhow::anyhow;
 use octocrab::{
-	models::{pulls::PullRequest, repos::Content, Repository, User},
+	models::{issues::Issue, pulls::PullRequest, repos::Content, Repository, User},
 	FromResponse, Octocrab, OctocrabBuilder,
 };
 use olog::{debug, tracing::instrument};
@@ -105,6 +105,26 @@ impl Client {
 			.octocrab()
 			.search()
 			.users(query)
+			.sort(sort)
+			.order(order)
+			.send()
+			.await?
+			.items)
+	}
+
+	/// Search issues using the Github Search API
+	/// See https://docs.github.com/en/rest/search?apiVersion=2022-11-28#search-issues-and-pull-requests for more info.
+	#[instrument(skip(self))]
+	pub async fn search_issues(
+		&self,
+		query: &str,
+		sort: &str,
+		order: &str,
+	) -> Result<Vec<Issue>, Error> {
+		Ok(self
+			.octocrab()
+			.search()
+			.issues_and_pull_requests(query)
 			.sort(sort)
 			.order(order)
 			.send()

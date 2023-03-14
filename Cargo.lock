@@ -1674,6 +1674,7 @@ dependencies = [
  "serde",
  "thiserror",
  "tracing",
+ "url",
 ]
 
 [[package]]
