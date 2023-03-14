@@ -85,6 +85,21 @@ impl GithubService for github::Client {
 	}
 
 	#[instrument(skip(self))]
+	async fn fetch_pull_request(
+		&self,
+		repo_owner: &str,
+		repo_name: &str,
+		pr_number: u64,
+	) -> GithubServiceResult<GithubPullRequest> {
+		self.get_pull_request(repo_owner, repo_name, pr_number)
+			.await?
+			.try_into()
+			.map_err(|e: GithubPullRequestFromOctocrabPullRequestError| {
+				GithubServiceError::Other(anyhow!(e))
+			})
+	}
+
+	#[instrument(skip(self))]
 	async fn fetch_user_by_id(&self, id: u64) -> GithubServiceResult<GithubUser> {
 		let user = self.get_user_by_id(id).await?;
 		Ok(user.into())

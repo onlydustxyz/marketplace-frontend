@@ -4,7 +4,7 @@ import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
 import View, { InputErrorDisplay } from "./View";
 
 type PropsType = {
-  label: string;
+  label?: string;
   type?: string;
   placeholder?: string;
   name: string;
@@ -20,6 +20,7 @@ type PropsType = {
   inputClassName?: string;
   showValidationErrors?: boolean;
   requiredForPayment?: boolean;
+  withMargin?: boolean;
 };
 
 export default function Input({
@@ -39,6 +40,7 @@ export default function Input({
   inputClassName,
   showValidationErrors = true,
   requiredForPayment = false,
+  withMargin = true,
 }: PropsType) {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
@@ -68,6 +70,7 @@ export default function Input({
         inputClassName,
         showValidationErrors,
         requiredForPayment,
+        withMargin,
       }}
     />
   );
