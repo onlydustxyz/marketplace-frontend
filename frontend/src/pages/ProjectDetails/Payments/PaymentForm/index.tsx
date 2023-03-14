@@ -10,8 +10,6 @@ import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { WorkItem } from "src/components/GithubIssue";
 
-export const REGEX_VALID_GITHUB_PULL_REQUEST_URL = /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+)\/pull\/(\d+)$/;
-
 const PaymentForm: React.FC = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();

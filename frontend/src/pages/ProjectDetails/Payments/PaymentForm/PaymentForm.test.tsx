@@ -3,7 +3,6 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
 
-import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from ".";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentForm from ".";
@@ -182,25 +181,5 @@ describe('"PaymentForm" component', () => {
     await userEvent.type(await screen.findByPlaceholderText(/github/i), "not-a-link");
     const errorMessages = screen.getAllByText(/oops/i);
     expect(errorMessages.length).toBe(1);
-  });
-});
-
-describe.each([
-  { link: "https://github.com/onlydustxyz/marketplace/pull/504", shouldMatch: true },
-  { link: "https://github.com/only-dust.xyz123/42_market---p.l.a.c.e/pull/66666", shouldMatch: true },
-  { link: "https://github.com/ONLY-dust/F00/pull/66666", shouldMatch: true },
-  { link: "https://github.com/onlydust/xyz/marketplace/pull/504", shouldMatch: false },
-  { link: "https://github.co/onlydustxyz/marketplace/pull/504", shouldMatch: false },
-  { link: "https://github.com/onlydustxyz/marketplace/issues/504", shouldMatch: false },
-  { link: "https://github.com/onlydustxyz/pull/504", shouldMatch: false },
-  { link: "https://github.com/onlydustxyz/marketplace/pull/", shouldMatch: false },
-  {
-    link: "https://github.com/onlydustxyz/marketplace/pull/504, https://github.com/onlydustxyz/marketplace/pull/505",
-    shouldMatch: false,
-  },
-  { link: "not-a-link", shouldMatch: false },
-])("Github PR validation regexp", ({ link, shouldMatch }) => {
-  test(`should ${shouldMatch ? "" : "not "}match link '${link}'`, async () => {
-    expect(REGEX_VALID_GITHUB_PULL_REQUEST_URL.test(link)).toEqual(shouldMatch);
   });
 });
