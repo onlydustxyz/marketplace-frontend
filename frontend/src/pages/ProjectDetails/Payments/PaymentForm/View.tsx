@@ -9,13 +9,28 @@ import { useNavigate } from "react-router-dom";
 import CloseLine from "src/icons/CloseLine";
 import Title from "../../Title";
 import Add from "src/icons/Add";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
+import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 
 interface Props {
   projectId: string;
   budget: Budget;
   onWorkEstimationChange: (workEstimation: number) => void;
+}
+
+type WorkItemAction = {
+  action: "add" | "remove";
+  workItem: WorkItem;
+};
+
+function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
+  switch (action.action) {
+    case "add":
+      return [...workItems, action.workItem];
+    case "remove":
+      return workItems.filter(w => w !== action.workItem);
+  }
 }
 
 const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) => {
@@ -24,6 +39,8 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
   const contributor = useWatch({ name: "contributor" });
   const navigate = useNavigate();
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
+
+  const [workItems, dispatchWorkItems] = useReducer(workItemsReducer, []);
 
   return (
     <>
@@ -53,7 +70,12 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
                 <Card className="flex flex-col px-8 pb-8 z-0 gap-8">
                   <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
                     <div className="font-medium text-lg">{T("payment.form.workItems.title")}</div>
-                    <span className="pt-3 text-greyscale-300">{T("payment.form.workItems.subTitle")}</span>
+                    <div className="flex flex-col gap-3">
+                      <div className="pt-3 text-greyscale-300">{T("payment.form.workItems.subTitle")}</div>
+                      {workItems.map(w => (
+                        <GithubIssue key={w.issue.id} {...w} action={Action.Remove} />
+                      ))}
+                    </div>
                   </div>
                   <div onClick={() => setSidePanelOpen(true)}>
                     <Button size={ButtonSize.Md} type={ButtonType.Secondary} width={Width.Full}>
@@ -62,7 +84,11 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, projectId }) =>
                     </Button>
                   </div>
                 </Card>
-                <WorkItemSidePanel open={sidePanelOpen} setOpen={setSidePanelOpen} />
+                <WorkItemSidePanel
+                  open={sidePanelOpen}
+                  setOpen={setSidePanelOpen}
+                  onWorkItemAdded={(workItem: WorkItem) => dispatchWorkItems({ action: "add", workItem })}
+                />
               </>
             )}
           </div>
