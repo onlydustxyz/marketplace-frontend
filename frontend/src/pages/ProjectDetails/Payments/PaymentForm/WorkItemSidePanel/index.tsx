@@ -53,10 +53,11 @@ export default function WorkItemSidePanel({ open, setOpen }: Props) {
                   <Input
                     name="otherPrLink"
                     placeholder={T("payment.form.workItems.addOtherPR.placeholder")}
+                    withMargin={false}
                     options={{
                       pattern: {
                         value: REGEX_VALID_GITHUB_PULL_REQUEST_URL,
-                        message: T("payment.form.issueLink.error"),
+                        message: T("payment.form.workItems.addOtherPR.notALink"),
                       },
                     }}
                   />
