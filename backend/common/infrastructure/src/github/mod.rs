@@ -92,6 +92,17 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
+	pub async fn get_pull_request(
+		&self,
+		repo_owner: &str,
+		repo_name: &str,
+		pr_number: u64,
+	) -> Result<PullRequest, Error> {
+		let pr = self.octocrab().pulls(repo_owner, repo_name).get(pr_number).await?;
+		Ok(pr)
+	}
+
+	#[instrument(skip(self))]
 	pub async fn get_user_by_name(&self, username: &str) -> Result<User, Error> {
 		self.get_as(format!("{}users/{username}", self.octocrab().base_url)).await
 	}

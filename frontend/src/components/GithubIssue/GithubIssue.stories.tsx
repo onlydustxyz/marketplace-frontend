@@ -55,7 +55,6 @@ export default {
 
 const props: Props = {
   repository: {
-    id: 545531678,
     owner: "sayajin-labs",
     name: "kakarot",
   },

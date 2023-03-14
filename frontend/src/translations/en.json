@@ -82,11 +82,22 @@
       "days": "days",
       "disabled": "Select a contributor and enter link to pull request to send payment",
       "estimate": "Estimate time spent",
-      "issueLink": {
-        "error": "Oops, this doesn't look like a pull request",
-        "inputLabel": "Please add a link to the corresponding pull request on Github",
-        "placeholder": "Enter pull request link here",
-        "title": "Contribution to pay"
+      "workItems": {
+        "add": "Add work item",
+        "addOtherPR": {
+          "add": "Add",
+          "button": "Add other PR",
+          "notALink": "Oops, this doesn't look like a pull request",
+          "invalidPrLink": "Hmm... we can't find this PR. Check the link and try again",
+          "placeholder": "github.com/example/repo/pull/472",
+          "label": "Add specific PR using URL"
+        },
+        "subTitle": "Add contributions that should be part of this payment",
+        "title": "Work items",
+        "emptyState": {
+          "title": "Nothing to show",
+          "subtitle": "Add work items using their links"
+        }
       },
       "leftToSpend": "Left to spend",
       "remainingBudget": "Remaining budget",
