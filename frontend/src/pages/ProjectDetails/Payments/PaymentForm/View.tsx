@@ -33,7 +33,7 @@ type WorkItemAction =
 function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
   switch (action.action) {
     case "add":
-      return sortBy(uniqBy([...workItems, action.workItem], "issue.id"), ["repo.owner", "repo.name", "issue.number"]);
+      return sortBy(uniqBy([...workItems, action.workItem], "issue.id"), "issue.createdAt").reverse();
     case "remove":
       return workItems.filter(w => w !== action.workItem);
     case "clear":

@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { differenceBy, differenceWith } from "lodash";
+import { differenceBy, differenceWith, sortBy } from "lodash";
 import { useMemo, useState } from "react";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import QueryWrapper from "src/components/QueryWrapper";
@@ -60,14 +60,17 @@ export default function PullRequests({ projectId, workItems, onWorkItemAdded }: 
 
   const elligiblePulls = useMemo(
     () =>
-      differenceWith(
-        differenceBy(pulls, workItems, "issue.id"),
-        paidItems,
-        (pr, paidItem) =>
-          pr.repository.owner === paidItem.repoOwner &&
-          pr.repository.name === paidItem.repoName &&
-          pr.issue.number === paidItem.prNumber
-      ),
+      sortBy(
+        differenceWith(
+          differenceBy(pulls, workItems, "issue.id"),
+          paidItems,
+          (pr, paidItem) =>
+            pr.repository.owner === paidItem.repoOwner &&
+            pr.repository.name === paidItem.repoName &&
+            pr.issue.number === paidItem.prNumber
+        ),
+        "issue.createdAt"
+      ).reverse(),
     [pulls, paidItems, workItems]
   );
 
