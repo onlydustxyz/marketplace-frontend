@@ -8,15 +8,57 @@ import Input from "src/components/FormInput";
 import Toggle from "./Toggle";
 import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "..";
 import EmptyState from "./EmptyState";
+import { WorkItem } from "src/components/GithubIssue";
+import { gql } from "@apollo/client";
+import { FetchPullRequestQuery, PullRequestDetailsFragmentDoc } from "src/__generated/graphql";
+import { useHasuraLazyQuery } from "src/hooks/useHasuraQuery";
+import { HasuraUserRole } from "src/types";
+import { useFormContext, useFormState } from "react-hook-form";
 
 type Props = {
   open: boolean;
   setOpen: (value: boolean) => void;
+  onWorkItemAdded: (workItem: WorkItem) => void;
 };
+
+const OTHER_PR_LINK_INPUT_NAME = "otherPrLink";
 
 export default function WorkItemSidePanel({ open, setOpen }: Props) {
   const { T } = useIntl();
   const [addOtherPrEnabled, setAddOtherPrEnabled] = useState(true);
+
+  const [fetchPullRequest] = useHasuraLazyQuery<FetchPullRequestQuery>(
+    FETCH_PR_DETAILS,
+    HasuraUserRole.RegisteredUser,
+    {
+      onCompleted: data => {
+        if (!data.fetchPullRequest) {
+          setError(OTHER_PR_LINK_INPUT_NAME, {
+            type: "validate",
+            message: T("payment.form.workItems.addOtherPR.invalidPrLink"),
+          });
+        }
+      },
+    }
+  );
+
+  const { watch, setError } = useFormContext();
+  const { errors } = useFormState({ name: OTHER_PR_LINK_INPUT_NAME });
+  const otherPrLink = watch(OTHER_PR_LINK_INPUT_NAME);
+  const otherPrLinkError = errors[OTHER_PR_LINK_INPUT_NAME];
+
+  const validateOtherPR = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, repoOwner, repoName, prNumber] = otherPrLink.match(REGEX_VALID_GITHUB_PULL_REQUEST_URL);
+
+    fetchPullRequest({
+      variables: {
+        repoOwner,
+        repoName,
+        prNumber: parseInt(prNumber),
+      },
+    });
+  };
 
   return (
     <Transition
@@ -51,7 +93,7 @@ export default function WorkItemSidePanel({ open, setOpen }: Props) {
                 </div>
                 <div className="flex flex-row gap-2 items-top">
                   <Input
-                    name="otherPrLink"
+                    name={OTHER_PR_LINK_INPUT_NAME}
                     placeholder={T("payment.form.workItems.addOtherPR.placeholder")}
                     withMargin={false}
                     options={{
@@ -61,8 +103,12 @@ export default function WorkItemSidePanel({ open, setOpen }: Props) {
                       },
                     }}
                   />
-                  <div className="-mt-0.5">
-                    <Button size={ButtonSize.LgLowHeight} type={ButtonType.Secondary}>
+                  <div className="-mt-0.5" onClick={validateOtherPR}>
+                    <Button
+                      size={ButtonSize.LgLowHeight}
+                      type={ButtonType.Secondary}
+                      disabled={!otherPrLink || !!otherPrLinkError}
+                    >
                       {T("payment.form.workItems.addOtherPR.add")}
                     </Button>
                   </div>
@@ -76,3 +122,12 @@ export default function WorkItemSidePanel({ open, setOpen }: Props) {
     </Transition>
   );
 }
+
+const FETCH_PR_DETAILS = gql`
+  ${PullRequestDetailsFragmentDoc}
+  query fetchPullRequest($repoOwner: String!, $repoName: String!, $prNumber: Int!) {
+    fetchPullRequest(repoOwner: $repoOwner, repoName: $repoName, prNumber: $prNumber) {
+      ...PullRequestDetails
+    }
+  }
+`;
