@@ -8,7 +8,7 @@ import { FetchPullRequestQuery, PullRequestDetailsFragmentDoc } from "src/__gene
 import { useHasuraLazyQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { useFormContext, useFormState } from "react-hook-form";
-import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "../..";
+import { parsePullRequestLink, REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/utils/github";
 
 type Props = {
   onWorkItemAdded: (workItem: WorkItem) => void;
@@ -48,11 +48,7 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
   const otherPrLink = watch(INPUT_NAME);
   const otherPrLinkError = errors[INPUT_NAME];
 
-  const [repoOwner, repoName, prNumber] = useMemo(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, repoOwner, repoName, prNumber] = otherPrLink?.match(REGEX_VALID_GITHUB_PULL_REQUEST_URL) || [];
-    return [repoOwner, repoName, parseInt(prNumber)];
-  }, [otherPrLink]);
+  const { repoOwner, repoName, prNumber } = useMemo(() => parsePullRequestLink(otherPrLink), [otherPrLink]);
 
   const validateOtherPR = () => {
     fetchPullRequest({

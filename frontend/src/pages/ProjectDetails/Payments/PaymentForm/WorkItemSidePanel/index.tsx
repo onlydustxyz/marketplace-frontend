@@ -1,23 +1,21 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import CloseLine from "src/icons/CloseLine";
 import { useIntl } from "src/hooks/useIntl";
-import Link from "src/icons/Link";
-import Toggle from "./Toggle";
-import EmptyState from "./EmptyState";
 import { WorkItem } from "src/components/GithubIssue";
-import OtherPrInput from "./OtherPrInput";
+import PullRequests from "./PullRequests";
 
 type Props = {
+  projectId: string;
   open: boolean;
   setOpen: (value: boolean) => void;
+  workItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
 };
 
-export default function WorkItemSidePanel({ open, setOpen, onWorkItemAdded }: Props) {
+export default function WorkItemSidePanel({ projectId, open, setOpen, workItems, onWorkItemAdded }: Props) {
   const { T } = useIntl();
-  const [addOtherPrEnabled, setAddOtherPrEnabled] = useState(false);
 
   return (
     <Transition
@@ -42,17 +40,7 @@ export default function WorkItemSidePanel({ open, setOpen, onWorkItemAdded }: Pr
             </Button>
           </div>
           <div className="font-belwe font-normal text-2xl text-greyscale-50">{T("payment.form.workItems.add")}</div>
-          <div className="flex flex-col gap-3">
-            <Toggle
-              enabled={addOtherPrEnabled}
-              setEnabled={setAddOtherPrEnabled}
-              icon={<Link />}
-              label={T("payment.form.workItems.addOtherPR.button")}
-              testId="add-other-pr-toggle"
-            />
-            {addOtherPrEnabled && <OtherPrInput onWorkItemAdded={onWorkItemAdded} />}
-          </div>
-          <EmptyState />
+          <PullRequests projectId={projectId} workItems={workItems} onWorkItemAdded={onWorkItemAdded} />
         </Dialog.Panel>
       </Dialog>
     </Transition>

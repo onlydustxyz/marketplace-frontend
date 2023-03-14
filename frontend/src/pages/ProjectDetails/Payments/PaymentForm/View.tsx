@@ -101,8 +101,10 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, onWorkItemsChan
                   </div>
                 </Card>
                 <WorkItemSidePanel
+                  projectId={projectId}
                   open={sidePanelOpen}
                   setOpen={setSidePanelOpen}
+                  workItems={workItems}
                   onWorkItemAdded={(workItem: WorkItem) => dispatchWorkItems({ action: "add", workItem })}
                 />
               </>
