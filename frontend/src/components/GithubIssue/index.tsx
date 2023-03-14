@@ -12,6 +12,7 @@ import { PullRequestDetailsFragment, RepositoryDetailsForGithubIssueFragment, St
 import Button, { ButtonSize, ButtonType } from "../Button";
 import Card from "../Card";
 import ExternalLink from "../ExternalLink";
+import Tooltip from "../Tooltip";
 
 export enum Action {
   Add = "add",
@@ -29,15 +30,22 @@ export type Props = {
 } & WorkItem;
 
 export default function GithubIssue({ action, repository, issue, onClick }: Props) {
+  const { T } = useIntl();
+
   return (
     <Card padded={false} blurred={false} className="p-4 flex flex-row gap-3">
       {action && (
-        <div onClick={onClick}>
-          <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
-            {action === Action.Add && <Add />}
-            {action === Action.Remove && <Subtract />}
-          </Button>
-        </div>
+        <>
+          <div id={`github-issue-action-${issue.id}`} onClick={onClick} className="h-fit">
+            <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
+              {action === Action.Add && <Add />}
+              {action === Action.Remove && <Subtract />}
+            </Button>
+          </div>
+          {action === Action.Add && (
+            <Tooltip anchorId={`github-issue-action-${issue.id}`}>{T("githubIssue.addTooltip")}</Tooltip>
+          )}
+        </>
       )}
       <div className="flex flex-col gap-2 font-walsheim ">
         <div className="font-medium text-sm text-greyscale-50">

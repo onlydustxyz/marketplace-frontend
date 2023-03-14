@@ -38,6 +38,7 @@
     "tokenMissing": "Github authentication token missing!"
   },
   "githubIssue": {
+    "addTooltip": "Add work item",
     "status": {
       "closed": "Closed __closedAt__",
       "merged": "Merged __mergedAt__",
