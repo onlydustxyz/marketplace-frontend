@@ -132,6 +132,9 @@ Default.args = {
   onWorkEstimationChange: () => {
     return;
   },
+  onWorkItemsChange: () => {
+    return;
+  },
   projectId,
 };
 
