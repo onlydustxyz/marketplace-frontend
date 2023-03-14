@@ -109,11 +109,13 @@ impl GithubService for github::Client {
 	async fn search_users(
 		&self,
 		query: &str,
-		sort: &str,
-		order: &str,
+		sort: Option<String>,
+		order: Option<String>,
+		per_page: Option<u8>,
+		page: Option<u32>,
 	) -> GithubServiceResult<Vec<GithubUser>> {
 		let users = self
-			.search_users(query, sort, order)
+			.search_users(query, sort, order, per_page, page)
 			.await?
 			.into_iter()
 			.map(GithubUser::from)
@@ -125,11 +127,13 @@ impl GithubService for github::Client {
 	async fn search_issues(
 		&self,
 		query: &str,
-		sort: &str,
-		order: &str,
+		sort: Option<String>,
+		order: Option<String>,
+		per_page: Option<u8>,
+		page: Option<u32>,
 	) -> GithubServiceResult<Vec<GithubPullRequest>> {
 		let issues = self
-			.search_issues(query, sort, order)
+			.search_issues(query, sort, order, per_page, page)
 			.await?
 			.into_iter()
 			.filter_map(|issue| match GithubPullRequest::try_from(issue) {

@@ -95,13 +95,21 @@ impl Query {
 		&self,
 		context: &Context,
 		query: String,
-		sort: String,
-		order: String,
+		sort: Option<String>,
+		order: Option<String>,
+		per_page: Option<i32>,
+		page: Option<i32>,
 	) -> Option<Vec<GithubUser>> {
 		context
 			.github_service()
 			.ok()?
-			.search_users(&query, &sort, &order)
+			.search_users(
+				&query,
+				sort,
+				order,
+				per_page.and_then(|n| u8::try_from(n).ok()),
+				page.and_then(|n| u32::try_from(n).ok()),
+			)
 			.await
 			.map_err(Error::from)
 			.logged()
@@ -112,13 +120,21 @@ impl Query {
 		&self,
 		context: &Context,
 		query: String,
-		sort: String,
-		order: String,
+		sort: Option<String>,
+		order: Option<String>,
+		per_page: Option<i32>,
+		page: Option<i32>,
 	) -> Option<Vec<GithubPullRequest>> {
 		context
 			.github_service()
 			.ok()?
-			.search_issues(&query, &sort, &order)
+			.search_issues(
+				&query,
+				sort,
+				order,
+				per_page.and_then(|n| u8::try_from(n).ok()),
+				page.and_then(|n| u32::try_from(n).ok()),
+			)
 			.await
 			.map_err(Error::from)
 			.logged()
