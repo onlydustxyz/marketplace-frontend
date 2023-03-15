@@ -175,22 +175,15 @@ impl TryFrom<octocrab::models::issues::Issue> for GithubIssue {
 			.try_into()
 			.expect("We cannot work with github PR number superior to i32::MAX");
 
-		let assignee_id = issue.assignee.as_ref().map(|assignee| {
-			assignee
-				.id
-				.0
-				.try_into()
-				.expect("We cannot work with github ids superior to i32::MAX")
-		});
-
 		let status = (&issue).try_into()?;
 
 		Ok(Self::new(
 			id,
 			number,
 			issue.title,
+			issue.html_url,
+			issue.user.html_url,
 			issue.repository_url,
-			assignee_id,
 			status,
 			issue.created_at,
 			issue.pull_request.and_then(|pr| pr.merged_at),
@@ -219,14 +212,6 @@ impl TryFrom<octocrab::models::pulls::PullRequest> for GithubIssue {
 			.clone()
 			.ok_or_else(|| Self::Error::MissingField("title".to_string()))?;
 
-		let assignee_id = pull_request.assignee.as_ref().map(|assignee| {
-			assignee
-				.id
-				.0
-				.try_into()
-				.expect("We cannot work with github ids superior to i32::MAX")
-		});
-
 		let status = (&pull_request).try_into()?;
 
 		let created_at = pull_request
@@ -238,12 +223,22 @@ impl TryFrom<octocrab::models::pulls::PullRequest> for GithubIssue {
 			.ok_or_else(|| Self::Error::MissingField("repo".to_string()))?
 			.url;
 
+		let html_url = pull_request
+			.html_url
+			.ok_or_else(|| Self::Error::MissingField("html_url".to_string()))?;
+
+		let user_html_url = pull_request
+			.user
+			.ok_or_else(|| Self::Error::MissingField("user".to_string()))?
+			.html_url;
+
 		Ok(Self::new(
 			id,
 			number,
 			title,
+			html_url,
+			user_html_url,
 			repository_url,
-			assignee_id,
 			status,
 			created_at,
 			pull_request.merged_at,
