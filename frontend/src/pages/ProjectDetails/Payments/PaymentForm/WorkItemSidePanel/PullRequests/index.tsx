@@ -128,11 +128,6 @@ const GET_PAID_WORK_ITEMS = gql`
     name
   }
 
-  fragment PaymentRequestReason on PaymentRequests {
-    id
-    reason
-  }
-
   query getPaidWorkItems($projectId: uuid!) {
     projectsByPk(id: $projectId) {
       githubRepos {
@@ -143,7 +138,8 @@ const GET_PAID_WORK_ITEMS = gql`
       budgets {
         id
         paymentRequests {
-          ...PaymentRequestReason
+          id
+          reason
         }
       }
     }

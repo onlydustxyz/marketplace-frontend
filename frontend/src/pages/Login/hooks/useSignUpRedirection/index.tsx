@@ -75,6 +75,7 @@ export const PENDING_USER_PAYMENTS = gql`
     user(id: $userId) {
       githubUser {
         paymentRequests {
+          id
           amountInUsd
           paymentsAggregate {
             aggregate {
