@@ -182,7 +182,6 @@ impl TryFrom<octocrab::models::issues::Issue> for GithubIssue {
 			number,
 			issue.title,
 			issue.html_url,
-			issue.user.html_url,
 			issue.repository_url,
 			status,
 			issue.created_at,
@@ -227,17 +226,11 @@ impl TryFrom<octocrab::models::pulls::PullRequest> for GithubIssue {
 			.html_url
 			.ok_or_else(|| Self::Error::MissingField("html_url".to_string()))?;
 
-		let user_html_url = pull_request
-			.user
-			.ok_or_else(|| Self::Error::MissingField("user".to_string()))?
-			.html_url;
-
 		Ok(Self::new(
 			id,
 			number,
 			title,
 			html_url,
-			user_html_url,
 			repository_url,
 			status,
 			created_at,

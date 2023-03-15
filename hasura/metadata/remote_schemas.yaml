@@ -109,7 +109,6 @@
             mergedAt: DateTimeUtc
             number: Int!
             htmlUrl: Url!
-            userHtmlUrl: Url!
             repositoryUrl: Url!
             status: Status!
             title: String!
@@ -156,7 +155,6 @@
             status: Status!
             title: String!
             htmlUrl: Url!
-            userHtmlUrl: Url!
             repositoryUrl: Url!
           }
           type Query {
