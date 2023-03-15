@@ -185,7 +185,6 @@ impl TryFrom<octocrab::models::issues::Issue> for GithubIssue {
 			number,
 			issue.title,
 			issue.html_url,
-			issue.repository_url,
 			status,
 			issue.created_at,
 			issue.pull_request.and_then(|pr| pr.merged_at),
@@ -220,11 +219,6 @@ impl TryFrom<octocrab::models::pulls::PullRequest> for GithubIssue {
 			.created_at
 			.ok_or_else(|| Self::Error::MissingField("created_at".to_string()))?;
 
-		let repository_url = pull_request
-			.repo
-			.ok_or_else(|| Self::Error::MissingField("repo".to_string()))?
-			.url;
-
 		let html_url = pull_request
 			.html_url
 			.ok_or_else(|| Self::Error::MissingField("html_url".to_string()))?;
@@ -234,7 +228,6 @@ impl TryFrom<octocrab::models::pulls::PullRequest> for GithubIssue {
 			number,
 			title,
 			html_url,
-			repository_url,
 			status,
 			created_at,
 			pull_request.merged_at,

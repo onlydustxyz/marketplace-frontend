@@ -18,7 +18,6 @@ pub struct Issue {
 	number: i32,
 	title: String,
 	html_url: Url,
-	repository_url: Url,
 	status: Status,
 	created_at: DateTime<Utc>,
 	merged_at: Option<DateTime<Utc>>,
