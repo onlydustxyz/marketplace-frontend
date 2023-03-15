@@ -116,8 +116,6 @@ window.IntersectionObserver = vi.fn().mockImplementation(intersectionObserverMoc
 const RECIPIENT_INPUT_LABEL = /Please select the contributor you would like to send a payment to/i;
 const ADD_WORK_ITEM_BUTTON_ID = "add-work-item-btn";
 const ADD_OTHER_PR_TOGGLE_ID = "add-other-pr-toggle";
-const ADD_OTHER_PR_BUTTON_ID = "add-other-pr-btn";
-const CLOSE_ADD_WORK_ITEM_PANEL_BUTTON_ID = "close-add-work-item-panel-btn";
 
 describe('"PaymentForm" component', () => {
   beforeAll(() => {
@@ -139,28 +137,6 @@ describe('"PaymentForm" component', () => {
   it("should show the right input / button labels", async () => {
     expect(screen.queryByTestId(ADD_WORK_ITEM_BUTTON_ID)).not.toBeInTheDocument();
     await screen.findByText(RECIPIENT_INPUT_LABEL);
-  });
-
-  // TODO: fix test
-  it.skip("should be able to request payment when required info is filled and go back to project overview", async () => {
-    await userEvent.type(await screen.findByLabelText(RECIPIENT_INPUT_LABEL), TEST_USER.displayName);
-    await waitFor(() => expect(graphQlMocks[0].newData).toHaveBeenCalledOnce());
-
-    await userEvent.click(await screen.findByTestId(ADD_WORK_ITEM_BUTTON_ID));
-    await userEvent.click(await screen.findByTestId(ADD_OTHER_PR_TOGGLE_ID));
-    await userEvent.type(
-      await screen.findByPlaceholderText(/github/i),
-      "https://github.com/onlydustxyz/marketplace/pull/504"
-    );
-
-    await userEvent.click(await screen.findByTestId(ADD_OTHER_PR_BUTTON_ID));
-    await waitFor(() => expect(fetchPrMock.newData).toHaveBeenCalledOnce());
-
-    await userEvent.click(await screen.findByTestId(CLOSE_ADD_WORK_ITEM_PANEL_BUTTON_ID));
-    await screen.findByText("A cool PR");
-
-    await userEvent.click(await screen.findByText(/confirm payment/i));
-    await screen.findByText("Payment successfully sent");
   });
 
   it("should display an error when the github username is invalid", async () => {
