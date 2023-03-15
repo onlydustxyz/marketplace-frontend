@@ -2434,6 +2434,7 @@ export type Query_Root = {
   /** fetch data from the table: "projects_sponsors" using primary key columns */
   projectsSponsorsByPk: Maybe<ProjectsSponsors>;
   searchIssues: Maybe<Array<Issue>>;
+  searchUsers: Maybe<Array<User>>;
   /** fetch data from the table: "sponsors" */
   sponsors: Array<Sponsors>;
   /** fetch data from the table: "sponsors" using primary key columns */
@@ -2659,6 +2660,13 @@ export type Query_RootSearchIssuesArgs = {
   order: InputMaybe<Scalars['String']>;
   page: InputMaybe<Scalars['Int']>;
   perPage: InputMaybe<Scalars['Int']>;
+  query: Scalars['String'];
+  sort: InputMaybe<Scalars['String']>;
+};
+
+
+export type Query_RootSearchUsersArgs = {
+  order: InputMaybe<Scalars['String']>;
   query: Scalars['String'];
   sort: InputMaybe<Scalars['String']>;
 };
@@ -3361,10 +3369,6 @@ export type Users_StreamCursorValueInput = {
   phoneNumberVerified: InputMaybe<Scalars['Boolean']>;
 };
 
-export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> };
-
-export type IssueDetailsFragment = { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null };
-
 export type UserIdentityQueryVariables = Exact<{
   userId: Scalars['uuid'];
 }>;
@@ -3378,6 +3382,8 @@ export type GetPaymentRequestIdsQueryVariables = Exact<{
 
 
 export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> };
+
+export type IssueDetailsFragment = { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null };
 
 export type ProjectCardGithubRepoFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null };
 
@@ -3469,6 +3475,8 @@ export type ProfileQueryVariables = Exact<{
 
 export type ProfileQuery = { __typename?: 'query_root', userInfoByPk: { __typename?: 'UserInfo', userId: any, identity: any | null, contactInformation: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean | null } | null };
 
+export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> };
+
 export type GithubRepoContributorsFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } | null } | null };
 
 export type GetProjectContributorsQueryVariables = Exact<{
@@ -3514,12 +3522,19 @@ export type GetProjectOverviewDetailsQueryVariables = Exact<{
 
 export type GetProjectOverviewDetailsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, longDescription: string, logoUrl: string | null } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', stars: number } | null } | null }> } | null };
 
+export type SearchGithubUsersByHandleSubstringQueryVariables = Exact<{
+  handleSubstringQuery: Scalars['String'];
+}>;
+
+
+export type SearchGithubUsersByHandleSubstringQuery = { __typename?: 'query_root', searchUsers: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> | null };
+
 export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> } | null };
+export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> } | null };
 
 export type FetchPullRequestQueryVariables = Exact<{
   repoOwner: Scalars['String'];
@@ -4539,6 +4554,46 @@ export function useGetProjectOverviewDetailsLazyQuery(baseOptions?: Apollo.LazyQ
 export type GetProjectOverviewDetailsQueryHookResult = ReturnType<typeof useGetProjectOverviewDetailsQuery>;
 export type GetProjectOverviewDetailsLazyQueryHookResult = ReturnType<typeof useGetProjectOverviewDetailsLazyQuery>;
 export type GetProjectOverviewDetailsQueryResult = Apollo.QueryResult<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>;
+export const SearchGithubUsersByHandleSubstringDocument = gql`
+    query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
+  searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc") {
+    id
+    login
+    avatarUrl
+    user {
+      userId
+    }
+  }
+}
+    `;
+
+/**
+ * __useSearchGithubUsersByHandleSubstringQuery__
+ *
+ * To run a query within a React component, call `useSearchGithubUsersByHandleSubstringQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchGithubUsersByHandleSubstringQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchGithubUsersByHandleSubstringQuery({
+ *   variables: {
+ *      handleSubstringQuery: // value for 'handleSubstringQuery'
+ *   },
+ * });
+ */
+export function useSearchGithubUsersByHandleSubstringQuery(baseOptions: Apollo.QueryHookOptions<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>(SearchGithubUsersByHandleSubstringDocument, options);
+      }
+export function useSearchGithubUsersByHandleSubstringLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>(SearchGithubUsersByHandleSubstringDocument, options);
+        }
+export type SearchGithubUsersByHandleSubstringQueryHookResult = ReturnType<typeof useSearchGithubUsersByHandleSubstringQuery>;
+export type SearchGithubUsersByHandleSubstringLazyQueryHookResult = ReturnType<typeof useSearchGithubUsersByHandleSubstringLazyQuery>;
+export type SearchGithubUsersByHandleSubstringQueryResult = Apollo.QueryResult<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>;
 export const GetProjectContributorsForPaymentSelectDocument = gql`
     query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
   projectsByPk(id: $projectId) {
@@ -4554,7 +4609,6 @@ export const GetProjectContributorsForPaymentSelectDocument = gql`
       }
     }
     budgets {
-      id
       paymentRequests {
         id
         githubRecipient {
