@@ -103,12 +103,13 @@
           scalar DateTimeUtc
           scalar Url
           type Issue {
-            assigneeId: Int
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             id: Int!
             mergedAt: DateTimeUtc
             number: Int!
+            htmlUrl: Url!
+            userHtmlUrl: Url!
             repositoryUrl: Url!
             status: Status!
             title: String!
@@ -147,7 +148,6 @@
           }
           scalar DateTimeUtc
           type Issue {
-            assigneeId: Int
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             id: Int!
@@ -155,6 +155,9 @@
             number: Int!
             status: Status!
             title: String!
+            htmlUrl: Url!
+            userHtmlUrl: Url!
+            repositoryUrl: Url!
           }
           type Query {
             fetchRepositoryDetails(id: Int!): Repository
