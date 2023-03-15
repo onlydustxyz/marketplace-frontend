@@ -33,16 +33,19 @@ impl GithubService for github::Client {
 			None => Default::default(),
 		};
 
-		let owner = repo.owner.ok_or_else(|| {
-			GithubServiceError::MissingRepositoryOwner(anyhow!(
-				"Missing owner in github repository"
-			))
-		})?;
+		let owner = repo
+			.owner
+			.ok_or_else(|| GithubServiceError::MissingField("owner".to_string()))?;
+
+		let html_url = repo
+			.html_url
+			.ok_or_else(|| GithubServiceError::MissingField("html_url".to_string()))?;
 
 		Ok(GithubRepository::new(
 			id as i32,
 			contributors.into_iter().map(Into::into).collect(),
-			owner.avatar_url.to_string(),
+			owner.avatar_url,
+			html_url,
 			repo.description.unwrap_or_default(),
 			repo.stargazers_count.unwrap_or_default() as i32,
 			repo.forks_count.unwrap_or_default() as i32,

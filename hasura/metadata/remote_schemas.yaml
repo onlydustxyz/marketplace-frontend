@@ -126,7 +126,8 @@
             description: String!
             forksCount: Int!
             id: Int!
-            logoUrl: String!
+            logoUrl: Url!
+            htmlUrl: Url!
             stars: Int!
           }
           type User {
@@ -169,7 +170,8 @@
             description: String!
             forksCount: Int!
             id: Int!
-            logoUrl: String!
+            logoUrl: Url!
+            htmlUrl: Url!
             stars: Int!
           }
           type User {

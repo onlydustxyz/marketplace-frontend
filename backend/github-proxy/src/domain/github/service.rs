@@ -8,8 +8,8 @@ use crate::domain::{GithubRepository, GithubUser};
 pub enum Error {
 	#[error("Not found")]
 	NotFound(#[source] anyhow::Error),
-	#[error("No owner for repository")]
-	MissingRepositoryOwner(#[source] anyhow::Error),
+	#[error("Field '{0}' is not present")]
+	MissingField(String),
 	#[error("Internal error")]
 	Other(#[source] anyhow::Error),
 }
