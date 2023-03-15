@@ -8,7 +8,7 @@ import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import Link from "src/icons/Link";
 import { HasuraUserRole } from "src/types";
-import { parseApiRepositoryLink, parsePullRequestLink } from "src/utils/github";
+import { parsePullRequestLink } from "src/utils/github";
 import isDefined from "src/utils/isDefined";
 import {
   GetPaidWorkItemsQuery,
@@ -73,8 +73,8 @@ export default function PullRequests({ projectId, contributorHandle, workItems, 
     () =>
       sortBy(
         differenceWith(differenceBy(pulls, workItems, "id"), paidItems, (pr, paidItem) => {
-          const { owner, name } = parseApiRepositoryLink(pr.repositoryUrl);
-          return owner === paidItem.repoOwner && name === paidItem.repoName && pr.number === paidItem.prNumber;
+          const { repoOwner, repoName } = parsePullRequestLink(pr.htmlUrl);
+          return repoOwner === paidItem.repoOwner && repoName === paidItem.repoName && pr.number === paidItem.prNumber;
         }),
         "createdAt"
       ).reverse(),

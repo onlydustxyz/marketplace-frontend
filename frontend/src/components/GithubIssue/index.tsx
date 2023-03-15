@@ -8,7 +8,7 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Subtract from "src/icons/SubtractLine";
 import Time from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { parseApiRepositoryLink } from "src/utils/github";
+import { parsePullRequestLink } from "src/utils/github";
 import { IssueDetailsFragment, Status } from "src/__generated/graphql";
 import Button, { ButtonSize, ButtonType } from "../Button";
 import Card from "../Card";
@@ -30,7 +30,7 @@ export type Props = {
 
 export default function GithubIssue({ action, workItem, onClick }: Props) {
   const { T } = useIntl();
-  const { name } = parseApiRepositoryLink(workItem.repositoryUrl);
+  const { repoName } = parsePullRequestLink(workItem.htmlUrl);
 
   return (
     <Card padded={false} blurred={false} className="p-4 flex flex-row gap-3">
@@ -61,7 +61,7 @@ export default function GithubIssue({ action, workItem, onClick }: Props) {
           </div>
           <div className="flex flex-row gap-1 items-center">
             <GitRepositoryLine />
-            {name}
+            {repoName}
           </div>
         </div>
       </div>
@@ -106,6 +106,5 @@ export const GITHUB_ISSUE_FRAGMENTS = gql`
     createdAt
     closedAt
     mergedAt
-    repositoryUrl
   }
 `;

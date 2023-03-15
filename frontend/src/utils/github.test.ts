@@ -1,4 +1,4 @@
-import { REGEX_VALID_GITHUB_PULL_REQUEST_URL, REGEX_VALID_GITHUB_REPOSITORY_URL } from "./github";
+import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "./github";
 
 describe.each([
   { link: "https://github.com/onlydustxyz/marketplace/pull/504", shouldMatch: true },
@@ -17,24 +17,5 @@ describe.each([
 ])("Github PR validation regexp", ({ link, shouldMatch }) => {
   test(`should ${shouldMatch ? "" : "not "}match link '${link}'`, async () => {
     expect(REGEX_VALID_GITHUB_PULL_REQUEST_URL.test(link)).toEqual(shouldMatch);
-  });
-});
-
-describe.each([
-  { link: "https://api.github.com/repos/onlydustxyz/marketplace", shouldMatch: true },
-  { link: "https://api.github.com/repos/only-dust.xyz123/42_market---p.l.a.c.e", shouldMatch: true },
-  { link: "https://api.github.com/repos/ONLY-dust/F00", shouldMatch: true },
-  { link: "https://github.com/onlydust/xyz/marketplace", shouldMatch: false },
-  { link: "https://api.github.com/repos/onlydust/xyz/marketplace", shouldMatch: false },
-  { link: "https://api.github.co/repos/onlydustxyz/marketplace", shouldMatch: false },
-  { link: "https://api.github.com/repos/onlydustxyz", shouldMatch: false },
-  {
-    link: "https://api.github.com/repos/onlydustxyz/marketplace, https://api.github.com/repos/onlydustxyz/marketplace2",
-    shouldMatch: false,
-  },
-  { link: "not-a-link", shouldMatch: false },
-])("Github PR validation regexp", ({ link, shouldMatch }) => {
-  test(`should ${shouldMatch ? "" : "not "}match link '${link}'`, async () => {
-    expect(REGEX_VALID_GITHUB_REPOSITORY_URL.test(link)).toEqual(shouldMatch);
   });
 });
