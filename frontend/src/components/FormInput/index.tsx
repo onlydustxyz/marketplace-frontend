@@ -1,5 +1,5 @@
 import { defaults } from "lodash";
-import { ChangeEventHandler, FocusEventHandler } from "react";
+import { ChangeEventHandler, FocusEventHandler, PropsWithChildren } from "react";
 import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
 import View, { InputErrorDisplay } from "./View";
 
@@ -21,7 +21,7 @@ type PropsType = {
   showValidationErrors?: boolean;
   requiredForPayment?: boolean;
   withMargin?: boolean;
-};
+} & PropsWithChildren;
 
 export default function Input({
   label,
@@ -41,6 +41,7 @@ export default function Input({
   showValidationErrors = true,
   requiredForPayment = false,
   withMargin = true,
+  children,
 }: PropsType) {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
@@ -71,6 +72,7 @@ export default function Input({
         showValidationErrors,
         requiredForPayment,
         withMargin,
+        children,
       }}
     />
   );

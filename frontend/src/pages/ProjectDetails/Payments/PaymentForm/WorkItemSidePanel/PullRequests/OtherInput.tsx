@@ -61,31 +61,30 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
       <div className="font-walsheim font-medium text-base text-greyscale-50">
         {T("payment.form.workItems.addOtherPR.label")}
       </div>
-      <div className="flex flex-row gap-2 items-top">
-        <Input
-          name={INPUT_NAME}
-          placeholder={T("payment.form.workItems.addOtherPR.placeholder")}
-          withMargin={false}
-          options={{
-            pattern: {
-              value: REGEX_VALID_GITHUB_PULL_REQUEST_URL,
-              message: T("payment.form.workItems.addOtherPR.notALink"),
-            },
-          }}
-          inputClassName="pl-10"
-          prefixComponent={
-            <div className="mt-0.5">
-              <Link
-                className={classNames("text-xl", {
-                  "text-spaceBlue-200": !otherPrLink,
-                  "text-greyscale-50": otherPrLink && !otherPrLinkError,
-                  "text-orange-500": otherPrLinkError,
-                })}
-              />
-            </div>
-          }
-        />
-        <div className="-mt-0.5" onClick={validateOtherPR} data-testid="add-other-pr-btn">
+      <Input
+        name={INPUT_NAME}
+        placeholder={T("payment.form.workItems.addOtherPR.placeholder")}
+        withMargin={false}
+        options={{
+          pattern: {
+            value: REGEX_VALID_GITHUB_PULL_REQUEST_URL,
+            message: T("payment.form.workItems.addOtherPR.notALink"),
+          },
+        }}
+        inputClassName="pl-10"
+        prefixComponent={
+          <div className="mt-0.5">
+            <Link
+              className={classNames("text-xl", {
+                "text-spaceBlue-200": !otherPrLink,
+                "text-greyscale-50": otherPrLink && !otherPrLinkError,
+                "text-orange-500": otherPrLinkError,
+              })}
+            />
+          </div>
+        }
+      >
+        <div onClick={validateOtherPR} data-testid="add-other-pr-btn">
           <Button
             size={ButtonSize.LgLowHeight}
             type={ButtonType.Secondary}
@@ -94,7 +93,7 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
             {T("payment.form.workItems.addOtherPR.add")}
           </Button>
         </div>
-      </div>
+      </Input>
     </div>
   );
 }

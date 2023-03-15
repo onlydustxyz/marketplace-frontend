@@ -1,4 +1,4 @@
-import { FocusEventHandler, memo } from "react";
+import { FocusEventHandler, memo, PropsWithChildren } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
 import ImageCard, { BackgroundBlur, BackgroundNoise, BackgroundPosition, BackgroundSize } from "../ImageCard";
@@ -25,7 +25,7 @@ type PropsType = {
   showValidationErrors: boolean;
   requiredForPayment: boolean;
   withMargin: boolean;
-};
+} & PropsWithChildren;
 
 export enum InputErrorDisplay {
   Normal = "normal",
@@ -53,6 +53,7 @@ const View: React.FC<PropsType> = ({
   showValidationErrors,
   requiredForPayment,
   withMargin,
+  children,
 }) => {
   const isValidationError = error?.type === InputErrorType.Pattern || error?.type === InputErrorType.Validate;
   const showError = error && (!isValidationError || showValidationErrors) && errorDisplay === InputErrorDisplay.Normal;
@@ -75,7 +76,7 @@ const View: React.FC<PropsType> = ({
           "gap-8": errorDisplay === InputErrorDisplay.Banner,
         })}
       >
-        <div className="relative flex items-center">
+        <div className="relative flex items-center gap-2">
           <input
             key={register.name}
             id={register.name}
@@ -96,6 +97,7 @@ const View: React.FC<PropsType> = ({
           ) : (
             suffixComponent
           )}
+          {children}
         </div>
         {error?.message && errorDisplay === InputErrorDisplay.Banner && (
           <div className="flex">
