@@ -9,6 +9,8 @@ import { useHasuraLazyQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { useFormContext, useFormState } from "react-hook-form";
 import { parsePullRequestLink, REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/utils/github";
+import Link from "src/icons/Link";
+import classNames from "classnames";
 
 type Props = {
   onWorkItemAdded: (workItem: WorkItem) => void;
@@ -70,6 +72,18 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
               message: T("payment.form.workItems.addOtherPR.notALink"),
             },
           }}
+          inputClassName="pl-10"
+          prefixComponent={
+            <div className="mt-0.5">
+              <Link
+                className={classNames("text-xl", {
+                  "text-spaceBlue-200": !otherPrLink,
+                  "text-greyscale-50": otherPrLink && !otherPrLinkError,
+                  "text-orange-500": otherPrLinkError,
+                })}
+              />
+            </div>
+          }
         />
         <div className="-mt-0.5" onClick={validateOtherPR} data-testid="add-other-pr-btn">
           <Button
