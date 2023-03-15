@@ -1,33 +1,38 @@
 import { Status } from "src/__generated/graphql";
 import GithubIssue, { Action, Props } from ".";
 
+const daysFromNow = (days: number) => new Date(Date.now() - days * 24 * 3600 * 1000);
+
 const issues = {
   closed: {
     id: 1268051991,
     number: 541,
     status: Status.Closed,
+    htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
     title: "Disable RPC json validation in devnet",
-    createdAt: "2023-03-08T15:31:51+00:00",
-    closedAt: "2023-03-09T18:42:24+00:00",
+    createdAt: daysFromNow(6),
+    closedAt: daysFromNow(5),
     mergedAt: null,
   },
   open: {
     id: 1268051991,
     number: 541,
     status: Status.Open,
+    htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
     title: "Disable RPC json validation in devnet",
-    createdAt: "2023-03-08T15:31:51+00:00",
-    closedAt: "2023-03-09T18:42:24+00:00",
+    createdAt: daysFromNow(6),
+    closedAt: daysFromNow(5),
     mergedAt: null,
   },
   merged: {
     id: 1268051991,
     number: 541,
     status: Status.Merged,
+    htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
     title: "Disable RPC json validation in devnet",
-    createdAt: "2023-03-08T15:31:51+00:00",
-    closedAt: "2023-03-09T18:42:24+00:00",
-    mergedAt: "2023-03-09T18:42:24+00:00",
+    createdAt: daysFromNow(6),
+    closedAt: daysFromNow(5),
+    mergedAt: daysFromNow(5),
   },
 };
 
@@ -53,13 +58,7 @@ export default {
   },
 };
 
-const props: Props = {
-  repository: {
-    owner: "sayajin-labs",
-    name: "kakarot",
-  },
-  issue: issues.closed,
-};
+const props: Props = { workItem: issues.closed };
 
 export const Default = {
   render: (args: Props) => <GithubIssue {...props} {...args} />,

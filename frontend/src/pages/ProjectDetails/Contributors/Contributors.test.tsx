@@ -49,6 +49,7 @@ const contributor1: ContributorsTableFieldsFragment = {
   id: 123456,
   avatarUrl: "avatar_url",
   login: "ofux",
+  htmlUrl: "https://github.com/ofux",
   user: null,
   paymentRequests: [mockPaymentRequest, mockPaymentRequest],
 };
@@ -58,6 +59,7 @@ const contributor2: ContributorsTableFieldsFragment = {
   id: 123457,
   avatarUrl: "avatar_url",
   login: "AnthonyBuisset",
+  htmlUrl: "https://github.com/AnthonyBuisset",
   user: null,
   paymentRequests: [mockPaymentRequest2],
 };
@@ -67,6 +69,7 @@ const contributor3: ContributorsTableFieldsFragment = {
   id: 123458,
   avatarUrl: "avatar_url",
   login: "oscarwroche",
+  htmlUrl: "https://github.com/oscarwroche",
   user: null,
   paymentRequests: [],
 };

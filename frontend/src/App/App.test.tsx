@@ -182,6 +182,7 @@ const GITHUB_REPO_DETAILS_RESULT: { data: GetGithubRepositoryDetailsQueryResult[
         __typename: "Repository",
         id: TEST_GITHUB_REPO_ID,
         description: TEST_GITHUB_REPO_CONTENT,
+        htmlUrl: "url",
         stars: 0,
         forksCount: 0,
       },
