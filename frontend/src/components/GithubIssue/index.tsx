@@ -30,7 +30,7 @@ export type Props = {
 
 export default function GithubIssue({ action, workItem, onClick }: Props) {
   const { T } = useIntl();
-  const { owner, name } = parseApiRepositoryLink(workItem.repositoryUrl);
+  const { name } = parseApiRepositoryLink(workItem.repositoryUrl);
 
   return (
     <Card padded={false} blurred={false} className="p-4 flex flex-row gap-3">
@@ -49,10 +49,7 @@ export default function GithubIssue({ action, workItem, onClick }: Props) {
       )}
       <div className="flex flex-col gap-2 font-walsheim ">
         <div className="font-medium text-sm text-greyscale-50">
-          <ExternalLink
-            url={`https://github.com/${owner}/${name}/issues/${workItem.number}`}
-            text={`#${workItem.number} · ${workItem.title}`}
-          />
+          <ExternalLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} />
         </div>
         <div className="flex flex-row gap-3 items-center text-greyscale-300 font-normal text-xs">
           <div className="flex flex-row gap-1 items-center">
@@ -105,6 +102,7 @@ export const GITHUB_ISSUE_FRAGMENTS = gql`
     number
     status
     title
+    htmlUrl
     createdAt
     closedAt
     mergedAt
