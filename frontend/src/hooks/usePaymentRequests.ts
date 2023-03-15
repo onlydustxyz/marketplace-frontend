@@ -34,28 +34,30 @@ export default function usePaymentRequests({ projectId, onNewPaymentRequested }:
         variables: { projectId },
       });
 
-      const newPaymentRequest: PaymentRequestFragment = {
-        __typename: "PaymentRequests",
-        id: data?.requestPayment,
-        amountInUsd: amount,
-        recipientId: contributorId,
-        reason: { work_items: reason.workItems },
-        payments: [],
-        requestedAt: Date.now(),
-      };
+      if (cachedQuery) {
+        const newPaymentRequest: PaymentRequestFragment = {
+          __typename: "PaymentRequests",
+          id: data?.requestPayment,
+          amountInUsd: amount,
+          recipientId: contributorId,
+          reason: { work_items: reason.workItems },
+          payments: [],
+          requestedAt: Date.now(),
+        };
 
-      const newQuery = cloneDeep(cachedQuery);
-      const budget = newQuery?.projectsByPk?.budgets.at(0);
-      if (budget) {
-        budget.paymentRequests.push(newPaymentRequest);
-        budget.remainingAmount -= amount;
+        const newQuery = cloneDeep(cachedQuery);
+        const budget = newQuery?.projectsByPk?.budgets.at(0);
+        if (budget) {
+          budget.paymentRequests.push(newPaymentRequest);
+          budget.remainingAmount -= amount;
+        }
+
+        cache.writeQuery({
+          query: PAYMENT_REQUESTS_FOR_PROJECT_QUERY,
+          data: newQuery,
+          variables: { projectId },
+        });
       }
-
-      cache.writeQuery({
-        query: PAYMENT_REQUESTS_FOR_PROJECT_QUERY,
-        data: newQuery,
-        variables: { projectId },
-      });
     },
   });
 

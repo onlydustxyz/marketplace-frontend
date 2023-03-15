@@ -11,6 +11,7 @@ const [contributor1, contributor2, contributor3, contributor4, contributor5]: Co
   __typename: "User",
   id,
   login: "contributor" + id,
+  htmlUrl: "htmlUrl" + id,
   avatarUrl: "logo" + id,
   user: null,
   paymentRequests: [],

@@ -7,5 +7,5 @@ pub use repository::Repository;
 mod user;
 pub use user::User;
 
-mod pull_request;
-pub use pull_request::{PullRequest, Status as PullRequestStatus};
+mod issue;
+pub use issue::{Issue, Status as IssueStatus};

@@ -42,7 +42,7 @@ export default function OverviewPanelView({
           <div className="flex flex-row flex-wrap gap-3">
             {projectLeads.map(lead => (
               <ClickableUser
-                key={lead.displayName}
+                key={lead.id}
                 name={lead.displayName}
                 logoUrl={lead.avatarUrl}
                 url={`https://github.com/${lead.displayName}`}

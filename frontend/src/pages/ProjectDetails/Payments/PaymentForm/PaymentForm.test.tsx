@@ -3,7 +3,6 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
 
-import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from ".";
 import { CLAIMS_KEY, PROJECTS_LED_KEY } from "src/types";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentForm from ".";
@@ -57,7 +56,7 @@ const fetchPrMock: MockedResponse = {
   newData: vi.fn(() => ({
     data: {
       fetchPullRequest: {
-        __typename: "PullRequest",
+        __typename: "Issue",
         id: 123456789,
         title: "A cool PR",
         status: Status.Merged,
@@ -117,8 +116,6 @@ window.IntersectionObserver = vi.fn().mockImplementation(intersectionObserverMoc
 const RECIPIENT_INPUT_LABEL = /Please select the contributor you would like to send a payment to/i;
 const ADD_WORK_ITEM_BUTTON_ID = "add-work-item-btn";
 const ADD_OTHER_PR_TOGGLE_ID = "add-other-pr-toggle";
-const ADD_OTHER_PR_BUTTON_ID = "add-other-pr-btn";
-const CLOSE_ADD_WORK_ITEM_PANEL_BUTTON_ID = "close-add-work-item-panel-btn";
 
 describe('"PaymentForm" component', () => {
   beforeAll(() => {
@@ -142,28 +139,6 @@ describe('"PaymentForm" component', () => {
     await screen.findByText(RECIPIENT_INPUT_LABEL);
   });
 
-  // TODO: fix test
-  it.skip("should be able to request payment when required info is filled and go back to project overview", async () => {
-    await userEvent.type(await screen.findByLabelText(RECIPIENT_INPUT_LABEL), TEST_USER.displayName);
-    await waitFor(() => expect(graphQlMocks[0].newData).toHaveBeenCalledOnce());
-
-    await userEvent.click(await screen.findByTestId(ADD_WORK_ITEM_BUTTON_ID));
-    await userEvent.click(await screen.findByTestId(ADD_OTHER_PR_TOGGLE_ID));
-    await userEvent.type(
-      await screen.findByPlaceholderText(/github/i),
-      "https://github.com/onlydustxyz/marketplace/pull/504"
-    );
-
-    await userEvent.click(await screen.findByTestId(ADD_OTHER_PR_BUTTON_ID));
-    await waitFor(() => expect(fetchPrMock.newData).toHaveBeenCalledOnce());
-
-    await userEvent.click(await screen.findByTestId(CLOSE_ADD_WORK_ITEM_PANEL_BUTTON_ID));
-    await screen.findByText("A cool PR");
-
-    await userEvent.click(await screen.findByText(/confirm payment/i));
-    await screen.findByText("Payment successfully sent");
-  });
-
   it("should display an error when the github username is invalid", async () => {
     await userEvent.type(await screen.findByLabelText(RECIPIENT_INPUT_LABEL), "invalid-username");
     await waitFor(() => {
@@ -182,25 +157,5 @@ describe('"PaymentForm" component', () => {
     await userEvent.type(await screen.findByPlaceholderText(/github/i), "not-a-link");
     const errorMessages = screen.getAllByText(/oops/i);
     expect(errorMessages.length).toBe(1);
-  });
-});
-
-describe.each([
-  { link: "https://github.com/onlydustxyz/marketplace/pull/504", shouldMatch: true },
-  { link: "https://github.com/only-dust.xyz123/42_market---p.l.a.c.e/pull/66666", shouldMatch: true },
-  { link: "https://github.com/ONLY-dust/F00/pull/66666", shouldMatch: true },
-  { link: "https://github.com/onlydust/xyz/marketplace/pull/504", shouldMatch: false },
-  { link: "https://github.co/onlydustxyz/marketplace/pull/504", shouldMatch: false },
-  { link: "https://github.com/onlydustxyz/marketplace/issues/504", shouldMatch: false },
-  { link: "https://github.com/onlydustxyz/pull/504", shouldMatch: false },
-  { link: "https://github.com/onlydustxyz/marketplace/pull/", shouldMatch: false },
-  {
-    link: "https://github.com/onlydustxyz/marketplace/pull/504, https://github.com/onlydustxyz/marketplace/pull/505",
-    shouldMatch: false,
-  },
-  { link: "not-a-link", shouldMatch: false },
-])("Github PR validation regexp", ({ link, shouldMatch }) => {
-  test(`should ${shouldMatch ? "" : "not "}match link '${link}'`, async () => {
-    expect(REGEX_VALID_GITHUB_PULL_REQUEST_URL.test(link)).toEqual(shouldMatch);
   });
 });

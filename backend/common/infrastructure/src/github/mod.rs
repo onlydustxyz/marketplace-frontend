@@ -6,7 +6,7 @@ use std::{
 
 use anyhow::anyhow;
 use octocrab::{
-	models::{pulls::PullRequest, repos::Content, Repository, User},
+	models::{issues::Issue, pulls::PullRequest, repos::Content, Repository, User},
 	FromResponse, Octocrab, OctocrabBuilder,
 };
 use olog::{debug, tracing::instrument};
@@ -98,18 +98,52 @@ impl Client {
 	pub async fn search_users(
 		&self,
 		query: &str,
-		sort: &str,
-		order: &str,
+		sort: Option<String>,
+		order: Option<String>,
+		per_page: Option<u8>,
+		page: Option<u32>,
 	) -> Result<Vec<User>, Error> {
-		Ok(self
-			.octocrab()
-			.search()
-			.users(query)
-			.sort(sort)
-			.order(order)
-			.send()
-			.await?
-			.items)
+		let mut request = self.octocrab().search().users(query);
+		if let Some(sort) = sort {
+			request = request.sort(sort);
+		}
+		if let Some(order) = order {
+			request = request.order(order);
+		}
+		if let Some(per_page) = per_page {
+			request = request.per_page(per_page);
+		}
+		if let Some(page) = page {
+			request = request.page(page);
+		}
+		Ok(request.send().await?.items)
+	}
+
+	/// Search issues using the Github Search API
+	/// See https://docs.github.com/en/rest/search?apiVersion=2022-11-28#search-issues-and-pull-requests for more info.
+	#[instrument(skip(self))]
+	pub async fn search_issues(
+		&self,
+		query: &str,
+		sort: Option<String>,
+		order: Option<String>,
+		per_page: Option<u8>,
+		page: Option<u32>,
+	) -> Result<Vec<Issue>, Error> {
+		let mut request = self.octocrab().search().issues_and_pull_requests(query);
+		if let Some(sort) = sort {
+			request = request.sort(sort);
+		}
+		if let Some(order) = order {
+			request = request.order(order);
+		}
+		if let Some(per_page) = per_page {
+			request = request.per_page(per_page);
+		}
+		if let Some(page) = page {
+			request = request.page(page);
+		}
+		Ok(request.send().await?.items)
 	}
 
 	#[instrument(skip(self))]
