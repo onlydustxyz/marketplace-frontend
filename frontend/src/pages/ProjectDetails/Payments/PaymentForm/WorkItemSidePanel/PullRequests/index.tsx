@@ -82,8 +82,8 @@ export default function PullRequests({ projectId, contributorHandle, workItems, 
   );
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4 overflow-hidden -mr-4 h-full">
+      <div className="flex flex-col gap-3 mr-4">
         <Toggle
           enabled={addOtherPrEnabled}
           setEnabled={setAddOtherPrEnabled}
@@ -100,10 +100,10 @@ export default function PullRequests({ projectId, contributorHandle, workItems, 
         }}
       >
         {elligiblePulls.length > 0 ? (
-          <div>
+          <div className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
             {elligiblePulls.map(pr => (
               <GithubIssue key={pr.id} workItem={pr} action={Action.Add} onClick={() => onPullRequestAdded(pr)} />
-            ))}{" "}
+            ))}
           </div>
         ) : (
           <EmptyState />
