@@ -119,6 +119,7 @@
             fetchUserDetails(username: String!): User
             fetchUserDetailsById(userId: Int!): User
             searchIssues(query: String!, sort: String, order: String, perPage: Int, page: Int): [Issue!]
+            searchUsers(query: String!, sort: String!, order: String!): [User!]
           }
           type Repository {
             contributors: [User!]!
