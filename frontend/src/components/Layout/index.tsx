@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { Outlet, useLocation } from "react-router-dom";
 import ResponsivityFallback from "../ResponsivityFallback";
-import { Toaster } from "../Toaster";
+import { Toaster } from "./Toaster";
 
 import Header from "./Header";
 
