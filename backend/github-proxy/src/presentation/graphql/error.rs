@@ -13,7 +13,7 @@ pub enum Error {
 impl From<GithubServiceError> for Error {
 	fn from(error: GithubServiceError) -> Self {
 		match &error {
-			GithubServiceError::MissingRepositoryOwner(_) => Error::InternalError(error.into()),
+			GithubServiceError::MissingField(_) => Error::InternalError(error.into()),
 			GithubServiceError::NotFound(_) => Error::InvalidRequest(error.into()),
 			GithubServiceError::Other(_) => Error::InternalError(error.into()),
 		}

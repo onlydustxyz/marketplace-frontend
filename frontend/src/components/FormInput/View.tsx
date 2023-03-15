@@ -1,4 +1,4 @@
-import { FocusEventHandler, memo } from "react";
+import { FocusEventHandler, KeyboardEventHandler, memo, PropsWithChildren } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
 import ImageCard, {
@@ -24,13 +24,14 @@ type PropsType = {
   errorDisplay: InputErrorDisplay;
   register: UseFormRegisterReturn<string>;
   onFocus?: FocusEventHandler<unknown>;
+  onKeyDown?: KeyboardEventHandler;
   prefixComponent?: React.ReactNode;
   suffixComponent?: React.ReactNode;
   inputClassName?: string;
   showValidationErrors: boolean;
   requiredForPayment: boolean;
   withMargin: boolean;
-};
+} & PropsWithChildren;
 
 export enum InputErrorDisplay {
   Normal = "normal",
@@ -52,12 +53,14 @@ const View: React.FC<PropsType> = ({
   errorDisplay,
   register,
   onFocus,
+  onKeyDown,
   prefixComponent,
   suffixComponent,
   inputClassName,
   showValidationErrors,
   requiredForPayment,
   withMargin,
+  children,
 }) => {
   const isValidationError = error?.type === InputErrorType.Pattern || error?.type === InputErrorType.Validate;
   const showError = error && (!isValidationError || showValidationErrors) && errorDisplay === InputErrorDisplay.Normal;
@@ -80,20 +83,21 @@ const View: React.FC<PropsType> = ({
           "gap-8": errorDisplay === InputErrorDisplay.Banner,
         })}
       >
-        <div className="relative flex items-center">
+        <div className="relative flex items-center gap-2">
           <input
             key={register.name}
             id={register.name}
             placeholder={placeholder}
             type={type}
             className={classNames(
-              "w-full h-11 bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 text-greyscale-50 placeholder:text-greyscale-400 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
+              "w-full h-11 bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 text-greyscale-50 placeholder:text-spaceBlue-200 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
               { "border outline-1 border-orange-500": showError },
               inputClassName
             )}
             value={value}
             {...register}
             onFocus={onFocus}
+            onKeyDown={onKeyDown}
           />
           {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}
           {loading ? (
@@ -101,6 +105,7 @@ const View: React.FC<PropsType> = ({
           ) : (
             suffixComponent
           )}
+          {children}
         </div>
         {error?.message && errorDisplay === InputErrorDisplay.Banner && (
           <div className="flex">

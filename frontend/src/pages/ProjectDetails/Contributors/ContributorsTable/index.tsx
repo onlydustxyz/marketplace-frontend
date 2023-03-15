@@ -24,6 +24,7 @@ const ContributorsTable: React.FC<PropsType> = ({
     return {
       login: c.login,
       avatarUrl: c.avatarUrl,
+      htmlUrl: c.htmlUrl,
       isRegistered: !!c.user?.userId,
       totalEarned: paymentRequests.reduce((acc, r) => acc + r.amountInUsd || 0, 0),
       paidContributions: paymentRequests.reduce((acc, r) => acc + r.reason.work_items?.length, 0) || 0,
@@ -68,6 +69,7 @@ export const CONTRIBUTORS_TABLE_FRAGMENT = gql`
     id
     login
     avatarUrl
+    htmlUrl
     user {
       userId
     }

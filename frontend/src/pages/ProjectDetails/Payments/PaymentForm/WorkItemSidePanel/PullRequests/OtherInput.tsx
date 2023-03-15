@@ -4,11 +4,13 @@ import { useIntl } from "src/hooks/useIntl";
 import Input from "src/components/FormInput";
 import { WorkItem } from "src/components/GithubIssue";
 import { gql } from "@apollo/client";
-import { FetchPullRequestQuery, PullRequestDetailsFragmentDoc } from "src/__generated/graphql";
+import { FetchPullRequestQuery, IssueDetailsFragmentDoc } from "src/__generated/graphql";
 import { useHasuraLazyQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { useFormContext, useFormState } from "react-hook-form";
-import { REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "../..";
+import { parsePullRequestLink, REGEX_VALID_GITHUB_PULL_REQUEST_URL } from "src/utils/github";
+import Link from "src/icons/Link";
+import classNames from "classnames";
 
 type Props = {
   onWorkItemAdded: (workItem: WorkItem) => void;
@@ -25,13 +27,7 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
     {
       onCompleted: data => {
         if (data.fetchPullRequest) {
-          onWorkItemAdded({
-            issue: data.fetchPullRequest,
-            repository: {
-              name: repoName,
-              owner: repoOwner,
-            },
-          });
+          onWorkItemAdded(data.fetchPullRequest);
           resetField(INPUT_NAME);
         } else {
           setError(INPUT_NAME, {
@@ -48,13 +44,9 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
   const otherPrLink = watch(INPUT_NAME);
   const otherPrLinkError = errors[INPUT_NAME];
 
-  const [repoOwner, repoName, prNumber] = useMemo(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, repoOwner, repoName, prNumber] = otherPrLink?.match(REGEX_VALID_GITHUB_PULL_REQUEST_URL) || [];
-    return [repoOwner, repoName, parseInt(prNumber)];
-  }, [otherPrLink]);
+  const { repoOwner, repoName, prNumber } = useMemo(() => parsePullRequestLink(otherPrLink), [otherPrLink]);
 
-  const validateOtherPR = () => {
+  const validateOtherPR = () =>
     fetchPullRequest({
       variables: {
         repoOwner,
@@ -62,26 +54,37 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
         prNumber,
       },
     });
-  };
 
   return (
     <div className="p-4 flex flex-col gap-2 border border-greyscale-50/12 rounded-lg">
       <div className="font-walsheim font-medium text-base text-greyscale-50">
         {T("payment.form.workItems.addOtherPR.label")}
       </div>
-      <div className="flex flex-row gap-2 items-top">
-        <Input
-          name={INPUT_NAME}
-          placeholder={T("payment.form.workItems.addOtherPR.placeholder")}
-          withMargin={false}
-          options={{
-            pattern: {
-              value: REGEX_VALID_GITHUB_PULL_REQUEST_URL,
-              message: T("payment.form.workItems.addOtherPR.notALink"),
-            },
-          }}
-        />
-        <div className="-mt-0.5" onClick={validateOtherPR} data-testid="add-other-pr-btn">
+      <Input
+        name={INPUT_NAME}
+        placeholder={T("payment.form.workItems.addOtherPR.placeholder")}
+        withMargin={false}
+        options={{
+          pattern: {
+            value: REGEX_VALID_GITHUB_PULL_REQUEST_URL,
+            message: T("payment.form.workItems.addOtherPR.notALink"),
+          },
+        }}
+        inputClassName="pl-10"
+        onKeyDown={event => event.key === "Enter" && validateOtherPR()}
+        prefixComponent={
+          <div className="mt-0.5">
+            <Link
+              className={classNames("text-xl", {
+                "text-spaceBlue-200": !otherPrLink,
+                "text-greyscale-50": otherPrLink && !otherPrLinkError,
+                "text-orange-500": otherPrLinkError,
+              })}
+            />
+          </div>
+        }
+      >
+        <div onClick={validateOtherPR} data-testid="add-other-pr-btn">
           <Button
             size={ButtonSize.LgLowHeight}
             type={ButtonType.Secondary}
@@ -90,16 +93,16 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
             {T("payment.form.workItems.addOtherPR.add")}
           </Button>
         </div>
-      </div>
+      </Input>
     </div>
   );
 }
 
 const FETCH_PR_DETAILS = gql`
-  ${PullRequestDetailsFragmentDoc}
+  ${IssueDetailsFragmentDoc}
   query fetchPullRequest($repoOwner: String!, $repoName: String!, $prNumber: Int!) {
     fetchPullRequest(repoOwner: $repoOwner, repoName: $repoName, prNumber: $prNumber) {
-      ...PullRequestDetails
+      ...IssueDetails
     }
   }
 `;

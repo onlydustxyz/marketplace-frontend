@@ -19,6 +19,13 @@ impl From<octocrab::Error> for Error {
 				Some(status) if status == 404 => Error::NotFound(anyhow!(error)),
 				_ => Error::Other(anyhow!(error)),
 			},
+			octocrab::Error::GitHub {
+				source,
+				backtrace: _,
+			} => match source.message.as_str() {
+				"Not Found" => Error::NotFound(anyhow!(error)),
+				_ => Error::Other(anyhow!(error)),
+			},
 			_ => Error::Other(anyhow!(error)),
 		}
 	}

@@ -33,7 +33,7 @@ type WorkItemAction =
 function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
   switch (action.action) {
     case "add":
-      return sortBy(uniqBy([...workItems, action.workItem], "issue.id"), ["repo.owner", "repo.name", "issue.number"]);
+      return sortBy(uniqBy([...workItems, action.workItem], "id"), "createdAt").reverse();
     case "remove":
       return workItems.filter(w => w !== action.workItem);
     case "clear":
@@ -85,8 +85,8 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, onWorkItemsChan
                       <div className="pt-3 text-greyscale-300">{T("payment.form.workItems.subTitle")}</div>
                       {workItems.map(workItem => (
                         <GithubIssue
-                          key={workItem.issue.id}
-                          {...workItem}
+                          key={workItem.id}
+                          workItem={workItem}
                           action={Action.Remove}
                           onClick={() => dispatchWorkItems({ action: "remove", workItem })}
                         />
@@ -101,8 +101,11 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, onWorkItemsChan
                   </div>
                 </Card>
                 <WorkItemSidePanel
+                  projectId={projectId}
                   open={sidePanelOpen}
                   setOpen={setSidePanelOpen}
+                  contributorHandle={contributorHandle}
+                  workItems={workItems}
                   onWorkItemAdded={(workItem: WorkItem) => dispatchWorkItems({ action: "add", workItem })}
                 />
               </>
