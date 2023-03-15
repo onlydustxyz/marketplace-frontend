@@ -46,7 +46,7 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
 
   const { repoOwner, repoName, prNumber } = useMemo(() => parsePullRequestLink(otherPrLink), [otherPrLink]);
 
-  const validateOtherPR = () => {
+  const validateOtherPR = () =>
     fetchPullRequest({
       variables: {
         repoOwner,
@@ -54,7 +54,6 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
         prNumber,
       },
     });
-  };
 
   return (
     <div className="p-4 flex flex-col gap-2 border border-greyscale-50/12 rounded-lg">
@@ -72,6 +71,7 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
           },
         }}
         inputClassName="pl-10"
+        onKeyDown={event => event.key === "Enter" && validateOtherPR()}
         prefixComponent={
           <div className="mt-0.5">
             <Link

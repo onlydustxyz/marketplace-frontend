@@ -488,15 +488,16 @@ export type IntComparisonExp = {
 
 export type Issue = {
   __typename?: 'Issue';
-  assigneeId: Maybe<Scalars['Int']>;
   closedAt: Maybe<Scalars['DateTimeUtc']>;
   createdAt: Scalars['DateTimeUtc'];
+  htmlUrl: Scalars['Url'];
   id: Scalars['Int'];
   mergedAt: Maybe<Scalars['DateTimeUtc']>;
   number: Scalars['Int'];
   repositoryUrl: Scalars['Url'];
   status: Status;
   title: Scalars['String'];
+  userHtmlUrl: Scalars['Url'];
 };
 
 export type JsonbCastExp = {

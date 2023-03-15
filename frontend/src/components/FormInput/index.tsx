@@ -1,5 +1,5 @@
 import { defaults } from "lodash";
-import { ChangeEventHandler, FocusEventHandler, PropsWithChildren } from "react";
+import { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, PropsWithChildren } from "react";
 import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
 import View, { InputErrorDisplay } from "./View";
 
@@ -15,6 +15,7 @@ type PropsType = {
   onChange?: ChangeEventHandler<unknown>;
   onFocus?: FocusEventHandler<unknown>;
   onBlur?: FocusEventHandler<unknown>;
+  onKeyDown?: KeyboardEventHandler;
   prefixComponent?: React.ReactNode;
   suffixComponent?: React.ReactNode;
   inputClassName?: string;
@@ -35,6 +36,7 @@ export default function Input({
   onChange,
   onBlur,
   onFocus,
+  onKeyDown,
   prefixComponent,
   suffixComponent,
   inputClassName,
@@ -66,6 +68,7 @@ export default function Input({
         value,
         register: overridenRegister,
         onFocus,
+        onKeyDown,
         prefixComponent,
         suffixComponent,
         inputClassName,

@@ -1,4 +1,4 @@
-import { FocusEventHandler, memo, PropsWithChildren } from "react";
+import { FocusEventHandler, KeyboardEventHandler, memo, PropsWithChildren } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
 import ImageCard, { BackgroundBlur, BackgroundNoise, BackgroundPosition, BackgroundSize } from "../ImageCard";
@@ -19,6 +19,7 @@ type PropsType = {
   errorDisplay: InputErrorDisplay;
   register: UseFormRegisterReturn<string>;
   onFocus?: FocusEventHandler<unknown>;
+  onKeyDown?: KeyboardEventHandler;
   prefixComponent?: React.ReactNode;
   suffixComponent?: React.ReactNode;
   inputClassName?: string;
@@ -47,6 +48,7 @@ const View: React.FC<PropsType> = ({
   errorDisplay,
   register,
   onFocus,
+  onKeyDown,
   prefixComponent,
   suffixComponent,
   inputClassName,
@@ -90,6 +92,7 @@ const View: React.FC<PropsType> = ({
             value={value}
             {...register}
             onFocus={onFocus}
+            onKeyDown={onKeyDown}
           />
           {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}
           {loading ? (
