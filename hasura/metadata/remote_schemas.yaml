@@ -130,9 +130,10 @@
             stars: Int!
           }
           type User {
-            avatarUrl: String!
+            avatarUrl: Url!
             id: Int!
             login: String!
+            htmlUrl: Url!
           }
           enum Status {
             CLOSED
@@ -146,6 +147,7 @@
             query: Query
           }
           scalar DateTimeUtc
+          scalar Url
           type Issue {
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
@@ -171,9 +173,10 @@
             stars: Int!
           }
           type User {
-            avatarUrl: String!
+            avatarUrl: Url!
             id: Int!
             login: String!
+            htmlUrl: Url!
           }
           enum Status {
             CLOSED

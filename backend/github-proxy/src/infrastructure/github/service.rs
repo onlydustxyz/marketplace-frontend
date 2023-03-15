@@ -148,7 +148,7 @@ impl GithubService for github::Client {
 
 impl From<octocrab::models::User> for GithubUser {
 	fn from(user: octocrab::models::User) -> Self {
-		Self::new(user.id.0 as i32, user.login, user.avatar_url.to_string())
+		Self::new(user.id.0 as i32, user.login, user.avatar_url, user.html_url)
 	}
 }
 
