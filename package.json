@@ -81,6 +81,7 @@
     "chromatic": "^6.11.4",
     "csv": "^6.2.5",
     "cypress": "^12.7.0",
+    "dependency-cruiser": "^12.10.1",
     "dotenv": "^16.0.3",
     "eslint": "^8.27.0",
     "eslint-config-prettier": "^8.5.0",
