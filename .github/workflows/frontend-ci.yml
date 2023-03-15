@@ -41,6 +41,17 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn lint
 
+  dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "yarn"
+      - run: yarn install --frozen-lockfile
+      - run: yarn dependency-cruiser
+
   test:
     runs-on: ubuntu-latest
     steps:
