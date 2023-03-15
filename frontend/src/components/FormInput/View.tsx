@@ -31,6 +31,7 @@ type PropsType = {
   showValidationErrors: boolean;
   requiredForPayment: boolean;
   withMargin: boolean;
+  negativeZIndex?: boolean;
 } & PropsWithChildren;
 
 export enum InputErrorDisplay {
@@ -61,6 +62,7 @@ const View: React.FC<PropsType> = ({
   requiredForPayment,
   withMargin,
   children,
+  negativeZIndex = false,
 }) => {
   const isValidationError = error?.type === InputErrorType.Pattern || error?.type === InputErrorType.Validate;
   const showError = error && (!isValidationError || showValidationErrors) && errorDisplay === InputErrorDisplay.Normal;
@@ -98,6 +100,7 @@ const View: React.FC<PropsType> = ({
             {...register}
             onFocus={onFocus}
             onKeyDown={onKeyDown}
+            style={negativeZIndex ? { zIndex: -1 } : {}}
           />
           {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}
           {loading ? (
