@@ -87,12 +87,13 @@ export default function Button({
           "text-spaceBlue-900": type === ButtonType.Primary && !disabled,
           "text-greyscale-50": type === ButtonType.Secondary && !disabled,
           "text-spacePurple-500": type === ButtonType.Ternary && !disabled,
-          "text-spaceBlue-500": (type === ButtonType.Primary || type === ButtonType.Secondary) && disabled,
+          "text-spaceBlue-500": type === ButtonType.Primary && disabled,
+          "text-greyscale-50/8": type === ButtonType.Secondary && disabled,
           "text-greyscale-600": type === ButtonType.Ternary && disabled,
         },
         {
-          "bg-spaceBlue-800": (type === ButtonType.Primary || type === ButtonType.Secondary) && disabled,
-          "border-spaceBlue-500": type === ButtonType.Secondary && disabled,
+          "bg-spaceBlue-800": type === ButtonType.Primary && disabled,
+          "bg-white/2 border-greyscale-50/8": type === ButtonType.Secondary && disabled,
         },
         {
           "hover:text-spacePurple-900 hover:outline hover:outline-4 hover:outline-spacePurple-800 hover:bg-spacePurple-50":
