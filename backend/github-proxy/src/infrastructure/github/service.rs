@@ -183,15 +183,17 @@ impl TryFrom<octocrab::models::issues::Issue> for GithubIssue {
 				.expect("We cannot work with github ids superior to i32::MAX")
 		});
 
+		let status = (&issue).try_into()?;
+
 		Ok(Self::new(
 			id,
 			number,
 			issue.title,
 			issue.repository_url,
 			assignee_id,
-			GithubIssueStatus::Open, // TODO
+			status,
 			issue.created_at,
-			None, // TODO
+			issue.pull_request.and_then(|pr| pr.merged_at),
 			issue.closed_at,
 		))
 	}
@@ -256,6 +258,24 @@ pub enum GithubIssueStatusFromOctocrabResultError {
 	UnknownState(String),
 	#[error("Field '{0}' is not present")]
 	MissingField(String),
+}
+
+impl TryFrom<&octocrab::models::issues::Issue> for GithubIssueStatus {
+	type Error = GithubIssueStatusFromOctocrabResultError;
+
+	fn try_from(issue: &octocrab::models::issues::Issue) -> Result<Self, Self::Error> {
+		match issue.state {
+			octocrab::models::IssueState::Open => Ok(Self::Open),
+			octocrab::models::IssueState::Closed =>
+				match issue.pull_request.as_ref().and_then(|pr| pr.merged_at) {
+					Some(_) => Ok(Self::Merged),
+					None => Ok(Self::Closed),
+				},
+			_ => Err(GithubIssueStatusFromOctocrabResultError::UnknownState(
+				format!("{:?}", issue.state),
+			)),
+		}
+	}
 }
 
 impl TryFrom<&octocrab::models::pulls::PullRequest> for GithubIssueStatus {

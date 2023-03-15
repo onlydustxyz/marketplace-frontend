@@ -16,7 +16,7 @@ anyhow = "1.0.57"
 thiserror = "1.0.31"
 
 # Github
-octocrab = "0.17.0"
+octocrab = { git = "https://github.com/onlydustxyz/octocrab.git" }
 
 # Http client
 reqwest = "0.11.13"
