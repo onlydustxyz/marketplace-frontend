@@ -17,8 +17,8 @@ import {
   RepositoryOwnerAndNameFragment,
   SearchIssuesQuery,
 } from "src/__generated/graphql";
-import EmptyState from "../EmptyState";
-import Toggle from "../Toggle";
+import EmptyState from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/EmptyState";
+import Toggle from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Toggle";
 import OtherPrInput from "./OtherInput";
 
 type Props = {

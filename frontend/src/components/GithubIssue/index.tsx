@@ -10,10 +10,10 @@ import Time from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { parsePullRequestLink } from "src/utils/github";
 import { IssueDetailsFragment, Status } from "src/__generated/graphql";
-import Button, { ButtonSize, ButtonType } from "../Button";
-import Card from "../Card";
-import ExternalLink from "../ExternalLink";
-import Tooltip from "../Tooltip";
+import Button, { ButtonSize, ButtonType } from "src/components/Button";
+import Card from "src/components/Card";
+import ExternalLink from "src/components/ExternalLink";
+import Tooltip from "src/components/Tooltip";
 
 export enum Action {
   Add = "add",
