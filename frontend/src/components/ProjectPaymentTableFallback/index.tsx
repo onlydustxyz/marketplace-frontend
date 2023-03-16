@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { ProjectPaymentsRoutePaths } from "src/App";
 import CurrencyLine from "src/icons/CurrencyLine";
 import { useT } from "talkr";
-import Button, { ButtonSize, Width } from "../Button";
-import Tooltip, { TooltipPosition } from "../Tooltip";
+import Button, { ButtonSize, Width } from "src/components/Button";
+import Tooltip, { TooltipPosition } from "src/components/Tooltip";
 
 interface ProjectPaymentTableFallbackProps {
   disabled?: boolean;

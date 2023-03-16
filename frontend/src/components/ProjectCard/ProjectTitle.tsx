@@ -1,8 +1,8 @@
 import { useIntl } from "src/hooks/useIntl";
 import { formatList } from "src/utils/list";
 import { ProjectLeadFragment } from "src/__generated/graphql";
-import RoundedImage, { ImageSize, Rounding } from "../RoundedImage";
-import Tooltip, { TooltipPosition } from "../Tooltip";
+import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
+import Tooltip, { TooltipPosition } from "src/components/Tooltip";
 
 type Props = {
   projectId: string;

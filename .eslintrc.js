@@ -22,7 +22,7 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
   ],
-  plugins: ["@typescript-eslint", "prettier"],
+  plugins: ["@typescript-eslint", "prettier", "no-relative-import-paths"],
   rules: {
     quotes: [
       "warn",
@@ -48,6 +48,7 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "error",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
+    "no-relative-import-paths/no-relative-import-paths": ["error", { allowSameFolder: true, rootDir: "frontend" }],
   },
   ignorePatterns: [
     "frontend/dist/*",
@@ -56,5 +57,6 @@ module.exports = {
     "cypress/*",
     "app.json",
     "scripts/*",
+    "dist/*",
   ],
 };

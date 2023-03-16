@@ -1,4 +1,4 @@
-import Table from "../../../../components/Table";
+import Table from "src/components/Table";
 import { rates } from "src/hooks/useWorkEstimation";
 import { useMemo, useState } from "react";
 import { sortBy } from "lodash";

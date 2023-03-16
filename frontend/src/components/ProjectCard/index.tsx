@@ -16,11 +16,11 @@ import { useMediaQuery } from "usehooks-ts";
 import { ProjectContributorsFragmentDoc, ProjectLeadFragmentDoc, SponsorFragmentDoc } from "src/__generated/graphql";
 import User3Line from "src/icons/User3Line";
 import FundsLine from "src/icons/FundsLine";
-import Tooltip, { TooltipPosition } from "../Tooltip";
+import Tooltip, { TooltipPosition } from "src/components/Tooltip";
 import ProjectTitle from "./ProjectTitle";
 import isDefined from "src/utils/isDefined";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import Tag, { TagSize } from "../Tag";
+import Tag, { TagSize } from "src/components/Tag";
 import { getContributors } from "src/utils/project";
 
 type ProjectCardProps = Project & {

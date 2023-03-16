@@ -10,7 +10,7 @@ import { useWatch } from "react-hook-form";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useNavigate } from "react-router-dom";
 import CloseLine from "src/icons/CloseLine";
-import Title from "../../Title";
+import Title from "src/pages/ProjectDetails/Title";
 
 interface Props {
   projectId: string;

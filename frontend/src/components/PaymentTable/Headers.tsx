@@ -1,11 +1,11 @@
 import { useIntl } from "src/hooks/useIntl";
-import HeaderLine from "../Table/HeaderLine";
-import HeaderCell, { HeaderCellWidth } from "../Table/HeaderCell";
+import HeaderLine from "src/components/Table/HeaderLine";
+import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import TimeLine from "src/icons/TimeLine";
 import Folder3Line from "src/icons/Folder3Line";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import FocusLine from "src/icons/FocusLine";
-import SortingArrow from "../../pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
+import SortingArrow from "src/pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import { Field, Sorting } from "src/hooks/usePaymentSorting";
 
 type Props = {

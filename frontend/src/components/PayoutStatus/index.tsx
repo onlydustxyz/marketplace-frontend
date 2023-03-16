@@ -4,7 +4,7 @@ import CheckLine from "src/icons/CheckLine";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";
 import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
-import Tooltip from "../Tooltip";
+import Tooltip from "src/components/Tooltip";
 
 type Props = {
   id: string;
