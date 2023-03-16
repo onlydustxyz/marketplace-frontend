@@ -1,9 +1,9 @@
 import { useIntl } from "src/hooks/useIntl";
-import Line from "../Table/Line";
-import Cell, { CellHeight } from "../Table/Cell";
-import Tooltip from "../Tooltip";
+import Line from "../../../../components/Table/Line";
+import Cell, { CellHeight } from "../../../../components/Table/Cell";
+import Tooltip from "../../../../components/Tooltip";
 import { linkClickHandlerFactory } from "src/utils/clickHandler";
-import Button, { ButtonSize, ButtonType } from "../Button";
+import Button, { ButtonSize, ButtonType } from "../../../../components/Button";
 import SendPlane2Line from "src/icons/SendPlane2Line";
 import { Contributor as ContributorType } from "./View";
 import { formatMoneyAmount } from "src/utils/money";

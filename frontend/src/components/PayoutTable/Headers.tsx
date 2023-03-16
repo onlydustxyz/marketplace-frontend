@@ -1,7 +1,7 @@
 import { useIntl } from "src/hooks/useIntl";
 import HeaderLine from "../Table/HeaderLine";
 import HeaderCell, { HeaderCellWidth } from "../Table/HeaderCell";
-import SortingArrow from "../ContributorsTable/SortingArrow";
+import SortingArrow from "../../pages/ProjectDetails/Contributors/ContributorsTable/SortingArrow";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import FocusLine from "src/icons/FocusLine";
 import FolderLine from "src/icons/FolderLine";
