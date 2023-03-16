@@ -115,6 +115,7 @@ export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
         }
       }
       budgets {
+        id
         paymentRequests {
           id
           githubRecipient {

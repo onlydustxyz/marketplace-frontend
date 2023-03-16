@@ -8,6 +8,7 @@ import ContributorLine from "./Line";
 export type Contributor = {
   login: string;
   avatarUrl: string;
+  htmlUrl: string;
   isRegistered: boolean;
   totalEarned: number;
   paidContributions: number;

@@ -1,10 +1,10 @@
 import { defaults } from "lodash";
-import { ChangeEventHandler, FocusEventHandler } from "react";
+import { ChangeEventHandler, FocusEventHandler, KeyboardEventHandler, PropsWithChildren } from "react";
 import { useFormContext, useFormState, RegisterOptions } from "react-hook-form";
 import View, { InputErrorDisplay } from "./View";
 
 type PropsType = {
-  label: string;
+  label?: string;
   type?: string;
   placeholder?: string;
   name: string;
@@ -15,12 +15,14 @@ type PropsType = {
   onChange?: ChangeEventHandler<unknown>;
   onFocus?: FocusEventHandler<unknown>;
   onBlur?: FocusEventHandler<unknown>;
+  onKeyDown?: KeyboardEventHandler;
   prefixComponent?: React.ReactNode;
   suffixComponent?: React.ReactNode;
   inputClassName?: string;
   showValidationErrors?: boolean;
   requiredForPayment?: boolean;
-};
+  withMargin?: boolean;
+} & PropsWithChildren;
 
 export default function Input({
   label,
@@ -34,11 +36,14 @@ export default function Input({
   onChange,
   onBlur,
   onFocus,
+  onKeyDown,
   prefixComponent,
   suffixComponent,
   inputClassName,
   showValidationErrors = true,
   requiredForPayment = false,
+  withMargin = true,
+  children,
 }: PropsType) {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
@@ -63,11 +68,14 @@ export default function Input({
         value,
         register: overridenRegister,
         onFocus,
+        onKeyDown,
         prefixComponent,
         suffixComponent,
         inputClassName,
         showValidationErrors,
         requiredForPayment,
+        withMargin,
+        children,
       }}
     />
   );

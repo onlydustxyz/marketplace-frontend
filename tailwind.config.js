@@ -15,6 +15,11 @@ module.exports = {
       },
       colors: {
         chineseBlack: "#110C1F",
+        github: {
+          red: "#C03837",
+          green: "#3C8343",
+          purple: "#684ABB",
+        },
         greyscale: {
           50: "#F3F0EE",
           100: "#DBD8D6",

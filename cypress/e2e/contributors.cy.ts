@@ -1,8 +1,16 @@
+import { WAIT_SHORT } from "../support/commands/common";
+import { Project } from "../support/commands/populate/projects";
+import { User } from "../support/commands/populate/users";
+
 describe("As a public user, I", () => {
-  const OFUX = 595505;
+  let project: Project;
+
+  beforeEach(function () {
+    project = this.projects["Project A"];
+  });
 
   it("can see the contributors of a project", function () {
-    cy.visit(`http://localhost:5173/projects/${this.projects["Project A"].id}`);
+    cy.visitApp({ path: `projects/${project.id}` });
 
     cy.contains("Contributors").click();
 
@@ -14,8 +22,8 @@ describe("As a public user, I", () => {
 
     cy.get("#contributors_table tbody tr:nth-child(2)").within(() => {
       cy.get("td:nth-child(1)").should(div => expect(div.text()).to.include("oscarwroche"));
-      cy.get("td:nth-child(2)").should("have.text", "-");
-      cy.get("td:nth-child(3)").should("have.text", "-");
+      cy.get("td:nth-child(2)").should("have.text", "$200");
+      cy.get("td:nth-child(3)").should("have.text", "1");
     });
 
     cy.get("#contributors_table tbody tr:nth-child(3)").within(() => {
@@ -28,7 +36,7 @@ describe("As a public user, I", () => {
   });
 
   it("can sort the contributors of a project", function () {
-    cy.visit(`http://localhost:5173/projects/${this.projects["Project A"].id}`);
+    cy.visitApp({ path: `projects/${project.id}` });
 
     cy.contains("Contributors").click();
     cy.get("#contributors_table thead tr th:nth-child(1)").click(); // sort by contributor name ASC
@@ -47,35 +55,26 @@ describe("As a public user, I", () => {
 
     cy.get("#contributors_table tbody tr:nth-child(3)").within(() => {
       cy.get("td:nth-child(1)").should(div => expect(div.text()).to.include("oscarwroche"));
-      cy.get("td:nth-child(2)").should("have.text", "-");
-      cy.get("td:nth-child(3)").should("have.text", "-");
+      cy.get("td:nth-child(2)").should("have.text", "$200");
+      cy.get("td:nth-child(3)").should("have.text", "1");
     });
   });
 });
 
-//TODO
 describe("As a project lead, I", () => {
+  let project: Project;
+  let user: User;
+
   beforeEach(function () {
-    cy.createGithubUser(98735558).then(user => {
-      cy.createProject("Project with budget").withLeader(user).withBudget(100000).withRepo().as("projectId");
-      cy.signinUser(user)
-        .then(user => JSON.stringify(user.session))
-        .as("token");
-    });
+    project = this.projects["Project B"];
+    user = this.users["Oscar"];
   });
 
   it.skip("can request a payment for a contributor", function () {
-    cy.visit(`http://localhost:5173/projects/${this.projectId}`, {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", this.token);
-      },
-    });
-
+    cy.visitApp({ path: `projects/${project.id}`, token: user.token });
     cy.contains("Contributors").click();
 
-    cy.get('[data-testid="send-payment-button"]').first().click({ force: true });
-    cy.wait(1000);
-    cy.contains("[name=contributorHandle]");
-    cy.get("[name=contributorHandle]").should("have.value", "AnthonyBuisset");
+    cy.get('[data-testid="send-payment-button"]').first().click({ force: true }).wait(WAIT_SHORT);
+    cy.get("#contributorHandle").should("have.value", "oscarwroche");
   });
 });

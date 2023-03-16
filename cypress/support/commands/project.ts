@@ -23,7 +23,7 @@ declare global {
         longDescription?: string
       ): Chainable<Uuid>;
       withLeader(user: any): Chainable<Uuid>;
-      withRepo(githubRepoId: number): Chainable<Uuid>;
+      withRepo(githubRepoId?: number): Chainable<Uuid>;
       withBudget(amount: number): Chainable<Uuid>;
     }
   }

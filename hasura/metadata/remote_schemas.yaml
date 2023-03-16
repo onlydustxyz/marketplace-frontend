@@ -101,35 +101,43 @@
             query: Query
           }
           scalar DateTimeUtc
-          type PullRequest {
-            assigneeId: Int
+          scalar Url
+          type Issue {
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             id: Int!
+            mergedAt: DateTimeUtc
+            number: Int!
+            htmlUrl: Url!
             status: Status!
             title: String!
           }
           type Query {
+            fetchPullRequest(repoOwner: String!, repoName: String!, prNumber: Int!): Issue
             fetchRepositoryDetails(id: Int!): Repository
-            fetchRepositoryPRs(id: Int!): [PullRequest!]
+            fetchRepositoryPRs(id: Int!): [Issue!]
             fetchUserDetails(username: String!): User
             fetchUserDetailsById(userId: Int!): User
+            searchIssues(query: String!, sort: String, order: String, perPage: Int, page: Int): [Issue!]
           }
           type Repository {
             contributors: [User!]!
             description: String!
             forksCount: Int!
             id: Int!
-            logoUrl: String!
+            logoUrl: Url!
+            htmlUrl: Url!
             stars: Int!
           }
           type User {
-            avatarUrl: String!
+            avatarUrl: Url!
             id: Int!
             login: String!
+            htmlUrl: Url!
           }
           enum Status {
             CLOSED
+            MERGED
             OPEN
           }
     - role: public
@@ -139,13 +147,16 @@
             query: Query
           }
           scalar DateTimeUtc
-          type PullRequest {
-            assigneeId: Int
+          scalar Url
+          type Issue {
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             id: Int!
+            mergedAt: DateTimeUtc
+            number: Int!
             status: Status!
             title: String!
+            htmlUrl: Url!
           }
           type Query {
             fetchRepositoryDetails(id: Int!): Repository
@@ -157,16 +168,19 @@
             description: String!
             forksCount: Int!
             id: Int!
-            logoUrl: String!
+            logoUrl: Url!
+            htmlUrl: Url!
             stars: Int!
           }
           type User {
-            avatarUrl: String!
+            avatarUrl: Url!
             id: Int!
             login: String!
+            htmlUrl: Url!
           }
           enum Status {
             CLOSED
+            MERGED
             OPEN
           }
   remote_relationships:

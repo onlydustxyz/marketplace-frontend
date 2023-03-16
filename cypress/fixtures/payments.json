@@ -55,5 +55,18 @@
         }
       }
     ]
+  },
+  {
+    "project": "Project A",
+    "recipientGithubId": 21149076,
+    "requestor": "TokioRs",
+    "items": [
+      {
+        "amount": 200,
+        "reason": {
+          "workItems": ["https://github.com/od-mocks/cool-repo-A/pull/3"]
+        }
+      }
+    ]
   }
 ]

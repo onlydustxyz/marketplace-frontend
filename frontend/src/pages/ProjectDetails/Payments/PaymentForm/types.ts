@@ -1,7 +1,7 @@
 import { GithubContributorFragment } from "src/__generated/graphql";
 
 export type Inputs = {
-  linkToIssue: string;
+  workItems: string[];
   contributorHandle: string | null;
   contributor: GithubContributorFragment;
   memo: string;

@@ -69,13 +69,13 @@ export default function Button({
         },
         !iconOnly && {
           "px-6 py-4": size === ButtonSize.Lg,
-          "px-4 py-1.5": size === (ButtonSize.LgLowHeight || ButtonSize.Md),
+          "px-4 py-3.5": size === ButtonSize.LgLowHeight || size === ButtonSize.Md,
           "px-4 py-2": size === ButtonSize.Sm,
           "px-2 py-1": size === ButtonSize.Xs,
         },
         iconOnly && {
           "p-4 w-14 h-14": size === ButtonSize.Lg,
-          "p-3.5 w-12 h-12": size === (ButtonSize.LgLowHeight || ButtonSize.Md),
+          "p-3.5 w-12 h-12": size === ButtonSize.LgLowHeight || size === ButtonSize.Md,
           "p-2 w-8 h-8": size === ButtonSize.Sm,
           "p-1 w-6 h-6": size === ButtonSize.Xs,
         },
@@ -87,12 +87,13 @@ export default function Button({
           "text-spaceBlue-900": type === ButtonType.Primary && !disabled,
           "text-greyscale-50": type === ButtonType.Secondary && !disabled,
           "text-spacePurple-500": type === ButtonType.Ternary && !disabled,
-          "text-spaceBlue-500": (type === ButtonType.Primary || type === ButtonType.Secondary) && disabled,
+          "text-spaceBlue-500": type === ButtonType.Primary && disabled,
+          "text-greyscale-50/8": type === ButtonType.Secondary && disabled,
           "text-greyscale-600": type === ButtonType.Ternary && disabled,
         },
         {
-          "bg-spaceBlue-800": (type === ButtonType.Primary || type === ButtonType.Secondary) && disabled,
-          "border-spaceBlue-500": type === ButtonType.Secondary && disabled,
+          "bg-spaceBlue-800": type === ButtonType.Primary && disabled,
+          "bg-white/2 border-greyscale-50/8": type === ButtonType.Secondary && disabled,
         },
         {
           "hover:text-spacePurple-900 hover:outline hover:outline-4 hover:outline-spacePurple-800 hover:bg-spacePurple-50":

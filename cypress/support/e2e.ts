@@ -24,6 +24,7 @@ import "./commands/project";
 import "./commands/sponsor";
 import "./commands/populate/db_utils";
 import "./commands/populate/users";
+import "./commands/populate/sponsors";
 import "./commands/populate/projects";
 import "./commands/populate/payments";
 import "./commands/populate/all";
@@ -43,7 +44,9 @@ beforeEach(function () {
   if (Cypress.currentTest.title !== __POPULATE) {
     cy.log("Restoring fixtures of populated data...");
     cy.fixtureOrDefault("__generated/users.json", "users");
+    cy.fixtureOrDefault("__generated/sponsors.json", "sponsors");
     cy.fixtureOrDefault("__generated/projects.json", "projects");
+    cy.fixtureOrDefault("__generated/payment_requests.json", "paymentRequests");
   }
 });
 

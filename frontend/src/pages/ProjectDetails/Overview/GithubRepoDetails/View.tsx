@@ -7,12 +7,11 @@ import CodeSSlashLine from "src/icons/CodeSSlashLine";
 import ForkLine from "src/icons/ForkLine";
 import StarLine from "src/icons/StarLine";
 import { getMostUsedLanguages } from "src/utils/languages";
-import { buildGithubLink } from "src/utils/stringUtils";
 import { GithubRepoDynamicDetailsFragment, GithubRepoStaticDetailsFragment } from "src/__generated/graphql";
 
 type Props = Omit<GithubRepoStaticDetailsFragment & GithubRepoDynamicDetailsFragment, "__typename">;
 
-export default function View({ owner, name, description, languages, stars, forksCount }: Props) {
+export default function View({ name, htmlUrl, description, languages, stars, forksCount }: Props) {
   const { T } = useIntl();
   return (
     <Card className="flex flex-row justify-between p-3" padded={false} blurred={false}>
@@ -40,7 +39,7 @@ export default function View({ owner, name, description, languages, stars, forks
           </div>
         </div>
       </div>
-      <div>{owner && name && <GithubLink link={buildGithubLink(owner, name)} />}</div>
+      <GithubLink link={htmlUrl} />
     </Card>
   );
 }
@@ -60,5 +59,6 @@ export const GITHUB_REPO_DYNAMIC_DETAILS_FRAGMENT = gql`
     description
     stars
     forksCount
+    htmlUrl
   }
 `;

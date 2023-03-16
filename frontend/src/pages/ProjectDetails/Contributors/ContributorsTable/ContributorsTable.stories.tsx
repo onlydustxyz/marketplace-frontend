@@ -10,6 +10,7 @@ const mockContributors: Contributor[] = [
   {
     login: "ofux",
     avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
+    htmlUrl: "https://github.com/ofux",
     isRegistered: true,
     paidContributions: 3,
     totalEarned: 2000,
@@ -17,6 +18,7 @@ const mockContributors: Contributor[] = [
   {
     login: "AnthonyBuisset",
     avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
+    htmlUrl: "https://github.com/AnthonyBuisset",
     isRegistered: true,
     paidContributions: 1,
     totalEarned: 500,
@@ -24,6 +26,7 @@ const mockContributors: Contributor[] = [
   {
     login: "tdelabro",
     avatarUrl: "https://avatars.githubusercontent.com/u/34384633?v=4",
+    htmlUrl: "https://github.com/tdelabro",
     isRegistered: false,
     paidContributions: 0,
     totalEarned: 0,

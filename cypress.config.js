@@ -25,6 +25,7 @@ module.exports = defineConfig({
   },
   env: {
     hasuraAdminSecret: process.env.HASURA_GRAPHQL_ADMIN_SECRET,
+    githubAccessTokenForE2eTestsUsers: process.env.GITHUB_PAT_FOR_E2E_TESTS_USERS,
     ...env,
   },
   video: false,

@@ -48,6 +48,7 @@ export const Default = {
       errorDisplay={args.errorType}
       showValidationErrors={true}
       requiredForPayment={args.requiredForPayment}
+      withMargin={true}
     />
   ),
 };

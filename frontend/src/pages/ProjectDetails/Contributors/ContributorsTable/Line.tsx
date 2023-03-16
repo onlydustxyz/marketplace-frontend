@@ -28,10 +28,7 @@ export default function ContributorLine({
   return (
     <Line key={contributor.login} highlightOnHover={200} className="h-10">
       <Cell height={CellHeight.Small} horizontalMargin={false} className="-ml-px">
-        <Contributor
-          contributor={contributor}
-          onClick={linkClickHandlerFactory(`https://github.com/${contributor.login}`)}
-        />
+        <Contributor contributor={contributor} onClick={linkClickHandlerFactory(contributor.htmlUrl)} />
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>{`${
         contributor?.totalEarned ? formatMoneyAmount(contributor.totalEarned, Currency.USD) : "-"

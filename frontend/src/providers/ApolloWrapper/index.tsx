@@ -21,6 +21,7 @@ import { TokenRefreshLink } from "apollo-link-token-refresh";
 import { TokenSet } from "src/types";
 import axios from "axios";
 import { RetryLink } from "@apollo/client/link/retry";
+import { PaymentRequests } from "src/__generated/graphql";
 
 type ErrorDisplay = "screen" | "toaster" | "none";
 
@@ -127,6 +128,15 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
       typePolicies: {
         ProjectDetails: {
           keyFields: ["projectId"],
+        },
+        Budgets: {
+          fields: {
+            paymentRequests: {
+              merge(existing: PaymentRequests[] = [], incoming: PaymentRequests[]) {
+                return [...existing, ...incoming];
+              },
+            },
+          },
         },
       },
     }),

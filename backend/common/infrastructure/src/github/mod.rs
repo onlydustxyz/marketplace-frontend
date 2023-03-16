@@ -6,7 +6,7 @@ use std::{
 
 use anyhow::anyhow;
 use octocrab::{
-	models::{pulls::PullRequest, repos::Content, Repository, User},
+	models::{issues::Issue, pulls::PullRequest, repos::Content, Repository, User},
 	FromResponse, Octocrab, OctocrabBuilder,
 };
 use olog::{debug, tracing::instrument};
@@ -20,7 +20,7 @@ mod logged_response;
 pub use logged_response::DebugTechnicalHeaders;
 use logged_response::LoggedResponse;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct Config {
 	base_url: String,
 	personal_access_tokens: String,
@@ -69,11 +69,81 @@ impl Client {
 		})
 	}
 
+	pub fn new_with_personal_access_token(
+		config: &Config,
+		personal_access_token: String,
+	) -> anyhow::Result<Self> {
+		Ok(Self {
+			octocrab_clients: vec![
+				Octocrab::builder()
+					.base_url(&config.base_url)?
+					.personal_token(personal_access_token)
+					.add_headers(&config.headers)?
+					.build()?,
+			],
+			next_octocrab_clients_index: Arc::new(Mutex::new(0)),
+		})
+	}
+
 	fn octocrab(&self) -> &Octocrab {
 		let mut index = self.next_octocrab_clients_index.lock().unwrap();
 		let next_octocrab = &self.octocrab_clients[*index];
 		*index = (*index + 1) % self.octocrab_clients.len();
 		next_octocrab
+	}
+
+	/// Search users using the Github Search API
+	/// See https://docs.github.com/en/rest/search?apiVersion=2022-11-28#search-users for more info.
+	#[instrument(skip(self))]
+	pub async fn search_users(
+		&self,
+		query: &str,
+		sort: Option<String>,
+		order: Option<String>,
+		per_page: Option<u8>,
+		page: Option<u32>,
+	) -> Result<Vec<User>, Error> {
+		let mut request = self.octocrab().search().users(query);
+		if let Some(sort) = sort {
+			request = request.sort(sort);
+		}
+		if let Some(order) = order {
+			request = request.order(order);
+		}
+		if let Some(per_page) = per_page {
+			request = request.per_page(per_page);
+		}
+		if let Some(page) = page {
+			request = request.page(page);
+		}
+		Ok(request.send().await?.items)
+	}
+
+	/// Search issues using the Github Search API
+	/// See https://docs.github.com/en/rest/search?apiVersion=2022-11-28#search-issues-and-pull-requests for more info.
+	#[instrument(skip(self))]
+	pub async fn search_issues(
+		&self,
+		query: &str,
+		sort: Option<String>,
+		order: Option<String>,
+		per_page: Option<u8>,
+		page: Option<u32>,
+	) -> Result<Vec<Issue>, Error> {
+		let mut request = self.octocrab().search().issues_and_pull_requests(query);
+		if let Some(sort) = sort {
+			request = request.sort(sort);
+		}
+		if let Some(order) = order {
+			request = request.order(order);
+		}
+		if let Some(per_page) = per_page {
+			request = request.per_page(per_page);
+		}
+		if let Some(page) = page {
+			request = request.page(page);
+		}
+		Ok(request.send().await?.items)
 	}
 
 	#[instrument(skip(self))]
@@ -89,6 +159,17 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn get_repository_by_id(&self, id: u64) -> Result<Repository, Error> {
 		self.get_as(format!("{}repositories/{id}", self.octocrab().base_url)).await
+	}
+
+	#[instrument(skip(self))]
+	pub async fn get_pull_request(
+		&self,
+		repo_owner: &str,
+		repo_name: &str,
+		pr_number: u64,
+	) -> Result<PullRequest, Error> {
+		let pr = self.octocrab().pulls(repo_owner, repo_name).get(pr_number).await?;
+		Ok(pr)
 	}
 
 	#[instrument(skip(self))]

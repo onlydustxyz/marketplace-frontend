@@ -81,13 +81,17 @@ Cypress.Commands.add(
             .should("be.a", "string")
             .then(() => {
               cy.graphql({
-                query: `mutation($userId: uuid!, $githubUserId: String!) {
-                                insertAuthUserProvider( object: {userId: $userId, providerId: "github", providerUserId: $githubUserId, accessToken: "fake-token"},
+                query: `mutation($userId: uuid!, $githubUserId: String!, $accessToken: String!) {
+                                insertAuthUserProvider( object: {userId: $userId, providerId: "github", providerUserId: $githubUserId, accessToken: $accessToken},
                                                         onConflict: {constraint: user_providers_provider_id_provider_user_id_key, update_columns: userId}) {
                                     id
                                 }
                             }`,
-                variables: { userId, githubUserId: githubUserId.toString() },
+                variables: {
+                  userId,
+                  githubUserId: githubUserId.toString(),
+                  accessToken: Cypress.env("githubAccessTokenForE2eTestsUsers"),
+                },
               })
                 .asAdmin()
                 .data()
@@ -131,12 +135,7 @@ Cypress.Commands.add("updateProfileInfo", (contactInformation, location, identit
 
 Cypress.Commands.add("fillPayoutSettings", token => {
   cy.fixture("profiles/james_bond").then(profile => {
-    cy.visit("http://localhost:5173/profile", {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", token);
-      },
-    });
-    cy.wait(500);
+    cy.visitApp({ path: "profile", token });
 
     cy.get("[name=firstname]").clear().type(profile.firstname);
     cy.get("[name=lastname]").clear().type(profile.lastname);
