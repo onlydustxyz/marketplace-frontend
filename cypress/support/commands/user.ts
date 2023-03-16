@@ -135,13 +135,9 @@ Cypress.Commands.add("updateProfileInfo", (contactInformation, location, identit
 
 Cypress.Commands.add("fillPayoutSettings", token => {
   cy.fixture("profiles/james_bond").then(profile => {
-    cy.visit("http://localhost:5173/profile", {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", token);
-      },
-    });
-    cy.wait(500);
+    cy.visitApp({ path: "profile", token });
 
+    cy.wait(500);
     cy.get("[name=firstname]").clear().type(profile.firstname);
     cy.get("[name=lastname]").clear().type(profile.lastname);
     cy.get("[name=email]").clear().type(profile.email);

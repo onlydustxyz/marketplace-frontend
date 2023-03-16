@@ -14,11 +14,7 @@ describe("As a contributor, I", () => {
   });
 
   it("can see the list of my payments", function () {
-    cy.visit("http://localhost:5173/payments", {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", user.token);
-      },
-    });
+    cy.visitApp({ path: "payments", token: user.token });
 
     cy.get("#payment_table tbody tr:nth-child(1)").within(() => {
       cy.get("td:nth-child(3)").should("have.text", "$200");

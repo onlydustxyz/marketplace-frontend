@@ -71,12 +71,7 @@ describe("As a project lead, I", () => {
   });
 
   it("can request a payment for a contributor", function () {
-    cy.visit(`http://localhost:5173/projects/${project.id}`, {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", user.token);
-      },
-    });
-
+    cy.visitApp({ path: `projects/${project.id}`, token: user.token });
     cy.contains("Contributors").click();
 
     cy.get('[data-testid="send-payment-button"]').first().click({ force: true }).wait(WAIT_SHORT);

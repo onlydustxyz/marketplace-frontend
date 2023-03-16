@@ -16,11 +16,7 @@ describe("The user", () => {
   });
 
   it.skip("can send feedback", function () {
-    cy.visit("http://localhost:5173", {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", this.token);
-      },
-    }).wait(500);
+    cy.visitApp({ token: this.token });
 
     cy.contains("Feedback").click().wait(2000);
     getIframeBody().should("include.text", "What can we do for you today?");

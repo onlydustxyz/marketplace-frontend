@@ -20,11 +20,7 @@ describe("The user", () => {
   });
 
   it("can see their personal info pre-filled", function () {
-    cy.visit("http://localhost:5173/profile", {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", this.token);
-      },
-    });
+    cy.visitApp({ path: "profile", token: this.token });
 
     cy.get("[name=firstname]").should("have.value", this.profile.firstname);
     cy.get("[name=lastname]").should("have.value", this.profile.lastname);
@@ -54,11 +50,7 @@ describe("The company", () => {
   });
 
   it("can fill their personal info", function () {
-    cy.visit("http://localhost:5173/profile", {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", this.token);
-      },
-    });
+    cy.visitApp({ path: "profile", token: this.token });
 
     cy.wait(1000);
     cy.get("[data-testid=COMPANY]").click().wait(100);
@@ -85,11 +77,7 @@ describe("The company", () => {
   });
 
   it("can see their personal info pre-filled", function () {
-    cy.visit("http://localhost:5173/profile", {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", this.token);
-      },
-    });
+    cy.visitApp({ path: "profile", token: this.token });
 
     cy.get("[name=companyName]").should("have.value", this.profile.name);
     cy.get("[name=identificationNumber]").should("have.value", this.profile.identificationNumber);

@@ -34,11 +34,7 @@ describe("As a project lead, I", () => {
   });
 
   it("can request a payment", function () {
-    cy.visit(`http://localhost:5173/projects/${project.id}/payments`, {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", leader1.token);
-      },
-    });
+    cy.visitApp({ path: `projects/${project.id}/payments`, token: leader1.token });
 
     cy.get("#remainingBudget").should("have.text", "$50,000");
 
@@ -51,20 +47,11 @@ describe("As a project lead, I", () => {
   });
 
   it("can request a payment and other project leads can see the update", function () {
-    const showPaymentsAsOtherLeader = () => {
-      cy.visit(`http://localhost:5173/projects/${project.id}/payments`, {
-        onBeforeLoad(win) {
-          win.localStorage.setItem("hasura_token", leader2.token);
-        },
-      });
-    };
+    const showPaymentsAsOtherLeader = () =>
+      cy.visitApp({ path: `projects/${project.id}/payments`, token: leader2.token });
 
     // 1. Request a payment, payment is "pending"
-    cy.visit(`http://localhost:5173/projects/${project.id}/payments`, {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", leader1.token);
-      },
-    });
+    cy.visitApp({ path: `projects/${project.id}/payments`, token: leader1.token });
 
     cy.contains("New payment").click();
     requestPayment({
@@ -126,11 +113,7 @@ describe("As a future project lead, I", () => {
   });
 
   it("can accept an invitation to become project lead", function () {
-    cy.visit("http://localhost:5173/", {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", user.token);
-      },
-    });
+    cy.visitApp({ token: user.token });
 
     cy.get('[data-testid="project-card"]').first().click();
     cy.get('[data-testid="accept-invite-button"]').click();

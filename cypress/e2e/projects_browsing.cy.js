@@ -74,11 +74,7 @@ describe("As a registered user, I", () => {
   });
 
   it("cannot access restricted projects page", function () {
-    cy.visit(`http://localhost:5173/projects/${this.projectId}/payments`, {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", this.token);
-      },
-    });
+    cy.visitApp({ path: `projects/${this.projectId}/payments`, token: this.token });
 
     cy.location().should(loc => {
       expect(loc.pathname).to.eq(`/projects/${this.projectId}`);

@@ -11,6 +11,7 @@ declare global {
       property(property: string): Chainable<any>;
       data(path?: string): Chainable<any>;
       errors(): Chainable<any>;
+      visitApp({ path, token }: { path?: string; token?: string }): Chainable<AUTWindow>;
     }
   }
 }
@@ -162,3 +163,13 @@ Cypress.Commands.add("fixtureOrDefault", (path, as) => {
   cy.exec(`if [ ! -f "cypress/fixtures/${path}" ]; then echo "{}" > cypress/fixtures/${path}; fi`);
   cy.fixture(path).as(as);
 });
+
+Cypress.Commands.add("visitApp", ({ path, token }: { path?: string; token?: string }) =>
+  cy.visit(`http://localhost:5173/${path}`, {
+    onBeforeLoad(win) {
+      if (token) {
+        win.localStorage.setItem("hasura_token", token);
+      }
+    },
+  })
+);

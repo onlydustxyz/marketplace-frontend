@@ -16,11 +16,7 @@ describe("A project without readme", () => {
   });
 
   it("should render properly", function () {
-    cy.visit(`http://localhost:5173/projects/${this.projectId}`, {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", this.token);
-      },
-    });
+    cy.visitApp({ path: `projects/${this.projectId}`, token: this.token });
     cy.contains("Project overview");
   });
 });
@@ -94,11 +90,7 @@ describe("An empty project", () => {
   });
 
   it("should render properly", function () {
-    cy.visit(`http://localhost:5173/projects/${this.projectId}`, {
-      onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", this.token);
-      },
-    });
+    cy.visitApp({ path: `projects/${this.projectId}`, token: this.token });
     cy.contains("Project overview");
   });
 });
