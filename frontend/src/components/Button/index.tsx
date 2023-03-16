@@ -69,13 +69,13 @@ export default function Button({
         },
         !iconOnly && {
           "px-6 py-4": size === ButtonSize.Lg,
-          "px-4 py-3.5": size === ButtonSize.LgLowHeight || ButtonSize.Md,
+          "px-4 py-3.5": size === ButtonSize.LgLowHeight || size === ButtonSize.Md,
           "px-4 py-2": size === ButtonSize.Sm,
           "px-2 py-1": size === ButtonSize.Xs,
         },
         iconOnly && {
           "p-4 w-14 h-14": size === ButtonSize.Lg,
-          "p-3.5 w-12 h-12": size === (ButtonSize.LgLowHeight || ButtonSize.Md),
+          "p-3.5 w-12 h-12": size === ButtonSize.LgLowHeight || size === ButtonSize.Md,
           "p-2 w-8 h-8": size === ButtonSize.Sm,
           "p-1 w-6 h-6": size === ButtonSize.Xs,
         },
