@@ -33,6 +33,7 @@ export type User = {
   id?: Uuid;
   password?: string;
   email: string;
+  token?: string;
   github: {
     id: number;
     login: string;
@@ -71,18 +72,21 @@ Cypress.Commands.add("populateUsers", function () {
 
     for (const [key, user] of users) {
       cy.createGithubUser(user.github.id, user.email, user.github.login).then(registered_user => {
-        augmented_users.set(key, {
-          id: registered_user.id,
-          password: registered_user.password,
-          ...user,
-        });
+        cy.signinUser(registered_user).then(signedInUser => {
+          augmented_users.set(key, {
+            id: registered_user.id,
+            password: registered_user.password,
+            token: JSON.stringify(signedInUser.session),
+            ...user,
+          });
 
-        if (user.profile) {
-          const profile = user.profile;
-          cy.updateProfileInfo({ email: user.email }, profile.location, profile.identity, profile.payoutSettings)
-            .asRegisteredUser(registered_user)
-            .data("updateProfileInfo");
-        }
+          if (user.profile) {
+            const profile = user.profile;
+            cy.updateProfileInfo({ email: user.email }, profile.location, profile.identity, profile.payoutSettings)
+              .asRegisteredUser(registered_user)
+              .data("updateProfileInfo");
+          }
+        });
       });
     }
 
