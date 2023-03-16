@@ -1,11 +1,11 @@
 import { Listbox } from "@headlessui/react";
 import UpDownChevrons from "src/assets/icons/UpDownChevrons";
 import { RoutePaths } from "src/App";
-import BackLink from "src/pages/ProjectDetails/Sidebar/BackLink";
+import BackLink from "./BackLink";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { ProjectDetails } from "..";
 import { useIntl } from "src/hooks/useIntl";
-import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
+import { ProjectDetailsTab } from ".";
 import { generatePath, NavLink, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import ProjectOption from "./ProjectOption";
