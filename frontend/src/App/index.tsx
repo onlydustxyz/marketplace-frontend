@@ -3,7 +3,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { RouteObject, useRoutes } from "react-router-dom";
 
 import Layout from "src/components/Layout";
-import ProtectedRoute from "src/components/ProtectedRoute";
+import ProtectedRoute from "src/App/ProtectedRoute";
 import ErrorFallback from "src/components/ErrorFallback";
 
 const Login = lazy(() => import("src/pages/Login"));
