@@ -41,7 +41,12 @@ const Payments = () => {
 
   const totalEarnings = hasPayments && payments.reduce((acc, p) => acc + p.amount.value, 0);
   const invoiceSubmissionNeeded =
-    pendingPaymentsRequests.length > 0 && invoiceNeeded && githubUserId && userInfos && payoutSettingsValid;
+    pendingPaymentsRequests.length > 0 &&
+    invoiceNeeded &&
+    pendingPaymentsRequests.find(p => !p.invoiceReceived) &&
+    githubUserId &&
+    userInfos &&
+    payoutSettingsValid;
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
@@ -94,6 +99,7 @@ const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Payment 
         title: project.projectDetails.name,
         logoUrl: project.projectDetails.logoUrl,
       },
+    invoiceReceived: !!apiPayment.invoiceReceivedAt,
     status:
       getPaidAmount(apiPayment.payments) === apiPayment.amountInUsd
         ? PaymentStatus.ACCEPTED
@@ -111,6 +117,7 @@ export const GET_PAYMENTS_QUERY = gql`
     }
     amountInUsd
     reason
+    invoiceReceivedAt
     budget {
       id
       project {

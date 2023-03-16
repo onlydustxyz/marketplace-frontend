@@ -2984,6 +2984,9 @@
               "kind": "OBJECT",
               "name": "Repository",
               "ofType": null
+              "kind": "OBJECT",
+              "name": "Repository",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -3077,7 +3080,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "Issue",
+                  "name": "PullRequest",
                   "ofType": null
                 }
               }
@@ -4211,6 +4214,18 @@
             "deprecationReason": null
           },
           {
+            "name": "invoiceReceivedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "payments",
             "description": "An array relationship",
             "args": [
@@ -5023,6 +5038,18 @@
             "deprecationReason": null
           },
           {
+            "name": "invoiceReceivedAt",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "TimestampComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "payments",
             "description": null,
             "type": {
@@ -5165,6 +5192,18 @@
             "deprecationReason": null
           },
           {
+            "name": "invoiceReceivedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "recipientId",
             "description": null,
             "args": [],
@@ -5242,6 +5281,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "invoiceReceivedAt",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5333,6 +5384,18 @@
           },
           {
             "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "invoiceReceivedAt",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -5454,6 +5517,12 @@
           },
           {
             "name": "id",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "invoiceReceivedAt",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -15313,6 +15382,18 @@
             "deprecationReason": null
           },
           {
+            "name": "invoiceReceivedAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "recipientId",
             "description": null,
             "type": {
@@ -15385,6 +15466,18 @@
           },
           {
             "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "invoiceReceivedAt",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -15616,6 +15709,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "invoiceReceivedAt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "timestamp",
               "ofType": null
             },
             "defaultValue": null,
@@ -17833,43 +17938,11 @@
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
-              },
-              {
-                "name": "repoName",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "name": "repoOwner",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
               }
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "Issue",
+              "name": "Repository",
               "ofType": null
             },
             "isDeprecated": false,
@@ -17897,35 +17970,6 @@
               }
             ],
             "type": {
-              "kind": "OBJECT",
-              "name": "Repository",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "fetchRepositoryPRs",
-            "description": null,
-            "args": [
-              {
-                "name": "id",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ],
-            "type": {
               "kind": "LIST",
               "name": null,
               "ofType": {
@@ -17933,7 +17977,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "Issue",
+                  "name": "PullRequest",
                   "ofType": null
                 }
               }

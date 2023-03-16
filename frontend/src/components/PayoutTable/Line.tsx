@@ -20,6 +20,7 @@ export type Payment = {
   };
   status: PaymentStatus;
   recipientId?: number;
+  invoiceReceived: boolean;
   recipientPayoutSettings?: PayoutSettings;
   project?: {
     id: string;
@@ -61,7 +62,12 @@ export default function PaymentLine({ payment, payoutInfoMissing, invoiceNeeded,
       <Cell>{formatMoneyAmount(payment.amount.value, payment.amount.currency)}</Cell>
       <Cell>
         <PayoutStatus
-          {...{ id: `payout-status-${payment.id}`, status: payment.status, payoutInfoMissing, invoiceNeeded }}
+          {...{
+            id: `payout-status-${payment.id}`,
+            status: payment.status,
+            payoutInfoMissing,
+            invoiceNeeded: invoiceNeeded && !payment.invoiceReceived,
+          }}
         />
       </Cell>
     </Line>
