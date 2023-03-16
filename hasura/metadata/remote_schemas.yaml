@@ -21,6 +21,7 @@
           scalar Uuid
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
+            markInvoiceAsReceived(paymentReferences: [PaymentReference!]!): Int!
             requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, reason: Reason!): Uuid!
             updateProfileInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput, contactInformation: ContactInformation): Uuid!
           }
@@ -61,6 +62,10 @@
             city: String
             country: String
             postCode: String
+          }
+          input PaymentReference {
+            paymentId: Uuid!
+            projectId: Uuid!
           }
           input PayoutSettingsInput {
             optBankAddress: BankAddress
