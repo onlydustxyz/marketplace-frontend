@@ -17,7 +17,7 @@ const PayoutTable: React.FC<PropsType> = ({ payments, payoutInfoMissing, invoice
 
   const sortablePayments = useMemo(
     () => payments.map(p => ({ ...p, sortingFields: paymentSortingFields[p.id] })),
-    [paymentSortingFields]
+    [paymentSortingFields, payments]
   );
 
   const sortedPayments = useMemo(() => sort(sortablePayments), [sort, sortablePayments]);
