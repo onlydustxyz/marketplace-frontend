@@ -1,3 +1,4 @@
+import { WAIT_SHORT } from "../support/commands/common";
 import { Project } from "../support/commands/populate/projects";
 import { User } from "../support/commands/populate/users";
 
@@ -78,7 +79,7 @@ describe("As a project lead, I", () => {
 
     cy.contains("Contributors").click();
 
-    cy.get('[data-testid="send-payment-button"]').first().click({ force: true });
+    cy.get('[data-testid="send-payment-button"]').first().click({ force: true }).wait(WAIT_SHORT);
     cy.get("#contributorHandle").should("have.value", "oscarwroche");
   });
 });
