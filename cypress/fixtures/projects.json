@@ -5,8 +5,10 @@
     "telegramLink": "https://t.me/kakarot",
     "logoUrl": "https://github.com/sayajin-labs/kakarot/raw/main/docs/img/kakarot_github_banner.png",
     "initialBudget": 50000,
+    "pendingLeaderInvitations": ["Anthony", "Oscar"],
     "leaders": ["TokioRs", "Olivier"],
-    "repos": ["kakarot"]
+    "repos": ["kakarot"],
+    "sponsors": ["StarkNet"]
   },
   "Project A": {
     "shortDescription": "A",
@@ -15,7 +17,8 @@
     "logoUrl": "https://avatars.githubusercontent.com/u/121887739?s=400&v=4",
     "initialBudget": 100000,
     "leaders": ["TokioRs"],
-    "repos": ["A", "B"]
+    "repos": ["A", "B"],
+    "sponsors": ["StarkNet"]
   },
   "Project B": {
     "shortDescription": "B",
@@ -25,12 +28,20 @@
     "initialBudget": 20000,
     "leaders": ["Oscar"],
     "pendingLeaderInvitations": ["Anthony"],
-    "repos": ["B"]
+    "repos": ["B"],
+    "sponsors": ["StarkNet", "Ether Foundation"]
   },
   "RepoLess": {
     "shortDescription": "A project without any repo",
     "longDescription": "A project without any repo is like un repas sans fromage",
     "initialBudget": 20000,
     "pendingLeaderInvitations": ["Olivier"]
+  },
+  "Empty": {
+    "shortDescription": "A project with an empty repo",
+    "longDescription": "A project with an empty repo is very sad",
+    "initialBudget": 5000,
+    "repos": ["empty"],
+    "leaders": ["Oscar"]
   }
 }
