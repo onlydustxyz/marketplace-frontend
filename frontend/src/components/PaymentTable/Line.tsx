@@ -1,11 +1,11 @@
 import { Currency, getPaymentStatusOrder, PaymentStatus, Sortable } from "src/types";
-import Line from "../Table/Line";
-import Cell, { CellHeight } from "../Table/Cell";
+import Line from "src/components/Table/Line";
+import Cell, { CellHeight } from "src/components/Table/Cell";
 import RoundedImage, { Rounding } from "src/components/RoundedImage";
-import PayoutStatus from "../PayoutStatus";
+import PayoutStatus from "src/components/PayoutStatus";
 import { formatMoneyAmount } from "src/utils/money";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import GithubPRLink from "../PayoutTable/GithubPRLink";
+import GithubPRLink from "src/components/PayoutTable/GithubPRLink";
 import useGithubUser from "src/hooks/useGithubUser";
 import { Field, SortingFields } from "src/hooks/usePaymentSorting";
 import { useEffect } from "react";

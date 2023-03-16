@@ -57,5 +57,6 @@ module.exports = {
     "cypress/*",
     "app.json",
     "scripts/*",
+    "dist/*",
   ],
 };

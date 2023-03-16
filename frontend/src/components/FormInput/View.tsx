@@ -1,7 +1,12 @@
 import { FocusEventHandler, memo } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
-import ImageCard, { BackgroundBlur, BackgroundNoise, BackgroundPosition, BackgroundSize } from "../ImageCard";
+import ImageCard, {
+  BackgroundBlur,
+  BackgroundNoise,
+  BackgroundPosition,
+  BackgroundSize,
+} from "src/components/ImageCard";
 import headerElementBackground from "src/assets/img/alert-bg.png";
 import classNames from "classnames";
 import ErrorWarningLine from "src/icons/ErrorWarningLine";

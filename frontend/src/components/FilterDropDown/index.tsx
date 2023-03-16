@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { useState } from "react";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
 import { ProjectFilter } from "src/pages/Projects";
-import Badge, { BadgeSize } from "../Badge";
+import Badge, { BadgeSize } from "src/components/Badge";
 
 export enum FilterDropDownIcon {
   Technology = "technology",

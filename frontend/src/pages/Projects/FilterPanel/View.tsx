@@ -4,8 +4,8 @@ import { useIntl } from "src/hooks/useIntl";
 import Refresh from "src/icons/Refresh";
 import StarLine from "src/icons/StarLine";
 import { ProjectFilter, ProjectOwnershipType } from "..";
-import Card from "../../../components/Card";
-import FilterDropDown, { FilterDropDownIcon } from "../../../components/FilterDropDown";
+import Card from "src/components/Card";
+import FilterDropDown, { FilterDropDownIcon } from "src/components/FilterDropDown";
 
 export interface FilterPanelViewProps {
   availableTechnologies: string[];

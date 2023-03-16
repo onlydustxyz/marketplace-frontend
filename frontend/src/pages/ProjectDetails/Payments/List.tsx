@@ -8,7 +8,7 @@ import { useIntl } from "src/hooks/useIntl";
 import RemainingBudget from "src/pages/ProjectDetails/Payments/RemainingBudget";
 import { Sortable } from "src/types";
 import { PaymentRequestFragment } from "src/__generated/graphql";
-import Title from "../Title";
+import Title from "src/pages/ProjectDetails/Title";
 
 const PaymentList: React.FC = () => {
   const { payments, budget } = useOutletContext<{

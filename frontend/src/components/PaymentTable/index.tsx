@@ -1,5 +1,5 @@
 import { Sortable } from "src/types";
-import Table from "../Table";
+import Table from "src/components/Table";
 import usePaymentSorting, { SortingFields } from "src/hooks/usePaymentSorting";
 import Headers from "./Headers";
 import PaymentLine from "./Line";

@@ -15,7 +15,7 @@ import Badge, { BadgeSize } from "src/components/Badge";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
-import Title from "../Title";
+import Title from "src/pages/ProjectDetails/Title";
 
 type OutletContext = {
   leads?: ProjectLeadFragment[];

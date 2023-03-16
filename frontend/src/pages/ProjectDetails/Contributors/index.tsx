@@ -12,7 +12,7 @@ import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useOutletContext } from "react-router-dom";
 import { getContributors } from "src/utils/project";
-import Title from "../Title";
+import Title from "src/pages/ProjectDetails/Title";
 
 const Contributors: React.FC = () => {
   const { T } = useIntl();
