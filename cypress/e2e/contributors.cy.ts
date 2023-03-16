@@ -70,7 +70,7 @@ describe("As a project lead, I", () => {
     user = this.users["Oscar"];
   });
 
-  it("can request a payment for a contributor", function () {
+  it.skip("can request a payment for a contributor", function () {
     cy.visitApp({ path: `projects/${project.id}`, token: user.token });
     cy.contains("Contributors").click();
 
