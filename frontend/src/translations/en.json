@@ -47,6 +47,10 @@
       "title": "Send invoice"
     },
     "submitButton": "Add invoice",
+    "toaster": {
+      "success": "Invoice successfully sent",
+      "error": "We were unable to send the invoice, please try again later"
+    },
     "title": "Invoice needed",
     "text": {
       "one": "Please send us an invoice for your pending payment",

@@ -549,6 +549,11 @@ export enum OrderBy {
   DescNullsLast = 'DESC_NULLS_LAST'
 }
 
+export type PaymentReference = {
+  paymentId: Scalars['Uuid'];
+  projectId: Scalars['Uuid'];
+};
+
 /** columns and relationships of "payment_requests" */
 export type PaymentRequests = {
   __typename?: 'PaymentRequests';
@@ -1852,6 +1857,7 @@ export type Mutation_Root = {
   insertUserInfo: Maybe<UserInfoMutationResponse>;
   /** insert a single row into the table: "user_info" */
   insertUserInfoOne: Maybe<UserInfo>;
+  markInvoiceAsReceived: Scalars['Int'];
   requestPayment: Scalars['Uuid'];
   updateProfileInfo: Scalars['Uuid'];
   /** update single row of the table: "auth.users" */
@@ -1898,6 +1904,12 @@ export type Mutation_RootInsertUserInfoArgs = {
 export type Mutation_RootInsertUserInfoOneArgs = {
   object: UserInfoInsertInput;
   onConflict: InputMaybe<UserInfoOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootMarkInvoiceAsReceivedArgs = {
+  paymentReferences: Array<PaymentReference>;
 };
 
 
@@ -3425,6 +3437,13 @@ export type PendingUserPaymentsQueryVariables = Exact<{
 
 export type PendingUserPaymentsQuery = { __typename?: 'query_root', user: { __typename?: 'users', githubUser: { __typename?: 'AuthGithubUsers', paymentRequests: Array<{ __typename?: 'PaymentRequests', amountInUsd: any, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> } | null } | null };
 
+export type MarkInvoiceAsReceivedMutationVariables = Exact<{
+  paymentReferences: Array<PaymentReference> | PaymentReference;
+}>;
+
+
+export type MarkInvoiceAsReceivedMutation = { __typename?: 'mutation_root', markInvoiceAsReceived: number };
+
 export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null } | null } | null };
 
 export type GetPaymentRequestsQueryVariables = Exact<{
@@ -4139,6 +4158,37 @@ export function usePendingUserPaymentsLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type PendingUserPaymentsQueryHookResult = ReturnType<typeof usePendingUserPaymentsQuery>;
 export type PendingUserPaymentsLazyQueryHookResult = ReturnType<typeof usePendingUserPaymentsLazyQuery>;
 export type PendingUserPaymentsQueryResult = Apollo.QueryResult<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>;
+export const MarkInvoiceAsReceivedDocument = gql`
+    mutation markInvoiceAsReceived($paymentReferences: [PaymentReference!]!) {
+  markInvoiceAsReceived(paymentReferences: $paymentReferences)
+}
+    `;
+export type MarkInvoiceAsReceivedMutationFn = Apollo.MutationFunction<MarkInvoiceAsReceivedMutation, MarkInvoiceAsReceivedMutationVariables>;
+
+/**
+ * __useMarkInvoiceAsReceivedMutation__
+ *
+ * To run a mutation, you first call `useMarkInvoiceAsReceivedMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMarkInvoiceAsReceivedMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [markInvoiceAsReceivedMutation, { data, loading, error }] = useMarkInvoiceAsReceivedMutation({
+ *   variables: {
+ *      paymentReferences: // value for 'paymentReferences'
+ *   },
+ * });
+ */
+export function useMarkInvoiceAsReceivedMutation(baseOptions?: Apollo.MutationHookOptions<MarkInvoiceAsReceivedMutation, MarkInvoiceAsReceivedMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MarkInvoiceAsReceivedMutation, MarkInvoiceAsReceivedMutationVariables>(MarkInvoiceAsReceivedDocument, options);
+      }
+export type MarkInvoiceAsReceivedMutationHookResult = ReturnType<typeof useMarkInvoiceAsReceivedMutation>;
+export type MarkInvoiceAsReceivedMutationResult = Apollo.MutationResult<MarkInvoiceAsReceivedMutation>;
+export type MarkInvoiceAsReceivedMutationOptions = Apollo.BaseMutationOptions<MarkInvoiceAsReceivedMutation, MarkInvoiceAsReceivedMutationVariables>;
 export const GetPaymentRequestsDocument = gql`
     query GetPaymentRequests($githubUserId: bigint!) {
   paymentRequests(where: {recipientId: {_eq: $githubUserId}}) {
