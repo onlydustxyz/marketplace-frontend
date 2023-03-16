@@ -14,6 +14,7 @@ pub struct PaymentRequest {
 	amount_in_usd: i64,
 	reason: Value,
 	requested_at: NaiveDateTime,
+	pub invoice_received_at: Option<NaiveDateTime>,
 }
 
 impl domain::Entity for PaymentRequest {

@@ -105,6 +105,24 @@ impl Budget {
 				amount + payment.requested_usd_amount()
 			})
 	}
+
+	pub fn mark_invoice_as_received(&self, payment_id: &PaymentId) -> Result<Vec<BudgetEvent>> {
+		let payment = self.payments.get(payment_id).ok_or(Error::PaymentNotFound(*payment_id))?;
+		Ok(payment
+			.mark_invoice_as_received()?
+			.into_iter()
+			.map(|event| BudgetEvent::Payment { id: self.id, event })
+			.collect())
+	}
+
+	pub fn reject_invoice(&self, payment_id: &PaymentId) -> Result<Vec<BudgetEvent>> {
+		let payment = self.payments.get(payment_id).ok_or(Error::PaymentNotFound(*payment_id))?;
+		Ok(payment
+			.reject_invoice()?
+			.into_iter()
+			.map(|event| BudgetEvent::Payment { id: self.id, event })
+			.collect())
+	}
 }
 
 impl Entity for Budget {

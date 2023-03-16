@@ -46,6 +46,7 @@ diesel::table! {
         amount_in_usd -> Int8,
         reason -> Jsonb,
         requested_at -> Timestamp,
+        invoice_received_at -> Nullable<Timestamp>,
     }
 }
 

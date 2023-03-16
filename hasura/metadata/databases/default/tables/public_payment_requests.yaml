@@ -55,6 +55,7 @@ select_permissions:
         - amount_in_usd
         - budget_id
         - id
+        - invoice_received_at
         - reason
         - recipient_id
         - requested_at

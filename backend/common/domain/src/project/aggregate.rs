@@ -162,6 +162,34 @@ impl Project {
 			.map(|event| ProjectEvent::Budget { id: self.id, event })
 			.collect())
 	}
+
+	pub async fn mark_invoice_as_received(
+		&self,
+		payment_id: &PaymentId,
+	) -> Result<Vec<<Self as Aggregate>::Event>> {
+		Ok(self
+			.budget
+			.as_ref()
+			.ok_or(Error::NoBudget)?
+			.mark_invoice_as_received(payment_id)?
+			.into_iter()
+			.map(|event| ProjectEvent::Budget { id: self.id, event })
+			.collect())
+	}
+
+	pub async fn reject_invoice(
+		&self,
+		payment_id: &PaymentId,
+	) -> Result<Vec<<Self as Aggregate>::Event>> {
+		Ok(self
+			.budget
+			.as_ref()
+			.ok_or(Error::NoBudget)?
+			.reject_invoice(payment_id)?
+			.into_iter()
+			.map(|event| ProjectEvent::Budget { id: self.id, event })
+			.collect())
+	}
 }
 
 #[cfg(test)]
