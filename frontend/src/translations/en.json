@@ -93,6 +93,7 @@
           "placeholder": "github.com/example/repo/pull/472",
           "label": "Add specific PR using URL"
         },
+        "morePullRequestsCallout": "Only the last __count__ unpaid pull requests by this user are shown in this list.",
         "pullRequestedAddedToaster": "Pull request added",
         "subTitle": "Add contributions that should be part of this payment",
         "title": "Work items",

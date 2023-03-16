@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import { differenceBy, differenceWith, sortBy } from "lodash";
 import { useMemo, useState } from "react";
+import Callout from "src/components/Callout";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
@@ -30,6 +31,8 @@ type Props = {
 export const buildQuery = (githubRepos: RepositoryOwnerAndNameFragment[], author: string) =>
   `${githubRepos.map(r => `repo:${r.owner}/${r.name}`).join(" ")} is:pr author:${author}`;
 
+const MAX_PR_COUNT = 50;
+
 export default function PullRequests({ projectId, contributorHandle, workItems, onWorkItemAdded }: Props) {
   const { T } = useIntl();
 
@@ -58,7 +61,10 @@ export default function PullRequests({ projectId, contributorHandle, workItems, 
     skip: !getPaidItemsQuery.data?.projectsByPk?.githubRepos,
   });
 
-  const pulls: WorkItem[] = useMemo(() => searchPrQuery.data?.searchIssues || [], [searchPrQuery.data?.searchIssues]);
+  const pulls: WorkItem[] = useMemo(
+    () => differenceBy(searchPrQuery.data?.searchIssues || [], workItems, "id"),
+    [searchPrQuery.data?.searchIssues, workItems]
+  );
 
   const paidItems = useMemo(
     () =>
@@ -66,19 +72,22 @@ export default function PullRequests({ projectId, contributorHandle, workItems, 
         .flatMap(b => b.paymentRequests)
         .flatMap(p => p.reason.work_items)
         .map(parsePullRequestLink) || [],
+
     [getPaidItemsQuery.data?.projectsByPk?.budgets]
   );
 
   const elligiblePulls = useMemo(
     () =>
       sortBy(
-        differenceWith(differenceBy(pulls, workItems, "id"), paidItems, (pr, paidItem) => {
+        differenceWith(pulls, paidItems, (pr, paidItem) => {
           const { repoOwner, repoName } = parsePullRequestLink(pr.htmlUrl);
           return repoOwner === paidItem.repoOwner && repoName === paidItem.repoName && pr.number === paidItem.prNumber;
         }),
         "createdAt"
-      ).reverse(),
-    [pulls, paidItems, workItems]
+      )
+        .reverse()
+        .slice(0, MAX_PR_COUNT),
+    [pulls, paidItems]
   );
 
   return (
@@ -106,7 +115,14 @@ export default function PullRequests({ projectId, contributorHandle, workItems, 
             ))}
           </div>
         ) : (
-          <EmptyState />
+          <div className="mr-4">
+            <EmptyState />
+          </div>
+        )}
+        {pulls.length > elligiblePulls.length && (
+          <div className="mr-4">
+            <Callout>{T("payment.form.workItems.morePullRequestsCallout", { count: MAX_PR_COUNT })}</Callout>
+          </div>
         )}
       </QueryWrapper>
     </div>
