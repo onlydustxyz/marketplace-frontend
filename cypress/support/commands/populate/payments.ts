@@ -35,6 +35,11 @@ export type PaymentReceipt = {
   transactionHashOrReference: string;
 };
 
+export type PaymentRequest = Omit<Payment, "items"> &
+  PaymentItem & {
+    id: string;
+  };
+
 Cypress.Commands.add("populatePayments", function () {
   cy.get("@users").then((_users: any) => {
     const users = new Map<string, User>(Object.entries(_users));
@@ -43,6 +48,8 @@ Cypress.Commands.add("populatePayments", function () {
       const projects = new Map<string, Project>(Object.entries(_projects));
 
       cy.fixture("payments.json").then((payments: Payment[]) => {
+        const augmented_payments = new Map<string, Map<number, PaymentRequest[]>>();
+
         for (const payment of payments) {
           const project = projects.get(payment.project);
           if (!project) {
@@ -58,11 +65,20 @@ Cypress.Commands.add("populatePayments", function () {
             throw new Error(`Requestor ${payment.requestor} is not a leader of project ${payment.project}`);
           }
 
+          if (!augmented_payments.has(payment.project)) {
+            augmented_payments.set(payment.project, new Map<number, PaymentRequest[]>());
+          }
+          if (!augmented_payments.get(payment.project).has(payment.recipientGithubId)) {
+            augmented_payments.get(payment.project).set(payment.recipientGithubId, []);
+          }
+
           for (const paymentItem of payment.items) {
             cy.requestPayment(project.id, paymentItem.amount, payment.recipientGithubId, paymentItem.reason)
               .asRegisteredUser(requestor)
               .data("requestPayment")
               .then(paymentId => {
+                const payment_request = { ...payment, ...paymentItem, id: paymentId, items: undefined };
+                augmented_payments.get(payment.project).get(payment.recipientGithubId).push(payment_request);
                 for (const receipt of paymentItem.receipts || []) {
                   if (receipt.recipientIdentity.type === PayoutIdentityType.ETHEREUM_ADDRESS) {
                     cy.addEthPaymentReceipt(
@@ -91,6 +107,15 @@ Cypress.Commands.add("populatePayments", function () {
               });
           }
         }
+
+        cy.then(() => {
+          let serializable_payment_requests: any = Object.fromEntries(augmented_payments);
+          for (const key in serializable_payment_requests) {
+            serializable_payment_requests[key] = Object.fromEntries(serializable_payment_requests[key]);
+          }
+          cy.writeFile("cypress/fixtures/__generated/payment_requests.json", serializable_payment_requests);
+          cy.wrap(serializable_payment_requests).as("paymentRequests");
+        });
       });
     });
   });

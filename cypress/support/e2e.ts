@@ -44,6 +44,7 @@ beforeEach(function () {
     cy.log("Restoring fixtures of populated data...");
     cy.fixtureOrDefault("__generated/users.json", "users");
     cy.fixtureOrDefault("__generated/projects.json", "projects");
+    cy.fixtureOrDefault("__generated/payment_requests.json", "paymentRequests");
   }
 });
 
