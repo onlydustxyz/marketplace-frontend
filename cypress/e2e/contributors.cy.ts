@@ -1,8 +1,15 @@
+import { Project } from "../support/commands/populate/projects";
+import { User } from "../support/commands/populate/users";
+
 describe("As a public user, I", () => {
-  const OFUX = 595505;
+  let project: Project;
+
+  beforeEach(function () {
+    project = this.projects["Project A"];
+  });
 
   it("can see the contributors of a project", function () {
-    cy.visit(`http://localhost:5173/projects/${this.projects["Project A"].id}`);
+    cy.visit(`http://localhost:5173/projects/${project.id}`);
 
     cy.contains("Contributors").click();
 
@@ -28,7 +35,7 @@ describe("As a public user, I", () => {
   });
 
   it("can sort the contributors of a project", function () {
-    cy.visit(`http://localhost:5173/projects/${this.projects["Project A"].id}`);
+    cy.visit(`http://localhost:5173/projects/${project.id}`);
 
     cy.contains("Contributors").click();
     cy.get("#contributors_table thead tr th:nth-child(1)").click(); // sort by contributor name ASC
@@ -53,29 +60,25 @@ describe("As a public user, I", () => {
   });
 });
 
-//TODO
 describe("As a project lead, I", () => {
+  let project: Project;
+  let user: User;
+
   beforeEach(function () {
-    cy.createGithubUser(98735558).then(user => {
-      cy.createProject("Project with budget").withLeader(user).withBudget(100000).withRepo().as("projectId");
-      cy.signinUser(user)
-        .then(user => JSON.stringify(user.session))
-        .as("token");
-    });
+    project = this.projects["Project B"];
+    user = this.users["Oscar"];
   });
 
-  it.skip("can request a payment for a contributor", function () {
-    cy.visit(`http://localhost:5173/projects/${this.projectId}`, {
+  it("can request a payment for a contributor", function () {
+    cy.visit(`http://localhost:5173/projects/${project.id}`, {
       onBeforeLoad(win) {
-        win.localStorage.setItem("hasura_token", this.token);
+        win.localStorage.setItem("hasura_token", user.token);
       },
     });
 
     cy.contains("Contributors").click();
 
     cy.get('[data-testid="send-payment-button"]').first().click({ force: true });
-    cy.wait(1000);
-    cy.contains("[name=contributorHandle]");
-    cy.get("[name=contributorHandle]").should("have.value", "AnthonyBuisset");
+    cy.get("#contributorHandle").should("have.value", "oscarwroche");
   });
 });
