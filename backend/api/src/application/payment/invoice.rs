@@ -7,7 +7,7 @@ use domain::{
 use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
 
-use crate::domain::Publishable;
+use crate::{domain::Publishable, presentation::http::dto::PaymentReference};
 
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
@@ -28,6 +28,20 @@ impl Usecase {
 	#[instrument(skip(self))]
 	pub async fn mark_invoice_as_received(
 		&self,
+		payment_references: &Vec<PaymentReference>,
+	) -> Result<(), DomainError> {
+		for payment_reference in payment_references {
+			self.mark_invoice_as_received_for_payment_request(
+				&(*payment_reference.project_id()).into(),
+				&(*payment_reference.payment_id()).into(),
+			)
+			.await?;
+		}
+		Ok(())
+	}
+
+	async fn mark_invoice_as_received_for_payment_request(
+		&self,
 		project_id: &ProjectId,
 		payment_id: &PaymentId,
 	) -> Result<(), DomainError> {
@@ -47,6 +61,20 @@ impl Usecase {
 
 	#[instrument(skip(self))]
 	pub async fn reject_invoice(
+		&self,
+		payment_references: &Vec<PaymentReference>,
+	) -> Result<(), DomainError> {
+		for payment_reference in payment_references {
+			self.reject_invoice_for_payment_request(
+				&(*payment_reference.project_id()).into(),
+				&(*payment_reference.payment_id()).into(),
+			)
+			.await?;
+		}
+		Ok(())
+	}
+
+	async fn reject_invoice_for_payment_request(
 		&self,
 		project_id: &ProjectId,
 		payment_id: &PaymentId,

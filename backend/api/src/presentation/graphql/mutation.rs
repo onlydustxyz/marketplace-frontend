@@ -13,7 +13,8 @@ use crate::{
 		PaymentReason,
 	},
 	presentation::http::dto::{
-		EthereumIdentityInput, IdentityInput, OptionalNonEmptyTrimmedString, PayoutSettingsInput,
+		EthereumIdentityInput, IdentityInput, OptionalNonEmptyTrimmedString, PaymentReference,
+		PayoutSettingsInput,
 	},
 };
 
@@ -109,26 +110,18 @@ impl Mutation {
 
 	pub async fn mark_invoice_as_received(
 		context: &Context,
-		project_id: Uuid,
-		payment_id: Uuid,
-	) -> Result<Uuid> {
-		context
-			.invoice_usecase
-			.mark_invoice_as_received(&project_id.into(), &payment_id.into())
-			.await?;
-		Ok(payment_id)
+		payment_references: Vec<PaymentReference>,
+	) -> Result<i32> {
+		context.invoice_usecase.mark_invoice_as_received(&payment_references).await?;
+		Ok(payment_references.len() as i32)
 	}
 
 	pub async fn reject_invoice(
 		context: &Context,
-		project_id: Uuid,
-		payment_id: Uuid,
-	) -> Result<Uuid> {
-		context
-			.invoice_usecase
-			.reject_invoice(&project_id.into(), &payment_id.into())
-			.await?;
-		Ok(payment_id)
+		payment_references: Vec<PaymentReference>,
+	) -> Result<i32> {
+		context.invoice_usecase.reject_invoice(&payment_references).await?;
+		Ok(payment_references.len() as i32)
 	}
 
 	pub async fn create_project(
