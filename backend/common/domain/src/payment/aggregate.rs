@@ -50,6 +50,7 @@ impl EventSourcable for Payment {
 				paid_usd_amount: self.paid_usd_amount + amount.amount(), // TODO: handle currencies
 				..self
 			},
+			PaymentEvent::InvoiceReceived { .. } | PaymentEvent::InvoiceRejected { .. } => self,
 		}
 	}
 }
@@ -122,6 +123,25 @@ impl Payment {
 		let events = vec![PaymentEvent::Cancelled { id: self.id }];
 
 		Ok(events)
+	}
+
+	pub fn mark_invoice_as_received(&self) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+		self.only_active()?;
+
+		info!(id = self.id.to_string(), "Invoice received",);
+
+		Ok(vec![PaymentEvent::InvoiceReceived {
+			id: self.id,
+			received_at: Utc::now().naive_utc(),
+		}])
+	}
+
+	pub fn reject_invoice(&self) -> Result<Vec<<Self as Aggregate>::Event>, Error> {
+		self.only_active()?;
+
+		info!(id = self.id.to_string(), "Invoice rejected",);
+
+		Ok(vec![PaymentEvent::InvoiceRejected { id: self.id }])
 	}
 
 	fn only_active(&self) -> Result<(), Error> {

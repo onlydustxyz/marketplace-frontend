@@ -28,12 +28,23 @@ pub enum Event {
 		amount: Amount,
 		receipt: PaymentReceipt,
 	},
+	InvoiceReceived {
+		id: PaymentId,
+		received_at: NaiveDateTime,
+	},
+	InvoiceRejected {
+		id: PaymentId,
+	},
 }
 
 impl AggregateEvent<Payment> for Event {
 	fn aggregate_id(&self) -> &PaymentId {
 		match self {
-			Self::Requested { id, .. } | Self::Processed { id, .. } | Self::Cancelled { id } => id,
+			Self::Requested { id, .. }
+			| Self::Processed { id, .. }
+			| Self::Cancelled { id }
+			| Self::InvoiceReceived { id, .. }
+			| Self::InvoiceRejected { id } => id,
 		}
 	}
 }

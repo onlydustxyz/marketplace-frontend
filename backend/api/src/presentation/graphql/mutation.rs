@@ -107,6 +107,30 @@ impl Mutation {
 		Ok(payment_id)
 	}
 
+	pub async fn mark_invoice_as_received(
+		context: &Context,
+		project_id: Uuid,
+		payment_id: Uuid,
+	) -> Result<Uuid> {
+		context
+			.invoice_usecase
+			.mark_invoice_as_received(&project_id.into(), &payment_id.into())
+			.await?;
+		Ok(payment_id)
+	}
+
+	pub async fn reject_invoice(
+		context: &Context,
+		project_id: Uuid,
+		payment_id: Uuid,
+	) -> Result<Uuid> {
+		context
+			.invoice_usecase
+			.reject_invoice(&project_id.into(), &payment_id.into())
+			.await?;
+		Ok(payment_id)
+	}
+
 	pub async fn create_project(
 		context: &Context,
 		name: String,
