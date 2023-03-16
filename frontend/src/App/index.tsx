@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { RouteObject, useRoutes } from "react-router-dom";
 
-import Layout from "src/components/Layout";
+import Layout from "src/App/Layout";
 import ProtectedRoute from "src/App/ProtectedRoute";
 import ErrorFallback from "src/components/ErrorFallback";
 

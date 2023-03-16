@@ -1,5 +1,5 @@
 import { useAuth } from "src/hooks/useAuth";
-import View from "src/components/Layout/Header/ProfileButton/View";
+import View from "src/App/Layout/Header/ProfileButton/View";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 
 const ProfileButton = () => {
