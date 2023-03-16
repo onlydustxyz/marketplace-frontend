@@ -17,7 +17,7 @@ describe("As a visitor, I", () => {
   });
 
   it("can filter projects by technology", function () {
-    cy.visit("http://localhost:5173/");
+    cy.visitApp();
 
     // Projects
     cy.contains("Croute A");
@@ -55,7 +55,7 @@ describe("As a visitor, I", () => {
   });
 
   it("cannot access restricted projects page", function () {
-    cy.visit(`http://localhost:5173/projects/${this.projectId}/payments`);
+    cy.visitApp({ path: `projects/${this.projectId}/payments` });
     cy.location().should(loc => {
       expect(loc.pathname).to.eq(`/projects/${this.projectId}`);
     });

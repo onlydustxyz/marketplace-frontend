@@ -10,7 +10,7 @@ describe("As a public user, I", () => {
   });
 
   it("can see the contributors of a project", function () {
-    cy.visit(`http://localhost:5173/projects/${project.id}`);
+    cy.visitApp({ path: `projects/${project.id}` });
 
     cy.contains("Contributors").click();
 
@@ -36,7 +36,7 @@ describe("As a public user, I", () => {
   });
 
   it("can sort the contributors of a project", function () {
-    cy.visit(`http://localhost:5173/projects/${project.id}`);
+    cy.visitApp({ path: `projects/${project.id}` });
 
     cy.contains("Contributors").click();
     cy.get("#contributors_table thead tr th:nth-child(1)").click(); // sort by contributor name ASC
