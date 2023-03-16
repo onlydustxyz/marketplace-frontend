@@ -2,8 +2,8 @@ import { lazy, Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { RouteObject, useRoutes } from "react-router-dom";
 
-import Layout from "src/components/Layout";
-import ProtectedRoute from "src/components/ProtectedRoute";
+import Layout from "src/App/Layout";
+import ProtectedRoute from "src/App/ProtectedRoute";
 import ErrorFallback from "src/components/ErrorFallback";
 
 const Login = lazy(() => import("src/pages/Login"));
@@ -19,7 +19,7 @@ const ProjectDetailsPaymentForm = lazy(() => import("src/pages/ProjectDetails/Pa
 
 import { CustomUserRole, HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/Loader";
-import ScrollToTop from "src/components/ScrollToTop";
+import ScrollToTop from "src/App/ScrollToTop";
 import ErrorTrigger from "src/pages/ErrorTrigger";
 
 export enum RoutePaths {

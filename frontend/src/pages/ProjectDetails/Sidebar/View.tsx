@@ -1,12 +1,11 @@
 import { Listbox } from "@headlessui/react";
-import Sidebar from "src/components/Sidebar";
 import UpDownChevrons from "src/assets/icons/UpDownChevrons";
 import { RoutePaths } from "src/App";
-import BackLink from "src/components/BackLink";
+import BackLink from "./BackLink";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import { ProjectDetails } from "..";
 import { useIntl } from "src/hooks/useIntl";
-import { ProjectDetailsTab } from "src/pages/ProjectDetails/Sidebar";
+import { ProjectDetailsTab } from ".";
 import { generatePath, NavLink, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import ProjectOption from "./ProjectOption";
@@ -31,7 +30,11 @@ export default function View({ expandable, currentProject, allProjects, availabl
   const navigate = useNavigate();
 
   return (
-    <Sidebar>
+    <div
+      className={
+        "flex flex-col min-h-full shrink-0 w-80 gap-6 bg-noise-medium bg-white/4 p-6 font-walsheim rounded-l-2xl"
+      }
+    >
       <BackLink to={RoutePaths.Projects} className="divide-none">
         {T("project.details.sidebar.backToProjects")}
       </BackLink>
@@ -83,6 +86,6 @@ export default function View({ expandable, currentProject, allProjects, availabl
           ))}
         </div>
       </div>
-    </Sidebar>
+    </div>
   );
 }

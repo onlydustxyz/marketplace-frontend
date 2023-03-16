@@ -7,7 +7,7 @@ import { IntlProvider } from "src/hooks/useIntl";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { SessionProvider } from "src/hooks/useSession";
 import { ToasterProvider } from "src/hooks/useToaster";
-import { Toaster } from "src/components/Toaster";
+import { Toaster } from "src/App/Layout/Toaster";
 import { viewportConfig } from "src/config";
 
 interface MemoryRouterProviderFactoryProps {

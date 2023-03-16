@@ -12,7 +12,7 @@ import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 
 import config from "src/config";
-import ErrorFallback from "../ErrorFallback";
+import ErrorFallback from "../../components/ErrorFallback";
 import { accessTokenExpired, LOCAL_STORAGE_TOKEN_SET_KEY, useTokenSet } from "src/hooks/useTokenSet";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";

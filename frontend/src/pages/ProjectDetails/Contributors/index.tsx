@@ -1,7 +1,9 @@
 import { gql } from "@apollo/client";
 import Card from "src/components/Card";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
-import ContributorsTable, { CONTRIBUTORS_TABLE_FRAGMENT } from "src/components/ContributorsTable";
+import ContributorsTable, {
+  CONTRIBUTORS_TABLE_FRAGMENT,
+} from "src/pages/ProjectDetails/Contributors/ContributorsTable";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { HasuraUserRole } from "src/types";

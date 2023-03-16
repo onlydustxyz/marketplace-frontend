@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
-import ApolloWrapper from "src/components/ApolloWrapper";
+import ApolloWrapper from "src/providers/ApolloWrapper";
 import { AuthProvider } from "src/hooks/useAuth";
 import App from "./App";
 import "./datadog";

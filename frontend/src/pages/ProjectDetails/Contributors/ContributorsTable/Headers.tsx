@@ -1,6 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
-import HeaderLine from "../Table/HeaderLine";
-import HeaderCell, { HeaderCellWidth } from "../Table/HeaderCell";
+import HeaderLine from "src/components/Table/HeaderLine";
+import HeaderCell, { HeaderCellWidth } from "src/components/Table/HeaderCell";
 import SortingArrow from "./SortingArrow";
 import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";

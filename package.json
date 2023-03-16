@@ -14,7 +14,8 @@
     "generate": "graphql-codegen --config codegen.ts",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "postbuild": "./scripts/upload-sourcemaps.sh"
+    "postbuild": "./scripts/upload-sourcemaps.sh",
+    "dependency-cruiser": "depcruise --config .dependency-cruiser.js frontend/src"
   },
   "dependencies": {
     "@apollo/client": "3.8.0-alpha.5",
@@ -81,6 +82,7 @@
     "chromatic": "^6.11.4",
     "csv": "^6.2.5",
     "cypress": "^12.7.0",
+    "dependency-cruiser": "^12.10.1",
     "dotenv": "^16.0.3",
     "eslint": "^8.27.0",
     "eslint-config-prettier": "^8.5.0",

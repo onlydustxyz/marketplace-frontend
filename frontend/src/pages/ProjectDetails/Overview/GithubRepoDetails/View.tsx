@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import Card from "src/components/Card";
-import GithubLink from "src/components/GithubLink";
+import GithubLink from "src/pages/ProjectDetails/Overview/GithubRepoDetails/GithubLink";
 import Tag, { TagSize } from "src/components/Tag";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";

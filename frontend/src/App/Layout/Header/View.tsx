@@ -3,7 +3,7 @@ import GithubLink from "./GithubLink";
 import OnlyDustLogo from "./OnlyDustLogo";
 import OnlyDustTitle from "./OnlyDustTitle";
 import ProfileButton from "./ProfileButton";
-import MenuItem from "src/components/Layout/Header/MenuItem";
+import MenuItem from "src/App/Layout/Header/MenuItem";
 import { Link } from "react-router-dom";
 import FeedbackButton from "./FeedbackButton";
 import classNames from "classnames";
