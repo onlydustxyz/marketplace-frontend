@@ -1,3 +1,5 @@
+import { __POPULATE } from "../e2e";
+
 export {};
 
 declare global {
@@ -46,7 +48,7 @@ Cypress.Commands.add(
       body: { query: query.query, variables: query.variables },
       timeout: GRAPHQL_TIMEOUT,
     }).then(response => {
-      if (query.wait) {
+      if (query.wait && Cypress.currentTest.title !== __POPULATE) {
         cy.wait(query.wait).then(() => {
           return response;
         });
@@ -73,7 +75,7 @@ Cypress.Commands.add(
       },
       timeout: GRAPHQL_TIMEOUT,
     }).then(response => {
-      if (query.wait) {
+      if (query.wait && Cypress.currentTest.title !== __POPULATE) {
         cy.wait(query.wait).then(() => {
           return response;
         });
@@ -105,8 +107,7 @@ Cypress.Commands.add(
         });
       })
       .then(response => {
-        //TODO: remove this once refactoring with populated data is done
-        if (query.wait) {
+        if (query.wait && Cypress.currentTest.title !== __POPULATE) {
           cy.wait(query.wait).then(() => {
             return response;
           });

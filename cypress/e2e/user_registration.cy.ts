@@ -61,7 +61,6 @@ describe("The company", () => {
     cy.get("[name=BIC]").clear().type(this.profile.BIC);
 
     cy.contains("Save profile").click();
-    cy.wait(WAIT_LONG);
 
     cy.contains("Changes saved");
   });

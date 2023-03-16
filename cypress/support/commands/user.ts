@@ -137,7 +137,6 @@ Cypress.Commands.add("fillPayoutSettings", token => {
   cy.fixture("profiles/james_bond").then(profile => {
     cy.visitApp({ path: "profile", token });
 
-    cy.wait(500);
     cy.get("[name=firstname]").clear().type(profile.firstname);
     cy.get("[name=lastname]").clear().type(profile.lastname);
     cy.get("[name=email]").clear().type(profile.email);
