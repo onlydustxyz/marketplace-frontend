@@ -2,7 +2,7 @@ import { range } from "lodash";
 import { Payment } from "src/components/PayoutTable/Line";
 import { Currency, PaymentStatus } from "src/types";
 import { UserInfo } from "src/__generated/graphql";
-import { buildHiddenFields } from ".";
+import { buildHiddenFields } from "./View";
 
 const paymentRequests: Payment[] = range(1, 4).map(id => ({
   id: `abc${id}${id}${id}${id}${id}${id}${id}`,
