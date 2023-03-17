@@ -43,11 +43,11 @@ export const VISIBLE_PROJECT_FRAGMENT = gql`
 type Project<R> = {
   githubRepos: Array<{
     githubRepoDetails: {
-      content: { contributors: Array<R> };
+      content: { contributors: Array<R | null> } | null;
     } | null;
   }>;
   budgets: Array<{
-    paymentRequests: Array<{ githubRecipient: R }>;
+    paymentRequests: Array<{ githubRecipient: R | null }>;
   }>;
 };
 

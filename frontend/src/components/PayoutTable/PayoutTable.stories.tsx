@@ -23,6 +23,7 @@ const mockPayments: Payment[] = [
     },
     status: PaymentStatus.ACCEPTED,
     reason: "https://github.com/open-dust/cairo-foundry/pull/110",
+    invoiceReceived: false,
   },
   {
     amount: { value: 100, currency: Currency.USD },
@@ -34,6 +35,7 @@ const mockPayments: Payment[] = [
     },
     reason: "https://github.com/open-dust/cairo-foundry/pull/110",
     status: PaymentStatus.WAITING_PAYMENT,
+    invoiceReceived: true,
   },
 ];
 
