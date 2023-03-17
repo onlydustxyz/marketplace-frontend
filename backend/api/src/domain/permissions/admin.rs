@@ -1,4 +1,4 @@
-use domain::ProjectId;
+use domain::{PaymentId, ProjectId};
 
 use super::Permissions;
 
@@ -13,6 +13,14 @@ impl Permissions for Admin {
 		&self,
 		_project_id: &ProjectId,
 		_user_id: &domain::UserId,
+	) -> bool {
+		true
+	}
+
+	fn can_mark_invoice_as_received_for_payment(
+		&self,
+		_project_id: &ProjectId,
+		_payment_id: &PaymentId,
 	) -> bool {
 		true
 	}

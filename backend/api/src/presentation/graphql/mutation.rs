@@ -112,6 +112,22 @@ impl Mutation {
 		context: &Context,
 		payment_references: Vec<PaymentReference>,
 	) -> Result<i32> {
+		for payment_reference in &payment_references {
+			let caller_id = *context.caller_info()?.user_id();
+
+			if !context.caller_permissions.can_mark_invoice_as_received_for_payment(
+				&(*payment_reference.project_id()).into(),
+				&(*payment_reference.payment_id()).into(),
+			) {
+				return Err(Error::NotAuthorized(
+					caller_id,
+					format!(
+						"Only recipient can mark invoice {} as received",
+						payment_reference.payment_id()
+					),
+				));
+			}
+		}
 		context.invoice_usecase.mark_invoice_as_received(&payment_references).await?;
 		Ok(payment_references.len() as i32)
 	}

@@ -1,13 +1,26 @@
+use domain::{AggregateRootRepository, Project};
 use presentation::http::guards::Role;
 
-use crate::domain::{permissions, Permissions};
+use crate::domain::{
+	permissions::{self, IntoPermission},
+	Permissions,
+};
 
-impl From<Role> for Box<dyn Permissions> {
-	fn from(role: Role) -> Self {
-		match role {
+impl IntoPermission for Role {
+	fn to_permissions(
+		&self,
+		project_repository: AggregateRootRepository<Project>,
+	) -> Box<dyn Permissions> {
+		match self {
 			Role::Admin => permissions::of_admin(),
-			Role::RegisteredUser { lead_projects } =>
-				permissions::of_identified_user(lead_projects.into_iter().map(Into::into).collect()),
+			Role::RegisteredUser {
+				lead_projects,
+				github_user_id,
+			} => permissions::of_identified_user(
+				lead_projects.iter().map(|id| (*id).into()).collect(),
+				*github_user_id,
+				project_repository,
+			),
 			Role::Public => permissions::of_anonymous(),
 		}
 	}

@@ -8,6 +8,7 @@ use rocket::{response::content, State};
 use tracing::instrument;
 
 use crate::{
+	domain::permissions::IntoPermission,
 	infrastructure::{
 		database::{
 			GithubRepoRepository, PendingProjectLeaderInvitationsRepository,
@@ -59,7 +60,7 @@ pub async fn get_graphql_handler(
 	simple_storage: &State<Arc<simple_storage::Client>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
-		role.into(),
+		role.to_permissions((*project_repository).clone()),
 		maybe_user_id,
 		(*event_publisher).clone(),
 		(*project_repository).clone(),
@@ -102,7 +103,7 @@ pub async fn post_graphql_handler(
 	simple_storage: &State<Arc<simple_storage::Client>>,
 ) -> GraphQLResponse {
 	let context = Context::new(
-		role.into(),
+		role.to_permissions((*project_repository).clone()),
 		maybe_user_id,
 		(*event_publisher).clone(),
 		(*project_repository).clone(),
