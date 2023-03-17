@@ -73,6 +73,7 @@ describe("As a simple user, I", () => {
                             recipientId
                             amountInUsd
                             budgetId
+                            invoiceReceivedAt
                             recipient {
                                 userId
                             }
@@ -87,6 +88,45 @@ describe("As a simple user, I", () => {
               expect(paymentRequest.amountInUsd).equal(500);
               expect(paymentRequest.budgetId).equal(globalBudgetId);
               expect(paymentRequest.recipient.userId).equal(user.id);
+              expect(paymentRequest.invoiceReceivedAt).to.be.null;
+
+              cy.markInvoiceAsReceived([{ projectId: globalProjectId, paymentId: requestId }])
+                .asRegisteredUser(user)
+                .data()
+                .then(() => {
+                  cy.graphql({
+                    query: `query($requestId: uuid!) {
+                                paymentRequestsByPk(id: $requestId) {
+                                    invoiceReceivedAt
+                                }
+                            }`,
+                    variables: { requestId },
+                  })
+                    .asRegisteredUser(user)
+                    .data("paymentRequestsByPk")
+                    .then(paymentRequest => {
+                      expect(paymentRequest.invoiceReceivedAt).not.to.be.null;
+
+                      cy.rejectInvoice([{ projectId: globalProjectId, paymentId: requestId }])
+                        .asAdmin()
+                        .data()
+                        .then(() => {
+                          cy.graphql({
+                            query: `query($requestId: uuid!) {
+                                paymentRequestsByPk(id: $requestId) {
+                                    invoiceReceivedAt
+                                }
+                            }`,
+                            variables: { requestId },
+                          })
+                            .asRegisteredUser(user)
+                            .data("paymentRequestsByPk")
+                            .then(paymentRequest => {
+                              expect(paymentRequest.invoiceReceivedAt).to.be.null;
+                            });
+                        });
+                    });
+                });
             });
         });
       });

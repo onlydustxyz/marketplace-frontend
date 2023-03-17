@@ -7,6 +7,8 @@ declare global {
     interface Chainable {
       requestPayment(projectId: Uuid, amount: number, recipientId: number, reason: object): Chainable<GraphQLRequest>;
       cancelPaymentRequest(projectId: Uuid, paymentId: Uuid): Chainable<GraphQLRequest>;
+      markInvoiceAsReceived(paymentReferences: PaymentReference[]): Chainable<GraphQLRequest>;
+      rejectInvoice(paymentReferences: PaymentReference[]): Chainable<GraphQLRequest>;
       paymentRequestShouldExist(paymentId: Uuid): Chainable<any>;
       paymentRequestShouldNotExist(paymentId: Uuid): Chainable<any>;
       paymentRequestShouldBePaid(paymentRequestId: Uuid, paymentId: Uuid): Chainable<any>;
@@ -29,6 +31,11 @@ declare global {
     }
   }
 }
+
+export type PaymentReference = {
+  projectId: Uuid;
+  paymentId: Uuid;
+};
 
 Cypress.Commands.add("requestPayment", (projectId, amount, recipientId, reason) => {
   return cy.wrap({
@@ -53,6 +60,30 @@ Cypress.Commands.add("cancelPaymentRequest", (projectId, paymentId) => {
     variables: {
       projectId,
       paymentId,
+    },
+    wait: WAIT_SHORT,
+  });
+});
+
+Cypress.Commands.add("markInvoiceAsReceived", (paymentReferences: PaymentReference[]) => {
+  return cy.wrap({
+    query: `mutation($paymentReferences:[PaymentReference!]!) {
+                markInvoiceAsReceived(paymentReferences: $paymentReferences)
+            }`,
+    variables: {
+      paymentReferences,
+    },
+    wait: WAIT_SHORT,
+  });
+});
+
+Cypress.Commands.add("rejectInvoice", (paymentReferences: PaymentReference[]) => {
+  return cy.wrap({
+    query: `mutation($paymentReferences:[PaymentReference!]!) {
+        rejectInvoice(paymentReferences: $paymentReferences)
+            }`,
+    variables: {
+      paymentReferences,
     },
     wait: WAIT_SHORT,
   });
