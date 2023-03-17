@@ -2,13 +2,13 @@ import { ComponentStory } from "@storybook/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { GithubContributorFragment } from "src/__generated/graphql";
 
-import ContributorsSelect from "./View";
+import ContributorSelectView from "./View";
 
 export default {
   title: "ContributorsSelect",
 };
 
-const contributors: GithubContributorFragment[] = [
+const filteredContributors: GithubContributorFragment[] = [
   {
     id: 1111,
     login: "antho",
@@ -27,6 +27,9 @@ const contributors: GithubContributorFragment[] = [
     avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
     user: null,
   },
+];
+
+const filteredExternalContributors: GithubContributorFragment[] = [
   {
     id: 4444,
     login: "oscar",
@@ -47,22 +50,23 @@ const contributors: GithubContributorFragment[] = [
   },
 ];
 
-const Template: ComponentStory<typeof ContributorsSelect> = () => {
-  const methods = useForm();
-
+const Template: ComponentStory<typeof ContributorSelectView> = () => {
   return (
-    <FormProvider {...methods}>
-      <ContributorsSelect {...args} />
-    </FormProvider>
+    <div className="w-full relative">
+      <ContributorSelectView {...args} />
+    </div>
   );
 };
 
 const args = {
-  loading: false,
-  contributors,
-  onContributorHandleChange: Function.prototype(),
-  validateContributorLogin: Function.prototype(),
-  clear: Function.prototype(),
+  selectedGithubHandle: "test",
+  setSelectedGithubHandle: Function.prototype(),
+  githubHandleSubstring: "test",
+  setGithubHandleSubstring: Function.prototype(),
+  filteredContributors,
+  filteredExternalContributors,
+  isSearchGithubUsersByHandleSubstringQueryLoading: false,
+  contributor: filteredContributors[0],
 };
 
 export const Default = Template.bind({});
