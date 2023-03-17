@@ -56,6 +56,7 @@ const mockContribution: UserPaymentRequestFragment = {
       },
     },
   },
+  invoiceReceivedAt: null,
 };
 
 const buildMockPaymentsQuery = (

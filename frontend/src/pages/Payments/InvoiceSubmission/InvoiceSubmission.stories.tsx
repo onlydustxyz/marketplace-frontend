@@ -18,6 +18,7 @@ const [payment1, payment2, payment3]: Payment[] = range(1, 4).map(id => ({
   reason: "",
   requestedAt: new Date(),
   status: PaymentStatus.WAITING_PAYMENT,
+  invoiceReceived: id % 2 === 0,
 }));
 
 const userInfos: UserInfo = {
