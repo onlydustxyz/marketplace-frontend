@@ -1,21 +1,19 @@
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { Inputs } from "./types";
-import { useCallback, useEffect } from "react";
+import { useCallback, useState } from "react";
 import { useIntl } from "src/hooks/useIntl";
 import View from "./View";
 import { useShowToaster } from "src/hooks/useToaster";
-import { generatePath, useLocation, useNavigate, useOutletContext } from "react-router-dom";
-import useFindGithubUser from "src/hooks/useIsGithubLoginValid";
+import { generatePath, useNavigate, useOutletContext } from "react-router-dom";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { WorkItem } from "src/components/GithubIssue";
+import { GithubContributorFragment } from "src/__generated/graphql";
 
 const PaymentForm: React.FC = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();
-  const location = useLocation();
   const navigate = useNavigate();
-  const findUserQuery = useFindGithubUser();
   const { projectId, budget } = useOutletContext<{
     projectId: string;
     budget: {
@@ -23,8 +21,6 @@ const PaymentForm: React.FC = () => {
       initialAmount: number;
     };
   }>();
-
-  const defaultContributor = location.state?.recipientGithubLogin;
 
   const { requestNewPayment } = usePaymentRequests({
     projectId,
@@ -34,13 +30,6 @@ const PaymentForm: React.FC = () => {
     },
   });
 
-  useEffect(() => {
-    if (defaultContributor) {
-      formMethods.setValue("contributorHandle", defaultContributor);
-      findUserQuery.trigger(defaultContributor);
-    }
-  }, [defaultContributor]);
-
   const formMethods = useForm<Inputs>({
     defaultValues: {
       remainingBudget: budget.remainingAmount,
@@ -49,11 +38,16 @@ const PaymentForm: React.FC = () => {
     mode: "all",
   });
 
+  const [contributor, setContributor] = useState<GithubContributorFragment | null | undefined>(null);
+
   const { handleSubmit } = formMethods;
 
-  const onValidSubmit: SubmitHandler<Inputs> = useCallback(async formData => {
-    await requestNewPayment(mapFormDataToSchema(formData));
-  }, []);
+  const onValidSubmit: SubmitHandler<Inputs> = useCallback(
+    async formData => {
+      if (contributor) await requestNewPayment(mapFormDataToSchema({ ...formData, contributor }));
+    },
+    [contributor]
+  );
 
   const onWorkEstimationChange = useCallback(
     (amount: number) => {
@@ -84,6 +78,8 @@ const PaymentForm: React.FC = () => {
             projectId={projectId}
             onWorkEstimationChange={onWorkEstimationChange}
             onWorkItemsChange={onWorkItemsChange}
+            contributor={contributor}
+            setContributor={setContributor}
           />
         </form>
       </FormProvider>
