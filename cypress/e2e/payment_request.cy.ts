@@ -5,7 +5,7 @@ import { User } from "../support/commands/populate/users";
 const TEST_ETH_ADDRESS = "0x3cd05ab88fbf996c0784e54f74195815bfa866de";
 
 function requestPayment({ contributor, issues }) {
-  cy.get("[name=contributorHandle]").type(contributor).blur();
+  cy.get("[role=combobox]").type(contributor).wait(WAIT_LONG).type("{enter}");
   cy.get("[data-testid=add-work-item-btn]").click();
   cy.get("[data-testid=add-other-pr-toggle]").click();
 
@@ -43,6 +43,7 @@ describe("As a project lead, I", () => {
       contributor: recipient.github.login,
       issues: ["https://github.com/od-mocks/cool-repo-A/pull/1", "https://github.com/od-mocks/cool-repo-A/pull/2"],
     });
+    cy.reload();
     cy.get("#remainingBudget").should("have.text", "$49,000");
   });
 
