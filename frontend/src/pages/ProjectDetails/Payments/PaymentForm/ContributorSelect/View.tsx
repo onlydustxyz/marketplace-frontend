@@ -1,8 +1,6 @@
-import { gql } from "@apollo/client";
 import { Combobox } from "@headlessui/react";
 import { GithubContributorFragment } from "src/__generated/graphql";
 import classNames from "classnames";
-import { GITHUB_CONTRIBUTOR_FRAGMENT } from "src/hooks/useIsGithubLoginValid";
 import Contributor from "src/components/Contributor";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import User3Line from "src/icons/User3Line";
