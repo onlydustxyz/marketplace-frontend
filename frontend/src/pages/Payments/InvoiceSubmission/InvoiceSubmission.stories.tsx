@@ -1,8 +1,9 @@
 import { range } from "lodash";
 import { Payment } from "src/components/PayoutTable/Line";
+import { ToasterProvider } from "src/hooks/useToaster";
 import { Currency, PaymentStatus } from "src/types";
 import { UserInfo } from "src/__generated/graphql";
-import InvoiceSubmission from ".";
+import InvoiceSubmission from "./View";
 
 export default {
   title: "InvoiceSubmission",
@@ -45,8 +46,17 @@ const userInfos: UserInfo = {
 
 export const Default = {
   render: () => (
-    <div style={{ width: 320 }}>
-      <InvoiceSubmission paymentRequests={[payment1, payment2, payment3]} githubUserId={123456} userInfos={userInfos} />
-    </div>
+    <ToasterProvider>
+      <div style={{ width: 320 }}>
+        <InvoiceSubmission
+          paymentRequests={[payment1, payment2, payment3]}
+          githubUserId={123456}
+          userInfos={userInfos}
+          markInvoiceAsReceived={() => {
+            return;
+          }}
+        />
+      </div>
+    </ToasterProvider>
   ),
 };
