@@ -25,6 +25,7 @@ const Payments = () => {
     {
       variables: { githubUserId },
       skip: !githubUserId,
+      fetchPolicy: "network-only",
     }
   );
 
