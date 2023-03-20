@@ -23,6 +23,10 @@
       "all": "All projects",
       "mine": "Mine only"
     },
+    "sponsors": {
+      "all": "All sponsors",
+      "some": "Sponsors"
+    },
     "technologies": {
       "all": "All technologies",
       "some": "Technologies"
