@@ -3361,10 +3361,6 @@ export type Users_StreamCursorValueInput = {
   phoneNumberVerified: InputMaybe<Scalars['Boolean']>;
 };
 
-export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> };
-
-export type IssueDetailsFragment = { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null };
-
 export type UserIdentityQueryVariables = Exact<{
   userId: Scalars['uuid'];
 }>;
@@ -3378,6 +3374,8 @@ export type GetPaymentRequestIdsQueryVariables = Exact<{
 
 
 export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> };
+
+export type IssueDetailsFragment = { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null };
 
 export type ProjectCardGithubRepoFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null };
 
@@ -3468,6 +3466,8 @@ export type ProfileQueryVariables = Exact<{
 
 
 export type ProfileQuery = { __typename?: 'query_root', userInfoByPk: { __typename?: 'UserInfo', userId: any, identity: any | null, contactInformation: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean | null } | null };
+
+export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> };
 
 export type GithubRepoContributorsFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } | null } | null };
 
@@ -3573,15 +3573,18 @@ export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
 
 export type AcceptProjectLeaderInvitationMutation = { __typename?: 'mutation_root', acceptProjectLeaderInvitation: boolean };
 
-export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetProjectsQueryVariables = Exact<{
+  languages: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  sponsors: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+}>;
 
 
 export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, user: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> }> };
 
-export type GetAllTechnologiesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllFilterOptionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllTechnologiesQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgets: Array<{ __typename?: 'Budgets', id: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
+export type GetAllFilterOptionsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string } }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgets: Array<{ __typename?: 'Budgets', id: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
 
 export type GithubRepoLanguagesFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null };
 
@@ -4825,7 +4828,7 @@ export type AcceptProjectLeaderInvitationMutationHookResult = ReturnType<typeof 
 export type AcceptProjectLeaderInvitationMutationResult = Apollo.MutationResult<AcceptProjectLeaderInvitationMutation>;
 export type AcceptProjectLeaderInvitationMutationOptions = Apollo.BaseMutationOptions<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>;
 export const GetProjectsDocument = gql`
-    query GetProjects {
+    query GetProjects($languages: [String!], $sponsors: [String!]) {
   projects(orderBy: {budgetsAggregate: {sum: {spentAmount: DESC}}}) {
     ...ProjectCardFields
   }
@@ -4844,6 +4847,8 @@ export const GetProjectsDocument = gql`
  * @example
  * const { data, loading, error } = useGetProjectsQuery({
  *   variables: {
+ *      languages: // value for 'languages'
+ *      sponsors: // value for 'sponsors'
  *   },
  * });
  */
@@ -4858,10 +4863,16 @@ export function useGetProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetProjectsQueryHookResult = ReturnType<typeof useGetProjectsQuery>;
 export type GetProjectsLazyQueryHookResult = ReturnType<typeof useGetProjectsLazyQuery>;
 export type GetProjectsQueryResult = Apollo.QueryResult<GetProjectsQuery, GetProjectsQueryVariables>;
-export const GetAllTechnologiesDocument = gql`
-    query GetAllTechnologies {
+export const GetAllFilterOptionsDocument = gql`
+    query GetAllFilterOptions {
   projects {
     ...VisibleProject
+    projectSponsors {
+      sponsor {
+        id
+        name
+      }
+    }
     githubRepos {
       ...GithubRepoLanguagesFields
     }
@@ -4871,28 +4882,28 @@ export const GetAllTechnologiesDocument = gql`
 ${GithubRepoLanguagesFieldsFragmentDoc}`;
 
 /**
- * __useGetAllTechnologiesQuery__
+ * __useGetAllFilterOptionsQuery__
  *
- * To run a query within a React component, call `useGetAllTechnologiesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllTechnologiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAllFilterOptionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllFilterOptionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAllTechnologiesQuery({
+ * const { data, loading, error } = useGetAllFilterOptionsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetAllTechnologiesQuery(baseOptions?: Apollo.QueryHookOptions<GetAllTechnologiesQuery, GetAllTechnologiesQueryVariables>) {
+export function useGetAllFilterOptionsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllTechnologiesQuery, GetAllTechnologiesQueryVariables>(GetAllTechnologiesDocument, options);
+        return Apollo.useQuery<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>(GetAllFilterOptionsDocument, options);
       }
-export function useGetAllTechnologiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllTechnologiesQuery, GetAllTechnologiesQueryVariables>) {
+export function useGetAllFilterOptionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllTechnologiesQuery, GetAllTechnologiesQueryVariables>(GetAllTechnologiesDocument, options);
+          return Apollo.useLazyQuery<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>(GetAllFilterOptionsDocument, options);
         }
-export type GetAllTechnologiesQueryHookResult = ReturnType<typeof useGetAllTechnologiesQuery>;
-export type GetAllTechnologiesLazyQueryHookResult = ReturnType<typeof useGetAllTechnologiesLazyQuery>;
-export type GetAllTechnologiesQueryResult = Apollo.QueryResult<GetAllTechnologiesQuery, GetAllTechnologiesQueryVariables>;
+export type GetAllFilterOptionsQueryHookResult = ReturnType<typeof useGetAllFilterOptionsQuery>;
+export type GetAllFilterOptionsLazyQueryHookResult = ReturnType<typeof useGetAllFilterOptionsLazyQuery>;
+export type GetAllFilterOptionsQueryResult = Apollo.QueryResult<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>;
