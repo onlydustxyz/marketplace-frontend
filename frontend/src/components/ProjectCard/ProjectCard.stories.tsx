@@ -113,6 +113,7 @@ const props = (args: { name: string; shortDescription: string; projectLeadsCount
     aggregate: {
       sum: {
         spentAmount: 47550,
+        initialAmount: 100000,
       },
     },
   },

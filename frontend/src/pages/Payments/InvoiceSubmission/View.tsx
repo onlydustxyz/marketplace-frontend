@@ -61,10 +61,10 @@ export function buildHiddenFields({
     pretty_requests: formatList(
       paymentRequests.map(
         p =>
-          `#${pretty(p.id)} - ${formatDate(new Date(p.requestedAt))} (${formatMoneyAmount(
-            p.amount.value,
-            p.amount.currency
-          )})`
+          `#${pretty(p.id)} - ${formatDate(new Date(p.requestedAt))} (${formatMoneyAmount({
+            amount: p.amount.value,
+            currency: p.amount.currency,
+          })})`
       )
     ),
     company_name: userInfos.identity.Company.name,
@@ -83,10 +83,10 @@ export function buildHiddenFields({
           `IBAN: ${userInfos.payoutSettings.WireTransfer?.IBAN}`,
           `BIC: ${userInfos.payoutSettings.WireTransfer?.BIC}`,
         ]),
-    total_amount: formatMoneyAmount(
-      paymentRequests.map(p => p.amount.value).reduce((acc, amount) => acc + amount, 0),
-      paymentRequests.at(0)?.amount.currency
-    ),
+    total_amount: formatMoneyAmount({
+      amount: paymentRequests.map(p => p.amount.value).reduce((acc, amount) => acc + amount, 0),
+      currency: paymentRequests.at(0)?.amount.currency,
+    }),
     env: config.ENVIRONMENT,
   };
 }

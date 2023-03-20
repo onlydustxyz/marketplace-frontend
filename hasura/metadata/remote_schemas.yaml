@@ -110,10 +110,10 @@
           type Issue {
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
+            htmlUrl: Url!
             id: Int!
             mergedAt: DateTimeUtc
             number: Int!
-            htmlUrl: Url!
             status: Status!
             title: String!
           }
@@ -124,21 +124,22 @@
             fetchUserDetails(username: String!): User
             fetchUserDetailsById(userId: Int!): User
             searchIssues(query: String!, sort: String, order: String, perPage: Int, page: Int): [Issue!]
+            searchUsers(query: String!, sort: String, order: String): [User!]
           }
           type Repository {
             contributors: [User!]!
             description: String!
             forksCount: Int!
+            htmlUrl: Url!
             id: Int!
             logoUrl: Url!
-            htmlUrl: Url!
             stars: Int!
           }
           type User {
             avatarUrl: Url!
+            htmlUrl: Url!
             id: Int!
             login: String!
-            htmlUrl: Url!
           }
           enum Status {
             CLOSED
@@ -156,12 +157,12 @@
           type Issue {
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
+            htmlUrl: Url!
             id: Int!
             mergedAt: DateTimeUtc
             number: Int!
             status: Status!
             title: String!
-            htmlUrl: Url!
           }
           type Query {
             fetchRepositoryDetails(id: Int!): Repository
@@ -172,16 +173,16 @@
             contributors: [User!]!
             description: String!
             forksCount: Int!
+            htmlUrl: Url!
             id: Int!
             logoUrl: Url!
-            htmlUrl: Url!
             stars: Int!
           }
           type User {
             avatarUrl: Url!
+            htmlUrl: Url!
             id: Int!
             login: String!
-            htmlUrl: Url!
           }
           enum Status {
             CLOSED

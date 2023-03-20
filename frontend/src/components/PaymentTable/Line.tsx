@@ -52,7 +52,7 @@ export default function PaymentLine({ payment, setSortingFields }: Props) {
             </div>
           </Cell>
           <Cell height={CellHeight.Medium}>
-            <span className="font-walsheim">{formatMoneyAmount(payment.amountInUsd, Currency.USD)}</span>
+            <span className="font-walsheim">{formatMoneyAmount({ amount: payment.amountInUsd })}</span>
           </Cell>
           <Cell height={CellHeight.Medium}>
             <PayoutStatus

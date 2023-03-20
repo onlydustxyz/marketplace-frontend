@@ -20,7 +20,7 @@ export default function TotalEarnings({ amount }: Props) {
     >
       <div className="flex flex-col p-8 w-80 min-w-min">
         <span className="text-base font-walsheim text-white font-semibold">{T("contributor.totalEarnings")}</span>
-        <span className="text-5xl font-belwe text-greyscale-50 font-normal">{formatMoneyAmount(amount)}</span>
+        <span className="text-5xl font-belwe text-greyscale-50 font-normal">{formatMoneyAmount({ amount })}</span>
       </div>
     </ImageCard>
   );

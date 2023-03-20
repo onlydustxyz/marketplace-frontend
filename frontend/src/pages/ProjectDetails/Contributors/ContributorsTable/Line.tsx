@@ -31,7 +31,7 @@ export default function ContributorLine({
         <Contributor contributor={contributor} onClick={linkClickHandlerFactory(contributor.htmlUrl)} />
       </Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>{`${
-        contributor?.totalEarned ? formatMoneyAmount(contributor.totalEarned, Currency.USD) : "-"
+        contributor?.totalEarned ? formatMoneyAmount({ amount: contributor.totalEarned }) : "-"
       }`}</Cell>
       <Cell height={CellHeight.Small} horizontalMargin={false}>
         {contributor.paidContributions || "-"}

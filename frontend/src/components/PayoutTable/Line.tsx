@@ -59,7 +59,7 @@ export default function PaymentLine({ payment, payoutInfoMissing, invoiceNeeded,
           {payment.reason && <GithubPRLink link={payment.reason}></GithubPRLink>}
         </div>
       </Cell>
-      <Cell>{formatMoneyAmount(payment.amount.value, payment.amount.currency)}</Cell>
+      <Cell>{formatMoneyAmount({ amount: payment.amount.value, currency: payment.amount.currency })}</Cell>
       <Cell>
         <PayoutStatus
           {...{

@@ -19,11 +19,11 @@ describe("A project", () => {
   it("should display project overview panel", function () {
     cy.visitApp({ path: `projects/${project.id}` });
 
-    cy.get('[data-testid="money-granted-amount"]').should("have.text", "$13,400");
+    cy.get('[data-testid="money-granted-amount"]').should("have.text", "$13.4K / $100.0K");
 
     cy.cancelPaymentRequest(project.id, paymentRequests[1].id).asAdmin().data();
     cy.reload();
-    cy.get('[data-testid="money-granted-amount"]').should("have.text", "$13,300");
+    cy.get('[data-testid="money-granted-amount"]').should("have.text", "$13.3K / $100.0K");
 
     cy.get('[data-testid="sponsors"]').should("have.text", project.sponsors[0]);
     cy.get('[data-testid="more-info-link"]').should("have.text", "t.me/a");
