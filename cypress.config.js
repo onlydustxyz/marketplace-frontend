@@ -15,7 +15,6 @@ module.exports = defineConfig({
       on("task", {
         log(message) {
           console.log(message);
-
           return null;
         },
       });
@@ -30,7 +29,6 @@ module.exports = defineConfig({
   },
   video: false,
   defaultCommandTimeout: 15000,
-  chromeWebSecurity: false,
   viewportHeight: 800,
   viewportWidth: 1280,
 });
