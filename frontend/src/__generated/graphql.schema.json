@@ -2984,9 +2984,6 @@
               "kind": "OBJECT",
               "name": "Repository",
               "ofType": null
-              "kind": "OBJECT",
-              "name": "Repository",
-              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -3080,7 +3077,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "PullRequest",
+                  "name": "Issue",
                   "ofType": null
                 }
               }
@@ -18022,11 +18019,43 @@
                 "defaultValue": null,
                 "isDeprecated": false,
                 "deprecationReason": null
+              },
+              {
+                "name": "repoName",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "repoOwner",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "Repository",
+              "name": "Issue",
               "ofType": null
             },
             "isDeprecated": false,
@@ -18054,6 +18083,35 @@
               }
             ],
             "type": {
+              "kind": "OBJECT",
+              "name": "Repository",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "fetchRepositoryPRs",
+            "description": null,
+            "args": [
+              {
+                "name": "id",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
               "kind": "LIST",
               "name": null,
               "ofType": {
@@ -18061,7 +18119,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "OBJECT",
-                  "name": "PullRequest",
+                  "name": "Issue",
                   "ofType": null
                 }
               }
