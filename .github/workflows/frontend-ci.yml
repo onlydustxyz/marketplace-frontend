@@ -16,6 +16,9 @@ on:
         required: false
         default: false
 
+env:
+  VITE_ENV: local
+
 jobs:
   build:
     runs-on: ubuntu-latest

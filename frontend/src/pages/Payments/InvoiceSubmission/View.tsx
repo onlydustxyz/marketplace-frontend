@@ -2,6 +2,7 @@ import { SliderButton } from "@typeform/embed-react";
 import Button, { Width } from "src/components/Button";
 import Card from "src/components/Card";
 import { Payment } from "src/components/PayoutTable/Line";
+import config from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import Attachment2 from "src/icons/Attachment2";
 import { formatDate } from "src/utils/date";
@@ -86,5 +87,6 @@ export function buildHiddenFields({
       paymentRequests.map(p => p.amount.value).reduce((acc, amount) => acc + amount, 0),
       paymentRequests.at(0)?.amount.currency
     ),
+    env: config.ENVIRONMENT,
   };
 }

@@ -73,6 +73,7 @@ describe("buildHiddenFields", () => {
     expect(hiddenFields.city).toBe("London");
     expect(hiddenFields.country).toBe("England");
     expect(hiddenFields.total_amount).toBe("$6,600");
+    expect(hiddenFields.env).toBe("local");
   });
 
   it("should build hidden fields for ENS Domain", () => {
