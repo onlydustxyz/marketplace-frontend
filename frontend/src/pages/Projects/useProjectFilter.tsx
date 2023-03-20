@@ -66,7 +66,7 @@ export const ProjectFilterContext = createContext<Context | null>(null);
 
 export function ProjectFilterProvider({ children }: PropsWithChildren) {
   const [storage, setStorage] = useLocalStorage(PROJECT_FILTER_KEY, DEFAULT_FILTER);
-  const [projectFilter, dispatch] = useReducer(reduce, storage ?? DEFAULT_FILTER);
+  const [projectFilter, dispatch] = useReducer(reduce, { ...DEFAULT_FILTER, ...storage });
 
   useEffect(() => setStorage(projectFilter), [setStorage, projectFilter]);
 
