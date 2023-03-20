@@ -1,9 +1,8 @@
 import axios from "axios";
-import { createContext, PropsWithChildren, useContext, useEffect, useRef, useState } from "react";
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "react-use";
 import config from "src/config";
 import { RefreshToken, TokenSet } from "src/types";
-import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 
 export const LOCAL_STORAGE_TOKEN_SET_KEY = "hasura_token";
 const ACCESS_TOKEN_VALIDITY_TIME_THRESHOLD = 30;
@@ -44,7 +43,6 @@ const TokenSetContext = createContext<TokenSetContextType | null>(null);
 export const TokenSetProvider = ({ children }: PropsWithChildren) => {
   const [tokenSet, setTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY);
   const [hasRefreshError, setHasRefreshError] = useState(false);
-  const timerRef__deprecated = useRef<NodeJS.Timeout>();
 
   const refreshAccessToken = (tokenSet: TokenSet) => {
     fetchNewAccessToken(tokenSet.refreshToken)
@@ -59,25 +57,6 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
       refreshAccessToken(tokenSet);
     }
   }, []);
-
-  useEffect(() => {
-    if (!isFeatureEnabled(FeatureFlags.REMOVE_TIMER_BASED_TOKEN_RELOAD)) {
-      if (tokenSet) {
-        if (accessTokenExpired(tokenSet)) {
-          refreshAccessToken(tokenSet);
-        } else {
-          timerRef__deprecated.current = setTimeout(() => {
-            refreshAccessToken(tokenSet);
-          }, accessTokenValidityDelay(tokenSet));
-        }
-      }
-      return () => {
-        if (timerRef__deprecated.current) {
-          clearTimeout(timerRef__deprecated.current);
-        }
-      };
-    }
-  }, [tokenSet?.accessToken]);
 
   const setFromRefreshToken = async (refreshToken: RefreshToken) => {
     const newTokenSet = await fetchNewAccessToken(refreshToken);
