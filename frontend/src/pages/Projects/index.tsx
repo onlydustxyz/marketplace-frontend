@@ -12,6 +12,7 @@ const PROJECT_FILTER_KEY = "project_filter";
 const DEFAULT_FILTER: ProjectFilter = {
   ownershipType: ProjectOwnershipType.All,
   technologies: [],
+  sponsors: [],
 };
 
 const reduceFilters = (filter: ProjectFilter, action: ProjectFilterAction): ProjectFilter => {
@@ -22,6 +23,8 @@ const reduceFilters = (filter: ProjectFilter, action: ProjectFilterAction): Proj
       return { ...filter, ownershipType: action.ownership };
     case ProjectFilterActionType.SelectTechnologies:
       return { ...filter, technologies: action.values };
+    case ProjectFilterActionType.SelectSponsors:
+      return { ...filter, sponsors: action.values };
   }
 };
 
@@ -52,6 +55,7 @@ export default function Projects() {
           {projectFilter && projectFilter.technologies && projectFilter.ownershipType && (
             <AllProjects
               technologies={projectFilter.technologies}
+              sponsors={projectFilter.sponsors}
               projectOwnershipType={projectFilter.ownershipType}
               clearFilters={() => dispatchProjectFilter({ type: ProjectFilterActionType.Clear })}
             />

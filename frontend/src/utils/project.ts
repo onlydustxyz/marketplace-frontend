@@ -6,7 +6,7 @@ import { ContributorIdFragment } from "src/__generated/graphql";
 
 export const isProjectVisible =
   (githubUserId?: number) =>
-  <T extends VisibleProjectFragment>(project: T | null) => {
+  <T extends VisibleProjectFragment>(project: T | null): boolean => {
     if (!project) {
       return false;
     }
@@ -18,7 +18,7 @@ export const isProjectVisible =
       githubUserId &&
       project.pendingInvitations.map(pendingInvitation => pendingInvitation.githubUserId).includes(githubUserId);
 
-    return hasRepos && hasBudget && (hasLeaders || hasInvitation);
+    return hasRepos && hasBudget && (hasLeaders || !!hasInvitation);
   };
 
 export const VISIBLE_PROJECT_FRAGMENT = gql`

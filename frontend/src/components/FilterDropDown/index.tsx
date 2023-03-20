@@ -1,5 +1,6 @@
 import { Listbox, Transition } from "@headlessui/react";
 import technologyIcon from "assets/img/technology.svg";
+import sponsorIcon from "assets/img/circle.png";
 import classNames from "classnames";
 import { useState } from "react";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
@@ -7,7 +8,7 @@ import { ProjectFilterAction, ProjectFilterActionType } from "src/pages/Projects
 import Badge, { BadgeSize } from "src/components/Badge";
 
 export type Props = {
-  type: ProjectFilterActionType.SelectTechnologies;
+  type: ProjectFilterActionType.SelectTechnologies | ProjectFilterActionType.SelectSponsors;
   defaultLabel: string;
   selectedLabel: string;
   options: string[];
@@ -16,8 +17,9 @@ export type Props = {
   dispatchProjectFilter: (action: ProjectFilterAction) => void;
 };
 
-const ICONS: Record<ProjectFilterActionType.SelectTechnologies, string> = {
+const ICONS = {
   [ProjectFilterActionType.SelectTechnologies]: technologyIcon,
+  [ProjectFilterActionType.SelectSponsors]: sponsorIcon,
 };
 
 export default function FilterDropDown({

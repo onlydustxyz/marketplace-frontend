@@ -11,12 +11,14 @@ export enum ProjectOwnershipType {
 export interface ProjectFilter {
   ownershipType: ProjectOwnershipType;
   technologies: string[];
+  sponsors: string[];
 }
 
 export enum ProjectFilterActionType {
   Clear = "clear",
   SelectOwnership = "ownership",
   SelectTechnologies = "technologies",
+  SelectSponsors = "sponsors",
 }
 
 export type ProjectFilterAction =
@@ -24,7 +26,7 @@ export type ProjectFilterAction =
       type: ProjectFilterActionType.Clear;
     }
   | {
-      type: ProjectFilterActionType.SelectTechnologies;
+      type: ProjectFilterActionType.SelectTechnologies | ProjectFilterActionType.SelectSponsors;
       values: string[];
     }
   | {

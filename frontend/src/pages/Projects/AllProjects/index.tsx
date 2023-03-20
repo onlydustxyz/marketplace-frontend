@@ -14,17 +14,18 @@ import AllProjectsFallback from "./AllProjectsFallback";
 type Props = {
   clearFilters: () => void;
   technologies: string[];
+  sponsors: string[];
   projectOwnershipType: ProjectOwnershipType;
 };
 
-export default function AllProjects({ clearFilters, technologies, projectOwnershipType }: Props) {
+export default function AllProjects({ clearFilters, technologies, sponsors, projectOwnershipType }: Props) {
   const { ledProjectIds, githubUserId, isLoggedIn } = useAuth();
 
   const getProjectsQuery = useHasuraQuery<GetProjectsQuery>(
-    buildGetProjectsQuery(technologies),
+    buildGetProjectsQuery(technologies, sponsors),
     HasuraUserRole.Public,
     {
-      variables: { languages: technologies },
+      variables: { languages: technologies, sponsors },
     }
   );
 
@@ -54,19 +55,21 @@ export default function AllProjects({ clearFilters, technologies, projectOwnersh
   );
 }
 
-const buildQueryFilters = (technologies: string[]) => {
-  let filters = "";
+const buildQueryFilters = (technologies: string[], sponsors: string[]) => {
+  const filters = [];
   if (technologies.length) {
-    filters += "{githubRepos: {githubRepoDetails: {languages: {_hasKeysAny: $languages}}}}";
+    filters.push("githubRepos: {githubRepoDetails: {languages: {_hasKeysAny: $languages}}}");
   }
-
-  return filters.length ? `where: ${filters}, ` : "";
+  if (sponsors.length) {
+    filters.push("projectSponsors: {sponsor: {name: {_in: $sponsors}}}");
+  }
+  return filters.length ? `where: {${filters.join(", ")}}, ` : "";
 };
 
-export const buildGetProjectsQuery = (technologies: string[]) => gql`
+export const buildGetProjectsQuery = (technologies: string[], sponsors: string[]) => gql`
   ${PROJECT_CARD_FRAGMENT}
-  query GetProjects${technologies.length ? "($languages: [String!])" : ""} {
-    projects(${buildQueryFilters(technologies)}orderBy: {budgetsAggregate: {sum: {spentAmount: DESC}}}) {
+  query GetProjects($languages: [String!], $sponsors: [String!]) {
+    projects(${buildQueryFilters(technologies, sponsors)}orderBy: {budgetsAggregate: {sum: {spentAmount: DESC}}}) {
       ...ProjectCardFields
     }
   }

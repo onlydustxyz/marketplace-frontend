@@ -14,6 +14,7 @@ import FilterDropDown from "src/components/FilterDropDown";
 
 export interface FilterPanelViewProps {
   availableTechnologies: string[];
+  availableSponsors: string[];
   isProjectLeader: boolean;
   projectFilter: ProjectFilter;
   dispatchProjectFilter: (action: ProjectFilterAction) => void;
@@ -22,6 +23,7 @@ export interface FilterPanelViewProps {
 
 export default function View({
   availableTechnologies,
+  availableSponsors,
   projectFilter,
   dispatchProjectFilter,
   isProjectLeader,
@@ -80,6 +82,15 @@ export default function View({
         value={projectFilter.technologies}
         dispatchProjectFilter={dispatchProjectFilter}
         dataTestId="technologies-filter-dropdown"
+      />
+      <FilterDropDown
+        defaultLabel={T("filter.sponsors.all")}
+        selectedLabel={T("filter.sponsors.some")}
+        type={ProjectFilterActionType.SelectSponsors}
+        options={availableSponsors}
+        value={projectFilter.sponsors}
+        dispatchProjectFilter={dispatchProjectFilter}
+        dataTestId="sponsors-filter-dropdown"
       />
     </Card>
   );
