@@ -5,7 +5,7 @@ import { User } from "../support/commands/populate/users";
 const TEST_ETH_ADDRESS = "0x3cd05ab88fbf996c0784e54f74195815bfa866de";
 
 function requestPayment({ contributor, issues }) {
-  cy.get("[role=combobox]").type(contributor).wait(WAIT_LONG).type("{enter}");
+  cy.get("[role=combobox]").type(contributor).wait(WAIT_LONG).type("{enter}").blur();
   cy.get("[data-testid=add-work-item-btn]").click();
   cy.get("[data-testid=add-other-pr-toggle]").click();
 
