@@ -1,25 +1,27 @@
-import { ProjectOwnershipType } from "src/pages/Projects";
-import FilterDropDown, { FilterDropDownIcon } from ".";
+import FilterDropDown, { FilterDropDownIcon, Props } from ".";
 
 export default {
   title: "FilterDropDown",
   component: FilterDropDown,
   argTypes: {
-    icon: { control: { type: "select", options: [FilterDropDownIcon.Technology] } },
+    icon: {
+      control: {
+        type: "select",
+        options: [FilterDropDownIcon.Technology, FilterDropDownIcon.Sponsors],
+      },
+    },
     width: { control: { type: "range", min: "200", max: "600" } },
   },
 };
 
-const args = {
+const args: Props & { width: number } = {
   defaultLabel: "All technologies",
   selectedLabel: "Technologies",
   options: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
   icon: FilterDropDownIcon.Technology,
   width: 200,
-  projectFilter: { technologies: [], ownershipType: ProjectOwnershipType.All },
-  setProjectFilter: () => {
-    return;
-  },
+  value: [],
+  setValue: Function.prototype(),
 };
 
 export const Default = {

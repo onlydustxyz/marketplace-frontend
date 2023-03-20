@@ -8,23 +8,21 @@ import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { isProjectVisible } from "src/utils/project";
 import { GetProjectsQuery } from "src/__generated/graphql";
-import { ProjectOwnershipType } from "..";
+import { Ownership as ProjectOwnership, useProjectFilter } from "src/pages/Projects/useProjectFilter";
 import AllProjectsFallback from "./AllProjectsFallback";
 
-type Props = {
-  clearFilters: () => void;
-  technologies: string[];
-  projectOwnershipType: ProjectOwnershipType;
-};
-
-export default function AllProjects({ clearFilters, technologies, projectOwnershipType }: Props) {
+export default function AllProjects() {
   const { ledProjectIds, githubUserId, isLoggedIn } = useAuth();
+  const {
+    projectFilter: { technologies, sponsors, ownership },
+    clear: clearFilters,
+  } = useProjectFilter();
 
   const getProjectsQuery = useHasuraQuery<GetProjectsQuery>(
-    buildGetProjectsQuery(technologies),
+    buildGetProjectsQuery(technologies, sponsors),
     HasuraUserRole.Public,
     {
-      variables: { languages: technologies },
+      variables: { languages: technologies, sponsors },
     }
   );
 
@@ -33,13 +31,13 @@ export default function AllProjects({ clearFilters, technologies, projectOwnersh
       ...p,
       pendingInvitations: p.pendingInvitations.filter(i => i.githubUserId === githubUserId),
     }));
-    if (projects && isLoggedIn && projectOwnershipType === ProjectOwnershipType.Mine) {
+    if (projects && isLoggedIn && ownership === ProjectOwnership.Mine) {
       projects = projects.filter(
         project => ledProjectIds.includes(project.id) || project.pendingInvitations.length > 0
       );
     }
     return sortBy(projects?.filter(isProjectVisible(githubUserId)), p => !p.pendingInvitations.length);
-  }, [getProjectsQuery.data?.projects, ledProjectIds, projectOwnershipType, isLoggedIn]);
+  }, [getProjectsQuery.data?.projects, ledProjectIds, ownership, isLoggedIn, githubUserId]);
 
   return (
     <QueryWrapper query={getProjectsQuery}>
@@ -54,21 +52,21 @@ export default function AllProjects({ clearFilters, technologies, projectOwnersh
   );
 }
 
-const buildQueryArgs = (technologies: string[]) => (technologies.length ? "$languages: [String!]" : "");
-
-const buildQueryFilters = (technologies: string[]) => {
-  let filters = "";
+const buildQueryFilters = (technologies: string[], sponsors: string[]) => {
+  const filters = [];
   if (technologies.length) {
-    filters += "{githubRepos: {githubRepoDetails: {languages: {_hasKeysAny: $languages}}}}";
+    filters.push("githubRepos: {githubRepoDetails: {languages: {_hasKeysAny: $languages}}}");
   }
-
-  return filters.length ? `where: ${filters}, ` : "";
+  if (sponsors.length) {
+    filters.push("projectSponsors: {sponsor: {name: {_in: $sponsors}}}");
+  }
+  return filters.length ? `where: {${filters.join(", ")}}, ` : "";
 };
 
-export const buildGetProjectsQuery = (technologies: string[]) => gql`
+export const buildGetProjectsQuery = (technologies: string[], sponsors: string[]) => gql`
   ${PROJECT_CARD_FRAGMENT}
-  query GetProjects${technologies.length ? "($languages: [String!])" : ""} {
-    projects(${buildQueryFilters(technologies)}orderBy: {budgetsAggregate: {sum: {spentAmount: DESC}}}) {
+  query GetProjects($languages: [String!], $sponsors: [String!]) {
+    projects(${buildQueryFilters(technologies, sponsors)}orderBy: {budgetsAggregate: {sum: {spentAmount: DESC}}}) {
       ...ProjectCardFields
     }
   }

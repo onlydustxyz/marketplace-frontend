@@ -1,7 +1,6 @@
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
-import ProjectCard from ".";
+import ProjectCard, { Project } from ".";
 import { screen } from "@testing-library/react";
-import { Project } from "src/pages/Projects";
 import {
   ContributorIdFragment,
   ProjectCardGithubRepoFieldsFragment,

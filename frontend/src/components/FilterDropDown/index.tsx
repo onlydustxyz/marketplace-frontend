@@ -1,27 +1,29 @@
 import { Listbox, Transition } from "@headlessui/react";
 import technologyIcon from "assets/img/technology.svg";
+import sponsorIcon from "assets/img/circle.png";
 import classNames from "classnames";
 import { useState } from "react";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
-import { ProjectFilter } from "src/pages/Projects";
 import Badge, { BadgeSize } from "src/components/Badge";
 
 export enum FilterDropDownIcon {
   Technology = "technology",
+  Sponsors = "sponsors",
 }
 
-type Props = {
+export type Props = {
   icon: FilterDropDownIcon;
   defaultLabel: string;
   selectedLabel: string;
   options: string[];
   dataTestId?: string;
-  projectFilter: ProjectFilter;
-  setProjectFilter: (projectFilter: ProjectFilter) => void;
+  value: string[];
+  setValue: (value: string[]) => void;
 };
 
 const ICONS = {
   [FilterDropDownIcon.Technology]: technologyIcon,
+  [FilterDropDownIcon.Sponsors]: sponsorIcon,
 };
 
 export default function FilterDropDown({
@@ -29,23 +31,14 @@ export default function FilterDropDown({
   defaultLabel,
   selectedLabel,
   options,
-  projectFilter,
-  setProjectFilter,
+  value,
+  setValue,
   dataTestId,
 }: Props) {
   const [open, setOpen] = useState(true);
 
   return (
-    <Listbox
-      onChange={technologies =>
-        setProjectFilter({
-          ...projectFilter,
-          technologies,
-        })
-      }
-      multiple
-      value={projectFilter.technologies}
-    >
+    <Listbox onChange={setValue} multiple value={value} as="div">
       {({ value }) => (
         <>
           <Listbox.Button

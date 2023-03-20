@@ -1,14 +1,20 @@
 import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
-import FilterPanel, { GET_ALL_TECHNOLOGIES_QUERY } from ".";
+import FilterPanel, { GET_ALL_FILTER_OPTIONS_QUERY } from ".";
 import { renderWithIntl, MemoryRouterProviderFactory } from "src/test/utils";
-import { ProjectOwnershipType } from "..";
-import { GetAllTechnologiesQuery } from "src/__generated/graphql";
+import { GetAllFilterOptionsQuery } from "src/__generated/graphql";
+import { MockedResponse } from "@apollo/client/testing";
+import {
+  MockedProjectFilterProvider,
+  Ownership,
+  ProjectFilter,
+  ProjectFilterProvider,
+} from "src/pages/Projects/useProjectFilter";
 
 expect.extend(matchers);
 
-const projects1: GetAllTechnologiesQuery["projects"][number] = {
+const projects1: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-1",
   githubRepos: [
@@ -22,12 +28,13 @@ const projects1: GetAllTechnologiesQuery["projects"][number] = {
       },
     },
   ],
+  projectSponsors: [{ sponsor: { id: "sponsor-1", name: "Sponsor 1" } }],
   budgets: [{ __typename: "Budgets", id: "budget-1" }],
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
 };
 
-const projects2: GetAllTechnologiesQuery["projects"][number] = {
+const projects2: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-2",
   githubRepos: [
@@ -41,12 +48,16 @@ const projects2: GetAllTechnologiesQuery["projects"][number] = {
       },
     },
   ],
+  projectSponsors: [
+    { sponsor: { id: "sponsor-1", name: "Sponsor 1" } },
+    { sponsor: { id: "sponsor-2", name: "Sponsor 2" } },
+  ],
   budgets: [{ __typename: "Budgets", id: "budget-1" }],
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
 };
 
-const projects3: GetAllTechnologiesQuery["projects"][number] = {
+const projects3: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-3",
   githubRepos: [
@@ -60,12 +71,13 @@ const projects3: GetAllTechnologiesQuery["projects"][number] = {
       },
     },
   ],
+  projectSponsors: [],
   budgets: [{ __typename: "Budgets", id: "budget-1" }],
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
 };
 
-const projects4: GetAllTechnologiesQuery["projects"][number] = {
+const projects4: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-4",
   githubRepos: [
@@ -80,12 +92,13 @@ const projects4: GetAllTechnologiesQuery["projects"][number] = {
       },
     },
   ],
+  projectSponsors: [],
   budgets: [{ __typename: "Budgets", id: "budget-1" }],
   projectLeads: [{ __typename: "ProjectLeads", userId: "user-1" }],
   pendingInvitations: [],
 };
 
-const projects5: GetAllTechnologiesQuery["projects"][number] = {
+const projects5: GetAllFilterOptionsQuery["projects"][number] = {
   __typename: "Projects",
   id: "project-5",
   githubRepos: [
@@ -101,6 +114,7 @@ const projects5: GetAllTechnologiesQuery["projects"][number] = {
     },
   ],
   budgets: [],
+  projectSponsors: [{ sponsor: { id: "sponsor-3", name: "Sponsor 3" } }],
   projectLeads: [
     {
       __typename: "ProjectLeads",
@@ -113,7 +127,7 @@ const projects5: GetAllTechnologiesQuery["projects"][number] = {
 const graphQlMocks = [
   {
     request: {
-      query: GET_ALL_TECHNOLOGIES_QUERY,
+      query: GET_ALL_FILTER_OPTIONS_QUERY,
     },
     result: {
       data: {
@@ -123,99 +137,53 @@ const graphQlMocks = [
   },
 ];
 
+const render = (isProjectLeader: boolean, { isCleared, mocks }: { isCleared?: boolean; mocks: MockedResponse[] }) =>
+  renderWithIntl(
+    <MockedProjectFilterProvider isCleared={isCleared}>
+      <FilterPanel isProjectLeader={isProjectLeader} />
+    </MockedProjectFilterProvider>,
+    {
+      wrapper: MemoryRouterProviderFactory({ mocks }),
+    }
+  );
+
 describe("FilterPanel", () => {
   beforeEach(() => {
     vi.resetAllMocks();
   });
 
-  it("should display first 2 technologies of projects and be sorted", async () => {
-    renderWithIntl(
-      <FilterPanel
-        projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [] }}
-        setProjectFilter={() => {
-          return;
-        }}
-        clearProjectFilter={Function.prototype()}
-        isProjectFilterCleared={() => false}
-        isProjectLeader={false}
-      />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: graphQlMocks,
-        }),
-      }
-    );
+  it("should display first 2 technologies of projects, all sponsors, and be sorted", async () => {
+    render(false, { mocks: graphQlMocks });
 
     const allOptions = await screen.findAllByRole("option");
-    expect(allOptions.length).toBe(6);
+    expect(allOptions.length).toBe(8);
     expect(allOptions[0]).toHaveTextContent("C");
     expect(allOptions[1]).toHaveTextContent("C++");
     expect(allOptions[2]).toHaveTextContent("Go");
     expect(allOptions[3]).toHaveTextContent("Rust");
     expect(allOptions[4]).toHaveTextContent("Shell");
     expect(allOptions[5]).toHaveTextContent("TypeScript");
+    expect(allOptions[6]).toHaveTextContent("Sponsor 1");
+    expect(allOptions[7]).toHaveTextContent("Sponsor 2");
   });
 
   it("should display 'Mine only' when user is leader'", async () => {
-    renderWithIntl(
-      <FilterPanel
-        projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [] }}
-        setProjectFilter={() => {
-          return;
-        }}
-        clearProjectFilter={Function.prototype()}
-        isProjectFilterCleared={() => false}
-        isProjectLeader={true}
-      />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: graphQlMocks,
-        }),
-      }
-    );
+    render(true, { mocks: graphQlMocks });
 
     await screen.findByText(/all projects/i);
     await screen.findByText(/mine only/i);
   });
 
-  it("should not display technologies from projects that aren't visible", async () => {
-    renderWithIntl(
-      <FilterPanel
-        projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [] }}
-        setProjectFilter={() => {
-          return;
-        }}
-        clearProjectFilter={Function.prototype()}
-        isProjectFilterCleared={() => false}
-        isProjectLeader={true}
-      />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: graphQlMocks,
-        }),
-      }
-    );
+  it("should not display technologies or sponsors from projects that aren't visible", async () => {
+    render(true, { mocks: graphQlMocks });
+
     await screen.findByText(/go/i);
     expect(screen.queryByText(/elisp/i)).toBeNull();
+    expect(screen.queryByText(/sponsor 3/i)).toBeNull();
   });
 
   test.each([true, false])("should not display clear all button if filter is cleared", async isProjectFilterCleared => {
-    renderWithIntl(
-      <FilterPanel
-        projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [] }}
-        setProjectFilter={() => {
-          return;
-        }}
-        clearProjectFilter={Function.prototype()}
-        isProjectFilterCleared={() => isProjectFilterCleared}
-        isProjectLeader={true}
-      />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: graphQlMocks,
-        }),
-      }
-    );
+    render(true, { isCleared: isProjectFilterCleared, mocks: graphQlMocks });
 
     if (isProjectFilterCleared) {
       expect(screen.queryByText(/clear all/i)).not.toBeInTheDocument();

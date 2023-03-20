@@ -3,34 +3,33 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import Refresh from "src/icons/Refresh";
 import StarLine from "src/icons/StarLine";
-import { ProjectFilter, ProjectOwnershipType } from "..";
 import Card from "src/components/Card";
 import FilterDropDown, { FilterDropDownIcon } from "src/components/FilterDropDown";
+import { useProjectFilter, Ownership as ProjectOwnership } from "src/pages/Projects/useProjectFilter";
 
 export interface FilterPanelViewProps {
   availableTechnologies: string[];
+  availableSponsors: string[];
   isProjectLeader: boolean;
-  projectFilter: ProjectFilter;
-  setProjectFilter: (projectFilter: ProjectFilter) => void;
-  clearProjectFilter: () => void;
-  isProjectFilterCleared: () => boolean;
 }
 
-export default function View({
-  availableTechnologies,
-  projectFilter,
-  setProjectFilter,
-  clearProjectFilter,
-  isProjectLeader,
-  isProjectFilterCleared,
-}: FilterPanelViewProps) {
+export default function View({ availableTechnologies, availableSponsors, isProjectLeader }: FilterPanelViewProps) {
   const { T } = useIntl();
 
+  const {
+    projectFilter,
+    isCleared: isProjectFilterCleared,
+    clear: clearProjectFilter,
+    setOwnership: setProjectOwnership,
+    setTechnologies: setProjectTechnologies,
+    setSponsors: setProjectSponsors,
+  } = useProjectFilter();
+
   return (
-    <Card className="flex flex-col h-fit w-full p-6 gap-0.5">
+    <Card className="flex flex-col h-fit w-full p-6 gap-4">
       <div className="flex flex-row justify-between items-center">
         <span className="font-belwe font-normal text-base text-greyscale-50">{T("filter.title")}</span>
-        {!isProjectFilterCleared() && (
+        {!isProjectFilterCleared && (
           <div onClick={clearProjectFilter}>
             <Button type={ButtonType.Ternary} size={ButtonSize.Xs}>
               <Refresh />
@@ -39,34 +38,41 @@ export default function View({
           </div>
         )}
       </div>
-      {isProjectLeader ? (
-        <div className="flex flex-row py-3 gap-2">
+      {isProjectLeader && (
+        <div className="flex flex-row gap-2">
           <OwnershipTypeButton
-            selected={projectFilter.ownershipType === ProjectOwnershipType.All}
-            onClick={() => setProjectFilter({ ...projectFilter, ownershipType: ProjectOwnershipType.All })}
+            selected={projectFilter.ownership === ProjectOwnership.All}
+            onClick={() => setProjectOwnership(ProjectOwnership.All)}
           >
             {T("filter.ownership.all")}
           </OwnershipTypeButton>
           <OwnershipTypeButton
-            selected={projectFilter.ownershipType === ProjectOwnershipType.Mine}
-            onClick={() => setProjectFilter({ ...projectFilter, ownershipType: ProjectOwnershipType.Mine })}
+            selected={projectFilter.ownership === ProjectOwnership.Mine}
+            onClick={() => setProjectOwnership(ProjectOwnership.Mine)}
           >
             <span className="flex flex-row items-center gap-1">
               <StarLine className="text-base" /> {T("filter.ownership.mine")}
             </span>
           </OwnershipTypeButton>
         </div>
-      ) : (
-        <div className="py-1.5" />
       )}
       <FilterDropDown
         defaultLabel={T("filter.technologies.all")}
         selectedLabel={T("filter.technologies.some")}
         icon={FilterDropDownIcon.Technology}
         options={availableTechnologies}
-        projectFilter={projectFilter}
-        setProjectFilter={setProjectFilter}
+        value={projectFilter.technologies}
+        setValue={setProjectTechnologies}
         dataTestId="technologies-filter-dropdown"
+      />
+      <FilterDropDown
+        defaultLabel={T("filter.sponsors.all")}
+        selectedLabel={T("filter.sponsors.some")}
+        icon={FilterDropDownIcon.Sponsors}
+        options={availableSponsors}
+        value={projectFilter.sponsors}
+        setValue={setProjectSponsors}
+        dataTestId="sponsors-filter-dropdown"
       />
     </Card>
   );

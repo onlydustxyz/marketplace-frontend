@@ -8,53 +8,58 @@ import {
   GITHUB_REPOS_LANGUAGES_FRAGMENT,
 } from "src/utils/languages";
 import { isProjectVisible, VISIBLE_PROJECT_FRAGMENT } from "src/utils/project";
-import { GetAllTechnologiesQuery } from "src/__generated/graphql";
-import { ProjectFilter } from "..";
+import { GetAllFilterOptionsQuery } from "src/__generated/graphql";
 import View from "./View";
+import { chain } from "lodash";
 
 type Props = {
-  projectFilter: ProjectFilter;
-  setProjectFilter: (projectFilter: ProjectFilter) => void;
-  clearProjectFilter: () => void;
-  isProjectFilterCleared: () => boolean;
   isProjectLeader: boolean;
 };
 
-export default function FilterPanel({
-  projectFilter,
-  setProjectFilter,
-  clearProjectFilter,
-  isProjectFilterCleared,
-  isProjectLeader,
-}: Props) {
+export default function FilterPanel({ isProjectLeader }: Props) {
   const { githubUserId } = useAuth();
-  const technologiesQuery = useHasuraQuery<GetAllTechnologiesQuery>(GET_ALL_TECHNOLOGIES_QUERY, HasuraUserRole.Public);
-
-  const availableTechnologies = new Set(
-    technologiesQuery.data?.projects
-      .filter(isProjectVisible(githubUserId))
-      .map(p => getMostUsedLanguages(getDeduplicatedAggregatedLanguages(p.githubRepos)))
-      .flat()
+  const filterOptionsQuery = useHasuraQuery<GetAllFilterOptionsQuery>(
+    GET_ALL_FILTER_OPTIONS_QUERY,
+    HasuraUserRole.Public
   );
+
+  const visibleProjects = chain(filterOptionsQuery.data?.projects).filter(isProjectVisible(githubUserId));
+
+  const availableTechnologies = visibleProjects
+    .flatMap(p => getMostUsedLanguages(getDeduplicatedAggregatedLanguages(p.githubRepos)))
+    .sort((t1: string, t2: string) => t1.localeCompare(t2))
+    .uniq()
+    .value();
+
+  const availableSponsors = visibleProjects
+    .flatMap(p => p.projectSponsors.map(s => s.sponsor.name))
+    .sort()
+    .uniq()
+    .value();
 
   return (
     <View
-      availableTechnologies={Array.from(availableTechnologies).sort((t1: string, t2: string) => t1.localeCompare(t2))}
-      projectFilter={projectFilter}
-      setProjectFilter={setProjectFilter}
-      clearProjectFilter={clearProjectFilter}
-      isProjectFilterCleared={isProjectFilterCleared}
-      isProjectLeader={isProjectLeader}
+      {...{
+        availableTechnologies,
+        availableSponsors,
+        isProjectLeader,
+      }}
     />
   );
 }
 
-export const GET_ALL_TECHNOLOGIES_QUERY = gql`
+export const GET_ALL_FILTER_OPTIONS_QUERY = gql`
   ${VISIBLE_PROJECT_FRAGMENT}
   ${GITHUB_REPOS_LANGUAGES_FRAGMENT}
-  query GetAllTechnologies {
+  query GetAllFilterOptions {
     projects {
       ...VisibleProject
+      projectSponsors {
+        sponsor {
+          id
+          name
+        }
+      }
       githubRepos {
         ...GithubRepoLanguagesFields
       }

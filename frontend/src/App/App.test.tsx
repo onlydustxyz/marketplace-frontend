@@ -209,15 +209,15 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
 const graphQlMocks = [
   {
     request: {
-      query: buildGetProjectsQuery([]),
-      variables: { languages: [] },
+      query: buildGetProjectsQuery([], []),
+      variables: { languages: [], sponsors: [] },
     },
     result: ALL_PROJECTS_RESULT,
   },
   {
     request: {
-      query: buildGetProjectsQuery([]),
-      variables: { languages: [] },
+      query: buildGetProjectsQuery([], []),
+      variables: { languages: [], sponsors: [] },
     },
     result: ALL_PROJECTS_RESULT,
   },

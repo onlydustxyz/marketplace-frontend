@@ -50,6 +50,34 @@ describe("As a visitor, I", () => {
     cy.contains(projectA.name);
   });
 
+  it("can filter projects by sponsor", function () {
+    cy.visitApp();
+
+    // Projects
+    cy.contains(kakarot.name);
+    cy.contains(projectB.name);
+    cy.contains(empty.name);
+    cy.contains(projectA.name);
+
+    // Filtering
+    cy.contains("StarkNet");
+    cy.contains("Ether Foundation");
+
+    // Test filter
+    cy.contains("StarkNet").click();
+    cy.contains(kakarot.name);
+    cy.contains(projectA.name);
+    cy.contains(projectB.name);
+    cy.contains(empty.name).should("not.exist");
+
+    // Clear filters
+    cy.contains("Clear all").click();
+    cy.contains(kakarot.name);
+    cy.contains(projectA.name);
+    cy.contains(projectB.name);
+    cy.contains(empty.name);
+  });
+
   it("cannot access restricted projects page", function () {
     cy.visitApp({ path: `projects/${projectA.id}/payments` });
     cy.location().should(loc => {
