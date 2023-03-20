@@ -113,10 +113,10 @@ export default function ProjectCard({
                     )}
                     {isXl
                       ? T("project.amountGranted", {
-                          granted: formatMoneyAmount({ amount: totalSpentAmountInUsd }),
-                          total: formatMoneyAmount({ amount: totalInitialAmountInUsd }),
+                          granted: formatMoneyAmount({ amount: totalSpentAmountInUsd, notation: "compact" }),
+                          total: formatMoneyAmount({ amount: totalInitialAmountInUsd, notation: "compact" }),
                         })
-                      : formatMoneyAmount({ amount: totalSpentAmountInUsd })}
+                      : formatMoneyAmount({ amount: totalSpentAmountInUsd, notation: "compact" })}
                   </Tag>
                   {projectSponsors?.length > 0 && (
                     <Tooltip anchorId={`sponsor-list-${id}`} position={TooltipPosition.Top}>

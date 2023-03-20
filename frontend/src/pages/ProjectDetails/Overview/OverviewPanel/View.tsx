@@ -78,8 +78,8 @@ export default function OverviewPanelView({
         <Section icon={SectionIcon.Funds} title={T("project.details.overview.totalSpentAmountInUsd")}>
           <div data-testid="money-granted-amount" className="text-sm text-greyscale-50 font-normal">
             {[
-              formatMoneyAmount({ amount: totalSpentAmountInUsd }),
-              formatMoneyAmount({ amount: totalInitialAmountInUsd }),
+              formatMoneyAmount({ amount: totalSpentAmountInUsd, notation: "compact" }),
+              formatMoneyAmount({ amount: totalInitialAmountInUsd, notation: "compact" }),
             ].join(" / ")}
           </div>
         </Section>
