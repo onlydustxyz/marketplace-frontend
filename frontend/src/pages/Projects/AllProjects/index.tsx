@@ -10,6 +10,7 @@ import { isProjectVisible } from "src/utils/project";
 import { GetProjectsQuery } from "src/__generated/graphql";
 import { Ownership as ProjectOwnership, useProjectFilter } from "src/pages/Projects/useProjectFilter";
 import AllProjectsFallback from "./AllProjectsFallback";
+import ScrollRestoration from "./useScrollRestoration";
 
 export default function AllProjects() {
   const { ledProjectIds, githubUserId, isLoggedIn } = useAuth();
@@ -48,6 +49,7 @@ export default function AllProjects() {
           <AllProjectsFallback clearFilters={clearFilters} />
         )}
       </div>
+      <ScrollRestoration />
     </QueryWrapper>
   );
 }

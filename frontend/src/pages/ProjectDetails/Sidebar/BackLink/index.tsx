@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
+import { RESTORE_SCROLL_POSITION_KEY } from "src/pages/Projects/AllProjects/useScrollRestoration";
 
 interface BackLinkProps extends React.PropsWithChildren {
   to: string;
@@ -9,7 +10,7 @@ interface BackLinkProps extends React.PropsWithChildren {
 export default function BackLink({ to, className = "", children }: BackLinkProps) {
   return (
     <div className="w-fit">
-      <Link to={to}>
+      <Link to={to} state={{ [RESTORE_SCROLL_POSITION_KEY]: true }}>
         <div className={`flex flex-row gap-3 items-center ${className}`}>
           <ArrowLeftSLine className="border border-neutral-100 rounded-lg p-1 w-6 h-6 flex items-center justify-center text-neutral-100" />
           <div className="font-belwe text-base">{children}</div>
