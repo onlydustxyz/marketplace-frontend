@@ -10,6 +10,7 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
+import { uniqBy } from "lodash";
 
 import config from "src/config";
 import ErrorFallback from "src/components/ErrorFallback";
@@ -132,7 +133,7 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
           fields: {
             paymentRequests: {
               merge(existing: PaymentRequests[] = [], incoming: PaymentRequests[]) {
-                return [...existing, ...incoming];
+                return uniqBy([...existing, ...incoming], "__ref");
               },
             },
           },
