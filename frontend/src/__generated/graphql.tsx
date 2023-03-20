@@ -562,6 +562,11 @@ export enum OrderBy {
   DescNullsLast = 'DESC_NULLS_LAST'
 }
 
+export type PaymentReference = {
+  paymentId: Scalars['Uuid'];
+  projectId: Scalars['Uuid'];
+};
+
 /** columns and relationships of "payment_requests" */
 export type PaymentRequests = {
   __typename?: 'PaymentRequests';
@@ -571,6 +576,7 @@ export type PaymentRequests = {
   budgetId: Scalars['uuid'];
   githubRecipient: Maybe<User>;
   id: Scalars['uuid'];
+  invoiceReceivedAt: Maybe<Scalars['timestamp']>;
   /** An array relationship */
   payments: Array<Payments>;
   /** An aggregate relationship */
@@ -672,6 +678,7 @@ export type PaymentRequestsBoolExp = {
   budget: InputMaybe<BudgetsBoolExp>;
   budgetId: InputMaybe<UuidComparisonExp>;
   id: InputMaybe<UuidComparisonExp>;
+  invoiceReceivedAt: InputMaybe<TimestampComparisonExp>;
   payments: InputMaybe<PaymentsBoolExp>;
   payments_aggregate: InputMaybe<Payments_Aggregate_Bool_Exp>;
   reason: InputMaybe<JsonbComparisonExp>;
@@ -688,6 +695,7 @@ export type PaymentRequestsMaxFields = {
   amountInUsd: Maybe<Scalars['bigint']>;
   budgetId: Maybe<Scalars['uuid']>;
   id: Maybe<Scalars['uuid']>;
+  invoiceReceivedAt: Maybe<Scalars['timestamp']>;
   recipientId: Maybe<Scalars['bigint']>;
   requestedAt: Maybe<Scalars['timestamp']>;
   requestorId: Maybe<Scalars['uuid']>;
@@ -699,6 +707,7 @@ export type PaymentRequestsMinFields = {
   amountInUsd: Maybe<Scalars['bigint']>;
   budgetId: Maybe<Scalars['uuid']>;
   id: Maybe<Scalars['uuid']>;
+  invoiceReceivedAt: Maybe<Scalars['timestamp']>;
   recipientId: Maybe<Scalars['bigint']>;
   requestedAt: Maybe<Scalars['timestamp']>;
   requestorId: Maybe<Scalars['uuid']>;
@@ -710,6 +719,7 @@ export type PaymentRequestsOrderBy = {
   budget: InputMaybe<BudgetsOrderBy>;
   budgetId: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
+  invoiceReceivedAt: InputMaybe<OrderBy>;
   paymentsAggregate: InputMaybe<PaymentsAggregateOrderBy>;
   reason: InputMaybe<OrderBy>;
   recipient: InputMaybe<AuthGithubUsersOrderBy>;
@@ -727,6 +737,8 @@ export enum PaymentRequestsSelectColumn {
   BudgetId = 'budgetId',
   /** column name */
   Id = 'id',
+  /** column name */
+  InvoiceReceivedAt = 'invoiceReceivedAt',
   /** column name */
   Reason = 'reason',
   /** column name */
@@ -1851,6 +1863,7 @@ export type Mutation_Root = {
   insertUserInfo: Maybe<UserInfoMutationResponse>;
   /** insert a single row into the table: "user_info" */
   insertUserInfoOne: Maybe<UserInfo>;
+  markInvoiceAsReceived: Scalars['Int'];
   requestPayment: Scalars['Uuid'];
   updateProfileInfo: Scalars['Uuid'];
   /** update single row of the table: "auth.users" */
@@ -1897,6 +1910,12 @@ export type Mutation_RootInsertUserInfoArgs = {
 export type Mutation_RootInsertUserInfoOneArgs = {
   object: UserInfoInsertInput;
   onConflict: InputMaybe<UserInfoOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootMarkInvoiceAsReceivedArgs = {
+  paymentReferences: Array<PaymentReference>;
 };
 
 
@@ -1999,6 +2018,7 @@ export type Payment_Requests_Max_Order_By = {
   amountInUsd: InputMaybe<OrderBy>;
   budgetId: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
+  invoiceReceivedAt: InputMaybe<OrderBy>;
   recipientId: InputMaybe<OrderBy>;
   requestedAt: InputMaybe<OrderBy>;
   requestorId: InputMaybe<OrderBy>;
@@ -2009,6 +2029,7 @@ export type Payment_Requests_Min_Order_By = {
   amountInUsd: InputMaybe<OrderBy>;
   budgetId: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
+  invoiceReceivedAt: InputMaybe<OrderBy>;
   recipientId: InputMaybe<OrderBy>;
   requestedAt: InputMaybe<OrderBy>;
   requestorId: InputMaybe<OrderBy>;
@@ -2045,6 +2066,7 @@ export type Payment_Requests_StreamCursorValueInput = {
   amountInUsd: InputMaybe<Scalars['bigint']>;
   budgetId: InputMaybe<Scalars['uuid']>;
   id: InputMaybe<Scalars['uuid']>;
+  invoiceReceivedAt: InputMaybe<Scalars['timestamp']>;
   reason: InputMaybe<Scalars['jsonb']>;
   recipientId: InputMaybe<Scalars['bigint']>;
   requestedAt: InputMaybe<Scalars['timestamp']>;
@@ -3361,10 +3383,6 @@ export type Users_StreamCursorValueInput = {
   phoneNumberVerified: InputMaybe<Scalars['Boolean']>;
 };
 
-export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> };
-
-export type IssueDetailsFragment = { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null };
-
 export type UserIdentityQueryVariables = Exact<{
   userId: Scalars['uuid'];
 }>;
@@ -3378,6 +3396,8 @@ export type GetPaymentRequestIdsQueryVariables = Exact<{
 
 
 export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> };
+
+export type IssueDetailsFragment = { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null };
 
 export type ProjectCardGithubRepoFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null };
 
@@ -3443,14 +3463,21 @@ export type PendingUserPaymentsQueryVariables = Exact<{
 
 export type PendingUserPaymentsQuery = { __typename?: 'query_root', user: { __typename?: 'users', githubUser: { __typename?: 'AuthGithubUsers', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> } | null } | null };
 
-export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null } | null } | null };
+export type MarkInvoiceAsReceivedMutationVariables = Exact<{
+  paymentReferences: Array<PaymentReference> | PaymentReference;
+}>;
+
+
+export type MarkInvoiceAsReceivedMutation = { __typename?: 'mutation_root', markInvoiceAsReceived: number };
+
+export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null } | null } | null };
 
 export type GetPaymentRequestsQueryVariables = Exact<{
   githubUserId: Scalars['bigint'];
 }>;
 
 
-export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null } | null } | null }> };
+export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, reason: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null } | null } | null }> };
 
 export type UpdateProfileInfoMutationVariables = Exact<{
   contactInformation: InputMaybe<ContactInformation>;
@@ -3468,6 +3495,8 @@ export type ProfileQueryVariables = Exact<{
 
 
 export type ProfileQuery = { __typename?: 'query_root', userInfoByPk: { __typename?: 'UserInfo', userId: any, identity: any | null, contactInformation: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean | null } | null };
+
+export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> };
 
 export type GithubRepoContributorsFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, reason: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null }> }> } | null } | null };
 
@@ -3747,6 +3776,7 @@ export const UserPaymentRequestFragmentDoc = gql`
   }
   amountInUsd
   reason
+  invoiceReceivedAt
   budget {
     id
     project {
@@ -4203,6 +4233,37 @@ export function usePendingUserPaymentsLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type PendingUserPaymentsQueryHookResult = ReturnType<typeof usePendingUserPaymentsQuery>;
 export type PendingUserPaymentsLazyQueryHookResult = ReturnType<typeof usePendingUserPaymentsLazyQuery>;
 export type PendingUserPaymentsQueryResult = Apollo.QueryResult<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>;
+export const MarkInvoiceAsReceivedDocument = gql`
+    mutation markInvoiceAsReceived($paymentReferences: [PaymentReference!]!) {
+  markInvoiceAsReceived(paymentReferences: $paymentReferences)
+}
+    `;
+export type MarkInvoiceAsReceivedMutationFn = Apollo.MutationFunction<MarkInvoiceAsReceivedMutation, MarkInvoiceAsReceivedMutationVariables>;
+
+/**
+ * __useMarkInvoiceAsReceivedMutation__
+ *
+ * To run a mutation, you first call `useMarkInvoiceAsReceivedMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMarkInvoiceAsReceivedMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [markInvoiceAsReceivedMutation, { data, loading, error }] = useMarkInvoiceAsReceivedMutation({
+ *   variables: {
+ *      paymentReferences: // value for 'paymentReferences'
+ *   },
+ * });
+ */
+export function useMarkInvoiceAsReceivedMutation(baseOptions?: Apollo.MutationHookOptions<MarkInvoiceAsReceivedMutation, MarkInvoiceAsReceivedMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MarkInvoiceAsReceivedMutation, MarkInvoiceAsReceivedMutationVariables>(MarkInvoiceAsReceivedDocument, options);
+      }
+export type MarkInvoiceAsReceivedMutationHookResult = ReturnType<typeof useMarkInvoiceAsReceivedMutation>;
+export type MarkInvoiceAsReceivedMutationResult = Apollo.MutationResult<MarkInvoiceAsReceivedMutation>;
+export type MarkInvoiceAsReceivedMutationOptions = Apollo.BaseMutationOptions<MarkInvoiceAsReceivedMutation, MarkInvoiceAsReceivedMutationVariables>;
 export const GetPaymentRequestsDocument = gql`
     query GetPaymentRequests($githubUserId: bigint!) {
   paymentRequests(where: {recipientId: {_eq: $githubUserId}}) {

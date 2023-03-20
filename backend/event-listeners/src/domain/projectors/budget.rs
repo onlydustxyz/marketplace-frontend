@@ -72,6 +72,7 @@ impl EventListener for Projector {
 							})?,
 							reason.clone(),
 							*requested_at,
+							None,
 						))?;
 					},
 					PaymentEvent::Cancelled { id: payment_id } => {
@@ -95,6 +96,21 @@ impl EventListener for Projector {
 							.map_err(|e| SubscriberCallbackError::Discard(e.into()))?,
 						(*payment_id).into(),
 					))?,
+					PaymentEvent::InvoiceReceived {
+						id: payment_id,
+						received_at,
+					} => {
+						let mut payment_request =
+							self.payment_request_repository.find_by_id(payment_id)?;
+						payment_request.invoice_received_at = Some(*received_at);
+						self.payment_request_repository.update(payment_id, payment_request)?;
+					},
+					PaymentEvent::InvoiceRejected { id: payment_id } => {
+						let mut payment_request =
+							self.payment_request_repository.find_by_id(payment_id)?;
+						payment_request.invoice_received_at = None;
+						self.payment_request_repository.update(payment_id, payment_request)?;
+					},
 				},
 			}
 		}

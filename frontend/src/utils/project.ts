@@ -43,12 +43,12 @@ export const VISIBLE_PROJECT_FRAGMENT = gql`
 type Project<R> = {
   githubRepos: Array<{
     githubRepoDetails: {
-      content: { contributors: Array<R> } | null;
+      content: { contributors: Array<R | null> } | null;
     } | null;
   }> | null;
   budgets: Array<{
-    paymentRequests: Array<{ githubRecipient: R }>;
-  }> | null;
+    paymentRequests: Array<{ githubRecipient: R | null }>;
+  }>;
 };
 
 export function getContributors<R extends ContributorIdFragment>(

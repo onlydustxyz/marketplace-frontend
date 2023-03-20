@@ -25,6 +25,7 @@ const Payments = () => {
     {
       variables: { githubUserId },
       skip: !githubUserId,
+      fetchPolicy: "network-only",
     }
   );
 
@@ -33,7 +34,8 @@ const Payments = () => {
   const { data: paymentRequestsQueryData } = getPaymentRequestsQuery;
   const payments = paymentRequestsQueryData?.paymentRequests?.map(mapApiPaymentsToProps);
   const hasPayments = payments && payments.length > 0;
-  const pendingPaymentsRequests = payments?.filter(p => p.status === PaymentStatus.WAITING_PAYMENT) || [];
+  const paymentRequestsNeedingInvoice =
+    payments?.filter(p => p.status === PaymentStatus.WAITING_PAYMENT && !p.invoiceReceived) || [];
 
   if (hasPayments === false) {
     return <Navigate to={RoutePaths.Projects} />;
@@ -41,7 +43,7 @@ const Payments = () => {
 
   const totalEarnings = hasPayments && payments.reduce((acc, p) => acc + p.amount.value, 0);
   const invoiceSubmissionNeeded =
-    pendingPaymentsRequests.length > 0 && invoiceNeeded && githubUserId && userInfos && payoutSettingsValid;
+    paymentRequestsNeedingInvoice.length > 0 && invoiceNeeded && githubUserId && userInfos && payoutSettingsValid;
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
@@ -62,7 +64,7 @@ const Payments = () => {
               {totalEarnings && <TotalEarnings amount={totalEarnings} />}
               {invoiceSubmissionNeeded && (
                 <InvoiceSubmission
-                  paymentRequests={pendingPaymentsRequests}
+                  paymentRequests={paymentRequestsNeedingInvoice}
                   githubUserId={githubUserId}
                   userInfos={userInfos}
                 />
@@ -94,6 +96,7 @@ const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Payment 
         title: project.projectDetails.name,
         logoUrl: project.projectDetails.logoUrl,
       },
+    invoiceReceived: !!apiPayment.invoiceReceivedAt,
     status:
       getPaidAmount(apiPayment.payments) === apiPayment.amountInUsd
         ? PaymentStatus.ACCEPTED
@@ -111,6 +114,7 @@ export const GET_PAYMENTS_QUERY = gql`
     }
     amountInUsd
     reason
+    invoiceReceivedAt
     budget {
       id
       project {

@@ -2,7 +2,7 @@ import { range } from "lodash";
 import { Payment } from "src/components/PayoutTable/Line";
 import { Currency, PaymentStatus } from "src/types";
 import { UserInfo } from "src/__generated/graphql";
-import { buildHiddenFields } from ".";
+import { buildHiddenFields } from "./View";
 
 const paymentRequests: Payment[] = range(1, 4).map(id => ({
   id: `abc${id}${id}${id}${id}${id}${id}${id}`,
@@ -13,6 +13,7 @@ const paymentRequests: Payment[] = range(1, 4).map(id => ({
   reason: "",
   requestedAt: new Date(`December ${id + 10}, 2022`),
   status: PaymentStatus.WAITING_PAYMENT,
+  invoiceReceived: id % 2 === 0,
 }));
 
 const userInfos: UserInfo = {
@@ -72,6 +73,7 @@ describe("buildHiddenFields", () => {
     expect(hiddenFields.city).toBe("London");
     expect(hiddenFields.country).toBe("England");
     expect(hiddenFields.total_amount).toBe("$6,600");
+    expect(hiddenFields.env).toBe("local");
   });
 
   it("should build hidden fields for ENS Domain", () => {
