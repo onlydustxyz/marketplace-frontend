@@ -13,9 +13,11 @@ export default {
 const allProjectsArgs = {
   projectFilter: {
     technologies: [],
+    sponsors: [],
     ownershipType: ProjectOwnershipType.All,
   },
   availableTechnologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
+  availableSponsors: ["StarkNet Foundation", "Ethereum Foundation", "Theodo"],
   dispatchProjectFilter: () => {
     return;
   },
@@ -33,9 +35,11 @@ export const AllProjects = {
 
 const allProjectsForProjectLeaderArgs = {
   availableTechnologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
+  availableSponsors: ["StarkNet Foundation", "Ethereum Foundation", "Theodo"],
   projectFilter: {
     ownershipType: ProjectOwnershipType.All,
     technologies: [],
+    sponsors: [],
   },
   dispatchProjectFilter: () => {
     return;
@@ -54,7 +58,8 @@ export const AllProjectsForProjectLeader = {
 
 const myProjectsArgs = {
   availableTechnologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
-  projectFilter: { technologies: [], ownershipType: ProjectOwnershipType.Mine },
+  availableSponsors: ["StarkNet Foundation", "Ethereum Foundation", "Theodo"],
+  projectFilter: { technologies: [], sponsors: [], ownershipType: ProjectOwnershipType.Mine },
   dispatchProjectFilter: () => {
     return;
   },

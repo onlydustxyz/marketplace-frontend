@@ -1,7 +1,7 @@
 import { ComponentStory } from "@storybook/react";
 import { JSXElementConstructor } from "react";
 import { responsiveChromatic } from "src/test/utils";
-import { Project } from "src/pages/Projects";
+import { Project } from "src/pages/Projects/types";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 import ProjectCard from ".";

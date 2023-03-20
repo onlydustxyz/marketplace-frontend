@@ -5,7 +5,12 @@ export default {
   title: "FilterDropDown",
   component: FilterDropDown,
   argTypes: {
-    type: { control: { type: "select", options: [ProjectFilterActionType.SelectTechnologies] } },
+    type: {
+      control: {
+        type: "select",
+        options: [ProjectFilterActionType.SelectTechnologies, ProjectFilterActionType.SelectSponsors],
+      },
+    },
     width: { control: { type: "range", min: "200", max: "600" } },
   },
 };

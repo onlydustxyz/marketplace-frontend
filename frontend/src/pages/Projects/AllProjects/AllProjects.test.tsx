@@ -358,11 +358,11 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
   projectSponsors: [],
 };
 
-const buildGraphQlMocks = (projectsQueryResult: { data: GetProjectsQueryResult["data"] }, githubUserId?: number) => [
+const buildGraphQlMocks = (projectsQueryResult: { data: GetProjectsQueryResult["data"] }) => [
   {
     request: {
-      query: buildGetProjectsQuery([]),
-      variables: { languages: [] },
+      query: buildGetProjectsQuery([], []),
+      variables: { languages: [], sponsors: [] },
     },
     result: projectsQueryResult,
   },
@@ -403,6 +403,7 @@ describe("All projects", () => {
     renderWithIntl(
       <AllProjects
         technologies={[]}
+        sponsors={[]}
         projectOwnershipType={ProjectOwnershipType.All}
         clearFilters={Function.prototype()}
       />,
@@ -422,6 +423,7 @@ describe("All projects", () => {
     renderWithIntl(
       <AllProjects
         technologies={[]}
+        sponsors={[]}
         projectOwnershipType={ProjectOwnershipType.All}
         clearFilters={Function.prototype()}
       />,
@@ -442,12 +444,13 @@ describe("All projects", () => {
     renderWithIntl(
       <AllProjects
         technologies={[]}
+        sponsors={[]}
         projectOwnershipType={ProjectOwnershipType.Mine}
         clearFilters={Function.prototype()}
       />,
       {
         wrapper: MemoryRouterProviderFactory({
-          mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_WITH_INVITATION, TEST_GITHUB_USER_ID),
+          mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_WITH_INVITATION),
         }),
       }
     );
@@ -462,27 +465,25 @@ describe("All projects", () => {
     renderWithIntl(
       <AllProjects
         technologies={[]}
+        sponsors={[]}
         projectOwnershipType={ProjectOwnershipType.All}
         clearFilters={Function.prototype()}
       />,
       {
         wrapper: MemoryRouterProviderFactory({
           mocks: [
-            ...buildGraphQlMocks(
-              {
-                data: {
-                  projects: [
-                    projectWithNoBudget,
-                    projectWithNoLeader,
-                    projectWithNoRepo,
-                    projectInvalidWithInvite,
-                    projectWithNoLeaderAndInviteForWrongUser,
-                    projectWithNoLeaderAndInvite,
-                  ],
-                },
+            ...buildGraphQlMocks({
+              data: {
+                projects: [
+                  projectWithNoBudget,
+                  projectWithNoLeader,
+                  projectWithNoRepo,
+                  projectInvalidWithInvite,
+                  projectWithNoLeaderAndInviteForWrongUser,
+                  projectWithNoLeaderAndInvite,
+                ],
               },
-              TEST_GITHUB_USER_ID
-            ),
+            }),
           ],
         }),
       }
@@ -497,18 +498,16 @@ describe("All projects", () => {
     renderWithIntl(
       <AllProjects
         technologies={[]}
+        sponsors={[]}
         projectOwnershipType={ProjectOwnershipType.All}
         clearFilters={Function.prototype()}
       />,
       {
         wrapper: MemoryRouterProviderFactory({
           mocks: [
-            ...buildGraphQlMocks(
-              {
-                data: { projects: [] },
-              },
-              TEST_GITHUB_USER_ID
-            ),
+            ...buildGraphQlMocks({
+              data: { projects: [] },
+            }),
           ],
         }),
       }

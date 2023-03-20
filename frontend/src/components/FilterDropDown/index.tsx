@@ -34,7 +34,7 @@ export default function FilterDropDown({
   const [open, setOpen] = useState(true);
 
   return (
-    <Listbox onChange={values => dispatchProjectFilter({ type, values })} multiple value={value}>
+    <Listbox onChange={(values: string[]) => dispatchProjectFilter({ type, values })} multiple value={value}>
       {({ value }) => (
         <>
           <Listbox.Button
