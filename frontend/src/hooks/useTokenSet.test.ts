@@ -41,69 +41,6 @@ describe("useTokenSet", () => {
     expect(result.current.tokenSet).toEqual({ accessToken });
   });
 
-  it("should refresh the token if access token from local storage is expired", async () => {
-    const updatedAccessToken = "updatedAccessToken";
-    const creationDate = new Date(2000, 1, 1, 13, 0, 0);
-    const currentDate = new Date(2000, 1, 1, 13, 2, 30);
-
-    const tokenSet = {
-      creationDate: creationDate.getTime(),
-      accessTokenExpiresIn: 90,
-      accessToken,
-      refreshToken,
-    } as unknown as TokenSet;
-    vi.setSystemTime(currentDate);
-    setTokenSet(tokenSet);
-    (axios.post as Mock).mockResolvedValue({ data: { ...tokenSet, accessToken: updatedAccessToken } });
-
-    const { result, waitForValueToChange } = renderWithProvider();
-    expect(axios.post).toHaveBeenCalledTimes(2);
-
-    await waitForValueToChange(() => result.current.tokenSet);
-    expect(result.current.tokenSet?.accessToken).toEqual(updatedAccessToken);
-  });
-
-  it("should schedule an access token refresh when mounted", async () => {
-    const currentDate = new Date(2000, 1, 1, 13, 0, 30);
-
-    vi.setSystemTime(currentDate);
-    const tokenSet = {
-      creationDate: currentDate.getTime(),
-      accessTokenExpiresIn: 90,
-      accessToken,
-      refreshToken,
-    } as unknown as TokenSet;
-    setTokenSet(tokenSet);
-    (axios.post as Mock).mockResolvedValue({ data: tokenSet });
-
-    renderWithProvider();
-    expect(axios.post).toHaveBeenCalledTimes(1);
-
-    vi.advanceTimersByTime(120 * 1000);
-    expect(axios.post).toHaveBeenCalledTimes(2);
-  });
-
-  it("should remove the scheduled access token refresh when unmounted", () => {
-    const currentDate = new Date(2000, 1, 1, 13, 0, 30);
-
-    vi.setSystemTime(currentDate);
-    const tokenSet = {
-      creationDate: currentDate.getTime(),
-      accessTokenExpiresIn: 90,
-      accessToken,
-      refreshToken,
-    } as unknown as TokenSet;
-    setTokenSet(tokenSet);
-    (axios.post as Mock).mockResolvedValue({ data: tokenSet });
-
-    const { unmount } = renderWithProvider();
-    expect(axios.post).toHaveBeenCalledOnce();
-
-    unmount();
-    vi.advanceTimersByTime(120 * 1000);
-    expect(axios.post).toHaveBeenCalledOnce();
-  });
-
   describe("clearTokenSet", () => {
     it("should remove the token from localStorage", () => {
       setTokenSet({ accessToken });
@@ -113,30 +50,6 @@ describe("useTokenSet", () => {
         result.current.clearTokenSet();
       });
       expect(window.localStorage.getItem(LOCAL_STORAGE_TOKEN_SET_KEY)).toBe("null");
-    });
-
-    it("should remove the scheduled access token update", () => {
-      const currentDate = new Date(2000, 1, 1, 13, 0, 30);
-
-      vi.setSystemTime(currentDate);
-      const tokenSet = {
-        creationDate: currentDate.getTime(),
-        accessTokenExpiresIn: 90,
-        accessToken,
-        refreshToken,
-      } as unknown as TokenSet;
-      setTokenSet(tokenSet);
-      (axios.post as Mock).mockResolvedValue({ data: tokenSet });
-
-      const { result } = renderWithProvider();
-      expect(axios.post).toHaveBeenCalledOnce();
-
-      act(() => {
-        result.current.clearTokenSet();
-      });
-
-      vi.advanceTimersByTime(120 * 1000);
-      expect(axios.post).toHaveBeenCalledOnce();
     });
   });
 
@@ -156,28 +69,6 @@ describe("useTokenSet", () => {
       expect(axios.post).toHaveBeenCalledWith(`${config.HASURA_AUTH_BASE_URL}/token`, { refreshToken });
 
       expect(result.current.tokenSet).toEqual({ ...tokenSet, creationDate: date.getTime() });
-    });
-
-    it("should schedule an access token refresh", async () => {
-      const currentDate = new Date(2000, 1, 1, 13, 0, 30);
-      const tokenSet = {
-        creationDate: currentDate.getTime(),
-        accessTokenExpiresIn: 90,
-        accessToken,
-        refreshToken,
-      } as unknown as TokenSet;
-      vi.setSystemTime(currentDate);
-
-      (axios.post as Mock).mockResolvedValue({ data: tokenSet });
-      const { result } = renderWithProvider();
-
-      await act(async () => {
-        await result.current.setFromRefreshToken(refreshToken as RefreshToken);
-      });
-
-      expect(axios.post).toHaveBeenCalledOnce();
-      vi.advanceTimersByTime(120 * 1000);
-      expect(axios.post).toHaveBeenCalledTimes(2);
     });
   });
 

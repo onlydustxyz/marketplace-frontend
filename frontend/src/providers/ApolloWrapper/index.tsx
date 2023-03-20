@@ -10,13 +10,13 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
+import { uniqBy } from "lodash";
 
 import config from "src/config";
 import ErrorFallback from "src/components/ErrorFallback";
-import { accessTokenExpired, LOCAL_STORAGE_TOKEN_SET_KEY, useTokenSet } from "src/hooks/useTokenSet";
+import { accessTokenExpired, useTokenSet } from "src/hooks/useTokenSet";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
-import { FeatureFlags, isFeatureEnabled } from "src/utils/featureFlags";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import { TokenSet } from "src/types";
 import axios from "axios";
@@ -133,7 +133,7 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
           fields: {
             paymentRequests: {
               merge(existing: PaymentRequests[] = [], incoming: PaymentRequests[]) {
-                return [...existing, ...incoming];
+                return uniqBy([...existing, ...incoming], "__ref");
               },
             },
           },
@@ -156,85 +156,4 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
-const ApolloWrapper__deprecated: React.FC<PropsWithChildren> = ({ children }) => {
-  const [displayError, setDisplayError] = useState(false);
-  const showToaster = useShowToaster();
-  const { T } = useIntl();
-
-  const AuthenticationLink = setContext((_, { headers }) => {
-    try {
-      const tokenSetString = localStorage.getItem(LOCAL_STORAGE_TOKEN_SET_KEY);
-      const tokenSet = tokenSetString ? JSON.parse(tokenSetString) : undefined;
-      const authorizationHeaders = tokenSet?.accessToken ? { Authorization: `Bearer ${tokenSet?.accessToken}` } : {};
-      return {
-        headers: {
-          ...headers,
-          ...authorizationHeaders,
-        },
-      };
-    } catch (e) {
-      console.error(`Error parsing token set: ${e}`);
-      return { headers };
-    }
-  });
-
-  const HttpLink = createHttpLink({
-    uri: `${config.HASURA_BASE_URL}/v1/graphql`,
-  });
-
-  const ErrorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
-    if (graphQLErrors) {
-      graphQLErrors.forEach(({ message, locations, path }) => {
-        console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
-        if (message === GraphQLErrorMessage.ConnectionError) {
-          return forward(operation);
-        }
-      });
-
-      switch ((operation.getContext().graphqlErrorDisplay || DEFAULT_ERROR_DISPLAY) as ErrorDisplay) {
-        case "screen":
-          setDisplayError(true);
-          break;
-        case "toaster":
-          showToaster(T("state.errorOccured"), { isError: true });
-          break;
-        default:
-          break;
-      }
-    }
-
-    if (networkError) {
-      console.error(`[Network error]: ${networkError}`);
-    }
-  });
-
-  const retryLink = new RetryLink();
-
-  const client = new ApolloClient({
-    link: ApolloLink.from([ErrorLink, retryLink, AuthenticationLink, HttpLink]),
-    cache: new InMemoryCache({
-      typePolicies: {
-        ProjectDetails: {
-          keyFields: ["projectId"],
-        },
-      },
-    }),
-  });
-
-  const suspenseCache = new SuspenseCache();
-
-  return (
-    <>
-      {displayError && <ErrorFallback />}
-      {!displayError && (
-        <ApolloProvider client={client} suspenseCache={suspenseCache}>
-          {children}
-        </ApolloProvider>
-      )}
-    </>
-  );
-};
-
-export default isFeatureEnabled(FeatureFlags.REMOVE_TIMER_BASED_TOKEN_RELOAD)
-  ? ApolloWrapper
-  : ApolloWrapper__deprecated;
+export default ApolloWrapper;
