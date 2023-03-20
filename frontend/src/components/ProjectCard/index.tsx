@@ -111,8 +111,8 @@ export default function ProjectCard({
                       <FundsLine />
                     )}
                     {isXl
-                      ? T("project.amountGranted", { amount: formatMoneyAmount(totalSpentAmountInUsd) })
-                      : formatMoneyAmount(totalSpentAmountInUsd)}
+                      ? T("project.amountGranted", { amount: formatMoneyAmount({ amount: totalSpentAmountInUsd }) })
+                      : formatMoneyAmount({ amount: totalSpentAmountInUsd })}
                   </Tag>
                   {projectSponsors?.length > 0 && (
                     <Tooltip anchorId={`sponsor-list-${id}`} position={TooltipPosition.Top}>

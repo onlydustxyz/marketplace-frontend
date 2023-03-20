@@ -81,17 +81,19 @@ export default function WorkEstimation({
           <div className="flex flex-col text-sm font-medium">
             <div className="flex flex-row justify-between">
               <div className="text-greyscale-300">{T("payment.form.remainingBudget")}</div>
-              <div className="font-semibold">{formatMoneyAmount(budget.remainingAmount)}</div>
+              <div className="font-semibold">{formatMoneyAmount({ amount: budget.remainingAmount })}</div>
             </div>
             {!disabled && (
               <>
                 <div className="flex flex-row justify-between">
                   <div className="text-greyscale-300">{T("payment.form.thisPayment")}</div>
-                  <div className="text-purple-500 font-semibold">{formatMoneyAmount(amountToPay)}</div>
+                  <div className="text-purple-500 font-semibold">{formatMoneyAmount({ amount: amountToPay })}</div>
                 </div>
                 <div className="flex flex-row justify-between">
                   <div className="text-greyscale-300">{T("payment.form.leftToSpend")}</div>
-                  <div className="font-semibold">{formatMoneyAmount(budget.remainingAmount - amountToPay)}</div>
+                  <div className="font-semibold">
+                    {formatMoneyAmount({ amount: budget.remainingAmount - amountToPay })}
+                  </div>
                 </div>
               </>
             )}

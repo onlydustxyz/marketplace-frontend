@@ -20,7 +20,7 @@ export default function RemainingBudget({ budget, disabled }: Props) {
       <div className="flex flex-col">
         <div className="text-white text-sm">{T("project.details.remainingBudget.title")}</div>
         <div id="remainingBudget" className="text-5xl font-belwe text-greyscale-50">
-          {formatMoneyAmount(budget.remainingAmount)}
+          {formatMoneyAmount({ amount: budget.remainingAmount })}
         </div>
         <div className="pt-4 pb-2">
           <BudgetBar budget={budget} pendingSpending={0} displayPendingSpending={false} />
