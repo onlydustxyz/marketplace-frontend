@@ -20,6 +20,7 @@ import Title from "src/pages/ProjectDetails/Title";
 type OutletContext = {
   leads?: ProjectLeadFragment[];
   totalSpentAmountInUsd: number;
+  totalInitialAmountInUsd: number;
   contributors?: Contributor[];
   projectId: string;
   sponsors: SponsorFragment[];
@@ -29,8 +30,16 @@ type OutletContext = {
 
 export default function Overview() {
   const { T } = useIntl();
-  const { leads, totalSpentAmountInUsd, contributors, sponsors, telegramLink, children, projectId } =
-    useOutletContext<OutletContext>();
+  const {
+    leads,
+    totalSpentAmountInUsd,
+    totalInitialAmountInUsd,
+    contributors,
+    sponsors,
+    telegramLink,
+    children,
+    projectId,
+  } = useOutletContext<OutletContext>();
 
   const { data, loading } = useHasuraQuery<GetProjectOverviewDetailsQuery>(
     GET_PROJECT_OVERVIEW_DETAILS,
@@ -99,7 +108,17 @@ export default function Overview() {
             </Card>
           </div>
         </QueryWrapper>
-        <OverviewPanel {...{ leads, projectId, contributors, totalSpentAmountInUsd, sponsors, telegramLink }} />
+        <OverviewPanel
+          {...{
+            leads,
+            projectId,
+            contributors,
+            totalSpentAmountInUsd,
+            totalInitialAmountInUsd,
+            sponsors,
+            telegramLink,
+          }}
+        />
       </div>
     </>
   );

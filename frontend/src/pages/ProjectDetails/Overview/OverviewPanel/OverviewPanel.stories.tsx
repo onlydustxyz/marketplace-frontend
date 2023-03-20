@@ -65,5 +65,6 @@ Default.args = {
     },
   ],
   totalSpentAmountInUsd: 135642,
+  totalInitialAmountInUsd: 300000,
   telegramLink: "https://t.me/kakarot",
 };

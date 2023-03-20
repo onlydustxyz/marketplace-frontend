@@ -214,7 +214,7 @@
     }
   },
   "project": {
-    "amountGranted": "__amount__ granted",
+    "amountGranted": "Granted: __granted__ / __total__",
     "details": {
       "contributors": {
         "count": {

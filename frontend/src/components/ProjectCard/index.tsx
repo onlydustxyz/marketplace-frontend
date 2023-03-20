@@ -43,6 +43,7 @@ export default function ProjectCard({
   const { T } = useIntl();
   const isXl = useMediaQuery(`(min-width: ${viewportConfig.breakpoints.xl}px)`);
   const totalSpentAmountInUsd = budgetsAggregate?.aggregate?.sum?.spentAmount;
+  const totalInitialAmountInUsd = budgetsAggregate?.aggregate?.sum?.initialAmount;
 
   const topSponsors = projectSponsors?.map(projectSponsor => projectSponsor.sponsor).slice(0, 3) || [];
   const { contributors } = getContributors({ githubRepos, budgets });
@@ -111,7 +112,10 @@ export default function ProjectCard({
                       <FundsLine />
                     )}
                     {isXl
-                      ? T("project.amountGranted", { amount: formatMoneyAmount({ amount: totalSpentAmountInUsd }) })
+                      ? T("project.amountGranted", {
+                          granted: formatMoneyAmount({ amount: totalSpentAmountInUsd }),
+                          total: formatMoneyAmount({ amount: totalInitialAmountInUsd }),
+                        })
                       : formatMoneyAmount({ amount: totalSpentAmountInUsd })}
                   </Tag>
                   {projectSponsors?.length > 0 && (
@@ -172,6 +176,7 @@ export const PROJECT_CARD_FRAGMENT = gql`
       aggregate {
         sum {
           spentAmount
+          initialAmount
         }
       }
     }

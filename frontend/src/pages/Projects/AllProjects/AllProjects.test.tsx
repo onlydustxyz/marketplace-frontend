@@ -32,6 +32,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           aggregate: {
             sum: {
               spentAmount: 1000,
+              initialAmount: 1000,
             },
           },
         },
@@ -67,6 +68,7 @@ const ALL_PROJECTS_RESULT_NO_INVITATIONS: { data: GetProjectsQueryResult["data"]
           aggregate: {
             sum: {
               spentAmount: 999,
+              initialAmount: 1000,
             },
           },
         },
@@ -109,6 +111,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           aggregate: {
             sum: {
               spentAmount: 1000,
+              initialAmount: 1000,
             },
           },
         },
@@ -144,6 +147,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           aggregate: {
             sum: {
               spentAmount: 999,
+              initialAmount: 1000,
             },
           },
         },
@@ -179,6 +183,7 @@ const ALL_PROJECTS_RESULT_WITH_INVITATION: { data: GetProjectsQueryResult["data"
           aggregate: {
             sum: {
               spentAmount: 0,
+              initialAmount: 1000,
             },
           },
         },
@@ -207,7 +212,7 @@ const projectWithNoBudget: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-budget",
   budgets: [],
-  budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
+  budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
   projectDetails: {
     projectId: "project-with-no-budget",
     name: "No budget",
@@ -237,7 +242,7 @@ const projectWithNoRepo: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-repo",
   budgets: [{ id: "budget-1", paymentRequests: [] }],
-  budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
+  budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
   projectDetails: {
     projectId: "project-with-no-repo",
     name: "No budget",
@@ -255,7 +260,7 @@ const projectWithNoLeader: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-leader",
   budgets: [{ id: "budget-1", paymentRequests: [] }],
-  budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
+  budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
   projectDetails: {
     projectId: "project-with-no-leader",
     name: "No budget",
@@ -285,7 +290,7 @@ const projectInvalidWithInvite: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-only-invite",
   budgets: [],
-  budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
+  budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
   projectDetails: {
     projectId: "project-with-only-invite",
     name: "Nothing but invited",
@@ -303,7 +308,7 @@ const projectWithNoLeaderAndInviteForWrongUser: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-leader-and-invite-for-wrong-user",
   budgets: [{ id: "budget-1", paymentRequests: [] }],
-  budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
+  budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
   projectDetails: {
     projectId: "project-with-no-leader",
     name: "No leader but invite",
@@ -333,7 +338,7 @@ const projectWithNoLeaderAndInvite: ProjectCardFieldsFragment = {
   __typename: "Projects",
   id: "project-with-no-leader-and-invite",
   budgets: [{ id: "budget-1", paymentRequests: [] }],
-  budgetsAggregate: { aggregate: { sum: { spentAmount: 0 } } },
+  budgetsAggregate: { aggregate: { sum: { spentAmount: 0, initialAmount: 1000 } } },
   projectDetails: {
     projectId: "project-with-no-leader",
     name: "No leader but invite",
@@ -437,8 +442,8 @@ describe("All projects", () => {
     });
     const moneyGrantedElementsInOrderOfAppearance = await screen.findAllByText("granted", { exact: false });
     expect(moneyGrantedElementsInOrderOfAppearance).toHaveLength(2);
-    expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("$0 granted");
-    expect(moneyGrantedElementsInOrderOfAppearance[1]).toHaveTextContent("$999 granted");
+    expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("Granted: $0 / $1,000");
+    expect(moneyGrantedElementsInOrderOfAppearance[1]).toHaveTextContent("Granted: $999 / $1,000");
   });
 
   it("should only show valid projects", async () => {

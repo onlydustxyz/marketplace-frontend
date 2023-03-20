@@ -9,6 +9,7 @@ import OverviewPanelView from "./View";
 interface OverviewPanelProps {
   leads?: ProjectLeadFragment[];
   totalSpentAmountInUsd?: number;
+  totalInitialAmountInUsd?: number;
   sponsors: SponsorFragment[];
   telegramLink: string | null;
   projectId: string;

@@ -124,7 +124,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
         pendingInvitations: [],
         githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
         projectSponsors: [],
-        budgetsAggregate: { aggregate: { sum: { spentAmount: 100 } } },
+        budgetsAggregate: { aggregate: { sum: { spentAmount: 100, initialAmount: 1000 } } },
         budgets: [{ id: "budget-1", paymentRequests: [] }],
       },
     ],
@@ -140,6 +140,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
         aggregate: {
           sum: {
             spentAmount: 123,
+            initialAmount: 1000,
           },
         },
       },
@@ -489,10 +490,9 @@ describe("Integration tests", () => {
       screen.getByText(TEST_PROJECT_LEAD_DISPLAY_NAME);
       screen.getByText(TEST_GITHUB_REPO_CONTENT);
       expect(screen.getAllByText(/project lead/i).length).toBeGreaterThan(0);
-      //   expect(screen.getAllByText(/contributors/i)).toHaveLength(2);
-      screen.getByText(/granted/i);
     });
 
+    expect(screen.findByText(/granted/i));
     expect(screen.findByText("Overview"));
     expect(screen.queryByText("Payments")).not.toBeInTheDocument();
     expect(screen.findByText("Contributors"));

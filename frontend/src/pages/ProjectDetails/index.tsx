@@ -25,6 +25,7 @@ export interface ProjectDetails {
   leads: ({ id: string } & Partial<ProjectLeadFragment>)[];
   invitationId?: string;
   totalSpentAmountInUsd?: number;
+  totalInitialAmountInUsd?: number;
   languages: LanguageMap;
   sponsors: SponsorFragment[];
 }
@@ -95,6 +96,7 @@ const projectFromQuery = (project: GetProjectQuery["projectsByPk"], githubUserId
   leads: project?.projectLeads?.map((lead: ProjectLead) => ({ id: lead.userId, ...lead.user })) || [],
   invitationId: project?.pendingInvitations.filter(i => i.githubUserId === githubUserId).at(0)?.id,
   totalSpentAmountInUsd: project?.budgetsAggregate.aggregate?.sum?.spentAmount,
+  totalInitialAmountInUsd: project?.budgetsAggregate.aggregate?.sum?.initialAmount,
   telegramLink: project?.projectDetails?.telegramLink,
   languages: (project?.githubRepos?.length === 1 && project?.githubRepos[0].githubRepoDetails?.languages) || {},
   sponsors: project?.projectSponsors?.map(projectSponsor => projectSponsor.sponsor) || [],

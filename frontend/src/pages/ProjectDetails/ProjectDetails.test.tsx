@@ -1,4 +1,4 @@
-import { describe, expect, it, Mock, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 
@@ -10,7 +10,6 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import ProjectDetails, { GET_PROJECT_QUERY } from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { LOCAL_STORAGE_SESSION_KEY } from "src/hooks/useSession";
-import jwtDecode from "jwt-decode";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY } from "src/types";
 import { GET_PROJECTS_FOR_SIDEBAR_QUERY } from "./Sidebar";
 import Overview from "src/pages/ProjectDetails/Overview";
@@ -69,6 +68,7 @@ const getProjectMock = {
           aggregate: {
             sum: {
               spentAmount: 1000,
+              initialAmount: 1000,
             },
           },
         },
@@ -114,6 +114,7 @@ const getLedProjectMock = {
           aggregate: {
             sum: {
               spentAmount: 1000,
+              initialAmount: 1000,
             },
           },
         },

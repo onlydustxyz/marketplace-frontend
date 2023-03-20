@@ -16,6 +16,7 @@ interface Contributor {
 interface OverviewPanelViewProps {
   leads?: ProjectLeadFragment[];
   totalSpentAmountInUsd?: number;
+  totalInitialAmountInUsd?: number;
   sponsors: SponsorFragment[];
   telegramLink: string | null;
   contributors: Contributor[];
@@ -24,6 +25,7 @@ interface OverviewPanelViewProps {
 export default function OverviewPanelView({
   leads,
   totalSpentAmountInUsd,
+  totalInitialAmountInUsd,
   sponsors,
   telegramLink,
   contributors,
@@ -72,10 +74,13 @@ export default function OverviewPanelView({
           </div>
         </Section>
       )}
-      {totalSpentAmountInUsd !== undefined && (
+      {totalSpentAmountInUsd !== undefined && totalInitialAmountInUsd !== undefined && (
         <Section icon={SectionIcon.Funds} title={T("project.details.overview.totalSpentAmountInUsd")}>
           <div data-testid="money-granted-amount" className="text-sm text-greyscale-50 font-normal">
-            {formatMoneyAmount({ amount: totalSpentAmountInUsd })}
+            {[
+              formatMoneyAmount({ amount: totalSpentAmountInUsd }),
+              formatMoneyAmount({ amount: totalInitialAmountInUsd }),
+            ].join(" / ")}
           </div>
         </Section>
       )}
