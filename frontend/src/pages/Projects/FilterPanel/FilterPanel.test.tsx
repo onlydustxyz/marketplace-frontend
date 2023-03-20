@@ -3,8 +3,8 @@ import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import FilterPanel, { GET_ALL_TECHNOLOGIES_QUERY } from ".";
 import { renderWithIntl, MemoryRouterProviderFactory } from "src/test/utils";
-import { ProjectOwnershipType } from "..";
 import { GetAllTechnologiesQuery } from "src/__generated/graphql";
+import { ProjectOwnershipType } from "src/pages/Projects/types";
 
 expect.extend(matchers);
 
@@ -132,10 +132,9 @@ describe("FilterPanel", () => {
     renderWithIntl(
       <FilterPanel
         projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [] }}
-        setProjectFilter={() => {
+        dispatchProjectFilter={() => {
           return;
         }}
-        clearProjectFilter={Function.prototype()}
         isProjectFilterCleared={() => false}
         isProjectLeader={false}
       />,
@@ -160,10 +159,9 @@ describe("FilterPanel", () => {
     renderWithIntl(
       <FilterPanel
         projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [] }}
-        setProjectFilter={() => {
+        dispatchProjectFilter={() => {
           return;
         }}
-        clearProjectFilter={Function.prototype()}
         isProjectFilterCleared={() => false}
         isProjectLeader={true}
       />,
@@ -182,10 +180,9 @@ describe("FilterPanel", () => {
     renderWithIntl(
       <FilterPanel
         projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [] }}
-        setProjectFilter={() => {
+        dispatchProjectFilter={() => {
           return;
         }}
-        clearProjectFilter={Function.prototype()}
         isProjectFilterCleared={() => false}
         isProjectLeader={true}
       />,
@@ -203,10 +200,9 @@ describe("FilterPanel", () => {
     renderWithIntl(
       <FilterPanel
         projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [] }}
-        setProjectFilter={() => {
+        dispatchProjectFilter={() => {
           return;
         }}
-        clearProjectFilter={Function.prototype()}
         isProjectFilterCleared={() => isProjectFilterCleared}
         isProjectLeader={true}
       />,

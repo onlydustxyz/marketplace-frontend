@@ -3,49 +3,36 @@ import technologyIcon from "assets/img/technology.svg";
 import classNames from "classnames";
 import { useState } from "react";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
-import { ProjectFilter } from "src/pages/Projects";
+import { ProjectFilterAction, ProjectFilterActionType } from "src/pages/Projects/types";
 import Badge, { BadgeSize } from "src/components/Badge";
 
-export enum FilterDropDownIcon {
-  Technology = "technology",
-}
-
-type Props = {
-  icon: FilterDropDownIcon;
+export type Props = {
+  type: ProjectFilterActionType.SelectTechnologies;
   defaultLabel: string;
   selectedLabel: string;
   options: string[];
   dataTestId?: string;
-  projectFilter: ProjectFilter;
-  setProjectFilter: (projectFilter: ProjectFilter) => void;
+  value: string[];
+  dispatchProjectFilter: (action: ProjectFilterAction) => void;
 };
 
-const ICONS = {
-  [FilterDropDownIcon.Technology]: technologyIcon,
+const ICONS: Record<ProjectFilterActionType.SelectTechnologies, string> = {
+  [ProjectFilterActionType.SelectTechnologies]: technologyIcon,
 };
 
 export default function FilterDropDown({
-  icon,
+  type,
   defaultLabel,
   selectedLabel,
   options,
-  projectFilter,
-  setProjectFilter,
+  value,
+  dispatchProjectFilter,
   dataTestId,
 }: Props) {
   const [open, setOpen] = useState(true);
 
   return (
-    <Listbox
-      onChange={technologies =>
-        setProjectFilter({
-          ...projectFilter,
-          technologies,
-        })
-      }
-      multiple
-      value={projectFilter.technologies}
-    >
+    <Listbox onChange={values => dispatchProjectFilter({ type, values })} multiple value={value}>
       {({ value }) => (
         <>
           <Listbox.Button
@@ -54,7 +41,7 @@ export default function FilterDropDown({
             className="w-full flex items-center justify-between py-2 drop-shadow-bottom-sm border-b border-greyscale-50/12 hover:cursor-pointer"
           >
             <div className="flex gap-2 items-center">
-              <img className="w-6 h-6" src={ICONS[icon]} />
+              <img className="w-6 h-6" src={ICONS[type]} />
               <span className="font-medium text-greyscale-50 text-sm font-walsheim">
                 {value.length > 0 ? selectedLabel : defaultLabel}
               </span>

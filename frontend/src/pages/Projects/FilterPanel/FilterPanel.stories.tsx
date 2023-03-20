@@ -1,4 +1,4 @@
-import { ProjectOwnershipType } from "..";
+import { ProjectOwnershipType } from "src/pages/Projects/types";
 import FilterPanel, { FilterPanelViewProps } from "./View";
 
 export default {
@@ -16,10 +16,9 @@ const allProjectsArgs = {
     ownershipType: ProjectOwnershipType.All,
   },
   availableTechnologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
-  setProjectFilter: () => {
+  dispatchProjectFilter: () => {
     return;
   },
-  clearProjectFilter: Function.prototype(),
   isProjectFilterCleared: () => false,
   isProjectLeader: false,
 };
@@ -38,10 +37,9 @@ const allProjectsForProjectLeaderArgs = {
     ownershipType: ProjectOwnershipType.All,
     technologies: [],
   },
-  setProjectFilter: () => {
+  dispatchProjectFilter: () => {
     return;
   },
-  clearProjectFilter: Function.prototype(),
   isProjectFilterCleared: () => false,
   isProjectLeader: true,
 };
@@ -57,10 +55,9 @@ export const AllProjectsForProjectLeader = {
 const myProjectsArgs = {
   availableTechnologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
   projectFilter: { technologies: [], ownershipType: ProjectOwnershipType.Mine },
-  setProjectFilter: () => {
+  dispatchProjectFilter: () => {
     return;
   },
-  clearProjectFilter: Function.prototype(),
   isProjectFilterCleared: () => false,
   isProjectLeader: true,
 };

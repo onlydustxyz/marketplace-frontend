@@ -8,7 +8,7 @@ import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { isProjectVisible } from "src/utils/project";
 import { GetProjectsQuery } from "src/__generated/graphql";
-import { ProjectOwnershipType } from "..";
+import { ProjectOwnershipType } from "src/pages/Projects/types";
 import AllProjectsFallback from "./AllProjectsFallback";
 
 type Props = {
@@ -53,8 +53,6 @@ export default function AllProjects({ clearFilters, technologies, projectOwnersh
     </QueryWrapper>
   );
 }
-
-const buildQueryArgs = (technologies: string[]) => (technologies.length ? "$languages: [String!]" : "");
 
 const buildQueryFilters = (technologies: string[]) => {
   let filters = "";

@@ -9,21 +9,19 @@ import {
 } from "src/utils/languages";
 import { isProjectVisible, VISIBLE_PROJECT_FRAGMENT } from "src/utils/project";
 import { GetAllTechnologiesQuery } from "src/__generated/graphql";
-import { ProjectFilter } from "..";
+import { ProjectFilter, ProjectFilterAction } from "src/pages/Projects/types";
 import View from "./View";
 
 type Props = {
   projectFilter: ProjectFilter;
-  setProjectFilter: (projectFilter: ProjectFilter) => void;
-  clearProjectFilter: () => void;
+  dispatchProjectFilter: (action: ProjectFilterAction) => void;
   isProjectFilterCleared: () => boolean;
   isProjectLeader: boolean;
 };
 
 export default function FilterPanel({
   projectFilter,
-  setProjectFilter,
-  clearProjectFilter,
+  dispatchProjectFilter,
   isProjectFilterCleared,
   isProjectLeader,
 }: Props) {
@@ -41,8 +39,7 @@ export default function FilterPanel({
     <View
       availableTechnologies={Array.from(availableTechnologies).sort((t1: string, t2: string) => t1.localeCompare(t2))}
       projectFilter={projectFilter}
-      setProjectFilter={setProjectFilter}
-      clearProjectFilter={clearProjectFilter}
+      dispatchProjectFilter={dispatchProjectFilter}
       isProjectFilterCleared={isProjectFilterCleared}
       isProjectLeader={isProjectLeader}
     />

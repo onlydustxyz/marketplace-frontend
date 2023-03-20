@@ -3,10 +3,10 @@ import { screen, waitFor } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import AllProjects, { buildGetProjectsQuery } from ".";
-import { ProjectOwnershipType } from "..";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { GetProjectsQueryResult, ProjectCardFieldsFragment } from "src/__generated/graphql";
+import { ProjectOwnershipType } from "src/pages/Projects/types";
 
 expect.extend(matchers);
 

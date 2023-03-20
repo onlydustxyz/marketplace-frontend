@@ -1,24 +1,11 @@
-import { useCallback } from "react";
+import { useEffect, useReducer } from "react";
 import { useLocalStorage } from "react-use";
 import Background, { BackgroundRoundedBorders } from "src/components/Background";
 import { useAuth } from "src/hooks/useAuth";
-import { ArrayElement } from "src/types";
-import { GetProjectsQuery } from "src/__generated/graphql";
 import { useT } from "talkr";
 import AllProjects from "./AllProjects";
 import FilterPanel from "./FilterPanel";
-
-export type Project = ArrayElement<GetProjectsQuery["projects"]>;
-
-export enum ProjectOwnershipType {
-  All = "All",
-  Mine = "Mine",
-}
-
-export interface ProjectFilter {
-  ownershipType: ProjectOwnershipType;
-  technologies: string[];
-}
+import { ProjectFilter, ProjectFilterAction, ProjectFilterActionType, ProjectOwnershipType } from "./types";
 
 const PROJECT_FILTER_KEY = "project_filter";
 
@@ -27,12 +14,25 @@ const DEFAULT_FILTER: ProjectFilter = {
   technologies: [],
 };
 
+const reduceFilters = (filter: ProjectFilter, action: ProjectFilterAction): ProjectFilter => {
+  switch (action.type) {
+    case ProjectFilterActionType.Clear:
+      return DEFAULT_FILTER;
+    case ProjectFilterActionType.SelectOwnership:
+      return { ...filter, ownershipType: action.ownership };
+    case ProjectFilterActionType.SelectTechnologies:
+      return { ...filter, technologies: action.values };
+  }
+};
+
 export default function Projects() {
   const { T } = useT();
   const { ledProjectIds } = useAuth();
 
-  const [projectFilter, setProjectFilter] = useLocalStorage(PROJECT_FILTER_KEY, DEFAULT_FILTER);
-  const clearProjectFilter = useCallback(() => setProjectFilter(DEFAULT_FILTER), [setProjectFilter]);
+  const [projectFilterStorage, setProjectFilterStorage] = useLocalStorage(PROJECT_FILTER_KEY, DEFAULT_FILTER);
+  const [projectFilter, dispatchProjectFilter] = useReducer(reduceFilters, projectFilterStorage ?? DEFAULT_FILTER);
+
+  useEffect(() => setProjectFilterStorage(projectFilter), [projectFilter]);
 
   return (
     <Background roundedBorders={BackgroundRoundedBorders.Full}>
@@ -43,8 +43,7 @@ export default function Projects() {
             {projectFilter && (
               <FilterPanel
                 projectFilter={projectFilter}
-                setProjectFilter={setProjectFilter}
-                clearProjectFilter={clearProjectFilter}
+                dispatchProjectFilter={dispatchProjectFilter}
                 isProjectFilterCleared={() => JSON.stringify(projectFilter) == JSON.stringify(DEFAULT_FILTER)}
                 isProjectLeader={!!ledProjectIds.length}
               />
@@ -54,7 +53,7 @@ export default function Projects() {
             <AllProjects
               technologies={projectFilter.technologies}
               projectOwnershipType={projectFilter.ownershipType}
-              clearFilters={clearProjectFilter}
+              clearFilters={() => dispatchProjectFilter({ type: ProjectFilterActionType.Clear })}
             />
           )}
         </div>

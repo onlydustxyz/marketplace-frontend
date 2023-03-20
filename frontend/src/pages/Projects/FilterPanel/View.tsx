@@ -3,24 +3,27 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import Refresh from "src/icons/Refresh";
 import StarLine from "src/icons/StarLine";
-import { ProjectFilter, ProjectOwnershipType } from "..";
+import {
+  ProjectFilter,
+  ProjectFilterAction,
+  ProjectFilterActionType,
+  ProjectOwnershipType,
+} from "src/pages/Projects/types";
 import Card from "src/components/Card";
-import FilterDropDown, { FilterDropDownIcon } from "src/components/FilterDropDown";
+import FilterDropDown from "src/components/FilterDropDown";
 
 export interface FilterPanelViewProps {
   availableTechnologies: string[];
   isProjectLeader: boolean;
   projectFilter: ProjectFilter;
-  setProjectFilter: (projectFilter: ProjectFilter) => void;
-  clearProjectFilter: () => void;
+  dispatchProjectFilter: (action: ProjectFilterAction) => void;
   isProjectFilterCleared: () => boolean;
 }
 
 export default function View({
   availableTechnologies,
   projectFilter,
-  setProjectFilter,
-  clearProjectFilter,
+  dispatchProjectFilter,
   isProjectLeader,
   isProjectFilterCleared,
 }: FilterPanelViewProps) {
@@ -31,7 +34,7 @@ export default function View({
       <div className="flex flex-row justify-between items-center">
         <span className="font-belwe font-normal text-base text-greyscale-50">{T("filter.title")}</span>
         {!isProjectFilterCleared() && (
-          <div onClick={clearProjectFilter}>
+          <div onClick={() => dispatchProjectFilter({ type: ProjectFilterActionType.Clear })}>
             <Button type={ButtonType.Ternary} size={ButtonSize.Xs}>
               <Refresh />
               {T("filter.clearButton")}
@@ -43,13 +46,23 @@ export default function View({
         <div className="flex flex-row py-3 gap-2">
           <OwnershipTypeButton
             selected={projectFilter.ownershipType === ProjectOwnershipType.All}
-            onClick={() => setProjectFilter({ ...projectFilter, ownershipType: ProjectOwnershipType.All })}
+            onClick={() =>
+              dispatchProjectFilter({
+                type: ProjectFilterActionType.SelectOwnership,
+                ownership: ProjectOwnershipType.All,
+              })
+            }
           >
             {T("filter.ownership.all")}
           </OwnershipTypeButton>
           <OwnershipTypeButton
             selected={projectFilter.ownershipType === ProjectOwnershipType.Mine}
-            onClick={() => setProjectFilter({ ...projectFilter, ownershipType: ProjectOwnershipType.Mine })}
+            onClick={() =>
+              dispatchProjectFilter({
+                type: ProjectFilterActionType.SelectOwnership,
+                ownership: ProjectOwnershipType.Mine,
+              })
+            }
           >
             <span className="flex flex-row items-center gap-1">
               <StarLine className="text-base" /> {T("filter.ownership.mine")}
@@ -62,10 +75,10 @@ export default function View({
       <FilterDropDown
         defaultLabel={T("filter.technologies.all")}
         selectedLabel={T("filter.technologies.some")}
-        icon={FilterDropDownIcon.Technology}
+        type={ProjectFilterActionType.SelectTechnologies}
         options={availableTechnologies}
-        projectFilter={projectFilter}
-        setProjectFilter={setProjectFilter}
+        value={projectFilter.technologies}
+        dispatchProjectFilter={dispatchProjectFilter}
         dataTestId="technologies-filter-dropdown"
       />
     </Card>
