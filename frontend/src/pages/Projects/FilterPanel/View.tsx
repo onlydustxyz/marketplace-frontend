@@ -32,7 +32,7 @@ export default function View({
   const { T } = useIntl();
 
   return (
-    <Card className="flex flex-col h-fit w-full p-6 gap-0.5">
+    <Card className="flex flex-col h-fit w-full p-6 gap-4">
       <div className="flex flex-row justify-between items-center">
         <span className="font-belwe font-normal text-base text-greyscale-50">{T("filter.title")}</span>
         {!isProjectFilterCleared() && (
@@ -44,8 +44,8 @@ export default function View({
           </div>
         )}
       </div>
-      {isProjectLeader ? (
-        <div className="flex flex-row py-3 gap-2">
+      {isProjectLeader && (
+        <div className="flex flex-row gap-2">
           <OwnershipTypeButton
             selected={projectFilter.ownershipType === ProjectOwnershipType.All}
             onClick={() =>
@@ -71,8 +71,6 @@ export default function View({
             </span>
           </OwnershipTypeButton>
         </div>
-      ) : (
-        <div className="py-1.5" />
       )}
       <FilterDropDown
         defaultLabel={T("filter.technologies.all")}
