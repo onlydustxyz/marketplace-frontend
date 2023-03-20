@@ -4,37 +4,41 @@ import sponsorIcon from "assets/img/circle.png";
 import classNames from "classnames";
 import { useState } from "react";
 import ArrowLeftSLine from "src/icons/ArrowLeftSLine";
-import { ProjectFilterAction, ProjectFilterActionType } from "src/pages/Projects/types";
 import Badge, { BadgeSize } from "src/components/Badge";
 
+export enum FilterDropDownIcon {
+  Technology = "technology",
+  Sponsors = "sponsors",
+}
+
 export type Props = {
-  type: ProjectFilterActionType.SelectTechnologies | ProjectFilterActionType.SelectSponsors;
+  icon: FilterDropDownIcon;
   defaultLabel: string;
   selectedLabel: string;
   options: string[];
   dataTestId?: string;
   value: string[];
-  dispatchProjectFilter: (action: ProjectFilterAction) => void;
+  setValue: (value: string[]) => void;
 };
 
 const ICONS = {
-  [ProjectFilterActionType.SelectTechnologies]: technologyIcon,
-  [ProjectFilterActionType.SelectSponsors]: sponsorIcon,
+  [FilterDropDownIcon.Technology]: technologyIcon,
+  [FilterDropDownIcon.Sponsors]: sponsorIcon,
 };
 
 export default function FilterDropDown({
-  type,
+  icon,
   defaultLabel,
   selectedLabel,
   options,
   value,
-  dispatchProjectFilter,
+  setValue,
   dataTestId,
 }: Props) {
   const [open, setOpen] = useState(true);
 
   return (
-    <Listbox onChange={(values: string[]) => dispatchProjectFilter({ type, values })} multiple value={value} as="div">
+    <Listbox onChange={setValue} multiple value={value} as="div">
       {({ value }) => (
         <>
           <Listbox.Button
@@ -43,7 +47,7 @@ export default function FilterDropDown({
             className="w-full flex items-center justify-between py-2 drop-shadow-bottom-sm border-b border-greyscale-50/12 hover:cursor-pointer"
           >
             <div className="flex gap-2 items-center">
-              <img className="w-6 h-6" src={ICONS[type]} />
+              <img className="w-6 h-6" src={ICONS[icon]} />
               <span className="font-medium text-greyscale-50 text-sm font-walsheim">
                 {value.length > 0 ? selectedLabel : defaultLabel}
               </span>

@@ -9,23 +9,14 @@ import {
 } from "src/utils/languages";
 import { isProjectVisible, VISIBLE_PROJECT_FRAGMENT } from "src/utils/project";
 import { GetAllFilterOptionsQuery } from "src/__generated/graphql";
-import { ProjectFilter, ProjectFilterAction } from "src/pages/Projects/types";
 import View from "./View";
 import { chain } from "lodash";
 
 type Props = {
-  projectFilter: ProjectFilter;
-  dispatchProjectFilter: (action: ProjectFilterAction) => void;
-  isProjectFilterCleared: () => boolean;
   isProjectLeader: boolean;
 };
 
-export default function FilterPanel({
-  projectFilter,
-  dispatchProjectFilter,
-  isProjectFilterCleared,
-  isProjectLeader,
-}: Props) {
+export default function FilterPanel({ isProjectLeader }: Props) {
   const { githubUserId } = useAuth();
   const filterOptionsQuery = useHasuraQuery<GetAllFilterOptionsQuery>(
     GET_ALL_FILTER_OPTIONS_QUERY,
@@ -51,9 +42,6 @@ export default function FilterPanel({
       {...{
         availableTechnologies,
         availableSponsors,
-        projectFilter,
-        dispatchProjectFilter,
-        isProjectFilterCleared,
         isProjectLeader,
       }}
     />

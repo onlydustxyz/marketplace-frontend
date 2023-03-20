@@ -9,7 +9,6 @@ import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import { viewportConfig } from "src/config";
 import { useIntl } from "src/hooks/useIntl";
 import CodeSSlashLine from "src/icons/CodeSSlashLine";
-import { Project } from "src/pages/Projects/types";
 import { buildLanguageString, getDeduplicatedAggregatedLanguages } from "src/utils/languages";
 import { formatMoneyAmount } from "src/utils/money";
 import { useMediaQuery } from "usehooks-ts";
@@ -22,6 +21,10 @@ import isDefined from "src/utils/isDefined";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Tag, { TagSize } from "src/components/Tag";
 import { getContributors } from "src/utils/project";
+import { ArrayElement } from "src/types";
+import { GetProjectsQuery } from "src/__generated/graphql";
+
+export type Project = ArrayElement<GetProjectsQuery["projects"]>;
 
 type ProjectCardProps = Project & {
   selectable?: boolean;

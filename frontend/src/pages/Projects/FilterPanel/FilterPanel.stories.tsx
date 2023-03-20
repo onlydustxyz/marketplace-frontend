@@ -1,34 +1,23 @@
-import { ProjectOwnershipType } from "src/pages/Projects/types";
-import FilterPanel, { FilterPanelViewProps } from "./View";
+import { ProjectFilterProvider } from "src/pages/Projects/useProjectFilter";
+import FilterPanel from "./View";
 
 export default {
   title: "FilterPanel",
-  component: (args: FilterPanelViewProps) => (
-    <div style={{ width: 400 }}>
-      <FilterPanel {...args} />
-    </div>
-  ),
+  component: FilterPanel,
 };
 
 const allProjectsArgs = {
-  projectFilter: {
-    technologies: [],
-    sponsors: [],
-    ownershipType: ProjectOwnershipType.All,
-  },
   availableTechnologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
   availableSponsors: ["StarkNet Foundation", "Ethereum Foundation", "Theodo"],
-  dispatchProjectFilter: () => {
-    return;
-  },
-  isProjectFilterCleared: () => false,
   isProjectLeader: false,
 };
 
 export const AllProjects = {
   render: () => (
     <div style={{ width: 400 }}>
-      <FilterPanel {...allProjectsArgs} />
+      <ProjectFilterProvider>
+        <FilterPanel {...allProjectsArgs} />
+      </ProjectFilterProvider>
     </div>
   ),
 };
@@ -36,22 +25,15 @@ export const AllProjects = {
 const allProjectsForProjectLeaderArgs = {
   availableTechnologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
   availableSponsors: ["StarkNet Foundation", "Ethereum Foundation", "Theodo"],
-  projectFilter: {
-    ownershipType: ProjectOwnershipType.All,
-    technologies: [],
-    sponsors: [],
-  },
-  dispatchProjectFilter: () => {
-    return;
-  },
-  isProjectFilterCleared: () => false,
   isProjectLeader: true,
 };
 
 export const AllProjectsForProjectLeader = {
   render: () => (
     <div style={{ width: 400 }}>
-      <FilterPanel {...allProjectsForProjectLeaderArgs} />
+      <ProjectFilterProvider>
+        <FilterPanel {...allProjectsForProjectLeaderArgs} />
+      </ProjectFilterProvider>
     </div>
   ),
 };
@@ -59,18 +41,15 @@ export const AllProjectsForProjectLeader = {
 const myProjectsArgs = {
   availableTechnologies: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
   availableSponsors: ["StarkNet Foundation", "Ethereum Foundation", "Theodo"],
-  projectFilter: { technologies: [], sponsors: [], ownershipType: ProjectOwnershipType.Mine },
-  dispatchProjectFilter: () => {
-    return;
-  },
-  isProjectFilterCleared: () => false,
   isProjectLeader: true,
 };
 
 export const MyProjects = {
   render: () => (
     <div style={{ width: 400 }}>
-      <FilterPanel {...myProjectsArgs} />
+      <ProjectFilterProvider>
+        <FilterPanel {...myProjectsArgs} />
+      </ProjectFilterProvider>
     </div>
   ),
 };

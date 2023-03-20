@@ -1,14 +1,13 @@
-import { ProjectFilterActionType } from "src/pages/Projects/types";
-import FilterDropDown, { Props } from ".";
+import FilterDropDown, { FilterDropDownIcon, Props } from ".";
 
 export default {
   title: "FilterDropDown",
   component: FilterDropDown,
   argTypes: {
-    type: {
+    icon: {
       control: {
         type: "select",
-        options: [ProjectFilterActionType.SelectTechnologies, ProjectFilterActionType.SelectSponsors],
+        options: [FilterDropDownIcon.Technology, FilterDropDownIcon.Sponsors],
       },
     },
     width: { control: { type: "range", min: "200", max: "600" } },
@@ -19,12 +18,10 @@ const args: Props & { width: number } = {
   defaultLabel: "All technologies",
   selectedLabel: "Technologies",
   options: ["Cairo", "Python", "Rust", "Dart", "JS", "Ruby", "Golang"],
-  type: ProjectFilterActionType.SelectTechnologies,
+  icon: FilterDropDownIcon.Technology,
   width: 200,
   value: [],
-  dispatchProjectFilter: () => {
-    return;
-  },
+  setValue: Function.prototype(),
 };
 
 export const Default = {

@@ -4,7 +4,13 @@ import matchers from "@testing-library/jest-dom/matchers";
 import FilterPanel, { GET_ALL_FILTER_OPTIONS_QUERY } from ".";
 import { renderWithIntl, MemoryRouterProviderFactory } from "src/test/utils";
 import { GetAllFilterOptionsQuery } from "src/__generated/graphql";
-import { ProjectOwnershipType } from "src/pages/Projects/types";
+import { MockedResponse } from "@apollo/client/testing";
+import {
+  MockedProjectFilterProvider,
+  Ownership,
+  ProjectFilter,
+  ProjectFilterProvider,
+} from "src/pages/Projects/useProjectFilter";
 
 expect.extend(matchers);
 
@@ -131,27 +137,23 @@ const graphQlMocks = [
   },
 ];
 
+const render = (isProjectLeader: boolean, { isCleared, mocks }: { isCleared?: boolean; mocks: MockedResponse[] }) =>
+  renderWithIntl(
+    <MockedProjectFilterProvider isCleared={isCleared}>
+      <FilterPanel isProjectLeader={isProjectLeader} />
+    </MockedProjectFilterProvider>,
+    {
+      wrapper: MemoryRouterProviderFactory({ mocks }),
+    }
+  );
+
 describe("FilterPanel", () => {
   beforeEach(() => {
     vi.resetAllMocks();
   });
 
   it("should display first 2 technologies of projects, all sponsors, and be sorted", async () => {
-    renderWithIntl(
-      <FilterPanel
-        projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [], sponsors: [] }}
-        dispatchProjectFilter={() => {
-          return;
-        }}
-        isProjectFilterCleared={() => false}
-        isProjectLeader={false}
-      />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: graphQlMocks,
-        }),
-      }
-    );
+    render(false, { mocks: graphQlMocks });
 
     const allOptions = await screen.findAllByRole("option");
     expect(allOptions.length).toBe(8);
@@ -166,63 +168,22 @@ describe("FilterPanel", () => {
   });
 
   it("should display 'Mine only' when user is leader'", async () => {
-    renderWithIntl(
-      <FilterPanel
-        projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [], sponsors: [] }}
-        dispatchProjectFilter={() => {
-          return;
-        }}
-        isProjectFilterCleared={() => false}
-        isProjectLeader={true}
-      />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: graphQlMocks,
-        }),
-      }
-    );
+    render(true, { mocks: graphQlMocks });
 
     await screen.findByText(/all projects/i);
     await screen.findByText(/mine only/i);
   });
 
   it("should not display technologies or sponsors from projects that aren't visible", async () => {
-    renderWithIntl(
-      <FilterPanel
-        projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [], sponsors: [] }}
-        dispatchProjectFilter={() => {
-          return;
-        }}
-        isProjectFilterCleared={() => false}
-        isProjectLeader={true}
-      />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: graphQlMocks,
-        }),
-      }
-    );
+    render(true, { mocks: graphQlMocks });
+
     await screen.findByText(/go/i);
     expect(screen.queryByText(/elisp/i)).toBeNull();
     expect(screen.queryByText(/sponsor 3/i)).toBeNull();
   });
 
   test.each([true, false])("should not display clear all button if filter is cleared", async isProjectFilterCleared => {
-    renderWithIntl(
-      <FilterPanel
-        projectFilter={{ ownershipType: ProjectOwnershipType.All, technologies: [], sponsors: [] }}
-        dispatchProjectFilter={() => {
-          return;
-        }}
-        isProjectFilterCleared={() => isProjectFilterCleared}
-        isProjectLeader={true}
-      />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: graphQlMocks,
-        }),
-      }
-    );
+    render(true, { isCleared: isProjectFilterCleared, mocks: graphQlMocks });
 
     if (isProjectFilterCleared) {
       expect(screen.queryByText(/clear all/i)).not.toBeInTheDocument();

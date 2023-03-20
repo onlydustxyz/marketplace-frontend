@@ -8,18 +8,15 @@ import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { isProjectVisible } from "src/utils/project";
 import { GetProjectsQuery } from "src/__generated/graphql";
-import { ProjectOwnershipType } from "src/pages/Projects/types";
+import { Ownership as ProjectOwnership, useProjectFilter } from "src/pages/Projects/useProjectFilter";
 import AllProjectsFallback from "./AllProjectsFallback";
 
-type Props = {
-  clearFilters: () => void;
-  technologies: string[];
-  sponsors: string[];
-  projectOwnershipType: ProjectOwnershipType;
-};
-
-export default function AllProjects({ clearFilters, technologies, sponsors, projectOwnershipType }: Props) {
+export default function AllProjects() {
   const { ledProjectIds, githubUserId, isLoggedIn } = useAuth();
+  const {
+    projectFilter: { technologies, sponsors, ownership },
+    clear: clearFilters,
+  } = useProjectFilter();
 
   const getProjectsQuery = useHasuraQuery<GetProjectsQuery>(
     buildGetProjectsQuery(technologies, sponsors),
@@ -34,13 +31,13 @@ export default function AllProjects({ clearFilters, technologies, sponsors, proj
       ...p,
       pendingInvitations: p.pendingInvitations.filter(i => i.githubUserId === githubUserId),
     }));
-    if (projects && isLoggedIn && projectOwnershipType === ProjectOwnershipType.Mine) {
+    if (projects && isLoggedIn && ownership === ProjectOwnership.Mine) {
       projects = projects.filter(
         project => ledProjectIds.includes(project.id) || project.pendingInvitations.length > 0
       );
     }
     return sortBy(projects?.filter(isProjectVisible(githubUserId)), p => !p.pendingInvitations.length);
-  }, [getProjectsQuery.data?.projects, ledProjectIds, projectOwnershipType, isLoggedIn]);
+  }, [getProjectsQuery.data?.projects, ledProjectIds, ownership, isLoggedIn, githubUserId]);
 
   return (
     <QueryWrapper query={getProjectsQuery}>

@@ -6,7 +6,8 @@ import AllProjects, { buildGetProjectsQuery } from ".";
 import { CLAIMS_KEY, GITHUB_USERID_KEY, PROJECTS_LED_KEY, TokenSet } from "src/types";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { GetProjectsQueryResult, ProjectCardFieldsFragment } from "src/__generated/graphql";
-import { ProjectOwnershipType } from "src/pages/Projects/types";
+import { MockedProjectFilterProvider, Ownership, ProjectFilter } from "src/pages/Projects/useProjectFilter";
+import { MockedResponse } from "@apollo/client/testing";
 
 expect.extend(matchers);
 
@@ -394,25 +395,26 @@ vi.mock("jwt-decode", () => ({
   },
 }));
 
+const render = ({ projectFilter, mocks }: { projectFilter?: ProjectFilter; mocks: MockedResponse[] }) =>
+  renderWithIntl(
+    <MockedProjectFilterProvider projectFilter={projectFilter}>
+      <AllProjects />
+    </MockedProjectFilterProvider>,
+    {
+      wrapper: MemoryRouterProviderFactory({
+        mocks,
+      }),
+    }
+  );
+
 describe("All projects", () => {
   beforeEach(() => {
     window.localStorage.clear();
   });
 
   it("should sort by money granted desc if no pending invitations", async () => {
-    renderWithIntl(
-      <AllProjects
-        technologies={[]}
-        sponsors={[]}
-        projectOwnershipType={ProjectOwnershipType.All}
-        clearFilters={Function.prototype()}
-      />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_NO_INVITATIONS),
-        }),
-      }
-    );
+    render({ mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_NO_INVITATIONS) });
+
     const moneyGrantedElementsInOrderOfAppearance = await screen.findAllByText("granted", { exact: false });
     expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("$1,000");
     expect(moneyGrantedElementsInOrderOfAppearance[1]).toHaveTextContent("$999");
@@ -420,19 +422,7 @@ describe("All projects", () => {
 
   it("should sort by pending invitation, then money granted desc if pending invitations", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN));
-    renderWithIntl(
-      <AllProjects
-        technologies={[]}
-        sponsors={[]}
-        projectOwnershipType={ProjectOwnershipType.All}
-        clearFilters={Function.prototype()}
-      />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_WITH_INVITATION),
-        }),
-      }
-    );
+    render({ mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_WITH_INVITATION) });
     const moneyGrantedElementsInOrderOfAppearance = await screen.findAllByText("granted", { exact: false });
     expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("$0");
     expect(moneyGrantedElementsInOrderOfAppearance[1]).toHaveTextContent("$1,000");
@@ -441,19 +431,10 @@ describe("All projects", () => {
 
   it("should only show projects led if project ownership type is 'mine'", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN));
-    renderWithIntl(
-      <AllProjects
-        technologies={[]}
-        sponsors={[]}
-        projectOwnershipType={ProjectOwnershipType.Mine}
-        clearFilters={Function.prototype()}
-      />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_WITH_INVITATION),
-        }),
-      }
-    );
+    render({
+      projectFilter: { ownership: Ownership.Mine, technologies: [], sponsors: [] },
+      mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_WITH_INVITATION),
+    });
     const moneyGrantedElementsInOrderOfAppearance = await screen.findAllByText("granted", { exact: false });
     expect(moneyGrantedElementsInOrderOfAppearance).toHaveLength(2);
     expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("$0 granted");
@@ -462,32 +443,22 @@ describe("All projects", () => {
 
   it("should only show valid projects", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN));
-    renderWithIntl(
-      <AllProjects
-        technologies={[]}
-        sponsors={[]}
-        projectOwnershipType={ProjectOwnershipType.All}
-        clearFilters={Function.prototype()}
-      />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: [
-            ...buildGraphQlMocks({
-              data: {
-                projects: [
-                  projectWithNoBudget,
-                  projectWithNoLeader,
-                  projectWithNoRepo,
-                  projectInvalidWithInvite,
-                  projectWithNoLeaderAndInviteForWrongUser,
-                  projectWithNoLeaderAndInvite,
-                ],
-              },
-            }),
-          ],
+    render({
+      mocks: [
+        ...buildGraphQlMocks({
+          data: {
+            projects: [
+              projectWithNoBudget,
+              projectWithNoLeader,
+              projectWithNoRepo,
+              projectInvalidWithInvite,
+              projectWithNoLeaderAndInviteForWrongUser,
+              projectWithNoLeaderAndInvite,
+            ],
+          },
         }),
-      }
-    );
+      ],
+    });
     const allProjectCards = await screen.findAllByTestId("project-card");
     expect(allProjectCards).toHaveLength(1);
     expect(screen.getByText("No leader but invite"));
@@ -495,23 +466,13 @@ describe("All projects", () => {
 
   it("should display fallback screen when no project", async () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN));
-    renderWithIntl(
-      <AllProjects
-        technologies={[]}
-        sponsors={[]}
-        projectOwnershipType={ProjectOwnershipType.All}
-        clearFilters={Function.prototype()}
-      />,
-      {
-        wrapper: MemoryRouterProviderFactory({
-          mocks: [
-            ...buildGraphQlMocks({
-              data: { projects: [] },
-            }),
-          ],
+    render({
+      mocks: [
+        ...buildGraphQlMocks({
+          data: { projects: [] },
         }),
-      }
-    );
+      ],
+    });
 
     await waitFor(() => expect(screen.getByText("Nothing to show")));
   });

@@ -1,10 +1,9 @@
 import { ComponentStory } from "@storybook/react";
 import { JSXElementConstructor } from "react";
 import { responsiveChromatic } from "src/test/utils";
-import { Project } from "src/pages/Projects/types";
 import { withRouter } from "storybook-addon-react-router-v6";
 
-import ProjectCard from ".";
+import ProjectCard, { Project } from ".";
 
 export default {
   title: "ProjectCard",
