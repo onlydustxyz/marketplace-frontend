@@ -136,6 +136,10 @@ Default.args = {
     return;
   },
   projectId,
+  contributor: null,
+  setContributor: () => {
+    return;
+  },
 };
 
 Default.parameters = {

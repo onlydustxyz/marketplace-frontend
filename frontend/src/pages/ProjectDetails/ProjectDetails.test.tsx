@@ -192,7 +192,7 @@ describe('"ProjectDetails" page', () => {
         }),
       }
     );
-    await screen.findByText("You’ve been promoted to Project Lead on test-project-name");
+    await screen.findByText("You've been promoted to Project Lead on test-project-name");
   });
 
   it("should store the project id if it is a project led by the user", async () => {

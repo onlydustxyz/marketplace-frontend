@@ -63,11 +63,11 @@
       "success": "Invoice successfully sent",
       "error": "We were unable to send the invoice, please try again later"
     },
-    "title": "Invoice needed",
     "text": {
-      "one": "Please send us an invoice for your pending payment",
-      "many": "Please send us an invoice for your __count__ pending payments"
-    }
+      "many": "Please send us an invoice for your __count__ pending payments",
+      "one": "Please send us an invoice for your pending payment"
+    },
+    "title": "Invoice needed"
   },
   "navbar": {
     "feedback": {
@@ -83,10 +83,20 @@
     "form": {
       "confirm": "Confirm payment",
       "contributor": {
-        "inputLabel": "Please select the contributor you would like to send a payment to",
-        "needsToSignup": "__contributor__ will have to sign up to OnlyDust to receive their payment",
-        "placeholder": "Search for contributor",
-        "title": "Send payment to"
+        "needsToSignup": {
+          "details": "You can still send them a payment. They'll need to create an account and sync it with their GitHub handle to claim it.",
+          "title": "__contributor__ isn't on OnlyDust"
+        },
+        "placeholder": "Search by Github handle",
+        "select": {
+          "externalUsers": "EXTERNAL USERS",
+          "fallback": {
+            "noUser": "No user found",
+            "typeMoreCharacters": "Type 3 or more characters to display external users"
+          },
+          "placeholder": "Search by Github handle"
+        },
+        "title": "Recipient"
       },
       "days": "days",
       "disabled": "Select a contributor and enter link to pull request to send payment",
@@ -156,15 +166,11 @@
     }
   },
   "profile": {
-    "edit": "Edit profile",
     "button": {
-      "payoutSettingsInvalidTooltip": "You’re unable to receive payments. Click to fill up required info"
+      "payoutSettingsInvalidTooltip": "You're unable to receive payments. Click to fill up required info"
     },
+    "edit": "Edit profile",
     "form": {
-      "profileType": "Account type",
-      "profileTypeIndividual": "Individual",
-      "profileTypeCompany": "Company",
-      "payoutInformation": "Payout information",
       "address": "Street address",
       "bankWire": "Bank wire",
       "bic": "BIC",
@@ -173,7 +179,7 @@
       "cancel": "Cancel",
       "city": "City",
       "companyName": "Company name",
-      "companyNeedsInvoiceCallout": "As a company, you’ll need to share an invoice for each payment in order to receive the funds.",
+      "companyNeedsInvoiceCallout": "As a company, you'll need to share an invoice for each payment in order to receive the funds.",
       "companyOwnerFirstName": "First name",
       "companyOwnerLastName": "Last name",
       "contactInfo": "Contact information",
@@ -194,11 +200,15 @@
       "lastname": "Last name",
       "location": "Location",
       "number": "N.",
+      "payoutInformation": "Payout information",
       "payoutSettings": "Payout information",
       "payoutSettingsRequiredTag": "* required to receive payments",
       "payoutSettingsType": "Preferred payment method",
-      "payoutSettingsValidTag": "You’re able to receive payments",
+      "payoutSettingsValidTag": "You're able to receive payments",
       "postCode": "Zip code",
+      "profileType": "Account type",
+      "profileTypeCompany": "Company",
+      "profileTypeIndividual": "Individual",
       "send": "Save profile",
       "success": "Changes saved",
       "telegram": "Telegram",
@@ -209,7 +219,7 @@
     },
     "missing": {
       "button": "Complete payout information",
-      "subtitle": "We won’t be able to issue any payment until your payout information is completed",
+      "subtitle": "We won't be able to issue any payment until your payout information is completed",
       "title": "Payout information missing"
     }
   },
@@ -257,10 +267,10 @@
         "totalSpentAmountInUsd": "GRANTED"
       },
       "payments": {
-        "title": "Payments",
         "new": {
           "title": "Send payment"
-        }
+        },
+        "title": "Payments"
       },
       "remainingBudget": {
         "leftToSpend": "left to spend",
@@ -290,13 +300,13 @@
       "one": "Led by __name__"
     },
     "projectLeadInvitation": {
-      "prompt": "You’ve been promoted to Project Lead",
+      "prompt": "You've been promoted to Project Lead",
       "view": "View invite"
     }
   },
   "projectLeadInvitation": {
     "accept": "Accept invite",
-    "prompt": "You’ve been promoted to Project Lead on __projectName__"
+    "prompt": "You've been promoted to Project Lead on __projectName__"
   },
   "projects": {
     "fallback": {

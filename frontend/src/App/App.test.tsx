@@ -489,13 +489,13 @@ describe("Integration tests", () => {
     await waitFor(() => {
       screen.getByText(TEST_PROJECT_LEAD_DISPLAY_NAME);
       screen.getByText(TEST_GITHUB_REPO_CONTENT);
-      expect(screen.getAllByText(/project lead/i).length).toBeGreaterThan(0);
     });
 
-    expect(screen.findByText(/granted/i));
-    expect(screen.findByText("Overview"));
+    screen.getByText(/project lead/i);
+    screen.getByText(/granted/i);
+    screen.getByText("Overview");
     expect(screen.queryByText("Payments")).not.toBeInTheDocument();
-    expect(screen.findByText("Contributors"));
+    screen.getByText("Contributors");
   });
 
   it("should redirect to project list when logging out", async () => {

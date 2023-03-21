@@ -3,7 +3,7 @@ import Card from "src/components/Card";
 import WorkEstimation from "./WorkEstimation";
 import { Budget } from "src/hooks/useWorkEstimation";
 import ContributorSelect from "src/pages/ProjectDetails/Payments/PaymentForm/ContributorSelect";
-import { useWatch } from "react-hook-form";
+
 import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import { useNavigate } from "react-router-dom";
 import CloseLine from "src/icons/CloseLine";
@@ -13,12 +13,16 @@ import { useEffect, useReducer, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import { sortBy, uniqBy } from "lodash";
+import Callout from "src/components/Callout";
+import { GithubContributorFragment } from "src/__generated/graphql";
 
 interface Props {
   projectId: string;
   budget: Budget;
   onWorkEstimationChange: (workEstimation: number) => void;
   onWorkItemsChange: (workItems: WorkItem[]) => void;
+  contributor: GithubContributorFragment | null | undefined;
+  setContributor: (contributor: GithubContributorFragment | null | undefined) => void;
 }
 
 type WorkItemAction =
@@ -41,17 +45,34 @@ function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
   }
 }
 
-const View: React.FC<Props> = ({ budget, onWorkEstimationChange, onWorkItemsChange, projectId }) => {
-  const { T } = useIntl();
+type TitleProps = {
+  title: string;
+};
 
-  const contributor = useWatch({ name: "contributor" });
-  const contributorHandle = useWatch({ name: "contributorHandle" });
+function SectionTitle({ title }: TitleProps) {
+  return (
+    <div className="font-normal font-belwe text-base text-greyscale-50 pb-2 mb-3 mx-4 border-b border-b-greyscale-50/8">
+      {title}
+    </div>
+  );
+}
+
+const View: React.FC<Props> = ({
+  budget,
+  onWorkEstimationChange,
+  onWorkItemsChange,
+  projectId,
+  contributor,
+  setContributor,
+}) => {
+  const { T } = useIntl();
   const navigate = useNavigate();
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
   const [workItems, dispatchWorkItems] = useReducer(workItemsReducer, []);
 
-  useEffect(() => dispatchWorkItems({ action: "clear" }), [contributorHandle]);
   useEffect(() => onWorkItemsChange(workItems), [workItems, onWorkItemsChange]);
+
+  const displayCallout = contributor && !contributor?.user?.userId;
 
   return (
     <>
@@ -65,50 +86,60 @@ const View: React.FC<Props> = ({ budget, onWorkEstimationChange, onWorkItemsChan
           {T("project.details.payments.new.title")}
         </div>
       </Title>
-      <div className="flex flex-row items-start gap-4 h-full">
+      <div className="flex flex-row items-start gap-5 h-full">
         <div className="basis-3/5 self-stretch">
           <div className="flex flex-col gap-6 w-full">
-            <Card className="px-8 pb-3 z-10">
-              <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
-                <div className="font-medium text-lg">{T("payment.form.contributor.title")}</div>
-                <div className="flex flex-row pt-3">
-                  <ContributorSelect projectId={projectId} />
+            <Card className="px-4 py-6" padded={false}>
+              <div className={displayCallout ? "h-56" : "h-24"}>
+                <SectionTitle title={T("payment.form.contributor.title")} />
+                <div className="relative z-10">
+                  <ContributorSelect projectId={projectId} contributor={contributor} setContributor={setContributor} />
                 </div>
-              </div>
-            </Card>
-            {contributor && (
-              <>
-                <Card className="flex flex-col px-8 pb-8 z-0 gap-8">
-                  <div className="flex flex-col gap-2 divide-y divide-solid divide-greyscale-50/8 ">
-                    <div className="font-medium text-lg">{T("payment.form.workItems.title")}</div>
-                    <div className="flex flex-col gap-3">
-                      <div className="pt-3 text-greyscale-300">{T("payment.form.workItems.subTitle")}</div>
-                      {workItems.map(workItem => (
-                        <GithubIssue
-                          key={workItem.id}
-                          workItem={workItem}
-                          action={Action.Remove}
-                          onClick={() => dispatchWorkItems({ action: "remove", workItem })}
-                        />
-                      ))}
-                    </div>
+                {displayCallout && (
+                  <div className="mx-4 pt-20">
+                    <Callout>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-base font-medium">
+                          {T("payment.form.contributor.needsToSignup.title", { contributor: contributor?.login })}
+                        </span>
+                        <span>{T("payment.form.contributor.needsToSignup.details")}</span>
+                      </div>
+                    </Callout>
                   </div>
-                  <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn">
+                )}
+              </div>
+              {contributor && (
+                <div className="pt-8">
+                  <SectionTitle title={T("payment.form.workItems.title")} />
+                  <div className="flex flex-col gap-3 mx-4">
+                    <div className=" text-greyscale-300">{T("payment.form.workItems.subTitle")}</div>
+                    {workItems.map(workItem => (
+                      <GithubIssue
+                        key={workItem.id}
+                        workItem={workItem}
+                        action={Action.Remove}
+                        onClick={() => dispatchWorkItems({ action: "remove", workItem })}
+                      />
+                    ))}
+                  </div>
+                  <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn" className="mx-4 pt-8">
                     <Button size={ButtonSize.Md} type={ButtonType.Secondary} width={Width.Full}>
                       <Add />
                       {T("payment.form.workItems.add")}
                     </Button>
                   </div>
-                </Card>
-                <WorkItemSidePanel
-                  projectId={projectId}
-                  open={sidePanelOpen}
-                  setOpen={setSidePanelOpen}
-                  contributorHandle={contributorHandle}
-                  workItems={workItems}
-                  onWorkItemAdded={(workItem: WorkItem) => dispatchWorkItems({ action: "add", workItem })}
-                />
-              </>
+                </div>
+              )}
+            </Card>
+            {contributor && (
+              <WorkItemSidePanel
+                projectId={projectId}
+                open={sidePanelOpen}
+                setOpen={setSidePanelOpen}
+                workItems={workItems}
+                onWorkItemAdded={(workItem: WorkItem) => dispatchWorkItems({ action: "add", workItem })}
+                contributorHandle={contributor.login}
+              />
             )}
           </div>
         </div>

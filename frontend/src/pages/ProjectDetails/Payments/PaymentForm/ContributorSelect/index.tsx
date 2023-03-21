@@ -1,25 +1,26 @@
 import { gql } from "@apollo/client";
-import { debounce } from "lodash";
-import { useCallback, useEffect, useMemo } from "react";
-import { useFormContext } from "react-hook-form";
-import { useLocation } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
-import { useIntl } from "src/hooks/useIntl";
-import useFindGithubUser, { GITHUB_CONTRIBUTOR_FRAGMENT } from "src/hooks/useIsGithubLoginValid";
 import { HasuraUserRole } from "src/types";
-import { GetProjectContributorsForPaymentSelectQuery } from "src/__generated/graphql";
-import View from "./View";
+import {
+  GetProjectContributorsForPaymentSelectQuery,
+  GithubContributorFragment,
+  SearchGithubUsersByHandleSubstringQuery,
+} from "src/__generated/graphql";
 import { getContributors } from "src/utils/project";
+import { GITHUB_CONTRIBUTOR_FRAGMENT } from "src/hooks/useIsGithubLoginValid";
+import View from "./View";
 
 type Props = {
   projectId: string;
+  contributor: GithubContributorFragment | null | undefined;
+  setContributor: (contributor: GithubContributorFragment | null | undefined) => void;
 };
 
-export default function ContributorSelect({ projectId }: Props) {
-  const { T } = useIntl();
-  const { setValue, setError, clearErrors, watch } = useFormContext();
-  const findUserQuery = useFindGithubUser();
-  const location = useLocation();
+export default function ContributorSelect({ projectId, contributor, setContributor }: Props) {
+  const [selectedGithubHandle, setSelectedGithubHandle] = useState<string | null>(null);
+  const [githubHandleSubstring, setGithubHandleSubstring] = useState<string | null>(null);
+  const handleSubstringQuery = `type:user ${githubHandleSubstring} in:login`;
 
   const getProjectContributorsQuery = useHasuraQuery<GetProjectContributorsForPaymentSelectQuery>(
     GET_PROJECT_CONTRIBUTORS_QUERY,
@@ -28,76 +29,69 @@ export default function ContributorSelect({ projectId }: Props) {
       variables: { projectId },
     }
   );
-
-  const defaultContributor = location.state?.recipientGithubLogin;
-  const onContributorHandleChange = useCallback((handle: string) => {
-    setValue("contributorHandle", handle);
-  }, []);
-  const clear = useCallback(() => {
-    setValue("contributorHandle", null);
-    setValue("contributor", null);
-  }, []);
-
-  const contributorHandle = watch("contributorHandle");
-  const contributor = watch("contributor");
-
-  useEffect(() => {
-    if (defaultContributor) {
-      findUserQuery.trigger(defaultContributor);
-      setValue("contributorHandle", defaultContributor);
+  const searchGithubUsersByHandleSubstringQuery = useHasuraQuery<SearchGithubUsersByHandleSubstringQuery>(
+    SEARCH_GITHUB_USERS_BY_HANDLE_SUBSTRING_QUERY,
+    HasuraUserRole.RegisteredUser,
+    {
+      variables: { handleSubstringQuery },
+      skip: !githubHandleSubstring || (githubHandleSubstring && githubHandleSubstring.length) < 2,
     }
-  }, [defaultContributor]);
-
-  useEffect(() => {
-    if (findUserQuery.user) {
-      setValue("contributor", findUserQuery.user);
-      clearErrors("contributorHandle");
-    }
-    if (findUserQuery.user === null) {
-      setError("contributorHandle", { message: T("github.invalidLogin") });
-      setValue("contributor", null);
-    }
-  }, [findUserQuery.user]);
-
-  useEffect(() => {
-    if (findUserQuery.error && contributorHandle !== "") {
-      setError("contributorHandle", { message: T("github.invalidLogin") });
-      setValue("contributor", null);
-    } else {
-      clearErrors("contributorHandle");
-    }
-  }, [findUserQuery.error]);
-
-  useEffect(() => {
-    if (contributorHandle === "") {
-      setValue("contributor", null);
-    }
-    if (contributorHandle !== null) {
-      onContributorLoginChange(contributorHandle);
-    }
-  }, [contributorHandle]);
-
-  const onContributorLoginChange = useMemo(() => debounce(handle => findUserQuery.trigger(handle), 500), []);
-  const validateContributorLogin = useCallback(
-    () => !!findUserQuery.user || T("github.invalidLogin"),
-    [findUserQuery.user]
   );
-  const { contributors } = useMemo(
+
+  const { contributors: internalContributors } = useMemo(
     () => getContributors(getProjectContributorsQuery.data?.projectsByPk),
     [getProjectContributorsQuery.data]
   );
 
+  const filteredContributors = internalContributors.filter(
+    contributor =>
+      !githubHandleSubstring || (githubHandleSubstring && contributor.login.startsWith(githubHandleSubstring))
+  );
+
+  const filteredExternalContributors = searchGithubUsersByHandleSubstringQuery?.data?.searchUsers
+    ?.slice(0, 5)
+    .filter(
+      contributor =>
+        !filteredContributors.map(filteredContributor => filteredContributor.login).includes(contributor.login)
+    );
+
+  useEffect(
+    () =>
+      setContributor(
+        filteredContributors?.find(contributor => contributor.login === selectedGithubHandle) ||
+          filteredExternalContributors?.find(contributor => contributor.login === selectedGithubHandle)
+      ),
+    [selectedGithubHandle]
+  );
+
   return (
     <View
-      loading={findUserQuery.loading || getProjectContributorsQuery.loading}
-      validateContributorLogin={validateContributorLogin}
-      onContributorHandleChange={onContributorHandleChange}
-      contributors={contributors ?? []}
-      contributor={contributor}
-      clear={clear}
+      {...{
+        selectedGithubHandle,
+        setSelectedGithubHandle,
+        githubHandleSubstring,
+        setGithubHandleSubstring,
+        filteredContributors,
+        filteredExternalContributors,
+        isSearchGithubUsersByHandleSubstringQueryLoading: searchGithubUsersByHandleSubstringQuery.loading,
+        contributor,
+      }}
     />
   );
 }
+
+export const SEARCH_GITHUB_USERS_BY_HANDLE_SUBSTRING_QUERY = gql`
+  query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
+    searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc") {
+      id
+      login
+      avatarUrl
+      user {
+        userId
+      }
+    }
+  }
+`;
 
 export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
   ${GITHUB_CONTRIBUTOR_FRAGMENT}
@@ -115,7 +109,6 @@ export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
         }
       }
       budgets {
-        id
         paymentRequests {
           id
           githubRecipient {

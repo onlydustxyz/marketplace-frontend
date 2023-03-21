@@ -28,6 +28,7 @@
     "@graphql-codegen/typescript-react-apollo": "^3.3.7",
     "@headlessui/tailwindcss": "^0.1.2",
     "@n8tb1t/use-scroll-position": "^2.0.3",
+    "@tag0/use-text-width": "^1.2.0",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@typeform/embed-react": "^2.15.0",
     "@types/react-currency-format": "^1.0.0",
@@ -104,6 +105,7 @@
     "vite": "^3.2.3",
     "vite-plugin-istanbul": "^3.0.4",
     "vitest": "^0.25.1",
+    "vitest-canvas-mock": "^0.2.2",
     "yargs": "^17.6.2"
   }
 }

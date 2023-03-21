@@ -1,137 +1,159 @@
-import { Transition } from "@headlessui/react";
-import { ChangeEventHandler, useCallback, useState } from "react";
-import Card from "src/components/Card";
-import Contributor from "src/components/Contributor";
-import Input from "src/components/FormInput";
-import ImageCard, { BackgroundSize } from "src/components/ImageCard";
-import headerElementBackground from "src/assets/img/alert-bg.png";
-import RoundedImage, { ImageSize } from "src/components/RoundedImage";
-import { useIntl } from "src/hooks/useIntl";
-import SearchLine from "src/icons/SearchLine";
+import { Combobox } from "@headlessui/react";
 import { GithubContributorFragment } from "src/__generated/graphql";
-import CloseLine from "src/icons/CloseLine";
 import classNames from "classnames";
-import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import Contributor from "src/components/Contributor";
+import ArrowDownSLine from "src/icons/ArrowDownSLine";
+import User3Line from "src/icons/User3Line";
+import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
+import { useTextWidth } from "@tag0/use-text-width";
+import onlyDustLogo from "assets/img/onlydust-logo.png";
+import { useIntl } from "src/hooks/useIntl";
 
-type Props = {
-  loading: boolean;
-  onContributorHandleChange: (handle: string) => void;
-  validateContributorLogin: () => boolean | string;
-  contributors: GithubContributorFragment[];
-  contributor?: GithubContributorFragment;
-  clear: () => void;
-};
+interface ContributorSelectViewProps {
+  selectedGithubHandle: string | null;
+  setSelectedGithubHandle: (selectedGithubHandle: string | null) => void;
+  githubHandleSubstring: string | null;
+  setGithubHandleSubstring: (githubHandleSubstring: string | null) => void;
+  filteredContributors: GithubContributorFragment[] | undefined;
+  filteredExternalContributors: GithubContributorFragment[] | undefined;
+  isSearchGithubUsersByHandleSubstringQueryLoading: boolean;
+  contributor: GithubContributorFragment | null | undefined;
+}
 
-const View = ({
-  loading,
+export default function ContributorSelectView({
+  selectedGithubHandle,
+  setSelectedGithubHandle,
+  githubHandleSubstring,
+  setGithubHandleSubstring,
+  filteredContributors,
+  filteredExternalContributors,
+  isSearchGithubUsersByHandleSubstringQueryLoading,
   contributor,
-  contributors,
-  onContributorHandleChange,
-  validateContributorLogin,
-  clear,
-}: Props) => {
+}: ContributorSelectViewProps) {
   const { T } = useIntl();
-  const onHandleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
-    event => {
-      onContributorHandleChange(event.target.value);
-    },
-    [onContributorHandleChange]
-  );
-  const onContributorChange = useCallback(
-    (contributor: GithubContributorFragment) => {
-      onContributorHandleChange(contributor.login);
-    },
-    [onContributorHandleChange]
-  );
-  const [opened, setOpened] = useState(false);
 
-  const prefixComponent =
-    contributor && !loading ? (
-      <RoundedImage src={contributor.avatarUrl} size={ImageSize.Sm} alt={contributor.login} />
-    ) : (
-      <SearchLine className="ml-2" />
-    );
+  const githubHandleSubstringTextWidth = useTextWidth({
+    text: githubHandleSubstring || "",
+    font: "500 16px GT Walsheim",
+  });
 
-  const suffixComponent = contributor && (
-    <div className="absolute right-0 cursor-pointer pr-4 text-greyscale-50" onClick={() => clear()}>
-      <CloseLine />
-    </div>
-  );
+  const selectedGithubHandleTextWidth = useTextWidth({
+    text: selectedGithubHandle || "",
+    font: "500 16px GT Walsheim",
+  });
+
+  const showExternalUsersSection = !!(githubHandleSubstring && githubHandleSubstring.length > 2);
 
   return (
-    <div className="w-full">
-      <div className="relative">
-        <Input
-          inputClassName="pl-12"
-          label={T("payment.form.contributor.inputLabel")}
-          name="contributorHandle"
-          placeholder={T("payment.form.contributor.placeholder")}
-          options={{
-            required: T("form.required"),
-            validate: validateContributorLogin,
-          }}
-          onChange={onHandleChange}
-          onFocus={() => setOpened(true)}
-          onBlur={() => setOpened(false)}
-          loading={loading}
-          prefixComponent={prefixComponent}
-          suffixComponent={suffixComponent}
-        />
-
-        <Transition
-          className="absolute w-full"
-          show={opened}
-          enter="transition duration-200 ease-out"
-          enterFrom="transform -translate-y-1/3 opacity-0"
-          enterTo="transform translate-y-0 opacity-100"
-          leave="transition duration-200 ease-out"
-          leaveFrom="transform translate-y-0 opacity-100"
-          leaveTo="transform -translate-y-1/3 opacity-0"
-        >
-          <Card className="bg-spaceBlue-900 pr-1" padded={false}>
-            <div
-              className={classNames(
-                "overflow-auto max-h-60",
-                "scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
-              )}
-            >
-              {contributors.map(contributor => (
-                <div
-                  key={contributor.id}
-                  className="px-4 py-3 hover:bg-white/2 cursor-pointer"
-                  onMouseDown={() => onContributorChange(contributor)}
-                >
-                  <Contributor
-                    contributor={{
-                      avatarUrl: contributor.avatarUrl,
-                      login: contributor.login,
-                      isRegistered: !!contributor.user?.userId,
+    <Combobox value={selectedGithubHandle} onChange={setSelectedGithubHandle} nullable>
+      {({ open }) => (
+        <div className={classNames("absolute w-full", { "bg-[#111127]": open })}>
+          <div
+            className={classNames("py-3 flex flex-col gap-3", {
+              "outline outline-greyscale-50/12 rounded-2xl backdrop-blur-4xl": open,
+            })}
+          >
+            <Combobox.Button className="px-3">
+              <div
+                className={classNames(
+                  "flex flex-row items-center justify-between w-full bg-white/2 rounded-2xl py-1 px-2 h-12 border border-greyscale-50/8",
+                  {
+                    "ring-solid ring-2 ring-spacePurple-500": open,
+                  }
+                )}
+              >
+                <div className="flex flex-row items-center w-full cursor-default">
+                  <div className="pl-2 pr-3 text-2xl">
+                    {contributor ? (
+                      <RoundedImage
+                        src={contributor.avatarUrl}
+                        alt={contributor.login}
+                        size={ImageSize.Sm}
+                        rounding={Rounding.Circle}
+                      />
+                    ) : (
+                      <div className="pt-0.5">
+                        <User3Line />
+                      </div>
+                    )}
+                  </div>
+                  <Combobox.Input
+                    onChange={event => setGithubHandleSubstring(event.target.value)}
+                    className="border-none outline-none w-full bg-transparent font-medium pt-0.5"
+                    placeholder={T("payment.form.contributor.select.placeholder")}
+                    onFocus={() => {
+                      setGithubHandleSubstring(selectedGithubHandle);
+                    }}
+                    style={{
+                      width: Math.max(githubHandleSubstringTextWidth, selectedGithubHandleTextWidth) + 4 || 200,
+                      padding: 0,
                     }}
                   />
+                  {contributor?.user?.userId && contributor?.login === githubHandleSubstring && (
+                    <img src={onlyDustLogo} className="w-3.5 ml-1.5" />
+                  )}
                 </div>
-              ))}
-            </div>
-          </Card>
-        </Transition>
-      </div>
-      {contributor && !contributor.user && (
-        <div className="h-22 mb-4">
-          <ImageCard backgroundImageUrl={headerElementBackground} backgroundSize={BackgroundSize.Cover}>
-            <div className="flex flex-row justify-between py-5 px-6">
-              <div className="flex flex-row justify-start items-center font-medium gap-4">
-                <ErrorWarningLine className="px-3 py-2.5 text-3xl rounded-2xl bg-white/10" />
-                <div className="flex flex-col ">
-                  <div className="text-lg font-medium">
-                    {T("payment.form.contributor.needsToSignup", { contributor: contributor.login })}
-                  </div>
-                </div>
+                <ArrowDownSLine />
               </div>
-            </div>
-          </ImageCard>
+            </Combobox.Button>
+            <Combobox.Options className="max-h-60 scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded overflow-auto px-4">
+              {filteredContributors && filteredContributors.length > 0 ? (
+                <ContributorSubList contributors={filteredContributors} />
+              ) : githubHandleSubstring && githubHandleSubstring.length < 3 ? (
+                <span className="text-greyscale-100 italic">
+                  {T("payment.form.contributor.select.fallback.typeMoreCharacters")}
+                </span>
+              ) : (
+                <div />
+              )}
+              {showExternalUsersSection &&
+                (filteredExternalContributors && filteredExternalContributors.length ? (
+                  <>
+                    <div className="font-medium text-md pb-1 pt-4 text-spaceBlue-200">
+                      {T("payment.form.contributor.select.externalUsers")}
+                    </div>
+                    <ContributorSubList contributors={filteredExternalContributors} />
+                  </>
+                ) : filteredContributors &&
+                  filteredContributors.length === 0 &&
+                  isSearchGithubUsersByHandleSubstringQueryLoading ? (
+                  <span className="text-greyscale-100 italic">
+                    {T("payment.form.contributor.select.fallback.noUser")}
+                  </span>
+                ) : (
+                  <div />
+                ))}
+            </Combobox.Options>
+          </div>
         </div>
       )}
+    </Combobox>
+  );
+}
+
+interface ContributorSubListProps<T extends GithubContributorFragment> {
+  contributors?: T[];
+}
+
+function ContributorSubList<T extends GithubContributorFragment>({ contributors }: ContributorSubListProps<T>) {
+  return (
+    <div className="divide-y divide-greyscale-50/8">
+      {contributors?.map(contributor => (
+        <Combobox.Option key={contributor.id} value={contributor.login}>
+          {({ active }) => (
+            <li className={`p-2 ${active && "bg-white/4 cursor-pointer"}`}>
+              <Contributor
+                contributor={{
+                  avatarUrl: contributor.avatarUrl,
+                  login: contributor.login,
+                  isRegistered: !!contributor.user?.userId,
+                }}
+              />
+            </li>
+          )}
+        </Combobox.Option>
+      ))}
+      <div />
     </div>
   );
-};
-
-export default View;
+}

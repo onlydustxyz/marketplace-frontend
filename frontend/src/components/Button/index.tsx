@@ -63,7 +63,7 @@ export default function Button({
         {
           "h-14 gap-3 rounded-xl": size === ButtonSize.Lg,
           "h-12 gap-3 rounded-xl": size === ButtonSize.LgLowHeight,
-          "text-sm h-14 gap-2 rounded-xl": size === ButtonSize.Md,
+          "text-base h-12 gap-2 rounded-xl": size === ButtonSize.Md,
           "text-sm h-8 gap-2 rounded-large": size === ButtonSize.Sm,
           "text-xs h-6 gap-1 rounded-lg": size === ButtonSize.Xs,
         },

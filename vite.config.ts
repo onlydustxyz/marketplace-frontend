@@ -31,5 +31,8 @@ export default defineConfig({
     setupFiles: ["frontend/src/test/setup.ts"],
     globals: true,
     environment: "jsdom",
+    deps: {
+      inline: ["vitest-canvas-mock"],
+    },
   },
 });
