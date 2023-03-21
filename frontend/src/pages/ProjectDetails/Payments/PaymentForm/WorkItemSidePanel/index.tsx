@@ -37,7 +37,7 @@ export default function WorkItemSidePanel({
       leaveTo="translate-x-full"
     >
       <Dialog onClose={setOpen} as={Fragment}>
-        <Dialog.Panel className="fixed z-10 inset-y-0 right-0 max-h-screen w-1/2 flex flex-col bg-greyscale-900 py-8 px-6 gap-8">
+        <Dialog.Panel className="fixed z-10 inset-y-0 right-0 max-h-screen w-5/12 flex flex-col bg-greyscale-900 py-8 px-6 gap-8">
           <div
             className="absolute top-3.5 right-3.5"
             onClick={() => setOpen(false)}
