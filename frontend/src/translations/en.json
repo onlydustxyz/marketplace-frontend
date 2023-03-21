@@ -38,8 +38,7 @@
   },
   "github": {
     "invalidLogin": "Invalid Github login",
-    "loggingIn": "Logging in...",
-    "tokenMissing": "Github authentication token missing!"
+    "loggingIn": "Logging in..."
   },
   "githubIssue": {
     "addTooltip": "Add work item",
