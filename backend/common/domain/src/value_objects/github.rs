@@ -52,3 +52,32 @@ impl FromStr for GithubUserId {
 		i64::from_str(s).map(Into::into)
 	}
 }
+
+#[derive(
+	Debug,
+	Clone,
+	Copy,
+	Default,
+	Serialize,
+	Deserialize,
+	PartialEq,
+	Eq,
+	Hash,
+	Display,
+	From,
+	Into,
+	AsRef,
+	AsExpression,
+	FromToSql,
+	FromSqlRow,
+)]
+#[sql_type = "diesel::sql_types::BigInt"]
+pub struct GithubIssueNumber(i64);
+
+impl FromStr for GithubIssueNumber {
+	type Err = <i64 as FromStr>::Err;
+
+	fn from_str(s: &str) -> Result<Self, Self::Err> {
+		i64::from_str(s).map(Into::into)
+	}
+}
