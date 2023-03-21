@@ -51,7 +51,7 @@ type TitleProps = {
 
 function SectionTitle({ title }: TitleProps) {
   return (
-    <div className="font-normal font-belwe text-base text-greyscale-50 pb-2 mb-3 mx-4 border-b border-b-greyscale-50/8">
+    <div className="font-normal font-belwe text-base text-greyscale-50 pb-2 mx-4 border-b border-b-greyscale-50/8">
       {title}
     </div>
   );
@@ -89,7 +89,7 @@ const View: React.FC<Props> = ({
       <div className="flex flex-row items-start gap-5 h-full">
         <div className="basis-3/5 self-stretch">
           <div className="flex flex-col gap-6 w-full">
-            <Card className="px-4 py-6" padded={false}>
+            <Card className="px-4 py-7" padded={false}>
               <div className={displayCallout ? "h-56" : "h-24"}>
                 <SectionTitle title={T("payment.form.contributor.title")} />
                 <div className="relative z-10">

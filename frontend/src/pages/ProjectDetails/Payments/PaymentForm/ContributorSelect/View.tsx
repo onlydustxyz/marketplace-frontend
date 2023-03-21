@@ -47,13 +47,13 @@ export default function ContributorSelectView({
   return (
     <Combobox value={selectedGithubHandle} onChange={setSelectedGithubHandle} nullable>
       {({ open }) => (
-        <div className={classNames("absolute w-full", { "bg-[#111127]": open })}>
+        <div className={classNames("absolute w-full top-0", { "bg-[#111127] rounded-2xl": open })}>
           <div
-            className={classNames("py-3 flex flex-col gap-3", {
+            className={classNames("flex flex-col gap-3", {
               "outline outline-greyscale-50/12 rounded-2xl backdrop-blur-4xl": open,
             })}
           >
-            <Combobox.Button className="px-3 text-spaceBlue-200">
+            <Combobox.Button className={classNames("px-3 pt-4 text-spaceBlue-200")}>
               <div
                 className={classNames(
                   "flex flex-row items-center justify-between w-full bg-white/5 rounded-2xl px-4 h-12 border border-greyscale-50/8",
@@ -79,7 +79,10 @@ export default function ContributorSelectView({
                   </div>
                   <Combobox.Input
                     onChange={event => setGithubHandleSubstring(event.target.value)}
-                    className="border-none outline-none w-full bg-transparent font-normal text-base pt-0.5"
+                    className={classNames(
+                      "border-none outline-none w-full bg-transparent font-normal text-base pt-0.5",
+                      { "text-white": githubHandleSubstring !== "" }
+                    )}
                     placeholder={T("payment.form.contributor.select.placeholder")}
                     onFocus={() => {
                       setGithubHandleSubstring(selectedGithubHandle);
@@ -96,7 +99,7 @@ export default function ContributorSelectView({
                 <ArrowDownSLine />
               </div>
             </Combobox.Button>
-            <Combobox.Options className="max-h-60 scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded overflow-auto px-4">
+            <Combobox.Options className="max-h-60 scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded overflow-auto px-4 pb-6">
               {filteredContributors && filteredContributors.length > 0 ? (
                 <ContributorSubList contributors={filteredContributors} />
               ) : githubHandleSubstring && githubHandleSubstring.length < 3 ? (
@@ -137,7 +140,7 @@ interface ContributorSubListProps<T extends GithubContributorFragment> {
 
 function ContributorSubList<T extends GithubContributorFragment>({ contributors }: ContributorSubListProps<T>) {
   return (
-    <div className="divide-y divide-greyscale-50/8">
+    <div className="divide-y divide-greyscale-50/8 pt-2.5">
       {contributors?.map(contributor => (
         <Combobox.Option key={contributor.id} value={contributor.login}>
           {({ active }) => (
