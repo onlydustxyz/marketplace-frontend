@@ -396,7 +396,14 @@ const paymentRequestsMock = {
             },
           ],
           amountInUsd: 200,
-          reason: { work_items: ["link_to_pr"] },
+          workItems: [
+            {
+              __typename: "WorkItems",
+              repoOwner: "onlydustxyz",
+              repoName: "marketplace",
+              issueNumber: 123,
+            },
+          ],
           budget: {
             id: "budget-1",
             project: {

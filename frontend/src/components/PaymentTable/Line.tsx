@@ -1,4 +1,4 @@
-import { Currency, getPaymentStatusOrder, PaymentStatus, Sortable } from "src/types";
+import { getPaymentStatusOrder, PaymentStatus, Sortable } from "src/types";
 import Line from "src/components/Table/Line";
 import Cell, { CellHeight } from "src/components/Table/Cell";
 import RoundedImage, { Rounding } from "src/components/RoundedImage";
@@ -17,22 +17,19 @@ type Props = {
   setSortingFields: (sortingFields: SortingFields) => void;
 };
 
-const ISSUE_NUMBER = /pull\/(\d+)$/;
-
 export default function PaymentLine({ payment, setSortingFields }: Props) {
   const { valid: payoutSettingsValid } = usePayoutSettings(payment.recipientId);
   const { data: recipient } = useGithubUser(payment.recipientId);
 
   const paidAmount = payment.payments.reduce((total, payment) => total + payment.amount, 0);
   const paymentStatus = paidAmount === payment.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT;
-  const paymentReason = payment.reason?.work_items?.at(0);
+  const paymentReason = payment.workItems?.at(0);
 
   useEffect(() => {
     if (recipient?.login && usePayoutSettings != undefined) {
-      const issueNumber = paymentReason?.match(ISSUE_NUMBER) || ["", ""];
       setSortingFields({
         [Field.Date]: new Date(payment.requestedAt),
-        [Field.Contribution]: recipient.login.toLocaleLowerCase() + issueNumber[1].padStart(10, "0"),
+        [Field.Contribution]: recipient.login.toLocaleLowerCase() + paymentReason?.issueNumber.padStart(10, "0"),
         [Field.Amount]: payment.amountInUsd,
         [Field.Status]: getPaymentStatusOrder(paymentStatus),
       });
@@ -48,7 +45,11 @@ export default function PaymentLine({ payment, setSortingFields }: Props) {
             <RoundedImage src={recipient.avatarUrl} alt={recipient.login} rounding={Rounding.Circle} />
             <div className="flex flex-col truncate justify-center pb-0.5">
               <div className="font-medium text-sm text-greyscale-50 font-walsheim">{recipient.login}</div>
-              {paymentReason && <GithubPRLink link={paymentReason}></GithubPRLink>}
+              {paymentReason && (
+                <GithubPRLink
+                  link={`https://github.com/${paymentReason.repoOwner}/${paymentReason.repoName}/pull/${paymentReason.issueNumber}`}
+                ></GithubPRLink>
+              )}
             </div>
           </Cell>
           <Cell height={CellHeight.Medium}>

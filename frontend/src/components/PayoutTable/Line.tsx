@@ -9,11 +9,12 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { Currency, getPaymentStatusOrder, PaymentStatus, PayoutSettings } from "src/types";
 import { Field, SortingFields } from "src/hooks/usePaymentSorting";
 import { useEffect } from "react";
+import { WorkItemFragment } from "src/__generated/graphql";
 
 export type Payment = {
   id: string;
   requestedAt: Date;
-  reason: string;
+  reason?: WorkItemFragment;
   amount: {
     value: number;
     currency: Currency;
@@ -36,18 +37,17 @@ type Props = {
   setSortingFields: (sortingFields: SortingFields) => void;
 };
 
-const ISSUE_NUMBER = /pull\/(\d+)$/;
-
 export default function PaymentLine({ payment, payoutInfoMissing, invoiceNeeded, setSortingFields }: Props) {
   useEffect(() => {
-    const issueNumber = payment.reason?.match(ISSUE_NUMBER) || ["", ""];
     setSortingFields({
       [Field.Date]: payment.requestedAt,
-      [Field.Contribution]: payment.project?.title?.toLocaleLowerCase() + issueNumber[1].padStart(10, "0"),
+      [Field.Contribution]: payment.project?.title?.toLocaleLowerCase() + payment.reason?.issueNumber.padStart(10, "0"),
       [Field.Amount]: payment.amount.value,
       [Field.Status]: getPaymentStatusOrder(payment.status),
     });
   }, []);
+
+  const githubLink = `https://github.com/${payment.reason?.repoOwner}/${payment.reason?.repoName}/pull/${payment.reason?.issueNumber}`;
 
   return (
     <Line highlightOnHover={200}>
@@ -56,7 +56,7 @@ export default function PaymentLine({ payment, payoutInfoMissing, invoiceNeeded,
         <RoundedImage src={payment?.project?.logoUrl || onlyDustLogo} alt={payment?.project?.title || ""} />
         <div className="flex flex-col truncate justify-center">
           <div className="font-normal text-base font-belwe">{payment?.project?.title}</div>
-          {payment.reason && <GithubPRLink link={payment.reason}></GithubPRLink>}
+          {payment.reason && <GithubPRLink link={githubLink}></GithubPRLink>}
         </div>
       </Cell>
       <Cell>{formatMoneyAmount({ amount: payment.amount.value, currency: payment.amount.currency })}</Cell>

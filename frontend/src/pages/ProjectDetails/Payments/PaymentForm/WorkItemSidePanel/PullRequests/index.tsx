@@ -67,11 +67,7 @@ export default function PullRequests({ projectId, contributorHandle, workItems, 
   );
 
   const paidItems = useMemo(
-    () =>
-      getPaidItemsQuery.data?.projectsByPk?.budgets
-        .flatMap(b => b.paymentRequests)
-        .flatMap(p => p.reason.work_items)
-        .map(parsePullRequestLink) || [],
+    () => getPaidItemsQuery.data?.projectsByPk?.budgets.flatMap(b => b.paymentRequests).flatMap(p => p.workItems) || [],
 
     [getPaidItemsQuery.data?.projectsByPk?.budgets]
   );
@@ -81,7 +77,9 @@ export default function PullRequests({ projectId, contributorHandle, workItems, 
       sortBy(
         differenceWith(pulls, paidItems, (pr, paidItem) => {
           const { repoOwner, repoName } = parsePullRequestLink(pr.htmlUrl);
-          return repoOwner === paidItem.repoOwner && repoName === paidItem.repoName && pr.number === paidItem.prNumber;
+          return (
+            repoOwner === paidItem.repoOwner && repoName === paidItem.repoName && pr.number === paidItem.issueNumber
+          );
         }),
         "createdAt"
       )
@@ -155,7 +153,11 @@ const GET_PAID_WORK_ITEMS = gql`
         id
         paymentRequests {
           id
-          reason
+          workItems {
+            repoOwner
+            repoName
+            issueNumber
+          }
         }
       }
     }
