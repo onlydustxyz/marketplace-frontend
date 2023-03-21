@@ -156,6 +156,11 @@
       "contribution": "Contribution",
       "date": "Date",
       "githubLink": "#__pullRequestNumber__ · Github",
+      "paymentRequest": {
+        "many": "#__id__ · __count__ items",
+        "one": "#__id__ · 1 item",
+        "zero": "#__id__ · No item"
+      },
       "status": "Status"
     },
     "tableFallback": {

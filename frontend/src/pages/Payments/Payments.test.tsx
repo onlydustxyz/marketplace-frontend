@@ -129,7 +129,7 @@ describe('"Payments" page', () => {
       }),
     });
 
-    expect(await screen.findByText(`#${mockContribution.workItems[0].issueNumber} · Github`)).toBeInTheDocument();
+    expect(await screen.findByText("#705E6 · 1 item")).toBeInTheDocument();
     expect(await screen.findByText(mockContribution.budget?.project?.projectDetails?.name || "")).toBeInTheDocument();
     expect(await screen.findAllByText("$200")).toHaveLength(2);
     expect(await screen.findAllByText(/Payout info missing/i)).toHaveLength(1);
