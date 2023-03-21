@@ -19,3 +19,4 @@
 - "!include public_projects_sponsors.yaml"
 - "!include public_sponsors.yaml"
 - "!include public_user_info.yaml"
+- "!include public_work_items.yaml"
