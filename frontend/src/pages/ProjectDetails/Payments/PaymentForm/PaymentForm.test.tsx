@@ -18,7 +18,7 @@ import {
 import { MockedResponse } from "@apollo/client/testing";
 import { SEARCH_GITHUB_USERS_BY_HANDLE_SUBSTRING_QUERY } from "./ContributorSelect";
 
-const TEST_USER = { id: "test-user-id", displayName: "test-user-name", githubUser: { githubUserId: 748483646584 } };
+const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };
 
 const HASURA_TOKEN_BASIC_TEST_VALUE = {
   user: {
