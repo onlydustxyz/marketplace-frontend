@@ -465,9 +465,9 @@ describe("Integration tests", () => {
     await screen.findByText(EDIT_PROFILE_TITLE);
   });
 
-  it("should display an error message if no refresh token is passed as a query parameter in the URL", async () => {
+  it("should redirect to homegae if no refresh token is passed as a query parameter in the URL", async () => {
     renderWithIntl(<App />, { wrapper: MemoryRouterProviderFactory({ route: RoutePaths.Login, mocks: graphQlMocks }) });
-    await screen.findByText(AUTH_TOKEN_MISSING_TEXT_QUERY);
+    expect(window.location.pathname).toBe(RoutePaths.Projects);
   });
 
   it("should redirect to the projects page if the profile route is accessed without a token in the local storage", async () => {
