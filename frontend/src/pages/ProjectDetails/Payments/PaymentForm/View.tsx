@@ -96,7 +96,7 @@ const View: React.FC<Props> = ({
                   <ContributorSelect projectId={projectId} contributor={contributor} setContributor={setContributor} />
                 </div>
                 {displayCallout && (
-                  <div className="mx-4 pt-20">
+                  <div className="mx-4 pt-24">
                     <Callout>
                       <div className="flex flex-col gap-1">
                         <span className="text-base font-medium">
@@ -109,7 +109,7 @@ const View: React.FC<Props> = ({
                 )}
               </div>
               {contributor && (
-                <div className="pt-8">
+                <div className="pt-12">
                   <SectionTitle title={T("payment.form.workItems.title")} />
                   <div className="flex flex-col gap-3 mx-4 pt-4">
                     <div className=" text-greyscale-300">{T("payment.form.workItems.subTitle")}</div>
