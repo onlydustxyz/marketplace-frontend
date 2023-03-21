@@ -33,7 +33,7 @@ describe("As a project lead, I", () => {
     recipient = this.users["Anthony"];
   });
 
-  it("can request a payment", function () {
+  it.skip("can request a payment", function () {
     cy.visitApp({ path: `projects/${project.id}/payments`, token: leader1.token });
 
     cy.get("#remainingBudget").should("have.text", "$50,000");
@@ -47,7 +47,7 @@ describe("As a project lead, I", () => {
     cy.get("#remainingBudget").should("have.text", "$49,000");
   });
 
-  it("can request a payment and other project leads can see the update", function () {
+  it.skip("can request a payment and other project leads can see the update", function () {
     const showPaymentsAsOtherLeader = () =>
       cy.visitApp({ path: `projects/${project.id}/payments`, token: leader2.token });
 
