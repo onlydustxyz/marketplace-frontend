@@ -53,17 +53,17 @@ export default function ContributorSelectView({
               "outline outline-greyscale-50/12 rounded-2xl backdrop-blur-4xl": open,
             })}
           >
-            <Combobox.Button className="px-3">
+            <Combobox.Button className="px-3 text-spaceBlue-200">
               <div
                 className={classNames(
-                  "flex flex-row items-center justify-between w-full bg-white/5 rounded-2xl py-1 px-2 h-12 border border-greyscale-50/8",
+                  "flex flex-row items-center justify-between w-full bg-white/5 rounded-2xl px-4 h-12 border border-greyscale-50/8",
                   {
                     "ring-solid ring-2 ring-spacePurple-500": open,
                   }
                 )}
               >
                 <div className="flex flex-row items-center w-full cursor-default">
-                  <div className="pl-2 pr-3 text-2xl">
+                  <div className="pr-2 text-2xl">
                     {contributor ? (
                       <RoundedImage
                         src={contributor.avatarUrl}
@@ -79,7 +79,7 @@ export default function ContributorSelectView({
                   </div>
                   <Combobox.Input
                     onChange={event => setGithubHandleSubstring(event.target.value)}
-                    className="border-none outline-none w-full bg-transparent font-medium pt-0.5"
+                    className="border-none outline-none w-full bg-transparent font-normal text-base pt-0.5"
                     placeholder={T("payment.form.contributor.select.placeholder")}
                     onFocus={() => {
                       setGithubHandleSubstring(selectedGithubHandle);
