@@ -56,7 +56,7 @@ export default function ContributorSelectView({
             <Combobox.Button className="px-3">
               <div
                 className={classNames(
-                  "flex flex-row items-center justify-between w-full bg-white/2 rounded-2xl py-1 px-2 h-12 border border-greyscale-50/8",
+                  "flex flex-row items-center justify-between w-full bg-white/5 rounded-2xl py-1 px-2 h-12 border border-greyscale-50/8",
                   {
                     "ring-solid ring-2 ring-spacePurple-500": open,
                   }
