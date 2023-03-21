@@ -90,7 +90,7 @@ const View: React.FC<Props> = ({
         <div className="basis-3/5 self-stretch">
           <div className="flex flex-col gap-6 w-full">
             <Card className="px-4 py-7" padded={false}>
-              <div className={displayCallout ? "h-56" : "h-24"}>
+              <div className={displayCallout ? "h-52" : "h-24"}>
                 <SectionTitle title={T("payment.form.contributor.title")} />
                 <div className="relative z-10">
                   <ContributorSelect projectId={projectId} contributor={contributor} setContributor={setContributor} />
@@ -111,7 +111,7 @@ const View: React.FC<Props> = ({
               {contributor && (
                 <div className="pt-8">
                   <SectionTitle title={T("payment.form.workItems.title")} />
-                  <div className="flex flex-col gap-3 mx-4">
+                  <div className="flex flex-col gap-3 mx-4 pt-4">
                     <div className=" text-greyscale-300">{T("payment.form.workItems.subTitle")}</div>
                     {workItems.map(workItem => (
                       <GithubIssue
