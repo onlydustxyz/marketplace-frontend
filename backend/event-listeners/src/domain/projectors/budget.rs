@@ -70,7 +70,6 @@ impl EventListener for Projector {
 									"Failed to project invalid amount {amount}"
 								))
 							})?,
-							reason.clone(),
 							*requested_at,
 							None,
 						))?;
