@@ -17,7 +17,7 @@ use crate::{
 	domain::*,
 	infrastructure::database::{
 		BudgetRepository, PaymentRepository, PaymentRequestRepository, ProjectLeadRepository,
-		ProjectRepository,
+		ProjectRepository, WorkItemRepository,
 	},
 	Config,
 };
@@ -40,6 +40,7 @@ pub async fn spawn_all(
 			PaymentRequestRepository::new(database.clone()),
 			PaymentRepository::new(database.clone()),
 			BudgetRepository::new(database.clone()),
+			WorkItemRepository::new(database.clone()),
 		)
 		.spawn(event_bus::consumer(config.amqp(), "budgets").await?),
 	];
