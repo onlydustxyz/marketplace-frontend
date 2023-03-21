@@ -16,7 +16,11 @@ const [payment1, payment2, payment3]: Payment[] = range(1, 4).map(id => ({
     value: id * 100,
     currency: Currency.USD,
   },
-  reason: "",
+  reason: {
+    repoOwner: "onlydustxyz",
+    repoName: "marketplace",
+    issueNumber: 123,
+  },
   requestedAt: new Date(),
   status: PaymentStatus.WAITING_PAYMENT,
   invoiceReceived: id % 2 === 0,

@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import { cloneDeep } from "lodash";
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
+import { parsePullRequestLink } from "src/utils/github";
 import {
   GetPaymentRequestsForProjectQuery,
   PaymentRequestFragment,
@@ -40,7 +41,15 @@ export default function usePaymentRequests({ projectId, onNewPaymentRequested }:
           id: data?.requestPayment,
           amountInUsd: amount,
           recipientId: contributorId,
-          reason: { work_items: reason.workItems },
+          workItems:
+            reason.workItems?.map(url => {
+              const { repoOwner, repoName, prNumber: issueNumber } = parsePullRequestLink(url);
+              return {
+                repoOwner,
+                repoName,
+                issueNumber,
+              };
+            }) || [],
           payments: [],
           requestedAt: Date.now(),
         };
@@ -82,7 +91,11 @@ const PAYMENT_REQUEST_FRAGMENT = gql`
     id
     recipientId
     amountInUsd
-    reason
+    workItems {
+      repoOwner
+      repoName
+      issueNumber
+    }
     payments {
       amount
       currencyCode

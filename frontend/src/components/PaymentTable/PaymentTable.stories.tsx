@@ -23,7 +23,14 @@ const mockPayments: PaymentRequestFragment[] = [
     amountInUsd: 200,
     id: "c0cfdf80-bbba-4512-b5ec-066dfa9529b1",
     recipientId: GITHUB_USER_ID,
-    reason: { work_items: ["https://github.com/onlydustxyz/marketplace/pull/1"] },
+    workItems: [
+      {
+        __typename: "WorkItems",
+        repoOwner: "onlydustxyz",
+        repoName: "marketplace",
+        issueNumber: 1,
+      },
+    ],
     requestedAt: yearsFromNow(6),
     payments: [{ amount: 200, currencyCode: Currency.USD }],
   },
@@ -31,7 +38,14 @@ const mockPayments: PaymentRequestFragment[] = [
     amountInUsd: 100,
     id: "6397226d-0461-4451-962c-a61e36fd324b",
     recipientId: GITHUB_USER_ID,
-    reason: { work_items: ["https://github.com/onlydustxyz/marketplace/pull/26"] },
+    workItems: [
+      {
+        __typename: "WorkItems",
+        repoOwner: "onlydustxyz",
+        repoName: "marketplace",
+        issueNumber: 26,
+      },
+    ],
     requestedAt: yearsFromNow(3),
     payments: [],
   },
@@ -39,7 +53,13 @@ const mockPayments: PaymentRequestFragment[] = [
     amountInUsd: 100,
     id: "6397226d-0461-4451-962c-a61e36fd3sju",
     recipientId: GITHUB_USER_ID2,
-    reason: { work_items: ["https://github.com/onlydustxyz/marketplace/pull/653"] },
+    workItems: [
+      {
+        repoOwner: "onlydustxyz",
+        repoName: "marketplace",
+        issueNumber: 653,
+      },
+    ],
     requestedAt: yearsFromNow(3),
     payments: [],
   },
