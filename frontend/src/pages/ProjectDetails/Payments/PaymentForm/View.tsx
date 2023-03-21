@@ -51,7 +51,7 @@ type TitleProps = {
 
 function SectionTitle({ title }: TitleProps) {
   return (
-    <div className="font-normal font-belwe text-base text-greyscale-50 pb-2 mb-3 mx-4 border-b border-b-greyscale-50/8">
+    <div className="font-normal font-belwe text-base text-greyscale-50 pb-2 mx-4 border-b border-b-greyscale-50/8">
       {title}
     </div>
   );
@@ -89,14 +89,14 @@ const View: React.FC<Props> = ({
       <div className="flex flex-row items-start gap-5 h-full">
         <div className="basis-3/5 self-stretch">
           <div className="flex flex-col gap-6 w-full">
-            <Card className="px-4 py-6" padded={false}>
-              <div className={displayCallout ? "h-56" : "h-24"}>
+            <Card className="px-4 py-7" padded={false}>
+              <div className={displayCallout ? "h-52" : "h-24"}>
                 <SectionTitle title={T("payment.form.contributor.title")} />
                 <div className="relative z-10">
                   <ContributorSelect projectId={projectId} contributor={contributor} setContributor={setContributor} />
                 </div>
                 {displayCallout && (
-                  <div className="mx-4 pt-20">
+                  <div className="mx-4 pt-24">
                     <Callout>
                       <div className="flex flex-col gap-1">
                         <span className="text-base font-medium">
@@ -109,9 +109,9 @@ const View: React.FC<Props> = ({
                 )}
               </div>
               {contributor && (
-                <div className="pt-8">
+                <div className="pt-12">
                   <SectionTitle title={T("payment.form.workItems.title")} />
-                  <div className="flex flex-col gap-3 mx-4">
+                  <div className="flex flex-col gap-3 mx-4 pt-4">
                     <div className=" text-greyscale-300">{T("payment.form.workItems.subTitle")}</div>
                     {workItems.map(workItem => (
                       <GithubIssue

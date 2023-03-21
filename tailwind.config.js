@@ -75,6 +75,10 @@ module.exports = {
           800: "#460066",
           900: "#230033",
         },
+        whiteFakeOpacity: {
+          5: "#111127",
+          12: "#4C4B58",
+        },
       },
       animation: {
         "spin-invert-slow": "spin-invert 4s linear infinite",

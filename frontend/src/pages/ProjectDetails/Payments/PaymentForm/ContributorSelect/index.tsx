@@ -61,7 +61,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
         filteredContributors?.find(contributor => contributor.login === selectedGithubHandle) ||
           filteredExternalContributors?.find(contributor => contributor.login === selectedGithubHandle)
       ),
-    [selectedGithubHandle]
+    [selectedGithubHandle, filteredContributors, filteredExternalContributors]
   );
 
   return (
