@@ -3,11 +3,14 @@ use async_trait::async_trait;
 use derive_more::Constructor;
 use domain::{BudgetEvent, Event, PaymentEvent, ProjectEvent, SubscriberCallbackError};
 use rust_decimal::{prelude::ToPrimitive, Decimal};
+use serde::Deserialize;
 use tracing::instrument;
 
 use crate::{
-	domain::{Budget, EventListener, Payment, PaymentRequest},
-	infrastructure::database::{BudgetRepository, PaymentRepository, PaymentRequestRepository},
+	domain::{Budget, EventListener, Payment, PaymentRequest, WorkItem},
+	infrastructure::database::{
+		BudgetRepository, PaymentRepository, PaymentRequestRepository, WorkItemRepository,
+	},
 };
 
 #[derive(Constructor)]
@@ -15,6 +18,12 @@ pub struct Projector {
 	payment_request_repository: PaymentRequestRepository,
 	payment_repository: PaymentRepository,
 	budget_repository: BudgetRepository,
+	work_item_repository: WorkItemRepository,
+}
+
+#[derive(Deserialize)]
+pub struct Reason {
+	work_items: Vec<String>,
 }
 
 #[async_trait]
@@ -66,13 +75,30 @@ impl EventListener for Projector {
 							*requestor_id,
 							*recipient_id,
 							amount.amount().to_i64().ok_or_else(|| {
-								SubscriberCallbackError::Fatal(anyhow!(
+								SubscriberCallbackError::Discard(anyhow!(
 									"Failed to project invalid amount {amount}"
 								))
 							})?,
 							*requested_at,
 							None,
 						))?;
+
+						serde_json::from_value::<Reason>(reason.clone())
+							.map_err(|e| SubscriberCallbackError::Discard(anyhow!(e)))?
+							.work_items
+							.iter()
+							.try_for_each(|url| {
+								let url = url.parse().map_err(|e: url::ParseError| {
+									SubscriberCallbackError::Discard(anyhow!(e))
+								})?;
+
+								let work_item = WorkItem::from_url(*payment_id, url)
+									.map_err(|e| SubscriberCallbackError::Discard(anyhow!(e)))?;
+
+								self.work_item_repository.upsert(&work_item)?;
+
+								Result::<_, SubscriberCallbackError>::Ok(())
+							})?;
 					},
 					PaymentEvent::Cancelled { id: payment_id } => {
 						let payment_request =
@@ -81,6 +107,7 @@ impl EventListener for Projector {
 						budget.remaining_amount += Decimal::from(*payment_request.amount_in_usd());
 						self.budget_repository.update(budget_id, &budget)?;
 						self.payment_request_repository.delete(payment_id)?;
+						self.work_item_repository.delete_by_payment_id(payment_id)?;
 					},
 					PaymentEvent::Processed {
 						id: payment_id,
