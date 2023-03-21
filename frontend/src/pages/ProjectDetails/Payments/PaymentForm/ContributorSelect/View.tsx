@@ -50,7 +50,7 @@ export default function ContributorSelectView({
         <div className={classNames("absolute w-full top-0", { "bg-[#111127] rounded-2xl": open })}>
           <div
             className={classNames("flex flex-col gap-3", {
-              "outline outline-greyscale-50/12 rounded-2xl backdrop-blur-4xl": open,
+              "outline outline-[#4C4B58] rounded-2xl backdrop-blur-4xl": open,
             })}
           >
             <Combobox.Button className={classNames("px-3 pt-4 text-spaceBlue-200")}>
