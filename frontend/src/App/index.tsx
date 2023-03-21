@@ -19,7 +19,6 @@ const ProjectDetailsPaymentForm = lazy(() => import("src/pages/ProjectDetails/Pa
 
 import { CustomUserRole, HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/Loader";
-import ScrollToTop from "src/App/ScrollToTop";
 import ErrorTrigger from "src/pages/ErrorTrigger";
 
 export enum RoutePaths {
@@ -119,7 +118,6 @@ function App() {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <ScrollToTop />
       <Suspense
         fallback={
           <div className="h-screen">
