@@ -45,32 +45,45 @@ export default function ContributorSelectView({
   const showExternalUsersSection = !!(githubHandleSubstring && githubHandleSubstring.length > 2);
 
   return (
-    <Combobox value={selectedGithubHandle} onChange={setSelectedGithubHandle} nullable>
+    <Combobox
+      value={selectedGithubHandle}
+      onChange={value => {
+        setGithubHandleSubstring(value);
+        setSelectedGithubHandle(value);
+      }}
+      nullable
+    >
       {({ open }) => (
         <div className={classNames("absolute w-full top-0", { "bg-[#111127] rounded-2xl": open })}>
           <div
             className={classNames("flex flex-col gap-3", {
-              "outline outline-[#4C4B58] rounded-2xl backdrop-blur-4xl": open,
+              "outline outline-1 outline-[#4C4B58] rounded-2xl backdrop-blur-4xl": open,
             })}
           >
-            <Combobox.Button className={classNames("px-3 pt-4 text-spaceBlue-200")}>
+            <Combobox.Button className="px-3 pt-4">
               <div
                 className={classNames(
-                  "flex flex-row items-center justify-between w-full bg-white/5 rounded-2xl px-4 h-12 border border-greyscale-50/8",
+                  "flex flex-row items-center justify-between w-full rounded-2xl px-4 h-12 border border-greyscale-50/8",
                   {
-                    "ring-solid ring-2 ring-spacePurple-500": open,
+                    "text-greyscale-50": open && (githubHandleSubstring || selectedGithubHandle || contributor),
+                    "bg-spacePurple-900 text-spacePurple-500 ring-solid ring-2 ring-spacePurple-500":
+                      open && (githubHandleSubstring === "" || githubHandleSubstring === null),
+                    "bg-white/5": !open || githubHandleSubstring,
+                    "text-spaceBlue-200": !open && !(githubHandleSubstring || selectedGithubHandle),
                   }
                 )}
               >
                 <div className="flex flex-row items-center w-full cursor-default">
                   <div className="pr-2 text-2xl">
                     {contributor ? (
-                      <RoundedImage
-                        src={contributor.avatarUrl}
-                        alt={contributor.login}
-                        size={ImageSize.Sm}
-                        rounding={Rounding.Circle}
-                      />
+                      <div className="pr-0.5">
+                        <RoundedImage
+                          src={contributor.avatarUrl}
+                          alt={contributor.login}
+                          size={ImageSize.Sm}
+                          rounding={Rounding.Circle}
+                        />
+                      </div>
                     ) : (
                       <div className="pt-0.5">
                         <User3Line />
@@ -81,9 +94,9 @@ export default function ContributorSelectView({
                     onChange={event => setGithubHandleSubstring(event.target.value)}
                     className={classNames(
                       "border-none outline-none w-full bg-transparent font-normal text-base pt-0.5",
-                      { "text-white": githubHandleSubstring !== "" }
+                      { "font-medium": !open && selectedGithubHandle }
                     )}
-                    placeholder={T("payment.form.contributor.select.placeholder")}
+                    placeholder={open ? "" : T("payment.form.contributor.select.placeholder")}
                     onFocus={() => {
                       setGithubHandleSubstring(selectedGithubHandle);
                     }}
