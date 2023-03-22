@@ -28,5 +28,21 @@ module.exports = {
     "./frontend/src/__generated/graphql.schema.json": {
       plugins: ["introspection"],
     },
+    "./playwright/__generated/graphql.tsx": {
+      plugins: ["typescript", "typescript-operations", "typescript-react-apollo"],
+      config: {
+        avoidOptionals: true,
+        skipTypename: false,
+      },
+      documents: ["./playwright/**/*.ts"],
+      schema: {
+        [getHasuraUrl()]: {
+          headers: {
+            "X-Hasura-Admin-Secret": getHasuraSecretKey(),
+            "X-Hasura-Role": "admin",
+          },
+        },
+      },
+    },
   },
 };
