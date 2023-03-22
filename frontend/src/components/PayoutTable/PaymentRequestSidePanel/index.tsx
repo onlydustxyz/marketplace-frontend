@@ -43,6 +43,13 @@ const GET_PAYMENT_REQUEST_DETAILS = gql`
     id
     amountInUsd
     requestedAt
+    paymentsAggregate {
+      aggregate {
+        max {
+          processedAt
+        }
+      }
+    }
     invoiceReceivedAt
     requestor {
       id
