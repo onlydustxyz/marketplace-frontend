@@ -1,4 +1,5 @@
 import { SliderButton } from "@typeform/embed-react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import Button, { Width } from "src/components/Button";
 import Card from "src/components/Card";
 import { Payment } from "src/components/PayoutTable/Line";
@@ -21,6 +22,26 @@ type Props = {
 export default function InvoiceSubmission({ paymentRequests, githubUserId, markInvoiceAsReceived, userInfos }: Props) {
   const { T } = useIntl();
 
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isClosed, setIsClosed] = useState(false);
+
+  const onSliderSubmit = useCallback(() => setIsSubmitted(true), []);
+  const onSliderClose = useCallback(() => {
+    setIsClosed(true);
+  }, []);
+  const hiddenFields = useMemo(
+    () => buildHiddenFields({ paymentRequests, githubUserId, userInfos }),
+    [paymentRequests, githubUserId, userInfos]
+  );
+
+  useEffect(() => {
+    if (isClosed && isSubmitted) {
+      markInvoiceAsReceived();
+      setIsClosed(false);
+      setIsSubmitted(false);
+    }
+  }, [isClosed, isSubmitted, markInvoiceAsReceived]);
+
   return (
     <Card padded={false} className="py-5 px-6">
       <div className="flex flex-col gap-6">
@@ -28,27 +49,43 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, markI
           <span className="text-lg font-medium">{T("invoiceSubmission.title")}</span>
           <span className="text-sm font-normal">{T("invoiceSubmission.text", { count: paymentRequests.length })}</span>
         </div>
-        <SliderButton
-          id="Eg67bRev"
-          iframeProps={{ title: T("invoiceSubmission.sidePanel.title") }}
-          opacity={100}
-          position="right"
-          autoClose={true}
-          medium="snippet"
-          hidden={buildHiddenFields({ paymentRequests, githubUserId, userInfos })}
-          transitiveSearchParams={true}
-          as="div"
-          onSubmit={() => markInvoiceAsReceived()}
-        >
-          <Button width={Width.Full}>
-            <Attachment2 className="text-xl" />
-            {T("invoiceSubmission.submitButton")}
-          </Button>
-        </SliderButton>
+        <MemoizedSlider onSubmit={onSliderSubmit} onClose={onSliderClose} hiddenFields={hiddenFields} />
       </div>
     </Card>
   );
 }
+
+interface SliderProps {
+  onSubmit: () => void;
+  onClose: () => void;
+  hiddenFields: Record<string, string>;
+}
+
+function Slider({ onSubmit, onClose, hiddenFields }: SliderProps) {
+  const { T } = useIntl();
+  return (
+    <SliderButton
+      id="Eg67bRev"
+      iframeProps={{ title: T("invoiceSubmission.sidePanel.title") }}
+      opacity={100}
+      autoClose={100}
+      position="right"
+      medium="snippet"
+      hidden={hiddenFields}
+      transitiveSearchParams={true}
+      as="div"
+      onSubmit={onSubmit}
+      onClose={onClose}
+    >
+      <Button width={Width.Full}>
+        <Attachment2 className="text-xl" />
+        {T("invoiceSubmission.submitButton")}
+      </Button>
+    </SliderButton>
+  );
+}
+
+const MemoizedSlider = memo(Slider);
 
 export function buildHiddenFields({
   githubUserId,
