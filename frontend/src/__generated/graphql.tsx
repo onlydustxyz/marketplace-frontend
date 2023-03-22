@@ -3598,14 +3598,14 @@ export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequ
 
 export type IssueDetailsFragment = { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null };
 
-export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', max: { __typename?: 'PaymentsMaxFields', processedAt: any | null } | null } | null }, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any } | null, workItems: Array<{ __typename?: 'WorkItems', githubIssue: { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null }> };
+export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', max: { __typename?: 'PaymentsMaxFields', processedAt: any | null } | null, sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any } | null, workItems: Array<{ __typename?: 'WorkItems', githubIssue: { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null }> };
 
 export type PaymentRequestDetailsQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', max: { __typename?: 'PaymentsMaxFields', processedAt: any | null } | null } | null }, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any } | null, workItems: Array<{ __typename?: 'WorkItems', githubIssue: { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null }> } | null };
+export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', max: { __typename?: 'PaymentsMaxFields', processedAt: any | null } | null, sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any } | null, workItems: Array<{ __typename?: 'WorkItems', githubIssue: { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null }> } | null };
 
 export type ProjectCardGithubRepoFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null };
 
@@ -3878,6 +3878,13 @@ export const PaymentRequestDetailsFragmentDoc = gql`
   workItems {
     githubIssue {
       ...IssueDetails
+    }
+  }
+  paymentsAggregate {
+    aggregate {
+      sum {
+        amount
+      }
     }
   }
 }
