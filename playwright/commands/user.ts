@@ -65,6 +65,8 @@ export const createGithubUser = async (
       accessToken: getEnv("GITHUB_PAT_FOR_E2E_TESTS_USERS"),
     },
   });
+
+  return { userId, email, password };
 };
 
 const GET_USER_BY_EMAIL = gql(`

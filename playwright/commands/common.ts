@@ -10,9 +10,6 @@ import {
 } from "@apollo/client/core";
 import { expect } from "@playwright/test";
 
-export type Url = string;
-export type Uuid = string;
-
 export const getEnv = (key: string) => {
   const value = process.env[key];
   if (value !== undefined) {

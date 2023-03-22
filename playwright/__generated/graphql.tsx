@@ -9520,6 +9520,62 @@ export type ContributorIdFragment = { __typename?: 'User', id: number };
 
 export type ProjectContributorsFragment = { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }> };
 
+export type RequestPaymentMutationVariables = Exact<{
+  amount: Scalars['Int'];
+  projectId: Scalars['Uuid'];
+  recipientId: Scalars['Int'];
+  reason: Reason;
+}>;
+
+
+export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
+
+export type CancelPaymentRequestMutationVariables = Exact<{
+  projectId: Scalars['Uuid'];
+  paymentId: Scalars['Uuid'];
+}>;
+
+
+export type CancelPaymentRequestMutation = { __typename?: 'mutation_root', cancelPaymentRequest: any };
+
+export type RejectInvoiceMutationVariables = Exact<{
+  paymentReferences: Array<PaymentReference> | PaymentReference;
+}>;
+
+
+export type RejectInvoiceMutation = { __typename?: 'mutation_root', rejectInvoice: number };
+
+export type AddEthPaymentReceiptMutationVariables = Exact<{
+  projectId: Scalars['Uuid'];
+  paymentId: Scalars['Uuid'];
+  amount: Scalars['String'];
+  currencyCode: Scalars['String'];
+  recipientIdentity: EthereumIdentityInput;
+  transactionHash: Scalars['String'];
+}>;
+
+
+export type AddEthPaymentReceiptMutation = { __typename?: 'mutation_root', addEthPaymentReceipt: any };
+
+export type AddFiatPaymentReceiptMutationVariables = Exact<{
+  projectId: Scalars['Uuid'];
+  paymentId: Scalars['Uuid'];
+  amount: Scalars['String'];
+  currencyCode: Scalars['String'];
+  recipientIban: Scalars['String'];
+  transactionReference: Scalars['String'];
+}>;
+
+
+export type AddFiatPaymentReceiptMutation = { __typename?: 'mutation_root', addFiatPaymentReceipt: any };
+
+export type PaymentRequestsByPkQueryVariables = Exact<{
+  paymentId: Scalars['uuid'];
+}>;
+
+
+export type PaymentRequestsByPkQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any } | null };
+
 export type CreateProjectMutationVariables = Exact<{
   projectName: Scalars['String'];
   telegramLink: Scalars['Url'];
@@ -9590,6 +9646,41 @@ export type InviteProjectLeaderMutationVariables = Exact<{
 
 
 export type InviteProjectLeaderMutation = { __typename?: 'mutation_root', inviteProjectLeader: any };
+
+export type CreateSponsorMutationVariables = Exact<{
+  name: Scalars['String'];
+  logoUrl: Scalars['Url'];
+  url: InputMaybe<Scalars['Url']>;
+}>;
+
+
+export type CreateSponsorMutation = { __typename?: 'mutation_root', createSponsor: any };
+
+export type UpdateSponsorMutationVariables = Exact<{
+  sponsorId: Scalars['Uuid'];
+  name: InputMaybe<Scalars['String']>;
+  logoUrl: InputMaybe<Scalars['Url']>;
+  url: InputMaybe<Scalars['Url']>;
+}>;
+
+
+export type UpdateSponsorMutation = { __typename?: 'mutation_root', updateSponsor: any };
+
+export type AddSponsorToProjectMutationVariables = Exact<{
+  projectId: Scalars['Uuid'];
+  sponsorId: Scalars['Uuid'];
+}>;
+
+
+export type AddSponsorToProjectMutation = { __typename?: 'mutation_root', addSponsorToProject: any };
+
+export type RemoveSponsorFromProjectMutationVariables = Exact<{
+  projectId: Scalars['Uuid'];
+  sponsorId: Scalars['Uuid'];
+}>;
+
+
+export type RemoveSponsorFromProjectMutation = { __typename?: 'mutation_root', removeSponsorFromProject: any };
 
 export type GetUserByEmailQueryVariables = Exact<{
   email: Scalars['citext'];
@@ -11009,6 +11100,229 @@ export function useGetAllFilterOptionsLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetAllFilterOptionsQueryHookResult = ReturnType<typeof useGetAllFilterOptionsQuery>;
 export type GetAllFilterOptionsLazyQueryHookResult = ReturnType<typeof useGetAllFilterOptionsLazyQuery>;
 export type GetAllFilterOptionsQueryResult = Apollo.QueryResult<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>;
+export const RequestPaymentDocument = gql`
+    mutation requestPayment($amount: Int!, $projectId: Uuid!, $recipientId: Int!, $reason: Reason!) {
+  requestPayment(
+    amountInUsd: $amount
+    projectId: $projectId
+    recipientId: $recipientId
+    reason: $reason
+  )
+}
+    `;
+export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMutation, RequestPaymentMutationVariables>;
+
+/**
+ * __useRequestPaymentMutation__
+ *
+ * To run a mutation, you first call `useRequestPaymentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRequestPaymentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [requestPaymentMutation, { data, loading, error }] = useRequestPaymentMutation({
+ *   variables: {
+ *      amount: // value for 'amount'
+ *      projectId: // value for 'projectId'
+ *      recipientId: // value for 'recipientId'
+ *      reason: // value for 'reason'
+ *   },
+ * });
+ */
+export function useRequestPaymentMutation(baseOptions?: Apollo.MutationHookOptions<RequestPaymentMutation, RequestPaymentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RequestPaymentMutation, RequestPaymentMutationVariables>(RequestPaymentDocument, options);
+      }
+export type RequestPaymentMutationHookResult = ReturnType<typeof useRequestPaymentMutation>;
+export type RequestPaymentMutationResult = Apollo.MutationResult<RequestPaymentMutation>;
+export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<RequestPaymentMutation, RequestPaymentMutationVariables>;
+export const CancelPaymentRequestDocument = gql`
+    mutation cancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
+  cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId)
+}
+    `;
+export type CancelPaymentRequestMutationFn = Apollo.MutationFunction<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>;
+
+/**
+ * __useCancelPaymentRequestMutation__
+ *
+ * To run a mutation, you first call `useCancelPaymentRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCancelPaymentRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cancelPaymentRequestMutation, { data, loading, error }] = useCancelPaymentRequestMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      paymentId: // value for 'paymentId'
+ *   },
+ * });
+ */
+export function useCancelPaymentRequestMutation(baseOptions?: Apollo.MutationHookOptions<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>(CancelPaymentRequestDocument, options);
+      }
+export type CancelPaymentRequestMutationHookResult = ReturnType<typeof useCancelPaymentRequestMutation>;
+export type CancelPaymentRequestMutationResult = Apollo.MutationResult<CancelPaymentRequestMutation>;
+export type CancelPaymentRequestMutationOptions = Apollo.BaseMutationOptions<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>;
+export const RejectInvoiceDocument = gql`
+    mutation rejectInvoice($paymentReferences: [PaymentReference!]!) {
+  rejectInvoice(paymentReferences: $paymentReferences)
+}
+    `;
+export type RejectInvoiceMutationFn = Apollo.MutationFunction<RejectInvoiceMutation, RejectInvoiceMutationVariables>;
+
+/**
+ * __useRejectInvoiceMutation__
+ *
+ * To run a mutation, you first call `useRejectInvoiceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRejectInvoiceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [rejectInvoiceMutation, { data, loading, error }] = useRejectInvoiceMutation({
+ *   variables: {
+ *      paymentReferences: // value for 'paymentReferences'
+ *   },
+ * });
+ */
+export function useRejectInvoiceMutation(baseOptions?: Apollo.MutationHookOptions<RejectInvoiceMutation, RejectInvoiceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RejectInvoiceMutation, RejectInvoiceMutationVariables>(RejectInvoiceDocument, options);
+      }
+export type RejectInvoiceMutationHookResult = ReturnType<typeof useRejectInvoiceMutation>;
+export type RejectInvoiceMutationResult = Apollo.MutationResult<RejectInvoiceMutation>;
+export type RejectInvoiceMutationOptions = Apollo.BaseMutationOptions<RejectInvoiceMutation, RejectInvoiceMutationVariables>;
+export const AddEthPaymentReceiptDocument = gql`
+    mutation addEthPaymentReceipt($projectId: Uuid!, $paymentId: Uuid!, $amount: String!, $currencyCode: String!, $recipientIdentity: EthereumIdentityInput!, $transactionHash: String!) {
+  addEthPaymentReceipt(
+    projectId: $projectId
+    paymentId: $paymentId
+    amount: $amount
+    currencyCode: $currencyCode
+    recipientIdentity: $recipientIdentity
+    transactionHash: $transactionHash
+  )
+}
+    `;
+export type AddEthPaymentReceiptMutationFn = Apollo.MutationFunction<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>;
+
+/**
+ * __useAddEthPaymentReceiptMutation__
+ *
+ * To run a mutation, you first call `useAddEthPaymentReceiptMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddEthPaymentReceiptMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addEthPaymentReceiptMutation, { data, loading, error }] = useAddEthPaymentReceiptMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      paymentId: // value for 'paymentId'
+ *      amount: // value for 'amount'
+ *      currencyCode: // value for 'currencyCode'
+ *      recipientIdentity: // value for 'recipientIdentity'
+ *      transactionHash: // value for 'transactionHash'
+ *   },
+ * });
+ */
+export function useAddEthPaymentReceiptMutation(baseOptions?: Apollo.MutationHookOptions<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>(AddEthPaymentReceiptDocument, options);
+      }
+export type AddEthPaymentReceiptMutationHookResult = ReturnType<typeof useAddEthPaymentReceiptMutation>;
+export type AddEthPaymentReceiptMutationResult = Apollo.MutationResult<AddEthPaymentReceiptMutation>;
+export type AddEthPaymentReceiptMutationOptions = Apollo.BaseMutationOptions<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>;
+export const AddFiatPaymentReceiptDocument = gql`
+    mutation addFiatPaymentReceipt($projectId: Uuid!, $paymentId: Uuid!, $amount: String!, $currencyCode: String!, $recipientIban: String!, $transactionReference: String!) {
+  addFiatPaymentReceipt(
+    projectId: $projectId
+    paymentId: $paymentId
+    amount: $amount
+    currencyCode: $currencyCode
+    recipientIban: $recipientIban
+    transactionReference: $transactionReference
+  )
+}
+    `;
+export type AddFiatPaymentReceiptMutationFn = Apollo.MutationFunction<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>;
+
+/**
+ * __useAddFiatPaymentReceiptMutation__
+ *
+ * To run a mutation, you first call `useAddFiatPaymentReceiptMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddFiatPaymentReceiptMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addFiatPaymentReceiptMutation, { data, loading, error }] = useAddFiatPaymentReceiptMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      paymentId: // value for 'paymentId'
+ *      amount: // value for 'amount'
+ *      currencyCode: // value for 'currencyCode'
+ *      recipientIban: // value for 'recipientIban'
+ *      transactionReference: // value for 'transactionReference'
+ *   },
+ * });
+ */
+export function useAddFiatPaymentReceiptMutation(baseOptions?: Apollo.MutationHookOptions<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>(AddFiatPaymentReceiptDocument, options);
+      }
+export type AddFiatPaymentReceiptMutationHookResult = ReturnType<typeof useAddFiatPaymentReceiptMutation>;
+export type AddFiatPaymentReceiptMutationResult = Apollo.MutationResult<AddFiatPaymentReceiptMutation>;
+export type AddFiatPaymentReceiptMutationOptions = Apollo.BaseMutationOptions<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>;
+export const PaymentRequestsByPkDocument = gql`
+    query paymentRequestsByPk($paymentId: uuid!) {
+  paymentRequestsByPk(id: $paymentId) {
+    id
+  }
+}
+    `;
+
+/**
+ * __usePaymentRequestsByPkQuery__
+ *
+ * To run a query within a React component, call `usePaymentRequestsByPkQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePaymentRequestsByPkQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePaymentRequestsByPkQuery({
+ *   variables: {
+ *      paymentId: // value for 'paymentId'
+ *   },
+ * });
+ */
+export function usePaymentRequestsByPkQuery(baseOptions: Apollo.QueryHookOptions<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>(PaymentRequestsByPkDocument, options);
+      }
+export function usePaymentRequestsByPkLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>(PaymentRequestsByPkDocument, options);
+        }
+export type PaymentRequestsByPkQueryHookResult = ReturnType<typeof usePaymentRequestsByPkQuery>;
+export type PaymentRequestsByPkLazyQueryHookResult = ReturnType<typeof usePaymentRequestsByPkLazyQuery>;
+export type PaymentRequestsByPkQueryResult = Apollo.QueryResult<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>;
 export const CreateProjectDocument = gql`
     mutation createProject($projectName: String!, $telegramLink: Url!, $logoUrl: Url!, $shortDescription: String!, $longDescription: String!, $initialBudget: Int) {
   createProject(
@@ -11292,6 +11606,137 @@ export function useInviteProjectLeaderMutation(baseOptions?: Apollo.MutationHook
 export type InviteProjectLeaderMutationHookResult = ReturnType<typeof useInviteProjectLeaderMutation>;
 export type InviteProjectLeaderMutationResult = Apollo.MutationResult<InviteProjectLeaderMutation>;
 export type InviteProjectLeaderMutationOptions = Apollo.BaseMutationOptions<InviteProjectLeaderMutation, InviteProjectLeaderMutationVariables>;
+export const CreateSponsorDocument = gql`
+    mutation createSponsor($name: String!, $logoUrl: Url!, $url: Url) {
+  createSponsor(name: $name, logoUrl: $logoUrl, url: $url)
+}
+    `;
+export type CreateSponsorMutationFn = Apollo.MutationFunction<CreateSponsorMutation, CreateSponsorMutationVariables>;
+
+/**
+ * __useCreateSponsorMutation__
+ *
+ * To run a mutation, you first call `useCreateSponsorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSponsorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSponsorMutation, { data, loading, error }] = useCreateSponsorMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      logoUrl: // value for 'logoUrl'
+ *      url: // value for 'url'
+ *   },
+ * });
+ */
+export function useCreateSponsorMutation(baseOptions?: Apollo.MutationHookOptions<CreateSponsorMutation, CreateSponsorMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSponsorMutation, CreateSponsorMutationVariables>(CreateSponsorDocument, options);
+      }
+export type CreateSponsorMutationHookResult = ReturnType<typeof useCreateSponsorMutation>;
+export type CreateSponsorMutationResult = Apollo.MutationResult<CreateSponsorMutation>;
+export type CreateSponsorMutationOptions = Apollo.BaseMutationOptions<CreateSponsorMutation, CreateSponsorMutationVariables>;
+export const UpdateSponsorDocument = gql`
+    mutation updateSponsor($sponsorId: Uuid!, $name: String, $logoUrl: Url, $url: Url) {
+  updateSponsor(sponsorId: $sponsorId, name: $name, logoUrl: $logoUrl, url: $url)
+}
+    `;
+export type UpdateSponsorMutationFn = Apollo.MutationFunction<UpdateSponsorMutation, UpdateSponsorMutationVariables>;
+
+/**
+ * __useUpdateSponsorMutation__
+ *
+ * To run a mutation, you first call `useUpdateSponsorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSponsorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSponsorMutation, { data, loading, error }] = useUpdateSponsorMutation({
+ *   variables: {
+ *      sponsorId: // value for 'sponsorId'
+ *      name: // value for 'name'
+ *      logoUrl: // value for 'logoUrl'
+ *      url: // value for 'url'
+ *   },
+ * });
+ */
+export function useUpdateSponsorMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSponsorMutation, UpdateSponsorMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSponsorMutation, UpdateSponsorMutationVariables>(UpdateSponsorDocument, options);
+      }
+export type UpdateSponsorMutationHookResult = ReturnType<typeof useUpdateSponsorMutation>;
+export type UpdateSponsorMutationResult = Apollo.MutationResult<UpdateSponsorMutation>;
+export type UpdateSponsorMutationOptions = Apollo.BaseMutationOptions<UpdateSponsorMutation, UpdateSponsorMutationVariables>;
+export const AddSponsorToProjectDocument = gql`
+    mutation addSponsorToProject($projectId: Uuid!, $sponsorId: Uuid!) {
+  addSponsorToProject(projectId: $projectId, sponsorId: $sponsorId)
+}
+    `;
+export type AddSponsorToProjectMutationFn = Apollo.MutationFunction<AddSponsorToProjectMutation, AddSponsorToProjectMutationVariables>;
+
+/**
+ * __useAddSponsorToProjectMutation__
+ *
+ * To run a mutation, you first call `useAddSponsorToProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddSponsorToProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addSponsorToProjectMutation, { data, loading, error }] = useAddSponsorToProjectMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      sponsorId: // value for 'sponsorId'
+ *   },
+ * });
+ */
+export function useAddSponsorToProjectMutation(baseOptions?: Apollo.MutationHookOptions<AddSponsorToProjectMutation, AddSponsorToProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddSponsorToProjectMutation, AddSponsorToProjectMutationVariables>(AddSponsorToProjectDocument, options);
+      }
+export type AddSponsorToProjectMutationHookResult = ReturnType<typeof useAddSponsorToProjectMutation>;
+export type AddSponsorToProjectMutationResult = Apollo.MutationResult<AddSponsorToProjectMutation>;
+export type AddSponsorToProjectMutationOptions = Apollo.BaseMutationOptions<AddSponsorToProjectMutation, AddSponsorToProjectMutationVariables>;
+export const RemoveSponsorFromProjectDocument = gql`
+    mutation removeSponsorFromProject($projectId: Uuid!, $sponsorId: Uuid!) {
+  removeSponsorFromProject(projectId: $projectId, sponsorId: $sponsorId)
+}
+    `;
+export type RemoveSponsorFromProjectMutationFn = Apollo.MutationFunction<RemoveSponsorFromProjectMutation, RemoveSponsorFromProjectMutationVariables>;
+
+/**
+ * __useRemoveSponsorFromProjectMutation__
+ *
+ * To run a mutation, you first call `useRemoveSponsorFromProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveSponsorFromProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeSponsorFromProjectMutation, { data, loading, error }] = useRemoveSponsorFromProjectMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      sponsorId: // value for 'sponsorId'
+ *   },
+ * });
+ */
+export function useRemoveSponsorFromProjectMutation(baseOptions?: Apollo.MutationHookOptions<RemoveSponsorFromProjectMutation, RemoveSponsorFromProjectMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveSponsorFromProjectMutation, RemoveSponsorFromProjectMutationVariables>(RemoveSponsorFromProjectDocument, options);
+      }
+export type RemoveSponsorFromProjectMutationHookResult = ReturnType<typeof useRemoveSponsorFromProjectMutation>;
+export type RemoveSponsorFromProjectMutationResult = Apollo.MutationResult<RemoveSponsorFromProjectMutation>;
+export type RemoveSponsorFromProjectMutationOptions = Apollo.BaseMutationOptions<RemoveSponsorFromProjectMutation, RemoveSponsorFromProjectMutationVariables>;
 export const GetUserByEmailDocument = gql`
     query getUserByEmail($email: citext!) {
   users(where: {email: {_eq: $email}}) {

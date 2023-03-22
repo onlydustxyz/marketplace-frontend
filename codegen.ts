@@ -34,7 +34,7 @@ module.exports = {
         avoidOptionals: true,
         skipTypename: false,
       },
-      documents: ["./playwright/**/*.ts"],
+      documents: ["./playwright/**/*.ts", "./playwright/**/*.graphql"],
       schema: {
         [getHasuraUrl()]: {
           headers: {

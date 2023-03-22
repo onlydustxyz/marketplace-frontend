@@ -37,7 +37,7 @@ mutation addFiatPaymentReceipt($projectId:Uuid!, $paymentId:Uuid!, $amount:Strin
 `);
 
 export const GET_PAYMENT_REQUEST = gql(`
-query paymentRequestsByPk($paymentId:Uuid!) {
+query paymentRequestsByPk($paymentId:uuid!) {
     paymentRequestsByPk(id: $paymentId) {
         id
     }
