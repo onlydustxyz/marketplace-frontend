@@ -9,10 +9,11 @@ select_permissions:
   - role: project_lead_specific
     permission:
       columns:
-        - receipt
         - amount
         - currency_code
         - id
+        - processed_at
+        - receipt
         - request_id
       filter:
         paymentRequest:
@@ -28,6 +29,7 @@ select_permissions:
         - amount
         - currency_code
         - id
+        - processed_at
         - receipt
         - request_id
       filter:
