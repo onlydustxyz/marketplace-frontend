@@ -29,18 +29,31 @@ const HASURA_TOKEN_BASIC_TEST_VALUE = {
 const mockPaymentRequest = {
   id: "request-1",
   amountInUsd: 1000,
-  reason: {
-    work_items: ["", ""],
-  },
+  workItems: [
+    {
+      repoOwner: "onlydustxyz",
+      repoName: "marketplace",
+      issueNumber: 123,
+    },
+    {
+      repoOwner: "onlydustxyz",
+      repoName: "marketplace",
+      issueNumber: 124,
+    },
+  ],
   budget: { id: "budget-id", projectId: TEST_PROJECT_ID },
 };
 
 const mockPaymentRequest2 = {
   id: "request-2",
   amountInUsd: 500,
-  reason: {
-    work_items: [""],
-  },
+  workItems: [
+    {
+      repoOwner: "onlydustxyz",
+      repoName: "marketplace",
+      issueNumber: 123,
+    },
+  ],
   budget: { id: "budget-id", projectId: TEST_PROJECT_ID },
 };
 

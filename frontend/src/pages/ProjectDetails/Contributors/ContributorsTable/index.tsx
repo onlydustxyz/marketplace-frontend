@@ -27,7 +27,7 @@ const ContributorsTable: React.FC<PropsType> = ({
       htmlUrl: c.htmlUrl,
       isRegistered: !!c.user?.userId,
       totalEarned: paymentRequests.reduce((acc, r) => acc + r.amountInUsd || 0, 0),
-      paidContributions: paymentRequests.reduce((acc, r) => acc + r.reason.work_items?.length, 0) || 0,
+      paidContributions: paymentRequests.reduce((acc, r) => acc + r.workItems?.length, 0) || 0,
     };
   });
 
@@ -80,7 +80,11 @@ export const CONTRIBUTORS_TABLE_FRAGMENT = gql`
         projectId
       }
       amountInUsd
-      reason
+      workItems {
+        repoOwner
+        repoName
+        issueNumber
+      }
     }
   }
 `;

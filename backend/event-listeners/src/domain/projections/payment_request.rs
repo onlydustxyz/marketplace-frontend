@@ -3,7 +3,6 @@ use derive_getters::Getters;
 use derive_new::new;
 use domain::{BudgetId, GithubUserId, PaymentId, UserId};
 use infrastructure::database::schema::payment_requests;
-use serde_json::Value;
 
 #[allow(clippy::too_many_arguments)]
 #[derive(Debug, Insertable, Identifiable, Queryable, AsChangeset, new, Getters)]
@@ -14,7 +13,6 @@ pub struct PaymentRequest {
 	requestor_id: UserId,
 	recipient_id: GithubUserId,
 	amount_in_usd: i64,
-	reason: Value,
 	requested_at: NaiveDateTime,
 	pub invoice_received_at: Option<NaiveDateTime>,
 }

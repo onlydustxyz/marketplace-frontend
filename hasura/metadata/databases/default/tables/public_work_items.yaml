@@ -1,0 +1,12 @@
+table:
+  name: work_items
+  schema: public
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - payment_id
+        - repo_owner
+        - repo_name
+        - issue_number
+      filter: {}
