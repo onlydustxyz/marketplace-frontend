@@ -1,5 +1,5 @@
 import { APIRequestContext } from "@playwright/test";
-import { chain, zip } from "lodash";
+import { zip } from "lodash";
 import { users } from "../../fixtures/users";
 import { UserFixture } from "../../types";
 import {
@@ -11,10 +11,7 @@ import { mutateAsAdmin } from "../common";
 import { createGithubUser, signinUser } from "../user";
 
 export const populateUsers = async (request: APIRequestContext): Promise<Record<string, UserFixture>> => {
-  const userValues = chain(Object.values(users)).value();
-
-  const populatedUsers = await Promise.all(userValues.map(user => populateUser(request, user)));
-
+  const populatedUsers = await Promise.all(Object.values(users).map(user => populateUser(request, user)));
   return Object.fromEntries(zip(Object.keys(users), populatedUsers));
 };
 

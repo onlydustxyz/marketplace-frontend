@@ -34,9 +34,9 @@ export type ProjectFixture = {
   name: string;
   shortDescription: string;
   longDescription: string;
-  telegramLink?: Url;
-  logoUrl?: Url;
-  initialBudget?: number;
+  telegramLink: Url | null;
+  logoUrl: Url | null;
+  initialBudget: number | null;
   leaders?: string[];
   pendingLeaderInvitations?: string[];
   repos?: string[];
