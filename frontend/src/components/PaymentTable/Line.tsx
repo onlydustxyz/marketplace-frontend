@@ -12,13 +12,15 @@ import { PaymentRequestFragment } from "src/__generated/graphql";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
 import { useIntl } from "src/hooks/useIntl";
 import { pretty } from "src/utils/id";
+import { PaymentInfos } from ".";
 
 type Props = {
   payment: PaymentRequestFragment & Sortable;
   setSortingFields: (sortingFields: SortingFields) => void;
+  onClick: (infos: PaymentInfos) => void;
 };
 
-export default function PaymentLine({ payment, setSortingFields }: Props) {
+export default function PaymentLine({ payment, setSortingFields, onClick }: Props) {
   const { valid: payoutSettingsValid } = usePayoutSettings(payment.recipientId);
   const { data: recipient } = useGithubUser(payment.recipientId);
 
@@ -41,7 +43,10 @@ export default function PaymentLine({ payment, setSortingFields }: Props) {
   return (
     <>
       {payment && recipient && (
-        <Line highlightOnHover={200}>
+        <Line
+          highlightOnHover={200}
+          onClick={() => onClick({ payoutInfoMissing: !payoutSettingsValid, status: paymentStatus })}
+        >
           <Cell height={CellHeight.Medium}>{displayRelativeDate(payment.requestedAt)}</Cell>
           <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
             <RoundedImage src={recipient.avatarUrl} alt={recipient.login} rounding={Rounding.Circle} />

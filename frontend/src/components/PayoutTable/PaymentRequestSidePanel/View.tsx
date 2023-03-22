@@ -20,7 +20,7 @@ export type Props = {
   userId?: string;
   githubUserId?: number;
   payoutInfoMissing: boolean;
-  invoiceNeeded: boolean;
+  invoiceNeeded?: boolean;
 } & Partial<PaymentRequestDetailsFragment>;
 
 const Details = ({ children }: PropsWithChildren) => (

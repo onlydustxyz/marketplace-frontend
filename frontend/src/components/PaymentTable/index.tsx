@@ -1,14 +1,17 @@
-import { Sortable } from "src/types";
+import { PaymentStatus, Sortable } from "src/types";
 import Table from "src/components/Table";
 import usePaymentSorting, { SortingFields } from "src/hooks/usePaymentSorting";
 import Headers from "./Headers";
 import PaymentLine from "./Line";
 import { PaymentRequestFragment } from "src/__generated/graphql";
 import { useMemo, useState } from "react";
+import PaymentRequestSidePanel from "src/components/PayoutTable/PaymentRequestSidePanel";
 
 type Props = {
   payments: (PaymentRequestFragment & Sortable)[];
 };
+
+export type PaymentInfos = { payoutInfoMissing: boolean; status: PaymentStatus };
 
 export default function PaymentTable({ payments }: Props) {
   const [paymentSortingFields, setPaymentSortingFields] = useState<Record<string, SortingFields>>({});
@@ -21,15 +24,33 @@ export default function PaymentTable({ payments }: Props) {
 
   const sortedPayments = useMemo(() => sort(sortablePayments), [sort, sortablePayments]);
 
+  const [selectedPayment, setSelectedPayment] = useState<(PaymentRequestFragment & PaymentInfos) | null>(null);
+  const [sidePanelOpen, setSidePanelOpen] = useState(false);
+
   return (
-    <Table id="payment_table" headers={<Headers {...{ sorting, applySorting }} />}>
-      {sortedPayments.map(p => (
-        <PaymentLine
-          key={p.id}
-          payment={p}
-          setSortingFields={fields => setPaymentSortingFields(existing => ({ ...existing, [p.id]: fields }))}
+    <>
+      <Table id="payment_table" headers={<Headers {...{ sorting, applySorting }} />}>
+        {sortedPayments.map(p => (
+          <PaymentLine
+            key={p.id}
+            payment={p}
+            setSortingFields={fields => setPaymentSortingFields(existing => ({ ...existing, [p.id]: fields }))}
+            onClick={(infos: PaymentInfos) => {
+              setSelectedPayment({ ...p, ...infos });
+              setSidePanelOpen(true);
+            }}
+          />
+        ))}
+      </Table>
+      {selectedPayment && (
+        <PaymentRequestSidePanel
+          open={sidePanelOpen}
+          setOpen={setSidePanelOpen}
+          paymentId={selectedPayment.id}
+          payoutInfoMissing={selectedPayment.payoutInfoMissing}
+          status={selectedPayment.status}
         />
-      ))}
-    </Table>
+      )}
+    </>
   );
 }

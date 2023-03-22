@@ -11,7 +11,7 @@ type Props = {
   paymentId: string;
   status: PaymentStatus;
   payoutInfoMissing: boolean;
-  invoiceNeeded: boolean;
+  invoiceNeeded?: boolean;
 };
 
 export default function PaymentRequestSidePanel({ paymentId, ...props }: Props) {
