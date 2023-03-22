@@ -58,3 +58,6 @@ lerna-debug.log*
 
 # Emacs
 *~
+/test-results/
+/playwright-report/
+/playwright/.cache/
