@@ -156,6 +156,24 @@
       "contribution": "Contribution",
       "date": "Date",
       "githubLink": "#__pullRequestNumber__ · Github",
+      "paymentRequest": {
+        "many": "#__id__ · __count__ items",
+        "one": "#__id__ · 1 item",
+        "zero": "#__id__ · No item"
+      },
+      "detailsPanel": {
+        "from": {
+          "you": "from __user__ (you)",
+          "other": "from __user__"
+        },
+        "requestedAt": "Created __requestedAt__",
+        "title": "Payment #__id__",
+        "to": {
+          "you": "to __user__ (you)",
+          "other": "to __user__"
+        },
+        "workItems": "Included in payment"
+      },
       "status": "Status"
     },
     "tableFallback": {

@@ -3,18 +3,19 @@ import Cell from "src/components/Table/Cell";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import RoundedImage from "src/components/RoundedImage";
 import PayoutStatus from "src/components/PayoutStatus";
-import GithubPRLink from "./GithubPRLink";
 import { formatMoneyAmount } from "src/utils/money";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { Currency, getPaymentStatusOrder, PaymentStatus, PayoutSettings } from "src/types";
 import { Field, SortingFields } from "src/hooks/usePaymentSorting";
 import { useEffect } from "react";
 import { WorkItemFragment } from "src/__generated/graphql";
+import { useIntl } from "src/hooks/useIntl";
+import { pretty } from "src/utils/id";
 
 export type Payment = {
   id: string;
   requestedAt: Date;
-  reason?: WorkItemFragment;
+  workItems: WorkItemFragment[];
   amount: {
     value: number;
     currency: Currency;
@@ -35,29 +36,31 @@ type Props = {
   payoutInfoMissing: boolean;
   invoiceNeeded: boolean;
   setSortingFields: (sortingFields: SortingFields) => void;
+  onClick: () => void;
 };
 
-export default function PaymentLine({ payment, payoutInfoMissing, invoiceNeeded, setSortingFields }: Props) {
+export default function PaymentLine({ payment, payoutInfoMissing, invoiceNeeded, setSortingFields, onClick }: Props) {
   useEffect(() => {
     setSortingFields({
       [Field.Date]: payment.requestedAt,
-      [Field.Contribution]:
-        payment.project?.title?.toLocaleLowerCase() + payment.reason?.issueNumber.toString().padStart(10, "0"),
+      [Field.Contribution]: payment.project?.title?.toLocaleLowerCase() + payment.id,
       [Field.Amount]: payment.amount.value,
       [Field.Status]: getPaymentStatusOrder(payment.status),
     });
   }, []);
 
-  const githubLink = `https://github.com/${payment.reason?.repoOwner}/${payment.reason?.repoName}/pull/${payment.reason?.issueNumber}`;
+  const { T } = useIntl();
 
   return (
-    <Line highlightOnHover={200}>
+    <Line highlightOnHover={200} onClick={onClick}>
       <Cell>{displayRelativeDate(payment.requestedAt)}</Cell>
       <Cell className="flex flex-row gap-3">
         <RoundedImage src={payment?.project?.logoUrl || onlyDustLogo} alt={payment?.project?.title || ""} />
         <div className="flex flex-col truncate justify-center">
           <div className="font-normal text-base font-belwe">{payment?.project?.title}</div>
-          {payment.reason && <GithubPRLink link={githubLink}></GithubPRLink>}
+          <div className="text-spaceBlue-200">
+            {T("payment.table.paymentRequest", { id: pretty(payment.id), count: payment.workItems.length })}
+          </div>
         </div>
       </Cell>
       <Cell>{formatMoneyAmount({ amount: payment.amount.value, currency: payment.amount.currency })}</Cell>

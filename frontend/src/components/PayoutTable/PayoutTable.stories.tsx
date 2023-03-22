@@ -22,11 +22,18 @@ const mockPayments: Payment[] = [
       logoUrl: "https://avatars.githubusercontent.com/u/25772758?v=4",
     },
     status: PaymentStatus.ACCEPTED,
-    reason: {
-      repoOwner: "open-dust",
-      repoName: "cairo-foundry",
-      issueNumber: 110,
-    },
+    workItems: [
+      {
+        repoOwner: "open-dust",
+        repoName: "cairo-foundry",
+        issueNumber: 110,
+      },
+      {
+        repoOwner: "open-dust",
+        repoName: "cairo-foundry",
+        issueNumber: 111,
+      },
+    ],
     invoiceReceived: false,
   },
   {
@@ -37,11 +44,13 @@ const mockPayments: Payment[] = [
       id: "fea3c754-bf35-4f2b-aabc-ff345105322e",
       title: "Good Project",
     },
-    reason: {
-      repoOwner: "open-dust",
-      repoName: "cairo-foundry",
-      issueNumber: 110,
-    },
+    workItems: [
+      {
+        repoOwner: "open-dust",
+        repoName: "cairo-foundry",
+        issueNumber: 110,
+      },
+    ],
     status: PaymentStatus.WAITING_PAYMENT,
     invoiceReceived: true,
   },

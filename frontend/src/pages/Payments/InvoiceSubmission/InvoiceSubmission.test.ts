@@ -10,11 +10,13 @@ const paymentRequests: Payment[] = range(1, 4).map(id => ({
     value: 2000 + id * 100,
     currency: Currency.USD,
   },
-  reason: {
-    repoOwner: "onlydustxyz",
-    repoName: "marketplace",
-    issueNumber: 123,
-  },
+  workItems: [
+    {
+      repoOwner: "onlydustxyz",
+      repoName: "marketplace",
+      issueNumber: 123,
+    },
+  ],
   requestedAt: new Date(`December ${id + 10}, 2022`),
   status: PaymentStatus.WAITING_PAYMENT,
   invoiceReceived: id % 2 === 0,
