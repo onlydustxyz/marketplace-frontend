@@ -114,6 +114,7 @@ impl EventListener for Projector {
 						receipt_id,
 						amount,
 						receipt,
+						processed_at,
 					} => self.payment_repository.upsert(&Payment::new(
 						*receipt_id,
 						*amount.amount(),
@@ -121,6 +122,7 @@ impl EventListener for Projector {
 						serde_json::to_value(receipt)
 							.map_err(|e| SubscriberCallbackError::Discard(e.into()))?,
 						(*payment_id).into(),
+						*processed_at,
 					))?,
 					PaymentEvent::InvoiceReceived {
 						id: payment_id,
