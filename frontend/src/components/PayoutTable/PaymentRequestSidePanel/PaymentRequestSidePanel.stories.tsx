@@ -60,6 +60,9 @@ const payment: PaymentRequestDetailsFragment = {
   },
   invoiceReceivedAt: null,
   requestedAt: daysFromNow(7),
+  paymentsAggregate: {
+    aggregate: { max: { processedAt: daysFromNow(2) } },
+  },
   requestor: {
     id: "53c45a8e-c762-48b0-a677-6f48ddb8a66b",
     displayName: "Antho",

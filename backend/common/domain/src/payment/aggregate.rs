@@ -116,6 +116,7 @@ impl Payment {
 			amount,
 			receipt_id,
 			receipt,
+			processed_at: Utc::now().naive_utc(),
 		}];
 
 		Ok(events)
@@ -173,7 +174,7 @@ mod tests {
 
 	use assert_matches::assert_matches;
 	use rstest::{fixture, rstest};
-	use testing::fixtures::payment::*;
+	use testing::fixtures::payment::constants::{CONTRACT_ADDRESSES, TRANSACTION_HASHES};
 	use uuid::Uuid;
 
 	use super::*;
@@ -226,23 +227,8 @@ mod tests {
 	fn receipt() -> PaymentReceipt {
 		PaymentReceipt::OnChainPayment {
 			network: BlockchainNetwork::Ethereum,
-			recipient_address: EthereumAddress::try_from(recipient_address()).unwrap(),
-			transaction_hash: transaction_hash(),
-		}
-	}
-
-	#[fixture]
-	fn payment_created_event(
-		payment_receipt_id: PaymentReceiptId,
-		payment_id: PaymentId,
-		amount: Amount,
-		receipt: PaymentReceipt,
-	) -> PaymentEvent {
-		PaymentEvent::Processed {
-			id: payment_id,
-			receipt_id: payment_receipt_id,
-			amount,
-			receipt,
+			recipient_address: EthereumAddress::try_from(CONTRACT_ADDRESSES[0]).unwrap(),
+			transaction_hash: TRANSACTION_HASHES[0].parse().unwrap(),
 		}
 	}
 
@@ -285,18 +271,34 @@ mod tests {
 
 	#[rstest]
 	async fn test_add_receipt(
+		payment_id: PaymentId,
 		payment_receipt_id: PaymentReceiptId,
-		payment_created_event: PaymentEvent,
 		amount: Amount,
 		receipt: PaymentReceipt,
 		#[future] requested_payment: Payment,
 	) {
 		let events = requested_payment
 			.await
-			.add_receipt(payment_receipt_id, amount, receipt)
+			.add_receipt(payment_receipt_id, amount.clone(), receipt.clone())
 			.expect("Problem when adding receipt");
 
-		assert_eq!(events, vec![payment_created_event]);
+		assert_eq!(events.len(), 1);
+
+		assert_matches!(
+			events.first().unwrap(),
+			PaymentEvent::Processed {
+				id,
+				receipt_id,
+				amount: event_amount,
+				receipt: event_receipt,
+				processed_at: _
+			} => {
+				assert_eq!(id, &payment_id);
+				assert_eq!(receipt_id, &payment_receipt_id);
+				assert_eq!(event_amount, &amount);
+				assert_eq!(event_receipt, &receipt);
+			}
+		);
 	}
 
 	#[rstest]

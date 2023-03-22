@@ -5,6 +5,7 @@ import QueryWrapper from "src/components/QueryWrapper";
 import RoundedImage, { ImageSize } from "src/components/RoundedImage";
 import SidePanel from "src/components/SidePanel";
 import { useIntl } from "src/hooks/useIntl";
+import CheckLine from "src/icons/CheckLine";
 import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
@@ -41,6 +42,7 @@ export default function View({
   payoutInfoMissing,
   invoiceNeeded,
   invoiceReceivedAt,
+  paymentsAggregate,
   ...props
 }: Props) {
   const { T } = useIntl();
@@ -77,6 +79,14 @@ export default function View({
             <Time className="text-base" />
             {T("payment.table.detailsPanel.requestedAt", { requestedAt: displayRelativeDate(requestedAt) })}
           </Details>
+          {status === PaymentStatus.ACCEPTED && (
+            <Details>
+              <CheckLine className="text-base" />
+              {T("payment.table.detailsPanel.processedAt", {
+                processedAt: displayRelativeDate(paymentsAggregate?.aggregate?.max?.processedAt),
+              })}
+            </Details>
+          )}
         </div>
         <div className="border-t border-greyscale-50/12" />
         <div className="flex flex-col gap-3 overflow-hidden -mr-4 h-full">

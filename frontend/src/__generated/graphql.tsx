@@ -809,6 +809,7 @@ export type Payments = {
   id: Scalars['uuid'];
   /** An object relationship */
   paymentRequest: PaymentRequests;
+  processedAt: Scalars['timestamp'];
   receipt: Scalars['jsonb'];
   requestId: Scalars['uuid'];
 };
@@ -879,6 +880,7 @@ export type PaymentsBoolExp = {
   currencyCode: InputMaybe<StringComparisonExp>;
   id: InputMaybe<UuidComparisonExp>;
   paymentRequest: InputMaybe<PaymentRequestsBoolExp>;
+  processedAt: InputMaybe<TimestampComparisonExp>;
   receipt: InputMaybe<JsonbComparisonExp>;
   requestId: InputMaybe<UuidComparisonExp>;
 };
@@ -889,6 +891,7 @@ export type PaymentsMaxFields = {
   amount: Maybe<Scalars['numeric']>;
   currencyCode: Maybe<Scalars['String']>;
   id: Maybe<Scalars['uuid']>;
+  processedAt: Maybe<Scalars['timestamp']>;
   requestId: Maybe<Scalars['uuid']>;
 };
 
@@ -898,6 +901,7 @@ export type PaymentsMinFields = {
   amount: Maybe<Scalars['numeric']>;
   currencyCode: Maybe<Scalars['String']>;
   id: Maybe<Scalars['uuid']>;
+  processedAt: Maybe<Scalars['timestamp']>;
   requestId: Maybe<Scalars['uuid']>;
 };
 
@@ -907,6 +911,7 @@ export type PaymentsOrderBy = {
   currencyCode: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
   paymentRequest: InputMaybe<PaymentRequestsOrderBy>;
+  processedAt: InputMaybe<OrderBy>;
   receipt: InputMaybe<OrderBy>;
   requestId: InputMaybe<OrderBy>;
 };
@@ -919,6 +924,8 @@ export enum PaymentsSelectColumn {
   CurrencyCode = 'currencyCode',
   /** column name */
   Id = 'id',
+  /** column name */
+  ProcessedAt = 'processedAt',
   /** column name */
   Receipt = 'receipt',
   /** column name */
@@ -2176,6 +2183,7 @@ export type Payments_Max_Order_By = {
   amount: InputMaybe<OrderBy>;
   currencyCode: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
+  processedAt: InputMaybe<OrderBy>;
   requestId: InputMaybe<OrderBy>;
 };
 
@@ -2184,6 +2192,7 @@ export type Payments_Min_Order_By = {
   amount: InputMaybe<OrderBy>;
   currencyCode: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
+  processedAt: InputMaybe<OrderBy>;
   requestId: InputMaybe<OrderBy>;
 };
 
@@ -2215,6 +2224,7 @@ export type Payments_StreamCursorValueInput = {
   amount: InputMaybe<Scalars['numeric']>;
   currencyCode: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['uuid']>;
+  processedAt: InputMaybe<Scalars['timestamp']>;
   receipt: InputMaybe<Scalars['jsonb']>;
   requestId: InputMaybe<Scalars['uuid']>;
 };
@@ -3588,14 +3598,14 @@ export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequ
 
 export type IssueDetailsFragment = { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null };
 
-export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any } | null, workItems: Array<{ __typename?: 'WorkItems', githubIssue: { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null }> };
+export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', max: { __typename?: 'PaymentsMaxFields', processedAt: any | null } | null } | null }, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any } | null, workItems: Array<{ __typename?: 'WorkItems', githubIssue: { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null }> };
 
 export type PaymentRequestDetailsQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any } | null, workItems: Array<{ __typename?: 'WorkItems', githubIssue: { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null }> } | null };
+export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', max: { __typename?: 'PaymentsMaxFields', processedAt: any | null } | null } | null }, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any } | null, workItems: Array<{ __typename?: 'WorkItems', githubIssue: { __typename?: 'Issue', id: number, number: number, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null }> } | null };
 
 export type ProjectCardGithubRepoFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null };
 
@@ -3847,6 +3857,13 @@ export const PaymentRequestDetailsFragmentDoc = gql`
   id
   amountInUsd
   requestedAt
+  paymentsAggregate {
+    aggregate {
+      max {
+        processedAt
+      }
+    }
+  }
   invoiceReceivedAt
   requestor {
     id

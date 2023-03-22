@@ -56,6 +56,7 @@ diesel::table! {
         currency_code -> Text,
         receipt -> Jsonb,
         request_id -> Uuid,
+        processed_at -> Timestamp,
     }
 }
 

@@ -167,6 +167,7 @@
           "other": "from __user__"
         },
         "requestedAt": "Created __requestedAt__",
+        "processedAt": "Completed __processedAt__",
         "title": "Payment #__id__",
         "to": {
           "you": "to __user__ (you)",
