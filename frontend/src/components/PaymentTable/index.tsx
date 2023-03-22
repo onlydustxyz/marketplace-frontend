@@ -1,4 +1,4 @@
-import { PaymentStatus, Sortable } from "src/types";
+import { Sortable } from "src/types";
 import Table from "src/components/Table";
 import usePaymentSorting, { SortingFields } from "src/hooks/usePaymentSorting";
 import Headers from "./Headers";
@@ -11,8 +11,6 @@ type Props = {
   payments: (PaymentRequestFragment & Sortable)[];
 };
 
-export type PaymentInfos = { payoutInfoMissing: boolean; status: PaymentStatus };
-
 export default function PaymentTable({ payments }: Props) {
   const [paymentSortingFields, setPaymentSortingFields] = useState<Record<string, SortingFields>>({});
   const { sort, sorting, applySorting } = usePaymentSorting();
@@ -24,7 +22,7 @@ export default function PaymentTable({ payments }: Props) {
 
   const sortedPayments = useMemo(() => sort(sortablePayments), [sort, sortablePayments]);
 
-  const [selectedPayment, setSelectedPayment] = useState<(PaymentRequestFragment & PaymentInfos) | null>(null);
+  const [selectedPayment, setSelectedPayment] = useState<PaymentRequestFragment | null>(null);
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   return (
@@ -35,21 +33,15 @@ export default function PaymentTable({ payments }: Props) {
             key={p.id}
             payment={p}
             setSortingFields={fields => setPaymentSortingFields(existing => ({ ...existing, [p.id]: fields }))}
-            onClick={(infos: PaymentInfos) => {
-              setSelectedPayment({ ...p, ...infos });
+            onClick={() => {
+              setSelectedPayment(p);
               setSidePanelOpen(true);
             }}
           />
         ))}
       </Table>
       {selectedPayment && (
-        <PaymentRequestSidePanel
-          open={sidePanelOpen}
-          setOpen={setSidePanelOpen}
-          paymentId={selectedPayment.id}
-          payoutInfoMissing={selectedPayment.payoutInfoMissing}
-          status={selectedPayment.status}
-        />
+        <PaymentRequestSidePanel open={sidePanelOpen} setOpen={setSidePanelOpen} paymentId={selectedPayment.id} />
       )}
     </>
   );

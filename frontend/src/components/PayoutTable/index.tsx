@@ -49,14 +49,7 @@ const PayoutTable: React.FC<PropsType> = ({ payments, payoutInfoMissing, invoice
         ))}
       </Table>
       {selectedPayment && (
-        <PaymentRequestSidePanel
-          open={sidePanelOpen}
-          setOpen={setSidePanelOpen}
-          paymentId={selectedPayment.id}
-          payoutInfoMissing={payoutInfoMissing}
-          invoiceNeeded={invoiceNeeded}
-          status={selectedPayment.status}
-        />
+        <PaymentRequestSidePanel open={sidePanelOpen} setOpen={setSidePanelOpen} paymentId={selectedPayment.id} />
       )}
     </>
   );
