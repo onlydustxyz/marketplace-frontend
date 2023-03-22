@@ -5,6 +5,7 @@ import Headers from "./Headers";
 import PaymentLine from "./Line";
 import { PaymentRequestFragment } from "src/__generated/graphql";
 import { useMemo, useState } from "react";
+import PaymentRequestSidePanel from "src/components/PayoutTable/PaymentRequestSidePanel";
 
 type Props = {
   payments: (PaymentRequestFragment & Sortable)[];
@@ -21,15 +22,32 @@ export default function PaymentTable({ payments }: Props) {
 
   const sortedPayments = useMemo(() => sort(sortablePayments), [sort, sortablePayments]);
 
+  const [selectedPayment, setSelectedPayment] = useState<PaymentRequestFragment | null>(null);
+  const [sidePanelOpen, setSidePanelOpen] = useState(false);
+
   return (
-    <Table id="payment_table" headers={<Headers {...{ sorting, applySorting }} />}>
-      {sortedPayments.map(p => (
-        <PaymentLine
-          key={p.id}
-          payment={p}
-          setSortingFields={fields => setPaymentSortingFields(existing => ({ ...existing, [p.id]: fields }))}
+    <>
+      <Table id="payment_table" headers={<Headers {...{ sorting, applySorting }} />}>
+        {sortedPayments.map(p => (
+          <PaymentLine
+            key={p.id}
+            payment={p}
+            setSortingFields={fields => setPaymentSortingFields(existing => ({ ...existing, [p.id]: fields }))}
+            onClick={() => {
+              setSelectedPayment(p);
+              setSidePanelOpen(true);
+            }}
+          />
+        ))}
+      </Table>
+      {selectedPayment && (
+        <PaymentRequestSidePanel
+          projectLeaderView
+          open={sidePanelOpen}
+          setOpen={setSidePanelOpen}
+          paymentId={selectedPayment.id}
         />
-      ))}
-    </Table>
+      )}
+    </>
   );
 }

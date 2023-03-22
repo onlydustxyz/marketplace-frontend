@@ -5,32 +5,34 @@ import RoundedImage, { Rounding } from "src/components/RoundedImage";
 import PayoutStatus from "src/components/PayoutStatus";
 import { formatMoneyAmount } from "src/utils/money";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import GithubPRLink from "src/components/PayoutTable/GithubPRLink";
 import useGithubUser from "src/hooks/useGithubUser";
 import { Field, SortingFields } from "src/hooks/usePaymentSorting";
 import { useEffect } from "react";
 import { PaymentRequestFragment } from "src/__generated/graphql";
 import usePayoutSettings from "src/hooks/usePayoutSettings";
+import { useIntl } from "src/hooks/useIntl";
+import { pretty } from "src/utils/id";
 
 type Props = {
   payment: PaymentRequestFragment & Sortable;
   setSortingFields: (sortingFields: SortingFields) => void;
+  onClick: () => void;
 };
 
-export default function PaymentLine({ payment, setSortingFields }: Props) {
+export default function PaymentLine({ payment, setSortingFields, onClick }: Props) {
   const { valid: payoutSettingsValid } = usePayoutSettings(payment.recipientId);
   const { data: recipient } = useGithubUser(payment.recipientId);
 
   const paidAmount = payment.payments.reduce((total, payment) => total + payment.amount, 0);
   const paymentStatus = paidAmount === payment.amountInUsd ? PaymentStatus.ACCEPTED : PaymentStatus.WAITING_PAYMENT;
-  const paymentReason = payment.workItems?.at(0);
+
+  const { T } = useIntl();
 
   useEffect(() => {
     if (recipient?.login && usePayoutSettings != undefined) {
       setSortingFields({
         [Field.Date]: new Date(payment.requestedAt),
-        [Field.Contribution]:
-          recipient.login.toLocaleLowerCase() + paymentReason?.issueNumber.toString().padStart(10, "0"),
+        [Field.Contribution]: recipient.login.toLocaleLowerCase() + payment.id,
         [Field.Amount]: payment.amountInUsd,
         [Field.Status]: getPaymentStatusOrder(paymentStatus),
       });
@@ -40,17 +42,15 @@ export default function PaymentLine({ payment, setSortingFields }: Props) {
   return (
     <>
       {payment && recipient && (
-        <Line highlightOnHover={200}>
+        <Line highlightOnHover={200} onClick={onClick}>
           <Cell height={CellHeight.Medium}>{displayRelativeDate(payment.requestedAt)}</Cell>
           <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
             <RoundedImage src={recipient.avatarUrl} alt={recipient.login} rounding={Rounding.Circle} />
             <div className="flex flex-col truncate justify-center pb-0.5">
               <div className="font-medium text-sm text-greyscale-50 font-walsheim">{recipient.login}</div>
-              {paymentReason && (
-                <GithubPRLink
-                  link={`https://github.com/${paymentReason.repoOwner}/${paymentReason.repoName}/pull/${paymentReason.issueNumber}`}
-                ></GithubPRLink>
-              )}
+              <div className="text-spaceBlue-200">
+                {T("payment.table.paymentRequest", { id: pretty(payment.id), count: payment.workItems.length })}
+              </div>
             </div>
           </Cell>
           <Cell height={CellHeight.Medium}>

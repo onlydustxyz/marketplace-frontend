@@ -4,6 +4,11 @@ import { IssueDetailsFragment, PaymentRequestDetailsFragment, Status } from "src
 import View, { Props } from "./View";
 
 const statuses = {
+  payoutInfoMissingAsLeader: {
+    payoutInfoMissing: true,
+    projectLeaderView: true,
+    status: PaymentStatus.WAITING_PAYMENT,
+  },
   payoutInfoMissing: { payoutInfoMissing: true, status: PaymentStatus.WAITING_PAYMENT },
   pendingInvoice: { payoutInfoMissing: false, invoiceNeeded: true, status: PaymentStatus.WAITING_PAYMENT },
   processing: { payoutInfoMissing: false, status: PaymentStatus.WAITING_PAYMENT },
@@ -20,6 +25,7 @@ export default {
       control: {
         type: "select",
         labels: {
+          payoutInfoMissingAsLeader: "Payout Info Missing (as project lead)",
           payoutInfoMissing: "Payout Info Missing",
           pendingInvoice: "Pending Invoice",
           processing: "Processing",
@@ -61,7 +67,10 @@ const payment: PaymentRequestDetailsFragment = {
   invoiceReceivedAt: null,
   requestedAt: daysFromNow(7),
   paymentsAggregate: {
-    aggregate: { max: { processedAt: daysFromNow(2) } },
+    aggregate: {
+      max: { processedAt: daysFromNow(2) },
+      sum: { amount: 0 },
+    },
   },
   requestor: {
     id: "53c45a8e-c762-48b0-a677-6f48ddb8a66b",
