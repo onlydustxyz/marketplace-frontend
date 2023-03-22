@@ -41,7 +41,12 @@ export default function PaymentTable({ payments }: Props) {
         ))}
       </Table>
       {selectedPayment && (
-        <PaymentRequestSidePanel open={sidePanelOpen} setOpen={setSidePanelOpen} paymentId={selectedPayment.id} />
+        <PaymentRequestSidePanel
+          projectLeaderView
+          open={sidePanelOpen}
+          setOpen={setSidePanelOpen}
+          paymentId={selectedPayment.id}
+        />
       )}
     </>
   );

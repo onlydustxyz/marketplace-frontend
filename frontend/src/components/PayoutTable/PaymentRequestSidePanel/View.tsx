@@ -21,6 +21,7 @@ export type Props = {
   githubUserId?: number;
   payoutInfoMissing: boolean;
   invoiceNeeded?: boolean;
+  projectLeaderView?: boolean;
 } & Partial<PaymentRequestDetailsFragment>;
 
 const Details = ({ children }: PropsWithChildren) => (
@@ -43,6 +44,7 @@ export default function View({
   invoiceNeeded,
   invoiceReceivedAt,
   paymentsAggregate,
+  projectLeaderView,
   ...props
 }: Props) {
   const { T } = useIntl();
@@ -57,6 +59,7 @@ export default function View({
               status: status,
               payoutInfoMissing,
               invoiceNeeded: invoiceNeeded && !invoiceReceivedAt,
+              isProjectLeaderView: projectLeaderView,
             }}
           />
           {requestor && (

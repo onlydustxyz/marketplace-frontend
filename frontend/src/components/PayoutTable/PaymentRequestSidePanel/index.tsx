@@ -10,9 +10,10 @@ type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
   paymentId: string;
+  projectLeaderView?: boolean;
 };
 
-export default function PaymentRequestSidePanel({ paymentId, ...props }: Props) {
+export default function PaymentRequestSidePanel({ paymentId, projectLeaderView, ...props }: Props) {
   const { user, githubUserId } = useAuth();
   const { data, loading } = useHasuraQuery<PaymentRequestDetailsQuery>(
     GET_PAYMENT_REQUEST_DETAILS,
@@ -43,6 +44,7 @@ export default function PaymentRequestSidePanel({ paymentId, ...props }: Props) 
       status={status}
       invoiceNeeded={invoiceNeeded}
       payoutInfoMissing={!payoutSettingsValid}
+      projectLeaderView={projectLeaderView}
     />
   );
 }
