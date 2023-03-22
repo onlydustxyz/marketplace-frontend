@@ -1,3 +1,4 @@
+use chrono::NaiveDateTime;
 use derive_more::Constructor;
 use domain::PaymentReceiptId;
 use infrastructure::database::schema::payments;
@@ -12,6 +13,7 @@ pub struct Payment {
 	currency_code: String,
 	receipt: Value,
 	request_id: Uuid,
+	processed_at: NaiveDateTime,
 }
 
 impl domain::Entity for Payment {

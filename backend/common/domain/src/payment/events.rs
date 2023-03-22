@@ -27,6 +27,7 @@ pub enum Event {
 		receipt_id: PaymentReceiptId,
 		amount: Amount,
 		receipt: PaymentReceipt,
+		processed_at: NaiveDateTime,
 	},
 	InvoiceReceived {
 		id: PaymentId,
@@ -61,13 +62,57 @@ impl Display for Event {
 
 #[cfg(test)]
 mod tests {
-	use assert_json_diff::assert_json_eq;
-	use serde_json::{json, Value};
-	use testing::fixtures::payment::{events, recipient_address, transaction_hash};
+	use std::str::FromStr;
 
-	#[test]
-	fn test_display() {
-		let event = events::payment_processed();
+	use assert_json_diff::assert_json_eq;
+	use chrono::{NaiveDate, NaiveTime};
+	use rstest::*;
+	use serde_json::{json, Value};
+	use testing::fixtures::payment::constants::{CONTRACT_ADDRESSES, TRANSACTION_HASHES};
+	use uuid::Uuid;
+
+	use super::*;
+	use crate::{BlockchainNetwork, Currency, TransactionHash};
+
+	#[fixture]
+	fn payment_id() -> PaymentId {
+		Uuid::from_str("abad1756-18ba-42e2-8cbf-83369cecfb38").unwrap().into()
+	}
+
+	#[fixture]
+	fn payment_receipt_id() -> PaymentReceiptId {
+		Uuid::from_str("b5db0b56-ab3e-4bd1-b9a2-6a3d41f35b8f").unwrap().into()
+	}
+
+	#[fixture]
+	fn recipient_address() -> &'static str {
+		CONTRACT_ADDRESSES[0]
+	}
+
+	#[fixture]
+	fn transaction_hash() -> TransactionHash {
+		TRANSACTION_HASHES[0].parse().unwrap()
+	}
+
+	#[rstest]
+	fn test_display(recipient_address: &'static str, transaction_hash: TransactionHash) {
+		let event = Event::Processed {
+			id: payment_id(),
+			receipt_id: payment_receipt_id(),
+			amount: Amount::new(
+				"500.45".parse().unwrap(),
+				Currency::Crypto("USDC".to_string()),
+			),
+			receipt: PaymentReceipt::OnChainPayment {
+				network: BlockchainNetwork::Ethereum,
+				recipient_address: recipient_address.try_into().unwrap(),
+				transaction_hash: transaction_hash.clone(),
+			},
+			processed_at: NaiveDateTime::new(
+				NaiveDate::from_ymd_opt(2023, 3, 22).unwrap(),
+				NaiveTime::from_hms_opt(10, 30, 0).unwrap(),
+			),
+		};
 
 		assert_json_eq!(
 			serde_json::from_str::<Value>(&event.to_string()).unwrap(),
@@ -84,10 +129,11 @@ mod tests {
 					"receipt":{
 						"OnChainPayment":{
 							"network":"Ethereum",
-							"recipient_address": recipient_address(),
-							"transaction_hash": transaction_hash()
+							"recipient_address": recipient_address,
+							"transaction_hash": transaction_hash,
 						}
-					}
+					},
+					"processed_at": "2023-03-22T10:30:00"
 				}
 			})
 		);

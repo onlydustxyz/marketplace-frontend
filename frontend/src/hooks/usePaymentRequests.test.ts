@@ -21,7 +21,13 @@ const paymentRequestTemplate = {
     },
   ],
   amountInUsd: 200,
-  reason: { work_items: ["link_to_pr"] },
+  workItems: [
+    {
+      repoOwner: "onlydustxyz",
+      repoName: "marketplace",
+      issueNumber: 123,
+    },
+  ],
 };
 
 const mockPaymentRequest = (githubUserId: number): PaymentRequestFragment => ({

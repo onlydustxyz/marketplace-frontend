@@ -13,6 +13,7 @@ pub struct Repository(Arc<Client>);
 
 #[cfg(test)]
 mod tests {
+	use chrono::Utc;
 	use dotenv::dotenv;
 	use infrastructure::database::Config;
 	use rstest::*;
@@ -47,6 +48,7 @@ mod tests {
 			"USDC".to_string(),
 			json!({}),
 			Uuid::new_v4(),
+			Utc::now().naive_utc(),
 		);
 
 		assert!(repository.insert(&payment).unwrap_err().to_string().contains("foreign key")); // foreign key on payment requests

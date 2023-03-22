@@ -80,7 +80,6 @@ const Payments = () => {
 const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Payment => {
   const amount = { value: apiPayment.amountInUsd, currency: Currency.USD };
   const project = apiPayment.budget?.project;
-  const reason = apiPayment.reason?.work_items?.at(0);
   const requestedAt = apiPayment.requestedAt;
   const getPaidAmount = (payments: { amount: number }[]) =>
     payments?.reduce((total: number, payment: { amount: number }) => total + payment.amount, 0);
@@ -89,7 +88,7 @@ const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Payment 
     id: apiPayment.id,
     requestedAt,
     amount,
-    reason,
+    workItems: apiPayment.workItems,
     project: project &&
       project?.projectDetails && {
         id: project.id,
@@ -105,6 +104,12 @@ const mapApiPaymentsToProps = (apiPayment: UserPaymentRequestFragment): Payment 
 };
 
 export const GET_PAYMENTS_QUERY = gql`
+  fragment WorkItem on WorkItems {
+    repoOwner
+    repoName
+    issueNumber
+  }
+
   fragment UserPaymentRequest on PaymentRequests {
     id
     requestedAt
@@ -113,7 +118,9 @@ export const GET_PAYMENTS_QUERY = gql`
       currencyCode
     }
     amountInUsd
-    reason
+    workItems {
+      ...WorkItem
+    }
     invoiceReceivedAt
     budget {
       id

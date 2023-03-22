@@ -44,7 +44,6 @@ diesel::table! {
         requestor_id -> Uuid,
         recipient_id -> Int8,
         amount_in_usd -> Int8,
-        reason -> Jsonb,
         requested_at -> Timestamp,
         invoice_received_at -> Nullable<Timestamp>,
     }
@@ -57,6 +56,7 @@ diesel::table! {
         currency_code -> Text,
         receipt -> Jsonb,
         request_id -> Uuid,
+        processed_at -> Timestamp,
     }
 }
 
@@ -126,6 +126,15 @@ diesel::table! {
     }
 }
 
+diesel::table! {
+    work_items (payment_id, repo_owner, repo_name, issue_number) {
+        payment_id -> Uuid,
+        repo_owner -> Text,
+        repo_name -> Text,
+        issue_number -> Int8,
+    }
+}
+
 diesel::joinable!(budgets -> projects (project_id));
 diesel::joinable!(payment_requests -> budgets (budget_id));
 diesel::joinable!(payments -> payment_requests (request_id));
@@ -148,4 +157,5 @@ diesel::allow_tables_to_appear_in_same_query!(
     projects_sponsors,
     sponsors,
     user_info,
+    work_items,
 );

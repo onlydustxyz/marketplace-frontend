@@ -37,6 +37,15 @@ array_relationships:
         table:
           name: payments
           schema: public
+  - name: workItems
+    using:
+      manual_configuration:
+        column_mapping:
+          id: payment_id
+        insertion_order: null
+        remote_table:
+          name: work_items
+          schema: public
 remote_relationships:
   - definition:
       to_remote_schema:
@@ -56,7 +65,6 @@ select_permissions:
         - budget_id
         - id
         - invoice_received_at
-        - reason
         - recipient_id
         - requested_at
         - requestor_id

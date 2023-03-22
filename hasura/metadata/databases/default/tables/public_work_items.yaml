@@ -1,0 +1,27 @@
+table:
+  name: work_items
+  schema: public
+remote_relationships:
+  - definition:
+      to_remote_schema:
+        lhs_fields:
+          - issue_number
+          - repo_owner
+          - repo_name
+        remote_field:
+          fetchPullRequest:
+            arguments:
+              prNumber: $issue_number
+              repoName: $repo_name
+              repoOwner: $repo_owner
+        remote_schema: GithubProxy
+    name: githubIssue
+select_permissions:
+  - role: public
+    permission:
+      columns:
+        - payment_id
+        - repo_owner
+        - repo_name
+        - issue_number
+      filter: {}

@@ -36,7 +36,13 @@ const paymentRequestMock: PaymentRequestFragment = {
     },
   ],
   amountInUsd: 200,
-  reason: { work_items: ["link_to_pr"] },
+  workItems: [
+    {
+      repoOwner: "onlydustxyz",
+      repoName: "marketplace",
+      issueNumber: 123,
+    },
+  ],
   requestedAt: new Date(),
 };
 
@@ -100,7 +106,7 @@ describe("PaymentsList page", () => {
   });
 
   it("should render the payments table", async () => {
-    expect(await screen.findByText(paymentRequestMock.reason.work_items[0])).toBeInTheDocument();
+    expect(await screen.findByText("#705E6 · 1 item")).toBeInTheDocument();
     expect(await screen.findByText(githubUserMock.login)).toBeInTheDocument();
     expect(await screen.findByText("$200")).toBeInTheDocument();
     expect(await screen.findByText(/complete/i)).toBeInTheDocument();
