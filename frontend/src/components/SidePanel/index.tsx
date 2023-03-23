@@ -1,4 +1,4 @@
-import { Fragment, PropsWithChildren } from "react";
+import { Fragment, PropsWithChildren, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import CloseLine from "src/icons/CloseLine";
@@ -10,6 +10,10 @@ type Props = {
 } & PropsWithChildren;
 
 export default function SidePanel({ title, open, setOpen, children }: Props) {
+  useEffect(() => {
+    document.documentElement.style.setProperty("overflow", null);
+  }, [open]);
+
   return (
     <Transition
       show={open}
@@ -32,7 +36,7 @@ export default function SidePanel({ title, open, setOpen, children }: Props) {
               <CloseLine />
             </Button>
           </div>
-          <div className="font-belwe font-normal text-2xl text-greyscale-50">{title}</div>
+          <Dialog.Title className="font-belwe font-normal text-2xl text-greyscale-50">{title}</Dialog.Title>
           {children}
         </Dialog.Panel>
       </Dialog>
