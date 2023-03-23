@@ -20,7 +20,7 @@ impl From<github::Error> for GithubServiceError {
 }
 
 #[async_trait]
-impl GithubService for github::Client {
+impl<P: github::OctocrabProxy> GithubService for P {
 	#[instrument(skip(self))]
 	async fn fetch_repository_by_id(&self, id: u64) -> GithubServiceResult<GithubRepository> {
 		let repo = self.get_repository_by_id(id).await?;

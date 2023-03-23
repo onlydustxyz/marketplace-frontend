@@ -5,6 +5,7 @@ use std::{
 };
 
 use anyhow::anyhow;
+use async_trait::async_trait;
 use octocrab::{
 	models::{issues::Issue, pulls::PullRequest, repos::Content, Repository, User},
 	FromResponse, Octocrab, OctocrabBuilder,
@@ -27,12 +28,12 @@ pub struct Config {
 	headers: HashMap<String, String>,
 }
 
-pub struct Client {
+pub struct RoundRobinClient {
 	octocrab_clients: Vec<Octocrab>,
 	next_octocrab_clients_index: Arc<Mutex<usize>>,
 }
 
-impl Client {
+impl RoundRobinClient {
 	pub fn new(config: &Config) -> anyhow::Result<Self> {
 		let personal_access_tokens: Vec<&str> = config
 			.personal_access_tokens
@@ -68,34 +69,45 @@ impl Client {
 			next_octocrab_clients_index: Arc::new(Mutex::new(0)),
 		})
 	}
+}
 
-	pub fn new_with_personal_access_token(
-		config: &Config,
-		personal_access_token: String,
-	) -> anyhow::Result<Self> {
-		Ok(Self {
-			octocrab_clients: vec![
-				Octocrab::builder()
-					.base_url(&config.base_url)?
-					.personal_token(personal_access_token)
-					.add_headers(&config.headers)?
-					.build()?,
-			],
-			next_octocrab_clients_index: Arc::new(Mutex::new(0)),
-		})
-	}
-
+impl OctocrabProxy for RoundRobinClient {
 	fn octocrab(&self) -> &Octocrab {
 		let mut index = self.next_octocrab_clients_index.lock().unwrap();
 		let next_octocrab = &self.octocrab_clients[*index];
 		*index = (*index + 1) % self.octocrab_clients.len();
 		next_octocrab
 	}
+}
+
+pub struct SingleClient(Octocrab);
+
+impl SingleClient {
+	pub fn new(config: &Config, personal_access_token: String) -> anyhow::Result<Self> {
+		Ok(Self(
+			Octocrab::builder()
+				.base_url(&config.base_url)?
+				.personal_token(personal_access_token)
+				.add_headers(&config.headers)?
+				.build()?,
+		))
+	}
+}
+
+impl OctocrabProxy for SingleClient {
+	fn octocrab(&self) -> &Octocrab {
+		&self.0
+	}
+}
+
+#[async_trait]
+pub trait OctocrabProxy: Sync + Send {
+	fn octocrab(&self) -> &Octocrab;
 
 	/// Search users using the Github Search API
 	/// See https://docs.github.com/en/rest/search?apiVersion=2022-11-28#search-users for more info.
 	#[instrument(skip(self))]
-	pub async fn search_users(
+	async fn search_users(
 		&self,
 		query: &str,
 		sort: Option<String>,
@@ -122,7 +134,7 @@ impl Client {
 	/// Search issues using the Github Search API
 	/// See https://docs.github.com/en/rest/search?apiVersion=2022-11-28#search-issues-and-pull-requests for more info.
 	#[instrument(skip(self))]
-	pub async fn search_issues(
+	async fn search_issues(
 		&self,
 		query: &str,
 		sort: Option<String>,
@@ -147,9 +159,9 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_as<U, R>(&self, url: U) -> Result<R, Error>
+	async fn get_as<U, R>(&self, url: U) -> Result<R, Error>
 	where
-		U: AsRef<str> + Debug,
+		U: AsRef<str> + Debug + Send,
 		R: FromResponse,
 	{
 		let result: LoggedResponse<R> = self.octocrab().get(url, None::<&()>).await?;
@@ -157,12 +169,12 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_repository_by_id(&self, id: u64) -> Result<Repository, Error> {
+	async fn get_repository_by_id(&self, id: u64) -> Result<Repository, Error> {
 		self.get_as(format!("{}repositories/{id}", self.octocrab().base_url)).await
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_pull_request(
+	async fn get_pull_request(
 		&self,
 		repo_owner: &str,
 		repo_name: &str,
@@ -173,13 +185,13 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_user_by_name(&self, username: &str) -> Result<User, Error> {
+	async fn get_user_by_name(&self, username: &str) -> Result<User, Error> {
 		self.get_as(format!("{}users/{username}", self.octocrab().base_url)).await
 	}
 
 	#[allow(non_snake_case)]
 	#[instrument(skip(self))]
-	pub async fn get_repository_PRs(&self, id: u64) -> Result<Vec<PullRequest>, Error> {
+	async fn get_repository_PRs(&self, id: u64) -> Result<Vec<PullRequest>, Error> {
 		self.get_as(format!(
 			"{}repositories/{id}/pulls?state=all",
 			self.octocrab().base_url
@@ -188,12 +200,12 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_user_by_id(&self, id: u64) -> Result<User, Error> {
+	async fn get_user_by_id(&self, id: u64) -> Result<User, Error> {
 		self.get_as(format!("{}user/{id}", self.octocrab().base_url)).await
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_raw_file(&self, repo: &Repository, path: &str) -> Result<Content, Error> {
+	async fn get_raw_file(&self, repo: &Repository, path: &str) -> Result<Content, Error> {
 		let owner = repo
 			.owner
 			.as_ref()
@@ -216,7 +228,7 @@ impl Client {
 			.ok_or_else(|| Error::NotFound(anyhow!("Could not find {path} in repository")))
 	}
 
-	pub fn fix_github_host(&self, url: &Option<Url>) -> anyhow::Result<Option<Url>> {
+	fn fix_github_host(&self, url: &Option<Url>) -> anyhow::Result<Option<Url>> {
 		Ok(match url {
 			Some(url) => Some(
 				format!(
@@ -261,7 +273,7 @@ mod tests {
 		#[case] url: Option<reqwest::Url>,
 		#[case] expected_url: Option<reqwest::Url>,
 	) {
-		let client = Client::new(&Config {
+		let client = RoundRobinClient::new(&Config {
 			base_url: base_url.to_string(),
 			personal_access_tokens: "token".to_string(),
 			headers: HashMap::new(),
@@ -277,7 +289,7 @@ mod tests {
 	#[case("token_a,token_b".to_string(), 2)]
 	#[case("token_a, token_b, token_c,,,token_d, token_e,  ,   , token_f".to_string(), 6)]
 	fn personal_access_tokens_config(#[case] personal_access_tokens: String, #[case] count: usize) {
-		let client = Client::new(&Config {
+		let client = RoundRobinClient::new(&Config {
 			base_url: "http://plop.fr/github/".to_string(),
 			personal_access_tokens,
 			headers: HashMap::new(),
@@ -297,7 +309,7 @@ mod tests {
 	#[case(",".to_string())]
 	#[case(", ,,, ,".to_string())]
 	fn invalid_personal_access_tokens_config(#[case] personal_access_tokens: String) {
-		let result = Client::new(&Config {
+		let result = RoundRobinClient::new(&Config {
 			base_url: "http://plop.fr/github/".to_string(),
 			personal_access_tokens,
 			headers: HashMap::new(),

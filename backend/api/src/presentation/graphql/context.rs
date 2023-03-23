@@ -59,7 +59,7 @@ impl Context {
 		project_sponsor_repository: ProjectSponsorRepository,
 		pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 		user_info_repository: UserInfoRepository,
-		github: Arc<github::Client>,
+		github: Arc<github::RoundRobinClient>,
 		ens: Arc<ens::Client>,
 		simple_storage: Arc<simple_storage::Client>,
 	) -> Self {
