@@ -1,7 +1,7 @@
-import { projects as projectFixtures } from "../../fixtures/projects";
-import { repos } from "../../fixtures/repos";
+import { projects as projectFixtures } from "../../fixtures/data/projects";
+import { repos } from "../../fixtures/data/repos";
 import { zip } from "lodash";
-import { User, ProjectFixture, Sponsor } from "../../types";
+import { User, ProjectFixture, Sponsor, Project } from "../../types";
 import {
   CreateProjectMutation,
   CreateProjectDocument,
@@ -16,7 +16,10 @@ import {
 import { mutateAsAdmin, waitEvents } from "../common";
 import { addProjectLeader, linkRepo } from "../project";
 
-export const populateProjects = async (users: Record<string, User>, sponsors: Record<string, Sponsor>) => {
+export const populateProjects = async (
+  users: Record<string, User>,
+  sponsors: Record<string, Sponsor>
+): Promise<Record<string, Project>> => {
   const promises = Object.values(projectFixtures).map(p => populateProject(p, users, sponsors));
   const projects = await Promise.all(promises);
   return Object.fromEntries(zip(Object.keys(projectFixtures), projects));

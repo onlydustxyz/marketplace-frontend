@@ -1,7 +1,7 @@
 import { Sponsor } from "../../types";
 import { chain, zip } from "lodash";
 import { mutateAsAdmin } from "../common";
-import { projects } from "../../fixtures/projects";
+import { projects } from "../../fixtures/data/projects";
 import {
   CreateSponsorMutation,
   CreateSponsorMutationVariables,

@@ -1,4 +1,4 @@
-import { ProjectFixture } from "../types";
+import { ProjectFixture } from "../../types";
 
 export const projects: Record<string, ProjectFixture> = {
   Kakarot: {

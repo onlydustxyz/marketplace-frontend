@@ -1,5 +1,5 @@
-import { PaymentFixture } from "../types";
-import { EthereumIdentityType } from "../__generated/graphql";
+import { PaymentFixture } from "../../types";
+import { EthereumIdentityType } from "../../__generated/graphql";
 
 export const payments: PaymentFixture[] = [
   {

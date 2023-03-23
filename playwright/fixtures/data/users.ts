@@ -1,5 +1,5 @@
-import { UserFixture } from "../types";
-import { IdentityType, PayoutSettingsType } from "../__generated/graphql";
+import { UserFixture } from "../../types";
+import { IdentityType, PayoutSettingsType } from "../../__generated/graphql";
 
 export const users: Record<string, UserFixture> = {
   TokioRs: {

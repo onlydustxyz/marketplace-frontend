@@ -11,7 +11,7 @@ import {
   RequestPaymentMutationVariables,
 } from "../../__generated/graphql";
 import { mutateAsAdmin, mutateAsRegisteredUser, waitEvents } from "../common";
-import { payments } from "../../fixtures/payments";
+import { payments } from "../../fixtures/data/payments";
 
 export const populatePayments = async (users: Record<string, User>, projects: Record<string, Project>) => {
   const populatedPayments = await Promise.all(payments.map(payment => populatePayment(users, projects, payment)));

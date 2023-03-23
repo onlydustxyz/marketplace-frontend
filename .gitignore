@@ -61,3 +61,4 @@ lerna-debug.log*
 /test-results/
 /playwright-report/
 /playwright/.cache/
+/playwright/fixtures/__generated

@@ -1,4 +1,4 @@
-import { Repo } from "../types";
+import { Repo } from "../../types";
 
 export const repos: Record<string, Repo> = {
   A: {

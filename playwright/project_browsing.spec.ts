@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { test } from "./fixtures";
 import { cleanupDB } from "./commands/db/db_utils";
 import { populate } from "./commands/populate";
 
@@ -8,7 +8,8 @@ test.describe("As a visitor, I", () => {
     await populate(request);
   });
 
-  test("can list projects", async ({ page }) => {
+  test("can list projects", async ({ page, users, sponsors, projects, payments }) => {
+    console.log(users, sponsors, projects, payments);
     await page.goto("http://localhost:5173");
   });
 });

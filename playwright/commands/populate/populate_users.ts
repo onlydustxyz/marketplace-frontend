@@ -1,6 +1,6 @@
 import { APIRequestContext } from "@playwright/test";
 import { zip } from "lodash";
-import { users } from "../../fixtures/users";
+import { users } from "../../fixtures/data/users";
 import { User, UserFixture } from "../../types";
 import {
   UpdateProfileDocument,
