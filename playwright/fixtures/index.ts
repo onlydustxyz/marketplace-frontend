@@ -47,7 +47,7 @@ export const test = base.extend<PopulatedDataFixtures>({
 
   signIn: async ({ page }, use) => {
     await use(async (user: User) => {
-      await page.goto("http://localhost:5173");
+      await page.goto("/");
       await setLocalStorageTest("hasura_token", user.session, page);
       await page.reload();
       await expect(page.locator("#profile-button").getByText(user.github.login, { exact: true })).toBeVisible();

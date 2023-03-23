@@ -8,7 +8,7 @@ test.describe("As a visitor, I", () => {
   });
 
   test("can list and filter projects", async ({ page, projects }) => {
-    await page.goto("http://localhost:5173");
+    await page.goto("/");
 
     // Projects
     const projectALocator = page.locator(`a[href='/projects/${projects.ProjectA.id}']`);
@@ -70,8 +70,8 @@ test.describe("As a visitor, I", () => {
   });
 
   test("cannot access restricted projects page", async ({ page, projects }) => {
-    await page.goto(`http://localhost:5173/projects/${projects.ProjectA.id}/payments`);
-    await expect(page).toHaveURL(`http://localhost:5173/projects/${projects.ProjectA.id}`);
+    await page.goto(`/projects/${projects.ProjectA.id}/payments`);
+    await expect(page).toHaveURL(`/projects/${projects.ProjectA.id}`);
   });
 });
 
@@ -82,7 +82,7 @@ test.describe("As a registered user, I", () => {
 
   test("cannot access restricted projects page", async ({ page, projects, users, signIn }) => {
     await signIn(users.Olivier);
-    await page.goto(`http://localhost:5173/projects/${projects.ProjectA.id}/payments`);
-    await expect(page).toHaveURL(`http://localhost:5173/projects/${projects.ProjectA.id}`);
+    await page.goto(`/projects/${projects.ProjectA.id}/payments`);
+    await expect(page).toHaveURL(`/projects/${projects.ProjectA.id}`);
   });
 });
