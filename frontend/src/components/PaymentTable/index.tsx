@@ -37,6 +37,7 @@ export default function PaymentTable({ payments }: Props) {
               setSelectedPayment(p);
               setSidePanelOpen(true);
             }}
+            selected={p.id === selectedPayment?.id}
           />
         ))}
       </Table>

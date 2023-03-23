@@ -7,7 +7,6 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import SendPlane2Line from "src/icons/SendPlane2Line";
 import { Contributor as ContributorType } from "./View";
 import { formatMoneyAmount } from "src/utils/money";
-import { Currency } from "src/types";
 import Contributor from "src/components/Contributor";
 
 type Props = {
@@ -26,7 +25,7 @@ export default function ContributorLine({
   const { T } = useIntl();
 
   return (
-    <Line key={contributor.login} highlightOnHover={200} className="h-10">
+    <Line key={contributor.login} className="h-10">
       <Cell height={CellHeight.Small} horizontalMargin={false} className="-ml-px">
         <Contributor contributor={contributor} onClick={linkClickHandlerFactory(contributor.htmlUrl)} />
       </Cell>
