@@ -1,5 +1,5 @@
 import { Payment, Project, Sponsor, User } from "../types";
-import { test as base } from "@playwright/test";
+import { Page, test as base, expect } from "@playwright/test";
 import fs from "fs";
 import {
   GENERATED_PAYMENTS_FIXTURE_BASE_PATH,
@@ -13,6 +13,7 @@ type PopulatedDataFixtures = {
   sponsors: Record<string, Sponsor>;
   projects: Record<string, Project>;
   payments: Record<string, Record<number, Payment[]>>;
+  signIn: (user: User) => Promise<void>;
 };
 
 export const test = base.extend<PopulatedDataFixtures>({
@@ -43,4 +44,22 @@ export const test = base.extend<PopulatedDataFixtures>({
     const payments = JSON.parse(content.toString());
     await use(payments);
   },
+
+  signIn: async ({ page }, use) => {
+    await use(async (user: User) => {
+      await page.goto("http://localhost:5173");
+      await setLocalStorageTest("hasura_token", user.session, page);
+      await page.reload();
+      await expect(page.locator("#profile-button").getByText(user.github.login, { exact: true })).toBeVisible();
+    });
+  },
 });
+
+const setLocalStorageTest = async (key: string, value: string, page: Page) => {
+  await page.addInitScript(
+    item => {
+      window.localStorage.setItem(item.key, item.value);
+    },
+    { key, value }
+  );
+};

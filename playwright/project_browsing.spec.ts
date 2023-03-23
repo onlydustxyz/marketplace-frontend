@@ -7,7 +7,7 @@ test.describe("As a visitor, I", () => {
     restoreDB();
   });
 
-  test("can filter projects by technology", async ({ page, projects }) => {
+  test("can list and filter projects", async ({ page, projects }) => {
     await page.goto("http://localhost:5173");
 
     // Projects
@@ -48,5 +48,41 @@ test.describe("As a visitor, I", () => {
     await expect(projectBLocator.getByText(projects.ProjectB.name, { exact: true })).toBeVisible();
     await expect(kakarotLocator.getByText(projects.Kakarot.name, { exact: true })).toBeVisible();
     await expect(emptyProjectLocator.getByText(projects.Empty.name, { exact: true })).toBeVisible();
+
+    // Filtering
+    const starknetFilterLocator = page.getByText("StarkNet", { exact: true });
+    await expect(starknetFilterLocator).toBeVisible();
+    await expect(page.getByText("Ether Foundation", { exact: true })).toBeVisible();
+
+    // Test filter
+    await starknetFilterLocator.click();
+    await expect(projectALocator.getByText(projects.ProjectA.name, { exact: true })).toBeVisible();
+    await expect(projectBLocator.getByText(projects.ProjectB.name, { exact: true })).toBeVisible();
+    await expect(kakarotLocator.getByText(projects.Kakarot.name, { exact: true })).toBeVisible();
+    await expect(emptyProjectLocator.getByText(projects.Empty.name, { exact: true })).not.toBeVisible();
+
+    // Clear filters
+    await page.getByText("Clear all", { exact: true }).click();
+    await expect(projectALocator.getByText(projects.ProjectA.name, { exact: true })).toBeVisible();
+    await expect(projectBLocator.getByText(projects.ProjectB.name, { exact: true })).toBeVisible();
+    await expect(kakarotLocator.getByText(projects.Kakarot.name, { exact: true })).toBeVisible();
+    await expect(emptyProjectLocator.getByText(projects.Empty.name, { exact: true })).toBeVisible();
+  });
+
+  test("cannot access restricted projects page", async ({ page, projects }) => {
+    await page.goto(`http://localhost:5173/projects/${projects.ProjectA.id}/payments`);
+    await expect(page).toHaveURL(`http://localhost:5173/projects/${projects.ProjectA.id}`);
+  });
+});
+
+test.describe("As a registered user, I", () => {
+  test.beforeAll(async () => {
+    restoreDB();
+  });
+
+  test("cannot access restricted projects page", async ({ page, projects, users, signIn }) => {
+    await signIn(users.Olivier);
+    await page.goto(`http://localhost:5173/projects/${projects.ProjectA.id}/payments`);
+    await expect(page).toHaveURL(`http://localhost:5173/projects/${projects.ProjectA.id}`);
   });
 });
