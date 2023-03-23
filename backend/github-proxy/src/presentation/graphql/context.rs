@@ -23,12 +23,22 @@ impl Context {
 		}
 	}
 
-	pub fn github_service(&self) -> Result<Arc<dyn GithubService>, Error> {
+	pub fn github_service_with_user_pat(&self) -> Result<Arc<dyn GithubService>, Error> {
 		match self.github_pat.clone() {
 			Some(token) => GithubServiceFactory::new(&self.config.github).with(token).build(),
 			None => GithubServiceFactory::new(&self.config.github).build(),
 		}
 		.map_err(|error| {
+			error!(
+				error = format!("{error:?}"),
+				"Error while building Github client"
+			);
+			Error::InternalError(error)
+		})
+	}
+
+	pub fn github_service(&self) -> Result<Arc<dyn GithubService>, Error> {
+		GithubServiceFactory::new(&self.config.github).build().map_err(|error| {
 			error!(
 				error = format!("{error:?}"),
 				"Error while building Github client"

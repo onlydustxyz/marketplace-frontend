@@ -101,7 +101,7 @@ impl Query {
 		page: Option<i32>,
 	) -> Option<Vec<GithubUser>> {
 		context
-			.github_service()
+			.github_service_with_user_pat()
 			.ok()?
 			.search_users(
 				&query,
@@ -126,7 +126,7 @@ impl Query {
 		page: Option<i32>,
 	) -> Option<Vec<GithubIssue>> {
 		context
-			.github_service()
+			.github_service_with_user_pat()
 			.ok()?
 			.search_issues(
 				&query,
