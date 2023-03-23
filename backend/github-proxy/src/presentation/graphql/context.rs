@@ -4,36 +4,37 @@ use olog::error;
 
 use super::Error;
 use crate::{
-	domain::GithubService, infrastructure::GithubServiceFactory,
+	domain::GithubService,
+	infrastructure::{GithubServiceBuilder, GithubServiceFactory},
 	presentation::http::guards::OptionGithubPat,
+	Config,
 };
 
 pub struct Context {
-	pub maybe_github_pat: OptionGithubPat,
-	github_service_factory: Arc<GithubServiceFactory>,
+	pub github_pat: Option<String>,
+	config: Config,
 }
 
 impl Context {
-	pub fn new(
-		maybe_github_pat: OptionGithubPat,
-		github_service_factory: Arc<GithubServiceFactory>,
-	) -> Self {
+	pub fn new(github_pat: OptionGithubPat, config: Config) -> Self {
 		Self {
-			maybe_github_pat,
-			github_service_factory,
+			github_pat: github_pat.into(),
+			config,
 		}
 	}
 
 	pub fn github_service(&self) -> Result<Arc<dyn GithubService>, Error> {
-		self.github_service_factory
-			.with((&self.maybe_github_pat).into())
-			.map_err(|error| {
-				error!(
-					error = format!("{error:?}"),
-					"Error while building Github client"
-				);
-				Error::InternalError(error)
-			})
+		match self.github_pat.clone() {
+			Some(token) => GithubServiceFactory::new(&self.config.github).with(token).build(),
+			None => GithubServiceFactory::new(&self.config.github).build(),
+		}
+		.map_err(|error| {
+			error!(
+				error = format!("{error:?}"),
+				"Error while building Github client"
+			);
+			Error::InternalError(error)
+		})
 	}
 }
 

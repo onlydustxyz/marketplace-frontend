@@ -1,2 +1,4 @@
 mod github;
-pub use github::factory::ServiceFactory as GithubServiceFactory;
+pub use github::factory::{
+	Builder as GithubServiceBuilder, ServiceFactory as GithubServiceFactory,
+};
