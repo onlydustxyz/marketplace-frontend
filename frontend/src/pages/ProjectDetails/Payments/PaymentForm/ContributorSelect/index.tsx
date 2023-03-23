@@ -10,6 +10,7 @@ import {
 import { getContributors } from "src/utils/project";
 import { GITHUB_CONTRIBUTOR_FRAGMENT } from "src/hooks/useIsGithubLoginValid";
 import View from "./View";
+import { useLocation } from "react-router-dom";
 
 type Props = {
   projectId: string;
@@ -18,7 +19,11 @@ type Props = {
 };
 
 export default function ContributorSelect({ projectId, contributor, setContributor }: Props) {
-  const [selectedGithubHandle, setSelectedGithubHandle] = useState<string | null>(null);
+  const location = useLocation();
+
+  const [selectedGithubHandle, setSelectedGithubHandle] = useState<string | null>(
+    location.state?.recipientGithubLogin || null
+  );
   const [githubHandleSubstring, setGithubHandleSubstring] = useState<string | null>(null);
   const handleSubstringQuery = `type:user ${githubHandleSubstring} in:login`;
 
@@ -55,14 +60,12 @@ export default function ContributorSelect({ projectId, contributor, setContribut
         !filteredContributors.map(filteredContributor => filteredContributor.login).includes(contributor.login)
     );
 
-  useEffect(
-    () =>
-      setContributor(
-        filteredContributors?.find(contributor => contributor.login === selectedGithubHandle) ||
-          filteredExternalContributors?.find(contributor => contributor.login === selectedGithubHandle)
-      ),
-    [selectedGithubHandle, filteredContributors, filteredExternalContributors]
-  );
+  useEffect(() => {
+    setContributor(
+      internalContributors?.find(contributor => contributor.login === selectedGithubHandle) ||
+        filteredExternalContributors?.find(contributor => contributor.login === selectedGithubHandle)
+    );
+  }, [selectedGithubHandle, filteredContributors, filteredExternalContributors, githubHandleSubstring]);
 
   return (
     <View
