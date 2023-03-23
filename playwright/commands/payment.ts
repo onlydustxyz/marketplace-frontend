@@ -1,11 +1,5 @@
 import { gql } from "@apollo/client/core";
 
-export const REQUEST_PAYMENT = gql(`
-mutation requestPayment($amount: Int!, $projectId: Uuid!, $recipientId: Int!, $reason: Reason!) {
-    requestPayment(amountInUsd: $amount, projectId: $projectId, recipientId: $recipientId, reason: $reason)
-}
-`);
-
 export const CANCEL_PAYMENT_REQUEST = gql(`
 mutation cancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
     cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId)

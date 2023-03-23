@@ -15,7 +15,7 @@ export const populateSponsors = async (): Promise<Record<string, Sponsor>> => {
     .filter(s => !!s)
     .value();
 
-  const sponsor_ids = await Promise.all(
+  const sponsors = await Promise.all(
     sponsor_names.map(name =>
       mutateAsAdmin<CreateSponsorMutation, CreateSponsorMutationVariables>({
         mutation: CreateSponsorDocument,
@@ -24,5 +24,6 @@ export const populateSponsors = async (): Promise<Record<string, Sponsor>> => {
     )
   );
 
+  const sponsor_ids = sponsors.map(sponsor => sponsor.data?.createSponsor);
   return Object.fromEntries(zip(sponsor_ids, sponsor_names).map(([id, name]) => [name, { id, name }]));
 };

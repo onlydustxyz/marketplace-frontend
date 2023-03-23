@@ -13,7 +13,7 @@ import {
   AddSponsorToProjectMutation,
   AddSponsorToProjectMutationVariables,
 } from "../../__generated/graphql";
-import { mutateAsAdmin } from "../common";
+import { mutateAsAdmin, waitEvents } from "../common";
 import { addProjectLeader, linkRepo } from "../project";
 
 export const populateProjects = async (users: Record<string, User>, sponsors: Record<string, Sponsor>) => {
@@ -34,6 +34,7 @@ const populateProject = async (
       ...project,
     },
   });
+  await waitEvents();
 
   const projectId = data?.createProject;
 
@@ -43,7 +44,7 @@ const populateProject = async (
       if (!leader) {
         throw new Error(`User ${leaderKey} does not exist in users fixture`);
       }
-      return addProjectLeader(projectId, leader.github.id);
+      return addProjectLeader(projectId, leader.github.id, leader.token);
     }) || [];
 
   const invitePromises =

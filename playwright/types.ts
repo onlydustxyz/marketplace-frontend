@@ -28,6 +28,7 @@ export type User = UserFixture & {
   id: string;
   password: string;
   token: string;
+  session: string;
 };
 
 export type ProjectFixture = {

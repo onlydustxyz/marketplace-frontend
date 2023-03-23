@@ -7,7 +7,7 @@ import {
   UpdateProfileInfoMutation,
   UpdateProfileInfoMutationVariables,
 } from "../../__generated/graphql";
-import { mutateAsAdmin } from "../common";
+import { mutateAsRegisteredUser } from "../common";
 import { createGithubUser, signinUser } from "../user";
 
 export const populateUsers = async (request: APIRequestContext): Promise<Record<string, User>> => {
@@ -16,11 +16,11 @@ export const populateUsers = async (request: APIRequestContext): Promise<Record<
 };
 
 const populateUser = async (request: APIRequestContext, user: UserFixture) => {
-  const credentials = await createGithubUser(request, user.github.id, user.email, user.github.login);
+  const credentials = await createGithubUser(request, user.github.id, user.github.login, user.email);
   const session = await signinUser(request, credentials);
 
   if (user.profile) {
-    await mutateAsAdmin<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>({
+    await mutateAsRegisteredUser<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>(session.accessToken, {
       mutation: UpdateProfileDocument,
       variables: user.profile,
     });
@@ -29,7 +29,8 @@ const populateUser = async (request: APIRequestContext, user: UserFixture) => {
   return {
     id: credentials.userId,
     password: credentials.password,
-    token: JSON.stringify(session),
+    token: session.accessToken,
+    session: JSON.stringify(session),
     ...user,
   };
 };

@@ -9,6 +9,11 @@ import {
   QueryOptions,
 } from "@apollo/client/core";
 import { expect } from "@playwright/test";
+import { Kind, OperationDefinitionNode } from "graphql";
+
+export const waitEvents = async () => {
+  await new Promise(resolve => setTimeout(resolve, 500));
+};
 
 export const getEnv = (key: string) => {
   const value = process.env[key];
@@ -86,18 +91,31 @@ const mutateAs = async <TData = any, TVariables = OperationVariables, TEContext 
   options: MutationOptions<TData, TVariables, TEContext>,
   expectError: boolean
 ) => {
-  const response = await client.mutate({
-    mutation: options.mutation,
-    variables: options.variables,
-    context: options.context,
-    fetchPolicy: "network-only",
-  });
-  if (expectError) {
-    expect(response.errors).toBeDefined();
-  } else {
-    expect(response.errors).toBeUndefined();
+  try {
+    const response = await client.mutate({
+      mutation: options.mutation,
+      variables: options.variables,
+      context: options.context,
+      fetchPolicy: "network-only",
+    });
+    if (expectError) {
+      expect(response.errors).toBeDefined();
+    } else {
+      expect(response.errors).toBeUndefined();
+    }
+    return response;
+  } catch (e) {
+    console.log(
+      "Mutation error:",
+      JSON.stringify(
+        options.mutation.definitions
+          .filter(def => def.kind === Kind.OPERATION_DEFINITION)
+          .map(def => (def as OperationDefinitionNode).name?.value)
+      ),
+      options.variables
+    );
+    throw e;
   }
-  return response;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -135,16 +153,29 @@ const queryAs = async <T = any, TVariables = OperationVariables>(
   options: QueryOptions<TVariables, T>,
   expectError: boolean
 ) => {
-  const response = await client.query({
-    query: options.query,
-    variables: options.variables,
-    context: options.context,
-    fetchPolicy: "network-only",
-  });
-  if (expectError) {
-    expect(response.errors).toBeDefined();
-  } else {
-    expect(response.errors).toBeUndefined();
+  try {
+    const response = await client.query({
+      query: options.query,
+      variables: options.variables,
+      context: options.context,
+      fetchPolicy: "network-only",
+    });
+    if (expectError) {
+      expect(response.errors).toBeDefined();
+    } else {
+      expect(response.errors).toBeUndefined();
+    }
+    return response;
+  } catch (e) {
+    console.log(
+      "Query error:",
+      JSON.stringify(
+        options.query.definitions
+          .filter(def => def.kind === Kind.OPERATION_DEFINITION)
+          .map(def => (def as OperationDefinitionNode).name?.value)
+      ),
+      options.variables
+    );
+    throw e;
   }
-  return response;
 };

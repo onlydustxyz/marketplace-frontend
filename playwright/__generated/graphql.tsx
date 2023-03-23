@@ -9520,16 +9520,6 @@ export type ContributorIdFragment = { __typename?: 'User', id: number };
 
 export type ProjectContributorsFragment = { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }> };
 
-export type RequestPaymentMutationVariables = Exact<{
-  amount: Scalars['Int'];
-  projectId: Scalars['Uuid'];
-  recipientId: Scalars['Int'];
-  reason: Reason;
-}>;
-
-
-export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
-
 export type CancelPaymentRequestMutationVariables = Exact<{
   projectId: Scalars['Uuid'];
   paymentId: Scalars['Uuid'];
@@ -11100,45 +11090,6 @@ export function useGetAllFilterOptionsLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type GetAllFilterOptionsQueryHookResult = ReturnType<typeof useGetAllFilterOptionsQuery>;
 export type GetAllFilterOptionsLazyQueryHookResult = ReturnType<typeof useGetAllFilterOptionsLazyQuery>;
 export type GetAllFilterOptionsQueryResult = Apollo.QueryResult<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>;
-export const RequestPaymentDocument = gql`
-    mutation requestPayment($amount: Int!, $projectId: Uuid!, $recipientId: Int!, $reason: Reason!) {
-  requestPayment(
-    amountInUsd: $amount
-    projectId: $projectId
-    recipientId: $recipientId
-    reason: $reason
-  )
-}
-    `;
-export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMutation, RequestPaymentMutationVariables>;
-
-/**
- * __useRequestPaymentMutation__
- *
- * To run a mutation, you first call `useRequestPaymentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRequestPaymentMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [requestPaymentMutation, { data, loading, error }] = useRequestPaymentMutation({
- *   variables: {
- *      amount: // value for 'amount'
- *      projectId: // value for 'projectId'
- *      recipientId: // value for 'recipientId'
- *      reason: // value for 'reason'
- *   },
- * });
- */
-export function useRequestPaymentMutation(baseOptions?: Apollo.MutationHookOptions<RequestPaymentMutation, RequestPaymentMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RequestPaymentMutation, RequestPaymentMutationVariables>(RequestPaymentDocument, options);
-      }
-export type RequestPaymentMutationHookResult = ReturnType<typeof useRequestPaymentMutation>;
-export type RequestPaymentMutationResult = Apollo.MutationResult<RequestPaymentMutation>;
-export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<RequestPaymentMutation, RequestPaymentMutationVariables>;
 export const CancelPaymentRequestDocument = gql`
     mutation cancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
   cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId)

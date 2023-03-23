@@ -1,15 +1,4 @@
-import { chain } from "lodash";
-import {
-  PaymentItem,
-  PaymentFixture,
-  Project,
-  ProjectFixture,
-  User,
-  UserFixture,
-  Uuid,
-  PaymentReceipt,
-  Payment,
-} from "../../types";
+import { PaymentItem, PaymentFixture, Project, User, Uuid, PaymentReceipt, Payment } from "../../types";
 import {
   AddEthPaymentReceiptDocument,
   AddEthPaymentReceiptMutation,
@@ -21,15 +10,23 @@ import {
   RequestPaymentMutation,
   RequestPaymentMutationVariables,
 } from "../../__generated/graphql";
-import { mutateAsAdmin, mutateAsRegisteredUser } from "../common";
+import { mutateAsAdmin, mutateAsRegisteredUser, waitEvents } from "../common";
 import { payments } from "../../fixtures/payments";
 
 export const populatePayments = async (users: Record<string, User>, projects: Record<string, Project>) => {
-  const paymentValues = chain(Object.values(payments)).value();
+  const populatedPayments = await Promise.all(payments.map(payment => populatePayment(users, projects, payment)));
 
-  const populatedPayments = await Promise.all(paymentValues.map(payment => populatePayment(users, projects, payment)));
-
-  //TODO arrange populatedPayments in a Record<projectKey, Record<recipientGithubId, Payment[]>>
+  const paymentsPerProjectPerRecipient: Record<string, Record<number, Payment[]>> = {};
+  populatedPayments.flat().forEach(payment => {
+    if (paymentsPerProjectPerRecipient[payment.project] === undefined) {
+      paymentsPerProjectPerRecipient[payment.project] = {};
+    }
+    if (paymentsPerProjectPerRecipient[payment.project][payment.recipientGithubId] === undefined) {
+      paymentsPerProjectPerRecipient[payment.project][payment.recipientGithubId] = [];
+    }
+    paymentsPerProjectPerRecipient[payment.project][payment.recipientGithubId].push(payment);
+  });
+  return paymentsPerProjectPerRecipient;
 };
 
 const populatePayment = async (
@@ -39,16 +36,16 @@ const populatePayment = async (
 ) => {
   const project = projects[payment.project];
   if (!project) {
-    throw new Error(`Project ${payment.project} does not exist in projects fixture`);
+    throw new Error(`Project '${payment.project}' does not exist in projects fixture`);
   }
 
   const requestor = users[payment.requestor];
   if (!requestor) {
-    throw new Error(`Requestor ${payment.requestor} does not exist in users fixture`);
+    throw new Error(`Requestor '${payment.requestor}' does not exist in users fixture`);
   }
 
   if (!project.leaders || !project.leaders.includes(payment.requestor)) {
-    throw new Error(`Requestor ${payment.requestor} is not a leader of project ${payment.project}`);
+    throw new Error(`Requestor '${payment.requestor}' is not a leader of project '${payment.project}'`);
   }
 
   return await Promise.all(payment.items.map(item => populatePaymentItem(payment, project, requestor, item)));
@@ -73,6 +70,8 @@ const populatePaymentItem = async (
     }
   );
   const paymentId: Uuid = response.data?.requestPayment;
+
+  await waitEvents();
 
   if (paymentItem.receipts) {
     await Promise.all(paymentItem.receipts.map(receipt => populateReceipt(paymentId, project, receipt)));

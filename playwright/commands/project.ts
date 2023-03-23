@@ -13,9 +13,9 @@ import {
   UpdateBudgetAllocationDocument,
   UpdateBudgetAllocationMutationVariables,
 } from "../__generated/graphql";
-import { mutateAsAdmin } from "./common";
+import { mutateAsAdmin, mutateAsRegisteredUser } from "./common";
 
-export const addProjectLeader = async (projectId: Uuid, githubUserId: number) => {
+export const addProjectLeader = async (projectId: Uuid, githubUserId: number, userToken: string) => {
   const response = await mutateAsAdmin<InviteProjectLeaderMutation, InviteProjectLeaderMutationVariables>({
     mutation: InviteProjectLeaderDocument,
     variables: {
@@ -24,12 +24,15 @@ export const addProjectLeader = async (projectId: Uuid, githubUserId: number) =>
     },
   });
 
-  await mutateAsAdmin<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>({
-    mutation: AcceptProjectLeaderInvitationDocument,
-    variables: {
-      invitationId: response.data?.inviteProjectLeader,
-    },
-  });
+  await mutateAsRegisteredUser<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>(
+    userToken,
+    {
+      mutation: AcceptProjectLeaderInvitationDocument,
+      variables: {
+        invitationId: response.data?.inviteProjectLeader,
+      },
+    }
+  );
 };
 
 export const linkRepo = async (projectId: Uuid, githubRepoId: number) =>
