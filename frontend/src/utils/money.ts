@@ -12,14 +12,32 @@ export const formatMoneyAmount = ({ amount, currency = Currency.USD, notation = 
       return Intl.NumberFormat("en-US", {
         style: "currency",
         currency,
-        maximumFractionDigits: notation === "compact" && amount >= 1000 ? 1 : 0,
+        maximumFractionDigits: maximumFractionDigits({ amount, notation }),
         notation,
       }).format(amount);
     case Currency.USDC:
     case Currency.ETH:
       return `${currency} ${Intl.NumberFormat("en-US", {
-        maximumFractionDigits: notation === "compact" && amount >= 1000 ? 1 : 0,
+        maximumFractionDigits: maximumFractionDigits({ amount, notation }),
         notation,
       }).format(amount)}`;
+  }
+};
+
+const maximumFractionDigits = ({ amount, notation }: Params) => {
+  switch (notation) {
+    case "compact": {
+      return Intl.NumberFormat("en-US", {
+        maximumFractionDigits: 1,
+        notation,
+      })
+        .formatToParts(amount)
+        .find(p => p.type === "fraction")?.value
+        ? 1
+        : 0;
+    }
+
+    default:
+      return 0;
   }
 };
