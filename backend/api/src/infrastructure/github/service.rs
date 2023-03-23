@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use domain::GithubRepositoryId;
-use infrastructure::github;
+use infrastructure::github::{self, OctocrabProxy};
 use serde_json::Value;
 
 use crate::domain::{GithubRepo, GithubService, GithubServiceError};
@@ -16,7 +16,7 @@ impl From<github::Error> for GithubServiceError {
 }
 
 #[async_trait]
-impl GithubService for github::Client {
+impl<P: OctocrabProxy> GithubService for P {
 	async fn fetch_repository_details(
 		&self,
 		github_repo_id: &GithubRepositoryId,
