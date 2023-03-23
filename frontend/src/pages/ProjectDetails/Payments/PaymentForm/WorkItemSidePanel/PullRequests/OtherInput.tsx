@@ -36,6 +36,14 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
           });
         }
       },
+      onError: () =>
+        setError(INPUT_NAME, {
+          type: "validate",
+          message: T("payment.form.workItems.addOtherPR.invalidPrLink"),
+        }),
+      context: {
+        graphqlErrorDisplay: "none",
+      },
     }
   );
 
