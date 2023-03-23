@@ -1,12 +1,10 @@
 import { test } from "./fixtures";
 import { expect } from "@playwright/test";
-import { cleanupDB } from "./commands/db/db_utils";
-import { populate } from "./commands/populate";
+import { restoreDB } from "./commands/db/db_utils";
 
 test.describe("As a visitor, I", () => {
-  test.beforeAll(async ({ request }) => {
-    cleanupDB();
-    await populate(request);
+  test.beforeAll(async () => {
+    restoreDB();
   });
 
   test("can filter projects by technology", async ({ page, projects }) => {
