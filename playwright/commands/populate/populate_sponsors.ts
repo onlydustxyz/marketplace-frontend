@@ -1,13 +1,14 @@
-import { Project, Sponsor } from "../../types";
+import { Sponsor } from "../../types";
 import { chain, zip } from "lodash";
 import { mutateAsAdmin } from "../common";
+import { projects } from "../../fixtures/projects";
 import {
   CreateSponsorMutation,
   CreateSponsorMutationVariables,
   CreateSponsorDocument,
 } from "../../__generated/graphql";
 
-export const populateSponsors = async (projects: Record<string, Project>): Promise<Record<string, Sponsor>> => {
+export const populateSponsors = async (): Promise<Record<string, Sponsor>> => {
   const sponsor_names = chain(Object.values(projects))
     .flatMap("sponsors")
     .uniq()

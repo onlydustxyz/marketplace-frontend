@@ -1,7 +1,7 @@
 import { APIRequestContext } from "@playwright/test";
 import { zip } from "lodash";
 import { users } from "../../fixtures/users";
-import { UserFixture } from "../../types";
+import { User, UserFixture } from "../../types";
 import {
   UpdateProfileDocument,
   UpdateProfileInfoMutation,
@@ -10,7 +10,7 @@ import {
 import { mutateAsAdmin } from "../common";
 import { createGithubUser, signinUser } from "../user";
 
-export const populateUsers = async (request: APIRequestContext): Promise<Record<string, UserFixture>> => {
+export const populateUsers = async (request: APIRequestContext): Promise<Record<string, User>> => {
   const populatedUsers = await Promise.all(Object.values(users).map(user => populateUser(request, user)));
   return Object.fromEntries(zip(Object.keys(users), populatedUsers));
 };
