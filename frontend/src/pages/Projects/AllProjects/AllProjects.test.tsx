@@ -421,7 +421,7 @@ describe("All projects", () => {
     render({ mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_NO_INVITATIONS) });
 
     const moneyGrantedElementsInOrderOfAppearance = await screen.findAllByText("granted", { exact: false });
-    expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("$1.0K");
+    expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("$1K");
     expect(moneyGrantedElementsInOrderOfAppearance[1]).toHaveTextContent("$999");
   });
 
@@ -430,7 +430,7 @@ describe("All projects", () => {
     render({ mocks: buildGraphQlMocks(ALL_PROJECTS_RESULT_WITH_INVITATION) });
     const moneyGrantedElementsInOrderOfAppearance = await screen.findAllByText("granted", { exact: false });
     expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("$0");
-    expect(moneyGrantedElementsInOrderOfAppearance[1]).toHaveTextContent("$1.0K");
+    expect(moneyGrantedElementsInOrderOfAppearance[1]).toHaveTextContent("$1K");
     expect(moneyGrantedElementsInOrderOfAppearance[2]).toHaveTextContent("$999");
   });
 
@@ -442,8 +442,8 @@ describe("All projects", () => {
     });
     const moneyGrantedElementsInOrderOfAppearance = await screen.findAllByText("granted", { exact: false });
     expect(moneyGrantedElementsInOrderOfAppearance).toHaveLength(2);
-    expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("Granted: $0 / $1.0K");
-    expect(moneyGrantedElementsInOrderOfAppearance[1]).toHaveTextContent("Granted: $999 / $1.0K");
+    expect(moneyGrantedElementsInOrderOfAppearance[0]).toHaveTextContent("Granted: $0 / $1K");
+    expect(moneyGrantedElementsInOrderOfAppearance[1]).toHaveTextContent("Granted: $999 / $1K");
   });
 
   it("should only show valid projects", async () => {
