@@ -98,7 +98,8 @@ export default function ContributorSelectView({
                     )}
                     placeholder={open ? "" : T("payment.form.contributor.select.placeholder")}
                     onFocus={() => {
-                      setGithubHandleSubstring(selectedGithubHandle);
+                      setGithubHandleSubstring(null);
+                      setSelectedGithubHandle(null);
                     }}
                     style={{
                       width: Math.max(githubHandleSubstringTextWidth, selectedGithubHandleTextWidth) + 4 || 200,
