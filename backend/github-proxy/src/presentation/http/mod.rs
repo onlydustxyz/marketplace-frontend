@@ -1,15 +1,18 @@
+use std::sync::Arc;
+
 use anyhow::Result;
 use presentation::http;
 
-use crate::Config;
+use crate::{domain::GithubService, Config};
 
 pub mod guards;
 mod routes;
 
-pub async fn serve(config: Config) -> Result<()> {
+pub async fn serve(config: Config, github: Arc<dyn GithubService>) -> Result<()> {
 	let _ = rocket::custom(http::config::rocket("backend/github-proxy/Rocket.toml"))
 		.manage(config.http.clone())
 		.manage(config)
+		.manage(github)
 		.mount("/", routes![http::routes::health_check,])
 		.mount(
 			"/",

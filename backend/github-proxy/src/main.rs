@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use ::infrastructure::{
 	config, github,
 	tracing::{self, Tracer},
@@ -14,7 +16,7 @@ mod presentation;
 
 use serde::Deserialize;
 
-use self::presentation::http;
+use self::{github::RoundRobinClient, presentation::http};
 
 #[derive(Deserialize, Clone)]
 pub struct Config {
@@ -29,7 +31,9 @@ async fn main() -> Result<()> {
 	let config: Config = config::load("backend/github-proxy/app.yaml")?;
 	let _tracer = Tracer::init(&config.tracer, "github-proxy")?;
 
-	http::serve(config).await?;
+	let github = Arc::new(RoundRobinClient::new(&config.github)?);
+
+	http::serve(config, github).await?;
 
 	info!("👋 Gracefully shut down");
 	Ok(())

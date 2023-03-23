@@ -1,9 +1,12 @@
+use std::sync::Arc;
+
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use presentation::http::guards::{ApiKey, ApiKeyGuard};
 use rocket::{response::content, State};
 use tracing::instrument;
 
 use crate::{
+	domain::GithubService,
 	presentation::{graphql, http::guards::OptionGithubPat},
 	Config,
 };
@@ -27,10 +30,11 @@ pub async fn get_graphql_handler(
 	_api_key: ApiKeyGuard<GraphqlApiKey>,
 	maybe_github_pat: OptionGithubPat,
 	config: &State<Config>,
+	github: &State<Arc<dyn GithubService>>,
 	request: GraphQLRequest,
 ) -> GraphQLResponse {
 	let schema = graphql::create_schema();
-	let context = graphql::Context::new(maybe_github_pat, (*config).clone());
+	let context = graphql::Context::new(maybe_github_pat, (*config).clone(), (*github).clone());
 	request.execute(&schema, &context).await
 }
 
@@ -40,9 +44,10 @@ pub async fn post_graphql_handler(
 	_api_key: ApiKeyGuard<GraphqlApiKey>,
 	maybe_github_pat: OptionGithubPat,
 	config: &State<Config>,
+	github: &State<Arc<dyn GithubService>>,
 	request: GraphQLRequest,
 ) -> GraphQLResponse {
 	let schema = graphql::create_schema();
-	let context = graphql::Context::new(maybe_github_pat, (*config).clone());
+	let context = graphql::Context::new(maybe_github_pat, (*config).clone(), (*github).clone());
 	request.execute(&schema, &context).await
 }
