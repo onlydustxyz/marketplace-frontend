@@ -62,6 +62,7 @@ export default function usePaymentRequests({ projectId, onNewPaymentRequested }:
                 paymentRequests: paymentRequestRefs => {
                   return [...paymentRequestRefs, newPaymentRequestRef];
                 },
+                remainingAmount: remainingAmount => remainingAmount - amount,
               },
             });
             return budgetRefs;
