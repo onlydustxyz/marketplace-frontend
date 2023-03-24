@@ -12,7 +12,7 @@ runs:
 
     - name: Install Playwright Browsers
       shell: bash
-      run: yarn playwright install --with-deps
+      run: yarn playwright install --with-deps chromium
 
     - name: Run Playwright tests
       shell: bash
