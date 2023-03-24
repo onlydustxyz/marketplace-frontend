@@ -38,19 +38,19 @@ runs:
         echo "github_proxy_pid=$!" >> $GITHUB_ENV
 
     - name: Wait for api to be up
-      uses: ifaxity/wait-on-action@v1
+      uses: onlydustxyz/wait-on-action@v1
       with:
         resource: http://localhost:8000
         timeout: 300000
 
     - name: Wait for event-listeners to be up
-      uses: ifaxity/wait-on-action@v1
+      uses: onlydustxyz/wait-on-action@v1
       with:
         resource: http-get://localhost:8081/graphiql
         timeout: 300000
 
     - name: Wait for github-proxy to be up
-      uses: ifaxity/wait-on-action@v1
+      uses: onlydustxyz/wait-on-action@v1
       with:
         resource: http://localhost:8001
         timeout: 300000
