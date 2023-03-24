@@ -2,7 +2,6 @@ import { gql } from "@apollo/client";
 import { Payment } from "src/components/PayoutTable/Line";
 import { useIntl } from "src/hooks/useIntl";
 import {
-  GetPaymentRequestsQuery,
   MarkInvoiceAsReceivedMutation,
   MarkInvoiceAsReceivedMutationVariables,
   UserPayoutSettingsFragment,
@@ -10,8 +9,6 @@ import {
 import { useHasuraMutation } from "src/hooks/useHasuraQuery";
 import { useShowToaster } from "src/hooks/useToaster";
 import { HasuraUserRole } from "src/types";
-import { cloneDeep } from "lodash";
-import { GET_PAYMENTS_QUERY } from "..";
 import View from "./View";
 
 type Props = {
@@ -38,23 +35,14 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, userI
           ? paymentReferences.map(p => p.paymentId)
           : [paymentReferences.paymentId];
 
-        const cachedQuery: GetPaymentRequestsQuery | null = cache.readQuery({
-          query: GET_PAYMENTS_QUERY,
-          variables: { githubUserId },
-        });
-
-        if (cachedQuery) {
-          const newQuery = cloneDeep(cachedQuery);
-          newQuery.paymentRequests
-            .filter(p => paymentIds.includes(p.id))
-            .forEach(p => (p.invoiceReceivedAt = new Date()));
-
-          cache.writeQuery({
-            query: GET_PAYMENTS_QUERY,
-            data: newQuery,
-            variables: { githubUserId },
+        paymentIds.map(id => {
+          cache.modify({
+            id: `PaymentRequests:${id}`,
+            fields: {
+              invoiceReceivedAt: () => new Date(),
+            },
           });
-        }
+        });
       },
     }
   );

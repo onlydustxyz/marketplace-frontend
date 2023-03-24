@@ -1,11 +1,11 @@
 import { gql } from "@apollo/client";
-import { cloneDeep } from "lodash";
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { parsePullRequestLink } from "src/utils/github";
 import {
   GetPaymentRequestsForProjectQuery,
   PaymentRequestFragment,
+  PaymentRequestFragmentDoc,
   RequestPaymentMutationResult,
   RequestPaymentMutationVariables,
 } from "src/__generated/graphql";
@@ -30,13 +30,10 @@ export default function usePaymentRequests({ projectId, onNewPaymentRequested }:
     update: (cache, result, { variables }) => {
       const { data } = result as RequestPaymentMutationResult;
       const { amount, contributorId, projectId, reason } = variables as RequestPaymentMutationVariables;
-      const cachedQuery: GetPaymentRequestsForProjectQuery | null = cache.readQuery({
-        query: PAYMENT_REQUESTS_FOR_PROJECT_QUERY,
-        variables: { projectId },
-      });
 
-      if (cachedQuery) {
-        const newPaymentRequest: PaymentRequestFragment = {
+      const newPaymentRequestRef = cache.writeFragment<PaymentRequestFragment>({
+        fragment: PaymentRequestFragmentDoc,
+        data: {
           __typename: "PaymentRequests",
           id: data?.requestPayment,
           amountInUsd: amount,
@@ -52,21 +49,25 @@ export default function usePaymentRequests({ projectId, onNewPaymentRequested }:
             }) || [],
           payments: [],
           requestedAt: Date.now(),
-        };
+        },
+      });
 
-        const newQuery = cloneDeep(cachedQuery);
-        const budget = newQuery?.projectsByPk?.budgets.at(0);
-        if (budget) {
-          budget.paymentRequests.push(newPaymentRequest);
-          budget.remainingAmount -= amount;
-        }
-
-        cache.writeQuery({
-          query: PAYMENT_REQUESTS_FOR_PROJECT_QUERY,
-          data: newQuery,
-          variables: { projectId },
-        });
-      }
+      cache.modify({
+        id: `Projects:${projectId}`,
+        fields: {
+          budgets: budgetRefs => {
+            cache.modify({
+              id: budgetRefs[0].__ref,
+              fields: {
+                paymentRequests: paymentRequestRefs => {
+                  return [...paymentRequestRefs, newPaymentRequestRef];
+                },
+              },
+            });
+            return budgetRefs;
+          },
+        },
+      });
     },
   });
 

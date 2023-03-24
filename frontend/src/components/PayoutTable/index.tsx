@@ -45,6 +45,7 @@ const PayoutTable: React.FC<PropsType> = ({ payments, payoutInfoMissing, invoice
               setSelectedPayment(p);
               setSidePanelOpen(true);
             }}
+            selected={p.id === selectedPayment?.id}
           />
         ))}
       </Table>

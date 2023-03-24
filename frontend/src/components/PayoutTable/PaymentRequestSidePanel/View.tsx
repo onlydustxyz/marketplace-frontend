@@ -10,6 +10,7 @@ import Time from "src/icons/TimeLine";
 import { PaymentStatus } from "src/types";
 import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
+import { formatMoneyAmount } from "src/utils/money";
 import { PaymentRequestDetailsFragment } from "src/__generated/graphql";
 
 export type Props = {
@@ -36,6 +37,7 @@ export default function View({
   userId,
   githubUserId,
   status,
+  amountInUsd,
   githubRecipient,
   requestor,
   requestedAt,
@@ -62,6 +64,9 @@ export default function View({
               isProjectLeaderView: projectLeaderView,
             }}
           />
+          <div className="font-belwe font-normal text-5xl text-greyscale-50">
+            {formatMoneyAmount({ amount: amountInUsd })}
+          </div>
           {requestor && (
             <Details>
               <RoundedImage alt={requestor.displayName} src={requestor.avatarUrl} size={ImageSize.Xxs} />

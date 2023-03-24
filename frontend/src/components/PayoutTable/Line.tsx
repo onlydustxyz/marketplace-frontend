@@ -37,9 +37,17 @@ type Props = {
   invoiceNeeded: boolean;
   setSortingFields: (sortingFields: SortingFields) => void;
   onClick: () => void;
+  selected: boolean;
 };
 
-export default function PaymentLine({ payment, payoutInfoMissing, invoiceNeeded, setSortingFields, onClick }: Props) {
+export default function PaymentLine({
+  payment,
+  payoutInfoMissing,
+  invoiceNeeded,
+  setSortingFields,
+  onClick,
+  selected,
+}: Props) {
   useEffect(() => {
     setSortingFields({
       [Field.Date]: payment.requestedAt,
@@ -52,7 +60,7 @@ export default function PaymentLine({ payment, payoutInfoMissing, invoiceNeeded,
   const { T } = useIntl();
 
   return (
-    <Line highlightOnHover={200} onClick={onClick}>
+    <Line onClick={onClick} selected={selected}>
       <Cell>{displayRelativeDate(payment.requestedAt)}</Cell>
       <Cell className="flex flex-row gap-3">
         <RoundedImage src={payment?.project?.logoUrl || onlyDustLogo} alt={payment?.project?.title || ""} />

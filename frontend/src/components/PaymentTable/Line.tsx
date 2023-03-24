@@ -17,9 +17,10 @@ type Props = {
   payment: PaymentRequestFragment & Sortable;
   setSortingFields: (sortingFields: SortingFields) => void;
   onClick: () => void;
+  selected: boolean;
 };
 
-export default function PaymentLine({ payment, setSortingFields, onClick }: Props) {
+export default function PaymentLine({ payment, setSortingFields, onClick, selected }: Props) {
   const { valid: payoutSettingsValid } = usePayoutSettings(payment.recipientId);
   const { data: recipient } = useGithubUser(payment.recipientId);
 
@@ -42,7 +43,7 @@ export default function PaymentLine({ payment, setSortingFields, onClick }: Prop
   return (
     <>
       {payment && recipient && (
-        <Line highlightOnHover={200} onClick={onClick}>
+        <Line onClick={onClick} selected={selected}>
           <Cell height={CellHeight.Medium}>{displayRelativeDate(payment.requestedAt)}</Cell>
           <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
             <RoundedImage src={recipient.avatarUrl} alt={recipient.login} rounding={Rounding.Circle} />
