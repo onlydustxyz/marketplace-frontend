@@ -63,6 +63,7 @@ export class EditProfilePage {
 
   async submitForm() {
     await this.page.locator("[data-testid='profile-form-submit-button']").click();
+    await expect(this.page.getByTestId("toaster-message")).toHaveText("Changes saved");
   }
 
   async fillForm(profile: UserProfile) {
