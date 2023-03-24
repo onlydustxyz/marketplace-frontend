@@ -94,11 +94,13 @@ export default function ContributorSelectView({
                     onChange={event => setGithubHandleSubstring(event.target.value)}
                     className={classNames(
                       "border-none outline-none w-full bg-transparent font-normal text-base pt-0.5",
-                      { "font-medium": !open && selectedGithubHandle }
+                      { "font-medium": !open && selectedGithubHandle },
+                      { "caret-transparent": !open }
                     )}
                     placeholder={open ? "" : T("payment.form.contributor.select.placeholder")}
                     onFocus={() => {
-                      setGithubHandleSubstring(selectedGithubHandle);
+                      setGithubHandleSubstring(null);
+                      setSelectedGithubHandle(null);
                     }}
                     style={{
                       width: Math.max(githubHandleSubstringTextWidth, selectedGithubHandleTextWidth) + 4 || 200,
@@ -132,7 +134,7 @@ export default function ContributorSelectView({
                   </>
                 ) : filteredContributors &&
                   filteredContributors.length === 0 &&
-                  isSearchGithubUsersByHandleSubstringQueryLoading ? (
+                  !isSearchGithubUsersByHandleSubstringQueryLoading ? (
                   <span className="text-greyscale-100 italic">
                     {T("payment.form.contributor.select.fallback.noUser")}
                   </span>

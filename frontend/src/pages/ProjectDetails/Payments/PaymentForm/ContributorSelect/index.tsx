@@ -10,6 +10,7 @@ import {
 import { getContributors } from "src/utils/project";
 import { GITHUB_CONTRIBUTOR_FRAGMENT } from "src/hooks/useIsGithubLoginValid";
 import View from "./View";
+import { useLocation } from "react-router-dom";
 
 type Props = {
   projectId: string;
@@ -18,7 +19,11 @@ type Props = {
 };
 
 export default function ContributorSelect({ projectId, contributor, setContributor }: Props) {
-  const [selectedGithubHandle, setSelectedGithubHandle] = useState<string | null>(null);
+  const location = useLocation();
+
+  const [selectedGithubHandle, setSelectedGithubHandle] = useState<string | null>(
+    location.state?.recipientGithubLogin || null
+  );
   const [githubHandleSubstring, setGithubHandleSubstring] = useState<string | null>(null);
   const handleSubstringQuery = `type:user ${githubHandleSubstring} in:login`;
 
@@ -43,26 +48,29 @@ export default function ContributorSelect({ projectId, contributor, setContribut
     [getProjectContributorsQuery.data]
   );
 
-  const filteredContributors = internalContributors.filter(
-    contributor =>
-      !githubHandleSubstring || (githubHandleSubstring && contributor.login.startsWith(githubHandleSubstring))
+  const filteredContributors = sortListByLogin(
+    internalContributors.filter(
+      contributor =>
+        !githubHandleSubstring ||
+        (githubHandleSubstring && contributor.login.toLowerCase().startsWith(githubHandleSubstring.toLowerCase()))
+    )
   );
 
-  const filteredExternalContributors = searchGithubUsersByHandleSubstringQuery?.data?.searchUsers
+  const filteredExternalContributors = sortListByLogin(searchGithubUsersByHandleSubstringQuery?.data?.searchUsers)
     ?.slice(0, 5)
     .filter(
       contributor =>
-        !filteredContributors.map(filteredContributor => filteredContributor.login).includes(contributor.login)
+        !filteredContributors
+          .map(filteredContributor => filteredContributor.login.toLocaleLowerCase())
+          .includes(contributor.login.toLocaleLowerCase())
     );
 
-  useEffect(
-    () =>
-      setContributor(
-        filteredContributors?.find(contributor => contributor.login === selectedGithubHandle) ||
-          filteredExternalContributors?.find(contributor => contributor.login === selectedGithubHandle)
-      ),
-    [selectedGithubHandle, filteredContributors, filteredExternalContributors]
-  );
+  useEffect(() => {
+    setContributor(
+      internalContributors?.find(contributor => contributor.login === selectedGithubHandle) ||
+        filteredExternalContributors?.find(contributor => contributor.login === selectedGithubHandle)
+    );
+  }, [selectedGithubHandle, filteredContributors, filteredExternalContributors, githubHandleSubstring]);
 
   return (
     <View
@@ -78,6 +86,14 @@ export default function ContributorSelect({ projectId, contributor, setContribut
       }}
     />
   );
+}
+
+function sortListByLogin<T extends { login: string }>(objectsWithLogin: T[] | null | undefined) {
+  return objectsWithLogin
+    ? [...objectsWithLogin].sort((objectWithLoginA, objectWithLoginB) =>
+        objectWithLoginA.login.toLocaleLowerCase().localeCompare(objectWithLoginB.login.toLocaleLowerCase())
+      )
+    : [];
 }
 
 export const SEARCH_GITHUB_USERS_BY_HANDLE_SUBSTRING_QUERY = gql`
