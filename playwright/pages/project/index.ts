@@ -17,12 +17,13 @@ export class ProjectPage {
 
   goto = async () => {
     await this.page.goto(this.url);
+    return this;
   };
 
   overview = async () => {
     await this.page.getByTestId("Overview-tab").click();
     await expect(this.page).toHaveURL(this.url);
-    return new ProjectOverviewPage();
+    return new ProjectOverviewPage(this.page);
   };
 
   contributors = async () => {

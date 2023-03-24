@@ -1,14 +1,16 @@
-import { Payment, Project, Sponsor, User } from "../types";
+import { Payment, Project, Repo, Sponsor, User } from "../types";
 import { Page, test as base, expect } from "@playwright/test";
 import fs from "fs";
 import {
   GENERATED_PAYMENTS_FIXTURE_BASE_PATH,
   GENERATED_PROJECTS_FIXTURE_BASE_PATH,
+  GENERATED_REPOS_FIXTURE_BASE_PATH,
   GENERATED_SPONSORS_FIXTURE_BASE_PATH,
   GENERATED_USERS_FIXTURE_BASE_PATH,
 } from "../commands/populate";
 
 type PopulatedDataFixtures = {
+  repos: Record<string, Repo>;
   users: Record<string, User>;
   sponsors: Record<string, Sponsor>;
   projects: Record<string, Project>;
@@ -17,6 +19,13 @@ type PopulatedDataFixtures = {
 };
 
 export const test = base.extend<PopulatedDataFixtures>({
+  // eslint-disable-next-line no-empty-pattern
+  repos: async ({}, use) => {
+    const content = fs.readFileSync(GENERATED_REPOS_FIXTURE_BASE_PATH);
+    const repos = JSON.parse(content.toString());
+    await use(repos);
+  },
+
   // eslint-disable-next-line no-empty-pattern
   users: async ({}, use) => {
     const content = fs.readFileSync(GENERATED_USERS_FIXTURE_BASE_PATH);

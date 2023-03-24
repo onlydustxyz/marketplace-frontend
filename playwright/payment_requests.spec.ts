@@ -10,27 +10,41 @@ import {
   AddEthPaymentReceiptMutationVariables,
   EthereumIdentityType,
 } from "./__generated/graphql";
+import { ProjectPaymentsPage } from "./pages/project/payments";
+import { EditProfilePage } from "./pages/edit_profile_page";
 
 test.describe("As a project lead, I", () => {
   test.beforeAll(async () => {
     restoreDB();
   });
 
-  test.only("can request a payment", async ({ page, projects, users, signIn }) => {
+  test("can request a payment", async ({ page, projects, users, repos, signIn }) => {
     const recipient = users.Anthony;
+    const project = projects.ProjectA;
 
-    const projectPage = new ProjectPage(page, projects.ProjectA);
     await signIn(users.TokioRs);
-    await projectPage.goto();
+    const projectPage = await new ProjectPage(page, project).goto();
+    const overviewPage = await projectPage.overview();
 
-    // TODO Expectations on overview page
-    // expect(await paymentsPage.remainingBudget()).toBe("$50,000");
+    expect(await overviewPage.description()).toBe(project.longDescription);
+    project.repos?.forEach(async repo => expect(overviewPage.repository(repos[repo].id)).toBeVisible());
+
+    await Promise.all(
+      project.leaders?.map(async leader =>
+        expect(await overviewPage.projectLeads()).toContain(users[leader].github.login)
+      ) || []
+    );
+    await Promise.all(
+      project.sponsors?.map(async sponsor => expect(await overviewPage.sponsors()).toContain(sponsor)) || []
+    );
+
+    expect(await overviewPage.contributorsCount()).toBe(3);
+    expect(await overviewPage.grantedAmount()).toBe("$13.4K / $100K");
 
     const contributorsPage = await projectPage.contributors();
     const contributors = contributorsPage.contributorsTable();
 
     // TODO Expectations on contributors page
-
     const newPaymentPage = await (await contributors).byName(recipient.github.login).pay();
     await expect(newPaymentPage.contributor()).toHaveValue(recipient.github.login);
 
@@ -39,7 +53,8 @@ test.describe("As a project lead, I", () => {
       otherIssues: ["https://github.com/od-mocks/cool-repo-A/pull/1", "https://github.com/od-mocks/cool-repo-A/pull/2"],
     });
 
-    const paymentsPage = await projectPage.payments(); // TODO cache should be updated automatically
+    const paymentsPage = new ProjectPaymentsPage(page, project);
+    expect(await paymentsPage.remainingBudget()).toBe("$85,600");
 
     const payment = paymentsPage.paymentList().nth(1);
     await payment.click();
@@ -47,7 +62,7 @@ test.describe("As a project lead, I", () => {
     const sidePanel = paymentsPage.sidePanel();
 
     expect(sidePanel.getByText(`Payment #${(await payment.paymentId())?.substring(0, 5).toUpperCase()}`)).toBeVisible();
-    // TODO expect amount
+    await expect(sidePanel.getByText("$1,000")).toBeVisible();
     await expect(sidePanel.getByText("from tokio-rs (you)")).toBeVisible();
     await expect(sidePanel.getByText("to AnthonyBuisset")).toBeVisible();
     await expect(sidePanel.getByText("Created a few seconds ago")).toBeVisible();
@@ -57,8 +72,6 @@ test.describe("As a project lead, I", () => {
     await expect(sidePanel.locator("div").filter({ hasText: "#1 · Update README.md" }).first()).toBeVisible();
 
     await sidePanel.getByRole("button").click();
-
-    expect(await paymentsPage.remainingBudget()).toBe("$85,600");
   });
 
   test("can see payments made by other project leads on the same project", async ({
@@ -72,7 +85,7 @@ test.describe("As a project lead, I", () => {
     const otherLeader = users.Olivier;
     const recipient = users.Anthony;
 
-    const projectPaymentsPage = await new ProjectPage(page, project).payments();
+    const projectPaymentsPage = new ProjectPaymentsPage(page, project);
 
     const listPaymentsAs = async (user: User) => {
       await signIn(user);
@@ -94,10 +107,14 @@ test.describe("As a project lead, I", () => {
     expect(await paymentRow.status()).toBe("Pending");
 
     // 2. Edit profile info, payment is "processing"
-    // TODO fillPayoutSettings(recipient);
+    const editProfilePage = new EditProfilePage(page);
+    await signIn(recipient);
+    await editProfilePage.goto();
+    recipient.profile && (await editProfilePage.fillForm(recipient.profile));
+    await editProfilePage.submitForm();
 
     await listPaymentsAs(otherLeader);
-    // TODO expect(await projectPaymentsPage.paymentList().nth(1).status()).toBe("Processing");
+    expect(await projectPaymentsPage.paymentList().nth(1).status()).toBe("Processing");
 
     // 3. Add receipt, payment is "complete"
     await mutateAsAdmin<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>({

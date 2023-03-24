@@ -64,6 +64,7 @@ export class NewPaymentPage {
       for (const issue of otherIssues) {
         await this.page.locator("#otherPrLink").fill(issue);
         await this.page.getByTestId("add-other-pr-btn").click();
+        await expect(this.page.getByText(`#${issue.split("/").at(-1)}`)).toBeVisible();
       }
     }
 
