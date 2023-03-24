@@ -48,19 +48,21 @@ export default function ContributorSelect({ projectId, contributor, setContribut
     [getProjectContributorsQuery.data]
   );
 
-  const filteredContributors = internalContributors.filter(
-    contributor =>
-      !githubHandleSubstring ||
-      (githubHandleSubstring && contributor.login.toLowerCase().startsWith(githubHandleSubstring.toLowerCase()))
+  const filteredContributors = sortListByLogin(
+    internalContributors.filter(
+      contributor =>
+        !githubHandleSubstring ||
+        (githubHandleSubstring && contributor.login.toLowerCase().startsWith(githubHandleSubstring.toLowerCase()))
+    )
   );
 
-  const filteredExternalContributors = searchGithubUsersByHandleSubstringQuery?.data?.searchUsers
+  const filteredExternalContributors = sortListByLogin(searchGithubUsersByHandleSubstringQuery?.data?.searchUsers)
     ?.slice(0, 5)
     .filter(
       contributor =>
         !filteredContributors
-          .map(filteredContributor => filteredContributor.login.toLowerCase())
-          .includes(contributor.login.toLowerCase())
+          .map(filteredContributor => filteredContributor.login.toLocaleLowerCase())
+          .includes(contributor.login.toLocaleLowerCase())
     );
 
   useEffect(() => {
@@ -84,6 +86,14 @@ export default function ContributorSelect({ projectId, contributor, setContribut
       }}
     />
   );
+}
+
+function sortListByLogin<T extends { login: string }>(objectsWithLogin: T[] | null | undefined) {
+  return objectsWithLogin
+    ? [...objectsWithLogin].sort((objectWithLoginA, objectWithLoginB) =>
+        objectWithLoginA.login.toLocaleLowerCase().localeCompare(objectWithLoginB.login.toLocaleLowerCase())
+      )
+    : [];
 }
 
 export const SEARCH_GITHUB_USERS_BY_HANDLE_SUBSTRING_QUERY = gql`
