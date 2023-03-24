@@ -107,7 +107,10 @@ export default function PullRequests({ projectId, contributorHandle, workItems, 
         }}
       >
         {elligiblePulls.length > 0 ? (
-          <div className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
+          <div
+            data-testId="elligible-pulls"
+            className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
+          >
             {elligiblePulls.map(pr => (
               <GithubIssue key={pr.id} workItem={pr} action={Action.Add} onClick={() => onPullRequestAdded(pr)} />
             ))}
