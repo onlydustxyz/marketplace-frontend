@@ -50,14 +50,17 @@ export default function ContributorSelect({ projectId, contributor, setContribut
 
   const filteredContributors = internalContributors.filter(
     contributor =>
-      !githubHandleSubstring || (githubHandleSubstring && contributor.login.startsWith(githubHandleSubstring))
+      !githubHandleSubstring ||
+      (githubHandleSubstring && contributor.login.toLowerCase().startsWith(githubHandleSubstring.toLowerCase()))
   );
 
   const filteredExternalContributors = searchGithubUsersByHandleSubstringQuery?.data?.searchUsers
     ?.slice(0, 5)
     .filter(
       contributor =>
-        !filteredContributors.map(filteredContributor => filteredContributor.login).includes(contributor.login)
+        !filteredContributors
+          .map(filteredContributor => filteredContributor.login.toLowerCase())
+          .includes(contributor.login.toLowerCase())
     );
 
   useEffect(() => {
