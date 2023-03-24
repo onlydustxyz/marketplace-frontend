@@ -94,7 +94,8 @@ export default function ContributorSelectView({
                     onChange={event => setGithubHandleSubstring(event.target.value)}
                     className={classNames(
                       "border-none outline-none w-full bg-transparent font-normal text-base pt-0.5",
-                      { "font-medium": !open && selectedGithubHandle }
+                      { "font-medium": !open && selectedGithubHandle },
+                      { "caret-transparent": !open }
                     )}
                     placeholder={open ? "" : T("payment.form.contributor.select.placeholder")}
                     onFocus={() => {
