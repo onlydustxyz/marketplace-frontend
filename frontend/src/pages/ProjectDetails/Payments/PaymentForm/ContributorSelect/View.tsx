@@ -133,7 +133,7 @@ export default function ContributorSelectView({
                   </>
                 ) : filteredContributors &&
                   filteredContributors.length === 0 &&
-                  isSearchGithubUsersByHandleSubstringQueryLoading ? (
+                  !isSearchGithubUsersByHandleSubstringQueryLoading ? (
                   <span className="text-greyscale-100 italic">
                     {T("payment.form.contributor.select.fallback.noUser")}
                   </span>
