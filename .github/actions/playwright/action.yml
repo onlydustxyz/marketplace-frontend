@@ -1,0 +1,19 @@
+name: Playwright Tests
+
+description: Install and run Playwright tests
+
+runs:
+  using: "composite"
+  steps:
+    - name: Use Node.js 18
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install Playwright Browsers
+      shell: bash
+      run: yarn playwright install --with-deps
+
+    - name: Run Playwright tests
+      shell: bash
+      run: yarn playwright test

@@ -68,7 +68,7 @@ jobs:
         uses: ./.github/actions/hasura-setup
 
       - name: Execute end-to-end tests
-        uses: ./.github/actions/cypress
+        uses: ./.github/actions/playwright
 
       - name: Kill Rust backend
         uses: ./.github/actions/backend-kill
@@ -112,11 +112,12 @@ jobs:
           file: coverage/cobertura-coverage.xml
 
       - name: Archive code coverage results
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         if: ${{ failure() }}
         with:
-          name: cypress-screenshots
-          path: cypress/screenshots/
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
