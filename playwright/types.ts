@@ -16,12 +16,14 @@ export type UserFixture = {
     id: number;
     login: string;
   };
-  profile?: {
-    identity: IdentityInput | null;
-    location: Location | null;
-    payoutSettings: PayoutSettingsInput | null;
-    contactInformation: ContactInformation | null;
-  };
+  profile?: UserProfile;
+};
+
+export type UserProfile = {
+  identity: IdentityInput | null;
+  location: Location | null;
+  payoutSettings: PayoutSettingsInput | null;
+  contactInformation: ContactInformation | null;
 };
 
 export type User = UserFixture & {

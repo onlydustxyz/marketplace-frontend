@@ -61,13 +61,10 @@ export const users: Record<string, UserFixture> = {
         postCode: "75005",
       },
       payoutSettings: {
-        type: PayoutSettingsType.BankAddress,
-        optBankAddress: {
-          BIC: "BNPAFRPPXXX",
-          IBAN: "FR7630004000031234567890143",
-        },
+        type: PayoutSettingsType.EthereumName,
+        optBankAddress: null,
         optEthAddress: null,
-        optEthName: null,
+        optEthName: "vitalik.eth",
       },
       contactInformation: null,
     },

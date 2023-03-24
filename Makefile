@@ -55,7 +55,7 @@ hasura/clean: db/migrate
 	yarn --cwd ./hasura hasura md export
 
 playwright/test:
-	yarn playwright test
+	yarn playwright test --reporter line
 
 playwright/clean:
 	rm -f "playwright/marketplace_db_dump"
