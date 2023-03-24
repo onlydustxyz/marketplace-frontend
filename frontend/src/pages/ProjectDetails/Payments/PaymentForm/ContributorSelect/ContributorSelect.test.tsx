@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
 
@@ -130,13 +130,13 @@ describe('"PaymentForm" component', () => {
   it("should choose the first contributor in the list when pressign the enter key", async () => {
     await userEvent.click(await screen.findByPlaceholderText(RECIPIENT_INPUT_LABEL));
     await userEvent.keyboard("{Enter}");
-    expect(contributor?.login).toEqual(TEST_USER.login);
+    expect(contributor?.login).toEqual(TEST_OTHER_USER.login);
   });
 
-  it("should choose the first contributor in the list when pressign the enter key", async () => {
+  it("should choose the first contributor in the list when pressing the enter key", async () => {
     await userEvent.click(await screen.findByPlaceholderText(RECIPIENT_INPUT_LABEL));
     await userEvent.keyboard("{ArrowDown}{Enter}");
-    expect(contributor?.login).toEqual(TEST_OTHER_USER.login);
+    expect(contributor?.login).toEqual(TEST_USER.login);
   });
 
   it("shouldn't display external contributors below 3 characters typed", async () => {
