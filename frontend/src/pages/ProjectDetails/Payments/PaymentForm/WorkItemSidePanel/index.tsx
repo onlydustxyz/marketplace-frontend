@@ -35,11 +35,15 @@ export default function WorkItemSidePanel({
   return (
     <SidePanel {...props} title={T("payment.form.workItems.addWorkItem")}>
       <div className="flex flex-row items-center gap-8 border-b border-greyscale-50/8">
-        <Tab active={selectedTab === Tabs.PullRequests} onClick={() => setSelectedTab(Tabs.PullRequests)}>
+        <Tab
+          testId="tab-pull-requests"
+          active={selectedTab === Tabs.PullRequests}
+          onClick={() => setSelectedTab(Tabs.PullRequests)}
+        >
           <GitPullRequestLine />
           {T("payment.form.workItems.pullRequests.tab")}
         </Tab>
-        <Tab active={selectedTab === Tabs.Issues} onClick={() => setSelectedTab(Tabs.Issues)}>
+        <Tab testId="tab-issues" active={selectedTab === Tabs.Issues} onClick={() => setSelectedTab(Tabs.Issues)}>
           <IssueOpen />
           {T("payment.form.workItems.issues.tab")}
         </Tab>

@@ -42,7 +42,10 @@ export default function IssuesView<T, E>({ workItems, onWorkItemAdded, isMore, q
       </div>
       <QueryWrapper query={query}>
         {workItems.length > 0 ? (
-          <div className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded">
+          <div
+            data-testId="elligible-issues"
+            className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
+          >
             {workItems.map(pr => (
               <GithubIssue key={pr.id} workItem={pr} action={Action.Add} onClick={() => onIssueAdded(pr)} />
             ))}

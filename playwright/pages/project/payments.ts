@@ -36,11 +36,15 @@ export class NewPaymentPage {
 
   requestPayment = async ({
     recipient,
-    otherIssues,
     pullRequestIndexes = [],
+    otherPullRequests = [],
+    issuesIndexes = [],
+    otherIssues = [],
   }: {
     recipient?: User;
     pullRequestIndexes?: number[];
+    otherPullRequests?: string[];
+    issuesIndexes?: number[];
     otherIssues?: string[];
   }) => {
     if (recipient) {
@@ -50,21 +54,37 @@ export class NewPaymentPage {
 
     await this.page.getByTestId("add-work-item-btn").click();
 
-    const elligiblePulls = this.page.getByTestId("elligible-pulls").locator("div");
-    await Promise.all(
-      pullRequestIndexes
-        .sort()
-        .reverse()
-        .map(i => elligiblePulls.nth(i).getByRole("button").click())
-    );
+    const elligiblePulls = this.page.getByTestId("elligible-pulls").getByRole("button");
+    for (const index of pullRequestIndexes.sort().reverse()) {
+      await elligiblePulls.nth(index).click();
+    }
 
-    if (otherIssues) {
+    if (otherPullRequests.length > 0) {
       await this.page.locator("[data-testid=add-other-pr-toggle]").click();
 
-      for (const issue of otherIssues) {
-        await this.page.locator("#otherPrLink").fill(issue);
+      for (const pr of otherPullRequests) {
+        await this.page.locator("#otherPrLink").fill(pr);
         await this.page.getByTestId("add-other-pr-btn").click();
-        await expect(this.page.getByText(`#${issue.split("/").at(-1)}`)).toBeVisible();
+        await expect(this.page.getByText(`#${pr.split("/").at(-1)}`)).toBeVisible();
+      }
+    }
+
+    if (issuesIndexes.length + otherIssues.length > 0) {
+      await this.page.getByTestId("tab-issues").click();
+
+      const elligibleIssues = this.page.getByTestId("elligible-issues").getByRole("button");
+      for (const index of issuesIndexes.sort().reverse()) {
+        await elligibleIssues.nth(index).click();
+      }
+
+      if (otherIssues.length > 0) {
+        await this.page.locator("[data-testid=add-other-issue-toggle]").click();
+
+        for (const issue of otherIssues) {
+          await this.page.locator("#otherIssueLink").fill(issue);
+          await this.page.getByTestId("add-other-issue-btn").click();
+          await expect(this.page.getByText(`#${issue.split("/").at(-1)}`)).toBeVisible();
+        }
       }
     }
 

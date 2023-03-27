@@ -55,7 +55,7 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
       variables: {
         repoOwner,
         repoName,
-        prNumber,
+        issueNumber: prNumber,
       },
     });
 
