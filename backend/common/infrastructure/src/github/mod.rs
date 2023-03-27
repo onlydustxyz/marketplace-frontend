@@ -101,14 +101,14 @@ pub trait OctocrabProxy: Sync + Send {
 	}
 
 	#[instrument(skip(self))]
-	async fn get_pull_request(
+	async fn get_issue(
 		&self,
 		repo_owner: &str,
 		repo_name: &str,
 		pr_number: u64,
-	) -> Result<PullRequest, Error> {
-		let pr = self.octocrab().pulls(repo_owner, repo_name).get(pr_number).await?;
-		Ok(pr)
+	) -> Result<Issue, Error> {
+		let issue = self.octocrab().issues(repo_owner, repo_name).get(pr_number).await?;
+		Ok(issue)
 	}
 
 	#[instrument(skip(self))]

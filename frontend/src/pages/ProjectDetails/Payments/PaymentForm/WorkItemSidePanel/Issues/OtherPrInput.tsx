@@ -4,7 +4,7 @@ import { useIntl } from "src/hooks/useIntl";
 import Input from "src/components/FormInput";
 import { WorkItem } from "src/components/GithubIssue";
 import { gql } from "@apollo/client";
-import { FetchPullRequestQuery, IssueDetailsFragmentDoc } from "src/__generated/graphql";
+import { FetchIssueQuery, IssueDetailsFragmentDoc } from "src/__generated/graphql";
 import { useHasuraLazyQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { useFormContext, useFormState } from "react-hook-form";
@@ -21,31 +21,27 @@ const INPUT_NAME = "otherPrLink";
 export default function OtherPrInput({ onWorkItemAdded }: Props) {
   const { T } = useIntl();
 
-  const [fetchPullRequest] = useHasuraLazyQuery<FetchPullRequestQuery>(
-    FETCH_PR_DETAILS,
-    HasuraUserRole.RegisteredUser,
-    {
-      onCompleted: data => {
-        if (data.fetchPullRequest) {
-          onWorkItemAdded(data.fetchPullRequest);
-          resetField(INPUT_NAME);
-        } else {
-          setError(INPUT_NAME, {
-            type: "validate",
-            message: T("payment.form.workItems.pullRequests.addOther.invalidPrLink"),
-          });
-        }
-      },
-      onError: () =>
+  const [fetchIssue] = useHasuraLazyQuery<FetchIssueQuery>(FETCH_PR_DETAILS, HasuraUserRole.RegisteredUser, {
+    onCompleted: data => {
+      if (data.fetchIssue) {
+        onWorkItemAdded(data.fetchIssue);
+        resetField(INPUT_NAME);
+      } else {
         setError(INPUT_NAME, {
           type: "validate",
           message: T("payment.form.workItems.pullRequests.addOther.invalidPrLink"),
-        }),
-      context: {
-        graphqlErrorDisplay: "none",
-      },
-    }
-  );
+        });
+      }
+    },
+    onError: () =>
+      setError(INPUT_NAME, {
+        type: "validate",
+        message: T("payment.form.workItems.pullRequests.addOther.invalidPrLink"),
+      }),
+    context: {
+      graphqlErrorDisplay: "none",
+    },
+  });
 
   const { watch, setError, resetField } = useFormContext();
   const { errors } = useFormState({ name: INPUT_NAME });
@@ -55,7 +51,7 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
   const { repoOwner, repoName, prNumber } = useMemo(() => parsePullRequestLink(otherPrLink), [otherPrLink]);
 
   const validateOtherPR = () =>
-    fetchPullRequest({
+    fetchIssue({
       variables: {
         repoOwner,
         repoName,
@@ -108,8 +104,8 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
 
 const FETCH_PR_DETAILS = gql`
   ${IssueDetailsFragmentDoc}
-  query fetchPullRequest($repoOwner: String!, $repoName: String!, $prNumber: Int!) {
-    fetchPullRequest(repoOwner: $repoOwner, repoName: $repoName, prNumber: $prNumber) {
+  query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
+    fetchIssue(repoOwner: $repoOwner, repoName: $repoName, issueNumber: $issueNumber) {
       ...IssueDetails
     }
   }

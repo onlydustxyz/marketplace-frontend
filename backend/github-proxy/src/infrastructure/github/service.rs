@@ -88,13 +88,13 @@ impl<P: github::OctocrabProxy> GithubService for P {
 	}
 
 	#[instrument(skip(self))]
-	async fn fetch_pull_request(
+	async fn fetch_issue(
 		&self,
 		repo_owner: &str,
 		repo_name: &str,
-		pr_number: u64,
+		issue_number: u64,
 	) -> GithubServiceResult<GithubIssue> {
-		self.get_pull_request(repo_owner, repo_name, pr_number)
+		self.get_issue(repo_owner, repo_name, issue_number)
 			.await?
 			.try_into()
 			.map_err(|e: GithubIssueFromOctocrabResultError| GithubServiceError::Other(anyhow!(e)))

@@ -118,7 +118,7 @@
             title: String!
           }
           type Query {
-            fetchPullRequest(repoOwner: String!, repoName: String!, prNumber: Int!): Issue
+            fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
             fetchRepositoryDetails(id: Int!): Repository
             fetchRepositoryPRs(id: Int!): [Issue!]
             fetchUserDetails(username: String!): User

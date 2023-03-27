@@ -3,7 +3,7 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import Input from "src/components/FormInput";
 import { WorkItem } from "src/components/GithubIssue";
-import { FetchPullRequestDocument, FetchPullRequestQuery } from "src/__generated/graphql";
+import { FetchIssueDocument, FetchIssueQuery } from "src/__generated/graphql";
 import { useHasuraLazyQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { useFormContext, useFormState } from "react-hook-form";
@@ -20,31 +20,27 @@ const INPUT_NAME = "otherIssueLink";
 export default function OtherIssueInput({ onWorkItemAdded }: Props) {
   const { T } = useIntl();
 
-  const [fetchPullRequest] = useHasuraLazyQuery<FetchPullRequestQuery>(
-    FetchPullRequestDocument,
-    HasuraUserRole.RegisteredUser,
-    {
-      onCompleted: data => {
-        if (data.fetchPullRequest) {
-          onWorkItemAdded(data.fetchPullRequest);
-          resetField(INPUT_NAME);
-        } else {
-          setError(INPUT_NAME, {
-            type: "validate",
-            message: T("payment.form.workItems.issues.addOther.invalidIssueLink"),
-          });
-        }
-      },
-      onError: () =>
+  const [fetchIssue] = useHasuraLazyQuery<FetchIssueQuery>(FetchIssueDocument, HasuraUserRole.RegisteredUser, {
+    onCompleted: data => {
+      if (data.fetchIssue) {
+        onWorkItemAdded(data.fetchIssue);
+        resetField(INPUT_NAME);
+      } else {
         setError(INPUT_NAME, {
           type: "validate",
           message: T("payment.form.workItems.issues.addOther.invalidIssueLink"),
-        }),
-      context: {
-        graphqlErrorDisplay: "none",
-      },
-    }
-  );
+        });
+      }
+    },
+    onError: () =>
+      setError(INPUT_NAME, {
+        type: "validate",
+        message: T("payment.form.workItems.issues.addOther.invalidIssueLink"),
+      }),
+    context: {
+      graphqlErrorDisplay: "none",
+    },
+  });
 
   const { watch, setError, resetField } = useFormContext();
   const { errors } = useFormState({ name: INPUT_NAME });
@@ -54,7 +50,7 @@ export default function OtherIssueInput({ onWorkItemAdded }: Props) {
   const { repoOwner, repoName, issueNumber } = useMemo(() => parseIssueLink(otherIssueLink), [otherIssueLink]);
 
   const validateOtherIssue = () =>
-    fetchPullRequest({
+    fetchIssue({
       variables: {
         repoOwner,
         repoName,
