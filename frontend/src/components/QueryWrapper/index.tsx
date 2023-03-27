@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import LoaderFallback from "src/components/Loader";
 
-type QueryResult<T, E> = {
+export type QueryResult<T, E> = {
   data?: T;
   loading: boolean;
   error?: E;

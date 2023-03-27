@@ -1,6 +1,6 @@
 import { buildQuery } from ".";
 
-describe("PullRequests", () => {
+describe("Issues", () => {
   it("should build the query properly", () => {
     const query = buildQuery(
       [

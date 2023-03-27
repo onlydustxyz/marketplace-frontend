@@ -1,6 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
 import { WorkItem } from "src/components/GithubIssue";
-import PullRequests from "./PullRequests";
+import Issues from "./Issues";
 import SidePanel from "src/components/SidePanel";
 import { useState } from "react";
 import EmptyState from "./EmptyState";
@@ -46,7 +46,7 @@ export default function WorkItemSidePanel({
         </Tab>
       </div>
       {selectedTab === Tabs.PullRequests && (
-        <PullRequests
+        <Issues
           projectId={projectId}
           contributorHandle={contributorHandle}
           workItems={workItems}
