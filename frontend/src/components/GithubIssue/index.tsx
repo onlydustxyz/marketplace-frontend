@@ -8,7 +8,7 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Subtract from "src/icons/SubtractLine";
 import Time from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { parsePullRequestLink } from "src/utils/github";
+import { parsePullRequestOrIssueLink } from "src/utils/github";
 import { IssueDetailsFragment, Status, Type } from "src/__generated/graphql";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
@@ -33,7 +33,7 @@ export type Props = {
 
 export default function GithubIssue({ action, workItem, onClick }: Props) {
   const { T } = useIntl();
-  const { repoName } = parsePullRequestLink(workItem.htmlUrl);
+  const { repoName } = parsePullRequestOrIssueLink(workItem.htmlUrl);
 
   return (
     <Card padded={false}>

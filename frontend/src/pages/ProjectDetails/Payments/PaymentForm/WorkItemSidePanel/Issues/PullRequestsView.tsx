@@ -43,7 +43,7 @@ export default function PullRequestsView<T, E>({ workItems, onWorkItemAdded, isM
       <QueryWrapper query={query}>
         {workItems.length > 0 ? (
           <div
-            data-testId="elligible-pulls"
+            data-testid="elligible-pulls"
             className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
           >
             {workItems.map(pr => (

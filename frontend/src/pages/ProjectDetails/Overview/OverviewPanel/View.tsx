@@ -71,7 +71,7 @@ export default function OverviewPanelView({
                 />
               ))}
             </div>
-            <div data-testId="contributors-count">{contributors.length}</div>
+            <div data-testid="contributors-count">{contributors.length}</div>
           </div>
         </Section>
       )}

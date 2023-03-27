@@ -10,7 +10,7 @@ type Props = {
 
 export default function Tab({ testId, active, onClick, children }: Props) {
   return (
-    <div data-testId={testId} className="cursor-pointer relative" onClick={onClick}>
+    <div data-testid={testId} className="cursor-pointer relative" onClick={onClick}>
       <div
         className={classNames("flex flex-row gap-1.5 items-center font-walsheim font-normal text-base pb-2", {
           "text-greyscale-500 fill-greyscale-500 hover:text-greyscale-200 hover:fill-greyscale-200 hover:border-b-2 hover:border-greyscale-500 hover:pb-1.5":
