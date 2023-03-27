@@ -147,7 +147,8 @@ const View: React.FC<Props> = ({
           <WorkEstimation
             onChange={onWorkEstimationChange}
             budget={budget}
-            disabled={!contributor || workItems.length === 0}
+            missingContributor={!contributor}
+            missingWorkItem={workItems.length === 0}
           />
         </div>
       </div>

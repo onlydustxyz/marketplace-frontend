@@ -98,7 +98,8 @@
         "title": "Recipient"
       },
       "days": "days",
-      "disabled": "Select a contributor and enter link to pull request to send payment",
+      "missingContributor": "Pick a contributor to get started",
+      "missingWorkItem": "Add work items to be paid",
       "estimate": "Estimate time spent",
       "workItems": {
         "addWorkItem": "Add work item",
