@@ -66,11 +66,13 @@ export default function ContributorSelect({ projectId, contributor, setContribut
     );
 
   useEffect(() => {
-    setContributor(
-      internalContributors?.find(contributor => contributor.login === selectedGithubHandle) ||
-        filteredExternalContributors?.find(contributor => contributor.login === selectedGithubHandle)
-    );
-  }, [selectedGithubHandle, filteredContributors, filteredExternalContributors, githubHandleSubstring]);
+    if (!contributor || (contributor && contributor.login !== selectedGithubHandle)) {
+      setContributor(
+        internalContributors?.find(contributor => contributor.login === selectedGithubHandle) ||
+          filteredExternalContributors?.find(contributor => contributor.login === selectedGithubHandle)
+      );
+    }
+  }, [selectedGithubHandle, contributor, filteredContributors, filteredExternalContributors, internalContributors]);
 
   return (
     <View
