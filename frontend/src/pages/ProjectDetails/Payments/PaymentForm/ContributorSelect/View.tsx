@@ -5,7 +5,6 @@ import Contributor from "src/components/Contributor";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import User3Line from "src/icons/User3Line";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
-import { useTextWidth } from "@tag0/use-text-width";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { useIntl } from "src/hooks/useIntl";
 
@@ -77,7 +76,11 @@ export default function ContributorSelectView({
                       )}
                     </div>
                     {!selectedGithubHandle && <div>{T("payment.form.contributor.select.placeholder")}</div>}
-                    {selectedGithubHandle && <div className="font-medium">{selectedGithubHandle}</div>}
+                    {selectedGithubHandle && (
+                      <div className="font-medium" data-testid="contributor-selection-value">
+                        {selectedGithubHandle}
+                      </div>
+                    )}
                     {contributor?.user?.userId && <img src={onlyDustLogo} className="w-3.5 ml-1.5" />}
                   </div>
                   <ArrowDownSLine />
@@ -107,6 +110,7 @@ export default function ContributorSelectView({
                         setGithubHandleSubstring("");
                       }}
                       value={githubHandleSubstring}
+                      data-testid="contributor-selection-input"
                     />
                   </div>
                   <ArrowDownSLine />

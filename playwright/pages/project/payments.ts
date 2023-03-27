@@ -44,7 +44,8 @@ export class NewPaymentPage {
     otherIssues?: string[];
   }) => {
     if (recipient) {
-      await this.page.getByRole("combobox").fill(recipient.github.login);
+      await this.page.getByPlaceholder(/search by github handle/i).click();
+      await this.page.getByTestId("contributor-selection-input").fill(recipient.github.login);
       await this.page.getByRole("listitem").click();
     }
 
@@ -72,7 +73,7 @@ export class NewPaymentPage {
     await this.page.getByText("Confirm payment").click();
   };
 
-  contributor = () => this.page.getByRole("combobox");
+  contributorText = () => this.page.getByTestId("contributor-selection-value").textContent();
 }
 
 export class PaymentTable {
