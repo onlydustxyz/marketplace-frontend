@@ -18,7 +18,8 @@ export const Default = Template.bind({});
 
 Default.args = {
   budget: { initialAmount: 5000, remainingAmount: 3000 },
-  disabled: false,
+  missingContributor: false,
+  missingWorkItem: false,
   canIncrease: true,
   canDecrease: true,
   amountToPay: 1000,
