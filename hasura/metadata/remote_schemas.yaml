@@ -116,6 +116,7 @@
             number: Int!
             status: Status!
             title: String!
+            type: Type!
           }
           type Query {
             fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
@@ -148,6 +149,10 @@
             MERGED
             OPEN
           }
+          enum Type {
+            ISSUE
+            PULL_REQUEST
+          }
     - role: public
       definition:
         schema: |
@@ -165,6 +170,7 @@
             number: Int!
             status: Status!
             title: String!
+            type: Type!
           }
           type Query {
             fetchRepositoryDetails(id: Int!): Repository
@@ -192,6 +198,10 @@
             COMPLETED
             MERGED
             OPEN
+          }
+          enum Type {
+            ISSUE
+            PULL_REQUEST
           }
   remote_relationships:
     - relationships:

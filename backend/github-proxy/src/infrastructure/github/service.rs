@@ -7,8 +7,8 @@ use thiserror::Error;
 
 use super::Contributors;
 use crate::domain::{
-	GithubIssue, GithubIssueStatus, GithubRepository, GithubService, GithubServiceError,
-	GithubServiceResult, GithubUser,
+	GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepository, GithubService,
+	GithubServiceError, GithubServiceResult, GithubUser,
 };
 
 impl From<github::Error> for GithubServiceError {
@@ -179,11 +179,17 @@ impl TryFrom<octocrab::models::issues::Issue> for GithubIssue {
 			.try_into()
 			.expect("We cannot work with github PR number superior to i32::MAX");
 
+		let issue_type = match issue.pull_request {
+			Some(_) => GithubIssueType::PullRequest,
+			None => GithubIssueType::Issue,
+		};
+
 		let status = (&issue).try_into()?;
 
 		Ok(Self::new(
 			id,
 			number,
+			issue_type,
 			issue.title,
 			issue.html_url,
 			status,
@@ -227,6 +233,7 @@ impl TryFrom<octocrab::models::pulls::PullRequest> for GithubIssue {
 		Ok(Self::new(
 			id,
 			number,
+			GithubIssueType::PullRequest,
 			title,
 			html_url,
 			status,
