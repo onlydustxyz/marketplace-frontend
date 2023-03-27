@@ -11,7 +11,7 @@ type Props = {
 
 export default function SidePanel({ title, open, setOpen, children }: Props) {
   useEffect(() => {
-    document.documentElement.style.setProperty("overflow", null);
+    document.body.style.setProperty("overflow", "auto");
   }, [open]);
 
   return (
