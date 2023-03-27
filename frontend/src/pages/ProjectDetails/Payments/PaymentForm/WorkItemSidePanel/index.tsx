@@ -5,7 +5,7 @@ import SidePanel from "src/components/SidePanel";
 import { useState } from "react";
 import Tab from "./Tab";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
-import RecordCircleLine from "src/icons/RecordCircleLine";
+import IssueOpen from "src/assets/icons/IssueOpen";
 
 type Props = {
   projectId: string;
@@ -40,7 +40,7 @@ export default function WorkItemSidePanel({
           {T("payment.form.workItems.pullRequests.tab")}
         </Tab>
         <Tab active={selectedTab === Tabs.Issues} onClick={() => setSelectedTab(Tabs.Issues)}>
-          <RecordCircleLine />
+          <IssueOpen />
           {T("payment.form.workItems.issues.tab")}
         </Tab>
       </div>
