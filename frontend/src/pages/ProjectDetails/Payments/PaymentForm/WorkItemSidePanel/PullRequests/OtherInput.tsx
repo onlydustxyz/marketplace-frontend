@@ -32,14 +32,14 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
         } else {
           setError(INPUT_NAME, {
             type: "validate",
-            message: T("payment.form.workItems.addOtherPR.invalidPrLink"),
+            message: T("payment.form.workItems.pullRequests.addOther.invalidPrLink"),
           });
         }
       },
       onError: () =>
         setError(INPUT_NAME, {
           type: "validate",
-          message: T("payment.form.workItems.addOtherPR.invalidPrLink"),
+          message: T("payment.form.workItems.pullRequests.addOther.invalidPrLink"),
         }),
       context: {
         graphqlErrorDisplay: "none",
@@ -66,16 +66,16 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
   return (
     <div className="p-4 flex flex-col gap-2 border border-greyscale-50/12 rounded-lg">
       <div className="font-walsheim font-medium text-base text-greyscale-50">
-        {T("payment.form.workItems.addOtherPR.label")}
+        {T("payment.form.workItems.pullRequests.addOther.label")}
       </div>
       <Input
         name={INPUT_NAME}
-        placeholder={T("payment.form.workItems.addOtherPR.placeholder")}
+        placeholder={T("payment.form.workItems.pullRequests.addOther.placeholder")}
         withMargin={false}
         options={{
           pattern: {
             value: REGEX_VALID_GITHUB_PULL_REQUEST_URL,
-            message: T("payment.form.workItems.addOtherPR.notALink"),
+            message: T("payment.form.workItems.pullRequests.addOther.notALink"),
           },
         }}
         inputClassName="pl-10"
@@ -98,7 +98,7 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
             type={ButtonType.Secondary}
             disabled={!otherPrLink || !!otherPrLinkError}
           >
-            {T("payment.form.workItems.addOtherPR.add")}
+            {T("payment.form.workItems.add")}
           </Button>
         </div>
       </Input>

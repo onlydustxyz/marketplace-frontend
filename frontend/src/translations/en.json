@@ -101,17 +101,20 @@
       "disabled": "Select a contributor and enter link to pull request to send payment",
       "estimate": "Estimate time spent",
       "workItems": {
-        "add": "Add work item",
-        "addOtherPR": {
-          "add": "Add",
-          "button": "Add other PR",
-          "notALink": "Oops, this doesn't look like a pull request",
-          "invalidPrLink": "Hmm... we can't find this PR. Check the link and try again",
-          "placeholder": "github.com/example/repo/pull/472",
-          "label": "Add specific PR using URL"
+        "addWorkItem": "Add work item",
+        "add": "Add",
+        "pullRequests": {
+          "addedToaster": "Pull request added",
+          "addOther": {
+            "toggle": "Add other PR",
+            "notALink": "Oops, this doesn't look like a pull request",
+            "invalidPrLink": "Hmm... we can't find this PR. Check the link and try again",
+            "placeholder": "github.com/example/repo/pull/472",
+            "label": "Add specific PR using URL"
+          },
+          "moreCallout": "Only the last __count__ unpaid pull requests by this user are shown in this list.",
+          "tab": "Pull requests"
         },
-        "morePullRequestsCallout": "Only the last __count__ unpaid pull requests by this user are shown in this list.",
-        "pullRequestedAddedToaster": "Pull request added",
         "subTitle": "Add contributions that should be part of this payment",
         "title": "Work items",
         "emptyState": {

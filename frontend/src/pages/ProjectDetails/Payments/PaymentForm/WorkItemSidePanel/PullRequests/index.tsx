@@ -41,7 +41,7 @@ export default function PullRequests({ projectId, contributorHandle, workItems, 
 
   const onPullRequestAdded = (pr: WorkItem) => {
     onWorkItemAdded(pr);
-    showToaster(T("payment.form.workItems.pullRequestedAddedToaster"));
+    showToaster(T("payment.form.workItems.pullRequests.addedToaster"));
   };
 
   const getPaidItemsQuery = useHasuraQuery<GetPaidWorkItemsQuery>(GET_PAID_WORK_ITEMS, HasuraUserRole.RegisteredUser, {
@@ -95,7 +95,7 @@ export default function PullRequests({ projectId, contributorHandle, workItems, 
           enabled={addOtherPrEnabled}
           setEnabled={setAddOtherPrEnabled}
           icon={<Link />}
-          label={T("payment.form.workItems.addOtherPR.button")}
+          label={T("payment.form.workItems.pullRequests.addOther.toggle")}
           testId="add-other-pr-toggle"
         />
         {addOtherPrEnabled && <OtherPrInput onWorkItemAdded={onPullRequestAdded} />}
@@ -122,7 +122,7 @@ export default function PullRequests({ projectId, contributorHandle, workItems, 
         )}
         {pulls.length > elligiblePulls.length && (
           <div className="mr-4">
-            <Callout>{T("payment.form.workItems.morePullRequestsCallout", { count: MAX_PR_COUNT })}</Callout>
+            <Callout>{T("payment.form.workItems.pullRequests.moreCallout", { count: MAX_PR_COUNT })}</Callout>
           </div>
         )}
       </QueryWrapper>
