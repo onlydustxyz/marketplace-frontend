@@ -24,7 +24,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
   const [selectedGithubHandle, setSelectedGithubHandle] = useState<string | null>(
     location.state?.recipientGithubLogin || null
   );
-  const [githubHandleSubstring, setGithubHandleSubstring] = useState<string | null>(null);
+  const [githubHandleSubstring, setGithubHandleSubstring] = useState<string>("");
   const handleSubstringQuery = `type:user ${githubHandleSubstring} in:login`;
 
   const getProjectContributorsQuery = useHasuraQuery<GetProjectContributorsForPaymentSelectQuery>(

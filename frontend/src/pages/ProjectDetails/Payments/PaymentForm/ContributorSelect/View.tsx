@@ -12,8 +12,8 @@ import { useIntl } from "src/hooks/useIntl";
 interface ContributorSelectViewProps {
   selectedGithubHandle: string | null;
   setSelectedGithubHandle: (selectedGithubHandle: string | null) => void;
-  githubHandleSubstring: string | null;
-  setGithubHandleSubstring: (githubHandleSubstring: string | null) => void;
+  githubHandleSubstring: string;
+  setGithubHandleSubstring: (githubHandleSubstring: string) => void;
   filteredContributors: GithubContributorFragment[] | undefined;
   filteredExternalContributors: GithubContributorFragment[] | undefined;
   isSearchGithubUsersByHandleSubstringQueryLoading: boolean;
@@ -32,26 +32,14 @@ export default function ContributorSelectView({
 }: ContributorSelectViewProps) {
   const { T } = useIntl();
 
-  const githubHandleSubstringTextWidth = useTextWidth({
-    text: githubHandleSubstring || "",
-    font: "500 16px GT Walsheim",
-  });
-
-  const selectedGithubHandleTextWidth = useTextWidth({
-    text: selectedGithubHandle || "",
-    font: "500 16px GT Walsheim",
-  });
-
   const showExternalUsersSection = !!(githubHandleSubstring && githubHandleSubstring.length > 2);
 
   return (
     <Combobox
       value={selectedGithubHandle}
       onChange={value => {
-        setGithubHandleSubstring(value);
         setSelectedGithubHandle(value);
       }}
-      nullable
     >
       {({ open }) => (
         <div className={classNames("absolute w-full top-0", { "bg-whiteFakeOpacity-5 rounded-2xl": open })}>
@@ -61,58 +49,69 @@ export default function ContributorSelectView({
             })}
           >
             <Combobox.Button className="px-3 pt-4">
-              <div
-                className={classNames(
-                  "flex flex-row items-center justify-between w-full rounded-2xl px-4 h-12 border border-greyscale-50/8",
-                  {
-                    "text-greyscale-50": open && (githubHandleSubstring || selectedGithubHandle || contributor),
-                    "bg-spacePurple-900 text-spacePurple-500 ring-solid ring-2 ring-spacePurple-500":
-                      open && (githubHandleSubstring === "" || githubHandleSubstring === null),
-                    "bg-white/5": !open || githubHandleSubstring,
-                    "text-spaceBlue-200": !open && !(githubHandleSubstring || selectedGithubHandle),
-                  }
-                )}
-              >
-                <div className="flex flex-row items-center w-full cursor-default">
-                  <div className="pr-2 text-2xl">
-                    {contributor ? (
-                      <div className="pr-0.5">
-                        <RoundedImage
-                          src={contributor.avatarUrl}
-                          alt={contributor.login}
-                          size={ImageSize.Sm}
-                          rounding={Rounding.Circle}
-                        />
-                      </div>
-                    ) : (
-                      <div className="pt-0.5">
-                        <User3Line />
-                      </div>
-                    )}
-                  </div>
-                  <Combobox.Input
-                    onChange={event => setGithubHandleSubstring(event.target.value)}
-                    className={classNames(
-                      "border-none outline-none w-full bg-transparent font-normal text-base pt-0.5",
-                      { "font-medium": !open && selectedGithubHandle },
-                      { "caret-transparent": !open }
-                    )}
-                    placeholder={open ? "" : T("payment.form.contributor.select.placeholder")}
-                    onFocus={() => {
-                      setGithubHandleSubstring(null);
-                      setSelectedGithubHandle(null);
-                    }}
-                    style={{
-                      width: Math.max(githubHandleSubstringTextWidth, selectedGithubHandleTextWidth) + 4 || 200,
-                      padding: 0,
-                    }}
-                  />
-                  {contributor?.user?.userId && contributor?.login === githubHandleSubstring && (
-                    <img src={onlyDustLogo} className="w-3.5 ml-1.5" />
+              {!open && (
+                <div
+                  className={classNames(
+                    "flex flex-row items-center justify-between w-full rounded-2xl px-4 h-12 border border-greyscale-50/8 cursor-pointer",
+                    {
+                      "text-spaceBlue-200": !selectedGithubHandle,
+                      "bg-white/5": selectedGithubHandle,
+                    }
                   )}
+                >
+                  <div className="flex flex-row items-center w-full">
+                    <div className="pr-2 text-2xl">
+                      {contributor ? (
+                        <div className="pr-0.5">
+                          <RoundedImage
+                            src={contributor.avatarUrl}
+                            alt={contributor.login}
+                            size={ImageSize.Sm}
+                            rounding={Rounding.Circle}
+                          />
+                        </div>
+                      ) : (
+                        <div className="pt-1">
+                          <User3Line />
+                        </div>
+                      )}
+                    </div>
+                    {!selectedGithubHandle && <div>{T("payment.form.contributor.select.placeholder")}</div>}
+                    {selectedGithubHandle && <div className="font-medium">{selectedGithubHandle}</div>}
+                    {contributor?.user?.userId && <img src={onlyDustLogo} className="w-3.5 ml-1.5" />}
+                  </div>
+                  <ArrowDownSLine />
                 </div>
-                <ArrowDownSLine />
-              </div>
+              )}
+              {open && (
+                <div
+                  className={classNames(
+                    "flex flex-row items-center justify-between w-full rounded-2xl px-4 h-12 border border-greyscale-50/8",
+                    {
+                      "text-greyscale-50 bg-white/5": githubHandleSubstring,
+                      "bg-spacePurple-900 text-spacePurple-500 ring-solid ring-2 ring-spacePurple-500":
+                        githubHandleSubstring === "",
+                    }
+                  )}
+                >
+                  <div className="flex flex-row items-center w-full cursor-default">
+                    <div className="pt-1 text-2xl">
+                      <User3Line />
+                    </div>
+                    <Combobox.Input
+                      onChange={event => setGithubHandleSubstring(event.target.value)}
+                      className={classNames(
+                        "border-none outline-none w-full bg-transparent font-medium text-base pt-0.5"
+                      )}
+                      onFocus={() => {
+                        setGithubHandleSubstring("");
+                      }}
+                      value={githubHandleSubstring}
+                    />
+                  </div>
+                  <ArrowDownSLine />
+                </div>
+              )}
             </Combobox.Button>
             <Combobox.Options className="max-h-60 scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded overflow-auto px-4 pb-6">
               {filteredContributors && filteredContributors.length > 0 ? (
