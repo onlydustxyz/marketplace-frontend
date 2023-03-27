@@ -115,6 +115,9 @@
           "moreCallout": "Only the last __count__ unpaid pull requests by this user are shown in this list.",
           "tab": "Pull requests"
         },
+        "issues": {
+          "tab": "Issues"
+        },
         "subTitle": "Add contributions that should be part of this payment",
         "title": "Work items",
         "emptyState": {
