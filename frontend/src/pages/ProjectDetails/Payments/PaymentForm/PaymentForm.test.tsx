@@ -16,9 +16,15 @@ import {
   Status,
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
-import { SEARCH_GITHUB_USERS_BY_HANDLE_SUBSTRING_QUERY } from "./ContributorSelect";
+import { GET_PROJECT_CONTRIBUTORS_QUERY, SEARCH_GITHUB_USERS_BY_HANDLE_SUBSTRING_QUERY } from "./ContributorSelect";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };
+const TEST_GITHUB_USER = {
+  id: "test-user-id",
+  login: "test-login",
+  avatarUrl: "test-avatar-url",
+  user: { userId: "test-user-id" },
+};
 
 const HASURA_TOKEN_BASIC_TEST_VALUE = {
   user: {
@@ -107,20 +113,26 @@ const graphQlMocks = [
   fetchPrMock,
   {
     request: {
-      query: SEARCH_GITHUB_USERS_BY_HANDLE_SUBSTRING_QUERY,
+      query: GET_PROJECT_CONTRIBUTORS_QUERY,
       variables: {
-        handleSubstringQuery: `type:user ${TEST_USER.displayName} in:login`,
+        projectId: TEST_PROJECT_ID,
       },
     },
     result: {
       data: {
-        searchUsers: [
-          {
-            id: TEST_USER.githubUser.githubUserId,
-            login: "test-login",
-            avatarUrl: "test-avatar-url",
-          },
-        ],
+        projectsByPk: {
+          id: TEST_PROJECT_ID,
+          githubRepos: [
+            {
+              githubRepoDetails: {
+                content: {
+                  id: "test-id",
+                  contributors: [TEST_GITHUB_USER],
+                },
+              },
+            },
+          ],
+        },
       },
     },
   },
@@ -157,12 +169,12 @@ describe('"PaymentForm" component', () => {
 
   it("should show the right input / button labels", async () => {
     expect(screen.queryByTestId(ADD_WORK_ITEM_BUTTON_ID)).not.toBeInTheDocument();
-    await screen.findByPlaceholderText(RECIPIENT_INPUT_LABEL);
+    await screen.findByText(RECIPIENT_INPUT_LABEL);
   });
 
   it("should display an error when the reason is not a valid link to a github issue", async () => {
-    await userEvent.type(await screen.findByPlaceholderText(RECIPIENT_INPUT_LABEL), TEST_USER.displayName);
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(await screen.findByText(RECIPIENT_INPUT_LABEL));
+    await userEvent.click(await screen.findByText(TEST_USER.displayName));
     await userEvent.click(await screen.findByTestId(ADD_WORK_ITEM_BUTTON_ID));
     await userEvent.click(await screen.findByTestId(ADD_OTHER_PR_TOGGLE_ID));
     await userEvent.type(await screen.findByPlaceholderText(/github.com/i), "not-a-link");
