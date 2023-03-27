@@ -43,7 +43,7 @@ export default function PaymentLine({ payment, setSortingFields, onClick, select
   return (
     <>
       {payment && recipient && (
-        <Line onClick={onClick} selected={selected}>
+        <Line paymentId={payment.id} onClick={onClick} selected={selected}>
           <Cell height={CellHeight.Medium}>{displayRelativeDate(payment.requestedAt)}</Cell>
           <Cell height={CellHeight.Medium} className="flex flex-row gap-3">
             <RoundedImage src={recipient.avatarUrl} alt={recipient.login} rounding={Rounding.Circle} />

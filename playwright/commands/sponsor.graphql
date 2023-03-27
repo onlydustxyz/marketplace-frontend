@@ -1,0 +1,15 @@
+mutation createSponsor($name: String!, $logoUrl: Url!, $url: Url) {
+    createSponsor(name: $name, logoUrl: $logoUrl, url: $url)
+}
+
+mutation updateSponsor($sponsorId: Uuid!, $name: String, $logoUrl: Url, $url: Url) {
+    updateSponsor(sponsorId: $sponsorId, name: $name, logoUrl: $logoUrl, url: $url)
+}
+
+mutation addSponsorToProject($projectId: Uuid!, $sponsorId: Uuid!) {
+    addSponsorToProject(projectId: $projectId, sponsorId: $sponsorId)
+}
+
+mutation removeSponsorFromProject($projectId: Uuid!, $sponsorId: Uuid!) {
+    removeSponsorFromProject(projectId: $projectId, sponsorId: $sponsorId)
+}

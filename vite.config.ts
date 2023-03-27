@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import * as path from "path";
 import istanbul from "vite-plugin-istanbul";
 import * as child from "child_process";
+import { configDefaults } from "vitest/config";
 
 export default defineConfig({
   plugins: [
@@ -34,5 +35,6 @@ export default defineConfig({
     deps: {
       inline: ["vitest-canvas-mock"],
     },
+    exclude: [...configDefaults.exclude, "playwright/*"],
   },
 });

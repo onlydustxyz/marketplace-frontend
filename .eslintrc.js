@@ -55,6 +55,7 @@ module.exports = {
     "frontend/test/*",
     "frontend/src/__generated",
     "cypress/*",
+    "playwright/__generated",
     "app.json",
     "scripts/*",
     "dist/*",

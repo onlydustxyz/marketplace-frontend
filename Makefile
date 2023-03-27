@@ -18,7 +18,7 @@ docker/clean:
 	docker volume rm -f $(ROOT_DIR)_httpmock
 	docker volume rm -f $(ROOT_DIR)_rabbitmq
 
-docker/re: docker/clean docker/up
+docker/re: docker/clean playwright/clean docker/up
 
 db/up:
 	docker-compose up -d --wait db
@@ -54,7 +54,11 @@ hasura/clean: db/migrate
 	yarn --cwd ./hasura hasura md ic drop
 	yarn --cwd ./hasura hasura md export
 
-cypress/test:
-	yarn cypress:run
+playwright/test:
+	yarn playwright test --reporter line
+
+playwright/clean:
+	rm -f "playwright/marketplace_db_dump"
+	rm -rf "playwright/fixtures/__generated"
 
 .PHONY: install docker/up docker/clean docker/re db/up db/connect db/update-staging-dump db/load-fixtures db/migrate api/start hasura/start hasura/clean cypress/test

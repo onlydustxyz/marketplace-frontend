@@ -38,6 +38,7 @@ export default function OverviewPanelView({
     <Card className="h-fit p-0 flex flex-col shrink-0 w-80 divide-y divide-greyscale-50/8" padded={false}>
       {projectLeads.length > 0 && (
         <Section
+          testId="project-leads"
           icon={SectionIcon.Star}
           title={T("project.details.overview.projectLeader", { count: projectLeads.length })}
         >
@@ -70,7 +71,7 @@ export default function OverviewPanelView({
                 />
               ))}
             </div>
-            <div>{contributors.length}</div>
+            <div data-testId="contributors-count">{contributors.length}</div>
           </div>
         </Section>
       )}
@@ -85,7 +86,11 @@ export default function OverviewPanelView({
         </Section>
       )}
       {sponsors?.length > 0 && (
-        <Section icon={SectionIcon.Service} title={T("project.details.overview.sponsors", { count: sponsors.length })}>
+        <Section
+          testId="sponsors"
+          icon={SectionIcon.Service}
+          title={T("project.details.overview.sponsors", { count: sponsors.length })}
+        >
           <div data-testid="sponsors" className="flex flex-row flex-wrap gap-3">
             {sponsors.map(sponsor => (
               <ClickableUser key={sponsor.id} name={sponsor.name} logoUrl={sponsor.logoUrl} url={sponsor.url} />
@@ -94,7 +99,7 @@ export default function OverviewPanelView({
         </Section>
       )}
       {telegramLink && (
-        <Section icon={SectionIcon.Link} title={T("project.details.overview.moreInfo")}>
+        <Section testId="more-info" icon={SectionIcon.Link} title={T("project.details.overview.moreInfo")}>
           <div data-testid="more-info-link" className="text-spacePurple-500 font-semibold text-sm">
             <ExternalLink text={telegramLink.replace(/^https?:\/\//i, "").replace(/\/$/, "")} url={telegramLink} />
           </div>

@@ -58,3 +58,8 @@ lerna-debug.log*
 
 # Emacs
 *~
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/playwright/fixtures/__generated
+/playwright/marketplace_db_dump

@@ -5,11 +5,13 @@ interface Props extends PropsWithChildren {
   className?: string;
   onClick?: () => void;
   selected?: boolean;
+  paymentId?: string;
 }
 
-const Line: React.FC<Props> = ({ className, children, onClick, selected }) => {
+const Line: React.FC<Props> = ({ className, children, onClick, selected, paymentId }) => {
   return (
     <tr
+      data-paymentId={paymentId}
       className={classNames(
         `group/line border-b border-gray-800 ${className}`,
         "transition duration-200 hover:bg-white/5 outline-offset-0 hover:outline-2",

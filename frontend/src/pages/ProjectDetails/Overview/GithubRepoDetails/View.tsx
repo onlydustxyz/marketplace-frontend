@@ -11,10 +11,10 @@ import { GithubRepoDynamicDetailsFragment, GithubRepoStaticDetailsFragment } fro
 
 type Props = Omit<GithubRepoStaticDetailsFragment & GithubRepoDynamicDetailsFragment, "__typename">;
 
-export default function View({ name, htmlUrl, description, languages, stars, forksCount }: Props) {
+export default function View({ id, name, htmlUrl, description, languages, stars, forksCount }: Props) {
   const { T } = useIntl();
   return (
-    <Card className="flex flex-row justify-between p-3" padded={false} blurred={false}>
+    <Card dataTestId={`github-repo-${id}`} className="flex flex-row justify-between p-3" padded={false} blurred={false}>
       <div className="flex flex-col justify-between font-walsheim text-greyscale-50 font-normal p-3 w-5/6 gap-5">
         <div className="flex flex-col gap-2 justify-start">
           {Object.keys(languages).length > 0 && (

@@ -68,7 +68,7 @@ jobs:
         uses: ./.github/actions/hasura-setup
 
       - name: Execute end-to-end tests
-        uses: ./.github/actions/cypress
+        uses: ./.github/actions/playwright
 
       - name: Kill Rust backend
         uses: ./.github/actions/backend-kill
@@ -76,47 +76,13 @@ jobs:
       - name: Kill frontend
         uses: ./.github/actions/frontend-kill
 
-      - name: Install grcov
-        uses: actions-rs/install@v0.1
-        with:
-          crate: grcov
-
-      - name: Build backend coverage file
-        run: |
-          grcov . \
-            --binary-path ./target/debug/deps/ \
-            -s . \
-            -t cobertura \
-            --branch \
-            --ignore-not-existing \
-            --ignore '../*' \
-            --ignore "/*" \
-            -o cobertura.xml
-
-      - name: Build frontend coverage file
-        run: |
-          npx nyc report --reporter=cobertura
-
-      - name: Upload backend coverage results
-        uses: ./.github/actions/coverage-upload
-        with:
-          codecov_token: ${{ secrets.CODECOV_TOKEN }}
-          codecov_flag: e2e
-          file: cobertura.xml
-
-      - name: Upload frontend coverage results
-        uses: ./.github/actions/coverage-upload
-        with:
-          codecov_token: ${{ secrets.CODECOV_TOKEN }}
-          codecov_flag: e2e
-          file: coverage/cobertura-coverage.xml
-
       - name: Archive code coverage results
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         if: ${{ failure() }}
         with:
-          name: cypress-screenshots
-          path: cypress/screenshots/
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
 
       - name: Setup tmate session for debugging
         uses: mxschmitt/action-tmate@v3
