@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
-import { parsePullRequestLink } from "src/utils/github";
+import { parsePullRequestOrIssueLink } from "src/utils/github";
 import {
   GetPaymentRequestsForProjectQuery,
   PaymentRequestFragment,
@@ -40,7 +40,7 @@ export default function usePaymentRequests({ projectId, onNewPaymentRequested }:
           recipientId: contributorId,
           workItems:
             reason.workItems?.map(url => {
-              const { repoOwner, repoName, prNumber: issueNumber } = parsePullRequestLink(url);
+              const { repoOwner, repoName, issueNumber } = parsePullRequestOrIssueLink(url);
               return {
                 repoOwner,
                 repoName,

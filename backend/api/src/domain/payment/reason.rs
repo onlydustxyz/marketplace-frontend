@@ -16,8 +16,8 @@ pub enum ValidReasonError {
 	NotAnUrl(String),
 	#[error("A reason is not a valid github url: {0}")]
 	NotGithubUrl(String),
-	#[error("A reason is not a valid github pull request url: {0}")]
-	NotPRUrl(String),
+	#[error("A reason is not a valid github pull request or issue url: {0}")]
+	NotPROrIssueUrl(String),
 }
 
 impl Reason {
@@ -35,14 +35,19 @@ impl Reason {
 			}
 			let mut path_segments = url
 				.path_segments()
-				.ok_or_else(|| ValidReasonError::NotPRUrl(item.to_string()))?;
-			if path_segments.nth(2) != Some("pull") {
-				Err(ValidReasonError::NotPRUrl(item.to_string()))?;
+				.ok_or_else(|| ValidReasonError::NotPROrIssueUrl(item.to_string()))?;
+
+			let issue_type = path_segments.nth(2);
+
+			if issue_type != Some("pull") && issue_type != Some("issues") {
+				Err(ValidReasonError::NotPROrIssueUrl(item.to_string()))?;
 			}
 			if let Some(pr_id) = path_segments.next() {
-				pr_id.parse::<u32>().map_err(|_| ValidReasonError::NotPRUrl(item.to_string()))?;
+				pr_id
+					.parse::<u32>()
+					.map_err(|_| ValidReasonError::NotPROrIssueUrl(item.to_string()))?;
 			} else {
-				Err(ValidReasonError::NotPRUrl(item.to_string()))?;
+				Err(ValidReasonError::NotPROrIssueUrl(item.to_string()))?;
 			}
 		}
 
