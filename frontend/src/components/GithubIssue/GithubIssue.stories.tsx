@@ -34,6 +34,26 @@ const issues = {
     closedAt: daysFromNow(5),
     mergedAt: daysFromNow(5),
   },
+  completed: {
+    id: 1268051991,
+    number: 541,
+    status: Status.Completed,
+    htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
+    title: "Disable RPC json validation in devnet",
+    createdAt: daysFromNow(6),
+    closedAt: daysFromNow(5),
+    mergedAt: daysFromNow(5),
+  },
+  cancelled: {
+    id: 1268051991,
+    number: 541,
+    status: Status.Cancelled,
+    htmlUrl: "https://github.com/sayajin-labs/kakarot/pull/541",
+    title: "Disable RPC json validation in devnet",
+    createdAt: daysFromNow(6),
+    closedAt: daysFromNow(5),
+    mergedAt: daysFromNow(5),
+  },
 };
 
 export default {
@@ -44,16 +64,10 @@ export default {
       control: { type: "select" },
       options: [undefined, Action.Add, Action.Remove],
     },
-    issue: {
+    workItem: {
       options: Object.keys(issues),
       mapping: issues,
-      control: {
-        type: "select",
-        labels: {
-          closed: "closed",
-          open: "open",
-        },
-      },
+      control: { type: "select" },
     },
   },
 };

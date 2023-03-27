@@ -10,6 +10,8 @@ pub enum Status {
 	Open,
 	Closed,
 	Merged,
+	Completed,
+	Cancelled,
 }
 
 #[derive(Constructor, GraphQLObject)]

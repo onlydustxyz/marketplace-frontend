@@ -14,6 +14,8 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
 import ExternalLink from "src/components/ExternalLink";
 import Tooltip from "src/components/Tooltip";
+import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
+import IssueCancelled from "src/assets/icons/IssueCancelled";
 
 export enum Action {
   Add = "add",
@@ -79,6 +81,16 @@ function IssueStatus({ issue }: { issue: IssueDetailsFragment }) {
       {issue.status === Status.Closed ? (
         <>
           <IssueClosed className="fill-github-red" />
+          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
+        </>
+      ) : issue.status === Status.Cancelled ? (
+        <>
+          <IssueCancelled className="fill-github-grey p-0.5" />
+          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
+        </>
+      ) : issue.status === Status.Completed ? (
+        <>
+          <CheckboxCircleLine className="text-github-purple text-base -my-1" />
           {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
         </>
       ) : issue.status === Status.Open ? (

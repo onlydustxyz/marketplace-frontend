@@ -1,6 +1,7 @@
 use anyhow::anyhow;
 use domain::GithubRepositoryId;
 use infrastructure::github;
+use octocrab::models::issues::IssueStateReason;
 use olog::{error, tracing::instrument};
 use thiserror::Error;
 
@@ -253,7 +254,11 @@ impl TryFrom<&octocrab::models::issues::Issue> for GithubIssueStatus {
 			octocrab::models::IssueState::Closed =>
 				match issue.pull_request.as_ref().and_then(|pr| pr.merged_at) {
 					Some(_) => Ok(Self::Merged),
-					None => Ok(Self::Closed),
+					None => match issue.state_reason {
+						Some(IssueStateReason::Completed) => Ok(Self::Completed),
+						Some(IssueStateReason::NotPlanned) => Ok(Self::Cancelled),
+						_ => Ok(Self::Closed),
+					},
 				},
 			_ => Err(GithubIssueStatusFromOctocrabResultError::UnknownState(
 				format!("{:?}", issue.state),
