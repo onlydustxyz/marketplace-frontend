@@ -1,15 +1,18 @@
 mod query;
 use query::Query;
 
+mod mutation;
+use mutation::Mutation;
+
 mod error;
-pub use error::Error;
+pub use error::{Error, Result};
 
 mod context;
 pub use context::Context;
-use juniper::{EmptyMutation, EmptySubscription, RootNode};
+use juniper::{EmptySubscription, RootNode};
 
-pub type Schema = RootNode<'static, Query, EmptyMutation<Context>, EmptySubscription<Context>>;
+pub type Schema = RootNode<'static, Query, Mutation, EmptySubscription<Context>>;
 
 pub fn create_schema() -> Schema {
-	Schema::new(Query, EmptyMutation::new(), EmptySubscription::new())
+	Schema::new(Query, Mutation, EmptySubscription::new())
 }
