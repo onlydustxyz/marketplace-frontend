@@ -12,21 +12,28 @@ import {
   RepositoryOwnerAndNameFragment,
   SearchIssuesQuery,
 } from "src/__generated/graphql";
+import IssuesView from "./IssuesView";
 import PullRequestsView from "./PullRequestsView";
 
+export enum IssueType {
+  PullRequest = "pr",
+  Issue = "issue",
+}
+
 type Props = {
+  type: IssueType;
   projectId: string;
   contributorHandle: string;
   workItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
 };
 
-export const buildQuery = (githubRepos: RepositoryOwnerAndNameFragment[], author: string) =>
-  `${githubRepos.map(r => `repo:${r.owner}/${r.name}`).join(" ")} is:pr author:${author}`;
+export const buildQuery = (githubRepos: RepositoryOwnerAndNameFragment[], author: string, issueType: IssueType) =>
+  `${githubRepos.map(r => `repo:${r.owner}/${r.name}`).join(" ")} is:${issueType} author:${author}`;
 
 export const MAX_ISSUE_COUNT = 50;
 
-export default function Issues({ projectId, contributorHandle, workItems, onWorkItemAdded }: Props) {
+export default function Issues({ type, projectId, contributorHandle, workItems, onWorkItemAdded }: Props) {
   const getPaidItemsQuery = useHasuraQuery<GetPaidWorkItemsQuery>(GET_PAID_WORK_ITEMS, HasuraUserRole.RegisteredUser, {
     variables: { projectId },
   });
@@ -35,7 +42,8 @@ export default function Issues({ projectId, contributorHandle, workItems, onWork
     variables: {
       query: buildQuery(
         getPaidItemsQuery.data?.projectsByPk?.githubRepos.map(r => r.githubRepoDetails).filter(isDefined) || [],
-        contributorHandle
+        contributorHandle,
+        type
       ),
       order: "desc",
       sort: "created",
@@ -44,7 +52,7 @@ export default function Issues({ projectId, contributorHandle, workItems, onWork
     skip: !getPaidItemsQuery.data?.projectsByPk?.githubRepos,
   });
 
-  const pulls: WorkItem[] = useMemo(
+  const issues: WorkItem[] = useMemo(
     () => differenceBy(searchPrQuery.data?.searchIssues || [], workItems, "id"),
     [searchPrQuery.data?.searchIssues, workItems]
   );
@@ -55,10 +63,10 @@ export default function Issues({ projectId, contributorHandle, workItems, onWork
     [getPaidItemsQuery.data?.projectsByPk?.budgets]
   );
 
-  const elligiblePulls = useMemo(
+  const elligibleIssues = useMemo(
     () =>
       sortBy(
-        differenceWith(pulls, paidItems, (pr, paidItem) => {
+        differenceWith(issues, paidItems, (pr, paidItem) => {
           const { repoOwner, repoName } = parsePullRequestLink(pr.htmlUrl);
           return (
             repoOwner === paidItem.repoOwner && repoName === paidItem.repoName && pr.number === paidItem.issueNumber
@@ -68,19 +76,34 @@ export default function Issues({ projectId, contributorHandle, workItems, onWork
       )
         .reverse()
         .slice(0, MAX_ISSUE_COUNT),
-    [pulls, paidItems]
+    [issues, paidItems]
   );
 
   return (
-    <PullRequestsView
-      workItems={elligiblePulls}
-      onWorkItemAdded={onWorkItemAdded}
-      query={{
-        data: searchPrQuery.data && getPaidItemsQuery.data,
-        loading: searchPrQuery.loading || getPaidItemsQuery.loading,
-      }}
-      isMore={pulls.length > elligiblePulls.length}
-    />
+    <>
+      {type === IssueType.PullRequest && (
+        <PullRequestsView
+          workItems={elligibleIssues}
+          onWorkItemAdded={onWorkItemAdded}
+          query={{
+            data: searchPrQuery.data && getPaidItemsQuery.data,
+            loading: searchPrQuery.loading || getPaidItemsQuery.loading,
+          }}
+          isMore={issues.length > elligibleIssues.length}
+        />
+      )}
+      {type === IssueType.Issue && (
+        <IssuesView
+          workItems={elligibleIssues}
+          onWorkItemAdded={onWorkItemAdded}
+          query={{
+            data: searchPrQuery.data && getPaidItemsQuery.data,
+            loading: searchPrQuery.loading || getPaidItemsQuery.loading,
+          }}
+          isMore={issues.length > elligibleIssues.length}
+        />
+      )}
+    </>
   );
 }
 

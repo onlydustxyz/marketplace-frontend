@@ -116,6 +116,15 @@
           "tab": "Pull requests"
         },
         "issues": {
+          "addedToaster": "Issue added",
+          "addOther": {
+            "toggle": "Add other issue",
+            "notALink": "Oops, this doesn't look like an issue",
+            "invalidIssueLink": "Hmm... we can't find this issue. Check the link and try again",
+            "placeholder": "github.com/example/repo/issues/472",
+            "label": "Add specific issue using URL"
+          },
+          "moreCallout": "Only the last __count__ unpaid issues by this user are shown.",
           "tab": "Issues"
         },
         "subTitle": "Add contributions that should be part of this payment",

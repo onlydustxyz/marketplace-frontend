@@ -1,9 +1,8 @@
 import { useIntl } from "src/hooks/useIntl";
 import { WorkItem } from "src/components/GithubIssue";
-import Issues from "./Issues";
+import Issues, { IssueType } from "./Issues";
 import SidePanel from "src/components/SidePanel";
 import { useState } from "react";
-import EmptyState from "./EmptyState";
 import Tab from "./Tab";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import RecordCircleLine from "src/icons/RecordCircleLine";
@@ -51,9 +50,18 @@ export default function WorkItemSidePanel({
           contributorHandle={contributorHandle}
           workItems={workItems}
           onWorkItemAdded={onWorkItemAdded}
+          type={IssueType.PullRequest}
         />
       )}
-      {selectedTab === Tabs.Issues && <EmptyState />}
+      {selectedTab === Tabs.Issues && (
+        <Issues
+          projectId={projectId}
+          contributorHandle={contributorHandle}
+          workItems={workItems}
+          onWorkItemAdded={onWorkItemAdded}
+          type={IssueType.Issue}
+        />
+      )}
     </SidePanel>
   );
 }

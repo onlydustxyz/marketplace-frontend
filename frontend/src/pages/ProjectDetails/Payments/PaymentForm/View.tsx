@@ -125,7 +125,7 @@ const View: React.FC<Props> = ({
                   <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn" className="mx-4 pt-8">
                     <Button size={ButtonSize.Md} type={ButtonType.Secondary} width={Width.Full}>
                       <Add />
-                      {T("payment.form.workItems.add")}
+                      {T("payment.form.workItems.addWorkItem")}
                     </Button>
                   </div>
                 </div>
