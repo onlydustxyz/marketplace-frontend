@@ -6,6 +6,8 @@ import { useState } from "react";
 import Tab from "./Tab";
 import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import IssueOpen from "src/assets/icons/IssueOpen";
+import OtherWorkForm from "./OtherWorkForm";
+import DiscussLine from "src/icons/DiscussLine";
 
 type Props = {
   projectId: string;
@@ -19,6 +21,7 @@ type Props = {
 enum Tabs {
   PullRequests = "pull-requests",
   Issues = "issues",
+  Other = "other",
 }
 
 export default function WorkItemSidePanel({
@@ -47,6 +50,10 @@ export default function WorkItemSidePanel({
           <IssueOpen />
           {T("payment.form.workItems.issues.tab")}
         </Tab>
+        <Tab testId="tab-other-work" active={selectedTab === Tabs.Other} onClick={() => setSelectedTab(Tabs.Other)}>
+          <DiscussLine />
+          {T("payment.form.workItems.other.tab")}
+        </Tab>
       </div>
       {selectedTab === Tabs.PullRequests && (
         <Issues
@@ -66,6 +73,7 @@ export default function WorkItemSidePanel({
           type={IssueType.Issue}
         />
       )}
+      {selectedTab === Tabs.Other && <OtherWorkForm projectId={projectId} />}
     </SidePanel>
   );
 }

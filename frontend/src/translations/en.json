@@ -128,6 +128,27 @@
           "moreCallout": "Only the last __count__ unpaid issues by this user are shown.",
           "tab": "Issues"
         },
+        "other": {
+          "attachments": {
+            "addButton": "Add file",
+            "title": "Attachments"
+          },
+          "callout": "For tracking purposes, we will create the corresponding issue on GitHub.",
+          "descriptionPlaceholder": "Add details about the work being paid",
+          "footer": {
+            "repository": "Create issue in",
+            "submitButton": "Create and add issue"
+          },
+          "tab": "Other work",
+          "title": "Describe the work",
+          "tooltip": "Issue created and item added",
+          "kinds": {
+            "documentation": "Documentation",
+            "meeting": "Meeting",
+            "other": "Other",
+            "subscription": "Subscription"
+          }
+        },
         "subTitle": "Add contributions that should be part of this payment",
         "title": "Work items",
         "emptyState": {
