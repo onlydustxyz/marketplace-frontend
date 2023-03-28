@@ -5350,6 +5350,7 @@ export type Mutation_Root = {
   addFiatPaymentReceipt: Scalars['Uuid'];
   addSponsorToProject: Scalars['Uuid'];
   cancelPaymentRequest: Scalars['Uuid'];
+  createIssue: Issue;
   createProject: Scalars['Uuid'];
   createSponsor: Scalars['Uuid'];
   /** delete data from the table: "auth.github_users" */
@@ -5710,6 +5711,16 @@ export type Mutation_RootAddSponsorToProjectArgs = {
 export type Mutation_RootCancelPaymentRequestArgs = {
   paymentId: Scalars['Uuid'];
   projectId: Scalars['Uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootCreateIssueArgs = {
+  assignees: Array<Scalars['String']>;
+  description: Scalars['String'];
+  repoName: Scalars['String'];
+  repoOwner: Scalars['String'];
+  title: Scalars['String'];
 };
 
 
@@ -9933,6 +9944,17 @@ export type GetProjectReposQueryVariables = Exact<{
 
 export type GetProjectReposQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', owner: string, name: string } | null }> } | null };
 
+export type CreateIssueMutationVariables = Exact<{
+  repoOwner: Scalars['String'];
+  repoName: Scalars['String'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+  assignees: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type CreateIssueMutation = { __typename?: 'mutation_root', createIssue: { __typename?: 'Issue', id: number, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } };
+
 export type SidebarProjectDetailsFragment = { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }> };
 
 export type GetProjectsForSidebarQueryVariables = Exact<{
@@ -11495,6 +11517,49 @@ export function useGetProjectReposLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetProjectReposQueryHookResult = ReturnType<typeof useGetProjectReposQuery>;
 export type GetProjectReposLazyQueryHookResult = ReturnType<typeof useGetProjectReposLazyQuery>;
 export type GetProjectReposQueryResult = Apollo.QueryResult<GetProjectReposQuery, GetProjectReposQueryVariables>;
+export const CreateIssueDocument = gql`
+    mutation CreateIssue($repoOwner: String!, $repoName: String!, $title: String!, $description: String!, $assignees: [String!]!) {
+  createIssue(
+    repoOwner: $repoOwner
+    repoName: $repoName
+    title: $title
+    description: $description
+    assignees: $assignees
+  ) {
+    ...IssueDetails
+  }
+}
+    ${IssueDetailsFragmentDoc}`;
+export type CreateIssueMutationFn = Apollo.MutationFunction<CreateIssueMutation, CreateIssueMutationVariables>;
+
+/**
+ * __useCreateIssueMutation__
+ *
+ * To run a mutation, you first call `useCreateIssueMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateIssueMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createIssueMutation, { data, loading, error }] = useCreateIssueMutation({
+ *   variables: {
+ *      repoOwner: // value for 'repoOwner'
+ *      repoName: // value for 'repoName'
+ *      title: // value for 'title'
+ *      description: // value for 'description'
+ *      assignees: // value for 'assignees'
+ *   },
+ * });
+ */
+export function useCreateIssueMutation(baseOptions?: Apollo.MutationHookOptions<CreateIssueMutation, CreateIssueMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateIssueMutation, CreateIssueMutationVariables>(CreateIssueDocument, options);
+      }
+export type CreateIssueMutationHookResult = ReturnType<typeof useCreateIssueMutation>;
+export type CreateIssueMutationResult = Apollo.MutationResult<CreateIssueMutation>;
+export type CreateIssueMutationOptions = Apollo.BaseMutationOptions<CreateIssueMutation, CreateIssueMutationVariables>;
 export const GetProjectsForSidebarDocument = gql`
     query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
   projects(
