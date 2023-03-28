@@ -1,5 +1,5 @@
 use anyhow::anyhow;
-use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt, ProjectId, UserId};
+use domain::{Amount, BlockchainNetwork, Currency, GithubIssue, PaymentReceipt, ProjectId, UserId};
 use iban::Iban;
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use rusty_money::Money;
@@ -411,5 +411,21 @@ impl Mutation {
 			.remove_sponsor(&project_id.into(), &sponsor_id.into())?;
 
 		Ok(project_id)
+	}
+
+	pub async fn create_issue(
+		&self,
+		context: &Context,
+		repo_owner: String,
+		repo_name: String,
+		title: String,
+		description: String,
+		assignees: Vec<String>,
+	) -> Result<GithubIssue> {
+		let issue = context
+			.create_github_issue_usecase
+			.create_issue(repo_owner, repo_name, title, description, assignees)
+			.await?;
+		Ok(issue)
 	}
 }

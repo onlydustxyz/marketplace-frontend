@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
-use domain::GithubRepositoryId;
-use infrastructure::github::{self, OctocrabProxy};
+use domain::{GithubIssue, GithubRepositoryId};
+use infrastructure::github::{self, FromOctocrabIssue, OctocrabProxy};
 use serde_json::Value;
 
 use crate::domain::{GithubRepo, GithubService, GithubServiceError};
@@ -44,5 +44,26 @@ impl<P: OctocrabProxy> GithubService for P {
 			repo.name,
 			languages,
 		))
+	}
+
+	async fn create_issue(
+		&self,
+		repo_owner: &str,
+		repo_name: &str,
+		title: &str,
+		description: &str,
+		assignees: Vec<String>,
+	) -> Result<GithubIssue, GithubServiceError> {
+		let issue = self
+			.octocrab()
+			.issues(repo_owner, repo_name)
+			.create(title)
+			.body(description)
+			.assignees(assignees)
+			.send()
+			.await
+			.map_err(|e| GithubServiceError::Other(anyhow!(e)))?;
+
+		GithubIssue::from_octocrab_issue(issue).map_err(|e| GithubServiceError::Other(anyhow!(e)))
 	}
 }

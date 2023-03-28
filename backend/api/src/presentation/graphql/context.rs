@@ -42,6 +42,7 @@ pub struct Context {
 		application::project::accept_leader_invitation::Usecase,
 	pub project_details_repository: ProjectDetailsRepository,
 	pub update_user_info_usecase: application::user::update_profile_info::Usecase,
+	pub create_github_issue_usecase: application::github::create_issue::Usecase,
 	pub ens: Arc<ens::Client>,
 }
 
@@ -99,7 +100,7 @@ impl Context {
 				github_repo_repository.clone(),
 				project_github_repo_repository.clone(),
 				github.clone(),
-				github,
+				github.clone(),
 			),
 			unlink_github_repo_usecase: application::project::unlink_github_repo::Usecase::new(
 				github_repo_repository,
@@ -137,6 +138,7 @@ impl Context {
 				user_info_repository,
 				ArePayoutSettingsValid::new(ens.clone()),
 			),
+			create_github_issue_usecase: application::github::create_issue::Usecase::new(github),
 			ens,
 		}
 	}

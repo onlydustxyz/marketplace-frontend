@@ -1,6 +1,5 @@
-use anyhow::Result;
 use async_trait::async_trait;
-use domain::GithubRepositoryId;
+use domain::{GithubIssue, GithubRepositoryId};
 #[cfg(test)]
 use mockall::automock;
 use thiserror::Error;
@@ -24,4 +23,13 @@ pub trait Service: Send + Sync {
 		&self,
 		github_repo_id: &GithubRepositoryId,
 	) -> Result<GithubRepo, Error>;
+
+	async fn create_issue(
+		&self,
+		repo_owner: &str,
+		repo_name: &str,
+		title: &str,
+		description: &str,
+		assignees: Vec<String>,
+	) -> Result<GithubIssue, Error>;
 }
