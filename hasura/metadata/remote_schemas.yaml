@@ -191,6 +191,9 @@
             searchIssues(query: String!, sort: String, order: String, perPage: Int, page: Int): [Issue!]
             searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [User!]
           }
+          type Mutation {
+            createIssue(repoOwner: String!, repoName: String!, title: String!, description: String!, assignees: [String!]!): Issue!
+          }
           type Repository {
             contributors: [User!]!
             description: String!
