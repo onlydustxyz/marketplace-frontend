@@ -56,8 +56,20 @@ test.describe("As a project lead, I", () => {
         "https://github.com/od-mocks/cool-repo-A/pull/1",
         "https://github.com/od-mocks/cool-repo-A/pull/2",
       ],
-      issuesIndexes: [0, 1, 2, 3],
+      issuesIndexes: [18, 19, 20, 21],
       otherIssues: ["https://github.com/onlydustxyz/marketplace/issues/79"],
+      otherWorks: [
+        {
+          kind: "subscription",
+          title: "Monthly contracting subscription",
+          description: "Paid monthly 100$",
+          repository: repos[project.repos?.at(1) || ""].name,
+        },
+        {
+          description: "Real cool documentation",
+          repository: repos[project.repos?.at(0) || ""].name,
+        },
+      ],
     });
 
     const paymentsPage = new ProjectPaymentsPage(page, project);
@@ -84,6 +96,15 @@ test.describe("As a project lead, I", () => {
     await expect(sidePanel.locator("div").filter({ hasText: "#8 · Yet another issue..." }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#9 · Completed, at last !" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#79 · " }).first()).toBeVisible();
+    await expect(
+      sidePanel.locator("div").filter({ hasText: " · Monthly contracting subscription" }).first()
+    ).toBeVisible();
+    await expect(
+      sidePanel
+        .locator("div")
+        .filter({ hasText: ` · Documentation by ${recipient.github.login}` })
+        .first()
+    ).toBeVisible();
 
     await sidePanel.getByRole("button").click();
   });

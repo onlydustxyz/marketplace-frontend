@@ -3,8 +3,7 @@ import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import { useIntl } from "src/hooks/useIntl";
 import Input from "src/components/FormInput";
 import { WorkItem } from "src/components/GithubIssue";
-import { gql } from "@apollo/client";
-import { FetchIssueQuery, IssueDetailsFragmentDoc } from "src/__generated/graphql";
+import { FetchIssueDocument, FetchIssueQuery } from "src/__generated/graphql";
 import { useHasuraLazyQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { useFormContext, useFormState } from "react-hook-form";
@@ -21,7 +20,7 @@ const INPUT_NAME = "otherPrLink";
 export default function OtherPrInput({ onWorkItemAdded }: Props) {
   const { T } = useIntl();
 
-  const [fetchIssue] = useHasuraLazyQuery<FetchIssueQuery>(FETCH_PR_DETAILS, HasuraUserRole.RegisteredUser, {
+  const [fetchIssue] = useHasuraLazyQuery<FetchIssueQuery>(FetchIssueDocument, HasuraUserRole.RegisteredUser, {
     onCompleted: data => {
       if (data.fetchIssue) {
         onWorkItemAdded(data.fetchIssue);
@@ -101,12 +100,3 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
     </div>
   );
 }
-
-const FETCH_PR_DETAILS = gql`
-  ${IssueDetailsFragmentDoc}
-  query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
-    fetchIssue(repoOwner: $repoOwner, repoName: $repoName, issueNumber: $issueNumber) {
-      ...IssueDetails
-    }
-  }
-`;

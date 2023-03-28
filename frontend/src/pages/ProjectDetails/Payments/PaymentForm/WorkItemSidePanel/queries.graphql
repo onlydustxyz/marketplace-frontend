@@ -1,0 +1,65 @@
+query searchIssues($query: String!, $order: String, $sort: String, $perPage: Int) {
+  searchIssues(query: $query, order: $order, sort: $sort, perPage: $perPage) {
+    ...IssueDetails
+  }
+}
+
+fragment RepositoryOwnerAndName on GithubRepoDetails {
+  owner
+  name
+}
+
+query getPaidWorkItems($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    githubRepos {
+      githubRepoDetails {
+        ...RepositoryOwnerAndName
+      }
+    }
+    budgets {
+      id
+      paymentRequests {
+        id
+        workItems {
+          repoOwner
+          repoName
+          issueNumber
+        }
+      }
+    }
+  }
+}
+
+query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
+  fetchIssue(repoOwner: $repoOwner, repoName: $repoName, issueNumber: $issueNumber) {
+    ...IssueDetails
+  }
+}
+
+query GetProjectRepos($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    githubRepos {
+      githubRepoDetails {
+        ...RepositoryOwnerAndName
+      }
+    }
+  }
+}
+
+mutation CreateIssue(
+  $repoOwner: String!
+  $repoName: String!
+  $title: String!
+  $description: String!
+  $assignees: [String!]!
+) {
+  createIssue(
+    repoOwner: $repoOwner
+    repoName: $repoName
+    title: $title
+    description: $description
+    assignees: $assignees
+  ) {
+    ...IssueDetails
+  }
+}
