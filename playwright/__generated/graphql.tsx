@@ -5716,10 +5716,9 @@ export type Mutation_RootCancelPaymentRequestArgs = {
 
 /** mutation root */
 export type Mutation_RootCreateIssueArgs = {
-  assignees: Array<Scalars['String']>;
   description: Scalars['String'];
-  repoName: Scalars['String'];
-  repoOwner: Scalars['String'];
+  githubRepoId: Scalars['Int'];
+  projectId: Scalars['Uuid'];
   title: Scalars['String'];
 };
 
@@ -9919,14 +9918,14 @@ export type SearchIssuesQueryVariables = Exact<{
 
 export type SearchIssuesQuery = { __typename?: 'query_root', searchIssues: Array<{ __typename?: 'Issue', id: number, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null }> | null };
 
-export type RepositoryOwnerAndNameFragment = { __typename?: 'GithubRepoDetails', owner: string, name: string };
+export type RepositoryOwnerAndNameFragment = { __typename?: 'GithubRepoDetails', id: any, owner: string, name: string };
 
 export type GetPaidWorkItemsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
-export type GetPaidWorkItemsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', owner: string, name: string } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, workItems: Array<{ __typename?: 'WorkItems', repoOwner: string, repoName: string, issueNumber: any }> }> }> } | null };
+export type GetPaidWorkItemsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, owner: string, name: string } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, workItems: Array<{ __typename?: 'WorkItems', repoOwner: string, repoName: string, issueNumber: any }> }> }> } | null };
 
 export type FetchIssueQueryVariables = Exact<{
   repoOwner: Scalars['String'];
@@ -9942,14 +9941,13 @@ export type GetProjectReposQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectReposQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', owner: string, name: string } | null }> } | null };
+export type GetProjectReposQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, owner: string, name: string } | null }> } | null };
 
 export type CreateIssueMutationVariables = Exact<{
-  repoOwner: Scalars['String'];
-  repoName: Scalars['String'];
+  projectId: Scalars['Uuid'];
+  githubRepoId: Scalars['Int'];
   title: Scalars['String'];
   description: Scalars['String'];
-  assignees: Array<Scalars['String']> | Scalars['String'];
 }>;
 
 
@@ -10465,6 +10463,7 @@ export const GithubRepoDynamicDetailsFragmentDoc = gql`
     `;
 export const RepositoryOwnerAndNameFragmentDoc = gql`
     fragment RepositoryOwnerAndName on GithubRepoDetails {
+  id
   owner
   name
 }
@@ -11518,13 +11517,12 @@ export type GetProjectReposQueryHookResult = ReturnType<typeof useGetProjectRepo
 export type GetProjectReposLazyQueryHookResult = ReturnType<typeof useGetProjectReposLazyQuery>;
 export type GetProjectReposQueryResult = Apollo.QueryResult<GetProjectReposQuery, GetProjectReposQueryVariables>;
 export const CreateIssueDocument = gql`
-    mutation CreateIssue($repoOwner: String!, $repoName: String!, $title: String!, $description: String!, $assignees: [String!]!) {
+    mutation CreateIssue($projectId: Uuid!, $githubRepoId: Int!, $title: String!, $description: String!) {
   createIssue(
-    repoOwner: $repoOwner
-    repoName: $repoName
+    projectId: $projectId
+    githubRepoId: $githubRepoId
     title: $title
     description: $description
-    assignees: $assignees
   ) {
     ...IssueDetails
   }
@@ -11545,11 +11543,10 @@ export type CreateIssueMutationFn = Apollo.MutationFunction<CreateIssueMutation,
  * @example
  * const [createIssueMutation, { data, loading, error }] = useCreateIssueMutation({
  *   variables: {
- *      repoOwner: // value for 'repoOwner'
- *      repoName: // value for 'repoName'
+ *      projectId: // value for 'projectId'
+ *      githubRepoId: // value for 'githubRepoId'
  *      title: // value for 'title'
  *      description: // value for 'description'
- *      assignees: // value for 'assignees'
  *   },
  * });
  */
