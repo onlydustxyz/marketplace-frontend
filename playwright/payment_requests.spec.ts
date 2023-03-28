@@ -46,7 +46,7 @@ test.describe("As a project lead, I", () => {
 
     // TODO Expectations on contributors page
     const newPaymentPage = await (await contributors).byName(recipient.github.login).pay();
-    await expect(newPaymentPage.contributor()).toHaveValue(recipient.github.login);
+    expect(await newPaymentPage.contributorText()).toEqual(recipient.github.login);
 
     await newPaymentPage.requestPayment({
       pullRequestIndexes: [0],
