@@ -35,6 +35,11 @@ pub use user::{Entity as User, Id as UserId};
 mod budget;
 pub use budget::{Budget, Error as BudgetError, Event as BudgetEvent, Id as BudgetId};
 
+mod github;
+pub use github::{
+	Issue as GithubIssue, IssueStatus as GithubIssueStatus, IssueType as GithubIssueType,
+};
+
 pub mod aggregate_root;
 #[cfg(test)]
 pub use aggregate_root::MockRepository as MockAggregateRootRepository;

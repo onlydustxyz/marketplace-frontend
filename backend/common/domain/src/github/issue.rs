@@ -6,7 +6,7 @@ use domain::GithubRepositoryId;
 use juniper::{GraphQLEnum, GraphQLObject};
 use url::Url;
 
-#[derive(GraphQLEnum)]
+#[derive(Clone, Debug, GraphQLEnum)]
 pub enum Status {
 	Open,
 	Closed,
@@ -15,13 +15,13 @@ pub enum Status {
 	Cancelled,
 }
 
-#[derive(GraphQLEnum)]
+#[derive(Clone, Debug, GraphQLEnum)]
 pub enum Type {
 	Issue,
 	PullRequest,
 }
 
-#[derive(Constructor, GraphQLObject)]
+#[derive(Clone, Debug, Constructor, GraphQLObject)]
 pub struct Issue {
 	id: i32,
 	repo_id: GithubRepositoryId,

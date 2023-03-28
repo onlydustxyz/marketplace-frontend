@@ -1,9 +1,9 @@
-use domain::GithubRepositoryId;
+use domain::{GithubIssue, GithubRepositoryId};
 use juniper::{graphql_object, DefaultScalarValue};
 use olog::{error, warn};
 
 use super::{Context, Error};
-use crate::domain::{GithubIssue, GithubRepository, GithubUser};
+use crate::domain::{GithubRepository, GithubUser};
 
 pub struct Query;
 
@@ -47,7 +47,7 @@ impl Query {
 		&self,
 		context: &Context,
 		id: i32,
-	) -> Option<Vec<GithubIssue>> {
+	) -> Option<Vec<domain::GithubIssue>> {
 		let repository_id = GithubRepositoryId::from(id as i64);
 		context
 			.github_service()
@@ -65,7 +65,7 @@ impl Query {
 		repo_owner: String,
 		repo_name: String,
 		issue_number: i32,
-	) -> Option<GithubIssue> {
+	) -> Option<domain::GithubIssue> {
 		context
 			.github_service()
 			.ok()?

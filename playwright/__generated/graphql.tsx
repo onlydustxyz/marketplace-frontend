@@ -12230,11 +12230,10 @@ export type CreateIssueMutationFn = Apollo.MutationFunction<CreateIssueMutation,
  * @example
  * const [createIssueMutation, { data, loading, error }] = useCreateIssueMutation({
  *   variables: {
- *      repoOwner: // value for 'repoOwner'
- *      repoName: // value for 'repoName'
+ *      projectId: // value for 'projectId'
+ *      githubRepoId: // value for 'githubRepoId'
  *      title: // value for 'title'
  *      description: // value for 'description'
- *      assignees: // value for 'assignees'
  *   },
  * });
  */

@@ -33,5 +33,3 @@ impl IntoFieldError for Error {
 		FieldError::new(msg, graphql_value!({ "reason": reason }))
 	}
 }
-
-pub type Result<T> = std::result::Result<T, Error>;
