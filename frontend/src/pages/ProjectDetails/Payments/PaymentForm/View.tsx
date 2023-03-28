@@ -111,7 +111,7 @@ const View: React.FC<Props> = ({
               {contributor && (
                 <div className="pt-12">
                   <SectionTitle title={T("payment.form.workItems.title")} />
-                  <div className="flex flex-col gap-3 mx-4 pt-4">
+                  <div className="flex flex-col gap-3 mx-4 pt-4" data-testid="added-work-items">
                     <div className=" text-greyscale-300">{T("payment.form.workItems.subTitle")}</div>
                     {workItems.map(workItem => (
                       <GithubIssue

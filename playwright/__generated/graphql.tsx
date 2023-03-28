@@ -1,5 +1,5 @@
-import { gql } from '@apollo/client';
-import * as Apollo from '@apollo/client';
+import { gql } from "@apollo/client";
+import * as Apollo from "@apollo/client";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -33,56 +33,54 @@ export type Scalars = {
 
 /** columns and relationships of "auth.github_users" */
 export type AuthGithubUsers = {
-  __typename?: 'AuthGithubUsers';
-  accessToken: Maybe<Scalars['String']>;
-  createdAt: Maybe<Scalars['timestamptz']>;
-  githubUserId: Maybe<Scalars['bigint']>;
-  id: Maybe<Scalars['uuid']>;
+  __typename?: "AuthGithubUsers";
+  accessToken: Maybe<Scalars["String"]>;
+  createdAt: Maybe<Scalars["timestamptz"]>;
+  githubUserId: Maybe<Scalars["bigint"]>;
+  id: Maybe<Scalars["uuid"]>;
   /** An array relationship */
   paymentRequests: Array<PaymentRequests>;
   /** An aggregate relationship */
   paymentRequestsAggregate: PaymentRequestsAggregate;
-  providerId: Maybe<Scalars['String']>;
-  providerUserId: Maybe<Scalars['String']>;
-  refreshToken: Maybe<Scalars['String']>;
-  updatedAt: Maybe<Scalars['timestamptz']>;
+  providerId: Maybe<Scalars["String"]>;
+  providerUserId: Maybe<Scalars["String"]>;
+  refreshToken: Maybe<Scalars["String"]>;
+  updatedAt: Maybe<Scalars["timestamptz"]>;
   /** An object relationship */
   user: Maybe<Users>;
-  userId: Maybe<Scalars['uuid']>;
+  userId: Maybe<Scalars["uuid"]>;
 };
-
 
 /** columns and relationships of "auth.github_users" */
 export type AuthGithubUsersPaymentRequestsArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
-
 /** columns and relationships of "auth.github_users" */
 export type AuthGithubUsersPaymentRequestsAggregateArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
 /** aggregated selection of "auth.github_users" */
 export type AuthGithubUsersAggregate = {
-  __typename?: 'AuthGithubUsersAggregate';
+  __typename?: "AuthGithubUsersAggregate";
   aggregate: Maybe<AuthGithubUsersAggregateFields>;
   nodes: Array<AuthGithubUsers>;
 };
 
 /** aggregate fields of "auth.github_users" */
 export type AuthGithubUsersAggregateFields = {
-  __typename?: 'AuthGithubUsersAggregateFields';
+  __typename?: "AuthGithubUsersAggregateFields";
   avg: Maybe<AuthGithubUsersAvgFields>;
-  count: Scalars['Int'];
+  count: Scalars["Int"];
   max: Maybe<AuthGithubUsersMaxFields>;
   min: Maybe<AuthGithubUsersMinFields>;
   stddev: Maybe<AuthGithubUsersStddevFields>;
@@ -94,17 +92,16 @@ export type AuthGithubUsersAggregateFields = {
   variance: Maybe<AuthGithubUsersVarianceFields>;
 };
 
-
 /** aggregate fields of "auth.github_users" */
 export type AuthGithubUsersAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<AuthGithubUsersSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** aggregate avg on columns */
 export type AuthGithubUsersAvgFields = {
-  __typename?: 'AuthGithubUsersAvgFields';
-  githubUserId: Maybe<Scalars['Float']>;
+  __typename?: "AuthGithubUsersAvgFields";
+  githubUserId: Maybe<Scalars["Float"]>;
 };
 
 /** Boolean expression to filter rows from the table "auth.github_users". All fields are combined with a logical 'AND'. */
@@ -128,57 +125,57 @@ export type AuthGithubUsersBoolExp = {
 
 /** input type for incrementing numeric columns in table "auth.github_users" */
 export type AuthGithubUsersIncInput = {
-  githubUserId: InputMaybe<Scalars['bigint']>;
+  githubUserId: InputMaybe<Scalars["bigint"]>;
 };
 
 /** input type for inserting data into table "auth.github_users" */
 export type AuthGithubUsersInsertInput = {
-  accessToken: InputMaybe<Scalars['String']>;
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  githubUserId: InputMaybe<Scalars['bigint']>;
-  id: InputMaybe<Scalars['uuid']>;
+  accessToken: InputMaybe<Scalars["String"]>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  githubUserId: InputMaybe<Scalars["bigint"]>;
+  id: InputMaybe<Scalars["uuid"]>;
   paymentRequests: InputMaybe<PaymentRequestsArrRelInsertInput>;
-  providerId: InputMaybe<Scalars['String']>;
-  providerUserId: InputMaybe<Scalars['String']>;
-  refreshToken: InputMaybe<Scalars['String']>;
-  updatedAt: InputMaybe<Scalars['timestamptz']>;
+  providerId: InputMaybe<Scalars["String"]>;
+  providerUserId: InputMaybe<Scalars["String"]>;
+  refreshToken: InputMaybe<Scalars["String"]>;
+  updatedAt: InputMaybe<Scalars["timestamptz"]>;
   user: InputMaybe<UsersObjRelInsertInput>;
-  userId: InputMaybe<Scalars['uuid']>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate max on columns */
 export type AuthGithubUsersMaxFields = {
-  __typename?: 'AuthGithubUsersMaxFields';
-  accessToken: Maybe<Scalars['String']>;
-  createdAt: Maybe<Scalars['timestamptz']>;
-  githubUserId: Maybe<Scalars['bigint']>;
-  id: Maybe<Scalars['uuid']>;
-  providerId: Maybe<Scalars['String']>;
-  providerUserId: Maybe<Scalars['String']>;
-  refreshToken: Maybe<Scalars['String']>;
-  updatedAt: Maybe<Scalars['timestamptz']>;
-  userId: Maybe<Scalars['uuid']>;
+  __typename?: "AuthGithubUsersMaxFields";
+  accessToken: Maybe<Scalars["String"]>;
+  createdAt: Maybe<Scalars["timestamptz"]>;
+  githubUserId: Maybe<Scalars["bigint"]>;
+  id: Maybe<Scalars["uuid"]>;
+  providerId: Maybe<Scalars["String"]>;
+  providerUserId: Maybe<Scalars["String"]>;
+  refreshToken: Maybe<Scalars["String"]>;
+  updatedAt: Maybe<Scalars["timestamptz"]>;
+  userId: Maybe<Scalars["uuid"]>;
 };
 
 /** aggregate min on columns */
 export type AuthGithubUsersMinFields = {
-  __typename?: 'AuthGithubUsersMinFields';
-  accessToken: Maybe<Scalars['String']>;
-  createdAt: Maybe<Scalars['timestamptz']>;
-  githubUserId: Maybe<Scalars['bigint']>;
-  id: Maybe<Scalars['uuid']>;
-  providerId: Maybe<Scalars['String']>;
-  providerUserId: Maybe<Scalars['String']>;
-  refreshToken: Maybe<Scalars['String']>;
-  updatedAt: Maybe<Scalars['timestamptz']>;
-  userId: Maybe<Scalars['uuid']>;
+  __typename?: "AuthGithubUsersMinFields";
+  accessToken: Maybe<Scalars["String"]>;
+  createdAt: Maybe<Scalars["timestamptz"]>;
+  githubUserId: Maybe<Scalars["bigint"]>;
+  id: Maybe<Scalars["uuid"]>;
+  providerId: Maybe<Scalars["String"]>;
+  providerUserId: Maybe<Scalars["String"]>;
+  refreshToken: Maybe<Scalars["String"]>;
+  updatedAt: Maybe<Scalars["timestamptz"]>;
+  userId: Maybe<Scalars["uuid"]>;
 };
 
 /** response of any mutation on the table "auth.github_users" */
 export type AuthGithubUsersMutationResponse = {
-  __typename?: 'AuthGithubUsersMutationResponse';
+  __typename?: "AuthGithubUsersMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<AuthGithubUsers>;
 };
@@ -206,60 +203,60 @@ export type AuthGithubUsersOrderBy = {
 /** select columns of table "auth.github_users" */
 export enum AuthGithubUsersSelectColumn {
   /** column name */
-  AccessToken = 'accessToken',
+  AccessToken = "accessToken",
   /** column name */
-  CreatedAt = 'createdAt',
+  CreatedAt = "createdAt",
   /** column name */
-  GithubUserId = 'githubUserId',
+  GithubUserId = "githubUserId",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  ProviderId = 'providerId',
+  ProviderId = "providerId",
   /** column name */
-  ProviderUserId = 'providerUserId',
+  ProviderUserId = "providerUserId",
   /** column name */
-  RefreshToken = 'refreshToken',
+  RefreshToken = "refreshToken",
   /** column name */
-  UpdatedAt = 'updatedAt',
+  UpdatedAt = "updatedAt",
   /** column name */
-  UserId = 'userId'
+  UserId = "userId",
 }
 
 /** input type for updating data in table "auth.github_users" */
 export type AuthGithubUsersSetInput = {
-  accessToken: InputMaybe<Scalars['String']>;
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  githubUserId: InputMaybe<Scalars['bigint']>;
-  id: InputMaybe<Scalars['uuid']>;
-  providerId: InputMaybe<Scalars['String']>;
-  providerUserId: InputMaybe<Scalars['String']>;
-  refreshToken: InputMaybe<Scalars['String']>;
-  updatedAt: InputMaybe<Scalars['timestamptz']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  accessToken: InputMaybe<Scalars["String"]>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  githubUserId: InputMaybe<Scalars["bigint"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  providerId: InputMaybe<Scalars["String"]>;
+  providerUserId: InputMaybe<Scalars["String"]>;
+  refreshToken: InputMaybe<Scalars["String"]>;
+  updatedAt: InputMaybe<Scalars["timestamptz"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate stddev on columns */
 export type AuthGithubUsersStddevFields = {
-  __typename?: 'AuthGithubUsersStddevFields';
-  githubUserId: Maybe<Scalars['Float']>;
+  __typename?: "AuthGithubUsersStddevFields";
+  githubUserId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_pop on columns */
 export type AuthGithubUsersStddev_PopFields = {
-  __typename?: 'AuthGithubUsersStddev_popFields';
-  githubUserId: Maybe<Scalars['Float']>;
+  __typename?: "AuthGithubUsersStddev_popFields";
+  githubUserId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_samp on columns */
 export type AuthGithubUsersStddev_SampFields = {
-  __typename?: 'AuthGithubUsersStddev_sampFields';
-  githubUserId: Maybe<Scalars['Float']>;
+  __typename?: "AuthGithubUsersStddev_sampFields";
+  githubUserId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate sum on columns */
 export type AuthGithubUsersSumFields = {
-  __typename?: 'AuthGithubUsersSumFields';
-  githubUserId: Maybe<Scalars['bigint']>;
+  __typename?: "AuthGithubUsersSumFields";
+  githubUserId: Maybe<Scalars["bigint"]>;
 };
 
 export type AuthGithubUsersUpdates = {
@@ -272,101 +269,99 @@ export type AuthGithubUsersUpdates = {
 
 /** aggregate var_pop on columns */
 export type AuthGithubUsersVar_PopFields = {
-  __typename?: 'AuthGithubUsersVar_popFields';
-  githubUserId: Maybe<Scalars['Float']>;
+  __typename?: "AuthGithubUsersVar_popFields";
+  githubUserId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate var_samp on columns */
 export type AuthGithubUsersVar_SampFields = {
-  __typename?: 'AuthGithubUsersVar_sampFields';
-  githubUserId: Maybe<Scalars['Float']>;
+  __typename?: "AuthGithubUsersVar_sampFields";
+  githubUserId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate variance on columns */
 export type AuthGithubUsersVarianceFields = {
-  __typename?: 'AuthGithubUsersVarianceFields';
-  githubUserId: Maybe<Scalars['Float']>;
+  __typename?: "AuthGithubUsersVarianceFields";
+  githubUserId: Maybe<Scalars["Float"]>;
 };
 
 export type BankAddress = {
-  BIC: Scalars['String'];
-  IBAN: Scalars['String'];
+  BIC: Scalars["String"];
+  IBAN: Scalars["String"];
 };
 
 /** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
 export type BigintComparisonExp = {
-  _eq: InputMaybe<Scalars['bigint']>;
-  _gt: InputMaybe<Scalars['bigint']>;
-  _gte: InputMaybe<Scalars['bigint']>;
-  _in: InputMaybe<Array<Scalars['bigint']>>;
-  _isNull: InputMaybe<Scalars['Boolean']>;
-  _lt: InputMaybe<Scalars['bigint']>;
-  _lte: InputMaybe<Scalars['bigint']>;
-  _neq: InputMaybe<Scalars['bigint']>;
-  _nin: InputMaybe<Array<Scalars['bigint']>>;
+  _eq: InputMaybe<Scalars["bigint"]>;
+  _gt: InputMaybe<Scalars["bigint"]>;
+  _gte: InputMaybe<Scalars["bigint"]>;
+  _in: InputMaybe<Array<Scalars["bigint"]>>;
+  _isNull: InputMaybe<Scalars["Boolean"]>;
+  _lt: InputMaybe<Scalars["bigint"]>;
+  _lte: InputMaybe<Scalars["bigint"]>;
+  _neq: InputMaybe<Scalars["bigint"]>;
+  _nin: InputMaybe<Array<Scalars["bigint"]>>;
 };
 
 /** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
 export type BooleanComparisonExp = {
-  _eq: InputMaybe<Scalars['Boolean']>;
-  _gt: InputMaybe<Scalars['Boolean']>;
-  _gte: InputMaybe<Scalars['Boolean']>;
-  _in: InputMaybe<Array<Scalars['Boolean']>>;
-  _isNull: InputMaybe<Scalars['Boolean']>;
-  _lt: InputMaybe<Scalars['Boolean']>;
-  _lte: InputMaybe<Scalars['Boolean']>;
-  _neq: InputMaybe<Scalars['Boolean']>;
-  _nin: InputMaybe<Array<Scalars['Boolean']>>;
+  _eq: InputMaybe<Scalars["Boolean"]>;
+  _gt: InputMaybe<Scalars["Boolean"]>;
+  _gte: InputMaybe<Scalars["Boolean"]>;
+  _in: InputMaybe<Array<Scalars["Boolean"]>>;
+  _isNull: InputMaybe<Scalars["Boolean"]>;
+  _lt: InputMaybe<Scalars["Boolean"]>;
+  _lte: InputMaybe<Scalars["Boolean"]>;
+  _neq: InputMaybe<Scalars["Boolean"]>;
+  _nin: InputMaybe<Array<Scalars["Boolean"]>>;
 };
 
 /** columns and relationships of "budgets" */
 export type Budgets = {
-  __typename?: 'Budgets';
-  id: Scalars['uuid'];
-  initialAmount: Scalars['numeric'];
+  __typename?: "Budgets";
+  id: Scalars["uuid"];
+  initialAmount: Scalars["numeric"];
   /** An array relationship */
   paymentRequests: Array<PaymentRequests>;
   /** An aggregate relationship */
   paymentRequestsAggregate: PaymentRequestsAggregate;
   /** An object relationship */
   project: Maybe<Projects>;
-  projectId: Maybe<Scalars['uuid']>;
-  remainingAmount: Scalars['numeric'];
-  spentAmount: Scalars['numeric'];
+  projectId: Maybe<Scalars["uuid"]>;
+  remainingAmount: Scalars["numeric"];
+  spentAmount: Scalars["numeric"];
 };
-
 
 /** columns and relationships of "budgets" */
 export type BudgetsPaymentRequestsArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
-
 /** columns and relationships of "budgets" */
 export type BudgetsPaymentRequestsAggregateArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
 /** aggregated selection of "budgets" */
 export type BudgetsAggregate = {
-  __typename?: 'BudgetsAggregate';
+  __typename?: "BudgetsAggregate";
   aggregate: Maybe<BudgetsAggregateFields>;
   nodes: Array<Budgets>;
 };
 
 /** aggregate fields of "budgets" */
 export type BudgetsAggregateFields = {
-  __typename?: 'BudgetsAggregateFields';
+  __typename?: "BudgetsAggregateFields";
   avg: Maybe<BudgetsAvgFields>;
-  count: Scalars['Int'];
+  count: Scalars["Int"];
   max: Maybe<BudgetsMaxFields>;
   min: Maybe<BudgetsMinFields>;
   stddev: Maybe<BudgetsStddevFields>;
@@ -378,11 +373,10 @@ export type BudgetsAggregateFields = {
   variance: Maybe<BudgetsVarianceFields>;
 };
 
-
 /** aggregate fields of "budgets" */
 export type BudgetsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<BudgetsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** order by aggregate values of table "budgets" */
@@ -409,10 +403,10 @@ export type BudgetsArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type BudgetsAvgFields = {
-  __typename?: 'BudgetsAvgFields';
-  initialAmount: Maybe<Scalars['Float']>;
-  remainingAmount: Maybe<Scalars['Float']>;
-  spentAmount: Maybe<Scalars['Float']>;
+  __typename?: "BudgetsAvgFields";
+  initialAmount: Maybe<Scalars["Float"]>;
+  remainingAmount: Maybe<Scalars["Float"]>;
+  spentAmount: Maybe<Scalars["Float"]>;
 };
 
 /** Boolean expression to filter rows from the table "budgets". All fields are combined with a logical 'AND'. */
@@ -433,50 +427,50 @@ export type BudgetsBoolExp = {
 /** unique or primary key constraints on table "budgets" */
 export enum BudgetsConstraint {
   /** unique or primary key constraint on columns "id" */
-  BudgetsPkey = 'budgets_pkey'
+  BudgetsPkey = "budgets_pkey",
 }
 
 /** input type for incrementing numeric columns in table "budgets" */
 export type BudgetsIncInput = {
-  initialAmount: InputMaybe<Scalars['numeric']>;
-  remainingAmount: InputMaybe<Scalars['numeric']>;
+  initialAmount: InputMaybe<Scalars["numeric"]>;
+  remainingAmount: InputMaybe<Scalars["numeric"]>;
 };
 
 /** input type for inserting data into table "budgets" */
 export type BudgetsInsertInput = {
-  id: InputMaybe<Scalars['uuid']>;
-  initialAmount: InputMaybe<Scalars['numeric']>;
+  id: InputMaybe<Scalars["uuid"]>;
+  initialAmount: InputMaybe<Scalars["numeric"]>;
   paymentRequests: InputMaybe<PaymentRequestsArrRelInsertInput>;
   project: InputMaybe<ProjectsObjRelInsertInput>;
-  projectId: InputMaybe<Scalars['uuid']>;
-  remainingAmount: InputMaybe<Scalars['numeric']>;
+  projectId: InputMaybe<Scalars["uuid"]>;
+  remainingAmount: InputMaybe<Scalars["numeric"]>;
 };
 
 /** aggregate max on columns */
 export type BudgetsMaxFields = {
-  __typename?: 'BudgetsMaxFields';
-  id: Maybe<Scalars['uuid']>;
-  initialAmount: Maybe<Scalars['numeric']>;
-  projectId: Maybe<Scalars['uuid']>;
-  remainingAmount: Maybe<Scalars['numeric']>;
-  spentAmount: Maybe<Scalars['numeric']>;
+  __typename?: "BudgetsMaxFields";
+  id: Maybe<Scalars["uuid"]>;
+  initialAmount: Maybe<Scalars["numeric"]>;
+  projectId: Maybe<Scalars["uuid"]>;
+  remainingAmount: Maybe<Scalars["numeric"]>;
+  spentAmount: Maybe<Scalars["numeric"]>;
 };
 
 /** aggregate min on columns */
 export type BudgetsMinFields = {
-  __typename?: 'BudgetsMinFields';
-  id: Maybe<Scalars['uuid']>;
-  initialAmount: Maybe<Scalars['numeric']>;
-  projectId: Maybe<Scalars['uuid']>;
-  remainingAmount: Maybe<Scalars['numeric']>;
-  spentAmount: Maybe<Scalars['numeric']>;
+  __typename?: "BudgetsMinFields";
+  id: Maybe<Scalars["uuid"]>;
+  initialAmount: Maybe<Scalars["numeric"]>;
+  projectId: Maybe<Scalars["uuid"]>;
+  remainingAmount: Maybe<Scalars["numeric"]>;
+  spentAmount: Maybe<Scalars["numeric"]>;
 };
 
 /** response of any mutation on the table "budgets" */
 export type BudgetsMutationResponse = {
-  __typename?: 'BudgetsMutationResponse';
+  __typename?: "BudgetsMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<Budgets>;
 };
@@ -508,73 +502,73 @@ export type BudgetsOrderBy = {
 
 /** primary key columns input for table: budgets */
 export type BudgetsPkColumnsInput = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
 /** select columns of table "budgets" */
 export enum BudgetsSelectColumn {
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  InitialAmount = 'initialAmount',
+  InitialAmount = "initialAmount",
   /** column name */
-  ProjectId = 'projectId',
+  ProjectId = "projectId",
   /** column name */
-  RemainingAmount = 'remainingAmount',
+  RemainingAmount = "remainingAmount",
   /** column name */
-  SpentAmount = 'spentAmount'
+  SpentAmount = "spentAmount",
 }
 
 /** input type for updating data in table "budgets" */
 export type BudgetsSetInput = {
-  id: InputMaybe<Scalars['uuid']>;
-  initialAmount: InputMaybe<Scalars['numeric']>;
-  projectId: InputMaybe<Scalars['uuid']>;
-  remainingAmount: InputMaybe<Scalars['numeric']>;
+  id: InputMaybe<Scalars["uuid"]>;
+  initialAmount: InputMaybe<Scalars["numeric"]>;
+  projectId: InputMaybe<Scalars["uuid"]>;
+  remainingAmount: InputMaybe<Scalars["numeric"]>;
 };
 
 /** aggregate stddev on columns */
 export type BudgetsStddevFields = {
-  __typename?: 'BudgetsStddevFields';
-  initialAmount: Maybe<Scalars['Float']>;
-  remainingAmount: Maybe<Scalars['Float']>;
-  spentAmount: Maybe<Scalars['Float']>;
+  __typename?: "BudgetsStddevFields";
+  initialAmount: Maybe<Scalars["Float"]>;
+  remainingAmount: Maybe<Scalars["Float"]>;
+  spentAmount: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_pop on columns */
 export type BudgetsStddev_PopFields = {
-  __typename?: 'BudgetsStddev_popFields';
-  initialAmount: Maybe<Scalars['Float']>;
-  remainingAmount: Maybe<Scalars['Float']>;
-  spentAmount: Maybe<Scalars['Float']>;
+  __typename?: "BudgetsStddev_popFields";
+  initialAmount: Maybe<Scalars["Float"]>;
+  remainingAmount: Maybe<Scalars["Float"]>;
+  spentAmount: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_samp on columns */
 export type BudgetsStddev_SampFields = {
-  __typename?: 'BudgetsStddev_sampFields';
-  initialAmount: Maybe<Scalars['Float']>;
-  remainingAmount: Maybe<Scalars['Float']>;
-  spentAmount: Maybe<Scalars['Float']>;
+  __typename?: "BudgetsStddev_sampFields";
+  initialAmount: Maybe<Scalars["Float"]>;
+  remainingAmount: Maybe<Scalars["Float"]>;
+  spentAmount: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate sum on columns */
 export type BudgetsSumFields = {
-  __typename?: 'BudgetsSumFields';
-  initialAmount: Maybe<Scalars['numeric']>;
-  remainingAmount: Maybe<Scalars['numeric']>;
-  spentAmount: Maybe<Scalars['numeric']>;
+  __typename?: "BudgetsSumFields";
+  initialAmount: Maybe<Scalars["numeric"]>;
+  remainingAmount: Maybe<Scalars["numeric"]>;
+  spentAmount: Maybe<Scalars["numeric"]>;
 };
 
 /** update columns of table "budgets" */
 export enum BudgetsUpdateColumn {
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  InitialAmount = 'initialAmount',
+  InitialAmount = "initialAmount",
   /** column name */
-  ProjectId = 'projectId',
+  ProjectId = "projectId",
   /** column name */
-  RemainingAmount = 'remainingAmount'
+  RemainingAmount = "remainingAmount",
 }
 
 export type BudgetsUpdates = {
@@ -587,133 +581,132 @@ export type BudgetsUpdates = {
 
 /** aggregate var_pop on columns */
 export type BudgetsVar_PopFields = {
-  __typename?: 'BudgetsVar_popFields';
-  initialAmount: Maybe<Scalars['Float']>;
-  remainingAmount: Maybe<Scalars['Float']>;
-  spentAmount: Maybe<Scalars['Float']>;
+  __typename?: "BudgetsVar_popFields";
+  initialAmount: Maybe<Scalars["Float"]>;
+  remainingAmount: Maybe<Scalars["Float"]>;
+  spentAmount: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate var_samp on columns */
 export type BudgetsVar_SampFields = {
-  __typename?: 'BudgetsVar_sampFields';
-  initialAmount: Maybe<Scalars['Float']>;
-  remainingAmount: Maybe<Scalars['Float']>;
-  spentAmount: Maybe<Scalars['Float']>;
+  __typename?: "BudgetsVar_sampFields";
+  initialAmount: Maybe<Scalars["Float"]>;
+  remainingAmount: Maybe<Scalars["Float"]>;
+  spentAmount: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate variance on columns */
 export type BudgetsVarianceFields = {
-  __typename?: 'BudgetsVarianceFields';
-  initialAmount: Maybe<Scalars['Float']>;
-  remainingAmount: Maybe<Scalars['Float']>;
-  spentAmount: Maybe<Scalars['Float']>;
+  __typename?: "BudgetsVarianceFields";
+  initialAmount: Maybe<Scalars["Float"]>;
+  remainingAmount: Maybe<Scalars["Float"]>;
+  spentAmount: Maybe<Scalars["Float"]>;
 };
 
 /** Boolean expression to compare columns of type "bytea". All fields are combined with logical 'AND'. */
 export type ByteaComparisonExp = {
-  _eq: InputMaybe<Scalars['bytea']>;
-  _gt: InputMaybe<Scalars['bytea']>;
-  _gte: InputMaybe<Scalars['bytea']>;
-  _in: InputMaybe<Array<Scalars['bytea']>>;
-  _isNull: InputMaybe<Scalars['Boolean']>;
-  _lt: InputMaybe<Scalars['bytea']>;
-  _lte: InputMaybe<Scalars['bytea']>;
-  _neq: InputMaybe<Scalars['bytea']>;
-  _nin: InputMaybe<Array<Scalars['bytea']>>;
+  _eq: InputMaybe<Scalars["bytea"]>;
+  _gt: InputMaybe<Scalars["bytea"]>;
+  _gte: InputMaybe<Scalars["bytea"]>;
+  _in: InputMaybe<Array<Scalars["bytea"]>>;
+  _isNull: InputMaybe<Scalars["Boolean"]>;
+  _lt: InputMaybe<Scalars["bytea"]>;
+  _lte: InputMaybe<Scalars["bytea"]>;
+  _neq: InputMaybe<Scalars["bytea"]>;
+  _nin: InputMaybe<Array<Scalars["bytea"]>>;
 };
 
 /** Boolean expression to compare columns of type "citext". All fields are combined with logical 'AND'. */
 export type CitextComparisonExp = {
-  _eq: InputMaybe<Scalars['citext']>;
-  _gt: InputMaybe<Scalars['citext']>;
-  _gte: InputMaybe<Scalars['citext']>;
+  _eq: InputMaybe<Scalars["citext"]>;
+  _gt: InputMaybe<Scalars["citext"]>;
+  _gte: InputMaybe<Scalars["citext"]>;
   /** does the column match the given case-insensitive pattern */
-  _ilike: InputMaybe<Scalars['citext']>;
-  _in: InputMaybe<Array<Scalars['citext']>>;
+  _ilike: InputMaybe<Scalars["citext"]>;
+  _in: InputMaybe<Array<Scalars["citext"]>>;
   /** does the column match the given POSIX regular expression, case insensitive */
-  _iregex: InputMaybe<Scalars['citext']>;
-  _isNull: InputMaybe<Scalars['Boolean']>;
+  _iregex: InputMaybe<Scalars["citext"]>;
+  _isNull: InputMaybe<Scalars["Boolean"]>;
   /** does the column match the given pattern */
-  _like: InputMaybe<Scalars['citext']>;
-  _lt: InputMaybe<Scalars['citext']>;
-  _lte: InputMaybe<Scalars['citext']>;
-  _neq: InputMaybe<Scalars['citext']>;
+  _like: InputMaybe<Scalars["citext"]>;
+  _lt: InputMaybe<Scalars["citext"]>;
+  _lte: InputMaybe<Scalars["citext"]>;
+  _neq: InputMaybe<Scalars["citext"]>;
   /** does the column NOT match the given case-insensitive pattern */
-  _nilike: InputMaybe<Scalars['citext']>;
-  _nin: InputMaybe<Array<Scalars['citext']>>;
+  _nilike: InputMaybe<Scalars["citext"]>;
+  _nin: InputMaybe<Array<Scalars["citext"]>>;
   /** does the column NOT match the given POSIX regular expression, case insensitive */
-  _niregex: InputMaybe<Scalars['citext']>;
+  _niregex: InputMaybe<Scalars["citext"]>;
   /** does the column NOT match the given pattern */
-  _nlike: InputMaybe<Scalars['citext']>;
+  _nlike: InputMaybe<Scalars["citext"]>;
   /** does the column NOT match the given POSIX regular expression, case sensitive */
-  _nregex: InputMaybe<Scalars['citext']>;
+  _nregex: InputMaybe<Scalars["citext"]>;
   /** does the column NOT match the given SQL regular expression */
-  _nsimilar: InputMaybe<Scalars['citext']>;
+  _nsimilar: InputMaybe<Scalars["citext"]>;
   /** does the column match the given POSIX regular expression, case sensitive */
-  _regex: InputMaybe<Scalars['citext']>;
+  _regex: InputMaybe<Scalars["citext"]>;
   /** does the column match the given SQL regular expression */
-  _similar: InputMaybe<Scalars['citext']>;
+  _similar: InputMaybe<Scalars["citext"]>;
 };
 
 export type CompanyIdentity = {
-  identificationNumber: InputMaybe<Scalars['String']>;
-  name: InputMaybe<Scalars['String']>;
+  identificationNumber: InputMaybe<Scalars["String"]>;
+  name: InputMaybe<Scalars["String"]>;
   owner: InputMaybe<PersonIdentity>;
 };
 
 export type ContactInformation = {
-  discord: InputMaybe<Scalars['String']>;
-  email: InputMaybe<Scalars['Email']>;
-  telegram: InputMaybe<Scalars['String']>;
-  twitter: InputMaybe<Scalars['String']>;
+  discord: InputMaybe<Scalars["String"]>;
+  email: InputMaybe<Scalars["Email"]>;
+  telegram: InputMaybe<Scalars["String"]>;
+  twitter: InputMaybe<Scalars["String"]>;
 };
 
 /** ordering argument of a cursor */
 export enum CursorOrdering {
   /** ascending ordering of the cursor */
-  Asc = 'ASC',
+  Asc = "ASC",
   /** descending ordering of the cursor */
-  Desc = 'DESC'
+  Desc = "DESC",
 }
 
 export type EthereumIdentityInput = {
-  optEthAddress: InputMaybe<Scalars['EthereumAddress']>;
-  optEthName: InputMaybe<Scalars['EthereumName']>;
+  optEthAddress: InputMaybe<Scalars["EthereumAddress"]>;
+  optEthName: InputMaybe<Scalars["EthereumName"]>;
   type: EthereumIdentityType;
 };
 
 export enum EthereumIdentityType {
-  EthereumAddress = 'ETHEREUM_ADDRESS',
-  EthereumName = 'ETHEREUM_NAME'
+  EthereumAddress = "ETHEREUM_ADDRESS",
+  EthereumName = "ETHEREUM_NAME",
 }
 
 /** columns and relationships of "github_repo_details" */
 export type GithubRepoDetails = {
-  __typename?: 'GithubRepoDetails';
+  __typename?: "GithubRepoDetails";
   content: Maybe<Repository>;
-  id: Scalars['bigint'];
-  languages: Scalars['jsonb'];
+  id: Scalars["bigint"];
+  languages: Scalars["jsonb"];
   pullRequests: Maybe<Array<Issue>>;
 };
 
-
 /** columns and relationships of "github_repo_details" */
 export type GithubRepoDetailsLanguagesArgs = {
-  path: InputMaybe<Scalars['String']>;
+  path: InputMaybe<Scalars["String"]>;
 };
 
 /** aggregated selection of "github_repo_details" */
 export type GithubRepoDetailsAggregate = {
-  __typename?: 'GithubRepoDetailsAggregate';
+  __typename?: "GithubRepoDetailsAggregate";
   aggregate: Maybe<GithubRepoDetailsAggregateFields>;
   nodes: Array<GithubRepoDetails>;
 };
 
 /** aggregate fields of "github_repo_details" */
 export type GithubRepoDetailsAggregateFields = {
-  __typename?: 'GithubRepoDetailsAggregateFields';
+  __typename?: "GithubRepoDetailsAggregateFields";
   avg: Maybe<GithubRepoDetailsAvgFields>;
-  count: Scalars['Int'];
+  count: Scalars["Int"];
   max: Maybe<GithubRepoDetailsMaxFields>;
   min: Maybe<GithubRepoDetailsMinFields>;
   stddev: Maybe<GithubRepoDetailsStddevFields>;
@@ -725,22 +718,21 @@ export type GithubRepoDetailsAggregateFields = {
   variance: Maybe<GithubRepoDetailsVarianceFields>;
 };
 
-
 /** aggregate fields of "github_repo_details" */
 export type GithubRepoDetailsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<GithubRepoDetailsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type GithubRepoDetailsAppendInput = {
-  languages: InputMaybe<Scalars['jsonb']>;
+  languages: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** aggregate avg on columns */
 export type GithubRepoDetailsAvgFields = {
-  __typename?: 'GithubRepoDetailsAvgFields';
-  id: Maybe<Scalars['Float']>;
+  __typename?: "GithubRepoDetailsAvgFields";
+  id: Maybe<Scalars["Float"]>;
 };
 
 /** Boolean expression to filter rows from the table "github_repo_details". All fields are combined with a logical 'AND'. */
@@ -755,52 +747,52 @@ export type GithubRepoDetailsBoolExp = {
 /** unique or primary key constraints on table "github_repo_details" */
 export enum GithubRepoDetailsConstraint {
   /** unique or primary key constraint on columns "id" */
-  GithubRepoDetailsPkey = 'github_repo_details_pkey'
+  GithubRepoDetailsPkey = "github_repo_details_pkey",
 }
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type GithubRepoDetailsDeleteAtPathInput = {
-  languages: InputMaybe<Array<Scalars['String']>>;
+  languages: InputMaybe<Array<Scalars["String"]>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type GithubRepoDetailsDeleteElemInput = {
-  languages: InputMaybe<Scalars['Int']>;
+  languages: InputMaybe<Scalars["Int"]>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type GithubRepoDetailsDeleteKeyInput = {
-  languages: InputMaybe<Scalars['String']>;
+  languages: InputMaybe<Scalars["String"]>;
 };
 
 /** input type for incrementing numeric columns in table "github_repo_details" */
 export type GithubRepoDetailsIncInput = {
-  id: InputMaybe<Scalars['bigint']>;
+  id: InputMaybe<Scalars["bigint"]>;
 };
 
 /** input type for inserting data into table "github_repo_details" */
 export type GithubRepoDetailsInsertInput = {
-  id: InputMaybe<Scalars['bigint']>;
-  languages: InputMaybe<Scalars['jsonb']>;
+  id: InputMaybe<Scalars["bigint"]>;
+  languages: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** aggregate max on columns */
 export type GithubRepoDetailsMaxFields = {
-  __typename?: 'GithubRepoDetailsMaxFields';
-  id: Maybe<Scalars['bigint']>;
+  __typename?: "GithubRepoDetailsMaxFields";
+  id: Maybe<Scalars["bigint"]>;
 };
 
 /** aggregate min on columns */
 export type GithubRepoDetailsMinFields = {
-  __typename?: 'GithubRepoDetailsMinFields';
-  id: Maybe<Scalars['bigint']>;
+  __typename?: "GithubRepoDetailsMinFields";
+  id: Maybe<Scalars["bigint"]>;
 };
 
 /** response of any mutation on the table "github_repo_details" */
 export type GithubRepoDetailsMutationResponse = {
-  __typename?: 'GithubRepoDetailsMutationResponse';
+  __typename?: "GithubRepoDetailsMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<GithubRepoDetails>;
 };
@@ -827,58 +819,58 @@ export type GithubRepoDetailsOrderBy = {
 
 /** primary key columns input for table: github_repo_details */
 export type GithubRepoDetailsPkColumnsInput = {
-  id: Scalars['bigint'];
+  id: Scalars["bigint"];
 };
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type GithubRepoDetailsPrependInput = {
-  languages: InputMaybe<Scalars['jsonb']>;
+  languages: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** select columns of table "github_repo_details" */
 export enum GithubRepoDetailsSelectColumn {
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  Languages = 'languages'
+  Languages = "languages",
 }
 
 /** input type for updating data in table "github_repo_details" */
 export type GithubRepoDetailsSetInput = {
-  id: InputMaybe<Scalars['bigint']>;
-  languages: InputMaybe<Scalars['jsonb']>;
+  id: InputMaybe<Scalars["bigint"]>;
+  languages: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** aggregate stddev on columns */
 export type GithubRepoDetailsStddevFields = {
-  __typename?: 'GithubRepoDetailsStddevFields';
-  id: Maybe<Scalars['Float']>;
+  __typename?: "GithubRepoDetailsStddevFields";
+  id: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_pop on columns */
 export type GithubRepoDetailsStddev_PopFields = {
-  __typename?: 'GithubRepoDetailsStddev_popFields';
-  id: Maybe<Scalars['Float']>;
+  __typename?: "GithubRepoDetailsStddev_popFields";
+  id: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_samp on columns */
 export type GithubRepoDetailsStddev_SampFields = {
-  __typename?: 'GithubRepoDetailsStddev_sampFields';
-  id: Maybe<Scalars['Float']>;
+  __typename?: "GithubRepoDetailsStddev_sampFields";
+  id: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate sum on columns */
 export type GithubRepoDetailsSumFields = {
-  __typename?: 'GithubRepoDetailsSumFields';
-  id: Maybe<Scalars['bigint']>;
+  __typename?: "GithubRepoDetailsSumFields";
+  id: Maybe<Scalars["bigint"]>;
 };
 
 /** update columns of table "github_repo_details" */
 export enum GithubRepoDetailsUpdateColumn {
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  Languages = 'languages'
+  Languages = "languages",
 }
 
 export type GithubRepoDetailsUpdates = {
@@ -901,20 +893,20 @@ export type GithubRepoDetailsUpdates = {
 
 /** aggregate var_pop on columns */
 export type GithubRepoDetailsVar_PopFields = {
-  __typename?: 'GithubRepoDetailsVar_popFields';
-  id: Maybe<Scalars['Float']>;
+  __typename?: "GithubRepoDetailsVar_popFields";
+  id: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate var_samp on columns */
 export type GithubRepoDetailsVar_SampFields = {
-  __typename?: 'GithubRepoDetailsVar_sampFields';
-  id: Maybe<Scalars['Float']>;
+  __typename?: "GithubRepoDetailsVar_sampFields";
+  id: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate variance on columns */
 export type GithubRepoDetailsVarianceFields = {
-  __typename?: 'GithubRepoDetailsVarianceFields';
-  id: Maybe<Scalars['Float']>;
+  __typename?: "GithubRepoDetailsVarianceFields";
+  id: Maybe<Scalars["Float"]>;
 };
 
 export type IdentityInput = {
@@ -924,34 +916,34 @@ export type IdentityInput = {
 };
 
 export enum IdentityType {
-  Company = 'COMPANY',
-  Person = 'PERSON'
+  Company = "COMPANY",
+  Person = "PERSON",
 }
 
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type IntComparisonExp = {
-  _eq: InputMaybe<Scalars['Int']>;
-  _gt: InputMaybe<Scalars['Int']>;
-  _gte: InputMaybe<Scalars['Int']>;
-  _in: InputMaybe<Array<Scalars['Int']>>;
-  _isNull: InputMaybe<Scalars['Boolean']>;
-  _lt: InputMaybe<Scalars['Int']>;
-  _lte: InputMaybe<Scalars['Int']>;
-  _neq: InputMaybe<Scalars['Int']>;
-  _nin: InputMaybe<Array<Scalars['Int']>>;
+  _eq: InputMaybe<Scalars["Int"]>;
+  _gt: InputMaybe<Scalars["Int"]>;
+  _gte: InputMaybe<Scalars["Int"]>;
+  _in: InputMaybe<Array<Scalars["Int"]>>;
+  _isNull: InputMaybe<Scalars["Boolean"]>;
+  _lt: InputMaybe<Scalars["Int"]>;
+  _lte: InputMaybe<Scalars["Int"]>;
+  _neq: InputMaybe<Scalars["Int"]>;
+  _nin: InputMaybe<Array<Scalars["Int"]>>;
 };
 
 export type Issue = {
-  __typename?: 'Issue';
-  closedAt: Maybe<Scalars['DateTimeUtc']>;
-  createdAt: Scalars['DateTimeUtc'];
-  htmlUrl: Scalars['Url'];
-  id: Scalars['Int'];
-  mergedAt: Maybe<Scalars['DateTimeUtc']>;
-  number: Scalars['Int'];
-  repoId: Scalars['GithubRepositoryId'];
+  __typename?: "Issue";
+  closedAt: Maybe<Scalars["DateTimeUtc"]>;
+  createdAt: Scalars["DateTimeUtc"];
+  htmlUrl: Scalars["Url"];
+  id: Scalars["Int"];
+  mergedAt: Maybe<Scalars["DateTimeUtc"]>;
+  number: Scalars["Int"];
+  repoId: Scalars["GithubRepositoryId"];
   status: Status;
-  title: Scalars['String'];
+  title: Scalars["String"];
   type: Type;
 };
 
@@ -963,146 +955,142 @@ export type JsonbCastExp = {
 export type JsonbComparisonExp = {
   _cast: InputMaybe<JsonbCastExp>;
   /** is the column contained in the given json value */
-  _containedIn: InputMaybe<Scalars['jsonb']>;
+  _containedIn: InputMaybe<Scalars["jsonb"]>;
   /** does the column contain the given json value at the top level */
-  _contains: InputMaybe<Scalars['jsonb']>;
-  _eq: InputMaybe<Scalars['jsonb']>;
-  _gt: InputMaybe<Scalars['jsonb']>;
-  _gte: InputMaybe<Scalars['jsonb']>;
+  _contains: InputMaybe<Scalars["jsonb"]>;
+  _eq: InputMaybe<Scalars["jsonb"]>;
+  _gt: InputMaybe<Scalars["jsonb"]>;
+  _gte: InputMaybe<Scalars["jsonb"]>;
   /** does the string exist as a top-level key in the column */
-  _hasKey: InputMaybe<Scalars['String']>;
+  _hasKey: InputMaybe<Scalars["String"]>;
   /** do all of these strings exist as top-level keys in the column */
-  _hasKeysAll: InputMaybe<Array<Scalars['String']>>;
+  _hasKeysAll: InputMaybe<Array<Scalars["String"]>>;
   /** do any of these strings exist as top-level keys in the column */
-  _hasKeysAny: InputMaybe<Array<Scalars['String']>>;
-  _in: InputMaybe<Array<Scalars['jsonb']>>;
-  _isNull: InputMaybe<Scalars['Boolean']>;
-  _lt: InputMaybe<Scalars['jsonb']>;
-  _lte: InputMaybe<Scalars['jsonb']>;
-  _neq: InputMaybe<Scalars['jsonb']>;
-  _nin: InputMaybe<Array<Scalars['jsonb']>>;
+  _hasKeysAny: InputMaybe<Array<Scalars["String"]>>;
+  _in: InputMaybe<Array<Scalars["jsonb"]>>;
+  _isNull: InputMaybe<Scalars["Boolean"]>;
+  _lt: InputMaybe<Scalars["jsonb"]>;
+  _lte: InputMaybe<Scalars["jsonb"]>;
+  _neq: InputMaybe<Scalars["jsonb"]>;
+  _nin: InputMaybe<Array<Scalars["jsonb"]>>;
 };
 
 export type Location = {
-  address: InputMaybe<Scalars['String']>;
-  city: InputMaybe<Scalars['String']>;
-  country: InputMaybe<Scalars['String']>;
-  postCode: InputMaybe<Scalars['String']>;
+  address: InputMaybe<Scalars["String"]>;
+  city: InputMaybe<Scalars["String"]>;
+  country: InputMaybe<Scalars["String"]>;
+  postCode: InputMaybe<Scalars["String"]>;
 };
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
 export type NumericComparisonExp = {
-  _eq: InputMaybe<Scalars['numeric']>;
-  _gt: InputMaybe<Scalars['numeric']>;
-  _gte: InputMaybe<Scalars['numeric']>;
-  _in: InputMaybe<Array<Scalars['numeric']>>;
-  _isNull: InputMaybe<Scalars['Boolean']>;
-  _lt: InputMaybe<Scalars['numeric']>;
-  _lte: InputMaybe<Scalars['numeric']>;
-  _neq: InputMaybe<Scalars['numeric']>;
-  _nin: InputMaybe<Array<Scalars['numeric']>>;
+  _eq: InputMaybe<Scalars["numeric"]>;
+  _gt: InputMaybe<Scalars["numeric"]>;
+  _gte: InputMaybe<Scalars["numeric"]>;
+  _in: InputMaybe<Array<Scalars["numeric"]>>;
+  _isNull: InputMaybe<Scalars["Boolean"]>;
+  _lt: InputMaybe<Scalars["numeric"]>;
+  _lte: InputMaybe<Scalars["numeric"]>;
+  _neq: InputMaybe<Scalars["numeric"]>;
+  _nin: InputMaybe<Array<Scalars["numeric"]>>;
 };
 
 /** column ordering options */
 export enum OrderBy {
   /** in ascending order, nulls last */
-  Asc = 'ASC',
+  Asc = "ASC",
   /** in ascending order, nulls first */
-  AscNullsFirst = 'ASC_NULLS_FIRST',
+  AscNullsFirst = "ASC_NULLS_FIRST",
   /** in ascending order, nulls last */
-  AscNullsLast = 'ASC_NULLS_LAST',
+  AscNullsLast = "ASC_NULLS_LAST",
   /** in descending order, nulls first */
-  Desc = 'DESC',
+  Desc = "DESC",
   /** in descending order, nulls first */
-  DescNullsFirst = 'DESC_NULLS_FIRST',
+  DescNullsFirst = "DESC_NULLS_FIRST",
   /** in descending order, nulls last */
-  DescNullsLast = 'DESC_NULLS_LAST'
+  DescNullsLast = "DESC_NULLS_LAST",
 }
 
 export type PaymentReference = {
-  paymentId: Scalars['Uuid'];
-  projectId: Scalars['Uuid'];
+  paymentId: Scalars["Uuid"];
+  projectId: Scalars["Uuid"];
 };
 
 /** columns and relationships of "payment_requests" */
 export type PaymentRequests = {
-  __typename?: 'PaymentRequests';
-  amountInUsd: Scalars['bigint'];
+  __typename?: "PaymentRequests";
+  amountInUsd: Scalars["bigint"];
   /** An object relationship */
   budget: Maybe<Budgets>;
-  budgetId: Scalars['uuid'];
+  budgetId: Scalars["uuid"];
   githubRecipient: Maybe<User>;
-  id: Scalars['uuid'];
-  invoiceReceivedAt: Maybe<Scalars['timestamp']>;
+  id: Scalars["uuid"];
+  invoiceReceivedAt: Maybe<Scalars["timestamp"]>;
   /** An array relationship */
   payments: Array<Payments>;
   /** An aggregate relationship */
   paymentsAggregate: PaymentsAggregate;
   /** An object relationship */
   recipient: Maybe<AuthGithubUsers>;
-  recipientId: Scalars['bigint'];
-  requestedAt: Scalars['timestamp'];
+  recipientId: Scalars["bigint"];
+  requestedAt: Scalars["timestamp"];
   /** An object relationship */
   requestor: Maybe<Users>;
-  requestorId: Scalars['uuid'];
+  requestorId: Scalars["uuid"];
   /** An array relationship */
   workItems: Array<WorkItems>;
   /** An aggregate relationship */
   workItemsAggregate: WorkItemsAggregate;
 };
 
-
 /** columns and relationships of "payment_requests" */
 export type PaymentRequestsPaymentsArgs = {
   distinctOn: InputMaybe<Array<PaymentsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentsOrderBy>>;
   where: InputMaybe<PaymentsBoolExp>;
 };
-
 
 /** columns and relationships of "payment_requests" */
 export type PaymentRequestsPaymentsAggregateArgs = {
   distinctOn: InputMaybe<Array<PaymentsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentsOrderBy>>;
   where: InputMaybe<PaymentsBoolExp>;
 };
 
-
 /** columns and relationships of "payment_requests" */
 export type PaymentRequestsWorkItemsArgs = {
   distinctOn: InputMaybe<Array<WorkItemsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<WorkItemsOrderBy>>;
   where: InputMaybe<WorkItemsBoolExp>;
 };
 
-
 /** columns and relationships of "payment_requests" */
 export type PaymentRequestsWorkItemsAggregateArgs = {
   distinctOn: InputMaybe<Array<WorkItemsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<WorkItemsOrderBy>>;
   where: InputMaybe<WorkItemsBoolExp>;
 };
 
 /** aggregated selection of "payment_requests" */
 export type PaymentRequestsAggregate = {
-  __typename?: 'PaymentRequestsAggregate';
+  __typename?: "PaymentRequestsAggregate";
   aggregate: Maybe<PaymentRequestsAggregateFields>;
   nodes: Array<PaymentRequests>;
 };
 
 /** aggregate fields of "payment_requests" */
 export type PaymentRequestsAggregateFields = {
-  __typename?: 'PaymentRequestsAggregateFields';
+  __typename?: "PaymentRequestsAggregateFields";
   avg: Maybe<PaymentRequestsAvgFields>;
-  count: Scalars['Int'];
+  count: Scalars["Int"];
   max: Maybe<PaymentRequestsMaxFields>;
   min: Maybe<PaymentRequestsMinFields>;
   stddev: Maybe<PaymentRequestsStddevFields>;
@@ -1114,11 +1102,10 @@ export type PaymentRequestsAggregateFields = {
   variance: Maybe<PaymentRequestsVarianceFields>;
 };
 
-
 /** aggregate fields of "payment_requests" */
 export type PaymentRequestsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** order by aggregate values of table "payment_requests" */
@@ -1145,9 +1132,9 @@ export type PaymentRequestsArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type PaymentRequestsAvgFields = {
-  __typename?: 'PaymentRequestsAvgFields';
-  amountInUsd: Maybe<Scalars['Float']>;
-  recipientId: Maybe<Scalars['Float']>;
+  __typename?: "PaymentRequestsAvgFields";
+  amountInUsd: Maybe<Scalars["Float"]>;
+  recipientId: Maybe<Scalars["Float"]>;
 };
 
 /** Boolean expression to filter rows from the table "payment_requests". All fields are combined with a logical 'AND'. */
@@ -1174,60 +1161,60 @@ export type PaymentRequestsBoolExp = {
 /** unique or primary key constraints on table "payment_requests" */
 export enum PaymentRequestsConstraint {
   /** unique or primary key constraint on columns "id" */
-  PaymentRequestsPkey1 = 'payment_requests_pkey1'
+  PaymentRequestsPkey1 = "payment_requests_pkey1",
 }
 
 /** input type for incrementing numeric columns in table "payment_requests" */
 export type PaymentRequestsIncInput = {
-  amountInUsd: InputMaybe<Scalars['bigint']>;
-  recipientId: InputMaybe<Scalars['bigint']>;
+  amountInUsd: InputMaybe<Scalars["bigint"]>;
+  recipientId: InputMaybe<Scalars["bigint"]>;
 };
 
 /** input type for inserting data into table "payment_requests" */
 export type PaymentRequestsInsertInput = {
-  amountInUsd: InputMaybe<Scalars['bigint']>;
+  amountInUsd: InputMaybe<Scalars["bigint"]>;
   budget: InputMaybe<BudgetsObjRelInsertInput>;
-  budgetId: InputMaybe<Scalars['uuid']>;
-  id: InputMaybe<Scalars['uuid']>;
-  invoiceReceivedAt: InputMaybe<Scalars['timestamp']>;
+  budgetId: InputMaybe<Scalars["uuid"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  invoiceReceivedAt: InputMaybe<Scalars["timestamp"]>;
   payments: InputMaybe<PaymentsArrRelInsertInput>;
   recipient: InputMaybe<AuthGithubUsersObjRelInsertInput>;
-  recipientId: InputMaybe<Scalars['bigint']>;
-  requestedAt: InputMaybe<Scalars['timestamp']>;
+  recipientId: InputMaybe<Scalars["bigint"]>;
+  requestedAt: InputMaybe<Scalars["timestamp"]>;
   requestor: InputMaybe<UsersObjRelInsertInput>;
-  requestorId: InputMaybe<Scalars['uuid']>;
+  requestorId: InputMaybe<Scalars["uuid"]>;
   workItems: InputMaybe<WorkItemsArrRelInsertInput>;
 };
 
 /** aggregate max on columns */
 export type PaymentRequestsMaxFields = {
-  __typename?: 'PaymentRequestsMaxFields';
-  amountInUsd: Maybe<Scalars['bigint']>;
-  budgetId: Maybe<Scalars['uuid']>;
-  id: Maybe<Scalars['uuid']>;
-  invoiceReceivedAt: Maybe<Scalars['timestamp']>;
-  recipientId: Maybe<Scalars['bigint']>;
-  requestedAt: Maybe<Scalars['timestamp']>;
-  requestorId: Maybe<Scalars['uuid']>;
+  __typename?: "PaymentRequestsMaxFields";
+  amountInUsd: Maybe<Scalars["bigint"]>;
+  budgetId: Maybe<Scalars["uuid"]>;
+  id: Maybe<Scalars["uuid"]>;
+  invoiceReceivedAt: Maybe<Scalars["timestamp"]>;
+  recipientId: Maybe<Scalars["bigint"]>;
+  requestedAt: Maybe<Scalars["timestamp"]>;
+  requestorId: Maybe<Scalars["uuid"]>;
 };
 
 /** aggregate min on columns */
 export type PaymentRequestsMinFields = {
-  __typename?: 'PaymentRequestsMinFields';
-  amountInUsd: Maybe<Scalars['bigint']>;
-  budgetId: Maybe<Scalars['uuid']>;
-  id: Maybe<Scalars['uuid']>;
-  invoiceReceivedAt: Maybe<Scalars['timestamp']>;
-  recipientId: Maybe<Scalars['bigint']>;
-  requestedAt: Maybe<Scalars['timestamp']>;
-  requestorId: Maybe<Scalars['uuid']>;
+  __typename?: "PaymentRequestsMinFields";
+  amountInUsd: Maybe<Scalars["bigint"]>;
+  budgetId: Maybe<Scalars["uuid"]>;
+  id: Maybe<Scalars["uuid"]>;
+  invoiceReceivedAt: Maybe<Scalars["timestamp"]>;
+  recipientId: Maybe<Scalars["bigint"]>;
+  requestedAt: Maybe<Scalars["timestamp"]>;
+  requestorId: Maybe<Scalars["uuid"]>;
 };
 
 /** response of any mutation on the table "payment_requests" */
 export type PaymentRequestsMutationResponse = {
-  __typename?: 'PaymentRequestsMutationResponse';
+  __typename?: "PaymentRequestsMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<PaymentRequests>;
 };
@@ -1264,82 +1251,82 @@ export type PaymentRequestsOrderBy = {
 
 /** primary key columns input for table: payment_requests */
 export type PaymentRequestsPkColumnsInput = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
 /** select columns of table "payment_requests" */
 export enum PaymentRequestsSelectColumn {
   /** column name */
-  AmountInUsd = 'amountInUsd',
+  AmountInUsd = "amountInUsd",
   /** column name */
-  BudgetId = 'budgetId',
+  BudgetId = "budgetId",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  InvoiceReceivedAt = 'invoiceReceivedAt',
+  InvoiceReceivedAt = "invoiceReceivedAt",
   /** column name */
-  RecipientId = 'recipientId',
+  RecipientId = "recipientId",
   /** column name */
-  RequestedAt = 'requestedAt',
+  RequestedAt = "requestedAt",
   /** column name */
-  RequestorId = 'requestorId'
+  RequestorId = "requestorId",
 }
 
 /** input type for updating data in table "payment_requests" */
 export type PaymentRequestsSetInput = {
-  amountInUsd: InputMaybe<Scalars['bigint']>;
-  budgetId: InputMaybe<Scalars['uuid']>;
-  id: InputMaybe<Scalars['uuid']>;
-  invoiceReceivedAt: InputMaybe<Scalars['timestamp']>;
-  recipientId: InputMaybe<Scalars['bigint']>;
-  requestedAt: InputMaybe<Scalars['timestamp']>;
-  requestorId: InputMaybe<Scalars['uuid']>;
+  amountInUsd: InputMaybe<Scalars["bigint"]>;
+  budgetId: InputMaybe<Scalars["uuid"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  invoiceReceivedAt: InputMaybe<Scalars["timestamp"]>;
+  recipientId: InputMaybe<Scalars["bigint"]>;
+  requestedAt: InputMaybe<Scalars["timestamp"]>;
+  requestorId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate stddev on columns */
 export type PaymentRequestsStddevFields = {
-  __typename?: 'PaymentRequestsStddevFields';
-  amountInUsd: Maybe<Scalars['Float']>;
-  recipientId: Maybe<Scalars['Float']>;
+  __typename?: "PaymentRequestsStddevFields";
+  amountInUsd: Maybe<Scalars["Float"]>;
+  recipientId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_pop on columns */
 export type PaymentRequestsStddev_PopFields = {
-  __typename?: 'PaymentRequestsStddev_popFields';
-  amountInUsd: Maybe<Scalars['Float']>;
-  recipientId: Maybe<Scalars['Float']>;
+  __typename?: "PaymentRequestsStddev_popFields";
+  amountInUsd: Maybe<Scalars["Float"]>;
+  recipientId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_samp on columns */
 export type PaymentRequestsStddev_SampFields = {
-  __typename?: 'PaymentRequestsStddev_sampFields';
-  amountInUsd: Maybe<Scalars['Float']>;
-  recipientId: Maybe<Scalars['Float']>;
+  __typename?: "PaymentRequestsStddev_sampFields";
+  amountInUsd: Maybe<Scalars["Float"]>;
+  recipientId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate sum on columns */
 export type PaymentRequestsSumFields = {
-  __typename?: 'PaymentRequestsSumFields';
-  amountInUsd: Maybe<Scalars['bigint']>;
-  recipientId: Maybe<Scalars['bigint']>;
+  __typename?: "PaymentRequestsSumFields";
+  amountInUsd: Maybe<Scalars["bigint"]>;
+  recipientId: Maybe<Scalars["bigint"]>;
 };
 
 /** update columns of table "payment_requests" */
 export enum PaymentRequestsUpdateColumn {
   /** column name */
-  AmountInUsd = 'amountInUsd',
+  AmountInUsd = "amountInUsd",
   /** column name */
-  BudgetId = 'budgetId',
+  BudgetId = "budgetId",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  InvoiceReceivedAt = 'invoiceReceivedAt',
+  InvoiceReceivedAt = "invoiceReceivedAt",
   /** column name */
-  RecipientId = 'recipientId',
+  RecipientId = "recipientId",
   /** column name */
-  RequestedAt = 'requestedAt',
+  RequestedAt = "requestedAt",
   /** column name */
-  RequestorId = 'requestorId'
+  RequestorId = "requestorId",
 }
 
 export type PaymentRequestsUpdates = {
@@ -1352,56 +1339,55 @@ export type PaymentRequestsUpdates = {
 
 /** aggregate var_pop on columns */
 export type PaymentRequestsVar_PopFields = {
-  __typename?: 'PaymentRequestsVar_popFields';
-  amountInUsd: Maybe<Scalars['Float']>;
-  recipientId: Maybe<Scalars['Float']>;
+  __typename?: "PaymentRequestsVar_popFields";
+  amountInUsd: Maybe<Scalars["Float"]>;
+  recipientId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate var_samp on columns */
 export type PaymentRequestsVar_SampFields = {
-  __typename?: 'PaymentRequestsVar_sampFields';
-  amountInUsd: Maybe<Scalars['Float']>;
-  recipientId: Maybe<Scalars['Float']>;
+  __typename?: "PaymentRequestsVar_sampFields";
+  amountInUsd: Maybe<Scalars["Float"]>;
+  recipientId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate variance on columns */
 export type PaymentRequestsVarianceFields = {
-  __typename?: 'PaymentRequestsVarianceFields';
-  amountInUsd: Maybe<Scalars['Float']>;
-  recipientId: Maybe<Scalars['Float']>;
+  __typename?: "PaymentRequestsVarianceFields";
+  amountInUsd: Maybe<Scalars["Float"]>;
+  recipientId: Maybe<Scalars["Float"]>;
 };
 
 /** columns and relationships of "payments" */
 export type Payments = {
-  __typename?: 'Payments';
-  amount: Scalars['numeric'];
-  currencyCode: Scalars['String'];
-  id: Scalars['uuid'];
+  __typename?: "Payments";
+  amount: Scalars["numeric"];
+  currencyCode: Scalars["String"];
+  id: Scalars["uuid"];
   /** An object relationship */
   paymentRequest: PaymentRequests;
-  processedAt: Scalars['timestamp'];
-  receipt: Scalars['jsonb'];
-  requestId: Scalars['uuid'];
+  processedAt: Scalars["timestamp"];
+  receipt: Scalars["jsonb"];
+  requestId: Scalars["uuid"];
 };
-
 
 /** columns and relationships of "payments" */
 export type PaymentsReceiptArgs = {
-  path: InputMaybe<Scalars['String']>;
+  path: InputMaybe<Scalars["String"]>;
 };
 
 /** aggregated selection of "payments" */
 export type PaymentsAggregate = {
-  __typename?: 'PaymentsAggregate';
+  __typename?: "PaymentsAggregate";
   aggregate: Maybe<PaymentsAggregateFields>;
   nodes: Array<Payments>;
 };
 
 /** aggregate fields of "payments" */
 export type PaymentsAggregateFields = {
-  __typename?: 'PaymentsAggregateFields';
+  __typename?: "PaymentsAggregateFields";
   avg: Maybe<PaymentsAvgFields>;
-  count: Scalars['Int'];
+  count: Scalars["Int"];
   max: Maybe<PaymentsMaxFields>;
   min: Maybe<PaymentsMinFields>;
   stddev: Maybe<PaymentsStddevFields>;
@@ -1413,11 +1399,10 @@ export type PaymentsAggregateFields = {
   variance: Maybe<PaymentsVarianceFields>;
 };
 
-
 /** aggregate fields of "payments" */
 export type PaymentsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<PaymentsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** order by aggregate values of table "payments" */
@@ -1437,7 +1422,7 @@ export type PaymentsAggregateOrderBy = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type PaymentsAppendInput = {
-  receipt: InputMaybe<Scalars['jsonb']>;
+  receipt: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** input type for inserting array relation for remote table "payments" */
@@ -1449,8 +1434,8 @@ export type PaymentsArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type PaymentsAvgFields = {
-  __typename?: 'PaymentsAvgFields';
-  amount: Maybe<Scalars['Float']>;
+  __typename?: "PaymentsAvgFields";
+  amount: Maybe<Scalars["Float"]>;
 };
 
 /** Boolean expression to filter rows from the table "payments". All fields are combined with a logical 'AND'. */
@@ -1470,65 +1455,65 @@ export type PaymentsBoolExp = {
 /** unique or primary key constraints on table "payments" */
 export enum PaymentsConstraint {
   /** unique or primary key constraint on columns "id" */
-  PaymentsPkey = 'payments_pkey'
+  PaymentsPkey = "payments_pkey",
 }
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type PaymentsDeleteAtPathInput = {
-  receipt: InputMaybe<Array<Scalars['String']>>;
+  receipt: InputMaybe<Array<Scalars["String"]>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type PaymentsDeleteElemInput = {
-  receipt: InputMaybe<Scalars['Int']>;
+  receipt: InputMaybe<Scalars["Int"]>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type PaymentsDeleteKeyInput = {
-  receipt: InputMaybe<Scalars['String']>;
+  receipt: InputMaybe<Scalars["String"]>;
 };
 
 /** input type for incrementing numeric columns in table "payments" */
 export type PaymentsIncInput = {
-  amount: InputMaybe<Scalars['numeric']>;
+  amount: InputMaybe<Scalars["numeric"]>;
 };
 
 /** input type for inserting data into table "payments" */
 export type PaymentsInsertInput = {
-  amount: InputMaybe<Scalars['numeric']>;
-  currencyCode: InputMaybe<Scalars['String']>;
-  id: InputMaybe<Scalars['uuid']>;
+  amount: InputMaybe<Scalars["numeric"]>;
+  currencyCode: InputMaybe<Scalars["String"]>;
+  id: InputMaybe<Scalars["uuid"]>;
   paymentRequest: InputMaybe<PaymentRequestsObjRelInsertInput>;
-  processedAt: InputMaybe<Scalars['timestamp']>;
-  receipt: InputMaybe<Scalars['jsonb']>;
-  requestId: InputMaybe<Scalars['uuid']>;
+  processedAt: InputMaybe<Scalars["timestamp"]>;
+  receipt: InputMaybe<Scalars["jsonb"]>;
+  requestId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate max on columns */
 export type PaymentsMaxFields = {
-  __typename?: 'PaymentsMaxFields';
-  amount: Maybe<Scalars['numeric']>;
-  currencyCode: Maybe<Scalars['String']>;
-  id: Maybe<Scalars['uuid']>;
-  processedAt: Maybe<Scalars['timestamp']>;
-  requestId: Maybe<Scalars['uuid']>;
+  __typename?: "PaymentsMaxFields";
+  amount: Maybe<Scalars["numeric"]>;
+  currencyCode: Maybe<Scalars["String"]>;
+  id: Maybe<Scalars["uuid"]>;
+  processedAt: Maybe<Scalars["timestamp"]>;
+  requestId: Maybe<Scalars["uuid"]>;
 };
 
 /** aggregate min on columns */
 export type PaymentsMinFields = {
-  __typename?: 'PaymentsMinFields';
-  amount: Maybe<Scalars['numeric']>;
-  currencyCode: Maybe<Scalars['String']>;
-  id: Maybe<Scalars['uuid']>;
-  processedAt: Maybe<Scalars['timestamp']>;
-  requestId: Maybe<Scalars['uuid']>;
+  __typename?: "PaymentsMinFields";
+  amount: Maybe<Scalars["numeric"]>;
+  currencyCode: Maybe<Scalars["String"]>;
+  id: Maybe<Scalars["uuid"]>;
+  processedAt: Maybe<Scalars["timestamp"]>;
+  requestId: Maybe<Scalars["uuid"]>;
 };
 
 /** response of any mutation on the table "payments" */
 export type PaymentsMutationResponse = {
-  __typename?: 'PaymentsMutationResponse';
+  __typename?: "PaymentsMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<Payments>;
 };
@@ -1553,78 +1538,78 @@ export type PaymentsOrderBy = {
 
 /** primary key columns input for table: payments */
 export type PaymentsPkColumnsInput = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type PaymentsPrependInput = {
-  receipt: InputMaybe<Scalars['jsonb']>;
+  receipt: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** select columns of table "payments" */
 export enum PaymentsSelectColumn {
   /** column name */
-  Amount = 'amount',
+  Amount = "amount",
   /** column name */
-  CurrencyCode = 'currencyCode',
+  CurrencyCode = "currencyCode",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  ProcessedAt = 'processedAt',
+  ProcessedAt = "processedAt",
   /** column name */
-  Receipt = 'receipt',
+  Receipt = "receipt",
   /** column name */
-  RequestId = 'requestId'
+  RequestId = "requestId",
 }
 
 /** input type for updating data in table "payments" */
 export type PaymentsSetInput = {
-  amount: InputMaybe<Scalars['numeric']>;
-  currencyCode: InputMaybe<Scalars['String']>;
-  id: InputMaybe<Scalars['uuid']>;
-  processedAt: InputMaybe<Scalars['timestamp']>;
-  receipt: InputMaybe<Scalars['jsonb']>;
-  requestId: InputMaybe<Scalars['uuid']>;
+  amount: InputMaybe<Scalars["numeric"]>;
+  currencyCode: InputMaybe<Scalars["String"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  processedAt: InputMaybe<Scalars["timestamp"]>;
+  receipt: InputMaybe<Scalars["jsonb"]>;
+  requestId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate stddev on columns */
 export type PaymentsStddevFields = {
-  __typename?: 'PaymentsStddevFields';
-  amount: Maybe<Scalars['Float']>;
+  __typename?: "PaymentsStddevFields";
+  amount: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_pop on columns */
 export type PaymentsStddev_PopFields = {
-  __typename?: 'PaymentsStddev_popFields';
-  amount: Maybe<Scalars['Float']>;
+  __typename?: "PaymentsStddev_popFields";
+  amount: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_samp on columns */
 export type PaymentsStddev_SampFields = {
-  __typename?: 'PaymentsStddev_sampFields';
-  amount: Maybe<Scalars['Float']>;
+  __typename?: "PaymentsStddev_sampFields";
+  amount: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate sum on columns */
 export type PaymentsSumFields = {
-  __typename?: 'PaymentsSumFields';
-  amount: Maybe<Scalars['numeric']>;
+  __typename?: "PaymentsSumFields";
+  amount: Maybe<Scalars["numeric"]>;
 };
 
 /** update columns of table "payments" */
 export enum PaymentsUpdateColumn {
   /** column name */
-  Amount = 'amount',
+  Amount = "amount",
   /** column name */
-  CurrencyCode = 'currencyCode',
+  CurrencyCode = "currencyCode",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  ProcessedAt = 'processedAt',
+  ProcessedAt = "processedAt",
   /** column name */
-  Receipt = 'receipt',
+  Receipt = "receipt",
   /** column name */
-  RequestId = 'requestId'
+  RequestId = "requestId",
 }
 
 export type PaymentsUpdates = {
@@ -1647,59 +1632,59 @@ export type PaymentsUpdates = {
 
 /** aggregate var_pop on columns */
 export type PaymentsVar_PopFields = {
-  __typename?: 'PaymentsVar_popFields';
-  amount: Maybe<Scalars['Float']>;
+  __typename?: "PaymentsVar_popFields";
+  amount: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate var_samp on columns */
 export type PaymentsVar_SampFields = {
-  __typename?: 'PaymentsVar_sampFields';
-  amount: Maybe<Scalars['Float']>;
+  __typename?: "PaymentsVar_sampFields";
+  amount: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate variance on columns */
 export type PaymentsVarianceFields = {
-  __typename?: 'PaymentsVarianceFields';
-  amount: Maybe<Scalars['Float']>;
+  __typename?: "PaymentsVarianceFields";
+  amount: Maybe<Scalars["Float"]>;
 };
 
 export type PayoutSettingsInput = {
   optBankAddress: InputMaybe<BankAddress>;
-  optEthAddress: InputMaybe<Scalars['EthereumAddress']>;
-  optEthName: InputMaybe<Scalars['EthereumName']>;
+  optEthAddress: InputMaybe<Scalars["EthereumAddress"]>;
+  optEthName: InputMaybe<Scalars["EthereumName"]>;
   type: PayoutSettingsType;
 };
 
 export enum PayoutSettingsType {
-  BankAddress = 'BANK_ADDRESS',
-  EthereumAddress = 'ETHEREUM_ADDRESS',
-  EthereumName = 'ETHEREUM_NAME'
+  BankAddress = "BANK_ADDRESS",
+  EthereumAddress = "ETHEREUM_ADDRESS",
+  EthereumName = "ETHEREUM_NAME",
 }
 
 /** columns and relationships of "pending_project_leader_invitations" */
 export type PendingProjectLeaderInvitations = {
-  __typename?: 'PendingProjectLeaderInvitations';
+  __typename?: "PendingProjectLeaderInvitations";
   /** An object relationship */
   githubUser: Maybe<AuthGithubUsers>;
-  githubUserId: Scalars['bigint'];
-  id: Scalars['uuid'];
+  githubUserId: Scalars["bigint"];
+  id: Scalars["uuid"];
   /** An object relationship */
   project: Maybe<Projects>;
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
 };
 
 /** aggregated selection of "pending_project_leader_invitations" */
 export type PendingProjectLeaderInvitationsAggregate = {
-  __typename?: 'PendingProjectLeaderInvitationsAggregate';
+  __typename?: "PendingProjectLeaderInvitationsAggregate";
   aggregate: Maybe<PendingProjectLeaderInvitationsAggregateFields>;
   nodes: Array<PendingProjectLeaderInvitations>;
 };
 
 /** aggregate fields of "pending_project_leader_invitations" */
 export type PendingProjectLeaderInvitationsAggregateFields = {
-  __typename?: 'PendingProjectLeaderInvitationsAggregateFields';
+  __typename?: "PendingProjectLeaderInvitationsAggregateFields";
   avg: Maybe<PendingProjectLeaderInvitationsAvgFields>;
-  count: Scalars['Int'];
+  count: Scalars["Int"];
   max: Maybe<PendingProjectLeaderInvitationsMaxFields>;
   min: Maybe<PendingProjectLeaderInvitationsMinFields>;
   stddev: Maybe<PendingProjectLeaderInvitationsStddevFields>;
@@ -1711,11 +1696,10 @@ export type PendingProjectLeaderInvitationsAggregateFields = {
   variance: Maybe<PendingProjectLeaderInvitationsVarianceFields>;
 };
 
-
 /** aggregate fields of "pending_project_leader_invitations" */
 export type PendingProjectLeaderInvitationsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<PendingProjectLeaderInvitationsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** order by aggregate values of table "pending_project_leader_invitations" */
@@ -1742,8 +1726,8 @@ export type PendingProjectLeaderInvitationsArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type PendingProjectLeaderInvitationsAvgFields = {
-  __typename?: 'PendingProjectLeaderInvitationsAvgFields';
-  githubUserId: Maybe<Scalars['Float']>;
+  __typename?: "PendingProjectLeaderInvitationsAvgFields";
+  githubUserId: Maybe<Scalars["Float"]>;
 };
 
 /** Boolean expression to filter rows from the table "pending_project_leader_invitations". All fields are combined with a logical 'AND'. */
@@ -1761,46 +1745,46 @@ export type PendingProjectLeaderInvitationsBoolExp = {
 /** unique or primary key constraints on table "pending_project_leader_invitations" */
 export enum PendingProjectLeaderInvitationsConstraint {
   /** unique or primary key constraint on columns "project_id", "github_user_id" */
-  PendingProjectLeaderInvitationProjectIdGithubUserIdKey = 'pending_project_leader_invitation_project_id_github_user_id_key',
+  PendingProjectLeaderInvitationProjectIdGithubUserIdKey = "pending_project_leader_invitation_project_id_github_user_id_key",
   /** unique or primary key constraint on columns "id" */
-  PendingProjectLeaderInvitationsPkey = 'pending_project_leader_invitations_pkey'
+  PendingProjectLeaderInvitationsPkey = "pending_project_leader_invitations_pkey",
 }
 
 /** input type for incrementing numeric columns in table "pending_project_leader_invitations" */
 export type PendingProjectLeaderInvitationsIncInput = {
-  githubUserId: InputMaybe<Scalars['bigint']>;
+  githubUserId: InputMaybe<Scalars["bigint"]>;
 };
 
 /** input type for inserting data into table "pending_project_leader_invitations" */
 export type PendingProjectLeaderInvitationsInsertInput = {
   githubUser: InputMaybe<AuthGithubUsersObjRelInsertInput>;
-  githubUserId: InputMaybe<Scalars['bigint']>;
-  id: InputMaybe<Scalars['uuid']>;
+  githubUserId: InputMaybe<Scalars["bigint"]>;
+  id: InputMaybe<Scalars["uuid"]>;
   project: InputMaybe<ProjectsObjRelInsertInput>;
-  projectId: InputMaybe<Scalars['uuid']>;
+  projectId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate max on columns */
 export type PendingProjectLeaderInvitationsMaxFields = {
-  __typename?: 'PendingProjectLeaderInvitationsMaxFields';
-  githubUserId: Maybe<Scalars['bigint']>;
-  id: Maybe<Scalars['uuid']>;
-  projectId: Maybe<Scalars['uuid']>;
+  __typename?: "PendingProjectLeaderInvitationsMaxFields";
+  githubUserId: Maybe<Scalars["bigint"]>;
+  id: Maybe<Scalars["uuid"]>;
+  projectId: Maybe<Scalars["uuid"]>;
 };
 
 /** aggregate min on columns */
 export type PendingProjectLeaderInvitationsMinFields = {
-  __typename?: 'PendingProjectLeaderInvitationsMinFields';
-  githubUserId: Maybe<Scalars['bigint']>;
-  id: Maybe<Scalars['uuid']>;
-  projectId: Maybe<Scalars['uuid']>;
+  __typename?: "PendingProjectLeaderInvitationsMinFields";
+  githubUserId: Maybe<Scalars["bigint"]>;
+  id: Maybe<Scalars["uuid"]>;
+  projectId: Maybe<Scalars["uuid"]>;
 };
 
 /** response of any mutation on the table "pending_project_leader_invitations" */
 export type PendingProjectLeaderInvitationsMutationResponse = {
-  __typename?: 'PendingProjectLeaderInvitationsMutationResponse';
+  __typename?: "PendingProjectLeaderInvitationsMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<PendingProjectLeaderInvitations>;
 };
@@ -1823,58 +1807,58 @@ export type PendingProjectLeaderInvitationsOrderBy = {
 
 /** primary key columns input for table: pending_project_leader_invitations */
 export type PendingProjectLeaderInvitationsPkColumnsInput = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
 /** select columns of table "pending_project_leader_invitations" */
 export enum PendingProjectLeaderInvitationsSelectColumn {
   /** column name */
-  GithubUserId = 'githubUserId',
+  GithubUserId = "githubUserId",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  ProjectId = 'projectId'
+  ProjectId = "projectId",
 }
 
 /** input type for updating data in table "pending_project_leader_invitations" */
 export type PendingProjectLeaderInvitationsSetInput = {
-  githubUserId: InputMaybe<Scalars['bigint']>;
-  id: InputMaybe<Scalars['uuid']>;
-  projectId: InputMaybe<Scalars['uuid']>;
+  githubUserId: InputMaybe<Scalars["bigint"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  projectId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate stddev on columns */
 export type PendingProjectLeaderInvitationsStddevFields = {
-  __typename?: 'PendingProjectLeaderInvitationsStddevFields';
-  githubUserId: Maybe<Scalars['Float']>;
+  __typename?: "PendingProjectLeaderInvitationsStddevFields";
+  githubUserId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_pop on columns */
 export type PendingProjectLeaderInvitationsStddev_PopFields = {
-  __typename?: 'PendingProjectLeaderInvitationsStddev_popFields';
-  githubUserId: Maybe<Scalars['Float']>;
+  __typename?: "PendingProjectLeaderInvitationsStddev_popFields";
+  githubUserId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_samp on columns */
 export type PendingProjectLeaderInvitationsStddev_SampFields = {
-  __typename?: 'PendingProjectLeaderInvitationsStddev_sampFields';
-  githubUserId: Maybe<Scalars['Float']>;
+  __typename?: "PendingProjectLeaderInvitationsStddev_sampFields";
+  githubUserId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate sum on columns */
 export type PendingProjectLeaderInvitationsSumFields = {
-  __typename?: 'PendingProjectLeaderInvitationsSumFields';
-  githubUserId: Maybe<Scalars['bigint']>;
+  __typename?: "PendingProjectLeaderInvitationsSumFields";
+  githubUserId: Maybe<Scalars["bigint"]>;
 };
 
 /** update columns of table "pending_project_leader_invitations" */
 export enum PendingProjectLeaderInvitationsUpdateColumn {
   /** column name */
-  GithubUserId = 'githubUserId',
+  GithubUserId = "githubUserId",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  ProjectId = 'projectId'
+  ProjectId = "projectId",
 }
 
 export type PendingProjectLeaderInvitationsUpdates = {
@@ -1887,58 +1871,57 @@ export type PendingProjectLeaderInvitationsUpdates = {
 
 /** aggregate var_pop on columns */
 export type PendingProjectLeaderInvitationsVar_PopFields = {
-  __typename?: 'PendingProjectLeaderInvitationsVar_popFields';
-  githubUserId: Maybe<Scalars['Float']>;
+  __typename?: "PendingProjectLeaderInvitationsVar_popFields";
+  githubUserId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate var_samp on columns */
 export type PendingProjectLeaderInvitationsVar_SampFields = {
-  __typename?: 'PendingProjectLeaderInvitationsVar_sampFields';
-  githubUserId: Maybe<Scalars['Float']>;
+  __typename?: "PendingProjectLeaderInvitationsVar_sampFields";
+  githubUserId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate variance on columns */
 export type PendingProjectLeaderInvitationsVarianceFields = {
-  __typename?: 'PendingProjectLeaderInvitationsVarianceFields';
-  githubUserId: Maybe<Scalars['Float']>;
+  __typename?: "PendingProjectLeaderInvitationsVarianceFields";
+  githubUserId: Maybe<Scalars["Float"]>;
 };
 
 export type PersonIdentity = {
-  firstname: InputMaybe<Scalars['String']>;
-  lastname: InputMaybe<Scalars['String']>;
+  firstname: InputMaybe<Scalars["String"]>;
+  lastname: InputMaybe<Scalars["String"]>;
 };
 
 /** columns and relationships of "project_details" */
 export type ProjectDetails = {
-  __typename?: 'ProjectDetails';
-  logoUrl: Maybe<Scalars['String']>;
-  longDescription: Scalars['String'];
-  name: Scalars['String'];
-  projectId: Scalars['uuid'];
-  shortDescription: Scalars['String'];
-  telegramLink: Maybe<Scalars['String']>;
+  __typename?: "ProjectDetails";
+  logoUrl: Maybe<Scalars["String"]>;
+  longDescription: Scalars["String"];
+  name: Scalars["String"];
+  projectId: Scalars["uuid"];
+  shortDescription: Scalars["String"];
+  telegramLink: Maybe<Scalars["String"]>;
 };
 
 /** aggregated selection of "project_details" */
 export type ProjectDetailsAggregate = {
-  __typename?: 'ProjectDetailsAggregate';
+  __typename?: "ProjectDetailsAggregate";
   aggregate: Maybe<ProjectDetailsAggregateFields>;
   nodes: Array<ProjectDetails>;
 };
 
 /** aggregate fields of "project_details" */
 export type ProjectDetailsAggregateFields = {
-  __typename?: 'ProjectDetailsAggregateFields';
-  count: Scalars['Int'];
+  __typename?: "ProjectDetailsAggregateFields";
+  count: Scalars["Int"];
   max: Maybe<ProjectDetailsMaxFields>;
   min: Maybe<ProjectDetailsMinFields>;
 };
 
-
 /** aggregate fields of "project_details" */
 export type ProjectDetailsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<ProjectDetailsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** Boolean expression to filter rows from the table "project_details". All fields are combined with a logical 'AND'. */
@@ -1957,46 +1940,46 @@ export type ProjectDetailsBoolExp = {
 /** unique or primary key constraints on table "project_details" */
 export enum ProjectDetailsConstraint {
   /** unique or primary key constraint on columns "project_id" */
-  ProjectDetailsPkey = 'project_details_pkey'
+  ProjectDetailsPkey = "project_details_pkey",
 }
 
 /** input type for inserting data into table "project_details" */
 export type ProjectDetailsInsertInput = {
-  logoUrl: InputMaybe<Scalars['String']>;
-  longDescription: InputMaybe<Scalars['String']>;
-  name: InputMaybe<Scalars['String']>;
-  projectId: InputMaybe<Scalars['uuid']>;
-  shortDescription: InputMaybe<Scalars['String']>;
-  telegramLink: InputMaybe<Scalars['String']>;
+  logoUrl: InputMaybe<Scalars["String"]>;
+  longDescription: InputMaybe<Scalars["String"]>;
+  name: InputMaybe<Scalars["String"]>;
+  projectId: InputMaybe<Scalars["uuid"]>;
+  shortDescription: InputMaybe<Scalars["String"]>;
+  telegramLink: InputMaybe<Scalars["String"]>;
 };
 
 /** aggregate max on columns */
 export type ProjectDetailsMaxFields = {
-  __typename?: 'ProjectDetailsMaxFields';
-  logoUrl: Maybe<Scalars['String']>;
-  longDescription: Maybe<Scalars['String']>;
-  name: Maybe<Scalars['String']>;
-  projectId: Maybe<Scalars['uuid']>;
-  shortDescription: Maybe<Scalars['String']>;
-  telegramLink: Maybe<Scalars['String']>;
+  __typename?: "ProjectDetailsMaxFields";
+  logoUrl: Maybe<Scalars["String"]>;
+  longDescription: Maybe<Scalars["String"]>;
+  name: Maybe<Scalars["String"]>;
+  projectId: Maybe<Scalars["uuid"]>;
+  shortDescription: Maybe<Scalars["String"]>;
+  telegramLink: Maybe<Scalars["String"]>;
 };
 
 /** aggregate min on columns */
 export type ProjectDetailsMinFields = {
-  __typename?: 'ProjectDetailsMinFields';
-  logoUrl: Maybe<Scalars['String']>;
-  longDescription: Maybe<Scalars['String']>;
-  name: Maybe<Scalars['String']>;
-  projectId: Maybe<Scalars['uuid']>;
-  shortDescription: Maybe<Scalars['String']>;
-  telegramLink: Maybe<Scalars['String']>;
+  __typename?: "ProjectDetailsMinFields";
+  logoUrl: Maybe<Scalars["String"]>;
+  longDescription: Maybe<Scalars["String"]>;
+  name: Maybe<Scalars["String"]>;
+  projectId: Maybe<Scalars["uuid"]>;
+  shortDescription: Maybe<Scalars["String"]>;
+  telegramLink: Maybe<Scalars["String"]>;
 };
 
 /** response of any mutation on the table "project_details" */
 export type ProjectDetailsMutationResponse = {
-  __typename?: 'ProjectDetailsMutationResponse';
+  __typename?: "ProjectDetailsMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<ProjectDetails>;
 };
@@ -2027,49 +2010,49 @@ export type ProjectDetailsOrderBy = {
 
 /** primary key columns input for table: project_details */
 export type ProjectDetailsPkColumnsInput = {
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
 };
 
 /** select columns of table "project_details" */
 export enum ProjectDetailsSelectColumn {
   /** column name */
-  LogoUrl = 'logoUrl',
+  LogoUrl = "logoUrl",
   /** column name */
-  LongDescription = 'longDescription',
+  LongDescription = "longDescription",
   /** column name */
-  Name = 'name',
+  Name = "name",
   /** column name */
-  ProjectId = 'projectId',
+  ProjectId = "projectId",
   /** column name */
-  ShortDescription = 'shortDescription',
+  ShortDescription = "shortDescription",
   /** column name */
-  TelegramLink = 'telegramLink'
+  TelegramLink = "telegramLink",
 }
 
 /** input type for updating data in table "project_details" */
 export type ProjectDetailsSetInput = {
-  logoUrl: InputMaybe<Scalars['String']>;
-  longDescription: InputMaybe<Scalars['String']>;
-  name: InputMaybe<Scalars['String']>;
-  projectId: InputMaybe<Scalars['uuid']>;
-  shortDescription: InputMaybe<Scalars['String']>;
-  telegramLink: InputMaybe<Scalars['String']>;
+  logoUrl: InputMaybe<Scalars["String"]>;
+  longDescription: InputMaybe<Scalars["String"]>;
+  name: InputMaybe<Scalars["String"]>;
+  projectId: InputMaybe<Scalars["uuid"]>;
+  shortDescription: InputMaybe<Scalars["String"]>;
+  telegramLink: InputMaybe<Scalars["String"]>;
 };
 
 /** update columns of table "project_details" */
 export enum ProjectDetailsUpdateColumn {
   /** column name */
-  LogoUrl = 'logoUrl',
+  LogoUrl = "logoUrl",
   /** column name */
-  LongDescription = 'longDescription',
+  LongDescription = "longDescription",
   /** column name */
-  Name = 'name',
+  Name = "name",
   /** column name */
-  ProjectId = 'projectId',
+  ProjectId = "projectId",
   /** column name */
-  ShortDescription = 'shortDescription',
+  ShortDescription = "shortDescription",
   /** column name */
-  TelegramLink = 'telegramLink'
+  TelegramLink = "telegramLink",
 }
 
 export type ProjectDetailsUpdates = {
@@ -2080,27 +2063,27 @@ export type ProjectDetailsUpdates = {
 
 /** columns and relationships of "project_github_repos" */
 export type ProjectGithubRepos = {
-  __typename?: 'ProjectGithubRepos';
+  __typename?: "ProjectGithubRepos";
   /** An object relationship */
   githubRepoDetails: Maybe<GithubRepoDetails>;
-  githubRepoId: Scalars['bigint'];
+  githubRepoId: Scalars["bigint"];
   /** An object relationship */
   project: Maybe<Projects>;
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
 };
 
 /** aggregated selection of "project_github_repos" */
 export type ProjectGithubReposAggregate = {
-  __typename?: 'ProjectGithubReposAggregate';
+  __typename?: "ProjectGithubReposAggregate";
   aggregate: Maybe<ProjectGithubReposAggregateFields>;
   nodes: Array<ProjectGithubRepos>;
 };
 
 /** aggregate fields of "project_github_repos" */
 export type ProjectGithubReposAggregateFields = {
-  __typename?: 'ProjectGithubReposAggregateFields';
+  __typename?: "ProjectGithubReposAggregateFields";
   avg: Maybe<ProjectGithubReposAvgFields>;
-  count: Scalars['Int'];
+  count: Scalars["Int"];
   max: Maybe<ProjectGithubReposMaxFields>;
   min: Maybe<ProjectGithubReposMinFields>;
   stddev: Maybe<ProjectGithubReposStddevFields>;
@@ -2112,11 +2095,10 @@ export type ProjectGithubReposAggregateFields = {
   variance: Maybe<ProjectGithubReposVarianceFields>;
 };
 
-
 /** aggregate fields of "project_github_repos" */
 export type ProjectGithubReposAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<ProjectGithubReposSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** order by aggregate values of table "project_github_repos" */
@@ -2143,8 +2125,8 @@ export type ProjectGithubReposArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type ProjectGithubReposAvgFields = {
-  __typename?: 'ProjectGithubReposAvgFields';
-  githubRepoId: Maybe<Scalars['Float']>;
+  __typename?: "ProjectGithubReposAvgFields";
+  githubRepoId: Maybe<Scalars["Float"]>;
 };
 
 /** Boolean expression to filter rows from the table "project_github_repos". All fields are combined with a logical 'AND'. */
@@ -2161,41 +2143,41 @@ export type ProjectGithubReposBoolExp = {
 /** unique or primary key constraints on table "project_github_repos" */
 export enum ProjectGithubReposConstraint {
   /** unique or primary key constraint on columns "github_repo_id", "project_id" */
-  ProjectGithubReposPkey = 'project_github_repos_pkey'
+  ProjectGithubReposPkey = "project_github_repos_pkey",
 }
 
 /** input type for incrementing numeric columns in table "project_github_repos" */
 export type ProjectGithubReposIncInput = {
-  githubRepoId: InputMaybe<Scalars['bigint']>;
+  githubRepoId: InputMaybe<Scalars["bigint"]>;
 };
 
 /** input type for inserting data into table "project_github_repos" */
 export type ProjectGithubReposInsertInput = {
   githubRepoDetails: InputMaybe<GithubRepoDetailsObjRelInsertInput>;
-  githubRepoId: InputMaybe<Scalars['bigint']>;
+  githubRepoId: InputMaybe<Scalars["bigint"]>;
   project: InputMaybe<ProjectsObjRelInsertInput>;
-  projectId: InputMaybe<Scalars['uuid']>;
+  projectId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate max on columns */
 export type ProjectGithubReposMaxFields = {
-  __typename?: 'ProjectGithubReposMaxFields';
-  githubRepoId: Maybe<Scalars['bigint']>;
-  projectId: Maybe<Scalars['uuid']>;
+  __typename?: "ProjectGithubReposMaxFields";
+  githubRepoId: Maybe<Scalars["bigint"]>;
+  projectId: Maybe<Scalars["uuid"]>;
 };
 
 /** aggregate min on columns */
 export type ProjectGithubReposMinFields = {
-  __typename?: 'ProjectGithubReposMinFields';
-  githubRepoId: Maybe<Scalars['bigint']>;
-  projectId: Maybe<Scalars['uuid']>;
+  __typename?: "ProjectGithubReposMinFields";
+  githubRepoId: Maybe<Scalars["bigint"]>;
+  projectId: Maybe<Scalars["uuid"]>;
 };
 
 /** response of any mutation on the table "project_github_repos" */
 export type ProjectGithubReposMutationResponse = {
-  __typename?: 'ProjectGithubReposMutationResponse';
+  __typename?: "ProjectGithubReposMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<ProjectGithubRepos>;
 };
@@ -2217,54 +2199,54 @@ export type ProjectGithubReposOrderBy = {
 
 /** primary key columns input for table: project_github_repos */
 export type ProjectGithubReposPkColumnsInput = {
-  githubRepoId: Scalars['bigint'];
-  projectId: Scalars['uuid'];
+  githubRepoId: Scalars["bigint"];
+  projectId: Scalars["uuid"];
 };
 
 /** select columns of table "project_github_repos" */
 export enum ProjectGithubReposSelectColumn {
   /** column name */
-  GithubRepoId = 'githubRepoId',
+  GithubRepoId = "githubRepoId",
   /** column name */
-  ProjectId = 'projectId'
+  ProjectId = "projectId",
 }
 
 /** input type for updating data in table "project_github_repos" */
 export type ProjectGithubReposSetInput = {
-  githubRepoId: InputMaybe<Scalars['bigint']>;
-  projectId: InputMaybe<Scalars['uuid']>;
+  githubRepoId: InputMaybe<Scalars["bigint"]>;
+  projectId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate stddev on columns */
 export type ProjectGithubReposStddevFields = {
-  __typename?: 'ProjectGithubReposStddevFields';
-  githubRepoId: Maybe<Scalars['Float']>;
+  __typename?: "ProjectGithubReposStddevFields";
+  githubRepoId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_pop on columns */
 export type ProjectGithubReposStddev_PopFields = {
-  __typename?: 'ProjectGithubReposStddev_popFields';
-  githubRepoId: Maybe<Scalars['Float']>;
+  __typename?: "ProjectGithubReposStddev_popFields";
+  githubRepoId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_samp on columns */
 export type ProjectGithubReposStddev_SampFields = {
-  __typename?: 'ProjectGithubReposStddev_sampFields';
-  githubRepoId: Maybe<Scalars['Float']>;
+  __typename?: "ProjectGithubReposStddev_sampFields";
+  githubRepoId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate sum on columns */
 export type ProjectGithubReposSumFields = {
-  __typename?: 'ProjectGithubReposSumFields';
-  githubRepoId: Maybe<Scalars['bigint']>;
+  __typename?: "ProjectGithubReposSumFields";
+  githubRepoId: Maybe<Scalars["bigint"]>;
 };
 
 /** update columns of table "project_github_repos" */
 export enum ProjectGithubReposUpdateColumn {
   /** column name */
-  GithubRepoId = 'githubRepoId',
+  GithubRepoId = "githubRepoId",
   /** column name */
-  ProjectId = 'projectId'
+  ProjectId = "projectId",
 }
 
 export type ProjectGithubReposUpdates = {
@@ -2277,53 +2259,52 @@ export type ProjectGithubReposUpdates = {
 
 /** aggregate var_pop on columns */
 export type ProjectGithubReposVar_PopFields = {
-  __typename?: 'ProjectGithubReposVar_popFields';
-  githubRepoId: Maybe<Scalars['Float']>;
+  __typename?: "ProjectGithubReposVar_popFields";
+  githubRepoId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate var_samp on columns */
 export type ProjectGithubReposVar_SampFields = {
-  __typename?: 'ProjectGithubReposVar_sampFields';
-  githubRepoId: Maybe<Scalars['Float']>;
+  __typename?: "ProjectGithubReposVar_sampFields";
+  githubRepoId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate variance on columns */
 export type ProjectGithubReposVarianceFields = {
-  __typename?: 'ProjectGithubReposVarianceFields';
-  githubRepoId: Maybe<Scalars['Float']>;
+  __typename?: "ProjectGithubReposVarianceFields";
+  githubRepoId: Maybe<Scalars["Float"]>;
 };
 
 /** columns and relationships of "project_leads" */
 export type ProjectLeads = {
-  __typename?: 'ProjectLeads';
+  __typename?: "ProjectLeads";
   /** An object relationship */
   project: Projects;
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
   /** An object relationship */
   user: Maybe<Users>;
-  userId: Scalars['uuid'];
+  userId: Scalars["uuid"];
 };
 
 /** aggregated selection of "project_leads" */
 export type ProjectLeadsAggregate = {
-  __typename?: 'ProjectLeadsAggregate';
+  __typename?: "ProjectLeadsAggregate";
   aggregate: Maybe<ProjectLeadsAggregateFields>;
   nodes: Array<ProjectLeads>;
 };
 
 /** aggregate fields of "project_leads" */
 export type ProjectLeadsAggregateFields = {
-  __typename?: 'ProjectLeadsAggregateFields';
-  count: Scalars['Int'];
+  __typename?: "ProjectLeadsAggregateFields";
+  count: Scalars["Int"];
   max: Maybe<ProjectLeadsMaxFields>;
   min: Maybe<ProjectLeadsMinFields>;
 };
 
-
 /** aggregate fields of "project_leads" */
 export type ProjectLeadsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<ProjectLeadsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** order by aggregate values of table "project_leads" */
@@ -2354,36 +2335,36 @@ export type ProjectLeadsBoolExp = {
 /** unique or primary key constraints on table "project_leads" */
 export enum ProjectLeadsConstraint {
   /** unique or primary key constraint on columns "project_id", "user_id" */
-  ProjectLeadsPkey = 'project_leads_pkey'
+  ProjectLeadsPkey = "project_leads_pkey",
 }
 
 /** input type for inserting data into table "project_leads" */
 export type ProjectLeadsInsertInput = {
   project: InputMaybe<ProjectsObjRelInsertInput>;
-  projectId: InputMaybe<Scalars['uuid']>;
+  projectId: InputMaybe<Scalars["uuid"]>;
   user: InputMaybe<UsersObjRelInsertInput>;
-  userId: InputMaybe<Scalars['uuid']>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate max on columns */
 export type ProjectLeadsMaxFields = {
-  __typename?: 'ProjectLeadsMaxFields';
-  projectId: Maybe<Scalars['uuid']>;
-  userId: Maybe<Scalars['uuid']>;
+  __typename?: "ProjectLeadsMaxFields";
+  projectId: Maybe<Scalars["uuid"]>;
+  userId: Maybe<Scalars["uuid"]>;
 };
 
 /** aggregate min on columns */
 export type ProjectLeadsMinFields = {
-  __typename?: 'ProjectLeadsMinFields';
-  projectId: Maybe<Scalars['uuid']>;
-  userId: Maybe<Scalars['uuid']>;
+  __typename?: "ProjectLeadsMinFields";
+  projectId: Maybe<Scalars["uuid"]>;
+  userId: Maybe<Scalars["uuid"]>;
 };
 
 /** response of any mutation on the table "project_leads" */
 export type ProjectLeadsMutationResponse = {
-  __typename?: 'ProjectLeadsMutationResponse';
+  __typename?: "ProjectLeadsMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<ProjectLeads>;
 };
@@ -2405,30 +2386,30 @@ export type ProjectLeadsOrderBy = {
 
 /** primary key columns input for table: project_leads */
 export type ProjectLeadsPkColumnsInput = {
-  projectId: Scalars['uuid'];
-  userId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
+  userId: Scalars["uuid"];
 };
 
 /** select columns of table "project_leads" */
 export enum ProjectLeadsSelectColumn {
   /** column name */
-  ProjectId = 'projectId',
+  ProjectId = "projectId",
   /** column name */
-  UserId = 'userId'
+  UserId = "userId",
 }
 
 /** input type for updating data in table "project_leads" */
 export type ProjectLeadsSetInput = {
-  projectId: InputMaybe<Scalars['uuid']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  projectId: InputMaybe<Scalars["uuid"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** update columns of table "project_leads" */
 export enum ProjectLeadsUpdateColumn {
   /** column name */
-  ProjectId = 'projectId',
+  ProjectId = "projectId",
   /** column name */
-  UserId = 'userId'
+  UserId = "userId",
 }
 
 export type ProjectLeadsUpdates = {
@@ -2439,7 +2420,7 @@ export type ProjectLeadsUpdates = {
 
 /** columns and relationships of "projects" */
 export type Projects = {
-  __typename?: 'Projects';
+  __typename?: "Projects";
   /** An array relationship */
   budgets: Array<Budgets>;
   /** An aggregate relationship */
@@ -2448,7 +2429,7 @@ export type Projects = {
   githubRepos: Array<ProjectGithubRepos>;
   /** An aggregate relationship */
   githubReposAggregate: ProjectGithubReposAggregate;
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
   /** An array relationship */
   pendingInvitations: Array<PendingProjectLeaderInvitations>;
   /** An aggregate relationship */
@@ -2465,126 +2446,115 @@ export type Projects = {
   projectSponsorsAggregate: ProjectsSponsorsAggregate;
 };
 
-
 /** columns and relationships of "projects" */
 export type ProjectsBudgetsArgs = {
   distinctOn: InputMaybe<Array<BudgetsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<BudgetsOrderBy>>;
   where: InputMaybe<BudgetsBoolExp>;
 };
-
 
 /** columns and relationships of "projects" */
 export type ProjectsBudgetsAggregateArgs = {
   distinctOn: InputMaybe<Array<BudgetsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<BudgetsOrderBy>>;
   where: InputMaybe<BudgetsBoolExp>;
 };
 
-
 /** columns and relationships of "projects" */
 export type ProjectsGithubReposArgs = {
   distinctOn: InputMaybe<Array<ProjectGithubReposSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectGithubReposOrderBy>>;
   where: InputMaybe<ProjectGithubReposBoolExp>;
 };
-
 
 /** columns and relationships of "projects" */
 export type ProjectsGithubReposAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectGithubReposSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectGithubReposOrderBy>>;
   where: InputMaybe<ProjectGithubReposBoolExp>;
 };
 
-
 /** columns and relationships of "projects" */
 export type ProjectsPendingInvitationsArgs = {
   distinctOn: InputMaybe<Array<PendingProjectLeaderInvitationsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PendingProjectLeaderInvitationsOrderBy>>;
   where: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
 };
-
 
 /** columns and relationships of "projects" */
 export type ProjectsPendingInvitationsAggregateArgs = {
   distinctOn: InputMaybe<Array<PendingProjectLeaderInvitationsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PendingProjectLeaderInvitationsOrderBy>>;
   where: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
 };
 
-
 /** columns and relationships of "projects" */
 export type ProjectsProjectLeadsArgs = {
   distinctOn: InputMaybe<Array<ProjectLeadsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectLeadsOrderBy>>;
   where: InputMaybe<ProjectLeadsBoolExp>;
 };
-
 
 /** columns and relationships of "projects" */
 export type ProjectsProjectLeadsAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectLeadsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectLeadsOrderBy>>;
   where: InputMaybe<ProjectLeadsBoolExp>;
 };
 
-
 /** columns and relationships of "projects" */
 export type ProjectsProjectSponsorsArgs = {
   distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectsSponsorsOrderBy>>;
   where: InputMaybe<ProjectsSponsorsBoolExp>;
 };
 
-
 /** columns and relationships of "projects" */
 export type ProjectsProjectSponsorsAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectsSponsorsOrderBy>>;
   where: InputMaybe<ProjectsSponsorsBoolExp>;
 };
 
 /** aggregated selection of "projects" */
 export type ProjectsAggregate = {
-  __typename?: 'ProjectsAggregate';
+  __typename?: "ProjectsAggregate";
   aggregate: Maybe<ProjectsAggregateFields>;
   nodes: Array<Projects>;
 };
 
 /** aggregate fields of "projects" */
 export type ProjectsAggregateFields = {
-  __typename?: 'ProjectsAggregateFields';
-  count: Scalars['Int'];
+  __typename?: "ProjectsAggregateFields";
+  count: Scalars["Int"];
   max: Maybe<ProjectsMaxFields>;
   min: Maybe<ProjectsMinFields>;
 };
 
-
 /** aggregate fields of "projects" */
 export type ProjectsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<ProjectsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** Boolean expression to filter rows from the table "projects". All fields are combined with a logical 'AND'. */
@@ -2609,14 +2579,14 @@ export type ProjectsBoolExp = {
 /** unique or primary key constraints on table "projects" */
 export enum ProjectsConstraint {
   /** unique or primary key constraint on columns "id" */
-  ProjectsPkey = 'projects_pkey'
+  ProjectsPkey = "projects_pkey",
 }
 
 /** input type for inserting data into table "projects" */
 export type ProjectsInsertInput = {
   budgets: InputMaybe<BudgetsArrRelInsertInput>;
   githubRepos: InputMaybe<ProjectGithubReposArrRelInsertInput>;
-  id: InputMaybe<Scalars['uuid']>;
+  id: InputMaybe<Scalars["uuid"]>;
   pendingInvitations: InputMaybe<PendingProjectLeaderInvitationsArrRelInsertInput>;
   projectDetails: InputMaybe<ProjectDetailsObjRelInsertInput>;
   projectLeads: InputMaybe<ProjectLeadsArrRelInsertInput>;
@@ -2625,21 +2595,21 @@ export type ProjectsInsertInput = {
 
 /** aggregate max on columns */
 export type ProjectsMaxFields = {
-  __typename?: 'ProjectsMaxFields';
-  id: Maybe<Scalars['uuid']>;
+  __typename?: "ProjectsMaxFields";
+  id: Maybe<Scalars["uuid"]>;
 };
 
 /** aggregate min on columns */
 export type ProjectsMinFields = {
-  __typename?: 'ProjectsMinFields';
-  id: Maybe<Scalars['uuid']>;
+  __typename?: "ProjectsMinFields";
+  id: Maybe<Scalars["uuid"]>;
 };
 
 /** response of any mutation on the table "projects" */
 export type ProjectsMutationResponse = {
-  __typename?: 'ProjectsMutationResponse';
+  __typename?: "ProjectsMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<Projects>;
 };
@@ -2671,51 +2641,50 @@ export type ProjectsOrderBy = {
 
 /** primary key columns input for table: projects */
 export type ProjectsPkColumnsInput = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
 /** select columns of table "projects" */
 export enum ProjectsSelectColumn {
   /** column name */
-  Id = 'id'
+  Id = "id",
 }
 
 /** input type for updating data in table "projects" */
 export type ProjectsSetInput = {
-  id: InputMaybe<Scalars['uuid']>;
+  id: InputMaybe<Scalars["uuid"]>;
 };
 
 /** columns and relationships of "projects_sponsors" */
 export type ProjectsSponsors = {
-  __typename?: 'ProjectsSponsors';
+  __typename?: "ProjectsSponsors";
   /** An object relationship */
   project: Projects;
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
   /** An object relationship */
   sponsor: Sponsors;
-  sponsorId: Scalars['uuid'];
+  sponsorId: Scalars["uuid"];
 };
 
 /** aggregated selection of "projects_sponsors" */
 export type ProjectsSponsorsAggregate = {
-  __typename?: 'ProjectsSponsorsAggregate';
+  __typename?: "ProjectsSponsorsAggregate";
   aggregate: Maybe<ProjectsSponsorsAggregateFields>;
   nodes: Array<ProjectsSponsors>;
 };
 
 /** aggregate fields of "projects_sponsors" */
 export type ProjectsSponsorsAggregateFields = {
-  __typename?: 'ProjectsSponsorsAggregateFields';
-  count: Scalars['Int'];
+  __typename?: "ProjectsSponsorsAggregateFields";
+  count: Scalars["Int"];
   max: Maybe<ProjectsSponsorsMaxFields>;
   min: Maybe<ProjectsSponsorsMinFields>;
 };
 
-
 /** aggregate fields of "projects_sponsors" */
 export type ProjectsSponsorsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** order by aggregate values of table "projects_sponsors" */
@@ -2746,38 +2715,38 @@ export type ProjectsSponsorsBoolExp = {
 /** unique or primary key constraints on table "projects_sponsors" */
 export enum ProjectsSponsorsConstraint {
   /** unique or primary key constraint on columns "project_id", "sponsor_id" */
-  ProjectsSponsorsPkey = 'projects_sponsors_pkey',
+  ProjectsSponsorsPkey = "projects_sponsors_pkey",
   /** unique or primary key constraint on columns "project_id", "sponsor_id" */
-  ProjectsSponsorsProjectIdSponsorIdKey = 'projects_sponsors_project_id_sponsor_id_key'
+  ProjectsSponsorsProjectIdSponsorIdKey = "projects_sponsors_project_id_sponsor_id_key",
 }
 
 /** input type for inserting data into table "projects_sponsors" */
 export type ProjectsSponsorsInsertInput = {
   project: InputMaybe<ProjectsObjRelInsertInput>;
-  projectId: InputMaybe<Scalars['uuid']>;
+  projectId: InputMaybe<Scalars["uuid"]>;
   sponsor: InputMaybe<SponsorsObjRelInsertInput>;
-  sponsorId: InputMaybe<Scalars['uuid']>;
+  sponsorId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate max on columns */
 export type ProjectsSponsorsMaxFields = {
-  __typename?: 'ProjectsSponsorsMaxFields';
-  projectId: Maybe<Scalars['uuid']>;
-  sponsorId: Maybe<Scalars['uuid']>;
+  __typename?: "ProjectsSponsorsMaxFields";
+  projectId: Maybe<Scalars["uuid"]>;
+  sponsorId: Maybe<Scalars["uuid"]>;
 };
 
 /** aggregate min on columns */
 export type ProjectsSponsorsMinFields = {
-  __typename?: 'ProjectsSponsorsMinFields';
-  projectId: Maybe<Scalars['uuid']>;
-  sponsorId: Maybe<Scalars['uuid']>;
+  __typename?: "ProjectsSponsorsMinFields";
+  projectId: Maybe<Scalars["uuid"]>;
+  sponsorId: Maybe<Scalars["uuid"]>;
 };
 
 /** response of any mutation on the table "projects_sponsors" */
 export type ProjectsSponsorsMutationResponse = {
-  __typename?: 'ProjectsSponsorsMutationResponse';
+  __typename?: "ProjectsSponsorsMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<ProjectsSponsors>;
 };
@@ -2799,30 +2768,30 @@ export type ProjectsSponsorsOrderBy = {
 
 /** primary key columns input for table: projects_sponsors */
 export type ProjectsSponsorsPkColumnsInput = {
-  projectId: Scalars['uuid'];
-  sponsorId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
+  sponsorId: Scalars["uuid"];
 };
 
 /** select columns of table "projects_sponsors" */
 export enum ProjectsSponsorsSelectColumn {
   /** column name */
-  ProjectId = 'projectId',
+  ProjectId = "projectId",
   /** column name */
-  SponsorId = 'sponsorId'
+  SponsorId = "sponsorId",
 }
 
 /** input type for updating data in table "projects_sponsors" */
 export type ProjectsSponsorsSetInput = {
-  projectId: InputMaybe<Scalars['uuid']>;
-  sponsorId: InputMaybe<Scalars['uuid']>;
+  projectId: InputMaybe<Scalars["uuid"]>;
+  sponsorId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** update columns of table "projects_sponsors" */
 export enum ProjectsSponsorsUpdateColumn {
   /** column name */
-  ProjectId = 'projectId',
+  ProjectId = "projectId",
   /** column name */
-  SponsorId = 'sponsorId'
+  SponsorId = "sponsorId",
 }
 
 export type ProjectsSponsorsUpdates = {
@@ -2834,7 +2803,7 @@ export type ProjectsSponsorsUpdates = {
 /** update columns of table "projects" */
 export enum ProjectsUpdateColumn {
   /** column name */
-  Id = 'id'
+  Id = "id",
 }
 
 export type ProjectsUpdates = {
@@ -2844,8 +2813,8 @@ export type ProjectsUpdates = {
 };
 
 export type Query = {
-  __typename?: 'Query';
-  hello: Scalars['String'];
+  __typename?: "Query";
+  hello: Scalars["String"];
   new: Query;
 };
 
@@ -2854,71 +2823,68 @@ export type Reason = {
 };
 
 export type Repository = {
-  __typename?: 'Repository';
+  __typename?: "Repository";
   contributors: Array<User>;
-  description: Scalars['String'];
-  forksCount: Scalars['Int'];
-  htmlUrl: Scalars['Url'];
-  id: Scalars['Int'];
-  logoUrl: Scalars['Url'];
-  name: Scalars['String'];
-  owner: Scalars['String'];
-  stars: Scalars['Int'];
+  description: Scalars["String"];
+  forksCount: Scalars["Int"];
+  htmlUrl: Scalars["Url"];
+  id: Scalars["Int"];
+  logoUrl: Scalars["Url"];
+  name: Scalars["String"];
+  owner: Scalars["String"];
+  stars: Scalars["Int"];
 };
 
 /** columns and relationships of "sponsors" */
 export type Sponsors = {
-  __typename?: 'Sponsors';
-  id: Scalars['uuid'];
-  logoUrl: Scalars['String'];
-  name: Scalars['String'];
+  __typename?: "Sponsors";
+  id: Scalars["uuid"];
+  logoUrl: Scalars["String"];
+  name: Scalars["String"];
   /** An array relationship */
   sponsorProjects: Array<ProjectsSponsors>;
   /** An aggregate relationship */
   sponsorProjectsAggregate: ProjectsSponsorsAggregate;
-  url: Maybe<Scalars['String']>;
+  url: Maybe<Scalars["String"]>;
 };
-
 
 /** columns and relationships of "sponsors" */
 export type SponsorsSponsorProjectsArgs = {
   distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectsSponsorsOrderBy>>;
   where: InputMaybe<ProjectsSponsorsBoolExp>;
 };
 
-
 /** columns and relationships of "sponsors" */
 export type SponsorsSponsorProjectsAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectsSponsorsOrderBy>>;
   where: InputMaybe<ProjectsSponsorsBoolExp>;
 };
 
 /** aggregated selection of "sponsors" */
 export type SponsorsAggregate = {
-  __typename?: 'SponsorsAggregate';
+  __typename?: "SponsorsAggregate";
   aggregate: Maybe<SponsorsAggregateFields>;
   nodes: Array<Sponsors>;
 };
 
 /** aggregate fields of "sponsors" */
 export type SponsorsAggregateFields = {
-  __typename?: 'SponsorsAggregateFields';
-  count: Scalars['Int'];
+  __typename?: "SponsorsAggregateFields";
+  count: Scalars["Int"];
   max: Maybe<SponsorsMaxFields>;
   min: Maybe<SponsorsMinFields>;
 };
 
-
 /** aggregate fields of "sponsors" */
 export type SponsorsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<SponsorsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** Boolean expression to filter rows from the table "sponsors". All fields are combined with a logical 'AND'. */
@@ -2937,43 +2903,43 @@ export type SponsorsBoolExp = {
 /** unique or primary key constraints on table "sponsors" */
 export enum SponsorsConstraint {
   /** unique or primary key constraint on columns "name" */
-  SponsorsNameKey = 'sponsors_name_key',
+  SponsorsNameKey = "sponsors_name_key",
   /** unique or primary key constraint on columns "id" */
-  SponsorsPkey = 'sponsors_pkey'
+  SponsorsPkey = "sponsors_pkey",
 }
 
 /** input type for inserting data into table "sponsors" */
 export type SponsorsInsertInput = {
-  id: InputMaybe<Scalars['uuid']>;
-  logoUrl: InputMaybe<Scalars['String']>;
-  name: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars["uuid"]>;
+  logoUrl: InputMaybe<Scalars["String"]>;
+  name: InputMaybe<Scalars["String"]>;
   sponsorProjects: InputMaybe<ProjectsSponsorsArrRelInsertInput>;
-  url: InputMaybe<Scalars['String']>;
+  url: InputMaybe<Scalars["String"]>;
 };
 
 /** aggregate max on columns */
 export type SponsorsMaxFields = {
-  __typename?: 'SponsorsMaxFields';
-  id: Maybe<Scalars['uuid']>;
-  logoUrl: Maybe<Scalars['String']>;
-  name: Maybe<Scalars['String']>;
-  url: Maybe<Scalars['String']>;
+  __typename?: "SponsorsMaxFields";
+  id: Maybe<Scalars["uuid"]>;
+  logoUrl: Maybe<Scalars["String"]>;
+  name: Maybe<Scalars["String"]>;
+  url: Maybe<Scalars["String"]>;
 };
 
 /** aggregate min on columns */
 export type SponsorsMinFields = {
-  __typename?: 'SponsorsMinFields';
-  id: Maybe<Scalars['uuid']>;
-  logoUrl: Maybe<Scalars['String']>;
-  name: Maybe<Scalars['String']>;
-  url: Maybe<Scalars['String']>;
+  __typename?: "SponsorsMinFields";
+  id: Maybe<Scalars["uuid"]>;
+  logoUrl: Maybe<Scalars["String"]>;
+  name: Maybe<Scalars["String"]>;
+  url: Maybe<Scalars["String"]>;
 };
 
 /** response of any mutation on the table "sponsors" */
 export type SponsorsMutationResponse = {
-  __typename?: 'SponsorsMutationResponse';
+  __typename?: "SponsorsMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<Sponsors>;
 };
@@ -3003,39 +2969,39 @@ export type SponsorsOrderBy = {
 
 /** primary key columns input for table: sponsors */
 export type SponsorsPkColumnsInput = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
 /** select columns of table "sponsors" */
 export enum SponsorsSelectColumn {
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  LogoUrl = 'logoUrl',
+  LogoUrl = "logoUrl",
   /** column name */
-  Name = 'name',
+  Name = "name",
   /** column name */
-  Url = 'url'
+  Url = "url",
 }
 
 /** input type for updating data in table "sponsors" */
 export type SponsorsSetInput = {
-  id: InputMaybe<Scalars['uuid']>;
-  logoUrl: InputMaybe<Scalars['String']>;
-  name: InputMaybe<Scalars['String']>;
-  url: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars["uuid"]>;
+  logoUrl: InputMaybe<Scalars["String"]>;
+  name: InputMaybe<Scalars["String"]>;
+  url: InputMaybe<Scalars["String"]>;
 };
 
 /** update columns of table "sponsors" */
 export enum SponsorsUpdateColumn {
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  LogoUrl = 'logoUrl',
+  LogoUrl = "logoUrl",
   /** column name */
-  Name = 'name',
+  Name = "name",
   /** column name */
-  Url = 'url'
+  Url = "url",
 }
 
 export type SponsorsUpdates = {
@@ -3045,83 +3011,83 @@ export type SponsorsUpdates = {
 };
 
 export enum Status {
-  Cancelled = 'CANCELLED',
-  Closed = 'CLOSED',
-  Completed = 'COMPLETED',
-  Merged = 'MERGED',
-  Open = 'OPEN'
+  Cancelled = "CANCELLED",
+  Closed = "CLOSED",
+  Completed = "COMPLETED",
+  Merged = "MERGED",
+  Open = "OPEN",
 }
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type StringComparisonExp = {
-  _eq: InputMaybe<Scalars['String']>;
-  _gt: InputMaybe<Scalars['String']>;
-  _gte: InputMaybe<Scalars['String']>;
+  _eq: InputMaybe<Scalars["String"]>;
+  _gt: InputMaybe<Scalars["String"]>;
+  _gte: InputMaybe<Scalars["String"]>;
   /** does the column match the given case-insensitive pattern */
-  _ilike: InputMaybe<Scalars['String']>;
-  _in: InputMaybe<Array<Scalars['String']>>;
+  _ilike: InputMaybe<Scalars["String"]>;
+  _in: InputMaybe<Array<Scalars["String"]>>;
   /** does the column match the given POSIX regular expression, case insensitive */
-  _iregex: InputMaybe<Scalars['String']>;
-  _isNull: InputMaybe<Scalars['Boolean']>;
+  _iregex: InputMaybe<Scalars["String"]>;
+  _isNull: InputMaybe<Scalars["Boolean"]>;
   /** does the column match the given pattern */
-  _like: InputMaybe<Scalars['String']>;
-  _lt: InputMaybe<Scalars['String']>;
-  _lte: InputMaybe<Scalars['String']>;
-  _neq: InputMaybe<Scalars['String']>;
+  _like: InputMaybe<Scalars["String"]>;
+  _lt: InputMaybe<Scalars["String"]>;
+  _lte: InputMaybe<Scalars["String"]>;
+  _neq: InputMaybe<Scalars["String"]>;
   /** does the column NOT match the given case-insensitive pattern */
-  _nilike: InputMaybe<Scalars['String']>;
-  _nin: InputMaybe<Array<Scalars['String']>>;
+  _nilike: InputMaybe<Scalars["String"]>;
+  _nin: InputMaybe<Array<Scalars["String"]>>;
   /** does the column NOT match the given POSIX regular expression, case insensitive */
-  _niregex: InputMaybe<Scalars['String']>;
+  _niregex: InputMaybe<Scalars["String"]>;
   /** does the column NOT match the given pattern */
-  _nlike: InputMaybe<Scalars['String']>;
+  _nlike: InputMaybe<Scalars["String"]>;
   /** does the column NOT match the given POSIX regular expression, case sensitive */
-  _nregex: InputMaybe<Scalars['String']>;
+  _nregex: InputMaybe<Scalars["String"]>;
   /** does the column NOT match the given SQL regular expression */
-  _nsimilar: InputMaybe<Scalars['String']>;
+  _nsimilar: InputMaybe<Scalars["String"]>;
   /** does the column match the given POSIX regular expression, case sensitive */
-  _regex: InputMaybe<Scalars['String']>;
+  _regex: InputMaybe<Scalars["String"]>;
   /** does the column match the given SQL regular expression */
-  _similar: InputMaybe<Scalars['String']>;
+  _similar: InputMaybe<Scalars["String"]>;
 };
 
 /** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
 export type TimestampComparisonExp = {
-  _eq: InputMaybe<Scalars['timestamp']>;
-  _gt: InputMaybe<Scalars['timestamp']>;
-  _gte: InputMaybe<Scalars['timestamp']>;
-  _in: InputMaybe<Array<Scalars['timestamp']>>;
-  _isNull: InputMaybe<Scalars['Boolean']>;
-  _lt: InputMaybe<Scalars['timestamp']>;
-  _lte: InputMaybe<Scalars['timestamp']>;
-  _neq: InputMaybe<Scalars['timestamp']>;
-  _nin: InputMaybe<Array<Scalars['timestamp']>>;
+  _eq: InputMaybe<Scalars["timestamp"]>;
+  _gt: InputMaybe<Scalars["timestamp"]>;
+  _gte: InputMaybe<Scalars["timestamp"]>;
+  _in: InputMaybe<Array<Scalars["timestamp"]>>;
+  _isNull: InputMaybe<Scalars["Boolean"]>;
+  _lt: InputMaybe<Scalars["timestamp"]>;
+  _lte: InputMaybe<Scalars["timestamp"]>;
+  _neq: InputMaybe<Scalars["timestamp"]>;
+  _nin: InputMaybe<Array<Scalars["timestamp"]>>;
 };
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type TimestamptzComparisonExp = {
-  _eq: InputMaybe<Scalars['timestamptz']>;
-  _gt: InputMaybe<Scalars['timestamptz']>;
-  _gte: InputMaybe<Scalars['timestamptz']>;
-  _in: InputMaybe<Array<Scalars['timestamptz']>>;
-  _isNull: InputMaybe<Scalars['Boolean']>;
-  _lt: InputMaybe<Scalars['timestamptz']>;
-  _lte: InputMaybe<Scalars['timestamptz']>;
-  _neq: InputMaybe<Scalars['timestamptz']>;
-  _nin: InputMaybe<Array<Scalars['timestamptz']>>;
+  _eq: InputMaybe<Scalars["timestamptz"]>;
+  _gt: InputMaybe<Scalars["timestamptz"]>;
+  _gte: InputMaybe<Scalars["timestamptz"]>;
+  _in: InputMaybe<Array<Scalars["timestamptz"]>>;
+  _isNull: InputMaybe<Scalars["Boolean"]>;
+  _lt: InputMaybe<Scalars["timestamptz"]>;
+  _lte: InputMaybe<Scalars["timestamptz"]>;
+  _neq: InputMaybe<Scalars["timestamptz"]>;
+  _nin: InputMaybe<Array<Scalars["timestamptz"]>>;
 };
 
 export enum Type {
-  Issue = 'ISSUE',
-  PullRequest = 'PULL_REQUEST'
+  Issue = "ISSUE",
+  PullRequest = "PULL_REQUEST",
 }
 
 export type User = {
-  __typename?: 'User';
-  avatarUrl: Scalars['Url'];
-  htmlUrl: Scalars['Url'];
-  id: Scalars['Int'];
-  login: Scalars['String'];
+  __typename?: "User";
+  avatarUrl: Scalars["Url"];
+  htmlUrl: Scalars["Url"];
+  id: Scalars["Int"];
+  login: Scalars["String"];
   /** An array relationship */
   paymentRequests: Array<PaymentRequests>;
   /** An aggregate relationship */
@@ -3129,87 +3095,80 @@ export type User = {
   user: Maybe<AuthGithubUsers>;
 };
 
-
 export type UserPaymentRequestsArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
-
 export type UserPaymentRequestsAggregateArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
 /** columns and relationships of "user_info" */
 export type UserInfo = {
-  __typename?: 'UserInfo';
-  arePayoutSettingsValid: Scalars['Boolean'];
-  contactInformation: Maybe<Scalars['jsonb']>;
-  identity: Maybe<Scalars['jsonb']>;
-  location: Maybe<Scalars['jsonb']>;
-  payoutSettings: Maybe<Scalars['jsonb']>;
-  userId: Scalars['uuid'];
+  __typename?: "UserInfo";
+  arePayoutSettingsValid: Scalars["Boolean"];
+  contactInformation: Maybe<Scalars["jsonb"]>;
+  identity: Maybe<Scalars["jsonb"]>;
+  location: Maybe<Scalars["jsonb"]>;
+  payoutSettings: Maybe<Scalars["jsonb"]>;
+  userId: Scalars["uuid"];
 };
-
 
 /** columns and relationships of "user_info" */
 export type UserInfoContactInformationArgs = {
-  path: InputMaybe<Scalars['String']>;
+  path: InputMaybe<Scalars["String"]>;
 };
-
 
 /** columns and relationships of "user_info" */
 export type UserInfoIdentityArgs = {
-  path: InputMaybe<Scalars['String']>;
+  path: InputMaybe<Scalars["String"]>;
 };
-
 
 /** columns and relationships of "user_info" */
 export type UserInfoLocationArgs = {
-  path: InputMaybe<Scalars['String']>;
+  path: InputMaybe<Scalars["String"]>;
 };
-
 
 /** columns and relationships of "user_info" */
 export type UserInfoPayoutSettingsArgs = {
-  path: InputMaybe<Scalars['String']>;
+  path: InputMaybe<Scalars["String"]>;
 };
 
 /** aggregated selection of "user_info" */
 export type UserInfoAggregate = {
-  __typename?: 'UserInfoAggregate';
+  __typename?: "UserInfoAggregate";
   aggregate: Maybe<UserInfoAggregateFields>;
   nodes: Array<UserInfo>;
 };
 
 /** aggregate fields of "user_info" */
 export type UserInfoAggregateFields = {
-  __typename?: 'UserInfoAggregateFields';
-  count: Scalars['Int'];
+  __typename?: "UserInfoAggregateFields";
+  count: Scalars["Int"];
   max: Maybe<UserInfoMaxFields>;
   min: Maybe<UserInfoMinFields>;
 };
 
-
 /** aggregate fields of "user_info" */
 export type UserInfoAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<UserInfoSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type UserInfoAppendInput = {
-  contactInformation: InputMaybe<Scalars['jsonb']>;
-  identity: InputMaybe<Scalars['jsonb']>;
-  location: InputMaybe<Scalars['jsonb']>;
-  payoutSettings: InputMaybe<Scalars['jsonb']>;
+  contactInformation: InputMaybe<Scalars["jsonb"]>;
+  identity: InputMaybe<Scalars["jsonb"]>;
+  location: InputMaybe<Scalars["jsonb"]>;
+  payoutSettings: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** Boolean expression to filter rows from the table "user_info". All fields are combined with a logical 'AND'. */
@@ -3228,59 +3187,59 @@ export type UserInfoBoolExp = {
 /** unique or primary key constraints on table "user_info" */
 export enum UserInfoConstraint {
   /** unique or primary key constraint on columns "user_id" */
-  UserInfoPkey = 'user_info_pkey'
+  UserInfoPkey = "user_info_pkey",
 }
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type UserInfoDeleteAtPathInput = {
-  contactInformation: InputMaybe<Array<Scalars['String']>>;
-  identity: InputMaybe<Array<Scalars['String']>>;
-  location: InputMaybe<Array<Scalars['String']>>;
-  payoutSettings: InputMaybe<Array<Scalars['String']>>;
+  contactInformation: InputMaybe<Array<Scalars["String"]>>;
+  identity: InputMaybe<Array<Scalars["String"]>>;
+  location: InputMaybe<Array<Scalars["String"]>>;
+  payoutSettings: InputMaybe<Array<Scalars["String"]>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type UserInfoDeleteElemInput = {
-  contactInformation: InputMaybe<Scalars['Int']>;
-  identity: InputMaybe<Scalars['Int']>;
-  location: InputMaybe<Scalars['Int']>;
-  payoutSettings: InputMaybe<Scalars['Int']>;
+  contactInformation: InputMaybe<Scalars["Int"]>;
+  identity: InputMaybe<Scalars["Int"]>;
+  location: InputMaybe<Scalars["Int"]>;
+  payoutSettings: InputMaybe<Scalars["Int"]>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type UserInfoDeleteKeyInput = {
-  contactInformation: InputMaybe<Scalars['String']>;
-  identity: InputMaybe<Scalars['String']>;
-  location: InputMaybe<Scalars['String']>;
-  payoutSettings: InputMaybe<Scalars['String']>;
+  contactInformation: InputMaybe<Scalars["String"]>;
+  identity: InputMaybe<Scalars["String"]>;
+  location: InputMaybe<Scalars["String"]>;
+  payoutSettings: InputMaybe<Scalars["String"]>;
 };
 
 /** input type for inserting data into table "user_info" */
 export type UserInfoInsertInput = {
-  contactInformation: InputMaybe<Scalars['jsonb']>;
-  identity: InputMaybe<Scalars['jsonb']>;
-  location: InputMaybe<Scalars['jsonb']>;
-  payoutSettings: InputMaybe<Scalars['jsonb']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  contactInformation: InputMaybe<Scalars["jsonb"]>;
+  identity: InputMaybe<Scalars["jsonb"]>;
+  location: InputMaybe<Scalars["jsonb"]>;
+  payoutSettings: InputMaybe<Scalars["jsonb"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate max on columns */
 export type UserInfoMaxFields = {
-  __typename?: 'UserInfoMaxFields';
-  userId: Maybe<Scalars['uuid']>;
+  __typename?: "UserInfoMaxFields";
+  userId: Maybe<Scalars["uuid"]>;
 };
 
 /** aggregate min on columns */
 export type UserInfoMinFields = {
-  __typename?: 'UserInfoMinFields';
-  userId: Maybe<Scalars['uuid']>;
+  __typename?: "UserInfoMinFields";
+  userId: Maybe<Scalars["uuid"]>;
 };
 
 /** response of any mutation on the table "user_info" */
 export type UserInfoMutationResponse = {
-  __typename?: 'UserInfoMutationResponse';
+  __typename?: "UserInfoMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<UserInfo>;
 };
@@ -3311,54 +3270,54 @@ export type UserInfoOrderBy = {
 
 /** primary key columns input for table: user_info */
 export type UserInfoPkColumnsInput = {
-  userId: Scalars['uuid'];
+  userId: Scalars["uuid"];
 };
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type UserInfoPrependInput = {
-  contactInformation: InputMaybe<Scalars['jsonb']>;
-  identity: InputMaybe<Scalars['jsonb']>;
-  location: InputMaybe<Scalars['jsonb']>;
-  payoutSettings: InputMaybe<Scalars['jsonb']>;
+  contactInformation: InputMaybe<Scalars["jsonb"]>;
+  identity: InputMaybe<Scalars["jsonb"]>;
+  location: InputMaybe<Scalars["jsonb"]>;
+  payoutSettings: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** select columns of table "user_info" */
 export enum UserInfoSelectColumn {
   /** column name */
-  ArePayoutSettingsValid = 'arePayoutSettingsValid',
+  ArePayoutSettingsValid = "arePayoutSettingsValid",
   /** column name */
-  ContactInformation = 'contactInformation',
+  ContactInformation = "contactInformation",
   /** column name */
-  Identity = 'identity',
+  Identity = "identity",
   /** column name */
-  Location = 'location',
+  Location = "location",
   /** column name */
-  PayoutSettings = 'payoutSettings',
+  PayoutSettings = "payoutSettings",
   /** column name */
-  UserId = 'userId'
+  UserId = "userId",
 }
 
 /** input type for updating data in table "user_info" */
 export type UserInfoSetInput = {
-  contactInformation: InputMaybe<Scalars['jsonb']>;
-  identity: InputMaybe<Scalars['jsonb']>;
-  location: InputMaybe<Scalars['jsonb']>;
-  payoutSettings: InputMaybe<Scalars['jsonb']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  contactInformation: InputMaybe<Scalars["jsonb"]>;
+  identity: InputMaybe<Scalars["jsonb"]>;
+  location: InputMaybe<Scalars["jsonb"]>;
+  payoutSettings: InputMaybe<Scalars["jsonb"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** update columns of table "user_info" */
 export enum UserInfoUpdateColumn {
   /** column name */
-  ContactInformation = 'contactInformation',
+  ContactInformation = "contactInformation",
   /** column name */
-  Identity = 'identity',
+  Identity = "identity",
   /** column name */
-  Location = 'location',
+  Location = "location",
   /** column name */
-  PayoutSettings = 'payoutSettings',
+  PayoutSettings = "payoutSettings",
   /** column name */
-  UserId = 'userId'
+  UserId = "userId",
 }
 
 export type UserInfoUpdates = {
@@ -3379,43 +3338,43 @@ export type UserInfoUpdates = {
 
 /** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
 export type UuidComparisonExp = {
-  _eq: InputMaybe<Scalars['uuid']>;
-  _gt: InputMaybe<Scalars['uuid']>;
-  _gte: InputMaybe<Scalars['uuid']>;
-  _in: InputMaybe<Array<Scalars['uuid']>>;
-  _isNull: InputMaybe<Scalars['Boolean']>;
-  _lt: InputMaybe<Scalars['uuid']>;
-  _lte: InputMaybe<Scalars['uuid']>;
-  _neq: InputMaybe<Scalars['uuid']>;
-  _nin: InputMaybe<Array<Scalars['uuid']>>;
+  _eq: InputMaybe<Scalars["uuid"]>;
+  _gt: InputMaybe<Scalars["uuid"]>;
+  _gte: InputMaybe<Scalars["uuid"]>;
+  _in: InputMaybe<Array<Scalars["uuid"]>>;
+  _isNull: InputMaybe<Scalars["Boolean"]>;
+  _lt: InputMaybe<Scalars["uuid"]>;
+  _lte: InputMaybe<Scalars["uuid"]>;
+  _neq: InputMaybe<Scalars["uuid"]>;
+  _nin: InputMaybe<Array<Scalars["uuid"]>>;
 };
 
 export type WorkItem = {
-  issueNumber: Scalars['GithubIssueNumber'];
-  repoId: Scalars['GithubRepositoryId'];
+  issueNumber: Scalars["GithubIssueNumber"];
+  repoId: Scalars["GithubRepositoryId"];
 };
 
 /** columns and relationships of "work_items" */
 export type WorkItems = {
-  __typename?: 'WorkItems';
+  __typename?: "WorkItems";
   githubIssue: Maybe<Issue>;
-  issueNumber: Scalars['bigint'];
-  paymentId: Scalars['uuid'];
-  repoId: Scalars['bigint'];
+  issueNumber: Scalars["bigint"];
+  paymentId: Scalars["uuid"];
+  repoId: Scalars["bigint"];
 };
 
 /** aggregated selection of "work_items" */
 export type WorkItemsAggregate = {
-  __typename?: 'WorkItemsAggregate';
+  __typename?: "WorkItemsAggregate";
   aggregate: Maybe<WorkItemsAggregateFields>;
   nodes: Array<WorkItems>;
 };
 
 /** aggregate fields of "work_items" */
 export type WorkItemsAggregateFields = {
-  __typename?: 'WorkItemsAggregateFields';
+  __typename?: "WorkItemsAggregateFields";
   avg: Maybe<WorkItemsAvgFields>;
-  count: Scalars['Int'];
+  count: Scalars["Int"];
   max: Maybe<WorkItemsMaxFields>;
   min: Maybe<WorkItemsMinFields>;
   stddev: Maybe<WorkItemsStddevFields>;
@@ -3427,11 +3386,10 @@ export type WorkItemsAggregateFields = {
   variance: Maybe<WorkItemsVarianceFields>;
 };
 
-
 /** aggregate fields of "work_items" */
 export type WorkItemsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<WorkItemsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** order by aggregate values of table "work_items" */
@@ -3458,9 +3416,9 @@ export type WorkItemsArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type WorkItemsAvgFields = {
-  __typename?: 'WorkItemsAvgFields';
-  issueNumber: Maybe<Scalars['Float']>;
-  repoId: Maybe<Scalars['Float']>;
+  __typename?: "WorkItemsAvgFields";
+  issueNumber: Maybe<Scalars["Float"]>;
+  repoId: Maybe<Scalars["Float"]>;
 };
 
 /** Boolean expression to filter rows from the table "work_items". All fields are combined with a logical 'AND'. */
@@ -3476,43 +3434,43 @@ export type WorkItemsBoolExp = {
 /** unique or primary key constraints on table "work_items" */
 export enum WorkItemsConstraint {
   /** unique or primary key constraint on columns "issue_number", "payment_id", "repo_id" */
-  WorkItemsPkey = 'work_items_pkey'
+  WorkItemsPkey = "work_items_pkey",
 }
 
 /** input type for incrementing numeric columns in table "work_items" */
 export type WorkItemsIncInput = {
-  issueNumber: InputMaybe<Scalars['bigint']>;
-  repoId: InputMaybe<Scalars['bigint']>;
+  issueNumber: InputMaybe<Scalars["bigint"]>;
+  repoId: InputMaybe<Scalars["bigint"]>;
 };
 
 /** input type for inserting data into table "work_items" */
 export type WorkItemsInsertInput = {
-  issueNumber: InputMaybe<Scalars['bigint']>;
-  paymentId: InputMaybe<Scalars['uuid']>;
-  repoId: InputMaybe<Scalars['bigint']>;
+  issueNumber: InputMaybe<Scalars["bigint"]>;
+  paymentId: InputMaybe<Scalars["uuid"]>;
+  repoId: InputMaybe<Scalars["bigint"]>;
 };
 
 /** aggregate max on columns */
 export type WorkItemsMaxFields = {
-  __typename?: 'WorkItemsMaxFields';
-  issueNumber: Maybe<Scalars['bigint']>;
-  paymentId: Maybe<Scalars['uuid']>;
-  repoId: Maybe<Scalars['bigint']>;
+  __typename?: "WorkItemsMaxFields";
+  issueNumber: Maybe<Scalars["bigint"]>;
+  paymentId: Maybe<Scalars["uuid"]>;
+  repoId: Maybe<Scalars["bigint"]>;
 };
 
 /** aggregate min on columns */
 export type WorkItemsMinFields = {
-  __typename?: 'WorkItemsMinFields';
-  issueNumber: Maybe<Scalars['bigint']>;
-  paymentId: Maybe<Scalars['uuid']>;
-  repoId: Maybe<Scalars['bigint']>;
+  __typename?: "WorkItemsMinFields";
+  issueNumber: Maybe<Scalars["bigint"]>;
+  paymentId: Maybe<Scalars["uuid"]>;
+  repoId: Maybe<Scalars["bigint"]>;
 };
 
 /** response of any mutation on the table "work_items" */
 export type WorkItemsMutationResponse = {
-  __typename?: 'WorkItemsMutationResponse';
+  __typename?: "WorkItemsMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<WorkItems>;
 };
@@ -3533,64 +3491,64 @@ export type WorkItemsOrderBy = {
 
 /** primary key columns input for table: work_items */
 export type WorkItemsPkColumnsInput = {
-  issueNumber: Scalars['bigint'];
-  paymentId: Scalars['uuid'];
-  repoId: Scalars['bigint'];
+  issueNumber: Scalars["bigint"];
+  paymentId: Scalars["uuid"];
+  repoId: Scalars["bigint"];
 };
 
 /** select columns of table "work_items" */
 export enum WorkItemsSelectColumn {
   /** column name */
-  IssueNumber = 'issueNumber',
+  IssueNumber = "issueNumber",
   /** column name */
-  PaymentId = 'paymentId',
+  PaymentId = "paymentId",
   /** column name */
-  RepoId = 'repoId'
+  RepoId = "repoId",
 }
 
 /** input type for updating data in table "work_items" */
 export type WorkItemsSetInput = {
-  issueNumber: InputMaybe<Scalars['bigint']>;
-  paymentId: InputMaybe<Scalars['uuid']>;
-  repoId: InputMaybe<Scalars['bigint']>;
+  issueNumber: InputMaybe<Scalars["bigint"]>;
+  paymentId: InputMaybe<Scalars["uuid"]>;
+  repoId: InputMaybe<Scalars["bigint"]>;
 };
 
 /** aggregate stddev on columns */
 export type WorkItemsStddevFields = {
-  __typename?: 'WorkItemsStddevFields';
-  issueNumber: Maybe<Scalars['Float']>;
-  repoId: Maybe<Scalars['Float']>;
+  __typename?: "WorkItemsStddevFields";
+  issueNumber: Maybe<Scalars["Float"]>;
+  repoId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_pop on columns */
 export type WorkItemsStddev_PopFields = {
-  __typename?: 'WorkItemsStddev_popFields';
-  issueNumber: Maybe<Scalars['Float']>;
-  repoId: Maybe<Scalars['Float']>;
+  __typename?: "WorkItemsStddev_popFields";
+  issueNumber: Maybe<Scalars["Float"]>;
+  repoId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_samp on columns */
 export type WorkItemsStddev_SampFields = {
-  __typename?: 'WorkItemsStddev_sampFields';
-  issueNumber: Maybe<Scalars['Float']>;
-  repoId: Maybe<Scalars['Float']>;
+  __typename?: "WorkItemsStddev_sampFields";
+  issueNumber: Maybe<Scalars["Float"]>;
+  repoId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate sum on columns */
 export type WorkItemsSumFields = {
-  __typename?: 'WorkItemsSumFields';
-  issueNumber: Maybe<Scalars['bigint']>;
-  repoId: Maybe<Scalars['bigint']>;
+  __typename?: "WorkItemsSumFields";
+  issueNumber: Maybe<Scalars["bigint"]>;
+  repoId: Maybe<Scalars["bigint"]>;
 };
 
 /** update columns of table "work_items" */
 export enum WorkItemsUpdateColumn {
   /** column name */
-  IssueNumber = 'issueNumber',
+  IssueNumber = "issueNumber",
   /** column name */
-  PaymentId = 'paymentId',
+  PaymentId = "paymentId",
   /** column name */
-  RepoId = 'repoId'
+  RepoId = "repoId",
 }
 
 export type WorkItemsUpdates = {
@@ -3603,63 +3561,61 @@ export type WorkItemsUpdates = {
 
 /** aggregate var_pop on columns */
 export type WorkItemsVar_PopFields = {
-  __typename?: 'WorkItemsVar_popFields';
-  issueNumber: Maybe<Scalars['Float']>;
-  repoId: Maybe<Scalars['Float']>;
+  __typename?: "WorkItemsVar_popFields";
+  issueNumber: Maybe<Scalars["Float"]>;
+  repoId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate var_samp on columns */
 export type WorkItemsVar_SampFields = {
-  __typename?: 'WorkItemsVar_sampFields';
-  issueNumber: Maybe<Scalars['Float']>;
-  repoId: Maybe<Scalars['Float']>;
+  __typename?: "WorkItemsVar_sampFields";
+  issueNumber: Maybe<Scalars["Float"]>;
+  repoId: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate variance on columns */
 export type WorkItemsVarianceFields = {
-  __typename?: 'WorkItemsVarianceFields';
-  issueNumber: Maybe<Scalars['Float']>;
-  repoId: Maybe<Scalars['Float']>;
+  __typename?: "WorkItemsVarianceFields";
+  issueNumber: Maybe<Scalars["Float"]>;
+  repoId: Maybe<Scalars["Float"]>;
 };
 
 /** Oauth requests, inserted before redirecting to the provider's site. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type AuthProviderRequests = {
-  __typename?: 'authProviderRequests';
-  id: Scalars['uuid'];
-  options: Maybe<Scalars['jsonb']>;
+  __typename?: "authProviderRequests";
+  id: Scalars["uuid"];
+  options: Maybe<Scalars["jsonb"]>;
 };
-
 
 /** Oauth requests, inserted before redirecting to the provider's site. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type AuthProviderRequestsOptionsArgs = {
-  path: InputMaybe<Scalars['String']>;
+  path: InputMaybe<Scalars["String"]>;
 };
 
 /** aggregated selection of "auth.provider_requests" */
 export type AuthProviderRequestsAggregate = {
-  __typename?: 'authProviderRequestsAggregate';
+  __typename?: "authProviderRequestsAggregate";
   aggregate: Maybe<AuthProviderRequestsAggregateFields>;
   nodes: Array<AuthProviderRequests>;
 };
 
 /** aggregate fields of "auth.provider_requests" */
 export type AuthProviderRequestsAggregateFields = {
-  __typename?: 'authProviderRequestsAggregateFields';
-  count: Scalars['Int'];
+  __typename?: "authProviderRequestsAggregateFields";
+  count: Scalars["Int"];
   max: Maybe<AuthProviderRequestsMaxFields>;
   min: Maybe<AuthProviderRequestsMinFields>;
 };
 
-
 /** aggregate fields of "auth.provider_requests" */
 export type AuthProviderRequestsAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<AuthProviderRequestsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type AuthProviderRequestsAppendInput = {
-  options: InputMaybe<Scalars['jsonb']>;
+  options: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** Boolean expression to filter rows from the table "auth.provider_requests". All fields are combined with a logical 'AND'. */
@@ -3674,47 +3630,47 @@ export type AuthProviderRequestsBoolExp = {
 /** unique or primary key constraints on table "auth.provider_requests" */
 export enum AuthProviderRequestsConstraint {
   /** unique or primary key constraint on columns "id" */
-  ProviderRequestsPkey = 'provider_requests_pkey'
+  ProviderRequestsPkey = "provider_requests_pkey",
 }
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type AuthProviderRequestsDeleteAtPathInput = {
-  options: InputMaybe<Array<Scalars['String']>>;
+  options: InputMaybe<Array<Scalars["String"]>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type AuthProviderRequestsDeleteElemInput = {
-  options: InputMaybe<Scalars['Int']>;
+  options: InputMaybe<Scalars["Int"]>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type AuthProviderRequestsDeleteKeyInput = {
-  options: InputMaybe<Scalars['String']>;
+  options: InputMaybe<Scalars["String"]>;
 };
 
 /** input type for inserting data into table "auth.provider_requests" */
 export type AuthProviderRequestsInsertInput = {
-  id: InputMaybe<Scalars['uuid']>;
-  options: InputMaybe<Scalars['jsonb']>;
+  id: InputMaybe<Scalars["uuid"]>;
+  options: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** aggregate max on columns */
 export type AuthProviderRequestsMaxFields = {
-  __typename?: 'authProviderRequestsMaxFields';
-  id: Maybe<Scalars['uuid']>;
+  __typename?: "authProviderRequestsMaxFields";
+  id: Maybe<Scalars["uuid"]>;
 };
 
 /** aggregate min on columns */
 export type AuthProviderRequestsMinFields = {
-  __typename?: 'authProviderRequestsMinFields';
-  id: Maybe<Scalars['uuid']>;
+  __typename?: "authProviderRequestsMinFields";
+  id: Maybe<Scalars["uuid"]>;
 };
 
 /** response of any mutation on the table "auth.provider_requests" */
 export type AuthProviderRequestsMutationResponse = {
-  __typename?: 'authProviderRequestsMutationResponse';
+  __typename?: "authProviderRequestsMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<AuthProviderRequests>;
 };
@@ -3734,34 +3690,34 @@ export type AuthProviderRequestsOrderBy = {
 
 /** primary key columns input for table: auth.provider_requests */
 export type AuthProviderRequestsPkColumnsInput = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type AuthProviderRequestsPrependInput = {
-  options: InputMaybe<Scalars['jsonb']>;
+  options: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** select columns of table "auth.provider_requests" */
 export enum AuthProviderRequestsSelectColumn {
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  Options = 'options'
+  Options = "options",
 }
 
 /** input type for updating data in table "auth.provider_requests" */
 export type AuthProviderRequestsSetInput = {
-  id: InputMaybe<Scalars['uuid']>;
-  options: InputMaybe<Scalars['jsonb']>;
+  id: InputMaybe<Scalars["uuid"]>;
+  options: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** update columns of table "auth.provider_requests" */
 export enum AuthProviderRequestsUpdateColumn {
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  Options = 'options'
+  Options = "options",
 }
 
 export type AuthProviderRequestsUpdates = {
@@ -3790,60 +3746,57 @@ export type AuthProviderRequests_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type AuthProviderRequests_StreamCursorValueInput = {
-  id: InputMaybe<Scalars['uuid']>;
-  options: InputMaybe<Scalars['jsonb']>;
+  id: InputMaybe<Scalars["uuid"]>;
+  options: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** List of available Oauth providers. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type AuthProviders = {
-  __typename?: 'authProviders';
-  id: Scalars['String'];
+  __typename?: "authProviders";
+  id: Scalars["String"];
   /** An array relationship */
   userProviders: Array<AuthUserProviders>;
   /** An aggregate relationship */
   userProvidersAggregate: AuthUserProvidersAggregate;
 };
 
-
 /** List of available Oauth providers. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type AuthProvidersUserProvidersArgs = {
   distinctOn: InputMaybe<Array<AuthUserProvidersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserProvidersOrderBy>>;
   where: InputMaybe<AuthUserProvidersBoolExp>;
 };
 
-
 /** List of available Oauth providers. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type AuthProvidersUserProvidersAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthUserProvidersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserProvidersOrderBy>>;
   where: InputMaybe<AuthUserProvidersBoolExp>;
 };
 
 /** aggregated selection of "auth.providers" */
 export type AuthProvidersAggregate = {
-  __typename?: 'authProvidersAggregate';
+  __typename?: "authProvidersAggregate";
   aggregate: Maybe<AuthProvidersAggregateFields>;
   nodes: Array<AuthProviders>;
 };
 
 /** aggregate fields of "auth.providers" */
 export type AuthProvidersAggregateFields = {
-  __typename?: 'authProvidersAggregateFields';
-  count: Scalars['Int'];
+  __typename?: "authProvidersAggregateFields";
+  count: Scalars["Int"];
   max: Maybe<AuthProvidersMaxFields>;
   min: Maybe<AuthProvidersMinFields>;
 };
 
-
 /** aggregate fields of "auth.providers" */
 export type AuthProvidersAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<AuthProvidersSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** Boolean expression to filter rows from the table "auth.providers". All fields are combined with a logical 'AND'. */
@@ -3859,32 +3812,32 @@ export type AuthProvidersBoolExp = {
 /** unique or primary key constraints on table "auth.providers" */
 export enum AuthProvidersConstraint {
   /** unique or primary key constraint on columns "id" */
-  ProvidersPkey = 'providers_pkey'
+  ProvidersPkey = "providers_pkey",
 }
 
 /** input type for inserting data into table "auth.providers" */
 export type AuthProvidersInsertInput = {
-  id: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars["String"]>;
   userProviders: InputMaybe<AuthUserProvidersArrRelInsertInput>;
 };
 
 /** aggregate max on columns */
 export type AuthProvidersMaxFields = {
-  __typename?: 'authProvidersMaxFields';
-  id: Maybe<Scalars['String']>;
+  __typename?: "authProvidersMaxFields";
+  id: Maybe<Scalars["String"]>;
 };
 
 /** aggregate min on columns */
 export type AuthProvidersMinFields = {
-  __typename?: 'authProvidersMinFields';
-  id: Maybe<Scalars['String']>;
+  __typename?: "authProvidersMinFields";
+  id: Maybe<Scalars["String"]>;
 };
 
 /** response of any mutation on the table "auth.providers" */
 export type AuthProvidersMutationResponse = {
-  __typename?: 'authProvidersMutationResponse';
+  __typename?: "authProvidersMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<AuthProviders>;
 };
@@ -3911,24 +3864,24 @@ export type AuthProvidersOrderBy = {
 
 /** primary key columns input for table: auth.providers */
 export type AuthProvidersPkColumnsInput = {
-  id: Scalars['String'];
+  id: Scalars["String"];
 };
 
 /** select columns of table "auth.providers" */
 export enum AuthProvidersSelectColumn {
   /** column name */
-  Id = 'id'
+  Id = "id",
 }
 
 /** input type for updating data in table "auth.providers" */
 export type AuthProvidersSetInput = {
-  id: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars["String"]>;
 };
 
 /** update columns of table "auth.providers" */
 export enum AuthProvidersUpdateColumn {
   /** column name */
-  Id = 'id'
+  Id = "id",
 }
 
 export type AuthProvidersUpdates = {
@@ -3947,42 +3900,41 @@ export type AuthProviders_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type AuthProviders_StreamCursorValueInput = {
-  id: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars["String"]>;
 };
 
 /** User refresh tokens. Hasura auth uses them to rotate new access tokens as long as the refresh token is not expired. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type AuthRefreshTokens = {
-  __typename?: 'authRefreshTokens';
-  createdAt: Scalars['timestamptz'];
-  expiresAt: Scalars['timestamptz'];
+  __typename?: "authRefreshTokens";
+  createdAt: Scalars["timestamptz"];
+  expiresAt: Scalars["timestamptz"];
   /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
-  refreshToken: Scalars['uuid'];
-  refreshTokenHash: Maybe<Scalars['String']>;
+  refreshToken: Scalars["uuid"];
+  refreshTokenHash: Maybe<Scalars["String"]>;
   /** An object relationship */
   user: Users;
-  userId: Scalars['uuid'];
+  userId: Scalars["uuid"];
 };
 
 /** aggregated selection of "auth.refresh_tokens" */
 export type AuthRefreshTokensAggregate = {
-  __typename?: 'authRefreshTokensAggregate';
+  __typename?: "authRefreshTokensAggregate";
   aggregate: Maybe<AuthRefreshTokensAggregateFields>;
   nodes: Array<AuthRefreshTokens>;
 };
 
 /** aggregate fields of "auth.refresh_tokens" */
 export type AuthRefreshTokensAggregateFields = {
-  __typename?: 'authRefreshTokensAggregateFields';
-  count: Scalars['Int'];
+  __typename?: "authRefreshTokensAggregateFields";
+  count: Scalars["Int"];
   max: Maybe<AuthRefreshTokensMaxFields>;
   min: Maybe<AuthRefreshTokensMinFields>;
 };
 
-
 /** aggregate fields of "auth.refresh_tokens" */
 export type AuthRefreshTokensAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<AuthRefreshTokensSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** order by aggregate values of table "auth.refresh_tokens" */
@@ -4015,46 +3967,46 @@ export type AuthRefreshTokensBoolExp = {
 /** unique or primary key constraints on table "auth.refresh_tokens" */
 export enum AuthRefreshTokensConstraint {
   /** unique or primary key constraint on columns "refresh_token" */
-  RefreshTokensPkey = 'refresh_tokens_pkey'
+  RefreshTokensPkey = "refresh_tokens_pkey",
 }
 
 /** input type for inserting data into table "auth.refresh_tokens" */
 export type AuthRefreshTokensInsertInput = {
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  expiresAt: InputMaybe<Scalars['timestamptz']>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  expiresAt: InputMaybe<Scalars["timestamptz"]>;
   /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
-  refreshToken: InputMaybe<Scalars['uuid']>;
+  refreshToken: InputMaybe<Scalars["uuid"]>;
   user: InputMaybe<UsersObjRelInsertInput>;
-  userId: InputMaybe<Scalars['uuid']>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate max on columns */
 export type AuthRefreshTokensMaxFields = {
-  __typename?: 'authRefreshTokensMaxFields';
-  createdAt: Maybe<Scalars['timestamptz']>;
-  expiresAt: Maybe<Scalars['timestamptz']>;
+  __typename?: "authRefreshTokensMaxFields";
+  createdAt: Maybe<Scalars["timestamptz"]>;
+  expiresAt: Maybe<Scalars["timestamptz"]>;
   /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
-  refreshToken: Maybe<Scalars['uuid']>;
-  refreshTokenHash: Maybe<Scalars['String']>;
-  userId: Maybe<Scalars['uuid']>;
+  refreshToken: Maybe<Scalars["uuid"]>;
+  refreshTokenHash: Maybe<Scalars["String"]>;
+  userId: Maybe<Scalars["uuid"]>;
 };
 
 /** aggregate min on columns */
 export type AuthRefreshTokensMinFields = {
-  __typename?: 'authRefreshTokensMinFields';
-  createdAt: Maybe<Scalars['timestamptz']>;
-  expiresAt: Maybe<Scalars['timestamptz']>;
+  __typename?: "authRefreshTokensMinFields";
+  createdAt: Maybe<Scalars["timestamptz"]>;
+  expiresAt: Maybe<Scalars["timestamptz"]>;
   /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
-  refreshToken: Maybe<Scalars['uuid']>;
-  refreshTokenHash: Maybe<Scalars['String']>;
-  userId: Maybe<Scalars['uuid']>;
+  refreshToken: Maybe<Scalars["uuid"]>;
+  refreshTokenHash: Maybe<Scalars["String"]>;
+  userId: Maybe<Scalars["uuid"]>;
 };
 
 /** response of any mutation on the table "auth.refresh_tokens" */
 export type AuthRefreshTokensMutationResponse = {
-  __typename?: 'authRefreshTokensMutationResponse';
+  __typename?: "authRefreshTokensMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<AuthRefreshTokens>;
 };
@@ -4079,42 +4031,42 @@ export type AuthRefreshTokensOrderBy = {
 /** primary key columns input for table: auth.refresh_tokens */
 export type AuthRefreshTokensPkColumnsInput = {
   /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
-  refreshToken: Scalars['uuid'];
+  refreshToken: Scalars["uuid"];
 };
 
 /** select columns of table "auth.refresh_tokens" */
 export enum AuthRefreshTokensSelectColumn {
   /** column name */
-  CreatedAt = 'createdAt',
+  CreatedAt = "createdAt",
   /** column name */
-  ExpiresAt = 'expiresAt',
+  ExpiresAt = "expiresAt",
   /** column name */
-  RefreshToken = 'refreshToken',
+  RefreshToken = "refreshToken",
   /** column name */
-  RefreshTokenHash = 'refreshTokenHash',
+  RefreshTokenHash = "refreshTokenHash",
   /** column name */
-  UserId = 'userId'
+  UserId = "userId",
 }
 
 /** input type for updating data in table "auth.refresh_tokens" */
 export type AuthRefreshTokensSetInput = {
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  expiresAt: InputMaybe<Scalars['timestamptz']>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  expiresAt: InputMaybe<Scalars["timestamptz"]>;
   /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
-  refreshToken: InputMaybe<Scalars['uuid']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  refreshToken: InputMaybe<Scalars["uuid"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** update columns of table "auth.refresh_tokens" */
 export enum AuthRefreshTokensUpdateColumn {
   /** column name */
-  CreatedAt = 'createdAt',
+  CreatedAt = "createdAt",
   /** column name */
-  ExpiresAt = 'expiresAt',
+  ExpiresAt = "expiresAt",
   /** column name */
-  RefreshToken = 'refreshToken',
+  RefreshToken = "refreshToken",
   /** column name */
-  UserId = 'userId'
+  UserId = "userId",
 }
 
 export type AuthRefreshTokensUpdates = {
@@ -4129,7 +4081,7 @@ export type AuthRefreshTokens_Aggregate_Bool_Exp = {
 
 export type AuthRefreshTokens_Aggregate_Bool_Exp_Count = {
   arguments: InputMaybe<Array<AuthRefreshTokensSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<AuthRefreshTokensBoolExp>;
   predicate: IntComparisonExp;
 };
@@ -4164,18 +4116,18 @@ export type AuthRefreshTokens_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type AuthRefreshTokens_StreamCursorValueInput = {
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  expiresAt: InputMaybe<Scalars['timestamptz']>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  expiresAt: InputMaybe<Scalars["timestamptz"]>;
   /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
-  refreshToken: InputMaybe<Scalars['uuid']>;
-  refreshTokenHash: InputMaybe<Scalars['String']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  refreshToken: InputMaybe<Scalars["uuid"]>;
+  refreshTokenHash: InputMaybe<Scalars["String"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** Persistent Hasura roles for users. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type AuthRoles = {
-  __typename?: 'authRoles';
-  role: Scalars['String'];
+  __typename?: "authRoles";
+  role: Scalars["String"];
   /** An array relationship */
   userRoles: Array<AuthUserRoles>;
   /** An aggregate relationship */
@@ -4186,66 +4138,61 @@ export type AuthRoles = {
   usersByDefaultRoleAggregate: UsersAggregate;
 };
 
-
 /** Persistent Hasura roles for users. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type AuthRolesUserRolesArgs = {
   distinctOn: InputMaybe<Array<AuthUserRolesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserRolesOrderBy>>;
   where: InputMaybe<AuthUserRolesBoolExp>;
 };
-
 
 /** Persistent Hasura roles for users. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type AuthRolesUserRolesAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthUserRolesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserRolesOrderBy>>;
   where: InputMaybe<AuthUserRolesBoolExp>;
 };
 
-
 /** Persistent Hasura roles for users. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type AuthRolesUsersByDefaultRoleArgs = {
   distinctOn: InputMaybe<Array<UsersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<UsersOrderBy>>;
   where: InputMaybe<UsersBoolExp>;
 };
 
-
 /** Persistent Hasura roles for users. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type AuthRolesUsersByDefaultRoleAggregateArgs = {
   distinctOn: InputMaybe<Array<UsersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<UsersOrderBy>>;
   where: InputMaybe<UsersBoolExp>;
 };
 
 /** aggregated selection of "auth.roles" */
 export type AuthRolesAggregate = {
-  __typename?: 'authRolesAggregate';
+  __typename?: "authRolesAggregate";
   aggregate: Maybe<AuthRolesAggregateFields>;
   nodes: Array<AuthRoles>;
 };
 
 /** aggregate fields of "auth.roles" */
 export type AuthRolesAggregateFields = {
-  __typename?: 'authRolesAggregateFields';
-  count: Scalars['Int'];
+  __typename?: "authRolesAggregateFields";
+  count: Scalars["Int"];
   max: Maybe<AuthRolesMaxFields>;
   min: Maybe<AuthRolesMinFields>;
 };
 
-
 /** aggregate fields of "auth.roles" */
 export type AuthRolesAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<AuthRolesSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** Boolean expression to filter rows from the table "auth.roles". All fields are combined with a logical 'AND'. */
@@ -4263,33 +4210,33 @@ export type AuthRolesBoolExp = {
 /** unique or primary key constraints on table "auth.roles" */
 export enum AuthRolesConstraint {
   /** unique or primary key constraint on columns "role" */
-  RolesPkey = 'roles_pkey'
+  RolesPkey = "roles_pkey",
 }
 
 /** input type for inserting data into table "auth.roles" */
 export type AuthRolesInsertInput = {
-  role: InputMaybe<Scalars['String']>;
+  role: InputMaybe<Scalars["String"]>;
   userRoles: InputMaybe<AuthUserRolesArrRelInsertInput>;
   usersByDefaultRole: InputMaybe<UsersArrRelInsertInput>;
 };
 
 /** aggregate max on columns */
 export type AuthRolesMaxFields = {
-  __typename?: 'authRolesMaxFields';
-  role: Maybe<Scalars['String']>;
+  __typename?: "authRolesMaxFields";
+  role: Maybe<Scalars["String"]>;
 };
 
 /** aggregate min on columns */
 export type AuthRolesMinFields = {
-  __typename?: 'authRolesMinFields';
-  role: Maybe<Scalars['String']>;
+  __typename?: "authRolesMinFields";
+  role: Maybe<Scalars["String"]>;
 };
 
 /** response of any mutation on the table "auth.roles" */
 export type AuthRolesMutationResponse = {
-  __typename?: 'authRolesMutationResponse';
+  __typename?: "authRolesMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<AuthRoles>;
 };
@@ -4317,24 +4264,24 @@ export type AuthRolesOrderBy = {
 
 /** primary key columns input for table: auth.roles */
 export type AuthRolesPkColumnsInput = {
-  role: Scalars['String'];
+  role: Scalars["String"];
 };
 
 /** select columns of table "auth.roles" */
 export enum AuthRolesSelectColumn {
   /** column name */
-  Role = 'role'
+  Role = "role",
 }
 
 /** input type for updating data in table "auth.roles" */
 export type AuthRolesSetInput = {
-  role: InputMaybe<Scalars['String']>;
+  role: InputMaybe<Scalars["String"]>;
 };
 
 /** update columns of table "auth.roles" */
 export enum AuthRolesUpdateColumn {
   /** column name */
-  Role = 'role'
+  Role = "role",
 }
 
 export type AuthRolesUpdates = {
@@ -4353,46 +4300,45 @@ export type AuthRoles_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type AuthRoles_StreamCursorValueInput = {
-  role: InputMaybe<Scalars['String']>;
+  role: InputMaybe<Scalars["String"]>;
 };
 
 /** Active providers for a given user. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type AuthUserProviders = {
-  __typename?: 'authUserProviders';
-  accessToken: Scalars['String'];
-  createdAt: Scalars['timestamptz'];
-  id: Scalars['uuid'];
+  __typename?: "authUserProviders";
+  accessToken: Scalars["String"];
+  createdAt: Scalars["timestamptz"];
+  id: Scalars["uuid"];
   /** An object relationship */
   provider: AuthProviders;
-  providerId: Scalars['String'];
-  providerUserId: Scalars['String'];
-  refreshToken: Maybe<Scalars['String']>;
-  updatedAt: Scalars['timestamptz'];
+  providerId: Scalars["String"];
+  providerUserId: Scalars["String"];
+  refreshToken: Maybe<Scalars["String"]>;
+  updatedAt: Scalars["timestamptz"];
   /** An object relationship */
   user: Users;
-  userId: Scalars['uuid'];
+  userId: Scalars["uuid"];
 };
 
 /** aggregated selection of "auth.user_providers" */
 export type AuthUserProvidersAggregate = {
-  __typename?: 'authUserProvidersAggregate';
+  __typename?: "authUserProvidersAggregate";
   aggregate: Maybe<AuthUserProvidersAggregateFields>;
   nodes: Array<AuthUserProviders>;
 };
 
 /** aggregate fields of "auth.user_providers" */
 export type AuthUserProvidersAggregateFields = {
-  __typename?: 'authUserProvidersAggregateFields';
-  count: Scalars['Int'];
+  __typename?: "authUserProvidersAggregateFields";
+  count: Scalars["Int"];
   max: Maybe<AuthUserProvidersMaxFields>;
   min: Maybe<AuthUserProvidersMinFields>;
 };
 
-
 /** aggregate fields of "auth.user_providers" */
 export type AuthUserProvidersAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<AuthUserProvidersSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** order by aggregate values of table "auth.user_providers" */
@@ -4429,58 +4375,58 @@ export type AuthUserProvidersBoolExp = {
 /** unique or primary key constraints on table "auth.user_providers" */
 export enum AuthUserProvidersConstraint {
   /** unique or primary key constraint on columns "id" */
-  UserProvidersPkey = 'user_providers_pkey',
+  UserProvidersPkey = "user_providers_pkey",
   /** unique or primary key constraint on columns "provider_id", "provider_user_id" */
-  UserProvidersProviderIdProviderUserIdKey = 'user_providers_provider_id_provider_user_id_key',
+  UserProvidersProviderIdProviderUserIdKey = "user_providers_provider_id_provider_user_id_key",
   /** unique or primary key constraint on columns "provider_id", "user_id" */
-  UserProvidersUserIdProviderIdKey = 'user_providers_user_id_provider_id_key'
+  UserProvidersUserIdProviderIdKey = "user_providers_user_id_provider_id_key",
 }
 
 /** input type for inserting data into table "auth.user_providers" */
 export type AuthUserProvidersInsertInput = {
-  accessToken: InputMaybe<Scalars['String']>;
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  id: InputMaybe<Scalars['uuid']>;
+  accessToken: InputMaybe<Scalars["String"]>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  id: InputMaybe<Scalars["uuid"]>;
   provider: InputMaybe<AuthProvidersObjRelInsertInput>;
-  providerId: InputMaybe<Scalars['String']>;
-  providerUserId: InputMaybe<Scalars['String']>;
-  refreshToken: InputMaybe<Scalars['String']>;
-  updatedAt: InputMaybe<Scalars['timestamptz']>;
+  providerId: InputMaybe<Scalars["String"]>;
+  providerUserId: InputMaybe<Scalars["String"]>;
+  refreshToken: InputMaybe<Scalars["String"]>;
+  updatedAt: InputMaybe<Scalars["timestamptz"]>;
   user: InputMaybe<UsersObjRelInsertInput>;
-  userId: InputMaybe<Scalars['uuid']>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate max on columns */
 export type AuthUserProvidersMaxFields = {
-  __typename?: 'authUserProvidersMaxFields';
-  accessToken: Maybe<Scalars['String']>;
-  createdAt: Maybe<Scalars['timestamptz']>;
-  id: Maybe<Scalars['uuid']>;
-  providerId: Maybe<Scalars['String']>;
-  providerUserId: Maybe<Scalars['String']>;
-  refreshToken: Maybe<Scalars['String']>;
-  updatedAt: Maybe<Scalars['timestamptz']>;
-  userId: Maybe<Scalars['uuid']>;
+  __typename?: "authUserProvidersMaxFields";
+  accessToken: Maybe<Scalars["String"]>;
+  createdAt: Maybe<Scalars["timestamptz"]>;
+  id: Maybe<Scalars["uuid"]>;
+  providerId: Maybe<Scalars["String"]>;
+  providerUserId: Maybe<Scalars["String"]>;
+  refreshToken: Maybe<Scalars["String"]>;
+  updatedAt: Maybe<Scalars["timestamptz"]>;
+  userId: Maybe<Scalars["uuid"]>;
 };
 
 /** aggregate min on columns */
 export type AuthUserProvidersMinFields = {
-  __typename?: 'authUserProvidersMinFields';
-  accessToken: Maybe<Scalars['String']>;
-  createdAt: Maybe<Scalars['timestamptz']>;
-  id: Maybe<Scalars['uuid']>;
-  providerId: Maybe<Scalars['String']>;
-  providerUserId: Maybe<Scalars['String']>;
-  refreshToken: Maybe<Scalars['String']>;
-  updatedAt: Maybe<Scalars['timestamptz']>;
-  userId: Maybe<Scalars['uuid']>;
+  __typename?: "authUserProvidersMinFields";
+  accessToken: Maybe<Scalars["String"]>;
+  createdAt: Maybe<Scalars["timestamptz"]>;
+  id: Maybe<Scalars["uuid"]>;
+  providerId: Maybe<Scalars["String"]>;
+  providerUserId: Maybe<Scalars["String"]>;
+  refreshToken: Maybe<Scalars["String"]>;
+  updatedAt: Maybe<Scalars["timestamptz"]>;
+  userId: Maybe<Scalars["uuid"]>;
 };
 
 /** response of any mutation on the table "auth.user_providers" */
 export type AuthUserProvidersMutationResponse = {
-  __typename?: 'authUserProvidersMutationResponse';
+  __typename?: "authUserProvidersMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<AuthUserProviders>;
 };
@@ -4508,59 +4454,59 @@ export type AuthUserProvidersOrderBy = {
 
 /** primary key columns input for table: auth.user_providers */
 export type AuthUserProvidersPkColumnsInput = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
 /** select columns of table "auth.user_providers" */
 export enum AuthUserProvidersSelectColumn {
   /** column name */
-  AccessToken = 'accessToken',
+  AccessToken = "accessToken",
   /** column name */
-  CreatedAt = 'createdAt',
+  CreatedAt = "createdAt",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  ProviderId = 'providerId',
+  ProviderId = "providerId",
   /** column name */
-  ProviderUserId = 'providerUserId',
+  ProviderUserId = "providerUserId",
   /** column name */
-  RefreshToken = 'refreshToken',
+  RefreshToken = "refreshToken",
   /** column name */
-  UpdatedAt = 'updatedAt',
+  UpdatedAt = "updatedAt",
   /** column name */
-  UserId = 'userId'
+  UserId = "userId",
 }
 
 /** input type for updating data in table "auth.user_providers" */
 export type AuthUserProvidersSetInput = {
-  accessToken: InputMaybe<Scalars['String']>;
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  id: InputMaybe<Scalars['uuid']>;
-  providerId: InputMaybe<Scalars['String']>;
-  providerUserId: InputMaybe<Scalars['String']>;
-  refreshToken: InputMaybe<Scalars['String']>;
-  updatedAt: InputMaybe<Scalars['timestamptz']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  accessToken: InputMaybe<Scalars["String"]>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  providerId: InputMaybe<Scalars["String"]>;
+  providerUserId: InputMaybe<Scalars["String"]>;
+  refreshToken: InputMaybe<Scalars["String"]>;
+  updatedAt: InputMaybe<Scalars["timestamptz"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** update columns of table "auth.user_providers" */
 export enum AuthUserProvidersUpdateColumn {
   /** column name */
-  AccessToken = 'accessToken',
+  AccessToken = "accessToken",
   /** column name */
-  CreatedAt = 'createdAt',
+  CreatedAt = "createdAt",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  ProviderId = 'providerId',
+  ProviderId = "providerId",
   /** column name */
-  ProviderUserId = 'providerUserId',
+  ProviderUserId = "providerUserId",
   /** column name */
-  RefreshToken = 'refreshToken',
+  RefreshToken = "refreshToken",
   /** column name */
-  UpdatedAt = 'updatedAt',
+  UpdatedAt = "updatedAt",
   /** column name */
-  UserId = 'userId'
+  UserId = "userId",
 }
 
 export type AuthUserProvidersUpdates = {
@@ -4575,7 +4521,7 @@ export type AuthUserProviders_Aggregate_Bool_Exp = {
 
 export type AuthUserProviders_Aggregate_Bool_Exp_Count = {
   arguments: InputMaybe<Array<AuthUserProvidersSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<AuthUserProvidersBoolExp>;
   predicate: IntComparisonExp;
 };
@@ -4614,49 +4560,48 @@ export type AuthUserProviders_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type AuthUserProviders_StreamCursorValueInput = {
-  accessToken: InputMaybe<Scalars['String']>;
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  id: InputMaybe<Scalars['uuid']>;
-  providerId: InputMaybe<Scalars['String']>;
-  providerUserId: InputMaybe<Scalars['String']>;
-  refreshToken: InputMaybe<Scalars['String']>;
-  updatedAt: InputMaybe<Scalars['timestamptz']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  accessToken: InputMaybe<Scalars["String"]>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  providerId: InputMaybe<Scalars["String"]>;
+  providerUserId: InputMaybe<Scalars["String"]>;
+  refreshToken: InputMaybe<Scalars["String"]>;
+  updatedAt: InputMaybe<Scalars["timestamptz"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** Roles of users. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type AuthUserRoles = {
-  __typename?: 'authUserRoles';
-  createdAt: Scalars['timestamptz'];
-  id: Scalars['uuid'];
-  role: Scalars['String'];
+  __typename?: "authUserRoles";
+  createdAt: Scalars["timestamptz"];
+  id: Scalars["uuid"];
+  role: Scalars["String"];
   /** An object relationship */
   roleByRole: AuthRoles;
   /** An object relationship */
   user: Users;
-  userId: Scalars['uuid'];
+  userId: Scalars["uuid"];
 };
 
 /** aggregated selection of "auth.user_roles" */
 export type AuthUserRolesAggregate = {
-  __typename?: 'authUserRolesAggregate';
+  __typename?: "authUserRolesAggregate";
   aggregate: Maybe<AuthUserRolesAggregateFields>;
   nodes: Array<AuthUserRoles>;
 };
 
 /** aggregate fields of "auth.user_roles" */
 export type AuthUserRolesAggregateFields = {
-  __typename?: 'authUserRolesAggregateFields';
-  count: Scalars['Int'];
+  __typename?: "authUserRolesAggregateFields";
+  count: Scalars["Int"];
   max: Maybe<AuthUserRolesMaxFields>;
   min: Maybe<AuthUserRolesMinFields>;
 };
 
-
 /** aggregate fields of "auth.user_roles" */
 export type AuthUserRolesAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<AuthUserRolesSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** order by aggregate values of table "auth.user_roles" */
@@ -4689,44 +4634,44 @@ export type AuthUserRolesBoolExp = {
 /** unique or primary key constraints on table "auth.user_roles" */
 export enum AuthUserRolesConstraint {
   /** unique or primary key constraint on columns "id" */
-  UserRolesPkey = 'user_roles_pkey',
+  UserRolesPkey = "user_roles_pkey",
   /** unique or primary key constraint on columns "user_id", "role" */
-  UserRolesUserIdRoleKey = 'user_roles_user_id_role_key'
+  UserRolesUserIdRoleKey = "user_roles_user_id_role_key",
 }
 
 /** input type for inserting data into table "auth.user_roles" */
 export type AuthUserRolesInsertInput = {
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  id: InputMaybe<Scalars['uuid']>;
-  role: InputMaybe<Scalars['String']>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  role: InputMaybe<Scalars["String"]>;
   roleByRole: InputMaybe<AuthRolesObjRelInsertInput>;
   user: InputMaybe<UsersObjRelInsertInput>;
-  userId: InputMaybe<Scalars['uuid']>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate max on columns */
 export type AuthUserRolesMaxFields = {
-  __typename?: 'authUserRolesMaxFields';
-  createdAt: Maybe<Scalars['timestamptz']>;
-  id: Maybe<Scalars['uuid']>;
-  role: Maybe<Scalars['String']>;
-  userId: Maybe<Scalars['uuid']>;
+  __typename?: "authUserRolesMaxFields";
+  createdAt: Maybe<Scalars["timestamptz"]>;
+  id: Maybe<Scalars["uuid"]>;
+  role: Maybe<Scalars["String"]>;
+  userId: Maybe<Scalars["uuid"]>;
 };
 
 /** aggregate min on columns */
 export type AuthUserRolesMinFields = {
-  __typename?: 'authUserRolesMinFields';
-  createdAt: Maybe<Scalars['timestamptz']>;
-  id: Maybe<Scalars['uuid']>;
-  role: Maybe<Scalars['String']>;
-  userId: Maybe<Scalars['uuid']>;
+  __typename?: "authUserRolesMinFields";
+  createdAt: Maybe<Scalars["timestamptz"]>;
+  id: Maybe<Scalars["uuid"]>;
+  role: Maybe<Scalars["String"]>;
+  userId: Maybe<Scalars["uuid"]>;
 };
 
 /** response of any mutation on the table "auth.user_roles" */
 export type AuthUserRolesMutationResponse = {
-  __typename?: 'authUserRolesMutationResponse';
+  __typename?: "authUserRolesMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<AuthUserRoles>;
 };
@@ -4750,39 +4695,39 @@ export type AuthUserRolesOrderBy = {
 
 /** primary key columns input for table: auth.user_roles */
 export type AuthUserRolesPkColumnsInput = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
 /** select columns of table "auth.user_roles" */
 export enum AuthUserRolesSelectColumn {
   /** column name */
-  CreatedAt = 'createdAt',
+  CreatedAt = "createdAt",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  Role = 'role',
+  Role = "role",
   /** column name */
-  UserId = 'userId'
+  UserId = "userId",
 }
 
 /** input type for updating data in table "auth.user_roles" */
 export type AuthUserRolesSetInput = {
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  id: InputMaybe<Scalars['uuid']>;
-  role: InputMaybe<Scalars['String']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  role: InputMaybe<Scalars["String"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** update columns of table "auth.user_roles" */
 export enum AuthUserRolesUpdateColumn {
   /** column name */
-  CreatedAt = 'createdAt',
+  CreatedAt = "createdAt",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  Role = 'role',
+  Role = "role",
   /** column name */
-  UserId = 'userId'
+  UserId = "userId",
 }
 
 export type AuthUserRolesUpdates = {
@@ -4797,7 +4742,7 @@ export type AuthUserRoles_Aggregate_Bool_Exp = {
 
 export type AuthUserRoles_Aggregate_Bool_Exp_Count = {
   arguments: InputMaybe<Array<AuthUserRolesSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<AuthUserRolesBoolExp>;
   predicate: IntComparisonExp;
 };
@@ -4828,38 +4773,38 @@ export type AuthUserRoles_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type AuthUserRoles_StreamCursorValueInput = {
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  id: InputMaybe<Scalars['uuid']>;
-  role: InputMaybe<Scalars['String']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  role: InputMaybe<Scalars["String"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** User webauthn security keys. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type AuthUserSecurityKeys = {
-  __typename?: 'authUserSecurityKeys';
-  counter: Scalars['bigint'];
-  credentialId: Scalars['String'];
-  credentialPublicKey: Maybe<Scalars['bytea']>;
-  id: Scalars['uuid'];
-  nickname: Maybe<Scalars['String']>;
-  transports: Scalars['String'];
+  __typename?: "authUserSecurityKeys";
+  counter: Scalars["bigint"];
+  credentialId: Scalars["String"];
+  credentialPublicKey: Maybe<Scalars["bytea"]>;
+  id: Scalars["uuid"];
+  nickname: Maybe<Scalars["String"]>;
+  transports: Scalars["String"];
   /** An object relationship */
   user: Users;
-  userId: Scalars['uuid'];
+  userId: Scalars["uuid"];
 };
 
 /** aggregated selection of "auth.user_security_keys" */
 export type AuthUserSecurityKeysAggregate = {
-  __typename?: 'authUserSecurityKeysAggregate';
+  __typename?: "authUserSecurityKeysAggregate";
   aggregate: Maybe<AuthUserSecurityKeysAggregateFields>;
   nodes: Array<AuthUserSecurityKeys>;
 };
 
 /** aggregate fields of "auth.user_security_keys" */
 export type AuthUserSecurityKeysAggregateFields = {
-  __typename?: 'authUserSecurityKeysAggregateFields';
+  __typename?: "authUserSecurityKeysAggregateFields";
   avg: Maybe<AuthUserSecurityKeysAvgFields>;
-  count: Scalars['Int'];
+  count: Scalars["Int"];
   max: Maybe<AuthUserSecurityKeysMaxFields>;
   min: Maybe<AuthUserSecurityKeysMinFields>;
   stddev: Maybe<AuthUserSecurityKeysStddevFields>;
@@ -4871,11 +4816,10 @@ export type AuthUserSecurityKeysAggregateFields = {
   variance: Maybe<AuthUserSecurityKeysVarianceFields>;
 };
 
-
 /** aggregate fields of "auth.user_security_keys" */
 export type AuthUserSecurityKeysAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<AuthUserSecurityKeysSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** order by aggregate values of table "auth.user_security_keys" */
@@ -4902,8 +4846,8 @@ export type AuthUserSecurityKeysArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type AuthUserSecurityKeysAvgFields = {
-  __typename?: 'authUserSecurityKeysAvgFields';
-  counter: Maybe<Scalars['Float']>;
+  __typename?: "authUserSecurityKeysAvgFields";
+  counter: Maybe<Scalars["Float"]>;
 };
 
 /** Boolean expression to filter rows from the table "auth.user_security_keys". All fields are combined with a logical 'AND'. */
@@ -4924,55 +4868,55 @@ export type AuthUserSecurityKeysBoolExp = {
 /** unique or primary key constraints on table "auth.user_security_keys" */
 export enum AuthUserSecurityKeysConstraint {
   /** unique or primary key constraint on columns "credential_id" */
-  UserSecurityKeyCredentialIdKey = 'user_security_key_credential_id_key',
+  UserSecurityKeyCredentialIdKey = "user_security_key_credential_id_key",
   /** unique or primary key constraint on columns "id" */
-  UserSecurityKeysPkey = 'user_security_keys_pkey'
+  UserSecurityKeysPkey = "user_security_keys_pkey",
 }
 
 /** input type for incrementing numeric columns in table "auth.user_security_keys" */
 export type AuthUserSecurityKeysIncInput = {
-  counter: InputMaybe<Scalars['bigint']>;
+  counter: InputMaybe<Scalars["bigint"]>;
 };
 
 /** input type for inserting data into table "auth.user_security_keys" */
 export type AuthUserSecurityKeysInsertInput = {
-  counter: InputMaybe<Scalars['bigint']>;
-  credentialId: InputMaybe<Scalars['String']>;
-  credentialPublicKey: InputMaybe<Scalars['bytea']>;
-  id: InputMaybe<Scalars['uuid']>;
-  nickname: InputMaybe<Scalars['String']>;
-  transports: InputMaybe<Scalars['String']>;
+  counter: InputMaybe<Scalars["bigint"]>;
+  credentialId: InputMaybe<Scalars["String"]>;
+  credentialPublicKey: InputMaybe<Scalars["bytea"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  nickname: InputMaybe<Scalars["String"]>;
+  transports: InputMaybe<Scalars["String"]>;
   user: InputMaybe<UsersObjRelInsertInput>;
-  userId: InputMaybe<Scalars['uuid']>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate max on columns */
 export type AuthUserSecurityKeysMaxFields = {
-  __typename?: 'authUserSecurityKeysMaxFields';
-  counter: Maybe<Scalars['bigint']>;
-  credentialId: Maybe<Scalars['String']>;
-  id: Maybe<Scalars['uuid']>;
-  nickname: Maybe<Scalars['String']>;
-  transports: Maybe<Scalars['String']>;
-  userId: Maybe<Scalars['uuid']>;
+  __typename?: "authUserSecurityKeysMaxFields";
+  counter: Maybe<Scalars["bigint"]>;
+  credentialId: Maybe<Scalars["String"]>;
+  id: Maybe<Scalars["uuid"]>;
+  nickname: Maybe<Scalars["String"]>;
+  transports: Maybe<Scalars["String"]>;
+  userId: Maybe<Scalars["uuid"]>;
 };
 
 /** aggregate min on columns */
 export type AuthUserSecurityKeysMinFields = {
-  __typename?: 'authUserSecurityKeysMinFields';
-  counter: Maybe<Scalars['bigint']>;
-  credentialId: Maybe<Scalars['String']>;
-  id: Maybe<Scalars['uuid']>;
-  nickname: Maybe<Scalars['String']>;
-  transports: Maybe<Scalars['String']>;
-  userId: Maybe<Scalars['uuid']>;
+  __typename?: "authUserSecurityKeysMinFields";
+  counter: Maybe<Scalars["bigint"]>;
+  credentialId: Maybe<Scalars["String"]>;
+  id: Maybe<Scalars["uuid"]>;
+  nickname: Maybe<Scalars["String"]>;
+  transports: Maybe<Scalars["String"]>;
+  userId: Maybe<Scalars["uuid"]>;
 };
 
 /** response of any mutation on the table "auth.user_security_keys" */
 export type AuthUserSecurityKeysMutationResponse = {
-  __typename?: 'authUserSecurityKeysMutationResponse';
+  __typename?: "authUserSecurityKeysMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<AuthUserSecurityKeys>;
 };
@@ -4998,78 +4942,78 @@ export type AuthUserSecurityKeysOrderBy = {
 
 /** primary key columns input for table: auth.user_security_keys */
 export type AuthUserSecurityKeysPkColumnsInput = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
 /** select columns of table "auth.user_security_keys" */
 export enum AuthUserSecurityKeysSelectColumn {
   /** column name */
-  Counter = 'counter',
+  Counter = "counter",
   /** column name */
-  CredentialId = 'credentialId',
+  CredentialId = "credentialId",
   /** column name */
-  CredentialPublicKey = 'credentialPublicKey',
+  CredentialPublicKey = "credentialPublicKey",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  Nickname = 'nickname',
+  Nickname = "nickname",
   /** column name */
-  Transports = 'transports',
+  Transports = "transports",
   /** column name */
-  UserId = 'userId'
+  UserId = "userId",
 }
 
 /** input type for updating data in table "auth.user_security_keys" */
 export type AuthUserSecurityKeysSetInput = {
-  counter: InputMaybe<Scalars['bigint']>;
-  credentialId: InputMaybe<Scalars['String']>;
-  credentialPublicKey: InputMaybe<Scalars['bytea']>;
-  id: InputMaybe<Scalars['uuid']>;
-  nickname: InputMaybe<Scalars['String']>;
-  transports: InputMaybe<Scalars['String']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  counter: InputMaybe<Scalars["bigint"]>;
+  credentialId: InputMaybe<Scalars["String"]>;
+  credentialPublicKey: InputMaybe<Scalars["bytea"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  nickname: InputMaybe<Scalars["String"]>;
+  transports: InputMaybe<Scalars["String"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** aggregate stddev on columns */
 export type AuthUserSecurityKeysStddevFields = {
-  __typename?: 'authUserSecurityKeysStddevFields';
-  counter: Maybe<Scalars['Float']>;
+  __typename?: "authUserSecurityKeysStddevFields";
+  counter: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_pop on columns */
 export type AuthUserSecurityKeysStddev_PopFields = {
-  __typename?: 'authUserSecurityKeysStddev_popFields';
-  counter: Maybe<Scalars['Float']>;
+  __typename?: "authUserSecurityKeysStddev_popFields";
+  counter: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate stddev_samp on columns */
 export type AuthUserSecurityKeysStddev_SampFields = {
-  __typename?: 'authUserSecurityKeysStddev_sampFields';
-  counter: Maybe<Scalars['Float']>;
+  __typename?: "authUserSecurityKeysStddev_sampFields";
+  counter: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate sum on columns */
 export type AuthUserSecurityKeysSumFields = {
-  __typename?: 'authUserSecurityKeysSumFields';
-  counter: Maybe<Scalars['bigint']>;
+  __typename?: "authUserSecurityKeysSumFields";
+  counter: Maybe<Scalars["bigint"]>;
 };
 
 /** update columns of table "auth.user_security_keys" */
 export enum AuthUserSecurityKeysUpdateColumn {
   /** column name */
-  Counter = 'counter',
+  Counter = "counter",
   /** column name */
-  CredentialId = 'credentialId',
+  CredentialId = "credentialId",
   /** column name */
-  CredentialPublicKey = 'credentialPublicKey',
+  CredentialPublicKey = "credentialPublicKey",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  Nickname = 'nickname',
+  Nickname = "nickname",
   /** column name */
-  Transports = 'transports',
+  Transports = "transports",
   /** column name */
-  UserId = 'userId'
+  UserId = "userId",
 }
 
 export type AuthUserSecurityKeysUpdates = {
@@ -5082,20 +5026,20 @@ export type AuthUserSecurityKeysUpdates = {
 
 /** aggregate var_pop on columns */
 export type AuthUserSecurityKeysVar_PopFields = {
-  __typename?: 'authUserSecurityKeysVar_popFields';
-  counter: Maybe<Scalars['Float']>;
+  __typename?: "authUserSecurityKeysVar_popFields";
+  counter: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate var_samp on columns */
 export type AuthUserSecurityKeysVar_SampFields = {
-  __typename?: 'authUserSecurityKeysVar_sampFields';
-  counter: Maybe<Scalars['Float']>;
+  __typename?: "authUserSecurityKeysVar_sampFields";
+  counter: Maybe<Scalars["Float"]>;
 };
 
 /** aggregate variance on columns */
 export type AuthUserSecurityKeysVarianceFields = {
-  __typename?: 'authUserSecurityKeysVarianceFields';
-  counter: Maybe<Scalars['Float']>;
+  __typename?: "authUserSecurityKeysVarianceFields";
+  counter: Maybe<Scalars["Float"]>;
 };
 
 export type AuthUserSecurityKeys_Aggregate_Bool_Exp = {
@@ -5104,7 +5048,7 @@ export type AuthUserSecurityKeys_Aggregate_Bool_Exp = {
 
 export type AuthUserSecurityKeys_Aggregate_Bool_Exp_Count = {
   arguments: InputMaybe<Array<AuthUserSecurityKeysSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<AuthUserSecurityKeysBoolExp>;
   predicate: IntComparisonExp;
 };
@@ -5159,13 +5103,13 @@ export type AuthUserSecurityKeys_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type AuthUserSecurityKeys_StreamCursorValueInput = {
-  counter: InputMaybe<Scalars['bigint']>;
-  credentialId: InputMaybe<Scalars['String']>;
-  credentialPublicKey: InputMaybe<Scalars['bytea']>;
-  id: InputMaybe<Scalars['uuid']>;
-  nickname: InputMaybe<Scalars['String']>;
-  transports: InputMaybe<Scalars['String']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  counter: InputMaybe<Scalars["bigint"]>;
+  credentialId: InputMaybe<Scalars["String"]>;
+  credentialPublicKey: InputMaybe<Scalars["bytea"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  nickname: InputMaybe<Scalars["String"]>;
+  transports: InputMaybe<Scalars["String"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** order by sum() on columns of table "auth.user_security_keys" */
@@ -5198,15 +5142,15 @@ export type Auth_Github_Users_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Auth_Github_Users_StreamCursorValueInput = {
-  accessToken: InputMaybe<Scalars['String']>;
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  githubUserId: InputMaybe<Scalars['bigint']>;
-  id: InputMaybe<Scalars['uuid']>;
-  providerId: InputMaybe<Scalars['String']>;
-  providerUserId: InputMaybe<Scalars['String']>;
-  refreshToken: InputMaybe<Scalars['String']>;
-  updatedAt: InputMaybe<Scalars['timestamptz']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  accessToken: InputMaybe<Scalars["String"]>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  githubUserId: InputMaybe<Scalars["bigint"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  providerId: InputMaybe<Scalars["String"]>;
+  providerUserId: InputMaybe<Scalars["String"]>;
+  refreshToken: InputMaybe<Scalars["String"]>;
+  updatedAt: InputMaybe<Scalars["timestamptz"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 export type Budgets_Aggregate_Bool_Exp = {
@@ -5215,7 +5159,7 @@ export type Budgets_Aggregate_Bool_Exp = {
 
 export type Budgets_Aggregate_Bool_Exp_Count = {
   arguments: InputMaybe<Array<BudgetsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<BudgetsBoolExp>;
   predicate: IntComparisonExp;
 };
@@ -5276,11 +5220,11 @@ export type Budgets_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Budgets_StreamCursorValueInput = {
-  id: InputMaybe<Scalars['uuid']>;
-  initialAmount: InputMaybe<Scalars['numeric']>;
-  projectId: InputMaybe<Scalars['uuid']>;
-  remainingAmount: InputMaybe<Scalars['numeric']>;
-  spentAmount: InputMaybe<Scalars['numeric']>;
+  id: InputMaybe<Scalars["uuid"]>;
+  initialAmount: InputMaybe<Scalars["numeric"]>;
+  projectId: InputMaybe<Scalars["uuid"]>;
+  remainingAmount: InputMaybe<Scalars["numeric"]>;
+  spentAmount: InputMaybe<Scalars["numeric"]>;
 };
 
 /** order by sum() on columns of table "budgets" */
@@ -5321,20 +5265,21 @@ export type Github_Repo_Details_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Github_Repo_Details_StreamCursorValueInput = {
-  id: InputMaybe<Scalars['bigint']>;
-  languages: InputMaybe<Scalars['jsonb']>;
+  id: InputMaybe<Scalars["bigint"]>;
+  languages: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** mutation root */
 export type Mutation_Root = {
-  __typename?: 'mutation_root';
-  acceptProjectLeaderInvitation: Scalars['Boolean'];
-  addEthPaymentReceipt: Scalars['Uuid'];
-  addFiatPaymentReceipt: Scalars['Uuid'];
-  addSponsorToProject: Scalars['Uuid'];
-  cancelPaymentRequest: Scalars['Uuid'];
-  createProject: Scalars['Uuid'];
-  createSponsor: Scalars['Uuid'];
+  __typename?: "mutation_root";
+  acceptProjectLeaderInvitation: Scalars["Boolean"];
+  addEthPaymentReceipt: Scalars["Uuid"];
+  addFiatPaymentReceipt: Scalars["Uuid"];
+  addSponsorToProject: Scalars["Uuid"];
+  cancelPaymentRequest: Scalars["Uuid"];
+  createIssue: Issue;
+  createProject: Scalars["Uuid"];
+  createSponsor: Scalars["Uuid"];
   /** delete data from the table: "auth.github_users" */
   deleteAuthGithubUsers: Maybe<AuthGithubUsersMutationResponse>;
   /** delete single row from the table: "auth.providers" */
@@ -5509,14 +5454,14 @@ export type Mutation_Root = {
   insertWorkItems: Maybe<WorkItemsMutationResponse>;
   /** insert a single row into the table: "work_items" */
   insertWorkItemsOne: Maybe<WorkItems>;
-  inviteProjectLeader: Scalars['Uuid'];
-  linkGithubRepo: Scalars['Uuid'];
-  markInvoiceAsReceived: Scalars['Int'];
-  rejectInvoice: Scalars['Int'];
-  removeSponsorFromProject: Scalars['Uuid'];
-  requestPayment: Scalars['Uuid'];
-  unassignProjectLead: Scalars['Boolean'];
-  unlinkGithubRepo: Scalars['Uuid'];
+  inviteProjectLeader: Scalars["Uuid"];
+  linkGithubRepo: Scalars["Uuid"];
+  markInvoiceAsReceived: Scalars["Int"];
+  rejectInvoice: Scalars["Int"];
+  removeSponsorFromProject: Scalars["Uuid"];
+  requestPayment: Scalars["Uuid"];
+  unassignProjectLead: Scalars["Boolean"];
+  unlinkGithubRepo: Scalars["Uuid"];
   /** update data of the table: "auth.github_users" */
   updateAuthGithubUsers: Maybe<AuthGithubUsersMutationResponse>;
   /** update multiples rows of table: "auth.github_users" */
@@ -5563,7 +5508,7 @@ export type Mutation_Root = {
   updateAuthUserSecurityKeys: Maybe<AuthUserSecurityKeysMutationResponse>;
   /** update multiples rows of table: "auth.user_security_keys" */
   updateAuthUserSecurityKeysMany: Maybe<Array<Maybe<AuthUserSecurityKeysMutationResponse>>>;
-  updateBudgetAllocation: Scalars['Uuid'];
+  updateBudgetAllocation: Scalars["Uuid"];
   /** update data of the table: "budgets" */
   updateBudgets: Maybe<BudgetsMutationResponse>;
   /** update single row of the table: "budgets" */
@@ -5594,8 +5539,8 @@ export type Mutation_Root = {
   updatePendingProjectLeaderInvitationsByPk: Maybe<PendingProjectLeaderInvitations>;
   /** update multiples rows of table: "pending_project_leader_invitations" */
   updatePendingProjectLeaderInvitationsMany: Maybe<Array<Maybe<PendingProjectLeaderInvitationsMutationResponse>>>;
-  updateProfileInfo: Scalars['Uuid'];
-  updateProject: Scalars['Uuid'];
+  updateProfileInfo: Scalars["Uuid"];
+  updateProject: Scalars["Uuid"];
   /** update data of the table: "project_details" */
   updateProjectDetails: Maybe<ProjectDetailsMutationResponse>;
   /** update single row of the table: "project_details" */
@@ -5626,7 +5571,7 @@ export type Mutation_Root = {
   updateProjectsSponsorsByPk: Maybe<ProjectsSponsors>;
   /** update multiples rows of table: "projects_sponsors" */
   updateProjectsSponsorsMany: Maybe<Array<Maybe<ProjectsSponsorsMutationResponse>>>;
-  updateSponsor: Scalars['Uuid'];
+  updateSponsor: Scalars["Uuid"];
   /** update data of the table: "sponsors" */
   updateSponsors: Maybe<SponsorsMutationResponse>;
   /** update single row of the table: "sponsors" */
@@ -5653,342 +5598,298 @@ export type Mutation_Root = {
   updateWorkItemsMany: Maybe<Array<Maybe<WorkItemsMutationResponse>>>;
 };
 
-
 /** mutation root */
 export type Mutation_RootAcceptProjectLeaderInvitationArgs = {
-  invitationId: Scalars['Uuid'];
+  invitationId: Scalars["Uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootAddEthPaymentReceiptArgs = {
-  amount: Scalars['String'];
-  currencyCode: Scalars['String'];
-  paymentId: Scalars['Uuid'];
-  projectId: Scalars['Uuid'];
+  amount: Scalars["String"];
+  currencyCode: Scalars["String"];
+  paymentId: Scalars["Uuid"];
+  projectId: Scalars["Uuid"];
   recipientIdentity: EthereumIdentityInput;
-  transactionHash: Scalars['String'];
+  transactionHash: Scalars["String"];
 };
-
 
 /** mutation root */
 export type Mutation_RootAddFiatPaymentReceiptArgs = {
-  amount: Scalars['String'];
-  currencyCode: Scalars['String'];
-  paymentId: Scalars['Uuid'];
-  projectId: Scalars['Uuid'];
-  recipientIban: Scalars['String'];
-  transactionReference: Scalars['String'];
+  amount: Scalars["String"];
+  currencyCode: Scalars["String"];
+  paymentId: Scalars["Uuid"];
+  projectId: Scalars["Uuid"];
+  recipientIban: Scalars["String"];
+  transactionReference: Scalars["String"];
 };
-
 
 /** mutation root */
 export type Mutation_RootAddSponsorToProjectArgs = {
-  projectId: Scalars['Uuid'];
-  sponsorId: Scalars['Uuid'];
+  projectId: Scalars["Uuid"];
+  sponsorId: Scalars["Uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootCancelPaymentRequestArgs = {
-  paymentId: Scalars['Uuid'];
-  projectId: Scalars['Uuid'];
+  paymentId: Scalars["Uuid"];
+  projectId: Scalars["Uuid"];
 };
 
+/** mutation root */
+export type Mutation_RootCreateIssueArgs = {
+  assignees: Array<Scalars["String"]>;
+  description: Scalars["String"];
+  repoName: Scalars["String"];
+  repoOwner: Scalars["String"];
+  title: Scalars["String"];
+};
 
 /** mutation root */
 export type Mutation_RootCreateProjectArgs = {
-  initialBudget: InputMaybe<Scalars['Int']>;
-  logoUrl: InputMaybe<Scalars['Url']>;
-  longDescription: Scalars['String'];
-  name: Scalars['String'];
-  shortDescription: Scalars['String'];
-  telegramLink: InputMaybe<Scalars['Url']>;
+  initialBudget: InputMaybe<Scalars["Int"]>;
+  logoUrl: InputMaybe<Scalars["Url"]>;
+  longDescription: Scalars["String"];
+  name: Scalars["String"];
+  shortDescription: Scalars["String"];
+  telegramLink: InputMaybe<Scalars["Url"]>;
 };
-
 
 /** mutation root */
 export type Mutation_RootCreateSponsorArgs = {
-  logoUrl: Scalars['Url'];
-  name: Scalars['String'];
-  url: InputMaybe<Scalars['Url']>;
+  logoUrl: Scalars["Url"];
+  name: Scalars["String"];
+  url: InputMaybe<Scalars["Url"]>;
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteAuthGithubUsersArgs = {
   where: AuthGithubUsersBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteAuthProviderArgs = {
-  id: Scalars['String'];
+  id: Scalars["String"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteAuthProviderRequestArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteAuthProviderRequestsArgs = {
   where: AuthProviderRequestsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteAuthProvidersArgs = {
   where: AuthProvidersBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteAuthRefreshTokenArgs = {
-  refreshToken: Scalars['uuid'];
+  refreshToken: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteAuthRefreshTokensArgs = {
   where: AuthRefreshTokensBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteAuthRoleArgs = {
-  role: Scalars['String'];
+  role: Scalars["String"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteAuthRolesArgs = {
   where: AuthRolesBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteAuthUserProviderArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteAuthUserProvidersArgs = {
   where: AuthUserProvidersBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteAuthUserRoleArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteAuthUserRolesArgs = {
   where: AuthUserRolesBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteAuthUserSecurityKeyArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteAuthUserSecurityKeysArgs = {
   where: AuthUserSecurityKeysBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteBudgetsArgs = {
   where: BudgetsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteBudgetsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteGithubRepoDetailsArgs = {
   where: GithubRepoDetailsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteGithubRepoDetailsByPkArgs = {
-  id: Scalars['bigint'];
+  id: Scalars["bigint"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeletePaymentRequestsArgs = {
   where: PaymentRequestsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeletePaymentRequestsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeletePaymentsArgs = {
   where: PaymentsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeletePaymentsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeletePendingProjectLeaderInvitationsArgs = {
   where: PendingProjectLeaderInvitationsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeletePendingProjectLeaderInvitationsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteProjectDetailsArgs = {
   where: ProjectDetailsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteProjectDetailsByPkArgs = {
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteProjectGithubReposArgs = {
   where: ProjectGithubReposBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteProjectGithubReposByPkArgs = {
-  githubRepoId: Scalars['bigint'];
-  projectId: Scalars['uuid'];
+  githubRepoId: Scalars["bigint"];
+  projectId: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteProjectLeadsArgs = {
   where: ProjectLeadsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteProjectLeadsByPkArgs = {
-  projectId: Scalars['uuid'];
-  userId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
+  userId: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteProjectsArgs = {
   where: ProjectsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteProjectsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteProjectsSponsorsArgs = {
   where: ProjectsSponsorsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteProjectsSponsorsByPkArgs = {
-  projectId: Scalars['uuid'];
-  sponsorId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
+  sponsorId: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteSponsorsArgs = {
   where: SponsorsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteSponsorsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteUserArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteUserInfoArgs = {
   where: UserInfoBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteUserInfoByPkArgs = {
-  userId: Scalars['uuid'];
+  userId: Scalars["uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootDeleteUsersArgs = {
   where: UsersBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteWorkItemsArgs = {
   where: WorkItemsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDeleteWorkItemsByPkArgs = {
-  issueNumber: Scalars['bigint'];
-  paymentId: Scalars['uuid'];
-  repoId: Scalars['bigint'];
+  issueNumber: Scalars["bigint"];
+  paymentId: Scalars["uuid"];
+  repoId: Scalars["bigint"];
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertAuthGithubUsersArgs = {
   objects: Array<AuthGithubUsersInsertInput>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertAuthGithubUsersOneArgs = {
   object: AuthGithubUsersInsertInput;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertAuthProviderArgs = {
@@ -5996,13 +5897,11 @@ export type Mutation_RootInsertAuthProviderArgs = {
   onConflict: InputMaybe<AuthProvidersOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertAuthProviderRequestArgs = {
   object: AuthProviderRequestsInsertInput;
   onConflict: InputMaybe<AuthProviderRequestsOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertAuthProviderRequestsArgs = {
@@ -6010,13 +5909,11 @@ export type Mutation_RootInsertAuthProviderRequestsArgs = {
   onConflict: InputMaybe<AuthProviderRequestsOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertAuthProvidersArgs = {
   objects: Array<AuthProvidersInsertInput>;
   onConflict: InputMaybe<AuthProvidersOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertAuthRefreshTokenArgs = {
@@ -6024,13 +5921,11 @@ export type Mutation_RootInsertAuthRefreshTokenArgs = {
   onConflict: InputMaybe<AuthRefreshTokensOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertAuthRefreshTokensArgs = {
   objects: Array<AuthRefreshTokensInsertInput>;
   onConflict: InputMaybe<AuthRefreshTokensOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertAuthRoleArgs = {
@@ -6038,13 +5933,11 @@ export type Mutation_RootInsertAuthRoleArgs = {
   onConflict: InputMaybe<AuthRolesOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertAuthRolesArgs = {
   objects: Array<AuthRolesInsertInput>;
   onConflict: InputMaybe<AuthRolesOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertAuthUserProviderArgs = {
@@ -6052,13 +5945,11 @@ export type Mutation_RootInsertAuthUserProviderArgs = {
   onConflict: InputMaybe<AuthUserProvidersOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertAuthUserProvidersArgs = {
   objects: Array<AuthUserProvidersInsertInput>;
   onConflict: InputMaybe<AuthUserProvidersOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertAuthUserRoleArgs = {
@@ -6066,13 +5957,11 @@ export type Mutation_RootInsertAuthUserRoleArgs = {
   onConflict: InputMaybe<AuthUserRolesOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertAuthUserRolesArgs = {
   objects: Array<AuthUserRolesInsertInput>;
   onConflict: InputMaybe<AuthUserRolesOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertAuthUserSecurityKeyArgs = {
@@ -6080,13 +5969,11 @@ export type Mutation_RootInsertAuthUserSecurityKeyArgs = {
   onConflict: InputMaybe<AuthUserSecurityKeysOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertAuthUserSecurityKeysArgs = {
   objects: Array<AuthUserSecurityKeysInsertInput>;
   onConflict: InputMaybe<AuthUserSecurityKeysOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertBudgetsArgs = {
@@ -6094,13 +5981,11 @@ export type Mutation_RootInsertBudgetsArgs = {
   onConflict: InputMaybe<BudgetsOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertBudgetsOneArgs = {
   object: BudgetsInsertInput;
   onConflict: InputMaybe<BudgetsOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertGithubRepoDetailsArgs = {
@@ -6108,13 +5993,11 @@ export type Mutation_RootInsertGithubRepoDetailsArgs = {
   onConflict: InputMaybe<GithubRepoDetailsOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertGithubRepoDetailsOneArgs = {
   object: GithubRepoDetailsInsertInput;
   onConflict: InputMaybe<GithubRepoDetailsOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertPaymentRequestsArgs = {
@@ -6122,13 +6005,11 @@ export type Mutation_RootInsertPaymentRequestsArgs = {
   onConflict: InputMaybe<PaymentRequestsOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertPaymentRequestsOneArgs = {
   object: PaymentRequestsInsertInput;
   onConflict: InputMaybe<PaymentRequestsOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertPaymentsArgs = {
@@ -6136,13 +6017,11 @@ export type Mutation_RootInsertPaymentsArgs = {
   onConflict: InputMaybe<PaymentsOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertPaymentsOneArgs = {
   object: PaymentsInsertInput;
   onConflict: InputMaybe<PaymentsOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertPendingProjectLeaderInvitationsArgs = {
@@ -6150,13 +6029,11 @@ export type Mutation_RootInsertPendingProjectLeaderInvitationsArgs = {
   onConflict: InputMaybe<PendingProjectLeaderInvitationsOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertPendingProjectLeaderInvitationsOneArgs = {
   object: PendingProjectLeaderInvitationsInsertInput;
   onConflict: InputMaybe<PendingProjectLeaderInvitationsOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertProjectDetailsArgs = {
@@ -6164,13 +6041,11 @@ export type Mutation_RootInsertProjectDetailsArgs = {
   onConflict: InputMaybe<ProjectDetailsOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertProjectDetailsOneArgs = {
   object: ProjectDetailsInsertInput;
   onConflict: InputMaybe<ProjectDetailsOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertProjectGithubReposArgs = {
@@ -6178,13 +6053,11 @@ export type Mutation_RootInsertProjectGithubReposArgs = {
   onConflict: InputMaybe<ProjectGithubReposOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertProjectGithubReposOneArgs = {
   object: ProjectGithubReposInsertInput;
   onConflict: InputMaybe<ProjectGithubReposOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertProjectLeadsArgs = {
@@ -6192,13 +6065,11 @@ export type Mutation_RootInsertProjectLeadsArgs = {
   onConflict: InputMaybe<ProjectLeadsOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertProjectLeadsOneArgs = {
   object: ProjectLeadsInsertInput;
   onConflict: InputMaybe<ProjectLeadsOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertProjectsArgs = {
@@ -6206,13 +6077,11 @@ export type Mutation_RootInsertProjectsArgs = {
   onConflict: InputMaybe<ProjectsOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertProjectsOneArgs = {
   object: ProjectsInsertInput;
   onConflict: InputMaybe<ProjectsOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertProjectsSponsorsArgs = {
@@ -6220,13 +6089,11 @@ export type Mutation_RootInsertProjectsSponsorsArgs = {
   onConflict: InputMaybe<ProjectsSponsorsOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertProjectsSponsorsOneArgs = {
   object: ProjectsSponsorsInsertInput;
   onConflict: InputMaybe<ProjectsSponsorsOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertSponsorsArgs = {
@@ -6234,13 +6101,11 @@ export type Mutation_RootInsertSponsorsArgs = {
   onConflict: InputMaybe<SponsorsOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertSponsorsOneArgs = {
   object: SponsorsInsertInput;
   onConflict: InputMaybe<SponsorsOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertUserArgs = {
@@ -6248,13 +6113,11 @@ export type Mutation_RootInsertUserArgs = {
   onConflict: InputMaybe<UsersOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertUserInfoArgs = {
   objects: Array<UserInfoInsertInput>;
   onConflict: InputMaybe<UserInfoOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertUserInfoOneArgs = {
@@ -6262,13 +6125,11 @@ export type Mutation_RootInsertUserInfoOneArgs = {
   onConflict: InputMaybe<UserInfoOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertUsersArgs = {
   objects: Array<UsersInsertInput>;
   onConflict: InputMaybe<UsersOnConflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsertWorkItemsArgs = {
@@ -6276,69 +6137,59 @@ export type Mutation_RootInsertWorkItemsArgs = {
   onConflict: InputMaybe<WorkItemsOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsertWorkItemsOneArgs = {
   object: WorkItemsInsertInput;
   onConflict: InputMaybe<WorkItemsOnConflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInviteProjectLeaderArgs = {
-  githubUserId: Scalars['Int'];
-  projectId: Scalars['Uuid'];
+  githubUserId: Scalars["Int"];
+  projectId: Scalars["Uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootLinkGithubRepoArgs = {
-  githubRepoId: Scalars['Int'];
-  projectId: Scalars['Uuid'];
+  githubRepoId: Scalars["Int"];
+  projectId: Scalars["Uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootMarkInvoiceAsReceivedArgs = {
   paymentReferences: Array<PaymentReference>;
 };
 
-
 /** mutation root */
 export type Mutation_RootRejectInvoiceArgs = {
   paymentReferences: Array<PaymentReference>;
 };
 
-
 /** mutation root */
 export type Mutation_RootRemoveSponsorFromProjectArgs = {
-  projectId: Scalars['Uuid'];
-  sponsorId: Scalars['Uuid'];
+  projectId: Scalars["Uuid"];
+  sponsorId: Scalars["Uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootRequestPaymentArgs = {
-  amountInUsd: Scalars['Int'];
-  projectId: Scalars['Uuid'];
+  amountInUsd: Scalars["Int"];
+  projectId: Scalars["Uuid"];
   reason: Reason;
-  recipientId: Scalars['Int'];
+  recipientId: Scalars["Int"];
 };
-
 
 /** mutation root */
 export type Mutation_RootUnassignProjectLeadArgs = {
-  projectId: Scalars['Uuid'];
-  userId: Scalars['Uuid'];
+  projectId: Scalars["Uuid"];
+  userId: Scalars["Uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootUnlinkGithubRepoArgs = {
-  githubRepoId: Scalars['Int'];
-  projectId: Scalars['Uuid'];
+  githubRepoId: Scalars["Int"];
+  projectId: Scalars["Uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateAuthGithubUsersArgs = {
@@ -6347,19 +6198,16 @@ export type Mutation_RootUpdateAuthGithubUsersArgs = {
   where: AuthGithubUsersBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateAuthGithubUsersManyArgs = {
   updates: Array<AuthGithubUsersUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateAuthProviderArgs = {
   _set: InputMaybe<AuthProvidersSetInput>;
   pk_columns: AuthProvidersPkColumnsInput;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateAuthProviderRequestArgs = {
@@ -6372,7 +6220,6 @@ export type Mutation_RootUpdateAuthProviderRequestArgs = {
   pk_columns: AuthProviderRequestsPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateAuthProviderRequestsArgs = {
   _append: InputMaybe<AuthProviderRequestsAppendInput>;
@@ -6384,12 +6231,10 @@ export type Mutation_RootUpdateAuthProviderRequestsArgs = {
   where: AuthProviderRequestsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateAuthProviderRequestsManyArgs = {
   updates: Array<AuthProviderRequestsUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateAuthProvidersArgs = {
@@ -6397,12 +6242,10 @@ export type Mutation_RootUpdateAuthProvidersArgs = {
   where: AuthProvidersBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateAuthProvidersManyArgs = {
   updates: Array<AuthProvidersUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateAuthRefreshTokenArgs = {
@@ -6410,19 +6253,16 @@ export type Mutation_RootUpdateAuthRefreshTokenArgs = {
   pk_columns: AuthRefreshTokensPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateAuthRefreshTokensArgs = {
   _set: InputMaybe<AuthRefreshTokensSetInput>;
   where: AuthRefreshTokensBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateAuthRefreshTokensManyArgs = {
   updates: Array<AuthRefreshTokensUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateAuthRoleArgs = {
@@ -6430,19 +6270,16 @@ export type Mutation_RootUpdateAuthRoleArgs = {
   pk_columns: AuthRolesPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateAuthRolesArgs = {
   _set: InputMaybe<AuthRolesSetInput>;
   where: AuthRolesBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateAuthRolesManyArgs = {
   updates: Array<AuthRolesUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateAuthUserProviderArgs = {
@@ -6450,19 +6287,16 @@ export type Mutation_RootUpdateAuthUserProviderArgs = {
   pk_columns: AuthUserProvidersPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateAuthUserProvidersArgs = {
   _set: InputMaybe<AuthUserProvidersSetInput>;
   where: AuthUserProvidersBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateAuthUserProvidersManyArgs = {
   updates: Array<AuthUserProvidersUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateAuthUserRoleArgs = {
@@ -6470,19 +6304,16 @@ export type Mutation_RootUpdateAuthUserRoleArgs = {
   pk_columns: AuthUserRolesPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateAuthUserRolesArgs = {
   _set: InputMaybe<AuthUserRolesSetInput>;
   where: AuthUserRolesBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateAuthUserRolesManyArgs = {
   updates: Array<AuthUserRolesUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateAuthUserSecurityKeyArgs = {
@@ -6491,7 +6322,6 @@ export type Mutation_RootUpdateAuthUserSecurityKeyArgs = {
   pk_columns: AuthUserSecurityKeysPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateAuthUserSecurityKeysArgs = {
   _inc: InputMaybe<AuthUserSecurityKeysIncInput>;
@@ -6499,19 +6329,16 @@ export type Mutation_RootUpdateAuthUserSecurityKeysArgs = {
   where: AuthUserSecurityKeysBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateAuthUserSecurityKeysManyArgs = {
   updates: Array<AuthUserSecurityKeysUpdates>;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateBudgetAllocationArgs = {
-  newRemainingAmountInUsd: Scalars['Int'];
-  projectId: Scalars['Uuid'];
+  newRemainingAmountInUsd: Scalars["Int"];
+  projectId: Scalars["Uuid"];
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateBudgetsArgs = {
@@ -6520,7 +6347,6 @@ export type Mutation_RootUpdateBudgetsArgs = {
   where: BudgetsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateBudgetsByPkArgs = {
   _inc: InputMaybe<BudgetsIncInput>;
@@ -6528,12 +6354,10 @@ export type Mutation_RootUpdateBudgetsByPkArgs = {
   pk_columns: BudgetsPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateBudgetsManyArgs = {
   updates: Array<BudgetsUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateGithubRepoDetailsArgs = {
@@ -6547,7 +6371,6 @@ export type Mutation_RootUpdateGithubRepoDetailsArgs = {
   where: GithubRepoDetailsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateGithubRepoDetailsByPkArgs = {
   _append: InputMaybe<GithubRepoDetailsAppendInput>;
@@ -6560,12 +6383,10 @@ export type Mutation_RootUpdateGithubRepoDetailsByPkArgs = {
   pk_columns: GithubRepoDetailsPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateGithubRepoDetailsManyArgs = {
   updates: Array<GithubRepoDetailsUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdatePaymentRequestsArgs = {
@@ -6574,7 +6395,6 @@ export type Mutation_RootUpdatePaymentRequestsArgs = {
   where: PaymentRequestsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdatePaymentRequestsByPkArgs = {
   _inc: InputMaybe<PaymentRequestsIncInput>;
@@ -6582,12 +6402,10 @@ export type Mutation_RootUpdatePaymentRequestsByPkArgs = {
   pk_columns: PaymentRequestsPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdatePaymentRequestsManyArgs = {
   updates: Array<PaymentRequestsUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdatePaymentsArgs = {
@@ -6601,7 +6419,6 @@ export type Mutation_RootUpdatePaymentsArgs = {
   where: PaymentsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdatePaymentsByPkArgs = {
   _append: InputMaybe<PaymentsAppendInput>;
@@ -6614,12 +6431,10 @@ export type Mutation_RootUpdatePaymentsByPkArgs = {
   pk_columns: PaymentsPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdatePaymentsManyArgs = {
   updates: Array<PaymentsUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdatePendingProjectLeaderInvitationsArgs = {
@@ -6628,7 +6443,6 @@ export type Mutation_RootUpdatePendingProjectLeaderInvitationsArgs = {
   where: PendingProjectLeaderInvitationsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdatePendingProjectLeaderInvitationsByPkArgs = {
   _inc: InputMaybe<PendingProjectLeaderInvitationsIncInput>;
@@ -6636,12 +6450,10 @@ export type Mutation_RootUpdatePendingProjectLeaderInvitationsByPkArgs = {
   pk_columns: PendingProjectLeaderInvitationsPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdatePendingProjectLeaderInvitationsManyArgs = {
   updates: Array<PendingProjectLeaderInvitationsUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateProfileInfoArgs = {
@@ -6651,17 +6463,15 @@ export type Mutation_RootUpdateProfileInfoArgs = {
   payoutSettings: InputMaybe<PayoutSettingsInput>;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateProjectArgs = {
-  id: Scalars['Uuid'];
-  logoUrl: InputMaybe<Scalars['Url']>;
-  longDescription: InputMaybe<Scalars['String']>;
-  name: InputMaybe<Scalars['String']>;
-  shortDescription: InputMaybe<Scalars['String']>;
-  telegramLink: InputMaybe<Scalars['Url']>;
+  id: Scalars["Uuid"];
+  logoUrl: InputMaybe<Scalars["Url"]>;
+  longDescription: InputMaybe<Scalars["String"]>;
+  name: InputMaybe<Scalars["String"]>;
+  shortDescription: InputMaybe<Scalars["String"]>;
+  telegramLink: InputMaybe<Scalars["Url"]>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateProjectDetailsArgs = {
@@ -6669,19 +6479,16 @@ export type Mutation_RootUpdateProjectDetailsArgs = {
   where: ProjectDetailsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateProjectDetailsByPkArgs = {
   _set: InputMaybe<ProjectDetailsSetInput>;
   pk_columns: ProjectDetailsPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateProjectDetailsManyArgs = {
   updates: Array<ProjectDetailsUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateProjectGithubReposArgs = {
@@ -6690,7 +6497,6 @@ export type Mutation_RootUpdateProjectGithubReposArgs = {
   where: ProjectGithubReposBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateProjectGithubReposByPkArgs = {
   _inc: InputMaybe<ProjectGithubReposIncInput>;
@@ -6698,12 +6504,10 @@ export type Mutation_RootUpdateProjectGithubReposByPkArgs = {
   pk_columns: ProjectGithubReposPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateProjectGithubReposManyArgs = {
   updates: Array<ProjectGithubReposUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateProjectLeadsArgs = {
@@ -6711,19 +6515,16 @@ export type Mutation_RootUpdateProjectLeadsArgs = {
   where: ProjectLeadsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateProjectLeadsByPkArgs = {
   _set: InputMaybe<ProjectLeadsSetInput>;
   pk_columns: ProjectLeadsPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateProjectLeadsManyArgs = {
   updates: Array<ProjectLeadsUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateProjectsArgs = {
@@ -6731,19 +6532,16 @@ export type Mutation_RootUpdateProjectsArgs = {
   where: ProjectsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateProjectsByPkArgs = {
   _set: InputMaybe<ProjectsSetInput>;
   pk_columns: ProjectsPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateProjectsManyArgs = {
   updates: Array<ProjectsUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateProjectsSponsorsArgs = {
@@ -6751,28 +6549,24 @@ export type Mutation_RootUpdateProjectsSponsorsArgs = {
   where: ProjectsSponsorsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateProjectsSponsorsByPkArgs = {
   _set: InputMaybe<ProjectsSponsorsSetInput>;
   pk_columns: ProjectsSponsorsPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateProjectsSponsorsManyArgs = {
   updates: Array<ProjectsSponsorsUpdates>;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateSponsorArgs = {
-  logoUrl: InputMaybe<Scalars['Url']>;
-  name: InputMaybe<Scalars['String']>;
-  sponsorId: Scalars['Uuid'];
-  url: InputMaybe<Scalars['Url']>;
+  logoUrl: InputMaybe<Scalars["Url"]>;
+  name: InputMaybe<Scalars["String"]>;
+  sponsorId: Scalars["Uuid"];
+  url: InputMaybe<Scalars["Url"]>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateSponsorsArgs = {
@@ -6780,19 +6574,16 @@ export type Mutation_RootUpdateSponsorsArgs = {
   where: SponsorsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateSponsorsByPkArgs = {
   _set: InputMaybe<SponsorsSetInput>;
   pk_columns: SponsorsPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateSponsorsManyArgs = {
   updates: Array<SponsorsUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateUserArgs = {
@@ -6805,7 +6596,6 @@ export type Mutation_RootUpdateUserArgs = {
   pk_columns: UsersPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateUserInfoArgs = {
   _append: InputMaybe<UserInfoAppendInput>;
@@ -6816,7 +6606,6 @@ export type Mutation_RootUpdateUserInfoArgs = {
   _set: InputMaybe<UserInfoSetInput>;
   where: UserInfoBoolExp;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateUserInfoByPkArgs = {
@@ -6829,12 +6618,10 @@ export type Mutation_RootUpdateUserInfoByPkArgs = {
   pk_columns: UserInfoPkColumnsInput;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateUserInfoManyArgs = {
   updates: Array<UserInfoUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateUsersArgs = {
@@ -6847,12 +6634,10 @@ export type Mutation_RootUpdateUsersArgs = {
   where: UsersBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateUsersManyArgs = {
   updates: Array<UsersUpdates>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateWorkItemsArgs = {
@@ -6861,14 +6646,12 @@ export type Mutation_RootUpdateWorkItemsArgs = {
   where: WorkItemsBoolExp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdateWorkItemsByPkArgs = {
   _inc: InputMaybe<WorkItemsIncInput>;
   _set: InputMaybe<WorkItemsSetInput>;
   pk_columns: WorkItemsPkColumnsInput;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdateWorkItemsManyArgs = {
@@ -6881,7 +6664,7 @@ export type Payment_Requests_Aggregate_Bool_Exp = {
 
 export type Payment_Requests_Aggregate_Bool_Exp_Count = {
   arguments: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<PaymentRequestsBoolExp>;
   predicate: IntComparisonExp;
 };
@@ -6942,13 +6725,13 @@ export type Payment_Requests_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Payment_Requests_StreamCursorValueInput = {
-  amountInUsd: InputMaybe<Scalars['bigint']>;
-  budgetId: InputMaybe<Scalars['uuid']>;
-  id: InputMaybe<Scalars['uuid']>;
-  invoiceReceivedAt: InputMaybe<Scalars['timestamp']>;
-  recipientId: InputMaybe<Scalars['bigint']>;
-  requestedAt: InputMaybe<Scalars['timestamp']>;
-  requestorId: InputMaybe<Scalars['uuid']>;
+  amountInUsd: InputMaybe<Scalars["bigint"]>;
+  budgetId: InputMaybe<Scalars["uuid"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  invoiceReceivedAt: InputMaybe<Scalars["timestamp"]>;
+  recipientId: InputMaybe<Scalars["bigint"]>;
+  requestedAt: InputMaybe<Scalars["timestamp"]>;
+  requestorId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** order by sum() on columns of table "payment_requests" */
@@ -6981,7 +6764,7 @@ export type Payments_Aggregate_Bool_Exp = {
 
 export type Payments_Aggregate_Bool_Exp_Count = {
   arguments: InputMaybe<Array<PaymentsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<PaymentsBoolExp>;
   predicate: IntComparisonExp;
 };
@@ -7034,12 +6817,12 @@ export type Payments_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Payments_StreamCursorValueInput = {
-  amount: InputMaybe<Scalars['numeric']>;
-  currencyCode: InputMaybe<Scalars['String']>;
-  id: InputMaybe<Scalars['uuid']>;
-  processedAt: InputMaybe<Scalars['timestamp']>;
-  receipt: InputMaybe<Scalars['jsonb']>;
-  requestId: InputMaybe<Scalars['uuid']>;
+  amount: InputMaybe<Scalars["numeric"]>;
+  currencyCode: InputMaybe<Scalars["String"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  processedAt: InputMaybe<Scalars["timestamp"]>;
+  receipt: InputMaybe<Scalars["jsonb"]>;
+  requestId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** order by sum() on columns of table "payments" */
@@ -7068,7 +6851,7 @@ export type Pending_Project_Leader_Invitations_Aggregate_Bool_Exp = {
 
 export type Pending_Project_Leader_Invitations_Aggregate_Bool_Exp_Count = {
   arguments: InputMaybe<Array<PendingProjectLeaderInvitationsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
   predicate: IntComparisonExp;
 };
@@ -7117,9 +6900,9 @@ export type Pending_Project_Leader_Invitations_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Pending_Project_Leader_Invitations_StreamCursorValueInput = {
-  githubUserId: InputMaybe<Scalars['bigint']>;
-  id: InputMaybe<Scalars['uuid']>;
-  projectId: InputMaybe<Scalars['uuid']>;
+  githubUserId: InputMaybe<Scalars["bigint"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  projectId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** order by sum() on columns of table "pending_project_leader_invitations" */
@@ -7152,12 +6935,12 @@ export type Project_Details_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Project_Details_StreamCursorValueInput = {
-  logoUrl: InputMaybe<Scalars['String']>;
-  longDescription: InputMaybe<Scalars['String']>;
-  name: InputMaybe<Scalars['String']>;
-  projectId: InputMaybe<Scalars['uuid']>;
-  shortDescription: InputMaybe<Scalars['String']>;
-  telegramLink: InputMaybe<Scalars['String']>;
+  logoUrl: InputMaybe<Scalars["String"]>;
+  longDescription: InputMaybe<Scalars["String"]>;
+  name: InputMaybe<Scalars["String"]>;
+  projectId: InputMaybe<Scalars["uuid"]>;
+  shortDescription: InputMaybe<Scalars["String"]>;
+  telegramLink: InputMaybe<Scalars["String"]>;
 };
 
 export type Project_Github_Repos_Aggregate_Bool_Exp = {
@@ -7166,7 +6949,7 @@ export type Project_Github_Repos_Aggregate_Bool_Exp = {
 
 export type Project_Github_Repos_Aggregate_Bool_Exp_Count = {
   arguments: InputMaybe<Array<ProjectGithubReposSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<ProjectGithubReposBoolExp>;
   predicate: IntComparisonExp;
 };
@@ -7213,8 +6996,8 @@ export type Project_Github_Repos_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Project_Github_Repos_StreamCursorValueInput = {
-  githubRepoId: InputMaybe<Scalars['bigint']>;
-  projectId: InputMaybe<Scalars['uuid']>;
+  githubRepoId: InputMaybe<Scalars["bigint"]>;
+  projectId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** order by sum() on columns of table "project_github_repos" */
@@ -7243,7 +7026,7 @@ export type Project_Leads_Aggregate_Bool_Exp = {
 
 export type Project_Leads_Aggregate_Bool_Exp_Count = {
   arguments: InputMaybe<Array<ProjectLeadsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<ProjectLeadsBoolExp>;
   predicate: IntComparisonExp;
 };
@@ -7270,8 +7053,8 @@ export type Project_Leads_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Project_Leads_StreamCursorValueInput = {
-  projectId: InputMaybe<Scalars['uuid']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  projectId: InputMaybe<Scalars["uuid"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 export type Projects_Sponsors_Aggregate_Bool_Exp = {
@@ -7280,7 +7063,7 @@ export type Projects_Sponsors_Aggregate_Bool_Exp = {
 
 export type Projects_Sponsors_Aggregate_Bool_Exp_Count = {
   arguments: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<ProjectsSponsorsBoolExp>;
   predicate: IntComparisonExp;
 };
@@ -7307,8 +7090,8 @@ export type Projects_Sponsors_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Projects_Sponsors_StreamCursorValueInput = {
-  projectId: InputMaybe<Scalars['uuid']>;
-  sponsorId: InputMaybe<Scalars['uuid']>;
+  projectId: InputMaybe<Scalars["uuid"]>;
+  sponsorId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** Streaming cursor of the table "projects" */
@@ -7321,11 +7104,11 @@ export type Projects_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Projects_StreamCursorValueInput = {
-  id: InputMaybe<Scalars['uuid']>;
+  id: InputMaybe<Scalars["uuid"]>;
 };
 
 export type Query_Root = {
-  __typename?: 'query_root';
+  __typename?: "query_root";
   /** fetch data from the table: "auth.github_users" */
   authGithubUsers: Array<AuthGithubUsers>;
   /** fetch aggregated fields from the table: "auth.github_users" */
@@ -7390,8 +7173,8 @@ export type Query_Root = {
   githubRepoDetailsAggregate: GithubRepoDetailsAggregate;
   /** fetch data from the table: "github_repo_details" using primary key columns */
   githubRepoDetailsByPk: Maybe<GithubRepoDetails>;
-  hello: Scalars['String'];
-  helloFromGithubProxy: Scalars['String'];
+  hello: Scalars["String"];
+  helloFromGithubProxy: Scalars["String"];
   new: Query;
   /** An array relationship */
   paymentRequests: Array<PaymentRequests>;
@@ -7469,561 +7252,488 @@ export type Query_Root = {
   workItemsByPk: Maybe<WorkItems>;
 };
 
-
 export type Query_RootAuthGithubUsersArgs = {
   distinctOn: InputMaybe<Array<AuthGithubUsersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthGithubUsersOrderBy>>;
   where: InputMaybe<AuthGithubUsersBoolExp>;
 };
-
 
 export type Query_RootAuthGithubUsersAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthGithubUsersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthGithubUsersOrderBy>>;
   where: InputMaybe<AuthGithubUsersBoolExp>;
 };
 
-
 export type Query_RootAuthProviderArgs = {
-  id: Scalars['String'];
+  id: Scalars["String"];
 };
-
 
 export type Query_RootAuthProviderRequestArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Query_RootAuthProviderRequestsArgs = {
   distinctOn: InputMaybe<Array<AuthProviderRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthProviderRequestsOrderBy>>;
   where: InputMaybe<AuthProviderRequestsBoolExp>;
 };
-
 
 export type Query_RootAuthProviderRequestsAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthProviderRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthProviderRequestsOrderBy>>;
   where: InputMaybe<AuthProviderRequestsBoolExp>;
 };
 
-
 export type Query_RootAuthProvidersArgs = {
   distinctOn: InputMaybe<Array<AuthProvidersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthProvidersOrderBy>>;
   where: InputMaybe<AuthProvidersBoolExp>;
 };
-
 
 export type Query_RootAuthProvidersAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthProvidersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthProvidersOrderBy>>;
   where: InputMaybe<AuthProvidersBoolExp>;
 };
 
-
 export type Query_RootAuthRefreshTokenArgs = {
-  refreshToken: Scalars['uuid'];
+  refreshToken: Scalars["uuid"];
 };
-
 
 export type Query_RootAuthRefreshTokensArgs = {
   distinctOn: InputMaybe<Array<AuthRefreshTokensSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthRefreshTokensOrderBy>>;
   where: InputMaybe<AuthRefreshTokensBoolExp>;
 };
-
 
 export type Query_RootAuthRefreshTokensAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthRefreshTokensSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthRefreshTokensOrderBy>>;
   where: InputMaybe<AuthRefreshTokensBoolExp>;
 };
 
-
 export type Query_RootAuthRoleArgs = {
-  role: Scalars['String'];
+  role: Scalars["String"];
 };
-
 
 export type Query_RootAuthRolesArgs = {
   distinctOn: InputMaybe<Array<AuthRolesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthRolesOrderBy>>;
   where: InputMaybe<AuthRolesBoolExp>;
 };
-
 
 export type Query_RootAuthRolesAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthRolesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthRolesOrderBy>>;
   where: InputMaybe<AuthRolesBoolExp>;
 };
 
-
 export type Query_RootAuthUserProviderArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Query_RootAuthUserProvidersArgs = {
   distinctOn: InputMaybe<Array<AuthUserProvidersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserProvidersOrderBy>>;
   where: InputMaybe<AuthUserProvidersBoolExp>;
 };
-
 
 export type Query_RootAuthUserProvidersAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthUserProvidersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserProvidersOrderBy>>;
   where: InputMaybe<AuthUserProvidersBoolExp>;
 };
 
-
 export type Query_RootAuthUserRoleArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Query_RootAuthUserRolesArgs = {
   distinctOn: InputMaybe<Array<AuthUserRolesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserRolesOrderBy>>;
   where: InputMaybe<AuthUserRolesBoolExp>;
 };
-
 
 export type Query_RootAuthUserRolesAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthUserRolesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserRolesOrderBy>>;
   where: InputMaybe<AuthUserRolesBoolExp>;
 };
 
-
 export type Query_RootAuthUserSecurityKeyArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Query_RootAuthUserSecurityKeysArgs = {
   distinctOn: InputMaybe<Array<AuthUserSecurityKeysSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserSecurityKeysOrderBy>>;
   where: InputMaybe<AuthUserSecurityKeysBoolExp>;
 };
-
 
 export type Query_RootAuthUserSecurityKeysAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthUserSecurityKeysSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserSecurityKeysOrderBy>>;
   where: InputMaybe<AuthUserSecurityKeysBoolExp>;
 };
 
-
 export type Query_RootBudgetsArgs = {
   distinctOn: InputMaybe<Array<BudgetsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<BudgetsOrderBy>>;
   where: InputMaybe<BudgetsBoolExp>;
 };
-
 
 export type Query_RootBudgetsAggregateArgs = {
   distinctOn: InputMaybe<Array<BudgetsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<BudgetsOrderBy>>;
   where: InputMaybe<BudgetsBoolExp>;
 };
 
-
 export type Query_RootBudgetsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Query_RootFetchIssueArgs = {
-  issueNumber: Scalars['Int'];
-  repoName: Scalars['String'];
-  repoOwner: Scalars['String'];
+  issueNumber: Scalars["Int"];
+  repoName: Scalars["String"];
+  repoOwner: Scalars["String"];
 };
-
 
 export type Query_RootFetchIssueByRepositoryIdArgs = {
-  issueNumber: Scalars['Int'];
-  repositoryId: Scalars['Int'];
+  issueNumber: Scalars["Int"];
+  repositoryId: Scalars["Int"];
 };
-
 
 export type Query_RootFetchRepositoryDetailsArgs = {
-  id: Scalars['Int'];
+  id: Scalars["Int"];
 };
-
 
 export type Query_RootFetchRepositoryPRsArgs = {
-  id: Scalars['Int'];
+  id: Scalars["Int"];
 };
-
 
 export type Query_RootFetchUserDetailsArgs = {
-  username: Scalars['String'];
+  username: Scalars["String"];
 };
-
 
 export type Query_RootFetchUserDetailsByIdArgs = {
-  userId: Scalars['Int'];
+  userId: Scalars["Int"];
 };
-
 
 export type Query_RootGithubRepoDetailsArgs = {
   distinctOn: InputMaybe<Array<GithubRepoDetailsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<GithubRepoDetailsOrderBy>>;
   where: InputMaybe<GithubRepoDetailsBoolExp>;
 };
-
 
 export type Query_RootGithubRepoDetailsAggregateArgs = {
   distinctOn: InputMaybe<Array<GithubRepoDetailsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<GithubRepoDetailsOrderBy>>;
   where: InputMaybe<GithubRepoDetailsBoolExp>;
 };
 
-
 export type Query_RootGithubRepoDetailsByPkArgs = {
-  id: Scalars['bigint'];
+  id: Scalars["bigint"];
 };
-
 
 export type Query_RootPaymentRequestsArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
-
 
 export type Query_RootPaymentRequestsAggregateArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
-
 export type Query_RootPaymentRequestsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Query_RootPaymentsArgs = {
   distinctOn: InputMaybe<Array<PaymentsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentsOrderBy>>;
   where: InputMaybe<PaymentsBoolExp>;
 };
-
 
 export type Query_RootPaymentsAggregateArgs = {
   distinctOn: InputMaybe<Array<PaymentsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentsOrderBy>>;
   where: InputMaybe<PaymentsBoolExp>;
 };
 
-
 export type Query_RootPaymentsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Query_RootPendingProjectLeaderInvitationsArgs = {
   distinctOn: InputMaybe<Array<PendingProjectLeaderInvitationsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PendingProjectLeaderInvitationsOrderBy>>;
   where: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
 };
-
 
 export type Query_RootPendingProjectLeaderInvitationsAggregateArgs = {
   distinctOn: InputMaybe<Array<PendingProjectLeaderInvitationsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PendingProjectLeaderInvitationsOrderBy>>;
   where: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
 };
 
-
 export type Query_RootPendingProjectLeaderInvitationsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Query_RootProjectDetailsArgs = {
   distinctOn: InputMaybe<Array<ProjectDetailsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectDetailsOrderBy>>;
   where: InputMaybe<ProjectDetailsBoolExp>;
 };
-
 
 export type Query_RootProjectDetailsAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectDetailsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectDetailsOrderBy>>;
   where: InputMaybe<ProjectDetailsBoolExp>;
 };
 
-
 export type Query_RootProjectDetailsByPkArgs = {
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
 };
-
 
 export type Query_RootProjectGithubReposArgs = {
   distinctOn: InputMaybe<Array<ProjectGithubReposSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectGithubReposOrderBy>>;
   where: InputMaybe<ProjectGithubReposBoolExp>;
 };
-
 
 export type Query_RootProjectGithubReposAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectGithubReposSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectGithubReposOrderBy>>;
   where: InputMaybe<ProjectGithubReposBoolExp>;
 };
 
-
 export type Query_RootProjectGithubReposByPkArgs = {
-  githubRepoId: Scalars['bigint'];
-  projectId: Scalars['uuid'];
+  githubRepoId: Scalars["bigint"];
+  projectId: Scalars["uuid"];
 };
-
 
 export type Query_RootProjectLeadsArgs = {
   distinctOn: InputMaybe<Array<ProjectLeadsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectLeadsOrderBy>>;
   where: InputMaybe<ProjectLeadsBoolExp>;
 };
-
 
 export type Query_RootProjectLeadsAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectLeadsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectLeadsOrderBy>>;
   where: InputMaybe<ProjectLeadsBoolExp>;
 };
 
-
 export type Query_RootProjectLeadsByPkArgs = {
-  projectId: Scalars['uuid'];
-  userId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
+  userId: Scalars["uuid"];
 };
-
 
 export type Query_RootProjectsArgs = {
   distinctOn: InputMaybe<Array<ProjectsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectsOrderBy>>;
   where: InputMaybe<ProjectsBoolExp>;
 };
-
 
 export type Query_RootProjectsAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectsOrderBy>>;
   where: InputMaybe<ProjectsBoolExp>;
 };
 
-
 export type Query_RootProjectsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Query_RootProjectsSponsorsArgs = {
   distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectsSponsorsOrderBy>>;
   where: InputMaybe<ProjectsSponsorsBoolExp>;
 };
-
 
 export type Query_RootProjectsSponsorsAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectsSponsorsOrderBy>>;
   where: InputMaybe<ProjectsSponsorsBoolExp>;
 };
 
-
 export type Query_RootProjectsSponsorsByPkArgs = {
-  projectId: Scalars['uuid'];
-  sponsorId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
+  sponsorId: Scalars["uuid"];
 };
-
 
 export type Query_RootSearchIssuesArgs = {
-  order: InputMaybe<Scalars['String']>;
-  page: InputMaybe<Scalars['Int']>;
-  perPage: InputMaybe<Scalars['Int']>;
-  query: Scalars['String'];
-  sort: InputMaybe<Scalars['String']>;
+  order: InputMaybe<Scalars["String"]>;
+  page: InputMaybe<Scalars["Int"]>;
+  perPage: InputMaybe<Scalars["Int"]>;
+  query: Scalars["String"];
+  sort: InputMaybe<Scalars["String"]>;
 };
-
 
 export type Query_RootSearchUsersArgs = {
-  order: InputMaybe<Scalars['String']>;
-  page: InputMaybe<Scalars['Int']>;
-  perPage: InputMaybe<Scalars['Int']>;
-  query: Scalars['String'];
-  sort: InputMaybe<Scalars['String']>;
+  order: InputMaybe<Scalars["String"]>;
+  page: InputMaybe<Scalars["Int"]>;
+  perPage: InputMaybe<Scalars["Int"]>;
+  query: Scalars["String"];
+  sort: InputMaybe<Scalars["String"]>;
 };
-
 
 export type Query_RootSponsorsArgs = {
   distinctOn: InputMaybe<Array<SponsorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<SponsorsOrderBy>>;
   where: InputMaybe<SponsorsBoolExp>;
 };
-
 
 export type Query_RootSponsorsAggregateArgs = {
   distinctOn: InputMaybe<Array<SponsorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<SponsorsOrderBy>>;
   where: InputMaybe<SponsorsBoolExp>;
 };
 
-
 export type Query_RootSponsorsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Query_RootUserArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Query_RootUserInfoArgs = {
   distinctOn: InputMaybe<Array<UserInfoSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<UserInfoOrderBy>>;
   where: InputMaybe<UserInfoBoolExp>;
 };
-
 
 export type Query_RootUserInfoAggregateArgs = {
   distinctOn: InputMaybe<Array<UserInfoSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<UserInfoOrderBy>>;
   where: InputMaybe<UserInfoBoolExp>;
 };
 
-
 export type Query_RootUserInfoByPkArgs = {
-  userId: Scalars['uuid'];
+  userId: Scalars["uuid"];
 };
-
 
 export type Query_RootUsersArgs = {
   distinctOn: InputMaybe<Array<UsersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<UsersOrderBy>>;
   where: InputMaybe<UsersBoolExp>;
 };
-
 
 export type Query_RootUsersAggregateArgs = {
   distinctOn: InputMaybe<Array<UsersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<UsersOrderBy>>;
   where: InputMaybe<UsersBoolExp>;
 };
 
-
 export type Query_RootWorkItemsArgs = {
   distinctOn: InputMaybe<Array<WorkItemsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<WorkItemsOrderBy>>;
   where: InputMaybe<WorkItemsBoolExp>;
 };
-
 
 export type Query_RootWorkItemsAggregateArgs = {
   distinctOn: InputMaybe<Array<WorkItemsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<WorkItemsOrderBy>>;
   where: InputMaybe<WorkItemsBoolExp>;
 };
 
-
 export type Query_RootWorkItemsByPkArgs = {
-  issueNumber: Scalars['bigint'];
-  paymentId: Scalars['uuid'];
-  repoId: Scalars['bigint'];
+  issueNumber: Scalars["bigint"];
+  paymentId: Scalars["uuid"];
+  repoId: Scalars["bigint"];
 };
 
 /** Streaming cursor of the table "sponsors" */
@@ -8036,14 +7746,14 @@ export type Sponsors_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Sponsors_StreamCursorValueInput = {
-  id: InputMaybe<Scalars['uuid']>;
-  logoUrl: InputMaybe<Scalars['String']>;
-  name: InputMaybe<Scalars['String']>;
-  url: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars["uuid"]>;
+  logoUrl: InputMaybe<Scalars["String"]>;
+  name: InputMaybe<Scalars["String"]>;
+  url: InputMaybe<Scalars["String"]>;
 };
 
 export type Subscription_Root = {
-  __typename?: 'subscription_root';
+  __typename?: "subscription_root";
   /** fetch data from the table: "auth.github_users" */
   authGithubUsers: Array<AuthGithubUsers>;
   /** fetch aggregated fields from the table: "auth.github_users" */
@@ -8220,662 +7930,575 @@ export type Subscription_Root = {
   workItemsStream: Array<WorkItems>;
 };
 
-
 export type Subscription_RootAuthGithubUsersArgs = {
   distinctOn: InputMaybe<Array<AuthGithubUsersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthGithubUsersOrderBy>>;
   where: InputMaybe<AuthGithubUsersBoolExp>;
 };
-
 
 export type Subscription_RootAuthGithubUsersAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthGithubUsersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthGithubUsersOrderBy>>;
   where: InputMaybe<AuthGithubUsersBoolExp>;
 };
 
-
 export type Subscription_RootAuthGithubUsersStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<Auth_Github_Users_StreamCursorInput>>;
   where: InputMaybe<AuthGithubUsersBoolExp>;
 };
 
-
 export type Subscription_RootAuthProviderArgs = {
-  id: Scalars['String'];
+  id: Scalars["String"];
 };
-
 
 export type Subscription_RootAuthProviderRequestArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Subscription_RootAuthProviderRequestsArgs = {
   distinctOn: InputMaybe<Array<AuthProviderRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthProviderRequestsOrderBy>>;
   where: InputMaybe<AuthProviderRequestsBoolExp>;
 };
-
 
 export type Subscription_RootAuthProviderRequestsAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthProviderRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthProviderRequestsOrderBy>>;
   where: InputMaybe<AuthProviderRequestsBoolExp>;
 };
 
-
 export type Subscription_RootAuthProviderRequestsStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<AuthProviderRequests_StreamCursorInput>>;
   where: InputMaybe<AuthProviderRequestsBoolExp>;
 };
 
-
 export type Subscription_RootAuthProvidersArgs = {
   distinctOn: InputMaybe<Array<AuthProvidersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthProvidersOrderBy>>;
   where: InputMaybe<AuthProvidersBoolExp>;
 };
-
 
 export type Subscription_RootAuthProvidersAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthProvidersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthProvidersOrderBy>>;
   where: InputMaybe<AuthProvidersBoolExp>;
 };
 
-
 export type Subscription_RootAuthProvidersStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<AuthProviders_StreamCursorInput>>;
   where: InputMaybe<AuthProvidersBoolExp>;
 };
 
-
 export type Subscription_RootAuthRefreshTokenArgs = {
-  refreshToken: Scalars['uuid'];
+  refreshToken: Scalars["uuid"];
 };
-
 
 export type Subscription_RootAuthRefreshTokensArgs = {
   distinctOn: InputMaybe<Array<AuthRefreshTokensSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthRefreshTokensOrderBy>>;
   where: InputMaybe<AuthRefreshTokensBoolExp>;
 };
-
 
 export type Subscription_RootAuthRefreshTokensAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthRefreshTokensSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthRefreshTokensOrderBy>>;
   where: InputMaybe<AuthRefreshTokensBoolExp>;
 };
 
-
 export type Subscription_RootAuthRefreshTokensStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<AuthRefreshTokens_StreamCursorInput>>;
   where: InputMaybe<AuthRefreshTokensBoolExp>;
 };
 
-
 export type Subscription_RootAuthRoleArgs = {
-  role: Scalars['String'];
+  role: Scalars["String"];
 };
-
 
 export type Subscription_RootAuthRolesArgs = {
   distinctOn: InputMaybe<Array<AuthRolesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthRolesOrderBy>>;
   where: InputMaybe<AuthRolesBoolExp>;
 };
-
 
 export type Subscription_RootAuthRolesAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthRolesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthRolesOrderBy>>;
   where: InputMaybe<AuthRolesBoolExp>;
 };
 
-
 export type Subscription_RootAuthRolesStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<AuthRoles_StreamCursorInput>>;
   where: InputMaybe<AuthRolesBoolExp>;
 };
 
-
 export type Subscription_RootAuthUserProviderArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Subscription_RootAuthUserProvidersArgs = {
   distinctOn: InputMaybe<Array<AuthUserProvidersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserProvidersOrderBy>>;
   where: InputMaybe<AuthUserProvidersBoolExp>;
 };
-
 
 export type Subscription_RootAuthUserProvidersAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthUserProvidersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserProvidersOrderBy>>;
   where: InputMaybe<AuthUserProvidersBoolExp>;
 };
 
-
 export type Subscription_RootAuthUserProvidersStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<AuthUserProviders_StreamCursorInput>>;
   where: InputMaybe<AuthUserProvidersBoolExp>;
 };
 
-
 export type Subscription_RootAuthUserRoleArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Subscription_RootAuthUserRolesArgs = {
   distinctOn: InputMaybe<Array<AuthUserRolesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserRolesOrderBy>>;
   where: InputMaybe<AuthUserRolesBoolExp>;
 };
-
 
 export type Subscription_RootAuthUserRolesAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthUserRolesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserRolesOrderBy>>;
   where: InputMaybe<AuthUserRolesBoolExp>;
 };
 
-
 export type Subscription_RootAuthUserRolesStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<AuthUserRoles_StreamCursorInput>>;
   where: InputMaybe<AuthUserRolesBoolExp>;
 };
 
-
 export type Subscription_RootAuthUserSecurityKeyArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Subscription_RootAuthUserSecurityKeysArgs = {
   distinctOn: InputMaybe<Array<AuthUserSecurityKeysSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserSecurityKeysOrderBy>>;
   where: InputMaybe<AuthUserSecurityKeysBoolExp>;
 };
-
 
 export type Subscription_RootAuthUserSecurityKeysAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthUserSecurityKeysSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserSecurityKeysOrderBy>>;
   where: InputMaybe<AuthUserSecurityKeysBoolExp>;
 };
 
-
 export type Subscription_RootAuthUserSecurityKeysStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<AuthUserSecurityKeys_StreamCursorInput>>;
   where: InputMaybe<AuthUserSecurityKeysBoolExp>;
 };
 
-
 export type Subscription_RootBudgetsArgs = {
   distinctOn: InputMaybe<Array<BudgetsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<BudgetsOrderBy>>;
   where: InputMaybe<BudgetsBoolExp>;
 };
-
 
 export type Subscription_RootBudgetsAggregateArgs = {
   distinctOn: InputMaybe<Array<BudgetsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<BudgetsOrderBy>>;
   where: InputMaybe<BudgetsBoolExp>;
 };
 
-
 export type Subscription_RootBudgetsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
-
 export type Subscription_RootBudgetsStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<Budgets_StreamCursorInput>>;
   where: InputMaybe<BudgetsBoolExp>;
 };
 
-
 export type Subscription_RootGithubRepoDetailsArgs = {
   distinctOn: InputMaybe<Array<GithubRepoDetailsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<GithubRepoDetailsOrderBy>>;
   where: InputMaybe<GithubRepoDetailsBoolExp>;
 };
-
 
 export type Subscription_RootGithubRepoDetailsAggregateArgs = {
   distinctOn: InputMaybe<Array<GithubRepoDetailsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<GithubRepoDetailsOrderBy>>;
   where: InputMaybe<GithubRepoDetailsBoolExp>;
 };
 
-
 export type Subscription_RootGithubRepoDetailsByPkArgs = {
-  id: Scalars['bigint'];
+  id: Scalars["bigint"];
 };
 
-
 export type Subscription_RootGithubRepoDetailsStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<Github_Repo_Details_StreamCursorInput>>;
   where: InputMaybe<GithubRepoDetailsBoolExp>;
 };
 
-
 export type Subscription_RootPaymentRequestsArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
-
 
 export type Subscription_RootPaymentRequestsAggregateArgs = {
   distinctOn: InputMaybe<Array<PaymentRequestsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentRequestsOrderBy>>;
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
-
 export type Subscription_RootPaymentRequestsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
-
 export type Subscription_RootPaymentRequestsStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<Payment_Requests_StreamCursorInput>>;
   where: InputMaybe<PaymentRequestsBoolExp>;
 };
 
-
 export type Subscription_RootPaymentsArgs = {
   distinctOn: InputMaybe<Array<PaymentsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentsOrderBy>>;
   where: InputMaybe<PaymentsBoolExp>;
 };
-
 
 export type Subscription_RootPaymentsAggregateArgs = {
   distinctOn: InputMaybe<Array<PaymentsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PaymentsOrderBy>>;
   where: InputMaybe<PaymentsBoolExp>;
 };
 
-
 export type Subscription_RootPaymentsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
-
 export type Subscription_RootPaymentsStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<Payments_StreamCursorInput>>;
   where: InputMaybe<PaymentsBoolExp>;
 };
 
-
 export type Subscription_RootPendingProjectLeaderInvitationsArgs = {
   distinctOn: InputMaybe<Array<PendingProjectLeaderInvitationsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PendingProjectLeaderInvitationsOrderBy>>;
   where: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
 };
-
 
 export type Subscription_RootPendingProjectLeaderInvitationsAggregateArgs = {
   distinctOn: InputMaybe<Array<PendingProjectLeaderInvitationsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<PendingProjectLeaderInvitationsOrderBy>>;
   where: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
 };
 
-
 export type Subscription_RootPendingProjectLeaderInvitationsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
-
 export type Subscription_RootPendingProjectLeaderInvitationsStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<Pending_Project_Leader_Invitations_StreamCursorInput>>;
   where: InputMaybe<PendingProjectLeaderInvitationsBoolExp>;
 };
 
-
 export type Subscription_RootProjectDetailsArgs = {
   distinctOn: InputMaybe<Array<ProjectDetailsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectDetailsOrderBy>>;
   where: InputMaybe<ProjectDetailsBoolExp>;
 };
-
 
 export type Subscription_RootProjectDetailsAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectDetailsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectDetailsOrderBy>>;
   where: InputMaybe<ProjectDetailsBoolExp>;
 };
 
-
 export type Subscription_RootProjectDetailsByPkArgs = {
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
 };
 
-
 export type Subscription_RootProjectDetailsStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<Project_Details_StreamCursorInput>>;
   where: InputMaybe<ProjectDetailsBoolExp>;
 };
 
-
 export type Subscription_RootProjectGithubReposArgs = {
   distinctOn: InputMaybe<Array<ProjectGithubReposSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectGithubReposOrderBy>>;
   where: InputMaybe<ProjectGithubReposBoolExp>;
 };
-
 
 export type Subscription_RootProjectGithubReposAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectGithubReposSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectGithubReposOrderBy>>;
   where: InputMaybe<ProjectGithubReposBoolExp>;
 };
 
-
 export type Subscription_RootProjectGithubReposByPkArgs = {
-  githubRepoId: Scalars['bigint'];
-  projectId: Scalars['uuid'];
+  githubRepoId: Scalars["bigint"];
+  projectId: Scalars["uuid"];
 };
 
-
 export type Subscription_RootProjectGithubReposStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<Project_Github_Repos_StreamCursorInput>>;
   where: InputMaybe<ProjectGithubReposBoolExp>;
 };
 
-
 export type Subscription_RootProjectLeadsArgs = {
   distinctOn: InputMaybe<Array<ProjectLeadsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectLeadsOrderBy>>;
   where: InputMaybe<ProjectLeadsBoolExp>;
 };
-
 
 export type Subscription_RootProjectLeadsAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectLeadsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectLeadsOrderBy>>;
   where: InputMaybe<ProjectLeadsBoolExp>;
 };
 
-
 export type Subscription_RootProjectLeadsByPkArgs = {
-  projectId: Scalars['uuid'];
-  userId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
+  userId: Scalars["uuid"];
 };
 
-
 export type Subscription_RootProjectLeadsStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<Project_Leads_StreamCursorInput>>;
   where: InputMaybe<ProjectLeadsBoolExp>;
 };
 
-
 export type Subscription_RootProjectsArgs = {
   distinctOn: InputMaybe<Array<ProjectsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectsOrderBy>>;
   where: InputMaybe<ProjectsBoolExp>;
 };
-
 
 export type Subscription_RootProjectsAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectsOrderBy>>;
   where: InputMaybe<ProjectsBoolExp>;
 };
 
-
 export type Subscription_RootProjectsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Subscription_RootProjectsSponsorsArgs = {
   distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectsSponsorsOrderBy>>;
   where: InputMaybe<ProjectsSponsorsBoolExp>;
 };
-
 
 export type Subscription_RootProjectsSponsorsAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectsSponsorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectsSponsorsOrderBy>>;
   where: InputMaybe<ProjectsSponsorsBoolExp>;
 };
 
-
 export type Subscription_RootProjectsSponsorsByPkArgs = {
-  projectId: Scalars['uuid'];
-  sponsorId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
+  sponsorId: Scalars["uuid"];
 };
 
-
 export type Subscription_RootProjectsSponsorsStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<Projects_Sponsors_StreamCursorInput>>;
   where: InputMaybe<ProjectsSponsorsBoolExp>;
 };
 
-
 export type Subscription_RootProjectsStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<Projects_StreamCursorInput>>;
   where: InputMaybe<ProjectsBoolExp>;
 };
 
-
 export type Subscription_RootSponsorsArgs = {
   distinctOn: InputMaybe<Array<SponsorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<SponsorsOrderBy>>;
   where: InputMaybe<SponsorsBoolExp>;
 };
-
 
 export type Subscription_RootSponsorsAggregateArgs = {
   distinctOn: InputMaybe<Array<SponsorsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<SponsorsOrderBy>>;
   where: InputMaybe<SponsorsBoolExp>;
 };
 
-
 export type Subscription_RootSponsorsByPkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
-
 export type Subscription_RootSponsorsStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<Sponsors_StreamCursorInput>>;
   where: InputMaybe<SponsorsBoolExp>;
 };
 
-
 export type Subscription_RootUserArgs = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
-
 
 export type Subscription_RootUserInfoArgs = {
   distinctOn: InputMaybe<Array<UserInfoSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<UserInfoOrderBy>>;
   where: InputMaybe<UserInfoBoolExp>;
 };
-
 
 export type Subscription_RootUserInfoAggregateArgs = {
   distinctOn: InputMaybe<Array<UserInfoSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<UserInfoOrderBy>>;
   where: InputMaybe<UserInfoBoolExp>;
 };
 
-
 export type Subscription_RootUserInfoByPkArgs = {
-  userId: Scalars['uuid'];
+  userId: Scalars["uuid"];
 };
 
-
 export type Subscription_RootUserInfoStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<User_Info_StreamCursorInput>>;
   where: InputMaybe<UserInfoBoolExp>;
 };
 
-
 export type Subscription_RootUsersArgs = {
   distinctOn: InputMaybe<Array<UsersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<UsersOrderBy>>;
   where: InputMaybe<UsersBoolExp>;
 };
-
 
 export type Subscription_RootUsersAggregateArgs = {
   distinctOn: InputMaybe<Array<UsersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<UsersOrderBy>>;
   where: InputMaybe<UsersBoolExp>;
 };
 
-
 export type Subscription_RootUsersStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<Users_StreamCursorInput>>;
   where: InputMaybe<UsersBoolExp>;
 };
 
-
 export type Subscription_RootWorkItemsArgs = {
   distinctOn: InputMaybe<Array<WorkItemsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<WorkItemsOrderBy>>;
   where: InputMaybe<WorkItemsBoolExp>;
 };
-
 
 export type Subscription_RootWorkItemsAggregateArgs = {
   distinctOn: InputMaybe<Array<WorkItemsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<WorkItemsOrderBy>>;
   where: InputMaybe<WorkItemsBoolExp>;
 };
 
-
 export type Subscription_RootWorkItemsByPkArgs = {
-  issueNumber: Scalars['bigint'];
-  paymentId: Scalars['uuid'];
-  repoId: Scalars['bigint'];
+  issueNumber: Scalars["bigint"];
+  paymentId: Scalars["uuid"];
+  repoId: Scalars["bigint"];
 };
 
-
 export type Subscription_RootWorkItemsStreamArgs = {
-  batchSize: Scalars['Int'];
+  batchSize: Scalars["Int"];
   cursor: Array<InputMaybe<Work_Items_StreamCursorInput>>;
   where: InputMaybe<WorkItemsBoolExp>;
 };
@@ -8890,42 +8513,42 @@ export type User_Info_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type User_Info_StreamCursorValueInput = {
-  arePayoutSettingsValid: InputMaybe<Scalars['Boolean']>;
-  contactInformation: InputMaybe<Scalars['jsonb']>;
-  identity: InputMaybe<Scalars['jsonb']>;
-  location: InputMaybe<Scalars['jsonb']>;
-  payoutSettings: InputMaybe<Scalars['jsonb']>;
-  userId: InputMaybe<Scalars['uuid']>;
+  arePayoutSettingsValid: InputMaybe<Scalars["Boolean"]>;
+  contactInformation: InputMaybe<Scalars["jsonb"]>;
+  identity: InputMaybe<Scalars["jsonb"]>;
+  location: InputMaybe<Scalars["jsonb"]>;
+  payoutSettings: InputMaybe<Scalars["jsonb"]>;
+  userId: InputMaybe<Scalars["uuid"]>;
 };
 
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type Users = {
-  __typename?: 'users';
-  activeMfaType: Maybe<Scalars['String']>;
-  avatarUrl: Scalars['String'];
-  createdAt: Scalars['timestamptz'];
-  currentChallenge: Maybe<Scalars['String']>;
-  defaultRole: Scalars['String'];
+  __typename?: "users";
+  activeMfaType: Maybe<Scalars["String"]>;
+  avatarUrl: Scalars["String"];
+  createdAt: Scalars["timestamptz"];
+  currentChallenge: Maybe<Scalars["String"]>;
+  defaultRole: Scalars["String"];
   /** An object relationship */
   defaultRoleByRole: AuthRoles;
-  disabled: Scalars['Boolean'];
-  displayName: Scalars['String'];
-  email: Maybe<Scalars['citext']>;
-  emailVerified: Scalars['Boolean'];
+  disabled: Scalars["Boolean"];
+  displayName: Scalars["String"];
+  email: Maybe<Scalars["citext"]>;
+  emailVerified: Scalars["Boolean"];
   /** An object relationship */
   githubUser: Maybe<AuthGithubUsers>;
-  id: Scalars['uuid'];
-  isAnonymous: Scalars['Boolean'];
-  lastSeen: Maybe<Scalars['timestamptz']>;
-  locale: Scalars['String'];
-  metadata: Maybe<Scalars['jsonb']>;
-  newEmail: Maybe<Scalars['citext']>;
-  otpHash: Maybe<Scalars['String']>;
-  otpHashExpiresAt: Scalars['timestamptz'];
-  otpMethodLastUsed: Maybe<Scalars['String']>;
-  passwordHash: Maybe<Scalars['String']>;
-  phoneNumber: Maybe<Scalars['String']>;
-  phoneNumberVerified: Scalars['Boolean'];
+  id: Scalars["uuid"];
+  isAnonymous: Scalars["Boolean"];
+  lastSeen: Maybe<Scalars["timestamptz"]>;
+  locale: Scalars["String"];
+  metadata: Maybe<Scalars["jsonb"]>;
+  newEmail: Maybe<Scalars["citext"]>;
+  otpHash: Maybe<Scalars["String"]>;
+  otpHashExpiresAt: Scalars["timestamptz"];
+  otpMethodLastUsed: Maybe<Scalars["String"]>;
+  passwordHash: Maybe<Scalars["String"]>;
+  phoneNumber: Maybe<Scalars["String"]>;
+  phoneNumberVerified: Scalars["Boolean"];
   /** An array relationship */
   projectsLeaded: Array<ProjectLeads>;
   /** An aggregate relationship */
@@ -8942,10 +8565,10 @@ export type Users = {
   securityKeys: Array<AuthUserSecurityKeys>;
   /** An aggregate relationship */
   securityKeysAggregate: AuthUserSecurityKeysAggregate;
-  ticket: Maybe<Scalars['String']>;
-  ticketExpiresAt: Scalars['timestamptz'];
-  totpSecret: Maybe<Scalars['String']>;
-  updatedAt: Scalars['timestamptz'];
+  ticket: Maybe<Scalars["String"]>;
+  ticketExpiresAt: Scalars["timestamptz"];
+  totpSecret: Maybe<Scalars["String"]>;
+  updatedAt: Scalars["timestamptz"];
   /** An object relationship */
   userInfo: Maybe<UserInfo>;
   /** An array relationship */
@@ -8954,132 +8577,120 @@ export type Users = {
   userProvidersAggregate: AuthUserProvidersAggregate;
 };
 
-
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type UsersMetadataArgs = {
-  path: InputMaybe<Scalars['String']>;
+  path: InputMaybe<Scalars["String"]>;
 };
-
 
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type UsersProjectsLeadedArgs = {
   distinctOn: InputMaybe<Array<ProjectLeadsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectLeadsOrderBy>>;
   where: InputMaybe<ProjectLeadsBoolExp>;
 };
-
 
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type UsersProjectsLeadedAggregateArgs = {
   distinctOn: InputMaybe<Array<ProjectLeadsSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<ProjectLeadsOrderBy>>;
   where: InputMaybe<ProjectLeadsBoolExp>;
 };
 
-
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type UsersRefreshTokensArgs = {
   distinctOn: InputMaybe<Array<AuthRefreshTokensSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthRefreshTokensOrderBy>>;
   where: InputMaybe<AuthRefreshTokensBoolExp>;
 };
-
 
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type UsersRefreshTokensAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthRefreshTokensSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthRefreshTokensOrderBy>>;
   where: InputMaybe<AuthRefreshTokensBoolExp>;
 };
 
-
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type UsersRolesArgs = {
   distinctOn: InputMaybe<Array<AuthUserRolesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserRolesOrderBy>>;
   where: InputMaybe<AuthUserRolesBoolExp>;
 };
-
 
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type UsersRolesAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthUserRolesSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserRolesOrderBy>>;
   where: InputMaybe<AuthUserRolesBoolExp>;
 };
 
-
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type UsersSecurityKeysArgs = {
   distinctOn: InputMaybe<Array<AuthUserSecurityKeysSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserSecurityKeysOrderBy>>;
   where: InputMaybe<AuthUserSecurityKeysBoolExp>;
 };
-
 
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type UsersSecurityKeysAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthUserSecurityKeysSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserSecurityKeysOrderBy>>;
   where: InputMaybe<AuthUserSecurityKeysBoolExp>;
 };
 
-
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type UsersUserProvidersArgs = {
   distinctOn: InputMaybe<Array<AuthUserProvidersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserProvidersOrderBy>>;
   where: InputMaybe<AuthUserProvidersBoolExp>;
 };
 
-
 /** User account information. Don't modify its structure as Hasura Auth relies on it to function properly. */
 export type UsersUserProvidersAggregateArgs = {
   distinctOn: InputMaybe<Array<AuthUserProvidersSelectColumn>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
+  limit: InputMaybe<Scalars["Int"]>;
+  offset: InputMaybe<Scalars["Int"]>;
   orderBy: InputMaybe<Array<AuthUserProvidersOrderBy>>;
   where: InputMaybe<AuthUserProvidersBoolExp>;
 };
 
 /** aggregated selection of "auth.users" */
 export type UsersAggregate = {
-  __typename?: 'usersAggregate';
+  __typename?: "usersAggregate";
   aggregate: Maybe<UsersAggregateFields>;
   nodes: Array<Users>;
 };
 
 /** aggregate fields of "auth.users" */
 export type UsersAggregateFields = {
-  __typename?: 'usersAggregateFields';
-  count: Scalars['Int'];
+  __typename?: "usersAggregateFields";
+  count: Scalars["Int"];
   max: Maybe<UsersMaxFields>;
   min: Maybe<UsersMinFields>;
 };
 
-
 /** aggregate fields of "auth.users" */
 export type UsersAggregateFieldsCountArgs = {
   columns: InputMaybe<Array<UsersSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
 };
 
 /** order by aggregate values of table "auth.users" */
@@ -9091,7 +8702,7 @@ export type UsersAggregateOrderBy = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type UsersAppendInput = {
-  metadata: InputMaybe<Scalars['jsonb']>;
+  metadata: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** input type for inserting array relation for remote table "auth.users" */
@@ -9149,120 +8760,120 @@ export type UsersBoolExp = {
 /** unique or primary key constraints on table "auth.users" */
 export enum UsersConstraint {
   /** unique or primary key constraint on columns "email" */
-  UsersEmailKey = 'users_email_key',
+  UsersEmailKey = "users_email_key",
   /** unique or primary key constraint on columns "phone_number" */
-  UsersPhoneNumberKey = 'users_phone_number_key',
+  UsersPhoneNumberKey = "users_phone_number_key",
   /** unique or primary key constraint on columns "id" */
-  UsersPkey = 'users_pkey'
+  UsersPkey = "users_pkey",
 }
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type UsersDeleteAtPathInput = {
-  metadata: InputMaybe<Array<Scalars['String']>>;
+  metadata: InputMaybe<Array<Scalars["String"]>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type UsersDeleteElemInput = {
-  metadata: InputMaybe<Scalars['Int']>;
+  metadata: InputMaybe<Scalars["Int"]>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type UsersDeleteKeyInput = {
-  metadata: InputMaybe<Scalars['String']>;
+  metadata: InputMaybe<Scalars["String"]>;
 };
 
 /** input type for inserting data into table "auth.users" */
 export type UsersInsertInput = {
-  activeMfaType: InputMaybe<Scalars['String']>;
-  avatarUrl: InputMaybe<Scalars['String']>;
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  currentChallenge: InputMaybe<Scalars['String']>;
-  defaultRole: InputMaybe<Scalars['String']>;
+  activeMfaType: InputMaybe<Scalars["String"]>;
+  avatarUrl: InputMaybe<Scalars["String"]>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  currentChallenge: InputMaybe<Scalars["String"]>;
+  defaultRole: InputMaybe<Scalars["String"]>;
   defaultRoleByRole: InputMaybe<AuthRolesObjRelInsertInput>;
-  disabled: InputMaybe<Scalars['Boolean']>;
-  displayName: InputMaybe<Scalars['String']>;
-  email: InputMaybe<Scalars['citext']>;
-  emailVerified: InputMaybe<Scalars['Boolean']>;
+  disabled: InputMaybe<Scalars["Boolean"]>;
+  displayName: InputMaybe<Scalars["String"]>;
+  email: InputMaybe<Scalars["citext"]>;
+  emailVerified: InputMaybe<Scalars["Boolean"]>;
   githubUser: InputMaybe<AuthGithubUsersObjRelInsertInput>;
-  id: InputMaybe<Scalars['uuid']>;
-  isAnonymous: InputMaybe<Scalars['Boolean']>;
-  lastSeen: InputMaybe<Scalars['timestamptz']>;
-  locale: InputMaybe<Scalars['String']>;
-  metadata: InputMaybe<Scalars['jsonb']>;
-  newEmail: InputMaybe<Scalars['citext']>;
-  otpHash: InputMaybe<Scalars['String']>;
-  otpHashExpiresAt: InputMaybe<Scalars['timestamptz']>;
-  otpMethodLastUsed: InputMaybe<Scalars['String']>;
-  passwordHash: InputMaybe<Scalars['String']>;
-  phoneNumber: InputMaybe<Scalars['String']>;
-  phoneNumberVerified: InputMaybe<Scalars['Boolean']>;
+  id: InputMaybe<Scalars["uuid"]>;
+  isAnonymous: InputMaybe<Scalars["Boolean"]>;
+  lastSeen: InputMaybe<Scalars["timestamptz"]>;
+  locale: InputMaybe<Scalars["String"]>;
+  metadata: InputMaybe<Scalars["jsonb"]>;
+  newEmail: InputMaybe<Scalars["citext"]>;
+  otpHash: InputMaybe<Scalars["String"]>;
+  otpHashExpiresAt: InputMaybe<Scalars["timestamptz"]>;
+  otpMethodLastUsed: InputMaybe<Scalars["String"]>;
+  passwordHash: InputMaybe<Scalars["String"]>;
+  phoneNumber: InputMaybe<Scalars["String"]>;
+  phoneNumberVerified: InputMaybe<Scalars["Boolean"]>;
   projectsLeaded: InputMaybe<ProjectLeadsArrRelInsertInput>;
   refreshTokens: InputMaybe<AuthRefreshTokensArrRelInsertInput>;
   roles: InputMaybe<AuthUserRolesArrRelInsertInput>;
   securityKeys: InputMaybe<AuthUserSecurityKeysArrRelInsertInput>;
-  ticket: InputMaybe<Scalars['String']>;
-  ticketExpiresAt: InputMaybe<Scalars['timestamptz']>;
-  totpSecret: InputMaybe<Scalars['String']>;
-  updatedAt: InputMaybe<Scalars['timestamptz']>;
+  ticket: InputMaybe<Scalars["String"]>;
+  ticketExpiresAt: InputMaybe<Scalars["timestamptz"]>;
+  totpSecret: InputMaybe<Scalars["String"]>;
+  updatedAt: InputMaybe<Scalars["timestamptz"]>;
   userInfo: InputMaybe<UserInfoObjRelInsertInput>;
   userProviders: InputMaybe<AuthUserProvidersArrRelInsertInput>;
 };
 
 /** aggregate max on columns */
 export type UsersMaxFields = {
-  __typename?: 'usersMaxFields';
-  activeMfaType: Maybe<Scalars['String']>;
-  avatarUrl: Maybe<Scalars['String']>;
-  createdAt: Maybe<Scalars['timestamptz']>;
-  currentChallenge: Maybe<Scalars['String']>;
-  defaultRole: Maybe<Scalars['String']>;
-  displayName: Maybe<Scalars['String']>;
-  email: Maybe<Scalars['citext']>;
-  id: Maybe<Scalars['uuid']>;
-  lastSeen: Maybe<Scalars['timestamptz']>;
-  locale: Maybe<Scalars['String']>;
-  newEmail: Maybe<Scalars['citext']>;
-  otpHash: Maybe<Scalars['String']>;
-  otpHashExpiresAt: Maybe<Scalars['timestamptz']>;
-  otpMethodLastUsed: Maybe<Scalars['String']>;
-  passwordHash: Maybe<Scalars['String']>;
-  phoneNumber: Maybe<Scalars['String']>;
-  ticket: Maybe<Scalars['String']>;
-  ticketExpiresAt: Maybe<Scalars['timestamptz']>;
-  totpSecret: Maybe<Scalars['String']>;
-  updatedAt: Maybe<Scalars['timestamptz']>;
+  __typename?: "usersMaxFields";
+  activeMfaType: Maybe<Scalars["String"]>;
+  avatarUrl: Maybe<Scalars["String"]>;
+  createdAt: Maybe<Scalars["timestamptz"]>;
+  currentChallenge: Maybe<Scalars["String"]>;
+  defaultRole: Maybe<Scalars["String"]>;
+  displayName: Maybe<Scalars["String"]>;
+  email: Maybe<Scalars["citext"]>;
+  id: Maybe<Scalars["uuid"]>;
+  lastSeen: Maybe<Scalars["timestamptz"]>;
+  locale: Maybe<Scalars["String"]>;
+  newEmail: Maybe<Scalars["citext"]>;
+  otpHash: Maybe<Scalars["String"]>;
+  otpHashExpiresAt: Maybe<Scalars["timestamptz"]>;
+  otpMethodLastUsed: Maybe<Scalars["String"]>;
+  passwordHash: Maybe<Scalars["String"]>;
+  phoneNumber: Maybe<Scalars["String"]>;
+  ticket: Maybe<Scalars["String"]>;
+  ticketExpiresAt: Maybe<Scalars["timestamptz"]>;
+  totpSecret: Maybe<Scalars["String"]>;
+  updatedAt: Maybe<Scalars["timestamptz"]>;
 };
 
 /** aggregate min on columns */
 export type UsersMinFields = {
-  __typename?: 'usersMinFields';
-  activeMfaType: Maybe<Scalars['String']>;
-  avatarUrl: Maybe<Scalars['String']>;
-  createdAt: Maybe<Scalars['timestamptz']>;
-  currentChallenge: Maybe<Scalars['String']>;
-  defaultRole: Maybe<Scalars['String']>;
-  displayName: Maybe<Scalars['String']>;
-  email: Maybe<Scalars['citext']>;
-  id: Maybe<Scalars['uuid']>;
-  lastSeen: Maybe<Scalars['timestamptz']>;
-  locale: Maybe<Scalars['String']>;
-  newEmail: Maybe<Scalars['citext']>;
-  otpHash: Maybe<Scalars['String']>;
-  otpHashExpiresAt: Maybe<Scalars['timestamptz']>;
-  otpMethodLastUsed: Maybe<Scalars['String']>;
-  passwordHash: Maybe<Scalars['String']>;
-  phoneNumber: Maybe<Scalars['String']>;
-  ticket: Maybe<Scalars['String']>;
-  ticketExpiresAt: Maybe<Scalars['timestamptz']>;
-  totpSecret: Maybe<Scalars['String']>;
-  updatedAt: Maybe<Scalars['timestamptz']>;
+  __typename?: "usersMinFields";
+  activeMfaType: Maybe<Scalars["String"]>;
+  avatarUrl: Maybe<Scalars["String"]>;
+  createdAt: Maybe<Scalars["timestamptz"]>;
+  currentChallenge: Maybe<Scalars["String"]>;
+  defaultRole: Maybe<Scalars["String"]>;
+  displayName: Maybe<Scalars["String"]>;
+  email: Maybe<Scalars["citext"]>;
+  id: Maybe<Scalars["uuid"]>;
+  lastSeen: Maybe<Scalars["timestamptz"]>;
+  locale: Maybe<Scalars["String"]>;
+  newEmail: Maybe<Scalars["citext"]>;
+  otpHash: Maybe<Scalars["String"]>;
+  otpHashExpiresAt: Maybe<Scalars["timestamptz"]>;
+  otpMethodLastUsed: Maybe<Scalars["String"]>;
+  passwordHash: Maybe<Scalars["String"]>;
+  phoneNumber: Maybe<Scalars["String"]>;
+  ticket: Maybe<Scalars["String"]>;
+  ticketExpiresAt: Maybe<Scalars["timestamptz"]>;
+  totpSecret: Maybe<Scalars["String"]>;
+  updatedAt: Maybe<Scalars["timestamptz"]>;
 };
 
 /** response of any mutation on the table "auth.users" */
 export type UsersMutationResponse = {
-  __typename?: 'usersMutationResponse';
+  __typename?: "usersMutationResponse";
   /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
+  affected_rows: Scalars["Int"];
   /** data from the rows affected by the mutation */
   returning: Array<Users>;
 };
@@ -9320,149 +8931,149 @@ export type UsersOrderBy = {
 
 /** primary key columns input for table: auth.users */
 export type UsersPkColumnsInput = {
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 };
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type UsersPrependInput = {
-  metadata: InputMaybe<Scalars['jsonb']>;
+  metadata: InputMaybe<Scalars["jsonb"]>;
 };
 
 /** select columns of table "auth.users" */
 export enum UsersSelectColumn {
   /** column name */
-  ActiveMfaType = 'activeMfaType',
+  ActiveMfaType = "activeMfaType",
   /** column name */
-  AvatarUrl = 'avatarUrl',
+  AvatarUrl = "avatarUrl",
   /** column name */
-  CreatedAt = 'createdAt',
+  CreatedAt = "createdAt",
   /** column name */
-  CurrentChallenge = 'currentChallenge',
+  CurrentChallenge = "currentChallenge",
   /** column name */
-  DefaultRole = 'defaultRole',
+  DefaultRole = "defaultRole",
   /** column name */
-  Disabled = 'disabled',
+  Disabled = "disabled",
   /** column name */
-  DisplayName = 'displayName',
+  DisplayName = "displayName",
   /** column name */
-  Email = 'email',
+  Email = "email",
   /** column name */
-  EmailVerified = 'emailVerified',
+  EmailVerified = "emailVerified",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  IsAnonymous = 'isAnonymous',
+  IsAnonymous = "isAnonymous",
   /** column name */
-  LastSeen = 'lastSeen',
+  LastSeen = "lastSeen",
   /** column name */
-  Locale = 'locale',
+  Locale = "locale",
   /** column name */
-  Metadata = 'metadata',
+  Metadata = "metadata",
   /** column name */
-  NewEmail = 'newEmail',
+  NewEmail = "newEmail",
   /** column name */
-  OtpHash = 'otpHash',
+  OtpHash = "otpHash",
   /** column name */
-  OtpHashExpiresAt = 'otpHashExpiresAt',
+  OtpHashExpiresAt = "otpHashExpiresAt",
   /** column name */
-  OtpMethodLastUsed = 'otpMethodLastUsed',
+  OtpMethodLastUsed = "otpMethodLastUsed",
   /** column name */
-  PasswordHash = 'passwordHash',
+  PasswordHash = "passwordHash",
   /** column name */
-  PhoneNumber = 'phoneNumber',
+  PhoneNumber = "phoneNumber",
   /** column name */
-  PhoneNumberVerified = 'phoneNumberVerified',
+  PhoneNumberVerified = "phoneNumberVerified",
   /** column name */
-  Ticket = 'ticket',
+  Ticket = "ticket",
   /** column name */
-  TicketExpiresAt = 'ticketExpiresAt',
+  TicketExpiresAt = "ticketExpiresAt",
   /** column name */
-  TotpSecret = 'totpSecret',
+  TotpSecret = "totpSecret",
   /** column name */
-  UpdatedAt = 'updatedAt'
+  UpdatedAt = "updatedAt",
 }
 
 /** input type for updating data in table "auth.users" */
 export type UsersSetInput = {
-  activeMfaType: InputMaybe<Scalars['String']>;
-  avatarUrl: InputMaybe<Scalars['String']>;
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  currentChallenge: InputMaybe<Scalars['String']>;
-  defaultRole: InputMaybe<Scalars['String']>;
-  disabled: InputMaybe<Scalars['Boolean']>;
-  displayName: InputMaybe<Scalars['String']>;
-  email: InputMaybe<Scalars['citext']>;
-  emailVerified: InputMaybe<Scalars['Boolean']>;
-  id: InputMaybe<Scalars['uuid']>;
-  isAnonymous: InputMaybe<Scalars['Boolean']>;
-  lastSeen: InputMaybe<Scalars['timestamptz']>;
-  locale: InputMaybe<Scalars['String']>;
-  metadata: InputMaybe<Scalars['jsonb']>;
-  newEmail: InputMaybe<Scalars['citext']>;
-  otpHash: InputMaybe<Scalars['String']>;
-  otpHashExpiresAt: InputMaybe<Scalars['timestamptz']>;
-  otpMethodLastUsed: InputMaybe<Scalars['String']>;
-  passwordHash: InputMaybe<Scalars['String']>;
-  phoneNumber: InputMaybe<Scalars['String']>;
-  phoneNumberVerified: InputMaybe<Scalars['Boolean']>;
-  ticket: InputMaybe<Scalars['String']>;
-  ticketExpiresAt: InputMaybe<Scalars['timestamptz']>;
-  totpSecret: InputMaybe<Scalars['String']>;
-  updatedAt: InputMaybe<Scalars['timestamptz']>;
+  activeMfaType: InputMaybe<Scalars["String"]>;
+  avatarUrl: InputMaybe<Scalars["String"]>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  currentChallenge: InputMaybe<Scalars["String"]>;
+  defaultRole: InputMaybe<Scalars["String"]>;
+  disabled: InputMaybe<Scalars["Boolean"]>;
+  displayName: InputMaybe<Scalars["String"]>;
+  email: InputMaybe<Scalars["citext"]>;
+  emailVerified: InputMaybe<Scalars["Boolean"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  isAnonymous: InputMaybe<Scalars["Boolean"]>;
+  lastSeen: InputMaybe<Scalars["timestamptz"]>;
+  locale: InputMaybe<Scalars["String"]>;
+  metadata: InputMaybe<Scalars["jsonb"]>;
+  newEmail: InputMaybe<Scalars["citext"]>;
+  otpHash: InputMaybe<Scalars["String"]>;
+  otpHashExpiresAt: InputMaybe<Scalars["timestamptz"]>;
+  otpMethodLastUsed: InputMaybe<Scalars["String"]>;
+  passwordHash: InputMaybe<Scalars["String"]>;
+  phoneNumber: InputMaybe<Scalars["String"]>;
+  phoneNumberVerified: InputMaybe<Scalars["Boolean"]>;
+  ticket: InputMaybe<Scalars["String"]>;
+  ticketExpiresAt: InputMaybe<Scalars["timestamptz"]>;
+  totpSecret: InputMaybe<Scalars["String"]>;
+  updatedAt: InputMaybe<Scalars["timestamptz"]>;
 };
 
 /** update columns of table "auth.users" */
 export enum UsersUpdateColumn {
   /** column name */
-  ActiveMfaType = 'activeMfaType',
+  ActiveMfaType = "activeMfaType",
   /** column name */
-  AvatarUrl = 'avatarUrl',
+  AvatarUrl = "avatarUrl",
   /** column name */
-  CreatedAt = 'createdAt',
+  CreatedAt = "createdAt",
   /** column name */
-  CurrentChallenge = 'currentChallenge',
+  CurrentChallenge = "currentChallenge",
   /** column name */
-  DefaultRole = 'defaultRole',
+  DefaultRole = "defaultRole",
   /** column name */
-  Disabled = 'disabled',
+  Disabled = "disabled",
   /** column name */
-  DisplayName = 'displayName',
+  DisplayName = "displayName",
   /** column name */
-  Email = 'email',
+  Email = "email",
   /** column name */
-  EmailVerified = 'emailVerified',
+  EmailVerified = "emailVerified",
   /** column name */
-  Id = 'id',
+  Id = "id",
   /** column name */
-  IsAnonymous = 'isAnonymous',
+  IsAnonymous = "isAnonymous",
   /** column name */
-  LastSeen = 'lastSeen',
+  LastSeen = "lastSeen",
   /** column name */
-  Locale = 'locale',
+  Locale = "locale",
   /** column name */
-  Metadata = 'metadata',
+  Metadata = "metadata",
   /** column name */
-  NewEmail = 'newEmail',
+  NewEmail = "newEmail",
   /** column name */
-  OtpHash = 'otpHash',
+  OtpHash = "otpHash",
   /** column name */
-  OtpHashExpiresAt = 'otpHashExpiresAt',
+  OtpHashExpiresAt = "otpHashExpiresAt",
   /** column name */
-  OtpMethodLastUsed = 'otpMethodLastUsed',
+  OtpMethodLastUsed = "otpMethodLastUsed",
   /** column name */
-  PasswordHash = 'passwordHash',
+  PasswordHash = "passwordHash",
   /** column name */
-  PhoneNumber = 'phoneNumber',
+  PhoneNumber = "phoneNumber",
   /** column name */
-  PhoneNumberVerified = 'phoneNumberVerified',
+  PhoneNumberVerified = "phoneNumberVerified",
   /** column name */
-  Ticket = 'ticket',
+  Ticket = "ticket",
   /** column name */
-  TicketExpiresAt = 'ticketExpiresAt',
+  TicketExpiresAt = "ticketExpiresAt",
   /** column name */
-  TotpSecret = 'totpSecret',
+  TotpSecret = "totpSecret",
   /** column name */
-  UpdatedAt = 'updatedAt'
+  UpdatedAt = "updatedAt",
 }
 
 export type UsersUpdates = {
@@ -9489,21 +9100,21 @@ export type Users_Aggregate_Bool_Exp = {
 
 export type Users_Aggregate_Bool_Exp_Bool_And = {
   arguments: Users_Select_Column_Users_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<UsersBoolExp>;
   predicate: BooleanComparisonExp;
 };
 
 export type Users_Aggregate_Bool_Exp_Bool_Or = {
   arguments: Users_Select_Column_Users_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<UsersBoolExp>;
   predicate: BooleanComparisonExp;
 };
 
 export type Users_Aggregate_Bool_Exp_Count = {
   arguments: InputMaybe<Array<UsersSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<UsersBoolExp>;
   predicate: IntComparisonExp;
 };
@@ -9559,25 +9170,25 @@ export type Users_Min_Order_By = {
 /** select "users_aggregate_bool_exp_bool_and_arguments_columns" columns of table "auth.users" */
 export enum Users_Select_Column_Users_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
   /** column name */
-  Disabled = 'disabled',
+  Disabled = "disabled",
   /** column name */
-  EmailVerified = 'emailVerified',
+  EmailVerified = "emailVerified",
   /** column name */
-  IsAnonymous = 'isAnonymous',
+  IsAnonymous = "isAnonymous",
   /** column name */
-  PhoneNumberVerified = 'phoneNumberVerified'
+  PhoneNumberVerified = "phoneNumberVerified",
 }
 
 /** select "users_aggregate_bool_exp_bool_or_arguments_columns" columns of table "auth.users" */
 export enum Users_Select_Column_Users_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
   /** column name */
-  Disabled = 'disabled',
+  Disabled = "disabled",
   /** column name */
-  EmailVerified = 'emailVerified',
+  EmailVerified = "emailVerified",
   /** column name */
-  IsAnonymous = 'isAnonymous',
+  IsAnonymous = "isAnonymous",
   /** column name */
-  PhoneNumberVerified = 'phoneNumberVerified'
+  PhoneNumberVerified = "phoneNumberVerified",
 }
 
 /** Streaming cursor of the table "users" */
@@ -9590,31 +9201,31 @@ export type Users_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Users_StreamCursorValueInput = {
-  activeMfaType: InputMaybe<Scalars['String']>;
-  avatarUrl: InputMaybe<Scalars['String']>;
-  createdAt: InputMaybe<Scalars['timestamptz']>;
-  currentChallenge: InputMaybe<Scalars['String']>;
-  defaultRole: InputMaybe<Scalars['String']>;
-  disabled: InputMaybe<Scalars['Boolean']>;
-  displayName: InputMaybe<Scalars['String']>;
-  email: InputMaybe<Scalars['citext']>;
-  emailVerified: InputMaybe<Scalars['Boolean']>;
-  id: InputMaybe<Scalars['uuid']>;
-  isAnonymous: InputMaybe<Scalars['Boolean']>;
-  lastSeen: InputMaybe<Scalars['timestamptz']>;
-  locale: InputMaybe<Scalars['String']>;
-  metadata: InputMaybe<Scalars['jsonb']>;
-  newEmail: InputMaybe<Scalars['citext']>;
-  otpHash: InputMaybe<Scalars['String']>;
-  otpHashExpiresAt: InputMaybe<Scalars['timestamptz']>;
-  otpMethodLastUsed: InputMaybe<Scalars['String']>;
-  passwordHash: InputMaybe<Scalars['String']>;
-  phoneNumber: InputMaybe<Scalars['String']>;
-  phoneNumberVerified: InputMaybe<Scalars['Boolean']>;
-  ticket: InputMaybe<Scalars['String']>;
-  ticketExpiresAt: InputMaybe<Scalars['timestamptz']>;
-  totpSecret: InputMaybe<Scalars['String']>;
-  updatedAt: InputMaybe<Scalars['timestamptz']>;
+  activeMfaType: InputMaybe<Scalars["String"]>;
+  avatarUrl: InputMaybe<Scalars["String"]>;
+  createdAt: InputMaybe<Scalars["timestamptz"]>;
+  currentChallenge: InputMaybe<Scalars["String"]>;
+  defaultRole: InputMaybe<Scalars["String"]>;
+  disabled: InputMaybe<Scalars["Boolean"]>;
+  displayName: InputMaybe<Scalars["String"]>;
+  email: InputMaybe<Scalars["citext"]>;
+  emailVerified: InputMaybe<Scalars["Boolean"]>;
+  id: InputMaybe<Scalars["uuid"]>;
+  isAnonymous: InputMaybe<Scalars["Boolean"]>;
+  lastSeen: InputMaybe<Scalars["timestamptz"]>;
+  locale: InputMaybe<Scalars["String"]>;
+  metadata: InputMaybe<Scalars["jsonb"]>;
+  newEmail: InputMaybe<Scalars["citext"]>;
+  otpHash: InputMaybe<Scalars["String"]>;
+  otpHashExpiresAt: InputMaybe<Scalars["timestamptz"]>;
+  otpMethodLastUsed: InputMaybe<Scalars["String"]>;
+  passwordHash: InputMaybe<Scalars["String"]>;
+  phoneNumber: InputMaybe<Scalars["String"]>;
+  phoneNumberVerified: InputMaybe<Scalars["Boolean"]>;
+  ticket: InputMaybe<Scalars["String"]>;
+  ticketExpiresAt: InputMaybe<Scalars["timestamptz"]>;
+  totpSecret: InputMaybe<Scalars["String"]>;
+  updatedAt: InputMaybe<Scalars["timestamptz"]>;
 };
 
 export type Work_Items_Aggregate_Bool_Exp = {
@@ -9623,7 +9234,7 @@ export type Work_Items_Aggregate_Bool_Exp = {
 
 export type Work_Items_Aggregate_Bool_Exp_Count = {
   arguments: InputMaybe<Array<WorkItemsSelectColumn>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
+  distinct: InputMaybe<Scalars["Boolean"]>;
   filter: InputMaybe<WorkItemsBoolExp>;
   predicate: IntComparisonExp;
 };
@@ -9676,9 +9287,9 @@ export type Work_Items_StreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type Work_Items_StreamCursorValueInput = {
-  issueNumber: InputMaybe<Scalars['bigint']>;
-  paymentId: InputMaybe<Scalars['uuid']>;
-  repoId: InputMaybe<Scalars['bigint']>;
+  issueNumber: InputMaybe<Scalars["bigint"]>;
+  paymentId: InputMaybe<Scalars["uuid"]>;
+  repoId: InputMaybe<Scalars["bigint"]>;
 };
 
 /** order by sum() on columns of table "work_items" */
@@ -9706,111 +9317,379 @@ export type Work_Items_Variance_Order_By = {
 };
 
 export type UserIdentityQueryVariables = Exact<{
-  userId: Scalars['uuid'];
+  userId: Scalars["uuid"];
 }>;
 
-
-export type UserIdentityQuery = { __typename?: 'query_root', userInfo: Array<{ __typename?: 'UserInfo', identity: any | null }> };
+export type UserIdentityQuery = {
+  __typename?: "query_root";
+  userInfo: Array<{ __typename?: "UserInfo"; identity: any | null }>;
+};
 
 export type GetPaymentRequestIdsQueryVariables = Exact<{
-  githubUserId: Scalars['bigint'];
+  githubUserId: Scalars["bigint"];
 }>;
 
+export type GetPaymentRequestIdsQuery = {
+  __typename?: "query_root";
+  paymentRequests: Array<{ __typename?: "PaymentRequests"; id: any }>;
+};
 
-export type GetPaymentRequestIdsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any }> };
+export type IssueDetailsFragment = {
+  __typename?: "Issue";
+  id: number;
+  repoId: any;
+  number: number;
+  type: Type;
+  status: Status;
+  title: string;
+  htmlUrl: any;
+  createdAt: any;
+  closedAt: any | null;
+  mergedAt: any | null;
+};
 
-export type IssueDetailsFragment = { __typename?: 'Issue', id: number, repoId: any, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null };
-
-export type PaymentRequestDetailsFragment = { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', max: { __typename?: 'PaymentsMaxFields', processedAt: any | null } | null, sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any } | null, workItems: Array<{ __typename?: 'WorkItems', githubIssue: { __typename?: 'Issue', id: number, repoId: any, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null }> };
+export type PaymentRequestDetailsFragment = {
+  __typename?: "PaymentRequests";
+  id: any;
+  amountInUsd: any;
+  requestedAt: any;
+  invoiceReceivedAt: any | null;
+  paymentsAggregate: {
+    __typename?: "PaymentsAggregate";
+    aggregate: {
+      __typename?: "PaymentsAggregateFields";
+      max: { __typename?: "PaymentsMaxFields"; processedAt: any | null } | null;
+      sum: { __typename?: "PaymentsSumFields"; amount: any | null } | null;
+    } | null;
+  };
+  requestor: { __typename?: "users"; id: any; displayName: string; avatarUrl: string } | null;
+  githubRecipient: { __typename?: "User"; id: number; login: string; avatarUrl: any } | null;
+  workItems: Array<{
+    __typename?: "WorkItems";
+    githubIssue: {
+      __typename?: "Issue";
+      id: number;
+      repoId: any;
+      number: number;
+      type: Type;
+      status: Status;
+      title: string;
+      htmlUrl: any;
+      createdAt: any;
+      closedAt: any | null;
+      mergedAt: any | null;
+    } | null;
+  }>;
+};
 
 export type PaymentRequestDetailsQueryVariables = Exact<{
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 }>;
 
+export type PaymentRequestDetailsQuery = {
+  __typename?: "query_root";
+  paymentRequestsByPk: {
+    __typename?: "PaymentRequests";
+    id: any;
+    amountInUsd: any;
+    requestedAt: any;
+    invoiceReceivedAt: any | null;
+    paymentsAggregate: {
+      __typename?: "PaymentsAggregate";
+      aggregate: {
+        __typename?: "PaymentsAggregateFields";
+        max: { __typename?: "PaymentsMaxFields"; processedAt: any | null } | null;
+        sum: { __typename?: "PaymentsSumFields"; amount: any | null } | null;
+      } | null;
+    };
+    requestor: { __typename?: "users"; id: any; displayName: string; avatarUrl: string } | null;
+    githubRecipient: { __typename?: "User"; id: number; login: string; avatarUrl: any } | null;
+    workItems: Array<{
+      __typename?: "WorkItems";
+      githubIssue: {
+        __typename?: "Issue";
+        id: number;
+        repoId: any;
+        number: number;
+        type: Type;
+        status: Status;
+        title: string;
+        htmlUrl: any;
+        createdAt: any;
+        closedAt: any | null;
+        mergedAt: any | null;
+      } | null;
+    }>;
+  } | null;
+};
 
-export type PaymentRequestDetailsQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any, amountInUsd: any, requestedAt: any, invoiceReceivedAt: any | null, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', max: { __typename?: 'PaymentsMaxFields', processedAt: any | null } | null, sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null }, requestor: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any } | null, workItems: Array<{ __typename?: 'WorkItems', githubIssue: { __typename?: 'Issue', id: number, repoId: any, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null }> } | null };
+export type ProjectCardGithubRepoFieldsFragment = {
+  __typename?: "ProjectGithubRepos";
+  githubRepoId: any;
+  githubRepoDetails: { __typename?: "GithubRepoDetails"; id: any; languages: any } | null;
+};
 
-export type ProjectCardGithubRepoFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null };
+export type ProjectCardFieldsFragment = {
+  __typename?: "Projects";
+  id: any;
+  budgetsAggregate: {
+    __typename?: "BudgetsAggregate";
+    aggregate: {
+      __typename?: "BudgetsAggregateFields";
+      sum: { __typename?: "BudgetsSumFields"; spentAmount: any | null; initialAmount: any | null } | null;
+    } | null;
+  };
+  budgets: Array<{
+    __typename?: "Budgets";
+    id: any;
+    paymentRequests: Array<{
+      __typename?: "PaymentRequests";
+      id: any;
+      githubRecipient: { __typename?: "User"; id: number } | null;
+    }>;
+  }>;
+  projectDetails: {
+    __typename?: "ProjectDetails";
+    projectId: any;
+    name: string;
+    telegramLink: string | null;
+    logoUrl: string | null;
+    shortDescription: string;
+  } | null;
+  pendingInvitations: Array<{ __typename?: "PendingProjectLeaderInvitations"; id: any; githubUserId: any }>;
+  projectLeads: Array<{
+    __typename?: "ProjectLeads";
+    userId: any;
+    user: { __typename?: "users"; id: any; displayName: string; avatarUrl: string } | null;
+  }>;
+  githubRepos: Array<{
+    __typename?: "ProjectGithubRepos";
+    githubRepoId: any;
+    githubRepoDetails: {
+      __typename?: "GithubRepoDetails";
+      id: any;
+      languages: any;
+      content: {
+        __typename?: "Repository";
+        id: number;
+        contributors: Array<{ __typename?: "User"; id: number }>;
+      } | null;
+    } | null;
+  }>;
+  projectSponsors: Array<{
+    __typename?: "ProjectsSponsors";
+    sponsor: { __typename?: "Sponsors"; id: any; name: string; logoUrl: string; url: string | null };
+  }>;
+};
 
-export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, user: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> };
-
-export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: any };
+export type GithubUserFragment = { __typename?: "User"; id: number; login: string; avatarUrl: any };
 
 export type GetGithubUserQueryVariables = Exact<{
-  githubUserId: Scalars['Int'];
+  githubUserId: Scalars["Int"];
 }>;
 
+export type GetGithubUserQuery = {
+  __typename?: "query_root";
+  fetchUserDetailsById: { __typename?: "User"; id: number; login: string; avatarUrl: any } | null;
+};
 
-export type GetGithubUserQuery = { __typename?: 'query_root', fetchUserDetailsById: { __typename?: 'User', id: number, login: string, avatarUrl: any } | null };
-
-export type GithubContributorFragment = { __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null };
+export type GithubContributorFragment = {
+  __typename?: "User";
+  id: number;
+  login: string;
+  avatarUrl: any;
+  user: { __typename?: "AuthGithubUsers"; userId: any | null } | null;
+};
 
 export type FindUserQueryForPaymentFormQueryVariables = Exact<{
-  username: Scalars['String'];
+  username: Scalars["String"];
 }>;
 
+export type FindUserQueryForPaymentFormQuery = {
+  __typename?: "query_root";
+  fetchUserDetails: {
+    __typename?: "User";
+    id: number;
+    login: string;
+    avatarUrl: any;
+    user: { __typename?: "AuthGithubUsers"; userId: any | null } | null;
+  } | null;
+};
 
-export type FindUserQueryForPaymentFormQuery = { __typename?: 'query_root', fetchUserDetails: { __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null };
-
-export type PaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, requestedAt: any, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }>, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> };
+export type PaymentRequestFragment = {
+  __typename?: "PaymentRequests";
+  id: any;
+  recipientId: any;
+  amountInUsd: any;
+  requestedAt: any;
+  workItems: Array<{ __typename?: "WorkItems"; repoId: any; issueNumber: any }>;
+  payments: Array<{ __typename?: "Payments"; amount: any; currencyCode: string }>;
+};
 
 export type GetPaymentRequestsForProjectQueryVariables = Exact<{
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
 }>;
 
-
-export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, initialAmount: any, remainingAmount: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, recipientId: any, amountInUsd: any, requestedAt: any, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }>, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }> }> }> } | null };
+export type GetPaymentRequestsForProjectQuery = {
+  __typename?: "query_root";
+  projectsByPk: {
+    __typename?: "Projects";
+    id: any;
+    budgets: Array<{
+      __typename?: "Budgets";
+      id: any;
+      initialAmount: any;
+      remainingAmount: any;
+      paymentRequests: Array<{
+        __typename?: "PaymentRequests";
+        id: any;
+        recipientId: any;
+        amountInUsd: any;
+        requestedAt: any;
+        workItems: Array<{ __typename?: "WorkItems"; repoId: any; issueNumber: any }>;
+        payments: Array<{ __typename?: "Payments"; amount: any; currencyCode: string }>;
+      }>;
+    }>;
+  } | null;
+};
 
 export type RequestPaymentMutationVariables = Exact<{
-  amount: Scalars['Int'];
-  contributorId: Scalars['Int'];
-  projectId: Scalars['Uuid'];
+  amount: Scalars["Int"];
+  contributorId: Scalars["Int"];
+  projectId: Scalars["Uuid"];
   reason: Reason;
 }>;
 
+export type RequestPaymentMutation = { __typename?: "mutation_root"; requestPayment: any };
 
-export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
-
-export type UserPayoutSettingsFragment = { __typename?: 'UserInfo', identity: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean };
+export type UserPayoutSettingsFragment = {
+  __typename?: "UserInfo";
+  identity: any | null;
+  location: any | null;
+  payoutSettings: any | null;
+  arePayoutSettingsValid: boolean;
+};
 
 export type GetUserPayoutSettingsQueryVariables = Exact<{
-  githubUserId: Scalars['bigint'];
+  githubUserId: Scalars["bigint"];
 }>;
 
-
-export type GetUserPayoutSettingsQuery = { __typename?: 'query_root', authGithubUsers: Array<{ __typename?: 'AuthGithubUsers', user: { __typename?: 'users', userInfo: { __typename?: 'UserInfo', identity: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean } | null } | null }> };
+export type GetUserPayoutSettingsQuery = {
+  __typename?: "query_root";
+  authGithubUsers: Array<{
+    __typename?: "AuthGithubUsers";
+    user: {
+      __typename?: "users";
+      userInfo: {
+        __typename?: "UserInfo";
+        identity: any | null;
+        location: any | null;
+        payoutSettings: any | null;
+        arePayoutSettingsValid: boolean;
+      } | null;
+    } | null;
+  }>;
+};
 
 export type PendingProjectLeaderInvitationsQueryVariables = Exact<{
-  githubUserId: InputMaybe<Scalars['bigint']>;
+  githubUserId: InputMaybe<Scalars["bigint"]>;
 }>;
 
-
-export type PendingProjectLeaderInvitationsQuery = { __typename?: 'query_root', pendingProjectLeaderInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, projectId: any }> };
+export type PendingProjectLeaderInvitationsQuery = {
+  __typename?: "query_root";
+  pendingProjectLeaderInvitations: Array<{ __typename?: "PendingProjectLeaderInvitations"; id: any; projectId: any }>;
+};
 
 export type PendingUserPaymentsQueryVariables = Exact<{
-  userId: Scalars['uuid'];
+  userId: Scalars["uuid"];
 }>;
 
-
-export type PendingUserPaymentsQuery = { __typename?: 'query_root', user: { __typename?: 'users', githubUser: { __typename?: 'AuthGithubUsers', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, paymentsAggregate: { __typename?: 'PaymentsAggregate', aggregate: { __typename?: 'PaymentsAggregateFields', sum: { __typename?: 'PaymentsSumFields', amount: any | null } | null } | null } }> } | null } | null };
+export type PendingUserPaymentsQuery = {
+  __typename?: "query_root";
+  user: {
+    __typename?: "users";
+    githubUser: {
+      __typename?: "AuthGithubUsers";
+      paymentRequests: Array<{
+        __typename?: "PaymentRequests";
+        id: any;
+        amountInUsd: any;
+        paymentsAggregate: {
+          __typename?: "PaymentsAggregate";
+          aggregate: {
+            __typename?: "PaymentsAggregateFields";
+            sum: { __typename?: "PaymentsSumFields"; amount: any | null } | null;
+          } | null;
+        };
+      }>;
+    } | null;
+  } | null;
+};
 
 export type MarkInvoiceAsReceivedMutationVariables = Exact<{
   paymentReferences: Array<PaymentReference> | PaymentReference;
 }>;
 
+export type MarkInvoiceAsReceivedMutation = { __typename?: "mutation_root"; markInvoiceAsReceived: number };
 
-export type MarkInvoiceAsReceivedMutation = { __typename?: 'mutation_root', markInvoiceAsReceived: number };
+export type WorkItemFragment = { __typename?: "WorkItems"; repoId: any; issueNumber: any };
 
-export type WorkItemFragment = { __typename?: 'WorkItems', repoId: any, issueNumber: any };
-
-export type UserPaymentRequestFragment = { __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null } | null } | null };
+export type UserPaymentRequestFragment = {
+  __typename?: "PaymentRequests";
+  id: any;
+  requestedAt: any;
+  amountInUsd: any;
+  invoiceReceivedAt: any | null;
+  payments: Array<{ __typename?: "Payments"; amount: any; currencyCode: string }>;
+  workItems: Array<{ __typename?: "WorkItems"; repoId: any; issueNumber: any }>;
+  budget: {
+    __typename?: "Budgets";
+    id: any;
+    project: {
+      __typename?: "Projects";
+      id: any;
+      projectDetails: {
+        __typename?: "ProjectDetails";
+        projectId: any;
+        name: string;
+        shortDescription: string;
+        logoUrl: string | null;
+      } | null;
+    } | null;
+  } | null;
+};
 
 export type GetPaymentRequestsQueryVariables = Exact<{
-  githubUserId: Scalars['bigint'];
+  githubUserId: Scalars["bigint"];
 }>;
 
-
-export type GetPaymentRequestsQuery = { __typename?: 'query_root', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, requestedAt: any, amountInUsd: any, invoiceReceivedAt: any | null, payments: Array<{ __typename?: 'Payments', amount: any, currencyCode: string }>, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }>, budget: { __typename?: 'Budgets', id: any, project: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, shortDescription: string, logoUrl: string | null } | null } | null } | null }> };
+export type GetPaymentRequestsQuery = {
+  __typename?: "query_root";
+  paymentRequests: Array<{
+    __typename?: "PaymentRequests";
+    id: any;
+    requestedAt: any;
+    amountInUsd: any;
+    invoiceReceivedAt: any | null;
+    payments: Array<{ __typename?: "Payments"; amount: any; currencyCode: string }>;
+    workItems: Array<{ __typename?: "WorkItems"; repoId: any; issueNumber: any }>;
+    budget: {
+      __typename?: "Budgets";
+      id: any;
+      project: {
+        __typename?: "Projects";
+        id: any;
+        projectDetails: {
+          __typename?: "ProjectDetails";
+          projectId: any;
+          name: string;
+          shortDescription: string;
+          logoUrl: string | null;
+        } | null;
+      } | null;
+    } | null;
+  }>;
+};
 
 export type UpdateProfileInfoMutationVariables = Exact<{
   contactInformation: InputMaybe<ContactInformation>;
@@ -9819,324 +9698,857 @@ export type UpdateProfileInfoMutationVariables = Exact<{
   payoutSettings: InputMaybe<PayoutSettingsInput>;
 }>;
 
-
-export type UpdateProfileInfoMutation = { __typename?: 'mutation_root', updateProfileInfo: any };
+export type UpdateProfileInfoMutation = { __typename?: "mutation_root"; updateProfileInfo: any };
 
 export type ProfileQueryVariables = Exact<{
-  userId: Scalars['uuid'];
+  userId: Scalars["uuid"];
 }>;
 
+export type ProfileQuery = {
+  __typename?: "query_root";
+  userInfoByPk: {
+    __typename?: "UserInfo";
+    userId: any;
+    identity: any | null;
+    contactInformation: any | null;
+    location: any | null;
+    payoutSettings: any | null;
+    arePayoutSettingsValid: boolean;
+  } | null;
+};
 
-export type ProfileQuery = { __typename?: 'query_root', userInfoByPk: { __typename?: 'UserInfo', userId: any, identity: any | null, contactInformation: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean } | null };
+export type ContributorsTableFieldsFragment = {
+  __typename?: "User";
+  id: number;
+  login: string;
+  avatarUrl: any;
+  htmlUrl: any;
+  user: { __typename?: "AuthGithubUsers"; userId: any | null } | null;
+  paymentRequests: Array<{
+    __typename?: "PaymentRequests";
+    id: any;
+    amountInUsd: any;
+    budget: { __typename?: "Budgets"; id: any; projectId: any | null } | null;
+    workItems: Array<{ __typename?: "WorkItems"; repoId: any; issueNumber: any }>;
+  }>;
+};
 
-export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }> }> };
-
-export type GithubRepoContributorsFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }> }> }> } | null } | null };
+export type GithubRepoContributorsFieldsFragment = {
+  __typename?: "ProjectGithubRepos";
+  githubRepoId: any;
+  githubRepoDetails: {
+    __typename?: "GithubRepoDetails";
+    id: any;
+    content: {
+      __typename?: "Repository";
+      id: number;
+      contributors: Array<{
+        __typename?: "User";
+        id: number;
+        login: string;
+        avatarUrl: any;
+        htmlUrl: any;
+        user: { __typename?: "AuthGithubUsers"; userId: any | null } | null;
+        paymentRequests: Array<{
+          __typename?: "PaymentRequests";
+          id: any;
+          amountInUsd: any;
+          budget: { __typename?: "Budgets"; id: any; projectId: any | null } | null;
+          workItems: Array<{ __typename?: "WorkItems"; repoId: any; issueNumber: any }>;
+        }>;
+      }>;
+    } | null;
+  } | null;
+};
 
 export type GetProjectContributorsQueryVariables = Exact<{
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
 }>;
 
-
-export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }> }> }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }> }> } | null }> }> } | null };
+export type GetProjectContributorsQuery = {
+  __typename?: "query_root";
+  projectsByPk: {
+    __typename?: "Projects";
+    id: any;
+    projectDetails: { __typename?: "ProjectDetails"; projectId: any; name: string } | null;
+    githubRepos: Array<{
+      __typename?: "ProjectGithubRepos";
+      githubRepoId: any;
+      githubRepoDetails: {
+        __typename?: "GithubRepoDetails";
+        id: any;
+        content: {
+          __typename?: "Repository";
+          id: number;
+          contributors: Array<{
+            __typename?: "User";
+            id: number;
+            login: string;
+            avatarUrl: any;
+            htmlUrl: any;
+            user: { __typename?: "AuthGithubUsers"; userId: any | null } | null;
+            paymentRequests: Array<{
+              __typename?: "PaymentRequests";
+              id: any;
+              amountInUsd: any;
+              budget: { __typename?: "Budgets"; id: any; projectId: any | null } | null;
+              workItems: Array<{ __typename?: "WorkItems"; repoId: any; issueNumber: any }>;
+            }>;
+          }>;
+        } | null;
+      } | null;
+    }>;
+    budgets: Array<{
+      __typename?: "Budgets";
+      id: any;
+      paymentRequests: Array<{
+        __typename?: "PaymentRequests";
+        id: any;
+        githubRecipient: {
+          __typename?: "User";
+          id: number;
+          login: string;
+          avatarUrl: any;
+          htmlUrl: any;
+          user: { __typename?: "AuthGithubUsers"; userId: any | null } | null;
+          paymentRequests: Array<{
+            __typename?: "PaymentRequests";
+            id: any;
+            amountInUsd: any;
+            budget: { __typename?: "Budgets"; id: any; projectId: any | null } | null;
+            workItems: Array<{ __typename?: "WorkItems"; repoId: any; issueNumber: any }>;
+          }>;
+        } | null;
+      }>;
+    }>;
+  } | null;
+};
 
 export type GetProjectRemainingBudgetQueryVariables = Exact<{
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
 }>;
 
+export type GetProjectRemainingBudgetQuery = {
+  __typename?: "query_root";
+  projectsByPk: {
+    __typename?: "Projects";
+    id: any;
+    budgets: Array<{ __typename?: "Budgets"; id: any; remainingAmount: any }>;
+  } | null;
+};
 
-export type GetProjectRemainingBudgetQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, budgets: Array<{ __typename?: 'Budgets', id: any, remainingAmount: any }> } | null };
+export type GithubRepoStaticDetailsFragment = { __typename?: "GithubRepoDetails"; id: any; languages: any };
 
-export type GithubRepoStaticDetailsFragment = { __typename?: 'GithubRepoDetails', id: any, languages: any };
-
-export type GithubRepoDynamicDetailsFragment = { __typename?: 'Repository', id: number, owner: string, name: string, description: string, stars: number, forksCount: number, htmlUrl: any };
+export type GithubRepoDynamicDetailsFragment = {
+  __typename?: "Repository";
+  id: number;
+  owner: string;
+  name: string;
+  description: string;
+  stars: number;
+  forksCount: number;
+  htmlUrl: any;
+};
 
 export type GetGithubRepositoryDetailsQueryVariables = Exact<{
-  githubRepoId: Scalars['bigint'];
+  githubRepoId: Scalars["bigint"];
 }>;
 
+export type GetGithubRepositoryDetailsQuery = {
+  __typename?: "query_root";
+  githubRepoDetailsByPk: {
+    __typename?: "GithubRepoDetails";
+    id: any;
+    languages: any;
+    content: {
+      __typename?: "Repository";
+      id: number;
+      owner: string;
+      name: string;
+      description: string;
+      stars: number;
+      forksCount: number;
+      htmlUrl: any;
+    } | null;
+  } | null;
+};
 
-export type GetGithubRepositoryDetailsQuery = { __typename?: 'query_root', githubRepoDetailsByPk: { __typename?: 'GithubRepoDetails', id: any, languages: any, content: { __typename?: 'Repository', id: number, owner: string, name: string, description: string, stars: number, forksCount: number, htmlUrl: any } | null } | null };
+export type ProjectLeadFragment = { __typename?: "users"; id: any; displayName: string; avatarUrl: string };
 
-export type ProjectLeadFragment = { __typename?: 'users', id: any, displayName: string, avatarUrl: string };
-
-export type SponsorFragment = { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null };
+export type SponsorFragment = { __typename?: "Sponsors"; id: any; name: string; logoUrl: string; url: string | null };
 
 export type GetProjectContributorsForOverviewQueryVariables = Exact<{
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
 }>;
 
-
-export type GetProjectContributorsForOverviewQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', contributors: Array<{ __typename?: 'User', login: string, avatarUrl: any }> } | null } | null }> } | null };
+export type GetProjectContributorsForOverviewQuery = {
+  __typename?: "query_root";
+  projectsByPk: {
+    __typename?: "Projects";
+    githubRepos: Array<{
+      __typename?: "ProjectGithubRepos";
+      githubRepoDetails: {
+        __typename?: "GithubRepoDetails";
+        content: {
+          __typename?: "Repository";
+          contributors: Array<{ __typename?: "User"; login: string; avatarUrl: any }>;
+        } | null;
+      } | null;
+    }>;
+  } | null;
+};
 
 export type GetProjectOverviewDetailsQueryVariables = Exact<{
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
 }>;
 
-
-export type GetProjectOverviewDetailsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, longDescription: string, logoUrl: string | null } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', stars: number } | null } | null }> } | null };
+export type GetProjectOverviewDetailsQuery = {
+  __typename?: "query_root";
+  projectsByPk: {
+    __typename?: "Projects";
+    id: any;
+    projectDetails: {
+      __typename?: "ProjectDetails";
+      projectId: any;
+      name: string;
+      longDescription: string;
+      logoUrl: string | null;
+    } | null;
+    githubRepos: Array<{
+      __typename?: "ProjectGithubRepos";
+      githubRepoId: any;
+      githubRepoDetails: {
+        __typename?: "GithubRepoDetails";
+        content: { __typename?: "Repository"; stars: number } | null;
+      } | null;
+    }>;
+  } | null;
+};
 
 export type SearchGithubUsersByHandleSubstringQueryVariables = Exact<{
-  handleSubstringQuery: Scalars['String'];
+  handleSubstringQuery: Scalars["String"];
 }>;
 
-
-export type SearchGithubUsersByHandleSubstringQuery = { __typename?: 'query_root', searchUsers: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> | null };
+export type SearchGithubUsersByHandleSubstringQuery = {
+  __typename?: "query_root";
+  searchUsers: Array<{
+    __typename?: "User";
+    id: number;
+    login: string;
+    avatarUrl: any;
+    user: { __typename?: "AuthGithubUsers"; userId: any | null } | null;
+  }> | null;
+};
 
 export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
 }>;
 
-
-export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> } | null };
+export type GetProjectContributorsForPaymentSelectQuery = {
+  __typename?: "query_root";
+  projectsByPk: {
+    __typename?: "Projects";
+    id: any;
+    githubRepos: Array<{
+      __typename?: "ProjectGithubRepos";
+      githubRepoDetails: {
+        __typename?: "GithubRepoDetails";
+        content: {
+          __typename?: "Repository";
+          id: number;
+          contributors: Array<{
+            __typename?: "User";
+            id: number;
+            login: string;
+            avatarUrl: any;
+            user: { __typename?: "AuthGithubUsers"; userId: any | null } | null;
+          }>;
+        } | null;
+      } | null;
+    }>;
+    budgets: Array<{
+      __typename?: "Budgets";
+      paymentRequests: Array<{
+        __typename?: "PaymentRequests";
+        id: any;
+        githubRecipient: {
+          __typename?: "User";
+          id: number;
+          login: string;
+          avatarUrl: any;
+          user: { __typename?: "AuthGithubUsers"; userId: any | null } | null;
+        } | null;
+      }>;
+    }>;
+  } | null;
+};
 
 export type FetchIssueQueryVariables = Exact<{
-  repoOwner: Scalars['String'];
-  repoName: Scalars['String'];
-  issueNumber: Scalars['Int'];
+  repoOwner: Scalars["String"];
+  repoName: Scalars["String"];
+  issueNumber: Scalars["Int"];
 }>;
 
-
-export type FetchIssueQuery = { __typename?: 'query_root', fetchIssue: { __typename?: 'Issue', id: number, repoId: any, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null };
+export type FetchIssueQuery = {
+  __typename?: "query_root";
+  fetchIssue: {
+    __typename?: "Issue";
+    id: number;
+    repoId: any;
+    number: number;
+    type: Type;
+    status: Status;
+    title: string;
+    htmlUrl: any;
+    createdAt: any;
+    closedAt: any | null;
+    mergedAt: any | null;
+  } | null;
+};
 
 export type SearchIssuesQueryVariables = Exact<{
-  query: Scalars['String'];
-  order: InputMaybe<Scalars['String']>;
-  sort: InputMaybe<Scalars['String']>;
-  perPage: InputMaybe<Scalars['Int']>;
+  query: Scalars["String"];
+  order: InputMaybe<Scalars["String"]>;
+  sort: InputMaybe<Scalars["String"]>;
+  perPage: InputMaybe<Scalars["Int"]>;
 }>;
 
+export type SearchIssuesQuery = {
+  __typename?: "query_root";
+  searchIssues: Array<{
+    __typename?: "Issue";
+    id: number;
+    repoId: any;
+    number: number;
+    type: Type;
+    status: Status;
+    title: string;
+    htmlUrl: any;
+    createdAt: any;
+    closedAt: any | null;
+    mergedAt: any | null;
+  }> | null;
+};
 
-export type SearchIssuesQuery = { __typename?: 'query_root', searchIssues: Array<{ __typename?: 'Issue', id: number, repoId: any, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null }> | null };
-
-export type RepositoryOwnerAndNameFragment = { __typename?: 'Repository', owner: string, name: string };
+export type RepositoryOwnerAndNameFragment = { __typename?: "Repository"; owner: string; name: string };
 
 export type GetPaidWorkItemsQueryVariables = Exact<{
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
 }>;
 
+export type GetPaidWorkItemsQuery = {
+  __typename?: "query_root";
+  projectsByPk: {
+    __typename?: "Projects";
+    githubRepos: Array<{
+      __typename?: "ProjectGithubRepos";
+      githubRepoDetails: {
+        __typename?: "GithubRepoDetails";
+        id: any;
+        content: { __typename?: "Repository"; owner: string; name: string } | null;
+      } | null;
+    }>;
+    budgets: Array<{
+      __typename?: "Budgets";
+      id: any;
+      paymentRequests: Array<{
+        __typename?: "PaymentRequests";
+        id: any;
+        workItems: Array<{ __typename?: "WorkItems"; repoId: any; issueNumber: any }>;
+      }>;
+    }>;
+  } | null;
+};
 
-export type GetPaidWorkItemsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', owner: string, name: string } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }> }> }> } | null };
+export type FetchIssueQueryVariables = Exact<{
+  repoOwner: Scalars["String"];
+  repoName: Scalars["String"];
+  issueNumber: Scalars["Int"];
+}>;
 
-export type SidebarProjectDetailsFragment = { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }> };
+export type FetchIssueQuery = {
+  __typename?: "query_root";
+  fetchIssue: {
+    __typename?: "Issue";
+    id: number;
+    number: number;
+    type: Type;
+    status: Status;
+    title: string;
+    htmlUrl: any;
+    createdAt: any;
+    closedAt: any | null;
+    mergedAt: any | null;
+  } | null;
+};
+
+export type GetProjectReposQueryVariables = Exact<{
+  projectId: Scalars["uuid"];
+}>;
+
+export type GetProjectReposQuery = {
+  __typename?: "query_root";
+  projectsByPk: {
+    __typename?: "Projects";
+    githubRepos: Array<{
+      __typename?: "ProjectGithubRepos";
+      githubRepoDetails: { __typename?: "GithubRepoDetails"; owner: string; name: string } | null;
+    }>;
+  } | null;
+};
+
+export type CreateIssueMutationVariables = Exact<{
+  repoOwner: Scalars["String"];
+  repoName: Scalars["String"];
+  title: Scalars["String"];
+  description: Scalars["String"];
+  assignees: Array<Scalars["String"]> | Scalars["String"];
+}>;
+
+export type CreateIssueMutation = {
+  __typename?: "mutation_root";
+  createIssue: {
+    __typename?: "Issue";
+    id: number;
+    number: number;
+    type: Type;
+    status: Status;
+    title: string;
+    htmlUrl: any;
+    createdAt: any;
+    closedAt: any | null;
+    mergedAt: any | null;
+  };
+};
+
+export type SidebarProjectDetailsFragment = {
+  __typename?: "Projects";
+  id: any;
+  projectDetails: { __typename?: "ProjectDetails"; projectId: any; name: string; logoUrl: string | null } | null;
+  pendingInvitations: Array<{ __typename?: "PendingProjectLeaderInvitations"; id: any }>;
+  githubRepos: Array<{
+    __typename?: "ProjectGithubRepos";
+    githubRepoId: any;
+    githubRepoDetails: {
+      __typename?: "GithubRepoDetails";
+      id: any;
+      content: {
+        __typename?: "Repository";
+        id: number;
+        contributors: Array<{ __typename?: "User"; id: number }>;
+      } | null;
+    } | null;
+  }>;
+  budgets: Array<{
+    __typename?: "Budgets";
+    id: any;
+    paymentRequests: Array<{
+      __typename?: "PaymentRequests";
+      id: any;
+      githubRecipient: { __typename?: "User"; id: number } | null;
+    }>;
+  }>;
+};
 
 export type GetProjectsForSidebarQueryVariables = Exact<{
-  ledProjectIds: InputMaybe<Array<Scalars['uuid']> | Scalars['uuid']>;
-  githubUserId: InputMaybe<Scalars['bigint']>;
+  ledProjectIds: InputMaybe<Array<Scalars["uuid"]> | Scalars["uuid"]>;
+  githubUserId: InputMaybe<Scalars["bigint"]>;
 }>;
 
-
-export type GetProjectsForSidebarQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }> }> };
+export type GetProjectsForSidebarQuery = {
+  __typename?: "query_root";
+  projects: Array<{
+    __typename?: "Projects";
+    id: any;
+    projectDetails: { __typename?: "ProjectDetails"; projectId: any; name: string; logoUrl: string | null } | null;
+    pendingInvitations: Array<{ __typename?: "PendingProjectLeaderInvitations"; id: any; githubUserId: any }>;
+    projectLeads: Array<{ __typename?: "ProjectLeads"; userId: any }>;
+    githubRepos: Array<{
+      __typename?: "ProjectGithubRepos";
+      githubRepoId: any;
+      githubRepoDetails: {
+        __typename?: "GithubRepoDetails";
+        id: any;
+        content: {
+          __typename?: "Repository";
+          id: number;
+          contributors: Array<{ __typename?: "User"; id: number }>;
+        } | null;
+      } | null;
+    }>;
+    budgets: Array<{
+      __typename?: "Budgets";
+      id: any;
+      paymentRequests: Array<{
+        __typename?: "PaymentRequests";
+        id: any;
+        githubRecipient: { __typename?: "User"; id: number } | null;
+      }>;
+    }>;
+  }>;
+};
 
 export type GetProjectQueryVariables = Exact<{
-  id: Scalars['uuid'];
+  id: Scalars["uuid"];
 }>;
 
-
-export type GetProjectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, user: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> } | null };
+export type GetProjectQuery = {
+  __typename?: "query_root";
+  projectsByPk: {
+    __typename?: "Projects";
+    id: any;
+    budgetsAggregate: {
+      __typename?: "BudgetsAggregate";
+      aggregate: {
+        __typename?: "BudgetsAggregateFields";
+        sum: { __typename?: "BudgetsSumFields"; spentAmount: any | null; initialAmount: any | null } | null;
+      } | null;
+    };
+    budgets: Array<{
+      __typename?: "Budgets";
+      id: any;
+      paymentRequests: Array<{
+        __typename?: "PaymentRequests";
+        id: any;
+        githubRecipient: { __typename?: "User"; id: number } | null;
+      }>;
+    }>;
+    projectDetails: {
+      __typename?: "ProjectDetails";
+      projectId: any;
+      name: string;
+      telegramLink: string | null;
+      logoUrl: string | null;
+      shortDescription: string;
+    } | null;
+    pendingInvitations: Array<{ __typename?: "PendingProjectLeaderInvitations"; id: any; githubUserId: any }>;
+    projectLeads: Array<{
+      __typename?: "ProjectLeads";
+      userId: any;
+      user: { __typename?: "users"; id: any; displayName: string; avatarUrl: string } | null;
+    }>;
+    githubRepos: Array<{
+      __typename?: "ProjectGithubRepos";
+      githubRepoId: any;
+      githubRepoDetails: {
+        __typename?: "GithubRepoDetails";
+        id: any;
+        languages: any;
+        content: {
+          __typename?: "Repository";
+          id: number;
+          contributors: Array<{ __typename?: "User"; id: number }>;
+        } | null;
+      } | null;
+    }>;
+    projectSponsors: Array<{
+      __typename?: "ProjectsSponsors";
+      sponsor: { __typename?: "Sponsors"; id: any; name: string; logoUrl: string; url: string | null };
+    }>;
+  } | null;
+};
 
 export type AcceptProjectLeaderInvitationMutationVariables = Exact<{
-  invitationId: Scalars['Uuid'];
+  invitationId: Scalars["Uuid"];
 }>;
 
-
-export type AcceptProjectLeaderInvitationMutation = { __typename?: 'mutation_root', acceptProjectLeaderInvitation: boolean };
+export type AcceptProjectLeaderInvitationMutation = {
+  __typename?: "mutation_root";
+  acceptProjectLeaderInvitation: boolean;
+};
 
 export type GetProjectsQueryVariables = Exact<{
-  languages: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
-  sponsors: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  languages: InputMaybe<Array<Scalars["String"]> | Scalars["String"]>;
+  sponsors: InputMaybe<Array<Scalars["String"]> | Scalars["String"]>;
 }>;
 
+export type GetProjectsQuery = {
+  __typename?: "query_root";
+  projects: Array<{
+    __typename?: "Projects";
+    id: any;
+    budgetsAggregate: {
+      __typename?: "BudgetsAggregate";
+      aggregate: {
+        __typename?: "BudgetsAggregateFields";
+        sum: { __typename?: "BudgetsSumFields"; spentAmount: any | null; initialAmount: any | null } | null;
+      } | null;
+    };
+    budgets: Array<{
+      __typename?: "Budgets";
+      id: any;
+      paymentRequests: Array<{
+        __typename?: "PaymentRequests";
+        id: any;
+        githubRecipient: { __typename?: "User"; id: number } | null;
+      }>;
+    }>;
+    projectDetails: {
+      __typename?: "ProjectDetails";
+      projectId: any;
+      name: string;
+      telegramLink: string | null;
+      logoUrl: string | null;
+      shortDescription: string;
+    } | null;
+    pendingInvitations: Array<{ __typename?: "PendingProjectLeaderInvitations"; id: any; githubUserId: any }>;
+    projectLeads: Array<{
+      __typename?: "ProjectLeads";
+      userId: any;
+      user: { __typename?: "users"; id: any; displayName: string; avatarUrl: string } | null;
+    }>;
+    githubRepos: Array<{
+      __typename?: "ProjectGithubRepos";
+      githubRepoId: any;
+      githubRepoDetails: {
+        __typename?: "GithubRepoDetails";
+        id: any;
+        languages: any;
+        content: {
+          __typename?: "Repository";
+          id: number;
+          contributors: Array<{ __typename?: "User"; id: number }>;
+        } | null;
+      } | null;
+    }>;
+    projectSponsors: Array<{
+      __typename?: "ProjectsSponsors";
+      sponsor: { __typename?: "Sponsors"; id: any; name: string; logoUrl: string; url: string | null };
+    }>;
+  }>;
+};
 
-export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, user: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> }> };
+export type GetAllFilterOptionsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetAllFilterOptionsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllFilterOptionsQuery = {
+  __typename?: "query_root";
+  projects: Array<{
+    __typename?: "Projects";
+    id: any;
+    projectSponsors: Array<{
+      __typename?: "ProjectsSponsors";
+      sponsor: { __typename?: "Sponsors"; id: any; name: string };
+    }>;
+    githubRepos: Array<{
+      __typename?: "ProjectGithubRepos";
+      githubRepoId: any;
+      githubRepoDetails: { __typename?: "GithubRepoDetails"; id: any; languages: any } | null;
+    }>;
+    projectLeads: Array<{ __typename?: "ProjectLeads"; userId: any }>;
+    budgets: Array<{ __typename?: "Budgets"; id: any }>;
+    pendingInvitations: Array<{ __typename?: "PendingProjectLeaderInvitations"; id: any; githubUserId: any }>;
+  }>;
+};
 
+export type GithubRepoLanguagesFieldsFragment = {
+  __typename?: "ProjectGithubRepos";
+  githubRepoId: any;
+  githubRepoDetails: { __typename?: "GithubRepoDetails"; id: any; languages: any } | null;
+};
 
-export type GetAllFilterOptionsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'Projects', id: any, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string } }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, budgets: Array<{ __typename?: 'Budgets', id: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> }> };
+export type VisibleProjectFragment = {
+  __typename?: "Projects";
+  id: any;
+  projectLeads: Array<{ __typename?: "ProjectLeads"; userId: any }>;
+  githubRepos: Array<{ __typename?: "ProjectGithubRepos"; githubRepoId: any }>;
+  budgets: Array<{ __typename?: "Budgets"; id: any }>;
+  pendingInvitations: Array<{ __typename?: "PendingProjectLeaderInvitations"; id: any; githubUserId: any }>;
+};
 
-export type GithubRepoLanguagesFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null };
+export type ContributorIdFragment = { __typename?: "User"; id: number };
 
-export type VisibleProjectFragment = { __typename?: 'Projects', id: any, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any }>, budgets: Array<{ __typename?: 'Budgets', id: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> };
-
-export type ContributorIdFragment = { __typename?: 'User', id: number };
-
-export type ProjectContributorsFragment = { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }> };
+export type ProjectContributorsFragment = {
+  __typename?: "Projects";
+  githubRepos: Array<{
+    __typename?: "ProjectGithubRepos";
+    githubRepoId: any;
+    githubRepoDetails: {
+      __typename?: "GithubRepoDetails";
+      id: any;
+      content: {
+        __typename?: "Repository";
+        id: number;
+        contributors: Array<{ __typename?: "User"; id: number }>;
+      } | null;
+    } | null;
+  }>;
+  budgets: Array<{
+    __typename?: "Budgets";
+    id: any;
+    paymentRequests: Array<{
+      __typename?: "PaymentRequests";
+      id: any;
+      githubRecipient: { __typename?: "User"; id: number } | null;
+    }>;
+  }>;
+};
 
 export type CancelPaymentRequestMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  paymentId: Scalars['Uuid'];
+  projectId: Scalars["Uuid"];
+  paymentId: Scalars["Uuid"];
 }>;
 
-
-export type CancelPaymentRequestMutation = { __typename?: 'mutation_root', cancelPaymentRequest: any };
+export type CancelPaymentRequestMutation = { __typename?: "mutation_root"; cancelPaymentRequest: any };
 
 export type RejectInvoiceMutationVariables = Exact<{
   paymentReferences: Array<PaymentReference> | PaymentReference;
 }>;
 
-
-export type RejectInvoiceMutation = { __typename?: 'mutation_root', rejectInvoice: number };
+export type RejectInvoiceMutation = { __typename?: "mutation_root"; rejectInvoice: number };
 
 export type AddEthPaymentReceiptMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  paymentId: Scalars['Uuid'];
-  amount: Scalars['String'];
-  currencyCode: Scalars['String'];
+  projectId: Scalars["Uuid"];
+  paymentId: Scalars["Uuid"];
+  amount: Scalars["String"];
+  currencyCode: Scalars["String"];
   recipientIdentity: EthereumIdentityInput;
-  transactionHash: Scalars['String'];
+  transactionHash: Scalars["String"];
 }>;
 
-
-export type AddEthPaymentReceiptMutation = { __typename?: 'mutation_root', addEthPaymentReceipt: any };
+export type AddEthPaymentReceiptMutation = { __typename?: "mutation_root"; addEthPaymentReceipt: any };
 
 export type AddFiatPaymentReceiptMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  paymentId: Scalars['Uuid'];
-  amount: Scalars['String'];
-  currencyCode: Scalars['String'];
-  recipientIban: Scalars['String'];
-  transactionReference: Scalars['String'];
+  projectId: Scalars["Uuid"];
+  paymentId: Scalars["Uuid"];
+  amount: Scalars["String"];
+  currencyCode: Scalars["String"];
+  recipientIban: Scalars["String"];
+  transactionReference: Scalars["String"];
 }>;
 
-
-export type AddFiatPaymentReceiptMutation = { __typename?: 'mutation_root', addFiatPaymentReceipt: any };
+export type AddFiatPaymentReceiptMutation = { __typename?: "mutation_root"; addFiatPaymentReceipt: any };
 
 export type PaymentRequestsByPkQueryVariables = Exact<{
-  paymentId: Scalars['uuid'];
+  paymentId: Scalars["uuid"];
 }>;
 
-
-export type PaymentRequestsByPkQuery = { __typename?: 'query_root', paymentRequestsByPk: { __typename?: 'PaymentRequests', id: any } | null };
+export type PaymentRequestsByPkQuery = {
+  __typename?: "query_root";
+  paymentRequestsByPk: { __typename?: "PaymentRequests"; id: any } | null;
+};
 
 export type CreateProjectMutationVariables = Exact<{
-  projectName: Scalars['String'];
-  telegramLink: Scalars['Url'];
-  logoUrl: Scalars['Url'];
-  shortDescription: Scalars['String'];
-  longDescription: Scalars['String'];
-  initialBudget: InputMaybe<Scalars['Int']>;
+  projectName: Scalars["String"];
+  telegramLink: Scalars["Url"];
+  logoUrl: Scalars["Url"];
+  shortDescription: Scalars["String"];
+  longDescription: Scalars["String"];
+  initialBudget: InputMaybe<Scalars["Int"]>;
 }>;
 
-
-export type CreateProjectMutation = { __typename?: 'mutation_root', createProject: any };
+export type CreateProjectMutation = { __typename?: "mutation_root"; createProject: any };
 
 export type UpdateProjectMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  name: InputMaybe<Scalars['String']>;
-  telegramLink: InputMaybe<Scalars['Url']>;
-  logoUrl: InputMaybe<Scalars['Url']>;
-  shortDescription: InputMaybe<Scalars['String']>;
-  longDescription: InputMaybe<Scalars['String']>;
+  projectId: Scalars["Uuid"];
+  name: InputMaybe<Scalars["String"]>;
+  telegramLink: InputMaybe<Scalars["Url"]>;
+  logoUrl: InputMaybe<Scalars["Url"]>;
+  shortDescription: InputMaybe<Scalars["String"]>;
+  longDescription: InputMaybe<Scalars["String"]>;
 }>;
 
-
-export type UpdateProjectMutation = { __typename?: 'mutation_root', updateProject: any };
+export type UpdateProjectMutation = { __typename?: "mutation_root"; updateProject: any };
 
 export type GetProjectBudgetQueryVariables = Exact<{
-  projectId: Scalars['uuid'];
+  projectId: Scalars["uuid"];
 }>;
 
-
-export type GetProjectBudgetQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', budgets: Array<{ __typename?: 'Budgets', id: any }> } | null };
+export type GetProjectBudgetQuery = {
+  __typename?: "query_root";
+  projectsByPk: { __typename?: "Projects"; budgets: Array<{ __typename?: "Budgets"; id: any }> } | null;
+};
 
 export type UpdateBudgetAllocationMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  amount: Scalars['Int'];
+  projectId: Scalars["Uuid"];
+  amount: Scalars["Int"];
 }>;
 
-
-export type UpdateBudgetAllocationMutation = { __typename?: 'mutation_root', updateBudgetAllocation: any };
+export type UpdateBudgetAllocationMutation = { __typename?: "mutation_root"; updateBudgetAllocation: any };
 
 export type LinkGithubRepoMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  githubRepoId: Scalars['Int'];
+  projectId: Scalars["Uuid"];
+  githubRepoId: Scalars["Int"];
 }>;
 
-
-export type LinkGithubRepoMutation = { __typename?: 'mutation_root', linkGithubRepo: any };
+export type LinkGithubRepoMutation = { __typename?: "mutation_root"; linkGithubRepo: any };
 
 export type UnlinkGithubRepoMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  githubRepoId: Scalars['Int'];
+  projectId: Scalars["Uuid"];
+  githubRepoId: Scalars["Int"];
 }>;
 
-
-export type UnlinkGithubRepoMutation = { __typename?: 'mutation_root', unlinkGithubRepo: any };
+export type UnlinkGithubRepoMutation = { __typename?: "mutation_root"; unlinkGithubRepo: any };
 
 export type UnassignProjectLeadMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  userId: Scalars['Uuid'];
+  projectId: Scalars["Uuid"];
+  userId: Scalars["Uuid"];
 }>;
 
-
-export type UnassignProjectLeadMutation = { __typename?: 'mutation_root', unassignProjectLead: boolean };
+export type UnassignProjectLeadMutation = { __typename?: "mutation_root"; unassignProjectLead: boolean };
 
 export type InviteProjectLeaderMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  githubUserId: Scalars['Int'];
+  projectId: Scalars["Uuid"];
+  githubUserId: Scalars["Int"];
 }>;
 
-
-export type InviteProjectLeaderMutation = { __typename?: 'mutation_root', inviteProjectLeader: any };
+export type InviteProjectLeaderMutation = { __typename?: "mutation_root"; inviteProjectLeader: any };
 
 export type CreateSponsorMutationVariables = Exact<{
-  name: Scalars['String'];
-  logoUrl: Scalars['Url'];
-  url: InputMaybe<Scalars['Url']>;
+  name: Scalars["String"];
+  logoUrl: Scalars["Url"];
+  url: InputMaybe<Scalars["Url"]>;
 }>;
 
-
-export type CreateSponsorMutation = { __typename?: 'mutation_root', createSponsor: any };
+export type CreateSponsorMutation = { __typename?: "mutation_root"; createSponsor: any };
 
 export type UpdateSponsorMutationVariables = Exact<{
-  sponsorId: Scalars['Uuid'];
-  name: InputMaybe<Scalars['String']>;
-  logoUrl: InputMaybe<Scalars['Url']>;
-  url: InputMaybe<Scalars['Url']>;
+  sponsorId: Scalars["Uuid"];
+  name: InputMaybe<Scalars["String"]>;
+  logoUrl: InputMaybe<Scalars["Url"]>;
+  url: InputMaybe<Scalars["Url"]>;
 }>;
 
-
-export type UpdateSponsorMutation = { __typename?: 'mutation_root', updateSponsor: any };
+export type UpdateSponsorMutation = { __typename?: "mutation_root"; updateSponsor: any };
 
 export type AddSponsorToProjectMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  sponsorId: Scalars['Uuid'];
+  projectId: Scalars["Uuid"];
+  sponsorId: Scalars["Uuid"];
 }>;
 
-
-export type AddSponsorToProjectMutation = { __typename?: 'mutation_root', addSponsorToProject: any };
+export type AddSponsorToProjectMutation = { __typename?: "mutation_root"; addSponsorToProject: any };
 
 export type RemoveSponsorFromProjectMutationVariables = Exact<{
-  projectId: Scalars['Uuid'];
-  sponsorId: Scalars['Uuid'];
+  projectId: Scalars["Uuid"];
+  sponsorId: Scalars["Uuid"];
 }>;
 
-
-export type RemoveSponsorFromProjectMutation = { __typename?: 'mutation_root', removeSponsorFromProject: any };
+export type RemoveSponsorFromProjectMutation = { __typename?: "mutation_root"; removeSponsorFromProject: any };
 
 export type GetUserByEmailQueryVariables = Exact<{
-  email: Scalars['citext'];
+  email: Scalars["citext"];
 }>;
 
-
-export type GetUserByEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any }> };
+export type GetUserByEmailQuery = { __typename?: "query_root"; users: Array<{ __typename?: "users"; id: any }> };
 
 export type SetUserEmailVerifiedMutationVariables = Exact<{
-  userId: Scalars['uuid'];
+  userId: Scalars["uuid"];
 }>;
 
-
-export type SetUserEmailVerifiedMutation = { __typename?: 'mutation_root', updateUser: { __typename?: 'users', id: any } | null };
+export type SetUserEmailVerifiedMutation = {
+  __typename?: "mutation_root";
+  updateUser: { __typename?: "users"; id: any } | null;
+};
 
 export type CreateGithubAuthUserMutationVariables = Exact<{
-  userId: Scalars['uuid'];
-  githubUserId: Scalars['String'];
-  accessToken: Scalars['String'];
+  userId: Scalars["uuid"];
+  githubUserId: Scalars["String"];
+  accessToken: Scalars["String"];
 }>;
 
-
-export type CreateGithubAuthUserMutation = { __typename?: 'mutation_root', insertAuthUserProvider: { __typename?: 'authUserProviders', id: any } | null };
+export type CreateGithubAuthUserMutation = {
+  __typename?: "mutation_root";
+  insertAuthUserProvider: { __typename?: "authUserProviders"; id: any } | null;
+};
 
 export type UpdateProfileMutationVariables = Exact<{
   contactInformation: ContactInformation;
@@ -10145,339 +10557,345 @@ export type UpdateProfileMutationVariables = Exact<{
   payoutSettings: PayoutSettingsInput;
 }>;
 
-
-export type UpdateProfileMutation = { __typename?: 'mutation_root', updateProfileInfo: any };
+export type UpdateProfileMutation = { __typename?: "mutation_root"; updateProfileInfo: any };
 
 export const IssueDetailsFragmentDoc = gql`
-    fragment IssueDetails on Issue {
-  id
-  repoId
-  number
-  type
-  status
-  title
-  htmlUrl
-  createdAt
-  closedAt
-  mergedAt
-}
-    `;
+  fragment IssueDetails on Issue {
+    id
+    repoId
+    number
+    type
+    status
+    title
+    htmlUrl
+    createdAt
+    closedAt
+    mergedAt
+  }
+`;
 export const PaymentRequestDetailsFragmentDoc = gql`
-    fragment PaymentRequestDetails on PaymentRequests {
-  id
-  amountInUsd
-  requestedAt
-  paymentsAggregate {
-    aggregate {
-      max {
-        processedAt
+  fragment PaymentRequestDetails on PaymentRequests {
+    id
+    amountInUsd
+    requestedAt
+    paymentsAggregate {
+      aggregate {
+        max {
+          processedAt
+        }
+      }
+    }
+    invoiceReceivedAt
+    requestor {
+      id
+      displayName
+      avatarUrl
+    }
+    githubRecipient {
+      id
+      login
+      avatarUrl
+    }
+    workItems {
+      githubIssue {
+        ...IssueDetails
+      }
+    }
+    paymentsAggregate {
+      aggregate {
+        sum {
+          amount
+        }
       }
     }
   }
-  invoiceReceivedAt
-  requestor {
+  ${IssueDetailsFragmentDoc}
+`;
+export const ContributorIdFragmentDoc = gql`
+  fragment ContributorId on User {
+    id
+  }
+`;
+export const ProjectContributorsFragmentDoc = gql`
+  fragment ProjectContributors on Projects {
+    githubRepos {
+      githubRepoId
+      githubRepoDetails {
+        id
+        content {
+          id
+          contributors {
+            ...ContributorId
+          }
+        }
+      }
+    }
+    budgets {
+      id
+      paymentRequests {
+        id
+        githubRecipient {
+          ...ContributorId
+        }
+      }
+    }
+  }
+  ${ContributorIdFragmentDoc}
+`;
+export const ProjectLeadFragmentDoc = gql`
+  fragment ProjectLead on users {
     id
     displayName
     avatarUrl
   }
-  githubRecipient {
+`;
+export const ProjectCardGithubRepoFieldsFragmentDoc = gql`
+  fragment ProjectCardGithubRepoFields on ProjectGithubRepos {
+    githubRepoId
+    githubRepoDetails {
+      id
+      languages
+    }
+  }
+`;
+export const SponsorFragmentDoc = gql`
+  fragment Sponsor on Sponsors {
+    id
+    name
+    logoUrl
+    url
+  }
+`;
+export const ProjectCardFieldsFragmentDoc = gql`
+  fragment ProjectCardFields on Projects {
+    id
+    ...ProjectContributors
+    budgetsAggregate {
+      aggregate {
+        sum {
+          spentAmount
+          initialAmount
+        }
+      }
+    }
+    budgets {
+      id
+    }
+    projectDetails {
+      projectId
+      name
+      telegramLink
+      logoUrl
+      shortDescription
+    }
+    pendingInvitations {
+      id
+      githubUserId
+    }
+    projectLeads {
+      userId
+      user {
+        ...ProjectLead
+      }
+    }
+    githubRepos {
+      ...ProjectCardGithubRepoFields
+    }
+    projectSponsors {
+      sponsor {
+        ...Sponsor
+      }
+    }
+  }
+  ${ProjectContributorsFragmentDoc}
+  ${ProjectLeadFragmentDoc}
+  ${ProjectCardGithubRepoFieldsFragmentDoc}
+  ${SponsorFragmentDoc}
+`;
+export const GithubUserFragmentDoc = gql`
+  fragment GithubUser on User {
     id
     login
     avatarUrl
   }
-  workItems {
-    githubIssue {
-      ...IssueDetails
+`;
+export const GithubContributorFragmentDoc = gql`
+  fragment GithubContributor on User {
+    ...GithubUser
+    user {
+      userId
     }
   }
-  paymentsAggregate {
-    aggregate {
-      sum {
-        amount
+  ${GithubUserFragmentDoc}
+`;
+export const PaymentRequestFragmentDoc = gql`
+  fragment PaymentRequest on PaymentRequests {
+    id
+    recipientId
+    amountInUsd
+    workItems {
+      repoId
+      issueNumber
+    }
+    payments {
+      amount
+      currencyCode
+    }
+    requestedAt
+  }
+`;
+export const UserPayoutSettingsFragmentDoc = gql`
+  fragment UserPayoutSettings on UserInfo {
+    identity
+    location
+    payoutSettings
+    arePayoutSettingsValid
+  }
+`;
+export const WorkItemFragmentDoc = gql`
+  fragment WorkItem on WorkItems {
+    repoId
+    issueNumber
+  }
+`;
+export const UserPaymentRequestFragmentDoc = gql`
+  fragment UserPaymentRequest on PaymentRequests {
+    id
+    requestedAt
+    payments {
+      amount
+      currencyCode
+    }
+    amountInUsd
+    workItems {
+      ...WorkItem
+    }
+    invoiceReceivedAt
+    budget {
+      id
+      project {
+        id
+        projectDetails {
+          projectId
+          name
+          shortDescription
+          logoUrl
+        }
       }
     }
   }
-}
-    ${IssueDetailsFragmentDoc}`;
-export const ContributorIdFragmentDoc = gql`
-    fragment ContributorId on User {
-  id
-}
-    `;
-export const ProjectContributorsFragmentDoc = gql`
-    fragment ProjectContributors on Projects {
-  githubRepos {
+  ${WorkItemFragmentDoc}
+`;
+export const ContributorsTableFieldsFragmentDoc = gql`
+  fragment ContributorsTableFields on User {
+    id
+    login
+    avatarUrl
+    htmlUrl
+    user {
+      userId
+    }
+    paymentRequests {
+      id
+      budget {
+        id
+        projectId
+      }
+      amountInUsd
+      workItems {
+        repoId
+        issueNumber
+      }
+    }
+  }
+`;
+export const GithubRepoContributorsFieldsFragmentDoc = gql`
+  fragment GithubRepoContributorsFields on ProjectGithubRepos {
     githubRepoId
     githubRepoDetails {
       id
       content {
         id
         contributors {
-          ...ContributorId
+          ...ContributorsTableFields
         }
       }
     }
   }
-  budgets {
-    id
-    paymentRequests {
-      id
-      githubRecipient {
-        ...ContributorId
-      }
-    }
-  }
-}
-    ${ContributorIdFragmentDoc}`;
-export const ProjectLeadFragmentDoc = gql`
-    fragment ProjectLead on users {
-  id
-  displayName
-  avatarUrl
-}
-    `;
-export const ProjectCardGithubRepoFieldsFragmentDoc = gql`
-    fragment ProjectCardGithubRepoFields on ProjectGithubRepos {
-  githubRepoId
-  githubRepoDetails {
-    id
-    languages
-  }
-}
-    `;
-export const SponsorFragmentDoc = gql`
-    fragment Sponsor on Sponsors {
-  id
-  name
-  logoUrl
-  url
-}
-    `;
-export const ProjectCardFieldsFragmentDoc = gql`
-    fragment ProjectCardFields on Projects {
-  id
-  ...ProjectContributors
-  budgetsAggregate {
-    aggregate {
-      sum {
-        spentAmount
-        initialAmount
-      }
-    }
-  }
-  budgets {
-    id
-  }
-  projectDetails {
-    projectId
-    name
-    telegramLink
-    logoUrl
-    shortDescription
-  }
-  pendingInvitations {
-    id
-    githubUserId
-  }
-  projectLeads {
-    userId
-    user {
-      ...ProjectLead
-    }
-  }
-  githubRepos {
-    ...ProjectCardGithubRepoFields
-  }
-  projectSponsors {
-    sponsor {
-      ...Sponsor
-    }
-  }
-}
-    ${ProjectContributorsFragmentDoc}
-${ProjectLeadFragmentDoc}
-${ProjectCardGithubRepoFieldsFragmentDoc}
-${SponsorFragmentDoc}`;
-export const GithubUserFragmentDoc = gql`
-    fragment GithubUser on User {
-  id
-  login
-  avatarUrl
-}
-    `;
-export const GithubContributorFragmentDoc = gql`
-    fragment GithubContributor on User {
-  ...GithubUser
-  user {
-    userId
-  }
-}
-    ${GithubUserFragmentDoc}`;
-export const PaymentRequestFragmentDoc = gql`
-    fragment PaymentRequest on PaymentRequests {
-  id
-  recipientId
-  amountInUsd
-  workItems {
-    repoId
-    issueNumber
-  }
-  payments {
-    amount
-    currencyCode
-  }
-  requestedAt
-}
-    `;
-export const UserPayoutSettingsFragmentDoc = gql`
-    fragment UserPayoutSettings on UserInfo {
-  identity
-  location
-  payoutSettings
-  arePayoutSettingsValid
-}
-    `;
-export const WorkItemFragmentDoc = gql`
-    fragment WorkItem on WorkItems {
-  repoId
-  issueNumber
-}
-    `;
-export const UserPaymentRequestFragmentDoc = gql`
-    fragment UserPaymentRequest on PaymentRequests {
-  id
-  requestedAt
-  payments {
-    amount
-    currencyCode
-  }
-  amountInUsd
-  workItems {
-    ...WorkItem
-  }
-  invoiceReceivedAt
-  budget {
-    id
-    project {
-      id
-      projectDetails {
-        projectId
-        name
-        shortDescription
-        logoUrl
-      }
-    }
-  }
-}
-    ${WorkItemFragmentDoc}`;
-export const ContributorsTableFieldsFragmentDoc = gql`
-    fragment ContributorsTableFields on User {
-  id
-  login
-  avatarUrl
-  htmlUrl
-  user {
-    userId
-  }
-  paymentRequests {
-    id
-    budget {
-      id
-      projectId
-    }
-    amountInUsd
-    workItems {
-      repoId
-      issueNumber
-    }
-  }
-}
-    `;
-export const GithubRepoContributorsFieldsFragmentDoc = gql`
-    fragment GithubRepoContributorsFields on ProjectGithubRepos {
-  githubRepoId
-  githubRepoDetails {
-    id
-    content {
-      id
-      contributors {
-        ...ContributorsTableFields
-      }
-    }
-  }
-}
-    ${ContributorsTableFieldsFragmentDoc}`;
+  ${ContributorsTableFieldsFragmentDoc}
+`;
 export const GithubRepoStaticDetailsFragmentDoc = gql`
-    fragment GithubRepoStaticDetails on GithubRepoDetails {
-  id
-  languages
-}
-    `;
-export const GithubRepoDynamicDetailsFragmentDoc = gql`
-    fragment GithubRepoDynamicDetails on Repository {
-  id
-  owner
-  name
-  description
-  stars
-  forksCount
-  htmlUrl
-}
-    `;
-export const RepositoryOwnerAndNameFragmentDoc = gql`
-    fragment RepositoryOwnerAndName on Repository {
-  owner
-  name
-}
-    `;
-export const SidebarProjectDetailsFragmentDoc = gql`
-    fragment SidebarProjectDetails on Projects {
-  ...ProjectContributors
-  id
-  projectDetails {
-    projectId
-    name
-    logoUrl
-  }
-  pendingInvitations {
-    id
-  }
-}
-    ${ProjectContributorsFragmentDoc}`;
-export const GithubRepoLanguagesFieldsFragmentDoc = gql`
-    fragment GithubRepoLanguagesFields on ProjectGithubRepos {
-  githubRepoId
-  githubRepoDetails {
+  fragment GithubRepoStaticDetails on GithubRepoDetails {
     id
     languages
   }
-}
-    `;
-export const VisibleProjectFragmentDoc = gql`
-    fragment VisibleProject on Projects {
-  id
-  projectLeads {
-    userId
+`;
+export const GithubRepoDynamicDetailsFragmentDoc = gql`
+  fragment GithubRepoDynamicDetails on Repository {
+    id
+    owner
+    name
+    description
+    stars
+    forksCount
+    htmlUrl
   }
-  githubRepos {
+`;
+export const RepositoryOwnerAndNameFragmentDoc = gql`
+  fragment RepositoryOwnerAndName on Repository {
+    owner
+    name
+  }
+`;
+export const SidebarProjectDetailsFragmentDoc = gql`
+  fragment SidebarProjectDetails on Projects {
+    ...ProjectContributors
+    id
+    projectDetails {
+      projectId
+      name
+      logoUrl
+    }
+    pendingInvitations {
+      id
+    }
+  }
+  ${ProjectContributorsFragmentDoc}
+`;
+export const GithubRepoLanguagesFieldsFragmentDoc = gql`
+  fragment GithubRepoLanguagesFields on ProjectGithubRepos {
     githubRepoId
+    githubRepoDetails {
+      id
+      languages
+    }
   }
-  budgets {
+`;
+export const VisibleProjectFragmentDoc = gql`
+  fragment VisibleProject on Projects {
     id
+    projectLeads {
+      userId
+    }
+    githubRepos {
+      githubRepoId
+    }
+    budgets {
+      id
+    }
+    pendingInvitations {
+      id
+      githubUserId
+    }
   }
-  pendingInvitations {
-    id
-    githubUserId
-  }
-}
-    `;
+`;
 export const UserIdentityDocument = gql`
-    query UserIdentity($userId: uuid!) {
-  userInfo(where: {userId: {_eq: $userId}}) {
-    identity
+  query UserIdentity($userId: uuid!) {
+    userInfo(where: { userId: { _eq: $userId } }) {
+      identity
+    }
   }
-}
-    `;
+`;
 
 /**
  * __useUserIdentityQuery__
@@ -10495,24 +10913,28 @@ export const UserIdentityDocument = gql`
  *   },
  * });
  */
-export function useUserIdentityQuery(baseOptions: Apollo.QueryHookOptions<UserIdentityQuery, UserIdentityQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UserIdentityQuery, UserIdentityQueryVariables>(UserIdentityDocument, options);
-      }
-export function useUserIdentityLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserIdentityQuery, UserIdentityQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UserIdentityQuery, UserIdentityQueryVariables>(UserIdentityDocument, options);
-        }
+export function useUserIdentityQuery(
+  baseOptions: Apollo.QueryHookOptions<UserIdentityQuery, UserIdentityQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<UserIdentityQuery, UserIdentityQueryVariables>(UserIdentityDocument, options);
+}
+export function useUserIdentityLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<UserIdentityQuery, UserIdentityQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<UserIdentityQuery, UserIdentityQueryVariables>(UserIdentityDocument, options);
+}
 export type UserIdentityQueryHookResult = ReturnType<typeof useUserIdentityQuery>;
 export type UserIdentityLazyQueryHookResult = ReturnType<typeof useUserIdentityLazyQuery>;
 export type UserIdentityQueryResult = Apollo.QueryResult<UserIdentityQuery, UserIdentityQueryVariables>;
 export const GetPaymentRequestIdsDocument = gql`
-    query GetPaymentRequestIds($githubUserId: bigint!) {
-  paymentRequests(where: {recipientId: {_eq: $githubUserId}}) {
-    id
+  query GetPaymentRequestIds($githubUserId: bigint!) {
+    paymentRequests(where: { recipientId: { _eq: $githubUserId } }) {
+      id
+    }
   }
-}
-    `;
+`;
 
 /**
  * __useGetPaymentRequestIdsQuery__
@@ -10530,24 +10952,38 @@ export const GetPaymentRequestIdsDocument = gql`
  *   },
  * });
  */
-export function useGetPaymentRequestIdsQuery(baseOptions: Apollo.QueryHookOptions<GetPaymentRequestIdsQuery, GetPaymentRequestIdsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPaymentRequestIdsQuery, GetPaymentRequestIdsQueryVariables>(GetPaymentRequestIdsDocument, options);
-      }
-export function useGetPaymentRequestIdsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaymentRequestIdsQuery, GetPaymentRequestIdsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPaymentRequestIdsQuery, GetPaymentRequestIdsQueryVariables>(GetPaymentRequestIdsDocument, options);
-        }
+export function useGetPaymentRequestIdsQuery(
+  baseOptions: Apollo.QueryHookOptions<GetPaymentRequestIdsQuery, GetPaymentRequestIdsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetPaymentRequestIdsQuery, GetPaymentRequestIdsQueryVariables>(
+    GetPaymentRequestIdsDocument,
+    options
+  );
+}
+export function useGetPaymentRequestIdsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetPaymentRequestIdsQuery, GetPaymentRequestIdsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetPaymentRequestIdsQuery, GetPaymentRequestIdsQueryVariables>(
+    GetPaymentRequestIdsDocument,
+    options
+  );
+}
 export type GetPaymentRequestIdsQueryHookResult = ReturnType<typeof useGetPaymentRequestIdsQuery>;
 export type GetPaymentRequestIdsLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestIdsLazyQuery>;
-export type GetPaymentRequestIdsQueryResult = Apollo.QueryResult<GetPaymentRequestIdsQuery, GetPaymentRequestIdsQueryVariables>;
+export type GetPaymentRequestIdsQueryResult = Apollo.QueryResult<
+  GetPaymentRequestIdsQuery,
+  GetPaymentRequestIdsQueryVariables
+>;
 export const PaymentRequestDetailsDocument = gql`
-    query PaymentRequestDetails($id: uuid!) {
-  paymentRequestsByPk(id: $id) {
-    ...PaymentRequestDetails
+  query PaymentRequestDetails($id: uuid!) {
+    paymentRequestsByPk(id: $id) {
+      ...PaymentRequestDetails
+    }
   }
-}
-    ${PaymentRequestDetailsFragmentDoc}`;
+  ${PaymentRequestDetailsFragmentDoc}
+`;
 
 /**
  * __usePaymentRequestDetailsQuery__
@@ -10565,24 +11001,38 @@ export const PaymentRequestDetailsDocument = gql`
  *   },
  * });
  */
-export function usePaymentRequestDetailsQuery(baseOptions: Apollo.QueryHookOptions<PaymentRequestDetailsQuery, PaymentRequestDetailsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PaymentRequestDetailsQuery, PaymentRequestDetailsQueryVariables>(PaymentRequestDetailsDocument, options);
-      }
-export function usePaymentRequestDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PaymentRequestDetailsQuery, PaymentRequestDetailsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PaymentRequestDetailsQuery, PaymentRequestDetailsQueryVariables>(PaymentRequestDetailsDocument, options);
-        }
+export function usePaymentRequestDetailsQuery(
+  baseOptions: Apollo.QueryHookOptions<PaymentRequestDetailsQuery, PaymentRequestDetailsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<PaymentRequestDetailsQuery, PaymentRequestDetailsQueryVariables>(
+    PaymentRequestDetailsDocument,
+    options
+  );
+}
+export function usePaymentRequestDetailsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<PaymentRequestDetailsQuery, PaymentRequestDetailsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<PaymentRequestDetailsQuery, PaymentRequestDetailsQueryVariables>(
+    PaymentRequestDetailsDocument,
+    options
+  );
+}
 export type PaymentRequestDetailsQueryHookResult = ReturnType<typeof usePaymentRequestDetailsQuery>;
 export type PaymentRequestDetailsLazyQueryHookResult = ReturnType<typeof usePaymentRequestDetailsLazyQuery>;
-export type PaymentRequestDetailsQueryResult = Apollo.QueryResult<PaymentRequestDetailsQuery, PaymentRequestDetailsQueryVariables>;
+export type PaymentRequestDetailsQueryResult = Apollo.QueryResult<
+  PaymentRequestDetailsQuery,
+  PaymentRequestDetailsQueryVariables
+>;
 export const GetGithubUserDocument = gql`
-    query GetGithubUser($githubUserId: Int!) {
-  fetchUserDetailsById(userId: $githubUserId) {
-    ...GithubUser
+  query GetGithubUser($githubUserId: Int!) {
+    fetchUserDetailsById(userId: $githubUserId) {
+      ...GithubUser
+    }
   }
-}
-    ${GithubUserFragmentDoc}`;
+  ${GithubUserFragmentDoc}
+`;
 
 /**
  * __useGetGithubUserQuery__
@@ -10600,24 +11050,29 @@ export const GetGithubUserDocument = gql`
  *   },
  * });
  */
-export function useGetGithubUserQuery(baseOptions: Apollo.QueryHookOptions<GetGithubUserQuery, GetGithubUserQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetGithubUserQuery, GetGithubUserQueryVariables>(GetGithubUserDocument, options);
-      }
-export function useGetGithubUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGithubUserQuery, GetGithubUserQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetGithubUserQuery, GetGithubUserQueryVariables>(GetGithubUserDocument, options);
-        }
+export function useGetGithubUserQuery(
+  baseOptions: Apollo.QueryHookOptions<GetGithubUserQuery, GetGithubUserQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetGithubUserQuery, GetGithubUserQueryVariables>(GetGithubUserDocument, options);
+}
+export function useGetGithubUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetGithubUserQuery, GetGithubUserQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetGithubUserQuery, GetGithubUserQueryVariables>(GetGithubUserDocument, options);
+}
 export type GetGithubUserQueryHookResult = ReturnType<typeof useGetGithubUserQuery>;
 export type GetGithubUserLazyQueryHookResult = ReturnType<typeof useGetGithubUserLazyQuery>;
 export type GetGithubUserQueryResult = Apollo.QueryResult<GetGithubUserQuery, GetGithubUserQueryVariables>;
 export const FindUserQueryForPaymentFormDocument = gql`
-    query FindUserQueryForPaymentForm($username: String!) {
-  fetchUserDetails(username: $username) {
-    ...GithubContributor
+  query FindUserQueryForPaymentForm($username: String!) {
+    fetchUserDetails(username: $username) {
+      ...GithubContributor
+    }
   }
-}
-    ${GithubContributorFragmentDoc}`;
+  ${GithubContributorFragmentDoc}
+`;
 
 /**
  * __useFindUserQueryForPaymentFormQuery__
@@ -10635,32 +11090,46 @@ export const FindUserQueryForPaymentFormDocument = gql`
  *   },
  * });
  */
-export function useFindUserQueryForPaymentFormQuery(baseOptions: Apollo.QueryHookOptions<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>(FindUserQueryForPaymentFormDocument, options);
-      }
-export function useFindUserQueryForPaymentFormLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>(FindUserQueryForPaymentFormDocument, options);
-        }
+export function useFindUserQueryForPaymentFormQuery(
+  baseOptions: Apollo.QueryHookOptions<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>(
+    FindUserQueryForPaymentFormDocument,
+    options
+  );
+}
+export function useFindUserQueryForPaymentFormLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>(
+    FindUserQueryForPaymentFormDocument,
+    options
+  );
+}
 export type FindUserQueryForPaymentFormQueryHookResult = ReturnType<typeof useFindUserQueryForPaymentFormQuery>;
 export type FindUserQueryForPaymentFormLazyQueryHookResult = ReturnType<typeof useFindUserQueryForPaymentFormLazyQuery>;
-export type FindUserQueryForPaymentFormQueryResult = Apollo.QueryResult<FindUserQueryForPaymentFormQuery, FindUserQueryForPaymentFormQueryVariables>;
+export type FindUserQueryForPaymentFormQueryResult = Apollo.QueryResult<
+  FindUserQueryForPaymentFormQuery,
+  FindUserQueryForPaymentFormQueryVariables
+>;
 export const GetPaymentRequestsForProjectDocument = gql`
-    query GetPaymentRequestsForProject($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    id
-    budgets {
+  query GetPaymentRequestsForProject($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
       id
-      initialAmount
-      remainingAmount
-      paymentRequests {
-        ...PaymentRequest
+      budgets {
+        id
+        initialAmount
+        remainingAmount
+        paymentRequests {
+          ...PaymentRequest
+        }
       }
     }
   }
-}
-    ${PaymentRequestFragmentDoc}`;
+  ${PaymentRequestFragmentDoc}
+`;
 
 /**
  * __useGetPaymentRequestsForProjectQuery__
@@ -10678,27 +11147,40 @@ export const GetPaymentRequestsForProjectDocument = gql`
  *   },
  * });
  */
-export function useGetPaymentRequestsForProjectQuery(baseOptions: Apollo.QueryHookOptions<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>(GetPaymentRequestsForProjectDocument, options);
-      }
-export function useGetPaymentRequestsForProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>(GetPaymentRequestsForProjectDocument, options);
-        }
-export type GetPaymentRequestsForProjectQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectQuery>;
-export type GetPaymentRequestsForProjectLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectLazyQuery>;
-export type GetPaymentRequestsForProjectQueryResult = Apollo.QueryResult<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>;
-export const RequestPaymentDocument = gql`
-    mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
-  requestPayment(
-    amountInUsd: $amount
-    projectId: $projectId
-    reason: $reason
-    recipientId: $contributorId
-  )
+export function useGetPaymentRequestsForProjectQuery(
+  baseOptions: Apollo.QueryHookOptions<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>(
+    GetPaymentRequestsForProjectDocument,
+    options
+  );
 }
-    `;
+export function useGetPaymentRequestsForProjectLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetPaymentRequestsForProjectQuery,
+    GetPaymentRequestsForProjectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>(
+    GetPaymentRequestsForProjectDocument,
+    options
+  );
+}
+export type GetPaymentRequestsForProjectQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectQuery>;
+export type GetPaymentRequestsForProjectLazyQueryHookResult = ReturnType<
+  typeof useGetPaymentRequestsForProjectLazyQuery
+>;
+export type GetPaymentRequestsForProjectQueryResult = Apollo.QueryResult<
+  GetPaymentRequestsForProjectQuery,
+  GetPaymentRequestsForProjectQueryVariables
+>;
+export const RequestPaymentDocument = gql`
+  mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
+    requestPayment(amountInUsd: $amount, projectId: $projectId, reason: $reason, recipientId: $contributorId)
+  }
+`;
 export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMutation, RequestPaymentMutationVariables>;
 
 /**
@@ -10721,24 +11203,30 @@ export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMut
  *   },
  * });
  */
-export function useRequestPaymentMutation(baseOptions?: Apollo.MutationHookOptions<RequestPaymentMutation, RequestPaymentMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RequestPaymentMutation, RequestPaymentMutationVariables>(RequestPaymentDocument, options);
-      }
+export function useRequestPaymentMutation(
+  baseOptions?: Apollo.MutationHookOptions<RequestPaymentMutation, RequestPaymentMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RequestPaymentMutation, RequestPaymentMutationVariables>(RequestPaymentDocument, options);
+}
 export type RequestPaymentMutationHookResult = ReturnType<typeof useRequestPaymentMutation>;
 export type RequestPaymentMutationResult = Apollo.MutationResult<RequestPaymentMutation>;
-export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<RequestPaymentMutation, RequestPaymentMutationVariables>;
+export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<
+  RequestPaymentMutation,
+  RequestPaymentMutationVariables
+>;
 export const GetUserPayoutSettingsDocument = gql`
-    query GetUserPayoutSettings($githubUserId: bigint!) {
-  authGithubUsers(where: {githubUserId: {_eq: $githubUserId}}) {
-    user {
-      userInfo {
-        ...UserPayoutSettings
+  query GetUserPayoutSettings($githubUserId: bigint!) {
+    authGithubUsers(where: { githubUserId: { _eq: $githubUserId } }) {
+      user {
+        userInfo {
+          ...UserPayoutSettings
+        }
       }
     }
   }
-}
-    ${UserPayoutSettingsFragmentDoc}`;
+  ${UserPayoutSettingsFragmentDoc}
+`;
 
 /**
  * __useGetUserPayoutSettingsQuery__
@@ -10756,25 +11244,38 @@ export const GetUserPayoutSettingsDocument = gql`
  *   },
  * });
  */
-export function useGetUserPayoutSettingsQuery(baseOptions: Apollo.QueryHookOptions<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>(GetUserPayoutSettingsDocument, options);
-      }
-export function useGetUserPayoutSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>(GetUserPayoutSettingsDocument, options);
-        }
+export function useGetUserPayoutSettingsQuery(
+  baseOptions: Apollo.QueryHookOptions<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>(
+    GetUserPayoutSettingsDocument,
+    options
+  );
+}
+export function useGetUserPayoutSettingsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>(
+    GetUserPayoutSettingsDocument,
+    options
+  );
+}
 export type GetUserPayoutSettingsQueryHookResult = ReturnType<typeof useGetUserPayoutSettingsQuery>;
 export type GetUserPayoutSettingsLazyQueryHookResult = ReturnType<typeof useGetUserPayoutSettingsLazyQuery>;
-export type GetUserPayoutSettingsQueryResult = Apollo.QueryResult<GetUserPayoutSettingsQuery, GetUserPayoutSettingsQueryVariables>;
+export type GetUserPayoutSettingsQueryResult = Apollo.QueryResult<
+  GetUserPayoutSettingsQuery,
+  GetUserPayoutSettingsQueryVariables
+>;
 export const PendingProjectLeaderInvitationsDocument = gql`
-    query PendingProjectLeaderInvitations($githubUserId: bigint) {
-  pendingProjectLeaderInvitations(where: {githubUserId: {_eq: $githubUserId}}) {
-    id
-    projectId
+  query PendingProjectLeaderInvitations($githubUserId: bigint) {
+    pendingProjectLeaderInvitations(where: { githubUserId: { _eq: $githubUserId } }) {
+      id
+      projectId
+    }
   }
-}
-    `;
+`;
 
 /**
  * __usePendingProjectLeaderInvitationsQuery__
@@ -10792,36 +11293,57 @@ export const PendingProjectLeaderInvitationsDocument = gql`
  *   },
  * });
  */
-export function usePendingProjectLeaderInvitationsQuery(baseOptions?: Apollo.QueryHookOptions<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>(PendingProjectLeaderInvitationsDocument, options);
-      }
-export function usePendingProjectLeaderInvitationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>(PendingProjectLeaderInvitationsDocument, options);
-        }
+export function usePendingProjectLeaderInvitationsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    PendingProjectLeaderInvitationsQuery,
+    PendingProjectLeaderInvitationsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>(
+    PendingProjectLeaderInvitationsDocument,
+    options
+  );
+}
+export function usePendingProjectLeaderInvitationsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    PendingProjectLeaderInvitationsQuery,
+    PendingProjectLeaderInvitationsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>(
+    PendingProjectLeaderInvitationsDocument,
+    options
+  );
+}
 export type PendingProjectLeaderInvitationsQueryHookResult = ReturnType<typeof usePendingProjectLeaderInvitationsQuery>;
-export type PendingProjectLeaderInvitationsLazyQueryHookResult = ReturnType<typeof usePendingProjectLeaderInvitationsLazyQuery>;
-export type PendingProjectLeaderInvitationsQueryResult = Apollo.QueryResult<PendingProjectLeaderInvitationsQuery, PendingProjectLeaderInvitationsQueryVariables>;
+export type PendingProjectLeaderInvitationsLazyQueryHookResult = ReturnType<
+  typeof usePendingProjectLeaderInvitationsLazyQuery
+>;
+export type PendingProjectLeaderInvitationsQueryResult = Apollo.QueryResult<
+  PendingProjectLeaderInvitationsQuery,
+  PendingProjectLeaderInvitationsQueryVariables
+>;
 export const PendingUserPaymentsDocument = gql`
-    query PendingUserPayments($userId: uuid!) {
-  user(id: $userId) {
-    githubUser {
-      paymentRequests {
-        id
-        amountInUsd
-        paymentsAggregate {
-          aggregate {
-            sum {
-              amount
+  query PendingUserPayments($userId: uuid!) {
+    user(id: $userId) {
+      githubUser {
+        paymentRequests {
+          id
+          amountInUsd
+          paymentsAggregate {
+            aggregate {
+              sum {
+                amount
+              }
             }
           }
         }
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __usePendingUserPaymentsQuery__
@@ -10839,23 +11361,39 @@ export const PendingUserPaymentsDocument = gql`
  *   },
  * });
  */
-export function usePendingUserPaymentsQuery(baseOptions: Apollo.QueryHookOptions<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>(PendingUserPaymentsDocument, options);
-      }
-export function usePendingUserPaymentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>(PendingUserPaymentsDocument, options);
-        }
+export function usePendingUserPaymentsQuery(
+  baseOptions: Apollo.QueryHookOptions<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>(
+    PendingUserPaymentsDocument,
+    options
+  );
+}
+export function usePendingUserPaymentsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>(
+    PendingUserPaymentsDocument,
+    options
+  );
+}
 export type PendingUserPaymentsQueryHookResult = ReturnType<typeof usePendingUserPaymentsQuery>;
 export type PendingUserPaymentsLazyQueryHookResult = ReturnType<typeof usePendingUserPaymentsLazyQuery>;
-export type PendingUserPaymentsQueryResult = Apollo.QueryResult<PendingUserPaymentsQuery, PendingUserPaymentsQueryVariables>;
+export type PendingUserPaymentsQueryResult = Apollo.QueryResult<
+  PendingUserPaymentsQuery,
+  PendingUserPaymentsQueryVariables
+>;
 export const MarkInvoiceAsReceivedDocument = gql`
-    mutation markInvoiceAsReceived($paymentReferences: [PaymentReference!]!) {
-  markInvoiceAsReceived(paymentReferences: $paymentReferences)
-}
-    `;
-export type MarkInvoiceAsReceivedMutationFn = Apollo.MutationFunction<MarkInvoiceAsReceivedMutation, MarkInvoiceAsReceivedMutationVariables>;
+  mutation markInvoiceAsReceived($paymentReferences: [PaymentReference!]!) {
+    markInvoiceAsReceived(paymentReferences: $paymentReferences)
+  }
+`;
+export type MarkInvoiceAsReceivedMutationFn = Apollo.MutationFunction<
+  MarkInvoiceAsReceivedMutation,
+  MarkInvoiceAsReceivedMutationVariables
+>;
 
 /**
  * __useMarkInvoiceAsReceivedMutation__
@@ -10874,20 +11412,29 @@ export type MarkInvoiceAsReceivedMutationFn = Apollo.MutationFunction<MarkInvoic
  *   },
  * });
  */
-export function useMarkInvoiceAsReceivedMutation(baseOptions?: Apollo.MutationHookOptions<MarkInvoiceAsReceivedMutation, MarkInvoiceAsReceivedMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<MarkInvoiceAsReceivedMutation, MarkInvoiceAsReceivedMutationVariables>(MarkInvoiceAsReceivedDocument, options);
-      }
+export function useMarkInvoiceAsReceivedMutation(
+  baseOptions?: Apollo.MutationHookOptions<MarkInvoiceAsReceivedMutation, MarkInvoiceAsReceivedMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<MarkInvoiceAsReceivedMutation, MarkInvoiceAsReceivedMutationVariables>(
+    MarkInvoiceAsReceivedDocument,
+    options
+  );
+}
 export type MarkInvoiceAsReceivedMutationHookResult = ReturnType<typeof useMarkInvoiceAsReceivedMutation>;
 export type MarkInvoiceAsReceivedMutationResult = Apollo.MutationResult<MarkInvoiceAsReceivedMutation>;
-export type MarkInvoiceAsReceivedMutationOptions = Apollo.BaseMutationOptions<MarkInvoiceAsReceivedMutation, MarkInvoiceAsReceivedMutationVariables>;
+export type MarkInvoiceAsReceivedMutationOptions = Apollo.BaseMutationOptions<
+  MarkInvoiceAsReceivedMutation,
+  MarkInvoiceAsReceivedMutationVariables
+>;
 export const GetPaymentRequestsDocument = gql`
-    query GetPaymentRequests($githubUserId: bigint!) {
-  paymentRequests(where: {recipientId: {_eq: $githubUserId}}) {
-    ...UserPaymentRequest
+  query GetPaymentRequests($githubUserId: bigint!) {
+    paymentRequests(where: { recipientId: { _eq: $githubUserId } }) {
+      ...UserPaymentRequest
+    }
   }
-}
-    ${UserPaymentRequestFragmentDoc}`;
+  ${UserPaymentRequestFragmentDoc}
+`;
 
 /**
  * __useGetPaymentRequestsQuery__
@@ -10905,28 +11452,49 @@ export const GetPaymentRequestsDocument = gql`
  *   },
  * });
  */
-export function useGetPaymentRequestsQuery(baseOptions: Apollo.QueryHookOptions<GetPaymentRequestsQuery, GetPaymentRequestsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPaymentRequestsQuery, GetPaymentRequestsQueryVariables>(GetPaymentRequestsDocument, options);
-      }
-export function useGetPaymentRequestsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaymentRequestsQuery, GetPaymentRequestsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPaymentRequestsQuery, GetPaymentRequestsQueryVariables>(GetPaymentRequestsDocument, options);
-        }
+export function useGetPaymentRequestsQuery(
+  baseOptions: Apollo.QueryHookOptions<GetPaymentRequestsQuery, GetPaymentRequestsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetPaymentRequestsQuery, GetPaymentRequestsQueryVariables>(
+    GetPaymentRequestsDocument,
+    options
+  );
+}
+export function useGetPaymentRequestsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetPaymentRequestsQuery, GetPaymentRequestsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetPaymentRequestsQuery, GetPaymentRequestsQueryVariables>(
+    GetPaymentRequestsDocument,
+    options
+  );
+}
 export type GetPaymentRequestsQueryHookResult = ReturnType<typeof useGetPaymentRequestsQuery>;
 export type GetPaymentRequestsLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsLazyQuery>;
-export type GetPaymentRequestsQueryResult = Apollo.QueryResult<GetPaymentRequestsQuery, GetPaymentRequestsQueryVariables>;
+export type GetPaymentRequestsQueryResult = Apollo.QueryResult<
+  GetPaymentRequestsQuery,
+  GetPaymentRequestsQueryVariables
+>;
 export const UpdateProfileInfoDocument = gql`
-    mutation updateProfileInfo($contactInformation: ContactInformation, $identity: IdentityInput, $location: Location, $payoutSettings: PayoutSettingsInput) {
-  updateProfileInfo(
-    identity: $identity
-    location: $location
-    payoutSettings: $payoutSettings
-    contactInformation: $contactInformation
-  )
-}
-    `;
-export type UpdateProfileInfoMutationFn = Apollo.MutationFunction<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>;
+  mutation updateProfileInfo(
+    $contactInformation: ContactInformation
+    $identity: IdentityInput
+    $location: Location
+    $payoutSettings: PayoutSettingsInput
+  ) {
+    updateProfileInfo(
+      identity: $identity
+      location: $location
+      payoutSettings: $payoutSettings
+      contactInformation: $contactInformation
+    )
+  }
+`;
+export type UpdateProfileInfoMutationFn = Apollo.MutationFunction<
+  UpdateProfileInfoMutation,
+  UpdateProfileInfoMutationVariables
+>;
 
 /**
  * __useUpdateProfileInfoMutation__
@@ -10948,24 +11516,33 @@ export type UpdateProfileInfoMutationFn = Apollo.MutationFunction<UpdateProfileI
  *   },
  * });
  */
-export function useUpdateProfileInfoMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>(UpdateProfileInfoDocument, options);
-      }
+export function useUpdateProfileInfoMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>(
+    UpdateProfileInfoDocument,
+    options
+  );
+}
 export type UpdateProfileInfoMutationHookResult = ReturnType<typeof useUpdateProfileInfoMutation>;
 export type UpdateProfileInfoMutationResult = Apollo.MutationResult<UpdateProfileInfoMutation>;
-export type UpdateProfileInfoMutationOptions = Apollo.BaseMutationOptions<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>;
+export type UpdateProfileInfoMutationOptions = Apollo.BaseMutationOptions<
+  UpdateProfileInfoMutation,
+  UpdateProfileInfoMutationVariables
+>;
 export const ProfileDocument = gql`
-    query Profile($userId: uuid!) {
-  userInfoByPk(userId: $userId) {
-    userId
-    identity
-    contactInformation
-    location
-    ...UserPayoutSettings
+  query Profile($userId: uuid!) {
+    userInfoByPk(userId: $userId) {
+      userId
+      identity
+      contactInformation
+      location
+      ...UserPayoutSettings
+    }
   }
-}
-    ${UserPayoutSettingsFragmentDoc}`;
+  ${UserPayoutSettingsFragmentDoc}
+`;
 
 /**
  * __useProfileQuery__
@@ -10984,40 +11561,41 @@ export const ProfileDocument = gql`
  * });
  */
 export function useProfileQuery(baseOptions: Apollo.QueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
+}
 export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, options);
+}
 export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
 export const GetProjectContributorsDocument = gql`
-    query GetProjectContributors($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    id
-    projectDetails {
-      projectId
-      name
-    }
-    githubRepos {
-      ...GithubRepoContributorsFields
-    }
-    budgets {
+  query GetProjectContributors($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
       id
-      paymentRequests {
+      projectDetails {
+        projectId
+        name
+      }
+      githubRepos {
+        ...GithubRepoContributorsFields
+      }
+      budgets {
         id
-        githubRecipient {
-          ...ContributorsTableFields
+        paymentRequests {
+          id
+          githubRecipient {
+            ...ContributorsTableFields
+          }
         }
       }
     }
   }
-}
-    ${GithubRepoContributorsFieldsFragmentDoc}
-${ContributorsTableFieldsFragmentDoc}`;
+  ${GithubRepoContributorsFieldsFragmentDoc}
+  ${ContributorsTableFieldsFragmentDoc}
+`;
 
 /**
  * __useGetProjectContributorsQuery__
@@ -11035,28 +11613,41 @@ ${ContributorsTableFieldsFragmentDoc}`;
  *   },
  * });
  */
-export function useGetProjectContributorsQuery(baseOptions: Apollo.QueryHookOptions<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>(GetProjectContributorsDocument, options);
-      }
-export function useGetProjectContributorsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>(GetProjectContributorsDocument, options);
-        }
+export function useGetProjectContributorsQuery(
+  baseOptions: Apollo.QueryHookOptions<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>(
+    GetProjectContributorsDocument,
+    options
+  );
+}
+export function useGetProjectContributorsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>(
+    GetProjectContributorsDocument,
+    options
+  );
+}
 export type GetProjectContributorsQueryHookResult = ReturnType<typeof useGetProjectContributorsQuery>;
 export type GetProjectContributorsLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsLazyQuery>;
-export type GetProjectContributorsQueryResult = Apollo.QueryResult<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>;
+export type GetProjectContributorsQueryResult = Apollo.QueryResult<
+  GetProjectContributorsQuery,
+  GetProjectContributorsQueryVariables
+>;
 export const GetProjectRemainingBudgetDocument = gql`
-    query GetProjectRemainingBudget($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    id
-    budgets {
+  query GetProjectRemainingBudget($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
       id
-      remainingAmount
+      budgets {
+        id
+        remainingAmount
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetProjectRemainingBudgetQuery__
@@ -11074,28 +11665,42 @@ export const GetProjectRemainingBudgetDocument = gql`
  *   },
  * });
  */
-export function useGetProjectRemainingBudgetQuery(baseOptions: Apollo.QueryHookOptions<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>(GetProjectRemainingBudgetDocument, options);
-      }
-export function useGetProjectRemainingBudgetLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>(GetProjectRemainingBudgetDocument, options);
-        }
+export function useGetProjectRemainingBudgetQuery(
+  baseOptions: Apollo.QueryHookOptions<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>(
+    GetProjectRemainingBudgetDocument,
+    options
+  );
+}
+export function useGetProjectRemainingBudgetLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>(
+    GetProjectRemainingBudgetDocument,
+    options
+  );
+}
 export type GetProjectRemainingBudgetQueryHookResult = ReturnType<typeof useGetProjectRemainingBudgetQuery>;
 export type GetProjectRemainingBudgetLazyQueryHookResult = ReturnType<typeof useGetProjectRemainingBudgetLazyQuery>;
-export type GetProjectRemainingBudgetQueryResult = Apollo.QueryResult<GetProjectRemainingBudgetQuery, GetProjectRemainingBudgetQueryVariables>;
+export type GetProjectRemainingBudgetQueryResult = Apollo.QueryResult<
+  GetProjectRemainingBudgetQuery,
+  GetProjectRemainingBudgetQueryVariables
+>;
 export const GetGithubRepositoryDetailsDocument = gql`
-    query GetGithubRepositoryDetails($githubRepoId: bigint!) {
-  githubRepoDetailsByPk(id: $githubRepoId) {
-    ...GithubRepoStaticDetails
-    content {
-      ...GithubRepoDynamicDetails
+  query GetGithubRepositoryDetails($githubRepoId: bigint!) {
+    githubRepoDetailsByPk(id: $githubRepoId) {
+      ...GithubRepoStaticDetails
+      content {
+        ...GithubRepoDynamicDetails
+      }
     }
   }
-}
-    ${GithubRepoStaticDetailsFragmentDoc}
-${GithubRepoDynamicDetailsFragmentDoc}`;
+  ${GithubRepoStaticDetailsFragmentDoc}
+  ${GithubRepoDynamicDetailsFragmentDoc}
+`;
 
 /**
  * __useGetGithubRepositoryDetailsQuery__
@@ -11113,33 +11718,46 @@ ${GithubRepoDynamicDetailsFragmentDoc}`;
  *   },
  * });
  */
-export function useGetGithubRepositoryDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>(GetGithubRepositoryDetailsDocument, options);
-      }
-export function useGetGithubRepositoryDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>(GetGithubRepositoryDetailsDocument, options);
-        }
+export function useGetGithubRepositoryDetailsQuery(
+  baseOptions: Apollo.QueryHookOptions<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>(
+    GetGithubRepositoryDetailsDocument,
+    options
+  );
+}
+export function useGetGithubRepositoryDetailsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>(
+    GetGithubRepositoryDetailsDocument,
+    options
+  );
+}
 export type GetGithubRepositoryDetailsQueryHookResult = ReturnType<typeof useGetGithubRepositoryDetailsQuery>;
 export type GetGithubRepositoryDetailsLazyQueryHookResult = ReturnType<typeof useGetGithubRepositoryDetailsLazyQuery>;
-export type GetGithubRepositoryDetailsQueryResult = Apollo.QueryResult<GetGithubRepositoryDetailsQuery, GetGithubRepositoryDetailsQueryVariables>;
+export type GetGithubRepositoryDetailsQueryResult = Apollo.QueryResult<
+  GetGithubRepositoryDetailsQuery,
+  GetGithubRepositoryDetailsQueryVariables
+>;
 export const GetProjectContributorsForOverviewDocument = gql`
-    query GetProjectContributorsForOverview($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    githubRepos {
-      githubRepoDetails {
-        content {
-          contributors {
-            login
-            avatarUrl
+  query GetProjectContributorsForOverview($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
+      githubRepos {
+        githubRepoDetails {
+          content {
+            contributors {
+              login
+              avatarUrl
+            }
           }
         }
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetProjectContributorsForOverviewQuery__
@@ -11157,38 +11775,61 @@ export const GetProjectContributorsForOverviewDocument = gql`
  *   },
  * });
  */
-export function useGetProjectContributorsForOverviewQuery(baseOptions: Apollo.QueryHookOptions<GetProjectContributorsForOverviewQuery, GetProjectContributorsForOverviewQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProjectContributorsForOverviewQuery, GetProjectContributorsForOverviewQueryVariables>(GetProjectContributorsForOverviewDocument, options);
-      }
-export function useGetProjectContributorsForOverviewLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectContributorsForOverviewQuery, GetProjectContributorsForOverviewQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProjectContributorsForOverviewQuery, GetProjectContributorsForOverviewQueryVariables>(GetProjectContributorsForOverviewDocument, options);
-        }
-export type GetProjectContributorsForOverviewQueryHookResult = ReturnType<typeof useGetProjectContributorsForOverviewQuery>;
-export type GetProjectContributorsForOverviewLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsForOverviewLazyQuery>;
-export type GetProjectContributorsForOverviewQueryResult = Apollo.QueryResult<GetProjectContributorsForOverviewQuery, GetProjectContributorsForOverviewQueryVariables>;
+export function useGetProjectContributorsForOverviewQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetProjectContributorsForOverviewQuery,
+    GetProjectContributorsForOverviewQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetProjectContributorsForOverviewQuery, GetProjectContributorsForOverviewQueryVariables>(
+    GetProjectContributorsForOverviewDocument,
+    options
+  );
+}
+export function useGetProjectContributorsForOverviewLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetProjectContributorsForOverviewQuery,
+    GetProjectContributorsForOverviewQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetProjectContributorsForOverviewQuery, GetProjectContributorsForOverviewQueryVariables>(
+    GetProjectContributorsForOverviewDocument,
+    options
+  );
+}
+export type GetProjectContributorsForOverviewQueryHookResult = ReturnType<
+  typeof useGetProjectContributorsForOverviewQuery
+>;
+export type GetProjectContributorsForOverviewLazyQueryHookResult = ReturnType<
+  typeof useGetProjectContributorsForOverviewLazyQuery
+>;
+export type GetProjectContributorsForOverviewQueryResult = Apollo.QueryResult<
+  GetProjectContributorsForOverviewQuery,
+  GetProjectContributorsForOverviewQueryVariables
+>;
 export const GetProjectOverviewDetailsDocument = gql`
-    query GetProjectOverviewDetails($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    id
-    projectDetails {
-      projectId
-      name
-      longDescription
-      logoUrl
-    }
-    githubRepos {
-      githubRepoId
-      githubRepoDetails {
-        content {
-          stars
+  query GetProjectOverviewDetails($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
+      id
+      projectDetails {
+        projectId
+        name
+        longDescription
+        logoUrl
+      }
+      githubRepos {
+        githubRepoId
+        githubRepoDetails {
+          content {
+            stars
+          }
         }
       }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetProjectOverviewDetailsQuery__
@@ -11206,29 +11847,42 @@ export const GetProjectOverviewDetailsDocument = gql`
  *   },
  * });
  */
-export function useGetProjectOverviewDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>(GetProjectOverviewDetailsDocument, options);
-      }
-export function useGetProjectOverviewDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>(GetProjectOverviewDetailsDocument, options);
-        }
+export function useGetProjectOverviewDetailsQuery(
+  baseOptions: Apollo.QueryHookOptions<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>(
+    GetProjectOverviewDetailsDocument,
+    options
+  );
+}
+export function useGetProjectOverviewDetailsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>(
+    GetProjectOverviewDetailsDocument,
+    options
+  );
+}
 export type GetProjectOverviewDetailsQueryHookResult = ReturnType<typeof useGetProjectOverviewDetailsQuery>;
 export type GetProjectOverviewDetailsLazyQueryHookResult = ReturnType<typeof useGetProjectOverviewDetailsLazyQuery>;
-export type GetProjectOverviewDetailsQueryResult = Apollo.QueryResult<GetProjectOverviewDetailsQuery, GetProjectOverviewDetailsQueryVariables>;
+export type GetProjectOverviewDetailsQueryResult = Apollo.QueryResult<
+  GetProjectOverviewDetailsQuery,
+  GetProjectOverviewDetailsQueryVariables
+>;
 export const SearchGithubUsersByHandleSubstringDocument = gql`
-    query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
-  searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc") {
-    id
-    login
-    avatarUrl
-    user {
-      userId
+  query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
+    searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc") {
+      id
+      login
+      avatarUrl
+      user {
+        userId
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useSearchGithubUsersByHandleSubstringQuery__
@@ -11246,42 +11900,66 @@ export const SearchGithubUsersByHandleSubstringDocument = gql`
  *   },
  * });
  */
-export function useSearchGithubUsersByHandleSubstringQuery(baseOptions: Apollo.QueryHookOptions<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>(SearchGithubUsersByHandleSubstringDocument, options);
-      }
-export function useSearchGithubUsersByHandleSubstringLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>(SearchGithubUsersByHandleSubstringDocument, options);
-        }
-export type SearchGithubUsersByHandleSubstringQueryHookResult = ReturnType<typeof useSearchGithubUsersByHandleSubstringQuery>;
-export type SearchGithubUsersByHandleSubstringLazyQueryHookResult = ReturnType<typeof useSearchGithubUsersByHandleSubstringLazyQuery>;
-export type SearchGithubUsersByHandleSubstringQueryResult = Apollo.QueryResult<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>;
+export function useSearchGithubUsersByHandleSubstringQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    SearchGithubUsersByHandleSubstringQuery,
+    SearchGithubUsersByHandleSubstringQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>(
+    SearchGithubUsersByHandleSubstringDocument,
+    options
+  );
+}
+export function useSearchGithubUsersByHandleSubstringLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    SearchGithubUsersByHandleSubstringQuery,
+    SearchGithubUsersByHandleSubstringQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<SearchGithubUsersByHandleSubstringQuery, SearchGithubUsersByHandleSubstringQueryVariables>(
+    SearchGithubUsersByHandleSubstringDocument,
+    options
+  );
+}
+export type SearchGithubUsersByHandleSubstringQueryHookResult = ReturnType<
+  typeof useSearchGithubUsersByHandleSubstringQuery
+>;
+export type SearchGithubUsersByHandleSubstringLazyQueryHookResult = ReturnType<
+  typeof useSearchGithubUsersByHandleSubstringLazyQuery
+>;
+export type SearchGithubUsersByHandleSubstringQueryResult = Apollo.QueryResult<
+  SearchGithubUsersByHandleSubstringQuery,
+  SearchGithubUsersByHandleSubstringQueryVariables
+>;
 export const GetProjectContributorsForPaymentSelectDocument = gql`
-    query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    id
-    githubRepos {
-      githubRepoDetails {
-        content {
+  query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
+      id
+      githubRepos {
+        githubRepoDetails {
+          content {
+            id
+            contributors {
+              ...GithubContributor
+            }
+          }
+        }
+      }
+      budgets {
+        paymentRequests {
           id
-          contributors {
+          githubRecipient {
             ...GithubContributor
           }
         }
       }
     }
-    budgets {
-      paymentRequests {
-        id
-        githubRecipient {
-          ...GithubContributor
-        }
-      }
-    }
   }
-}
-    ${GithubContributorFragmentDoc}`;
+  ${GithubContributorFragmentDoc}
+`;
 
 /**
  * __useGetProjectContributorsForPaymentSelectQuery__
@@ -11299,65 +11977,48 @@ export const GetProjectContributorsForPaymentSelectDocument = gql`
  *   },
  * });
  */
-export function useGetProjectContributorsForPaymentSelectQuery(baseOptions: Apollo.QueryHookOptions<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>(GetProjectContributorsForPaymentSelectDocument, options);
-      }
-export function useGetProjectContributorsForPaymentSelectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>(GetProjectContributorsForPaymentSelectDocument, options);
-        }
-export type GetProjectContributorsForPaymentSelectQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelectQuery>;
-export type GetProjectContributorsForPaymentSelectLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelectLazyQuery>;
-export type GetProjectContributorsForPaymentSelectQueryResult = Apollo.QueryResult<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>;
-export const FetchIssueDocument = gql`
-    query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
-  fetchIssue(
-    repoOwner: $repoOwner
-    repoName: $repoName
-    issueNumber: $issueNumber
-  ) {
-    ...IssueDetails
-  }
+export function useGetProjectContributorsForPaymentSelectQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetProjectContributorsForPaymentSelectQuery,
+    GetProjectContributorsForPaymentSelectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetProjectContributorsForPaymentSelectQuery,
+    GetProjectContributorsForPaymentSelectQueryVariables
+  >(GetProjectContributorsForPaymentSelectDocument, options);
 }
-    ${IssueDetailsFragmentDoc}`;
-
-/**
- * __useFetchIssueQuery__
- *
- * To run a query within a React component, call `useFetchIssueQuery` and pass it any options that fit your needs.
- * When your component renders, `useFetchIssueQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFetchIssueQuery({
- *   variables: {
- *      repoOwner: // value for 'repoOwner'
- *      repoName: // value for 'repoName'
- *      issueNumber: // value for 'issueNumber'
- *   },
- * });
- */
-export function useFetchIssueQuery(baseOptions: Apollo.QueryHookOptions<FetchIssueQuery, FetchIssueQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FetchIssueQuery, FetchIssueQueryVariables>(FetchIssueDocument, options);
-      }
-export function useFetchIssueLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FetchIssueQuery, FetchIssueQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FetchIssueQuery, FetchIssueQueryVariables>(FetchIssueDocument, options);
-        }
-export type FetchIssueQueryHookResult = ReturnType<typeof useFetchIssueQuery>;
-export type FetchIssueLazyQueryHookResult = ReturnType<typeof useFetchIssueLazyQuery>;
-export type FetchIssueQueryResult = Apollo.QueryResult<FetchIssueQuery, FetchIssueQueryVariables>;
+export function useGetProjectContributorsForPaymentSelectLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetProjectContributorsForPaymentSelectQuery,
+    GetProjectContributorsForPaymentSelectQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetProjectContributorsForPaymentSelectQuery,
+    GetProjectContributorsForPaymentSelectQueryVariables
+  >(GetProjectContributorsForPaymentSelectDocument, options);
+}
+export type GetProjectContributorsForPaymentSelectQueryHookResult = ReturnType<
+  typeof useGetProjectContributorsForPaymentSelectQuery
+>;
+export type GetProjectContributorsForPaymentSelectLazyQueryHookResult = ReturnType<
+  typeof useGetProjectContributorsForPaymentSelectLazyQuery
+>;
+export type GetProjectContributorsForPaymentSelectQueryResult = Apollo.QueryResult<
+  GetProjectContributorsForPaymentSelectQuery,
+  GetProjectContributorsForPaymentSelectQueryVariables
+>;
 export const SearchIssuesDocument = gql`
-    query searchIssues($query: String!, $order: String, $sort: String, $perPage: Int) {
-  searchIssues(query: $query, order: $order, sort: $sort, perPage: $perPage) {
-    ...IssueDetails
+  query searchIssues($query: String!, $order: String, $sort: String, $perPage: Int) {
+    searchIssues(query: $query, order: $order, sort: $sort, perPage: $perPage) {
+      ...IssueDetails
+    }
   }
-}
-    ${IssueDetailsFragmentDoc}`;
+  ${IssueDetailsFragmentDoc}
+`;
 
 /**
  * __useSearchIssuesQuery__
@@ -11378,41 +12039,46 @@ export const SearchIssuesDocument = gql`
  *   },
  * });
  */
-export function useSearchIssuesQuery(baseOptions: Apollo.QueryHookOptions<SearchIssuesQuery, SearchIssuesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SearchIssuesQuery, SearchIssuesQueryVariables>(SearchIssuesDocument, options);
-      }
-export function useSearchIssuesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchIssuesQuery, SearchIssuesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SearchIssuesQuery, SearchIssuesQueryVariables>(SearchIssuesDocument, options);
-        }
+export function useSearchIssuesQuery(
+  baseOptions: Apollo.QueryHookOptions<SearchIssuesQuery, SearchIssuesQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<SearchIssuesQuery, SearchIssuesQueryVariables>(SearchIssuesDocument, options);
+}
+export function useSearchIssuesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<SearchIssuesQuery, SearchIssuesQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<SearchIssuesQuery, SearchIssuesQueryVariables>(SearchIssuesDocument, options);
+}
 export type SearchIssuesQueryHookResult = ReturnType<typeof useSearchIssuesQuery>;
 export type SearchIssuesLazyQueryHookResult = ReturnType<typeof useSearchIssuesLazyQuery>;
 export type SearchIssuesQueryResult = Apollo.QueryResult<SearchIssuesQuery, SearchIssuesQueryVariables>;
 export const GetPaidWorkItemsDocument = gql`
-    query getPaidWorkItems($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    githubRepos {
-      githubRepoDetails {
-        id
-        content {
-          ...RepositoryOwnerAndName
+  query getPaidWorkItems($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
+      githubRepos {
+        githubRepoDetails {
+          id
+          content {
+            ...RepositoryOwnerAndName
+          }
         }
       }
-    }
-    budgets {
-      id
-      paymentRequests {
+      budgets {
         id
-        workItems {
-          repoId
-          issueNumber
+        paymentRequests {
+          id
+          workItems {
+            repoId
+            issueNumber
+          }
         }
       }
     }
   }
-}
-    ${RepositoryOwnerAndNameFragmentDoc}`;
+  ${RepositoryOwnerAndNameFragmentDoc}
+`;
 
 /**
  * __useGetPaidWorkItemsQuery__
@@ -11430,28 +12096,171 @@ export const GetPaidWorkItemsDocument = gql`
  *   },
  * });
  */
-export function useGetPaidWorkItemsQuery(baseOptions: Apollo.QueryHookOptions<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>(GetPaidWorkItemsDocument, options);
-      }
-export function useGetPaidWorkItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>(GetPaidWorkItemsDocument, options);
-        }
+export function useGetPaidWorkItemsQuery(
+  baseOptions: Apollo.QueryHookOptions<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>(GetPaidWorkItemsDocument, options);
+}
+export function useGetPaidWorkItemsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>(GetPaidWorkItemsDocument, options);
+}
 export type GetPaidWorkItemsQueryHookResult = ReturnType<typeof useGetPaidWorkItemsQuery>;
 export type GetPaidWorkItemsLazyQueryHookResult = ReturnType<typeof useGetPaidWorkItemsLazyQuery>;
 export type GetPaidWorkItemsQueryResult = Apollo.QueryResult<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>;
-export const GetProjectsForSidebarDocument = gql`
-    query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
-  projects(
-    where: {_or: [{id: {_in: $ledProjectIds}}, {pendingInvitations: {githubUserId: {_eq: $githubUserId}}}]}
-  ) {
-    ...SidebarProjectDetails
-    ...VisibleProject
+export const FetchIssueDocument = gql`
+  query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
+    fetchIssue(repoOwner: $repoOwner, repoName: $repoName, issueNumber: $issueNumber) {
+      ...IssueDetails
+    }
   }
+  ${IssueDetailsFragmentDoc}
+`;
+
+/**
+ * __useFetchIssueQuery__
+ *
+ * To run a query within a React component, call `useFetchIssueQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchIssueQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchIssueQuery({
+ *   variables: {
+ *      repoOwner: // value for 'repoOwner'
+ *      repoName: // value for 'repoName'
+ *      issueNumber: // value for 'issueNumber'
+ *   },
+ * });
+ */
+export function useFetchIssueQuery(baseOptions: Apollo.QueryHookOptions<FetchIssueQuery, FetchIssueQueryVariables>) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchIssueQuery, FetchIssueQueryVariables>(FetchIssueDocument, options);
 }
-    ${SidebarProjectDetailsFragmentDoc}
-${VisibleProjectFragmentDoc}`;
+export function useFetchIssueLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FetchIssueQuery, FetchIssueQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchIssueQuery, FetchIssueQueryVariables>(FetchIssueDocument, options);
+}
+export type FetchIssueQueryHookResult = ReturnType<typeof useFetchIssueQuery>;
+export type FetchIssueLazyQueryHookResult = ReturnType<typeof useFetchIssueLazyQuery>;
+export type FetchIssueQueryResult = Apollo.QueryResult<FetchIssueQuery, FetchIssueQueryVariables>;
+export const GetProjectReposDocument = gql`
+  query GetProjectRepos($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
+      githubRepos {
+        githubRepoDetails {
+          ...RepositoryOwnerAndName
+        }
+      }
+    }
+  }
+  ${RepositoryOwnerAndNameFragmentDoc}
+`;
+
+/**
+ * __useGetProjectReposQuery__
+ *
+ * To run a query within a React component, call `useGetProjectReposQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectReposQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectReposQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetProjectReposQuery(
+  baseOptions: Apollo.QueryHookOptions<GetProjectReposQuery, GetProjectReposQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetProjectReposQuery, GetProjectReposQueryVariables>(GetProjectReposDocument, options);
+}
+export function useGetProjectReposLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetProjectReposQuery, GetProjectReposQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetProjectReposQuery, GetProjectReposQueryVariables>(GetProjectReposDocument, options);
+}
+export type GetProjectReposQueryHookResult = ReturnType<typeof useGetProjectReposQuery>;
+export type GetProjectReposLazyQueryHookResult = ReturnType<typeof useGetProjectReposLazyQuery>;
+export type GetProjectReposQueryResult = Apollo.QueryResult<GetProjectReposQuery, GetProjectReposQueryVariables>;
+export const CreateIssueDocument = gql`
+  mutation CreateIssue(
+    $repoOwner: String!
+    $repoName: String!
+    $title: String!
+    $description: String!
+    $assignees: [String!]!
+  ) {
+    createIssue(
+      repoOwner: $repoOwner
+      repoName: $repoName
+      title: $title
+      description: $description
+      assignees: $assignees
+    ) {
+      ...IssueDetails
+    }
+  }
+  ${IssueDetailsFragmentDoc}
+`;
+export type CreateIssueMutationFn = Apollo.MutationFunction<CreateIssueMutation, CreateIssueMutationVariables>;
+
+/**
+ * __useCreateIssueMutation__
+ *
+ * To run a mutation, you first call `useCreateIssueMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateIssueMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createIssueMutation, { data, loading, error }] = useCreateIssueMutation({
+ *   variables: {
+ *      repoOwner: // value for 'repoOwner'
+ *      repoName: // value for 'repoName'
+ *      title: // value for 'title'
+ *      description: // value for 'description'
+ *      assignees: // value for 'assignees'
+ *   },
+ * });
+ */
+export function useCreateIssueMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateIssueMutation, CreateIssueMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateIssueMutation, CreateIssueMutationVariables>(CreateIssueDocument, options);
+}
+export type CreateIssueMutationHookResult = ReturnType<typeof useCreateIssueMutation>;
+export type CreateIssueMutationResult = Apollo.MutationResult<CreateIssueMutation>;
+export type CreateIssueMutationOptions = Apollo.BaseMutationOptions<CreateIssueMutation, CreateIssueMutationVariables>;
+export const GetProjectsForSidebarDocument = gql`
+  query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
+    projects(
+      where: {
+        _or: [{ id: { _in: $ledProjectIds } }, { pendingInvitations: { githubUserId: { _eq: $githubUserId } } }]
+      }
+    ) {
+      ...SidebarProjectDetails
+      ...VisibleProject
+    }
+  }
+  ${SidebarProjectDetailsFragmentDoc}
+  ${VisibleProjectFragmentDoc}
+`;
 
 /**
  * __useGetProjectsForSidebarQuery__
@@ -11470,24 +12279,38 @@ ${VisibleProjectFragmentDoc}`;
  *   },
  * });
  */
-export function useGetProjectsForSidebarQuery(baseOptions?: Apollo.QueryHookOptions<GetProjectsForSidebarQuery, GetProjectsForSidebarQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProjectsForSidebarQuery, GetProjectsForSidebarQueryVariables>(GetProjectsForSidebarDocument, options);
-      }
-export function useGetProjectsForSidebarLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectsForSidebarQuery, GetProjectsForSidebarQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProjectsForSidebarQuery, GetProjectsForSidebarQueryVariables>(GetProjectsForSidebarDocument, options);
-        }
+export function useGetProjectsForSidebarQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetProjectsForSidebarQuery, GetProjectsForSidebarQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetProjectsForSidebarQuery, GetProjectsForSidebarQueryVariables>(
+    GetProjectsForSidebarDocument,
+    options
+  );
+}
+export function useGetProjectsForSidebarLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetProjectsForSidebarQuery, GetProjectsForSidebarQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetProjectsForSidebarQuery, GetProjectsForSidebarQueryVariables>(
+    GetProjectsForSidebarDocument,
+    options
+  );
+}
 export type GetProjectsForSidebarQueryHookResult = ReturnType<typeof useGetProjectsForSidebarQuery>;
 export type GetProjectsForSidebarLazyQueryHookResult = ReturnType<typeof useGetProjectsForSidebarLazyQuery>;
-export type GetProjectsForSidebarQueryResult = Apollo.QueryResult<GetProjectsForSidebarQuery, GetProjectsForSidebarQueryVariables>;
+export type GetProjectsForSidebarQueryResult = Apollo.QueryResult<
+  GetProjectsForSidebarQuery,
+  GetProjectsForSidebarQueryVariables
+>;
 export const GetProjectDocument = gql`
-    query GetProject($id: uuid!) {
-  projectsByPk(id: $id) {
-    ...ProjectCardFields
+  query GetProject($id: uuid!) {
+    projectsByPk(id: $id) {
+      ...ProjectCardFields
+    }
   }
-}
-    ${ProjectCardFieldsFragmentDoc}`;
+  ${ProjectCardFieldsFragmentDoc}
+`;
 
 /**
  * __useGetProjectQuery__
@@ -11506,22 +12329,27 @@ export const GetProjectDocument = gql`
  * });
  */
 export function useGetProjectQuery(baseOptions: Apollo.QueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
-      }
-export function useGetProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
+}
+export function useGetProjectLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetProjectQuery, GetProjectQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
+}
 export type GetProjectQueryHookResult = ReturnType<typeof useGetProjectQuery>;
 export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQuery>;
 export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;
 export const AcceptProjectLeaderInvitationDocument = gql`
-    mutation acceptProjectLeaderInvitation($invitationId: Uuid!) {
-  acceptProjectLeaderInvitation(invitationId: $invitationId)
-}
-    `;
-export type AcceptProjectLeaderInvitationMutationFn = Apollo.MutationFunction<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>;
+  mutation acceptProjectLeaderInvitation($invitationId: Uuid!) {
+    acceptProjectLeaderInvitation(invitationId: $invitationId)
+  }
+`;
+export type AcceptProjectLeaderInvitationMutationFn = Apollo.MutationFunction<
+  AcceptProjectLeaderInvitationMutation,
+  AcceptProjectLeaderInvitationMutationVariables
+>;
 
 /**
  * __useAcceptProjectLeaderInvitationMutation__
@@ -11540,20 +12368,34 @@ export type AcceptProjectLeaderInvitationMutationFn = Apollo.MutationFunction<Ac
  *   },
  * });
  */
-export function useAcceptProjectLeaderInvitationMutation(baseOptions?: Apollo.MutationHookOptions<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>(AcceptProjectLeaderInvitationDocument, options);
-      }
-export type AcceptProjectLeaderInvitationMutationHookResult = ReturnType<typeof useAcceptProjectLeaderInvitationMutation>;
-export type AcceptProjectLeaderInvitationMutationResult = Apollo.MutationResult<AcceptProjectLeaderInvitationMutation>;
-export type AcceptProjectLeaderInvitationMutationOptions = Apollo.BaseMutationOptions<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>;
-export const GetProjectsDocument = gql`
-    query GetProjects($languages: [String!], $sponsors: [String!]) {
-  projects(orderBy: {budgetsAggregate: {sum: {spentAmount: DESC}}}) {
-    ...ProjectCardFields
-  }
+export function useAcceptProjectLeaderInvitationMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AcceptProjectLeaderInvitationMutation,
+    AcceptProjectLeaderInvitationMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<AcceptProjectLeaderInvitationMutation, AcceptProjectLeaderInvitationMutationVariables>(
+    AcceptProjectLeaderInvitationDocument,
+    options
+  );
 }
-    ${ProjectCardFieldsFragmentDoc}`;
+export type AcceptProjectLeaderInvitationMutationHookResult = ReturnType<
+  typeof useAcceptProjectLeaderInvitationMutation
+>;
+export type AcceptProjectLeaderInvitationMutationResult = Apollo.MutationResult<AcceptProjectLeaderInvitationMutation>;
+export type AcceptProjectLeaderInvitationMutationOptions = Apollo.BaseMutationOptions<
+  AcceptProjectLeaderInvitationMutation,
+  AcceptProjectLeaderInvitationMutationVariables
+>;
+export const GetProjectsDocument = gql`
+  query GetProjects($languages: [String!], $sponsors: [String!]) {
+    projects(orderBy: { budgetsAggregate: { sum: { spentAmount: DESC } } }) {
+      ...ProjectCardFields
+    }
+  }
+  ${ProjectCardFieldsFragmentDoc}
+`;
 
 /**
  * __useGetProjectsQuery__
@@ -11572,34 +12414,39 @@ export const GetProjectsDocument = gql`
  *   },
  * });
  */
-export function useGetProjectsQuery(baseOptions?: Apollo.QueryHookOptions<GetProjectsQuery, GetProjectsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, options);
-      }
-export function useGetProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectsQuery, GetProjectsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, options);
-        }
+export function useGetProjectsQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetProjectsQuery, GetProjectsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, options);
+}
+export function useGetProjectsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetProjectsQuery, GetProjectsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, options);
+}
 export type GetProjectsQueryHookResult = ReturnType<typeof useGetProjectsQuery>;
 export type GetProjectsLazyQueryHookResult = ReturnType<typeof useGetProjectsLazyQuery>;
 export type GetProjectsQueryResult = Apollo.QueryResult<GetProjectsQuery, GetProjectsQueryVariables>;
 export const GetAllFilterOptionsDocument = gql`
-    query GetAllFilterOptions {
-  projects {
-    ...VisibleProject
-    projectSponsors {
-      sponsor {
-        id
-        name
+  query GetAllFilterOptions {
+    projects {
+      ...VisibleProject
+      projectSponsors {
+        sponsor {
+          id
+          name
+        }
+      }
+      githubRepos {
+        ...GithubRepoLanguagesFields
       }
     }
-    githubRepos {
-      ...GithubRepoLanguagesFields
-    }
   }
-}
-    ${VisibleProjectFragmentDoc}
-${GithubRepoLanguagesFieldsFragmentDoc}`;
+  ${VisibleProjectFragmentDoc}
+  ${GithubRepoLanguagesFieldsFragmentDoc}
+`;
 
 /**
  * __useGetAllFilterOptionsQuery__
@@ -11616,23 +12463,39 @@ ${GithubRepoLanguagesFieldsFragmentDoc}`;
  *   },
  * });
  */
-export function useGetAllFilterOptionsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>(GetAllFilterOptionsDocument, options);
-      }
-export function useGetAllFilterOptionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>(GetAllFilterOptionsDocument, options);
-        }
+export function useGetAllFilterOptionsQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>(
+    GetAllFilterOptionsDocument,
+    options
+  );
+}
+export function useGetAllFilterOptionsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>(
+    GetAllFilterOptionsDocument,
+    options
+  );
+}
 export type GetAllFilterOptionsQueryHookResult = ReturnType<typeof useGetAllFilterOptionsQuery>;
 export type GetAllFilterOptionsLazyQueryHookResult = ReturnType<typeof useGetAllFilterOptionsLazyQuery>;
-export type GetAllFilterOptionsQueryResult = Apollo.QueryResult<GetAllFilterOptionsQuery, GetAllFilterOptionsQueryVariables>;
+export type GetAllFilterOptionsQueryResult = Apollo.QueryResult<
+  GetAllFilterOptionsQuery,
+  GetAllFilterOptionsQueryVariables
+>;
 export const CancelPaymentRequestDocument = gql`
-    mutation cancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
-  cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId)
-}
-    `;
-export type CancelPaymentRequestMutationFn = Apollo.MutationFunction<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>;
+  mutation cancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
+    cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId)
+  }
+`;
+export type CancelPaymentRequestMutationFn = Apollo.MutationFunction<
+  CancelPaymentRequestMutation,
+  CancelPaymentRequestMutationVariables
+>;
 
 /**
  * __useCancelPaymentRequestMutation__
@@ -11652,18 +12515,26 @@ export type CancelPaymentRequestMutationFn = Apollo.MutationFunction<CancelPayme
  *   },
  * });
  */
-export function useCancelPaymentRequestMutation(baseOptions?: Apollo.MutationHookOptions<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>(CancelPaymentRequestDocument, options);
-      }
+export function useCancelPaymentRequestMutation(
+  baseOptions?: Apollo.MutationHookOptions<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>(
+    CancelPaymentRequestDocument,
+    options
+  );
+}
 export type CancelPaymentRequestMutationHookResult = ReturnType<typeof useCancelPaymentRequestMutation>;
 export type CancelPaymentRequestMutationResult = Apollo.MutationResult<CancelPaymentRequestMutation>;
-export type CancelPaymentRequestMutationOptions = Apollo.BaseMutationOptions<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>;
+export type CancelPaymentRequestMutationOptions = Apollo.BaseMutationOptions<
+  CancelPaymentRequestMutation,
+  CancelPaymentRequestMutationVariables
+>;
 export const RejectInvoiceDocument = gql`
-    mutation rejectInvoice($paymentReferences: [PaymentReference!]!) {
-  rejectInvoice(paymentReferences: $paymentReferences)
-}
-    `;
+  mutation rejectInvoice($paymentReferences: [PaymentReference!]!) {
+    rejectInvoice(paymentReferences: $paymentReferences)
+  }
+`;
 export type RejectInvoiceMutationFn = Apollo.MutationFunction<RejectInvoiceMutation, RejectInvoiceMutationVariables>;
 
 /**
@@ -11683,26 +12554,41 @@ export type RejectInvoiceMutationFn = Apollo.MutationFunction<RejectInvoiceMutat
  *   },
  * });
  */
-export function useRejectInvoiceMutation(baseOptions?: Apollo.MutationHookOptions<RejectInvoiceMutation, RejectInvoiceMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RejectInvoiceMutation, RejectInvoiceMutationVariables>(RejectInvoiceDocument, options);
-      }
+export function useRejectInvoiceMutation(
+  baseOptions?: Apollo.MutationHookOptions<RejectInvoiceMutation, RejectInvoiceMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RejectInvoiceMutation, RejectInvoiceMutationVariables>(RejectInvoiceDocument, options);
+}
 export type RejectInvoiceMutationHookResult = ReturnType<typeof useRejectInvoiceMutation>;
 export type RejectInvoiceMutationResult = Apollo.MutationResult<RejectInvoiceMutation>;
-export type RejectInvoiceMutationOptions = Apollo.BaseMutationOptions<RejectInvoiceMutation, RejectInvoiceMutationVariables>;
+export type RejectInvoiceMutationOptions = Apollo.BaseMutationOptions<
+  RejectInvoiceMutation,
+  RejectInvoiceMutationVariables
+>;
 export const AddEthPaymentReceiptDocument = gql`
-    mutation addEthPaymentReceipt($projectId: Uuid!, $paymentId: Uuid!, $amount: String!, $currencyCode: String!, $recipientIdentity: EthereumIdentityInput!, $transactionHash: String!) {
-  addEthPaymentReceipt(
-    projectId: $projectId
-    paymentId: $paymentId
-    amount: $amount
-    currencyCode: $currencyCode
-    recipientIdentity: $recipientIdentity
-    transactionHash: $transactionHash
-  )
-}
-    `;
-export type AddEthPaymentReceiptMutationFn = Apollo.MutationFunction<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>;
+  mutation addEthPaymentReceipt(
+    $projectId: Uuid!
+    $paymentId: Uuid!
+    $amount: String!
+    $currencyCode: String!
+    $recipientIdentity: EthereumIdentityInput!
+    $transactionHash: String!
+  ) {
+    addEthPaymentReceipt(
+      projectId: $projectId
+      paymentId: $paymentId
+      amount: $amount
+      currencyCode: $currencyCode
+      recipientIdentity: $recipientIdentity
+      transactionHash: $transactionHash
+    )
+  }
+`;
+export type AddEthPaymentReceiptMutationFn = Apollo.MutationFunction<
+  AddEthPaymentReceiptMutation,
+  AddEthPaymentReceiptMutationVariables
+>;
 
 /**
  * __useAddEthPaymentReceiptMutation__
@@ -11726,26 +12612,44 @@ export type AddEthPaymentReceiptMutationFn = Apollo.MutationFunction<AddEthPayme
  *   },
  * });
  */
-export function useAddEthPaymentReceiptMutation(baseOptions?: Apollo.MutationHookOptions<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>(AddEthPaymentReceiptDocument, options);
-      }
+export function useAddEthPaymentReceiptMutation(
+  baseOptions?: Apollo.MutationHookOptions<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>(
+    AddEthPaymentReceiptDocument,
+    options
+  );
+}
 export type AddEthPaymentReceiptMutationHookResult = ReturnType<typeof useAddEthPaymentReceiptMutation>;
 export type AddEthPaymentReceiptMutationResult = Apollo.MutationResult<AddEthPaymentReceiptMutation>;
-export type AddEthPaymentReceiptMutationOptions = Apollo.BaseMutationOptions<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>;
+export type AddEthPaymentReceiptMutationOptions = Apollo.BaseMutationOptions<
+  AddEthPaymentReceiptMutation,
+  AddEthPaymentReceiptMutationVariables
+>;
 export const AddFiatPaymentReceiptDocument = gql`
-    mutation addFiatPaymentReceipt($projectId: Uuid!, $paymentId: Uuid!, $amount: String!, $currencyCode: String!, $recipientIban: String!, $transactionReference: String!) {
-  addFiatPaymentReceipt(
-    projectId: $projectId
-    paymentId: $paymentId
-    amount: $amount
-    currencyCode: $currencyCode
-    recipientIban: $recipientIban
-    transactionReference: $transactionReference
-  )
-}
-    `;
-export type AddFiatPaymentReceiptMutationFn = Apollo.MutationFunction<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>;
+  mutation addFiatPaymentReceipt(
+    $projectId: Uuid!
+    $paymentId: Uuid!
+    $amount: String!
+    $currencyCode: String!
+    $recipientIban: String!
+    $transactionReference: String!
+  ) {
+    addFiatPaymentReceipt(
+      projectId: $projectId
+      paymentId: $paymentId
+      amount: $amount
+      currencyCode: $currencyCode
+      recipientIban: $recipientIban
+      transactionReference: $transactionReference
+    )
+  }
+`;
+export type AddFiatPaymentReceiptMutationFn = Apollo.MutationFunction<
+  AddFiatPaymentReceiptMutation,
+  AddFiatPaymentReceiptMutationVariables
+>;
 
 /**
  * __useAddFiatPaymentReceiptMutation__
@@ -11769,20 +12673,28 @@ export type AddFiatPaymentReceiptMutationFn = Apollo.MutationFunction<AddFiatPay
  *   },
  * });
  */
-export function useAddFiatPaymentReceiptMutation(baseOptions?: Apollo.MutationHookOptions<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>(AddFiatPaymentReceiptDocument, options);
-      }
+export function useAddFiatPaymentReceiptMutation(
+  baseOptions?: Apollo.MutationHookOptions<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>(
+    AddFiatPaymentReceiptDocument,
+    options
+  );
+}
 export type AddFiatPaymentReceiptMutationHookResult = ReturnType<typeof useAddFiatPaymentReceiptMutation>;
 export type AddFiatPaymentReceiptMutationResult = Apollo.MutationResult<AddFiatPaymentReceiptMutation>;
-export type AddFiatPaymentReceiptMutationOptions = Apollo.BaseMutationOptions<AddFiatPaymentReceiptMutation, AddFiatPaymentReceiptMutationVariables>;
+export type AddFiatPaymentReceiptMutationOptions = Apollo.BaseMutationOptions<
+  AddFiatPaymentReceiptMutation,
+  AddFiatPaymentReceiptMutationVariables
+>;
 export const PaymentRequestsByPkDocument = gql`
-    query paymentRequestsByPk($paymentId: uuid!) {
-  paymentRequestsByPk(id: $paymentId) {
-    id
+  query paymentRequestsByPk($paymentId: uuid!) {
+    paymentRequestsByPk(id: $paymentId) {
+      id
+    }
   }
-}
-    `;
+`;
 
 /**
  * __usePaymentRequestsByPkQuery__
@@ -11800,29 +12712,49 @@ export const PaymentRequestsByPkDocument = gql`
  *   },
  * });
  */
-export function usePaymentRequestsByPkQuery(baseOptions: Apollo.QueryHookOptions<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>(PaymentRequestsByPkDocument, options);
-      }
-export function usePaymentRequestsByPkLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>(PaymentRequestsByPkDocument, options);
-        }
+export function usePaymentRequestsByPkQuery(
+  baseOptions: Apollo.QueryHookOptions<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>(
+    PaymentRequestsByPkDocument,
+    options
+  );
+}
+export function usePaymentRequestsByPkLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>(
+    PaymentRequestsByPkDocument,
+    options
+  );
+}
 export type PaymentRequestsByPkQueryHookResult = ReturnType<typeof usePaymentRequestsByPkQuery>;
 export type PaymentRequestsByPkLazyQueryHookResult = ReturnType<typeof usePaymentRequestsByPkLazyQuery>;
-export type PaymentRequestsByPkQueryResult = Apollo.QueryResult<PaymentRequestsByPkQuery, PaymentRequestsByPkQueryVariables>;
+export type PaymentRequestsByPkQueryResult = Apollo.QueryResult<
+  PaymentRequestsByPkQuery,
+  PaymentRequestsByPkQueryVariables
+>;
 export const CreateProjectDocument = gql`
-    mutation createProject($projectName: String!, $telegramLink: Url!, $logoUrl: Url!, $shortDescription: String!, $longDescription: String!, $initialBudget: Int) {
-  createProject(
-    name: $projectName
-    telegramLink: $telegramLink
-    logoUrl: $logoUrl
-    shortDescription: $shortDescription
-    longDescription: $longDescription
-    initialBudget: $initialBudget
-  )
-}
-    `;
+  mutation createProject(
+    $projectName: String!
+    $telegramLink: Url!
+    $logoUrl: Url!
+    $shortDescription: String!
+    $longDescription: String!
+    $initialBudget: Int
+  ) {
+    createProject(
+      name: $projectName
+      telegramLink: $telegramLink
+      logoUrl: $logoUrl
+      shortDescription: $shortDescription
+      longDescription: $longDescription
+      initialBudget: $initialBudget
+    )
+  }
+`;
 export type CreateProjectMutationFn = Apollo.MutationFunction<CreateProjectMutation, CreateProjectMutationVariables>;
 
 /**
@@ -11847,25 +12779,37 @@ export type CreateProjectMutationFn = Apollo.MutationFunction<CreateProjectMutat
  *   },
  * });
  */
-export function useCreateProjectMutation(baseOptions?: Apollo.MutationHookOptions<CreateProjectMutation, CreateProjectMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateProjectMutation, CreateProjectMutationVariables>(CreateProjectDocument, options);
-      }
+export function useCreateProjectMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateProjectMutation, CreateProjectMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateProjectMutation, CreateProjectMutationVariables>(CreateProjectDocument, options);
+}
 export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProjectMutation>;
 export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
-export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<CreateProjectMutation, CreateProjectMutationVariables>;
+export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<
+  CreateProjectMutation,
+  CreateProjectMutationVariables
+>;
 export const UpdateProjectDocument = gql`
-    mutation updateProject($projectId: Uuid!, $name: String, $telegramLink: Url, $logoUrl: Url, $shortDescription: String, $longDescription: String) {
-  updateProject(
-    id: $projectId
-    name: $name
-    telegramLink: $telegramLink
-    logoUrl: $logoUrl
-    shortDescription: $shortDescription
-    longDescription: $longDescription
-  )
-}
-    `;
+  mutation updateProject(
+    $projectId: Uuid!
+    $name: String
+    $telegramLink: Url
+    $logoUrl: Url
+    $shortDescription: String
+    $longDescription: String
+  ) {
+    updateProject(
+      id: $projectId
+      name: $name
+      telegramLink: $telegramLink
+      logoUrl: $logoUrl
+      shortDescription: $shortDescription
+      longDescription: $longDescription
+    )
+  }
+`;
 export type UpdateProjectMutationFn = Apollo.MutationFunction<UpdateProjectMutation, UpdateProjectMutationVariables>;
 
 /**
@@ -11890,22 +12834,27 @@ export type UpdateProjectMutationFn = Apollo.MutationFunction<UpdateProjectMutat
  *   },
  * });
  */
-export function useUpdateProjectMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProjectMutation, UpdateProjectMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateProjectMutation, UpdateProjectMutationVariables>(UpdateProjectDocument, options);
-      }
+export function useUpdateProjectMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateProjectMutation, UpdateProjectMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateProjectMutation, UpdateProjectMutationVariables>(UpdateProjectDocument, options);
+}
 export type UpdateProjectMutationHookResult = ReturnType<typeof useUpdateProjectMutation>;
 export type UpdateProjectMutationResult = Apollo.MutationResult<UpdateProjectMutation>;
-export type UpdateProjectMutationOptions = Apollo.BaseMutationOptions<UpdateProjectMutation, UpdateProjectMutationVariables>;
+export type UpdateProjectMutationOptions = Apollo.BaseMutationOptions<
+  UpdateProjectMutation,
+  UpdateProjectMutationVariables
+>;
 export const GetProjectBudgetDocument = gql`
-    query getProjectBudget($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
-    budgets {
-      id
+  query getProjectBudget($projectId: uuid!) {
+    projectsByPk(id: $projectId) {
+      budgets {
+        id
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetProjectBudgetQuery__
@@ -11923,23 +12872,30 @@ export const GetProjectBudgetDocument = gql`
  *   },
  * });
  */
-export function useGetProjectBudgetQuery(baseOptions: Apollo.QueryHookOptions<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>(GetProjectBudgetDocument, options);
-      }
-export function useGetProjectBudgetLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>(GetProjectBudgetDocument, options);
-        }
+export function useGetProjectBudgetQuery(
+  baseOptions: Apollo.QueryHookOptions<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>(GetProjectBudgetDocument, options);
+}
+export function useGetProjectBudgetLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>(GetProjectBudgetDocument, options);
+}
 export type GetProjectBudgetQueryHookResult = ReturnType<typeof useGetProjectBudgetQuery>;
 export type GetProjectBudgetLazyQueryHookResult = ReturnType<typeof useGetProjectBudgetLazyQuery>;
 export type GetProjectBudgetQueryResult = Apollo.QueryResult<GetProjectBudgetQuery, GetProjectBudgetQueryVariables>;
 export const UpdateBudgetAllocationDocument = gql`
-    mutation updateBudgetAllocation($projectId: Uuid!, $amount: Int!) {
-  updateBudgetAllocation(projectId: $projectId, newRemainingAmountInUsd: $amount)
-}
-    `;
-export type UpdateBudgetAllocationMutationFn = Apollo.MutationFunction<UpdateBudgetAllocationMutation, UpdateBudgetAllocationMutationVariables>;
+  mutation updateBudgetAllocation($projectId: Uuid!, $amount: Int!) {
+    updateBudgetAllocation(projectId: $projectId, newRemainingAmountInUsd: $amount)
+  }
+`;
+export type UpdateBudgetAllocationMutationFn = Apollo.MutationFunction<
+  UpdateBudgetAllocationMutation,
+  UpdateBudgetAllocationMutationVariables
+>;
 
 /**
  * __useUpdateBudgetAllocationMutation__
@@ -11959,18 +12915,26 @@ export type UpdateBudgetAllocationMutationFn = Apollo.MutationFunction<UpdateBud
  *   },
  * });
  */
-export function useUpdateBudgetAllocationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateBudgetAllocationMutation, UpdateBudgetAllocationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateBudgetAllocationMutation, UpdateBudgetAllocationMutationVariables>(UpdateBudgetAllocationDocument, options);
-      }
+export function useUpdateBudgetAllocationMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateBudgetAllocationMutation, UpdateBudgetAllocationMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateBudgetAllocationMutation, UpdateBudgetAllocationMutationVariables>(
+    UpdateBudgetAllocationDocument,
+    options
+  );
+}
 export type UpdateBudgetAllocationMutationHookResult = ReturnType<typeof useUpdateBudgetAllocationMutation>;
 export type UpdateBudgetAllocationMutationResult = Apollo.MutationResult<UpdateBudgetAllocationMutation>;
-export type UpdateBudgetAllocationMutationOptions = Apollo.BaseMutationOptions<UpdateBudgetAllocationMutation, UpdateBudgetAllocationMutationVariables>;
+export type UpdateBudgetAllocationMutationOptions = Apollo.BaseMutationOptions<
+  UpdateBudgetAllocationMutation,
+  UpdateBudgetAllocationMutationVariables
+>;
 export const LinkGithubRepoDocument = gql`
-    mutation linkGithubRepo($projectId: Uuid!, $githubRepoId: Int!) {
-  linkGithubRepo(projectId: $projectId, githubRepoId: $githubRepoId)
-}
-    `;
+  mutation linkGithubRepo($projectId: Uuid!, $githubRepoId: Int!) {
+    linkGithubRepo(projectId: $projectId, githubRepoId: $githubRepoId)
+  }
+`;
 export type LinkGithubRepoMutationFn = Apollo.MutationFunction<LinkGithubRepoMutation, LinkGithubRepoMutationVariables>;
 
 /**
@@ -11991,19 +12955,27 @@ export type LinkGithubRepoMutationFn = Apollo.MutationFunction<LinkGithubRepoMut
  *   },
  * });
  */
-export function useLinkGithubRepoMutation(baseOptions?: Apollo.MutationHookOptions<LinkGithubRepoMutation, LinkGithubRepoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LinkGithubRepoMutation, LinkGithubRepoMutationVariables>(LinkGithubRepoDocument, options);
-      }
+export function useLinkGithubRepoMutation(
+  baseOptions?: Apollo.MutationHookOptions<LinkGithubRepoMutation, LinkGithubRepoMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LinkGithubRepoMutation, LinkGithubRepoMutationVariables>(LinkGithubRepoDocument, options);
+}
 export type LinkGithubRepoMutationHookResult = ReturnType<typeof useLinkGithubRepoMutation>;
 export type LinkGithubRepoMutationResult = Apollo.MutationResult<LinkGithubRepoMutation>;
-export type LinkGithubRepoMutationOptions = Apollo.BaseMutationOptions<LinkGithubRepoMutation, LinkGithubRepoMutationVariables>;
+export type LinkGithubRepoMutationOptions = Apollo.BaseMutationOptions<
+  LinkGithubRepoMutation,
+  LinkGithubRepoMutationVariables
+>;
 export const UnlinkGithubRepoDocument = gql`
-    mutation unlinkGithubRepo($projectId: Uuid!, $githubRepoId: Int!) {
-  unlinkGithubRepo(projectId: $projectId, githubRepoId: $githubRepoId)
-}
-    `;
-export type UnlinkGithubRepoMutationFn = Apollo.MutationFunction<UnlinkGithubRepoMutation, UnlinkGithubRepoMutationVariables>;
+  mutation unlinkGithubRepo($projectId: Uuid!, $githubRepoId: Int!) {
+    unlinkGithubRepo(projectId: $projectId, githubRepoId: $githubRepoId)
+  }
+`;
+export type UnlinkGithubRepoMutationFn = Apollo.MutationFunction<
+  UnlinkGithubRepoMutation,
+  UnlinkGithubRepoMutationVariables
+>;
 
 /**
  * __useUnlinkGithubRepoMutation__
@@ -12023,19 +12995,30 @@ export type UnlinkGithubRepoMutationFn = Apollo.MutationFunction<UnlinkGithubRep
  *   },
  * });
  */
-export function useUnlinkGithubRepoMutation(baseOptions?: Apollo.MutationHookOptions<UnlinkGithubRepoMutation, UnlinkGithubRepoMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UnlinkGithubRepoMutation, UnlinkGithubRepoMutationVariables>(UnlinkGithubRepoDocument, options);
-      }
+export function useUnlinkGithubRepoMutation(
+  baseOptions?: Apollo.MutationHookOptions<UnlinkGithubRepoMutation, UnlinkGithubRepoMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UnlinkGithubRepoMutation, UnlinkGithubRepoMutationVariables>(
+    UnlinkGithubRepoDocument,
+    options
+  );
+}
 export type UnlinkGithubRepoMutationHookResult = ReturnType<typeof useUnlinkGithubRepoMutation>;
 export type UnlinkGithubRepoMutationResult = Apollo.MutationResult<UnlinkGithubRepoMutation>;
-export type UnlinkGithubRepoMutationOptions = Apollo.BaseMutationOptions<UnlinkGithubRepoMutation, UnlinkGithubRepoMutationVariables>;
+export type UnlinkGithubRepoMutationOptions = Apollo.BaseMutationOptions<
+  UnlinkGithubRepoMutation,
+  UnlinkGithubRepoMutationVariables
+>;
 export const UnassignProjectLeadDocument = gql`
-    mutation unassignProjectLead($projectId: Uuid!, $userId: Uuid!) {
-  unassignProjectLead(projectId: $projectId, userId: $userId)
-}
-    `;
-export type UnassignProjectLeadMutationFn = Apollo.MutationFunction<UnassignProjectLeadMutation, UnassignProjectLeadMutationVariables>;
+  mutation unassignProjectLead($projectId: Uuid!, $userId: Uuid!) {
+    unassignProjectLead(projectId: $projectId, userId: $userId)
+  }
+`;
+export type UnassignProjectLeadMutationFn = Apollo.MutationFunction<
+  UnassignProjectLeadMutation,
+  UnassignProjectLeadMutationVariables
+>;
 
 /**
  * __useUnassignProjectLeadMutation__
@@ -12055,19 +13038,30 @@ export type UnassignProjectLeadMutationFn = Apollo.MutationFunction<UnassignProj
  *   },
  * });
  */
-export function useUnassignProjectLeadMutation(baseOptions?: Apollo.MutationHookOptions<UnassignProjectLeadMutation, UnassignProjectLeadMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UnassignProjectLeadMutation, UnassignProjectLeadMutationVariables>(UnassignProjectLeadDocument, options);
-      }
+export function useUnassignProjectLeadMutation(
+  baseOptions?: Apollo.MutationHookOptions<UnassignProjectLeadMutation, UnassignProjectLeadMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UnassignProjectLeadMutation, UnassignProjectLeadMutationVariables>(
+    UnassignProjectLeadDocument,
+    options
+  );
+}
 export type UnassignProjectLeadMutationHookResult = ReturnType<typeof useUnassignProjectLeadMutation>;
 export type UnassignProjectLeadMutationResult = Apollo.MutationResult<UnassignProjectLeadMutation>;
-export type UnassignProjectLeadMutationOptions = Apollo.BaseMutationOptions<UnassignProjectLeadMutation, UnassignProjectLeadMutationVariables>;
+export type UnassignProjectLeadMutationOptions = Apollo.BaseMutationOptions<
+  UnassignProjectLeadMutation,
+  UnassignProjectLeadMutationVariables
+>;
 export const InviteProjectLeaderDocument = gql`
-    mutation inviteProjectLeader($projectId: Uuid!, $githubUserId: Int!) {
-  inviteProjectLeader(projectId: $projectId, githubUserId: $githubUserId)
-}
-    `;
-export type InviteProjectLeaderMutationFn = Apollo.MutationFunction<InviteProjectLeaderMutation, InviteProjectLeaderMutationVariables>;
+  mutation inviteProjectLeader($projectId: Uuid!, $githubUserId: Int!) {
+    inviteProjectLeader(projectId: $projectId, githubUserId: $githubUserId)
+  }
+`;
+export type InviteProjectLeaderMutationFn = Apollo.MutationFunction<
+  InviteProjectLeaderMutation,
+  InviteProjectLeaderMutationVariables
+>;
 
 /**
  * __useInviteProjectLeaderMutation__
@@ -12087,18 +13081,26 @@ export type InviteProjectLeaderMutationFn = Apollo.MutationFunction<InviteProjec
  *   },
  * });
  */
-export function useInviteProjectLeaderMutation(baseOptions?: Apollo.MutationHookOptions<InviteProjectLeaderMutation, InviteProjectLeaderMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<InviteProjectLeaderMutation, InviteProjectLeaderMutationVariables>(InviteProjectLeaderDocument, options);
-      }
+export function useInviteProjectLeaderMutation(
+  baseOptions?: Apollo.MutationHookOptions<InviteProjectLeaderMutation, InviteProjectLeaderMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<InviteProjectLeaderMutation, InviteProjectLeaderMutationVariables>(
+    InviteProjectLeaderDocument,
+    options
+  );
+}
 export type InviteProjectLeaderMutationHookResult = ReturnType<typeof useInviteProjectLeaderMutation>;
 export type InviteProjectLeaderMutationResult = Apollo.MutationResult<InviteProjectLeaderMutation>;
-export type InviteProjectLeaderMutationOptions = Apollo.BaseMutationOptions<InviteProjectLeaderMutation, InviteProjectLeaderMutationVariables>;
+export type InviteProjectLeaderMutationOptions = Apollo.BaseMutationOptions<
+  InviteProjectLeaderMutation,
+  InviteProjectLeaderMutationVariables
+>;
 export const CreateSponsorDocument = gql`
-    mutation createSponsor($name: String!, $logoUrl: Url!, $url: Url) {
-  createSponsor(name: $name, logoUrl: $logoUrl, url: $url)
-}
-    `;
+  mutation createSponsor($name: String!, $logoUrl: Url!, $url: Url) {
+    createSponsor(name: $name, logoUrl: $logoUrl, url: $url)
+  }
+`;
 export type CreateSponsorMutationFn = Apollo.MutationFunction<CreateSponsorMutation, CreateSponsorMutationVariables>;
 
 /**
@@ -12120,18 +13122,23 @@ export type CreateSponsorMutationFn = Apollo.MutationFunction<CreateSponsorMutat
  *   },
  * });
  */
-export function useCreateSponsorMutation(baseOptions?: Apollo.MutationHookOptions<CreateSponsorMutation, CreateSponsorMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateSponsorMutation, CreateSponsorMutationVariables>(CreateSponsorDocument, options);
-      }
+export function useCreateSponsorMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateSponsorMutation, CreateSponsorMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateSponsorMutation, CreateSponsorMutationVariables>(CreateSponsorDocument, options);
+}
 export type CreateSponsorMutationHookResult = ReturnType<typeof useCreateSponsorMutation>;
 export type CreateSponsorMutationResult = Apollo.MutationResult<CreateSponsorMutation>;
-export type CreateSponsorMutationOptions = Apollo.BaseMutationOptions<CreateSponsorMutation, CreateSponsorMutationVariables>;
+export type CreateSponsorMutationOptions = Apollo.BaseMutationOptions<
+  CreateSponsorMutation,
+  CreateSponsorMutationVariables
+>;
 export const UpdateSponsorDocument = gql`
-    mutation updateSponsor($sponsorId: Uuid!, $name: String, $logoUrl: Url, $url: Url) {
-  updateSponsor(sponsorId: $sponsorId, name: $name, logoUrl: $logoUrl, url: $url)
-}
-    `;
+  mutation updateSponsor($sponsorId: Uuid!, $name: String, $logoUrl: Url, $url: Url) {
+    updateSponsor(sponsorId: $sponsorId, name: $name, logoUrl: $logoUrl, url: $url)
+  }
+`;
 export type UpdateSponsorMutationFn = Apollo.MutationFunction<UpdateSponsorMutation, UpdateSponsorMutationVariables>;
 
 /**
@@ -12154,19 +13161,27 @@ export type UpdateSponsorMutationFn = Apollo.MutationFunction<UpdateSponsorMutat
  *   },
  * });
  */
-export function useUpdateSponsorMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSponsorMutation, UpdateSponsorMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateSponsorMutation, UpdateSponsorMutationVariables>(UpdateSponsorDocument, options);
-      }
+export function useUpdateSponsorMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateSponsorMutation, UpdateSponsorMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateSponsorMutation, UpdateSponsorMutationVariables>(UpdateSponsorDocument, options);
+}
 export type UpdateSponsorMutationHookResult = ReturnType<typeof useUpdateSponsorMutation>;
 export type UpdateSponsorMutationResult = Apollo.MutationResult<UpdateSponsorMutation>;
-export type UpdateSponsorMutationOptions = Apollo.BaseMutationOptions<UpdateSponsorMutation, UpdateSponsorMutationVariables>;
+export type UpdateSponsorMutationOptions = Apollo.BaseMutationOptions<
+  UpdateSponsorMutation,
+  UpdateSponsorMutationVariables
+>;
 export const AddSponsorToProjectDocument = gql`
-    mutation addSponsorToProject($projectId: Uuid!, $sponsorId: Uuid!) {
-  addSponsorToProject(projectId: $projectId, sponsorId: $sponsorId)
-}
-    `;
-export type AddSponsorToProjectMutationFn = Apollo.MutationFunction<AddSponsorToProjectMutation, AddSponsorToProjectMutationVariables>;
+  mutation addSponsorToProject($projectId: Uuid!, $sponsorId: Uuid!) {
+    addSponsorToProject(projectId: $projectId, sponsorId: $sponsorId)
+  }
+`;
+export type AddSponsorToProjectMutationFn = Apollo.MutationFunction<
+  AddSponsorToProjectMutation,
+  AddSponsorToProjectMutationVariables
+>;
 
 /**
  * __useAddSponsorToProjectMutation__
@@ -12186,19 +13201,30 @@ export type AddSponsorToProjectMutationFn = Apollo.MutationFunction<AddSponsorTo
  *   },
  * });
  */
-export function useAddSponsorToProjectMutation(baseOptions?: Apollo.MutationHookOptions<AddSponsorToProjectMutation, AddSponsorToProjectMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<AddSponsorToProjectMutation, AddSponsorToProjectMutationVariables>(AddSponsorToProjectDocument, options);
-      }
+export function useAddSponsorToProjectMutation(
+  baseOptions?: Apollo.MutationHookOptions<AddSponsorToProjectMutation, AddSponsorToProjectMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<AddSponsorToProjectMutation, AddSponsorToProjectMutationVariables>(
+    AddSponsorToProjectDocument,
+    options
+  );
+}
 export type AddSponsorToProjectMutationHookResult = ReturnType<typeof useAddSponsorToProjectMutation>;
 export type AddSponsorToProjectMutationResult = Apollo.MutationResult<AddSponsorToProjectMutation>;
-export type AddSponsorToProjectMutationOptions = Apollo.BaseMutationOptions<AddSponsorToProjectMutation, AddSponsorToProjectMutationVariables>;
+export type AddSponsorToProjectMutationOptions = Apollo.BaseMutationOptions<
+  AddSponsorToProjectMutation,
+  AddSponsorToProjectMutationVariables
+>;
 export const RemoveSponsorFromProjectDocument = gql`
-    mutation removeSponsorFromProject($projectId: Uuid!, $sponsorId: Uuid!) {
-  removeSponsorFromProject(projectId: $projectId, sponsorId: $sponsorId)
-}
-    `;
-export type RemoveSponsorFromProjectMutationFn = Apollo.MutationFunction<RemoveSponsorFromProjectMutation, RemoveSponsorFromProjectMutationVariables>;
+  mutation removeSponsorFromProject($projectId: Uuid!, $sponsorId: Uuid!) {
+    removeSponsorFromProject(projectId: $projectId, sponsorId: $sponsorId)
+  }
+`;
+export type RemoveSponsorFromProjectMutationFn = Apollo.MutationFunction<
+  RemoveSponsorFromProjectMutation,
+  RemoveSponsorFromProjectMutationVariables
+>;
 
 /**
  * __useRemoveSponsorFromProjectMutation__
@@ -12218,20 +13244,28 @@ export type RemoveSponsorFromProjectMutationFn = Apollo.MutationFunction<RemoveS
  *   },
  * });
  */
-export function useRemoveSponsorFromProjectMutation(baseOptions?: Apollo.MutationHookOptions<RemoveSponsorFromProjectMutation, RemoveSponsorFromProjectMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RemoveSponsorFromProjectMutation, RemoveSponsorFromProjectMutationVariables>(RemoveSponsorFromProjectDocument, options);
-      }
+export function useRemoveSponsorFromProjectMutation(
+  baseOptions?: Apollo.MutationHookOptions<RemoveSponsorFromProjectMutation, RemoveSponsorFromProjectMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RemoveSponsorFromProjectMutation, RemoveSponsorFromProjectMutationVariables>(
+    RemoveSponsorFromProjectDocument,
+    options
+  );
+}
 export type RemoveSponsorFromProjectMutationHookResult = ReturnType<typeof useRemoveSponsorFromProjectMutation>;
 export type RemoveSponsorFromProjectMutationResult = Apollo.MutationResult<RemoveSponsorFromProjectMutation>;
-export type RemoveSponsorFromProjectMutationOptions = Apollo.BaseMutationOptions<RemoveSponsorFromProjectMutation, RemoveSponsorFromProjectMutationVariables>;
+export type RemoveSponsorFromProjectMutationOptions = Apollo.BaseMutationOptions<
+  RemoveSponsorFromProjectMutation,
+  RemoveSponsorFromProjectMutationVariables
+>;
 export const GetUserByEmailDocument = gql`
-    query getUserByEmail($email: citext!) {
-  users(where: {email: {_eq: $email}}) {
-    id
+  query getUserByEmail($email: citext!) {
+    users(where: { email: { _eq: $email } }) {
+      id
+    }
   }
-}
-    `;
+`;
 
 /**
  * __useGetUserByEmailQuery__
@@ -12249,25 +13283,32 @@ export const GetUserByEmailDocument = gql`
  *   },
  * });
  */
-export function useGetUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
-      }
-export function useGetUserByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
-        }
+export function useGetUserByEmailQuery(
+  baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+}
+export function useGetUserByEmailLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+}
 export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>;
 export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>;
 export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>;
 export const SetUserEmailVerifiedDocument = gql`
-    mutation setUserEmailVerified($userId: uuid!) {
-  updateUser(pk_columns: {id: $userId}, _set: {emailVerified: true}) {
-    id
+  mutation setUserEmailVerified($userId: uuid!) {
+    updateUser(pk_columns: { id: $userId }, _set: { emailVerified: true }) {
+      id
+    }
   }
-}
-    `;
-export type SetUserEmailVerifiedMutationFn = Apollo.MutationFunction<SetUserEmailVerifiedMutation, SetUserEmailVerifiedMutationVariables>;
+`;
+export type SetUserEmailVerifiedMutationFn = Apollo.MutationFunction<
+  SetUserEmailVerifiedMutation,
+  SetUserEmailVerifiedMutationVariables
+>;
 
 /**
  * __useSetUserEmailVerifiedMutation__
@@ -12286,24 +13327,35 @@ export type SetUserEmailVerifiedMutationFn = Apollo.MutationFunction<SetUserEmai
  *   },
  * });
  */
-export function useSetUserEmailVerifiedMutation(baseOptions?: Apollo.MutationHookOptions<SetUserEmailVerifiedMutation, SetUserEmailVerifiedMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<SetUserEmailVerifiedMutation, SetUserEmailVerifiedMutationVariables>(SetUserEmailVerifiedDocument, options);
-      }
+export function useSetUserEmailVerifiedMutation(
+  baseOptions?: Apollo.MutationHookOptions<SetUserEmailVerifiedMutation, SetUserEmailVerifiedMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<SetUserEmailVerifiedMutation, SetUserEmailVerifiedMutationVariables>(
+    SetUserEmailVerifiedDocument,
+    options
+  );
+}
 export type SetUserEmailVerifiedMutationHookResult = ReturnType<typeof useSetUserEmailVerifiedMutation>;
 export type SetUserEmailVerifiedMutationResult = Apollo.MutationResult<SetUserEmailVerifiedMutation>;
-export type SetUserEmailVerifiedMutationOptions = Apollo.BaseMutationOptions<SetUserEmailVerifiedMutation, SetUserEmailVerifiedMutationVariables>;
+export type SetUserEmailVerifiedMutationOptions = Apollo.BaseMutationOptions<
+  SetUserEmailVerifiedMutation,
+  SetUserEmailVerifiedMutationVariables
+>;
 export const CreateGithubAuthUserDocument = gql`
-    mutation createGithubAuthUser($userId: uuid!, $githubUserId: String!, $accessToken: String!) {
-  insertAuthUserProvider(
-    object: {userId: $userId, providerId: "github", providerUserId: $githubUserId, accessToken: $accessToken}
-    onConflict: {constraint: user_providers_provider_id_provider_user_id_key, update_columns: userId}
-  ) {
-    id
+  mutation createGithubAuthUser($userId: uuid!, $githubUserId: String!, $accessToken: String!) {
+    insertAuthUserProvider(
+      object: { userId: $userId, providerId: "github", providerUserId: $githubUserId, accessToken: $accessToken }
+      onConflict: { constraint: user_providers_provider_id_provider_user_id_key, update_columns: userId }
+    ) {
+      id
+    }
   }
-}
-    `;
-export type CreateGithubAuthUserMutationFn = Apollo.MutationFunction<CreateGithubAuthUserMutation, CreateGithubAuthUserMutationVariables>;
+`;
+export type CreateGithubAuthUserMutationFn = Apollo.MutationFunction<
+  CreateGithubAuthUserMutation,
+  CreateGithubAuthUserMutationVariables
+>;
 
 /**
  * __useCreateGithubAuthUserMutation__
@@ -12324,23 +13376,36 @@ export type CreateGithubAuthUserMutationFn = Apollo.MutationFunction<CreateGithu
  *   },
  * });
  */
-export function useCreateGithubAuthUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateGithubAuthUserMutation, CreateGithubAuthUserMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateGithubAuthUserMutation, CreateGithubAuthUserMutationVariables>(CreateGithubAuthUserDocument, options);
-      }
+export function useCreateGithubAuthUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateGithubAuthUserMutation, CreateGithubAuthUserMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<CreateGithubAuthUserMutation, CreateGithubAuthUserMutationVariables>(
+    CreateGithubAuthUserDocument,
+    options
+  );
+}
 export type CreateGithubAuthUserMutationHookResult = ReturnType<typeof useCreateGithubAuthUserMutation>;
 export type CreateGithubAuthUserMutationResult = Apollo.MutationResult<CreateGithubAuthUserMutation>;
-export type CreateGithubAuthUserMutationOptions = Apollo.BaseMutationOptions<CreateGithubAuthUserMutation, CreateGithubAuthUserMutationVariables>;
+export type CreateGithubAuthUserMutationOptions = Apollo.BaseMutationOptions<
+  CreateGithubAuthUserMutation,
+  CreateGithubAuthUserMutationVariables
+>;
 export const UpdateProfileDocument = gql`
-    mutation updateProfile($contactInformation: ContactInformation!, $identity: IdentityInput!, $location: Location!, $payoutSettings: PayoutSettingsInput!) {
-  updateProfileInfo(
-    contactInformation: $contactInformation
-    identity: $identity
-    location: $location
-    payoutSettings: $payoutSettings
-  )
-}
-    `;
+  mutation updateProfile(
+    $contactInformation: ContactInformation!
+    $identity: IdentityInput!
+    $location: Location!
+    $payoutSettings: PayoutSettingsInput!
+  ) {
+    updateProfileInfo(
+      contactInformation: $contactInformation
+      identity: $identity
+      location: $location
+      payoutSettings: $payoutSettings
+    )
+  }
+`;
 export type UpdateProfileMutationFn = Apollo.MutationFunction<UpdateProfileMutation, UpdateProfileMutationVariables>;
 
 /**
@@ -12363,10 +13428,15 @@ export type UpdateProfileMutationFn = Apollo.MutationFunction<UpdateProfileMutat
  *   },
  * });
  */
-export function useUpdateProfileMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProfileMutation, UpdateProfileMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateProfileMutation, UpdateProfileMutationVariables>(UpdateProfileDocument, options);
-      }
+export function useUpdateProfileMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateProfileMutation, UpdateProfileMutationVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateProfileMutation, UpdateProfileMutationVariables>(UpdateProfileDocument, options);
+}
 export type UpdateProfileMutationHookResult = ReturnType<typeof useUpdateProfileMutation>;
 export type UpdateProfileMutationResult = Apollo.MutationResult<UpdateProfileMutation>;
-export type UpdateProfileMutationOptions = Apollo.BaseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables>;
+export type UpdateProfileMutationOptions = Apollo.BaseMutationOptions<
+  UpdateProfileMutation,
+  UpdateProfileMutationVariables
+>;

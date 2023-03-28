@@ -819,10 +819,93 @@ export type GithubRepoDetailsOnConflict = {
   where: InputMaybe<GithubRepoDetailsBoolExp>;
 };
 
+/** unique or primary key constraints on table "github_repo_details" */
+export enum GithubRepoDetailsConstraint {
+  /** unique or primary key constraint on columns "id" */
+  GithubRepoDetailsPkey = 'github_repo_details_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type GithubRepoDetailsDeleteAtPathInput = {
+  languages: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type GithubRepoDetailsDeleteElemInput = {
+  languages: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type GithubRepoDetailsDeleteKeyInput = {
+  languages: InputMaybe<Scalars['String']>;
+};
+
+/** input type for incrementing numeric columns in table "github_repo_details" */
+export type GithubRepoDetailsIncInput = {
+  id: InputMaybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "github_repo_details" */
+export type GithubRepoDetailsInsertInput = {
+  id: InputMaybe<Scalars['bigint']>;
+  languages: InputMaybe<Scalars['jsonb']>;
+  name: InputMaybe<Scalars['String']>;
+  owner: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type GithubRepoDetailsMaxFields = {
+  __typename?: 'GithubRepoDetailsMaxFields';
+  id: Maybe<Scalars['bigint']>;
+  name: Maybe<Scalars['String']>;
+  owner: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type GithubRepoDetailsMinFields = {
+  __typename?: 'GithubRepoDetailsMinFields';
+  id: Maybe<Scalars['bigint']>;
+  name: Maybe<Scalars['String']>;
+  owner: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "github_repo_details" */
+export type GithubRepoDetailsMutationResponse = {
+  __typename?: 'GithubRepoDetailsMutationResponse';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<GithubRepoDetails>;
+};
+
+/** input type for inserting object relation for remote table "github_repo_details" */
+export type GithubRepoDetailsObjRelInsertInput = {
+  data: GithubRepoDetailsInsertInput;
+  /** upsert condition */
+  onConflict: InputMaybe<GithubRepoDetailsOnConflict>;
+};
+
+/** on_conflict condition type for table "github_repo_details" */
+export type GithubRepoDetailsOnConflict = {
+  constraint: GithubRepoDetailsConstraint;
+  update_columns: Array<GithubRepoDetailsUpdateColumn>;
+  where: InputMaybe<GithubRepoDetailsBoolExp>;
+};
+
 /** Ordering options when selecting data from "github_repo_details". */
 export type GithubRepoDetailsOrderBy = {
   id: InputMaybe<OrderBy>;
   languages: InputMaybe<OrderBy>;
+};
+
+/** primary key columns input for table: github_repo_details */
+export type GithubRepoDetailsPkColumnsInput = {
+  id: Scalars['bigint'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type GithubRepoDetailsPrependInput = {
+  languages: InputMaybe<Scalars['jsonb']>;
 };
 
 /** primary key columns input for table: github_repo_details */
@@ -3434,6 +3517,36 @@ export type WorkItemsAggregateFieldsCountArgs = {
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
+/** aggregated selection of "work_items" */
+export type WorkItemsAggregate = {
+  __typename?: 'WorkItemsAggregate';
+  aggregate: Maybe<WorkItemsAggregateFields>;
+  nodes: Array<WorkItems>;
+};
+
+/** aggregate fields of "work_items" */
+export type WorkItemsAggregateFields = {
+  __typename?: 'WorkItemsAggregateFields';
+  avg: Maybe<WorkItemsAvgFields>;
+  count: Scalars['Int'];
+  max: Maybe<WorkItemsMaxFields>;
+  min: Maybe<WorkItemsMinFields>;
+  stddev: Maybe<WorkItemsStddevFields>;
+  stddevPop: Maybe<WorkItemsStddev_PopFields>;
+  stddevSamp: Maybe<WorkItemsStddev_SampFields>;
+  sum: Maybe<WorkItemsSumFields>;
+  varPop: Maybe<WorkItemsVar_PopFields>;
+  varSamp: Maybe<WorkItemsVar_SampFields>;
+  variance: Maybe<WorkItemsVarianceFields>;
+};
+
+
+/** aggregate fields of "work_items" */
+export type WorkItemsAggregateFieldsCountArgs = {
+  columns: InputMaybe<Array<WorkItemsSelectColumn>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
 /** order by aggregate values of table "work_items" */
 export type WorkItemsAggregateOrderBy = {
   avg: InputMaybe<Work_Items_Avg_Order_By>;
@@ -3524,6 +3637,59 @@ export type WorkItemsOnConflict = {
   where: InputMaybe<WorkItemsBoolExp>;
 };
 
+/** unique or primary key constraints on table "work_items" */
+export enum WorkItemsConstraint {
+  /** unique or primary key constraint on columns "issue_number", "payment_id", "repo_owner", "repo_name" */
+  WorkItemsPkey = 'work_items_pkey'
+}
+
+/** input type for incrementing numeric columns in table "work_items" */
+export type WorkItemsIncInput = {
+  issueNumber: InputMaybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "work_items" */
+export type WorkItemsInsertInput = {
+  issueNumber: InputMaybe<Scalars['bigint']>;
+  paymentId: InputMaybe<Scalars['uuid']>;
+  repoName: InputMaybe<Scalars['String']>;
+  repoOwner: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type WorkItemsMaxFields = {
+  __typename?: 'WorkItemsMaxFields';
+  issueNumber: Maybe<Scalars['bigint']>;
+  paymentId: Maybe<Scalars['uuid']>;
+  repoName: Maybe<Scalars['String']>;
+  repoOwner: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type WorkItemsMinFields = {
+  __typename?: 'WorkItemsMinFields';
+  issueNumber: Maybe<Scalars['bigint']>;
+  paymentId: Maybe<Scalars['uuid']>;
+  repoName: Maybe<Scalars['String']>;
+  repoOwner: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "work_items" */
+export type WorkItemsMutationResponse = {
+  __typename?: 'WorkItemsMutationResponse';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<WorkItems>;
+};
+
+/** on_conflict condition type for table "work_items" */
+export type WorkItemsOnConflict = {
+  constraint: WorkItemsConstraint;
+  update_columns: Array<WorkItemsUpdateColumn>;
+  where: InputMaybe<WorkItemsBoolExp>;
+};
+
 /** Ordering options when selecting data from "work_items". */
 export type WorkItemsOrderBy = {
   issueNumber: InputMaybe<OrderBy>;
@@ -3536,6 +3702,14 @@ export type WorkItemsPkColumnsInput = {
   issueNumber: Scalars['bigint'];
   paymentId: Scalars['uuid'];
   repoId: Scalars['bigint'];
+};
+
+/** primary key columns input for table: work_items */
+export type WorkItemsPkColumnsInput = {
+  issueNumber: Scalars['bigint'];
+  paymentId: Scalars['uuid'];
+  repoName: Scalars['String'];
+  repoOwner: Scalars['String'];
 };
 
 /** select columns of table "work_items" */
@@ -9918,6 +10092,33 @@ export type GetPaidWorkItemsQueryVariables = Exact<{
 
 export type GetPaidWorkItemsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', owner: string, name: string } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }> }> }> } | null };
 
+export type FetchIssueQueryVariables = Exact<{
+  repoOwner: Scalars['String'];
+  repoName: Scalars['String'];
+  issueNumber: Scalars['Int'];
+}>;
+
+
+export type FetchIssueQuery = { __typename?: 'query_root', fetchIssue: { __typename?: 'Issue', id: number, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null };
+
+export type GetProjectReposQueryVariables = Exact<{
+  projectId: Scalars['uuid'];
+}>;
+
+
+export type GetProjectReposQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', owner: string, name: string } | null }> } | null };
+
+export type CreateIssueMutationVariables = Exact<{
+  repoOwner: Scalars['String'];
+  repoName: Scalars['String'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+  assignees: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type CreateIssueMutation = { __typename?: 'mutation_root', createIssue: { __typename?: 'Issue', id: number, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } };
+
 export type SidebarProjectDetailsFragment = { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, logoUrl: string | null } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }> };
 
 export type GetProjectsForSidebarQueryVariables = Exact<{
@@ -11310,47 +11511,6 @@ export function useGetProjectContributorsForPaymentSelectLazyQuery(baseOptions?:
 export type GetProjectContributorsForPaymentSelectQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelectQuery>;
 export type GetProjectContributorsForPaymentSelectLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelectLazyQuery>;
 export type GetProjectContributorsForPaymentSelectQueryResult = Apollo.QueryResult<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>;
-export const FetchIssueDocument = gql`
-    query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
-  fetchIssue(
-    repoOwner: $repoOwner
-    repoName: $repoName
-    issueNumber: $issueNumber
-  ) {
-    ...IssueDetails
-  }
-}
-    ${IssueDetailsFragmentDoc}`;
-
-/**
- * __useFetchIssueQuery__
- *
- * To run a query within a React component, call `useFetchIssueQuery` and pass it any options that fit your needs.
- * When your component renders, `useFetchIssueQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFetchIssueQuery({
- *   variables: {
- *      repoOwner: // value for 'repoOwner'
- *      repoName: // value for 'repoName'
- *      issueNumber: // value for 'issueNumber'
- *   },
- * });
- */
-export function useFetchIssueQuery(baseOptions: Apollo.QueryHookOptions<FetchIssueQuery, FetchIssueQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FetchIssueQuery, FetchIssueQueryVariables>(FetchIssueDocument, options);
-      }
-export function useFetchIssueLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FetchIssueQuery, FetchIssueQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FetchIssueQuery, FetchIssueQueryVariables>(FetchIssueDocument, options);
-        }
-export type FetchIssueQueryHookResult = ReturnType<typeof useFetchIssueQuery>;
-export type FetchIssueLazyQueryHookResult = ReturnType<typeof useFetchIssueLazyQuery>;
-export type FetchIssueQueryResult = Apollo.QueryResult<FetchIssueQuery, FetchIssueQueryVariables>;
 export const SearchIssuesDocument = gql`
     query searchIssues($query: String!, $order: String, $sort: String, $perPage: Int) {
   searchIssues(query: $query, order: $order, sort: $sort, perPage: $perPage) {
@@ -11441,6 +11601,129 @@ export function useGetPaidWorkItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetPaidWorkItemsQueryHookResult = ReturnType<typeof useGetPaidWorkItemsQuery>;
 export type GetPaidWorkItemsLazyQueryHookResult = ReturnType<typeof useGetPaidWorkItemsLazyQuery>;
 export type GetPaidWorkItemsQueryResult = Apollo.QueryResult<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>;
+export const FetchIssueDocument = gql`
+    query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
+  fetchIssue(
+    repoOwner: $repoOwner
+    repoName: $repoName
+    issueNumber: $issueNumber
+  ) {
+    ...IssueDetails
+  }
+}
+    ${IssueDetailsFragmentDoc}`;
+
+/**
+ * __useFetchIssueQuery__
+ *
+ * To run a query within a React component, call `useFetchIssueQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchIssueQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchIssueQuery({
+ *   variables: {
+ *      repoOwner: // value for 'repoOwner'
+ *      repoName: // value for 'repoName'
+ *      issueNumber: // value for 'issueNumber'
+ *   },
+ * });
+ */
+export function useFetchIssueQuery(baseOptions: Apollo.QueryHookOptions<FetchIssueQuery, FetchIssueQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FetchIssueQuery, FetchIssueQueryVariables>(FetchIssueDocument, options);
+      }
+export function useFetchIssueLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FetchIssueQuery, FetchIssueQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FetchIssueQuery, FetchIssueQueryVariables>(FetchIssueDocument, options);
+        }
+export type FetchIssueQueryHookResult = ReturnType<typeof useFetchIssueQuery>;
+export type FetchIssueLazyQueryHookResult = ReturnType<typeof useFetchIssueLazyQuery>;
+export type FetchIssueQueryResult = Apollo.QueryResult<FetchIssueQuery, FetchIssueQueryVariables>;
+export const GetProjectReposDocument = gql`
+    query GetProjectRepos($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    githubRepos {
+      githubRepoDetails {
+        ...RepositoryOwnerAndName
+      }
+    }
+  }
+}
+    ${RepositoryOwnerAndNameFragmentDoc}`;
+
+/**
+ * __useGetProjectReposQuery__
+ *
+ * To run a query within a React component, call `useGetProjectReposQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectReposQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectReposQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetProjectReposQuery(baseOptions: Apollo.QueryHookOptions<GetProjectReposQuery, GetProjectReposQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectReposQuery, GetProjectReposQueryVariables>(GetProjectReposDocument, options);
+      }
+export function useGetProjectReposLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectReposQuery, GetProjectReposQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectReposQuery, GetProjectReposQueryVariables>(GetProjectReposDocument, options);
+        }
+export type GetProjectReposQueryHookResult = ReturnType<typeof useGetProjectReposQuery>;
+export type GetProjectReposLazyQueryHookResult = ReturnType<typeof useGetProjectReposLazyQuery>;
+export type GetProjectReposQueryResult = Apollo.QueryResult<GetProjectReposQuery, GetProjectReposQueryVariables>;
+export const CreateIssueDocument = gql`
+    mutation CreateIssue($repoOwner: String!, $repoName: String!, $title: String!, $description: String!, $assignees: [String!]!) {
+  createIssue(
+    repoOwner: $repoOwner
+    repoName: $repoName
+    title: $title
+    description: $description
+    assignees: $assignees
+  ) {
+    ...IssueDetails
+  }
+}
+    ${IssueDetailsFragmentDoc}`;
+export type CreateIssueMutationFn = Apollo.MutationFunction<CreateIssueMutation, CreateIssueMutationVariables>;
+
+/**
+ * __useCreateIssueMutation__
+ *
+ * To run a mutation, you first call `useCreateIssueMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateIssueMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createIssueMutation, { data, loading, error }] = useCreateIssueMutation({
+ *   variables: {
+ *      repoOwner: // value for 'repoOwner'
+ *      repoName: // value for 'repoName'
+ *      title: // value for 'title'
+ *      description: // value for 'description'
+ *      assignees: // value for 'assignees'
+ *   },
+ * });
+ */
+export function useCreateIssueMutation(baseOptions?: Apollo.MutationHookOptions<CreateIssueMutation, CreateIssueMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateIssueMutation, CreateIssueMutationVariables>(CreateIssueDocument, options);
+      }
+export type CreateIssueMutationHookResult = ReturnType<typeof useCreateIssueMutation>;
+export type CreateIssueMutationResult = Apollo.MutationResult<CreateIssueMutation>;
+export type CreateIssueMutationOptions = Apollo.BaseMutationOptions<CreateIssueMutation, CreateIssueMutationVariables>;
 export const GetProjectsForSidebarDocument = gql`
     query GetProjectsForSidebar($ledProjectIds: [uuid!], $githubUserId: bigint) {
   projects(

@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { differenceBy, differenceWith, sortBy } from "lodash";
 import { useMemo } from "react";
 import { WorkItem } from "src/components/GithubIssue";
@@ -6,9 +5,10 @@ import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import isDefined from "src/utils/isDefined";
 import {
+  GetPaidWorkItemsDocument,
   GetPaidWorkItemsQuery,
-  IssueDetailsFragmentDoc,
   RepositoryOwnerAndNameFragment,
+  SearchIssuesDocument,
   SearchIssuesQuery,
 } from "src/__generated/graphql";
 import IssuesView from "./IssuesView";
@@ -33,11 +33,15 @@ export const buildQuery = (githubRepos: RepositoryOwnerAndNameFragment[], author
 export const MAX_ISSUE_COUNT = 50;
 
 export default function Issues({ type, projectId, contributorHandle, workItems, onWorkItemAdded }: Props) {
-  const getPaidItemsQuery = useHasuraQuery<GetPaidWorkItemsQuery>(GET_PAID_WORK_ITEMS, HasuraUserRole.RegisteredUser, {
-    variables: { projectId },
-  });
+  const getPaidItemsQuery = useHasuraQuery<GetPaidWorkItemsQuery>(
+    GetPaidWorkItemsDocument,
+    HasuraUserRole.RegisteredUser,
+    {
+      variables: { projectId },
+    }
+  );
 
-  const searchPrQuery = useHasuraQuery<SearchIssuesQuery>(SEARCH_ISSUES, HasuraUserRole.RegisteredUser, {
+  const searchPrQuery = useHasuraQuery<SearchIssuesQuery>(SearchIssuesDocument, HasuraUserRole.RegisteredUser, {
     variables: {
       query: buildQuery(
         getPaidItemsQuery.data?.projectsByPk?.githubRepos.map(r => r.githubRepoDetails?.content).filter(isDefined) ||
@@ -103,42 +107,3 @@ export default function Issues({ type, projectId, contributorHandle, workItems, 
     </>
   );
 }
-
-const SEARCH_ISSUES = gql`
-  ${IssueDetailsFragmentDoc}
-  query searchIssues($query: String!, $order: String, $sort: String, $perPage: Int) {
-    searchIssues(query: $query, order: $order, sort: $sort, perPage: $perPage) {
-      ...IssueDetails
-    }
-  }
-`;
-
-const GET_PAID_WORK_ITEMS = gql`
-  fragment RepositoryOwnerAndName on Repository {
-    owner
-    name
-  }
-
-  query getPaidWorkItems($projectId: uuid!) {
-    projectsByPk(id: $projectId) {
-      githubRepos {
-        githubRepoDetails {
-          id
-          content {
-            ...RepositoryOwnerAndName
-          }
-        }
-      }
-      budgets {
-        id
-        paymentRequests {
-          id
-          workItems {
-            repoId
-            issueNumber
-          }
-        }
-      }
-    }
-  }
-`;

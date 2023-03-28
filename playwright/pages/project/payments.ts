@@ -1,5 +1,6 @@
 import { Page, expect, Locator } from "@playwright/test";
 import { Project, User } from "../../types";
+import { sortBy } from "lodash";
 
 export class ProjectPaymentsPage {
   readonly page: Page;
@@ -40,26 +41,37 @@ export class NewPaymentPage {
     otherPullRequests = [],
     issuesIndexes = [],
     otherIssues = [],
+    otherWorks = [],
   }: {
     recipient?: User;
     pullRequestIndexes?: number[];
     otherPullRequests?: string[];
     issuesIndexes?: number[];
     otherIssues?: string[];
+    otherWorks?: {
+      kind?: "documentation" | "meeting" | "subscription" | "other";
+      title?: string;
+      description: string;
+      repository?: string;
+    }[];
   }) => {
+    // Set recipient
     if (recipient) {
       await this.page.getByText("Search by Github handle").click();
       await this.page.getByTestId("contributor-selection-input").fill(recipient.github.login);
       await this.page.getByRole("listitem").first().click();
     }
 
+    // Add work items
     await this.page.getByTestId("add-work-item-btn").click();
 
+    // Select PR in list
     const elligiblePulls = this.page.getByTestId("elligible-pulls").getByRole("button");
     for (const index of pullRequestIndexes.sort().reverse()) {
       await elligiblePulls.nth(index).click();
     }
 
+    // Add other PR
     if (otherPullRequests.length > 0) {
       await this.page.locator("[data-testid=add-other-pr-toggle]").click();
 
@@ -70,14 +82,17 @@ export class NewPaymentPage {
       }
     }
 
+    // Add issues
     if (issuesIndexes.length + otherIssues.length > 0) {
       await this.page.getByTestId("tab-issues").click();
 
+      // Select issues in list
       const elligibleIssues = this.page.getByTestId("elligible-issues").getByRole("button");
-      for (const index of issuesIndexes.sort().reverse()) {
+      for (const index of sortBy(issuesIndexes).reverse()) {
         await elligibleIssues.nth(index).click();
       }
 
+      // Add other issues
       if (otherIssues.length > 0) {
         await this.page.locator("[data-testid=add-other-issue-toggle]").click();
 
@@ -89,6 +104,32 @@ export class NewPaymentPage {
       }
     }
 
+    // Add other work
+    if (otherWorks.length > 0) {
+      await this.page.getByTestId("tab-other-work").click();
+
+      for (const otherWork of otherWorks) {
+        const addedWorkItemsCount = await this.page
+          .getByTestId("added-work-items")
+          .locator("div[id^=github-issue-]")
+          .count();
+
+        otherWork.kind && (await this.page.getByRole("option", { name: otherWork.kind }).click());
+        otherWork.title && (await this.page.getByTestId("other-work-title").fill(otherWork.title));
+        await this.page.getByTestId("other-work-description").fill(otherWork.description);
+        if (otherWork.repository) {
+          await this.page.getByTestId("select-repo-button").click();
+          await this.page.getByTestId("select-repo-options").locator("div", { hasText: otherWork.repository }).click();
+        }
+        await this.page.getByRole("button", { name: "create and add issue" }).click();
+
+        await expect(this.page.getByTestId("added-work-items").locator("div[id^=github-issue-]")).toHaveCount(
+          addedWorkItemsCount + 1
+        );
+      }
+    }
+
+    // Close panel and submit payment request
     await this.page.getByTestId("close-add-work-item-panel-btn").click();
     await this.page.getByText("Confirm payment").click();
   };
