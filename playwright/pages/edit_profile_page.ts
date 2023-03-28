@@ -148,7 +148,7 @@ export class EditProfilePage {
         profile.payoutSettings?.optEthAddress || profile.payoutSettings?.optEthName || ""
       );
     }
-    console.log(profile.contactInformation);
+
     await expect(this.email).toHaveValue(profile.contactInformation?.email || preFilledEmail);
     await expect(this.telegram).toHaveValue(profile.contactInformation?.telegram || "");
     await expect(this.twitter).toHaveValue(profile.contactInformation?.twitter || "");

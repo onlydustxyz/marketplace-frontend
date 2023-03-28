@@ -88,8 +88,8 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
     HasuraUserRole.RegisteredUser,
     {
       variables: {
-        repoOwner: selectedRepo?.owner,
-        repoName: selectedRepo?.name,
+        projectId: projectId,
+        githubRepoId: selectedRepo?.id,
         title: title || defaultTitle,
         description,
         assignees: [leader?.displayName, contributorHandle],

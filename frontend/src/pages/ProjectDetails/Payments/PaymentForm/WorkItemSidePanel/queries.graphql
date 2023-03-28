@@ -5,6 +5,7 @@ query searchIssues($query: String!, $order: String, $sort: String, $perPage: Int
 }
 
 fragment RepositoryOwnerAndName on GithubRepoDetails {
+  id
   owner
   name
 }
@@ -47,18 +48,16 @@ query GetProjectRepos($projectId: uuid!) {
 }
 
 mutation CreateIssue(
-  $repoOwner: String!
-  $repoName: String!
+  $projectId: Uuid!
+  $githubRepoId: Int!
   $title: String!
   $description: String!
-  $assignees: [String!]!
 ) {
   createIssue(
-    repoOwner: $repoOwner
-    repoName: $repoName
+    projectId: $projectId
+    githubRepoId: $githubRepoId
     title: $title
     description: $description
-    assignees: $assignees
   ) {
     ...IssueDetails
   }

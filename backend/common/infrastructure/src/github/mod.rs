@@ -20,6 +20,9 @@ mod logged_response;
 pub use logged_response::DebugTechnicalHeaders;
 use logged_response::LoggedResponse;
 
+mod issue;
+pub use issue::{Error as FromOctocrabIssueError, FromOctocrabIssue};
+
 #[derive(Deserialize, Clone)]
 pub struct Config {
 	base_url: String,

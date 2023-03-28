@@ -1,14 +1,10 @@
-use anyhow::anyhow;
-use domain::GithubRepositoryId;
-use infrastructure::github;
-use octocrab::models::issues::IssueStateReason;
+use domain::{GithubIssue, GithubRepositoryId};
+use infrastructure::github::{self, FromOctocrabIssue};
 use olog::{error, tracing::instrument};
-use thiserror::Error;
 
 use super::Contributors;
 use crate::domain::{
-	GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepository, GithubService,
-	GithubServiceError, GithubServiceResult, GithubUser,
+	GithubRepository, GithubService, GithubServiceError, GithubServiceResult, GithubUser,
 };
 
 impl From<github::Error> for GithubServiceError {
@@ -71,18 +67,20 @@ impl<P: github::OctocrabProxy> GithubService for P {
 		let octocrab_pull_requests = self.get_repository_PRs(repository_id).await?;
 		let pull_requests = octocrab_pull_requests
 			.into_iter()
-			.filter_map(|pr| match GithubIssue::try_from(pr.clone()) {
-				Ok(pr) => Some(pr),
-				Err(e) => {
-					error!(
-						error = e.to_string(),
-						repository_id = repository_id,
-						pullrequest_id = pr.id.0,
-						"Failed to process pull request"
-					);
-					None
+			.filter_map(
+				|pr| match GithubIssue::from_octocrab_pull_request(pr.clone()) {
+					Ok(pr) => Some(pr),
+					Err(e) => {
+						error!(
+							error = e.to_string(),
+							repository_id = repository_id,
+							pullrequest_id = pr.id.0,
+							"Failed to process pull request"
+						);
+						None
+					},
 				},
-			})
+			)
 			.collect();
 
 		Ok(pull_requests)
@@ -95,10 +93,9 @@ impl<P: github::OctocrabProxy> GithubService for P {
 		repo_name: &str,
 		issue_number: u64,
 	) -> GithubServiceResult<GithubIssue> {
-		self.get_issue(repo_owner, repo_name, issue_number)
-			.await?
-			.try_into()
-			.map_err(|e: GithubIssueFromOctocrabResultError| GithubServiceError::Other(anyhow!(e)))
+		let issue = self.get_issue(repo_owner, repo_name, issue_number).await?;
+		GithubIssue::from_octocrab_issue(issue)
+			.map_err(|e| GithubServiceError::MissingField(e.to_string()))
 	}
 
 	#[instrument(skip(self))]
@@ -138,7 +135,7 @@ impl<P: github::OctocrabProxy> GithubService for P {
 			.search_issues(query, sort, order, per_page, page)
 			.await?
 			.into_iter()
-			.filter_map(|issue| match GithubIssue::try_from(issue) {
+			.filter_map(|issue| match GithubIssue::from_octocrab_issue(issue) {
 				Ok(issue) => Some(issue),
 				Err(error) => {
 					error!(error = error.to_string(), "Failed to map Octocrab issue");
@@ -148,171 +145,10 @@ impl<P: github::OctocrabProxy> GithubService for P {
 			.collect();
 		Ok(issues)
 	}
-
-	#[instrument(skip(self))]
-	async fn create_issue(
-		&self,
-		repo_owner: &str,
-		repo_name: &str,
-		title: &str,
-		description: &str,
-		assignees: Vec<String>,
-	) -> GithubServiceResult<GithubIssue> {
-		self.octocrab()
-			.issues(repo_owner, repo_name)
-			.create(title)
-			.body(description)
-			.assignees(assignees)
-			.send()
-			.await
-			.map_err(|e| GithubServiceError::Other(anyhow!(e)))?
-			.try_into()
-			.map_err(|e: GithubIssueFromOctocrabResultError| GithubServiceError::Other(anyhow!(e)))
-	}
 }
 
 impl From<octocrab::models::User> for GithubUser {
 	fn from(user: octocrab::models::User) -> Self {
 		Self::new(user.id.0 as i32, user.login, user.avatar_url, user.html_url)
-	}
-}
-
-#[derive(Debug, Error)]
-pub enum GithubIssueFromOctocrabResultError {
-	#[error("Field '{0}' is not present")]
-	MissingField(String),
-	#[error(transparent)]
-	UnknownStatus(#[from] GithubIssueStatusFromOctocrabResultError),
-}
-
-impl TryFrom<octocrab::models::issues::Issue> for GithubIssue {
-	type Error = GithubIssueFromOctocrabResultError;
-
-	fn try_from(issue: octocrab::models::issues::Issue) -> Result<Self, Self::Error> {
-		let id = issue
-			.id
-			.0
-			.try_into()
-			.expect("We cannot work with github ids superior to i32::MAX");
-
-		let number = issue
-			.number
-			.try_into()
-			.expect("We cannot work with github PR number superior to i32::MAX");
-
-		let issue_type = match issue.pull_request {
-			Some(_) => GithubIssueType::PullRequest,
-			None => GithubIssueType::Issue,
-		};
-
-		let status = (&issue).try_into()?;
-
-		Ok(Self::new(
-			id,
-			number,
-			issue_type,
-			issue.title,
-			issue.html_url,
-			status,
-			issue.created_at,
-			issue.pull_request.and_then(|pr| pr.merged_at),
-			issue.closed_at,
-		))
-	}
-}
-
-impl TryFrom<octocrab::models::pulls::PullRequest> for GithubIssue {
-	type Error = GithubIssueFromOctocrabResultError;
-
-	fn try_from(pull_request: octocrab::models::pulls::PullRequest) -> Result<Self, Self::Error> {
-		let id = pull_request
-			.id
-			.0
-			.try_into()
-			.expect("We cannot work with github ids superior to i32::MAX");
-
-		let number = pull_request
-			.number
-			.try_into()
-			.expect("We cannot work with github PR number superior to i32::MAX");
-
-		let title = pull_request
-			.title
-			.clone()
-			.ok_or_else(|| Self::Error::MissingField("title".to_string()))?;
-
-		let status = (&pull_request).try_into()?;
-
-		let created_at = pull_request
-			.created_at
-			.ok_or_else(|| Self::Error::MissingField("created_at".to_string()))?;
-
-		let html_url = pull_request
-			.html_url
-			.ok_or_else(|| Self::Error::MissingField("html_url".to_string()))?;
-
-		Ok(Self::new(
-			id,
-			number,
-			GithubIssueType::PullRequest,
-			title,
-			html_url,
-			status,
-			created_at,
-			pull_request.merged_at,
-			pull_request.closed_at,
-		))
-	}
-}
-
-#[derive(Debug, Error)]
-pub enum GithubIssueStatusFromOctocrabResultError {
-	#[error("Unknown octocrab state: '{0}'")]
-	UnknownState(String),
-	#[error("Field '{0}' is not present")]
-	MissingField(String),
-}
-
-impl TryFrom<&octocrab::models::issues::Issue> for GithubIssueStatus {
-	type Error = GithubIssueStatusFromOctocrabResultError;
-
-	fn try_from(issue: &octocrab::models::issues::Issue) -> Result<Self, Self::Error> {
-		match issue.state {
-			octocrab::models::IssueState::Open => Ok(Self::Open),
-			octocrab::models::IssueState::Closed =>
-				match issue.pull_request.as_ref().and_then(|pr| pr.merged_at) {
-					Some(_) => Ok(Self::Merged),
-					None => match issue.state_reason {
-						Some(IssueStateReason::Completed) => Ok(Self::Completed),
-						Some(IssueStateReason::NotPlanned) => Ok(Self::Cancelled),
-						_ => Ok(Self::Closed),
-					},
-				},
-			_ => Err(GithubIssueStatusFromOctocrabResultError::UnknownState(
-				format!("{:?}", issue.state),
-			)),
-		}
-	}
-}
-
-impl TryFrom<&octocrab::models::pulls::PullRequest> for GithubIssueStatus {
-	type Error = GithubIssueStatusFromOctocrabResultError;
-
-	fn try_from(pull_request: &octocrab::models::pulls::PullRequest) -> Result<Self, Self::Error> {
-		let state = pull_request
-			.state
-			.as_ref()
-			.ok_or_else(|| Self::Error::MissingField("state".to_string()))?;
-
-		match state {
-			octocrab::models::IssueState::Open => Ok(Self::Open),
-			octocrab::models::IssueState::Closed => match pull_request.merged_at {
-				Some(_) => Ok(Self::Merged),
-				None => Ok(Self::Closed),
-			},
-			_ => Err(GithubIssueStatusFromOctocrabResultError::UnknownState(
-				format!("{:?}", state),
-			)),
-		}
 	}
 }

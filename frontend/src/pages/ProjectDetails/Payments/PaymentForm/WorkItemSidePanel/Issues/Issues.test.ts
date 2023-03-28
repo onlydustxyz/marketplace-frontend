@@ -4,8 +4,8 @@ describe("Issues", () => {
   it("should build the query properly for pull requests", () => {
     const query = buildQuery(
       [
-        { owner: "sayajin-labs", name: "kakarot" },
-        { owner: "onlydustxyz", name: "kaaper" },
+        { id: 545531678, owner: "sayajin-labs", name: "kakarot" },
+        { id: 493591124, owner: "onlydustxyz", name: "kaaper" },
       ],
       "ofux",
       IssueType.PullRequest
@@ -16,8 +16,8 @@ describe("Issues", () => {
   it("should build the query properly for issues", () => {
     const query = buildQuery(
       [
-        { owner: "sayajin-labs", name: "kakarot" },
-        { owner: "onlydustxyz", name: "kaaper" },
+        { id: 545531678, owner: "sayajin-labs", name: "kakarot" },
+        { id: 493591124, owner: "onlydustxyz", name: "kaaper" },
       ],
       "ofux",
       IssueType.Issue
