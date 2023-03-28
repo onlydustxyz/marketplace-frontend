@@ -1,7 +1,7 @@
+use domain::GithubIssue;
 use juniper::{graphql_object, DefaultScalarValue};
 
 use super::{Context, Result};
-use crate::domain::GithubIssue;
 
 pub struct Mutation;
 
