@@ -43,4 +43,13 @@ pub trait Service: Send + Sync {
 		per_page: Option<u8>,
 		page: Option<u32>,
 	) -> Result<Vec<Issue>>;
+
+	async fn create_issue(
+		&self,
+		repo_owner: &str,
+		repo_name: &str,
+		title: &str,
+		description: &str,
+		assignees: Vec<String>,
+	) -> Result<Issue>;
 }
