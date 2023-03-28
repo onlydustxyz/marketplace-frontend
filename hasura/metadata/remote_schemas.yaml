@@ -34,7 +34,7 @@
           }
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
-            createIssue(projectId: Uuid!, githubRepoId: Int!, title: String!, description: String!, assignees: [String!]!): Issue!
+            createIssue(projectId: Uuid!, githubRepoId: Int!, title: String!, description: String!): Issue!
             markInvoiceAsReceived(paymentReferences: [PaymentReference!]!): Int!
             requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, reason: Reason!): Uuid!
             updateProfileInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput, contactInformation: ContactInformation): Uuid!

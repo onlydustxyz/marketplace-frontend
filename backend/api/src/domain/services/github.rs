@@ -30,6 +30,5 @@ pub trait Service: Send + Sync {
 		repo_name: &str,
 		title: &str,
 		description: &str,
-		assignees: Vec<String>,
 	) -> Result<GithubIssue, Error>;
 }

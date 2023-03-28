@@ -35,7 +35,6 @@ impl Usecase {
 		github_repo_id: &GithubRepositoryId,
 		title: String,
 		description: String,
-		assignees: Vec<String>,
 	) -> Result<GithubIssue, DomainError> {
 		if !self.project_github_repo_repository.exists(project_id, github_repo_id)? {
 			return Err(DomainError::InvalidInputs(anyhow!(
@@ -51,7 +50,6 @@ impl Usecase {
 				github_repo.name(),
 				&title,
 				&description,
-				assignees,
 			)
 			.await
 			.map_err(|e| match e {
@@ -126,10 +124,9 @@ mod tests {
 				eq(GITHUB_REPO_NAME),
 				eq("title"),
 				eq("description"),
-				eq(vec![]),
 			)
 			.once()
-			.returning(move |_, _, _, _, _| {
+			.returning(move |_, _, _, _| {
 				Err(crate::domain::GithubServiceError::Other(anyhow!(
 					"We don't need to test returned value"
 				)))
@@ -147,7 +144,6 @@ mod tests {
 				&github_repo_id,
 				"title".to_string(),
 				"description".to_string(),
-				vec![],
 			)
 			.await
 			.unwrap_err();
@@ -181,7 +177,6 @@ mod tests {
 				&github_repo_id,
 				"title".to_string(),
 				"description".to_string(),
-				vec![],
 			)
 			.await
 			.unwrap_err();

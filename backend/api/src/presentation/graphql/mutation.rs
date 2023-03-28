@@ -420,7 +420,6 @@ impl Mutation {
 		github_repo_id: i32,
 		title: String,
 		description: String,
-		assignees: Vec<String>,
 	) -> Result<GithubIssue> {
 		let caller_id = *context.caller_info()?.user_id();
 
@@ -441,7 +440,6 @@ impl Mutation {
 				&(github_repo_id as i64).into(),
 				title,
 				description,
-				assignees,
 			)
 			.await?;
 		Ok(issue)

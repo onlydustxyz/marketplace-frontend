@@ -52,14 +52,12 @@ impl<P: OctocrabProxy> GithubService for P {
 		repo_name: &str,
 		title: &str,
 		description: &str,
-		assignees: Vec<String>,
 	) -> Result<GithubIssue, GithubServiceError> {
 		let issue = self
 			.octocrab()
 			.issues(repo_owner, repo_name)
 			.create(title)
 			.body(description)
-			.assignees(assignees)
 			.send()
 			.await
 			.map_err(|e| GithubServiceError::Other(anyhow!(e)))?;
