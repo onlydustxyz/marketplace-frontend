@@ -73,7 +73,9 @@ export default function WorkItemSidePanel({
           type={IssueType.Issue}
         />
       )}
-      {selectedTab === Tabs.Other && <OtherWorkForm projectId={projectId} />}
+      {selectedTab === Tabs.Other && (
+        <OtherWorkForm projectId={projectId} contributorHandle={contributorHandle} onWorkItemAdded={onWorkItemAdded} />
+      )}
     </SidePanel>
   );
 }

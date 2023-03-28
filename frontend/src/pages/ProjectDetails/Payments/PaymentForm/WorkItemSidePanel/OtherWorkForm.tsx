@@ -1,12 +1,15 @@
 import { Listbox } from "@headlessui/react";
 import classNames from "classnames";
 import { sortBy } from "lodash";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReactElement } from "react-markdown/lib/react-markdown";
 import Button, { ButtonSize, ButtonType, Width } from "src/components/Button";
 import Callout from "src/components/Callout";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { WorkItem } from "src/components/GithubIssue";
+import { useAuth } from "src/hooks/useAuth";
+import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
+import { useShowToaster } from "src/hooks/useToaster";
 import ArrowDownSLine from "src/icons/ArrowDownSLine";
 import Attachment2 from "src/icons/Attachment2";
 import CheckLine from "src/icons/CheckLine";
@@ -16,7 +19,14 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import MoreLine from "src/icons/MoreLine";
 import TeamLine from "src/icons/TeamLine";
 import { HasuraUserRole } from "src/types";
-import { GetProjectReposDocument, GetProjectReposQuery, RepositoryOwnerAndNameFragment } from "src/__generated/graphql";
+import {
+  CreateIssueDocument,
+  CreateIssueMutation,
+  CreateIssueMutationVariables,
+  GetProjectReposDocument,
+  GetProjectReposQuery,
+  RepositoryOwnerAndNameFragment,
+} from "src/__generated/graphql";
 
 type WorkKind = {
   icon: ReactElement;
@@ -30,26 +40,66 @@ const WORK_KINDS: WorkKind[] = [
   { icon: <MoreLine />, labelKey: "payment.form.workItems.other.kinds.other" },
 ];
 
+const DEFAULT_WORK_KIND = WORK_KINDS[0];
+
 type Props = {
   projectId: string;
+  contributorHandle: string;
+  onWorkItemAdded: (workItem: WorkItem) => void;
 };
 
-export default function OtherWorkForm({ projectId }: Props) {
+export default function OtherWorkForm({ projectId, contributorHandle, onWorkItemAdded }: Props) {
   const { T } = useIntl();
+  const { user: leader } = useAuth();
 
-  const [selectedWorkKind, setSelectedWorkKind] = useState<WorkKind | null>(null);
+  const [selectedWorkKind, setSelectedWorkKind] = useState<WorkKind>(DEFAULT_WORK_KIND);
   const [selectedRepo, setSelectedRepo] = useState<RepositoryOwnerAndNameFragment | null>();
-  const [description, setDescription] = useState<string | null>(null);
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+
+  const defaultTitle = T("payment.form.workItems.other.issue.defaultTitle", {
+    kind: T(selectedWorkKind.labelKey),
+    author: contributorHandle,
+  });
 
   const { data } = useHasuraQuery<GetProjectReposQuery>(GetProjectReposDocument, HasuraUserRole.RegisteredUser, {
     variables: { projectId },
   });
 
-  const options = Object.values(WORK_KINDS);
-
   const repos = sortBy(
     data?.projectsByPk?.githubRepos.map(repo => repo.githubRepoDetails),
     "name"
+  );
+
+  useEffect(() => {
+    if (!selectedRepo) setSelectedRepo(repos[0]);
+  }, [selectedRepo, repos]);
+
+  const showToaster = useShowToaster();
+
+  const clearForm = () => {
+    setTitle("");
+    setDescription("");
+    setSelectedWorkKind(DEFAULT_WORK_KIND);
+  };
+
+  const [createIssue, { loading }] = useHasuraMutation<CreateIssueMutation>(
+    CreateIssueDocument,
+    HasuraUserRole.RegisteredUser,
+    {
+      variables: {
+        repoOwner: selectedRepo?.owner,
+        repoName: selectedRepo?.name,
+        title: title || defaultTitle,
+        description,
+        assignees: [leader?.displayName, contributorHandle],
+      } as CreateIssueMutationVariables,
+      onCompleted: data => {
+        clearForm();
+        onWorkItemAdded(data.createIssue);
+        showToaster(T("payment.form.workItems.other.success"));
+      },
+    }
   );
 
   return (
@@ -57,13 +107,13 @@ export default function OtherWorkForm({ projectId }: Props) {
       <div className="font-belwe font-normal text-base text-greyscale-50">
         {T("payment.form.workItems.other.title")}
       </div>
-      <Listbox onChange={setSelectedWorkKind}>
+      <Listbox onChange={setSelectedWorkKind} value={selectedWorkKind}>
         <Listbox.Options static as="div" className="flex flex-wrap gap-x-2 gap-y-3">
-          {options.map(option => (
+          {WORK_KINDS.map((workKind, index) => (
             <Listbox.Option
-              key={options.indexOf(option)}
+              key={index}
               as="div"
-              value={option}
+              value={workKind}
               className={classNames(
                 "flex flex-row gap-1 items-center",
                 "py-2 px-3 w-fit text-neutral-100 font-walsheim font-normal text-sm bg-white/8 border border-greyscale-50/8 rounded-xl",
@@ -74,20 +124,31 @@ export default function OtherWorkForm({ projectId }: Props) {
                 "ui-selected:border-transparent ui-selected:bg-spacePurple-900"
               )}
             >
-              {option.icon}
-              {T(option.labelKey)}
+              {workKind.icon}
+              {T(workKind.labelKey)}
             </Listbox.Option>
           ))}
         </Listbox.Options>
       </Listbox>
+      <input
+        value={title}
+        placeholder={defaultTitle}
+        className={classNames(
+          "w-full py-3 px-4",
+          "border border-greyscale-50/8 outline-none rounded-xl bg-white/5",
+          "font-walsheim font-normal text-base text-greyscale-50 placeholder:text-greyscale-500"
+        )}
+        onChange={({ target }) => setTitle(target.value)}
+      />
       <textarea
-        placeholder={T("payment.form.workItems.other.descriptionPlaceholder")}
+        placeholder={T("payment.form.workItems.other.issue.descriptionPlaceholder")}
         className={classNames(
           "w-full py-3 px-4 h-36 resize-none",
           "border border-greyscale-50/8 outline-none rounded-xl bg-white/5",
           "font-walsheim font-normal text-base text-greyscale-50 placeholder:text-greyscale-500",
           "scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
         )}
+        value={description}
         onChange={({ target }) => setDescription(target.value)}
       />
       <div className="flex flex-row justify-between items-center px-4 py-3 font-belwe font-normal text-base text-greyscale-50 rounded-lg border border-greyscale-50/12">
@@ -100,17 +161,12 @@ export default function OtherWorkForm({ projectId }: Props) {
       <Callout>{T("payment.form.workItems.other.callout")}</Callout>
       <div className="fixed bottom-0 inset-x-0 flex flex-row gap-8 px-6 py-6 bg-white/2 border-t border-greyscale-50/8">
         <div className="relative flex flex-col gap-2 w-full">
-          {repos && repos.length > 0 && (
+          {selectedRepo && (
             <>
               <div className="font-walsheim font-normal text-sm text-white">
                 {T("payment.form.workItems.other.footer.repository")}
               </div>
-              <Listbox
-                defaultValue={repos[0]}
-                value={selectedRepo}
-                onChange={setSelectedRepo}
-                disabled={repos.length < 2}
-              >
+              <Listbox value={selectedRepo} onChange={setSelectedRepo} disabled={repos.length < 2}>
                 <Listbox.Button
                   as="div"
                   className={classNames(
@@ -148,7 +204,7 @@ export default function OtherWorkForm({ projectId }: Props) {
             </>
           )}
         </div>
-        <Button width={Width.Full} disabled={!selectedWorkKind || !description}>
+        <Button width={Width.Full} disabled={!selectedWorkKind || !description || loading} onClick={createIssue}>
           <CheckLine />
           {T("payment.form.workItems.other.footer.submitButton")}
         </Button>

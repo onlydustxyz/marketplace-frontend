@@ -45,3 +45,21 @@ query GetProjectRepos($projectId: uuid!) {
     }
   }
 }
+
+mutation CreateIssue(
+  $repoOwner: String!
+  $repoName: String!
+  $title: String!
+  $description: String!
+  $assignees: [String!]!
+) {
+  createIssue(
+    repoOwner: $repoOwner
+    repoName: $repoName
+    title: $title
+    description: $description
+    assignees: $assignees
+  ) {
+    ...IssueDetails
+  }
+}

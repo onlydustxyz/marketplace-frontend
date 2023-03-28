@@ -134,14 +134,17 @@
             "title": "Attachments"
           },
           "callout": "For tracking purposes, we will create the corresponding issue on GitHub.",
-          "descriptionPlaceholder": "Add details about the work being paid",
+          "issue": {
+            "defaultTitle": "__kind__ by __author__",
+            "descriptionPlaceholder": "Add details about the work being paid"
+          },
           "footer": {
             "repository": "Create issue in",
             "submitButton": "Create and add issue"
           },
+          "success": "Issue created and item added",
           "tab": "Other work",
           "title": "Describe the work",
-          "tooltip": "Issue created and item added",
           "kinds": {
             "documentation": "Documentation",
             "meeting": "Meeting",
