@@ -15,12 +15,26 @@
             query: Query
             mutation: Mutation
           }
+          scalar DateTimeUtc
           scalar Email
           scalar EthereumAddress
           scalar EthereumName
+          scalar Url
           scalar Uuid
+          type Issue {
+            closedAt: DateTimeUtc
+            createdAt: DateTimeUtc!
+            htmlUrl: Url!
+            id: Int!
+            mergedAt: DateTimeUtc
+            number: Int!
+            status: Status!
+            title: String!
+            type: Type!
+          }
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
+            createIssue(projectId: Uuid!, githubRepoId: Int!, title: String!, description: String!, assignees: [String!]!): Issue!
             markInvoiceAsReceived(paymentReferences: [PaymentReference!]!): Int!
             requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, reason: Reason!): Uuid!
             updateProfileInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput, contactInformation: ContactInformation): Uuid!
@@ -36,6 +50,17 @@
             BANK_ADDRESS
             ETHEREUM_ADDRESS
             ETHEREUM_NAME
+          }
+          enum Status {
+            CANCELLED
+            CLOSED
+            COMPLETED
+            MERGED
+            OPEN
+          }
+          enum Type {
+            ISSUE
+            PULL_REQUEST
           }
           input BankAddress {
             BIC: String!
@@ -104,7 +129,6 @@
         schema: |
           schema {
             query: Query
-            mutation: Mutation
           }
           scalar DateTimeUtc
           scalar Url
@@ -118,9 +142,6 @@
             status: Status!
             title: String!
             type: Type!
-          }
-          type Mutation {
-            createIssue(repoOwner: String!, repoName: String!, title: String!, description: String!, assignees: [String!]!): Issue!
           }
           type Query {
             fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
