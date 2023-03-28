@@ -47,7 +47,7 @@ export default function ContributorSelectView({
               "outline outline-1 outline-whiteFakeOpacity-12 rounded-2xl backdrop-blur-4xl": open,
             })}
           >
-            <Combobox.Button className="px-3 pt-4">
+            <Combobox.Button className="px-3 pt-4" as="div">
               {!open && (
                 <div
                   className={classNames(
