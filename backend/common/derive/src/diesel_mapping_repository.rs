@@ -104,6 +104,7 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 		use diesel::QueryDsl;
 		use diesel::ExpressionMethods;
 		use diesel::query_dsl::filter_dsl::FindDsl;
+		use diesel::BoolExpressionMethods;
 
 		impl #repository_name {
 			#[tracing::instrument(name = #insert_span_name, skip(self))]
@@ -183,6 +184,25 @@ pub fn impl_diesel_mapping_repository(input: syn::DeriveInput) -> TokenStream {
 
 				Ok(result)
 			}
+
+			#[tracing::instrument(name = #find_all_entity2_of_span_name, skip(self))]
+			pub fn exists(
+				&self,
+				id1: &<#entity1 as domain::Entity>::Id,
+				id2: &<#entity2 as domain::Entity>::Id,
+			) -> Result<
+				bool,
+				infrastructure::database::DatabaseError,
+			> {
+				let connection = self.0.connection()?;
+
+				let result = #table.filter(#id1.eq(id1).and(#id2.eq(id2))).load::<(
+					<#entity1 as domain::Entity>::Id,
+					<#entity2 as domain::Entity>::Id,
+				)>(&*connection)?;
+
+				Ok(!result.is_empty())
+			}
 		}
 
 		#mocks
@@ -225,6 +245,7 @@ fn impl_mocks(
 					Vec<(<#entity1 as domain::Entity>::Id, <#entity2 as domain::Entity>::Id)>,
 					infrastructure::database::DatabaseError,
 				>;
+				pub fn exists(&self, id1: &<#entity1 as domain::Entity>::Id, id2: &<#entity2 as domain::Entity>::Id) -> Result<bool, infrastructure::database::DatabaseError>;
 			}
 
 			impl Clone for #repository_name {

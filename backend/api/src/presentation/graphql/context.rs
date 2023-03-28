@@ -103,8 +103,8 @@ impl Context {
 				github.clone(),
 			),
 			unlink_github_repo_usecase: application::project::unlink_github_repo::Usecase::new(
-				github_repo_repository,
-				project_github_repo_repository,
+				github_repo_repository.clone(),
+				project_github_repo_repository.clone(),
 			),
 			create_sponsor_usecase: application::sponsor::create::Usecase::new(
 				sponsor_repository.clone(),
@@ -138,7 +138,11 @@ impl Context {
 				user_info_repository,
 				ArePayoutSettingsValid::new(ens.clone()),
 			),
-			create_github_issue_usecase: application::github::create_issue::Usecase::new(github),
+			create_github_issue_usecase: application::github::create_issue::Usecase::new(
+				github_repo_repository,
+				project_github_repo_repository,
+				github,
+			),
 			ens,
 		}
 	}

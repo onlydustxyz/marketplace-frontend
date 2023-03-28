@@ -416,15 +416,33 @@ impl Mutation {
 	pub async fn create_issue(
 		&self,
 		context: &Context,
-		repo_owner: String,
-		repo_name: String,
+		project_id: Uuid,
+		github_repo_id: i32,
 		title: String,
 		description: String,
 		assignees: Vec<String>,
 	) -> Result<GithubIssue> {
+		let caller_id = *context.caller_info()?.user_id();
+
+		if !context
+			.caller_permissions
+			.can_create_github_issue_for_project(&project_id.into())
+		{
+			return Err(Error::NotAuthorized(
+				caller_id,
+				"Project Lead role required".to_string(),
+			));
+		}
+
 		let issue = context
 			.create_github_issue_usecase
-			.create_issue(repo_owner, repo_name, title, description, assignees)
+			.create_issue(
+				&project_id.into(),
+				&(github_repo_id as i64).into(),
+				title,
+				description,
+				assignees,
+			)
 			.await?;
 		Ok(issue)
 	}
