@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { Listbox } from "@headlessui/react";
 import classNames from "classnames";
 import { sortBy } from "lodash";
@@ -17,12 +16,7 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import MoreLine from "src/icons/MoreLine";
 import TeamLine from "src/icons/TeamLine";
 import { HasuraUserRole } from "src/types";
-import {
-  GetProjectReposDocument,
-  GetProjectReposQuery,
-  RepositoryOwnerAndNameFragment,
-  RepositoryOwnerAndNameFragmentDoc,
-} from "src/__generated/graphql";
+import { GetProjectReposDocument, GetProjectReposQuery, RepositoryOwnerAndNameFragment } from "src/__generated/graphql";
 
 type WorkKind = {
   icon: ReactElement;
@@ -162,16 +156,3 @@ export default function OtherWorkForm({ projectId }: Props) {
     </div>
   );
 }
-
-gql`
-  ${RepositoryOwnerAndNameFragmentDoc}
-  query GetProjectRepos($projectId: uuid!) {
-    projectsByPk(id: $projectId) {
-      githubRepos {
-        githubRepoDetails {
-          ...RepositoryOwnerAndName
-        }
-      }
-    }
-  }
-`;

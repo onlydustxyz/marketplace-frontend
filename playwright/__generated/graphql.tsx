@@ -9898,15 +9898,6 @@ export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
 
 export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', id: number, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> } | null };
 
-export type FetchIssueQueryVariables = Exact<{
-  repoOwner: Scalars['String'];
-  repoName: Scalars['String'];
-  issueNumber: Scalars['Int'];
-}>;
-
-
-export type FetchIssueQuery = { __typename?: 'query_root', fetchIssue: { __typename?: 'Issue', id: number, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null };
-
 export type SearchIssuesQueryVariables = Exact<{
   query: Scalars['String'];
   order: InputMaybe<Scalars['String']>;
@@ -9925,6 +9916,15 @@ export type GetPaidWorkItemsQueryVariables = Exact<{
 
 
 export type GetPaidWorkItemsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', owner: string, name: string } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, workItems: Array<{ __typename?: 'WorkItems', repoOwner: string, repoName: string, issueNumber: any }> }> }> } | null };
+
+export type FetchIssueQueryVariables = Exact<{
+  repoOwner: Scalars['String'];
+  repoName: Scalars['String'];
+  issueNumber: Scalars['Int'];
+}>;
+
+
+export type FetchIssueQuery = { __typename?: 'query_root', fetchIssue: { __typename?: 'Issue', id: number, number: number, type: Type, status: Status, title: string, htmlUrl: any, createdAt: any, closedAt: any | null, mergedAt: any | null } | null };
 
 export type GetProjectReposQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -11327,47 +11327,6 @@ export function useGetProjectContributorsForPaymentSelectLazyQuery(baseOptions?:
 export type GetProjectContributorsForPaymentSelectQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelectQuery>;
 export type GetProjectContributorsForPaymentSelectLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsForPaymentSelectLazyQuery>;
 export type GetProjectContributorsForPaymentSelectQueryResult = Apollo.QueryResult<GetProjectContributorsForPaymentSelectQuery, GetProjectContributorsForPaymentSelectQueryVariables>;
-export const FetchIssueDocument = gql`
-    query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
-  fetchIssue(
-    repoOwner: $repoOwner
-    repoName: $repoName
-    issueNumber: $issueNumber
-  ) {
-    ...IssueDetails
-  }
-}
-    ${IssueDetailsFragmentDoc}`;
-
-/**
- * __useFetchIssueQuery__
- *
- * To run a query within a React component, call `useFetchIssueQuery` and pass it any options that fit your needs.
- * When your component renders, `useFetchIssueQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFetchIssueQuery({
- *   variables: {
- *      repoOwner: // value for 'repoOwner'
- *      repoName: // value for 'repoName'
- *      issueNumber: // value for 'issueNumber'
- *   },
- * });
- */
-export function useFetchIssueQuery(baseOptions: Apollo.QueryHookOptions<FetchIssueQuery, FetchIssueQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FetchIssueQuery, FetchIssueQueryVariables>(FetchIssueDocument, options);
-      }
-export function useFetchIssueLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FetchIssueQuery, FetchIssueQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FetchIssueQuery, FetchIssueQueryVariables>(FetchIssueDocument, options);
-        }
-export type FetchIssueQueryHookResult = ReturnType<typeof useFetchIssueQuery>;
-export type FetchIssueLazyQueryHookResult = ReturnType<typeof useFetchIssueLazyQuery>;
-export type FetchIssueQueryResult = Apollo.QueryResult<FetchIssueQuery, FetchIssueQueryVariables>;
 export const SearchIssuesDocument = gql`
     query searchIssues($query: String!, $order: String, $sort: String, $perPage: Int) {
   searchIssues(query: $query, order: $order, sort: $sort, perPage: $perPage) {
@@ -11456,6 +11415,47 @@ export function useGetPaidWorkItemsLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetPaidWorkItemsQueryHookResult = ReturnType<typeof useGetPaidWorkItemsQuery>;
 export type GetPaidWorkItemsLazyQueryHookResult = ReturnType<typeof useGetPaidWorkItemsLazyQuery>;
 export type GetPaidWorkItemsQueryResult = Apollo.QueryResult<GetPaidWorkItemsQuery, GetPaidWorkItemsQueryVariables>;
+export const FetchIssueDocument = gql`
+    query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
+  fetchIssue(
+    repoOwner: $repoOwner
+    repoName: $repoName
+    issueNumber: $issueNumber
+  ) {
+    ...IssueDetails
+  }
+}
+    ${IssueDetailsFragmentDoc}`;
+
+/**
+ * __useFetchIssueQuery__
+ *
+ * To run a query within a React component, call `useFetchIssueQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchIssueQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchIssueQuery({
+ *   variables: {
+ *      repoOwner: // value for 'repoOwner'
+ *      repoName: // value for 'repoName'
+ *      issueNumber: // value for 'issueNumber'
+ *   },
+ * });
+ */
+export function useFetchIssueQuery(baseOptions: Apollo.QueryHookOptions<FetchIssueQuery, FetchIssueQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FetchIssueQuery, FetchIssueQueryVariables>(FetchIssueDocument, options);
+      }
+export function useFetchIssueLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FetchIssueQuery, FetchIssueQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FetchIssueQuery, FetchIssueQueryVariables>(FetchIssueDocument, options);
+        }
+export type FetchIssueQueryHookResult = ReturnType<typeof useFetchIssueQuery>;
+export type FetchIssueLazyQueryHookResult = ReturnType<typeof useFetchIssueLazyQuery>;
+export type FetchIssueQueryResult = Apollo.QueryResult<FetchIssueQuery, FetchIssueQueryVariables>;
 export const GetProjectReposDocument = gql`
     query GetProjectRepos($projectId: uuid!) {
   projectsByPk(id: $projectId) {
