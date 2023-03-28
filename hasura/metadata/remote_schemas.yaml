@@ -104,6 +104,7 @@
         schema: |
           schema {
             query: Query
+            mutation: Mutation
           }
           scalar DateTimeUtc
           scalar Url
@@ -118,6 +119,9 @@
             title: String!
             type: Type!
           }
+          type Mutation {
+            createIssue(repoOwner: String!, repoName: String!, title: String!, description: String!, assignees: [String!]!): Issue!
+          }
           type Query {
             fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
             fetchRepositoryDetails(id: Int!): Repository
@@ -125,7 +129,7 @@
             fetchUserDetails(username: String!): User
             fetchUserDetailsById(userId: Int!): User
             searchIssues(query: String!, sort: String, order: String, perPage: Int, page: Int): [Issue!]
-            searchUsers(query: String!, sort: String, order: String): [User!]
+            searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [User!]
           }
           type Repository {
             contributors: [User!]!

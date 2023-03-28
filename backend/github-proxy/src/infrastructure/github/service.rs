@@ -148,6 +148,27 @@ impl<P: github::OctocrabProxy> GithubService for P {
 			.collect();
 		Ok(issues)
 	}
+
+	#[instrument(skip(self))]
+	async fn create_issue(
+		&self,
+		repo_owner: &str,
+		repo_name: &str,
+		title: &str,
+		description: &str,
+		assignees: Vec<String>,
+	) -> GithubServiceResult<GithubIssue> {
+		self.octocrab()
+			.issues(repo_owner, repo_name)
+			.create(title)
+			.body(description)
+			.assignees(assignees)
+			.send()
+			.await
+			.map_err(|e| GithubServiceError::Other(anyhow!(e)))?
+			.try_into()
+			.map_err(|e: GithubIssueFromOctocrabResultError| GithubServiceError::Other(anyhow!(e)))
+	}
 }
 
 impl From<octocrab::models::User> for GithubUser {
