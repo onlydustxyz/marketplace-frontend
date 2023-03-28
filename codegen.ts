@@ -15,7 +15,7 @@ const generateSchemas = () =>
 
 module.exports = {
   schema: generateSchemas(),
-  documents: ["./frontend/src/**/*.tsx", "./frontend/src/**/*.ts"],
+  documents: ["./frontend/src/**/*.tsx", "./frontend/src/**/*.ts", "./frontend/src/**/*.graphql"],
   overwrite: true,
   generates: {
     "./frontend/src/__generated/graphql.tsx": {
