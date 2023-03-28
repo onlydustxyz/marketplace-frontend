@@ -131,6 +131,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
         </Listbox.Options>
       </Listbox>
       <input
+        data-testid="other-work-title"
         value={title}
         placeholder={defaultTitle}
         className={classNames(
@@ -141,6 +142,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
         onChange={({ target }) => setTitle(target.value)}
       />
       <textarea
+        data-testid="other-work-description"
         placeholder={T("payment.form.workItems.other.issue.descriptionPlaceholder")}
         className={classNames(
           "w-full py-3 px-4 h-36 resize-none",
@@ -168,6 +170,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
               </div>
               <Listbox value={selectedRepo} onChange={setSelectedRepo} disabled={repos.length < 2}>
                 <Listbox.Button
+                  data-testid="select-repo-button"
                   as="div"
                   className={classNames(
                     "relative flex flex-row px-2.5 py-1.5 gap-2 items-center font-medium font-walsheim text-sm text-greyscale-50 bg-white/5 border border-greyscale-50/8 rounded-lg",
@@ -185,6 +188,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
                   )}
                 </Listbox.Button>
                 <Listbox.Options
+                  data-testid="select-repo-options"
                   as="div"
                   className="absolute bottom-10 w-full divide-y divide-greyscale-50/8 rounded-lg border border-greyscale-50/8 backdrop-blur-4xl"
                 >
