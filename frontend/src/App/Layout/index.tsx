@@ -10,7 +10,7 @@ export default function Layout() {
   const homepage = location.pathname === "/";
 
   return (
-    <div>
+    <div className="fixed h-screen w-screen">
       {!homepage && (
         <div className="md:invisible md:h-0">
           <ResponsivityFallback />
@@ -22,10 +22,8 @@ export default function Layout() {
         })}
       >
         <Header />
-        <div className="px-2 sm:px-6 pb-2 sm:pb-6 flex-1">
-          <Outlet />
-          <Toaster />
-        </div>
+        <Outlet />
+        <Toaster />
       </div>
     </div>
   );
