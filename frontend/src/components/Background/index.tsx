@@ -18,7 +18,11 @@ export default function Background({ roundedBorders, withSidebar = false, childr
         "mr-6 ml-2": withSidebar,
       })}
     >
-      <div className={classNames("bg-space bg-no-repeat bg-fixed bg-clip-content", roundedBorders)}>{children}</div>
+      <div
+        className={classNames("bg-space bg-no-repeat bg-fixed bg-clip-content min-h-full min-w-full", roundedBorders)}
+      >
+        {children}
+      </div>
     </div>
   );
 }
