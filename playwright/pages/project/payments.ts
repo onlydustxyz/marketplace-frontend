@@ -57,7 +57,7 @@ export class NewPaymentPage {
   }) => {
     // Set recipient
     if (recipient) {
-      await this.page.getByRole("button", { name: "Search by Github handle" }).click();
+      await this.page.getByText("Search by Github handle").click();
       await this.page.getByTestId("contributor-selection-input").fill(recipient.github.login);
       await this.page.getByRole("listitem").first().click();
     }
