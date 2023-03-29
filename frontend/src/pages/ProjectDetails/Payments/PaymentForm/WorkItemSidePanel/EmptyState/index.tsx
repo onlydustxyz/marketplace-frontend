@@ -1,10 +1,7 @@
 import { useIntl } from "src/hooks/useIntl";
 import emptyStateLogo from "assets/img/empty-state.png";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type Props = {};
-
-const EmptyState: React.FC<Props> = () => {
+export default function EmptyState() {
   const { T } = useIntl();
 
   return (
@@ -20,6 +17,4 @@ const EmptyState: React.FC<Props> = () => {
       </div>
     </div>
   );
-};
-
-export default EmptyState;
+}

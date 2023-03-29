@@ -4,7 +4,7 @@ import { useIntl } from "src/hooks/useIntl";
 import Input from "src/components/FormInput";
 import { WorkItem } from "src/components/GithubIssue";
 import { gql } from "@apollo/client";
-import { FetchPullRequestQuery, IssueDetailsFragmentDoc } from "src/__generated/graphql";
+import { FetchIssueQuery, IssueDetailsFragmentDoc } from "src/__generated/graphql";
 import { useHasuraLazyQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { useFormContext, useFormState } from "react-hook-form";
@@ -21,31 +21,27 @@ const INPUT_NAME = "otherPrLink";
 export default function OtherPrInput({ onWorkItemAdded }: Props) {
   const { T } = useIntl();
 
-  const [fetchPullRequest] = useHasuraLazyQuery<FetchPullRequestQuery>(
-    FETCH_PR_DETAILS,
-    HasuraUserRole.RegisteredUser,
-    {
-      onCompleted: data => {
-        if (data.fetchPullRequest) {
-          onWorkItemAdded(data.fetchPullRequest);
-          resetField(INPUT_NAME);
-        } else {
-          setError(INPUT_NAME, {
-            type: "validate",
-            message: T("payment.form.workItems.addOtherPR.invalidPrLink"),
-          });
-        }
-      },
-      onError: () =>
+  const [fetchIssue] = useHasuraLazyQuery<FetchIssueQuery>(FETCH_PR_DETAILS, HasuraUserRole.RegisteredUser, {
+    onCompleted: data => {
+      if (data.fetchIssue) {
+        onWorkItemAdded(data.fetchIssue);
+        resetField(INPUT_NAME);
+      } else {
         setError(INPUT_NAME, {
           type: "validate",
-          message: T("payment.form.workItems.addOtherPR.invalidPrLink"),
-        }),
-      context: {
-        graphqlErrorDisplay: "none",
-      },
-    }
-  );
+          message: T("payment.form.workItems.pullRequests.addOther.invalidPrLink"),
+        });
+      }
+    },
+    onError: () =>
+      setError(INPUT_NAME, {
+        type: "validate",
+        message: T("payment.form.workItems.pullRequests.addOther.invalidPrLink"),
+      }),
+    context: {
+      graphqlErrorDisplay: "none",
+    },
+  });
 
   const { watch, setError, resetField } = useFormContext();
   const { errors } = useFormState({ name: INPUT_NAME });
@@ -55,27 +51,27 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
   const { repoOwner, repoName, prNumber } = useMemo(() => parsePullRequestLink(otherPrLink), [otherPrLink]);
 
   const validateOtherPR = () =>
-    fetchPullRequest({
+    fetchIssue({
       variables: {
         repoOwner,
         repoName,
-        prNumber,
+        issueNumber: prNumber,
       },
     });
 
   return (
     <div className="p-4 flex flex-col gap-2 border border-greyscale-50/12 rounded-lg">
       <div className="font-walsheim font-medium text-base text-greyscale-50">
-        {T("payment.form.workItems.addOtherPR.label")}
+        {T("payment.form.workItems.pullRequests.addOther.label")}
       </div>
       <Input
         name={INPUT_NAME}
-        placeholder={T("payment.form.workItems.addOtherPR.placeholder")}
+        placeholder={T("payment.form.workItems.pullRequests.addOther.placeholder")}
         withMargin={false}
         options={{
           pattern: {
             value: REGEX_VALID_GITHUB_PULL_REQUEST_URL,
-            message: T("payment.form.workItems.addOtherPR.notALink"),
+            message: T("payment.form.workItems.pullRequests.addOther.notALink"),
           },
         }}
         inputClassName="pl-10"
@@ -98,7 +94,7 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
             type={ButtonType.Secondary}
             disabled={!otherPrLink || !!otherPrLinkError}
           >
-            {T("payment.form.workItems.addOtherPR.add")}
+            {T("payment.form.workItems.add")}
           </Button>
         </div>
       </Input>
@@ -108,8 +104,8 @@ export default function OtherPrInput({ onWorkItemAdded }: Props) {
 
 const FETCH_PR_DETAILS = gql`
   ${IssueDetailsFragmentDoc}
-  query fetchPullRequest($repoOwner: String!, $repoName: String!, $prNumber: Int!) {
-    fetchPullRequest(repoOwner: $repoOwner, repoName: $repoName, prNumber: $prNumber) {
+  query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
+    fetchIssue(repoOwner: $repoOwner, repoName: $repoName, issueNumber: $issueNumber) {
       ...IssueDetails
     }
   }

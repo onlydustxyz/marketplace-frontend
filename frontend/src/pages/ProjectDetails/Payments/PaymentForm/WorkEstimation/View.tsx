@@ -10,7 +10,8 @@ import { useT } from "talkr";
 
 interface Props {
   budget: { initialAmount: number; remainingAmount: number };
-  disabled: boolean;
+  missingContributor: boolean;
+  missingWorkItem: boolean;
   canIncrease: boolean;
   canDecrease: boolean;
   amountToPay: number;
@@ -27,11 +28,14 @@ export default function WorkEstimation({
   tryDecreaseNumberOfDays,
   budget,
   amountToPay,
-  disabled,
+  missingContributor,
+  missingWorkItem,
   stepNumber,
   steps,
 }: Props) {
   const { T } = useT();
+
+  const disabled = missingContributor || missingWorkItem;
 
   return (
     <Card padded={false}>
@@ -75,7 +79,9 @@ export default function WorkEstimation({
             </div>
           )}
           {disabled && (
-            <div className="font-semibold text-center mt-2 mb-5 px-2 py-px">{T("payment.form.disabled")}</div>
+            <div className="font-semibold text-center mt-2 mb-5 px-2 py-px">
+              {T(missingContributor ? "payment.form.missingContributor" : "payment.form.missingWorkItem")}
+            </div>
           )}
           <BudgetBar budget={budget} pendingSpending={amountToPay} displayPendingSpending={!disabled} />
           <div className="flex flex-col text-sm font-medium">

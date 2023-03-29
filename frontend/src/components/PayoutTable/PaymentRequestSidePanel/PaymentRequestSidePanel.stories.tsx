@@ -1,6 +1,6 @@
 import { range } from "lodash";
 import { PaymentStatus } from "src/types";
-import { IssueDetailsFragment, PaymentRequestDetailsFragment, Status } from "src/__generated/graphql";
+import { IssueDetailsFragment, PaymentRequestDetailsFragment, Status, Type } from "src/__generated/graphql";
 import View, { Props } from "./View";
 
 const statuses = {
@@ -47,6 +47,7 @@ const issues: IssueDetailsFragment[] = range(1, 50).map(id => ({
   __typename: "Issue",
   id: id,
   number: id,
+  type: Type.Issue,
   title: "Update README.md",
   status: Status.Open,
   htmlUrl: "https://github.com/od-mocks/cool-repo-A/pull/1",

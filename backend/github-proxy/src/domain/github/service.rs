@@ -22,12 +22,8 @@ pub trait Service: Send + Sync {
 	async fn fetch_repository_by_id(&self, id: u64) -> Result<GithubRepository>;
 	async fn fetch_user_by_name(&self, username: &str) -> Result<GithubUser>;
 	async fn fetch_repository_PRs(&self, repository_id: &GithubRepositoryId) -> Result<Vec<Issue>>;
-	async fn fetch_pull_request(
-		&self,
-		repo_owner: &str,
-		repo_name: &str,
-		pr_number: u64,
-	) -> Result<Issue>;
+	async fn fetch_issue(&self, repo_owner: &str, repo_name: &str, pr_number: u64)
+	-> Result<Issue>;
 	async fn fetch_user_by_id(&self, id: u64) -> Result<GithubUser>;
 
 	async fn search_users(

@@ -9,9 +9,9 @@ remote_relationships:
           - repo_owner
           - repo_name
         remote_field:
-          fetchPullRequest:
+          fetchIssue:
             arguments:
-              prNumber: $issue_number
+              issueNumber: $issue_number
               repoName: $repo_name
               repoOwner: $repo_owner
         remote_schema: GithubProxy

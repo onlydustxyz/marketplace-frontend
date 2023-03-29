@@ -3651,6 +3651,22 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "Type",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -10487,7 +10503,19 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "CANCELLED",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "CLOSED",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "COMPLETED",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -11040,6 +11068,29 @@
         ],
         "interfaces": null,
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "Type",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "ISSUE",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "PULL_REQUEST",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -18608,11 +18659,11 @@
             "deprecationReason": null
           },
           {
-            "name": "fetchPullRequest",
+            "name": "fetchIssue",
             "description": null,
             "args": [
               {
-                "name": "prNumber",
+                "name": "issueNumber",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",

@@ -4,10 +4,11 @@ import View from "./View";
 interface Props {
   onChange: (value: number) => void;
   budget: { initialAmount: number; remainingAmount: number };
-  disabled: boolean;
+  missingContributor: boolean;
+  missingWorkItem: boolean;
 }
 
-export default function WorkEstimation({ onChange, budget, disabled }: Props) {
+export default function WorkEstimation({ onChange, budget, missingContributor, missingWorkItem }: Props) {
   const { amountToPay, stepNumber, steps, tryDecreaseNumberOfDays, tryIncreaseNumberOfDays, canDecrease, canIncrease } =
     useWorkEstimation(onChange, budget);
 
@@ -22,7 +23,8 @@ export default function WorkEstimation({ onChange, budget, disabled }: Props) {
         tryDecreaseNumberOfDays,
         tryIncreaseNumberOfDays,
         budget,
-        disabled,
+        missingContributor,
+        missingWorkItem,
       }}
     />
   );

@@ -27,7 +27,9 @@ test.describe("As a project lead, I", () => {
     const overviewPage = await projectPage.overview();
 
     expect(await overviewPage.description()).toBe(project.longDescription);
-    project.repos?.forEach(async repo => expect(overviewPage.repository(repos[repo].id)).toBeVisible());
+    await Promise.all(
+      project.repos?.map(async repo => expect(overviewPage.repository(repos[repo].id)).toBeVisible()) || []
+    );
 
     await Promise.all(
       project.leaders?.map(async leader =>
@@ -50,7 +52,12 @@ test.describe("As a project lead, I", () => {
 
     await newPaymentPage.requestPayment({
       pullRequestIndexes: [0],
-      otherIssues: ["https://github.com/od-mocks/cool-repo-A/pull/1", "https://github.com/od-mocks/cool-repo-A/pull/2"],
+      otherPullRequests: [
+        "https://github.com/od-mocks/cool-repo-A/pull/1",
+        "https://github.com/od-mocks/cool-repo-A/pull/2",
+      ],
+      issuesIndexes: [0, 1, 2, 3],
+      otherIssues: ["https://github.com/onlydustxyz/marketplace/issues/79"],
     });
 
     const paymentsPage = new ProjectPaymentsPage(page, project);
@@ -70,6 +77,13 @@ test.describe("As a project lead, I", () => {
     await expect(sidePanel.locator("div").filter({ hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#2 · Another update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#1 · Update README.md" }).first()).toBeVisible();
+    await expect(sidePanel.locator("div").filter({ hasText: "#6 · This is a new issue" }).first()).toBeVisible();
+    await expect(
+      sidePanel.locator("div").filter({ hasText: "#7 · This one has been cancelled" }).first()
+    ).toBeVisible();
+    await expect(sidePanel.locator("div").filter({ hasText: "#8 · Yet another issue..." }).first()).toBeVisible();
+    await expect(sidePanel.locator("div").filter({ hasText: "#9 · Completed, at last !" }).first()).toBeVisible();
+    await expect(sidePanel.locator("div").filter({ hasText: "#79 · " }).first()).toBeVisible();
 
     await sidePanel.getByRole("button").click();
   });
@@ -98,7 +112,7 @@ test.describe("As a project lead, I", () => {
     const newPaymentPage = await projectPaymentsPage.newPayment();
     await newPaymentPage.requestPayment({
       recipient,
-      otherIssues: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
+      otherPullRequests: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
     });
 
     const paymentRow = projectPaymentsPage.paymentList().nth(1);

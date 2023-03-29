@@ -10,12 +10,21 @@ pub enum Status {
 	Open,
 	Closed,
 	Merged,
+	Completed,
+	Cancelled,
+}
+
+#[derive(GraphQLEnum)]
+pub enum Type {
+	Issue,
+	PullRequest,
 }
 
 #[derive(Constructor, GraphQLObject)]
 pub struct Issue {
 	id: i32,
 	number: i32,
+	r#type: Type,
 	title: String,
 	html_url: Url,
 	status: Status,

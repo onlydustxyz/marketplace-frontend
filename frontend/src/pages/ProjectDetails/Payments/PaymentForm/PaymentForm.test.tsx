@@ -9,12 +9,7 @@ import PaymentForm from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { FIND_USER_QUERY } from "src/hooks/useIsGithubLoginValid";
 import { REQUEST_PAYMENT_MUTATION } from "src/hooks/usePaymentRequests";
-import {
-  FetchPullRequestDocument,
-  FetchPullRequestQueryResult,
-  FetchPullRequestQueryVariables,
-  Status,
-} from "src/__generated/graphql";
+import { FetchIssueDocument, FetchIssueQueryResult, FetchIssueQueryVariables, Status } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
 import { GET_PROJECT_CONTRIBUTORS_QUERY, SEARCH_GITHUB_USERS_BY_HANDLE_SUBSTRING_QUERY } from "./ContributorSelect";
 
@@ -53,16 +48,16 @@ const TEST_PROJECT_ID = "test-project-id";
 
 const fetchPrMock: MockedResponse = {
   request: {
-    query: FetchPullRequestDocument,
+    query: FetchIssueDocument,
     variables: {
       repoOwner: "onlydustxyz",
       repoName: "marketplace",
-      prNumber: 504,
-    } as FetchPullRequestQueryVariables,
+      issueNumber: 504,
+    } as FetchIssueQueryVariables,
   },
   newData: vi.fn(() => ({
     data: {
-      fetchPullRequest: {
+      fetchIssue: {
         __typename: "Issue",
         id: 123456789,
         title: "A cool PR",
@@ -72,7 +67,7 @@ const fetchPrMock: MockedResponse = {
         closedAt: Date.now(),
         number: 504,
       },
-    } as FetchPullRequestQueryResult["data"],
+    } as FetchIssueQueryResult["data"],
   })),
 };
 

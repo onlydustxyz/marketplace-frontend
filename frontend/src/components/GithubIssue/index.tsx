@@ -8,12 +8,15 @@ import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Subtract from "src/icons/SubtractLine";
 import Time from "src/icons/TimeLine";
 import displayRelativeDate from "src/utils/displayRelativeDate";
-import { parsePullRequestLink } from "src/utils/github";
-import { IssueDetailsFragment, Status } from "src/__generated/graphql";
+import { parsePullRequestOrIssueLink } from "src/utils/github";
+import { IssueDetailsFragment, Status, Type } from "src/__generated/graphql";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
 import ExternalLink from "src/components/ExternalLink";
 import Tooltip from "src/components/Tooltip";
+import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
+import IssueCancelled from "src/assets/icons/IssueCancelled";
+import IssueOpen from "src/assets/icons/IssueOpen";
 
 export enum Action {
   Add = "add",
@@ -30,7 +33,7 @@ export type Props = {
 
 export default function GithubIssue({ action, workItem, onClick }: Props) {
   const { T } = useIntl();
-  const { repoName } = parsePullRequestLink(workItem.htmlUrl);
+  const { repoName } = parsePullRequestOrIssueLink(workItem.htmlUrl);
 
   return (
     <Card padded={false}>
@@ -81,9 +84,23 @@ function IssueStatus({ issue }: { issue: IssueDetailsFragment }) {
           <IssueClosed className="fill-github-red" />
           {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
         </>
+      ) : issue.status === Status.Cancelled ? (
+        <>
+          <IssueCancelled className="fill-github-grey p-0.5" />
+          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
+        </>
+      ) : issue.status === Status.Completed ? (
+        <>
+          <CheckboxCircleLine className="text-github-purple text-base -my-1" />
+          {T("githubIssue.status.closed", { closedAt: displayRelativeDate(issue.closedAt) })}
+        </>
       ) : issue.status === Status.Open ? (
         <>
-          <GitPullRequestLine className="text-github-green text-base -my-1" />
+          {issue.type === Type.Issue ? (
+            <IssueOpen className="fill-github-green p-0.5" />
+          ) : (
+            <GitPullRequestLine className="text-github-green text-base -my-1" />
+          )}
           {T("githubIssue.status.open")}
         </>
       ) : issue.status === Status.Merged ? (
@@ -102,6 +119,7 @@ export const GITHUB_ISSUE_FRAGMENTS = gql`
   fragment IssueDetails on Issue {
     id
     number
+    type
     status
     title
     htmlUrl

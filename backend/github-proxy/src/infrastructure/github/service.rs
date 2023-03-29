@@ -1,13 +1,14 @@
 use anyhow::anyhow;
 use domain::GithubRepositoryId;
 use infrastructure::github;
+use octocrab::models::issues::IssueStateReason;
 use olog::{error, tracing::instrument};
 use thiserror::Error;
 
 use super::Contributors;
 use crate::domain::{
-	GithubIssue, GithubIssueStatus, GithubRepository, GithubService, GithubServiceError,
-	GithubServiceResult, GithubUser,
+	GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepository, GithubService,
+	GithubServiceError, GithubServiceResult, GithubUser,
 };
 
 impl From<github::Error> for GithubServiceError {
@@ -88,13 +89,13 @@ impl<P: github::OctocrabProxy> GithubService for P {
 	}
 
 	#[instrument(skip(self))]
-	async fn fetch_pull_request(
+	async fn fetch_issue(
 		&self,
 		repo_owner: &str,
 		repo_name: &str,
-		pr_number: u64,
+		issue_number: u64,
 	) -> GithubServiceResult<GithubIssue> {
-		self.get_pull_request(repo_owner, repo_name, pr_number)
+		self.get_issue(repo_owner, repo_name, issue_number)
 			.await?
 			.try_into()
 			.map_err(|e: GithubIssueFromOctocrabResultError| GithubServiceError::Other(anyhow!(e)))
@@ -178,11 +179,17 @@ impl TryFrom<octocrab::models::issues::Issue> for GithubIssue {
 			.try_into()
 			.expect("We cannot work with github PR number superior to i32::MAX");
 
+		let issue_type = match issue.pull_request {
+			Some(_) => GithubIssueType::PullRequest,
+			None => GithubIssueType::Issue,
+		};
+
 		let status = (&issue).try_into()?;
 
 		Ok(Self::new(
 			id,
 			number,
+			issue_type,
 			issue.title,
 			issue.html_url,
 			status,
@@ -226,6 +233,7 @@ impl TryFrom<octocrab::models::pulls::PullRequest> for GithubIssue {
 		Ok(Self::new(
 			id,
 			number,
+			GithubIssueType::PullRequest,
 			title,
 			html_url,
 			status,
@@ -253,7 +261,11 @@ impl TryFrom<&octocrab::models::issues::Issue> for GithubIssueStatus {
 			octocrab::models::IssueState::Closed =>
 				match issue.pull_request.as_ref().and_then(|pr| pr.merged_at) {
 					Some(_) => Ok(Self::Merged),
-					None => Ok(Self::Closed),
+					None => match issue.state_reason {
+						Some(IssueStateReason::Completed) => Ok(Self::Completed),
+						Some(IssueStateReason::NotPlanned) => Ok(Self::Cancelled),
+						_ => Ok(Self::Closed),
+					},
 				},
 			_ => Err(GithubIssueStatusFromOctocrabResultError::UnknownState(
 				format!("{:?}", issue.state),

@@ -116,9 +116,10 @@
             number: Int!
             status: Status!
             title: String!
+            type: Type!
           }
           type Query {
-            fetchPullRequest(repoOwner: String!, repoName: String!, prNumber: Int!): Issue
+            fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
             fetchRepositoryDetails(id: Int!): Repository
             fetchRepositoryPRs(id: Int!): [Issue!]
             fetchUserDetails(username: String!): User
@@ -142,9 +143,15 @@
             login: String!
           }
           enum Status {
+            CANCELLED
             CLOSED
+            COMPLETED
             MERGED
             OPEN
+          }
+          enum Type {
+            ISSUE
+            PULL_REQUEST
           }
     - role: public
       definition:
@@ -163,6 +170,7 @@
             number: Int!
             status: Status!
             title: String!
+            type: Type!
           }
           type Query {
             fetchRepositoryDetails(id: Int!): Repository
@@ -185,9 +193,15 @@
             login: String!
           }
           enum Status {
+            CANCELLED
             CLOSED
+            COMPLETED
             MERGED
             OPEN
+          }
+          enum Type {
+            ISSUE
+            PULL_REQUEST
           }
   remote_relationships:
     - relationships:
