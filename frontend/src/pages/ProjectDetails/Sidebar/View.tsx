@@ -57,7 +57,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
                   {expandable && <UpDownChevrons className="h-5 w-5 fill-gray-400" />}
                 </div>
               </Listbox.Button>
-              <Listbox.Options className="flex flex-col divide-y">
+              <Listbox.Options className="flex flex-col divide-y max-h-116 overflow-y-auto rounded-b-2xl scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-white/12 scrollbar-thumb-rounded">
                 {allProjects.map(project => (
                   <ProjectOption key={project.id} project={project} isSelected={project.id === currentProject.id} />
                 ))}
