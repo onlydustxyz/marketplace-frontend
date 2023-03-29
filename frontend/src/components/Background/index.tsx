@@ -14,7 +14,7 @@ type Props = {
 export default function Background({ roundedBorders, withSidebar = false, children }: Props) {
   return (
     <div
-      className={classNames("overflow-y-auto mx-6 scrollbar-none h-full mb-6", {
+      className={classNames("overflow-y-auto mx-6 scrollbar-none h-full w-full mb-6", {
         "mr-6 ml-2": withSidebar,
       })}
     >
