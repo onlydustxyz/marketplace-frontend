@@ -31,9 +31,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
 
   return (
     <div
-      className={
-        "flex flex-col min-h-full shrink-0 w-80 gap-6 bg-noise-medium bg-white/4 p-6 font-walsheim rounded-l-2xl"
-      }
+      className={"flex flex-col shrink-0 w-80 gap-6 bg-noise-medium bg-white/4 p-6 font-walsheim rounded-l-2xl ml-6"}
     >
       <BackLink to={RoutePaths.Projects} className="divide-none">
         {T("project.details.sidebar.backToProjects")}
