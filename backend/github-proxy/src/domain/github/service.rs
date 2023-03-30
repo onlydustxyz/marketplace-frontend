@@ -48,4 +48,10 @@ pub trait Service: Send + Sync {
 		per_page: Option<u8>,
 		page: Option<u32>,
 	) -> Result<Vec<Issue>>;
+
+	async fn build_issue(
+		&self,
+		issue: octocrab::models::issues::Issue,
+		repo_id: Option<GithubRepositoryId>,
+	) -> Result<Issue>;
 }
