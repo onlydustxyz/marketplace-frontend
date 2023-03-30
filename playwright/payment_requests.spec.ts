@@ -56,7 +56,7 @@ test.describe("As a project lead, I", () => {
         "https://github.com/od-mocks/cool-repo-A/pull/1",
         "https://github.com/od-mocks/cool-repo-A/pull/2",
       ],
-      issuesIndexes: [0, 1, 2, 3],
+      issuesIndexes: [18, 19, 20, 21],
       otherIssues: ["https://github.com/onlydustxyz/marketplace/issues/79"],
     });
 
