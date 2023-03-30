@@ -12,10 +12,9 @@ import GithubRepoDetails from "./GithubRepoDetails";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
 import classNames from "classnames";
 import Badge, { BadgeSize } from "src/components/Badge";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import GitRepositoryLine from "src/icons/GitRepositoryLine";
 import Title from "src/pages/ProjectDetails/Title";
+import MarkdownPreview from "src/components/MarkdownPreview";
 
 type OutletContext = {
   leads?: ProjectLeadFragment[];
@@ -82,13 +81,7 @@ export default function Overview() {
                 className="w-32 h-32 flex-shrink-0 rounded-lg bg-spaceBlue-900"
               />
               <div className="self-center">
-                <ReactMarkdown
-                  skipHtml={true}
-                  remarkPlugins={[[remarkGfm]]}
-                  className="text-greyscale-50 font-walsheim font-normal text-sm text-justify max-w-full prose prose-invert"
-                >
-                  {description}
-                </ReactMarkdown>
+                <MarkdownPreview>{description}</MarkdownPreview>
               </div>
             </Card>
             <Card className="flex flex-col gap-4">

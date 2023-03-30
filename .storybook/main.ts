@@ -33,9 +33,5 @@ const config = {
   docs: {
     autodocs: true,
   },
-  env: config => ({
-    ...config,
-    VITE_FF_RESPONSIVENESS: "true",
-  }),
 };
 export default config;
