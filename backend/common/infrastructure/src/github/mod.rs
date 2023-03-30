@@ -112,6 +112,19 @@ pub trait OctocrabProxy: Sync + Send {
 	}
 
 	#[instrument(skip(self))]
+	async fn get_issue_by_repository_id(
+		&self,
+		repo_id: u64,
+		pr_number: u64,
+	) -> Result<Issue, Error> {
+		self.get_as(format!(
+			"{}repositories/{repo_id}/issues/{pr_number}",
+			self.octocrab().base_url
+		))
+		.await
+	}
+
+	#[instrument(skip(self))]
 	async fn get_user_by_name(&self, username: &str) -> Result<User, Error> {
 		self.get_as(format!("{}users/{username}", self.octocrab().base_url)).await
 	}
