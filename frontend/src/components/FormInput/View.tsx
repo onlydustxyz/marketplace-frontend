@@ -96,7 +96,7 @@ const View: React.FC<PropsType> = ({
             placeholder,
             type,
             className: classNames(
-              "w-full  bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 text-greyscale-50 placeholder:text-spaceBlue-200 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
+              "w-full bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 text-greyscale-50 placeholder:text-spaceBlue-200 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
               { "border outline-1 border-orange-500": showError, "h-11": as === "input" },
               inputClassName
             ),

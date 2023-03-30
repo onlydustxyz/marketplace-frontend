@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { useForm, useWatch } from "react-hook-form";
 import Input from "src/components/FormInput";
 import FormToggle from "src/components/FormToggle";
+import MarkdownPreview from "src/components/MarkdownPreview";
 import { useIntl } from "src/hooks/useIntl";
 
 type Props = {
@@ -29,7 +30,11 @@ export default function Description({ description, setDescription }: Props) {
           control={control}
         />
       </div>
-      {!displayPreview && (
+      {displayPreview ? (
+        <div className="w-full bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 text-greyscale-50">
+          <MarkdownPreview>{description}</MarkdownPreview>
+        </div>
+      ) : (
         <Input
           name="other-work-description"
           placeholder={T("payment.form.workItems.other.issue.descriptionPlaceholder")}
