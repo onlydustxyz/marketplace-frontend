@@ -154,7 +154,8 @@
           "inputs": {
             "title": "Title",
             "description": "Description"
-          }
+          },
+          "toggleDescriptionPreview": "Toggle preview"
         },
         "subTitle": "Add contributions that should be part of this payment",
         "title": "Work items",
