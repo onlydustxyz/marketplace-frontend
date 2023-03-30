@@ -23,6 +23,7 @@ type PropsType = {
   requiredForPayment?: boolean;
   withMargin?: boolean;
   as?: React.ElementType;
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement> | React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 } & PropsWithChildren;
 
 export default function Input({
@@ -46,6 +47,7 @@ export default function Input({
   withMargin = true,
   children,
   as,
+  inputProps,
 }: PropsType) {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
@@ -79,6 +81,7 @@ export default function Input({
         withMargin,
         children,
         as,
+        inputProps,
       }}
     />
   );

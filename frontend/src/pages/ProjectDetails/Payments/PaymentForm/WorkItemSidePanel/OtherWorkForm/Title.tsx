@@ -17,6 +17,7 @@ export default function Title({ defaultTitle, title, setTitle }: Props) {
       value={title}
       placeholder={defaultTitle}
       onChange={({ target }) => setTitle(target.value)}
+      withMargin={false}
     />
   );
 }
