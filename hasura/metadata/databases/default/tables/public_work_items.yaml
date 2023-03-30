@@ -6,14 +6,12 @@ remote_relationships:
       to_remote_schema:
         lhs_fields:
           - issue_number
-          - repo_owner
-          - repo_name
+          - repo_id
         remote_field:
-          fetchIssue:
+          fetchIssueByRepositoryId:
             arguments:
               issueNumber: $issue_number
-              repoName: $repo_name
-              repoOwner: $repo_owner
+              repositoryId: $repo_id
         remote_schema: GithubProxy
     name: githubIssue
 select_permissions:
@@ -21,7 +19,6 @@ select_permissions:
     permission:
       columns:
         - payment_id
-        - repo_owner
-        - repo_name
+        - repo_id
         - issue_number
       filter: {}

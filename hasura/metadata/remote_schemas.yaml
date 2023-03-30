@@ -18,6 +18,8 @@
           scalar Email
           scalar EthereumAddress
           scalar EthereumName
+          scalar GithubIssueNumber
+          scalar GithubRepositoryId
           scalar Uuid
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
@@ -78,7 +80,11 @@
             lastname: String
           }
           input Reason {
-            workItems: [String!]
+            workItems: [WorkItem!]!
+          }
+          input WorkItem {
+            issueNumber: GithubIssueNumber!
+            repoId: GithubRepositoryId!
           }
     - role: public
       definition:
@@ -99,13 +105,14 @@
         value_from_env: GITHUB_PROXY_GRAPHQL_API_KEY
   comment: ""
   permissions:
-    - role: registered_user
+    - role: public
       definition:
         schema: |
           schema {
             query: Query
           }
           scalar DateTimeUtc
+          scalar GithubRepositoryId
           scalar Url
           type Issue {
             closedAt: DateTimeUtc
@@ -114,18 +121,16 @@
             id: Int!
             mergedAt: DateTimeUtc
             number: Int!
+            repoId: GithubRepositoryId!
             status: Status!
             title: String!
             type: Type!
           }
           type Query {
-            fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
+            fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
             fetchRepositoryDetails(id: Int!): Repository
-            fetchRepositoryPRs(id: Int!): [Issue!]
-            fetchUserDetails(username: String!): User
             fetchUserDetailsById(userId: Int!): User
-            searchIssues(query: String!, sort: String, order: String, perPage: Int, page: Int): [Issue!]
-            searchUsers(query: String!, sort: String, order: String): [User!]
+            helloFromGithubProxy: String!
           }
           type Repository {
             contributors: [User!]!
@@ -134,6 +139,8 @@
             htmlUrl: Url!
             id: Int!
             logoUrl: Url!
+            name: String!
+            owner: String!
             stars: Int!
           }
           type User {
@@ -153,13 +160,14 @@
             ISSUE
             PULL_REQUEST
           }
-    - role: public
+    - role: registered_user
       definition:
         schema: |
           schema {
             query: Query
           }
           scalar DateTimeUtc
+          scalar GithubRepositoryId
           scalar Url
           type Issue {
             closedAt: DateTimeUtc
@@ -168,14 +176,20 @@
             id: Int!
             mergedAt: DateTimeUtc
             number: Int!
+            repoId: GithubRepositoryId!
             status: Status!
             title: String!
             type: Type!
           }
           type Query {
+            fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
+            fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
             fetchRepositoryDetails(id: Int!): Repository
+            fetchRepositoryPRs(id: Int!): [Issue!]
+            fetchUserDetails(username: String!): User
             fetchUserDetailsById(userId: Int!): User
-            helloFromGithubProxy: String!
+            searchIssues(query: String!, sort: String, order: String, perPage: Int, page: Int): [Issue!]
+            searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [User!]
           }
           type Repository {
             contributors: [User!]!
@@ -184,6 +198,8 @@
             htmlUrl: Url!
             id: Int!
             logoUrl: Url!
+            name: String!
+            owner: String!
             stars: Int!
           }
           type User {
