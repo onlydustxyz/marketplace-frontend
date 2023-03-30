@@ -22,9 +22,9 @@ export default function View({ currentProject, onInvitationAccepted }: Props) {
     ),
   };
   return (
-    <div className="flex flex-1 w-full gap-2 h-full">
+    <div className="flex flex-row flex-1 w-full h-0 pb-6">
       <ProjectsSidebar currentProject={currentProject} />
-      <Background roundedBorders={BackgroundRoundedBorders.Right}>
+      <Background roundedBorders={BackgroundRoundedBorders.Right} withSidebar={true}>
         <div className="h-full px-8 py-6 flex flex-col flex-1 gap-6">
           <Outlet context={outletContext} />
         </div>

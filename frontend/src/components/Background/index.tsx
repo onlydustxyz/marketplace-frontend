@@ -8,8 +8,24 @@ export enum BackgroundRoundedBorders {
 
 type Props = {
   roundedBorders: BackgroundRoundedBorders;
+  withSidebar?: boolean;
 } & PropsWithChildren;
 
-export default function Background({ roundedBorders, children }: Props) {
-  return <div className={classNames("bg-space bg-no-repeat bg-fixed h-full w-full", roundedBorders)}>{children}</div>;
+export default function Background({ roundedBorders, withSidebar = false, children }: Props) {
+  return (
+    <div
+      className={classNames("overflow-y-auto scrollbar-none h-full w-full mb-6", {
+        "mr-6 ml-2": withSidebar,
+        "md:mx-6 md:pr-6 px-2": !withSidebar,
+      })}
+    >
+      <div
+        className={classNames("bg-space bg-no-repeat bg-fixed bg-clip-content min-h-full", roundedBorders, {
+          "md:mr-6": !withSidebar,
+        })}
+      >
+        {children}
+      </div>
+    </div>
+  );
 }

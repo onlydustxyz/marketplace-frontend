@@ -31,9 +31,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
 
   return (
     <div
-      className={
-        "flex flex-col min-h-full shrink-0 w-80 gap-6 bg-noise-medium bg-white/4 p-6 font-walsheim rounded-l-2xl"
-      }
+      className={"flex flex-col shrink-0 w-80 gap-6 bg-noise-medium bg-white/4 p-6 font-walsheim rounded-l-2xl ml-6"}
     >
       <BackLink to={RoutePaths.Projects} className="divide-none">
         {T("project.details.sidebar.backToProjects")}
@@ -59,7 +57,7 @@ export default function View({ expandable, currentProject, allProjects, availabl
                   {expandable && <UpDownChevrons className="h-5 w-5 fill-gray-400" />}
                 </div>
               </Listbox.Button>
-              <Listbox.Options className="flex flex-col divide-y">
+              <Listbox.Options className="flex flex-col divide-y max-h-116 overflow-y-auto rounded-b-2xl scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-white/12 scrollbar-thumb-rounded">
                 {allProjects.map(project => (
                   <ProjectOption key={project.id} project={project} isSelected={project.id === currentProject.id} />
                 ))}
