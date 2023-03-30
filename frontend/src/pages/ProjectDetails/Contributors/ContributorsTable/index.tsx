@@ -81,8 +81,7 @@ export const CONTRIBUTORS_TABLE_FRAGMENT = gql`
       }
       amountInUsd
       workItems {
-        repoOwner
-        repoName
+        repoId
         issueNumber
       }
     }

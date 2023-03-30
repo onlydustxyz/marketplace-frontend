@@ -31,13 +31,11 @@ const mockPaymentRequest = {
   amountInUsd: 1000,
   workItems: [
     {
-      repoOwner: "onlydustxyz",
-      repoName: "marketplace",
+      repoId: 123456,
       issueNumber: 123,
     },
     {
-      repoOwner: "onlydustxyz",
-      repoName: "marketplace",
+      repoId: 123456,
       issueNumber: 124,
     },
   ],
@@ -49,8 +47,8 @@ const mockPaymentRequest2 = {
   amountInUsd: 500,
   workItems: [
     {
-      repoOwner: "onlydustxyz",
-      repoName: "marketplace",
+      repoId: 123456,
+
       issueNumber: 123,
     },
   ],

@@ -60,7 +60,7 @@ const PaymentForm: React.FC = () => {
     (workItems: WorkItem[]) =>
       formMethods.setValue(
         "workItems",
-        workItems.map(workItem => workItem.htmlUrl)
+        workItems.map(workItem => ({ repoId: workItem.repoId, issueNumber: workItem.number }))
       ),
     [formMethods]
   );

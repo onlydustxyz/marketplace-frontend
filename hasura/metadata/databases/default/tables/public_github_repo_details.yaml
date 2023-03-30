@@ -26,7 +26,5 @@ select_permissions:
     permission:
       columns:
         - id
-        - owner
-        - name
         - languages
       filter: {}

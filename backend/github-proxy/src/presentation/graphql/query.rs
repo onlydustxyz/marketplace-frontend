@@ -76,6 +76,23 @@ impl Query {
 			.ok()
 	}
 
+	pub async fn fetch_issue_by_repository_id(
+		&self,
+		context: &Context,
+		repository_id: i32,
+		issue_number: i32,
+	) -> Option<GithubIssue> {
+		let repository_id = GithubRepositoryId::from(repository_id as i64);
+		context
+			.github_service()
+			.ok()?
+			.fetch_issue_by_repository_id(&repository_id, issue_number as u64)
+			.await
+			.map_err(Error::from)
+			.logged()
+			.ok()
+	}
+
 	pub async fn fetch_user_details_by_id(
 		&self,
 		context: &Context,

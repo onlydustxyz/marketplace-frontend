@@ -99,12 +99,7 @@ mod tests {
 
 	#[fixture]
 	fn github_repo(github_repo_id: GithubRepositoryId) -> GithubRepo {
-		GithubRepo::new(
-			github_repo_id,
-			"ofux".to_string(),
-			"Foo".to_string(),
-			json!(["rust", "cairo"]),
-		)
+		GithubRepo::new(github_repo_id, json!(["rust", "cairo"]))
 	}
 
 	#[rstest]

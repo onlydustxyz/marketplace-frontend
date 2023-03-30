@@ -2,6 +2,7 @@ use std::{collections::HashMap, fmt::Debug};
 
 use anyhow::anyhow;
 use async_trait::async_trait;
+use domain::GithubRepositoryId;
 use octocrab::{
 	models::{issues::Issue, pulls::PullRequest, repos::Content, Repository, User},
 	FromResponse, Octocrab, OctocrabBuilder,
@@ -109,6 +110,19 @@ pub trait OctocrabProxy: Sync + Send {
 	) -> Result<Issue, Error> {
 		let issue = self.octocrab().issues(repo_owner, repo_name).get(pr_number).await?;
 		Ok(issue)
+	}
+
+	#[instrument(skip(self))]
+	async fn get_issue_by_repository_id(
+		&self,
+		repo_id: GithubRepositoryId,
+		pr_number: u64,
+	) -> Result<Issue, Error> {
+		self.get_as(format!(
+			"{}repositories/{repo_id}/issues/{pr_number}",
+			self.octocrab().base_url
+		))
+		.await
 	}
 
 	#[instrument(skip(self))]

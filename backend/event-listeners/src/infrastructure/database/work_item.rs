@@ -16,12 +16,7 @@ impl Repository {
 		let connection = self.0.connection()?;
 		diesel::insert_into(dsl::work_items)
 			.values(work_item)
-			.on_conflict((
-				dsl::payment_id,
-				dsl::repo_owner,
-				dsl::repo_name,
-				dsl::issue_number,
-			))
+			.on_conflict((dsl::payment_id, dsl::repo_id, dsl::issue_number))
 			.do_nothing()
 			.execute(&*connection)?;
 		Ok(())

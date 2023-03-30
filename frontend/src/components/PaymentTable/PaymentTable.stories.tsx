@@ -26,8 +26,7 @@ const mockPayments: PaymentRequestFragment[] = [
     workItems: [
       {
         __typename: "WorkItems",
-        repoOwner: "onlydustxyz",
-        repoName: "marketplace",
+        repoId: 123456,
         issueNumber: 1,
       },
     ],
@@ -41,8 +40,7 @@ const mockPayments: PaymentRequestFragment[] = [
     workItems: [
       {
         __typename: "WorkItems",
-        repoOwner: "onlydustxyz",
-        repoName: "marketplace",
+        repoId: 123456,
         issueNumber: 26,
       },
     ],
@@ -55,8 +53,7 @@ const mockPayments: PaymentRequestFragment[] = [
     recipientId: GITHUB_USER_ID2,
     workItems: [
       {
-        repoOwner: "onlydustxyz",
-        repoName: "marketplace",
+        repoId: 123456,
         issueNumber: 653,
       },
     ],

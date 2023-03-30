@@ -118,6 +118,7 @@ function IssueStatus({ issue }: { issue: IssueDetailsFragment }) {
 export const GITHUB_ISSUE_FRAGMENTS = gql`
   fragment IssueDetails on Issue {
     id
+    repoId
     number
     type
     status

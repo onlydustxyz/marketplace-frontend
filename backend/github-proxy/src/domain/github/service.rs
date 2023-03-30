@@ -24,6 +24,11 @@ pub trait Service: Send + Sync {
 	async fn fetch_repository_PRs(&self, repository_id: &GithubRepositoryId) -> Result<Vec<Issue>>;
 	async fn fetch_issue(&self, repo_owner: &str, repo_name: &str, pr_number: u64)
 	-> Result<Issue>;
+	async fn fetch_issue_by_repository_id(
+		&self,
+		repository_id: &GithubRepositoryId,
+		pr_number: u64,
+	) -> Result<Issue>;
 	async fn fetch_user_by_id(&self, id: u64) -> Result<GithubUser>;
 
 	async fn search_users(
@@ -43,4 +48,10 @@ pub trait Service: Send + Sync {
 		per_page: Option<u8>,
 		page: Option<u32>,
 	) -> Result<Vec<Issue>>;
+
+	async fn build_issue(
+		&self,
+		issue: octocrab::models::issues::Issue,
+		repo_id: Option<GithubRepositoryId>,
+	) -> Result<Issue>;
 }

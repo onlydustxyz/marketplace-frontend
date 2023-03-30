@@ -46,6 +46,7 @@ const daysFromNow = (days: number) => new Date(Date.now() - days * 24 * 3600 * 1
 const issues: IssueDetailsFragment[] = range(1, 50).map(id => ({
   __typename: "Issue",
   id: id,
+  repoId: 123456,
   number: id,
   type: Type.Issue,
   title: "Update README.md",

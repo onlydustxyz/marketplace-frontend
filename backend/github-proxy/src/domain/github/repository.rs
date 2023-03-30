@@ -1,12 +1,16 @@
-use derive_more::Constructor;
+use derive_getters::Getters;
+use derive_new::new;
 use juniper::GraphQLObject;
 use url::Url;
 
 use crate::domain::GithubUser;
 
-#[derive(Constructor, GraphQLObject)]
+#[allow(clippy::too_many_arguments)]
+#[derive(new, GraphQLObject, Getters)]
 pub struct Repository {
 	id: i32,
+	owner: String,
+	name: String,
 	contributors: Vec<GithubUser>,
 	logo_url: Url,
 	html_url: Url,

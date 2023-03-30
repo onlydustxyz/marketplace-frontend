@@ -2,13 +2,12 @@ use std::collections::HashMap;
 
 use derive_getters::Getters;
 use rust_decimal::Decimal;
-use serde_json::Value;
 use thiserror::Error;
 
 use crate::{
-	Aggregate, AggregateEvent, Amount, BudgetEvent, BudgetId, Currency, Entity, EventSourcable,
-	GithubUserId, Payment, PaymentError, PaymentId, PaymentReceipt, PaymentReceiptId,
-	PaymentStatus, UserId,
+	payment::Reason, Aggregate, AggregateEvent, Amount, BudgetEvent, BudgetId, Currency, Entity,
+	EventSourcable, GithubUserId, Payment, PaymentError, PaymentId, PaymentReceipt,
+	PaymentReceiptId, PaymentStatus, UserId,
 };
 
 #[derive(Debug, Error)]
@@ -54,7 +53,7 @@ impl Budget {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
-		reason: Value,
+		reason: Reason,
 	) -> Result<Vec<BudgetEvent>> {
 		if self.allocated_amount.currency() != amount.currency() {
 			return Err(Error::InvalidCurrency);

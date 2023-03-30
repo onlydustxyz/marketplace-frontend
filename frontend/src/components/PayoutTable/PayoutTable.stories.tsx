@@ -24,13 +24,11 @@ const mockPayments: Payment[] = [
     status: PaymentStatus.ACCEPTED,
     workItems: [
       {
-        repoOwner: "open-dust",
-        repoName: "cairo-foundry",
+        repoId: 123456,
         issueNumber: 110,
       },
       {
-        repoOwner: "open-dust",
-        repoName: "cairo-foundry",
+        repoId: 123456,
         issueNumber: 111,
       },
     ],
@@ -46,8 +44,7 @@ const mockPayments: Payment[] = [
     },
     workItems: [
       {
-        repoOwner: "open-dust",
-        repoName: "cairo-foundry",
+        repoId: 123456,
         issueNumber: 110,
       },
     ],

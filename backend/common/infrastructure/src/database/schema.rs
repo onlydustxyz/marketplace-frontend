@@ -31,8 +31,6 @@ diesel::table! {
 diesel::table! {
     github_repo_details (id) {
         id -> Int8,
-        owner -> Text,
-        name -> Text,
         languages -> Jsonb,
     }
 }
@@ -127,11 +125,10 @@ diesel::table! {
 }
 
 diesel::table! {
-    work_items (payment_id, repo_owner, repo_name, issue_number) {
+    work_items (payment_id, repo_id, issue_number) {
         payment_id -> Uuid,
-        repo_owner -> Text,
-        repo_name -> Text,
         issue_number -> Int8,
+        repo_id -> Int8,
     }
 }
 

@@ -4,7 +4,6 @@ import { useMemo } from "react";
 import { WorkItem } from "src/components/GithubIssue";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
-import { parsePullRequestLink } from "src/utils/github";
 import isDefined from "src/utils/isDefined";
 import {
   GetPaidWorkItemsQuery,
@@ -41,7 +40,8 @@ export default function Issues({ type, projectId, contributorHandle, workItems, 
   const searchPrQuery = useHasuraQuery<SearchIssuesQuery>(SEARCH_ISSUES, HasuraUserRole.RegisteredUser, {
     variables: {
       query: buildQuery(
-        getPaidItemsQuery.data?.projectsByPk?.githubRepos.map(r => r.githubRepoDetails).filter(isDefined) || [],
+        getPaidItemsQuery.data?.projectsByPk?.githubRepos.map(r => r.githubRepoDetails?.content).filter(isDefined) ||
+          [],
         contributorHandle,
         type
       ),
@@ -67,10 +67,7 @@ export default function Issues({ type, projectId, contributorHandle, workItems, 
     () =>
       sortBy(
         differenceWith(issues, paidItems, (pr, paidItem) => {
-          const { repoOwner, repoName } = parsePullRequestLink(pr.htmlUrl);
-          return (
-            repoOwner === paidItem.repoOwner && repoName === paidItem.repoName && pr.number === paidItem.issueNumber
-          );
+          return pr.repoId === paidItem.repoId && pr.number === paidItem.issueNumber;
         }),
         "createdAt"
       )
@@ -117,7 +114,7 @@ const SEARCH_ISSUES = gql`
 `;
 
 const GET_PAID_WORK_ITEMS = gql`
-  fragment RepositoryOwnerAndName on GithubRepoDetails {
+  fragment RepositoryOwnerAndName on Repository {
     owner
     name
   }
@@ -126,7 +123,10 @@ const GET_PAID_WORK_ITEMS = gql`
     projectsByPk(id: $projectId) {
       githubRepos {
         githubRepoDetails {
-          ...RepositoryOwnerAndName
+          id
+          content {
+            ...RepositoryOwnerAndName
+          }
         }
       }
       budgets {
@@ -134,8 +134,7 @@ const GET_PAID_WORK_ITEMS = gql`
         paymentRequests {
           id
           workItems {
-            repoOwner
-            repoName
+            repoId
             issueNumber
           }
         }

@@ -1,6 +1,8 @@
 import { PaymentFixture } from "../../types";
 import { EthereumIdentityType } from "../../__generated/graphql";
 
+const coolRepoAId = 602953043;
+
 export const payments: PaymentFixture[] = [
   {
     project: "ProjectA",
@@ -11,8 +13,8 @@ export const payments: PaymentFixture[] = [
         amount: 100,
         reason: {
           workItems: [
-            "https://github.com/od-mocks/cool-repo-A/pull/1",
-            "https://github.com/od-mocks/cool-repo-A/pull/2",
+            { repoId: coolRepoAId, issueNumber: 1 },
+            { repoId: coolRepoAId, issueNumber: 2 },
           ],
         },
         receipts: [
@@ -31,31 +33,31 @@ export const payments: PaymentFixture[] = [
       {
         amount: 100,
         reason: {
-          workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
+          workItems: [{ repoId: coolRepoAId, issueNumber: 1 }],
         },
       },
       {
         amount: 500,
         reason: {
-          workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
+          workItems: [{ repoId: coolRepoAId, issueNumber: 1 }],
         },
       },
       {
         amount: 500,
         reason: {
-          workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
+          workItems: [{ repoId: coolRepoAId, issueNumber: 1 }],
         },
       },
       {
         amount: 2000,
         reason: {
-          workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
+          workItems: [{ repoId: coolRepoAId, issueNumber: 1 }],
         },
       },
       {
         amount: 10000,
         reason: {
-          workItems: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
+          workItems: [{ repoId: coolRepoAId, issueNumber: 1 }],
         },
       },
     ],
@@ -68,7 +70,7 @@ export const payments: PaymentFixture[] = [
       {
         amount: 200,
         reason: {
-          workItems: ["https://github.com/od-mocks/cool-repo-A/pull/3"],
+          workItems: [{ repoId: coolRepoAId, issueNumber: 3 }],
         },
       },
     ],

@@ -6,6 +6,7 @@ const daysFromNow = (days: number) => new Date(Date.now() - days * 24 * 3600 * 1
 const issues = {
   closed: {
     id: 1268051991,
+    repoId: 123456,
     number: 541,
     type: Type.Issue,
     status: Status.Closed,
@@ -17,6 +18,7 @@ const issues = {
   },
   prOpen: {
     id: 1268051991,
+    repoId: 123456,
     number: 541,
     type: Type.PullRequest,
     status: Status.Open,
@@ -28,6 +30,7 @@ const issues = {
   },
   issueOpen: {
     id: 1268051991,
+    repoId: 123456,
     number: 541,
     type: Type.Issue,
     status: Status.Open,
@@ -39,6 +42,7 @@ const issues = {
   },
   merged: {
     id: 1268051991,
+    repoId: 123456,
     number: 541,
     type: Type.PullRequest,
     status: Status.Merged,
@@ -50,6 +54,7 @@ const issues = {
   },
   completed: {
     id: 1268051991,
+    repoId: 123456,
     number: 541,
     type: Type.Issue,
     status: Status.Completed,
@@ -61,6 +66,7 @@ const issues = {
   },
   cancelled: {
     id: 1268051991,
+    repoId: 123456,
     number: 541,
     type: Type.Issue,
     status: Status.Cancelled,

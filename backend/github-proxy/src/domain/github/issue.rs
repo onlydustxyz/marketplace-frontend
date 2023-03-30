@@ -2,6 +2,7 @@
 
 use chrono::{DateTime, Utc};
 use derive_more::Constructor;
+use domain::GithubRepositoryId;
 use juniper::{GraphQLEnum, GraphQLObject};
 use url::Url;
 
@@ -23,6 +24,7 @@ pub enum Type {
 #[derive(Constructor, GraphQLObject)]
 pub struct Issue {
 	id: i32,
+	repo_id: GithubRepositoryId,
 	number: i32,
 	r#type: Type,
 	title: String,

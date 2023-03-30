@@ -3,7 +3,6 @@ use async_trait::async_trait;
 use derive_more::Constructor;
 use domain::{BudgetEvent, Event, PaymentEvent, ProjectEvent, SubscriberCallbackError};
 use rust_decimal::{prelude::ToPrimitive, Decimal};
-use serde::Deserialize;
 use tracing::instrument;
 
 use crate::{
@@ -19,11 +18,6 @@ pub struct Projector {
 	payment_repository: PaymentRepository,
 	budget_repository: BudgetRepository,
 	work_item_repository: WorkItemRepository,
-}
-
-#[derive(Deserialize)]
-pub struct Reason {
-	work_items: Vec<String>,
 }
 
 #[async_trait]
@@ -83,22 +77,13 @@ impl EventListener for Projector {
 							None,
 						))?;
 
-						serde_json::from_value::<Reason>(reason.clone())
-							.map_err(|e| SubscriberCallbackError::Discard(anyhow!(e)))?
-							.work_items
-							.iter()
-							.try_for_each(|url| {
-								let url = url.parse().map_err(|e: url::ParseError| {
-									SubscriberCallbackError::Discard(anyhow!(e))
-								})?;
-
-								let work_item = WorkItem::from_url(*payment_id, url)
-									.map_err(|e| SubscriberCallbackError::Discard(anyhow!(e)))?;
-
-								self.work_item_repository.upsert(&work_item)?;
-
-								Result::<_, SubscriberCallbackError>::Ok(())
-							})?;
+						reason.work_items().iter().try_for_each(|work_item| {
+							self.work_item_repository.upsert(&WorkItem::new(
+								*payment_id,
+								*work_item.repo_id(),
+								*work_item.issue_number(),
+							))
+						})?;
 					},
 					PaymentEvent::Cancelled { id: payment_id } => {
 						let payment_request =

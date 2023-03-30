@@ -12,8 +12,7 @@ const paymentRequests: Payment[] = range(1, 4).map(id => ({
   },
   workItems: [
     {
-      repoOwner: "onlydustxyz",
-      repoName: "marketplace",
+      repoId: 123456,
       issueNumber: 123,
     },
   ],

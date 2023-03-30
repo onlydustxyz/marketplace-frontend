@@ -25,7 +25,8 @@ pub use project::{Error as ProjectError, Event as ProjectEvent, Id as ProjectId,
 mod payment;
 pub use payment::{
 	Error as PaymentError, Event as PaymentEvent, Id as PaymentId, Payment,
-	Receipt as PaymentReceipt, ReceiptId as PaymentReceiptId, Status as PaymentStatus,
+	Reason as PaymentReason, Receipt as PaymentReceipt, ReceiptId as PaymentReceiptId,
+	Status as PaymentStatus,
 };
 
 mod user;
