@@ -44,6 +44,8 @@ impl<P: github::OctocrabProxy> GithubService for P {
 
 		Ok(GithubRepository::new(
 			id as i32,
+			owner.login,
+			repo.name,
 			contributors.into_iter().map(Into::into).collect(),
 			owner.avatar_url,
 			html_url,
@@ -96,6 +98,22 @@ impl<P: github::OctocrabProxy> GithubService for P {
 		issue_number: u64,
 	) -> GithubServiceResult<GithubIssue> {
 		self.get_issue(repo_owner, repo_name, issue_number)
+			.await?
+			.try_into()
+			.map_err(|e: GithubIssueFromOctocrabResultError| GithubServiceError::Other(anyhow!(e)))
+	}
+
+	#[instrument(skip(self))]
+	async fn fetch_issue_by_repository_id(
+		&self,
+		repository_id: &GithubRepositoryId,
+		pr_number: u64,
+	) -> GithubServiceResult<GithubIssue> {
+		let repository_id: u64 = i64::from(*repository_id)
+			.try_into()
+			.expect("Repository id should always be positive");
+
+		self.get_issue_by_repository_id(repository_id, pr_number)
 			.await?
 			.try_into()
 			.map_err(|e: GithubIssueFromOctocrabResultError| GithubServiceError::Other(anyhow!(e)))
