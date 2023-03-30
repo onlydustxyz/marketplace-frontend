@@ -22,6 +22,7 @@ type PropsType = {
   showValidationErrors?: boolean;
   requiredForPayment?: boolean;
   withMargin?: boolean;
+  as?: React.ElementType;
 } & PropsWithChildren;
 
 export default function Input({
@@ -44,6 +45,7 @@ export default function Input({
   requiredForPayment = false,
   withMargin = true,
   children,
+  as,
 }: PropsType) {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
@@ -76,6 +78,7 @@ export default function Input({
         requiredForPayment,
         withMargin,
         children,
+        as,
       }}
     />
   );
