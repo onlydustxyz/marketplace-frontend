@@ -8,10 +8,9 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentForm from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { FIND_USER_QUERY } from "src/hooks/useIsGithubLoginValid";
-import { REQUEST_PAYMENT_MUTATION } from "src/hooks/usePaymentRequests";
 import { FetchIssueDocument, FetchIssueQueryResult, FetchIssueQueryVariables, Status } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
-import { GET_PROJECT_CONTRIBUTORS_QUERY, SEARCH_GITHUB_USERS_BY_HANDLE_SUBSTRING_QUERY } from "./ContributorSelect";
+import { GET_PROJECT_CONTRIBUTORS_QUERY } from "./ContributorSelect";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };
 const TEST_GITHUB_USER = {
@@ -90,20 +89,6 @@ const graphQlMocks = [
         },
       },
     })),
-  },
-  {
-    request: {
-      query: REQUEST_PAYMENT_MUTATION,
-      variables: {
-        projectId: TEST_PROJECT_ID,
-        amount: 1000,
-        contributorId: TEST_USER.githubUser.githubUserId,
-        reason: { workItems: ["https://github.com/onlydustxyz/marketplace/pull/504"] },
-      },
-    },
-    result: {
-      data: {},
-    },
   },
   fetchPrMock,
   {

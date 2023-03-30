@@ -38,8 +38,7 @@ const paymentRequestMock: PaymentRequestFragment = {
   amountInUsd: 200,
   workItems: [
     {
-      repoOwner: "onlydustxyz",
-      repoName: "marketplace",
+      repoId: 123456,
       issueNumber: 123,
     },
   ],

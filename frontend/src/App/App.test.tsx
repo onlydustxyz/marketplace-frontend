@@ -39,7 +39,6 @@ import { GET_USER_PAYOUT_SETTINGS } from "src/hooks/usePayoutSettings";
 
 const AUTH_CODE_TEST_VALUE = "code";
 const LOGGING_IN_TEXT_QUERY = /logging in.../i;
-const AUTH_TOKEN_MISSING_TEXT_QUERY = /github authentication token missing!/i;
 const TEST_USER_ID = "test-user-id";
 const TEST_GITHUB_USER_ID = 123456789;
 const TEST_USER_EMAIL = "test@user.email";
@@ -176,12 +175,12 @@ const GITHUB_REPO_DETAILS_RESULT: { data: GetGithubRepositoryDetailsQueryResult[
     githubRepoDetailsByPk: {
       __typename: "GithubRepoDetails",
       id: TEST_GITHUB_REPO_ID,
-      owner: TEST_GITHUB_REPO_OWNER,
-      name: TEST_GITHUB_REPO_NAME,
       languages: {},
       content: {
         __typename: "Repository",
         id: TEST_GITHUB_REPO_ID,
+        owner: TEST_GITHUB_REPO_OWNER,
+        name: TEST_GITHUB_REPO_NAME,
         description: TEST_GITHUB_REPO_CONTENT,
         htmlUrl: "url",
         stars: 0,
@@ -399,8 +398,7 @@ const paymentRequestsMock = {
           workItems: [
             {
               __typename: "WorkItems",
-              repoOwner: "onlydustxyz",
-              repoName: "marketplace",
+              repoId: 123456,
               issueNumber: 123,
             },
           ],

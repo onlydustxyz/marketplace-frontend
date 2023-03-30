@@ -18,8 +18,7 @@ const [payment1, payment2, payment3]: Payment[] = range(1, 4).map(id => ({
   },
   workItems: [
     {
-      repoOwner: "onlydustxyz",
-      repoName: "marketplace",
+      repoId: 123456,
       issueNumber: 123,
     },
   ],

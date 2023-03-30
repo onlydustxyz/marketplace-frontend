@@ -46,8 +46,7 @@ const mockContribution: UserPaymentRequestFragment = {
   workItems: [
     {
       __typename: "WorkItems",
-      repoOwner: "onlydustxyz",
-      repoName: "marketplace",
+      repoId: 123456,
       issueNumber: 123,
     },
   ],
