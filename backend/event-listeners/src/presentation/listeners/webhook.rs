@@ -188,10 +188,7 @@ mod tests {
 	#[rstest]
 	fn webhook_event_serialize(project_created_event: ProjectEvent, project_id: &ProjectId) {
 		let event: Event = project_created_event.into();
-
-		let webhook_event = WebhookEvent::new(event);
-
-		let json_value = serde_json::to_value(&webhook_event).unwrap();
+		let json_value = serde_json::to_value(WebhookEvent::new(event)).unwrap();
 
 		let expected_json_value = json!({
 			"aggregate_name":"Project",

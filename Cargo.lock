@@ -1676,6 +1676,7 @@ dependencies = [
  "async-trait",
  "chrono",
  "derive-getters",
+ "derive-new",
  "derive_more",
  "domain",
  "dotenv",
