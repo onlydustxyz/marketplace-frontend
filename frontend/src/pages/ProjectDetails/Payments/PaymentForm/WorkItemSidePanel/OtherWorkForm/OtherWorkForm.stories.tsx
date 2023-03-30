@@ -1,4 +1,5 @@
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
+import { FormProvider, useForm } from "react-hook-form";
 import { GET_USER_IDENTITY_QUERY } from "src/App/Layout/Header/FeedbackButton";
 import { AuthContext, AuthContextType } from "src/hooks/useAuth";
 import { ToasterProvider } from "src/hooks/useToaster";
@@ -31,7 +32,12 @@ const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
     } as unknown as User,
     githubUserId: 123,
   };
-  return <AuthContext.Provider value={mockedValue}>{children}</AuthContext.Provider>;
+  const methods = useForm();
+  return (
+    <FormProvider {...methods}>
+      <AuthContext.Provider value={mockedValue}>{children}</AuthContext.Provider>
+    </FormProvider>
+  );
 };
 
 const mocks: MockedResponse[] = [
