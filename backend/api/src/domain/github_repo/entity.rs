@@ -23,8 +23,6 @@ use serde_json::Value;
 #[primary_key(id)]
 pub struct GithubRepo {
 	id: GithubRepositoryId,
-	owner: String,
-	name: String,
 	languages: Value,
 }
 

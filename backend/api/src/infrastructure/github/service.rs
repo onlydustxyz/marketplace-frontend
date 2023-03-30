@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 use async_trait::async_trait;
 use domain::GithubRepositoryId;
 use infrastructure::github::{self, OctocrabProxy};
@@ -32,17 +32,6 @@ impl<P: OctocrabProxy> GithubService for P {
 			Default::default()
 		};
 
-		let owner = repo.owner.ok_or_else(|| {
-			GithubServiceError::MissingRepositoryOwner(anyhow!(
-				"No owner in github repository {github_repo_id}"
-			))
-		})?;
-
-		Ok(GithubRepo::new(
-			*github_repo_id,
-			owner.login,
-			repo.name,
-			languages,
-		))
+		Ok(GithubRepo::new(*github_repo_id, languages))
 	}
 }
