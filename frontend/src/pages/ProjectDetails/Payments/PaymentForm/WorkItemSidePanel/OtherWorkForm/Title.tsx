@@ -1,4 +1,5 @@
-import classNames from "classnames";
+import Input from "src/components/FormInput";
+import { useIntl } from "src/hooks/useIntl";
 
 type Props = {
   defaultTitle: string;
@@ -7,16 +8,14 @@ type Props = {
 };
 
 export default function Title({ defaultTitle, title, setTitle }: Props) {
+  const { T } = useIntl();
+
   return (
-    <input
-      data-testid="other-work-title"
+    <Input
+      label={T("payment.form.workItems.other.inputs.title")}
+      name="other-work-title"
       value={title}
       placeholder={defaultTitle}
-      className={classNames(
-        "w-full py-3 px-4",
-        "border border-greyscale-50/8 outline-none rounded-xl bg-white/5",
-        "font-walsheim font-normal text-base text-greyscale-50 placeholder:text-greyscale-500"
-      )}
       onChange={({ target }) => setTitle(target.value)}
     />
   );

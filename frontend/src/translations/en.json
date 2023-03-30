@@ -150,6 +150,10 @@
             "meeting": "Meeting",
             "other": "Other",
             "subscription": "Subscription"
+          },
+          "inputs": {
+            "title": "Title",
+            "description": "Description"
           }
         },
         "subTitle": "Add contributions that should be part of this payment",

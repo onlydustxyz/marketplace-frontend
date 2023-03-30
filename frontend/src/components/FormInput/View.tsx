@@ -101,6 +101,7 @@ const View: React.FC<PropsType> = ({
             onFocus={onFocus}
             onKeyDown={onKeyDown}
             style={negativeZIndex ? { zIndex: -1 } : {}}
+            data-testid={register.name}
           />
           {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}
           {loading ? (

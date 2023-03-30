@@ -12,9 +12,9 @@ type PropsType = {
   options?: RegisterOptions;
   value?: string | number;
   errorDisplay?: InputErrorDisplay;
-  onChange?: ChangeEventHandler<unknown>;
-  onFocus?: FocusEventHandler<unknown>;
-  onBlur?: FocusEventHandler<unknown>;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  onFocus?: FocusEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
   onKeyDown?: KeyboardEventHandler;
   prefixComponent?: React.ReactNode;
   suffixComponent?: React.ReactNode;
