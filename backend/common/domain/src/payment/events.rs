@@ -2,8 +2,8 @@ use std::fmt::Display;
 
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 
+use super::Reason;
 use crate::{
 	AggregateEvent, Amount, GithubUserId, Payment, PaymentId, PaymentReceipt, PaymentReceiptId,
 	UserId,
@@ -16,7 +16,7 @@ pub enum Event {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
-		reason: Value,
+		reason: Reason,
 		requested_at: NaiveDateTime,
 	},
 	Cancelled {

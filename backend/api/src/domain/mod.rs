@@ -14,9 +14,6 @@ pub use github_repo::GithubRepo;
 pub mod user_info;
 pub use user_info::UserInfo;
 
-mod payment;
-pub use payment::Reason as PaymentReason;
-
 mod specifications;
 #[cfg(test)]
 pub use specifications::MockGithubRepoExists;

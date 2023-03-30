@@ -1,5 +1,7 @@
 use anyhow::anyhow;
-use domain::{Amount, BlockchainNetwork, Currency, PaymentReceipt, ProjectId, UserId};
+use domain::{
+	Amount, BlockchainNetwork, Currency, PaymentReason, PaymentReceipt, ProjectId, UserId,
+};
 use iban::Iban;
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
 use rusty_money::Money;
@@ -8,10 +10,7 @@ use uuid::Uuid;
 
 use super::{Context, Error, Result};
 use crate::{
-	domain::{
-		user_info::{ContactInformation, Identity, Location, PayoutSettings},
-		PaymentReason,
-	},
+	domain::user_info::{ContactInformation, Identity, Location, PayoutSettings},
 	presentation::http::dto::{
 		EthereumIdentityInput, IdentityInput, OptionalNonEmptyTrimmedString, PaymentReference,
 		PayoutSettingsInput,
@@ -252,8 +251,6 @@ impl Mutation {
 			));
 		}
 
-		reason.is_valid().map_err(|e| Error::InvalidRequest(e.into()))?;
-
 		let payment_request_id = context
 			.request_payment_usecase
 			.request(
@@ -261,7 +258,7 @@ impl Mutation {
 				caller_id,
 				(recipient_id as i64).into(),
 				amount_in_usd as u32,
-				serde_json::to_value(reason).map_err(|e| Error::InvalidRequest(anyhow!(e)))?,
+				reason,
 			)
 			.await?;
 

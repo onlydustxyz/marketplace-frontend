@@ -2,10 +2,9 @@ use std::collections::HashSet;
 
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
-use serde_json::Value;
 use thiserror::Error;
 
-use crate::*;
+use crate::{payment::Reason, *};
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -119,7 +118,7 @@ impl Project {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
-		reason: Value,
+		reason: Reason,
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
 		Ok(self
 			.budget

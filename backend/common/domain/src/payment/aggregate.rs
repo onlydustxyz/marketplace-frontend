@@ -3,9 +3,9 @@ use derive_getters::Getters;
 use olog::info;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use thiserror::Error;
 
+use super::Reason;
 use crate::{
 	Aggregate, Amount, Entity, EventSourcable, GithubUserId, PaymentEvent, PaymentId,
 	PaymentReceipt, PaymentReceiptId, UserId,
@@ -79,7 +79,7 @@ impl Payment {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
-		reason: Value,
+		reason: Reason,
 	) -> Vec<<Self as Aggregate>::Event> {
 		vec![PaymentEvent::Requested {
 			id,
@@ -206,8 +206,8 @@ mod tests {
 	}
 
 	#[fixture]
-	fn reason() -> Value {
-		serde_json::to_value("{}").unwrap()
+	fn reason() -> Reason {
+		Default::default()
 	}
 
 	#[fixture]
@@ -243,7 +243,7 @@ mod tests {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
-		reason: Value,
+		reason: Reason,
 	) -> Payment {
 		let events = Payment::request(payment_id, requestor_id, recipient_id, amount, reason);
 		Payment::from_events(&events)
@@ -377,7 +377,7 @@ mod tests {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
-		reason: Value,
+		reason: Reason,
 	) {
 		let before = Utc::now();
 		let events = Payment::request(

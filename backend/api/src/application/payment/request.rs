@@ -2,12 +2,11 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{
-	AggregateRootRepository, DomainError, Event, GithubUserId, PaymentId, Project, ProjectId,
-	Publisher, UserId,
+	AggregateRootRepository, DomainError, Event, GithubUserId, PaymentId, PaymentReason, Project,
+	ProjectId, Publisher, UserId,
 };
 use infrastructure::amqp::UniqueMessage;
 use rusty_money::{crypto, Money};
-use serde_json::Value;
 use tracing::instrument;
 
 use crate::domain::Publishable;
@@ -35,7 +34,7 @@ impl Usecase {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount_in_usd: u32,
-		reason: Value,
+		reason: PaymentReason,
 	) -> Result<PaymentId, DomainError> {
 		let project = self.project_repository.find_by_id(&project_id)?;
 		let new_payment_id = PaymentId::new();
