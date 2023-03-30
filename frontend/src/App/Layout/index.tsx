@@ -10,14 +10,14 @@ export default function Layout() {
   const homepage = location.pathname === "/";
 
   return (
-    <div className="fixed h-screen w-screen">
+    <div className="md:fixed h-screen w-screen">
       {!homepage && (
         <div className="md:invisible md:h-0">
           <ResponsivityFallback />
         </div>
       )}
       <div
-        className={classNames("h-screen flex flex-col", {
+        className={classNames("md:h-screen flex flex-col", {
           "invisible md:visible": !homepage,
         })}
       >

@@ -16,12 +16,12 @@ export default function Background({ roundedBorders, withSidebar = false, childr
     <div
       className={classNames("overflow-y-auto scrollbar-none h-full w-full mb-6", {
         "mr-6 ml-2": withSidebar,
-        "mx-6 pr-6": !withSidebar,
+        "md:mx-6 md:pr-6 px-2": !withSidebar,
       })}
     >
       <div
         className={classNames("bg-space bg-no-repeat bg-fixed bg-clip-content min-h-full", roundedBorders, {
-          "mr-6": !withSidebar,
+          "md:mr-6": !withSidebar,
         })}
       >
         {children}
