@@ -55,9 +55,10 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
     variables: { projectId },
   });
 
-  const repos = sortBy(data?.projectsByPk?.githubRepos.map(repo => repo.githubRepoDetails) || [], "name").filter(
-    isDefined
-  );
+  const repos = sortBy(
+    data?.projectsByPk?.githubRepos.map(repo => repo.githubRepoDetails?.content) || [],
+    "name"
+  ).filter(isDefined);
 
   useEffect(() => {
     if (!selectedRepo) setSelectedRepo(repos[0]);

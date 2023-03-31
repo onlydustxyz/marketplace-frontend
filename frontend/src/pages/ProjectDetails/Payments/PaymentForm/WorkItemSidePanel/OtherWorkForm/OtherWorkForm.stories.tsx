@@ -70,8 +70,18 @@ const mocks: MockedResponse[] = [
       data: {
         projectsByPk: {
           githubRepos: [
-            { githubRepoDetails: { __typename: "GithubRepoDetails", owner: "owner-1", name: "first-repo" } },
-            { githubRepoDetails: { __typename: "GithubRepoDetails", owner: "owner-1", name: "second-repo" } },
+            {
+              githubRepoDetails: {
+                id: 123456,
+                content: { __typename: "Repository", owner: "owner-1", name: "first-repo" },
+              },
+            },
+            {
+              githubRepoDetails: {
+                id: 123456,
+                content: { __typename: "Repository", owner: "owner-1", name: "second-repo" },
+              },
+            },
           ],
         },
       },
