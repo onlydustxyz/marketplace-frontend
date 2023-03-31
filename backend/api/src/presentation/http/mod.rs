@@ -35,7 +35,7 @@ pub async fn serve(
 	project_sponsor_repository: ProjectSponsorRepository,
 	pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 	user_info_repository: UserInfoRepository,
-	github: Arc<github::RoundRobinClient>,
+	github: Arc<github::Client>,
 	ens: Arc<ens::Client>,
 	simple_storage: Arc<simple_storage::Client>,
 ) -> Result<()> {

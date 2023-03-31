@@ -35,6 +35,17 @@ pub use user::{Entity as User, Id as UserId};
 mod budget;
 pub use budget::{Budget, Error as BudgetError, Event as BudgetEvent, Id as BudgetId};
 
+mod github;
+pub use github::{
+	FetchIssueService as GithubFetchIssueService, FetchRepoService as GithubFetchRepoService,
+	FetchService as GithubFetchService, FetchUserService as GithubFetchUserService,
+	Issue as GithubIssue, IssueStatus as GithubIssueStatus, IssueType as GithubIssueType,
+	Repository as GithubRepo, SearchIssueService as GithubSearchIssueService,
+	SearchService as GithubSearchService, SearchUserService as GithubSearchUserService,
+	Service as GithubService, ServiceError as GithubServiceError,
+	ServiceResult as GithubServiceResult, User as GithubUser,
+};
+
 pub mod aggregate_root;
 #[cfg(test)]
 pub use aggregate_root::MockRepository as MockAggregateRootRepository;

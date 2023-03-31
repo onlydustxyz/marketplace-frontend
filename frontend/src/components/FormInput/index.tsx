@@ -12,9 +12,9 @@ type PropsType = {
   options?: RegisterOptions;
   value?: string | number;
   errorDisplay?: InputErrorDisplay;
-  onChange?: ChangeEventHandler<unknown>;
-  onFocus?: FocusEventHandler<unknown>;
-  onBlur?: FocusEventHandler<unknown>;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  onFocus?: FocusEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
   onKeyDown?: KeyboardEventHandler;
   prefixComponent?: React.ReactNode;
   suffixComponent?: React.ReactNode;
@@ -22,6 +22,8 @@ type PropsType = {
   showValidationErrors?: boolean;
   requiredForPayment?: boolean;
   withMargin?: boolean;
+  as?: React.ElementType;
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement> | React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 } & PropsWithChildren;
 
 export default function Input({
@@ -44,6 +46,8 @@ export default function Input({
   requiredForPayment = false,
   withMargin = true,
   children,
+  as,
+  inputProps,
 }: PropsType) {
   const { register } = useFormContext();
   const { errors } = useFormState({ name });
@@ -76,6 +80,8 @@ export default function Input({
         requiredForPayment,
         withMargin,
         children,
+        as,
+        inputProps,
       }}
     />
   );

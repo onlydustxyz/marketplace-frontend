@@ -1,3 +1,4 @@
+use async_trait::async_trait;
 use derive_more::IntoIterator;
 use octocrab::FromResponse;
 use reqwest::StatusCode;

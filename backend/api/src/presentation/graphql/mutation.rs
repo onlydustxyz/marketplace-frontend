@@ -1,6 +1,7 @@
 use anyhow::anyhow;
 use domain::{
-	Amount, BlockchainNetwork, Currency, PaymentReason, PaymentReceipt, ProjectId, UserId,
+	Amount, BlockchainNetwork, Currency, GithubIssue, PaymentReason, PaymentReceipt, ProjectId,
+	UserId,
 };
 use iban::Iban;
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
@@ -408,5 +409,37 @@ impl Mutation {
 			.remove_sponsor(&project_id.into(), &sponsor_id.into())?;
 
 		Ok(project_id)
+	}
+
+	pub async fn create_issue(
+		&self,
+		context: &Context,
+		project_id: Uuid,
+		github_repo_id: i32,
+		title: String,
+		description: String,
+	) -> Result<GithubIssue> {
+		let caller_id = *context.caller_info()?.user_id();
+
+		if !context
+			.caller_permissions
+			.can_create_github_issue_for_project(&project_id.into())
+		{
+			return Err(Error::NotAuthorized(
+				caller_id,
+				"Project Lead role required".to_string(),
+			));
+		}
+
+		let issue = context
+			.create_github_issue_usecase
+			.create_issue(
+				&project_id.into(),
+				&(github_repo_id as i64).into(),
+				title,
+				description,
+			)
+			.await?;
+		Ok(issue)
 	}
 }

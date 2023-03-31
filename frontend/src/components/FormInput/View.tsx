@@ -1,4 +1,4 @@
-import { FocusEventHandler, KeyboardEventHandler, memo, PropsWithChildren } from "react";
+import React, { FocusEventHandler, KeyboardEventHandler, memo, PropsWithChildren } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import LoaderIcon from "src/assets/icons/Loader";
 import ImageCard, {
@@ -32,6 +32,8 @@ type PropsType = {
   requiredForPayment: boolean;
   withMargin: boolean;
   negativeZIndex?: boolean;
+  as?: React.ElementType;
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement> | React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 } & PropsWithChildren;
 
 export enum InputErrorDisplay {
@@ -63,6 +65,8 @@ const View: React.FC<PropsType> = ({
   withMargin,
   children,
   negativeZIndex = false,
+  as = "input",
+  inputProps,
 }) => {
   const isValidationError = error?.type === InputErrorType.Pattern || error?.type === InputErrorType.Validate;
   const showError = error && (!isValidationError || showValidationErrors) && errorDisplay === InputErrorDisplay.Normal;
@@ -86,22 +90,24 @@ const View: React.FC<PropsType> = ({
         })}
       >
         <div className="relative flex items-center gap-2">
-          <input
-            key={register.name}
-            id={register.name}
-            placeholder={placeholder}
-            type={type}
-            className={classNames(
-              "w-full h-11 bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 text-greyscale-50 placeholder:text-spaceBlue-200 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
-              { "border outline-1 border-orange-500": showError },
+          {React.createElement(as, {
+            key: register.name,
+            id: register.name,
+            placeholder,
+            type,
+            className: classNames(
+              "w-full bg-white/5 border border-greyscale-50/[0.08] rounded-xl font-walsheim font-normal text-base px-4 py-3 text-greyscale-50 placeholder:text-spaceBlue-200 focus:placeholder:text-spacePurple-200/60 focus:outline-double focus:outline-spacePurple-500 focus:border-spacePurple-500 focus:bg-spacePurple-900",
+              { "border outline-1 border-orange-500": showError, "h-11": as === "input" },
               inputClassName
-            )}
-            value={value}
-            {...register}
-            onFocus={onFocus}
-            onKeyDown={onKeyDown}
-            style={negativeZIndex ? { zIndex: -1 } : {}}
-          />
+            ),
+            value,
+            ...register,
+            onFocus,
+            onKeyDown,
+            style: negativeZIndex ? { zIndex: -1 } : {},
+            "data-testid": register.name,
+            ...inputProps,
+          })}
           {prefixComponent && <div className="absolute left-0 ml-3">{prefixComponent}</div>}
           {loading ? (
             <LoaderIcon className="flex animate-spin place-items-center absolute right-0 mr-3" />

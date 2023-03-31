@@ -1,9 +1,10 @@
 use std::sync::Arc;
 
 use anyhow::Result;
+use domain::GithubService;
 use presentation::http;
 
-use crate::{domain::GithubService, Config};
+use crate::Config;
 
 pub mod guards;
 mod routes;

@@ -1,6 +1,6 @@
 use octocrab::Octocrab;
 
-use super::{AddHeaders, Config, OctocrabProxy};
+use super::{AddHeaders, Config};
 pub struct Client(Octocrab);
 
 impl Client {
@@ -13,10 +13,8 @@ impl Client {
 				.build()?,
 		))
 	}
-}
 
-impl OctocrabProxy for Client {
-	fn octocrab(&self) -> &Octocrab {
+	pub fn octocrab(&self) -> &Octocrab {
 		&self.0
 	}
 }

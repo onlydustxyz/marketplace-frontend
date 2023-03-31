@@ -1,8 +1,9 @@
-use derive_more::Constructor;
+use derive_getters::Getters;
+use derive_new::new;
 use juniper::GraphQLObject;
 use url::Url;
 
-#[derive(Constructor, GraphQLObject)]
+#[derive(new, Getters, GraphQLObject)]
 pub struct User {
 	id: i32,
 	login: String,

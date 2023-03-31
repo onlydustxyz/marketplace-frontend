@@ -9,6 +9,10 @@ impl Permissions for Anonymous {
 		false
 	}
 
+	fn can_create_github_issue_for_project(&self, _project_id: &ProjectId) -> bool {
+		false
+	}
+
 	fn can_unassign_project_leader(
 		&self,
 		_project_id: &ProjectId,

@@ -55,7 +55,7 @@ pub async fn get_graphql_handler(
 		PendingProjectLeaderInvitationsRepository,
 	>,
 	user_info_repository: &State<UserInfoRepository>,
-	github: &State<Arc<github::RoundRobinClient>>,
+	github: &State<Arc<github::Client>>,
 	ens: &State<Arc<ens::Client>>,
 	simple_storage: &State<Arc<simple_storage::Client>>,
 ) -> GraphQLResponse {
@@ -98,7 +98,7 @@ pub async fn post_graphql_handler(
 		PendingProjectLeaderInvitationsRepository,
 	>,
 	user_info_repository: &State<UserInfoRepository>,
-	github: &State<Arc<github::RoundRobinClient>>,
+	github: &State<Arc<github::Client>>,
 	ens: &State<Arc<ens::Client>>,
 	simple_storage: &State<Arc<simple_storage::Client>>,
 ) -> GraphQLResponse {

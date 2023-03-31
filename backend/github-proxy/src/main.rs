@@ -10,8 +10,6 @@ use dotenv::dotenv;
 #[macro_use]
 extern crate rocket;
 
-mod domain;
-mod infrastructure;
 mod presentation;
 
 use serde::Deserialize;
@@ -31,9 +29,9 @@ async fn main() -> Result<()> {
 	let config: Config = config::load("backend/github-proxy/app.yaml")?;
 	let _tracer = Tracer::init(&config.tracer, "github-proxy")?;
 
-	let github = Arc::new(RoundRobinClient::new(&config.github)?);
+	let github: github::Client = RoundRobinClient::new(&config.github)?.into();
 
-	http::serve(config, github).await?;
+	http::serve(config, Arc::new(github)).await?;
 
 	info!("👋 Gracefully shut down");
 	Ok(())

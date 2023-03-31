@@ -42,6 +42,7 @@ pub struct Context {
 		application::project::accept_leader_invitation::Usecase,
 	pub project_details_repository: ProjectDetailsRepository,
 	pub update_user_info_usecase: application::user::update_profile_info::Usecase,
+	pub create_github_issue_usecase: application::github::create_issue::Usecase,
 	pub ens: Arc<ens::Client>,
 }
 
@@ -59,7 +60,7 @@ impl Context {
 		project_sponsor_repository: ProjectSponsorRepository,
 		pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 		user_info_repository: UserInfoRepository,
-		github: Arc<github::RoundRobinClient>,
+		github: Arc<github::Client>,
 		ens: Arc<ens::Client>,
 		simple_storage: Arc<simple_storage::Client>,
 	) -> Self {
@@ -99,11 +100,11 @@ impl Context {
 				github_repo_repository.clone(),
 				project_github_repo_repository.clone(),
 				github.clone(),
-				github,
+				github.clone(),
 			),
 			unlink_github_repo_usecase: application::project::unlink_github_repo::Usecase::new(
 				github_repo_repository,
-				project_github_repo_repository,
+				project_github_repo_repository.clone(),
 			),
 			create_sponsor_usecase: application::sponsor::create::Usecase::new(
 				sponsor_repository.clone(),
@@ -136,6 +137,11 @@ impl Context {
 			update_user_info_usecase: application::user::update_profile_info::Usecase::new(
 				user_info_repository,
 				ArePayoutSettingsValid::new(ens.clone()),
+			),
+			create_github_issue_usecase: application::github::create_issue::Usecase::new(
+				project_github_repo_repository,
+				github.clone(),
+				github,
 			),
 			ens,
 		}
