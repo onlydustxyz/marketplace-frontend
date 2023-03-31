@@ -1,10 +1,11 @@
 use std::sync::Arc;
 
-use infrastructure::github::SingleClient as SingleGithubClient;
+use domain::GithubService;
+use infrastructure::github;
 use olog::error;
 
 use super::Error;
-use crate::{domain::GithubService, presentation::http::guards::OptionGithubPat, Config};
+use crate::{presentation::http::guards::OptionGithubPat, Config};
 
 pub struct Context {
 	pub github_pat: Option<String>,
@@ -27,15 +28,18 @@ impl Context {
 
 	pub fn github_service_with_user_pat(&self) -> Result<Arc<dyn GithubService>, Error> {
 		let client: Arc<dyn GithubService> = match self.github_pat.clone() {
-			Some(token) => Arc::new(SingleGithubClient::new(&self.config.github, token).map_err(
-				|error| {
-					error!(
-						error = format!("{error:?}"),
-						"Error while building Github client"
-					);
-					Error::InternalError(error)
-				},
-			)?),
+			Some(token) => {
+				let client: github::Client = github::SingleClient::new(&self.config.github, token)
+					.map_err(|error| {
+						error!(
+							error = format!("{error:?}"),
+							"Error while building Github client"
+						);
+						Error::InternalError(error)
+					})?
+					.into();
+				Arc::new(client)
+			},
 			None => self.default_github_service.clone(),
 		};
 

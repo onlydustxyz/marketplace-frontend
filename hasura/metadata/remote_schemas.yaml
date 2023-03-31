@@ -30,6 +30,7 @@
             id: Int!
             mergedAt: DateTimeUtc
             number: Int!
+            repoId: GithubRepositoryId!
             status: Status!
             title: String!
             type: Type!
@@ -162,7 +163,7 @@
             description: String!
             forksCount: Int!
             htmlUrl: Url!
-            id: Int!
+            id: GithubRepositoryId!
             logoUrl: Url!
             name: String!
             owner: String!
@@ -216,15 +217,12 @@
             searchIssues(query: String!, sort: String, order: String, perPage: Int, page: Int): [Issue!]
             searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [User!]
           }
-          type Mutation {
-            createIssue(repoOwner: String!, repoName: String!, title: String!, description: String!, assignees: [String!]!): Issue!
-          }
           type Repository {
             contributors: [User!]!
             description: String!
             forksCount: Int!
             htmlUrl: Url!
-            id: Int!
+            id: GithubRepositoryId!
             logoUrl: Url!
             name: String!
             owner: String!

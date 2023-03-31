@@ -1,30 +1,27 @@
 use std::sync::Arc;
 
 use anyhow::anyhow;
-use domain::{DomainError, GithubIssue, GithubRepositoryId, ProjectId};
+use domain::{DomainError, GithubFetchRepoService, GithubIssue, GithubRepositoryId, ProjectId};
 use tracing::instrument;
 
-use crate::{
-	domain::GithubService,
-	infrastructure::database::{GithubRepoRepository, ProjectGithubRepoRepository},
-};
+use crate::{domain::GithubService, infrastructure::database::ProjectGithubRepoRepository};
 
 pub struct Usecase {
-	github_repo_repository: GithubRepoRepository,
 	project_github_repo_repository: ProjectGithubRepoRepository,
 	github_service: Arc<dyn GithubService>,
+	github_repo_fetch_service: Arc<dyn GithubFetchRepoService>,
 }
 
 impl Usecase {
 	pub fn new(
-		github_repo_repository: GithubRepoRepository,
 		project_github_repo_repository: ProjectGithubRepoRepository,
 		github_service: Arc<dyn GithubService>,
+		github_repo_fetch_service: Arc<dyn GithubFetchRepoService>,
 	) -> Self {
 		Self {
-			github_repo_repository,
 			project_github_repo_repository,
 			github_service,
+			github_repo_fetch_service,
 		}
 	}
 
@@ -42,7 +39,11 @@ impl Usecase {
 			)));
 		}
 
-		let github_repo = self.github_repo_repository.find_by_id(github_repo_id)?;
+		let github_repo = self
+			.github_repo_fetch_service
+			.repo_by_id(github_repo_id)
+			.await
+			.map_err(|e| DomainError::InvalidInputs(anyhow!(e)))?;
 
 		self.github_service
 			.create_issue(
@@ -65,13 +66,25 @@ mod tests {
 	use std::str::FromStr;
 
 	use assert_matches::assert_matches;
-	use mockall::predicate::eq;
+	use async_trait::async_trait;
+	use domain::{GithubRepo, GithubServiceError};
+	use mockall::{mock, predicate::eq};
 	use rstest::{fixture, rstest};
-	use serde_json::json;
+	use url::Url;
 	use uuid::Uuid;
 
 	use super::*;
-	use crate::domain::{GithubRepo, MockGithubService};
+	use crate::domain::MockGithubService;
+
+	mock! {
+		Client {}
+
+		#[async_trait]
+		impl GithubFetchRepoService for Client {
+			async fn repo_by_id(&self, id: &GithubRepositoryId) -> Result<GithubRepo, GithubServiceError>;
+			async fn repo_by_url(&self, url: &Url) -> Result<GithubRepo, GithubServiceError>;
+		}
+	}
 
 	#[fixture]
 	fn project_id() -> ProjectId {
@@ -92,7 +105,12 @@ mod tests {
 			github_repo_id,
 			GITHUB_REPO_OWNER.to_string(),
 			GITHUB_REPO_NAME.to_string(),
-			json!(["rust", "cairo"]),
+			Default::default(),
+			String::from("https://github.com").parse().unwrap(),
+			String::from("https://github.com").parse().unwrap(),
+			Default::default(),
+			Default::default(),
+			Default::default(),
 		)
 	}
 
@@ -108,13 +126,6 @@ mod tests {
 			.once()
 			.with(eq(project_id), eq(github_repo_id))
 			.returning(|_, _| Ok(true));
-
-		let mut github_repo_repository = GithubRepoRepository::default();
-		github_repo_repository
-			.expect_find_by_id()
-			.with(eq(github_repo_id))
-			.once()
-			.returning(move |_| Ok(github_repo.clone()));
 
 		let mut github_service = MockGithubService::new();
 		github_service
@@ -132,10 +143,17 @@ mod tests {
 				)))
 			});
 
+		let mut github_fetch_repo_service = MockClient::new();
+		github_fetch_repo_service
+			.expect_repo_by_id()
+			.with(eq(github_repo_id))
+			.once()
+			.return_once(|_| Ok(github_repo));
+
 		let usecase = Usecase::new(
-			github_repo_repository,
 			project_github_repo_repository,
 			Arc::new(github_service),
+			Arc::new(github_fetch_repo_service),
 		);
 
 		let error = usecase
@@ -162,13 +180,13 @@ mod tests {
 			.with(eq(project_id), eq(github_repo_id))
 			.returning(|_, _| Ok(false));
 
-		let github_repo_repository = GithubRepoRepository::default();
+		let github_fetch_repo_service = MockClient::new();
 		let github_service = MockGithubService::new();
 
 		let usecase = Usecase::new(
-			github_repo_repository,
 			project_github_repo_repository,
 			Arc::new(github_service),
+			Arc::new(github_fetch_repo_service),
 		);
 
 		let error = usecase

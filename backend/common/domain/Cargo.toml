@@ -45,6 +45,7 @@ chrono = { version = "0.4", features = ["serde"] }
 # Utils
 derive-getters = "0.2.0"
 derive_more = "0.99.17"
+derive-new = "0.5.9"
 
 # Database
 diesel = {version = "1.4.8", default-features = false, features = [

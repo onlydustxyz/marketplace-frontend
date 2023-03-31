@@ -1159,6 +1159,7 @@ dependencies = [
  "chrono",
  "derive",
  "derive-getters",
+ "derive-new",
  "derive_more",
  "diesel",
  "futures",

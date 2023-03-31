@@ -4,7 +4,7 @@ use anyhow::anyhow;
 use octocrab::Octocrab;
 use olog::debug;
 
-use super::{AddHeaders, Config, OctocrabProxy};
+use super::{AddHeaders, Config};
 
 pub struct Client {
 	octocrab_clients: Vec<Octocrab>,
@@ -47,10 +47,8 @@ impl Client {
 			next_octocrab_clients_index: Arc::new(Mutex::new(0)),
 		})
 	}
-}
 
-impl OctocrabProxy for Client {
-	fn octocrab(&self) -> &Octocrab {
+	pub fn octocrab(&self) -> &Octocrab {
 		let mut index = self.next_octocrab_clients_index.lock().unwrap();
 		let next_octocrab = &self.octocrab_clients[*index];
 		*index = (*index + 1) % self.octocrab_clients.len();
@@ -65,28 +63,6 @@ mod tests {
 	use rstest::rstest;
 
 	use super::*;
-
-	#[rstest]
-	#[case("http://plop.fr/github/", Some("https://api.github.com/repos/ning-rain/evens/contributors".parse().unwrap()), Some("http://plop.fr/github/repos/ning-rain/evens/contributors".parse().unwrap()))]
-	#[case("http://plop.fr/github", Some("https://api.github.com/repos/ning-rain/evens/contributors".parse().unwrap()), Some("http://plop.fr/github/repos/ning-rain/evens/contributors".parse().unwrap()))]
-	#[case("http://plop.fr/github/", Some("https://api.github.com".parse().unwrap()), Some("http://plop.fr/github/".parse().unwrap()))]
-	#[case("http://plop.fr/github", Some("https://api.github.com".parse().unwrap()), Some("http://plop.fr/github/".parse().unwrap()))]
-	#[case("http://plop.fr/github/", None, None)]
-	fn fix_github_host(
-		#[case] base_url: &str,
-		#[case] url: Option<reqwest::Url>,
-		#[case] expected_url: Option<reqwest::Url>,
-	) {
-		let client = Client::new(&Config {
-			base_url: base_url.to_string(),
-			personal_access_tokens: "token".to_string(),
-			headers: HashMap::new(),
-		})
-		.unwrap();
-
-		let result_url = client.fix_github_host(&url).unwrap();
-		assert_eq!(result_url, expected_url);
-	}
 
 	#[rstest]
 	#[case("only_one_token".to_string(), 1)]

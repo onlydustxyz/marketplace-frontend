@@ -1,10 +1,10 @@
-#![allow(clippy::too_many_arguments)]
-
 use chrono::{DateTime, Utc};
-use derive_more::Constructor;
-use domain::GithubRepositoryId;
+use derive_getters::Getters;
+use derive_new::new;
 use juniper::{GraphQLEnum, GraphQLObject};
 use url::Url;
+
+use crate::GithubRepositoryId;
 
 #[derive(Clone, Debug, GraphQLEnum)]
 pub enum Status {
@@ -21,7 +21,8 @@ pub enum Type {
 	PullRequest,
 }
 
-#[derive(Clone, Debug, Constructor, GraphQLObject)]
+#[allow(clippy::too_many_arguments)]
+#[derive(Clone, Debug, new, Getters, GraphQLObject)]
 pub struct Issue {
 	id: i32,
 	repo_id: GithubRepositoryId,

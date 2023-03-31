@@ -1,7 +1,7 @@
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use domain::{GithubIssue, GithubRepositoryId};
-use infrastructure::github::{self, FromOctocrabIssue, OctocrabProxy};
+use infrastructure::github::{self, IssueFromOctocrab};
 use serde_json::Value;
 
 use crate::domain::{GithubRepo, GithubService, GithubServiceError};
@@ -16,13 +16,12 @@ impl From<github::Error> for GithubServiceError {
 }
 
 #[async_trait]
-impl<P: OctocrabProxy> GithubService for P {
+impl GithubService for github::Client {
 	async fn fetch_repository_details(
 		&self,
 		github_repo_id: &GithubRepositoryId,
 	) -> Result<GithubRepo, GithubServiceError> {
-		let repo_id: i64 = (*github_repo_id).into();
-		let repo = self.get_repository_by_id(repo_id as u64).await?;
+		let repo = self.get_repository_by_id(github_repo_id).await?;
 
 		let languages: Value = if let Some(url) =
 			self.fix_github_host(&repo.languages_url).map_err(GithubServiceError::Other)?
@@ -51,6 +50,8 @@ impl<P: OctocrabProxy> GithubService for P {
 			.await
 			.map_err(|e| GithubServiceError::Other(anyhow!(e)))?;
 
-		GithubIssue::from_octocrab_issue(issue).map_err(|e| GithubServiceError::Other(anyhow!(e)))
+		let repo_id = self.get_issue_repository_id(&issue).await?;
+
+		GithubIssue::from_octocrab_issue(issue, repo_id).map_err(GithubServiceError::Other)
 	}
 }

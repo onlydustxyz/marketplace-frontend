@@ -1,12 +1,12 @@
 use std::sync::Arc;
 
+use domain::GithubService;
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use presentation::http::guards::{ApiKey, ApiKeyGuard};
 use rocket::{response::content, State};
 use tracing::instrument;
 
 use crate::{
-	domain::GithubService,
 	presentation::{graphql, http::guards::OptionGithubPat},
 	Config,
 };

@@ -1,46 +1,29 @@
-use domain::{GithubIssue, GithubIssueStatus, GithubIssueType};
+use anyhow::{anyhow, Result};
+use domain::{GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepositoryId};
 use octocrab::models::issues::IssueStateReason;
-use olog::error;
-use thiserror::Error;
 
-#[derive(Debug, Error)]
-pub enum Error {
-	#[error("Field '{0}' is not present")]
-	MissingField(String),
-	#[error(transparent)]
-	UnknownStatus(#[from] StatusError),
-}
-
-#[derive(Debug, Error)]
-pub enum StatusError {
-	#[error("Unknown octocrab state: '{0}'")]
-	UnknownState(String),
-	#[error("Field '{0}' is not present")]
-	MissingField(String),
-}
-
-pub trait FromOctocrabIssue
+pub trait IssueFromOctocrab
 where
 	Self: Sized,
 {
-	fn from_octocrab_issue(issue: octocrab::models::issues::Issue) -> Result<Self, Error>;
+	fn from_octocrab_issue(
+		issue: octocrab::models::issues::Issue,
+		repo_id: GithubRepositoryId,
+	) -> Result<Self>;
+
 	fn from_octocrab_pull_request(
 		pull_request: octocrab::models::pulls::PullRequest,
-	) -> Result<Self, Error>;
+	) -> Result<Self>;
 }
 
-impl FromOctocrabIssue for GithubIssue {
-	fn from_octocrab_issue(issue: octocrab::models::issues::Issue) -> Result<Self, Error> {
-		let id = issue
-			.id
-			.0
-			.try_into()
-			.expect("We cannot work with github ids superior to i32::MAX");
+impl IssueFromOctocrab for GithubIssue {
+	fn from_octocrab_issue(
+		issue: octocrab::models::issues::Issue,
+		repo_id: GithubRepositoryId,
+	) -> Result<Self> {
+		let id = issue.id.0.try_into()?;
 
-		let number = issue
-			.number
-			.try_into()
-			.expect("We cannot work with github PR number superior to i32::MAX");
+		let number = issue.number.try_into()?;
 
 		let issue_type = match issue.pull_request {
 			Some(_) => GithubIssueType::PullRequest,
@@ -51,6 +34,7 @@ impl FromOctocrabIssue for GithubIssue {
 
 		Ok(domain::GithubIssue::new(
 			id,
+			repo_id,
 			number,
 			issue_type,
 			issue.title,
@@ -64,35 +48,25 @@ impl FromOctocrabIssue for GithubIssue {
 
 	fn from_octocrab_pull_request(
 		pull_request: octocrab::models::pulls::PullRequest,
-	) -> Result<Self, Error> {
-		let id = pull_request
-			.id
-			.0
-			.try_into()
-			.expect("We cannot work with github ids superior to i32::MAX");
+	) -> Result<Self> {
+		let id = pull_request.id.0.try_into()?;
 
-		let number = pull_request
-			.number
-			.try_into()
-			.expect("We cannot work with github PR number superior to i32::MAX");
+		let number = pull_request.number.try_into()?;
 
-		let title = pull_request
-			.title
-			.clone()
-			.ok_or_else(|| Error::MissingField("title".to_string()))?;
+		let title = pull_request.title.clone().ok_or_else(|| anyhow!("Missing field: 'title'"))?;
 
 		let status = get_status_from_pull_request(&pull_request)?;
 
-		let created_at = pull_request
-			.created_at
-			.ok_or_else(|| Error::MissingField("created_at".to_string()))?;
+		let created_at =
+			pull_request.created_at.ok_or_else(|| anyhow!("Missing field: 'created_at'"))?;
 
-		let html_url = pull_request
-			.html_url
-			.ok_or_else(|| Error::MissingField("html_url".to_string()))?;
+		let html_url = pull_request.html_url.ok_or_else(|| anyhow!("Missing field: 'html_url'"))?;
+
+		let repo = pull_request.repo.ok_or_else(|| anyhow!("Missing field: 'repo'"))?;
 
 		Ok(domain::GithubIssue::new(
 			id,
+			(repo.id.0 as i64).into(),
 			number,
 			GithubIssueType::PullRequest,
 			title,
@@ -105,9 +79,7 @@ impl FromOctocrabIssue for GithubIssue {
 	}
 }
 
-fn get_status_from_issue(
-	issue: &octocrab::models::issues::Issue,
-) -> Result<GithubIssueStatus, StatusError> {
+fn get_status_from_issue(issue: &octocrab::models::issues::Issue) -> Result<GithubIssueStatus> {
 	match issue.state {
 		octocrab::models::IssueState::Open => Ok(GithubIssueStatus::Open),
 		octocrab::models::IssueState::Closed =>
@@ -119,17 +91,14 @@ fn get_status_from_issue(
 					_ => Ok(GithubIssueStatus::Closed),
 				},
 			},
-		_ => Err(StatusError::UnknownState(format!("{:?}", issue.state))),
+		_ => Err(anyhow!("Unknown state: '{:?}'", issue.state)),
 	}
 }
 
 fn get_status_from_pull_request(
 	pull_request: &octocrab::models::pulls::PullRequest,
-) -> Result<GithubIssueStatus, StatusError> {
-	let state = pull_request
-		.state
-		.as_ref()
-		.ok_or_else(|| StatusError::MissingField("state".to_string()))?;
+) -> Result<GithubIssueStatus> {
+	let state = pull_request.state.as_ref().ok_or_else(|| anyhow!("Missing field: 'state'"))?;
 
 	match state {
 		octocrab::models::IssueState::Open => Ok(GithubIssueStatus::Open),
@@ -137,6 +106,6 @@ fn get_status_from_pull_request(
 			Some(_) => Ok(GithubIssueStatus::Merged),
 			None => Ok(GithubIssueStatus::Closed),
 		},
-		_ => Err(StatusError::UnknownState(format!("{:?}", state))),
+		_ => Err(anyhow!("Unknown state: '{:?}'", state)),
 	}
 }

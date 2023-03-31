@@ -3,12 +3,12 @@ use derive_new::new;
 use juniper::GraphQLObject;
 use url::Url;
 
-use crate::domain::GithubUser;
+use crate::{GithubRepositoryId, GithubUser};
 
 #[allow(clippy::too_many_arguments)]
-#[derive(new, GraphQLObject, Getters)]
+#[derive(new, Getters, GraphQLObject)]
 pub struct Repository {
-	id: i32,
+	id: GithubRepositoryId,
 	owner: String,
 	name: String,
 	contributors: Vec<GithubUser>,

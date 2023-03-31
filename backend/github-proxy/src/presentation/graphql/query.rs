@@ -1,9 +1,10 @@
-use domain::{GithubIssue, GithubRepositoryId};
+use domain::{
+	GithubIssue, GithubIssueNumber, GithubRepo, GithubRepositoryId, GithubUser, GithubUserId,
+};
 use juniper::{graphql_object, DefaultScalarValue};
 use olog::{error, warn};
 
 use super::{Context, Error};
-use crate::domain::{GithubRepository, GithubUser};
 
 pub struct Query;
 
@@ -13,15 +14,12 @@ impl Query {
 		"Raclette!"
 	}
 
-	pub async fn fetch_repository_details(
-		&self,
-		context: &Context,
-		id: i32,
-	) -> Option<GithubRepository> {
+	pub async fn fetch_repository_details(&self, context: &Context, id: i32) -> Option<GithubRepo> {
+		let repository_id = GithubRepositoryId::from(id as i64);
 		context
 			.github_service()
 			.ok()?
-			.fetch_repository_by_id(id as u64)
+			.repo_by_id(&repository_id)
 			.await
 			.map_err(Error::from)
 			.logged()
@@ -36,7 +34,7 @@ impl Query {
 		context
 			.github_service()
 			.ok()?
-			.fetch_user_by_name(&username)
+			.user(&username)
 			.await
 			.map_err(Error::from)
 			.logged()
@@ -52,7 +50,7 @@ impl Query {
 		context
 			.github_service()
 			.ok()?
-			.fetch_repository_PRs(&repository_id)
+			.pulls_by_repo_id(&repository_id)
 			.await
 			.map_err(Error::from)
 			.logged()
@@ -66,10 +64,11 @@ impl Query {
 		repo_name: String,
 		issue_number: i32,
 	) -> Option<domain::GithubIssue> {
+		let issue_number = GithubIssueNumber::from(issue_number as i64);
 		context
 			.github_service()
 			.ok()?
-			.fetch_issue(&repo_owner, &repo_name, issue_number as u64)
+			.issue(&repo_owner, &repo_name, &issue_number)
 			.await
 			.map_err(Error::from)
 			.logged()
@@ -83,10 +82,11 @@ impl Query {
 		issue_number: i32,
 	) -> Option<GithubIssue> {
 		let repository_id = GithubRepositoryId::from(repository_id as i64);
+		let issue_number = GithubIssueNumber::from(issue_number as i64);
 		context
 			.github_service()
 			.ok()?
-			.fetch_issue_by_repository_id(&repository_id, issue_number as u64)
+			.issue_by_repo_id(&repository_id, &issue_number)
 			.await
 			.map_err(Error::from)
 			.logged()
@@ -98,10 +98,11 @@ impl Query {
 		context: &Context,
 		user_id: i32,
 	) -> Option<GithubUser> {
+		let user_id = GithubUserId::from(user_id as i64);
 		context
 			.github_service()
 			.ok()?
-			.fetch_user_by_id(user_id as u64)
+			.user_by_id(&user_id)
 			.await
 			.map_err(Error::from)
 			.logged()
@@ -120,7 +121,7 @@ impl Query {
 		context
 			.github_service_with_user_pat()
 			.ok()?
-			.search_users(
+			.users(
 				&query,
 				sort,
 				order,
@@ -145,7 +146,7 @@ impl Query {
 		context
 			.github_service_with_user_pat()
 			.ok()?
-			.search_issues(
+			.issues(
 				&query,
 				sort,
 				order,

@@ -29,7 +29,7 @@ async fn main() -> Result<()> {
 	)?));
 	database.run_migrations()?;
 
-	let github = Arc::new(github::RoundRobinClient::new(config.github())?);
+	let github: github::Client = github::RoundRobinClient::new(config.github())?.into();
 	let simple_storage = Arc::new(simple_storage::Client::new(config.s3()).await?);
 
 	http::serve(
@@ -44,7 +44,7 @@ async fn main() -> Result<()> {
 		ProjectSponsorRepository::new(database.clone()),
 		PendingProjectLeaderInvitationsRepository::new(database.clone()),
 		UserInfoRepository::new(database),
-		github,
+		Arc::new(github),
 		Arc::new(ens::Client::new(config.web3())?),
 		simple_storage,
 	)

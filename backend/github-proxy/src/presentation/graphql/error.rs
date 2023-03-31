@@ -1,8 +1,7 @@
+use domain::GithubServiceError;
 use juniper::{graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
 use olog::error;
 use thiserror::Error;
-
-use crate::domain::GithubServiceError;
 
 #[derive(Debug, Error)]
 pub enum Error {
