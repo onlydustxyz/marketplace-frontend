@@ -1,5 +1,8 @@
 pub mod schema;
 
+#[cfg(test)]
+mod tests;
+
 mod error;
 use diesel_tracing::pg::InstrumentedPgConnection;
 pub use error::Error as DatabaseError;
