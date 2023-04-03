@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { PullDetailsFragment, VisibleProjectFragment } from "src/__generated/graphql";
+import { PullDetailsFragment, Status, VisibleProjectFragment } from "src/__generated/graphql";
 import { chain, flatMap, some, uniqBy } from "lodash";
 import isDefined from "src/utils/isDefined";
 import { ContributorIdFragment } from "src/__generated/graphql";
@@ -86,7 +86,7 @@ export const countUnpaidMergedPullsByContributor = (project?: Project<Contributo
 
   return chain(project?.githubRepos)
     .flatMap("githubRepoDetails.pullRequests")
-    .filter("mergedAt")
+    .filter({ status: Status.Merged })
     .filter(notPaid)
     .countBy("author.id")
     .value();
@@ -101,7 +101,7 @@ gql`
     id
     repoId
     number
-    mergedAt
+    status
     author {
       ...ContributorId
     }

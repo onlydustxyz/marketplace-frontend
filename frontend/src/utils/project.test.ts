@@ -4,6 +4,7 @@ import {
   ContributorsTableFieldsFragment,
   ProjectContributorsFragment,
   PullDetailsFragment,
+  Status,
   WorkItem,
 } from "src/__generated/graphql";
 import { countUnpaidMergedPullsByContributor, getContributors } from "./project";
@@ -84,7 +85,7 @@ describe("countUnpaidMergedPullsByContributor", () => {
       repoId,
       number: issueNumber,
       author: users[index],
-      mergedAt: new Date(),
+      status: Status.Merged,
     }));
 
     const mergedUnPaidPulls: PullDetailsFragment[] = range(0, 10).map(id => ({
@@ -92,7 +93,7 @@ describe("countUnpaidMergedPullsByContributor", () => {
       repoId: 3000 + id,
       number: id,
       author: users[id % users.length],
-      mergedAt: new Date(),
+      status: Status.Merged,
     }));
 
     const openPulls: PullDetailsFragment[] = range(0, 4).map(id => ({
@@ -100,7 +101,7 @@ describe("countUnpaidMergedPullsByContributor", () => {
       repoId: 4000 + id,
       number: id,
       author: users[id % users.length],
-      mergedAt: null, // TODO change to status
+      status: Status.Open,
     }));
 
     const counts = countUnpaidMergedPullsByContributor({
