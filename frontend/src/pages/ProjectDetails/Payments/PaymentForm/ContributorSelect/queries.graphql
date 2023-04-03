@@ -1,11 +1,9 @@
 fragment ProjectContributorsForPaymentSelect on Projects {
+  ...ProjectContributorsByLeader
   id
   githubRepos {
     githubRepoDetails {
       id
-      pullRequests(state: CLOSED) {
-        ...PullDetails
-      }
       content {
         id
         contributors {

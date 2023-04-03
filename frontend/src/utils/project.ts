@@ -134,7 +134,7 @@ gql`
   fragment ProjectContributorsByLeader on Projects {
     githubRepos {
       githubRepoDetails {
-        pullRequests {
+        pullRequests(state: CLOSED) {
           ...PullDetails
         }
       }

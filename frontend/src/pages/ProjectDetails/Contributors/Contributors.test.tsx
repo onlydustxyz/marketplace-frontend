@@ -7,6 +7,7 @@ import Contributors from ".";
 import {
   ContributorsTableFieldsFragment,
   GetProjectContributorsDocument,
+  GetProjectContributorsQueryResult,
   GithubRepoContributorsFieldsFragment,
 } from "src/__generated/graphql";
 
@@ -124,11 +125,16 @@ const graphQlMocks = [
     result: {
       data: {
         projectsByPk: {
+          __typename: "Projects",
           id: TEST_PROJECT_ID,
-          name: "test-project",
           githubRepos: [githubRepo1, githubRepo2],
+          budgets: [],
+          projectDetails: {
+            projectId: TEST_PROJECT_ID,
+            name: "test-project",
+          },
         },
-      },
+      } as GetProjectContributorsQueryResult["data"],
     },
   },
 ];

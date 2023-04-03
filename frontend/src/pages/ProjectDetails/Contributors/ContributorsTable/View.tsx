@@ -12,12 +12,14 @@ export type Contributor = {
   isRegistered: boolean;
   totalEarned: number;
   paidContributions: number;
+  unpaidMergedPullsCount?: number;
 };
 
 export enum Field {
   Login = "login",
   TotalEarned = "totalEarned",
   PaidContributions = "paidContributions",
+  LeftToPay = "unpaidMergedPullsCount",
 }
 
 export type Sorting = {
@@ -46,7 +48,7 @@ export default function View({ contributors, isProjectLeader, remainingBudget, o
       return typeof f === "string" ? f.toLocaleLowerCase() : f;
     });
     return sorting.ascending ? sorted : sorted.reverse();
-  }, [sorting]);
+  }, [sorting, contributors]);
 
   return (
     <Table id="contributors_table" headers={<Headers {...{ sorting, applySorting, isProjectLeader }} />}>

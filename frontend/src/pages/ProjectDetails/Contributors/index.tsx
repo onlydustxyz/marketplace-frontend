@@ -5,6 +5,8 @@ import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { HasuraUserRole } from "src/types";
 import {
+  GetProjectContributorsAsLeaderDocument,
+  GetProjectContributorsAsLeaderQuery,
   GetProjectContributorsDocument,
   GetProjectContributorsQuery,
   GetProjectRemainingBudgetDocument,
@@ -16,20 +18,34 @@ import { useOutletContext } from "react-router-dom";
 import { getContributors } from "src/utils/project";
 import Title from "src/pages/ProjectDetails/Title";
 
-const Contributors: React.FC = () => {
+export default function Contributors() {
   const { T } = useIntl();
   const { ledProjectIds } = useAuth();
   const { projectId } = useOutletContext<{ projectId: string }>();
 
   const isProjectLeader = !!ledProjectIds.find(element => element === projectId);
 
-  const getProjectContributorsQuery = useHasuraQuery<GetProjectContributorsQuery>(
+  const getProjectContributorsQueryAsPublic = useHasuraQuery<GetProjectContributorsQuery>(
     GetProjectContributorsDocument,
     HasuraUserRole.Public,
     {
       variables: { projectId },
+      skip: isProjectLeader,
     }
   );
+
+  const getProjectContributorsQueryAsLeader = useHasuraQuery<GetProjectContributorsAsLeaderQuery>(
+    GetProjectContributorsAsLeaderDocument,
+    HasuraUserRole.RegisteredUser,
+    {
+      variables: { projectId },
+      skip: !isProjectLeader,
+    }
+  );
+
+  const getProjectContributorsQuery = isProjectLeader
+    ? getProjectContributorsQueryAsLeader
+    : getProjectContributorsQueryAsPublic;
 
   const getProjectRemainingBudget = useHasuraQuery<GetProjectRemainingBudgetQuery>(
     GetProjectRemainingBudgetDocument,
@@ -41,6 +57,7 @@ const Contributors: React.FC = () => {
   );
 
   const { contributors } = getContributors(getProjectContributorsQuery.data?.projectsByPk);
+  console.log(contributors);
 
   const remainingBudget = getProjectRemainingBudget.data?.projectsByPk?.budgets.at(0)?.remainingAmount;
 
@@ -56,6 +73,4 @@ const Contributors: React.FC = () => {
       )}
     </QueryWrapper>
   );
-};
-
-export default Contributors;
+}

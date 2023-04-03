@@ -33,25 +33,36 @@ fragment GithubRepoContributorsFields on ProjectGithubRepos {
   }
 }
 
-query GetProjectContributors($projectId: uuid!) {
-  projectsByPk(id: $projectId) {
+fragment ProjectContributorsForTable on Projects {
+  id
+  projectDetails {
+    projectId
+    name
+  }
+  githubRepos {
+    ...GithubRepoContributorsFields
+  }
+  budgets {
     id
-    projectDetails {
-      projectId
-      name
-    }
-    githubRepos {
-      ...GithubRepoContributorsFields
-    }
-    budgets {
+    paymentRequests {
       id
-      paymentRequests {
-        id
-        githubRecipient {
-          ...ContributorsTableFields
-        }
+      githubRecipient {
+        ...ContributorsTableFields
       }
     }
+  }
+}
+
+query GetProjectContributors($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    ...ProjectContributorsForTable
+  }
+}
+
+query GetProjectContributorsAsLeader($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    ...ProjectContributorsForTable
+    ...ProjectContributorsByLeader
   }
 }
 
