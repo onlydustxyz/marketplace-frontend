@@ -13,12 +13,13 @@ impl GithubFetchIssueService for github::Client {
 	async fn pulls_by_repo_id(
 		&self,
 		repo_id: &GithubRepositoryId,
+		state: &str,
 	) -> GithubServiceResult<Vec<GithubIssue>> {
-		let octocrab_pull_requests = self.get_repository_PRs(repo_id).await?;
+		let octocrab_pull_requests = self.pulls_by_repo_id(repo_id, state).await?;
 		let pull_requests = octocrab_pull_requests
 			.into_iter()
 			.filter_map(
-				|pr| match GithubIssue::from_octocrab_pull_request(pr.clone()) {
+				|pr| match GithubIssue::from_octocrab_pull_request(pr.clone(), *repo_id) {
 					Ok(pr) => Some(pr),
 					Err(e) => {
 						error!(

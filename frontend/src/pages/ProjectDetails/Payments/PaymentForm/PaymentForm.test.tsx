@@ -8,13 +8,21 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentForm from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { FIND_USER_QUERY } from "src/hooks/useIsGithubLoginValid";
-import { FetchIssueDocument, FetchIssueQueryResult, FetchIssueQueryVariables, Status } from "src/__generated/graphql";
+import {
+  FetchIssueDocument,
+  FetchIssueQueryResult,
+  FetchIssueQueryVariables,
+  GetProjectContributorsForPaymentSelectDocument,
+  GetProjectContributorsForPaymentSelectQueryResult,
+  Status,
+} from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
-import { GET_PROJECT_CONTRIBUTORS_QUERY } from "./ContributorSelect";
+import { GithubContributorFragment } from "src/__generated/graphql";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };
-const TEST_GITHUB_USER = {
-  id: "test-user-id",
+const TEST_GITHUB_USER: GithubContributorFragment = {
+  __typename: "User",
+  id: 23326,
   login: "test-login",
   avatarUrl: "test-avatar-url",
   user: { userId: "test-user-id" },
@@ -93,7 +101,7 @@ const graphQlMocks = [
   fetchPrMock,
   {
     request: {
-      query: GET_PROJECT_CONTRIBUTORS_QUERY,
+      query: GetProjectContributorsForPaymentSelectDocument,
       variables: {
         projectId: TEST_PROJECT_ID,
       },
@@ -101,19 +109,23 @@ const graphQlMocks = [
     result: {
       data: {
         projectsByPk: {
+          __typename: "Projects",
           id: TEST_PROJECT_ID,
           githubRepos: [
             {
               githubRepoDetails: {
+                id: 123456,
                 content: {
-                  id: "test-id",
+                  id: 123456,
                   contributors: [TEST_GITHUB_USER],
                 },
+                pullRequests: [],
               },
             },
           ],
+          budgets: [],
         },
-      },
+      } as GetProjectContributorsForPaymentSelectQueryResult["data"],
     },
   },
 ];
