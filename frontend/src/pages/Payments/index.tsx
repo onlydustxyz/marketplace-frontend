@@ -60,15 +60,17 @@ const Payments = () => {
                 />
               )}
             </Card>
-            <div className="flex flex-col gap-4">
-              {totalEarnings && <TotalEarnings amount={totalEarnings} />}
-              {invoiceSubmissionNeeded && (
-                <InvoiceSubmission
-                  paymentRequests={paymentRequestsNeedingInvoice}
-                  githubUserId={githubUserId}
-                  userInfos={userInfos}
-                />
-              )}
+            <div>
+              <div className="flex flex-col gap-4 sticky top-4">
+                {totalEarnings && <TotalEarnings amount={totalEarnings} />}
+                {invoiceSubmissionNeeded && (
+                  <InvoiceSubmission
+                    paymentRequests={paymentRequestsNeedingInvoice}
+                    githubUserId={githubUserId}
+                    userInfos={userInfos}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </QueryWrapper>
