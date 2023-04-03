@@ -78,3 +78,5 @@ mockito = "0.31.0"
 rstest = "0.15.0"
 testing = {path = "../common/testing"}
 rust_decimal_macros = "1.26"
+mockall = "0.11.2"
+mockall_double = "0.3.0"
