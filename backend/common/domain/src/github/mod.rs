@@ -5,7 +5,7 @@ pub use service::{
 };
 
 mod repository;
-pub use repository::Repository;
+pub use repository::{Languages, Repository};
 
 mod user;
 pub use user::User;

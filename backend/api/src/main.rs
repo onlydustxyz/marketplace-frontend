@@ -4,9 +4,8 @@ use anyhow::Result;
 use api::{
 	infrastructure::{
 		database::{
-			GithubRepoRepository, PendingProjectLeaderInvitationsRepository,
-			ProjectDetailsRepository, ProjectGithubRepoRepository, ProjectSponsorRepository,
-			SponsorRepository, UserInfoRepository,
+			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
+			ProjectSponsorRepository, SponsorRepository, UserInfoRepository,
 		},
 		simple_storage,
 	},
@@ -38,8 +37,6 @@ async fn main() -> Result<()> {
 		Arc::new(amqp::Bus::new(config.amqp()).await?),
 		AggregateRootRepository::new(database.clone()),
 		ProjectDetailsRepository::new(database.clone()),
-		GithubRepoRepository::new(database.clone()),
-		ProjectGithubRepoRepository::new(database.clone()),
 		SponsorRepository::new(database.clone()),
 		ProjectSponsorRepository::new(database.clone()),
 		PendingProjectLeaderInvitationsRepository::new(database.clone()),

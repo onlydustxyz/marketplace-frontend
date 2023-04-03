@@ -8,7 +8,7 @@ use anyhow::Result;
 use domain::{Event, Subscriber, SubscriberCallbackError};
 use infrastructure::{
 	amqp::{ConsumableBus, UniqueMessage},
-	database, event_bus,
+	database, event_bus, github,
 };
 use tokio::task::JoinHandle;
 use webhook::EventWebHook;
@@ -16,7 +16,8 @@ use webhook::EventWebHook;
 use crate::{
 	domain::*,
 	infrastructure::database::{
-		BudgetRepository, PaymentRepository, PaymentRequestRepository, ProjectLeadRepository,
+		BudgetRepository, CrmGithubRepoRepository, GithubRepoDetailsRepository, PaymentRepository,
+		PaymentRequestRepository, ProjectGithubRepoDetailsRepository, ProjectLeadRepository,
 		ProjectRepository, WorkItemRepository,
 	},
 	Config,
@@ -26,6 +27,7 @@ pub async fn spawn_all(
 	config: &Config,
 	reqwest: reqwest::Client,
 	database: Arc<database::Client>,
+	github: Arc<github::Client>,
 ) -> Result<Vec<JoinHandle<()>>> {
 	let handles = [
 		Logger.spawn(event_bus::consumer(config.amqp(), "logger").await?),
@@ -34,6 +36,9 @@ pub async fn spawn_all(
 		ProjectProjector::new(
 			ProjectRepository::new(database.clone()),
 			ProjectLeadRepository::new(database.clone()),
+			GithubRepoDetailsRepository::new(database.clone()),
+			ProjectGithubRepoDetailsRepository::new(database.clone()),
+			github.clone(),
 		)
 		.spawn(event_bus::consumer(config.amqp(), "projects").await?),
 		BudgetProjector::new(
@@ -43,6 +48,8 @@ pub async fn spawn_all(
 			WorkItemRepository::new(database.clone()),
 		)
 		.spawn(event_bus::consumer(config.amqp(), "budgets").await?),
+		CrmProjector::new(CrmGithubRepoRepository::new(database.clone()), github)
+			.spawn(event_bus::consumer(config.amqp(), "crm").await?),
 	];
 
 	Ok(handles.into())

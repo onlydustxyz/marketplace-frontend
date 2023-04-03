@@ -21,11 +21,11 @@ use serde_json::Value;
 )]
 #[table_name = "github_repo_details"]
 #[primary_key(id)]
-pub struct GithubRepo {
+pub struct GithubRepoDetails {
 	id: GithubRepositoryId,
 	languages: Value,
 }
 
-impl domain::Entity for GithubRepo {
+impl domain::Entity for GithubRepoDetails {
 	type Id = GithubRepositoryId;
 }

@@ -1,7 +1,7 @@
 use std::fmt::Debug;
 
 use anyhow::anyhow;
-use domain::{GithubIssueNumber, GithubRepositoryId, GithubUserId};
+use domain::{GithubIssueNumber, GithubRepoLanguages, GithubRepositoryId, GithubUserId};
 use octocrab::{
 	models::{issues::Issue, pulls::PullRequest, repos::Content, Repository, User},
 	FromResponse, Octocrab,
@@ -117,6 +117,18 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn get_repository_by_id(&self, id: &GithubRepositoryId) -> Result<Repository, Error> {
 		self.get_as(format!("{}repositories/{id}", self.octocrab().base_url)).await
+	}
+
+	#[instrument(skip(self))]
+	pub async fn get_languages_by_repository_id(
+		&self,
+		id: &GithubRepositoryId,
+	) -> Result<GithubRepoLanguages, Error> {
+		self.get_as(format!(
+			"{}repositories/{id}/languages",
+			self.octocrab().base_url
+		))
+		.await
 	}
 
 	#[instrument(skip(self))]

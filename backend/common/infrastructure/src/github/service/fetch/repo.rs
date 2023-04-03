@@ -1,6 +1,7 @@
 use async_trait::async_trait;
 use domain::{
-	GithubFetchRepoService, GithubRepo, GithubRepositoryId, GithubServiceError, GithubServiceResult,
+	GithubFetchRepoService, GithubRepo, GithubRepoLanguages, GithubRepositoryId,
+	GithubServiceError, GithubServiceResult,
 };
 use tracing::instrument;
 use url::Url;
@@ -25,5 +26,14 @@ impl GithubFetchRepoService for github::Client {
 			.await
 			.map_err(GithubServiceError::Other)?;
 		Ok(repo)
+	}
+
+	#[instrument(skip(self))]
+	async fn repo_languages(
+		&self,
+		id: &GithubRepositoryId,
+	) -> GithubServiceResult<GithubRepoLanguages> {
+		let languages = self.get_languages_by_repository_id(id).await?;
+		Ok(languages)
 	}
 }

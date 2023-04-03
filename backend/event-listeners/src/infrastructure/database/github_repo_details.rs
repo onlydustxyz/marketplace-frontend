@@ -3,10 +3,10 @@ use std::sync::Arc;
 use derive_more::Constructor;
 use infrastructure::database::{schema::github_repo_details::dsl, Client};
 
-use crate::domain::GithubRepo;
+use crate::domain::GithubRepoDetails;
 
 #[derive(DieselRepository, Constructor, Clone)]
-#[entity(GithubRepo)]
+#[entity(GithubRepoDetails)]
 #[table(dsl::github_repo_details)]
 #[id(dsl::id)]
 #[mock]

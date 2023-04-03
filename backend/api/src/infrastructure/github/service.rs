@@ -1,46 +1,19 @@
-use anyhow::{anyhow, Result};
+use anyhow::anyhow;
 use async_trait::async_trait;
-use domain::{GithubIssue, GithubRepositoryId};
+use domain::{GithubIssue, GithubServiceError, GithubServiceResult};
 use infrastructure::github::{self, IssueFromOctocrab};
-use serde_json::Value;
-
-use crate::domain::{GithubRepo, GithubService, GithubServiceError};
-
-impl From<github::Error> for GithubServiceError {
-	fn from(error: github::Error) -> Self {
-		match error {
-			github::Error::NotFound(error) => GithubServiceError::NotFound(error),
-			github::Error::Other(error) => GithubServiceError::Other(error),
-		}
-	}
-}
+use olog::tracing::instrument;
 
 #[async_trait]
-impl GithubService for github::Client {
-	async fn fetch_repository_details(
-		&self,
-		github_repo_id: &GithubRepositoryId,
-	) -> Result<GithubRepo, GithubServiceError> {
-		let repo = self.get_repository_by_id(github_repo_id).await?;
-
-		let languages: Value = if let Some(url) =
-			self.fix_github_host(&repo.languages_url).map_err(GithubServiceError::Other)?
-		{
-			self.get_as(url).await?
-		} else {
-			Default::default()
-		};
-
-		Ok(GithubRepo::new(*github_repo_id, languages))
-	}
-
+impl crate::domain::GithubService for github::Client {
+	#[instrument(skip(self))]
 	async fn create_issue(
 		&self,
 		repo_owner: &str,
 		repo_name: &str,
 		title: &str,
 		description: &str,
-	) -> Result<GithubIssue, GithubServiceError> {
+	) -> GithubServiceResult<GithubIssue> {
 		let issue = self
 			.octocrab()
 			.issues(repo_owner, repo_name)
