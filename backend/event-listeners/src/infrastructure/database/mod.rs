@@ -1,4 +1,5 @@
 mod budget;
+mod crm;
 mod github_repo_details;
 mod payment;
 mod payment_request;
@@ -9,6 +10,7 @@ mod project_lead;
 mod work_item;
 
 pub use budget::Repository as BudgetRepository;
+pub use crm::GithubRepoRepository as CrmGithubRepoRepository;
 pub use github_repo_details::Repository as GithubRepoDetailsRepository;
 pub use payment::Repository as PaymentRepository;
 pub use payment_request::Repository as PaymentRequestRepository;

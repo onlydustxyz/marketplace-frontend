@@ -2,11 +2,11 @@ use std::sync::Arc;
 
 use domain::Project;
 use event_listeners::{
-	domain::{BudgetProjector, ProjectProjector},
+	domain::{BudgetProjector, CrmProjector, ProjectProjector},
 	infrastructure::database::{
-		BudgetRepository, GithubRepoDetailsRepository, PaymentRepository, PaymentRequestRepository,
-		ProjectGithubRepoDetailsRepository, ProjectLeadRepository, ProjectRepository,
-		WorkItemRepository,
+		BudgetRepository, CrmGithubRepoRepository, GithubRepoDetailsRepository, PaymentRepository,
+		PaymentRequestRepository, ProjectGithubRepoDetailsRepository, ProjectLeadRepository,
+		ProjectRepository, WorkItemRepository,
 	},
 };
 use infrastructure::{database, github};
@@ -19,7 +19,7 @@ pub fn create(database: Arc<database::Client>, github: Arc<github::Client>) -> i
 		ProjectLeadRepository::new(database.clone()),
 		GithubRepoDetailsRepository::new(database.clone()),
 		ProjectGithubRepoDetailsRepository::new(database.clone()),
-		github,
+		github.clone(),
 	);
 
 	let budget_projector = BudgetProjector::new(
@@ -29,8 +29,14 @@ pub fn create(database: Arc<database::Client>, github: Arc<github::Client>) -> i
 		WorkItemRepository::new(database.clone()),
 	);
 
+	let crm_projector = CrmProjector::new(CrmGithubRepoRepository::new(database.clone()), github);
+
 	Refresher::<Project>::new(
 		database,
-		vec![Arc::new(project_projector), Arc::new(budget_projector)],
+		vec![
+			Arc::new(project_projector),
+			Arc::new(budget_projector),
+			Arc::new(crm_projector),
+		],
 	)
 }
