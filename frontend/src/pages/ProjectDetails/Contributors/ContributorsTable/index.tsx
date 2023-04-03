@@ -1,6 +1,5 @@
 import { rates } from "src/hooks/useWorkEstimation";
 import { generatePath, useNavigate } from "react-router-dom";
-import { gql } from "@apollo/client";
 import { ContributorsTableFieldsFragment } from "src/__generated/graphql";
 import View, { Contributor } from "./View";
 import { ProjectPaymentsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
@@ -63,27 +62,3 @@ const ContributorsTable: React.FC<PropsType> = ({
 };
 
 export default ContributorsTable;
-
-export const CONTRIBUTORS_TABLE_FRAGMENT = gql`
-  fragment ContributorsTableFields on User {
-    id
-    login
-    avatarUrl
-    htmlUrl
-    user {
-      userId
-    }
-    paymentRequests {
-      id
-      budget {
-        id
-        projectId
-      }
-      amountInUsd
-      workItems {
-        repoId
-        issueNumber
-      }
-    }
-  }
-`;

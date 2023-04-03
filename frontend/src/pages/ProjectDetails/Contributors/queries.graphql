@@ -1,0 +1,66 @@
+fragment ContributorsTableFields on User {
+  id
+  login
+  avatarUrl
+  htmlUrl
+  user {
+    userId
+  }
+  paymentRequests {
+    id
+    budget {
+      id
+      projectId
+    }
+    amountInUsd
+    workItems {
+      repoId
+      issueNumber
+    }
+  }
+}
+
+fragment GithubRepoContributorsFields on ProjectGithubRepos {
+  githubRepoId
+  githubRepoDetails {
+    id
+    content {
+      id
+      contributors {
+        ...ContributorsTableFields
+      }
+    }
+  }
+}
+
+query GetProjectContributors($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    id
+    projectDetails {
+      projectId
+      name
+    }
+    githubRepos {
+      ...GithubRepoContributorsFields
+    }
+    budgets {
+      id
+      paymentRequests {
+        id
+        githubRecipient {
+          ...ContributorsTableFields
+        }
+      }
+    }
+  }
+}
+
+query GetProjectRemainingBudget($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    id
+    budgets {
+      id
+      remainingAmount
+    }
+  }
+}

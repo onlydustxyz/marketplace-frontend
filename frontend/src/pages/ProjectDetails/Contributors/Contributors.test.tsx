@@ -3,8 +3,12 @@ import { screen } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
-import Contributors, { GET_PROJECT_CONTRIBUTORS_QUERY } from ".";
-import { ContributorsTableFieldsFragment, GithubRepoContributorsFieldsFragment } from "src/__generated/graphql";
+import Contributors from ".";
+import {
+  ContributorsTableFieldsFragment,
+  GetProjectContributorsDocument,
+  GithubRepoContributorsFieldsFragment,
+} from "src/__generated/graphql";
 
 expect.extend(matchers);
 
@@ -112,7 +116,7 @@ const githubRepo2: GithubRepoContributorsFieldsFragment = {
 const graphQlMocks = [
   {
     request: {
-      query: GET_PROJECT_CONTRIBUTORS_QUERY,
+      query: GetProjectContributorsDocument,
       variables: {
         projectId: TEST_PROJECT_ID,
       },
