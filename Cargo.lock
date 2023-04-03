@@ -1336,6 +1336,8 @@ dependencies = [
  "juniper",
  "juniper_warp",
  "lazy_static",
+ "mockall",
+ "mockall_double",
  "mockito",
  "olog",
  "reqwest",

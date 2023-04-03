@@ -6,7 +6,7 @@ use clap::Parser;
 use dotenv::dotenv;
 use event_listeners::Config;
 use futures::future::try_join_all;
-use infrastructure::{database, tracing::Tracer};
+use infrastructure::{database, github, tracing::Tracer};
 
 mod refresher;
 use refresher::{Registrable, Registry};
@@ -21,10 +21,11 @@ async fn main() -> Result<()> {
 	let database = Arc::new(database::Client::new(database::init_pool(
 		config.database(),
 	)?));
+	let github = Arc::<github::Client>::new(github::RoundRobinClient::new(config.github())?.into());
 
 	let mut registry = Registry::new();
 
-	refresher::project::create(database.clone()).register(&mut registry, "Project")?;
+	refresher::project::create(database.clone(), github).register(&mut registry, "Project")?;
 
 	let (aggregate_name, aggregate_ids, all_ids) = cli::Args::parse().dissolve();
 

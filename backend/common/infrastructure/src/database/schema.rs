@@ -11,6 +11,14 @@ diesel::table! {
 }
 
 diesel::table! {
+    crm_github_repos (id) {
+        id -> Int8,
+        owner -> Text,
+        name -> Text,
+    }
+}
+
+diesel::table! {
     event_deduplications (deduplication_id) {
         deduplication_id -> Text,
         event_index -> Int4,
@@ -141,6 +149,7 @@ diesel::joinable!(projects_sponsors -> sponsors (sponsor_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
     budgets,
+    crm_github_repos,
     event_deduplications,
     events,
     github_repo_details,

@@ -9,9 +9,8 @@ use presentation::http;
 use crate::{
 	infrastructure::{
 		database::{
-			GithubRepoRepository, PendingProjectLeaderInvitationsRepository,
-			ProjectDetailsRepository, ProjectGithubRepoRepository, ProjectSponsorRepository,
-			SponsorRepository, UserInfoRepository,
+			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
+			ProjectSponsorRepository, SponsorRepository, UserInfoRepository,
 		},
 		simple_storage,
 	},
@@ -29,8 +28,6 @@ pub async fn serve(
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_repository: AggregateRootRepository<Project>,
 	project_details_repository: ProjectDetailsRepository,
-	github_repo_repository: GithubRepoRepository,
-	project_github_repo_repository: ProjectGithubRepoRepository,
 	sponsor_repository: SponsorRepository,
 	project_sponsor_repository: ProjectSponsorRepository,
 	pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
@@ -45,8 +42,6 @@ pub async fn serve(
 		.manage(event_publisher)
 		.manage(project_repository)
 		.manage(project_details_repository)
-		.manage(github_repo_repository)
-		.manage(project_github_repo_repository)
 		.manage(sponsor_repository)
 		.manage(project_sponsor_repository)
 		.manage(pending_project_leader_invitations_repository)

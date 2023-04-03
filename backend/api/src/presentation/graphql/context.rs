@@ -11,9 +11,8 @@ use crate::{
 	domain::{ArePayoutSettingsValid, Permissions},
 	infrastructure::{
 		database::{
-			GithubRepoRepository, PendingProjectLeaderInvitationsRepository,
-			ProjectDetailsRepository, ProjectGithubRepoRepository, ProjectSponsorRepository,
-			SponsorRepository, UserInfoRepository,
+			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
+			ProjectSponsorRepository, SponsorRepository, UserInfoRepository,
 		},
 		simple_storage,
 		web3::ens,
@@ -54,8 +53,6 @@ impl Context {
 		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 		project_repository: AggregateRootRepository<Project>,
 		project_details_repository: ProjectDetailsRepository,
-		github_repo_repository: GithubRepoRepository,
-		project_github_repo_repository: ProjectGithubRepoRepository,
 		sponsor_repository: SponsorRepository,
 		project_sponsor_repository: ProjectSponsorRepository,
 		pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
@@ -97,14 +94,13 @@ impl Context {
 				simple_storage.clone(),
 			),
 			link_github_repo_usecase: application::project::link_github_repo::Usecase::new(
-				github_repo_repository.clone(),
-				project_github_repo_repository.clone(),
-				github.clone(),
+				event_publisher.to_owned(),
+				project_repository.clone(),
 				github.clone(),
 			),
 			unlink_github_repo_usecase: application::project::unlink_github_repo::Usecase::new(
-				github_repo_repository,
-				project_github_repo_repository.clone(),
+				event_publisher.to_owned(),
+				project_repository.clone(),
 			),
 			create_sponsor_usecase: application::sponsor::create::Usecase::new(
 				sponsor_repository.clone(),
@@ -131,7 +127,7 @@ impl Context {
 				application::project::accept_leader_invitation::Usecase::new(
 					event_publisher.to_owned(),
 					pending_project_leader_invitations_repository,
-					project_repository,
+					project_repository.clone(),
 				),
 			project_details_repository,
 			update_user_info_usecase: application::user::update_profile_info::Usecase::new(
@@ -139,7 +135,7 @@ impl Context {
 				ArePayoutSettingsValid::new(ens.clone()),
 			),
 			create_github_issue_usecase: application::github::create_issue::Usecase::new(
-				project_github_repo_repository,
+				project_repository,
 				github.clone(),
 				github,
 			),
