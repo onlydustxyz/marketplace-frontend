@@ -1,7 +1,5 @@
 use async_trait::async_trait;
-
-use super::Result;
-use crate::GithubIssue;
+use domain::{GithubIssue, GithubServiceResult};
 
 #[async_trait]
 pub trait Service: Send + Sync {
@@ -11,5 +9,5 @@ pub trait Service: Send + Sync {
 		repo_name: &str,
 		title: &str,
 		description: &str,
-	) -> Result<GithubIssue>;
+	) -> GithubServiceResult<GithubIssue>;
 }

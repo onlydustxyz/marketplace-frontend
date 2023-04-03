@@ -1,12 +1,11 @@
 use anyhow::anyhow;
 use async_trait::async_trait;
-use domain::{GithubCreateIssueService, GithubIssue, GithubServiceError, GithubServiceResult};
+use domain::{GithubIssue, GithubServiceError, GithubServiceResult};
+use infrastructure::github::{self, IssueFromOctocrab};
 use olog::tracing::instrument;
 
-use crate::{github, github::IssueFromOctocrab};
-
 #[async_trait]
-impl GithubCreateIssueService for github::Client {
+impl crate::domain::GithubService for github::Client {
 	#[instrument(skip(self))]
 	async fn create_issue(
 		&self,

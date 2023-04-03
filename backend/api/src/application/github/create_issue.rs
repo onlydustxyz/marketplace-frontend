@@ -2,26 +2,28 @@ use std::sync::Arc;
 
 use anyhow::anyhow;
 use domain::{
-	AggregateRootRepository, DomainError, GithubCreateIssueService, GithubFetchRepoService,
-	GithubIssue, GithubRepositoryId, Project, ProjectId,
+	AggregateRootRepository, DomainError, GithubFetchRepoService, GithubIssue, GithubRepositoryId,
+	Project, ProjectId,
 };
 use tracing::instrument;
 
+use crate::domain::GithubService;
+
 pub struct Usecase {
 	project_repository: AggregateRootRepository<Project>,
-	github_create_issue_service: Arc<dyn GithubCreateIssueService>,
+	github_service: Arc<dyn GithubService>,
 	github_fetch_repo_service: Arc<dyn GithubFetchRepoService>,
 }
 
 impl Usecase {
 	pub fn new(
 		project_repository: AggregateRootRepository<Project>,
-		github_create_issue_service: Arc<dyn GithubCreateIssueService>,
+		github_service: Arc<dyn GithubService>,
 		github_fetch_repo_service: Arc<dyn GithubFetchRepoService>,
 	) -> Self {
 		Self {
 			project_repository,
-			github_create_issue_service,
+			github_service,
 			github_fetch_repo_service,
 		}
 	}
@@ -44,7 +46,7 @@ impl Usecase {
 		let repo = self.github_fetch_repo_service.repo_by_id(github_repo_id).await?;
 
 		let issue = self
-			.github_create_issue_service
+			.github_service
 			.create_issue(repo.owner(), repo.name(), &title, &description)
 			.await?;
 

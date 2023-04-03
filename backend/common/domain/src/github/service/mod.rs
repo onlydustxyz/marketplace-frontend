@@ -8,9 +8,6 @@ mod search;
 pub use search::{
 	IssueService as SearchIssueService, Service as SearchService, UserService as SearchUserService,
 };
-
-mod create;
-pub use create::IssueService as CreateIssueService;
 use thiserror::Error;
 
 #[derive(Debug, Error)]

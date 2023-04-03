@@ -37,10 +37,9 @@ pub use budget::{Budget, Error as BudgetError, Event as BudgetEvent, Id as Budge
 
 mod github;
 pub use github::{
-	CreateIssueService as GithubCreateIssueService, FetchIssueService as GithubFetchIssueService,
-	FetchRepoService as GithubFetchRepoService, FetchService as GithubFetchService,
-	FetchUserService as GithubFetchUserService, Issue as GithubIssue,
-	IssueStatus as GithubIssueStatus, IssueType as GithubIssueType,
+	FetchIssueService as GithubFetchIssueService, FetchRepoService as GithubFetchRepoService,
+	FetchService as GithubFetchService, FetchUserService as GithubFetchUserService,
+	Issue as GithubIssue, IssueStatus as GithubIssueStatus, IssueType as GithubIssueType,
 	Languages as GithubRepoLanguages, Repository as GithubRepo,
 	SearchIssueService as GithubSearchIssueService, SearchService as GithubSearchService,
 	SearchUserService as GithubSearchUserService, Service as GithubService,

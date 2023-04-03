@@ -1,4 +1,3 @@
-mod create;
 mod fetch;
 mod search;
 
