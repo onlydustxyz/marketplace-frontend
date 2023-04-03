@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
-import { VisibleProjectFragment } from "src/__generated/graphql";
-import { uniqBy } from "lodash";
+import { PullDetailsFragment, VisibleProjectFragment } from "src/__generated/graphql";
+import { chain, flatMap, some, uniqBy } from "lodash";
 import isDefined from "src/utils/isDefined";
 import { ContributorIdFragment } from "src/__generated/graphql";
 
@@ -44,6 +44,7 @@ type Project<R> = {
   githubRepos: Array<{
     githubRepoDetails: {
       content: { contributors: Array<R | null> } | null;
+      pullRequests?: PullDetailsFragment[] | null;
     } | null;
   }> | null;
   budgets: Array<{
@@ -63,12 +64,47 @@ export function getContributors<R extends ContributorIdFragment>(
       .map(paymentRequest => paymentRequest?.githubRecipient)
       .filter(isDefined) || [];
 
-  return { contributors: uniqBy([...contributorsFromRepos, ...contributorsFromPaymentRequests], "id") };
+  const unpaidMergedPullsByContributor = project ? countUnpaidMergedPullsByContributor(project) : {};
+
+  const contributors = uniqBy([...contributorsFromRepos, ...contributorsFromPaymentRequests], "id").map(c => ({
+    ...c,
+    unpaidMergedPullsCount: unpaidMergedPullsByContributor[c.id],
+  }));
+
+  return { contributors };
 }
 
-export const PROJECT_CONTRIBUTORS_FRAGMENTS = gql`
+export const countUnpaidMergedPullsByContributor = (project?: Project<ContributorIdFragment | null> | null) => {
+  const paidItemsByLogin = chain(project?.budgets)
+    .flatMap("paymentRequests")
+    .groupBy("githubRecipient.id")
+    .mapValues(requests => flatMap(requests, "workItems"))
+    .value();
+
+  const notPaid = ({ author, repoId, number: issueNumber }: PullDetailsFragment) =>
+    !some(paidItemsByLogin[author.id], { repoId, issueNumber });
+
+  return chain(project?.githubRepos)
+    .flatMap("githubRepoDetails.pullRequests")
+    .filter("mergedAt")
+    .filter(notPaid)
+    .countBy("author.id")
+    .value();
+};
+
+gql`
   fragment ContributorId on User {
     id
+  }
+
+  fragment PullDetails on Issue {
+    id
+    repoId
+    number
+    mergedAt
+    author {
+      ...ContributorId
+    }
   }
 
   fragment ProjectContributors on Projects {
@@ -90,6 +126,16 @@ export const PROJECT_CONTRIBUTORS_FRAGMENTS = gql`
         id
         githubRecipient {
           ...ContributorId
+        }
+      }
+    }
+  }
+
+  fragment ProjectContributorsByLeader on Projects {
+    githubRepos {
+      githubRepoDetails {
+        pullRequests {
+          ...PullDetails
         }
       }
     }

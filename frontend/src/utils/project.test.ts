@@ -1,6 +1,12 @@
 import { range } from "lodash";
-import { ContributorsTableFieldsFragment, ProjectContributorsFragment } from "src/__generated/graphql";
-import { getContributors } from "./project";
+import {
+  ContributorIdFragment,
+  ContributorsTableFieldsFragment,
+  ProjectContributorsFragment,
+  PullDetailsFragment,
+  WorkItem,
+} from "src/__generated/graphql";
+import { countUnpaidMergedPullsByContributor, getContributors } from "./project";
 
 const REPO1_ID = 123456;
 const REPO2_ID = 321654;
@@ -59,5 +65,68 @@ describe("useProjectContributors", () => {
   test("should return deduplicated contributors", async () => {
     const { contributors } = getContributors(project);
     expect(contributors).toHaveLength(5);
+  });
+});
+
+describe("countUnpaidMergedPullsByContributor", () => {
+  it("should count unpaid merged PRs by author login", () => {
+    const users: ContributorIdFragment[] = range(0, 3).map(id => ({
+      id: 1000 + id,
+    }));
+
+    const paidItems: WorkItem[] = range(0, 3).map(id => ({
+      repoId: 1000 + id,
+      issueNumber: id + 1,
+    }));
+
+    const mergedPaidPulls: PullDetailsFragment[] = paidItems.map(({ repoId, issueNumber }, index) => ({
+      id: 2000 + index,
+      repoId,
+      number: issueNumber,
+      author: users[index],
+      mergedAt: new Date(),
+    }));
+
+    const mergedUnPaidPulls: PullDetailsFragment[] = range(0, 10).map(id => ({
+      id: 3000 + id,
+      repoId: 3000 + id,
+      number: id,
+      author: users[id % users.length],
+      mergedAt: new Date(),
+    }));
+
+    const openPulls: PullDetailsFragment[] = range(0, 4).map(id => ({
+      id: 4000 + id,
+      repoId: 4000 + id,
+      number: id,
+      author: users[id % users.length],
+      mergedAt: null, // TODO change to status
+    }));
+
+    const counts = countUnpaidMergedPullsByContributor({
+      githubRepos: [
+        {
+          githubRepoDetails: {
+            pullRequests: [...mergedPaidPulls, ...mergedUnPaidPulls, ...openPulls],
+            content: { contributors: [...users] },
+          },
+        },
+      ],
+      budgets: [
+        {
+          paymentRequests: paidItems.map((workItem, index) => ({
+            id: `payment-${index + 1}`,
+            workItems: [workItem],
+            githubRecipient: users[index % users.length],
+          })),
+        },
+      ],
+    });
+
+    expect(counts).to.deep.equal({
+      [users[0].id]: 4,
+      [users[1].id]: 3,
+      [users[2].id]: 3,
+    });
   });
 });

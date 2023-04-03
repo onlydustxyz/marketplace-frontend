@@ -1,14 +1,3 @@
-fragment PullDetails on Issue {
-  id
-  repoId
-  number
-  mergedAt
-  author {
-    id
-    login
-  }
-}
-
 fragment ProjectContributorsForPaymentSelect on Projects {
   id
   githubRepos {
