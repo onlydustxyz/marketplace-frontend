@@ -5,12 +5,15 @@ import {
   GetProjectContributorsForPaymentSelectDocument,
   GetProjectContributorsForPaymentSelectQuery,
   GithubContributorFragment,
+  ProjectContributorsForPaymentSelectFragment,
+  PullDetailsFragment,
   SearchGithubUsersByHandleSubstringDocument,
   SearchGithubUsersByHandleSubstringQuery,
 } from "src/__generated/graphql";
 import { getContributors } from "src/utils/project";
 import View from "./View";
 import { useLocation } from "react-router-dom";
+import { chain, flatMap, some } from "lodash";
 
 type Props = {
   projectId: string;
@@ -43,10 +46,22 @@ export default function ContributorSelect({ projectId, contributor, setContribut
     }
   );
 
-  const { contributors: internalContributors } = useMemo(
-    () => getContributors(getProjectContributorsQuery.data?.projectsByPk),
+  const unpaidMergedPullsCountByContributor = useMemo(
+    () =>
+      getProjectContributorsQuery.data?.projectsByPk
+        ? countUnpaidMergedPullsByContributor(getProjectContributorsQuery.data?.projectsByPk)
+        : {},
     [getProjectContributorsQuery.data]
   );
+
+  const { contributors: internalContributors } = useMemo(() => {
+    const contributors = getContributors(getProjectContributorsQuery.data?.projectsByPk);
+    contributors.contributors.map(c => ({
+      ...c,
+      unpaidMergedPullsCount: unpaidMergedPullsCountByContributor[c?.login],
+    }));
+    return contributors;
+  }, [getProjectContributorsQuery.data, unpaidMergedPullsCountByContributor]);
 
   const filteredContributors = sortListByLogin(
     internalContributors.filter(
@@ -97,3 +112,24 @@ function sortListByLogin<T extends { login: string }>(objectsWithLogin: T[] | nu
       )
     : [];
 }
+
+export const countUnpaidMergedPullsByContributor = ({
+  githubRepos,
+  budgets,
+}: ProjectContributorsForPaymentSelectFragment) => {
+  const paidItemsByLogin = chain(budgets)
+    .flatMap("paymentRequests")
+    .groupBy("githubRecipient.login")
+    .mapValues(requests => flatMap(requests, "workItems"))
+    .value();
+
+  const notPaid = ({ author, repoId, number: issueNumber }: PullDetailsFragment) =>
+    !some(paidItemsByLogin[author.login], { repoId, issueNumber });
+
+  return chain(githubRepos)
+    .flatMap("githubRepoDetails.pullRequests")
+    .filter("mergedAt")
+    .filter(notPaid)
+    .countBy("author.login")
+    .value();
+};

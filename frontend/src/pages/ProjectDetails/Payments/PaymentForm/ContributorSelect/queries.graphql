@@ -1,3 +1,44 @@
+fragment PullDetails on Issue {
+  id
+  repoId
+  number
+  mergedAt
+  author {
+    id
+    login
+  }
+}
+
+fragment ProjectContributorsForPaymentSelect on Projects {
+  id
+  githubRepos {
+    githubRepoDetails {
+      id
+      pullRequests(state: CLOSED) {
+        ...PullDetails
+      }
+      content {
+        id
+        contributors {
+          ...GithubContributor
+        }
+      }
+    }
+  }
+  budgets {
+    paymentRequests {
+      id
+      workItems {
+        repoId
+        issueNumber
+      }
+      githubRecipient {
+        ...GithubContributor
+      }
+    }
+  }
+}
+
 query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
   searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc") {
     id
@@ -11,24 +52,6 @@ query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
 
 query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
   projectsByPk(id: $projectId) {
-    id
-    githubRepos {
-      githubRepoDetails {
-        content {
-          id
-          contributors {
-            ...GithubContributor
-          }
-        }
-      }
-    }
-    budgets {
-      paymentRequests {
-        id
-        githubRecipient {
-          ...GithubContributor
-        }
-      }
-    }
+    ...ProjectContributorsForPaymentSelect
   }
 }
