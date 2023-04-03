@@ -57,7 +57,6 @@ export default function Contributors() {
   );
 
   const { contributors } = getContributors(getProjectContributorsQuery.data?.projectsByPk);
-  console.log(contributors);
 
   const remainingBudget = getProjectRemainingBudget.data?.projectsByPk?.budgets.at(0)?.remainingAmount;
 
