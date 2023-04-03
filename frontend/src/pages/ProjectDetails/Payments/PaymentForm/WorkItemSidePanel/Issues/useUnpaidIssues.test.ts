@@ -1,4 +1,4 @@
-import { buildQuery, IssueType } from ".";
+import { buildQuery, IssueType } from "./useUnpaidIssues";
 
 describe("Issues", () => {
   it("should build the query properly for pull requests", () => {
