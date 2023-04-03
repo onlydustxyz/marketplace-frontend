@@ -702,6 +702,12 @@ export type GithubRepoDetailsLanguagesArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
+
+/** columns and relationships of "github_repo_details" */
+export type GithubRepoDetailsPullRequestsArgs = {
+  state: InputMaybe<PullState>;
+};
+
 /** aggregated selection of "github_repo_details" */
 export type GithubRepoDetailsAggregate = {
   __typename?: 'GithubRepoDetailsAggregate';
@@ -943,6 +949,7 @@ export type IntComparisonExp = {
 
 export type Issue = {
   __typename?: 'Issue';
+  author: User;
   closedAt: Maybe<Scalars['DateTimeUtc']>;
   createdAt: Scalars['DateTimeUtc'];
   htmlUrl: Scalars['Url'];
@@ -2843,6 +2850,12 @@ export type ProjectsUpdates = {
   where: ProjectsBoolExp;
 };
 
+export enum PullState {
+  All = 'ALL',
+  Closed = 'CLOSED',
+  Open = 'OPEN'
+}
+
 export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
@@ -3955,7 +3968,9 @@ export type AuthRefreshTokens = {
   __typename?: 'authRefreshTokens';
   createdAt: Scalars['timestamptz'];
   expiresAt: Scalars['timestamptz'];
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: Scalars['uuid'];
+  refreshTokenHash: Maybe<Scalars['String']>;
   /** An object relationship */
   user: Users;
   userId: Scalars['uuid'];
@@ -4005,6 +4020,7 @@ export type AuthRefreshTokensBoolExp = {
   createdAt: InputMaybe<TimestamptzComparisonExp>;
   expiresAt: InputMaybe<TimestamptzComparisonExp>;
   refreshToken: InputMaybe<UuidComparisonExp>;
+  refreshTokenHash: InputMaybe<StringComparisonExp>;
   user: InputMaybe<UsersBoolExp>;
   userId: InputMaybe<UuidComparisonExp>;
 };
@@ -4019,6 +4035,7 @@ export enum AuthRefreshTokensConstraint {
 export type AuthRefreshTokensInsertInput = {
   createdAt: InputMaybe<Scalars['timestamptz']>;
   expiresAt: InputMaybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<Scalars['uuid']>;
   user: InputMaybe<UsersObjRelInsertInput>;
   userId: InputMaybe<Scalars['uuid']>;
@@ -4029,7 +4046,9 @@ export type AuthRefreshTokensMaxFields = {
   __typename?: 'authRefreshTokensMaxFields';
   createdAt: Maybe<Scalars['timestamptz']>;
   expiresAt: Maybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: Maybe<Scalars['uuid']>;
+  refreshTokenHash: Maybe<Scalars['String']>;
   userId: Maybe<Scalars['uuid']>;
 };
 
@@ -4038,7 +4057,9 @@ export type AuthRefreshTokensMinFields = {
   __typename?: 'authRefreshTokensMinFields';
   createdAt: Maybe<Scalars['timestamptz']>;
   expiresAt: Maybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: Maybe<Scalars['uuid']>;
+  refreshTokenHash: Maybe<Scalars['String']>;
   userId: Maybe<Scalars['uuid']>;
 };
 
@@ -4063,12 +4084,14 @@ export type AuthRefreshTokensOrderBy = {
   createdAt: InputMaybe<OrderBy>;
   expiresAt: InputMaybe<OrderBy>;
   refreshToken: InputMaybe<OrderBy>;
+  refreshTokenHash: InputMaybe<OrderBy>;
   user: InputMaybe<UsersOrderBy>;
   userId: InputMaybe<OrderBy>;
 };
 
 /** primary key columns input for table: auth.refresh_tokens */
 export type AuthRefreshTokensPkColumnsInput = {
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: Scalars['uuid'];
 };
 
@@ -4081,6 +4104,8 @@ export enum AuthRefreshTokensSelectColumn {
   /** column name */
   RefreshToken = 'refreshToken',
   /** column name */
+  RefreshTokenHash = 'refreshTokenHash',
+  /** column name */
   UserId = 'userId'
 }
 
@@ -4088,6 +4113,7 @@ export enum AuthRefreshTokensSelectColumn {
 export type AuthRefreshTokensSetInput = {
   createdAt: InputMaybe<Scalars['timestamptz']>;
   expiresAt: InputMaybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<Scalars['uuid']>;
   userId: InputMaybe<Scalars['uuid']>;
 };
@@ -4125,7 +4151,9 @@ export type AuthRefreshTokens_Aggregate_Bool_Exp_Count = {
 export type AuthRefreshTokens_Max_Order_By = {
   createdAt: InputMaybe<OrderBy>;
   expiresAt: InputMaybe<OrderBy>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<OrderBy>;
+  refreshTokenHash: InputMaybe<OrderBy>;
   userId: InputMaybe<OrderBy>;
 };
 
@@ -4133,7 +4161,9 @@ export type AuthRefreshTokens_Max_Order_By = {
 export type AuthRefreshTokens_Min_Order_By = {
   createdAt: InputMaybe<OrderBy>;
   expiresAt: InputMaybe<OrderBy>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<OrderBy>;
+  refreshTokenHash: InputMaybe<OrderBy>;
   userId: InputMaybe<OrderBy>;
 };
 
@@ -4149,7 +4179,9 @@ export type AuthRefreshTokens_StreamCursorInput = {
 export type AuthRefreshTokens_StreamCursorValueInput = {
   createdAt: InputMaybe<Scalars['timestamptz']>;
   expiresAt: InputMaybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<Scalars['uuid']>;
+  refreshTokenHash: InputMaybe<Scalars['String']>;
   userId: InputMaybe<Scalars['uuid']>;
 };
 
@@ -7371,8 +7403,8 @@ export type Query_Root = {
   budgetsByPk: Maybe<Budgets>;
   fetchIssue: Maybe<Issue>;
   fetchIssueByRepositoryId: Maybe<Issue>;
+  fetchPullsByRepoId: Maybe<Array<Issue>>;
   fetchRepositoryDetails: Maybe<Repository>;
-  fetchRepositoryPRs: Maybe<Array<Issue>>;
   fetchUserDetails: Maybe<User>;
   fetchUserDetailsById: Maybe<User>;
   /** fetch data from the table: "github_repo_details" */
@@ -7676,12 +7708,13 @@ export type Query_RootFetchIssueByRepositoryIdArgs = {
 };
 
 
-export type Query_RootFetchRepositoryDetailsArgs = {
-  id: Scalars['Int'];
+export type Query_RootFetchPullsByRepoIdArgs = {
+  repoId: Scalars['GithubRepositoryId'];
+  state: InputMaybe<PullState>;
 };
 
 
-export type Query_RootFetchRepositoryPRsArgs = {
+export type Query_RootFetchRepositoryDetailsArgs = {
   id: Scalars['Int'];
 };
 
@@ -9838,12 +9871,21 @@ export type ContributorsTableFieldsFragment = { __typename?: 'User', id: number,
 
 export type GithubRepoContributorsFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: any, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }> }> }> } | null } | null };
 
+export type ProjectContributorsForTableFragment = { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: any, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }> }> }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }> }> } | null }> }> };
+
 export type GetProjectContributorsQueryVariables = Exact<{
   projectId: Scalars['uuid'];
 }>;
 
 
 export type GetProjectContributorsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: any, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }> }> }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }> }> } | null }> }> } | null };
+
+export type GetProjectContributorsAsLeaderQueryVariables = Exact<{
+  projectId: Scalars['uuid'];
+}>;
+
+
+export type GetProjectContributorsAsLeaderQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, pullRequests: Array<{ __typename?: 'Issue', id: number, repoId: any, number: number, status: Status, author: { __typename?: 'User', id: number } }> | null, content: { __typename?: 'Repository', id: any, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }> }> }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any, htmlUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, amountInUsd: any, budget: { __typename?: 'Budgets', id: any, projectId: any | null } | null, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }> }> } | null }> }> } | null };
 
 export type GetProjectRemainingBudgetQueryVariables = Exact<{
   projectId: Scalars['uuid'];
@@ -9881,6 +9923,8 @@ export type GetProjectOverviewDetailsQueryVariables = Exact<{
 
 export type GetProjectOverviewDetailsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, longDescription: string, logoUrl: string | null } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', stars: number } | null } | null }> } | null };
 
+export type ProjectContributorsForPaymentSelectFragment = { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: any, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null, pullRequests: Array<{ __typename?: 'Issue', id: number, repoId: any, number: number, status: Status, author: { __typename?: 'User', id: number } }> | null } | null }>, budgets: Array<{ __typename?: 'Budgets', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }>, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> };
+
 export type SearchGithubUsersByHandleSubstringQueryVariables = Exact<{
   handleSubstringQuery: Scalars['String'];
 }>;
@@ -9893,7 +9937,7 @@ export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repository', id: any, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> } | null };
+export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: any, contributors: Array<{ __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null, pullRequests: Array<{ __typename?: 'Issue', id: number, repoId: any, number: number, status: Status, author: { __typename?: 'User', id: number } }> | null } | null }>, budgets: Array<{ __typename?: 'Budgets', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }>, githubRecipient: { __typename?: 'User', id: number, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> } | null };
 
 export type SearchIssuesQueryVariables = Exact<{
   query: Scalars['String'];
@@ -9983,7 +10027,11 @@ export type VisibleProjectFragment = { __typename?: 'Projects', id: any, project
 
 export type ContributorIdFragment = { __typename?: 'User', id: number };
 
+export type PullDetailsFragment = { __typename?: 'Issue', id: number, repoId: any, number: number, status: Status, author: { __typename?: 'User', id: number } };
+
 export type ProjectContributorsFragment = { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repository', id: any, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }> };
+
+export type ProjectContributorsByLeaderFragment = { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', pullRequests: Array<{ __typename?: 'Issue', id: number, repoId: any, number: number, status: Status, author: { __typename?: 'User', id: number } }> | null } | null }> };
 
 export type CancelPaymentRequestMutationVariables = Exact<{
   projectId: Scalars['Uuid'];
@@ -10320,21 +10368,6 @@ export const ProjectCardFieldsFragmentDoc = gql`
 ${ProjectLeadFragmentDoc}
 ${ProjectCardGithubRepoFieldsFragmentDoc}
 ${SponsorFragmentDoc}`;
-export const GithubUserFragmentDoc = gql`
-    fragment GithubUser on User {
-  id
-  login
-  avatarUrl
-}
-    `;
-export const GithubContributorFragmentDoc = gql`
-    fragment GithubContributor on User {
-  ...GithubUser
-  user {
-    userId
-  }
-}
-    ${GithubUserFragmentDoc}`;
 export const PaymentRequestFragmentDoc = gql`
     fragment PaymentRequest on PaymentRequests {
   id
@@ -10429,6 +10462,28 @@ export const GithubRepoContributorsFieldsFragmentDoc = gql`
   }
 }
     ${ContributorsTableFieldsFragmentDoc}`;
+export const ProjectContributorsForTableFragmentDoc = gql`
+    fragment ProjectContributorsForTable on Projects {
+  id
+  projectDetails {
+    projectId
+    name
+  }
+  githubRepos {
+    ...GithubRepoContributorsFields
+  }
+  budgets {
+    id
+    paymentRequests {
+      id
+      githubRecipient {
+        ...ContributorsTableFields
+      }
+    }
+  }
+}
+    ${GithubRepoContributorsFieldsFragmentDoc}
+${ContributorsTableFieldsFragmentDoc}`;
 export const GithubRepoStaticDetailsFragmentDoc = gql`
     fragment GithubRepoStaticDetails on GithubRepoDetails {
   id
@@ -10446,6 +10501,73 @@ export const GithubRepoDynamicDetailsFragmentDoc = gql`
   htmlUrl
 }
     `;
+export const PullDetailsFragmentDoc = gql`
+    fragment PullDetails on Issue {
+  id
+  repoId
+  number
+  status
+  author {
+    ...ContributorId
+  }
+}
+    ${ContributorIdFragmentDoc}`;
+export const ProjectContributorsByLeaderFragmentDoc = gql`
+    fragment ProjectContributorsByLeader on Projects {
+  githubRepos {
+    githubRepoDetails {
+      pullRequests(state: CLOSED) {
+        ...PullDetails
+      }
+    }
+  }
+}
+    ${PullDetailsFragmentDoc}`;
+export const GithubUserFragmentDoc = gql`
+    fragment GithubUser on User {
+  id
+  login
+  avatarUrl
+}
+    `;
+export const GithubContributorFragmentDoc = gql`
+    fragment GithubContributor on User {
+  ...GithubUser
+  user {
+    userId
+  }
+}
+    ${GithubUserFragmentDoc}`;
+export const ProjectContributorsForPaymentSelectFragmentDoc = gql`
+    fragment ProjectContributorsForPaymentSelect on Projects {
+  ...ProjectContributorsByLeader
+  id
+  githubRepos {
+    githubRepoDetails {
+      id
+      content {
+        id
+        contributors {
+          ...GithubContributor
+        }
+      }
+    }
+  }
+  budgets {
+    paymentRequests {
+      id
+      workItems {
+        repoId
+        issueNumber
+      }
+      githubRecipient {
+        ...GithubContributor
+      }
+    }
+  }
+}
+    ${ProjectContributorsByLeaderFragmentDoc}
+${GithubContributorFragmentDoc}`;
 export const RepositoryOwnerAndNameFragmentDoc = gql`
     fragment RepositoryOwnerAndName on Repository {
   id
@@ -11107,27 +11229,10 @@ export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVa
 export const GetProjectContributorsDocument = gql`
     query GetProjectContributors($projectId: uuid!) {
   projectsByPk(id: $projectId) {
-    id
-    projectDetails {
-      projectId
-      name
-    }
-    githubRepos {
-      ...GithubRepoContributorsFields
-    }
-    budgets {
-      id
-      paymentRequests {
-        id
-        githubRecipient {
-          ...ContributorsTableFields
-        }
-      }
-    }
+    ...ProjectContributorsForTable
   }
 }
-    ${GithubRepoContributorsFieldsFragmentDoc}
-${ContributorsTableFieldsFragmentDoc}`;
+    ${ProjectContributorsForTableFragmentDoc}`;
 
 /**
  * __useGetProjectContributorsQuery__
@@ -11156,6 +11261,43 @@ export function useGetProjectContributorsLazyQuery(baseOptions?: Apollo.LazyQuer
 export type GetProjectContributorsQueryHookResult = ReturnType<typeof useGetProjectContributorsQuery>;
 export type GetProjectContributorsLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsLazyQuery>;
 export type GetProjectContributorsQueryResult = Apollo.QueryResult<GetProjectContributorsQuery, GetProjectContributorsQueryVariables>;
+export const GetProjectContributorsAsLeaderDocument = gql`
+    query GetProjectContributorsAsLeader($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    ...ProjectContributorsForTable
+    ...ProjectContributorsByLeader
+  }
+}
+    ${ProjectContributorsForTableFragmentDoc}
+${ProjectContributorsByLeaderFragmentDoc}`;
+
+/**
+ * __useGetProjectContributorsAsLeaderQuery__
+ *
+ * To run a query within a React component, call `useGetProjectContributorsAsLeaderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectContributorsAsLeaderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectContributorsAsLeaderQuery({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *   },
+ * });
+ */
+export function useGetProjectContributorsAsLeaderQuery(baseOptions: Apollo.QueryHookOptions<GetProjectContributorsAsLeaderQuery, GetProjectContributorsAsLeaderQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectContributorsAsLeaderQuery, GetProjectContributorsAsLeaderQueryVariables>(GetProjectContributorsAsLeaderDocument, options);
+      }
+export function useGetProjectContributorsAsLeaderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectContributorsAsLeaderQuery, GetProjectContributorsAsLeaderQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectContributorsAsLeaderQuery, GetProjectContributorsAsLeaderQueryVariables>(GetProjectContributorsAsLeaderDocument, options);
+        }
+export type GetProjectContributorsAsLeaderQueryHookResult = ReturnType<typeof useGetProjectContributorsAsLeaderQuery>;
+export type GetProjectContributorsAsLeaderLazyQueryHookResult = ReturnType<typeof useGetProjectContributorsAsLeaderLazyQuery>;
+export type GetProjectContributorsAsLeaderQueryResult = Apollo.QueryResult<GetProjectContributorsAsLeaderQuery, GetProjectContributorsAsLeaderQueryVariables>;
 export const GetProjectRemainingBudgetDocument = gql`
     query GetProjectRemainingBudget($projectId: uuid!) {
   projectsByPk(id: $projectId) {
@@ -11370,28 +11512,10 @@ export type SearchGithubUsersByHandleSubstringQueryResult = Apollo.QueryResult<S
 export const GetProjectContributorsForPaymentSelectDocument = gql`
     query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
   projectsByPk(id: $projectId) {
-    id
-    githubRepos {
-      githubRepoDetails {
-        content {
-          id
-          contributors {
-            ...GithubContributor
-          }
-        }
-      }
-    }
-    budgets {
-      paymentRequests {
-        id
-        githubRecipient {
-          ...GithubContributor
-        }
-      }
-    }
+    ...ProjectContributorsForPaymentSelect
   }
 }
-    ${GithubContributorFragmentDoc}`;
+    ${ProjectContributorsForPaymentSelectFragmentDoc}`;
 
 /**
  * __useGetProjectContributorsForPaymentSelectQuery__

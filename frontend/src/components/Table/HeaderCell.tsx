@@ -3,6 +3,7 @@ import { PropsWithChildren } from "react";
 
 export enum HeaderCellWidth {
   Sixth = "w-1/6",
+  Fifth = "w-1/5",
   Quarter = "w-1/4",
   Third = "w-1/3",
   Half = "w-1/2",
@@ -25,7 +26,7 @@ export const HeaderCell: React.FC<Props> = ({ onClick, children, horizontalMargi
       })}
       onClick={onClick}
     >
-      <div className="h-4 mb-2 flex items-center space-x-1.5 font-medium">{children}</div>
+      <div className="h-4 mb-2 flex items-center gap-1 font-medium">{children}</div>
     </th>
   );
 };

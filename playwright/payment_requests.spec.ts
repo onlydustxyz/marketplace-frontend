@@ -44,10 +44,21 @@ test.describe("As a project lead, I", () => {
     expect(await overviewPage.grantedAmount()).toBe("$13.4K / $100K");
 
     const contributorsPage = await projectPage.contributors();
-    const contributors = contributorsPage.contributorsTable();
+    const contributors = await contributorsPage.contributorsTable();
 
-    // TODO Expectations on contributors page
-    const newPaymentPage = await (await contributors).byName(recipient.github.login).pay();
+    expect(await contributors.byName("AnthonyBuisset").totalEarned()).toBe("-");
+    expect(await contributors.byName("AnthonyBuisset").paidContributions()).toBe("-");
+    expect(await contributors.byName("AnthonyBuisset").leftToPay()).toBe("1");
+
+    expect(await contributors.byName("oscarwroche").totalEarned()).toBe("$200");
+    expect(await contributors.byName("oscarwroche").paidContributions()).toBe("1");
+    expect(await contributors.byName("oscarwroche").leftToPay()).toBe("1");
+
+    expect(await contributors.byName("ofux").totalEarned()).toBe("$13,200");
+    expect(await contributors.byName("ofux").paidContributions()).toBe("7");
+    expect(await contributors.byName("ofux").leftToPay()).toBe("-");
+
+    const newPaymentPage = await contributors.byName(recipient.github.login).pay();
     expect(await newPaymentPage.contributorText()).toEqual(recipient.github.login);
 
     await newPaymentPage.requestPayment({
