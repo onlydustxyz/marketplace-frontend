@@ -19,7 +19,7 @@ impl GithubFetchIssueService for github::Client {
 		let pull_requests = octocrab_pull_requests
 			.into_iter()
 			.filter_map(
-				|pr| match GithubIssue::from_octocrab_pull_request(pr.clone()) {
+				|pr| match GithubIssue::from_octocrab_pull_request(pr.clone(), *repo_id) {
 					Ok(pr) => Some(pr),
 					Err(e) => {
 						error!(
