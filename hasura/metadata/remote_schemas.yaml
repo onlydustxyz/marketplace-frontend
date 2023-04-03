@@ -24,6 +24,7 @@
           scalar Url
           scalar Uuid
           type Issue {
+            author: User!
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             htmlUrl: Url!
@@ -141,6 +142,7 @@
           scalar GithubRepositoryId
           scalar Url
           type Issue {
+            author: User!
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             htmlUrl: Url!
@@ -205,6 +207,7 @@
           scalar GithubRepositoryId
           scalar Url
           type Issue {
+            author: User!
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             htmlUrl: Url!

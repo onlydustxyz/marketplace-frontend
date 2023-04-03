@@ -1,6 +1,8 @@
 use anyhow::{anyhow, Result};
-use domain::{GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepositoryId};
+use domain::{GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepositoryId, GithubUser};
 use octocrab::models::issues::IssueStateReason;
+
+use super::UserFromOctocrab;
 
 pub trait IssueFromOctocrab
 where
@@ -38,6 +40,7 @@ impl IssueFromOctocrab for GithubIssue {
 			number,
 			issue_type,
 			issue.title,
+			GithubUser::from_octocrab_user(issue.user),
 			issue.html_url,
 			status,
 			issue.created_at,
@@ -63,6 +66,7 @@ impl IssueFromOctocrab for GithubIssue {
 		let html_url = pull_request.html_url.ok_or_else(|| anyhow!("Missing field: 'html_url'"))?;
 
 		let repo = pull_request.repo.ok_or_else(|| anyhow!("Missing field: 'repo'"))?;
+		let user = pull_request.user.ok_or_else(|| anyhow!("Missing field: 'user'"))?;
 
 		Ok(domain::GithubIssue::new(
 			id,
@@ -70,6 +74,7 @@ impl IssueFromOctocrab for GithubIssue {
 			number,
 			GithubIssueType::PullRequest,
 			title,
+			GithubUser::from_octocrab_user(*user),
 			html_url,
 			status,
 			created_at,
