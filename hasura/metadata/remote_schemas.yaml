@@ -131,6 +131,70 @@
         value_from_env: GITHUB_PROXY_GRAPHQL_API_KEY
   comment: ""
   permissions:
+    - role: registered_user
+      definition:
+        schema: |
+          schema {
+            query: Query
+          }
+          scalar DateTimeUtc
+          scalar GithubRepositoryId
+          scalar Url
+          type Issue {
+            closedAt: DateTimeUtc
+            createdAt: DateTimeUtc!
+            htmlUrl: Url!
+            id: Int!
+            mergedAt: DateTimeUtc
+            number: Int!
+            repoId: GithubRepositoryId!
+            status: Status!
+            title: String!
+            type: Type!
+          }
+          type Query {
+            fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
+            fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
+            fetchPullsByRepoId(repoId: GithubRepositoryId!, state: PullState): [Issue!]
+            fetchRepositoryDetails(id: Int!): Repository
+            fetchUserDetails(username: String!): User
+            fetchUserDetailsById(userId: Int!): User
+            searchIssues(query: String!, sort: String, order: String, perPage: Int, page: Int): [Issue!]
+            searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [User!]
+          }
+          type Repository {
+            contributors: [User!]!
+            description: String!
+            forksCount: Int!
+            htmlUrl: Url!
+            id: GithubRepositoryId!
+            logoUrl: Url!
+            name: String!
+            owner: String!
+            stars: Int!
+          }
+          type User {
+            avatarUrl: Url!
+            htmlUrl: Url!
+            id: Int!
+            login: String!
+          }
+          enum PullState {
+            ALL
+            CLOSED
+            OPEN
+          }
+          enum Status {
+            CANCELLED
+            CLOSED
+            COMPLETED
+            MERGED
+            OPEN
+          }
+          enum Type {
+            ISSUE
+            PULL_REQUEST
+          }
     - role: public
       definition:
         schema: |
@@ -157,65 +221,6 @@
             fetchRepositoryDetails(id: Int!): Repository
             fetchUserDetailsById(userId: Int!): User
             helloFromGithubProxy: String!
-          }
-          type Repository {
-            contributors: [User!]!
-            description: String!
-            forksCount: Int!
-            htmlUrl: Url!
-            id: GithubRepositoryId!
-            logoUrl: Url!
-            name: String!
-            owner: String!
-            stars: Int!
-          }
-          type User {
-            avatarUrl: Url!
-            htmlUrl: Url!
-            id: Int!
-            login: String!
-          }
-          enum Status {
-            CANCELLED
-            CLOSED
-            COMPLETED
-            MERGED
-            OPEN
-          }
-          enum Type {
-            ISSUE
-            PULL_REQUEST
-          }
-    - role: registered_user
-      definition:
-        schema: |
-          schema {
-            query: Query
-          }
-          scalar DateTimeUtc
-          scalar GithubRepositoryId
-          scalar Url
-          type Issue {
-            closedAt: DateTimeUtc
-            createdAt: DateTimeUtc!
-            htmlUrl: Url!
-            id: Int!
-            mergedAt: DateTimeUtc
-            number: Int!
-            repoId: GithubRepositoryId!
-            status: Status!
-            title: String!
-            type: Type!
-          }
-          type Query {
-            fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
-            fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
-            fetchRepositoryDetails(id: Int!): Repository
-            fetchRepositoryPRs(id: Int!): [Issue!]
-            fetchUserDetails(username: String!): User
-            fetchUserDetailsById(userId: Int!): User
-            searchIssues(query: String!, sort: String, order: String, perPage: Int, page: Int): [Issue!]
-            searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [User!]
           }
           type Repository {
             contributors: [User!]!
