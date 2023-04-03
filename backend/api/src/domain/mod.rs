@@ -7,9 +7,6 @@ pub use permissions::Permissions;
 mod project_details;
 pub use project_details::ProjectDetails;
 
-mod github_repo;
-pub use github_repo::GithubRepo;
-
 #[allow(clippy::extra_unused_lifetimes)]
 pub mod user_info;
 pub use user_info::UserInfo;
@@ -20,9 +17,9 @@ pub use specifications::MockGithubRepoExists;
 pub use specifications::{ArePayoutSettingsValid, GithubRepoExists};
 
 mod services;
-pub use services::{GithubService, GithubServiceError, ImageStoreService, ImageStoreServiceError};
 #[cfg(test)]
-pub use services::{MockGithubService, MockImageStoreService};
+pub use services::MockImageStoreService;
+pub use services::{ImageStoreService, ImageStoreServiceError};
 
 mod pending_project_leader_invitation;
 pub use pending_project_leader_invitation::{
