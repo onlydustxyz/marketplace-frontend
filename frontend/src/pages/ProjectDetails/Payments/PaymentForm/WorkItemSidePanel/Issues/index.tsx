@@ -16,7 +16,7 @@ type Props = {
 export const MAX_ISSUE_COUNT = 50;
 
 export default function Issues({ type, projectId, contributorHandle, workItems, onWorkItemAdded }: Props) {
-  const { data: unpaidIssues, loading } = useUnpaidIssues({ projectId, contributorHandle, type });
+  const { data: unpaidIssues, loading } = useUnpaidIssues({ projectId, filters: { author: contributorHandle, type } });
 
   const issues: WorkItem[] = useMemo(
     () => differenceBy(unpaidIssues, workItems, "id").slice(0, MAX_ISSUE_COUNT),

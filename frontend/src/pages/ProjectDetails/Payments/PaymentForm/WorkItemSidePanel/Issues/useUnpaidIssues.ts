@@ -16,16 +16,34 @@ export enum IssueType {
   Issue = "issue",
 }
 
-export const buildQuery = (githubRepos: RepositoryOwnerAndNameFragment[], author: string, issueType: IssueType) =>
-  `${githubRepos.map(r => `repo:${r.owner}/${r.name}`).join(" ")} is:${issueType} author:${author}`;
+export enum IssueState {
+  Merged = "merged",
+}
+
+export const buildQuery = ({
+  author,
+  repos = [],
+  state,
+  type,
+}: { repos?: RepositoryOwnerAndNameFragment[] } & Filters) =>
+  [`${repos?.map(r => `repo:${r.owner}/${r.name}`).join(" ")}`]
+    .concat(type ? [`is:${type}`] : [])
+    .concat(author ? [`author:${author}`] : [])
+    .concat(state ? [`is:${state}`] : [])
+    .join(" ");
+
+type Filters = {
+  type?: IssueType;
+  author?: string;
+  state?: IssueState;
+};
 
 type Props = {
   projectId: string;
-  contributorHandle: string;
-  type: IssueType;
+  filters?: Filters;
 };
 
-export default function useUnpaidIssues({ projectId, contributorHandle, type }: Props) {
+export default function useUnpaidIssues({ projectId, filters }: Props) {
   const getPaidItemsQuery = useHasuraQuery<GetPaidWorkItemsQuery>(
     GetPaidWorkItemsDocument,
     HasuraUserRole.RegisteredUser,
@@ -36,17 +54,17 @@ export default function useUnpaidIssues({ projectId, contributorHandle, type }: 
 
   const searchPrQuery = useHasuraQuery<SearchIssuesQuery>(SearchIssuesDocument, HasuraUserRole.RegisteredUser, {
     variables: {
-      query: buildQuery(
-        getPaidItemsQuery.data?.projectsByPk?.githubRepos.map(r => r.githubRepoDetails?.content).filter(isDefined) ||
-          [],
-        contributorHandle,
-        type
-      ),
+      query: buildQuery({
+        ...filters,
+        repos: getPaidItemsQuery.data?.projectsByPk?.githubRepos
+          .map(r => r.githubRepoDetails?.content)
+          .filter(isDefined),
+      }),
       order: "desc",
       sort: "created",
       perPage: 100,
     },
-    skip: !getPaidItemsQuery.data?.projectsByPk?.githubRepos,
+    skip: !getPaidItemsQuery.data?.projectsByPk?.githubRepos || !filters?.author,
   });
 
   const paidItems = useMemo(
