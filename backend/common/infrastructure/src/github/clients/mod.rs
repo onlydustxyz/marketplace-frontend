@@ -151,12 +151,13 @@ impl Client {
 
 	#[allow(non_snake_case)]
 	#[instrument(skip(self))]
-	pub async fn get_repository_PRs(
+	pub async fn pulls_by_repo_id(
 		&self,
 		id: &GithubRepositoryId,
+		state: &str,
 	) -> Result<Vec<PullRequest>, Error> {
 		self.get_as(format!(
-			"{}repositories/{id}/pulls?state=all",
+			"{}repositories/{id}/pulls?state={state}",
 			self.octocrab().base_url
 		))
 		.await

@@ -33,6 +33,10 @@ export class ContributorLine {
     this.row = row;
   }
 
+  totalEarned = () => this.row.getByRole("cell").nth(1).textContent();
+  paidContributions = () => this.row.getByRole("cell").nth(2).textContent();
+  leftToPay = () => this.row.getByRole("cell").nth(3).textContent();
+
   pay = async () => {
     await this.row.hover();
     await this.row.getByRole("button").click();

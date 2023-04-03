@@ -4,7 +4,7 @@ use domain::{
 use juniper::{graphql_object, DefaultScalarValue};
 use olog::{error, warn};
 
-use super::{Context, Error};
+use super::{dto, dto::AsStr, Context, Error};
 
 pub struct Query;
 
@@ -41,16 +41,16 @@ impl Query {
 			.ok()
 	}
 
-	pub async fn fetch_repository_PRs(
+	pub async fn fetch_pulls_by_repo_id(
 		&self,
 		context: &Context,
-		id: i32,
-	) -> Option<Vec<domain::GithubIssue>> {
-		let repository_id = GithubRepositoryId::from(id as i64);
+		repo_id: GithubRepositoryId,
+		state: Option<dto::PullState>,
+	) -> Option<Vec<GithubIssue>> {
 		context
 			.github_service()
 			.ok()?
-			.pulls_by_repo_id(&repository_id)
+			.pulls_by_repo_id(&repo_id, state.unwrap_or_default().as_str())
 			.await
 			.map_err(Error::from)
 			.logged()

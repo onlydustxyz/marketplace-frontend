@@ -7,13 +7,14 @@ import User3Line from "src/icons/User3Line";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { useIntl } from "src/hooks/useIntl";
+import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
 
 interface ContributorSelectViewProps {
   selectedGithubHandle: string | null;
   setSelectedGithubHandle: (selectedGithubHandle: string | null) => void;
   githubHandleSubstring: string;
   setGithubHandleSubstring: (githubHandleSubstring: string) => void;
-  filteredContributors: GithubContributorFragment[] | undefined;
+  filteredContributors: (GithubContributorFragment[] & { unpaidMergedPullsCount?: number }) | undefined;
   filteredExternalContributors: GithubContributorFragment[] | undefined;
   isSearchGithubUsersByHandleSubstringQueryLoading: boolean;
   contributor: GithubContributorFragment | null | undefined;
@@ -153,7 +154,7 @@ export default function ContributorSelectView({
 }
 
 interface ContributorSubListProps<T extends GithubContributorFragment> {
-  contributors?: T[];
+  contributors?: (T & { unpaidMergedPullsCount?: number })[];
 }
 
 function ContributorSubList<T extends GithubContributorFragment>({ contributors }: ContributorSubListProps<T>) {
@@ -162,7 +163,11 @@ function ContributorSubList<T extends GithubContributorFragment>({ contributors 
       {contributors?.map(contributor => (
         <Combobox.Option key={contributor.id} value={contributor.login}>
           {({ active }) => (
-            <li className={`p-2 ${active && "bg-white/4 cursor-pointer"}`}>
+            <li
+              className={classNames("p-2 flex items-center justify-between", {
+                "bg-white/4 cursor-pointer": active,
+              })}
+            >
               <Contributor
                 contributor={{
                   avatarUrl: contributor.avatarUrl,
@@ -170,6 +175,9 @@ function ContributorSubList<T extends GithubContributorFragment>({ contributors 
                   isRegistered: !!contributor.user?.userId,
                 }}
               />
+              {contributor.unpaidMergedPullsCount && (
+                <Badge value={contributor.unpaidMergedPullsCount} icon={BadgeIcon.GitMerge} size={BadgeSize.Small} />
+              )}
             </li>
           )}
         </Combobox.Option>

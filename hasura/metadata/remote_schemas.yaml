@@ -24,6 +24,7 @@
           scalar Url
           scalar Uuid
           type Issue {
+            author: User!
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             htmlUrl: Url!
@@ -131,7 +132,7 @@
         value_from_env: GITHUB_PROXY_GRAPHQL_API_KEY
   comment: ""
   permissions:
-    - role: public
+    - role: registered_user
       definition:
         schema: |
           schema {
@@ -141,6 +142,7 @@
           scalar GithubRepositoryId
           scalar Url
           type Issue {
+            author: User!
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             htmlUrl: Url!
@@ -153,10 +155,14 @@
             type: Type!
           }
           type Query {
+            fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
             fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
+            fetchPullsByRepoId(repoId: GithubRepositoryId!, state: PullState): [Issue!]
             fetchRepositoryDetails(id: Int!): Repository
+            fetchUserDetails(username: String!): User
             fetchUserDetailsById(userId: Int!): User
-            helloFromGithubProxy: String!
+            searchIssues(query: String!, sort: String, order: String, perPage: Int, page: Int): [Issue!]
+            searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [User!]
           }
           type Repository {
             contributors: [User!]!
@@ -175,6 +181,11 @@
             id: Int!
             login: String!
           }
+          enum PullState {
+            ALL
+            CLOSED
+            OPEN
+          }
           enum Status {
             CANCELLED
             CLOSED
@@ -186,7 +197,7 @@
             ISSUE
             PULL_REQUEST
           }
-    - role: registered_user
+    - role: public
       definition:
         schema: |
           schema {
@@ -196,6 +207,7 @@
           scalar GithubRepositoryId
           scalar Url
           type Issue {
+            author: User!
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             htmlUrl: Url!
@@ -208,14 +220,10 @@
             type: Type!
           }
           type Query {
-            fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
             fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
             fetchRepositoryDetails(id: Int!): Repository
-            fetchRepositoryPRs(id: Int!): [Issue!]
-            fetchUserDetails(username: String!): User
             fetchUserDetailsById(userId: Int!): User
-            searchIssues(query: String!, sort: String, order: String, perPage: Int, page: Int): [Issue!]
-            searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [User!]
+            helloFromGithubProxy: String!
           }
           type Repository {
             contributors: [User!]!

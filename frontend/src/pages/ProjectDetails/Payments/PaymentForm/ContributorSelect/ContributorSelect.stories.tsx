@@ -1,5 +1,4 @@
 import { ComponentStory } from "@storybook/react";
-import { FormProvider, useForm } from "react-hook-form";
 import { GithubContributorFragment } from "src/__generated/graphql";
 
 import ContributorSelectView from "./View";
@@ -8,12 +7,13 @@ export default {
   title: "ContributorsSelect",
 };
 
-const filteredContributors: GithubContributorFragment[] = [
+const filteredContributors: (GithubContributorFragment & { unpaidMergedPullsCount?: number })[] = [
   {
     id: 1111,
     login: "antho",
     avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
     user: null,
+    unpaidMergedPullsCount: 3,
   },
   {
     id: 2222,
@@ -26,6 +26,7 @@ const filteredContributors: GithubContributorFragment[] = [
     login: "ofux",
     avatarUrl: "https://avatars.githubusercontent.com/u/595505?v=4",
     user: null,
+    unpaidMergedPullsCount: 10,
   },
 ];
 
