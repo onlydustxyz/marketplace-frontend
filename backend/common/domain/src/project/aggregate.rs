@@ -12,6 +12,10 @@ pub enum Error {
 	LeaderAlreadyAssigned,
 	#[error("User is not a project leader")]
 	NotLeader,
+	#[error("Github repository already linked to this project")]
+	GithubRepoAlreadyLinked,
+	#[error("Github repository is not linked to this project")]
+	NotLinked,
 	#[error("Budget must be created first")]
 	NoBudget,
 	#[error(transparent)]
@@ -25,9 +29,9 @@ type Result<T> = std::result::Result<T, Error>;
 #[derive(Default, Debug, Clone, PartialEq, Eq, Getters, Dissolve, Constructor)]
 pub struct Project {
 	id: ProjectId,
-	github_repo_id: GithubRepositoryId,
 	leaders: HashSet<UserId>,
 	budget: Option<Budget>,
+	github_repos: HashSet<GithubRepositoryId>,
 }
 
 impl Entity for Project {
@@ -64,6 +68,14 @@ impl EventSourcable for Project {
 			ProjectEvent::Budget { event, .. } => Self {
 				budget: Some(self.budget.unwrap_or_default().apply_event(event)),
 				..self
+			},
+			ProjectEvent::GithubRepoLinked { github_repo_id, .. } => {
+				self.github_repos.insert(*github_repo_id);
+				self
+			},
+			ProjectEvent::GithubRepoUnlinked { github_repo_id, .. } => {
+				self.github_repos.remove(github_repo_id);
+				self
 			},
 		}
 	}
@@ -109,6 +121,34 @@ impl Project {
 		Ok(vec![ProjectEvent::LeaderUnassigned {
 			id: self.id,
 			leader_id,
+		}])
+	}
+
+	pub fn link_github_repo(
+		&self,
+		github_repo_id: GithubRepositoryId,
+	) -> Result<Vec<<Self as Aggregate>::Event>> {
+		if self.github_repos.contains(&github_repo_id) {
+			return Err(Error::GithubRepoAlreadyLinked);
+		}
+
+		Ok(vec![ProjectEvent::GithubRepoLinked {
+			id: self.id,
+			github_repo_id,
+		}])
+	}
+
+	pub fn unlink_github_repo(
+		&self,
+		github_repo_id: GithubRepositoryId,
+	) -> Result<Vec<<Self as Aggregate>::Event>> {
+		if !self.github_repos.contains(&github_repo_id) {
+			return Err(Error::NotLinked);
+		}
+
+		Ok(vec![ProjectEvent::GithubRepoUnlinked {
+			id: self.id,
+			github_repo_id,
 		}])
 	}
 

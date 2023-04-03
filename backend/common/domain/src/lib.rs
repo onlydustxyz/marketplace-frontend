@@ -37,13 +37,14 @@ pub use budget::{Budget, Error as BudgetError, Event as BudgetEvent, Id as Budge
 
 mod github;
 pub use github::{
-	FetchIssueService as GithubFetchIssueService, FetchRepoService as GithubFetchRepoService,
-	FetchService as GithubFetchService, FetchUserService as GithubFetchUserService,
-	Issue as GithubIssue, IssueStatus as GithubIssueStatus, IssueType as GithubIssueType,
-	Repository as GithubRepo, SearchIssueService as GithubSearchIssueService,
-	SearchService as GithubSearchService, SearchUserService as GithubSearchUserService,
-	Service as GithubService, ServiceError as GithubServiceError,
-	ServiceResult as GithubServiceResult, User as GithubUser,
+	CreateIssueService as GithubCreateIssueService, FetchIssueService as GithubFetchIssueService,
+	FetchRepoService as GithubFetchRepoService, FetchService as GithubFetchService,
+	FetchUserService as GithubFetchUserService, Issue as GithubIssue,
+	IssueStatus as GithubIssueStatus, IssueType as GithubIssueType,
+	Languages as GithubRepoLanguages, Repository as GithubRepo,
+	SearchIssueService as GithubSearchIssueService, SearchService as GithubSearchService,
+	SearchUserService as GithubSearchUserService, Service as GithubService,
+	ServiceError as GithubServiceError, ServiceResult as GithubServiceResult, User as GithubUser,
 };
 
 pub mod aggregate_root;
