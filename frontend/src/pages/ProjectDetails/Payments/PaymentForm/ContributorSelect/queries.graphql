@@ -1,0 +1,34 @@
+query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
+  searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc") {
+    id
+    login
+    avatarUrl
+    user {
+      userId
+    }
+  }
+}
+
+query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    id
+    githubRepos {
+      githubRepoDetails {
+        content {
+          id
+          contributors {
+            ...GithubContributor
+          }
+        }
+      }
+    }
+    budgets {
+      paymentRequests {
+        id
+        githubRecipient {
+          ...GithubContributor
+        }
+      }
+    }
+  }
+}

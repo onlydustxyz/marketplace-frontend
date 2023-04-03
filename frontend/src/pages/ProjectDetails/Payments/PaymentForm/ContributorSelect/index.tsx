@@ -1,14 +1,14 @@
-import { gql } from "@apollo/client";
 import { useEffect, useMemo, useState } from "react";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import {
+  GetProjectContributorsForPaymentSelectDocument,
   GetProjectContributorsForPaymentSelectQuery,
   GithubContributorFragment,
+  SearchGithubUsersByHandleSubstringDocument,
   SearchGithubUsersByHandleSubstringQuery,
 } from "src/__generated/graphql";
 import { getContributors } from "src/utils/project";
-import { GITHUB_CONTRIBUTOR_FRAGMENT } from "src/hooks/useIsGithubLoginValid";
 import View from "./View";
 import { useLocation } from "react-router-dom";
 
@@ -28,18 +28,18 @@ export default function ContributorSelect({ projectId, contributor, setContribut
   const handleSubstringQuery = `type:user ${githubHandleSubstring} in:login`;
 
   const getProjectContributorsQuery = useHasuraQuery<GetProjectContributorsForPaymentSelectQuery>(
-    GET_PROJECT_CONTRIBUTORS_QUERY,
+    GetProjectContributorsForPaymentSelectDocument,
     HasuraUserRole.Public,
     {
       variables: { projectId },
     }
   );
   const searchGithubUsersByHandleSubstringQuery = useHasuraQuery<SearchGithubUsersByHandleSubstringQuery>(
-    SEARCH_GITHUB_USERS_BY_HANDLE_SUBSTRING_QUERY,
+    SearchGithubUsersByHandleSubstringDocument,
     HasuraUserRole.RegisteredUser,
     {
       variables: { handleSubstringQuery },
-      skip: !githubHandleSubstring || (githubHandleSubstring && githubHandleSubstring.length) < 2,
+      skip: (githubHandleSubstring?.length || 0) < 2,
     }
   );
 
@@ -93,47 +93,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
 function sortListByLogin<T extends { login: string }>(objectsWithLogin: T[] | null | undefined) {
   return objectsWithLogin
     ? [...objectsWithLogin].sort((objectWithLoginA, objectWithLoginB) =>
-        objectWithLoginA.login.toLocaleLowerCase().localeCompare(objectWithLoginB.login.toLocaleLowerCase())
+        objectWithLoginA.login.localeCompare(objectWithLoginB.login)
       )
     : [];
 }
-
-export const SEARCH_GITHUB_USERS_BY_HANDLE_SUBSTRING_QUERY = gql`
-  query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
-    searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc") {
-      id
-      login
-      avatarUrl
-      user {
-        userId
-      }
-    }
-  }
-`;
-
-export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
-  ${GITHUB_CONTRIBUTOR_FRAGMENT}
-  query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
-    projectsByPk(id: $projectId) {
-      id
-      githubRepos {
-        githubRepoDetails {
-          content {
-            id
-            contributors {
-              ...GithubContributor
-            }
-          }
-        }
-      }
-      budgets {
-        paymentRequests {
-          id
-          githubRecipient {
-            ...GithubContributor
-          }
-        }
-      }
-    }
-  }
-`;
