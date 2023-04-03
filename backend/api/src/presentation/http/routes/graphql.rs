@@ -11,9 +11,8 @@ use crate::{
 	domain::permissions::IntoPermission,
 	infrastructure::{
 		database::{
-			GithubRepoRepository, PendingProjectLeaderInvitationsRepository,
-			ProjectDetailsRepository, ProjectGithubRepoRepository, ProjectSponsorRepository,
-			SponsorRepository, UserInfoRepository,
+			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
+			ProjectSponsorRepository, SponsorRepository, UserInfoRepository,
 		},
 		simple_storage,
 		web3::ens,
@@ -47,8 +46,6 @@ pub async fn get_graphql_handler(
 	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<ProjectDetailsRepository>,
-	github_repo_repository: &State<GithubRepoRepository>,
-	project_github_repo_repository: &State<ProjectGithubRepoRepository>,
 	sponsor_repository: &State<SponsorRepository>,
 	project_sponsor_repository: &State<ProjectSponsorRepository>,
 	pending_project_leader_invitations_repository: &State<
@@ -65,8 +62,6 @@ pub async fn get_graphql_handler(
 		(*event_publisher).clone(),
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
-		(*github_repo_repository).clone(),
-		(*project_github_repo_repository).clone(),
 		(*sponsor_repository).clone(),
 		(*project_sponsor_repository).clone(),
 		(*pending_project_leader_invitations_repository).clone(),
@@ -90,8 +85,6 @@ pub async fn post_graphql_handler(
 	event_publisher: &State<Arc<dyn Publisher<UniqueMessage<Event>>>>,
 	project_repository: &State<AggregateRootRepository<Project>>,
 	project_details_repository: &State<ProjectDetailsRepository>,
-	github_repo_repository: &State<GithubRepoRepository>,
-	project_github_repo_repository: &State<ProjectGithubRepoRepository>,
 	sponsor_repository: &State<SponsorRepository>,
 	project_sponsor_repository: &State<ProjectSponsorRepository>,
 	pending_project_leader_invitations_repository: &State<
@@ -108,8 +101,6 @@ pub async fn post_graphql_handler(
 		(*event_publisher).clone(),
 		(*project_repository).clone(),
 		(*project_details_repository).clone(),
-		(*github_repo_repository).clone(),
-		(*project_github_repo_repository).clone(),
 		(*sponsor_repository).clone(),
 		(*project_sponsor_repository).clone(),
 		(*pending_project_leader_invitations_repository).clone(),
