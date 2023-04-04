@@ -19,7 +19,7 @@ import { GithubContributorFragment } from "src/__generated/graphql";
 interface Props {
   projectId: string;
   budget: Budget;
-  onWorkEstimationChange: (workEstimation: number) => void;
+  onWorkEstimationChange: (amountToPay: number, hoursWorked: number) => void;
   onWorkItemsChange: (workItems: WorkItem[]) => void;
   contributor: GithubContributorFragment | null | undefined;
   setContributor: (contributor: GithubContributorFragment | null | undefined) => void;

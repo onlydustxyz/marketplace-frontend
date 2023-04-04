@@ -5,6 +5,7 @@ import {
   DEFAULT_NUMBER_OF_DAYS,
   getInitialStep,
   getReducer,
+  hours,
   Steps,
   stepSizes,
   useWorkEstimation,
@@ -19,6 +20,7 @@ const budget = {
 describe("useWorkEstimation", () => {
   const onChange = vi.fn();
   const initialAmountToPay = DEFAULT_NUMBER_OF_DAYS * DAY_RATE_USD;
+  const initialWorkedHours = DEFAULT_NUMBER_OF_DAYS * hours[Steps.Days];
 
   beforeEach(() => {
     vi.resetAllMocks();
@@ -31,7 +33,7 @@ describe("useWorkEstimation", () => {
 
   it("should initially call the onChange callback with the initial amount", () => {
     renderHook(() => useWorkEstimation(onChange, budget));
-    expect(onChange).toHaveBeenCalledWith(initialAmountToPay);
+    expect(onChange).toHaveBeenCalledWith(initialAmountToPay, initialWorkedHours);
   });
 
   it("should call the onChange callback when amount has changed", () => {
@@ -41,7 +43,10 @@ describe("useWorkEstimation", () => {
       result.current.tryIncreaseNumberOfDays();
     });
     expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith(initialAmountToPay + DAY_RATE_USD / 2);
+    expect(onChange).toHaveBeenCalledWith(
+      initialAmountToPay + DAY_RATE_USD / 2,
+      initialWorkedHours + 0.5 * hours[Steps.Days]
+    );
   });
 
   it("should forbid decreasing when estimation is 1 hour", () => {
