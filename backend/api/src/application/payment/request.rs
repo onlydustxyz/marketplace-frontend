@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
+use chrono::Duration;
 use domain::{
 	AggregateRootRepository, DomainError, Event, GithubUserId, PaymentId, PaymentReason, Project,
 	ProjectId, Publisher, UserId,
@@ -34,6 +35,7 @@ impl Usecase {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount_in_usd: u32,
+		hours_worked: u32,
 		reason: PaymentReason,
 	) -> Result<PaymentId, DomainError> {
 		let project = self.project_repository.find_by_id(&project_id)?;
@@ -45,6 +47,7 @@ impl Usecase {
 				requestor_id,
 				recipient_id,
 				Money::from_major(amount_in_usd as i64, crypto::USDC).into(),
+				Duration::hours(hours_worked as i64),
 				reason,
 			)
 			.await

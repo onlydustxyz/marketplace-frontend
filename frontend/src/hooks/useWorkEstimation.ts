@@ -27,9 +27,14 @@ const maxSteps = {
   [Steps.Hours]: 7,
 };
 
+export const hours = {
+  [Steps.Days]: maxSteps[Steps.Hours] + 1,
+  [Steps.Hours]: 1,
+};
+
 export const rates = {
   [Steps.Days]: DAY_RATE_USD,
-  [Steps.Hours]: DAY_RATE_USD / (maxSteps[Steps.Hours] + 1),
+  [Steps.Hours]: DAY_RATE_USD / hours[Steps.Days],
 };
 
 export const stepSizes = {
@@ -93,7 +98,7 @@ export const getReducer = (budget: Budget) => (state: State, action: Action) => 
 };
 
 export const useWorkEstimation = (
-  onChange: (amount: number) => void,
+  onChange: (amountToPay: number, hoursWorked: number) => void,
   budget: { initialAmount: number; remainingAmount: number }
 ) => {
   const reducer = useMemo(() => getReducer(budget), [budget]);
@@ -102,10 +107,11 @@ export const useWorkEstimation = (
   const { stepNumber, steps } = estimationState;
 
   const amountToPay = useMemo(() => Math.ceil(stepNumber * rates[steps]), [stepNumber, steps]);
+  const hoursWorked = useMemo(() => Math.ceil(stepNumber * hours[steps]), [stepNumber, steps]);
 
   useEffect(() => {
-    onChange(amountToPay);
-  }, [amountToPay]);
+    onChange(amountToPay, hoursWorked);
+  }, [amountToPay, hoursWorked]);
 
   const canDecrease = useMemo(() => steps === Steps.Days || stepNumber > 1, [steps, stepNumber]);
 

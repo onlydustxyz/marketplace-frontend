@@ -66,6 +66,7 @@ const populatePaymentItem = async (
         contributorId: payment.recipientGithubId,
         amount: paymentItem.amount,
         reason: paymentItem.reason,
+        hoursWorked: Math.ceil(paymentItem.amount / (500.0 / 8)),
       },
     }
   );

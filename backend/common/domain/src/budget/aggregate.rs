@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use chrono::Duration;
 use derive_getters::Getters;
 use rust_decimal::Decimal;
 use thiserror::Error;
@@ -53,6 +54,7 @@ impl Budget {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
+		duration_worked: Duration,
 		reason: Reason,
 	) -> Result<Vec<BudgetEvent>> {
 		if self.allocated_amount.currency() != amount.currency() {
@@ -63,12 +65,17 @@ impl Budget {
 			return Err(Error::Overspent);
 		}
 
-		Ok(
-			Payment::request(payment_id, requestor_id, recipient_id, amount, reason)
-				.into_iter()
-				.map(|event| BudgetEvent::Payment { id: self.id, event })
-				.collect(),
+		Ok(Payment::request(
+			payment_id,
+			requestor_id,
+			recipient_id,
+			amount,
+			duration_worked,
+			reason,
 		)
+		.into_iter()
+		.map(|event| BudgetEvent::Payment { id: self.id, event })
+		.collect())
 	}
 
 	pub fn cancel_payment_request(&self, payment_id: &PaymentId) -> Result<Vec<BudgetEvent>> {
@@ -192,6 +199,11 @@ mod tests {
 	}
 
 	#[fixture]
+	fn duration_worked() -> Duration {
+		Duration::hours(7)
+	}
+
+	#[fixture]
 	fn currency() -> Currency {
 		Currency::Crypto("USDC".to_string())
 	}
@@ -235,6 +247,7 @@ mod tests {
 	#[rstest]
 	fn spend_budget(
 		amount: Decimal,
+		duration_worked: Duration,
 		currency: Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
@@ -245,6 +258,7 @@ mod tests {
 			Default::default(),
 			Default::default(),
 			Amount::new(amount, currency),
+			duration_worked,
 			Default::default(),
 		);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
@@ -261,6 +275,7 @@ mod tests {
 	#[rstest]
 	fn spend_and_cancel_budget(
 		amount: Decimal,
+		duration_worked: Duration,
 		currency: Currency,
 		payment_id: &PaymentId,
 		budget_created_event: BudgetEvent,
@@ -272,6 +287,7 @@ mod tests {
 			Default::default(),
 			Default::default(),
 			Amount::new(amount, currency.clone()),
+			duration_worked,
 			Default::default(),
 		);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
@@ -286,6 +302,7 @@ mod tests {
 			Default::default(),
 			Default::default(),
 			Amount::new(amount, currency),
+			duration_worked,
 			Default::default(),
 		);
 		assert!(result.is_ok(), "{}", result.err().unwrap());
@@ -294,6 +311,7 @@ mod tests {
 	#[rstest]
 	fn overspend_budget(
 		amount: Decimal,
+		duration_worked: Duration,
 		currency: Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
@@ -304,6 +322,7 @@ mod tests {
 			Default::default(),
 			Default::default(),
 			Amount::new(amount * dec!(2), currency),
+			duration_worked,
 			Default::default(),
 		);
 		assert_matches!(result, Err(Error::Overspent));
@@ -311,6 +330,7 @@ mod tests {
 
 	#[rstest]
 	fn spend_in_different_currency(
+		duration_worked: Duration,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
 	) {
@@ -320,6 +340,7 @@ mod tests {
 			Default::default(),
 			Default::default(),
 			Amount::new(dec!(10), crate::Currency::Crypto("USDT".to_string())),
+			duration_worked,
 			Default::default(),
 		);
 
@@ -329,6 +350,7 @@ mod tests {
 	#[rstest]
 	fn refill_budget(
 		amount: Decimal,
+		duration_worked: Duration,
 		currency: Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
@@ -341,6 +363,7 @@ mod tests {
 				Default::default(),
 				Default::default(),
 				Amount::new(amount, currency.clone()),
+				duration_worked,
 				Default::default(),
 			)
 			.unwrap();
@@ -358,6 +381,7 @@ mod tests {
 				Default::default(),
 				Default::default(),
 				Amount::new(amount, currency),
+				duration_worked,
 				Default::default(),
 			)
 			.unwrap();
@@ -370,6 +394,7 @@ mod tests {
 	#[rstest]
 	fn cut_budget(
 		amount: Decimal,
+		duration_worked: Duration,
 		currency: Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
@@ -386,6 +411,7 @@ mod tests {
 				Default::default(),
 				Default::default(),
 				Amount::new(amount, currency),
+				duration_worked,
 				Default::default(),
 			)
 			.unwrap();
@@ -403,6 +429,7 @@ mod tests {
 	#[rstest]
 	fn cannot_cut_budget_below_spent(
 		amount: Decimal,
+		duration_worked: Duration,
 		currency: Currency,
 		budget_created_event: BudgetEvent,
 		budget_allocated_event: BudgetEvent,
@@ -415,6 +442,7 @@ mod tests {
 				Default::default(),
 				Default::default(),
 				Amount::new(amount, currency),
+				duration_worked,
 				Default::default(),
 			)
 			.unwrap();
