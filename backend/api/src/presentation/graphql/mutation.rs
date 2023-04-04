@@ -241,6 +241,7 @@ impl Mutation {
 		project_id: Uuid,
 		recipient_id: i32,
 		amount_in_usd: i32,
+		hours_worked: i32,
 		reason: PaymentReason,
 	) -> Result<Uuid> {
 		let caller_id = *context.caller_info()?.user_id();
@@ -251,6 +252,9 @@ impl Mutation {
 				"Project Lead role required".to_string(),
 			));
 		}
+
+		// TODO: remove this in next commit
+		println!("hours_worked = {hours_worked}");
 
 		let payment_request_id = context
 			.request_payment_usecase

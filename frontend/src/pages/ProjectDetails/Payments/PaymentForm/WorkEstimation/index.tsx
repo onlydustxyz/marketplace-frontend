@@ -2,7 +2,7 @@ import { useWorkEstimation } from "src/hooks/useWorkEstimation";
 import View from "./View";
 
 interface Props {
-  onChange: (value: number) => void;
+  onChange: (amountToPay: number, hoursWorked: number) => void;
   budget: { initialAmount: number; remainingAmount: number };
   missingContributor: boolean;
   missingWorkItem: boolean;

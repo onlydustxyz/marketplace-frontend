@@ -6330,6 +6330,7 @@ export type Mutation_RootRemoveSponsorFromProjectArgs = {
 /** mutation root */
 export type Mutation_RootRequestPaymentArgs = {
   amountInUsd: Scalars['Int'];
+  hoursWorked: Scalars['Int'];
   projectId: Scalars['Uuid'];
   reason: Reason;
   recipientId: Scalars['Int'];
@@ -9774,6 +9775,7 @@ export type GetPaymentRequestsForProjectQuery = { __typename?: 'query_root', pro
 export type RequestPaymentMutationVariables = Exact<{
   amount: Scalars['Int'];
   contributorId: Scalars['Int'];
+  hoursWorked: Scalars['Int'];
   projectId: Scalars['Uuid'];
   reason: Reason;
 }>;
@@ -10718,9 +10720,10 @@ export type GetPaymentRequestsForProjectQueryHookResult = ReturnType<typeof useG
 export type GetPaymentRequestsForProjectLazyQueryHookResult = ReturnType<typeof useGetPaymentRequestsForProjectLazyQuery>;
 export type GetPaymentRequestsForProjectQueryResult = Apollo.QueryResult<GetPaymentRequestsForProjectQuery, GetPaymentRequestsForProjectQueryVariables>;
 export const RequestPaymentDocument = gql`
-    mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
+    mutation RequestPayment($amount: Int!, $contributorId: Int!, $hoursWorked: Int!, $projectId: Uuid!, $reason: Reason!) {
   requestPayment(
     amountInUsd: $amount
+    hoursWorked: $hoursWorked
     projectId: $projectId
     reason: $reason
     recipientId: $contributorId
@@ -10744,6 +10747,7 @@ export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMut
  *   variables: {
  *      amount: // value for 'amount'
  *      contributorId: // value for 'contributorId'
+ *      hoursWorked: // value for 'hoursWorked'
  *      projectId: // value for 'projectId'
  *      reason: // value for 'reason'
  *   },
