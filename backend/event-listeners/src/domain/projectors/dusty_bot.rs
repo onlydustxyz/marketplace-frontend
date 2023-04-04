@@ -4,9 +4,9 @@ use async_trait::async_trait;
 use chrono::Duration;
 use derive_more::Constructor;
 use domain::{
-	Amount, BudgetEvent, Event, GithubFetchRepoService, GithubFetchUserService, GithubServiceError,
-	GithubUserId, PaymentEvent, PaymentId, PaymentWorkItem, ProjectEvent, SubscriberCallbackError,
-	UserId,
+	Amount, AuthUserRepository, BudgetEvent, Event, GithubFetchRepoService, GithubFetchUserService,
+	GithubServiceError, GithubUserId, PaymentEvent, PaymentId, PaymentWorkItem, ProjectEvent,
+	SubscriberCallbackError, UserId,
 };
 use tracing::instrument;
 
@@ -16,6 +16,7 @@ use crate::domain::{EventListener, GithubCommentService};
 pub struct DustyBot {
 	comment_service: Arc<dyn GithubCommentService>,
 	fetch_user_service: Arc<dyn GithubFetchUserService>,
+	auth_user_repository: Arc<dyn AuthUserRepository>,
 	fetch_repo_service: Arc<dyn GithubFetchRepoService>,
 }
 
@@ -35,28 +36,55 @@ impl DustyBot {
 		amount: &Amount,
 		work_info: WorkInfo,
 	) -> Result<(), SubscriberCallbackError> {
-		let repository =
-			self.fetch_repo_service
-				.repo_by_id(work_item.repo_id())
-				.await
-				.map_err::<SubscriberCallbackError, _>(FromGithubError::from_github_error)?;
-		let recipient_login = self
+		// TODO: parallelize calls within here
+		let repository = self
+			.fetch_repo_service
+			.repo_by_id(work_item.repo_id())
+			.await
+			.map_err(SubscriberCallbackError::from_github_error)?;
+
+		let requestor = self.auth_user_repository.user_by_id(requestor_id).await?;
+
+		let recipient = self
 			.fetch_user_service
 			.user_by_id(recipient_id)
 			.await
-			.map_err::<SubscriberCallbackError, _>(FromGithubError::from_github_error)?
-			.login()
-			.clone();
-		let id = payment_id.pretty();
-		let time_worked_string = format_duration_worked(&work_info.duration_worked);
-		let work_items_count = work_info.work_items_count;
-		self.comment_service.create_comment(
-							    repository.owner(),
- 							    repository.name(),
-							    work_item.issue_number(),
-		    &format!("This item belongs to payment request #{id} on OnlyDust from {requestor_id} to {recipient_login}, {work_items_count} items included, ${amount} {time_worked_string}")).await.map_err::<SubscriberCallbackError, _>(FromGithubError::from_github_error)?;
+			.map_err(SubscriberCallbackError::from_github_error)?;
+
+		let comment_body = format_comment(
+			&payment_id.pretty(),
+			requestor.display_name(),
+			recipient.login(),
+			amount,
+			work_info.work_items_count,
+			&format_duration_worked(&work_info.duration_worked),
+		);
+
+		self.comment_service
+			.create_comment(
+				repository.owner(),
+				repository.name(),
+				work_item.issue_number(),
+				&comment_body,
+			)
+			.await
+			.map_err::<SubscriberCallbackError, _>(FromGithubError::from_github_error)?;
+
 		Ok(())
 	}
+}
+
+fn format_comment(
+	payment_id: &str,
+	requestor_login: &str,
+	recipient_login: &str,
+	amount: &Amount,
+	work_items_count: usize,
+	worked_duration: &str,
+) -> String {
+	format!(
+		"This item belongs to payment request #{payment_id} on OnlyDust from {requestor_login} to {recipient_login}, {work_items_count} items included, ${amount} for {worked_duration} of work.",
+	)
 }
 
 #[async_trait]
@@ -81,6 +109,7 @@ impl EventListener for DustyBot {
 			..
 		}) = event
 		{
+			// TODO: parallelize calls within here
 			for work_item in reason.work_items().iter() {
 				self.comment_issue(
 					work_item,
@@ -101,13 +130,13 @@ fn format_duration_worked(duration_worked_hours: &Duration) -> String {
 	let number_of_days = duration_worked_hours.num_hours() / 8;
 	let number_of_hours = duration_worked_hours.num_hours() - 8 * number_of_days;
 	if number_of_days > 0 && number_of_hours > 0 {
-		format!("for {number_of_days} days and {number_of_hours} hours of work")
+		format!("{number_of_days} days and {number_of_hours} hours")
 	} else if number_of_days > 0 {
-		format!("for {number_of_days} days of work")
+		format!("{number_of_days} days")
 	} else if number_of_hours > 0 {
-		format!("for {number_of_hours} hours of work")
+		format!("{number_of_hours} hours")
 	} else {
-		panic!("Number of hours should be more than 0")
+		panic!("Number of hours should be more than 0") // TODO: Do not panic
 	}
 }
 

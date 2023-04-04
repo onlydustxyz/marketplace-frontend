@@ -1,4 +1,7 @@
+use anyhow::anyhow;
 use thiserror::Error;
+
+use crate::SubscriberCallbackError;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -9,3 +12,12 @@ pub enum Error {
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
+
+impl From<Error> for SubscriberCallbackError {
+	fn from(error: Error) -> Self {
+		match error {
+			Error::NotFound => Self::Discard(anyhow!(error)),
+			Error::Other(_) => Self::Fatal(anyhow!(error)),
+		}
+	}
+}

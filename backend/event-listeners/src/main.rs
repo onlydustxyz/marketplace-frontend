@@ -8,7 +8,7 @@ use event_listeners::{
 	Config,
 };
 use futures::future::try_join_all;
-use infrastructure::{github, tracing::Tracer};
+use infrastructure::{github, graphql::Client as GraphQlClient, tracing::Tracer};
 use tokio::task::JoinHandle;
 
 #[tokio::main]
@@ -22,9 +22,10 @@ async fn main() -> Result<()> {
 		config.database(),
 	)?));
 	let github = Arc::<github::Client>::new(github::RoundRobinClient::new(config.github())?.into());
+	let graphql = Arc::new(GraphQlClient::new(config.graphql())?);
 
 	let mut handles = vec![spawn_web_server()?];
-	handles.extend(listeners::spawn_all(&config, reqwest, database, github).await?);
+	handles.extend(listeners::spawn_all(&config, reqwest, database, github, graphql).await?);
 	try_join_all(handles).await?;
 
 	Ok(())
