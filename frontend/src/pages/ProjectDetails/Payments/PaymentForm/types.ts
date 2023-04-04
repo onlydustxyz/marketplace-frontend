@@ -6,8 +6,6 @@ export type Inputs = {
   contributor: GithubContributorFragment;
   memo: string;
   remainingBudget: number;
-  seniority: number;
-  workingDays: number;
-  satisfaction: number;
+  hoursWorked: number;
   amountToWire: number;
 };

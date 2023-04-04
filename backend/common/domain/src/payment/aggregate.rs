@@ -1,4 +1,4 @@
-use chrono::Utc;
+use chrono::{Duration, Utc};
 use derive_getters::Getters;
 use olog::info;
 use rust_decimal::Decimal;
@@ -79,6 +79,7 @@ impl Payment {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
+		duration_worked: Duration,
 		reason: Reason,
 	) -> Vec<<Self as Aggregate>::Event> {
 		vec![PaymentEvent::Requested {
@@ -86,6 +87,7 @@ impl Payment {
 			requestor_id,
 			recipient_id,
 			amount,
+			duration_worked,
 			reason,
 			requested_at: Utc::now().naive_utc(),
 		}]
@@ -224,6 +226,11 @@ mod tests {
 	}
 
 	#[fixture]
+	fn duration_worked() -> Duration {
+		Duration::hours(12)
+	}
+
+	#[fixture]
 	fn receipt() -> PaymentReceipt {
 		PaymentReceipt::OnChainPayment {
 			network: BlockchainNetwork::Ethereum,
@@ -243,9 +250,17 @@ mod tests {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
+		duration_worked: Duration,
 		reason: Reason,
 	) -> Payment {
-		let events = Payment::request(payment_id, requestor_id, recipient_id, amount, reason);
+		let events = Payment::request(
+			payment_id,
+			requestor_id,
+			recipient_id,
+			amount,
+			duration_worked,
+			reason,
+		);
 		Payment::from_events(&events)
 	}
 
@@ -377,6 +392,7 @@ mod tests {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
+		duration_worked: Duration,
 		reason: Reason,
 	) {
 		let before = Utc::now();
@@ -385,6 +401,7 @@ mod tests {
 			requestor_id,
 			recipient_id,
 			amount.clone(),
+			duration_worked,
 			reason.clone(),
 		);
 		let after = Utc::now();
@@ -405,6 +422,7 @@ mod tests {
 				requestor_id,
 				recipient_id,
 				amount,
+				duration_worked,
 				reason,
 				requested_at,
 			}
@@ -418,6 +436,7 @@ mod tests {
 			requestor_id: Default::default(),
 			recipient_id: Default::default(),
 			amount: Default::default(),
+			duration_worked: Duration::hours(0),
 			reason: Default::default(),
 			requested_at: Default::default(),
 		};

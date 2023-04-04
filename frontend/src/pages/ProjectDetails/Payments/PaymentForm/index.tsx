@@ -50,8 +50,9 @@ const PaymentForm: React.FC = () => {
   );
 
   const onWorkEstimationChange = useCallback(
-    (amount: number) => {
-      formMethods.setValue("amountToWire", amount);
+    (amountToPay: number, hoursWorked: number) => {
+      formMethods.setValue("amountToWire", amountToPay);
+      formMethods.setValue("hoursWorked", hoursWorked);
     },
     [formMethods]
   );
@@ -87,11 +88,12 @@ const PaymentForm: React.FC = () => {
   );
 };
 
-const mapFormDataToSchema = ({ workItems, amountToWire, contributor }: Inputs) => {
+const mapFormDataToSchema = ({ workItems, amountToWire, hoursWorked, contributor }: Inputs) => {
   return {
     variables: {
       contributorId: contributor.id,
       amount: amountToWire,
+      hoursWorked,
       reason: { workItems },
     },
   };
