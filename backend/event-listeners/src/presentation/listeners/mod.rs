@@ -48,8 +48,13 @@ pub async fn spawn_all(
 			WorkItemRepository::new(database.clone()),
 		)
 		.spawn(event_bus::consumer(config.amqp(), "budgets").await?),
-		CrmProjector::new(CrmGithubRepoRepository::new(database.clone()), github)
-			.spawn(event_bus::consumer(config.amqp(), "crm").await?),
+		CrmProjector::new(
+			CrmGithubRepoRepository::new(database.clone()),
+			github.clone(),
+		)
+		.spawn(event_bus::consumer(config.amqp(), "crm").await?),
+		DustyBot::new(github.clone(), github.clone(), github)
+			.spawn(event_bus::consumer(config.amqp(), "dusty-bot").await?),
 	];
 
 	Ok(handles.into())

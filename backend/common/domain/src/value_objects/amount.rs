@@ -1,13 +1,23 @@
 use std::ops::{Add, Deref, Mul, Sub};
 
 use derive_getters::Getters;
-use derive_more::Display;
+use derive_more::{Constructor, Display};
 use rust_decimal::Decimal;
 use rusty_money::{FormattableCurrency, Money};
 use serde::{Deserialize, Serialize};
 
 #[derive(
-	Debug, Default, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, Getters,
+	Debug,
+	Default,
+	Clone,
+	PartialEq,
+	Eq,
+	PartialOrd,
+	Ord,
+	Serialize,
+	Deserialize,
+	Getters,
+	Constructor,
 )]
 pub struct Amount {
 	amount: Decimal,
@@ -76,12 +86,6 @@ pub enum Currency {
 impl Default for Currency {
 	fn default() -> Self {
 		Self::Crypto(Default::default())
-	}
-}
-
-impl Amount {
-	pub fn new(amount: Decimal, currency: Currency) -> Self {
-		Self { amount, currency }
 	}
 }
 
