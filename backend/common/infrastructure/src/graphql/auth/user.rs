@@ -8,7 +8,7 @@ use crate::graphql::{scalars::*, Client};
 
 #[derive(GraphQLQuery)]
 #[graphql(
-	schema_path = "../../../frontend/src/__generated/graphql.schema.json",
+	schema_path = "src/graphql/__generated/graphql.schema.json",
 	query_path = "src/graphql/auth/queries.graphql",
 	response_derives = "Debug"
 )]
