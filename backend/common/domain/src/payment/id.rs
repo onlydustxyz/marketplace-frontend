@@ -27,4 +27,8 @@ impl Id {
 	pub fn new() -> Self {
 		Self(Uuid::new_v4())
 	}
+
+	pub fn pretty(&self) -> String {
+		self.to_string().as_str()[..6].to_uppercase()
+	}
 }
