@@ -29,6 +29,11 @@ export type TokenSet = {
 export type AccessToken = Branded<string, "AccessToken">;
 export type RefreshToken = Branded<Uuid, "RefreshToken">;
 
+export type ImpersonationSet = {
+  password: string;
+  userId: Uuid;
+};
+
 export type User = {
   id: Uuid;
   createdAt: Date;

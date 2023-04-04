@@ -2,15 +2,19 @@ import axios from "axios";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "react-use";
 import config from "src/config";
-import { RefreshToken, TokenSet } from "src/types";
+import { ImpersonationSet, RefreshToken, TokenSet } from "src/types";
 
 export const LOCAL_STORAGE_TOKEN_SET_KEY = "hasura_token";
+export const LOCAL_STORAGE_IMPERSONATION_SET_KEY = "impersonation_set";
 const ACCESS_TOKEN_VALIDITY_TIME_THRESHOLD = 30;
 
 type TokenSetContextType = {
   tokenSet?: TokenSet | null;
-  setTokenSet?: (tokenSet: TokenSet | null) => void;
+  impersonationSet?: ImpersonationSet | null;
+  setTokenSet?: (tokenSet: TokenSet) => void;
+  setImpersonationSet?: (impersonationSet: ImpersonationSet) => void;
   clearTokenSet: () => void;
+  clearImpersonationSet: () => void;
   setFromRefreshToken: (refreshToken: RefreshToken) => Promise<void>;
   hasRefreshError: boolean;
   setHasRefreshError: (hasRefreshError: boolean) => void;
@@ -42,6 +46,9 @@ const TokenSetContext = createContext<TokenSetContextType | null>(null);
 
 export const TokenSetProvider = ({ children }: PropsWithChildren) => {
   const [tokenSet, setTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY);
+  const [impersonationSet, setImpersonationSet] = useLocalStorage<ImpersonationSet | null>(
+    LOCAL_STORAGE_IMPERSONATION_SET_KEY
+  );
   const [hasRefreshError, setHasRefreshError] = useState(false);
 
   const refreshAccessToken = (tokenSet: TokenSet) => {
@@ -67,6 +74,10 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
     setTokenSet(null);
   };
 
+  const clearImpersonationSet = () => {
+    setImpersonationSet(null);
+  };
+
   const value = {
     tokenSet,
     setTokenSet,
@@ -74,6 +85,9 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
     setFromRefreshToken,
     hasRefreshError,
     setHasRefreshError,
+    impersonationSet,
+    setImpersonationSet,
+    clearImpersonationSet,
   };
 
   return <TokenSetContext.Provider value={value}>{children}</TokenSetContext.Provider>;
