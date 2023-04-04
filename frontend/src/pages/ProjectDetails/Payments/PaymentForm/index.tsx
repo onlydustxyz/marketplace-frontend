@@ -9,6 +9,7 @@ import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { WorkItem } from "src/components/GithubIssue";
 import { GithubContributorFragment } from "src/__generated/graphql";
+import useUnpaidIssues, { IssueState, IssueType } from "./WorkItemSidePanel/Issues/useUnpaidIssues";
 
 const PaymentForm: React.FC = () => {
   const { T } = useIntl();
@@ -39,6 +40,11 @@ const PaymentForm: React.FC = () => {
   });
 
   const [contributor, setContributor] = useState<GithubContributorFragment | null | undefined>(null);
+
+  const getUnpaidMergedPullsQuery = useUnpaidIssues({
+    projectId,
+    filters: { author: contributor?.login, type: IssueType.PullRequest, state: IssueState.Merged },
+  });
 
   const { handleSubmit } = formMethods;
 
@@ -80,6 +86,7 @@ const PaymentForm: React.FC = () => {
             onWorkItemsChange={onWorkItemsChange}
             contributor={contributor}
             setContributor={setContributor}
+            getUnpaidMergedPullsQuery={getUnpaidMergedPullsQuery}
           />
         </form>
       </FormProvider>

@@ -62,7 +62,6 @@ test.describe("As a project lead, I", () => {
     expect(await newPaymentPage.contributorText()).toEqual(recipient.github.login);
 
     await newPaymentPage.requestPayment({
-      pullRequestIndexes: [0],
       otherPullRequests: [
         "https://github.com/od-mocks/cool-repo-A/pull/1",
         "https://github.com/od-mocks/cool-repo-A/pull/2",
@@ -97,7 +96,7 @@ test.describe("As a project lead, I", () => {
     await expect(sidePanel.getByText("to AnthonyBuisset")).toBeVisible();
     await expect(sidePanel.getByText("Created a few seconds ago")).toBeVisible();
     await expect(sidePanel.getByText("Created a few seconds ago")).toBeVisible();
-    await expect(sidePanel.locator("div").filter({ hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible();
+    await expect(sidePanel.locator("div").filter({ hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible(); // auto added
     await expect(sidePanel.locator("div").filter({ hasText: "#2 · Another update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#1 · Update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#6 · This is a new issue" }).first()).toBeVisible();
