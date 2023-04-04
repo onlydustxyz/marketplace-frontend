@@ -1,0 +1,6 @@
+query GetAuthUserById($id: uuid!) {
+  user(id: $id) {
+    id
+    displayName
+  }
+}
