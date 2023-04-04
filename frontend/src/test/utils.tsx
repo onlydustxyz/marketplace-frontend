@@ -24,7 +24,14 @@ export const MemoryRouterProviderFactory =
       <ToasterProvider>
         <SessionProvider>
           <TokenSetProvider>
-            <MockedProvider mocks={mocks} addTypename={false}>
+            <MockedProvider
+              mocks={mocks}
+              addTypename={false}
+              defaultOptions={{
+                query: { fetchPolicy: "no-cache" },
+                watchQuery: { fetchPolicy: "no-cache" },
+              }}
+            >
               <MemoryRouter initialEntries={[route]}>
                 {context ? (
                   <Routes>
