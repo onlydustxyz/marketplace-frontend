@@ -29,7 +29,15 @@ export const MemoryRouterProviderFactory =
         <SessionProvider>
           <TokenSetProvider>
             <ImpersonationClaimsProvider>
-              <MockedProvider mocks={mocks} addTypename={false} suspenseCache={suspenseCache}>
+              <MockedProvider
+                mocks={mocks}
+                addTypename={false}
+                suspenseCache={suspenseCache}
+                defaultOptions={{
+                  query: { fetchPolicy: "no-cache" },
+                  watchQuery: { fetchPolicy: "no-cache" },
+                }}
+              >
                 <MemoryRouter initialEntries={[route]}>
                   {context ? (
                     <Routes>

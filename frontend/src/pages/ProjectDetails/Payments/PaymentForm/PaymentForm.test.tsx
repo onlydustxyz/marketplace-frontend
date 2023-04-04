@@ -12,6 +12,12 @@ import {
   FetchIssueDocument,
   FetchIssueQueryResult,
   FetchIssueQueryVariables,
+  GetPaidWorkItemsDocument,
+  GetPaidWorkItemsQueryResult,
+  GetPaidWorkItemsQueryVariables,
+  SearchIssuesDocument,
+  SearchIssuesQueryResult,
+  SearchIssuesQueryVariables,
   GetProjectContributorsForPaymentSelectDocument,
   GetProjectContributorsForPaymentSelectQueryResult,
   Status,
@@ -126,6 +132,45 @@ const graphQlMocks = [
           budgets: [],
         },
       } as GetProjectContributorsForPaymentSelectQueryResult["data"],
+    },
+  },
+  {
+    request: {
+      query: GetPaidWorkItemsDocument,
+      variables: {
+        projectId: TEST_PROJECT_ID,
+      } as GetPaidWorkItemsQueryVariables,
+    },
+    result: {
+      data: {
+        projectsByPk: {
+          githubRepos: [
+            {
+              githubRepoDetails: {
+                id: 123456,
+                content: { __typename: "Repository", id: 123456, owner: "owner", name: "name" },
+              },
+            },
+          ],
+          budgets: [],
+        },
+      } as GetPaidWorkItemsQueryResult["data"],
+    },
+  },
+  {
+    request: {
+      query: SearchIssuesDocument,
+      variables: {
+        query: `repo:owner/name is:pr author:${TEST_USER.displayName} is:merged`,
+        order: "desc",
+        sort: "created",
+        perPage: 100,
+      } as SearchIssuesQueryVariables,
+    },
+    result: {
+      data: {
+        searchIssues: [],
+      } as SearchIssuesQueryResult["data"],
     },
   },
 ];
