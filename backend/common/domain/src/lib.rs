@@ -1,3 +1,10 @@
+mod auth;
+pub use auth::{
+	User as AuthUser, UserRepository as AuthUserRepository,
+	UserRepositoryError as AuthUserRepositoryError,
+	UserRepositoryResult as AuthUserRepositoryResult,
+};
+
 mod value_objects;
 pub use value_objects::*;
 
