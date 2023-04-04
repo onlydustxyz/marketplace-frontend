@@ -253,9 +253,6 @@ impl Mutation {
 			));
 		}
 
-		// TODO: remove this in next commit
-		println!("hours_worked = {hours_worked}");
-
 		let payment_request_id = context
 			.request_payment_usecase
 			.request(
@@ -263,6 +260,7 @@ impl Mutation {
 				caller_id,
 				(recipient_id as i64).into(),
 				amount_in_usd as u32,
+				hours_worked as u32,
 				reason,
 			)
 			.await?;

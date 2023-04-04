@@ -1,3 +1,5 @@
+use std::convert::TryFrom;
+
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
 use derive_more::Constructor;
@@ -57,6 +59,7 @@ impl EventListener for Projector {
 						recipient_id,
 						amount,
 						reason,
+						duration_worked,
 						requested_at,
 					} => {
 						let mut budget = self.budget_repository.find_by_id(budget_id)?;
@@ -75,6 +78,7 @@ impl EventListener for Projector {
 							})?,
 							*requested_at,
 							None,
+							i32::try_from(duration_worked.num_hours()).unwrap_or(0),
 						))?;
 
 						reason.work_items().iter().try_for_each(|work_item| {
