@@ -9,12 +9,15 @@ import { SessionProvider } from "src/hooks/useSession";
 import { ToasterProvider } from "src/hooks/useToaster";
 import { Toaster } from "src/App/Layout/Toaster";
 import { viewportConfig } from "src/config";
+import { SuspenseCache } from "@apollo/client";
 
 interface MemoryRouterProviderFactoryProps {
   route?: string;
   mocks?: ReadonlyArray<MockedResponse>;
   context?: unknown;
 }
+
+const suspenseCache = new SuspenseCache();
 
 export const MemoryRouterProviderFactory =
   ({ route = "/", mocks, context }: MemoryRouterProviderFactoryProps) =>
@@ -24,7 +27,7 @@ export const MemoryRouterProviderFactory =
       <ToasterProvider>
         <SessionProvider>
           <TokenSetProvider>
-            <MockedProvider mocks={mocks} addTypename={false}>
+            <MockedProvider mocks={mocks} addTypename={false} suspenseCache={suspenseCache}>
               <MemoryRouter initialEntries={[route]}>
                 {context ? (
                   <Routes>
