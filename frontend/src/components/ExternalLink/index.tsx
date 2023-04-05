@@ -8,8 +8,8 @@ type Props = {
 
 export default function ExternalLink({ text, url }: Props) {
   return (
-    <div className="group/link flex flex-row gap-1 w-fit items-center hover:cursor-pointer">
-      <div className={"flex group-hover/link:underline"} onClick={linkClickHandlerFactory(url)}>
+    <div className="group/link flex flex-row gap-1 w-fit items-center hover:cursor-pointer overflow-hidden">
+      <div className={"group-hover/link:underline truncate"} onClick={linkClickHandlerFactory(url)}>
         {text || url}
       </div>
       <ExternalLinkLine className="flex text-spacePurple-500 invisible group-hover/link:visible" />
