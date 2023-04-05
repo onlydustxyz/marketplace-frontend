@@ -17,6 +17,7 @@ interface ContributorSelectViewProps {
   filteredExternalContributors: GithubContributorFragment[] | undefined;
   isSearchGithubUsersByHandleSubstringQueryLoading: boolean;
   contributor: GithubContributorFragment | null | undefined;
+  debouncedGithubHandleSubstring: string;
 }
 
 export default function ContributorSelectView({
@@ -28,6 +29,7 @@ export default function ContributorSelectView({
   filteredExternalContributors,
   isSearchGithubUsersByHandleSubstringQueryLoading,
   contributor,
+  debouncedGithubHandleSubstring,
 }: ContributorSelectViewProps) {
   const { T } = useIntl();
 
@@ -135,6 +137,8 @@ export default function ContributorSelectView({
                     </div>
                     <ContributorSubList contributors={filteredExternalContributors} />
                   </>
+                ) : githubHandleSubstring !== debouncedGithubHandleSubstring ? (
+                  <div />
                 ) : filteredContributors &&
                   filteredContributors.length === 0 &&
                   !isSearchGithubUsersByHandleSubstringQueryLoading ? (

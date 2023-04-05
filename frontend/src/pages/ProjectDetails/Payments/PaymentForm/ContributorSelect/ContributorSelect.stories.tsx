@@ -67,6 +67,7 @@ const args = {
   filteredExternalContributors,
   isSearchGithubUsersByHandleSubstringQueryLoading: false,
   contributor: filteredContributors[0],
+  debouncedGithubHandleSubstring: "test",
 };
 
 export const Default = Template.bind({});
