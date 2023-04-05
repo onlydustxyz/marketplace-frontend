@@ -12,7 +12,7 @@ type TokenSetContextType = {
   tokenSet?: TokenSet | null;
   impersonationSet?: ImpersonationSet | null;
   setTokenSet?: (tokenSet: TokenSet) => void;
-  setImpersonationSet?: (impersonationSet: ImpersonationSet) => void;
+  setImpersonationSet: (impersonationSet: ImpersonationSet) => void;
   clearTokenSet: () => void;
   clearImpersonationSet: () => void;
   setFromRefreshToken: (refreshToken: RefreshToken) => Promise<void>;

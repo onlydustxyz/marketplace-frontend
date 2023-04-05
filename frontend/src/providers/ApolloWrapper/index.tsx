@@ -37,7 +37,21 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const [displayError, setDisplayError] = useState(false);
   const showToaster = useShowToaster();
   const { T } = useIntl();
-  const { tokenSet, setTokenSet, setHasRefreshError } = useTokenSet();
+  const { tokenSet, impersonationSet, setTokenSet, setImpersonationSet, setHasRefreshError } = useTokenSet();
+
+  document.onkeydown = e => {
+    if (e.key === "i" && e.metaKey) {
+      const password = prompt(T("impersonation.passwordPrompt"));
+      if (!password) {
+        return;
+      }
+      const userId = prompt(T("impersonation.userPrompt"));
+      if (!userId) {
+        return;
+      }
+      setImpersonationSet({ password, userId });
+    }
+  };
 
   const TokenLink = new TokenRefreshLink<TokenSet>({
     accessTokenField: "hasura_token",
@@ -81,10 +95,14 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
 
   const AuthenticationLink = setContext((_, { headers }) => {
     const authorizationHeaders = tokenSet?.accessToken ? { Authorization: `Bearer ${tokenSet?.accessToken}` } : {};
+    const impersonationHeaders = impersonationSet
+      ? { "X-Hasura-Admin-Secret": impersonationSet.password, "X-Hasura-User-Id": impersonationSet.userId }
+      : {};
     return {
       headers: {
         ...headers,
         ...authorizationHeaders,
+        ...impersonationHeaders,
       },
     };
   });
@@ -123,7 +141,12 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const retryLink = new RetryLink();
 
   const client = new ApolloClient({
-    link: ApolloLink.from([ErrorLink, retryLink, AuthenticationLink, TokenLink, HttpLink]),
+    link: ApolloLink.from([
+      ErrorLink,
+      retryLink,
+      ...(impersonationSet ? [AuthenticationLink] : [AuthenticationLink, TokenLink]),
+      HttpLink,
+    ]),
     cache: new InMemoryCache({
       typePolicies: {
         ProjectDetails: {

@@ -24,7 +24,8 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
-  const { tokenSet, setFromRefreshToken, clearTokenSet, hasRefreshError } = useTokenSet();
+  const { tokenSet, impersonationSet, setFromRefreshToken, clearTokenSet, clearImpersonationSet, hasRefreshError } =
+    useTokenSet();
   const tokenIsRefreshed = !(tokenSet?.accessToken && accessTokenExpired(tokenSet));
   const { isLoggedIn, roles, ledProjectIds, githubUserId } = useRoles(tokenSet?.accessToken);
 
@@ -37,10 +38,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const logout = async () => {
     await client.clearStore();
-    await axios.post(`${config.HASURA_AUTH_BASE_URL}/signout`, {
-      refreshToken: tokenSet?.refreshToken,
-    });
-    clearTokenSet();
+    if (!impersonationSet) {
+      await axios.post(`${config.HASURA_AUTH_BASE_URL}/signout`, {
+        refreshToken: tokenSet?.refreshToken,
+      });
+      clearTokenSet();
+    }
+    clearImpersonationSet();
     navigate(RoutePaths.Projects, { replace: true });
   };
 
