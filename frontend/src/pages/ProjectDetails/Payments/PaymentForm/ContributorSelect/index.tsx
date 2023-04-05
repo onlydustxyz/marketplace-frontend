@@ -11,6 +11,9 @@ import { getContributors } from "src/utils/project";
 import { GITHUB_CONTRIBUTOR_FRAGMENT } from "src/hooks/useIsGithubLoginValid";
 import View from "./View";
 import { useLocation } from "react-router-dom";
+import useDebounce from "src/hooks/useDebounce";
+
+const EXTERNAL_USER_QUERY_DEBOUNCE_TIME = 500;
 
 type Props = {
   projectId: string;
@@ -25,7 +28,8 @@ export default function ContributorSelect({ projectId, contributor, setContribut
     location.state?.recipientGithubLogin || null
   );
   const [githubHandleSubstring, setGithubHandleSubstring] = useState<string>("");
-  const handleSubstringQuery = `type:user ${githubHandleSubstring} in:login`;
+  const debouncedGithubHandleSubstring = useDebounce(githubHandleSubstring, EXTERNAL_USER_QUERY_DEBOUNCE_TIME);
+  const handleSubstringQuery = `type:user ${debouncedGithubHandleSubstring} in:login`;
 
   const getProjectContributorsQuery = useHasuraQuery<GetProjectContributorsForPaymentSelectQuery>(
     GET_PROJECT_CONTRIBUTORS_QUERY,
@@ -39,7 +43,10 @@ export default function ContributorSelect({ projectId, contributor, setContribut
     HasuraUserRole.RegisteredUser,
     {
       variables: { handleSubstringQuery },
-      skip: !githubHandleSubstring || (githubHandleSubstring && githubHandleSubstring.length) < 2,
+      skip:
+        !githubHandleSubstring ||
+        (githubHandleSubstring && githubHandleSubstring.length) < 2 ||
+        githubHandleSubstring !== debouncedGithubHandleSubstring,
     }
   );
 
@@ -85,6 +92,7 @@ export default function ContributorSelect({ projectId, contributor, setContribut
         filteredExternalContributors,
         isSearchGithubUsersByHandleSubstringQueryLoading: searchGithubUsersByHandleSubstringQuery.loading,
         contributor,
+        debouncedGithubHandleSubstring,
       }}
     />
   );
