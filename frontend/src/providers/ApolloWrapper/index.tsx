@@ -37,7 +37,8 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const [displayError, setDisplayError] = useState(false);
   const showToaster = useShowToaster();
   const { T } = useIntl();
-  const { tokenSet, impersonationSet, setTokenSet, setImpersonationSet, setHasRefreshError } = useTokenSet();
+  const { tokenSet, impersonationSet, customClaims, setTokenSet, setImpersonationSet, setHasRefreshError } =
+    useTokenSet();
 
   document.onkeydown = e => {
     if (e.key === "i" && e.metaKey) {
@@ -96,7 +97,12 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const AuthenticationLink = setContext((_, { headers }) => {
     const authorizationHeaders = tokenSet?.accessToken ? { Authorization: `Bearer ${tokenSet?.accessToken}` } : {};
     const impersonationHeaders = impersonationSet
-      ? { "X-Hasura-Admin-Secret": impersonationSet.password, "X-Hasura-User-Id": impersonationSet.userId }
+      ? {
+          "X-Hasura-Admin-Secret": impersonationSet.password,
+          "X-Hasura-User-Id": impersonationSet.userId,
+          "X-Hasura-projectsLeaded": `{${customClaims.projectsLeaded?.map(id => `"${id}"`).join(",")}}`,
+          "X-Hasura-githubUserId": customClaims.githubUserId,
+        }
       : {};
     return {
       headers: {

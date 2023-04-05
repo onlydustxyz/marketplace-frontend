@@ -1,11 +1,12 @@
 import { gql } from "@apollo/client";
+import { useEffect, useMemo } from "react";
 import { ImpersonatedLeadProjectsQuery, ImpersonatedUserQuery } from "src/__generated/graphql";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useTokenSet } from "src/hooks/useTokenSet";
-import { HasuraUserRole, Locale, User } from "src/types";
+import { CustomUserRole, HasuraUserRole, Locale, User } from "src/types";
 
 export const useImpersonation = () => {
-  const { impersonationSet, clearImpersonationSet } = useTokenSet();
+  const { impersonationSet, clearImpersonationSet, setCustomClaims } = useTokenSet();
 
   const impersonatedUserQuery = useHasuraQuery<ImpersonatedUserQuery>(IMPERSONATED_USER_QUERY, HasuraUserRole.Admin, {
     variables: {
@@ -30,10 +31,27 @@ export const useImpersonation = () => {
     ? mapImpersonatedUser(impersonatedUserQuery.data.user)
     : null;
 
-  const impersonatedRoles = [HasuraUserRole.RegisteredUser];
-
   const impersonatedGithubUserId = impersonatedUserQuery.data?.user?.githubUser?.githubUserId as number | undefined;
-  const impersonatedLedProjectIds: string[] = leadProjectsQuery.data?.projectLeads.map(lead => lead.projectId) ?? [];
+  const impersonatedLedProjectIds: string[] = useMemo(
+    () => leadProjectsQuery.data?.projectLeads.map(lead => lead.projectId) ?? [],
+    [leadProjectsQuery.data]
+  );
+
+  const impersonatedRoles =
+    impersonatedLedProjectIds.length > 0
+      ? [HasuraUserRole.RegisteredUser, CustomUserRole.ProjectLead]
+      : [HasuraUserRole.RegisteredUser];
+
+  useEffect(() => {
+    if (impersonatedGithubUserId === undefined || impersonatedLedProjectIds.length === 0) {
+      return;
+    }
+    setCustomClaims({
+      githubUserId: impersonatedGithubUserId,
+      projectsLeaded: impersonatedLedProjectIds,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [impersonatedLedProjectIds, impersonatedGithubUserId]);
 
   return {
     impersonating,

@@ -13,11 +13,18 @@ type TokenSetContextType = {
   impersonationSet?: ImpersonationSet;
   setTokenSet?: (tokenSet: TokenSet) => void;
   setImpersonationSet: (impersonationSet: ImpersonationSet) => void;
+  customClaims: CustomClaims;
+  setCustomClaims: (customClaims: CustomClaims) => void;
   clearTokenSet: () => void;
   clearImpersonationSet: () => void;
   setFromRefreshToken: (refreshToken: RefreshToken) => Promise<void>;
   hasRefreshError: boolean;
   setHasRefreshError: (hasRefreshError: boolean) => void;
+};
+
+type CustomClaims = {
+  projectsLeaded?: string[];
+  githubUserId?: number;
 };
 
 export const accessTokenValidityDelay = (token: TokenSet): number => {
@@ -50,6 +57,15 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
     LOCAL_STORAGE_IMPERSONATION_SET_KEY
   );
   const [hasRefreshError, setHasRefreshError] = useState(false);
+  const [customClaims, doSetCustomClaims] = useState<CustomClaims>({});
+
+  const setCustomClaims = (newClaims: CustomClaims) => {
+    const newValueIsDeeplyEqualToPrevious = JSON.stringify(newClaims) === JSON.stringify(customClaims);
+    if (newValueIsDeeplyEqualToPrevious) {
+      return;
+    }
+    doSetCustomClaims(newClaims);
+  };
 
   const refreshAccessToken = (tokenSet: TokenSet) => {
     fetchNewAccessToken(tokenSet.refreshToken)
@@ -63,6 +79,7 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
     if (tokenSet) {
       refreshAccessToken(tokenSet);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setFromRefreshToken = async (refreshToken: RefreshToken) => {
@@ -80,6 +97,8 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
     impersonationSet,
     setImpersonationSet,
     clearImpersonationSet,
+    customClaims,
+    setCustomClaims,
   };
 
   return <TokenSetContext.Provider value={value}>{children}</TokenSetContext.Provider>;
