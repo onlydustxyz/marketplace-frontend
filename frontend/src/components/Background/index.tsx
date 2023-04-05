@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { PropsWithChildren } from "react";
+import { ForwardedRef, PropsWithChildren, forwardRef } from "react";
 
 export enum BackgroundRoundedBorders {
   Full = "rounded-3xl",
@@ -11,9 +11,13 @@ type Props = {
   withSidebar?: boolean;
 } & PropsWithChildren;
 
-export default function Background({ roundedBorders, withSidebar = false, children }: Props) {
+const Background = forwardRef(function Background(
+  { roundedBorders, withSidebar = false, children }: Props,
+  ref: ForwardedRef<HTMLDivElement>
+) {
   return (
     <div
+      ref={ref}
       className={classNames("overflow-y-auto scrollbar-none h-full w-full mb-6", {
         "mr-6 ml-2": withSidebar,
         "md:mx-6 md:pr-6 px-2": !withSidebar,
@@ -28,4 +32,6 @@ export default function Background({ roundedBorders, withSidebar = false, childr
       </div>
     </div>
   );
-}
+});
+
+export default Background;
