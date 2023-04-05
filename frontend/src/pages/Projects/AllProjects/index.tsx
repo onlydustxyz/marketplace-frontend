@@ -2,15 +2,13 @@ import { gql } from "@apollo/client";
 import { sortBy } from "lodash";
 import { useMemo } from "react";
 import ProjectCard, { PROJECT_CARD_FRAGMENT } from "src/components/ProjectCard";
-import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useHasuraSuspensedQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { isProjectVisible } from "src/utils/project";
 import { GetProjectsQuery } from "src/__generated/graphql";
 import { Ownership as ProjectOwnership, useProjectFilter } from "src/pages/Projects/useProjectFilter";
 import AllProjectsFallback from "./AllProjectsFallback";
-import ScrollRestoration from "./useScrollRestoration";
 
 export default function AllProjects() {
   const { ledProjectIds, githubUserId, isLoggedIn } = useAuth();
@@ -19,7 +17,7 @@ export default function AllProjects() {
     clear: clearFilters,
   } = useProjectFilter();
 
-  const getProjectsQuery = useHasuraQuery<GetProjectsQuery>(
+  const getProjectsQuery = useHasuraSuspensedQuery<GetProjectsQuery>(
     buildGetProjectsQuery(technologies, sponsors),
     HasuraUserRole.Public,
     {
@@ -41,16 +39,13 @@ export default function AllProjects() {
   }, [getProjectsQuery.data?.projects, ledProjectIds, ownership, isLoggedIn, githubUserId]);
 
   return (
-    <QueryWrapper query={getProjectsQuery}>
-      <div className="flex flex-col gap-5 grow">
-        {projects && projects.length > 0 ? (
-          projects.map(project => <ProjectCard key={project.id} {...project} />)
-        ) : (
-          <AllProjectsFallback clearFilters={clearFilters} />
-        )}
-      </div>
-      <ScrollRestoration />
-    </QueryWrapper>
+    <div className="flex flex-col gap-5 grow">
+      {projects && projects.length > 0 ? (
+        projects.map(project => <ProjectCard key={project.id} {...project} />)
+      ) : (
+        <AllProjectsFallback clearFilters={clearFilters} />
+      )}
+    </div>
   );
 }
 
