@@ -80,7 +80,7 @@ const ProfileForm: React.FC<PropsType> = ({
   payoutSettingsValid,
   onUserProfileUpdated,
 }) => {
-  const { githubEmail } = useAuth();
+  const { user: authenticatedUser } = useAuth();
   const formMethods = useForm<Inputs>({
     defaultValues: {
       profileType: user?.identity?.Company ? ProfileType.Company : ProfileType.Individual,
@@ -104,7 +104,7 @@ const ProfileForm: React.FC<PropsType> = ({
       ethIdentity: user?.payoutSettings?.EthTransfer?.Address || user?.payoutSettings?.EthTransfer?.Name,
       IBAN: user?.payoutSettings?.WireTransfer?.IBAN,
       BIC: user?.payoutSettings?.WireTransfer?.BIC,
-      email: user?.contactInformation?.email || githubEmail,
+      email: user?.contactInformation?.email || authenticatedUser?.email,
       telegram: user?.contactInformation?.telegram,
       discord: user?.contactInformation?.discord,
       twitter: user?.contactInformation?.twitter,
