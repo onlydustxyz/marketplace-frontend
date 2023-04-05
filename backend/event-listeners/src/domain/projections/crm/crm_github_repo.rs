@@ -1,4 +1,5 @@
 use ::infrastructure::database::schema::*;
+use chrono::NaiveDateTime;
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
 use domain::GithubRepositoryId;
@@ -24,6 +25,7 @@ pub struct CrmGithubRepo {
 	id: GithubRepositoryId,
 	owner: String,
 	name: String,
+	updated_at: Option<NaiveDateTime>,
 }
 
 impl domain::Entity for CrmGithubRepo {
