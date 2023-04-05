@@ -7,6 +7,7 @@ use domain::{
 	BudgetEvent, Event, GithubRepositoryId, GithubService, PaymentEvent, ProjectEvent,
 	SubscriberCallbackError,
 };
+use futures::future::try_join_all;
 use tracing::instrument;
 
 use crate::{
@@ -75,9 +76,7 @@ impl EventListener for Projector {
 						.iter()
 						.map(|work_item| self.upsert_crm_github_repo(work_item.repo_id()))
 						.collect();
-					for task in tasks {
-						task.await?;
-					}
+					try_join_all(tasks).await?;
 				},
 				_ => (),
 			},
