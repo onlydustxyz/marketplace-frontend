@@ -117,16 +117,8 @@ cargo test
 
 ### End-to-end testing
 
-Make sure cypress is installed:
-
 ```
-yarn --cwd testing/cypress install
-```
-
-Then run e2e tests:
-
-```
-yarn --cwd testing/cypress cypress:open
+make playwright/test
 ```
 
 ## Migrate database

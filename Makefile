@@ -61,4 +61,4 @@ playwright/clean:
 	rm -f "playwright/marketplace_db_dump"
 	rm -rf "playwright/fixtures/__generated"
 
-.PHONY: install docker/up docker/clean docker/re db/up db/connect db/update-staging-dump db/load-fixtures db/migrate api/start hasura/start hasura/clean cypress/test
+.PHONY: install docker/up docker/clean docker/re db/up db/connect db/update-staging-dump db/load-fixtures db/migrate api/start hasura/start hasura/clean playwright/test playwright/clean
