@@ -1,7 +1,7 @@
 const getHasuraUrl = () => process.env.HASURA_URL ?? "http://localhost:8080/v1/graphql";
 const getHasuraSecretKey = () => process.env.HASURA_SECRET_KEY ?? "myadminsecretkey";
 
-const roleList = ["public", "registered_user"];
+const roleList = ["public", "registered_user", "admin"];
 
 const generateSchemas = () =>
   roleList.map(role => ({
