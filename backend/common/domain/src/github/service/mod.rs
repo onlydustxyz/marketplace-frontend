@@ -4,6 +4,7 @@ pub use fetch::{
 	UserService as FetchUserService,
 };
 
+use crate::SubscriberCallbackError;
 mod search;
 pub use search::{
 	IssueService as SearchIssueService, Service as SearchService, UserService as SearchUserService,
@@ -18,6 +19,15 @@ pub enum Error {
 	MissingField(String),
 	#[error("Internal error")]
 	Other(#[source] anyhow::Error),
+}
+
+impl From<Error> for SubscriberCallbackError {
+	fn from(error: Error) -> Self {
+		match error {
+			Error::NotFound(_) | Error::MissingField(_) => Self::Discard(error.into()),
+			Error::Other(_) => Self::Fatal(error.into()),
+		}
+	}
 }
 
 pub type Result<T> = std::result::Result<T, Error>;

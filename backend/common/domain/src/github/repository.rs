@@ -11,7 +11,7 @@ use url::Url;
 use crate::{GithubRepositoryId, GithubUser};
 
 #[allow(clippy::too_many_arguments)]
-#[derive(new, Getters, GraphQLObject)]
+#[derive(new, Getters, GraphQLObject, Clone)]
 pub struct Repository {
 	id: GithubRepositoryId,
 	owner: String,

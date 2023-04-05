@@ -15,6 +15,7 @@ diesel::table! {
         id -> Int8,
         owner -> Text,
         name -> Text,
+        updated_at -> Nullable<Timestamp>,
     }
 }
 
