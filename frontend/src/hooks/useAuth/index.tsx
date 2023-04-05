@@ -25,8 +25,14 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
   const { tokenSet, setFromRefreshToken, clearTokenSet, hasRefreshError } = useTokenSet();
-  const { impersonating, impersonatedRoles, impersonatedUser, impersonatedGithubUserId, stopImpersonation } =
-    useImpersonation();
+  const {
+    impersonating,
+    impersonatedRoles,
+    impersonatedUser,
+    impersonatedGithubUserId,
+    impersonatedLedProjectIds,
+    stopImpersonation,
+  } = useImpersonation();
 
   const tokenIsRefreshed = !(tokenSet?.accessToken && accessTokenExpired(tokenSet));
   const { isLoggedIn, roles, ledProjectIds, githubUserId } = useRoles(tokenSet?.accessToken);
@@ -67,7 +73,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     logout,
     isLoggedIn: impersonating || isLoggedIn,
     roles: impersonating ? impersonatedRoles : roles,
-    ledProjectIds,
+    ledProjectIds: impersonating ? impersonatedLedProjectIds : ledProjectIds,
     githubUserId: impersonating ? impersonatedGithubUserId : githubUserId,
   };
 
