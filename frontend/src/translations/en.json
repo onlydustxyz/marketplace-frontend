@@ -55,7 +55,8 @@
   },
   "impersonation": {
     "passwordPrompt": "With great power comes great responsibility (Ben Parker's uncle). What is the password?",
-    "userPrompt": "Who do you want to be? (user id)"
+    "userPrompt": "Who do you want to be? (user id)",
+    "banner": "Impersonation in progress!"
   },
   "invoiceSubmission": {
     "sidePanel": {
