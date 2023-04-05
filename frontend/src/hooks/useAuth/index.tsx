@@ -8,6 +8,7 @@ import { useRoles } from "src/hooks/useAuth/useRoles";
 import { accessTokenExpired, useTokenSet } from "src/hooks/useTokenSet";
 import { RefreshToken, User, UserRole } from "src/types";
 import { datadogRum } from "@datadog/browser-rum";
+import { useImpersonation } from "src/hooks/useAuth/useImpersonation";
 
 export type AuthContextType = {
   login: (refreshToken: RefreshToken) => void;
@@ -23,8 +24,10 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const navigate = useNavigate();
-  const { tokenSet, impersonationSet, setFromRefreshToken, clearTokenSet, clearImpersonationSet, hasRefreshError } =
-    useTokenSet();
+  const { tokenSet, setFromRefreshToken, clearTokenSet, hasRefreshError } = useTokenSet();
+  const { impersonating, impersonatedRoles, impersonatedUser, impersonatedGithubUserId, stopImpersonation } =
+    useImpersonation();
+
   const tokenIsRefreshed = !(tokenSet?.accessToken && accessTokenExpired(tokenSet));
   const { isLoggedIn, roles, ledProjectIds, githubUserId } = useRoles(tokenSet?.accessToken);
 
@@ -37,13 +40,14 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const logout = async () => {
     await client.clearStore();
-    if (!impersonationSet) {
+    if (!impersonating) {
       await axios.post(`${config.HASURA_AUTH_BASE_URL}/signout`, {
         refreshToken: tokenSet?.refreshToken,
       });
       clearTokenSet();
+    } else {
+      stopImpersonation();
     }
-    clearImpersonationSet();
     navigate(RoutePaths.Projects, { replace: true });
   };
 
@@ -55,14 +59,16 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     setFromRefreshToken(tokenSet.refreshToken);
   }
 
+  const user = impersonating ? impersonatedUser : tokenSet ? tokenSet?.user : null;
+
   const value = {
-    user: tokenSet ? tokenSet.user : null,
+    user,
     login,
     logout,
-    isLoggedIn,
-    roles,
+    isLoggedIn: impersonating || isLoggedIn,
+    roles: impersonating ? impersonatedRoles : roles,
     ledProjectIds,
-    githubUserId,
+    githubUserId: impersonating ? impersonatedGithubUserId : githubUserId,
   };
 
   if (value.user) {

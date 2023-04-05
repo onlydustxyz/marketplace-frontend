@@ -9730,7 +9730,7 @@ export type ImpersonatedUserQueryVariables = Exact<{
 }>;
 
 
-export type ImpersonatedUserQuery = { __typename?: 'query_root', user: { __typename?: 'users', id: any, createdAt: any, displayName: string, email: any | null, avatarUrl: string, locale: string, isAnonymous: boolean, defaultRole: string, emailVerified: boolean, phoneNumber: string | null, phoneNumberVerified: boolean, activeMfaType: string | null, roles: Array<{ __typename?: 'authUserRoles', role: string }> } | null };
+export type ImpersonatedUserQuery = { __typename?: 'query_root', user: { __typename?: 'users', id: any, createdAt: any, displayName: string, email: any | null, avatarUrl: string, locale: string, isAnonymous: boolean, defaultRole: string, emailVerified: boolean, phoneNumber: string | null, phoneNumberVerified: boolean, activeMfaType: string | null, roles: Array<{ __typename?: 'authUserRoles', role: string }>, githubUser: { __typename?: 'AuthGithubUsers', githubUserId: any | null } | null } | null };
 
 export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: any };
 
@@ -10609,6 +10609,9 @@ export const ImpersonatedUserDocument = gql`
     activeMfaType
     roles {
       role
+    }
+    githubUser {
+      githubUserId
     }
   }
 }

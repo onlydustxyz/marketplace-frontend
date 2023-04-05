@@ -10,6 +10,7 @@ export type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType exten
 export enum HasuraUserRole {
   Public = "public",
   RegisteredUser = "registered_user",
+  Admin = "admin",
 }
 
 export enum CustomUserRole {
@@ -46,7 +47,7 @@ export type User = {
   emailVerified: boolean;
   phoneNumber: PhoneNumber | null;
   phoneNumberVerified: boolean;
-  activeMfaType: null;
+  activeMfaType: string | null;
   roles: HasuraUserRole[];
 };
 
@@ -81,7 +82,7 @@ export function getPaymentStatusOrder(status: PaymentStatus | "payout_missing"):
   }
 }
 
-type Locale = "en" | "fr";
+export type Locale = "en" | "fr";
 
 export const CLAIMS_KEY = "https://hasura.io/jwt/claims";
 export const PROJECTS_LED_KEY = "x-hasura-projectsLeaded";

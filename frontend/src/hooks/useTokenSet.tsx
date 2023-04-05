@@ -10,7 +10,7 @@ const ACCESS_TOKEN_VALIDITY_TIME_THRESHOLD = 30;
 
 type TokenSetContextType = {
   tokenSet?: TokenSet | null;
-  impersonationSet?: ImpersonationSet | null;
+  impersonationSet?: ImpersonationSet;
   setTokenSet?: (tokenSet: TokenSet) => void;
   setImpersonationSet: (impersonationSet: ImpersonationSet) => void;
   clearTokenSet: () => void;
@@ -45,8 +45,8 @@ const fetchNewAccessToken = async (refreshToken: RefreshToken): Promise<TokenSet
 const TokenSetContext = createContext<TokenSetContextType | null>(null);
 
 export const TokenSetProvider = ({ children }: PropsWithChildren) => {
-  const [tokenSet, setTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY);
-  const [impersonationSet, setImpersonationSet] = useLocalStorage<ImpersonationSet | null>(
+  const [tokenSet, setTokenSet, clearTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY);
+  const [impersonationSet, setImpersonationSet, clearImpersonationSet] = useLocalStorage<ImpersonationSet>(
     LOCAL_STORAGE_IMPERSONATION_SET_KEY
   );
   const [hasRefreshError, setHasRefreshError] = useState(false);
@@ -68,14 +68,6 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
   const setFromRefreshToken = async (refreshToken: RefreshToken) => {
     const newTokenSet = await fetchNewAccessToken(refreshToken);
     setTokenSet(newTokenSet);
-  };
-
-  const clearTokenSet = () => {
-    setTokenSet(null);
-  };
-
-  const clearImpersonationSet = () => {
-    setImpersonationSet(null);
   };
 
   const value = {
