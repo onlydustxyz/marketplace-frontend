@@ -2,6 +2,7 @@ use std::fmt::Debug;
 
 use anyhow::anyhow;
 use domain::{GithubIssueNumber, GithubRepoLanguages, GithubRepositoryId, GithubUserId};
+use futures::{Stream, StreamExt, TryStreamExt};
 use octocrab::{
 	models::{issues::Issue, pulls::PullRequest, repos::Content, Repository, User},
 	FromResponse, Octocrab,
@@ -115,6 +116,20 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
+	async fn stream_as<R: serde::de::DeserializeOwned + 'static>(
+		&self,
+		url: Url,
+	) -> Result<Option<impl Stream<Item = Result<R, octocrab::Error>> + '_>, Error> {
+		// TODO find a way to return an empty stream instead of option
+		let stream = self
+			.octocrab()
+			.get_page::<R>(&Some(url))
+			.await?
+			.map(|page| page.into_stream(self.octocrab()).take(100));
+		Ok(stream)
+	}
+
+	#[instrument(skip(self))]
 	pub async fn get_repository_by_id(&self, id: &GithubRepositoryId) -> Result<Repository, Error> {
 		self.get_as(format!("{}repositories/{id}", self.octocrab().base_url)).await
 	}
@@ -161,18 +176,24 @@ impl Client {
 		self.get_as(format!("{}users/{username}", self.octocrab().base_url)).await
 	}
 
-	#[allow(non_snake_case)]
 	#[instrument(skip(self))]
 	pub async fn pulls_by_repo_id(
 		&self,
 		id: &GithubRepositoryId,
 		state: &str,
 	) -> Result<Vec<PullRequest>, Error> {
-		self.get_as(format!(
+		let url = format!(
 			"{}repositories/{id}/pulls?state={state}",
-			self.octocrab().base_url
-		))
-		.await
+			self.octocrab().base_url,
+		)
+		.parse()?;
+
+		let pulls = match self.stream_as(url).await? {
+			Some(stream) => stream.try_collect().await?,
+			None => Default::default(),
+		};
+
+		Ok(pulls)
 	}
 
 	#[instrument(skip(self))]

@@ -1,10 +1,13 @@
 use anyhow::anyhow;
 use thiserror::Error;
+use url::ParseError;
 
 #[derive(Debug, Error)]
 pub enum Error {
 	#[error("Not found")]
 	NotFound(#[source] anyhow::Error),
+	#[error(transparent)]
+	InvalidInput(anyhow::Error),
 	#[error(transparent)]
 	Other(anyhow::Error),
 }
@@ -28,5 +31,11 @@ impl From<octocrab::Error> for Error {
 			},
 			_ => Error::Other(anyhow!(error)),
 		}
+	}
+}
+
+impl From<ParseError> for Error {
+	fn from(error: ParseError) -> Self {
+		Self::InvalidInput(anyhow!(error))
 	}
 }

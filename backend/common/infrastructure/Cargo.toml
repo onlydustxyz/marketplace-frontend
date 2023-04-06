@@ -38,7 +38,7 @@ uuid = {version = "0.8.2", default_features = false, features = [
 ]}
 
 # Github
-octocrab = { git = "https://github.com/onlydustxyz/octocrab.git" }
+octocrab = { git = "https://github.com/onlydustxyz/octocrab.git", features=["stream"] }
 reqwest = "0.11.13"
 
 # Tracing

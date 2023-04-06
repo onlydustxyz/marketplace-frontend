@@ -16,6 +16,7 @@ impl From<GithubServiceError> for Error {
 		match &error {
 			GithubServiceError::MissingField(_) => Error::InternalError(error.into()),
 			GithubServiceError::NotFound(_) => Error::InvalidRequest(error.into()),
+			GithubServiceError::InvalidInput(_) => Error::InvalidRequest(error.into()),
 			GithubServiceError::Other(_) => Error::InternalError(error.into()),
 		}
 	}
