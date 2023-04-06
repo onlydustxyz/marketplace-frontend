@@ -49,7 +49,7 @@ describe("useTokenSet", () => {
       act(() => {
         result.current.clearTokenSet();
       });
-      expect(window.localStorage.getItem(LOCAL_STORAGE_TOKEN_SET_KEY)).toBe("null");
+      expect(window.localStorage.getItem(LOCAL_STORAGE_TOKEN_SET_KEY)).toBeNull();
     });
   });
 

@@ -9,7 +9,7 @@ const ACCESS_TOKEN_VALIDITY_TIME_THRESHOLD = 30;
 
 type TokenSetContextType = {
   tokenSet?: TokenSet | null;
-  setTokenSet?: (tokenSet: TokenSet | null) => void;
+  setTokenSet?: (tokenSet: TokenSet) => void;
   clearTokenSet: () => void;
   setFromRefreshToken: (refreshToken: RefreshToken) => Promise<void>;
   hasRefreshError: boolean;
@@ -41,7 +41,7 @@ const fetchNewAccessToken = async (refreshToken: RefreshToken): Promise<TokenSet
 const TokenSetContext = createContext<TokenSetContextType | null>(null);
 
 export const TokenSetProvider = ({ children }: PropsWithChildren) => {
-  const [tokenSet, setTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY);
+  const [tokenSet, setTokenSet, clearTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY);
   const [hasRefreshError, setHasRefreshError] = useState(false);
 
   const refreshAccessToken = (tokenSet: TokenSet) => {
@@ -56,15 +56,12 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
     if (tokenSet) {
       refreshAccessToken(tokenSet);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setFromRefreshToken = async (refreshToken: RefreshToken) => {
     const newTokenSet = await fetchNewAccessToken(refreshToken);
     setTokenSet(newTokenSet);
-  };
-
-  const clearTokenSet = () => {
-    setTokenSet(null);
   };
 
   const value = {

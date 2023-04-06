@@ -55,6 +55,7 @@ export default function PaymentLine({
       [Field.Amount]: payment.amount.value,
       [Field.Status]: getPaymentStatusOrder(payment.status),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { T } = useIntl();

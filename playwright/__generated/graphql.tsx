@@ -3955,9 +3955,7 @@ export type AuthRefreshTokens = {
   __typename?: 'authRefreshTokens';
   createdAt: Scalars['timestamptz'];
   expiresAt: Scalars['timestamptz'];
-  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: Scalars['uuid'];
-  refreshTokenHash: Maybe<Scalars['String']>;
   /** An object relationship */
   user: Users;
   userId: Scalars['uuid'];
@@ -4007,7 +4005,6 @@ export type AuthRefreshTokensBoolExp = {
   createdAt: InputMaybe<TimestamptzComparisonExp>;
   expiresAt: InputMaybe<TimestamptzComparisonExp>;
   refreshToken: InputMaybe<UuidComparisonExp>;
-  refreshTokenHash: InputMaybe<StringComparisonExp>;
   user: InputMaybe<UsersBoolExp>;
   userId: InputMaybe<UuidComparisonExp>;
 };
@@ -4022,7 +4019,6 @@ export enum AuthRefreshTokensConstraint {
 export type AuthRefreshTokensInsertInput = {
   createdAt: InputMaybe<Scalars['timestamptz']>;
   expiresAt: InputMaybe<Scalars['timestamptz']>;
-  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<Scalars['uuid']>;
   user: InputMaybe<UsersObjRelInsertInput>;
   userId: InputMaybe<Scalars['uuid']>;
@@ -4033,9 +4029,7 @@ export type AuthRefreshTokensMaxFields = {
   __typename?: 'authRefreshTokensMaxFields';
   createdAt: Maybe<Scalars['timestamptz']>;
   expiresAt: Maybe<Scalars['timestamptz']>;
-  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: Maybe<Scalars['uuid']>;
-  refreshTokenHash: Maybe<Scalars['String']>;
   userId: Maybe<Scalars['uuid']>;
 };
 
@@ -4044,9 +4038,7 @@ export type AuthRefreshTokensMinFields = {
   __typename?: 'authRefreshTokensMinFields';
   createdAt: Maybe<Scalars['timestamptz']>;
   expiresAt: Maybe<Scalars['timestamptz']>;
-  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: Maybe<Scalars['uuid']>;
-  refreshTokenHash: Maybe<Scalars['String']>;
   userId: Maybe<Scalars['uuid']>;
 };
 
@@ -4071,14 +4063,12 @@ export type AuthRefreshTokensOrderBy = {
   createdAt: InputMaybe<OrderBy>;
   expiresAt: InputMaybe<OrderBy>;
   refreshToken: InputMaybe<OrderBy>;
-  refreshTokenHash: InputMaybe<OrderBy>;
   user: InputMaybe<UsersOrderBy>;
   userId: InputMaybe<OrderBy>;
 };
 
 /** primary key columns input for table: auth.refresh_tokens */
 export type AuthRefreshTokensPkColumnsInput = {
-  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: Scalars['uuid'];
 };
 
@@ -4091,8 +4081,6 @@ export enum AuthRefreshTokensSelectColumn {
   /** column name */
   RefreshToken = 'refreshToken',
   /** column name */
-  RefreshTokenHash = 'refreshTokenHash',
-  /** column name */
   UserId = 'userId'
 }
 
@@ -4100,7 +4088,6 @@ export enum AuthRefreshTokensSelectColumn {
 export type AuthRefreshTokensSetInput = {
   createdAt: InputMaybe<Scalars['timestamptz']>;
   expiresAt: InputMaybe<Scalars['timestamptz']>;
-  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<Scalars['uuid']>;
   userId: InputMaybe<Scalars['uuid']>;
 };
@@ -4138,9 +4125,7 @@ export type AuthRefreshTokens_Aggregate_Bool_Exp_Count = {
 export type AuthRefreshTokens_Max_Order_By = {
   createdAt: InputMaybe<OrderBy>;
   expiresAt: InputMaybe<OrderBy>;
-  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<OrderBy>;
-  refreshTokenHash: InputMaybe<OrderBy>;
   userId: InputMaybe<OrderBy>;
 };
 
@@ -4148,9 +4133,7 @@ export type AuthRefreshTokens_Max_Order_By = {
 export type AuthRefreshTokens_Min_Order_By = {
   createdAt: InputMaybe<OrderBy>;
   expiresAt: InputMaybe<OrderBy>;
-  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<OrderBy>;
-  refreshTokenHash: InputMaybe<OrderBy>;
   userId: InputMaybe<OrderBy>;
 };
 
@@ -4166,9 +4149,7 @@ export type AuthRefreshTokens_StreamCursorInput = {
 export type AuthRefreshTokens_StreamCursorValueInput = {
   createdAt: InputMaybe<Scalars['timestamptz']>;
   expiresAt: InputMaybe<Scalars['timestamptz']>;
-  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<Scalars['uuid']>;
-  refreshTokenHash: InputMaybe<Scalars['String']>;
   userId: InputMaybe<Scalars['uuid']>;
 };
 
@@ -9744,6 +9725,20 @@ export type ProjectCardGithubRepoFieldsFragment = { __typename?: 'ProjectGithubR
 
 export type ProjectCardFieldsFragment = { __typename?: 'Projects', id: any, budgetsAggregate: { __typename?: 'BudgetsAggregate', aggregate: { __typename?: 'BudgetsAggregateFields', sum: { __typename?: 'BudgetsSumFields', spentAmount: any | null, initialAmount: any | null } | null } | null }, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: number } | null }> }>, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, telegramLink: string | null, logoUrl: string | null, shortDescription: string } | null, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }>, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, user: { __typename?: 'users', id: any, displayName: string, avatarUrl: string } | null }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any, content: { __typename?: 'Repository', id: any, contributors: Array<{ __typename?: 'User', id: number }> } | null } | null }>, projectSponsors: Array<{ __typename?: 'ProjectsSponsors', sponsor: { __typename?: 'Sponsors', id: any, name: string, logoUrl: string, url: string | null } }> };
 
+export type ImpersonatedUserQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type ImpersonatedUserQuery = { __typename?: 'query_root', user: { __typename?: 'users', id: any, createdAt: any, displayName: string, email: any | null, avatarUrl: string, locale: string, isAnonymous: boolean, defaultRole: string, emailVerified: boolean, phoneNumber: string | null, phoneNumberVerified: boolean, activeMfaType: string | null, roles: Array<{ __typename?: 'authUserRoles', role: string }>, githubUser: { __typename?: 'AuthGithubUsers', githubUserId: any | null } | null } | null };
+
+export type ImpersonatedLeadProjectsQueryVariables = Exact<{
+  userId: Scalars['uuid'];
+}>;
+
+
+export type ImpersonatedLeadProjectsQuery = { __typename?: 'query_root', projectLeads: Array<{ __typename?: 'ProjectLeads', projectId: any }> };
+
 export type GithubUserFragment = { __typename?: 'User', id: number, login: string, avatarUrl: any };
 
 export type GetGithubUserQueryVariables = Exact<{
@@ -10604,6 +10599,93 @@ export function usePaymentRequestDetailsLazyQuery(baseOptions?: Apollo.LazyQuery
 export type PaymentRequestDetailsQueryHookResult = ReturnType<typeof usePaymentRequestDetailsQuery>;
 export type PaymentRequestDetailsLazyQueryHookResult = ReturnType<typeof usePaymentRequestDetailsLazyQuery>;
 export type PaymentRequestDetailsQueryResult = Apollo.QueryResult<PaymentRequestDetailsQuery, PaymentRequestDetailsQueryVariables>;
+export const ImpersonatedUserDocument = gql`
+    query ImpersonatedUser($id: uuid!) {
+  user(id: $id) {
+    id
+    createdAt
+    displayName
+    email
+    avatarUrl
+    locale
+    isAnonymous
+    defaultRole
+    emailVerified
+    phoneNumber
+    phoneNumberVerified
+    activeMfaType
+    roles {
+      role
+    }
+    githubUser {
+      githubUserId
+    }
+  }
+}
+    `;
+
+/**
+ * __useImpersonatedUserQuery__
+ *
+ * To run a query within a React component, call `useImpersonatedUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useImpersonatedUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useImpersonatedUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useImpersonatedUserQuery(baseOptions: Apollo.QueryHookOptions<ImpersonatedUserQuery, ImpersonatedUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ImpersonatedUserQuery, ImpersonatedUserQueryVariables>(ImpersonatedUserDocument, options);
+      }
+export function useImpersonatedUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ImpersonatedUserQuery, ImpersonatedUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ImpersonatedUserQuery, ImpersonatedUserQueryVariables>(ImpersonatedUserDocument, options);
+        }
+export type ImpersonatedUserQueryHookResult = ReturnType<typeof useImpersonatedUserQuery>;
+export type ImpersonatedUserLazyQueryHookResult = ReturnType<typeof useImpersonatedUserLazyQuery>;
+export type ImpersonatedUserQueryResult = Apollo.QueryResult<ImpersonatedUserQuery, ImpersonatedUserQueryVariables>;
+export const ImpersonatedLeadProjectsDocument = gql`
+    query ImpersonatedLeadProjects($userId: uuid!) {
+  projectLeads(where: {userId: {_eq: $userId}}) {
+    projectId
+  }
+}
+    `;
+
+/**
+ * __useImpersonatedLeadProjectsQuery__
+ *
+ * To run a query within a React component, call `useImpersonatedLeadProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useImpersonatedLeadProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useImpersonatedLeadProjectsQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useImpersonatedLeadProjectsQuery(baseOptions: Apollo.QueryHookOptions<ImpersonatedLeadProjectsQuery, ImpersonatedLeadProjectsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ImpersonatedLeadProjectsQuery, ImpersonatedLeadProjectsQueryVariables>(ImpersonatedLeadProjectsDocument, options);
+      }
+export function useImpersonatedLeadProjectsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ImpersonatedLeadProjectsQuery, ImpersonatedLeadProjectsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ImpersonatedLeadProjectsQuery, ImpersonatedLeadProjectsQueryVariables>(ImpersonatedLeadProjectsDocument, options);
+        }
+export type ImpersonatedLeadProjectsQueryHookResult = ReturnType<typeof useImpersonatedLeadProjectsQuery>;
+export type ImpersonatedLeadProjectsLazyQueryHookResult = ReturnType<typeof useImpersonatedLeadProjectsLazyQuery>;
+export type ImpersonatedLeadProjectsQueryResult = Apollo.QueryResult<ImpersonatedLeadProjectsQuery, ImpersonatedLeadProjectsQueryVariables>;
 export const GetGithubUserDocument = gql`
     query GetGithubUser($githubUserId: Int!) {
   fetchUserDetailsById(userId: $githubUserId) {

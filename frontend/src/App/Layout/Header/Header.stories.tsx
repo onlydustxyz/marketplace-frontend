@@ -81,6 +81,7 @@ Default.args = {
   },
   isLoggedIn: false,
   selectedMenuItem: RoutePaths.Projects,
+  impersonating: false,
 };
 
 Default.parameters = { layout: "fullscreen", backgrounds: { default: "space" } };

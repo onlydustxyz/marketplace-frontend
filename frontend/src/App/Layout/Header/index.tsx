@@ -8,12 +8,15 @@ import { SessionMethod, useSessionDispatch } from "src/hooks/useSession";
 import { HasuraUserRole } from "src/types";
 import { GetPaymentRequestIdsQuery } from "src/__generated/graphql";
 import View from "./View";
+import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 
 export default function Header() {
   const location = useLocation();
   const { isLoggedIn, githubUserId } = useAuth();
   const { T } = useIntl();
   const dispatchSession = useSessionDispatch();
+  const { impersonationSet } = useImpersonationClaims();
+  const impersonating = !!impersonationSet;
 
   const { data: paymentRequestIdsQueryData } = useHasuraQuery<GetPaymentRequestIdsQuery>(
     GET_MY_CONTRIBUTION_IDS_QUERY,
@@ -38,6 +41,7 @@ export default function Header() {
       isLoggedIn={isLoggedIn}
       selectedMenuItem={location.pathname}
       onLogin={() => dispatchSession({ method: SessionMethod.SetVisitedPageBeforeLogin, value: location.pathname })}
+      impersonating={impersonating}
     />
   );
 }

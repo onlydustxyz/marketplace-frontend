@@ -22,6 +22,7 @@ import { TokenSet } from "src/types";
 import axios from "axios";
 import { RetryLink } from "@apollo/client/link/retry";
 import { PaymentRequests } from "src/__generated/graphql";
+import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 
 type ErrorDisplay = "screen" | "toaster" | "none";
 
@@ -37,6 +38,7 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const [displayError, setDisplayError] = useState(false);
   const showToaster = useShowToaster();
   const { T } = useIntl();
+  const { impersonationSet, customClaims } = useImpersonationClaims();
   const { tokenSet, setTokenSet, setHasRefreshError } = useTokenSet();
 
   const TokenLink = new TokenRefreshLink<TokenSet>({
@@ -81,10 +83,19 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
 
   const AuthenticationLink = setContext((_, { headers }) => {
     const authorizationHeaders = tokenSet?.accessToken ? { Authorization: `Bearer ${tokenSet?.accessToken}` } : {};
+    const impersonationHeaders = impersonationSet
+      ? {
+          "X-Hasura-Admin-Secret": impersonationSet.password,
+          "X-Hasura-User-Id": impersonationSet.userId,
+          "X-Hasura-projectsLeaded": `{${customClaims.projectsLeaded?.map(id => `"${id}"`).join(",")}}`,
+          "X-Hasura-githubUserId": customClaims.githubUserId,
+        }
+      : {};
     return {
       headers: {
         ...headers,
         ...authorizationHeaders,
+        ...impersonationHeaders,
       },
     };
   });
@@ -123,7 +134,12 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const retryLink = new RetryLink();
 
   const client = new ApolloClient({
-    link: ApolloLink.from([ErrorLink, retryLink, AuthenticationLink, TokenLink, HttpLink]),
+    link: ApolloLink.from([
+      ErrorLink,
+      retryLink,
+      ...(impersonationSet ? [AuthenticationLink] : [AuthenticationLink, TokenLink]),
+      HttpLink,
+    ]),
     cache: new InMemoryCache({
       typePolicies: {
         ProjectDetails: {
