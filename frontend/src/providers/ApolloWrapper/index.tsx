@@ -38,22 +38,8 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const [displayError, setDisplayError] = useState(false);
   const showToaster = useShowToaster();
   const { T } = useIntl();
-  const { impersonationSet, setImpersonationSet, customClaims } = useImpersonationClaims();
+  const { impersonationSet, customClaims } = useImpersonationClaims();
   const { tokenSet, setTokenSet, setHasRefreshError } = useTokenSet();
-
-  document.onkeydown = e => {
-    if (e.key === "i" && e.metaKey) {
-      const password = prompt(T("impersonation.passwordPrompt"));
-      if (!password) {
-        return;
-      }
-      const userId = prompt(T("impersonation.userPrompt"));
-      if (!userId) {
-        return;
-      }
-      setImpersonationSet({ password, userId });
-    }
-  };
 
   const TokenLink = new TokenRefreshLink<TokenSet>({
     accessTokenField: "hasura_token",
