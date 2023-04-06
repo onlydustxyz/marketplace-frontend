@@ -206,8 +206,19 @@ impl Client {
 		}
 		.boxed();
 
-		if let Some(State::Merged) = filters.state {
+		if filters.state == Some(State::Merged) || filters.merged_since.is_some() {
 			stream = stream.try_filter(|pr| ready(pr.merged_at.is_some())).boxed()
+		}
+
+		if let Some(merged_since) = filters.merged_since {
+			stream = stream
+				.try_take_while(move |pr| {
+					ready(Ok(pr
+						.merged_at
+						.map(|merged_at| merged_at >= merged_since)
+						.unwrap_or(false)))
+				})
+				.boxed()
 		}
 
 		stream.try_collect().await.map_err(Into::into)
