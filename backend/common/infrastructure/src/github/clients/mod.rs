@@ -1,16 +1,19 @@
 use std::fmt::Debug;
 
 use anyhow::anyhow;
-use domain::{GithubIssueNumber, GithubRepoLanguages, GithubRepositoryId, GithubUserId};
+use domain::{
+	GithubIssueNumber, GithubRepoLanguages, GithubRepositoryId, GithubServiceFilters, GithubUserId,
+};
 use futures::{Stream, StreamExt, TryStreamExt};
 use octocrab::{
 	models::{issues::Issue, pulls::PullRequest, repos::Content, Repository, User},
+	params::{pulls::Sort, Direction},
 	FromResponse, Octocrab,
 };
 use olog::tracing::instrument;
 use reqwest::Url;
 
-use super::{logged_response::LoggedResponse, AddHeaders, Config, Error};
+use super::{logged_response::LoggedResponse, service::QueryParams, AddHeaders, Config, Error};
 
 mod round_robin;
 pub use round_robin::Client as RoundRobinClient;
@@ -180,11 +183,19 @@ impl Client {
 	pub async fn pulls_by_repo_id(
 		&self,
 		id: &GithubRepositoryId,
-		state: &str,
+		filters: &GithubServiceFilters,
 	) -> Result<Vec<PullRequest>, Error> {
+		let query_params = QueryParams::default()
+			.state(filters.state.into())
+			.sort(Sort::Updated)
+			.direction(Direction::Descending)
+			.page(1)
+			.per_page(100);
+
 		let url = format!(
-			"{}repositories/{id}/pulls?state={state}",
+			"{}repositories/{id}/pulls?{}",
 			self.octocrab().base_url,
+			query_params.to_query_string()?
 		)
 		.parse()?;
 

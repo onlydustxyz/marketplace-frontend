@@ -9,6 +9,9 @@ mod search;
 pub use search::{
 	IssueService as SearchIssueService, Service as SearchService, UserService as SearchUserService,
 };
+
+pub mod filters;
+pub use filters::Filters;
 use thiserror::Error;
 
 #[derive(Debug, Error)]

@@ -39,3 +39,9 @@ impl From<ParseError> for Error {
 		Self::InvalidInput(anyhow!(error))
 	}
 }
+
+impl From<serde_qs::Error> for Error {
+	fn from(error: serde_qs::Error) -> Self {
+		Self::InvalidInput(anyhow!(error))
+	}
+}

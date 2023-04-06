@@ -56,6 +56,7 @@ thiserror = "1.0.31"
 # Serde
 serde = {version = "1.0.137", features = ["derive"]}
 serde_json = {version = "1.0.81"}
+serde_qs = "0.12.0"
 
 # Datetime
 chrono = "0.4"

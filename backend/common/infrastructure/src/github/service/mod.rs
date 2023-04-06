@@ -1,7 +1,9 @@
 mod fetch;
+pub mod query_params;
 mod search;
 
 use domain::GithubServiceError;
+pub use query_params::QueryParams;
 
 use crate::github;
 
