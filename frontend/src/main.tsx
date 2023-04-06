@@ -17,21 +17,24 @@ import { IntlProvider } from "src/hooks/useIntl";
 import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { SessionProvider } from "./hooks/useSession";
 import { ToasterProvider } from "./hooks/useToaster";
+import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <IntlProvider>
       <BrowserRouter>
         <SessionProvider>
-          <TokenSetProvider>
-            <ToasterProvider>
-              <ApolloWrapper>
-                <AuthProvider>
-                  <App />
-                </AuthProvider>
-              </ApolloWrapper>
-            </ToasterProvider>
-          </TokenSetProvider>
+          <ImpersonationClaimsProvider>
+            <TokenSetProvider>
+              <ToasterProvider>
+                <ApolloWrapper>
+                  <AuthProvider>
+                    <App />
+                  </AuthProvider>
+                </ApolloWrapper>
+              </ToasterProvider>
+            </TokenSetProvider>
+          </ImpersonationClaimsProvider>
         </SessionProvider>
       </BrowserRouter>
     </IntlProvider>

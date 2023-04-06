@@ -10,6 +10,7 @@ import { ToasterProvider } from "src/hooks/useToaster";
 import { Toaster } from "src/App/Layout/Toaster";
 import { viewportConfig } from "src/config";
 import { SuspenseCache } from "@apollo/client";
+import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 
 interface MemoryRouterProviderFactoryProps {
   route?: string;
@@ -27,19 +28,21 @@ export const MemoryRouterProviderFactory =
       <ToasterProvider>
         <SessionProvider>
           <TokenSetProvider>
-            <MockedProvider mocks={mocks} addTypename={false} suspenseCache={suspenseCache}>
-              <MemoryRouter initialEntries={[route]}>
-                {context ? (
-                  <Routes>
-                    <Route path="/" element={<Outlet context={context} />}>
-                      <Route index element={<AuthProvider>{children}</AuthProvider>} />
-                    </Route>
-                  </Routes>
-                ) : (
-                  <AuthProvider>{children}</AuthProvider>
-                )}
-              </MemoryRouter>
-            </MockedProvider>
+            <ImpersonationClaimsProvider>
+              <MockedProvider mocks={mocks} addTypename={false} suspenseCache={suspenseCache}>
+                <MemoryRouter initialEntries={[route]}>
+                  {context ? (
+                    <Routes>
+                      <Route path="/" element={<Outlet context={context} />}>
+                        <Route index element={<AuthProvider>{children}</AuthProvider>} />
+                      </Route>
+                    </Routes>
+                  ) : (
+                    <AuthProvider>{children}</AuthProvider>
+                  )}
+                </MemoryRouter>
+              </MockedProvider>
+            </ImpersonationClaimsProvider>
           </TokenSetProvider>
         </SessionProvider>
         <Toaster />

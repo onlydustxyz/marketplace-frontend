@@ -9,6 +9,7 @@ import { AuthProvider } from "src/hooks/useAuth";
 import { renderWithIntl } from "src/test/utils";
 import { MockedProvider } from "@apollo/client/testing";
 import { LOCAL_STORAGE_TOKEN_SET_KEY, TokenSetProvider } from "src/hooks/useTokenSet";
+import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 
 expect.extend(matchers);
 
@@ -40,9 +41,11 @@ describe('"ProtectedRoute" component', () => {
     renderWithIntl(
       <MockedProvider>
         <TokenSetProvider>
-          <AuthProvider>
-            <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>{CHILD_ELEMENT_TEXT}</ProtectedRoute>
-          </AuthProvider>
+          <ImpersonationClaimsProvider>
+            <AuthProvider>
+              <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>{CHILD_ELEMENT_TEXT}</ProtectedRoute>
+            </AuthProvider>
+          </ImpersonationClaimsProvider>
         </TokenSetProvider>
       </MockedProvider>,
       { wrapper: BrowserRouter }

@@ -2,29 +2,18 @@ import axios from "axios";
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "react-use";
 import config from "src/config";
-import { ImpersonationSet, RefreshToken, TokenSet } from "src/types";
+import { RefreshToken, TokenSet } from "src/types";
 
 export const LOCAL_STORAGE_TOKEN_SET_KEY = "hasura_token";
-export const LOCAL_STORAGE_IMPERSONATION_SET_KEY = "impersonation_set";
 const ACCESS_TOKEN_VALIDITY_TIME_THRESHOLD = 30;
 
 type TokenSetContextType = {
   tokenSet?: TokenSet | null;
-  impersonationSet?: ImpersonationSet;
   setTokenSet?: (tokenSet: TokenSet) => void;
-  setImpersonationSet: (impersonationSet: ImpersonationSet) => void;
-  customClaims: CustomClaims;
-  setCustomClaims: (customClaims: CustomClaims) => void;
   clearTokenSet: () => void;
-  clearImpersonationSet: () => void;
   setFromRefreshToken: (refreshToken: RefreshToken) => Promise<void>;
   hasRefreshError: boolean;
   setHasRefreshError: (hasRefreshError: boolean) => void;
-};
-
-type CustomClaims = {
-  projectsLeaded?: string[];
-  githubUserId?: number;
 };
 
 export const accessTokenValidityDelay = (token: TokenSet): number => {
@@ -53,19 +42,7 @@ const TokenSetContext = createContext<TokenSetContextType | null>(null);
 
 export const TokenSetProvider = ({ children }: PropsWithChildren) => {
   const [tokenSet, setTokenSet, clearTokenSet] = useLocalStorage<TokenSet | null>(LOCAL_STORAGE_TOKEN_SET_KEY);
-  const [impersonationSet, setImpersonationSet, clearImpersonationSet] = useLocalStorage<ImpersonationSet>(
-    LOCAL_STORAGE_IMPERSONATION_SET_KEY
-  );
   const [hasRefreshError, setHasRefreshError] = useState(false);
-  const [customClaims, doSetCustomClaims] = useState<CustomClaims>({});
-
-  const setCustomClaims = (newClaims: CustomClaims) => {
-    const newValueIsDeeplyEqualToPrevious = JSON.stringify(newClaims) === JSON.stringify(customClaims);
-    if (newValueIsDeeplyEqualToPrevious) {
-      return;
-    }
-    doSetCustomClaims(newClaims);
-  };
 
   const refreshAccessToken = (tokenSet: TokenSet) => {
     fetchNewAccessToken(tokenSet.refreshToken)
@@ -94,11 +71,6 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
     setFromRefreshToken,
     hasRefreshError,
     setHasRefreshError,
-    impersonationSet,
-    setImpersonationSet,
-    clearImpersonationSet,
-    customClaims,
-    setCustomClaims,
   };
 
   return <TokenSetContext.Provider value={value}>{children}</TokenSetContext.Provider>;

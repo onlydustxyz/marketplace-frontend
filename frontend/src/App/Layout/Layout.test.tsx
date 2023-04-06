@@ -13,6 +13,7 @@ import { ToasterProvider } from "src/hooks/useToaster";
 import { GET_MY_CONTRIBUTION_IDS_QUERY } from "./Header";
 import { useRoles } from "src/hooks/useAuth/useRoles";
 import { HasuraUserRole } from "src/types";
+import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 
 expect.extend(matchers);
 
@@ -126,20 +127,7 @@ describe('"Layout" component', () => {
   });
 
   it("should always display the onlydust logo", async () => {
-    renderWithIntl(
-      <ToasterProvider>
-        <MockedProvider>
-          <SessionProvider>
-            <TokenSetProvider>
-              <AuthProvider>
-                <Layout />
-              </AuthProvider>
-            </TokenSetProvider>
-          </SessionProvider>
-        </MockedProvider>
-      </ToasterProvider>,
-      { wrapper: BrowserRouter }
-    );
+    renderTest();
     await screen.findByRole("img", {
       name: ONLYDUST_LOGO_NAME_QUERY,
     });
@@ -153,39 +141,13 @@ describe('"Layout" component', () => {
       user: undefined,
       githubUserId: undefined,
     });
-    renderWithIntl(
-      <ToasterProvider>
-        <MockedProvider>
-          <SessionProvider>
-            <TokenSetProvider>
-              <AuthProvider>
-                <Layout />
-              </AuthProvider>
-            </TokenSetProvider>
-          </SessionProvider>
-        </MockedProvider>
-      </ToasterProvider>,
-      { wrapper: BrowserRouter }
-    );
+    renderTest();
     await screen.findByRole("githubLogo");
   });
 
   it("should display the onlydust logo and title if there is no hasura jwt", () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify("test"));
-    renderWithIntl(
-      <ToasterProvider>
-        <MockedProvider>
-          <SessionProvider>
-            <TokenSetProvider>
-              <AuthProvider>
-                <Layout />
-              </AuthProvider>
-            </TokenSetProvider>
-          </SessionProvider>
-        </MockedProvider>
-      </ToasterProvider>,
-      { wrapper: BrowserRouter }
-    );
+    renderTest();
     expect(
       screen.getByRole("img", {
         name: ONLYDUST_LOGO_NAME_QUERY,
@@ -198,3 +160,22 @@ describe('"Layout" component', () => {
     ).toBeInTheDocument();
   });
 });
+
+const renderTest = () => {
+  return renderWithIntl(
+    <ToasterProvider>
+      <MockedProvider>
+        <SessionProvider>
+          <TokenSetProvider>
+            <ImpersonationClaimsProvider>
+              <AuthProvider>
+                <Layout />
+              </AuthProvider>
+            </ImpersonationClaimsProvider>
+          </TokenSetProvider>
+        </SessionProvider>
+      </MockedProvider>
+    </ToasterProvider>,
+    { wrapper: BrowserRouter }
+  );
+};

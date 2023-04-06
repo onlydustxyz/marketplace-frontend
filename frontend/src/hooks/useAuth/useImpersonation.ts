@@ -2,11 +2,11 @@ import { gql } from "@apollo/client";
 import { useEffect, useMemo } from "react";
 import { ImpersonatedLeadProjectsQuery, ImpersonatedUserQuery } from "src/__generated/graphql";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
-import { useTokenSet } from "src/hooks/useTokenSet";
+import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import { CustomUserRole, HasuraUserRole, Locale, User } from "src/types";
 
 export const useImpersonation = () => {
-  const { impersonationSet, clearImpersonationSet, setCustomClaims } = useTokenSet();
+  const { impersonationSet, clearImpersonationSet, setCustomClaims } = useImpersonationClaims();
 
   const impersonatedUserQuery = useHasuraQuery<ImpersonatedUserQuery>(IMPERSONATED_USER_QUERY, HasuraUserRole.Admin, {
     variables: {

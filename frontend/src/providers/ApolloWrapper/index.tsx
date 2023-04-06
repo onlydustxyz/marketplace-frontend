@@ -22,6 +22,7 @@ import { TokenSet } from "src/types";
 import axios from "axios";
 import { RetryLink } from "@apollo/client/link/retry";
 import { PaymentRequests } from "src/__generated/graphql";
+import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 
 type ErrorDisplay = "screen" | "toaster" | "none";
 
@@ -37,8 +38,8 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const [displayError, setDisplayError] = useState(false);
   const showToaster = useShowToaster();
   const { T } = useIntl();
-  const { tokenSet, impersonationSet, customClaims, setTokenSet, setImpersonationSet, setHasRefreshError } =
-    useTokenSet();
+  const { impersonationSet, setImpersonationSet, customClaims } = useImpersonationClaims();
+  const { tokenSet, setTokenSet, setHasRefreshError } = useTokenSet();
 
   document.onkeydown = e => {
     if (e.key === "i" && e.metaKey) {
