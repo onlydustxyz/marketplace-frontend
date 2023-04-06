@@ -1,8 +1,9 @@
-use std::fmt::Debug;
+use std::{fmt::Debug, future::ready};
 
 use anyhow::anyhow;
 use domain::{
-	GithubIssueNumber, GithubRepoLanguages, GithubRepositoryId, GithubServiceFilters, GithubUserId,
+	github_service_filters::State, GithubIssueNumber, GithubRepoLanguages, GithubRepositoryId,
+	GithubServiceFilters, GithubUserId,
 };
 use futures::{Stream, StreamExt, TryStreamExt};
 use octocrab::{
@@ -199,12 +200,17 @@ impl Client {
 		)
 		.parse()?;
 
-		let pulls = match self.stream_as(url).await? {
-			Some(stream) => stream.try_collect().await?,
-			None => Default::default(),
-		};
+		let mut stream = match self.stream_as::<PullRequest>(url).await? {
+			Some(stream) => stream,
+			None => return Ok(Default::default()),
+		}
+		.boxed();
 
-		Ok(pulls)
+		if let Some(State::Merged) = filters.state {
+			stream = stream.try_filter(|pr| ready(pr.merged_at.is_some())).boxed()
+		}
+
+		stream.try_collect().await.map_err(Into::into)
 	}
 
 	#[instrument(skip(self))]

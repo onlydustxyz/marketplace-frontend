@@ -9,5 +9,6 @@ pub struct Filters {
 pub enum State {
 	Open,
 	Closed,
+	Merged,
 	All,
 }

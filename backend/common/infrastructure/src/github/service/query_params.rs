@@ -55,6 +55,7 @@ impl From<Option<github_service_filters::State>> for State {
 			.map(|state| match state {
 				github_service_filters::State::Open => State::Open,
 				github_service_filters::State::Closed => State::Closed,
+				github_service_filters::State::Merged => State::Closed,
 				github_service_filters::State::All => State::All,
 			})
 			.unwrap_or(State::All)
