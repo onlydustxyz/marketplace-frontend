@@ -1,7 +1,9 @@
+import { expect } from "@playwright/test";
 import { test } from "./fixtures";
 import { restoreDB } from "./commands/db/db_utils";
 import { BrowseProjectsPage } from "./pages/browse_projects_page";
 import { GenericPage } from "./pages/generic_page";
+import { PaymentsPage } from "./pages/my_payments_page";
 
 test.describe("As an admin, I", () => {
   test.beforeAll(async () => {
@@ -16,5 +18,13 @@ test.describe("As an admin, I", () => {
     await appPage.expectToBeAnonymous();
     await browseProjectsPage.impersonateUser(users.Olivier);
     await appPage.expectToBeImpersonating(users.Olivier);
+
+    await appPage.clickOnMenuItem("/payments");
+    const paymentsPage = new PaymentsPage(page);
+
+    await expect(paymentsPage.payments).toHaveCount(6);
+    await paymentsPage.payments.first().click();
+
+    await expect(paymentsPage.sidePanel).toContainText(`to ${users.Olivier.github.login} (you)`);
   });
 });

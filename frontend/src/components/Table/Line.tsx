@@ -12,6 +12,7 @@ const Line: React.FC<Props> = ({ className, children, onClick, selected, payment
   return (
     <tr
       data-paymentId={paymentId}
+      data-testid="payment-line"
       className={classNames(
         `group/line border-b border-gray-800 ${className}`,
         "transition duration-200 hover:bg-white/5 outline-offset-0 hover:outline-2",
