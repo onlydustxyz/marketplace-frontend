@@ -7,7 +7,6 @@ import MenuItem from "src/App/Layout/Header/MenuItem";
 import { Link } from "react-router-dom";
 import FeedbackButton from "./FeedbackButton";
 import classNames from "classnames";
-import { useTokenSet } from "src/hooks/useTokenSet";
 import { useIntl } from "src/hooks/useIntl";
 
 interface HeaderViewProps {
@@ -32,7 +31,10 @@ export default function HeaderView({
   const { T } = useIntl();
 
   return (
-    <div className={classNames("bg-black", "py-4 px-6 gap-3 xl:gap-8", "font-walsheim text-xl text-neutral-400")}>
+    <div
+      className={classNames("bg-black", "py-4 px-6 gap-3 xl:gap-8", "font-walsheim text-xl text-neutral-400")}
+      data-testid="header"
+    >
       <div className="flex gap-8 justify-center xl:justify-start items-center">
         <Link to={RoutePaths.Projects} className="flex items-center w-fit gap-3 ">
           <OnlyDustLogo />
@@ -51,7 +53,10 @@ export default function HeaderView({
           )}
           <div className="flex-1 flex justify-center">
             {impersonating && (
-              <div className="bg-orange-500 text-white text-sm uppercase font-bold px-4 py-2 rounded-xl">
+              <div
+                className="bg-orange-500 text-white text-sm uppercase font-bold px-4 py-2 rounded-xl"
+                data-testid="impersonation-banner"
+              >
                 {T("impersonation.banner")}
               </div>
             )}

@@ -1,5 +1,5 @@
 import { expect, Page } from "@playwright/test";
-import { Project } from "../types";
+import { Project, User } from "../types";
 
 export class BrowseProjectsPage {
   readonly page: Page;
@@ -56,6 +56,18 @@ export class BrowseProjectsPage {
 
   async clearFilters() {
     await this.page.getByText("Clear all", { exact: true }).click();
+  }
+
+  async impersonateUser(user: User) {
+    this.page.on("dialog", async dialog => {
+      if (dialog.message().includes("password")) {
+        await dialog.accept(process.env.HASURA_GRAPHQL_ADMIN_SECRET);
+      }
+      if (dialog.message().includes("user")) {
+        await dialog.accept(user.id);
+      }
+    });
+    await this.page.keyboard.press("Meta+i");
   }
 
   getProjectLocator(project: Project) {
