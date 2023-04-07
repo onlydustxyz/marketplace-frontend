@@ -3,23 +3,20 @@ use octocrab::models::pulls::PullRequest;
 
 use super::{Decision, Filter};
 
-impl Filter for Result<PullRequest, octocrab::Error> {
+impl Filter for PullRequest {
 	fn filter(self, filters: &GithubServiceFilters) -> Decision<Self> {
 		if (filters.state == Some(State::Merged) || filters.merged_since.is_some())
-			&& self.as_ref().ok().map(|pr| pr.merged_at.is_none()).unwrap_or(false)
+			&& self.merged_at.is_none()
 		{
+			// Skipping non merged items if filter state is `Merged` or `merge_since`
 			return Decision::Skip;
 		}
 
 		if let Some(merged_since) = filters.merged_since {
-			if self
-				.as_ref()
-				.map(|pr| pr.merged_at)
-				.map(|merged_at| {
-					merged_at.map(|merged_at| merged_at < merged_since).unwrap_or(false)
-				})
-				.unwrap_or(true)
-			{
+			// Safe to unwrap as checked above
+			if self.merged_at.unwrap() < merged_since {
+				// Found a pr merged before `merged_since`,
+				// assuming stream is ordered, we can end here
 				return Decision::End;
 			}
 		}

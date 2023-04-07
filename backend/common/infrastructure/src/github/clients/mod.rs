@@ -1,4 +1,4 @@
-use std::fmt::Debug;
+use std::{fmt::Debug, future::ready};
 
 use anyhow::anyhow;
 use domain::{
@@ -22,6 +22,7 @@ mod single;
 pub use single::Client as SingleClient;
 
 mod stream_filter;
+use olog::error;
 use stream_filter::StreamFilterWith;
 
 pub enum Client {
@@ -125,13 +126,19 @@ impl Client {
 	async fn stream_as<R: serde::de::DeserializeOwned + 'static>(
 		&self,
 		url: Url,
-	) -> Result<Option<impl Stream<Item = Result<R, octocrab::Error>> + '_>, Error> {
+	) -> Result<Option<impl Stream<Item = R> + '_>, Error> {
 		// TODO find a way to return an empty stream instead of option
 		let stream = self
 			.octocrab()
 			.get_page::<R>(&Some(url))
 			.await?
-			.map(|page| page.into_stream(self.octocrab()).take(100));
+			.map(|page| page.into_stream(self.octocrab()).take(100))
+			.map(|stream| {
+				stream
+					.inspect_err(|e| error!(error = e.to_string(), "Unable to stream from github"))
+					.take_while(|res| ready(res.is_ok()))
+					.map(Result::unwrap)
+			});
 		Ok(stream)
 	}
 
@@ -202,14 +209,15 @@ impl Client {
 		)
 		.parse()?;
 
-		match self.stream_as::<PullRequest>(url).await? {
+		let stream = match self.stream_as::<PullRequest>(url).await? {
 			Some(stream) => stream,
 			None => return Ok(Default::default()),
 		}
 		.filter_with(*filters)
-		.try_collect()
-		.await
-		.map_err(Into::into)
+		.collect()
+		.await;
+
+		Ok(stream)
 	}
 
 	#[instrument(skip(self))]
