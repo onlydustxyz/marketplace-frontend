@@ -1,5 +1,5 @@
 use derive_getters::Getters;
-use infrastructure::{amqp, database, github, tracing, web3};
+use infrastructure::{amqp, database, github, graphql, tracing, web3};
 use presentation::http;
 use serde::Deserialize;
 
@@ -14,4 +14,5 @@ pub struct Config {
 	github: github::Config,
 	web3: web3::Config,
 	s3: simple_storage::Config,
+	graphql_client: graphql::Config,
 }
