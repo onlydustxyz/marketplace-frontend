@@ -8,6 +8,8 @@ import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { useIntl } from "src/hooks/useIntl";
 import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
+import Tooltip from "src/components/Tooltip";
+import { SEARCH_MAX_DAYS_COUNT } from "..";
 
 interface ContributorSelectViewProps {
   selectedGithubHandle: string | null;
@@ -162,6 +164,8 @@ interface ContributorSubListProps<T extends GithubContributorFragment> {
 }
 
 function ContributorSubList<T extends GithubContributorFragment>({ contributors }: ContributorSubListProps<T>) {
+  const { T } = useIntl();
+
   return (
     <div className="divide-y divide-greyscale-50/8 pt-2.5">
       {contributors?.map(contributor => (
@@ -180,7 +184,17 @@ function ContributorSubList<T extends GithubContributorFragment>({ contributors 
                 }}
               />
               {contributor.unpaidMergedPullsCount && (
-                <Badge value={contributor.unpaidMergedPullsCount} icon={BadgeIcon.GitMerge} size={BadgeSize.Small} />
+                <>
+                  <Badge
+                    id={`pr-count-badge-${contributor.id}`}
+                    value={contributor.unpaidMergedPullsCount}
+                    icon={BadgeIcon.GitMerge}
+                    size={BadgeSize.Small}
+                  />
+                  <Tooltip anchorId={`pr-count-badge-${contributor.id}`}>
+                    {T("payment.form.contributor.unpaidMergedPrCountTooltip", { count: SEARCH_MAX_DAYS_COUNT })}
+                  </Tooltip>
+                </>
               )}
             </li>
           )}

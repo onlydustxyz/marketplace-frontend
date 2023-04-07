@@ -9,6 +9,7 @@ import { Contributor as ContributorType } from "./View";
 import { formatMoneyAmount } from "src/utils/money";
 import Contributor from "src/components/Contributor";
 import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
+import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
 
 type Props = {
   contributor: ContributorType;
@@ -40,7 +41,17 @@ export default function ContributorLine({
         <>
           <Cell height={CellHeight.Small} horizontalMargin={false}>
             {contributor.unpaidMergedPullsCount ? (
-              <Badge size={BadgeSize.Small} icon={BadgeIcon.GitMerge} value={contributor.unpaidMergedPullsCount} />
+              <>
+                <Badge
+                  id={`pr-count-badge-${contributor.login}`}
+                  size={BadgeSize.Small}
+                  icon={BadgeIcon.GitMerge}
+                  value={contributor.unpaidMergedPullsCount}
+                />
+                <Tooltip anchorId={`pr-count-badge-${contributor.login}`}>
+                  {T("payment.form.contributor.unpaidMergedPrCountTooltip", { count: SEARCH_MAX_DAYS_COUNT })}
+                </Tooltip>
+              </>
             ) : (
               "-"
             )}

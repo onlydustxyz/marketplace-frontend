@@ -100,7 +100,8 @@
           },
           "placeholder": "Search by Github handle"
         },
-        "title": "Recipient"
+        "title": "Recipient",
+        "unpaidMergedPrCountTooltip": "Unpaid merged pull requests opened in the last __count__ days"
       },
       "days": "days",
       "missingContributor": "Pick a contributor to get started",
