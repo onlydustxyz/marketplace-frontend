@@ -1,6 +1,5 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 import { useLocalStorage } from "react-use";
-import { useIntl } from "src/hooks/useIntl";
 import { ImpersonationSet } from "src/types";
 
 export const LOCAL_STORAGE_IMPERSONATION_SET_KEY = "impersonation_set";
@@ -21,7 +20,6 @@ type CustomClaims = {
 export const ImpersonationClaimsContext = createContext<ImpersonationClaimsContextType | null>(null);
 
 export const ImpersonationClaimsProvider = ({ children }: PropsWithChildren) => {
-  const { T } = useIntl();
   const [impersonationSet, setImpersonationSet, clearImpersonationSet] = useLocalStorage<ImpersonationSet>(
     LOCAL_STORAGE_IMPERSONATION_SET_KEY
   );
@@ -34,20 +32,6 @@ export const ImpersonationClaimsProvider = ({ children }: PropsWithChildren) => 
     }
     doSetCustomClaims(newClaims);
   };
-
-  document.addEventListener("keydown", e => {
-    if (e.key === "i" && e.metaKey) {
-      const password = window.prompt(T("impersonation.passwordPrompt"));
-      if (!password) {
-        return;
-      }
-      const userId = window.prompt(T("impersonation.userPrompt"));
-      if (!userId) {
-        return;
-      }
-      setImpersonationSet({ password, userId });
-    }
-  });
 
   const value = {
     impersonationSet,

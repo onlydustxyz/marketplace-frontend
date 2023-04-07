@@ -4,6 +4,7 @@ import { restoreDB } from "./commands/db/db_utils";
 import { BrowseProjectsPage } from "./pages/browse_projects_page";
 import { GenericPage } from "./pages/generic_page";
 import { PaymentsPage } from "./pages/my_payments_page";
+import { ImpersonationPage } from "./pages/impersonation_page";
 
 test.describe("As an admin, I", () => {
   test.beforeAll(async () => {
@@ -16,7 +17,10 @@ test.describe("As an admin, I", () => {
 
     const appPage = new GenericPage(page);
     await appPage.expectToBeAnonymous();
-    await browseProjectsPage.impersonateUser(users.Olivier);
+
+    const impersonationPage = new ImpersonationPage(page);
+    await impersonationPage.goto(users.Olivier);
+    await impersonationPage.submitForm();
     await appPage.expectToBeImpersonating(users.Olivier);
 
     await appPage.clickOnMenuItem("/payments");
