@@ -26,11 +26,12 @@ pub use user::UserFromOctocrab;
 mod repo;
 pub use repo::RepoFromOctocrab;
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, Default)]
 pub struct Config {
 	base_url: String,
 	personal_access_tokens: String,
 	headers: HashMap<String, String>,
+	max_calls_per_request: Option<usize>,
 }
 
 trait AddHeaders: Sized {

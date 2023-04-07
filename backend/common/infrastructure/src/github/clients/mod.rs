@@ -50,6 +50,13 @@ impl Client {
 		}
 	}
 
+	pub fn config(&self) -> &Config {
+		match self {
+			Client::Single(client) => client.config(),
+			Client::RoundRobin(client) => client.config(),
+		}
+	}
+
 	pub async fn get_issue_repository_id(
 		&self,
 		issue: &Issue,
@@ -126,6 +133,7 @@ impl Client {
 	async fn stream_as<R: serde::de::DeserializeOwned + Send + 'static>(
 		&self,
 		url: Url,
+		max_results: usize,
 	) -> Result<Pin<Box<dyn Stream<Item = R> + Send + '_>>, Error> {
 		Ok(self
 			.octocrab()
@@ -133,7 +141,7 @@ impl Client {
 			.await?
 			.map(|page| {
 				page.into_stream(self.octocrab())
-					.take(100)
+					.take(max_results)
 					.inspect_err(|e| error!(error = e.to_string(), "Unable to stream from github"))
 					.take_while(|res| ready(res.is_ok()))
 					.map(Result::unwrap)
@@ -209,7 +217,12 @@ impl Client {
 		)
 		.parse()?;
 
-		let pulls = self.stream_as::<PullRequest>(url).await?.filter_with(*filters).collect().await;
+		let pulls = self
+			.stream_as::<PullRequest>(url, 100 * self.config().max_calls_per_request.unwrap_or(3))
+			.await?
+			.filter_with(*filters)
+			.collect()
+			.await;
 		Ok(pulls)
 	}
 
@@ -259,8 +272,6 @@ impl Client {
 
 #[cfg(test)]
 mod tests {
-	use std::collections::HashMap;
-
 	use rstest::rstest;
 
 	use super::*;
@@ -279,7 +290,7 @@ mod tests {
 		let client: Client = RoundRobinClient::new(&Config {
 			base_url: base_url.to_string(),
 			personal_access_tokens: "token".to_string(),
-			headers: HashMap::new(),
+			..Default::default()
 		})
 		.unwrap()
 		.into();
