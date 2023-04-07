@@ -3,6 +3,7 @@ use std::{fmt::Debug, future::ready, pin::Pin};
 use anyhow::anyhow;
 use domain::{
 	GithubIssueNumber, GithubRepoLanguages, GithubRepositoryId, GithubServiceFilters, GithubUserId,
+	PositiveCount,
 };
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
@@ -218,7 +219,10 @@ impl Client {
 		.parse()?;
 
 		let pulls = self
-			.stream_as::<PullRequest>(url, 100 * self.config().max_calls_per_request.unwrap_or(3))
+			.stream_as::<PullRequest>(
+				url,
+				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
+			)
 			.await?
 			.filter_with(*filters)
 			.collect()

@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use domain::PositiveCount;
 use octocrab::OctocrabBuilder;
 use serde::Deserialize;
 
@@ -31,7 +32,7 @@ pub struct Config {
 	base_url: String,
 	personal_access_tokens: String,
 	headers: HashMap<String, String>,
-	max_calls_per_request: Option<usize>,
+	max_calls_per_request: Option<PositiveCount>,
 }
 
 trait AddHeaders: Sized {
