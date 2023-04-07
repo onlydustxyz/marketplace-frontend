@@ -13,7 +13,6 @@ export default defineConfig({
       include: "frontend/src/*",
       exclude: ["node_modules", "test/", "__generated"],
       extension: [".js", ".ts", ".tsx"],
-      cypress: true,
     }),
   ],
   resolve: {

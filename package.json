@@ -12,8 +12,6 @@
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=2118ca8bdd40",
     "generate": "graphql-codegen --config codegen.ts",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run",
     "postbuild": "./scripts/upload-sourcemaps.sh",
     "dependency-cruiser": "depcruise --config .dependency-cruiser.js frontend/src"
   },
@@ -55,7 +53,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
-    "@cypress/code-coverage": "^3.10.0",
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^2.0.13",
     "@playwright/test": "^1.31.2",
@@ -83,7 +80,6 @@
     "babel-loader": "^9.1.0",
     "chromatic": "^6.11.4",
     "csv": "^6.2.5",
-    "cypress": "^12.8.1",
     "dependency-cruiser": "^12.10.1",
     "dotenv": "^16.0.3",
     "eslint": "^8.27.0",
