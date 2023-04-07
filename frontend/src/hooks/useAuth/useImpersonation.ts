@@ -14,7 +14,7 @@ export const useImpersonation = () => {
 
   const impersonatedUserQuery = useHasuraQuery<ImpersonatedUserQuery>(IMPERSONATED_USER_QUERY, HasuraUserRole.Admin, {
     context: {
-      graphqlErrorDisplay: "toaster",
+      graphqlErrorDisplay: "none",
     },
     variables: {
       id: impersonationSet?.userId,
@@ -25,7 +25,14 @@ export const useImpersonation = () => {
         showToaster(T("impersonation.form.errors.unknownUser", { userId: impersonationSet?.userId }), {
           isError: true,
         });
+        clearImpersonationSet();
       }
+    },
+    onError(error) {
+      showToaster(error.message, {
+        isError: true,
+      });
+      clearImpersonationSet();
     },
   });
   const impersonating = !!impersonatedUserQuery.data;
