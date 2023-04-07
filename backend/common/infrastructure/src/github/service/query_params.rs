@@ -22,14 +22,14 @@ impl QueryParams {
 
 	pub fn page(self, page: u8) -> Self {
 		Self {
-			page: Some(page.into()),
+			page: Some(page),
 			..self
 		}
 	}
 
 	pub fn per_page(self, per_page: u8) -> Self {
 		Self {
-			per_page: Some(per_page.into()),
+			per_page: Some(per_page),
 			..self
 		}
 	}
@@ -63,8 +63,8 @@ impl From<Option<github_service_filters::State>> for State {
 }
 
 impl QueryParams {
-	pub fn to_query_string(&self) -> Result<String, serde_qs::Error> {
-		serde_qs::to_string(self)
+	pub fn to_query_string(self) -> Result<String, serde_qs::Error> {
+		serde_qs::to_string(&self)
 	}
 }
 

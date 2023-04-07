@@ -52,7 +52,7 @@ impl<St: Stream<Item = Item>, Item: Filter> Stream for FilterWith<St> {
 
 		Poll::Ready(loop {
 			let next = ready!(this.stream.as_mut().poll_next(cx));
-			match next.map(|item| item.filter(&this.filters)).unwrap_or_default() {
+			match next.map(|item| item.filter(this.filters)).unwrap_or_default() {
 				Decision::Take(item) => break Some(item),
 				Decision::Skip => continue,
 				Decision::End => break None,
