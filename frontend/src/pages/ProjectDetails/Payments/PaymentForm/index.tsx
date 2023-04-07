@@ -11,6 +11,8 @@ import { WorkItem } from "src/components/GithubIssue";
 import { GithubContributorFragment } from "src/__generated/graphql";
 import useUnpaidIssues, { IssueState, IssueType } from "./WorkItemSidePanel/Issues/useUnpaidIssues";
 
+export const SEARCH_MAX_DAYS_COUNT = 60;
+
 const PaymentForm: React.FC = () => {
   const { T } = useIntl();
   const showToaster = useShowToaster();

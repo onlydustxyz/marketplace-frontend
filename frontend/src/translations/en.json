@@ -118,7 +118,7 @@
             "placeholder": "github.com/example/repo/pull/472",
             "label": "Add specific PR using URL"
           },
-          "moreCallout": "Only the last __count__ unpaid pull requests by this user are shown in this list.",
+          "moreCallout": "Only the unpaid merged pull requests open by this user within the last __count__ days are shown in this list.",
           "tab": "Pull requests"
         },
         "issues": {
@@ -130,7 +130,7 @@
             "placeholder": "github.com/example/repo/issues/472",
             "label": "Add specific issue using URL"
           },
-          "moreCallout": "Only the last __count__ unpaid issues by this user are shown.",
+          "moreCallout": "Only the unpaid issues open by this user within the last __count__ days are shown in this list.",
           "tab": "Issues"
         },
         "other": {

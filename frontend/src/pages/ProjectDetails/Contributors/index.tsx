@@ -19,6 +19,7 @@ import { getContributors } from "src/utils/project";
 import Title from "src/pages/ProjectDetails/Title";
 import { useMemo } from "react";
 import { daysFromNow } from "src/utils/date";
+import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
 
 export default function Contributors() {
   const { T } = useIntl();
@@ -36,7 +37,7 @@ export default function Contributors() {
     }
   );
 
-  const mergedSince = useMemo(() => daysFromNow(60), []);
+  const mergedSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), []);
 
   const getProjectContributorsQueryAsLeader = useHasuraQuery<GetProjectContributorsAsLeaderQuery>(
     GetProjectContributorsAsLeaderDocument,
