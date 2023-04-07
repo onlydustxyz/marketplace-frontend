@@ -54,8 +54,10 @@
     "onlyDustTitle": "OnlyDust title"
   },
   "impersonation": {
-    "passwordPrompt": "With great power comes great responsibility (Ben Parker's uncle). What is the password?",
-    "userPrompt": "Who do you want to be? (user id)",
+    "title": "This is a restricted area",
+    "passwordLabel": "Password",
+    "passwordNotice": "With great power comes great responsibility (Ben Parker's uncle).",
+    "missingPassword": "Please provide a password",
     "banner": "Impersonation in progress!"
   },
   "invoiceSubmission": {
