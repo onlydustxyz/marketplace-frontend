@@ -9,6 +9,7 @@ import {
 } from "src/__generated/graphql";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
+import { daysFromNow } from "src/utils/date";
 import isDefined from "src/utils/isDefined";
 
 export enum IssueType {
@@ -30,6 +31,8 @@ export const buildQuery = ({
     .concat(type ? [`is:${type}`] : [])
     .concat(author ? [`author:${author}`] : [])
     .concat(state ? [`is:${state}`] : [])
+    .concat([`created:>=${daysFromNow(60).toISOString().slice(0, 10)}`])
+    .filter(a => a.length > 0)
     .join(" ");
 
 type Filters = {
@@ -50,6 +53,13 @@ export default function useUnpaidIssues({ projectId, filters }: Props) {
     {
       variables: { projectId },
     }
+  );
+
+  console.log(
+    buildQuery({
+      ...filters,
+      repos: getPaidItemsQuery.data?.projectsByPk?.githubRepos.map(r => r.githubRepoDetails?.content).filter(isDefined),
+    })
   );
 
   const searchPrQuery = useHasuraQuery<SearchIssuesQuery>(SearchIssuesDocument, HasuraUserRole.RegisteredUser, {

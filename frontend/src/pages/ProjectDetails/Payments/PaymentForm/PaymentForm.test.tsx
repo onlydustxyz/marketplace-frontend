@@ -24,6 +24,7 @@ import {
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
 import { GithubContributorFragment } from "src/__generated/graphql";
+import { IssueState, IssueType, buildQuery } from "./WorkItemSidePanel/Issues/useUnpaidIssues";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };
 const TEST_GITHUB_USER: GithubContributorFragment = {
@@ -161,7 +162,12 @@ const graphQlMocks = [
     request: {
       query: SearchIssuesDocument,
       variables: {
-        query: `repo:owner/name is:pr author:${TEST_USER.displayName} is:merged`,
+        query: buildQuery({
+          author: TEST_USER.displayName,
+          repos: [{ id: 1234, owner: "owner", name: "name" }],
+          state: IssueState.Merged,
+          type: IssueType.PullRequest,
+        }),
         order: "desc",
         sort: "created",
         perPage: 100,
