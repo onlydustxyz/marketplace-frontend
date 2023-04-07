@@ -9,6 +9,9 @@ export const useImpersonation = () => {
   const { impersonationSet, clearImpersonationSet, setCustomClaims } = useImpersonationClaims();
 
   const impersonatedUserQuery = useHasuraQuery<ImpersonatedUserQuery>(IMPERSONATED_USER_QUERY, HasuraUserRole.Admin, {
+    context: {
+      graphqlErrorDisplay: "toaster",
+    },
     variables: {
       id: impersonationSet?.userId,
     },
@@ -16,10 +19,15 @@ export const useImpersonation = () => {
   });
   const impersonating = !!impersonatedUserQuery.data;
 
+  const invalidImpersonation = !!impersonatedUserQuery.error;
+
   const leadProjectsQuery = useHasuraQuery<ImpersonatedLeadProjectsQuery>(
     IMPERSONATED_LEAD_PROJECTS_QUERY,
     HasuraUserRole.Admin,
     {
+      context: {
+        graphqlErrorDisplay: "toaster",
+      },
       variables: {
         userId: impersonationSet?.userId,
       },
@@ -55,6 +63,7 @@ export const useImpersonation = () => {
 
   return {
     impersonating,
+    invalidImpersonation,
     impersonatedRoles,
     impersonatedUser,
     impersonatedGithubUserId,

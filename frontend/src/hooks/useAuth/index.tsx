@@ -18,6 +18,7 @@ export type AuthContextType = {
   roles: UserRole[];
   ledProjectIds: string[];
   githubUserId?: number;
+  invalidImpersonation: boolean;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -32,6 +33,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     impersonatedGithubUserId,
     impersonatedLedProjectIds,
     stopImpersonation,
+    invalidImpersonation,
   } = useImpersonation();
 
   const tokenIsRefreshed = !(tokenSet?.accessToken && accessTokenExpired(tokenSet));
@@ -75,6 +77,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     roles: impersonating ? impersonatedRoles : roles,
     ledProjectIds: impersonating ? impersonatedLedProjectIds : ledProjectIds,
     githubUserId: impersonating ? impersonatedGithubUserId : githubUserId,
+    invalidImpersonation,
   };
 
   if (value.user) {
