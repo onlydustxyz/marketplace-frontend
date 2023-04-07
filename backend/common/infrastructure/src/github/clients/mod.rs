@@ -1,10 +1,10 @@
-use std::{fmt::Debug, future::ready};
+use std::{fmt::Debug, future::ready, pin::Pin};
 
 use anyhow::anyhow;
 use domain::{
 	GithubIssueNumber, GithubRepoLanguages, GithubRepositoryId, GithubServiceFilters, GithubUserId,
 };
-use futures::{Stream, StreamExt, TryStreamExt};
+use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
 	models::{issues::Issue, pulls::PullRequest, repos::Content, Repository, User},
 	params::{pulls::Sort, Direction},
@@ -123,23 +123,23 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	async fn stream_as<R: serde::de::DeserializeOwned + 'static>(
+	async fn stream_as<R: serde::de::DeserializeOwned + Send + 'static>(
 		&self,
 		url: Url,
-	) -> Result<Option<impl Stream<Item = R> + '_>, Error> {
-		// TODO find a way to return an empty stream instead of option
-		let stream = self
+	) -> Result<Pin<Box<dyn Stream<Item = R> + Send + '_>>, Error> {
+		Ok(self
 			.octocrab()
 			.get_page::<R>(&Some(url))
 			.await?
-			.map(|page| page.into_stream(self.octocrab()).take(100))
-			.map(|stream| {
-				stream
+			.map(|page| {
+				page.into_stream(self.octocrab())
+					.take(100)
 					.inspect_err(|e| error!(error = e.to_string(), "Unable to stream from github"))
 					.take_while(|res| ready(res.is_ok()))
 					.map(Result::unwrap)
-			});
-		Ok(stream)
+					.boxed()
+			})
+			.unwrap_or_else(|| empty().boxed()))
 	}
 
 	#[instrument(skip(self))]
@@ -209,15 +209,8 @@ impl Client {
 		)
 		.parse()?;
 
-		let stream = match self.stream_as::<PullRequest>(url).await? {
-			Some(stream) => stream,
-			None => return Ok(Default::default()),
-		}
-		.filter_with(*filters)
-		.collect()
-		.await;
-
-		Ok(stream)
+		let pulls = self.stream_as::<PullRequest>(url).await?.filter_with(*filters).collect().await;
+		Ok(pulls)
 	}
 
 	#[instrument(skip(self))]
