@@ -55,13 +55,6 @@ export default function useUnpaidIssues({ projectId, filters }: Props) {
     }
   );
 
-  console.log(
-    buildQuery({
-      ...filters,
-      repos: getPaidItemsQuery.data?.projectsByPk?.githubRepos.map(r => r.githubRepoDetails?.content).filter(isDefined),
-    })
-  );
-
   const searchPrQuery = useHasuraQuery<SearchIssuesQuery>(SearchIssuesDocument, HasuraUserRole.RegisteredUser, {
     variables: {
       query: buildQuery({

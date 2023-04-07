@@ -96,19 +96,11 @@ describe("countUnpaidMergedPullsByContributor", () => {
       status: Status.Merged,
     }));
 
-    const openPulls: PullDetailsFragment[] = range(0, 4).map(id => ({
-      id: 4000 + id,
-      repoId: 4000 + id,
-      number: id,
-      author: users[id % users.length],
-      status: Status.Open,
-    }));
-
     const counts = countUnpaidMergedPullsByContributor({
       githubRepos: [
         {
           githubRepoDetails: {
-            pullRequests: [...mergedPaidPulls, ...mergedUnPaidPulls, ...openPulls],
+            pullRequests: [...mergedPaidPulls, ...mergedUnPaidPulls],
             content: { contributors: [...users] },
           },
         },

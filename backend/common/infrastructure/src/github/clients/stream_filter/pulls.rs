@@ -5,20 +5,17 @@ use super::{Decision, Filter};
 
 impl Filter for PullRequest {
 	fn filter(self, filters: &GithubServiceFilters) -> Decision<Self> {
-		if (filters.state == Some(State::Merged) || filters.merged_since.is_some())
-			&& self.merged_at.is_none()
-		{
-			// Skipping non merged items if filter state is `Merged` or `merge_since`
-			return Decision::Skip;
-		}
-
-		if let Some(merged_since) = filters.merged_since {
-			// Safe to unwrap as checked above
-			if self.merged_at.unwrap() < merged_since {
-				// Found a pr merged before `merged_since`,
+		if let Some(created_since) = filters.created_since {
+			if self.created_at.map(|created_at| created_at < created_since).unwrap_or(false) {
+				// Found a pr created before `created_since`,
 				// assuming stream is ordered, we can end here
 				return Decision::End;
 			}
+		}
+
+		if (filters.state == Some(State::Merged)) && self.merged_at.is_none() {
+			// Skipping non merged items if filter state is `Merged`
+			return Decision::Skip;
 		}
 
 		Decision::Take(self)

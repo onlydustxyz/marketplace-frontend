@@ -33,13 +33,13 @@ export default function ContributorSelect({ projectId, contributor, setContribut
   const debouncedGithubHandleSubstring = useDebounce(githubHandleSubstring, EXTERNAL_USER_QUERY_DEBOUNCE_TIME);
   const handleSubstringQuery = `type:user ${debouncedGithubHandleSubstring} in:login`;
 
-  const mergedSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), []);
+  const createdSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), []);
 
   const getProjectContributorsQuery = useHasuraQuery<GetProjectContributorsForPaymentSelectQuery>(
     GetProjectContributorsForPaymentSelectDocument,
     HasuraUserRole.RegisteredUser,
     {
-      variables: { projectId, mergedSince },
+      variables: { projectId, createdSince },
     }
   );
 

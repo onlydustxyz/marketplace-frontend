@@ -37,13 +37,13 @@ export default function Contributors() {
     }
   );
 
-  const mergedSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), []);
+  const createdSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), []);
 
   const getProjectContributorsQueryAsLeader = useHasuraQuery<GetProjectContributorsAsLeaderQuery>(
     GetProjectContributorsAsLeaderDocument,
     HasuraUserRole.RegisteredUser,
     {
-      variables: { projectId, mergedSince },
+      variables: { projectId, createdSince },
       skip: !isProjectLeader,
     }
   );

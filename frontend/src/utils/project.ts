@@ -103,7 +103,6 @@ gql`
     id
     repoId
     number
-    status
     author {
       ...ContributorId
     }
@@ -136,7 +135,7 @@ gql`
   fragment ProjectContributorsByLeader on Projects {
     githubRepos {
       githubRepoDetails {
-        pullRequests(filters: { mergedSince: $mergedSince }) {
+        pullRequests(filters: { createdSince: $createdSince, state: MERGED }) {
           ...PullDetails
         }
       }

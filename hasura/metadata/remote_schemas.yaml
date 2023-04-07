@@ -205,7 +205,7 @@
             PULL_REQUEST
           }
           input Filters {
-            mergedSince: DateTimeUtc
+            createdSince: DateTimeUtc
             state: State
           }
     - role: public
