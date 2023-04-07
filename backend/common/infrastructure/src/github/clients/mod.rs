@@ -1,9 +1,8 @@
-use std::{fmt::Debug, future::ready};
+use std::fmt::Debug;
 
 use anyhow::anyhow;
 use domain::{
-	github_service_filters::State, GithubIssueNumber, GithubRepoLanguages, GithubRepositoryId,
-	GithubServiceFilters, GithubUserId,
+	GithubIssueNumber, GithubRepoLanguages, GithubRepositoryId, GithubServiceFilters, GithubUserId,
 };
 use futures::{Stream, StreamExt, TryStreamExt};
 use octocrab::{
@@ -21,6 +20,9 @@ pub use round_robin::Client as RoundRobinClient;
 
 mod single;
 pub use single::Client as SingleClient;
+
+mod stream_filter;
+use stream_filter::StreamFilterWith;
 
 pub enum Client {
 	Single(SingleClient),
@@ -200,28 +202,14 @@ impl Client {
 		)
 		.parse()?;
 
-		let mut stream = match self.stream_as::<PullRequest>(url).await? {
+		match self.stream_as::<PullRequest>(url).await? {
 			Some(stream) => stream,
 			None => return Ok(Default::default()),
 		}
-		.boxed();
-
-		if filters.state == Some(State::Merged) || filters.merged_since.is_some() {
-			stream = stream.try_filter(|pr| ready(pr.merged_at.is_some())).boxed()
-		}
-
-		if let Some(merged_since) = filters.merged_since {
-			stream = stream
-				.try_take_while(move |pr| {
-					ready(Ok(pr
-						.merged_at
-						.map(|merged_at| merged_at >= merged_since)
-						.unwrap_or(false)))
-				})
-				.boxed()
-		}
-
-		stream.try_collect().await.map_err(Into::into)
+		.filter_with(*filters)
+		.try_collect()
+		.await
+		.map_err(Into::into)
 	}
 
 	#[instrument(skip(self))]

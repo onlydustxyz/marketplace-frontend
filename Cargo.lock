@@ -2066,6 +2066,7 @@ dependencies = [
  "olog",
  "opentelemetry",
  "opentelemetry-datadog",
+ "pin-project-lite",
  "r2d2",
  "r2d2-diesel",
  "rand 0.8.5",
