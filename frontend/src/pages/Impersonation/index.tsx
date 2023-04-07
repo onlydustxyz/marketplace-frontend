@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { RoutePaths } from "src/App";
-import { Toaster } from "src/App/Layout/Toaster";
+import { Toaster } from "src/components/Toaster";
 import { useAuth } from "src/hooks/useAuth";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 import PasswordForm from "src/pages/Impersonation/PasswordForm";
