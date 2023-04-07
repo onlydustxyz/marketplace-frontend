@@ -1032,6 +1032,7 @@ export type PaymentRequests = {
   budget: Maybe<Budgets>;
   budgetId: Scalars['uuid'];
   githubRecipient: Maybe<User>;
+  hoursWorked: Scalars['Int'];
   id: Scalars['uuid'];
   invoiceReceivedAt: Maybe<Scalars['timestamp']>;
   /** An array relationship */
@@ -1147,6 +1148,7 @@ export type PaymentRequestsArrRelInsertInput = {
 export type PaymentRequestsAvgFields = {
   __typename?: 'PaymentRequestsAvgFields';
   amountInUsd: Maybe<Scalars['Float']>;
+  hoursWorked: Maybe<Scalars['Float']>;
   recipientId: Maybe<Scalars['Float']>;
 };
 
@@ -1158,6 +1160,7 @@ export type PaymentRequestsBoolExp = {
   amountInUsd: InputMaybe<BigintComparisonExp>;
   budget: InputMaybe<BudgetsBoolExp>;
   budgetId: InputMaybe<UuidComparisonExp>;
+  hoursWorked: InputMaybe<IntComparisonExp>;
   id: InputMaybe<UuidComparisonExp>;
   invoiceReceivedAt: InputMaybe<TimestampComparisonExp>;
   payments: InputMaybe<PaymentsBoolExp>;
@@ -1180,6 +1183,7 @@ export enum PaymentRequestsConstraint {
 /** input type for incrementing numeric columns in table "payment_requests" */
 export type PaymentRequestsIncInput = {
   amountInUsd: InputMaybe<Scalars['bigint']>;
+  hoursWorked: InputMaybe<Scalars['Int']>;
   recipientId: InputMaybe<Scalars['bigint']>;
 };
 
@@ -1188,6 +1192,7 @@ export type PaymentRequestsInsertInput = {
   amountInUsd: InputMaybe<Scalars['bigint']>;
   budget: InputMaybe<BudgetsObjRelInsertInput>;
   budgetId: InputMaybe<Scalars['uuid']>;
+  hoursWorked: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['uuid']>;
   invoiceReceivedAt: InputMaybe<Scalars['timestamp']>;
   payments: InputMaybe<PaymentsArrRelInsertInput>;
@@ -1204,6 +1209,7 @@ export type PaymentRequestsMaxFields = {
   __typename?: 'PaymentRequestsMaxFields';
   amountInUsd: Maybe<Scalars['bigint']>;
   budgetId: Maybe<Scalars['uuid']>;
+  hoursWorked: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['uuid']>;
   invoiceReceivedAt: Maybe<Scalars['timestamp']>;
   recipientId: Maybe<Scalars['bigint']>;
@@ -1216,6 +1222,7 @@ export type PaymentRequestsMinFields = {
   __typename?: 'PaymentRequestsMinFields';
   amountInUsd: Maybe<Scalars['bigint']>;
   budgetId: Maybe<Scalars['uuid']>;
+  hoursWorked: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['uuid']>;
   invoiceReceivedAt: Maybe<Scalars['timestamp']>;
   recipientId: Maybe<Scalars['bigint']>;
@@ -1251,6 +1258,7 @@ export type PaymentRequestsOrderBy = {
   amountInUsd: InputMaybe<OrderBy>;
   budget: InputMaybe<BudgetsOrderBy>;
   budgetId: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
   invoiceReceivedAt: InputMaybe<OrderBy>;
   paymentsAggregate: InputMaybe<PaymentsAggregateOrderBy>;
@@ -1274,6 +1282,8 @@ export enum PaymentRequestsSelectColumn {
   /** column name */
   BudgetId = 'budgetId',
   /** column name */
+  HoursWorked = 'hoursWorked',
+  /** column name */
   Id = 'id',
   /** column name */
   InvoiceReceivedAt = 'invoiceReceivedAt',
@@ -1289,6 +1299,7 @@ export enum PaymentRequestsSelectColumn {
 export type PaymentRequestsSetInput = {
   amountInUsd: InputMaybe<Scalars['bigint']>;
   budgetId: InputMaybe<Scalars['uuid']>;
+  hoursWorked: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['uuid']>;
   invoiceReceivedAt: InputMaybe<Scalars['timestamp']>;
   recipientId: InputMaybe<Scalars['bigint']>;
@@ -1300,6 +1311,7 @@ export type PaymentRequestsSetInput = {
 export type PaymentRequestsStddevFields = {
   __typename?: 'PaymentRequestsStddevFields';
   amountInUsd: Maybe<Scalars['Float']>;
+  hoursWorked: Maybe<Scalars['Float']>;
   recipientId: Maybe<Scalars['Float']>;
 };
 
@@ -1307,6 +1319,7 @@ export type PaymentRequestsStddevFields = {
 export type PaymentRequestsStddev_PopFields = {
   __typename?: 'PaymentRequestsStddev_popFields';
   amountInUsd: Maybe<Scalars['Float']>;
+  hoursWorked: Maybe<Scalars['Float']>;
   recipientId: Maybe<Scalars['Float']>;
 };
 
@@ -1314,6 +1327,7 @@ export type PaymentRequestsStddev_PopFields = {
 export type PaymentRequestsStddev_SampFields = {
   __typename?: 'PaymentRequestsStddev_sampFields';
   amountInUsd: Maybe<Scalars['Float']>;
+  hoursWorked: Maybe<Scalars['Float']>;
   recipientId: Maybe<Scalars['Float']>;
 };
 
@@ -1321,6 +1335,7 @@ export type PaymentRequestsStddev_SampFields = {
 export type PaymentRequestsSumFields = {
   __typename?: 'PaymentRequestsSumFields';
   amountInUsd: Maybe<Scalars['bigint']>;
+  hoursWorked: Maybe<Scalars['Int']>;
   recipientId: Maybe<Scalars['bigint']>;
 };
 
@@ -1330,6 +1345,8 @@ export enum PaymentRequestsUpdateColumn {
   AmountInUsd = 'amountInUsd',
   /** column name */
   BudgetId = 'budgetId',
+  /** column name */
+  HoursWorked = 'hoursWorked',
   /** column name */
   Id = 'id',
   /** column name */
@@ -1354,6 +1371,7 @@ export type PaymentRequestsUpdates = {
 export type PaymentRequestsVar_PopFields = {
   __typename?: 'PaymentRequestsVar_popFields';
   amountInUsd: Maybe<Scalars['Float']>;
+  hoursWorked: Maybe<Scalars['Float']>;
   recipientId: Maybe<Scalars['Float']>;
 };
 
@@ -1361,6 +1379,7 @@ export type PaymentRequestsVar_PopFields = {
 export type PaymentRequestsVar_SampFields = {
   __typename?: 'PaymentRequestsVar_sampFields';
   amountInUsd: Maybe<Scalars['Float']>;
+  hoursWorked: Maybe<Scalars['Float']>;
   recipientId: Maybe<Scalars['Float']>;
 };
 
@@ -1368,6 +1387,7 @@ export type PaymentRequestsVar_SampFields = {
 export type PaymentRequestsVarianceFields = {
   __typename?: 'PaymentRequestsVarianceFields';
   amountInUsd: Maybe<Scalars['Float']>;
+  hoursWorked: Maybe<Scalars['Float']>;
   recipientId: Maybe<Scalars['Float']>;
 };
 
@@ -6881,6 +6901,7 @@ export type Payment_Requests_Aggregate_Bool_Exp_Count = {
 /** order by avg() on columns of table "payment_requests" */
 export type Payment_Requests_Avg_Order_By = {
   amountInUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
   recipientId: InputMaybe<OrderBy>;
 };
 
@@ -6888,6 +6909,7 @@ export type Payment_Requests_Avg_Order_By = {
 export type Payment_Requests_Max_Order_By = {
   amountInUsd: InputMaybe<OrderBy>;
   budgetId: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
   invoiceReceivedAt: InputMaybe<OrderBy>;
   recipientId: InputMaybe<OrderBy>;
@@ -6899,6 +6921,7 @@ export type Payment_Requests_Max_Order_By = {
 export type Payment_Requests_Min_Order_By = {
   amountInUsd: InputMaybe<OrderBy>;
   budgetId: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
   id: InputMaybe<OrderBy>;
   invoiceReceivedAt: InputMaybe<OrderBy>;
   recipientId: InputMaybe<OrderBy>;
@@ -6909,18 +6932,21 @@ export type Payment_Requests_Min_Order_By = {
 /** order by stddev() on columns of table "payment_requests" */
 export type Payment_Requests_Stddev_Order_By = {
   amountInUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
   recipientId: InputMaybe<OrderBy>;
 };
 
 /** order by stddev_pop() on columns of table "payment_requests" */
 export type Payment_Requests_Stddev_Pop_Order_By = {
   amountInUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
   recipientId: InputMaybe<OrderBy>;
 };
 
 /** order by stddev_samp() on columns of table "payment_requests" */
 export type Payment_Requests_Stddev_Samp_Order_By = {
   amountInUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
   recipientId: InputMaybe<OrderBy>;
 };
 
@@ -6936,6 +6962,7 @@ export type Payment_Requests_StreamCursorInput = {
 export type Payment_Requests_StreamCursorValueInput = {
   amountInUsd: InputMaybe<Scalars['bigint']>;
   budgetId: InputMaybe<Scalars['uuid']>;
+  hoursWorked: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['uuid']>;
   invoiceReceivedAt: InputMaybe<Scalars['timestamp']>;
   recipientId: InputMaybe<Scalars['bigint']>;
@@ -6946,24 +6973,28 @@ export type Payment_Requests_StreamCursorValueInput = {
 /** order by sum() on columns of table "payment_requests" */
 export type Payment_Requests_Sum_Order_By = {
   amountInUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
   recipientId: InputMaybe<OrderBy>;
 };
 
 /** order by var_pop() on columns of table "payment_requests" */
 export type Payment_Requests_Var_Pop_Order_By = {
   amountInUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
   recipientId: InputMaybe<OrderBy>;
 };
 
 /** order by var_samp() on columns of table "payment_requests" */
 export type Payment_Requests_Var_Samp_Order_By = {
   amountInUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
   recipientId: InputMaybe<OrderBy>;
 };
 
 /** order by variance() on columns of table "payment_requests" */
 export type Payment_Requests_Variance_Order_By = {
   amountInUsd: InputMaybe<OrderBy>;
+  hoursWorked: InputMaybe<OrderBy>;
   recipientId: InputMaybe<OrderBy>;
 };
 
