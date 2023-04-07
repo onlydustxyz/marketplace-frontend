@@ -169,7 +169,7 @@ function ContributorSubList<T extends GithubContributorFragment>({ contributors 
   return (
     <div className="divide-y divide-greyscale-50/8 pt-2.5">
       {contributors?.map(contributor => (
-        <Combobox.Option key={contributor.id} value={contributor.login}>
+        <Combobox.Option key={contributor.id} as="div" value={contributor.login}>
           {({ active }) => (
             <li
               className={classNames("p-2 flex items-center justify-between", {
