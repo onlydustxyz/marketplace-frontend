@@ -152,6 +152,7 @@ dependencies = [
  "log",
  "mockall",
  "mockall_double",
+ "octocrab",
  "olog",
  "presentation",
  "reqwest",
