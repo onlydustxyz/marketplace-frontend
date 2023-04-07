@@ -1,3 +1,16 @@
+fragment PaymentRequestDetailsForContributorsTable on PaymentRequests {
+  id
+  budget {
+    id
+    projectId
+  }
+  amountInUsd
+  workItems {
+    repoId
+    issueNumber
+  }
+}
+
 fragment ContributorsTableFields on User {
   id
   login
@@ -7,16 +20,7 @@ fragment ContributorsTableFields on User {
     userId
   }
   paymentRequests {
-    id
-    budget {
-      id
-      projectId
-    }
-    amountInUsd
-    workItems {
-      repoId
-      issueNumber
-    }
+    ...PaymentRequestDetailsForContributorsTable
   }
 }
 
@@ -45,7 +49,7 @@ fragment ProjectContributorsForTable on Projects {
   budgets {
     id
     paymentRequests {
-      id
+      ...PaymentRequestDetailsForContributorsTable
       githubRecipient {
         ...ContributorsTableFields
       }
@@ -59,7 +63,7 @@ query GetProjectContributors($projectId: uuid!) {
   }
 }
 
-query GetProjectContributorsAsLeader($projectId: uuid!) {
+query GetProjectContributorsAsLeader($projectId: uuid!, $mergedSince: DateTimeUtc) {
   projectsByPk(id: $projectId) {
     ...ProjectContributorsForTable
     ...ProjectContributorsByLeader

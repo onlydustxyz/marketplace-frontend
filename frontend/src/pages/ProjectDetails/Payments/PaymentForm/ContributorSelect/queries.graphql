@@ -37,7 +37,7 @@ query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
   }
 }
 
-query GetProjectContributorsForPaymentSelect($projectId: uuid!) {
+query GetProjectContributorsForPaymentSelect($projectId: uuid!, $mergedSince: DateTimeUtc) {
   projectsByPk(id: $projectId) {
     ...ProjectContributorsForPaymentSelect
   }

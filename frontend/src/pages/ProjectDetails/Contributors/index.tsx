@@ -17,6 +17,8 @@ import { useAuth } from "src/hooks/useAuth";
 import { useOutletContext } from "react-router-dom";
 import { getContributors } from "src/utils/project";
 import Title from "src/pages/ProjectDetails/Title";
+import { useMemo } from "react";
+import { daysFromNow } from "src/utils/date";
 
 export default function Contributors() {
   const { T } = useIntl();
@@ -34,11 +36,13 @@ export default function Contributors() {
     }
   );
 
+  const mergedSince = useMemo(() => daysFromNow(60), []);
+
   const getProjectContributorsQueryAsLeader = useHasuraQuery<GetProjectContributorsAsLeaderQuery>(
     GetProjectContributorsAsLeaderDocument,
     HasuraUserRole.RegisteredUser,
     {
-      variables: { projectId },
+      variables: { projectId, mergedSince },
       skip: !isProjectLeader,
     }
   );
