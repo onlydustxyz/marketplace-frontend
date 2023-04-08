@@ -10,6 +10,7 @@ import { renderWithIntl } from "src/test/utils";
 import { MockedProvider } from "@apollo/client/testing";
 import { LOCAL_STORAGE_TOKEN_SET_KEY, TokenSetProvider } from "src/hooks/useTokenSet";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
+import { ToasterProvider } from "src/hooks/useToaster";
 
 expect.extend(matchers);
 
@@ -40,13 +41,15 @@ describe('"ProtectedRoute" component', () => {
     window.localStorage.setItem(LOCAL_STORAGE_TOKEN_SET_KEY, JSON.stringify(HASURA_TOKEN_BASIC_TEST_VALUE));
     renderWithIntl(
       <MockedProvider>
-        <TokenSetProvider>
-          <ImpersonationClaimsProvider>
-            <AuthProvider>
-              <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>{CHILD_ELEMENT_TEXT}</ProtectedRoute>
-            </AuthProvider>
-          </ImpersonationClaimsProvider>
-        </TokenSetProvider>
+        <ToasterProvider>
+          <TokenSetProvider>
+            <ImpersonationClaimsProvider>
+              <AuthProvider>
+                <ProtectedRoute requiredRole={HasuraUserRole.RegisteredUser}>{CHILD_ELEMENT_TEXT}</ProtectedRoute>
+              </AuthProvider>
+            </ImpersonationClaimsProvider>
+          </TokenSetProvider>
+        </ToasterProvider>
       </MockedProvider>,
       { wrapper: BrowserRouter }
     );

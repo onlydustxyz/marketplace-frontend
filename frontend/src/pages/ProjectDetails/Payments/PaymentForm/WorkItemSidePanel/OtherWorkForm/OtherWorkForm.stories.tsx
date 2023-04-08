@@ -31,6 +31,7 @@ const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
       avatarUrl: "https://avatars.githubusercontent.com/u/10167015?v=4",
     } as unknown as User,
     githubUserId: 123,
+    invalidImpersonation: false,
   };
   const methods = useForm();
   return (

@@ -30,6 +30,7 @@ const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
       displayName: "foobar",
     } as unknown as User,
     githubUserId: 123,
+    invalidImpersonation: false,
   };
   return <AuthContext.Provider value={mockedValue}>{children}</AuthContext.Provider>;
 };
