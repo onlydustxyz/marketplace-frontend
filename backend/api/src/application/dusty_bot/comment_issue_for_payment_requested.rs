@@ -2,9 +2,10 @@ use std::sync::Arc;
 
 use derive_more::Constructor;
 use domain::{
-	AuthUserRepository, GithubFetchRepoService, GithubFetchUserService, GithubServiceError,
-	GithubUserId, PaymentId, PaymentReason, SubscriberCallbackError, UserId,
+	AuthUserRepository, GithubFetchRepoService, GithubFetchUserService, GithubUserId, PaymentId,
+	PaymentReason, SubscriberCallbackError, UserId,
 };
+use futures::future::try_join_all;
 
 use crate::domain::GithubService;
 
@@ -26,21 +27,12 @@ impl Usecase {
 		hours_worked: u32,
 		reason: PaymentReason,
 	) -> Result<(), SubscriberCallbackError> {
-		// TODO: parallelize calls within here
-		for work_item in reason.work_items().iter() {
-			let repository = self
-				.fetch_repo_service
-				.repo_by_id(work_item.repo_id())
-				.await
-				.map_err(SubscriberCallbackError::from_github_service_error)?;
+		try_join_all(reason.work_items().iter().map(|work_item| async {
+			let repository = self.fetch_repo_service.repo_by_id(work_item.repo_id()).await?;
 
 			let requestor = self.auth_user_repository.user_by_id(&requestor_id).await?;
 
-			let recipient = self
-				.fetch_user_service
-				.user_by_id(&recipient_id)
-				.await
-				.map_err(SubscriberCallbackError::from_github_service_error)?;
+			let recipient = self.fetch_user_service.user_by_id(&recipient_id).await?;
 
 			let comment_body = format_payment_requested_comment(
 				&payment_id.pretty(),
@@ -58,11 +50,10 @@ impl Usecase {
 					work_item.issue_number(),
 					&comment_body,
 				)
-				.await
-				.map_err::<SubscriberCallbackError, _>(
-					FromGithubServiceError::from_github_service_error,
-				)?;
-		}
+				.await?;
+			Ok::<(), SubscriberCallbackError>(())
+		}))
+		.await?;
 		Ok(())
 	}
 }
@@ -91,20 +82,5 @@ pub fn format_duration_worked(duration_worked_hours: &u32) -> String {
 		format!("{number_of_hours} hours")
 	} else {
 		panic!("Number of hours should be more than 0") // TODO: Do not panic
-	}
-}
-
-trait FromGithubServiceError {
-	fn from_github_service_error(error: GithubServiceError) -> Self;
-}
-
-impl FromGithubServiceError for SubscriberCallbackError {
-	fn from_github_service_error(error: GithubServiceError) -> Self {
-		match error {
-			GithubServiceError::MissingField(err) =>
-				SubscriberCallbackError::Discard(anyhow::anyhow!(err)),
-			GithubServiceError::NotFound(err) => SubscriberCallbackError::Discard(err),
-			GithubServiceError::Other(err) => SubscriberCallbackError::Discard(err),
-		}
 	}
 }
