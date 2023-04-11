@@ -20,6 +20,7 @@ const ProjectDetailsPaymentForm = lazy(() => import("src/pages/ProjectDetails/Pa
 import { CustomUserRole, HasuraUserRole } from "src/types";
 import LoaderFallback from "src/components/Loader";
 import ErrorTrigger from "src/pages/ErrorTrigger";
+import ImpersonationPage from "src/pages/Impersonation";
 
 export enum RoutePaths {
   Projects = "/",
@@ -29,6 +30,7 @@ export enum RoutePaths {
   Payments = "/payments",
   CatchAll = "*",
   Error = "/error",
+  Impersonation = "/impersonate/:userId",
 }
 
 export enum ProjectRoutePaths {
@@ -72,6 +74,10 @@ function App() {
     },
   ];
   const routes = useRoutes([
+    {
+      path: RoutePaths.Impersonation,
+      element: <ImpersonationPage />,
+    },
     {
       element: <Layout />,
       children: [

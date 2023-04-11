@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
@@ -20,23 +19,21 @@ import { ToasterProvider } from "./hooks/useToaster";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <IntlProvider>
-      <BrowserRouter>
-        <SessionProvider>
-          <ImpersonationClaimsProvider>
-            <TokenSetProvider>
-              <ToasterProvider>
-                <ApolloWrapper>
-                  <AuthProvider>
-                    <App />
-                  </AuthProvider>
-                </ApolloWrapper>
-              </ToasterProvider>
-            </TokenSetProvider>
-          </ImpersonationClaimsProvider>
-        </SessionProvider>
-      </BrowserRouter>
-    </IntlProvider>
-  </React.StrictMode>
+  <IntlProvider>
+    <BrowserRouter>
+      <SessionProvider>
+        <ImpersonationClaimsProvider>
+          <TokenSetProvider>
+            <ToasterProvider>
+              <ApolloWrapper>
+                <AuthProvider>
+                  <App />
+                </AuthProvider>
+              </ApolloWrapper>
+            </ToasterProvider>
+          </TokenSetProvider>
+        </ImpersonationClaimsProvider>
+      </SessionProvider>
+    </BrowserRouter>
+  </IntlProvider>
 );

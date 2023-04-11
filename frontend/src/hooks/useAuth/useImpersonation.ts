@@ -3,23 +3,49 @@ import { useEffect, useMemo } from "react";
 import { ImpersonatedLeadProjectsQuery, ImpersonatedUserQuery } from "src/__generated/graphql";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
+import { useIntl } from "src/hooks/useIntl";
+import { useShowToaster } from "src/hooks/useToaster";
 import { CustomUserRole, HasuraUserRole, Locale, User } from "src/types";
 
 export const useImpersonation = () => {
   const { impersonationSet, clearImpersonationSet, setCustomClaims } = useImpersonationClaims();
+  const showToaster = useShowToaster();
+  const { T } = useIntl();
 
   const impersonatedUserQuery = useHasuraQuery<ImpersonatedUserQuery>(IMPERSONATED_USER_QUERY, HasuraUserRole.Admin, {
+    context: {
+      graphqlErrorDisplay: "none",
+    },
     variables: {
       id: impersonationSet?.userId,
     },
     skip: !impersonationSet,
+    onCompleted(data) {
+      if (!data.user) {
+        showToaster(T("impersonation.form.errors.unknownUser", { userId: impersonationSet?.userId }), {
+          isError: true,
+        });
+        clearImpersonationSet();
+      }
+    },
+    onError(error) {
+      showToaster(error.message, {
+        isError: true,
+      });
+      clearImpersonationSet();
+    },
   });
   const impersonating = !!impersonatedUserQuery.data;
+
+  const invalidImpersonation = !!impersonatedUserQuery.error;
 
   const leadProjectsQuery = useHasuraQuery<ImpersonatedLeadProjectsQuery>(
     IMPERSONATED_LEAD_PROJECTS_QUERY,
     HasuraUserRole.Admin,
     {
+      context: {
+        graphqlErrorDisplay: "none",
+      },
       variables: {
         userId: impersonationSet?.userId,
       },
@@ -55,6 +81,7 @@ export const useImpersonation = () => {
 
   return {
     impersonating,
+    invalidImpersonation,
     impersonatedRoles,
     impersonatedUser,
     impersonatedGithubUserId,
