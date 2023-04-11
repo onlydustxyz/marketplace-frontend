@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use anyhow::anyhow;
 use derive_more::Constructor;
 use domain::{
 	AuthUserRepository, GithubFetchRepoService, GithubFetchUserService, GithubUserId, PaymentId,
@@ -40,7 +41,7 @@ impl Usecase {
 				recipient.login(),
 				&amount_in_usd,
 				reason.work_items().len(),
-				&format_duration_worked(&hours_worked),
+				&format_duration_worked(&hours_worked).map_err(SubscriberCallbackError::Discard)?,
 			);
 
 			self.github_service
@@ -71,16 +72,16 @@ fn format_payment_requested_comment(
 	)
 }
 
-pub fn format_duration_worked(duration_worked_hours: &u32) -> String {
+pub fn format_duration_worked(duration_worked_hours: &u32) -> anyhow::Result<String> {
 	let number_of_days = duration_worked_hours / 8;
 	let number_of_hours = duration_worked_hours - 8 * number_of_days;
 	if number_of_days > 0 && number_of_hours > 0 {
-		format!("{number_of_days} days and {number_of_hours} hours")
+		Ok(format!("{number_of_days} days and {number_of_hours} hours"))
 	} else if number_of_days > 0 {
-		format!("{number_of_days} days")
+		Ok(format!("{number_of_days} days"))
 	} else if number_of_hours > 0 {
-		format!("{number_of_hours} hours")
+		Ok(format!("{number_of_hours} hours"))
 	} else {
-		panic!("Number of hours should be more than 0") // TODO: Do not panic
+		Err(anyhow!("Number of hours should be more than 0"))
 	}
 }
