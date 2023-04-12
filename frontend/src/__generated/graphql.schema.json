@@ -6993,6 +6993,22 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -7921,6 +7937,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "recipientId",
             "description": null,
             "args": [],
@@ -8026,6 +8054,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "UuidComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hoursWorked",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "IntComparisonExp",
               "ofType": null
             },
             "defaultValue": null,
@@ -8205,6 +8245,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "recipientId",
             "description": null,
             "type": {
@@ -8257,6 +8309,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hoursWorked",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -8406,6 +8470,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "args": [],
@@ -8495,6 +8571,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hoursWorked",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -8762,6 +8850,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -8922,6 +9022,12 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": "column name",
             "isDeprecated": false,
@@ -8978,6 +9084,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hoursWorked",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -9067,6 +9185,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "recipientId",
             "description": null,
             "args": [],
@@ -9091,6 +9221,18 @@
         "fields": [
           {
             "name": "amountInUsd",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hoursWorked",
             "description": null,
             "args": [],
             "type": {
@@ -9137,6 +9279,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "recipientId",
             "description": null,
             "args": [],
@@ -9166,6 +9320,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "bigint",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hoursWorked",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -9205,6 +9371,12 @@
           },
           {
             "name": "budgetId",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hoursWorked",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -9311,6 +9483,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "recipientId",
             "description": null,
             "args": [],
@@ -9346,6 +9530,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "recipientId",
             "description": null,
             "args": [],
@@ -9370,6 +9566,18 @@
         "fields": [
           {
             "name": "amountInUsd",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hoursWorked",
             "description": null,
             "args": [],
             "type": {
@@ -40098,6 +40306,22 @@
                 "deprecationReason": null
               },
               {
+                "name": "hoursWorked",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
                 "name": "projectId",
                 "description": null,
                 "type": {
@@ -44130,6 +44354,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "recipientId",
             "description": null,
             "type": {
@@ -44166,6 +44402,18 @@
           },
           {
             "name": "budgetId",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hoursWorked",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -44272,6 +44520,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -44355,6 +44615,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "recipientId",
             "description": null,
             "type": {
@@ -44390,6 +44662,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "recipientId",
             "description": null,
             "type": {
@@ -44414,6 +44698,18 @@
         "inputFields": [
           {
             "name": "amountInUsd",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hoursWorked",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -44511,6 +44807,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "id",
             "description": null,
             "type": {
@@ -44594,6 +44902,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "recipientId",
             "description": null,
             "type": {
@@ -44618,6 +44938,18 @@
         "inputFields": [
           {
             "name": "amountInUsd",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hoursWorked",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -44664,6 +44996,18 @@
             "deprecationReason": null
           },
           {
+            "name": "hoursWorked",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "recipientId",
             "description": null,
             "type": {
@@ -44688,6 +45032,18 @@
         "inputFields": [
           {
             "name": "amountInUsd",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hoursWorked",
             "description": null,
             "type": {
               "kind": "ENUM",

@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use thiserror::Error;
 
-use crate::SubscriberCallbackError;
+use crate::{DomainError, SubscriberCallbackError};
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -18,6 +18,15 @@ impl From<Error> for SubscriberCallbackError {
 		match error {
 			Error::NotFound => Self::Discard(anyhow!(error)),
 			Error::Other(_) => Self::Fatal(anyhow!(error)),
+		}
+	}
+}
+
+impl From<Error> for DomainError {
+	fn from(error: Error) -> Self {
+		match error {
+			Error::NotFound => Self::InternalError(anyhow!(error)),
+			Error::Other(_) => Self::InternalError(anyhow!(error)),
 		}
 	}
 }

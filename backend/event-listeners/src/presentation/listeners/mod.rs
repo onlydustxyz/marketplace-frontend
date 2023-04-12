@@ -8,7 +8,7 @@ use anyhow::Result;
 use domain::{Event, Subscriber, SubscriberCallbackError};
 use infrastructure::{
 	amqp::{ConsumableBus, UniqueMessage},
-	database, event_bus, github, graphql,
+	database, event_bus, github,
 };
 use tokio::task::JoinHandle;
 use webhook::EventWebHook;
@@ -28,7 +28,6 @@ pub async fn spawn_all(
 	reqwest: reqwest::Client,
 	database: Arc<database::Client>,
 	github: Arc<github::Client>,
-	graphql: Arc<graphql::Client>,
 ) -> Result<Vec<JoinHandle<()>>> {
 	let handles = [
 		Logger.spawn(event_bus::consumer(config.amqp(), "logger").await?),
@@ -49,13 +48,8 @@ pub async fn spawn_all(
 			WorkItemRepository::new(database.clone()),
 		)
 		.spawn(event_bus::consumer(config.amqp(), "budgets").await?),
-		CrmProjector::new(
-			CrmGithubRepoRepository::new(database.clone()),
-			github.clone(),
-		)
-		.spawn(event_bus::consumer(config.amqp(), "crm").await?),
-		DustyBot::new(github.clone(), github.clone(), graphql, github)
-			.spawn(event_bus::consumer(config.amqp(), "dusty-bot").await?),
+		CrmProjector::new(CrmGithubRepoRepository::new(database.clone()), github)
+			.spawn(event_bus::consumer(config.amqp(), "crm").await?),
 	];
 
 	Ok(handles.into())
