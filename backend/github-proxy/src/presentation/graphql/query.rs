@@ -1,10 +1,11 @@
 use domain::{
-	GithubIssue, GithubIssueNumber, GithubRepo, GithubRepositoryId, GithubUser, GithubUserId,
+	GithubIssue, GithubIssueNumber, GithubRepo, GithubRepositoryId, GithubServiceFilters,
+	GithubUser, GithubUserId,
 };
 use juniper::{graphql_object, DefaultScalarValue};
 use olog::{error, warn};
 
-use super::{dto, dto::AsStr, Context, Error};
+use super::{Context, Error};
 
 pub struct Query;
 
@@ -45,12 +46,12 @@ impl Query {
 		&self,
 		context: &Context,
 		repo_id: GithubRepositoryId,
-		state: Option<dto::PullState>,
+		filters: Option<GithubServiceFilters>,
 	) -> Option<Vec<GithubIssue>> {
 		context
 			.github_service()
 			.ok()?
-			.pulls_by_repo_id(&repo_id, state.unwrap_or_default().as_str())
+			.pulls_by_repo_id(&repo_id, &filters.unwrap_or_default())
 			.await
 			.map_err(Error::from)
 			.logged()

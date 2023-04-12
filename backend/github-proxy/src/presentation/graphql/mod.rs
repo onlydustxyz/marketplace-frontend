@@ -6,9 +6,6 @@ pub use error::Error;
 
 mod context;
 pub use context::Context;
-
-mod dto;
-
 use juniper::{EmptyMutation, EmptySubscription, RootNode};
 
 pub type Schema = RootNode<'static, Query, EmptyMutation<Context>, EmptySubscription<Context>>;

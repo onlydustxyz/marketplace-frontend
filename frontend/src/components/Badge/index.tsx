@@ -11,14 +11,16 @@ export enum BadgeSize {
 }
 
 type Props = {
+  id?: string;
   icon?: BadgeIcon;
   size: BadgeSize;
   value: number;
 };
 
-export default function Badge({ icon, size, value }: Props) {
+export default function Badge({ id, icon, size, value }: Props) {
   return (
     <div
+      id={id}
       className={classNames(
         "flex items-center justify-center rounded-full bg-spacePurple-900 text-spacePurple-500 font-walsheim min-w-min font-medium",
         {

@@ -154,7 +154,7 @@ export class PaymentLine {
     this.row = row;
   }
 
-  paymentId = () => this.row.getAttribute("data-paymentId");
+  paymentId = () => this.row.getAttribute("data-payment-id");
   status = () => this.row.getByRole("cell").nth(3).locator("div").nth(1).textContent();
   click = () => this.row.click();
 }

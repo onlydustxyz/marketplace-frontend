@@ -12,7 +12,7 @@ impl GithubRepoExists for github::Client {
 			Ok(_) => Ok(true),
 			Err(error) => match error {
 				Error::NotFound(_) => Ok(false),
-				Error::Other(error) => Err(error),
+				_ => Err(error.into()),
 			},
 		}
 	}

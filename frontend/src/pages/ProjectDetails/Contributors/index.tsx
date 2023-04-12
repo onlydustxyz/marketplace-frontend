@@ -17,6 +17,9 @@ import { useAuth } from "src/hooks/useAuth";
 import { useOutletContext } from "react-router-dom";
 import { getContributors } from "src/utils/project";
 import Title from "src/pages/ProjectDetails/Title";
+import { useMemo } from "react";
+import { daysFromNow } from "src/utils/date";
+import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
 
 export default function Contributors() {
   const { T } = useIntl();
@@ -34,11 +37,13 @@ export default function Contributors() {
     }
   );
 
+  const createdSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), []);
+
   const getProjectContributorsQueryAsLeader = useHasuraQuery<GetProjectContributorsAsLeaderQuery>(
     GetProjectContributorsAsLeaderDocument,
     HasuraUserRole.RegisteredUser,
     {
-      variables: { projectId },
+      variables: { projectId, createdSince },
       skip: !isProjectLeader,
     }
   );

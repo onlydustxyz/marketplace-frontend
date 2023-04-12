@@ -13,15 +13,10 @@ type Props = {
   onWorkItemAdded: (workItem: WorkItem) => void;
 };
 
-export const MAX_ISSUE_COUNT = 50;
-
 export default function Issues({ type, projectId, contributorHandle, workItems, onWorkItemAdded }: Props) {
   const { data: unpaidIssues, loading } = useUnpaidIssues({ projectId, filters: { author: contributorHandle, type } });
 
-  const issues: WorkItem[] = useMemo(
-    () => differenceBy(unpaidIssues, workItems, "id").slice(0, MAX_ISSUE_COUNT),
-    [unpaidIssues, workItems]
-  );
+  const issues: WorkItem[] = useMemo(() => differenceBy(unpaidIssues, workItems, "id"), [unpaidIssues, workItems]);
 
   return (
     <>
@@ -33,7 +28,6 @@ export default function Issues({ type, projectId, contributorHandle, workItems, 
             data: unpaidIssues,
             loading,
           }}
-          isMore={unpaidIssues ? issues.length > unpaidIssues.length : false}
         />
       )}
       {type === IssueType.Issue && (
@@ -44,7 +38,6 @@ export default function Issues({ type, projectId, contributorHandle, workItems, 
             data: unpaidIssues,
             loading,
           }}
-          isMore={unpaidIssues ? issues.length > unpaidIssues.length : false}
         />
       )}
     </>

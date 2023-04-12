@@ -11,6 +11,8 @@ import {
 import { getContributors } from "src/utils/project";
 import View from "./View";
 import { useLocation } from "react-router-dom";
+import { daysFromNow } from "src/utils/date";
+import { SEARCH_MAX_DAYS_COUNT } from "..";
 import useDebounce from "src/hooks/useDebounce";
 
 const EXTERNAL_USER_QUERY_DEBOUNCE_TIME = 500;
@@ -31,11 +33,13 @@ export default function ContributorSelect({ projectId, contributor, setContribut
   const debouncedGithubHandleSubstring = useDebounce(githubHandleSubstring, EXTERNAL_USER_QUERY_DEBOUNCE_TIME);
   const handleSubstringQuery = `type:user ${debouncedGithubHandleSubstring} in:login`;
 
+  const createdSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), []);
+
   const getProjectContributorsQuery = useHasuraQuery<GetProjectContributorsForPaymentSelectQuery>(
     GetProjectContributorsForPaymentSelectDocument,
     HasuraUserRole.RegisteredUser,
     {
-      variables: { projectId },
+      variables: { projectId, createdSince },
     }
   );
 

@@ -46,6 +46,12 @@
           type Query {
             hello: String!
           }
+          type User {
+            avatarUrl: Url!
+            htmlUrl: Url!
+            id: Int!
+            login: String!
+          }
           enum IdentityType {
             COMPANY
             PERSON
@@ -157,7 +163,7 @@
           type Query {
             fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
             fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
-            fetchPullsByRepoId(repoId: GithubRepositoryId!, state: PullState): [Issue!]
+            fetchPullsByRepoId(repoId: GithubRepositoryId!, filters: Filters): [Issue!]
             fetchRepositoryDetails(id: Int!): Repository
             fetchUserDetails(username: String!): User
             fetchUserDetailsById(userId: Int!): User
@@ -181,9 +187,10 @@
             id: Int!
             login: String!
           }
-          enum PullState {
+          enum State {
             ALL
             CLOSED
+            MERGED
             OPEN
           }
           enum Status {
@@ -196,6 +203,10 @@
           enum Type {
             ISSUE
             PULL_REQUEST
+          }
+          input Filters {
+            createdSince: DateTimeUtc
+            state: State
           }
     - role: public
       definition:

@@ -1,21 +1,30 @@
-use std::fmt::Debug;
+use std::{fmt::Debug, future::ready, pin::Pin};
 
 use anyhow::anyhow;
-use domain::{GithubIssueNumber, GithubRepoLanguages, GithubRepositoryId, GithubUserId};
+use domain::{
+	GithubIssueNumber, GithubRepoLanguages, GithubRepositoryId, GithubServiceFilters, GithubUserId,
+	PositiveCount,
+};
+use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
 	models::{issues::Issue, pulls::PullRequest, repos::Content, Repository, User},
+	params::{pulls::Sort, Direction},
 	FromResponse, Octocrab,
 };
 use olog::tracing::instrument;
 use reqwest::Url;
 
-use super::{logged_response::LoggedResponse, AddHeaders, Config, Error};
+use super::{logged_response::LoggedResponse, service::QueryParams, AddHeaders, Config, Error};
 
 mod round_robin;
 pub use round_robin::Client as RoundRobinClient;
 
 mod single;
 pub use single::Client as SingleClient;
+
+mod stream_filter;
+use olog::error;
+use stream_filter::StreamFilterWith;
 
 pub enum Client {
 	Single(SingleClient),
@@ -39,6 +48,13 @@ impl Client {
 		match self {
 			Client::Single(client) => client.octocrab(),
 			Client::RoundRobin(client) => client.octocrab(),
+		}
+	}
+
+	pub fn config(&self) -> &Config {
+		match self {
+			Client::Single(client) => client.config(),
+			Client::RoundRobin(client) => client.config(),
 		}
 	}
 
@@ -115,6 +131,27 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
+	async fn stream_as<R: serde::de::DeserializeOwned + Send + 'static>(
+		&self,
+		url: Url,
+		max_results: usize,
+	) -> Result<Pin<Box<dyn Stream<Item = R> + Send + '_>>, Error> {
+		Ok(self
+			.octocrab()
+			.get_page::<R>(&Some(url))
+			.await?
+			.map(|page| {
+				page.into_stream(self.octocrab())
+					.take(max_results)
+					.inspect_err(|e| error!(error = e.to_string(), "Unable to stream from github"))
+					.take_while(|res| ready(res.is_ok()))
+					.map(Result::unwrap)
+					.boxed()
+			})
+			.unwrap_or_else(|| empty().boxed()))
+	}
+
+	#[instrument(skip(self))]
 	pub async fn get_repository_by_id(&self, id: &GithubRepositoryId) -> Result<Repository, Error> {
 		self.get_as(format!("{}repositories/{id}", self.octocrab().base_url)).await
 	}
@@ -161,18 +198,36 @@ impl Client {
 		self.get_as(format!("{}users/{username}", self.octocrab().base_url)).await
 	}
 
-	#[allow(non_snake_case)]
 	#[instrument(skip(self))]
 	pub async fn pulls_by_repo_id(
 		&self,
 		id: &GithubRepositoryId,
-		state: &str,
+		filters: &GithubServiceFilters,
 	) -> Result<Vec<PullRequest>, Error> {
-		self.get_as(format!(
-			"{}repositories/{id}/pulls?state={state}",
-			self.octocrab().base_url
-		))
-		.await
+		let query_params = QueryParams::default()
+			.state(filters.state.into())
+			.sort(Sort::Created)
+			.direction(Direction::Descending)
+			.page(1)
+			.per_page(100);
+
+		let url = format!(
+			"{}repositories/{id}/pulls?{}",
+			self.octocrab().base_url,
+			query_params.to_query_string()?
+		)
+		.parse()?;
+
+		let pulls = self
+			.stream_as::<PullRequest>(
+				url,
+				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
+			)
+			.await?
+			.filter_with(*filters)
+			.collect()
+			.await;
+		Ok(pulls)
 	}
 
 	#[instrument(skip(self))]
@@ -221,8 +276,6 @@ impl Client {
 
 #[cfg(test)]
 mod tests {
-	use std::collections::HashMap;
-
 	use rstest::rstest;
 
 	use super::*;
@@ -241,7 +294,7 @@ mod tests {
 		let client: Client = RoundRobinClient::new(&Config {
 			base_url: base_url.to_string(),
 			personal_access_tokens: "token".to_string(),
-			headers: HashMap::new(),
+			..Default::default()
 		})
 		.unwrap()
 		.into();
