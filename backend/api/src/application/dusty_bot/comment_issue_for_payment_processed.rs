@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use derive_more::Constructor;
-use domain::{GithubFetchRepoService, Payment, SubscriberCallbackError};
+use domain::{DomainError, GithubFetchRepoService, Payment};
 use futures::future::try_join_all;
 
 use crate::domain::GithubService;
@@ -16,7 +16,7 @@ impl Usecase {
 	pub async fn comment_issue_for_payment_processed(
 		&self,
 		payment: &Payment,
-	) -> Result<(), SubscriberCallbackError> {
+	) -> Result<(), DomainError> {
 		try_join_all(payment.work_items().iter().map(|work_item| async {
 			let repository = self.fetch_repo_service.repo_by_id(work_item.repo_id()).await?;
 
@@ -48,7 +48,8 @@ impl Usecase {
 					work_item.issue_number(),
 				)
 				.await?;
-			Ok::<(), SubscriberCallbackError>(())
+
+			Ok::<(), DomainError>(())
 		}))
 		.await?;
 		Ok(())

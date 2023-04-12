@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use anyhow::{anyhow, Result};
+use anyhow::Result;
 use chrono::Duration;
 use domain::{
 	AggregateRootRepository, DomainError, Event, GithubUserId, PaymentId, PaymentReason, Project,
@@ -72,8 +72,7 @@ impl Usecase {
 				hours_worked,
 				reason,
 			)
-			.await
-			.map_err(|e| DomainError::InternalError(anyhow!(e)))?;
+			.await?;
 
 		Ok(new_payment_id)
 	}

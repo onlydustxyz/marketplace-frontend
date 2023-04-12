@@ -69,7 +69,8 @@ impl Usecase {
 		self.comment_issue_for_payment_processed_usecase
 			.comment_issue_for_payment_processed(payment)
 			.await
-			.map_err(|e| DomainError::InternalError(anyhow!(e)))?;
+			.map_err(|e| DomainError::InternalError(anyhow!(e)))
+			.ok();
 
 		Ok(new_receipt_id)
 	}

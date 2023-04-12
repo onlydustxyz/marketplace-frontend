@@ -3,8 +3,8 @@ use std::sync::Arc;
 use anyhow::anyhow;
 use derive_more::Constructor;
 use domain::{
-	AuthUserRepository, GithubFetchRepoService, GithubFetchUserService, GithubUserId, PaymentId,
-	PaymentReason, SubscriberCallbackError, UserId,
+	AuthUserRepository, DomainError, GithubFetchRepoService, GithubFetchUserService, GithubUserId,
+	PaymentId, PaymentReason, UserId,
 };
 use futures::future::try_join_all;
 
@@ -27,7 +27,7 @@ impl Usecase {
 		amount_in_usd: u32,
 		hours_worked: u32,
 		reason: PaymentReason,
-	) -> Result<(), SubscriberCallbackError> {
+	) -> Result<(), DomainError> {
 		try_join_all(reason.work_items().iter().map(|work_item| async {
 			let repository = self.fetch_repo_service.repo_by_id(work_item.repo_id()).await?;
 
@@ -41,7 +41,7 @@ impl Usecase {
 				recipient.login(),
 				&amount_in_usd,
 				reason.work_items().len(),
-				&format_duration_worked(&hours_worked).map_err(SubscriberCallbackError::Discard)?,
+				&format_duration_worked(&hours_worked).map_err(DomainError::InvalidInputs)?,
 			);
 
 			self.github_service
@@ -52,7 +52,7 @@ impl Usecase {
 					&comment_body,
 				)
 				.await?;
-			Ok::<(), SubscriberCallbackError>(())
+			Ok::<(), DomainError>(())
 		}))
 		.await?;
 		Ok(())
