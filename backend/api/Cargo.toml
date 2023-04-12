@@ -66,6 +66,7 @@ derive_setters = "0.1.5"
 dotenv = "0.15.0"
 email_address = "0.2.4"
 iban_validate = {version = "4.0.1", features = ["serde"]}
+indoc = "2.0.1"
 infer = "0.12.0"
 num-format = "0.4.4"
 rust_decimal = "1.26.1"
