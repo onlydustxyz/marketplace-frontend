@@ -75,13 +75,50 @@ fn format_payment_requested_comment(
 pub fn format_duration_worked(duration_worked_hours: &u32) -> anyhow::Result<String> {
 	let number_of_days = duration_worked_hours / 8;
 	let number_of_hours = duration_worked_hours - 8 * number_of_days;
+	let days_string = pluralize_word(&number_of_days, "day");
+	let hours_string = pluralize_word(&number_of_hours, "hour");
 	if number_of_days > 0 && number_of_hours > 0 {
-		Ok(format!("{number_of_days} days and {number_of_hours} hours"))
+		Ok(format!("{days_string} and {hours_string}"))
 	} else if number_of_days > 0 {
-		Ok(format!("{number_of_days} days"))
+		Ok(String::from(days_string))
 	} else if number_of_hours > 0 {
-		Ok(format!("{number_of_hours} hours"))
+		Ok(String::from(hours_string))
 	} else {
 		Err(anyhow!("Number of hours should be more than 0"))
+	}
+}
+
+fn pluralize_word(quantity: &u32, word: &str) -> String {
+	if *quantity == 0 {
+		format!("")
+	} else if *quantity == 1 {
+		format!("1 {word}")
+	} else {
+		format!("{quantity} {word}s")
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use rstest::rstest;
+
+	use crate::application::dusty_bot::comment_issue_for_payment_requested::format_duration_worked;
+
+	#[rstest]
+	#[case(4, String::from("4 hours"))]
+	#[case(8, String::from("1 day"))]
+	#[case(12, String::from("1 day and 4 hours"))]
+	#[case(16, String::from("2 days"))]
+	#[case(20, String::from("2 days and 4 hours"))]
+	fn test_duration_worked(#[case] input: u32, #[case] expected: String) {
+		let result = format_duration_worked(&input);
+		match result {
+			Ok(result_string) => {
+				assert_eq!(result_string, expected)
+			},
+			Err(_) => {
+				assert!(result.is_err())
+			},
+		}
 	}
 }
