@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use domain::{AggregateRootRepository, Event, Project, Publisher};
+use domain::{AggregateRootRepository, AuthUserRepository, Event, Project, Publisher};
 use infrastructure::{amqp::UniqueMessage, github};
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use presentation::http::guards::{ApiKey, ApiKeyGuard, OptionUserId, Role};
@@ -52,6 +52,7 @@ pub async fn get_graphql_handler(
 		PendingProjectLeaderInvitationsRepository,
 	>,
 	user_info_repository: &State<UserInfoRepository>,
+	auth_user_repository: &State<Arc<dyn AuthUserRepository>>,
 	github: &State<Arc<github::Client>>,
 	ens: &State<Arc<ens::Client>>,
 	simple_storage: &State<Arc<simple_storage::Client>>,
@@ -66,6 +67,7 @@ pub async fn get_graphql_handler(
 		(*project_sponsor_repository).clone(),
 		(*pending_project_leader_invitations_repository).clone(),
 		(*user_info_repository).clone(),
+		(*auth_user_repository).clone(),
 		(*github).clone(),
 		(*ens).clone(),
 		(*simple_storage).clone(),
@@ -91,6 +93,7 @@ pub async fn post_graphql_handler(
 		PendingProjectLeaderInvitationsRepository,
 	>,
 	user_info_repository: &State<UserInfoRepository>,
+	auth_user_repository: &State<Arc<dyn AuthUserRepository>>,
 	github: &State<Arc<github::Client>>,
 	ens: &State<Arc<ens::Client>>,
 	simple_storage: &State<Arc<simple_storage::Client>>,
@@ -105,6 +108,7 @@ pub async fn post_graphql_handler(
 		(*project_sponsor_repository).clone(),
 		(*pending_project_leader_invitations_repository).clone(),
 		(*user_info_repository).clone(),
+		(*auth_user_repository).clone(),
 		(*github).clone(),
 		(*ens).clone(),
 		(*simple_storage).clone(),
