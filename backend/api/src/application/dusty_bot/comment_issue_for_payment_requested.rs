@@ -4,11 +4,15 @@ use anyhow::anyhow;
 use derive_more::Constructor;
 use domain::{
 	AuthUserRepository, DomainError, GithubFetchRepoService, GithubFetchUserService, GithubUserId,
-	PaymentId, PaymentReason, UserId,
+	PaymentId, PaymentReason, PaymentWorkItem, UserId,
 };
 use futures::future::try_join_all;
+use indoc::formatdoc;
+use num_format::{Locale, ToFormattedString};
 
 use crate::domain::GithubService;
+
+const HOURS_PER_DAY: u32 = 8;
 
 #[derive(Constructor)]
 pub struct Usecase {
@@ -19,6 +23,45 @@ pub struct Usecase {
 }
 
 impl Usecase {
+	#[allow(clippy::too_many_arguments)]
+	async fn comment_single_issue(
+		&self,
+		payment_id: PaymentId,
+		requestor_id: UserId,
+		recipient_id: GithubUserId,
+		amount_in_usd: u32,
+		hours_worked: u32,
+		work_item: &PaymentWorkItem,
+		work_items_count: usize,
+	) -> Result<(), DomainError> {
+		let repository = self.fetch_repo_service.repo_by_id(work_item.repo_id()).await?;
+
+		let requestor = self.auth_user_repository.user_by_id(&requestor_id).await?;
+
+		let recipient = self.fetch_user_service.user_by_id(&recipient_id).await?;
+
+		let comment_body = format_comment(
+			&payment_id.pretty(),
+			requestor.display_name(),
+			recipient.login(),
+			&amount_in_usd.to_formatted_string(&Locale::en),
+			work_items_count,
+			&format_duration_worked(hours_worked / HOURS_PER_DAY, hours_worked % HOURS_PER_DAY)
+				.map_err(DomainError::InvalidInputs)?,
+		);
+
+		self.github_service
+			.create_comment(
+				repository.owner(),
+				repository.name(),
+				work_item.issue_number(),
+				&comment_body,
+			)
+			.await?;
+
+		Ok(())
+	}
+
 	pub async fn comment_issue_for_payment_requested(
 		&self,
 		payment_id: PaymentId,
@@ -28,73 +71,59 @@ impl Usecase {
 		hours_worked: u32,
 		reason: PaymentReason,
 	) -> Result<(), DomainError> {
-		try_join_all(reason.work_items().iter().map(|work_item| async {
-			let repository = self.fetch_repo_service.repo_by_id(work_item.repo_id()).await?;
-
-			let requestor = self.auth_user_repository.user_by_id(&requestor_id).await?;
-
-			let recipient = self.fetch_user_service.user_by_id(&recipient_id).await?;
-
-			let comment_body = format_payment_requested_comment(
-				&payment_id.pretty(),
-				requestor.display_name(),
-				recipient.login(),
-				&amount_in_usd,
+		let handles = reason.work_items().iter().map(|work_item| {
+			self.comment_single_issue(
+				payment_id,
+				requestor_id,
+				recipient_id,
+				amount_in_usd,
+				hours_worked,
+				work_item,
 				reason.work_items().len(),
-				&format_duration_worked(&hours_worked).map_err(DomainError::InvalidInputs)?,
-			);
+			)
+		});
 
-			self.github_service
-				.create_comment(
-					repository.owner(),
-					repository.name(),
-					work_item.issue_number(),
-					&comment_body,
-				)
-				.await?;
-			Ok::<(), DomainError>(())
-		}))
-		.await?;
+		try_join_all(handles).await?;
+
 		Ok(())
 	}
 }
 
-fn format_payment_requested_comment(
+fn format_comment(
 	payment_id: &str,
 	requestor_login: &str,
 	recipient_login: &str,
-	amount: &u32,
+	amount: &str,
 	work_items_count: usize,
 	worked_duration: &str,
 ) -> String {
-	format!(
-		"This item belongs to payment request #{payment_id} on OnlyDust from {requestor_login} to {recipient_login}, {work_items_count} items included, ${amount} for {worked_duration} of work.",
+	formatdoc!(
+		"This item belongs to payment request #{payment_id} on [OnlyDust](https://www.onlydust.xyz/):
+		 * from [{requestor_login}](https://www.onlydust.xyz/) to [{recipient_login}](https://www.onlydust.xyz/)
+		 * {work_items_count} items included
+		 * ${amount} for {worked_duration} of work",
 	)
 }
 
-pub fn format_duration_worked(duration_worked_hours: &u32) -> anyhow::Result<String> {
-	let number_of_days = duration_worked_hours / 8;
-	let number_of_hours = duration_worked_hours - 8 * number_of_days;
-	let days_string = pluralize_word(&number_of_days, "day");
-	let hours_string = pluralize_word(&number_of_hours, "hour");
-	if number_of_days > 0 && number_of_hours > 0 {
-		Ok(format!("{days_string} and {hours_string}"))
-	} else if number_of_days > 0 {
-		Ok(days_string)
-	} else if number_of_hours > 0 {
-		Ok(hours_string)
+pub fn format_duration_worked(days: u32, hours: u32) -> anyhow::Result<String> {
+	if days == 0 && hours == 0 {
+		Err(anyhow!("Work duration should be more than 0"))
 	} else {
-		Err(anyhow!("Number of hours should be more than 0"))
+		Ok(
+			vec![pluralize_word(days, "day"), pluralize_word(hours, "hour")]
+				.into_iter()
+				.flatten()
+				.collect::<Vec<_>>()
+				.join(" and "),
+		)
 	}
 }
 
-fn pluralize_word(quantity: &u32, word: &str) -> String {
-	if *quantity == 0 {
-		String::new()
-	} else if *quantity == 1 {
-		format!("1 {word}")
-	} else {
-		format!("{quantity} {word}s")
+fn pluralize_word(quantity: u32, word: &str) -> Option<String> {
+	match quantity {
+		0 => None,
+		1 => Some(format!("1 {word}")),
+		quantity => Some(format!("{quantity} {word}s")),
 	}
 }
 
@@ -102,23 +131,24 @@ fn pluralize_word(quantity: &u32, word: &str) -> String {
 mod tests {
 	use rstest::rstest;
 
-	use crate::application::dusty_bot::comment_issue_for_payment_requested::format_duration_worked;
+	use super::*;
 
 	#[rstest]
-	#[case(4, String::from("4 hours"))]
-	#[case(8, String::from("1 day"))]
-	#[case(12, String::from("1 day and 4 hours"))]
-	#[case(16, String::from("2 days"))]
-	#[case(20, String::from("2 days and 4 hours"))]
-	fn test_duration_worked(#[case] input: u32, #[case] expected: String) {
-		let result = format_duration_worked(&input);
-		match result {
-			Ok(result_string) => {
-				assert_eq!(result_string, expected)
-			},
-			Err(_) => {
-				assert!(result.is_err())
-			},
-		}
+	#[case(1, "1 hour")]
+	#[case(4, "4 hours")]
+	#[case(8, "1 day")]
+	#[case(12, "1 day and 4 hours")]
+	#[case(16, "2 days")]
+	#[case(17, "2 days and 1 hour")]
+	#[case(20, "2 days and 4 hours")]
+	fn test_duration_worked(#[case] input: u32, #[case] expected: &str) {
+		let result = format_duration_worked(input / HOURS_PER_DAY, input % HOURS_PER_DAY)
+			.expect("Unable to format duration worked");
+		assert_eq!(result, expected);
+	}
+
+	#[rstest]
+	fn test_invalid_duration_worked() {
+		format_duration_worked(0, 0).expect_err("Format duration should have failed");
 	}
 }
