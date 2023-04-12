@@ -80,9 +80,9 @@ pub fn format_duration_worked(duration_worked_hours: &u32) -> anyhow::Result<Str
 	if number_of_days > 0 && number_of_hours > 0 {
 		Ok(format!("{days_string} and {hours_string}"))
 	} else if number_of_days > 0 {
-		Ok(String::from(days_string))
+		Ok(days_string)
 	} else if number_of_hours > 0 {
-		Ok(String::from(hours_string))
+		Ok(hours_string)
 	} else {
 		Err(anyhow!("Number of hours should be more than 0"))
 	}
@@ -90,7 +90,7 @@ pub fn format_duration_worked(duration_worked_hours: &u32) -> anyhow::Result<Str
 
 fn pluralize_word(quantity: &u32, word: &str) -> String {
 	if *quantity == 0 {
-		format!("")
+		String::new()
 	} else if *quantity == 1 {
 		format!("1 {word}")
 	} else {
