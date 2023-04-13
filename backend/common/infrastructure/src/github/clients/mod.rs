@@ -3,7 +3,12 @@ use std::fmt::Debug;
 use anyhow::anyhow;
 use domain::{GithubIssueNumber, GithubRepoLanguages, GithubRepositoryId, GithubUserId};
 use octocrab::{
-	models::{issues::Issue, pulls::PullRequest, repos::Content, Repository, User},
+	models::{
+		issues::{Comment, Issue},
+		pulls::PullRequest,
+		repos::Content,
+		Repository, User,
+	},
 	FromResponse, Octocrab,
 };
 use olog::tracing::instrument;
@@ -177,6 +182,28 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn get_user_by_id(&self, id: &GithubUserId) -> Result<User, Error> {
 		self.get_as(format!("{}user/{id}", self.octocrab().base_url)).await
+	}
+
+	#[instrument(skip(self))]
+	pub async fn all_issue_comments(
+		&self,
+		repo_owner: &str,
+		repo_name: &str,
+		issue_number: &GithubIssueNumber,
+	) -> Result<Vec<Comment>, Error> {
+		let issue_number: i64 = (*issue_number).into();
+
+		let first_page = self
+			.octocrab()
+			.issues(repo_owner, repo_name)
+			.list_comments(issue_number as u64)
+			.per_page(100)
+			.send()
+			.await?;
+
+		let comments = self.octocrab().all_pages(first_page).await?;
+
+		Ok(comments)
 	}
 
 	#[instrument(skip(self))]

@@ -2,10 +2,7 @@ use anyhow::anyhow;
 use async_trait::async_trait;
 use domain::{GithubIssue, GithubIssueNumber, GithubServiceError, GithubServiceResult};
 use infrastructure::github::{self, IssueFromOctocrab};
-use octocrab::{
-	self,
-	models::{self, issues::Comment},
-};
+use octocrab::{self, models};
 use olog::tracing::instrument;
 
 use crate::domain::GithubService;
@@ -59,25 +56,19 @@ impl GithubService for github::Client {
 		repo_name: &str,
 		issue_number: &GithubIssueNumber,
 	) -> GithubServiceResult<Option<String>> {
-		let issue_number: i64 = (*issue_number).into();
+		let dusty_bot =
+			self.octocrab().current().user().await.map_err(Into::<github::Error>::into)?;
 
-		let own_id =
-			self.octocrab().current().user().await.map_err(Into::<github::Error>::into)?.id;
-
-		let comment = self
-			.octocrab()
-			.issues(repo_owner, repo_name)
-			.list_comments(issue_number as u64)
-			.send()
-			.await
-			.map_err(Into::<github::Error>::into)?
-			.items
-			.sorted_by_key(|comment| comment.created_at, false)
+		let mut comments: Vec<_> = self
+			.all_issue_comments(repo_owner, repo_name, issue_number)
+			.await?
 			.into_iter()
-			.find(|comment| comment.user.id == own_id)
-			.and_then(|comment| comment.body);
+			.filter(|comment| comment.user.id == dusty_bot.id)
+			.collect();
 
-		Ok(comment)
+		comments.sort_by_key(|comment| comment.created_at);
+
+		Ok(comments.last().cloned().and_then(|comment| comment.body))
 	}
 
 	async fn close_issue(
@@ -97,26 +88,5 @@ impl GithubService for github::Client {
 			.map_err(Into::<github::Error>::into)?;
 
 		Ok(())
-	}
-}
-
-trait SortedBy<T> {
-	fn sorted_by_key<K, F>(self, f: F, ascending: bool) -> Self
-	where
-		F: FnMut(&T) -> K,
-		K: Ord;
-}
-
-impl SortedBy<Comment> for Vec<Comment> {
-	fn sorted_by_key<K, F>(mut self, f: F, ascencing: bool) -> Self
-	where
-		F: FnMut(&Comment) -> K,
-		K: Ord,
-	{
-		self.sort_by_key(f);
-		if !ascencing {
-			self.reverse();
-		}
-		self
 	}
 }
