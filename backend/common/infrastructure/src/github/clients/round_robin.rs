@@ -9,6 +9,7 @@ use super::{AddHeaders, Config};
 pub struct Client {
 	octocrab_clients: Vec<Octocrab>,
 	next_octocrab_clients_index: Arc<Mutex<usize>>,
+	config: Config,
 }
 
 impl Client {
@@ -45,6 +46,7 @@ impl Client {
 		Ok(Self {
 			octocrab_clients: octocrab_clients?,
 			next_octocrab_clients_index: Arc::new(Mutex::new(0)),
+			config: config.clone(),
 		})
 	}
 
@@ -54,12 +56,14 @@ impl Client {
 		*index = (*index + 1) % self.octocrab_clients.len();
 		next_octocrab
 	}
+
+	pub fn config(&self) -> &Config {
+		&self.config
+	}
 }
 
 #[cfg(test)]
 mod tests {
-	use std::collections::HashMap;
-
 	use rstest::rstest;
 
 	use super::*;
@@ -72,7 +76,7 @@ mod tests {
 		let client = Client::new(&Config {
 			base_url: "http://plop.fr/github/".to_string(),
 			personal_access_tokens,
-			headers: HashMap::new(),
+			..Default::default()
 		})
 		.unwrap();
 
@@ -92,7 +96,7 @@ mod tests {
 		let result = Client::new(&Config {
 			base_url: "http://plop.fr/github/".to_string(),
 			personal_access_tokens,
-			headers: HashMap::new(),
+			..Default::default()
 		});
 
 		assert!(result.is_err());

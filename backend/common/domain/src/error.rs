@@ -29,7 +29,8 @@ impl From<PublisherError> for DomainError {
 impl From<GithubServiceError> for DomainError {
 	fn from(error: GithubServiceError) -> Self {
 		match error {
-			GithubServiceError::NotFound(_) => Self::InvalidInputs(error.into()),
+			GithubServiceError::NotFound(_) | GithubServiceError::InvalidInput(_) =>
+				Self::InvalidInputs(error.into()),
 			GithubServiceError::MissingField(_) | GithubServiceError::Other(_) =>
 				Self::InternalError(error.into()),
 		}

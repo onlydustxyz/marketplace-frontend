@@ -1,6 +1,6 @@
 import { useIntl } from "src/hooks/useIntl";
 import { WorkItem } from "src/components/GithubIssue";
-import Issues, { IssueType } from "./Issues";
+import Issues from "./Issues";
 import SidePanel from "src/components/SidePanel";
 import { useState } from "react";
 import Tab from "./Tab";
@@ -8,6 +8,7 @@ import GitPullRequestLine from "src/icons/GitPullRequestLine";
 import IssueOpen from "src/assets/icons/IssueOpen";
 import OtherWorkForm from "./OtherWorkForm";
 import DiscussLine from "src/icons/DiscussLine";
+import { IssueType } from "./Issues/useUnpaidIssues";
 
 type Props = {
   projectId: string;

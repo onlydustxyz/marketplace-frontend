@@ -11,19 +11,21 @@ export enum BadgeSize {
 }
 
 type Props = {
+  id?: string;
   icon?: BadgeIcon;
   size: BadgeSize;
   value: number;
 };
 
-export default function Badge({ icon, size, value }: Props) {
+export default function Badge({ id, icon, size, value }: Props) {
   return (
     <div
+      id={id}
       className={classNames(
         "flex items-center justify-center rounded-full bg-spacePurple-900 text-spacePurple-500 font-walsheim min-w-min font-medium",
         {
-          "w-5 h-5 px-1 gap-0.5": size === BadgeSize.Small,
-          "w-6 h-6 px-1 gap-1": size === BadgeSize.Medium,
+          "w-5 h-5 px-1.5 gap-0.5": size === BadgeSize.Small,
+          "w-6 h-6 px-2 gap-1": size === BadgeSize.Medium,
           "w-8 h-8 px-3 gap-1": size === BadgeSize.Large,
         }
       )}

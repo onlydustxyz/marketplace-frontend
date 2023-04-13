@@ -44,14 +44,24 @@ test.describe("As a project lead, I", () => {
     expect(await overviewPage.grantedAmount()).toBe("$13.4K / $100K");
 
     const contributorsPage = await projectPage.contributors();
-    const contributors = contributorsPage.contributorsTable();
+    const contributors = await contributorsPage.contributorsTable();
 
-    // TODO Expectations on contributors page
-    const newPaymentPage = await (await contributors).byName(recipient.github.login).pay();
+    expect(await contributors.byName("AnthonyBuisset").totalEarned()).toBe("-");
+    expect(await contributors.byName("AnthonyBuisset").paidContributions()).toBe("-");
+    expect(await contributors.byName("AnthonyBuisset").leftToPay()).toContain("1");
+
+    expect(await contributors.byName("oscarwroche").totalEarned()).toBe("$200");
+    expect(await contributors.byName("oscarwroche").paidContributions()).toBe("1");
+    expect(await contributors.byName("oscarwroche").leftToPay()).toContain("1");
+
+    expect(await contributors.byName("ofux").totalEarned()).toBe("$13,200");
+    expect(await contributors.byName("ofux").paidContributions()).toBe("7");
+    expect(await contributors.byName("ofux").leftToPay()).toBe("-");
+
+    const newPaymentPage = await contributors.byName(recipient.github.login).pay();
     expect(await newPaymentPage.contributorText()).toEqual(recipient.github.login);
 
     await newPaymentPage.requestPayment({
-      pullRequestIndexes: [0],
       otherPullRequests: [
         "https://github.com/od-mocks/cool-repo-A/pull/1",
         "https://github.com/od-mocks/cool-repo-A/pull/2",
@@ -86,7 +96,7 @@ test.describe("As a project lead, I", () => {
     await expect(sidePanel.getByText("to AnthonyBuisset")).toBeVisible();
     await expect(sidePanel.getByText("Created a few seconds ago")).toBeVisible();
     await expect(sidePanel.getByText("Created a few seconds ago")).toBeVisible();
-    await expect(sidePanel.locator("div").filter({ hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible();
+    await expect(sidePanel.locator("div").filter({ hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible(); // auto added
     await expect(sidePanel.locator("div").filter({ hasText: "#2 · Another update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#1 · Update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#6 · This is a new issue" }).first()).toBeVisible();

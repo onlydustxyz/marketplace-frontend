@@ -2066,6 +2066,7 @@ dependencies = [
  "olog",
  "opentelemetry",
  "opentelemetry-datadog",
+ "pin-project-lite",
  "r2d2",
  "r2d2-diesel",
  "rand 0.8.5",
@@ -2074,6 +2075,7 @@ dependencies = [
  "rstest",
  "serde",
  "serde_json",
+ "serde_qs",
  "thiserror",
  "tokio",
  "tokio-retry",
@@ -2673,6 +2675,8 @@ dependencies = [
  "cfg-if",
  "chrono",
  "either",
+ "futures-core",
+ "futures-util",
  "hyperx",
  "jsonwebtoken",
  "once_cell",
@@ -3446,6 +3450,7 @@ dependencies = [
  "serde_urlencoded",
  "tokio",
  "tokio-native-tls",
+ "tokio-util 0.7.3",
  "tower-service",
  "url",
  "wasm-bindgen",
@@ -3962,6 +3967,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "184c643044780f7ceb59104cef98a5a6f12cb2288a7bc701ab93a362b49fd47d"
 dependencies = [
  "serde",
+]
+
+[[package]]
+name = "serde_qs"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0431a35568651e363364210c91983c1da5eb29404d9f0928b67d4ebcfa7d330c"
+dependencies = [
+ "percent-encoding",
+ "serde",
+ "thiserror",
 ]
 
 [[package]]

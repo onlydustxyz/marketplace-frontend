@@ -1,36 +1,59 @@
-import { gql } from "@apollo/client";
 import Card from "src/components/Card";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
-import ContributorsTable, {
-  CONTRIBUTORS_TABLE_FRAGMENT,
-} from "src/pages/ProjectDetails/Contributors/ContributorsTable";
+import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { HasuraUserRole } from "src/types";
-import { GetProjectContributorsQuery, GetProjectRemainingBudgetQuery } from "src/__generated/graphql";
+import {
+  GetProjectContributorsAsLeaderDocument,
+  GetProjectContributorsAsLeaderQuery,
+  GetProjectContributorsDocument,
+  GetProjectContributorsQuery,
+  GetProjectRemainingBudgetDocument,
+  GetProjectRemainingBudgetQuery,
+} from "src/__generated/graphql";
 import { useAuth } from "src/hooks/useAuth";
 import { useOutletContext } from "react-router-dom";
 import { getContributors } from "src/utils/project";
 import Title from "src/pages/ProjectDetails/Title";
 import { Suspense } from "react";
+import { useMemo } from "react";
+import { daysFromNow } from "src/utils/date";
+import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
 
-const Contributors: React.FC = () => {
+export default function Contributors() {
   const { T } = useIntl();
   const { ledProjectIds } = useAuth();
   const { projectId } = useOutletContext<{ projectId: string }>();
 
   const isProjectLeader = !!ledProjectIds.find(element => element === projectId);
 
-  const getProjectContributorsQuery = useHasuraQuery<GetProjectContributorsQuery>(
-    GET_PROJECT_CONTRIBUTORS_QUERY,
+  const getProjectContributorsQueryAsPublic = useHasuraQuery<GetProjectContributorsQuery>(
+    GetProjectContributorsDocument,
     HasuraUserRole.Public,
     {
       variables: { projectId },
+      skip: isProjectLeader,
     }
   );
 
+  const createdSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), []);
+
+  const getProjectContributorsQueryAsLeader = useHasuraQuery<GetProjectContributorsAsLeaderQuery>(
+    GetProjectContributorsAsLeaderDocument,
+    HasuraUserRole.RegisteredUser,
+    {
+      variables: { projectId, createdSince },
+      skip: !isProjectLeader,
+    }
+  );
+
+  const getProjectContributorsQuery = isProjectLeader
+    ? getProjectContributorsQueryAsLeader
+    : getProjectContributorsQueryAsPublic;
+
   const getProjectRemainingBudget = useHasuraQuery<GetProjectRemainingBudgetQuery>(
-    GET_PROJECT_REMAINING_BUDGET_QUERY,
+    GetProjectRemainingBudgetDocument,
     HasuraUserRole.RegisteredUser,
     {
       variables: { projectId },
@@ -59,59 +82,4 @@ const Contributors: React.FC = () => {
       </Suspense>
     </>
   );
-};
-
-export const GITHUB_REPO_CONTRIBUTORS_FRAGMENT = gql`
-  ${CONTRIBUTORS_TABLE_FRAGMENT}
-  fragment GithubRepoContributorsFields on ProjectGithubRepos {
-    githubRepoId
-    githubRepoDetails {
-      id
-      content {
-        id
-        contributors {
-          ...ContributorsTableFields
-        }
-      }
-    }
-  }
-`;
-
-export const GET_PROJECT_CONTRIBUTORS_QUERY = gql`
-  ${GITHUB_REPO_CONTRIBUTORS_FRAGMENT}
-  query GetProjectContributors($projectId: uuid!) {
-    projectsByPk(id: $projectId) {
-      id
-      projectDetails {
-        projectId
-        name
-      }
-      githubRepos {
-        ...GithubRepoContributorsFields
-      }
-      budgets {
-        id
-        paymentRequests {
-          id
-          githubRecipient {
-            ...ContributorsTableFields
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const GET_PROJECT_REMAINING_BUDGET_QUERY = gql`
-  query GetProjectRemainingBudget($projectId: uuid!) {
-    projectsByPk(id: $projectId) {
-      id
-      budgets {
-        id
-        remainingAmount
-      }
-    }
-  }
-`;
-
-export default Contributors;
+}

@@ -1,7 +1,6 @@
 import { Status, Type } from "src/__generated/graphql";
 import GithubIssue, { Action, Props } from ".";
-
-const daysFromNow = (days: number) => new Date(Date.now() - days * 24 * 3600 * 1000);
+import { daysFromNow } from "src/utils/date";
 
 const issues = {
   closed: {

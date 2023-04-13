@@ -3,13 +3,12 @@ import { Currency, PaymentStatus } from "src/types";
 
 import PayoutTable from ".";
 import { Payment } from "./Line";
+import { daysFromNow } from "src/utils/date";
 
 export default {
   title: "PayoutTable",
   component: PayoutTable,
 } as ComponentMeta<typeof PayoutTable>;
-
-const daysFromNow = (days: number) => new Date(Date.now() - days * 24 * 3600 * 1000);
 
 const mockPayments: Payment[] = [
   {
