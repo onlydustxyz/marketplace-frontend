@@ -7,13 +7,16 @@ import User3Line from "src/icons/User3Line";
 import RoundedImage, { ImageSize, Rounding } from "src/components/RoundedImage";
 import onlyDustLogo from "assets/img/onlydust-logo.png";
 import { useIntl } from "src/hooks/useIntl";
+import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
+import Tooltip from "src/components/Tooltip";
+import { SEARCH_MAX_DAYS_COUNT } from "..";
 
 interface ContributorSelectViewProps {
   selectedGithubHandle: string | null;
   setSelectedGithubHandle: (selectedGithubHandle: string | null) => void;
   githubHandleSubstring: string;
   setGithubHandleSubstring: (githubHandleSubstring: string) => void;
-  filteredContributors: GithubContributorFragment[] | undefined;
+  filteredContributors: (GithubContributorFragment[] & { unpaidMergedPullsCount?: number }) | undefined;
   filteredExternalContributors: GithubContributorFragment[] | undefined;
   isSearchGithubUsersByHandleSubstringQueryLoading: boolean;
   contributor: GithubContributorFragment | null | undefined;
@@ -157,16 +160,22 @@ export default function ContributorSelectView({
 }
 
 interface ContributorSubListProps<T extends GithubContributorFragment> {
-  contributors?: T[];
+  contributors?: (T & { unpaidMergedPullsCount?: number })[];
 }
 
 function ContributorSubList<T extends GithubContributorFragment>({ contributors }: ContributorSubListProps<T>) {
+  const { T } = useIntl();
+
   return (
     <div className="divide-y divide-greyscale-50/8 pt-2.5">
       {contributors?.map(contributor => (
-        <Combobox.Option key={contributor.id} value={contributor.login}>
+        <Combobox.Option key={contributor.id} as="div" value={contributor.login}>
           {({ active }) => (
-            <li className={`p-2 ${active && "bg-white/4 cursor-pointer"}`}>
+            <li
+              className={classNames("p-2 flex items-center justify-between", {
+                "bg-white/4 cursor-pointer": active,
+              })}
+            >
               <Contributor
                 contributor={{
                   avatarUrl: contributor.avatarUrl,
@@ -174,6 +183,19 @@ function ContributorSubList<T extends GithubContributorFragment>({ contributors 
                   isRegistered: !!contributor.user?.userId,
                 }}
               />
+              {contributor.unpaidMergedPullsCount && (
+                <>
+                  <Badge
+                    id={`pr-count-badge-${contributor.id}`}
+                    value={contributor.unpaidMergedPullsCount}
+                    icon={BadgeIcon.GitMerge}
+                    size={BadgeSize.Small}
+                  />
+                  <Tooltip anchorId={`pr-count-badge-${contributor.id}`}>
+                    {T("payment.form.contributor.unpaidMergedPrCountTooltip", { count: SEARCH_MAX_DAYS_COUNT })}
+                  </Tooltip>
+                </>
+              )}
             </li>
           )}
         </Combobox.Option>

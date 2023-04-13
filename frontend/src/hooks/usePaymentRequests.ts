@@ -49,6 +49,8 @@ export default function usePaymentRequests({ projectId, onNewPaymentRequested }:
           budgets: budgetRefs => {
             cache.modify({
               id: budgetRefs[0].__ref,
+              broadcast: false,
+              optimistic: true,
               fields: {
                 paymentRequests: paymentRequestRefs => {
                   return [...paymentRequestRefs, newPaymentRequestRef];

@@ -6,6 +6,7 @@ import MoneyDollarCircleLine from "src/icons/MoneyDollarCircleLine";
 import User3Line from "src/icons/User3Line";
 import CheckLine from "src/icons/CheckLine";
 import { Field, Sorting } from "./View";
+import GitMergeLine from "src/icons/GitMergeLine";
 
 type Props = {
   sorting: Sorting;
@@ -17,26 +18,35 @@ export default function Headers({ sorting, applySorting, isProjectLeader }: Prop
   const { T } = useIntl();
 
   return (
-    <HeaderLine className="text-sm">
+    <HeaderLine className="text-sm text-spaceBlue-200">
       <HeaderCell onClick={() => applySorting(Field.Login)}>
-        <User3Line className="text-sm text-white" />
-        <span className="text-spaceBlue-200 ">{T("contributor.table.contributor")}</span>
+        <User3Line />
+        {T("contributor.table.contributor")}
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.Login} />
       </HeaderCell>
       <HeaderCell onClick={() => applySorting(Field.TotalEarned)}>
-        <MoneyDollarCircleLine className="text-sm text-white" />
-        <span className="text-spaceBlue-200 ">{T("contributor.table.totalEarned")}</span>
+        <MoneyDollarCircleLine />
+        {T("contributor.table.totalEarned")}
         <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.TotalEarned} />
       </HeaderCell>
       <HeaderCell onClick={() => applySorting(Field.PaidContributions)}>
-        <CheckLine className="text-sm text-white" />
-        <span className="text-spaceBlue-200 ">{T("contributor.table.paidContributions")}</span>
+        <CheckLine />
+        {T("contributor.table.paidContributions")}
         <SortingArrow
           direction={sorting.ascending ? "up" : "down"}
           visible={sorting.field === Field.PaidContributions}
         />
       </HeaderCell>
-      {isProjectLeader && <HeaderCell width={HeaderCellWidth.Quarter} />}
+      {isProjectLeader && (
+        <>
+          <HeaderCell onClick={() => applySorting(Field.LeftToPay)}>
+            <GitMergeLine />
+            {T("contributor.table.leftToPay")}
+            <SortingArrow direction={sorting.ascending ? "up" : "down"} visible={sorting.field === Field.LeftToPay} />
+          </HeaderCell>
+          <HeaderCell width={HeaderCellWidth.Fifth} />
+        </>
+      )}
     </HeaderLine>
   );
 }

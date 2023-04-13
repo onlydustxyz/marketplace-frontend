@@ -14,6 +14,7 @@ const mockContributors: Contributor[] = [
     isRegistered: true,
     paidContributions: 3,
     totalEarned: 2000,
+    unpaidMergedPullsCount: 3,
   },
   {
     login: "AnthonyBuisset",
@@ -22,6 +23,7 @@ const mockContributors: Contributor[] = [
     isRegistered: true,
     paidContributions: 1,
     totalEarned: 500,
+    unpaidMergedPullsCount: 10,
   },
   {
     login: "tdelabro",

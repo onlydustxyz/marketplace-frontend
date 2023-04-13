@@ -11,7 +11,7 @@ interface Props extends PropsWithChildren {
 const Line: React.FC<Props> = ({ className, children, onClick, selected, paymentId }) => {
   return (
     <tr
-      data-paymentId={paymentId}
+      data-payment-id={paymentId}
       data-testid="payment-line"
       className={classNames(
         `group/line border-b border-gray-800 ${className}`,

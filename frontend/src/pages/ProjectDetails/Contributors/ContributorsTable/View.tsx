@@ -12,12 +12,14 @@ export type Contributor = {
   isRegistered: boolean;
   totalEarned: number;
   paidContributions: number;
+  unpaidMergedPullsCount?: number;
 };
 
 export enum Field {
   Login = "login",
   TotalEarned = "totalEarned",
   PaidContributions = "paidContributions",
+  LeftToPay = "unpaidMergedPullsCount",
 }
 
 export type Sorting = {
@@ -35,18 +37,21 @@ type Props = {
 export default function View({ contributors, isProjectLeader, remainingBudget, onPaymentRequested }: Props) {
   const isSendingNewPaymentDisabled = remainingBudget < rates.hours;
 
-  const [sorting, setSorting] = useState({ field: Field.PaidContributions, ascending: false });
+  const [sorting, setSorting] = useState({
+    field: isProjectLeader ? Field.LeftToPay : Field.PaidContributions,
+    ascending: false,
+  });
 
   const applySorting = (field: Field) =>
     setSorting({ field, ascending: sorting.field === field ? !sorting.ascending : true });
 
   const sortedContributors = useMemo(() => {
     const sorted = sortBy([...contributors], contributor => {
-      const f = contributor[sorting.field];
+      const f = contributor[sorting.field] || 0;
       return typeof f === "string" ? f.toLocaleLowerCase() : f;
     });
     return sorting.ascending ? sorted : sorted.reverse();
-  }, [sorting]);
+  }, [sorting, contributors]);
 
   return (
     <Table id="contributors_table" headers={<Headers {...{ sorting, applySorting, isProjectLeader }} />}>

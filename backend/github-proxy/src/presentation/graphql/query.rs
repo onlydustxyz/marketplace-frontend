@@ -1,5 +1,6 @@
 use domain::{
-	GithubIssue, GithubIssueNumber, GithubRepo, GithubRepositoryId, GithubUser, GithubUserId,
+	GithubIssue, GithubIssueNumber, GithubRepo, GithubRepositoryId, GithubServiceFilters,
+	GithubUser, GithubUserId,
 };
 use juniper::{graphql_object, DefaultScalarValue};
 use olog::{error, warn};
@@ -41,16 +42,16 @@ impl Query {
 			.ok()
 	}
 
-	pub async fn fetch_repository_PRs(
+	pub async fn fetch_pulls_by_repo_id(
 		&self,
 		context: &Context,
-		id: i32,
-	) -> Option<Vec<domain::GithubIssue>> {
-		let repository_id = GithubRepositoryId::from(id as i64);
+		repo_id: GithubRepositoryId,
+		filters: Option<GithubServiceFilters>,
+	) -> Option<Vec<GithubIssue>> {
 		context
 			.github_service()
 			.ok()?
-			.pulls_by_repo_id(&repository_id)
+			.pulls_by_repo_id(&repo_id, &filters.unwrap_or_default())
 			.await
 			.map_err(Error::from)
 			.logged()
