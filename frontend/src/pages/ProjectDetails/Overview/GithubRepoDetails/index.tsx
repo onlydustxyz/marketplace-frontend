@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function GithubRepoDetails({ githubRepoId }: Props) {
-  const { data, loading } = useHasuraQuery<GetGithubRepositoryDetailsQuery>(
+  const { data } = useHasuraQuery<GetGithubRepositoryDetailsQuery>(
     GET_GITHUB_REPOSITORY_DETAILS_QUERY,
     HasuraUserRole.Public,
     {
@@ -25,7 +25,7 @@ export default function GithubRepoDetails({ githubRepoId }: Props) {
   const githubRepoDetails = data?.githubRepoDetailsByPk &&
     data?.githubRepoDetailsByPk?.content && { ...data.githubRepoDetailsByPk, ...data.githubRepoDetailsByPk?.content };
 
-  return <QueryWrapper query={{ loading, data }}>{githubRepoDetails && <View {...githubRepoDetails} />}</QueryWrapper>;
+  return <>{githubRepoDetails && <View {...githubRepoDetails} />}</>;
 }
 
 export const GET_GITHUB_REPOSITORY_DETAILS_QUERY = gql`
