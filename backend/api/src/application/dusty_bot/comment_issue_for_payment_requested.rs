@@ -9,6 +9,7 @@ use domain::{
 use futures::future::try_join_all;
 use indoc::formatdoc;
 use num_format::{Locale, ToFormattedString};
+use tokio::try_join;
 
 use crate::domain::GithubService;
 
@@ -34,11 +35,26 @@ impl Usecase {
 		work_item: &PaymentWorkItem,
 		work_items_count: usize,
 	) -> Result<(), DomainError> {
-		let repository = self.fetch_repo_service.repo_by_id(work_item.repo_id()).await?;
-
-		let requestor = self.auth_user_repository.user_by_id(&requestor_id).await?;
-
-		let recipient = self.fetch_user_service.user_by_id(&recipient_id).await?;
+		let (repository, requestor, recipient) = try_join!(
+			async {
+				self.fetch_repo_service
+					.repo_by_id(work_item.repo_id())
+					.await
+					.map_err(DomainError::from)
+			},
+			async {
+				self.auth_user_repository
+					.user_by_id(&requestor_id)
+					.await
+					.map_err(DomainError::from)
+			},
+			async {
+				self.fetch_user_service
+					.user_by_id(&recipient_id)
+					.await
+					.map_err(DomainError::from)
+			}
+		)?;
 
 		let comment_body = format_comment(
 			&payment_id.pretty(),
