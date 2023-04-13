@@ -12,13 +12,14 @@ import {
 } from "./__generated/graphql";
 import { ProjectPaymentsPage } from "./pages/project/payments";
 import { EditProfilePage } from "./pages/edit_profile_page";
+import { populateReceipt } from "./commands/populate/populate_payments";
 
 test.describe("As a project lead, I", () => {
   test.beforeAll(async () => {
     restoreDB();
   });
 
-  test("can request a payment", async ({ page, projects, users, repos, signIn }) => {
+  test("can request a payment", async ({ page, projects, users, repos, signIn, context }) => {
     const recipient = users.Anthony;
     const project = projects.ProjectA;
 
@@ -99,13 +100,27 @@ test.describe("As a project lead, I", () => {
     await expect(
       sidePanel.locator("div").filter({ hasText: " · Monthly contracting subscription" }).first()
     ).toBeVisible();
-    await expect(
-      sidePanel
-        .locator("div")
-        .filter({ hasText: ` · Documentation by ${recipient.github.login}` })
-        .first()
-    ).toBeVisible();
+    const otherWorkIssueLink = sidePanel
+      .locator("div")
+      .filter({ hasText: ` · Documentation by ${recipient.github.login}` })
+      .last();
+    await expect(otherWorkIssueLink).toBeVisible();
+    await otherWorkIssueLink.click();
 
+    const pagePromise = context.waitForEvent("page");
+    const newPage = await pagePromise;
+    await newPage.waitForLoadState();
+    await expect(newPage.getByText("to AnthonyBuisset, 10 items included, $1000 for 2 days of work.")).toBeVisible();
+
+    const paymentId = await payment.paymentId();
+    if (paymentId) {
+      await populateReceipt(paymentId, projects.projectA, {
+        currencyCode: "USDC",
+        recipientETHIdentity: { type: EthereumIdentityType.EthereumAddress, optEthAddress: "", optEthName: null },
+        transactionHashOrReference: "",
+        amount: 100,
+      });
+    }
     await sidePanel.getByRole("button").click();
   });
 
