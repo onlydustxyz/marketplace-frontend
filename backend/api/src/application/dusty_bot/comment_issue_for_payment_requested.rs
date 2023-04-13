@@ -61,7 +61,9 @@ impl Usecase {
 			requestor.display_name(),
 			recipient.login(),
 			&amount_in_usd.to_formatted_string(&Locale::en),
-			work_items_count,
+			&pluralize_word(work_items_count, "item").ok_or_else(|| {
+				DomainError::InvalidInputs(anyhow!("Unable to format work item count"))
+			})?,
 			&format_duration_worked(hours_worked / HOURS_PER_DAY, hours_worked % HOURS_PER_DAY)
 				.map_err(DomainError::InvalidInputs)?,
 		);
@@ -110,13 +112,13 @@ fn format_comment(
 	requestor_login: &str,
 	recipient_login: &str,
 	amount: &str,
-	work_items_count: usize,
+	work_items_count: &str,
 	worked_duration: &str,
 ) -> String {
 	formatdoc!(
 		"This item belongs to payment request #{payment_id} on [OnlyDust](https://www.onlydust.xyz/):
 		 * from [{requestor_login}](https://www.onlydust.xyz/) to [{recipient_login}](https://www.onlydust.xyz/)
-		 * {work_items_count} items included
+		 * {work_items_count} included
 		 * ${amount} for {worked_duration} of work",
 	)
 }
@@ -125,17 +127,18 @@ pub fn format_duration_worked(days: u32, hours: u32) -> anyhow::Result<String> {
 	if days == 0 && hours == 0 {
 		Err(anyhow!("Work duration should be more than 0"))
 	} else {
-		Ok(
-			vec![pluralize_word(days, "day"), pluralize_word(hours, "hour")]
-				.into_iter()
-				.flatten()
-				.collect::<Vec<_>>()
-				.join(" and "),
-		)
+		Ok(vec![
+			pluralize_word(days as usize, "day"),
+			pluralize_word(hours as usize, "hour"),
+		]
+		.into_iter()
+		.flatten()
+		.collect::<Vec<_>>()
+		.join(" and "))
 	}
 }
 
-fn pluralize_word(quantity: u32, word: &str) -> Option<String> {
+fn pluralize_word(quantity: usize, word: &str) -> Option<String> {
 	match quantity {
 		0 => None,
 		1 => Some(format!("1 {word}")),
