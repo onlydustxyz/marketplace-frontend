@@ -39,12 +39,14 @@ impl GithubService for github::Client {
 		issue_number: &GithubIssueNumber,
 		comment: &str,
 	) -> GithubServiceResult<()> {
-		let handler = self.octocrab().issues(repo_owner, repo_name);
 		let issue_number: i64 = (*issue_number).into();
-		handler
+
+		self.octocrab()
+			.issues(repo_owner, repo_name)
 			.create_comment(issue_number as u64, comment)
 			.await
 			.map_err(Into::<github::Error>::into)?;
+
 		Ok(())
 	}
 
@@ -54,23 +56,24 @@ impl GithubService for github::Client {
 		repo_name: &str,
 		issue_number: &GithubIssueNumber,
 	) -> GithubServiceResult<Option<String>> {
-		let handler = self.octocrab().issues(repo_owner, repo_name);
 		let issue_number: i64 = (*issue_number).into();
-		let comments = handler
+
+		let own_id =
+			self.octocrab().current().user().await.map_err(Into::<github::Error>::into)?.id;
+
+		let comment = self
+			.octocrab()
+			.issues(repo_owner, repo_name)
 			.list_comments(issue_number as u64)
 			.send()
 			.await
-			.map_err(Into::<github::Error>::into)?;
-		let own_id =
-			self.octocrab().current().user().await.map_err(Into::<github::Error>::into)?.id;
-		for comment in comments {
-			if comment.user.id == own_id {
-				if let Some(comment_text) = comment.body {
-					return Ok(Some(comment_text));
-				}
-			}
-		}
-		Ok(None)
+			.map_err(Into::<github::Error>::into)?
+			.items
+			.into_iter()
+			.find(|comment| comment.user.id == own_id)
+			.and_then(|comment| comment.body);
+
+		Ok(comment)
 	}
 
 	async fn close_issue(
@@ -79,14 +82,16 @@ impl GithubService for github::Client {
 		repo_name: &str,
 		issue_number: &GithubIssueNumber,
 	) -> GithubServiceResult<()> {
-		let handler = self.octocrab().issues(repo_owner, repo_name);
 		let issue_number: i64 = (*issue_number).into();
-		handler
+
+		self.octocrab()
+			.issues(repo_owner, repo_name)
 			.update(issue_number as u64)
 			.state(models::IssueState::Closed)
 			.send()
 			.await
 			.map_err(Into::<github::Error>::into)?;
+
 		Ok(())
 	}
 }
