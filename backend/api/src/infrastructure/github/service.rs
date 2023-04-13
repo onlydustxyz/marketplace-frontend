@@ -2,7 +2,10 @@ use anyhow::anyhow;
 use async_trait::async_trait;
 use domain::{GithubIssue, GithubIssueNumber, GithubServiceError, GithubServiceResult};
 use infrastructure::github::{self, IssueFromOctocrab};
-use octocrab::{self, models};
+use octocrab::{
+	self,
+	models::{self, issues::Comment},
+};
 use olog::tracing::instrument;
 
 use crate::domain::GithubService;
@@ -69,6 +72,7 @@ impl GithubService for github::Client {
 			.await
 			.map_err(Into::<github::Error>::into)?
 			.items
+			.sorted_by_key(|comment| comment.created_at, false)
 			.into_iter()
 			.find(|comment| comment.user.id == own_id)
 			.and_then(|comment| comment.body);
@@ -93,5 +97,26 @@ impl GithubService for github::Client {
 			.map_err(Into::<github::Error>::into)?;
 
 		Ok(())
+	}
+}
+
+trait SortedBy<T> {
+	fn sorted_by_key<K, F>(self, f: F, ascending: bool) -> Self
+	where
+		F: FnMut(&T) -> K,
+		K: Ord;
+}
+
+impl SortedBy<Comment> for Vec<Comment> {
+	fn sorted_by_key<K, F>(mut self, f: F, ascencing: bool) -> Self
+	where
+		F: FnMut(&Comment) -> K,
+		K: Ord,
+	{
+		self.sort_by_key(f);
+		if !ascencing {
+			self.reverse();
+		}
+		self
 	}
 }
