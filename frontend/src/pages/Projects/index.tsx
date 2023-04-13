@@ -5,6 +5,8 @@ import AllProjects from "./AllProjects";
 import FilterPanel from "./FilterPanel";
 import { ProjectFilterProvider } from "./useProjectFilter";
 import useScrollRestoration from "./AllProjects/useScrollRestoration";
+import { Suspense } from "react";
+import Loader from "src/components/Loader";
 
 export default function Projects() {
   const { T } = useT();
@@ -21,7 +23,9 @@ export default function Projects() {
             <div className="hidden xl:block basis-80 shrink-0 sticky top-0">
               <FilterPanel isProjectLeader={!!ledProjectIds.length} />
             </div>
-            <AllProjects />
+            <Suspense fallback={<Loader />}>
+              <AllProjects />
+            </Suspense>
           </div>
         </div>
       </Background>
