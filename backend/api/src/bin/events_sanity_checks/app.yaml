@@ -5,8 +5,6 @@ default:
   github:
     base_url: $GITHUB_BASE_URL
     personal_access_tokens: $GITHUB_PAT
-    headers:
-      api-key: $GITHUB_PROXY_GITHUB_API_KEY
     max_calls_per_request: $GITHUB_MAX_CALLS_PER_REQUEST
   web3:
     url: https://mainnet.infura.io/v3/$INFURA_API_KEY
