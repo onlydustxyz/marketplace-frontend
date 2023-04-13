@@ -114,11 +114,15 @@ test.describe("As a project lead, I", () => {
 
     const paymentId = await payment.paymentId();
     if (paymentId) {
-      await populateReceipt(paymentId, projects.projectA, {
+      await populateReceipt(paymentId, project, {
         currencyCode: "USDC",
-        recipientETHIdentity: { type: EthereumIdentityType.EthereumAddress, optEthAddress: "", optEthName: null },
-        transactionHashOrReference: "",
-        amount: 100,
+        recipientETHIdentity: {
+          type: EthereumIdentityType.EthereumAddress,
+          optEthAddress: "0x95222290dd7278aa3ddd389cc1e1d165cc4bafe5",
+          optEthName: null,
+        },
+        transactionHashOrReference: "0x4003962da58c61b668ae4af0013751237131274d3f84107fc8de6b98c16edebc",
+        amount: 1000,
       });
     }
     await sidePanel.getByRole("button").click();
