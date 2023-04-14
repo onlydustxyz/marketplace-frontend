@@ -1,8 +1,9 @@
-use std::sync::Arc;
+use std::{future::ready, sync::Arc};
 
 use derive_more::Constructor;
 use domain::{DomainError, GithubFetchService, Payment, PaymentId, PaymentWorkItem};
-use futures::future::try_join_all;
+use futures::{future::try_join_all, FutureExt};
+use tokio::try_join;
 
 use crate::domain::GithubService;
 
@@ -18,12 +19,12 @@ impl Usecase {
 		payment_id: &PaymentId,
 		work_item: &PaymentWorkItem,
 	) -> Result<(), DomainError> {
-		let repository = self.fetch_service.repo_by_id(work_item.repo_id()).await?;
-		let issue = self
-			.fetch_service
-			.issue_by_repo_id(work_item.repo_id(), work_item.issue_number())
-			.await?;
-		let current_user = self.fetch_service.current_user().await?;
+		let (repository, issue, current_user) = try_join!(
+			self.fetch_service.repo_by_id(work_item.repo_id()),
+			self.fetch_service
+				.issue_by_repo_id(work_item.repo_id(), work_item.issue_number()),
+			self.fetch_service.current_user()
+		)?;
 
 		let previous_comment = self
 			.github_service
@@ -34,24 +35,25 @@ impl Usecase {
 			)
 			.await?;
 
-		self.github_service
-			.create_comment(
+		let comment_body = format_comment(&payment_id.pretty(), previous_comment);
+
+		try_join!(
+			self.github_service.create_comment(
 				repository.owner(),
 				repository.name(),
 				work_item.issue_number(),
-				&format_comment(&payment_id.pretty(), previous_comment),
-			)
-			.await?;
-
-		if issue.author_id() == current_user.id() {
-			self.github_service
-				.close_issue(
+				&comment_body,
+			),
+			if issue.author_id() == current_user.id() {
+				self.github_service.close_issue(
 					repository.owner(),
 					repository.name(),
 					work_item.issue_number(),
 				)
-				.await?;
-		}
+			} else {
+				ready(Ok(())).boxed()
+			}
+		)?;
 
 		Ok(())
 	}
