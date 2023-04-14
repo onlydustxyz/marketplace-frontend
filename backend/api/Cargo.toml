@@ -60,15 +60,17 @@ serde_json = {version = "1.0.81"}
 chrono = "0.4"
 
 # Utils
-derive_more = "0.99.17"
-dotenv = "0.15.0"
-rusty-money = {version = "0.4.1", features = ["iso", "crypto"]}
 derive-getters = "0.2.0"
+derive_more = "0.99.17"
 derive_setters = "0.1.5"
+dotenv = "0.15.0"
 email_address = "0.2.4"
 iban_validate = {version = "4.0.1", features = ["serde"]}
-rust_decimal = "1.26.1"
+indoc = "2.0.1"
 infer = "0.12.0"
+num-format = "0.4.4"
+rust_decimal = "1.26.1"
+rusty-money = {version = "0.4.1", features = ["iso", "crypto"]}
 tokio-retry = "0.3"
 
 # Github

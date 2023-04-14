@@ -77,6 +77,29 @@ impl FromStr for GithubUserId {
 	}
 }
 
+#[juniper::graphql_scalar(
+	name = "GithubUserId",
+	description = "A GitHub user ID, represented as an integer"
+)]
+impl<S> GraphQLScalar for GithubUserId
+where
+	S: ScalarValue,
+{
+	fn resolve(&self) -> Value {
+		Value::scalar::<i32>(
+			self.0.try_into().expect("Inner user id is not a valid 32-bits integer"),
+		)
+	}
+
+	fn from_input_value(value: &InputValue) -> Option<Self> {
+		value.as_int_value().map(|x| Self(x as i64))
+	}
+
+	fn from_str<'a>(value: ScalarToken<'a>) -> ParseScalarResult<'a, S> {
+		<i32 as ParseScalarValue<S>>::from_str(value)
+	}
+}
+
 #[derive(
 	Debug,
 	Clone,

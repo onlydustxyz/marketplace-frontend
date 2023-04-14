@@ -139,6 +139,7 @@
           }
           scalar DateTimeUtc
           scalar GithubRepositoryId
+          scalar GithubUserId
           scalar Url
           type Issue {
             closedAt: DateTimeUtc
@@ -172,7 +173,7 @@
           type User {
             avatarUrl: Url!
             htmlUrl: Url!
-            id: Int!
+            id: GithubUserId!
             login: String!
           }
           enum Status {
@@ -194,6 +195,7 @@
           }
           scalar DateTimeUtc
           scalar GithubRepositoryId
+          scalar GithubUserId
           scalar Url
           type Issue {
             closedAt: DateTimeUtc
@@ -231,7 +233,7 @@
           type User {
             avatarUrl: Url!
             htmlUrl: Url!
-            id: Int!
+            id: GithubUserId!
             login: String!
           }
           enum Status {
