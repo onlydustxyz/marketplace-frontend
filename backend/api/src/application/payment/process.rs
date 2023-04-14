@@ -66,11 +66,13 @@ impl Usecase {
 				"Failed while finding payment"
 			)))?;
 
-		self.comment_issue_for_payment_processed_usecase
+		if let Err(error) = self
+			.comment_issue_for_payment_processed_usecase
 			.comment_issue_for_payment_processed(payment)
 			.await
-			.map_err(|e| DomainError::InternalError(anyhow!(e)))
-			.ok();
+		{
+			olog::warn!(error = error.to_string(), "Unable to comment / close issue")
+		}
 
 		Ok(new_receipt_id)
 	}
