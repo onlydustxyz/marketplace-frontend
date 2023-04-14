@@ -146,6 +146,7 @@
           }
           scalar DateTimeUtc
           scalar GithubRepositoryId
+          scalar GithubUserId
           scalar Url
           type Issue {
             author: User!
@@ -184,7 +185,7 @@
           type User {
             avatarUrl: Url!
             htmlUrl: Url!
-            id: Int!
+            id: GithubUserId!
             login: String!
           }
           enum State {
@@ -216,6 +217,7 @@
           }
           scalar DateTimeUtc
           scalar GithubRepositoryId
+          scalar GithubUserId
           scalar Url
           type Issue {
             author: User!
@@ -250,7 +252,7 @@
           type User {
             avatarUrl: Url!
             htmlUrl: Url!
-            id: Int!
+            id: GithubUserId!
             login: String!
           }
           enum Status {

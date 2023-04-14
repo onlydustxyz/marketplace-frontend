@@ -144,6 +144,7 @@ dependencies = [
  "event-store",
  "futures",
  "iban_validate",
+ "indoc",
  "infer",
  "infrastructure",
  "juniper",
@@ -152,6 +153,7 @@ dependencies = [
  "log",
  "mockall",
  "mockall_double",
+ "num-format",
  "octocrab",
  "olog",
  "presentation",
@@ -2127,6 +2129,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "indoc"
+version = "2.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9f2cb48b81b1dc9f39676bf99f5499babfec7cd8fe14307f7b3d747208fb5690"
+
+[[package]]
 name = "infer"
 version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2719,6 +2727,16 @@ dependencies = [
  "autocfg",
  "num-integer",
  "num-traits",
+]
+
+[[package]]
+name = "num-format"
+version = "0.4.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a652d9771a63711fd3c3deb670acfbe5c30a4072e664d7a3bf5a9e1056ac72c3"
+dependencies = [
+ "arrayvec",
+ "itoa",
 ]
 
 [[package]]

@@ -117,17 +117,22 @@ test.describe("As a project lead, I", () => {
     await expect(otherWorkIssueLink).toBeVisible();
     await otherWorkIssueLink.click();
 
-    const pagePromise = context.waitForEvent("page");
-    const newPage = await pagePromise;
-    await newPage.waitForLoadState();
-    await expect(newPage.getByText("to AnthonyBuisset, 10 items included, $1000 for 2 days of work.")).toBeVisible();
+    const githubIssuePage = await context.waitForEvent("page");
+    await githubIssuePage.waitForLoadState();
+    await expect(githubIssuePage.getByText("to AnthonyBuisset")).toBeVisible();
+    await expect(githubIssuePage.getByText("10 items included")).toBeVisible();
+    await expect(githubIssuePage.getByText("$1,000 for 2 days of work")).toBeVisible();
 
     const paymentId = await payment.paymentId();
     if (paymentId) {
-      await populateReceipt(paymentId, projects.projectA, {
+      await populateReceipt(paymentId, project, {
         currencyCode: "USDC",
-        recipientETHIdentity: { type: EthereumIdentityType.EthereumAddress, optEthAddress: "", optEthName: null },
-        transactionHashOrReference: "",
+        recipientETHIdentity: {
+          type: EthereumIdentityType.EthereumName,
+          optEthAddress: null,
+          optEthName: "vitalik.eth",
+        },
+        transactionHashOrReference: "0xb9db5477fc9c50bfbf2253c55d03724ebee12db8dacda22cc1add1605a5a6cba",
         amount: 100,
       });
     }
