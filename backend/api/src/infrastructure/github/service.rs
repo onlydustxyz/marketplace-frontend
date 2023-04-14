@@ -84,8 +84,10 @@ impl GithubService for github::Client {
 			.state(models::IssueState::Closed)
 			.send()
 			.await
-			.map_err(Into::<github::Error>::into)?;
-
+			.map_err(|err| {
+				olog::warn!("{}", err.to_string());
+				Into::<github::Error>::into(err)
+			})?;
 		Ok(())
 	}
 }

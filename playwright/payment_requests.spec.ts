@@ -19,7 +19,8 @@ test.describe("As a project lead, I", () => {
     restoreDB();
   });
 
-  test("can request a payment", async ({ page, projects, users, repos, signIn, context }) => {
+  test("can request a payment", async ({ page, projects, users, repos, signIn, context, request }) => {
+    test.slow();
     const recipient = users.Anthony;
     const project = projects.ProjectA;
 
@@ -136,6 +137,25 @@ test.describe("As a project lead, I", () => {
         amount: 100,
       });
     }
+
+    const githubIssueUrl = githubIssuePage.url();
+    const githubApiIssueUrl = githubIssueUrl.replace("github.com", "api.github.com/repos");
+
+    const githubApiIssue = await request.get(githubApiIssueUrl);
+
+    expect(await githubApiIssue.json()).toMatchObject({
+      state: "closed",
+    });
+
+    const githubApiIssueCommentsUrl = githubApiIssueUrl.concat("/comments");
+    const githubApiIssueComments = await request.get(githubApiIssueCommentsUrl);
+
+    expect(await githubApiIssueComments.json()).toContainEqual(
+      expect.objectContaining({
+        body: expect.stringContaining("has been processed and payment is complete."),
+      })
+    );
+
     await sidePanel.getByRole("button").click();
   });
 
