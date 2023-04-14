@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import QueryWrapper from "src/components/QueryWrapper";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useCachableHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import {
   GetGithubRepositoryDetailsQuery,
@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function GithubRepoDetails({ githubRepoId }: Props) {
-  const { data, loading } = useHasuraQuery<GetGithubRepositoryDetailsQuery>(
+  const { data, loading } = useCachableHasuraQuery<GetGithubRepositoryDetailsQuery>(
     GET_GITHUB_REPOSITORY_DETAILS_QUERY,
     HasuraUserRole.Public,
     {

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { uniqBy } from "lodash";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useCachableHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import isDefined from "src/utils/isDefined";
 import { GetProjectContributorsForOverviewQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
@@ -16,7 +16,7 @@ interface OverviewPanelProps {
 }
 
 export default function OverviewPanel({ projectId, ...props }: OverviewPanelProps) {
-  const getProjectContributorsForOverview = useHasuraQuery<GetProjectContributorsForOverviewQuery>(
+  const getProjectContributorsForOverview = useCachableHasuraQuery<GetProjectContributorsForOverviewQuery>(
     GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY,
     HasuraUserRole.Public,
     { variables: { projectId } }
