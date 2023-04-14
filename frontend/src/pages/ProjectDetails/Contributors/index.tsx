@@ -8,11 +8,11 @@ import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { HasuraUserRole } from "src/types";
 import { GetProjectContributorsQuery, GetProjectRemainingBudgetQuery } from "src/__generated/graphql";
-import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
 import { useOutletContext } from "react-router-dom";
 import { getContributors } from "src/utils/project";
 import Title from "src/pages/ProjectDetails/Title";
+import { Suspense } from "react";
 
 const Contributors: React.FC = () => {
   const { T } = useIntl();
@@ -43,16 +43,21 @@ const Contributors: React.FC = () => {
   const remainingBudget = getProjectRemainingBudget.data?.projectsByPk?.budgets.at(0)?.remainingAmount;
 
   return (
-    <QueryWrapper query={getProjectContributorsQuery}>
+    <>
       <Title>{T("project.details.contributors.title")}</Title>
-      {contributors.length ? (
-        <Card className="h-full">
-          <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />{" "}
-        </Card>
-      ) : (
-        <ContributorsTableFallback projectName={getProjectContributorsQuery.data?.projectsByPk?.projectDetails?.name} />
-      )}
-    </QueryWrapper>
+      <Suspense fallback={<div />}>
+        {contributors?.length > 0 && (
+          <Card className="h-full">
+            <ContributorsTable {...{ contributors, isProjectLeader, remainingBudget, projectId }} />
+          </Card>
+        )}
+        {!contributors.length && !getProjectContributorsQuery.loading && (
+          <ContributorsTableFallback
+            projectName={getProjectContributorsQuery.data?.projectsByPk?.projectDetails?.name}
+          />
+        )}
+      </Suspense>
+    </>
   );
 };
 
