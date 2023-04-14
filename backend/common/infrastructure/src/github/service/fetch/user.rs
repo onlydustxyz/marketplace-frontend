@@ -17,4 +17,10 @@ impl GithubFetchUserService for github::Client {
 		let user = self.get_user_by_id(id).await?;
 		Ok(GithubUser::from_octocrab_user(user))
 	}
+
+	#[instrument(skip(self))]
+	async fn current_user(&self) -> GithubServiceResult<GithubUser> {
+		let user = self.get_current_user().await?;
+		Ok(GithubUser::from_octocrab_user(user))
+	}
 }

@@ -56,8 +56,7 @@ impl GithubService for github::Client {
 		repo_name: &str,
 		issue_number: &GithubIssueNumber,
 	) -> GithubServiceResult<Option<String>> {
-		let dusty_bot =
-			self.octocrab().current().user().await.map_err(Into::<github::Error>::into)?;
+		let dusty_bot = self.get_current_user().await?;
 
 		let mut comments: Vec<_> = self
 			.all_issue_comments(repo_owner, repo_name, issue_number)

@@ -137,6 +137,12 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
+	pub async fn get_current_user(&self) -> Result<User, Error> {
+		let user = self.octocrab().current().user().await?;
+		Ok(user)
+	}
+
+	#[instrument(skip(self))]
 	pub async fn get_issue(
 		&self,
 		repo_owner: &str,
