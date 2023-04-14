@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import QueryWrapper from "src/components/QueryWrapper";
 import { useAuth } from "src/hooks/useAuth";
-import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useCachableHasuraQuery, useHasuraMutation } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole, LanguageMap } from "src/types";
 import { GetProjectQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 import onlyDustLogo from "assets/img/onlydust-logo-space.jpg";
@@ -41,7 +41,7 @@ const ProjectDetails: React.FC = () => {
     HasuraUserRole.RegisteredUser
   );
 
-  const getProjectQuery = useHasuraQuery<GetProjectQuery>(GET_PROJECT_QUERY, HasuraUserRole.Public, {
+  const getProjectQuery = useCachableHasuraQuery<GetProjectQuery>(GET_PROJECT_QUERY, HasuraUserRole.Public, {
     variables: { id: projectId },
     skip: !projectId,
   });

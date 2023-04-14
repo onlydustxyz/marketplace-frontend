@@ -5,7 +5,7 @@ import { useOutletContext } from "react-router-dom";
 import { ReactNode, useEffect, useState } from "react";
 import { GetProjectOverviewDetailsQuery, ProjectLeadFragment, SponsorFragment } from "src/__generated/graphql";
 import { gql } from "@apollo/client";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useCachableHasuraQuery } from "src/hooks/useHasuraQuery";
 import QueryWrapper from "src/components/QueryWrapper";
 import Card from "src/components/Card";
 import GithubRepoDetails from "./GithubRepoDetails";
@@ -40,7 +40,7 @@ export default function Overview() {
     projectId,
   } = useOutletContext<OutletContext>();
 
-  const { data, loading } = useHasuraQuery<GetProjectOverviewDetailsQuery>(
+  const { data, loading } = useCachableHasuraQuery<GetProjectOverviewDetailsQuery>(
     GET_PROJECT_OVERVIEW_DETAILS,
     HasuraUserRole.Public,
     {

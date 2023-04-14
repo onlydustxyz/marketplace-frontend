@@ -1,7 +1,7 @@
 import Card from "src/components/Card";
 import ContributorsTableFallback from "src/components/ContributorsTableFallback";
 import ContributorsTable from "src/pages/ProjectDetails/Contributors/ContributorsTable";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useCachableHasuraQuery, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { useIntl } from "src/hooks/useIntl";
 import { HasuraUserRole } from "src/types";
 import {
@@ -28,7 +28,7 @@ export default function Contributors() {
 
   const isProjectLeader = !!ledProjectIds.find(element => element === projectId);
 
-  const getProjectContributorsQueryAsPublic = useHasuraQuery<GetProjectContributorsQuery>(
+  const getProjectContributorsQueryAsPublic = useCachableHasuraQuery<GetProjectContributorsQuery>(
     GetProjectContributorsDocument,
     HasuraUserRole.Public,
     {

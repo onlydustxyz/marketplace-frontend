@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
-import { useHasuraQuery } from "src/hooks/useHasuraQuery";
+import { useCachableHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import {
   getDeduplicatedAggregatedLanguages,
@@ -18,7 +18,7 @@ type Props = {
 
 export default function FilterPanel({ isProjectLeader }: Props) {
   const { githubUserId } = useAuth();
-  const filterOptionsQuery = useHasuraQuery<GetAllFilterOptionsQuery>(
+  const filterOptionsQuery = useCachableHasuraQuery<GetAllFilterOptionsQuery>(
     GET_ALL_FILTER_OPTIONS_QUERY,
     HasuraUserRole.Public
   );
