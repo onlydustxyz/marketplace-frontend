@@ -31,6 +31,7 @@ pub use repo::RepoFromOctocrab;
 pub struct Config {
 	base_url: String,
 	personal_access_tokens: String,
+	#[serde(default)]
 	headers: HashMap<String, String>,
 	max_calls_per_request: Option<PositiveCount>,
 }
