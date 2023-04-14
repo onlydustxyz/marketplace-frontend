@@ -22,6 +22,9 @@ slug_commit() {
 }
 
 deploy_backends() {
+    log_info "Creating DB backup..."
+    execute heroku pg:backups:capture -a od-hasura-production
+
     log_info "Retrieving apps infos..."
     staging_commit=`slug_commit od-api-staging`
     production_commit=`slug_commit od-api-production`
