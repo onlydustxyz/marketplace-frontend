@@ -64,6 +64,7 @@ rollback_database() {
     ask "OK to promote $rollback_database for all apps"
     if [ $? -eq 0 ]; then
         for app in ${ALL_DB_CONNECTED_APPS[@]}; do
+            execute heroku addons:attach $rollback_database -a $app
             execute heroku pg:promote $rollback_database -a $app
         done
     fi
@@ -81,7 +82,7 @@ rollback_frontend() {
     log_info "Listing previous deployments"
     execute vercel list marketplace --prod
 
-    read -p "Which deployment do you want to rollback to ? (leave blank for 1 deployment) " rollback_deployment
+    read -p "Which deployment do you want to rollback to ? (deployment url or id) " rollback_deployment
     execute vercel rollback $rollback_deployment
 }
 
