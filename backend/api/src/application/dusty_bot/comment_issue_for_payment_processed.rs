@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use derive_more::Constructor;
-use domain::{DomainError, GithubFetchRepoService, Payment, PaymentId, PaymentWorkItem};
+use domain::{DomainError, GithubFetchService, Payment, PaymentId, PaymentWorkItem};
 use futures::future::try_join_all;
 
 use crate::domain::GithubService;
@@ -9,7 +9,7 @@ use crate::domain::GithubService;
 #[derive(Constructor)]
 pub struct Usecase {
 	github_service: Arc<dyn GithubService>,
-	fetch_repo_service: Arc<dyn GithubFetchRepoService>,
+	fetch_service: Arc<dyn GithubFetchService>,
 }
 
 impl Usecase {
@@ -18,7 +18,12 @@ impl Usecase {
 		payment_id: &PaymentId,
 		work_item: &PaymentWorkItem,
 	) -> Result<(), DomainError> {
-		let repository = self.fetch_repo_service.repo_by_id(work_item.repo_id()).await?;
+		let repository = self.fetch_service.repo_by_id(work_item.repo_id()).await?;
+		let issue = self
+			.fetch_service
+			.issue_by_repo_id(work_item.repo_id(), work_item.issue_number())
+			.await?;
+		let current_user = self.fetch_service.current_user().await?;
 
 		let previous_comment = self
 			.github_service
@@ -38,13 +43,15 @@ impl Usecase {
 			)
 			.await?;
 
-		self.github_service
-			.close_issue(
-				repository.owner(),
-				repository.name(),
-				work_item.issue_number(),
-			)
-			.await?;
+		if issue.author_id() == current_user.id() {
+			self.github_service
+				.close_issue(
+					repository.owner(),
+					repository.name(),
+					work_item.issue_number(),
+				)
+				.await?;
+		}
 
 		Ok(())
 	}
