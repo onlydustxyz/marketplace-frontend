@@ -52,36 +52,37 @@ LEFT OUTER JOIN (
 ) created ON (projects.id::TEXT = created.id);
 "
 )]
-// TODO: Uncomment when crm_github_repos is available
-// #[case("
-// SELECT github_repo_details.id as github_repo_id, crm_github_repos.owner as github_repo_owner,
-// crm_github_repos.name as github_repo_name, github_repo_details.languages as
-// github_repo_languages, project_github_repos.project_id FROM github_repo_details
-// INNER JOIN project_github_repos ON project_github_repos.github_repo_id = github_repo_details.id
-// INNER JOIN crm_github_repos ON crm_github_repos.id = github_repo_details.id;
-// ")]
-// #[case("
-// SELECT payment_requests.id, project_id, budgets.id as budget_id, amount_in_usd, recipient_id,
-// requestor_id, Items.items AS PRs, requested.timestamp as Requested, processed.timestamp as
-// Processed FROM payment_requests
-// INNER JOIN budgets ON payment_requests.budget_id = budgets.id
-// LEFT OUTER JOIN (
-// 	SELECT string_agg('https://github.com/'||r.owner||'/'||r.name||'/issues/'||issue_number, ', ') AS Items, payment_id
-// 	FROM work_items
-// 	INNER JOIN crm_github_repos AS r ON id = work_items.repo_id
-// 	GROUP BY payment_id
-// ) Items ON (payment_requests.id = Items.payment_id)
-// INNER JOIN (
-//   SELECT payload->'Budget'->'event'->'Payment'->'event'->'Requested'->>'id' as id, \"timestamp\"
-//   FROM events
-//   WHERE aggregate_name = 'PROJECT' AND payload->'Budget'->'event'->'Payment'->'event'?'Requested'
-// ) requested ON (payment_requests.id::TEXT = requested.id)
-// LEFT OUTER JOIN (
-//   SELECT payload->'Budget'->'event'->'Payment'->'event'->'Processed'->>'id' as id, \"timestamp\"
-//   FROM events
-//   WHERE aggregate_name = 'PROJECT' AND payload->'Budget'->'event'->'Payment'->'event'?'Processed'
-// ) processed ON (payment_requests.id::TEXT = processed.id);
-// ")]
+#[case(
+	"
+SELECT github_repo_details.id as github_repo_id, crm_github_repos.owner as github_repo_owner,
+crm_github_repos.name as github_repo_name, github_repo_details.languages as
+github_repo_languages, project_github_repos.project_id FROM github_repo_details
+INNER JOIN project_github_repos ON project_github_repos.github_repo_id = github_repo_details.id
+INNER JOIN crm_github_repos ON crm_github_repos.id = github_repo_details.id;
+"
+)]
+#[case("
+SELECT payment_requests.id, project_id, budgets.id as budget_id, amount_in_usd, recipient_id,
+requestor_id, Items.items AS PRs, requested.timestamp as Requested, processed.timestamp as
+Processed FROM payment_requests
+INNER JOIN budgets ON payment_requests.budget_id = budgets.id
+LEFT OUTER JOIN (
+	SELECT string_agg('https://github.com/'||r.owner||'/'||r.name||'/issues/'||issue_number, ', ') AS Items, payment_id
+	FROM work_items
+	INNER JOIN crm_github_repos AS r ON id = work_items.repo_id
+	GROUP BY payment_id
+) Items ON (payment_requests.id = Items.payment_id)
+INNER JOIN (
+  SELECT payload->'Budget'->'event'->'Payment'->'event'->'Requested'->>'id' as id, \"timestamp\"
+  FROM events
+  WHERE aggregate_name = 'PROJECT' AND payload->'Budget'->'event'->'Payment'->'event'?'Requested'
+) requested ON (payment_requests.id::TEXT = requested.id)
+LEFT OUTER JOIN (
+  SELECT payload->'Budget'->'event'->'Payment'->'event'->'Processed'->>'id' as id, \"timestamp\"
+  FROM events
+  WHERE aggregate_name = 'PROJECT' AND payload->'Budget'->'event'->'Payment'->'event'?'Processed'
+) processed ON (payment_requests.id::TEXT = processed.id);
+")]
 #[case(
 	"
 SELECT id, project_id, github_user_id
