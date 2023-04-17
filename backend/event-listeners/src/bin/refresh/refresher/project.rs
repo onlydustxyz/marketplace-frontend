@@ -4,9 +4,10 @@ use domain::Project;
 use event_listeners::{
 	domain::{BudgetProjector, CrmProjector, ProjectProjector},
 	infrastructure::database::{
-		BudgetRepository, CrmGithubRepoRepository, GithubRepoDetailsRepository, PaymentRepository,
-		PaymentRequestRepository, ProjectGithubRepoDetailsRepository, ProjectLeadRepository,
-		ProjectRepository, WorkItemRepository,
+		BudgetRepository, CrmGithubRepoRepository, GithubRepoDetailsRepository,
+		GithubRepoIndexRepository, PaymentRepository, PaymentRequestRepository,
+		ProjectGithubRepoDetailsRepository, ProjectLeadRepository, ProjectRepository,
+		WorkItemRepository,
 	},
 };
 use infrastructure::{database, github};
@@ -19,6 +20,7 @@ pub fn create(database: Arc<database::Client>, github: Arc<github::Client>) -> i
 		ProjectLeadRepository::new(database.clone()),
 		GithubRepoDetailsRepository::new(database.clone()),
 		ProjectGithubRepoDetailsRepository::new(database.clone()),
+		GithubRepoIndexRepository::new(database.clone()),
 		github.clone(),
 	);
 
