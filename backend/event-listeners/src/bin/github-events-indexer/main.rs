@@ -32,7 +32,7 @@ async fn sleep() {
 	let seconds = std::env::var("GITHUB_EVENTS_INDEXER_SLEEP_DURATION")
 		.unwrap_or_default()
 		.parse()
-		.unwrap_or(1);
+		.unwrap_or(60);
 
 	tokio::time::sleep(Duration::from_secs(seconds)).await;
 }
