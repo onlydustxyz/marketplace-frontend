@@ -1,5 +1,6 @@
 use std::collections::HashSet;
 
+use chrono::Duration;
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
 use thiserror::Error;
@@ -158,13 +159,21 @@ impl Project {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
+		duration_worked: Duration,
 		reason: Reason,
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
 		Ok(self
 			.budget
 			.as_ref()
 			.ok_or(Error::NoBudget)?
-			.request_payment(payment_id, requestor_id, recipient_id, amount, reason)?
+			.request_payment(
+				payment_id,
+				requestor_id,
+				recipient_id,
+				amount,
+				duration_worked,
+				reason,
+			)?
 			.into_iter()
 			.map(|event| ProjectEvent::Budget { id: self.id, event })
 			.collect())

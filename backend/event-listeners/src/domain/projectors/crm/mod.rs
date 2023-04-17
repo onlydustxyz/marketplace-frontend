@@ -128,6 +128,7 @@ mod tests {
 		impl GithubFetchUserService for GithubService {
 			async fn user(&self, username: &str) -> GithubServiceResult<GithubUser>;
 			async fn user_by_id(&self, id: &GithubUserId) -> GithubServiceResult<GithubUser>;
+			async fn current_user(&self) -> GithubServiceResult<GithubUser>;
 		}
 		#[async_trait]
 		impl GithubFetchRepoService for GithubService{

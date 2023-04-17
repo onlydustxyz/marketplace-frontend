@@ -1,3 +1,10 @@
+mod auth;
+pub use auth::{
+	User as AuthUser, UserRepository as AuthUserRepository,
+	UserRepositoryError as AuthUserRepositoryError,
+	UserRepositoryResult as AuthUserRepositoryResult,
+};
+
 mod value_objects;
 pub use value_objects::*;
 
@@ -26,7 +33,7 @@ mod payment;
 pub use payment::{
 	Error as PaymentError, Event as PaymentEvent, Id as PaymentId, Payment,
 	Reason as PaymentReason, Receipt as PaymentReceipt, ReceiptId as PaymentReceiptId,
-	Status as PaymentStatus,
+	Status as PaymentStatus, WorkItem as PaymentWorkItem,
 };
 
 mod user;

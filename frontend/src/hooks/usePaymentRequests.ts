@@ -116,7 +116,19 @@ export const PAYMENT_REQUESTS_FOR_PROJECT_QUERY = gql`
 `;
 
 export const REQUEST_PAYMENT_MUTATION = gql`
-  mutation RequestPayment($amount: Int!, $contributorId: Int!, $projectId: Uuid!, $reason: Reason!) {
-    requestPayment(amountInUsd: $amount, projectId: $projectId, reason: $reason, recipientId: $contributorId)
+  mutation RequestPayment(
+    $amount: Int!
+    $contributorId: Int!
+    $hoursWorked: Int!
+    $projectId: Uuid!
+    $reason: Reason!
+  ) {
+    requestPayment(
+      amountInUsd: $amount
+      hoursWorked: $hoursWorked
+      projectId: $projectId
+      reason: $reason
+      recipientId: $contributorId
+    )
   }
 `;

@@ -241,6 +241,7 @@ impl Mutation {
 		project_id: Uuid,
 		recipient_id: i32,
 		amount_in_usd: i32,
+		hours_worked: i32,
 		reason: PaymentReason,
 	) -> Result<Uuid> {
 		let caller_id = *context.caller_info()?.user_id();
@@ -259,6 +260,7 @@ impl Mutation {
 				caller_id,
 				(recipient_id as i64).into(),
 				amount_in_usd as u32,
+				hours_worked as u32,
 				reason,
 			)
 			.await?;

@@ -42,6 +42,9 @@ uuid = {version = "0.8.2", default_features = false, features = [
 octocrab = { git = "https://github.com/onlydustxyz/octocrab.git", features=["stream"] }
 reqwest = "0.11.13"
 
+# Graphql client
+graphql_client = "0.12.0"
+
 # Tracing
 opentelemetry = {version = "0.18.0", features = ["rt-tokio"]}
 opentelemetry-datadog = {version = "0.6.0", features = ["reqwest-client"]}

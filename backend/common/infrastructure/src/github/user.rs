@@ -7,6 +7,11 @@ pub trait UserFromOctocrab {
 
 impl UserFromOctocrab for GithubUser {
 	fn from_octocrab_user(user: User) -> Self {
-		Self::new(user.id.0 as i32, user.login, user.avatar_url, user.html_url)
+		Self::new(
+			(user.id.0 as i64).into(),
+			user.login,
+			user.avatar_url,
+			user.html_url,
+		)
 	}
 }

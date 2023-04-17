@@ -53,6 +53,7 @@ diesel::table! {
         amount_in_usd -> Int8,
         requested_at -> Timestamp,
         invoice_received_at -> Nullable<Timestamp>,
+        hours_worked -> Int4,
     }
 }
 
