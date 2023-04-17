@@ -14,15 +14,17 @@ import WorkItemSidePanel from "./WorkItemSidePanel";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import { sortBy, uniqBy } from "lodash";
 import Callout from "src/components/Callout";
-import { GithubContributorFragment } from "src/__generated/graphql";
+import { GithubContributorFragment, IssueDetailsFragment } from "src/__generated/graphql";
+import QueryWrapper from "src/components/QueryWrapper";
 
 interface Props {
   projectId: string;
   budget: Budget;
-  onWorkEstimationChange: (workEstimation: number) => void;
+  onWorkEstimationChange: (amountToPay: number, hoursWorked: number) => void;
   onWorkItemsChange: (workItems: WorkItem[]) => void;
   contributor: GithubContributorFragment | null | undefined;
   setContributor: (contributor: GithubContributorFragment | null | undefined) => void;
+  getUnpaidMergedPullsQuery: { data?: IssueDetailsFragment[] | null; loading: boolean };
 }
 
 type WorkItemAction =
@@ -64,6 +66,7 @@ const View: React.FC<Props> = ({
   projectId,
   contributor,
   setContributor,
+  getUnpaidMergedPullsQuery,
 }) => {
   const { T } = useIntl();
   const navigate = useNavigate();
@@ -71,6 +74,10 @@ const View: React.FC<Props> = ({
   const [workItems, dispatchWorkItems] = useReducer(workItemsReducer, []);
 
   useEffect(() => onWorkItemsChange(workItems), [workItems, onWorkItemsChange]);
+  useEffect(() => {
+    dispatchWorkItems({ action: "clear" });
+    getUnpaidMergedPullsQuery.data?.forEach(workItem => dispatchWorkItems({ action: "add", workItem }));
+  }, [getUnpaidMergedPullsQuery.data, contributor]);
 
   const displayCallout = contributor && !contributor?.user?.userId;
 
@@ -122,12 +129,14 @@ const View: React.FC<Props> = ({
                       />
                     ))}
                   </div>
-                  <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn" className="mx-4 pt-8">
-                    <Button size={ButtonSize.Md} type={ButtonType.Secondary} width={Width.Full}>
-                      <Add />
-                      {T("payment.form.workItems.addWorkItem")}
-                    </Button>
-                  </div>
+                  <QueryWrapper query={getUnpaidMergedPullsQuery}>
+                    <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn" className="mx-4 pt-8">
+                      <Button size={ButtonSize.Md} type={ButtonType.Secondary} width={Width.Full}>
+                        <Add />
+                        {T("payment.form.workItems.addWorkItem")}
+                      </Button>
+                    </div>
+                  </QueryWrapper>
                 </div>
               )}
             </Card>

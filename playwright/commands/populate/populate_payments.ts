@@ -66,6 +66,7 @@ const populatePaymentItem = async (
         contributorId: payment.recipientGithubId,
         amount: paymentItem.amount,
         reason: paymentItem.reason,
+        hoursWorked: Math.ceil(paymentItem.amount / (500.0 / 8)),
       },
     }
   );
@@ -80,7 +81,7 @@ const populatePaymentItem = async (
   return { ...payment, ...paymentItem, id: paymentId };
 };
 
-const populateReceipt = async (paymentId: Uuid, project: Project, receipt: PaymentReceipt) => {
+export const populateReceipt = async (paymentId: Uuid, project: Project, receipt: PaymentReceipt) => {
   if (receipt.recipientETHIdentity) {
     await mutateAsAdmin<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>({
       mutation: AddEthPaymentReceiptDocument,

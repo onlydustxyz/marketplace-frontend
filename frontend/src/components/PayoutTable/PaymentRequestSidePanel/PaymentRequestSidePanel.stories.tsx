@@ -2,6 +2,7 @@ import { range } from "lodash";
 import { PaymentStatus } from "src/types";
 import { IssueDetailsFragment, PaymentRequestDetailsFragment, Status, Type } from "src/__generated/graphql";
 import View, { Props } from "./View";
+import { daysFromNow } from "src/utils/date";
 
 const statuses = {
   payoutInfoMissingAsLeader: {
@@ -40,8 +41,6 @@ export default {
     },
   },
 };
-
-const daysFromNow = (days: number) => new Date(Date.now() - days * 24 * 3600 * 1000);
 
 const issues: IssueDetailsFragment[] = range(1, 50).map(id => ({
   __typename: "Issue",

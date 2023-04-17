@@ -94,7 +94,8 @@ mod tests {
 	use domain::{
 		GithubFetchIssueService, GithubFetchRepoService, GithubFetchUserService, GithubIssue,
 		GithubIssueNumber, GithubRepo, GithubRepoLanguages, GithubSearchIssueService,
-		GithubSearchUserService, GithubServiceResult, GithubUser, GithubUserId,
+		GithubSearchUserService, GithubServiceFilters, GithubServiceResult, GithubUser,
+		GithubUserId,
 	};
 	use infrastructure::database::DatabaseError;
 	use mockall::{mock, predicate::eq};
@@ -121,12 +122,13 @@ mod tests {
 				issue_number: &GithubIssueNumber,
 			) -> GithubServiceResult<GithubIssue>;
 
-			async fn pulls_by_repo_id(&self, repo_id: &GithubRepositoryId) -> GithubServiceResult<Vec<GithubIssue>>;
+			async fn pulls_by_repo_id(&self, repo_id: &GithubRepositoryId, filters: &GithubServiceFilters) -> GithubServiceResult<Vec<GithubIssue>>;
 		}
 		#[async_trait]
 		impl GithubFetchUserService for GithubService {
 			async fn user(&self, username: &str) -> GithubServiceResult<GithubUser>;
 			async fn user_by_id(&self, id: &GithubUserId) -> GithubServiceResult<GithubUser>;
+			async fn current_user(&self) -> GithubServiceResult<GithubUser>;
 		}
 		#[async_trait]
 		impl GithubFetchRepoService for GithubService{

@@ -8,16 +8,15 @@ import Link from "src/icons/Link";
 import EmptyState from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/EmptyState";
 import Toggle from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Toggle";
 import OtherIssueInput from "./OtherIssueInput";
-import { MAX_ISSUE_COUNT } from ".";
+import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
 
 type Props<T, E> = {
   workItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
-  isMore: boolean;
   query: QueryResult<T, E>;
 };
 
-export default function IssuesView<T, E>({ workItems, onWorkItemAdded, isMore, query }: Props<T, E>) {
+export default function IssuesView<T, E>({ workItems, onWorkItemAdded, query }: Props<T, E>) {
   const { T } = useIntl();
 
   const [addOtherIssueEnabled, setAddOtherIssueEnabled] = useState(false);
@@ -55,11 +54,9 @@ export default function IssuesView<T, E>({ workItems, onWorkItemAdded, isMore, q
             <EmptyState />
           </div>
         )}
-        {isMore && (
-          <div className="mr-4">
-            <Callout>{T("payment.form.workItems.issues.moreCallout", { count: MAX_ISSUE_COUNT })}</Callout>
-          </div>
-        )}
+        <div className="mr-4">
+          <Callout>{T("payment.form.workItems.issues.moreCallout", { count: SEARCH_MAX_DAYS_COUNT })}</Callout>
+        </div>
       </QueryWrapper>
     </div>
   );

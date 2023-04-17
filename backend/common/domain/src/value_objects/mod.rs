@@ -15,3 +15,6 @@ pub use ethereum_name::EthereumName;
 
 mod ethereum_identity;
 pub use ethereum_identity::EthereumIdentity;
+
+mod positive_count;
+pub use positive_count::Count as PositiveCount;

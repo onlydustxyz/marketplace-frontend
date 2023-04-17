@@ -1,0 +1,44 @@
+fragment ProjectContributorsForPaymentSelect on Projects {
+  ...ProjectContributorsByLeader
+  id
+  githubRepos {
+    githubRepoDetails {
+      id
+      content {
+        id
+        contributors {
+          ...GithubContributor
+        }
+      }
+    }
+  }
+  budgets {
+    paymentRequests {
+      id
+      workItems {
+        repoId
+        issueNumber
+      }
+      githubRecipient {
+        ...GithubContributor
+      }
+    }
+  }
+}
+
+query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
+  searchUsers(query: $handleSubstringQuery, sort: "followers", order: "desc") {
+    id
+    login
+    avatarUrl
+    user {
+      userId
+    }
+  }
+}
+
+query GetProjectContributorsForPaymentSelect($projectId: uuid!, $createdSince: DateTimeUtc) {
+  projectsByPk(id: $projectId) {
+    ...ProjectContributorsForPaymentSelect
+  }
+}

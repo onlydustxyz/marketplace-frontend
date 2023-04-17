@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, vitest } from "vitest";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
@@ -8,13 +8,29 @@ import { MemoryRouterProviderFactory, renderWithIntl } from "src/test/utils";
 import PaymentForm from ".";
 import { LOCAL_STORAGE_TOKEN_SET_KEY } from "src/hooks/useTokenSet";
 import { FIND_USER_QUERY } from "src/hooks/useIsGithubLoginValid";
-import { FetchIssueDocument, FetchIssueQueryResult, FetchIssueQueryVariables, Status } from "src/__generated/graphql";
+import {
+  FetchIssueDocument,
+  FetchIssueQueryResult,
+  FetchIssueQueryVariables,
+  GetPaidWorkItemsDocument,
+  GetPaidWorkItemsQueryResult,
+  GetPaidWorkItemsQueryVariables,
+  SearchIssuesDocument,
+  SearchIssuesQueryResult,
+  SearchIssuesQueryVariables,
+  GetProjectContributorsForPaymentSelectDocument,
+  GetProjectContributorsForPaymentSelectQueryResult,
+  Status,
+} from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
-import { GET_PROJECT_CONTRIBUTORS_QUERY } from "./ContributorSelect";
+import { GithubContributorFragment } from "src/__generated/graphql";
+import { IssueState, IssueType, buildQuery } from "./WorkItemSidePanel/Issues/useUnpaidIssues";
+import { daysFromNow } from "src/utils/date";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };
-const TEST_GITHUB_USER = {
-  id: "test-user-id",
+const TEST_GITHUB_USER: GithubContributorFragment = {
+  __typename: "User",
+  id: 23326,
   login: "test-login",
   avatarUrl: "test-avatar-url",
   user: { userId: "test-user-id" },
@@ -33,6 +49,10 @@ expect.extend(matchers);
 
 vi.mock("jwt-decode", () => ({
   default: () => ({ [CLAIMS_KEY]: { [PROJECTS_LED_KEY]: '{"test-project-id"}' } }),
+}));
+
+vi.mock("src/utils/date", () => ({
+  daysFromNow: () => new Date(2022, 3, 10),
 }));
 
 vi.mock("axios", () => ({
@@ -93,27 +113,76 @@ const graphQlMocks = [
   fetchPrMock,
   {
     request: {
-      query: GET_PROJECT_CONTRIBUTORS_QUERY,
+      query: GetProjectContributorsForPaymentSelectDocument,
       variables: {
         projectId: TEST_PROJECT_ID,
+        createdSince: daysFromNow(60),
       },
     },
     result: {
       data: {
         projectsByPk: {
+          __typename: "Projects",
           id: TEST_PROJECT_ID,
           githubRepos: [
             {
               githubRepoDetails: {
+                id: 123456,
                 content: {
-                  id: "test-id",
+                  id: 123456,
                   contributors: [TEST_GITHUB_USER],
                 },
+                pullRequests: [],
               },
             },
           ],
+          budgets: [],
         },
-      },
+      } as GetProjectContributorsForPaymentSelectQueryResult["data"],
+    },
+  },
+  {
+    request: {
+      query: GetPaidWorkItemsDocument,
+      variables: {
+        projectId: TEST_PROJECT_ID,
+      } as GetPaidWorkItemsQueryVariables,
+    },
+    result: {
+      data: {
+        projectsByPk: {
+          githubRepos: [
+            {
+              githubRepoDetails: {
+                id: 123456,
+                content: { __typename: "Repository", id: 123456, owner: "owner", name: "name" },
+              },
+            },
+          ],
+          budgets: [],
+        },
+      } as GetPaidWorkItemsQueryResult["data"],
+    },
+  },
+  {
+    request: {
+      query: SearchIssuesDocument,
+      variables: {
+        query: buildQuery({
+          author: TEST_USER.displayName,
+          repos: [{ id: 1234, owner: "owner", name: "name" }],
+          state: IssueState.Merged,
+          type: IssueType.PullRequest,
+        }),
+        order: "desc",
+        sort: "created",
+        perPage: 100,
+      } as SearchIssuesQueryVariables,
+    },
+    result: {
+      data: {
+        searchIssues: [],
+      } as SearchIssuesQueryResult["data"],
     },
   },
 ];

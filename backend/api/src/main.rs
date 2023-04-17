@@ -14,7 +14,9 @@ use api::{
 };
 use domain::AggregateRootRepository;
 use dotenv::dotenv;
-use infrastructure::{amqp, config, database, github, tracing::Tracer, web3::ens};
+use infrastructure::{
+	amqp, config, database, github, graphql as infrastructure_graphql, tracing::Tracer, web3::ens,
+};
 use olog::info;
 
 #[tokio::main]
@@ -41,6 +43,9 @@ async fn main() -> Result<()> {
 		ProjectSponsorRepository::new(database.clone()),
 		PendingProjectLeaderInvitationsRepository::new(database.clone()),
 		UserInfoRepository::new(database),
+		Arc::new(infrastructure_graphql::Client::new(
+			config.graphql_client(),
+		)?),
 		Arc::new(github),
 		Arc::new(ens::Client::new(config.web3())?),
 		simple_storage,

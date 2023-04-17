@@ -4,7 +4,7 @@ use derive_new::new;
 use juniper::{GraphQLEnum, GraphQLObject};
 use url::Url;
 
-use crate::GithubRepositoryId;
+use crate::{GithubRepositoryId, GithubUser, GithubUserId};
 
 #[derive(Clone, Debug, GraphQLEnum)]
 pub enum Status {
@@ -26,9 +26,11 @@ pub enum Type {
 pub struct Issue {
 	id: i32,
 	repo_id: GithubRepositoryId,
+	author_id: GithubUserId,
 	number: i32,
 	r#type: Type,
 	title: String,
+	author: GithubUser,
 	html_url: Url,
 	status: Status,
 	created_at: DateTime<Utc>,

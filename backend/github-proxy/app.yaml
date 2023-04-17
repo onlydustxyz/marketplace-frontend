@@ -2,12 +2,10 @@ default:
   http:
     api_keys:
       graphql: $GITHUB_PROXY_GRAPHQL_API_KEY
-      github: $GITHUB_PROXY_GITHUB_API_KEY
   github:
     base_url: $GITHUB_BASE_URL
     personal_access_tokens: $GITHUB_PAT
-    headers:
-      api-key: $GITHUB_PROXY_GITHUB_API_KEY
+    max_calls_per_request: $GITHUB_MAX_CALLS_PER_REQUEST
 
 local:
   tracer:

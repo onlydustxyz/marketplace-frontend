@@ -1,3 +1,10 @@
+mod auth;
+pub use auth::{
+	User as AuthUser, UserRepository as AuthUserRepository,
+	UserRepositoryError as AuthUserRepositoryError,
+	UserRepositoryResult as AuthUserRepositoryResult,
+};
+
 mod value_objects;
 pub use value_objects::*;
 
@@ -26,7 +33,7 @@ mod payment;
 pub use payment::{
 	Error as PaymentError, Event as PaymentEvent, Id as PaymentId, Payment,
 	Reason as PaymentReason, Receipt as PaymentReceipt, ReceiptId as PaymentReceiptId,
-	Status as PaymentStatus,
+	Status as PaymentStatus, WorkItem as PaymentWorkItem,
 };
 
 mod user;
@@ -37,13 +44,15 @@ pub use budget::{Budget, Error as BudgetError, Event as BudgetEvent, Id as Budge
 
 mod github;
 pub use github::{
-	FetchIssueService as GithubFetchIssueService, FetchRepoService as GithubFetchRepoService,
-	FetchService as GithubFetchService, FetchUserService as GithubFetchUserService,
-	Issue as GithubIssue, IssueStatus as GithubIssueStatus, IssueType as GithubIssueType,
+	service_filters as github_service_filters, FetchIssueService as GithubFetchIssueService,
+	FetchRepoService as GithubFetchRepoService, FetchService as GithubFetchService,
+	FetchUserService as GithubFetchUserService, Issue as GithubIssue,
+	IssueStatus as GithubIssueStatus, IssueType as GithubIssueType,
 	Languages as GithubRepoLanguages, Repository as GithubRepo,
 	SearchIssueService as GithubSearchIssueService, SearchService as GithubSearchService,
 	SearchUserService as GithubSearchUserService, Service as GithubService,
-	ServiceError as GithubServiceError, ServiceResult as GithubServiceResult, User as GithubUser,
+	ServiceError as GithubServiceError, ServiceFilters as GithubServiceFilters,
+	ServiceResult as GithubServiceResult, User as GithubUser,
 };
 
 pub mod aggregate_root;

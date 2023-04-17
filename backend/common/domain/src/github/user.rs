@@ -3,9 +3,11 @@ use derive_new::new;
 use juniper::GraphQLObject;
 use url::Url;
 
-#[derive(new, Getters, GraphQLObject, Clone)]
+use crate::GithubUserId;
+
+#[derive(new, Debug, Clone, Getters, GraphQLObject)]
 pub struct User {
-	id: i32,
+	id: GithubUserId,
 	login: String,
 	avatar_url: Url,
 	html_url: Url,

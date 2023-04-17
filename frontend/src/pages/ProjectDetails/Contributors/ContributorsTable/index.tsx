@@ -1,23 +1,22 @@
 import { rates } from "src/hooks/useWorkEstimation";
 import { generatePath, useNavigate } from "react-router-dom";
-import { gql } from "@apollo/client";
 import { ContributorsTableFieldsFragment } from "src/__generated/graphql";
 import View, { Contributor } from "./View";
 import { ProjectPaymentsRoutePaths, ProjectRoutePaths, RoutePaths } from "src/App";
 
-type PropsType = {
-  contributors: ContributorsTableFieldsFragment[];
+type Props = {
+  contributors: (ContributorsTableFieldsFragment & { unpaidMergedPullsCount?: number })[];
   isProjectLeader: boolean;
   remainingBudget: number;
   projectId: string;
 };
 
-const ContributorsTable: React.FC<PropsType> = ({
+export default function ContributorsTable({
   contributors: contributorFragments,
   isProjectLeader,
   remainingBudget,
   projectId,
-}) => {
+}: Props) {
   const contributors = contributorFragments.map(c => {
     const paymentRequests = c.paymentRequests?.filter(r => r.budget?.projectId === projectId) || [];
 
@@ -28,6 +27,7 @@ const ContributorsTable: React.FC<PropsType> = ({
       isRegistered: !!c.user?.userId,
       totalEarned: paymentRequests.reduce((acc, r) => acc + r.amountInUsd || 0, 0),
       paidContributions: paymentRequests.reduce((acc, r) => acc + r.workItems?.length, 0) || 0,
+      unpaidMergedPullsCount: c.unpaidMergedPullsCount,
     };
   });
 
@@ -60,30 +60,4 @@ const ContributorsTable: React.FC<PropsType> = ({
       }}
     />
   );
-};
-
-export default ContributorsTable;
-
-export const CONTRIBUTORS_TABLE_FRAGMENT = gql`
-  fragment ContributorsTableFields on User {
-    id
-    login
-    avatarUrl
-    htmlUrl
-    user {
-      userId
-    }
-    paymentRequests {
-      id
-      budget {
-        id
-        projectId
-      }
-      amountInUsd
-      workItems {
-        repoId
-        issueNumber
-      }
-    }
-  }
-`;
+}

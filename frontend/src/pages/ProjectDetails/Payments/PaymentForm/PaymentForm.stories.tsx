@@ -2,8 +2,10 @@ import { MockedProvider } from "@apollo/client/testing";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FIND_USER_QUERY } from "src/hooks/useIsGithubLoginValid";
-import { GET_PROJECT_CONTRIBUTORS_QUERY } from "src/pages/ProjectDetails/Payments/PaymentForm/ContributorSelect";
-import { GetProjectContributorsForPaymentSelectQueryResult } from "src/__generated/graphql";
+import {
+  GetProjectContributorsForPaymentSelectDocument,
+  GetProjectContributorsForPaymentSelectQueryResult,
+} from "src/__generated/graphql";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 import PaymentForm from "./View";
@@ -60,7 +62,7 @@ const TDELABRO = {
 const mocks = [
   {
     request: {
-      query: GET_PROJECT_CONTRIBUTORS_QUERY,
+      query: GetProjectContributorsForPaymentSelectDocument,
       variables: {
         projectId,
       },
@@ -139,6 +141,10 @@ Default.args = {
   contributor: null,
   setContributor: () => {
     return;
+  },
+  getUnpaidMergedPullsQuery: {
+    data: [],
+    loading: false,
   },
 };
 

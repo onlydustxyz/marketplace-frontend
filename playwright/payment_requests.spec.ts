@@ -12,13 +12,15 @@ import {
 } from "./__generated/graphql";
 import { ProjectPaymentsPage } from "./pages/project/payments";
 import { EditProfilePage } from "./pages/edit_profile_page";
+import { populateReceipt } from "./commands/populate/populate_payments";
 
 test.describe("As a project lead, I", () => {
   test.beforeAll(async () => {
     restoreDB();
   });
 
-  test("can request a payment", async ({ page, projects, users, repos, signIn }) => {
+  test("can request a payment", async ({ page, projects, users, repos, signIn, context, request }) => {
+    test.slow();
     const recipient = users.Anthony;
     const project = projects.ProjectA;
 
@@ -44,14 +46,24 @@ test.describe("As a project lead, I", () => {
     expect(await overviewPage.grantedAmount()).toBe("$13.4K / $100K");
 
     const contributorsPage = await projectPage.contributors();
-    const contributors = contributorsPage.contributorsTable();
+    const contributors = await contributorsPage.contributorsTable();
 
-    // TODO Expectations on contributors page
-    const newPaymentPage = await (await contributors).byName(recipient.github.login).pay();
+    expect(await contributors.byName("AnthonyBuisset").totalEarned()).toBe("-");
+    expect(await contributors.byName("AnthonyBuisset").paidContributions()).toBe("-");
+    expect(await contributors.byName("AnthonyBuisset").leftToPay()).toContain("1");
+
+    expect(await contributors.byName("oscarwroche").totalEarned()).toBe("$200");
+    expect(await contributors.byName("oscarwroche").paidContributions()).toBe("1");
+    expect(await contributors.byName("oscarwroche").leftToPay()).toContain("1");
+
+    expect(await contributors.byName("ofux").totalEarned()).toBe("$13,200");
+    expect(await contributors.byName("ofux").paidContributions()).toBe("7");
+    expect(await contributors.byName("ofux").leftToPay()).toBe("-");
+
+    const newPaymentPage = await contributors.byName(recipient.github.login).pay();
     expect(await newPaymentPage.contributorText()).toEqual(recipient.github.login);
 
     await newPaymentPage.requestPayment({
-      pullRequestIndexes: [0],
       otherPullRequests: [
         "https://github.com/od-mocks/cool-repo-A/pull/1",
         "https://github.com/od-mocks/cool-repo-A/pull/2",
@@ -86,7 +98,7 @@ test.describe("As a project lead, I", () => {
     await expect(sidePanel.getByText("to AnthonyBuisset")).toBeVisible();
     await expect(sidePanel.getByText("Created a few seconds ago")).toBeVisible();
     await expect(sidePanel.getByText("Created a few seconds ago")).toBeVisible();
-    await expect(sidePanel.locator("div").filter({ hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible();
+    await expect(sidePanel.locator("div").filter({ hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible(); // auto added
     await expect(sidePanel.locator("div").filter({ hasText: "#2 · Another update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#1 · Update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#6 · This is a new issue" }).first()).toBeVisible();
@@ -99,12 +111,50 @@ test.describe("As a project lead, I", () => {
     await expect(
       sidePanel.locator("div").filter({ hasText: " · Monthly contracting subscription" }).first()
     ).toBeVisible();
-    await expect(
-      sidePanel
-        .locator("div")
-        .filter({ hasText: ` · Documentation by ${recipient.github.login}` })
-        .first()
-    ).toBeVisible();
+    const otherWorkIssueLink = sidePanel
+      .locator("div")
+      .filter({ hasText: ` · Documentation by ${recipient.github.login}` })
+      .last();
+    await expect(otherWorkIssueLink).toBeVisible();
+    await otherWorkIssueLink.click();
+
+    const githubIssuePage = await context.waitForEvent("page");
+    await githubIssuePage.waitForLoadState();
+    await expect(githubIssuePage.getByText("to AnthonyBuisset")).toBeVisible();
+    await expect(githubIssuePage.getByText("10 items included")).toBeVisible();
+    await expect(githubIssuePage.getByText("$1,000 for 2 days of work")).toBeVisible();
+
+    const paymentId = await payment.paymentId();
+    if (paymentId) {
+      await populateReceipt(paymentId, project, {
+        currencyCode: "USDC",
+        recipientETHIdentity: {
+          type: EthereumIdentityType.EthereumName,
+          optEthAddress: null,
+          optEthName: "vitalik.eth",
+        },
+        transactionHashOrReference: "0xb9db5477fc9c50bfbf2253c55d03724ebee12db8dacda22cc1add1605a5a6cba",
+        amount: 100,
+      });
+    }
+
+    const githubIssueUrl = githubIssuePage.url();
+    const githubApiIssueUrl = githubIssueUrl.replace("github.com", "api.github.com/repos");
+
+    const githubApiIssue = await request.get(githubApiIssueUrl);
+
+    expect(await githubApiIssue.json()).toMatchObject({
+      state: "closed",
+    });
+
+    const githubApiIssueCommentsUrl = githubApiIssueUrl.concat("/comments");
+    const githubApiIssueComments = await request.get(githubApiIssueCommentsUrl);
+
+    expect(await githubApiIssueComments.json()).toContainEqual(
+      expect.objectContaining({
+        body: expect.stringContaining("has been processed and payment is complete."),
+      })
+    );
 
     await sidePanel.getByRole("button").click();
   });

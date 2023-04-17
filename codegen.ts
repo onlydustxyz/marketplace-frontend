@@ -28,6 +28,9 @@ module.exports = {
     "./frontend/src/__generated/graphql.schema.json": {
       plugins: ["introspection"],
     },
+    "./backend/common/infrastructure/src/graphql/__generated/graphql.schema.json": {
+      plugins: ["introspection"],
+    },
     "./playwright/__generated/graphql.tsx": {
       plugins: ["typescript", "typescript-operations", "typescript-react-apollo"],
       config: {

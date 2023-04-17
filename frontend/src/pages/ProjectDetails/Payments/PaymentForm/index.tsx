@@ -9,6 +9,9 @@ import usePaymentRequests from "src/hooks/usePaymentRequests";
 import { ProjectRoutePaths, RoutePaths } from "src/App";
 import { WorkItem } from "src/components/GithubIssue";
 import { GithubContributorFragment } from "src/__generated/graphql";
+import useUnpaidIssues, { IssueState, IssueType } from "./WorkItemSidePanel/Issues/useUnpaidIssues";
+
+export const SEARCH_MAX_DAYS_COUNT = 60;
 
 const PaymentForm: React.FC = () => {
   const { T } = useIntl();
@@ -40,6 +43,11 @@ const PaymentForm: React.FC = () => {
 
   const [contributor, setContributor] = useState<GithubContributorFragment | null | undefined>(null);
 
+  const getUnpaidMergedPullsQuery = useUnpaidIssues({
+    projectId,
+    filters: { author: contributor?.login, type: IssueType.PullRequest, state: IssueState.Merged },
+  });
+
   const { handleSubmit } = formMethods;
 
   const onValidSubmit: SubmitHandler<Inputs> = useCallback(
@@ -50,8 +58,9 @@ const PaymentForm: React.FC = () => {
   );
 
   const onWorkEstimationChange = useCallback(
-    (amount: number) => {
-      formMethods.setValue("amountToWire", amount);
+    (amountToPay: number, hoursWorked: number) => {
+      formMethods.setValue("amountToWire", amountToPay);
+      formMethods.setValue("hoursWorked", hoursWorked);
     },
     [formMethods]
   );
@@ -80,6 +89,7 @@ const PaymentForm: React.FC = () => {
             onWorkItemsChange={onWorkItemsChange}
             contributor={contributor}
             setContributor={setContributor}
+            getUnpaidMergedPullsQuery={getUnpaidMergedPullsQuery}
           />
         </form>
       </FormProvider>
@@ -87,11 +97,12 @@ const PaymentForm: React.FC = () => {
   );
 };
 
-const mapFormDataToSchema = ({ workItems, amountToWire, contributor }: Inputs) => {
+const mapFormDataToSchema = ({ workItems, amountToWire, hoursWorked, contributor }: Inputs) => {
   return {
     variables: {
       contributorId: contributor.id,
       amount: amountToWire,
+      hoursWorked,
       reason: { workItems },
     },
   };

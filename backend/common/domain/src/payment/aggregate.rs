@@ -1,14 +1,15 @@
-use chrono::Utc;
+use chrono::{Duration, Utc};
 use derive_getters::Getters;
 use olog::info;
 use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
+use serde_with::{serde_as, DurationSeconds};
 use thiserror::Error;
 
 use super::Reason;
 use crate::{
 	Aggregate, Amount, Entity, EventSourcable, GithubUserId, PaymentEvent, PaymentId,
-	PaymentReceipt, PaymentReceiptId, UserId,
+	PaymentReceipt, PaymentReceiptId, PaymentWorkItem, UserId,
 };
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -18,13 +19,33 @@ pub enum Status {
 	Cancelled,
 }
 
-#[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize, Getters)]
+#[serde_as]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Getters)]
 pub struct Payment {
 	id: PaymentId,
 	requested_usd_amount: Decimal,
 	paid_usd_amount: Decimal,
 	status: Status,
 	recipient_id: GithubUserId,
+	requestor_id: UserId,
+	work_items: Vec<PaymentWorkItem>,
+	#[serde_as(as = "DurationSeconds<i64>")]
+	duration_worked: Duration,
+}
+
+impl Default for Payment {
+	fn default() -> Self {
+		Self {
+			duration_worked: Duration::seconds(0),
+			id: Default::default(),
+			requested_usd_amount: Default::default(),
+			paid_usd_amount: Default::default(),
+			status: Default::default(),
+			recipient_id: Default::default(),
+			requestor_id: Default::default(),
+			work_items: Default::default(),
+		}
+	}
 }
 
 impl Entity for Payment {
@@ -42,11 +63,17 @@ impl EventSourcable for Payment {
 				id,
 				amount,
 				recipient_id,
+				reason,
+				requestor_id,
+				duration_worked,
 				..
 			} => Self {
 				id: *id,
 				requested_usd_amount: *amount.amount(), // TODO: handle currencies
 				recipient_id: *recipient_id,
+				work_items: reason.work_items().clone(),
+				requestor_id: *requestor_id,
+				duration_worked: *duration_worked,
 				..self
 			},
 			PaymentEvent::Cancelled { id: _ } => Self {
@@ -79,6 +106,7 @@ impl Payment {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
+		duration_worked: Duration,
 		reason: Reason,
 	) -> Vec<<Self as Aggregate>::Event> {
 		vec![PaymentEvent::Requested {
@@ -86,6 +114,7 @@ impl Payment {
 			requestor_id,
 			recipient_id,
 			amount,
+			duration_worked,
 			reason,
 			requested_at: Utc::now().naive_utc(),
 		}]
@@ -224,6 +253,11 @@ mod tests {
 	}
 
 	#[fixture]
+	fn duration_worked() -> Duration {
+		Duration::hours(12)
+	}
+
+	#[fixture]
 	fn receipt() -> PaymentReceipt {
 		PaymentReceipt::OnChainPayment {
 			network: BlockchainNetwork::Ethereum,
@@ -243,9 +277,17 @@ mod tests {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
+		duration_worked: Duration,
 		reason: Reason,
 	) -> Payment {
-		let events = Payment::request(payment_id, requestor_id, recipient_id, amount, reason);
+		let events = Payment::request(
+			payment_id,
+			requestor_id,
+			recipient_id,
+			amount,
+			duration_worked,
+			reason,
+		);
 		Payment::from_events(&events)
 	}
 
@@ -377,6 +419,7 @@ mod tests {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
+		duration_worked: Duration,
 		reason: Reason,
 	) {
 		let before = Utc::now();
@@ -385,6 +428,7 @@ mod tests {
 			requestor_id,
 			recipient_id,
 			amount.clone(),
+			duration_worked,
 			reason.clone(),
 		);
 		let after = Utc::now();
@@ -405,6 +449,7 @@ mod tests {
 				requestor_id,
 				recipient_id,
 				amount,
+				duration_worked,
 				reason,
 				requested_at,
 			}
@@ -418,6 +463,7 @@ mod tests {
 			requestor_id: Default::default(),
 			recipient_id: Default::default(),
 			amount: Default::default(),
+			duration_worked: Duration::hours(0),
 			reason: Default::default(),
 			requested_at: Default::default(),
 		};

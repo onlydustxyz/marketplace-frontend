@@ -1,7 +1,8 @@
 use std::fmt::Display;
 
-use chrono::NaiveDateTime;
+use chrono::{Duration, NaiveDateTime};
 use serde::{Deserialize, Serialize};
+use serde_with::{serde_as, DurationSeconds};
 
 use super::Reason;
 use crate::{
@@ -9,6 +10,7 @@ use crate::{
 	UserId,
 };
 
+#[serde_as]
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
 	Requested {
@@ -16,6 +18,8 @@ pub enum Event {
 		requestor_id: UserId,
 		recipient_id: GithubUserId,
 		amount: Amount,
+		#[serde_as(as = "DurationSeconds<i64>")]
+		duration_worked: Duration,
 		reason: Reason,
 		requested_at: NaiveDateTime,
 	},
