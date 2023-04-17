@@ -95,7 +95,7 @@ mod tests {
 		GithubFetchIssueService, GithubFetchRepoService, GithubFetchUserService, GithubIssue,
 		GithubIssueNumber, GithubRepo, GithubRepoLanguages, GithubSearchIssueService,
 		GithubSearchUserService, GithubServiceFilters, GithubServiceResult, GithubUser,
-		GithubUserId,
+		GithubUserId, JsonStream,
 	};
 	use infrastructure::database::DatabaseError;
 	use mockall::{mock, predicate::eq};
@@ -135,6 +135,7 @@ mod tests {
 			async fn repo_by_id(&self, id: &GithubRepositoryId) -> GithubServiceResult<GithubRepo>;
 			async fn repo_by_url(&self, url: &Url) -> GithubServiceResult<GithubRepo>;
 			async fn repo_languages(&self, id: &GithubRepositoryId) -> GithubServiceResult<GithubRepoLanguages>;
+			async fn repo_events<'a>(&'a self, id: &GithubRepositoryId) -> GithubServiceResult<JsonStream<'a>>;
 		}
 		#[async_trait]
 		impl GithubSearchIssueService for GithubService {

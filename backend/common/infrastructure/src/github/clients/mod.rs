@@ -8,6 +8,7 @@ use domain::{
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
 	models::{
+		events::Event,
 		issues::{Comment, Issue},
 		pulls::PullRequest,
 		repos::Content,
@@ -47,6 +48,8 @@ impl From<RoundRobinClient> for Client {
 		Self::RoundRobin(client)
 	}
 }
+
+type EventStream<'a> = Pin<Box<dyn Stream<Item = Event> + Send + 'a>>;
 
 impl Client {
 	pub fn octocrab(&self) -> &Octocrab {
@@ -154,6 +157,39 @@ impl Client {
 					.boxed()
 			})
 			.unwrap_or_else(|| empty().boxed()))
+	}
+
+	#[instrument(skip(self))]
+	pub async fn stream_repo_events(
+		&self,
+		repo_owner: &str,
+		repo_name: &str,
+	) -> Result<EventStream<'_>, Error> {
+		let first_page = self
+			.octocrab()
+			.repos(repo_owner, repo_name)
+			.events()
+			.per_page(100)
+			.send()
+			.await?;
+
+		let stream = first_page
+			.value
+			.map(|page| {
+				page.into_stream(self.octocrab())
+					.inspect_err(|e| {
+						error!(
+							error = e.to_string(),
+							"Unable to stream repo events from github"
+						)
+					})
+					.take_while(|res| ready(res.is_ok()))
+					.map(Result::unwrap)
+					.boxed()
+			})
+			.unwrap_or_else(|| empty().boxed());
+
+		Ok(stream)
 	}
 
 	#[instrument(skip(self))]
