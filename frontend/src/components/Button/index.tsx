@@ -58,7 +58,7 @@ export default function Button({
         },
         {
           "w-full": width === Width.Full,
-          "w-fit": width === Width.Fit,
+          "w-fit": width === Width.Fit && !iconOnly,
         },
         {
           "h-14 gap-3 rounded-xl": size === ButtonSize.Lg,

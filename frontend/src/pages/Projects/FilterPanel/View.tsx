@@ -26,7 +26,7 @@ export default function View({ availableTechnologies, availableSponsors, isProje
   } = useProjectFilter();
 
   return (
-    <Card className="flex flex-col h-fit w-full p-6 gap-4 sticky top-4">
+    <Card className="flex flex-col h-fit p-6 gap-4 sticky top-4">
       <div className="flex flex-row justify-between items-center">
         <span className="font-belwe font-normal text-base text-greyscale-50">{T("filter.title")}</span>
         {!isProjectFilterCleared && (

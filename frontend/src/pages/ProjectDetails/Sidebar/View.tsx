@@ -71,8 +71,8 @@ export default function View({ expandable, currentProject, allProjects, availabl
               key={tab.path}
               to={tab.path}
               className={({ isActive }) =>
-                classNames("rounded-xl hover:cursor-pointer text-white text-base px-4 py-2.5", {
-                  "bg-white/8": isActive,
+                classNames("rounded-xl hover:cursor-pointer text-base px-4 py-2.5", {
+                  "bg-white/8 text-white": isActive,
                   "text-neutral-400": !isActive,
                 })
               }

@@ -11,6 +11,7 @@ interface CardProps extends React.PropsWithChildren {
   border?: CardBorder;
   padded?: boolean;
   blurred?: boolean;
+  fullWidth?: boolean;
 }
 
 export default function Card({
@@ -19,6 +20,7 @@ export default function Card({
   border = CardBorder.Light,
   padded = true,
   blurred = true,
+  fullWidth = true,
   dataTestId,
   children,
 }: CardProps) {
@@ -26,9 +28,12 @@ export default function Card({
     <div
       className={classNames(
         className,
-        "w-full rounded-2xl font-walsheim",
+        "rounded-2xl font-walsheim",
         "pseudo-outline",
         "bg-white/2",
+        {
+          "w-full": fullWidth,
+        },
         {
           "p-4 lg:p-6": padded,
         },
