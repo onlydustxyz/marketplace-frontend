@@ -71,7 +71,10 @@ impl Usecase {
 			.comment_issue_for_payment_processed(payment)
 			.await
 		{
-			olog::warn!(error = error.to_string(), "Unable to comment / close issue")
+			olog::error!(
+				error = format!("{error:?}"),
+				"Unable to comment / close issue"
+			)
 		}
 
 		Ok(new_receipt_id)
