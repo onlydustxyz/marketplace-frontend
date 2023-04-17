@@ -21,6 +21,7 @@
           scalar EthereumName
           scalar GithubIssueNumber
           scalar GithubRepositoryId
+          scalar GithubUserId
           scalar Url
           scalar Uuid
           type Issue {
@@ -49,7 +50,7 @@
           type User {
             avatarUrl: Url!
             htmlUrl: Url!
-            id: Int!
+            id: GithubUserId!
             login: String!
           }
           enum IdentityType {
