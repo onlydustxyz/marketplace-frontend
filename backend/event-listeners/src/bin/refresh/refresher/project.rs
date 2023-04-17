@@ -20,7 +20,7 @@ pub fn create(database: Arc<database::Client>, github: Arc<github::Client>) -> i
 		GithubRepoDetailsRepository::new(database.clone()),
 		ProjectGithubRepoDetailsRepository::new(database.clone()),
 		GithubRepoIndexRepository::new(database.clone()),
-		github.clone(),
+		github,
 	);
 
 	let budget_projector = BudgetProjector::new(
