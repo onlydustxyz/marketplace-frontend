@@ -95,12 +95,13 @@ mod tests {
 		GithubFetchIssueService, GithubFetchRepoService, GithubFetchUserService, GithubIssue,
 		GithubIssueNumber, GithubRepo, GithubRepoLanguages, GithubSearchIssueService,
 		GithubSearchUserService, GithubServiceFilters, GithubServiceResult, GithubUser,
-		GithubUserId, JsonStream,
+		GithubUserId,
 	};
 	use infrastructure::database::DatabaseError;
 	use mockall::{mock, predicate::eq};
 	use reqwest::Url;
 	use rstest::{fixture, rstest};
+	use serde_json::Value;
 
 	use super::*;
 
@@ -135,7 +136,7 @@ mod tests {
 			async fn repo_by_id(&self, id: &GithubRepositoryId) -> GithubServiceResult<GithubRepo>;
 			async fn repo_by_url(&self, url: &Url) -> GithubServiceResult<GithubRepo>;
 			async fn repo_languages(&self, id: &GithubRepositoryId) -> GithubServiceResult<GithubRepoLanguages>;
-			async fn repo_events<'a>(&'a self, id: &GithubRepositoryId) -> GithubServiceResult<JsonStream<'a>>;
+			async fn repo_events(&self, id: &GithubRepositoryId, filters: &GithubServiceFilters) -> GithubServiceResult<Vec<Value>>;
 		}
 		#[async_trait]
 		impl GithubSearchIssueService for GithubService {

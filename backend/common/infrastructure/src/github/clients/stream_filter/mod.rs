@@ -8,6 +8,7 @@ use domain::GithubServiceFilters;
 use futures::{ready, Stream};
 use pin_project_lite::pin_project;
 
+mod events;
 mod pulls;
 
 pub trait StreamFilterWith: Stream

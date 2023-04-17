@@ -49,8 +49,6 @@ impl From<RoundRobinClient> for Client {
 	}
 }
 
-type EventStream<'a> = Pin<Box<dyn Stream<Item = Event> + Send + 'a>>;
-
 impl Client {
 	pub fn octocrab(&self) -> &Octocrab {
 		match self {
@@ -160,36 +158,31 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn stream_repo_events(
+	pub async fn events_by_repo_id(
 		&self,
-		repo_owner: &str,
-		repo_name: &str,
-	) -> Result<EventStream<'_>, Error> {
-		let first_page = self
-			.octocrab()
-			.repos(repo_owner, repo_name)
-			.events()
-			.per_page(100)
-			.send()
-			.await?;
+		id: &GithubRepositoryId,
+		filters: &GithubServiceFilters,
+	) -> Result<Vec<Event>, Error> {
+		let query_params = QueryParams::default().page(1).per_page(100);
 
-		let stream = first_page
-			.value
-			.map(|page| {
-				page.into_stream(self.octocrab())
-					.inspect_err(|e| {
-						error!(
-							error = e.to_string(),
-							"Unable to stream repo events from github"
-						)
-					})
-					.take_while(|res| ready(res.is_ok()))
-					.map(Result::unwrap)
-					.boxed()
-			})
-			.unwrap_or_else(|| empty().boxed());
+		let url: Url = format!(
+			"{}repositories/{id}/events?{}",
+			self.octocrab().base_url,
+			query_params.to_query_string()?
+		)
+		.parse()?;
 
-		Ok(stream)
+		let events = self
+			.stream_as::<Event>(
+				url,
+				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
+			)
+			.await?
+			.filter_with(*filters)
+			.collect()
+			.await;
+
+		Ok(events)
 	}
 
 	#[instrument(skip(self))]

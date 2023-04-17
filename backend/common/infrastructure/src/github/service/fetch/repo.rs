@@ -1,9 +1,9 @@
 use async_trait::async_trait;
 use domain::{
 	GithubFetchRepoService, GithubRepo, GithubRepoLanguages, GithubRepositoryId,
-	GithubServiceError, GithubServiceResult, JsonStream, LogErr,
+	GithubServiceError, GithubServiceFilters, GithubServiceResult, LogErr,
 };
-use futures::StreamExt;
+use serde_json::Value;
 use tracing::instrument;
 use url::Url;
 
@@ -38,21 +38,19 @@ impl GithubFetchRepoService for github::Client {
 		Ok(languages)
 	}
 
-	async fn repo_events<'a>(
-		&'a self,
+	async fn repo_events(
+		&self,
 		id: &GithubRepositoryId,
-	) -> GithubServiceResult<JsonStream<'a>>
-	where
-		'a: 'async_trait,
-	{
-		let repo = self.repo_by_id(id).await?;
-		let events = self.stream_repo_events(repo.owner(), repo.name()).await?;
-
-		let events = events
-			.filter_map(|event| async {
+		filters: &GithubServiceFilters,
+	) -> GithubServiceResult<Vec<Value>> {
+		let events = self
+			.events_by_repo_id(id, filters)
+			.await?
+			.into_iter()
+			.filter_map(|event| {
 				serde_json::to_value(event).log_err("Unable to serialize github event").ok()
 			})
-			.boxed();
+			.collect();
 
 		Ok(events)
 	}
