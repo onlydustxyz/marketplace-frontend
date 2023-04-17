@@ -102,15 +102,13 @@ export default function ContributorSelectView({
                     }
                   )}
                 >
-                  <div className="flex flex-row items-center w-full cursor-default">
+                  <div className="flex flex-row items-center w-full cursor-default gap-2.5">
                     <div className="pt-1 text-2xl">
                       <User3Line />
                     </div>
                     <Combobox.Input
                       onChange={event => setGithubHandleSubstring(event.target.value)}
-                      className={classNames(
-                        "border-none outline-none w-full bg-transparent font-medium text-base pt-0.5"
-                      )}
+                      className={classNames("border-none outline-none w-full bg-transparent font-medium text-base")}
                       onFocus={() => {
                         setGithubHandleSubstring("");
                       }}
