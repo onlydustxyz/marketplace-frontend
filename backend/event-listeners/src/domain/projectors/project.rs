@@ -45,7 +45,7 @@ impl Projector {
 }
 
 #[async_trait]
-impl EventListener for Projector {
+impl EventListener<Event> for Projector {
 	#[instrument(name = "project_projection", skip(self))]
 	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
 		match event {

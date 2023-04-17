@@ -1,7 +1,7 @@
 use async_trait::async_trait;
-use domain::{Event, SubscriberCallbackError};
+use domain::SubscriberCallbackError;
 
 #[async_trait]
-pub trait EventListener: Send + Sync {
-	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError>;
+pub trait EventListener<E>: Send + Sync {
+	async fn on_event(&self, event: &E) -> Result<(), SubscriberCallbackError>;
 }

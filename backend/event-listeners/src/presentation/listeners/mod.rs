@@ -61,7 +61,7 @@ trait Spawnable {
 	fn spawn(self, bus: ConsumableBus) -> JoinHandle<()>;
 }
 
-impl<EL: EventListener + 'static> Spawnable for EL {
+impl<EL: EventListener<Event> + 'static> Spawnable for EL {
 	fn spawn(self, bus: ConsumableBus) -> JoinHandle<()> {
 		let listener = Arc::new(self);
 		tokio::spawn(async move {
@@ -75,7 +75,7 @@ impl<EL: EventListener + 'static> Spawnable for EL {
 }
 
 async fn notify_event_listener(
-	listener: Arc<dyn EventListener>,
+	listener: Arc<dyn EventListener<Event>>,
 	event: Event,
 ) -> Result<(), SubscriberCallbackError> {
 	listener.on_event(&event).await.map_err(SubscriberCallbackError::from)
