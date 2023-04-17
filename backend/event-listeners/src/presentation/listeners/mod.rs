@@ -5,7 +5,7 @@ mod webhook;
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::{Event, Subscriber, SubscriberCallbackError};
+use domain::{MessagePayload, Subscriber, SubscriberCallbackError};
 use infrastructure::{
 	amqp::{ConsumableBus, UniqueMessage},
 	database, event_bus, github,
@@ -21,7 +21,7 @@ use crate::{
 		ProjectGithubRepoDetailsRepository, ProjectLeadRepository, ProjectRepository,
 		WorkItemRepository,
 	},
-	Config,
+	Config, GITHUB_EVENTS_EXCHANGE,
 };
 
 pub async fn spawn_all(
@@ -52,20 +52,24 @@ pub async fn spawn_all(
 		.spawn(event_bus::consumer(config.amqp(), "budgets").await?),
 		CrmProjector::new(CrmGithubRepoRepository::new(database.clone()), github)
 			.spawn(event_bus::consumer(config.amqp(), "crm").await?),
+		Logger.spawn(
+			event_bus::consumer_with_exchange(config.amqp(), GITHUB_EVENTS_EXCHANGE, "logger")
+				.await?,
+		),
 	];
 
 	Ok(handles.into())
 }
 
-trait Spawnable {
+trait Spawnable<E: MessagePayload> {
 	fn spawn(self, bus: ConsumableBus) -> JoinHandle<()>;
 }
 
-impl<EL: EventListener<Event> + 'static> Spawnable for EL {
+impl<E: MessagePayload + Send + Sync, EL: EventListener<E> + 'static> Spawnable<E> for EL {
 	fn spawn(self, bus: ConsumableBus) -> JoinHandle<()> {
 		let listener = Arc::new(self);
 		tokio::spawn(async move {
-			bus.subscribe(|message: UniqueMessage<Event>| {
+			bus.subscribe(|message: UniqueMessage<E>| {
 				notify_event_listener(listener.clone(), message.payload().clone())
 			})
 			.await
@@ -74,9 +78,9 @@ impl<EL: EventListener<Event> + 'static> Spawnable for EL {
 	}
 }
 
-async fn notify_event_listener(
-	listener: Arc<dyn EventListener<Event>>,
-	event: Event,
+async fn notify_event_listener<E>(
+	listener: Arc<dyn EventListener<E>>,
+	event: E,
 ) -> Result<(), SubscriberCallbackError> {
 	listener.on_event(&event).await.map_err(SubscriberCallbackError::from)
 }

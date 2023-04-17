@@ -6,12 +6,11 @@ use domain::{Destination, GithubFetchRepoService, Publisher};
 use error::*;
 use event_listeners::{
 	domain::GithubRepoIndex, infrastructure::database::GithubRepoIndexRepository,
+	GITHUB_EVENTS_EXCHANGE,
 };
 use futures::{future::try_join_all, StreamExt};
 use infrastructure::amqp::UniqueMessage;
 use serde_json::Value;
-
-use crate::GITHUB_EVENTS_EXCHANGE;
 
 #[derive(new)]
 pub struct Indexer {

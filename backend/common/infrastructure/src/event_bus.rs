@@ -10,6 +10,14 @@ pub async fn consumer(
 	config: &Config,
 	queue_name: &'static str,
 ) -> Result<ConsumableBus, BusError> {
+	consumer_with_exchange(config, EXCHANGE_NAME, queue_name).await
+}
+
+pub async fn consumer_with_exchange(
+	config: &Config,
+	exchange_name: &'static str,
+	queue_name: &'static str,
+) -> Result<ConsumableBus, BusError> {
 	let bus = Bus::new(config)
 		.await?
 		.with_queue(
@@ -28,7 +36,7 @@ pub async fn consumer(
 			},
 		)
 		.await?
-		.with_exchange(EXCHANGE_NAME)
+		.with_exchange(exchange_name)
 		.await?;
 
 	info!("[{queue_name}] 🎧 Start listening to events");

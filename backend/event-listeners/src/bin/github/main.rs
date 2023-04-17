@@ -8,8 +8,6 @@ use infrastructure::{amqp, config, database, github, tracing::Tracer};
 
 mod indexer;
 
-const GITHUB_EVENTS_EXCHANGE: &str = "github-events";
-
 #[tokio::main]
 async fn main() -> Result<()> {
 	dotenv().ok();
