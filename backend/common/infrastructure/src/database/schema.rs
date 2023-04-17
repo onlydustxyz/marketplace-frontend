@@ -45,6 +45,13 @@ diesel::table! {
 }
 
 diesel::table! {
+    github_repo_indexes (repo_id) {
+        repo_id -> Int8,
+        last_indexed_time -> Nullable<Timestamp>,
+    }
+}
+
+diesel::table! {
     payment_requests (id) {
         id -> Uuid,
         budget_id -> Uuid,
@@ -152,6 +159,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     event_deduplications,
     events,
     github_repo_details,
+    github_repo_indexes,
     payment_requests,
     payments,
     pending_project_leader_invitations,
