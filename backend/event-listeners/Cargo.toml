@@ -35,6 +35,9 @@ uuid = {version = "0.8.2", default_features = false, features = [
 ]}
 rust_decimal = {version="1.26.1", features=["db-diesel-postgres"]}
 
+# Github
+octocrab = { git = "https://github.com/onlydustxyz/octocrab.git", features=["stream"] }
+
 # Http client
 reqwest = {version = "0.11", default-features = false}
 url = "2.2.2"

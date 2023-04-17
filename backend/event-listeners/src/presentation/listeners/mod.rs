@@ -40,7 +40,7 @@ pub async fn spawn_all(
 			GithubRepoDetailsRepository::new(database.clone()),
 			ProjectGithubRepoDetailsRepository::new(database.clone()),
 			GithubRepoIndexRepository::new(database.clone()),
-			github.clone(),
+			github,
 		)
 		.spawn(event_bus::consumer(config.amqp(), "projects").await?),
 		BudgetProjector::new(
@@ -48,10 +48,12 @@ pub async fn spawn_all(
 			PaymentRepository::new(database.clone()),
 			BudgetRepository::new(database.clone()),
 			WorkItemRepository::new(database.clone()),
+			GithubRepoIndexRepository::new(database.clone()),
 		)
 		.spawn(event_bus::consumer(config.amqp(), "budgets").await?),
-		CrmProjector::new(CrmGithubRepoRepository::new(database.clone()), github)
-			.spawn(event_bus::consumer(config.amqp(), "crm").await?),
+		CrmProjector::new(CrmGithubRepoRepository::new(database.clone())).spawn(
+			event_bus::consumer_with_exchange(config.amqp(), GITHUB_EVENTS_EXCHANGE, "crm").await?,
+		),
 		Logger.spawn(
 			event_bus::consumer_with_exchange(config.amqp(), GITHUB_EVENTS_EXCHANGE, "logger")
 				.await?,
