@@ -1,6 +1,8 @@
 import http from "k6/http";
 import { check } from "k6";
 
+const GRAPHQL_URL = "https://staging.gateway.onlydust.xyz/api/v1/graphql";
+
 function checkGraphQLResponse(res) {
   check(res, {
     "no error in response": r => {
@@ -11,7 +13,7 @@ function checkGraphQLResponse(res) {
 
 export function getProjects(headers) {
   const res = http.post(
-    "https://staging.hasura.onlydust.xyz/v1/graphql",
+    GRAPHQL_URL,
     JSON.stringify(
       {
         operationName: "GetProjects",
@@ -27,7 +29,7 @@ export function getProjects(headers) {
 
 export function getFilterOptions(headers) {
   const res = http.post(
-    "https://staging.hasura.onlydust.xyz/v1/graphql",
+    GRAPHQL_URL,
     JSON.stringify(
       {
         operationName: "GetAllFilterOptions",
@@ -43,7 +45,7 @@ export function getFilterOptions(headers) {
 
 export function getProject(projectId, headers) {
   const res = http.post(
-    "https://staging.hasura.onlydust.xyz/v1/graphql",
+    GRAPHQL_URL,
     JSON.stringify(
       {
         operationName: "GetProject",
@@ -61,7 +63,7 @@ export function getProject(projectId, headers) {
 
 export function getContributors(projectId, headers) {
   const res = http.post(
-    "https://staging.hasura.onlydust.xyz/v1/graphql",
+    GRAPHQL_URL,
     JSON.stringify(
       {
         operationName: "GetProjectContributors",

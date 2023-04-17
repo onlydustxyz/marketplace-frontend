@@ -42,6 +42,7 @@ export const options = {
 
 const unauthenticatedUserHeaders = {
   "Content-Type": "application/json",
+  "X-Cache-Api": "1",
   "x-hasura-role": "public",
 };
 
