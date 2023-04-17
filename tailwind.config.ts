@@ -1,8 +1,10 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const plugin = require("tailwindcss/plugin");
+import { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
+import scrollbar from "tailwind-scrollbar";
+import headlessUi from "@headlessui/tailwindcss";
+import typography from "@tailwindcss/typography";
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+const config: Config = {
   content: ["./index.html", "./frontend/src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
@@ -134,11 +136,9 @@ module.exports = {
   },
 
   plugins: [
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/line-clamp"),
-    require("@headlessui/tailwindcss"),
-    /* eslint-disable @typescript-eslint/no-var-requires */
-    require("tailwind-scrollbar")({ nocompatible: true }),
+    typography,
+    headlessUi,
+    scrollbar({ nocompatible: true }),
     plugin(function ({ addComponents }) {
       const pseudoOutline = {
         position: "relative",
@@ -174,3 +174,5 @@ module.exports = {
     }),
   ],
 };
+
+export default config;
