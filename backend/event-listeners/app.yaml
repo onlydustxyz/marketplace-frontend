@@ -6,8 +6,6 @@ default:
   amqp:
     connection_retry_interval_ms: 6000
     connection_retry_count: 100
-  graphql:
-    base_url: $GRAPHQL_BASE_URL
 
 local:
   database:
