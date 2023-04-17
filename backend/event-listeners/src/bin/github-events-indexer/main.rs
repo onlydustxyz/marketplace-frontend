@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
 use dotenv::dotenv;
@@ -20,9 +20,19 @@ async fn main() -> Result<()> {
 	)?));
 	let event_bus = Arc::new(amqp::Bus::new(config.amqp()).await?);
 
-	Indexer::new(github, GithubRepoIndexRepository::new(database), event_bus)
-		.index_all()
-		.await?;
+	let indexer = Indexer::new(github, GithubRepoIndexRepository::new(database), event_bus);
 
-	Ok(())
+	loop {
+		indexer.index_all().await?;
+		sleep().await;
+	}
+}
+
+async fn sleep() {
+	let seconds = std::env::var("GITHUB_EVENTS_INDEXER_SLEEP_DURATION")
+		.unwrap_or_default()
+		.parse()
+		.unwrap_or(1);
+
+	tokio::time::sleep(Duration::from_secs(seconds)).await;
 }
