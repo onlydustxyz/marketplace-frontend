@@ -142,10 +142,7 @@ diesel::table! {
     }
 }
 
-diesel::joinable!(budgets -> projects (project_id));
-diesel::joinable!(payment_requests -> budgets (budget_id));
-diesel::joinable!(payments -> payment_requests (request_id));
-diesel::joinable!(project_leads -> projects (project_id));
+diesel::joinable!(pending_project_leader_invitations -> projects (project_id));
 diesel::joinable!(projects_sponsors -> projects (project_id));
 diesel::joinable!(projects_sponsors -> sponsors (sponsor_id));
 
