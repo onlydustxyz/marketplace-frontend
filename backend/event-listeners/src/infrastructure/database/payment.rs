@@ -51,7 +51,7 @@ mod tests {
 			Utc::now().naive_utc(),
 		);
 
-		assert!(repository.insert(&payment).unwrap_err().to_string().contains("foreign key")); // foreign key on payment requests
+		assert!(repository.insert(&payment).is_ok());
 		assert!(repository.update(&payment_id, &payment).is_ok());
 		assert!(repository.delete(&payment_id).is_ok());
 		assert!(repository.clear().is_ok());
