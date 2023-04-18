@@ -4,7 +4,13 @@ table:
 object_relationships:
   - name: project
     using:
-      foreign_key_constraint_on: project_id
+      manual_configuration:
+        column_mapping:
+          project_id: id
+        insertion_order: null
+        remote_table:
+          name: projects
+          schema: public
   - name: user
     using:
       manual_configuration:
