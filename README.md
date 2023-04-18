@@ -25,6 +25,8 @@
 > This repo contains highly experimental code.
 > Expect rapid iteration.
 
+![Global architecture](doc/architecture.excalidraw.png)
+
 # 📡 Backend
 
 ## 🎗️ Prerequisites
