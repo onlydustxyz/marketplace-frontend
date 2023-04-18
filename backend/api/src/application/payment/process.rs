@@ -41,18 +41,6 @@ impl Usecase {
 	) -> Result<PaymentReceiptId, DomainError> {
 		let new_receipt_id = PaymentReceiptId::new();
 		let project = self.project_repository.find_by_id(project_id)?;
-		let events: Vec<_> = project
-			.add_payment_receipt(payment_id, new_receipt_id, amount, receipt)
-			.await
-			.map_err(|e| DomainError::InvalidInputs(e.into()))?
-			.into_iter()
-			.map(Event::from)
-			.map(UniqueMessage::new)
-			.collect();
-
-		self.event_publisher
-			.publish_many(Destination::queue(EVENT_STORE_QUEUE), &events)
-			.await?;
 
 		let payment = project
 			.budget()
@@ -65,6 +53,19 @@ impl Usecase {
 			.ok_or(DomainError::InternalError(anyhow!(
 				"Failed while finding payment"
 			)))?;
+
+		let events: Vec<_> = project
+			.add_payment_receipt(payment_id, new_receipt_id, amount, receipt)
+			.await
+			.map_err(|e| DomainError::InvalidInputs(e.into()))?
+			.into_iter()
+			.map(Event::from)
+			.map(UniqueMessage::new)
+			.collect();
+
+		self.event_publisher
+			.publish_many(Destination::queue(EVENT_STORE_QUEUE), &events)
+			.await?;
 
 		if let Err(error) = self
 			.comment_issue_for_payment_processed_usecase
