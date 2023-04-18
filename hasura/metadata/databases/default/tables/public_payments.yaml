@@ -4,7 +4,13 @@ table:
 object_relationships:
   - name: paymentRequest
     using:
-      foreign_key_constraint_on: request_id
+      manual_configuration:
+        column_mapping:
+          request_id: id
+        insertion_order: null
+        remote_table:
+          name: payment_requests
+          schema: public
 select_permissions:
   - role: project_lead_specific
     permission:

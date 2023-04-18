@@ -19,7 +19,7 @@ const populateUser = async (request: APIRequestContext, user: UserFixture) => {
   const credentials = await createGithubUser(request, user.github.id, user.github.login, user.email);
   const session = await signinUser(request, credentials);
 
-  if (user.profile) {
+  if (user.profile && user.profile.populate !== false) {
     await mutateAsRegisteredUser<UpdateProfileInfoMutation, UpdateProfileInfoMutationVariables>(session.accessToken, {
       mutation: UpdateProfileDocument,
       variables: user.profile,
