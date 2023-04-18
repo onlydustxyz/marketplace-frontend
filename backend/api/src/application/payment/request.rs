@@ -63,7 +63,8 @@ impl Usecase {
 			.publish(self.event_publisher.clone())
 			.await?;
 
-		self.comment_issue_for_payment_requested_usecase
+		if let Err(error) = self
+			.comment_issue_for_payment_requested_usecase
 			.comment_issue_for_payment_requested(
 				new_payment_id,
 				requestor_id,
@@ -72,7 +73,10 @@ impl Usecase {
 				hours_worked,
 				reason,
 			)
-			.await?;
+			.await
+		{
+			olog::error!(error = format!("{error:?}"), "Unable to comment issue")
+		}
 
 		Ok(new_payment_id)
 	}

@@ -47,6 +47,10 @@ impl Usecase {
 
 		let project = project.apply_events(&events);
 
+		let budget = project.budget().as_ref().ok_or(DomainError::InternalError(anyhow!(
+			"Failed while allocating budget"
+		)))?;
+
 		events
 			.into_iter()
 			.map(Event::from)
@@ -54,10 +58,6 @@ impl Usecase {
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;
-
-		let budget = project.budget().as_ref().ok_or(DomainError::InternalError(anyhow!(
-			"Failed while allocating budget"
-		)))?;
 
 		Ok(*budget.id())
 	}
