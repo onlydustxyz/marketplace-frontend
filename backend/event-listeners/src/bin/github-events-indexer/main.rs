@@ -5,6 +5,7 @@ use dotenv::dotenv;
 use event_listeners::{infrastructure::database::GithubRepoIndexRepository, Config};
 use indexer::Indexer;
 use infrastructure::{amqp, config, database, github, tracing::Tracer};
+use olog::info;
 
 mod indexer;
 
@@ -23,6 +24,7 @@ async fn main() -> Result<()> {
 	let indexer = Indexer::new(github, GithubRepoIndexRepository::new(database), event_bus);
 
 	loop {
+		info!("🎶 Still alive 🎶");
 		indexer.index_all().await?;
 		sleep().await;
 	}
