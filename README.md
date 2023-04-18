@@ -31,30 +31,23 @@
 
 ## 🎗️ Prerequisites
 
-### 1. Install nix and direnv
-
-> Do note that this step is a work in progress in the Nix experimentation.
+### 1. Setup your environment
 
 ```
-brew install nix direnv
-direnv allow
-direnv reload
+cp .env.example .env
 ```
 
-### 2. Setup your environment
+Then modify the values tagged with `REPLACE_AT_INSTALLATION` according to your personal accounts.
 
-Create the `.env` file with the correct environment variables.
-Copy the `.env.example` file and modify the values according to your setup.
+### 2. Start the docker stack
 
-### 3. Start the docker stack
-
-Make sure `docker-compose` is installed (see [Installation instructions](https://docs.docker.com/compose/install/)).
+Make sure `docker` is installed (see [Installation instructions](https://docs.docker.com/get-docker/)).
 
 ```
-docker-compose up -d
+docker compose up -d
 ```
 
-### 4. Setup the database
+### 3. Setup the database
 
 Make sure `Diesel CLI` is installed (see [installation instructions](https://diesel.rs/guides/getting-started)):
 

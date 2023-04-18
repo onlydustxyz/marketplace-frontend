@@ -5,26 +5,18 @@ install:
 	rustup install $(RUST_VERSION)
 
 docker/up:
-	docker-compose up -d --wait
+	docker compose up -d --wait
 
 docker/clean:
-	docker-compose stop
-	docker-compose rm -f db
-	docker-compose rm -f httpmock
-	docker-compose rm -f rabbitmq
-	docker-compose rm -f graphql-engine
-	docker-compose rm -f hasura-auth
-	docker volume rm -f $(ROOT_DIR)_db
-	docker volume rm -f $(ROOT_DIR)_httpmock
-	docker volume rm -f $(ROOT_DIR)_rabbitmq
+	docker compose down -v
 
 docker/re: docker/clean playwright/clean docker/up
 
 db/up:
-	docker-compose up -d --wait db
+	docker compose up -d --wait db
 
 db/connect: db/up
-	docker-compose exec -u postgres db psql marketplace_db
+	docker compose exec -u postgres db psql marketplace_db
 
 db/migrate: db/up
 	diesel migration run
@@ -49,7 +41,7 @@ hasura/start:
 	yarn --cwd ./hasura start
 
 hasura/clean: db/migrate
-	docker-compose exec -u postgres db psql marketplace_db -c "DELETE FROM hdb_catalog.hdb_metadata"
+	docker compose exec -u postgres db psql marketplace_db -c "DELETE FROM hdb_catalog.hdb_metadata"
 	yarn --cwd ./hasura hasura md apply
 	yarn --cwd ./hasura hasura md ic drop
 	yarn --cwd ./hasura hasura md export
