@@ -53,15 +53,6 @@ impl Usecase {
 			_ => vec![],
 		};
 
-		events
-			.into_iter()
-			.chain(budget_events)
-			.map(Event::from)
-			.map(UniqueMessage::new)
-			.collect::<Vec<_>>()
-			.publish(self.event_publisher.clone())
-			.await?;
-
 		let stored_logo_url = match logo_url {
 			Some(url) => Some(self.image_store.store_image(&url).await?.to_string()),
 			None => None,
@@ -75,6 +66,15 @@ impl Usecase {
 			short_description.into(),
 			long_description.into(),
 		))?;
+
+		events
+			.into_iter()
+			.chain(budget_events)
+			.map(Event::from)
+			.map(UniqueMessage::new)
+			.collect::<Vec<_>>()
+			.publish(self.event_publisher.clone())
+			.await?;
 
 		Ok(project_id)
 	}
