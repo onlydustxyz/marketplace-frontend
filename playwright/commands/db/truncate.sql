@@ -13,6 +13,7 @@ TRUNCATE "public"."projects_sponsors" RESTART IDENTITY CASCADE;
 TRUNCATE "public"."sponsors" RESTART IDENTITY CASCADE;
 TRUNCATE "public"."budgets" RESTART IDENTITY CASCADE;
 TRUNCATE "public"."work_items" RESTART IDENTITY CASCADE;
+TRUNCATE "public"."crm_github_repos" RESTART IDENTITY CASCADE;
 
 TRUNCATE "auth"."provider_requests" RESTART IDENTITY CASCADE;
 TRUNCATE "auth"."user_roles" RESTART IDENTITY CASCADE;

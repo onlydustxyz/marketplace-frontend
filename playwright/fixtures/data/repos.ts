@@ -36,16 +36,16 @@ export const repos: Record<string, Repo> = {
     languages: {},
   },
   kakarot: {
-    id: 545531678,
+    id: 629516515,
     name: "kakarot",
-    owner: "sayajin-labs",
+    owner: "od-mocks",
     languages: {
-      Cairo: 759611,
-      Python: 238626,
+      Cairo: 769329,
+      Python: 261120,
       Solidity: 49001,
       Shell: 15765,
-      Makefile: 3390,
-      Dockerfile: 1778,
+      Makefile: 3506,
+      Dockerfile: 1607,
     },
   },
 };

@@ -76,6 +76,7 @@ export const users: Record<string, UserFixture> = {
       login: "AnthonyBuisset",
     },
     profile: {
+      populate: false,
       identity: {
         type: IdentityType.Person,
         optCompany: null,

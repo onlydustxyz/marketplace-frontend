@@ -20,6 +20,7 @@ export type UserFixture = {
 };
 
 export type UserProfile = {
+  populate?: boolean;
   identity: IdentityInput | null;
   location: Location | null;
   payoutSettings: PayoutSettingsInput | null;

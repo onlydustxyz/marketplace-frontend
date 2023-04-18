@@ -14,6 +14,7 @@ export class ProjectPaymentsPage {
   }
 
   goto = () => this.page.goto(this.url);
+  reload = () => this.page.reload();
 
   remainingBudget = () => this.page.locator("#remainingBudget").textContent();
 

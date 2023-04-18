@@ -175,6 +175,7 @@ test.describe("As a project lead, I", () => {
     const listPaymentsAs = async (user: User) => {
       await signIn(user);
       await projectPaymentsPage.goto();
+      await projectPaymentsPage.reload();
     };
 
     await listPaymentsAs(leader);
