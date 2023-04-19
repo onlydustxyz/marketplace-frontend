@@ -73,7 +73,7 @@ enum Error {
 }
 
 #[async_trait]
-impl EventListener for EventWebHook {
+impl EventListener<Event> for EventWebHook {
 	async fn on_event(&self, event: &Event) -> Result<(), SubscriberCallbackError> {
 		match send_event_to_webhook(&self.web_client, event).await {
 			Ok(()) => {},

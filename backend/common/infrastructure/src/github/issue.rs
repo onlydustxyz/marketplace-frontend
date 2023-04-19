@@ -28,8 +28,6 @@ impl IssueFromOctocrab for GithubIssue {
 
 		let number = issue.number.try_into()?;
 
-		let author = &issue.user;
-
 		let issue_type = match issue.pull_request {
 			Some(_) => GithubIssueType::PullRequest,
 			None => GithubIssueType::Issue,
@@ -40,7 +38,6 @@ impl IssueFromOctocrab for GithubIssue {
 		Ok(domain::GithubIssue::new(
 			id,
 			repo_id,
-			(author.id.0 as i64).into(),
 			number,
 			issue_type,
 			issue.title,
@@ -59,7 +56,6 @@ impl IssueFromOctocrab for GithubIssue {
 	) -> Result<Self> {
 		let id = pull_request.id.0.try_into()?;
 
-		let author = pull_request.user.clone().ok_or_else(|| anyhow!("Missing field: 'user'"))?;
 		let number = pull_request.number.try_into()?;
 
 		let title = pull_request.title.clone().ok_or_else(|| anyhow!("Missing field: 'title'"))?;
@@ -76,7 +72,6 @@ impl IssueFromOctocrab for GithubIssue {
 		Ok(domain::GithubIssue::new(
 			id,
 			repo_id,
-			(author.id.0 as i64).into(),
 			number,
 			GithubIssueType::PullRequest,
 			title,

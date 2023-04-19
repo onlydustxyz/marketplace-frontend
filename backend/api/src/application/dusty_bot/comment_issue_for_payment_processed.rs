@@ -44,7 +44,7 @@ impl Usecase {
 				work_item.issue_number(),
 				&comment_body,
 			),
-			if issue.author_id() == current_user.id() {
+			if issue.author().id() == current_user.id() {
 				self.github_service.close_issue(
 					repository.owner(),
 					repository.name(),

@@ -956,7 +956,6 @@ export type IntComparisonExp = {
 export type Issue = {
   __typename?: 'Issue';
   author: User;
-  authorId: Scalars['GithubUserId'];
   closedAt: Maybe<Scalars['DateTimeUtc']>;
   createdAt: Scalars['DateTimeUtc'];
   htmlUrl: Scalars['Url'];
@@ -1412,7 +1411,7 @@ export type Payments = {
   currencyCode: Scalars['String'];
   id: Scalars['uuid'];
   /** An object relationship */
-  paymentRequest: PaymentRequests;
+  paymentRequest: Maybe<PaymentRequests>;
   processedAt: Scalars['timestamp'];
   receipt: Scalars['jsonb'];
   requestId: Scalars['uuid'];
@@ -2331,7 +2330,7 @@ export type ProjectGithubReposVarianceFields = {
 export type ProjectLeads = {
   __typename?: 'ProjectLeads';
   /** An object relationship */
-  project: Projects;
+  project: Maybe<Projects>;
   projectId: Scalars['uuid'];
   /** An object relationship */
   user: Maybe<Users>;
@@ -3996,7 +3995,9 @@ export type AuthRefreshTokens = {
   __typename?: 'authRefreshTokens';
   createdAt: Scalars['timestamptz'];
   expiresAt: Scalars['timestamptz'];
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: Scalars['uuid'];
+  refreshTokenHash: Maybe<Scalars['String']>;
   /** An object relationship */
   user: Users;
   userId: Scalars['uuid'];
@@ -4046,6 +4047,7 @@ export type AuthRefreshTokensBoolExp = {
   createdAt: InputMaybe<TimestamptzComparisonExp>;
   expiresAt: InputMaybe<TimestamptzComparisonExp>;
   refreshToken: InputMaybe<UuidComparisonExp>;
+  refreshTokenHash: InputMaybe<StringComparisonExp>;
   user: InputMaybe<UsersBoolExp>;
   userId: InputMaybe<UuidComparisonExp>;
 };
@@ -4060,6 +4062,7 @@ export enum AuthRefreshTokensConstraint {
 export type AuthRefreshTokensInsertInput = {
   createdAt: InputMaybe<Scalars['timestamptz']>;
   expiresAt: InputMaybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<Scalars['uuid']>;
   user: InputMaybe<UsersObjRelInsertInput>;
   userId: InputMaybe<Scalars['uuid']>;
@@ -4070,7 +4073,9 @@ export type AuthRefreshTokensMaxFields = {
   __typename?: 'authRefreshTokensMaxFields';
   createdAt: Maybe<Scalars['timestamptz']>;
   expiresAt: Maybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: Maybe<Scalars['uuid']>;
+  refreshTokenHash: Maybe<Scalars['String']>;
   userId: Maybe<Scalars['uuid']>;
 };
 
@@ -4079,7 +4084,9 @@ export type AuthRefreshTokensMinFields = {
   __typename?: 'authRefreshTokensMinFields';
   createdAt: Maybe<Scalars['timestamptz']>;
   expiresAt: Maybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: Maybe<Scalars['uuid']>;
+  refreshTokenHash: Maybe<Scalars['String']>;
   userId: Maybe<Scalars['uuid']>;
 };
 
@@ -4104,12 +4111,14 @@ export type AuthRefreshTokensOrderBy = {
   createdAt: InputMaybe<OrderBy>;
   expiresAt: InputMaybe<OrderBy>;
   refreshToken: InputMaybe<OrderBy>;
+  refreshTokenHash: InputMaybe<OrderBy>;
   user: InputMaybe<UsersOrderBy>;
   userId: InputMaybe<OrderBy>;
 };
 
 /** primary key columns input for table: auth.refresh_tokens */
 export type AuthRefreshTokensPkColumnsInput = {
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: Scalars['uuid'];
 };
 
@@ -4122,6 +4131,8 @@ export enum AuthRefreshTokensSelectColumn {
   /** column name */
   RefreshToken = 'refreshToken',
   /** column name */
+  RefreshTokenHash = 'refreshTokenHash',
+  /** column name */
   UserId = 'userId'
 }
 
@@ -4129,6 +4140,7 @@ export enum AuthRefreshTokensSelectColumn {
 export type AuthRefreshTokensSetInput = {
   createdAt: InputMaybe<Scalars['timestamptz']>;
   expiresAt: InputMaybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<Scalars['uuid']>;
   userId: InputMaybe<Scalars['uuid']>;
 };
@@ -4166,7 +4178,9 @@ export type AuthRefreshTokens_Aggregate_Bool_Exp_Count = {
 export type AuthRefreshTokens_Max_Order_By = {
   createdAt: InputMaybe<OrderBy>;
   expiresAt: InputMaybe<OrderBy>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<OrderBy>;
+  refreshTokenHash: InputMaybe<OrderBy>;
   userId: InputMaybe<OrderBy>;
 };
 
@@ -4174,7 +4188,9 @@ export type AuthRefreshTokens_Max_Order_By = {
 export type AuthRefreshTokens_Min_Order_By = {
   createdAt: InputMaybe<OrderBy>;
   expiresAt: InputMaybe<OrderBy>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<OrderBy>;
+  refreshTokenHash: InputMaybe<OrderBy>;
   userId: InputMaybe<OrderBy>;
 };
 
@@ -4190,7 +4206,9 @@ export type AuthRefreshTokens_StreamCursorInput = {
 export type AuthRefreshTokens_StreamCursorValueInput = {
   createdAt: InputMaybe<Scalars['timestamptz']>;
   expiresAt: InputMaybe<Scalars['timestamptz']>;
+  /** DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead. */
   refreshToken: InputMaybe<Scalars['uuid']>;
+  refreshTokenHash: InputMaybe<Scalars['String']>;
   userId: InputMaybe<Scalars['uuid']>;
 };
 

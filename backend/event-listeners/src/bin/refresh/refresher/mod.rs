@@ -16,7 +16,7 @@ pub mod project;
 #[derive(Constructor)]
 pub struct Refresher<A: Aggregate> {
 	event_store: Arc<dyn EventStore<A>>,
-	projectors: Vec<Arc<dyn EventListener>>,
+	projectors: Vec<Arc<dyn EventListener<Event>>>,
 }
 
 #[async_trait]

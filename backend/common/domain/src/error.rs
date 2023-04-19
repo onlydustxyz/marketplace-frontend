@@ -36,3 +36,16 @@ impl From<GithubServiceError> for DomainError {
 		}
 	}
 }
+
+pub trait LogErr {
+	fn log_err(self, message: &str) -> Self;
+}
+
+impl<T, E: ToString> LogErr for Result<T, E> {
+	fn log_err(self, message: &str) -> Self {
+		if let Err(error) = &self {
+			olog::error!(error = error.to_string(), message);
+		}
+		self
+	}
+}
