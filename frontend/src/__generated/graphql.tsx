@@ -5550,6 +5550,7 @@ export type Mutation_Root = {
   insertWorkItems: Maybe<WorkItemsMutationResponse>;
   /** insert a single row into the table: "work_items" */
   insertWorkItemsOne: Maybe<WorkItems>;
+  internalCreateIssue: Issue;
   inviteProjectLeader: Scalars['Uuid'];
   linkGithubRepo: Scalars['Uuid'];
   markInvoiceAsReceived: Scalars['Int'];
@@ -6331,6 +6332,14 @@ export type Mutation_RootInsertWorkItemsArgs = {
 export type Mutation_RootInsertWorkItemsOneArgs = {
   object: WorkItemsInsertInput;
   onConflict: InputMaybe<WorkItemsOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInternalCreateIssueArgs = {
+  description: Scalars['String'];
+  repoId: Scalars['GithubRepositoryId'];
+  title: Scalars['String'];
 };
 
 
@@ -7453,6 +7462,7 @@ export type Query_Root = {
   /** fetch data from the table: "github_repo_details" using primary key columns */
   githubRepoDetailsByPk: Maybe<GithubRepoDetails>;
   hello: Scalars['String'];
+  helloFromDustyBot: Scalars['String'];
   helloFromGithubProxy: Scalars['String'];
   new: Query;
   /** An array relationship */
