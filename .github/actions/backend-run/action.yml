@@ -37,6 +37,18 @@ runs:
         cargo run -p github-proxy &> github-proxy.out.log &
         echo "github_proxy_pid=$!" >> $GITHUB_ENV
 
+    - name: Run the dusty-bot
+      shell: bash
+      run: |
+        cargo run -p dusty-bot &> dusty-bot.out.log &
+        echo "dusty_bot_pid=$!" >> $GITHUB_ENV
+
+    - name: Run the dusty-bot action dequeuer
+      shell: bash
+      run: |
+        cargo run --bin action-dequeuer &> action-dequeuer.out.log &
+        echo "action_dequeuer_pid=$!" >> $GITHUB_ENV
+
     - name: Wait for api to be up
       uses: onlydustxyz/wait-on-action@v1
       with:
@@ -53,4 +65,10 @@ runs:
       uses: onlydustxyz/wait-on-action@v1
       with:
         resource: http://localhost:8001
+        timeout: 300000
+
+    - name: Wait for dusty-bot to be up
+      uses: onlydustxyz/wait-on-action@v1
+      with:
+        resource: http://localhost:8002
         timeout: 300000
