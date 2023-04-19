@@ -5,3 +5,6 @@ pub use image_store::{Error as ImageStoreServiceError, Service as ImageStoreServ
 
 mod github;
 pub use github::Service as GithubService;
+
+mod dusty_bot;
+pub use dusty_bot::Service as DustyBotService;

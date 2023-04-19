@@ -1,10 +1,8 @@
 use std::sync::Arc;
 
 use derive_getters::Getters;
-use domain::{
-	AggregateRootRepository, AuthUserRepository, Event, GithubUserId, Project, Publisher, UserId,
-};
-use infrastructure::{amqp::UniqueMessage, github};
+use domain::{AggregateRootRepository, Event, GithubUserId, Project, Publisher, UserId};
+use infrastructure::{amqp::UniqueMessage, github, graphql};
 use presentation::http::guards::OptionUserId;
 
 use super::{Error, Result};
@@ -59,7 +57,7 @@ impl Context {
 		project_sponsor_repository: ProjectSponsorRepository,
 		pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 		user_info_repository: UserInfoRepository,
-		auth_user_repository: Arc<dyn AuthUserRepository>,
+		graphql: Arc<graphql::Client>,
 		github: Arc<github::Client>,
 		ens: Arc<ens::Client>,
 		simple_storage: Arc<simple_storage::Client>,
@@ -73,7 +71,7 @@ impl Context {
 				application::dusty_bot::comment_issue_for_payment_requested::Usecase::new(
 					github.clone(),
 					github.clone(),
-					auth_user_repository.clone(),
+					graphql.clone(),
 					github.clone(),
 				),
 			),
@@ -149,8 +147,7 @@ impl Context {
 			),
 			create_github_issue_usecase: application::github::create_issue::Usecase::new(
 				project_repository,
-				github.clone(),
-				github,
+				graphql,
 			),
 			ens,
 		}

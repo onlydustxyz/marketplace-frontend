@@ -1,0 +1,28 @@
+fragment GithubUser on User {
+  id
+  login
+  avatarUrl
+  htmlUrl
+}
+
+fragment GithubIssue on Issue {
+  id
+  repoId
+  number
+  type
+  title
+  author {
+    ...GithubUser
+  }
+  htmlUrl
+  status
+  createdAt
+  mergedAt
+  closedAt
+}
+
+mutation CreateIssue($repoId: GithubRepositoryId!, $title: String!, $description: String!) {
+  internalCreateIssue(repoId: $repoId, title: $title, description: $description) {
+    ...GithubIssue
+  }
+}

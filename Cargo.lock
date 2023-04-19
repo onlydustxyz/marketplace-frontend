@@ -143,6 +143,7 @@ dependencies = [
  "email_address",
  "event-store",
  "futures",
+ "graphql_client",
  "iban_validate",
  "indoc",
  "infer",

@@ -1,33 +1,21 @@
 use std::sync::Arc;
 
 use anyhow::anyhow;
+use derive_more::Constructor;
 use domain::{
-	AggregateRootRepository, DomainError, GithubFetchRepoService, GithubIssue, GithubRepositoryId,
-	Project, ProjectId,
+	AggregateRootRepository, DomainError, GithubIssue, GithubRepositoryId, Project, ProjectId,
 };
 use tracing::instrument;
 
-use crate::domain::GithubService;
+use crate::domain::DustyBotService;
 
+#[derive(Constructor)]
 pub struct Usecase {
 	project_repository: AggregateRootRepository<Project>,
-	github_service: Arc<dyn GithubService>,
-	github_fetch_repo_service: Arc<dyn GithubFetchRepoService>,
+	dusty_bot_service: Arc<dyn DustyBotService>,
 }
 
 impl Usecase {
-	pub fn new(
-		project_repository: AggregateRootRepository<Project>,
-		github_service: Arc<dyn GithubService>,
-		github_fetch_repo_service: Arc<dyn GithubFetchRepoService>,
-	) -> Self {
-		Self {
-			project_repository,
-			github_service,
-			github_fetch_repo_service,
-		}
-	}
-
 	#[instrument(skip(self))]
 	pub async fn create_issue(
 		&self,
@@ -43,13 +31,9 @@ impl Usecase {
 			)));
 		}
 
-		let repo = self.github_fetch_repo_service.repo_by_id(github_repo_id).await?;
-
-		let issue = self
-			.github_service
-			.create_issue(repo.owner(), repo.name(), &title, &description)
-			.await?;
-
-		Ok(issue)
+		self.dusty_bot_service
+			.create_issue(github_repo_id, &title, &description)
+			.await
+			.map_err(DomainError::InternalError)
 	}
 }
