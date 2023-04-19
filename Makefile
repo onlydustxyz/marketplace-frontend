@@ -92,6 +92,12 @@ db/load-fixtures: db/up
 #                           Backend
 # ----------------------------------------------------------
 
+# Starts the backend stack in background
+backend/background-start: api/background-start github-proxy/background-start
+
+# Stops the background backend stack, if running
+backend/background-stop: api/background-stop github-proxy/background-stop
+
 api.pid:
 	@./scripts/wait-for-port.sh api 8000
 
@@ -123,12 +129,6 @@ github-proxy/background-stop:
 		rm github-proxy.pid; \
 		rm github-proxy.log; \
 	fi
-
-# Starts the backend stack in background
-backend/background-start: api/background-start github-proxy/background-start
-
-# Stops the background backend stack, if running
-backend/background-stop: api/background-stop github-proxy/background-stop
 
 # ----------------------------------------------------------
 #                          Hasura
