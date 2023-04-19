@@ -1,0 +1,1 @@
+dusty-bot: RUST_LOG=info ./target/release/dusty-bot
