@@ -63,4 +63,4 @@ playwright/clean:
 	rm -f "playwright/marketplace_db_dump"
 	rm -rf "playwright/fixtures/__generated"
 
-default: install frontend/install docker/re db/up db/update-staging-dump db/migrate db/load-fixtures hasura/clean playwright/test playwright/clean
+default: install frontend/install hasura/install docker/re db/up db/update-staging-dump db/migrate db/load-fixtures hasura/clean playwright/test playwright/clean
