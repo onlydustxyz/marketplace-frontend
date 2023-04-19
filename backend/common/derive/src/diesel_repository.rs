@@ -20,6 +20,7 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 	let upsert_span_name = format!("{}::upsert", table_ident);
 	let delete_span_name = format!("{}::delete", table_ident);
 	let clear_span_name = format!("{}::clear", table_ident);
+	let list_span_name = format!("{}::list", table_ident);
 
 	let select_methods = if has_feature(&features, "select") {
 		quote! {
@@ -28,6 +29,13 @@ pub fn impl_diesel_repository(derive_input: syn::DeriveInput) -> TokenStream {
 				let connection = self.0.connection()?;
 				let entity = #table.find(*id).first(&*connection)?;
 				Ok(entity)
+			}
+
+			#[tracing::instrument(name = #list_span_name, skip(self))]
+			pub fn list(&self) -> Result<Vec<#entity_type>, infrastructure::database::DatabaseError> {
+				let connection = self.0.connection()?;
+				let entities = #table.get_results(&*connection)?;
+				Ok(entities)
 			}
 		}
 	} else {
@@ -148,6 +156,7 @@ fn impl_mocks(
 	let select_methods = if has_feature(features, "select") {
 		quote! {
 			pub fn find_by_id(&self, id: &<#entity_type as ::domain::Entity>::Id) -> Result<#entity_type, infrastructure::database::DatabaseError>;
+			pub fn list(&self) -> Result<Vec<#entity_type>, infrastructure::database::DatabaseError>;
 		}
 	} else {
 		quote! {}

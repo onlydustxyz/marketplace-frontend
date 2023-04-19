@@ -1378,6 +1378,7 @@ dependencies = [
  "mockall",
  "mockall_double",
  "mockito",
+ "octocrab",
  "olog",
  "reqwest",
  "rstest",

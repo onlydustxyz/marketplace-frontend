@@ -1,4 +1,5 @@
 use std::{
+	fmt::Debug,
 	pin::Pin,
 	task::{Context, Poll},
 };
@@ -8,6 +9,7 @@ use domain::GithubServiceFilters;
 use futures::{ready, Stream};
 use pin_project_lite::pin_project;
 
+mod events;
 mod pulls;
 
 pub trait StreamFilterWith: Stream
@@ -32,7 +34,7 @@ pin_project! {
 	}
 }
 
-#[derive(Default)]
+#[derive(Default, Debug, PartialEq, Eq)]
 enum Decision<I> {
 	Take(I), // Item is valid, take it
 	Skip,    // Item is not valid, keep looking

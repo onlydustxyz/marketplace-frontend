@@ -6318,22 +6318,6 @@
             "deprecationReason": null
           },
           {
-            "name": "authorId",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "GithubUserId",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "closedAt",
             "description": null,
             "args": [],
@@ -9754,13 +9738,9 @@
             "description": "An object relationship",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "PaymentRequests",
-                "ofType": null
-              }
+              "kind": "OBJECT",
+              "name": "PaymentRequests",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -15433,13 +15413,9 @@
             "description": "An object relationship",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Projects",
-                "ofType": null
-              }
+              "kind": "OBJECT",
+              "name": "Projects",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -27219,7 +27195,7 @@
           },
           {
             "name": "refreshToken",
-            "description": null,
+            "description": "DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -27229,6 +27205,18 @@
                 "name": "uuid",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refreshTokenHash",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -27591,6 +27579,18 @@
             "deprecationReason": null
           },
           {
+            "name": "refreshTokenHash",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "StringComparisonExp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "user",
             "description": null,
             "type": {
@@ -27668,7 +27668,7 @@
           },
           {
             "name": "refreshToken",
-            "description": null,
+            "description": "DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead.",
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
@@ -27738,11 +27738,23 @@
           },
           {
             "name": "refreshToken",
-            "description": null,
+            "description": "DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead.",
             "args": [],
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refreshTokenHash",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -27797,11 +27809,23 @@
           },
           {
             "name": "refreshToken",
-            "description": null,
+            "description": "DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead.",
             "args": [],
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refreshTokenHash",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -27982,6 +28006,18 @@
             "deprecationReason": null
           },
           {
+            "name": "refreshTokenHash",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "user",
             "description": null,
             "type": {
@@ -28018,7 +28054,7 @@
         "inputFields": [
           {
             "name": "refreshToken",
-            "description": null,
+            "description": "DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead.",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -28064,6 +28100,12 @@
             "deprecationReason": null
           },
           {
+            "name": "refreshTokenHash",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "userId",
             "description": "column name",
             "isDeprecated": false,
@@ -28104,7 +28146,7 @@
           },
           {
             "name": "refreshToken",
-            "description": null,
+            "description": "DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead.",
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
@@ -28331,6 +28373,18 @@
           },
           {
             "name": "refreshToken",
+            "description": "DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead.",
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refreshTokenHash",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -28390,6 +28444,18 @@
           },
           {
             "name": "refreshToken",
+            "description": "DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead.",
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderBy",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refreshTokenHash",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -28488,10 +28554,22 @@
           },
           {
             "name": "refreshToken",
-            "description": null,
+            "description": "DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead.",
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "refreshTokenHash",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -37049,7 +37127,7 @@
             "args": [
               {
                 "name": "refreshToken",
-                "description": null,
+                "description": "DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead.",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
@@ -47929,7 +48007,7 @@
             "args": [
               {
                 "name": "refreshToken",
-                "description": null,
+                "description": "DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead.",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
@@ -53674,7 +53752,7 @@
             "args": [
               {
                 "name": "refreshToken",
-                "description": null,
+                "description": "DEPRECATED: auto-generated refresh token id. Will be replaced by a genereric id column that will be used as a primary key, not the refresh token itself. Use refresh_token_hash instead.",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
