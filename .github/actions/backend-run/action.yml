@@ -55,12 +55,6 @@ runs:
         resource: http://localhost:8000
         timeout: 300000
 
-    - name: Wait for event-listeners to be up
-      uses: onlydustxyz/wait-on-action@v1
-      with:
-        resource: http-get://localhost:8081/graphiql
-        timeout: 300000
-
     - name: Wait for github-proxy to be up
       uses: onlydustxyz/wait-on-action@v1
       with:
