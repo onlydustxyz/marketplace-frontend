@@ -8,6 +8,7 @@ use domain::{
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
 	models::{
+		events::Event,
 		issues::{Comment, Issue},
 		pulls::PullRequest,
 		repos::Content,
@@ -154,6 +155,34 @@ impl Client {
 					.boxed()
 			})
 			.unwrap_or_else(|| empty().boxed()))
+	}
+
+	#[instrument(skip(self))]
+	pub async fn events_by_repo_id(
+		&self,
+		id: &GithubRepositoryId,
+		filters: &GithubServiceFilters,
+	) -> Result<Vec<Event>, Error> {
+		let query_params = QueryParams::default().page(1).per_page(100);
+
+		let url: Url = format!(
+			"{}repositories/{id}/events?{}",
+			self.octocrab().base_url,
+			query_params.to_query_string()?
+		)
+		.parse()?;
+
+		let events = self
+			.stream_as::<Event>(
+				url,
+				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
+			)
+			.await?
+			.filter_with(*filters)
+			.collect()
+			.await;
+
+		Ok(events)
 	}
 
 	#[instrument(skip(self))]

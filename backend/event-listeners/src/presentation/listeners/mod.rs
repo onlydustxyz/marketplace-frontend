@@ -5,7 +5,7 @@ mod webhook;
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::{Event, Subscriber, SubscriberCallbackError};
+use domain::{MessagePayload, Subscriber, SubscriberCallbackError};
 use infrastructure::{
 	amqp::{ConsumableBus, UniqueMessage},
 	database, event_bus, github,
@@ -16,11 +16,12 @@ use webhook::EventWebHook;
 use crate::{
 	domain::*,
 	infrastructure::database::{
-		BudgetRepository, CrmGithubRepoRepository, GithubRepoDetailsRepository, PaymentRepository,
-		PaymentRequestRepository, ProjectGithubRepoDetailsRepository, ProjectLeadRepository,
-		ProjectRepository, WorkItemRepository,
+		BudgetRepository, CrmGithubRepoRepository, GithubRepoDetailsRepository,
+		GithubRepoIndexRepository, PaymentRepository, PaymentRequestRepository,
+		ProjectGithubRepoDetailsRepository, ProjectLeadRepository, ProjectRepository,
+		WorkItemRepository,
 	},
-	Config,
+	Config, GITHUB_EVENTS_EXCHANGE,
 };
 
 pub async fn spawn_all(
@@ -38,7 +39,8 @@ pub async fn spawn_all(
 			ProjectLeadRepository::new(database.clone()),
 			GithubRepoDetailsRepository::new(database.clone()),
 			ProjectGithubRepoDetailsRepository::new(database.clone()),
-			github.clone(),
+			GithubRepoIndexRepository::new(database.clone()),
+			github,
 		)
 		.spawn(event_bus::consumer(config.amqp(), "projects").await?),
 		BudgetProjector::new(
@@ -46,24 +48,30 @@ pub async fn spawn_all(
 			PaymentRepository::new(database.clone()),
 			BudgetRepository::new(database.clone()),
 			WorkItemRepository::new(database.clone()),
+			GithubRepoIndexRepository::new(database.clone()),
 		)
 		.spawn(event_bus::consumer(config.amqp(), "budgets").await?),
-		CrmProjector::new(CrmGithubRepoRepository::new(database.clone()), github)
-			.spawn(event_bus::consumer(config.amqp(), "crm").await?),
+		CrmProjector::new(CrmGithubRepoRepository::new(database.clone())).spawn(
+			event_bus::consumer_with_exchange(config.amqp(), GITHUB_EVENTS_EXCHANGE, "crm").await?,
+		),
+		Logger.spawn(
+			event_bus::consumer_with_exchange(config.amqp(), GITHUB_EVENTS_EXCHANGE, "logger")
+				.await?,
+		),
 	];
 
 	Ok(handles.into())
 }
 
-trait Spawnable {
+trait Spawnable<E: MessagePayload> {
 	fn spawn(self, bus: ConsumableBus) -> JoinHandle<()>;
 }
 
-impl<EL: EventListener + 'static> Spawnable for EL {
+impl<E: MessagePayload + Send + Sync, EL: EventListener<E> + 'static> Spawnable<E> for EL {
 	fn spawn(self, bus: ConsumableBus) -> JoinHandle<()> {
 		let listener = Arc::new(self);
 		tokio::spawn(async move {
-			bus.subscribe(|message: UniqueMessage<Event>| {
+			bus.subscribe(|message: UniqueMessage<E>| {
 				notify_event_listener(listener.clone(), message.payload().clone())
 			})
 			.await
@@ -72,9 +80,9 @@ impl<EL: EventListener + 'static> Spawnable for EL {
 	}
 }
 
-async fn notify_event_listener(
-	listener: Arc<dyn EventListener>,
-	event: Event,
+async fn notify_event_listener<E>(
+	listener: Arc<dyn EventListener<E>>,
+	event: E,
 ) -> Result<(), SubscriberCallbackError> {
 	listener.on_event(&event).await.map_err(SubscriberCallbackError::from)
 }

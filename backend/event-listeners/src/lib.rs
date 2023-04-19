@@ -10,3 +10,5 @@ pub mod presentation;
 
 mod config;
 pub use config::Config;
+
+pub const GITHUB_EVENTS_EXCHANGE: &str = "github-events";
