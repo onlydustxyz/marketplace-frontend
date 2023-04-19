@@ -1,15 +1,10 @@
 use std::sync::Arc;
 
-use ::infrastructure::{config, database};
 use anyhow::Result;
 use dotenv::dotenv;
-use event_listeners::{
-	presentation::{graphql, http, listeners},
-	Config,
-};
+use event_listeners::{infrastructure::listeners, Config};
 use futures::future::try_join_all;
-use infrastructure::{github, tracing::Tracer};
-use tokio::task::JoinHandle;
+use infrastructure::{config, database, github, tracing::Tracer};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -23,15 +18,7 @@ async fn main() -> Result<()> {
 	)?));
 	let github = Arc::<github::Client>::new(github::RoundRobinClient::new(config.github())?.into());
 
-	let mut handles = vec![spawn_web_server()?];
-	handles.extend(listeners::spawn_all(&config, reqwest, database, github).await?);
-	try_join_all(handles).await?;
+	try_join_all(listeners::spawn_all(&config, reqwest, database, github).await?).await?;
 
 	Ok(())
-}
-
-fn spawn_web_server() -> Result<JoinHandle<()>> {
-	let web_server = http::server(http::port()?, graphql::Context::new);
-
-	Ok(tokio::spawn(web_server))
 }
