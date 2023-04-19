@@ -16,7 +16,7 @@ impl GithubService for github::Client {
 		title: &str,
 		description: &str,
 	) -> GithubServiceResult<GithubIssue> {
-		let repo = self.repo_by_id(&repo_id).await?;
+		let repo = self.repo_by_id(repo_id).await?;
 
 		let issue = self
 			.octocrab()

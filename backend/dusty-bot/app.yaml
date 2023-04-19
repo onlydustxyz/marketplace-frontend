@@ -5,7 +5,6 @@ default:
   github:
     base_url: $GITHUB_BASE_URL
     personal_access_tokens: $GITHUB_PAT
-    max_calls_per_request: $GITHUB_MAX_CALLS_PER_REQUEST
   amqp:
     connection_retry_interval_ms: 6000
     connection_retry_count: 100

@@ -49,6 +49,7 @@ async fn main() -> Result<()> {
 		Arc::new(github),
 		Arc::new(ens::Client::new(config.web3())?),
 		simple_storage,
+		Arc::new(amqp::Bus::new(config.amqp()).await?),
 	)
 	.await?;
 

@@ -35,7 +35,7 @@ pub async fn get_graphql_handler(
 	schema: &State<Schema>,
 ) -> GraphQLResponse {
 	let context = graphql::Context::new(maybe_github_pat, (*config).clone(), (*github).clone());
-	request.execute(&schema, &context).await
+	request.execute(schema, &context).await
 }
 
 #[post("/graphql", data = "<request>")]
@@ -49,5 +49,5 @@ pub async fn post_graphql_handler(
 	schema: &State<Schema>,
 ) -> GraphQLResponse {
 	let context = graphql::Context::new(maybe_github_pat, (*config).clone(), (*github).clone());
-	request.execute(&schema, &context).await
+	request.execute(schema, &context).await
 }

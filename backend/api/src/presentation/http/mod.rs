@@ -3,7 +3,11 @@ use std::sync::Arc;
 use ::domain::{AggregateRootRepository, Event, Project, Publisher};
 use anyhow::Result;
 use http::Config;
-use infrastructure::{amqp::UniqueMessage, github, web3::ens};
+use infrastructure::{
+	amqp::{self, UniqueMessage},
+	github,
+	web3::ens,
+};
 use presentation::http;
 
 use crate::{
@@ -36,6 +40,7 @@ pub async fn serve(
 	github: Arc<github::Client>,
 	ens: Arc<ens::Client>,
 	simple_storage: Arc<simple_storage::Client>,
+	publisher: Arc<amqp::Bus>,
 ) -> Result<()> {
 	let _ = rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config)
@@ -51,6 +56,7 @@ pub async fn serve(
 		.manage(github)
 		.manage(ens)
 		.manage(simple_storage)
+		.manage(publisher)
 		.mount("/", routes![http::routes::health_check,])
 		.mount(
 			"/",

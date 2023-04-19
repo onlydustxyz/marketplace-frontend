@@ -11,16 +11,16 @@ use indoc::formatdoc;
 use num_format::{Locale, ToFormattedString};
 use tokio::try_join;
 
-use crate::domain::GithubService;
+use crate::domain::DustyBotAsyncService;
 
 const HOURS_PER_DAY: u32 = 8;
 
 #[derive(Constructor)]
 pub struct Usecase {
-	github_service: Arc<dyn GithubService>,
 	fetch_user_service: Arc<dyn GithubFetchUserService>,
 	auth_user_repository: Arc<dyn AuthUserRepository>,
 	fetch_repo_service: Arc<dyn GithubFetchRepoService>,
+	dusty_bot_service: Arc<dyn DustyBotAsyncService>,
 }
 
 impl Usecase {
@@ -68,14 +68,15 @@ impl Usecase {
 				.map_err(DomainError::InvalidInputs)?,
 		);
 
-		self.github_service
+		self.dusty_bot_service
 			.create_comment(
 				repository.owner(),
 				repository.name(),
 				work_item.issue_number(),
 				&comment_body,
 			)
-			.await?;
+			.await
+			.map_err(DomainError::InternalError)?;
 
 		Ok(())
 	}

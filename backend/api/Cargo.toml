@@ -81,6 +81,7 @@ octocrab = { git = "https://github.com/onlydustxyz/octocrab.git" }
 
 # Local dependecies
 domain = {path = "../common/domain", features = ["rocket"]}
+dusty-bot = {path = "../dusty-bot"}
 event-store = {path = "../event-store"}
 infrastructure = {path = "../common/infrastructure"}
 derive = {path = "../common/derive"}

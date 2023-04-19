@@ -140,6 +140,7 @@ dependencies = [
  "diesel",
  "domain",
  "dotenv",
+ "dusty-bot",
  "email_address",
  "event-store",
  "futures",
