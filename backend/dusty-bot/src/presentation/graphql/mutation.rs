@@ -7,7 +7,7 @@ pub struct Mutation;
 
 #[graphql_object(context=Context, Scalar = DefaultScalarValue)]
 impl Mutation {
-	pub async fn create_issue(
+	pub async fn internal_create_issue(
 		&self,
 		context: &Context,
 		repo_id: GithubRepositoryId,
