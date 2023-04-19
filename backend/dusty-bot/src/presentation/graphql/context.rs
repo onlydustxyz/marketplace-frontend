@@ -1,6 +1,12 @@
-use derive_more::Constructor;
+use std::sync::Arc;
 
-#[derive(Clone, Constructor)]
-pub struct Context {}
+use derive_new::new;
+
+use crate::domain::GithubService;
+
+#[derive(Clone, new)]
+pub struct Context {
+	pub github_service: Arc<dyn GithubService>,
+}
 
 impl juniper::Context for Context {}

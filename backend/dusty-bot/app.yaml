@@ -1,4 +1,7 @@
 default:
+  http:
+    api_keys:
+      graphql: $DUSTY_BOT_GRAPHQL_API_KEY
   github:
     base_url: $GITHUB_BASE_URL
     personal_access_tokens: $GITHUB_PAT

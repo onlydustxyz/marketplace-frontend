@@ -4,6 +4,9 @@ use query::Query;
 mod mutation;
 use mutation::Mutation;
 
+mod error;
+pub use error::{Error, Result};
+
 mod context;
 pub use context::Context;
 use juniper::{EmptySubscription, RootNode};

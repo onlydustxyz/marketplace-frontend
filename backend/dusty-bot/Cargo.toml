@@ -31,8 +31,8 @@ url = "2.2.2"
 
 # Http Server
 juniper = "0.15.10"
-juniper_warp = "0.7.0"
-warp = "0.3.3"
+juniper_rocket = "0.8.2"
+rocket = {version = "0.5.0-rc.2", features = ["json", "uuid"]}
 
 # Tracing
 tracing = "0.1"
@@ -56,6 +56,7 @@ chrono = { version = "0.4", features = ["serde"] }
 # Local dependecies
 domain = {path = "../common/domain"}
 infrastructure = {path = "../common/infrastructure"}
+presentation = {path = "../common/presentation"}
 olog = {path = "../common/olog"}
 
 [dev-dependencies]

@@ -1,17 +1,16 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use domain::GithubService;
+use http::Config;
+use infrastructure::github;
 use presentation::http;
 
-use crate::{presentation::graphql, Config};
+use crate::presentation::graphql;
 
-pub mod guards;
 mod routes;
 
-pub async fn serve(config: Config, github: Arc<dyn GithubService>) -> Result<()> {
-	let _ = rocket::custom(http::config::rocket("backend/github-proxy/Rocket.toml"))
-		.manage(config.http.clone())
+pub async fn serve(config: Config, github: Arc<github::Client>) -> Result<()> {
+	let _ = rocket::custom(http::config::rocket("backend/dusty-bot/Rocket.toml"))
 		.manage(config)
 		.manage(graphql::create_schema())
 		.manage(github)
@@ -26,5 +25,6 @@ pub async fn serve(config: Config, github: Arc<dyn GithubService>) -> Result<()>
 		)
 		.launch()
 		.await?;
+
 	Ok(())
 }

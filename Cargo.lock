@@ -1252,12 +1252,14 @@ dependencies = [
  "futures",
  "infrastructure",
  "juniper",
- "juniper_warp",
+ "juniper_rocket",
  "lazy_static",
  "mockall",
  "mockall_double",
  "octocrab",
  "olog",
+ "presentation",
+ "rocket",
  "rstest",
  "serde",
  "serde_json",
@@ -1267,7 +1269,6 @@ dependencies = [
  "tracing",
  "url",
  "uuid 0.8.2",
- "warp",
 ]
 
 [[package]]
