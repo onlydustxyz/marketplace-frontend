@@ -60,3 +60,9 @@ lerna-debug.log*
 
 # Db dumps
 **/*.dump
+
+# Processes
+*.pid
+
+# Logs
+*.logs
