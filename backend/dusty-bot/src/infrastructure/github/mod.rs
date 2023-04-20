@@ -1,6 +1,7 @@
 use async_trait::async_trait;
 use domain::{
-	GithubFetchRepoService, GithubIssue, GithubIssueNumber, GithubRepositoryId, GithubServiceError,
+	GithubFetchIssueService, GithubFetchRepoService, GithubFetchUserService, GithubIssue,
+	GithubIssueNumber, GithubIssueStatus, GithubRepositoryId, GithubServiceError,
 	GithubServiceResult,
 };
 use infrastructure::github::{self, IssueFromOctocrab};
@@ -41,34 +42,22 @@ impl GithubService for github::Client {
 	) -> GithubServiceResult<()> {
 		let issue_number = (*issue_number).into();
 
-		self.octocrab()
+		let issue = self
+			.octocrab()
 			.issues(repo_owner, repo_name)
-			.create_comment(issue_number, comment)
+			.get(issue_number)
 			.await
 			.map_err(github::Error::from)?;
 
+		if !issue.locked {
+			self.octocrab()
+				.issues(repo_owner, repo_name)
+				.create_comment(issue_number, comment)
+				.await
+				.map_err(github::Error::from)?;
+		}
+
 		Ok(())
-	}
-
-	async fn get_latest_own_comment_on_issue(
-		&self,
-		repo_owner: &str,
-		repo_name: &str,
-		issue_number: &GithubIssueNumber,
-	) -> GithubServiceResult<Option<String>> {
-		let dusty_bot = self.get_current_user().await.map_err(github::Error::from)?;
-
-		let mut comments: Vec<_> = self
-			.all_issue_comments(repo_owner, repo_name, issue_number)
-			.await
-			.map_err(github::Error::from)?
-			.into_iter()
-			.filter(|comment| comment.user.id == dusty_bot.id)
-			.collect();
-
-		comments.sort_by_key(|comment| comment.created_at);
-
-		Ok(comments.last().cloned().and_then(|comment| comment.body))
 	}
 
 	async fn close_issue(
@@ -77,16 +66,20 @@ impl GithubService for github::Client {
 		repo_name: &str,
 		issue_number: &GithubIssueNumber,
 	) -> GithubServiceResult<()> {
-		let issue_number: i64 = (*issue_number).into();
+		let dusty_bot = self.current_user().await?;
 
-		self.octocrab()
-			.issues(repo_owner, repo_name)
-			.update(issue_number as u64)
-			.state(models::IssueState::Closed)
-			.send()
-			.await
-			.map_err(github::Error::from)?;
+		let issue = self.issue(repo_owner, repo_name, issue_number).await?;
+		let issue_number: u64 = (*issue_number).into();
 
+		if issue.author().id() == dusty_bot.id() && *issue.status() == GithubIssueStatus::Open {
+			self.octocrab()
+				.issues(repo_owner, repo_name)
+				.update(issue_number)
+				.state(models::IssueState::Closed)
+				.send()
+				.await
+				.map_err(github::Error::from)?;
+		}
 		Ok(())
 	}
 }

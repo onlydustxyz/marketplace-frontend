@@ -20,13 +20,6 @@ pub trait Service: GithubService + Send + Sync {
 		comment: &str,
 	) -> GithubServiceResult<()>;
 
-	async fn get_latest_own_comment_on_issue(
-		&self,
-		repo_owner: &str,
-		repo_name: &str,
-		issue_number: &GithubIssueNumber,
-	) -> GithubServiceResult<Option<String>>;
-
 	async fn close_issue(
 		&self,
 		repo_owner: &str,

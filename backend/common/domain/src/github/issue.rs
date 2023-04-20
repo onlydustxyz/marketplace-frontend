@@ -6,7 +6,7 @@ use url::Url;
 
 use crate::{GithubRepositoryId, GithubUser};
 
-#[derive(Clone, Debug, GraphQLEnum)]
+#[derive(Clone, Debug, GraphQLEnum, PartialEq, Eq)]
 pub enum Status {
 	Open,
 	Closed,
