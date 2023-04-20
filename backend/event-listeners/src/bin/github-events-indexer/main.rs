@@ -12,8 +12,7 @@ mod indexer;
 #[tokio::main]
 async fn main() -> Result<()> {
 	dotenv().ok();
-	let config: Config =
-		config::load("backend/event-listeners/src/bin/github-events-indexer/app.yaml")?;
+	let config: Config = config::load("backend/event-listeners/app.yaml")?;
 	let _tracer = Tracer::init(config.tracer(), "github")?;
 	let github = Arc::<github::Client>::new(github::RoundRobinClient::new(config.github())?.into());
 	let database = Arc::new(database::Client::new(database::init_pool(

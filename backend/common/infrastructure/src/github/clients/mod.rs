@@ -68,7 +68,8 @@ impl Client {
 		&self,
 		issue: &Issue,
 	) -> Result<GithubRepositoryId, Error> {
-		let repo = self.get_as::<_, Repository>(issue.repository_url.clone()).await?;
+		let repository_url = self.fix_github_host(&issue.repository_url).map_err(Error::Other)?;
+		let repo = self.get_as::<_, Repository>(repository_url).await?;
 		Ok((repo.id.0 as i64).into())
 	}
 
@@ -321,18 +322,14 @@ impl Client {
 			.ok_or_else(|| Error::NotFound(anyhow!("Could not find {path} in repository")))
 	}
 
-	pub fn fix_github_host(&self, url: &Option<Url>) -> anyhow::Result<Option<Url>> {
-		Ok(match url {
-			Some(url) => Some(
-				format!(
-					"{}{}",
-					self.octocrab().base_url.as_str().trim_end_matches('/'),
-					url.path()
-				)
-				.parse()?,
-			),
-			None => None,
-		})
+	pub fn fix_github_host(&self, url: &Url) -> anyhow::Result<Url> {
+		let url = format!(
+			"{}{}",
+			self.octocrab().base_url.as_str().trim_end_matches('/'),
+			url.path()
+		)
+		.parse()?;
+		Ok(url)
 	}
 }
 
@@ -343,16 +340,27 @@ mod tests {
 	use super::*;
 
 	#[rstest]
-	#[case("http://plop.fr/github/", Some("https://api.github.com/repos/ning-rain/evens/contributors".parse().unwrap()), Some("http://plop.fr/github/repos/ning-rain/evens/contributors".parse().unwrap()))]
-	#[case("http://plop.fr/github", Some("https://api.github.com/repos/ning-rain/evens/contributors".parse().unwrap()), Some("http://plop.fr/github/repos/ning-rain/evens/contributors".parse().unwrap()))]
-	#[case("http://plop.fr/github/", Some("https://api.github.com".parse().unwrap()), Some("http://plop.fr/github/".parse().unwrap()))]
-	#[case("http://plop.fr/github", Some("https://api.github.com".parse().unwrap()), Some("http://plop.fr/github/".parse().unwrap()))]
-	#[case("http://plop.fr/github/", None, None)]
-	fn fix_github_host(
-		#[case] base_url: &str,
-		#[case] url: Option<reqwest::Url>,
-		#[case] expected_url: Option<reqwest::Url>,
-	) {
+	#[case(
+		"http://plop.fr/github/",
+		"https://api.github.com/repos/ning-rain/evens/contributors",
+		"http://plop.fr/github/repos/ning-rain/evens/contributors"
+	)]
+	#[case(
+		"http://plop.fr/github",
+		"https://api.github.com/repos/ning-rain/evens/contributors",
+		"http://plop.fr/github/repos/ning-rain/evens/contributors"
+	)]
+	#[case(
+		"http://plop.fr/github/",
+		"https://api.github.com",
+		"http://plop.fr/github/"
+	)]
+	#[case(
+		"http://plop.fr/github",
+		"https://api.github.com",
+		"http://plop.fr/github/"
+	)]
+	fn fix_github_host(#[case] base_url: &str, #[case] url: &str, #[case] expected_url: &str) {
 		let client: Client = RoundRobinClient::new(&Config {
 			base_url: base_url.to_string(),
 			personal_access_tokens: "token".to_string(),
@@ -361,7 +369,7 @@ mod tests {
 		.unwrap()
 		.into();
 
-		let result_url = client.fix_github_host(&url).unwrap();
-		assert_eq!(result_url, expected_url);
+		let result_url = client.fix_github_host(&url.parse().unwrap()).unwrap();
+		assert_eq!(result_url, expected_url.parse().unwrap());
 	}
 }

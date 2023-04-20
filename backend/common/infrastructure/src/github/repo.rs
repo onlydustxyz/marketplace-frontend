@@ -20,8 +20,9 @@ impl RepoFromOctocrab for GithubRepo {
 		client: &github::Client,
 		repo: Repository,
 	) -> Result<GithubRepo> {
-		let contributors: Contributors = match client.fix_github_host(&repo.contributors_url)? {
-			Some(url) => client.get_as(url).await?,
+		let contributor_url = repo.contributors_url.map(|url| client.fix_github_host(&url));
+		let contributors: Contributors = match contributor_url {
+			Some(url) => client.get_as(url?).await?,
 			None => Default::default(),
 		};
 

@@ -6,7 +6,7 @@ use crate::amqp::Config;
 
 pub const EXCHANGE_NAME: &str = "events";
 
-pub async fn consumer(
+pub async fn event_consumer(
 	config: &Config,
 	queue_name: &'static str,
 ) -> Result<ConsumableBus, BusError> {
@@ -16,6 +16,13 @@ pub async fn consumer(
 pub async fn consumer_with_exchange(
 	config: &Config,
 	exchange_name: &'static str,
+	queue_name: &'static str,
+) -> Result<ConsumableBus, BusError> {
+	consumer(config, queue_name).await?.with_exchange(exchange_name).await
+}
+
+pub async fn consumer(
+	config: &Config,
 	queue_name: &'static str,
 ) -> Result<ConsumableBus, BusError> {
 	let bus = Bus::new(config)
@@ -35,8 +42,6 @@ pub async fn consumer_with_exchange(
 				..Default::default()
 			},
 		)
-		.await?
-		.with_exchange(exchange_name)
 		.await?;
 
 	info!("[{queue_name}] 🎧 Start listening to events");

@@ -47,7 +47,7 @@ else
     exit 1
 fi
 
-for SERVICE in github-proxy api event-listeners event-store
+for SERVICE in github-proxy api event-listeners event-store dusty-bot
 do
     APPNAME="od-$SERVICE-$ENV"
 

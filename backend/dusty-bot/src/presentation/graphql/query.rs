@@ -6,7 +6,7 @@ pub struct Query;
 
 #[graphql_object(context=Context)]
 impl Query {
-	pub fn new() -> Self {
-		Self {}
+	pub fn hello_from_dusty_bot(&self) -> &str {
+		"Beep Bop bup!"
 	}
 }

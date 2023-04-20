@@ -7,7 +7,7 @@ use rocket::{response::content, State};
 use tracing::instrument;
 
 use crate::{
-	presentation::{graphql, http::guards::OptionGithubPat},
+	presentation::{graphql, graphql::Schema, http::guards::OptionGithubPat},
 	Config,
 };
 
@@ -32,10 +32,10 @@ pub async fn get_graphql_handler(
 	config: &State<Config>,
 	github: &State<Arc<dyn GithubService>>,
 	request: GraphQLRequest,
+	schema: &State<Schema>,
 ) -> GraphQLResponse {
-	let schema = graphql::create_schema();
 	let context = graphql::Context::new(maybe_github_pat, (*config).clone(), (*github).clone());
-	request.execute(&schema, &context).await
+	request.execute(schema, &context).await
 }
 
 #[post("/graphql", data = "<request>")]
@@ -46,8 +46,8 @@ pub async fn post_graphql_handler(
 	config: &State<Config>,
 	github: &State<Arc<dyn GithubService>>,
 	request: GraphQLRequest,
+	schema: &State<Schema>,
 ) -> GraphQLResponse {
-	let schema = graphql::create_schema();
 	let context = graphql::Context::new(maybe_github_pat, (*config).clone(), (*github).clone());
-	request.execute(&schema, &context).await
+	request.execute(schema, &context).await
 }

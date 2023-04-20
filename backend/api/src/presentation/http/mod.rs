@@ -2,9 +2,12 @@ use std::sync::Arc;
 
 use ::domain::{AggregateRootRepository, Event, Project, Publisher};
 use anyhow::Result;
-use domain::AuthUserRepository;
 use http::Config;
-use infrastructure::{amqp::UniqueMessage, github, web3::ens};
+use infrastructure::{
+	amqp::{self, UniqueMessage},
+	github,
+	web3::ens,
+};
 use presentation::http;
 
 use crate::{
@@ -33,10 +36,11 @@ pub async fn serve(
 	project_sponsor_repository: ProjectSponsorRepository,
 	pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
 	user_info_repository: UserInfoRepository,
-	auth_user_repository: Arc<dyn AuthUserRepository>,
+	graphql: Arc<infrastructure::graphql::Client>,
 	github: Arc<github::Client>,
 	ens: Arc<ens::Client>,
 	simple_storage: Arc<simple_storage::Client>,
+	publisher: Arc<amqp::Bus>,
 ) -> Result<()> {
 	let _ = rocket::custom(http::config::rocket("backend/api/Rocket.toml"))
 		.manage(config)
@@ -48,10 +52,11 @@ pub async fn serve(
 		.manage(project_sponsor_repository)
 		.manage(pending_project_leader_invitations_repository)
 		.manage(user_info_repository)
-		.manage(auth_user_repository)
+		.manage(graphql)
 		.manage(github)
 		.manage(ens)
 		.manage(simple_storage)
+		.manage(publisher)
 		.mount("/", routes![http::routes::health_check,])
 		.mount(
 			"/",

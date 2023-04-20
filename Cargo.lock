@@ -140,9 +140,11 @@ dependencies = [
  "diesel",
  "domain",
  "dotenv",
+ "dusty-bot",
  "email_address",
  "event-store",
  "futures",
+ "graphql_client",
  "iban_validate",
  "indoc",
  "infer",
@@ -1234,6 +1236,42 @@ name = "downcast"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1435fa1053d8b2fbbe9be7e97eca7f33d37b28409959813daefc1446a14247f1"
+
+[[package]]
+name = "dusty-bot"
+version = "1.0.0"
+dependencies = [
+ "anyhow",
+ "assert_matches",
+ "async-std",
+ "async-trait",
+ "chrono",
+ "derive-getters",
+ "derive-new",
+ "derive_more",
+ "domain",
+ "dotenv",
+ "futures",
+ "infrastructure",
+ "juniper",
+ "juniper_rocket",
+ "lazy_static",
+ "mockall",
+ "mockall_double",
+ "octocrab",
+ "olog",
+ "presentation",
+ "rocket",
+ "rstest",
+ "serde",
+ "serde_json",
+ "testing",
+ "thiserror",
+ "tokio",
+ "tracing",
+ "url",
+ "uuid 0.8.2",
+]
 
 [[package]]
 name = "either"

@@ -1,5 +1,6 @@
 #![allow(non_camel_case_types)]
 
-use ::uuid::Uuid;
-
-pub type uuid = Uuid;
+pub type uuid = ::uuid::Uuid;
+pub use url::Url;
+pub type DateTimeUtc = chrono::DateTime<chrono::Utc>;
+pub use domain::{GithubRepositoryId, GithubUserId};
