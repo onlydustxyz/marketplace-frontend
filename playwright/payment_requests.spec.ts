@@ -3,7 +3,7 @@ import { expect } from "@playwright/test";
 import { restoreDB } from "./commands/db/db_utils";
 import { ProjectPage } from "./pages/project";
 import { User } from "./types";
-import { mutateAsAdmin, sleep } from "./commands/common";
+import { mutateAsAdmin, retry } from "./commands/common";
 import {
   AddEthPaymentReceiptDocument,
   AddEthPaymentReceiptMutation,
@@ -120,9 +120,19 @@ test.describe("As a project lead, I", () => {
 
     const githubIssuePage = await context.waitForEvent("page");
     await githubIssuePage.waitForLoadState();
-    await expect(githubIssuePage.getByText("to AnthonyBuisset")).toBeVisible();
-    await expect(githubIssuePage.getByText("10 items included")).toBeVisible();
-    await expect(githubIssuePage.getByText("$1,000 for 2 days of work")).toBeVisible();
+    const githubIssueUrl = githubIssuePage.url();
+    const githubApiIssueCommentsUrl = githubIssueUrl.replace("github.com", "api.github.com/repos") + "/comments";
+
+    const comments = await retry(
+      () => request.get(githubApiIssueCommentsUrl).then(res => res.json()),
+      comments => comments.length > 0
+    );
+
+    expect(comments).toContainEqual(
+      expect.objectContaining({
+        body: expect.stringMatching(/to \[AnthonyBuisset\].*10 items included.*\$1,000 for 2 days of work/s),
+      })
+    );
 
     const paymentId = await payment.paymentId();
     if (paymentId) {
@@ -138,22 +148,15 @@ test.describe("As a project lead, I", () => {
       });
     }
 
-    const githubIssueUrl = githubIssuePage.url();
     const githubApiIssueUrl = githubIssueUrl.replace("github.com", "api.github.com/repos");
 
-    let state: string;
-    let retries = 20;
-    do {
-      await sleep(1000);
-      const githubApiIssue = await request.get(githubApiIssueUrl);
-      state = (await githubApiIssue.json()).state;
-    } while (state === "open" && retries-- > 0);
+    const issue = await retry(
+      () => request.get(githubApiIssueUrl).then(res => res.json()),
+      issue => issue.state !== "open"
+    );
+    expect(issue.state).toBe("closed");
 
-    expect(state).toBe("closed");
-
-    const githubApiIssueCommentsUrl = githubApiIssueUrl.concat("/comments");
     const githubApiIssueComments = await request.get(githubApiIssueCommentsUrl);
-
     expect(await githubApiIssueComments.json()).toContainEqual(
       expect.objectContaining({
         body: expect.stringContaining("has been processed and payment is complete."),

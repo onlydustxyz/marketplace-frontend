@@ -25,6 +25,20 @@ export const getEnv = (key: string) => {
 
 export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
+export const retry = async <T>(
+  callback: () => Promise<T>,
+  test: (value: T) => boolean,
+  delay = 1000,
+  maxRetries = 20
+) => {
+  let value: T;
+  do {
+    await sleep(delay);
+    value = await callback();
+  } while (!test(value) && maxRetries-- > 0);
+  return value;
+};
+
 const apolloClientAnonymous = new ApolloClient({
   link: new HttpLink({
     uri: "http://localhost:8080/v1/graphql",
