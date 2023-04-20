@@ -1,11 +1,13 @@
-use anyhow::anyhow;
 use async_trait::async_trait;
-use domain::{GithubFetchRepoService, GithubIssue, GithubIssueNumber, GithubRepositoryId};
+use domain::{
+	GithubFetchRepoService, GithubIssue, GithubIssueNumber, GithubRepositoryId, GithubServiceError,
+	GithubServiceResult,
+};
 use infrastructure::github::{self, IssueFromOctocrab};
 use octocrab::{self, models};
 use olog::tracing::instrument;
 
-use crate::domain::{GithubService, GithubServiceError, GithubServiceResult};
+use crate::domain::GithubService;
 
 #[async_trait]
 impl GithubService for github::Client {
@@ -25,10 +27,9 @@ impl GithubService for github::Client {
 			.body(description)
 			.send()
 			.await
-			.map_err(|e| GithubServiceError::Internal(anyhow!(e)))?;
+			.map_err(github::Error::from)?;
 
-		GithubIssue::from_octocrab_issue(issue, *repo.id())
-			.map_err(|e| GithubServiceError::Internal(anyhow!(e)))
+		GithubIssue::from_octocrab_issue(issue, *repo.id()).map_err(GithubServiceError::Other)
 	}
 
 	async fn create_comment(
@@ -38,13 +39,13 @@ impl GithubService for github::Client {
 		issue_number: &GithubIssueNumber,
 		comment: &str,
 	) -> GithubServiceResult<()> {
-		let issue_number: i64 = (*issue_number).into();
+		let issue_number = (*issue_number).into();
 
 		self.octocrab()
 			.issues(repo_owner, repo_name)
-			.create_comment(issue_number as u64, comment)
+			.create_comment(issue_number, comment)
 			.await
-			.map_err(|e| GithubServiceError::Internal(anyhow!(e)))?;
+			.map_err(github::Error::from)?;
 
 		Ok(())
 	}
@@ -55,15 +56,12 @@ impl GithubService for github::Client {
 		repo_name: &str,
 		issue_number: &GithubIssueNumber,
 	) -> GithubServiceResult<Option<String>> {
-		let dusty_bot = self
-			.get_current_user()
-			.await
-			.map_err(|e| GithubServiceError::Internal(anyhow!(e)))?;
+		let dusty_bot = self.get_current_user().await.map_err(github::Error::from)?;
 
 		let mut comments: Vec<_> = self
 			.all_issue_comments(repo_owner, repo_name, issue_number)
 			.await
-			.map_err(|e| GithubServiceError::Internal(anyhow!(e)))?
+			.map_err(github::Error::from)?
 			.into_iter()
 			.filter(|comment| comment.user.id == dusty_bot.id)
 			.collect();
@@ -87,7 +85,7 @@ impl GithubService for github::Client {
 			.state(models::IssueState::Closed)
 			.send()
 			.await
-			.map_err(|e| GithubServiceError::Internal(anyhow!(e)))?;
+			.map_err(github::Error::from)?;
 
 		Ok(())
 	}

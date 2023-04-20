@@ -1,8 +1,7 @@
-mod error;
-
 use async_trait::async_trait;
-use domain::{GithubIssue, GithubIssueNumber, GithubRepositoryId, GithubService};
-pub use error::{Error, Result};
+use domain::{
+	GithubIssue, GithubIssueNumber, GithubRepositoryId, GithubService, GithubServiceResult,
+};
 
 #[async_trait]
 pub trait Service: GithubService + Send + Sync {
@@ -11,7 +10,7 @@ pub trait Service: GithubService + Send + Sync {
 		repo_id: &GithubRepositoryId,
 		title: &str,
 		description: &str,
-	) -> Result<GithubIssue>;
+	) -> GithubServiceResult<GithubIssue>;
 
 	async fn create_comment(
 		&self,
@@ -19,19 +18,19 @@ pub trait Service: GithubService + Send + Sync {
 		repo_name: &str,
 		issue_number: &GithubIssueNumber,
 		comment: &str,
-	) -> Result<()>;
+	) -> GithubServiceResult<()>;
 
 	async fn get_latest_own_comment_on_issue(
 		&self,
 		repo_owner: &str,
 		repo_name: &str,
 		issue_number: &GithubIssueNumber,
-	) -> Result<Option<String>>;
+	) -> GithubServiceResult<Option<String>>;
 
 	async fn close_issue(
 		&self,
 		repo_owner: &str,
 		repo_name: &str,
 		issue_number: &GithubIssueNumber,
-	) -> Result<()>;
+	) -> GithubServiceResult<()>;
 }
