@@ -129,6 +129,14 @@
           type Query {
             hello: String!
           }
+- name: DustyBot
+  definition:
+    url_from_env: DUSTY_BOT_GRAPHQL_URL
+    timeout_seconds: 60
+    customization: {}
+    headers:
+      - name: Api-Key
+        value_from_env: DUSTY_BOT_GRAPHQL_API_KEY
 - name: GithubProxy
   definition:
     url_from_env: GITHUB_PROXY_GRAPHQL_URL

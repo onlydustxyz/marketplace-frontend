@@ -31,9 +31,9 @@ pub async fn spawn_all(
 	github: Arc<github::Client>,
 ) -> Result<Vec<JoinHandle<()>>> {
 	let handles = [
-		Logger.spawn(event_bus::consumer(config.amqp(), "logger").await?),
+		Logger.spawn(event_bus::event_consumer(config.amqp(), "logger").await?),
 		EventWebHook::new(reqwest)
-			.spawn(event_bus::consumer(config.amqp(), "event-webhooks").await?),
+			.spawn(event_bus::event_consumer(config.amqp(), "event-webhooks").await?),
 		ProjectProjector::new(
 			ProjectRepository::new(database.clone()),
 			ProjectLeadRepository::new(database.clone()),
@@ -42,7 +42,7 @@ pub async fn spawn_all(
 			GithubRepoIndexRepository::new(database.clone()),
 			github,
 		)
-		.spawn(event_bus::consumer(config.amqp(), "projects").await?),
+		.spawn(event_bus::event_consumer(config.amqp(), "projects").await?),
 		BudgetProjector::new(
 			PaymentRequestRepository::new(database.clone()),
 			PaymentRepository::new(database.clone()),
@@ -50,7 +50,7 @@ pub async fn spawn_all(
 			WorkItemRepository::new(database.clone()),
 			GithubRepoIndexRepository::new(database.clone()),
 		)
-		.spawn(event_bus::consumer(config.amqp(), "budgets").await?),
+		.spawn(event_bus::event_consumer(config.amqp(), "budgets").await?),
 		CrmProjector::new(CrmGithubRepoRepository::new(database.clone())).spawn(
 			event_bus::consumer_with_exchange(config.amqp(), GITHUB_EVENTS_EXCHANGE, "crm").await?,
 		),

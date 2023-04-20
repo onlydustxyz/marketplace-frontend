@@ -19,7 +19,9 @@ pub use specifications::{ArePayoutSettingsValid, GithubRepoExists};
 mod services;
 #[cfg(test)]
 pub use services::MockImageStoreService;
-pub use services::{GithubService, ImageStoreService, ImageStoreServiceError};
+pub use services::{
+	DustyBotAsyncService, DustyBotService, GithubService, ImageStoreService, ImageStoreServiceError,
+};
 
 mod pending_project_leader_invitation;
 pub use pending_project_leader_invitation::{

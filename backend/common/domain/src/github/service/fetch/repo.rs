@@ -2,7 +2,6 @@ use async_trait::async_trait;
 #[cfg(test)]
 use mockall::automock;
 use serde_json::Value;
-use url::Url;
 
 use super::Result;
 use crate::{GithubRepo, GithubRepoLanguages, GithubRepositoryId, GithubServiceFilters};
@@ -11,7 +10,6 @@ use crate::{GithubRepo, GithubRepoLanguages, GithubRepositoryId, GithubServiceFi
 #[async_trait]
 pub trait Service: Send + Sync {
 	async fn repo_by_id(&self, id: &GithubRepositoryId) -> Result<GithubRepo>;
-	async fn repo_by_url(&self, url: &Url) -> Result<GithubRepo>;
 	async fn repo_languages(&self, id: &GithubRepositoryId) -> Result<GithubRepoLanguages>;
 	async fn repo_events(
 		&self,

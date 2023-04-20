@@ -5,12 +5,13 @@ use domain::{DomainError, GithubFetchService, Payment, PaymentId, PaymentWorkIte
 use futures::{future::try_join_all, FutureExt};
 use tokio::try_join;
 
-use crate::domain::GithubService;
+use crate::domain::{DustyBotAsyncService, GithubService};
 
 #[derive(Constructor)]
 pub struct Usecase {
 	github_service: Arc<dyn GithubService>,
 	fetch_service: Arc<dyn GithubFetchService>,
+	dusty_bot_service: Arc<dyn DustyBotAsyncService>,
 }
 
 impl Usecase {
@@ -38,14 +39,14 @@ impl Usecase {
 		let comment_body = format_comment(&payment_id.pretty(), previous_comment);
 
 		try_join!(
-			self.github_service.create_comment(
+			self.dusty_bot_service.create_comment(
 				repository.owner(),
 				repository.name(),
 				work_item.issue_number(),
 				&comment_body,
 			),
 			if issue.author().id() == current_user.id() {
-				self.github_service.close_issue(
+				self.dusty_bot_service.close_issue(
 					repository.owner(),
 					repository.name(),
 					work_item.issue_number(),
@@ -53,7 +54,8 @@ impl Usecase {
 			} else {
 				ready(Ok(())).boxed()
 			}
-		)?;
+		)
+		.map_err(DomainError::InternalError)?;
 
 		Ok(())
 	}

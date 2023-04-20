@@ -1,0 +1,26 @@
+default:
+  http:
+    api_keys:
+      graphql: $DUSTY_BOT_GRAPHQL_API_KEY
+  github:
+    base_url: $GITHUB_BASE_URL
+    personal_access_tokens: $GITHUB_PAT
+  amqp:
+    connection_retry_interval_ms: 6000
+    connection_retry_count: 100
+
+local:
+  amqp:
+    url: "amqp://127.0.0.1:5672/%2f"
+  tracer:
+    json: false
+    ansi: true
+    location: true
+
+production:
+  amqp:
+    url: $CLOUDAMQP_URL
+  tracer:
+    json: true
+    ansi: false
+    location: true

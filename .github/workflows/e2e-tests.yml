@@ -78,6 +78,10 @@ jobs:
       - name: Kill frontend
         uses: ./.github/actions/frontend-kill
 
+      - name: Display log files in case of failure
+        run: tail -n 30 *.out.log
+        if: ${{ failure() }}
+
       - name: Archive code coverage results
         uses: actions/upload-artifact@v3
         if: ${{ failure() }}
