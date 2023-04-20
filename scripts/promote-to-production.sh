@@ -57,9 +57,10 @@ deploy_backends() {
         heroku run -a od-api-production events_sanity_checks
 
         log_info "Checking diff in environment variables"
-        DIFF=`git diff $production_commit..$staging_commit -- docker-compose.yml .env.example`
+        GIT_DIFF_CMD="git diff $production_commit..$staging_commit -- docker-compose.yml .env.example"
+        DIFF=`eval $GIT_DIFF_CMD`
         if [ -n "$DIFF" ]; then
-            echo $DIFF
+            execute $GIT_DIFF_CMD
             log_warning "Some diff have been found, make sure to update the environment variables 🧐"
         else
             log_success "No diff found, you are good to go 🥳"
