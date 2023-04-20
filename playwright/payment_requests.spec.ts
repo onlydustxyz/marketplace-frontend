@@ -141,11 +141,15 @@ test.describe("As a project lead, I", () => {
     const githubIssueUrl = githubIssuePage.url();
     const githubApiIssueUrl = githubIssueUrl.replace("github.com", "api.github.com/repos");
 
-    const githubApiIssue = await request.get(githubApiIssueUrl);
+    let state: string;
+    let retries = 20;
+    do {
+      await sleep(1000);
+      const githubApiIssue = await request.get(githubApiIssueUrl);
+      state = (await githubApiIssue.json()).state;
+    } while (state === "open" && retries-- > 0);
 
-    expect(await githubApiIssue.json()).toMatchObject({
-      state: "closed",
-    });
+    expect(state).toBe("closed");
 
     const githubApiIssueCommentsUrl = githubApiIssueUrl.concat("/comments");
     const githubApiIssueComments = await request.get(githubApiIssueCommentsUrl);
@@ -223,3 +227,5 @@ test.describe("As a project lead, I", () => {
     expect(await projectPaymentsPage.paymentList().nth(1).status()).toBe("Complete");
   });
 });
+
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

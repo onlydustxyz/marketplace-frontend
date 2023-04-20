@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{sync::Arc, time::Duration};
 
 use anyhow::Result;
 use domain::{Subscriber, SubscriberCallbackError};
@@ -18,7 +18,12 @@ async fn main() -> Result<()> {
 
 	dequeuer
 		.subscribe(|message: UniqueMessage<Action>| {
-			process(github.clone(), message.payload().clone())
+			let github_clone = github.clone();
+			async move {
+				process(github_clone.clone(), message.payload().clone()).await?;
+				throttle().await;
+				Ok(())
+			}
 		})
 		.await?;
 
@@ -45,4 +50,13 @@ async fn process(
 	}
 
 	Ok(())
+}
+
+async fn throttle() {
+	let seconds = std::env::var("DUSTY_BOT_THROTTLE_DURATION")
+		.unwrap_or_default()
+		.parse()
+		.unwrap_or(1);
+
+	tokio::time::sleep(Duration::from_secs(seconds)).await;
 }
