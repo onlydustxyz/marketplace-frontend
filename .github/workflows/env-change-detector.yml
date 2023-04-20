@@ -1,0 +1,56 @@
+name: Detect environment variables changes
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - main
+
+jobs:
+  detect_and_comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Comment on pull request if changes detected
+        uses: actions/github-script@v6.4.1
+        with:
+          script: |
+            const specificFilePatterns = [
+              /(?:\+\+\+ b\/|--- a\/)(.*\.env\.example)/g,
+              /(?:\+\+\+ b\/|--- a\/)(.*docker-compose.yml)/g,
+              /(?:\+\+\+ b\/|--- a\/)(.*Procfile)/g,
+              /(?:\+\+\+ b\/|--- a\/)(.*app\.yaml)/g,
+            ];
+
+            const { data: diff } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              mediaType: {
+                format: "diff",
+              },
+            });
+
+            const filesChanged = [
+              ...new Set(specificFilePatterns.map(pattern => [...diff.matchAll(pattern)].map(arr => arr.at(1))).flat()),
+            ];
+
+            if (filesChanged.length > 0) {
+              const comment = `The following files have changed. It may have impacted environment variables:
+              ${filesChanged.map(file => ` * \`${file}\``).join("\n")}
+
+              Confirm that you have:
+
+              - [ ] updated environment variables in staging
+              - [ ] updated environment variables in production
+              - [ ] done any required change in Heroku (new dynos, new apps, etc.)`;
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body: comment
+              })
+            }
