@@ -129,6 +129,12 @@ impl FromStr for GithubIssueNumber {
 	}
 }
 
+impl From<GithubIssueNumber> for u64 {
+	fn from(value: GithubIssueNumber) -> Self {
+		value.0 as u64
+	}
+}
+
 #[juniper::graphql_scalar(
 	name = "GithubIssueNumber",
 	description = "A GitHub issue number, represented as an integer"

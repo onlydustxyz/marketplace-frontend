@@ -1,8 +1,8 @@
-use std::{future::ready, sync::Arc};
+use std::sync::Arc;
 
 use derive_more::Constructor;
 use domain::{DomainError, GithubFetchService, Payment, PaymentId, PaymentWorkItem};
-use futures::{future::try_join_all, FutureExt};
+use futures::future::try_join_all;
 use tokio::try_join;
 
 use crate::domain::{DustyBotAsyncService, GithubService};
@@ -20,12 +20,7 @@ impl Usecase {
 		payment_id: &PaymentId,
 		work_item: &PaymentWorkItem,
 	) -> Result<(), DomainError> {
-		let (repository, issue, current_user) = try_join!(
-			self.fetch_service.repo_by_id(work_item.repo_id()),
-			self.fetch_service
-				.issue_by_repo_id(work_item.repo_id(), work_item.issue_number()),
-			self.fetch_service.current_user()
-		)?;
+		let repository = self.fetch_service.repo_by_id(work_item.repo_id()).await?;
 
 		let previous_comment = self
 			.github_service
@@ -45,15 +40,11 @@ impl Usecase {
 				work_item.issue_number(),
 				&comment_body,
 			),
-			if issue.author().id() == current_user.id() {
-				self.dusty_bot_service.close_issue(
-					repository.owner(),
-					repository.name(),
-					work_item.issue_number(),
-				)
-			} else {
-				ready(Ok(())).boxed()
-			}
+			self.dusty_bot_service.close_issue(
+				repository.owner(),
+				repository.name(),
+				work_item.issue_number(),
+			)
 		)
 		.map_err(DomainError::InternalError)?;
 

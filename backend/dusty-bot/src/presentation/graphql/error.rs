@@ -1,8 +1,7 @@
+use domain::GithubServiceError;
 use juniper::{graphql_value, DefaultScalarValue, FieldError, IntoFieldError};
 use olog::error;
 use thiserror::Error;
-
-use crate::domain::GithubServiceError;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -27,13 +26,10 @@ impl IntoFieldError for Error {
 impl From<GithubServiceError> for Error {
 	fn from(error: GithubServiceError) -> Self {
 		match error {
-			GithubServiceError::GithubService(error) => match error {
-				domain::GithubServiceError::NotFound(_)
-				| domain::GithubServiceError::InvalidInput(_) => Self::InvalidRequest(error.into()),
-				domain::GithubServiceError::MissingField(_)
-				| domain::GithubServiceError::Other(_) => Self::Internal(error.into()),
-			},
-			GithubServiceError::Internal(_) => Self::Internal(error.into()),
+			GithubServiceError::NotFound(_) | GithubServiceError::InvalidInput(_) =>
+				Self::InvalidRequest(error.into()),
+			GithubServiceError::MissingField(_) | GithubServiceError::Other(_) =>
+				Self::Internal(error.into()),
 		}
 	}
 }
