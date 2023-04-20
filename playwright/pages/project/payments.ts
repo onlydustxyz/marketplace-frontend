@@ -1,6 +1,7 @@
 import { Page, expect, Locator } from "@playwright/test";
 import { Project, User } from "../../types";
 import { sortBy } from "lodash";
+import { sleep } from "../../commands/common";
 
 export class ProjectPaymentsPage {
   readonly page: Page;
@@ -127,6 +128,7 @@ export class NewPaymentPage {
         await expect(this.page.getByTestId("added-work-items").locator("div[id^=github-issue-]")).toHaveCount(
           addedWorkItemsCount + 1
         );
+        await sleep(1000);
       }
     }
 

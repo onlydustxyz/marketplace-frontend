@@ -23,6 +23,8 @@ export const getEnv = (key: string) => {
   throw new Error(`Environment variable '${key}' is not defined`);
 };
 
+export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 const apolloClientAnonymous = new ApolloClient({
   link: new HttpLink({
     uri: "http://localhost:8080/v1/graphql",

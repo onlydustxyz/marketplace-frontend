@@ -3,7 +3,7 @@ import { expect } from "@playwright/test";
 import { restoreDB } from "./commands/db/db_utils";
 import { ProjectPage } from "./pages/project";
 import { User } from "./types";
-import { mutateAsAdmin } from "./commands/common";
+import { mutateAsAdmin, sleep } from "./commands/common";
 import {
   AddEthPaymentReceiptDocument,
   AddEthPaymentReceiptMutation,
@@ -227,5 +227,3 @@ test.describe("As a project lead, I", () => {
     expect(await projectPaymentsPage.paymentList().nth(1).status()).toBe("Complete");
   });
 });
-
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
