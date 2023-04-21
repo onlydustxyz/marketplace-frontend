@@ -24,7 +24,7 @@ impl IssueFromOctocrab for GithubIssue {
 		issue: octocrab::models::issues::Issue,
 		repo_id: GithubRepoId,
 	) -> Result<Self> {
-		let id = issue.id.0.try_into()?;
+		let id = issue.id.0.into();
 
 		let number = issue.number.try_into()?;
 

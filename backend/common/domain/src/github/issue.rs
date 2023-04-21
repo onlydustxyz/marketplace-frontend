@@ -28,7 +28,7 @@ pub enum Type {
 #[allow(clippy::too_many_arguments)]
 #[derive(Clone, Debug, new, Getters, GraphQLObject)]
 pub struct Issue {
-	id: i32,
+	id: Id,
 	repo_id: GithubRepoId,
 	number: i32,
 	r#type: Type,
@@ -87,6 +87,70 @@ where
 	fn resolve(&self) -> Value {
 		Value::scalar::<i32>(
 			self.0.try_into().expect("Inner issue number is not a valid 32-bits integer"),
+		)
+	}
+
+	fn from_input_value(value: &InputValue) -> Option<Self> {
+		value.as_int_value().map(|x| Self(x as i64))
+	}
+
+	fn from_str<'a>(value: ScalarToken<'a>) -> ParseScalarResult<'a, S> {
+		<i32 as ParseScalarValue<S>>::from_str(value)
+	}
+}
+
+#[derive(
+	Debug,
+	Clone,
+	Copy,
+	Default,
+	Serialize,
+	Deserialize,
+	PartialEq,
+	Eq,
+	Hash,
+	Display,
+	From,
+	Into,
+	AsRef,
+	AsExpression,
+	FromToSql,
+	FromSqlRow,
+)]
+#[sql_type = "diesel::sql_types::BigInt"]
+pub struct Id(i64);
+
+impl FromStr for Id {
+	type Err = <i64 as FromStr>::Err;
+
+	fn from_str(s: &str) -> Result<Self, Self::Err> {
+		i64::from_str(s).map(Into::into)
+	}
+}
+
+impl From<Id> for u64 {
+	fn from(value: Id) -> Self {
+		value.0 as u64
+	}
+}
+
+impl From<u64> for Id {
+	fn from(value: u64) -> Self {
+		(value as i64).into()
+	}
+}
+
+#[juniper::graphql_scalar(
+	name = "GithubIssueId",
+	description = "A GitHub issue id, represented as an integer"
+)]
+impl<S> GraphQLScalar for Id
+where
+	S: ScalarValue,
+{
+	fn resolve(&self) -> Value {
+		Value::scalar::<i32>(
+			self.0.try_into().expect("Inner issue id is not a valid 32-bits integer"),
 		)
 	}
 
