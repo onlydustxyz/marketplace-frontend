@@ -192,10 +192,15 @@ test.describe("As a project lead, I", () => {
       otherPullRequests: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
     });
 
-    const paymentRow = projectPaymentsPage.paymentList().nth(1);
-
-    await listPaymentsAs(otherLeader);
-    expect(await paymentRow.status()).toBe("Pending");
+    await retry(
+      async () => {
+        await page.reload();
+        await listPaymentsAs(otherLeader);
+        const paymentRow = projectPaymentsPage.paymentList().nth(1);
+        return paymentRow.status();
+      },
+      value => value === "Pending"
+    );
 
     // 2. Edit profile info, payment is "processing"
     const editProfilePage = new EditProfilePage(page);
@@ -204,10 +209,17 @@ test.describe("As a project lead, I", () => {
     recipient.profile && (await editProfilePage.fillForm(recipient.profile));
     await editProfilePage.submitForm();
 
-    await listPaymentsAs(otherLeader);
-    expect(await projectPaymentsPage.paymentList().nth(1).status()).toBe("Processing");
+    await retry(
+      async () => {
+        await page.reload();
+        await listPaymentsAs(otherLeader);
+        return projectPaymentsPage.paymentList().nth(1).status();
+      },
+      value => value === "Processing"
+    );
 
     // 3. Add receipt, payment is "complete"
+    const paymentRow = projectPaymentsPage.paymentList().nth(1);
     await mutateAsAdmin<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>({
       mutation: AddEthPaymentReceiptDocument,
       variables: {
@@ -224,7 +236,13 @@ test.describe("As a project lead, I", () => {
       },
     });
 
-    await listPaymentsAs(otherLeader);
-    expect(await projectPaymentsPage.paymentList().nth(1).status()).toBe("Complete");
+    await retry(
+      async () => {
+        await page.reload();
+        await listPaymentsAs(otherLeader);
+        return projectPaymentsPage.paymentList().nth(1).status();
+      },
+      value => value === "Complete"
+    );
   });
 });
