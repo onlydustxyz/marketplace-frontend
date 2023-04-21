@@ -9,6 +9,19 @@ runs:
       shell: bash
       run: cp .env.example .env
 
+    - name: Set up cargo cache
+      uses: actions/cache@v3
+      continue-on-error: true
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ runner.os }}-cargo-
+
     - name: Build the workspace
       shell: bash
       run: cargo build --workspace
