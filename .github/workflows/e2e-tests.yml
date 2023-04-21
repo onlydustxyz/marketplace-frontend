@@ -69,6 +69,15 @@ jobs:
       - name: Setup hasura
         uses: ./.github/actions/hasura-setup
 
+      - name: Check database and GraphQL schema consistency
+        run: yarn hasura md ic status
+        working-directory: ./hasura
+
+      - name: Log inconsistencies list on failure
+        if: ${{ failure() }}
+        run: yarn hasura md ic list
+        working-directory: ./hasura
+
       - name: Execute end-to-end tests
         uses: ./.github/actions/playwright
 

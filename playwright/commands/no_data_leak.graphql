@@ -1,0 +1,32 @@
+query getUserDetails($userId: uuid!) {
+  user(id: $userId) {
+    email
+    userInfo {
+      location
+      identity
+      contactInformation
+      payoutSettings
+    }
+    githubUser {
+      accessToken
+      refreshToken
+      paymentRequests {
+        payments {
+          receipt
+        }
+      }
+    }
+  }
+}
+
+query getPayments {
+  paymentRequests {
+    recipient {
+      accessToken
+      refreshToken
+    }
+    payments {
+      receipt
+    }
+  }
+}
