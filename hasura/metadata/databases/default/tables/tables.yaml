@@ -9,6 +9,7 @@
 - "!include auth_users.yaml"
 - "!include public_budgets.yaml"
 - "!include public_github_repo_details.yaml"
+- "!include public_ignored_github_issues.yaml"
 - "!include public_payment_requests.yaml"
 - "!include public_payments.yaml"
 - "!include public_pending_project_leader_invitations.yaml"

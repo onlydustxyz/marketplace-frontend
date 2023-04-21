@@ -19,8 +19,9 @@
           scalar Email
           scalar EthereumAddress
           scalar EthereumName
+          scalar GithubIssueId
           scalar GithubIssueNumber
-          scalar GithubRepositoryId
+          scalar GithubRepoId
           scalar GithubUserId
           scalar Url
           scalar Uuid
@@ -29,10 +30,10 @@
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             htmlUrl: Url!
-            id: Int!
+            id: GithubIssueId!
             mergedAt: DateTimeUtc
             number: Int!
-            repoId: GithubRepositoryId!
+            repoId: GithubRepoId!
             status: Status!
             title: String!
             type: Type!
@@ -40,8 +41,10 @@
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
             createIssue(projectId: Uuid!, githubRepoId: Int!, title: String!, description: String!): Issue!
+            ignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
             markInvoiceAsReceived(paymentReferences: [PaymentReference!]!): Int!
             requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, hoursWorked: Int!, reason: Reason!): Uuid!
+            unignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
             updateProfileInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput, contactInformation: ContactInformation): Uuid!
           }
           type Query {
@@ -118,7 +121,7 @@
           }
           input WorkItem {
             issueNumber: GithubIssueNumber!
-            repoId: GithubRepositoryId!
+            repoId: GithubRepoId!
           }
     - role: public
       definition:
@@ -154,7 +157,8 @@
             query: Query
           }
           scalar DateTimeUtc
-          scalar GithubRepositoryId
+          scalar GithubIssueId
+          scalar GithubRepoId
           scalar GithubUserId
           scalar Url
           type Issue {
@@ -162,10 +166,10 @@
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             htmlUrl: Url!
-            id: Int!
+            id: GithubIssueId!
             mergedAt: DateTimeUtc
             number: Int!
-            repoId: GithubRepositoryId!
+            repoId: GithubRepoId!
             status: Status!
             title: String!
             type: Type!
@@ -173,19 +177,19 @@
           type Query {
             fetchIssue(repoOwner: String!, repoName: String!, issueNumber: Int!): Issue
             fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
-            fetchPullsByRepoId(repoId: GithubRepositoryId!, filters: Filters): [Issue!]
-            fetchRepositoryDetails(id: Int!): Repository
+            fetchPullsByRepoId(repoId: GithubRepoId!, filters: Filters): [Issue!]
+            fetchRepositoryDetails(id: Int!): Repo
             fetchUserDetails(username: String!): User
             fetchUserDetailsById(userId: Int!): User
             searchIssues(query: String!, sort: String, order: String, perPage: Int, page: Int): [Issue!]
             searchUsers(query: String!, sort: String, order: String, perPage: Int, page: Int): [User!]
           }
-          type Repository {
+          type Repo {
             contributors: [User!]!
             description: String!
             forksCount: Int!
             htmlUrl: Url!
-            id: GithubRepositoryId!
+            id: GithubRepoId!
             logoUrl: Url!
             name: String!
             owner: String!
@@ -225,7 +229,8 @@
             query: Query
           }
           scalar DateTimeUtc
-          scalar GithubRepositoryId
+          scalar GithubIssueId
+          scalar GithubRepoId
           scalar GithubUserId
           scalar Url
           type Issue {
@@ -233,26 +238,26 @@
             closedAt: DateTimeUtc
             createdAt: DateTimeUtc!
             htmlUrl: Url!
-            id: Int!
+            id: GithubIssueId!
             mergedAt: DateTimeUtc
             number: Int!
-            repoId: GithubRepositoryId!
+            repoId: GithubRepoId!
             status: Status!
             title: String!
             type: Type!
           }
           type Query {
             fetchIssueByRepositoryId(repositoryId: Int!, issueNumber: Int!): Issue
-            fetchRepositoryDetails(id: Int!): Repository
+            fetchRepositoryDetails(id: Int!): Repo
             fetchUserDetailsById(userId: Int!): User
             helloFromGithubProxy: String!
           }
-          type Repository {
+          type Repo {
             contributors: [User!]!
             description: String!
             forksCount: Int!
             htmlUrl: Url!
-            id: GithubRepositoryId!
+            id: GithubRepoId!
             logoUrl: Url!
             name: String!
             owner: String!
@@ -298,3 +303,16 @@
                 schema: auth
           name: user
       type_name: User
+    - relationships:
+        - definition:
+            to_source:
+              field_mapping:
+                number: issue_number
+                repoId: repo_id
+              relationship_type: array
+              source: default
+              table:
+                name: ignored_github_issues
+                schema: public
+          name: ignoredForProjects
+      type_name: Issue
