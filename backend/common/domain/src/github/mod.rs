@@ -12,4 +12,6 @@ mod user;
 pub use user::{Id as UserId, User};
 
 mod issue;
-pub use issue::{Issue, Number as IssueNumber, Status as IssueStatus, Type as IssueType};
+pub use issue::{
+	Id as IssueId, Issue, Number as IssueNumber, Status as IssueStatus, Type as IssueType,
+};
