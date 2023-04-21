@@ -32,6 +32,11 @@ export default function Issues({ type, projectId, contributorHandle, workItems, 
     unignore: unignoreIssue,
   } = useIgnoredIssues(initialIgnoredIssues);
 
+  const addAndUnignoreItem = (workItem: WorkItem) => {
+    if (find(ignoredIssues, { id: workItem.id })) unignoreIssue(projectId, workItem);
+    onWorkItemAdded(workItem);
+  };
+
   const issues: WorkItem[] = useMemo(
     () => chain(unpaidIssues).differenceBy(workItems, "id").differenceBy(ignoredIssues, "id").value(),
     [unpaidIssues, workItems, ignoredIssues]
@@ -43,7 +48,7 @@ export default function Issues({ type, projectId, contributorHandle, workItems, 
         <PullRequestsView
           workItems={issues}
           ignoredItems={ignoredIssues}
-          onWorkItemAdded={onWorkItemAdded}
+          onWorkItemAdded={addAndUnignoreItem}
           onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
           onWorkItemUnignored={workItem => unignoreIssue(projectId, workItem)}
           query={{
@@ -56,7 +61,7 @@ export default function Issues({ type, projectId, contributorHandle, workItems, 
         <IssuesView
           workItems={issues}
           ignoredItems={ignoredIssues}
-          onWorkItemAdded={onWorkItemAdded}
+          onWorkItemAdded={addAndUnignoreItem}
           onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
           onWorkItemUnignored={workItem => unignoreIssue(projectId, workItem)}
           query={{
