@@ -41,7 +41,11 @@
     "loggingIn": "Logging in..."
   },
   "githubIssue": {
-    "addTooltip": "Add work item",
+    "tooltip": {
+      "add": "Add work item",
+      "ignore": "Ignore",
+      "unignore": "Stop ignoring"
+    },
     "status": {
       "closed": "Closed __closedAt__",
       "merged": "Merged __mergedAt__",

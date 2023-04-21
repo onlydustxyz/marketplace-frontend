@@ -83,7 +83,11 @@ export default {
   argTypes: {
     action: {
       control: { type: "select" },
-      options: [undefined, Action.Add, Action.Remove],
+      options: [undefined, Action.Add, Action.Remove, Action.Ignore, Action.UnIgnore],
+    },
+    secondaryAction: {
+      control: { type: "select" },
+      options: [undefined, Action.Add, Action.Remove, Action.Ignore, Action.UnIgnore],
     },
     workItem: {
       options: Object.keys(issues),
