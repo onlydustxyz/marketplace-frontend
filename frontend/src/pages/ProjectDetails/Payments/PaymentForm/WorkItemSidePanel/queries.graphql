@@ -4,7 +4,7 @@ query searchIssues($query: String!, $order: String, $sort: String, $perPage: Int
   }
 }
 
-fragment RepositoryOwnerAndName on Repository {
+fragment RepositoryOwnerAndName on Repo {
   id
   owner
   name
