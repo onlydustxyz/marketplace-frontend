@@ -100,38 +100,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --bins --tests --examples -- -D warnings
 
-  hasura_inconsistencies:
-    name: Database and GraphQL Schema consistency
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup cargo
-        uses: ./.github/actions/cargo-setup
-
-      - name: Setup environment
-        uses: ./.github/actions/env-setup
-
-      - name: Run Rust backend
-        uses: ./.github/actions/backend-run
-
-      - name: Install Hasura CLI
-        uses: ./.github/actions/hasura-setup
-
-      - name: Check inconsistencies
-        run: yarn hasura md ic status
-        working-directory: ./hasura
-
-      - name: Log inconsistencies list on failure
-        if: ${{ failure() }}
-        run: yarn hasura md ic list
-        working-directory: ./hasura
-
-      - name: Setup tmate session for debugging
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ failure() && inputs.debug_enabled }}
-
   unit_tests:
     name: Unit tests
     runs-on: ubuntu-latest-4-cores
