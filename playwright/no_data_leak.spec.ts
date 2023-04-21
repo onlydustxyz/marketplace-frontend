@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import { test } from "./fixtures";
 import { restoreDB } from "./commands/db/db_utils";
-import { queryAsRegisteredUser } from "./commands/common";
+import { queryAsAnonymous, queryAsRegisteredUser } from "./commands/common";
 import {
   GetPaymentsDocument,
   GetPaymentsQuery,
@@ -64,5 +64,30 @@ test.describe("As a logged user, I", () => {
 
     expect(result.data.paymentRequests).not.toBeNull();
     expect(deepCheckContainsOnlyNullOrEmptyArrays(result.data.paymentRequests)).toBeTruthy();
+  });
+});
+
+test.describe("As an anonymous user, I", () => {
+  test.beforeAll(async () => {
+    restoreDB();
+  });
+
+  test("can't get details about other users'", async ({ users }) => {
+    await expect(
+      queryAsAnonymous<GetUserDetailsQuery, GetUserDetailsQueryVariables>({
+        query: GetUserDetailsDocument,
+        variables: {
+          userId: users.Olivier.id,
+        },
+      })
+    ).rejects.toThrow("field 'email' not found in type: 'users'");
+  });
+
+  test("can't get details about other's payments''", async () => {
+    await expect(
+      queryAsAnonymous<GetPaymentsQuery, GetPaymentsQueryVariables>({
+        query: GetPaymentsDocument,
+      })
+    ).rejects.toThrow("field 'accessToken' not found in type: 'AuthGithubUsers'");
   });
 });
