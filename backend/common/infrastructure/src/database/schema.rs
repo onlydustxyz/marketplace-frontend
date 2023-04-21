@@ -52,6 +52,14 @@ diesel::table! {
 }
 
 diesel::table! {
+    ignored_github_issues (project_id, repo_id, issue_number) {
+        project_id -> Uuid,
+        repo_id -> Int8,
+        issue_number -> Int8,
+    }
+}
+
+diesel::table! {
     payment_requests (id) {
         id -> Uuid,
         budget_id -> Uuid,
@@ -149,6 +157,7 @@ diesel::table! {
     }
 }
 
+diesel::joinable!(ignored_github_issues -> projects (project_id));
 diesel::joinable!(pending_project_leader_invitations -> projects (project_id));
 diesel::joinable!(projects_sponsors -> projects (project_id));
 diesel::joinable!(projects_sponsors -> sponsors (sponsor_id));
@@ -160,6 +169,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     events,
     github_repo_details,
     github_repo_indexes,
+    ignored_github_issues,
     payment_requests,
     payments,
     pending_project_leader_invitations,
