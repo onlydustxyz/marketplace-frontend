@@ -1,4 +1,4 @@
-import { differenceBy } from "lodash";
+import { chain, find } from "lodash";
 import { useMemo } from "react";
 import { WorkItem } from "src/components/GithubIssue";
 import IssuesView from "./IssuesView";
@@ -16,8 +16,18 @@ type Props = {
 
 export default function Issues({ type, projectId, contributorHandle, workItems, onWorkItemAdded }: Props) {
   const { data: unpaidIssues, loading } = useUnpaidIssues({ projectId, filters: { author: contributorHandle, type } });
-  const { ignore: ignoreWorkItem } = useIgnoredIssues();
-  const issues: WorkItem[] = useMemo(() => differenceBy(unpaidIssues, workItems, "id"), [unpaidIssues, workItems]);
+
+  const initialIgnoredIssues = useMemo(
+    () => unpaidIssues?.filter((issue: WorkItem) => find(issue.ignoredForProjects, { projectId })) || [],
+    [projectId, unpaidIssues]
+  );
+
+  const { issues: ignoredIssues, ignore: ignoreIssue } = useIgnoredIssues(initialIgnoredIssues);
+
+  const issues: WorkItem[] = useMemo(
+    () => chain(unpaidIssues).differenceBy(workItems, "id").differenceBy(ignoredIssues, "id").value(),
+    [unpaidIssues, workItems, ignoredIssues]
+  );
 
   return (
     <>
@@ -25,7 +35,7 @@ export default function Issues({ type, projectId, contributorHandle, workItems, 
         <PullRequestsView
           workItems={issues}
           onWorkItemAdded={onWorkItemAdded}
-          onWorkItemIgnored={workItem => ignoreWorkItem(projectId, workItem)}
+          onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
           query={{
             data: unpaidIssues,
             loading,
@@ -36,7 +46,7 @@ export default function Issues({ type, projectId, contributorHandle, workItems, 
         <IssuesView
           workItems={issues}
           onWorkItemAdded={onWorkItemAdded}
-          onWorkItemIgnored={workItem => ignoreWorkItem(projectId, workItem)}
+          onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
           query={{
             data: unpaidIssues,
             loading,
