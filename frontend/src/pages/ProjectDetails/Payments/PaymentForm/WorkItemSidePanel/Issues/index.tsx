@@ -15,7 +15,11 @@ type Props = {
 };
 
 export default function Issues({ type, projectId, contributorHandle, workItems, onWorkItemAdded }: Props) {
-  const { data: unpaidIssues, loading } = useUnpaidIssues({ projectId, filters: { author: contributorHandle, type } });
+  const { data: unpaidIssues, loading } = useUnpaidIssues({
+    projectId,
+    filters: { author: contributorHandle, type },
+    includeIgnored: true,
+  });
 
   const initialIgnoredIssues = useMemo(
     () => unpaidIssues?.filter((issue: WorkItem) => find(issue.ignoredForProjects, { projectId })) || [],
