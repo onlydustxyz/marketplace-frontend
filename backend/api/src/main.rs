@@ -4,8 +4,9 @@ use anyhow::Result;
 use api::{
 	infrastructure::{
 		database::{
-			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
-			ProjectSponsorRepository, SponsorRepository, UserInfoRepository,
+			IgnoredGithubIssuesRepository, PendingProjectLeaderInvitationsRepository,
+			ProjectDetailsRepository, ProjectSponsorRepository, SponsorRepository,
+			UserInfoRepository,
 		},
 		simple_storage,
 	},
@@ -42,6 +43,7 @@ async fn main() -> Result<()> {
 		SponsorRepository::new(database.clone()),
 		ProjectSponsorRepository::new(database.clone()),
 		PendingProjectLeaderInvitationsRepository::new(database.clone()),
+		IgnoredGithubIssuesRepository::new(database.clone()),
 		UserInfoRepository::new(database),
 		Arc::new(infrastructure_graphql::Client::new(
 			config.graphql_client(),
