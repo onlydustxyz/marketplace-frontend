@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use domain::{
-	Amount, BlockchainNetwork, Currency, GithubIssue, PaymentReason, PaymentReceipt, ProjectId,
-	UserId,
+	Amount, BlockchainNetwork, Currency, GithubIssue, GithubIssueNumber, GithubRepoId,
+	PaymentReason, PaymentReceipt, ProjectId, UserId,
 };
 use iban::Iban;
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
@@ -443,5 +443,55 @@ impl Mutation {
 			)
 			.await?;
 		Ok(issue)
+	}
+
+	pub async fn ignore_issue(
+		&self,
+		context: &Context,
+		project_id: Uuid,
+		repo_id: GithubRepoId,
+		issue_number: GithubIssueNumber,
+	) -> Result<bool> {
+		let caller_id = *context.caller_info()?.user_id();
+
+		if !context.caller_permissions.can_ignore_issue_for_project(&project_id.into()) {
+			return Err(Error::NotAuthorized(
+				caller_id,
+				"Project Lead role required".to_string(),
+			));
+		}
+
+		context.ignored_github_issues_usecase.add(
+			&project_id.into(),
+			&repo_id.into(),
+			&issue_number.into(),
+		)?;
+
+		Ok(true)
+	}
+
+	pub async fn unignore_issue(
+		&self,
+		context: &Context,
+		project_id: Uuid,
+		repo_id: GithubRepoId,
+		issue_number: GithubIssueNumber,
+	) -> Result<bool> {
+		let caller_id = *context.caller_info()?.user_id();
+
+		if !context.caller_permissions.can_ignore_issue_for_project(&project_id.into()) {
+			return Err(Error::NotAuthorized(
+				caller_id,
+				"Project Lead role required".to_string(),
+			));
+		}
+
+		context.ignored_github_issues_usecase.remove(
+			&project_id.into(),
+			&repo_id.into(),
+			&issue_number.into(),
+		)?;
+
+		Ok(true)
 	}
 }
