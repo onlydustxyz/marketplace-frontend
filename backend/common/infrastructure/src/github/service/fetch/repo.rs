@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use domain::{
-	GithubFetchRepoService, GithubRepo, GithubRepoLanguages, GithubRepositoryId,
-	GithubServiceError, GithubServiceFilters, GithubServiceResult, LogErr,
+	GithubFetchRepoService, GithubRepo, GithubRepoId, GithubRepoLanguages, GithubServiceError,
+	GithubServiceFilters, GithubServiceResult, LogErr,
 };
 use serde_json::Value;
 use tracing::instrument;
@@ -11,7 +11,7 @@ use crate::{github, github::RepoFromOctocrab};
 #[async_trait]
 impl GithubFetchRepoService for github::Client {
 	#[instrument(skip(self))]
-	async fn repo_by_id(&self, id: &GithubRepositoryId) -> GithubServiceResult<GithubRepo> {
+	async fn repo_by_id(&self, id: &GithubRepoId) -> GithubServiceResult<GithubRepo> {
 		let repo = self.get_repository_by_id(id).await?;
 		let repo = GithubRepo::try_from_octocrab_repo(self, repo)
 			.await
@@ -20,17 +20,14 @@ impl GithubFetchRepoService for github::Client {
 	}
 
 	#[instrument(skip(self))]
-	async fn repo_languages(
-		&self,
-		id: &GithubRepositoryId,
-	) -> GithubServiceResult<GithubRepoLanguages> {
+	async fn repo_languages(&self, id: &GithubRepoId) -> GithubServiceResult<GithubRepoLanguages> {
 		let languages = self.get_languages_by_repository_id(id).await?;
 		Ok(languages)
 	}
 
 	async fn repo_events(
 		&self,
-		id: &GithubRepositoryId,
+		id: &GithubRepoId,
 		filters: &GithubServiceFilters,
 	) -> GithubServiceResult<Vec<Value>> {
 		let events = self

@@ -3,4 +3,4 @@
 pub type uuid = ::uuid::Uuid;
 pub use url::Url;
 pub type DateTimeUtc = chrono::DateTime<chrono::Utc>;
-pub use domain::{GithubRepositoryId, GithubUserId};
+pub use domain::{GithubRepoId, GithubUserId};

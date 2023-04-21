@@ -2,7 +2,7 @@ use std::{fmt::Debug, future::ready, pin::Pin};
 
 use anyhow::anyhow;
 use domain::{
-	GithubIssueNumber, GithubRepoLanguages, GithubRepositoryId, GithubServiceFilters, GithubUserId,
+	GithubIssueNumber, GithubRepoId, GithubRepoLanguages, GithubServiceFilters, GithubUserId,
 	PositiveCount,
 };
 use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
@@ -64,10 +64,7 @@ impl Client {
 		}
 	}
 
-	pub async fn get_issue_repository_id(
-		&self,
-		issue: &Issue,
-	) -> Result<GithubRepositoryId, Error> {
+	pub async fn get_issue_repository_id(&self, issue: &Issue) -> Result<GithubRepoId, Error> {
 		let repository_url = self.fix_github_host(&issue.repository_url).map_err(Error::Other)?;
 		let repo = self.get_as::<_, Repository>(repository_url).await?;
 		Ok((repo.id.0 as i64).into())
@@ -161,7 +158,7 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn events_by_repo_id(
 		&self,
-		id: &GithubRepositoryId,
+		id: &GithubRepoId,
 		filters: &GithubServiceFilters,
 	) -> Result<Vec<Event>, Error> {
 		let query_params = QueryParams::default().page(1).per_page(100);
@@ -187,14 +184,14 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
-	pub async fn get_repository_by_id(&self, id: &GithubRepositoryId) -> Result<Repository, Error> {
+	pub async fn get_repository_by_id(&self, id: &GithubRepoId) -> Result<Repository, Error> {
 		self.get_as(format!("{}repositories/{id}", self.octocrab().base_url)).await
 	}
 
 	#[instrument(skip(self))]
 	pub async fn get_languages_by_repository_id(
 		&self,
-		id: &GithubRepositoryId,
+		id: &GithubRepoId,
 	) -> Result<GithubRepoLanguages, Error> {
 		self.get_as(format!(
 			"{}repositories/{id}/languages",
@@ -224,7 +221,7 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn get_issue_by_repository_id(
 		&self,
-		repo_id: &GithubRepositoryId,
+		repo_id: &GithubRepoId,
 		issue_number: &GithubIssueNumber,
 	) -> Result<Issue, Error> {
 		self.get_as(format!(
@@ -242,7 +239,7 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn pulls_by_repo_id(
 		&self,
-		id: &GithubRepositoryId,
+		id: &GithubRepoId,
 		filters: &GithubServiceFilters,
 	) -> Result<Vec<PullRequest>, Error> {
 		let query_params = QueryParams::default()

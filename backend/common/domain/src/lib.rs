@@ -47,12 +47,13 @@ pub use github::{
 	service_filters as github_service_filters, FetchIssueService as GithubFetchIssueService,
 	FetchRepoService as GithubFetchRepoService, FetchService as GithubFetchService,
 	FetchUserService as GithubFetchUserService, Issue as GithubIssue,
-	IssueStatus as GithubIssueStatus, IssueType as GithubIssueType,
-	Languages as GithubRepoLanguages, Repository as GithubRepo,
-	SearchIssueService as GithubSearchIssueService, SearchService as GithubSearchService,
-	SearchUserService as GithubSearchUserService, Service as GithubService,
-	ServiceError as GithubServiceError, ServiceFilters as GithubServiceFilters,
-	ServiceResult as GithubServiceResult, User as GithubUser,
+	IssueNumber as GithubIssueNumber, IssueStatus as GithubIssueStatus,
+	IssueType as GithubIssueType, Languages as GithubRepoLanguages, Repo as GithubRepo,
+	RepoId as GithubRepoId, SearchIssueService as GithubSearchIssueService,
+	SearchService as GithubSearchService, SearchUserService as GithubSearchUserService,
+	Service as GithubService, ServiceError as GithubServiceError,
+	ServiceFilters as GithubServiceFilters, ServiceResult as GithubServiceResult,
+	User as GithubUser, UserId as GithubUserId,
 };
 
 pub mod aggregate_root;

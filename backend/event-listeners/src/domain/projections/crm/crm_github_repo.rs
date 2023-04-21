@@ -2,7 +2,7 @@ use ::infrastructure::database::schema::*;
 use chrono::NaiveDateTime;
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
-use domain::GithubRepositoryId;
+use domain::GithubRepoId;
 use serde::{Deserialize, Serialize};
 
 #[derive(
@@ -22,12 +22,12 @@ use serde::{Deserialize, Serialize};
 #[table_name = "crm_github_repos"]
 #[primary_key(id)]
 pub struct CrmGithubRepo {
-	id: GithubRepositoryId,
+	id: GithubRepoId,
 	owner: String,
 	name: String,
 	updated_at: Option<NaiveDateTime>,
 }
 
 impl domain::Entity for CrmGithubRepo {
-	type Id = GithubRepositoryId;
+	type Id = GithubRepoId;
 }

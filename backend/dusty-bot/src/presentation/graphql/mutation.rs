@@ -1,4 +1,4 @@
-use domain::{GithubIssue, GithubRepositoryId};
+use domain::{GithubIssue, GithubRepoId};
 use juniper::{graphql_object, DefaultScalarValue};
 
 use super::{Context, Result};
@@ -10,7 +10,7 @@ impl Mutation {
 	pub async fn internal_create_issue(
 		&self,
 		context: &Context,
-		repo_id: GithubRepositoryId,
+		repo_id: GithubRepoId,
 		title: String,
 		description: String,
 	) -> Result<GithubIssue> {

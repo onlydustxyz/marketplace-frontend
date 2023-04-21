@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::{anyhow, Result};
 use domain::{
-	AggregateRootRepository, DomainError, Event, GithubRepositoryId, Project, ProjectId, Publisher,
+	AggregateRootRepository, DomainError, Event, GithubRepoId, Project, ProjectId, Publisher,
 };
 use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
@@ -33,7 +33,7 @@ impl Usecase {
 	pub async fn link_github_repo(
 		&self,
 		project_id: ProjectId,
-		github_repo_id: GithubRepositoryId,
+		github_repo_id: GithubRepoId,
 	) -> Result<(), DomainError> {
 		if !self
 			.github_repo_exists

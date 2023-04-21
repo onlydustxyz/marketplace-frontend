@@ -21,7 +21,7 @@ fragment GithubIssue on Issue {
   closedAt
 }
 
-mutation CreateIssue($repoId: GithubRepositoryId!, $title: String!, $description: String!) {
+mutation CreateIssue($repoId: GithubRepoId!, $title: String!, $description: String!) {
   internalCreateIssue(repoId: $repoId, title: $title, description: $description) {
     ...GithubIssue
   }
