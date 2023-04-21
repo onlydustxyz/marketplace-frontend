@@ -113,6 +113,7 @@ gql`
   }
 
   fragment ProjectContributors on Projects {
+    id
     githubRepos {
       githubRepoId
       githubRepoDetails {

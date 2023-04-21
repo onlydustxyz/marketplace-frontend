@@ -54,6 +54,7 @@ const issues: IssueDetailsFragment[] = range(1, 50).map(id => ({
   createdAt: daysFromNow(id),
   closedAt: null,
   mergedAt: null,
+  ignoredForProjects: [],
 }));
 
 const payment: PaymentRequestDetailsFragment = {
