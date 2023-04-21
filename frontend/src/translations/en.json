@@ -123,6 +123,7 @@
       "workItems": {
         "addWorkItem": "Add work item",
         "add": "Add",
+        "showIgnored": "Show ignored",
         "pullRequests": {
           "addedToaster": "Pull request added",
           "addOther": {

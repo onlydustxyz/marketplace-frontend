@@ -1,0 +1,7 @@
+mutation IgnoreIssue($issueNumber: GithubIssueNumber!, $projectId: Uuid!, $repoId: GithubRepoId!) {
+  ignoreIssue(issueNumber: $issueNumber, projectId: $projectId, repoId: $repoId)
+}
+
+mutation UnignoreIssue($issueNumber: GithubIssueNumber!, $projectId: Uuid!, $repoId: GithubRepoId!) {
+  unignoreIssue(issueNumber: $issueNumber, projectId: $projectId, repoId: $repoId)
+}

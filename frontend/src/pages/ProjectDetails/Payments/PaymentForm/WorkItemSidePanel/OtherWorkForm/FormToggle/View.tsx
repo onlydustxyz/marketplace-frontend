@@ -2,7 +2,7 @@ import { Switch } from "@headlessui/react";
 
 type Props = {
   checked: boolean;
-  label: string;
+  label?: string;
   onChange?(checked: boolean): void;
 };
 
@@ -23,7 +23,7 @@ const View = ({ checked, label, onChange }: Props) => (
         }`}
       />
     </Switch>
-    <span>{label}</span>
+    {label && <span>{label}</span>}
   </div>
 );
 
