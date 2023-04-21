@@ -1,4 +1,4 @@
-use std::str::FromStr;
+use std::collections::HashMap;
 
 use derive_getters::Getters;
 use derive_more::{AsRef, Display, From, Into};
@@ -7,12 +7,31 @@ use juniper::{GraphQLObject, ParseScalarResult, ParseScalarValue, Value};
 use serde::{Deserialize, Serialize};
 use url::Url;
 
-#[derive(new, Debug, Clone, Getters, GraphQLObject)]
-pub struct User {
+use crate::GithubUser;
+
+#[allow(clippy::too_many_arguments)]
+#[derive(new, Debug, Getters, GraphQLObject, Clone)]
+pub struct Repo {
 	id: Id,
-	login: String,
-	avatar_url: Url,
+	owner: String,
+	name: String,
+	contributors: Vec<GithubUser>,
+	logo_url: Url,
 	html_url: Url,
+	description: String,
+	stars: i32,
+	forks_count: i32,
+}
+
+#[derive(From, Into, Serialize, Deserialize)]
+pub struct Languages(HashMap<String, i32>);
+
+impl TryFrom<Languages> for serde_json::Value {
+	type Error = serde_json::Error;
+
+	fn try_from(value: Languages) -> Result<Self, Self::Error> {
+		serde_json::to_value(value.0)
+	}
 }
 
 #[derive(
@@ -24,11 +43,11 @@ pub struct User {
 	Deserialize,
 	PartialEq,
 	Eq,
-	Hash,
 	Display,
 	From,
 	Into,
 	AsRef,
+	Hash,
 	AsExpression,
 	FromToSql,
 	FromSqlRow,
@@ -36,17 +55,9 @@ pub struct User {
 #[sql_type = "diesel::sql_types::BigInt"]
 pub struct Id(i64);
 
-impl FromStr for Id {
-	type Err = <i64 as FromStr>::Err;
-
-	fn from_str(s: &str) -> Result<Self, Self::Err> {
-		i64::from_str(s).map(Into::into)
-	}
-}
-
 #[juniper::graphql_scalar(
-	name = "GithubUserId",
-	description = "A GitHub user ID, represented as an integer"
+	name = "GithubRepoId",
+	description = "A GitHub repository ID, represented as an integer"
 )]
 impl<S> GraphQLScalar for Id
 where
@@ -54,7 +65,7 @@ where
 {
 	fn resolve(&self) -> Value {
 		Value::scalar::<i32>(
-			self.0.try_into().expect("Inner user id is not a valid 32-bits integer"),
+			self.0.try_into().expect("Inner repository id is not a valid 32-bits integer"),
 		)
 	}
 

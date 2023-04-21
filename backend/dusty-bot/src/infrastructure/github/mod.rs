@@ -1,8 +1,7 @@
 use async_trait::async_trait;
 use domain::{
 	GithubFetchIssueService, GithubFetchRepoService, GithubFetchUserService, GithubIssue,
-	GithubIssueNumber, GithubIssueStatus, GithubRepositoryId, GithubServiceError,
-	GithubServiceResult,
+	GithubIssueNumber, GithubIssueStatus, GithubRepoId, GithubServiceError, GithubServiceResult,
 };
 use infrastructure::github::{self, IssueFromOctocrab};
 use octocrab::{self, models};
@@ -15,7 +14,7 @@ impl GithubService for github::Client {
 	#[instrument(skip(self))]
 	async fn create_issue(
 		&self,
-		repo_id: &GithubRepositoryId,
+		repo_id: &GithubRepoId,
 		title: &str,
 		description: &str,
 	) -> GithubServiceResult<GithubIssue> {

@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use domain::{
-	AggregateRootRepository, DomainError, Event, GithubRepositoryId, Project, ProjectId, Publisher,
+	AggregateRootRepository, DomainError, Event, GithubRepoId, Project, ProjectId, Publisher,
 };
 use infrastructure::amqp::UniqueMessage;
 use tracing::instrument;
@@ -30,7 +30,7 @@ impl Usecase {
 	pub async fn unlink_github_repo(
 		&self,
 		project_id: ProjectId,
-		github_repo_id: GithubRepositoryId,
+		github_repo_id: GithubRepoId,
 	) -> Result<(), DomainError> {
 		let project = self.project_repository.find_by_id(&project_id)?;
 

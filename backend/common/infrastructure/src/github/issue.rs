@@ -1,5 +1,5 @@
 use anyhow::{anyhow, Result};
-use domain::{GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepositoryId, GithubUser};
+use domain::{GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepoId, GithubUser};
 use octocrab::models::issues::IssueStateReason;
 
 use super::UserFromOctocrab;
@@ -10,19 +10,19 @@ where
 {
 	fn from_octocrab_issue(
 		issue: octocrab::models::issues::Issue,
-		repo_id: GithubRepositoryId,
+		repo_id: GithubRepoId,
 	) -> Result<Self>;
 
 	fn from_octocrab_pull_request(
 		pull_request: octocrab::models::pulls::PullRequest,
-		repo_id: GithubRepositoryId,
+		repo_id: GithubRepoId,
 	) -> Result<Self>;
 }
 
 impl IssueFromOctocrab for GithubIssue {
 	fn from_octocrab_issue(
 		issue: octocrab::models::issues::Issue,
-		repo_id: GithubRepositoryId,
+		repo_id: GithubRepoId,
 	) -> Result<Self> {
 		let id = issue.id.0.try_into()?;
 
@@ -52,7 +52,7 @@ impl IssueFromOctocrab for GithubIssue {
 
 	fn from_octocrab_pull_request(
 		pull_request: octocrab::models::pulls::PullRequest,
-		repo_id: GithubRepositoryId,
+		repo_id: GithubRepoId,
 	) -> Result<Self> {
 		let id = pull_request.id.0.try_into()?;
 

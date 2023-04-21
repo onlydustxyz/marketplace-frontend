@@ -3,7 +3,7 @@ use std::sync::Arc;
 use anyhow::Result;
 use async_trait::async_trait;
 use derive_new::new;
-use domain::{Event, GithubRepositoryId, GithubService, ProjectEvent, SubscriberCallbackError};
+use domain::{Event, GithubRepoId, GithubService, ProjectEvent, SubscriberCallbackError};
 use tracing::instrument;
 
 use crate::{
@@ -25,14 +25,14 @@ pub struct Projector {
 }
 
 impl Projector {
-	async fn update_github_repo_details(&self, github_repo_id: &GithubRepositoryId) -> Result<()> {
+	async fn update_github_repo_details(&self, github_repo_id: &GithubRepoId) -> Result<()> {
 		let languages = self.github_service.repo_languages(github_repo_id).await?.try_into()?;
 		let repo_details = GithubRepoDetails::new(*github_repo_id, languages);
 		self.github_repo_details_repository.upsert(&repo_details)?;
 		Ok(())
 	}
 
-	fn remove_orphan_github_repo_details(&self, github_repo_id: &GithubRepositoryId) -> Result<()> {
+	fn remove_orphan_github_repo_details(&self, github_repo_id: &GithubRepoId) -> Result<()> {
 		let projects = self
 			.project_github_repo_details_repository
 			.find_all_projects_of(github_repo_id)?;

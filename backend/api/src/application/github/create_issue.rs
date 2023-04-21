@@ -2,9 +2,7 @@ use std::sync::Arc;
 
 use anyhow::anyhow;
 use derive_more::Constructor;
-use domain::{
-	AggregateRootRepository, DomainError, GithubIssue, GithubRepositoryId, Project, ProjectId,
-};
+use domain::{AggregateRootRepository, DomainError, GithubIssue, GithubRepoId, Project, ProjectId};
 use tracing::instrument;
 
 use crate::domain::DustyBotService;
@@ -20,7 +18,7 @@ impl Usecase {
 	pub async fn create_issue(
 		&self,
 		project_id: &ProjectId,
-		github_repo_id: &GithubRepositoryId,
+		github_repo_id: &GithubRepoId,
 		title: String,
 		description: String,
 	) -> Result<GithubIssue, DomainError> {

@@ -5,11 +5,11 @@ pub use service::{
 	SearchIssueService, SearchService, SearchUserService, Service,
 };
 
-mod repository;
-pub use repository::{Languages, Repository};
+mod repo;
+pub use repo::{Id as RepoId, Languages, Repo};
 
 mod user;
-pub use user::User;
+pub use user::{Id as UserId, User};
 
 mod issue;
-pub use issue::{Issue, Status as IssueStatus, Type as IssueType};
+pub use issue::{Issue, Number as IssueNumber, Status as IssueStatus, Type as IssueType};

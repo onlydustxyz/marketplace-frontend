@@ -1,7 +1,7 @@
 use ::infrastructure::database::schema::*;
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
-use domain::GithubRepositoryId;
+use domain::GithubRepoId;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -22,10 +22,10 @@ use serde_json::Value;
 #[table_name = "github_repo_details"]
 #[primary_key(id)]
 pub struct GithubRepoDetails {
-	id: GithubRepositoryId,
+	id: GithubRepoId,
 	languages: Value,
 }
 
 impl domain::Entity for GithubRepoDetails {
-	type Id = GithubRepositoryId;
+	type Id = GithubRepoId;
 }

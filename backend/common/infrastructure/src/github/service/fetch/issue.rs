@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use domain::{
-	GithubFetchIssueService, GithubIssue, GithubIssueNumber, GithubRepositoryId,
-	GithubServiceError, GithubServiceFilters, GithubServiceResult,
+	GithubFetchIssueService, GithubIssue, GithubIssueNumber, GithubRepoId, GithubServiceError,
+	GithubServiceFilters, GithubServiceResult,
 };
 use olog::{error, tracing::instrument};
 
@@ -12,7 +12,7 @@ impl GithubFetchIssueService for github::Client {
 	#[instrument(skip(self))]
 	async fn pulls_by_repo_id(
 		&self,
-		repo_id: &GithubRepositoryId,
+		repo_id: &GithubRepoId,
 		filters: &GithubServiceFilters,
 	) -> GithubServiceResult<Vec<GithubIssue>> {
 		let octocrab_pull_requests = self.pulls_by_repo_id(repo_id, filters).await?;
@@ -52,7 +52,7 @@ impl GithubFetchIssueService for github::Client {
 	#[instrument(skip(self))]
 	async fn issue_by_repo_id(
 		&self,
-		repo_id: &GithubRepositoryId,
+		repo_id: &GithubRepoId,
 		issue_number: &GithubIssueNumber,
 	) -> GithubServiceResult<GithubIssue> {
 		let issue = self.get_issue_by_repository_id(repo_id, issue_number).await?;

@@ -1,6 +1,6 @@
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
-use domain::{GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepositoryId, GithubUser};
+use domain::{GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepoId, GithubUser};
 use graphql_client::GraphQLQuery;
 use infrastructure::graphql::{self, scalars::*};
 
@@ -18,7 +18,7 @@ struct CreateIssue;
 impl DustyBotService for graphql::Client {
 	async fn create_issue(
 		&self,
-		repo_id: &GithubRepositoryId,
+		repo_id: &GithubRepoId,
 		title: &str,
 		description: &str,
 	) -> Result<GithubIssue> {
