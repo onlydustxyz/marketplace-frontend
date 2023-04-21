@@ -22,21 +22,18 @@ const ImpersonationPage = () => {
     if (!userId) {
       navigate(RoutePaths.Projects);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   useEffect(() => {
     if (invalidImpersonation) {
       clearImpersonationSet();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [invalidImpersonation]);
 
   useEffect(() => {
     if (user) {
       navigate(RoutePaths.Projects);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (

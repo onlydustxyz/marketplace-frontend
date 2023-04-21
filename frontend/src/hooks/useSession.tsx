@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useEffect, useReducer } from "react";
+import { createContext, Dispatch, PropsWithChildren, useContext, useEffect, useReducer } from "react";
 import { useLocalStorage } from "react-use";
 
 export const LOCAL_STORAGE_SESSION_KEY = "session";
@@ -10,7 +10,7 @@ type Session = {
 };
 
 export const SessionContext = createContext({});
-export const SessionDispatchContext = createContext((action: Action) => {
+export const SessionDispatchContext = createContext<Dispatch<Action>>(() => {
   return;
 });
 
