@@ -461,11 +461,9 @@ impl Mutation {
 			));
 		}
 
-		context.ignored_github_issues_usecase.add(
-			&project_id.into(),
-			&repo_id.into(),
-			&issue_number.into(),
-		)?;
+		context
+			.ignored_github_issues_usecase
+			.add(&project_id.into(), &repo_id, &issue_number)?;
 
 		Ok(true)
 	}
@@ -488,8 +486,8 @@ impl Mutation {
 
 		context.ignored_github_issues_usecase.remove(
 			&project_id.into(),
-			&repo_id.into(),
-			&issue_number.into(),
+			&repo_id,
+			&issue_number,
 		)?;
 
 		Ok(true)
