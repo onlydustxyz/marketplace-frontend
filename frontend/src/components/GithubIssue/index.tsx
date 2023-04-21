@@ -151,5 +151,8 @@ export const GITHUB_ISSUE_FRAGMENTS = gql`
     createdAt
     closedAt
     mergedAt
+    ignoredForProjects {
+      projectId
+    }
   }
 `;

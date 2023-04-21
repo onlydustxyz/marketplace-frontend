@@ -16,6 +16,7 @@ function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
     case "add":
       return sortBy(uniqBy([...workItems, action.workItem], "id"), "createdAt").reverse();
     case "remove":
+      console.log(`removing ${action.workItem}`);
       return workItems.filter(w => w !== action.workItem);
     case "clear":
       return [];

@@ -17,10 +17,11 @@ import FormInput from "src/components/FormInput";
 type Props<T, E> = {
   workItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
+  onWorkItemIgnored: (workItem: WorkItem) => void;
   query: QueryResult<T, E>;
 };
 
-export default function PullRequestsView<T, E>({ workItems, onWorkItemAdded, query }: Props<T, E>) {
+export default function PullRequestsView<T, E>({ workItems, onWorkItemAdded, onWorkItemIgnored, query }: Props<T, E>) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
 
@@ -94,7 +95,14 @@ export default function PullRequestsView<T, E>({ workItems, onWorkItemAdded, que
             className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
           >
             {filteredWorkItems.map(pr => (
-              <GithubIssue key={pr.id} workItem={pr} action={Action.Add} onClick={() => onIssueAdded(pr)} />
+              <GithubIssue
+                key={pr.id}
+                workItem={pr}
+                action={Action.Add}
+                onClick={() => onIssueAdded(pr)}
+                secondaryAction={Action.Ignore}
+                onSecondaryClick={() => onWorkItemIgnored(pr)}
+              />
             ))}
           </div>
         ) : (

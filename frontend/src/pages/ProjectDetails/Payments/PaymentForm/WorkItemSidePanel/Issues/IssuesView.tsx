@@ -17,10 +17,11 @@ import useFilteredWorkItems from "./useFilteredWorkItems";
 type Props<T, E> = {
   workItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
+  onWorkItemIgnored: (workItem: WorkItem) => void;
   query: QueryResult<T, E>;
 };
 
-export default function IssuesView<T, E>({ workItems, onWorkItemAdded, query }: Props<T, E>) {
+export default function IssuesView<T, E>({ workItems, onWorkItemAdded, onWorkItemIgnored, query }: Props<T, E>) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
 
@@ -93,7 +94,14 @@ export default function IssuesView<T, E>({ workItems, onWorkItemAdded, query }: 
             className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
           >
             {filteredWorkItems.map(issue => (
-              <GithubIssue key={issue.id} workItem={issue} action={Action.Add} onClick={() => onIssueAdded(issue)} />
+              <GithubIssue
+                key={issue.id}
+                workItem={issue}
+                action={Action.Add}
+                onClick={() => onIssueAdded(issue)}
+                secondaryAction={Action.Ignore}
+                onSecondaryClick={() => onWorkItemIgnored(issue)}
+              />
             ))}
           </div>
         ) : (
