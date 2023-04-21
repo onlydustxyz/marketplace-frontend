@@ -9,6 +9,7 @@ mod identified;
 pub trait Permissions: Send + Sync {
 	fn can_spend_budget_of_project(&self, project_id: &ProjectId) -> bool;
 	fn can_create_github_issue_for_project(&self, project_id: &ProjectId) -> bool;
+	fn can_ignore_issue_for_project(&self, project_id: &ProjectId) -> bool;
 	fn can_unassign_project_leader(&self, project_id: &ProjectId, user_id: &UserId) -> bool;
 	fn can_mark_invoice_as_received_for_payment(
 		&self,

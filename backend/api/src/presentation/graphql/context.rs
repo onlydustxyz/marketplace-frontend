@@ -14,8 +14,9 @@ use crate::{
 	domain::{ArePayoutSettingsValid, Permissions},
 	infrastructure::{
 		database::{
-			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
-			ProjectSponsorRepository, SponsorRepository, UserInfoRepository,
+			IgnoredGithubIssuesRepository, PendingProjectLeaderInvitationsRepository,
+			ProjectDetailsRepository, ProjectSponsorRepository, SponsorRepository,
+			UserInfoRepository,
 		},
 		simple_storage,
 		web3::ens,
@@ -45,6 +46,7 @@ pub struct Context {
 	pub project_details_repository: ProjectDetailsRepository,
 	pub update_user_info_usecase: application::user::update_profile_info::Usecase,
 	pub create_github_issue_usecase: application::github::create_issue::Usecase,
+	pub ignored_github_issues_usecase: application::project::ignored_issues::Usecase,
 	pub ens: Arc<ens::Client>,
 }
 
@@ -59,6 +61,7 @@ impl Context {
 		sponsor_repository: SponsorRepository,
 		project_sponsor_repository: ProjectSponsorRepository,
 		pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
+		ignored_github_issues_repository: IgnoredGithubIssuesRepository,
 		user_info_repository: UserInfoRepository,
 		graphql: Arc<graphql::Client>,
 		github: Arc<github::Client>,
@@ -143,6 +146,9 @@ impl Context {
 			create_github_issue_usecase: application::github::create_issue::Usecase::new(
 				project_repository,
 				graphql,
+			),
+			ignored_github_issues_usecase: application::project::ignored_issues::Usecase::new(
+				ignored_github_issues_repository,
 			),
 			ens,
 		}

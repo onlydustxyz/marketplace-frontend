@@ -22,6 +22,10 @@ impl Permissions for IdentifiedUser {
 		self.projects.contains(project_id)
 	}
 
+	fn can_ignore_issue_for_project(&self, project_id: &ProjectId) -> bool {
+		self.projects.contains(project_id)
+	}
+
 	fn can_unassign_project_leader(
 		&self,
 		_project_id: &ProjectId,

@@ -15,3 +15,6 @@ pub use project_sponsor::Repository as ProjectSponsorRepository;
 mod sponsor;
 #[cfg_attr(test, mockall_double::double)]
 pub use sponsor::Repository as SponsorRepository;
+
+mod ignored_github_issues;
+pub use ignored_github_issues::Repository as IgnoredGithubIssuesRepository;

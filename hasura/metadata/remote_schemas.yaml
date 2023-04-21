@@ -44,8 +44,10 @@
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
             cancelPaymentRequest(projectId: Uuid!, paymentId: Uuid!): Payment!
             createIssue(projectId: Uuid!, githubRepoId: Int!, title: String!, description: String!): Issue!
+            ignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
             markInvoiceAsReceived(paymentReferences: [PaymentReference!]!): Int!
             requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, hoursWorked: Int!, reason: Reason!): Payment!
+            unignoreIssue(projectId: Uuid!, repoId: GithubRepoId!, issueNumber: GithubIssueNumber!): Boolean!
             updateProfileInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput, contactInformation: ContactInformation): Uuid!
           }
           type Payment {
@@ -310,3 +312,16 @@
                 schema: auth
           name: user
       type_name: User
+    - relationships:
+        - definition:
+            to_source:
+              field_mapping:
+                number: issue_number
+                repoId: repo_id
+              relationship_type: array
+              source: default
+              table:
+                name: ignored_github_issues
+                schema: public
+          name: ignoredForProjects
+      type_name: Issue

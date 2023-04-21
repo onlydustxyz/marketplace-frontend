@@ -13,8 +13,9 @@ use presentation::http;
 use crate::{
 	infrastructure::{
 		database::{
-			PendingProjectLeaderInvitationsRepository, ProjectDetailsRepository,
-			ProjectSponsorRepository, SponsorRepository, UserInfoRepository,
+			IgnoredGithubIssuesRepository, PendingProjectLeaderInvitationsRepository,
+			ProjectDetailsRepository, ProjectSponsorRepository, SponsorRepository,
+			UserInfoRepository,
 		},
 		simple_storage,
 	},
@@ -35,6 +36,7 @@ pub async fn serve(
 	sponsor_repository: SponsorRepository,
 	project_sponsor_repository: ProjectSponsorRepository,
 	pending_project_leader_invitations_repository: PendingProjectLeaderInvitationsRepository,
+	ignored_github_issues_repository: IgnoredGithubIssuesRepository,
 	user_info_repository: UserInfoRepository,
 	graphql: Arc<infrastructure::graphql::Client>,
 	github: Arc<github::Client>,
@@ -51,6 +53,7 @@ pub async fn serve(
 		.manage(sponsor_repository)
 		.manage(project_sponsor_repository)
 		.manage(pending_project_leader_invitations_repository)
+		.manage(ignored_github_issues_repository)
 		.manage(user_info_repository)
 		.manage(graphql)
 		.manage(github)
