@@ -177,7 +177,7 @@ const GITHUB_REPO_DETAILS_RESULT: { data: GetGithubRepositoryDetailsQueryResult[
       id: TEST_GITHUB_REPO_ID,
       languages: {},
       content: {
-        __typename: "Repository",
+        __typename: "Repo",
         id: TEST_GITHUB_REPO_ID,
         owner: TEST_GITHUB_REPO_OWNER,
         name: TEST_GITHUB_REPO_NAME,

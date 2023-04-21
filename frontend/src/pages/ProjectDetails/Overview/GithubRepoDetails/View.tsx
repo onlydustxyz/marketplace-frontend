@@ -52,7 +52,7 @@ export const GITHUB_REPO_STATIC_DETAILS_FRAGMENT = gql`
 `;
 
 export const GITHUB_REPO_DYNAMIC_DETAILS_FRAGMENT = gql`
-  fragment GithubRepoDynamicDetails on Repository {
+  fragment GithubRepoDynamicDetails on Repo {
     id
     owner
     name
