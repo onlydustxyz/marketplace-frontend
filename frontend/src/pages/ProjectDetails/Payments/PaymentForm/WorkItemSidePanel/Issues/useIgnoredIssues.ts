@@ -21,6 +21,13 @@ export default function useIgnoredIssues(issues: WorkItem[]) {
       ignoreIssue({
         variables: { projectId, repoId: workItem.repoId, issueNumber: workItem.number },
         onCompleted: () => add(workItem),
+        update: cache =>
+          cache.modify({
+            id: `Issue:${workItem.id}`,
+            fields: {
+              ignoredForProjects: () => [{ projectId }],
+            },
+          }),
       }),
     [ignoreIssue, add]
   );
@@ -30,6 +37,13 @@ export default function useIgnoredIssues(issues: WorkItem[]) {
       unignoreIssue({
         variables: { projectId, repoId: workItem.repoId, issueNumber: workItem.number },
         onCompleted: () => remove(workItem),
+        update: cache =>
+          cache.modify({
+            id: `Issue:${workItem.id}`,
+            fields: {
+              ignoredForProjects: () => [],
+            },
+          }),
       }),
     [unignoreIssue, remove]
   );
