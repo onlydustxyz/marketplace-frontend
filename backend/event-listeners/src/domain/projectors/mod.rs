@@ -1,7 +1,7 @@
 mod budget;
-mod crm;
+mod github;
 mod project;
 
 pub use budget::Projector as BudgetProjector;
-pub use crm::Projector as CrmProjector;
+pub use github::{crm::Projector as CrmProjector, pulls::Projector as GithubPullsProjector};
 pub use project::Projector as ProjectProjector;
