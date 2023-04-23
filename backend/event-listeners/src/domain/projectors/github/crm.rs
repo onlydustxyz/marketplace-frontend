@@ -2,10 +2,10 @@ use anyhow::Result;
 use async_trait::async_trait;
 use chrono::Utc;
 use derive_new::new;
-use domain::{MessagePayload, SubscriberCallbackError};
-use serde::{Deserialize, Serialize};
+use domain::SubscriberCallbackError;
 use tracing::instrument;
 
+use super::GithubEvent;
 use crate::{
 	domain::{CrmGithubRepo, EventListener},
 	infrastructure::database::CrmGithubRepoRepository,
@@ -15,12 +15,6 @@ use crate::{
 pub struct Projector {
 	crm_github_repo_repository: CrmGithubRepoRepository,
 }
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(transparent)]
-pub struct GithubEvent(octocrab::models::events::Event);
-
-impl MessagePayload for GithubEvent {}
 
 #[async_trait]
 impl EventListener<GithubEvent> for Projector {
