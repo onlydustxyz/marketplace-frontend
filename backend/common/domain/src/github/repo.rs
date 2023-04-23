@@ -55,6 +55,12 @@ impl TryFrom<Languages> for serde_json::Value {
 #[sql_type = "diesel::sql_types::BigInt"]
 pub struct Id(i64);
 
+impl From<u64> for Id {
+	fn from(value: u64) -> Self {
+		(value as i64).into()
+	}
+}
+
 #[juniper::graphql_scalar(
 	name = "GithubRepoId",
 	description = "A GitHub repository ID, represented as an integer"

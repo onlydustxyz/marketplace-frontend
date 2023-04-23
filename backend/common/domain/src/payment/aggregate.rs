@@ -226,7 +226,7 @@ mod tests {
 
 	#[fixture]
 	fn recipient_id() -> GithubUserId {
-		42.into()
+		42u64.into()
 	}
 
 	#[fixture]

@@ -44,6 +44,12 @@ impl FromStr for Id {
 	}
 }
 
+impl From<u64> for Id {
+	fn from(value: u64) -> Self {
+		(value as i64).into()
+	}
+}
+
 #[juniper::graphql_scalar(
 	name = "GithubUserId",
 	description = "A GitHub user ID, represented as an integer"
