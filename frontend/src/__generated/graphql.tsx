@@ -10399,6 +10399,14 @@ export type RequestPaymentMutationVariables = Exact<{
 
 export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
 
+export type CancelPaymentRequestMutationVariables = Exact<{
+  projectId: Scalars['Uuid'];
+  paymentId: Scalars['Uuid'];
+}>;
+
+
+export type CancelPaymentRequestMutation = { __typename?: 'mutation_root', cancelPaymentRequest: any };
+
 export type UserPayoutSettingsFragment = { __typename?: 'UserInfo', identity: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean };
 
 export type GetUserPayoutSettingsQueryVariables = Exact<{
@@ -11372,6 +11380,38 @@ export function useRequestPaymentMutation(baseOptions?: Apollo.MutationHookOptio
 export type RequestPaymentMutationHookResult = ReturnType<typeof useRequestPaymentMutation>;
 export type RequestPaymentMutationResult = Apollo.MutationResult<RequestPaymentMutation>;
 export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<RequestPaymentMutation, RequestPaymentMutationVariables>;
+export const CancelPaymentRequestDocument = gql`
+    mutation CancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
+  cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId)
+}
+    `;
+export type CancelPaymentRequestMutationFn = Apollo.MutationFunction<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>;
+
+/**
+ * __useCancelPaymentRequestMutation__
+ *
+ * To run a mutation, you first call `useCancelPaymentRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCancelPaymentRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cancelPaymentRequestMutation, { data, loading, error }] = useCancelPaymentRequestMutation({
+ *   variables: {
+ *      projectId: // value for 'projectId'
+ *      paymentId: // value for 'paymentId'
+ *   },
+ * });
+ */
+export function useCancelPaymentRequestMutation(baseOptions?: Apollo.MutationHookOptions<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>(CancelPaymentRequestDocument, options);
+      }
+export type CancelPaymentRequestMutationHookResult = ReturnType<typeof useCancelPaymentRequestMutation>;
+export type CancelPaymentRequestMutationResult = Apollo.MutationResult<CancelPaymentRequestMutation>;
+export type CancelPaymentRequestMutationOptions = Apollo.BaseMutationOptions<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>;
 export const GetUserPayoutSettingsDocument = gql`
     query GetUserPayoutSettings($githubUserId: bigint!) {
   authGithubUsers(where: {githubUserId: {_eq: $githubUserId}}) {
