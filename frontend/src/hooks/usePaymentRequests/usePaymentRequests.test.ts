@@ -61,7 +61,7 @@ const getPaymentRequestsMock = {
 };
 
 const render = (projectId: string) =>
-  renderHook(() => usePaymentRequests({ projectId }), {
+  renderHook(() => usePaymentRequests(projectId), {
     wrapper: MockedProvider,
     initialProps: {
       mocks: [getPaymentRequestsMock],

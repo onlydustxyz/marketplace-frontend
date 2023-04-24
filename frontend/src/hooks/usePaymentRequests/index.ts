@@ -10,11 +10,7 @@ import {
   RequestPaymentMutationVariables,
 } from "src/__generated/graphql";
 
-type Params = {
-  projectId: string;
-};
-
-export default function usePaymentRequests({ projectId }: Params) {
+export default function usePaymentRequests(projectId: string) {
   const getPaymentRequestsQuery = useHasuraQuery<GetPaymentRequestsForProjectQuery>(
     GetPaymentRequestsForProjectDocument,
     HasuraUserRole.RegisteredUser,

@@ -25,7 +25,7 @@ const PaymentForm: React.FC = () => {
     };
   }>();
 
-  const { requestNewPayment } = usePaymentRequests({ projectId });
+  const { requestNewPayment } = usePaymentRequests(projectId);
 
   const formMethods = useForm<Inputs>({
     defaultValues: {

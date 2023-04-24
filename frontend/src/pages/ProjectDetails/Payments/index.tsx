@@ -4,7 +4,7 @@ import usePaymentRequests from "src/hooks/usePaymentRequests";
 
 const Payments: React.FC = () => {
   const { projectId } = useOutletContext<{ projectId: string }>();
-  const query = usePaymentRequests({ projectId });
+  const query = usePaymentRequests(projectId);
   const payments = query.data?.paymentRequests || [];
   const budget = query.data?.budget || { initialAmount: 0, remainingAmount: 0 };
 
