@@ -67,6 +67,39 @@ test.describe("As a project lead, I", () => {
     const newPaymentPage = await contributors.byName(recipient.github.login).pay();
     expect(await newPaymentPage.contributorText()).toEqual(recipient.github.login);
 
+    // Play with ignored items
+    {
+      const issueNumber = "#15";
+      // ignore/unignore
+      await newPaymentPage.addWorkItemButton().click();
+      await newPaymentPage.issuesTab().click();
+      await expect(newPaymentPage.showIgnoredToggle()).not.toBeVisible();
+      await expect(newPaymentPage.workItem(issueNumber)).toBeVisible();
+      await newPaymentPage.ignoreWorkItem(issueNumber);
+      await expect(newPaymentPage.workItem(issueNumber)).not.toBeVisible();
+      await newPaymentPage.showIgnoredToggle().click();
+      await expect(newPaymentPage.workItem(issueNumber)).toBeVisible();
+      await newPaymentPage.ignoreWorkItem(issueNumber); // unignore
+      await expect(newPaymentPage.showIgnoredToggle()).not.toBeVisible();
+      await expect(newPaymentPage.workItem(issueNumber)).toBeVisible();
+
+      // ignore/add/auto-unignore
+      await newPaymentPage.ignoreWorkItem(issueNumber);
+      await newPaymentPage.addWorkItem(issueNumber);
+
+      await page.waitForResponse(async resp => (await resp.json()).data.unignoreIssue && resp.status() === 200);
+
+      await newPaymentPage.closeWorkItemsPanelButton().click();
+      await page
+        .locator("[data-testid='added-work-items'] > div", { hasText: issueNumber })
+        .getByRole("button")
+        .click(); // remove from payment request
+      await newPaymentPage.addWorkItemButton().click();
+      await expect(newPaymentPage.showIgnoredToggle()).not.toBeVisible();
+      await expect(newPaymentPage.workItem(issueNumber)).toBeVisible();
+      await newPaymentPage.closeWorkItemsPanelButton().click();
+    }
+
     await newPaymentPage.requestPayment({
       otherPullRequests: [
         "https://github.com/od-mocks/cool-repo-A/pull/1",
