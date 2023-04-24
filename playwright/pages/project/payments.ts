@@ -121,10 +121,7 @@ export class NewPaymentPage {
       await this.otherWorkTab().click();
 
       for (const otherWork of otherWorks) {
-        const addedWorkItemsCount = await this.page
-          .getByTestId("added-work-items")
-          .locator("div[id^=github-issue-]")
-          .count();
+        const addedWorkItemsCount = await this.page.locator("[data-testid=added-work-items] > div").count();
 
         otherWork.kind && (await this.page.getByRole("option", { name: otherWork.kind }).click());
         otherWork.title && (await this.page.getByTestId("other-work-title").fill(otherWork.title));
@@ -135,9 +132,7 @@ export class NewPaymentPage {
         }
         await this.page.getByRole("button", { name: "create and add issue" }).click();
 
-        await expect(this.page.getByTestId("added-work-items").locator("div[id^=github-issue-]")).toHaveCount(
-          addedWorkItemsCount + 1
-        );
+        await expect(this.page.locator("[data-testid=added-work-items] > div")).toHaveCount(addedWorkItemsCount + 1);
         await sleep(1000);
       }
     }
