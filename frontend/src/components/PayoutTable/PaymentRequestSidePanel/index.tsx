@@ -15,7 +15,7 @@ type Props = {
   projectLeaderView?: boolean;
 };
 
-export default function PaymentRequestSidePanel({ projectId, paymentId, projectLeaderView, ...props }: Props) {
+export default function PaymentRequestSidePanel({ projectId, paymentId, projectLeaderView, setOpen, ...props }: Props) {
   const { user, githubUserId } = useAuth();
   const { data, loading } = useHasuraQuery<PaymentRequestDetailsQuery>(
     GET_PAYMENT_REQUEST_DETAILS,
@@ -37,9 +37,12 @@ export default function PaymentRequestSidePanel({ projectId, paymentId, projectL
 
   const { cancelPaymentRequest } = usePaymentRequests(projectId);
 
+  const onPaymentCancel = () => cancelPaymentRequest({ variables: { paymentId }, onCompleted: () => setOpen(false) });
+
   return (
     <View
       {...props}
+      setOpen={setOpen}
       loading={loading}
       {...data?.paymentRequestsByPk}
       id={paymentId}
@@ -49,7 +52,7 @@ export default function PaymentRequestSidePanel({ projectId, paymentId, projectL
       invoiceNeeded={invoiceNeeded}
       payoutInfoMissing={!payoutSettingsValid}
       projectLeaderView={projectLeaderView}
-      onPaymentCancel={() => cancelPaymentRequest({ variables: { paymentId } })}
+      onPaymentCancel={onPaymentCancel}
     />
   );
 }

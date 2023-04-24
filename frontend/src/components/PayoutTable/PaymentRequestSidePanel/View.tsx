@@ -150,7 +150,13 @@ function CancelPaymentButton({ onPaymentCancel }: CancelPaymentButtonProps) {
           hidden: !modalOpened,
         })}
       >
-        <ConfirmationModal onClose={closeModal} onConfirm={onPaymentCancel} />
+        <ConfirmationModal
+          onClose={closeModal}
+          onConfirm={() => {
+            onPaymentCancel();
+            closeModal();
+          }}
+        />
       </div>
     </div>
   );
