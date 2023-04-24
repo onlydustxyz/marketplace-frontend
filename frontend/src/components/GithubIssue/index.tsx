@@ -53,7 +53,7 @@ export default function GithubIssue({ action, workItem, onClick }: Props) {
         )}
         <div className="flex flex-col gap-2 font-walsheim ">
           <div className="font-medium text-sm text-greyscale-50">
-            <ExternalLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} />
+            <ExternalLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} numberOfLines={2} />
           </div>
           <div className="flex flex-row gap-3 items-center text-greyscale-300 font-normal text-xs">
             <div className="flex flex-row gap-1 items-center">
