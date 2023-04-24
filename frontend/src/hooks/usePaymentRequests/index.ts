@@ -12,10 +12,9 @@ import {
 
 type Params = {
   projectId: string;
-  onNewPaymentRequested?(): void;
 };
 
-export default function usePaymentRequests({ projectId, onNewPaymentRequested }: Params) {
+export default function usePaymentRequests({ projectId }: Params) {
   const getPaymentRequestsQuery = useHasuraQuery<GetPaymentRequestsForProjectQuery>(
     GetPaymentRequestsForProjectDocument,
     HasuraUserRole.RegisteredUser,
@@ -26,7 +25,6 @@ export default function usePaymentRequests({ projectId, onNewPaymentRequested }:
 
   const [requestNewPayment] = useHasuraMutation(RequestPaymentDocument, HasuraUserRole.RegisteredUser, {
     variables: { projectId },
-    onCompleted: () => onNewPaymentRequested && onNewPaymentRequested(),
     update: (cache, result, { variables }) => {
       const { data } = result as RequestPaymentMutationResult;
       const { amount, contributorId, projectId, reason } = variables as RequestPaymentMutationVariables;
