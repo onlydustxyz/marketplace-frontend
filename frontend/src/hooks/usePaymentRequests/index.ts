@@ -1,10 +1,11 @@
-import { gql } from "@apollo/client";
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import {
+  GetPaymentRequestsForProjectDocument,
   GetPaymentRequestsForProjectQuery,
   PaymentRequestFragment,
   PaymentRequestFragmentDoc,
+  RequestPaymentDocument,
   RequestPaymentMutationResult,
   RequestPaymentMutationVariables,
 } from "src/__generated/graphql";
@@ -16,14 +17,14 @@ type Params = {
 
 export default function usePaymentRequests({ projectId, onNewPaymentRequested }: Params) {
   const getPaymentRequestsQuery = useHasuraQuery<GetPaymentRequestsForProjectQuery>(
-    PAYMENT_REQUESTS_FOR_PROJECT_QUERY,
+    GetPaymentRequestsForProjectDocument,
     HasuraUserRole.RegisteredUser,
     {
       variables: { projectId },
     }
   );
 
-  const [requestNewPayment] = useHasuraMutation(REQUEST_PAYMENT_MUTATION, HasuraUserRole.RegisteredUser, {
+  const [requestNewPayment] = useHasuraMutation(RequestPaymentDocument, HasuraUserRole.RegisteredUser, {
     variables: { projectId },
     onCompleted: () => onNewPaymentRequested && onNewPaymentRequested(),
     update: (cache, result, { variables }) => {
@@ -80,55 +81,3 @@ export default function usePaymentRequests({ projectId, onNewPaymentRequested }:
     requestNewPayment,
   };
 }
-
-const PAYMENT_REQUEST_FRAGMENT = gql`
-  fragment PaymentRequest on PaymentRequests {
-    id
-    recipientId
-    amountInUsd
-    workItems {
-      repoId
-      issueNumber
-    }
-    payments {
-      amount
-      currencyCode
-    }
-    requestedAt
-  }
-`;
-
-export const PAYMENT_REQUESTS_FOR_PROJECT_QUERY = gql`
-  ${PAYMENT_REQUEST_FRAGMENT}
-  query GetPaymentRequestsForProject($projectId: uuid!) {
-    projectsByPk(id: $projectId) {
-      id
-      budgets {
-        id
-        initialAmount
-        remainingAmount
-        paymentRequests {
-          ...PaymentRequest
-        }
-      }
-    }
-  }
-`;
-
-export const REQUEST_PAYMENT_MUTATION = gql`
-  mutation RequestPayment(
-    $amount: Int!
-    $contributorId: Int!
-    $hoursWorked: Int!
-    $projectId: Uuid!
-    $reason: Reason!
-  ) {
-    requestPayment(
-      amountInUsd: $amount
-      hoursWorked: $hoursWorked
-      projectId: $projectId
-      reason: $reason
-      recipientId: $contributorId
-    )
-  }
-`;
