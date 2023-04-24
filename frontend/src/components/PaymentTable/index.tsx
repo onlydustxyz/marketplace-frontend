@@ -8,10 +8,11 @@ import { useMemo, useState } from "react";
 import PaymentRequestSidePanel from "src/components/PayoutTable/PaymentRequestSidePanel";
 
 type Props = {
+  projectId: string;
   payments: (PaymentRequestFragment & Sortable)[];
 };
 
-export default function PaymentTable({ payments }: Props) {
+export default function PaymentTable({ projectId, payments }: Props) {
   const [paymentSortingFields, setPaymentSortingFields] = useState<Record<string, SortingFields>>({});
   const { sort, sorting, applySorting } = usePaymentSorting();
 
@@ -44,6 +45,7 @@ export default function PaymentTable({ payments }: Props) {
       {selectedPayment && (
         <PaymentRequestSidePanel
           projectLeaderView
+          projectId={projectId}
           open={sidePanelOpen}
           setOpen={setSidePanelOpen}
           paymentId={selectedPayment.id}

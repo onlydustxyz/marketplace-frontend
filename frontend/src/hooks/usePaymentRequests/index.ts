@@ -1,6 +1,7 @@
 import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import {
+  CancelPaymentRequestDocument,
   GetPaymentRequestsForProjectDocument,
   GetPaymentRequestsForProjectQuery,
   PaymentRequestFragment,
@@ -10,7 +11,7 @@ import {
   RequestPaymentMutationVariables,
 } from "src/__generated/graphql";
 
-export default function usePaymentRequests(projectId: string) {
+export default function usePaymentRequests(projectId?: string) {
   const getPaymentRequestsQuery = useHasuraQuery<GetPaymentRequestsForProjectQuery>(
     GetPaymentRequestsForProjectDocument,
     HasuraUserRole.RegisteredUser,
@@ -60,6 +61,10 @@ export default function usePaymentRequests(projectId: string) {
     },
   });
 
+  const [cancelPaymentRequest] = useHasuraMutation(CancelPaymentRequestDocument, HasuraUserRole.RegisteredUser, {
+    variables: { projectId },
+  });
+
   return {
     ...getPaymentRequestsQuery,
     data: getPaymentRequestsQuery.data && {
@@ -73,5 +78,6 @@ export default function usePaymentRequests(projectId: string) {
       paymentRequests: getPaymentRequestsQuery.data.projectsByPk?.budgets.map(b => b.paymentRequests).flat(),
     },
     requestNewPayment,
+    cancelPaymentRequest,
   };
 }

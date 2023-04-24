@@ -27,6 +27,7 @@ export type Props = {
   payoutInfoMissing: boolean;
   invoiceNeeded?: boolean;
   projectLeaderView?: boolean;
+  onPaymentCancel: () => void;
 } & Partial<PaymentRequestDetailsFragment>;
 
 const Details = ({ children }: PropsWithChildren) => (
@@ -51,6 +52,7 @@ export default function View({
   invoiceReceivedAt,
   paymentsAggregate,
   projectLeaderView,
+  onPaymentCancel,
   ...props
 }: Props) {
   const { T } = useIntl();
@@ -59,7 +61,11 @@ export default function View({
     <SidePanel
       {...props}
       title={T("payment.table.detailsPanel.title", { id: pretty(id) })}
-      action={projectLeaderView && status === PaymentStatus.WAITING_PAYMENT ? <CancelPaymentButton /> : undefined}
+      action={
+        projectLeaderView && status === PaymentStatus.WAITING_PAYMENT ? (
+          <CancelPaymentButton onPaymentCancel={onPaymentCancel} />
+        ) : undefined
+      }
     >
       <QueryWrapper query={{ loading, data: requestedAt }}>
         <div className="flex flex-col gap-2">
@@ -121,7 +127,11 @@ export default function View({
   );
 }
 
-function CancelPaymentButton() {
+type CancelPaymentButtonProps = {
+  onPaymentCancel: () => void;
+};
+
+function CancelPaymentButton({ onPaymentCancel }: CancelPaymentButtonProps) {
   const { T } = useIntl();
 
   const [modalOpened, setModalOpened] = useState(false);
@@ -140,7 +150,7 @@ function CancelPaymentButton() {
           hidden: !modalOpened,
         })}
       >
-        <ConfirmationModal onClose={closeModal} onConfirm={closeModal} />
+        <ConfirmationModal onClose={closeModal} onConfirm={onPaymentCancel} />
       </div>
     </div>
   );
