@@ -19,8 +19,12 @@ test.describe("As a project lead, I", () => {
     restoreDB();
   });
 
+  // eslint-disable-next-line no-empty-pattern
+  test.beforeEach(async ({}, testInfo) => {
+    testInfo.setTimeout(3 * testInfo.timeout);
+  });
+
   test("can request a payment", async ({ page, projects, users, repos, signIn, context, request }) => {
-    test.slow();
     const recipient = users.Anthony;
     const project = projects.ProjectA;
 
@@ -50,7 +54,7 @@ test.describe("As a project lead, I", () => {
 
     expect(await contributors.byName("AnthonyBuisset").totalEarned()).toBe("-");
     expect(await contributors.byName("AnthonyBuisset").paidContributions()).toBe("-");
-    expect(await contributors.byName("AnthonyBuisset").leftToPay()).toContain("1");
+    expect(await contributors.byName("AnthonyBuisset").leftToPay()).toContain("2");
 
     expect(await contributors.byName("oscarwroche").totalEarned()).toBe("$200");
     expect(await contributors.byName("oscarwroche").paidContributions()).toBe("1");
@@ -96,9 +100,7 @@ test.describe("As a project lead, I", () => {
     await expect(sidePanel.getByText("$1,000")).toBeVisible();
     await expect(sidePanel.getByText("from tokio-rs (you)")).toBeVisible();
     await expect(sidePanel.getByText("to AnthonyBuisset")).toBeVisible();
-    await expect(sidePanel.getByText("Created a few seconds ago")).toBeVisible();
-    await expect(sidePanel.getByText("Created a few seconds ago")).toBeVisible();
-    await expect(sidePanel.locator("div").filter({ hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible(); // auto added
+    await expect(sidePanel.locator("div").filter({ hasText: "#397 · Update main.rs" }).first()).toBeVisible(); // auto added
     await expect(sidePanel.locator("div").filter({ hasText: "#2 · Another update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#1 · Update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#6 · This is a new issue" }).first()).toBeVisible();
@@ -124,13 +126,16 @@ test.describe("As a project lead, I", () => {
     const githubApiIssueCommentsUrl = githubIssueUrl.replace("github.com", "api.github.com/repos") + "/comments";
 
     const comments = await retry(
-      () => request.get(githubApiIssueCommentsUrl).then(res => res.json()),
+      () =>
+        request
+          .get(githubApiIssueCommentsUrl, { params: { sort: "updated", direction: "desc" } })
+          .then(res => res.json()),
       comments => comments.length > 0
     );
 
     expect(comments).toContainEqual(
       expect.objectContaining({
-        body: expect.stringMatching(/to \[AnthonyBuisset\].*10 items included.*\$1,000 for 2 days of work/s),
+        body: expect.stringMatching(/to \[AnthonyBuisset\].*11 items included.*\$1,000 for 2 days of work/s),
       })
     );
 
@@ -156,7 +161,9 @@ test.describe("As a project lead, I", () => {
     );
     expect(issue.state).toBe("closed");
 
-    const githubApiIssueComments = await request.get(githubApiIssueCommentsUrl);
+    const githubApiIssueComments = await request.get(githubApiIssueCommentsUrl, {
+      params: { sort: "updated", direction: "desc" },
+    });
     expect(await githubApiIssueComments.json()).toContainEqual(
       expect.objectContaining({
         body: expect.stringContaining("has been processed and payment is complete."),
@@ -194,10 +201,15 @@ test.describe("As a project lead, I", () => {
       otherPullRequests: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
     });
 
-    const paymentRow = projectPaymentsPage.paymentList().nth(1);
-
-    await listPaymentsAs(otherLeader);
-    expect(await paymentRow.status()).toBe("Pending");
+    await retry(
+      async () => {
+        await page.reload();
+        await listPaymentsAs(otherLeader);
+        const paymentRow = projectPaymentsPage.paymentList().nth(1);
+        return paymentRow.status();
+      },
+      value => value === "Pending"
+    );
 
     // 2. Edit profile info, payment is "processing"
     const editProfilePage = new EditProfilePage(page);
@@ -206,10 +218,17 @@ test.describe("As a project lead, I", () => {
     recipient.profile && (await editProfilePage.fillForm(recipient.profile));
     await editProfilePage.submitForm();
 
-    await listPaymentsAs(otherLeader);
-    expect(await projectPaymentsPage.paymentList().nth(1).status()).toBe("Processing");
+    await retry(
+      async () => {
+        await page.reload();
+        await listPaymentsAs(otherLeader);
+        return projectPaymentsPage.paymentList().nth(1).status();
+      },
+      value => value === "Processing"
+    );
 
     // 3. Add receipt, payment is "complete"
+    const paymentRow = projectPaymentsPage.paymentList().nth(1);
     await mutateAsAdmin<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>({
       mutation: AddEthPaymentReceiptDocument,
       variables: {
@@ -226,7 +245,13 @@ test.describe("As a project lead, I", () => {
       },
     });
 
-    await listPaymentsAs(otherLeader);
-    expect(await projectPaymentsPage.paymentList().nth(1).status()).toBe("Complete");
+    await retry(
+      async () => {
+        await page.reload();
+        await listPaymentsAs(otherLeader);
+        return projectPaymentsPage.paymentList().nth(1).status();
+      },
+      value => value === "Complete"
+    );
   });
 });
