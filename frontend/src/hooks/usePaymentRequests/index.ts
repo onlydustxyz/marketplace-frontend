@@ -2,7 +2,7 @@ import { useHasuraMutation, useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import {
   CancelPaymentRequestDocument,
-  CancelPaymentRequestMutationVariables,
+  CancelPaymentRequestMutationResult,
   GetPaymentRequestsForProjectDocument,
   GetPaymentRequestsForProjectQuery,
   PaymentRequestFragment,
@@ -25,14 +25,14 @@ export default function usePaymentRequests(projectId?: string) {
   const [requestNewPayment] = useHasuraMutation(RequestPaymentDocument, HasuraUserRole.RegisteredUser, {
     variables: { projectId },
     update: (cache, result, { variables }) => {
-      const { data } = result as RequestPaymentMutationResult;
-      const { amount, contributorId, projectId, reason } = variables as RequestPaymentMutationVariables;
+      const { budgetId, paymentId, amount } = (result as RequestPaymentMutationResult).data?.requestPayment || {};
+      const { contributorId, reason } = variables as RequestPaymentMutationVariables;
 
       const newPaymentRequestRef = cache.writeFragment<PaymentRequestFragment>({
         fragment: PaymentRequestFragmentDoc,
         data: {
           __typename: "PaymentRequests",
-          id: data?.requestPayment,
+          id: paymentId,
           amountInUsd: amount,
           recipientId: contributorId,
           workItems: reason.workItems,
@@ -42,22 +42,12 @@ export default function usePaymentRequests(projectId?: string) {
       });
 
       cache.modify({
-        id: `Projects:${projectId}`,
+        id: `Budgets:${budgetId}`,
         fields: {
-          budgets: budgetRefs => {
-            cache.modify({
-              id: budgetRefs[0].__ref,
-              broadcast: false,
-              optimistic: true,
-              fields: {
-                paymentRequests: paymentRequestRefs => {
-                  return [...paymentRequestRefs, newPaymentRequestRef];
-                },
-                remainingAmount: remainingAmount => remainingAmount - amount,
-              },
-            });
-            return budgetRefs;
+          paymentRequests: paymentRequestRefs => {
+            return [...paymentRequestRefs, newPaymentRequestRef];
           },
+          remainingAmount: remainingAmount => remainingAmount - amount,
         },
       });
     },
@@ -65,21 +55,13 @@ export default function usePaymentRequests(projectId?: string) {
 
   const [cancelPaymentRequest] = useHasuraMutation(CancelPaymentRequestDocument, HasuraUserRole.RegisteredUser, {
     variables: { projectId },
-    update: (cache, _, { variables }) => {
-      const { paymentId, projectId } = variables as CancelPaymentRequestMutationVariables;
+    update: (cache, result) => {
+      const { budgetId, paymentId } = (result as CancelPaymentRequestMutationResult).data?.cancelPaymentRequest || {};
 
       cache.modify({
-        id: `Projects:${projectId}`,
+        id: `Budgets:${budgetId}`,
         fields: {
-          budgets: budgetRefs => {
-            cache.modify({
-              id: budgetRefs[0].__ref,
-              fields: {
-                paymentRequests: current => reject(current, { __ref: `PaymentRequests:${paymentId}` }),
-              },
-            });
-            return budgetRefs;
-          },
+          paymentRequests: current => reject(current, { __ref: `PaymentRequests:${paymentId}` }),
         },
       });
     },

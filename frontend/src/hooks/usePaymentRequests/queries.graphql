@@ -34,9 +34,19 @@ mutation RequestPayment($amount: Int!, $contributorId: Int!, $hoursWorked: Int!,
     projectId: $projectId
     reason: $reason
     recipientId: $contributorId
-  )
+  ) {
+    projectId
+    budgetId
+    paymentId
+    amount
+  }
 }
 
 mutation CancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
-  cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId)
+  cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId) {
+    projectId
+    budgetId
+    paymentId
+    amount
+  }
 }
