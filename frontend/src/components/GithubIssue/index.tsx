@@ -36,37 +36,35 @@ export default function GithubIssue({ action, workItem, onClick }: Props) {
   const { repoName } = parsePullRequestOrIssueLink(workItem.htmlUrl);
 
   return (
-    <Card padded={false}>
-      <div className="p-4 flex flex-row gap-3 hover:bg-noise-light hover:backdrop-blur-4xl rounded-2xl ">
-        {action && (
-          <>
-            <div id={`github-issue-action-${workItem.id}`} onClick={onClick} className="h-fit">
-              <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
-                {action === Action.Add && <Add />}
-                {action === Action.Remove && <Subtract />}
-              </Button>
-            </div>
-            {action === Action.Add && (
-              <Tooltip anchorId={`github-issue-action-${workItem.id}`}>{T("githubIssue.addTooltip")}</Tooltip>
-            )}
-          </>
-        )}
-        <div className="flex flex-col gap-2 font-walsheim ">
-          <div className="font-medium text-sm text-greyscale-50">
-            <ExternalLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} numberOfLines={2} />
+    <Card padded={false} className="p-4 flex flex-row gap-3 hover:bg-noise-light hover:backdrop-blur-4xl rounded-2xl">
+      {action && (
+        <>
+          <div id={`github-issue-action-${workItem.id}`} onClick={onClick} className="h-fit">
+            <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
+              {action === Action.Add && <Add />}
+              {action === Action.Remove && <Subtract />}
+            </Button>
           </div>
-          <div className="flex flex-row gap-3 items-center text-greyscale-300 font-normal text-xs">
-            <div className="flex flex-row gap-1 items-center">
-              <Time />
-              {displayRelativeDate(workItem.createdAt)}
-            </div>
-            <div className="flex flex-row gap-1 items-center">
-              <IssueStatus issue={workItem} />
-            </div>
-            <div className="flex flex-row gap-1 items-center">
-              <GitRepositoryLine />
-              {repoName}
-            </div>
+          {action === Action.Add && (
+            <Tooltip anchorId={`github-issue-action-${workItem.id}`}>{T("githubIssue.addTooltip")}</Tooltip>
+          )}
+        </>
+      )}
+      <div className="flex flex-col gap-2 font-walsheim truncate">
+        <div className="flex font-medium text-sm text-greyscale-50 overflow-hidden">
+          <ExternalLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} />
+        </div>
+        <div className="flex flex-row gap-3 items-center text-greyscale-300 font-normal text-xs">
+          <div className="flex flex-row gap-1 items-center">
+            <Time />
+            {displayRelativeDate(workItem.createdAt)}
+          </div>
+          <div className="flex flex-row gap-1 items-center">
+            <IssueStatus issue={workItem} />
+          </div>
+          <div className="flex flex-row gap-1 items-center">
+            <GitRepositoryLine />
+            {repoName}
           </div>
         </div>
       </div>
