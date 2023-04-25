@@ -405,7 +405,7 @@
   "state": {
     "error": {
       "back": "Go back home",
-      "description": "Please try again or contact us if the problem persists",
+      "description": "Please try again or _contact us_ if the problem persists",
       "refresh": "Refresh page",
       "title": "We've just crashed"
     },
