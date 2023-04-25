@@ -1,9 +1,8 @@
 use async_trait::async_trait;
 use domain::{
 	GithubFetchRepoService, GithubRepo, GithubRepoId, GithubRepoLanguages, GithubServiceError,
-	GithubServiceFilters, GithubServiceResult, LogErr,
+	GithubServiceResult,
 };
-use serde_json::Value;
 use tracing::instrument;
 
 use crate::{github, github::RepoFromOctocrab};
@@ -23,22 +22,5 @@ impl GithubFetchRepoService for github::Client {
 	async fn repo_languages(&self, id: &GithubRepoId) -> GithubServiceResult<GithubRepoLanguages> {
 		let languages = self.get_languages_by_repository_id(id).await?;
 		Ok(languages)
-	}
-
-	async fn repo_events(
-		&self,
-		id: &GithubRepoId,
-		filters: &GithubServiceFilters,
-	) -> GithubServiceResult<Vec<Value>> {
-		let events = self
-			.events_by_repo_id(id, filters)
-			.await?
-			.into_iter()
-			.filter_map(|event| {
-				serde_json::to_value(event).log_err("Unable to serialize github event").ok()
-			})
-			.collect();
-
-		Ok(events)
 	}
 }
