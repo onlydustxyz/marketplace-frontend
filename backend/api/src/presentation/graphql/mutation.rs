@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use domain::{
-	Amount, BlockchainNetwork, Currency, GithubIssue, PaymentReason, PaymentReceipt, ProjectId,
-	UserId,
+	Amount, BlockchainNetwork, Currency, GithubIssue, LogErr, PaymentReason, PaymentReceipt,
+	ProjectId, UserId,
 };
 use iban::Iban;
 use juniper::{graphql_object, DefaultScalarValue, Nullable};
@@ -9,7 +9,7 @@ use rusty_money::Money;
 use url::Url;
 use uuid::Uuid;
 
-use super::{Context, Error, Result};
+use super::{dto, Context, Error, Result};
 use crate::{
 	domain::user_info::{ContactInformation, Identity, Location, PayoutSettings},
 	presentation::http::dto::{
@@ -100,12 +100,22 @@ impl Mutation {
 		context: &Context,
 		project_id: Uuid,
 		payment_id: Uuid,
-	) -> Result<Uuid> {
-		context
+	) -> Result<dto::Payment> {
+		let (project, budget, payment) = context
 			.cancel_payment_usecase
 			.cancel(&project_id.into(), &payment_id.into())
 			.await?;
-		Ok(payment_id)
+
+		Ok(dto::Payment::new(
+			*project.id(),
+			*budget.id(),
+			*payment.id(),
+			payment
+				.requested_usd_amount()
+				.try_into()
+				.log_err("Could not format payment amount")
+				.unwrap_or_default(),
+		))
 	}
 
 	pub async fn mark_invoice_as_received(
@@ -243,7 +253,7 @@ impl Mutation {
 		amount_in_usd: i32,
 		hours_worked: i32,
 		reason: PaymentReason,
-	) -> Result<Uuid> {
+	) -> Result<dto::Payment> {
 		let caller_id = *context.caller_info()?.user_id();
 
 		if !context.caller_permissions.can_spend_budget_of_project(&project_id.into()) {
@@ -253,7 +263,7 @@ impl Mutation {
 			));
 		}
 
-		let payment_request_id = context
+		let (project, budget, payment) = context
 			.request_payment_usecase
 			.request(
 				project_id.into(),
@@ -265,7 +275,16 @@ impl Mutation {
 			)
 			.await?;
 
-		Ok(payment_request_id.into())
+		Ok(dto::Payment::new(
+			*project.id(),
+			*budget.id(),
+			*payment.id(),
+			payment
+				.requested_usd_amount()
+				.try_into()
+				.log_err("Could not format payment amount")
+				.unwrap_or_default(),
+		))
 	}
 
 	pub async fn update_profile_info(
