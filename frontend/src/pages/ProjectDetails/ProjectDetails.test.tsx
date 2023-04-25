@@ -45,7 +45,7 @@ vi.mock("axios", () => ({
 const TEST_GITHUB_USER_ID = 123456;
 
 vi.mock("jwt-decode", () => ({
-  default: (jwt: string) => {
+  default: () => {
     return {
       [CLAIMS_KEY]: { [PROJECTS_LED_KEY]: `{"${TEST_LED_PROJECT_ID}"}`, [GITHUB_USERID_KEY]: TEST_GITHUB_USER_ID },
     };

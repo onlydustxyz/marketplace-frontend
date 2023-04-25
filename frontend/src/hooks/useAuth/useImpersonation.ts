@@ -76,7 +76,6 @@ export const useImpersonation = () => {
       githubUserId: impersonatedGithubUserId,
       projectsLeaded: impersonatedLedProjectIds,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [impersonatedLedProjectIds, impersonatedGithubUserId]);
 
   return {

@@ -1,12 +1,3 @@
-const DESKTOP_THROTTLING_CONSTANTS = {
-  rttMs: 40,
-  throughputKbps: 10 * 1024,
-  cpuSlowdownMultiplier: 1,
-  requestLatencyMs: 0, // 0 means unset
-  downloadThroughputKbps: 0,
-  uploadThroughputKbps: 0,
-};
-
 const DESKTOP_EMULATION_METRICS = {
   mobile: false,
   width: 1350,

@@ -48,6 +48,7 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "error",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
+    "react-hooks/exhaustive-deps": "off",
     "no-relative-import-paths/no-relative-import-paths": ["error", { allowSameFolder: true, rootDir: "frontend" }],
   },
   ignorePatterns: [

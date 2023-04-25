@@ -5,12 +5,7 @@ import FilterPanel, { GET_ALL_FILTER_OPTIONS_QUERY } from ".";
 import { renderWithIntl, MemoryRouterProviderFactory } from "src/test/utils";
 import { GetAllFilterOptionsQuery } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
-import {
-  MockedProjectFilterProvider,
-  Ownership,
-  ProjectFilter,
-  ProjectFilterProvider,
-} from "src/pages/Projects/useProjectFilter";
+import { MockedProjectFilterProvider } from "src/pages/Projects/useProjectFilter";
 
 expect.extend(matchers);
 

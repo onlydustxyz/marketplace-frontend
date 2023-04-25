@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, vitest } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";

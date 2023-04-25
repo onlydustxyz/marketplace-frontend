@@ -56,7 +56,6 @@ export const TokenSetProvider = ({ children }: PropsWithChildren) => {
     if (tokenSet) {
       refreshAccessToken(tokenSet);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setFromRefreshToken = async (refreshToken: RefreshToken) => {
