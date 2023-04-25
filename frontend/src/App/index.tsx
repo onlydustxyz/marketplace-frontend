@@ -21,6 +21,7 @@ import ErrorTrigger from "src/pages/ErrorTrigger";
 import ImpersonationPage from "src/pages/Impersonation";
 
 export enum RoutePaths {
+  Home = "/",
   Projects = "/",
   Login = "/login",
   Profile = "/profile",
