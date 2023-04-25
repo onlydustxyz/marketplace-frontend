@@ -141,7 +141,7 @@ function CancelPaymentButton({ onPaymentCancel }: CancelPaymentButtonProps) {
 
   return (
     <div className="relative">
-      <Button size={ButtonSize.Sm} onClick={toggleModal} hover={modalOpened}>
+      <Button size={ButtonSize.Sm} onClick={toggleModal} hover={modalOpened} data-testid="cancel-payment-button">
         <ErrorWarningLine />
         {T("payment.table.detailsPanel.cancelPayment.button")}
       </Button>

@@ -19,6 +19,7 @@ export default function usePaymentRequests(projectId?: string) {
     HasuraUserRole.RegisteredUser,
     {
       variables: { projectId },
+      skip: !projectId,
     }
   );
 

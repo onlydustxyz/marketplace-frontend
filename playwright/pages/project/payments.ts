@@ -28,6 +28,11 @@ export class ProjectPaymentsPage {
   };
 
   sidePanel = () => this.page.getByRole("dialog");
+
+  cancelCurrentPayment = async () => {
+    await this.sidePanel().getByTestId("cancel-payment-button").click();
+    await this.sidePanel().getByText("Confirm").click();
+  };
 }
 
 export class NewPaymentPage {
