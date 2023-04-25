@@ -11,7 +11,7 @@ type Props = {
 export default function ExternalLink({ text, url, numberOfLines = 1 }: Props) {
   return (
     <div
-      className={classNames("group/link flex flex-row gap-1 w-fit max-w-lg items-center hover:cursor-pointer", {
+      className={classNames("group/link flex flex-row gap-1 w-fit items-center hover:cursor-pointer", {
         truncate: numberOfLines === 1,
       })}
     >
