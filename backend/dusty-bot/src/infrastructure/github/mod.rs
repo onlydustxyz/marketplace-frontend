@@ -49,7 +49,8 @@ impl GithubService for github::Client {
 			.await
 			.map_err(github::Error::from)?;
 
-		if !issue.locked {
+		// Github API has a limit of 2500 comments per issue see https://docs.github.com/rest/reference/issues#create-an-issue-comment
+		if !issue.locked && issue.comments < 2500 {
 			self.octocrab()
 				.issues(repo_owner, repo_name)
 				.create_comment(issue_number, comment)
