@@ -152,6 +152,11 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
                 return uniqBy([...existing, ...incoming], "__ref");
               },
             },
+            pullRequests: {
+              merge(existing: PaymentRequests[] = [], incoming: PaymentRequests[]) {
+                return uniqBy([...existing, ...incoming], "__ref");
+              },
+            },
           },
         },
       },
