@@ -43,6 +43,8 @@ export default function usePaymentRequests(projectId?: string) {
 
       cache.modify({
         id: `Budgets:${budgetId}`,
+        broadcast: true,
+        optimistic: false,
         fields: {
           paymentRequests: paymentRequestRefs => [...paymentRequestRefs, newPaymentRequestRef],
           remainingAmount: remainingAmount => remainingAmount - amount,
@@ -59,6 +61,8 @@ export default function usePaymentRequests(projectId?: string) {
 
       cache.modify({
         id: `Budgets:${budgetId}`,
+        broadcast: true,
+        optimistic: false,
         fields: {
           paymentRequests: current => reject(current, { __ref: `PaymentRequests:${paymentId}` }),
           remainingAmount: remainingAmount => remainingAmount + amount,
