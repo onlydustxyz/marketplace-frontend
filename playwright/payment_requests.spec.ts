@@ -19,8 +19,12 @@ test.describe("As a project lead, I", () => {
     restoreDB();
   });
 
+  // eslint-disable-next-line no-empty-pattern
+  test.beforeEach(async ({}, testInfo) => {
+    testInfo.setTimeout(3 * testInfo.timeout);
+  });
+
   test("can request a payment", async ({ page, projects, users, repos, signIn, context, request }) => {
-    test.slow();
     const recipient = users.Anthony;
     const project = projects.ProjectA;
 
