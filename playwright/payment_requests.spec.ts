@@ -122,7 +122,10 @@ test.describe("As a project lead, I", () => {
     const githubApiIssueCommentsUrl = githubIssueUrl.replace("github.com", "api.github.com/repos") + "/comments";
 
     const comments = await retry(
-      () => request.get(githubApiIssueCommentsUrl).then(res => res.json()),
+      () =>
+        request
+          .get(githubApiIssueCommentsUrl, { params: { sort: "updated", direction: "desc" } })
+          .then(res => res.json()),
       comments => comments.length > 0
     );
 
@@ -154,7 +157,9 @@ test.describe("As a project lead, I", () => {
     );
     expect(issue.state).toBe("closed");
 
-    const githubApiIssueComments = await request.get(githubApiIssueCommentsUrl);
+    const githubApiIssueComments = await request.get(githubApiIssueCommentsUrl, {
+      params: { sort: "updated", direction: "desc" },
+    });
     expect(await githubApiIssueComments.json()).toContainEqual(
       expect.objectContaining({
         body: expect.stringContaining("has been processed and payment is complete."),
