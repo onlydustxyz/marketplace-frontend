@@ -13,6 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Amount: any;
   DateTimeUtc: any;
   Email: any;
   EthereumAddress: any;
@@ -21,6 +22,7 @@ export type Scalars = {
   GithubIssueNumber: any;
   GithubRepoId: any;
   GithubUserId: any;
+  Id: any;
   Url: any;
   Uuid: any;
   bigint: any;
@@ -1308,6 +1310,14 @@ export enum OrderBy {
   /** in descending order, nulls last */
   DescNullsLast = 'DESC_NULLS_LAST'
 }
+
+export type Payment = {
+  __typename?: 'Payment';
+  amount: Scalars['Amount'];
+  budgetId: Scalars['Id'];
+  paymentId: Scalars['Id'];
+  projectId: Scalars['Id'];
+};
 
 export type PaymentReference = {
   paymentId: Scalars['Uuid'];
@@ -5784,7 +5794,7 @@ export type Mutation_Root = {
   addEthPaymentReceipt: Scalars['Uuid'];
   addFiatPaymentReceipt: Scalars['Uuid'];
   addSponsorToProject: Scalars['Uuid'];
-  cancelPaymentRequest: Scalars['Uuid'];
+  cancelPaymentRequest: Payment;
   createIssue: Issue;
   createProject: Scalars['Uuid'];
   createSponsor: Scalars['Uuid'];
@@ -5976,7 +5986,7 @@ export type Mutation_Root = {
   markInvoiceAsReceived: Scalars['Int'];
   rejectInvoice: Scalars['Int'];
   removeSponsorFromProject: Scalars['Uuid'];
-  requestPayment: Scalars['Uuid'];
+  requestPayment: Payment;
   unassignProjectLead: Scalars['Boolean'];
   unlinkGithubRepo: Scalars['Uuid'];
   /** update data of the table: "auth.github_users" */
@@ -10397,7 +10407,7 @@ export type RequestPaymentMutationVariables = Exact<{
 }>;
 
 
-export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: any };
+export type RequestPaymentMutation = { __typename?: 'mutation_root', requestPayment: { __typename?: 'Payment', projectId: any, budgetId: any, paymentId: any, amount: any } };
 
 export type CancelPaymentRequestMutationVariables = Exact<{
   projectId: Scalars['Uuid'];
@@ -10405,7 +10415,7 @@ export type CancelPaymentRequestMutationVariables = Exact<{
 }>;
 
 
-export type CancelPaymentRequestMutation = { __typename?: 'mutation_root', cancelPaymentRequest: any };
+export type CancelPaymentRequestMutation = { __typename?: 'mutation_root', cancelPaymentRequest: { __typename?: 'Payment', projectId: any, budgetId: any, paymentId: any, amount: any } };
 
 export type UserPayoutSettingsFragment = { __typename?: 'UserInfo', identity: any | null, location: any | null, payoutSettings: any | null, arePayoutSettingsValid: boolean };
 
@@ -11347,7 +11357,12 @@ export const RequestPaymentDocument = gql`
     projectId: $projectId
     reason: $reason
     recipientId: $contributorId
-  )
+  ) {
+    projectId
+    budgetId
+    paymentId
+    amount
+  }
 }
     `;
 export type RequestPaymentMutationFn = Apollo.MutationFunction<RequestPaymentMutation, RequestPaymentMutationVariables>;
@@ -11382,7 +11397,12 @@ export type RequestPaymentMutationResult = Apollo.MutationResult<RequestPaymentM
 export type RequestPaymentMutationOptions = Apollo.BaseMutationOptions<RequestPaymentMutation, RequestPaymentMutationVariables>;
 export const CancelPaymentRequestDocument = gql`
     mutation CancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
-  cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId)
+  cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId) {
+    projectId
+    budgetId
+    paymentId
+    amount
+  }
 }
     `;
 export type CancelPaymentRequestMutationFn = Apollo.MutationFunction<CancelPaymentRequestMutation, CancelPaymentRequestMutationVariables>;
