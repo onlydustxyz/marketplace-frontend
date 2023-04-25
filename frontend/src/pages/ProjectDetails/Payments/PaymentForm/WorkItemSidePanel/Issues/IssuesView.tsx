@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Callout from "src/components/Callout";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import QueryWrapper, { QueryResult } from "src/components/QueryWrapper";
@@ -22,7 +22,7 @@ type Props<T, E> = {
 
 export default function IssuesView<T, E>({ workItems, onWorkItemAdded, query }: Props<T, E>) {
   const { T } = useIntl();
-  const { watch } = useFormContext();
+  const { watch, resetField } = useFormContext();
 
   const [addOtherIssueEnabled, setStateAddOtherIssueEnabled] = useState(false);
   const [searchEnabled, setStateSearchEnabled] = useState(false);
@@ -41,7 +41,13 @@ export default function IssuesView<T, E>({ workItems, onWorkItemAdded, query }: 
     showToaster(T("payment.form.workItems.issues.addedToaster"));
   };
 
-  const searchPattern = watch("search");
+  useEffect(() => {
+    if (searchEnabled === false) {
+      resetField("search-issues");
+    }
+  }, [searchEnabled]);
+
+  const searchPattern = watch("search-issues");
   const filteredWorkItems = useFilteredWorkItems({ pattern: searchPattern, workItems });
 
   return (
@@ -55,18 +61,20 @@ export default function IssuesView<T, E>({ workItems, onWorkItemAdded, query }: 
             label={T("payment.form.workItems.issues.addOther.toggle")}
             testId="add-other-issue-toggle"
           />
-          <Toggle
-            enabled={searchEnabled}
-            setEnabled={setSearchEnabled}
-            icon={<SearchLine />}
-            label={T("payment.form.workItems.issues.search")}
-            testId="search-toggle"
-          />
+          {workItems.length > 0 && (
+            <Toggle
+              enabled={searchEnabled}
+              setEnabled={setSearchEnabled}
+              icon={<SearchLine />}
+              label={T("payment.form.workItems.issues.search")}
+              testId="search-toggle"
+            />
+          )}
         </div>
         {addOtherIssueEnabled && <OtherIssueInput onWorkItemAdded={onIssueAdded} />}
         {searchEnabled && (
           <FormInput
-            name="search"
+            name="search-issues"
             placeholder={T("payment.form.workItems.issues.searchPlaceholder")}
             withMargin={false}
             inputClassName="pl-10"
