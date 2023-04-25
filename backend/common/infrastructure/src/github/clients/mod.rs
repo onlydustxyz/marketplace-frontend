@@ -242,9 +242,15 @@ impl Client {
 		id: &GithubRepoId,
 		filters: &GithubServiceFilters,
 	) -> Result<Vec<PullRequest>, Error> {
+		let sort = if filters.updated_since.is_some() {
+			Sort::Updated
+		} else {
+			Sort::Created
+		};
+
 		let query_params = QueryParams::default()
 			.state(filters.state.into())
-			.sort(Sort::Created)
+			.sort(sort)
 			.direction(Direction::Descending)
 			.page(1)
 			.per_page(100);

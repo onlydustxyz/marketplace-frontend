@@ -10,7 +10,7 @@ use url::Url;
 
 use crate::{GithubRepoId, GithubUser};
 
-#[derive(Clone, Debug, GraphQLEnum, PartialEq, Eq)]
+#[derive(Clone, Debug, GraphQLEnum, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Status {
 	Open,
 	Closed,
@@ -19,14 +19,14 @@ pub enum Status {
 	Cancelled,
 }
 
-#[derive(Clone, Debug, GraphQLEnum)]
+#[derive(Clone, Debug, GraphQLEnum, Serialize, Deserialize)]
 pub enum Type {
 	Issue,
 	PullRequest,
 }
 
 #[allow(clippy::too_many_arguments)]
-#[derive(Clone, Debug, new, Getters, GraphQLObject)]
+#[derive(Clone, Debug, new, Getters, GraphQLObject, Serialize, Deserialize)]
 pub struct Issue {
 	id: Id,
 	repo_id: GithubRepoId,

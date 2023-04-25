@@ -10,7 +10,7 @@ use url::Url;
 use crate::GithubUser;
 
 #[allow(clippy::too_many_arguments)]
-#[derive(new, Debug, Getters, GraphQLObject, Clone)]
+#[derive(new, Debug, Getters, GraphQLObject, Clone, Serialize, Deserialize)]
 pub struct Repo {
 	id: Id,
 	owner: String,

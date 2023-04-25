@@ -11,14 +11,9 @@ pub struct GithubPull {
 	issue_number: GithubIssueNumber,
 	created_at: NaiveDateTime,
 	author_id: GithubUserId,
+	merged_at: Option<NaiveDateTime>,
 }
 
 impl domain::Entity for GithubPull {
 	type Id = GithubIssueId;
-}
-
-#[derive(Default, Debug, Clone, AsChangeset, Serialize, Deserialize, Constructor)]
-#[table_name = "github_pulls"]
-pub struct GithubMergedPull {
-	merged_at: Option<NaiveDateTime>,
 }

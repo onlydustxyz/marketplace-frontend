@@ -51,21 +51,30 @@ mod tests {
 
 	#[rstest]
 	fn filter_by_created_since(event: Event) {
-		let filters = GithubServiceFilters::new(None, "2023-03-18T13:15:05Z".parse().ok());
+		let filters = GithubServiceFilters {
+			created_since: "2023-03-18T13:15:05Z".parse().ok(),
+			..Default::default()
+		};
 
 		assert_eq!(event.clone().filter(&filters), Decision::Take(event));
 	}
 
 	#[rstest]
 	fn filter_by_created_since_on_exact_date(event: Event) {
-		let filters = GithubServiceFilters::new(None, "2023-04-18T13:15:05Z".parse().ok());
+		let filters = GithubServiceFilters {
+			created_since: "2023-04-18T13:15:05Z".parse().ok(),
+			..Default::default()
+		};
 
 		assert_eq!(event.filter(&filters), Decision::End);
 	}
 
 	#[rstest]
 	fn end_stream_if_pull_created_before(event: Event) {
-		let filters = GithubServiceFilters::new(None, "2023-04-18T13:15:05Z".parse().ok());
+		let filters = GithubServiceFilters {
+			created_since: "2023-04-18T13:15:05Z".parse().ok(),
+			..Default::default()
+		};
 
 		assert_eq!(event.filter(&filters), Decision::End);
 	}

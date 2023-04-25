@@ -18,7 +18,7 @@ mod work_item;
 
 pub use budget::Budget;
 pub use crm::CrmGithubRepo;
-pub use github_pulls::{GithubMergedPull, GithubPull};
+pub use github_pulls::GithubPull;
 pub use github_repo_details::GithubRepoDetails;
 pub use github_repo_indexes::GithubRepoIndex;
 pub use payment::Payment;
