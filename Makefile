@@ -13,7 +13,7 @@ help:
 	@awk '/^# -+/{getline; sub(/^#[ ]+/, ""); section=$$0 "\n\n"; getline;} /^# /{sub(/^# /, ""); desc=$$0; getline; if ($$0 ~ /^[a-zA-Z0-9].*\/.*[^$#\\t=]*:([^=]|$$)|help|install/) {sub(/:.*/, ""); printf "%s%s  %-30s %s\n", (section != "" ? "\n" : ""), section, $$0, desc; section=""; getline}}' Makefile
 
 # Setups the dev whole dev environment
-setup: install docker/re db/up db/update-remote-dump db/migrate db/load-fixtures hasura/start-clean-stop playwright/start-test-stop playwright/clean
+install: install docker/re db/up db/update-remote-dump db/migrate db/load-fixtures hasura/start-clean-stop playwright/start-test-stop
 
 # ----------------------------------------------------------
 #                     Tools installation
@@ -28,19 +28,20 @@ rust/install:
 # ----------------------------------------------------------
 
 # Install all the dependencies
-install: rust/install frontend/install hasura/install playwright/install
+install/all: rust/install frontend/install hasura/install playwright/install
 
 node_modules:
 	yarn
 
-# Installs the frontend dependencies
-frontend/install: node_modules
+# ----------------------------------------------------------
+#                        Full stack
+# ----------------------------------------------------------
 
-hasura/node_modules:
-	yarn --cwd ./hasura
+# Spins up the full stack in background
+app/background-start: docker/up backend/background-start frontend/background-start
 
-# Installs the Hasura CLI dependencies
-hasura/install: hasura/node_modules
+# Stops the background full stack, if running
+app/background-stop: backend/background-stop frontend/background-stop
 
 # ----------------------------------------------------------
 #                       Docker stack
@@ -93,46 +94,106 @@ db/load-fixtures: db/up
 # ----------------------------------------------------------
 
 # Starts the backend stack in background
-backend/background-start: api/background-start github-proxy/background-start
+backend/background-start: event-store/background-start event-listeners/background-start action-dequeuer/background-start api/background-start github-proxy/background-start dusty-bot/background-start
 
 # Stops the background backend stack, if running
-backend/background-stop: api/background-stop github-proxy/background-stop
+backend/background-stop: event-store/background-stop event-listeners/background-stop action-dequeuer/background-stop api/background-stop github-proxy/background-stop dusty-bot/background-stop
 
 api.pid:
-	@./scripts/wait-for-port.sh api 8000
+	@./scripts/cargo-run.sh api
+	@./scripts/wait-for-port.sh 8000
 
 # Starts the API in background
 api/background-start: api.pid
 
 # Stops the background API, if running
 api/background-stop:
-	@if [ -f "api.pid" ]; then \
-		kill $$(cat api.pid); \
-		rm api.pid; \
-		rm api.log; \
-	fi
+	@./scripts/stop-app.sh api
 
 # Starts the API interactively
 api/start: docker/up
-	cargo run -p api
+	@./scripts/cargo-run.sh api
 
 github-proxy.pid:
-	@./scripts/wait-for-port.sh github-proxy 8001
+	@./scripts/cargo-run.sh github-proxy
+	@./scripts/wait-for-port.sh 8001
 
 # Starts the Github proxy in background
 github-proxy/background-start: github-proxy.pid
 
 # Stops the background Github proxy, if running
 github-proxy/background-stop:
-	@if [ -f "github-proxy.pid" ]; then \
-		kill $$(cat github-proxy.pid); \
-		rm github-proxy.pid; \
-		rm github-proxy.log; \
-	fi
+	@./scripts/stop-app.sh github-proxy
+
+dusty-bot.pid:
+	@./scripts/cargo-run.sh dusty-bot
+	@./scripts/wait-for-port.sh 8002
+
+# Starts the Dusty bot in background
+dusty-bot/background-start: dusty-bot.pid
+
+# Stops the background Dusty bot, if running
+dusty-bot/background-stop:
+	@./scripts/stop-app.sh dusty-bot
+
+event-listeners.pid:
+	@./scripts/cargo-run.sh event-listeners
+
+# Starts the event listeners in background
+event-listeners/background-start: event-listeners.pid
+
+# Stops the background event listeners, if running
+event-listeners/background-stop:
+	@./scripts/stop-app.sh event-listeners
+
+event-store.pid:
+	@./scripts/cargo-run.sh event-store
+
+# Starts the event store in background
+event-store/background-start: event-store.pid
+
+# Stops the background event store, if running
+event-store/background-stop:
+	@./scripts/stop-app.sh event-store
+
+action-dequeuer.pid:
+	@cargo run --bin action-dequeuer > action-dequeuer.log 2>&1 & echo $$! > action-dequeuer.pid
+	@echo "App action-dequeuer started with PID: `cat action-dequeuer.pid`"
+
+# Starts the action dequeuer in background
+action-dequeuer/background-start: action-dequeuer.pid
+
+# Stops the background action dequeuer, if running
+action-dequeuer/background-stop:
+	@./scripts/stop-app.sh action-dequeuer
+
+# ----------------------------------------------------------
+#                           Frontend
+# ----------------------------------------------------------
+
+# Installs the frontend dependencies
+frontend/install: node_modules
+
+frontend.pid:
+	@yarn dev > frontend.log 2>&1 & echo $$! > frontend.pid
+	@./scripts/wait-for-port.sh 5173
+
+# Starts the frontend in background
+frontend/background-start: frontend.pid
+
+# Stops the frontend, if running
+frontend/background-stop:
+	@./scripts/stop-app.sh frontend
 
 # ----------------------------------------------------------
 #                          Hasura
 # ----------------------------------------------------------
+
+hasura/node_modules:
+	yarn --cwd ./hasura
+
+# Installs the Hasura CLI dependencies
+hasura/install: hasura/node_modules
 
 # Starts the Hasura CLI in interactive mode
 hasura/start:
@@ -158,7 +219,7 @@ playwright/install:
 	yarn playwright install
 
 # Runs the e2e tests, starting and stopping the whole stack afterwards
-playwright/start-test-stop: backend/background-start playwright/test backend/background-stop
+playwright/start-test-stop: app/background-start playwright/test app/background-stop
 
 # Runs the e2e tests
 playwright/test:
