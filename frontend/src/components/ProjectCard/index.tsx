@@ -123,6 +123,10 @@ export default function ProjectCard({
                       <div className="w-fit">
                         {T("project.fundedBy", {
                           topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
+                          leftToSpend: formatMoneyAmount({
+                            amount: totalInitialAmountInUsd - totalSpentAmountInUsd,
+                            notation: "compact",
+                          }),
                         })}
                       </div>
                     </Tooltip>
