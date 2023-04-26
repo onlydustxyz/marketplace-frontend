@@ -423,6 +423,11 @@
       "refresh": "Refresh page",
       "title": "We've just crashed"
     },
+    "maintenance": {
+      "description": "We're hard at work to make OnlyDust better. Check back later!",
+      "refresh": "Refresh",
+      "title": "We're under maintenance"
+    },
     "errorOccured": "An error just occurred, please try again. Contact us at contact@onlydust.xyz if the problem persists",
     "loading": "Loading...",
     "notResponsive": "This website is only available for desktop now. Mobile version coming soon ...",
