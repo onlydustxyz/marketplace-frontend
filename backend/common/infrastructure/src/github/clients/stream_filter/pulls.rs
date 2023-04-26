@@ -13,6 +13,14 @@ impl Filter for PullRequest {
 			}
 		}
 
+		if let Some(updated_since) = filters.updated_since {
+			if self.updated_at.map(|updated_at| updated_at < updated_since).unwrap_or(false) {
+				// Found a pr updated before `updated_since`,
+				// assuming stream is ordered, we can end here
+				return Decision::End;
+			}
+		}
+
 		if (filters.state == Some(State::Merged)) && self.merged_at.is_none() {
 			// Skipping non merged items if filter state is `Merged`
 			return Decision::Skip;
@@ -73,7 +81,10 @@ mod tests {
 
 	#[rstest]
 	fn filter_by_created_since(pull_request: PullRequest) {
-		let filters = GithubServiceFilters::new(None, "2023-03-10T10:00:00Z".parse().ok());
+		let filters = GithubServiceFilters {
+			created_since: "2023-03-10T10:00:00Z".parse().ok(),
+			..Default::default()
+		};
 
 		assert_eq!(
 			pull_request.clone().filter(&filters),
@@ -83,7 +94,10 @@ mod tests {
 
 	#[rstest]
 	fn filter_by_created_since_on_exact_date(pull_request: PullRequest) {
-		let filters = GithubServiceFilters::new(None, "2023-04-18T13:15:05Z".parse().ok());
+		let filters = GithubServiceFilters {
+			created_since: "2023-04-18T13:15:05Z".parse().ok(),
+			..Default::default()
+		};
 
 		assert_eq!(
 			pull_request.clone().filter(&filters),
@@ -93,7 +107,10 @@ mod tests {
 
 	#[rstest]
 	fn filter_by_state_merged(#[from(merged_pull_request)] pull_request: PullRequest) {
-		let filters = GithubServiceFilters::new(Some(State::Merged), None);
+		let filters = GithubServiceFilters {
+			state: Some(State::Merged),
+			..Default::default()
+		};
 
 		assert_eq!(
 			pull_request.clone().filter(&filters),
@@ -103,16 +120,22 @@ mod tests {
 
 	#[rstest]
 	fn skip_pull(pull_request: PullRequest) {
-		let filters =
-			GithubServiceFilters::new(Some(State::Merged), "2023-04-18T13:15:05Z".parse().ok());
+		let filters = GithubServiceFilters {
+			state: Some(State::Merged),
+			created_since: "2023-04-18T13:15:05Z".parse().ok(),
+			..Default::default()
+		};
 
 		assert_eq!(pull_request.filter(&filters), Decision::Skip);
 	}
 
 	#[rstest]
 	fn end_stream_if_pull_created_before(pull_request: PullRequest) {
-		let filters =
-			GithubServiceFilters::new(Some(State::Merged), "2023-05-18T13:15:05Z".parse().ok());
+		let filters = GithubServiceFilters {
+			state: Some(State::Merged),
+			created_since: "2023-05-18T13:15:05Z".parse().ok(),
+			..Default::default()
+		};
 
 		assert_eq!(pull_request.filter(&filters), Decision::End);
 	}

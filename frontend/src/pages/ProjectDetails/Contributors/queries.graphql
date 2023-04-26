@@ -63,7 +63,7 @@ query GetProjectContributors($projectId: uuid!) {
   }
 }
 
-query GetProjectContributorsAsLeader($projectId: uuid!, $createdSince: DateTimeUtc) {
+query GetProjectContributorsAsLeader($projectId: uuid!, $createdSince: timestamp) {
   projectsByPk(id: $projectId) {
     ...ProjectContributorsForTable
     ...ProjectContributorsByLeader

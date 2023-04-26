@@ -2,7 +2,7 @@ use ::infrastructure::database::schema::*;
 use chrono::NaiveDateTime;
 use derive_getters::{Dissolve, Getters};
 use derive_more::Constructor;
-use domain::GithubRepositoryId;
+use domain::GithubRepoId;
 use serde::{Deserialize, Serialize};
 
 #[derive(
@@ -22,10 +22,10 @@ use serde::{Deserialize, Serialize};
 #[table_name = "github_repo_indexes"]
 #[primary_key(repo_id)]
 pub struct GithubRepoIndex {
-	repo_id: GithubRepositoryId,
+	repo_id: GithubRepoId,
 	last_indexed_time: Option<NaiveDateTime>,
 }
 
 impl domain::Entity for GithubRepoIndex {
-	type Id = GithubRepositoryId;
+	type Id = GithubRepoId;
 }

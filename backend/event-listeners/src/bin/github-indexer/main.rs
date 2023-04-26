@@ -3,7 +3,7 @@ use std::{sync::Arc, time::Duration};
 use anyhow::Result;
 use dotenv::dotenv;
 use event_listeners::{infrastructure::database::GithubRepoIndexRepository, Config};
-use indexer::Indexer;
+use indexer::{logged::Logged, published::Published, with_state::WithState};
 use infrastructure::{amqp, config, database, github, tracing::Tracer};
 use olog::info;
 
@@ -20,7 +20,13 @@ async fn main() -> Result<()> {
 	)?));
 	let event_bus = Arc::new(amqp::Bus::new(config.amqp()).await?);
 
-	let indexer = Indexer::new(github, GithubRepoIndexRepository::new(database), event_bus);
+	let indexer = indexer::composite::Indexer::new(vec![
+		Arc::new(indexer::repo::Indexer::new(github.clone())),
+		Arc::new(indexer::pulls::Indexer::new(github.clone())),
+	])
+	.logged()
+	.published(event_bus)
+	.with_state(GithubRepoIndexRepository::new(database));
 
 	loop {
 		info!("🎶 Still alive 🎶");

@@ -1,12 +1,12 @@
 use anyhow::Result;
 use async_trait::async_trait;
-use domain::{GithubIssue, GithubIssueNumber, GithubRepositoryId};
+use domain::{GithubIssue, GithubIssueNumber, GithubRepoId};
 
 #[async_trait]
 pub trait Service: Send + Sync {
 	async fn create_issue(
 		&self,
-		repo_id: &GithubRepositoryId,
+		repo_id: &GithubRepoId,
 		title: &str,
 		description: &str,
 	) -> Result<GithubIssue>;

@@ -1,0 +1,14 @@
+table:
+  name: github_pulls
+  schema: public
+select_permissions:
+  - role: registered_user
+    permission:
+      columns:
+        - id
+        - repo_id
+        - issue_number
+        - created_at
+        - author_id
+        - merged_at
+      filter: {}

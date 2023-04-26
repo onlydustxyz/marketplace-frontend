@@ -74,13 +74,13 @@ const mocks: MockedResponse[] = [
             {
               githubRepoDetails: {
                 id: 123456,
-                content: { __typename: "Repository", owner: "owner-1", name: "first-repo" },
+                content: { __typename: "Repo", owner: "owner-1", name: "first-repo" },
               },
             },
             {
               githubRepoDetails: {
                 id: 123456,
-                content: { __typename: "Repository", owner: "owner-1", name: "second-repo" },
+                content: { __typename: "Repo", owner: "owner-1", name: "second-repo" },
               },
             },
           ],

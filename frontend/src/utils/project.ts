@@ -44,8 +44,8 @@ type Project<R> = {
   githubRepos: Array<{
     githubRepoDetails: {
       content: { contributors: Array<R | null> } | null;
-      pullRequests?: PullDetailsFragment[] | null;
     } | null;
+    repoPulls?: PullDetailsFragment[] | null;
   }> | null;
   budgets: Array<{
     paymentRequests: Array<{ githubRecipient: R | null }>;
@@ -81,17 +81,10 @@ export const countUnpaidMergedPullsByContributor = (project?: Project<Contributo
     .mapValues(requests => flatMap(requests, "workItems"))
     .value();
 
-  const notPaid = ({ author, repoId, number: issueNumber }: PullDetailsFragment) =>
-    !some(paidItemsByLogin[author.id], { repoId, issueNumber });
+  const notPaid = ({ authorId, repoId, issueNumber }: PullDetailsFragment) =>
+    !some(paidItemsByLogin[authorId], { repoId, issueNumber });
 
-  const res = chain(project?.githubRepos)
-    .flatMap("githubRepoDetails.pullRequests")
-    .filter(isDefined)
-    .filter(notPaid)
-    .countBy("author.id")
-    .value();
-
-  return res;
+  return chain(project?.githubRepos).flatMap("repoPulls").filter(isDefined).filter(notPaid).countBy("authorId").value();
 };
 
 gql`
@@ -99,13 +92,11 @@ gql`
     id
   }
 
-  fragment PullDetails on Issue {
+  fragment PullDetails on GithubPulls {
     id
     repoId
-    number
-    author {
-      ...ContributorId
-    }
+    issueNumber
+    authorId
   }
 
   fragment ProjectContributors on Projects {
@@ -134,10 +125,8 @@ gql`
 
   fragment ProjectContributorsByLeader on Projects {
     githubRepos {
-      githubRepoDetails {
-        pullRequests(filters: { createdSince: $createdSince, state: MERGED }) {
-          ...PullDetails
-        }
+      repoPulls(where: { createdAt: { _gte: $createdSince }, mergedAt: { _isNull: false } }) {
+        ...PullDetails
       }
     }
   }

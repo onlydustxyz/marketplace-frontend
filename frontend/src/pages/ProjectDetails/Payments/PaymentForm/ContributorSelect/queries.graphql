@@ -37,7 +37,7 @@ query SearchGithubUsersByHandleSubstring($handleSubstringQuery: String!) {
   }
 }
 
-query GetProjectContributorsForPaymentSelect($projectId: uuid!, $createdSince: DateTimeUtc) {
+query GetProjectContributorsForPaymentSelect($projectId: uuid!, $createdSince: timestamp) {
   projectsByPk(id: $projectId) {
     ...ProjectContributorsForPaymentSelect
   }

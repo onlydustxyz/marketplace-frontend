@@ -32,7 +32,7 @@ pub struct Project {
 	id: ProjectId,
 	leaders: HashSet<UserId>,
 	budget: Option<Budget>,
-	github_repos: HashSet<GithubRepositoryId>,
+	github_repos: HashSet<GithubRepoId>,
 }
 
 impl Entity for Project {
@@ -127,7 +127,7 @@ impl Project {
 
 	pub fn link_github_repo(
 		&self,
-		github_repo_id: GithubRepositoryId,
+		github_repo_id: GithubRepoId,
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
 		if self.github_repos.contains(&github_repo_id) {
 			return Err(Error::GithubRepoAlreadyLinked);
@@ -141,7 +141,7 @@ impl Project {
 
 	pub fn unlink_github_repo(
 		&self,
-		github_repo_id: GithubRepositoryId,
+		github_repo_id: GithubRepoId,
 	) -> Result<Vec<<Self as Aggregate>::Event>> {
 		if !self.github_repos.contains(&github_repo_id) {
 			return Err(Error::NotLinked);

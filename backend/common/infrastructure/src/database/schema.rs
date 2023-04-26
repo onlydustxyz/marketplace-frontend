@@ -38,6 +38,17 @@ diesel::table! {
 }
 
 diesel::table! {
+    github_pulls (id) {
+        id -> Int8,
+        repo_id -> Int8,
+        issue_number -> Int8,
+        created_at -> Timestamp,
+        author_id -> Int8,
+        merged_at -> Nullable<Timestamp>,
+    }
+}
+
+diesel::table! {
     github_repo_details (id) {
         id -> Int8,
         languages -> Jsonb,
@@ -158,6 +169,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     crm_github_repos,
     event_deduplications,
     events,
+    github_pulls,
     github_repo_details,
     github_repo_indexes,
     payment_requests,

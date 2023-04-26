@@ -1,6 +1,6 @@
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
-use domain::{GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepositoryId, GithubUser};
+use domain::{GithubIssue, GithubIssueStatus, GithubIssueType, GithubRepoId, GithubUser};
 use graphql_client::GraphQLQuery;
 use infrastructure::graphql::{self, scalars::*};
 
@@ -18,7 +18,7 @@ struct CreateIssue;
 impl DustyBotService for graphql::Client {
 	async fn create_issue(
 		&self,
-		repo_id: &GithubRepositoryId,
+		repo_id: &GithubRepoId,
 		title: &str,
 		description: &str,
 	) -> Result<GithubIssue> {
@@ -39,7 +39,7 @@ impl TryFrom<create_issue::GithubIssue> for GithubIssue {
 
 	fn try_from(issue: create_issue::GithubIssue) -> Result<Self, Self::Error> {
 		Ok(Self::new(
-			issue.id.try_into()?,
+			issue.id,
 			issue.repo_id,
 			issue.number.try_into()?,
 			issue.type_.try_into()?,

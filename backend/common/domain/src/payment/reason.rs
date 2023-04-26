@@ -3,11 +3,11 @@ use derive_new::new;
 use juniper::GraphQLInputObject;
 use serde::{Deserialize, Serialize};
 
-use crate::{GithubIssueNumber, GithubRepositoryId};
+use crate::{GithubIssueNumber, GithubRepoId};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, GraphQLInputObject, Getters, new)]
 pub struct WorkItem {
-	repo_id: GithubRepositoryId,
+	repo_id: GithubRepoId,
 	issue_number: GithubIssueNumber,
 }
 

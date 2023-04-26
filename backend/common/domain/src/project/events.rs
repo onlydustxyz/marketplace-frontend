@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{AggregateEvent, BudgetEvent, GithubRepositoryId, Project, ProjectId, UserId};
+use crate::{AggregateEvent, BudgetEvent, GithubRepoId, Project, ProjectId, UserId};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Event {
@@ -23,11 +23,11 @@ pub enum Event {
 	},
 	GithubRepoLinked {
 		id: ProjectId,
-		github_repo_id: GithubRepositoryId,
+		github_repo_id: GithubRepoId,
 	},
 	GithubRepoUnlinked {
 		id: ProjectId,
-		github_repo_id: GithubRepositoryId,
+		github_repo_id: GithubRepoId,
 	},
 }
 
