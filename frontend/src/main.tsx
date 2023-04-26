@@ -20,6 +20,8 @@ import { ToasterProvider } from "./hooks/useToaster";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
 import ErrorFallback from "./ErrorFallback";
 import { ErrorBoundary } from "react-error-boundary";
+import config from "./config";
+import Maintenance from "./Maintenance";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <IntlProvider>
@@ -30,9 +32,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             <TokenSetProvider>
               <ToasterProvider>
                 <ApolloWrapper>
-                  <AuthProvider>
-                    <App />
-                  </AuthProvider>
+                  <AuthProvider>{config.MAINTENANCE ? <Maintenance /> : <App />}</AuthProvider>
                 </ApolloWrapper>
               </ToasterProvider>
             </TokenSetProvider>
