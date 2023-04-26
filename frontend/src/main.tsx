@@ -18,7 +18,7 @@ import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { SessionProvider } from "./hooks/useSession";
 import { ToasterProvider } from "./hooks/useToaster";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
-import ErrorFallback from "./components/ErrorFallback";
+import ErrorFallback from "./ErrorFallback";
 import { ErrorBoundary } from "react-error-boundary";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
