@@ -38,6 +38,12 @@ runs:
         cargo run -p event-listeners &> event-listeners.out.log &
         echo "event_listeners_pid=$!" >> $GITHUB_ENV
 
+    - name: Run the github-indexer
+      shell: bash
+      run: |
+        cargo run --bin github-indexer &> github-indexer.out.log &
+        echo "github_indexer_pid=$!" >> $GITHUB_ENV
+
     - name: Run the event-store
       shell: bash
       run: |
