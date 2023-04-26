@@ -35,13 +35,6 @@ async fn process(
 	action: Action,
 ) -> Result<(), SubscriberCallbackError> {
 	match action {
-		Action::CreateComment {
-			repo_owner,
-			repo_name,
-			issue_number,
-			body,
-		} => github.create_comment(&repo_owner, &repo_name, &issue_number, &body).await?,
-
 		Action::CloseIssue {
 			repo_owner,
 			repo_name,

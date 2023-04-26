@@ -33,34 +33,6 @@ impl GithubService for github::Client {
 		GithubIssue::from_octocrab_issue(issue, *repo.id()).map_err(GithubServiceError::Other)
 	}
 
-	async fn create_comment(
-		&self,
-		repo_owner: &str,
-		repo_name: &str,
-		issue_number: &GithubIssueNumber,
-		comment: &str,
-	) -> GithubServiceResult<()> {
-		let issue_number = (*issue_number).into();
-
-		let issue = self
-			.octocrab()
-			.issues(repo_owner, repo_name)
-			.get(issue_number)
-			.await
-			.map_err(github::Error::from)?;
-
-		// Github API has a limit of 2500 comments per issue see https://docs.github.com/rest/reference/issues#create-an-issue-comment
-		if !issue.locked && issue.comments < 2500 {
-			self.octocrab()
-				.issues(repo_owner, repo_name)
-				.create_comment(issue_number, comment)
-				.await
-				.map_err(github::Error::from)?;
-		}
-
-		Ok(())
-	}
-
 	async fn close_issue(
 		&self,
 		repo_owner: &str,
