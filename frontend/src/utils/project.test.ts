@@ -83,16 +83,16 @@ describe("countUnpaidMergedPullsByContributor", () => {
     const mergedPaidPulls: PullDetailsFragment[] = paidItems.map(({ repoId, issueNumber }, index) => ({
       id: 2000 + index,
       repoId,
-      number: issueNumber,
-      author: users[index],
+      issueNumber,
+      authorId: users[index].id,
       status: Status.Merged,
     }));
 
     const mergedUnPaidPulls: PullDetailsFragment[] = range(0, 10).map(id => ({
       id: 3000 + id,
       repoId: 3000 + id,
-      number: id,
-      author: users[id % users.length],
+      issueNumber: id,
+      authorId: users[id % users.length].id,
       status: Status.Merged,
     }));
 
@@ -100,9 +100,9 @@ describe("countUnpaidMergedPullsByContributor", () => {
       githubRepos: [
         {
           githubRepoDetails: {
-            pullRequests: [...mergedPaidPulls, ...mergedUnPaidPulls],
             content: { contributors: [...users] },
           },
+          repoPulls: [...mergedPaidPulls, ...mergedUnPaidPulls],
         },
       ],
       budgets: [
