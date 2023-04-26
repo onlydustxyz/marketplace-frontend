@@ -407,6 +407,12 @@
     "title": "Seniority"
   },
   "state": {
+    "error": {
+      "back": "Go back home",
+      "description": "Please try again or _contact us_ if the problem persists",
+      "refresh": "Refresh page",
+      "title": "We've just crashed"
+    },
     "errorOccured": "An error just occurred, please try again. Contact us at contact@onlydust.xyz if the problem persists",
     "loading": "Loading...",
     "notResponsive": "This website is only available for desktop now. Mobile version coming soon ...",

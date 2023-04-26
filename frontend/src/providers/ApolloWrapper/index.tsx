@@ -13,7 +13,6 @@ import { onError } from "@apollo/client/link/error";
 import { uniqBy } from "lodash";
 
 import config from "src/config";
-import ErrorFallback from "src/components/ErrorFallback";
 import { accessTokenExpired, useTokenSet } from "src/hooks/useTokenSet";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
@@ -35,11 +34,11 @@ enum GraphQLErrorMessage {
 disableFragmentWarnings();
 
 const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
-  const [displayError, setDisplayError] = useState(false);
   const showToaster = useShowToaster();
   const { T } = useIntl();
   const { impersonationSet, customClaims } = useImpersonationClaims();
   const { tokenSet, setTokenSet, setHasRefreshError } = useTokenSet();
+  const [, setState] = useState();
 
   const TokenLink = new TokenRefreshLink<TokenSet>({
     accessTokenField: "hasura_token",
@@ -106,17 +105,15 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
 
   const ErrorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
     if (graphQLErrors) {
-      graphQLErrors.forEach(({ message, locations, path }) => {
-        console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
-      });
-
       if (graphQLErrors.find(graphQLError => graphQLError.message === GraphQLErrorMessage.ConnectionError)) {
         return forward(operation);
       }
 
       switch ((operation.getContext().graphqlErrorDisplay || DEFAULT_ERROR_DISPLAY) as ErrorDisplay) {
         case "screen":
-          setDisplayError(true);
+          setState(() => {
+            throw graphQLErrors;
+          });
           break;
         case "toaster":
           showToaster(T("state.errorOccured"), { isError: true });
@@ -166,14 +163,9 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const suspenseCache = new SuspenseCache();
 
   return (
-    <>
-      {displayError && <ErrorFallback />}
-      {!displayError && (
-        <ApolloProvider client={client} suspenseCache={suspenseCache}>
-          {children}
-        </ApolloProvider>
-      )}
-    </>
+    <ApolloProvider client={client} suspenseCache={suspenseCache}>
+      {children}
+    </ApolloProvider>
   );
 };
 

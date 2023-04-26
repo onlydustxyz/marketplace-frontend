@@ -1,10 +1,8 @@
 import { lazy, Suspense } from "react";
-import { ErrorBoundary } from "react-error-boundary";
 import { RouteObject, useRoutes } from "react-router-dom";
 
 import Layout from "src/App/Layout";
 import ProtectedRoute from "src/App/ProtectedRoute";
-import ErrorFallback from "src/components/ErrorFallback";
 
 const Login = lazy(() => import("src/pages/Login"));
 const Projects = lazy(() => import("src/pages/Projects"));
@@ -23,6 +21,7 @@ import ErrorTrigger from "src/pages/ErrorTrigger";
 import ImpersonationPage from "src/pages/Impersonation";
 
 export enum RoutePaths {
+  Home = "/",
   Projects = "/",
   Login = "/login",
   Profile = "/profile",
@@ -123,17 +122,15 @@ function App() {
   ]);
 
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <Suspense
-        fallback={
-          <div className="h-screen">
-            <LoaderFallback />
-          </div>
-        }
-      >
-        {routes}
-      </Suspense>
-    </ErrorBoundary>
+    <Suspense
+      fallback={
+        <div className="h-screen">
+          <LoaderFallback />
+        </div>
+      }
+    >
+      {routes}
+    </Suspense>
   );
 }
 

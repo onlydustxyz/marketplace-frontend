@@ -18,23 +18,27 @@ import { TokenSetProvider } from "src/hooks/useTokenSet";
 import { SessionProvider } from "./hooks/useSession";
 import { ToasterProvider } from "./hooks/useToaster";
 import { ImpersonationClaimsProvider } from "src/hooks/useImpersonationClaims";
+import ErrorFallback from "./ErrorFallback";
+import { ErrorBoundary } from "react-error-boundary";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <IntlProvider>
     <BrowserRouter>
-      <SessionProvider>
-        <ImpersonationClaimsProvider>
-          <TokenSetProvider>
-            <ToasterProvider>
-              <ApolloWrapper>
-                <AuthProvider>
-                  <App />
-                </AuthProvider>
-              </ApolloWrapper>
-            </ToasterProvider>
-          </TokenSetProvider>
-        </ImpersonationClaimsProvider>
-      </SessionProvider>
+      <ErrorBoundary FallbackComponent={ErrorFallback} onError={console.error}>
+        <SessionProvider>
+          <ImpersonationClaimsProvider>
+            <TokenSetProvider>
+              <ToasterProvider>
+                <ApolloWrapper>
+                  <AuthProvider>
+                    <App />
+                  </AuthProvider>
+                </ApolloWrapper>
+              </ToasterProvider>
+            </TokenSetProvider>
+          </ImpersonationClaimsProvider>
+        </SessionProvider>
+      </ErrorBoundary>
     </BrowserRouter>
   </IntlProvider>
 );
