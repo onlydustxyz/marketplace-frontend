@@ -1,6 +1,17 @@
 table:
   name: github_pulls
   schema: public
+array_relationships:
+  - name: ignoredForProjects
+    using:
+      manual_configuration:
+        column_mapping:
+          issue_number: issue_number
+          repo_id: repo_id
+        insertion_order: null
+        remote_table:
+          name: ignored_github_issues
+          schema: public
 select_permissions:
   - role: registered_user
     permission:
