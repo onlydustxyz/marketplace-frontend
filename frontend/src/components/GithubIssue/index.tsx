@@ -12,7 +12,7 @@ import { parsePullRequestOrIssueLink } from "src/utils/github";
 import { IssueDetailsFragment, Status, Type } from "src/__generated/graphql";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
-import ExternalLink from "src/components/ExternalLink";
+import GithubIssueLink from "./GithubIssueLink";
 import Tooltip from "src/components/Tooltip";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import IssueCancelled from "src/assets/icons/IssueCancelled";
@@ -50,38 +50,36 @@ export default function GithubIssue({
   const { repoName } = parsePullRequestOrIssueLink(workItem.htmlUrl);
 
   return (
-    <Card padded={false}>
-      <div className="p-4 flex flex-row gap-3 hover:bg-noise-light hover:backdrop-blur-4xl rounded-2xl">
-        {action && (
-          <ActionButton id={`github-issue-action-${workItem.id}`} action={action} onClick={onClick} ignored={ignored} />
-        )}
-        <div className={classNames("flex flex-col gap-2 font-walsheim grow", { "opacity-70": ignored })}>
-          <div className="font-medium text-sm text-greyscale-50">
-            <ExternalLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} numberOfLines={2} />
+    <Card padded={false} className="p-4 flex flex-row gap-3 hover:bg-noise-light hover:backdrop-blur-4xl rounded-2xl">
+      {action && (
+        <ActionButton id={`github-issue-action-${workItem.id}`} action={action} onClick={onClick} ignored={ignored} />
+      )}
+      <div className="flex flex-col gap-2 font-walsheim ">
+        <div className="flex font-medium text-sm text-greyscale-50">
+          <GithubIssueLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} />
+        </div>
+        <div className="flex flex-row gap-3 items-center text-greyscale-300 font-normal text-xs">
+          <div className="flex flex-row gap-1 items-center">
+            <Time />
+            {displayRelativeDate(workItem.createdAt)}
           </div>
-          <div className="flex flex-row gap-3 items-center text-greyscale-300 font-normal text-xs">
-            <div className="flex flex-row gap-1 items-center">
-              <Time />
-              {displayRelativeDate(workItem.createdAt)}
-            </div>
-            <div className="flex flex-row gap-1 items-center">
-              <IssueStatus issue={workItem} />
-            </div>
-            <div className="flex flex-row gap-1 items-center">
-              <GitRepositoryLine />
-              {repoName}
-            </div>
+          <div className="flex flex-row gap-1 items-center">
+            <IssueStatus issue={workItem} />
+          </div>
+          <div className="flex flex-row gap-1 items-center">
+            <GitRepositoryLine />
+            {repoName}
           </div>
         </div>
-        {secondaryAction && (
-          <ActionButton
-            id={`github-issue-secondary-action-${workItem.id}`}
-            action={secondaryAction}
-            onClick={onSecondaryClick}
-            ignored={ignored}
-          />
-        )}
       </div>
+      {secondaryAction && (
+        <ActionButton
+          id={`github-issue-secondary-action-${workItem.id}`}
+          action={secondaryAction}
+          onClick={onSecondaryClick}
+          ignored={ignored}
+        />
+      )}
     </Card>
   );
 }
