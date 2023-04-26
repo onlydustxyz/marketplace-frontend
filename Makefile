@@ -162,7 +162,7 @@ playwright/start-test-stop: backend/background-start playwright/test backend/bac
 
 # Runs the e2e tests
 playwright/test:
-	yarn playwright test --reporter line
+	yarn playwright test
 
 # Removes the Playwright generated fixtures
 playwright/clean:

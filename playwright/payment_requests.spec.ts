@@ -3,7 +3,7 @@ import { expect } from "@playwright/test";
 import { restoreDB } from "./commands/db/db_utils";
 import { ProjectPage } from "./pages/project";
 import { User } from "./types";
-import { mutateAsAdmin, retry } from "./commands/common";
+import { mutateAsAdmin, retry, sleep } from "./commands/common";
 import {
   AddEthPaymentReceiptDocument,
   AddEthPaymentReceiptMutation,
@@ -89,6 +89,11 @@ test.describe("As a project lead, I", () => {
     });
 
     const paymentsPage = new ProjectPaymentsPage(page, project);
+
+    // TODO: Remove once E-507 is fixed
+    await sleep(500);
+    await page.reload();
+
     expect(await paymentsPage.remainingBudget()).toBe("$85,600");
 
     const payment = paymentsPage.paymentList().nth(1);
@@ -100,7 +105,7 @@ test.describe("As a project lead, I", () => {
     await expect(sidePanel.getByText("$1,000")).toBeVisible();
     await expect(sidePanel.getByText("from tokio-rs (you)")).toBeVisible();
     await expect(sidePanel.getByText("to AnthonyBuisset")).toBeVisible();
-    await expect(sidePanel.locator("div").filter({ hasText: "#397 · Update main.rs" }).first()).toBeVisible(); // auto added
+    await expect(sidePanel.locator("div").filter({ hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible(); // auto added
     await expect(sidePanel.locator("div").filter({ hasText: "#2 · Another update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#1 · Update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#6 · This is a new issue" }).first()).toBeVisible();
@@ -141,7 +146,10 @@ test.describe("As a project lead, I", () => {
     const githubApiIssueUrl = githubIssueUrl.replace("github.com", "api.github.com/repos");
 
     const issue = await retry(
-      () => request.get(githubApiIssueUrl).then(res => res.json()),
+      () =>
+        request
+          .get(githubApiIssueUrl, { headers: { Authorization: `Bearer ${process.env.GITHUB_PAT}` } })
+          .then(res => res.json()),
       issue => issue.state !== "open"
     );
     expect(issue.state).toBe("closed");
