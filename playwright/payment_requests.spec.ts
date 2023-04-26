@@ -100,7 +100,7 @@ test.describe("As a project lead, I", () => {
     await expect(sidePanel.getByText("$1,000")).toBeVisible();
     await expect(sidePanel.getByText("from tokio-rs (you)")).toBeVisible();
     await expect(sidePanel.getByText("to AnthonyBuisset")).toBeVisible();
-    await expect(sidePanel.locator("div").filter({ hasText: "#397 · Update main.rs" }).first()).toBeVisible(); // auto added
+    await expect(sidePanel.locator("div").filter({ hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible(); // auto added
     await expect(sidePanel.locator("div").filter({ hasText: "#2 · Another update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#1 · Update README.md" }).first()).toBeVisible();
     await expect(sidePanel.locator("div").filter({ hasText: "#6 · This is a new issue" }).first()).toBeVisible();
