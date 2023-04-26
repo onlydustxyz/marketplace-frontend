@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Callout from "src/components/Callout";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import QueryWrapper, { QueryResult } from "src/components/QueryWrapper";
@@ -9,6 +9,10 @@ import EmptyState from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSi
 import Toggle from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Toggle";
 import OtherPrInput from "./OtherPrInput";
 import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
+import { useFormContext } from "react-hook-form";
+import useFilteredWorkItems from "./useFilteredWorkItems";
+import SearchLine from "src/icons/SearchLine";
+import FormInput from "src/components/FormInput";
 
 type Props<T, E> = {
   workItems: WorkItem[];
@@ -18,8 +22,19 @@ type Props<T, E> = {
 
 export default function PullRequestsView<T, E>({ workItems, onWorkItemAdded, query }: Props<T, E>) {
   const { T } = useIntl();
+  const { watch, resetField } = useFormContext();
 
-  const [addOtherPrEnabled, setAddOtherPrEnabled] = useState(false);
+  const [addOtherPrEnabled, setStateAddOtherPrEnabled] = useState(false);
+  const [searchEnabled, setStateSearchEnabled] = useState(false);
+  const setAddOtherPrEnabled = (value: boolean) => {
+    setStateAddOtherPrEnabled(value);
+    setStateSearchEnabled(false);
+  };
+  const setSearchEnabled = (value: boolean) => {
+    setStateSearchEnabled(value);
+    setStateAddOtherPrEnabled(false);
+  };
+
   const showToaster = useShowToaster();
 
   const onIssueAdded = (item: WorkItem) => {
@@ -27,25 +42,58 @@ export default function PullRequestsView<T, E>({ workItems, onWorkItemAdded, que
     showToaster(T("payment.form.workItems.pullRequests.addedToaster"));
   };
 
+  useEffect(() => {
+    if (searchEnabled === false) {
+      resetField("search-prs");
+    }
+  }, [searchEnabled]);
+
+  const searchPattern = watch("search-prs");
+  const filteredWorkItems = useFilteredWorkItems({ pattern: searchPattern, workItems });
+
   return (
     <div className="flex flex-col gap-4 overflow-hidden -mr-4 h-full">
       <div className="flex flex-col gap-3 mr-4">
-        <Toggle
-          enabled={addOtherPrEnabled}
-          setEnabled={setAddOtherPrEnabled}
-          icon={<Link />}
-          label={T("payment.form.workItems.pullRequests.addOther.toggle")}
-          testId="add-other-pr-toggle"
-        />
+        <div className="flex flex-row gap-3">
+          <Toggle
+            enabled={addOtherPrEnabled}
+            setEnabled={setAddOtherPrEnabled}
+            icon={<Link />}
+            label={T("payment.form.workItems.pullRequests.addOther.toggle")}
+            testId="add-other-pr-toggle"
+          />
+          {workItems.length > 0 && (
+            <Toggle
+              enabled={searchEnabled}
+              setEnabled={setSearchEnabled}
+              icon={<SearchLine />}
+              label={T("payment.form.workItems.pullRequests.search")}
+              testId="search-toggle"
+            />
+          )}
+        </div>
         {addOtherPrEnabled && <OtherPrInput onWorkItemAdded={onIssueAdded} />}
+        {searchEnabled && (
+          <FormInput
+            name="search-prs"
+            placeholder={T("payment.form.workItems.pullRequests.searchPlaceholder")}
+            withMargin={false}
+            inputClassName="pl-10"
+            prefixComponent={
+              <div className="mt-0.5">
+                <SearchLine className="text-spaceBlue-200 text-xl" />
+              </div>
+            }
+          />
+        )}
       </div>
       <QueryWrapper query={query}>
-        {workItems.length > 0 ? (
+        {filteredWorkItems.length > 0 ? (
           <div
             data-testid="elligible-pulls"
             className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
           >
-            {workItems.map(pr => (
+            {filteredWorkItems.map(pr => (
               <GithubIssue key={pr.id} workItem={pr} action={Action.Add} onClick={() => onIssueAdded(pr)} />
             ))}
           </div>

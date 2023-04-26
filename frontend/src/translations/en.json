@@ -129,7 +129,9 @@
             "label": "Add specific PR using URL"
           },
           "moreCallout": "Only the unpaid merged pull requests open by this user within the last __count__ days are shown in this list.",
-          "tab": "Pull requests"
+          "tab": "Pull requests",
+          "search": "Search",
+          "searchPlaceholder": "Search by name or #"
         },
         "issues": {
           "addedToaster": "Issue added",
@@ -141,7 +143,9 @@
             "label": "Add specific issue using URL"
           },
           "moreCallout": "Only the unpaid issues open by this user within the last __count__ days are shown in this list.",
-          "tab": "Issues"
+          "tab": "Issues",
+          "search": "Search",
+          "searchPlaceholder": "Search by name or #"
         },
         "other": {
           "attachments": {
