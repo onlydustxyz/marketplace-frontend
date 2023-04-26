@@ -2,7 +2,10 @@ use std::sync::Arc;
 
 use derive_getters::Getters;
 use domain::{AggregateRootRepository, Event, GithubUserId, Project, Publisher, UserId};
-use infrastructure::{amqp::UniqueMessage, github, graphql};
+use infrastructure::{
+	amqp::{self, UniqueMessage},
+	github, graphql,
+};
 use presentation::http::guards::OptionUserId;
 
 use super::{Error, Result};
@@ -61,6 +64,7 @@ impl Context {
 		github: Arc<github::Client>,
 		ens: Arc<ens::Client>,
 		simple_storage: Arc<simple_storage::Client>,
+		publisher: Arc<amqp::Bus>,
 	) -> Self {
 		Self {
 			caller_permissions,
@@ -72,6 +76,7 @@ impl Context {
 			process_payment_usecase: application::payment::process::Usecase::new(
 				event_publisher.to_owned(),
 				project_repository.clone(),
+				application::dusty_bot::close_issues::Usecase::new(github.clone(), publisher),
 			),
 			cancel_payment_usecase: application::payment::cancel::Usecase::new(
 				event_publisher.to_owned(),
