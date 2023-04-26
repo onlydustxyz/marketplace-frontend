@@ -1,10 +1,8 @@
-import ErrorFallback from ".";
-import { withRouter } from "storybook-addon-react-router-v6";
+import ErrorFallback from "./View";
 
 export default {
   title: "ErrorFallback",
   component: ErrorFallback,
-  decorators: [withRouter],
 };
 
 export const Default = {
