@@ -9,10 +9,10 @@ type Props = {
 export default function GithubIssueLink({ text, url }: Props) {
   return (
     <span className={"group/link hover:cursor-pointer"}>
-      <span className={"group-hover/link:underline align-top mt-1"} onClick={linkClickHandlerFactory(url)}>
+      <span className={"group-hover/link:underline align-top"} onClick={linkClickHandlerFactory(url)}>
         {text || url}
       </span>
-      <span className="align-top mt-1 ml-1">
+      <span className="align-top ml-1">
         <ExternalLinkLine className="text-spacePurple-500 invisible group-hover/link:visible" />
       </span>
     </span>
