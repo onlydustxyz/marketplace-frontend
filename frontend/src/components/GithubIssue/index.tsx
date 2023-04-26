@@ -12,7 +12,7 @@ import { parsePullRequestOrIssueLink } from "src/utils/github";
 import { IssueDetailsFragment, Status, Type } from "src/__generated/graphql";
 import Button, { ButtonSize, ButtonType } from "src/components/Button";
 import Card from "src/components/Card";
-import ExternalLink from "src/components/ExternalLink";
+import GithubIssueLink from "./GithubIssueLink";
 import Tooltip from "src/components/Tooltip";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import IssueCancelled from "src/assets/icons/IssueCancelled";
@@ -50,9 +50,9 @@ export default function GithubIssue({ action, workItem, onClick }: Props) {
           )}
         </>
       )}
-      <div className="flex flex-col gap-2 font-walsheim truncate">
-        <div className="flex font-medium text-sm text-greyscale-50 overflow-hidden">
-          <ExternalLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} />
+      <div className="flex flex-col gap-2 font-walsheim">
+        <div className="flex font-medium text-sm text-greyscale-50">
+          <GithubIssueLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} />
         </div>
         <div className="flex flex-row gap-3 items-center text-greyscale-300 font-normal text-xs">
           <div className="flex flex-row gap-1 items-center">
