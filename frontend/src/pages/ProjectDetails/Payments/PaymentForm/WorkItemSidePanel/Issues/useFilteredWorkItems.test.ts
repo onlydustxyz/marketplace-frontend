@@ -11,6 +11,7 @@ const workItemTemplate = {
   closedAt: null,
   createdAt: null,
   mergedAt: null,
+  ignoredForProjects: [],
 };
 
 const workItems: WorkItem[] = [
