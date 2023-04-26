@@ -3,7 +3,7 @@ import { expect } from "@playwright/test";
 import { restoreDB } from "./commands/db/db_utils";
 import { ProjectPage } from "./pages/project";
 import { User } from "./types";
-import { mutateAsAdmin, retry } from "./commands/common";
+import { mutateAsAdmin, retry, sleep } from "./commands/common";
 import {
   AddEthPaymentReceiptDocument,
   AddEthPaymentReceiptMutation,
@@ -89,6 +89,11 @@ test.describe("As a project lead, I", () => {
     });
 
     const paymentsPage = new ProjectPaymentsPage(page, project);
+
+    // TODO: Remove once E-507 is fixed
+    await sleep(500);
+    await page.reload();
+
     expect(await paymentsPage.remainingBudget()).toBe("$85,600");
 
     const payment = paymentsPage.paymentList().nth(1);
@@ -141,7 +146,10 @@ test.describe("As a project lead, I", () => {
     const githubApiIssueUrl = githubIssueUrl.replace("github.com", "api.github.com/repos");
 
     const issue = await retry(
-      () => request.get(githubApiIssueUrl).then(res => res.json()),
+      () =>
+        request
+          .get(githubApiIssueUrl, { headers: { Authorization: `Bearer ${process.env.GITHUB_PAT}` } })
+          .then(res => res.json()),
       issue => issue.state !== "open"
     );
     expect(issue.state).toBe("closed");
