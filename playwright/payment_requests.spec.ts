@@ -20,8 +20,8 @@ test.describe("As a project lead, I", () => {
   });
 
   // eslint-disable-next-line no-empty-pattern
-  test.beforeEach(async ({}, testInfo) => {
-    testInfo.setTimeout(3 * testInfo.timeout);
+  test.beforeEach(async () => {
+    test.slow();
   });
 
   test("can request a payment", async ({ page, projects, users, repos, signIn, context, request }) => {
@@ -185,15 +185,15 @@ test.describe("As a project lead, I", () => {
       otherPullRequests: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
     });
 
-    await retry(
+    const pendingStatus = await retry(
       async () => {
-        await page.reload();
         await listPaymentsAs(otherLeader);
         const paymentRow = projectPaymentsPage.paymentList().nth(1);
         return paymentRow.status();
       },
       value => value === "Pending"
     );
+    expect(pendingStatus).toBe("Pending");
 
     // 2. Edit profile info, payment is "processing"
     const editProfilePage = new EditProfilePage(page);
@@ -202,14 +202,14 @@ test.describe("As a project lead, I", () => {
     recipient.profile && (await editProfilePage.fillForm(recipient.profile));
     await editProfilePage.submitForm();
 
-    await retry(
+    const processingStatus = await retry(
       async () => {
-        await page.reload();
         await listPaymentsAs(otherLeader);
         return projectPaymentsPage.paymentList().nth(1).status();
       },
       value => value === "Processing"
     );
+    expect(processingStatus).toBe("Processing");
 
     // 3. Add receipt, payment is "complete"
     const paymentRow = projectPaymentsPage.paymentList().nth(1);
@@ -229,7 +229,7 @@ test.describe("As a project lead, I", () => {
       },
     });
 
-    await retry(
+    const completeStatus = await retry(
       async () => {
         await page.reload();
         await listPaymentsAs(otherLeader);
@@ -237,5 +237,6 @@ test.describe("As a project lead, I", () => {
       },
       value => value === "Complete"
     );
+    expect(completeStatus).toBe("Complete");
   });
 });
