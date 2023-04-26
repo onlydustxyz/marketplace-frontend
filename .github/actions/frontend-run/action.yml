@@ -9,6 +9,14 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version: 18
+    - name: Set up node modules cache
+      uses: actions/cache@v3
+      continue-on-error: true
+      with:
+        path: |
+          node_modules/
+        key: ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
+        restore-keys: ${{ runner.os }}-node-modules-
     - name: Install frontend dependencies
       shell: bash
       run: yarn install --frozen-lockfile
