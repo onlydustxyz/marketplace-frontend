@@ -154,7 +154,7 @@ export class NewPaymentPage {
   workItem = (text: string) => this.page.locator("[data-testid='elligible-issues'] > div", { hasText: text });
   addWorkItem = (text: string) => this.workItem(text).locator("button").first().click();
   ignoreWorkItem = (text: string) => this.workItem(text).locator("button").nth(1).click();
-  showIgnoredToggle = () => this.page.getByRole("switch").nth(1);
+  showIgnoredToggle = () => this.page.locator('[id="headlessui-switch-\\:re\\:"]');
 }
 
 export class PaymentTable {
