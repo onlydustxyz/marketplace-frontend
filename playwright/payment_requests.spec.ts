@@ -47,7 +47,7 @@ test.describe("As a project lead, I", () => {
     );
 
     expect(await overviewPage.contributorsCount()).toBe(3);
-    expect(await overviewPage.grantedAmount()).toBe("$13.4K / $100K");
+    expect(await overviewPage.grantedAmount()).toBe("$13.4K / $100K — $86.6K left to spend");
 
     const contributorsPage = await projectPage.contributors();
     const contributors = await contributorsPage.contributorsTable();
