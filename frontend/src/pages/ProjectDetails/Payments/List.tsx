@@ -11,7 +11,8 @@ import { PaymentRequestFragment } from "src/__generated/graphql";
 import Title from "src/pages/ProjectDetails/Title";
 
 const PaymentList: React.FC = () => {
-  const { payments, budget } = useOutletContext<{
+  const { projectId, payments, budget } = useOutletContext<{
+    projectId: string;
     payments: (PaymentRequestFragment & Sortable)[];
     budget: { initialAmount: number; remainingAmount: number };
   }>();
@@ -26,7 +27,7 @@ const PaymentList: React.FC = () => {
           {payments.length > 0 ? (
             <Card>
               <Suspense fallback={<Loader />}>
-                <PaymentTable payments={payments} />
+                <PaymentTable payments={payments} projectId={projectId} />
               </Suspense>
             </Card>
           ) : (

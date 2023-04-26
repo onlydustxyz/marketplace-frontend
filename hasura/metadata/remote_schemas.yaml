@@ -15,6 +15,7 @@
             query: Query
             mutation: Mutation
           }
+          scalar Amount
           scalar DateTimeUtc
           scalar Email
           scalar EthereumAddress
@@ -23,6 +24,7 @@
           scalar GithubIssueNumber
           scalar GithubRepoId
           scalar GithubUserId
+          scalar Id
           scalar Url
           scalar Uuid
           type Issue {
@@ -40,10 +42,17 @@
           }
           type Mutation {
             acceptProjectLeaderInvitation(invitationId: Uuid!): Boolean!
+            cancelPaymentRequest(projectId: Uuid!, paymentId: Uuid!): Payment!
             createIssue(projectId: Uuid!, githubRepoId: Int!, title: String!, description: String!): Issue!
             markInvoiceAsReceived(paymentReferences: [PaymentReference!]!): Int!
-            requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, hoursWorked: Int!, reason: Reason!): Uuid!
+            requestPayment(projectId: Uuid!, recipientId: Int!, amountInUsd: Int!, hoursWorked: Int!, reason: Reason!): Payment!
             updateProfileInfo(location: Location, identity: IdentityInput, payoutSettings: PayoutSettingsInput, contactInformation: ContactInformation): Uuid!
+          }
+          type Payment {
+            amount: Amount!
+            budgetId: Id!
+            paymentId: Id!
+            projectId: Id!
           }
           type Query {
             hello: String!

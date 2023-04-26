@@ -1,3 +1,5 @@
+mod dto;
+
 mod error;
 pub use error::*;
 

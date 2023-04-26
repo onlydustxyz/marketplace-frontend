@@ -25,13 +25,7 @@ const PaymentForm: React.FC = () => {
     };
   }>();
 
-  const { requestNewPayment } = usePaymentRequests({
-    projectId,
-    onNewPaymentRequested: () => {
-      showToaster(T("payment.form.sent"));
-      navigate(generatePath(RoutePaths.ProjectDetails, { projectId }) + "/" + ProjectRoutePaths.Payments);
-    },
-  });
+  const { requestNewPayment } = usePaymentRequests(projectId);
 
   const formMethods = useForm<Inputs>({
     defaultValues: {
@@ -52,9 +46,16 @@ const PaymentForm: React.FC = () => {
 
   const onValidSubmit: SubmitHandler<Inputs> = useCallback(
     async formData => {
-      if (contributor) await requestNewPayment(mapFormDataToSchema({ ...formData, contributor }));
+      if (contributor)
+        await requestNewPayment({
+          ...mapFormDataToSchema({ ...formData, contributor }),
+          onCompleted: () => {
+            showToaster(T("payment.form.sent"));
+            navigate(generatePath(RoutePaths.ProjectDetails, { projectId }) + "/" + ProjectRoutePaths.Payments);
+          },
+        });
     },
-    [contributor]
+    [contributor, projectId]
   );
 
   const onWorkEstimationChange = useCallback(

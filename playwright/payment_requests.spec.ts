@@ -130,18 +130,16 @@ test.describe("As a project lead, I", () => {
     const githubIssueUrl = githubIssuePage.url();
 
     const paymentId = await payment.paymentId();
-    if (paymentId) {
-      await populateReceipt(paymentId, project, {
-        currencyCode: "USDC",
-        recipientETHIdentity: {
-          type: EthereumIdentityType.EthereumName,
-          optEthAddress: null,
-          optEthName: "vitalik.eth",
-        },
-        transactionHashOrReference: "0xb9db5477fc9c50bfbf2253c55d03724ebee12db8dacda22cc1add1605a5a6cba",
-        amount: 100,
-      });
-    }
+    await populateReceipt(paymentId || "not found", project, {
+      currencyCode: "USDC",
+      recipientETHIdentity: {
+        type: EthereumIdentityType.EthereumName,
+        optEthAddress: null,
+        optEthName: "vitalik.eth",
+      },
+      transactionHashOrReference: "0xb9db5477fc9c50bfbf2253c55d03724ebee12db8dacda22cc1add1605a5a6cba",
+      amount: 100,
+    });
 
     const githubApiIssueUrl = githubIssueUrl.replace("github.com", "api.github.com/repos");
 
@@ -154,7 +152,36 @@ test.describe("As a project lead, I", () => {
     );
     expect(issue.state).toBe("closed");
 
-    await sidePanel.getByRole("button").click();
+    await page.reload();
+
+    await payment.click();
+    expect(sidePanel.getByTestId("cancel-payment-button")).not.toBeVisible();
+
+    await sidePanel.getByTestId("close-add-work-item-panel-btn").click();
+  });
+
+  test("can cancel a pending payment request", async ({ page, projects, users, signIn }) => {
+    const project = projects.Kakarot;
+    const leader = users.TokioRs;
+    const recipient = users.Anthony;
+
+    const projectPaymentsPage = new ProjectPaymentsPage(page, project);
+
+    await signIn(leader);
+    await projectPaymentsPage.goto();
+    await projectPaymentsPage.reload();
+
+    const newPaymentPage = await projectPaymentsPage.newPayment();
+    await newPaymentPage.requestPayment({
+      recipient,
+      otherPullRequests: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
+    });
+
+    const payment = projectPaymentsPage.paymentList().nth(1);
+    const paymentId = (await payment.paymentId()) || "";
+    await payment.click();
+    await projectPaymentsPage.cancelCurrentPayment();
+    expect(page.locator("div", { hasText: paymentId })).not.toBeVisible();
   });
 
   test("can see payments made by other project leads on the same project", async ({
@@ -185,10 +212,10 @@ test.describe("As a project lead, I", () => {
       otherPullRequests: ["https://github.com/od-mocks/cool-repo-A/pull/1"],
     });
 
+    const paymentRow = projectPaymentsPage.paymentList().nth(1);
     const pendingStatus = await retry(
       async () => {
         await listPaymentsAs(otherLeader);
-        const paymentRow = projectPaymentsPage.paymentList().nth(1);
         return paymentRow.status();
       },
       value => value === "Pending"
@@ -212,7 +239,6 @@ test.describe("As a project lead, I", () => {
     expect(processingStatus).toBe("Processing");
 
     // 3. Add receipt, payment is "complete"
-    const paymentRow = projectPaymentsPage.paymentList().nth(1);
     await mutateAsAdmin<AddEthPaymentReceiptMutation, AddEthPaymentReceiptMutationVariables>({
       mutation: AddEthPaymentReceiptDocument,
       variables: {

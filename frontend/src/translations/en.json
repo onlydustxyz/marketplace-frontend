@@ -226,6 +226,15 @@
         "zero": "#__id__ · No item"
       },
       "detailsPanel": {
+        "cancelPayment": {
+          "button": "Cancel payment",
+          "modal": {
+            "confirmButton": "Confirm",
+            "cancelButton": "Go back",
+            "description": "Once cancelled, you won't be able to restore this payment",
+            "title": "Are you sure?"
+          }
+        },
         "from": {
           "you": "from __user__ (you)",
           "other": "from __user__"

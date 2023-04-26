@@ -1,0 +1,52 @@
+fragment PaymentRequest on PaymentRequests {
+  id
+  recipientId
+  amountInUsd
+  workItems {
+    repoId
+    issueNumber
+  }
+  payments {
+    amount
+    currencyCode
+  }
+  requestedAt
+}
+
+query GetPaymentRequestsForProject($projectId: uuid!) {
+  projectsByPk(id: $projectId) {
+    id
+    budgets {
+      id
+      initialAmount
+      remainingAmount
+      paymentRequests {
+        ...PaymentRequest
+      }
+    }
+  }
+}
+
+mutation RequestPayment($amount: Int!, $contributorId: Int!, $hoursWorked: Int!, $projectId: Uuid!, $reason: Reason!) {
+  requestPayment(
+    amountInUsd: $amount
+    hoursWorked: $hoursWorked
+    projectId: $projectId
+    reason: $reason
+    recipientId: $contributorId
+  ) {
+    projectId
+    budgetId
+    paymentId
+    amount
+  }
+}
+
+mutation CancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
+  cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId) {
+    projectId
+    budgetId
+    paymentId
+    amount
+  }
+}

@@ -1,4 +1,5 @@
 use derive_more::{Display, From, FromStr, Into};
+use juniper::GraphQLScalarValue;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -19,6 +20,7 @@ use uuid::Uuid;
 	FromToSql,
 	FromSqlRow,
 	FromStr,
+	GraphQLScalarValue,
 )]
 #[sql_type = "diesel::sql_types::Uuid"]
 pub struct Id(Uuid);

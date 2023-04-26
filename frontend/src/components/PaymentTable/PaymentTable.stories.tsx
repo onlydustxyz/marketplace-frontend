@@ -122,7 +122,7 @@ const suspenseCache = new SuspenseCache();
 
 const Template: ComponentStory<typeof PaymentTable> = () => (
   <MockedProvider mocks={mocks} suspenseCache={suspenseCache}>
-    <PaymentTable payments={mockPayments} />
+    <PaymentTable projectId="project-1" payments={mockPayments} />
   </MockedProvider>
 );
 

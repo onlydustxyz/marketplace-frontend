@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import GithubIssue from "src/components/GithubIssue";
 import PayoutStatus from "src/components/PayoutStatus";
 import QueryWrapper from "src/components/QueryWrapper";
@@ -12,6 +12,10 @@ import displayRelativeDate from "src/utils/displayRelativeDate";
 import { pretty } from "src/utils/id";
 import { formatMoneyAmount } from "src/utils/money";
 import { PaymentRequestDetailsFragment } from "src/__generated/graphql";
+import Button, { ButtonSize } from "src/components/Button";
+import ErrorWarningLine from "src/icons/ErrorWarningLine";
+import ConfirmationModal from "./ConfirmationModal";
+import classNames from "classnames";
 
 export type Props = {
   open: boolean;
@@ -23,6 +27,7 @@ export type Props = {
   payoutInfoMissing: boolean;
   invoiceNeeded?: boolean;
   projectLeaderView?: boolean;
+  onPaymentCancel: () => void;
 } & Partial<PaymentRequestDetailsFragment>;
 
 const Details = ({ children }: PropsWithChildren) => (
@@ -47,12 +52,21 @@ export default function View({
   invoiceReceivedAt,
   paymentsAggregate,
   projectLeaderView,
+  onPaymentCancel,
   ...props
 }: Props) {
   const { T } = useIntl();
 
   return (
-    <SidePanel {...props} title={T("payment.table.detailsPanel.title", { id: pretty(id) })}>
+    <SidePanel
+      {...props}
+      title={T("payment.table.detailsPanel.title", { id: pretty(id) })}
+      action={
+        projectLeaderView && status === PaymentStatus.WAITING_PAYMENT ? (
+          <CancelPaymentButton onPaymentCancel={onPaymentCancel} />
+        ) : undefined
+      }
+    >
       <QueryWrapper query={{ loading, data: requestedAt }}>
         <div className="flex flex-col gap-2">
           <PayoutStatus
@@ -110,5 +124,40 @@ export default function View({
         </div>
       </QueryWrapper>
     </SidePanel>
+  );
+}
+
+type CancelPaymentButtonProps = {
+  onPaymentCancel: () => void;
+};
+
+function CancelPaymentButton({ onPaymentCancel }: CancelPaymentButtonProps) {
+  const { T } = useIntl();
+
+  const [modalOpened, setModalOpened] = useState(false);
+
+  const toggleModal = () => setModalOpened(!modalOpened);
+  const closeModal = () => setModalOpened(false);
+
+  return (
+    <div className="relative">
+      <Button size={ButtonSize.Sm} onClick={toggleModal} hover={modalOpened} data-testid="cancel-payment-button">
+        <ErrorWarningLine />
+        {T("payment.table.detailsPanel.cancelPayment.button")}
+      </Button>
+      <div
+        className={classNames("absolute -inset-x-10 top-10", {
+          hidden: !modalOpened,
+        })}
+      >
+        <ConfirmationModal
+          onClose={closeModal}
+          onConfirm={() => {
+            onPaymentCancel();
+            closeModal();
+          }}
+        />
+      </div>
+    </div>
   );
 }

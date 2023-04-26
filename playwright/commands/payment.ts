@@ -1,11 +1,5 @@
 import { gql } from "@apollo/client/core";
 
-export const CANCEL_PAYMENT_REQUEST = gql(`
-mutation cancelPaymentRequest($projectId: Uuid!, $paymentId: Uuid!) {
-    cancelPaymentRequest(projectId: $projectId, paymentId: $paymentId)
-}
-`);
-
 export const MARK_INVOICE_AS_RECEIVED = gql(`
 mutation markInvoiceAsReceived($paymentReferences:[PaymentReference!]!) {
     markInvoiceAsReceived(paymentReferences: $paymentReferences)

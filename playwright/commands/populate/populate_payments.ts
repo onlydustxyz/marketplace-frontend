@@ -70,7 +70,7 @@ const populatePaymentItem = async (
       },
     }
   );
-  const paymentId: Uuid = response.data?.requestPayment;
+  const paymentId: Uuid = response.data?.requestPayment.paymentId;
 
   await waitEvents();
 

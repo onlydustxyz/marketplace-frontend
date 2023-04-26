@@ -5,15 +5,17 @@ import usePayoutSettings from "src/hooks/usePayoutSettings";
 import { HasuraUserRole, PaymentStatus } from "src/types";
 import { IssueDetailsFragmentDoc, PaymentRequestDetailsQuery } from "src/__generated/graphql";
 import View from "./View";
+import usePaymentRequests from "src/hooks/usePaymentRequests";
 
 type Props = {
+  projectId?: string;
   open: boolean;
   setOpen: (open: boolean) => void;
   paymentId: string;
   projectLeaderView?: boolean;
 };
 
-export default function PaymentRequestSidePanel({ paymentId, projectLeaderView, ...props }: Props) {
+export default function PaymentRequestSidePanel({ projectId, paymentId, projectLeaderView, setOpen, ...props }: Props) {
   const { user, githubUserId } = useAuth();
   const { data, loading } = useHasuraQuery<PaymentRequestDetailsQuery>(
     GET_PAYMENT_REQUEST_DETAILS,
@@ -33,9 +35,14 @@ export default function PaymentRequestSidePanel({ paymentId, projectLeaderView, 
     data?.paymentRequestsByPk?.githubRecipient?.id
   );
 
+  const { cancelPaymentRequest } = usePaymentRequests(projectId);
+
+  const onPaymentCancel = () => cancelPaymentRequest({ variables: { paymentId }, onCompleted: () => setOpen(false) });
+
   return (
     <View
       {...props}
+      setOpen={setOpen}
       loading={loading}
       {...data?.paymentRequestsByPk}
       id={paymentId}
@@ -45,6 +52,7 @@ export default function PaymentRequestSidePanel({ paymentId, projectLeaderView, 
       invoiceNeeded={invoiceNeeded}
       payoutInfoMissing={!payoutSettingsValid}
       projectLeaderView={projectLeaderView}
+      onPaymentCancel={onPaymentCancel}
     />
   );
 }
