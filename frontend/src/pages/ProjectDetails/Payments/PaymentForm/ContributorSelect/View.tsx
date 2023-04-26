@@ -10,6 +10,11 @@ import { useIntl } from "src/hooks/useIntl";
 import Badge, { BadgeIcon, BadgeSize } from "src/components/Badge";
 import Tooltip from "src/components/Tooltip";
 import { ContributorFragment } from "src/types";
+import { Virtuoso } from "react-virtuoso";
+import { forwardRef } from "react";
+
+const MAX_CONTRIBUTOR_SELECT_SCROLLER_HEIGHT_PX = 240;
+const CONTRIBUTOR_SELECT_LINE_HEIGHT_PX = 36;
 
 interface ContributorSelectViewProps {
   selectedGithubHandle: string | null;
@@ -38,6 +43,29 @@ export default function ContributorSelectView({
 
   const showExternalUsersSection = !!(githubHandleSubstring && githubHandleSubstring.length > 2);
 
+  let lines: Line<ContributorFragment>[] = [];
+
+  if (filteredContributors && filteredContributors.length > 0) {
+    lines = lines.concat(
+      filteredContributors.map(contributor => ({
+        type: "contributor",
+        contributor,
+      }))
+    );
+  }
+
+  if (showExternalUsersSection && filteredExternalContributors && filteredExternalContributors.length) {
+    lines.push({ type: "separator" });
+    lines = lines.concat(
+      filteredExternalContributors.map(contributor => ({
+        type: "contributor",
+        contributor,
+      }))
+    );
+  }
+
+  lines.push({ type: "lastLine" });
+
   return (
     <Combobox
       value={selectedGithubHandle}
@@ -49,7 +77,7 @@ export default function ContributorSelectView({
         <div className={classNames("absolute w-full top-0", { "bg-whiteFakeOpacity-5 rounded-2xl": open })}>
           <div
             className={classNames("flex flex-col gap-3", {
-              "outline outline-1 outline-whiteFakeOpacity-12 rounded-2xl backdrop-blur-4xl": open,
+              "outline outline-1 outline-whiteFakeOpacity-12 rounded-2xl backdrop-blur-4xl overflow-hidden": open,
             })}
           >
             <Combobox.Button className="px-3 pt-4" as="div">
@@ -120,35 +148,27 @@ export default function ContributorSelectView({
                 </div>
               )}
             </Combobox.Button>
-            <Combobox.Options className="max-h-60 scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded overflow-auto px-4 pb-6">
-              {filteredContributors && filteredContributors.length > 0 ? (
-                <ContributorSubList contributors={filteredContributors} />
-              ) : githubHandleSubstring && githubHandleSubstring.length < 3 ? (
-                <span className="text-greyscale-100 italic">
-                  {T("payment.form.contributor.select.fallback.typeMoreCharacters")}
-                </span>
+            <Combobox.Options>
+              {githubHandleSubstring && githubHandleSubstring.length < 3 ? (
+                <div className="pb-6">
+                  <span className="text-greyscale-100 italic pb-6 px-4">
+                    {T("payment.form.contributor.select.fallback.typeMoreCharacters")}
+                  </span>
+                </div>
+              ) : filteredContributors &&
+                filteredContributors.length === 0 &&
+                !isSearchGithubUsersByHandleSubstringQueryLoading &&
+                debouncedGithubHandleSubstring === githubHandleSubstring ? (
+                <div className="pb-6">
+                  <span className="text-greyscale-100 italic pb-6 px-4">
+                    {T("payment.form.contributor.select.fallback.noUser")}
+                  </span>
+                </div>
+              ) : lines.length > 0 ? (
+                <VirtualizedContributorSubList lines={lines} />
               ) : (
                 <div />
               )}
-              {showExternalUsersSection &&
-                (filteredExternalContributors && filteredExternalContributors.length ? (
-                  <>
-                    <div className="font-medium text-md pb-1 pt-4 text-spaceBlue-200">
-                      {T("payment.form.contributor.select.externalUsers")}
-                    </div>
-                    <ContributorSubList contributors={filteredExternalContributors} />
-                  </>
-                ) : githubHandleSubstring !== debouncedGithubHandleSubstring ? (
-                  <div />
-                ) : filteredContributors &&
-                  filteredContributors.length === 0 &&
-                  !isSearchGithubUsersByHandleSubstringQueryLoading ? (
-                  <span className="text-greyscale-100 italic">
-                    {T("payment.form.contributor.select.fallback.noUser")}
-                  </span>
-                ) : (
-                  <div />
-                ))}
             </Combobox.Options>
           </div>
         </div>
@@ -157,48 +177,91 @@ export default function ContributorSelectView({
   );
 }
 
+type Line<T extends ContributorFragment> =
+  | { type: "contributor"; contributor: T & { unpaidMergedPullsCount?: number } }
+  | { type: "separator" }
+  | { type: "lastLine" };
+
 interface ContributorSubListProps<T extends ContributorFragment> {
-  contributors?: (T & { unpaidMergedPullsCount?: number })[];
+  lines?: Line<T>[];
 }
 
-function ContributorSubList<T extends ContributorFragment>({ contributors }: ContributorSubListProps<T>) {
+const List = forwardRef<HTMLDivElement>((props, ref) => {
+  return <div className="divide-y divide-greyscale-50/8 pt-2.5 px-4" {...props} ref={ref} />;
+});
+
+List.displayName = "List";
+
+const Scroller = forwardRef<HTMLDivElement>((props, ref) => {
+  return (
+    <div
+      className="scrollbar-thin scrollbar-w-1.5 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded overflow-y-auto overflow-x-hidden"
+      {...props}
+      ref={ref}
+    />
+  );
+});
+
+Scroller.displayName = "Scroller";
+
+function VirtualizedContributorSubList<T extends ContributorFragment>({ lines }: ContributorSubListProps<T>) {
   const { T } = useIntl();
 
   return (
-    <div className="divide-y divide-greyscale-50/8 pt-2.5">
-      {contributors?.map(contributor => (
-        <Combobox.Option key={contributor.id} as="div" value={contributor.login}>
-          {({ active }) => (
-            <li
-              className={classNames("p-2 flex items-center justify-between", {
-                "bg-white/4 cursor-pointer": active,
-              })}
-            >
-              <Contributor
-                contributor={{
-                  avatarUrl: contributor.avatarUrl,
-                  login: contributor.login,
-                  isRegistered: !!contributor.user?.userId,
-                }}
-              />
-              {contributor.unpaidMergedPullsCount && (
-                <>
-                  <Badge
-                    id={`pr-count-badge-${contributor.id}`}
-                    value={contributor.unpaidMergedPullsCount}
-                    icon={BadgeIcon.GitMerge}
-                    size={BadgeSize.Small}
+    <Virtuoso
+      style={{
+        height: Math.min(
+          lines?.length ? lines.length * CONTRIBUTOR_SELECT_LINE_HEIGHT_PX : MAX_CONTRIBUTOR_SELECT_SCROLLER_HEIGHT_PX,
+          MAX_CONTRIBUTOR_SELECT_SCROLLER_HEIGHT_PX
+        ),
+      }}
+      data={lines}
+      components={{ List, Scroller }}
+      itemContent={(_, line) => {
+        if (line.type === "contributor") {
+          const contributor = line.contributor;
+          return (
+            <Combobox.Option key={contributor.id} value={contributor.login}>
+              {({ active }) => (
+                <li
+                  className={classNames("p-2 flex items-center justify-between", {
+                    "bg-white/4 cursor-pointer": active,
+                  })}
+                >
+                  <Contributor
+                    contributor={{
+                      avatarUrl: contributor.avatarUrl,
+                      login: contributor.login,
+                      isRegistered: !!contributor.user?.userId,
+                    }}
                   />
-                  <Tooltip anchorId={`pr-count-badge-${contributor.id}`}>
-                    {T("payment.form.contributor.unpaidMergedPrCountTooltip")}
-                  </Tooltip>
-                </>
+                  {contributor.unpaidMergedPullsCount && (
+                    <>
+                      <Badge
+                        id={`pr-count-badge-${contributor.id}`}
+                        value={contributor.unpaidMergedPullsCount}
+                        icon={BadgeIcon.GitMerge}
+                        size={BadgeSize.Small}
+                      />
+                      <Tooltip anchorId={`pr-count-badge-${contributor.id}`}>
+                        {T("payment.form.contributor.unpaidMergedPrCountTooltip")}
+                      </Tooltip>
+                    </>
+                  )}
+                </li>
               )}
-            </li>
-          )}
-        </Combobox.Option>
-      ))}
-      <div />
-    </div>
+            </Combobox.Option>
+          );
+        } else if (line.type === "separator") {
+          return (
+            <div className="font-medium text-md pb-1 pt-4 text-spaceBlue-200">
+              {T("payment.form.contributor.select.externalUsers")}
+            </div>
+          );
+        } else {
+          return <div className="pb-6" />;
+        }
+      }}
+    />
   );
 }

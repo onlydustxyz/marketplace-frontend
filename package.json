@@ -50,6 +50,7 @@
     "react-router-dom": "^6.4.3",
     "react-tooltip": "^5.7.4",
     "react-use": "^17.4.0",
+    "react-virtuoso": "^4.3.2",
     "remark-gfm": "^3.0.1",
     "remixicon": "^2.5.0",
     "tailwind-scrollbar": "^2.1.0",
