@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use chrono::Duration;
+use derive_more::Constructor;
 use domain::{
 	AggregateRootRepository, DomainError, Event, GithubUserId, PaymentId, PaymentReason, Project,
 	ProjectId, Publisher, UserId,
@@ -10,28 +11,15 @@ use infrastructure::amqp::UniqueMessage;
 use rusty_money::{crypto, Money};
 use tracing::instrument;
 
-use crate::{application::dusty_bot, domain::Publishable};
+use crate::domain::Publishable;
 
+#[derive(Constructor)]
 pub struct Usecase {
 	event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
 	project_repository: AggregateRootRepository<Project>,
-	comment_issue_for_payment_requested_usecase:
-		dusty_bot::comment_issue_for_payment_requested::Usecase,
 }
 
 impl Usecase {
-	pub fn new(
-		event_publisher: Arc<dyn Publisher<UniqueMessage<Event>>>,
-		project_repository: AggregateRootRepository<Project>,
-		comment_issue_for_payment_requested_usecase: dusty_bot::comment_issue_for_payment_requested::Usecase,
-	) -> Self {
-		Self {
-			event_publisher,
-			project_repository,
-			comment_issue_for_payment_requested_usecase,
-		}
-	}
-
 	#[instrument(skip(self))]
 	pub async fn request(
 		&self,
@@ -62,21 +50,6 @@ impl Usecase {
 			.collect::<Vec<_>>()
 			.publish(self.event_publisher.clone())
 			.await?;
-
-		if let Err(error) = self
-			.comment_issue_for_payment_requested_usecase
-			.comment_issue_for_payment_requested(
-				new_payment_id,
-				requestor_id,
-				recipient_id,
-				amount_in_usd,
-				hours_worked,
-				reason,
-			)
-			.await
-		{
-			olog::error!(error = format!("{error:?}"), "Unable to comment issue")
-		}
 
 		Ok(new_payment_id)
 	}

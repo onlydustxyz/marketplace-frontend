@@ -1,10 +1,7 @@
 use std::sync::Arc;
 
 use domain::{AggregateRootRepository, Event, Project, Publisher};
-use infrastructure::{
-	amqp::{self, UniqueMessage},
-	github, graphql,
-};
+use infrastructure::{amqp::UniqueMessage, github, graphql};
 use juniper_rocket::{GraphQLRequest, GraphQLResponse};
 use presentation::http::guards::{ApiKey, ApiKeyGuard, OptionUserId, Role};
 use rocket::{response::content, State};
@@ -57,7 +54,6 @@ pub async fn get_graphql_handler(
 	user_info_repository: &State<UserInfoRepository>,
 	graphql: &State<Arc<graphql::Client>>,
 	github: &State<Arc<github::Client>>,
-	amqp: &State<Arc<amqp::Bus>>,
 	ens: &State<Arc<ens::Client>>,
 	simple_storage: &State<Arc<simple_storage::Client>>,
 ) -> GraphQLResponse {
@@ -75,7 +71,6 @@ pub async fn get_graphql_handler(
 		(*github).clone(),
 		(*ens).clone(),
 		(*simple_storage).clone(),
-		(*amqp).clone(),
 	);
 	request.execute(schema, &context).await
 }
@@ -100,7 +95,6 @@ pub async fn post_graphql_handler(
 	user_info_repository: &State<UserInfoRepository>,
 	graphql: &State<Arc<graphql::Client>>,
 	github: &State<Arc<github::Client>>,
-	amqp: &State<Arc<amqp::Bus>>,
 	ens: &State<Arc<ens::Client>>,
 	simple_storage: &State<Arc<simple_storage::Client>>,
 ) -> GraphQLResponse {
@@ -118,7 +112,6 @@ pub async fn post_graphql_handler(
 		(*github).clone(),
 		(*ens).clone(),
 		(*simple_storage).clone(),
-		(*amqp).clone(),
 	);
 	request.execute(schema, &context).await
 }

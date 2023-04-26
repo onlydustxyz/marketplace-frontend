@@ -123,21 +123,6 @@ test.describe("As a project lead, I", () => {
     const githubIssuePage = await context.waitForEvent("page");
     await githubIssuePage.waitForLoadState();
     const githubIssueUrl = githubIssuePage.url();
-    const githubApiIssueCommentsUrl = githubIssueUrl.replace("github.com", "api.github.com/repos") + "/comments";
-
-    const comments = await retry(
-      () =>
-        request
-          .get(githubApiIssueCommentsUrl, { params: { sort: "updated", direction: "desc" } })
-          .then(res => res.json()),
-      comments => comments.length > 0
-    );
-
-    expect(comments).toContainEqual(
-      expect.objectContaining({
-        body: expect.stringMatching(/to \[AnthonyBuisset\].*11 items included.*\$1,000 for 2 days of work/s),
-      })
-    );
 
     const paymentId = await payment.paymentId();
     if (paymentId) {
@@ -160,15 +145,6 @@ test.describe("As a project lead, I", () => {
       issue => issue.state !== "open"
     );
     expect(issue.state).toBe("closed");
-
-    const githubApiIssueComments = await request.get(githubApiIssueCommentsUrl, {
-      params: { sort: "updated", direction: "desc" },
-    });
-    expect(await githubApiIssueComments.json()).toContainEqual(
-      expect.objectContaining({
-        body: expect.stringContaining("has been processed and payment is complete."),
-      })
-    );
 
     await sidePanel.getByRole("button").click();
   });

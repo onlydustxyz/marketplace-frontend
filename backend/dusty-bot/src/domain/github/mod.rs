@@ -12,14 +12,6 @@ pub trait Service: GithubService + Send + Sync {
 		description: &str,
 	) -> GithubServiceResult<GithubIssue>;
 
-	async fn create_comment(
-		&self,
-		repo_owner: &str,
-		repo_name: &str,
-		issue_number: &GithubIssueNumber,
-		comment: &str,
-	) -> GithubServiceResult<()>;
-
 	async fn close_issue(
 		&self,
 		repo_owner: &str,
