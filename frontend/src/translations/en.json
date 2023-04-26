@@ -346,7 +346,8 @@
         },
         "technologies": "Technologies",
         "title": "Project overview",
-        "totalSpentAmountInUsd": "GRANTED"
+        "totalSpentAmountInUsd": "GRANTED",
+        "amountGranted": "__granted__ / __total__ — __leftToSpend__ left to spend"
       },
       "payments": {
         "new": {

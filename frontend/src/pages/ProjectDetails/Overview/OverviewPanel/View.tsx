@@ -82,10 +82,14 @@ export default function OverviewPanelView({
       {totalSpentAmountInUsd !== undefined && totalInitialAmountInUsd !== undefined && (
         <Section icon={SectionIcon.Funds} title={T("project.details.overview.totalSpentAmountInUsd")}>
           <div data-testid="money-granted-amount" className="text-sm text-greyscale-50 font-normal">
-            {[
-              formatMoneyAmount({ amount: totalSpentAmountInUsd, notation: "compact" }),
-              formatMoneyAmount({ amount: totalInitialAmountInUsd, notation: "compact" }),
-            ].join(" / ")}
+            {T("project.details.overview.amountGranted", {
+              granted: formatMoneyAmount({ amount: totalSpentAmountInUsd, notation: "compact" }),
+              total: formatMoneyAmount({ amount: totalInitialAmountInUsd, notation: "compact" }),
+              leftToSpend: formatMoneyAmount({
+                amount: totalInitialAmountInUsd - totalSpentAmountInUsd,
+                notation: "compact",
+              }),
+            })}
           </div>
         </Section>
       )}
