@@ -119,6 +119,10 @@ impl ConsumableBus {
 		})
 	}
 
+	pub fn queue_name(&self) -> &'static str {
+		self.queue_name
+	}
+
 	pub async fn with_exchange(self, exchange_name: &'static str) -> Result<Self, Error> {
 		self.bus
 			.channel

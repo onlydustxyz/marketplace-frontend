@@ -29,6 +29,7 @@ impl<M: Message + Send + Sync> Subscriber<M> for ConsumableBus {
 					error!(
 						content = format!("{:?}", delivery.data),
 						error = error.to_string(),
+						queue_name = self.queue_name(),
 						"Failed to deserialize message",
 					);
 					Self::discard_message(&delivery).await?;
@@ -71,6 +72,7 @@ impl ConsumableBus {
 					error!(
 						event = format!("{:?}", message),
 						error = error.to_string(),
+						queue_name = self.queue_name(),
 						"Ignoring event",
 					);
 					Self::discard_message(&delivery).await
@@ -79,6 +81,7 @@ impl ConsumableBus {
 					error!(
 						event = format!("{:?}", message),
 						error = error.to_string(),
+						queue_name = self.queue_name(),
 						"Fatal error while processing the event",
 					);
 					Err(SubscriberError::Processing(error))
