@@ -55,6 +55,7 @@ module.exports = {
     "frontend/dist/*",
     "frontend/test/*",
     "frontend/src/__generated",
+    "frontend/src/assets/animations/*.json",
     "cypress/*",
     "backend/common/infrastructure/src/graphql/__generated",
     "playwright/__generated",
