@@ -3,7 +3,7 @@ use std::{sync::Arc, time::Duration};
 use anyhow::Result;
 use dotenv::dotenv;
 use event_listeners::{infrastructure::database::GithubRepoIndexRepository, Config};
-use indexer::{published::Published, with_state::WithState};
+use indexer::{logged::Logged, published::Published, with_state::WithState};
 use infrastructure::{amqp, config, database, github, tracing::Tracer};
 use olog::info;
 
@@ -24,6 +24,7 @@ async fn main() -> Result<()> {
 		Arc::new(indexer::repo::Indexer::new(github.clone())),
 		Arc::new(indexer::pulls::Indexer::new(github.clone())),
 	])
+	.logged()
 	.published(event_bus)
 	.with_state(GithubRepoIndexRepository::new(database));
 
