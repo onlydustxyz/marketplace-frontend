@@ -23,6 +23,9 @@ install: install docker/re db/up db/update-remote-dump db/migrate db/load-fixtur
 rust/install:
 	rustup install $(RUST_VERSION)
 
+diesel/install: rust/install
+	cargo install diesel_cli
+
 # ----------------------------------------------------------
 #                 Dependencies installation
 # ----------------------------------------------------------
@@ -74,7 +77,7 @@ db/connect: db/up
 	docker compose exec -u postgres db psql marketplace_db
 
 # Runs the migrations
-db/migrate: db/up
+db/migrate: db/up diesel/install
 	diesel migration run
 
 # Creates and downloads a remote database dump
@@ -206,7 +209,7 @@ hasura/start:
 hasura/start-refresh-stop: backend/background-start hasura/refresh backend/background-stop
 
 # Refreshes the local Hasura metadata
-hasura/refresh: db/migrate
+hasura/refresh:
 	docker compose exec -u postgres db psql marketplace_db -c "DELETE FROM hdb_catalog.hdb_metadata"
 	yarn --cwd ./hasura hasura --skip-update-check md apply
 	yarn --cwd ./hasura hasura --skip-update-check md ic drop
