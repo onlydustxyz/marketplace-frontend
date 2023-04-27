@@ -18,6 +18,12 @@ pub trait Service: Send + Sync {
 		issue_number: &GithubIssueNumber,
 	) -> Result<GithubIssue>;
 
+	async fn issues_by_repo_id(
+		&self,
+		repo_id: &GithubRepoId,
+		filters: &GithubServiceFilters,
+	) -> Result<Vec<GithubIssue>>;
+
 	async fn pulls_by_repo_id(
 		&self,
 		repo_id: &GithubRepoId,

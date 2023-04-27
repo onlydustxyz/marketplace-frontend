@@ -23,6 +23,7 @@ async fn main() -> Result<()> {
 	let indexer = indexer::composite::Indexer::new(vec![
 		Arc::new(indexer::repo::Indexer::new(github.clone())),
 		Arc::new(indexer::pulls::Indexer::new(github.clone())),
+		Arc::new(indexer::issues::Indexer::new(github.clone())),
 	])
 	.logged()
 	.published(event_bus)

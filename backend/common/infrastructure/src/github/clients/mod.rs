@@ -246,6 +246,44 @@ impl Client {
 	}
 
 	#[instrument(skip(self))]
+	pub async fn issues_by_repo_id(
+		&self,
+		id: &GithubRepoId,
+		filters: &GithubServiceFilters,
+	) -> Result<Vec<Issue>, Error> {
+		let sort = if filters.updated_since.is_some() {
+			Sort::Updated
+		} else {
+			Sort::Created
+		};
+
+		let query_params = QueryParams::default()
+			.state(filters.state.into())
+			.sort(sort)
+			.direction(Direction::Descending)
+			.page(1)
+			.per_page(100);
+
+		let url = format!(
+			"{}repositories/{id}/issues?{}",
+			self.octocrab().base_url,
+			query_params.to_query_string()?
+		)
+		.parse()?;
+
+		let issues = self
+			.stream_as::<Issue>(
+				url,
+				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
+			)
+			.await?
+			.filter_with(*filters)
+			.collect()
+			.await;
+		Ok(issues)
+	}
+
+	#[instrument(skip(self))]
 	pub async fn get_user_by_id(&self, id: &GithubUserId) -> Result<User, Error> {
 		self.get_as(format!("{}user/{id}", self.octocrab().base_url)).await
 	}

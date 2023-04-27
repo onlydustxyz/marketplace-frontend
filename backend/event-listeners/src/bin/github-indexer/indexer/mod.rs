@@ -2,6 +2,7 @@ mod error;
 use error::*;
 
 pub mod composite;
+pub mod issues;
 pub mod logged;
 pub mod published;
 pub mod pulls;
