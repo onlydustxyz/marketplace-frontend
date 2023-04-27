@@ -26,6 +26,7 @@ const [contributor1, contributor2, contributor3, contributor4, contributor5]: Co
 
 const project: ProjectContributorsFragment = {
   __typename: "Projects",
+  id: "12345",
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
@@ -86,6 +87,7 @@ describe("countUnpaidMergedPullsByContributor", () => {
       issueNumber,
       authorId: users[index].id,
       status: Status.Merged,
+      ignoredForProjects: [],
     }));
 
     const mergedUnPaidPulls: PullDetailsFragment[] = range(0, 10).map(id => ({
@@ -94,9 +96,11 @@ describe("countUnpaidMergedPullsByContributor", () => {
       issueNumber: id,
       authorId: users[id % users.length].id,
       status: Status.Merged,
+      ignoredForProjects: [],
     }));
 
     const counts = countUnpaidMergedPullsByContributor({
+      id: "12345",
       githubRepos: [
         {
           githubRepoDetails: {

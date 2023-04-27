@@ -9,13 +9,13 @@ import { useNavigate } from "react-router-dom";
 import CloseLine from "src/icons/CloseLine";
 import Title from "src/pages/ProjectDetails/Title";
 import Add from "src/icons/Add";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
-import { sortBy, uniqBy } from "lodash";
 import Callout from "src/components/Callout";
 import { GithubContributorFragment, IssueDetailsFragment } from "src/__generated/graphql";
 import QueryWrapper from "src/components/QueryWrapper";
+import useWorkItems from "./useWorkItems";
 
 interface Props {
   projectId: string;
@@ -25,26 +25,6 @@ interface Props {
   contributor: GithubContributorFragment | null | undefined;
   setContributor: (contributor: GithubContributorFragment | null | undefined) => void;
   getUnpaidMergedPullsQuery: { data?: IssueDetailsFragment[] | null; loading: boolean };
-}
-
-type WorkItemAction =
-  | {
-      action: "add" | "remove";
-      workItem: WorkItem;
-    }
-  | {
-      action: "clear";
-    };
-
-function workItemsReducer(workItems: WorkItem[], action: WorkItemAction) {
-  switch (action.action) {
-    case "add":
-      return sortBy(uniqBy([...workItems, action.workItem], "id"), "createdAt").reverse();
-    case "remove":
-      return workItems.filter(w => w !== action.workItem);
-    case "clear":
-      return [];
-  }
 }
 
 type TitleProps = {
@@ -71,13 +51,14 @@ const View: React.FC<Props> = ({
   const { T } = useIntl();
   const navigate = useNavigate();
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
-  const [workItems, dispatchWorkItems] = useReducer(workItemsReducer, []);
+
+  const { workItems, add: addWorkItem, remove: removeWorkItem, clear: clearWorkItems } = useWorkItems();
 
   useEffect(() => onWorkItemsChange(workItems), [workItems, onWorkItemsChange]);
   useEffect(() => {
-    dispatchWorkItems({ action: "clear" });
-    getUnpaidMergedPullsQuery.data?.forEach(workItem => dispatchWorkItems({ action: "add", workItem }));
-  }, [getUnpaidMergedPullsQuery.data, contributor]);
+    clearWorkItems();
+    getUnpaidMergedPullsQuery.data?.forEach(addWorkItem);
+  }, [getUnpaidMergedPullsQuery.data, contributor, addWorkItem, clearWorkItems]);
 
   const displayCallout = contributor && !contributor?.user?.userId;
 
@@ -125,7 +106,7 @@ const View: React.FC<Props> = ({
                         key={workItem.id}
                         workItem={workItem}
                         action={Action.Remove}
-                        onClick={() => dispatchWorkItems({ action: "remove", workItem })}
+                        onClick={() => removeWorkItem(workItem)}
                       />
                     ))}
                   </div>
@@ -146,7 +127,7 @@ const View: React.FC<Props> = ({
                 open={sidePanelOpen}
                 setOpen={setSidePanelOpen}
                 workItems={workItems}
-                onWorkItemAdded={(workItem: WorkItem) => dispatchWorkItems({ action: "add", workItem })}
+                onWorkItemAdded={addWorkItem}
                 contributorHandle={contributor.login}
               />
             )}

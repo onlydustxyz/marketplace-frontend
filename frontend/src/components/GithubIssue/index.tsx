@@ -17,41 +17,45 @@ import Tooltip from "src/components/Tooltip";
 import CheckboxCircleLine from "src/icons/CheckboxCircleLine";
 import IssueCancelled from "src/assets/icons/IssueCancelled";
 import IssueOpen from "src/assets/icons/IssueOpen";
+import EyeOffLine from "src/icons/EyeOffLine";
+import EyeLine from "src/icons/EyeLine";
+import classNames from "classnames";
 
 export enum Action {
   Add = "add",
   Remove = "remove",
+  Ignore = "ignore",
+  UnIgnore = "unignore",
 }
 
 export type WorkItem = IssueDetailsFragment;
 
 export type Props = {
   action?: Action;
+  secondaryAction?: Action;
   onClick?: () => void;
+  onSecondaryClick?: () => void;
   workItem: WorkItem;
+  ignored?: boolean;
 };
 
-export default function GithubIssue({ action, workItem, onClick }: Props) {
-  const { T } = useIntl();
+export default function GithubIssue({
+  action,
+  secondaryAction,
+  workItem,
+  onClick,
+  onSecondaryClick,
+  ignored = false,
+}: Props) {
   const { repoName } = parsePullRequestOrIssueLink(workItem.htmlUrl);
 
   return (
     <Card padded={false}>
-      <div className="p-4 flex flex-row gap-3 hover:bg-noise-light hover:backdrop-blur-4xl rounded-2xl ">
+      <div className="p-4 flex flex-row gap-3 hover:bg-noise-light hover:backdrop-blur-4xl rounded-2xl">
         {action && (
-          <>
-            <div id={`github-issue-action-${workItem.id}`} onClick={onClick} className="h-fit">
-              <Button size={ButtonSize.Sm} type={ButtonType.Secondary} iconOnly>
-                {action === Action.Add && <Add />}
-                {action === Action.Remove && <Subtract />}
-              </Button>
-            </div>
-            {action === Action.Add && (
-              <Tooltip anchorId={`github-issue-action-${workItem.id}`}>{T("githubIssue.addTooltip")}</Tooltip>
-            )}
-          </>
+          <ActionButton id={`github-issue-action-${workItem.id}`} action={action} onClick={onClick} ignored={ignored} />
         )}
-        <div className="flex flex-col gap-2 font-walsheim ">
+        <div className={classNames("flex flex-col gap-2 font-walsheim grow", { "opacity-70": ignored })}>
           <div className="font-medium text-sm text-greyscale-50">
             <ExternalLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} numberOfLines={2} />
           </div>
@@ -69,8 +73,43 @@ export default function GithubIssue({ action, workItem, onClick }: Props) {
             </div>
           </div>
         </div>
+        {secondaryAction && (
+          <ActionButton
+            id={`github-issue-secondary-action-${workItem.id}`}
+            action={secondaryAction}
+            onClick={onSecondaryClick}
+            ignored={ignored}
+          />
+        )}
       </div>
     </Card>
+  );
+}
+
+type ActionButtonProps = {
+  id: string;
+  action: Action;
+  ignored: boolean;
+  onClick?: () => void;
+};
+
+function ActionButton({ id, action, ignored, onClick }: ActionButtonProps) {
+  const { T } = useIntl();
+
+  return (
+    <>
+      <div className={classNames({ "opacity-70": ignored })}>
+        <Button size={ButtonSize.Sm} type={ButtonType.Secondary} id={id} onClick={onClick} iconOnly>
+          {action === Action.Add && <Add />}
+          {action === Action.Remove && <Subtract />}
+          {action === Action.Ignore && <EyeOffLine />}
+          {action === Action.UnIgnore && <EyeLine />}
+        </Button>
+      </div>
+      {action === Action.Add && <Tooltip anchorId={id}>{T("githubIssue.tooltip.add")}</Tooltip>}
+      {action === Action.Ignore && <Tooltip anchorId={id}>{T("githubIssue.tooltip.ignore")}</Tooltip>}
+      {action === Action.UnIgnore && <Tooltip anchorId={id}>{T("githubIssue.tooltip.unignore")}</Tooltip>}
+    </>
   );
 }
 
@@ -127,5 +166,8 @@ export const GITHUB_ISSUE_FRAGMENTS = gql`
     createdAt
     closedAt
     mergedAt
+    ignoredForProjects {
+      projectId
+    }
   }
 `;

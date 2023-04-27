@@ -9,6 +9,9 @@ import EmptyState from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSi
 import Toggle from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/Toggle";
 import OtherPrInput from "./OtherPrInput";
 import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
+import FormToggle from "src/pages/ProjectDetails/Payments/PaymentForm/WorkItemSidePanel/OtherWorkForm/FormToggle";
+import { useForm, useWatch } from "react-hook-form";
+import EyeOffLine from "src/icons/EyeOffLine";
 import { useFormContext } from "react-hook-form";
 import useFilteredWorkItems from "./useFilteredWorkItems";
 import SearchLine from "src/icons/SearchLine";
@@ -16,11 +19,21 @@ import FormInput from "src/components/FormInput";
 
 type Props<T, E> = {
   workItems: WorkItem[];
+  ignoredItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
+  onWorkItemIgnored: (workItem: WorkItem) => void;
+  onWorkItemUnignored: (workItem: WorkItem) => void;
   query: QueryResult<T, E>;
 };
 
-export default function PullRequestsView<T, E>({ workItems, onWorkItemAdded, query }: Props<T, E>) {
+export default function PullRequestsView<T, E>({
+  workItems,
+  ignoredItems,
+  onWorkItemAdded,
+  onWorkItemIgnored,
+  onWorkItemUnignored,
+  query,
+}: Props<T, E>) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
 
@@ -51,25 +64,41 @@ export default function PullRequestsView<T, E>({ workItems, onWorkItemAdded, que
   const searchPattern = watch("search-prs");
   const filteredWorkItems = useFilteredWorkItems({ pattern: searchPattern, workItems });
 
+  const showIgnoredItemsName = "show-ignored-items";
+  const { control } = useForm({ defaultValues: { [showIgnoredItemsName]: false } });
+  const showIgnoredItems = useWatch({
+    control,
+    name: showIgnoredItemsName,
+  });
+
   return (
     <div className="flex flex-col gap-4 overflow-hidden -mr-4 h-full">
       <div className="flex flex-col gap-3 mr-4">
-        <div className="flex flex-row gap-3">
-          <Toggle
-            enabled={addOtherPrEnabled}
-            setEnabled={setAddOtherPrEnabled}
-            icon={<Link />}
-            label={T("payment.form.workItems.pullRequests.addOther.toggle")}
-            testId="add-other-pr-toggle"
-          />
-          {workItems.length > 0 && (
+        <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-row gap-3">
             <Toggle
-              enabled={searchEnabled}
-              setEnabled={setSearchEnabled}
-              icon={<SearchLine />}
-              label={T("payment.form.workItems.pullRequests.search")}
-              testId="search-toggle"
+              enabled={addOtherPrEnabled}
+              setEnabled={setAddOtherPrEnabled}
+              icon={<Link />}
+              label={T("payment.form.workItems.pullRequests.addOther.toggle")}
+              testId="add-other-pr-toggle"
             />
+            {workItems.length > 0 && (
+              <Toggle
+                enabled={searchEnabled}
+                setEnabled={setSearchEnabled}
+                icon={<SearchLine />}
+                label={T("payment.form.workItems.pullRequests.search")}
+                testId="search-toggle"
+              />
+            )}
+          </div>
+          {ignoredItems.length > 0 && (
+            <div className="flex flex-row items-center gap-2 text-greyscale-50 font-walsheim font-normal text-sm">
+              <EyeOffLine />
+              {T("payment.form.workItems.showIgnored")}
+              <FormToggle name={showIgnoredItemsName} control={control} />
+            </div>
           )}
         </div>
         {addOtherPrEnabled && <OtherPrInput onWorkItemAdded={onIssueAdded} />}
@@ -88,14 +117,33 @@ export default function PullRequestsView<T, E>({ workItems, onWorkItemAdded, que
         )}
       </div>
       <QueryWrapper query={query}>
-        {filteredWorkItems.length > 0 ? (
+        {filteredWorkItems.length + (showIgnoredItems ? ignoredItems.length : 0) > 0 ? (
           <div
             data-testid="elligible-pulls"
             className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
           >
             {filteredWorkItems.map(pr => (
-              <GithubIssue key={pr.id} workItem={pr} action={Action.Add} onClick={() => onIssueAdded(pr)} />
+              <GithubIssue
+                key={pr.id}
+                workItem={pr}
+                action={Action.Add}
+                onClick={() => onIssueAdded(pr)}
+                secondaryAction={Action.Ignore}
+                onSecondaryClick={() => onWorkItemIgnored(pr)}
+              />
             ))}
+            {showIgnoredItems &&
+              ignoredItems.map(pr => (
+                <GithubIssue
+                  key={pr.id}
+                  workItem={pr}
+                  action={Action.Add}
+                  onClick={() => onIssueAdded(pr)}
+                  secondaryAction={Action.UnIgnore}
+                  onSecondaryClick={() => onWorkItemUnignored(pr)}
+                  ignored
+                />
+              ))}
           </div>
         ) : (
           <div className="mr-4">

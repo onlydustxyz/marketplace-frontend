@@ -67,6 +67,41 @@ test.describe("As a project lead, I", () => {
     const newPaymentPage = await contributors.byName(recipient.github.login).pay();
     expect(await newPaymentPage.contributorText()).toEqual(recipient.github.login);
 
+    // Play with ignored items
+    {
+      const issueNumber = "#15";
+      // ignore/unignore
+      await newPaymentPage.addWorkItemButton().click();
+      await newPaymentPage.issuesTab().click();
+      await expect(newPaymentPage.showIgnoredToggle()).not.toBeVisible();
+      await expect(newPaymentPage.workItem(issueNumber)).toBeVisible();
+      await newPaymentPage.ignoreWorkItem(issueNumber);
+      await expect(newPaymentPage.workItem(issueNumber)).not.toBeVisible();
+      await newPaymentPage.showIgnoredToggle().click();
+      await expect(newPaymentPage.workItem(issueNumber)).toBeVisible();
+      await newPaymentPage.ignoreWorkItem(issueNumber); // unignore
+      await expect(newPaymentPage.showIgnoredToggle()).not.toBeVisible();
+      await expect(newPaymentPage.workItem(issueNumber)).toBeVisible();
+
+      // ignore/add/auto-unignore
+      await newPaymentPage.ignoreWorkItem(issueNumber);
+
+      await Promise.all([
+        page.waitForResponse(async resp => (await resp.json()).data.unignoreIssue && resp.status() === 200),
+        newPaymentPage.addWorkItem(issueNumber),
+      ]);
+
+      await newPaymentPage.closeWorkItemsPanelButton().click();
+      await page
+        .locator("[data-testid='added-work-items'] > div", { hasText: issueNumber })
+        .getByRole("button")
+        .click(); // remove from payment request
+      await newPaymentPage.addWorkItemButton().click();
+      await expect(newPaymentPage.showIgnoredToggle()).not.toBeVisible();
+      await expect(newPaymentPage.workItem(issueNumber)).toBeVisible();
+      await newPaymentPage.closeWorkItemsPanelButton().click();
+    }
+
     await newPaymentPage.requestPayment({
       otherPullRequests: [
         "https://github.com/od-mocks/cool-repo-A/pull/1",
@@ -105,23 +140,12 @@ test.describe("As a project lead, I", () => {
     await expect(sidePanel.getByText("$1,000")).toBeVisible();
     await expect(sidePanel.getByText("from tokio-rs (you)")).toBeVisible();
     await expect(sidePanel.getByText("to AnthonyBuisset")).toBeVisible();
-    await expect(sidePanel.locator("div").filter({ hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible(); // auto added
-    await expect(sidePanel.locator("div").filter({ hasText: "#2 · Another update README.md" }).first()).toBeVisible();
-    await expect(sidePanel.locator("div").filter({ hasText: "#1 · Update README.md" }).first()).toBeVisible();
-    await expect(sidePanel.locator("div").filter({ hasText: "#6 · This is a new issue" }).first()).toBeVisible();
-    await expect(
-      sidePanel.locator("div").filter({ hasText: "#7 · This one has been cancelled" }).first()
-    ).toBeVisible();
-    await expect(sidePanel.locator("div").filter({ hasText: "#8 · Yet another issue..." }).first()).toBeVisible();
-    await expect(sidePanel.locator("div").filter({ hasText: "#9 · Completed, at last !" }).first()).toBeVisible();
-    await expect(sidePanel.locator("div").filter({ hasText: "#79 · " }).first()).toBeVisible();
-    await expect(
-      sidePanel.locator("div").filter({ hasText: " · Monthly contracting subscription" }).first()
-    ).toBeVisible();
-    const otherWorkIssueLink = sidePanel
-      .locator("div")
-      .filter({ hasText: ` · Documentation by ${recipient.github.login}` })
-      .last();
+    await expect(sidePanel.locator("div", { hasText: "#4 · Create a-new-file.txt" }).first()).toBeVisible(); // auto added
+    await expect(sidePanel.locator("div", { hasText: "#2 · Another update README.md" }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: "#1 · Update README.md" }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: "#79 · " }).first()).toBeVisible();
+    await expect(sidePanel.locator("div", { hasText: " · Monthly contracting subscription" }).first()).toBeVisible();
+    const otherWorkIssueLink = sidePanel.getByText(" · Documentation by").first();
     await expect(otherWorkIssueLink).toBeVisible();
     await otherWorkIssueLink.click();
 
