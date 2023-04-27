@@ -13,6 +13,7 @@ fragment ProjectContributorsForPaymentSelect on Projects {
     }
   }
   budgets {
+    id
     paymentRequests {
       id
       workItems {

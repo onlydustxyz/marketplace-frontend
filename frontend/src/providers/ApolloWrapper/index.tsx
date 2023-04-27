@@ -20,7 +20,7 @@ import { TokenRefreshLink } from "apollo-link-token-refresh";
 import { TokenSet } from "src/types";
 import axios from "axios";
 import { RetryLink } from "@apollo/client/link/retry";
-import { PaymentRequests } from "src/__generated/graphql";
+import { PaymentRequests, WorkItems } from "src/__generated/graphql";
 import { useImpersonationClaims } from "src/hooks/useImpersonationClaims";
 
 type ErrorDisplay = "screen" | "toaster" | "none";
@@ -145,14 +145,15 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
         Budgets: {
           fields: {
             paymentRequests: {
-              merge(existing: PaymentRequests[] = [], incoming: PaymentRequests[]) {
-                return uniqBy([...existing, ...incoming], "__ref");
-              },
+              merge: (existing: PaymentRequests[] = [], incoming: PaymentRequests[]) =>
+                uniqBy([...existing, ...incoming], "__ref"),
             },
-            pullRequests: {
-              merge(existing: PaymentRequests[] = [], incoming: PaymentRequests[]) {
-                return uniqBy([...existing, ...incoming], "__ref");
-              },
+          },
+        },
+        PaymentRequests: {
+          fields: {
+            workItems: {
+              merge: (_, incoming: WorkItems[]) => incoming,
             },
           },
         },

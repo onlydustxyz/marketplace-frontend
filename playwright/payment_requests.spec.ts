@@ -90,11 +90,11 @@ test.describe("As a project lead, I", () => {
 
     const paymentsPage = new ProjectPaymentsPage(page, project);
 
-    // TODO: Remove once E-507 is fixed
-    await sleep(500);
-    await page.reload();
-
     expect(await paymentsPage.remainingBudget()).toBe("$85,600");
+
+    // TODO: Remove when we do not fake time anymore
+    await sleep(1000);
+    await page.reload();
 
     const payment = paymentsPage.paymentList().nth(1);
     await payment.click();
