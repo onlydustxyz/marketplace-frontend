@@ -10534,7 +10534,7 @@ export type GetProjectOverviewDetailsQueryVariables = Exact<{
 
 export type GetProjectOverviewDetailsQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, projectDetails: { __typename?: 'ProjectDetails', projectId: any, name: string, longDescription: string, logoUrl: string | null } | null, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', content: { __typename?: 'Repo', stars: number } | null } | null }> } | null };
 
-export type ProjectContributorsForPaymentSelectFragment = { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repo', id: any, contributors: Array<{ __typename?: 'User', id: any, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null } | null, repoPulls: Array<{ __typename?: 'GithubPulls', id: any, repoId: any, issueNumber: any, authorId: any }> }>, budgets: Array<{ __typename?: 'Budgets', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }>, githubRecipient: { __typename?: 'User', id: any, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> };
+export type ProjectContributorsForPaymentSelectFragment = { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repo', id: any, contributors: Array<{ __typename?: 'User', id: any, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null } | null, repoPulls: Array<{ __typename?: 'GithubPulls', id: any, repoId: any, issueNumber: any, authorId: any }> }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }>, githubRecipient: { __typename?: 'User', id: any, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> };
 
 export type SearchGithubUsersByHandleSubstringQueryVariables = Exact<{
   handleSubstringQuery: Scalars['String'];
@@ -10549,7 +10549,7 @@ export type GetProjectContributorsForPaymentSelectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repo', id: any, contributors: Array<{ __typename?: 'User', id: any, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null } | null, repoPulls: Array<{ __typename?: 'GithubPulls', id: any, repoId: any, issueNumber: any, authorId: any }> }>, budgets: Array<{ __typename?: 'Budgets', paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }>, githubRecipient: { __typename?: 'User', id: any, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> } | null };
+export type GetProjectContributorsForPaymentSelectQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repo', id: any, contributors: Array<{ __typename?: 'User', id: any, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null }> } | null } | null, repoPulls: Array<{ __typename?: 'GithubPulls', id: any, repoId: any, issueNumber: any, authorId: any }> }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, workItems: Array<{ __typename?: 'WorkItems', repoId: any, issueNumber: any }>, githubRecipient: { __typename?: 'User', id: any, login: string, avatarUrl: any, user: { __typename?: 'AuthGithubUsers', userId: any | null } | null } | null }> }> } | null };
 
 export type SearchIssuesQueryVariables = Exact<{
   query: Scalars['String'];
@@ -10982,6 +10982,7 @@ export const ProjectContributorsForPaymentSelectFragmentDoc = gql`
     }
   }
   budgets {
+    id
     paymentRequests {
       id
       workItems {
