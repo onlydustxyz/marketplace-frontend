@@ -45,6 +45,12 @@ diesel::table! {
         created_at -> Timestamp,
         author_id -> Int8,
         merged_at -> Nullable<Timestamp>,
+        #[sql_name = "type"]
+        type_ -> Jsonb,
+        status -> Jsonb,
+        title -> Text,
+        html_url -> Text,
+        closed_at -> Nullable<Timestamp>,
     }
 }
 

@@ -39,6 +39,11 @@ impl TryFrom<GithubIssue> for GithubPull {
 			pull.created_at().naive_utc(),
 			*pull.author().id(),
 			pull.merged_at().map(|date| date.naive_utc()),
+			*pull.r#type(),
+			*pull.status(),
+			pull.title().clone(),
+			pull.html_url().to_string(),
+			pull.closed_at().map(|date| date.naive_utc()),
 		))
 	}
 }
