@@ -85,9 +85,11 @@ test.describe("As a project lead, I", () => {
 
       // ignore/add/auto-unignore
       await newPaymentPage.ignoreWorkItem(issueNumber);
-      await newPaymentPage.addWorkItem(issueNumber);
 
-      await page.waitForResponse(async resp => (await resp.json()).data.unignoreIssue && resp.status() === 200);
+      await Promise.all([
+        page.waitForResponse(async resp => (await resp.json()).data.unignoreIssue && resp.status() === 200),
+        newPaymentPage.addWorkItem(issueNumber),
+      ]);
 
       await newPaymentPage.closeWorkItemsPanelButton().click();
       await page
