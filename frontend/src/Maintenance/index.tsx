@@ -1,14 +1,12 @@
 import { useIntl } from "src/hooks/useIntl";
-import Button from "src/components/Button";
-import Refresh from "src/icons/Refresh";
 import MaintenanceAnimation from "src/assets/animations/Maintenance";
 
 export default function Maintenance() {
   const { T } = useIntl();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-center gap-12">
-      <div className="w-72 -mb-20 stroke-white">
+    <div className="min-h-screen flex flex-col items-center justify-center text-center">
+      <div className="w-72 -mb-8 stroke-white">
         <MaintenanceAnimation />
       </div>
       <div className="flex flex-col gap-6 w-110">
@@ -17,9 +15,6 @@ export default function Maintenance() {
           {T("state.maintenance.description")}
         </div>
       </div>
-      <Button onClick={window.location.reload}>
-        <Refresh className="text-xl" /> {T("state.maintenance.refresh")}
-      </Button>
     </div>
   );
 }
