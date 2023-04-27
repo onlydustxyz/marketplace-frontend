@@ -32,6 +32,13 @@ runs:
         cargo run -p api &> api.out.log &
         echo "api_pid=$!" >> $GITHUB_ENV
 
+    # Wait here for api to be up to make sure the migrations are run
+    - name: Wait for api to be up
+      uses: onlydustxyz/wait-on-action@v1
+      with:
+        resource: http://localhost:8000
+        timeout: 300000
+
     - name: Run the event-listeners
       shell: bash
       run: |
@@ -67,12 +74,6 @@ runs:
       run: |
         cargo run --bin action-dequeuer &> action-dequeuer.out.log &
         echo "action_dequeuer_pid=$!" >> $GITHUB_ENV
-
-    - name: Wait for api to be up
-      uses: onlydustxyz/wait-on-action@v1
-      with:
-        resource: http://localhost:8000
-        timeout: 300000
 
     - name: Wait for github-proxy to be up
       uses: onlydustxyz/wait-on-action@v1
