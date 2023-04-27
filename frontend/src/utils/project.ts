@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { PullDetailsFragment, VisibleProjectFragment } from "src/__generated/graphql";
+import { GithubIssueDetailsFragment, VisibleProjectFragment } from "src/__generated/graphql";
 import { chain, find, flatMap, some, uniqBy } from "lodash";
 import isDefined from "src/utils/isDefined";
 import { ContributorIdFragment } from "src/__generated/graphql";
@@ -46,7 +46,7 @@ type Project<R> = {
     githubRepoDetails: {
       content: { contributors: Array<R | null> } | null;
     } | null;
-    repoPulls?: PullDetailsFragment[] | null;
+    repoPulls?: GithubIssueDetailsFragment[] | null;
   }> | null;
   budgets: Array<{
     paymentRequests: Array<{ githubRecipient: R | null }>;
@@ -82,10 +82,10 @@ export const countUnpaidMergedPullsByContributor = (project?: Project<Contributo
     .mapValues(requests => flatMap(requests, "workItems"))
     .value();
 
-  const notPaid = ({ authorId, repoId, issueNumber }: PullDetailsFragment) =>
+  const notPaid = ({ authorId, repoId, issueNumber }: GithubIssueDetailsFragment) =>
     !some(paidItemsByLogin[authorId], { repoId, issueNumber });
 
-  const notIgnored = ({ ignoredForProjects }: PullDetailsFragment) =>
+  const notIgnored = ({ ignoredForProjects }: GithubIssueDetailsFragment) =>
     !find(ignoredForProjects, { projectId: project?.id });
 
   return chain(project?.githubRepos)
@@ -102,7 +102,7 @@ gql`
     id
   }
 
-  fragment PullDetails on GithubPulls {
+  fragment GithubIssueDetails on GithubIssues {
     id
     repoId
     issueNumber
@@ -139,8 +139,10 @@ gql`
 
   fragment ProjectContributorsByLeader on Projects {
     githubRepos {
-      repoPulls(where: { createdAt: { _gte: $createdSince }, mergedAt: { _isNull: false } }) {
-        ...PullDetails
+      repoIssues(
+        where: { createdAt: { _gte: $createdSince }, type: { _eq: "PullRequest" }, mergedAt: { _isNull: false } }
+      ) {
+        ...GithubIssueDetails
       }
     }
   }

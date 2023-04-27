@@ -4,3 +4,6 @@ ALTER TABLE github_pulls
     ADD COLUMN title TEXT NOT NULL DEFAULT '',
     ADD COLUMN html_url TEXT NOT NULL DEFAULT '',
     ADD COLUMN closed_at TIMESTAMP;
+
+ALTER TABLE github_pulls
+  RENAME TO github_issues;

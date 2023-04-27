@@ -1,5 +1,5 @@
 table:
-  name: github_pulls
+  name: github_issues
   schema: public
 array_relationships:
   - name: ignoredForProjects

@@ -38,7 +38,7 @@ diesel::table! {
 }
 
 diesel::table! {
-    github_pulls (id) {
+    github_issues (id) {
         id -> Int8,
         repo_id -> Int8,
         issue_number -> Int8,
@@ -184,7 +184,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     crm_github_repos,
     event_deduplications,
     events,
-    github_pulls,
+    github_issues,
     github_repo_details,
     github_repo_indexes,
     ignored_github_issues,

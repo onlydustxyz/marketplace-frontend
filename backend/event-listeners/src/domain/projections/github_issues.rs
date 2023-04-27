@@ -8,7 +8,7 @@ use domain::{
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Insertable, AsChangeset, Serialize, Deserialize, Constructor)]
-pub struct GithubPull {
+pub struct GithubIssue {
 	id: GithubIssueId,
 	repo_id: GithubRepoId,
 	issue_number: GithubIssueNumber,
@@ -22,6 +22,6 @@ pub struct GithubPull {
 	closed_at: Option<NaiveDateTime>,
 }
 
-impl domain::Entity for GithubPull {
+impl domain::Entity for GithubIssue {
 	type Id = GithubIssueId;
 }

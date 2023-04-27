@@ -3,7 +3,7 @@ import {
   ContributorIdFragment,
   ContributorsTableFieldsFragment,
   ProjectContributorsFragment,
-  PullDetailsFragment,
+  GithubIssueDetailsFragment,
   Status,
   WorkItem,
 } from "src/__generated/graphql";
@@ -81,7 +81,7 @@ describe("countUnpaidMergedPullsByContributor", () => {
       issueNumber: id + 1,
     }));
 
-    const mergedPaidPulls: PullDetailsFragment[] = paidItems.map(({ repoId, issueNumber }, index) => ({
+    const mergedPaidPulls: GithubIssueDetailsFragment[] = paidItems.map(({ repoId, issueNumber }, index) => ({
       id: 2000 + index,
       repoId,
       issueNumber,
@@ -90,7 +90,7 @@ describe("countUnpaidMergedPullsByContributor", () => {
       ignoredForProjects: [],
     }));
 
-    const mergedUnPaidPulls: PullDetailsFragment[] = range(0, 10).map(id => ({
+    const mergedUnPaidPulls: GithubIssueDetailsFragment[] = range(0, 10).map(id => ({
       id: 3000 + id,
       repoId: 3000 + id,
       issueNumber: id,

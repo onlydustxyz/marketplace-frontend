@@ -1,3 +1,6 @@
+ALTER TABLE github_issues
+  RENAME TO github_pulls;
+
 ALTER TABLE github_pulls
     DROP COLUMN type,
     DROP COLUMN status,
