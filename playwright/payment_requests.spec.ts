@@ -3,7 +3,7 @@ import { expect } from "@playwright/test";
 import { restoreDB } from "./commands/db/db_utils";
 import { ProjectPage } from "./pages/project";
 import { User } from "./types";
-import { mutateAsAdmin, retry, sleep } from "./commands/common";
+import { mutateAsAdmin, retry } from "./commands/common";
 import {
   AddEthPaymentReceiptDocument,
   AddEthPaymentReceiptMutation,
@@ -89,10 +89,6 @@ test.describe("As a project lead, I", () => {
     });
 
     const paymentsPage = new ProjectPaymentsPage(page, project);
-
-    // TODO: Remove once E-507 is fixed
-    await sleep(500);
-    await page.reload();
 
     expect(await paymentsPage.remainingBudget()).toBe("$85,600");
 
