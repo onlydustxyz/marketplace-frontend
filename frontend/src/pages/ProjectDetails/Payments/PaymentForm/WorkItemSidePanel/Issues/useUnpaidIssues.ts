@@ -1,4 +1,4 @@
-import { differenceWith, sortBy } from "lodash";
+import { chain, find } from "lodash";
 import { useMemo } from "react";
 import {
   GetPaidWorkItemsDocument,
@@ -44,9 +44,10 @@ type Filters = {
 type Props = {
   projectId: string;
   filters?: Filters;
+  includeIgnored?: boolean;
 };
 
-export default function useUnpaidIssues({ projectId, filters }: Props) {
+export default function useUnpaidIssues({ projectId, filters, includeIgnored = false }: Props) {
   const getPaidItemsQuery = useHasuraQuery<GetPaidWorkItemsQuery>(
     GetPaidWorkItemsDocument,
     HasuraUserRole.RegisteredUser,
@@ -79,13 +80,15 @@ export default function useUnpaidIssues({ projectId, filters }: Props) {
     () =>
       searchPrQuery.data?.searchIssues &&
       paidItems &&
-      sortBy(
-        differenceWith(searchPrQuery.data?.searchIssues, paidItems, (pr, paidItem) => {
+      chain(searchPrQuery.data?.searchIssues)
+        .differenceWith(paidItems, (pr, paidItem) => {
           return pr.repoId === paidItem.repoId && pr.number === paidItem.issueNumber;
-        }),
-        "createdAt"
-      ).reverse(),
-    [searchPrQuery.data?.searchIssues, paidItems]
+        })
+        .filter(item => includeIgnored || !find(item.ignoredForProjects, { projectId }))
+        .sortBy("createdAt")
+        .reverse()
+        .value(),
+    [searchPrQuery.data?.searchIssues, paidItems, projectId, includeIgnored]
   );
 
   return { data: elligibleIssues, loading: searchPrQuery.loading || getPaidItemsQuery.loading };

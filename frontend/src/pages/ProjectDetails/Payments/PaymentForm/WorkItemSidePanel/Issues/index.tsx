@@ -1,9 +1,10 @@
-import { differenceBy } from "lodash";
+import { chain, find } from "lodash";
 import { useMemo } from "react";
 import { WorkItem } from "src/components/GithubIssue";
 import IssuesView from "./IssuesView";
 import PullRequestsView from "./PullRequestsView";
 import useUnpaidIssues, { IssueType } from "./useUnpaidIssues";
+import useIgnoredIssues from "./useIgnoredIssues";
 
 type Props = {
   type: IssueType;
@@ -14,16 +15,42 @@ type Props = {
 };
 
 export default function Issues({ type, projectId, contributorHandle, workItems, onWorkItemAdded }: Props) {
-  const { data: unpaidIssues, loading } = useUnpaidIssues({ projectId, filters: { author: contributorHandle, type } });
+  const { data: unpaidIssues, loading } = useUnpaidIssues({
+    projectId,
+    filters: { author: contributorHandle, type },
+    includeIgnored: true,
+  });
 
-  const issues: WorkItem[] = useMemo(() => differenceBy(unpaidIssues, workItems, "id"), [unpaidIssues, workItems]);
+  const initialIgnoredIssues = useMemo(
+    () => unpaidIssues?.filter((issue: WorkItem) => find(issue.ignoredForProjects, { projectId })) || [],
+    [projectId, unpaidIssues]
+  );
+
+  const {
+    issues: ignoredIssues,
+    ignore: ignoreIssue,
+    unignore: unignoreIssue,
+  } = useIgnoredIssues(initialIgnoredIssues);
+
+  const addAndUnignoreItem = (workItem: WorkItem) => {
+    if (find(ignoredIssues, { id: workItem.id })) unignoreIssue(projectId, workItem);
+    onWorkItemAdded(workItem);
+  };
+
+  const issues: WorkItem[] = useMemo(
+    () => chain(unpaidIssues).differenceBy(workItems, "id").differenceBy(ignoredIssues, "id").value(),
+    [unpaidIssues, workItems, ignoredIssues]
+  );
 
   return (
     <>
       {type === IssueType.PullRequest && (
         <PullRequestsView
           workItems={issues}
-          onWorkItemAdded={onWorkItemAdded}
+          ignoredItems={ignoredIssues}
+          onWorkItemAdded={addAndUnignoreItem}
+          onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
+          onWorkItemUnignored={workItem => unignoreIssue(projectId, workItem)}
           query={{
             data: unpaidIssues,
             loading,
@@ -33,7 +60,10 @@ export default function Issues({ type, projectId, contributorHandle, workItems, 
       {type === IssueType.Issue && (
         <IssuesView
           workItems={issues}
-          onWorkItemAdded={onWorkItemAdded}
+          ignoredItems={ignoredIssues}
+          onWorkItemAdded={addAndUnignoreItem}
+          onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
+          onWorkItemUnignored={workItem => unignoreIssue(projectId, workItem)}
           query={{
             data: unpaidIssues,
             loading,

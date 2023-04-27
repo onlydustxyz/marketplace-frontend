@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { PullDetailsFragment, VisibleProjectFragment } from "src/__generated/graphql";
-import { chain, flatMap, some, uniqBy } from "lodash";
+import { chain, find, flatMap, some, uniqBy } from "lodash";
 import isDefined from "src/utils/isDefined";
 import { ContributorIdFragment } from "src/__generated/graphql";
 
@@ -41,6 +41,7 @@ export const VISIBLE_PROJECT_FRAGMENT = gql`
 `;
 
 type Project<R> = {
+  id: string;
   githubRepos: Array<{
     githubRepoDetails: {
       content: { contributors: Array<R | null> } | null;
@@ -84,7 +85,16 @@ export const countUnpaidMergedPullsByContributor = (project?: Project<Contributo
   const notPaid = ({ authorId, repoId, issueNumber }: PullDetailsFragment) =>
     !some(paidItemsByLogin[authorId], { repoId, issueNumber });
 
-  return chain(project?.githubRepos).flatMap("repoPulls").filter(isDefined).filter(notPaid).countBy("authorId").value();
+  const notIgnored = ({ ignoredForProjects }: PullDetailsFragment) =>
+    !find(ignoredForProjects, { projectId: project?.id });
+
+  return chain(project?.githubRepos)
+    .flatMap("repoPulls")
+    .filter(isDefined)
+    .filter(notPaid)
+    .filter(notIgnored)
+    .countBy("authorId")
+    .value();
 };
 
 gql`
@@ -97,9 +107,13 @@ gql`
     repoId
     issueNumber
     authorId
+    ignoredForProjects {
+      projectId
+    }
   }
 
   fragment ProjectContributors on Projects {
+    id
     githubRepos {
       githubRepoId
       githubRepoDetails {

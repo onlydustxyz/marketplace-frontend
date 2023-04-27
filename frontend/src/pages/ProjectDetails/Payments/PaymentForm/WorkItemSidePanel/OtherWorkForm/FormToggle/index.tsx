@@ -3,7 +3,7 @@ import View from "./View";
 
 type Props<TName extends FieldPath<TFieldValues>, TFieldValues extends FieldValues> = {
   name: TName;
-  label: string;
+  label?: string;
   control?: Control<TFieldValues>;
 };
 

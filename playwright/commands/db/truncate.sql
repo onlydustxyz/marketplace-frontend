@@ -3,6 +3,7 @@ TRUNCATE "public"."payment_requests" RESTART IDENTITY CASCADE;
 TRUNCATE "public"."event_deduplications" RESTART IDENTITY CASCADE;
 TRUNCATE "public"."events" RESTART IDENTITY CASCADE;
 TRUNCATE "public"."github_repo_details" RESTART IDENTITY CASCADE;
+TRUNCATE "public"."ignored_github_issues" RESTART IDENTITY CASCADE;
 TRUNCATE "public"."payments" RESTART IDENTITY CASCADE;
 TRUNCATE "public"."project_leads" RESTART IDENTITY CASCADE;
 TRUNCATE "public"."pending_project_leader_invitations" RESTART IDENTITY CASCADE;

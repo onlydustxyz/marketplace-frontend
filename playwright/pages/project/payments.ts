@@ -70,28 +70,33 @@ export class NewPaymentPage {
     }
 
     // Add work items
-    await this.page.getByTestId("add-work-item-btn").click();
+    await this.addWorkItemButton().click();
 
-    // Select PR in list
-    const elligiblePulls = this.page.getByTestId("elligible-pulls").getByRole("button");
-    for (const index of pullRequestIndexes.sort().reverse()) {
-      await elligiblePulls.nth(index).click();
-    }
+    // Add PRs
+    if (pullRequestIndexes.length + otherPullRequests.length > 0) {
+      await this.pullRequestsTab().click();
 
-    // Add other PR
-    if (otherPullRequests.length > 0) {
-      await this.page.locator("[data-testid=add-other-pr-toggle]").click();
+      // Select PR in list
+      const elligiblePulls = this.page.getByTestId("elligible-pulls").getByRole("button");
+      for (const index of pullRequestIndexes.sort().reverse()) {
+        await elligiblePulls.nth(index).click();
+      }
 
-      for (const pr of otherPullRequests) {
-        await this.page.locator("#otherPrLink").fill(pr);
-        await this.page.getByTestId("add-other-pr-btn").click();
-        await expect(this.page.getByText(`#${pr.split("/").at(-1)}`)).toBeVisible();
+      // Add other PR
+      if (otherPullRequests.length > 0) {
+        await this.page.locator("[data-testid=add-other-pr-toggle]").click();
+
+        for (const pr of otherPullRequests) {
+          await this.page.locator("#otherPrLink").fill(pr);
+          await this.page.getByTestId("add-other-pr-btn").click();
+          await expect(this.page.getByText(`#${pr.split("/").at(-1)}`)).toBeVisible();
+        }
       }
     }
 
     // Add issues
     if (issuesIndexes.length + otherIssues.length > 0) {
-      await this.page.getByTestId("tab-issues").click();
+      await this.issuesTab().click();
 
       // Select issues in list
       const elligibleIssues = this.page.getByTestId("elligible-issues").getByRole("button");
@@ -113,13 +118,10 @@ export class NewPaymentPage {
 
     // Add other work
     if (otherWorks.length > 0) {
-      await this.page.getByTestId("tab-other-work").click();
+      await this.otherWorkTab().click();
 
       for (const otherWork of otherWorks) {
-        const addedWorkItemsCount = await this.page
-          .getByTestId("added-work-items")
-          .locator("div[id^=github-issue-]")
-          .count();
+        const addedWorkItemsCount = await this.page.locator("[data-testid=added-work-items] > div").count();
 
         otherWork.kind && (await this.page.getByRole("option", { name: otherWork.kind }).click());
         otherWork.title && (await this.page.getByTestId("other-work-title").fill(otherWork.title));
@@ -130,19 +132,29 @@ export class NewPaymentPage {
         }
         await this.page.getByRole("button", { name: "create and add issue" }).click();
 
-        await expect(this.page.getByTestId("added-work-items").locator("div[id^=github-issue-]")).toHaveCount(
-          addedWorkItemsCount + 1
-        );
+        await expect(this.page.locator("[data-testid=added-work-items] > div")).toHaveCount(addedWorkItemsCount + 1);
         await sleep(1000);
       }
     }
 
     // Close panel and submit payment request
-    await this.page.getByTestId("close-add-work-item-panel-btn").click();
+    await this.closeWorkItemsPanelButton().click();
     await this.page.getByText("Confirm payment").click();
   };
 
   contributorText = () => this.page.getByTestId("contributor-selection-value").textContent();
+
+  addWorkItemButton = () => this.page.getByTestId("add-work-item-btn");
+  closeWorkItemsPanelButton = () => this.page.getByTestId("close-add-work-item-panel-btn");
+
+  pullRequestsTab = () => this.page.getByTestId("tab-pull-requests");
+  issuesTab = () => this.page.getByTestId("tab-issues");
+  otherWorkTab = () => this.page.getByTestId("tab-other-work");
+
+  workItem = (text: string) => this.page.locator("[data-testid='elligible-issues'] > div", { hasText: text });
+  addWorkItem = (text: string) => this.workItem(text).locator("button").first().click();
+  ignoreWorkItem = (text: string) => this.workItem(text).locator("button").nth(1).click();
+  showIgnoredToggle = () => this.page.locator('[id="headlessui-switch-\\:re\\:"]');
 }
 
 export class PaymentTable {

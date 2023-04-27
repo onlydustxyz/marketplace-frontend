@@ -1,8 +1,8 @@
 import { Status, Type } from "src/__generated/graphql";
-import GithubIssue, { Action, Props } from ".";
+import GithubIssue, { Action, Props, WorkItem } from ".";
 import { daysFromNow } from "src/utils/date";
 
-const issues = {
+const issues: Record<string, WorkItem> = {
   closed: {
     id: 1268051991,
     repoId: 123456,
@@ -14,6 +14,7 @@ const issues = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(5),
     mergedAt: null,
+    ignoredForProjects: [],
   },
   prOpen: {
     id: 1268051991,
@@ -26,6 +27,7 @@ const issues = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(5),
     mergedAt: null,
+    ignoredForProjects: [],
   },
   issueOpen: {
     id: 1268051991,
@@ -38,6 +40,7 @@ const issues = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(5),
     mergedAt: null,
+    ignoredForProjects: [],
   },
   merged: {
     id: 1268051991,
@@ -50,6 +53,7 @@ const issues = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(5),
     mergedAt: daysFromNow(5),
+    ignoredForProjects: [],
   },
   completed: {
     id: 1268051991,
@@ -62,6 +66,7 @@ const issues = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(5),
     mergedAt: daysFromNow(5),
+    ignoredForProjects: [],
   },
   cancelled: {
     id: 1268051991,
@@ -74,6 +79,7 @@ const issues = {
     createdAt: daysFromNow(6),
     closedAt: daysFromNow(5),
     mergedAt: daysFromNow(5),
+    ignoredForProjects: [],
   },
 };
 
@@ -83,7 +89,11 @@ export default {
   argTypes: {
     action: {
       control: { type: "select" },
-      options: [undefined, Action.Add, Action.Remove],
+      options: [undefined, Action.Add, Action.Remove, Action.Ignore, Action.UnIgnore],
+    },
+    secondaryAction: {
+      control: { type: "select" },
+      options: [undefined, Action.Add, Action.Remove, Action.Ignore, Action.UnIgnore],
     },
     workItem: {
       options: Object.keys(issues),
