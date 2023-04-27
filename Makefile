@@ -27,8 +27,11 @@ rust/install:
 #                 Dependencies installation
 # ----------------------------------------------------------
 
+.env:
+	@cp .env.example .env
+
 # Install all the dependencies
-install/all: rust/install frontend/install hasura/install playwright/install
+install/all: .env rust/install frontend/install hasura/install playwright/install
 
 node_modules:
 	yarn
