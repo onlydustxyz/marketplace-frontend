@@ -28,7 +28,9 @@ export enum Action {
   UnIgnore = "unignore",
 }
 
-export type WorkItem = IssueDetailsFragment;
+export type WorkItem = IssueDetailsFragment & {
+  ignored?: boolean;
+};
 
 export type Props = {
   action?: Action;
