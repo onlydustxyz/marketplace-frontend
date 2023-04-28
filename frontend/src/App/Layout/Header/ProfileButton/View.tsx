@@ -61,7 +61,7 @@ const View = ({ avatarUrl, displayName, logout, payoutSettingsInvalid }: Props) 
             onFocus={() => setMenuItemsVisible(true)}
             onBlur={() => setMenuItemsVisible(false)}
             className="
-							absolute right-0 mt-3 w-full origin-top-right
+							absolute right-0 mt-3 w-40 origin-top-right
 							divide-y divide-stone-100/8 rounded-md bg-white/2 backdrop-blur-4xl shadow-lg ring-1 ring-stone-100/8
                             text-greyscale-50 text-sm font-walsheim
 							focus:outline-none z-10 overflow-hidden"
