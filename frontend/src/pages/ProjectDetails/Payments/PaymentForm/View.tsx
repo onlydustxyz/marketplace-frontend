@@ -64,6 +64,8 @@ const View: React.FC<Props> = ({
     }
   }, [unpaidIssues, contributor, addWorkItem, clearWorkItems, workItemsPrefilled, setWorkItemsPrefilled]);
 
+  useEffect(() => setWorkItemsPrefilled(false), [contributor]);
+
   const displayCallout = contributor && !contributor?.user?.userId;
 
   return (
