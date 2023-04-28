@@ -145,8 +145,14 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
         Budgets: {
           fields: {
             paymentRequests: {
-              merge: (existing: PaymentRequests[] = [], incoming: PaymentRequests[]) =>
-                uniqBy([...existing, ...incoming], "__ref"),
+              merge: (existing = [], incoming) => uniqBy([...existing, ...incoming], "__ref"),
+            },
+          },
+        },
+        GithubPulls: {
+          fields: {
+            ignoredForProjects: {
+              merge: (existing = [], incoming) => uniqBy([...existing, ...incoming], "__ref"),
             },
           },
         },
