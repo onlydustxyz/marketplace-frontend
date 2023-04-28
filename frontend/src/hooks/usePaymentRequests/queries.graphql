@@ -3,6 +3,7 @@ fragment PaymentRequest on PaymentRequests {
   recipientId
   amountInUsd
   workItems {
+    paymentId
     repoId
     issueNumber
   }

@@ -25,6 +25,7 @@ export default function usePayoutSettings(githubUserId?: number) {
 
 const USER_PAYOUT_SETTINGS_FRAGMENT = gql`
   fragment UserPayoutSettings on UserInfo {
+    userId
     identity
     location
     payoutSettings
@@ -37,6 +38,7 @@ export const GET_USER_PAYOUT_SETTINGS = gql`
   query GetUserPayoutSettings($githubUserId: bigint!) {
     authGithubUsers(where: { githubUserId: { _eq: $githubUserId } }) {
       user {
+        id
         userInfo {
           ...UserPayoutSettings
         }

@@ -19,6 +19,7 @@ fragment ProjectContributorsForPaymentSelect on Projects {
     paymentRequests {
       id
       workItems {
+        paymentId
         repoId
         issueNumber
       }

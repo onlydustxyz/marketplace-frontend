@@ -35,6 +35,7 @@ query getPaidWorkItems($projectId: uuid!) {
       paymentRequests {
         id
         workItems {
+          paymentId
           repoId
           issueNumber
         }
