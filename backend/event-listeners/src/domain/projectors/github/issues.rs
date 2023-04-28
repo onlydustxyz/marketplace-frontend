@@ -18,11 +18,12 @@ pub struct Projector {
 impl EventListener<GithubEvent> for Projector {
 	#[instrument(name = "github_issues_projection", skip(self))]
 	async fn on_event(&self, event: &GithubEvent) -> Result<(), SubscriberCallbackError> {
-		if let GithubEvent::PullRequest(pull) = event {
-			{
-				let pull = pull.clone().try_into().map_err(SubscriberCallbackError::Discard)?;
-				self.github_issues_repository.upsert(&pull)?;
-			}
+		match event {
+			GithubEvent::PullRequest(issue) | GithubEvent::Issue(issue) => {
+				let issue = issue.clone().try_into().map_err(SubscriberCallbackError::Discard)?;
+				self.github_issues_repository.upsert(&issue)?;
+			},
+			GithubEvent::Repo(_) => (),
 		}
 		Ok(())
 	}

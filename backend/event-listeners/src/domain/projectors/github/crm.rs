@@ -19,9 +19,12 @@ pub struct Projector {
 impl EventListener<GithubEvent> for Projector {
 	#[instrument(name = "crm_projection", skip(self))]
 	async fn on_event(&self, event: &GithubEvent) -> Result<(), SubscriberCallbackError> {
-		if let GithubEvent::Repo(repo) = event.clone() {
-			let repo = repo.try_into().map_err(SubscriberCallbackError::Discard)?;
-			self.crm_github_repo_repository.upsert(&repo)?;
+		match event.clone() {
+			GithubEvent::Repo(repo) => {
+				let repo = repo.try_into().map_err(SubscriberCallbackError::Discard)?;
+				self.crm_github_repo_repository.upsert(&repo)?;
+			},
+			GithubEvent::Issue(_) | GithubEvent::PullRequest(_) => (),
 		}
 		Ok(())
 	}
