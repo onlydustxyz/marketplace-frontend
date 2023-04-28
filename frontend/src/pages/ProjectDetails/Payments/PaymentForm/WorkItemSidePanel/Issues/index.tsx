@@ -61,8 +61,8 @@ export default function Issues({ type, projectId, workItems, onWorkItemAdded, un
 }
 
 export const issueToWorkItem = (
-  projectId: string,
-  { ignoredForProjects, ...props }: IssueDetailsFragment
+  { ignoredForProjects, ...props }: IssueDetailsFragment,
+  projectId?: string
 ): WorkItem => ({
   ...props,
   ignored: some(ignoredForProjects, { projectId }),

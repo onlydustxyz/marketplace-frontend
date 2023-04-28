@@ -25,7 +25,7 @@ export default function OtherIssueInput({ projectId, onWorkItemAdded }: Props) {
   const [fetchIssue] = useHasuraLazyQuery<FetchIssueQuery>(FetchIssueDocument, HasuraUserRole.RegisteredUser, {
     onCompleted: data => {
       if (data.fetchIssue) {
-        onWorkItemAdded(issueToWorkItem(projectId, data.fetchIssue));
+        onWorkItemAdded(issueToWorkItem(data.fetchIssue, projectId));
         resetField(INPUT_NAME);
       } else {
         setError(INPUT_NAME, {
