@@ -81,7 +81,7 @@ const graphQlMocks = [
                   contributors: [TEST_USER, TEST_OTHER_USER],
                 },
               },
-              repoPulls: [],
+              repoIssues: [],
             },
           ],
           budgets: [],

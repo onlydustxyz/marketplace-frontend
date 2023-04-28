@@ -6,6 +6,7 @@ import {
   GithubIssueDetailsFragment,
   Status,
   WorkItem,
+  Type,
 } from "src/__generated/graphql";
 import { countUnpaidMergedPullsByContributor, getContributors } from "./project";
 
@@ -85,6 +86,12 @@ describe("countUnpaidMergedPullsByContributor", () => {
       id: 2000 + index,
       repoId,
       issueNumber,
+      closedAt: new Date(),
+      createdAt: new Date(),
+      mergedAt: new Date(),
+      htmlUrl: "",
+      title: "title",
+      type: Type.PullRequest,
       authorId: users[index].id,
       status: Status.Merged,
       ignoredForProjects: [],
@@ -94,6 +101,12 @@ describe("countUnpaidMergedPullsByContributor", () => {
       id: 3000 + id,
       repoId: 3000 + id,
       issueNumber: id,
+      closedAt: new Date(),
+      createdAt: new Date(),
+      mergedAt: new Date(),
+      htmlUrl: "",
+      title: "title",
+      type: Type.PullRequest,
       authorId: users[id % users.length].id,
       status: Status.Merged,
       ignoredForProjects: [],
@@ -106,7 +119,7 @@ describe("countUnpaidMergedPullsByContributor", () => {
           githubRepoDetails: {
             content: { contributors: [...users] },
           },
-          repoPulls: [...mergedPaidPulls, ...mergedUnPaidPulls],
+          repoIssues: [...mergedPaidPulls, ...mergedUnPaidPulls],
         },
       ],
       budgets: [

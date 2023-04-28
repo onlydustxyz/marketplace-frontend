@@ -46,7 +46,7 @@ type Project<R> = {
     githubRepoDetails: {
       content: { contributors: Array<R | null> } | null;
     } | null;
-    repoPulls?: GithubIssueDetailsFragment[] | null;
+    repoIssues?: GithubIssueDetailsFragment[] | null;
   }> | null;
   budgets: Array<{
     paymentRequests: Array<{ githubRecipient: R | null }>;

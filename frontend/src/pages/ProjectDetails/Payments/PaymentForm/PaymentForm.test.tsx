@@ -24,7 +24,6 @@ import {
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
 import { GithubContributorFragment } from "src/__generated/graphql";
-import { IssueState, IssueType } from "./WorkItemSidePanel/Issues/useUnpaidIssues";
 import { daysFromNow } from "src/utils/date";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };
@@ -133,7 +132,7 @@ const graphQlMocks = [
                   contributors: [TEST_GITHUB_USER],
                 },
               },
-              repoPulls: [],
+              repoIssues: [],
             },
           ],
           budgets: [],
@@ -168,20 +167,17 @@ const graphQlMocks = [
     request: {
       query: SearchIssuesDocument,
       variables: {
-        query: buildQuery({
-          author: TEST_USER.displayName,
-          repos: [{ id: 1234, owner: "owner", name: "name" }],
-          state: IssueState.Merged,
-          type: IssueType.PullRequest,
-        }),
-        order: "desc",
-        sort: "created",
-        perPage: 100,
+        authorId: TEST_USER.id,
+        projectId: TEST_PROJECT_ID,
       } as SearchIssuesQueryVariables,
     },
     result: {
       data: {
-        searchIssues: [],
+        projectsByPk: {
+          __typename: "Projects",
+          id: TEST_PROJECT_ID,
+          githubRepos: [],
+        },
       } as SearchIssuesQueryResult["data"],
     },
   },
