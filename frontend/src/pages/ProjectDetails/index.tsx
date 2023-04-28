@@ -38,7 +38,10 @@ const ProjectDetails: React.FC = () => {
 
   const [acceptInvitation, acceptInvitationResponse] = useHasuraMutation(
     ACCEPT_PROJECT_LEADER_INVITATION_MUTATION,
-    HasuraUserRole.RegisteredUser
+    HasuraUserRole.RegisteredUser,
+    {
+      context: { graphqlErrorDisplay: "toaster" },
+    }
   );
 
   const getProjectQuery = useCachableHasuraQuery<GetProjectQuery>(GET_PROJECT_QUERY, HasuraUserRole.Public, {
