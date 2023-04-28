@@ -11235,13 +11235,13 @@ export type UnignoreIssueMutation = { __typename?: 'mutation_root', unignoreIssu
 export type SearchIssuesQueryVariables = Exact<{
   projectId: Scalars['uuid'];
   authorId: Scalars['bigint'];
-  status: InputMaybe<Scalars['jsonb']>;
+  status: Array<Scalars['String']> | Scalars['String'];
   type: Scalars['jsonb'];
   createdSince: Scalars['timestamp'];
 }>;
 
 
-export type SearchIssuesQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', githubRepos: Array<{ __typename?: 'ProjectGithubRepos', repoIssues: Array<{ __typename?: 'GithubIssues', id: any, repoId: any, issueNumber: any, title: string, htmlUrl: string, authorId: any, type: any, status: any, createdAt: any, closedAt: any | null, mergedAt: any | null, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any }> }> }> } | null };
+export type SearchIssuesQuery = { __typename?: 'query_root', projectsByPk: { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', repoIssues: Array<{ __typename?: 'GithubIssues', id: any, repoId: any, issueNumber: any, title: string, htmlUrl: string, authorId: any, type: any, status: any, createdAt: any, closedAt: any | null, mergedAt: any | null, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any }> }> }> } | null };
 
 export type RepositoryOwnerAndNameFragment = { __typename?: 'Repo', id: any, owner: string, name: string };
 
@@ -12973,11 +12973,12 @@ export type UnignoreIssueMutationHookResult = ReturnType<typeof useUnignoreIssue
 export type UnignoreIssueMutationResult = Apollo.MutationResult<UnignoreIssueMutation>;
 export type UnignoreIssueMutationOptions = Apollo.BaseMutationOptions<UnignoreIssueMutation, UnignoreIssueMutationVariables>;
 export const SearchIssuesDocument = gql`
-    query SearchIssues($projectId: uuid!, $authorId: bigint!, $status: jsonb, $type: jsonb!, $createdSince: timestamp!) {
+    query SearchIssues($projectId: uuid!, $authorId: bigint!, $status: [String!]!, $type: jsonb!, $createdSince: timestamp!) {
   projectsByPk(id: $projectId) {
+    id
     githubRepos {
       repoIssues(
-        where: {authorId: {_eq: $authorId}, status: {_eq: $status}, createdAt: {_gte: $createdSince}, type: {_eq: $type}}
+        where: {authorId: {_eq: $authorId}, status: {_hasKeysAll: $status}, createdAt: {_gte: $createdSince}, type: {_eq: $type}}
       ) {
         ...GithubIssueDetails
       }
