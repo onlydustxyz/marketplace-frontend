@@ -23,10 +23,4 @@ pub trait Service: Send + Sync {
 		repo_id: &GithubRepoId,
 		filters: &GithubServiceFilters,
 	) -> Result<Vec<GithubIssue>>;
-
-	async fn pulls_by_repo_id(
-		&self,
-		repo_id: &GithubRepoId,
-		filters: &GithubServiceFilters,
-	) -> Result<Vec<GithubIssue>>;
 }

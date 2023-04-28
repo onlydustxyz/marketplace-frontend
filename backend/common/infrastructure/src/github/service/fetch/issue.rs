@@ -10,34 +10,6 @@ use crate::{github, github::IssueFromOctocrab};
 #[async_trait]
 impl GithubFetchIssueService for github::Client {
 	#[instrument(skip(self))]
-	async fn pulls_by_repo_id(
-		&self,
-		repo_id: &GithubRepoId,
-		filters: &GithubServiceFilters,
-	) -> GithubServiceResult<Vec<GithubIssue>> {
-		let octocrab_pull_requests = self.pulls_by_repo_id(repo_id, filters).await?;
-		let pull_requests = octocrab_pull_requests
-			.into_iter()
-			.filter_map(
-				|pr| match GithubIssue::from_octocrab_pull_request(pr.clone(), *repo_id) {
-					Ok(pr) => Some(pr),
-					Err(e) => {
-						error!(
-							error = e.to_string(),
-							repository_id = repo_id.to_string(),
-							pullrequest_id = pr.id.0,
-							"Failed to process pull request"
-						);
-						None
-					},
-				},
-			)
-			.collect();
-
-		Ok(pull_requests)
-	}
-
-	#[instrument(skip(self))]
 	async fn issues_by_repo_id(
 		&self,
 		repo_id: &GithubRepoId,

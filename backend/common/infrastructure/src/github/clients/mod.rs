@@ -9,7 +9,6 @@ use futures::{stream::empty, Stream, StreamExt, TryStreamExt};
 use octocrab::{
 	models::{
 		issues::{Comment, Issue},
-		pulls::PullRequest,
 		repos::Content,
 		Repository, User,
 	},
@@ -205,44 +204,6 @@ impl Client {
 	#[instrument(skip(self))]
 	pub async fn get_user_by_name(&self, username: &str) -> Result<User, Error> {
 		self.get_as(format!("{}users/{username}", self.octocrab().base_url)).await
-	}
-
-	#[instrument(skip(self))]
-	pub async fn pulls_by_repo_id(
-		&self,
-		id: &GithubRepoId,
-		filters: &GithubServiceFilters,
-	) -> Result<Vec<PullRequest>, Error> {
-		let sort = if filters.updated_since.is_some() {
-			Sort::Updated
-		} else {
-			Sort::Created
-		};
-
-		let query_params = QueryParams::default()
-			.state(filters.state.into())
-			.sort(sort)
-			.direction(Direction::Descending)
-			.page(1)
-			.per_page(100);
-
-		let url = format!(
-			"{}repositories/{id}/pulls?{}",
-			self.octocrab().base_url,
-			query_params.to_query_string()?
-		)
-		.parse()?;
-
-		let pulls = self
-			.stream_as::<PullRequest>(
-				url,
-				100 * self.config().max_calls_per_request.map(PositiveCount::get).unwrap_or(3),
-			)
-			.await?
-			.filter_with(*filters)
-			.collect()
-			.await;
-		Ok(pulls)
 	}
 
 	#[instrument(skip(self))]
