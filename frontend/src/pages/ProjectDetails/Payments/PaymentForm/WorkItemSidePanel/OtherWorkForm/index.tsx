@@ -83,6 +83,7 @@ export default function OtherWorkForm({ projectId, contributorHandle, onWorkItem
         description,
         assignees: [leader?.displayName, contributorHandle],
       } as CreateIssueMutationVariables,
+      context: { graphqlErrorDisplay: "toaster" },
       onCompleted: data => {
         clearForm();
         onWorkItemAdded(data.createIssue);

@@ -27,8 +27,8 @@ export default function InvoiceSubmission({ paymentRequests, githubUserId, userI
     HasuraUserRole.RegisteredUser,
     {
       variables: { paymentReferences: paymentRequests.map(p => ({ projectId: p.project?.id || "", paymentId: p.id })) },
+      context: { graphqlErrorDisplay: "toaster" },
       onCompleted: () => showToaster(T("invoiceSubmission.toaster.success")),
-      onError: () => showToaster(T("invoiceSubmission.toaster.error"), { isError: true }),
       update: (cache, _, { variables }) => {
         const { paymentReferences } = variables as MarkInvoiceAsReceivedMutationVariables;
         const paymentIds = Array.isArray(paymentReferences)
