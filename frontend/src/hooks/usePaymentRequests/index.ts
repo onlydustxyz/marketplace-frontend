@@ -26,6 +26,7 @@ export default function usePaymentRequests(projectId?: string) {
 
   const [requestNewPayment] = useHasuraMutation(RequestPaymentDocument, HasuraUserRole.RegisteredUser, {
     variables: { projectId },
+    context: { graphqlErrorDisplay: "toaster" },
     update: (cache, result, { variables }) => {
       const { budgetId, paymentId, amount } = (result as RequestPaymentMutationResult).data?.requestPayment || {};
       const { contributorId, reason } = variables as RequestPaymentMutationVariables;
@@ -55,6 +56,7 @@ export default function usePaymentRequests(projectId?: string) {
 
   const [cancelPaymentRequest] = useHasuraMutation(CancelPaymentRequestDocument, HasuraUserRole.RegisteredUser, {
     variables: { projectId },
+    context: { graphqlErrorDisplay: "toaster" },
     update: (cache, result) => {
       const { budgetId, paymentId, amount } =
         (result as CancelPaymentRequestMutationResult).data?.cancelPaymentRequest || {};

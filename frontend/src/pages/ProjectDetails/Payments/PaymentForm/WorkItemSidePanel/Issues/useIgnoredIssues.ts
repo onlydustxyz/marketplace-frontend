@@ -20,6 +20,7 @@ export default function useIgnoredIssues(issues: WorkItem[]) {
     (projectId: string, workItem: WorkItem) =>
       ignoreIssue({
         variables: { projectId, repoId: workItem.repoId, issueNumber: workItem.number },
+        context: { graphqlErrorDisplay: "toaster" },
         onCompleted: () => add(workItem),
         update: cache =>
           cache.modify({
@@ -36,6 +37,7 @@ export default function useIgnoredIssues(issues: WorkItem[]) {
     (projectId: string, workItem: WorkItem) =>
       unignoreIssue({
         variables: { projectId, repoId: workItem.repoId, issueNumber: workItem.number },
+        context: { graphqlErrorDisplay: "toaster" },
         onCompleted: () => remove(workItem),
         update: cache =>
           cache.modify({
