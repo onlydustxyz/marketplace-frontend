@@ -31,6 +31,15 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
+  VITE_HASURA_AUTH_BASE_URL: http://localhost:4000
+  VITE_HASURA_BASE_URL: http://localhost:8080
+  VITE_HASURA_BASE_WS_URL: ws://localhost:8080
+  VITE_HASURA_ADMIN_SECRET: myadminsecretkey
+  VITE_LOGIN_URL: http://localhost:4000/signin/provider/github
+  VITE_FAKE_TIME: "2023-04-10T00:00:00Z"
+  CARGO_INCREMENTAL: 0
+  RUSTFLAGS: -Cinstrument-coverage
+  LLVM_PROFILE_FILE: backend-%p-%m.profraw
 
 jobs:
   e2e_tests:
@@ -47,28 +56,17 @@ jobs:
       - name: Setup llvm tools
         run: rustup component add llvm-tools-preview
 
-      - name: Setup environment
-        uses: ./.github/actions/env-setup
+      - name: Install the stack
+        run: make install/all
 
-      - name: Run frontend
-        uses: ./.github/actions/frontend-run
-        env:
-          VITE_HASURA_AUTH_BASE_URL: http://localhost:4000
-          VITE_HASURA_BASE_URL: http://localhost:8080
-          VITE_HASURA_BASE_WS_URL: ws://localhost:8080
-          VITE_HASURA_ADMIN_SECRET: myadminsecretkey
-          VITE_LOGIN_URL: http://localhost:4000/signin/provider/github
-          VITE_FAKE_TIME: "2023-04-10T00:00:00Z"
+      - name: Start the docker stack
+        run: make docker/up
 
-      - name: Run Rust backend
-        uses: ./.github/actions/backend-run
-        env:
-          CARGO_INCREMENTAL: 0
-          RUSTFLAGS: -Cinstrument-coverage
-          LLVM_PROFILE_FILE: backend-%p-%m.profraw
+      - name: Start the full stack
+        run: make app/background-start
 
-      - name: Setup hasura
-        uses: ./.github/actions/hasura-setup
+      - name: Prepare Hasura
+        run: make hasura/refresh
 
       - name: Check database and GraphQL schema consistency
         run: yarn hasura md ic status
@@ -79,18 +77,19 @@ jobs:
         run: yarn hasura md ic list
         working-directory: ./hasura
 
-      - name: Execute end-to-end tests
-        uses: ./.github/actions/playwright
+      - name: Run the end-to-end tests
+        run: make playwright/test
 
-      - name: Kill Rust backend
-        uses: ./.github/actions/backend-kill
-
-      - name: Kill frontend
-        uses: ./.github/actions/frontend-kill
+      - name: Setup tmate session for debugging
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ failure() && inputs.debug_enabled }}
 
       - name: Display log files in case of failure
-        run: tail -n 30 *.out.log
+        run: tail -n 30 *.log
         if: ${{ failure() }}
+
+      - name: Stop the fullstack
+        run: make app/background-stop
 
       - name: Archive code coverage results
         uses: actions/upload-artifact@v3
@@ -100,6 +99,3 @@ jobs:
           path: playwright-report/
           retention-days: 7
 
-      - name: Setup tmate session for debugging
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ failure() && inputs.debug_enabled }}
