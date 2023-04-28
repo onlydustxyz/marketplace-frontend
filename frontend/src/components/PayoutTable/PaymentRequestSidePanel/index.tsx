@@ -6,6 +6,8 @@ import { HasuraUserRole, PaymentStatus } from "src/types";
 import { IssueDetailsFragmentDoc, PaymentRequestDetailsQuery } from "src/__generated/graphql";
 import View from "./View";
 import usePaymentRequests from "src/hooks/usePaymentRequests";
+import { useShowToaster } from "src/hooks/useToaster";
+import { useIntl } from "src/hooks/useIntl";
 
 type Props = {
   projectId?: string;
@@ -26,6 +28,9 @@ export default function PaymentRequestSidePanel({ projectId, paymentId, projectL
     }
   );
 
+  const showToaster = useShowToaster();
+  const { T } = useIntl();
+
   const status =
     data?.paymentRequestsByPk?.paymentsAggregate.aggregate?.sum?.amount === data?.paymentRequestsByPk?.amountInUsd
       ? PaymentStatus.ACCEPTED
@@ -37,7 +42,14 @@ export default function PaymentRequestSidePanel({ projectId, paymentId, projectL
 
   const { cancelPaymentRequest } = usePaymentRequests(projectId);
 
-  const onPaymentCancel = () => cancelPaymentRequest({ variables: { paymentId }, onCompleted: () => setOpen(false) });
+  const onPaymentCancel = () =>
+    cancelPaymentRequest({
+      variables: { paymentId },
+      onCompleted: () => {
+        setOpen(false);
+        showToaster(T("payment.form.cancelled"));
+      },
+    });
 
   return (
     <View

@@ -190,6 +190,7 @@
       },
       "leftToSpend": "Left to spend",
       "remainingBudget": "Remaining budget",
+      "cancelled": "Payment request cancelled",
       "sent": "Payment successfully sent",
       "steps": {
         "days": {
