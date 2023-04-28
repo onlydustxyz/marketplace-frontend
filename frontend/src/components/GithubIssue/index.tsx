@@ -54,7 +54,7 @@ export default function GithubIssue({
       {action && (
         <ActionButton id={`github-issue-action-${workItem.id}`} action={action} onClick={onClick} ignored={ignored} />
       )}
-      <div className="flex flex-col gap-2 font-walsheim ">
+      <div className="flex flex-col gap-2 font-walsheim w-full">
         <div className="flex font-medium text-sm text-greyscale-50">
           <GithubIssueLink url={workItem.htmlUrl} text={`#${workItem.number} · ${workItem.title}`} />
         </div>
