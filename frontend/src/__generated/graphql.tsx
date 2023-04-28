@@ -10988,14 +10988,14 @@ export type ImpersonatedUserQueryVariables = Exact<{
 }>;
 
 
-export type ImpersonatedUserQuery = { __typename?: 'query_root', user: { __typename?: 'users', id: any, createdAt: any, displayName: string, email: any | null, avatarUrl: string, locale: string, isAnonymous: boolean, defaultRole: string, emailVerified: boolean, phoneNumber: string | null, phoneNumberVerified: boolean, activeMfaType: string | null, roles: Array<{ __typename?: 'authUserRoles', role: string }>, githubUser: { __typename?: 'AuthGithubUsers', githubUserId: any | null } | null } | null };
+export type ImpersonatedUserQuery = { __typename?: 'query_root', user: { __typename?: 'users', id: any, createdAt: any, displayName: string, email: any | null, avatarUrl: string, locale: string, isAnonymous: boolean, defaultRole: string, emailVerified: boolean, phoneNumber: string | null, phoneNumberVerified: boolean, activeMfaType: string | null, roles: Array<{ __typename?: 'authUserRoles', role: string }>, githubUser: { __typename?: 'AuthGithubUsers', userId: any | null, githubUserId: any | null } | null } | null };
 
 export type ImpersonatedLeadProjectsQueryVariables = Exact<{
   userId: Scalars['uuid'];
 }>;
 
 
-export type ImpersonatedLeadProjectsQuery = { __typename?: 'query_root', projectLeads: Array<{ __typename?: 'ProjectLeads', projectId: any }> };
+export type ImpersonatedLeadProjectsQuery = { __typename?: 'query_root', projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any }> };
 
 export type GithubUserFragment = { __typename?: 'User', id: any, login: string, avatarUrl: any };
 
@@ -11853,6 +11853,7 @@ export const ImpersonatedUserDocument = gql`
       role
     }
     githubUser {
+      userId
       githubUserId
     }
   }
@@ -11889,6 +11890,7 @@ export type ImpersonatedUserQueryResult = Apollo.QueryResult<ImpersonatedUserQue
 export const ImpersonatedLeadProjectsDocument = gql`
     query ImpersonatedLeadProjects($userId: uuid!) {
   projectLeads(where: {userId: {_eq: $userId}}) {
+    userId
     projectId
   }
 }
