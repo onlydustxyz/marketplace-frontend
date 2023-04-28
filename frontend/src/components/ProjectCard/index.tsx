@@ -199,6 +199,7 @@ export const PROJECT_CARD_FRAGMENT = gql`
     }
     projectLeads {
       userId
+      projectId
       user {
         ...ProjectLead
       }

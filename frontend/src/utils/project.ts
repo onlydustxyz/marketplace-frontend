@@ -26,6 +26,7 @@ export const VISIBLE_PROJECT_FRAGMENT = gql`
     id
     projectLeads {
       userId
+      projectId
     }
     githubRepos {
       githubRepoId

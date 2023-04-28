@@ -144,6 +144,21 @@ const ApolloWrapper: React.FC<PropsWithChildren> = ({ children }) => {
         PojectGithubRepos: {
           keyFields: ["projectId", "githubRepoId"],
         },
+        ProjectLeads: {
+          keyFields: ["userId", "projectId"],
+        },
+        ProjectSponsors: {
+          keyFields: ["sponsorId", "projectId"],
+        },
+        IgnoredGithubIssues: {
+          keyFields: ["projectId", "repoId", "issueNumber"],
+        },
+        UserInfo: {
+          keyFields: ["userId"],
+        },
+        WorkItems: {
+          keyFields: ["paymentId", "repoId", "issueNumber"],
+        },
         Budgets: {
           fields: {
             paymentRequests: {
