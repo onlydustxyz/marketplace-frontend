@@ -391,7 +391,11 @@
         "send": "Send your first one!"
       }
     },
-    "fundedBy": "Funded by __topSponsorsString__ — __leftToSpend__ left to spend",
+    "fundedBy": {
+      "zero": "__leftToSpend__ left to spend",
+      "one": "Funded by __topSponsorsString__ — __leftToSpend__ left to spend",
+      "many": "Funded by __topSponsorsString__ — __leftToSpend__ left to spend"
+    },
     "ledBy": {
       "many": "__count__ project leads",
       "one": "Led by __name__"

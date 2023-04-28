@@ -118,19 +118,18 @@ export default function ProjectCard({
                         })
                       : formatMoneyAmount({ amount: totalSpentAmountInUsd, notation: "compact" })}
                   </Tag>
-                  {projectSponsors?.length > 0 && (
-                    <Tooltip anchorId={`sponsor-list-${id}`} position={TooltipPosition.Top}>
-                      <div className="w-fit">
-                        {T("project.fundedBy", {
-                          topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
-                          leftToSpend: formatMoneyAmount({
-                            amount: totalInitialAmountInUsd - totalSpentAmountInUsd,
-                            notation: "compact",
-                          }),
-                        })}
-                      </div>
-                    </Tooltip>
-                  )}
+                  <Tooltip anchorId={`sponsor-list-${id}`} position={TooltipPosition.Top}>
+                    <div className="w-fit">
+                      {T("project.fundedBy", {
+                        count: topSponsors.length,
+                        topSponsorsString: topSponsors.map(sponsor => sponsor.name).join(", "),
+                        leftToSpend: formatMoneyAmount({
+                          amount: totalInitialAmountInUsd - totalSpentAmountInUsd,
+                          notation: "compact",
+                        }),
+                      })}
+                    </div>
+                  </Tooltip>
                 </>
               )}
             </div>
