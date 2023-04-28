@@ -134,31 +134,6 @@ impl Query {
 			.logged()
 			.ok()
 	}
-
-	pub async fn search_issues(
-		&self,
-		context: &Context,
-		query: String,
-		sort: Option<String>,
-		order: Option<String>,
-		per_page: Option<i32>,
-		page: Option<i32>,
-	) -> Option<Vec<GithubIssue>> {
-		context
-			.github_service_with_user_pat()
-			.ok()?
-			.issues(
-				&query,
-				sort,
-				order,
-				per_page.and_then(|n| u8::try_from(n).ok()),
-				page.and_then(|n| u32::try_from(n).ok()),
-			)
-			.await
-			.map_err(Error::from)
-			.logged()
-			.ok()
-	}
 }
 
 trait Logged {
