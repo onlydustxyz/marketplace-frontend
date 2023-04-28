@@ -23,6 +23,7 @@ const paymentRequestTemplate = {
   amountInUsd: 200,
   workItems: [
     {
+      paymentId: "705e6b37-d0ee-4e87-b681-7009dd691965",
       repoId: 123456,
       issueNumber: 123,
     },
