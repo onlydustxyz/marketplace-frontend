@@ -89,7 +89,7 @@ export const countUnpaidMergedPullsByContributor = (project?: Project<Contributo
     !find(ignoredForProjects, { projectId: project?.id });
 
   return chain(project?.githubRepos)
-    .flatMap("repoPulls")
+    .flatMap("repoIssues")
     .filter(isDefined)
     .filter(notPaid)
     .filter(notIgnored)
@@ -106,7 +106,14 @@ gql`
     id
     repoId
     issueNumber
+    title
+    htmlUrl
     authorId
+    type
+    status
+    createdAt
+    closedAt
+    mergedAt
     ignoredForProjects {
       projectId
     }
@@ -140,7 +147,7 @@ gql`
   fragment ProjectContributorsByLeader on Projects {
     githubRepos {
       repoIssues(
-        where: { createdAt: { _gte: $createdSince }, type: { _eq: "PullRequest" }, mergedAt: { _isNull: false } }
+        where: { createdAt: { _gte: $createdSince }, type: { _eq: "PullRequest" }, status: { _eq: "Merged" } }
       ) {
         ...GithubIssueDetails
       }

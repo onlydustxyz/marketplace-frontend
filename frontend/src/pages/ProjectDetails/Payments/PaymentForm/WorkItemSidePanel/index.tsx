@@ -14,6 +14,7 @@ type Props = {
   projectId: string;
   open: boolean;
   setOpen: (value: boolean) => void;
+  contributorId: number;
   contributorHandle: string;
   workItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
@@ -27,6 +28,7 @@ enum Tabs {
 
 export default function WorkItemSidePanel({
   projectId,
+  contributorId,
   contributorHandle,
   workItems,
   onWorkItemAdded,
@@ -59,7 +61,7 @@ export default function WorkItemSidePanel({
       {selectedTab === Tabs.PullRequests && (
         <Issues
           projectId={projectId}
-          contributorHandle={contributorHandle}
+          contributorId={contributorId}
           workItems={workItems}
           onWorkItemAdded={onWorkItemAdded}
           type={IssueType.PullRequest}
@@ -68,7 +70,7 @@ export default function WorkItemSidePanel({
       {selectedTab === Tabs.Issues && (
         <Issues
           projectId={projectId}
-          contributorHandle={contributorHandle}
+          contributorId={contributorId}
           workItems={workItems}
           onWorkItemAdded={onWorkItemAdded}
           type={IssueType.Issue}

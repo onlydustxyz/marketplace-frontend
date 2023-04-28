@@ -1,4 +1,4 @@
-import { chain, find } from "lodash";
+import { chain, filter, find } from "lodash";
 import { useMemo } from "react";
 import { WorkItem } from "src/components/GithubIssue";
 import IssuesView from "./IssuesView";
@@ -9,22 +9,20 @@ import useIgnoredIssues from "./useIgnoredIssues";
 type Props = {
   type: IssueType;
   projectId: string;
-  contributorHandle: string;
+  contributorId: number;
   workItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
 };
 
-export default function Issues({ type, projectId, contributorHandle, workItems, onWorkItemAdded }: Props) {
-  const { data: unpaidIssues, loading } = useUnpaidIssues({
+export default function Issues({ type, projectId, contributorId, workItems, onWorkItemAdded }: Props) {
+  const { data: unpaidIssues } = useUnpaidIssues({
     projectId,
-    filters: { author: contributorHandle, type },
+    authorId: contributorId,
+    type,
     includeIgnored: true,
   });
 
-  const initialIgnoredIssues = useMemo(
-    () => unpaidIssues?.filter((issue: WorkItem) => find(issue.ignoredForProjects, { projectId })) || [],
-    [projectId, unpaidIssues]
-  );
+  const initialIgnoredIssues = useMemo(() => filter(unpaidIssues || [], "ignored"), [projectId, unpaidIssues]);
 
   const {
     issues: ignoredIssues,
@@ -51,10 +49,6 @@ export default function Issues({ type, projectId, contributorHandle, workItems, 
           onWorkItemAdded={addAndUnignoreItem}
           onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
           onWorkItemUnignored={workItem => unignoreIssue(projectId, workItem)}
-          query={{
-            data: unpaidIssues,
-            loading,
-          }}
         />
       )}
       {type === IssueType.Issue && (
@@ -64,10 +58,6 @@ export default function Issues({ type, projectId, contributorHandle, workItems, 
           onWorkItemAdded={addAndUnignoreItem}
           onWorkItemIgnored={workItem => ignoreIssue(projectId, workItem)}
           onWorkItemUnignored={workItem => unignoreIssue(projectId, workItem)}
-          query={{
-            data: unpaidIssues,
-            loading,
-          }}
         />
       )}
     </>

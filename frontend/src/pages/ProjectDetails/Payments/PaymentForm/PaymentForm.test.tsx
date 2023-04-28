@@ -24,7 +24,7 @@ import {
 } from "src/__generated/graphql";
 import { MockedResponse } from "@apollo/client/testing";
 import { GithubContributorFragment } from "src/__generated/graphql";
-import { IssueState, IssueType, buildQuery } from "./WorkItemSidePanel/Issues/useUnpaidIssues";
+import { IssueState, IssueType } from "./WorkItemSidePanel/Issues/useUnpaidIssues";
 import { daysFromNow } from "src/utils/date";
 
 const TEST_USER = { id: "test-user-id", displayName: "test-login", githubUser: { githubUserId: 748483646584 } };

@@ -13,8 +13,7 @@ import { useEffect, useState } from "react";
 import WorkItemSidePanel from "./WorkItemSidePanel";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
 import Callout from "src/components/Callout";
-import { GithubContributorFragment, IssueDetailsFragment } from "src/__generated/graphql";
-import QueryWrapper from "src/components/QueryWrapper";
+import { GithubContributorFragment } from "src/__generated/graphql";
 import useWorkItems from "./useWorkItems";
 
 interface Props {
@@ -24,7 +23,7 @@ interface Props {
   onWorkItemsChange: (workItems: WorkItem[]) => void;
   contributor: GithubContributorFragment | null | undefined;
   setContributor: (contributor: GithubContributorFragment | null | undefined) => void;
-  getUnpaidMergedPullsQuery: { data?: IssueDetailsFragment[] | null; loading: boolean };
+  getUnpaidMergedPullsQuery: { data?: WorkItem[] | null; loading: boolean };
 }
 
 type TitleProps = {
@@ -121,14 +120,12 @@ const View: React.FC<Props> = ({
                       />
                     ))}
                   </div>
-                  <QueryWrapper query={getUnpaidMergedPullsQuery}>
-                    <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn" className="mx-4 pt-8">
-                      <Button size={ButtonSize.Md} type={ButtonType.Secondary} width={Width.Full}>
-                        <Add />
-                        {T("payment.form.workItems.addWorkItem")}
-                      </Button>
-                    </div>
-                  </QueryWrapper>
+                  <div onClick={() => setSidePanelOpen(true)} data-testid="add-work-item-btn" className="mx-4 pt-8">
+                    <Button size={ButtonSize.Md} type={ButtonType.Secondary} width={Width.Full}>
+                      <Add />
+                      {T("payment.form.workItems.addWorkItem")}
+                    </Button>
+                  </div>
                 </div>
               )}
             </Card>
@@ -140,6 +137,7 @@ const View: React.FC<Props> = ({
                 workItems={workItems}
                 onWorkItemAdded={addWorkItem}
                 contributorHandle={contributor.login}
+                contributorId={contributor.id}
               />
             )}
           </div>

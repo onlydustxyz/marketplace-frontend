@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Callout from "src/components/Callout";
 import GithubIssue, { Action, WorkItem } from "src/components/GithubIssue";
-import QueryWrapper, { QueryResult } from "src/components/QueryWrapper";
 import { useIntl } from "src/hooks/useIntl";
 import { useShowToaster } from "src/hooks/useToaster";
 import Link from "src/icons/Link";
@@ -18,23 +17,21 @@ import { useFormContext } from "react-hook-form";
 import useFilteredWorkItems from "./useFilteredWorkItems";
 import { sortBy } from "lodash";
 
-type Props<T, E> = {
+type Props = {
   workItems: WorkItem[];
   ignoredItems: WorkItem[];
   onWorkItemAdded: (workItem: WorkItem) => void;
   onWorkItemIgnored: (workItem: WorkItem) => void;
   onWorkItemUnignored: (workItem: WorkItem) => void;
-  query: QueryResult<T, E>;
 };
 
-export default function IssuesView<T, E>({
+export default function IssuesView({
   workItems,
   ignoredItems,
   onWorkItemAdded,
   onWorkItemIgnored,
   onWorkItemUnignored,
-  query,
-}: Props<T, E>) {
+}: Props) {
   const { T } = useIntl();
   const { watch, resetField } = useFormContext();
 
@@ -69,7 +66,7 @@ export default function IssuesView<T, E>({
   });
 
   const visibleItems = showIgnoredItems
-    ? sortBy([...workItems, ...ignoredItems.map(item => ({ ...item, ignored: true }))], "createdAt")
+    ? sortBy([...workItems, ...ignoredItems.map(item => ({ ...item, ignored: true }))], "createdAt").reverse()
     : workItems;
 
   const searchPattern = watch("search-issues");
@@ -120,33 +117,31 @@ export default function IssuesView<T, E>({
           />
         )}
       </div>
-      <QueryWrapper query={query}>
-        {filteredWorkItems.length > 0 ? (
-          <div
-            data-testid="elligible-issues"
-            className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
-          >
-            {filteredWorkItems.map(issue => (
-              <GithubIssue
-                key={issue.id}
-                workItem={issue}
-                action={Action.Add}
-                onClick={() => onIssueAdded(issue)}
-                secondaryAction={issue.ignored ? Action.UnIgnore : Action.Ignore}
-                onSecondaryClick={() => (issue.ignored ? onWorkItemUnignored(issue) : onWorkItemIgnored(issue))}
-                ignored={issue.ignored}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="mr-4">
-            <EmptyState />
-          </div>
-        )}
-        <div className="mr-4">
-          <Callout>{T("payment.form.workItems.issues.moreCallout", { count: SEARCH_MAX_DAYS_COUNT })}</Callout>
+      {filteredWorkItems.length > 0 ? (
+        <div
+          data-testid="elligible-issues"
+          className="flex flex-col gap-3 h-full p-px pr-4 overflow-auto scrollbar-thin scrollbar-w-2 scrollbar-thumb-spaceBlue-500 scrollbar-thumb-rounded"
+        >
+          {filteredWorkItems.map(issue => (
+            <GithubIssue
+              key={issue.id}
+              workItem={issue}
+              action={Action.Add}
+              onClick={() => onIssueAdded(issue)}
+              secondaryAction={issue.ignored ? Action.UnIgnore : Action.Ignore}
+              onSecondaryClick={() => (issue.ignored ? onWorkItemUnignored(issue) : onWorkItemIgnored(issue))}
+              ignored={issue.ignored}
+            />
+          ))}
         </div>
-      </QueryWrapper>
+      ) : (
+        <div className="mr-4">
+          <EmptyState />
+        </div>
+      )}
+      <div className="mr-4">
+        <Callout>{T("payment.form.workItems.issues.moreCallout", { count: SEARCH_MAX_DAYS_COUNT })}</Callout>
+      </div>
     </div>
   );
 }

@@ -39,7 +39,9 @@ const PaymentForm: React.FC = () => {
 
   const getUnpaidMergedPullsQuery = useUnpaidIssues({
     projectId,
-    filters: { author: contributor?.login, type: IssueType.PullRequest, state: IssueState.Merged },
+    authorId: contributor?.id,
+    type: IssueType.PullRequest,
+    state: IssueState.Merged,
   });
 
   const { handleSubmit } = formMethods;

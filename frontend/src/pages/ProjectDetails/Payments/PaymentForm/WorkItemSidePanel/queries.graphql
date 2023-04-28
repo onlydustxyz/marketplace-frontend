@@ -1,6 +1,24 @@
-query searchIssues($query: String!, $order: String, $sort: String, $perPage: Int) {
-  searchIssues(query: $query, order: $order, sort: $sort, perPage: $perPage) {
-    ...IssueDetails
+query SearchIssues(
+  $projectId: uuid!
+  $authorId: bigint!
+  $status: [String!]!
+  $type: jsonb!
+  $createdSince: timestamp!
+) {
+  projectsByPk(id: $projectId) {
+    id
+    githubRepos {
+      repoIssues(
+        where: {
+          authorId: { _eq: $authorId }
+          status: { _hasKeysAll: $status }
+          createdAt: { _gte: $createdSince }
+          type: { _eq: $type }
+        }
+      ) {
+        ...GithubIssueDetails
+      }
+    }
   }
 }
 

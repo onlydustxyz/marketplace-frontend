@@ -1,53 +1,36 @@
-import { chain, find } from "lodash";
+import { chain, some } from "lodash";
 import { useMemo } from "react";
 import {
   GetPaidWorkItemsDocument,
   GetPaidWorkItemsQuery,
-  RepositoryOwnerAndNameFragment,
+  GithubIssueDetailsFragment,
   SearchIssuesDocument,
   SearchIssuesQuery,
 } from "src/__generated/graphql";
 import { useHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
 import { daysFromNow } from "src/utils/date";
-import isDefined from "src/utils/isDefined";
+import { SEARCH_MAX_DAYS_COUNT } from "src/pages/ProjectDetails/Payments/PaymentForm";
+import { WorkItem } from "src/components/GithubIssue";
 
 export enum IssueType {
-  PullRequest = "pr",
-  Issue = "issue",
+  PullRequest = "PullRequest",
+  Issue = "Issue",
 }
 
 export enum IssueState {
-  Merged = "merged",
+  Merged = "Merged",
 }
-
-export const buildQuery = ({
-  author,
-  repos = [],
-  state,
-  type,
-}: { repos?: RepositoryOwnerAndNameFragment[] } & Filters) =>
-  [`${repos?.map(r => `repo:${r.owner}/${r.name}`).join(" ")}`]
-    .concat(type ? [`is:${type}`] : [])
-    .concat(author ? [`author:${author}`] : [])
-    .concat(state ? [`is:${state}`] : [])
-    .concat([`created:>=${daysFromNow(60).toISOString().slice(0, 10)}`])
-    .filter(a => a.length > 0)
-    .join(" ");
-
-type Filters = {
-  type?: IssueType;
-  author?: string;
-  state?: IssueState;
-};
 
 type Props = {
   projectId: string;
-  filters?: Filters;
+  type: IssueType;
+  authorId: number;
+  state?: IssueState;
   includeIgnored?: boolean;
 };
 
-export default function useUnpaidIssues({ projectId, filters, includeIgnored = false }: Props) {
+export default function useUnpaidIssues({ projectId, type, state, authorId, includeIgnored = false }: Props) {
   const getPaidItemsQuery = useHasuraQuery<GetPaidWorkItemsQuery>(
     GetPaidWorkItemsDocument,
     HasuraUserRole.RegisteredUser,
@@ -56,19 +39,17 @@ export default function useUnpaidIssues({ projectId, filters, includeIgnored = f
     }
   );
 
+  const createdSince = useMemo(() => daysFromNow(SEARCH_MAX_DAYS_COUNT), [daysFromNow, SEARCH_MAX_DAYS_COUNT]);
+
   const searchPrQuery = useHasuraQuery<SearchIssuesQuery>(SearchIssuesDocument, HasuraUserRole.RegisteredUser, {
     variables: {
-      query: buildQuery({
-        ...filters,
-        repos: getPaidItemsQuery.data?.projectsByPk?.githubRepos
-          .map(r => r.githubRepoDetails?.content)
-          .filter(isDefined),
-      }),
-      order: "desc",
-      sort: "created",
-      perPage: 100,
+      projectId,
+      authorId,
+      status: state ? [state] : [],
+      type,
+      createdSince,
     },
-    skip: !getPaidItemsQuery.data?.projectsByPk?.githubRepos || !filters?.author,
+    skip: !authorId || !projectId,
   });
 
   const paidItems = useMemo(
@@ -76,20 +57,31 @@ export default function useUnpaidIssues({ projectId, filters, includeIgnored = f
     [getPaidItemsQuery.data?.projectsByPk?.budgets]
   );
 
-  const elligibleIssues = useMemo(
+  const elligibleIssues: WorkItem[] | undefined | null = useMemo(
     () =>
-      searchPrQuery.data?.searchIssues &&
+      searchPrQuery.data?.projectsByPk &&
       paidItems &&
-      chain(searchPrQuery.data?.searchIssues)
+      chain(searchPrQuery.data?.projectsByPk.githubRepos)
+        .flatMap("repoIssues")
+        .map(issue => issueToWorkItem(projectId, issue))
         .differenceWith(paidItems, (pr, paidItem) => {
           return pr.repoId === paidItem.repoId && pr.number === paidItem.issueNumber;
         })
-        .filter(item => includeIgnored || !find(item.ignoredForProjects, { projectId }))
+        .filter(item => includeIgnored || !item.ignored)
         .sortBy("createdAt")
         .reverse()
         .value(),
-    [searchPrQuery.data?.searchIssues, paidItems, projectId, includeIgnored]
+    [searchPrQuery.data?.projectsByPk, paidItems, projectId, includeIgnored]
   );
-
   return { data: elligibleIssues, loading: searchPrQuery.loading || getPaidItemsQuery.loading };
 }
+
+const issueToWorkItem = (
+  projectId: string,
+  { ignoredForProjects, issueNumber: number, status, ...props }: GithubIssueDetailsFragment
+): WorkItem => ({
+  ...props,
+  number,
+  status: status.toUpperCase(),
+  ignored: some(ignoredForProjects, { projectId }),
+});
