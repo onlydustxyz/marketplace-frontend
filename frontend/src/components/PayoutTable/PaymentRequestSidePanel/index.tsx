@@ -94,6 +94,8 @@ const GET_PAYMENT_REQUEST_DETAILS = gql`
       avatarUrl
     }
     workItems {
+      repoId
+      issueNumber
       githubIssue {
         ...IssueDetails
       }

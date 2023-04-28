@@ -79,7 +79,7 @@ const payment: PaymentRequestDetailsFragment = {
     displayName: "Antho",
     avatarUrl: "https://avatars.githubusercontent.com/u/43467246?v=4",
   },
-  workItems: issues.map(githubIssue => ({ githubIssue })),
+  workItems: issues.map(githubIssue => ({ repoId: githubIssue.repoId, issueNumber: githubIssue.number, githubIssue })),
 };
 
 const args = {
