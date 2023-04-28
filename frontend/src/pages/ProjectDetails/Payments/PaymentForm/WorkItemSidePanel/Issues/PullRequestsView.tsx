@@ -117,6 +117,7 @@ export default function PullRequestsView({
                 <SearchLine className="text-spaceBlue-200 text-xl" />
               </div>
             }
+            inputProps={{ autoFocus: true }}
           />
         )}
       </div>

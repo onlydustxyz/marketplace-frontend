@@ -88,6 +88,7 @@ export default function OtherIssueInput({ projectId, onWorkItemAdded }: Props) {
             />
           </div>
         }
+        inputProps={{ autoFocus: true }}
       >
         <div onClick={validateOtherIssue} data-testid="add-other-issue-btn">
           <Button

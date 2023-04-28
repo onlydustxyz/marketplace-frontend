@@ -88,6 +88,7 @@ export default function OtherPrInput({ projectId, onWorkItemAdded }: Props) {
             />
           </div>
         }
+        inputProps={{ autoFocus: true }}
       >
         <div onClick={validateOtherPR} data-testid="add-other-pr-btn">
           <Button

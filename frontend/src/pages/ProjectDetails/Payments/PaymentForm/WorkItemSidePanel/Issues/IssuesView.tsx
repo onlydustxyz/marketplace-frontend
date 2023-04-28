@@ -116,6 +116,7 @@ export default function IssuesView({
                 <SearchLine className="text-spaceBlue-200 text-xl" />
               </div>
             }
+            inputProps={{ autoFocus: true }}
           />
         )}
       </div>
