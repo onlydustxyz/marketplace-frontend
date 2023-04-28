@@ -10,7 +10,7 @@ export default function useIgnoredIssues(issues: WorkItem[]) {
 
   useLayoutEffect(() => {
     clear();
-    issues.forEach(add);
+    add(issues);
   }, [issues]);
 
   const [ignoreIssue] = useHasuraMutation(IgnoreIssueDocument, HasuraUserRole.RegisteredUser);
