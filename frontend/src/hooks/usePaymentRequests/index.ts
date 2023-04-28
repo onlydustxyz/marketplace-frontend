@@ -68,6 +68,10 @@ export default function usePaymentRequests(projectId?: string) {
           remainingAmount: remainingAmount => remainingAmount + amount,
         },
       });
+
+      cache.evict({
+        id: `PaymentRequests:${paymentId}`,
+      });
     },
   });
 
