@@ -16,7 +16,7 @@ export default function Maintenance() {
           {T("state.maintenance.description")}
         </div>
       </div>
-      <a href="http://onlydust.xyz" rel="noreferrer">
+      <a href="https://onlydust.xyz" rel="noreferrer">
         <Button>{T("state.maintenance.visitButton")}</Button>
       </a>
     </div>
