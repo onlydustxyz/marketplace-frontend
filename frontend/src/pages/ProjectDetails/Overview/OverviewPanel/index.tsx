@@ -53,6 +53,8 @@ export const GET_PROJECT_CONTRIBUTORS_FOR_OVERVIEW_PANEL_QUERY = gql`
   query GetProjectContributorsForOverview($projectId: uuid!) {
     projectsByPk(id: $projectId) {
       githubRepos {
+        projectId
+        githubRepoId
         githubRepoDetails {
           content {
             contributors {

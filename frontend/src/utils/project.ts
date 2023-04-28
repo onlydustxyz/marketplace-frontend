@@ -29,6 +29,7 @@ export const VISIBLE_PROJECT_FRAGMENT = gql`
       projectId
     }
     githubRepos {
+      projectId
       githubRepoId
     }
     budgets {
@@ -123,6 +124,7 @@ gql`
   fragment ProjectContributors on Projects {
     id
     githubRepos {
+      projectId
       githubRepoId
       githubRepoDetails {
         id
@@ -147,6 +149,8 @@ gql`
 
   fragment ProjectContributorsByLeader on Projects {
     githubRepos {
+      projectId
+      githubRepoId
       repoIssues(
         where: { createdAt: { _gte: $createdSince }, type: { _eq: "PullRequest" }, status: { _eq: "Merged" } }
       ) {

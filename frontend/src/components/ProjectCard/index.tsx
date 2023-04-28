@@ -205,6 +205,8 @@ export const PROJECT_CARD_FRAGMENT = gql`
       }
     }
     githubRepos {
+      projectId
+      githubRepoId
       ...ProjectCardGithubRepoFields
     }
     projectSponsors {

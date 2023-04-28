@@ -20,6 +20,8 @@ fragment RepositoryOwnerAndName on Repo {
 query getPaidWorkItems($projectId: uuid!) {
   projectsByPk(id: $projectId) {
     githubRepos {
+      projectId
+      githubRepoId
       githubRepoDetails {
         id
         content {
@@ -49,6 +51,8 @@ query fetchIssue($repoOwner: String!, $repoName: String!, $issueNumber: Int!) {
 query GetProjectRepos($projectId: uuid!) {
   projectsByPk(id: $projectId) {
     githubRepos {
+      projectId
+      githubRepoId
       githubRepoDetails {
         id
         content {

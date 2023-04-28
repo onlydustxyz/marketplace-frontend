@@ -61,6 +61,8 @@ export const GET_ALL_FILTER_OPTIONS_QUERY = gql`
         }
       }
       githubRepos {
+        projectId
+        githubRepoId
         ...GithubRepoLanguagesFields
       }
     }

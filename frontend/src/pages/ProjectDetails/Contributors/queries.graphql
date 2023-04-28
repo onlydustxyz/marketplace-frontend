@@ -44,6 +44,8 @@ fragment ProjectContributorsForTable on Projects {
     name
   }
   githubRepos {
+    projectId
+    githubRepoId
     ...GithubRepoContributorsFields
   }
   budgets {
