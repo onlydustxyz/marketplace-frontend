@@ -127,7 +127,10 @@ const graphQlMocks = [
         projectsByPk: {
           __typename: "Projects",
           id: TEST_PROJECT_ID,
-          githubRepos: [githubRepo1, githubRepo2],
+          githubRepos: [
+            { projectId: TEST_PROJECT_ID, ...githubRepo1 },
+            { projectId: TEST_PROJECT_ID, ...githubRepo2 },
+          ],
           budgets: [],
           projectDetails: {
             projectId: TEST_PROJECT_ID,

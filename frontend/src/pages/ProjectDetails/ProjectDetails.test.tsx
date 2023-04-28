@@ -83,6 +83,7 @@ const getProjectMock = {
         projectLeads: [
           {
             userId: "test-user-id",
+            projectId: TEST_PROJECT_ID,
             user: {
               id: "test-user-id",
               displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
@@ -91,7 +92,7 @@ const getProjectMock = {
           },
         ],
         budgets: [{ id: "budget-1", paymentRequests: [] }],
-        githubRepos: [{ githubRepoId: 123456, githubRepoDetails: null }],
+        githubRepos: [{ githubRepoId: 123456, projectId: TEST_PROJECT_ID, githubRepoDetails: null }],
         projectSponsors: [],
       },
     } as GetProjectQueryResult["data"],
@@ -129,6 +130,7 @@ const getLedProjectMock = {
         projectLeads: [
           {
             userId: "test-user-id",
+            projectId: TEST_LED_PROJECT_ID,
             user: {
               id: "test-user-id",
               displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
@@ -137,7 +139,7 @@ const getLedProjectMock = {
           },
         ],
         budgets: [{ id: "budget-1", paymentRequests: [] }],
-        githubRepos: [{ githubRepoId: 123456, githubRepoDetails: null }],
+        githubRepos: [{ projectId: TEST_LED_PROJECT_ID, githubRepoId: 123456, githubRepoDetails: null }],
         projectSponsors: [],
       },
     } as GetProjectQueryResult["data"],

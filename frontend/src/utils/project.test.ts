@@ -31,6 +31,7 @@ const project: ProjectContributorsFragment = {
   githubRepos: [
     {
       __typename: "ProjectGithubRepos",
+      projectId: "project-1",
       githubRepoId: REPO1_ID,
       githubRepoDetails: {
         id: REPO1_ID,
@@ -39,6 +40,7 @@ const project: ProjectContributorsFragment = {
     },
     {
       __typename: "ProjectGithubRepos",
+      projectId: "project-1",
       githubRepoId: REPO2_ID,
       githubRepoDetails: {
         id: REPO2_ID,

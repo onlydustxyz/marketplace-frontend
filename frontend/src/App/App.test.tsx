@@ -113,6 +113,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
         projectLeads: [
           {
             userId: TEST_USER_ID,
+            projectId: TEST_PROJECT_ID,
             user: {
               id: TEST_USER_ID,
               displayName: TEST_PROJECT_LEAD_DISPLAY_NAME,
@@ -121,7 +122,7 @@ const ALL_PROJECTS_RESULT: { data: GetProjectsQueryResult["data"] } = {
           },
         ],
         pendingInvitations: [],
-        githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
+        githubRepos: [{ projectId: TEST_PROJECT_ID, githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
         projectSponsors: [],
         budgetsAggregate: { aggregate: { sum: { spentAmount: 100, initialAmount: 1000 } } },
         budgets: [{ id: "budget-1", paymentRequests: [] }],
@@ -153,6 +154,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
       projectLeads: [
         {
           __typename: "ProjectLeads",
+          projectId: TEST_PROJECT_ID,
           userId: TEST_USER_ID,
           user: {
             __typename: "users",
@@ -163,7 +165,7 @@ const SINGLE_PROJECT_RESULT: { data: GetProjectQueryResult["data"] } = {
         },
       ],
       pendingInvitations: [{ id: "invitation-id", githubUserId: TEST_GITHUB_USER_ID }],
-      githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
+      githubRepos: [{ projectId: TEST_PROJECT_ID, githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: null }],
       projectSponsors: [],
       budgets: [{ id: "budget-1", paymentRequests: [] }],
     },
@@ -201,7 +203,13 @@ const PROJECT_OVERVIEW_DETAILS_RESULT: { data: GetProjectOverviewDetailsQueryRes
         logoUrl: null,
         longDescription: "This is the long description",
       },
-      githubRepos: [{ githubRepoId: TEST_GITHUB_REPO_ID, githubRepoDetails: { content: { stars: 1000 } } }],
+      githubRepos: [
+        {
+          projectId: TEST_PROJECT_ID,
+          githubRepoId: TEST_GITHUB_REPO_ID,
+          githubRepoDetails: { content: { stars: 1000 } },
+        },
+      ],
     },
   },
 };
@@ -276,6 +284,7 @@ const graphQlMocks = [
             pendingInvitations: [],
             githubRepos: [
               {
+                projectId: TEST_PROJECT_ID,
                 githubRepoId: TEST_GITHUB_REPO_ID,
                 githubRepoDetails: {
                   id: TEST_GITHUB_REPO_ID,

@@ -125,6 +125,8 @@ const graphQlMocks = [
           id: TEST_PROJECT_ID,
           githubRepos: [
             {
+              githubRepoId: 123456,
+              projectId: TEST_PROJECT_ID,
               githubRepoDetails: {
                 id: 123456,
                 content: {
@@ -152,6 +154,8 @@ const graphQlMocks = [
         projectsByPk: {
           githubRepos: [
             {
+              projectId: TEST_PROJECT_ID,
+              githubRepoId: 123456,
               githubRepoDetails: {
                 id: 123456,
                 content: { __typename: "Repo", id: 123456, owner: "owner", name: "name" },
