@@ -152,6 +152,7 @@ const graphQlMocks = [
     result: {
       data: {
         projectsByPk: {
+          id: TEST_PROJECT_ID,
           githubRepos: [
             {
               projectId: TEST_PROJECT_ID,
