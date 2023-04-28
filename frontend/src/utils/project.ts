@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { GithubIssueDetailsFragment, VisibleProjectFragment } from "src/__generated/graphql";
 import { chain, find, flatMap, some, uniqBy } from "lodash";
 import isDefined from "src/utils/isDefined";
@@ -20,27 +19,6 @@ export const isProjectVisible =
 
     return hasRepos && hasBudget && (hasLeaders || !!hasInvitation);
   };
-
-export const VISIBLE_PROJECT_FRAGMENT = gql`
-  fragment VisibleProject on Projects {
-    id
-    projectLeads {
-      userId
-      projectId
-    }
-    githubRepos {
-      projectId
-      githubRepoId
-    }
-    budgets {
-      id
-    }
-    pendingInvitations {
-      id
-      githubUserId
-    }
-  }
-`;
 
 type Project<R> = {
   id: string;
@@ -98,66 +76,3 @@ export const countUnpaidMergedPullsByContributor = (project?: Project<Contributo
     .countBy("authorId")
     .value();
 };
-
-gql`
-  fragment ContributorId on User {
-    id
-  }
-
-  fragment GithubIssueDetails on GithubIssues {
-    id
-    repoId
-    issueNumber
-    title
-    htmlUrl
-    authorId
-    type
-    status
-    createdAt
-    closedAt
-    mergedAt
-    ignoredForProjects {
-      projectId
-      repoId
-      issueNumber
-    }
-  }
-
-  fragment ProjectContributors on Projects {
-    id
-    githubRepos {
-      projectId
-      githubRepoId
-      githubRepoDetails {
-        id
-        content {
-          id
-          contributors {
-            ...ContributorId
-          }
-        }
-      }
-    }
-    budgets {
-      id
-      paymentRequests {
-        id
-        githubRecipient {
-          ...ContributorId
-        }
-      }
-    }
-  }
-
-  fragment ProjectContributorsByLeader on Projects {
-    githubRepos {
-      projectId
-      githubRepoId
-      repoIssues(
-        where: { createdAt: { _gte: $createdSince }, type: { _eq: "PullRequest" }, status: { _eq: "Merged" } }
-      ) {
-        ...GithubIssueDetails
-      }
-    }
-  }
-`;

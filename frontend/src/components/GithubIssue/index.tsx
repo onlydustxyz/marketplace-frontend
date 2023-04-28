@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import IssueClosed from "src/assets/icons/IssueClosed";
 import { useIntl } from "src/hooks/useIntl";
 import Add from "src/icons/Add";
@@ -164,23 +163,3 @@ function IssueStatus({ issue }: { issue: WorkItem }) {
     </>
   );
 }
-
-export const GITHUB_ISSUE_FRAGMENTS = gql`
-  fragment IssueDetails on Issue {
-    id
-    repoId
-    number
-    type
-    status
-    title
-    htmlUrl
-    createdAt
-    closedAt
-    mergedAt
-    ignoredForProjects {
-      projectId
-      repoId
-      issueNumber
-    }
-  }
-`;

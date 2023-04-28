@@ -2,13 +2,13 @@ import { gql } from "@apollo/client";
 import { useAuth } from "src/hooks/useAuth";
 import { useCachableHasuraQuery } from "src/hooks/useHasuraQuery";
 import { HasuraUserRole } from "src/types";
+import { getDeduplicatedAggregatedLanguages, getMostUsedLanguages } from "src/utils/languages";
+import { isProjectVisible } from "src/utils/project";
 import {
-  getDeduplicatedAggregatedLanguages,
-  getMostUsedLanguages,
-  GITHUB_REPOS_LANGUAGES_FRAGMENT,
-} from "src/utils/languages";
-import { isProjectVisible, VISIBLE_PROJECT_FRAGMENT } from "src/utils/project";
-import { GetAllFilterOptionsQuery } from "src/__generated/graphql";
+  GetAllFilterOptionsQuery,
+  GithubRepoLanguagesFieldsFragmentDoc,
+  VisibleProjectFragmentDoc,
+} from "src/__generated/graphql";
 import View from "./View";
 import { chain } from "lodash";
 
@@ -49,8 +49,8 @@ export default function FilterPanel({ isProjectLeader }: Props) {
 }
 
 export const GET_ALL_FILTER_OPTIONS_QUERY = gql`
-  ${VISIBLE_PROJECT_FRAGMENT}
-  ${GITHUB_REPOS_LANGUAGES_FRAGMENT}
+  ${VisibleProjectFragmentDoc}
+  ${GithubRepoLanguagesFieldsFragmentDoc}
   query GetAllFilterOptions {
     projects {
       ...VisibleProject

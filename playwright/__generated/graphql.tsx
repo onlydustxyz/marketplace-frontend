@@ -11278,11 +11278,13 @@ export type GetAllFilterOptionsQuery = { __typename?: 'query_root', projects: Ar
 
 export type GithubRepoLanguagesFieldsFragment = { __typename?: 'ProjectGithubRepos', githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, languages: any } | null };
 
-export type VisibleProjectFragment = { __typename?: 'Projects', id: any, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any }>, budgets: Array<{ __typename?: 'Budgets', id: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> };
-
 export type ContributorIdFragment = { __typename?: 'User', id: any };
 
+export type IgnoredGithubIssueIdFragment = { __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any };
+
 export type GithubIssueDetailsFragment = { __typename?: 'GithubIssues', id: any, repoId: any, issueNumber: any, title: string, htmlUrl: string, authorId: any, type: any, status: any, createdAt: any, closedAt: any | null, mergedAt: any | null, ignoredForProjects: Array<{ __typename?: 'IgnoredGithubIssues', projectId: any, repoId: any, issueNumber: any }> };
+
+export type VisibleProjectFragment = { __typename?: 'Projects', id: any, projectLeads: Array<{ __typename?: 'ProjectLeads', userId: any, projectId: any }>, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any }>, budgets: Array<{ __typename?: 'Budgets', id: any }>, pendingInvitations: Array<{ __typename?: 'PendingProjectLeaderInvitations', id: any, githubUserId: any }> };
 
 export type ProjectContributorsFragment = { __typename?: 'Projects', id: any, githubRepos: Array<{ __typename?: 'ProjectGithubRepos', projectId: any, githubRepoId: any, githubRepoDetails: { __typename?: 'GithubRepoDetails', id: any, content: { __typename?: 'Repo', id: any, contributors: Array<{ __typename?: 'User', id: any }> } | null } | null }>, budgets: Array<{ __typename?: 'Budgets', id: any, paymentRequests: Array<{ __typename?: 'PaymentRequests', id: any, githubRecipient: { __typename?: 'User', id: any } | null }> }> };
 
@@ -11477,6 +11479,13 @@ export type UpdateProfileMutationVariables = Exact<{
 
 export type UpdateProfileMutation = { __typename?: 'mutation_root', updateProfileInfo: any };
 
+export const IgnoredGithubIssueIdFragmentDoc = gql`
+    fragment IgnoredGithubIssueId on IgnoredGithubIssues {
+  projectId
+  repoId
+  issueNumber
+}
+    `;
 export const IssueDetailsFragmentDoc = gql`
     fragment IssueDetails on Issue {
   id
@@ -11490,12 +11499,10 @@ export const IssueDetailsFragmentDoc = gql`
   closedAt
   mergedAt
   ignoredForProjects {
-    projectId
-    repoId
-    issueNumber
+    ...IgnoredGithubIssueId
   }
 }
-    `;
+    ${IgnoredGithubIssueIdFragmentDoc}`;
 export const PaymentRequestDetailsFragmentDoc = gql`
     fragment PaymentRequestDetails on PaymentRequests {
   id
@@ -11799,12 +11806,10 @@ export const GithubIssueDetailsFragmentDoc = gql`
   closedAt
   mergedAt
   ignoredForProjects {
-    projectId
-    repoId
-    issueNumber
+    ...IgnoredGithubIssueId
   }
 }
-    `;
+    ${IgnoredGithubIssueIdFragmentDoc}`;
 export const ProjectContributorsByLeaderFragmentDoc = gql`
     fragment ProjectContributorsByLeader on Projects {
   githubRepos {
